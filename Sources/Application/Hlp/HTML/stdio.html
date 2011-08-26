@@ -1,0 +1,2116 @@
+<HTML>
+<HEAD>
+<TITLE>I/O Functions</TITLE>
+</HEAD>
+<BODY>
+<H1>
+<TABLE style="WIDTH: 722px; HEIGHT: 20px" cellSpacing=2 cellPadding=5 width=722 
+bgColor=#ffffff border=0>
+  
+  <TR>
+    <TD align=left bgColor=#ccccff>
+      <P align=center><FONT face=Arial color=red size=5><STRONG>I/O 
+      Functions</STRONG></FONT></P></TD></TR>
+  <TR>
+    <TD align=left bgColor=#eeeeff><FONT face=Arial>
+      <P><FONT face=Arial size=2>This 
+      chapter comprises functions to manage files or other input/output streams. 
+      Among these functions are subroutines to generate or scan strings 
+      according to specifications from a format string. </FONT></P>
+      <P><FONT face=Arial size=2>The 
+      underlying facilities for input and output depend on the host system, but 
+      these functions provide a uniform interface. </FONT></P>
+      <P><FONT face=Arial size=2>The 
+      corresponding declarations are in <TT>`stdio.h'</TT>. 
+      </FONT></P>
+      <P><FONT face=Arial size=2>The 
+      reentrant versions of these functions use macros </FONT></P>
+      <P><FONT face=Arial size=2>_stdin_r(<VAR 
+      >reent</VAR>) _stdout_r(<VAR 
+      >reent</VAR>) _stderr_r(<VAR 
+      >reent</VAR>) </FONT></P>
+      <P><FONT face=Arial size=2 
+      >instead of the globals stdin, stdout, and stderr. The 
+      argument &lt;[reent]&gt; is a pointer to a reentrancy structure. 
+      </FONT></P>
+      <H2><A name=clearerr ><FONT face=Arial 
+      size=3 color=blue><U>clearerr : clear file 
+      or stream error indicator</U>       
+      </FONT></A></H2>
+      <P><A name=IDX62></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR>void clearerr(FILE 
+        *<VAR>fp</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>The 
+        stdio functions maintain an error indicator with each file pointer <VAR 
+        >fp</VAR>, to record whether any read or write 
+        errors have occurred on the associated file or stream. Similarly, it 
+        maintains an end-of-file indicator to record whether there is no more 
+        data in the file. </FONT></P>
+        <P><FONT face=Arial size=2>Use 
+        clearerr to reset both of these indicators. </FONT></P>
+        <P><FONT face=Arial size=2>See 
+        ferror and feof to query the two indicators. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >clearerr does not return a result. 
+      </FONT></P></BLOCKQUOTE>
+      <H2><A name=fclose ><FONT face=Arial 
+      size=3 color=blue><U>fclose : close a 
+      file</U>    </FONT></A></H2>
+      <P><A name=IDX63></A><FONT 
+      face=Arial><FONT size=2><STRONG 
+      >Synopsis</STRONG> </FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR>int fclose(FILE *<VAR 
+        >fp</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>If 
+        the file or stream identified by <VAR>fp</VAR> is 
+        open, fclose closes it, after first ensuring that any pending data is 
+        written (by calling fflush(<VAR>fp</VAR>)). 
+        </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >fclose returns 0 if successful (including when <VAR 
+        >fp</VAR> is NULL or not an open file); otherwise, 
+        it returns EOF. </FONT></P></BLOCKQUOTE>
+      <H2><A name=feof ><FONT face=Arial 
+      size=3 color=blue><U>feof : test for end 
+      of file</U>      </FONT></A></H2>
+      <P><A name=IDX64></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR>int feof(FILE *<VAR 
+        >fp</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >feof tests whether or not the end of the file 
+        identified by <VAR>fp</VAR> has been reached. 
+        </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >feof returns 0 if the end of file has not yet been 
+        reached; if at end of file, the result is nonzero. 
+</FONT></P></BLOCKQUOTE>
+      <H2><A name=ferror ><FONT face=Arial 
+      size=3 color=blue><U>ferror : test whether 
+      read/write error has occurred</U>       
+      </FONT></A></H2>
+      <P><A name=IDX65></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt; int ferror(FILE *<VAR 
+        >fp</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>The 
+        stdio functions maintain an error indicator with each file pointer <VAR 
+        >fp</VAR>, to record whether any read or write 
+        errors have occurred on the associated file or stream. Use ferror to 
+        query this indicator. </FONT></P>
+        <P><FONT face=Arial size=2>See 
+        clearerr to reset the error indicator. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >ferror returns 0 if no errors have occurred; it 
+        returns a nonzero value otherwise. </FONT></P></BLOCKQUOTE>
+      <H2><A name=fflush ><FONT face=Arial 
+      size=3 color=blue><U>fflush : flush 
+      buffered file output</U>     
+      </FONT></A></H2>
+      <P><A name=IDX66></A><FONT 
+      face=Arial><FONT size=2><STRONG 
+      >Synopsis</STRONG> </FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR>int fflush(FILE *<VAR 
+        >fp</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>The 
+        stdio output functions can buffer output before delivering it to the 
+        host system, in order to minimize the overhead of system calls. 
+        </FONT></P>
+        <P><FONT face=Arial size=2>Use 
+        fflush to deliver any such pending output (for the file or stream 
+        identified by <VAR>fp</VAR>) to the host system. 
+        </FONT></P>
+        <P><FONT face=Arial size=2>If 
+        <VAR>fp</VAR> is NULL, fflush delivers pending 
+        output from all open files. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >fflush returns 0 unless it encounters a write 
+        error; in that situation, it returns EOF. </FONT></P></BLOCKQUOTE>
+      <H2><A name=fgetc ><FONT face=Arial 
+      size=3 color=blue><U>fgetc : get a 
+      character from a file or stream</U>         
+      </FONT></A></H2>
+      <P><A name=IDX67></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR>int fgetc(FILE *<VAR 
+        >fp</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>Use 
+        fgetc to get the next single character from the file or stream 
+        identified by <VAR>fp</VAR>. As a side effect, 
+        fgetc advances the file's current position indicator. </FONT></P>
+        <P><FONT face=Arial size=2>For 
+        a macro version of this function, see getc. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>The 
+        next character (read as an unsigned char, and cast to int), unless there 
+        is no more data, or the host system reports a read error; in either of 
+        these situations, fgetc returns EOF. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can distinguish the two situations that cause an EOF result by using the 
+        ferror and feof functions. </FONT></P></BLOCKQUOTE>
+      <H2><A name=fgetpos ><FONT face=Arial 
+      size=3 color=blue><U>fgetpos : record 
+      position in a stream or file</U>        
+      </FONT></A></H2>
+      <P><A name=IDX68></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR>int fgetpos(FILE *<VAR 
+        >fp</VAR>, fpos_t *<VAR 
+        >pos</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >Objects of type FILE can have a "position" that 
+        records how much of the file your program has already read. Many of the 
+        stdio functions depend on this position, and many change it as a side 
+        effect. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can use fgetpos to report on the current position for a file identified 
+        by <VAR>fp</VAR>; fgetpos will write a value 
+        representing that position at *<VAR>pos</VAR>. 
+        Later, you can use this value with fsetpos to return the file to this 
+        position. </FONT></P>
+        <P><FONT face=Arial size=2>In 
+        the current implementation, fgetpos simply uses a character count to 
+        represent the file position; this is the same number that would be 
+        returned by ftell. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >fgetpos returns 0 when successful. If fgetpos 
+        fails, the result is 1. Failure occurs on streams that do not support 
+        positioning; the global errno indicates this condition with the value 
+        ESPIPE. </FONT></P></BLOCKQUOTE>
+      <H2><A name=fgets ><FONT face=Arial 
+      size=3 color=blue><U>fgets : get character 
+      string from a file or stream</U>         
+      </FONT></A></H2>
+      <P><A name=IDX69></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR>char *fgets(char *<VAR 
+        >buf</VAR>, int <VAR>n</VAR>, 
+        FILE *<VAR>fp</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >Reads at most <VAR>n-1</VAR> 
+        characters from <VAR>fp</VAR> until a newline is 
+        found. The characters including to the newline are stored in <VAR 
+        >buf</VAR>. The buffer is terminated with a 0. 
+        </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >fgets returns the buffer passed to it, with the 
+        data filled in. If end of file occurs with some data already 
+        accumulated, the data is returned with no other indication. If no data 
+        are read, NULL is returned instead. </FONT></P></BLOCKQUOTE>
+      <H2><A name=fiprintf ><FONT face=Arial 
+      size=3 color=blue><U>fiprintf : format 
+      output to file (integer only)</U>       
+      </FONT></A></H2>
+      <P><A name=IDX70></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR>int fiprintf(FILE *<VAR 
+        >fd</VAR>, const char *<VAR 
+        >format</VAR>, ...); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >fiprintf is a restricted version of fprintf: it has 
+        the same arguments and behavior, save that it cannot perform any 
+        floating-point formatting--the f, g, G, e, and F type specifiers are not 
+        recognized. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >fiprintf returns the number of bytes in the output 
+        string, save that the concluding NULL is not counted. fiprintf returns 
+        when the end of the format string is encountered. If an error occurs, 
+        fiprintf returns EOF. </FONT></P></BLOCKQUOTE>
+      <H2><A name=fopen ><FONT face=Arial 
+      size=3 color=blue><U>fopen : open a 
+      file</U>    </FONT></A></H2>
+      <P><A name=IDX71></A><A 
+      name=IDX72></A><FONT size=2><FONT face=Arial 
+      ><STRONG>Synopsis</STRONG></FONT> 
+      </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR>FILE *fopen(const char 
+        *<VAR>file</VAR>, const char *<VAR 
+        >mode</VAR>);<BR>FILE *_fopen_r(void *<VAR 
+        >reent</VAR>, const char *<VAR 
+        >file</VAR>, const char *<VAR 
+        >mode</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >fopen initializes the data structures needed to 
+        read or write a file. Specify the file's name as the string at <VAR 
+        >file</VAR>, and the kind of access you need to the 
+        file with the string at <VAR>mode</VAR>. 
+</FONT></P>
+        <P><FONT face=Arial size=2>The 
+        alternate function _fopen_r is a reentrant version. The extra argument 
+        <VAR>reent</VAR> is a pointer to a reentrancy 
+        structure. </FONT></P>
+        <P><FONT face=Arial size=2 
+        >Three fundamental kinds of access are available: 
+        read, write, and append. *<VAR>mode</VAR> must 
+        begin with one of the three characters `r', `w', or `a', to select one 
+        of these: </FONT></P></BLOCKQUOTE>
+      <DL compact>
+        <DL>
+          <DT><FONT face=Arial size=2 
+          ><STRONG>r</STRONG> </FONT>
+          <DD><FONT face=Arial size=2 
+          >Open the file for reading; the operation will 
+          fail if the file does not exist, or if the host system does not permit 
+          you to read it. </FONT>
+          <DT><FONT face=Arial size=2 
+          ><STRONG>w</STRONG> </FONT>
+          <DD><FONT face=Arial size=2 
+          >Open the file for writing <EM 
+          >from the beginning</EM> of the file: effectively, 
+          this always creates a new file. If the file whose name you specified 
+          already existed, its old contents are discarded. </FONT>
+          <DT><FONT face=Arial size=2 
+          ><STRONG>a</STRONG> </FONT>
+          <DD><FONT face=Arial size=2 
+          >Open the file for appending data, that is writing 
+          from the end of file. When you open a file this way, all data always 
+          goes to the current end of file; you cannot change this using fseek. 
+          </FONT></DD></DL></DL>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >Some host systems distinguish between "binary" and 
+        "text" files. Such systems may perform data transformations on data 
+        written to, or read from, files opened as "text". If your system is one 
+        of these, then you can append a `b' to any of the three modes above, to 
+        specify that you are opening the file as a binary file (the default is 
+        to open the file as a text file). </FONT></P>
+        <P><FONT face=Arial size=2 
+        >`rb', then, means "read binary"; `wb', "write 
+        binary"; and `ab', "append binary". </FONT></P>
+        <P><FONT face=Arial size=2>To 
+        make C programs more portable, the `b' is accepted on all systems, 
+        whether or not it makes a difference. </FONT></P>
+        <P><FONT face=Arial size=2 
+        >Finally, you might need to both read and write from 
+        the same file. You can also append a `+' to any of the three modes, to 
+        permit this. (If you want to append both `b' and `+', you can do it in 
+        either order: for example, "rb+" means the same thing as "r+b" when used 
+        as a mode string.) </FONT></P>
+        <P><FONT face=Arial size=2>Use 
+        "r+" (or "rb+") to permit reading and writing anywhere in an existing 
+        file, without discarding any data; "w+" (or "wb+") to create a new file 
+        (or begin by discarding all data from an old one) that permits reading 
+        and writing anywhere in it; and "a+" (or "ab+") to permit reading 
+        anywhere in an existing file, but writing only at the end. 
+      </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >fopen returns a file pointer which you can use for 
+        other file operations, unless the file you requested could not be 
+        opened; in that situation, the result is NULL. If the reason for failure 
+        was an invalid string at <VAR>mode</VAR>, errno is 
+        set to EINVAL. </FONT></P></BLOCKQUOTE>
+      <H2><A name=fdopen ><FONT face=Arial 
+      size=3 color=blue><U>fdopen : turn open 
+      file into a stream</U>       
+      </FONT></A></H2>
+      <P><A name=IDX73></A><A 
+      name=IDX74></A><FONT size=2><FONT face=Arial 
+      ><STRONG>Synopsis</STRONG></FONT> 
+      </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR>FILE *fdopen(int <VAR 
+        >fd</VAR>, const char *<VAR 
+        >mode</VAR>);<BR>FILE 
+        *_fdopen_r(void *<VAR>reent</VAR>, int <VAR 
+        >fd</VAR>, const char *<VAR 
+        >mode</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >fdopen produces a file descriptor of type FILE *, 
+        from a descriptor for an already-open file (returned, for example, by 
+        the system subroutine open rather than by fopen). The <VAR 
+        >mode</VAR> argument has the same meanings as in 
+        fopen. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >File pointer or NULL, as for fopen. 
+      </FONT></P></BLOCKQUOTE>
+      <H2><A name=fputc><FONT 
+      face=Arial color=blue size=3><U>fputc : write a 
+      character on a stream or file</U></FONT></A></H2>
+      <P><A name=IDX75></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR 
+        >int fputc(int <VAR>ch</VAR>, 
+        FILE *<VAR>fp</VAR>);</FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >fputc converts the argument <VAR 
+        >ch</VAR> from an int to an unsigned char, then 
+        writes it to the file or stream identified by <VAR 
+        >fp</VAR>. </FONT></P>
+        <P><FONT face=Arial size=2>If 
+        the file was opened with append mode (or if the stream cannot support 
+        positioning), then the new character goes at the end of the file or 
+        stream. Otherwise, the new character is written at the current value of 
+        the position indicator, and the position indicator oadvances by one. 
+        </FONT></P>
+        <P><FONT face=Arial size=2>For 
+        a macro version of this function, see putc. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>If 
+        successful, fputc returns its argument <VAR 
+        >ch</VAR>. If an error intervenes, the result is 
+        EOF. You can use `ferror(<VAR>fp</VAR>)' to query 
+        for errors. </FONT></P></BLOCKQUOTE>
+      <H2><A name=fputs><FONT 
+      face=Arial color=blue size=3><U>fputs : write a 
+      character string in a file or stream</U></FONT></A></H2>
+      <P><A name=IDX76></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR 
+        >int fputs(const char *<VAR 
+        >s</VAR>, FILE *<VAR 
+        >fp</VAR>);</FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >fputs writes the string at <VAR 
+        >s</VAR> (but without the trailing null) to the file 
+        or stream identified by <VAR>fp</VAR>. 
+      </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>If 
+        successful, the result is 0; otherwise, the result is EOF. 
+      </FONT></P></BLOCKQUOTE>
+      <H2><A name=fread><FONT 
+      face=Arial color=blue size=3><U>fread : read array 
+      elements from a file</U></FONT></A></H2>
+      <P><A name=IDX77></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR 
+        >size_t fread(void *<VAR 
+        >buf</VAR>, size_t <VAR 
+        >size</VAR>, size_t <VAR 
+        >count</VAR>, FILE *<VAR 
+        >fp</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >fread attempts to copy, from the file or stream 
+        identified by <VAR>fp</VAR>, <VAR 
+        >count</VAR> elements (each of size <VAR 
+        >size</VAR>) into memory, starting at <VAR 
+        >buf</VAR>. fread may copy fewer elements than <VAR 
+        >count</VAR> if an error, or end of file, 
+        intervenes. </FONT></P>
+        <P><FONT face=Arial size=2 
+        >fread also advances the file position indicator (if 
+        any) for <VAR>fp</VAR> by the number of <EM 
+        >characters</EM> actually read. 
+      </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>The 
+        result of fread is the number of elements it succeeded in reading. 
+        </FONT></P></BLOCKQUOTE>
+      <H2><A name=freopen><FONT 
+      face=Arial color=blue size=3><U>freopen : open a file 
+      using an existing file descriptor</U></FONT></A></H2>
+      <P><A name=IDX78></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt; <BR 
+        >FILE *freopen(const char *<VAR 
+        >file</VAR>, const char *<VAR 
+        >mode</VAR>, FILE *<VAR 
+        >fp</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>Use 
+        this variant of fopen if you wish to specify a particular file 
+        descriptor <VAR>fp</VAR> (notably stdin, stdout, or 
+        stderr) for the file. </FONT><FONT face=Arial size=2 
+        >If <VAR>fp</VAR> was 
+        associated with another file or stream, freopen closes that other file 
+        or stream (but ignores any errors while closing it). </FONT><FONT 
+        face=Arial><FONT size=2><VAR 
+        >file</VAR> and <VAR>mode</VAR> 
+        are used just as in fopen. </FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>If 
+        successful, the result is the same as the argument <VAR 
+        >fp</VAR>. If the file cannot be opened as 
+        specified, the result is NULL. </FONT></P></BLOCKQUOTE>
+      <H2><A name=fseek><FONT 
+      face=Arial color=blue size=3><U>fseek : set file 
+      position</U></FONT></A></H2>
+      <P><A name=IDX79></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR 
+        >int fseek(FILE *<VAR>fp</VAR>, 
+        long <VAR>offset</VAR>, int <VAR 
+        >whence</VAR>) </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >Objects of type FILE can have a "position" that 
+        records how much of the file your program has already read. Many of the 
+        stdio functions depend on this position, and many change it as a side 
+        effect. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can use fseek to set the position for the file identified by <VAR 
+        >fp</VAR>. The value of <VAR 
+        >offset</VAR> determines the new position, in one of 
+        three ways selected by the value of <VAR 
+        >whence</VAR> (defined as macros in `stdio.h'): 
+        </FONT></P>
+        <P><FONT face=Arial size=2 
+        ><STRONG>SEEK_SET :</STRONG> 
+        <VAR>offset</VAR> is the absolute file position (an 
+        offset from the beginning of the file) desired. <VAR 
+        >offset</VAR> must be positive. </FONT></P>
+        <P><FONT face=Arial size=2 
+        ><STRONG>SEEK_CUR :</STRONG> 
+        <VAR>offset</VAR> is relative to the current file 
+        position. <VAR>offset</VAR> can meaningfully be 
+        either positive or negative. </FONT></P>
+        <P><FONT face=Arial size=2 
+        ><STRONG>SEEK_END :</STRONG> 
+        <VAR>offset</VAR> is relative to the current end of 
+        file. <VAR>offset</VAR> can meaningfully be either 
+        positive (to increase the size of the file) or negative. </FONT></P>
+        <P><FONT face=Arial size=2>See 
+        ftell to determine the current file position. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <P><FONT face=Arial size=2>fseek 
+      returns 0 when successful. If fseek fails, the result is EOF. The reason 
+      for failure is indicated in errno: either ESPIPE (the stream identified by 
+      <VAR>fp</VAR> doesn't support repositioning) or 
+      EINVAL (invalid file position). </FONT></P>
+      <H2><A name=fsetpos><FONT 
+      face=Arial color=blue size=3><U>fsetpos : restore 
+      position of a stream or file</U></FONT></A></H2>
+      <P><A name=IDX80></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR 
+        >int fsetpos(FILE *<VAR 
+        >fp</VAR>, const fpos_t *<VAR 
+        >pos</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >Objects of type FILE can have a "position" that 
+        records how much of the file your program has already read. Many of the 
+        stdio functions depend on this position, and many change it as a side 
+        effect. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can use fsetpos to return the file identified by <VAR 
+        >fp</VAR> to a previous position *<VAR 
+        >pos</VAR> (after first recording it with fgetpos). 
+        </FONT></P>
+        <P><FONT face=Arial size=2>See 
+        fseek for a similar facility. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >fgetpos returns 0 when successful. If fgetpos 
+        fails, the result is 1. The reason for failure is indicated in errno: 
+        either ESPIPE (the stream identified by <VAR 
+        >fp</VAR> doesn't support repositioning) or EINVAL 
+        (invalid file position). </FONT></P></BLOCKQUOTE>
+      <H2><A name=ftell><FONT 
+      face=Arial color=blue size=3><U>ftell : return 
+      position in a stream or file</U></FONT></A></H2>
+      <H2><FONT size=2><FONT 
+      face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT></H2>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR 
+        >long ftell(FILE *<VAR 
+        >fp</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >Objects of type FILE can have a "position" that 
+        records how much of the file your program has already read. Many of the 
+        stdio functions depend on this position, and many change it as a side 
+        effect. </FONT></P>
+        <P><FONT face=Arial size=2>The 
+        result of ftell is the current position for a file identified by <VAR 
+        >fp</VAR>. If you record this result, you can later 
+        use it with fseek to return the file to this position. </FONT></P>
+        <P><FONT face=Arial size=2>In 
+        the current implementation, ftell simply uses a character count to 
+        represent the file position; this is the same number that would be 
+        recorded by fgetpos. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >ftell returns the file position, if possible. If it 
+        cannot do this, it returns -1L. Failure occurs on streams that do not 
+        support positioning; the global errno indicates this condition with the 
+        value ESPIPE. </FONT></P></BLOCKQUOTE>
+      <H2><A name=fwrite><FONT 
+      face=Arial color=blue size=3><U>fwrite : write array 
+      elements</U></FONT></A></H2>
+      <P><A name=IDX82></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR 
+        >size_t fwrite(const void *<VAR 
+        >buf</VAR>, size_t <VAR 
+        >size</VAR>, size_t <VAR 
+        >count</VAR>, FILE *<VAR 
+        >fp</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >fwrite attempts to copy, starting from the memory 
+        location <VAR>buf</VAR>, <VAR 
+        >count</VAR> elements (each of size <VAR 
+        >size</VAR>) into the file or stream identified by 
+        <VAR>fp</VAR>. fwrite may copy fewer elements than 
+        <VAR>count</VAR> if an error intervenes. 
+</FONT></P>
+        <P><FONT face=Arial size=2 
+        >fwrite also advances the file position indicator 
+        (if any) for <VAR>fp</VAR> by the number of <EM 
+        >characters</EM> actually written. 
+      </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>If 
+        fwrite succeeds in writing all the elements you specify, the result is 
+        the same as the argument <VAR>count</VAR>. In any 
+        event, the result is the number of complete elements that fwrite copied 
+        to the file. </FONT></P></BLOCKQUOTE>
+      <H2><A name=getc><FONT 
+      face=Arial color=blue size=3><U>getc : read a 
+      character (macro)</U></FONT></A></H2>
+      <P><A name=IDX83></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR 
+        >int getc(FILE *<VAR>fp</VAR>); 
+        </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >getc is a macro, defined in stdio.h. You can use 
+        getc to get the next single character from the file or stream identified 
+        by <VAR>fp</VAR>. As a side effect, getc advances 
+        the file's current position indicator. </FONT></P>
+        <P><FONT face=Arial size=2>For 
+        a subroutine version of this macro, see fgetc. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>The 
+        next character (read as an unsigned char, and cast to int), unless there 
+        is no more data, or the host system reports a read error; in either of 
+        these situations, getc returns EOF. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can distinguish the two situations that cause an EOF result by using the 
+        ferror and feof functions. </FONT></P></BLOCKQUOTE>
+      <H2><A name=getchar><FONT 
+      face=Arial color=blue size=3><U>getchar : read a 
+      character (macro)</U></FONT></A></H2>
+      <P><A name=IDX84></A><A 
+      name=IDX85></A><FONT size=2 
+      ><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR 
+        >int getchar(void); <BR>int 
+        _getchar_r(void *<VAR>reent</VAR>); 
+      </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >getchar is a macro, defined in stdio.h. You can use 
+        getchar to get the next single character from the standard input stream. 
+        As a side effect, getchar advances the standard input's current position 
+        indicator. </FONT></P>
+        <P><FONT face=Arial size=2>The 
+        alternate function _getchar_r is a reentrant version. The extra argument 
+        <VAR>reent</VAR> is a pointer to a reentrancy 
+        structure. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>The 
+        next character (read as an unsigned char, and cast to int), unless there 
+        is no more data, or the host system reports a read error; in either of 
+        these situations, getchar returns EOF. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can distinguish the two situations that cause an EOF result by using 
+        `ferror(stdin)' and `feof(stdin)'.</FONT></P></BLOCKQUOTE>
+      <H2><A name=gets><FONT 
+      face=Arial color=blue size=3><U>gets : get character 
+      string (obsolete, use fgets instead)</U></FONT></A></H2>
+      <P><A name=IDX86></A><A 
+      name=IDX87></A><FONT size=2 
+      ><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR 
+        >char *gets(char *<VAR 
+        >buf</VAR>); char *_gets_r(void *<VAR 
+        >reent</VAR>, char *<VAR 
+        >buf</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >Reads characters from standard input until a 
+        newline is found. The characters up to the newline are stored in <VAR 
+        >buf</VAR>. The newline is discarded, and the buffer 
+        is terminated with a 0. </FONT></P>
+        <P><FONT face=Arial size=2 
+        >This is a <EM>dangerous</EM> 
+        function, as it has no way of checking the amount of space available in 
+        <VAR>buf</VAR>. One of the attacks used by the 
+        Internet Worm of 1988 used this to overrun a buffer allocated on the 
+        stack of the finger daemon and overwrite the return address, causing the 
+        daemon to execute code downloaded into it over the connection. 
+        </FONT></P>
+        <P><FONT face=Arial size=2>The 
+        alternate function _gets_r is a reentrant version. The extra argument 
+        <VAR>reent</VAR> is a pointer to a reentrancy 
+        structure. </FONT></P></BLOCKQUOTE>
+      <P><BR><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >gets returns the buffer passed to it, with the data 
+        filled in. If end of file occurs with some data already accumulated, the 
+        data is returned with no other indication. If end of file occurs with no 
+        data in the buffer, NULL is returned. </FONT></P>
+        <P><FONT face=Arial size=2 
+        >Supporting OS subroutines required: close, fstat, 
+        isatty, lseek, read, sbrk, write.</FONT><FONT face=Arial 
+        ></P></BLOCKQUOTE><FONT size=2 
+      ></FONT></FONT>
+      <H2><A name=iprintf><FONT 
+      face=Arial color=blue size=3><U>iprintf : write 
+      formatted output (integer only)</U></FONT></A></H2>
+      <P><A name=IDX88></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR 
+        >int iprintf(const char *<VAR 
+        >format</VAR>, ...); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >iprintf is a restricted version of printf: it has 
+        the same arguments and behavior, save that it cannot perform any 
+        floating-point formatting: the f, g, G, e, and F type specifiers are not 
+        recognized. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >iprintf returns the number of bytes in the output 
+        string, save that the concluding NULL is not counted. iprintf returns 
+        when the end of the format string is encountered. If an error occurs, 
+        iprintf returns EOF. </FONT></P></BLOCKQUOTE>
+      <H2><A name=mktemp><FONT 
+      face=Arial color=blue size=3><U>mktemp, mkstemp : 
+      generate unused file name</U></FONT></A></H2>
+      <P><A name=IDX89></A><A 
+      name=IDX90></A><A name=IDX91 
+      ></A><A name=IDX92></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR 
+        >char *mktemp(char *<VAR 
+        >path</VAR>);<BR>int 
+        mkstemp(char *<VAR>path</VAR>);<BR 
+        >char *_mktemp_r(void *<VAR 
+        >reent</VAR>, char *<VAR 
+        >path</VAR>);<BR>int 
+        *_mkstemp_r(void *<VAR>reent</VAR>, char *<VAR 
+        >path</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >mktemp and mkstemp attempt to generate a file name 
+        that is not yet in use for any existing file. mkstemp creates the file 
+        and opens it for reading and writing; mktemp simply generates the file 
+        name. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        supply a simple pattern for the generated file name, as the string at 
+        <VAR>path</VAR>. The pattern should be a valid 
+        filename (including path information if you wish) ending with some 
+        number of `X' characters. The generated filename will match the leading 
+        part of the name you supply, with the trailing `X' characters replaced 
+        by some combination of digits and letters. </FONT></P>
+        <P><FONT face=Arial size=2>The 
+        alternate functions _mktemp_r and _mkstemp_r are reentrant versions. The 
+        extra argument <VAR>reent</VAR> is a pointer to a 
+        reentrancy structure. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >mktemp returns the pointer <VAR 
+        >path</VAR> to the modified string representing an 
+        unused filename, unless it could not generate one, or the pattern you 
+        provided is not suitable for a filename; in that case, it returns NULL. 
+        </FONT></P>
+        <P><FONT face=Arial size=2 
+        >mkstemp returns a file descriptor to the newly 
+        created file, unless it could not generate an unused filename, or the 
+        pattern you provided is not suitable for a filename; in that case, it 
+        returns -1. </FONT><FONT face=Arial><BR 
+        ></P></BLOCKQUOTE></FONT>
+      <H2><A name=perror><FONT 
+      face=Arial color=blue size=3><U>perror : print an 
+      error message on standard error</U></FONT></A></H2>
+      <P><A name=IDX93></A><A 
+      name=IDX94></A><FONT size=2 
+      ><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;stdio.h&gt;<BR 
+        >void perror(char *<VAR 
+        >prefix</VAR>);<BR>void 
+        _perror_r(void *<VAR>reent</VAR>, char *<VAR 
+        >prefix</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>Use 
+        perror to print (on standard error) an error message corresponding to 
+        the current value of the global variable errno. Unless you use NULL as 
+        the value of the argument <VAR>prefix</VAR>, the 
+        error message will begin with the string at <VAR 
+        >prefix</VAR>, followed by a colon and a space (: ). 
+        The remainder of the error message is one of the strings described for 
+        strerror. </FONT></P>
+        <P><FONT face=Arial size=2>The 
+        alternate function _perror_r is a reentrant version. The extra argument 
+        <VAR>reent</VAR> is a pointer to a reentrancy 
+        structure. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >perror returns no result. </FONT></P></BLOCKQUOTE>
+      <H2><A name=putc><FONT 
+      face=Arial color=blue size=3><U>putc : write a 
+      character (macro)</U></FONT></A></H2>
+      <P><A name=IDX95></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT></FONT> 
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT size=2><FONT 
+        face=Arial>#include &lt;stdio.h&gt;<BR 
+        >int putc(int <VAR>ch</VAR>, 
+        FILE *<VAR>fp</VAR>); </FONT></FONT></P></BLOCKQUOTE>
+      <P dir=ltr><FONT face=Arial 
+      ><FONT size=2><STRONG 
+      >Description</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>putc is a macro, defined in stdio.h. putc 
+        writes the argument <VAR>ch</VAR> to the file or 
+        stream identified by <VAR>fp</VAR>, after 
+        converting it from an int to an unsigned char. </FONT></FONT></P>
+        <P><FONT face=Arial size=2>If 
+        the file was opened with append mode (or if the stream cannot support 
+        positioning), then the new character goes at the end of the file or 
+        stream. Otherwise, the new character is written at the current value of 
+        the position indicator, and the position indicator advances by one. 
+        </FONT></P>
+        <P><FONT face=Arial size=2>For 
+        a subroutine version of this macro, see fputc. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>If successful, putc returns its argument 
+        <VAR>ch</VAR>. If an error intervenes, the result 
+        is EOF. You can use `ferror(<VAR>fp</VAR>)' to 
+        query for errors. </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=putchar><FONT 
+      face=Arial color=blue size=3><U>putchar : write a 
+      character (macro)</U></FONT></A></H2>
+      <P><A name=IDX96></A><A 
+      name=IDX97></A><FONT size=2 
+      ><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT></FONT> 
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT size=2><FONT 
+        face=Arial>#include &lt;stdio.h&gt;<BR 
+        >int putchar(int <VAR 
+        >ch</VAR>);<BR>int 
+        _putchar_r(void *<VAR>reent</VAR>, int <VAR 
+        >ch</VAR>); </FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>putchar is a macro, defined in stdio.h. 
+        putchar writes its argument to the standard output stream, after 
+        converting it from an int to an unsigned char. </FONT></FONT></P>
+        <P><FONT face=Arial size=2>The 
+        alternate function _putchar_r is a reentrant version. The extra argument 
+        <VAR>reent</VAR> is a pointer to a reentrancy 
+        structure. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>If successful, putchar returns its argument 
+        <VAR>ch</VAR>. If an error intervenes, the result 
+        is EOF. You can use `ferror(stdin)' to query for errors. 
+        </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=puts><FONT 
+      face=Arial color=blue size=3><U>puts : write a 
+      character string</U></FONT></A></H2>
+      <P><A name=IDX98></A><A 
+      name=IDX99></A><FONT size=2 
+      ><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT></FONT> 
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT size=2><FONT 
+        face=Arial>#include &lt;stdio.h&gt;<BR 
+        >int puts(const char *<VAR 
+        >s</VAR>);<BR>int _puts_r(void 
+        *<VAR>reent</VAR>, const char *<VAR 
+        >s</VAR>); </FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>puts writes the string at <VAR 
+        >s</VAR> (followed by a newline, instead of the 
+        trailing null) to the standard output stream. </FONT></FONT></P>
+        <P><FONT face=Arial size=2>The 
+        alternate function _puts_r is a reentrant version. The extra argument 
+        <VAR>reent</VAR> is a pointer to a reentrancy 
+        structure. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>If successful, the result is a nonnegative 
+        integer; otherwise, the result is EOF. </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=remove><FONT 
+      face=Arial color=blue size=3><U>remove : delete a 
+      file's name</U></FONT></A></H2>
+      <P><A name=IDX100></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT></FONT> 
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT size=2><FONT 
+        face=Arial>#include &lt;stdio.h&gt;<BR 
+        >int remove(char *<VAR 
+        >filename</VAR>);<BR>int 
+        _remove_r(void *<VAR>reent</VAR>, char *<VAR 
+        >filename</VAR>); </FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>Use remove to dissolve the association 
+        between a particular filename (the string at <VAR 
+        >filename</VAR>) and the file it represents. After 
+        calling remove with a particular filename, you will no longer be able to 
+        open the file by that name. </FONT></FONT></P>
+        <P><FONT face=Arial size=2>In 
+        this implementation, you may use remove on an open file without error; 
+        existing file descriptors for the file will continue to access the 
+        file's data until the program using them closes the file. </FONT></P>
+        <P><FONT face=Arial size=2>The 
+        alternate function _remove_r is a reentrant version. The extra argument 
+        <VAR>reent</VAR> is a pointer to a reentrancy 
+        structure. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>remove returns 0 if it succeeds, -1 if it 
+        fails. </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=rename><FONT 
+      face=Arial color=blue size=3><U>rename : rename a 
+      file</U></FONT></A></H2>
+      <P><A name=IDX101></A><A 
+      name=IDX102></A><FONT size=2 
+      ><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT></FONT> 
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT size=2><FONT 
+        face=Arial>#include &lt;stdio.h&gt;<BR 
+        >int rename(const char *<VAR 
+        >old</VAR>, const char *<VAR 
+        >new</VAR>);<BR>int 
+        _rename_r(void *<VAR>reent</VAR>, const char *<VAR 
+        >old</VAR>, const char *<VAR 
+        >new</VAR>); </FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>Use rename to establish a new name (the 
+        string at <VAR>new</VAR>) for a file now known by 
+        the string at <VAR>old</VAR>. After a successful 
+        rename, the file is no longer accessible by the string at <VAR 
+        >old</VAR>. </FONT></FONT></P>
+        <P><FONT face=Arial size=2>If 
+        rename fails, the file named *<VAR>old</VAR> is 
+        unaffected. The conditions for failure depend on the host operating 
+        system. </FONT></P>
+        <P><FONT face=Arial size=2>The 
+        alternate function _rename_r is a reentrant version. The extra argument 
+        <VAR>reent</VAR> is a pointer to a reentrancy 
+        structure. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>The result is either 0 (when successful) or 
+        -1 (when the file could not be renamed). </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=rewind><FONT 
+      face=Arial color=blue size=3><U>rewind : reinitialize 
+      a file or stream</U></FONT></A></H2>
+      <P><A name=IDX103></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT></FONT> 
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT size=2><FONT 
+        face=Arial>#include &lt;stdio.h&gt;<BR 
+        >void rewind(FILE *<VAR 
+        >fp</VAR>); </FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>rewind returns the file position indicator 
+        (if any) for the file or stream identified by <VAR 
+        >fp</VAR> to the beginning of the file. It also 
+        clears any error indicator and flushes any pending output. 
+        </FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>rewind does not return a result. 
+        </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=setbuf><FONT 
+      face=Arial color=blue size=3><U>setbuf : specify full 
+      buffering for a file or stream</U></FONT></A></H2>
+      <P><A name=IDX104></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT></FONT> 
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT size=2><FONT 
+        face=Arial>#include &lt;stdio.h&gt;<BR 
+        >void setbuf(FILE *<VAR 
+        >fp</VAR>, char *<VAR 
+        >buf</VAR>); </FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>setbuf specifies that output to the file or 
+        stream identified by <VAR>fp</VAR> should be fully 
+        buffered. All output for this file will go to a buffer (of size BUFSIZ, 
+        specified in `stdio.h'). Output will be passed on to the host system 
+        only when the buffer is full, or when an input operation intervenes. 
+        </FONT></FONT></P>
+        <P><FONT face=Arial size=2>You 
+        may, if you wish, supply your own buffer by passing a pointer to it as 
+        the argument <VAR>buf</VAR>. It must have size 
+        BUFSIZ. You can also use NULL as the value of <VAR 
+        >buf</VAR>, to signal that the setbuf function is to 
+        allocate the buffer. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Warnings</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>You may only use setbuf before performing 
+        any file operation other than opening the file. </FONT></FONT></P>
+        <P><FONT face=Arial size=2>If 
+        you supply a non-null <VAR>buf</VAR>, you must 
+        ensure that the associated storage continues to be available until you 
+        close the stream identified by <VAR>fp</VAR>. 
+        </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>setbuf does not return a result. 
+        </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=setvbuf><FONT 
+      face=Arial color=blue size=3><U>setvbuf : specify 
+      file or stream buffering</U></FONT></A></H2>
+      <P><A name=IDX105></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG> </FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT size=2><FONT 
+        face=Arial>#include &lt;stdio.h&gt;<BR 
+        >int setvbuf(FILE *<VAR 
+        >fp</VAR>, char *<VAR 
+        >buf</VAR>, int <VAR 
+        >mode</VAR>, size_t <VAR 
+        >size</VAR>); </FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>Use setvbuf to specify what kind of 
+        buffering you want for the file or stream identified by <VAR 
+        >fp</VAR>, by using one of the following values 
+        (from stdio.h) as the <VAR>mode</VAR> argument: 
+        </FONT></FONT></P>
+        <DL compact>
+          <DT><FONT face=Arial size=2 
+          ><STRONG>_IONBF</STRONG> 
+          </FONT>
+          <DD><FONT face=Arial size=2 
+          >Do not use a buffer: send output directly to the 
+          host system for the file or stream identified by <VAR 
+          >fp</VAR>. </FONT>
+          <DT><FONT face=Arial size=2 
+          ><STRONG>_IOFBF</STRONG> 
+          </FONT>
+          <DD><FONT face=Arial size=2 
+          >Use full output buffering: output will be passed 
+          on to the host system only when the buffer is full, or when an input 
+          operation intervenes. </FONT>
+          <DT><FONT face=Arial size=2 
+          ><STRONG>_IOLBF</STRONG> 
+          </FONT>
+          <DD><FONT face=Arial size=2 
+          >Use line buffering: pass on output to the host 
+          system at every newline, as well as when the buffer is full, or when 
+          an input operation intervenes. </FONT></DD></DL>
+        <P><FONT face=Arial size=2>Use 
+        the <VAR>size</VAR> argument to specify how large a 
+        buffer you wish. You can supply the buffer itself, if you wish, by 
+        passing a pointer to a suitable area of memory as <VAR 
+        >buf</VAR>. Otherwise, you may pass NULL as the <VAR 
+        >buf</VAR> argument, and setvbuf will allocate the 
+        buffer. </FONT></P></BLOCKQUOTE>
+      <P><BR><FONT face=Arial 
+      ><FONT size=2><STRONG 
+      >Warnings</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>You may only use setvbuf before performing 
+        any file operation other than opening the file. </FONT></FONT></P>
+        <P><FONT face=Arial size=2>If 
+        you supply a non-null <VAR>buf</VAR>, you must 
+        ensure that the associated storage continues to be available until you 
+        close the stream identified by <VAR>fp</VAR>. 
+        </FONT></P></BLOCKQUOTE>
+      <P><BR><FONT face=Arial 
+      ><FONT size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>A 0 result indicates success, EOF failure 
+        (invalid <VAR>mode</VAR> or <VAR 
+        >size</VAR> can cause failure). 
+      </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=siprintf><FONT 
+      face=Arial color=blue size=3><U>siprintf : write 
+      formatted output (integer only)</U></FONT></A></H2>
+      <P><A name=IDX106></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG> </FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT size=2><FONT 
+        face=Arial>#include &lt;stdio.h&gt;<BR 
+        >int siprintf(char *<VAR 
+        >str</VAR>, const char *<VAR 
+        >format</VAR> [, <VAR 
+        >arg</VAR>, ...]); </FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>siprintf is a restricted version of sprintf: 
+        it has the same arguments and behavior, save that it cannot perform any 
+        floating-point formatting: the f, g, G, e, and F type specifiers are not 
+        recognized. </FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>siprintf returns the number of bytes in the 
+        output string, save that the concluding NULL is not counted. siprintf 
+        returns when the end of the format string is encountered. 
+        </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=printf><FONT 
+      face=Arial color=blue size=3><U>printf, fprintf, 
+      sprintf : format output</U></FONT></A></H2>
+      <P><A name=IDX107></A><A 
+      name=IDX108></A><A name=IDX109 
+      ></A><FONT size=2><FONT 
+      face=Arial><STRONG 
+      >Synopsis</STRONG></FONT></FONT> 
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT size=2><FONT 
+        face=Arial>&nbsp;</FONT><FONT face=Arial 
+        >#include &lt;stdio.h&gt;<BR 
+        >int printf(const char *<VAR 
+        >format</VAR> [, <VAR 
+        >arg</VAR>, ...]);<BR>int 
+        fprintf(FILE *<VAR>fd</VAR>, const char *<VAR 
+        >format</VAR> [, <VAR 
+        >arg</VAR>, ...]); int sprintf(char *<VAR 
+        >str</VAR>, const char *<VAR 
+        >format</VAR> [, <VAR 
+        >arg</VAR>, ...]); </FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>printf accepts a series of arguments, 
+        applies to each a format specifier from *<VAR 
+        >format</VAR>, and writes the formatted data to 
+        stdout, terminated with a null character. The behavior of printf is 
+        undefined if there are not enough arguments for the format. printf 
+        returns when it reaches the end of the format string. If there are more 
+        arguments than the format requires, excess arguments are ignored. 
+        </FONT></FONT></P>
+        <P><FONT face=Arial size=2 
+        >fprintf and sprintf are identical to printf, other 
+        than the destination of the formatted output: fprintf sends the output 
+        to a specified file <VAR>fd</VAR>, while sprintf 
+        stores the output in the specified char array <VAR 
+        >str</VAR>. For sprintf, the behavior is also 
+        undefined if the output *<VAR>str</VAR> overlaps 
+        with one of the arguments. <VAR>format</VAR> is a 
+        pointer to a charater string containing two types of objects: ordinary 
+        characters (other than %), which are copied unchanged to the output, and 
+        conversion specifications, each of which is introduced by %. (To include 
+        % in the output, use %% in the format string.) A conversion 
+        specification has the following form: </FONT></P>
+        <P><FONT face=Arial size=2 
+        >%[<VAR>flags</VAR>][<VAR 
+        >width</VAR>][.<VAR 
+        >prec</VAR>][<VAR 
+        >size</VAR>][<VAR>type</VAR>] 
+        </FONT></P>
+        <P><FONT face=Arial size=2>The 
+        fields of the conversion specification have the following meanings: 
+        </FONT></P></BLOCKQUOTE>
+      <UL>
+        <LI><FONT face=Arial><FONT 
+        size=2><VAR>flags</VAR> an 
+        optional sequence of characters which control output justification, 
+        numeric signs, decimal points, trailing zeroes, and octal and hex 
+        prefixes. The flag characters are minus (-), plus (+), space ( ), zero 
+        (0), and sharp (#). They can appear in any combination. </FONT></FONT>
+        <DL compact>
+          <DT><FONT face=Arial size=2 
+          >- </FONT>
+          <DD><FONT face=Arial size=2 
+          >The result of the conversion is left justified, 
+          and the right is padded with blanks. If you do not use this flag, the 
+          result is right justified, and padded on the left. </FONT>
+          <DT><FONT face=Arial size=2 
+          >+ </FONT>
+          <DD><FONT face=Arial size=2 
+          >The result of a signed conversion (as determined 
+          by <VAR>type</VAR>) will always begin with a plus 
+          or minus sign. (If you do not use this flag, positive values do not 
+          begin with a plus sign.) </FONT>
+          <DT><FONT face=Arial size=2 
+          >" " (space) </FONT>
+          <DD><FONT face=Arial size=2 
+          >If the first character of a signed conversion 
+          specification is not a sign, or if a signed conversion results in no 
+          characters, the result will begin with a space. If the space ( ) flag 
+          and the plus (+) flag both appear, the space flag is ignored. </FONT>
+          <DT><FONT face=Arial size=2 
+          >0 </FONT>
+          <DD><FONT face=Arial size=2 
+          >If the <VAR>type</VAR> 
+          character is d, i, o, u, x, X, e, E, f, g, or G: leading zeroes, are 
+          used to pad the field width (following any indication of sign or 
+          base); no spaces are used for padding. If the zero (0) and minus (-) 
+          flags both appear, the zero (0) flag will be ignored. For d, i, o, u, 
+          x, and X conversions, if a precision <VAR 
+          >prec</VAR> is specified, the zero (0) flag is 
+          ignored. Note that 0 is interpreted as a flag, not as the beginning of 
+          a field width. </FONT>
+          <DT><FONT face=Arial size=2 
+          ># </FONT>
+          <DD><FONT face=Arial size=2 
+          >The result is to be converted to an alternative 
+          form, according to the next character: </FONT>
+          <DL compact>
+            <DT><FONT face=Arial size=2 
+            >0 </FONT>
+            <DD><FONT face=Arial size=2 
+            >increases precision to force the first digit of 
+            the result to be a zero. </FONT>
+            <DT><FONT face=Arial size=2 
+            >x </FONT>
+            <DD><FONT face=Arial size=2 
+            >a non-zero result will have a 0x prefix. 
+</FONT>
+            <DT><FONT face=Arial size=2 
+            >X </FONT>
+            <DD><FONT face=Arial size=2 
+            >a non-zero result will have a 0X prefix. 
+</FONT>
+            <DT><FONT face=Arial size=2 
+            >e, E or f </FONT>
+            <DD><FONT face=Arial size=2 
+            >The result will always contain a decimal point 
+            even if no digits follow the point. (Normally, a decimal point 
+            appears only if a digit follows it.) Trailing zeroes are removed. 
+            </FONT>
+            <DT><FONT face=Arial size=2 
+            >g or G </FONT>
+            <DD><FONT face=Arial size=2 
+            >same as e or E, but trailing zeroes are not 
+            removed. </FONT>
+            <DT><FONT face=Arial size=2 
+            >all others </FONT>
+            <DD><FONT face=Arial size=2 
+            >undefined. </FONT></DD></DL></DD></DL>
+        <LI><FONT face=Arial><FONT 
+        size=2><VAR>width</VAR> <VAR 
+        >width</VAR> is an optional minimum field width. You 
+        can either specify it directly as a decimal integer, or indirectly by 
+        using instead an asterisk (*), in which case an int argument is used as 
+        the field width. Negative field widths are not supported; if you attempt 
+        to specify a negative field width, it is interpreted as a minus (-) flag 
+        followed by a positive field width. </FONT></FONT>
+        <LI><FONT face=Arial><FONT 
+        size=2><VAR>prec</VAR> an 
+        optional field; if present, it is introduced with `.' (a period). This 
+        field gives the maximum number of characters to print in a conversion; 
+        the minimum number of digits of an integer to print, for conversions 
+        with <VAR>type</VAR> d, i, o, u, x, and X; the 
+        maximum number of significant digits, for the g and G conversions; or 
+        the number of digits to print after the decimal point, for e, E, and f 
+        conversions. You can specify the precision either directly as a decimal 
+        integer or indirectly by using an asterisk (*), in which case an int 
+        argument is used as the precision. Supplying a negative precision is 
+        equivalent to omitting the precision. If only a period is specified the 
+        precision is zero. If a precision appears with any other conversion <VAR 
+        >type</VAR> than those listed here, the behavior is 
+        undefined. </FONT></FONT>
+        <LI><FONT face=Arial><FONT 
+        size=2><VAR>size</VAR> h, l, 
+        and L are optional size characters which override the default way that 
+        printf interprets the data type of the corresponding argument. h forces 
+        the following d, i, o, u, x or X conversion <VAR 
+        >type</VAR> to apply to a short or unsigned short. h 
+        also forces a following n <VAR>type</VAR> to apply 
+        to a pointer to a short. Similarily, an l forces the following d, i, o, 
+        u, x or X conversion <VAR>type</VAR> to apply to a 
+        long or unsigned long. l also forces a following n <VAR 
+        >type</VAR> to apply to a pointer to a long. If an h 
+        or an l appears with another conversion specifier, the behavior is 
+        undefined. L forces a following e, E, f, g or G conversion <VAR 
+        >type</VAR> to apply to a long double argument. If L 
+        appears with any other conversion <VAR>type</VAR>, 
+        the behavior is undefined. </FONT></FONT>
+        <LI><FONT face=Arial><FONT 
+        size=2><VAR>type</VAR> <VAR 
+        >type</VAR> specifies what kind of conversion printf 
+        performs. Here is a table of these: </FONT></FONT>
+        <DL compact>
+          <DT><FONT face=Arial size=2 
+          >% </FONT>
+          <DD><FONT face=Arial size=2 
+          >prints the percent character (%) </FONT>
+          <DT><FONT face=Arial size=2 
+          >c </FONT>
+          <DD><FONT face=Arial size=2 
+          >prints <VAR>arg</VAR> as 
+          single character </FONT>
+          <DT><FONT face=Arial size=2 
+          >s </FONT>
+          <DD><FONT face=Arial size=2 
+          >prints characters until precision is reached or a 
+          null terminator is encountered; takes a string pointer </FONT>
+          <DT><FONT face=Arial size=2 
+          >d </FONT>
+          <DD><FONT face=Arial size=2 
+          >prints a signed decimal integer; takes an int 
+          (same as i) </FONT>
+          <DT><FONT face=Arial size=2 
+          >i </FONT>
+          <DD><FONT face=Arial size=2 
+          >prints a signed decimal integer; takes an int 
+          (same as d) </FONT>
+          <DT><FONT face=Arial size=2 
+          >o </FONT>
+          <DD><FONT face=Arial size=2 
+          >prints a signed octal integer; takes an int 
+          </FONT>
+          <DT><FONT face=Arial size=2 
+          >u </FONT>
+          <DD><FONT face=Arial size=2 
+          >prints an unsigned decimal integer; takes an int 
+          </FONT>
+          <DT><FONT face=Arial size=2 
+          >x </FONT>
+          <DD><FONT face=Arial size=2 
+          >prints an unsigned hexadecimal integer (using 
+          abcdef as digits beyond 9); takes an int </FONT>
+          <DT><FONT face=Arial size=2 
+          >X </FONT>
+          <DD><FONT face=Arial size=2 
+          >prints an unsigned hexadecimal integer (using 
+          ABCDEF as digits beyond 9); takes an int </FONT>
+          <DT><FONT face=Arial size=2 
+          >f </FONT>
+          <DD><FONT face=Arial size=2 
+          >prints a signed value of the form [-]9999.9999; 
+          takes a floating point number </FONT>
+          <DT><FONT face=Arial size=2 
+          >e </FONT>
+          <DD><FONT face=Arial size=2 
+          >prints a signed value of the form 
+          [-]9.9999e[+|-]999; takes a floating point number </FONT>
+          <DT><FONT face=Arial size=2 
+          >E </FONT>
+          <DD><FONT face=Arial size=2 
+          >prints the same way as e, but using E to 
+          introduce the exponent; takes a floating point number </FONT>
+          <DT><FONT face=Arial size=2 
+          >g </FONT>
+          <DD><FONT face=Arial size=2 
+          >prints a signed value in either f or e form, 
+          based on given value and precision--trailing zeros and the decimal 
+          point are printed only if necessary; takes a floating point number 
+          </FONT>
+          <DT><FONT face=Arial size=2 
+          >G </FONT>
+          <DD><FONT face=Arial size=2 
+          >prints the same way as g, but using E for the 
+          exponent if an exponent is needed; takes a floating point number 
+          </FONT>
+          <DT><FONT face=Arial size=2 
+          >n </FONT>
+          <DD><FONT face=Arial size=2 
+          >stores (in the same object) a count of the 
+          characters written; takes a pointer to int </FONT>
+          <DT><FONT face=Arial size=2 
+          >p </FONT>
+          <DD><FONT face=Arial size=2 
+          >prints a pointer in an implementation-defined 
+          format. This implementation treats the pointer as an unsigned long 
+          (same as Lu). </FONT></DD></DL></LI></UL>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>sprintf returns the number of bytes in the 
+        output string, save that the concluding NULL is not counted. printf and 
+        fprintf return the number of characters transmitted. If an error occurs, 
+        printf and fprintf return EOF. No error returns occur for sprintf. 
+        </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=scanf><FONT 
+      face=Arial color=blue size=3><U>scanf, fscanf, sscanf 
+      : scan and format input</U></FONT></A></H2>
+      <P><A name=IDX110></A><A 
+      name=IDX111></A><A name=IDX112 
+      ></A><FONT size=2><FONT 
+      face=Arial><STRONG 
+      >Synopsis</STRONG></FONT></FONT> 
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT size=2><FONT 
+        face=Arial>#include &lt;stdio.h&gt;<BR 
+        >int scanf(const char *<VAR 
+        >format</VAR> [, <VAR 
+        >arg</VAR>, ...]);<BR>int 
+        fscanf(FILE *<VAR>fd</VAR>, const char *<VAR 
+        >format</VAR> [, <VAR 
+        >arg</VAR>, ...]);<BR>int 
+        sscanf(const char *<VAR>str</VAR>, const char *<VAR 
+        >format</VAR> [, <VAR 
+        >arg</VAR>, ...]); </FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>scanf scans a series of input fields from 
+        standard input, one character at a time. Each field is interpreted 
+        according to a format specifier passed to scanf in the format string at 
+        *<VAR>format</VAR>. scanf stores the interpreted 
+        input from each field at the address passed to it as the corresponding 
+        argument following <VAR>format</VAR>. You must 
+        supply the same number of format specifiers and address arguments as 
+        there are input fields. </FONT></FONT></P>
+        <P><FONT face=Arial size=2 
+        >There must be sufficient address arguments for the 
+        given format specifiers; if not the results are unpredictable and likely 
+        disasterous. Excess address arguments are merely ignored. </FONT></P>
+        <P><FONT face=Arial size=2 
+        >scanf often produces unexpected results if the 
+        input diverges from an expected pattern. Since the combination of gets 
+        or fgets followed by sscanf is safe and easy, that is the preferred way 
+        to be certain that a program is synchronized with input at the end of a 
+        line. </FONT></P>
+        <P><FONT face=Arial size=2 
+        >fscanf and sscanf are identical to scanf, other 
+        than the source of input: fscanf reads from a file, and sscanf from a 
+        string. </FONT></P>
+        <P><FONT face=Arial size=2>The 
+        string at *<VAR>format</VAR> is a character 
+        sequence composed of zero or more directives. Directives are composed of 
+        one or more whitespace characters, non-whitespace characters, and format 
+        specifications. </FONT></P>
+        <P><FONT face=Arial size=2 
+        >Whitespace characters are blank ( ), tab (\t), or 
+        newline (\n). When scanf encounters a whitespace character in the format 
+        string it will read (but not store) all consecutive whitespace 
+        characters up to the next non-whitespace character in the input. 
+        </FONT></P>
+        <P><FONT face=Arial size=2 
+        >Non-whitespace characters are all other ASCII 
+        characters except the percent sign (%). When scanf encounters a 
+        non-whitespace character in the format string it will read, but not 
+        store a matching non-whitespace character. </FONT></P>
+        <P><FONT face=Arial size=2 
+        >Format specifications tell scanf to read and 
+        convert characters from the input field into specific types of values, 
+        and store then in the locations specified by the address arguments. 
+        </FONT></P>
+        <P><FONT face=Arial size=2 
+        >Trailing whitespace is left unread unless 
+        explicitly matched in the format string. </FONT></P>
+        <P><FONT face=Arial size=2>The 
+        format specifiers must begin with a percent sign (%) and have the 
+        following form: </FONT></P>
+        <P><FONT face=Arial size=2 
+        >%[*][<VAR>width</VAR>][<VAR 
+        >size</VAR>]<VAR>type</VAR> 
+        </FONT></P>
+        <P><FONT face=Arial size=2 
+        >Each format specification begins with the percent 
+        character (%). The other fields are: </FONT></P></BLOCKQUOTE>
+      <DL compact>
+        <DL>
+          <DT><FONT face=Arial size=2 
+          >* </FONT>
+          <DD><FONT face=Arial size=2 
+          >an optional marker; if present, it suppresses 
+          interpretation and assignment of this input field. </FONT>
+          <DT><FONT face=Arial><FONT 
+          size=2><VAR>width</VAR> 
+          </FONT></FONT>
+          <DD><FONT face=Arial size=2 
+          >an optional maximum field width: a decimal 
+          integer, which controls the maximum number of characters that will be 
+          read before converting the current input field. If the input field has 
+          fewer than <VAR>width</VAR> characters, scanf 
+          reads all the characters in the field, and then proceeds with the next 
+          field and its format specification. If a whitespace or a 
+          non-convertable character occurs before <VAR 
+          >width</VAR> character are read, the characters up 
+          to that character are read, converted, and stored. Then scanf proceeds 
+          to the next format specification. </FONT>
+          <DT><FONT face=Arial size=2 
+          >size </FONT>
+          <DD><FONT size=2><FONT 
+          face=Arial>h, l, and L are optional size 
+          characters which override the default way that scanf interprets the 
+          data type of the corresponding argument. </FONT><FONT face=Arial 
+          >Modifier Type(s) h d, i, o, u, x convert input to 
+          short, store in short object h D, I, O, U, X no effect e, f, c, s, n, 
+          p l d, i, o, u, x convert input to long, store in long object l e, f, 
+          g convert input to double store in a double object l D, I, O, U, X no 
+          effect c, s, n, p L d, i, o, u, x convert to long double, store in 
+          long double L all others no effect </FONT></FONT>
+          <DT><FONT face=Arial><FONT 
+          size=2><VAR>type</VAR> 
+          </FONT></FONT></DT></DL>
+        <DL>
+          <DD><FONT face=Arial size=2 
+          >A character to specify what kind of conversion 
+          scanf performs. Here is a table of the conversion characters: </FONT>
+          <DT><FONT face=Arial size=2 
+          >% </FONT>
+          <DD><FONT face=Arial size=2 
+          >No conversion is done; the percent character (%) 
+          is stored. </FONT>
+          <DT><FONT face=Arial size=2 
+          >c </FONT>
+          <DD><FONT face=Arial size=2 
+          >Scans one character. Corresponding <VAR 
+          >arg</VAR>: (char *arg). </FONT>
+          <DT><FONT face=Arial size=2 
+          >s </FONT>
+          <DD><FONT face=Arial size=2 
+          >Reads a character string into the array supplied. 
+          Corresponding <VAR>arg</VAR>: (char arg[]). 
+          </FONT>
+          <DT><FONT face=Arial size=2 
+          >[<VAR>pattern</VAR>] </FONT>
+          <DD><FONT face=Arial size=2 
+          >Reads a non-empty character string into memory 
+          starting at <VAR>arg</VAR>. This area must be 
+          large enough to accept the sequence and a terminating null character 
+          which will be added automatically. (<VAR 
+          >pattern</VAR> is discussed in the paragraph 
+          following this table). Corresponding <VAR 
+          >arg</VAR>: (char *arg). </FONT>
+          <DT><FONT face=Arial size=2 
+          >d </FONT>
+          <DD><FONT face=Arial size=2 
+          >Reads a decimal integer into the corresponding 
+          <VAR>arg</VAR>: (int *arg). </FONT>
+          <DT><FONT face=Arial size=2 
+          >D </FONT>
+          <DD><FONT face=Arial size=2 
+          >Reads a decimal integer into the corresponding 
+          <VAR>arg</VAR>: (long *arg). </FONT>
+          <DT><FONT face=Arial size=2 
+          >o </FONT>
+          <DD><FONT face=Arial size=2 
+          >Reads an octal integer into the corresponding 
+          <VAR>arg</VAR>: (int *arg). </FONT>
+          <DT><FONT face=Arial size=2 
+          >O </FONT>
+          <DD><FONT face=Arial size=2 
+          >Reads an octal integer into the corresponding 
+          <VAR>arg</VAR>: (long *arg). </FONT>
+          <DT><FONT face=Arial size=2 
+          >u </FONT>
+          <DD><FONT face=Arial size=2 
+          >Reads an unsigned decimal integer into the 
+          corresponding <VAR>arg</VAR>: (unsigned int 
+          *arg). </FONT>
+          <DT><FONT face=Arial size=2 
+          >U </FONT>
+          <DD><FONT face=Arial size=2 
+          >Reads an unsigned decimal integer into the 
+          corresponding <VAR>arg</VAR>: (unsigned long 
+          *arg). </FONT>
+          <DT><FONT face=Arial size=2 
+          >x,X </FONT>
+          <DD><FONT face=Arial size=2 
+          >Read a hexadecimal integer into the corresponding 
+          <VAR>arg</VAR>: (int *arg). </FONT>
+          <DT><FONT face=Arial size=2 
+          >e, f, g </FONT>
+          <DD><FONT face=Arial size=2 
+          >Read a floating point number into the 
+          corresponding <VAR>arg</VAR>: (float *arg). 
+          </FONT>
+          <DT><FONT face=Arial size=2 
+          >E, F, G </FONT>
+          <DD><FONT face=Arial size=2 
+          >Read a floating point number into the 
+          corresponding <VAR>arg</VAR>: (double *arg). 
+          </FONT>
+          <DT><FONT face=Arial size=2 
+          >i </FONT>
+          <DD><FONT face=Arial size=2 
+          >Reads a decimal, octal or hexadecimal integer 
+          into the corresponding <VAR>arg</VAR>: (int 
+          *arg). </FONT>
+          <DT><FONT face=Arial size=2 
+          >I </FONT>
+          <DD><FONT face=Arial size=2 
+          >Reads a decimal, octal or hexadecimal integer 
+          into the corresponding <VAR>arg</VAR>: (long 
+          *arg). </FONT>
+          <DT><FONT face=Arial size=2 
+          >n </FONT>
+          <DD><FONT face=Arial size=2 
+          >Stores the number of characters read in the 
+          corresponding <VAR>arg</VAR>: (int *arg). </FONT>
+          <DT><FONT face=Arial size=2 
+          >p </FONT>
+          <DD><FONT face=Arial size=2 
+          >Stores a scanned pointer. ANSI C leaves the 
+          details to each implementation; this implementation treats %p exactly 
+          the same as %U. Corresponding <VAR>arg</VAR>: 
+          (void **arg). </FONT></DD></DL>
+        <DD><FONT face=Arial size=2>A 
+        <VAR>pattern</VAR> of characters surrounded by 
+        square brackets can be used instead of the s type character. <VAR 
+        >pattern</VAR> is a set of characters which define a 
+        search set of possible characters making up the scanf input field. If 
+        the first character in the brackets is a caret (^), the search set is 
+        inverted to include all ASCII characters except those between the 
+        brackets. There is also a range facility which you can use as a 
+        shortcut. %[0-9] matches all decimal digits. The hyphen must not be the 
+        first or last character in the set. The character prior to the hyphen 
+        must be lexically less than the character after it. Here are some <VAR 
+        >pattern</VAR> examples: </FONT>
+        <DL compact>
+          <DT><FONT face=Arial size=2 
+          >%[abcd] </FONT>
+          <DD><FONT face=Arial size=2 
+          >matches strings containing only a, b, c, and d. 
+          </FONT>
+          <DT><FONT face=Arial size=2 
+          >%[^abcd] </FONT>
+          <DD><FONT face=Arial size=2 
+          >matches strings containing any characters except 
+          a, b, c, or d </FONT>
+          <DT><FONT face=Arial size=2 
+          >%[A-DW-Z] </FONT>
+          <DD><FONT face=Arial size=2 
+          >matches strings containing A, B, C, D, W, X, Y, Z 
+          </FONT>
+          <DT><FONT face=Arial size=2 
+          >%[z-a] </FONT>
+          <DD><FONT face=Arial size=2 
+          >matches the characters z, -, and a 
+        </FONT></DD></DL><FONT size=2><FONT face=Arial 
+        >Floating point numbers (for field types e, f, g, E, 
+        F, G) must correspond to the following general form: </FONT><FONT 
+        face=Arial>[+/-] ddddd[.]ddd [E|e[+|-]ddd] 
+        </FONT><FONT face=Arial>where objects inclosed in 
+        square brackets are optional, and ddd represents decimal, octal, or 
+        hexadecimal digits. </FONT></FONT></DD></DL>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>scanf returns the number of input fields 
+        successfully scanned, converted and stored; the return value does not 
+        include scanned fields which were not stored. </FONT></FONT></P>
+        <P><FONT face=Arial size=2>If 
+        scanf attempts to read at end-of-file, the return value is EOF. 
+        </FONT></P>
+        <P><FONT face=Arial size=2>If 
+        no fields were stored, the return value is 0. </FONT></P>
+        <P><FONT face=Arial size=2 
+        >scanf might stop scanning a particular field before 
+        reaching the normal field end character, or may terminate entirely. 
+        </FONT></P>
+        <P><FONT face=Arial size=2 
+        >scanf stops scanning and storing the current field 
+        and moves to the next input field (if any) in any of the following 
+        situations: </FONT></P></BLOCKQUOTE>
+      <UL>
+        <LI><FONT face=Arial size=2 
+        >The assignment suppressing character (*) appears 
+        after the % in the format specification; the current input field is 
+        scanned but not stored. </FONT>
+        <LI><FONT face=Arial><FONT 
+        size=2><VAR>width</VAR> 
+        characters have been read (<VAR>width</VAR> is a 
+        width specification, a positive decimal integer). </FONT></FONT>
+        <LI><FONT face=Arial size=2 
+        >The next character read cannot be converted under 
+        the the current format (for example, if a Z is read when the format is 
+        decimal). </FONT>
+        <LI><FONT face=Arial size=2 
+        >The next character in the input field does not 
+        appear in the search set (or does appear in the inverted search set). 
+        </FONT></LI></UL>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >When scanf stops scanning the current input field 
+        for one of these reasons, the next character is considered unread and 
+        used as the first character of the following input field, or the first 
+        character in a subsequent read operation on the input. </FONT></P>
+        <P><FONT face=Arial size=2 
+        >scanf will terminate under the following 
+        circumstances: </FONT></P></BLOCKQUOTE>
+      <UL>
+        <LI><FONT face=Arial size=2 
+        >The next character in the input field conflicts 
+        with a corresponding non-whitespace character in the format string. 
+        </FONT>
+        <LI><FONT face=Arial size=2 
+        >The next character in the input field is EOF. 
+        </FONT>
+        <LI><FONT face=Arial size=2 
+        >The format string has been exhausted. 
+      </FONT></LI></UL>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >When the format string contains a character 
+        sequence that is not part of a format specification, the same character 
+        sequence must appear in the input; scanf will scan but not store the 
+        matched characters. If a conflict occurs, the first conflicting 
+        character remains in the input as if it had never been read. 
+      </FONT></P></BLOCKQUOTE>
+      <H2><A name=tmpfile><FONT 
+      face=Arial color=blue size=3><U>tmpfile : create a 
+      temporary file</U></FONT></A></H2>
+      <P><A name=IDX113></A><A 
+      name=IDX114></A><FONT size=2 
+      ><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT></FONT> 
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT size=2><FONT 
+        face=Arial>#include &lt;stdio.h&gt;<BR 
+        >FILE *tmpfile(void);<BR>FILE 
+        *_tmpfile_r(void *<VAR>reent</VAR>); 
+        </FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>Create a temporary file (a file which will 
+        be deleted automatically), using a name generated by tmpnam. The 
+        temporary file is opened with the mode "wb+", permitting you to read and 
+        write anywhere in it as a binary file (without any data transformations 
+        the host system may perform for text files). </FONT></FONT></P>
+        <P><FONT face=Arial size=2>The 
+        alternate function _tmpfile_r is a reentrant version. The argument <VAR 
+        >reent</VAR> is a pointer to a reentrancy structure. 
+        </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>tmpfile normally returns a pointer to the 
+        temporary file. If no temporary file could be created, the result is 
+        NULL, and errno records the reason for 
+      failure.</FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=tmpnam><FONT 
+      face=Arial color=blue size=3><U>tmpnam, tempnam : 
+      name for a temporary file</U></FONT></A></H2>
+      <P><A name=IDX115></A><A 
+      name=IDX116></A><A name=IDX117 
+      ></A><A name=IDX118></A><FONT 
+      size=2><FONT face=Arial><STRONG 
+      >Synopsis</STRONG></FONT></FONT> 
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT size=2><FONT 
+        face=Arial>#include &lt;stdio.h&gt;<BR 
+        >char *tmpnam(char *<VAR 
+        >s</VAR>);<BR>char 
+        *tempnam(char *<VAR>dir</VAR>, char *<VAR 
+        >pfx</VAR>);<BR>char 
+        *_tmpnam_r(void *<VAR>reent</VAR>, char *<VAR 
+        >s</VAR>);<BR>char 
+        *_tempnam_r(void *<VAR>reent</VAR>, char *<VAR 
+        >dir</VAR>, char *<VAR 
+        >pfx</VAR>); </FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>Use either of these functions to generate a 
+        name for a temporary file. The generated name is guaranteed to avoid 
+        collision with other files (for up to TMP_MAX calls of either function). 
+        </FONT></FONT></P>
+        <P><FONT face=Arial size=2 
+        >tmpnam generates file names with the value of 
+        P_tmpdir (defined in `stdio.h') as the leading directory component of 
+        the path. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can use the tmpnam argument <VAR>s</VAR> to specify 
+        a suitable area of memory for the generated filename; otherwise, you can 
+        call tmpnam(NULL) to use an internal static buffer. </FONT></P>
+        <P><FONT face=Arial size=2 
+        >tempnam allows you more control over the generated 
+        filename: you can use the argument <VAR>dir</VAR> 
+        to specify the path to a directory for temporary files, and you can use 
+        the argument <VAR>pfx</VAR> to specify a prefix for 
+        the base filename. </FONT></P>
+        <P><FONT face=Arial size=2>If 
+        <VAR>dir</VAR> is NULL, tempnam will attempt to use 
+        the value of environment variable TMPDIR instead; if there is no such 
+        value, tempnam uses the value of P_tmpdir (defined in `stdio.h'). 
+        </FONT></P>
+        <P><FONT face=Arial size=2>If 
+        you don't need any particular prefix to the basename of temporary files, 
+        you can pass NULL as the <VAR>pfx</VAR> argument to 
+        tempnam. </FONT></P>
+        <P><FONT face=Arial size=2 
+        >_tmpnam_r and _tempnam_r are reentrant versions of 
+        tmpnam and tempnam respectively. The extra argument <VAR 
+        >reent</VAR> is a pointer to a reentrancy structure. 
+        </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Warnings</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>The generated filenames are suitable for 
+        temporary files, but do not in themselves make files temporary. Files 
+        with these names must still be explicitly removed when you no longer 
+        want them. </FONT></FONT></P>
+        <P><FONT face=Arial size=2>If 
+        you supply your own data area <VAR>s</VAR> for 
+        tmpnam, you must ensure that it has room for at least L_tmpnam elements 
+        of type char. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>Both tmpnam and tempnam return a pointer to 
+        the newly generated filename. </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=vprintf><FONT 
+      face=Arial color=blue size=3><U>vprintf, vfprintf, 
+      vsprintf : format argument list</U></FONT></A></H2>
+      <P><A name=IDX119></A><A 
+      name=IDX120></A><A name=IDX121 
+      ></A><FONT size=2><FONT 
+      face=Arial><STRONG 
+      >Synopsis</STRONG></FONT></FONT> 
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT size=2><FONT 
+        face=Arial>#include &lt;stdio.h&gt;<BR 
+        >#include &lt;stdarg.h&gt;<BR 
+        >int vprintf(const char *<VAR 
+        >fmt</VAR>, va_list <VAR 
+        >list</VAR>);<BR>int 
+        vfprintf(FILE *<VAR>fp</VAR>, const char *<VAR 
+        >fmt</VAR>, va_list <VAR 
+        >list</VAR>);<BR>int 
+        vsprintf(char *<VAR>str</VAR>, const char *<VAR 
+        >fmt</VAR>, va_list <VAR 
+        >list</VAR>);<BR>int 
+        _vprintf_r(void *<VAR>reent</VAR>, const char *<VAR 
+        >fmt</VAR>, va_list <VAR 
+        >list</VAR>);<BR>int 
+        _vfprintf_r(void *<VAR>reent</VAR>, FILE *<VAR 
+        >fp</VAR>, const char *<VAR 
+        >fmt</VAR>, va_list <VAR 
+        >list</VAR>);<BR>int 
+        _vsprintf_r(void *<VAR>reent</VAR>, char *<VAR 
+        >str</VAR>, const char *<VAR 
+        >fmt</VAR>, va_list <VAR 
+        >list</VAR>); </FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>vprintf, vfprintf, and vsprintf are 
+        (respectively) variants of printf, fprintf, and sprintf. They differ 
+        only in allowing their caller to pass the variable argument list as a 
+        va_list object (initialized by va_start) rather than directly accepting 
+        a variable number of arguments. </FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><FONT size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT 
+        size=2>The return values are consistent with the 
+        corresponding functions: vsprintf returns the number of bytes in the 
+        output string, save that the concluding NULL is not counted. vprintf and 
+        vfprintf return the number of characters transmitted. If an error 
+        occurs, vprintf and vfprintf return EOF. No error returns occur for 
+        vsprintf. 
+</FONT></FONT></P></BLOCKQUOTE></FONT></TD></TR></TABLE></H1>
+
+</BODY>
+</HTML>

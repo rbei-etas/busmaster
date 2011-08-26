@@ -1,0 +1,399 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "TxWindow_resource.h"
+
+// Generated Help ID header file
+#define APSTUDIO_HIDDEN_SYMBOLS
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "TxWindow_resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""afxres.rc""     // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "TXWindow.dll"
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "OriginalFilename", "TXWindow.dll"
+            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DLG_TX_MSG_DETAILS DIALOGEX 0, 0, 389, 161
+STYLE DS_SETFONT | DS_MODALFRAME | WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    COMBOBOX        IDC_COMB_MSG_ID_NAME,5,19,70,65,CBS_DROPDOWN | 
+                    CBS_AUTOHSCROLL | CBS_SORT | CBS_DISABLENOSCROLL | 
+                    WS_VSCROLL | WS_TABSTOP,WS_EX_LEFTSCROLLBAR                    
+    EDITTEXT        IDC_EDIT_DLC,78,19,15,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DB1,96,19,17,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DB2,116,19,17,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DB3,136,19,17,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DB4,156,19,17,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DB5,176,19,17,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DB6,196,19,17,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DB7,216,19,17,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DB8,236,19,17,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMB_CHANNEL_ID,256,19,27,40,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Std",IDC_RBTN_MSGTYPE_STD,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,290,18,23,10,0                    
+    CONTROL         "Exd",IDC_RBTN_MSGTYPE_EXTD,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,317,18,24,10,0
+    CONTROL         "RTR",IDC_CHKB_MSGTYPE_RTR,"Button",BS_AUTOCHECKBOX | 
+                    WS_GROUP | WS_TABSTOP,346,18,27,10,0                    
+    PUSHBUTTON      "Add &Message",IDC_CBTN_ADD_MSG,166,145,55,14
+    CONTROL         "List2",IDC_LSTC_SIG_DETAILS,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | 
+                    WS_TABSTOP,6,48,245,91
+    LTEXT           "Message ID/Name",IDC_STAT_HEADER2,8,8,61,8
+    CTEXT           "DLC ",IDC_STATIC,78,8,16,8
+    CTEXT           "|------------------------------Data Bytes-------------------------------|",
+                    IDC_STATIC,94,8,159,8
+    GROUPBOX        "",IDC_STATIC,1,0,382,38
+    GROUPBOX        "Signal Details",IDC_STATIC,1,39,254,104
+    GROUPBOX        "Type",IDC_STATIC,287,7,90,26
+    LTEXT           "",IDC_STAT_STATUS,1,148,161,9,0,WS_EX_STATICEDGE
+    CTEXT           "Channel",IDC_STATIC,256,8,26,8
+    CTEXT           "6",IDC_STAT_8,258,126,8,8
+    CTEXT           "0",IDC_STAT_7,258,53,8,8
+    CTEXT           "1",IDC_STAT_6,258,65,8,8
+    CTEXT           "2",IDC_STAT_5,258,77,8,8
+    CTEXT           "3",IDC_STAT_4,258,89,8,8
+    CTEXT           "4",IDC_STAT_3,258,101,8,8
+    CTEXT           "5",IDC_STAT_2,258,113,8,8
+    CTEXT           "7",IDC_STAT_1,258,138,8,8
+    CTEXT           "7",IDC_STAT_9,272,40,8,8
+    CTEXT           "6",IDC_STAT_10,286,40,8,8
+    CTEXT           "5",IDC_STAT_11,300,40,8,8
+    CTEXT           "4",IDC_STAT_12,314,40,8,8
+    CTEXT           "3",IDC_STAT_13,328,40,8,8
+    CTEXT           "2",IDC_STAT_14,342,40,8,8
+    CTEXT           "1",IDC_STAT_151,356,40,8,8
+    CTEXT           "0",IDC_STAT_161,370,40,8,8
+    CONTROL         "",IDC_STAT_MATRIX_RECT,"Static",SS_BLACKFRAME,268,49,
+                    114,102,WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | 
+                    WS_EX_STATICEDGE
+END
+
+IDD_DLG_TX_MSG_BLOCKS DIALOGEX 0, 0, 139, 292
+STYLE DS_SETFONT | DS_MODALFRAME | WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "List1",IDC_LSTC_MSG_BLOCKS_NAME,"SysListView32",
+                    LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | 
+                    WS_BORDER | WS_TABSTOP,5,9,130,161
+    EDITTEXT        IDC_EDIT_MSG_BLOCK_NAME,36,188,75,12,ES_AUTOHSCROLL,0,                
+    CONTROL         "Time Delay",IDC_CHKB_ON_TIME_TRIGGER,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,10,240,49,12
+    EDITTEXT        IDC_EDIT_TRG_TIME_VAL,65,240,26,12,ES_AUTOHSCROLL | 
+                    WS_GROUP,0
+    CONTROL         "Key",IDC_CHKB_ON_KEY_TRIGGER,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,10,257,25,12
+    EDITTEXT        IDC_EDIT_TRG_KEY_VAL,39,257,26,12,ES_AUTOHSCROLL | 
+                    WS_GROUP,0
+    PUSHBUTTON      "Add",IDC_CBTN_ADD_MSG_BLOCK,13,279,52,14
+    PUSHBUTTON      "Delete",IDC_CBTN_DELETE_MSG_BLOCK,73,279,52,14
+    LTEXT           "Name",IDC_STATIC,13,190,20,8
+    GROUPBOX        "Trigger (Cyclic) on event",IDC_GROUPBOX_TRIGGER,7,228,
+                    126,45
+    LTEXT           "msec",IDC_STAT_UNIT_MS,95,241,18,11,0,0,                    
+    GROUPBOX        "Block Details",IDC_STATIC,2,176,137,100
+    GROUPBOX        "Message Blocks",IDC_STATIC,1,0,138,175
+    COMBOBOX        IDC_COMBO_MSGS,68,257,40,53,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Tx Mode",IDC_STATIC,7,203,126,23
+    CONTROL         "Cyclic",IDC_RADIOCYCLIC,"Button",BS_AUTORADIOBUTTON,10,
+                    213,35,10
+    CONTROL         "Monoshot",IDC_RADIOMONOSHOT,"Button",BS_AUTORADIOBUTTON,
+                    51,213,47,10
+    LTEXT           "Msg(s)",IDC_STATIC,108,259,22,8
+END
+
+IDD_DLG_TX_MSG_BLOCK_DETAILS DIALOGEX 0, 0, 378, 131
+STYLE DS_SETFONT | DS_MODALFRAME | WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "List1",IDC_LSTC_MSG_DETAILS,"SysListView32",LVS_REPORT | 
+                    LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,6,11,365,98,0
+    PUSHBUTTON      "&Send",IDC_CBTN_SEND_MSG,104,115,42,14,0,0
+    PUSHBUTTON      "D&elete",IDC_CBTN_DELETE_SEL_MSG,167,115,42,14,0,0
+    PUSHBUTTON      "Delete A&ll",IDC_CBTN_DELETE_ALL_MSG,230,115,42,14,0,0
+    GROUPBOX        "Tx Message List",IDC_STATIC,2,1,374,112
+END
+
+IDD_DLG_TX_FUNCTIONS DIALOG  0, 0, 208, 14
+STYLE DS_SETFONT | DS_MODALFRAME | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Update",IDC_BTN_UPDATE,48,0,52,14
+    PUSHBUTTON      "Close",IDC_BTN_CLOSE,108,0,52,14
+END
+
+IDD_DLG_SIGNAL DIALOGEX 0, 0, 277, 142
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Signal Details"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_SGNAME,40,7,227,14,ES_AUTOHSCROLL,0
+    COMBOBOX        IDC_COMB_SGTYPE,40,31,53,48,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP,0
+    EDITTEXT        IDC_EDIT_BYINDEX,138,31,40,14,ES_AUTOHSCROLL | ES_NUMBER,
+                    0
+    CONTROL         "Spin2",IDC_SPIN_BYINDEX,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,160,31,11,14
+    EDITTEXT        IDC_EDIT_STBIT,227,31,40,14,ES_AUTOHSCROLL | ES_NUMBER,0
+    CONTROL         "Spin3",IDC_SPIN_BIT,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,248,31,11,14
+    EDITTEXT        IDC_EDIT_SGLEN,40,54,27,14,ES_AUTOHSCROLL | ES_NUMBER,0
+    CONTROL         "Spin1",IDC_SPIN_SGLENGTH,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,56,54,11,14,0
+    EDITTEXT        IDC_EDIT_MIN,138,55,40,14,ES_UPPERCASE | ES_AUTOHSCROLL,
+                    0
+    EDITTEXT        IDC_EDIT_MAX,227,55,40,14,ES_UPPERCASE | ES_AUTOHSCROLL,
+                    0
+    EDITTEXT        IDC_EDIT_OFFSET,40,78,52,14,ES_AUTOHSCROLL,0
+    EDITTEXT        IDC_EDIT_FACTOR,138,78,40,14,ES_AUTOHSCROLL,0
+    EDITTEXT        IDC_EDIT_UNIT,227,78,40,14,ES_AUTOHSCROLL,0
+    DEFPUSHBUTTON   "OK",IDOK,154,118,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,218,118,50,14
+    LTEXT           "&Name:",IDC_STAT_SGNAME,10,10,22,8
+    LTEXT           "&Length :",IDC_STAT_SGLEN,9,57,26,8
+    LTEXT           "&Byte Index :",IDC_STAT_BYINDEX,98,34,38,8
+    LTEXT           "&Factor :",IDC_STAT_FACTOR,106,80,25,8
+    LTEXT           "&Unit :",IDC_STAT_UNIT,205,80,18,8
+    LTEXT           "&Max Val : 0x",IDC_STAT_MAX,184,57,40,8
+    LTEXT           "M&in Val : 0x",IDC_STAT_MIN,98,57,38,8
+    LTEXT           "&Start Bit :",IDC_STAT_STBIT,184,34,30,8
+    LTEXT           "&Type :",IDC_STAT_TYPE,9,33,21,8
+    LTEXT           "&Offset :",IDC_STAT_OFFSET,9,80,24,8
+    LTEXT           "Bits",IDC_STATIC,70,57,12,8
+    LTEXT           "Byte Order :",IDC_STATIC,9,101,38,8
+    CONTROL         "Intel (Little-Endian)",IDC_RADIO_INTEL,"Button",
+                    BS_AUTORADIOBUTTON,49,101,74,10
+    CONTROL         "Motorola (Big-Endian)",IDC_RADIO_MOTOROLA,"Button",
+                    BS_AUTORADIOBUTTON,125,101,83,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_DLG_TX_MSG_DETAILS DLGINIT
+BEGIN
+    IDC_COMB_MSG_ID_NAME, 0x403, 5, 0
+0x6574, 0x7473, "\000" 
+    IDC_COMB_MSG_ID_NAME, 0x403, 6, 0
+0x6574, 0x7473, 0x0031, 
+    IDC_COMB_CHANNEL_ID, 0x403, 2, 0
+0x0031, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_DLG_TX_MSG_DETAILS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 201
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 154
+    END
+
+    IDD_DLG_TX_MSG_BLOCKS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 285
+    END
+
+    IDD_DLG_TX_MSG_BLOCK_DETAILS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 124
+    END
+
+    IDD_DLG_TX_FUNCTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 132
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 7
+    END
+
+    IDD_DLG_SIGNAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 118
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDM_CONFIG_MSG_BLOCK MENU 
+BEGIN
+    POPUP "Msg Block Configuration"
+    BEGIN
+        MENUITEM "&Add",                        IDM_ADD_MSG_BLOCK
+        MENUITEM "&Delete",                     IDM_DELETE_SEL_MSG_BLOCK
+    END
+END
+
+IDM_SEND_OPRNS MENU 
+BEGIN
+    POPUP "Send Operations"
+    BEGIN
+        MENUITEM "&Send",                       IDM_SEND_SEL_MSG
+        MENUITEM "&Delete",                     IDM_DELETE_SEL_MSG
+        MENUITEM "Delete &All",                 IDM_DELETE_ALL_MSG
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_BMP_MSG_SIG_WATCH   BITMAP                  "res\\bitmap2.bmp"
+IDR_BMP_MSGSGDB         BITMAP                  "res\\bitmap1.bmp"
+IDR_BMP_CHECKBOX        BITMAP                  "res\\bmp_chec.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICO_SEND_MSG        ICON                    "res\\ico_send.ico"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "afxres.rc"     // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

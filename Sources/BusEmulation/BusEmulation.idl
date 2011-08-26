@@ -1,0 +1,44 @@
+// BusEmulation.idl : IDL source for BusEmulation
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (BusEmulation.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+
+[
+	object,
+	uuid(F5F760CC-370B-4DB1-8889-FD0D4203E422),
+	dual,
+	nonextensible,
+	helpstring("ISimENG Interface"),
+	pointer_default(unique)
+]
+interface ISimENG : IDispatch{
+    [id(1), helpstring("method SendMessage")] HRESULT SendMessage([in] USHORT ClientID, [in] USHORT CurrDataLength, [in] BYTE pbCurrDataByte[128]);
+    [id(2), helpstring("method RegisterClient")] HRESULT RegisterClient([in] USHORT Bus, [in] USHORT MaxDataLen, [out] USHORT* ClientID, [out] BSTR* PipeName, [out] BSTR* EventName);
+    [id(3), helpstring("method UnregisterClient")] HRESULT UnregisterClient([in] USHORT ClientID);
+    [id(4), helpstring("method ConnectNode")] HRESULT ConnectNode([in] USHORT ClientID);
+    [id(5), helpstring("method DisconnectNode")] HRESULT DisconnectNode([in] USHORT ClientID);
+    [id(6), helpstring("method GetTimeModeMapping")] HRESULT GetTimeModeMapping([out] SYSTEMTIME* CurrSysTime, [out] ULONGLONG* TimeStamp, [out]LARGE_INTEGER* lQueryTickCount);
+    [id(7), helpstring("method GetCurrentStatus")] HRESULT GetCurrentStatus([in] USHORT ClientID, [in,out] VARIANT *pNodeStatus);
+};
+[
+	uuid(A4713C2F-A01D-4CD9-98AE-5A1D7AA1D20E),
+	version(1.0),
+	helpstring("BusEmulation 1.0 Type Library")
+]
+library BusEmulationLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(80352754-A7D4-4390-9788-D763B88903BC),
+		helpstring("SimENG Class")
+	]
+	coclass SimENG
+	{
+		[default] interface ISimENG;
+	};
+};

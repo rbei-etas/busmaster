@@ -1,0 +1,27 @@
+The following changes will be made before Open API 1.0:
+
+* Introduce Basic Open API header
+  - Move OLI, OCI and CSI into sub-folders
+  - use generic BOA_ERROR etc. instead of OCI_ERROR
+
+* (Fully) define CSI
+  - remove OCI_STATICLIB and friends once the interface
+    binding is defined (i.e. remove the duplicate API
+    function signatures)
+
+* Define OLI
+
+----------------------------------------------------------
+
+Open issues for the CAN specific part
+
+* The queue events are still not defined. 
+
+* The event callbacks are still not defined.
+
+* The bus events are still not defined. 
+
+* Filter definitions for all event kinds is missing. 
+
+
+ 

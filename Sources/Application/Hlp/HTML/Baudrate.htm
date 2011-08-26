@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+	<HEAD>
+		<TITLE>Baudrate</TITLE>
+		<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+	</HEAD>
+	<BODY BGCOLOR="#ffffff" TEXT="#000000">
+		<OBJECT type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+			<PARAM NAME="Keyword" VALUE="Baudrate">
+		</OBJECT>
+		<H3>
+			<TABLE style="WIDTH: 722px" cellSpacing="2" cellPadding="5" width="722" bgColor="#ffffff"
+				border="0">
+				<TR>
+					<TD align="left" bgColor="#ccccff">
+						<P align="center"><FONT face="Arial" color="red" size="5"><STRONG>Baudrate</STRONG></FONT></P>
+					</TD>
+				</TR>
+				<TR>
+					<TD align="left" bgColor="#eeeeff"><FONT face="Arial" size="2">
+							<P><BR>
+								While defining a baud rate the number of <B>samples/bit value</B> can also be 
+								defined. For a selected baud rate a set of all possible combinations 
+								of&nbsp;CNF0, CNF1&nbsp;and&nbsp;CNF2 values will be listed. From this you can 
+								select any one set. The selected combination of&nbsp;CNF0, 
+								CNF1&nbsp;and&nbsp;CNF2 values will be used to initialize the CAN controller. 
+								The baud rate can be changed by the method mentioned below.</P>
+							<UL>
+								<LI>
+									Select <B>Configure </B><IMG alt="" src="images\arrow.jpg" border="0"> <B>Controller</B>.
+								<LI>
+									<STRONG>Configure CAN Controller</STRONG>&nbsp;dialog box will be displayed 
+								as shown below.
+								<LI>
+									Enter the required <B>Baud rate. </B>
+								<LI>
+									If required select the <B>Number of Sample/Bit</B>.
+								<LI>
+								Specific values for&nbsp;propagation delay and SJW can be selected too. 
+								Default&nbsp;selection for them is ALL.
+								<LI>
+									If the default value is not appropriate for the application then the required <B>CNF0</B>,
+									<B>CNF1 </B>and&nbsp; <B>CNF2</B> value can be selected by&nbsp;selecting an 
+									entry from in the list.
+								</LI>
+							</UL>
+							<P></P>
+							<P align="center"><IMG alt="" src="images\baudrate.bmp" border="0"></P>
+							<P></P>
+							<P>
+							&nbsp;
+							<P>
+								Other fields like BRP, Sampling Point, SJW and NBT are dependent on CNF0, 
+								CNF1&nbsp;and&nbsp;CNF2 values. On clicking the “OK” button the controller will 
+								be initialized with the selected baud rate.</P>
+							<P>
+								For more details on bit values of CNF0, CNF1&nbsp;and&nbsp;CNF2 and the 
+								calculation of baud rate refer the section <A href="Bit Timing.htm"><B>Bit Time 
+										Calculation</B>.</A></P>
+						</FONT>
+					</TD>
+				</TR>
+			</TABLE>
+		</H3>
+	</BODY>
+</HTML>

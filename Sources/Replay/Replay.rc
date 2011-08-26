@@ -1,0 +1,204 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "Replay_resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "Replay_resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""afxres.rc""     // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "Replay.dll"
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "OriginalFilename", "Replay.dll"
+            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DLG_REPLAY DIALOGEX 0, 0, 399, 188
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Replay Configuration"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "List1",IDC_LIST_REPALY_FILES,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | 
+                    WS_TABSTOP,11,12,151,127
+    PUSHBUTTON      "Add",IDC_BTN_ADD_FILE,34,144,50,14
+    PUSHBUTTON      "Delete",IDC_BTN_DELETE_FILE,90,144,50,14
+    EDITTEXT        IDC_EDIT_REPLAY_FILE_NAME,212,16,155,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_TABSTOP
+    PUSHBUTTON      "...",IDC_BTN_BROWSE,369,16,17,12
+    CONTROL         "Retain the recorded time delay",
+                    IDC_CHK_RETAIN_RECORDED_DELAY,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,191,45,111,8
+    EDITTEXT        IDC_EDIT_MSG_DELAY,319,57,31,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    CONTROL         "Once",IDC_RADIO_REPLAY_MODE_MONO,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,191,92,43,10
+    CONTROL         "Cyclic",IDC_RADIO_REPLAY_MODE_CYCLIC,"Button",
+                    BS_AUTORADIOBUTTON,249,92,44,10
+    EDITTEXT        IDC_EDIT_CYCLE_DELAY,307,104,31,13,ES_AUTOHSCROLL | 
+                    WS_GROUP
+    CONTROL         "Interactive Replay",IDC_CHK_INTERACTIVE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,183,131,74,8
+    PUSHBUTTON      "Filters",IDC_BTN_FILTER,258,143,50,14
+    DEFPUSHBUTTON   "OK",IDOK,146,170,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,203,170,50,14
+    GROUPBOX        "Replay Files",IDC_STATIC,6,3,162,162
+    GROUPBOX        "Replay File Details",IDC_STATIC,175,3,217,161
+    LTEXT           "File Path",IDC_STATIC,181,18,29,8
+    GROUPBOX        "Replay Mode",IDC_STATIC,183,81,202,44
+    GROUPBOX        "Time Mode",IDC_STATIC,183,32,202,46
+    LTEXT           "Delay between replay messages",IDC_STATIC,211,59,102,8
+    LTEXT           "msecs",IDC_STATIC,355,59,22,8
+    LTEXT           "Delay between replay cycles",IDC_STATIC,211,106,92,8
+    LTEXT           "msecs",IDC_STATIC,344,106,22,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_DLG_REPLAY, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 392
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 181
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BMP_BREAKPOINT      BITMAP                  "res\\bmp_break_point.bmp"
+IDB_BMP_PROPERTIES      BITMAP                  "res\\Properties.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICO_REPLAY          ICON                    "res\\Replay.ico"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "afxres.rc"     // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

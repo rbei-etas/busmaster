@@ -1,0 +1,355 @@
+.rn '' }`
+''' $RCSfile$$Revision$$Date$
+'''
+''' $Log$
+'''
+.de Sh
+.br
+.if t .Sp
+.ne 5
+.PP
+\fB\\$1\fR
+.PP
+..
+.de Sp
+.if t .sp .5v
+.if n .sp
+..
+.de Ip
+.br
+.ie \\n(.$>=3 .ne \\$3
+.el .ne 3
+.IP "\\$1" \\$2
+..
+.de Vb
+.ft CW
+.nf
+.ne \\$1
+..
+.de Ve
+.ft R
+
+.fi
+..
+'''
+'''
+'''     Set up \*(-- to give an unbreakable dash;
+'''     string Tr holds user defined translation string.
+'''     Bell System Logo is used as a dummy character.
+'''
+.tr \(*W-|\(bv\*(Tr
+.ie n \{\
+.ds -- \(*W-
+.ds PI pi
+.if (\n(.H=4u)&(1m=24u) .ds -- \(*W\h'-12u'\(*W\h'-12u'-\" diablo 10 pitch
+.if (\n(.H=4u)&(1m=20u) .ds -- \(*W\h'-12u'\(*W\h'-8u'-\" diablo 12 pitch
+.ds L" ""
+.ds R" ""
+'''   \*(M", \*(S", \*(N" and \*(T" are the equivalent of
+'''   \*(L" and \*(R", except that they are used on ".xx" lines,
+'''   such as .IP and .SH, which do another additional levels of
+'''   double-quote interpretation
+.ds M" """
+.ds S" """
+.ds N" """""
+.ds T" """""
+.ds L' '
+.ds R' '
+.ds M' '
+.ds S' '
+.ds N' '
+.ds T' '
+'br\}
+.el\{\
+.ds -- \(em\|
+.tr \*(Tr
+.ds L" ``
+.ds R" ''
+.ds M" ``
+.ds S" ''
+.ds N" ``
+.ds T" ''
+.ds L' `
+.ds R' '
+.ds M' `
+.ds S' '
+.ds N' `
+.ds T' '
+.ds PI \(*p
+'br\}
+.\"	If the F register is turned on, we'll generate
+.\"	index entries out stderr for the following things:
+.\"		TH	Title 
+.\"		SH	Header
+.\"		Sh	Subsection 
+.\"		Ip	Item
+.\"		X<>	Xref  (embedded
+.\"	Of course, you have to process the output yourself
+.\"	in some meaninful fashion.
+.if \nF \{
+.de IX
+.tm Index:\\$1\t\\n%\t"\\$2"
+..
+.nr % 0
+.rr F
+.\}
+.TH STRIP 1 "binutils-2.11.90" "14/Sep/101" "GNU"
+.UC
+.if n .hy 0
+.ds C+ C\v'-.1v'\h'-1p'\s-2+\h'-1p'+\s0\v'.1v'\h'-1p'
+.de CQ          \" put $1 in typewriter font
+.ft CW
+'if n "\c
+'if t \\&\\$1\c
+'if n \\&\\$1\c
+'if n \&"
+\\&\\$2 \\$3 \\$4 \\$5 \\$6 \\$7
+'.ft R
+..
+.\" @(#)ms.acc 1.5 88/02/08 SMI; from UCB 4.2
+.	\" AM - accent mark definitions
+.bd B 3
+.	\" fudge factors for nroff and troff
+.if n \{\
+.	ds #H 0
+.	ds #V .8m
+.	ds #F .3m
+.	ds #[ \f1
+.	ds #] \fP
+.\}
+.if t \{\
+.	ds #H ((1u-(\\\\n(.fu%2u))*.13m)
+.	ds #V .6m
+.	ds #F 0
+.	ds #[ \&
+.	ds #] \&
+.\}
+.	\" simple accents for nroff and troff
+.if n \{\
+.	ds ' \&
+.	ds ` \&
+.	ds ^ \&
+.	ds , \&
+.	ds ~ ~
+.	ds ? ?
+.	ds ! !
+.	ds /
+.	ds q
+.\}
+.if t \{\
+.	ds ' \\k:\h'-(\\n(.wu*8/10-\*(#H)'\'\h"|\\n:u"
+.	ds ` \\k:\h'-(\\n(.wu*8/10-\*(#H)'\`\h'|\\n:u'
+.	ds ^ \\k:\h'-(\\n(.wu*10/11-\*(#H)'^\h'|\\n:u'
+.	ds , \\k:\h'-(\\n(.wu*8/10)',\h'|\\n:u'
+.	ds ~ \\k:\h'-(\\n(.wu-\*(#H-.1m)'~\h'|\\n:u'
+.	ds ? \s-2c\h'-\w'c'u*7/10'\u\h'\*(#H'\zi\d\s+2\h'\w'c'u*8/10'
+.	ds ! \s-2\(or\s+2\h'-\w'\(or'u'\v'-.8m'.\v'.8m'
+.	ds / \\k:\h'-(\\n(.wu*8/10-\*(#H)'\z\(sl\h'|\\n:u'
+.	ds q o\h'-\w'o'u*8/10'\s-4\v'.4m'\z\(*i\v'-.4m'\s+4\h'\w'o'u*8/10'
+.\}
+.	\" troff and (daisy-wheel) nroff accents
+.ds : \\k:\h'-(\\n(.wu*8/10-\*(#H+.1m+\*(#F)'\v'-\*(#V'\z.\h'.2m+\*(#F'.\h'|\\n:u'\v'\*(#V'
+.ds 8 \h'\*(#H'\(*b\h'-\*(#H'
+.ds v \\k:\h'-(\\n(.wu*9/10-\*(#H)'\v'-\*(#V'\*(#[\s-4v\s0\v'\*(#V'\h'|\\n:u'\*(#]
+.ds _ \\k:\h'-(\\n(.wu*9/10-\*(#H+(\*(#F*2/3))'\v'-.4m'\z\(hy\v'.4m'\h'|\\n:u'
+.ds . \\k:\h'-(\\n(.wu*8/10)'\v'\*(#V*4/10'\z.\v'-\*(#V*4/10'\h'|\\n:u'
+.ds 3 \*(#[\v'.2m'\s-2\&3\s0\v'-.2m'\*(#]
+.ds o \\k:\h'-(\\n(.wu+\w'\(de'u-\*(#H)/2u'\v'-.3n'\*(#[\z\(de\v'.3n'\h'|\\n:u'\*(#]
+.ds d- \h'\*(#H'\(pd\h'-\w'~'u'\v'-.25m'\f2\(hy\fP\v'.25m'\h'-\*(#H'
+.ds D- D\\k:\h'-\w'D'u'\v'-.11m'\z\(hy\v'.11m'\h'|\\n:u'
+.ds th \*(#[\v'.3m'\s+1I\s-1\v'-.3m'\h'-(\w'I'u*2/3)'\s-1o\s+1\*(#]
+.ds Th \*(#[\s+2I\s-2\h'-\w'I'u*3/5'\v'-.3m'o\v'.3m'\*(#]
+.ds ae a\h'-(\w'a'u*4/10)'e
+.ds Ae A\h'-(\w'A'u*4/10)'E
+.ds oe o\h'-(\w'o'u*4/10)'e
+.ds Oe O\h'-(\w'O'u*4/10)'E
+.	\" corrections for vroff
+.if v .ds ~ \\k:\h'-(\\n(.wu*9/10-\*(#H)'\s-2\u~\d\s+2\h'|\\n:u'
+.if v .ds ^ \\k:\h'-(\\n(.wu*10/11-\*(#H)'\v'-.4m'^\v'.4m'\h'|\\n:u'
+.	\" for low resolution devices (crt and lpr)
+.if \n(.H>23 .if \n(.V>19 \
+\{\
+.	ds : e
+.	ds 8 ss
+.	ds v \h'-1'\o'\(aa\(ga'
+.	ds _ \h'-1'^
+.	ds . \h'-1'.
+.	ds 3 3
+.	ds o a
+.	ds d- d\h'-1'\(ga
+.	ds D- D\h'-1'\(hy
+.	ds th \o'bp'
+.	ds Th \o'LP'
+.	ds ae ae
+.	ds Ae AE
+.	ds oe oe
+.	ds Oe OE
+.\}
+.rm #[ #] #H #V #F C
+.SH "NAME"
+strip \- Discard symbols from object files.
+.SH "SYNOPSIS"
+strip [\fB\-F\fR \fIbfdname\fR |\fB--target=\fR\fIbfdname\fR ]
+      [\fB\-I\fR \fIbfdname\fR |\fB--input-target=\fR\fIbfdname\fR ]
+      [\fB\-O\fR \fIbfdname\fR |\fB--output-target=\fR\fIbfdname\fR ]
+      [\fB\-s\fR|\fB--strip-all\fR] [\fB\-S\fR|\fB\-g\fR|\fB--strip-debug\fR]
+      [\fB\-K\fR \fIsymbolname\fR |\fB--keep-symbol=\fR\fIsymbolname\fR ]
+      [\fB\-N\fR \fIsymbolname\fR |\fB--strip-symbol=\fR\fIsymbolname\fR ]
+      [\fB\-x\fR|\fB--discard-all\fR ] [\fB\-X\fR |\fB--discard-locals\fR]
+      [\fB\-R\fR \fIsectionname\fR |\fB--remove-section=\fR\fIsectionname\fR ]
+      [\fB\-o\fR \fIfile\fR ] [\fB\-p\fR|\fB--preserve-dates\fR]
+      [\fB\-v\fR |\fB--verbose\fR]  [\fB\-V\fR|\fB--version\fR] [\fB--help\fR]
+      \fIobjfile\fR...
+.SH "DESCRIPTION"
+GNU \fBstrip\fR discards all symbols from object files
+\fIobjfile\fR.  The list of object files may include archives.
+At least one object file must be given.
+.PP
+\fBstrip\fR modifies the files named in its argument,
+rather than writing modified copies under different names.
+.SH "OPTIONS"
+.Ip "\fB\-F\fR \fIbfdname\fR" 4
+.Ip "\fB--target=\fR\fIbfdname\fR" 4
+Treat the original \fIobjfile\fR as a file with the object
+code format \fIbfdname\fR, and rewrite it in the same format.
+.Ip "\fB--help\fR" 4
+Show a summary of the options to \fBstrip\fR and exit.
+.Ip "\fB\-I\fR \fIbfdname\fR\fB	\fR" 4
+.Ip "\fB--input-target=\fR\fIbfdname\fR" 4
+Treat the original \fIobjfile\fR as a file with the object
+code format \fIbfdname\fR.
+.Ip "\fB\-O\fR \fIbfdname\fR" 4
+.Ip "\fB--output-target=\fR\fIbfdname\fR" 4
+Replace \fIobjfile\fR with a file in the output format \fIbfdname\fR.
+.Ip "\fB\-R\fR \fIsectionname\fR" 4
+.Ip "\fB--remove-section=\fR\fIsectionname\fR" 4
+Remove any section named \fIsectionname\fR from the output file.  This
+option may be given more than once.  Note that using this option
+inappropriately may make the output file unusable.
+.Ip "\fB\-s\fR" 4
+.Ip "\fB--strip-all\fR" 4
+Remove all symbols.
+.Ip "\fB\-g\fR" 4
+.Ip "\fB\-S\fR" 4
+.Ip "\fB--strip-debug\fR" 4
+Remove debugging symbols only.
+.Ip "\fB--strip-unneeded\fR" 4
+Remove all symbols that are not needed for relocation processing.
+.Ip "\fB\-K\fR \fIsymbolname\fR" 4
+.Ip "\fB--keep-symbol=\fR\fIsymbolname\fR" 4
+Keep only symbol \fIsymbolname\fR from the source file.  This option may
+be given more than once.
+.Ip "\fB\-N\fR \fIsymbolname\fR" 4
+.Ip "\fB--strip-symbol=\fR\fIsymbolname\fR" 4
+Remove symbol \fIsymbolname\fR from the source file. This option may be
+given more than once, and may be combined with strip options other than
+\fB\-K\fR.
+.Ip "\fB\-o\fR \fIfile\fR" 4
+Put the stripped output in \fIfile\fR, rather than replacing the
+existing file.  When this argument is used, only one \fIobjfile\fR
+argument may be specified.
+.Ip "\fB\-p\fR" 4
+.Ip "\fB--preserve-dates\fR" 4
+Preserve the access and modification dates of the file.
+.Ip "\fB\-x\fR" 4
+.Ip "\fB--discard-all\fR" 4
+Remove non-global symbols.
+.Ip "\fB\-X\fR" 4
+.Ip "\fB--discard-locals\fR" 4
+Remove compiler-generated local symbols.
+(These usually start with \fBL\fR or \fB.\fR.)
+.Ip "\fB\-V\fR" 4
+.Ip "\fB--version\fR" 4
+Show the version number for \fBstrip\fR.
+.Ip "\fB\-v\fR" 4
+.Ip "\fB--verbose\fR" 4
+Verbose output: list all object files modified.  In the case of
+archives, \fBstrip \-v\fR lists all members of the archive.
+.SH "SEE ALSO"
+the Info entries for \fIbinutils\fR.
+.SH "COPYRIGHT"
+Copyright (c) 1991, 92, 93, 94, 95, 96, 97, 98, 99, 2000, 2001 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled \*(L"GNU Free Documentation License\*(R".
+
+.rn }` ''
+.IX Title "STRIP 1"
+.IX Name "strip - Discard symbols from object files."
+
+.IX Header "NAME"
+
+.IX Header "SYNOPSIS"
+
+.IX Header "DESCRIPTION"
+
+.IX Header "OPTIONS"
+
+.IX Item "\fB\-F\fR \fIbfdname\fR"
+
+.IX Item "\fB--target=\fR\fIbfdname\fR"
+
+.IX Item "\fB--help\fR"
+
+.IX Item "\fB\-I\fR \fIbfdname\fR\fB	\fR"
+
+.IX Item "\fB--input-target=\fR\fIbfdname\fR"
+
+.IX Item "\fB\-O\fR \fIbfdname\fR"
+
+.IX Item "\fB--output-target=\fR\fIbfdname\fR"
+
+.IX Item "\fB\-R\fR \fIsectionname\fR"
+
+.IX Item "\fB--remove-section=\fR\fIsectionname\fR"
+
+.IX Item "\fB\-s\fR"
+
+.IX Item "\fB--strip-all\fR"
+
+.IX Item "\fB\-g\fR"
+
+.IX Item "\fB\-S\fR"
+
+.IX Item "\fB--strip-debug\fR"
+
+.IX Item "\fB--strip-unneeded\fR"
+
+.IX Item "\fB\-K\fR \fIsymbolname\fR"
+
+.IX Item "\fB--keep-symbol=\fR\fIsymbolname\fR"
+
+.IX Item "\fB\-N\fR \fIsymbolname\fR"
+
+.IX Item "\fB--strip-symbol=\fR\fIsymbolname\fR"
+
+.IX Item "\fB\-o\fR \fIfile\fR"
+
+.IX Item "\fB\-p\fR"
+
+.IX Item "\fB--preserve-dates\fR"
+
+.IX Item "\fB\-x\fR"
+
+.IX Item "\fB--discard-all\fR"
+
+.IX Item "\fB\-X\fR"
+
+.IX Item "\fB--discard-locals\fR"
+
+.IX Item "\fB\-V\fR"
+
+.IX Item "\fB--version\fR"
+
+.IX Item "\fB\-v\fR"
+
+.IX Item "\fB--verbose\fR"
+
+.IX Header "SEE ALSO"
+
+.IX Header "COPYRIGHT"
+
