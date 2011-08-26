@@ -1,0 +1,892 @@
+.rn '' }`
+''' $RCSfile$$Revision$$Date$
+'''
+''' $Log$
+'''
+.de Sh
+.br
+.if t .Sp
+.ne 5
+.PP
+\fB\\$1\fR
+.PP
+..
+.de Sp
+.if t .sp .5v
+.if n .sp
+..
+.de Ip
+.br
+.ie \\n(.$>=3 .ne \\$3
+.el .ne 3
+.IP "\\$1" \\$2
+..
+.de Vb
+.ft CW
+.nf
+.ne \\$1
+..
+.de Ve
+.ft R
+
+.fi
+..
+'''
+'''
+'''     Set up \*(-- to give an unbreakable dash;
+'''     string Tr holds user defined translation string.
+'''     Bell System Logo is used as a dummy character.
+'''
+.tr \(*W-|\(bv\*(Tr
+.ie n \{\
+.ds -- \(*W-
+.ds PI pi
+.if (\n(.H=4u)&(1m=24u) .ds -- \(*W\h'-12u'\(*W\h'-12u'-\" diablo 10 pitch
+.if (\n(.H=4u)&(1m=20u) .ds -- \(*W\h'-12u'\(*W\h'-8u'-\" diablo 12 pitch
+.ds L" ""
+.ds R" ""
+'''   \*(M", \*(S", \*(N" and \*(T" are the equivalent of
+'''   \*(L" and \*(R", except that they are used on ".xx" lines,
+'''   such as .IP and .SH, which do another additional levels of
+'''   double-quote interpretation
+.ds M" """
+.ds S" """
+.ds N" """""
+.ds T" """""
+.ds L' '
+.ds R' '
+.ds M' '
+.ds S' '
+.ds N' '
+.ds T' '
+'br\}
+.el\{\
+.ds -- \(em\|
+.tr \*(Tr
+.ds L" ``
+.ds R" ''
+.ds M" ``
+.ds S" ''
+.ds N" ``
+.ds T" ''
+.ds L' `
+.ds R' '
+.ds M' `
+.ds S' '
+.ds N' `
+.ds T' '
+.ds PI \(*p
+'br\}
+.\"	If the F register is turned on, we'll generate
+.\"	index entries out stderr for the following things:
+.\"		TH	Title 
+.\"		SH	Header
+.\"		Sh	Subsection 
+.\"		Ip	Item
+.\"		X<>	Xref  (embedded
+.\"	Of course, you have to process the output yourself
+.\"	in some meaninful fashion.
+.if \nF \{
+.de IX
+.tm Index:\\$1\t\\n%\t"\\$2"
+..
+.nr % 0
+.rr F
+.\}
+.TH AS 1 "binutils-2.11.90" "14/Sep/101" "GNU"
+.UC
+.if n .hy 0
+.ds C+ C\v'-.1v'\h'-1p'\s-2+\h'-1p'+\s0\v'.1v'\h'-1p'
+.de CQ          \" put $1 in typewriter font
+.ft CW
+'if n "\c
+'if t \\&\\$1\c
+'if n \\&\\$1\c
+'if n \&"
+\\&\\$2 \\$3 \\$4 \\$5 \\$6 \\$7
+'.ft R
+..
+.\" @(#)ms.acc 1.5 88/02/08 SMI; from UCB 4.2
+.	\" AM - accent mark definitions
+.bd B 3
+.	\" fudge factors for nroff and troff
+.if n \{\
+.	ds #H 0
+.	ds #V .8m
+.	ds #F .3m
+.	ds #[ \f1
+.	ds #] \fP
+.\}
+.if t \{\
+.	ds #H ((1u-(\\\\n(.fu%2u))*.13m)
+.	ds #V .6m
+.	ds #F 0
+.	ds #[ \&
+.	ds #] \&
+.\}
+.	\" simple accents for nroff and troff
+.if n \{\
+.	ds ' \&
+.	ds ` \&
+.	ds ^ \&
+.	ds , \&
+.	ds ~ ~
+.	ds ? ?
+.	ds ! !
+.	ds /
+.	ds q
+.\}
+.if t \{\
+.	ds ' \\k:\h'-(\\n(.wu*8/10-\*(#H)'\'\h"|\\n:u"
+.	ds ` \\k:\h'-(\\n(.wu*8/10-\*(#H)'\`\h'|\\n:u'
+.	ds ^ \\k:\h'-(\\n(.wu*10/11-\*(#H)'^\h'|\\n:u'
+.	ds , \\k:\h'-(\\n(.wu*8/10)',\h'|\\n:u'
+.	ds ~ \\k:\h'-(\\n(.wu-\*(#H-.1m)'~\h'|\\n:u'
+.	ds ? \s-2c\h'-\w'c'u*7/10'\u\h'\*(#H'\zi\d\s+2\h'\w'c'u*8/10'
+.	ds ! \s-2\(or\s+2\h'-\w'\(or'u'\v'-.8m'.\v'.8m'
+.	ds / \\k:\h'-(\\n(.wu*8/10-\*(#H)'\z\(sl\h'|\\n:u'
+.	ds q o\h'-\w'o'u*8/10'\s-4\v'.4m'\z\(*i\v'-.4m'\s+4\h'\w'o'u*8/10'
+.\}
+.	\" troff and (daisy-wheel) nroff accents
+.ds : \\k:\h'-(\\n(.wu*8/10-\*(#H+.1m+\*(#F)'\v'-\*(#V'\z.\h'.2m+\*(#F'.\h'|\\n:u'\v'\*(#V'
+.ds 8 \h'\*(#H'\(*b\h'-\*(#H'
+.ds v \\k:\h'-(\\n(.wu*9/10-\*(#H)'\v'-\*(#V'\*(#[\s-4v\s0\v'\*(#V'\h'|\\n:u'\*(#]
+.ds _ \\k:\h'-(\\n(.wu*9/10-\*(#H+(\*(#F*2/3))'\v'-.4m'\z\(hy\v'.4m'\h'|\\n:u'
+.ds . \\k:\h'-(\\n(.wu*8/10)'\v'\*(#V*4/10'\z.\v'-\*(#V*4/10'\h'|\\n:u'
+.ds 3 \*(#[\v'.2m'\s-2\&3\s0\v'-.2m'\*(#]
+.ds o \\k:\h'-(\\n(.wu+\w'\(de'u-\*(#H)/2u'\v'-.3n'\*(#[\z\(de\v'.3n'\h'|\\n:u'\*(#]
+.ds d- \h'\*(#H'\(pd\h'-\w'~'u'\v'-.25m'\f2\(hy\fP\v'.25m'\h'-\*(#H'
+.ds D- D\\k:\h'-\w'D'u'\v'-.11m'\z\(hy\v'.11m'\h'|\\n:u'
+.ds th \*(#[\v'.3m'\s+1I\s-1\v'-.3m'\h'-(\w'I'u*2/3)'\s-1o\s+1\*(#]
+.ds Th \*(#[\s+2I\s-2\h'-\w'I'u*3/5'\v'-.3m'o\v'.3m'\*(#]
+.ds ae a\h'-(\w'a'u*4/10)'e
+.ds Ae A\h'-(\w'A'u*4/10)'E
+.ds oe o\h'-(\w'o'u*4/10)'e
+.ds Oe O\h'-(\w'O'u*4/10)'E
+.	\" corrections for vroff
+.if v .ds ~ \\k:\h'-(\\n(.wu*9/10-\*(#H)'\s-2\u~\d\s+2\h'|\\n:u'
+.if v .ds ^ \\k:\h'-(\\n(.wu*10/11-\*(#H)'\v'-.4m'^\v'.4m'\h'|\\n:u'
+.	\" for low resolution devices (crt and lpr)
+.if \n(.H>23 .if \n(.V>19 \
+\{\
+.	ds : e
+.	ds 8 ss
+.	ds v \h'-1'\o'\(aa\(ga'
+.	ds _ \h'-1'^
+.	ds . \h'-1'.
+.	ds 3 3
+.	ds o a
+.	ds d- d\h'-1'\(ga
+.	ds D- D\h'-1'\(hy
+.	ds th \o'bp'
+.	ds Th \o'LP'
+.	ds ae ae
+.	ds Ae AE
+.	ds oe oe
+.	ds Oe OE
+.\}
+.rm #[ #] #H #V #F C
+.SH "NAME"
+AS \- the portable GNU assembler.
+.SH "SYNOPSIS"
+as [ \-a[cdhlns][=file] ] [ \-D ]  [ --defsym \fIsym\fR=\fIval\fR ]
+ [ \-f ] [ --gstabs ] [ --gdwarf2 ] [ --help ] [ \-I \fIdir\fR ] 
+ [ \-J ] [ \-K ] [ \-L ]
+ [ --listing\*(--lhs-width=NUM ][ --listing-lhs-width2=NUM ]
+ [ --listing-rhs-width=NUM ][ --listing-cont-lines=NUM ]
+ [ --keep-locals ] [ \-o \fIobjfile\fR ] [ \-R ] [ --statistics ] [ \-v ]
+ [ \-version ] [ --version ] [ \-W ] [ --warn ] [ --fatal-warnings ] 
+ [ \-w ] [ \-x ] [ \-Z ] [ --target-help ]
+ [ \-marc[5|6|7|8] ]
+ [ \-EB | \-EL ]
+ [ \-m[arm]1 | \-m[arm]2 | \-m[arm]250 | \-m[arm]3 |
+   \-m[arm]6 | \-m[arm]60 | \-m[arm]600 | \-m[arm]610 |
+   \-m[arm]620 | \-m[arm]7[t][[d]m[i]][fe] | \-m[arm]70 |
+   \-m[arm]700 | \-m[arm]710[c] | \-m[arm]7100 |
+   \-m[arm]7500 | \-m[arm]8 | \-m[arm]810 | \-m[arm]9 |
+   \-m[arm]920 | \-m[arm]920t | \-m[arm]9tdmi |
+   \-mstrongarm | \-mstrongarm110 | \-mstrongarm1100 ]
+ [ \-m[arm]v2 | \-m[arm]v2a | \-m[arm]v3 | \-m[arm]v3m |
+   \-m[arm]v4 | \-m[arm]v4t | \-m[arm]v5 | \-[arm]v5t |
+   \-[arm]v5te ]
+ [ \-mthumb | \-mall ]
+ [ \-mfpa10 | \-mfpa11 | \-mfpe-old | \-mno-fpu ]
+ [ \-EB | \-EL ]
+ [ \-mapcs-32 | \-mapcs-26 | \-mapcs-float |
+   \-mapcs-reentrant ]
+ [ \-mthumb-interwork ] [ \-moabi ] [ \-k ]
+ [ \-O ]
+ [ \-O | \-n | \-N ]
+ [ \-mb | \-me ]
+ [ \-Av6 | \-Av7 | \-Av8 | \-Asparclet | \-Asparclite
+   \-Av8plus | \-Av8plusa | \-Av9 | \-Av9a ]
+ [ \-xarch=v8plus | \-xarch=v8plusa ] [ \-bump ]
+ [ \-32 | \-64 ]
+ [ \-ACA | \-ACA_A | \-ACB | \-ACC | \-AKA | \-AKB |
+   \-AKC | \-AMC ]
+ [ \-b ] [ \-no-relax ]
+ [ --m32rx | --[no-]warn-explicit-parallel-conflicts |
+   --W[n]p ]
+ [ \-l ] [ \-m68000 | \-m68010 | \-m68020 | ... ]
+ [ \-jsri2bsr ] [ \-sifilter ] [ \-relax ]
+ [ \-mcpu=[210|340] ]
+ [ \-m68hc11 | \-m68hc12 ]
+ [ --force-long-branchs ] [ --short-branchs ]
+ [ --strict-direct-mode ] [ --print-insn-syntax ]
+ [ --print-opcodes ] [ --generate-example ]
+ [ \-nocpp ] [ \-EL ] [ \-EB ] [ \-G \fInum\fR ] [ \-mcpu=\fICPU\fR ]
+ [ \-mips1 ] [ \-mips2 ] [ \-mips3 ] [ \-mips4 ] [ \-mips5 ]
+ [ \-mips32 ] [ \-mips64 ]
+ [ \-m4650 ] [ \-no-m4650 ]
+ [ --trap ] [ --break ] [ \-n ]
+ [ --emulation=\fIname\fR ]
+ [ -- | \fIfiles\fR ... ]
+.SH "DESCRIPTION"
+GNU \f(CWas\fR is really a family of assemblers.
+If you use (or have used) the GNU assembler on one architecture, you
+should find a fairly similar environment when you use it on another
+architecture.  Each version has much in common with the others,
+including object file formats, most assembler directives (often called
+\fIpseudo-ops\fR) and assembler syntax.
+.PP
+\f(CWas\fR is primarily intended to assemble the output of the
+GNU C compiler \f(CW\fR for use by the linker
+\f(CW\fR.  Nevertheless, we've tried to make \f(CWas\fR
+assemble correctly everything that other assemblers for the same
+machine would assemble.
+Any exceptions are documented explicitly.
+This doesn't mean \f(CWas\fR always uses the same syntax as another
+assembler for the same architecture; for example, we know of several
+incompatible versions of 680x0 assembly language syntax.
+.PP
+Each time you run \f(CWas\fR it assembles exactly one source
+program.  The source program is made up of one or more files.
+(The standard input is also a file.)
+.PP
+You give \f(CWas\fR a command line that has zero or more input file
+names.  The input files are read (from left file name to right).  A
+command line argument (in any position) that has no special meaning
+is taken to be an input file name.
+.PP
+If you give \f(CWas\fR no file names it attempts to read one input file
+from the \f(CWas\fR standard input, which is normally your terminal.  You
+may have to type \fBctl-D\fR to tell \f(CWas\fR there is no more program
+to assemble.
+.PP
+Use \fB--\fR if you need to explicitly name the standard input file
+in your command line.
+.PP
+If the source is empty, \f(CWas\fR produces a small, empty object
+file.
+.PP
+\f(CWas\fR may write warnings and error messages to the standard error
+file (usually your terminal).  This should not happen when  a compiler
+runs \f(CWas\fR automatically.  Warnings report an assumption made so
+that \f(CWas\fR could keep assembling a flawed program; errors report a
+grave problem that stops the assembly.
+.PP
+If you are invoking \f(CWas\fR via the GNU C compiler (version 2),
+you can use the \fB\-Wa\fR option to pass arguments through to the assembler.
+The assembler arguments must be separated from each other (and the \fB\-Wa\fR)
+by commas.  For example:
+.PP
+.Vb 2
+\&        
+\&        gcc -c -g -O -Wa,-alh,-L file.c
+.Ve
+This passes two options to the assembler: \fB\-alh\fR (emit a listing to
+standard output with with high-level and assembly source) and \fB\-L\fR (retain
+local symbols in the symbol table).
+.PP
+Usually you do not need to use this \fB\-Wa\fR mechanism, since many compiler
+command-line options are automatically passed to the assembler by the compiler.
+(You can call the GNU compiler driver with the \fB\-v\fR option to see
+precisely what options it passes to each compilation pass, including the
+assembler.)
+.SH "OPTIONS"
+.Ip "\f(CW-a[cdhlmns]\fR" 4
+Turn on listings, in any of a variety of ways:
+.Ip "\f(CW-ac\fR" 8
+omit false conditionals
+.Ip "\f(CW-ad\fR" 8
+omit debugging directives
+.Ip "\f(CW-ah\fR" 8
+include high-level source
+.Ip "\f(CW-al\fR" 8
+include assembly
+.Ip "\f(CW-am\fR" 8
+include macro expansions
+.Ip "\f(CW-an\fR" 8
+omit forms processing
+.Ip "\f(CW-as\fR" 8
+include symbols
+.Ip "\f(CW=file\fR" 8
+set the name of the listing file
+.Sp
+You may combine these options; for example, use \fB\-aln\fR for assembly
+listing without forms processing.  The \fB=file\fR option, if used, must be
+the last one.  By itself, \fB\-a\fR defaults to \fB\-ahls\fR.
+.Ip "\f(CW-D\fR" 4
+Ignored.  This option is accepted for script compatibility with calls to
+other assemblers.
+.Ip "\f(CW--defsym \fIsym\fR=\fIvalue\fR\fR" 4
+Define the symbol \fIsym\fR to be \fIvalue\fR before assembling the input file.
+\fIvalue\fR must be an integer constant.  As in C, a leading \fB0x\fR
+indicates a hexadecimal value, and a leading \fB0\fR indicates an octal value.
+.Ip "\f(CW-f\fR" 4
+``fast'\*(R'---skip whitespace and comment preprocessing (assume source is
+compiler output).
+.Ip "\f(CW--gstabs\fR" 4
+Generate stabs debugging information for each assembler line.  This
+may help debugging assembler code, if the debugger can handle it.
+.Ip "\f(CW--gdwarf2\fR" 4
+Generate \s-1DWARF2\s0 debugging information for each assembler line.  This
+may help debugging assembler code, if the debugger can handle it.  Note \- this
+option is only supported by some targets, not all of them.
+.Ip "\f(CW--help\fR" 4
+Print a summary of the command line options and exit.
+.Ip "\f(CW--target-help\fR" 4
+Print a summary of all target specific options and exit.
+.Ip "\f(CW-I \fIdir\fR\fR" 4
+Add directory \fIdir\fR to the search list for \f(CW.include\fR directives.
+.Ip "\f(CW-J\fR" 4
+Don't warn about signed overflow.
+.Ip "\f(CW-K\fR" 4
+This option is accepted but has no effect on the \s-1TARGET\s0 family.
+.Ip "\f(CW-L\fR" 4
+.Ip "\f(CW--keep-locals\fR" 4
+Keep (in the symbol table) local symbols.  On traditional a.out systems
+these start with \fBL\fR, but different systems have different local
+label prefixes.
+.Ip "\f(CW--listing-lhs-width=\fInumber\fR\fR" 4
+Set the maximum width, in words, of the output data column for an assembler
+listing to \fInumber\fR.
+.Ip "\f(CW--listing-lhs-width2=\fInumber\fR\fR" 4
+Set the maximum width, in words, of the output data column for continuation
+lines in an assembler listing to \fInumber\fR.
+.Ip "\f(CW--listing-rhs-width=\fInumber\fR\fR" 4
+Set the maximum width of an input source line, as displayed in a listing, to
+\fInumber\fR bytes.
+.Ip "\f(CW--listing-cont-lines=\fInumber\fR\fR" 4
+Set the maximum number of lines printed in a listing for a single line of input
+to \fInumber\fR + 1.
+.Ip "\f(CW-o \fIobjfile\fR\fR" 4
+Name the object-file output from \f(CWas\fR \fIobjfile\fR.
+.Ip "\f(CW-R\fR" 4
+Fold the data section into the text section.
+.Ip "\f(CW--statistics\fR" 4
+Print the maximum space (in bytes) and total time (in seconds) used by
+assembly.
+.Ip "\f(CW--strip-local-absolute\fR" 4
+Remove local absolute symbols from the outgoing symbol table.
+.Ip "\f(CW-v\fR" 4
+.Ip "\f(CW-version\fR" 4
+Print the \f(CWas\fR version.
+.Ip "\f(CW--version\fR" 4
+Print the \f(CWas\fR version and exit.
+.Ip "\f(CW-W\fR" 4
+.Ip "\f(CW--no-warn\fR" 4
+Suppress warning messages.
+.Ip "\f(CW--fatal-warnings\fR" 4
+Treat warnings as errors.
+.Ip "\f(CW--warn\fR" 4
+Don't suppress warning messages or treat them as errors.
+.Ip "\f(CW-w\fR" 4
+Ignored.
+.Ip "\f(CW-x\fR" 4
+Ignored.
+.Ip "\f(CW-Z\fR" 4
+Generate an object file even after errors.
+.Ip "\f(CW-- | \fIfiles\fR ...\fR" 4
+Standard input, or source files to assemble.
+.PP
+The following options are available when as is configured for
+an \s-1ARC\s0 processor.
+.Ip "\f(CW-marc[5|6|7|8]\fR" 4
+This option selects the core processor variant.
+.Ip "\f(CW-EB | -EL\fR" 4
+Select either big-endian (\-\s-1EB\s0) or little-endian (\-\s-1EL\s0) output.
+.PP
+The following options are available when as is configured for the \s-1ARM\s0
+processor family.
+.Ip "\f(CW-m[arm][1|2|3|6|7|8|9][...] \fR" 4
+Specify which \s-1ARM\s0 processor variant is the target.
+.Ip "\f(CW-m[arm]v[2|2a|3|3m|4|4t|5|5t]\fR" 4
+Specify which \s-1ARM\s0 architecture variant is used by the target.
+.Ip "\f(CW-mthumb | -mall\fR" 4
+Enable or disable Thumb only instruction decoding.
+.Ip "\f(CW-mfpa10 | -mfpa11 | -mfpe-old | -mno-fpu\fR" 4
+Select which Floating Point architecture is the target.
+.Ip "\f(CW-mapcs-32 | -mapcs-26 | -mapcs-float | -mapcs-reentrant | -moabi\fR" 4
+Select which procedure calling convention is in use.
+.Ip "\f(CW-EB | -EL\fR" 4
+Select either big-endian (\-\s-1EB\s0) or little-endian (\-\s-1EL\s0) output.
+.Ip "\f(CW-mthumb-interwork\fR" 4
+Specify that the code has been generated with interworking between Thumb and
+\s-1ARM\s0 code in mind.
+.Ip "\f(CW-k\fR" 4
+Specify that \s-1PIC\s0 code has been generated.
+.PP
+The following options are available when as is configured for
+a D10V processor.
+.Ip "\f(CW-O\fR" 4
+Optimize output by parallelizing instructions.
+.PP
+The following options are available when as is configured for a D30V
+processor.
+.Ip "\f(CW-O\fR" 4
+Optimize output by parallelizing instructions.
+.Ip "\f(CW-n\fR" 4
+Warn when nops are generated.
+.Ip "\f(CW-N\fR" 4
+Warn when a nop after a 32-bit multiply instruction is generated.
+.PP
+The following options are available when as is configured for the
+Intel 80960 processor.
+.Ip "\f(CW-ACA | -ACA_A | -ACB | -ACC | -AKA | -AKB | -AKC | -AMC\fR" 4
+Specify which variant of the 960 architecture is the target.
+.Ip "\f(CW-b\fR" 4
+Add code to collect statistics about branches taken.
+.Ip "\f(CW-no-relax\fR" 4
+Do not alter compare-and-branch instructions for long displacements;
+error if necessary.
+.PP
+The following options are available when as is configured for the
+Mitsubishi M32R series.
+.Ip "\f(CW--m32rx\fR" 4
+Specify which processor in the M32R family is the target.  The default
+is normally the M32R, but this option changes it to the M32RX.
+.Ip "\f(CW--warn-explicit-parallel-conflicts or --Wp\fR" 4
+Produce warning messages when questionable parallel constructs are
+encountered. 
+.Ip "\f(CW--no-warn-explicit-parallel-conflicts or --Wnp\fR" 4
+Do not produce warning messages when questionable parallel constructs are 
+encountered. 
+.PP
+The following options are available when as is configured for the
+Motorola 68000 series.
+.Ip "\f(CW-l\fR" 4
+Shorten references to undefined symbols, to one word instead of two.
+.Ip "\f(CW-m68000 | -m68008 | -m68010 | -m68020 | -m68030\fR" 4
+.Ip "\f(CW| -m68040 | -m68060 | -m68302 | -m68331 | -m68332\fR" 4
+.Ip "\f(CW| -m68333 | -m68340 | -mcpu32 | -m5200\fR" 4
+Specify what processor in the 68000 family is the target.  The default
+is normally the 68020, but this can be changed at configuration time.
+.Ip "\f(CW-m68881 | -m68882 | -mno-68881 | -mno-68882\fR" 4
+The target machine does (or does not) have a floating-point coprocessor.
+The default is to assume a coprocessor for 68020, 68030, and cpu32.  Although
+the basic 68000 is not compatible with the 68881, a combination of the
+two can be specified, since it's possible to do emulation of the
+coprocessor instructions with the main processor.
+.Ip "\f(CW-m68851 | -mno-68851\fR" 4
+The target machine does (or does not) have a memory-management
+unit coprocessor.  The default is to assume an \s-1MMU\s0 for 68020 and up.
+.PP
+For details about the \s-1PDP\s0\-11 machine dependent features options,
+see \f(CW@ref\fR{\s-1PDP\s0\-11-Options}.
+.Ip "\f(CW-mpic | -mno-pic\fR" 4
+Generate position-independent (or position-dependent) code.  The
+default is \f(CW-mpic\fR.
+.Ip "\f(CW-mall\fR" 4
+.Ip "\f(CW-mall-extensions\fR" 4
+Enable all instruction set extensions.  This is the default.
+.Ip "\f(CW-mno-extensions\fR" 4
+Disable all instruction set extensions.
+.Ip "\f(CW-m\fIextension\fR | -mno-\fIextension\fR\fR" 4
+Enable (or disable) a particular instruction set extension.
+.Ip "\f(CW-m\fIcpu\fR\fR" 4
+Enable the instruction set extensions supported by a particular \s-1CPU\s0, and
+disable all other extensions.
+.Ip "\f(CW-m\fImachine\fR\fR" 4
+Enable the instruction set extensions supported by a particular machine
+model, and disable all other extensions.
+.PP
+The following options are available when as is configured for
+a picoJava processor.
+.Ip "\f(CW-mb\fR" 4
+Generate ``big endian'\*(R' format output.
+.Ip "\f(CW-ml\fR" 4
+Generate ``little endian'\*(R' format output.
+.PP
+The following options are available when as is configured for the
+Motorola 68HC11 or 68HC12 series.
+.Ip "\f(CW-m68hc11 | -m68hc12\fR" 4
+Specify what processor is the target.  The default is
+defined by the configuration option when building the assembler.
+.Ip "\f(CW--force-long-branchs\fR" 4
+Relative branches are turned into absolute ones. This concerns
+conditional branches, unconditional branches and branches to a
+sub routine.
+.Ip "\f(CW-S | --short-branchs\fR" 4
+Do not turn relative branchs into absolute ones
+when the offset is out of range.
+.Ip "\f(CW--strict-direct-mode\fR" 4
+Do not turn the direct addressing mode into extended addressing mode
+when the instruction does not support direct addressing mode.
+.Ip "\f(CW--print-insn-syntax\fR" 4
+Print the syntax of instruction in case of error.
+.Ip "\f(CW--print-opcodes\fR" 4
+print the list of instructions with syntax and then exit.
+.Ip "\f(CW--generate-example\fR" 4
+print an example of instruction for each possible instruction and then exit.
+This option is only useful for testing \f(CWas\fR.
+.PP
+The following options are available when \f(CWas\fR is configured
+for the \s-1SPARC\s0 architecture:
+.Ip "\f(CW-Av6 | -Av7 | -Av8 | -Asparclet | -Asparclite\fR" 4
+.Ip "\f(CW-Av8plus | -Av8plusa | -Av9 | -Av9a\fR" 4
+Explicitly select a variant of the \s-1SPARC\s0 architecture.
+.Sp
+\fB\-Av8plus\fR and \fB\-Av8plusa\fR select a 32 bit environment.
+\fB\-Av9\fR and \fB\-Av9a\fR select a 64 bit environment.
+.Sp
+\fB\-Av8plusa\fR and \fB\-Av9a\fR enable the \s-1SPARC\s0 V9 instruction set with
+UltraSPARC extensions.
+.Ip "\f(CW-xarch=v8plus | -xarch=v8plusa\fR" 4
+For compatibility with the Solaris v9 assembler.  These options are
+equivalent to \-Av8plus and \-Av8plusa, respectively.
+.Ip "\f(CW-bump\fR" 4
+Warn when the assembler switches to another architecture.
+.PP
+The following options are available when as is configured for
+a \s-1MIPS\s0 processor.
+.Ip "\f(CW-G \fInum\fR\fR" 4
+This option sets the largest size of an object that can be referenced
+implicitly with the \f(CWgp\fR register.  It is only accepted for targets that
+use \s-1ECOFF\s0 format, such as a DECstation running Ultrix.  The default value is 8.
+.Ip "\f(CW-EB\fR" 4
+Generate ``big endian'\*(R' format output.
+.Ip "\f(CW-EL\fR" 4
+Generate ``little endian'\*(R' format output.
+.Ip "\f(CW-mips1\fR" 4
+.Ip "\f(CW-mips2\fR" 4
+.Ip "\f(CW-mips3\fR" 4
+.Ip "\f(CW-mips4\fR" 4
+.Ip "\f(CW-mips32\fR" 4
+Generate code for a particular \s-1MIPS\s0 Instruction Set Architecture level.
+\fB\-mips1\fR corresponds to the R2000 and R3000 processors,
+\fB\-mips2\fR to the R6000 processor, and \fB\-mips3\fR to the R4000
+processor.
+\fB\-mips5\fR, \fB\-mips32\fR, and \fB\-mips64\fR correspond
+to generic \s-1MIPS\s0 V, \s-1MIPS32\s0, and \s-1MIPS64\s0 \s-1ISA\s0
+processors, respectively.
+.Ip "\f(CW-m4650\fR" 4
+.Ip "\f(CW-no-m4650\fR" 4
+Generate code for the \s-1MIPS\s0 R4650 chip.  This tells the assembler to accept
+the \fBmad\fR and \fBmadu\fR instruction, and to not schedule \fBnop\fR
+instructions around accesses to the \fB\s-1HI\s0\fR and \fB\s-1LO\s0\fR registers.
+\fB\-no-m4650\fR turns off this option.
+.Ip "\f(CW-mcpu=\fICPU\fR\fR" 4
+Generate code for a particular \s-1MIPS\s0 cpu.  It is exactly equivalent to
+\fB\-m\fR\fIcpu\fR, except that there are more value of \fIcpu\fR
+understood.
+.Ip "\f(CW--emulation=\fIname\fR\fR" 4
+This option causes \f(CWas\fR to emulate \f(CWas\fR configured
+for some other target, in all respects, including output format (choosing
+between \s-1ELF\s0 and \s-1ECOFF\s0 only), handling of pseudo-opcodes which may generate
+debugging information or store symbol table information, and default
+endianness.  The available configuration names are: \fBmipsecoff\fR,
+\fBmipself\fR, \fBmipslecoff\fR, \fBmipsbecoff\fR, \fBmipslelf\fR,
+\fBmipsbelf\fR.  The first two do not alter the default endianness from that
+of the primary target for which the assembler was configured; the others change
+the default to little- or big-endian as indicated by the \fBb\fR or \fBl\fR
+in the name.  Using \fB\-\s-1EB\s0\fR or \fB\-\s-1EL\s0\fR will override the endianness
+selection in any case.
+.Sp
+This option is currently supported only when the primary target
+\f(CWas\fR is configured for is a \s-1MIPS\s0 \s-1ELF\s0 or \s-1ECOFF\s0 target.
+Furthermore, the primary target or others specified with
+\fB--enable-targets=...\fR at configuration time must include support for
+the other format, if both are to be available.  For example, the Irix 5
+configuration includes support for both.
+.Sp
+Eventually, this option will support more configurations, with more
+fine-grained control over the assembler's behavior, and will be supported for
+more processors.
+.Ip "\f(CW-nocpp\fR" 4
+\f(CWas\fR ignores this option.  It is accepted for compatibility with
+the native tools.
+.Ip "\f(CW--trap\fR" 4
+.Ip "\f(CW--no-trap\fR" 4
+.Ip "\f(CW--break\fR" 4
+.Ip "\f(CW--no-break\fR" 4
+Control how to deal with multiplication overflow and division by zero.
+\fB--trap\fR or \fB--no-break\fR (which are synonyms) take a trap exception
+(and only work for Instruction Set Architecture level 2 and higher);
+\fB--break\fR or \fB--no-trap\fR (also synonyms, and the default) take a
+break exception.
+.Ip "\f(CW-n\fR" 4
+When this option is used, \f(CWas\fR will issue a warning every
+time it generates a nop instruction from a macro.
+.PP
+The following options are available when as is configured for
+an MCore processor.
+.Ip "\f(CW-jsri2bsr\fR" 4
+.Ip "\f(CW-nojsri2bsr\fR" 4
+Enable or disable the \s-1JSRI\s0 to \s-1BSR\s0 transformation.  By default this is enabled.
+The command line option \fB\-nojsri2bsr\fR can be used to disable it.
+.Ip "\f(CW-sifilter\fR" 4
+.Ip "\f(CW-nosifilter\fR" 4
+Enable or disable the silicon filter behaviour.  By default this is disabled.
+The default can be overridden by the \fB\-sifilter\fR command line option.
+.Ip "\f(CW-relax\fR" 4
+Alter jump instructions for long displacements.
+.Ip "\f(CW-mcpu=[210|340]\fR" 4
+Select the cpu type on the target hardware.  This controls which instructions
+can be assembled.
+.Ip "\f(CW-EB\fR" 4
+Assemble for a big endian target.
+.Ip "\f(CW-EL\fR" 4
+Assemble for a little endian target.
+.SH "SEE ALSO"
+\fIgcc\fR\|(1), \fIld\fR\|(1), and the Info entries for \fIbinutils\fR and \fIld\fR.
+.SH "COPYRIGHT"
+Copyright (C) 1991, 92, 93, 94, 95, 96, 97, 98, 99, 2000, 2001 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled \*(L"GNU Free Documentation License\*(R".
+
+.rn }` ''
+.IX Title "AS 1"
+.IX Name "AS - the portable GNU assembler."
+
+.IX Header "NAME"
+
+.IX Header "SYNOPSIS"
+
+.IX Header "DESCRIPTION"
+
+.IX Header "OPTIONS"
+
+.IX Item "\f(CW-a[cdhlmns]\fR"
+
+.IX Item "\f(CW-ac\fR"
+
+.IX Item "\f(CW-ad\fR"
+
+.IX Item "\f(CW-ah\fR"
+
+.IX Item "\f(CW-al\fR"
+
+.IX Item "\f(CW-am\fR"
+
+.IX Item "\f(CW-an\fR"
+
+.IX Item "\f(CW-as\fR"
+
+.IX Item "\f(CW=file\fR"
+
+.IX Item "\f(CW-D\fR"
+
+.IX Item "\f(CW--defsym \fIsym\fR=\fIvalue\fR\fR"
+
+.IX Item "\f(CW-f\fR"
+
+.IX Item "\f(CW--gstabs\fR"
+
+.IX Item "\f(CW--gdwarf2\fR"
+
+.IX Item "\f(CW--help\fR"
+
+.IX Item "\f(CW--target-help\fR"
+
+.IX Item "\f(CW-I \fIdir\fR\fR"
+
+.IX Item "\f(CW-J\fR"
+
+.IX Item "\f(CW-K\fR"
+
+.IX Item "\f(CW-L\fR"
+
+.IX Item "\f(CW--keep-locals\fR"
+
+.IX Item "\f(CW--listing-lhs-width=\fInumber\fR\fR"
+
+.IX Item "\f(CW--listing-lhs-width2=\fInumber\fR\fR"
+
+.IX Item "\f(CW--listing-rhs-width=\fInumber\fR\fR"
+
+.IX Item "\f(CW--listing-cont-lines=\fInumber\fR\fR"
+
+.IX Item "\f(CW-o \fIobjfile\fR\fR"
+
+.IX Item "\f(CW-R\fR"
+
+.IX Item "\f(CW--statistics\fR"
+
+.IX Item "\f(CW--strip-local-absolute\fR"
+
+.IX Item "\f(CW-v\fR"
+
+.IX Item "\f(CW-version\fR"
+
+.IX Item "\f(CW--version\fR"
+
+.IX Item "\f(CW-W\fR"
+
+.IX Item "\f(CW--no-warn\fR"
+
+.IX Item "\f(CW--fatal-warnings\fR"
+
+.IX Item "\f(CW--warn\fR"
+
+.IX Item "\f(CW-w\fR"
+
+.IX Item "\f(CW-x\fR"
+
+.IX Item "\f(CW-Z\fR"
+
+.IX Item "\f(CW-- | \fIfiles\fR ...\fR"
+
+.IX Item "\f(CW-marc[5|6|7|8]\fR"
+
+.IX Item "\f(CW-EB | -EL\fR"
+
+.IX Item "\f(CW-m[arm][1|2|3|6|7|8|9][...] \fR"
+
+.IX Item "\f(CW-m[arm]v[2|2a|3|3m|4|4t|5|5t]\fR"
+
+.IX Item "\f(CW-mthumb | -mall\fR"
+
+.IX Item "\f(CW-mfpa10 | -mfpa11 | -mfpe-old | -mno-fpu\fR"
+
+.IX Item "\f(CW-mapcs-32 | -mapcs-26 | -mapcs-float | -mapcs-reentrant | -moabi\fR"
+
+.IX Item "\f(CW-EB | -EL\fR"
+
+.IX Item "\f(CW-mthumb-interwork\fR"
+
+.IX Item "\f(CW-k\fR"
+
+.IX Item "\f(CW-O\fR"
+
+.IX Item "\f(CW-O\fR"
+
+.IX Item "\f(CW-n\fR"
+
+.IX Item "\f(CW-N\fR"
+
+.IX Item "\f(CW-ACA | -ACA_A | -ACB | -ACC | -AKA | -AKB | -AKC | -AMC\fR"
+
+.IX Item "\f(CW-b\fR"
+
+.IX Item "\f(CW-no-relax\fR"
+
+.IX Item "\f(CW--m32rx\fR"
+
+.IX Item "\f(CW--warn-explicit-parallel-conflicts or --Wp\fR"
+
+.IX Item "\f(CW--no-warn-explicit-parallel-conflicts or --Wnp\fR"
+
+.IX Item "\f(CW-l\fR"
+
+.IX Item "\f(CW-m68000 | -m68008 | -m68010 | -m68020 | -m68030\fR"
+
+.IX Item "\f(CW| -m68040 | -m68060 | -m68302 | -m68331 | -m68332\fR"
+
+.IX Item "\f(CW| -m68333 | -m68340 | -mcpu32 | -m5200\fR"
+
+.IX Item "\f(CW-m68881 | -m68882 | -mno-68881 | -mno-68882\fR"
+
+.IX Item "\f(CW-m68851 | -mno-68851\fR"
+
+.IX Item "\f(CW-mpic | -mno-pic\fR"
+
+.IX Item "\f(CW-mall\fR"
+
+.IX Item "\f(CW-mall-extensions\fR"
+
+.IX Item "\f(CW-mno-extensions\fR"
+
+.IX Item "\f(CW-m\fIextension\fR | -mno-\fIextension\fR\fR"
+
+.IX Item "\f(CW-m\fIcpu\fR\fR"
+
+.IX Item "\f(CW-m\fImachine\fR\fR"
+
+.IX Item "\f(CW-mb\fR"
+
+.IX Item "\f(CW-ml\fR"
+
+.IX Item "\f(CW-m68hc11 | -m68hc12\fR"
+
+.IX Item "\f(CW--force-long-branchs\fR"
+
+.IX Item "\f(CW-S | --short-branchs\fR"
+
+.IX Item "\f(CW--strict-direct-mode\fR"
+
+.IX Item "\f(CW--print-insn-syntax\fR"
+
+.IX Item "\f(CW--print-opcodes\fR"
+
+.IX Item "\f(CW--generate-example\fR"
+
+.IX Item "\f(CW-Av6 | -Av7 | -Av8 | -Asparclet | -Asparclite\fR"
+
+.IX Item "\f(CW-Av8plus | -Av8plusa | -Av9 | -Av9a\fR"
+
+.IX Item "\f(CW-xarch=v8plus | -xarch=v8plusa\fR"
+
+.IX Item "\f(CW-bump\fR"
+
+.IX Item "\f(CW-G \fInum\fR\fR"
+
+.IX Item "\f(CW-EB\fR"
+
+.IX Item "\f(CW-EL\fR"
+
+.IX Item "\f(CW-mips1\fR"
+
+.IX Item "\f(CW-mips2\fR"
+
+.IX Item "\f(CW-mips3\fR"
+
+.IX Item "\f(CW-mips4\fR"
+
+.IX Item "\f(CW-mips32\fR"
+
+.IX Item "\f(CW-m4650\fR"
+
+.IX Item "\f(CW-no-m4650\fR"
+
+.IX Item "\f(CW-mcpu=\fICPU\fR\fR"
+
+.IX Item "\f(CW--emulation=\fIname\fR\fR"
+
+.IX Item "\f(CW-nocpp\fR"
+
+.IX Item "\f(CW--trap\fR"
+
+.IX Item "\f(CW--no-trap\fR"
+
+.IX Item "\f(CW--break\fR"
+
+.IX Item "\f(CW--no-break\fR"
+
+.IX Item "\f(CW-n\fR"
+
+.IX Item "\f(CW-jsri2bsr\fR"
+
+.IX Item "\f(CW-nojsri2bsr\fR"
+
+.IX Item "\f(CW-sifilter\fR"
+
+.IX Item "\f(CW-nosifilter\fR"
+
+.IX Item "\f(CW-relax\fR"
+
+.IX Item "\f(CW-mcpu=[210|340]\fR"
+
+.IX Item "\f(CW-EB\fR"
+
+.IX Item "\f(CW-EL\fR"
+
+.IX Header "SEE ALSO"
+
+.IX Header "COPYRIGHT"
+

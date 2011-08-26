@@ -1,0 +1,316 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "Filter_resource.h"
+
+// Generated Help ID header file
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "Filter_resource.hm"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "Filter_resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""afxres.rc""     // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "Filter.dll"
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "OriginalFilename", "Filter.dll"
+            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BMP_FILTER          BITMAP                  "res\\Filter.bmp"
+IDR_BMP_CHECKBOX        BITMAP                  "res\\bmp_chec.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DLG_CONFIGURE_FILTER DIALOGEX 0, 0, 298, 196
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Configure %s Filter"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "List1",IDC_LSTC_FILTER_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | 
+                    WS_TABSTOP,7,17,97,146
+    PUSHBUTTON      "&Add",IDC_BTN_ADD_FILTER,111,57,44,13
+    PUSHBUTTON      "&Delete",IDC_BTN_DELETE_FILTER,111,81,44,13
+    CONTROL         "List1",IDC_LSTC_SELECTED_FILTERS,"SysListView32",
+                    LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | 
+                    WS_BORDER | WS_TABSTOP,162,17,97,146
+    PUSHBUTTON      "&Up",IDC_BTN_MOVE_UP,266,73,25,13
+    PUSHBUTTON      "Do&wn",IDC_BTN_MOVE_DOWN,266,96,25,13
+    PUSHBUTTON      "&Clear",IDC_BTN_CLEAR,111,107,44,13
+    DEFPUSHBUTTON   "OK",IDOK,95,177,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,152,177,50,14
+    LTEXT           "Named Filters",IDC_STATIC,7,7,104,8
+    LTEXT           "Selected Filters",IDC_STATIC,162,7,104,8
+    GROUPBOX        "",IDC_STATIC,0,166,297,30
+END
+
+IDD_DLG_CREATE_FILTER DIALOGEX 0, 0, 418, 249
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP | WS_EX_APPWINDOW
+CAPTION "Configure Filter List"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "List1",IDC_LSTC_FILTER_NAMES,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | 
+                    WS_TABSTOP,10,14,105,191
+    PUSHBUTTON      "Add",IDC_BTN_ADD,11,209,48,13
+    PUSHBUTTON      "Delete",IDC_BTN_DELETE,67,209,48,13
+    CONTROL         "List2",IDC_LSTC_FILTER_DETAILS,"SysListView32",
+                    LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | 
+                    WS_BORDER | WS_TABSTOP,132,14,276,107
+    PUSHBUTTON      "Delete",IDC_BTN_DELETE_FILTER,218,124,48,13
+    PUSHBUTTON      "Delete All",IDC_BTN_DELETE_ALL_FILTER,274,124,48,13
+    CONTROL         "ID  0x",IDC_RADIO_ID,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,133,159,31,8
+    COMBOBOX        IDC_COMB_MSG_ID_FROM,167,157,65,94,CBS_DROPDOWN | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Range From 0x",IDC_RADIO_RANGE,"Button",
+                    BS_AUTORADIOBUTTON,239,159,61,8
+    EDITTEXT        IDC_EDIT_RANGE_FROM,303,157,38,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_RANGE_TO,367,157,38,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMB_MSG_ID_TYPE,161,177,32,43,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMB_MSG_TYPE,222,177,47,42,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMB_MSG_DIRECTION,309,177,29,48,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMB_MSG_CHANNEL,377,177,29,47,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Add",IDC_BTN_ADD_FILTER_TO_LIST,246,211,48,13
+    PUSHBUTTON      "OK",ID_OK,157,233,48,13
+    PUSHBUTTON      "Cancel",IDCANCEL,213,233,48,13
+    GROUPBOX        "Filter Attributes",IDC_STATIC,126,144,288,85
+    LTEXT           "Id Type",IDC_STATIC,134,179,25,8
+    LTEXT           "Frame",IDC_STATIC,199,179,20,8
+    LTEXT           "Direction",IDC_STATIC,276,179,28,8
+    LTEXT           "Channel",IDC_STATIC,345,179,27,8
+    GROUPBOX        "Filter List",IDC_STATIC,6,4,114,224
+    GROUPBOX        "Filter Details",IDC_STATIC,126,4,288,137
+    LTEXT           "to 0x",IDC_STATIC_TO_STRING,346,159,19,8
+    LTEXT           "",IDC_STAT_STATUS,134,197,272,9,0,WS_EX_STATICEDGE
+END
+
+IDD_DLG_ADD_DEL_SIGNALS DIALOGEX 0, 0, 254, 199
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | DS_CONTEXTHELP | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Signal Watch List "
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "List2",IDC_LSTC_SIGNAL,"SysListView32",LVS_REPORT | 
+                    LVS_SHOWSELALWAYS | LVS_SORTASCENDING | 
+                    LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,7,25,89,136
+    PUSHBUTTON      "&Add",IDM_SIGNALDLG_ADD,102,41,44,14
+    DEFPUSHBUTTON   "&OK",IDOK,153,175,44,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,202,175,44,14
+    CONTROL         "List2",IDC_LSTC_SIGNAL_WATCH,"SysListView32",LVS_REPORT | 
+                    LVS_SHOWSELALWAYS | LVS_SORTASCENDING | 
+                    LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,153,25,93,
+                    138
+    COMBOBOX        IDC_COMB_MSGNAME,46,175,51,85,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP,0,HIDC_COMB_MSGNAME
+    PUSHBUTTON      "Add Al&l",IDM_SIGNALDLG_ADDALL,102,63,44,14
+    PUSHBUTTON      "&Delete",IDM_SIGNALDLG_DELETE,102,85,44,14
+    PUSHBUTTON      "D&elete All",IDM_SIGNALDLG_DELETEALL,102,107,44,14
+    EDITTEXT        IDC_EDIT_MAINLIST_NAME,7,176,28,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER
+    EDITTEXT        IDC_EDIT_UNSELLIST_NAME,7,11,90,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER
+    EDITTEXT        IDC_EDIT_SELLIST_NAME,153,11,77,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_DLG_CONFIGURE_FILTER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 189
+    END
+
+    IDD_DLG_CREATE_FILTER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 207
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 242
+    END
+
+    IDD_DLG_ADD_DEL_SIGNALS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 247
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 29
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_DLG_ADD_DEL_SIGNALS DLGINIT
+BEGIN
+    IDC_COMB_MSGNAME, 0x403, 5, 0
+0x6554, 0x7473, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDM_MENU_SIGNAL_WATCH MENU 
+BEGIN
+    POPUP "Signal Watch"
+    BEGIN
+        MENUITEM "&Add/Delete Signals...",      IDM_SIGNALWATCH_ADDSIGNAL
+        MENUITEM "&Close",                      IDM_SIGNALWATCH_CLOSE
+    END
+    POPUP "Operations"
+    BEGIN
+        MENUITEM "&Clear",                      IDM_SG_WATCH_CLEAR
+    END
+    POPUP "Signal Dlg"
+    BEGIN
+        MENUITEM "&Add",                        IDM_SIGNALDLG_ADD
+        MENUITEM "Add Al&l",                    IDM_SIGNALDLG_ADDALL
+        MENUITEM "&Delete",                     IDM_SIGNALDLG_DELETE
+        MENUITEM "D&elete All",                 IDM_SIGNALDLG_DELETEALL
+        MENUITEM SEPARATOR
+        MENUITEM "&Signal Details",             IDM_SIGNALDLG_SIGNALDETAILS
+    END
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "afxres.rc"     // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

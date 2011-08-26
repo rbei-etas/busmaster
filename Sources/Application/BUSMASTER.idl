@@ -1,0 +1,82 @@
+#include "olectl.h"
+[ uuid(C3F9B41A-D3AD-4b36-BA65-C5C2F1A314D9), version(1.0) ]
+
+// This is usually the name of your application.
+library CAN_MonitorApp
+{
+
+    #include "IdlStructure.h"
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[ uuid(B3DBF7E2-93DD-4c0c-A237-0E8E46D354C6),
+	  oleautomation,
+	  dual
+	]
+	interface IApplication : IDispatch
+	{
+		[id(1), helpstring("method Connect")] HRESULT Connect(BOOL bConnect);
+		//[id(2), helpstring("method SetHwFilter")] HRESULT SetHwFilter(BOOL pnExtended,double dBeginMsgId, double dEndMsgId);
+		//[id(3), helpstring("method GetHwFilter")] HRESULT GetHwFilter(BOOL *pnExtended, double *dBeginMsgId, double *dEndMsgId);
+		//[id(4), helpstring("method BuildAllDll")] HRESULT BuildAllDll();
+		//[id(5), helpstring("method BuildLoadAllDll")] HRESULT BuildLoadAllDll();
+		[id(6), helpstring("method LoadAllDll")] HRESULT LoadAllDll();
+		[id(7), helpstring("method UnLoadAllDll")] HRESULT UnLoadAllDll();
+		[id(8), helpstring("method StartTxMsgBlock")] HRESULT StartTxMsgBlock();
+		[id(9), helpstring("method StopTxMsgBlock")] HRESULT StopTxMsgBlock();
+		[id(10), helpstring("method ResetHW")] HRESULT ResetHW();
+		[id(11), helpstring("method ResetSW")] HRESULT ResetSW();
+		[id(12), helpstring("method StartLogging")] HRESULT StartLogging();
+		[id(15), helpstring("method DisplayWindow")] HRESULT DisplayWindow(eWindow eWhichWindow);
+		//[id(16), helpstring("method SetBaudRate")] HRESULT SetBaudRate(int nChannelNo, BYTE bBTR0,BYTE bBTR1);
+		//[id(18), helpstring("method SetControllerMode")] HRESULT SetControllerMode(eControllerMode eMode);
+		[id(27), helpstring("method GetMsgInfo")] HRESULT GetMsgInfo(BSTR MsgName,sMESSAGESTRUCT  *sMsgStruct);
+		//[id(19), helpstring("method GetControllerMode")] HRESULT GetControllerMode([in,out]eControllerMode *eMode);
+		[id(20), helpstring("method SendKeyValue")] HRESULT SendKeyValue(UCHAR keyval);
+		[id(21), helpstring("method LoadConfiguration")] HRESULT LoadConfiguration(BSTR FileName);
+		[id(22), helpstring("method ImportDatabase")] HRESULT ImportDatabase(BSTR DBFilePath);
+		[id(23), helpstring("method EnableDisableHandlers")] HRESULT EnableDisableHandlers(BOOL bEnable,eHandlerType eType);
+		[id(24), helpstring("method GetErrorCounter")] HRESULT GetErrorCounter(UCHAR *Tx, UCHAR *Rx, INT nChannel);
+		[id(25), helpstring("method SendCANMSg")] HRESULT SendCANMSg(CAN_MSGS *sMsg);
+		[id(26), helpstring("method GetNetworkStatistics")] HRESULT GetNetworkStatistics(int nChannel, sBUSSTATISTICS_USR *sStat);
+		//[id(17), helpstring("method GetBaudRate")] HRESULT GetBaudRate(int nChannelNo, BYTE *bBTR0,BYTE *bBTR1);
+		[id(13), helpstring("method StopLogging")] HRESULT StopLogging();
+		[id(14), helpstring("method WriteToLogFile")] HRESULT WriteToLogFile(USHORT BlockIndex, BSTR pcStr);
+		[id(28), helpstring("method SaveConfiguration")] HRESULT SaveConfiguration();
+		[id(29), helpstring("method AddLoggingBlock")] HRESULT AddLoggingBlock(SLOGGINGBLOCK_USR* psLoggingBlock);
+        [id(30), helpstring("method SaveConfigurationAs")] HRESULT SaveConfigurationAs(BSTR ConfigPath);
+	    [id(31), helpstring("method AddTxBlock")] HRESULT AddTxBlock(STXBLOCK_USR* psTxBlock);
+        [id(32), helpstring("method GetTxBlockCount")] HRESULT GetTxBlockCount (USHORT* Result);
+        [id(33), helpstring("method GetTxBlock")] HRESULT GetTxBlock (USHORT BlockIndex, STXBLOCK_USR* psTxBlock);
+        [id(34), helpstring("method DeleteTxBlock")] HRESULT DeleteTxBlock (USHORT BlockIndex);
+        [id(35), helpstring("method ClearTxBlockList")] HRESULT ClearTxBlockList ();
+        [id(36), helpstring("method AddMsgToTxBlock")] HRESULT AddMsgToTxBlock (USHORT BlockIndex, CAN_MSGS* psMsg);
+        [id(37), helpstring("method GetMsgCount")] HRESULT GetMsgCount (USHORT BlockIndex, USHORT* Result);
+        [id(38), helpstring("method GetMsgFromTxBlock")] HRESULT GetMsgFromTxBlock  ( USHORT BlockIndex, USHORT MsgIndex, CAN_MSGS* psMsg);
+        [id(39), helpstring("method DeleteMsgFromTxBlock")] HRESULT DeleteMsgFromTxBlock (USHORT BlockIndex, USHORT FrameIndex);
+        [id(40), helpstring("method ClearMsgList")] HRESULT ClearMsgList ([in] USHORT BlockIndex);
+        [id(41), helpstring("method AddFilterScheme")] HRESULT AddFilterScheme ([in] BSTR pcFilterName, [in] VARIANT_BOOL  FilterType);
+        [id(42), helpstring("method GetFilterScheme")] HRESULT GetFilterScheme ( [in] USHORT FilterSchINdex, [in] BSTR pcFilterName, [in] VARIANT_BOOL*  FilterType);
+        [id(43), helpstring("method GetFilterSchCount")] HRESULT GetFilterSchCount ([out] USHORT* pTotal);
+        [id(44), helpstring("method UpdateFilterSch")] HRESULT UpdateFilterSch ([in] USHORT FilterSchIndex, [in] SFILTER_USR* psFilter);
+        [id(45), helpstring("method GetFilterCountInSch")] HRESULT GetFilterCountInSch ([in] USHORT FilterSchIndex, [out] USHORT* pTotal);
+        [id(46), helpstring("method GetFilterInFilterSch")] HRESULT GetFilterInFilterSch ([in] USHORT FilterSchIndex, [in] USHORT FilterIndex, [out] SFILTER_USR* psFilter);
+        [id(47), helpstring("method DeleteFilterInSch")] HRESULT DeleteFilterInSch ([in] USHORT FilterSchIndex, [in] USHORT FilterIndex);
+        [id(48), helpstring("method EnableFilterSch")] HRESULT EnableFilterSch ([in] EFILTERMODULE eModule, [in] BOOL Enable);
+        [id(49), helpstring("method AddSimulatedSystem")] HRESULT AddSimulatedSystem([in] BSTR pcSimPath);
+        [id(50), helpstring("method GetSimulatedSystemCount")] HRESULT GetSimulatedSystemCount([out] USHORT* pSimTotal);
+        [id(51), helpstring("method GetSimulatedSystemName")] HRESULT GetSimulatedSystemName([in] USHORT SimSysIndex, [out] BSTR* pcSimPath);
+        [id(52), helpstring("method DeleteSimulatedSystem")] HRESULT DeleteSimulatedSystem([in] USHORT SimSysIndex);
+        [id(53), helpstring("method RemoveLoggingBlock")] HRESULT RemoveLoggingBlock([in] USHORT BlockIndex);
+        [id(54), helpstring("method GetLoggingBlockCount")] HRESULT GetLoggingBlockCount([out] USHORT* BlockCount);
+        [id(55), helpstring("method ClearLoggingBlockList")] HRESULT ClearLoggingBlockList(void);
+        [id(56), helpstring("method GetLoggingBlock")] HRESULT GetLoggingBlock([in] USHORT BlockIndex, [out] SLOGGINGBLOCK_USR* psLoggingBlock);
+    
+    };
+
+	[ uuid(92D435C1-A552-4435-AD1E-468B4C17BDC7) ]
+	coclass Application
+	{
+		[default] interface IApplication;
+	};
+};

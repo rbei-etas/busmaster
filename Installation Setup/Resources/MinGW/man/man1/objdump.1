@@ -1,0 +1,577 @@
+.rn '' }`
+''' $RCSfile$$Revision$$Date$
+'''
+''' $Log$
+'''
+.de Sh
+.br
+.if t .Sp
+.ne 5
+.PP
+\fB\\$1\fR
+.PP
+..
+.de Sp
+.if t .sp .5v
+.if n .sp
+..
+.de Ip
+.br
+.ie \\n(.$>=3 .ne \\$3
+.el .ne 3
+.IP "\\$1" \\$2
+..
+.de Vb
+.ft CW
+.nf
+.ne \\$1
+..
+.de Ve
+.ft R
+
+.fi
+..
+'''
+'''
+'''     Set up \*(-- to give an unbreakable dash;
+'''     string Tr holds user defined translation string.
+'''     Bell System Logo is used as a dummy character.
+'''
+.tr \(*W-|\(bv\*(Tr
+.ie n \{\
+.ds -- \(*W-
+.ds PI pi
+.if (\n(.H=4u)&(1m=24u) .ds -- \(*W\h'-12u'\(*W\h'-12u'-\" diablo 10 pitch
+.if (\n(.H=4u)&(1m=20u) .ds -- \(*W\h'-12u'\(*W\h'-8u'-\" diablo 12 pitch
+.ds L" ""
+.ds R" ""
+'''   \*(M", \*(S", \*(N" and \*(T" are the equivalent of
+'''   \*(L" and \*(R", except that they are used on ".xx" lines,
+'''   such as .IP and .SH, which do another additional levels of
+'''   double-quote interpretation
+.ds M" """
+.ds S" """
+.ds N" """""
+.ds T" """""
+.ds L' '
+.ds R' '
+.ds M' '
+.ds S' '
+.ds N' '
+.ds T' '
+'br\}
+.el\{\
+.ds -- \(em\|
+.tr \*(Tr
+.ds L" ``
+.ds R" ''
+.ds M" ``
+.ds S" ''
+.ds N" ``
+.ds T" ''
+.ds L' `
+.ds R' '
+.ds M' `
+.ds S' '
+.ds N' `
+.ds T' '
+.ds PI \(*p
+'br\}
+.\"	If the F register is turned on, we'll generate
+.\"	index entries out stderr for the following things:
+.\"		TH	Title 
+.\"		SH	Header
+.\"		Sh	Subsection 
+.\"		Ip	Item
+.\"		X<>	Xref  (embedded
+.\"	Of course, you have to process the output yourself
+.\"	in some meaninful fashion.
+.if \nF \{
+.de IX
+.tm Index:\\$1\t\\n%\t"\\$2"
+..
+.nr % 0
+.rr F
+.\}
+.TH OBJDUMP 1 "binutils-2.11.90" "14/Sep/101" "GNU"
+.UC
+.if n .hy 0
+.ds C+ C\v'-.1v'\h'-1p'\s-2+\h'-1p'+\s0\v'.1v'\h'-1p'
+.de CQ          \" put $1 in typewriter font
+.ft CW
+'if n "\c
+'if t \\&\\$1\c
+'if n \\&\\$1\c
+'if n \&"
+\\&\\$2 \\$3 \\$4 \\$5 \\$6 \\$7
+'.ft R
+..
+.\" @(#)ms.acc 1.5 88/02/08 SMI; from UCB 4.2
+.	\" AM - accent mark definitions
+.bd B 3
+.	\" fudge factors for nroff and troff
+.if n \{\
+.	ds #H 0
+.	ds #V .8m
+.	ds #F .3m
+.	ds #[ \f1
+.	ds #] \fP
+.\}
+.if t \{\
+.	ds #H ((1u-(\\\\n(.fu%2u))*.13m)
+.	ds #V .6m
+.	ds #F 0
+.	ds #[ \&
+.	ds #] \&
+.\}
+.	\" simple accents for nroff and troff
+.if n \{\
+.	ds ' \&
+.	ds ` \&
+.	ds ^ \&
+.	ds , \&
+.	ds ~ ~
+.	ds ? ?
+.	ds ! !
+.	ds /
+.	ds q
+.\}
+.if t \{\
+.	ds ' \\k:\h'-(\\n(.wu*8/10-\*(#H)'\'\h"|\\n:u"
+.	ds ` \\k:\h'-(\\n(.wu*8/10-\*(#H)'\`\h'|\\n:u'
+.	ds ^ \\k:\h'-(\\n(.wu*10/11-\*(#H)'^\h'|\\n:u'
+.	ds , \\k:\h'-(\\n(.wu*8/10)',\h'|\\n:u'
+.	ds ~ \\k:\h'-(\\n(.wu-\*(#H-.1m)'~\h'|\\n:u'
+.	ds ? \s-2c\h'-\w'c'u*7/10'\u\h'\*(#H'\zi\d\s+2\h'\w'c'u*8/10'
+.	ds ! \s-2\(or\s+2\h'-\w'\(or'u'\v'-.8m'.\v'.8m'
+.	ds / \\k:\h'-(\\n(.wu*8/10-\*(#H)'\z\(sl\h'|\\n:u'
+.	ds q o\h'-\w'o'u*8/10'\s-4\v'.4m'\z\(*i\v'-.4m'\s+4\h'\w'o'u*8/10'
+.\}
+.	\" troff and (daisy-wheel) nroff accents
+.ds : \\k:\h'-(\\n(.wu*8/10-\*(#H+.1m+\*(#F)'\v'-\*(#V'\z.\h'.2m+\*(#F'.\h'|\\n:u'\v'\*(#V'
+.ds 8 \h'\*(#H'\(*b\h'-\*(#H'
+.ds v \\k:\h'-(\\n(.wu*9/10-\*(#H)'\v'-\*(#V'\*(#[\s-4v\s0\v'\*(#V'\h'|\\n:u'\*(#]
+.ds _ \\k:\h'-(\\n(.wu*9/10-\*(#H+(\*(#F*2/3))'\v'-.4m'\z\(hy\v'.4m'\h'|\\n:u'
+.ds . \\k:\h'-(\\n(.wu*8/10)'\v'\*(#V*4/10'\z.\v'-\*(#V*4/10'\h'|\\n:u'
+.ds 3 \*(#[\v'.2m'\s-2\&3\s0\v'-.2m'\*(#]
+.ds o \\k:\h'-(\\n(.wu+\w'\(de'u-\*(#H)/2u'\v'-.3n'\*(#[\z\(de\v'.3n'\h'|\\n:u'\*(#]
+.ds d- \h'\*(#H'\(pd\h'-\w'~'u'\v'-.25m'\f2\(hy\fP\v'.25m'\h'-\*(#H'
+.ds D- D\\k:\h'-\w'D'u'\v'-.11m'\z\(hy\v'.11m'\h'|\\n:u'
+.ds th \*(#[\v'.3m'\s+1I\s-1\v'-.3m'\h'-(\w'I'u*2/3)'\s-1o\s+1\*(#]
+.ds Th \*(#[\s+2I\s-2\h'-\w'I'u*3/5'\v'-.3m'o\v'.3m'\*(#]
+.ds ae a\h'-(\w'a'u*4/10)'e
+.ds Ae A\h'-(\w'A'u*4/10)'E
+.ds oe o\h'-(\w'o'u*4/10)'e
+.ds Oe O\h'-(\w'O'u*4/10)'E
+.	\" corrections for vroff
+.if v .ds ~ \\k:\h'-(\\n(.wu*9/10-\*(#H)'\s-2\u~\d\s+2\h'|\\n:u'
+.if v .ds ^ \\k:\h'-(\\n(.wu*10/11-\*(#H)'\v'-.4m'^\v'.4m'\h'|\\n:u'
+.	\" for low resolution devices (crt and lpr)
+.if \n(.H>23 .if \n(.V>19 \
+\{\
+.	ds : e
+.	ds 8 ss
+.	ds v \h'-1'\o'\(aa\(ga'
+.	ds _ \h'-1'^
+.	ds . \h'-1'.
+.	ds 3 3
+.	ds o a
+.	ds d- d\h'-1'\(ga
+.	ds D- D\h'-1'\(hy
+.	ds th \o'bp'
+.	ds Th \o'LP'
+.	ds ae ae
+.	ds Ae AE
+.	ds oe oe
+.	ds Oe OE
+.\}
+.rm #[ #] #H #V #F C
+.SH "NAME"
+objdump \- display information from object files.
+.SH "SYNOPSIS"
+objdump [\fB\-a\fR|\fB--archive-headers\fR]
+        [\fB\-b\fR \fIbfdname\fR|\fB--target=\fR\fIbfdname\fR]
+        [\fB\-C\fR|\fB--demangle\fR[=\fIstyle\fR] ]
+        [\fB\-d\fR|\fB--disassemble\fR]
+        [\fB\-D\fR|\fB--disassemble-all\fR]
+        [\fB\-z\fR|\fB--disassemble-zeroes\fR]
+        [\fB\-EB\fR|\fB\-EL\fR|\fB--endian=\fR{big | little }]
+        [\fB\-f\fR|\fB--file-headers\fR]
+        [\fB--file-start-context\fR]
+        [\fB\-g\fR|\fB--debugging\fR]
+        [\fB\-h\fR|\fB--section-headers\fR|\fB--headers\fR]
+        [\fB\-i\fR|\fB--info\fR]
+        [\fB\-j\fR \fIsection\fR|\fB--section=\fR\fIsection\fR]
+        [\fB\-l\fR|\fB--line-numbers\fR]
+        [\fB\-S\fR|\fB--source\fR]
+        [\fB\-m\fR \fImachine\fR|\fB--architecture=\fR\fImachine\fR]
+        [\fB\-M\fR \fIoptions\fR|\fB--disassembler-options=\fR\fIoptions\fR]
+        [\fB\-p\fR|\fB--private-headers\fR]
+        [\fB\-r\fR|\fB--reloc\fR]
+        [\fB\-R\fR|\fB--dynamic-reloc\fR]
+        [\fB\-s\fR|\fB--full-contents\fR]
+        [\fB\-G\fR|\fB--stabs\fR]
+        [\fB\-t\fR|\fB--syms\fR]
+        [\fB\-T\fR|\fB--dynamic-syms\fR]
+        [\fB\-x\fR|\fB--all-headers\fR]
+        [\fB\-w\fR|\fB--wide\fR]
+        [\fB--start-address=\fR\fIaddress\fR]
+        [\fB--stop-address=\fR\fIaddress\fR]
+        [\fB--prefix-addresses\fR]
+        [\fB--[no-]show-raw-insn\fR]
+        [\fB--adjust-vma=\fR\fIoffset\fR]
+        [\fB\-V\fR|\fB--version\fR]
+        [\fB\-H\fR|\fB--help\fR]
+        \fIobjfile\fR...
+.SH "DESCRIPTION"
+\fBobjdump\fR displays information about one or more object files.
+The options control what particular information to display.  This
+information is mostly useful to programmers who are working on the
+compilation tools, as opposed to programmers who just want their
+program to compile and work.
+.PP
+\fIobjfile\fR... are the object files to be examined.  When you
+specify archives, \fBobjdump\fR shows information on each of the member
+object files.
+.SH "OPTIONS"
+The long and short forms of options, shown here as alternatives, are
+equivalent.  At least one option from the list
+\fB\-a,\-d,\-D,\-f,\-g,\-G,\-h,\-H,\-p,\-r,\-R,\-S,\-t,\-T,\-V,\-x\fR must be given. 
+.Ip "\fB\-a\fR" 4
+.Ip "\fB--archive-header\fR" 4
+If any of the \fIobjfile\fR files are archives, display the archive
+header information (in a format similar to \fBls \-l\fR).  Besides the
+information you could list with \fBar tv\fR, \fBobjdump \-a\fR shows
+the object file format of each archive member.
+.Ip "\fB--adjust-vma=\fR\fIoffset\fR" 4
+When dumping information, first add \fIoffset\fR to all the section
+addresses.  This is useful if the section addresses do not correspond to
+the symbol table, which can happen when putting sections at particular
+addresses when using a format which can not represent section addresses,
+such as a.out.
+.Ip "\fB\-b\fR \fIbfdname\fR" 4
+.Ip "\fB--target=\fR\fIbfdname\fR" 4
+Specify that the object-code format for the object files is
+\fIbfdname\fR.  This option may not be necessary; \fIobjdump\fR can
+automatically recognize many formats.
+.Sp
+For example,
+	
+	objdump \-b oasys \-m vax \-h fu.o
+.Sp
+displays summary information from the section headers (\fB\-h\fR) of
+\fIfu.o\fR, which is explicitly identified (\fB\-m\fR) as a \s-1VAX\s0 object
+file in the format produced by Oasys compilers.  You can list the
+formats available with the \fB\-i\fR option.
+.Ip "\fB\-C\fR" 4
+.Ip "\fB--demangle[=\fR\fIstyle\fR\fB]\fR" 4
+Decode (\fIdemangle\fR) low-level symbol names into user-level names.
+Besides removing any initial underscore prepended by the system, this
+makes \*(C+ function names readable.  Different compilers have different
+mangling styles. The optional demangling style argument can be used to 
+choose an appropriate demangling style for your compiler. 
+.Ip "\fB\-G\fR" 4
+.Ip "\fB--debugging\fR" 4
+Display debugging information.  This attempts to parse debugging
+information stored in the file and print it out using a C like syntax.
+Only certain types of debugging information have been implemented.
+.Ip "\fB\-d\fR" 4
+.Ip "\fB--disassemble\fR" 4
+Display the assembler mnemonics for the machine instructions from
+\fIobjfile\fR.  This option only disassembles those sections which are
+expected to contain instructions.
+.Ip "\fB\-D\fR" 4
+.Ip "\fB--disassemble-all\fR" 4
+Like \fB\-d\fR, but disassemble the contents of all sections, not just
+those expected to contain instructions.
+.Ip "\fB--prefix-addresses\fR" 4
+When disassembling, print the complete address on each line.  This is
+the older disassembly format.
+.Ip "\fB--disassemble-zeroes\fR" 4
+Normally the disassembly output will skip blocks of zeroes.  This
+option directs the disassembler to disassemble those blocks, just like
+any other data.
+.Ip "\fB\-\s-1EB\s0\fR" 4
+.Ip "\fB\-\s-1EL\s0\fR" 4
+.Ip "\fB--endian={big|little}\fR" 4
+Specify the endianness of the object files.  This only affects
+disassembly.  This can be useful when disassembling a file format which
+does not describe endianness information, such as S\-records.
+.Ip "\fB\-f\fR" 4
+.Ip "\fB--file-header\fR" 4
+Display summary information from the overall header of
+each of the \fIobjfile\fR files.
+.Ip "\fB--file-start-context\fR" 4
+Specify that when displaying interlisted source code/disassembly
+(assumes \fB\-S\fR) from a file that has not yet been displayed, extend the
+context to the start of the file.
+.Ip "\fB\-h\fR" 4
+.Ip "\fB--section-header\fR" 4
+.Ip "\fB--header\fR" 4
+Display summary information from the section headers of the
+object file.
+.Sp
+File segments may be relocated to nonstandard addresses, for example by
+using the \fB\-Ttext\fR, \fB\-Tdata\fR, or \fB\-Tbss\fR options to
+\fBld\fR.  However, some object file formats, such as a.out, do not
+store the starting address of the file segments.  In those situations,
+although \fBld\fR relocates the sections correctly, using \fBobjdump
+\-h\fR to list the file section headers cannot show the correct addresses.
+Instead, it shows the usual addresses, which are implicit for the
+target.
+.Ip "\fB--help\fR" 4
+Print a summary of the options to \fBobjdump\fR and exit.
+.Ip "\fB\-i\fR" 4
+.Ip "\fB--info\fR" 4
+Display a list showing all architectures and object formats available
+for specification with \fB\-b\fR or \fB\-m\fR.
+.Ip "\fB\-j\fR \fIname\fR" 4
+.Ip "\fB--section=\fR\fIname\fR" 4
+Display information only for section \fIname\fR.
+.Ip "\fB\-l\fR" 4
+.Ip "\fB--line-numbers\fR" 4
+Label the display (using debugging information) with the filename and
+source line numbers corresponding to the object code or relocs shown.
+Only useful with \fB\-d\fR, \fB\-D\fR, or \fB\-r\fR.
+.Ip "\fB\-m\fR \fImachine\fR" 4
+.Ip "\fB--architecture=\fR\fImachine\fR" 4
+Specify the architecture to use when disassembling object files.  This
+can be useful when disassembling object files which do not describe
+architecture information, such as S\-records.  You can list the available
+architectures with the \fB\-i\fR option.
+.Ip "\fB\-M\fR \fIoptions\fR" 4
+.Ip "\fB--disassembler-options=\fR\fIoptions\fR" 4
+Pass target specific information to the disassembler.  Only supported on
+some targets.
+.Sp
+If the target is an \s-1ARM\s0 architecture then this switch can be used to
+select which register name set is used during disassembler.  Specifying
+\fB\-M reg-name-std\fR (the default) will select the register names as
+used in \s-1ARM\s0's instruction set documentation, but with register 13 called
+\&'sp\*(R', register 14 called \*(L'lr\*(R' and register 15 called \*(L'pc\*(R'.  Specifying
+\fB\-M reg-names-apcs\fR will select the name set used by the \s-1ARM\s0
+Procedure Call Standard, whilst specifying \fB\-M reg-names-raw\fR will
+just use \fBr\fR followed by the register number.
+.Sp
+There are also two variants on the \s-1APCS\s0 register naming scheme enabled
+by \fB\-M reg-names-atpcs\fR and \fB\-M reg-names-special-atpcs\fR which
+use the \s-1ARM/\s0Thumb Procedure Call Standard naming conventions.  (Either
+with the normal register name or the special register names).
+.Sp
+This option can also be used for \s-1ARM\s0 architectures to force the
+disassembler to interpret all instructions as Thumb instructions by
+using the switch \fB--disassembler-options=force-thumb\fR.  This can be
+useful when attempting to disassemble thumb code produced by other
+compilers.
+.Ip "\fB\-p\fR" 4
+.Ip "\fB--private-headers\fR" 4
+Print information that is specific to the object file format.  The exact
+information printed depends upon the object file format.  For some
+object file formats, no additional information is printed.
+.Ip "\fB\-r\fR" 4
+.Ip "\fB--reloc\fR" 4
+Print the relocation entries of the file.  If used with \fB\-d\fR or
+\fB\-D\fR, the relocations are printed interspersed with the
+disassembly.
+.Ip "\fB\-R\fR" 4
+.Ip "\fB--dynamic-reloc\fR" 4
+Print the dynamic relocation entries of the file.  This is only
+meaningful for dynamic objects, such as certain types of shared
+libraries.
+.Ip "\fB\-s\fR" 4
+.Ip "\fB--full-contents\fR" 4
+Display the full contents of any sections requested.
+.Ip "\fB\-S\fR" 4
+.Ip "\fB--source\fR" 4
+Display source code intermixed with disassembly, if possible.  Implies
+\fB\-d\fR.
+.Ip "\fB--show-raw-insn\fR" 4
+When disassembling instructions, print the instruction in hex as well as
+in symbolic form.  This is the default except when
+\fB--prefix-addresses\fR is used.
+.Ip "\fB--no-show-raw-insn\fR" 4
+When disassembling instructions, do not print the instruction bytes.
+This is the default when \fB--prefix-addresses\fR is used.
+.Ip "\fB\-G\fR" 4
+.Ip "\fB--stabs\fR" 4
+Display the full contents of any sections requested.  Display the
+contents of the .stab and .stab.index and .stab.excl sections from an
+\s-1ELF\s0 file.  This is only useful on systems (such as Solaris 2.0) in which
+\&\f(CW.stab\fR debugging symbol-table entries are carried in an \s-1ELF\s0
+section.  In most other file formats, debugging symbol-table entries are
+interleaved with linkage symbols, and are visible in the \fB--syms\fR
+output.
+.Ip "\fB--start-address=\fR\fIaddress\fR" 4
+Start displaying data at the specified address.  This affects the output
+of the \fB\-d\fR, \fB\-r\fR and \fB\-s\fR options.
+.Ip "\fB--stop-address=\fR\fIaddress\fR" 4
+Stop displaying data at the specified address.  This affects the output
+of the \fB\-d\fR, \fB\-r\fR and \fB\-s\fR options.
+.Ip "\fB\-t\fR" 4
+.Ip "\fB--syms\fR" 4
+Print the symbol table entries of the file.
+This is similar to the information provided by the \fBnm\fR program.
+.Ip "\fB\-T\fR" 4
+.Ip "\fB--dynamic-syms\fR" 4
+Print the dynamic symbol table entries of the file.  This is only
+meaningful for dynamic objects, such as certain types of shared
+libraries.  This is similar to the information provided by the \fBnm\fR
+program when given the \fB\-D\fR (\fB--dynamic\fR) option.
+.Ip "\fB--version\fR" 4
+Print the version number of \fBobjdump\fR and exit.
+.Ip "\fB\-x\fR" 4
+.Ip "\fB--all-header\fR" 4
+Display all available header information, including the symbol table and
+relocation entries.  Using \fB\-x\fR is equivalent to specifying all of
+\fB\-a \-f \-h \-r \-t\fR.
+.Ip "\fB\-w\fR" 4
+.Ip "\fB--wide\fR" 4
+Format some lines for output devices that have more than 80 columns.
+.SH "SEE ALSO"
+\fInm\fR\|(1), \fIreadelf\fR\|(1), and the Info entries for \fIbinutils\fR.
+.SH "COPYRIGHT"
+Copyright (c) 1991, 92, 93, 94, 95, 96, 97, 98, 99, 2000, 2001 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled \*(L"GNU Free Documentation License\*(R".
+
+.rn }` ''
+.IX Title "OBJDUMP 1"
+.IX Name "objdump - display information from object files."
+
+.IX Header "NAME"
+
+.IX Header "SYNOPSIS"
+
+.IX Header "DESCRIPTION"
+
+.IX Header "OPTIONS"
+
+.IX Item "\fB\-a\fR"
+
+.IX Item "\fB--archive-header\fR"
+
+.IX Item "\fB--adjust-vma=\fR\fIoffset\fR"
+
+.IX Item "\fB\-b\fR \fIbfdname\fR"
+
+.IX Item "\fB--target=\fR\fIbfdname\fR"
+
+.IX Item "\fB\-C\fR"
+
+.IX Item "\fB--demangle[=\fR\fIstyle\fR\fB]\fR"
+
+.IX Item "\fB\-G\fR"
+
+.IX Item "\fB--debugging\fR"
+
+.IX Item "\fB\-d\fR"
+
+.IX Item "\fB--disassemble\fR"
+
+.IX Item "\fB\-D\fR"
+
+.IX Item "\fB--disassemble-all\fR"
+
+.IX Item "\fB--prefix-addresses\fR"
+
+.IX Item "\fB--disassemble-zeroes\fR"
+
+.IX Item "\fB\-\s-1EB\s0\fR"
+
+.IX Item "\fB\-\s-1EL\s0\fR"
+
+.IX Item "\fB--endian={big|little}\fR"
+
+.IX Item "\fB\-f\fR"
+
+.IX Item "\fB--file-header\fR"
+
+.IX Item "\fB--file-start-context\fR"
+
+.IX Item "\fB\-h\fR"
+
+.IX Item "\fB--section-header\fR"
+
+.IX Item "\fB--header\fR"
+
+.IX Item "\fB--help\fR"
+
+.IX Item "\fB\-i\fR"
+
+.IX Item "\fB--info\fR"
+
+.IX Item "\fB\-j\fR \fIname\fR"
+
+.IX Item "\fB--section=\fR\fIname\fR"
+
+.IX Item "\fB\-l\fR"
+
+.IX Item "\fB--line-numbers\fR"
+
+.IX Item "\fB\-m\fR \fImachine\fR"
+
+.IX Item "\fB--architecture=\fR\fImachine\fR"
+
+.IX Item "\fB\-M\fR \fIoptions\fR"
+
+.IX Item "\fB--disassembler-options=\fR\fIoptions\fR"
+
+.IX Item "\fB\-p\fR"
+
+.IX Item "\fB--private-headers\fR"
+
+.IX Item "\fB\-r\fR"
+
+.IX Item "\fB--reloc\fR"
+
+.IX Item "\fB\-R\fR"
+
+.IX Item "\fB--dynamic-reloc\fR"
+
+.IX Item "\fB\-s\fR"
+
+.IX Item "\fB--full-contents\fR"
+
+.IX Item "\fB\-S\fR"
+
+.IX Item "\fB--source\fR"
+
+.IX Item "\fB--show-raw-insn\fR"
+
+.IX Item "\fB--no-show-raw-insn\fR"
+
+.IX Item "\fB\-G\fR"
+
+.IX Item "\fB--stabs\fR"
+
+.IX Item "\fB--start-address=\fR\fIaddress\fR"
+
+.IX Item "\fB--stop-address=\fR\fIaddress\fR"
+
+.IX Item "\fB\-t\fR"
+
+.IX Item "\fB--syms\fR"
+
+.IX Item "\fB\-T\fR"
+
+.IX Item "\fB--dynamic-syms\fR"
+
+.IX Item "\fB--version\fR"
+
+.IX Item "\fB\-x\fR"
+
+.IX Item "\fB--all-header\fR"
+
+.IX Item "\fB\-w\fR"
+
+.IX Item "\fB--wide\fR"
+
+.IX Header "SEE ALSO"
+
+.IX Header "COPYRIGHT"
+

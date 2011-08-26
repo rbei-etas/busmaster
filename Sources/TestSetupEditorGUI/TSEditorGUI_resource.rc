@@ -1,0 +1,291 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "TSEditorGUI_resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "TSEditorGUI_resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""afxres.rc""     // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "TestSetupEditorGUI.dll"
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "OriginalFilename", "TestSetupEditorGUI.dll"
+            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PROPERTYVIEW DIALOGEX 0, 0, 325, 255
+STYLE DS_SETFONT | WS_CHILD
+EXSTYLE WS_EX_CLIENTEDGE
+FONT 9, "Courier New", 400, 0, 0x0
+BEGIN
+    CONTROL         "",IDC_PROPERTYLIST,"SysListView32",LVS_REPORT | 
+                    LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,10,9,298,133,
+                    WS_EX_TRANSPARENT | WS_EX_CLIENTEDGE
+    PUSHBUTTON      "Confirm",IDC_CONFIRM,201,151,50,14
+    PUSHBUTTON      "Cancel",IDC_CANCEL,258,151,50,14
+    EDITTEXT        IDC_EDITHELP,16,188,283,32,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | 
+                    WS_VSCROLL | WS_HSCROLL,WS_EX_TRANSPARENT
+    GROUPBOX        "Details:",IDC_STATICDETAILS,4,2,311,169
+    GROUPBOX        "Help Text",IDC_STATICHELP,4,172,311,59
+END
+
+IDD_SETTINGS DIALOGEX 0, 0, 197, 230
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Settings"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "Right View (List View)",IDC_STATIC,12,8,172,61
+    GROUPBOX        "Left View (Tree View)",IDC_STATIC,12,79,171,61
+    LTEXT           "BackGround Color",IDC_STATIC,34,96,71,8
+    PUSHBUTTON      "",IDC_BTN_BKG,114,93,50,14
+    LTEXT           "Text Color",IDC_STATIC,34,116,71,8
+    PUSHBUTTON      "",IDC_BTN_TXT,114,113,50,14
+    GROUPBOX        "Other Settings",IDC_STATIC,13,150,171,40
+    CONTROL         "Save Changes Automatically",IDC_AUTOSAVE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,45,168,107,10
+    PUSHBUTTON      "OK",IDOK,15,202,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,73,202,50,14
+    LTEXT           "1st Row Color",IDC_STATIC,34,26,71,8
+    PUSHBUTTON      "",IDC_ROW1_COL,114,23,50,14
+    LTEXT           "2nd Row Color",IDC_STATIC,34,46,71,8
+    PUSHBUTTON      "",IDC_ROW2_COL,114,43,50,14
+    PUSHBUTTON      "Default",ID_DEFAULT,131,202,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICONTESTCASE        ICON                    "res\\TestCase.ico"
+IDI_ICONMSGVERIFY       ICON                    "res\\VerifyMessage.ico"
+IDI_ICONMSGSEND         ICON                    "res\\SendMessage.ico"
+IDI_ICONWAIT            ICON                    "res\\Wait.ico"
+IDI_ICONREPLAY          ICON                    "res\\Replay.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_CURMUP              CURSOR                  "res\\cursorup.cur"
+IDC_CURMDOWN            CURSOR                  "res\\cursordown.cur"
+IDC_POINTER             CURSOR                  "res\\arrow.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_TSEDITORMENU MENU 
+BEGIN
+    POPUP "File"
+    BEGIN
+        MENUITEM "&New\tCtrl + N",              IDM_FILE_NEW
+        MENUITEM "&Open\tCtrl + O",             IDM_FILE_OPEN
+        MENUITEM "&Close",                      IDM_FILE_CLOSE
+        MENUITEM SEPARATOR
+        MENUITEM "&Save\tCtrl + S",             IDM_FILE_SAVE
+        MENUITEM "Save &As",                    IDM_FILE_SAVEAS
+        MENUITEM SEPARATOR
+        MENUITEM "Validate",                    IDM_FILE_VALIDATE
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       IDM_FILE_EXIT
+    END
+    POPUP "Edit"
+    BEGIN
+        MENUITEM "Cu&t\tCtrl + X",              IDM_EDIT_CUT
+        MENUITEM "&Copy\tCtrl + C",             IDM_EDIT_COPY
+        MENUITEM "&Paste\tCtrl + V",            IDM_EDIT_PASTE
+    END
+    POPUP "Display"
+    BEGIN
+        MENUITEM "&Reset",                      IDM_DISPLAY_RESET
+        MENUITEM "Settings",                    ID_DISPLAY_SETTINGS
+    END
+    POPUP "Help"
+    BEGIN
+        MENUITEM "Test Setup Editor Help\tF1",  IDM_HELP_TESTEDITORHELP
+        MENUITEM "About Test Setup Editor",     IDM_HELP_ABOUTTESTSETUPEDITOR
+
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_CTRL_SAVE ACCELERATORS 
+BEGIN
+    "C",            IDM_EDIT_COPY,          VIRTKEY, CONTROL, NOINVERT
+    "V",            IDM_EDIT_PASTE,         VIRTKEY, CONTROL, NOINVERT
+    "I",            IDM_HELP_ABOUTTESTSETUPEDITOR, VIRTKEY, CONTROL, 
+                                                    NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 190
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 223
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_HELP_TESTSETUP      "Right Click on tree item to add New Test Case."
+    IDS_HELP_TESTCASE       "Right Click to add a new Test Sequence"
+    IDS_HELP_SEND           "Add Messages in List Box to Send Across the bus"
+    IDS_HELP_VERIFY         "Add Messages in List Box whose values has to be verify"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_HELP_SENDMSG        "List Box will show the Signals\n.Provide the signal values in second column"
+    IDS_HELP_VERIFYMSG      "List Box will show the Signals\n.Provide the signal condition in second column"
+    IDS_HELP_WAIT           "Give the time(ms) to wait in second row."
+    IDS_HELP_REPLAY         "Give the Log file(.log) path in the List row."
+    IDS_TSEDITOR_ABOUT      "Test Setup Editor V.1.0"
+END
+
+STRINGTABLE 
+BEGIN
+    IDM_FILE_NEW            "Creates a New Test Setup File"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "afxres.rc"     // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

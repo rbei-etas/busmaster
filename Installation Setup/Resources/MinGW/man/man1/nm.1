@@ -1,0 +1,495 @@
+.rn '' }`
+''' $RCSfile$$Revision$$Date$
+'''
+''' $Log$
+'''
+.de Sh
+.br
+.if t .Sp
+.ne 5
+.PP
+\fB\\$1\fR
+.PP
+..
+.de Sp
+.if t .sp .5v
+.if n .sp
+..
+.de Ip
+.br
+.ie \\n(.$>=3 .ne \\$3
+.el .ne 3
+.IP "\\$1" \\$2
+..
+.de Vb
+.ft CW
+.nf
+.ne \\$1
+..
+.de Ve
+.ft R
+
+.fi
+..
+'''
+'''
+'''     Set up \*(-- to give an unbreakable dash;
+'''     string Tr holds user defined translation string.
+'''     Bell System Logo is used as a dummy character.
+'''
+.tr \(*W-|\(bv\*(Tr
+.ie n \{\
+.ds -- \(*W-
+.ds PI pi
+.if (\n(.H=4u)&(1m=24u) .ds -- \(*W\h'-12u'\(*W\h'-12u'-\" diablo 10 pitch
+.if (\n(.H=4u)&(1m=20u) .ds -- \(*W\h'-12u'\(*W\h'-8u'-\" diablo 12 pitch
+.ds L" ""
+.ds R" ""
+'''   \*(M", \*(S", \*(N" and \*(T" are the equivalent of
+'''   \*(L" and \*(R", except that they are used on ".xx" lines,
+'''   such as .IP and .SH, which do another additional levels of
+'''   double-quote interpretation
+.ds M" """
+.ds S" """
+.ds N" """""
+.ds T" """""
+.ds L' '
+.ds R' '
+.ds M' '
+.ds S' '
+.ds N' '
+.ds T' '
+'br\}
+.el\{\
+.ds -- \(em\|
+.tr \*(Tr
+.ds L" ``
+.ds R" ''
+.ds M" ``
+.ds S" ''
+.ds N" ``
+.ds T" ''
+.ds L' `
+.ds R' '
+.ds M' `
+.ds S' '
+.ds N' `
+.ds T' '
+.ds PI \(*p
+'br\}
+.\"	If the F register is turned on, we'll generate
+.\"	index entries out stderr for the following things:
+.\"		TH	Title 
+.\"		SH	Header
+.\"		Sh	Subsection 
+.\"		Ip	Item
+.\"		X<>	Xref  (embedded
+.\"	Of course, you have to process the output yourself
+.\"	in some meaninful fashion.
+.if \nF \{
+.de IX
+.tm Index:\\$1\t\\n%\t"\\$2"
+..
+.nr % 0
+.rr F
+.\}
+.TH NM 1 "binutils-2.11.90" "14/Sep/101" "GNU"
+.UC
+.if n .hy 0
+.ds C+ C\v'-.1v'\h'-1p'\s-2+\h'-1p'+\s0\v'.1v'\h'-1p'
+.de CQ          \" put $1 in typewriter font
+.ft CW
+'if n "\c
+'if t \\&\\$1\c
+'if n \\&\\$1\c
+'if n \&"
+\\&\\$2 \\$3 \\$4 \\$5 \\$6 \\$7
+'.ft R
+..
+.\" @(#)ms.acc 1.5 88/02/08 SMI; from UCB 4.2
+.	\" AM - accent mark definitions
+.bd B 3
+.	\" fudge factors for nroff and troff
+.if n \{\
+.	ds #H 0
+.	ds #V .8m
+.	ds #F .3m
+.	ds #[ \f1
+.	ds #] \fP
+.\}
+.if t \{\
+.	ds #H ((1u-(\\\\n(.fu%2u))*.13m)
+.	ds #V .6m
+.	ds #F 0
+.	ds #[ \&
+.	ds #] \&
+.\}
+.	\" simple accents for nroff and troff
+.if n \{\
+.	ds ' \&
+.	ds ` \&
+.	ds ^ \&
+.	ds , \&
+.	ds ~ ~
+.	ds ? ?
+.	ds ! !
+.	ds /
+.	ds q
+.\}
+.if t \{\
+.	ds ' \\k:\h'-(\\n(.wu*8/10-\*(#H)'\'\h"|\\n:u"
+.	ds ` \\k:\h'-(\\n(.wu*8/10-\*(#H)'\`\h'|\\n:u'
+.	ds ^ \\k:\h'-(\\n(.wu*10/11-\*(#H)'^\h'|\\n:u'
+.	ds , \\k:\h'-(\\n(.wu*8/10)',\h'|\\n:u'
+.	ds ~ \\k:\h'-(\\n(.wu-\*(#H-.1m)'~\h'|\\n:u'
+.	ds ? \s-2c\h'-\w'c'u*7/10'\u\h'\*(#H'\zi\d\s+2\h'\w'c'u*8/10'
+.	ds ! \s-2\(or\s+2\h'-\w'\(or'u'\v'-.8m'.\v'.8m'
+.	ds / \\k:\h'-(\\n(.wu*8/10-\*(#H)'\z\(sl\h'|\\n:u'
+.	ds q o\h'-\w'o'u*8/10'\s-4\v'.4m'\z\(*i\v'-.4m'\s+4\h'\w'o'u*8/10'
+.\}
+.	\" troff and (daisy-wheel) nroff accents
+.ds : \\k:\h'-(\\n(.wu*8/10-\*(#H+.1m+\*(#F)'\v'-\*(#V'\z.\h'.2m+\*(#F'.\h'|\\n:u'\v'\*(#V'
+.ds 8 \h'\*(#H'\(*b\h'-\*(#H'
+.ds v \\k:\h'-(\\n(.wu*9/10-\*(#H)'\v'-\*(#V'\*(#[\s-4v\s0\v'\*(#V'\h'|\\n:u'\*(#]
+.ds _ \\k:\h'-(\\n(.wu*9/10-\*(#H+(\*(#F*2/3))'\v'-.4m'\z\(hy\v'.4m'\h'|\\n:u'
+.ds . \\k:\h'-(\\n(.wu*8/10)'\v'\*(#V*4/10'\z.\v'-\*(#V*4/10'\h'|\\n:u'
+.ds 3 \*(#[\v'.2m'\s-2\&3\s0\v'-.2m'\*(#]
+.ds o \\k:\h'-(\\n(.wu+\w'\(de'u-\*(#H)/2u'\v'-.3n'\*(#[\z\(de\v'.3n'\h'|\\n:u'\*(#]
+.ds d- \h'\*(#H'\(pd\h'-\w'~'u'\v'-.25m'\f2\(hy\fP\v'.25m'\h'-\*(#H'
+.ds D- D\\k:\h'-\w'D'u'\v'-.11m'\z\(hy\v'.11m'\h'|\\n:u'
+.ds th \*(#[\v'.3m'\s+1I\s-1\v'-.3m'\h'-(\w'I'u*2/3)'\s-1o\s+1\*(#]
+.ds Th \*(#[\s+2I\s-2\h'-\w'I'u*3/5'\v'-.3m'o\v'.3m'\*(#]
+.ds ae a\h'-(\w'a'u*4/10)'e
+.ds Ae A\h'-(\w'A'u*4/10)'E
+.ds oe o\h'-(\w'o'u*4/10)'e
+.ds Oe O\h'-(\w'O'u*4/10)'E
+.	\" corrections for vroff
+.if v .ds ~ \\k:\h'-(\\n(.wu*9/10-\*(#H)'\s-2\u~\d\s+2\h'|\\n:u'
+.if v .ds ^ \\k:\h'-(\\n(.wu*10/11-\*(#H)'\v'-.4m'^\v'.4m'\h'|\\n:u'
+.	\" for low resolution devices (crt and lpr)
+.if \n(.H>23 .if \n(.V>19 \
+\{\
+.	ds : e
+.	ds 8 ss
+.	ds v \h'-1'\o'\(aa\(ga'
+.	ds _ \h'-1'^
+.	ds . \h'-1'.
+.	ds 3 3
+.	ds o a
+.	ds d- d\h'-1'\(ga
+.	ds D- D\h'-1'\(hy
+.	ds th \o'bp'
+.	ds Th \o'LP'
+.	ds ae ae
+.	ds Ae AE
+.	ds oe oe
+.	ds Oe OE
+.\}
+.rm #[ #] #H #V #F C
+.SH "NAME"
+nm \- list symbols from object files
+.SH "SYNOPSIS"
+nm [\fB\-a\fR|\fB--debug-syms\fR] [\fB\-g\fR|\fB--extern-only\fR]
+   [\fB\-B\fR] [\fB\-C\fR|\fB--demangle\fR[=\fIstyle\fR]] [\fB\-D\fR|\fB--dynamic\fR]
+   [\fB\-s\fR|\fB--print-armap\fR] [\fB\-A\fR|\fB\-o\fR|\fB--print-file-name\fR]
+   [\fB\-n\fR|\fB\-v\fR|\fB--numeric-sort\fR] [\fB\-p\fR|\fB--no-sort\fR]
+   [\fB\-r\fR|\fB--reverse-sort\fR] [\fB--size-sort\fR] [\fB\-u\fR|\fB--undefined-only\fR]
+   [\fB\-t\fR \fIradix\fR|\fB--radix=\fR\fIradix\fR] [\fB\-P\fR|\fB--portability\fR]
+   [\fB--target=\fR\fIbfdname\fR] [\fB\-f\fR\fIformat\fR|\fB--format=\fR\fIformat\fR]
+   [\fB--defined-only\fR] [\fB\-l\fR|\fB--line-numbers\fR] [\fB--no-demangle\fR]
+   [\fB\-V\fR|\fB--version\fR] [\fB\-X 32_64\fR] [\fB--help\fR]  [\fIobjfile\fR...]
+.SH "DESCRIPTION"
+GNU \fBnm\fR lists the symbols from object files \fIobjfile\fR....
+If no object files are listed as arguments, \fBnm\fR assumes the file
+\fIa.out\fR.
+.PP
+For each symbol, \fBnm\fR shows:
+.Ip "\(bu" 4
+The symbol value, in the radix selected by options (see below), or
+hexadecimal by default.
+.Ip "\(bu" 4
+The symbol type.  At least the following types are used; others are, as
+well, depending on the object file format.  If lowercase, the symbol is
+local; if uppercase, the symbol is global (external).
+.Ip "\f(CWA\fR" 8
+The symbol's value is absolute, and will not be changed by further
+linking.
+.Ip "\f(CWB\fR" 8
+The symbol is in the uninitialized data section (known as \s-1BSS\s0).
+.Ip "\f(CWC\fR" 8
+The symbol is common.  Common symbols are uninitialized data.  When
+linking, multiple common symbols may appear with the same name.  If the
+symbol is defined anywhere, the common symbols are treated as undefined
+references.
+.Ip "\f(CWD\fR" 8
+The symbol is in the initialized data section.
+.Ip "\f(CWG\fR" 8
+The symbol is in an initialized data section for small objects.  Some
+object file formats permit more efficient access to small data objects,
+such as a global int variable as opposed to a large global array.
+.Ip "\f(CWI\fR" 8
+The symbol is an indirect reference to another symbol.  This is a \s-1GNU\s0
+extension to the a.out object file format which is rarely used.
+.Ip "\f(CWN\fR" 8
+The symbol is a debugging symbol.
+.Ip "\f(CWR\fR" 8
+The symbol is in a read only data section.
+.Ip "\f(CWS\fR" 8
+The symbol is in an uninitialized data section for small objects.
+.Ip "\f(CWT\fR" 8
+The symbol is in the text (code) section.
+.Ip "\f(CWU\fR" 8
+The symbol is undefined.
+.Ip "\f(CWV\fR" 8
+The symbol is a weak object.  When a weak defined symbol is linked with
+a normal defined symbol, the normal defined symbol is used with no error.
+When a weak undefined symbol is linked and the symbol is not defined,
+the value of the weak symbol becomes zero with no error.
+.Ip "\f(CWW\fR" 8
+The symbol is a weak symbol that has not been specifically tagged as a
+weak object symbol.  When a weak defined symbol is linked with a normal
+defined symbol, the normal defined symbol is used with no error.
+When a weak undefined symbol is linked and the symbol is not defined,
+the value of the weak symbol becomes zero with no error.
+.Ip "\f(CW-\fR" 8
+The symbol is a stabs symbol in an a.out object file.  In this case, the
+next values printed are the stabs other field, the stabs desc field, and
+the stab type.  Stabs symbols are used to hold debugging information.
+.Ip "\f(CW?\fR" 8
+The symbol type is unknown, or object file format specific.
+.Ip "\(bu" 4
+The symbol name.
+.SH "OPTIONS"
+The long and short forms of options, shown here as alternatives, are
+equivalent.
+.Ip "\fB\-A\fR" 4
+.Ip "\fB\-o\fR" 4
+.Ip "\fB--print-file-name\fR " 4
+Precede each symbol by the name of the input file (or archive member)
+in which it was found, rather than identifying the input file once only,
+before all of its symbols.
+.Ip "\fB\-a\fR" 4
+.Ip "\fB--debug-syms\fR " 4
+Display all symbols, even debugger-only symbols; normally these are not
+listed.
+.Ip "\fB\-B\fR" 4
+The same as \fB--format=bsd\fR (for compatibility with the \s-1MIPS\s0 \fBnm\fR).
+.Ip "\fB\-C\fR" 4
+.Ip "\fB--demangle[=\fR\fIstyle\fR\fB]\fR" 4
+Decode (\fIdemangle\fR) low-level symbol names into user-level names.
+Besides removing any initial underscore prepended by the system, this
+makes \*(C+ function names readable. Different compilers have different
+mangling styles. The optional demangling style argument can be used to 
+choose an appropriate demangling style for your compiler. 
+.Ip "\fB--no-demangle\fR" 4
+Do not demangle low-level symbol names.  This is the default.
+.Ip "\fB\-D\fR" 4
+.Ip "\fB--dynamic\fR" 4
+Display the dynamic symbols rather than the normal symbols.  This is
+only meaningful for dynamic objects, such as certain types of shared
+libraries.
+.Ip "\fB\-f\fR \fIformat\fR" 4
+.Ip "\fB--format=\fR\fIformat\fR" 4
+Use the output format \fIformat\fR, which can be \f(CWbsd\fR,
+\f(CWsysv\fR, or \f(CWposix\fR.  The default is \f(CWbsd\fR.
+Only the first character of \fIformat\fR is significant; it can be
+either upper or lower case.
+.Ip "\fB\-g\fR" 4
+.Ip "\fB--extern-only\fR " 4
+Display only external symbols.
+.Ip "\fB\-l\fR" 4
+.Ip "\fB--line-numbers\fR" 4
+For each symbol, use debugging information to try to find a filename and
+line number.  For a defined symbol, look for the line number of the
+address of the symbol.  For an undefined symbol, look for the line
+number of a relocation entry which refers to the symbol.  If line number
+information can be found, print it after the other symbol information.
+.Ip "\fB\-n\fR" 4
+.Ip "\fB\-v\fR" 4
+.Ip "\fB--numeric-sort\fR " 4
+Sort symbols numerically by their addresses, rather than alphabetically
+by their names. 
+.Ip "\fB\-p\fR" 4
+.Ip "\fB--no-sort\fR " 4
+Do not bother to sort the symbols in any order; print them in the order
+encountered.
+.Ip "\fB\-P\fR" 4
+.Ip "\fB--portability\fR" 4
+Use the \s-1POSIX\s0.2 standard output format instead of the default format.
+Equivalent to \fB\-f posix\fR.
+.Ip "\fB\-s\fR" 4
+.Ip "\fB--print-armap\fR" 4
+When listing symbols from archive members, include the index: a mapping
+(stored in the archive by \fBar\fR or \fBranlib\fR) of which modules
+contain definitions for which names.
+.Ip "\fB\-r\fR" 4
+.Ip "\fB--reverse-sort\fR " 4
+Reverse the order of the sort (whether numeric or alphabetic); let the
+last come first.
+.Ip "\fB--size-sort\fR" 4
+Sort symbols by size.  The size is computed as the difference between
+the value of the symbol and the value of the symbol with the next higher
+value.  The size of the symbol is printed, rather than the value.
+.Ip "\fB\-t\fR \fIradix\fR" 4
+.Ip "\fB--radix=\fR\fIradix\fR" 4
+Use \fIradix\fR as the radix for printing the symbol values.  It must be
+\fBd\fR for decimal, \fBo\fR for octal, or \fBx\fR for hexadecimal.
+.Ip "\fB--target=\fR\fIbfdname\fR" 4
+Specify an object code format other than your system's default format.
+.Ip "\fB\-u\fR" 4
+.Ip "\fB--undefined-only\fR " 4
+Display only undefined symbols (those external to each object file).
+.Ip "\fB--defined-only\fR" 4
+Display only defined symbols for each object file.
+.Ip "\fB\-V\fR" 4
+.Ip "\fB--version\fR" 4
+Show the version number of \fBnm\fR and exit.
+.Ip "\fB\-X\fR" 4
+This option is ignored for compatibility with the \s-1AIX\s0 version of
+\fBnm\fR.  It takes one parameter which must be the string
+\fB32_64\fR.  The default mode of \s-1AIX\s0 \fBnm\fR corresponds
+to \fB\-X 32\fR, which is not supported by \s-1GNU\s0 \fBnm\fR.
+.Ip "\fB--help\fR" 4
+Show a summary of the options to \fBnm\fR and exit.
+.SH "SEE ALSO"
+\fIar\fR\|(1), \fIobjdump\fR\|(1), \fIranlib\fR\|(1), and the Info entries for \fIbinutils\fR.
+.SH "COPYRIGHT"
+Copyright (c) 1991, 92, 93, 94, 95, 96, 97, 98, 99, 2000, 2001 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled \*(L"GNU Free Documentation License\*(R".
+
+.rn }` ''
+.IX Title "NM 1"
+.IX Name "nm - list symbols from object files"
+
+.IX Header "NAME"
+
+.IX Header "SYNOPSIS"
+
+.IX Header "DESCRIPTION"
+
+.IX Item "\(bu"
+
+.IX Item "\(bu"
+
+.IX Item "\f(CWA\fR"
+
+.IX Item "\f(CWB\fR"
+
+.IX Item "\f(CWC\fR"
+
+.IX Item "\f(CWD\fR"
+
+.IX Item "\f(CWG\fR"
+
+.IX Item "\f(CWI\fR"
+
+.IX Item "\f(CWN\fR"
+
+.IX Item "\f(CWR\fR"
+
+.IX Item "\f(CWS\fR"
+
+.IX Item "\f(CWT\fR"
+
+.IX Item "\f(CWU\fR"
+
+.IX Item "\f(CWV\fR"
+
+.IX Item "\f(CWW\fR"
+
+.IX Item "\f(CW-\fR"
+
+.IX Item "\f(CW?\fR"
+
+.IX Item "\(bu"
+
+.IX Header "OPTIONS"
+
+.IX Item "\fB\-A\fR"
+
+.IX Item "\fB\-o\fR"
+
+.IX Item "\fB--print-file-name\fR "
+
+.IX Item "\fB\-a\fR"
+
+.IX Item "\fB--debug-syms\fR "
+
+.IX Item "\fB\-B\fR"
+
+.IX Item "\fB\-C\fR"
+
+.IX Item "\fB--demangle[=\fR\fIstyle\fR\fB]\fR"
+
+.IX Item "\fB--no-demangle\fR"
+
+.IX Item "\fB\-D\fR"
+
+.IX Item "\fB--dynamic\fR"
+
+.IX Item "\fB\-f\fR \fIformat\fR"
+
+.IX Item "\fB--format=\fR\fIformat\fR"
+
+.IX Item "\fB\-g\fR"
+
+.IX Item "\fB--extern-only\fR "
+
+.IX Item "\fB\-l\fR"
+
+.IX Item "\fB--line-numbers\fR"
+
+.IX Item "\fB\-n\fR"
+
+.IX Item "\fB\-v\fR"
+
+.IX Item "\fB--numeric-sort\fR "
+
+.IX Item "\fB\-p\fR"
+
+.IX Item "\fB--no-sort\fR "
+
+.IX Item "\fB\-P\fR"
+
+.IX Item "\fB--portability\fR"
+
+.IX Item "\fB\-s\fR"
+
+.IX Item "\fB--print-armap\fR"
+
+.IX Item "\fB\-r\fR"
+
+.IX Item "\fB--reverse-sort\fR "
+
+.IX Item "\fB--size-sort\fR"
+
+.IX Item "\fB\-t\fR \fIradix\fR"
+
+.IX Item "\fB--radix=\fR\fIradix\fR"
+
+.IX Item "\fB--target=\fR\fIbfdname\fR"
+
+.IX Item "\fB\-u\fR"
+
+.IX Item "\fB--undefined-only\fR "
+
+.IX Item "\fB--defined-only\fR"
+
+.IX Item "\fB\-V\fR"
+
+.IX Item "\fB--version\fR"
+
+.IX Item "\fB\-X\fR"
+
+.IX Item "\fB--help\fR"
+
+.IX Header "SEE ALSO"
+
+.IX Header "COPYRIGHT"
+

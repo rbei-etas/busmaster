@@ -1,0 +1,6 @@
+; CAN_ETAS_ES581.def : Declares the module parameters for the DLL.
+
+LIBRARY      "CAN_ETAS_ES581"
+
+EXPORTS
+    ; Explicit exports can go here

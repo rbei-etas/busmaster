@@ -1,0 +1,1050 @@
+<HTML>
+    <HEAD>
+        <TITLE>API Listing</TITLE></HEAD>
+    <BODY>
+        <P>
+            <TABLE style="WIDTH: 722px" cellSpacing="2" cellPadding="5" width="722" bgColor="#ffffff"
+                border="0">
+                <TR>
+                    <TD align="left" bgColor="#ccccff" height="46">
+                        <P align="center"><STRONG><FONT face="Arial" color="red" size="5">COM Interface API Listing</FONT></STRONG>
+                        </P>
+                    </TD>
+                </TR>
+                <TR>
+                </TR>
+                <TR>
+                    <TD align="left" bgColor="#eeeeff">
+                        <P><FONT face="Arial" color="red"><STRONG><U>BUSMASTER COM Interface API Listing</U></STRONG>
+                            </FONT>
+                        </P>
+                        <UL>
+                            <LI>
+                                <STRONG><A href="#Connect"><FONT face="Arial" color="blue" size="2">Connect&nbsp;: 
+                                            To&nbsp;connect&nbsp;BUSMASTER to the bus&nbsp; </FONT></A></STRONG>
+                            <LI>
+                                <STRONG><A href="#ResetHW"><FONT face="Arial" color="#0000ff" size="2">ResetHW&nbsp;: 
+                                            To&nbsp;reset the hardware&nbsp; </FONT></A></STRONG>
+                            <LI>
+                                <STRONG><A href="#GetErrorCounter"><FONT face="Arial" color="#0000ff" size="2">GetErrorCounter&nbsp;:&nbsp;Getter 
+                                            for both Rx and Tx error, given the&nbsp;channel number</FONT></STRONG></A>
+                            <LI>
+                                <STRONG><A href="#SendCANMSg"><FONT face="Arial" color="#0000ff" size="2">SendCANMSg: 
+                                            To&nbsp;send a CAN message&nbsp; </FONT></STRONG>
+                            <LI>
+                                <STRONG><A href="#GetMsgInfo"><FONT face="Arial" color="#0000ff" size="2">GetMsgInfo 
+                                            :&nbsp;Retrieves the message&nbsp;parameters from the loaded database, given 
+                                            the message&nbsp;name&nbsp; </FONT></A></STRONG>
+                            <LI>
+                                <STRONG><A href="#GetNetworkStatistics"><FONT face="Arial" color="#0000ff" size="2">GetNetworkStatistics 
+                                            :&nbsp;&nbsp;To get all the statistics of a channel&nbsp;&nbsp; </FONT></A>
+                                    </FONT></A></FONT></A></STRONG>
+                            <LI>
+                                <STRONG><A href="#LoadAllDll"><FONT face="Arial" color="#0000ff" size="2">LoadAllDll 
+                                            :&nbsp; To load all user DLLs&nbsp; </FONT></A></FONT></A></STRONG>
+                            <LI>
+                                <STRONG><A href="#UnLoadAllDll"><FONT face="Arial" color="#0000ff" size="2">UnLoadAllDll : 
+                                            To Unload all DLLs&nbsp; </FONT></A></FONT></A></STRONG>
+                            <LI>
+                                <STRONG><STRONG><STRONG><A href="#SendKeyValue"><FONT face="Arial" color="#0000ff" size="2">SendKeyValue&nbsp;: 
+                                                    To simulate a particular key stroke</FONT></A></STRONG></STRONG></STRONG>
+                            <LI>
+                                <STRONG><STRONG><A href="#EnableDisableHandlers"><FONT face="Arial" color="#0000ff" size="2">EnableDisableHandlers 
+                                                : To enable or disable&nbsp;DLL handlers</FONT></A></STRONG></STRONG>
+                            <LI>
+                                <STRONG><STRONG><A href="#ImportDatabase"><FONT face="Arial" color="#0000ff" size="2">ImportDatabase 
+                                                : To import a database file in BUSMASTER</FONT></A></STRONG></STRONG>
+                            <LI>
+                                <STRONG><STRONG><A href="#LoadConfiguration"><FONT face="Arial" color="#0000ff" size="2">LoadConfiguration 
+                                                : To load a configuration file in BUSMASTER</FONT></A></STRONG></STRONG>
+                            <LI>
+                                <STRONG><STRONG><A href="#SaveConfiguration"><FONT face="Arial" color="#0000ff" size="2">SaveConfiguration 
+                                                : To save current configuration file</FONT></A></STRONG></STRONG>
+                            <LI>
+                                <STRONG><STRONG><A href="#SaveConfigurationAs"><FONT face="Arial" color="#0000ff" size="2">SaveConfigurationAs 
+                                                : To save current configuration in a particular file</FONT></A></STRONG></STRONG>
+                            <LI>
+                                <STRONG><STRONG><A href="#GetTxBlockCount"><FONT face="Arial" color="#0000ff" size="2">GetTxBlockCount 
+                                                : Getter for current&nbsp;transmission block count</FONT></A></STRONG></STRONG>
+                            <LI>
+                                <STRONG><STRONG><STRONG><A href="#ClearTxBlockList"><FONT face="Arial" color="#0000ff" size="2">ClearTxBlockList 
+                                                    : Deletes all the&nbsp;transmission blocks </FONT></A></STRONG></STRONG>
+                                </STRONG>
+                            <LI>
+                                <STRONG><A href="#StartTxMsgBlock"><FONT face="Arial" color="#0000ff" size="2">StartTxMsgBlock 
+                                            : To start sending messages </FONT></A></STRONG>
+                            <LI>
+                                <STRONG><A href="#StopTxMsgBlock"><FONT face="Arial" color="#0000ff" size="2">StopTxMsgBlock 
+                                            : To&nbsp;stop sending messages </FONT></A></STRONG>
+                            <LI>
+                                <STRONG><STRONG><A href="#EnableFilterSch"><FONT face="Arial" color="#0000ff" size="2">EnableFilterSch 
+                                                : Enables / disables a particular filtering scheme</FONT></A></STRONG></STRONG>
+                            <LI>
+                                <STRONG><STRONG><A href="#GetLoggingBlockCount"><FONT face="Arial" color="#0000ff" size="2">GetLoggingBlockCount&nbsp;: 
+                                                Getter for total number of logging blocks</FONT></A></STRONG></STRONG>
+                            <LI>
+                                <STRONG><STRONG><A href="#RemoveLoggingBlock"><FONT face="Arial" color="#0000ff" size="2">RemoveLoggingBlock 
+                                                : To remove a particular logging block</FONT></A></STRONG></STRONG>
+                            <LI>
+                                <STRONG><STRONG><A href="#ClearLoggingBlock"><FONT face="Arial" color="#0000ff" size="2">ClearLoggingBlock 
+                                                : Clears the current logging blocks defined</FONT></A></STRONG></STRONG>
+                            <LI>
+                                <STRONG><STRONG><A href="#StartLogging"><FONT face="Arial" color="#0000ff" size="2">StartLogging&nbsp;: 
+                                                To start logging</FONT></A></STRONG></STRONG>
+                            <LI>
+                                <STRONG><STRONG><STRONG><A href="#StopLogging"><FONT face="Arial" color="#0000ff" size="2">StopLogging&nbsp;: 
+                                                    To stop logging</FONT></A></STRONG></STRONG></STRONG>
+                            <LI>
+                                <STRONG><STRONG><A href="#WriteToLogFile"><FONT face="Arial" color="#0000ff" size="2">WriteToLogFile&nbsp;: 
+                                                Writes a text in&nbsp;the log file currently open</FONT></A></STRONG></STRONG>&nbsp;<STRONG><FONT color="#ff0033">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </FONT></STRONG>
+                            </LI>
+                        </UL>
+                    </TD>
+                </TR>
+            </TABLE>
+        <P></P>
+        <TABLE style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5" bgColor="#ffffff"
+            border="0">
+            <TR>
+                <TD align="left" bgColor="#ccccff"><A name="SendCANMSg"><FONT color="#ff0033"><FONT face="Arial" size="2"><STRONG>SendCANMSg</STRONG></FONT>
+                        </FONT></A>
+                </TD>
+            </TR>
+            <TR>
+                <TD align="left" bgColor="#eeeeff">
+                    <P><FONT face="Arial" size="2">This function will put the message on the CAN bus. The 
+                            message structure CAN_MSGS will be filled with ID, length, frame format and 
+                            data.
+                            <BR>
+                        </FONT>
+                        <TABLE id="TABLE1" style="WIDTH: 598px; HEIGHT: 59px" cellSpacing="1" cellPadding="1" border="1">
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                <TD>
+                                    <P><FONT face="Arial" size="2">CAN_MSGS - CAN Message Structure</FONT></P>
+                                </TD>
+                            </TR>
+                            <TR>
+                                <TD width="70">
+                                    <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                </TD>
+                                <TD><FONT face="Arial" size="2">
+                                        <P><FONT size="2">Tool not connected</FONT>
+                                        </P>
+                                    </FONT>
+                                </TD>
+                            </TR>
+                        </TABLE>
+                        </FONT></P>
+                </TD>
+            </TR>
+        </TABLE>
+        <P></P>
+        <TABLE style="LEFT: 9px; WIDTH: 722px; TOP: 253px; HEIGHT: 170px" cellSpacing="2" cellPadding="5"
+            bgColor="#ffffff" border="0">
+            <TR>
+                <A name="StartLogging">
+                    <TD align="left" bgColor="#ccccff"><FONT face="Arial" size="2"><STRONG><FONT color="red">StartLogging</FONT>
+                            </STRONG></FONT>
+                    </TD>
+                </A>
+            </TR>
+            <TR>
+                <TD align="left" bgColor="#eeeeff">
+                    <P><FONT face="Arial" size="2">This function enables logging. </FONT>
+                        <TABLE id="TABLE1" style="WIDTH: 598px; HEIGHT: 59px" cellSpacing="1" cellPadding="1" border="1">
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                <TD><FONT face="Arial" size="2">&nbsp;NA</FONT></TD>
+                            </TR>
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">
+                                        <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                    </FONT>
+                                </TD>
+                                <TD>
+                                    <P><FONT face="Arial" size="2">Log file absent in configuration</FONT></P>
+                                </TD>
+                            </TR>
+                        </TABLE>
+                        </FONT></P>
+                </TD>
+            </TR>
+        </TABLE>
+        <BR>
+        <TABLE style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5" bgColor="#ffffff"
+            border="0">
+            <TR>
+                <A name="StopLogging">
+                    <TD align="left" bgColor="#ccccff"><FONT style="BACKGROUND-COLOR: #ccccff" face="Arial" size="2"><STRONG><FONT color="red">StopLogging</FONT>&nbsp;
+                            </STRONG></FONT>
+                    </TD>
+                </A>
+            </TR>
+            <TR>
+                <TD align="left" bgColor="#eeeeff">
+                    <P><FONT face="Arial" size="2"> This function disables logging.<BR>
+                            <BR>
+                        </FONT>
+                        <TABLE id="TABLE1" style="WIDTH: 598px; HEIGHT: 59px" cellSpacing="1" cellPadding="1" border="1">
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                <TD><FONT face="Arial" size="2">&nbsp;NA</FONT></TD>
+                            </TR>
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">
+                                        <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                    </FONT>
+                                </TD>
+                                <TD>
+                                    <P><FONT face="Arial" size="2">&nbsp;NA</FONT></P>
+                                </TD>
+                            </TR>
+                        </TABLE>
+                        </FONT></P>
+                </TD>
+            </TR>
+        </TABLE>
+        <BR>
+        <TABLE style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5" bgColor="#ffffff"
+            border="0">
+            <TR>
+                <A name="WriteToLogFile">
+                    <TD align="left" bgColor="#ccccff"><FONT style="BACKGROUND-COLOR: #ccccff" face="Arial" size="2"><STRONG><FONT color="#ff0000">WriteToLogFile</FONT>
+                            </STRONG></FONT>
+                    </TD>
+                </A>
+            </TR>
+            <TR>
+                <TD align="left" bgColor="#eeeeff">
+                    <P><FONT face="Arial" size="2">This function writes a text in the log file currently 
+                            open.
+                            <BR>
+                        </FONT>
+                        <TABLE id="TABLE1" style="WIDTH: 598px; HEIGHT: 77px" cellSpacing="1" cellPadding="1" border="1">
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                <TD><FONT face="Arial" size="2">bstrStr&nbsp;- The input string in BSTR</FONT></TD>
+                            </TR>
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">
+                                        <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                    </FONT>
+                                </TD>
+                                <TD>
+                                    <P><FONT face="Arial" size="2">Logging not enabled, log file not present</FONT></P>
+                                </TD>
+                            </TR>
+                        </TABLE>
+                        </FONT></P>
+                </TD>
+            </TR>
+        </TABLE>
+        <BR>
+        <TABLE style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5" bgColor="#ffffff"
+            border="0">
+            <TR>
+                <A name="ResetHW">
+                    <TD align="left" bgColor="#ccccff" height="26"><FONT style="BACKGROUND-COLOR: #ccccff" face="Arial" size="2"><STRONG><FONT color="red">&nbsp;ResetHW
+                                </FONT></STRONG></FONT>
+                    </TD>
+                </A>
+            </TR>
+            <TR>
+                <TD align="left" bgColor="#eeeeff">
+                    <P><FONT face="Arial" size="2"> This function resets the hardware.<BR>
+                            <BR>
+                        </FONT>
+                        <TABLE id="TABLE1" style="WIDTH: 598px; HEIGHT: 77px" cellSpacing="1" cellPadding="1" border="1">
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                <TD><FONT face="Arial" size="2"> void</FONT></TD>
+                            </TR>
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">
+                                        <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                    </FONT>
+                                </TD>
+                                <TD>
+                                    <P><FONT face="Arial" size="2"> NA</FONT></P>
+                                </TD>
+                            </TR>
+                        </TABLE>
+                        </FONT></P>
+                </TD>
+            </TR>
+        </TABLE>
+        <BR>
+        <TABLE id="TABLE16" style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5"
+            bgColor="#ffffff" border="0">
+            <TR>
+                <A name="GetTxBlockCount">
+                    <TD align="left" bgColor="#ccccff"><FONT face="Arial" size="2"><STRONG><FONT style="BACKGROUND-COLOR: #ccccff"><FONT style="BACKGROUND-COLOR: #ccccff" face="Arial" size="2"><STRONG><FONT color="red">&nbsp;GetTxBlockCount</FONT></STRONG></FONT>
+                                </FONT></STRONG></FONT>
+                    </TD>
+                </A>
+            </TR>
+            <TR>
+                <TD align="left" bgColor="#eeeeff">
+                    <P><FONT face="Arial" size="2"> Getter for current transmission block count.
+                            <BR>
+                        </FONT>
+                        <TABLE id="TABLE1" style="WIDTH: 598px; HEIGHT: 63px" cellSpacing="1" cellPadding="1" border="1">
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                <TD><FONT face="Arial" size="2">USHORT* Result - The [out] parameter to receive the 
+                                        result.</FONT></TD>
+                            </TR>
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">
+                                        <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                    </FONT>
+                                </TD>
+                                <TD>
+                                    <P><FONT face="Arial" size="2">&nbsp;NA</FONT></P>
+                                </TD>
+                            </TR>
+                        </TABLE>
+                        </FONT></P>
+                </TD>
+            </TR>
+        </TABLE>
+        <BR>
+        <TABLE style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5" bgColor="#ffffff"
+            border="0">
+            <TR>
+                <FONT color="#cc0033"><U></U></FONT><A name="ClearTxBlockList">
+                    <TD align="left" bgColor="#ccccff"><FONT face="Arial" size="2"><STRONG><FONT style="BACKGROUND-COLOR: #ccccff" color="#ff0000">&nbsp;ClearTxBlockList
+                                </FONT></STRONG></FONT>
+                    </TD>
+                </A>
+            </TR>
+            <TR>
+                <TD align="left" bgColor="#eeeeff">
+                    <P><FONT face="Arial" size="2"> Deletes all the transmission blocks. </FONT>
+                    </P>
+                    <P>
+                        <TABLE id="TABLE1" style="WIDTH: 598px; HEIGHT: 77px" cellSpacing="1" cellPadding="1" border="1">
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                <TD><FONT face="Arial" size="2">&nbsp;-</FONT></TD>
+                            </TR>
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">
+                                        <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                    </FONT>
+                                </TD>
+                                <TD>
+                                    <P><FONT face="Arial" size="2">&nbsp;NA</FONT></P>
+                                </TD>
+                            </TR>
+                        </TABLE>
+                    </P>
+                    </FONT></TD>
+            </TR>
+        </TABLE>
+        <BR>
+        <TABLE style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5" bgColor="#ffffff"
+            border="0">
+            <TR>
+                <FONT color="#ff0033"></FONT><A name="SaveConfigurationAs">
+                    <TD align="left" bgColor="#ccccff"><FONT face="Arial" size="2"><STRONG><FONT style="BACKGROUND-COLOR: #ccccff" color="#ff0033">&nbsp;SaveConfigurationAs
+                                </FONT></STRONG></FONT>
+                    </TD>
+                </A>
+            </TR>
+            <TR>
+                <TD align="left" bgColor="#eeeeff">
+                    <P><FONT face="Arial" size="2"><FONT face="Arial" size="2">To save current configuration in 
+                                a particular configuration file.</FONT> &nbsp;
+                            <BR>
+                            <BR>
+                        </FONT>
+                        <TABLE id="TABLE1" style="WIDTH: 598px; HEIGHT: 77px" cellSpacing="1" cellPadding="1" border="1">
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                <TD><FONT face="Arial" size="2">BSTR ConfigPath - Configuration file path.</FONT></TD>
+                            </TR>
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">
+                                        <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                    </FONT>
+                                </TD>
+                                <TD>
+                                    <P><FONT face="Arial" size="2">NA</FONT></P>
+                                </TD>
+                            </TR>
+                        </TABLE>
+                        </FONT></P>
+                </TD>
+            </TR>
+        </TABLE>
+        <BR>
+        <TABLE style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5" bgColor="#ffffff"
+            border="0">
+            <TR>
+                <A name="LoadAllDll">
+                    <TD align="left" bgColor="#ccccff"><FONT face="Arial" size="2"><STRONG><FONT style="BACKGROUND-COLOR: #ccccff" color="#ff0033">LoadAllDll
+                                </FONT></STRONG></FONT>
+                    </TD>
+                </A>
+            </TR>
+            <TR>
+                <TD align="left" bgColor="#eeeeff">
+                    <P><FONT face="Arial" size="2"><FONT face="Arial" size="2">This function loads&nbsp;all the 
+                                user DLLs associated to the presently active simulated system.</FONT>
+                            <BR>
+                        </FONT>
+                        <TABLE id="TABLE1" style="WIDTH: 598px; HEIGHT: 48px" cellSpacing="1" cellPadding="1" border="1">
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                <TD><FONT face="Arial" size="2">&nbsp;NA</FONT></TD>
+                            </TR>
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">
+                                        <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                    </FONT>
+                                </TD>
+                                <TD>
+                                    <P>&nbsp;NA&nbsp;
+                                    </P>
+                                </TD>
+                            </TR>
+                        </TABLE>
+                        </FONT></P>
+                </TD>
+            </TR>
+        </TABLE>
+        <BR>
+        <TABLE style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5" bgColor="#ffffff"
+            border="0">
+            <TR>
+                <A name="UnLoadAllDll">
+                    <TD align="left" bgColor="#ccccff"><FONT face="Arial" size="2"><STRONG><FONT style="BACKGROUND-COLOR: #ccccff" color="#ff0033">UnLoadAllDll
+                                </FONT></STRONG></FONT>
+                    </TD>
+                </A>
+            </TR>
+            <TR>
+                <TD align="left" bgColor="#eeeeff">
+                    <P><FONT face="Arial" size="2"><FONT face="Arial" size="2"><FONT face="Arial" size="2">This 
+                                    function&nbsp;unloads all the currently loaded user DLLs <FONT face="Arial" size="2">
+                                        <FONT face="Arial" size="2">associated to the presently&nbsp;active&nbsp;simulated 
+                                            system.</FONT></FONT></FONT><BR>
+                            </FONT>
+                            <BR>
+                        </FONT>
+                        <TABLE id="TABLE1" style="WIDTH: 598px; HEIGHT: 45px" cellSpacing="1" cellPadding="1" border="1">
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                <TD><FONT face="Arial" size="2">&nbsp;NA&nbsp;</FONT></TD>
+                            </TR>
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">
+                                        <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                    </FONT>
+                                </TD>
+                                <TD>
+                                    <P>&nbsp;NA&nbsp;</P>
+                                </TD>
+                            </TR>
+                        </TABLE>
+                        </FONT></P>
+                </TD>
+            </TR>
+        </TABLE>
+        <BR>
+        <TABLE style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5" bgColor="#ffffff"
+            border="0">
+            <TR>
+                <A name="StartTxMsgBlock">
+                    <TD align="left" bgColor="#ccccff"><FONT face="Arial" size="2"><STRONG><FONT size="+0"><FONT color="black"><FONT style="BACKGROUND-COLOR: #ccccff"><FONT size="2"><FONT color="red">StartTxMsgBlock
+                                                </FONT></FONT></FONT></FONT></FONT></STRONG></FONT>
+                    </TD>
+                </A>
+            </TR>
+            <TR>
+                <TD align="left" bgColor="#eeeeff">
+                    <P><FONT face="Arial" size="2"> This function&nbsp;starts the message transmission if 
+                            message blocks are configured.<BR>
+                            <BR>
+                        </FONT>
+                        <TABLE id="TABLE1" style="WIDTH: 598px; HEIGHT: 45px" cellSpacing="1" cellPadding="1" border="1">
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                <TD><FONT face="Arial" size="2">&nbsp;-</FONT></TD>
+                            </TR>
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">
+                                        <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                    </FONT>
+                                </TD>
+                                <TD>
+                                    <P><FONT face="Arial" size="2">&nbsp;NA</FONT></P>
+                                </TD>
+                            </TR>
+                        </TABLE>
+                        </FONT></P>
+                </TD>
+            </TR>
+        </TABLE>
+        <BR>
+        <TABLE style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5" bgColor="#ffffff"
+            border="0">
+            <TR>
+                <A name="StopTxMsgBlock">
+                    <TD align="left" bgColor="#ccccff"><FONT face="Arial" color="black" size="2"><FONT style="BACKGROUND-COLOR: #ccccff"><STRONG><FONT color="red">StopTxMsgBlock</FONT></STRONG>
+                            </FONT></FONT>
+                    </TD>
+                </A>
+            </TR>
+            <TR>
+                <TD align="left" bgColor="#eeeeff">
+                    <P><FONT face="Arial" size="2"><FONT face="Arial" size="2"> This function&nbsp;stop the 
+                                ongoing message transmission.<BR>
+                            </FONT>
+                            <BR>
+                        </FONT>
+                        <TABLE id="TABLE1" style="WIDTH: 598px; HEIGHT: 45px" cellSpacing="1" cellPadding="1" border="1">
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                <TD><FONT face="Arial" size="2">&nbsp;-</FONT></TD>
+                            </TR>
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">
+                                        <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                    </FONT>
+                                </TD>
+                                <TD>
+                                    <P><FONT face="Arial" size="2">&nbsp;NA</FONT></P>
+                                </TD>
+                            </TR>
+                        </TABLE>
+                        </FONT></P>
+                </TD>
+            </TR>
+        </TABLE>
+        <BR>
+        <TABLE style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5" bgColor="#ffffff"
+            border="0">
+            <TR>
+                <A name="EnableFilterSch">
+                    <TD align="left" bgColor="#ccccff"><FONT face="Arial" color="black" size="2"><FONT style="BACKGROUND-COLOR: #ccccff"><STRONG><FONT color="red">&nbsp;EnableFilterSch
+                                    </FONT></STRONG></FONT></FONT>
+                    </TD>
+                </A>
+            </TR>
+            <TR>
+                <TD align="left" bgColor="#eeeeff">
+                    <P><FONT face="Arial" size="2">Enables / disables filtering scheme for&nbsp;the 
+                            particular module passed.
+                            <BR>
+                        </FONT>
+                        <TABLE id="TABLE1" style="WIDTH: 598px; HEIGHT: 45px" cellSpacing="1" cellPadding="1" border="1">
+                            <TR>
+                                <TD width="70" height="11"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                <TD height="11">
+                                    <P><FONT face="Arial" size="2">&nbsp;EFILTERMODULE eModule - Can be one of { Log, 
+                                            Display }&nbsp;</FONT></P>
+                                    <P><FONT face="Arial" size="2">BOOL bEnable - TRUE to enable, else FALSE.</FONT></P>
+                                </TD>
+                            </TR>
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">
+                                        <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                    </FONT>
+                                </TD>
+                                <TD>
+                                    <P><FONT face="Arial" size="2"><FONT face="Arial" size="2">&nbsp;NA</FONT></FONT></P>
+                                </TD>
+                            </TR>
+                        </TABLE>
+                        </FONT></P>
+                </TD>
+            </TR>
+        </TABLE>
+        <BR>
+        <TABLE style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5" bgColor="#ffffff"
+            border="0">
+            <TR>
+                <A name="GetLoggingBlockCount">
+                    <TD align="left" bgColor="#ccccff"><FONT face="Arial" color="black" size="2"><FONT style="BACKGROUND-COLOR: #ccccff"><STRONG><FONT color="red">&nbsp;GetLoggingBlockCount
+                                    </FONT></STRONG></FONT></FONT>
+                    </TD>
+                </A>
+            </TR>
+            <TR>
+                <TD align="left" bgColor="#eeeeff">
+                    <P><FONT face="Arial" size="2"><FONT face="Arial" size="2">This function is a getter of 
+                                logging blocks defined.</FONT>
+                            <BR>
+                            <BR>
+                        </FONT>
+                        <TABLE id="TABLE1" style="WIDTH: 598px; HEIGHT: 45px" cellSpacing="1" cellPadding="1" border="1">
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                <TD><FONT face="Arial" size="2">&nbsp;USHORT* BlockCount = An [out] parameter for the 
+                                        logging block count.</FONT></TD>
+                            </TR>
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">
+                                        <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                    </FONT>
+                                </TD>
+                                <TD>
+                                    <P><FONT face="Arial" size="2">&nbsp;NA</FONT></P>
+                                </TD>
+                            </TR>
+                        </TABLE>
+                        </FONT></P>
+                </TD>
+            </TR>
+        </TABLE>
+        <BR>
+        <BR>
+        <TABLE style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5" bgColor="#ffffff"
+            border="0">
+            <TR>
+                <A name="GetMsgInfo">
+                    <TD align="left" bgColor="#ccccff"><FONT face="Arial" color="black"><FONT size="2"><FONT><STRONG><FONT color="red"><FONT face="Arial" color="red">GetMsgInfo</FONT>
+                                        </FONT></STRONG></FONT></FONT></FONT></FONT></FONT></FONT></TD>
+                </A>
+            </TR>
+            <TR>
+                <TD align="left" bgColor="#eeeeff">
+                    <P><FONT face="Arial" size="2"> This function will get the details about a database 
+                            message.
+                            <BR>
+                        </FONT>
+                        <TABLE id="TABLE1" style="WIDTH: 598px; HEIGHT: 45px" cellSpacing="1" cellPadding="1" border="1">
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                <TD><FONT face="Arial" size="2">Message 
+                                        name,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                                        Structure sMESSAGESTRUCT&nbsp;{ double 
+                                        m_dMessageCode;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                                        double m_dNumberOfSignals; double 
+                                        m_dMessageLength;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                                        BOOL m_bMessageFrameFormat; int m_nMsgDataFormat; }</FONT></TD>
+                            </TR>
+                            <TR>
+                                <TD width="70"><FONT face="Arial" size="2">
+                                        <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                    </FONT>
+                                </TD>
+                                <TD>
+                                    <P><FONT face="Arial" size="2">message name not in database,data bese file is not 
+                                            imported to BUSMASTER</FONT></P>
+                                </TD>
+                            </TR>
+                        </TABLE>
+                        </FONT></P>
+                </TD>
+            </TR>
+        </TABLE>
+        <P>&nbsp;
+        </P>
+        <P>
+            <TABLE id="Table4" style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5"
+                bgColor="#ffffff" border="0">
+                <TR>
+                    <A name="SendKeyValue">
+                        <TD align="left" bgColor="#ccccff"><FONT style="BACKGROUND-COLOR: #ccccff" face="Arial" color="black" size="2"><STRONG><FONT color="red">SendKeyValue
+                                    </FONT></STRONG></FONT>
+                        </TD>
+                    </A>
+                </TR>
+                <TR>
+                    <TD align="left" bgColor="#eeeeff">
+                        <P><FONT face="Arial" size="2">This function can be used to capture any key pressed in 
+                                client application and pass it to BUSMASTER.<STRONG>The function takes ascii character 
+                                    of the key</STRONG>.<STRONG>Only alphanumeric key is allowed.</STRONG>
+                                <BR>
+                            </FONT>
+                            <TABLE id="Table5" style="WIDTH: 598px; HEIGHT: 45px" cellSpacing="1" cellPadding="1" border="1">
+                                <TR>
+                                    <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                    <TD><FONT face="Arial" size="2">Ascii value of key.</FONT></TD>
+                                </TR>
+                                <TR>
+                                    <TD width="70"><FONT face="Arial" size="2">
+                                            <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                        </FONT>
+                                    </TD>
+                                    <TD>
+                                        <P><FONT face="Arial" size="2">The Ascii value doesn't corresspond to any Alphanumeric 
+                                                character.</FONT></P>
+                                    </TD>
+                                </TR>
+                            </TABLE>
+                            </FONT></P>
+                    </TD>
+                </TR>
+            </TABLE>
+        </P>
+        <P><BR>
+            &nbsp;
+        </P>
+        <P>
+            <TABLE id="Table6" style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5"
+                bgColor="#ffffff" border="0">
+                <TR>
+                    <A name="LoadConfiguration">
+                        <TD align="left" bgColor="#ccccff"><FONT style="BACKGROUND-COLOR: #ccccff" face="Arial" color="black" size="2"><STRONG><FONT color="red">LoadConfiguration
+                                    </FONT></STRONG></FONT>
+                        </TD>
+                    </A>
+                </TR>
+                <TR>
+                    <TD align="left" bgColor="#eeeeff">
+                        <P><FONT face="Arial" size="2">This function will load the configuration file specified 
+                                by client.
+                                <BR>
+                            </FONT>
+                            <TABLE id="Table7" style="WIDTH: 598px; HEIGHT: 45px" cellSpacing="1" cellPadding="1" border="1">
+                                <TR>
+                                    <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                    <TD><FONT face="Arial" size="2">Configuration file path.</FONT></TD>
+                                </TR>
+                                <TR>
+                                    <TD width="70"><FONT face="Arial" size="2">
+                                            <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                        </FONT>
+                                    </TD>
+                                    <TD>
+                                        <P><FONT face="Arial" size="2">File absent,tool is connected,DLLs are loaded</FONT></P>
+                                    </TD>
+                                </TR>
+                            </TABLE>
+                            </FONT></P>
+                    </TD>
+                </TR>
+            </TABLE>
+        </P>
+        <P>
+            <TABLE id="Table8" style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5"
+                bgColor="#ffffff" border="0">
+                <TR>
+                    <A name="ImportDatabase">
+                        <TD align="left" bgColor="#ccccff"><FONT style="BACKGROUND-COLOR: #ccccff" face="Arial" color="black" size="2"><STRONG><FONT color="red">ImportDatabase
+                                    </FONT></STRONG></FONT>
+                        </TD>
+                    </A>
+                </TR>
+                <TR>
+                    <TD align="left" bgColor="#eeeeff">
+                        <P><FONT face="Arial" size="2">This function will import the specfied file to BUSMASTER.<BR>
+                                <BR>
+                            </FONT>
+                            <TABLE id="Table9" style="WIDTH: 598px; HEIGHT: 45px" cellSpacing="1" cellPadding="1" border="1">
+                                <TR>
+                                    <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                    <TD><FONT face="Arial" size="2">Database file path</FONT></TD>
+                                </TR>
+                                <TR>
+                                    <TD width="70"><FONT face="Arial" size="2">
+                                            <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                        </FONT>
+                                    </TD>
+                                    <TD>
+                                        <P><FONT face="Arial" size="2">Dlls are loaded,<FONT face="Arial" size="2">File absent</FONT></FONT></P>
+                                    </TD>
+                                </TR>
+                            </TABLE>
+                            </FONT></P>
+                    </TD>
+                </TR>
+            </TABLE>
+        </P>
+        <P><BR>
+        </P>
+        <P>
+            <TABLE id="Table10" style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5"
+                bgColor="#ffffff" border="0">
+                <TR>
+                    <A name="EnableDisableHandlers">
+                        <TD align="left" bgColor="#ccccff"><FONT style="BACKGROUND-COLOR: #ccccff" face="Arial" color="black" size="2"><STRONG><FONT color="red">EnableDisableHandlers
+                                    </FONT></STRONG></FONT>
+                        </TD>
+                    </A>
+                </TR>
+                <TR>
+                    <TD align="left" bgColor="#eeeeff">
+                        <P><FONT face="Arial" size="2">This function will enable or disable different handlers 
+                                depending upon the argument passed to it.<BR>
+                                <BR>
+                            </FONT>
+                            <TABLE id="Table11" style="WIDTH: 598px; HEIGHT: 45px" cellSpacing="1" cellPadding="1"
+                                border="1">
+                                <TR>
+                                    <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                    <TD><FONT face="Arial" size="2">Enum eHandlerType { all = 0, timers = all + 1, key = 
+                                            timers + 1, message = key + 1, error = message + 1 }</FONT></TD>
+                                </TR>
+                                <TR>
+                                    <TD width="70"><FONT face="Arial" size="2">
+                                            <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                        </FONT>
+                                    </TD>
+                                    <TD>
+                                        <P><FONT face="Arial" size="2">Invalid Enum type.</FONT></P>
+                                    </TD>
+                                </TR>
+                            </TABLE>
+                            </FONT></P>
+                    </TD>
+                </TR>
+            </TABLE>
+        </P>
+        <P><BR>
+        </P>
+        <P>
+            <TABLE id="Table12" style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5"
+                bgColor="#ffffff" border="0">
+                <TR>
+                    <A name="GetErrorCounter">
+                        <TD align="left" bgColor="#ccccff"><FONT style="BACKGROUND-COLOR: #ccccff" face="Arial" color="black" size="2"><STRONG><FONT color="red">GetErrorCounter
+                                    </FONT></STRONG></FONT>
+                        </TD>
+                    </A>
+                </TR>
+                <TR>
+                    <TD align="left" bgColor="#eeeeff">
+                        <P><FONT face="Arial" size="2"> This function will provide the TX and RX error 
+                                count&nbsp;of the specified channel from BUSMASTER.<BR>
+                                <BR>
+                            </FONT>
+                            <TABLE id="Table13" style="WIDTH: 598px; HEIGHT: 45px" cellSpacing="1" cellPadding="1"
+                                border="1">
+                                <TR>
+                                    <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                    <TD><FONT face="Arial" size="2">Channel number, pointers to variables&nbsp;for RX and 
+                                            TX error</FONT></TD>
+                                </TR>
+                                <TR>
+                                    <TD width="70"><FONT face="Arial" size="2">
+                                            <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                        </FONT>
+                                    </TD>
+                                    <TD>
+                                        <P><FONT face="Arial" size="2">&nbsp;NA</FONT></P>
+                                    </TD>
+                                </TR>
+                            </TABLE>
+                            </FONT></P>
+                    </TD>
+                </TR>
+            </TABLE>
+        </P>
+        <P><BR>
+        </P>
+        <P>
+            <TABLE id="Table14" style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5"
+                bgColor="#ffffff" border="0">
+                <TR>
+                    <A name="GetNetworkStatistics">
+                        <TD align="left" bgColor="#ccccff"><FONT style="BACKGROUND-COLOR: #ccccff" face="Arial" color="black" size="2"><STRONG><FONT color="red">GetNetworkStatistics&nbsp;
+                                    </FONT></STRONG></FONT>
+                        </TD>
+                    </A>
+                </TR>
+                <TR>
+                    <TD align="left" bgColor="#eeeeff">
+                        <P><FONT face="Arial" size="2">This function will provide the channel's statistics.<BR>
+                                <BR>
+                            </FONT>
+                            <TABLE id="Table15" style="WIDTH: 598px; HEIGHT: 45px" cellSpacing="1" cellPadding="1"
+                                border="1">
+                                <TR>
+                                    <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                    <TD>
+                                        <P><FONT face="Arial" size="2">Channel number and Pointer to the structure</FONT><FONT face="Arial" size="2">sCHANNELSTATISTICS
+                                            </FONT>
+                                        </P>
+                                        <P><FONT face="Arial" size="2">{ DOUBLE m_dBusLoad; DOUBLE m_dPeakBusLoad; float 
+                                                m_fTotalMsgCount; float m_unMsgPerSecond; float m_fTotalTxMsgCount; DOUBLE 
+                                                m_dTotalTxMsgRate; float m_fTxSTDMsgCount; DOUBLE m_dTxSTDMsgRate; float 
+                                                m_fTxEXTDMsgCount; DOUBLE m_dTxEXTMsgRate; float m_fTxSTD_RTRMsgCount; float 
+                                                m_fTxEXTD_RTRMsgCount; float m_fTotalRxMsgCount; DOUBLE m_dTotalRxMsgRate; 
+                                                float m_fRxSTDMsgCount; DOUBLE m_dRxSTDMsgRate; float m_fRxEXTDMsgCount; DOUBLE 
+                                                m_dRxEXTMsgRate; float m_fRxSTD_RTRMsgCount; float m_fRxEXTD_RTRMsgCount; float 
+                                                m_fErrorTxCount; DOUBLE m_dErrorTxRate; float m_fErrorRxCount; DOUBLE 
+                                                m_dErrorRxRate; float m_fErrorTotalCount; DOUBLE m_dErrorRate; float 
+                                                m_fDLCCount; DOUBLE m_dBaudRate; DOUBLE m_dTotalBusLoad; int m_nSamples; DOUBLE 
+                                                m_dAvarageBusLoad; UCHAR m_ucTxErrorCounter; UCHAR m_ucRxErrorCounter; UCHAR 
+                                                m_ucTxPeakErrorCount; UCHAR m_ucRxPeakErrorCount; UCHAR m_ucStatus;}</FONT></P>
+                                    </TD>
+                                </TR>
+                                <TR>
+                                    <TD width="70"><FONT face="Arial" size="2">
+                                            <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                        </FONT>
+                                    </TD>
+                                    <TD>
+                                        <P><FONT face="Arial" size="2">&nbsp;NA</FONT></P>
+                                    </TD>
+                                </TR>
+                            </TABLE>
+                            </FONT></P>
+                    </TD>
+                </TR>
+            </TABLE>
+        </P>
+        <P>&nbsp;
+        </P>
+        <P>
+            <TABLE id="Table19" style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5"
+                bgColor="#ffffff" border="0">
+                <TR>
+                    <A name="Connect">
+                        <TD align="left" bgColor="#ccccff"><FONT style="BACKGROUND-COLOR: #ccccff" face="Arial" color="black" size="2"><STRONG><FONT color="red">Connect&nbsp;</FONT></STRONG>
+                            </FONT>
+                        </TD>
+                    </A>
+                </TR>
+                <TR>
+                    <TD align="left" bgColor="#eeeeff">
+                        <P><FONT face="Arial" size="2"><FONT face="Arial" size="2">This function connects / 
+                                    disconnects&nbsp;BUSMASTER to the bus.</FONT><BR>
+                                <BR>
+                            </FONT>
+                            <TABLE id="Table20" style="WIDTH: 598px; HEIGHT: 45px" cellSpacing="1" cellPadding="1"
+                                border="1">
+                                <TR>
+                                    <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                    <TD><FONT face="Arial" size="2">TRUE - connect, FALSE - Disconnect</FONT></TD>
+                                </TR>
+                                <TR>
+                                    <TD width="70"><FONT face="Arial" size="2">
+                                            <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                        </FONT>
+                                    </TD>
+                                    <TD>
+                                        <P><FONT face="Arial" size="2">&nbsp;NA</FONT></P>
+                                    </TD>
+                                </TR>
+                            </TABLE>
+                            </FONT></P>
+                    </TD>
+                </TR>
+            </TABLE>
+        </P>
+        <P>&nbsp;</P>
+        <P>
+            <TABLE id="Table21" style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5"
+                bgColor="#ffffff" border="0">
+                <TR>
+                    <A name="SaveConfiguration">
+                        <TD align="left" bgColor="#ccccff"><FONT style="BACKGROUND-COLOR: #ccccff" face="Arial" color="black" size="2"><STRONG><FONT color="red">SaveConfiguration</FONT></STRONG>&nbsp;</FONT></TD>
+                    </A>
+                </TR>
+                <TR>
+                    <TD align="left" bgColor="#eeeeff">
+                        <P><FONT face="Arial" size="2"><FONT face="Arial" size="2"> This function&nbsp;saves the 
+                                    current configuration file of&nbsp;&nbsp;BUSMASTER tool.</FONT><BR>
+                                <BR>
+                            </FONT>
+                            <TABLE id="Table22" style="WIDTH: 598px; HEIGHT: 45px" cellSpacing="1" cellPadding="1"
+                                border="1">
+                                <TR>
+                                    <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                    <TD><FONT face="Arial" size="2"> &nbsp;-</FONT></TD>
+                                </TR>
+                                <TR>
+                                    <TD width="70"><FONT face="Arial" size="2">
+                                            <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                        </FONT>
+                                    </TD>
+                                    <TD>
+                                        <P><FONT face="Arial" size="2">&nbsp;NA</FONT></P>
+                                    </TD>
+                                </TR>
+                            </TABLE>
+                            </FONT></P>
+                    </TD>
+                </TR>
+            </TABLE>
+        </P>
+        <P><BR>
+        </P>
+        <P>
+            <TABLE id="Table25" style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5"
+                bgColor="#ffffff" border="0">
+                <TR>
+                    <A name="RemoveLoggingBlock">
+                        <TD align="left" bgColor="#ccccff"><FONT style="BACKGROUND-COLOR: #ccccff" face="Arial" color="black" size="2"><STRONG><FONT color="red">RemoveLoggingBlock</FONT></STRONG>&nbsp;
+                            </FONT>
+                        </TD>
+                    </A>
+                </TR>
+                <TR>
+                    <TD align="left" bgColor="#eeeeff">
+                        <P><FONT face="Arial" size="2"><FONT face="Arial" size="2">This function removes a 
+                                    particular logging block</FONT><BR>
+                                <BR>
+                            </FONT>
+                            <TABLE id="Table26" style="WIDTH: 598px; HEIGHT: 45px" cellSpacing="1" cellPadding="1"
+                                border="1">
+                                <TR>
+                                    <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                    <TD><FONT face="Arial" size="2">&nbsp;USHORT BlockIndex - The zero based logging block 
+                                            index</FONT></TD>
+                                </TR>
+                                <TR>
+                                    <TD width="70"><FONT face="Arial" size="2">
+                                            <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                        </FONT>
+                                    </TD>
+                                    <TD>
+                                        <P><FONT face="Arial" size="2">&nbsp;Will fail in case&nbsp;block index passed is 
+                                                wrong.&nbsp;</FONT></P>
+                                    </TD>
+                                </TR>
+                            </TABLE>
+                            </FONT></P>
+                    </TD>
+                </TR>
+            </TABLE>
+        </P>
+        <P>&nbsp;</P>
+        <P>
+            <TABLE id="Table23" style="WIDTH: 722px; HEIGHT: 170px" cellSpacing="2" cellPadding="5"
+                bgColor="#ffffff" border="0">
+                <TR>
+                    <A name="ClearLoggingBlock">
+                        <TD align="left" bgColor="#ccccff"><FONT style="BACKGROUND-COLOR: #ccccff" face="Arial" color="black" size="2"><STRONG><FONT color="red">ClearLoggingBlock</FONT></STRONG>&nbsp;
+                            </FONT>
+                        </TD>
+                    </A>
+                </TR>
+                <TR>
+                    <TD align="left" bgColor="#eeeeff">
+                        <P><FONT face="Arial" size="2"><FONT face="Arial" size="2">This function clears the current 
+                                    logging blocks defined</FONT><BR>
+                                <BR>
+                            </FONT>
+                            <TABLE id="Table24" style="WIDTH: 598px; HEIGHT: 45px" cellSpacing="1" cellPadding="1"
+                                border="1">
+                                <TR>
+                                    <TD width="70"><FONT face="Arial" size="2">Inputs</FONT></TD>
+                                    <TD><FONT face="Arial" size="2"> &nbsp;NA</FONT></TD>
+                                </TR>
+                                <TR>
+                                    <TD width="70"><FONT face="Arial" size="2">
+                                            <P><FONT face="Arial" size="2">Cause of failure</FONT></P>
+                                        </FONT>
+                                    </TD>
+                                    <TD>
+                                        <P><FONT face="Arial" size="2"> &nbsp;NA</FONT></P>
+                                    </TD>
+                                </TR>
+                            </TABLE>
+                            </FONT></P>
+                    </TD>
+                </TR>
+            </TABLE>
+        </P>
+        <P>&nbsp;</P>
+    </BODY>
+</HTML>

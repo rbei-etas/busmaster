@@ -1,0 +1,1190 @@
+<HTML>
+<HEAD>
+<TITLE>C Math Library</TITLE>
+</HEAD>
+<BODY>
+<H1>
+<TABLE style="WIDTH: 722px; HEIGHT: 20px" cellSpacing=2 cellPadding=5 width=722 
+bgColor=#ffffff border=0>
+  
+  <TR>
+    <TD align=left bgColor=#ccccff>
+      <P align=center><FONT face=Arial color=red size=5><STRONG>C Math Library 
+      Functions</STRONG></FONT></P></TD></TR>
+  <TR>
+    <TD align=left bgColor=#eeeeff><FONT size=2>
+      <H2><A href="libm_toc.html#TOC3" name=SEC3><FONT face=Arial 
+      size=3>acos, acosf : arc cosine</FONT> 
+         </A></H2>
+      <P><A name=IDX5></A><A name=IDX6></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double acos(double <VAR>x</VAR>);
+float acosf(float <VAR>x</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG><BR></P></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>acos computes the inverse 
+        cosine (arc cosine) of the input value. Arguments to acos must be in the 
+        range -1 to 1. </FONT><FONT face=Arial>acosf is identical to acos, 
+        except that it performs its calculations on floats. 
+      </FONT>          
+                  </P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial>If <VAR>x</VAR> is not between 
+        -1 and 1, the returned value is NaN (not a number) the global variable 
+        errno is set to EDOM, and a DOMAIN error message is sent as standard 
+        error output. </FONT></P>
+      <P><FONT face=Arial>You can modify error handling 
+        for these functions using matherr.</FONT><FONT face=Arial><BR>         
+       </P></BLOCKQUOTE></FONT>
+      <H2><A href="libm_toc.html#TOC4" name=SEC4><FONT face=Arial 
+      size=3>acosh, acoshf : inverse hyperbolic cosine</FONT> 
+          </A></H2>
+      <P><A name=IDX7></A><A name=IDX8></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double acosh(double <VAR>x</VAR>);
+float acoshf(float <VAR>x</VAR>);
+
+</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial>acosh calculates the 
+      inverse hyperbolic cosine of <VAR>x</VAR>. acosh is defined as </FONT><FONT 
+        face=Arial><VAR>x</VAR> must be a number greater 
+        than or equal to 1. </FONT><FONT face=Arial>acoshf is identical, other 
+        than taking and returning floats.</FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial>acosh and 
+      acoshf return the calculated value. If <VAR>x</VAR> less than 1, the return value is NaN 
+        and errno is set to EDOM. </FONT><FONT face=Arial>You can change the 
+        error-handling behavior with the non-ANSI matherr function.</FONT><FONT 
+        face=Arial><BR></FONT></P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC5" name=SEC5><FONT face=Arial 
+      size=3>asin, asinf : arc sine</FONT> 
+         </A></H2>
+      <P><A name=IDX9></A><A name=IDX10></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double asin(double <VAR>x</VAR>);
+float asinf(float <VAR>x</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG><BR></P></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>asin computes the inverse sine (arc sine) of the argument 
+      <VAR>x</VAR>. Arguments 
+        to asin must be in the range -1 to 1. </FONT><FONT face=Arial>asinf is 
+        identical to asin, other than taking and returning floats. </FONT><FONT 
+        face=Arial>You can modify error handling for these routines using 
+        matherr.</FONT>            
+      </P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial>If <VAR>x</VAR> is not in the 
+        range -1 to 1, asin and asinf return NaN (not a number), set the global 
+        variable errno to EDOM, and issue a DOMAIN error message. </FONT><FONT 
+        face=Arial>You can change this error treatment using matherr. 
+      </FONT></P></BLOCKQUOTE><FONT face=Arial>
+      <P><BR></P></FONT>
+      <H2><A href="libm_toc.html#TOC6" name=SEC6><FONT face=Arial 
+      size=3>asinh, asinhf : inverse hyperbolic sine</FONT> 
+          </A></H2>
+      <P><A name=IDX11></A><A name=IDX12></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double asinh(double <VAR>x</VAR>);
+float asinhf(float <VAR>x</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial>asinh calculates the 
+      inverse hyperbolic sine of <VAR>x</VAR>. asinh is defined as </FONT><FONT 
+        face=Arial>asinhf is identical, other than taking and returning 
+        floats.</FONT></P></BLOCKQUOTE>
+      <P dir=ltr><FONT face=Arial><STRONG>Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P dir=ltr><FONT face=Arial>asinh and asinhf return the calculated 
+        value.</FONT><FONT face=Arial><BR></FONT></P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC7" name=SEC7><FONT face=Arial 
+      size=3>atan, atanf : arc tangent</FONT> 
+         </A></H2>
+      <P><A name=IDX13></A><A name=IDX14></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double atan(double <VAR>x</VAR>);
+float atanf(float <VAR>x</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG><BR></P></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>atan computes the inverse 
+        tangent (arc tangent) of the input value. </FONT><FONT face=Arial>atanf 
+        is identical to atan, save that it operates on floats. 
+      </FONT>         
+        </P></BLOCKQUOTE>
+      <P dir=ltr><FONT face=Arial><STRONG>Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P dir=ltr><FONT face=Arial>atan and atanf return the calculated 
+        value</FONT></P></BLOCKQUOTE><FONT face=Arial>
+      <P><BR></P></FONT>
+      <H2><A href="libm_toc.html#TOC8" name=SEC8><FONT face=Arial 
+      size=3>atan2, atan2f : arc tangent of y/x</FONT> 
+           </A></H2>
+      <P><A name=IDX15></A><A name=IDX16></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double atan2(double <VAR>y</VAR>,double <VAR>x</VAR>);
+float atan2f(float <VAR>y</VAR>,float <VAR>x</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG><BR></P></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>atan2 computes the inverse tangent (arc tangent) of 
+      <VAR>y</VAR>/<VAR>x</VAR>. atan2 produces the correct result 
+      even for angles near (that is, when <VAR>x</VAR> is near 0). 
+        </FONT><FONT face=Arial>atan2f is identical to atan2, save that it takes 
+        and returns float.</FONT>    </P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT>  
+                </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>atan2 and atan2f return a value 
+        in radians. </FONT><FONT face=Arial>If both <VAR>x</VAR> and <VAR>y</VAR> are 
+        0.0, atan2 causes a DOMAIN error. </FONT><FONT face=Arial>You can modify 
+        error handling for these functions using matherr.</FONT>  
+                </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC9" name=SEC9><FONT face=Arial 
+      size=3>atanh, atanhf : inverse hyperbolic tangent</FONT> 
+          </A></H2>
+      <P><A name=IDX17></A><A name=IDX18></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double atanh(double <VAR>x</VAR>);
+float atanhf(float <VAR>x</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT> </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>atanh calculates the 
+      inverse hyperbolic tangent of <VAR>x</VAR>. </FONT><FONT 
+        face=Arial>atanhf is identical, other than taking and returning float 
+        values. </FONT> </P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT>  
+           </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>atanh and atanhf return the 
+        calculated value. </FONT><FONT face=Arial>If is greater than 1, the 
+        global errno is set to EDOM and the result is a NaN. A DOMAIN error is 
+        reported. </FONT><FONT face=Arial>If is 1, the global errno is set to 
+        EDOM; and the result is infinity with the same sign as x. A SING error 
+        is reported. </FONT><FONT face=Arial>You can modify the error handling 
+        for these routines using matherr. </FONT><FONT face=Arial><BR></FONT>  
+           </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC10" 
+      name=SEC10><FONT 
+      face=Arial>jN,jNf,yN,yNf : Bessel functions</FONT>   
+      </A></H2>
+      <P><A name=IDX19></A><A name=IDX20></A><A name=IDX21></A><A 
+      name=IDX22></A><A name=IDX23></A><A name=IDX24></A><A name=IDX25></A><A 
+      name=IDX26></A><A name=IDX27></A><A name=IDX28></A><A name=IDX29></A><A 
+      name=IDX30></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double j0(double <VAR>x</VAR>);
+float j0f(float <VAR>x</VAR>);
+double j1(double <VAR>x</VAR>);
+float j1f(float <VAR>x</VAR>);
+double jn(int <VAR>n</VAR>, double <VAR>x</VAR>);
+float jnf(int <VAR>n</VAR>, float <VAR>x</VAR>);
+double y0(double <VAR>x</VAR>);
+float y0f(float <VAR>x</VAR>);
+double y1(double <VAR>x</VAR>);
+float y1f(float <VAR>x</VAR>);
+double yn(int <VAR>n</VAR>, double <VAR>x</VAR>);
+float ynf(int <VAR>n</VAR>, float <VAR>x</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>       
+                
+           </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>The Bessel functions are a 
+        family of functions that solve the differential equation These functions 
+        have many applications in engineering and physics. </FONT><FONT 
+        face=Arial>jn calculates the Bessel function of the first kind of 
+      order <VAR>n</VAR>. j0 and j1 are special cases for order 
+        0 and order 1 respectively. </FONT><FONT face=Arial>Similarly, yn calculates the Bessel function of the second 
+      kind of order <VAR>n</VAR>, and y0 and y1 are special cases for order 
+        0 and 1. </FONT><FONT face=Arial>jnf, j0f, j1f, ynf, y0f, and y1f 
+        perform the same calculations, but on float rather than double 
+        values.</FONT>       
+                
+           </P></BLOCKQUOTE>
+      <P dir=ltr><FONT face=Arial><STRONG>Returns</STRONG></FONT>       
+                
+           </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P dir=ltr><FONT face=Arial>The value of each Bessel function at 
+      <VAR>x</VAR> is returned. 
+        </FONT>       
+                
+           </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC11" name=SEC11><FONT face=Arial 
+      size=3>cbrt, cbrtf : cube root</FONT> 
+         </A></H2>
+      <P><A name=IDX31></A><A name=IDX32></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double cbrt(double <VAR>x</VAR>);
+float  cbrtf(float <VAR>x</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>    
+          </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>cbrt computes the cube root of 
+        the argument. </FONT>    
+          </P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT>     </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>The cube root is returned. 
+        </FONT>     </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC12" name=SEC12><FONT 
+      face=Arial><FONT size=3>copysign, 
+      copysignf : sign of <VAR>y</VAR>, magnitude of 
+      <VAR>x</VAR></FONT></FONT></A></H2>
+      <P><A name=IDX33></A><A name=IDX34></A><FONT face=Arial><STRONG>Synopsis</STRONG></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double copysign (double <VAR>x</VAR>, double <VAR>y</VAR>);
+float copysignf (float <VAR>x</VAR>, float <VAR>y</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT> </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>copysign constructs a 
+      number with the magnitude (absolute value) of its first argument, 
+      <VAR>x</VAR>, and the sign of its second argument, <VAR>y</VAR>. </FONT><FONT face=Arial>copysignf does the 
+        same thing; the two functions differ only in the type of their arguments 
+        and result.</FONT> </P></BLOCKQUOTE>
+      <P dir=ltr><FONT face=Arial><STRONG>Returns</STRONG></FONT> </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P dir=ltr><FONT face=Arial>copysign returns a 
+      double with the magnitude of <VAR>x</VAR> and the sign of 
+      <VAR>y</VAR>. copysignf returns a float with the 
+      magnitude of <VAR>x</VAR> and the sign of <VAR>y</VAR>. </FONT> </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC13" name=SEC13><FONT face=Arial 
+      size=3>cosh, coshf : hyperbolic cosine</FONT> 
+         </A></H2>
+      <P><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double cosh(double <VAR>x</VAR>);
+float coshf(float <VAR>x</VAR>)</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG><BR></P></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>cosh computes the hyperbolic cosine of the argument 
+      <VAR>x</VAR>. cosh(<VAR>x</VAR>) is defined as </FONT><FONT 
+        face=Arial>Angles are specified in radians. coshf is identical, save 
+        that it takes and returns float.</FONT>    </P></BLOCKQUOTE>
+      <P dir=ltr><FONT face=Arial><STRONG>Returns</STRONG></FONT>    </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P dir=ltr><FONT face=Arial>The computed value is 
+        returned. When the correct value would create an overflow, cosh returns 
+        the value HUGE_VAL with the appropriate sign, and the global value errno 
+        is set to ERANGE. </FONT><FONT face=Arial>You can modify error handling 
+        for these functions using the function matherr.</FONT>    </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC14" name=SEC14><FONT face=Arial 
+      size=3>erf, erff, erfc, erfcf : error function</FONT> 
+           
+      </A></H2>
+      <P><A name=IDX35></A><A name=IDX36></A><A name=IDX37></A><A 
+      name=IDX38></A><FONT 
+      face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double erf(double <VAR>x</VAR>);
+float erff(float <VAR>x</VAR>);
+double erfc(double <VAR>x</VAR>);
+float erfcf(float <VAR>x</VAR>);</FONT>
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>    
+            </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>erf calculates an 
+      approximation to the "error function", which estimates the probability 
+      that an observation will fall within <VAR>x</VAR> standard 
+        deviations of the mean (assuming a normal distribution). </FONT><FONT 
+        face=Arial>erfc calculates the complementary probability; that is, 
+      erfc(<VAR>x</VAR>) is 1 - erf(<VAR>x</VAR>). 
+      erfc is computed directly, so that you can use it to avoid 
+      the loss of precision that would result from subtracting large 
+      probabilities (on large <VAR>x</VAR>) from 1. </FONT><FONT face=Arial>erff and 
+        erfcf differ from erf and erfc only in the argument and result types. 
+        </FONT>    
+            </P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT>   
+               
+          </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>For positive arguments, erf and 
+        all its variants return a probability--a number between 0 and 
+        1.</FONT><FONT face=Arial><BR></FONT>   
+               
+          </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC15" name=SEC15><FONT face=Arial 
+      size=3>exp, expf : exponential</FONT> 
+        </A></H2>
+      <P><A name=IDX39></A><A name=IDX40></A><FONT face=Arial><STRONG>Synopsis</STRONG></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double exp(double <VAR>x</VAR>);
+float expf(float <VAR>x</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>        
+            </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>exp and expf 
+      calculate the exponential of <VAR>x</VAR>, that is, is the base 
+        of the natural system of logarithms, approximately 2.71828). 
+        </FONT><FONT face=Arial>You can use the (non-ANSI) function matherr to 
+        specify error handling for these functions.</FONT>        
+            </P></BLOCKQUOTE>
+      <P dir=ltr><FONT face=Arial><STRONG>Returns</STRONG></FONT>        
+            </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P dir=ltr><FONT face=Arial>On success, exp and 
+        expf return the calculated value. If the result underflows, the returned 
+        value is 0. If the result overflows, the returned value is HUGE_VAL. In 
+        either case, errno is set to ERANGE. </FONT>        
+            </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC16" name=SEC16><FONT face=Arial 
+      size=3>expm1, expm1f : exponential minus 1</FONT> 
+          </A></H2>
+      <P><A name=IDX41></A><A name=IDX42></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double expm1(double <VAR>x</VAR>);
+float expm1f(float <VAR>x</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>     
+       </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>expm1 and 
+      expm1f calculate the exponential of <VAR>x</VAR> and subtract 
+      1, that is, is the base of the natural system of logarithms, approximately 
+      2.71828). The result is accurate even for small values of <VAR>x</VAR>, 
+      where using exp(<VAR>x</VAR>)-1 would lose many significant digits. 
+        </FONT>     
+       </P></BLOCKQUOTE>
+      <P><BR><FONT face=Arial><STRONG>Returns</STRONG></FONT> 
+        </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>e raised to the power <VAR>x</VAR>, minus 1. </FONT> 
+        </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC17" name=SEC17><FONT face=Arial 
+      size=3>fabs, fabsf : absolute value (magnitude)</FONT> 
+          </A></H2>
+      <P><A name=IDX43></A><A name=IDX44></A><FONT face=Arial><STRONG>Synopsis</STRONG></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double fabs(double <VAR>x</VAR>);
+float fabsf(float <VAR>x</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT> </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>fabs and 
+      fabsf calculate the absolute value (magnitude) of the 
+      argument <VAR>x</VAR>, by direct manipulation of the bit representation of 
+      <VAR>x</VAR>. 
+      </FONT> </P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT>      
+         </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>The calculated value is 
+        returned. No errors are detected.</FONT>      
+         </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC18" name=SEC18><FONT face=Arial 
+      size=3>floor, floorf, ceil, ceilf : floor and ceiling</FONT> 
+            
+      </A></H2>
+      <P><A name=IDX45></A><A name=IDX46></A><A name=IDX47></A><A 
+      name=IDX48></A><FONT 
+      face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double floor(double <VAR>x</VAR>);
+float floorf(float <VAR>x</VAR>);
+double ceil(double <VAR>x</VAR>);
+float ceilf(float <VAR>x</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT> </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>floor and 
+      floorf find the nearest integer less than or equal to 
+      <VAR>x</VAR>. ceil and ceilf find the nearest 
+      integer greater than or equal to <VAR>x</VAR>.</FONT> </P></BLOCKQUOTE>
+      <P dir=ltr><FONT face=Arial><STRONG>Returns</STRONG></FONT> </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P dir=ltr><FONT face=Arial>floor and ceil return 
+        the integer result as a double. floorf and ceilf return the integer 
+        result as a float.</FONT> </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC19" name=SEC19><FONT face=Arial 
+      size=3>fmod, fmodf : floating-point remainder (modulo)</FONT> 
+          </A></H2>
+      <P><A name=IDX49></A><A name=IDX50></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double fmod(double <VAR>x</VAR>, double <VAR>y</VAR>)
+float fmodf(float <VAR>x</VAR>, float <VAR>y</VAR>)</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT> </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>The fmod and 
+      fmodf functions compute the floating-point remainder of 
+      <VAR>x</VAR>/<VAR>y</VAR> (<VAR>x</VAR> modulo <VAR>y</VAR>). 
+        </FONT> </P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT> </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>The fmod function returns 
+      the value for the largest integer <VAR>i</VAR> such that, if <VAR>y</VAR> 
+      is nonzero, the result has the same sign as <VAR>x</VAR> and magnitude 
+      less than the magnitude of <VAR>y</VAR>. </FONT><FONT 
+        face=Arial>fmod(<VAR>x</VAR>,0) returns NaN, and 
+        sets errno to EDOM. </FONT><FONT face=Arial>You can modify error 
+        treatment for these functions using matherr.</FONT> </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC20" name=SEC20><FONT face=Arial 
+      size=3>frexp, frexpf : split floating-point number</FONT> 
+          </A></H2>
+      <P><A name=IDX51></A><A name=IDX52></A><FONT face=Arial><STRONG>Synopsis</STRONG></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double frexp(double <VAR>val</VAR>, int *<VAR>exp</VAR>);
+float frexpf(float <VAR>val</VAR>, int *<VAR>exp</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT> </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>All non zero, normal numbers can be 
+      described as <VAR>m</VAR> * 2**<VAR>p</VAR>. frexp represents 
+      the double <VAR>val</VAR> as a mantissa <VAR>m</VAR> and a power of two 
+      <VAR>p</VAR>. The resulting mantissa will always be greater than or equal 
+      to 0.5, and less than 1.0 (as long as 
+      <VAR>val</VAR> is nonzero). The power of two will be stored in 
+      *<VAR>exp</VAR>. </FONT><FONT 
+        face=Arial>frexpf is identical, other than taking and returning floats 
+        rather than doubles.</FONT> </P></BLOCKQUOTE>
+      <P dir=ltr><FONT face=Arial><STRONG>Returns</STRONG></FONT> </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P dir=ltr><FONT face=Arial>frexp returns the mantissa 
+      <VAR>m</VAR>. If <VAR>val</VAR> is 0, infinity, or Nan, 
+      frexp will set *<VAR>exp</VAR> to 0 
+      and return <VAR>val</VAR>.</FONT> </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC21" name=SEC21><FONT face=Arial 
+      size=3>gamma, gammaf, lgamma, lgammaf, gamma_r,</FONT> 
+         
+      </A></H2>
+      <P><A name=IDX53></A><A name=IDX54></A><A name=IDX55></A><A 
+      name=IDX56></A><A name=IDX57></A><A name=IDX58></A><A name=IDX59></A><A 
+      name=IDX60></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double gamma(double <VAR>x</VAR>);
+float gammaf(float <VAR>x</VAR>);
+double lgamma(double <VAR>x</VAR>);
+float lgammaf(float <VAR>x</VAR>);
+double gamma_r(double <VAR>x</VAR>, int *<VAR>signgamp</VAR>);
+float gammaf_r(float <VAR>x</VAR>, int *<VAR>signgamp</VAR>);
+double lgamma_r(double <VAR>x</VAR>, int *<VAR>signgamp</VAR>);
+float lgammaf_r(float <VAR>x</VAR>, int *<VAR>signgamp</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>     
+                 
+                
+              </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>gamma calculates the 
+      natural logarithm of the gamma function of <VAR>x</VAR>. The gamma 
+      function (exp(gamma(<VAR>x</VAR>))) is a 
+        generalization of factorial, and retains the property that Accordingly, 
+        the results of the gamma function itself grow very quickly. gamma is 
+        defined as to extend the useful range of results representable. 
+        </FONT>     
+                 
+                
+              </P>
+      <P><FONT face=Arial>The sign of the result is 
+        returned in the global variable signgam, which is declared in math.h. 
+        </FONT><FONT face=Arial>gammaf performs the same calculation as gamma, 
+        but uses and returns float values. </FONT><FONT face=Arial>lgamma and 
+        lgammaf are alternate names for gamma and gammaf. The use of lgamma 
+        instead of gamma is a reminder that these functions compute the log of 
+        the gamma function, rather than the gamma function itself. </FONT>           
+            </P>
+      <P><FONT face=Arial>The functions gamma_r, 
+        gammaf_r, lgamma_r, and lgammaf_r are just like gamma, gammaf, lgamma, 
+        and lgammaf, respectively, but take an additional argument. This 
+        additional argument is a pointer to an integer. This additional argument 
+        is used to return the sign of the result, and the global variable 
+        signgam is not used. These functions may be used for reentrant calls 
+        (but they will still set the global variable errno if an error occurs). 
+        </FONT>    
+            
+          
+              
+                 
+                   
+                
+                
+           </P></BLOCKQUOTE>
+      <P><BR><FONT face=Arial><STRONG>Returns</STRONG></FONT>     
+       </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>Normally, the computed result 
+        is returned. </FONT><FONT face=Arial>When <VAR>x</VAR> is a nonpositive integer, gamma returns 
+        HUGE_VAL and errno is set to EDOM. If the result overflows, gamma 
+        returns HUGE_VAL and errno is set to ERANGE. </FONT><FONT face=Arial>You 
+        can modify this error treatment using matherr.</FONT>     
+       </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC22" name=SEC22><FONT face=Arial 
+      size=3>hypot, hypotf : distance from origin</FONT> 
+          </A></H2>
+      <P><A name=IDX61></A><A name=IDX62></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double hypot(double <VAR>x</VAR>, double <VAR>y</VAR>);
+float hypotf(float <VAR>x</VAR>, float <VAR>y</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>  
+                </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>hypot calculates the 
+      Euclidean distance between the origin (0,0) and a point represented by the 
+      Cartesian coordinates (<VAR>x</VAR>,<VAR>y</VAR>). hypotf differs only in the type of its 
+        arguments and result.</FONT>  
+                </P></BLOCKQUOTE>
+      <P dir=ltr><FONT face=Arial><STRONG>Returns</STRONG></FONT>  
+                </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P dir=ltr><FONT face=Arial>Normally, the distance 
+        value is returned. On overflow, hypot returns HUGE_VAL and sets errno to 
+        ERANGE. </FONT><FONT face=Arial>You can change the error treatment with 
+        matherr. </FONT>  
+                </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC23" name=SEC23><FONT face=Arial 
+      size=3>ilogb, ilogbf : get exponent of floating point 
+      number</FONT> 
+             </A></H2>
+      <P><A name=IDX63></A><A name=IDX64></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+int ilogb(double <VAR>val</VAR>);
+int ilogbf(float <VAR>val</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></P></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>All non zero, normal numbers can be described as <VAR>m</VAR> * 
+      2**<VAR>p</VAR>. ilogb and ilogbf examine the 
+      argument <VAR>val</VAR>, and return <VAR>p</VAR>. The functions 
+      frexp and frexpf are similar to 
+      ilogb and ilogbf, but also return <VAR>m</VAR>. 
+        </FONT> 
+      </P></BLOCKQUOTE>
+      <P><BR><FONT face=Arial><STRONG>Returns</STRONG><BR></P></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>ilogb and ilogbf return the power of two used 
+      to form the floating point argument. If <VAR>val</VAR> is 0, 
+      they return - INT_MAX (INT_MAX is defined in 
+      limits.h). If <VAR>val</VAR> is 
+        infinite, or NaN, they return INT_MAX. </FONT><FONT 
+      face=Arial>       
+       </P></BLOCKQUOTE></FONT>
+      <H2><A href="libm_toc.html#TOC24" name=SEC24><FONT face=Arial 
+      size=3>infinity, infinityf : representation of infinity</FONT> 
+          </A></H2>
+      <P><A name=IDX65></A><A name=IDX66></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double infinity(void);
+float infinityf(void);</FONT> 
+ 
+ 
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>  
+               
+           </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>infinity and infinityf return 
+        the special number IEEE infinity in double and single precision 
+        arithmetic respectivly. </FONT>  
+               
+           </P></BLOCKQUOTE><FONT face=Arial>
+      <P><BR></P></FONT>
+      <H2><A href="libm_toc.html#TOC25" 
+      name=SEC25><FONT face=Arial 
+      size=3>isnan,isnanf,isinf,isinff,finite,finitef : test for exceptional 
+      numbers</FONT>   
+        </A></H2>
+      <P><A name=IDX67></A><A name=IDX68></A><A name=IDX69></A><A 
+      name=IDX70></A><A name=IDX71></A><A 
+      name=IDX72></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;ieeefp.h&gt;
+int isnan(double <VAR>arg</VAR>);
+int isinf(double <VAR>arg</VAR>);
+int finite(double <VAR>arg</VAR>);
+int isnanf(float <VAR>arg</VAR>);
+int isinff(float <VAR>arg</VAR>);
+int finitef(float <VAR>arg</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>     
+           </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>These functions provide 
+        information on the floating point argument supplied. </FONT><FONT 
+        face=Arial>There are five major number formats - </FONT>     
+           </P>       
+      <DL compact>
+        <DT><FONT face=Arial>zero </FONT> 
+        <DD><FONT face=Arial>a number which contains all 
+          zero bits. </FONT>       
+        <DT><FONT face=Arial>subnormal </FONT> 
+        <DD><FONT face=Arial>Is used to represent number 
+          with a zero exponent, but a non zero fraction. </FONT>             
+         
+        <DT><FONT face=Arial>normal </FONT> 
+        <DD><FONT face=Arial>A number with an exponent, 
+          and a fraction </FONT>        
+        <DT><FONT face=Arial>infinity </FONT> 
+        <DD><FONT face=Arial>A number with an all 1's 
+          exponent and a zero fraction. </FONT>           
+        <DT><FONT face=Arial>NAN </FONT> 
+        <DD><FONT face=Arial>A number with an all 1's 
+          exponent and a non zero fraction. </FONT>            </DD></DL>
+      <P><FONT face=Arial>isnan returns 1 if the argument 
+        is a nan. isinf returns 1 if the argument is infinity. finite returns 1 
+        if the argument is zero, subnormal or normal. The isnanf, isinff and 
+        finitef perform the same operations as their isnan, isinf and finite 
+        counterparts, but on single precision floating point numbers. 
+      </FONT>         
+              
+                
+           
+             
+          
+              </P></BLOCKQUOTE><FONT face=Arial>
+      <P><BR></P></FONT>
+      <H2><A href="libm_toc.html#TOC26" name=SEC26><FONT face=Arial 
+      size=3>ldexp, ldexpf : load exponent</FONT> 
+         </A></H2>
+      <P><A name=IDX73></A><A name=IDX74></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double ldexp(double <VAR>val</VAR>, int <VAR>exp</VAR>);
+float ldexpf(float <VAR>val</VAR>, int <VAR>exp</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>    
+               
+           </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>ldexp calculates the value 
+        ldexpf is identical, save that it takes and returns float rather than 
+        double values. </FONT>    
+               
+           </P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT>   
+        </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>ldexp returns the calculated 
+        value. </FONT><FONT face=Arial>Underflow and overflow both set errno to 
+        ERANGE. On underflow, ldexp and ldexpf return 0.0. On overflow, ldexp 
+        returns plus or minus HUGE_VAL. </FONT>   
+        </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC27" name=SEC27><FONT face=Arial 
+      size=3>log, logf : natural logarithms</FONT> 
+         </A></H2>
+      <P><A name=IDX75></A><A name=IDX76></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double log(double <VAR>x</VAR>);
+float logf(float <VAR>x</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>              
+             
+                
+      </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>Return the natural logarithm of 
+      <VAR>x</VAR>, that is, its logarithm base e (where 
+        e is the base of the natural system of logarithms, 2.71828...). log and 
+        logf are identical save for the return and argument types. </FONT><FONT 
+        face=Arial>You can use the (non-ANSI) function matherr to specify error 
+        handling for these functions. </FONT>              
+             
+                
+      </P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT>  
+             
+                
+         </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>Normally, returns the calculated value. 
+      When <VAR>x</VAR> is zero, the returned value is -HUGE_VAL 
+      and errno is set to ERANGE. When <VAR>x</VAR> is negative, the returned value is 
+        -HUGE_VAL and errno is set to EDOM. You can control the error behavior 
+        via matherr. </FONT>  
+             
+                
+         </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC28" name=SEC28><FONT face=Arial 
+      size=3>log10, log10f : base 10 logarithms</FONT> 
+          </A></H2>
+      <P><A name=IDX77></A><A name=IDX78></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double log10(double <VAR>x</VAR>);
+float log10f(float <VAR>x</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>  
+       </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>log10 returns the base 10 
+      logarithm of <VAR>x</VAR>. It is implemented as log(<VAR>x</VAR>) / log(10). </FONT><FONT 
+        face=Arial>log10f is identical, save that it takes and returns float 
+        values. </FONT>  
+       </P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT>  
+           </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>log10 and log10f return the 
+        calculated value. </FONT><FONT face=Arial>See the description of log for 
+        information on errors. </FONT>  
+           </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC29" name=SEC29><FONT 
+      face=Arial><FONT size=3>log1p, 
+      log1pf : log of 1 + <VAR>x</VAR></FONT></FONT></A></H2>
+      <P><A name=IDX79></A><A name=IDX80></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double log1p(double <VAR>x</VAR>);
+float log1pf(float <VAR>x</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>    </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>log1p calculates the 
+      natural logarithm of 1+<VAR>x</VAR>. You can use 
+      log1p rather than `log(1+<VAR>x</VAR>)' for 
+      greater precision when <VAR>x</VAR> is very small. 
+        </FONT><FONT face=Arial>log1pf calculates the same thing, but accepts 
+        and returns float values rather than double. </FONT>    </P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT> </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>log1p returns a 
+      double, the natural log of 1+<VAR>x</VAR>. 
+      log1pf returns a float, the natural log of 
+      1+<VAR>x</VAR>. 
+        </FONT> </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC30" 
+      name=SEC30><FONT face=Arial 
+      size=3>matherr : modifiable math error handler</FONT>     </A></H2>
+      <P><A name=IDX81></A><FONT 
+      face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+int matherr(struct exception *<VAR>e</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>    
+                
+               
+                 
+               </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>matherr is called whenever a 
+        math library function generates an error. You can replace matherr by 
+        your own subroutine to customize error treatment. The customized matherr 
+        must return 0 if it fails to resolve the error, and non-zero if the 
+        error is resolved. </FONT>    
+                
+               
+                 
+               </P>
+      <P><FONT face=Arial>When matherr returns a nonzero value, no error message is 
+      printed and the value of errno is not modified. You can 
+      accomplish either or both of these things in your own matherr 
+      using the information passed in the structure *<VAR>e</VAR>. </FONT> 
+      </P>
+      <P><FONT face=Arial>This is the exception structure 
+        (defined in `math.h'): </FONT></P></BLOCKQUOTE>       
+       <PRE><FONT face=Arial>	struct exception {
+	        int type;
+	        char *name;
+	        double arg1, arg2, retval;
+		int err;
+	};
+</FONT>	  
+	         
+	         
+	           
+		 
+	
+</PRE>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>The members of the exception 
+        structure have the following meanings: </FONT></P></BLOCKQUOTE>
+      <BLOCKQUOTE>          
+      <DL compact>
+        <DT><FONT face=Arial><STRONG>type</STRONG> 
+</FONT> 
+        <DD><FONT face=Arial>The type of mathematical 
+          error that occured; macros encoding error types are also defined in 
+          `math.h'. </FONT>          
+              
+        <DT><FONT face=Arial><STRONG>name</STRONG> 
+</FONT> 
+        <DD><FONT face=Arial>a pointer to a 
+          null-terminated string holding the name of the math library function 
+          where the error occurred. </FONT>            
+              
+        <DT><FONT face=Arial><STRONG>arg1, arg2</STRONG> 
+          </FONT>  
+        <DD><FONT face=Arial>The arguments which caused 
+          the error. </FONT>      
+        <DT><FONT face=Arial><STRONG>retval</STRONG> 
+          </FONT> 
+        <DD><FONT face=Arial>The error return value (what 
+          the calling function will return). </FONT>          
+        <DT><FONT face=Arial><STRONG>err</STRONG> </FONT> 
+        <DD><FONT face=Arial>If set to be non-zero, this 
+          is the new value assigned to errno. </FONT>            
+         </DD></DL>
+      <P><FONT face=Arial>The error types defined in 
+        `math.h' represent possible mathematical errors as follows: </FONT>        
+          </P>
+      <DL compact>
+        <DT><FONT face=Arial><STRONG>DOMAIN</STRONG> 
+          </FONT> 
+        <DD><FONT face=Arial>An argument was not in the 
+          domain of the function; e.g. log(-1.0). </FONT>           
+         
+        <DT><FONT face=Arial><STRONG>SING</STRONG> 
+</FONT> 
+        <DD><FONT face=Arial>The requested calculation 
+          would result in a singularity; e.g. pow(0.0,-2.0) </FONT>         
+         
+        <DT><FONT face=Arial><STRONG>OVERFLOW</STRONG> 
+          </FONT> 
+        <DD><FONT face=Arial>A calculation would produce 
+          a result too large to represent; e.g. exp(1000.0). </FONT>           
+         
+        <DT><FONT face=Arial><STRONG>UNDERFLOW</STRONG> 
+          </FONT> 
+        <DD><FONT face=Arial>A calculation would produce 
+          a result too small to represent; e.g. exp(-1000.0). </FONT>           
+         
+        <DT><FONT face=Arial><STRONG>TLOSS</STRONG> 
+          </FONT> 
+        <DD><FONT face=Arial>Total loss of precision. The 
+          result would have no significant digits; e.g. sin(10e70). </FONT>          
+           
+        <DT><FONT face=Arial><STRONG>PLOSS</STRONG> 
+          </FONT> 
+        <DD><FONT face=Arial>Partial loss of precision. 
+          </FONT>    </DD></DL></BLOCKQUOTE>
+      <P><BR><FONT face=Arial><STRONG>Returns</STRONG></FONT>    
+            </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>The library definition for 
+        matherr returns 0 in all cases. </FONT><FONT face=Arial>You can change 
+        the calling function's result from a customized matherr by modifying 
+        e-&gt;retval, which propagates backs to the caller. </FONT>    
+            </P>
+      <P><FONT face=Arial>If matherr returns 0 
+        (indicating that it was not able to resolve the error) the caller sets 
+        errno to an appropriate value, and prints an error 
+      message.</FONT>        
+                  
+             </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC31" name=SEC31><FONT face=Arial 
+      size=3>modf, modff : split fractional and integer parts</FONT> 
+            </A></H2>
+      <P><A name=IDX82></A><A name=IDX83></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double modf(double <VAR>val</VAR>, double *<VAR>ipart</VAR>);
+float modff(float <VAR>val</VAR>, float *<VAR>ipart</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>         
+            </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>modf splits the double 
+      <VAR>val</VAR> apart into an integer part and a fractional part, returning 
+      the fractional part and storing the integer part in 
+      *<VAR>ipart</VAR>. No rounding whatsoever is done; the sum of 
+      the integer and fractional parts is guaranteed to be exactly equal to 
+      <VAR>val</VAR>. That is, if . <VAR>realpart</VAR> = modf(<VAR>val</VAR>, 
+      &amp;<VAR>intpart</VAR>); then 
+      `<VAR>realpart</VAR>+<VAR>intpart</VAR>' is the same as 
+      <VAR>val</VAR>. modff is identical, save that it takes 
+        and returns float rather than double values. </FONT>         
+            </P></BLOCKQUOTE>
+      <P dir=ltr><FONT face=Arial><STRONG>Returns</STRONG></FONT>         
+            </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>The fractional part is returned. Each 
+      result has the same sign as the supplied argument <VAR>val</VAR>. </FONT> </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC32" name=SEC32><FONT face=Arial 
+      size=3>nan, nanf : representation of infinity</FONT> 
+          </A></H2>
+      <P><A name=IDX84></A><A name=IDX85></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double nan(void);
+float nanf(void);</FONT> 
+ 
+ 
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>   
+                  
+        </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>nan and nanf return an IEEE NaN 
+        (Not a Number) in double and single precision arithmetic respectivly. 
+        </FONT>   
+                  
+        </P></BLOCKQUOTE><FONT face=Arial>
+      <P><BR></P></FONT>
+      <H2><A href="libm_toc.html#TOC33" name=SEC33><FONT face=Arial 
+      size=3>nextafter, nextafterf : get next number</FONT> 
+          </A></H2>
+      <P><A name=IDX86></A><A name=IDX87></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double nextafter(double <VAR>val</VAR>, double <VAR>dir</VAR>);
+float nextafterf(float <VAR>val</VAR>, float <VAR>dir</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>     
+            
+             
+           </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>nextafter returns the 
+      double) precision floating point number closest to <VAR>val</VAR> in the 
+      direction toward <VAR>dir</VAR>. nextafterf performs the same operation 
+        in single precision. For example, nextafter(0.0,1.0) returns the 
+        smallest positive number which is representable in double precision. 
+        </FONT>     
+            
+             
+           </P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT> </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>Returns the next closest number to 
+      <VAR>val</VAR> in the direction toward <VAR>dir</VAR>. </FONT> </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC34" name=SEC34><FONT face=Arial 
+      size=3>pow, powf : x to the power y</FONT> 
+            </A></H2>
+      <P><A name=IDX88></A><A name=IDX89></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double pow(double <VAR>x</VAR>, double <VAR>y</VAR>);
+float pow(float <VAR>x</VAR>, float <VAR>y</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT> </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>pow and powf 
+      calculate <VAR>x</VAR> raised to the exp1.0nt <VAR>y</VAR>. </FONT> </P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT>    
+           </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>On success, pow and powf return 
+        the value calculated. </FONT>    
+           </P>
+      <P><FONT face=Arial>When the argument values would produce overflow, pow 
+      returns HUGE_VAL and set errno to 
+      ERANGE. If the argument <VAR>x</VAR> passed to 
+      pow or powf is a negative noninteger, and 
+      <VAR>y</VAR> is also not an integer, then errno is set to 
+      EDOM. If <VAR>x</VAR> and <VAR>y</VAR> are 
+        both 0, then pow and powf return 1. </FONT><FONT face=Arial>You can 
+        modify error handling for these functions using matherr. 
+      </FONT>     
+           </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC35" name=SEC35><FONT face=Arial 
+      size=3>rint, rintf, remainder, remainderf : round and 
+      remainder</FONT> 
+        
+          </A></H2>
+      <P><A name=IDX90></A><A name=IDX91></A><A name=IDX92></A><A 
+      name=IDX93></A><FONT 
+      face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double rint(double <VAR>x</VAR>);
+float rintf(float <VAR>x</VAR>);
+double remainder(double <VAR>x</VAR>, double <VAR>y</VAR>);
+float remainderf(float <VAR>x</VAR>, float <VAR>y</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT> </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>rint and 
+      rintf returns their argument rounded to the nearest integer. 
+      remainder and remainderf find the remainder of 
+      <VAR>x</VAR>/<VAR>y</VAR>; this value is in the range -<VAR>y</VAR>/2 .. 
+      +<VAR>y</VAR>/2. 
+        </FONT> </P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT>  
+              </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>rint and remainder return the 
+        integer result as a double. </FONT>  
+              </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC36" name=SEC36><FONT face=Arial 
+      size=3>scalbn, scalbnf : scale by integer</FONT> 
+          </A></H2>
+      <P><A name=IDX94></A><A name=IDX95></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double scalbn(double <VAR>x</VAR>, int <VAR>y</VAR>);
+float scalbnf(float <VAR>x</VAR>, int <VAR>y</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>      
+               
+         </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>scalbn and 
+      scalbnf scale <VAR>x</VAR> by <VAR>n</VAR>, returning 
+      <VAR>x</VAR> times 2 to the power <VAR>n</VAR>. The result is computed by manipulating the 
+        exponent, rather than by actually performing an exponentiation or 
+        multiplication. </FONT>      
+               
+         </P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT> </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial><VAR>x</VAR> times 2 to the power 
+      <VAR>n</VAR>. </FONT> </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC37" name=SEC37><FONT face=Arial 
+      size=3>sqrt, sqrtf : positive square root</FONT> 
+          </A></H2>
+      <P><A name=IDX96></A><A name=IDX97></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double sqrt(double <VAR>x</VAR>);
+float  sqrtf(float <VAR>x</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>    
+                  
+         </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>sqrt computes the positive 
+        square root of the argument. You can modify error handling for this 
+        function with matherr. </FONT>    
+                  
+         </P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT>        
+             </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>On success, the square root is 
+      returned. If <VAR>x</VAR> is real and positive, then the result is 
+      positive. If <VAR>x</VAR> is 
+        real and negative, the global value errno is set to EDOM (domain error). 
+        </FONT>        
+             </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC38" name=SEC38><FONT face=Arial 
+      size=3>sin, sinf, cos, cosf : sine or cosine</FONT> 
+            
+      </A></H2>
+      <P><A name=IDX98></A><A name=IDX99></A><A name=IDX100></A><A 
+      name=IDX101></A><FONT 
+      face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double sin(double <VAR>x</VAR>);
+float  sinf(float <VAR>x</VAR>);
+double cos(double <VAR>x</VAR>);
+float cosf(float <VAR>x</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT> 
+           </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>sin and cos 
+      compute (respectively) the sine and cosine of the argument <VAR>x</VAR>. Angles are specified in radians. 
+        </FONT><FONT face=Arial>sinf and cosf are identical, save that they take 
+        and return float values. </FONT> 
+           </P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT>  
+       </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>The sine or cosine of <VAR>x</VAR> is returned. </FONT>  
+       </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC39" name=SEC39><FONT face=Arial 
+      size=3>sinh, sinhf : hyperbolic sine</FONT> 
+         </A></H2>
+      <P><A name=IDX102></A><A name=IDX103></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double sinh(double <VAR>x</VAR>);
+float  sinhf(float <VAR>x</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>    </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>sinh computes the 
+      hyperbolic sine of the argument <VAR>x</VAR>. Angles are specified in 
+      radians. sinh(<VAR>x</VAR>) is defined 
+        as </FONT><FONT face=Arial>sinhf is identical, save that it takes and 
+        returns float values. </FONT>    </P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT>  
+       </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>The hyperbolic sine of <VAR>x</VAR> is returned. </FONT>  
+       </P>
+      <P><FONT face=Arial>When the correct result is too 
+        large to be representable (an overflow), sinh returns HUGE_VAL with the 
+        appropriate sign, and sets the global value errno to ERANGE. 
+        </FONT><FONT face=Arial>You can modify error handling for these 
+        functions with matherr. </FONT>            
+             
+              </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC40" name=SEC40><FONT face=Arial 
+      size=3>tan, tanf : tangent</FONT> 
+        </A></H2>
+      <P><A name=IDX104></A><A name=IDX105></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double tan(double <VAR>x</VAR>);
+float tanf(float <VAR>x</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT>      </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>tan computes the tangent 
+      of the argument <VAR>x</VAR>. Angles are specified in 
+        radians. </FONT><FONT face=Arial>tanf is identical, save that it takes 
+        and returns float values. </FONT>      </P></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Returns</STRONG></FONT>  
+       </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>The tangent of <VAR>x</VAR> is returned. </FONT>  
+       </P></BLOCKQUOTE>
+      <H2><A href="libm_toc.html#TOC41" name=SEC41><FONT face=Arial 
+      size=3>tanh, tanhf : hyperbolic tangent</FONT> 
+         </A></H2>
+      <P><A name=IDX106></A><A name=IDX107></A><FONT face=Arial><STRONG>Synopsis</STRONG> </FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px"> <PRE><FONT face=Arial>#include &lt;math.h&gt;
+double tanh(double <VAR>x</VAR>);
+float tanhf(float <VAR>x</VAR>);</FONT>
+
+</PRE></BLOCKQUOTE>
+      <P><FONT face=Arial><STRONG>Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P><FONT face=Arial>tanh computes the hyperbolic tangent of the argument 
+      <VAR>x</VAR>. Angles are 
+        specified in radians. </FONT><FONT face=Arial>tanh(<VAR>x</VAR>) is defined as </FONT></P>
+        <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+          <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">    <PRE><FONT face=Arial> sinh(<VAR>x</VAR>)/cosh(<VAR>x</VAR>)</FONT>
+</PRE></BLOCKQUOTE></BLOCKQUOTE>
+      <P><FONT face=Arial>tanhf is identical, save that 
+        it takes and returns float values.</FONT>         
+        </P></BLOCKQUOTE>
+      <P dir=ltr><FONT face=Arial><STRONG>Returns</STRONG></FONT>         
+        </P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+      <P dir=ltr><FONT face=Arial>The hyperbolic tangent of <VAR>x</VAR> is 
+      returned.</FONT>         
+        </P></BLOCKQUOTE></FONT></TD></TR></TABLE>    </H1>
+</BODY>
+</HTML>

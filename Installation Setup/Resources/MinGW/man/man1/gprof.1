@@ -1,0 +1,727 @@
+.rn '' }`
+''' $RCSfile$$Revision$$Date$
+'''
+''' $Log$
+'''
+.de Sh
+.br
+.if t .Sp
+.ne 5
+.PP
+\fB\\$1\fR
+.PP
+..
+.de Sp
+.if t .sp .5v
+.if n .sp
+..
+.de Ip
+.br
+.ie \\n(.$>=3 .ne \\$3
+.el .ne 3
+.IP "\\$1" \\$2
+..
+.de Vb
+.ft CW
+.nf
+.ne \\$1
+..
+.de Ve
+.ft R
+
+.fi
+..
+'''
+'''
+'''     Set up \*(-- to give an unbreakable dash;
+'''     string Tr holds user defined translation string.
+'''     Bell System Logo is used as a dummy character.
+'''
+.tr \(*W-|\(bv\*(Tr
+.ie n \{\
+.ds -- \(*W-
+.ds PI pi
+.if (\n(.H=4u)&(1m=24u) .ds -- \(*W\h'-12u'\(*W\h'-12u'-\" diablo 10 pitch
+.if (\n(.H=4u)&(1m=20u) .ds -- \(*W\h'-12u'\(*W\h'-8u'-\" diablo 12 pitch
+.ds L" ""
+.ds R" ""
+'''   \*(M", \*(S", \*(N" and \*(T" are the equivalent of
+'''   \*(L" and \*(R", except that they are used on ".xx" lines,
+'''   such as .IP and .SH, which do another additional levels of
+'''   double-quote interpretation
+.ds M" """
+.ds S" """
+.ds N" """""
+.ds T" """""
+.ds L' '
+.ds R' '
+.ds M' '
+.ds S' '
+.ds N' '
+.ds T' '
+'br\}
+.el\{\
+.ds -- \(em\|
+.tr \*(Tr
+.ds L" ``
+.ds R" ''
+.ds M" ``
+.ds S" ''
+.ds N" ``
+.ds T" ''
+.ds L' `
+.ds R' '
+.ds M' `
+.ds S' '
+.ds N' `
+.ds T' '
+.ds PI \(*p
+'br\}
+.\"	If the F register is turned on, we'll generate
+.\"	index entries out stderr for the following things:
+.\"		TH	Title 
+.\"		SH	Header
+.\"		Sh	Subsection 
+.\"		Ip	Item
+.\"		X<>	Xref  (embedded
+.\"	Of course, you have to process the output yourself
+.\"	in some meaninful fashion.
+.if \nF \{
+.de IX
+.tm Index:\\$1\t\\n%\t"\\$2"
+..
+.nr % 0
+.rr F
+.\}
+.TH GPROF 1 "binutils-2.11.90" "14/Sep/101" "GNU"
+.UC
+.if n .hy 0
+.ds C+ C\v'-.1v'\h'-1p'\s-2+\h'-1p'+\s0\v'.1v'\h'-1p'
+.de CQ          \" put $1 in typewriter font
+.ft CW
+'if n "\c
+'if t \\&\\$1\c
+'if n \\&\\$1\c
+'if n \&"
+\\&\\$2 \\$3 \\$4 \\$5 \\$6 \\$7
+'.ft R
+..
+.\" @(#)ms.acc 1.5 88/02/08 SMI; from UCB 4.2
+.	\" AM - accent mark definitions
+.bd B 3
+.	\" fudge factors for nroff and troff
+.if n \{\
+.	ds #H 0
+.	ds #V .8m
+.	ds #F .3m
+.	ds #[ \f1
+.	ds #] \fP
+.\}
+.if t \{\
+.	ds #H ((1u-(\\\\n(.fu%2u))*.13m)
+.	ds #V .6m
+.	ds #F 0
+.	ds #[ \&
+.	ds #] \&
+.\}
+.	\" simple accents for nroff and troff
+.if n \{\
+.	ds ' \&
+.	ds ` \&
+.	ds ^ \&
+.	ds , \&
+.	ds ~ ~
+.	ds ? ?
+.	ds ! !
+.	ds /
+.	ds q
+.\}
+.if t \{\
+.	ds ' \\k:\h'-(\\n(.wu*8/10-\*(#H)'\'\h"|\\n:u"
+.	ds ` \\k:\h'-(\\n(.wu*8/10-\*(#H)'\`\h'|\\n:u'
+.	ds ^ \\k:\h'-(\\n(.wu*10/11-\*(#H)'^\h'|\\n:u'
+.	ds , \\k:\h'-(\\n(.wu*8/10)',\h'|\\n:u'
+.	ds ~ \\k:\h'-(\\n(.wu-\*(#H-.1m)'~\h'|\\n:u'
+.	ds ? \s-2c\h'-\w'c'u*7/10'\u\h'\*(#H'\zi\d\s+2\h'\w'c'u*8/10'
+.	ds ! \s-2\(or\s+2\h'-\w'\(or'u'\v'-.8m'.\v'.8m'
+.	ds / \\k:\h'-(\\n(.wu*8/10-\*(#H)'\z\(sl\h'|\\n:u'
+.	ds q o\h'-\w'o'u*8/10'\s-4\v'.4m'\z\(*i\v'-.4m'\s+4\h'\w'o'u*8/10'
+.\}
+.	\" troff and (daisy-wheel) nroff accents
+.ds : \\k:\h'-(\\n(.wu*8/10-\*(#H+.1m+\*(#F)'\v'-\*(#V'\z.\h'.2m+\*(#F'.\h'|\\n:u'\v'\*(#V'
+.ds 8 \h'\*(#H'\(*b\h'-\*(#H'
+.ds v \\k:\h'-(\\n(.wu*9/10-\*(#H)'\v'-\*(#V'\*(#[\s-4v\s0\v'\*(#V'\h'|\\n:u'\*(#]
+.ds _ \\k:\h'-(\\n(.wu*9/10-\*(#H+(\*(#F*2/3))'\v'-.4m'\z\(hy\v'.4m'\h'|\\n:u'
+.ds . \\k:\h'-(\\n(.wu*8/10)'\v'\*(#V*4/10'\z.\v'-\*(#V*4/10'\h'|\\n:u'
+.ds 3 \*(#[\v'.2m'\s-2\&3\s0\v'-.2m'\*(#]
+.ds o \\k:\h'-(\\n(.wu+\w'\(de'u-\*(#H)/2u'\v'-.3n'\*(#[\z\(de\v'.3n'\h'|\\n:u'\*(#]
+.ds d- \h'\*(#H'\(pd\h'-\w'~'u'\v'-.25m'\f2\(hy\fP\v'.25m'\h'-\*(#H'
+.ds D- D\\k:\h'-\w'D'u'\v'-.11m'\z\(hy\v'.11m'\h'|\\n:u'
+.ds th \*(#[\v'.3m'\s+1I\s-1\v'-.3m'\h'-(\w'I'u*2/3)'\s-1o\s+1\*(#]
+.ds Th \*(#[\s+2I\s-2\h'-\w'I'u*3/5'\v'-.3m'o\v'.3m'\*(#]
+.ds ae a\h'-(\w'a'u*4/10)'e
+.ds Ae A\h'-(\w'A'u*4/10)'E
+.ds oe o\h'-(\w'o'u*4/10)'e
+.ds Oe O\h'-(\w'O'u*4/10)'E
+.	\" corrections for vroff
+.if v .ds ~ \\k:\h'-(\\n(.wu*9/10-\*(#H)'\s-2\u~\d\s+2\h'|\\n:u'
+.if v .ds ^ \\k:\h'-(\\n(.wu*10/11-\*(#H)'\v'-.4m'^\v'.4m'\h'|\\n:u'
+.	\" for low resolution devices (crt and lpr)
+.if \n(.H>23 .if \n(.V>19 \
+\{\
+.	ds : e
+.	ds 8 ss
+.	ds v \h'-1'\o'\(aa\(ga'
+.	ds _ \h'-1'^
+.	ds . \h'-1'.
+.	ds 3 3
+.	ds o a
+.	ds d- d\h'-1'\(ga
+.	ds D- D\h'-1'\(hy
+.	ds th \o'bp'
+.	ds Th \o'LP'
+.	ds ae ae
+.	ds Ae AE
+.	ds oe oe
+.	ds Oe OE
+.\}
+.rm #[ #] #H #V #F C
+.SH "NAME"
+gprof \- display call graph profile data
+.SH "SYNOPSIS"
+gprof [ \-[abcDhilLsTvwxyz] ] [ \-[ACeEfFJnNOpPqQZ][\fIname\fR] ] 
+ [ \-I \fIdirs\fR ] [ \-d[\fInum\fR] ] [ \-k \fIfrom/to\fR ]
+ [ \-m \fImin-count\fR ] [ \-t \fItable-length\fR ]
+ [ --[no-]annotated-source[=\fIname\fR] ] 
+ [ --[no-]exec-counts[=\fIname\fR] ]
+ [ --[no-]flat-profile[=\fIname\fR] ] [ --[no-]graph[=\fIname\fR] ]
+ [ --[no-]time=\fIname\fR] [ --all-lines ] [ --brief ] 
+ [ --debug[=\fIlevel\fR] ] [ --function-ordering ] 
+ [ --file-ordering ] [ --directory-path=\fIdirs\fR ]
+ [ --display-unused-functions ] [ --file-format=\fIname\fR ]
+ [ --file-info ] [ --help ] [ --line ] [ --min-count=\fIn\fR ]
+ [ --no-static ] [ --print-path ] [ --separate-files ]
+ [ --static-call-graph ] [ --sum ] [ --table-length=\fIlen\fR ]
+ [ --traditional ] [ --version ] [ --width=\fIn\fR ]
+ [ --ignore-non-functions ] [ --demangle[=\fISTYLE\fR] ]
+ [ --no-demangle ] [ \fIimage-file\fR ] [ \fIprofile-file\fR ... ]
+.SH "DESCRIPTION"
+\f(CWgprof\fR produces an execution profile of C, Pascal, or Fortran77 
+programs.  The effect of called routines is incorporated in the profile 
+of each caller.  The profile data is taken from the call graph profile file
+(\fIgmon.out\fR default) which is created by programs
+that are compiled with the \fB\-pg\fR option of
+\f(CWcc\fR, \f(CWpc\fR, and \f(CWf77\fR.
+The \fB\-pg\fR option also links in versions of the library routines
+that are compiled for profiling.  \f(CWGprof\fR reads the given object 
+file (the default is \f(CWa.out\fR) and establishes the relation between
+its symbol table and the call graph profile from \fIgmon.out\fR.
+If more than one profile file is specified, the \f(CWgprof\fR
+output shows the sum of the profile information in the given profile files.
+.PP
+\f(CWGprof\fR calculates the amount of time spent in each routine.
+Next, these times are propagated along the edges of the call graph.
+Cycles are discovered, and calls into a cycle are made to share the time
+of the cycle.
+.PP
+Several forms of output are available from the analysis.
+.PP
+The \fIflat profile\fR shows how much time your program spent in each function,
+and how many times that function was called.  If you simply want to know
+which functions burn most of the cycles, it is stated concisely here.
+.PP
+The \fIcall graph\fR shows, for each function, which functions called it, which
+other functions it called, and how many times.  There is also an estimate
+of how much time was spent in the subroutines of each function.  This can
+suggest places where you might try to eliminate function calls that use a
+lot of time.  
+.PP
+The \fIannotated source\fR listing is a copy of the program's
+source code, labeled with the number of times each line of the
+program was executed.  
+.SH "OPTIONS"
+These options specify which of several output formats
+\f(CWgprof\fR should produce.
+.PP
+Many of these options take an optional \fIsymspec\fR to specify
+functions to be included or excluded.  These options can be
+specified multiple times, with different symspecs, to include
+or exclude sets of symbols.  
+.PP
+Specifying any of these options overrides the default (\fB\-p \-q\fR),
+which prints a flat profile and call graph analysis
+for all functions.
+.Ip "\f(CW-A[\fIsymspec\fR]\fR" 4
+.Ip "\f(CW--annotated-source[=\fIsymspec\fR]\fR" 4
+The \fB\-A\fR option causes \f(CWgprof\fR to print annotated source code.
+If \fIsymspec\fR is specified, print output only for matching symbols.
+.Ip "\f(CW-b\fR" 4
+.Ip "\f(CW--brief\fR" 4
+If the \fB\-b\fR option is given, \f(CWgprof\fR doesn't print the
+verbose blurbs that try to explain the meaning of all of the fields in
+the tables.  This is useful if you intend to print out the output, or
+are tired of seeing the blurbs.
+.Ip "\f(CW-C[\fIsymspec\fR]\fR" 4
+.Ip "\f(CW--exec-counts[=\fIsymspec\fR]\fR" 4
+The \fB\-C\fR option causes \f(CWgprof\fR to
+print a tally of functions and the number of times each was called.
+If \fIsymspec\fR is specified, print tally only for matching symbols.
+.Sp
+If the profile data file contains basic-block count records, specifying
+the \fB\-l\fR option, along with \fB\-C\fR, will cause basic-block
+execution counts to be tallied and displayed.
+.Ip "\f(CW-i\fR" 4
+.Ip "\f(CW--file-info\fR" 4
+The \fB\-i\fR option causes \f(CWgprof\fR to display summary information
+about the profile data \fIfile\fR\|(s) and then exit.  The number of histogram,
+call graph, and basic-block count records is displayed.
+.Ip "\f(CW-I \fIdirs\fR\fR" 4
+.Ip "\f(CW--directory-path=\fIdirs\fR\fR" 4
+The \fB\-I\fR option specifies a list of search directories in
+which to find source files.  Environment variable \fI\s-1GPROF_PATH\s0\fR
+can also be used to convey this information.
+Used mostly for annotated source output.
+.Ip "\f(CW-J[\fIsymspec\fR]\fR" 4
+.Ip "\f(CW--no-annotated-source[=\fIsymspec\fR]\fR" 4
+The \fB\-J\fR option causes \f(CWgprof\fR not to
+print annotated source code.
+If \fIsymspec\fR is specified, \f(CWgprof\fR prints annotated source,
+but excludes matching symbols.
+.Ip "\f(CW-L\fR" 4
+.Ip "\f(CW--print-path\fR" 4
+Normally, source filenames are printed with the path
+component suppressed.  The \fB\-L\fR option causes \f(CWgprof\fR
+to print the full pathname of
+source filenames, which is determined
+from symbolic debugging information in the image file
+and is relative to the directory in which the compiler
+was invoked.
+.Ip "\f(CW-p[\fIsymspec\fR]\fR" 4
+.Ip "\f(CW--flat-profile[=\fIsymspec\fR]\fR" 4
+The \fB\-p\fR option causes \f(CWgprof\fR to print a flat profile.
+If \fIsymspec\fR is specified, print flat profile only for matching symbols.
+.Ip "\f(CW-P[\fIsymspec\fR]\fR" 4
+.Ip "\f(CW--no-flat-profile[=\fIsymspec\fR]\fR" 4
+The \fB\-P\fR option causes \f(CWgprof\fR to suppress printing a flat profile.
+If \fIsymspec\fR is specified, \f(CWgprof\fR prints a flat profile,
+but excludes matching symbols.
+.Ip "\f(CW-q[\fIsymspec\fR]\fR" 4
+.Ip "\f(CW--graph[=\fIsymspec\fR]\fR" 4
+The \fB\-q\fR option causes \f(CWgprof\fR to print the call graph analysis.
+If \fIsymspec\fR is specified, print call graph only for matching symbols
+and their children.
+.Ip "\f(CW-Q[\fIsymspec\fR]\fR" 4
+.Ip "\f(CW--no-graph[=\fIsymspec\fR]\fR" 4
+The \fB\-Q\fR option causes \f(CWgprof\fR to suppress printing the
+call graph.
+If \fIsymspec\fR is specified, \f(CWgprof\fR prints a call graph,
+but excludes matching symbols.
+.Ip "\f(CW-y\fR" 4
+.Ip "\f(CW--separate-files\fR" 4
+This option affects annotated source output only.
+Normally, \f(CWgprof\fR prints annotated source files
+to standard-output.  If this option is specified,
+annotated source for a file named \fIpath/\fIfilename\fR\fR
+is generated in the file \fI\fIfilename\fR\-ann\fR.  If the underlying
+filesystem would truncate \fI\fIfilename\fR\-ann\fR so that it
+overwrites the original \fI\fIfilename\fR\fR, \f(CWgprof\fR generates
+annotated source in the file \fI\fIfilename\fR.ann\fR instead (if the
+original file name has an extension, that extension is \fIreplaced\fR
+with \fI.ann\fR).
+.Ip "\f(CW-Z[\fIsymspec\fR]\fR" 4
+.Ip "\f(CW--no-exec-counts[=\fIsymspec\fR]\fR" 4
+The \fB\-Z\fR option causes \f(CWgprof\fR not to
+print a tally of functions and the number of times each was called.
+If \fIsymspec\fR is specified, print tally, but exclude matching symbols.
+.Ip "\f(CW--function-ordering\fR" 4
+The \fB--function-ordering\fR option causes \f(CWgprof\fR to print a
+suggested function ordering for the program based on profiling data.
+This option suggests an ordering which may improve paging, tlb and
+cache behavior for the program on systems which support arbitrary
+ordering of functions in an executable.
+.Sp
+The exact details of how to force the linker to place functions
+in a particular order is system dependent and out of the scope of this
+manual.
+.Ip "\f(CW--file-ordering \fImap_file\fR\fR" 4
+The \fB--file-ordering\fR option causes \f(CWgprof\fR to print a
+suggested .o link line ordering for the program based on profiling data.
+This option suggests an ordering which may improve paging, tlb and
+cache behavior for the program on systems which do not support arbitrary
+ordering of functions in an executable.
+.Sp
+Use of the \fB\-a\fR argument is highly recommended with this option.
+.Sp
+The \fImap_file\fR argument is a pathname to a file which provides
+function name to object file mappings.  The format of the file is similar to
+the output of the program \f(CWnm\fR.
+.Sp
+.Vb 10
+\&        
+\&        c-parse.o:00000000 T yyparse
+\&        c-parse.o:00000004 C yyerrflag
+\&        c-lang.o:00000000 T maybe_objc_method_name
+\&        c-lang.o:00000000 T print_lang_statistics
+\&        c-lang.o:00000000 T recognize_objc_keyword
+\&        c-decl.o:00000000 T print_lang_identifier
+\&        c-decl.o:00000000 T print_lang_type
+\&        ...
+\&        
+.Ve
+To create a \fImap_file\fR with \s-1GNU\s0 \f(CWnm\fR, type a command like
+\f(CWnm --extern-only --defined-only -v --print-file-name program-name\fR.
+.Ip "\f(CW-T\fR" 4
+.Ip "\f(CW--traditional\fR" 4
+The \fB\-T\fR option causes \f(CWgprof\fR to print its output in
+``traditional'\*(R' \s-1BSD\s0 style.
+.Ip "\f(CW-w \fIwidth\fR\fR" 4
+.Ip "\f(CW--width=\fIwidth\fR\fR" 4
+Sets width of output lines to \fIwidth\fR.
+Currently only used when printing the function index at the bottom
+of the call graph.
+.Ip "\f(CW-x\fR" 4
+.Ip "\f(CW--all-lines\fR" 4
+This option affects annotated source output only.
+By default, only the lines at the beginning of a basic-block
+are annotated.  If this option is specified, every line in
+a basic-block is annotated by repeating the annotation for the
+first line.  This behavior is similar to \f(CWtcov\fR's \fB\-a\fR.
+.Ip "\f(CW--demangle[=\fIstyle\fR]\fR" 4
+.Ip "\f(CW--no-demangle\fR" 4
+These options control whether \*(C+ symbol names should be demangled when
+printing output.  The default is to demangle symbols.  The
+\f(CW--no-demangle\fR option may be used to turn off demangling. Different 
+compilers have different mangling styles.  The optional demangling style 
+argument can be used to choose an appropriate demangling style for your 
+compiler.
+.Sh "Analysis Options"
+.Ip "\f(CW-a\fR" 4
+.Ip "\f(CW--no-static\fR" 4
+The \fB\-a\fR option causes \f(CWgprof\fR to suppress the printing of
+statically declared (private) functions.  (These are functions whose
+names are not listed as global, and which are not visible outside the
+file/function/block where they were defined.)  Time spent in these
+functions, calls to/from them, etc, will all be attributed to the
+function that was loaded directly before it in the executable file.
+This option affects both the flat profile and the call graph.
+.Ip "\f(CW-c\fR" 4
+.Ip "\f(CW--static-call-graph\fR" 4
+The \fB\-c\fR option causes the call graph of the program to be
+augmented by a heuristic which examines the text space of the object
+file and identifies function calls in the binary machine code.
+Since normal call graph records are only generated when functions are
+entered, this option identifies children that could have been called,
+but never were.  Calls to functions that were not compiled with
+profiling enabled are also identified, but only if symbol table
+entries are present for them.
+Calls to dynamic library routines are typically \fInot\fR found
+by this option.
+Parents or children identified via this heuristic
+are indicated in the call graph with call counts of \fB0\fR.
+.Ip "\f(CW-D\fR" 4
+.Ip "\f(CW--ignore-non-functions\fR" 4
+The \fB\-D\fR option causes \f(CWgprof\fR to ignore symbols which
+are not known to be functions.  This option will give more accurate
+profile data on systems where it is supported (Solaris and \s-1HPUX\s0 for
+example).
+.Ip "\f(CW-k \fIfrom\fR/\fIto\fR\fR" 4
+The \fB\-k\fR option allows you to delete from the call graph any arcs from
+symbols matching symspec \fIfrom\fR to those matching symspec \fIto\fR.
+.Ip "\f(CW-l\fR" 4
+.Ip "\f(CW--line\fR" 4
+The \fB\-l\fR option enables line-by-line profiling, which causes
+histogram hits to be charged to individual source code lines,
+instead of functions.
+If the program was compiled with basic-block counting enabled,
+this option will also identify how many times each line of
+code was executed.
+While line-by-line profiling can help isolate where in a large function
+a program is spending its time, it also significantly increases
+the running time of \f(CWgprof\fR, and magnifies statistical
+inaccuracies.
+.Ip "\f(CW-m \fInum\fR\fR" 4
+.Ip "\f(CW--min-count=\fInum\fR\fR" 4
+This option affects execution count output only.
+Symbols that are executed less than \fInum\fR times are suppressed.
+.Ip "\f(CW-n[\fIsymspec\fR]\fR" 4
+.Ip "\f(CW--time[=\fIsymspec\fR]\fR" 4
+The \fB\-n\fR option causes \f(CWgprof\fR, in its call graph analysis,
+to only propagate times for symbols matching \fIsymspec\fR.
+.Ip "\f(CW-N[\fIsymspec\fR]\fR" 4
+.Ip "\f(CW--no-time[=\fIsymspec\fR]\fR" 4
+The \fB\-n\fR option causes \f(CWgprof\fR, in its call graph analysis,
+not to propagate times for symbols matching \fIsymspec\fR.
+.Ip "\f(CW-z\fR" 4
+.Ip "\f(CW--display-unused-functions\fR" 4
+If you give the \fB\-z\fR option, \f(CWgprof\fR will mention all
+functions in the flat profile, even those that were never called, and
+that had no time spent in them.  This is useful in conjunction with the
+\fB\-c\fR option for discovering which routines were never called.
+.Sh "Miscellaneous Options"
+.Ip "\f(CW-d[\fInum\fR]\fR" 4
+.Ip "\f(CW--debug[=\fInum\fR]\fR" 4
+The \fB\-d\fR \fInum\fR option specifies debugging options.
+If \fInum\fR is not specified, enable all debugging.
+.Ip "\f(CW-O\fIname\fR\fR" 4
+.Ip "\f(CW--file-format=\fIname\fR\fR" 4
+Selects the format of the profile data files.  Recognized formats are
+\fBauto\fR (the default), \fBbsd\fR, \fB4.4bsd\fR, \fBmagic\fR, and
+\fBprof\fR (not yet supported).
+.Ip "\f(CW-s\fR" 4
+.Ip "\f(CW--sum\fR" 4
+The \fB\-s\fR option causes \f(CWgprof\fR to summarize the information
+in the profile data files it read in, and write out a profile data
+file called \fIgmon.sum\fR, which contains all the information from
+the profile data files that \f(CWgprof\fR read in.  The file \fIgmon.sum\fR
+may be one of the specified input files; the effect of this is to
+merge the data in the other input files into \fIgmon.sum\fR.
+.Sp
+Eventually you can run \f(CWgprof\fR again without \fB\-s\fR to analyze the
+cumulative data in the file \fIgmon.sum\fR.
+.Ip "\f(CW-v\fR" 4
+.Ip "\f(CW--version\fR" 4
+The \fB\-v\fR flag causes \f(CWgprof\fR to print the current version
+number, and then exit.
+.Sh "Deprecated Options"
+These options have been replaced with newer versions that use symspecs.
+.Ip "\f(CW-e \fIfunction_name\fR\fR" 4
+The \fB\-e\fR \fIfunction\fR option tells \f(CWgprof\fR to not print
+information about the function \fIfunction_name\fR (and its
+children...) in the call graph.  The function will still be listed
+as a child of any functions that call it, but its index number will be
+shown as \fB[not printed]\fR.  More than one \fB\-e\fR option may be
+given; only one \fIfunction_name\fR may be indicated with each \fB\-e\fR
+option. 
+.Ip "\f(CW-E \fIfunction_name\fR\fR" 4
+The \f(CW-E \fIfunction\fR\fR option works like the \f(CW-e\fR option, but
+time spent in the function (and children who were not called from
+anywhere else), will not be used to compute the percentages-of-time for
+the call graph.  More than one \fB\-E\fR option may be given; only one
+\fIfunction_name\fR may be indicated with each \fB\-E\fR option.
+.Ip "\f(CW-f \fIfunction_name\fR\fR" 4
+The \fB\-f\fR \fIfunction\fR option causes \f(CWgprof\fR to limit the
+call graph to the function \fIfunction_name\fR and its children (and
+their children...).  More than one \fB\-f\fR option may be given;
+only one \fIfunction_name\fR may be indicated with each \fB\-f\fR
+option.  
+.Ip "\f(CW-F \fIfunction_name\fR\fR" 4
+The \fB\-F\fR \fIfunction\fR option works like the \f(CW-f\fR option, but
+only time spent in the function and its children (and their
+children...) will be used to determine total-time and
+percentages-of-time for the call graph.  More than one \fB\-F\fR option
+may be given; only one \fIfunction_name\fR may be indicated with each
+\fB\-F\fR option.  The \fB\-F\fR option overrides the \fB\-E\fR option.
+.SH "FILES"
+.Ip "\f(CW\fIa.out\fR\fR" 4
+the namelist and text space.
+.Ip "\f(CW\fIgmon.out\fR\fR" 4
+dynamic call graph and profile.
+.Ip "\f(CW\fIgmon.sum\fR\fR" 4
+summarized dynamic call graph and profile.  
+.SH "BUGS"
+The granularity of the sampling is shown, but remains
+statistical at best.
+We assume that the time for each execution of a function
+can be expressed by the total time for the function divided
+by the number of times the function is called.
+Thus the time propagated along the call graph arcs to the function's
+parents is directly proportional to the number of times that
+arc is traversed.
+.PP
+Parents that are not themselves profiled will have the time of
+their profiled children propagated to them, but they will appear
+to be spontaneously invoked in the call graph listing, and will
+not have their time propagated further.
+Similarly, signal catchers, even though profiled, will appear
+to be spontaneous (although for more obscure reasons).
+Any profiled children of signal catchers should have their times
+propagated properly, unless the signal catcher was invoked during
+the execution of the profiling routine, in which case all is lost.
+.PP
+The profiled program must call \f(CWexit\fR(2)
+or return normally for the profiling information to be saved
+in the \fIgmon.out\fR file.
+.SH "SEE ALSO"
+\fImonitor\fR\|(3), \fIprofil\fR\|(2), \fIcc\fR\|(1), \fIprof\fR\|(1), and the Info entry for \fIgprof\fR.
+.PP
+``An Execution Profiler for Modular Programs'\*(R',
+by S. Graham, P. Kessler, M. McKusick;
+Software \- Practice and Experience,
+Vol. 13, pp. 671-685, 1983.
+.PP
+``gprof: A Call Graph Execution Profiler'\*(R',
+by S. Graham, P. Kessler, M. McKusick;
+Proceedings of the SIGPLAN \*(L'82 Symposium on Compiler Construction,
+SIGPLAN Notices, Vol. 17, No  6, pp. 120-126, June 1982.
+.SH "COPYRIGHT"
+Copyright (C) 1988, 92, 97, 98, 99, 2000, 2001 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled \*(L"GNU Free Documentation License\*(R".
+
+.rn }` ''
+.IX Title "GPROF 1"
+.IX Name "gprof - display call graph profile data"
+
+.IX Header "NAME"
+
+.IX Header "SYNOPSIS"
+
+.IX Header "DESCRIPTION"
+
+.IX Header "OPTIONS"
+
+.IX Item "\f(CW-A[\fIsymspec\fR]\fR"
+
+.IX Item "\f(CW--annotated-source[=\fIsymspec\fR]\fR"
+
+.IX Item "\f(CW-b\fR"
+
+.IX Item "\f(CW--brief\fR"
+
+.IX Item "\f(CW-C[\fIsymspec\fR]\fR"
+
+.IX Item "\f(CW--exec-counts[=\fIsymspec\fR]\fR"
+
+.IX Item "\f(CW-i\fR"
+
+.IX Item "\f(CW--file-info\fR"
+
+.IX Item "\f(CW-I \fIdirs\fR\fR"
+
+.IX Item "\f(CW--directory-path=\fIdirs\fR\fR"
+
+.IX Item "\f(CW-J[\fIsymspec\fR]\fR"
+
+.IX Item "\f(CW--no-annotated-source[=\fIsymspec\fR]\fR"
+
+.IX Item "\f(CW-L\fR"
+
+.IX Item "\f(CW--print-path\fR"
+
+.IX Item "\f(CW-p[\fIsymspec\fR]\fR"
+
+.IX Item "\f(CW--flat-profile[=\fIsymspec\fR]\fR"
+
+.IX Item "\f(CW-P[\fIsymspec\fR]\fR"
+
+.IX Item "\f(CW--no-flat-profile[=\fIsymspec\fR]\fR"
+
+.IX Item "\f(CW-q[\fIsymspec\fR]\fR"
+
+.IX Item "\f(CW--graph[=\fIsymspec\fR]\fR"
+
+.IX Item "\f(CW-Q[\fIsymspec\fR]\fR"
+
+.IX Item "\f(CW--no-graph[=\fIsymspec\fR]\fR"
+
+.IX Item "\f(CW-y\fR"
+
+.IX Item "\f(CW--separate-files\fR"
+
+.IX Item "\f(CW-Z[\fIsymspec\fR]\fR"
+
+.IX Item "\f(CW--no-exec-counts[=\fIsymspec\fR]\fR"
+
+.IX Item "\f(CW--function-ordering\fR"
+
+.IX Item "\f(CW--file-ordering \fImap_file\fR\fR"
+
+.IX Item "\f(CW-T\fR"
+
+.IX Item "\f(CW--traditional\fR"
+
+.IX Item "\f(CW-w \fIwidth\fR\fR"
+
+.IX Item "\f(CW--width=\fIwidth\fR\fR"
+
+.IX Item "\f(CW-x\fR"
+
+.IX Item "\f(CW--all-lines\fR"
+
+.IX Item "\f(CW--demangle[=\fIstyle\fR]\fR"
+
+.IX Item "\f(CW--no-demangle\fR"
+
+.IX Subsection "Analysis Options"
+
+.IX Item "\f(CW-a\fR"
+
+.IX Item "\f(CW--no-static\fR"
+
+.IX Item "\f(CW-c\fR"
+
+.IX Item "\f(CW--static-call-graph\fR"
+
+.IX Item "\f(CW-D\fR"
+
+.IX Item "\f(CW--ignore-non-functions\fR"
+
+.IX Item "\f(CW-k \fIfrom\fR/\fIto\fR\fR"
+
+.IX Item "\f(CW-l\fR"
+
+.IX Item "\f(CW--line\fR"
+
+.IX Item "\f(CW-m \fInum\fR\fR"
+
+.IX Item "\f(CW--min-count=\fInum\fR\fR"
+
+.IX Item "\f(CW-n[\fIsymspec\fR]\fR"
+
+.IX Item "\f(CW--time[=\fIsymspec\fR]\fR"
+
+.IX Item "\f(CW-N[\fIsymspec\fR]\fR"
+
+.IX Item "\f(CW--no-time[=\fIsymspec\fR]\fR"
+
+.IX Item "\f(CW-z\fR"
+
+.IX Item "\f(CW--display-unused-functions\fR"
+
+.IX Subsection "Miscellaneous Options"
+
+.IX Item "\f(CW-d[\fInum\fR]\fR"
+
+.IX Item "\f(CW--debug[=\fInum\fR]\fR"
+
+.IX Item "\f(CW-O\fIname\fR\fR"
+
+.IX Item "\f(CW--file-format=\fIname\fR\fR"
+
+.IX Item "\f(CW-s\fR"
+
+.IX Item "\f(CW--sum\fR"
+
+.IX Item "\f(CW-v\fR"
+
+.IX Item "\f(CW--version\fR"
+
+.IX Subsection "Deprecated Options"
+
+.IX Item "\f(CW-e \fIfunction_name\fR\fR"
+
+.IX Item "\f(CW-E \fIfunction_name\fR\fR"
+
+.IX Item "\f(CW-f \fIfunction_name\fR\fR"
+
+.IX Item "\f(CW-F \fIfunction_name\fR\fR"
+
+.IX Header "FILES"
+
+.IX Item "\f(CW\fIa.out\fR\fR"
+
+.IX Item "\f(CW\fIgmon.out\fR\fR"
+
+.IX Item "\f(CW\fIgmon.sum\fR\fR"
+
+.IX Header "BUGS"
+
+.IX Header "SEE ALSO"
+
+.IX Header "COPYRIGHT"
+

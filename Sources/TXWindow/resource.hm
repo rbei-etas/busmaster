@@ -1,0 +1,26 @@
+// Microsoft Visual C++ generated Help ID include file.
+// Used by TXWindow.rc
+//
+#define HIDC_CBTN_DELETE_ALL_MSG        0x809e04cf    // IDD_DLG_TX_MSG_BLOCK_DETAILS
+#define HIDC_CBTN_DELETE_SEL_MSG        0x809e04ce    // IDD_DLG_TX_MSG_BLOCK_DETAILS
+#define HIDC_CBTN_SEND_MSG              0x809e04cd    // IDD_DLG_TX_MSG_BLOCK_DETAILS
+#define HIDC_CHKB_MSGTYPE_RTR           0x809e04c0    // IDD_DLG_TX_MSG_DETAILS
+#define HIDC_COMB_MSG_ID_NAME           0x809e04c5    // IDD_DLG_TX_MSG_DETAILS
+#define HIDC_COMB_SGTYPE                0x808303f0    // IDD_DLG_SIGNAL
+#define HIDC_EDIT_BYINDEX               0x808303ff    // IDD_DLG_SIGNAL
+#define HIDC_EDIT_FACTOR                0x808303eb    // IDD_DLG_SIGNAL
+#define HIDC_EDIT_MAX                   0x808303ed    // IDD_DLG_SIGNAL
+#define HIDC_EDIT_MIN                   0x808303ee    // IDD_DLG_SIGNAL
+#define HIDC_EDIT_MSG_BLOCK_NAME        0x809e04cc    // IDD_DLG_TX_MSG_BLOCKS
+#define HIDC_EDIT_OFFSET                0x80830408    // IDD_DLG_SIGNAL
+#define HIDC_EDIT_SGLEN                 0x80830400    // IDD_DLG_SIGNAL
+#define HIDC_EDIT_SGNAME                0x808303e8    // IDD_DLG_SIGNAL
+#define HIDC_EDIT_STBIT                 0x80830401    // IDD_DLG_SIGNAL
+#define HIDC_EDIT_TRG_KEY_VAL           0x809e0471    // IDD_DLG_TX_MSG_BLOCKS
+#define HIDC_EDIT_TRG_TIME_VAL          0x809e046e    // IDD_DLG_TX_MSG_BLOCKS
+#define HIDC_EDIT_UNIT                  0x808303ec    // IDD_DLG_SIGNAL
+#define HIDC_LSTC_MSG_DETAILS           0x809e044b    // IDD_DLG_TX_MSG_BLOCK_DETAILS
+#define HIDC_RBTN_MSGTYPE_EXTD          0x809e04bd    // IDD_DLG_TX_MSG_DETAILS
+#define HIDC_RBTN_MSGTYPE_STD           0x809e04bf    // IDD_DLG_TX_MSG_DETAILS
+#define HIDC_SPIN_SGLENGTH              0x808303e9    // IDD_DLG_SIGNAL
+#define HIDC_STAT_UNIT_MS               0x809e0488    // IDD_DLG_TX_MSG_BLOCKS

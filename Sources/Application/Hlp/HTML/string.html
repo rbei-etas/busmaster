@@ -1,0 +1,1190 @@
+<HTML>
+<HEAD>
+<TITLE>String and Memory Functions</TITLE>
+</HEAD>
+<BODY>
+<H1>
+<TABLE style="WIDTH: 722px; HEIGHT: 20px" cellSpacing=2 cellPadding=5 width=722 
+bgColor=#ffffff border=0>
+  
+  <TR>
+    <TD align=left bgColor=#ccccff>
+      <P align=center><FONT face=Arial color=red size=5><STRONG>String and 
+      Memory Functions</STRONG></FONT></P></TD></TR>
+  <TR>
+    <TD align=left bgColor=#eeeeff>
+      <P><FONT face=Arial size=2>This 
+      chapter describes string-handling functions and functions for managing 
+      areas of memory. The corresponding declarations are in <TT 
+      >`string.h'</TT>. </FONT></P>
+      <H2><A name=bcmp ><FONT face=Arial 
+      size=3 color=blue><U>bcmp : compare two 
+      memory areas</U>     
+</FONT></A></H2>
+      <P><A name=IDX122></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>int bcmp(const char 
+        *<VAR>s1</VAR>, const char *<VAR 
+        >s2</VAR>, size_t <VAR 
+        >n</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>This function compares not more than <VAR 
+        >n</VAR> characters of the object pointed to by <VAR 
+        >s1</VAR> with the object pointed to by <VAR 
+        >s2</VAR>. </FONT></FONT></FONT></P>
+        <P><FONT face=Arial size=2 
+        >This function is identical to 
+      memcmp.</FONT></P></BLOCKQUOTE>
+      <P dir=ltr><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P dir=ltr><FONT face=Arial size=2 
+        >The function returns an integer greater than, equal 
+        to or less than zero according to whether the object pointed to by <VAR 
+        >s1</VAR> is greater than, equal to or less than the 
+        object pointed to by <VAR>s2</VAR>. 
+      </FONT></P></BLOCKQUOTE>
+      <H2><A name=bcopy ><FONT face=Arial 
+      size=3 color=blue><U>bcopy : copy memory 
+      regions</U>    </FONT></A></H2>
+      <P><FONT face=Arial><FONT size=2><FONT 
+      ><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>void bcopy(const char 
+        *<VAR>in</VAR>, char *<VAR 
+        >out</VAR>, size_t <VAR 
+        >n</VAR>);</FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT 
+        face=Arial><FONT size=2>This function copies <VAR 
+        >n</VAR> bytes from the memory region pointed to by 
+        <VAR>in</VAR> to the memory region pointed to by 
+        <VAR>out</VAR>. </FONT></FONT></P>
+        <P><FONT face=Arial size=2 
+        >This function is implemented in term of memmove. 
+        </FONT></P></BLOCKQUOTE>
+      <H2><A name=bzero ><FONT face=Arial 
+      size=3 color=blue><U>bzero : initialize 
+      memory to zero</U>     
+      </FONT></A></H2>
+      <P><A name=IDX123></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>void bzero(char *<VAR 
+        >b</VAR>, size_t <VAR 
+        >length</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>bzero initializes <VAR 
+        >length</VAR> bytes of memory, starting at address 
+        <VAR>b</VAR>, to zero. 
+      </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT 
+        face=Arial><FONT size=2>bzero does not return a result. 
+        </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=index ><FONT face=Arial 
+      size=3 color=blue><U>index : search for 
+      character in string</U>      
+      </FONT></A></H2>
+      <P><A name=IDX124></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>char * index(const 
+        char *<VAR>string</VAR>, int <VAR 
+        >c</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>This function finds the first occurence of <VAR 
+        >c</VAR> (converted to a char) in the string pointed 
+        to by <VAR>string</VAR> (including the terminating 
+        null character). </FONT></FONT></FONT></P>
+        <P><FONT face=Arial size=2 
+        >This function is identical to strchr. 
+      </FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT 
+        face=Arial><FONT size=2>Returns a pointer to the located character, or a 
+        null pointer if <VAR>c</VAR> does not occur in <VAR 
+        >string</VAR>. </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=memchr ><FONT face=Arial 
+      size=3 color=blue><U>memchr : find 
+      character in memory</U>     
+      </FONT></A></H2>
+      <P><A name=IDX125></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>void *memchr(const 
+        void *<VAR>src</VAR>, int <VAR 
+        >c</VAR>, size_t <VAR 
+        >length</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>This function searches memory starting at *<VAR 
+        >src</VAR> for the character <VAR 
+        >c</VAR>. The search only ends with the first 
+        occurrence of <VAR>c</VAR>, or after <VAR 
+        >length</VAR> characters; in particular, NULL does 
+        not terminate the search. </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT 
+        face=Arial><FONT size=2>If the character <VAR 
+        >c</VAR> is found within <VAR 
+        >length</VAR> characters of *<VAR 
+        >src</VAR>, a pointer to the character is returned. 
+        If <VAR>c</VAR> is not found, then NULL is 
+        returned. </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=memcmp ><FONT face=Arial 
+      size=3 color=blue><U>memcmp : compare two 
+      memory areas</U>     
+      </FONT></A></H2>
+      <P><A name=IDX126></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include 
+        &lt;string.h&gt;<BR></FONT></FONT></FONT><FONT face=Arial><FONT 
+        size=2><FONT>int memcmp(const void *<VAR 
+        >s1</VAR>, const void *<VAR 
+        >s2</VAR>, size_t <VAR 
+        >n</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>This function compares not more than <VAR 
+        >n</VAR> characters of the object pointed to by <VAR 
+        >s1</VAR> with the object pointed to by <VAR 
+        >s2</VAR>. </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT 
+        face=Arial><FONT size=2>The function returns an integer greater than, 
+        equal to or less than zero according to whether the object pointed to by 
+        <VAR>s1</VAR> is greater than, equal to or less 
+        than the object pointed to by <VAR>s2</VAR>. 
+        </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=memcpy ><FONT face=Arial 
+      size=3 color=blue><U>memcpy : copy memory 
+      regions</U>    </FONT></A></H2>
+      <P><FONT face=Arial><FONT size=2><FONT 
+      ><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include 
+        &lt;string.h&gt;<BR></FONT></FONT></FONT><FONT face=Arial><FONT 
+        size=2><FONT>void* memcpy(void *<VAR 
+        >out</VAR>, const void *<VAR 
+        >in</VAR>, size_t <VAR 
+        >n</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>This function copies <VAR 
+        >n</VAR> bytes from the memory region pointed to by 
+        <VAR>in</VAR> to the memory region pointed to by 
+        <VAR>out</VAR>. </FONT></FONT></FONT></P>
+        <P><FONT face=Arial size=2>If 
+        the regions overlap, the behavior is undefined. </FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT 
+        face=Arial><FONT size=2>memcpy returns a pointer to the first byte of 
+        the <VAR>out</VAR> region. 
+      </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=memmove ><FONT face=Arial 
+      size=3 color=blue><U>memmove : move 
+      possibly overlapping memory</U>     
+      </FONT></A></H2>
+      <P><A name=IDX127></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>void *memmove(void 
+        *<VAR>dst</VAR>, const void *<VAR 
+        >src</VAR>, size_t <VAR 
+        >length</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>This function moves <VAR 
+        >length</VAR> characters from the block of memory 
+        starting at *<VAR>src</VAR> to the memory starting 
+        at *<VAR>dst</VAR>. memmove reproduces the 
+        characters correctly at *<VAR>dst</VAR> even if the 
+        two areas overlap. </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT 
+        face=Arial><FONT size=2>The function returns <VAR 
+        >dst</VAR> as passed. 
+      </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=memset ><FONT face=Arial 
+      size=3 color=blue><U>memset : set an area 
+      of memory</U>      </FONT></A></H2>
+      <P><A name=IDX128></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>void *memset(const 
+        void *<VAR>dst</VAR>, int <VAR 
+        >c</VAR>, size_t <VAR 
+        >length</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>This function converts the argument <VAR 
+        >c</VAR> into an unsigned char and fills the first 
+        <VAR>length</VAR> characters of the array pointed 
+        to by <VAR>dst</VAR> to the value. 
+        </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT 
+        face=Arial><FONT size=2>memset returns the value of <VAR 
+        >m</VAR>. </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=rindex ><FONT face=Arial 
+      size=3 color=blue><U>rindex : reverse 
+      search for character in string</U>       
+      </FONT></A></H2>
+      <P><A name=IDX129></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>char * rindex(const 
+        char *<VAR>string</VAR>, int <VAR 
+        >c</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>This function finds the last occurence of <VAR 
+        >c</VAR> (converted to a char) in the string pointed 
+        to by <VAR>string</VAR> (including the terminating 
+        null character). </FONT></FONT></FONT></P>
+        <P><FONT face=Arial size=2 
+        >This function is identical to 
+      strrchr.</FONT></P></BLOCKQUOTE>
+      <P dir=ltr><FONT><FONT 
+      face=Arial><FONT size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P dir=ltr><FONT 
+        face=Arial><FONT size=2>Returns a pointer to the located character, or a 
+        null pointer if <VAR>c</VAR> does not occur in <VAR 
+        >string</VAR>. </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=strcat ><FONT face=Arial 
+      size=3 color=blue><U>strcat : concatenate 
+      strings</U>   </FONT></A></H2>
+      <P><A name=IDX130></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>char *strcat(char 
+        *<VAR>dst</VAR>, const char *<VAR 
+        >src</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>strcat appends a copy of the string pointed to 
+        by <VAR>src</VAR> (including the terminating null 
+        character) to the end of the string pointed to by <VAR 
+        >dst</VAR>. The initial character of <VAR 
+        >src</VAR> overwrites the null character at the end 
+        of <VAR>dst</VAR>. 
+      </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT 
+        face=Arial><FONT size=2>This function returns the initial value of <VAR 
+        >dst</VAR> </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=strchr ><FONT face=Arial 
+      size=3 color=blue><U>strchr : search for 
+      character in string</U>      
+      </FONT></A></H2>
+      <P><A name=IDX131></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt; <BR>char * strchr(const 
+        char *<VAR>string</VAR>, int <VAR 
+        >c</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>This function finds the first occurence of <VAR 
+        >c</VAR> (converted to a char) in the string pointed 
+        to by <VAR>string</VAR> (including the terminating 
+        null character). </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT 
+        face=Arial><FONT size=2>Returns a pointer to the located character, or a 
+        null pointer if <VAR>c</VAR> does not occur in <VAR 
+        >string</VAR>. </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=strcmp ><FONT face=Arial 
+      size=3 color=blue><U>strcmp : character 
+      string compare</U>    
+      </FONT></A></H2>
+      <P><A name=IDX132></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>int strcmp(const char 
+        *<VAR>a</VAR>, const char *<VAR 
+        >b</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>strcmp compares the string at <VAR 
+        >a</VAR> to the string at <VAR 
+        >b</VAR>. </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT 
+        face=Arial><FONT size=2>If *<VAR>a</VAR> sorts 
+        lexicographically after *<VAR>b</VAR>, strcmp 
+        returns a number greater than zero. If the two strings match, strcmp 
+        returns zero. If *<VAR>a</VAR> sorts 
+        lexicographically before *<VAR>b</VAR>, strcmp 
+        returns a number less than zero. </FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=strcoll ><FONT face=Arial 
+      size=3 color=blue><U>strcoll : locale 
+      specific character string compare</U>      
+      </FONT></A></H2>
+      <P><A name=IDX133></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR> int strcoll(const 
+        char *<VAR>stra</VAR>, const char * <VAR 
+        >strb</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>strcoll compares the string pointed to by <VAR 
+        >stra</VAR> to the string pointed to by <VAR 
+        >strb</VAR>, using an interpretation appropriate to 
+        the current LC_COLLATE state. </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>If the first string is greater than the second 
+        string, strcoll returns a number greater than zero. If the two strings 
+        are equivalent, strcoll returns zero. If the first string is less than 
+        the second string, strcoll returns a number less than zero. 
+        </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=strcpy ><FONT face=Arial 
+      size=3 color=blue><U>strcpy : copy 
+      string</U>   </FONT></A></H2>
+      <P><A name=IDX134></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>char *strcpy(char 
+        *<VAR>dst</VAR>, const char *<VAR 
+        >src</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>strcpy copies the string pointed to by <VAR 
+        >src</VAR> (including the terminating null 
+        character) to the array pointed to by <VAR 
+        >dst</VAR>. </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>This function returns the initial value of <VAR 
+        >dst</VAR>. </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=strcspn ><FONT face=Arial 
+      size=3 color=blue><U>strcspn : count chars 
+      not in string</U>      
+      </FONT></A></H2>
+      <P><A name=IDX135></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >size_t strcspn(const char *<VAR 
+        >s1</VAR>, const char *<VAR 
+        >s2</VAR>);</FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>This function computes the length of the initial 
+        part of the string pointed to by <VAR>s1</VAR> 
+        which consists entirely of characters <VAR 
+        >NOT</VAR> from the string pointed to by <VAR 
+        >s2</VAR> (excluding the terminating null 
+        character). </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>strcspn returns the length of the substring 
+        found. </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=strerror ><FONT face=Arial 
+      size=3 color=blue><U>strerror : convert 
+      error number to string</U>      
+      </FONT></A></H2>
+      <P><A name=IDX136></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>char *strerror(int 
+        <VAR>errnum</VAR>); 
+      </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>strerror converts the error number <VAR 
+        >errnum</VAR> into a string. The value of <VAR 
+        >errnum</VAR> is usually a copy of errno. If errnum 
+        is not a known error number, the result points to an empty string. 
+        </FONT></FONT></FONT></P>
+        <P><FONT face=Arial size=2 
+        >This implementation of strerror prints out the 
+        following strings for each of the values defined in `errno.h': 
+        </FONT></P></BLOCKQUOTE>
+      <DL compact>
+        <DL>
+          <DT><FONT face=Arial size=2 
+          >E2BIG</FONT>
+          <DD><FONT face=Arial size=2 
+          >Arg list too long </FONT>
+          <DT><FONT face=Arial size=2 
+          >EACCES </FONT>
+          <DD><FONT face=Arial size=2 
+          >Permission denied </FONT>
+          <DT><FONT face=Arial size=2 
+          >EADV </FONT>
+          <DD><FONT face=Arial size=2 
+          >Advertise error </FONT>
+          <DT><FONT face=Arial size=2 
+          >EAGAIN </FONT>
+          <DD><FONT face=Arial size=2 
+          >No more processes </FONT>
+          <DT><FONT face=Arial size=2 
+          >EBADF </FONT>
+          <DD><FONT face=Arial size=2 
+          >Bad file number </FONT>
+          <DT><FONT face=Arial size=2 
+          >EBADMSG </FONT>
+          <DD><FONT face=Arial size=2 
+          >Bad message </FONT>
+          <DT><FONT face=Arial size=2 
+          >EBUSY </FONT>
+          <DD><FONT face=Arial size=2 
+          >Device or resource busy </FONT>
+          <DT><FONT face=Arial size=2 
+          >ECHILD </FONT>
+          <DD><FONT face=Arial size=2 
+          >No children </FONT>
+          <DT><FONT face=Arial size=2 
+          >ECOMM </FONT>
+          <DD><FONT face=Arial size=2 
+          >Communication error </FONT>
+          <DT><FONT face=Arial size=2 
+          >EDEADLK </FONT>
+          <DD><FONT face=Arial size=2 
+          >Deadlock </FONT>
+          <DT><FONT face=Arial size=2 
+          >EEXIST </FONT>
+          <DD><FONT face=Arial size=2 
+          >File exists </FONT>
+          <DT><FONT face=Arial size=2 
+          >EDOM </FONT>
+          <DD><FONT face=Arial size=2 
+          >Math argument </FONT>
+          <DT><FONT face=Arial size=2 
+          >EFAULT </FONT>
+          <DD><FONT face=Arial size=2 
+          >Bad address </FONT>
+          <DT><FONT face=Arial size=2 
+          >EFBIG </FONT>
+          <DD><FONT face=Arial size=2 
+          >File too large </FONT>
+          <DT><FONT face=Arial size=2 
+          >EIDRM </FONT>
+          <DD><FONT face=Arial size=2 
+          >Identifier removed </FONT>
+          <DT><FONT face=Arial size=2 
+          >EINTR </FONT>
+          <DD><FONT face=Arial size=2 
+          >Interrupted system call </FONT>
+          <DT><FONT face=Arial size=2 
+          >EINVAL </FONT>
+          <DD><FONT face=Arial size=2 
+          >Invalid argument </FONT>
+          <DT><FONT face=Arial size=2 
+          >EIO </FONT>
+          <DD><FONT face=Arial size=2 
+          >I/O error </FONT>
+          <DT><FONT face=Arial size=2 
+          >EISDIR </FONT>
+          <DD><FONT face=Arial size=2 
+          >Is a directory </FONT>
+          <DT><FONT face=Arial size=2 
+          >ELIBACC </FONT>
+          <DD><FONT face=Arial size=2 
+          >Cannot access a needed shared library </FONT>
+          <DT><FONT face=Arial size=2 
+          >ELIBBAD </FONT>
+          <DD><FONT face=Arial size=2 
+          >Accessing a corrupted shared library </FONT>
+          <DT><FONT face=Arial size=2 
+          >ELIBEXEC </FONT>
+          <DD><FONT face=Arial size=2 
+          >Cannot exec a shared library directly </FONT>
+          <DT><FONT face=Arial size=2 
+          >ELIBMAX </FONT>
+          <DD><FONT face=Arial size=2 
+          >Attempting to link in more shared libraries than 
+          system limit </FONT>
+          <DT><FONT face=Arial size=2 
+          >ELIBSCN </FONT>
+          <DD><FONT face=Arial size=2 
+          >.lib section in a.out corrupted </FONT>
+          <DT><FONT face=Arial size=2 
+          >EMFILE </FONT>
+          <DD><FONT face=Arial size=2 
+          >Too many open files </FONT>
+          <DT><FONT face=Arial size=2 
+          >EMLINK </FONT>
+          <DD><FONT face=Arial size=2 
+          >Too many links </FONT>
+          <DT><FONT face=Arial size=2 
+          >EMULTIHOP </FONT>
+          <DD><FONT face=Arial size=2 
+          >Multihop attempted </FONT>
+          <DT><FONT face=Arial size=2 
+          >ENAMETOOLONG </FONT>
+          <DD><FONT face=Arial size=2 
+          >File or path name too long </FONT>
+          <DT><FONT face=Arial size=2 
+          >ENFILE </FONT>
+          <DD><FONT face=Arial size=2 
+          >Too many open files in system </FONT>
+          <DT><FONT face=Arial size=2 
+          >ENODEV </FONT>
+          <DD><FONT face=Arial size=2 
+          >No such device </FONT>
+          <DT><FONT face=Arial size=2 
+          >ENOENT </FONT>
+          <DD><FONT face=Arial size=2 
+          >No such file or directory </FONT>
+          <DT><FONT face=Arial size=2 
+          >ENOEXEC </FONT>
+          <DD><FONT face=Arial size=2 
+          >Exec format error </FONT>
+          <DT><FONT face=Arial size=2 
+          >ENOLCK </FONT>
+          <DD><FONT face=Arial size=2 
+          >No lock </FONT>
+          <DT><FONT face=Arial size=2 
+          >ENOLINK </FONT>
+          <DD><FONT face=Arial size=2 
+          >Virtual circuit is gone </FONT>
+          <DT><FONT face=Arial size=2 
+          >ENOMEM </FONT>
+          <DD><FONT face=Arial size=2 
+          >Not enough space </FONT>
+          <DT><FONT face=Arial size=2 
+          >ENOMSG </FONT>
+          <DD><FONT face=Arial size=2 
+          >No message of desired type </FONT>
+          <DT><FONT face=Arial size=2 
+          >ENONET </FONT>
+          <DD><FONT face=Arial size=2 
+          >Machine is not on the network </FONT>
+          <DT><FONT face=Arial size=2 
+          >ENOPKG </FONT>
+          <DD><FONT face=Arial size=2 
+          >No package </FONT>
+          <DT><FONT face=Arial size=2 
+          >ENOSPC </FONT>
+          <DD><FONT face=Arial size=2 
+          >No space left on device </FONT>
+          <DT><FONT face=Arial size=2 
+          >ENOSR </FONT>
+          <DD><FONT face=Arial size=2 
+          >No stream resources </FONT>
+          <DT><FONT face=Arial size=2 
+          >ENOSTR </FONT>
+          <DD><FONT face=Arial size=2 
+          >Not a stream </FONT>
+          <DT><FONT face=Arial size=2 
+          >ENOSYS </FONT>
+          <DD><FONT face=Arial size=2 
+          >Function not implemented </FONT>
+          <DT><FONT face=Arial size=2 
+          >ENOTBLK </FONT>
+          <DD><FONT face=Arial size=2 
+          >Block device required </FONT>
+          <DT><FONT face=Arial size=2 
+          >ENOTDIR </FONT>
+          <DD><FONT face=Arial size=2 
+          >Not a directory </FONT>
+          <DT><FONT face=Arial size=2 
+          >ENOTEMPTY </FONT>
+          <DD><FONT face=Arial size=2 
+          >Directory not empty </FONT>
+          <DT><FONT face=Arial size=2 
+          >ENOTTY </FONT>
+          <DD><FONT face=Arial size=2 
+          >Not a character device </FONT>
+          <DT><FONT face=Arial size=2 
+          >ENXIO </FONT>
+          <DD><FONT face=Arial size=2 
+          >No such device or address </FONT>
+          <DT><FONT face=Arial size=2 
+          >EPERM </FONT>
+          <DD><FONT face=Arial size=2 
+          >Not owner </FONT>
+          <DT><FONT face=Arial size=2 
+          >EPIPE </FONT>
+          <DD><FONT face=Arial size=2 
+          >Broken pipe </FONT>
+          <DT><FONT face=Arial size=2 
+          >EPROTO </FONT>
+          <DD><FONT face=Arial size=2 
+          >Protocol error </FONT>
+          <DT><FONT face=Arial size=2 
+          >ERANGE </FONT>
+          <DD><FONT face=Arial size=2 
+          >Result too large </FONT>
+          <DT><FONT face=Arial size=2 
+          >EREMOTE </FONT>
+          <DD><FONT face=Arial size=2 
+          >Resource is remote </FONT>
+          <DT><FONT face=Arial size=2 
+          >EROFS </FONT>
+          <DD><FONT face=Arial size=2 
+          >Read-only file system </FONT>
+          <DT><FONT face=Arial size=2 
+          >ESPIPE </FONT>
+          <DD><FONT face=Arial size=2 
+          >Illegal seek </FONT>
+          <DT><FONT face=Arial size=2 
+          >ESRCH </FONT>
+          <DD><FONT face=Arial size=2 
+          >No such process </FONT>
+          <DT><FONT face=Arial size=2 
+          >ESRMNT </FONT>
+          <DD><FONT face=Arial size=2 
+          >Srmount error </FONT>
+          <DT><FONT face=Arial size=2 
+          >ETIME </FONT>
+          <DD><FONT face=Arial size=2 
+          >Stream ioctl timeout </FONT>
+          <DT><FONT face=Arial size=2 
+          >ETXTBSY </FONT>
+          <DD><FONT face=Arial size=2 
+          >Text file busy </FONT>
+          <DT><FONT face=Arial size=2 
+          >EXDEV </FONT>
+          <DD><FONT face=Arial size=2 
+          >Cross-device link </FONT></DD></DL></DL>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>This function returns a pointer to a string. 
+        Your application must not modify that string. 
+      </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=strlen ><FONT face=Arial 
+      size=3 color=blue><U>strlen : character 
+      string length</U>    
+      </FONT></A></H2>
+      <P><A name=IDX137></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR> size_t strlen(const 
+        char *<VAR>str</VAR>); 
+      </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>The strlen function works out the length of the 
+        string starting at *<VAR>str</VAR> by counting 
+        chararacters until it reaches a NULL character. 
+      </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>strlen returns the character 
+        count.</FONT></FONT></FONT><FONT 
+      ></P></BLOCKQUOTE></FONT>
+      <H2><A name=strlwr ><FONT face=Arial 
+      size=3 color=blue><U>strlwr : force string 
+      to lower case</U>      
+      </FONT></A></H2>
+      <P><A name=IDX138></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>char *strlwr(char 
+        *<VAR>a</VAR>); 
+</FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>strlwr converts each characters in the string at 
+        <VAR>a</VAR> to lower case. 
+        </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>strlwr returns its argument, <VAR 
+        >a</VAR>. </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=strncat ><FONT face=Arial 
+      size=3 color=blue><U>strncat : concatenate 
+      strings</U>   </FONT></A></H2>
+      <P><A name=IDX139></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>char *strncat(char 
+        *<VAR>dst</VAR>, const char *<VAR 
+        >src</VAR>, size_t <VAR 
+        >length</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>strncat appends not more than <VAR 
+        >length</VAR> characters from the string pointed to 
+        by <VAR>src</VAR> (including the terminating null 
+        character) to the end of the string pointed to by <VAR 
+        >dst</VAR>. The initial character of <VAR 
+        >src</VAR> overwrites the null character at the end 
+        of <VAR>dst</VAR>. A terminating null character is 
+        always appended to the result </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Warnings</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>Note that a null is always appended, so that if 
+        the copy is limited by the <VAR>length</VAR> 
+        argument, the number of characters appended to <VAR 
+        >dst</VAR> is n + 
+      1.</FONT></FONT></FONT></P></BLOCKQUOTE><FONT><FONT 
+      face=Arial><FONT size=2>
+      <P dir=ltr><STRONG 
+      >Returns</STRONG></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P dir=ltr>This function returns the initial value 
+        of <VAR>dst</VAR> 
+      </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=strncmp ><FONT face=Arial 
+      size=3 color=blue><U>strncmp : character 
+      string compare</U>    
+      </FONT></A></H2>
+      <P><A name=IDX140></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>int strncmp(const char 
+        *<VAR>a</VAR>, const char * <VAR 
+        >b</VAR>, size_t <VAR 
+        >length</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>strncmp compares up to <VAR 
+        >length</VAR> characters from the string at <VAR 
+        >a</VAR> to the string at <VAR 
+        >b</VAR>. </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>If *<VAR>a</VAR> sorts 
+        lexicographically after *<VAR>b</VAR>, strncmp 
+        returns a number greater than zero. If the two strings are equivalent, 
+        strncmp returns zero. If *<VAR>a</VAR> sorts 
+        lexicographically before *<VAR>b</VAR>, strncmp 
+        returns a number less than zero. </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=strncpy ><FONT face=Arial 
+      size=3 color=blue><U>strncpy : counted 
+      copy string</U>    </FONT></A></H2>
+      <P><A name=IDX141></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>char *strncpy(char 
+        *<VAR>dst</VAR>, const char *<VAR 
+        >src</VAR>, size_t <VAR 
+        >length</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>strncpy copies not more than <VAR 
+        >length</VAR> characters from the the string pointed 
+        to by <VAR>src</VAR> (including the terminating 
+        null character) to the array pointed to by <VAR 
+        >dst</VAR>. If the string pointed to by <VAR 
+        >src</VAR> is shorter than <VAR 
+        >length</VAR> characters, null characters are 
+        appended to the destination array until a total of <VAR 
+        >length</VAR> characters have been written. 
+        </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>This function returns the initial value of <VAR 
+        >dst</VAR>. </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=strpbrk ><FONT face=Arial 
+      size=3 color=blue><U>strpbrk : find chars 
+      in string</U>     </FONT></A></H2>
+      <P><A name=IDX142></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>char *strpbrk(const 
+        char *<VAR>s1</VAR>, const char *<VAR 
+        >s2</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>This function locates the first occurence in the 
+        string pointed to by <VAR>s1</VAR> of any character 
+        in string pointed to by <VAR>s2</VAR> (excluding 
+        the terminating null character). </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>strpbrk returns a pointer to the character found 
+        in <VAR>s1</VAR>, or a null pointer if no character 
+        from <VAR>s2</VAR> occurs in <VAR 
+        >s1</VAR>. </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=strrchr ><FONT face=Arial 
+      size=3 color=blue><U>strrchr : reverse 
+      search for character in string</U>       
+      </FONT></A></H2>
+      <P><A name=IDX143></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>char * strrchr(const 
+        char *<VAR>string</VAR>, int <VAR 
+        >c</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>This function finds the last occurence of <VAR 
+        >c</VAR> (converted to a char) in the string pointed 
+        to by <VAR>string</VAR> (including the terminating 
+        null character). </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>Returns a pointer to the located character, or a 
+        null pointer if <VAR>c</VAR> does not occur in <VAR 
+        >string</VAR>. </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=strspn ><FONT face=Arial 
+      size=3 color=blue><U>strspn : find initial 
+      match</U>    </FONT></A></H2>
+      <P><A name=IDX144></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>size_t strspn(const 
+        char *<VAR>s1</VAR>, const char *<VAR 
+        >s2</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>This function computes the length of the initial 
+        segment of the string pointed to by <VAR>s1</VAR> 
+        which consists entirely of characters from the string pointed to by <VAR 
+        >s2</VAR> (excluding the terminating null 
+        character). </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>strspn returns the length of the segment found. 
+        </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=strstr ><FONT face=Arial 
+      size=3 color=blue><U>strstr : find string 
+      segment</U>    </FONT></A></H2>
+      <P><A name=IDX145></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>char *strstr(const 
+        char *<VAR>s1</VAR>, const char *<VAR 
+        >s2</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>Locates the first occurence in the string 
+        pointed to by <VAR>s1</VAR> of the sequence of 
+        characters in the string pointed to by <VAR 
+        >s2</VAR> (excluding the terminating null 
+        character). </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>Returns a pointer to the located string segment, 
+        or a null pointer if the string <VAR>s2</VAR> is 
+        not found. If <VAR>s2</VAR> points to a string with 
+        zero length, the <VAR>s1</VAR> is returned. 
+        </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=strtok ><FONT face=Arial 
+      size=3 color=blue><U>strtok : get next 
+      token from a string</U>       
+      </FONT></A></H2>
+      <P><A name=IDX146></A><A 
+      name=IDX147></A><FONT face=Arial><FONT size=2><FONT 
+      ><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt; <BR>char *strtok(char 
+        *<VAR>source</VAR>, const char *<VAR 
+        >delimiters</VAR>)<BR> char *strtok_r(char *<VAR 
+        >source</VAR>, const char *<VAR 
+        >delimiters</VAR>, char **<VAR 
+        >lasts</VAR>) </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>The strtok function is used to isolate 
+        sequential tokens in a null-terminated string, *<VAR 
+        >source</VAR>. These tokens are delimited in the 
+        string by at least one of the characters in *<VAR 
+        >delimiters</VAR>. The first time that strtok is 
+        called, *<VAR>source</VAR> should be specified; 
+        subsequent calls, wishing to obtain further tokens from the same string, 
+        should pass a null pointer instead. The separator string, *<VAR 
+        >delimiters</VAR>, must be supplied each time, and 
+        may change between calls. </FONT></FONT></FONT></P>
+        <P><FONT face=Arial size=2>The 
+        strtok function returns a pointer to the beginning of each subsequent 
+        token in the string, after replacing the separator character itself with 
+        a NUL character. When no more tokens remain, a null pointer is returned. 
+        </FONT></P>
+        <P><FONT face=Arial size=2>The 
+        strtok_r function has the same behavior as strtok, except a pointer to 
+        placeholder *[lasts&gt; must be supplied by the caller. 
+      </FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>strtok returns a pointer to the next token, or 
+        NULL if no more tokens can be found. 
+</FONT></FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=strupr ><FONT face=Arial 
+      size=3 color=blue><U>strupr : force string 
+      to uppercase</U>     
+      </FONT></A></H2>
+      <P><A name=IDX148></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>char *strupr(char 
+        *<VAR>a</VAR>); 
+</FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>strupr converts each characters in the string at 
+        <VAR>a</VAR> to upper case. 
+        </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>strupr returns its argument, <VAR 
+        >a</VAR>. </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <H2><A name=strxfrm ><FONT face=Arial 
+      size=3 color=blue><U>strxfrm : transform 
+      string</U>   </FONT></A></H2>
+      <P><A name=IDX149></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial><FONT size=2><FONT 
+        >#include &lt;string.h&gt;<BR>size_t strxfrm(char 
+        *<VAR>s1</VAR>, const char *<VAR 
+        >s2</VAR>, size_t <VAR 
+        >n</VAR>); </FONT></FONT></FONT></P></BLOCKQUOTE>
+      <P><FONT><FONT face=Arial><FONT 
+      size=2><STRONG 
+      >Description</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT><FONT 
+        face=Arial><FONT size=2>This function transforms the string pointed to 
+        by <VAR>s2</VAR> and places the resulting string 
+        into the array pointed to by <VAR>s1</VAR>. The 
+        transformation is such that if the strcmp function is applied to the two 
+        transformed strings, it returns a value greater than, equal to, or less 
+        than zero, correspoinding to the result of a strcoll function applied to 
+        the same two original strings. </FONT></FONT></FONT></P>
+        <P><FONT face=Arial size=2>No 
+        more than <VAR>n</VAR> characters are placed into 
+        the resulting array pointed to by <VAR>s1</VAR>, 
+        including the terminating null character. If <VAR 
+        >n</VAR> is zero, <VAR>s1</VAR> 
+        may be a null pointer. If copying takes place between objects that 
+        overlap, the behavior is undefined. </FONT></P>
+        <P><FONT face=Arial size=2 
+        >With a C locale, this function just 
+        copies.</FONT></P></BLOCKQUOTE>
+      <P dir=ltr><FONT><FONT 
+      face=Arial><FONT size=2><STRONG 
+      >Returns</STRONG></FONT></FONT></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P dir=ltr><FONT><FONT 
+        face=Arial><FONT size=2>The strxfrm function returns the length of the 
+        transformed string (not including the terminating null character). If 
+        the value returned is <VAR>n</VAR> or more, the 
+        contents of the array pointed to by <VAR>s1</VAR> 
+        are 
+indeterminate.</FONT></FONT></FONT></P></BLOCKQUOTE></TD></TR></TABLE></H1>
+<P><FONT face=Arial></FONT>&nbsp;</P>
+
+</BODY>
+</HTML>

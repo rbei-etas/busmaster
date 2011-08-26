@@ -1,0 +1,240 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "SignalWatch_resource.h"
+
+// Generated Help ID header file
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "SignalWatch_resource.hm"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "SignalWatch_resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""afxres.rc""     // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "SignalWatch.dll"
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "OriginalFilename", "SignalWatch.dll"
+            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DLG_ADD_DEL_SIGNALS DIALOGEX 0, 0, 316, 258
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | DS_CONTEXTHELP | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Signal Watch List "
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "Message List:",-1,7,6,44,8
+    CONTROL         "List2",IDC_LSTC_SIGNAL,"SysListView32",LVS_REPORT | 
+                    LVS_SHOWSELALWAYS | LVS_SORTASCENDING | 
+                    LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,7,42,107,187
+    PUSHBUTTON      "&Add",IDM_SIGNALDLG_ADD,124,83,50,14
+    DEFPUSHBUTTON   "&OK",IDOK,107,237,50,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,170,237,50,14
+    CONTROL         "List2",IDC_LSTC_SIGNAL_WATCH,"SysListView32",LVS_REPORT | 
+                    LVS_SHOWSELALWAYS | LVS_SORTASCENDING | 
+                    LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,184,42,125,
+                    187
+    LTEXT           "Signal List:",-1,7,31,35,8
+    LTEXT           "Signal Watch List",-1,184,30,56,8
+    COMBOBOX        IDC_COMB_MSGNAME,7,16,108,85,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP,0,HIDC_COMB_MSGNAME
+    PUSHBUTTON      "Add Al&l",IDM_SIGNALDLG_ADDALL,124,108,50,14
+    PUSHBUTTON      "&Delete",IDM_SIGNALDLG_DELETE,124,133,50,14
+    PUSHBUTTON      "D&elete All",IDM_SIGNALDLG_DELETEALL,124,158,50,14
+END
+
+IDD_DLG_SIGNAL_WATCH DIALOG  0, 0, 218, 113
+STYLE DS_SETFONT | WS_MINIMIZEBOX | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Signal Watch"
+FONT 8, "Courier"
+BEGIN
+    CONTROL         "List1",IDC_LIST_SIGNAL_WATCH,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,1,1,217,112
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_DLG_ADD_DEL_SIGNALS DLGINIT
+BEGIN
+    IDC_COMB_MSGNAME, 0x403, 5, 0
+0x6554, 0x7473, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_DLG_ADD_DEL_SIGNALS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 132
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_DLG_SIGNAL_WATCH, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        BOTTOMMARGIN, 106
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDM_MENU_SIGNAL_WATCH MENU 
+BEGIN
+    POPUP "Signal Watch"
+    BEGIN
+        MENUITEM "&Add/Delete Signals...",      IDM_SIGNALWATCH_ADDSIGNAL
+        MENUITEM "&Close",                      IDM_SIGNALWATCH_CLOSE
+    END
+    POPUP "Operations"
+    BEGIN
+        MENUITEM "&Clear",                      IDM_SG_WATCH_CLEAR
+    END
+    POPUP "Signal Dlg"
+    BEGIN
+        MENUITEM "&Add",                        IDM_SIGNALDLG_ADD
+        MENUITEM "Add Al&l",                    IDM_SIGNALDLG_ADDALL
+        MENUITEM "&Delete",                     IDM_SIGNALDLG_DELETE
+        MENUITEM "D&elete All",                 IDM_SIGNALDLG_DELETEALL
+        MENUITEM SEPARATOR
+        MENUITEM "&Signal Details",             IDM_SIGNALDLG_SIGNALDETAILS
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_BMP_MSG_SIG_WATCH   BITMAP                  "res\\Signalwatch.bmp"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "afxres.rc"     // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
