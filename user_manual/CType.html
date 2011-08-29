@@ -1,0 +1,486 @@
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
+<TITLE>Character Type Macros and Functions</TITLE>
+</HEAD>
+<BODY>
+<H1>
+<TABLE style="WIDTH: 722px; HEIGHT: 20px" cellSpacing=2 cellPadding=5 width=722 
+bgColor=#ffffff border=0>
+  
+  <TR>
+    <TD align=left bgColor=#ccccff>
+      <P align=center><FONT face=Arial color=red size=5><STRONG>Character Type 
+      Macros and Functions</STRONG></FONT></P></TD></TR>
+  <TR>
+    <TD align=left bgColor=#eeeeff>
+      <P><FONT face=Arial size=2><BR>This 
+      chapter groups macros (which are also available as subroutines) to 
+      classify characters into several categories (alphabetic, numeric, control 
+      characters, whitespace, and so on), or to perform simple character 
+      mappings. </FONT></P>
+      <P><FONT face=Arial size=2>The 
+      header file <TT>`ctype.h'</TT> defines the macros. 
+      </FONT></P>
+      <H2><A name=isalnum ><FONT face=Arial 
+      size=2 color=blue><U>isalnum : alphanumeric 
+      character predicate</U>    
+      </FONT></A></H2>
+      <P><A name=IDX45></A><FONT 
+      ><FONT face=Arial><FONT size=2><STRONG 
+      >Synopsis</STRONG> </FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>#include 
+        &lt;ctype.h&gt;<BR>int isalnum(int <VAR>c</VAR>); 
+        </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>isalnum is a macro which classifies ASCII 
+        integer values by table lookup. It is a predicate returning non-zero for 
+        alphabetic or numeric ASCII characters, and 0 for other arguments. It is 
+        defined for all integer values. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can use a compiled subroutine instead of the macro definition by 
+        undefining the macro using `#undef isalnum'. </FONT></P></BLOCKQUOTE>
+      <P><BR><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>isalnum returns non-zero if <VAR 
+        >c</VAR> is a letter (a--z or A--Z) or a digit 
+        (0--9). </FONT></P></BLOCKQUOTE>
+      <H2><A name=isalpha ><FONT face=Arial 
+      size=2 color=blue><U>isalpha : alphabetic 
+      character predicate</U>    
+      </FONT></A></H2>
+      <P><A name=IDX46></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT> </FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>#include 
+        &lt;ctype.h&gt;<BR>int isalpha(int <VAR>c</VAR>); 
+        </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>isalpha is a macro which classifies ASCII 
+        integer values by table lookup. It is a predicate returning non-zero 
+        when <VAR>c</VAR> represents an alphabetic ASCII 
+        character, and 0 otherwise. It is defined only when isascii(<VAR 
+        >c</VAR>) is true or <VAR 
+        >c</VAR> is EOF. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can use a compiled subroutine instead of the macro definition by 
+        undefining the macro using `#undef isalpha'. </FONT></P></BLOCKQUOTE>
+      <P><BR><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>isalpha returns non-zero if <VAR 
+        >c</VAR> is a letter (A--Z or a--z). 
+      </FONT></P></BLOCKQUOTE>
+      <H2><A name=isascii ><FONT face=Arial 
+      size=2 color=blue><U>isascii : ASCII 
+      character predicate</U>    
+      </FONT></A></H2>
+      <P><A name=IDX47></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT> </FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>#include 
+        &lt;ctype.h&gt;<BR>int isascii(int <VAR>c</VAR>); 
+        </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>isascii is a macro which returns non-zero 
+        when <VAR>c</VAR> is an ASCII character, and 0 
+        otherwise. It is defined for all integer values. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can use a compiled subroutine instead of the macro definition by 
+        undefining the macro using `#undef isascii'. </FONT></P></BLOCKQUOTE>
+      <P><BR><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>isascii returns non-zero if the low order 
+        byte of <VAR>c</VAR> is in the range 0 to 127 
+        (0x00--0x7F). </FONT></P></BLOCKQUOTE>
+      <H2><A name=iscntrl ><FONT face=Arial 
+      size=2 color=blue><U>iscntrl : control 
+      character predicate</U>    
+      </FONT></A></H2>
+      <P><A name=IDX48></A><FONT 
+      ><FONT face=Arial><FONT size=2><STRONG 
+      >Synopsis</STRONG> </FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>#include 
+        &lt;ctype.h&gt;<BR>int iscntrl(int <VAR>c</VAR>); 
+        </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>iscntrl is a macro which classifies ASCII 
+        integer values by table lookup. It is a predicate returning non-zero for 
+        control characters, and 0 for other characters. It is defined only when 
+        isascii(<VAR>c</VAR>) is true or <VAR 
+        >c</VAR> is EOF. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can use a compiled subroutine instead of the macro definition by 
+        undefining the macro using `#undef iscntrl'. </FONT></P></BLOCKQUOTE>
+      <P><BR><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>iscntrl returns non-zero if <VAR 
+        >c</VAR> is a delete character or ordinary control 
+        character (0x7F or 0x00--0x1F). </FONT></P></BLOCKQUOTE>
+      <H2><A name=isdigit ><FONT face=Arial 
+      size=2 color=blue><U>isdigit : decimal 
+      digit predicate</U>    
+      </FONT></A></H2>
+      <P><A name=IDX49></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT> </FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>#include 
+        &lt;ctype.h&gt;<BR>int isdigit(int <VAR>c</VAR>); 
+        </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>isdigit is a macro which classifies ASCII 
+        integer values by table lookup. It is a predicate returning non-zero for 
+        decimal digits, and 0 for other characters. It is defined only when 
+        isascii(<VAR>c</VAR>) is true or <VAR 
+        >c</VAR> is EOF. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can use a compiled subroutine instead of the macro definition by 
+        undefining the macro using `#undef isdigit'. </FONT></P></BLOCKQUOTE>
+      <P><BR><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >isdigit returns non-zero if <VAR 
+        >c</VAR> is a decimal digit (0--9). 
+      </FONT></P></BLOCKQUOTE>
+      <H2><A name=islower ><FONT face=Arial 
+      size=2 color=blue><U>islower : lower-case 
+      character predicate</U>    
+      </FONT></A></H2>
+      <P><A name=IDX50></A><FONT 
+      ><FONT face=Arial><FONT size=2><STRONG 
+      >Synopsis</STRONG> </FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;ctype.h&gt;<BR>int islower(int <VAR 
+        >c</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >islower is a macro which classifies ASCII integer 
+        values by table lookup. It is a predicate returning non-zero for 
+        minuscules (lower-case alphabetic characters), and 0 for other 
+        characters. It is defined only when isascii(<VAR 
+        >c</VAR>) is true or <VAR 
+        >c</VAR> is EOF. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can use a compiled subroutine instead of the macro definition by 
+        undefining the macro using `#undef islower'. </FONT></P></BLOCKQUOTE>
+      <P><BR><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >islower returns non-zero if <VAR 
+        >c</VAR> is a lower case letter (a--z). 
+      </FONT></P></BLOCKQUOTE>
+      <H2><A name=isprint ><FONT face=Arial 
+      size=2 color=blue><U>isprint, isgraph : 
+      printable character predicates</U>     
+      </FONT></A></H2>
+      <P><A name=IDX51></A><A 
+      name=IDX52></A><FONT face=Arial><FONT size=2><FONT 
+      ><STRONG>Synopsis</STRONG></FONT> 
+      </FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;ctype.h&gt;<BR>int isprint(int <VAR 
+        >c</VAR>);<BR>int isgraph(int <VAR 
+        >c</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >isprint is a macro which classifies ASCII integer 
+        values by table lookup. It is a predicate returning non-zero for 
+        printable characters, and 0 for other character arguments. It is defined 
+        only when isascii(<VAR>c</VAR>) is true or <VAR 
+        >c</VAR> is EOF. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can use a compiled subroutine instead of the macro definition by 
+        undefining either macro using `#undef isprint' or `#undef isgraph'. 
+        </FONT></P></BLOCKQUOTE>
+      <P><BR><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >isprint returns non-zero if <VAR 
+        >c</VAR> is a printing character, (0x20--0x7E). 
+        isgraph behaves identically to isprint, except that the space character 
+        (0x20) is excluded. </FONT></P></BLOCKQUOTE>
+      <H2><A name=ispunct ><FONT face=Arial 
+      size=2 color=blue><U>ispunct : punctuation 
+      character predicate</U>    
+      </FONT></A></H2>
+      <P><A name=IDX53></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT> </FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;ctype.h&gt;<BR>int ispunct(int <VAR 
+        >c</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >ispunct is a macro which classifies ASCII integer 
+        values by table lookup. It is a predicate returning non-zero for 
+        printable punctuation characters, and 0 for other characters. It is 
+        defined only when isascii(<VAR>c</VAR>) is true or 
+        <VAR>c</VAR> is EOF. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can use a compiled subroutine instead of the macro definition by 
+        undefining the macro using `#undef ispunct'. </FONT></P></BLOCKQUOTE>
+      <P><BR><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >ispunct returns non-zero if <VAR 
+        >c</VAR> is a printable punctuation character 
+        (isgraph(<VAR>c</VAR>) &amp;&amp; !isalnum(<VAR 
+        >c</VAR>)). </FONT></P></BLOCKQUOTE>
+      <H2><A name=isspace ><FONT face=Arial 
+      size=2 color=blue><U>isspace : whitespace 
+      character predicate</U>    
+      </FONT></A></H2>
+      <P><A name=IDX54></A><FONT 
+      ><FONT face=Arial><FONT size=2><STRONG 
+      >Synopsis</STRONG> </FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;ctype.h&gt;<BR>int isspace(int <VAR 
+        >c</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >isspace is a macro which classifies ASCII integer 
+        values by table lookup. It is a predicate returning non-zero for 
+        whitespace characters, and 0 for other characters. It is defined only 
+        when isascii(<VAR>c</VAR>) is true or <VAR 
+        >c</VAR> is EOF. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can use a compiled subroutine instead of the macro definition by 
+        undefining the macro using `#undef isspace'. </FONT></P></BLOCKQUOTE>
+      <P><BR><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >isspace returns non-zero if <VAR 
+        >c</VAR> is a space, tab, carriage return, new line, 
+        vertical tab, or formfeed (0x09--0x0D, 0x20). </FONT></P></BLOCKQUOTE>
+      <H2><A name=isupper ><FONT face=Arial 
+      size=2 color=blue><U>isupper : uppercase 
+      character predicate</U>    
+      </FONT></A></H2>
+      <P><A name=IDX55></A><FONT 
+      ><FONT face=Arial><FONT size=2><STRONG 
+      >Synopsis</STRONG> </FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;ctype.h&gt;<BR>int isupper(int <VAR 
+        >c</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >isupper is a macro which classifies ASCII integer 
+        values by table lookup. It is a predicate returning non-zero for 
+        upper-case letters (A--Z), and 0 for other characters. It is defined 
+        only when isascii(<VAR>c</VAR>) is true or <VAR 
+        >c</VAR> is EOF. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can use a compiled subroutine instead of the macro definition by 
+        undefining the macro using `#undef isupper'. </FONT></P></BLOCKQUOTE>
+      <P><BR><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >supper returns non-zero if <VAR 
+        >c</VAR> is a upper case letter (A-Z). 
+      </FONT></P></BLOCKQUOTE>
+      <H2><A name=isxdigit ><FONT face=Arial 
+      size=2 color=blue><U>isxdigit : hexadecimal 
+      digit predicate</U>    
+      </FONT></A></H2>
+      <P><A name=IDX56></A><FONT 
+      ><FONT face=Arial><FONT size=2><STRONG 
+      >Synopsis</STRONG> </FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;ctype.h&gt;<BR>int isxdigit(int <VAR 
+        >c</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >isxdigit is a macro which classifies ASCII integer 
+        values by table lookup. It is a predicate returning non-zero for 
+        hexadecimal digits, and 0 for other characters. It is defined only when 
+        isascii(<VAR>c</VAR>) is true or <VAR 
+        >c</VAR> is EOF. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can use a compiled subroutine instead of the macro definition by 
+        undefining the macro using `#undef isxdigit'. </FONT></P></BLOCKQUOTE>
+      <P><BR><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >isxdigit returns non-zero if <VAR 
+        >c</VAR> is a hexadecimal digit (0--9, a--f, or 
+        A--F). </FONT></P></BLOCKQUOTE>
+      <H2><A name=toascii ><FONT face=Arial 
+      size=2 color=blue><U>toascii : force 
+      integers to ASCII range</U>      
+      </FONT></A></H2>
+      <P><A name=IDX57></A><FONT 
+      face=Arial><FONT size=2><FONT><STRONG 
+      >Synopsis</STRONG></FONT> </FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;ctype.h&gt;<BR>int toascii(int <VAR 
+        >c</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >toascii is a macro which coerces integers to the 
+        ASCII range (0--127) by zeroing any higher-order bits. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can use a compiled subroutine instead of the macro definition by 
+        undefining this macro using `#undef toascii'. </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >toascii returns integers between 0 and 127. 
+        </FONT></P></BLOCKQUOTE>
+      <H2><A name=tolower ><FONT face=Arial 
+      size=2 color=blue><U>tolower : translate 
+      characters to lower case</U>      
+      </FONT></A></H2>
+      <P><A name=IDX58></A><A 
+      name=IDX59></A><FONT face=Arial><FONT size=2><FONT 
+      ><STRONG>Synopsis</STRONG></FONT> 
+      </FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;ctype.h&gt; <BR>int tolower(int <VAR 
+        >c</VAR>);<BR>int _tolower(int <VAR 
+        >c</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >tolower is a macro which converts upper-case 
+        characters to lower case, leaving all other characters unchanged. It is 
+        only defined when <VAR>c</VAR> is an integer in the 
+        range EOF to 255. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can use a compiled subroutine instead of the macro definition by 
+        undefining this macro using `#undef tolower'. </FONT></P>
+        <P><FONT face=Arial size=2 
+        >_tolower performs the same conversion as tolower, 
+        but should only be used when <VAR>c</VAR> is known 
+        to be an uppercase character (A--Z). </FONT></P></BLOCKQUOTE>
+      <P><BR><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >tolower returns the lower-case equivalent of <VAR 
+        >c</VAR> when it is a character between A and Z, and 
+        <VAR>c</VAR> otherwise. </FONT></P>
+        <P><FONT face=Arial size=2 
+        >_tolower returns the lower-case equivalent of <VAR 
+        >c</VAR> when it is a character between A and Z. If 
+        <VAR>c</VAR> is not one of these characters, the 
+        behaviour of _tolower is undefined. </FONT></P></BLOCKQUOTE>
+      <H2><A  name=toupper ><FONT face=Arial 
+      size=2 color=blue><U>toupper : translate 
+      characters to upper case</U>      
+      </FONT></A></H2>
+      <P><A name=IDX60></A><A 
+      name=IDX61></A><FONT><FONT 
+      face=Arial><FONT size=2><STRONG>Synopsis</STRONG> 
+      </FONT></FONT></FONT>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >#include &lt;ctype.h&gt;<BR>int toupper(int <VAR 
+        >c</VAR>);<BR> int _toupper(int <VAR 
+        >c</VAR>); </FONT></P></BLOCKQUOTE>
+      <P><FONT face=Arial size=2 
+      ><STRONG 
+      >Description</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >toupper is a macro which converts lower-case 
+        characters to upper case, leaving all other characters unchanged. It is 
+        only defined when <VAR>c</VAR> is an integer in the 
+        range EOF to 255. </FONT></P>
+        <P><FONT face=Arial size=2>You 
+        can use a compiled subroutine instead of the macro definition by 
+        undefining this macro using `#undef toupper'. </FONT></P>
+        <P><FONT face=Arial size=2 
+        >_toupper performs the same conversion as toupper, 
+        but should only be used when <VAR>c</VAR> is known 
+        to be a lowercase character (a--z). </FONT></P></BLOCKQUOTE>
+      <P><BR><FONT face=Arial size=2 
+      ><STRONG 
+      >Returns</STRONG></FONT></P>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2 
+        >toupper returns the upper-case equivalent of <VAR 
+        >c</VAR> when it is a character between a and z, and 
+        <VAR>c</VAR> otherwise. </FONT></P>
+        <P><FONT face=Arial size=2 
+        >_toupper returns the upper-case equivalent of <VAR 
+        >c</VAR> when it is a character between a and z. If 
+        <VAR>c</VAR> is not one of these characters, the 
+        behaviour of _toupper is undefined. 
+</FONT></P></BLOCKQUOTE></TD></TR></TABLE></H1><A href="libc_toc.html#TOC27" name=SEC27 ><FONT face=Arial></FONT></A>
+
+</BODY>
+</HTML>

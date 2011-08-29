@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>User Program</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<OBJECT type=application/x-oleobject 
+classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="User Program"></OBJECT>
+
+<H1>
+<TABLE style="WIDTH: 722px" cellSpacing=2 cellPadding=5 width=722 
+bgColor=#ffffff border=0>
+  
+  <TR>
+    <TD align=left bgColor=#ccccff>
+      <P align=center><FONT face=Arial color=red size=5><STRONG>User 
+      Program</STRONG></FONT></P></TD></TR>
+  <TR>
+    <TD align=left bgColor=#eeeeff><FONT size=2 
+     >
+      <P><FONT face=Arial>Once the program is written it 
+      can be built as a DLL and loaded. The GCC compiler is used for this 
+      purpose. The GCC compiler is a freeware shipped along with the BUSMASTER 
+      tool. You can either build or build and load on the fly. You can also 
+      unload any loaded DLL. Once the DLL is loaded, all the handler function 
+      can be invoked/revoked selectively. Once the user program is loaded in to 
+      the BUSMASTER application handlers are exposed to the application.</FONT>      
+                      
+                  
+                     
+                   
+                  
+              </P>
+      <P dir=ltr><FONT face=Arial>
+      <OBJECT type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Build"></OBJECT></FONT></P>
+      <H3><A name=build></A><FONT size=2 face=Arial>Build</FONT></H3>
+      <P><FONT 
+      face=Arial>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To make a 
+      build the program file should be associated with a node under a s<FONT 
+      color=black>imulated system</FONT>. (Refer section 
+      </FONT></FONT><A href="Simulated Systems.htm"><B><FONT size=2 face=Arial>Simulated 
+      Systems</FONT></B></A><FONT size=2><FONT face=Arial>) Selecting <STRONG>Build All</STRONG> 
+      from toolbar or&nbsp; <STRONG>User 
+      Program</STRONG>&nbsp; <IMG 
+      alt="" 
+      src="images\arrow.jpg" 
+      border=0>&nbsp;<STRONG>Build 
+      All</STRONG> will start building all the C files under all the simulated 
+      systems configured in that session. The building status will be displayed 
+      in the Output Window. If any errors found in the program, it will be 
+      listed with the line number. Double clicking the error line in the output 
+      window will open that particular file in Function editor and highlights 
+      the code in source window and will select the corresponding line in the 
+      Pane 2 (Refer section </FONT>            
+                    
+                  
+                   
+                   
+                   
+       <A href="Function Editor.htm"><FONT 
+      face=Arial><STRONG>Function Editor</STRONG> </FONT> </A><FONT face=Arial> ) and makes the 
+      same editable in Pane 3. (Refer section </FONT>      
+            <A href="Function Editor.htm"><FONT face=Arial><STRONG>Function Editor</STRONG> 
+      </FONT> 
+      </A><FONT face=Arial> ) If there is no error in the program, the DLLs will be 
+      generated and user will be notified of successful creation of DLLs. User 
+      can load these DLLs using <STRONG>User Program</STRONG>&nbsp;<IMG alt="" 
+      src="images\arrow.jpg" border=0>&nbsp;<STRONG>Load All</STRONG> menu.&nbsp;&nbsp;&nbsp;&nbsp; </FONT></P>
+      <P><FONT face=Arial>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; All the program 
+      files&nbsp;under the simulated system(s) can also be&nbsp;built by right 
+      clicking on any simulated system and selecting <STRONG>Build All 
+      </STRONG>in simulated system window <STRONG>Pane 1</STRONG>. The program 
+      file under the node can be built by selecting <STRONG>Build</STRONG> in 
+      the simulated system window <STRONG>Pane 2</STRONG> . </FONT> 
+       </P>
+      <P dir=ltr><FONT face=Arial>
+      <OBJECT id=OBJECT1 type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Build and Load"></OBJECT></FONT></P>
+      <H3><A name=build_and_load></A><FONT size=2 
+      face=Arial>Build and Load</FONT></H3>
+      <P><FONT 
+      face=Arial>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User can 
+      build and load a DLL in one step. After associating the program file(s) to 
+      the node(s) , select <STRONG>User Program</STRONG>&nbsp;<IMG alt="" 
+      src="images\arrow.jpg" 
+      border=0>&nbsp;<B>Build &amp; Load All</B>. It will first build the 
+      DLLs. Once the DLLs&nbsp;are built successfully,&nbsp;they will be loaded 
+      automatically. The loaded DLLs will be unloaded before loading the 
+      selected DLLs. Once DLLs&nbsp;are loaded all handler functions written in 
+      the corresponding source files can be invoked.</FONT>      
+                  
+                   
+                
+      </P>
+      <P><FONT 
+      face=Arial>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The program 
+      file under the node can be built and loaded by selecting <STRONG>Build and 
+      Load</STRONG>&nbsp;in the simulated system window <STRONG>Pane 
+      2</STRONG> .</FONT>        
+                  
+                   
+                
+      </P>
+      <P dir=ltr><FONT face=Arial>
+      <OBJECT id=OBJECT2 type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Load"></OBJECT></FONT></P>
+      <H3><A name=load></A><FONT size=2 face=Arial>Load</FONT></H3>
+      <P><FONT 
+      face=Arial>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User can load 
+      BUSMASTER DLLs built earlier. Select <STRONG>User Program</STRONG><STRONG> 
+      </STRONG><IMG alt="" 
+      src="images\arrow.jpg" 
+      border=0>&nbsp;<B>Load All </B>to load the DLLs associated with the nodes under the simulated 
+      systems. Once DLLs&nbsp;are loaded successfully you will be notified with 
+      message.&nbsp;The already loaded DLLs will be unloaded before loading all 
+      the&nbsp;DLL(s). There will be no warning before unloading the DLLs. Once 
+      DLLs&nbsp;are loaded all the handler function(s) written in the 
+      corresponding source files can be executed.</FONT>               
+               
+                   
+                 
+              </P>
+      <P><FONT 
+      face=Arial>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;All 
+      the&nbsp;dlls&nbsp;under the simulated system(s) can also be&nbsp;loaded 
+      by right clicking on any simulated system and selecting&nbsp;<STRONG>Load 
+      All </STRONG>in simulated system window <STRONG>Pane 1</STRONG>. 
+      The&nbsp;dll under the node can be&nbsp;loaded by selecting <STRONG>Load 
+      </STRONG>in the simulated system window <STRONG>Pane 2</STRONG> 
+      .</FONT>        
+               
+                   
+                 
+              </P>
+      <P dir=ltr><FONT face=Arial>
+      <OBJECT id=OBJECT3 type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Unload"></OBJECT></FONT></P>
+      <H3><A name=unload></A><FONT size=2 face=Arial>Unload</FONT></H3>
+      <P><FONT face=Arial>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; User can 
+      unload&nbsp;the DLLs from BUSMASTER. To unload the DLL select <STRONG>User 
+      Program</STRONG><STRONG> </STRONG><IMG 
+      style="LEFT: 242px; TOP: 653px" alt="" 
+      src="images\arrow.jpg" 
+      border=0>&nbsp;<B>Unload 
+      All</B>. Once the DLLs&nbsp;are unloaded all the handlers defined in those 
+      DLLs are no more available. If any handlers are executed that time, those 
+      will be informed about unload. If all handlers are completed its execution 
+      then the DLL(s) will be unloaded. If any timer handlers are heavily loaded 
+      and didn't complete its execution, unload will show a warning message and 
+      unload will be suspended. In this case user shall initiate unload again to 
+      forcibly unload the DLL(s).</FONT>        
+                   
+                  
+                  
+                 
+                   
+              
+  </P>
+      <P><FONT face=Arial>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; All 
+      the&nbsp;dlls&nbsp;under the simulated system(s) can also be&nbsp;unloaded 
+      by right clicking on any simulated system and 
+      selecting&nbsp;<STRONG>UnLoad All </STRONG>in simulated system window 
+      <STRONG>Pane 1</STRONG>. The&nbsp;dll under the node can be&nbsp;unloaded 
+      by selecting <STRONG>UnLoad </STRONG>in the simulated system window 
+      <STRONG>Pane 2</STRONG> 
+  .</FONT>        
+                   
+                  
+                  
+                 
+                   
+              
+  </P></FONT></TD></TR></TABLE> </H1>
+
+<P><FONT face=Arial></FONT>                                                                &nbsp;</P>
+
+</BODY>
+</HTML>

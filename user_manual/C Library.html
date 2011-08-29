@@ -1,0 +1,697 @@
+<HTML>
+<HEAD>
+<TITLE>C Library Functions</TITLE>
+</HEAD>
+<BODY>
+<H1>
+<TABLE style="WIDTH: 722px; HEIGHT: 20px" cellSpacing=2 cellPadding=5 width=722 
+bgColor=#ffffff border=0>
+  
+  <TR>
+    <TD align=left bgColor=#ccccff>
+      <P align=center><FONT face=Arial color=red size=5 
+      ><STRONG>C Library 
+      Functions</STRONG></FONT></P></TD></TR>
+  <TR>
+    <TD align=left bgColor=#eeeeff><FONT size=2 
+      >
+      <UL>
+        <LI><A href="stdlib.html" name=TOC1><FONT face=Arial 
+        size=3 color=red><STRONG>Standard Utility 
+        Functions (<TT>`stdlib.h'</TT>)</STRONG></FONT></A><BR><FONT size=3 
+        ><BR> </FONT>
+        <UL>
+          <LI><A href="stdlib.html#abs" name=TOC3><FONT 
+          face=Arial><FONT color=blue><STRONG>abs : 
+          integer absolute value (magnitude) </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#atof" name=TOC6><FONT 
+          face=Arial><FONT color=blue><STRONG>atof, 
+          atoff : string to double or float </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#atoi" name=TOC7><FONT 
+          face=Arial><FONT color=blue><STRONG>atoi, 
+          atol : string to integer </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#bsearch" name=TOC8><FONT 
+          face=Arial><FONT color=blue><STRONG>bsearch : binary search 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#calloc" name=TOC9><FONT 
+          face=Arial><FONT color=blue><STRONG>calloc : allocate space for arrays 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#div" name=TOC10><FONT 
+          face=Arial><FONT color=blue><STRONG>div : 
+          divide two integers </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#ecvt" name=TOC11><FONT 
+          face=Arial><FONT color=blue><STRONG>ecvt,ecvtf,fcvt,fcvtf : double or float to 
+          string </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#gvcvt" name=TOC12><FONT 
+          face=Arial><FONT color=blue><STRONG>gvcvt, gcvtf : format double or float as 
+          string </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#ecvtbuf" name=TOC13><FONT 
+          face=Arial><FONT color=blue><STRONG>ecvtbuf, fcvtbuf : double or float to 
+          string </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#exit" name=TOC14><FONT 
+          face=Arial><FONT color=blue><STRONG>exit 
+          : end program execution </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#getenv" name=TOC15><FONT 
+          face=Arial><FONT color=blue><STRONG>getenv : look up environment variable 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#labs" name=TOC16><FONT 
+          face=Arial><FONT color=blue><STRONG>labs 
+          : long integer absolute value </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#ldiv" name=TOC17><FONT 
+          face=Arial><FONT color=blue><STRONG>ldiv 
+          : divide two long integers </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#malloc" name=TOC18><FONT 
+          face=Arial><FONT color=blue><STRONG>malloc, realloc, free : manage memory 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#mbtowc" name=TOC19><FONT 
+          face=Arial><FONT color=blue><STRONG>mbtowc : minimal multibyte to wide char 
+          converter </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#qsort" name=TOC20><FONT 
+          face=Arial><FONT color=blue><STRONG>qsort 
+          : sort an array </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#rand" name=TOC21><FONT 
+          face=Arial><FONT color=blue><STRONG>rand, 
+          srand : pseudo-random numbers </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#strtod" name=TOC22><FONT 
+          face=Arial><FONT color=blue><STRONG>strtod, strtodf : string to double or 
+          float </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#strtol" name=TOC23><FONT 
+          face=Arial><FONT color=blue><STRONG>strtol : string to long 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#strtoul" name=TOC24><FONT 
+          face=Arial><FONT color=blue><STRONG>strtoul : string to unsigned long 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#system" name=TOC25><FONT 
+          face=Arial><FONT color=blue><STRONG>system : execute command string 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdlib.html#wctomb" name=TOC26><FONT 
+          face=Arial><FONT color=blue 
+         ><STRONG>wctomb : minimal wide char to multibyte 
+          converter</STRONG>     
+          </FONT> </FONT></A></LI></UL></LI></UL>
+      <P><BR></P>
+      <UL>
+        <LI><A href="CType.html" name=TOC27><FONT face=Arial 
+        size=3 color=red><STRONG>Character Type 
+        Macros and Functions (<TT>`ctype.h'</TT>)</STRONG></FONT></A><FONT face=Arial size=3 
+       > <BR><BR> 
+        </FONT>
+        <UL>
+          <LI><A href="CType.html#isalnum" name=TOC28><FONT 
+          face=Arial><FONT color=blue><STRONG>isalnum : alphanumeric character predicate 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="CType.html#isalpha" name=TOC29><FONT 
+          face=Arial><FONT color=blue><STRONG>isalpha : alphabetic character predicate 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="CType.html#isascii" name=TOC30><FONT 
+          face=Arial><FONT color=blue><STRONG>isascii : ASCII character predicate 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="CType.html#iscntrl" name=TOC31><FONT 
+          face=Arial><FONT color=blue><STRONG>iscntrl : control character predicate 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="CType.html#isdigit" name=TOC32><FONT 
+          face=Arial><FONT color=blue><STRONG>isdigit : decimal digit predicate 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="CType.html#islower" name=TOC33><FONT 
+          face=Arial><FONT color=blue><STRONG>islower : lower-case character predicate 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="CType.html#isprint" name=TOC34><FONT 
+          face=Arial><FONT color=blue><STRONG>isprint, isgraph : printable character 
+          predicates </STRONG></FONT></FONT></A>
+          <LI><A href="CType.html#ispunct" name=TOC35><FONT 
+          face=Arial><FONT color=blue><STRONG>ispunct : punctuation character predicate 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="CType.html#isspace" name=TOC36><FONT 
+          face=Arial><FONT color=blue><STRONG>isspace : whitespace character predicate 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="CType.html#isupper" name=TOC37><FONT 
+          face=Arial><FONT color=blue><STRONG>isupper : uppercase character predicate 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="CType.html#isxdigit" name=TOC38><FONT 
+          face=Arial><FONT color=blue><STRONG>isxdigit : hexadecimal digit predicate 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="CType.html#toascii" name=TOC39><FONT 
+          face=Arial><FONT color=blue><STRONG>toascii : force integers to ASCII range 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="CType.html#tolower" name=TOC40><FONT 
+          face=Arial><FONT color=blue><STRONG>tolower : translate characters to lower 
+          case </STRONG></FONT></FONT></A>
+          <LI><A href="CType.html#toupper" name=TOC41><FONT 
+          face=Arial><FONT color=blue 
+         ><STRONG>toupper : translate characters to upper 
+          case </STRONG>    
+          </FONT> </FONT></A></LI></UL></LI></UL>
+      <P><BR></P>
+      <UL>
+        <LI><A href="stdio.html" name=TOC42><FONT size=3 
+        ><FONT face=Arial><STRONG><FONT color=red>Input and Output 
+        Functions (<TT>`stdio.h'</TT>)<BR></FONT></STRONG><BR></FONT></FONT></A>
+        <UL>
+          <LI><A href="stdio.html#clearerr" name=TOC43><FONT 
+          face=Arial><FONT color=blue><STRONG>clearerr : clear file 
+          or stream error indicator </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#fclose" name=TOC44><FONT 
+          face=Arial><FONT color=blue><STRONG>fclose : close a file 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#feof" name=TOC45><FONT 
+          face=Arial><FONT color=blue><STRONG>feof : test for end of file 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#ferror" name=TOC46><FONT 
+          face=Arial><FONT color=blue><STRONG>ferror : test whether read/write error has 
+          occurred </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#fflush" name=TOC47><FONT 
+          face=Arial><FONT color=blue><STRONG>fflush : flush buffered file output 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#fgetc" name=TOC48><FONT 
+          face=Arial><FONT color=blue><STRONG>fgetc : get a character from a file or stream 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#fgetpos" name=TOC49><FONT 
+          face=Arial><FONT color=blue><STRONG>fgetpos : record 
+          position in a stream or file </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#fgets" name=TOC50><FONT 
+          face=Arial><FONT color=blue><STRONG>fgets : get character string from a file or stream 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#fiprintf" name=TOC51><FONT 
+          face=Arial><FONT color=blue><STRONG>fiprintf : format 
+          output to file (integer only) </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#fopen" name=TOC52><FONT 
+          face=Arial><FONT color=blue><STRONG>fopen : open a file 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#fdopen" name=TOC53><FONT 
+          face=Arial><FONT color=blue><STRONG>fdopen : turn open file into a stream 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#fputc" name=TOC54><FONT 
+          face=Arial><FONT color=blue><STRONG>fputc : write a character on a stream or file 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#fputs" name=TOC55><FONT 
+          face=Arial><FONT color=blue><STRONG>fputs : write a character string in a file or 
+          stream </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#fread" name=TOC56><FONT 
+          face=Arial><FONT color=blue><STRONG>fread : read array elements from a file 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#freopen" name=TOC57><FONT 
+          face=Arial><FONT color=blue><STRONG>freopen : open a file 
+          using an existing file descriptor </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#fseek" name=TOC58><FONT 
+          face=Arial><FONT color=blue><STRONG>fseek : set file position 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#fsetpos" name=TOC59><FONT 
+          face=Arial><FONT color=blue><STRONG>fsetpos : restore 
+          position of a stream or file </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#ftell" name=TOC60><FONT 
+          face=Arial><FONT color=blue><STRONG>ftell : return position in a stream or file 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#fwrite" name=TOC61><FONT 
+          face=Arial><FONT color=blue><STRONG>fwrite : write array elements 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#getc" name=TOC62><FONT 
+          face=Arial><FONT color=blue><STRONG>getc : read a character (macro) 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#getchar" name=TOC63><FONT 
+          face=Arial><FONT color=blue><STRONG>getchar : read a 
+          character (macro) 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#gets" name=TOC64><FONT 
+          face=Arial><FONT color=blue><STRONG>gets : get character string (obsolete, use fgets 
+          instead) </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#iprintf" name=TOC65><FONT 
+          face=Arial><FONT color=blue><STRONG>iprintf : write 
+          formatted output (integer only) </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#mktemp" name=TOC66><FONT 
+          face=Arial><FONT color=blue><STRONG>mktemp, mkstemp : generate unused file name 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#perror" name=TOC67><FONT 
+          face=Arial><FONT color=blue><STRONG>perror : print an error message on standard error 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#putc" name=TOC68><FONT 
+          face=Arial><FONT color=blue><STRONG>putc : write a character (macro) 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#putchar" name=TOC69><FONT 
+          face=Arial><FONT color=blue><STRONG>putchar : write a 
+          character (macro) 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#puts" name=TOC70><FONT 
+          face=Arial><FONT color=blue><STRONG>puts : write a character string 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#remove" name=TOC71><FONT 
+          face=Arial><FONT color=blue><STRONG>remove : delete a file's name 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#rename" name=TOC72><FONT 
+          face=Arial><FONT color=blue><STRONG>rename : rename a file 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#rewind" name=TOC73><FONT 
+          face=Arial><FONT color=blue><STRONG>rewind : reinitialize a file or stream 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#setbuf" name=TOC74><FONT 
+          face=Arial><FONT color=blue><STRONG>setbuf : specify full buffering for a file or 
+          stream </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#setvbuf" name=TOC75><FONT 
+          face=Arial><FONT color=blue><STRONG>setvbuf : specify file 
+          or stream buffering 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#siprintf" name=TOC76><FONT 
+          face=Arial><FONT color=blue><STRONG>siprintf : write 
+          formatted output (integer only) </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#printf" name=TOC77><FONT 
+          face=Arial><FONT color=blue><STRONG>printf, fprintf, sprintf : format output 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#scanf" name=TOC78><FONT 
+          face=Arial><FONT color=blue><STRONG>scanf, fscanf, sscanf : scan and format input 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#tmpfile" name=TOC79><FONT 
+          face=Arial><FONT color=blue><STRONG>tmpfile : create a 
+          temporary file 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#tmpnam" name=TOC80><FONT 
+          face=Arial><FONT color=blue><STRONG>tmpnam, tempnam : name for a temporary file 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="stdio.html#vprintf" name=TOC81><FONT 
+          face=Arial><STRONG><FONT color=blue>vprintf, vfprintf, 
+          vsprintf : format argument 
+          list</FONT> 
+          </STRONG></FONT></A></LI></UL></LI></UL>
+      <P><BR></P>
+      <UL>
+        <LI><A href="string.html" name=TOC82><FONT size=3 
+        ><FONT face=Arial><STRONG><FONT color=red>Strings and 
+        Memory Functions&nbsp;(<TT>`string.h'</TT>)<BR></FONT></STRONG><BR></FONT></FONT></A>
+        <UL>
+          <LI><A href="string.html#bcmp" name=TOC83><FONT 
+          face=Arial><FONT color=blue><STRONG>bcmp : compare two memory areas 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#bcopy" name=TOC84><FONT 
+          face=Arial><FONT color=blue><STRONG>bcopy : copy memory regions 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#bzero" name=TOC85><FONT 
+          face=Arial><FONT color=blue><STRONG>bzero : initialize memory to zero 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#index" name=TOC86><FONT 
+          face=Arial><FONT color=blue><STRONG>index : search for character in string 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#memchr" name=TOC87><FONT 
+          face=Arial><FONT color=blue><STRONG>memchr : find 
+          character in memory 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#memcmp" name=TOC88><FONT 
+          face=Arial><FONT color=blue><STRONG>memcmp : compare two 
+          memory areas 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#memcpy" name=TOC89><FONT 
+          face=Arial><FONT color=blue><STRONG>memcpy : copy memory 
+          regions 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#memmove" name=TOC90><FONT 
+          face=Arial><FONT color=blue><STRONG>memmove : move 
+          possibly overlapping memory 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#memset" name=TOC91><FONT 
+          face=Arial><FONT color=blue><STRONG>memset : set an area 
+          of memory 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#rindex" name=TOC92><FONT 
+          face=Arial><FONT color=blue><STRONG>rindex : reverse 
+          search for character in string </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#strcat" name=TOC93><FONT 
+          face=Arial><FONT color=blue><STRONG>strcat : concatenate 
+          strings 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#strchr" name=TOC94><FONT 
+          face=Arial><FONT color=blue><STRONG>strchr : search for 
+          character in string 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#strcmp" name=TOC95><FONT 
+          face=Arial><FONT color=blue><STRONG>strcmp : character 
+          string compare 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#strcoll" name=TOC96><FONT 
+          face=Arial><FONT color=blue><STRONG>strcoll : locale 
+          specific character string compare </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#strcpy" name=TOC97><FONT 
+          face=Arial><FONT color=blue><STRONG>strcpy : copy string 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#strcspn" name=TOC98><FONT 
+          face=Arial><FONT color=blue><STRONG>strcspn : count chars 
+          not in string 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#strerror" name=TOC99><FONT 
+          face=Arial><FONT color=blue><STRONG>strerror : convert 
+          error number to string 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#strlen" name=TOC100><FONT 
+          face=Arial><FONT color=blue><STRONG>strlen : character 
+          string length 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#strlwr" name=TOC101><FONT 
+          face=Arial><FONT color=blue><STRONG>strlwr : force string 
+          to lower case 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#strncat" name=TOC102><FONT 
+          face=Arial><FONT color=blue><STRONG>strncat : concatenate 
+          strings 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#strncmp" name=TOC103><FONT 
+          face=Arial><FONT color=blue><STRONG>strncmp : character 
+          string compare 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#strncpy" name=TOC104><FONT 
+          face=Arial><FONT color=blue><STRONG>strncpy : counted copy 
+          string 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#strpbrk" name=TOC105><FONT 
+          face=Arial><FONT color=blue><STRONG>strpbrk : find chars 
+          in string 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#strrchr" name=TOC106><FONT 
+          face=Arial><FONT color=blue><STRONG>strrchr : reverse 
+          search for character in string </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#strspn" name=TOC107><FONT 
+          face=Arial><FONT color=blue><STRONG>strspn : find initial 
+          match 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#strstr" name=TOC108><FONT 
+          face=Arial><FONT color=blue><STRONG>strstr : find string 
+          segment 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#strtok" name=TOC109><FONT 
+          face=Arial><FONT color=blue><STRONG>strtok : get next 
+          token from a string 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#strupr" name=TOC110><FONT 
+          face=Arial><FONT color=blue><STRONG>strupr : force string 
+          to uppercase 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="string.html#strxfrm" name=TOC111><FONT 
+          face=Arial><STRONG><FONT color=blue 
+         >strxfrm : transform 
+          string</FONT> 
+          </STRONG></FONT></A></LI></UL></LI></UL>
+      <P><BR></P>
+      <UL>
+        <LI><A href="time.html" name=TOC115><FONT face=Arial 
+        size=3 color=red><STRONG>Time 
+        Functions (<TT>`time.h'</TT>)</STRONG></FONT></A><BR><BR>
+        <UL>
+          <LI><A href="time.html#asctime" name=TOC116><FONT 
+          face=Arial><FONT color=blue><STRONG>asctime : format time as string 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="time.html#clock" name=TOC117><FONT 
+          face=Arial><FONT color=blue><STRONG>clock : cumulative processor time 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="time.html#ctime" name=TOC118><FONT 
+          face=Arial><FONT color=blue><STRONG>ctime : convert time to local and format as string 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="time.html#difftime" name=TOC119><FONT 
+          face=Arial><FONT color=blue><STRONG>difftime : subtract 
+          two times 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="time.html#gmtime" name=TOC120><FONT 
+          face=Arial><FONT color=blue><STRONG>gmtime : convert time to UTC traditional form 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="time.html#localtime" name=TOC121><FONT 
+          face=Arial><FONT color=blue><STRONG>localtime : convert 
+          time to local representation </STRONG></FONT></FONT></A>
+          <LI><A href="time.html#mktime" name=TOC122><FONT 
+          face=Arial><FONT color=blue><STRONG>mktime : convert time to arithmetic representation 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="time.html#strftime" name=TOC123><FONT 
+          face=Arial><FONT color=blue><STRONG>strftime : flexible 
+          calendar time formatter 
+          </STRONG></FONT></FONT></A>
+          <LI><A href="time.html#time" name=TOC124><FONT 
+          face=Arial><STRONG><FONT color=blue>time : get current calendar time (as 
+          single number)</FONT> 
+          </STRONG></FONT></A></LI></UL></LI></UL>
+      <P><BR></P>
+      <UL>
+        <LI><FONT size=3 > 
+       <A 
+        href="math.html" name=TOC125><FONT face=Arial 
+        color=red><STRONG>Mathematical Functions 
+        (<TT>`math.h'</TT>)</STRONG></FONT></A><FONT 
+        face=Arial> <BR><BR></FONT>
+        <UL>
+          <LI><A href="math.html#SEC3" name=TOC3><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>acos, acosf : arc 
+          cosine</STRONG>  </FONT></A><FONT 
+          face=Arial color=blue size=2 
+         ><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC4" name=TOC4><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>acosh, acoshf : inverse 
+          hyperbolic cosine</STRONG>   
+          </FONT></A><FONT face=Arial color=blue 
+          size=2><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC5" name=TOC5><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>asin, asinf : arc 
+          sine</STRONG>  </FONT></A><FONT 
+          face=Arial color=blue size=2 
+         ><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC6" name=TOC6><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>asinh, asinhf : inverse 
+          hyperbolic sine</STRONG>   
+          </FONT></A><FONT face=Arial color=blue size=2 
+         ><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC7" name=TOC7><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>atan, atanf : arc 
+          tangent</STRONG>  </FONT></A><FONT 
+          face=Arial color=blue size=2 
+         ><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC8" name=TOC8><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>atan2, atan2f : arc 
+          tangent of y/x</STRONG>    
+          </FONT></A><FONT face=Arial color=blue size=2 
+         ><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC9" name=TOC9><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>atanh, atanhf : inverse 
+          hyperbolic tangent</STRONG>   
+          </FONT></A><FONT face=Arial color=blue 
+          size=2><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC10" name=TOC10><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>jN,jNf,yN,yNf : Bessel 
+          functions</STRONG> </FONT></A><FONT 
+          face=Arial color=blue size=2 
+         ><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC11" name=TOC11><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>cbrt, cbrtf : cube 
+          root</STRONG>  </FONT></A><FONT 
+          face=Arial color=blue size=2 
+         ><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC12" name=TOC12><FONT face=Arial><FONT color=blue><FONT 
+          size=2><STRONG>copysign, copysignf : sign of 
+          <VAR>y</VAR>, magnitude of <VAR>x</VAR></STRONG></FONT></FONT></FONT></A><FONT face=Arial 
+          color=blue size=2><STRONG> 
+          </STRONG> </FONT>
+          <LI><A href="math.html#SEC13" name=TOC13><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>cosh, coshf : hyperbolic 
+          cosine</STRONG>  </FONT></A><FONT 
+          face=Arial color=blue size=2 
+         ><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC14" name=TOC14><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>erf, erff, erfc, 
+          erfcf : error function</STRONG>   
+           </FONT></A><FONT 
+          face=Arial color=blue 
+          size=2><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC15" name=TOC15><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>exp, 
+          expf : exponential</STRONG> 
+          </FONT></A><FONT 
+          face=Arial color=blue 
+          size=2><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC16" name=TOC16><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>expm1, 
+          expm1f : exponential minus 1</STRONG>   
+          </FONT></A><FONT face=Arial color=blue size=2><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC17" name=TOC17><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>fabs, fabsf : absolute 
+          value (magnitude)</STRONG>   
+          </FONT></A><FONT face=Arial color=blue 
+          size=2><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC18" name=TOC18><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>floor, floorf, ceil, 
+          ceilf : floor and ceiling</STRONG>   
+            </FONT></A><FONT 
+          face=Arial color=blue size=2><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC19" name=TOC19><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>fmod, 
+          fmodf : floating-point remainder (modulo)</STRONG>   
+          </FONT></A><FONT face=Arial color=blue size=2><STRONG> 
+          </STRONG> </FONT>
+          <LI><A href="math.html#SEC20" name=TOC20><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>frexp, frexpf : split 
+          floating-point number</STRONG>   
+          </FONT></A><FONT face=Arial color=blue 
+          size=2><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC21" name=TOC21><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>gamma, gammaf, lgamma, 
+          lgammaf, gamma_r,</STRONG>  
+            
+          </FONT></A><FONT face=Arial color=blue 
+          size=2><STRONG> </STRONG> 
+          </FONT>
+          <LI><A href="math.html#SEC22" name=TOC22><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>hypot, hypotf : distance 
+          from origin</STRONG>   
+          </FONT></A><FONT face=Arial color=blue size=2 
+         ><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC23" name=TOC23><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>ilogb, ilogbf : get 
+          exponent of floating point number</STRONG>      
+          </FONT></A><FONT face=Arial color=blue 
+         size=2><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC24" name=TOC24><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>infinity, 
+          infinityf : representation of infinity</STRONG> 
+            
+          </FONT></A><FONT face=Arial color=blue 
+         size=2><STRONG> 
+          </STRONG> </FONT>
+          <LI><A href="math.html#SEC25" name=TOC25><FONT 
+          face=Arial 
+          color=blue 
+         size=2 
+         ><STRONG>isnan,isnanf,isinf,isinff,finite,finitef : test 
+          for exceptional numbers</STRONG>   
+          </FONT></A><FONT face=Arial color=blue 
+          size=2><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC26" name=TOC26><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>ldexp, ldexpf : load 
+          exponent</STRONG>  </FONT></A><FONT 
+          face=Arial color=blue size=2 
+         ><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC27" name=TOC27><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>log, logf : natural 
+          logarithms</STRONG>  </FONT></A><FONT 
+          face=Arial color=blue size=2 
+         ><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC28" name=TOC28><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>log10, log10f : base 10 
+          logarithms</STRONG>   
+          </FONT></A><FONT face=Arial color=blue size=2 
+         ><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC29" name=TOC29><FONT face=Arial><FONT color=blue><FONT 
+          size=2><STRONG>log1p, log1pf : log of 1 + 
+          <VAR>x</VAR></STRONG></FONT></FONT></FONT></A><FONT face=Arial 
+          color=blue size=2><STRONG> 
+          </STRONG> 
+</FONT>
+          <LI><A href="math.html#SEC30" name=TOC30><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>matherr : modifiable 
+          math error handler</STRONG>  
+           </FONT></A><FONT face=Arial color=blue 
+          size=2><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC31" name=TOC31><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>modf, modff : split 
+          fractional and integer parts</STRONG>     
+          </FONT></A><FONT face=Arial color=blue 
+         size=2><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC32" name=TOC32><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>nan, 
+          nanf : representation of infinity</STRONG>   
+          </FONT></A><FONT face=Arial color=blue size=2><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC33" name=TOC33><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>nextafter, 
+          nextafterf : get next number</STRONG>   
+          </FONT></A><FONT face=Arial color=blue size=2><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC34" name=TOC34><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>pow, powf : x to the 
+          power y</STRONG>     </FONT></A><FONT 
+          face=Arial color=blue size=2 
+         ><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC35" name=TOC35><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>rint, rintf, remainder, 
+          remainderf : round and remainder</STRONG>  
+             
+          </FONT></A><FONT face=Arial color=blue 
+         size=2><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC36" name=TOC36><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>scalbn, scalbnf : scale 
+          by integer</STRONG>   </FONT></A><FONT 
+          face=Arial color=blue size=2 
+         ><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC37" name=TOC37><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>sqrt, sqrtf : positive 
+          square root</STRONG>   
+          </FONT></A><FONT face=Arial color=blue size=2 
+         ><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC38" name=TOC38><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>sin, sinf, cos, 
+          cosf : sine or cosine</STRONG>   
+            </FONT></A><FONT 
+          face=Arial color=blue 
+          size=2><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC39" name=TOC39><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>sinh, sinhf : hyperbolic 
+          sine</STRONG>  </FONT></A><FONT 
+          face=Arial color=blue size=2 
+         ><STRONG> </STRONG> </FONT>
+          <LI><A href="math.html#SEC40" name=TOC40><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>tan, 
+          tanf : tangent</STRONG> 
+          </FONT></A><FONT face=Arial color=blue size=2 
+         ><STRONG> </STRONG> 
+          </FONT>
+          <LI><A href="math.html#SEC41" name=TOC41><FONT 
+          face=Arial 
+          color=blue size=2><STRONG>tanh, tanhf : hyperbolic 
+          tangent</STRONG>  </FONT></A></LI></UL></LI></UL>
+      <P><BR></P>
+      <UL>
+        <LI><A href="other.html" name=others><FONT face=Arial 
+        color=red><STRONG><U>Miscellaneous Macros and 
+        Functions</U></STRONG></FONT></A><BR>
+        </LI></UL>
+      <A name=copyright><P><FONT face=Arial color=black><STRONG>Copyright</STRONG></FONT></P></A>
+      <BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+        <P><FONT face=Arial size=2>C Library functions help is taken from GCC 
+        help content and it is from<BR><BR>The Cygnus C Support 
+        Library<BR></FONT><FONT face=Arial size=2>Copyright (c) 1991 by 
+        AT&amp;T. </FONT></P>
+        <P><FONT face=Arial size=2>Permission to use, copy, modify, and 
+        distribute this software for any purpose without fee is hereby granted, 
+        provided that this entire notice is included in all copies of any 
+        software which is or includes a copy or modification of this software 
+        and in all copies of the supporting documentation for such software. 
+        </FONT></P>
+        <P><FONT face=Arial size=2>THIS SOFTWARE IS BEING PROVIDED "AS IS", 
+        WITHOUT ANY EXPRESS OR IMPLIED WARRANTY. IN PARTICULAR, NEITHER THE 
+        AUTHOR NOR AT&amp;T MAKES ANY REPRESENTATION OR WARRANTY OF ANY KIND 
+        CONCERNING THE MERCHANTABILITY OF THIS SOFTWARE OR ITS FITNESS FOR ANY 
+        PARTICULAR 
+PURPOSE.</FONT></P></BLOCKQUOTE></FONT></FONT></TD></TR></TABLE></H1>
+</BODY>
+</HTML>

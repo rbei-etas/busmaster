@@ -1,0 +1,416 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Function Editor</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<OBJECT type=application/x-oleobject 
+classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Function Editor"></OBJECT>
+
+<H1>
+<TABLE style="WIDTH: 722px" cellSpacing=2 cellPadding=5 width=722 
+bgColor=#ffffff border=0>
+  <TBODY>
+  <TR>
+    <TD align=left bgColor=#ccccff>
+      <P align=center><FONT face=Arial color=red size=5 
+      ><STRONG>Function 
+      Editor</STRONG></FONT></P></TD></TR>
+  <TR>
+    <TD align=left bgColor=#eeeeff><FONT face=Arial 
+      size=2>
+      <P class=MsoNormal dir=ltr style="MARGIN: 0in 0in 0pt" 
+      ><SPAN style="FONT-FAMILY: Arial" 
+      ><BR> BUSMASTER can 
+      work as a programmable node over a CAN bus. User can program different 
+      event handlers using function editor. The programming language is C.</P>
+      <P> Five types of event handlers 
+      are supported.
+      <UL>
+        <LI>Message Handler
+        <LI>Timer Handler
+        <LI>Key Handler
+        <LI>Error Handler
+        <LI>Dll Handler</LI></UL>
+      <P>These function handlers when built and loaded are executed on
+      <UL>
+        <LI>Receipt of a Message.
+        <LI>Elapse of a time interval.
+        <LI>Press of a Key
+        <LI>Detection of error or change in error state
+        <LI>Loading / unloading of Dll. </LI></UL>
+      <P> User&nbsp;can also include 
+      <B>Header File names</B>, add <B>Global Variables</B> and <B>Utility 
+      Functions</B> while programming the event handlers. All these functions 
+      can be edited and saved in a file with extension “. C”. The source file 
+      can be built to a DLL. This DLL can be loaded dynamically. </P>
+      <P> There are three panes in 
+      function editor as shown below
+      <UL>
+        <LI>Left Pane : Will be called <B>Pane 1.</B>
+        <LI>Right Top Pane : Will be called <B>Pane 2</B>.
+        <LI>Right Bottom Pane : Will be called <B>Pane 3</B>.</LI></UL>
+      <P><B> Pane 1 </B>displays the 
+      list of functions, included header files and global variables defined. 
+      <B>Pane 2 </B>displays the contents of the source file. Through <B>Pane 3 
+      </B>User can edit the body of function selected.</P>
+      <P></P>
+      <P align=center><IMG alt="" 
+      src="images\function_editor.bmp" 
+      border=0></P>
+      <P class=MsoNormal dir=ltr style="MARGIN: 0in 0in 0pt" 
+      >
+      <OBJECT type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Create new source file"></OBJECT></P>
+      <H3><A name=create_new_source_file></A><FONT size=2>Create new source 
+      file</FONT></H3>
+      <P> User can create file by 
+      Selecting <B>File</B> <IMG alt="" src="images\arrow.jpg"
+      border=0><B> Function Editor </B><IMG alt="" src="images\arrow.jpg" 
+      border=0><B>New</B> menu option OR clicking on the tool bar button shown 
+      in figure below.</P>
+      <P align=center><IMG alt="" 
+      src="images\file_new.bmp" 
+      border=0></P>
+      <P class=MsoNormal dir=ltr style="MARGIN: 0in 0in 0pt" 
+      >
+      <OBJECT type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Open a source file"></OBJECT></P>
+      <H3><A name=open_a_source_file></A><FONT size=2>Open a source 
+      file</FONT></H3>
+      <P> User can open a source file 
+      following the steps given below 
+      <UL>
+        <LI>Select <B>File</B><IMG alt="" src="images\arrow.jpg" 
+        border=0><B>Function Editor</B><IMG alt="" src="images\arrow.jpg" 
+        border=0><B>Open</B>. A File Open dialog will be displayed.
+        <LI>Click on the <B>Open tool bar button</B> shown in figure below.
+        <LI>Select a source file and click on <B>Open </B>button<B>.</B></LI></UL>
+      <P align=center><IMG alt="" src="images\fileopen.bmp"
+      border=0></P>
+      <P class=MsoNormal dir=ltr style="MARGIN: 0in 0in 0pt" 
+      >
+      <OBJECT type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Save a source file"></OBJECT></P>
+      <H3><A name=save_a_source_file></A><FONT size=2>Save a source 
+      file</FONT></H3>
+      <P> User can save a source file 
+      by selecting <B>File </B><IMG alt="" src="images\arrow.jpg"
+      border=0> <B>Function Editor&nbsp;<IMG alt="" src="images\arrow.jpg"
+      border=0></B> <B>Save</B> menu option. Or by clicking on the tool bar 
+      button shown below.</P>
+      <P></P>
+      <P> User&nbsp;also have an option to save the file with different names. User can 
+      do this by following the steps given below 
+      <UL>
+        <LI>Select <B>File&nbsp;<IMG alt="" src="images\arrow.jpg"
+        border=0></B> <B>Function Editor&nbsp;<IMG alt="" 
+        src="images\arrow.jpg" 
+        border=0></B> <B>Save</B> <B>As</B>.
+        <LI>A <B>Save As</B> file dialog box will be displayed.
+        <LI>Enter the file name. Click on <B>Save </B>button. </LI></UL>
+      <P align=center><IMG alt="" src="images\filesave.bmp" 
+      border=0></P>
+      <P class=MsoNormal dir=ltr style="MARGIN: 0in 0in 0pt" 
+      >
+      <OBJECT type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Close a source file"></OBJECT></P>
+      <H3><A name=close_a_source_file></A><FONT size=2>Close a source 
+      file</FONT></H3>
+      <P> User can close a source file 
+      by selecting <B>File&nbsp;<IMG alt="" 
+      src="images\arrow.jpg" 
+      border=0></B> <B>Function Editor&nbsp;<IMG alt="" 
+      src="images\arrow.jpg" 
+      border=0></B> <B>Close</B>. A save message confirmation will be displayed 
+      if the file is modified.</P>
+      <P class=MsoNormal dir=ltr style="MARGIN: 0in 0in 0pt" 
+      >
+      <OBJECT type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Include Header file"></OBJECT></P>
+      <H3><A name=include_header_file></A><FONT size=2>Include Header 
+      file</FONT></H3>
+      <P> User can include a header 
+      filename while programming event handlers. To do so please follow the 
+      steps given below: 
+      <UL>
+        <LI>Select Include<B> Headers</B> category in the <B>Pane 1 </B>and 
+        right click.
+        <LI>A pop-up menu comes up. Select <B>Add</B>. A dialog box appears.
+        <LI>Click on Browse button to select the required header file name and 
+        click on <B>OK</B> button.
+        <LI>The selected header filename will be added to the source file in the 
+        <B>Pane 2 </B>and also under <B>Include Headers </B>category in <B>Pane 
+        1.</B> </LI></UL>
+      <P class=MsoNormal dir=ltr style="MARGIN: 0in 0in 0pt" 
+      >
+      <OBJECT type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Edit Include Header file name"></OBJECT></P>
+      <P><B><A name=edit_include_header_file_name></A>Edit Include Header File 
+      Name</B> 
+      <P>User can edit the name of the header file, to do 
+      so please follow the steps given below</P>
+      <UL>
+        <LI>Select the Include Header filename under Include Header category to 
+        be edited in the Pane 1 and Right click.
+        <LI>A pop-up menu will be displayed.
+        <LI>Select Edit.
+        <LI>A dialog box will be displayed.
+        <LI>Click on Browse button to select the required header file and click 
+        on <B>OK</B> button.</LI></UL>
+      <P> The selected header file 
+      will be replaced with the previous header file in the source file in the 
+      <B>Pane 2 </B>and also under <B>Include Headers </B>category in <B>Pane 
+      1.</B></P>
+      <P class=MsoNormal dir=ltr style="MARGIN: 0in 0in 0pt" 
+      >
+      <OBJECT type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Delete Handlers"></OBJECT></P>
+      <H3><A name=delete_handlers></A><FONT size=2>Delete Handlers</FONT></H3>
+      <P> User can delete Header 
+      files, Message Handlers. Timer Handlers, Key Handlers, Error handlers, Dll 
+      handlers and Utility Functions in source file opened for 
+      editing, to do so follow the steps given below: 
+      <UL>
+        <LI>Select the item to be deleted in the <B>Pane 1 </B>and right click.
+        <LI>A pop-up menu will be displayed.
+        <LI>Select Delete.
+        <LI>A confirmation message is displayed.
+        <LI>Select Yes.</LI></UL>
+      <P> The selected item’s 
+      definition will be deleted from the source file in the <B>Pane 2 </B>and 
+      also in <B>Pane 1.</B></P>
+      <P class=MsoNormal dir=ltr style="MARGIN: 0in 0in 0pt" 
+      >
+      <OBJECT type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Add Message Handler"></OBJECT></P>
+      <H3><A name=add_message_handler></A><FONT size=2>Add Message 
+      Handler</FONT></H3>
+      <UL>
+        <LI>Select Message<B> Handlers</B> category in the <B>Pane 1 </B>and 
+        right click.
+        <LI>A pop-up menu will be displayed.
+        <LI>On selecting <B>Add </B>menu. A dialog as shown below pops 
+      up.</LI></UL>
+      <P align=center><IMG alt="" src="images\addmsghandler.bmp" 
+      border=0> </P>
+      <UL>
+        <LI>From this dialog message handlers of different type can be selected. 
+        The different types of message handlers supported are<BR>
+        <UL>
+          <LI>Message handler based on the message name.
+          <LI>Message handler based on message ID.
+          <LI>Message handler based on range of message ID.
+          <LI>Message handler for all received messages. </LI></UL></LI></UL>
+      <P> The type of message handler 
+      can be selected using the radio buttons. To add handler based on the 
+      message name the corresponding message should be available in the imported 
+      database. Multiple messages can be added from this dialog box by clicking 
+      on <B>Apply </B>button after selecting a message handler.</P>
+      <P> Function definition will be 
+      added to the source file in the <B>Pane 2 </B>and the prototype under 
+      <B>Message Handlers </B>category in <B>Pane 1.</B></P>
+      <P class=MsoNormal dir=ltr style="MARGIN: 0in 0in 0pt" 
+      >
+      <OBJECT type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Add Timer Handler"></OBJECT></P>
+      <H3><A name=add_timer_handler></A><FONT size=2>Add Timer 
+      Handler</FONT></H3>
+      <UL>
+        <LI>Select <B>Timer Handlers</B> category in the <B>Pane 1 </B>and right 
+        click.
+        <LI>A pop-up menu will be displayed.
+        <LI>Select <B>Add.</B> A dialog box appears.
+        <LI>Enter <B>Timer Handler Name</B> like e.g., “Time_One” and the 
+        <B>Timer Value</B> in milliseconds.
+        <LI>Select <B>OK</B> button.
+        <LI>Function definition will be added to the source file automatically 
+        in the <B>Pane 2 </B>and the prototype under <B>Timer Handlers 
+        </B>category in <B>Pane 1.</B></LI></UL>
+      <P><STRONG><FONT color=red>Note</FONT></STRONG>
+      <UL>
+        <LI><B><FONT color=red>Adding a Sleep function inside a Timer handler 
+        might have an adverse effect on the application.</FONT></B>
+        <LI><B><FONT color=red>Maximum of 16 timers can run simultaneously in 
+        cyclic mode. Anything above 16 will fail to start.</FONT></B> </LI></UL>
+      <P class=MsoNormal dir=ltr style="MARGIN: 0in 0in 0pt" 
+      >
+      <OBJECT type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Add Key Handler"></OBJECT></P>
+      <H3><A name=add_key_handler></A><FONT size=2>Add Key Handler</FONT></H3>
+      <UL>
+        <LI>Select Key Handlers category in the Pane 1 and right click.
+        <LI>A pop-up menu will be displayed.
+        <LI>Select Add. A dialog box appears asking the user to press a key.
+        <LI>Press a key for which User want to write the handler. The same will 
+        be displayed in the dialog box.
+        <LI>Select <B>OK</B> button or <B>Apply</B> button if more key handlers 
+        are to be added from the same dialog.</LI></UL>
+      <P> Function definition will be 
+      added to the source file automatically in the <B>Pane 2 </B>and the 
+      prototype under <B>Key Handlers </B>category in <B>Pane 1.</B></P>
+      <P class=MsoNormal dir=ltr style="MARGIN: 0in 0in 0pt" 
+      >
+      <OBJECT type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Add Error Handler"></OBJECT></P>
+      <H3><A name=add_error_handler></A><FONT size=2>Add Error 
+      Handler</FONT></H3>
+      <UL>
+        <LI>Select Error Handler’s category in the Pane 1 and right click.
+        <LI>A pop-up menu will be displayed.
+        <LI>Select Add. A dialog as shown below pops up from this dialog select 
+        the type of error handlers to he handled by your program and click on 
+        <B>OK</B> button.</LI></UL>
+      <P align=center><IMG alt="" src="images\adderrhandler.bmp" 
+      border=0></P>
+      <P> Function definition will be 
+      added to the source file automatically in the <B>Pane 2 </B>and the 
+      prototype under <B>Error Handlers </B>category in <B>Pane 1.</B></P>
+      <P class=MsoNormal dir=ltr style="MARGIN: 0in 0in 0pt" 
+      >
+      <OBJECT type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Add Dll Handler"></OBJECT></P>
+      <H3><A name=add_dll_handler></A><FONT size=2>Add DLLHandler</FONT></H3>
+      <P> DLL handlers are invoked at 
+      the time of loading the DLL or while unloading the DLL. The procedure for 
+      adding DLL handlers is similar to that of adding error handlers.</P>
+      <P class=MsoNormal dir=ltr style="MARGIN: 0in 0in 0pt" 
+      >
+      <OBJECT type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Add Utility Function"></OBJECT></P>
+      <H3><A name=add_utility_function></A><FONT size=2>Add Utility 
+      Function</FONT></H3>
+      <UL>
+        <LI>Select <B>Utility </B>Functions category in the <B>Pane 1 </B>and 
+        right click.
+        <LI>A pop-up menu comes up.
+        <LI>Select <B>Add</B>. A 
+        dialog box appears.
+        <LI><B>Return Type</B> of the 
+        utility function can be selected from the combo box or directly typed. 
+        The combo box will have primitive data types and database message 
+        structure names.
+        <LI>Enter the Function<B> Prototype</B> in the Edit control like e.g., “Func_One( int a, int b )”.
+        <LI>Select <B>OK</B> button. </LI></UL>
+      <P>Function definition will be added to the source file automatically in 
+      the <B>Pane 2 </B>and the prototype under <B>Utility Functions 
+      </B>category in <B>Pane 1.</B></P>
+      <P class=MsoNormal dir=ltr style="MARGIN: 0in 0in 0pt" 
+      >
+      <OBJECT type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Global Variables"></OBJECT></P>
+      <H3><A name=global_variable></A>Global Variables</H3>
+      <P>To add/delete/modify global variables follow the steps given below. 
+      <UL>
+        <LI>Select <B>Global </B>Variables category in the <B>Pane 1 </B>and 
+        double click.
+        <LI>The <B>Pane 3</B> will become editable and will show global variable 
+        block.
+        <LI>Change this block to Add/Delete/Modify the global variables.</LI></UL>
+      <P> Variable declaration will be 
+      added to the source file automatically in the <B>Pane 2</B>.</P>
+      <P><STRONG>Note</STRONG></P>
+      <UL>
+        <LI><STRONG><FONT color=blue>Use global variable block to use macros, 
+        structure or union definitions. The scope of variables and definitions 
+        given in this block is throughout the program.</FONT></STRONG></LI></UL>
+      <P class=MsoNormal dir=ltr style="MARGIN: 0in 0in 0pt" 
+      >
+      <OBJECT type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Edit Function Body"></OBJECT></P>
+      <H3><A name=edit_function_body></A><FONT size=2>Edit Function 
+      Body</FONT></H3>
+      <P> User can edit any function 
+      body by double clicking the prototype of the function displayed in <B>Pane 
+      1.</B> On double click of the function prototype, the function body will 
+      be displayed in the <B>Pane 3 </B>and will be ready for editing.</P>
+      <P class=MsoNormal dir=ltr style="MARGIN: 0in 0in 0pt" 
+      >
+      <OBJECT type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Variable of Message Type"></OBJECT></P>
+      <H3><A name=variable_of_message_type></A><FONT size=2>Variable of Message 
+      Type</FONT></H3>
+      <P> BUSMASTER defines structures 
+      for messages define in the database. User can use these structures while 
+      programming. Please follow the steps below to add variable of the message 
+      type
+      <UL>
+        <LI>Edit the function for which database message name is to be added. 
+        (Refer: section <A href="#edit_function_body">Edit Function Body</A>)
+        <LI>Right click in the <B>Pane 3.</B>
+        <LI>A pop-up menu is displayed.
+        <LI>Select <B>Insert Message. </B>A dialog box is displayed with all the 
+        database messages under <B>Message list</B>.
+        <LI>Choose a message from the list.
+        <LI>Select the check box option in the dialog box.
+        <LI>Click on Select button.</LI></UL>
+      <P> The selected message 
+      variable will be displayed in the <B>Pane 3 </B>and the same is updated in 
+      the<B> Pane 2.</B></P>
+      <P class=MsoNormal dir=ltr style="MARGIN: 0in 0in 0pt" 
+      >
+      <OBJECT type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Insert Message name"></OBJECT></P>
+      <H3><A name=insert_message_name></A><FONT size=2>Insert Message 
+      name</FONT></H3>
+      <P> User can add a tag of 
+      message structure and this could be used for defining variables. Please 
+      follow the steps below to insert a message structure tag into the 
+function.
+      <UL>
+        <LI>Edit the function for which database message name is to be added. 
+        (Refer: section <A href="#edit_function_body">Edit Function Body</A> )
+        <LI>Right click in the <B>Pane 3.</B>
+        <LI>A pop-up menu is displayed.
+        <LI>Select Insert<B> Message. </B>A dialog box is displayed with all the 
+        database messages under <B>Message list</B>.
+        <LI>Choose a message from the list and click on <B>Select</B> button.
+        <LI>The selected message will be displayed in the <B>Pane 3 </B>and the 
+        same is updated in the<B> Pane 2.</B></LI></UL>
+      <P class=MsoNormal dir=ltr style="MARGIN: 0in 0in 0pt" 
+      >
+      <OBJECT type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Insert Signal name"></OBJECT></P>
+      <H3><A name=insert_signal_name></A><FONT size=2>Insert Signal 
+      name</FONT></H3>
+      <P> User can use signal names 
+      while programming. The signal names have to be used in conjunction with 
+      the corresponding message variable. It is member of message structure. 
+      Please follow the steps below to insert a signal name into the function. 
+      <UL>
+        <LI>Edit the function in which signal name is to be added. (Refer: 
+        section Edit Function Bodyedit_function_body)
+        <LI>Right click in the Pane 3. A pop-up menu is displayed.
+        <LI>Select Insert Signal. A dialog box is displayed with all the 
+        database messages under Message list.
+        <LI>Choose a message from the list. A list of signals will be displayed 
+        under Signals list.
+        <LI>Select a signal and click on Select button.
+        <LI>The selected signal will be displayed in the Pane 3 and the same is 
+        updated in the Pane 2.</LI></UL>
+      <P class=MsoNormal dir=ltr style="MARGIN: 0in 0in 0pt" 
+      >
+      <OBJECT type=application/x-oleobject 
+      classid=clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e><PARAM NAME="Keyword" VALUE="Insert a Function prototype"></OBJECT></P>
+      <H3><A name=insert_a_function_prototype></A><FONT size=2>Insert a Function 
+      </FONT></H3>
+      <P> BUSMASTER provides API 
+      functions, which can used while programming. These functions can be used 
+      to interact with BUSMASTER application. Please follow the steps below to 
+      insert a function 
+      <UL>
+        <LI>Edit the function for which prototype is to be added. (Refer: <A 
+        href="#edit_function_body">Editing Function Body</A>)
+        <LI>Right click in the <B>Pane 3.</B> A pop-up menu is displayed.
+        <LI>Select Insert<B> Function</B>. A dialog box is displayed with a set 
+        of function prototypes. <A href="API reference.htm">(API Listing</A>)
+        <LI>Choose required function prototype from the list and click on 
+        <B>OK</B> button.
+        <LI>The selected function prototype will be displayed in the <B>Pane 3 
+        </B>and the same is updated in the <B>Pane 
+    2</B>.</LI></UL></SPAN></FONT></TD></TR></TBODY></TABLE>  </H1>
+
+</BODY>
+</HTML>
