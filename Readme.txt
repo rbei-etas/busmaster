@@ -1,6 +1,5 @@
 
-
-1. For setting up the development environment, please refer to the document "1. BUSMASTER OSS - Development Environment.doc" ocurring under the folder 'Documents'
+1. For setting up the development environment, please refer to the document "1. BUSMASTER OSS - Development Environment.doc" ocurring under the 'Downloads' folder.
 
 2. This BUSMASTER application is entirely compilable and it is possible to run it in simulation mode by following the instruction set provided in the aforementioned document. The application source can be found under 'Sources'
 
