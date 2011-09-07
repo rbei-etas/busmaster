@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
-	ProjectType="Visual C++"
+    ProjectType="Visual C++"
 	Version="9.00"
 	Name="Language_Converter"
 	ProjectGUID="{06ED9A50-3CF2-4A6D-A72B-201096094C70}"
@@ -507,7 +507,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="&quot;\\missl_nts2\EMC_Server\EDI\EDI-OLD-PROJECTS\CAN_Monitor_Maintenance-Documents\References\Flex&amp;Bison\flex.exe&quot; -i -olexer.h &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						CommandLine="flex.exe -i -olexer.h &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="lexer.h"
 					/>
 				</FileConfiguration>
@@ -516,7 +516,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="&quot;\\missl_nts2\EMC_Server\EDI\EDI-OLD-PROJECTS\CAN_Monitor_Maintenance-Documents\References\Flex&amp;Bison\flex.exe&quot; -i -olexer.h &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						CommandLine="flex.exe -i -olexer.h &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 						Outputs="lexer.h"
 					/>
 				</FileConfiguration>

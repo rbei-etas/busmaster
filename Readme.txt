@@ -5,7 +5,7 @@
 3. Steps to use BUSMASTER with real CAN bus - 
 
 3.1 For PCAN_USB (vendor is Peak GmbH), please procure the hardware from the vendor and install the driver
-3.2 For ES 581 (vendor is ETAS GmbH) and further ETAS devices, please procure the hardware from the vendor and install the HSP (Hardware Service Pack) driver.  
+3.2 For ES 581 (vendor is ETAS GmbH) and further ETAS devices, please procure the hardware from the vendor and install the HSP (Hardware Service Pack) driver.
 
 4. In order to build an installation application, please follow the instruction set in the developer's environment document. The install script and the related artifacts occur under 'Installation Setup' folder.
 

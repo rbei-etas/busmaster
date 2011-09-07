@@ -106,6 +106,7 @@ Section ""
 
      SetOutPath $INSTDIR\MinGW\OBJ
      File Resources\MinGW\OBJ\*.*
+     SetOutPath $INSTDIR
 
      CreateDirectory "$SMPROGRAMS\BUSMASTER"
 	 CreateShortCut "$SMPROGRAMS\BUSMASTER\BUSMASTER.lnk" "$INSTDIR\BUSMASTER.exe" "" "$INSTDIR\BUSMASTER.exe" 0
