@@ -1825,7 +1825,7 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
     
     if (m_hConfigFile != NULL)
     {
-        CFile   oConfigFile(m_hConfigFile);
+        CFile   oConfigFile((INT_PTR)m_hConfigFile);
         
         try
         {
