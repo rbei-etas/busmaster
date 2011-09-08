@@ -1825,7 +1825,11 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
     
     if (m_hConfigFile != NULL)
     {
+#if _MFC_VER <= 0x0600
         CFile   oConfigFile((INT_PTR)m_hConfigFile);
+#else
+        CFile   oConfigFile(m_hConfigFile);
+#endif
         
         try
         {

@@ -1385,9 +1385,15 @@ void CColourPopup::OnKillFocus(CWnd* pNewWnd)
   Date Created   : 09/12/2004
   Modifications  : 
 *******************************************************************************/
-void CColourPopup::OnActivateApp(BOOL bActive, HTASK hTask) 
+#if _MFC_VER <= 0x0600
+void CColourPopup::OnActivateApp(BOOL bActive, HTASK hTask)
 {
     CWnd::OnActivateApp(bActive,hTask);
+#else
+void CColourPopup::OnActivateApp(BOOL bActive, DWORD dwThreadID)
+{
+    CWnd::OnActivateApp(bActive,dwThreadID);
+#endif
 
     // If Deactivating App, cancel this selection
     if (!bActive)

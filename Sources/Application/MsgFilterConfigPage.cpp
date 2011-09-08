@@ -339,7 +339,7 @@ static void vPopulateFilterApplied(const SFILTERAPPLIED_CAN* psFilterConfigured,
     POSITION pos = sMainEntry.m_odSelEntryList.GetHeadPosition();
     while (pos)
     {        
-        SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(pos);
+        SSUBENTRY sSubEntry = sMainEntry.m_odSelEntryList.GetNext(pos);
         const PSFILTERSET psTemp = SFILTERSET::psGetFilterSetPointer(psFilterConfigured->m_psFilters, 
             psFilterConfigured->m_ushTotal, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
         ASSERT (psTemp != NULL);
