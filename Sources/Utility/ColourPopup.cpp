@@ -1385,9 +1385,9 @@ void CColourPopup::OnKillFocus(CWnd* pNewWnd)
   Date Created   : 09/12/2004
   Modifications  : 
 *******************************************************************************/
-void CColourPopup::OnActivateApp(BOOL bActive, HTASK hTask) 
+void CColourPopup::OnActivateApp(BOOL bActive, DWORD dwThreadID) 
 {
-    CWnd::OnActivateApp(bActive,hTask);
+    CWnd::OnActivateApp(bActive,dwThreadID);
 
     // If Deactivating App, cancel this selection
     if (!bActive)
