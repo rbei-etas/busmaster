@@ -107,7 +107,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy $(OutDir)\CANDBConverter_Import.exe ..\..\bin\$(OutDir)\"
+				CommandLine="copy &quot;$(OutDir)\CANDBConverter_Import.exe&quot; &quot;..\..\bin\$(OutDir)\CANDBConverter_Import.exe&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -202,6 +202,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+                                CommandLine="copy &quot;$(OutDir)\CANDBConverter_Import.exe&quot; &quot;..\..\bin\$(OutDir)\CANDBConverter_Import.exe&quot;"				
 			/>
 		</Configuration>
 	</Configurations>
