@@ -106,7 +106,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy $(OutDir)\Language_Converter.exe ..\..\bin\$(OutDir)\"
+				CommandLine="copy &quot;$(OutDir)\Language_Converter.exe&quot; &quot;..\..\bin\$(OutDir)\Language_Converter.exe&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -200,6 +200,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;$(OutDir)\Language_Converter.exe&quot; &quot;..\..\bin\$(OutDir)\Language_Converter.exe&quot;"
 			/>
 		</Configuration>
 	</Configurations>
