@@ -108,7 +108,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy $(OutDir)\CANDBConverter_Export.exe ..\..\bin\$(OutDir)\"
+				CommandLine="copy &quot;$(OutDir)\CANDBConverter_Export.exe&quot; &quot;..\..\bin\$(OutDir)\CANDBConverter_Export.exe&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -203,6 +203,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+                                CommandLine="copy &quot;$(OutDir)\CANDBConverter_Export.exe&quot; &quot;..\..\bin\$(OutDir)\CANDBConverter_Export.exe&quot;"
 			/>
 		</Configuration>
 	</Configurations>
