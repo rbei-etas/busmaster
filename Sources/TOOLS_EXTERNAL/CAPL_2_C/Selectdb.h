@@ -62,7 +62,7 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(CSelectdb)
 	afx_msg void OnBrowseCANoeDb();
-	afx_msg void OnBrowseCANvasDb();
+	afx_msg void OnBrowseBUSMASTERDb();
 	afx_msg void OnChkbOption();
 	virtual void OnOK();
 	afx_msg void OnChangeEditAdcanoe();

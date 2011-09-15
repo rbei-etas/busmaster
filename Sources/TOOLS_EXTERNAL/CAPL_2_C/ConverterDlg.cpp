@@ -114,7 +114,7 @@ BEGIN_MESSAGE_MAP(CConverterDlg, CDialog)
 	ON_EN_CHANGE(IDC_EDIT_INPUT, OnChangeEditInput)
 	ON_BN_CLICKED(IDC_CHKB_OPTN, OnChkbOptn)
 	ON_BN_CLICKED(IDC_CBTN_BCANOEDB, OnBrowseCANoeDb)
-	ON_BN_CLICKED(IDC_CBTN_BCANVASDB, OnBrowseCANvasDb)
+	ON_BN_CLICKED(IDC_CBTN_BBUSMASTERDB, OnBrowseBUSMASTERDb)
 	ON_BN_CLICKED(IDC_CBTN_CANCEL, OnCancel)
 	ON_BN_CLICKED(IDC_CHKB_SAVEDB, OnChkbSavedb)
 	//}}AFX_MSG_MAP
@@ -494,9 +494,9 @@ void CConverterDlg::OnBrowseSource()
 void CConverterDlg::OnBrowseDest() 
 {
 	CFileDialog cfd(TRUE,"c",NULL,OFN_OVERWRITEPROMPT|
-		OFN_PATHMUSTEXIST,"CANvas  Files(*.c)|*.c||",this);
+		OFN_PATHMUSTEXIST,"BUSMASTER  Files(*.c)|*.c||",this);
 
-	cfd.m_ofn.lpstrTitle = "Select CANvas File";
+	cfd.m_ofn.lpstrTitle = "Select BUSMASTER File";
 	
 	CString omStrPath;
 	int nIndex;
@@ -581,13 +581,13 @@ void CConverterDlg::OnChkbOptn()
 		cFlagH = 0;
 		
 		SetDlgItemText(IDC_EDIT_CANOEDB," " );
-		SetDlgItemText(IDC_EDIT_CANVASDB," " );
+		SetDlgItemText(IDC_EDIT_BUSMASTERDB," " );
 		//m_savedb = FALSE;
 		GetDlgItem( IDC_EDIT_CANOEDB )->EnableWindow(FALSE);
 		GetDlgItem( IDC_CBTN_BCANOEDB )->EnableWindow(FALSE);
 		GetDlgItem( IDC_CHKB_SAVEDB )->EnableWindow(FALSE);
-		GetDlgItem( IDC_EDIT_CANVASDB )->EnableWindow(FALSE);
-		GetDlgItem( IDC_CBTN_BCANVASDB )->EnableWindow(FALSE);
+		GetDlgItem( IDC_EDIT_BUSMASTERDB )->EnableWindow(FALSE);
+		GetDlgItem( IDC_CBTN_BBUSMASTERDB )->EnableWindow(FALSE);
 		
 	}
 }
@@ -635,11 +635,11 @@ void CConverterDlg::OnBrowseCANoeDb()
 }
 
 /*******************************************************************************
- Function Name    : OnBrowseCANvasDb
+ Function Name    : OnBrowseBUSMASTERDb
  Input(s)         :     -
  Output           :     -
  Functionality    : This will pop-up a comman dialog box to select the input 
-                    CANvas database file.
+                    BUSMASTER database file.
  Member of        :     -
  Friend of        :     -
  Author(s)        : Amit Ranjan
@@ -647,16 +647,16 @@ void CConverterDlg::OnBrowseCANoeDb()
  Modifications    :
 *******************************************************************************/	
 
-void CConverterDlg::OnBrowseCANvasDb() 
+void CConverterDlg::OnBrowseBUSMASTERDb() 
 {
 	CString omStrPath;
 	
 	CFileDialog cfd( TRUE,"dbf",NULL,OFN_OVERWRITEPROMPT|
-		OFN_PATHMUSTEXIST,"CANvas Database Files(*.dbf)|*.dbf||",this);
+		OFN_PATHMUSTEXIST,"BUSMASTER Database Files(*.dbf)|*.dbf||",this);
 
-	cfd.m_ofn.lpstrTitle = "Select CANvas Database File";
+	cfd.m_ofn.lpstrTitle = "Select BUSMASTER Database File";
 
-	GetDlgItemText( IDC_EDIT_CANVASDB,omStrPath );
+	GetDlgItemText( IDC_EDIT_BUSMASTERDB,omStrPath );
 	omStrPath.TrimLeft();
 	omStrPath.TrimRight();
 
@@ -670,7 +670,7 @@ void CConverterDlg::OnBrowseCANvasDb()
 	if(cfd.DoModal()==IDOK)
 	{
 		omStrPath = cfd.GetPathName();
-		SetDlgItemText(IDC_EDIT_CANVASDB, omStrPath );
+		SetDlgItemText(IDC_EDIT_BUSMASTERDB, omStrPath );
 	}
 	
 }
@@ -681,15 +681,15 @@ void CConverterDlg::OnChkbSavedb()
 	if( m_savedb )
 	{
 		cFlagLog = 2;//to check whether to save converted database or not
-		GetDlgItem( IDC_EDIT_CANVASDB )->EnableWindow(TRUE);
-		GetDlgItem( IDC_CBTN_BCANVASDB )->EnableWindow(TRUE);
+		GetDlgItem( IDC_EDIT_BUSMASTERDB )->EnableWindow(TRUE);
+		GetDlgItem( IDC_CBTN_BBUSMASTERDB )->EnableWindow(TRUE);
 	}
 	else
 	{
 		cFlagLog = 0;
-		SetDlgItemText(IDC_EDIT_CANVASDB," " );
-		GetDlgItem( IDC_EDIT_CANVASDB )->EnableWindow(FALSE);
-		GetDlgItem( IDC_CBTN_BCANVASDB )->EnableWindow(FALSE);
+		SetDlgItemText(IDC_EDIT_BUSMASTERDB," " );
+		GetDlgItem( IDC_EDIT_BUSMASTERDB )->EnableWindow(FALSE);
+		GetDlgItem( IDC_CBTN_BBUSMASTERDB )->EnableWindow(FALSE);
 		
 	}
 	

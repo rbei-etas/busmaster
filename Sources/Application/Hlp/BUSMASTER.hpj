@@ -2,24 +2,24 @@
 
 [OPTIONS]
 COMPRESS=12 Hall Zeck
-ERRORLOG=CANvas.LOG
+ERRORLOG=BUSMASTER.LOG
 DBCS=Yes
 LCID=0x409 0x6 0x0 ; English (United States)
 REPORT=Yes
 CONTENTS=main_index
-TITLE=CANvas Help
-CNT=CANvas.cnt
+TITLE=BUSMASTER Help
+CNT=BUSMASTER.cnt
 BMROOT=.
 BMROOT=..
 ROOT=..
 ROOT=.
-HLP=CANvas.HLP
+HLP=BUSMASTER.HLP
 
 [FILES]
 UserManual_CAN-Monitor.rtf
 
 [MAP]
-#include <CANvas.hm>
+#include <BUSMASTER.hm>
 
 [CONFIG]
 CreateButton(btn_previous, Prev, Prev())

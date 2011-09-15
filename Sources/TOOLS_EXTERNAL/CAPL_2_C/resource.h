@@ -23,14 +23,14 @@
 #define IDC_CBTN_CANOEDB                1004
 #define IDC_BUTTON2                     1005
 #define IDC_CBTN_OK                     1005
-#define IDC_CBTN_BCANVASDB              1005
-#define IDC_CBTN_CANVASDB               1005
+#define IDC_CBTN_BBUSMASTERDB           1005
+#define IDC_CBTN_BUSMASTERDB            1005
 #define IDC_EDIT1                       1006
 #define IDC_EDIT_INPUT                  1006
 #define IDC_EDIT_ADCANOE                1006
 #define IDC_EDIT2                       1007
 #define IDC_EDIT_OUTPUT                 1007
-#define IDC_EDIT_ADCANVAS               1007
+#define IDC_EDIT_ADBUSMASTER            1007
 #define IDC_BUTTON3                     1008
 #define IDC_CBTN_LOG                    1008
 #define IDC_EDIT4                       1010
@@ -43,7 +43,7 @@
 #define IDC_STAT_RESULT2                1016
 #define IDC_CHKB_OPTN                   1018
 #define IDC_EDIT_CANOEDB                1042
-#define IDC_EDIT_CANVASDB               1043
+#define IDC_EDIT_BUSMASTERDB            1043
 #define IDC_CHKB_OPTION                 1044
 #define IDC_CHKB_SAVEDB                 1045
 

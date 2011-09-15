@@ -1,20 +1,20 @@
 HKCR
 {
-	CAN_Monitor.CANvasInterFace.1 = s 'CANvasInterFace Class'
+	CAN_Monitor.BUSMASTERInterFace.1 = s 'BUSMASTERInterFace Class'
 	{
 		CLSID = s '{BDFA166E-E51A-49C0-B0B3-F54CC09416E3}'
 	}
-	CAN_Monitor.CANvasInterFace = s 'CANvasInterFace Class'
+	CAN_Monitor.BUSMASTERInterFace = s 'BUSMASTERInterFace Class'
 	{
 		CLSID = s '{BDFA166E-E51A-49C0-B0B3-F54CC09416E3}'
-		CurVer = s 'CAN_Monitor.CANvasInterFace.1'
+		CurVer = s 'CAN_Monitor.BUSMASTERInterFace.1'
 	}
 	NoRemove CLSID
 	{
-		ForceRemove {BDFA166E-E51A-49C0-B0B3-F54CC09416E3} = s 'CANvasInterFace Class'
+		ForceRemove {BDFA166E-E51A-49C0-B0B3-F54CC09416E3} = s 'BUSMASTERInterFace Class'
 		{
-			ProgID = s 'CAN_Monitor.CANvasInterFace.1'
-			VersionIndependentProgID = s 'CAN_Monitor.CANvasInterFace'
+			ProgID = s 'CAN_Monitor.BUSMASTERInterFace.1'
+			VersionIndependentProgID = s 'CAN_Monitor.BUSMASTERInterFace'
 			ForceRemove 'Programmable'
 			LocalServer32 = s '%MODULE%'
 			val AppID = s '{798119F7-E0BA-4FB4-8DBA-FBFA8D0B21C9}'

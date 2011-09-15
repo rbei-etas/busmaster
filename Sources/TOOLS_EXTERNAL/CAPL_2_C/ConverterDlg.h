@@ -70,7 +70,7 @@ protected:
 	afx_msg void OnChangeEditInput();
 	afx_msg void OnChkbOptn();
 	afx_msg void OnBrowseCANoeDb();
-	afx_msg void OnBrowseCANvasDb();
+	afx_msg void OnBrowseBUSMASTERDb();
 	afx_msg void OnChkbSavedb();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

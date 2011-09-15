@@ -39,14 +39,14 @@
 #define defSTR_PEAK_USB_DEVICE_NAME         _T("PCAN-USB") /*_T("PEAK USB-CAN")*/
 #define defSTR_PEAK_NPNP_DEVICE             _T("PeakCan")
 //// Maximum name length is 20
-#define defSTR_PEAK_USB_HW_NET_NAME                _T("CANvas USB Net")
-#define defSTR_PEAK_USB_SIM_NET_NAME               _T("CANvas Sim Net")
+#define defSTR_PEAK_USB_HW_NET_NAME                _T("BUSMASTER USB Net")
+#define defSTR_PEAK_USB_SIM_NET_NAME               _T("BUSMASTER Sim Net")
 #define defPEAK_USB_SIM_HW_HANDLE              0
 #define defPEAK_USB_SIM_NET_HANDLE             32
 
 #define defUSB_PARAM_BUFFER_SIZE               1024
 #define defUSB_PARAM_READ_BUFFER_SIZE          128
-#define defSTR_USB_CLIENT_NAME              _T("CANvas USB")
+#define defSTR_USB_CLIENT_NAME              _T("BUSMASTER USB")
 #define defSTR_NET_NAME_FORMAT              _T("%s_%d")
 
 #define defUSB_MODE_ACTIVE                     1

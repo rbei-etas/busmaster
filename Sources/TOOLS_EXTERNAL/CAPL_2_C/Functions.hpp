@@ -30,7 +30,7 @@
  Input(s)         :     -
  Output           :     -
  Functionality    : This will extract the name of the key from yytext. If key is
-                    supported by CANvas it will be stored in" acSptdKey " else 
+                    supported by BUSMASTER it will be stored in" acSptdKey " else 
                     it will be stored in " acUnSptdKey ".
                     
  Member of        :     -
@@ -1580,7 +1580,7 @@ void vFooter()
                     database then it cinverts it and if he wants to save it,
                     the function saves the converted database in appropriate
                     output file.This function return the percentage of CANoe
-                    file converted into CANvas.
+                    file converted into BUSMASTER.
  Member of        :     -
  Friend of        :     -
  Author(s)        : Amit Ranjan
@@ -1616,7 +1616,7 @@ int nConvert( CString srs,CString dest ,CString dest1)
     convert.Convert(canoedb);//convert database
     if (cFlagLog == 2 )
     {//if user wants to save it
-        convert.WriteToOutputFile(canvasdb);
+        convert.WriteToOutputFile(busmasterdb);
     }
 
     cFlagLog = 1;
@@ -1650,11 +1650,11 @@ int nConvert( CString srs,CString dest ,CString dest1)
 }
 
 /*******************************************************************************
- Function Name    : OnBrowseCANvasDb
+ Function Name    : OnBrowseBUSMASTERDb
  Input(s)         :     -
  Output           :     -
  Functionality    : This will pop-up a comman dialog box to select the input 
-                    CANvas database file.
+                    BUSMASTER database file.
  Member of        :     -
  Friend of        :     -
  Author(s)        : Amit Ranjan
@@ -1662,16 +1662,16 @@ int nConvert( CString srs,CString dest ,CString dest1)
  Modifications    :
 *******************************************************************************/    
 
-void CSelectdb::OnBrowseCANvasDb() 
+void CSelectdb::OnBrowseBUSMASTERDb() 
 {
     CString omStrPath;
     int nIndex;
 
     CFileDialog cfd(TRUE,"dbf",NULL,OFN_OVERWRITEPROMPT|
-        OFN_PATHMUSTEXIST,"CANvas Database Files(*.dbf)|*.dbf||",this);
-    cfd.m_ofn.lpstrTitle = "Select CANvas Database File";
+        OFN_PATHMUSTEXIST,"BUSMASTER Database Files(*.dbf)|*.dbf||",this);
+    cfd.m_ofn.lpstrTitle = "Select BUSMASTER Database File";
     
-    GetDlgItemText( IDC_EDIT_ADCANVAS,omStrPath );
+    GetDlgItemText( IDC_EDIT_ADBUSMASTER,omStrPath );
     omStrPath.TrimLeft();
     omStrPath.TrimRight();
 
@@ -1689,7 +1689,7 @@ void CSelectdb::OnBrowseCANvasDb()
     if(cfd.DoModal()==IDOK)
     {
         omStrPath = cfd.GetPathName();
-        SetDlgItemText(IDC_EDIT_ADCANVAS, omStrPath );
+        SetDlgItemText(IDC_EDIT_ADBUSMASTER, omStrPath );
     }
     
     
@@ -1758,15 +1758,15 @@ void CSelectdb::OnChkbOption()
     if( m_option )
     {//if checked
         cFlagLog = 2;
-        GetDlgItem( IDC_EDIT_ADCANVAS )->EnableWindow(TRUE);
-        GetDlgItem( IDC_CBTN_CANVASDB )->EnableWindow(TRUE);
+        GetDlgItem( IDC_EDIT_ADBUSMASTER )->EnableWindow(TRUE);
+        GetDlgItem( IDC_CBTN_BUSMASTERDB )->EnableWindow(TRUE);
     }
     else
     {//if unchecked
         cFlagLog = 1;
-        SetDlgItemText(IDC_EDIT_ADCANVAS, "");
-        GetDlgItem( IDC_EDIT_ADCANVAS )->EnableWindow(FALSE);
-        GetDlgItem( IDC_CBTN_CANVASDB )->EnableWindow(FALSE);
+        SetDlgItemText(IDC_EDIT_ADBUSMASTER, "");
+        GetDlgItem( IDC_EDIT_ADBUSMASTER )->EnableWindow(FALSE);
+        GetDlgItem( IDC_CBTN_BUSMASTERDB )->EnableWindow(FALSE);
         
     }
     
@@ -1776,7 +1776,7 @@ void CSelectdb::OnChkbOption()
  Function Name    : OnOK
  Input(s)         :     -
  Output           :     -
- Functionality    : This will verify the correctness of CANoe and CANvas databse
+ Functionality    : This will verify the correctness of CANoe and BUSMASTER databse
                     files.
  Member of        :     -
  Friend of        :     -
@@ -1787,7 +1787,7 @@ void CSelectdb::OnChkbOption()
 
 void CSelectdb::OnOK() 
 {
-//  "canoedb" and "canvasdb" are global CString objects
+//  "canoedb" and "busmasterdb" are global CString objects
     int flag = 1;
     CString extn;
     GetDlgItemText( IDC_EDIT_ADCANOE,canoedb );
@@ -1822,28 +1822,28 @@ void CSelectdb::OnOK()
         
     if( cFlagLog == 2)
     {
-        GetDlgItemText( IDC_EDIT_ADCANVAS,canvasdb );
-        canvasdb.TrimRight();
-        extn = canvasdb.Right(4);
+        GetDlgItemText( IDC_EDIT_ADBUSMASTER,busmasterdb );
+        busmasterdb.TrimRight();
+        extn = busmasterdb.Right(4);
         extn.MakeLower();
             
         if( extn != ".dbf")
         {
             MessageBox(defSTR_Warning9,MB_OK);
-            SetDlgItemText( IDC_EDIT_ADCANVAS,"" );
-            GetDlgItem( IDC_EDIT_ADCANVAS)->SetFocus();
+            SetDlgItemText( IDC_EDIT_ADBUSMASTER,"" );
+            GetDlgItem( IDC_EDIT_ADBUSMASTER)->SetFocus();
             flag = 0;//to avoid conversion
         }
         else
         {
             CFile fdatabase;
-            if ( fdatabase.Open( canvasdb,CFile::modeCreate|CFile::modeWrite )
+            if ( fdatabase.Open( busmasterdb,CFile::modeCreate|CFile::modeWrite )
                 == NULL )
             {
                 //if file doesn't exist or in write mode
                 MessageBox( defSTR_Warning3,MB_ICONWARNING|MB_OK );
-                SetDlgItemText( IDC_EDIT_ADCANVAS,"" );
-                GetDlgItem( IDC_EDIT_ADCANVAS)->SetFocus();
+                SetDlgItemText( IDC_EDIT_ADBUSMASTER,"" );
+                GetDlgItem( IDC_EDIT_ADBUSMASTER)->SetFocus();
                 flag = 0;//to avoid conversion
             }
             else
@@ -1984,27 +1984,27 @@ void CConverterDlg::OnConvert()
         
         if( cFlagLog == 2)
         {
-            GetDlgItemText( IDC_EDIT_CANVASDB,canvasdb );
-            canvasdb.TrimRight();
-            extn = canvasdb.Right(4);
+            GetDlgItemText( IDC_EDIT_BUSMASTERDB,busmasterdb );
+            busmasterdb.TrimRight();
+            extn = busmasterdb.Right(4);
             extn.MakeLower();
             
             if( extn != ".dbf")
             {
                 MessageBox(defSTR_Warning9,MB_OK);
-                SetDlgItemText( IDC_EDIT_CANVASDB,"" );
-                GetDlgItem( IDC_EDIT_CANVASDB)->SetFocus();
+                SetDlgItemText( IDC_EDIT_BUSMASTERDB,"" );
+                GetDlgItem( IDC_EDIT_BUSMASTERDB)->SetFocus();
                 flag = 0;//to avoid conversion
             }
             else
             {
                 CFile fdatabase;
-                if ( fdatabase.Open( canvasdb,CFile::modeCreate|CFile::modeWrite ) == NULL )
+                if ( fdatabase.Open( busmasterdb,CFile::modeCreate|CFile::modeWrite ) == NULL )
                 {
                     //if file doesn't exist or in write mode
                     MessageBox( defSTR_Warning3,MB_ICONWARNING|MB_OK );
-                    SetDlgItemText( IDC_EDIT_CANVASDB,"" );
-                    GetDlgItem( IDC_EDIT_CANVASDB)->SetFocus();
+                    SetDlgItemText( IDC_EDIT_BUSMASTERDB,"" );
+                    GetDlgItem( IDC_EDIT_BUSMASTERDB)->SetFocus();
                     flag = 0;//to avoid conversion
                 }
                 else

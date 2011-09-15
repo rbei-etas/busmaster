@@ -920,7 +920,7 @@ HRESULT ResetSW()
 
     Input(s)         :  
     Output           :  -
-    Functionality    :  Display the windows in CANvas
+    Functionality    :  Display the windows in BUSMASTER
     Member of        :  CApplication
     Author(s)        :  Anish kumar
     Date Created     :  20.06.2006

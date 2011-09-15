@@ -125,7 +125,7 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "Comments", "This program converts a dbc database to CANvas database"
+            VALUE "Comments", "This program converts a dbc database to BUSMASTER database"
             VALUE "CompanyName", "Robert Bosch Engineering and Business Solutions Limited (RBEI)"
             VALUE "FileDescription", "CANDBConverter MFC Application"
             VALUE "FileVersion", "1.1"

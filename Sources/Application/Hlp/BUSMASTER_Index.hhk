@@ -96,14 +96,14 @@
 		<param name="Local" value="html/User Program.htm#build_and_load">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="CANvas with Graph Support">
+		<param name="Name" value="BUSMASTER with Graph Support">
 		<param name="Name" value="What is new?">
-		<param name="Local" value="html/What is new.htm#canvas_graph">
+		<param name="Local" value="html/What is new.htm#busmaster_graph">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="CANvas with USB Interface">
+		<param name="Name" value="BUSMASTER with USB Interface">
 		<param name="Name" value="What is new?">
-		<param name="Local" value="html/What is new.htm#canvas_usb">
+		<param name="Local" value="html/What is new.htm#busmaster_usb">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Clear message window">
@@ -411,7 +411,7 @@
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Multi Channel Support">
 		<param name="Name" value="What is new?">
-		<param name="Local" value="html\What is new.htm#canvas_usb">
+		<param name="Local" value="html\What is new.htm#busmaster_usb">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Network Statistics">

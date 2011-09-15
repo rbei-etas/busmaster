@@ -22,21 +22,21 @@
  * Interface file for standard definitions
  */
 
-#define defSTR_StartIncludeHeader "/* Start CANvas include header */\n"
-#define defSTR_EndIncludeHeader "/* End CANvas include header */\n"
+#define defSTR_StartIncludeHeader "/* Start BUSMASTER include header */\n"
+#define defSTR_EndIncludeHeader "/* End BUSMASTER include header */\n"
 
-#define defSTR_GlobalVarHeader "/* Start CANvas global variable */\n"
+#define defSTR_GlobalVarHeader "/* Start BUSMASTER global variable */\n"
 #define defSTR_TypedefByte " typedef unsigned char byte ;\n"
 #define defSTR_TypedefWord " typedef long word ;\n"
 #define defSTR_DefRx " #define Rx  1\n"
 #define defSTR_ForTrace "char %s[1000];  /*using for Trace*/"
 #define defSTR_TraceBufferName " GlobalTrace "
-#define defSTR_FooterVar "/* End CANvas global variable */\n"
+#define defSTR_FooterVar "/* End BUSMASTER global variable */\n"
 #define defSTR_HeaderFormat " */\n"
 
 
-#define defSTR_FuncProHeader "/* Start CANvas Function Prototype  */\n"
-#define defSTR_FuncProFooter "/* End CANvas Function Prototype  */"
+#define defSTR_FuncProHeader "/* Start BUSMASTER Function Prototype  */\n"
+#define defSTR_FuncProFooter "/* End BUSMASTER Function Prototype  */"
 
 
 #define defSTR_SetTimerVal "SetTimerVal(\"OnTimer_%s_100\","
@@ -47,8 +47,8 @@
 #define defSTR_TimerStart "void OnTimer_%s_100()\n{"
 
 
-#define defSTR_Header "/* Start CANvas generated function - "
-#define defSTR_Footer "}/* End CANvas generated function - "
+#define defSTR_Header "/* Start BUSMASTER generated function - "
+#define defSTR_Footer "}/* End BUSMASTER generated function - "
 
 
 #define defSTR_MsgIniFormat "%s  %s = { 0x%x,%d,0,%d,{"
@@ -132,7 +132,7 @@
 #define defSTR_Warning6 "Default combination will be used for rest of the keys","Warning"
 #define defSTR_Warning7 "Unsupported Key:%s @ Line No. %d has not been converted\n"
 #define defSTR_Warning8 "Wrong CANoe Database File","Warning"
-#define defSTR_Warning9 "Wrong CANvas Database File","Warning"
+#define defSTR_Warning9 "Wrong BUSMASTER Database File","Warning"
 #define defSTR_EnvVarLogEntry "Environment handler : @ Line No. %d has been replaced with Key Handler\n"
 #define defSTR_UnSptdKeyNotChanged "Unsupported Key : @ Line No. %d has not been changed.\n"
 #define defSTR_ConvertedkeyInfo "Unsupported Key :'%s' @ %d has been replaced with '%c'\n"

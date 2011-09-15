@@ -89,7 +89,7 @@ CConverter::~CConverter()
 }
 
 const char CConverter::m_accHeader[] = 
-"//******************************CANvas Messages and signals Database ******************************//\n\n";
+"//******************************BUSMASTER Messages and signals Database ******************************//\n\n";
 /**
 * \brief         This is the baisc function which is to be called  
                  to convert any given CANoe  file to a CANMon file

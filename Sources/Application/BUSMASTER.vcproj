@@ -85,7 +85,7 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Debug/CANvas.pdb"
+				ProgramDatabaseFile=".\Debug/BUSMASTER.pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -189,7 +189,7 @@
 				GenerateManifest="true"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Release/CANvas.pdb"
+				ProgramDatabaseFile=".\Release/BUSMASTER.pdb"
 				GenerateMapFile="false"
 				MapFileName=""
 				MapExports="false"
@@ -1869,15 +1869,15 @@
 				>
 			</File>
 			<File
-				RelativePath="Res\CANvas.ico"
+				RelativePath="Res\BUSMASTER.ico"
 				>
 			</File>
 			<File
-				RelativePath="Res\CANvasDoc.ico"
+				RelativePath="Res\BUSMASTERDoc.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\Hlp\Html\Images\CANvasDriver.bmp"
+				RelativePath=".\Hlp\Html\Images\BUSMASTERDriver.bmp"
 				>
 			</File>
 			<File

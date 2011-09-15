@@ -91,18 +91,18 @@ BEGIN
     DEFPUSHBUTTON   "&Cancel",IDC_CBTN_CANCEL,211,157,51,15
     LTEXT           "Percentage Of File Converted : ",IDC_STAT_RESULT,16,141,
                     99,10
-    LTEXT           "O/P File   (CANvas)",IDC_STATIC,15,37,30,16
+    LTEXT           "O/P File   (BUSMASTER)",IDC_STATIC,15,37,30,16
     LTEXT           "InputFile",IDC_STATIC,15,20,31,10
     GROUPBOX        "Database",IDC_STATIC,10,73,281,63
     CONTROL         "Assign Database",IDC_CHKB_OPTN,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,10,62,70,9
     LTEXT           "InputFile",IDC_STATIC,15,84,29,11
-    LTEXT           "CANvas",IDC_STATIC,17,117,27,9
+    LTEXT           "BUSMASTER",IDC_STATIC,17,117,27,9
     DEFPUSHBUTTON   "Browse",IDC_CBTN_BCANOEDB,233,83,51,15,WS_DISABLED
-    DEFPUSHBUTTON   "Browse",IDC_CBTN_BCANVASDB,233,115,51,15,WS_DISABLED
+    DEFPUSHBUTTON   "Browse",IDC_CBTN_BBUSMASTERDB,233,115,51,15,WS_DISABLED
     EDITTEXT        IDC_EDIT_CANOEDB,48,84,182,12,ES_AUTOHSCROLL | 
                     WS_DISABLED
-    EDITTEXT        IDC_EDIT_CANVASDB,48,116,182,12,ES_AUTOHSCROLL | 
+    EDITTEXT        IDC_EDIT_BUSMASTERDB,48,116,182,12,ES_AUTOHSCROLL | 
                     WS_DISABLED
     CONTROL         "Do you want to save the converted Database",
                     IDC_CHKB_SAVEDB,"Button",BS_AUTOCHECKBOX | WS_DISABLED | 
@@ -144,9 +144,9 @@ BEGIN
     CONTROL         "Do you want to save the converted Database",
                     IDC_CHKB_OPTION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,
                     41,162,14
-    EDITTEXT        IDC_EDIT_ADCANVAS,10,59,154,12,ES_AUTOHSCROLL | 
+    EDITTEXT        IDC_EDIT_ADBUSMASTER,10,59,154,12,ES_AUTOHSCROLL | 
                     WS_DISABLED
-    DEFPUSHBUTTON   "Br&owse",IDC_CBTN_CANVASDB,166,57,46,15,WS_DISABLED
+    DEFPUSHBUTTON   "Br&owse",IDC_CBTN_BUSMASTERDB,166,57,46,15,WS_DISABLED
 END
 
 

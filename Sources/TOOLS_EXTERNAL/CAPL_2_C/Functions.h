@@ -60,7 +60,7 @@ CString dest1;  //to store the path of log file (needed)
 char cFlagHeader = 0; //used as flag to go in vardecl state from header state
 int counter = 1; // to count "{" and "}" (needed)
 
-CString canoedb , canvasdb; //to store the name of canoe and canvas database
+CString canoedb , busmasterdb; //to store the name of canoe and busmaster database
 
 CConverter convert;
 

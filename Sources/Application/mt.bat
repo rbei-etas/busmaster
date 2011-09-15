@@ -1,2 +1,2 @@
-mt -manifest CANvas.exe.manifest -outputresource:../bin/release/CANvas.exe
+mt -manifest BUSMASTER.exe.manifest -outputresource:../bin/release/BUSMASTER.exe
 pause

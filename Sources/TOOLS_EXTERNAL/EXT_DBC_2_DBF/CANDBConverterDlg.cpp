@@ -327,7 +327,7 @@ void CCANDBConverterDlg::OnCanmonBrowseBtn()
 
 /**
 * \brief      OnCanmonBrowseBtn is the Handler of ON_BN_CLICKED message for IDC_CONVERT_BTN.
-This function converts the CANoe Database to CANvas Database
+This function converts the CANoe Database to BUSMASTER Database
 * \param[in]  None   
 * \param[out] None   
 * \return     void   

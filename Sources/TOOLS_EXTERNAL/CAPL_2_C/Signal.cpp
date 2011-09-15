@@ -112,7 +112,7 @@ int CSignal::Format(char *pcLine)
 	// <SIG_NAME mk :> -- mode dependent signal
 
 	pcToken = strtok(pcLine,":"); // get upto colon
-	// copy only signal name because we CANvas does not support modes
+	// copy only signal name because we BUSMASTER does not support modes
 	// skip leading spaces first
 	while(*pcToken && *pcToken == ' ')
 	{
@@ -155,7 +155,7 @@ int CSignal::Format(char *pcLine)
 	unsigned int uiStartBit = atoi(acTemp);
 	// rajesh: 21-03-2003: begin: 
 	// based on INTEL/MOTOROLA - the start bit is represnted differently by CANoe.
-	// With motorola format, bits are stored in reverse order. CANvas
+	// With motorola format, bits are stored in reverse order. BUSMASTER
 	// does not differentiate between INTEL and MOTOROLA at this stage and START_BYTE 
 	// and START_BIT are not depending on this. So process this after identifying the 
 	// format. Original code commented - moved down.
@@ -380,7 +380,7 @@ int CSignal::AddValueDescriptors(char *pcLine)
 	return 1;
 }
 
-// validate for conformance to CANvas DB format
+// validate for conformance to BUSMASTER DB format
 
 // Convert single bit INT and UINT to BOOL
 // if MAX_value == MIN_value update MAX_value to MAX_default

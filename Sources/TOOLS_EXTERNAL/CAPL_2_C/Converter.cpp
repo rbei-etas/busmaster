@@ -56,7 +56,7 @@ CConverter::~CConverter()
 
 
 const char CConverter::m_accHeader[] = 
-"//******************************CANvas Messages and signals Database ******************************//\n";
+"//******************************BUSMASTER Messages and signals Database ******************************//\n";
 
 unsigned int CConverter::Convert(CString sCanoeFile)
 {
@@ -144,7 +144,7 @@ unsigned int CConverter::SetResultCode(unsigned int uiCode)
 }
 
 // parses the full message list and makes any changes required for 
-// CANvas format
+// BUSMASTER format
 // Message Data format = DF of first signal, discard all signals of other type
 
 bool CConverter::WriteToOutputFile(CString sCanMonFile)
