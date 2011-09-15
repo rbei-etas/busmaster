@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="idil_can" xml:lang="en-us">
+  <title>IDIL_CAN</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>This is the DIL interface of CAN. The class CDIL_CAN acts as the router, to maintain dynamic mapping between the interface and the target DIL function of the intended controller. The below class diagram provides a glimpse on that procedure.<image placement="break" href="../images/umls/idil_can.png"/></p>
+    <p>
+Support of any controller needs writing of a socket for the same. This is implemented as a DLL and obviously the exported functions have the same prototype with the of the other controllers.</p>
+  </body>
+</topic>

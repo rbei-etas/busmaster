@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="doxygen" xml:lang="en-us">
+  <title>Doxygen - Source Code Documentation</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>To integrate Doxygen into the Visual C++ IDE, just add it to the external tools. And refer to the config file called Doxyfile use the following documentation:</p>
+    <p>The doxygen manual is available at:</p>
+    <p><xref href="http://www.testcocoon.org/coveragescanner.html#toc77" scope="external"/></p>
+    <p>Comment style has to be changed as follows:</p>
+    <p>Current file headers:
+<codeblock>
+/******************************************************************************
+  Project       :  BUSMASTER                                          
+  FileName      :  BUSMASTER.cpp     
+  Description   :  CBUSMASTERApp class implementation file
+  $Log:   X:/Archive/Sources/Application/CAN_Monitor.cpv  $
+   
+      Rev 1.18   15 Apr 2011 19:59:30   CANMNTTM
+   Added RBEI Copyright information.
+                                                                           
+  Author(s)    :  Amitesh Bharti                                         
+  Date Created  :  20.02.2002 
+  Modified By   :  Amitesh Bharti, Ratnadip Choudhury, Anish kumar 
+  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
+******************************************************************************/
+</codeblock></p>
+    <p>Doxygen file headers:
+<codeblock>
+/**
+ * \file       BUSMASTER.cpp
+ * \brief      CBUSMASTERApp class implementation file
+ * \author     Amitesh Bharti                                  [use author  if there is only one]
+ * \authors    Amitesh Bharti, Ratnadip Choudhury, Anish kumar [use authors if there are multiple (modifiers)]
+ * \date       20.02.2002 Created
+ * \date       15.04.2011 Added RBEI Copyright information
+ * \copyright  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
+ */
+</codeblock></p>
+    <p>Current funtion headers:
+<codeblock>
+/******************************************************************************/
+/*  Function Name    :  CBUSMASTERApp                                         */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :                                                        */
+/*                                                                            */
+/*  Member of        :  CBUSMASTERApp                                         */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amarnath Shastry,Amitesh Bharti                       */
+/*  Date Created     :  20.02.2002                                            */
+/*  Modification date:  30.12.2002,                                           */
+/*  Modification By  :  Amitesh Bharti,                                       */
+/*                      Initialise the thread structure.                      */
+/*  Modification date:  22.07.2004,                                           */
+/*  Modification By  :  Amitesh Bharti,                                       */
+/*                      Modofiction due to new DLL Unload thread              */
+/******************************************************************************/
+</codeblock></p>
+    <p>Doxygen function headers:
+<codeblock>
+/**
+ * \brief         Brief description of function
+ * \param[in]     a Description of paramter a, if thats inbound
+ * \param[out]    a Description of paramter a, if thats outbound
+ * \param[in,out] a Description of paramter a, if thats in- and outbound
+ * \param         a Description of paramter a, if the direction is unspecified
+ * \return        Description of return value
+ * \author        Amitesh Bharti                  [use author  if there is only one]
+ * \authors       Amarnath Shastry,Amitesh Bharti [use authors if there are multiple (modifiers)]
+ * \date          20.02.2002 Created
+ * \date          30.12.2002 Amitesh Bharti, Initialise the thread structure.
+ * \date          22.07.2004 Amitesh Bharti, Modofiction due to new DLL Unload thread
+ *
+ * If a long description is necessary, put it here.
+ */
+int foobar( int a )
+</codeblock></p>
+  </body>
+</topic>

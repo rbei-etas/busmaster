@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="operational_requirements" xml:lang="en-us">
+  <title>Operational Requirements</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <ul>
+      <li>Background information: Objective of development of the application suite BUSMASTER is to bring seamless support to any vehicle bus standard, all occurring under the umbrella of &quot;automotive bus monitoring and node simulation tool&quot; where the variability factor is the target automotive bus. From feature and functionality viewpoint, there are substantial amount of generalness to consider them to be of the same family. Towards that goal, the features and functionalities including the modules realizing them have been identified and analyzed from feasibility viewpoint, till the crystallization of the requirements into tagged statements.</li>
+      <li>This means, there shall be a base version supporting the most widely used CAN standard, and easily extendable at run time with the addition of components for any other bus e.g., FlexRay, TTCAN, LIN; other CAN higher layer protocols like J1939, ISO-TP etc.</li>
+      <li>The obvious addendum in the pool of development ideas is reusability, not only in terms of artifacts but also in terms of framework, algorithms &amp; process. Hence it has been decided to employ the family engineering approach of product line engineering, which will extract the reuse possibility to the maximum possible extent using ideas of &quot;commonality and predicted variability&quot;.</li>
+      <li>Target environment: No module or component has been written targeting a particular windows environment and hence the product suite is expected to run on Windows 2k/XP/Vista/7 without any problem. However, running on XP is guaranteed for the time being. Being inline to the organization’s policy, we assume no responsibility for Win2K.</li>
+      <li>User characteristics: This is an engineering tool targeting an automotive bus because of which the primarily intended users are the ECU developers, system engineers and testers.</li>
+      <li>Assumptions and Dependencies of this Software on other systems: No such occurs till now.</li>
+    </ul>
+  </body>
+</topic>

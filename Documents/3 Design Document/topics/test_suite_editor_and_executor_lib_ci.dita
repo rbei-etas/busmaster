@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="test_suite_editor_and_executor_lib_ci" xml:lang="en-us">
+  <title>Test Suite Editor and Executor Lib</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>Interface of this module is tabulated below:<table>
+        <tgroup cols="5">
+          <thead>
+            <row>
+              <entry>Name &amp; prototype</entry>
+              <entry>Functionality</entry>
+              <entry>Parameter details</entry>
+              <entry>Return values</entry>
+              <entry>Remarks</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>HRESULT SelectBus([in] eTYPE_BUS eCurrBus)</entry>
+              <entry>Sets the Current bus type for test suite.</entry>
+              <entry>eCurrBus - Current bus indicator</entry>
+              <entry>S_OK, ERR_NOT_IMPLEMENTED</entry>
+              <entry/>
+            </row>
+            <row>
+              <entry>void SetTestsuiteName([in] CString omName)</entry>
+              <entry>Sets name of the test suite</entry>
+              <entry>omName - Intended name of the test suite.</entry>
+              <entry>-</entry>
+              <entry/>
+            </row>
+            <row>
+              <entry>HRESULT AddTestSetup([in] CString omFilePath, [out] DWORD&amp; dwID)</entry>
+              <entry>Adds a test setup</entry>
+              <entry>omFilePath - Path of the test setup file dwID - The unique ID of the test setup if the function is successful.</entry>
+              <entry>S_OK, ERR_PATH_INCORRECT, ERR_FILE_INCORRECT, ERR_ALREADY_ADDED, ERR_BUSTYPE_MISMATCH</entry>
+              <entry/>
+            </row>
+            <row>
+              <entry>HRESULT UpdateTestSetup( [in] DWORD dwID, [in] CString omFilePath)</entry>
+              <entry>Redefines an existing test setup</entry>
+              <entry>dwID - ID of the test setup. omFilePath - Path of the test setup file</entry>
+              <entry>S_OK, ERR_PATH_INCORRECT, ERR_FILE_INCORRECT, ERR_ALREADY_ADDED ERR_WRONG_ID</entry>
+              <entry/>
+            </row>
+            <row>
+              <entry>HRESULT DeleteTestSetup( [in] DWORD dwID)</entry>
+              <entry>Deletes an existing test setup</entry>
+              <entry>dwID - ID of the test setup.</entry>
+              <entry>S_OK, ERR_WRONG_ID</entry>
+              <entry/>
+            </row>
+            <row>
+              <entry>HRESULT EnableTestSetup( [in] DWORD dwID, [in] BOOL bEnable)</entry>
+              <entry>Enables / disables a test setup</entry>
+              <entry>dwID - ID of the test setup. bEnable - TRUE to enable, else FALSE</entry>
+              <entry>S_OK, ERR_WRONG_ID</entry>
+              <entry/>
+            </row>
+            <row>
+              <entry>HRESULT RepositionTestSetup( [in] DWORD dwID, [in] dwIDPreceding)</entry>
+              <entry>Repositions an existing test setup entry after another one.</entry>
+              <entry>dwID - ID of the test setup. dwIDPreceding - ID of the preceding test setup entry. If it is invalid (= ID_INVALID), the shifting entry shifts to the frontmost position.</entry>
+              <entry>S_OK, ERR_WRONG_ID, ERR_WRONG_ID_REF</entry>
+              <entry/>
+            </row>
+            <row>
+              <entry>HRESULT GetTestcaseCount( [in] DWORD dwID, [out] UINT&amp; unTotal)</entry>
+              <entry>Call to get total number of test cases occurring under a test setup.</entry>
+              <entry>dwID - ID of the test setup. unTotal - Total number of test cases</entry>
+              <entry>S_OK, ERR_WRONG_ID</entry>
+              <entry/>
+            </row>
+            <row>
+              <entry>HRESULT GetTestCaseInfo( [in] DWORD dwID, [in] UINT unIndex, [out] STestCaseInfo&amp; sTCInfo)</entry>
+              <entry>Getter for a test case basic information like its name and selection status.</entry>
+              <entry>dwID - ID of the test setup. unIndex - Zero based index of the test case. sTCInfo - Test case information.</entry>
+              <entry>S_OK, ERR_WRONG_ID, ERR_WRONG_INDEX</entry>
+              <entry>typedef struct STestCaseInfo { Cstring m_omName; BOOL m_bEnabled; };</entry>
+            </row>
+            <row>
+              <entry>HRESULT EnableTestCase( [in] DWORD dwID, [in] UINT unIndex, [in] BOOL bEnable)</entry>
+              <entry>Enables / disables a test case</entry>
+              <entry>dwID - ID of the test setup. unIndex - Zero based index of the test case. bEnable - TRUE to enable, else FALSE</entry>
+              <entry>S_OK, ERR_WRONG_ID, ERR_WRONG_INDEX</entry>
+              <entry/>
+            </row>
+            <row>
+              <entry>HRESULT Execute( [in] PFCALLBACKRESULTTC pfResultTC)</entry>
+              <entry>Executes the enabled test cases</entry>
+              <entry>pfResultTC - Address of the callback function defined in the caller which will be called as a result of each test case execution. This can be null.</entry>
+              <entry>S_OK, ???</entry>
+              <entry>Callback function prototype defined as: void (CALLBACK* PFCALLBACKRESULT)([in] DWORD dwTestsetupID, [in] CResultTC&amp; Result) </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></p>
+  </body>
+</topic>

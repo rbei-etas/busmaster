@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="development_environment" xml:lang="en-us">
+  <title>Development Environment</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>Workstation specific<ul>
+        <li>Machine: IBM compatible PC/XT and the </li>
+      </ul><ul>
+        <li>OS: Microsoft Windows XP.</li>
+      </ul></p>
+    <p>Implementation<ul>
+        <li>Environment: Microsoft Visual C++ Express 2008</li>
+      </ul><ul>
+        <li>Language: C, C++, VC++, XML</li>
+      </ul><ul>
+        <li>Other libraries: Win32 SDK, MFC</li>
+      </ul><ul>
+        <li>Installation: NullSoft</li>
+      </ul></p>
+    <p>Others<ul>
+        <li>Design tool: Enterprise Architect</li>
+      </ul><ul>
+        <li>Design notation: UML</li>
+      </ul><ul>
+        <li>Version control: GitHub</li>
+      </ul></p>
+    <p>Testing<ul>
+        <li>TestCocoon</li>
+        <li>AutoIt</li>
+      </ul></p>
+  </body>
+</topic>

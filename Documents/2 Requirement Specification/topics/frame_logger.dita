@@ -1,0 +1,324 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="frame_logger" xml:lang="en-us">
+  <title>Frame Logger</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>This generates log files for a monitoring session. A log file is human readable ASCII text file containing the fundamental or bare minimum information of the said monitoring session. A log file consists of the three sections namely:</p>
+    <ul>
+      <li>File header which presents the following information<ul>
+          <li>&lt;Application version information&gt;</li>
+          <li>&lt;Declaration of the start of the logging session&gt;</li>
+          <li>&lt;Start date and time&gt;</li>
+          <li>&lt;Numeric format&gt;</li>
+          <li>&lt;Time mode&gt;</li>
+        </ul></li>
+      <li>Data section which contains the frame data that is specific to the current vehicle bus standard. Nevertheless, so far the following data fields are observed to be consistently present in all the vehicle bus hitherto considered.<ul>
+          <li>&lt;Time stamp&gt;</li>
+          <li>&lt;Rx/Tx status&gt;</li>
+          <li>&lt;Channel&gt;</li>
+          <li>&lt;Frame ID&gt;</li>
+          <li>&lt;Frame type&gt;</li>
+          <li>&lt;Data length code&gt;</li>
+          <li>&lt;Data bytes&gt;</li>
+        </ul></li>
+      <li>File footer concludes the end of the logging session specifying the time and date of the end of the logging session.</li>
+    </ul>
+    <p>Clearly, frame logger consists of two sub-modules; one serves the purpose configuration tool whereas the other actually carries out the logging process.</p>
+    <p>Configuration</p>
+    <p><ul>
+        <li>Addition of a logging block</li>
+        <li>Deletion of a logging block</li>
+        <li>Enabling / disabling of a logging block</li>
+      </ul>A logging session is defined in terms of a logging block. In order to start a logging session the user must define a logging block. So the first step is to define logging blocks. Clearly, the functionalities expected are -</p>
+    <p>A logging block is defined with a number of parameters namely,<ul>
+        <li>Absolute log file path</li>
+        <li>Numeric mode (decimal / hexadecimal)</li>
+        <li>Time mode (system / relative / absolute)</li>
+        <li>File updating mode (overwrite / append)</li>
+        <li>Log triggering parameters (optional). Logging can start at the reception of a particular frame. Similarly, it can stop based on the reception of a particular frame.</li>
+        <li>Filters to be associated with the logging block </li>
+      </ul></p>
+    <p>The user interface specification for CAN is presented below:<image href="../images/screenshots/logging_config.png" placement="break"/></p>
+    <p>Additionally, the following operations shall be supported:<ul>
+        <li>Commit and rollback operations</li>
+        <li>Saving and retrieving of configuration data </li>
+      </ul></p>
+    <p>Log executor</p>
+    <p>This generates the log files as defined by the enabled logging blocks and provides all the controls necessary which are listed below:<ul>
+        <li>Enabling / disabling of the logging process</li>
+        <li>Enabling / disabling of logging filter</li>
+      </ul></p>
+    <p>If so needed, it shall be possible to use the logging module as a library without taking resource to the GUI. This means separation of front end from the back end operation and data.</p>
+    <p>The tagged requirement details are tabulated below:<table>
+        <tgroup cols="6">
+          <thead>
+            <row>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry>CAN</entry>
+              <entry>FlexRay</entry>
+              <entry>J1939</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>12</entry>
+              <entry/>
+              <entry>Frame Logger </entry>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry>Configuration </entry>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry>[RS_12_01]</entry>
+              <entry>Feature</entry>
+              <entry>Addition of a logging block</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_02]</entry>
+              <entry>Feature</entry>
+              <entry>Deletion of a logging block</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_03]</entry>
+              <entry>Feature</entry>
+              <entry>Enabling of a logging block</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_04]</entry>
+              <entry>Feature</entry>
+              <entry>Disabling of a logging block</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry>Editing a logging block</entry>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry>[RS_12_05]</entry>
+              <entry>Feature</entry>
+              <entry> - Updating the target file path</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_06] </entry>
+              <entry>Feature</entry>
+              <entry> - Selecting a time mode (system / absolute / relative)</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_07] </entry>
+              <entry>Feature</entry>
+              <entry> - Selecting a channel</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_08] </entry>
+              <entry>Feature</entry>
+              <entry> - Selecting the desired numeric mode (decimal / hexadecimal)</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_09] </entry>
+              <entry>Feature</entry>
+              <entry> - Selecting the file updation mode (append / overwrite)</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry> - Selecting trigger condition</entry>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry>[RS_12_10] </entry>
+              <entry>Feature</entry>
+              <entry> - Start trigger on reception of a frame</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_11] </entry>
+              <entry>Feature</entry>
+              <entry> - Stop trigger on reception of a frame</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_12] </entry>
+              <entry>Feature</entry>
+              <entry> - Enable start trigger</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_13] </entry>
+              <entry>Feature</entry>
+              <entry> - Disable start trigger</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_14] </entry>
+              <entry>Feature</entry>
+              <entry> - Enable stop trigger</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_15] </entry>
+              <entry>Feature</entry>
+              <entry> - Disable stop trigger</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_16] </entry>
+              <entry>Feature</entry>
+              <entry> - Associating filters</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_17] </entry>
+              <entry>Feature</entry>
+              <entry>Saving of present configuration</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_18] </entry>
+              <entry>Feature</entry>
+              <entry>Loading of configuration</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_19] </entry>
+              <entry>Feature</entry>
+              <entry>Committing of the present updation</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_20] </entry>
+              <entry>Feature</entry>
+              <entry>Rolling back the present updation</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry>Logging execution</entry>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry>[RS_12_21] </entry>
+              <entry>Feature</entry>
+              <entry>Enable logging filter</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_22] </entry>
+              <entry>Feature</entry>
+              <entry>Disable logging filter</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_23] </entry>
+              <entry>Feature</entry>
+              <entry>Start logging</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_24] </entry>
+              <entry>Feature</entry>
+              <entry>Stop logging</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_12_25] </entry>
+              <entry>Design</entry>
+              <entry>Make logging module employable as a library</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></p>
+  </body>
+</topic>

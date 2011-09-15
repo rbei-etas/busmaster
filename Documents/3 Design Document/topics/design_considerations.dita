@@ -1,0 +1,472 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="design_considerations" xml:lang="en-us">
+  <title>Design Considerations </title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>Here some the design requirements which are to be followed while carrying out development activities are described concisely. The BUSMASTER application design &amp; architecture specification, following continuous associated improvement activities, evoluted from a vast monolithic architecture into a properly harmonised ensemble of loosely coupled reusable and efficient modules &amp; components. As a natural and obvious consequence, certain patterns and structural approaches for development, albeit implicit, resulted. This document aims at capturing those steps and implied procedures.</p>
+    <p>The various aspects can be listed as:<ol>
+        <li>
+          <p>Adequate loose coupling between UI and data: This application is GUI based for normal usage. However, usage as automation server is also possible.</p>
+          <p>Towards this, a problem arises which is related to the complexity in harmonization of GUI with the application data (backend data).</p>
+          <p>The user modifies the application data through the GUI which is a coarse visual reflection of the data. The handler modifies the data as per the user’s choice and domain rules and then updates the GUI based on the handler or function data.</p>
+          <image href="../images/umls/id_ear.png" placement="break"/>
+          <p>It is often missed that GUI is only one of the ways to initiate application data modification activity. Explicitness of the other one remains unconsidered most often. Therefore, the design and the very structuring of the sub modules &amp; function list naturally don’t support this aspect. The result is obvious – whenever such a need arises (e.g., exploitation of the feature from some other module while keeping the GUI on, automated testing etc), bugs with synchronization of GUI with the application data, unexpected crashes, duplication of codes etc creep in. This results in patch work, which further pervades into chaotic coding and many other undesirable consequences.</p>
+          <p>A sample code is presented below. The use case deals with 5 controls and takes the services of 5 utility API calls from the application data manager library.</p>
+          <p>So long as we use the GUI to run this particular use case, things will proceed as expected, in the right manner. However, when it is done through some other means instead, (e.g., from a tester module running the application in the server mode, running the use case from another sub module etc). Something unexpected happens most often. In case of the former, a crash in case the GUI code doesn’t always validate the properness of the window or control handles or object pointers. In case of the later, either duplicate code and hence possibility of the GUI not appropriately reflecting the application data state. Add with it the numerous GUI conditions.</p>
+          <p>Very defensive coding may solve the problem. Nevertheless – it should always be kept in mind that that is hard to practice and also this can make the code rather ugly and unreadable. Hence, a design solution may be the most natural and therefore, best approach.</p>
+          <codeblock>// Data_Manager.cpp
+
+RET_TYPE Function1_Exported(ARG_TYPE);
+RET_TYPE Function2_Exported(ARG_TYPE);
+RET_TYPE Function3_Exported(ARG_TYPE);
+RET_TYPE Function4_Exported(ARG_TYPE);
+RET_TYPE Function5_Exported(ARG_TYPE);
+
+
+// GUIClass.cpp
+#include &quot;Data_Manager_extern.h&quot; 
+
+// Set of functions that operate on Control 1 upto 3
+void GUIClass::Modify_Control1(ARG_TYPE)
+{
+// Modify control1 according to ARG_TYPE
+}
+
+void GUIClass::Modify_Control2(ARG_TYPE)
+{
+// Modify control1 according to ARG_TYPE
+}
+
+void GUIClass::Modify_Control3(ARG_TYPE)
+{
+// Modify control1 according to ARG_TYPE
+}
+
+void GUIClass::Handler(ARG_TYPE)  // The handler implements the logic to realize
+{      // the desired functionality.
+if (Function1_Exported(..) == SUCCESS)
+{
+Modify_Control3(..);
+
+if (Function5_Exported(..) == SUCCESS)
+{
+if ( Function3_Exported(..) &amp;&amp; Function2_Exported(..) )
+{
+// Code to update control 4 
+Modify_Control2(..);
+}
+
+if (Function4_Exported(..) == FAILURE)
+{
+Modify_Control1(..);
+}
+else
+{
+// Code to update control 5 
+}
+}
+}
+}
+</codeblock>
+          <p>The solution crafted is layering of responsibilities by introducing a two-way communication with the data source. Any change in the back-end data can be indicated to the existing clients implemented either in event notification or call-back function. So the back-end data or the application data manager should have a well-defined interface. A typical use case can be realized by the execution of a few routines in some order, with adequate parameters.</p>
+          <image placement="break" href="../images/umls/test_client.png"/>
+          <p>The solution concept is inspired on the observer design pattern and the model-view-controller software architecture.</p>
+        </li>
+        <li>
+          <p>Abstract data channel: Usage of BUSMASTER falls under two distinct categories namely, bus monitoring &amp; analysis, and node simulation. Undercurrent of the first one is “retrieve data and represent the same in the desired fashion”. All the major functionalities like frame display, logging, data interpretation, signal watch and graph, replay etc have frame data processing as the kernel of their activities. That’s why it is of paramount importance to make the data retrieval procedure efficient and simple. The below diagram depicts such a schema ~</p>
+          <image placement="break" href="../images/umls/scenario.png"/>
+          <p>This calls for an optimised design for the message buffer classes which also qualifies the necessary performance criteria. Since frame data processing lies as the core of the activities, this issue is of paramount importance and even an iota of improvement in this direction can significantly contribute is performance elevation. The next point details on this.</p>
+        </li>
+        <li>
+          <p>Optimised data design: Reiterating the RS, this discussion continues with the disclaimer that no loss of frame data can’t be guaranteed. Only the possibility of data loss can be brought down with efficient design of the data structure. In a non-real time system like Windows this can be achieved by using buffer(s) as temporary placeholder(s) of data as shown in the figure above. The controller in addition contains a buffer that provides the first level of buffering whereas the application buffer is the last one. Hence we have an ensemble of two buffers – one from the controller and the other from the application.</p>
+          <image placement="break" href="../images/umls/buffers.png"/>
+          <p>Hence the deciding factors can be the following:<ol>
+              <li>Size of the controller buffer</li>
+              <li>Controller buffer management</li>
+              <li>Size of the application buffer</li>
+              <li>Application buffer management</li>
+              <li>Retrieval process of frame data from the driver.</li>
+            </ol></p>
+          <p>‘A’ and ‘B’ are out of the purview of our discussion on analysis and strategy.</p>
+          <p>Optimum size calculation of the application buffer depends on the following factors ~<ol>
+              <li>A.Current bit rate / throughput per second. It is finally the amount of data per second / millisecond that matters and hence the upper limit of total data at any moment.</li>
+              <li>B.Space management of each frame entry. Since the payload / data segment length of frames of buses like FlexRay or J1939 varies within a known range, a buffer of maximum allocable size can cater to a frame of any allowable length. In another approach, only the space of the actual size may be used – given we know the current bit rate. The former approach may be called method of fixed-size entry whereas the later one may be termed as method of variable-size entry.</li>
+            </ol></p>
+          <p>Formulation for method of variable-size entry</p>
+          <p>Let rt bps be the data rate at any moment t. If T seconds is the total time for which the bus data are to be retained, then the total amount of space can be expressed as -</p>
+          <p>S = Σ rt , where 1 &lt;= t &lt;= T.</p>
+          <p>Assuming R be the average data rate,</p>
+          <p>S = R * T</p>
+          <p>Let C be the controller buffer size and M be the application buffer size. Hence, the following inequality must hold good -</p>
+          <p>R * T &lt; C + M</p>
+          <p>Considering the bus to be FlexRay, for each channel,</p>
+          <p>Rmax = 10 Mbps</p>
+          <p>Rmax = 10 * 2^17 bps</p>
+          <p>Counting both the channels, the total data rate is 10 * 218 Bps</p>
+          <p>Calculation of the optimized value of application buffer size depends on the realistic value of R and correct value of C.</p>
+          <p>Assuming maximum data rate and neglecting C, we find for FlexRay ~</p>
+          <p>M &gt; 2.5 * T MB</p>
+          <p>The payload segment of a frame varies from 0 up to 127 WORDs. Hence the above formula is useful when the buffer for a frame is not assumed to be of fixed size and hence follows the implementation.</p>
+          <p>Similarly, for a CAN controller with a single channel -</p>
+          <p>Rmax = 1 Mbps</p>
+          <p>Rmax = 2^17 Bps</p>
+          <p>Again assuming maximum data rate and neglecting C, we find for CAN ~</p>
+          <p>M &gt; 1^27 * T kB</p>
+          <p>Formulation for method of fixed-size entry</p>
+          <p>The first use case cited is for FlexRay bus.</p>
+          <p>If Fcurr is the size in bytes of the current frame, then</p>
+          <p>Fcurr = 8 + 2 * W, where 0 &lt;= W &lt;= 127 and W is the number of WORDs in the payload segment.</p>
+          <p>If N is the number of Fcurr frames, then the following equation will hold good,</p>
+          <p>R * T = N * Fcurr</p>
+          <p>N = (R * T ) / (8 + 2 * W)</p>
+          <p>For evident reason, space for every entry is allocated to accommodate frame of maximum size i.e., Fmax = 262 bytes.</p>
+          <p>Therefore, total amount of space needed is,</p>
+          <p>M = N * Fmax</p>
+          <p>M = (R * T * 262) / (8 + 2 * W)</p>
+          <p>Assuming maximum data rate accounting both the channels,</p>
+          <p>M = (2 * Rmax * T * 262) / (8 + 2 * W)</p>
+          <p>M = (10 * 218 * T * 262) / (8 + 2 * W), in MB</p>
+          <p>Clearly, M and W are inversely proportional.</p>
+          <p>The following graph shows the amount of memory to be allocated for different payload segment length when the data rate is 10 Mb/s for each channel and the data need to be contained for a second.</p>
+          <image placement="break" href="../images/charts/memory_consumption_chart_payload.png"/>
+          <p>Similarly, for CAN also the same calculation may be carried out in which both normal and extended frames are considered. Maximum baud rate is assumed and for each data length code value ranging between 0 and 8, the number of entries in fixed-size entry buffer is calculated out. The consolidated result is represented with a line diagram. Below is shown the application buffer size nuance chart:</p>
+          <image placement="break" href="../images/charts/memory_consumption_chart_dlc.png"/>
+          <table>
+            <tgroup cols="7">
+              <thead>
+                <row>
+                  <entry>DLC</entry>
+                  <entry>Frames per second</entry>
+                  <entry>Memory (KB)</entry>
+                  <entry>DLC</entry>
+                  <entry>Frames per second</entry>
+                  <entry>Memory (KB)</entry>
+                  <entry>Data Rate</entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry>0</entry>
+                  <entry>23831.27273</entry>
+                  <entry>558.5454545</entry>
+                  <entry>0</entry>
+                  <entry>16384</entry>
+                  <entry>384</entry>
+                  <entry>1048576</entry>
+                </row>
+                <row>
+                  <entry>1</entry>
+                  <entry>20164.92308</entry>
+                  <entry>472.6153846</entry>
+                  <entry>1</entry>
+                  <entry>14563.55556</entry>
+                  <entry>341.3333</entry>
+                  <entry>Duration</entry>
+                </row>
+                <row>
+                  <entry>2</entry>
+                  <entry>17476.26667</entry>
+                  <entry>409.6</entry>
+                  <entry>2</entry>
+                  <entry>13107.2</entry>
+                  <entry>307.2</entry>
+                  <entry>1</entry>
+                </row>
+                <row>
+                  <entry>3</entry>
+                  <entry>15420.23529</entry>
+                  <entry>361.4117647</entry>
+                  <entry>3</entry>
+                  <entry>11915.63636</entry>
+                  <entry>279.2727</entry>
+                  <entry>Static section (standard CAN)</entry>
+                </row>
+                <row>
+                  <entry>4</entry>
+                  <entry>13797.05263</entry>
+                  <entry>323.3684211</entry>
+                  <entry>4</entry>
+                  <entry>10922.66667</entry>
+                  <entry>256</entry>
+                  <entry>44</entry>
+                </row>
+                <row>
+                  <entry>5</entry>
+                  <entry>12483.04762</entry>
+                  <entry>292.5714286</entry>
+                  <entry>5</entry>
+                  <entry>10082.46154</entry>
+                  <entry>236.3077</entry>
+                  <entry>Frame length</entry>
+                </row>
+                <row>
+                  <entry>6</entry>
+                  <entry>11397.56522</entry>
+                  <entry>267.1304348</entry>
+                  <entry>6</entry>
+                  <entry>9362.285714</entry>
+                  <entry>219.4286</entry>
+                  <entry>192</entry>
+                </row>
+                <row>
+                  <entry>7</entry>
+                  <entry>10485.76</entry>
+                  <entry>245.76</entry>
+                  <entry>7</entry>
+                  <entry>8738.133333</entry>
+                  <entry>204.8</entry>
+                  <entry>Static section (extended CAN)</entry>
+                </row>
+                <row>
+                  <entry>8</entry>
+                  <entry>9709.037037</entry>
+                  <entry>227.5555556</entry>
+                  <entry>8</entry>
+                  <entry>8192</entry>
+                  <entry>192</entry>
+                  <entry>64</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+          <table>
+            <tgroup cols="5">
+              <thead>
+                <row>
+                  <entry>Type</entry>
+                  <entry>Field</entry>
+                  <entry>Length (Bits) [Min]</entry>
+                  <entry>Length (Bits) [Max]</entry>
+                  <entry>Purpose</entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry>Base Frame Format</entry>
+                  <entry>Start-of-frame</entry>
+                  <entry>1</entry>
+                  <entry>1</entry>
+                  <entry>Denotes the start of frame transmission</entry>
+                </row>
+                <row>
+                  <entry>Base Frame Format</entry>
+                  <entry>Identifier</entry>
+                  <entry>11</entry>
+                  <entry>11</entry>
+                  <entry>A (unique) identifier for the data</entry>
+                </row>
+                <row>
+                  <entry>Base Frame Format</entry>
+                  <entry>Remote transmission request (RTR)</entry>
+                  <entry>1</entry>
+                  <entry>1</entry>
+                  <entry>Dominant (0) (see Remote Frame below)</entry>
+                </row>
+                <row>
+                  <entry>Base Frame Format</entry>
+                  <entry>Identifier extension bit (IDE)</entry>
+                  <entry>1</entry>
+                  <entry>1</entry>
+                  <entry>Must be dominant (0) Optional</entry>
+                </row>
+                <row>
+                  <entry>Base Frame Format</entry>
+                  <entry>Reserved Bit (r0)</entry>
+                  <entry>1</entry>
+                  <entry>1</entry>
+                  <entry>Reserved bit (it must be set to dominant (0), but accepted as either dominant or recessive)</entry>
+                </row>
+                <row>
+                  <entry>Base Frame Format</entry>
+                  <entry>Data Length Code (DLC)</entry>
+                  <entry>4</entry>
+                  <entry>4</entry>
+                  <entry>Number of bytes of data (0-8 bytes)</entry>
+                </row>
+                <row>
+                  <entry>Base Frame Format</entry>
+                  <entry>Data field</entry>
+                  <entry>0</entry>
+                  <entry>64</entry>
+                  <entry>Data to be transmitted (length dictated by DLC field)</entry>
+                </row>
+                <row>
+                  <entry>Base Frame Format</entry>
+                  <entry>CRC</entry>
+                  <entry>15</entry>
+                  <entry>15</entry>
+                  <entry>Cyclic Redundancy Check</entry>
+                </row>
+                <row>
+                  <entry>Base Frame Format</entry>
+                  <entry>CRC Delimiter</entry>
+                  <entry>1</entry>
+                  <entry>1</entry>
+                  <entry>Must be recessive (1)</entry>
+                </row>
+                <row>
+                  <entry>Base Frame Format</entry>
+                  <entry>ACK slot</entry>
+                  <entry>1</entry>
+                  <entry>1</entry>
+                  <entry>Transmitter sends recessive (1) and any receiver can assert a dominant (0)</entry>
+                </row>
+                <row>
+                  <entry>Base Frame Format</entry>
+                  <entry>ACK delimiter</entry>
+                  <entry>1</entry>
+                  <entry>1</entry>
+                  <entry>Must be recessive (1)</entry>
+                </row>
+                <row>
+                  <entry>Base Frame Format</entry>
+                  <entry>End-of-frame (EOF)</entry>
+                  <entry>7</entry>
+                  <entry>7</entry>
+                  <entry>Must be recessive (1)</entry>
+                </row>
+                <row>
+                  <entry/>
+                  <entry/>
+                  <entry/>
+                  <entry/>
+                  <entry/>
+                </row>
+                <row>
+                  <entry>Extended Frame Format</entry>
+                  <entry>Start-of-frame</entry>
+                  <entry>1</entry>
+                  <entry>1</entry>
+                  <entry>Denotes the start of frame transmission</entry>
+                </row>
+                <row>
+                  <entry>Extended Frame Format</entry>
+                  <entry>Identifier A</entry>
+                  <entry>11</entry>
+                  <entry>11</entry>
+                  <entry>First part of the (unique) identifier for the data</entry>
+                </row>
+                <row>
+                  <entry>Extended Frame Format</entry>
+                  <entry>Substitute remote request (SRR)</entry>
+                  <entry>1</entry>
+                  <entry>1</entry>
+                  <entry>Must be recessive (1) Optional</entry>
+                </row>
+                <row>
+                  <entry>Extended Frame Format</entry>
+                  <entry>Identifier extension bit (IDE)</entry>
+                  <entry>1</entry>
+                  <entry>1</entry>
+                  <entry>Must be recessive (1) Optional</entry>
+                </row>
+                <row>
+                  <entry>Extended Frame Format</entry>
+                  <entry>Identifier B</entry>
+                  <entry>18</entry>
+                  <entry>18</entry>
+                  <entry>Second part of the (unique) identifier for the data</entry>
+                </row>
+                <row>
+                  <entry>Extended Frame Format</entry>
+                  <entry>Remote transmission request (RTR)</entry>
+                  <entry>1</entry>
+                  <entry>1</entry>
+                  <entry>Must be Dominant (0)</entry>
+                </row>
+                <row>
+                  <entry>Extended Frame Format</entry>
+                  <entry>Reserved Bit (r0, r1)</entry>
+                  <entry>2</entry>
+                  <entry>2</entry>
+                  <entry>Reserved bit (it must be set to dominant (0), but accepted as either dominant or recessive)</entry>
+                </row>
+                <row>
+                  <entry>Extended Frame Format</entry>
+                  <entry>Data Length Code (DLC)</entry>
+                  <entry>4</entry>
+                  <entry>4</entry>
+                  <entry>Number of bytes of data (0-8 bytes)</entry>
+                </row>
+                <row>
+                  <entry>Extended Frame Format</entry>
+                  <entry>Data field</entry>
+                  <entry>0</entry>
+                  <entry>64</entry>
+                  <entry>Data to be transmitted (length dictated by DLC field)</entry>
+                </row>
+                <row>
+                  <entry>Extended Frame Format</entry>
+                  <entry>CRC</entry>
+                  <entry>15</entry>
+                  <entry>15</entry>
+                  <entry>Cyclic Redundancy Check</entry>
+                </row>
+                <row>
+                  <entry>Extended Frame Format</entry>
+                  <entry>CRC Delimiter</entry>
+                  <entry>1</entry>
+                  <entry>1</entry>
+                  <entry>Must be recessive (1)</entry>
+                </row>
+                <row>
+                  <entry>Extended Frame Format</entry>
+                  <entry>ACK slot</entry>
+                  <entry>1</entry>
+                  <entry>1</entry>
+                  <entry>Transmitter sends recessive (1) and any receiver can assert a dominant (0)</entry>
+                </row>
+                <row>
+                  <entry>Extended Frame Format</entry>
+                  <entry>ACK delimiter</entry>
+                  <entry>1</entry>
+                  <entry>1</entry>
+                  <entry>Must be recessive (1)</entry>
+                </row>
+                <row>
+                  <entry>Extended Frame Format</entry>
+                  <entry>End-of-frame (EOF)</entry>
+                  <entry>7</entry>
+                  <entry>7</entry>
+                  <entry>Must be recessive (1)</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+          <p>The relative advantages and disadvantages of the two methods are tabulated below:</p>
+          <table>
+            <tgroup cols="3">
+              <thead>
+                <row>
+                  <entry/>
+                  <entry>Fixed-size entry</entry>
+                  <entry>Variable-size entry</entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry>Resource usage</entry>
+                  <entry>Variable; payload length of the frame is the deciding factor. Hence empirical data analysis is one of the means which is not guaranteed</entry>
+                  <entry>Fixed; only the maximum bit rate is the deciding factor.</entry>
+                </row>
+                <row>
+                  <entry>Easiness of implementation</entry>
+                  <entry>Easier. There is no need to think on room for an entry.</entry>
+                  <entry>Quite complex.</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+          <p>Variable-size entry method guarantees the most optimum usage of memory and addressing of any situation and hence real sturdiness. On the other hand, fixed-size entry method has a better performance. However, the difference in performance is not of a crucial magnitude. Therefore, choice of method is subject to the bus standard. For example – for CAN method of fixed-size entry is used whereas for J1939 the other one is used.</p>
+          <p>The application buffer class is the best agency to provide the information of buffer overrun. The ‘Write(…)’ method can check if the slot to write the new frame data is free. A new method can be exposed or an event can be fired to notify its client in case such occurrence. In fixed-size entry method it is also possible to keep count of the number of frames missed whereas in variable-size entry method it is not possible.</p>
+        </li>
+      </ol></p>
+  </body>
+</topic>

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="test_suite_editor_and_executor_lib_ta" xml:lang="en-us">
+  <title>Test Suite Editor and Executor Lib</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>This helper module realises defining and updating of a test suite node along with its execution. Services provides by this module are listed down with a use case diagram.<image placement="break" href="../images/umls/ud_ts_editor_and_executor.png"/></p>
+  </body>
+</topic>

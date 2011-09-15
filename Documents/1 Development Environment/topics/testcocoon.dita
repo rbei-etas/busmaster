@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="testcocoon" xml:lang="en-us">
+  <title>TestCocoon - Source Code Coverage Tool</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+	  <p>To integrate TestCocoon into the Visual C++ IDE, use the following documentation:</p>
+	  <p><xref href="http://www.testcocoon.org/coveragescanner.html#toc77" scope="external"/></p>
+  </body>
+</topic>

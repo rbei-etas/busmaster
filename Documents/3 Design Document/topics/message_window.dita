@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="message_window" xml:lang="en-us">
+  <title>Message Window</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>Modus operandi of message window is similar to Bus statistics or logger modules. Here also the general functional part and the vehicle standard specific routines are grouped asunder, into non-cohesive units. From deployment viewpoint the general functional sub-module resides within the application whereas the data formatting routines are realised in a DLL called PSDI_&lt;BUS&gt;. The below component diagram shows the mechanism.<image href="../images/umls/message_window_1.png" placement="break"/></p>
+    <p>The behavioural aspect of message window module is outlined with the following sequence diagram which shows the initialisation and normal usage instance.<image href="../images/umls/message_window_2.png" placement="break"/></p>
+    <p>The class design approach is similar to the logger module. The class diagram is presented below:<image href="../images/umls/message_window_3.png" placement="break"/></p>
+  </body>
+</topic>

@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="user_interface" xml:lang="en-us">
+  <title>User Interface</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>•This section is applicable only if there is a human interface. Give reference to GUI standards document, if any. Mention about the GUI standards used as the basis for the design. Refer Guidelines on Database Design for more details.</p>
+    <p>&lt;TBD&gt;
+</p>
+  </body>
+</topic>

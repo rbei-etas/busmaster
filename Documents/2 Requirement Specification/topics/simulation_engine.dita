@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="simulation_engine" xml:lang="en-us">
+  <title>Simulation Engine</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <table>
+      <tgroup cols="6">
+        <thead>
+          <row>
+            <entry>Tag</entry>
+            <entry>Name &amp; Prototype</entry>
+            <entry>Functionality</entry>
+            <entry>Parameter Details</entry>
+            <entry>Return value</entry>
+            <entry>Remarks</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>RSI_5_001</entry>
+            <entry>RegisterClient ( [in] ETYPE_BUS eBus, [out] USHORT* ClientID, [out] BSTR* PipeName, [out] BSTR* EventName)</entry>
+            <entry>This function makes an entry in the client list of the simulation engine assigning a unique client id. Also, it opens a communication channel between the engine and the client in the form of a pipe and an event for notification.</entry>
+            <entry>eBus – The target bus standard for which the communication channel is to be opened. The purpose of this parameter is only to distinguish the target buses. This component has no knowledge of the bus standard data frame format and structure. ClientID – The client id assigned which needs to be remembered and used for the subsequent calls. PipeName – Name of the the communication conduit. The caller needs to get a handle of the pipe in order to retrieve a message. EventName – When SimENG pumps a message into the pipe, this shall be signalled. </entry>
+            <entry>S_OK is successful, else S_FALSE.</entry>
+            <entry>This must be the first call to SimENG (with the exception of GetTimeModeMapping)</entry>
+          </row>
+          <row>
+            <entry>RSI_5_002</entry>
+            <entry>UnregisterClient ( [in] USHORT ClientID)</entry>
+            <entry>Call this function to get unregistered from SimENG.</entry>
+            <entry>ClientID – Identifier of the client.</entry>
+            <entry>DO</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>RSI_5_003</entry>
+            <entry>ConnectNode ( [in] USHORT ClientID)</entry>
+            <entry>Connects the caller to the virtual bus. On successful calling of this function, receiving and sending of messages shall be possible.</entry>
+            <entry>DO</entry>
+            <entry>DO</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>RSI_5_004</entry>
+            <entry>DisconnectNode ( [in] USHORT ClientID)</entry>
+            <entry>Disconnects the caller from the virtual bus.</entry>
+            <entry>DO</entry>
+            <entry>DO</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>RSI_5_005</entry>
+            <entry>GetTimeModeMapping ( [out] SYSTEMTIME* CurrSysTime, [out] ULONGLONG* TimeStamp)</entry>
+            <entry>Call this function to get a system time and the time stamp associated to it.</entry>
+            <entry>CurrSysTime – A system time TimeStamp – The time stamp associated with CurrSysTime.</entry>
+            <entry>DO</entry>
+            <entry>This is useful to calculate current system time from the time stamp.</entry>
+          </row>
+          <row>
+            <entry>RSI_5_006</entry>
+            <entry>SendMessage ( [in] USHORT ClientID, [in] BYTE* pbyMsgData [in] UINT unLength)</entry>
+            <entry>Call this function to send a message to the virtual bus or other nodes.</entry>
+            <entry>ClientID – Identifier of the client. pbyMsgData – Message data entry unLength – Message data entry length in number of bytes.</entry>
+            <entry>DO</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>RSI_5_007</entry>
+            <entry>GetCurrentStatus ( [in] USHORT ClientID, [in,out] VARIANT *pNodeStatus)</entry>
+            <entry>Call this function to get the current state of the node.</entry>
+            <entry>ClientID – Identifier of the client. pNodeStatus – Parameter to receive the current status of the node. This contains the following values: RESET (0), INITIALISED (1), WAITING (2), NORMAL_ACTIVE (3), NORMAL_PASSIVE (4), UNDEFINED (5)</entry>
+            <entry>DO</entry>
+            <entry>-</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </body>
+</topic>

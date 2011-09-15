@@ -1,0 +1,302 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="frame_transmission" xml:lang="en-us">
+  <title>Frame Transmission</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>From triggering viewpoint, this occurs in two different ways. First one is time-oriented whereas for the other, triggering comes from event handlers, user-programme, test cases in test automation etc. The second one features in activities such as node programming, test automation, automation server and hence is part of a larger scenario.</p>
+    <p>This section describes transmission module which deals with the first one thereby employing time-oriented triggers. Independent yet obvious another of the considerations is the frame data configuration that focuses on the bus data exchange aspect. So again the discussion proceeds with configuration and executor modules.</p>
+    <p>Configuration</p>
+    <p>The first step is to define transmission blocks which can be defined with a name. There is no specific nomenclature to be imposed. Nor is there any enforced principle on uniqueness of name. A transmission block is appreciated with a certain number of parameters which are the results of an at length analysis and collation of the various below characteristics.</p>
+    <ul>
+      <li>Transmission block repeats with a time period specified (cyclic block)</li>
+      <li>Transmission block doesn’t get repeated (monoshot block)</li>
+      <li>Frames constituting a transmission block maintain a uniform time delay between them</li>
+      <li>Transmission for a block takes place by a manual event like a key press</li>
+      <li>Manual event transmission for a block sends one frame at a time</li>
+      <li>Manual event transmission for a block sends all frames in a burst</li>
+    </ul>
+    <p>The above listing results in the following transmission configuration parameters.</p>
+    <ol>
+      <li>Name of transmission block</li>
+      <li>Activation status of a block</li>
+      <li>Frame list with which this block consists of. Each of the selected frames shall also be deactivated from transmission. This means only those selected can be transmitted.</li>
+      <li>Transmission mode which can be either cyclic or monoshot.</li>
+      <li>Trigger event: Triggering event for a frame transmission which can be a timer, a manual one such as a key press. When it’s a manual event, either one frame gets transmitted at a time or the entire list in a burst. </li>
+    </ol>
+    <p>Besides, there is another aspect which involves configuration of the message data. It should be possible to edit a defined message to the extent of its individual signals covering both its raw and engineering values.</p>
+    <p>The above listing translates into the following user interface specification for CAN~<image placement="break" href="../images/screenshots/transmission_messages_config.png"/></p>
+    <p>Transmission</p>
+    <p>This transmits the frames defined in the transmission block list according to the time period and data specified. This must ensure the time integrity is maintained.</p>
+    <p>The tagged requirement details are tabulated below:<table>
+        <tgroup cols="6">
+          <thead>
+            <row>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry>CAN</entry>
+              <entry>FlexRay</entry>
+              <entry>J1939</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry/>
+              <entry/>
+              <entry>Configuration</entry>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry>[RS_17_01]</entry>
+              <entry>Feature</entry>
+              <entry>Addition of a transmission block</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_17_02]</entry>
+              <entry>Feature</entry>
+              <entry>Deletion of a transmission block</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_17_03]</entry>
+              <entry>Feature</entry>
+              <entry>Enable / disable a transmission block</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry>Editing characteristics of a transmission block</entry>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry>[RS_17_04]</entry>
+              <entry>Feature</entry>
+              <entry> - Editing of transmission block</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_17_05]</entry>
+              <entry>Feature</entry>
+              <entry> - Choosing between &apos;Cyclic&apos; and &apos;Monoshot&apos; transmission mode</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_17_06]</entry>
+              <entry>Feature</entry>
+              <entry> - Enable / disable time delay characteristics.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_17_07]</entry>
+              <entry>Feature</entry>
+              <entry> - Update time delay</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_17_08]</entry>
+              <entry>Feature</entry>
+              <entry> - Enable / disable key event trigger for transmission</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_17_09]</entry>
+              <entry>Feature</entry>
+              <entry> - Configure key event trigger by specifying the key stroke</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_17_10]</entry>
+              <entry>Feature</entry>
+              <entry> - Specify if key event for a single message or a burst of message</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry>Editing a transmission block data</entry>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry>[RS_17_11]</entry>
+              <entry>Feature</entry>
+              <entry> - Addition of a frame, defined / undefined</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_17_12]</entry>
+              <entry>Feature</entry>
+              <entry> - Deletion of a frame</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_17_13]</entry>
+              <entry>Feature</entry>
+              <entry> - Clearing the frame list</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_17_14]</entry>
+              <entry>Feature</entry>
+              <entry> - Enable / disable a frame from transmission</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry>Editing of a frame data in a block</entry>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry>[RS_17_15]</entry>
+              <entry>Feature</entry>
+              <entry> - Edit the frame characteristics</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_17_16]</entry>
+              <entry>Feature</entry>
+              <entry> - Editing data for an undefined frame</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_17_17]</entry>
+              <entry>Feature</entry>
+              <entry> - Editing data for a defined frame</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_17_18]</entry>
+              <entry>Feature</entry>
+              <entry>Committing the transmission block list</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_17_19]</entry>
+              <entry>Feature</entry>
+              <entry>Saving of configuration data</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_17_20]</entry>
+              <entry>Feature</entry>
+              <entry>Retrieving of configuration data</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry>Transmission</entry>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry>[RS_17_21]</entry>
+              <entry>Feature</entry>
+              <entry>Manual transmission of a frame</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_17_22]</entry>
+              <entry>Feature</entry>
+              <entry>Start transmission activity</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_17_23]</entry>
+              <entry>Feature</entry>
+              <entry>Stop transmission activity</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_17_24]</entry>
+              <entry>Design</entry>
+              <entry>Maintaining integrity of the transmission frequency</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_17_25]</entry>
+              <entry>Design</entry>
+              <entry>Ensure substantial number of transmission block doesn&apos;t overburden the system</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></p>
+  </body>
+</topic>

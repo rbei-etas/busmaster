@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="project_configuration_library" xml:lang="en-us">
+  <title>Project Configuration library</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>Purpose of this library is to provide an API set for the saving and retrieval of project configuration related information. Targeted data store may be either file system or database. In case of the former, the accessing shall be direct whereas in case of the later the interfacing shall be via ODBC. Following are the RS for the API set:</p>
+    <p>Function to ~</p>
+    <ol>
+      <li>Set the present data storage configuration [RS_06_01].</li>
+      <li>Get the presently selected data storage configuration [RS_06_02].</li>
+      <li>Perform data storage operation after selection. Options are OPEN, SAVE and CLOSE [RS_06_03].</li>
+      <li>Get total number of projects in the project table [RS_06_04].</li>
+      <li>Get project name list from the project table [RS_06_05]. Function that, given name of the project ~</li>
+      <li>And project data, adds a project entry in the project table or modifies an existing one [RS_06_06].</li>
+      <li>Deletes the project entry from the project table [RS_06_07].</li>
+      <li>Retrieves project data from the project table [RS_06_08].</li>
+      <li>And section name, add a section or modify an existing one in the section table of the project [RS_06_09].</li>
+      <li>And section name, deletes the section from the section table of the project [RS_06_10].</li>
+      <li>And section name, gets information of that particular section from the section table of the project [RS_06_11].</li>
+      <li>Receives total number of sections from the section table of the project [RS_06_12].</li>
+      <li>Retrieves list of all the section names from the section table of the project [RS_06_13]. </li>
+    </ol>
+  </body>
+</topic>

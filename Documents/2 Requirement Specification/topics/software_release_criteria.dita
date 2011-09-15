@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="software_release_criteria" xml:lang="en-us">
+  <title>Software Release Criteria</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>The software shall be deemed fit to be released when it clears the successful criteria of the following:<ul>
+        <li>Development environment: All the different phases of testing namely, unit testing, system testing and integration testing.</li>
+        <li>Real usage environment: Application runs properly without buffer overrun or showing any nonresponsive state even at the maximum bus load in the real usage scenario. This shall be carried out at a real end-user’s workplace.</li>
+      </ul>
+
+
+</p>
+  </body>
+</topic>

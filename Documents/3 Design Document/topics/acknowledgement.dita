@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="acknowledgement" xml:lang="en-us">
+  <title>Acknowledgement</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>The BUSMASTER application suite evoluted from its incipient stage of monolithic single bus - single controller architecture towards the present stage of modular &amp; reusable component based architecture, easily and seamlessly extendable to support multiple vehicle buses, exhibiting a rich set of carefully crafted feature list. Reaching of such a milestone was possible only by the valuable contributions from many dedicated and skilful professionals who were involved at different cycles of the development process defining the trajectories of the product’s evolution, translating many innovative ideas into reality. The contributors so far are Mrs. Jalaja K.V, Mr. Amitesh Bharti, Mr. Amarnath Shastry, Mr. Ratnadip Choudhury, Mr. Pemmaiah B.D, Mr. Raja N, Mr. Rajesh Kumar R, Mr. Anish Kumar, Mr. Pradeep Kadoor, Mr. Arunkumar Karri and Mr. Venkatanarayana Makam.</p>
+    <p>This design document is the summation of all the relevant design documents, notes and an analysis report, produced and refined throughout the development process, and hence is an integrated version prepared to roll out the OSS version of BUSMASTER.</p>
+  </body>
+</topic>

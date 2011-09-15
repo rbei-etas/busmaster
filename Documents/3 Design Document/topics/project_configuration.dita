@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="project_configuration" xml:lang="en-us">
+  <title>Project Configuration</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>This module is implemented as a DLL which exports some functions for one or multiple project configuration data retention in a file. The file is called the project configuration file. It’s a binary file.</p>
+    <p>Project data are logically organised to follow a schema alike to database. This means the entry point is a master table which is called ‘Project Table’ and lists the different project entries. So the primary key of each entry is the project name. This means it is possible to work with configuration data of multiple projects. Each project entry is parameterised with information like language code (ISO 639-3), time and date of last editing, application version and the unique identifier of the application. Configuration data section of a project is maintained in an entity called section table. Each project has its own section table which is identified by the name of the project. A section table is the summation of section entries, which is defined by a section name, the section data pointer and the data length in bytes. Hence, a section is a quasi-unit of a configuration data. This view is depicted in the following data model diagram:<image href="../images/umls/project_configuration_1.png" placement="break"/></p>
+    <p>The implementing components are carved based on the aforementioned data model and the interfacing aspect of the library with its client applications or components. A simple API set of exported functions is sufficient for the interfacing requirement. Also, there must be avenues to use both file and database system (should the need arise to realise this in future) for the archiving purpose. Hence, results the first object named as ‘Project Configuration Interface Manager’. Based of the current choice (file or database system), the path forks.<image href="../images/umls/project_configuration_2.png" placement="break"/></p>
+    <p>The object ‘Project Configuration Manager’ deals with the project list whereas the entity ‘Project Data’ manages individual project data (the section list) and makes it possible to process section data through ‘Section Data’ object. The four entities are the cornerstones of the Project Configuration library. The component diagram shows this arrangement with an outlining on the data and control flow.</p>
+    <p>The concrete implementation is described with the following class diagram. Again, the class designing is directed by the data model schema and closely reflect the organizational aspect.<image href="../images/umls/project_configuration_3.png"/></p>
+    <p>The other supporting data types are presented below.<image href="../images/umls/project_configuration_4.png"/></p>
+    <p>Therefore, design of project configuration library again follows a hybrid design methodology, albeit well rhythmized.</p>
+  </body>
+</topic>

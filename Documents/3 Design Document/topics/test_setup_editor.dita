@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="test_setup_editor" xml:lang="en-us">
+  <title>Test Setup Editor</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>This helper module basically manipulates entities of varying kinds. For example – a test case node contains four different kinds of sub entities or nodes. Also, sub entities like send or verify also contain their own message sub-entities whereas nodes like wait, replay are simple nodes. Nevertheless, all of them must exhibit functionalities like addition, deletion, modification of self. Also, repositioning of a sub entity is also a desired functionality. Therefore, it is the obvious decision to inherit them from a common base class named as CBaseEntityTA (TA stands for Test Automation). Also, each of the objects has a data part. The overall class structure may be expressed by the following class design diagram where the Test Setup Editor Lib is realised by the class CTestSetupEntity<image placement="break" href="../images/umls/test_setup_editor.png"/></p>
+  </body>
+</topic>

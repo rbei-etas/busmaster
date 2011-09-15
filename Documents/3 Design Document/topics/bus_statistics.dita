@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="bus_statistics" xml:lang="en-us">
+  <title>Bus Statistics</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>Like the other monitoring and analyzing modules, this Bus Statistics module implementation too follows the data channel abstraction procedure as already explained. This means – it owns a data buffer and uses it to register to the DIL as a data channel under the same client ID of its container – the application.</p>
+    <p>DIL ensures the buffer gets updated with the bus traffic. A worker thread maintained by bus statistics module waits for the notification event of the buffer and updates a set of bus statistics data parameters. The UI sub-module accesses the statistical data parameters at frequency according to the refresh rate set, and refreshes the required controls accordingly. This is depicted by the following component diagram:<image placement="break" href="../images/umls/bus_statistics_1.png"/><image placement="break" href="../images/umls/bus_statistics_2.png"/></p>
+    <p>Below is provided the class diagram:<image placement="break" href="../images/umls/bus_statistics_3.png"/></p>
+  </body>
+</topic>

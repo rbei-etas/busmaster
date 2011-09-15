@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="project_scope" xml:lang="en-us">
+  <title>Project Scope</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>The project is taken up as product development Initiative. Its scope is to develope an automotive bus monitoring, analyzing and node simulation suite named as BUSMASTER. This can be used to fulfill the family engineering aspect; both from the viewpoint of commonality and predicted variability; to be used as the development infrastructure. The application engineering part focuses on creating the concrete product that targets a particular bus. End product can be either a desktop based GUI application or an automation server. The goal is also to support tools for multiple buses under the same umbrella.</p>
+  </body>
+</topic>

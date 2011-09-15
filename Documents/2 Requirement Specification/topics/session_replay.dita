@@ -1,0 +1,244 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="session_replay" xml:lang="en-us">
+  <title>Session Replay</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>Here the objective is to play back a recorded monitoring session using the generated log files from that session in question, as the input data source. Play back a session is characterized by transmitting all the data frame entries in the input data file, both transmitted and received. To be noted that realization of session replay feature doesn’t qualify for its name ad verbatim. The only reason behind this apparent aberration is that otherwise, for received frames the application node shall be dependent on other nodes resulting in a distributed testing environment with higher degree of implementation complexity, and so far there is no such demand from current user group.</p>
+    <p>Session reply occurs in two sub-modules the first one deals with the necessary configuration whereas the last one with the execution activity.</p>
+    <p>Configuration</p>
+    <p>This manages the replay entries. A replay entry is parameterized with the following ~<ol>
+        <li>Log file: An existing log file.</li>
+        <li>Time mode: Time mode is defined as the expected time delay between frames transmitted, which is either the recorded time delay in the associated log file or a time delay specified by the user. The time unit here is millisecond.</li>
+        <li>Repetition mode: Repetition mode can have two values. ‘Once’ means the replay file will be played only once. ‘Cyclic’ means it will be repeated with the interval specified by the user.</li>
+        <li>Replay mode: Replay mode shuttles between interactive replay more and non-interactive replay mode. The former one involves human intervention in which the user can set breakpoints against some selected entries. Transmission halts at those entries awaiting user-event to go ahead. It is also possible for the user to transmit one frame at a time. All these together provide the user a better control over session play back. This is a manifestation of the typical debugging scenario in this domain. Meaning of the later one is obvious and hence needs no further explanation.</li>
+        <li>Filter set: The filter set associated. This is optional.</li>
+      </ol></p>
+    <p>Below goes the user interface specification:<image placement="break" href="../images/screenshots/replay_config.png"/></p>
+    <p>Replay Window</p>
+    <p>This carries out the execution part and transmits frames according to the rules set by the configuration module. Execution activity set involves steps resulting in full control in the replay execution spectrum. These can be listed as below:<ul>
+        <li>Add / remove breakpoints</li>
+        <li>Start replay session and halt at a breakpoint</li>
+        <li>Select any entry to make it the current execution location</li>
+        <li>Transmit current entry and move forward one step</li>
+        <li>Transmit current entry and move forward transmitting until hitting next breakpoint</li>
+        <li>Skip current entry and move one step</li>
+        <li>Stop the replay activity </li>
+      </ul></p>
+    <p>The user interface specification is presented below:<image placement="break" href="../images/screenshots/replay_window.png"/></p>
+    <p>The tagged requirement details are tabulated below:<table>
+        <tgroup cols="6">
+          <thead>
+            <row>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry>CAN</entry>
+              <entry>FlexRay</entry>
+              <entry>J1939</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>19</entry>
+              <entry/>
+              <entry>Session Replay</entry>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry>Configuration</entry>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry>[RS_19_01]</entry>
+              <entry>Feature</entry>
+              <entry>Existing log file shall be identifiable as the input data source</entry>
+              <entry>X</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry>[RS_19_02]</entry>
+              <entry>Feature</entry>
+              <entry>Multiple input data source shall be employable</entry>
+              <entry>X</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry>[RS_19_03]</entry>
+              <entry>Feature</entry>
+              <entry>It shall be possible to add / remove any log file from the input data source set</entry>
+              <entry>X</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry>[RS_19_04]</entry>
+              <entry>Feature</entry>
+              <entry>In the input data source set, any entry can be enabled / disabled</entry>
+              <entry>X</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry>[RS_19_05]</entry>
+              <entry>Feature</entry>
+              <entry>It shall be possible to configure / reconfigure an existing input data source by -</entry>
+              <entry>X</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry>[RS_19_06]</entry>
+              <entry>Feature</entry>
+              <entry> - Changing the log file absolute path</entry>
+              <entry>X</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry>[RS_19_07]</entry>
+              <entry>Feature</entry>
+              <entry> - Choosing between recorded time delay and user-specified delay in ms</entry>
+              <entry>X</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry>[RS_19_08]</entry>
+              <entry>Feature</entry>
+              <entry> - Choosing between &apos;Once&apos; and &apos;Cyclic&apos; repetition mode</entry>
+              <entry>X</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry>[RS_19_09]</entry>
+              <entry>Feature</entry>
+              <entry> - Choosing between interactive and non-interactive replay mode</entry>
+              <entry>X</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry>[RS_19_10]</entry>
+              <entry>Feature</entry>
+              <entry> - Using a filter set</entry>
+              <entry>X</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry>[RS_19_11]</entry>
+              <entry>Feature</entry>
+              <entry>It shall be possible to commit the changes or to roll back</entry>
+              <entry>X</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry>Replay Window</entry>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry>[RS_19_12]</entry>
+              <entry>Feature</entry>
+              <entry>Add / remove breakpoints</entry>
+              <entry>X</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry>[RS_19_13]</entry>
+              <entry>Feature</entry>
+              <entry>Select eny entry to make it the current execution location</entry>
+              <entry>X</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry>[RS_19_14]</entry>
+              <entry>Feature</entry>
+              <entry>Start / resume replay session</entry>
+              <entry>X</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry>[RS_19_15]</entry>
+              <entry>Feature</entry>
+              <entry>Halt at a breakpoint</entry>
+              <entry>X</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry>[RS_19_16]</entry>
+              <entry>Feature</entry>
+              <entry>Step on (current entry is transmitted and move by one step)</entry>
+              <entry>X</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry>[RS_19_17]</entry>
+              <entry>Feature</entry>
+              <entry>Step over (Move by one step without transmitting the current entry)</entry>
+              <entry>X</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry>[RS_19_18]</entry>
+              <entry>Feature</entry>
+              <entry>Transmit current entry and move forward until meeting the next breakpoint</entry>
+              <entry>X</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry>[RS_19_19]</entry>
+              <entry>Feature</entry>
+              <entry>Terminate current replay session</entry>
+              <entry>X</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></p>
+  </body>
+</topic>

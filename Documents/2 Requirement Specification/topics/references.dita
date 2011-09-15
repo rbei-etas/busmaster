@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="references" xml:lang="en-us">
+  <title>References</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <table>
+      <tgroup cols="6">
+        <thead>
+          <row>
+            <entry>No.</entry>
+            <entry>Title</entry>
+            <entry>Version</entry>
+            <entry>Author</entry>
+            <entry>Date</entry>
+            <entry>Source/Location</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>1</entry>
+            <entry>Design Patterns: Elements of Reusable Object-Oriented software</entry>
+            <entry>-</entry>
+            <entry>Gamma, Helm, Johnson &amp; Vlissides</entry>
+            <entry>August, 1994</entry>
+            <entry>Paperback edition</entry>
+          </row>
+          <row>
+            <entry>2</entry>
+            <entry>Architectural Blueprints - The &quot;4+1&quot; View Model of Software Architecture</entry>
+            <entry>-</entry>
+            <entry>Philippe Kruchten</entry>
+            <entry>November, 1995</entry>
+            <entry>Paper published in IEEE Software 12 (6) </entry>
+          </row>
+          <row>
+            <entry>3</entry>
+            <entry>Programming Applications for Microsoft Windows</entry>
+            <entry>4th edition</entry>
+            <entry>Jeffrey Richter</entry>
+            <entry>-</entry>
+            <entry>Microsoft press</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </body>
+</topic>

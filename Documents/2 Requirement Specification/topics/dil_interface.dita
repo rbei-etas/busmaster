@@ -1,0 +1,250 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="dil_interface" xml:lang="en-us">
+  <title>DIL Interface</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>DIL is abbreviation for driver interface layer. Here the idea is to bring in a necessary abstraction between the application and the driver including the user interfaces for the controller configuration. Additionally in absence of the real driver, this contains the driver simulation. Below goes a component diagram of DIL usage:<image href="../images/umls/dil_components_diagram.png" placement="break"/></p>
+    <p>Hence the objective of DIL may be outlined in the following way -</p>
+    <ul>
+      <li>Easy interfacing to stub / any hardware without any change in the DIL interface. So the API set shall be prototyped in such a way to support easy extendibility for any controller for a bus.</li>
+      <li>Minimal change in DIL for addition of any new hardware support. “Change” mostly comprises of sheer code addition. The final goal is to realize “plug and play” feature.</li>
+      <li>Optimum usage of resource. This involves minimum increase in code and minimum occupation of processor time. The later may be realized by minimizing redundant codes (e.g., if … else statements).</li>
+      <li>The first two points needs a fair amount of general streamlining of the API set of drivers of automotive bus hardware.</li>
+      <li>Configuration procedures of each of the supporting controllers are assumed to be different from each other. So there shall be UI specific to each one of them. Citing example from CAN bus controllers; configuration of ES581 is different from PCAN USB hardware. This means for addition of a new hardware support, the application also needs to add a new UI.</li>
+      <li>In view of the above – the change in application code may be prevented if the UI related code is shifted to DIL. In this approach application performs a query to receive list of all the controllers been supported. On selection of a controller from the list, DIL shall be instructed to return handle of a configuration dialog box (or any other UI). The entire hardware configuration related code shall remain inside the UI object and hence the application only calls a few functions from the API set.</li>
+    </ul>
+    <p>Clearly, the services of DIL can be categorized in two groups, one bus the general type of services whereas the other one is of bus specific type. The tagged requirements of the general type are tabulated below:</p>
+    <table>
+      <tgroup cols="6">
+        <thead>
+          <row>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry>CAN</entry>
+            <entry>FlexRay</entry>
+            <entry>J1939</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>23</entry>
+            <entry/>
+            <entry>DIL Interface</entry>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+          <row>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+          <row>
+            <entry>[RS_23_01]</entry>
+            <entry>Feature</entry>
+            <entry>Getter for the DIL list (number of driver interfaces)</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>[RS_23_02]</entry>
+            <entry>Feature</entry>
+            <entry>Selecting a driver from the DIL list</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>[RS_23_03]</entry>
+            <entry>Feature</entry>
+            <entry>Getter for the presently selected driver</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>[RS_23_04]</entry>
+            <entry>Feature</entry>
+            <entry>Registration of a client to simulate a node</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_23_05]</entry>
+            <entry>Feature</entry>
+            <entry>Unregistering of an existing client</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_23_06]</entry>
+            <entry>Feature</entry>
+            <entry>Addition of a message repository buffer of an existing client</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_23_07]</entry>
+            <entry>Feature</entry>
+            <entry>Deletion of a message repository buffer of an existing client</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_23_08]</entry>
+            <entry>Feature</entry>
+            <entry>Carry out initialization operations</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_23_09]</entry>
+            <entry>Feature</entry>
+            <entry>Carry out closure operations</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_23_10]</entry>
+            <entry>Feature</entry>
+            <entry>Getter for the time mode mapping (usually the 64-bit time stamp by the driver)</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_23_11]</entry>
+            <entry>Feature</entry>
+            <entry>Listing of the controllers for the current driver</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>[RS_23_12]</entry>
+            <entry>Feature</entry>
+            <entry>Selection of a controller from the hardware interface list</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>[RS_23_13]</entry>
+            <entry>Feature</entry>
+            <entry>Deselection of the presently selected controller</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>[RS_23_14]</entry>
+            <entry>Feature</entry>
+            <entry>Display the configuration dialog box of the present controller</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>[RS_23_15]</entry>
+            <entry>Feature</entry>
+            <entry>Setting of the configuration data for the present controller</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>[RS_23_16]</entry>
+            <entry>Feature</entry>
+            <entry>Start the presently selected controller (or connect)</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_23_17]</entry>
+            <entry>Feature</entry>
+            <entry>Stop the presently selected controller (or disconnect)</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_23_18]</entry>
+            <entry>Feature</entry>
+            <entry>Reset the presently selected controller</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>[RS_23_19]</entry>
+            <entry>Feature</entry>
+            <entry>Transmit a frame</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_23_20]</entry>
+            <entry>Feature</entry>
+            <entry>Getter for the version information of the DIL for the present bus</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_23_21]</entry>
+            <entry>Feature</entry>
+            <entry>In case of any error, a function returns the associated string of the last error</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_23_22]</entry>
+            <entry>Feature</entry>
+            <entry>To set pass filters at hardware level.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_23_23]</entry>
+            <entry>Feature</entry>
+            <entry>To set stop filters at hardware level. </entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_23_24]</entry>
+            <entry>Feature</entry>
+            <entry>Getter for controller status by callback mechanism</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <p>To be noted that for J1939, some of the requirements directly don’t hold good. The reason is that J1939 is based on CAN and hence they still hold good, albeit indirectly.</p>
+  </body>
+</topic>

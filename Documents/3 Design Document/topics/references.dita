@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="references" xml:lang="en-us">
+  <title>References</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>List of all external sources of information referenced in this document.</p>
+    <table>
+      <tgroup cols="5">
+        <thead>
+          <row>
+            <entry>SI. No.</entry>
+            <entry>Description</entry>
+            <entry>Date</entry>
+            <entry>Vers.</entry>
+            <entry>Location</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <p>Description, date, and version shall uniquely identify the information source, and the location shall specify where it is to be found.</p>
+    <p>References to books or journals may be given using the following format:
+Author [s]: Journal Name / Book Name, publisher, date of publication.</p>
+  </body>
+</topic>

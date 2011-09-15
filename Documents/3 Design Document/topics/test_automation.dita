@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="test_automation" xml:lang="en-us">
+  <title>Test Automation</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>Services of Automatic Test Framework may be harnessed in two ways namely, through a GUI and through an API set. The services are categorized in two different sets – A. Test Setup Editor and B. Test Suite Editor and Executor. The GUI modules of both of them employ the related helper modules or API sets. This is illustrated by the following component diagram:<image href="../images/umls/id_components.png" placement="break"/></p>
+    <p>Clearly, the client application interacts with the user interface modules that employ services of helper modules / libraries to serve the client application. The client application service interface is needed to carry out operations like frame transmission, interaction to virtual bus etc.</p>
+    <p>Below is a reiteration of the software’s functions:</p>
+    <p>Test Setup Editor: This is the editor of a test setup file, with which it is possible to define and modify a number of test cases. The test setup editor UI is the front-end and realised as graphical user interface. Data manipulation is carried out by Test Setup Editor Library module and the artefact generated is the xml based test module file.</p>
+    <p>Test Suite Editor and Executor: Its purpose is twofold – the first one is defining and manipulating a test suite and secondly, executing the same by running the selected test setups and test cases. Output of the editing is a byte stream which the client application can store somewhere.</p>
+    <p>The Test Suite tree contains consistent types of leaves all being test setups that contains only test cases. Hence for Test Suite Editor and Executor Lib, just a set of API is sufficient. On the other hand, the Test Setup tree contains leaves of varying kinds going into varying hierarchy levels and given the functionalities like repositioning, it is best to define the Test Setup Editor Lib interface as a container class with all the other entities being inherited from a common class owing to their sharing of certain functionalities.</p>
+    <p>Because the UI truly reflects the data, test case editor lib and test setup editor &amp; executor lib are having same use cases as the user interface modules.</p>
+  </body>
+</topic>

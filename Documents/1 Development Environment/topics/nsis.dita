@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="nsis" xml:lang="en-us">
+  <title>Installation</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>NullSoft Scriptable Install System (NSIS) is the software installation framework used. It is a script-driven Windows installation system. The following links may be accessed for details and download:</p>
+    <ul>
+      <li>
+        <xref href="http://en.wikipedia.org/wiki/List_of_installation_software" scope="external"/>
+      </li>
+      <li>
+        <xref href="http://en.wikipedia.org/wiki/Nullsoft_Scriptable_Install_System" scope="external"/>
+      </li>
+      <li>
+        <xref href="http://nsis.sourceforge.net/Main_Page" scope="external"/>
+      </li>
+    </ul>
+    <p>The installation process must clear the associated test script or STS prepared.</p>
+    <p>Settings Specific to BUSMASTER Installation:</p>
+    <ul>
+      <li>Ensure the &quot;BUSMASTER Installer.nsi&quot; script is accompanied by all the application files which are a part of installable in a folder called as &quot;Resources&quot; as shown in image below. <image href="../images/nsis_script.png" placement="break"/></li>
+      <li>Register the inproc, local and remote servers which are being part of the installation folder using the script command examples below:<ul>
+          <li>ExecWait &apos;BUSMASTER.exe /regserver&apos;</li>
+          <li>ExecWait &apos;&quot;$SYSDIR\regsvr32.exe&quot; /s &quot;Sample.dll&quot;&apos;</li>
+        </ul></li>
+      <li>Make sure the path of the .exe or .dll file is set as outpath before executing the above commands. The following command does that: SetOutPath $INSTDIR</li>
+      <li>Consider an example script for registration as shown below: <codeblock>
+SetOutPath $INSTDIR
+ExecWait &apos;BusEmulation.exe /regserver&apos;  
+
+SetOutPath $INSTDIR/MinGW
+ExecWait &apos;&quot;$SYSDIR\regsvr32.exe&quot; /s &quot;Sample.dll&quot; 
+</codeblock></li>
+    </ul>
+    <p>In the above example, BusEmulation.exe lies within the target directory so the outpath is set to the same. The Sample.dll exists under the MinGW folder in target directory, so the outpath is set accordingly to $INSTDIR/MinGW.</p>
+    <p>The registrations should take place only after the binaries get copied to the target folders. Also the un-registrations should take place before uninstalling the binaries from the system.</p>
+    <p>Windows 7 specific settings in install script:</p>
+    <p>The BUSMASTER.exe and BUSEmulation.exe needs to run with &quot;WIN98 compatibility&quot; setting to run smoothly under windows 7 OS.</p>
+    <p>In order to set the compatibility mode, the following registry keys have been added under the registry if the installed environment is windows 7.</p>
+    <ol>
+      <li>&quot;HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers&quot; &quot;$INSTDIR\BUSMASTER.exe&quot; &quot;WIN98&quot;</li>
+      <li>&quot;HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers&quot; &quot;$INSTDIR\BUSEmulation.exe&quot; &quot;WIN98&quot;</li>
+    </ol>
+    <p>The operating system details are read using the following script:
+<codeblock>
+ReadRegStr $1 HKLM &quot;SOFTWARE\Microsoft\Windows NT\CurrentVersion&quot; CurrentVersion
+; Current version value of 6.1 denotes Windows 7 OS    
+StrCmp $1 &quot;6.1&quot; 0 lbl              ; StrCmp str1 str2 jump_if_equal [jump_if_not_equal]    
+</codeblock>
+</p>
+    <p>The registry entries should actually be added under HKEY_LOCAL_MACHINE but windows 7 prevents 32-bit Null soft installer exe from writing to HKLM location.</p>
+  </body>
+</topic>

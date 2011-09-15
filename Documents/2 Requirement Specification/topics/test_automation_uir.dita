@@ -1,0 +1,410 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="test_automation_uir" xml:lang="en-us">
+  <title>Test Automation</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>Test Setup Editor GUI</p>
+    <p>Below goes a schematic view of Test Setup Editor GUI:<image href="../images/sketches/test_setup_editor_1.png" placement="break"/></p>
+    <p>Clearly, the client area has been divided into three panes. The leftmost is the one that shall be used to update the nodes whereas the upper right pane shall be used to modify a node parameters. The former one is called master layout pane or simply master pane. The later one shall be termed as the property pane for a node or concisely, a property pane. Roles of the two buttons &quot;Confirm&quot; and &quot;Cancel&quot; in the property pane are obvious from their names. Node parameters may be modifiable by a generic list control in property pane, where each of the row entries correspond to a node parameter. The third pane names as helptext pane shall show some tips / brief explanations on the functionality of the node / control selected by the user.</p>
+    <p>Here goes a short overview on the nodes in the master pane ~<image href="../images/sketches/test_setup_editor_2.png" placement="break"/></p>
+    <p>Clearly, the Test Setup Node is the root of all from where are sprouted the other nodes. The helper functions may be accessed by right-clicking on a node and selecting the proper menu item in the resultant popup menu. Below goes list of all the popup menus to be resulted from the right-click on the relevant tree nodes in the master layout pane –<table>
+        <tgroup cols="5">
+          <thead>
+            <row>
+              <entry>SI. No.</entry>
+              <entry>Node Type</entry>
+              <entry>Popup menu item</entry>
+              <entry>Functionality</entry>
+              <entry>Display state condition</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>1</entry>
+              <entry>Test Setup Node</entry>
+              <entry>Add</entry>
+              <entry>Adds a test case</entry>
+              <entry>Always</entry>
+            </row>
+            <row>
+              <entry>2</entry>
+              <entry>Test Case Node</entry>
+              <entry>Wait</entry>
+              <entry>Adds a wait node</entry>
+              <entry>- do -</entry>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry>Send</entry>
+              <entry>Adds a send node</entry>
+              <entry>Selecting a valid database is the prerequisite to enable this menu item</entry>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry>Verify</entry>
+              <entry>Adds a verify node</entry>
+              <entry>- do -</entry>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry>Replay</entry>
+              <entry>Adds a replay node</entry>
+              <entry>Always</entry>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry>Delete</entry>
+              <entry>Deletes the test case node selected.</entry>
+              <entry>- do -</entry>
+            </row>
+            <row>
+              <entry>3</entry>
+              <entry>Send Node</entry>
+              <entry>Add</entry>
+              <entry>Adds a message</entry>
+              <entry>- do -</entry>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry>Delete</entry>
+              <entry>Deletes the send node selected.</entry>
+              <entry>- do -</entry>
+            </row>
+            <row>
+              <entry>4</entry>
+              <entry>Verify</entry>
+              <entry>Add</entry>
+              <entry>Adds a message</entry>
+              <entry>- do -</entry>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry>Delete</entry>
+              <entry>Deletes the verify node selected.</entry>
+              <entry>- do -</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></p>
+    <p>Lastly, an overview of the property pane is presented below ~<image href="../images/sketches/test_setup_editor_3.png" placement="break"/></p>
+    <p>In order to modify values of each node in the master layout pane, the node in question needs to be selected and a corresponding list control shall appear on the property pane which can be used to update values. Each of the modifiable nodes and its associated schematic property user interface is described below:<ul>
+        <li>Test Setup Node<table>
+            <tgroup cols="3">
+              <tbody>
+                <row>
+                  <entry>Module Information</entry>
+                  <entry>Name</entry>
+                  <entry>&lt; Name assigned to the test setup module &gt;</entry>
+                </row>
+                <row>
+                  <entry>Module Information</entry>
+                  <entry>Bus Type</entry>
+                  <entry>&lt; Bus type needs to be entered which may be one of CAN, J1939 and FlexRay. Presently only CAN shall be selectable. &gt;</entry>
+                </row>
+                <row>
+                  <entry>Module Information</entry>
+                  <entry>Database</entry>
+                  <entry>&lt; Path of the associated database &gt;</entry>
+                </row>
+                <row>
+                  <entry>Module Information</entry>
+                  <entry>Version</entry>
+                  <entry>&lt; Version number string &gt;</entry>
+                </row>
+                <row>
+                  <entry>Engineer</entry>
+                  <entry>Name</entry>
+                  <entry>&lt; Engineer&apos;s name &gt;</entry>
+                </row>
+                <row>
+                  <entry>Engineer</entry>
+                  <entry>Role</entry>
+                  <entry>&lt; Engineer&apos;s role / designation &gt;</entry>
+                </row>
+                <row>
+                  <entry>Report File</entry>
+                  <entry>Path</entry>
+                  <entry>&lt; Report file path &gt;</entry>
+                </row>
+                <row>
+                  <entry>Report File</entry>
+                  <entry>File type</entry>
+                  <entry>&lt; File type. Can be one of TXT and HTM &gt;</entry>
+                </row>
+                <row>
+                  <entry>Report File</entry>
+                  <entry>Time mode</entry>
+                  <entry>&lt; Time mode. May be one of system and relative modes. &gt;</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table></li>
+        <li>Test Case Node<table>
+            <tgroup cols="2">
+              <thead>
+                <row>
+                  <entry>Test Case params</entry>
+                  <entry>Parameter values</entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry>Identifier</entry>
+                  <entry>&lt; Identifier of the test case. Shall be unique &gt;</entry>
+                </row>
+                <row>
+                  <entry>Title</entry>
+                  <entry>&lt; Title of the test case &gt;</entry>
+                </row>
+                <row>
+                  <entry>Exception handler</entry>
+                  <entry>&lt; Action to be taken in case of failure. Must be one of &quot;continue&quot; or &quot;exit&quot;. In case of the former, the process of test case running should go on whereas for the later the process should abort &gt;</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table></li>
+        <li>Wait Node<table>
+            <tgroup cols="2">
+              <thead>
+                <row>
+                  <entry>Wait node params</entry>
+                  <entry>Parameter values</entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry>Purpose</entry>
+                  <entry>&lt; Purpose of the wait &gt;</entry>
+                </row>
+                <row>
+                  <entry>Delay</entry>
+                  <entry>&lt; Time specified in millisecond. Takes an integer &gt;</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table></li>
+        <li>Replay Node<table>
+            <tgroup cols="2">
+              <thead>
+                <row>
+                  <entry>Replay file params</entry>
+                  <entry>Parameter values</entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry>File Path</entry>
+                  <entry>&lt; Absolute / relative path of the replay file &gt;</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table></li>
+        <li>Send Node<table>
+            <tgroup cols="2">
+              <thead>
+                <row>
+                  <entry>Send node params</entry>
+                  <entry>Parameter values</entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry>Messages</entry>
+                  <entry>&lt; Enter number of messages to be sent. This will create required number of rows to make message entries &gt;</entry>
+                </row>
+                <row>
+                  <entry>&lt; Message ID &gt;</entry>
+                  <entry>&lt; Message Name. Double-click on any of the two cells to view the popup combo / list box that shall display the available message list from database and select the required message entry &gt;</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table></li>
+        <li>Send_Message Node<table>
+            <tgroup cols="2">
+              <thead>
+                <row>
+                  <entry>Send_Message params</entry>
+                  <entry>Parameter values</entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry>Signal value type</entry>
+                  <entry>&lt; Shall be of the data type eTYPE_UNIT_SIGNAL. Choose one of RAW and ENGG. A drop-down list appears with the two entries &gt;</entry>
+                </row>
+                <row>
+                  <entry>&lt; Default signal value &gt;</entry>
+                  <entry>&lt; The default signal value which shall be assumed for the signal entry value unspecified by the user &gt;</entry>
+                </row>
+                <row>
+                  <entry>&lt; Signal list showing signal names &gt;</entry>
+                  <entry>&lt; Each of the list control entries correspond to a signal defined in the message. Signal values need to be entered here. For obvious reason, number of rows in the list control will be equal to the number of signals defined in the message &gt;</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table></li>
+        <li>Verify Node<table>
+            <tgroup cols="2">
+              <thead>
+                <row>
+                  <entry>Verify node params</entry>
+                  <entry>Parameter values</entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry>Failure classification</entry>
+                  <entry>&lt; Shall be of the data type eRESULT. Choose one of WARNING, ERROR and FATAL. A drop-down list appears with the three entries &gt;</entry>
+                </row>
+                <row>
+                  <entry>Messages</entry>
+                  <entry>&lt; Enter number of messages to be sent. This will create required number of rows to make message entries &gt;</entry>
+                </row>
+                <row>
+                  <entry>&lt; Message ID &gt;</entry>
+                  <entry>&lt; Message Name. Double-click on any of the two cells to view the popup combo / list box that shall display the available message list from database and select the required message entry &gt;</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table></li>
+        <li>Verify_Message Node<table>
+            <tgroup cols="2">
+              <thead>
+                <row>
+                  <entry>Verify_Message params</entry>
+                  <entry>Parameter values</entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry>Signal value type</entry>
+                  <entry>&lt; Shall be of the data type eTYPE_UNIT_SIGNAL. Choose one of RAW and ENGG. A drop-down list appears with the two entries &gt;</entry>
+                </row>
+                <row>
+                  <entry>Signals</entry>
+                  <entry>&lt; Enter number of signals whose values are to be evaluated. This will create required number of rows to make signal entries &gt;</entry>
+                </row>
+                <row>
+                  <entry>&lt; Signal list showing signal names &gt;</entry>
+                  <entry>&lt; The signal validation formula with normal algebraic notation like &apos;x&apos; to denote the current signal value. The following mathematical operators can be used: +, -, /, *, (, ), ==, !=, &lt;, &gt;, &lt;=, &gt;=, &amp;&amp; and ||. To illustrate, an example is cited below ~ ((x + 3 == 9) || ((x / 23 == 3) &amp;&amp; (2 * x - 34 &gt; 12))) &gt; </entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table></li>
+      </ul></p>
+    <p>Menu items</p>
+    <p>Below is the schematic view of the menu items:<image placement="break" href="../images/mockups/menus_1.png"/></p>
+    <p>A brief explanation of each of the menu item’s functionalities along with its display state conditions:<table>
+        <tgroup cols="4">
+          <thead>
+            <row>
+              <entry>SI. No.</entry>
+              <entry>Menu item</entry>
+              <entry>Functionality</entry>
+              <entry>Display state condition</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>1</entry>
+              <entry>File-&gt;New</entry>
+              <entry>This shall create a new test setup.</entry>
+              <entry>Always be enabled.</entry>
+            </row>
+            <row>
+              <entry>2</entry>
+              <entry>File-&gt;Open</entry>
+              <entry>This shall open an existing test setup file.</entry>
+              <entry>- Do -</entry>
+            </row>
+            <row>
+              <entry>3</entry>
+              <entry>File-&gt;Save</entry>
+              <entry>This shall update the currently open file with the modifications made.</entry>
+              <entry>Shall be enabled when a test setup file is modified.</entry>
+            </row>
+            <row>
+              <entry>4</entry>
+              <entry>File-&gt;Save As</entry>
+              <entry>This shall update the some other new or existing file with the modifications made.</entry>
+              <entry>Shall be enabled when a test setup file is opened.</entry>
+            </row>
+            <row>
+              <entry>5</entry>
+              <entry>File-&gt;Close</entry>
+              <entry>This shall close the currently open test setup file.</entry>
+              <entry>- Do -</entry>
+            </row>
+            <row>
+              <entry>6</entry>
+              <entry>File-&gt;Exit</entry>
+              <entry>This shall close the application. In case there is a test setup file open and underwent some modification, the user shall be prompted.</entry>
+              <entry>Always be enabled.</entry>
+            </row>
+            <row>
+              <entry>7</entry>
+              <entry>Edit-&gt;Cut</entry>
+              <entry>Can be used to shift the selected node to somewhere else.</entry>
+              <entry>When one of the associated nodes in the master layout pane is selected.</entry>
+            </row>
+            <row>
+              <entry>8</entry>
+              <entry>Edit-&gt;Copy</entry>
+              <entry>Copies the selected node.</entry>
+              <entry>- Do -</entry>
+            </row>
+            <row>
+              <entry>9</entry>
+              <entry>Edit-&gt;Paste</entry>
+              <entry>Pastes the cut or copied node under the selected node. Cut, Copy and Paste operation are applicable to the master layout pane for the following nodes: 1. Wait, 2. Send_Message, 3. Verify_Message and 4. Replay</entry>
+              <entry>Below goes a list of the nodes and the parent nodes for which the menu item shall be enabled. Wait: Test case node Send_Message: Send node Replay: Test case node Verify_Message: Verify node </entry>
+            </row>
+            <row>
+              <entry>10</entry>
+              <entry>Display-&gt;Reset</entry>
+              <entry>Resets layout of the three panes to a default setting.</entry>
+              <entry>Always be enabled.</entry>
+            </row>
+            <row>
+              <entry>11</entry>
+              <entry>Help-&gt;Test Setup Editor Help</entry>
+              <entry>Shall open the help file.</entry>
+              <entry>- Do -</entry>
+            </row>
+            <row>
+              <entry>12</entry>
+              <entry>Help-&gt;About Test Setup Editor</entry>
+              <entry>Shall display programme information, version and copyright.</entry>
+              <entry>- Do -</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></p>
+    <p>Test Suite Editor and Executor</p>
+    <p>A graphical overview with short explanations on its various sections is provided below. The different numbered sections are explained here ~<ul>
+        <li>This is the test suite node and is the root of the tree control. The text is editable so that the user can assign a meaningful name to the test suite being defined.</li>
+        <li>This is the Test Setup node. This node must be associated with a test setup file when such a node is being added.</li>
+        <li>This is the Test Case node and shall appear when a Test Setup node is successfully associated with a corresponding file.</li>
+        <li>This checkbox shall be used to select / deselect a Test Setup node while executing the Test Suite.</li>
+        <li>The right pane is termed as the output pane where results of each test case executed shall be displayed.</li>
+        <li>Right-clicking the Test Suite node results in the popup menu. The &apos; Add&apos; button shall add a Test Setup node whereas &apos;Execute&apos; button shall execute the current Test Suite.</li>
+        <li>Right-clicking a Test Setup node results in this popup menu. The &apos;Delete&apos; menu item shall delete the Test Setup menu whereas &apos;Modify&apos; menu item shall change the Test Setup file associated with the node.</li>
+        <li>This check box shall include or exclude the related Test Case node from the execution process.</li>
+        <li>This dialog box shall be used when a Test Setup node is being associated with a corresponding file. </li>
+      </ul></p>
+    <image placement="break" href="../images/sketches/test_suite_editor_and_executor.png"/>
+  </body>
+</topic>

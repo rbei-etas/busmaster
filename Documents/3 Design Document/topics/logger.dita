@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="logger" xml:lang="en-us">
+  <title>Logger</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>Data channel abstraction procedure continues to be followed as expected. Logger module receives the client ID from its client. A dedicated worker thread is the engine of the whole mechanism and drives the logging process. It waits for data frame event signals of the buffer; retrieves frame data, formats the same and finally logs the formatted frame data into a log file, through other specific objects acting as agencies. Logging configuration aspect is addressed by an object denoted by Logger_&lt;BUS&gt; (e.g., for CAN the class name is CFrameProcessor_CAN). The following component diagram explains this mechanism. No particular bus name is mentioned, which means the procedure manifests for any vehicle standard support.<image placement="break" href="../images/umls/logger_1.png"/></p>
+    <p>The following sequence diagram shows the configuration and logging activation / deactivation process.<image placement="break" href="../images/umls/logger_2.png"/></p>
+    <p>The below class diagram shows the implementation aspect. This largely involves identification of the common activities across all target vehicle bus standards and group them together in terms of classes. Here the emphasis is on reuse through inheritance and encapsulation through proper abstraction. The entity ‘Logger_&lt;BUS&gt;’, in all its possible manifestations (e.g., Logger_CAN, Logger_J1939, Logger_FlexRay etc) exhibits the same characterisation of activity which is – waiting for a data event from the message buffer, retrieving frame data, formatting the same according to the present formatting conditions imposed and logging the resultant string into the target file or file list. The services rendered can easily fall under a distinct category of their own. Unique operations for a particular vehicle bus are the frame data being dealt with, the formatting intricacy and a few related subtle operations.</p>
+    <p>The inheritance is governed by the following directives derived from the above analysis:<ul>
+        <li>Logger_&lt;BUS&gt; class is inherited from the interface virtual class</li>
+        <li>The common or generic activities translated into another class (to be called CFrameProcessor_Common)</li>
+        <li>CFrameProcessor_Common drives the whole mechanism and Logger_&lt;BUS&gt; is inherited from it too.</li>
+        <li>The unique operations are prototyped as generic methods and hence can be invoked from CFrameProcessor_Common. They are declared pure virtual and hence the derived class must implement the same. </li>
+      </ul></p>
+    <image placement="break" href="../images/umls/logger_3.png"/>
+  </body>
+</topic>

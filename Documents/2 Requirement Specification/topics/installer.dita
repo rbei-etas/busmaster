@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="installer" xml:lang="en-us">
+  <title>Installer</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>The installer manages setting up the deployment phase where all executables, libraries, components and other relevant artifacts are copied into the target system to make the application suite operational. Installation activities occur in three distinct modes namely, new installation, maintenance (modification / repairing) and uninstalling.</p>
+    <p>Installations are of different types - ‘restricted’, ‘free’ and ‘evaluation’. The first one is controlled by suitable keys from vendor, ‘free’ installation and ‘evaluation’ where a validation period for running the application suite is applied.</p>
+    <p>Below goes the detailed tagged specification.<table>
+        <tgroup cols="6">
+          <thead>
+            <row>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry>CAN</entry>
+              <entry>FlexRay</entry>
+              <entry>J1939</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>25</entry>
+              <entry/>
+              <entry>Installer</entry>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry>[RS_25_01]</entry>
+              <entry>Feature</entry>
+              <entry> Installation doesn&apos;t proceed if the target platform isn&apos;t indicated in the target platform support matrix.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_25_02]</entry>
+              <entry>Feature</entry>
+              <entry>Installation doesn&apos;t proceed if the user doesn&apos;t have the required access rights.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_25_03]</entry>
+              <entry>Feature</entry>
+              <entry>Accepts the target location for the installing application suite</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_25_04]</entry>
+              <entry>Feature</entry>
+              <entry>Copies all the relevant components in the required location.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_25_05]</entry>
+              <entry>Feature</entry>
+              <entry>Registers all the COM components.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_25_06]</entry>
+              <entry>Feature</entry>
+              <entry>In case the target system doesn&apos;t have some necessary system libraries which are freely redistributable, the same shall be copied.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_25_07]</entry>
+              <entry>Feature</entry>
+              <entry>In case this is a commercial application suite, license key shall be mandatory to go ahead with the process.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_25_08]</entry>
+              <entry>Feature</entry>
+              <entry>A license key is for single usage only.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_25_09]</entry>
+              <entry>Feature</entry>
+              <entry>Commercial application suite validates the installation authenticity before starting.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_25_10]</entry>
+              <entry>Feature</entry>
+              <entry>The installation application shall be usable for new installation, repairing and uninstallation.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_25_11]</entry>
+              <entry>Feature</entry>
+              <entry>Repairing and uninstallation shall be possible from Control Panel too.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_25_12]</entry>
+              <entry>Feature</entry>
+              <entry>Uninstallation shall completely remove the whle application suite.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_25_13]</entry>
+              <entry>Feature</entry>
+              <entry>Uninstallation process generates an uninstallation key which can be treated as a proof of that activity.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_25_14]</entry>
+              <entry>Feature</entry>
+              <entry>For evaluation copy, the licence key dictates the validation period</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_25_15]</entry>
+              <entry>Feature</entry>
+              <entry>Application suite stops working if the validation period is over</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_25_16]</entry>
+              <entry>Feature</entry>
+              <entry>It shall be possible to extend the validation period with another suitable license key</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_25_17]</entry>
+              <entry>Design</entry>
+              <entry>All keys (activation, license, uninstallation) shall not be comprehensible by normal means.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_25_18]</entry>
+              <entry>Design</entry>
+              <entry>Validation period shall not be extendable by end user by means other than a suitable license key.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></p>
+  </body>
+</topic>

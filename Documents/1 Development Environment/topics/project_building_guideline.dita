@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="project_building_guideline" xml:lang="en-us">
+  <title>Project building guideline</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>BUSMASTER project consists of a multitude of sub-projects of various types namely, dynamic link libraries (Win32 DLL, regular DLL using MFC and MFC extension DLL), static link libraries, out-of-proc servers and executables. For obvious reason there are dependencies. For example the static link libraries are the helper libraries employed by all the other modules / components. That&apos;s why all the project dependencies must be suitably defined. The following two guidelines must be strictly adhered to throughout the development process:</p>
+    <ul>
+      <li>Ensure every individual sub-project is buildable from a clean state (which means no relevant object files are available prior to the building process)</li>
+      <li>The above must hold for both debug and release modes</li>
+    </ul>
+  </body>
+</topic>

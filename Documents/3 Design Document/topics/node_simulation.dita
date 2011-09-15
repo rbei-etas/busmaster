@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="node_simulation" xml:lang="en-us">
+  <title>Node Simulation</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>Design description of node simulation starts with a short prologue on a typical node ensemble and the role of BUSMASTER in the simulation.<image placement="break" href="../images/umls/node_simulation_1.png"/></p>
+    <p>The above diagram exemplifies a cluster of CAN nodes from user’s perspective and how BUSMASTER is going to simulate the chosen nodes.<image placement="break" href="../images/umls/node_simulation_2.png"/></p>
+    <p>Above is shown what it means from the developer’s perspective to simulate one or multiple nodes, from a closer view with the visibility of the bus controllers. Some controllers can simulate multiple nodes. In case it doesn’t BUSMASTER does it. Each node simulation is realised by a DLL running in the context of the application. Also, every node should be able to carry out certain bus specific operations (like frame transmission, connecting / disconnecting from the network etc) and hence a suitable API with required services must be available for the DLL. The services must best be rendered by the application.</p>
+    <p>Function editor module makes it possible to generate the DLL from a user-edited ‘C’ file. The below diagram shows the building process:<image placement="break" href="../images/umls/node_simulation_3.png"/></p>
+    <p>Please note that an object file is necessary for extracting the application’s API set for a particular bus.</p>
+    <p>For Function Editor the primary bus specific entities are application API set and database information. So it is possible to implement the function editor in a generic way and dynamically configure it by the respective bus specific client. The below diagram describes this process.<image placement="break" href="../images/umls/node_simulation_4.png"/></p>
+    <p>The execution model of node simulation is depicted below. It is the application that mobilises the activity with the reception of the handlers (message, error event etc).<image placement="break" href="../images/umls/node_simulation_5.png"/></p>
+    <image placement="break" href="../images/umls/node_simulation_6.png"/>
+    <image placement="break" href="../images/umls/node_simulation_7.png"/>
+  </body>
+</topic>

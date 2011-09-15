@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="simulation_engine_stub_component" xml:lang="en-us">
+  <title>Simulation Engine (Stub) component</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>Simulation engine realizes a virtual bus in the workstation making it possible for any instance of the application to act as a node and communicate via this communication channel. By design this should be able to simulate any bus from the viewpoint of data frame. Also, the same instance of server can cater to any number of buses with any number of nodes simultaneously.</p>
+    <p>Below diagram presents the usage of the simulation engine component.<image placement="break" href="../images/umls/virtual_automotive_bus.png"/></p>
+    <p>This clearly shows that any DIL can employ the service of the same simulation engine process at any time.</p>
+    <p>Tagged requirements:</p>
+    <ul>
+      <li>A bus communication channel will be simulated in the system [RS_05_01].</li>
+      <li>Each instance of BUSMASTER shall act as a node on the bus [RS_05_02].</li>
+      <li>When a node is connected to the bus, it will be able to send / receive messages [RS_05_03]. Else it won’t be [RS_05_04].</li>
+      <li>Communication takes place when there are multiple nodes connected [RS_05_05]. In other words it must be a multi-node cluster connected to the bus.</li>
+      <li>When a node sends a message, all of the other nodes except the sender shall receive the message [RS_05_06].</li>
+      <li>While the communication is ON, for an assembly of 3 or more nodes, any node may get disconnected from the bus without causing any interruption / impact to the ongoing communication [RS_05_07]. For two nodes, only the communication will be OFF [RS_05_08].</li>
+      <li>While the communication is ON, any node may join the cluster without causing any interruption / impact to the ongoing communication [RS_05_09].</li>
+      <li>In order to facilitate the above two points (6 &amp; 7), simulation of the virtual communication channel shall be realized as a separate process [RS_05_10]. From now onwards this will be defined as simulation engine.</li>
+      <li>When the last node exits (on other words, the last client process exits), simulation engine process also exits [RS_05_11].</li>
+    </ul>
+  </body>
+</topic>

@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="external_interface_requirements" xml:lang="en-us">
+  <title>External Interface Requirements</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>There are two different kinds of CAN controllers being used:<ul>
+        <li>PCAN USB from Peak GmbH</li>
+        <li>ES 581.x from ETAS GmbH</li>
+      </ul></p>
+    <p>Additionally, a general hardware abstraction named as BOA (Basic Open Architecture) from ETAS GmbH is supported. This makes it possible to support numerous other controllers which BOA presently supports.</p>
+    <p>In all cases the device driver shall be procured from the vendor.</p>
+  </body>
+</topic>

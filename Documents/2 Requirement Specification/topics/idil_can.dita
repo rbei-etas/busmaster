@@ -1,0 +1,220 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="idil_can" xml:lang="en-us">
+  <title>IDIL_CAN</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <table>
+      <tgroup cols="6">
+        <thead>
+          <row>
+            <entry>Tag</entry>
+            <entry>Name &amp; Prototype</entry>
+            <entry>Functionality</entry>
+            <entry>Parameter Details</entry>
+            <entry>Return value</entry>
+            <entry>Remarks</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>RSI_14_001</entry>
+            <entry>DWORD DILC_GetDILList(bool bAvailable, DILLIST* List)</entry>
+            <entry>Based on the parameter this function renders number of the driver interface layers supported or available.</entry>
+            <entry>bAvailable – Set as true to get list of DIL implemented; else list of DIL supported by the existing licence will be returned. List – Buffer where the result is written. If it is NULL, only number of DIL is returned. </entry>
+            <entry>Number of DIL.</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>RSI_14_002</entry>
+            <entry>HRESULT DILC_SelectDriver(DWORD dwDriverID, HWND hWndParent, Base_WrapperErrorLogger* pILog)</entry>
+            <entry>Selects a driver abstraction layer (DAL).</entry>
+            <entry>dwDriverID - The driver abstraction layer id. Possible values are - 1. DRIVER_CAN_STUB, 2. DRIVER_CAN_PEAK_USB, 3. DRIVER_CAN_PEAK_PP, 4. DRIVER_CAN_ETAS_ES581 and 5. DRIVER_CAN_BOA. hWndParent - Window handle if the client application is a GUI application. pILog - Error logging interface. </entry>
+            <entry>If support for the intended one isn&apos;t allowed with the present license, this returns NO_LICENSE. Else returns S_OK</entry>
+            <entry>Annotation of the ids: 1. Simulation engine without the hardware, 2. PEAK-CAN USB hardware, 3. PEAK-CAN Parallel Port Interface, 4. ETAS ES581 USB hardware and 5. ETAS BOA Framework </entry>
+          </row>
+          <row>
+            <entry>RSI_14_003</entry>
+            <entry>HRESULT DILC_RegisterClient(BOOL bRegister, DWORD&amp; ClientID, TCHAR* pacClientName)</entry>
+            <entry>Registers / unregisters a client. This is necessary to simulate a node and to receive messages. Only registered client&apos;s buffer will be updated on receive of a msg in the bus.</entry>
+            <entry>bRegister - TRUE to register, else FALSE. ClientID - Unique client id rendered by the function. pacClientName - Client node name.</entry>
+            <entry>1. ERR_CLIENT_ EXISTS, 2. ERR_ NO_CLIENT_EXIST &amp; 3. ERR_NO_ MORE_CLIENT_ALLOWED</entry>
+            <entry>Explanation: 1. Client already registered, 2. No such client with this id exists. 3. No more clients is allowed to register.</entry>
+          </row>
+          <row>
+            <entry>RSI_14_004</entry>
+            <entry>HRESULT DILC_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)</entry>
+            <entry>Manages the target client buffer list. Call this function to open a data channel to receive messages.</entry>
+            <entry>bAction - When MSGBUF_ADD, adds pBufObj to the target message buffer list. Removes when MSGBUF_CLEAR. ClientID - Client ID pBufObj - Interface to message buffer object. </entry>
+            <entry>S_OK if successful, else S_FALSE.</entry>
+            <entry>At present maximum number of entries in the list is kept as 8.</entry>
+          </row>
+          <row>
+            <entry>RSI_14_005</entry>
+            <entry>DWORD DILC_GetSelectedDriver(void)</entry>
+            <entry>This returns ID of the driver interface layer presently selected.</entry>
+            <entry>-</entry>
+            <entry>ID of DIL</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>RSI_14_006</entry>
+            <entry>HRESULT DILC_PerformInitOperations(void)</entry>
+            <entry>Performs initialisation operations.</entry>
+            <entry>-</entry>
+            <entry>S_OK if successful, else S_FALSE.</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>RSI_14_007</entry>
+            <entry>HRESULT DILC_PerformClosureOperations(void)</entry>
+            <entry>Performs uninitialisation operations.</entry>
+            <entry>-</entry>
+            <entry>S_OK if successful, else S_FALSE.</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>RSI_14_008</entry>
+            <entry>HRESULT DILC_GetTimeModeMapping(SYSTEMTIME&amp; CurrSysTime, UINT64&amp; TimeStamp)</entry>
+            <entry>Call this function to get a system time and the time stamp associated with it.</entry>
+            <entry>CurrSysTime – A system time TimeStamp – The time stamp associated with CurrSysTime.</entry>
+            <entry>S_OK if successful, else S_FALSE.</entry>
+            <entry>Call this function after starting the hardware.</entry>
+          </row>
+          <row>
+            <entry>RSI_14_009</entry>
+            <entry>HRESULT DILC_ListHwInterfaces(INTERFACE_HW_LIST&amp; sSelHwInterface, INT&amp; nCount)</entry>
+            <entry>This function lists the hardware interfaces available and receive user&apos;s choice.</entry>
+            <entry>sSelHwInterface – Object to receive user’s choice. nCount - Number of hardware interfaces available.</entry>
+            <entry>S_OK if chosen an interface, else HW_INTERFACE_NO_SEL</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>RSI_14_010</entry>
+            <entry>HRESULT DILC_SelectHwInterfaces(const INTERFACE_HW_LIST&amp; sSelHwInterface)</entry>
+            <entry>Call this function to select a particular hardware interface.</entry>
+            <entry>sCurrHwInterface – Information on the hardware interface to be selected.</entry>
+            <entry>S_OK, NO_HW_ INTERFACE, ERR _LOAD_HW_INTERFACE</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>RSI_14_011</entry>
+            <entry>HRESULT DILC_DeselectHwInterfaces(void)</entry>
+            <entry>Call this function to deselect the selected hardware interface.</entry>
+            <entry>-</entry>
+            <entry>S_OK if successful, else S_FALSE.</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>RSI_14_012</entry>
+            <entry>HRESULT DILC_DisplayConfigDlg(PCHAR&amp; InitData, int&amp; Length)</entry>
+            <entry>Displays configuration dialog box for the selected DIL. If the dialog box needs to be displayed with initialisation, pass the relevant data as InitData. If it is null, the dialog box is uninitialised. This also contains the user&apos;s choice as OUT parameter.</entry>
+            <entry>InitData – Dialog initialisation data as [in] parameter. If this is null, the dialog appears uninitialized. This also contains the user’s choice as [out] parameter. Length – Data byte length of InitData.</entry>
+            <entry>S_OK, CONTROLLER_NO_CONFIG, ERROR_OTHER</entry>
+            <entry>Afterwards, the caller must release the memory. Return value of ERROR_OTHER indicates controller specific error. Error details (string) may be retrieved by calling GetLastErrorString(…)</entry>
+          </row>
+          <row>
+            <entry>RSI_14_013</entry>
+            <entry>HRESULT DILC_SetConfigData(PCHAR pInitData, int Length)</entry>
+            <entry>To set the configuration data for the currently selected DIL. Caller must release the memory.</entry>
+            <entry>pInitData – Configuration data stream. Length – Data stream length. </entry>
+            <entry/>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>RSI_14_014</entry>
+            <entry>HRESULT DILC_StartHardware(void)</entry>
+            <entry>Starts the controller</entry>
+            <entry>-</entry>
+            <entry/>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>RSI_14_015</entry>
+            <entry>HRESULT DILC_StopHardware(void)</entry>
+            <entry>Stops the controller</entry>
+            <entry>-</entry>
+            <entry/>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>RSI_14_016</entry>
+            <entry>HRESULT DILC_ResetHardware(void)</entry>
+            <entry>Resets the controller</entry>
+            <entry>-</entry>
+            <entry/>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>RSI_14_017</entry>
+            <entry>HRESULT DILC_SendMsg(DWORD dwClientID, const STCAN_MSG&amp; sCANTxMsg)</entry>
+            <entry>To transmit a message</entry>
+            <entry>sCANTxMsg - The CAN message to be transmitted.</entry>
+            <entry>S_OK if successful, else S_FALSE.</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>RSI_14_018</entry>
+            <entry>HRESULT DILC_GetVersionInfo(VERSIONINFO&amp; sVerInfo)</entry>
+            <entry>Getter for the CAN DIL version information.</entry>
+            <entry>sVerInfo - Structure to receive the information.</entry>
+            <entry>do</entry>
+            <entry>Version info on DIL, controller and driver.</entry>
+          </row>
+          <row>
+            <entry>RSI_14_019</entry>
+            <entry>void GetLastErrorString ([out] char acErrorStr[], [in] int nLength)</entry>
+            <entry>Call to get descriptive string of the last error occurred.</entry>
+            <entry>acErrorStr – Receiver of the error string. nlength – Capacity of the string.</entry>
+            <entry>-</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>RSI_14_020</entry>
+            <entry>HRESULT DILC_FilterFrames(FILTER_TYPE FilterType, ECHANNEL Channel, UINT* punMsgIDs, UINT nLength)</entry>
+            <entry>Call to set PASS / STOP filter</entry>
+            <entry>FilterType - PASS_FILTER, STOP_FILTER. Channel - Channel number punMsgIDs - Array of Msg IDs to be filtered. nLength - Array size</entry>
+            <entry>S_OK if successful, ERR_INVALID_CHANNEL for invalid channel, ERR_DRIVER_NO_SUPPORT incase driver doesn&apos;t support HW filtering, else S_FALSE for failure.</entry>
+            <entry>If this function is called, DIL removes existing filters and new filters willl be added.</entry>
+          </row>
+          <row>
+            <entry>RSI_14_021</entry>
+            <entry>HRESULT DILC_GetCntrlStatus(const HANDLE&amp; hEvent, UINT&amp; unCntrlStatus)</entry>
+            <entry>To get controller status. Caller has to pass the handle of an event which will be set whenever the controller changes the state.</entry>
+            <entry>hEvent - The client thread should wait for this event to get controller status notification. unCntrlStatus -</entry>
+            <entry>S_OK if successful, else S_FALSE.</entry>
+            <entry>Values of unCntrlStatus are: 1. CONTROLLER_ACTIVE, 2. CONTROLLER_PASSIVE, 3. CONTROLLER_BUSOFF</entry>
+          </row>
+          <row>
+            <entry>RSI_14_022</entry>
+            <entry>HRESULT DILC_GetControllerParams(LONG&amp; lParam, UINT nChannel, ECONTR_PARAM eContrParam)</entry>
+            <entry>Call to get Controller parameters. Value will be returned stored in lParam.</entry>
+            <entry>lParam - Out param. Result will be stored in this variable. nChannel - Channel number. eContrParam - Possible inputs are<ol>
+                <li>NUMBER_HW,</li>
+                <li>NUMBER_CONNECTED_HW,</li>
+                <li>DRIVER_STATUS,</li>
+                <li>HW_MODE,</li>
+                <li>CON_TEST.</li>
+              </ol></entry>
+            <entry>S_OK if successful, ERR_INVALID_CHANNEL for invalid channel, S_FALSE for failure. </entry>
+            <entry>Values of lParam: 1. If eContrParam == HW_MODE a. defMODE_ACTIVE b. defMODE_PASSIVE c. defMODE_SIMULATE </entry>
+          </row>
+          <row>
+            <entry>RSI_14_023</entry>
+            <entry>HRESULT DILC_GetErrorCount(SERROR_CNT&amp; sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam)</entry>
+            <entry>Call to Get Error Counts &amp; Peak Error Counts. </entry>
+            <entry>sErrorCnt - Out param. Structure to store the Tx/Rx error counter. nChannel - Channel number. eContrParam - PEAK_ERR_CNT, ERR_CNT. </entry>
+            <entry>S_OK if successful, ERR_INVALID_CHANNEL for invalid channel, S_FALSE for failure. </entry>
+            <entry>-</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </body>
+</topic>

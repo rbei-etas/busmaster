@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="simulation_engine" xml:lang="en-us">
+  <title>Simulation Engine</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>
+We start with a brief recapitulation on the overview of simulation engine.</p>
+    <image placement="break" href="../images/umls/simulation_engine_1.png"/>
+    <p>Clearly, it a manifestation of inter process communication with an abstraction on the vehicle bus standard data type. Communication among various instances of the application takes place through an out-of-proc server named as SimENG. The server exposes an API set which a client may use to exploit its functionalities. The server keeps a list of all its clients. When a client calls “SendMessage”, the server adds this message entry into a circular buffer. The message entry saves id of the sender in a parameter of it. SimENG maintains a worker thread which gets activated when the circular buffer is non-empty. It then retrieves the current entry and runs through the client list. In case the present client is the sender, message status is kept as “Tx”, else the default setting is “Rx”. The thread pumps the current message entry into the pipe and signals an event which is an auto-reset one. A thread inside the client process must wait for that. The waiting thread inside the client process then retrieves the message from the pipe.</p>
+    <p>The following diagram shows the registration / unregistration activities of multiple clients in a macroscopic view.</p>
+    <image href="../images/umls/simulation_engine_2.png"/>
+    <p>The registration procedure is elaborated in details with the following diagram:</p>
+    <image placement="break" href="../images/umls/simulation_engine_3.png"/>
+    <p>The below diagrams describe the process of frame transmission and dispatching:</p>
+    <image placement="break" href="../images/umls/simulation_engine_4.png"/>
+    <image placement="break" href="../images/umls/simulation_engine_5.png"/>
+  </body>
+</topic>

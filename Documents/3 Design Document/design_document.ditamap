@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/map.dtd" []>
+<map>
+  <title>Design Document</title>
+  <topicmeta>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </topicmeta>
+  <topicref href="topics/license_information.dita" type="topic" toc="no"/>
+  <topicref href="topics/acknowledgement.dita" type="topic" toc="no"/>
+  <topicref href="topics/abbreviations.dita" type="topic" toc="no"/>
+  <topicref href="topics/introduction.dita" type="topic"/>
+  <topicref href="topics/design_scope.dita" type="topic"/>
+  <topicref href="topics/design_methodology.dita" type="topic"/>
+  <topicref href="topics/design_notations.dita" type="topic"/>
+  <topicref href="topics/design_considerations.dita" type="topic"/>
+  <topicref href="topics/design_overview.dita" type="topic"/>
+  <topicref href="topics/architecture_design.dita" type="topic">
+    <topicref href="topics/dil_interface.dita" type="topic"/>
+    <topicref href="topics/idil_can.dita" type="topic">
+      <topicref href="topics/dil_es581.dita" type="topic"/>
+      <topicref href="topics/dil_boa.dita" type="topic"/>
+      <topicref href="topics/dil_stub_can.dita" type="topic"/>
+    </topicref>
+    <topicref href="topics/configdialogdil.dita" type="topic"/>
+    <topicref href="topics/bus_statistics.dita" type="topic"/>
+    <topicref href="topics/simulation_engine.dita" type="topic"/>
+    <topicref href="topics/project_configuration.dita" type="topic"/>
+    <topicref href="topics/logger.dita" type="topic"/>
+    <topicref href="topics/message_window.dita" type="topic"/>
+    <topicref href="topics/filter.dita" type="topic"/>
+    <topicref href="topics/session_replay.dita" type="topic"/>
+    <topicref href="topics/node_simulation.dita" type="topic"/>
+    <topicref href="topics/frame_transmission.dita" type="topic"/>
+    <topicref href="topics/signal_watch_window.dita" type="topic"/>
+    <topicref href="topics/test_automation.dita" type="topic">
+      <topicref href="topics/test_setup_editor_lib_module.dita" type="topic"/>
+      <topicref href="topics/test_suite_editor_and_executor_lib_ta.dita" type="topic"/>
+      <topicref href="topics/test_setup_editor.dita" type="topic"/>
+    </topicref>
+    <topicref href="topics/automation_server_interface.dita" type="topic"/>
+  </topicref>
+  <topicref href="topics/interface_design.dita" type="topic">
+    <topicref href="topics/user_interface.dita" type="topic"/>
+    <topicref href="topics/component_interface.dita" type="topic">
+      <topicref href="topics/test_suite_editor_and_executor_lib_ci.dita" type="topic"/>
+    </topicref>
+  </topicref>
+  <topicref href="topics/design_alternatives.dita" type="topic"/>
+  <topicref href="topics/design_feasibility.dita" type="topic"/>
+  <topicref href="topics/design_tools_used.dita" type="topic"/>
+  <topicref href="topics/additional_hardware_and_software_required.dita" type="topic"/>
+  <topicref href="topics/testing_strategy.dita" type="topic"/>
+  <topicref href="topics/references.dita" type="topic"/>
+</map>

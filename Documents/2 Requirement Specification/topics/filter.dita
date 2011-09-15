@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="filter" xml:lang="en-us">
+  <title>Filter</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>This feature aims at reducing the runtime load on the application and also to higher efficiency by extracting from the channel only those frames identified as relevant by the user. A filter defines a condition by which a set of one or multiple frames can be identified so that a blocking mechanism is applied on that set or on the absolute complement of it. In the former one the usage is called stop (blocks the identified frames) whereas in the later one the filter usage is the pass usage (blocks every frame except those in the filter).</p>
+    <p>As an identification condition can be a combination of individual identification conditions, a filter also follows suit with the priority being on the blocked set.</p>
+    <p>A filter, from the implementation perspective, realizes a set of frames. We denote a filter as F and the set A. We also denote FA to be the function which performs the filtering action. Let the parameterized usage be FA (&lt;Bus Data&gt;, &lt;Filter&gt;, &lt;Usage&gt;). The two use cases shall be the following:</p>
+    <p>FA (&lt;Bus Data&gt;, F1, Pass) = A1; Outcome is the set of available frames</p>
+    <p>And,</p>
+    <p>FA (&lt;Bus Data&gt;, F1, Stop) = A1C; Outcome is the set of available frames</p>
+    <p>Assume two filters F1 and F2, and the associated sets A1 and A2. Hence, the final outcome of F1 and F2 on a bus data set shall be equal to</p>
+    <p>FA (&lt;Bus Data&gt;, F1, &lt;Usage&gt;) ∩ FA (&lt;Bus Data&gt;, F2, &lt;Usage&gt;)</p>
+    <p>Filtering can take place from two levels:<ul>
+        <li>Hardware level: This is the most efficient type of filtering as the controller blocks the unwanted frames thereby taking off unnecessary load from the application. Prerequisite is that the controller must support filtering feature.</li>
+        <li>Software level: This is not as efficient as the previous type of filtering, but this has guaranteed availability and no dependency on third party.</li>
+      </ul></p>
+  </body>
+</topic>

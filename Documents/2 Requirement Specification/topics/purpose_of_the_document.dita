@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="purpose_of_the_document" xml:lang="en-us">
+  <title>Purpose of the document</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>This document combines purposes of both RS and RA. The former one focuses on understanding and stating the requirements of the BUSMASTER suite whereas the later one comments on the analysis in different aspects, especially from the 4+1 view architecture, and feedbacks towards possible modification of the former. Emphasis is given on the motivation behind each of the modules. The RS is covered from different functionality viewpoints.</p>
+  </body>
+</topic>

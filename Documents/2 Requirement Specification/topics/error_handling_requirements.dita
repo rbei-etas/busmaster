@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="error_handling_requirements" xml:lang="en-us">
+  <title>Error handling requirements</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>Error handling in code:<ol>
+        <li>A library (or lower level module / component) does not render any user notification. This is the sole responsibility of the UI. Rather this indicates the error by the return value of the API function.</li>
+        <li>The return value of an interface function is of type HRESULT. The following Microsoft-specified convention for error codes is followed:<table>
+            <tgroup cols="6">
+              <thead>
+                <row>
+                  <entry>Bits</entry>
+                  <entry>31-30</entry>
+                  <entry>29</entry>
+                  <entry>28</entry>
+                  <entry>27-16</entry>
+                  <entry>15-0</entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry>Contents</entry>
+                  <entry>Severity</entry>
+                  <entry>Microsoft/customer</entry>
+                  <entry>Reserved</entry>
+                  <entry>Facility code</entry>
+                  <entry>Exception code</entry>
+                </row>
+                <row>
+                  <entry>Meaning</entry>
+                  <entry>
+                    <p>0 = Success</p>
+                    <p>1 = Informational</p>
+                    <p>2 = Warning</p>
+                    <p>3 = Error</p>
+                  </entry>
+                  <entry>
+                    <p>0 = Microsoft-defined code</p>
+                    <p>1 = Customer-defined code</p>
+                  </entry>
+                  <entry>Must be 0 </entry>
+                  <entry>Microsoft-defined</entry>
+                  <entry>Microsoft/customer-defined</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table><p>Following this specification, the 29th bit is always kept as 1. The 6th and 7th nibble are used to denote the module.</p></li>
+      </ol></p>
+    <p>Execution time error handling:</p>
+    <p>One aspect of this is reporting of the error messages by logging. For a suitable (i.e., which is grave enough and needs suitable debugging information) erroneous condition, the message containing the file name and line number of the code shall be logged in a text file. The error message text, combined with the other two information provides a good amount of clues to identify the root cause of the erroneous condition. The log file shall be generated only when such an erroneous situation does occur. The log file shall be generated in the working directory of the application under a generated directory named as “log”.</p>
+    <p>The logging module shall be an out-of-proc server named as “ErrorLogger.exe”. This, being of this architecture, entitles complete logging even if unexpected crash in the application happens.</p>
+    <p>The most beneficial aspect of such a logging is that in case of a customer reported problem, the debugging information can also accompany the report. This means lesser time is required for analysis and reproducing of the test case at developer’s workplace.</p>
+  </body>
+</topic>

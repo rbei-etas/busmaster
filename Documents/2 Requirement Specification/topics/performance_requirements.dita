@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="performance_requirements" xml:lang="en-us">
+  <title>Performance Requirements</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>This aspect aims at achieving full resilience and integrity for the suite. In other words - to ensure optimized performance at any data rate. This can be illustrated through the following prime statements:<ul>
+        <li>Application can not ensure no-loss of data. Data overrun is inevitable under a number of easily realizable circumstances. Making the system slow enough by executing simultaneously sufficient number of processes, using inefficient driver and hardware, using all the features of the application at a time while the data rate is very high – are a few examples. </li>
+        <li>The suite shall ensure an optimized way of processing the data streaming from the driver in addition to minimize the possibility of losing frame data [RS_11_01]. Optimization means employment of minimum resources (memory, processor time slice and user’s time) to carry out a task. In doing so, the often encountered problem of trade-off between memory and speed shall also be taken into account [RS_11_02].</li>
+      </ul><ul>
+        <li>The application shall ensure that detailed information (number of frames lost) of any data overrun event is available to the user at any moment [RS_11_03].</li>
+      </ul><ul>
+        <li>It shall be possible for the user to dynamically enable / disable the available features / functionalities [RS_11_04]. This will provide the user a better control over the application functionalities and thereby efficient usage of this suite. In case the user is more interested in the message data for offline analysis when the bus is at peak load, only logging can be enabled with other functionalities like updating of message window, signal graph window been disabled. At bus peak load this strategy will minimize the possibility of data loss.</li>
+      </ul><ul>
+        <li>Disabling a feature means that currently no resource be employed for this feature [RS_11_05]. For example – if display feature is deactivated, not even background tasks like frame data updating (or formatting) should take place.</li>
+      </ul><ul>
+        <li>It has been found out by empirical means that usage of a temporary data storage buffer reduces the possibility of data loss to the maximum extent. Subject to the expected maximum throughput, its storage size shall be made configurable by the user [RS_11_06]. By default the tool shall make an optimal choice based on certain other factors or valid assumptions [RS_11_07].</li>
+      </ul></p>
+  </body>
+</topic>

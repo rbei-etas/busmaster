@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="signal_watch_window" xml:lang="en-us">
+  <title>Signal Watch Window</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>The modus operandi of this component, like other modules viz. bus statistics, message window etc, centres around the already defined concept of abstract data channelling. The only addendum is usage of the loaded message database which is part and parcel of the usage of signal watch window. In fact, without any associated message database, usage of this module bears no significance. So, configuration is an absolute prerequisite.</p>
+    <p>Signal Watch Window operations covering both the configuration and signal watching activities are explained with the following component diagram with necessary annotations.<image placement="break" href="../images/umls/signal_watch_window_1.png"/></p>
+    <p>The below sequence diagram shows the initialisation and the signal watch operation sequence details.<image placement="break" href="../images/umls/signal_watch_window_2.png"/></p>
+  </body>
+</topic>

@@ -1,0 +1,203 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="design_scope" xml:lang="en-us">
+  <title>Design Scope </title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>The modules mostly have a one-to-one mapping with the feature set the application suite. The feature list against the implementing modules is tabulated below:<table>
+        <tgroup cols="4">
+          <thead>
+            <row>
+              <entry>SI. No.</entry>
+              <entry>Feature Name</entry>
+              <entry>Module Name</entry>
+              <entry>Remark</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>1</entry>
+              <entry>Project configuration saving and retrieval</entry>
+              <entry>ProjectConfiguration.dll</entry>
+              <entry>Used to store project configuration data in a binary file which also can accommodate multiple project information. If necessary, ODBC support can also be brought in; this is supported by its design.</entry>
+            </row>
+            <row>
+              <entry>2</entry>
+              <entry>Interface for a DIL of a bus</entry>
+              <entry>DIL_Interface.dll</entry>
+              <entry>DIL stands for Driver Interface Layer and is the interface to the bus. This abstracts out the driver details from the application thereby bringing in loose coupling. When the query for a particular bus interface from the client component to DIL_Interface.dll is successful, this library renders the appropriate interface.</entry>
+            </row>
+            <row>
+              <entry>3</entry>
+              <entry>CAN DIL ES581</entry>
+              <entry>CAN_ETAS_ES581.dll</entry>
+              <entry>CAN DIL interface to ES581.x controller from ETAS GmbH</entry>
+            </row>
+            <row>
+              <entry>4</entry>
+              <entry>CAN DIL PEAK USB</entry>
+              <entry>CAN_PEAK_USB.dll</entry>
+              <entry>CAN DIL interface to PCAN controller from Peak GmbH</entry>
+            </row>
+            <row>
+              <entry>5</entry>
+              <entry>CAN DIL BOA</entry>
+              <entry>CAN_BOA.dll</entry>
+              <entry>Interface to BOA from ETAS which is an abstraction to its CAN hardware interfaces. This completely decouples the client application from the underlying hardware.</entry>
+            </row>
+            <row>
+              <entry>6</entry>
+              <entry>CAN controller configuration</entry>
+              <entry>ConfigDialogsDIL.dll</entry>
+              <entry>Implements the controller configuration GUI. This makes it possible for CANvas application to completely get decoupled from the underlying hardware support. Addition of a new hardware / controller for a bus means a updating in DIL_&lt;bus&gt;.dll, ConfigDialogs.dll and introduction of &lt;bus&gt;_&lt;new controller&gt;.dll. Commercial feature related files &amp; routines will be taken off.</entry>
+            </row>
+            <row>
+              <entry>7</entry>
+              <entry>CAN bus simulation</entry>
+              <entry>CAN_STUB.dll &amp; BusEmulation.exe</entry>
+              <entry>The first one is CAN DIL interface to simulation engine. Second one is also known as simulation engine; this realizes a virtual bus in the workstation making it possible for any instance of CANvas to act as a node and communicate via this communication channel. By design this should be able to simulate any bus hitherto known and unknown. Also, the same instance of server can cater to any number of buses with any number of nodes simultaneously.</entry>
+            </row>
+            <row>
+              <entry>8</entry>
+              <entry>Filtering</entry>
+              <entry>Filter.dll</entry>
+              <entry>Implements filtering configuration dialogues. Both a composite aggregate and generic. Commercial feature related files &amp; routines will be taken off.</entry>
+            </row>
+            <row>
+              <entry>9</entry>
+              <entry>Node programming and simulation for CAN</entry>
+              <entry>NodeSimEx.dll</entry>
+              <entry>Realizes greater part of the node programming features. Accommodates both function editor and node executor modules. Function editor is generic and is configurable by its client on the fly to cater to various bus interface characteristics. Node executor - on the other hand contains individual bus specific slim sub-modules with majority of common modules / classes.</entry>
+            </row>
+            <row>
+              <entry>10</entry>
+              <entry>Logging of frame data</entry>
+              <entry>FrameProcessor.dll</entry>
+              <entry>Is utilized to log messages. When queried, this provides interface to various sub modules specific to individual buses. Since logging procedure is same for any bus, save the protocol specific frame information, the classes all descend from a common class and employs common worker thread function. This results in saving a lot of implementation and testing effort. For example - adding J1939 support took 3.5 days of effort instead of the usual 2.5 weeks of effort, thereby saving 72%.</entry>
+            </row>
+            <row>
+              <entry>11</entry>
+              <entry>Play back a session</entry>
+              <entry>Replay.dll</entry>
+              <entry>Implements the replay module, covering both configuration and operation aspects. Tested so far only for CAN.</entry>
+            </row>
+            <row>
+              <entry>12</entry>
+              <entry>Signal watch - CAN</entry>
+              <entry>SignalWatch.dll</entry>
+              <entry>Implements signal watch windows. Dynamically configurable for any bus.</entry>
+            </row>
+            <row>
+              <entry>13</entry>
+              <entry>CAN Frame transmission - both in mono shot and cyclic modes</entry>
+              <entry>TxWindow.dll</entry>
+              <entry>Implements message transmission configuration UIs and helper modules. Implemented so far for CAN.</entry>
+            </row>
+            <row>
+              <entry>14</entry>
+              <entry>Signal graph</entry>
+              <entry>SigGrphWnd.dll &amp; CGCtrl.ocx</entry>
+              <entry>
+                <ol>
+                  <li>Responsible for managing the signal value display in the signal graph activeX control. Configurable for any bus and so the bus-specific routines are responsibilities of the client module.</li>
+                  <li>This is the signal graph control where selected signal values are displayed as continuous line diagrams.</li>
+                </ol>
+              </entry>
+            </row>
+            <row>
+              <entry>15</entry>
+              <entry>CAN message window</entry>
+              <entry>PSDI_CAN.dll</entry>
+              <entry>A helper module for CAN message window containing all the bus specific associated routines.</entry>
+            </row>
+            <row>
+              <entry>16</entry>
+              <entry>Test Automation</entry>
+              <entry>TestSetupEditorGUI.dll, TestSetupEditorLib.lib, TestSuiteExecutorGUI.dll &amp; TestSuiteExecutorGUI.lib</entry>
+              <entry>
+                <ol>
+                  <li>This is the editor of a test setup file.</li>
+                  <li>This is the helper library exclusively for test setup editor</li>
+                  <li>This defines a test suite, executes the same and saves the result in the desired format. </li>
+                </ol>
+              </entry>
+            </row>
+            <row>
+              <entry>17</entry>
+              <entry>Database editor</entry>
+              <entry>CANvas.exe</entry>
+              <entry>CANvas application. Full decoupling is not yet fully achieved; this contains some generic classes, modules as well. Commercial feature related files &amp; routines will be taken off.</entry>
+            </row>
+            <row>
+              <entry>18</entry>
+              <entry>Bus statistics</entry>
+              <entry>CANvas.exe</entry>
+              <entry>Same as above</entry>
+            </row>
+            <row>
+              <entry>19</entry>
+              <entry>Automation server interface</entry>
+              <entry>CANvas.exe</entry>
+              <entry>Same as above</entry>
+            </row>
+            <row>
+              <entry>20</entry>
+              <entry>Log file export</entry>
+              <entry>CANvas.exe</entry>
+              <entry>Same as above</entry>
+            </row>
+            <row>
+              <entry>21</entry>
+              <entry>Trace window</entry>
+              <entry>CANvas.exe</entry>
+              <entry>Same as above</entry>
+            </row>
+            <row>
+              <entry>22</entry>
+              <entry>Main GUI and controller &amp; configuration for other modules</entry>
+              <entry>CANvas.exe</entry>
+              <entry>Same as above</entry>
+            </row>
+            <row>
+              <entry>23</entry>
+              <entry>Helper libraries (not feature)</entry>
+              <entry>DataType.lib</entry>
+              <entry>Implements the data types / structures that are widely utilised by any module / component of CANvas tool family. This was created with the idea to solve the greater part of the problem at hand by properly defining the data type. Commercial feature related files &amp; routines will be taken off.</entry>
+            </row>
+            <row>
+              <entry>24</entry>
+              <entry>Helper libraries (not feature)</entry>
+              <entry>Utils.lib</entry>
+              <entry>Contains some utility services, both GUI and non-GUI, commonly soughted after by any module / component of CANvas tool family. Commercial feature related files &amp; routines will be taken off.</entry>
+            </row>
+            <row>
+              <entry>25</entry>
+              <entry>Helper libraries (not feature)</entry>
+              <entry>CommonClass.lib</entry>
+              <entry>Implements some utility classes commonly used. Commercial feature related files &amp; routines will be taken off.</entry>
+            </row>
+            <row>
+              <entry>26</entry>
+              <entry>Wave pattern generator</entry>
+              <entry>SignalGeneration.dll, CANvas.exe </entry>
+              <entry>This generates signals with values matching certain regular wave patterns like sinusoidal, triangular, spike etc. For CAN the first two has been implemented.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></p>
+    <p>This design document addresses all the required different design aspects namely:<ol>
+        <li>Component diagram</li>
+        <li>State machine diagram</li>
+        <li>Sequence diagram</li>
+        <li>Class diagram</li>
+        <li>Deployment diagram </li>
+      </ol></p>
+    <p>So for every module the applicable design will be discussed on.</p>
+  </body>
+</topic>

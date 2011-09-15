@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="tagging" xml:lang="en-us">
+  <title>Tagging</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>Tagging follows the below convention:</p>
+    <p>RS_&lt;module number&gt;_&lt;incremental number of RS for this module&gt;</p>
+    <p>All the module names and the number assigned to each of them are tabulated below:</p>
+    <table>
+      <tgroup cols="2">
+        <thead>
+          <row>
+            <entry>Module name</entry>
+            <entry>Module No.</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>Error Logger</entry>
+            <entry>1</entry>
+          </row>
+          <row>
+            <entry>License Validating Module</entry>
+            <entry>2</entry>
+          </row>
+          <row>
+            <entry>Utility library</entry>
+            <entry>3</entry>
+          </row>
+          <row>
+            <entry>DataType library</entry>
+            <entry>4</entry>
+          </row>
+          <row>
+            <entry>SimulationENG</entry>
+            <entry>5</entry>
+          </row>
+          <row>
+            <entry>Project Configuration</entry>
+            <entry>6</entry>
+          </row>
+          <row>
+            <entry>DIL_FlexRay</entry>
+            <entry>7</entry>
+          </row>
+          <row>
+            <entry>Main UI (Control unit)</entry>
+            <entry>8 </entry>
+          </row>
+          <row>
+            <entry>ConfigDialogsDIL</entry>
+            <entry>9</entry>
+          </row>
+          <row>
+            <entry>Fibex Editor</entry>
+            <entry>10</entry>
+          </row>
+          <row>
+            <entry>Resilience (aspect)</entry>
+            <entry>11</entry>
+          </row>
+          <row>
+            <entry>Frame Logger</entry>
+            <entry>12</entry>
+          </row>
+          <row>
+            <entry>Node Simulation</entry>
+            <entry>13</entry>
+          </row>
+          <row>
+            <entry>DIL_CAN</entry>
+            <entry>14</entry>
+          </row>
+          <row>
+            <entry>DIL_MCNet</entry>
+            <entry>15</entry>
+          </row>
+          <row>
+            <entry>Generic Message Window</entry>
+            <entry>16</entry>
+          </row>
+          <row>
+            <entry>Tx Window</entry>
+            <entry>17</entry>
+          </row>
+          <row>
+            <entry>Signal Watch Window</entry>
+            <entry>18</entry>
+          </row>
+          <row>
+            <entry>Replay Window</entry>
+            <entry>19</entry>
+          </row>
+          <row>
+            <entry>Filter</entry>
+            <entry>20</entry>
+          </row>
+          <row>
+            <entry>Common Class</entry>
+            <entry>21</entry>
+          </row>
+          <row>
+            <entry>Signal Graph</entry>
+            <entry>22</entry>
+          </row>
+          <row>
+            <entry>DIL_Interface</entry>
+            <entry>23</entry>
+          </row>
+          <row>
+            <entry>Bus Statistics</entry>
+            <entry>24</entry>
+          </row>
+          <row>
+            <entry>Installation</entry>
+            <entry>25</entry>
+          </row>
+          <row>
+            <entry>DIL_J1939</entry>
+            <entry>26</entry>
+          </row>
+          <row>
+            <entry>Test Automation</entry>
+            <entry>27</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </body>
+</topic>

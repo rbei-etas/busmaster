@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="dil_interface" xml:lang="en-us">
+  <title>DIL_Interface</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>This module acts as the interfacing entity between the application and the expected DIL for the intended bus. This is the deliverer or interface manager of the DIL interface required by the application or the client. The procedure starts with the client’s querying for the DIL and if it’s available, DIL_Interface returns the interface pointer (IDIL_&lt;Bus&gt;) to the client. To get hold of a controller interface or even the simulation engine, a query must be made using the interface pointer. The whole arrangement is presented by the below component diagram covering support of CAN, J1939 and FlexRay with the support of a few controllers:<image href="../images/umls/dil_interface_1.png" placement="break"/></p>
+    <p>The calling sequence of query is illustrated by the following sequence diagram:<image href="../images/umls/dil_interface_2.png" placement="break"/></p>
+  </body>
+</topic>

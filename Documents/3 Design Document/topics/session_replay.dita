@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="session_replay" xml:lang="en-us">
+  <title>Session Replay</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>For both the configuration and replay session running the trigger comes from the user. The replay client delegates the service requests to the replay module through its interface. A replay interface manager manages the interface functions and routes the calls appropriately to the replay manager which employs the appropriate sub-modules to carry out the desired tasks. Replay data processor entity accesses the input log file and loads its’ data to be treated as the working data set of the replay session. Non-interactive replay window object provides the fundamental replay functionalities such as ‘step’, ‘go’, ‘skip’ and accesses IDIL_&lt;BUS&gt; to exploit the frame transmission functionality of the later.<image placement="break" href="../images/umls/session_replay_1.png"/></p>
+    <p>As the feature set of interactive replay window object is a superset of the other replay window, the former accesses the later for its execution. Both the windows are passed the data contained in replay data processor object as the input data from the replay manager.</p>
+    <p>This is also depicted in the following sequence diagram.<image placement="break" href="../images/umls/session_replay_2.png"/></p>
+    <p>The concrete implementation takes place by a class arrangement described by the following class diagram.<image placement="break" href="../images/umls/session_replay_3.png"/></p>
+  </body>
+</topic>

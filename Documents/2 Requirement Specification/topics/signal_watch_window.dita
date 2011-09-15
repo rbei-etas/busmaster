@@ -1,0 +1,243 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="signal_watch_window" xml:lang="en-us">
+  <title>Signal Watch Window</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>In signal watch window the data are looked at a different perspective, having the focus rather on signals. Here the user identifies from the frame database a set of signals of choice. Upon confirmation, signal watch window monitors engineering and raw values of the chosen signal set. The different fields in the signal watch window are message / frame name, signal name, engineering / physical value and raw value.</p>
+    <p>Naturally this has two sub-modules namely, the configuration module and the executor.</p>
+    <p>Configuration - This is used to configure the signal watch activity. Naturally this consists of the following functionalities:<ol>
+        <li>Listing of the available frames</li>
+        <li>Listing of the signals for each frame</li>
+        <li>Selection of one or multiple or all the signals under a frame</li>
+        <li>Deselection of one or multiple or all the signals under a frame</li>
+        <li>Retrieval of the available and selected list data</li>
+        <li>Confirming the present selection</li>
+        <li>Setting the refresh rate of signal watch window </li>
+      </ol></p>
+    <p>Below is a schematic diagram of the configuration user interface. Clearly, this consists of the following sections in general:<ol>
+        <li>A master list of the frames</li>
+        <li>Available signals for all frames, shown for a selected frame at a time</li>
+        <li>Selected signal list for signal watching showing the container frame </li>
+      </ol></p>
+    <image href="../images/screenshots/signal_watch_list.png" placement="break"/>
+    <p>Watch Window - This is the module that actually does the monitoring of the selected signals. This consists of the following functionalities:<ol>
+        <li>Showing of the four different aspects of signal data which are the owner frame name, signal name, raw value and engineering value with unit</li>
+        <li>Updating the window with latest signal data</li>
+      </ol></p>
+    <p>The user interface diagram for the watch window is the following:<image href="../images/screenshots/signal_watch.png" placement="break"/>The title bar indicates the bus. This means for each bus supported, there shall be a watch window.</p>
+    <p>The detailed tagged requirements are given below:<table>
+        <tgroup cols="6">
+          <thead>
+            <row>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry>CAN</entry>
+              <entry>FlexRay</entry>
+              <entry>J1939</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry>18</entry>
+              <entry/>
+              <entry>Signal Watch Window</entry>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry/>
+              <entry>Definition</entry>
+              <entry>Signal watch window monitors a group of signals selected by the user. Monitoring takes place in terms of their raw and engineering values.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry>Configuration</entry>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry>[RS_18_01]</entry>
+              <entry>Feature</entry>
+              <entry>Signal watch configuration dialog box lists frames / messages from the loaded database (combo box / list box)</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_18_02]</entry>
+              <entry>Feature</entry>
+              <entry>There are two lists maintained - one for the available signals for a frame (available list) and the other one for the signals selected (selected list)</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_18_03]</entry>
+              <entry>Feature</entry>
+              <entry>There are four selection buttons maintained - &apos;Add&apos;, &apos;Add All&apos;, &apos;Delete&apos; and &quot;Delete All&apos;</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_18_04] - [RS_18_09]</entry>
+              <entry>Feature</entry>
+              <entry>Enable / disable status of the buttons:<ol>
+                  <li>At least one selected entry in available list - &apos;Add&apos; and &apos;Add All&apos; buttons enabled.</li>
+                  <li>At least one selected entry in selected list - &apos;Delete&apos; and &apos;Delete All&apos; buttons enabled.</li>
+                  <li>No entry in available list - &apos;Add&apos; and &apos;Add All&apos; buttons disabled.</li>
+                  <li>No entry in selected list - &apos;Delete&apos; and &apos;Delete All&apos; buttons disabled.</li>
+                  <li>At least one unselected entry in available list - &apos;Add All&apos; button enabled.</li>
+                  <li>At least one unselected entry in selected list - &apos;Delete All&apos; button enabled.</li>
+                </ol></entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_18_10]</entry>
+              <entry>Feature</entry>
+              <entry>Both the lists support multiple selection.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_18_11]</entry>
+              <entry>Feature</entry>
+              <entry>Add&apos; button moves the selected item(s) from the available list into the selected list</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_18_12]</entry>
+              <entry>Feature</entry>
+              <entry>Delete&apos; button moves the selected item(s) from the selected list into the available list</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_18_13]</entry>
+              <entry>Feature</entry>
+              <entry>Add All&apos; button moves all the entries into the selected list.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_18_14]</entry>
+              <entry>Feature</entry>
+              <entry>Delete All&apos; button moves all the entries into the available list.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_18_15]</entry>
+              <entry>Feature</entry>
+              <entry>Entry in selected list: &lt;Frame Name&gt;-&gt;&lt;Signal Name&gt;</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_18_16] - [RS_18_17]</entry>
+              <entry>Feature</entry>
+              <entry>Ok&apos; button confirms the selection whereas &apos;Cancel&apos; button causes no change of the current signal watch selection.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry>Signal watch activity</entry>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry>[RS_18_18]</entry>
+              <entry>Feature</entry>
+              <entry>Signal watch window title bar indicates name of the current bus standard</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_18_19] - [RS_18_20]</entry>
+              <entry>Feature</entry>
+              <entry>There are four columns in the window - &apos;Message / frame&apos; showing name of the frame under which the signal occurs, &apos;Signal&apos; which shows the signal name, &apos;Raw value&apos; reflecting raw value of the signal and &apos;Engineering value&apos; under which the fields are updated with the engineering values with unit.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_18_21]</entry>
+              <entry>Feature</entry>
+              <entry>On right click a popup menu is displayed.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_18_22]</entry>
+              <entry>Feature</entry>
+              <entry>Signal watch window is updated at the refresh rate set by the user</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_18_23]</entry>
+              <entry>Feature</entry>
+              <entry>Items of the popup menu - &apos;Clear&apos; (clears the signal watch window).</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></p>
+  </body>
+</topic>

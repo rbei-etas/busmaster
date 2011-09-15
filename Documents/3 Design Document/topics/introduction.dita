@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="interface_details" xml:lang="en-us">
+  <title>Interface Details</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>This document describes at length the various design aspects of BUSMASTER tool family which aims at simultaneous support of any vehicle bus standard.</p>
+    <p><image href="../images/introduction.png" placement="break"/>For obvious reason the design approach primarily harps on the principle of large-scale reuse and consequently is broadly inspired by product line model to leverage on this said aspect. The approach conforms to the SEI definition of product line engineering which is “A set of systems sharing a common set of features that satisfy the specific needs of a particular market segment or mission and thus are developed from a common set of core assets in a prescribed way”. So outlining of the engineering activity may be presented by the following:</p>
+  </body>
+</topic>

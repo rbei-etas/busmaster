@@ -1,0 +1,640 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="message_window" xml:lang="en-us">
+  <title>Message Window</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>It is the visual means of the bus data monitoring with dynamic listing of the frames. The window does the listing in a soft real time manner with the minimum possible time latency. Both data and error frames are accounted in the listing. Each raw corresponds to a frame entry whereas each of the columns to the data property like time stamp, receive status (Rx / Tx), frame identifier, channel, DLC, data bytes etc.</p>
+    <p>Clearly, visual presentation can be of two types, the first one is called append mode and the second one is called overwrite mode. In append mode frames appear in chronological order whereas for the later, the whole set of frames is grouped according to the frame identifier and the list contains only the latest entries of all the different frame identifiers. The apparently unintelligible data bytes needs to be presented in suitable way with all the signal names and values indicated and this is defined as online interpretation. This shall be possible only when the message window is associated with a database or a number of it. Two numeric modes are supported namely, decimal and hexadecimal. Three different time modes are possible. System time mode presents the time stamp in the local time. In absolute time format, time stamp is presented as the time elapsed since the application is connected to the channels. Relative time manifests differently in append and overwrite visual modes. In the former one, it is the time difference with respect to the last received frame. In the later one the time difference is with respect to the previous instance of the frame with the same id. During the execution it should be possible to select any such setting without losing of bus data. For better performance and control, the refresh rate shall be configurable. Also on the same token, there is an upper limit to the frame entries in either of the visual modes configurable at run time.</p>
+    <p>Clearly, the aforementioned paragraph discusses about the general characteristics of message window not hinting anything on the vehicle bus data. The columns are selected according to the specific bus data.</p>
+    <p>Below goes the UI specification of message window for CAN:
+     <image href="../images/screenshots/message_window.png" placement="break"/></p>
+    <p>This example shows message window with overwrite visual mode, using hexadecimal numeric mode and with relative time stamp.</p>
+    <p>Clearly, in message overwrite mode there will be only one instance of a message with specific frame ID and direction on the message window. Subsequent messages that occur with the same values for ID and direction will overwrite the current message entry. In append mode new messages are appended at the end of the existing list of messages on the window even though that entry is already existing in the list.</p>
+    <p>The presentation is in interpreted mode. The message database can be either proprietary or a standard one (e.g., Fibex). From the loaded database are extracted the necessary frame / message and signal information and engineering values of all the signals using signal encoding technique are calculated. When message interpretation option is selected, the signals present in the frames should be displayed in the message window. In the message window at the left hand side there shall be +/- option for each and every frame to expand / collapse the particular frame if that contains signals.</p>
+    <p>There are some miscellaneous features of message window available. For example – any frame entry can be selected and transmitted. The GUI specification depicting this property is shown below:<image href="../images/screenshots/message_window_context_menu.png" placement="break"/>Message Window configuration</p>
+    <p>The different configurations aspects potentially related with message window are explained below:<ul>
+        <li>Visual indication for defined frame entries - A particular frame can be made easily visually distinguishable from others with different colour. Both database and non-database message shall be configurable, albeit with a restriction in the configuration extent. For database frames the frame list is available and different colour can be associated with each one of them. There shall be a default colour (black).</li>
+        <li>Visual indication for undefined frames - It shall be possible to define a frame with an ID, name and colour code. Again the default colour is black.</li>
+        <li>Usage of filters – Filters can be applied for message window as well to boost up the performance. The defined filters shall be available from where the selected filters can be confirmed. Again each of the filters can be enabled / disabled.</li>
+        <li>Buffer and refresh parameters – Characteristically it shall be possible to switch to any visual, numeric and time mode – both online and offline. This is possible because a message repository is maintained for each of the visual modes. The size of the list is configurable at run-time. Also, the refresh rate is configurable. Both of them render the user a better control over message window.</li>
+      </ul></p>
+    <p>Message window is configurable through a property sheet where the property pages are logically linked with the aforementioned configuration aspects.</p>
+    <p>Database frame configuration UI specification:<image href="../images/screenshots/message_display_db_config.png" placement="break"/></p>
+    <p>Non-database frame configuration UI specification:<image href="../images/screenshots/message_display_ndb_add.png" placement="break"/></p>
+    <p>Filter configuration UI specification:<image href="../images/screenshots/message_display_filter_config.png" placement="break"/></p>
+    <p>Other configuration UI specification:<image href="../images/screenshots/message_display_buffer_config.png" placement="break"/></p>
+    <table>
+      <tgroup cols="6">
+        <thead>
+          <row>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry>CAN</entry>
+            <entry>FlexRay</entry>
+            <entry>J1939</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>16</entry>
+            <entry/>
+            <entry>Message Window</entry>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+          <row>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+          <row>
+            <entry/>
+            <entry>Definition</entry>
+            <entry>BUSMASTER is connected to the bus through one or more controllers. A controller can be either a real or a virtual one. A communication channel of a controller can be perceived as a connection instance to a bus. Objective of message window for a particular bus is to list messages in all the related communication channels that the application is connected. The flag &apos;Tx&apos; or &apos;Rx&apos; ascribed for a message entry is done from the perspective of the channel.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+          <row>
+            <entry/>
+            <entry/>
+            <entry>Display modes</entry>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+          <row>
+            <entry>[RS_16_01]</entry>
+            <entry>Feature</entry>
+            <entry>Two display modes namely, overwrite and append shall be supported.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_02]</entry>
+            <entry>Definition</entry>
+            <entry>A message entry signature := &lt;CAN id&gt; + &lt;type (standard | extended | RTR)&gt; + &lt;Rx | Tx&gt; + &lt;channel&gt;</entry>
+            <entry>X</entry>
+            <entry>-</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>[RS_16_03]</entry>
+            <entry>Definition</entry>
+            <entry>A message entry signature := [&lt;PGN Number&gt; &lt;Type (Request | data | broadcast)&gt;]</entry>
+            <entry>-</entry>
+            <entry>-</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_04]</entry>
+            <entry>Definition</entry>
+            <entry>A message entry signature := &lt;Rx | Tx&gt; | &lt;Frame ID&gt; | &lt;Cycle number&gt; | &lt;channel (A | B | AB)&gt;</entry>
+            <entry>-</entry>
+            <entry>X</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>[RS_16_05]</entry>
+            <entry>Feature</entry>
+            <entry>In overwrite mode, an entry shall be overwritten by the one with the same signature.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_06]</entry>
+            <entry>Feature</entry>
+            <entry>In append mode message entries shall be listed in chronological order.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_07]</entry>
+            <entry>Feature</entry>
+            <entry>In append mode number of message entries shall be kept restricted and the number shall be configurable.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_08]</entry>
+            <entry>Design</entry>
+            <entry>In overwrite mode, the condition of entry restriction shall not come into the picture. This is because of the fact that compared to the maximum allowable number of entries in append mode, number of entries in overwrite mode is expected to be just a fraction.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_09]</entry>
+            <entry>Feature</entry>
+            <entry>In append mode when the list is full, the newest entry replaces the oldest one. As a result, the list scrolls up by one entry.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_10]</entry>
+            <entry>Feature</entry>
+            <entry>It shall be possible to toggle between the two display modes without loss of data.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_11]</entry>
+            <entry>Feature</entry>
+            <entry>The above shall be possible both online and offline.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+          <row>
+            <entry/>
+            <entry/>
+            <entry>Time stamp types</entry>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+          <row>
+            <entry/>
+            <entry>Definition</entry>
+            <entry>Unit for a message time stamp is hundreds of microseconds. There are three different time modes. System time mode expresses the time stamp in local time. In append mode relative time stamp indicates time elapsed since the last message whereas in overwrites it indicates the time elapsed since message of same signature. In absolute time mode it is the time elapsed since the connection.</entry>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+          <row>
+            <entry>[RS_16_12]</entry>
+            <entry>Feature</entry>
+            <entry>Support of system time stamp.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_13]</entry>
+            <entry>Feature</entry>
+            <entry>Support of relative time stamp.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_14]</entry>
+            <entry>Feature</entry>
+            <entry>Support of absolute time stamp.</entry>
+            <entry>X</entry>
+            <entry>-</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_15]</entry>
+            <entry>Feature</entry>
+            <entry>It shall be possible to transit from one time stamp mode to another without any loss of data.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_16]</entry>
+            <entry>Feature</entry>
+            <entry>The above shall be possible both online and offline</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+          <row>
+            <entry/>
+            <entry/>
+            <entry>Numeric modes</entry>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+          <row>
+            <entry>[RS_16_17]</entry>
+            <entry>Definition</entry>
+            <entry>Numeric mode dictates numeric representation of frame / CAN ID and data bytes.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_18] [RS_16_19]</entry>
+            <entry>Feature</entry>
+            <entry>Shall support two numeric modes namely, decimal and hexadecimal.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_20]</entry>
+            <entry>Feature</entry>
+            <entry>It shall be possible to toggle between the two numeric modes without loss of data</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_21]</entry>
+            <entry>Feature</entry>
+            <entry>The above shall be possible both online and offline</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+          <row>
+            <entry/>
+            <entry/>
+            <entry>Column configurations</entry>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+          <row>
+            <entry>[RS_16_22]</entry>
+            <entry>Definition</entry>
+            <entry>A section of an entry in a bus occur under a particular columns.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_23]</entry>
+            <entry>Definition</entry>
+            <entry>Sections of a message entry := { &lt;time stamp&gt;, &lt;CAN id&gt;, &lt;Rx | Tx&gt;, &lt;description&gt;, &lt;type&gt;, &lt;channel&gt;, &lt;DLC (0 - 8)&gt;, &lt;data bytes&gt; }</entry>
+            <entry>X</entry>
+            <entry>-</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>[RS_16_24]</entry>
+            <entry>Definition</entry>
+            <entry>Sections of a message entry := { &lt;time stamp&gt;, &lt;channel&gt;, &lt;CAN id&gt;, &lt;PGN&gt;, &lt;PGN name&gt;, &lt;Type&gt;, &lt;Src&gt;, &lt;Dest&gt;, &lt;Priority&gt;, &lt;Tx/Rx&gt;, &lt;DLC&gt;, &lt;data bytes&gt; }</entry>
+            <entry>-</entry>
+            <entry>-</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_25]</entry>
+            <entry>Definition</entry>
+            <entry>Sections of a message entry := { &lt;time stamp&gt;, &lt;frame id&gt;, &lt;Rx | Tx&gt;, &lt;description&gt;, &lt;cycle number&gt;, &lt;channel (A | B | AB)&gt;, &lt;DLC&gt;, &lt;data bytes&gt; } </entry>
+            <entry>-</entry>
+            <entry>X</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>[RS_16_26]</entry>
+            <entry>Definition</entry>
+            <entry>A selected set of columns shall have sorting property. Also, this feature shall be available only in offline mode.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_27]</entry>
+            <entry>Feature</entry>
+            <entry>For a CAN message window, the following columns shall feature sorting property: 1. &lt;time stamp&gt;, 2. &lt;CAN id&gt; and 3. &lt;channel&gt; Next priority columns in decreasing order of importance may be 4. type, 5. direction and 6. description. </entry>
+            <entry>X</entry>
+            <entry>-</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>[RS_16_28]</entry>
+            <entry>Feature</entry>
+            <entry>
+              <p>For a FlexRay message window, the following columns shall feature sorting property: 1. &lt;time stamp&gt;, 2. &lt;frame id&gt; and 3. &lt;cycle number&gt;</p>
+              <p>Next priority columns in decreasing order of importance may be 4. channel, 5. direction and 6. description.</p>
+             </entry>
+            <entry>-</entry>
+            <entry>X</entry>
+            <entry>-</entry>
+          </row>
+          <row>
+            <entry>[RS_16_29]</entry>
+            <entry>Feature</entry>
+            <entry>
+              <p>For a J1939 message window, the following columns shall feature sorting property: 1. &lt;time stamp&gt;, 2. &lt;channel&gt;, 3. &lt;CAN ID&gt;, 4. &lt;PGN&gt;, 5. &lt;Src&gt; and 6. &lt;Dest&gt;</p>
+              <p>Next priority columns in decreasing order of importance may be 4. CAN id, 5. direction, 6. type  and 7. message name / code.</p>
+            </entry>
+            <entry>-</entry>
+            <entry>-</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_30]</entry>
+            <entry>Feature</entry>
+            <entry>Sorting shall be possible both in overwrite and append modes.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_31] [RS_16_32]</entry>
+            <entry>Feature</entry>
+            <entry>It shall be possible to show / hide any column.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_33]</entry>
+            <entry>Feature</entry>
+            <entry>It shall be possible to reorder message columns (by dragging).</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_34]</entry>
+            <entry>Feature</entry>
+            <entry>It shall be possible to revert to the default setting of column order.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+          <row>
+            <entry/>
+            <entry/>
+            <entry>Message interpretation</entry>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+          <row>
+            <entry>[RS_16_35]</entry>
+            <entry>Design</entry>
+            <entry>Message interpretation means apparently incomprehensible raw data bytes of a message entry are translated into and conveyed in human-readable signal values. Finally it is the signal set that are of prime concern for the user. Presentation of a signal involves the following parameters: 1. signal name, 2. raw value, 3. engineering value and 4. unit. Interpreting a message means presenting its signal using the four parameters.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_36]</entry>
+            <entry>Feature</entry>
+            <entry>It shall be possible to load a message database (Fibex or proprietary) and extract out the information necessary for message interpretation using signaling encoding technique.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_37]</entry>
+            <entry>Feature</entry>
+            <entry>When this is ON, defined signals are interpreted with the four parameters.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_38]</entry>
+            <entry>Feature</entry>
+            <entry>Interpretation shall be possible only in overwrite mode.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_39]</entry>
+            <entry>Feature</entry>
+            <entry>Interpretation can be toggled between active and inactive states.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_40]</entry>
+            <entry>Design</entry>
+            <entry>Hence the following states of an entry result - 1. NON_INTERPRETABLE, 2. INTERPRETABLE and 3. INTERPRETING</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_41]</entry>
+            <entry>Design</entry>
+            <entry>Also, the following message window states are defined - 1. APPEND, 2. OVERWRITE and 3. OVERWRITE_INTERPRET</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_42]</entry>
+            <entry>Feature</entry>
+            <entry>Every interpretable message entry shall have a &apos;+&apos; sign against it to indicate presence of interpreted signals.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_43]</entry>
+            <entry>Feature</entry>
+            <entry>Clicking on the &apos;+&apos; sign shall be taken as message entry expansion action and the entry shall be expanded into the full set of interpreted signals and the sign shall change into &apos;-&apos;.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_44]</entry>
+            <entry>Feature</entry>
+            <entry>Clicking on the &apos;-&apos; sign shall be taken as message entry collapsing action and the entry shall be collapsed and the sign shall change back into &apos;+&apos;.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_45]</entry>
+            <entry>Feature</entry>
+            <entry>It shall be possible to transit to any message window state without any loss of data.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_46]</entry>
+            <entry>Feature</entry>
+            <entry>The above shall be possible both online and offline.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+          <row>
+            <entry/>
+            <entry/>
+            <entry>Configuration retention</entry>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+          <row>
+            <entry>[RS_16_47]</entry>
+            <entry>Design</entry>
+            <entry>Message window configuration data := { 1. numerical mode, 2. display mode, 3. time mode, 4. displayed column list, 5. individual column width (in proportion with respect to overall window width), 6. displayed column order, 7. window dimension, 8. window state, 9. active interpretation mode, 10. interpretation data and 11. expanded message entries }.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_48]</entry>
+            <entry>Feature</entry>
+            <entry>It shall be possible to save the present configuration in a byte stream.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_49]</entry>
+            <entry>Feature</entry>
+            <entry>It shall be possible to load a configuration from a byte stream.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_50]</entry>
+            <entry>Feature</entry>
+            <entry>In case of absence of configuration data, default setting shall be assumed.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+          <row>
+            <entry/>
+            <entry/>
+            <entry>Utilities and others</entry>
+            <entry/>
+            <entry/>
+            <entry/>
+          </row>
+          <row>
+            <entry>[RS_16_51]</entry>
+            <entry>Performance</entry>
+            <entry>Display updation shall be flicker-free</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_52]</entry>
+            <entry>Feature</entry>
+            <entry>Shall be possible to to clear message window, both during online and offline.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_53]</entry>
+            <entry>Design</entry>
+            <entry>Message window exactly reflects the message data in the buffer (but obviously not the representation). Both append and overwrite display modes have their own data buffer.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_54]</entry>
+            <entry>Design</entry>
+            <entry>Hence clearing the message window means clearing the buffers as well.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_55]</entry>
+            <entry>Feature</entry>
+            <entry>It shall be possible to specify frequency / refresh rate of message window</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_56]</entry>
+            <entry>Feature</entry>
+            <entry>It shall be possible to specify size of the append buffer and this shall have lower and upper limits.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+          <row>
+            <entry>[RS_16_57]</entry>
+            <entry>Design</entry>
+            <entry>Multiple message windows even for a single bus shall be possible.</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+            <entry>X</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </body>
+</topic>
