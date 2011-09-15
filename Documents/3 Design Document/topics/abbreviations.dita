@@ -15,8 +15,24 @@
       <tgroup cols="2">
         <tbody>
           <row>
-            <entry>ERD</entry>
-            <entry>Entity Relationship Diagram</entry>
+            <entry>API</entry>
+            <entry>Application Programming Interface</entry>
+          </row>
+          <row>
+            <entry>BOA</entry>
+            <entry>Basic Open Architecture</entry>
+          </row>
+          <row>
+            <entry>CAN</entry>
+            <entry>Controller Area Network</entry>
+          </row>
+          <row>
+            <entry>DIL</entry>
+            <entry>Driver Interface Library</entry>
+          </row>
+          <row>
+            <entry>FlexRay</entry>
+            <entry>A vehicle communication system developed by the FlexRay consortium</entry>
           </row>
           <row>
             <entry>GUI</entry>
@@ -25,6 +41,14 @@
           <row>
             <entry>HLD</entry>
             <entry>High Level Design</entry>
+          </row>
+          <row>
+            <entry>J1939</entry>
+            <entry>A CAN based higher layer vehicle bus standard</entry>
+          </row>
+          <row>
+            <entry>LIN</entry>
+            <entry>Local Interconnect Network</entry>
           </row>
           <row>
             <entry>OOD</entry>
@@ -39,8 +63,12 @@
             <entry>Robert Bosch Engineering and Business Solutions Limited</entry>
           </row>
           <row>
-            <entry>RUP</entry>
-            <entry>Rational Unified Process</entry>
+            <entry>SEI</entry>
+            <entry>Software Engineering Institute</entry>
+          </row>
+          <row>
+            <entry>UI</entry>
+            <entry>User Interface</entry>
           </row>
         </tbody>
       </tgroup>
