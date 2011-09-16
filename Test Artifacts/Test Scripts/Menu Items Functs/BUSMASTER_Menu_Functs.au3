@@ -222,7 +222,7 @@ Sleep(500) ; 0.5 sec
 
 if WinWaitActive("Select BUSMASTER Database Filename...", "", 2) Then ; wait till its open
 	$Result = "ok"		
-	Send("d:\CANvas\ConfigFiles\New_Database1.DBF")
+	Send("d:\BUSMASTER\ConfigFiles\New_Database1.DBF")
 	Sleep(250)
 	ControlClick("Select BUSMASTER Database Filename...", "","Button2")	
 Else

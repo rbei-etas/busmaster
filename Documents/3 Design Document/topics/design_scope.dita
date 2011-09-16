@@ -55,13 +55,13 @@
               <entry>6</entry>
               <entry>CAN controller configuration</entry>
               <entry>ConfigDialogsDIL.dll</entry>
-              <entry>Implements the controller configuration GUI. This makes it possible for CANvas application to completely get decoupled from the underlying hardware support. Addition of a new hardware / controller for a bus means a updating in DIL_&lt;bus&gt;.dll, ConfigDialogs.dll and introduction of &lt;bus&gt;_&lt;new controller&gt;.dll. Commercial feature related files &amp; routines will be taken off.</entry>
+              <entry>Implements the controller configuration GUI. This makes it possible for BUSMASTER application to completely get decoupled from the underlying hardware support. Addition of a new hardware / controller for a bus means a updating in DIL_&lt;bus&gt;.dll, ConfigDialogs.dll and introduction of &lt;bus&gt;_&lt;new controller&gt;.dll. Commercial feature related files &amp; routines will be taken off.</entry>
             </row>
             <row>
               <entry>7</entry>
               <entry>CAN bus simulation</entry>
               <entry>CAN_STUB.dll &amp; BusEmulation.exe</entry>
-              <entry>The first one is CAN DIL interface to simulation engine. Second one is also known as simulation engine; this realizes a virtual bus in the workstation making it possible for any instance of CANvas to act as a node and communicate via this communication channel. By design this should be able to simulate any bus hitherto known and unknown. Also, the same instance of server can cater to any number of buses with any number of nodes simultaneously.</entry>
+              <entry>The first one is CAN DIL interface to simulation engine. Second one is also known as simulation engine; this realizes a virtual bus in the workstation making it possible for any instance of BUSMASTER to act as a node and communicate via this communication channel. By design this should be able to simulate any bus hitherto known and unknown. Also, the same instance of server can cater to any number of buses with any number of nodes simultaneously.</entry>
             </row>
             <row>
               <entry>8</entry>
@@ -131,50 +131,50 @@
             <row>
               <entry>17</entry>
               <entry>Database editor</entry>
-              <entry>CANvas.exe</entry>
-              <entry>CANvas application. Full decoupling is not yet fully achieved; this contains some generic classes, modules as well. Commercial feature related files &amp; routines will be taken off.</entry>
+              <entry>BUSMASTER.exe</entry>
+              <entry>BUSMASTER application. Full decoupling is not yet fully achieved; this contains some generic classes, modules as well. Commercial feature related files &amp; routines will be taken off.</entry>
             </row>
             <row>
               <entry>18</entry>
               <entry>Bus statistics</entry>
-              <entry>CANvas.exe</entry>
+              <entry>BUSMASTER.exe</entry>
               <entry>Same as above</entry>
             </row>
             <row>
               <entry>19</entry>
               <entry>Automation server interface</entry>
-              <entry>CANvas.exe</entry>
+              <entry>BUSMASTER.exe</entry>
               <entry>Same as above</entry>
             </row>
             <row>
               <entry>20</entry>
               <entry>Log file export</entry>
-              <entry>CANvas.exe</entry>
+              <entry>BUSMASTER.exe</entry>
               <entry>Same as above</entry>
             </row>
             <row>
               <entry>21</entry>
               <entry>Trace window</entry>
-              <entry>CANvas.exe</entry>
+              <entry>BUSMASTER.exe</entry>
               <entry>Same as above</entry>
             </row>
             <row>
               <entry>22</entry>
               <entry>Main GUI and controller &amp; configuration for other modules</entry>
-              <entry>CANvas.exe</entry>
+              <entry>BUSMASTER.exe</entry>
               <entry>Same as above</entry>
             </row>
             <row>
               <entry>23</entry>
               <entry>Helper libraries (not feature)</entry>
               <entry>DataType.lib</entry>
-              <entry>Implements the data types / structures that are widely utilised by any module / component of CANvas tool family. This was created with the idea to solve the greater part of the problem at hand by properly defining the data type. Commercial feature related files &amp; routines will be taken off.</entry>
+              <entry>Implements the data types / structures that are widely utilised by any module / component of BUSMASTER tool family. This was created with the idea to solve the greater part of the problem at hand by properly defining the data type. Commercial feature related files &amp; routines will be taken off.</entry>
             </row>
             <row>
               <entry>24</entry>
               <entry>Helper libraries (not feature)</entry>
               <entry>Utils.lib</entry>
-              <entry>Contains some utility services, both GUI and non-GUI, commonly soughted after by any module / component of CANvas tool family. Commercial feature related files &amp; routines will be taken off.</entry>
+              <entry>Contains some utility services, both GUI and non-GUI, commonly soughted after by any module / component of BUSMASTER tool family. Commercial feature related files &amp; routines will be taken off.</entry>
             </row>
             <row>
               <entry>25</entry>
@@ -185,7 +185,7 @@
             <row>
               <entry>26</entry>
               <entry>Wave pattern generator</entry>
-              <entry>SignalGeneration.dll, CANvas.exe </entry>
+              <entry>SignalGeneration.dll, BUSMASTER.exe </entry>
               <entry>This generates signals with values matching certain regular wave patterns like sinusoidal, triangular, spike etc. For CAN the first two has been implemented.</entry>
             </row>
           </tbody>

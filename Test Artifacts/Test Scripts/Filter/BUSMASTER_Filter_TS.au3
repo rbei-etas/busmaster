@@ -86,7 +86,7 @@ WinActivate("BUSMASTER","")
 Send("!fda") ; File -> Database -> Associate...
 
 WinWaitActive("Select Active Database Filename...", "BUSMASTER Datatbase File(*.dbf)", 2) ; wait till its open
-Send("d:\CANvas\ConfigFiles\New_Database1.DBF")
+Send("d:\BUSMASTER\ConfigFiles\New_Database1.DBF")
 Sleep(1000)
 ControlClick("Select Active Database Filename...", "","Button2")
 

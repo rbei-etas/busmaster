@@ -11,7 +11,7 @@
   </prolog>
   <body>
     <p>This automates the ECU testing by using certain general test models or patterns. So objective of this is to realize more abstraction in testing where the user only needs to define the test cases that may be taken directly as input parameters for the execution of a testing session carried out by the tool. This means user can expend more time for writing proper test cases rather than implementation issues of the same.</p>
-    <p>As a prelude, some technical jargons used in the parlance of Test Automation of CANvas are explained first. For obvious reason the different sections of a test setup file shall be most highlighted in the discussion. The different sections are perceived to occur as different nodes of certain respective levels in a tree.</p>
+    <p>As a prelude, some technical jargons used in the parlance of Test Automation of BUSMASTER are explained first. For obvious reason the different sections of a test setup file shall be most highlighted in the discussion. The different sections are perceived to occur as different nodes of certain respective levels in a tree.</p>
     <table>
       <tgroup cols="3">
         <thead>
