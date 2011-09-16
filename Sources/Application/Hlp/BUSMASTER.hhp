@@ -48,7 +48,6 @@ html\network statistics.htm
 html\Bit Timing.htm
 html\STCAN_struct.htm
 html\API reference.htm
-html\Signal Graph.htm
 html\C Library.html
 html\stdlib.html
 html\stdio.html
@@ -59,7 +58,6 @@ html\CType.html
 html\math.html
 HTML\ComInterfaceApi.htm
 HTML\FAQ.htm
-HTML\SignalGeneration.htm
 
 [ALIAS]
 afx_hidd_color = html\afxc465u.htm
