@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="putc" xml:lang="en-us">
+  <title>putc : write a character (macro)</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+int putc(int ch, FILE *fp);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>putc is a macro, defined in stdio.h. putc writes the argument ch to the file or stream identified by fp, after converting it from an int to an unsigned char.</p>
+      <p>If the file was opened with append mode (or if the stream cannot support positioning), then the new character goes at the end of the file or stream. Otherwise, the new character is written at the current value of the position indicator, and the position indicator advances by one.</p>
+      <p>For a subroutine version of this macro, see fputc.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>If successful, putc returns its argument ch. If an error intervenes, the result is EOF. You can use `ferror(fp)&apos; to query for errors.</p>
+    </section>
+  </refbody>
+</reference>

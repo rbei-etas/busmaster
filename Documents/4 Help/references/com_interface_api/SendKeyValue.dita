@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="SendKeyValue" xml:lang="en-us">
+  <title>SendKeyValue : To simulate a particular key stroke</title>
+  <refbody>
+    <section>
+      <title>Description</title>
+      <p>This function can be used to capture any key pressed in client application and pass it to BUSMASTER. The function takes ascii character of the key.Only alphanumeric key is allowed.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>Ascii value of key.</p>
+    </section>
+    <section>
+      <title>Cause of failure</title>
+      <p>The Ascii value doesn&apos;t corresspond to any Alphanumeric character.</p>
+    </section>
+  </refbody>
+</reference>

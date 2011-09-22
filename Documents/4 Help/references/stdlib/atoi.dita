@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="atoi" xml:lang="en-us">
+  <title>atoi, atol : string to integer</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdlib.h&gt;
+int atoi(const char *s);
+long atol(const char *s);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>atoi converts the initial portion of a string to an int. atol converts the initial portion of a string to a long. atoi(s) is implemented as (int)strtol(s, NULL, 10). atol(s) is implemented as strtol(s, NULL, 10).</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The functions return the converted value, if any. If no conversion was made, 0 is returned.</p>
+    </section>
+  </refbody>
+</reference>

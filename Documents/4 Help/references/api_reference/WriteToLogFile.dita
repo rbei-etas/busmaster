@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="WriteToLogFile" xml:lang="en-us">
+  <title>WriteToLogFile : To send string to log file</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>UINT WriteToLogFile ( char* msg )</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function will output text passed as parameter &quot;msg&quot; to all log files. The return value of this function will be 0 or 1.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>msg - Pointer to characterarray</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>A value zero indicate failure condition while a value 1 indicate a success condition. This function can return 0 in case logging is OFF or user has passed a NULL pointer.</p>
+    </section>
+  </refbody>
+</reference>

@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="difftime" xml:lang="en-us">
+  <title>difftime : subtract two times</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;time.h&gt;
+double difftime(time_t tim1, time_t tim2);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Subtracts the two times in the arguments: `tim1 - tim2&apos;.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The difference (in seconds) between tim2 and tim1, as a double.</p>
+    </section>
+  </refbody>
+</reference>

@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="acos" xml:lang="en-us">
+  <title>acos, acosf : arc cosine</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double acos(double x);
+float acosf(float x);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>acos computes the inverse cosine (arc cosine) of the input value. Arguments to acos must be in the range -1 to 1. acosf is identical to acos, except that it performs its calculations on floats. 
+
+</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>If x is not between -1 and 1, the returned value is NaN (not a number) the global variable errno is set to EDOM, and a DOMAIN error message is sent as standard error output.</p>
+      <p>You can modify error handling for these functions using matherr.</p>
+    </section>
+  </refbody>
+</reference>

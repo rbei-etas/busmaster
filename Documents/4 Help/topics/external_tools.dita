@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="external_tools" xml:lang="en-us">
+  <title>External Tools</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>External Tools</p>
+    <p>Currently three external tools are integrated with BUSMASTER. These tools can be used only from BUSMASTER.
+    <ul>
+        <li>CAPL TO C Converter: Converts CAPL (*.can) file into BUSMASTER C (*.c) file.</li>
+        <li>DBC TO DBF Converter: Converts DBC (*.dbc) file into BUSMASTER database (*.dbf) file.</li>
+        <li>DBF TO DBC Converter: Converts BUSMASTER database (*.dbf) file into DBC (*.dbc) file.</li>
+      </ul></p>
+    <image placement="break" href="../images/External_Tools.bmp"/>
+  </body>
+</topic>

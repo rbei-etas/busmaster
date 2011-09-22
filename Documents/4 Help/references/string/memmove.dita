@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="memmove" xml:lang="en-us">
+  <title>memmove : move possibly overlapping memory</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;string.h&gt;
+void *memmove(void *dst, const void *src, size_t length);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function moves length characters from the block of memory starting at *src to the memory starting at *dst. memmove reproduces the characters correctly at *dst even if the two areas overlap.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The function returns dst as passed.</p>
+    </section>
+  </refbody>
+</reference>

@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="rint" xml:lang="en-us">
+  <title>rint, rintf, remainder, remainderf : round and remainder</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double rint(double x);
+float rintf(float x);
+double remainder(double x, double y);
+float remainderf(float x, float y);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>rint and rintf returns their argument rounded to the nearest integer. remainder and remainderf find the remainder of x/y; this value is in the range -y/2 .. +y/2.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>rint and remainder return the integer result as a double.</p>
+    </section>
+  </refbody>
+</reference>

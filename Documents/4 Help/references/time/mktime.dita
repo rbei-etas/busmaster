@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="mktime" xml:lang="en-us">
+  <title>mktime : convert time to arithmetic representation</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;time.h&gt;
+time_t mktime(struct tm *timp);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>mktime assumes the time at timp is a local time, and converts its representation from the traditional representation defined by struct tm into a representation suitable for arithmetic.</p>
+      <p>localtime is the inverse of mktime.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>If the contents of the structure at timp do not form a valid calendar time representation, the result is -1. Otherwise, the result is the time, converted to a time_t value.</p>
+    </section>
+  </refbody>
+</reference>

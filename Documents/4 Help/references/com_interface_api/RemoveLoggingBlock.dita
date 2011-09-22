@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="RemoveLoggingBlock" xml:lang="en-us">
+  <title>RemoveLoggingBlock : To remove a particular logging block</title>
+  <refbody>
+    <section>
+      <title>Description</title>
+      <p>This function removes a particular logging block</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>USHORT BlockIndex - The zero based logging block index</p>
+    </section>
+    <section>
+      <title>Cause of failure</title>
+      <p>Will fail in case block index passed is wrong.</p>
+    </section>
+  </refbody>
+</reference>

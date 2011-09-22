@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="tolower" xml:lang="en-us">
+  <title>tolower : translate characters to lower case</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;ctype.h&gt;
+int tolower(int c);
+int _tolower(int c);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>tolower is a macro which converts upper-case characters to lower case, leaving all other characters unchanged. It is only defined when c is an integer in the range EOF to 255.</p>
+      <p>You can use a compiled subroutine instead of the macro definition by undefining this macro using `#undef tolower&apos;.</p>
+      <p>_tolower performs the same conversion as tolower, but should only be used when c is known to be an uppercase character (A--Z).</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>tolower returns the lower-case equivalent of c when it is a character between A and Z, and c otherwise.</p>
+      <p>_tolower returns the lower-case equivalent of c when it is a character between A and Z. If c is not one of these characters, the behaviour of _tolower is undefined.</p>
+    </section>
+  </refbody>
+</reference>

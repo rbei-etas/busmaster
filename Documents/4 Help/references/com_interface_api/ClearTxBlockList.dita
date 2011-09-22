@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="ClearTxBlockList" xml:lang="en-us">
+  <title>ClearTxBlockList : Deletes all the transmission blocks</title>
+  <refbody>
+    <section>
+      <title>Description</title>
+      <p>Deletes all the transmission blocks.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>-</p>
+    </section>
+    <section>
+      <title>Cause of failure</title>
+      <p>NA</p>
+    </section>
+  </refbody>
+</reference>

@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="strtol" xml:lang="en-us">
+  <title>strtol : string to long</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdlib.h&gt;
+long strtol(const char *s, char **ptr,int base);
+long _strtol_r(void *reent, const char *s, char **ptr,int base);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>The function strtol converts the string *s to a long. First, it breaks down the string into three parts: leading whitespace, which is ignored; a subject string consisting of characters resembling an integer in the radix specified by base; and a trailing portion consisting of zero or more unparseable characters, and always including the terminating null character. Then, it attempts to convert the subject string into a long and returns the result.</p>
+      <p>If the value of base is 0, the subject string is expected to look like a normal C integer constant: an optional sign, a possible `0x&apos; indicating a hexadecimal base, and a number. If base is between 2 and 36, the expected form of the subject is a sequence of letters and digits representing an integer in the radix specified by base, with an optional plus or minus sign. The letters a--z (or, equivalently, A--Z) are used to signify values from 10 to 35; only letters whose ascribed values are less than base are permitted. If base is 16, a leading 0x is permitted.</p>
+      <p>The subject sequence is the longest initial sequence of the input string that has the expected form, starting with the first non-whitespace character. If the string is empty or consists entirely of whitespace, or if the first non-whitespace character is not a permissible letter or digit, the subject string is empty.</p>
+      <p>If the subject string is acceptable, and the value of base is zero, strtol attempts to determine the radix from the input string. A string with a leading 0x is treated as a hexadecimal value; a string with a leading 0 and no x is treated as octal; all other strings are treated as decimal. If base is between 2 and 36, it is used as the conversion radix, as described above. If the subject string begins with a minus sign, the value is negated. Finally, a pointer to the first character past the converted subject string is stored in ptr, if ptr is not NULL.</p>
+      <p>If the subject string is empty (or not in acceptable form), no conversion is performed and the value of s is stored in ptr (if ptr is not NULL).</p>
+      <p>The alternate function _strtol_r is a reentrant version. The extra argument reent is a pointer to a reentrancy structure.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>strtol returns the converted value, if any. If no conversion was made, 0 is returned.</p>
+      <p>strtol returns LONG_MAX or LONG_MIN if the magnitude of the converted value is too large, and sets errno to ERANGE.</p>
+    </section>
+  </refbody>
+</reference>

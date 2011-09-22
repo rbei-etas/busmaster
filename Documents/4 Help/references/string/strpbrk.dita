@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="strpbrk" xml:lang="en-us">
+  <title>strpbrk : find chars in string</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;string.h&gt;
+char *strpbrk(const char *s1, const char *s2);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function locates the first occurence in the string pointed to by s1 of any character in string pointed to by s2 (excluding the terminating null character).</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>strpbrk returns a pointer to the character found in s1, or a null pointer if no character from s2 occurs in s1.</p>
+    </section>
+  </refbody>
+</reference>

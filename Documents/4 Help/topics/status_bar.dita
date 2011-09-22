@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="status_bar" xml:lang="en-us">
+  <title>Status Bar</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>The status bar gives the following information
+    </p>
+    <image href="../images/statusbar.bmp" placement="break"/>
+    <ul>
+      <li>The center pane shows the loaded configuration file path.</li>
+      <li>The extreme right pane indicates the number of channels supported by the application.</li>
+    </ul>
+    <note>
+      <ul>
+        <li>Error Counters values and controller status are displayed in Network Statics window.</li>
+      </ul>
+    </note>
+  </body>
+</topic>

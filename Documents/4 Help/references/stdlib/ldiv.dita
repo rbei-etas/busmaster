@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="ldiv" xml:lang="en-us">
+  <title>ldiv : divide two long integers</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdlib.h&gt;
+ldiv_t ldiv(long n, long d);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Divide returning quotient and remainder as two long integers in a structure ldiv_t.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The result is represented with the structure</p>
+      <p>typedef struct { long quot; long rem; } ldiv_t;</p>
+      <p>where the quot field represents the quotient, and rem the remainder. For nonzero d, if `r = ldiv(n,d);&apos; then n equals `r.rem + d*r.quot&apos;.</p>
+      <p>To divide int rather than long values, use the similar function div.</p>
+    </section>
+  </refbody>
+</reference>

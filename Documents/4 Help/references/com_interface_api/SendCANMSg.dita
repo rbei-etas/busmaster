@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="SendCANMSg" xml:lang="en-us">
+  <title>SendCANMSg : To send a CAN message</title>
+  <refbody>
+    <section>
+      <title>Description</title>
+      <p>This function will put the message on the CAN bus. The message structure CAN_MSGS will be filled with ID, length, frame format and data.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>CAN_MSGS - CAN Message Structure</p>
+    </section>
+    <section>
+      <title>Cause of failure</title>
+      <p>Tool not connected</p>
+    </section>
+  </refbody>
+</reference>

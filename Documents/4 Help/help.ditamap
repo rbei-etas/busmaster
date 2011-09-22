@@ -1,0 +1,294 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/map.dtd" [
+<!ENTITY no_toc SYSTEM "no_toc.ditamap">]>
+<map>
+  <title>Help</title>
+  <topicmeta>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </topicmeta>
+  <topicref href="topics/introduction.dita" type="topic"/>
+  <topicref href="topics/what_is_new.dita" type="topic"/>
+  <topicref href="topics/getting_started.dita" type="topic"/>
+  <topicref href="topics/operating_modes.dita" type="topic"/>
+  <topicref href="topics/status_bar.dita" type="topic"/>
+  <topicref href="topics/configuration.dita" type="topic">
+    <topicref href="topics/baudrate.dita" type="topic">
+      <topicref href="topics/bit_timing.dita" type="topic"/>
+    </topicref>
+    <topicref href="topics/app_filter.dita" type="topic"/>
+    <topicref href="topics/log_and_replay.dita" type="topic"/>
+    <topicref href="topics/configure_replay.dita" type="topic"/>
+    <topicref href="topics/message_display.dita" type="topic"/>
+    <topicref href="topics/transmit_messages.dita" type="topic"/>
+    <topicref href="topics/simulated_systems.dita" type="topic"/>
+  </topicref>
+  <topicref href="topics/message_log.dita" type="topic"/>
+  <topicref href="topics/replay.dita" type="topic">
+    <topicref href="topics/cyclic_mode.dita" type="topic"/>
+    <topicref href="topics/single_run_mode.dita" type="topic"/>
+  </topicref>
+  <topicref href="topics/filter.dita" type="topic"/>
+  <topicref href="topics/function_editor.dita" type="topic"/>
+  <topicref href="topics/user_program.dita" type="topic">
+    <topicref href="topics/execute_handlers.dita" type="topic"/>
+  </topicref>
+  <topicref href="topics/database_editor.dita" type="topic"/>
+  <topicref href="topics/message_window.dita" type="topic"/>
+  <topicref href="topics/signal_watch.dita" type="topic"/>
+  <topicref href="topics/trace_window.dita" type="topic"/>
+  <topicref href="topics/test_automation.dita" type="topic"/>
+  <topicref href="topics/reset_controller.dita" type="topic"/>
+  <topicref href="topics/network_statistics.dita" type="topic"/>
+  <topicref href="topics/configuration_file.dita" type="topic"/>
+  <topicref href="topics/connect.dita" type="topic"/>
+  <topicref href="topics/external_tools.dita" type="topic"/>
+  <topicref href="topics/api_reference.dita" type="topic">
+    <topicref href="topics/stcan_struct.dita" type="topic"/>
+    <topicref href="topics/api_listing.dita" type="topic">
+      <topicref href="references/api_reference/SendMsg.dita" type="reference"/>
+      <topicref href="references/api_reference/EnableLogging.dita" type="reference"/>
+      <topicref href="references/api_reference/DisableLogging.dita" type="reference"/>
+      <topicref href="references/api_reference/WriteToLogFile.dita" type="reference"/>
+      <topicref href="references/api_reference/Trace.dita" type="reference"/>
+      <topicref href="references/api_reference/ResetController.dita" type="reference"/>
+      <topicref href="references/api_reference/GoOnline.dita" type="reference"/>
+      <topicref href="references/api_reference/GoOffline.dita" type="reference"/>
+      <topicref href="references/api_reference/Disconnect.dita" type="reference"/>
+      <topicref href="references/api_reference/Connect.dita" type="reference"/>
+      <topicref href="references/api_reference/StartTimer.dita" type="reference"/>
+      <topicref href="references/api_reference/StopTimer.dita" type="reference"/>
+      <topicref href="references/api_reference/SetTimerVal.dita" type="reference"/>
+      <topicref href="references/api_reference/EnableMsgHandlers.dita" type="reference"/>
+      <topicref href="references/api_reference/EnableErrorHandlers.dita" type="reference"/>
+      <topicref href="references/api_reference/EnableKeyHandlers.dita" type="reference"/>
+      <topicref href="references/api_reference/EnableDisableMsgTx.dita" type="reference"/>
+      <topicref href="references/api_reference/hGetDllHandle.dita" type="reference"/>
+    </topicref>
+  </topicref>
+  <topicref href="topics/c_library.dita" type="topic">
+    <topicref href="topics/stdlib.dita" type="topic">
+      <topicref href="references/stdlib/abs.dita" type="reference"/>
+      <topicref href="references/stdlib/atexit.dita" type="reference"/>
+      <topicref href="references/stdlib/atof.dita" type="reference"/>
+      <topicref href="references/stdlib/atoi.dita" type="reference"/>
+      <topicref href="references/stdlib/bsearch.dita" type="reference"/>
+      <topicref href="references/stdlib/calloc.dita" type="reference"/>
+      <topicref href="references/stdlib/div.dita" type="reference"/>
+      <topicref href="references/stdlib/ecvt.dita" type="reference"/>
+      <topicref href="references/stdlib/gvcvt.dita" type="reference"/>
+      <topicref href="references/stdlib/ecvtbuf.dita" type="reference"/>
+      <topicref href="references/stdlib/exit.dita" type="reference"/>
+      <topicref href="references/stdlib/getenv.dita" type="reference"/>
+      <topicref href="references/stdlib/labs.dita" type="reference"/>
+      <topicref href="references/stdlib/ldiv.dita" type="reference"/>
+      <topicref href="references/stdlib/malloc.dita" type="reference"/>
+      <topicref href="references/stdlib/mbtowc.dita" type="reference"/>
+      <topicref href="references/stdlib/qsort.dita" type="reference"/>
+      <topicref href="references/stdlib/rand.dita" type="reference"/>
+      <topicref href="references/stdlib/strtod.dita" type="reference"/>
+      <topicref href="references/stdlib/strtol.dita" type="reference"/>
+      <topicref href="references/stdlib/strtoul.dita" type="reference"/>
+      <topicref href="references/stdlib/system.dita" type="reference"/>
+      <topicref href="references/stdlib/wctomb.dita" type="reference"/>
+    </topicref>
+    <topicref href="topics/ctype.dita" type="topic">
+      <topicref href="references/ctype/isalnum.dita" type="reference"/>
+      <topicref href="references/ctype/isalpha.dita" type="reference"/>
+      <topicref href="references/ctype/isascii.dita" type="reference"/>
+      <topicref href="references/ctype/iscntrl.dita" type="reference"/>
+      <topicref href="references/ctype/isdigit.dita" type="reference"/>
+      <topicref href="references/ctype/islower.dita" type="reference"/>
+      <topicref href="references/ctype/isprint.dita" type="reference"/>
+      <topicref href="references/ctype/ispunct.dita" type="reference"/>
+      <topicref href="references/ctype/isspace.dita" type="reference"/>
+      <topicref href="references/ctype/isupper.dita" type="reference"/>
+      <topicref href="references/ctype/isxdigit.dita" type="reference"/>
+      <topicref href="references/ctype/toascii.dita" type="reference"/>
+      <topicref href="references/ctype/tolower.dita" type="reference"/>
+      <topicref href="references/ctype/toupper.dita" type="reference"/>
+    </topicref>
+    <topicref href="topics/stdio.dita" type="topic">
+      <topicref href="references/stdio/clearerr.dita" type="reference"/>
+      <topicref href="references/stdio/fclose.dita" type="reference"/>
+      <topicref href="references/stdio/fdopen.dita" type="reference"/>
+      <topicref href="references/stdio/feof.dita" type="reference"/>
+      <topicref href="references/stdio/ferror.dita" type="reference"/>
+      <topicref href="references/stdio/fflush.dita" type="reference"/>
+      <topicref href="references/stdio/fgetc.dita" type="reference"/>
+      <topicref href="references/stdio/fgetpos.dita" type="reference"/>
+      <topicref href="references/stdio/fgets.dita" type="reference"/>
+      <topicref href="references/stdio/fiprintf.dita" type="reference"/>
+      <topicref href="references/stdio/fopen.dita" type="reference"/>
+      <topicref href="references/stdio/fputc.dita" type="reference"/>
+      <topicref href="references/stdio/fputs.dita" type="reference"/>
+      <topicref href="references/stdio/fread.dita" type="reference"/>
+      <topicref href="references/stdio/freopen.dita" type="reference"/>
+      <topicref href="references/stdio/fseek.dita" type="reference"/>
+      <topicref href="references/stdio/fsetpos.dita" type="reference"/>
+      <topicref href="references/stdio/ftell.dita" type="reference"/>
+      <topicref href="references/stdio/fwrite.dita" type="reference"/>
+      <topicref href="references/stdio/getc.dita" type="reference"/>
+      <topicref href="references/stdio/getchar.dita" type="reference"/>
+      <topicref href="references/stdio/gets.dita" type="reference"/>
+      <topicref href="references/stdio/iprintf.dita" type="reference"/>
+      <topicref href="references/stdio/mktemp.dita" type="reference"/>
+      <topicref href="references/stdio/perror.dita" type="reference"/>
+      <topicref href="references/stdio/printf.dita" type="reference"/>
+      <topicref href="references/stdio/putc.dita" type="reference"/>
+      <topicref href="references/stdio/putchar.dita" type="reference"/>
+      <topicref href="references/stdio/puts.dita" type="reference"/>
+      <topicref href="references/stdio/remove.dita" type="reference"/>
+      <topicref href="references/stdio/rename.dita" type="reference"/>
+      <topicref href="references/stdio/rewind.dita" type="reference"/>
+      <topicref href="references/stdio/scanf.dita" type="reference"/>
+      <topicref href="references/stdio/setbuf.dita" type="reference"/>
+      <topicref href="references/stdio/setvbuf.dita" type="reference"/>
+      <topicref href="references/stdio/siprintf.dita" type="reference"/>
+      <topicref href="references/stdio/tmpfile.dita" type="reference"/>
+      <topicref href="references/stdio/tmpnam.dita" type="reference"/>
+      <topicref href="references/stdio/vprintf.dita" type="reference"/>
+    </topicref>
+    <topicref href="topics/string.dita" type="topic">
+      <topicref href="references/string/bcmp.dita" type="reference"/>
+      <topicref href="references/string/bcopy.dita" type="reference"/>
+      <topicref href="references/string/bzero.dita" type="reference"/>
+      <topicref href="references/string/index.dita" type="reference"/>
+      <topicref href="references/string/memchr.dita" type="reference"/>
+      <topicref href="references/string/memcmp.dita" type="reference"/>
+      <topicref href="references/string/memcpy.dita" type="reference"/>
+      <topicref href="references/string/memmove.dita" type="reference"/>
+      <topicref href="references/string/memset.dita" type="reference"/>
+      <topicref href="references/string/rindex.dita" type="reference"/>
+      <topicref href="references/string/strcat.dita" type="reference"/>
+      <topicref href="references/string/strchr.dita" type="reference"/>
+      <topicref href="references/string/strcmp.dita" type="reference"/>
+      <topicref href="references/string/strcoll.dita" type="reference"/>
+      <topicref href="references/string/strcpy.dita" type="reference"/>
+      <topicref href="references/string/strcspn.dita" type="reference"/>
+      <topicref href="references/string/strerror.dita" type="reference"/>
+      <topicref href="references/string/strlen.dita" type="reference"/>
+      <topicref href="references/string/strlwr.dita" type="reference"/>
+      <topicref href="references/string/strncat.dita" type="reference"/>
+      <topicref href="references/string/strncmp.dita" type="reference"/>
+      <topicref href="references/string/strncpy.dita" type="reference"/>
+      <topicref href="references/string/strpbrk.dita" type="reference"/>
+      <topicref href="references/string/strrchr.dita" type="reference"/>
+      <topicref href="references/string/strspn.dita" type="reference"/>
+      <topicref href="references/string/strstr.dita" type="reference"/>
+      <topicref href="references/string/strtok.dita" type="reference"/>
+      <topicref href="references/string/strupr.dita" type="reference"/>
+      <topicref href="references/string/strxfrm.dita" type="reference"/>
+    </topicref>
+    <topicref href="topics/time.dita" type="topic">
+      <topicref href="references/time/asctime.dita" type="reference"/>
+      <topicref href="references/time/clock.dita" type="reference"/>
+      <topicref href="references/time/ctime.dita" type="reference"/>
+      <topicref href="references/time/difftime.dita" type="reference"/>
+      <topicref href="references/time/gmtime.dita" type="reference"/>
+      <topicref href="references/time/localtime.dita" type="reference"/>
+      <topicref href="references/time/mktime.dita" type="reference"/>
+      <topicref href="references/time/strftime.dita" type="reference"/>
+      <topicref href="references/time/time.dita" type="reference"/>
+    </topicref>
+    <topicref href="topics/math.dita" type="topic">
+      <topicref href="references/math/acos.dita" type="reference"/>
+      <topicref href="references/math/acosh.dita" type="reference"/>
+      <topicref href="references/math/asin.dita" type="reference"/>
+      <topicref href="references/math/asinh.dita" type="reference"/>
+      <topicref href="references/math/atan.dita" type="reference"/>
+      <topicref href="references/math/atan2.dita" type="reference"/>
+      <topicref href="references/math/atanh.dita" type="reference"/>
+      <topicref href="references/math/jN.dita" type="reference"/>
+      <topicref href="references/math/cbrt.dita" type="reference"/>
+      <topicref href="references/math/copysign.dita" type="reference"/>
+      <topicref href="references/math/cosh.dita" type="reference"/>
+      <topicref href="references/math/erf.dita" type="reference"/>
+      <topicref href="references/math/exp.dita" type="reference"/>
+      <topicref href="references/math/expm1.dita" type="reference"/>
+      <topicref href="references/math/fabs.dita" type="reference"/>
+      <topicref href="references/math/floor.dita" type="reference"/>
+      <topicref href="references/math/fmod.dita" type="reference"/>
+      <topicref href="references/math/frexp.dita" type="reference"/>
+      <topicref href="references/math/gamma.dita" type="reference"/>
+      <topicref href="references/math/hypot.dita" type="reference"/>
+      <topicref href="references/math/ilogb.dita" type="reference"/>
+      <topicref href="references/math/infinity.dita" type="reference"/>
+      <topicref href="references/math/isnan.dita" type="reference"/>
+      <topicref href="references/math/ldexp.dita" type="reference"/>
+      <topicref href="references/math/log.dita" type="reference"/>
+      <topicref href="references/math/log10.dita" type="reference"/>
+      <topicref href="references/math/log1p.dita" type="reference"/>
+      <topicref href="references/math/matherr.dita" type="reference"/>
+      <topicref href="references/math/modf.dita" type="reference"/>
+      <topicref href="references/math/nan.dita" type="reference"/>
+      <topicref href="references/math/nextafter.dita" type="reference"/>
+      <topicref href="references/math/pow.dita" type="reference"/>
+      <topicref href="references/math/rint.dita" type="reference"/>
+      <topicref href="references/math/scalbn.dita" type="reference"/>
+      <topicref href="references/math/sqrt.dita" type="reference"/>
+      <topicref href="references/math/sin.dita" type="reference"/>
+      <topicref href="references/math/sinh.dita" type="reference"/>
+      <topicref href="references/math/tan.dita" type="reference"/>
+      <topicref href="references/math/tanh.dita" type="reference"/>
+    </topicref>
+    <topicref href="topics/other.dita" type="topic">
+      <topicref href="references/unctrl/unctrl.dita" type="reference"/>
+      <topicref href="topics/variable_argument_lists.dita" type="topic">
+        <topicref href="topics/stdarg.dita" type="topic">
+          <topicref href="references/stdarg/va_start.dita" type="reference"/>
+          <topicref href="references/stdarg/va_arg.dita" type="reference"/>
+          <topicref href="references/stdarg/va_end.dita" type="reference"/>
+        </topicref>
+        <topicref href="topics/varargs.dita" type="topic">
+          <topicref href="references/varargs/va_dcl.dita" type="reference"/>
+          <topicref href="references/varargs/va_start.dita" type="reference"/>
+          <topicref href="references/varargs/va_arg.dita" type="reference"/>
+          <topicref href="references/varargs/va_end.dita" type="reference"/>
+        </topicref>
+      </topicref>
+    </topicref>
+    <topicref href="topics/copyright.dita" type="topic"/>
+  </topicref>
+  <topicref href="topics/com_interface.dita" type="topic">
+    <topicref href="topics/com_interface_application.dita" type="topic"/>
+    <topicref href="topics/com_interface_api.dita" type="topic">
+      <topicref href="references/com_interface_api/Connect.dita" type="reference"/>
+      <topicref href="references/com_interface_api/ResetHW.dita" type="reference"/>
+      <topicref href="references/com_interface_api/GetErrorCounter.dita" type="reference"/>
+      <topicref href="references/com_interface_api/SendCANMSg.dita" type="reference"/>
+      <topicref href="references/com_interface_api/GetMsgInfo.dita" type="reference"/>
+      <topicref href="references/com_interface_api/GetNetworkStatistics.dita" type="reference"/>
+      <topicref href="references/com_interface_api/LoadAllDll.dita" type="reference"/>
+      <topicref href="references/com_interface_api/UnLoadAllDll.dita" type="reference"/>
+      <topicref href="references/com_interface_api/SendKeyValue.dita" type="reference"/>
+      <topicref href="references/com_interface_api/EnableDisableHandlers.dita" type="reference"/>
+      <topicref href="references/com_interface_api/ImportDatabase.dita" type="reference"/>
+      <topicref href="references/com_interface_api/LoadConfiguration.dita" type="reference"/>
+      <topicref href="references/com_interface_api/SaveConfiguration.dita" type="reference"/>
+      <topicref href="references/com_interface_api/SaveConfigurationAs.dita" type="reference"/>
+      <topicref href="references/com_interface_api/GetTxBlockCount.dita" type="reference"/>
+      <topicref href="references/com_interface_api/ClearTxBlockList.dita" type="reference"/>
+      <topicref href="references/com_interface_api/StartTxMsgBlock.dita" type="reference"/>
+      <topicref href="references/com_interface_api/StopTxMsgBlock.dita" type="reference"/>
+      <topicref href="references/com_interface_api/EnableFilterSch.dita" type="reference"/>
+      <topicref href="references/com_interface_api/GetLoggingBlockCount.dita" type="reference"/>
+      <topicref href="references/com_interface_api/RemoveLoggingBlock.dita" type="reference"/>
+      <topicref href="references/com_interface_api/ClearLoggingBlock.dita" type="reference"/>
+      <topicref href="references/com_interface_api/StartLogging.dita" type="reference"/>
+      <topicref href="references/com_interface_api/StopLogging.dita" type="reference"/>
+      <topicref href="references/com_interface_api/WriteToLogFile.dita" type="reference"/>
+    </topicref>
+  </topicref>
+  <topicref href="topics/hotkeys.dita" type="topic"/>
+  <topicref href="topics/suberror.dita" type="topic"/>
+  <topicref href="topics/faq.dita" type="topic"/>
+  <topichead navtitle="Unused chapters" toc="no">
+    <topicref href="topics/message_logging.dita" type="topic" toc="no"/>
+    <topicref href="topics/main_index.dita" type="topic" toc="no"/>
+    <topicref href="topics/connection_details.dita" type="topic" toc="no"/>
+  </topichead>
+</map>

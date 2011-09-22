@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="WriteToLogFile" xml:lang="en-us">
+  <title>WriteToLogFile : Writes a text in the log file currently open</title>
+  <refbody>
+    <section>
+      <title>Description</title>
+      <p>This function writes a text in the log file currently open.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>bstrStr - The input string in BSTR</p>
+    </section>
+    <section>
+      <title>Cause of failure</title>
+      <p>Logging not enabled, log file not present</p>
+    </section>
+  </refbody>
+</reference>

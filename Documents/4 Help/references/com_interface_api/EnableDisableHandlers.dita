@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="EnableDisableHandlers" xml:lang="en-us">
+  <title>EnableDisableHandlers : To enable or disable DLL handlers</title>
+  <refbody>
+    <section>
+      <title>Description</title>
+      <p>This function will enable or disable different handlers depending upon the argument passed to it.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>Enum eHandlerType { all = 0, timers = all + 1, key = timers + 1, message = key + 1, error = message + 1 }</p>
+    </section>
+    <section>
+      <title>Cause of failure</title>
+      <p>Invalid Enum type.</p>
+    </section>
+  </refbody>
+</reference>

@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="strtod" xml:lang="en-us">
+  <title>strtod, strtodf : string to double or float</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdlib.h&gt;
+double strtod(const char *str, char **tail);
+float strtodf(const char *str, char **tail);
+double _strtod_r(void *reent, const char *str, char **tail);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>The function strtod parses the character string str, producing a substring which can be converted to a double value. The substring converted is the longest initial subsequence of str, beginning with the first non-whitespace character, that has the format: [+|-]digits[.][digits][(e|E)[+|-]digits]</p>
+      <p>The substring contains no characters if str is empty, consists entirely of whitespace, or if the first non-whitespace character is something other than +, -, ., or a digit. If the substring is empty, no conversion is done, and the value of str is stored in *tail. Otherwise, the substring is converted, and a pointer to the final string (which will contain at least the terminating null character of str) is stored in *tail. If you want no assignment to *tail, pass a null pointer as tail. strtodf is identical to strtod except for its return type.</p>
+      <p>This implementation returns the nearest machine number to the input decimal string. Ties are broken by using the IEEE round-even rule.</p>
+      <p>The alternate function _strtod_r is a reentrant version. The extra argument reent is a pointer to a reentrancy structure.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>strtod returns the converted substring value, if any. If no conversion could be performed, 0 is returned. If the correct value is out of the range of representable values, plus or minus HUGE_VAL is returned, and ERANGE is stored in errno. If the correct value would cause underflow, 0 is returned and ERANGE is stored in errno.</p>
+    </section>
+  </refbody>
+</reference>

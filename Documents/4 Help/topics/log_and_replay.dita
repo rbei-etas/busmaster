@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="log_and_replay" xml:lang="en-us">
+  <title>Log and Replay</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <section>
+      <title>Logging</title>
+      <p>User can configure log file setting using Configure  <image href="../images/Arrow.jpg"/> Log menu. This will show log file configuration dialog as shown below.</p>
+      <image href="../images/log_config.bmp" placement="break" alt="Log File Configuration Dialog"/>
+    </section>
+    <section>
+      <title>Log Files</title>
+      <p>User can add as many as log files in to the list of Log Files. This list will show the log files that are already configured. To add a new Log file select Add button. This will add a log file with default file name. User can change the file name using &quot;...&quot; button in the Log File Details section. The check box associated with the log file will make the log file eligible for logging. If the check box is not checked logging will not happen to that particular file.</p>
+    </section>
+    <section>
+      <title>Log File Details</title>
+      <p>Log file details will give configuration of the selected log file. This will give info of log file path, time mode, numeric mode, file mode, log triggers and log filter.</p>
+    </section>
+    <section>
+      <title>Log File Path</title>
+      <p>The file path text box will give the selected log file path. To change the path select &quot;...&quot; button. This will show file selection dialog. On selection of a log file, the file path text box will be updated with selected file path.</p>
+    </section>
+    <section>
+      <title>Time Mode</title>
+      <p>Logging of messages can be done in three different time modes. System time, Absolute time and Relative time mode. In system time mode time stamping of message is done using real time clock of the system. In absolute time mode the time stamping is done with respect the to the absolute timer that will be stated during connect. In relative time mode the time stamping of a message is with respect to previously received message.</p>
+    </section>
+    <section>
+      <title>Numeric Mode</title>
+      <p>This tells the numeric format of log file entries. It has two options Hex and Decimal. Message ID and data bytes of a CAN message will use this as a base while format for logging.</p>
+    </section>
+    <section>
+      <title>File Mode</title>
+      <p>In Append file mode, log sessions will be appended at the end of the file. Each logging session will have its own session header and footer. In Overwrite file mode the file will be overwritten for the first session. For consecutive sessions the file name will be suffixed with an incrementing number and each session will be logged in new files. The log file name will be incremented every-time when you stop the logging process.</p>
+    </section>
+    <example>
+      <title>Example</title>
+      <p>If the log file name is xyz.log for the first time, then for the next time the log file name will be xyz0.log.</p>
+      <p>Similarly, if the log file name is xyzn.log for the first time, where n – is any number, then for the next time the log file name will be xyzm.log, where m = n + 1.</p>
+    </example>
+    <section>
+      <title>Replay</title>
+      <p>User can configure replay file setting using Configure  <image href="../images/Arrow.jpg"/>    Replay menu. This will show replay file configuration dialog as shown below.</p>
+      <image href="../images/replay_config.bmp" placement="break" alt="Replay File Configuration Dialog"/>
+    </section>
+    <section>
+      <title>Replay Files</title>
+      <p>User can add as many as replay files in to the replay list. This list will show the replay files that are already configured. To add a new Replay file select Add button. This will show replay file selection dialog. User can select log files that are created using BUSMASTER. Once the user has selected a replay file, the file will be added to the replay list. User can change the file &quot;... &quot; button in the Replay File Details section. The check box associated with replay file will make the replay file eligible to run. If the check box is not checked then that replay will not be used for replay.</p>
+    </section>
+    <section>
+      <title>Replay File Details</title>
+      <p>Replay file details will give configuration of the selected replay file. This will give info of replay file path, time mode, replay mode, filters and Replay type.</p>
+    </section>
+    <section>
+      <title>Replay File Path</title>
+      <p>The file path text box will give the selected replay file path. To change the path select &quot;...&quot; button. This will show file selection dialog. On selection of a log file, the file path text box will be updated with selected file path.</p>
+    </section>
+    <section>
+      <title>Replay Time Mode</title>
+      <p>Time mode or replay tells whether to use logged time for replay or to use user specified value. If user selects Retain Delay option then the delay between messages will be calculated from the log file time stamping. If this option is not checked then user can specify the delay between messages.</p>
+    </section>
+    <section>
+      <title>Replay Mode</title>
+      <p>Replay mode instructs whether the replay file has to be transmitted only once or cyclically. In cyclic mode, messages will be transmitted periodically. User can specify the cycle delay which will be used in between cycles. Where as in monoshot or once, the replay of messages will happen only once.</p>
+    </section>
+    <section>
+      <title>Interactive Replay</title>
+      <p>In interactive replay mode, the log file content will be display as list of messages and user can navigate this list and can transmit interested messages. User can step through replay messages, can skip messages, can start message transmission continuously and can insert break points.</p>
+    </section>
+    <section>
+      <title>Non Interactive Replay</title>
+      <p>In non interactive mode, reply will start during tool connect and will be stopped during tool disconnect. In case of cyclic mode the replay will continue till tool disconnect and in monoshot or once, all messages will be transmitted only once and replay will start.</p>
+    </section>
+  </body>
+</topic>

@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="hypot" xml:lang="en-us">
+  <title>hypot, hypotf : distance from origin</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double hypot(double x, double y);
+float hypotf(float x, float y);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>hypot calculates the Euclidean distance between the origin (0,0) and a point represented by the Cartesian coordinates (x,y). hypotf differs only in the type of its arguments and result.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>Normally, the distance value is returned. On overflow, hypot returns HUGE_VAL and sets errno to ERANGE. You can change the error treatment with matherr.</p>
+    </section>
+  </refbody>
+</reference>

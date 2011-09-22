@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="bcopy" xml:lang="en-us">
+  <title>bcopy : copy memory regions</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;string.h&gt;
+void bcopy(const char *in, char *out, size_t n);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function copies n bytes from the memory region pointed to by in to the memory region pointed to by out.</p>
+      <p>This function is implemented in term of memmove.</p>
+    </section>
+  </refbody>
+</reference>

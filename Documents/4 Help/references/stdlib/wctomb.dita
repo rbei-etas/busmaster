@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="wctomb" xml:lang="en-us">
+  <title>wctomb : minimal wide char to multibyte converter</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdlib.h&gt;
+int wctomb(char *s, wchar_t wchar);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This is a minimal ANSI-conforming implementation of wctomb. The only &quot;wide characters&quot; recognized are single bytes, and they are &quot;converted&quot; to themselves.</p>
+      <p>Each call to wctomb copies the character wchar to *s, unless s is a null pointer.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>This implementation of wctomb returns 0 if s is NULL; it returns 1 otherwise (reporting the length of the character &quot;sequence&quot; generated).</p>
+    </section>
+  </refbody>
+</reference>

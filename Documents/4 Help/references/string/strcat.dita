@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="strcat" xml:lang="en-us">
+  <title>strcat : concatenate strings</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;string.h&gt;
+char *strcat(char *dst, const char *src);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>strcat appends a copy of the string pointed to by src (including the terminating null character) to the end of the string pointed to by dst. The initial character of src overwrites the null character at the end of dst.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>This function returns the initial value of dst</p>
+    </section>
+  </refbody>
+</reference>

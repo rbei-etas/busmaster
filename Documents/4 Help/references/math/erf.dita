@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="erf" xml:lang="en-us">
+  <title>erf, erff, erfc, erfcf : error function</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double erf(double x);
+float erff(float x);
+double erfc(double x);
+float erfcf(float x);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>erf calculates an approximation to the &quot;error function&quot;, which estimates the probability that an observation will fall within x standard deviations of the mean (assuming a normal distribution). erfc calculates the complementary probability; that is, erfc(x) is 1 - erf(x). erfc is computed directly, so that you can use it to avoid the loss of precision that would result from subtracting large probabilities (on large x) from 1. erff and erfcf differ from erf and erfc only in the argument and result types.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>For positive arguments, erf and all its variants return a probability--a number between 0 and 1.</p>
+    </section>
+  </refbody>
+</reference>

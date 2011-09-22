@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="cbrt" xml:lang="en-us">
+  <title>cbrt, cbrtf : cube root</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double cbrt(double x);
+float  cbrtf(float x);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>cbrt computes the cube root of the argument.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The cube root is returned.</p>
+    </section>
+  </refbody>
+</reference>

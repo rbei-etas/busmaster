@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="tmpnam" xml:lang="en-us">
+  <title>tmpnam, tempnam : name for a temporary file</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+char *tmpnam(char *s);
+char *tempnam(char *dir, char *pfx);
+char *_tmpnam_r(void *reent, char *s);
+char *_tempnam_r(void *reent, char *dir, char *pfx);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Use either of these functions to generate a name for a temporary file. The generated name is guaranteed to avoid collision with other files (for up to TMP_MAX calls of either function).</p>
+      <p>tmpnam generates file names with the value of P_tmpdir (defined in `stdio.h&apos;) as the leading directory component of the path.</p>
+      <p>You can use the tmpnam argument s to specify a suitable area of memory for the generated filename; otherwise, you can call tmpnam(NULL) to use an internal static buffer.</p>
+      <p>tempnam allows you more control over the generated filename: you can use the argument dir to specify the path to a directory for temporary files, and you can use the argument pfx to specify a prefix for the base filename.</p>
+      <p>If dir is NULL, tempnam will attempt to use the value of environment variable TMPDIR instead; if there is no such value, tempnam uses the value of P_tmpdir (defined in `stdio.h&apos;).</p>
+      <p>If you don&apos;t need any particular prefix to the basename of temporary files, you can pass NULL as the pfx argument to tempnam.</p>
+      <p>_tmpnam_r and _tempnam_r are reentrant versions of tmpnam and tempnam respectively. The extra argument reent is a pointer to a reentrancy structure.</p>
+      <p>Warnings</p>
+      <p>The generated filenames are suitable for temporary files, but do not in themselves make files temporary. Files with these names must still be explicitly removed when you no longer want them.</p>
+      <p>If you supply your own data area s for tmpnam, you must ensure that it has room for at least L_tmpnam elements of type char.
+
+</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>Both tmpnam and tempnam return a pointer to the newly generated filename.</p>
+    </section>
+  </refbody>
+</reference>

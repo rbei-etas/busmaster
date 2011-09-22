@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="freopen" xml:lang="en-us">
+  <title>freopen : open a file using an existing file descriptor</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+FILE *freopen(const char *file, const char *mode, FILE *fp);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Use this variant of fopen if you wish to specify a particular file descriptor fp (notably stdin, stdout, or stderr) for the file. If fp was associated with another file or stream, freopen closes that other file or stream (but ignores any errors while closing it). file and mode are used just as in fopen.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>If successful, the result is the same as the argument fp. If the file cannot be opened as specified, the result is NULL.</p>
+    </section>
+  </refbody>
+</reference>

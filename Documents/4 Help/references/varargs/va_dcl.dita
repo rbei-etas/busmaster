@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="va_dcl" xml:lang="en-us">
+  <title>Declare variable arguments</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;varargs.h&gt;
+function(va_alist) va_dcl</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>To use the `varargs.h&apos; version of variable argument lists, you must declare your function with a call to the macro va_alist as its argument list, and use va_dcl as the declaration. Do not use a semicolon after va_dcl.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>These macros cannot be used in a context where a return is syntactically possible.</p>
+    </section>
+  </refbody>
+</reference>

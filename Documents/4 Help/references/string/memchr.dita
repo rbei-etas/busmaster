@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="memchr" xml:lang="en-us">
+  <title>memchr : find character in memory</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;string.h&gt;
+void *memchr(const void *src, int c, size_t length);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function searches memory starting at *src for the character c. The search only ends with the first occurrence of c, or after length characters; in particular, NULL does not terminate the search.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>If the character c is found within length characters of *src, a pointer to the character is returned. If c is not found, then NULL is returned.</p>
+    </section>
+  </refbody>
+</reference>

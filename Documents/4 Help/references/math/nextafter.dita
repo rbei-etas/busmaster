@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="nextafter" xml:lang="en-us">
+  <title>nextafter, nextafterf : get next number</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double nextafter(double val, double dir);
+float nextafterf(float val, float dir);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>nextafter returns the double) precision floating point number closest to val in the direction toward dir. nextafterf performs the same operation in single precision. For example, nextafter(0.0,1.0) returns the smallest positive number which is representable in double precision.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>Returns the next closest number to val in the direction toward dir.</p>
+    </section>
+  </refbody>
+</reference>
