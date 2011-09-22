@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"
+    prefer="system">
+
+    <!-- Custom attributes entry -->
+    <uri name="cfg:fo/attrs/custom.xsl" uri="fo/attrs/custom.xsl"/>
+
+
+    <!-- Custom XSL code entry.-->
+    <uri name="cfg:fo/xsl/custom.xsl" uri="fo/xsl/custom.xsl"/>
+
+
+    <!-- Layout masters override entry.-->
+    <!--uri name="cfg:fo/layout-masters.xml" uri="fo/layout-masters.xml"/-->
+
+
+    <!-- FontMapper configuration override entry.-->
+    <!--uri name="cfg:fo/font-mappings.xml" uri="fo/font-mappings.xml"/-->
+
+
+    <!-- Common configuration override entries.-->
+    <uri name="cfg:common/vars/en.xml" uri="common/vars/en.xml"/>
+
+
+    <!-- I18N configuration override entries.-->
+    <!--uri name="cfg:fo/i18n/de_DE.xml" uri="fo/i18n/de_DE.xml"/-->
+    <!--uri name="cfg:fo/i18n/en_US.xml" uri="fo/i18n/en_US.xml"/-->
+    <!--uri name="cfg:fo/i18n/es_ES.xml" uri="fo/i18n/es_ES.xml"/-->
+    <!--uri name="cfg:fo/i18n/fr_FR.xml" uri="fo/i18n/fr_FR.xml"/-->
+    <!--uri name="cfg:fo/i18n/it_IT.xml" uri="fo/i18n/it_IT.xml"/-->
+    <!--uri name="cfg:fo/i18n/ja_JP.xml" uri="fo/i18n/ja_JP.xml"/-->
+    <!--uri name="cfg:fo/i18n/zh_CN.xml" uri="fo/i18n/zh_CN.xml"/-->
+
+
+    <!-- Index configuration override entries.-->
+    <!--uri name="cfg:common/index/de_DE.xml" uri="common/index/de_DE.xml"/-->
+    <!--uri name="cfg:common/index/en_US.xml" uri="common/index/en_US.xml"/-->
+    <!--uri name="cfg:common/index/es_ES.xml" uri="common/index/es_ES.xml"/-->
+    <!--uri name="cfg:common/index/fr_FR.xml" uri="common/index/fr_FR.xml"/-->
+    <!--uri name="cfg:common/index/it_IT.xml" uri="common/index/it_IT.xml"/-->
+    <!--uri name="cfg:common/index/ja_JP.xml" uri="common/index/ja_JP.xml"/-->
+    <!--uri name="cfg:common/index/zh_CN.xml" uri="common/index/zh_CN.xml"/-->
+
+</catalog>
