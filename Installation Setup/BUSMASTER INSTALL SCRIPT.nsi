@@ -190,9 +190,10 @@ Section "Uninstall"
      Delete "$INSTDIR\MinGW\mingw32\lib\ldscripts\*.*"	
      Delete "$INSTDIR\MinGW\OBJ\*.*"		      
      Delete "$INSTDIR\uninst.exe"
+     Delete "$INSTDIR\CanApi2.dll"
      	           
-	 Delete "$SMPROGRAMS\BUSMASTER\Uninstall.lnk"
-	 Delete "$SMPROGRAMS\BUSMASTER\BUSMASTER.lnk"
+     Delete "$SMPROGRAMS\BUSMASTER\Uninstall.lnk"
+     Delete "$SMPROGRAMS\BUSMASTER\BUSMASTER.lnk"
 
      RmDir "$INSTDIR\MinGW\bin"
      RmDir "$INSTDIR\MinGW\Include\g++-3\std"
