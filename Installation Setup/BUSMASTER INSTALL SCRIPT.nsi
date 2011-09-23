@@ -41,7 +41,7 @@ Outfile "BUSMASTER Installer.exe"
 Function .onInit
     # the plugins dir is automatically deleted when the installer exits
     InitPluginsDir	
-    File /oname=$PLUGINSDIR\Splsh16.bmp "Resources\Splsh16.bmp"
+    File /oname=$PLUGINSDIR\Splsh16.bmp "..\Sources\BIN\Release\Splsh16.bmp"
     #optional
     #File /oname=$PLUGINSDIR\splash.wav "C:\myprog\sound.wav"
 
@@ -62,51 +62,60 @@ DirText "Please select an installation folder."
 ; Section Default
 Section ""
 
-     SetOutPath $INSTDIR	 
-     File Resources\*.*
-
      SetOutPath $INSTDIR\MinGW\bin	 
-     File Resources\MinGW\bin\*.*
+     File ..\Sources\BIN\Release\MinGW\bin\*.*
 
      SetOutPath $INSTDIR\MinGW\Include
-     File Resources\MinGW\Include\*.*
+     File ..\Sources\BIN\Release\MinGW\Include\*.*
 
      SetOutPath $INSTDIR\MinGW\Include\g++-3
-     File Resources\MinGW\Include\g++-3\*.*
+     File ..\Sources\BIN\Release\MinGW\Include\g++-3\*.*
 
      SetOutPath $INSTDIR\MinGW\Include\g++-3\std
-     File Resources\MinGW\Include\g++-3\std\*.*
+     File ..\Sources\BIN\Release\MinGW\Include\g++-3\std\*.*
 
      SetOutPath $INSTDIR\MinGW\Include\sys
-     File Resources\MinGW\Include\sys\*.*
+     File ..\Sources\BIN\Release\MinGW\Include\sys\*.*
 
      SetOutPath $INSTDIR\MinGW\lib
-     File Resources\MinGW\lib\*.*
+     File ..\Sources\BIN\Release\MinGW\lib\*.*
 
      SetOutPath $INSTDIR\MinGW\lib\gcc-lib\mingw32\2.95.3-6
-     File Resources\MinGW\lib\gcc-lib\mingw32\2.95.3-6\*.*
+     File ..\Sources\BIN\Release\MinGW\lib\gcc-lib\mingw32\2.95.3-6\*.*
 
      SetOutPath $INSTDIR\MinGW\lib\gcc-lib\mingw32\2.95.3-6\include
-     File Resources\MinGW\lib\gcc-lib\mingw32\2.95.3-6\include\*.*
+     File ..\Sources\BIN\Release\MinGW\lib\gcc-lib\mingw32\2.95.3-6\include\*.*
 
      SetOutPath $INSTDIR\MinGW\lib\gcc-lib\mingw32\2.95.3-6\include\objc
-     File Resources\MinGW\lib\gcc-lib\mingw32\2.95.3-6\include\objc\*.*
+     File ..\Sources\BIN\Release\MinGW\lib\gcc-lib\mingw32\2.95.3-6\include\objc\*.*
 
      SetOutPath $INSTDIR\MinGW\man\man1
-     File Resources\MinGW\man\man1\*.*
+     File ..\Sources\BIN\Release\MinGW\man\man1\*.*
 
      SetOutPath $INSTDIR\MinGW\mingw32\include
-     File Resources\MinGW\mingw32\include\*.*
+     File ..\Sources\BIN\Release\MinGW\mingw32\include\*.*
 
      SetOutPath $INSTDIR\MinGW\mingw32\lib
-     File Resources\MinGW\mingw32\lib\*.*
+     File ..\Sources\BIN\Release\MinGW\mingw32\lib\*.*
 
      SetOutPath $INSTDIR\MinGW\mingw32\lib\ldscripts
-     File Resources\MinGW\mingw32\lib\ldscripts\*.*
+     File ..\Sources\BIN\Release\MinGW\mingw32\lib\ldscripts\*.*
 
      SetOutPath $INSTDIR\MinGW\OBJ
-     File Resources\MinGW\OBJ\*.*
-     SetOutPath $INSTDIR
+     File ..\Sources\BIN\Release\MinGW\OBJ\*.*
+     SetOutPath $INSTDIR	 
+     File ..\Sources\BIN\Release\*.exe
+	 File ..\Sources\BIN\Release\*.dll
+	 File ..\Sources\BIN\Release\BUSMASTER.chm
+	 File ..\Sources\BIN\Release\BUSMASTER.tlb
+	 File ..\Sources\BIN\Release\BUSMASTER_Interface.c
+	 File ..\Sources\BIN\Release\BUSMASTER_Interface.h
+	 File ..\Sources\BIN\Release\GCCDLLMakeTemplate_CAN	
+	 File ..\Sources\BIN\Release\Language_Converter.exe
+	 File ..\Sources\BIN\Release\CANDBConverter_Import.exe
+	 File ..\Sources\BIN\Release\CANDBConverter_Export.exe	 
+	 Delete "$INSTDIR\Splsh16.bmp"
+
 
      CreateDirectory "$SMPROGRAMS\BUSMASTER"
 	 CreateShortCut "$SMPROGRAMS\BUSMASTER\BUSMASTER.lnk" "$INSTDIR\BUSMASTER.exe" "" "$INSTDIR\BUSMASTER.exe" 0
@@ -158,9 +167,9 @@ Section "Uninstall"
      Delete "$INSTDIR\CAN_ETAS_ES581.dll"
      Delete "$INSTDIR\CAN_PEAK_USB.dll"
      Delete "$INSTDIR\CAN_STUB.dll"     
-     Delete "$INSTDIR\CAN_Monitor.tlb"
-     Delete "$INSTDIR\CAN_Monitor_Interface.h"
-     Delete "$INSTDIR\CAN_Monitor_Interface.c"
+     Delete "$INSTDIR\BUSMASTER.tlb"
+     Delete "$INSTDIR\BUSMASTER_Interface.h"
+     Delete "$INSTDIR\BUSMASTER_Interface.c"
      Delete "$INSTDIR\GCCDLLMakeTemplate_CAN"
      Delete "$INSTDIR\CANDBConverter_Import.exe"
      Delete "$INSTDIR\CANDBConverter_Export.exe"
@@ -179,8 +188,7 @@ Section "Uninstall"
      Delete "$INSTDIR\MinGW\mingw32\include\*.*"		 
      Delete "$INSTDIR\MinGW\mingw32\lib\*.*"		 
      Delete "$INSTDIR\MinGW\mingw32\lib\ldscripts\*.*"	
-     Delete "$INSTDIR\MinGW\OBJ\*.*"		 
-     Delete "$INSTDIR\Splsh16.bmp"
+     Delete "$INSTDIR\MinGW\OBJ\*.*"		      
      Delete "$INSTDIR\uninst.exe"
      	           
 	 Delete "$SMPROGRAMS\BUSMASTER\Uninstall.lnk"
