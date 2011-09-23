@@ -35,19 +35,19 @@
 #include "Dil_CAN.h"
 
 
-typedef struct 
+typedef struct
 {
     DWORD           m_dwDIL;
     TCHAR           m_acDIL[MAX_DILNAME];
 } ENTRY_DIL;
 
-static ENTRY_DIL sg_ListDIL[DIL_TOTAL] = 
+static ENTRY_DIL sg_ListDIL[DIL_TOTAL] =
 {
-    {DRIVER_CAN_STUB,		_T("CAN_Simulation")},
-    {DRIVER_CAN_ETAS_ES581, _T("CAN_ES581")		},
-    {DRIVER_CAN_BOA,		_T("CAN_BOA")		},
-    {DRIVER_CAN_PEAK_USB,	_T("CAN_USB_PEAK")	},
-    {DRIVER_CAN_PEAK_PP,	_T("CAN_PP_PEAK")	}
+    {DRIVER_CAN_STUB,       _T("CAN_Simulation")},
+    {DRIVER_CAN_ETAS_ES581, _T("CAN_ES581")     },
+    {DRIVER_CAN_BOA,        _T("CAN_BOA")       },
+    {DRIVER_CAN_PEAK_USB,   _T("CAN_USB_PEAK")  },
+    {DRIVER_CAN_PEAK_PP,    _T("CAN_PP_PEAK")   }
 };
 
 
@@ -77,6 +77,9 @@ BOOL CDIL_CAN::InitInstance()
 
 /* End of router implementation along with initialisation with dummy functions */
 
+/**
+ * Helper Function for Dummy Interface
+ */
 void CDIL_CAN::vSelectInterface_Dummy(void)
 {
     m_pfPerformInitOperations = DILC_Dummy_PerformInitOperations;
@@ -96,7 +99,7 @@ void CDIL_CAN::vSelectInterface_Dummy(void)
     m_pfGetBusConfigInfo = DILC_Dummy_GetBusConfigInfo;
     m_pfGetVersionInfo = DILC_Dummy_GetVersionInfo;
     m_pfGetLastErrorString = DILC_Dummy_GetLastErrorString;
-	m_pfFilterFrames = DILC_Dummy_FilterFrames;
+    m_pfFilterFrames = DILC_Dummy_FilterFrames;
     m_pfManageMsgBuf = DILC_Dummy_ManageMsgBuf;
     m_pfRegisterClient = DILC_Dummy_RegisterClient;
     m_pfGetCntrlStatus = DILC_Dummy_GetCntrlStatus;
@@ -104,6 +107,9 @@ void CDIL_CAN::vSelectInterface_Dummy(void)
     m_pfGetErrorCount = DILC_Dummy_GetErrorCount;
 }
 
+/**
+ * Helper Function for CAN_Usb Interface
+ */
 void CDIL_CAN::vSelectInterface_CAN_Usb(void)
 {
     m_pfPerformInitOperations = CAN_Usb_PerformInitOperations;
@@ -123,7 +129,7 @@ void CDIL_CAN::vSelectInterface_CAN_Usb(void)
     m_pfGetBusConfigInfo = CAN_Usb_GetBusConfigInfo;
     m_pfGetVersionInfo = CAN_Usb_GetVersionInfo;
     m_pfGetLastErrorString = CAN_Usb_GetLastErrorString;
-	m_pfFilterFrames = CAN_Usb_FilterFrames;
+    m_pfFilterFrames = CAN_Usb_FilterFrames;
     m_pfManageMsgBuf = CAN_Usb_ManageMsgBuf;
     m_pfRegisterClient = CAN_Usb_RegisterClient;
     m_pfGetCntrlStatus = CAN_Usb_GetCntrlStatus;
@@ -131,6 +137,9 @@ void CDIL_CAN::vSelectInterface_CAN_Usb(void)
     m_pfGetErrorCount = CAN_Usb_GetErrorCount;
 }
 
+/**
+ * Helper Function for CAN_STUB Interface
+ */
 void CDIL_CAN::vSelectInterface_CAN_STUB(void)
 {
     m_pfPerformInitOperations = CAN_STUB_PerformInitOperations;
@@ -150,7 +159,7 @@ void CDIL_CAN::vSelectInterface_CAN_STUB(void)
     m_pfGetBusConfigInfo = CAN_STUB_GetBusConfigInfo;
     m_pfGetVersionInfo = CAN_STUB_GetVersionInfo;
     m_pfGetLastErrorString = CAN_STUB_GetLastErrorString;
-	m_pfFilterFrames = CAN_STUB_FilterFrames;
+    m_pfFilterFrames = CAN_STUB_FilterFrames;
     m_pfManageMsgBuf = CAN_STUB_ManageMsgBuf;
     m_pfRegisterClient = CAN_STUB_RegisterClient;
     m_pfGetCntrlStatus = CAN_STUB_GetCntrlStatus;
@@ -158,6 +167,9 @@ void CDIL_CAN::vSelectInterface_CAN_STUB(void)
     m_pfGetErrorCount = CAN_STUB_GetErrorCount;
 }
 
+/**
+ * Helper Function for CAN_ETAS_ES581 Interface
+ */
 void CDIL_CAN::vSelectInterface_CAN_ETAS_ES581(void)
 {
     m_pfPerformInitOperations = CAN_ES581_Usb_PerformInitOperations;
@@ -177,7 +189,7 @@ void CDIL_CAN::vSelectInterface_CAN_ETAS_ES581(void)
     m_pfGetBusConfigInfo = CAN_ES581_Usb_GetBusConfigInfo;
     m_pfGetVersionInfo = CAN_ES581_Usb_GetVersionInfo;
     m_pfGetLastErrorString = CAN_ES581_Usb_GetLastErrorString;
-	m_pfFilterFrames = CAN_ES581_Usb_FilterFrames;
+    m_pfFilterFrames = CAN_ES581_Usb_FilterFrames;
     m_pfManageMsgBuf = CAN_ES581_Usb_ManageMsgBuf;
     m_pfRegisterClient = CAN_ES581_Usb_RegisterClient;
     m_pfGetCntrlStatus = CAN_ES581_Usb_GetCntrlStatus;
@@ -185,11 +197,17 @@ void CDIL_CAN::vSelectInterface_CAN_ETAS_ES581(void)
     m_pfGetErrorCount = CAN_ES581_Usb_GetErrorCount;
 }
 
+/**
+ * Helper Function for CAN_Parallel_Port Interface
+ */
 void CDIL_CAN::vSelectInterface_CAN_Parallel_Port(void)
 {
-   
+
 }
 
+/**
+ * Helper Function for CAN_BOA Interface
+ */
 void CDIL_CAN::vSelectInterface_CAN_BOA(void)
 {
     m_pfPerformInitOperations = CAN_BOA_PerformInitOperations;
@@ -215,15 +233,17 @@ void CDIL_CAN::vSelectInterface_CAN_BOA(void)
     m_pfGetCntrlStatus = CAN_BOA_GetCntrlStatus;
     m_pfGetControllerParams = CAN_BOA_GetControllerParams;
     m_pfGetErrorCount = CAN_BOA_GetErrorCount;
-   
 }
 /* ROUTER CODE FINISHES */
 
 /**
- * \function  DILC_GetDILList
+ * \brief     Get DIL list
  * \req       RS_23_01 - Getter for the DIL List
  *
- * Getter for the DIL List
+ * Based on the parameter this function renders number of the driver interface
+ * layers supported or available. If 'bAvailable' is true, this returns number of
+ * the DILs implemented; else the list of the DILs supported by the existing
+ * license will be returned. If List is NULL, only number is returned.
  */
 DWORD CDIL_CAN::DILC_GetDILList(bool /*bAvailable*/, DILLIST* List)
 {
@@ -242,12 +262,13 @@ DWORD CDIL_CAN::DILC_GetDILList(bool /*bAvailable*/, DILLIST* List)
 }
 
 /**
- * \function  DILC_GetDILList
+ * \brief     Select driver from DIL list
  * \req       RS_23_02 - Selecting a driver from the DIL list
  *
- * Selecting a driver from the DIL list
+ * This function selects a driver abstraction layer (DAL). If support for the
+ * intended one isn't allowed with the present license, this returns NO_LICENSE.
  */
-HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner, 
+HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
               Base_WrapperErrorLogger* pILog)
 {
     USES_CONVERSION;
@@ -266,15 +287,15 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
     {
         if (hWndOwner == NULL)
         {
-            /* Log a warning message informing about the invalidity of the 
+            /* Log a warning message informing about the invalidity of the
             owner window handle. */
         }
 
         if (dwDriverID == DRIVER_CAN_PEAK_USB)
         {
             pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Selecting DAL_NONE..."));
-			// First select the dummy interface
-	        DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
+            // First select the dummy interface
+            DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
             // First set the application parameters.
             CAN_Usb_SetAppParams(hWndOwner, pILog);
             // Next load the driver library
@@ -302,8 +323,8 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
         else if (dwDriverID == DRIVER_CAN_ETAS_ES581)
         {
             pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Selecting DAL_NONE..."));
-			// First select the dummy interface
-	        DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
+            // First select the dummy interface
+            DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
             // First set the application parameters.
             hResult = CAN_ES581_Usb_SetAppParams(hWndOwner, pILog);
             // Next load the driver library
@@ -331,8 +352,8 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
         else if (dwDriverID == DRIVER_CAN_BOA)
         {
             pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Selecting DAL_NONE..."));
-			// First select the dummy interface
-	        DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
+            // First select the dummy interface
+            DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
 
             // First set the application parameters.
             hResult = CAN_BOA_SetAppParams(hWndOwner, pILog);
@@ -359,8 +380,8 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
         }
         else if (dwDriverID == DRIVER_CAN_PEAK_PP)
         {
-			// First select the dummy interface
-	        DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
+            // First select the dummy interface
+            DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
 
             // First set the application parameters.
             //CAN_Parallel_Port_SetAppParams(hWndOwner, pILog);
@@ -382,8 +403,8 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
         else if (dwDriverID == DRIVER_CAN_STUB)
         {
             pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Selecting DRIVER_CAN_STUB..."));
-			// First select the dummy interface
-	        DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
+            // First select the dummy interface
+            DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
 
             // First set the application parameters.
             hResult = CAN_STUB_SetAppParams(hWndOwner, pILog);
@@ -423,16 +444,22 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
     return hResult;
 }
 
+/**
+ * \brief     Manage target message buffer list
+ *
+ * This function manages the target message buffer list.
+ */
 HRESULT CDIL_CAN::DILC_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
     return (*m_pfManageMsgBuf)(bAction, ClientID, pBufObj);
 }
 
 /**
- * \function  DILC_RegisterClient
+ * \brief     Register a client
  * \req       RS_23_04 - Registration of a client to simulate a node
  *
- * Registration of a client to simulate a node
+ * This function registers the client. Only registered client's buffer will be
+ * updated on receive of a msg in the bus.
  */
 HRESULT CDIL_CAN::DILC_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
 {
@@ -440,10 +467,10 @@ HRESULT CDIL_CAN::DILC_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pa
 }
 
 /**
- * \function  DILC_GetSelectedDriver
+ * \brief     Get selected driver
  * \req       RS_23_03 - Getter for the presently selected driver
  *
- * Getter for the presently selected driver
+ * This returns ID of the driver interface layer presently selected.
  */
 DWORD CDIL_CAN::DILC_GetSelectedDriver(void)
 {
@@ -469,10 +496,10 @@ DWORD CDIL_CAN::DILC_GetSelectedDriver(void)
 }
 
 /**
- * \function  DILC_PerformInitOperations
+ * \brief     Initialize operation
  * \req       RS_23_08 - Carry out initialization operations
  *
- * Carry out initialization operations
+ * Call for all initialisation operations
  */
 HRESULT CDIL_CAN::DILC_PerformInitOperations(void)
 {
@@ -480,10 +507,10 @@ HRESULT CDIL_CAN::DILC_PerformInitOperations(void)
 }
 
 /**
- * \function  DILC_PerformClosureOperations
+ * \brief     Closure operation
  * \req       RS_23_09 - Carry out closure operations
  *
- * Carry out closure operations
+ * Call for all uninitialisation operations
  */
 HRESULT CDIL_CAN::DILC_PerformClosureOperations(void)
 {
@@ -493,10 +520,10 @@ HRESULT CDIL_CAN::DILC_PerformClosureOperations(void)
 }
 
 /**
- * \function  DILC_GetTimeModeMapping
+ * \brief     Get time mode mapping
  * \req       RS_23_10 - Getter for the time mode mapping (usually the 64-bit time stamp by the driver)
  *
- * Getter for the time mode mapping (usually the 64-bit time stamp by the driver)
+ * Call this function to get a system time and the time stamp associated with it
  */
 HRESULT CDIL_CAN::DILC_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
 {
@@ -504,21 +531,21 @@ HRESULT CDIL_CAN::DILC_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeS
 }
 
 /**
- * \function  DILC_ListHwInterfaces
+ * \brief     List hardware interfaces
  * \req       RS_23_11 - Listing of the controllers for the current driver
  *
- * Listing of the controllers for the current driver
+ * Call this function to list the hardware interfaces available and receive user's choice.
  */
 HRESULT CDIL_CAN::DILC_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount)
-{    
+{
     return (*m_pfListHwInterfaces)(sSelHwInterface, nCount);
 }
 
 /**
- * \function  DILC_SelectHwInterfaces
+ * \brief     Select hardware interfaces
  * \req       RS_23_12 - Selection of a controller from the hardware interface list
  *
- * Selection of a controller from the hardware interface list
+ * Call this function to select hardware interfaces.
  */
 HRESULT CDIL_CAN::DILC_SelectHwInterfaces(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount)
 {
@@ -526,10 +553,10 @@ HRESULT CDIL_CAN::DILC_SelectHwInterfaces(const INTERFACE_HW_LIST& sSelHwInterfa
 }
 
 /**
- * \function  DILC_DeselectHwInterfaces
+ * \brief     Deselect hardware interfaces
  * \req       RS_23_13 - Deselection of the presently selected controller
  *
- * Deselection of the presently selected controller
+ * Call this function to deselect the selected hardware interface
  */
 HRESULT CDIL_CAN::DILC_DeselectHwInterfaces(void)
 {
@@ -537,10 +564,13 @@ HRESULT CDIL_CAN::DILC_DeselectHwInterfaces(void)
 }
 
 /**
- * \function  DILC_DisplayConfigDlg
+ * \brief     Display configuration dialog box
  * \req       RS_23_14 - Display the configuration dialog box of the present controller
  *
- * Display the configuration dialog box of the present controller
+ * Function to display the configuration dialog box for the selected DIL. If
+ * the dialog box needs to be displayed been initialised, pass the relevant data
+ * as InitData. If it is null, the dialog box is uninitialised. This also contains
+ *  the user's choice as OUT parameter */
  */
 HRESULT CDIL_CAN::DILC_DisplayConfigDlg(PCHAR& InitData, int& Length)
 {
@@ -548,10 +578,11 @@ HRESULT CDIL_CAN::DILC_DisplayConfigDlg(PCHAR& InitData, int& Length)
 }
 
 /**
- * \function  DILC_SetConfigData
+ * \brief     Set configuration data
  * \req       RS_23_15 - Setting of the configuration data for the present controller
  *
- * Setting of the configuration data for the present controller
+ * To set the configuration data for the currently selected DIL. Caller must
+ * release the memory.
  */
 HRESULT CDIL_CAN::DILC_SetConfigData(PCHAR pInitData, int Length)
 {
@@ -559,10 +590,10 @@ HRESULT CDIL_CAN::DILC_SetConfigData(PCHAR pInitData, int Length)
 }
 
 /**
- * \function  DILC_StartHardware
+ * \brief     Start the controller
  * \req       RS_23_16 - Start the presently selected controller (or connect)
  *
- * Start the presently selected controller (or connect)
+ * Start the controller
  */
 HRESULT CDIL_CAN::DILC_StartHardware(void)
 {
@@ -570,10 +601,10 @@ HRESULT CDIL_CAN::DILC_StartHardware(void)
 }
 
 /**
- * \function  DILC_StopHardware
+ * \brief     Stop the controller
  * \req       RS_23_17 - Stop the presently selected controller (or disconnect)
  *
- * Stop the presently selected controller (or disconnect)
+ * Stop the controller
  */
 HRESULT CDIL_CAN::DILC_StopHardware(void)
 {
@@ -581,10 +612,10 @@ HRESULT CDIL_CAN::DILC_StopHardware(void)
 }
 
 /**
- * \function  DILC_ResetHardware
+ * \brief     Reset hardware
  * \req       RS_23_18 - Reset the presently selected controller
  *
- * Reset the presently selected controller
+ * Reset Hardware
  */
 HRESULT CDIL_CAN::DILC_ResetHardware(void)
 {
@@ -592,7 +623,9 @@ HRESULT CDIL_CAN::DILC_ResetHardware(void)
 }
 
 /**
- * \function  DILC_GetTxMsgBuffer
+ * \brief     Get transmittable messages
+ *
+ * Call to receive list of the transmittable messages
  */
 HRESULT CDIL_CAN::DILC_GetTxMsgBuffer(BYTE*& pouTxMsgBuffer)
 {
@@ -600,10 +633,10 @@ HRESULT CDIL_CAN::DILC_GetTxMsgBuffer(BYTE*& pouTxMsgBuffer)
 }
 
 /**
- * \function  DILC_SendMsg
+ * \brief     Send messages
  * \req       RS_23_19 - Transmit a frame
  *
- * Transmit a frame
+ * Send messages
  */
 HRESULT CDIL_CAN::DILC_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
 {
@@ -611,7 +644,9 @@ HRESULT CDIL_CAN::DILC_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
 }
 
 /**
- * \function  DILC_GetBoardInfo
+ * \brief     Get basic board info
+ *
+ * Get basic information of the board
  */
 HRESULT CDIL_CAN::DILC_GetBoardInfo(s_BOARDINFO& RBIN_BoardInfo)
 {
@@ -619,7 +654,9 @@ HRESULT CDIL_CAN::DILC_GetBoardInfo(s_BOARDINFO& RBIN_BoardInfo)
 }
 
 /**
- * \function  DILC_GetBusConfigInfo
+ * \brief     Get bus configuration info
+ *
+ * Get salient informations on current bus configuration
  */
 HRESULT CDIL_CAN::DILC_GetBusConfigInfo(BYTE* RBIN_BusInfo)
 {
@@ -627,10 +664,10 @@ HRESULT CDIL_CAN::DILC_GetBusConfigInfo(BYTE* RBIN_BusInfo)
 }
 
 /**
- * \function  DILC_GetVersionInfo
+ * \brief     Get version information
  * \req       RS_23_20 - Getter for the version information of the DIL for the present bus
  *
- * Getter for the version information of the DIL for the present bus
+ * Call to receive the version informations
  */
 HRESULT CDIL_CAN::DILC_GetVersionInfo(VERSIONINFO& sVerInfo)
 {
@@ -638,10 +675,10 @@ HRESULT CDIL_CAN::DILC_GetVersionInfo(VERSIONINFO& sVerInfo)
 }
 
 /**
- * \function  DILC_GetLastErrorString
+ * \brief     Get last error as string
  * \req       RS_23_21 - In case of any error, a function returns the associated string of the last error
  *
- * In case of any error, a function returns the associated string of the last error
+ * Call to get descriptive string of the last error occurred
  */
 HRESULT CDIL_CAN::DILC_GetLastErrorString(char acErrorStr[], int nLength)
 {
@@ -649,10 +686,11 @@ HRESULT CDIL_CAN::DILC_GetLastErrorString(char acErrorStr[], int nLength)
 }
 
 /**
- * \function  DILC_GetCntrlStatus
+ * \brief     Get controller status
  * \req       RS_23_24 - Getter for controller status by callback mechanism
  *
- * Getter for controller status by callback mechanism
+ * Call to get controller status. Caller has to give the handle of a
+ * event which will set whenever the controller changes the state.
  */
 HRESULT CDIL_CAN::DILC_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus)
 {
@@ -660,7 +698,9 @@ HRESULT CDIL_CAN::DILC_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus)
 }
 
 /**
- * \function  DILC_GetControllerParams
+ * \brief     Get controller parameters
+ *
+ * Call to get Controller parameters. Value will be returned stored in lParam.
  */
 HRESULT CDIL_CAN::DILC_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
 {
@@ -668,7 +708,11 @@ HRESULT CDIL_CAN::DILC_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_P
 }
 
 /**
- * \function  DILC_FilterFrames
+ * \brief     Set PASS/STOP filter
+ * \req       RS_23_22 - To set pass filters at hardware level
+ * \req       RS_23_23 - To set stop filters at hardware level
+ *
+ * Call to set PASS/STOP filter
  */
 HRESULT CDIL_CAN::DILC_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIDs, UINT nLength)
 {
@@ -676,7 +720,9 @@ HRESULT CDIL_CAN::DILC_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel
 }
 
 /**
- * \function  DILC_GetErrorCount
+ * \brief     Get error counts
+ *
+ * Call to get error counts
  */
 HRESULT  CDIL_CAN::DILC_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam)
 {
