@@ -219,6 +219,12 @@ void CDIL_CAN::vSelectInterface_CAN_BOA(void)
 }
 /* ROUTER CODE FINISHES */
 
+/**
+ * \function  DILC_GetDILList
+ * \req       RS_23_01 - Getter for the DIL List
+ *
+ * Getter for the DIL List
+ */
 DWORD CDIL_CAN::DILC_GetDILList(bool /*bAvailable*/, DILLIST* List)
 {
     DWORD Result = DIL_TOTAL;
@@ -235,6 +241,12 @@ DWORD CDIL_CAN::DILC_GetDILList(bool /*bAvailable*/, DILLIST* List)
     return Result;
 }
 
+/**
+ * \function  DILC_GetDILList
+ * \req       RS_23_02 - Selecting a driver from the DIL list
+ *
+ * Selecting a driver from the DIL list
+ */
 HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner, 
               Base_WrapperErrorLogger* pILog)
 {
@@ -416,11 +428,23 @@ HRESULT CDIL_CAN::DILC_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE
     return (*m_pfManageMsgBuf)(bAction, ClientID, pBufObj);
 }
 
+/**
+ * \function  DILC_RegisterClient
+ * \req       RS_23_04 - Registration of a client to simulate a node
+ *
+ * Registration of a client to simulate a node
+ */
 HRESULT CDIL_CAN::DILC_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
 {
     return (*m_pfRegisterClient)(bRegister, ClientID, pacClientName);
 }
 
+/**
+ * \function  DILC_GetSelectedDriver
+ * \req       RS_23_03 - Getter for the presently selected driver
+ *
+ * Getter for the presently selected driver
+ */
 DWORD CDIL_CAN::DILC_GetSelectedDriver(void)
 {
     DWORD Result = (DWORD)DAL_NONE;
@@ -444,11 +468,23 @@ DWORD CDIL_CAN::DILC_GetSelectedDriver(void)
     return Result;
 }
 
+/**
+ * \function  DILC_PerformInitOperations
+ * \req       RS_23_08 - Carry out initialization operations
+ *
+ * Carry out initialization operations
+ */
 HRESULT CDIL_CAN::DILC_PerformInitOperations(void)
 {
     return (*m_pfPerformInitOperations)();
 }
 
+/**
+ * \function  DILC_PerformClosureOperations
+ * \req       RS_23_09 - Carry out closure operations
+ *
+ * Carry out closure operations
+ */
 HRESULT CDIL_CAN::DILC_PerformClosureOperations(void)
 {
     HRESULT hResult =  (*m_pfPerformClosureOperations)();
@@ -456,96 +492,192 @@ HRESULT CDIL_CAN::DILC_PerformClosureOperations(void)
     return hResult;
 }
 
+/**
+ * \function  DILC_GetTimeModeMapping
+ * \req       RS_23_10 - Getter for the time mode mapping (usually the 64-bit time stamp by the driver)
+ *
+ * Getter for the time mode mapping (usually the 64-bit time stamp by the driver)
+ */
 HRESULT CDIL_CAN::DILC_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
 {
     return (*m_pfGetTimeModeMapping)(CurrSysTime, TimeStamp, QueryTickCount);
 }
 
+/**
+ * \function  DILC_ListHwInterfaces
+ * \req       RS_23_11 - Listing of the controllers for the current driver
+ *
+ * Listing of the controllers for the current driver
+ */
 HRESULT CDIL_CAN::DILC_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount)
 {    
     return (*m_pfListHwInterfaces)(sSelHwInterface, nCount);
 }
 
+/**
+ * \function  DILC_SelectHwInterfaces
+ * \req       RS_23_12 - Selection of a controller from the hardware interface list
+ *
+ * Selection of a controller from the hardware interface list
+ */
 HRESULT CDIL_CAN::DILC_SelectHwInterfaces(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount)
 {
     return (*m_pfSelectHwInterface)(sSelHwInterface, nCount);
 }
 
+/**
+ * \function  DILC_DeselectHwInterfaces
+ * \req       RS_23_13 - Deselection of the presently selected controller
+ *
+ * Deselection of the presently selected controller
+ */
 HRESULT CDIL_CAN::DILC_DeselectHwInterfaces(void)
 {
     return (*m_pfDeselectHwInterfaces)();
 }
 
+/**
+ * \function  DILC_DisplayConfigDlg
+ * \req       RS_23_14 - Display the configuration dialog box of the present controller
+ *
+ * Display the configuration dialog box of the present controller
+ */
 HRESULT CDIL_CAN::DILC_DisplayConfigDlg(PCHAR& InitData, int& Length)
 {
     return (*m_pfDisplayConfigDlg)(InitData, Length);
 }
 
+/**
+ * \function  DILC_SetConfigData
+ * \req       RS_23_15 - Setting of the configuration data for the present controller
+ *
+ * Setting of the configuration data for the present controller
+ */
 HRESULT CDIL_CAN::DILC_SetConfigData(PCHAR pInitData, int Length)
 {
     return (*m_pfSetConfigData)(pInitData, Length);
 }
 
+/**
+ * \function  DILC_StartHardware
+ * \req       RS_23_16 - Start the presently selected controller (or connect)
+ *
+ * Start the presently selected controller (or connect)
+ */
 HRESULT CDIL_CAN::DILC_StartHardware(void)
 {
     return (*m_pfStartHardware)();
 }
 
+/**
+ * \function  DILC_StopHardware
+ * \req       RS_23_17 - Stop the presently selected controller (or disconnect)
+ *
+ * Stop the presently selected controller (or disconnect)
+ */
 HRESULT CDIL_CAN::DILC_StopHardware(void)
 {
     return (*m_pfStopHardware)();
 }
 
+/**
+ * \function  DILC_ResetHardware
+ * \req       RS_23_18 - Reset the presently selected controller
+ *
+ * Reset the presently selected controller
+ */
 HRESULT CDIL_CAN::DILC_ResetHardware(void)
 {
     return (*m_pfResetHardware)();
 }
 
+/**
+ * \function  DILC_GetTxMsgBuffer
+ */
 HRESULT CDIL_CAN::DILC_GetTxMsgBuffer(BYTE*& pouTxMsgBuffer)
 {
     return (*m_pfGetTxMsgBuffer)(pouTxMsgBuffer);
 }
 
+/**
+ * \function  DILC_SendMsg
+ * \req       RS_23_19 - Transmit a frame
+ *
+ * Transmit a frame
+ */
 HRESULT CDIL_CAN::DILC_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
 {
     return (*m_pfSendMsg)(dwClientID, sCanTxMsg);
 }
 
+/**
+ * \function  DILC_GetBoardInfo
+ */
 HRESULT CDIL_CAN::DILC_GetBoardInfo(s_BOARDINFO& RBIN_BoardInfo)
 {
     return (*m_pfGetBoardInfo)(RBIN_BoardInfo);
 }
 
+/**
+ * \function  DILC_GetBusConfigInfo
+ */
 HRESULT CDIL_CAN::DILC_GetBusConfigInfo(BYTE* RBIN_BusInfo)
 {
     return (*m_pfGetBusConfigInfo)(RBIN_BusInfo);
 }
 
+/**
+ * \function  DILC_GetVersionInfo
+ * \req       RS_23_20 - Getter for the version information of the DIL for the present bus
+ *
+ * Getter for the version information of the DIL for the present bus
+ */
 HRESULT CDIL_CAN::DILC_GetVersionInfo(VERSIONINFO& sVerInfo)
 {
     return (*m_pfGetVersionInfo)(sVerInfo);
 }
 
+/**
+ * \function  DILC_GetLastErrorString
+ * \req       RS_23_21 - In case of any error, a function returns the associated string of the last error
+ *
+ * In case of any error, a function returns the associated string of the last error
+ */
 HRESULT CDIL_CAN::DILC_GetLastErrorString(char acErrorStr[], int nLength)
 {
     return (*m_pfGetLastErrorString)(acErrorStr, nLength);
 }
 
+/**
+ * \function  DILC_GetCntrlStatus
+ * \req       RS_23_24 - Getter for controller status by callback mechanism
+ *
+ * Getter for controller status by callback mechanism
+ */
 HRESULT CDIL_CAN::DILC_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus)
 {
     return (*m_pfGetCntrlStatus)(hEvent, unCntrlStatus);
 }
 
+/**
+ * \function  DILC_GetControllerParams
+ */
 HRESULT CDIL_CAN::DILC_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
 {
     return (*m_pfGetControllerParams)(lParam, nChannel, eContrParam);
 }
 
+/**
+ * \function  DILC_FilterFrames
+ */
 HRESULT CDIL_CAN::DILC_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIDs, UINT nLength)
 {
     return (*m_pfFilterFrames)(FilterType, Channel, punMsgIDs, nLength);
 }
 
+/**
+ * \function  DILC_GetErrorCount
+ */
 HRESULT  CDIL_CAN::DILC_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam)
 {
     return (*m_pfGetErrorCount)(sErrorCnt, nChannel, eContrParam);
