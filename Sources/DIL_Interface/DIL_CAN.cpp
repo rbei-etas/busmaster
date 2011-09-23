@@ -570,7 +570,7 @@ HRESULT CDIL_CAN::DILC_DeselectHwInterfaces(void)
  * Function to display the configuration dialog box for the selected DIL. If
  * the dialog box needs to be displayed been initialised, pass the relevant data
  * as InitData. If it is null, the dialog box is uninitialised. This also contains
- *  the user's choice as OUT parameter */
+ * the user's choice as OUT parameter
  */
 HRESULT CDIL_CAN::DILC_DisplayConfigDlg(PCHAR& InitData, int& Length)
 {
