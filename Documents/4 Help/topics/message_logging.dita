@@ -16,7 +16,10 @@
   </prolog>
   <body>
     <p>User can configure the name of the log file to which the messages will be logged by following the steps given below<ul>
-        <li>Select Configure <image href="../images/Arrow.jpg"/> Log</li>
+        <li>Select <menucascade>
+            <uicontrol>Configure</uicontrol>
+            <uicontrol>Log</uicontrol>
+          </menucascade></li>
         <li>Select log file name. You can also navigate to any folder to select the log file. If an existing file is selected it will be overwritten if Over Write Mode. Otherwise it will append the same log file for each new logging session. If a new file name is entered, you will be prompted to confirm the new file creation.</li>
         <li>Specify a message ID or select a message name, on reception of which, logging gets triggered</li>
       </ul></p>

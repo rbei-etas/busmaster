@@ -17,7 +17,10 @@
   <body>
     <section>
       <title>Logging</title>
-      <p>User can configure log file setting using Configure  <image href="../images/Arrow.jpg"/> Log menu. This will show log file configuration dialog as shown below.</p>
+      <p>User can configure log file setting using <menucascade>
+          <uicontrol>Configure</uicontrol>
+          <uicontrol>Log</uicontrol>
+        </menucascade> menu. This will show log file configuration dialog as shown below.</p>
       <image href="../images/log_config.bmp" alt="Log File Configuration Dialog" placement="break"/>
     </section>
     <section>
@@ -51,7 +54,10 @@
     </example>
     <section>
       <title>Replay</title>
-      <p>User can configure replay file setting using Configure  <image href="../images/Arrow.jpg"/>    Replay menu. This will show replay file configuration dialog as shown below.</p>
+      <p>User can configure replay file setting using <menucascade>
+          <uicontrol>Configure</uicontrol>
+          <uicontrol>Replay</uicontrol>
+        </menucascade> menu. This will show replay file configuration dialog as shown below.</p>
       <image href="../images/replay_config.bmp" alt="Replay File Configuration Dialog" placement="break"/>
     </section>
     <section>

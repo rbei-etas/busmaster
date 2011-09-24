@@ -15,7 +15,10 @@
     </metadata>
   </prolog>
   <body>
-    <p>Messages can be send over CAN-bus by following the steps given below. Select Configure  <image href="../images/Arrow.jpg"/> Tx Messages… menu option. This will display the dialog as shown is figure below.</p>
+    <p>Messages can be send over CAN-bus by following the steps given below. Select <menucascade>
+        <uicontrol>Configure</uicontrol>
+        <uicontrol>Tx Messages</uicontrol>
+      </menucascade> menu option. This will display the dialog as shown is figure below.</p>
     <section>
       <title>Getting Started</title>
       <image href="../images/Tx_Message.bmp" placement="break"/>
@@ -40,12 +43,15 @@
       <p>The messages added in to the Tx message list can also be modified. Follow the steps given below.</p>
       <ul>
         <li>Select an entry in the message list. The selected detail will be unpacked and will be displayed in the edit controls below. If it is a database message then the signal details will be listed in the signal list with both physical and raw values.</li>
-        <li>Any modification in Message Name/ID, DLC, Data bytes, signal raw and physical values will directly reflect in the selected message entrty in the message list. The signal matrix will also get updated to reflect the changes.</li>
-        <li>Selecting Apply or OK button will reflect message details cahnge in transmission immediatly if message transmission is on. </li>
+        <li>Any modification in Message Name/ID, DLC, Data bytes, signal raw and physical values will directly reflect in the selected message entry in the message list. The signal matrix will also get updated to reflect the changes.</li>
+        <li>Selecting Apply or OK button will reflect message details change in transmission immediately if message transmission is on. </li>
       </ul>
       <p>User can delete a message frame entry from the list by following the steps given below.</p>
       <ul>
-        <li>Select Configure <image href="../images/Arrow.jpg"/> Tx Messages menu option. This will display the dialog box as shown below in figure (a).</li>
+        <li>Select <menucascade>
+            <uicontrol>Configure</uicontrol>
+            <uicontrol>Tx Messages</uicontrol>
+          </menucascade> menu option. This will display the dialog box as shown below in figure (a).</li>
         <li>Select an entry in the message frame list.</li>
         <li>Select Delete button. A delete confirmation will be displayed. Select Yes to confirm deletion. The selected item will be deleted from the list. Multiple items can be selected to delete multiple items in one shot.</li>
         <li>Select Delete All button to delete all entries in the message block. A delete all confirmation will be displayed. Select Yes to confirm deletion. This will clear message block entries.</li>

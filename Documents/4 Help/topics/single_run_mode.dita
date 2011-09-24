@@ -21,10 +21,30 @@
       <p>In interactive replay mode, replay window will be displayed during connect. Follow the steps given below to start replay.<ul>
           <li>Select a message from Message Replay Window.</li>
           <li>There are four options to select<ul>
-              <li>Replay <image href="../images/Arrow.jpg"/> Go</li>
-              <li>Replay <image href="../images/Arrow.jpg"/> Step</li>
-              <li>Replay <image href="../images/Arrow.jpg"/> Skip</li>
-              <li>Replay <image href="../images/Arrow.jpg"/> Stop</li>
+              <li>
+                <menucascade>
+                  <uicontrol>Replay</uicontrol>
+                  <uicontrol>Go</uicontrol>
+                </menucascade>
+              </li>
+              <li>
+                <menucascade>
+                  <uicontrol>Replay</uicontrol>
+                  <uicontrol>Step</uicontrol>
+                </menucascade>
+              </li>
+              <li>
+                <menucascade>
+                  <uicontrol>Replay</uicontrol>
+                  <uicontrol>Skip</uicontrol>
+                </menucascade>
+              </li>
+              <li>
+                <menucascade>
+                  <uicontrol>Replay</uicontrol>
+                  <uicontrol>Stop</uicontrol>
+                </menucascade>
+              </li>
             </ul></li>
         </ul></p>
       <p>User can use tool bar button shown in figure below for this purpose.

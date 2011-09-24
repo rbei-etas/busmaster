@@ -45,23 +45,39 @@
     <section>
       <title>Open a source file</title>
       <p>User can open a source file following the steps given below<ol>
-          <li>Select File <image href="../images/Arrow.jpg"/> Function Editor <image href="../images/Arrow.jpg"/> Open. A File Open dialog will be displayed.</li>
+          <li>Select <menucascade>
+              <uicontrol>File</uicontrol>
+              <uicontrol>Function Editor</uicontrol>
+              <uicontrol>Open</uicontrol>
+            </menucascade>. A File Open dialog will be displayed.</li>
           <li>Click on the Open tool bar button shown in figure below.<image href="../images/File_new.bmp" placement="break"/></li>
           <li>Select a source file and click on Open button.</li>
         </ol></p>
     </section>
     <section>
       <title>Save a source file</title>
-      <p>User can save a source file by selecting File <image href="../images/Arrow.jpg"/> Function Editor <image href="../images/Arrow.jpg"/> Save menu option. Or by clicking on the tool bar button shown below.<image href="../images/FileOpen.bmp" placement="break"/></p>
+      <p>User can save a source file by selecting <menucascade>
+          <uicontrol>File</uicontrol>
+          <uicontrol>Function Editor</uicontrol>
+          <uicontrol>Save</uicontrol>
+        </menucascade> menu option. Or by clicking on the tool bar button shown below.<image href="../images/FileOpen.bmp" placement="break"/></p>
       <p>User also have an option to save the file with different names. User can do this by following the steps given below<ol>
-          <li>Select File <image href="../images/Arrow.jpg"/> Function Editor <image href="../images/Arrow.jpg"/> Save As.</li>
+          <li>Select <menucascade>
+              <uicontrol>File</uicontrol>
+              <uicontrol>Function Editor</uicontrol>
+              <uicontrol>Save As</uicontrol>
+            </menucascade>.</li>
           <li>A Save As file dialog box will be displayed.</li>
           <li>Enter the file name. Click on Save button.</li>
         </ol></p>
     </section>
     <section>
       <title>Close a source file</title>
-      <p>User can close a source file by selecting File <image href="../images/Arrow.jpg"/> Function Editor <image href="../images/Arrow.jpg"/> Close. A save message confirmation will be displayed if the file is modified.</p>
+      <p>User can close a source file by selecting <menucascade>
+          <uicontrol>File</uicontrol>
+          <uicontrol>Function Editor</uicontrol>
+          <uicontrol>Close</uicontrol>
+        </menucascade>. A save message confirmation will be displayed if the file is modified.</p>
     </section>
     <image href="../images/FileSave.bmp" placement="break"/>
     <section>

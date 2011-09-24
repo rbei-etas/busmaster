@@ -17,6 +17,9 @@
   <body>
     <p>Trace window gives details about the result of the latest operation. Result can be information, warning or error. Below picture shows some text displayed in the trace window. This window basically contains a multiple selection list box where user can select, clear, delete the entries. It is possible to copy the text into clipboard also.</p>
     <image href="../images/TraceWindow.bmp" placement="break"/>
-    <p>To display trace window Select the menu Display <image href="../images/Arrow.jpg"/> Trace Window.</p>
+    <p>To display trace window Select the menu <menucascade>
+        <uicontrol>Display</uicontrol>
+        <uicontrol>Trace Window</uicontrol>
+      </menucascade>.</p>
   </body>
 </topic>

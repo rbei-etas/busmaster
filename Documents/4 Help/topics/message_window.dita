@@ -88,7 +88,11 @@ And clicking on the ‘-’ sign will collapse the expanded entries as shown in 
     </section>
     <section>
       <title>Toggle Date display</title>
-      <p>You have an option to display the system date on the message window. You can enable the Date by selecting Display <image href="../images/Arrow.jpg"/> Message Window <image href="../images/Arrow.jpg"/> Date menu option. This option is not available in relative time mode display.</p>
+      <p>You have an option to display the system date on the message window. You can enable the Date by selecting <menucascade>
+          <uicontrol>Display</uicontrol>
+          <uicontrol>Message Window</uicontrol>
+          <uicontrol>Date</uicontrol>
+        </menucascade> menu option. This option is not available in relative time mode display.</p>
     </section>
     <section>
       <title>Clear Message Window</title>
