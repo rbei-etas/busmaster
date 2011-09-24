@@ -8,17 +8,22 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Message Display</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <section>
       <title>Message Filter</title>
       <p>Filters for message display can be configured by selecting Configure  <image href="../images/Arrow.jpg"/> Message Display and by selecting Filter tab. This will show list of filters configured for Message Display.</p>
-      <image href="../images/display_filter.bmp" placement="break" alt="Display Filter"/>
+      <image href="../images/display_filter.bmp" alt="Display Filter" placement="break"/>
     </section>
     <section>
       <title>Display Filter</title>
       <p>To configure display filter list select Configure button which will list available filters and selected filters.</p>
-      <image href="../images/configure_filter.bmp" placement="break" alt="Display Filter Configuration"/>
+      <image href="../images/configure_filter.bmp" alt="Display Filter Configuration" placement="break"/>
     </section>
     <section>
       <title>Message Coloring</title>

@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Operating Modes</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>The BUSMASTER can be operated in Active mode</p>

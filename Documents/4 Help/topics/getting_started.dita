@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Getting Started</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>If you are using BUSMASTER application for the first time then the following section will help you to get familiarized with the features of this tool. For this we will operate the BUSMASTER in self-reception mode i.e. the BUSMASTER tool will be the sender and receiver of CAN messages.</p>

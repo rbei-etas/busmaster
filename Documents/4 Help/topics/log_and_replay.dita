@@ -8,12 +8,17 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Log and Replay</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <section>
       <title>Logging</title>
       <p>User can configure log file setting using Configure  <image href="../images/Arrow.jpg"/> Log menu. This will show log file configuration dialog as shown below.</p>
-      <image href="../images/log_config.bmp" placement="break" alt="Log File Configuration Dialog"/>
+      <image href="../images/log_config.bmp" alt="Log File Configuration Dialog" placement="break"/>
     </section>
     <section>
       <title>Log Files</title>
@@ -47,7 +52,7 @@
     <section>
       <title>Replay</title>
       <p>User can configure replay file setting using Configure  <image href="../images/Arrow.jpg"/>    Replay menu. This will show replay file configuration dialog as shown below.</p>
-      <image href="../images/replay_config.bmp" placement="break" alt="Replay File Configuration Dialog"/>
+      <image href="../images/replay_config.bmp" alt="Replay File Configuration Dialog" placement="break"/>
     </section>
     <section>
       <title>Replay Files</title>

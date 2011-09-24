@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Status Bar</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>The status bar gives the following information

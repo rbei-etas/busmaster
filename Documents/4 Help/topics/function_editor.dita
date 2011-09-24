@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Function Editor</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>BUSMASTER can work as a programmable node over a CAN bus. User can program different event handlers using function editor. The programming language is C.</p>

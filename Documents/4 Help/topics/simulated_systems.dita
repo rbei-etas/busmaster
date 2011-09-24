@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Simulated Systems</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>Simulated systems can be configured under the CAN-bus by following the steps given below. Select Configure  Simulated  Systems… menu option. This will display the window as shown is figure below.</p>

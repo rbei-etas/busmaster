@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Signal Watch</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>User can watch the value of a signal using the signal watch window as and when a message having that signal is received. The Physical and Raw values will be listed and updated as and when the message arrives. Click on the tool bar button shown below to display the signal watch window.</p>

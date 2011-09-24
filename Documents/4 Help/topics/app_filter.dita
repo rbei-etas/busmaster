@@ -8,12 +8,17 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>App Filter</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>User can configure filter list by choosing messages to be filtered.To configure the filter list, follow the steps given below
     <ul>
         <li>Select Configure <image href="../images/Arrow.jpg"/> Filters.</li>
-        <li>The dialog box specified below will be displayed.<image placement="break" href="../images/MsgFilter.bmp"/></li>
+        <li>The dialog box specified below will be displayed.<image href="../images/MsgFilter.bmp" placement="break"/></li>
       </ul></p>
     <section>
       <title>Filter List </title>

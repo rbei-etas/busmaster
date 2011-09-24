@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>External Tools</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>External Tools</p>
@@ -17,6 +22,6 @@
         <li>DBC TO DBF Converter: Converts DBC (*.dbc) file into BUSMASTER database (*.dbf) file.</li>
         <li>DBF TO DBC Converter: Converts BUSMASTER database (*.dbf) file into DBC (*.dbc) file.</li>
       </ul></p>
-    <image placement="break" href="../images/External_Tools.bmp"/>
+    <image href="../images/External_Tools.bmp" placement="break"/>
   </body>
 </topic>

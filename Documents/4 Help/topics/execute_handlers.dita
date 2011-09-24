@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Execute Handlers</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>There are five types of function handlers, which are executed on reception of corresponding event<ul>

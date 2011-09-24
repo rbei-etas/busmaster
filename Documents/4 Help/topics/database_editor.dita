@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Database Editor</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>BUSMASTER database consists of information about expected message. You can create a database of messages to be transmitted or received over CAN bus. Each message has a unique ID and name. Each message has upto eight bytes of data. You can define the length of message in bytes. Each message can consist of one or more signals. In a message each signal has start bit and length, no two signals can overlap. Signal can have an offset, a multiplication factor and engineering units. These three information together are used to display signal value received in engineering units. The data received is multiplied by the factor, added to the offset to obtain the engineering value. Also a particular value of the signal can be given a meaningful name by using signal descriptor (e.g. ON = 1, OFF = 0). This information will be used while interpreting the messages.</p>

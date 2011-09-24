@@ -288,7 +288,6 @@
   <topicref href="topics/faq.dita" type="topic"/>
   <topichead navtitle="Unused chapters" toc="no">
     <topicref href="topics/message_logging.dita" type="topic" toc="no"/>
-    <topicref href="topics/main_index.dita" type="topic" toc="no"/>
     <topicref href="topics/connection_details.dita" type="topic" toc="no"/>
   </topichead>
 </map>

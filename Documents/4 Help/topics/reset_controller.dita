@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Reset Controller</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>The CAN controller can be reset through BUSMASTER application. Reset of the controller will require in case of error conditions. BUSMASTER provides two kind of reset of the CAN controller.<ul>

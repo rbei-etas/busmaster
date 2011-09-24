@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Configure Replay</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>Replay can be configured using the three parameters mentioned below<ul>

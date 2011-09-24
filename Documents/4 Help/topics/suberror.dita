@@ -8,10 +8,15 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Know About SubErrors</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>The enhanced view of error display in USB version of BUSMASTER is, as shown in the picture below.The SubErrors are not displayed in parallel port version of BUSMASTER.The Sub error value corressponds to the error value given by CAN controller.</p>
-    <image placement="break" href="../images/SubError.bmp"/>
+    <image href="../images/SubError.bmp" placement="break"/>
     <p>The Suberror value is error value given by CAn controller and the Sub Error is its name.</p>
     <p>The details of Sub errors are:</p>
     <table>

@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Variable Argument Lists</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>The printf family of functions is defined to accept a variable number of arguments, rather than a fixed argument list. You can define your own functions with a variable argument list, by using macro definitions from either `stdarg.h&apos; (for compatibility with ANSI C) or from `varargs.h&apos; (for compatibility with a popular convention prior to ANSI C).</p>

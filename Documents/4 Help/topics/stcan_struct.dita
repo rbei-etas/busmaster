@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>STCAN_MSG Structure</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>STCAN_MSG Structure Definition</p>

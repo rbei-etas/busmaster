@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>User Program</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>Once the program is written it can be built as a DLL and loaded. The GCC compiler is used for this purpose. The GCC compiler is a freeware shipped along with the BUSMASTER tool. You can either build or build and load on the fly. You can also unload any loaded DLL. Once the DLL is loaded, all the handler function can be invoked/revoked selectively. Once the user program is loaded in to the BUSMASTER application handlers are exposed to the application.</p>

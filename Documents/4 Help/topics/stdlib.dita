@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Standard Library Functions</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>This chapter groups utility functions useful in a variety of programs. The corresponding declarations are in the header file `stdlib.h&apos;.</p>

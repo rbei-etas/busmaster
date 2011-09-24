@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Transmit Messages</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>Messages can be send over CAN-bus by following the steps given below. Select Configure  <image href="../images/Arrow.jpg"/> Tx Messages… menu option. This will display the dialog as shown is figure below.</p>

@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Message Logging</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>User can configure the name of the log file to which the messages will be logged by following the steps given below<ul>

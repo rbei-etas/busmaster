@@ -8,10 +8,15 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Network Statistics</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>Network statistics dialog gives details about the messages transmitted and received on the bus. This information includes the number of Standard, Extended, RTR and Error messages transmitted and received by BUSMASTER and current rate of these parameters. This is updated once in a second. Message rate per second and Network load in terms of Bus traffic is also presented. The peak network load will show the peak traffic during that session. This information can be used to find bus utilisation. Statistics information will be cleared during connect and during controller reset.</p>
-    <image placement="break" href="../images/nwstatistics.bmp"/>
+    <image href="../images/nwstatistics.bmp" placement="break"/>
     <p>To invoke Network Statistics Dialog, select the menu Display <image href="../images/Arrow.jpg"/> Network Statistics.</p>
   </body>
 </topic>

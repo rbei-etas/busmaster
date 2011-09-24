@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Connect and Disconnect</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>User can connect/disconnect the tool from the CAN-bus by pressing/releasing a toggle toolbar button shown in the figure below.</p>

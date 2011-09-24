@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Message Window</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>BUSMASTER reports all kinds of messages through this window. A message can arise from any one of the two categories as mentioned below<ul>

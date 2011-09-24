@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Test Automation</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>Introduction to Test Automation:</p>

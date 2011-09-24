@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>String and Memory Functions</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>String and Memory Functions

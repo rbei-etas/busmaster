@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Configuration</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>BUSMASTER has provision for configuring the following properties<ul>

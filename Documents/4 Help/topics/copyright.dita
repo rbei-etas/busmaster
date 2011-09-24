@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Copyright</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>C Library functions help is taken from GCC help content and it is from</p>

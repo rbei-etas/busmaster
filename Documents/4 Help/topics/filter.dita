@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Enable/Disable Filter</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>Filter (App Filter) can be enabled/disabled-using tool bar buttons or menu. Filters must have been configured prior to this. (Refer section Configure - App Filter and Display Filter).</p>

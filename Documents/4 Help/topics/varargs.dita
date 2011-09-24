@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Traditional macros</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>If your C compiler predates ANSI C, you may still be able to use variable argument lists using the macros from the `varargs.h&apos; header file. These macros resemble their ANSI counterparts, but have important differences in usage. In particular, since traditional C has no declaration mechanism for variable argument lists, two additional macros are provided simply for the purpose of defining functions with variable argument lists.</p>

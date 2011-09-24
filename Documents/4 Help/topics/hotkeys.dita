@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Hot Keys</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>Hot keys are available for most frequently used operations. Following are the hot keys implemented.</p>

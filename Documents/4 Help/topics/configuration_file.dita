@@ -8,12 +8,17 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Configuration settings in a file</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>User can save your preferences of the tool into &quot;.cfx&quot; file. The last loaded configuration file will be loaded automatically when the tool is run for the next session. If the configuration file is not found then, the application will load the default configuration settings and the status of the loaded configuration filename will be shown on the status bar.</p>
     <section>
       <title>Creating New Configuration file</title>
-       <ol>
+      <ol>
         <li>Select File <image href="../images/Arrow.jpg"/> Configuration <image href="../images/Arrow.jpg"/> New menu option. This will invoke file Save dialog box.</li>
         <li>Enter the new configuration file name. And select Save button. The new configuration file will be loaded and the same filename can be seen on the status bar.</li>
       </ol>

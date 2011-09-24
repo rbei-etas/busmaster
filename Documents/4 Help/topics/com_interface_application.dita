@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>BUSMASTER COM interface</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>Using BUSMASTER Automation Object:</p>

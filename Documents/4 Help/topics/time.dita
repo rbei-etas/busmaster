@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Time Functions</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>This chapter groups functions used either for reporting on time (elapsed, current, or compute time) or to perform calculations based on time.</p>

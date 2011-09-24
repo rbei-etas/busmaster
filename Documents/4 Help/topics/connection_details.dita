@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Connection Details</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>The connection to the CAN bus is via the 9 pole SUB-D-plug according to CiA Recommendation DS 102-1. Minimal configurations are the PINs 2 and 7 (CAN-L, CAN-H)</p>

@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Baudrate</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>While defining a baud rate the number of samples/bit value can also be defined. For a selected baud rate a set of all possible combinations of CNF0, CNF1 and CNF2 values will be listed. From this you can select any one set. The selected combination of CNF0, CNF1 and CNF2 values will be used to initialize the CAN controller. The baud rate can be changed by the method mentioned below.</p>

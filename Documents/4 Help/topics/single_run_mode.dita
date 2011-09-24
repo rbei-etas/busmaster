@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Single Run Mode</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body>
     <p>Find more details to configure replay in cyclic mode in section Log and Replay.</p>

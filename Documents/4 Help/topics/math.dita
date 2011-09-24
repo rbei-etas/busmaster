@@ -8,6 +8,11 @@
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>C Math Library Functions</indexterm>
+      </keywords>
+    </metadata>
   </prolog>
   <body/>
 </topic>
