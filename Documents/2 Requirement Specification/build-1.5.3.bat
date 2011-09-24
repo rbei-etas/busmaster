@@ -6,7 +6,6 @@ set PATH=%JAVA_DIR%\bin;%DITA_DIR%\tools\ant\bin;%PATH%
 set CLASSPATH=%CLASSPATH%;%DITA_DIR%\lib
 set CLASSPATH=%CLASSPATH%;%DITA_DIR%\lib\dost.jar
 set CLASSPATH=%CLASSPATH%;%DITA_DIR%\lib\commons-codec-1.4.jar
-set CLASSPATH=%CLASSPATH%;%DITA_DIR%\lib\dost.jar
 set CLASSPATH=%CLASSPATH%;%DITA_DIR%\lib\resolver.jar
 set CLASSPATH=%CLASSPATH%;%DITA_DIR%\lib\icu4j.jar
 set CLASSPATH=%CLASSPATH%;%DITA_DIR%\lib\saxon
