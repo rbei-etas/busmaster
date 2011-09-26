@@ -1,29 +1,71 @@
-/*
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
 
-/**
- * \file      RxMsgList.cpp
- * \brief     Implementation of CRxMsgList class, To customize the receive
- * \authors   Ravi. D, Arunkumar Karri
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
- *
- * Implementation of CRxMsgList class, To customize the receive
- */
- 
+/******************************************************************************
+  Project       :  Auto-SAT_Tools
+  FileName      :  RxMsgList.cpp
+  Description   :  Implementation of CRxMsgList class, To customize the receive
+                   window list control
+  $Log:   X:/Archive/Sources/Application/RxMsgList.cpv  $
+   
+      Rev 1.11   09 Jun 2011 11:28:26   CANMNTTM
+    
+   
+      Rev 1.10   15 Apr 2011 20:01:22   CANMNTTM
+   Added RBEI Copyright information.
+   
+      Rev 1.9   08 Mar 2011 19:54:16   CANMNTTM
+   Updated structure names to make the coding free from open source codes.
+   
+      Rev 1.8   04 Mar 2011 17:28:12   CANMNTTM
+   Updated to solve the issues in J1939 MsgWnd:
+   1. Sorting issues in J1939 Msg Wnd.
+   2. Problem with J1939 messages with DLC > 150.
+   3. Addition of new column for PGN Name.
+   
+      Rev 1.7   18 Feb 2011 12:00:24   CANMNTTM
+   Updated to suite the generic message window to support multiple buses CAN, J1939.
+   
+      Rev 1.6   14 Sep 2010 16:39:02   CANMNTTM
+   Updated OnVScroll(..) function to support
+   scroll while in interpret mode and send
+   messages in progress.
+   
+      Rev 1.5   14 Sep 2010 16:24:14   CANMNTTM
+   Added new Handlers for VK_PRIOR, VK_NEXT, VK_END, VK_HOME
+   in OnKeyDown(..).
+   Updated OnMouseWheel(..) function.
+   
+      Rev 1.4   09 Sep 2010 20:56:30   CANMNTTM
+   Added OnMouseWheel() and updated 
+   OnVScroll() function.
+   
+      Rev 1.3   07 Sep 2010 21:03:54   CANMNTTM
+   Addressed the following issues:
+   
+   12.Error messages are not displayed in RED.  
+   14. Double click on + should not pop out Msg Interpret Window. 
+   15. Interpretation values are not updated while message sending in progress.
+   16. Hex and Dec should be applied to Msg interpretation. 
+   17. Values in Msg Interpretation window not updated according to message value. 
+   
+      Rev 1.2   06 Sep 2010 20:23:24   CANMNTTM
+   Updated vShowHideBlankcolumn()
+   functionality.
+   
+      Rev 1.1   27 Aug 2010 15:00:50   CANMNTTM
+   BugFix: On press of Key up it used skip the
+   rows in the message window
+   
+      Rev 1.0   16 Aug 2010 21:20:42   rac2kor
+    
+   
+  Author(s)     :  Ravi. D.
+  Date Created  :  19.09.2006
+  Modified By   :  
+  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
+******************************************************************************/
+
 #include "StdAfx.h"
-#include "BUSMASTER.h"
+#include "CAN_Monitor.h"
 #include "RxMsgList.h"
 #include "Resource.h"
 #include "Common.h"
@@ -53,21 +95,23 @@ CRxMsgList::CRxMsgList()
 	m_nSortedColumn = 1;
 	m_pbSortableColumn = NULL;
 	m_pbAscendingOrder = NULL;
-	m_lClkPoint = CPoint(0,0);	
-	//m_omNewFont.CreateFont(GET_FILE_VIEW_CHAR_HEIGHT(),
- //                        GET_FILE_VIEW_CHAR_WIDTH(),
- //                        DEFAULT_FONT_ESCAPEMENT,
- //                        DEFAULT_FONT_ORIENTATION,
- //                        FW_NORMAL,
- //                        NOT_ITALIC,
- //                        NO_UNDERLINE,
- //                        NO_STRIKEOUT,
- //                        DEFAULT_CHARSET,
- //                        OUT_CHARACTER_PRECIS, 
- //                        CLIP_CHARACTER_PRECIS,
- //                        DEFAULT_QUALITY,
- //                        DEFAULT_PITCH | FF_MODERN,
- //                        _T("Tahoma"));		
+	m_lClkPoint.SetPoint(0,0);	
+	m_omNewFont.CreateFont(((::GetDeviceCaps(::GetDC(NULL), LOGPIXELSY) * 10) / 72 ),
+							/*GET_CONTEXT_WND_CHAR_HEIGHT(),*/
+							((::GetDeviceCaps(::GetDC(NULL), LOGPIXELSX) * 8) / 72 ),
+                         //GET_CONTEXT_WND_CHAR_WIDTH(),
+                         DEFAULT_FONT_ESCAPEMENT,
+                         DEFAULT_FONT_ORIENTATION,
+                         FW_NORMAL,
+                         NOT_ITALIC,
+                         NO_UNDERLINE,
+                         NO_STRIKEOUT,
+                         DEFAULT_CHARSET,
+                         OUT_CHARACTER_PRECIS, 
+                         CLIP_CHARACTER_PRECIS,
+                         DEFAULT_QUALITY,
+                         DEFAULT_PITCH | FF_MODERN,
+                         _T("Courier"));		
 }
 
 /**********************************************************************************
@@ -316,7 +360,7 @@ void CRxMsgList::vDoInitialization()
     {
         m_hParent = pWnd->m_hWnd;
     }
-	//CRxMsgList::SetFont(&m_omNewFont, TRUE);
+	CRxMsgList::SetFont(&m_omNewFont, TRUE);
 }
 
 /*******************************************************************************
@@ -666,16 +710,15 @@ void CRxMsgList::InsertColumnState(int nCol, bool bVisible, int nOrgWidth)
 	}
 	else
 	{
-		m_ColumnStates.InsertAt(nCol, columnState);
 		// Insert column in the middle of the array
-		//CArray<ColumnState, ColumnState> newArray;
-		//for(int i=0 ; i < m_ColumnStates.GetSize(); ++i)
-		//{
-		//	if (i == nCol)
-		//		newArray.Add(columnState);
-		//	newArray.Add(m_ColumnStates[i]);
-		//}		
-		//m_ColumnStates = newArray;
+		CSimpleArray<ColumnState> newArray;
+		for(int i=0 ; i < m_ColumnStates.GetSize(); ++i)
+		{
+			if (i == nCol)
+				newArray.Add(columnState);
+			newArray.Add(m_ColumnStates[i]);
+		}
+		m_ColumnStates = newArray;
 	}
 }
 
@@ -1113,6 +1156,17 @@ void CRxMsgList::vSetSortableMsgColumns(SMSGWNDHDRCOL& sHdrColStruct, ETYPE_BUS 
 		m_pbSortableColumn[sHdrColStruct.m_byTimePos] = true;
 		m_pbSortableColumn[sHdrColStruct.m_byChannel] = true;
 		m_pbSortableColumn[sHdrColStruct.m_byIDPos]   = true;
+	}
+	else if(eBusType == J1939)
+	//If the BUS is J1939,Set the Time field, Channel, CANID, PGN, Type, Src and Dest fields as Sortable
+	{
+		m_pbSortableColumn[sHdrColStruct.m_byTimePos]   = true;
+		m_pbSortableColumn[sHdrColStruct.m_byChannel]   = true;
+		m_pbSortableColumn[sHdrColStruct.m_byIDPos]	    = true;
+		m_pbSortableColumn[sHdrColStruct.m_byPGNPos]    = true;
+		//m_pbSortableColumn[sHdrColStruct.m_byMsgTypePos]= true;
+		m_pbSortableColumn[sHdrColStruct.m_bySrcPos]    = true;
+		m_pbSortableColumn[sHdrColStruct.m_byDestPos]   = true;
 	}
 }
 
