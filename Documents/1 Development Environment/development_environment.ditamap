@@ -14,7 +14,7 @@
   <topicref href="topics/nsis.dita" type="topic"/>
   <topicref href="topics/doxygen.dita" type="topic"/>
   <topicref href="topics/dita.dita" type="topic"/>
-  <topicref href="topics/splint.dita" type="topic"/>
+  <topicref href="topics/cppcheck.dita" type="topic"/>
   <topicref href="topics/testcocoon.dita" type="topic"/>
   <topicref href="topics/autoit.dita" type="topic"/>
   <topicref href="topics/project_building_guideline.dita" type="topic"/>
