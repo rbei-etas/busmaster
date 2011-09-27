@@ -125,7 +125,7 @@ SectionEnd
 
 ; This emptily named section will always run
 Section ""
-     WriteRegStr HKLM "SOFTWARE\BUSMASTER Installer" "Install_Dir" "$INSTDIR"
+     WriteRegStr HKLM "Software\BUSMASTER" "Install_Dir" "$INSTDIR"
      WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER" "DisplayName" "BUSMASTER (remove only)"
      WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER" "UninstallString" '"$INSTDIR\uninst.exe"'	 	 
 	  	  
