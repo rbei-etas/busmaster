@@ -54,20 +54,22 @@ CRxMsgList::CRxMsgList()
 	m_pbSortableColumn = NULL;
 	m_pbAscendingOrder = NULL;
 	m_lClkPoint = CPoint(0,0);	
-	//m_omNewFont.CreateFont(GET_FILE_VIEW_CHAR_HEIGHT(),
- //                        GET_FILE_VIEW_CHAR_WIDTH(),
- //                        DEFAULT_FONT_ESCAPEMENT,
- //                        DEFAULT_FONT_ORIENTATION,
- //                        FW_NORMAL,
- //                        NOT_ITALIC,
- //                        NO_UNDERLINE,
- //                        NO_STRIKEOUT,
- //                        DEFAULT_CHARSET,
- //                        OUT_CHARACTER_PRECIS, 
- //                        CLIP_CHARACTER_PRECIS,
- //                        DEFAULT_QUALITY,
- //                        DEFAULT_PITCH | FF_MODERN,
- //                        _T("Tahoma"));		
+	m_omNewFont.CreateFont(((::GetDeviceCaps(::GetDC(NULL), LOGPIXELSY) * 10) / 72 ),
+							/*GET_CONTEXT_WND_CHAR_HEIGHT(),*/
+							((::GetDeviceCaps(::GetDC(NULL), LOGPIXELSX) * 8) / 72 ),
+                         //GET_CONTEXT_WND_CHAR_WIDTH(),
+                         DEFAULT_FONT_ESCAPEMENT,
+                         DEFAULT_FONT_ORIENTATION,
+                         FW_NORMAL,
+                         NOT_ITALIC,
+                         NO_UNDERLINE,
+                         NO_STRIKEOUT,
+                         DEFAULT_CHARSET,
+                         OUT_CHARACTER_PRECIS, 
+                         CLIP_CHARACTER_PRECIS,
+                         DEFAULT_QUALITY,
+                         DEFAULT_PITCH | FF_MODERN,
+                         _T("Courier"));		
 }
 
 /**********************************************************************************
@@ -316,7 +318,7 @@ void CRxMsgList::vDoInitialization()
     {
         m_hParent = pWnd->m_hWnd;
     }
-	//CRxMsgList::SetFont(&m_omNewFont, TRUE);
+	CRxMsgList::SetFont(&m_omNewFont, TRUE);
 }
 
 /*******************************************************************************

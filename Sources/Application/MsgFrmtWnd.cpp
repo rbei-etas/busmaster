@@ -3507,10 +3507,11 @@ void CMsgFrmtWnd::vDisplayToolTip(MSG* pMsg)
 			m_nPrevToolRow = -1;
 			m_nPrevToolCol = -1;
 		}
-		else if(sbItmHitInfo.iItem >= 0 && 
+		else if( nIndex >=0 &&
+			sbItmHitInfo.iItem >= 0 && 
 			m_sHdrColStruct.m_byDataPos+1 == sbItmHitInfo.iSubItem &&
 			(sbItmHitInfo.iItem !=m_nPrevToolRow || 
-			sbItmHitInfo.iSubItem!=m_nPrevToolCol ))			
+			sbItmHitInfo.iSubItem!=m_nPrevToolCol ))				
 		{
 			m_objToolTip.Activate(TRUE);
 			static SWMUPDATEPTRPARA sParam;

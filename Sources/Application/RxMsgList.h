@@ -46,7 +46,7 @@ private:
 	bool* m_pbAscendingOrder;
 	int m_nSortedColumn;
 	CPoint m_lClkPoint;
-	//CFont m_omNewFont;
+	CFont m_omNewFont;
 
 protected:
 	struct ColumnState
