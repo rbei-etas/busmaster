@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
 <topic id="splint" xml:lang="en-us">
-  <title>Splint - Static Source Code Tester</title>
+  <title>Cppcheck - Static Source Code Checker</title>
   <prolog>
     <author>Ratnadip Choudhury</author>
     <copyright>
@@ -10,7 +10,20 @@
     </copyright>
   </prolog>
   <body>
-	  <p>To integrate Splint into the Visual C++ IDE, use the following documentation:</p>
-	  <p><xref href="http://www.splint.org/win32.html" scope="external"/></p>
+    <section>
+      <title>Evaluation of Static Source Code Checkers</title>
+      <p>There are multiple commonly used tools in Open Source projects.</p>
+      <p>Splint is probably the most used checker. It seamlessly  integrates into the Visual C++ IDE. See the following documentation: <xref href="http://www.splint.org/win32.html" scope="external"/>. Unfortunately it is limited to C and is not able to parse C++ code.</p>
+      <p>Cppcheck is another Open Source software, which is able to parse C++ code. It is available under: <xref href="http://cppcheck.sourceforge.net/" scope="external"/>.</p>
+    </section>
+    <section>
+      <title>Cppcheck configuration</title>
+      <p>Steps to configure the tool.</p>
+      <ol>
+        <li>Download and install the tool. Add the %PATH% variable accordingly.</li>
+        <li>Go to the BUSMASTER sources folder.</li>
+        <li>Execute <cmdname>cppcheck -I. --enable=all %SOURCE_FILES%</cmdname> on the respective files. If you have git-bash or cygwin installed, you can do it over all cpp and h files using <cmdname>find -name &quot;*.[cpp|h]&quot; | xargs cppcheck -I. --enable=all *.cpp *.h</cmdname>.</li>
+      </ol>
+    </section>
   </body>
 </topic>
