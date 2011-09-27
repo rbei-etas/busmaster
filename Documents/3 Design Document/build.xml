@@ -55,5 +55,5 @@
     </ant>
   </target>
 
-  <target name="all" depends="design_document2pdf"/>
+  <target name="all" depends="design_document2pdf, design_document2xhtml"/>
 </project>

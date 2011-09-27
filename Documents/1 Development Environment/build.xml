@@ -55,5 +55,5 @@
     </ant>
   </target>
 
-  <target name="all" depends="development_environment2pdf"/>
+  <target name="all" depends="development_environment2pdf, development_environment2xhtml"/>
 </project>
