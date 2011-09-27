@@ -238,6 +238,7 @@ void CDIL_CAN::vSelectInterface_CAN_BOA(void)
 
 /**
  * \brief     Get DIL list
+ * \req       RSI_14_001 - DILC_GetDILList
  * \req       RS_23_01 - Getter for the DIL List
  *
  * Based on the parameter this function renders number of the driver interface
@@ -263,6 +264,7 @@ DWORD CDIL_CAN::DILC_GetDILList(bool /*bAvailable*/, DILLIST* List)
 
 /**
  * \brief     Select driver from DIL list
+ * \req       RSI_14_002 - DILC_SelectDriver
  * \req       RS_23_02 - Selecting a driver from the DIL list
  *
  * This function selects a driver abstraction layer (DAL). If support for the
@@ -446,6 +448,7 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
 
 /**
  * \brief     Manage target message buffer list
+ * \req       RSI_14_004 - DILC_ManageMsgBuf
  *
  * This function manages the target message buffer list.
  */
@@ -456,6 +459,7 @@ HRESULT CDIL_CAN::DILC_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE
 
 /**
  * \brief     Register a client
+ * \req       RSI_14_004 - DILC_RegisterClient
  * \req       RS_23_04 - Registration of a client to simulate a node
  *
  * This function registers the client. Only registered client's buffer will be
@@ -468,6 +472,7 @@ HRESULT CDIL_CAN::DILC_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pa
 
 /**
  * \brief     Get selected driver
+ * \req       RSI_14_005 - DILC_GetSelectedDriver
  * \req       RS_23_03 - Getter for the presently selected driver
  *
  * This returns ID of the driver interface layer presently selected.
@@ -497,6 +502,7 @@ DWORD CDIL_CAN::DILC_GetSelectedDriver(void)
 
 /**
  * \brief     Initialize operation
+ * \req       RSI_14_006 - DILC_PerformInitOperations
  * \req       RS_23_08 - Carry out initialization operations
  *
  * Call for all initialisation operations
@@ -508,6 +514,7 @@ HRESULT CDIL_CAN::DILC_PerformInitOperations(void)
 
 /**
  * \brief     Closure operation
+ * \req       RSI_14_007 - DILC_PerformClosureOperations
  * \req       RS_23_09 - Carry out closure operations
  *
  * Call for all uninitialisation operations
@@ -521,6 +528,7 @@ HRESULT CDIL_CAN::DILC_PerformClosureOperations(void)
 
 /**
  * \brief     Get time mode mapping
+ * \req       RSI_14_008 - DILC_GetTimeModeMapping
  * \req       RS_23_10 - Getter for the time mode mapping (usually the 64-bit time stamp by the driver)
  *
  * Call this function to get a system time and the time stamp associated with it
@@ -532,6 +540,7 @@ HRESULT CDIL_CAN::DILC_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeS
 
 /**
  * \brief     List hardware interfaces
+ * \req       RSI_14_009 - DILC_ListHwInterfaces
  * \req       RS_23_11 - Listing of the controllers for the current driver
  *
  * Call this function to list the hardware interfaces available and receive user's choice.
@@ -543,6 +552,7 @@ HRESULT CDIL_CAN::DILC_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT&
 
 /**
  * \brief     Select hardware interfaces
+ * \req       RSI_14_010 - DILC_SelectHwInterfaces
  * \req       RS_23_12 - Selection of a controller from the hardware interface list
  *
  * Call this function to select hardware interfaces.
@@ -554,6 +564,7 @@ HRESULT CDIL_CAN::DILC_SelectHwInterfaces(const INTERFACE_HW_LIST& sSelHwInterfa
 
 /**
  * \brief     Deselect hardware interfaces
+ * \req       RSI_14_011 - DILC_DeselectHwInterfaces
  * \req       RS_23_13 - Deselection of the presently selected controller
  *
  * Call this function to deselect the selected hardware interface
@@ -565,6 +576,7 @@ HRESULT CDIL_CAN::DILC_DeselectHwInterfaces(void)
 
 /**
  * \brief     Display configuration dialog box
+ * \req       RSI_14_012 - DILC_DisplayConfigDlg
  * \req       RS_23_14 - Display the configuration dialog box of the present controller
  *
  * Function to display the configuration dialog box for the selected DIL. If
@@ -579,6 +591,7 @@ HRESULT CDIL_CAN::DILC_DisplayConfigDlg(PCHAR& InitData, int& Length)
 
 /**
  * \brief     Set configuration data
+ * \req       RSI_14_013 - DILC_SetConfigData
  * \req       RS_23_15 - Setting of the configuration data for the present controller
  *
  * To set the configuration data for the currently selected DIL. Caller must
@@ -591,6 +604,7 @@ HRESULT CDIL_CAN::DILC_SetConfigData(PCHAR pInitData, int Length)
 
 /**
  * \brief     Start the controller
+ * \req       RSI_14_014 - DILC_StartHardware
  * \req       RS_23_16 - Start the presently selected controller (or connect)
  *
  * Start the controller
@@ -602,6 +616,7 @@ HRESULT CDIL_CAN::DILC_StartHardware(void)
 
 /**
  * \brief     Stop the controller
+ * \req       RSI_14_015 - DILC_StopHardware
  * \req       RS_23_17 - Stop the presently selected controller (or disconnect)
  *
  * Stop the controller
@@ -613,6 +628,7 @@ HRESULT CDIL_CAN::DILC_StopHardware(void)
 
 /**
  * \brief     Reset hardware
+ * \req       RSI_14_016 - DILC_ResetHardware
  * \req       RS_23_18 - Reset the presently selected controller
  *
  * Reset Hardware
@@ -634,6 +650,7 @@ HRESULT CDIL_CAN::DILC_GetTxMsgBuffer(BYTE*& pouTxMsgBuffer)
 
 /**
  * \brief     Send messages
+ * \req       RSI_14_017 - DILC_SendMsg
  * \req       RS_23_19 - Transmit a frame
  *
  * Send messages
@@ -665,6 +682,7 @@ HRESULT CDIL_CAN::DILC_GetBusConfigInfo(BYTE* RBIN_BusInfo)
 
 /**
  * \brief     Get version information
+ * \req       RSI_14_018 - DILC_GetVersionInfo
  * \req       RS_23_20 - Getter for the version information of the DIL for the present bus
  *
  * Call to receive the version informations
@@ -676,6 +694,7 @@ HRESULT CDIL_CAN::DILC_GetVersionInfo(VERSIONINFO& sVerInfo)
 
 /**
  * \brief     Get last error as string
+ * \req       RSI_14_019 - DILC_GetLastErrorString
  * \req       RS_23_21 - In case of any error, a function returns the associated string of the last error
  *
  * Call to get descriptive string of the last error occurred
@@ -687,6 +706,7 @@ HRESULT CDIL_CAN::DILC_GetLastErrorString(char acErrorStr[], int nLength)
 
 /**
  * \brief     Get controller status
+ * \req       RSI_14_021 - DILC_GetControllreStatus
  * \req       RS_23_24 - Getter for controller status by callback mechanism
  *
  * Call to get controller status. Caller has to give the handle of a
@@ -699,6 +719,7 @@ HRESULT CDIL_CAN::DILC_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus)
 
 /**
  * \brief     Get controller parameters
+ * \req       RSI_14_022 - DILC_GetControllerParams
  *
  * Call to get Controller parameters. Value will be returned stored in lParam.
  */
@@ -709,6 +730,7 @@ HRESULT CDIL_CAN::DILC_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_P
 
 /**
  * \brief     Set PASS/STOP filter
+ * \req       RSI_14_020 - DILC_FilterFrames
  * \req       RS_23_22 - To set pass filters at hardware level
  * \req       RS_23_23 - To set stop filters at hardware level
  *
@@ -721,6 +743,7 @@ HRESULT CDIL_CAN::DILC_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel
 
 /**
  * \brief     Get error counts
+ * \req       RSI_14_023 - DILC_GetErrorCount
  *
  * Call to get error counts
  */
