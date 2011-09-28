@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = TestSetupEditorGUI
+PROJECT_BRIEF          = TestSetupEditorGUI
+OUTPUT_DIRECTORY       = out/TestSetupEditorGUI
+STRIP_FROM_PATH        = ../../Sources/TestSetupEditorGUI
+INPUT                  = ../../Sources/TestSetupEditorGUI

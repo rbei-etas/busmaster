@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = TXWindow
+PROJECT_BRIEF          = TXWindow
+OUTPUT_DIRECTORY       = out/TXWindow
+STRIP_FROM_PATH        = ../../Sources/TXWindow
+INPUT                  = ../../Sources/TXWindow

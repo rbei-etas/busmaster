@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = Utility
+PROJECT_BRIEF          = Utility
+OUTPUT_DIRECTORY       = out/Utility
+STRIP_FROM_PATH        = ../../Sources/Utility
+INPUT                  = ../../Sources/Utility

@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = ConfigDialogsDIL
+PROJECT_BRIEF          = ConfigDialogsDIL
+OUTPUT_DIRECTORY       = out/ConfigDialogsDIL
+STRIP_FROM_PATH        = ../../Sources/ConfigDialogsDIL
+INPUT                  = ../../Sources/ConfigDialogsDIL

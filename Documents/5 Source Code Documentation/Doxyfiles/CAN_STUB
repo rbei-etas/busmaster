@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = CAN_STUB
+PROJECT_BRIEF          = CAN_STUB
+OUTPUT_DIRECTORY       = out/CAN_STUB
+STRIP_FROM_PATH        = ../../Sources/CAN_STUB
+INPUT                  = ../../Sources/CAN_STUB

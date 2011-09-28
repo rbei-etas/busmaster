@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = DataTypes
+PROJECT_BRIEF          = DataTypes
+OUTPUT_DIRECTORY       = out/DataTypes
+STRIP_FROM_PATH        = ../../Sources/DataTypes
+INPUT                  = ../../Sources/DataTypes

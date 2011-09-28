@@ -1,3 +1,7 @@
+# Generic files
+*~
+*.orig
+
 # Visual Studio intermediate files
 *.vcproj.*.user
 Sources/Application/BUSMASTER_Interface.c
@@ -101,11 +105,17 @@ Sources/BIN/Libs/*/TestSetupEditorLib.lib
 Sources/BIN/Libs/*/TestSuiteExecutorGUI.lib
 Sources/BIN/Libs/*/Utils.lib
 
-# DITA
+# Documents
 Documents/1 Development Environment/out
+Documents/1 Development Environment/temp
 Documents/2 Requirement Specification/out
+Documents/2 Requirement Specification/temp
 Documents/3 Design Document/out
+Documents/3 Design Document/temp
 Documents/4 Help/out
+Documents/4 Help/temp
+Documents/5 Source Code Documentation/out
+Documents/5 Source Code Documentation/temp
 
 # Doxygen
 Sources/Application/html/

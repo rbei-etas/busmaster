@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = ProjectConfiguration
+PROJECT_BRIEF          = ProjectConfiguration
+OUTPUT_DIRECTORY       = out/ProjectConfiguration
+STRIP_FROM_PATH        = ../../Sources/ProjectConfiguration
+INPUT                  = ../../Sources/ProjectConfiguration

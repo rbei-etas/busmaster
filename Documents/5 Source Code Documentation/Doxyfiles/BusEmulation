@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = BusEmulation
+PROJECT_BRIEF          = BusEmulation
+OUTPUT_DIRECTORY       = out/BusEmulation
+STRIP_FROM_PATH        = ../../Sources/BusEmulation
+INPUT                  = ../../Sources/BusEmulation

@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = NodeSimEx
+PROJECT_BRIEF          = NodeSimEx
+OUTPUT_DIRECTORY       = out/NodeSimEx
+STRIP_FROM_PATH        = ../../Sources/NodeSimEx
+INPUT                  = ../../Sources/NodeSimEx

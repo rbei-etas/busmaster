@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = Replay
+PROJECT_BRIEF          = Replay
+OUTPUT_DIRECTORY       = out/Replay
+STRIP_FROM_PATH        = ../../Sources/Replay
+INPUT                  = ../../Sources/Replay

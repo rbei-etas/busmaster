@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = PSDI_CAN
+PROJECT_BRIEF          = PSDI_CAN
+OUTPUT_DIRECTORY       = out/PSDI_CAN
+STRIP_FROM_PATH        = ../../Sources/PSDI_CAN
+INPUT                  = ../../Sources/PSDI_CAN

@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = FrameProcessor
+PROJECT_BRIEF          = FrameProcessor
+OUTPUT_DIRECTORY       = out/FrameProcessor
+STRIP_FROM_PATH        = ../../Sources/FrameProcessor
+INPUT                  = ../../Sources/FrameProcessor

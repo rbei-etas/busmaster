@@ -1,0 +1,15 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = CAN_BOA
+PROJECT_BRIEF          = CAN_BOA
+OUTPUT_DIRECTORY       = out/CAN_BOA
+STRIP_FROM_PATH        = ../../Sources/CAN_BOA
+INPUT                  = ../../Sources/CAN_BOA
+ALIASES               += "capabilities=\par Capabilities:\n" \
+                         "coding=\par Coding:\n" \
+                         "controllerState=\par Controller state:\n" \
+                         "default=\par Default:\n" \
+                         "flags=\par Flags:\n" \
+                         "messages=\par Messages:\n" \
+                         "status=\par Status:\n" \
+                         "size=\par Size:\n" \
+                         "values=\par Values:\n"

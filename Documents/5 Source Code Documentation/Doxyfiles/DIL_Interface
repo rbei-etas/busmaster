@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = DIL_Interface
+PROJECT_BRIEF          = DIL_Interface
+OUTPUT_DIRECTORY       = out/DIL_Interface
+STRIP_FROM_PATH        = ../../Sources/DIL_Interface
+INPUT                  = ../../Sources/DIL_Interface
