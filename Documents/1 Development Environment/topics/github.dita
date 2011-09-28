@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="github" xml:lang="en-us">
+  <title>Github Usage - Best Practices</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>This describes the four elements of the release process.</p>
+    <section>
+      <title>Version suffix</title>
+      <p>A version suffix is part of the installer download, e.g. <filepath>BUSMASTER Installer V1.0.1.exe</filepath>.
+This has the advantage that the download statistics clearly reflect which versions have been downloaded.
+Always the former two versions of the BUSMASTER installer along with its current version will be maintained in the repository for download.</p>
+    </section>
+    <section>
+      <title>Tags</title>
+      <p><cmdname>git tag</cmdname> will be executed every time a new BUSMASTER version is released.
+This way an older version can easily be retrieved, whenever technical questions on it evolve.</p>
+    </section>
+    <section>
+      <title>Changelogs</title>
+      <p>A <filepath>changelog.txt</filepath> file will be installed together with the application. This is based on the output of “git log”.
+It will clearly show which changes have been made since the former version.</p>
+    </section>
+    <section>
+      <title>Issue tracker</title>
+      <p>Anytime an issue is fixed, references to the related commits will be posted to the Issue Tracker.
+After the new BUSMASTER version containing the fix is released, this download will also be referenced in the Issue Tracker, before it is finally closed.</p>
+    </section>
+  </body>
+</topic>

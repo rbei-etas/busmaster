@@ -18,4 +18,5 @@
   <topicref href="topics/testcocoon.dita" type="topic"/>
   <topicref href="topics/autoit.dita" type="topic"/>
   <topicref href="topics/project_building_guideline.dita" type="topic"/>
+  <topicref href="topics/github.dita" type="topic"/>
 </map>
