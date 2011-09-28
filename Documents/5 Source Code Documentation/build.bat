@@ -1,3 +1,5 @@
+@echo off
+
 mkdir out
 doxygen Doxyfiles/Application
 doxygen Doxyfiles/BusEmulation
