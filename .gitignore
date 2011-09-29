@@ -36,6 +36,7 @@ Sources/TestSetupEditorLib/Release
 Sources/TestSuiteExecutorGUI/Release
 Sources/TXWindow/Release
 Sources/Utility/Release
+Sources/TOOLS_EXTERNAL/*/Release
 
 # Debug dirs (except BIN)
 Sources/Application/Debug
@@ -59,6 +60,7 @@ Sources/TestSetupEditorLib/Debug
 Sources/TestSuiteExecutorGUI/Debug
 Sources/TXWindow/Debug
 Sources/Utility/Debug
+Sources/TOOLS_EXTERNAL/*/Debug
 
 # Files in BIN
 Sources/BIN/*/*.bmp
