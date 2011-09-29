@@ -115,31 +115,3 @@ Documents/3 Design Document/temp
 Documents/4 Help/out
 Documents/4 Help/temp
 Documents/5 Source Code Documentation/out
-Documents/5 Source Code Documentation/temp
-
-# Doxygen
-Sources/Application/html/
-Sources/BusEmulation/html/
-Sources/CAN_BOA/html/
-Sources/CAN_ETAS_ES581/html/
-Sources/CAN_STUB/html/
-Sources/CommonClass/html/
-Sources/ConfigDialogsDIL/html/
-Sources/DataTypes/html/
-Sources/DIL_Interface/html/
-Sources/Filter/html/
-Sources/FrameProcessor/html/
-Sources/Include/html/
-Sources/NodeSimEx/html/
-Sources/ProjectConfiguration/html/
-Sources/PSDI_CAN/html/
-Sources/Replay/html/
-Sources/SignalWatch/html/
-Sources/TestSetupEditorGUI/html/
-Sources/TestSetupEditorLib/html/
-Sources/TestSuiteExecutorGUI/html/
-Sources/TOOLS_EXTERNAL/CAPL_2_C/html/
-Sources/TOOLS_EXTERNAL/EXT_DBC_2_DBF/html/
-Sources/TOOLS_EXTERNAL/EXT_DBF_2_DBC/html/
-Sources/TXWindow/html/
-Sources/Utility/html/
