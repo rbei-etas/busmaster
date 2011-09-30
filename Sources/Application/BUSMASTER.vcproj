@@ -1724,22 +1724,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Hlp\Html\Images\AddErrHandler.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\AddMsgHandler.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\Arrow.jpg"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\Baudrate.bmp"
-				>
-			</File>
-			<File
 				RelativePath="res\bitmap1.bmp"
 				>
 			</File>
@@ -1808,19 +1792,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Hlp\Html\Images\BTR.bmp"
-				>
-			</File>
-			<File
 				RelativePath=".\Res\BuildAll.ico"
 				>
 			</File>
 			<File
 				RelativePath=".\Res\BuilLoadAll.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\CANbus_PopupMenu.bmp"
 				>
 			</File>
 			<File
@@ -1840,14 +1816,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Hlp\Html\Images\CANUsbMultipleNet.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\CanUsbNetwork.bmp"
-				>
-			</File>
-			<File
 				RelativePath="Res\BUSMASTER.ico"
 				>
 			</File>
@@ -1856,15 +1824,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Hlp\Html\Images\BUSMASTERDriver.bmp"
-				>
-			</File>
-			<File
 				RelativePath=".\Res\cascade.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\clearwindowtoolbar.bmp"
 				>
 			</File>
 			<File
@@ -1876,10 +1836,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Hlp\Html\Images\configure_filter.bmp"
-				>
-			</File>
-			<File
 				RelativePath=".\Res\Configure_Hot.bmp"
 				>
 			</File>
@@ -1888,35 +1844,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Hlp\Html\Images\ConfigureMsgDisplayBuffer.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\ConfigureMsgDisplayDB.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\ConfigureMsgDisplayNDB.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\Connect.bmp"
-				>
-			</File>
-			<File
 				RelativePath="Res\copyright.bmp"
 				>
 			</File>
 			<File
-				RelativePath=".\Hlp\Html\Images\database_editor.bmp"
-				>
-			</File>
-			<File
 				RelativePath="Res\DB Editor.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\DB_save.bmp"
 				>
 			</File>
 			<File
@@ -1925,10 +1857,6 @@
 			</File>
 			<File
 				RelativePath=".\Res\Disconnect.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\display_filter.bmp"
 				>
 			</File>
 			<File
@@ -1948,10 +1876,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Hlp\Html\Images\ErrHandlerDlg.bmp"
-				>
-			</File>
-			<File
 				RelativePath="Res\ERROR_ACTIVE.ico"
 				>
 			</File>
@@ -1961,10 +1885,6 @@
 			</File>
 			<File
 				RelativePath="Res\ERROR_PASSIVE.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\errorcode.bmp"
 				>
 			</File>
 			<File
@@ -1988,18 +1908,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Hlp\Html\Images\File_new.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\FileOpen.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\FileSave.bmp"
-				>
-			</File>
-			<File
 				RelativePath="Res\Filter.bmp"
 				>
 			</File>
@@ -2016,39 +1924,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Hlp\Html\Images\FilterToolBar.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\Function_Editor.bmp"
-				>
-			</File>
-			<File
 				RelativePath="res\FunctionEditorDoc.ico"
 				>
 			</File>
 			<File
 				RelativePath=".\Res\Functions_J1939.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\Graph_Configure.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\Graph_Element.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\Graph_main.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\Graph_Manipulation.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\Graph_UI_Configure.bmp"
 				>
 			</File>
 			<File
@@ -2092,10 +1972,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Hlp\Html\Images\keyhandlertoolbar.bmp"
-				>
-			</File>
-			<File
 				RelativePath="Res\LEFTArrow.ico"
 				>
 			</File>
@@ -2112,43 +1988,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Hlp\Html\Images\log_config.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\LogReplay.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\LogToolBar.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\MessageHandler.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\MessageOperation.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\MessageWindow.bmp"
-				>
-			</File>
-			<File
 				RelativePath=".\Res\Minus.ICO"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\MsgDisplayAdd.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\MsgFilter.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\MsgInterpretation.bmp"
 				>
 			</File>
 			<File
@@ -2180,23 +2020,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Hlp\Html\Images\NBT.bmp"
-				>
-			</File>
-			<File
 				RelativePath=".\Res\New.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\Hlp\Html\Images\nwstatistics.bmp"
-				>
-			</File>
-			<File
 				RelativePath=".\Res\Open.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\pin_details.bmp"
 				>
 			</File>
 			<File
@@ -2208,23 +2036,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Hlp\Html\Images\Reference.bmp"
-				>
-			</File>
-			<File
 				RelativePath="Res\Replay.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\replay_config.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\ReplayToolBars.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\restartcontroller.bmp"
 				>
 			</File>
 			<File
@@ -2233,10 +2045,6 @@
 			</File>
 			<File
 				RelativePath=".\Res\Save.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\sendmessagetoolbar.bmp"
 				>
 			</File>
 			<File
@@ -2260,27 +2068,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Hlp\Html\Images\signalwatch.bmp"
-				>
-			</File>
-			<File
 				RelativePath=".\Res\Signalwatch.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\SignalWatchListDialog.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\SignalWatchWindow.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\SimSys_PopupMenu.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\SimSys_Wnd.bmp"
 				>
 			</File>
 			<File
@@ -2292,27 +2080,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Hlp\Html\Images\statusbar.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\SubError.bmp"
-				>
-			</File>
-			<File
 				RelativePath=".\Res\Tile.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\timer.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\Timer_Dialog.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\Tip.bmp"
 				>
 			</File>
 			<File
@@ -2372,23 +2140,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Hlp\Html\Images\Tx Message.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\TypeLib.bmp"
-				>
-			</File>
-			<File
 				RelativePath=".\Res\UnLoadAll.ico"
 				>
 			</File>
 			<File
 				RelativePath="Res\UPArrow.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\Hlp\Html\Images\USB Hw Selection.bmp"
 				>
 			</File>
 			<File
