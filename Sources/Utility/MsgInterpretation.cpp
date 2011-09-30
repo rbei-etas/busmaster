@@ -172,7 +172,6 @@ __int64 static n64GetSignalValueInBits(register CByteArray* pMsgArray,
         /* Whether the format is Intel or Motorola reading bits inside
            a byte is always same */
         UINT CurrBitNum = unBitNum;
-        UINT nBitsRead = 0;
         /* If Byte order is motorola then Bytes have to be read in
         reverse order */
         INT nByteOrder = (bByteOrder == DATA_FORMAT_INTEL)? 1: -1;
@@ -180,6 +179,7 @@ __int64 static n64GetSignalValueInBits(register CByteArray* pMsgArray,
         ASSERT(bValid == TRUE);
         if (bValid == TRUE)
         {
+        UINT nBitsRead = 0;
         for (register UINT i = 0; i < nBytesToRead; i++)
         {
             /* Please note: If byte number is byteNumber then array index = byteNumber - 1 */

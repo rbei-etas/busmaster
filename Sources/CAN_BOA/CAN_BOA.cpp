@@ -2371,7 +2371,6 @@ USAGEMODE HRESULT CAN_BOA_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
     HRESULT hResult = S_FALSE;
-    OCI_ErrorCode ErrCode = OCI_FAILURE;
     if (bClientIdExist(dwClientID))
     {
         if (sCanTxMsg.m_ucChannel <= sg_nNoOfChannels)
@@ -2388,7 +2387,7 @@ USAGEMODE HRESULT CAN_BOA_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
             sAckMap.m_Channel  = sCanTxMsg.m_ucChannel;
             sAckMap.m_MsgID    = sOciCanMsg.data.txMessage.frameID;
             vMarkEntryIntoMap(sAckMap);
-            ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.writeCANData))
+            OCI_ErrorCode ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.writeCANData))
                 (sg_asChannel[sCanTxMsg.m_ucChannel - 1].m_OCI_TxQueueHandle, OCI_NO_TIME, &sOciCanMsg, 1, &nRemaining);
             if (ErrCode == OCI_SUCCESS)
             {

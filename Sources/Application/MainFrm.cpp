@@ -2636,11 +2636,13 @@ void CMainFrame::OnMessageInterpretation()
         }
 		for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
 		{
-			BYTE bModes = DISPLAY_MODE;
 			hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
 			//Update Message Window
 			if(hWnd)
+			{
+				BYTE bModes = DISPLAY_MODE;
 				::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
+			}
 		}
 	}
 }
@@ -3996,11 +3998,13 @@ void CMainFrame::OnHex_DecButon()
 		}
 		for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
 		{
-			BYTE bModes = NUMERIC;
 			hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
 			//Update Message Window
 			if(hWnd)
+			{
+				BYTE bModes = NUMERIC;
 				::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
+			}
 		}
 	}
     
@@ -4064,11 +4068,13 @@ void CMainFrame::OnDisplayMessagewindowOverwrite()
 		}
 		for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
 		{
-			BYTE bModes = DISPLAY_MODE;
 			hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
 			//Update Message Window
 			if(hWnd)
+			{
+				BYTE bModes = DISPLAY_MODE;
 				::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
+			}
 		}
 	}
    /* BOOL bOverwriteON = theApp.pouGetFlagsPtr()->nGetFlagStatus(OVERWRITE);

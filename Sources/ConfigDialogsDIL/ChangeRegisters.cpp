@@ -847,7 +847,6 @@ void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
     FLOAT   fNbt            = 0;
     UINT    unBrp           = 0;
     UINT    unProductNbtNBrp= 0;
-    INT     nColumnCount    = 0;
     uBTR0   sBtr0Reg    ;
     TCHAR* pcStopStr         = NULL;
 
@@ -990,7 +989,6 @@ void CChangeRegisters:: vCalculateBaudRateNBTR0(CString omStrBtr1)
     UINT    unBrp               = 0;
     FLOAT   fBrp                = 0;
     WORD    usProductNbtNBrp    = 0;
-    INT     nItem               = 0;
     INT     nSample             = 0;
     INT     nSampleChange       = 0;
     INT     nGetValue           = 0;
@@ -1092,7 +1090,7 @@ void CChangeRegisters:: vCalculateBaudRateNBTR0(CString omStrBtr1)
 
          info.psz   = omStrLocalBtr0;
 
-         nItem = m_omListCtrlBitTime.FindItem(&info);
+         INT nItem = m_omListCtrlBitTime.FindItem(&info);
          // Search for the item containing the same BTR0 and BTR1 value.
          if(nItem!= -1 )
          {

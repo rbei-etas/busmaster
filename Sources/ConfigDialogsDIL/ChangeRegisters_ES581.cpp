@@ -1441,34 +1441,26 @@ BOOL CChangeRegisters_ES581::bGetFilterFromCom(BOOL  &bExtended, double  &dBegin
                                    double &dEndMsgId)
 {
     BOOL bReturn = FALSE;
-    int nAccCodeByte1;
-    int nAccCodeByte2;
-    int nAccCodeByte3;
-    int nAccCodeByte4;
-    int nMaskCodeByte1;
-    int nMaskCodeByte2;
-    int nMaskCodeByte3;
-    int nMaskCodeByte4;
     if (m_pControllerDetails != NULL)
     {
         
         TCHAR* pcStopStr ;
         //Change to separate integer value for each byte
-        nAccCodeByte1 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte1,
+        int nAccCodeByte1 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte1,
                         &pcStopStr,defHEXADECIMAL);
-        nAccCodeByte2 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte2,
+        int nAccCodeByte2 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte2,
                         &pcStopStr,defHEXADECIMAL);
-        nAccCodeByte3 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte3,
+        int nAccCodeByte3 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte3,
                         &pcStopStr,defHEXADECIMAL);
-        nAccCodeByte4 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte4,
+        int nAccCodeByte4 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte4,
                         &pcStopStr,defHEXADECIMAL);
-        nMaskCodeByte1 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte1,
+        int nMaskCodeByte1 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte1,
                         &pcStopStr,defHEXADECIMAL);
-        nMaskCodeByte2 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte2,
+        int nMaskCodeByte2 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte2,
                         &pcStopStr,defHEXADECIMAL); 
-        nMaskCodeByte3 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte3,
+        int nMaskCodeByte3 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte3,
                         &pcStopStr,defHEXADECIMAL); 
-        nMaskCodeByte4 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte4,
+        int nMaskCodeByte4 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte4,
                         &pcStopStr,defHEXADECIMAL);
         //now make them as dword in decimal
         dBeginMsgId = (ULONG)(nAccCodeByte1*0X1000000+nAccCodeByte2*0X10000+

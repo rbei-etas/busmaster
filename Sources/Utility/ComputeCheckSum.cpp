@@ -83,10 +83,10 @@ BOOL CComputeCheckSum::bComputeCheckSum(UCHAR* pucBuff,
                                       UCHAR* pucCheckSum)
 {
     BOOL  bReturn     = FALSE;
-    UCHAR ucTempByte  = 0;
     // check for pointer and size to be more then zero.
     if(pucBuff != NULL && dwSize >0)
     {
+       UCHAR ucTempByte  = 0;
        for(UINT unIndex = 0; unIndex < dwSize; unIndex++)
        {
           // XOR the bytes with result and update the result. First time 
