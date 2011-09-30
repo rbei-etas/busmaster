@@ -106,7 +106,7 @@ Section ""
      SetOutPath $INSTDIR	 
      File ..\Sources\BIN\Release\*.exe
 	 File ..\Sources\BIN\Release\*.dll
-	 File ..\Sources\BIN\Release\BUSMASTER.chm
+	 File /oname=BUSMASTER.chm "..\Documents\4 Help\out\help.chm"
 	 File ..\Sources\BIN\Release\BUSMASTER.tlb
 	 File ..\Sources\BIN\Release\BUSMASTER_Interface.c
 	 File ..\Sources\BIN\Release\BUSMASTER_Interface.h
