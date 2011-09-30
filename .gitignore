@@ -14,6 +14,7 @@ Sources/Application/Hlp/BUSMASTER.hm
 Sources/BusEmulation/BusEmulation.h
 Sources/BusEmulation/BusEmulation_i.c
 Sources/BusEmulation/BusEmulation_p.c
+Sources/TOOLS_EXTERNAL/CAPL_2_C/lexer.h
 
 # Release dirs (except BIN)
 Sources/Application/Release
@@ -107,6 +108,9 @@ Sources/BIN/Libs/*/TestSetupEditorGUI.lib
 Sources/BIN/Libs/*/TestSetupEditorLib.lib
 Sources/BIN/Libs/*/TestSuiteExecutorGUI.lib
 Sources/BIN/Libs/*/Utils.lib
+
+# Installation Setup
+Installation Setup/BUSMASTER Installer.exe
 
 # Documents
 Documents/1 Development Environment/out
