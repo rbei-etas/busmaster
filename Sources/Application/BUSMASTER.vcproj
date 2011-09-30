@@ -1633,26 +1633,6 @@
 			<File
 				RelativePath="Resource.h"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Making help include file..."
-						CommandLine="echo. &gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo // Commands (ID_* and IDM_*) &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;makehm ID_,HID_,0x10000 IDM_,HIDM_,0x10000 resource.h &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo. &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo // Prompts (IDP_*) &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;makehm IDP_,HIDP_,0x30000 resource.h &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo. &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo // Resources (IDR_*) &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;makehm IDR_,HIDR_,0x20000 resource.h &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo. &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo // Dialogs (IDD_*) &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;makehm IDD_,HIDD_,0x20000 resource.h &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo. &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo // Frame Controls (IDW_*) &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;makehm IDW_,HIDW_,0x50000 resource.h &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;"
-						Outputs="hlp\$(TargetName).hm"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Making help include file..."
-						CommandLine="echo. &gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo // Commands (ID_* and IDM_*) &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;makehm ID_,HID_,0x10000 IDM_,HIDM_,0x10000 resource.h &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo. &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo // Prompts (IDP_*) &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;makehm IDP_,HIDP_,0x30000 resource.h &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo. &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo // Resources (IDR_*) &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;makehm IDR_,HIDR_,0x20000 resource.h &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo. &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo // Dialogs (IDD_*) &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;makehm IDD_,HIDD_,0x20000 resource.h &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo. &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo // Frame Controls (IDW_*) &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;makehm IDW_,HIDW_,0x50000 resource.h &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;"
-						Outputs="hlp\$(TargetName).hm"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="resource.hm"
