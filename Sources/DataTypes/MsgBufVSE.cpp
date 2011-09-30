@@ -498,19 +498,3 @@ int CMsgBufVSE::nHandleBufferOverrun(INT nSize)
     }
     return nResult;
 }
-/**********************************************************************************
-Function Name   :   GetSkippedMsgCount()
-Input(s)        :   -
-Output          :   -
-Functionality   :   Gets the no. of msgs skipped by user or by buffer overrun
-Member of       :   CMsgBufVSE
-Friend of       :   -
-Authors         :   Pradeep Kadoor
-Date Created    :   22/06/2009
-Modifications   :   -
-************************************************************************************/
-
-int CMsgBufVSE::GetSkippedMsgCount(void) const
-{    
-    return m_nMsgSkipped;
-}

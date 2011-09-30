@@ -164,8 +164,6 @@ BOOL CFunctionEditorDoc::bCreateNewDocument(CString& omStrFileName )
         strcat(buffer, "\n\n");
         int nLength = (COMMANINT)strlen(buffer); 
       
-        int numwritten = (COMMANINT)fwrite( buffer, sizeof( char ), nLength, pCFile );
-
         fclose(pCFile);
         pCFile = NULL;
     }

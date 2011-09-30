@@ -1036,35 +1036,6 @@ LRESULT CRxMsgList::OnInsertColumn(WPARAM wParam, LPARAM lParam)
 	return lRet;
 }
 
-namespace {
-	LRESULT EnableWindowTheme(HWND hwnd, LPCWSTR classList, LPCWSTR subApp, LPCWSTR idlist)
-	{
-		HMODULE hinstDll;
-		HRESULT (__stdcall *pSetWindowTheme)(HWND hwnd, LPCWSTR pszSubAppName, LPCWSTR pszSubIdList);
-		HANDLE (__stdcall *pOpenThemeData)(HWND hwnd, LPCWSTR pszClassList);
-		HRESULT (__stdcall *pCloseThemeData)(HANDLE hTheme);
-
-		hinstDll = ::LoadLibrary("UxTheme.dll");
-		if (hinstDll)
-		{
-			(FARPROC&)pOpenThemeData = ::GetProcAddress(hinstDll, TEXT("OpenThemeData"));
-			(FARPROC&)pCloseThemeData = ::GetProcAddress(hinstDll, TEXT("CloseThemeData"));
-			(FARPROC&)pSetWindowTheme = ::GetProcAddress(hinstDll, TEXT("SetWindowTheme"));
-			::FreeLibrary(hinstDll);
-			if (pSetWindowTheme && pOpenThemeData && pCloseThemeData)
-			{
-				HANDLE theme = pOpenThemeData(hwnd,classList);
-				if (theme!=NULL)
-				{
-					VERIFY(pCloseThemeData(theme)==S_OK);
-					return pSetWindowTheme(hwnd, subApp, idlist);
-				}
-			}
-		}
-		return S_FALSE;
-	}
-}
-
 /*******************************************************************************
   Function Name  : PreSubclassWindow
   Input(s)       : -

@@ -555,7 +555,6 @@ void CConverter::GenerateMessageList(CStdioFile& fileInput)
                 // signal type appropriately of the respective signal
 
                 pcToken = strtok(NULL," :;"); // msgid
-                int flag = 0;
                 unsigned int id = (unsigned int)atoi(pcToken);
                 POSITION posMsg = m_listMessages.GetHeadPosition();
                 if(id != 3221225472)

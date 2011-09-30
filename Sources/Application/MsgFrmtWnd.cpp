@@ -26,7 +26,6 @@
 #include "include/utils_macro.h"
 #include "common.h"
 #include "MsgFrmtWnd.h"
-#include "DataTypes/McNet_Datatypes.h"
 #include "Include/CAN_Error_Defs.h"
 // Time calculation related functionality
 #include "TimeManager.h"

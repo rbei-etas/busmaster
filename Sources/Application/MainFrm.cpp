@@ -5513,9 +5513,6 @@ void CMainFrame::vUpdateGraphData(const STCANDATA &sCanData)
 	SINTERPRETDATA_LIST sInterpretList;						
 
     STCAN_MSG sMessage = sCanData.m_uDataInfo.m_sCANMsg;
-    double nTime = (DOUBLE)(sCanData.m_lTickCount.QuadPart - m_nTimeStamp);
-    // Divide the time to get time in seconds
-    nTime /= defTIMER_RESOLUTION_FACTOR;
     // Iterate through list
 
     // Get List pointer    
@@ -8934,10 +8931,6 @@ void CMainFrame::vUpdateGraphStatsData()
 		CGraphList * pList = &(m_odGraphList[nBusType]);  
         // Get the element count
         int nCount = pList->m_omElementList.GetSize();
-        // Get the absolute time value
-        double dTime = CTimeManager::nCalculateCurrTimeStamp() -
-                    CTimeManager::nGetAbsoluteTime();
-        dTime /= defTIMER_RESOLUTION_FACTOR;
         // Iterate through element list
         for( int nIndex = 0; nIndex < nCount; nIndex++ )
         {
@@ -11298,46 +11291,6 @@ void CMainFrame::vPostConfigChangeCmdToSigGrphWnds()
 		m_objSigGrphHandler.vPostMessageToSGWnd((SHORT)nBusID, WM_USER_CMD,
 												(WPARAM)eCONFIGCHANGECMD, NULL);
 	}
-}
-
-static BOOL bCreateStudioFile(CString& omDefaultFileName)
-{
-    BOOL bResult = FALSE;
-    CStdioFile om_File;
-    TRY
-    {
-        CFileDialog fileDlg(FALSE, DATABASE_EXTN, omDefaultFileName.GetBuffer(MAX_PATH), 
-                            OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, DATABASE_FILTER);
-        if (fileDlg.DoModal() == IDOK)
-        {
-            omDefaultFileName = fileDlg.GetPathName();
-            bResult = TRUE;
-        
-            // create the selected file
-            if (om_File.Open(omDefaultFileName,
-                            CFile::modeCreate | CFile::modeRead | 
-                            CFile::typeText))
-            {
-                om_File.Close();
-            }
-        }
-    }
-    CATCH_ALL(om_Fe)
-    {
-        if(om_Fe != NULL )
-        {
-            LPTSTR lpszError = NULL;
-            // Get error
-            om_Fe->GetErrorMessage( lpszError, 255);
-
-            AfxMessageBox( lpszError, NULL, MB_OK );
-        
-            om_Fe->Delete();
-        }
-    }
-    END_CATCH_ALL
-
-    return bResult;
 }
 
 void CMainFrame::OnToolbarCandatabase()

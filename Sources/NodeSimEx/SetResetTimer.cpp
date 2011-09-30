@@ -644,8 +644,6 @@ void CSetResetTimer::OnItemchangedLstcTimerHandler(NMHDR* pNMHDR,
 		    
             if(unCurrentState != FALSE)
             {
-				PSTIMERHANDLER ps_CurrTimeHandler=GetPointerOfHandler(psTimerList,
-					pNMListView->iItem);
 				vUpdateTimerInformation(psTimerList,pNMListView->iItem);
             }
             // if it is checked or unchecked, get the condition of the item

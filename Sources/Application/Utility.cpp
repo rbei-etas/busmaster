@@ -97,26 +97,6 @@ BOOL bGetMsgData(UINT unMsgIndex,
 }
 
 
-
-/*******************************************************************************
- Function Name  : gvOverWriteBufferOverFlowHandler
-
- Input(s)       :     -
- Output         :     -
- Functionality  : Handler function to handle the overflow of overwrite buffer.
- Member of      : -
- Author(s)      : Raja N
- Date Created   : 28.06.2004
- Modifications  : 
-*******************************************************************************/
-void gvOverWriteBufferOverFlowHandler()
-{
-    // Display the warning message
-    gbSendStrToTrace(defSTR_OW_BUFFER_OVERFLOW);
-    // Other actions can be done here
-}
-
-
 /******************************************************************************
     Function Name    :  unKeyHandlerProc
     Input(s)         :  pParam - Typecasted address of user-defined key 

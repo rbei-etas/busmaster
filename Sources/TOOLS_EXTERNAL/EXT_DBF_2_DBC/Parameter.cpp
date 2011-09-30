@@ -409,8 +409,8 @@ void CParameters::Format_ParamDef(char *pcLine,int index)
 void CParameters::GetParam_Def(char *pcLine)
 {
     char *pcToken;
-    char acTemp[defCON_CHAR_LEN],*pcTemp;
-    pcTemp = acTemp;
+    char acTemp[defCON_CHAR_LEN];
+	char *pcTemp = acTemp;
 
     //get Param name
     pcToken = strtok(pcLine,"\""); 

@@ -333,48 +333,6 @@ typedef struct tagDATINDSTR
 
 static sDatIndStr s_DatIndThread;
 
-
-/******************************************************************************
-Function Name  : ThreadDataInd
-Input(s)       : LPVOID pParam - Function specific data
-Output         : 0
-Description    : Thread function 
-Member of      : None
-Functionality  : Indicates presence of data in the bus.
-Author(s)      : Ratnadip Choudhury
-Date Created   : 10.04.2008
-Modifications  : Ratnadip Choudhury, 12.05.2008
-                 Before calling 'icsneoWaitForRxMessagesWithTimeOut', we are 
-                 now checking if the application is connected to the bus. At
-                 present open port procedure is called only when the node /
-                 application is connected to the bus.
-******************************************************************************/
-unsigned int ThreadDataInd(LPVOID pParam)
-{
-    sDatIndStr& sCurrStr = *((sDatIndStr *) pParam);
-    DWORD dwResult = 0;
-
-    while (sCurrStr.m_bToContinue)
-    {
-        if (sCurrStr.m_bIsConnected)
-        {
-            for (UINT i = 0; i < sCurrStr.m_unChannels; i++)
-            {
-                dwResult = (*pFuncPtrWaitForRxMsg)(m_anhObject[i], WAITTIME_NEOVI);
-                if (dwResult > 0) /* At present a timeout of 100ms is applied */
-                {
-                    SetEvent(sCurrStr.m_hHandle);
-                }
-            }
-        }
-        else
-        {
-            WaitForSingleObject(sCurrStr.m_hHandle, 500);
-        }
-    }
-    return 0;
-}
-
 HRESULT CAN_ES581_Usb_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
 
 /* HELPER FUNCTIONS START */
@@ -842,7 +800,6 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
 {
     int i = 0;
     int nReturn = 0;
-    static int errorCount = 0;
     // Now the data messages
     CChannel& odChannel = sg_odHardwareNetwork.m_aodChannels[nChannelIndex];
     static int s_CurrIndex = 0, s_Messages = 0;
@@ -864,7 +821,6 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
         nReturn = (*pFuncPtrGetErrMsgs)(m_anhObject[nChannelIndex], s_anErrorCodes, &nErrors);
         if ((nReturn == NEOVI_OK) && (nErrors > 0))
         {
-            errorCount += nErrors;
             for (int j = 0; j < nErrors; j++)
             {
                 switch (s_anErrorCodes[j])

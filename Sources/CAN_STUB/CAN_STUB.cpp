@@ -455,11 +455,6 @@ USAGEMODE HRESULT CAN_STUB_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger*
     return hResult;
 }
 
-BOOL Callback_DILStub(BYTE /*Argument*/, PBYTE pDatStream, int /*Length*/)
-{
-    return (CAN_STUB_SetConfigData((CHAR *) pDatStream, 0) == S_OK);
-}
-
 USAGEMODE HRESULT CAN_STUB_DisplayConfigDlg(PCHAR& InitData, int& Length)
 {
     HRESULT Result = S_FALSE;
@@ -758,96 +753,6 @@ USAGEMODE HRESULT CAN_STUB_UnloadDriverLibrary(void)
 {
     // Do nothing
     return S_OK;
-}
-
-bool ExtractFrom(char* pcSrc, int nLenSrc, char cCurr, 
-                 char* pcDest, int nLenDest)
-{
-    bool bResult = false;
-    // Erroneous situations addressed are invalid pointers & insufficient space
-    if ((pcSrc != NULL) && (pcDest != NULL))
-    {
-        bResult = true;
-        int i;                          //i declared outside
-        for (i = 0; i < nLenSrc; i++)
-        {
-            if (*(pcSrc + i) == cCurr)
-            {
-                i++;
-                break;
-            }
-        }
-        for (int j = 0; 
-             (i < nLenSrc) && (j < nLenDest) 
-             && ((*(pcDest + j) = *(pcSrc + i)) != '\0');
-             i++, j++)
-        {
-            ;
-        }
-    }
-    return bResult;
-}
-
-bool ExtractUntil(char* pcSrc, int nLenSrc, char cCurr, 
-                  char* pcDest, int nLenDest)
-{
-    bool bResult = false;
-    // Erroneous situations addressed are invalid pointers & insufficient space
-    if ((pcSrc != NULL) && (pcDest != NULL))
-    {
-        for (int i = 0; (i < nLenSrc) && (i < nLenDest); i++)
-        {
-            if (*(pcSrc + i) == cCurr) // We found the character
-            {
-                strncpy(pcDest, pcSrc, i); // So copy until it
-                *(pcDest + i) = '\0';
-                bResult = true;
-                break;
-            }
-        }
-    }
-    return bResult;
-}
-
-int GetTotalTx(FILE* pFile)
-{
-    int Result = -1;
-
-    if (pFile != NULL)
-    {
-        Result = 0;
-        fseek(pFile, 0, SEEK_SET);
-        char acCurrLine[256] = {'\0'};
-        while (fgets(acCurrLine, 256, pFile) != NULL)
-        {
-            int Length = (int) strlen(acCurrLine);
-            for (int i = 0; i < Length; i++)
-            {
-                if (acCurrLine[i] == '[')
-                {
-                    if ((i + 2) < Length)
-                    {
-                        if ((acCurrLine[i+1] == 't') && (acCurrLine[i+2] == 'x'))
-                        {
-                            Result++;
-                            break;
-                        }
-                    }
-                }
-                else if (acCurrLine[i] == ' ')
-                {
-                    ;
-                }
-                else // for anything else
-                {
-                    break;
-                }
-            }
-        }
-        fseek(pFile, 0, SEEK_SET);
-    }
-
-    return Result;
 }
 
 USAGEMODE HRESULT CAN_STUB_SetConfigData(PCHAR /*ConfigFile*/, int /*Length*/)

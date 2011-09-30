@@ -1348,7 +1348,6 @@ void CSimSysTreeView::OnDeleteNode()
     CTreeCtrl& om_tree = GetTreeCtrl();
     HTREEITEM hNodeItem = om_tree.GetSelectedItem();
     CString omStrNodeName = om_tree. GetItemText(hNodeItem);
-    CSimSysConfigDetails* pSimsysConfig = NULL;
 
     HTREEITEM hSimSysItem =   om_tree.GetParentItem(hNodeItem);
     CString omStrSimSysName = om_tree. GetItemText(hSimSysItem);

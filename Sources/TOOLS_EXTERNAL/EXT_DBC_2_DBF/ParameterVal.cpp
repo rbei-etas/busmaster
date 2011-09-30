@@ -129,9 +129,9 @@ int CParameterValues::GetNodeParams(char *paramType,char *pcLine)
 int CParameterValues::GetNetParams(char *paramType,char *pcLine)
 {
     char *pcToken=pcLine;
-    char acTemp[defCON_TEMP_LEN],*pcTemp;
+    char acTemp[defCON_TEMP_LEN];
+	char *pcTemp = acTemp;
     int success=1;
-    pcTemp = acTemp;
     //reads the net param value.
     pcToken=strtok(pcToken,";");
     ReadParamValue(paramType,pcToken);

@@ -188,8 +188,7 @@ BOOL CElementSelection::OnInitDialog()
     // Create Result flag
     BOOL m_bCreateSuccess = TRUE;
     // Get Database Pointer
-    CMsgSignal * pomDatabase = NULL;
-    pomDatabase = theApp.m_pouMsgSignal;
+    CMsgSignal * pomDatabase = theApp.m_pouMsgSignal;
 
     CDialog::OnInitDialog();	
 

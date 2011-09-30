@@ -257,13 +257,10 @@ BOOL CNotificWnd::bCreateNotificWindow(CMDIFrameWnd* pomParentWnd)
 
     // Get Window rect from Configuration file
     WINDOWPLACEMENT sWinCurrStatus;
-    WINDOWPLACEMENT *psData = &sWinCurrStatus;		
     sWinCurrStatus.rcNormalPosition.left = 5;
     sWinCurrStatus.rcNormalPosition.top = 460;
     sWinCurrStatus.rcNormalPosition.right = sWinCurrStatus.rcNormalPosition.left + 810;
     sWinCurrStatus.rcNormalPosition.bottom = sWinCurrStatus.rcNormalPosition.top + 191;
-    // Get data from config
-    //theApp.bGetData(NOTIFICATION_WND_PLACEMENT, (void **)&psData);
 
     bResult = CMDIChildBase::Create(strMDIClass, _T("Trace Window"), 
                         WS_CHILD /*| WS_VISIBLE*/ | WS_OVERLAPPEDWINDOW,
@@ -473,10 +470,10 @@ LRESULT CNotificWnd::DoConfigOperation(WPARAM WParam, LPARAM LParam)
 /*****************************************************************************/
 void CNotificWnd :: vLoadNotificWndConfig()
 {
+#if 0
 	int nBufferCount = 0;
 	BYTE *SrcBuffer = NULL;
 	/* Retrieve the section NOTIFIC_WND_CONFIG_SECTION_NAME*/
-#if 0
 	CConfigDetails::ouGetConfigDetailsObject().bGetData((void *&)(SrcBuffer),
 											nBufferCount,NOTIFIC_WND_CONFIG_SECTION_NAME);
 	if (SrcBuffer != NULL)
@@ -536,10 +533,10 @@ void CNotificWnd::CopyNFDataFromBuffer(BYTE* SrcBuffer)
 /*****************************************************************************/
 BOOL CNotificWnd::bIsConfigChanged()
 {	
-	int nBufferCount = 0;
-	BOOL bReturn = FALSE;
 	BYTE *SrcBuffer = NULL;
 #if 0
+	int nBufferCount = 0;
+	BOOL bReturn = FALSE;
 	CConfigDetails::ouGetConfigDetailsObject().bGetData((void *&)(SrcBuffer),
 											nBufferCount,NOTIFIC_WND_CONFIG_SECTION_NAME);
 	if (SrcBuffer != NULL)

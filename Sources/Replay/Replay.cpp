@@ -131,11 +131,6 @@ USAGEMODE void vREP_SetReplayConfigData(BYTE* pSrcBuffer, int nBuffSize)
     CReplayManager::ouGetReplayManager().vSetReplayConfigData(pSrcBuffer, nBuffSize);
 }
 
-USAGEMODE BOOL bREP_IsReplayConfigChanged()
-{
-    return CReplayManager::ouGetReplayManager().bIsReplayConfigChanged();
-}
-
 USAGEMODE void vREP_InitReplay(PVOID pvObjects, eREPLAY_INIT eUpdateType)
 {
     if (pvObjects != NULL)

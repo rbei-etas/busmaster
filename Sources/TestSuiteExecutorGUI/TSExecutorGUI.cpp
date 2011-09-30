@@ -101,8 +101,6 @@ USAGEMODE HRESULT TS_vShowTSExecutorWindow(void* pParentWnd)
 			
             //// Set the size got from configuration module
             WINDOWPLACEMENT sTxWndPlacement;
-            WINDOWPLACEMENT* psTxWndPlacement = &sTxWndPlacement;
-            //CTxWndDataStore::ouGetTxWndDataStoreObj().bGetTxData(TX_WINDOW_PLACEMENT, (void**)&psTxWndPlacement);
             if (sTxWndPlacement.rcNormalPosition.top == -1 ||
                 sTxWndPlacement.length == 0)//Load default configuration
             {

@@ -737,7 +737,6 @@ void CTreeViewEx::vDeleteChildItems(HTREEITEM hItem)
 
 void CTreeViewEx::ShowCheckBoxes(BOOL bShow)
 {
-    CTreeCtrl &omTreeCtrl = GetTreeCtrl();
     DWORD lStyle = GetWindowLong(GetSafeHwnd(), GWL_STYLE);
 
     if(bShow == TRUE)
@@ -791,7 +790,6 @@ void CTreeViewEx::OnTvnBeginlabeledit(NMHDR *pNMHDR, LRESULT *pResult)
 void CTreeViewEx::OnTvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult)
 {
     LPNMTVDISPINFO pTVDispInfo = reinterpret_cast<LPNMTVDISPINFO>(pNMHDR);
-    CTreeCtrl &omTreeCtrl = GetTreeCtrl();
     LPTSTR pszText = pTVDispInfo->item.pszText;
     *pResult = ( pszText && (*pszText != _T('\0')));
     CString omstrItemNewName(pszText);

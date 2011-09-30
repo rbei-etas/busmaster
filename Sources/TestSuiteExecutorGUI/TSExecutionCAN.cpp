@@ -373,12 +373,7 @@ HRESULT CTSExecutionCAN::TSX_VerifyResponse(CBaseEntityTA* pEntity, CResultVerif
         CString omStrCount;
         if(m_LastCanMsg != -1)
         {
-            float fTimeElapsed = (float)(m_LastCanMsg-tr)-(float)((Tick1.QuadPart-Tickr.QuadPart)/m_QueryFrequency.QuadPart);
-            //(Tick1.QuadPart-Tickr.QuadPart)*m_QueryFrequency
-            //float fTimeElapsed = (m_QueryFrequency.QuadPart * (m_LastCanMsg - tr) + Tickr.QuadPart - Tick1.QuadPart) / m_QueryFrequency.QuadPart;
-            //float fTimeElapsed = ((m_LastCanMsg - tr) + Tickr.QuadPart - Tick1.QuadPart);// / m_QueryFrequency.QuadPart;
             omStrCount.Format(_T("SUCCESS COUNT %d"), m_MsgVerifiedList.GetCount());
-            
         }
         else
         {

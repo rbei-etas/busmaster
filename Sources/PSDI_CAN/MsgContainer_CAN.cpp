@@ -234,60 +234,6 @@ BOOL CMsgContainerCAN::bIsTransitionInState( UINT unChannel,
 }
 void CMsgContainerCAN::vProcessCurrErrorEntry(const SERROR_INFO& sErrInfo)
 {
-    // Get the Error code
-    USHORT usErrorID = ERROR_UNKNOWN;
-    // Get the channel number
-    CHAR nChannel = sErrInfo.m_ucChannel - 1;
-    if( nChannel < 0 || nChannel >= defNO_OF_CHANNELS )
-    {
-        ASSERT( FALSE );
-        // Take prevension
-        nChannel = 0;
-    }
-    SCAN_ERR sCanErr;
-    sCanErr.m_ucRxError = sErrInfo.m_ucRxErrCount;
-    sCanErr.m_ucTxError = sErrInfo.m_ucTxErrCount;
-    sCanErr.m_ucChannel = nChannel + 1; //sCanErr.m_ucChannel is 1 based channel number
-            
-    eERROR_STATE eErrorState = ERROR_ACTIVE;
-    // Decide which module(s) to notify by analysing the error code
-    // Accordingly notify the modules by sending/posting message
-    if (sErrInfo.m_ucErrType == ERROR_WARNING_LIMIT_REACHED)
-    {
-        // Reaching warning limit isn't considered as an error.
-        // In case of this interrupt there is no need for display to 
-        // be updated.
-        // Use Channel ID as High Byte of WPARAM
-        usErrorID = sErrInfo.m_ucErrType;
-        eErrorState = ERROR_WARNING_LIMIT;
-    }
-    else
-    {
-        // Handle interrupts. This is not error message and assign error code
-        // to unknown
-        // Interrupts are state transition indicators but not real error message
-        if (sErrInfo.m_ucErrType == ERROR_BUS)
-        {
-            // Update Statistics information
-            usErrorID = sErrInfo.m_ucReg_ErrCap & 0xE0;
-            // Create Channel ID & Error code word
-        }
-        else if (sErrInfo.m_ucErrType == ERROR_INTERRUPT)
-        {
-            usErrorID = sErrInfo.m_ucErrType;
-        }
-        if (bIsTransitionInState(nChannel, sErrInfo.m_ucRxErrCount, sErrInfo.m_ucTxErrCount))
-        {
-            if (usErrorID == STUFF_ERROR_RX)
-            {
-                eErrorState = ERROR_FRAME;
-            }
-            else
-            {
-                eErrorState = m_eCurrErrorState[nChannel];
-            }
-        }
-    }
 }
 
 /******************************************************************************

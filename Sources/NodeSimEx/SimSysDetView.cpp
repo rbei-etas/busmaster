@@ -369,7 +369,6 @@ void CSimSysDetView::OnButtonLoadUnload()
 	else if(omStrButtonText == "UnLoad")  // when user wants to unload
 	{
 		BOOL bSuccess = FALSE;
-		int nFailure = 0;
 		if(( m_psNodeInfo != NULL) && (m_psNodeInfo->m_omStrDllName != STR_EMPTY ) )
 		{
 			bSuccess = CExecuteManager::ouGetExecuteManager(m_eBus).
@@ -1478,10 +1477,6 @@ void CSimSysDetView::PostNcDestroy()
 void CSimSysDetView::vAddItemToHanDetList( sNODEINFO* pNode )
 {
     
-    int nMsgHanCount = 0;
-    int nTimerHanCount = 0;
-    int nKeyHanCount = 0;
-    int nErrorHanCount = 0;
     CString omStrTemp = STR_EMPTY;
     // get the CStringArray of all handlers and update the handler handler details 
     // with the no. of handlers present for each type n status.

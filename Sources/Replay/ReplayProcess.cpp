@@ -457,11 +457,6 @@ BOOL CReplayProcess::bOpenReplayFile()
                     int nPos = omStrLine.Find( defSTR_BUSMASTER_VERSION_STRING );
                     nPos += (int)strlen( defSTR_BUSMASTER_VERSION_STRING );
                     int nMajorVer = omStrLine[ nPos ] - '0';
-                    int nMinorVer = 
-                        omStrLine[ nPos + defMINOR_VERSION_POSITION ] - '0';
-                    nMinorVer *= BASE_10;
-                    nMinorVer +=
-                        omStrLine[ nPos + defMINOR_VERSION_POSITION + 1 ] - '0';
                     if( nMajorVer < defLOG_FILE_MAJOR_VERSION_SUPPORTED )
                     {
                         bOldVersionFile = TRUE;

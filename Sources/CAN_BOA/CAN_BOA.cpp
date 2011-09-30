@@ -1291,7 +1291,6 @@ void vUpdateErrorCounter(UCHAR ucTxError, UCHAR ucRxError, UINT nChannel)
 void vProcessErrMsg(void *userData, struct OCI_CANMessage* msg)
 {
     static STCANDATA sCanData;
-    static OCI_ControllerHandle hHandle;
     vCopyOCI_CAN_ERR_2_RBIN_DATA(&(msg->data.errorFrameMessage), &sCanData);
     int32* pUserData = (int32*)userData;
     sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel = (UCHAR)nGetChannel(*pUserData);

@@ -372,10 +372,6 @@ BOOL CFnsTreeView::bPopulateTree()
         omTree.SetItemImage( hUti, 6, 6 );
         omTree.Expand( hUti, TVE_EXPAND );
 
-        // Get global varaible array from the doc
-        CStringArray* pGloArray = 
-            pDoc->omStrGetGlobalVariablePrototypes();
-
         omTree.SetItemImage( hGlv, 3, 3 );
         omTree.Expand( hGlv, TVE_EXPAND );
     }
@@ -1439,7 +1435,6 @@ void CFnsTreeView::vEditTimerHandler(HTREEITEM hItem)
 	int nSpaceIndex = omStrVariable.Find( SPACE );
 	if(nIndex != -1)
 	{
-		int nLength = omStrVariable.GetLength();
 		//create dialog
         CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)CView::GetDocument();
 		CDefineTimerHandler od_Dlg(pDoc);

@@ -957,8 +957,6 @@ BOOL CTSExecutorLIB::bExecuteTestCase(CBaseEntityTA* pTCEntity, CResultTc& ouTes
     BOOL bResult = TRUE;
     ouTestCaseResult.m_ouVerifyList.RemoveAll();
     
-    CListCtrl *pomList = (CListCtrl*)m_ompResultDisplayWnd;
-    
     ((CTestCaseEntity*)pTCEntity)->GetTestCaseDetails(omStrTilte, omStrID, eExp);
     int nCurrentRow = m_ompResultDisplayWnd->GetItemCount();
     m_ompResultDisplayWnd->InsertItem(nCurrentRow, omStrTilte);
