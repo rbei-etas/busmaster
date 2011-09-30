@@ -2116,10 +2116,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\logo.bmp"
-				>
-			</File>
-			<File
 				RelativePath=".\Hlp\Html\Images\LogReplay.bmp"
 				>
 			</File>

@@ -63,7 +63,6 @@
 #define IDB_BMP_SEND_MULTI_MSGS         168
 #define IDB_BMP_TOOLBAR_DISCONNECT      174
 #define IDB_BMP_TOOLBAR_CONNECT         175
-#define IDB_BMPLOGO                     178
 #define IDB_BMP_COPYRIGHT               184
 #define IDR_ICON_ERROR_ACTIVE           189
 #define IDR_ICON_WARNING_LIMIT          190
