@@ -63,11 +63,11 @@ public:
                         BOOL bHexON);
     // This will interpret message and fill data value. This will not format
     // any value
-    BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
+    BOOL vInterpretMsgs(UINT unMsgCode,
                         const UCHAR *ucData, CSignalInfoArray& omSignalInfo );
 
     //VENKAT
-    BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
+    BOOL bInterpretMsgs(UINT unMsgCode,
                                         const UCHAR *ucData,
                                         CSignalInfoArray& omSignalInfo );
 
@@ -86,7 +86,7 @@ public:
                         const UCHAR *ucData, SSignalInfoArray& SigInfoArray);
     //The same function with a different prototype for interpreting 
     //individual message, provided the msgdetail pointer 
-    BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT /*eNumFormat*/, 
+    BOOL bInterpretMsgs(EFORMAT /*eNumFormat*/, 
                                         const sMESSAGE* pMsg,
                                         const UCHAR *ucData, 
                                         CSignalInfoArray& omSigInfoArray);

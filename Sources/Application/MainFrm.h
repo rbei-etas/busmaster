@@ -268,7 +268,7 @@ public:
     //Function takes the Root Menu and returns the SubMenu Pointer
     CMenu* GetSubMenu(CString MenuName);
 
-    BOOL CMainFrame::bInitFrameProcCAN(void);
+    BOOL bInitFrameProcCAN(void);
 
 
 #ifdef _DEBUG

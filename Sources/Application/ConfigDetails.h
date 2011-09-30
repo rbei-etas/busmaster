@@ -132,10 +132,10 @@ public:
     // releases all the memory allocated for the data members..
     void    vResetAll();
     // To get default Window Coordinates
-    BOOL CConfigDetails::bGetDefaultValue( eCONFIGDETAILS eParam,
+    BOOL bGetDefaultValue( eCONFIGDETAILS eParam,
 		WINDOWPLACEMENT& sPosition );
     // To get default splitter postion based on window size
-    BOOL CConfigDetails::bGetDefaultSplitterPostion( eCONFIGDETAILS eParam,
+    BOOL bGetDefaultSplitterPostion( eCONFIGDETAILS eParam,
 		CRect omWindowSize,
 		LPVOID* psSplitterData );
 	

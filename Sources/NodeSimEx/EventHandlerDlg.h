@@ -47,5 +47,5 @@ private:
     void vAddAdresClaimHandler(HTREEITEM hParent);
     BOOL bIsEventHandlerExist(const CString& omStrFuncType);
     void vAddDataConfHandler(HTREEITEM hParent);
-    void CEventHandlerDlg::vAddEventHandlerFunction(const CString& omStrFuncName, const CString& omStrFuncPrototype);
+    void vAddEventHandlerFunction(const CString& omStrFuncName, const CString& omStrFuncPrototype);
 };
