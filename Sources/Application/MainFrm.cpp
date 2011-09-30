@@ -10508,8 +10508,8 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
 		/*case WAVEFORMDATA_SECTION_ID:
 		{
 			m_objWaveformDataHandler.SetConfigData(pbyConfigData);
-		}*/
-		break;
+		}
+		break;*/
 		case BUS_STATISTICS_SECTION_ID:
 		{
 			if(m_bIsStatWndCreated)
@@ -10856,8 +10856,8 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
 		/*case WAVEFORMDATA_SECTION_ID:
 		{
 			m_objWaveformDataHandler.GetConfigData(&pbyConfigData, nSize);
-		}*/
-		break;
+		}
+		break;*/
 		case BUS_STATISTICS_SECTION_ID:
 		{			
 			if(m_bIsStatWndCreated)
