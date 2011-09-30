@@ -129,7 +129,6 @@ BOOL COutWnd::bAddString(CStringArray& omStrArray)
     // so that user can scroll
     CSize   sz(0,0);
     CString omStrText   = _T("");
-    INT nDx             = 0;
     CDC*  pDC = m_omListBox.GetDC();
 	TEXTMETRIC   tm;
 	pDC->GetTextMetrics(&tm);
@@ -140,6 +139,7 @@ BOOL COutWnd::bAddString(CStringArray& omStrArray)
 		//because font is set for window not for CDC
 		CFont *pOldFont = pDC->SelectObject(&m_omNewFont);
         INT nTotalItem =  m_omListBox.GetCount();
+	    INT nDx = 0;
         for (nCount = 0;nCount < nTotalItem;nCount++)
         {
             m_omListBox.GetText( nCount, omStrText );

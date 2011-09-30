@@ -1659,7 +1659,6 @@ USAGEMODE HRESULT CAN_BOA_LoadDriverLibrary(void)
     HRESULT hResult = S_FALSE;
     /* Load the CSI library to search the controllers */
     TCHAR acPath[MAX_PATH] = {'\0'};
-    INT nSize = 0;
     /* Get BOA installation path from the registery */
     TCHAR acLIB_OCI[MAX_PATH] = {'\0'};
     TCHAR acLIB_CSL[MAX_PATH] = {'\0'};
@@ -1667,6 +1666,7 @@ USAGEMODE HRESULT CAN_BOA_LoadDriverLibrary(void)
         ||(bGetLibPath(acLIB_CSL, BOA_REGISTRY_LIB_CSL) == FALSE))
     {   
         //If registry entry not found
+		INT nSize = 0;
         bGetBOAInstallationPath(acPath, nSize);
         _stprintf(acLIB_OCI, _T("%s\\%s"), acPath, LIB_OCI_NAME);
         _stprintf(acLIB_CSL, _T("%s\\%s"), acPath, LIB_CSL_NAME);        

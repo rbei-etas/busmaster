@@ -175,7 +175,6 @@ void CLogToExcel::vPrintFields()
 	UINT unFieldIndex = 0;		// field index
 	bool bFieldIndexExists  = false;
 	fprintf(m_pExcelFile,"<TR>");
-	int nFieldCurPosition = 0;
 
 
     
@@ -208,7 +207,6 @@ void CLogToExcel::vPrintFields()
 				unFieldBufferIndex++;
 				unBufferIndex++;
 			}
-			nFieldCurPosition = unFieldIndex;
 
 		} // else 
 		m_strFieldBuffer.append(1,'\0');

@@ -1427,11 +1427,9 @@ LRESULT CMsgFrmtWnd::vSortMsgWndColumn(WPARAM wParam, LPARAM lParam)
 		return 0;
 	}	
 
-
-	int nExpCnt = 0;
-
 	if (IS_MODE_INTRP(m_bExprnFlag_Disp))
     {
+		int nExpCnt = 0;
 		for(UINT i = 0; i < m_omMgsIndexVec.size(); i++)	//Collapse message entries which are expanded.
 		{
 			SMSGDISPMAPENTRY sTemp;

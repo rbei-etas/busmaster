@@ -1309,12 +1309,11 @@ VOID CExecuteManager::vSetResetOnTimerHandler(const CStringArray& omSysNode,
 	vManageTimerThreads();
 	m_odSetResetTimer.DestroyWindow();
     // A modelless dialog is created.
-    BOOL bDlgReturn = 0;
     BOOL bIsTimerDialogCreated  = CSimSysManager::ouGetSimSysManager(m_eBus).
                                   ouGetFlags().nGetFlagStatus(H_TIMERBUTTON);
 	if(FALSE == bIsTimerDialogCreated)
 	{
-		bDlgReturn = m_odSetResetTimer.Create(IDD_DLG_SET_RESET_TIMER, 
+		BOOL bDlgReturn = m_odSetResetTimer.Create(IDD_DLG_SET_RESET_TIMER, 
 				                                                    NULL);
 		if(bDlgReturn != 0)
 		{

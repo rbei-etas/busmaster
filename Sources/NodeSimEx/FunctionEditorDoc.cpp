@@ -332,11 +332,10 @@ void CFunctionEditorDoc::Serialize(CArchive& ar)
         int nLineLength = 0;
         TRY
         {
-            ULONGLONG FileLength = 0;
             CFile* pFile = ar.GetFile();
             if (pFile != NULL)
             {
-                FileLength = pFile->GetLength();
+                ULONGLONG FileLength = pFile->GetLength();
                 BYTE *pbyFileData = new BYTE[(size_t)FileLength];       //Warning
                 pFile->Read(pbyFileData, (COMMANUINT)FileLength);
             

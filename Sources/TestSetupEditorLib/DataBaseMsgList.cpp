@@ -71,8 +71,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
     BOOL bReturnValue   = TRUE;
     BOOL bIsFileOpen    = FALSE;
     m_unMessageCount = 0;
-    FLOAT fDBVerNum = 0;
-    FLOAT fCurrDBVer = 0;
     CHAR s_acTraceStr[1024];
     // validate the file
     if ( bValidateDatabaseFile(strFileName) )
@@ -87,6 +85,8 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                             strFileName, CFile::modeRead|CFile::typeText );
             if(bIsFileOpen != FALSE )
             {
+				float fDBVerNum = 0;
+				float fCurrDBVer = 0;
                 CString sFirstLine  = STR_EMPTY;
                 CString omDBVerLine  = STR_EMPTY;
                 // read subsequent info from the file

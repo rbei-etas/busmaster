@@ -175,7 +175,6 @@ BOOL CDLLHandlerDlg::OnInitDialog()
         CButton* pomButton       = NULL;
         CString omStrHandlerName = STR_EMPTY ;
         CString omStrControl     = STR_EMPTY ;
-        INT nCheck               = 0;
         // get the pointer to CStringArray of error handlers prototypes
         pomStrArrayHandlerName = m_byType == 0? m_pDoc->pomStrGetDLLHandlerPrototypes(): m_pDoc->omStrGetEventIndPrototypes();
         if(pomStrArrayHandlerName != NULL )
@@ -220,7 +219,7 @@ BOOL CDLLHandlerDlg::OnInitDialog()
                 pomButton = (CButton*)GetDlgItem(IDC_CHKB_DLL_LOAD_HANDLER+i);
                 if(pomButton != NULL )
                 {
-                    nCheck = pomButton->GetCheck();
+                    INT nCheck = pomButton->GetCheck();
                     if(nCheck == 0 )
                     {
                         pomButton->EnableWindow(FALSE);

@@ -1240,13 +1240,13 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
     BOOL bReturnValue   = TRUE;
     BOOL bIsFileOpen    = FALSE;
 	m_unMessageCount = 0;
-    FLOAT fDBVerNum = 0;
-    FLOAT fCurrDBVer = 0;
     // validate the file
     if ( bValidateDatabaseFile(strFileName) )
     {
         // For File I/O
         CStdioFile o_File;
+		FLOAT fDBVerNum = 0;
+		FLOAT fCurrDBVer = 0;
 
         TRY
         {
@@ -3842,11 +3842,6 @@ void CMsgSignal::vGetSigNamesAndIndexTobeDeleted( UINT unMessageLength,
 {
     if ( omStrMsgName.IsEmpty() == FALSE )
     {
-        // Count for Index
-        USHORT usIndex = 0;
-        // Signal Count
-        USHORT usSgCount = 0;
-
         // Clear the list
         omStrList.RemoveAll();
         // Get message pointer
@@ -3855,6 +3850,11 @@ void CMsgSignal::vGetSigNamesAndIndexTobeDeleted( UINT unMessageLength,
         if ( pMsg != NULL)
         {
             sSIGNALS* pSignal = pMsg->m_psSignals;
+
+			// Count for Index
+			USHORT usIndex = 0;
+			// Signal Count
+			USHORT usSgCount = 0;
 
             while ( pSignal != NULL )
             {
@@ -4253,14 +4253,13 @@ BOOL CMsgSignal::bFormSigNameAndLength(UINT *punLength,
                                       const INT nIndex)
 {
     BOOL bReturn    = FALSE;
-    UINT unSigCount = 0;
     sSIGNALS *pSg = m_psMessages[nIndex].m_psSignals;
-    UINT unStartBit = 0;
-    UINT unUnused   = 0;
-    UINT unCount    = 0;
     if( pSg != NULL && punLength != NULL && punStartBit != NULL )
     {
-        unSigCount = m_psMessages[nIndex].m_unNumberOfSignals;
+        UINT unSigCount = m_psMessages[nIndex].m_unNumberOfSignals;
+	    UINT unStartBit = 0;
+	    UINT unUnused   = 0;
+	    UINT unCount    = 0;
         CString omFormatString;
         for(UINT i = 0 ; i <unSigCount ; i++ )
         {
@@ -4472,11 +4471,10 @@ BOOL CMsgSignal::bFormSigNameAndLengthJ1939(const UINT *punStartBit,
                                       const INT nIndex)
 {
     BOOL bReturn    = FALSE;
-    UINT unSigCount = 0;
     
     if(punStartBit != NULL )
     {
-        unSigCount = m_psMessages[nIndex].m_unNumberOfSignals;
+        UINT unSigCount = m_psMessages[nIndex].m_unNumberOfSignals;
         CString omFormatString;
         for(UINT i = 0 ; i < unSigCount ; i++ )
         {         

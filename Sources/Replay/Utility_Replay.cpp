@@ -52,19 +52,15 @@ BOOL bGetMsgInfoFromMsgStr( CONST CString& omSendMsgLine,
     CString omStrDLC        =_T("");
     CString omStrData       =_T("");
     CString omStrMsgIDType  =_T("");
-    UINT    unMsgID         = 0;
-    UINT    unDLC           = 0;
-    INT nIndex              = 0;
     CHAR* pcStopString      = NULL;
     BOOL nReturn            = FALSE;
-    UCHAR ucChannel = 1;
 
     CByteArray omByteArrayDataTx;
     // Get the string before first white space charactor
     omStrTemp = omSendMsgLine.SpanExcluding("\t ");
     if(omStrTemp.IsEmpty()==0)
     {
-        nIndex = omStrTemp.GetLength();
+        INT nIndex = omStrTemp.GetLength();
         if(nIndex>0)
         {
             // Remove the time stamp string
@@ -89,7 +85,7 @@ BOOL bGetMsgInfoFromMsgStr( CONST CString& omSendMsgLine,
                 omStrTemp.TrimLeft();
                 // Channel ID
                 omStrMsgID = omStrTemp.SpanExcluding("\t ");
-                ucChannel    = 
+                UCHAR ucChannel    = 
                         (UCHAR) strtol( (LPCTSTR )omStrMsgID,&pcStopString ,10);
                 nIndex     = omStrMsgID.GetLength();
                 omStrTemp  = omStrTemp.Right(omStrTemp.GetLength() - nIndex -1);
@@ -104,6 +100,7 @@ BOOL bGetMsgInfoFromMsgStr( CONST CString& omSendMsgLine,
 
                 // Get message ID string after removing any message name.
                 omStrMsgID = omStrMsgID.SpanExcluding(defMSGID_NAME_DELIMITER);
+				UINT unMsgID = 0;
                 if( bHexON == TRUE)
                 {
                     unMsgID    = 
@@ -142,7 +139,7 @@ BOOL bGetMsgInfoFromMsgStr( CONST CString& omSendMsgLine,
                 // Get the DLC
                 omStrDLC   = omStrTemp.SpanExcluding("\t ");
                 nIndex     = omStrDLC.GetLength();
-                unDLC      = (UINT) strtol((LPCTSTR)omStrDLC,&pcStopString ,16);
+                UINT unDLC = (UINT) strtol((LPCTSTR)omStrDLC,&pcStopString ,16);
                 omStrTemp  = omStrTemp.Right(omStrTemp.GetLength() - nIndex -1);
 
                 omStrTemp.TrimLeft();
@@ -392,13 +389,10 @@ UINT unTimeDiffBetweenMsg( CString& omStrNextMsg,
     CString omStrMsgNextTime  =_T("");
     CString omStrTemp        =_T("");
 
-    INT nIndex               = 0;
     DOUBLE dCurTime          = 0;
     DOUBLE dNextTime         = 0;
     // Multiplication factors for HR, MIN, SECOND, and MILLI SECOND
     DOUBLE adMultiFac[4]     = {60*60*1000,60*1000,1000,0.1};
-    INT  nLoopCount          = 0;
-    UINT unTemp              = 0;
     CHAR* pcStopString  = NULL;
 
     omStrMsgCurTime = omStrCurMsg.SpanExcluding("\t ");
@@ -406,6 +400,9 @@ UINT unTimeDiffBetweenMsg( CString& omStrNextMsg,
     
     if(omStrMsgNextTime.IsEmpty()==FALSE && omStrMsgCurTime.IsEmpty()==FALSE)
     {
+	    INT  nIndex     = 0;
+	    INT  nLoopCount = 0;
+	    UINT unTemp     = 0;
 
         // Get the Next time in milli second
         while(omStrMsgNextTime.IsEmpty()==FALSE)

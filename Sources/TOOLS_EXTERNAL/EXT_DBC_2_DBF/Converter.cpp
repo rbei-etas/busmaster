@@ -438,7 +438,6 @@ void CConverter::GenerateMessageList(CStdioFile& fileInput)
             else if(strcmp(pcToken,"SG_") == 0) 
             {
                 CSignal sig;
-                int flag = 0;
                 sig.Format(pcLine + strlen(pcToken)+1);
                 //if signal associated with a msg add it to that perticular list
                 //elses add it to msg independent list
@@ -448,6 +447,7 @@ void CConverter::GenerateMessageList(CStdioFile& fileInput)
                     POSITION pos = m_listMessages.GetTailPosition();
                     CMessage& msg = m_listMessages.GetAt(pos);
                     POSITION prevpos,possig = msg.m_listSignals.GetTailPosition(); 
+	                int flag = 0;
                     if (possig == NULL)
                     {
                         msg.m_listSignals.AddHead(sig);

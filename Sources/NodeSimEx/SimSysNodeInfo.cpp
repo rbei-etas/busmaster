@@ -1050,11 +1050,11 @@ Modifications    :
 BOOL CSimSysNodeInfo::bReturnAllHandlersStatus(CString &omStrSimSysName)
 {
     BOOL bIsEnabled = FALSE;
-    UINT nActiveNodeCount = 0;  
-    UINT nNoOfEnabledHan = 0;
 	PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
 	if(pTempSimsys != NULL )
 	{
+	    UINT nActiveNodeCount = 0;  
+	    UINT nNoOfEnabledHan = 0;
 		PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
 		while(pTempNode != NULL)
 		{
@@ -1130,11 +1130,11 @@ Modifications    :
 BOOL CSimSysNodeInfo::bReturnAllKeyHandlersStatus(CString &omStrSimSysName)
 {
     BOOL bIsEnabled = FALSE;
-    UINT nNoOfEnabledHan = 0;
-    UINT nActiveNodeCount = 0;
 	PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
 	if(pTempSimsys != NULL )
 	{
+	    UINT nNoOfEnabledHan = 0;
+	    UINT nActiveNodeCount = 0;
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
         while(pTempNode != NULL)
         {
@@ -1210,11 +1210,11 @@ Modifications    :
 BOOL CSimSysNodeInfo::bReturnAllMsgHandlersStatus(CString &omStrSimSysName)
 {
     BOOL bIsEnabled = FALSE;
-    UINT nNoOfEnabledHan = 0;
-    UINT nActiveNodeCount = 0;
 	PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
 	if (pTempSimsys != NULL )
 	{
+	    UINT nNoOfEnabledHan = 0;
+	    UINT nActiveNodeCount = 0;
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
         while(pTempNode != NULL)
         {
@@ -1288,12 +1288,12 @@ Modifications    :
 BOOL CSimSysNodeInfo::bReturnAllErrorHandlersStatus(CString &omStrSimSysName)
 {
     BOOL bIsEnabled = FALSE;
-    UINT nNoOfEnabledHan = 0;
-    UINT nActiveNodeCount = 0;
 	PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
     
 	if (pTempSimsys != NULL )
 	{
+	    UINT nNoOfEnabledHan = 0;
+	    UINT nActiveNodeCount = 0;
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
         while(pTempNode != NULL)
         {
@@ -1404,12 +1404,12 @@ Modifications    :
 BOOL CSimSysNodeInfo::bReturnAllTimerHandlersStatus(CString &omStrSimSysName)
 {
     BOOL bIsEnabled = FALSE;
-    UINT nNoOfEnabledHan = 0;
-    UINT nActiveNodeCount = 0;
 	PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
     
 	if (pTempSimsys != NULL )
 	{
+	    UINT nNoOfEnabledHan = 0;
+	    UINT nActiveNodeCount = 0;
 		PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
 		while(pTempNode != NULL)
 		{

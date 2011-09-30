@@ -323,8 +323,6 @@ BOOL CExploreMsgSg::OnInitDialog()
     }
     else if( m_eSelectType == SEL_GLOBAL_MESSAGE)
     {
-        int nDialogWidth = 0;
-        
         CRect omDRect, omLRect, omBRect;
 
 
@@ -374,7 +372,7 @@ BOOL CExploreMsgSg::OnInitDialog()
                     pWnd->GetWindowRect(&omBRect);
                     ScreenToClient(&omBRect);
                     // Reduce the size by half and add right margin
-                    nDialogWidth = (omDRect.Width() / 2) + omLRect.left - 1;
+                    int nDialogWidth = (omDRect.Width() / 2) + omLRect.left - 1;
 
                     MoveWindow( omDRect.left, omDRect.top,
                                 nDialogWidth, omDRect.Height());

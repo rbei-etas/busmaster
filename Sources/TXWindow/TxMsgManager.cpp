@@ -599,7 +599,6 @@ VOID CTxMsgManager::vDeleteTxBlockMemory()
 const int SIZE_STCAN_MSG = sizeof(STCAN_MSG);
 UINT CTxMsgManager::s_unSendSelectedMsg(LPVOID pParam )
 {
-    int nReturn = -1;
     s_omState.ResetEvent();
     PSTXSELMSGDATA psTxCanMsg = static_cast <PSTXSELMSGDATA> (pParam);
     if(psTxCanMsg != NULL)
@@ -612,7 +611,7 @@ UINT CTxMsgManager::s_unSendSelectedMsg(LPVOID pParam )
             {
                 // Use HIL function to send CAN message
 
-                nReturn = g_pouDIL_CAN_Interface->DILC_SendMsg(g_dwClientID, psTxCanMsg->m_psTxMsg[unIndex]);
+                int nReturn = g_pouDIL_CAN_Interface->DILC_SendMsg(g_dwClientID, psTxCanMsg->m_psTxMsg[unIndex]);
                 if (nReturn != S_OK)
                 {
                     //::PostMessage(GUI_hDisplayWindow, WM_ERROR, 
@@ -834,7 +833,6 @@ UINT CTxMsgManager::s_unSendMsgBlockOnKey(LPVOID pParam )
         psTxMsg->m_omTxBlockKeyEvent.ResetEvent();
         // Take the first node of Tx block
         PSTXCANMSGLIST psTxMsgList = psTxMsg->m_psTxCANMsgList;
-        LPLONG lpPreviousCount = NULL;
         // If All Messages option is enabled search for atleast one message
         // with send option enabled. If not then quit
         BOOL bMsgFound = FALSE;
@@ -861,6 +859,7 @@ UINT CTxMsgManager::s_unSendMsgBlockOnKey(LPVOID pParam )
         {
             // Search through the list
             BOOL bStopMsgBlockTx = CTxMsgManager::s_podGetTxMsgManager()->bGetTxStopFlag();
+	        LPLONG lpPreviousCount = NULL;
             while(psTxMsgList != NULL  && bStopMsgBlockTx == FALSE)
             {
                 // Get the first enabled message

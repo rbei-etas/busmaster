@@ -468,7 +468,6 @@ void CChangeRegisters::OnKillfocusEditBaudRate()
     CString omStrBaudRate   =_T("");
     CString omStrValid      =_T("");
     INT     nLength         = 0;
-    DOUBLE  dBaudRate       = 0;
 
     m_omEditBaudRate.GetWindowText(omStrBaudRate);
     
@@ -485,7 +484,7 @@ void CChangeRegisters::OnKillfocusEditBaudRate()
         if(unButtonState ==0 )
         {
             // Validate for empty string and if zero value is entered.
-            dBaudRate           = (FLOAT) _tstof(omStrBaudRate);
+            DOUBLE dBaudRate = (FLOAT) _tstof(omStrBaudRate);
             if(nLength == 0 || dBaudRate <= 0 || dBaudRate > 1000.0 )
             {   
                 m_omEditBaudRate.SetWindowText(m_omStrEditBaudRate);
@@ -696,8 +695,6 @@ void CChangeRegisters::vChangeListBoxValues(INT nflag)
     INT nGetValue               = 0;
     INT nSample                 = 0;
     INT nReturn                 = 0;
-    INT nColumnCount            = 0;
-    INT nItem                   = 0;
     UINT unClock                = 0;
 
     //Get the value selected by user for number of sampling/bit
@@ -727,9 +724,9 @@ void CChangeRegisters::vChangeListBoxValues(INT nflag)
          // Update the clock frequency value in data member
          m_unCombClock = unClock;
          // Get the number of columns.
-         nColumnCount = m_omListCtrlBitTime.GetHeaderCtrl()->GetItemCount();
+         INT nColumnCount = m_omListCtrlBitTime.GetHeaderCtrl()->GetItemCount();
          // Get the row number selected.
-         nItem        = m_omListCtrlBitTime.GetNextItem(-1, LVNI_SELECTED) ;     
+         INT nItem        = m_omListCtrlBitTime.GetNextItem(-1, LVNI_SELECTED) ;     
          if(nColumnCount !=defERROR)
          {
              vUpdateBTRsBRPEditWindow(nColumnCount,nItem);
@@ -851,8 +848,6 @@ void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
     UINT    unBrp           = 0;
     UINT    unProductNbtNBrp= 0;
     INT     nColumnCount    = 0;
-    INT     nItemCount      = 0;
-    INT     nItem           = 0;
     uBTR0   sBtr0Reg    ;
     TCHAR* pcStopStr         = NULL;
 
@@ -901,8 +896,8 @@ void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
     }
     else
     {
-         nColumnCount = m_omListCtrlBitTime.GetHeaderCtrl()->GetItemCount();
-         nItemCount   = m_omListCtrlBitTime.GetItemCount();
+         INT nColumnCount = m_omListCtrlBitTime.GetHeaderCtrl()->GetItemCount();
+         INT nItemCount   = m_omListCtrlBitTime.GetItemCount();
 
          LVFINDINFO info;
      
@@ -911,7 +906,7 @@ void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
          omStrLocalBtr0 = _T("0x") + omStrBtr0;
          info.psz   = omStrLocalBtr0;
 
-         nItem = m_omListCtrlBitTime.FindItem(&info);
+         INT nItem = m_omListCtrlBitTime.FindItem(&info);
          // Search for the item containing the same BTR0 and BTR1 value.
          if(nItem!= -1 )
          {
@@ -995,8 +990,6 @@ void CChangeRegisters:: vCalculateBaudRateNBTR0(CString omStrBtr1)
     UINT    unBrp               = 0;
     FLOAT   fBrp                = 0;
     WORD    usProductNbtNBrp    = 0;
-    INT     nColumnCount        = 0;
-    INT     nItemCount          = 0;
     INT     nItem               = 0;
     INT     nSample             = 0;
     INT     nSampleChange       = 0;
@@ -1086,8 +1079,8 @@ void CChangeRegisters:: vCalculateBaudRateNBTR0(CString omStrBtr1)
            m_omCombSampling.SetCurSel(sBtr1Reg.sBTR1Bit.ucSAMbit);
            vChangeListBoxValues(-1);
          }
-         nColumnCount = m_omListCtrlBitTime.GetHeaderCtrl()->GetItemCount();
-         nItemCount   = m_omListCtrlBitTime.GetItemCount();
+         INT nColumnCount = m_omListCtrlBitTime.GetHeaderCtrl()->GetItemCount();
+         INT nItemCount   = m_omListCtrlBitTime.GetItemCount();
          sBtr0Reg.sBTR0Bit.ucBRPbit = unBrp - 1;
          sBtr0Reg.sBTR0Bit.ucSJWbit = 1;
 
@@ -1242,14 +1235,9 @@ void CChangeRegisters::vValidateBaudRate()
     CString omStrPrvBaudRate    = _T("");
     CString omStrClockFreq      = _T("");
     DOUBLE  dBaudRate           = 0;
-    FLOAT   fNbt                = 0;
     UINT    unClockFreq         = 0;
-    UINT    unClockPrevValue    = 0 ;
-    UINT    unNbt               = 0;
     UINT    unProductNbtNBrp    = 0;
     DOUBLE  dProductNbtNBrp     = 0; 
-    INT     i                   = 0;
-    INT     nFlag               = 0;
     CString omStrMessage        = _T("");
     //INT     nUserOption         = 0;
    
@@ -1270,13 +1258,13 @@ void CChangeRegisters::vValidateBaudRate()
           || unProductNbtNBrp<defMIN_NBT )
     {
         unProductNbtNBrp =defmcROUND5(dProductNbtNBrp);
-        nFlag = defRESET;
+        INT nFlag = defRESET;
 
         while(nFlag == defRESET)
         {
-            i = 1;
-            unNbt = unProductNbtNBrp/i;
-            fNbt  = (FLOAT)unProductNbtNBrp/i;
+            INT i = 1;
+            UINT unNbt = unProductNbtNBrp/i;
+            FLOAT fNbt  = (FLOAT)unProductNbtNBrp/i;
             
             while( unNbt >= 1 && i <= defMAX_BRP && nFlag == defRESET )
             {
@@ -1317,7 +1305,6 @@ void CChangeRegisters::vValidateBaudRate()
         
         omStrMessage.Format(defBAUD_RATE_MESSAGE,omStrBaudRate);
         omStrPrvBaudRate = m_omStrEditBaudRate;
-        unClockPrevValue = m_unCombClock;
         
         // set the baudrate
         m_omEditBaudRate.SetWindowText(omStrBaudRate);
@@ -1824,9 +1811,6 @@ void CChangeRegisters::vFillControllerConfigDetails()
 *******************************************************************************/
 void CChangeRegisters::vUpdateControllerDetails()
 {
-    INT   nItemUnderFocus           = 0;
-    UCHAR  ucBtr0                   = 0;
-    UCHAR  ucBtr1                   = 0;
     TCHAR* pcStopStr                = NULL;
     CString omStrComboSampling      = _T("");
     CString omStrEditBtr0           = _T("");
@@ -1846,10 +1830,10 @@ void CChangeRegisters::vUpdateControllerDetails()
     if(   ( unWarningLimit >= unWarningLimtMin ) 
        && ( unWarningLimit <= unWarningLimtMax ) )
     {
-        nItemUnderFocus = m_omListCtrlBitTime.GetNextItem(-1, LVNI_SELECTED );
+        INT nItemUnderFocus = m_omListCtrlBitTime.GetNextItem(-1, LVNI_SELECTED );
         m_ucWarningLimit = static_cast <UCHAR> (unWarningLimit);
-        ucBtr0 = (UCHAR) lFromCString_2_Long(m_omStrEditBTR0, &pcStopStr, defHEXADECIMAL);
-        ucBtr1 = (UCHAR) lFromCString_2_Long(m_omStrEditBTR1, &pcStopStr, defHEXADECIMAL);
+        UCHAR ucBtr0 = (UCHAR) lFromCString_2_Long(m_omStrEditBTR0, &pcStopStr, defHEXADECIMAL);
+        UCHAR ucBtr1 = (UCHAR) lFromCString_2_Long(m_omStrEditBTR1, &pcStopStr, defHEXADECIMAL);
         // Pack the BTR0 and BTR1 values in two bytes before calling DIL fuction 
         // to initialise.
         m_usBTR0BTR1 = static_cast <USHORT>(((ucBtr0 << 8 )| ucBtr1) & 0xffff);
@@ -2066,29 +2050,20 @@ BOOL CChangeRegisters::bGetFilterFromCom(BOOL  &bExtended, double  &dBeginMsgId,
 								   double &dEndMsgId)
 {
 	BOOL bReturn = FALSE;
-	int nAccCodeByte1;
-	int nAccCodeByte2;
-	int nAccCodeByte3;
-	int nAccCodeByte4;
-	int nMaskCodeByte1;
-	int nMaskCodeByte2;
-	int nMaskCodeByte3;
-	int nMaskCodeByte4;
 	if(m_pControllerDetails != NULL)
 	{
 		
 		TCHAR* pcStopStr = NULL;
 		//Change to separate integer value for each byte
+        int nAccCodeByte1 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte1, &pcStopStr, defHEXADECIMAL);
+        int nAccCodeByte2 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte2, &pcStopStr, defHEXADECIMAL);
+        int nAccCodeByte3 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte3, &pcStopStr, defHEXADECIMAL);
+        int nAccCodeByte4 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte4, &pcStopStr, defHEXADECIMAL);
 
-        nAccCodeByte1 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte1, &pcStopStr, defHEXADECIMAL);
-        nAccCodeByte2 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte2, &pcStopStr, defHEXADECIMAL);
-        nAccCodeByte3 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte3, &pcStopStr, defHEXADECIMAL);
-        nAccCodeByte4 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte4, &pcStopStr, defHEXADECIMAL);
-
-        nMaskCodeByte1 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccMaskByte1, &pcStopStr, defHEXADECIMAL);
-        nMaskCodeByte2 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccMaskByte2, &pcStopStr, defHEXADECIMAL);
-        nMaskCodeByte3 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccMaskByte3, &pcStopStr, defHEXADECIMAL);
-        nMaskCodeByte4 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccMaskByte4, &pcStopStr, defHEXADECIMAL);
+        int nMaskCodeByte1 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccMaskByte1, &pcStopStr, defHEXADECIMAL);
+        int nMaskCodeByte2 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccMaskByte2, &pcStopStr, defHEXADECIMAL);
+        int nMaskCodeByte3 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccMaskByte3, &pcStopStr, defHEXADECIMAL);
+        int nMaskCodeByte4 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccMaskByte4, &pcStopStr, defHEXADECIMAL);
 
 		//now make them as dword in decimal
 		dBeginMsgId = (ULONG)(nAccCodeByte1*0X1000000+nAccCodeByte2*0X10000+

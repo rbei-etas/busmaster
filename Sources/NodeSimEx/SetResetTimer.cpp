@@ -1057,9 +1057,6 @@ void CSetResetTimer::vStopTimer()
 
 void CSetResetTimer::OnSelchangeNodeList() 
 {
-	INT nCountTimer = 0;
-    INT nColumnWidth = 0;
-    INT nTemp = 0;
 	CString omNodeName;
 	m_bNodeNameChanged = TRUE;
 	//Get the node selected in combobox
@@ -1094,6 +1091,8 @@ void CSetResetTimer::OnSelchangeNodeList()
         ASSERT(m_omTimerList.GetItemCount() == 0);
 
 		PSTIMERHANDLERLIST ps_CurrTimeHandl=m_psSelectedNodeTimerListPtr;
+		INT nCountTimer = 0;
+	    INT nColumnWidth = 0;
 		while(ps_CurrTimeHandl!=NULL)
 		{
 			m_omTimerList.InsertItem(nCountTimer, 
@@ -1106,7 +1105,7 @@ void CSetResetTimer::OnSelchangeNodeList()
 				ps_CurrTimeHandl->sTimerHandler.bTimerType = FALSE;
 			}
 			// get the width of cloumn from length of item string inserted.
-			nTemp = m_omTimerList.GetStringWidth( 
+			INT nTemp = m_omTimerList.GetStringWidth( 
 				ps_CurrTimeHandl->sTimerHandler.omStrTimerHandlerName);
 			// Get the maximum colunm width.
 			if(nTemp >nColumnWidth)

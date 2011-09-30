@@ -55,12 +55,8 @@ BOOL CChangeRegisters_ES581::nListBoxValues(sCOLUMNS* /*psColListCtrl*/,
 {
     UINT    unProductNbtNBrp    = 0;
     DOUBLE  dProductNbtNBrp     = 0; 
-    FLOAT   fNBT                = 0;
-    WORD    wNBT                = 0;
-    WORD    wBRP                = 0;
     INT     nReturn             = -1;
 
-    INT   i = 1;
     // Calcualte the product NBT * BRP = clock/(2.0 * baudrate ). This product
     // should be an integer multiple.
     dProductNbtNBrp  = (wClockFreq / dBuadRate) / 2.0 *
@@ -70,15 +66,16 @@ BOOL CChangeRegisters_ES581::nListBoxValues(sCOLUMNS* /*psColListCtrl*/,
     //Check if product is integer multiple. Ignore diffrence <= 0.004
     if (fabs((dProductNbtNBrp - unProductNbtNBrp)) <= defVALID_DECIMAL_VALUE)
     {
-        wNBT = (WORD) (unProductNbtNBrp / i);
-        fNBT = (FLOAT) unProductNbtNBrp / i;
+		INT   i = 1;
+        WORD wNBT  = (WORD) (unProductNbtNBrp / i);
+        FLOAT fNBT = (FLOAT) unProductNbtNBrp / i;
 
         //Calculate all set of NBT and BRP value for a given product of NBT and BRP.
         while (wNBT >= 1 && i <= defMAX_BRP)
         {
             if ((wNBT == fNBT) && (wNBT >= defMIN_NBT) && (wNBT <=defMAX_NBT))
             {
-                wBRP = (WORD)(unProductNbtNBrp / wNBT);
+                WORD wBRP = (WORD)(unProductNbtNBrp / wNBT);
                 //Call this function to calculate BTR0, BTR1 regsiter value 
                 // for one set of NBT and BRP.
                 if (m_bOption == NO_DEF)

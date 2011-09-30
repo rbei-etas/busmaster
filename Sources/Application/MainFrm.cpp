@@ -1124,11 +1124,9 @@ void CMainFrame::OnCloseDatabase()
         // Get the pointer to the editor database structure
         pTempMsgSg = theApp.m_pouMsgSgInactive;
 
-        UINT bRetVal = 0;
-
         if ( pTempMsgSg != NULL && !pTempMsgSg->bGetModifiedFlag())
         {
-            bRetVal =
+            UINT bRetVal =
               AfxMessageBox("Do you want to save changes to the database file?",
                              MB_YESNO | MB_ICONQUESTION);
              if ( bRetVal == IDYES )
@@ -2613,7 +2611,6 @@ void CMainFrame::OnDllUnload()
 ******************************************************************************/
 void CMainFrame::OnMessageInterpretation() 
 {
-	BYTE bModes = DISPLAY_MODE;
 	if (m_podMsgWndThread != NULL)
 	{
 		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
@@ -2639,6 +2636,7 @@ void CMainFrame::OnMessageInterpretation()
         }
 		for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
 		{
+			BYTE bModes = DISPLAY_MODE;
 			hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
 			//Update Message Window
 			if(hWnd)
@@ -3979,7 +3977,6 @@ BOOL CMainFrame::bCreateMsgWindow()
 ******************************************************************************/
 void CMainFrame::OnHex_DecButon() 
 {
-	BYTE bModes = NUMERIC;
 	if (m_podMsgWndThread != NULL)
 	{
 		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
@@ -3999,6 +3996,7 @@ void CMainFrame::OnHex_DecButon()
 		}
 		for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
 		{
+			BYTE bModes = NUMERIC;
 			hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
 			//Update Message Window
 			if(hWnd)
@@ -4034,7 +4032,6 @@ void CMainFrame::OnHex_DecButon()
 ******************************************************************************/
 void CMainFrame::OnDisplayMessagewindowOverwrite() 
 {
-	BYTE bModes = DISPLAY_MODE;
 	if (m_podMsgWndThread != NULL)
 	{
 		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
@@ -4067,6 +4064,7 @@ void CMainFrame::OnDisplayMessagewindowOverwrite()
 		}
 		for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
 		{
+			BYTE bModes = DISPLAY_MODE;
 			hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
 			//Update Message Window
 			if(hWnd)
@@ -5917,15 +5915,11 @@ void CMainFrame::OnUpdateFileConnect(CCmdUI* pCmdUI)
     // the next available state i.e., if currently "Connect" is displayed,
     // next available state is Disconnect and vice versa. Texts are taken from
     // the string table
-    BOOL bConnected    = FALSE;
-    CFlags* pouFlag  = NULL;
-    UINT unConnected = 0;
-
-    pouFlag      = theApp.pouGetFlagsPtr();
+    CFlags* pouFlag  = theApp.pouGetFlagsPtr();
     if(pouFlag != NULL)
     {
-        bConnected   = pouFlag->nGetFlagStatus(CONNECTED);
-        unConnected  = bConnected ? IDS_DISCONNECT : IDS_CONNECT;
+        BOOL bConnected  = pouFlag->nGetFlagStatus(CONNECTED);
+        UINT unConnected = bConnected ? IDS_DISCONNECT : IDS_CONNECT;
 
         // And initialise a CString with the string.
         CString omMenuItemText(_T(""));
@@ -6542,7 +6536,6 @@ void CMainFrame::vPushConfigFilenameDown(CString omStrConfigFilename )
                 // Get the menu pointer of "Recent Configuration" 
                 CMenu *pMenu = pomGetMRUMenuPointer();
 
-                UINT unMenuID = IDM_REC_CFG_FILE1;
                 if ( pMenu != NULL )// Verify
                 {
                     INT nMenuCount = pMenu->GetMenuItemCount();
@@ -6550,6 +6543,7 @@ void CMainFrame::vPushConfigFilenameDown(CString omStrConfigFilename )
                     {
                         // Create an item with empty string. UI Update will
                         // set the text appropriatly
+						UINT unMenuID = IDM_REC_CFG_FILE1;
                         pMenu->AppendMenu( MF_STRING | MF_ENABLED,
                                            unMenuID + nMenuCount, STR_EMPTY);
                     }
@@ -6823,11 +6817,11 @@ void CMainFrame::vCreateMRU_Menus()
     CMenu *pMenu = pomGetMRUMenuPointer();
     if ( pMenu != NULL )// Verify
     {
-        UINT unMenuID = IDM_REC_CFG_FILE1;
         // if the first MRU file is empty then, "Empty" text shud be displayed
         if ( m_omStrMRU_ConfigurationFiles[0] != STR_EMPTY &&
              m_omStrMRU_ConfigurationFiles[0] != defSTR_DEFAULT_MRU_ITEM )
         {   // Remove the static item
+			UINT unMenuID = IDM_REC_CFG_FILE1;
             pMenu->RemoveMenu( unMenuID, MF_BYCOMMAND);
             // Create menu's to hold rest of MRU configuration files
             for (UINT unCount = 0; unCount < 5; unCount++ )
@@ -7161,7 +7155,6 @@ void CMainFrame::OnNetworkStatisticsWnd()
     if(m_bIsStatWndCreated == FALSE )
     {
         // Create statistics dialog
-        int nReturn = 0;
 
 		LONG lParam = 0;
 		int unTotalChannels = defNO_OF_CHANNELS;
@@ -7176,7 +7169,7 @@ void CMainFrame::OnNetworkStatisticsWnd()
         if( m_podBusStatistics != NULL )
         {
             // Create the dialog
-            nReturn =
+            int nReturn =
                 m_podBusStatistics->Create(IDD_DLG_NETWORK_STATISTICS, this);
             
             if(nReturn != 0 )
@@ -8041,7 +8034,6 @@ void CMainFrame::vToolBarDropDownMenu(UINT unControlID, int nButtonID)
 ******************************************************************************/
 void CMainFrame::OnDisplayAbsoluteTime() 
 {
-	BYTE bModes = TIME_MODE;
 	if (m_podMsgWndThread != NULL)
 	{
 		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
@@ -8053,7 +8045,10 @@ void CMainFrame::OnDisplayAbsoluteTime()
 		{
 			hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);					
 			if(hWnd)
+			{
+				BYTE bModes = TIME_MODE;
 				::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
+			}
 		}
 	}
 }
@@ -8106,7 +8101,6 @@ void CMainFrame::OnUpdateDisplayAbsolutetime(CCmdUI* pCmdUI)
 ******************************************************************************/
 void CMainFrame::OnDisplayRelativetime() 
 {
-	BYTE bModes = TIME_MODE;
 	if (m_podMsgWndThread != NULL)
 	{
 		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
@@ -8118,7 +8112,10 @@ void CMainFrame::OnDisplayRelativetime()
 		{
 			hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);					
 			if(hWnd)
+			{
+				BYTE bModes = TIME_MODE;
 				::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
+			}
 		}
 	}
 }
@@ -8171,7 +8168,6 @@ void CMainFrame::OnUpdateDisplayRelativetime(CCmdUI* pCmdUI)
 ******************************************************************************/
 void CMainFrame::OnDisplaySystemTime() 
 {
-	BYTE bModes = TIME_MODE;
 	if (m_podMsgWndThread != NULL)
 	{
 		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
@@ -8183,7 +8179,10 @@ void CMainFrame::OnDisplaySystemTime()
 		{
 			hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);					
 			if(hWnd)
+			{
+				BYTE bModes = TIME_MODE;
 				::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
+			}
 		}
 	}
 }

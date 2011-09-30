@@ -163,8 +163,6 @@ BOOL CMsgSgTreeView::bPopulateTree()
 
     om_tree.SetTextColor( BLUE_COLOR );
 
-    HTREEITEM hRootItem = NULL;
-
     CString omStrDatabaseFilename = m_omCurrDbName;
 
     if ( omStrDatabaseFilename.IsEmpty() )
@@ -178,7 +176,7 @@ BOOL CMsgSgTreeView::bPopulateTree()
 //        om_tree.DeleteAllItems();
 
         // Insert database filename
-        hRootItem = om_tree.InsertItem( omStrDatabaseFilename );
+        HTREEITEM hRootItem = om_tree.InsertItem( omStrDatabaseFilename );
 
         om_tree.SetItemImage(hRootItem, 0, 0);
 

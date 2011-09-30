@@ -401,7 +401,6 @@ VOID CExecuteFunc::vExecuteOnKeyHandler(UCHAR ucKey)
 {
     UINT unKeyHandlerCount   = 0;
     BOOL bKeyHandlerExecuted = FALSE;
-    UINT unKeyCount          = 0; 
 
     PSEXECUTE_KEY_HANDLER psExecuteKeyHandler = NULL;
 
@@ -410,6 +409,7 @@ VOID CExecuteFunc::vExecuteOnKeyHandler(UCHAR ucKey)
     psExecuteKeyHandler = new SEXECUTE_KEY_HANDLER;
     if(psExecuteKeyHandler != NULL)
     {
+		UINT unKeyCount          = 0; 
         psExecuteKeyHandler->m_ucKeyValue = ucKey;
         psExecuteKeyHandler->m_pFKeyHandler = NULL;
 		psExecuteKeyHandler->m_pCExecuteFunc=this;
@@ -484,12 +484,12 @@ VOID CExecuteFunc::vExecuteOnErrorHandler(eERROR_STATE eErrorCode,SCAN_ERR sErro
 {
     UINT unErrorHandlerCount   = 0;
     BOOL bErrorHandlerExecuted = FALSE;
-    UINT unErrorCount          = 0; 
 
     unErrorHandlerCount        = (COMMANUINT)m_omStrArrayErrorHandlers.GetSize();
 
     if(m_asUtilThread[defERROR_HANDLER_THREAD].m_hThread == NULL )
     {
+	    UINT unErrorCount = 0; 
         while(unErrorCount<unErrorHandlerCount && bErrorHandlerExecuted != TRUE)
         {
             if(eErrorCode == m_psOnErrorHandlers[unErrorCount].m_eErrorCode)
@@ -909,7 +909,6 @@ BOOL CExecuteFunc::bInitMSGStruct(CStringArray &omErrorArray)
 BOOL CExecuteFunc::bInitOnKeyStruct(CStringArray &omErrorArray)
 {
     UINT unKeyHandlerCount = 0;
-    UINT unGenric          = 0;
     BOOL bReturn           = TRUE;
     unKeyHandlerCount      = (COMMANUINT)m_omStrArrayKeyHandlers.GetSize();
     if(unKeyHandlerCount>0)
@@ -925,6 +924,7 @@ BOOL CExecuteFunc::bInitOnKeyStruct(CStringArray &omErrorArray)
         }
         if(m_psOnKeyHandlers !=NULL)
         {
+		    UINT unGenric          = 0;
             for(    UINT unKeyCount = 0; 
                     unKeyCount < unKeyHandlerCount;
                     unKeyCount++    )
@@ -1505,7 +1505,6 @@ BOOL CExecuteFunc::bInitMsgIDandNameHandlStruct(UINT unMsgIDandNameCount,
     CString omStrMsgIDType    = _T("");
     CString omStrMsgNameType  = _T("");
     CString omStrTemp         = _T("");
-    INT     nMsgID            = -1;
     CString omStrMsgNameOrID  = _T("");
     BOOL    bReturn           = TRUE;
 
@@ -1519,6 +1518,7 @@ BOOL CExecuteFunc::bInitMsgIDandNameHandlStruct(UINT unMsgIDandNameCount,
         //CMsgSignal * pouDatabase = theApp.m_pouMsgSignal;
         for(UINT i=0; i<unMsgIDandNameCount; i++ )
         {
+		    INT nMsgID = -1;
             omStrFuncName    = m_omStrArrayMsgIDandName.GetAt(i);
             // Get the message name or Id from function prototype.
             omStrMsgNameOrID = omStrFuncName.Right(omStrFuncName.GetLength() -
@@ -1628,8 +1628,6 @@ BOOL CExecuteFunc::bInitMsgIDRangeHandlStruct(UINT unMsgIDRangeCount,
     CString omStrMsgIDFrom    = _T("");
     CString omStrMsgIDTo      = _T("");
     CString omStrTemp         = _T("");
-    UINT    unMsgIDFrom       = 0;
-    UINT    unMsgIDTo         = 0;
     BOOL    bReturn           = TRUE;
 
     if(m_psMsgHandlersInfo != NULL )
@@ -1641,13 +1639,13 @@ BOOL CExecuteFunc::bInitMsgIDRangeHandlStruct(UINT unMsgIDRangeCount,
             // Get the message ID from the string
             omStrTemp        = omStrFuncName.Right(omStrFuncName.GetLength() -
                                                  omStrFuncName.Find(_T("_")) - 1 );
-            omStrMsgIDFrom      = omStrTemp.Left(omStrTemp.Find(_T("_")));
-            omStrMsgIDTo        = omStrTemp;
+            omStrMsgIDFrom = omStrTemp.Left(omStrTemp.Find(_T("_")));
+            omStrMsgIDTo   = omStrTemp;
             omStrMsgIDTo.Replace(omStrMsgIDFrom,_T(""));
             omStrMsgIDTo.Replace(_T("_"),_T(""));
             TCHAR* pcStopStr = NULL;
-            unMsgIDFrom  = _tcstol((LPCTSTR )omStrMsgIDFrom,&pcStopStr,16);
-            unMsgIDTo = _tcstol((LPCTSTR )omStrMsgIDTo,&pcStopStr,16);
+            UINT unMsgIDFrom  = _tcstol((LPCTSTR )omStrMsgIDFrom,&pcStopStr,16);
+            UINT unMsgIDTo = _tcstol((LPCTSTR )omStrMsgIDTo,&pcStopStr,16);
             TRY
             {                
                 if (m_eBus == CAN) // Use a separate structure 'm_psOnMsgIDRangeHandlersCAN'

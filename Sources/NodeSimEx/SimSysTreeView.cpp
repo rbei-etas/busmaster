@@ -2217,7 +2217,6 @@ void CSimSysTreeView::OnDeleteAllNodes()
 	BOOL bSuccess = FALSE;
 	BOOL bDataSet = FALSE;
 	CTreeCtrl& om_tree = GetTreeCtrl();
-	HTREEITEM hNodeItem = NULL;
     HTREEITEM hSimSysItem = om_tree.GetSelectedItem();
     CString omStrSimSysName = STR_EMPTY;
     omStrSimSysName = om_tree. GetItemText(hSimSysItem);
@@ -2238,7 +2237,7 @@ void CSimSysTreeView::OnDeleteAllNodes()
             {
                 while(om_tree.ItemHasChildren(hSimSysItem))
                 {
-                    hNodeItem = om_tree.GetChildItem(hSimSysItem);
+                    HTREEITEM hNodeItem = om_tree.GetChildItem(hSimSysItem);
                     om_tree.DeleteItem(hNodeItem);
                 }
                 //Set the modify flag

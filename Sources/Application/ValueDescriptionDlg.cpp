@@ -294,13 +294,13 @@ BOOL CValueDescriptionDlg::PreTranslateMessage(MSG* pMsg)
     // Do not process non-hexadecimal characters
     // in signal value edit control
     BOOL bSkip = FALSE;
-    int nStart, nEnd;
     CEdit* omEditCtrlName   = (CEdit*) GetDlgItem(IDC_EDIT_VAL);
     CEdit* omEditFocusName  = (CEdit*) GetFocus();
     if ( pMsg->message == WM_CHAR )
     {
         if ( omEditCtrlName == omEditFocusName )
         {
+		    int nStart, nEnd;
             omEditCtrlName->GetSel(nStart, nEnd);
             if (nStart == 0 && 
                 pMsg->wParam == MINUS_SIGN) 

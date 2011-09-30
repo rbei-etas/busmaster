@@ -1248,7 +1248,6 @@ BOOL CFnsTreeView::bDeleteALineFromHeader(CString omStrHeader,
                                          CString omSearchStr)
 {
     CString omStrLine = STR_EMPTY;
-    POSITION posTobeDeleted = NULL;
     CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)CView::GetDocument();
     SBUS_SPECIFIC_INFO sBusSpecInfo;
     pDoc->bGetBusSpecificInfo(sBusSpecInfo);
@@ -1261,7 +1260,7 @@ BOOL CFnsTreeView::bDeleteALineFromHeader(CString omStrHeader,
         // Find the required variable
         while ( pos != NULL )
         {
-            posTobeDeleted = pos;
+            POSITION posTobeDeleted = pos;
 
             omStrLine = 
                 pDoc->m_omSourceCodeTextList.GetNext(pos);
@@ -2498,10 +2497,9 @@ BOOL CFnsTreeView::bDeleteHandlerInArray(const CStringArray &omStrArray,
                                          CFunctionEditorDoc* pDoc )
 {
     BOOL bReturn = FALSE;
-    INT nCount   = 0;
     if(pDoc != NULL )
     {
-        nCount = (COMMANINT)omStrArray.GetSize();
+        INT nCount = (COMMANINT)omStrArray.GetSize();
         CString omStrFunctionName = _T("");
         for(int i = 0; i<nCount; i++)
         {

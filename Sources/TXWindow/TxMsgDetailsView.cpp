@@ -278,11 +278,10 @@ void CTxMsgDetailsView::vUpdateChannelIDInfo()
     m_omComboChannelID.ResetContent();
 
 	LONG lParam = 0;
-	UINT nHardware = 0;
 	if(((CBaseDIL_CAN*)CTxMsgManager::pGetDILInterfacePtr())
 							->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
 	{
-		nHardware = (UINT)lParam;
+		UINT nHardware = (UINT)lParam;
 
 		for( int nIndex = 0; (UINT)nIndex < nHardware; nIndex++)
 		{
@@ -1613,8 +1612,6 @@ BOOL CTxMsgDetailsView::bValidateData()
     BOOL bIsValid = FALSE;
     // Selected Message Code
     int nMsgCode = -1;
-    // Selected DLC Value
-    USHORT usDLC = 0;
     // User has to input atleast msg code and dlc
     CString omStr = _T("");
     UpdateData(TRUE);
@@ -1631,10 +1628,12 @@ BOOL CTxMsgDetailsView::bValidateData()
     }
     if ( nMsgCode != -1 )
     {
-        m_odDLC.GetWindowText(omStr);
+		// Selected DLC Value
+		USHORT usDLC = 0;
+		m_odDLC.GetWindowText(omStr);
         if ( omStr.IsEmpty() != TRUE )
         {
-            usDLC = (USHORT)m_odDLC.lGetValue();
+		    usDLC = (USHORT)m_odDLC.lGetValue();
             if(usDLC >= 0  && usDLC <=8)
             {
                 bIsValid = TRUE;
@@ -1789,7 +1788,6 @@ void CTxMsgDetailsView::OnSelchangeCombMsgIdName()
     {
         CString omStrMsgName = STR_EMPTY;
         sMESSAGE * psMsg = NULL;
-        INT nMsgID = -1;
         BOOL bValidMsgID = TRUE;
     
         int nSelectedIndex = m_omComboMsgIDorName.GetCurSel();
@@ -1803,7 +1801,7 @@ void CTxMsgDetailsView::OnSelchangeCombMsgIdName()
 		int nIndex = omStrMsgName.Find(defMSGID_NAME_START_CHAR);
 		if(nIndex != -1)
 		{
-			nMsgID = unGetMsgIDFromName(omStrMsgName);
+			INT nMsgID = unGetMsgIDFromName(omStrMsgName);
             CMsgSignal *pDBptr =  m_pouDBPtr;
             if (NULL != pDBptr)
             {
@@ -2519,8 +2517,6 @@ void CTxMsgDetailsView::vUpdateFromRawValue(int nItem, int nSubItem)
         memcpy(m_unData, ucData, sizeof(UCHAR) * defMAX_BYTE);
         //commented by kadoor vUpdateSignalData( psSignal, nI64SignVal );
         vUpdateDataBytes();
-        // Calculate Physical Value and update
-        double dPhyValue = 0;
         BOOL bFound = FALSE;
         // Set the Raw Value
         if( TRUE == CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_HEX) )
@@ -2586,7 +2582,8 @@ void CTxMsgDetailsView::vUpdateFromRawValue(int nItem, int nSubItem)
             }
             if( bFloat == TRUE )
             {
-                dPhyValue = nI64SignVal * psSignal->m_fSignalFactor +
+				// Calculate Physical Value and update
+				double dPhyValue = nI64SignVal * psSignal->m_fSignalFactor +
                                         psSignal->m_fSignalOffset;
                 omstrDefault.Format(defSTR_FORMAT_PHY_VALUE, dPhyValue);
             }

@@ -86,9 +86,6 @@ CBuildProgram::~CBuildProgram()
 BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
 {
     BOOL bReturn            = FALSE;
-    HANDLE hStdInput        = NULL; // Standard input handle of the child process.
-    HANDLE hStdOutput       = NULL; // - Standard output handle of the child process.
-    HANDLE hStdError        = NULL; //- Standard error handle of the child process. 
     CString omStrFilePath   = _T(""); 
     CString omStrErrorMsg   = _T("");
 	int iMajorVer = 0;
@@ -126,7 +123,11 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
         // sub key
         if(lError==ERROR_SUCCESS)
         {
-            lError = ERROR_SUCCESS;
+			HANDLE hStdInput        = NULL; // Standard input handle of the child process.
+			HANDLE hStdOutput       = NULL; // - Standard output handle of the child process.
+			HANDLE hStdError        = NULL; //- Standard error handle of the child process. 
+
+			lError = ERROR_SUCCESS;
             /*lError = RegQueryValueEx(sKey,_T("path"),0, &ulType, acGCCPath,&dwSize); 
             RegCloseKey(sKey);*/
             // Check if value is read successfully.

@@ -135,7 +135,6 @@ void CFileView::OnDraw(CDC* pDC)
     if(pomDoc != NULL)
     {
         TCHAR acSourceLineNo[10]  = STR_EMPTY;
-        POSITION Position        = NULL;
         long lLineCount          = LONG_INIT;
         long lCurrentWarnLineNum = LONG_INIT;
         int  nTabStopPositions   = INT_INIT;
@@ -148,8 +147,6 @@ void CFileView::OnDraw(CDC* pDC)
         CFont* pomOldFont=NULL;
         BOOL bCommentFound = FALSE;
         BOOL bWithInComment = FALSE;
-
-        int nMargin = MARGIN_FOR_FILE_VIEW;
 
         // Create font
         BOOL bSuccess = omNewFont.CreateFont(m_nCharHeight,
@@ -168,7 +165,7 @@ void CFileView::OnDraw(CDC* pDC)
                                              DEFAULT_FONT);
         if(bSuccess == TRUE)
         {
-            // Select the new font object
+			// Select the new font object
             pomOldFont = pomDC -> SelectObject(&omNewFont);
 
             // Get line count
@@ -180,12 +177,13 @@ void CFileView::OnDraw(CDC* pDC)
 
             if(lLineCount  > defCOUNT_INIT)
             {
-                Position = pomDoc -> SetPosToFirstLine();
+                POSITION Position = pomDoc -> SetPosToFirstLine();
                 if( Position!= NULL)
                 {
+
                     for(long lInt = defCOUNT_INIT; lInt < lLineCount ; lInt++)
                     {  
-                        nMargin = MARGIN_FOR_FILE_VIEW;
+                        int nMargin = MARGIN_FOR_FILE_VIEW;
                         bCommentFound = FALSE;
                         // Set the background mix mode to 
                         // tranparent

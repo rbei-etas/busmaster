@@ -386,7 +386,6 @@ void CChangeRegisters_CAN_BOA::OnKillfocusEditBaudRate()
     CString omStrBaudRate   =_T("");
     CString omStrValid      =_T("");
     INT     nLength         = 0;
-    DOUBLE  dBaudRate       = 0;
 
     m_omEditBaudRate.GetWindowText(omStrBaudRate);    
     nLength             = omStrBaudRate.GetLength();
@@ -402,7 +401,7 @@ void CChangeRegisters_CAN_BOA::OnKillfocusEditBaudRate()
         if (unButtonState ==0)
         {
             // Validate for empty string and if zero value is entered.
-            dBaudRate           = (FLOAT)_tstof(omStrBaudRate);
+            DOUBLE dBaudRate = (FLOAT)_tstof(omStrBaudRate);
             if (nLength == 0 || dBaudRate <= 0 || dBaudRate > 1000.0)
             {   
                 m_omEditBaudRate.SetWindowText(m_omStrEditBaudRate);
@@ -527,14 +526,10 @@ void CChangeRegisters_CAN_BOA::vValidateBaudRate()
     CString omStrPrvBaudRate    = _T("");
     CString omStrClockFreq      = _T("");
     DOUBLE  dBaudRate           = 0;
-    FLOAT   fNbt                = 0;
     //UINT    unClockFreq         = 0;
     //UINT    unClockPrevValue    = 0 ;
-    UINT    unNbt               = 0;
     UINT    unProductNbtNBrp    = 0;
     DOUBLE  dProductNbtNBrp     = 0; 
-    INT     i                   = 0;
-    INT     nFlag               = 0;
     CString omStrMessage        = _T("");
    
     m_omEditBaudRate.GetWindowText(omStrBaudRate);
@@ -553,13 +548,13 @@ void CChangeRegisters_CAN_BOA::vValidateBaudRate()
           || (unProductNbtNBrp < defMIN_NBT))
     {
         unProductNbtNBrp =defmcROUND5(dProductNbtNBrp);
-        nFlag = defRESET;
+        int nFlag = defRESET;
 
         while (nFlag == defRESET)
         {
-            i = 1;
-            unNbt = unProductNbtNBrp / i;
-            fNbt  = (FLOAT)unProductNbtNBrp / i;
+            INT i = 1;
+            UINT unNbt = unProductNbtNBrp / i;
+            FLOAT fNbt = (FLOAT)unProductNbtNBrp / i;
             
             while ((unNbt >= 1) && (i <= defMAX_BRP) && (nFlag == defRESET))
             {
@@ -899,10 +894,6 @@ void CChangeRegisters_CAN_BOA::vFillControllerConfigDetails()
 *******************************************************************************/
 void CChangeRegisters_CAN_BOA::vUpdateControllerDetails()
 {
-    INT   nItemUnderFocus           = 0;
-    UCHAR  ucBtr0                   = 0;
-    UCHAR  ucBtr1                   = 0;
-    UCHAR ucCNF1 = 0, ucCNF2 = 0, ucCNF3 = 0;
     TCHAR*    pcStopStr              = NULL;
     CString omStrComboSampling      = _T("");
     CString omStrEditBtr0           = _T("");
@@ -925,12 +916,15 @@ void CChangeRegisters_CAN_BOA::vUpdateControllerDetails()
     if (  ( unWarningLimit >= unWarningLimtMin) 
        && ( unWarningLimit <= unWarningLimtMax))
     {
+	    INT nItemUnderFocus = 0;
         m_ucWarningLimit = static_cast <UCHAR> (unWarningLimit);
-        ucCNF1 = static_cast<UCHAR>( _tcstol(( LPCTSTR)m_omStrEditCNF1,
+		UCHAR ucBtr0 = 0;
+		UCHAR ucBtr1 = 0;
+        UCHAR ucCNF1 = static_cast<UCHAR>( _tcstol(( LPCTSTR)m_omStrEditCNF1,
                                         &pcStopStr,defHEXADECIMAL));
-        ucCNF2 = static_cast<UCHAR>( _tcstol(( LPCTSTR)m_omStrEditCNF2,
+        UCHAR ucCNF2 = static_cast<UCHAR>( _tcstol(( LPCTSTR)m_omStrEditCNF2,
                                         &pcStopStr,defHEXADECIMAL));
-        ucCNF3 = static_cast<UCHAR>( _tcstol(( LPCTSTR)m_omStrEditCNF3,
+        UCHAR ucCNF3 = static_cast<UCHAR>( _tcstol(( LPCTSTR)m_omStrEditCNF3,
                                         &pcStopStr,defHEXADECIMAL));
         // Pack the BTR0 and BTR1 values in two bytes before calling DIL fuction 
         // to initialise.
@@ -1089,34 +1083,26 @@ BOOL CChangeRegisters_CAN_BOA::bGetFilterFromCom(BOOL  &bExtended, double  &dBeg
                                    double &dEndMsgId)
 {
     BOOL bReturn = FALSE;
-    int nAccCodeByte1;
-    int nAccCodeByte2;
-    int nAccCodeByte3;
-    int nAccCodeByte4;
-    int nMaskCodeByte1;
-    int nMaskCodeByte2;
-    int nMaskCodeByte3;
-    int nMaskCodeByte4;
     if (m_pControllerDetails != NULL)
     {
         
         TCHAR* pcStopStr ;
         //Change to separate integer value for each byte
-        nAccCodeByte1 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte1,
+        int nAccCodeByte1 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte1,
                         &pcStopStr,defHEXADECIMAL);
-        nAccCodeByte2 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte2,
+        int nAccCodeByte2 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte2,
                         &pcStopStr,defHEXADECIMAL);
-        nAccCodeByte3 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte3,
+        int nAccCodeByte3 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte3,
                         &pcStopStr,defHEXADECIMAL);
-        nAccCodeByte4 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte4,
+        int nAccCodeByte4 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte4,
                         &pcStopStr,defHEXADECIMAL);
-        nMaskCodeByte1 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte1,
+        int nMaskCodeByte1 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte1,
                         &pcStopStr,defHEXADECIMAL);
-        nMaskCodeByte2 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte2,
+        int nMaskCodeByte2 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte2,
                         &pcStopStr,defHEXADECIMAL); 
-        nMaskCodeByte3 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte3,
+        int nMaskCodeByte3 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte3,
                         &pcStopStr,defHEXADECIMAL); 
-        nMaskCodeByte4 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte4,
+        int nMaskCodeByte4 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte4,
                         &pcStopStr,defHEXADECIMAL);
         //now make them as dword in decimal
         dBeginMsgId = (ULONG)(nAccCodeByte1*0X1000000+nAccCodeByte2*0X10000+
@@ -1184,11 +1170,11 @@ void CChangeRegisters_CAN_BOA::OnCbnSelchangeCombPropdelay()
 *******************************************************************************/
 BOOL CChangeRegisters_CAN_BOA::bUpdateControllerDataMembers(void)
 {
-    BYTE bCNF1 = 0x0, bCNF2 = 0x0, bCNF3 = 0x0;
 
     BOOL Result = 1; // Calculate if required in future
     if (Result)
     {
+		BYTE bCNF1 = 0x0, bCNF2 = 0x0, bCNF3 = 0x0;
         m_omStrEditCNF1.Format(_T("%x"), bCNF1);
         m_omStrEditCNF2.Format(_T("%x"), bCNF2);
         m_omStrEditCNF3.Format(_T("%x"), bCNF3);

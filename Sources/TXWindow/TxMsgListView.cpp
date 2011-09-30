@@ -412,7 +412,6 @@ void CTxMsgListView::OnItemchangedLstcMsgDetails(NMHDR* pNMHDR,
                                                    LRESULT* pResult) 
 {
     NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
-    UINT unCurrentState = 0;
 
     CTxMsgBlocksView * pomBlocksView = NULL;
     pomBlocksView = ( CTxMsgBlocksView *)pomGetBlocksViewPointer();
@@ -420,7 +419,7 @@ void CTxMsgListView::OnItemchangedLstcMsgDetails(NMHDR* pNMHDR,
     {
         // Get new state of the list control items
         // and check for if it is selected and focused.
-        unCurrentState = pNMListView->uNewState & defMASK_LIST_CTRL;
+        UINT unCurrentState = pNMListView->uNewState & defMASK_LIST_CTRL;
         if(pNMListView->uNewState & (LVIS_FOCUSED|LVIS_SELECTED) )
         {
             if((TRUE == CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_CONNECTED)) && (pNMListView->uNewState & LVIS_SELECTED))
@@ -670,9 +669,9 @@ PSTXCANMSGLIST CTxMsgListView::psGetMsgDetailPointer(INT nIndex,
                                           SMSGBLOCKLIST* psCurrentMsgBlockList)
 {
     PSTXCANMSGLIST psTxMsgList = NULL;
-    INT nCurrentIndex = 0;
     if(nIndex != -1 && psCurrentMsgBlockList != NULL )
     {
+	    INT nCurrentIndex = 0;
         psTxMsgList = psCurrentMsgBlockList->m_psTxCANMsgList;
         while(nIndex != nCurrentIndex)
         {
@@ -889,7 +888,6 @@ BOOL CTxMsgListView::bDeleteMsgFromBlock(SMSGBLOCKLIST* psMsgCurrentBlock)
         PSTXCANMSGLIST psTxCANMsgList = NULL;
         // Get the total selected items in message details list control.
         UINT  unSelectedCount = m_omLctrMsgList.GetSelectedCount();
-        int  nItem = -1;
         // If there is selection then delete it one by one.
         if (unSelectedCount > 0)
         {
@@ -898,7 +896,7 @@ BOOL CTxMsgListView::bDeleteMsgFromBlock(SMSGBLOCKLIST* psMsgCurrentBlock)
                 // Get the first selection from the begining. Search for 
                 // selection is always from start to ensure that selected
                 // index is matching with the nodes in the list.
-                nItem = m_omLctrMsgList.GetNextItem(-1, LVNI_SELECTED);
+                int nItem = m_omLctrMsgList.GetNextItem(-1, LVNI_SELECTED);
                 if(nItem != -1)
                 {
                     // Get the current pointer

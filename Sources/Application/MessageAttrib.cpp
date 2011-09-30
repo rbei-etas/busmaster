@@ -214,7 +214,6 @@ void CMessageAttrib::vSaveMessageAttribData()
 
 	UINT unMsgCount = m_omMsgIDMap.GetCount();
     UINT unMsgID;
-    PSMESSAGEATTR pMsgAttributes = NULL, pNext = NULL;
 
     // store info into the structure
     sMsgAttribDetails.m_usMsgCount = static_cast<USHORT>(unMsgCount);
@@ -223,12 +222,12 @@ void CMessageAttrib::vSaveMessageAttribData()
     if (unMsgCount != 0)
     {
         // allocate the array
-        pMsgAttributes = new SMESSAGEATTR [unMsgCount];
+        PSMESSAGEATTR pMsgAttributes = new SMESSAGEATTR [unMsgCount];
 
         if (pMsgAttributes != NULL)
         {
             sMsgAttribDetails.m_psMsgAttribDetails = pMsgAttributes;
-            pNext = pMsgAttributes;
+            PSMESSAGEATTR pNext = pMsgAttributes;
             //POSITION posNextPos = m_omMsgIDMap.GetStartPosition();
 			POSITION posNextPos = m_omIDList.GetHeadPosition();		
 
@@ -264,7 +263,6 @@ void CMessageAttrib::vGetMessageAttribData(SMESSAGE_ATTRIB& sMsgAttribDetails)
 
 	UINT unMsgCount = m_omMsgIDMap.GetCount();
     UINT unMsgID;
-    PSMESSAGEATTR pMsgAttributes = NULL, pNext = NULL;
 
     // store info into the structure
     sMsgAttribDetails.m_usMsgCount = static_cast<USHORT>(unMsgCount);
@@ -273,12 +271,12 @@ void CMessageAttrib::vGetMessageAttribData(SMESSAGE_ATTRIB& sMsgAttribDetails)
     if (unMsgCount != 0)
     {
         // allocate the array
-        pMsgAttributes = new SMESSAGEATTR [unMsgCount];
+        PSMESSAGEATTR pMsgAttributes = new SMESSAGEATTR [unMsgCount];
 
         if (pMsgAttributes != NULL)
         {
             sMsgAttribDetails.m_psMsgAttribDetails = pMsgAttributes;
-            pNext = pMsgAttributes;
+            PSMESSAGEATTR pNext = pMsgAttributes;
             //POSITION posNextPos = m_omMsgIDMap.GetStartPosition();			
 			POSITION posNextPos = m_omIDList.GetHeadPosition();			
 

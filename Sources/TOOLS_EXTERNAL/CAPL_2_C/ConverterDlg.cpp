@@ -339,12 +339,11 @@ void List::OnAdd()
 void List::OnRemove()
 {
 	CString ekey;
-	int 	k = 0;
 	if((m = m_EquiKeys.GetCurSel()) != LB_ERR)
 	{
 		GetDlgItem( IDC_CBTN_ADD )->EnableWindow(TRUE);
 		m_EquiKeys.GetText( m,ekey );
-		k = ekey.Find(' ',0);
+		int k = ekey.Find(' ',0);
 		if( k != -1)
 		{
 			m_UnSupKeys.AddString(ekey.Left(k));

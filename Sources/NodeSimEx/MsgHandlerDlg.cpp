@@ -838,7 +838,6 @@ BOOL CMsgHandlerDlg::bValidateMessageNameAndID(const CStringArray* pomStrArray,
 {
     BOOL bReturn = TRUE;
     CString omStrMakeHandler = _T("");
-    UINT unCount = 0;
     if(pomStrArray != NULL )
     {
         omStrMakeHandler = CGlobalObj::omGetBusSpecMsgHndlrName(m_eBus);
@@ -854,7 +853,7 @@ BOOL CMsgHandlerDlg::bValidateMessageNameAndID(const CStringArray* pomStrArray,
         // Make the current handler by getting its ID from name and vice 
         // versa.
         omStrMakeHandler += omStrMessageNameOrID;
-        unCount = (COMMANUINT)pomStrArray->GetSize();
+        UINT unCount = (COMMANUINT)pomStrArray->GetSize();
         CString omStrMsgPro = _T("");
         for(UINT i = 0; i<unCount; i++)
         {

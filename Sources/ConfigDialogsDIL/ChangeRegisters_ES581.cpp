@@ -506,7 +506,6 @@ void CChangeRegisters_ES581::OnKillfocusEditBaudRate()
     CString omStrBaudRate   =_T("");
     CString omStrValid      =_T("");
     INT     nLength         = 0;
-    DOUBLE  dBaudRate       = 0;
 
     m_omEditBaudRate.GetWindowText(omStrBaudRate);    
     nLength             = omStrBaudRate.GetLength();
@@ -522,7 +521,7 @@ void CChangeRegisters_ES581::OnKillfocusEditBaudRate()
         if (unButtonState ==0)
         {
             // Validate for empty string and if zero value is entered.
-            dBaudRate           = (FLOAT)_tstof(omStrBaudRate);
+            DOUBLE dBaudRate = (FLOAT)_tstof(omStrBaudRate);
             if (nLength == 0 || dBaudRate <= 0 || dBaudRate > 1000.0)
             {   
                 m_omEditBaudRate.SetWindowText(m_omStrEditBaudRate);
@@ -723,14 +722,10 @@ void CChangeRegisters_ES581::vValidateBaudRate()
     CString omStrPrvBaudRate    = _T("");
     CString omStrClockFreq      = _T("");
     DOUBLE  dBaudRate           = 0;
-    FLOAT   fNbt                = 0;
     //UINT    unClockFreq         = 0;
     //UINT    unClockPrevValue    = 0 ;
-    UINT    unNbt               = 0;
     UINT    unProductNbtNBrp    = 0;
     DOUBLE  dProductNbtNBrp     = 0; 
-    INT     i                   = 0;
-    INT     nFlag               = 0;
     CString omStrMessage        = _T("");
    
    
@@ -750,13 +745,13 @@ void CChangeRegisters_ES581::vValidateBaudRate()
           || (unProductNbtNBrp < defMIN_NBT))
     {
         unProductNbtNBrp =defmcROUND5(dProductNbtNBrp);
-        nFlag = defRESET;
+        INT nFlag = defRESET;
 
         while (nFlag == defRESET)
         {
-            i = 1;
-            unNbt = unProductNbtNBrp / i;
-            fNbt  = (FLOAT)unProductNbtNBrp / i;
+            INT i = 1;
+            UINT unNbt = unProductNbtNBrp / i;
+            FLOAT fNbt = (FLOAT)unProductNbtNBrp / i;
             
             while ((unNbt >= 1) && (i <= defMAX_BRP) && (nFlag == defRESET))
             {
@@ -1188,10 +1183,6 @@ void CChangeRegisters_ES581::vFillControllerConfigDetails()
 *******************************************************************************/
 void CChangeRegisters_ES581::vUpdateControllerDetails()
 {
-    INT   nItemUnderFocus           = 0;
-    UCHAR  ucBtr0                   = 0;
-    UCHAR  ucBtr1                   = 0;
-    UCHAR ucCNF1 = 0, ucCNF2 = 0, ucCNF3 = 0;
     TCHAR*    pcStopStr              = NULL;
     CString omStrComboSampling      = _T("");
     CString omStrEditBtr0           = _T("");
@@ -1214,14 +1205,16 @@ void CChangeRegisters_ES581::vUpdateControllerDetails()
     if (  ( unWarningLimit >= unWarningLimtMin) 
        && ( unWarningLimit <= unWarningLimtMax))
     {
-        nItemUnderFocus = m_omListCtrlBitTime.GetNextItem(-1, LVNI_SELECTED);
+        INT nItemUnderFocus = m_omListCtrlBitTime.GetNextItem(-1, LVNI_SELECTED);
         m_ucWarningLimit = static_cast <UCHAR> (unWarningLimit);
-        ucCNF1 = static_cast<UCHAR>( _tcstol(( LPCTSTR)m_omStrEditCNF1,
+        UCHAR ucCNF1 = static_cast<UCHAR>( _tcstol(( LPCTSTR)m_omStrEditCNF1,
                                         &pcStopStr,defHEXADECIMAL));
-        ucCNF2 = static_cast<UCHAR>( _tcstol(( LPCTSTR)m_omStrEditCNF2,
+        UCHAR ucCNF2 = static_cast<UCHAR>( _tcstol(( LPCTSTR)m_omStrEditCNF2,
                                         &pcStopStr,defHEXADECIMAL));
-        ucCNF3 = static_cast<UCHAR>( _tcstol(( LPCTSTR)m_omStrEditCNF3,
+        UCHAR ucCNF3 = static_cast<UCHAR>( _tcstol(( LPCTSTR)m_omStrEditCNF3,
                                         &pcStopStr,defHEXADECIMAL));
+	    UCHAR  ucBtr0                   = 0;
+		UCHAR  ucBtr1                   = 0;
         // Pack the BTR0 and BTR1 values in two bytes before calling DIL fuction 
         // to initialise.
         m_usBTR0BTR1 = static_cast <USHORT>(((ucBtr0 << 8)| ucBtr1) & 0xffff);

@@ -249,14 +249,12 @@ void CMsgSignalDBWnd::OnClose()
 
         ppTempMsgSg = (CMsgSignal**)(m_sDbParams.m_ppvActiveDB);
         
-        UINT bRetVal = 0;
-
         //CMsgSgDetView* podMsgSg = 
         pFrame->podGetMsgSgDetView(m_sDbParams.m_eBus);
 
         if ((*ppTempMsgSg)->bGetModifiedFlag() == FALSE)
         {
-            bRetVal =  AfxMessageBox(ASK_SAVE_PROMPT,
+            UINT bRetVal =  AfxMessageBox(ASK_SAVE_PROMPT,
                                     MB_YESNO|MB_ICONQUESTION);
             if ( bRetVal == IDYES )
             {

@@ -190,7 +190,6 @@ void CFunctionView::vSetFunctionToEdit(const CString &omStrFunction)
 
     CString omStrFnBody(_T(""));
     BOOL bGlobalVar = FALSE;
-    int nLineNumber = 0;
 
     m_bIsValidFunction = FALSE;
     m_sStartPos = NULL;
@@ -230,6 +229,7 @@ void CFunctionView::vSetFunctionToEdit(const CString &omStrFunction)
         }
 
         POSITION sPos = pDoc->m_omSourceCodeTextList.GetHeadPosition();
+		int nLineNumber = 0;
 
         while ( sPos != NULL )
         {
@@ -575,8 +575,6 @@ void CFunctionView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 BOOL CFunctionView::UpdateFunctionInDocument()
 {
     BOOL bRetVal    = FALSE;
-    POSITION sPos1  = NULL;
-    POSITION sPos2  = NULL;
     POSITION sStart = m_sStartPos;
     if ( sStart != NULL )
     {
@@ -619,6 +617,8 @@ BOOL CFunctionView::UpdateFunctionInDocument()
     
             pDoc->m_omSourceCodeTextList.GetNext(sStart);
 
+		    POSITION sPos1  = NULL;
+			POSITION sPos2  = NULL;
             for( sPos1 = sStart; ( ((sPos2 = sPos1) != NULL) && (!bDone) ); )
             {
                 CString omStrDel = 

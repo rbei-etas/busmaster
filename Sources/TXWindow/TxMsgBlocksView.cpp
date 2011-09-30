@@ -707,9 +707,9 @@ BOOL CTxMsgBlocksView::bDeleteBlock()
 SMSGBLOCKLIST* CTxMsgBlocksView::psGetMsgBlockPointer(INT nIndexCurBlock,
                                                  SMSGBLOCKLIST* psMsgBlockList)
 {
-    INT nIndex = 0;
     if(psMsgBlockList != NULL && nIndexCurBlock != -1)
     {
+	    INT nIndex = 0;
         // Get the message block pointer in the list at the index 
         // nIndexCurBlock
         while(nIndex != nIndexCurBlock)

@@ -184,7 +184,6 @@ INT CConfigDetails::nIsCfgFileFound(CString& omStrFilename, BOOL bOpenExisting)
     // access.
     
     INT nRetVal             = defCONFIG_FILE_SUCCESS;
-    DWORD dwDesiredAccess   = 0;
     
     // validate the extension
     INT nDotPosn = omStrFilename.ReverseFind(defDOT);
@@ -201,7 +200,9 @@ INT CConfigDetails::nIsCfgFileFound(CString& omStrFilename, BOOL bOpenExisting)
     // is everything OK until now ?
     if (nRetVal == defCONFIG_FILE_SUCCESS)
     {
-        // set the mode of creation..
+	    DWORD dwDesiredAccess = 0;
+		
+		// set the mode of creation..
         DWORD dwCreateMode;
         
         // a copy of the file needs to be created, hence the file is opened
