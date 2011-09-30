@@ -4,12 +4,13 @@
 
 # Visual Studio intermediate files
 *.vcproj.*.user
+*.ncb
+*.sln.cache
+*.suo
 Sources/Application/BUSMASTER_Interface.c
 Sources/Application/BUSMASTER_Interface.h
 Sources/Application/Hlp/BUSMASTER.chm
 Sources/Application/Hlp/BUSMASTER.hm
-Sources/BUSMASTER.ncb
-Sources/BUSMASTER.suo
 Sources/BusEmulation/BusEmulation.h
 Sources/BusEmulation/BusEmulation_i.c
 Sources/BusEmulation/BusEmulation_p.c
