@@ -36,7 +36,7 @@
 #include "Utility/Utility_Thread.h"
 #include "Include/DIL_CommonDefs.h"
 #include "ConfigDialogsDIL/API_dialog.h"
-#include "icsnVC40.h"
+#include "EXTERNAL_INCLUDE/icsnVC40.h"
 
 
 #define USAGE_EXPORT
