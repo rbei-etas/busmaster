@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      CAN_ETAS_ES581_Channel.cpp
+ * \file      CAN_ICS_neoVI_Channel.cpp
  * \brief     Implementation file for CChannel class
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
@@ -22,8 +22,8 @@
  * Implementation file for CChannel class
  */
 
-#include "CAN_ETAS_ES581_stdafx.h"
-#include "CAN_ETAS_ES581_Channel.h" // For CChannel class declaration
+#include "CAN_ICS_neoVI_stdafx.h"
+#include "CAN_ICS_neoVI_Channel.h" // For CChannel class declaration
 #include "Include/CanUsbDefs.h"
 
 #ifdef _DEBUG

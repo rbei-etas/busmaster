@@ -77,7 +77,7 @@ public:
     // To find system time value of clock tick
     static int nCalculateElapsedTimeFromTick(const __int64& n64CurrTick);
     // To reinitialise the offset time value
-    static void bReinitOffsetTimeValForES581(void);
+    static void bReinitOffsetTimeValForICSneoVI(void);
     
 };
 #endif // !defined(AFX_TIMEMANAGER_H__03C4B0FC_5A6E_4330_821C_F4109863D8C0__INCLUDED_)

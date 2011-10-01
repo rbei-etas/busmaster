@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
-<topic id="dil_es581" xml:lang="en-us">
-  <title>DIL_ES581</title>
+<topic id="dil_ics_neovi" xml:lang="en-us">
+  <title>DIL_ICS_neoVI</title>
   <prolog>
     <author>Ratnadip Choudhury</author>
     <copyright>
@@ -10,6 +10,6 @@
     </copyright>
   </prolog>
   <body>
-    <p>This is the interface to ES581 interface. Below goes the interface description:<image placement="break" href="../images/umls/dil_es581.png"/></p>
+    <p>This is the interface to IntrepidCS neoVI interfaces. Below goes the interface description:<image placement="break" href="../images/umls/dil_ics_neovi.png"/></p>
   </body>
 </topic>

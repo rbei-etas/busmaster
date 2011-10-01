@@ -175,7 +175,7 @@ public:
     void vSelectInterface_Dummy(void);
     void vSelectInterface_CAN_Parallel_Port(void);
     void vSelectInterface_CAN_Usb(void);
-    void vSelectInterface_CAN_ETAS_ES581(void);
+    void vSelectInterface_CAN_ICS_neoVI(void);
     void vSelectInterface_CAN_STUB(void);
     void vSelectInterface_CAN_ETAS_BOA(void);
 

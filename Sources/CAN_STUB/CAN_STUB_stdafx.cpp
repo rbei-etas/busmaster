@@ -19,7 +19,7 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 // stdafx.cpp : source file that includes just the standard includes
-// CAN_ETAS_ES581.pch will be the pre-compiled header
+// CAN_STUB.pch will be the pre-compiled header
 // stdafx.obj will contain the pre-compiled type information
 
 #include "CAN_STUB_stdafx.h"

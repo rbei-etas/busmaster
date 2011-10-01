@@ -35,7 +35,7 @@
 #include "Include/CanUsbDefs.h"
 #include "ConfigDialogsDIL.h"
 #include "ChangeRegisters.h"
-#include "ChangeRegisters_ES581.h"
+#include "ChangeRegisters_CAN_ICS_neoVI.h"
 #include "ChangeRegisters_CAN_ETAS_BOA.h"
 #include "ControllerPPage.h"
 #include "AcceptanceFilterDlg.h"
@@ -123,9 +123,9 @@ USAGEMODE int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/,
         ouChangeRegister.DoModal();
         nResult = ouChangeRegister.nGetInitStatus();
     }
-    else if (dwDriverID == DRIVER_CAN_ETAS_ES581)
+    else if (dwDriverID == DRIVER_CAN_ICS_NEOVI)
     {
-        CChangeRegisters_ES581 ouChangeRegister(CWnd::FromHandle(hParent), pControllerDetails, nCount);
+        CChangeRegisters_CAN_ICS_neoVI ouChangeRegister(CWnd::FromHandle(hParent), pControllerDetails, nCount);
         ouChangeRegister.DoModal();
         nResult = ouChangeRegister.nGetInitStatus();
     }
@@ -145,7 +145,7 @@ USAGEMODE int ListHardwareInterfaces(HWND hParent, DWORD dwDriver, INTERFACE_HW*
 	int Result = -1;
     if ((dwDriver == DRIVER_CAN_ETAS_BOA) ||
         (dwDriver == DRIVER_CAN_PEAK_USB) ||
-        (dwDriver == DRIVER_CAN_ETAS_ES581))
+        (dwDriver == DRIVER_CAN_ICS_NEOVI))
     {
         CHardwareListing HwList(psInterfaces, nCount, NULL);
         HwList.DoModal();

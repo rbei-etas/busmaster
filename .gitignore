@@ -20,7 +20,7 @@ Sources/TOOLS_EXTERNAL/CAPL_2_C/lexer.h
 Sources/Application/Release
 Sources/BusEmulation/Release
 Sources/CAN_ETAS_BOA/Release
-Sources/CAN_ETAS_ES581/Release
+Sources/CAN_ICS_neoVI/Release
 Sources/CAN_STUB/Release
 Sources/CommonClass/Release
 Sources/ConfigDialogsDIL/Release
@@ -44,7 +44,7 @@ Sources/TOOLS_EXTERNAL/*/Release
 Sources/Application/Debug
 Sources/BusEmulation/Debug
 Sources/CAN_ETAS_BOA/Debug
-Sources/CAN_ETAS_ES581/Debug
+Sources/CAN_ICS_neoVI/Debug
 Sources/CAN_STUB/Debug
 Sources/CommonClass/Debug
 Sources/ConfigDialogsDIL/Debug
@@ -74,7 +74,7 @@ Sources/BIN/*/*.ilk
 Sources/BIN/*/*.pdb
 Sources/BIN/*/*.tlb
 Sources/BIN/*/CAN_ETAS_BOA.dll
-Sources/BIN/*/CAN_ETAS_ES581.dll
+Sources/BIN/*/CAN_ICS_neoVI.dll
 Sources/BIN/*/CAN_STUB.dll
 Sources/BIN/*/ConfigDialogsDIL.dll
 Sources/BIN/*/DIL_Interface.dll
@@ -90,7 +90,7 @@ Sources/BIN/*/TestSetupEditorGUI.dll
 Sources/BIN/*/TestSuiteExecutorGUI.dll
 Sources/BIN/Libs/*/*.exp
 Sources/BIN/Libs/*/CAN_ETAS_BOA.lib
-Sources/BIN/Libs/*/CAN_ETAS_ES581.lib
+Sources/BIN/Libs/*/CAN_ICS_neoVI.lib
 Sources/BIN/Libs/*/CAN_STUB.lib
 Sources/BIN/Libs/*/CommonClass.lib
 Sources/BIN/Libs/*/ConfigDialogsDIL.lib

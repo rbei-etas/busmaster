@@ -14,15 +14,15 @@
  */
 
 /**
- * \file      CAN_ETAS_ES581_stdafx.cpp
+ * \file      CAN_ICS_neoVI_stdafx.cpp
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 // stdafx.cpp : source file that includes just the standard includes
-// CAN_ETAS_ES581.pch will be the pre-compiled header
+// CAN_ICS_neoVI.pch will be the pre-compiled header
 // stdafx.obj will contain the pre-compiled type information
 
-#include "CAN_ETAS_ES581_stdafx.h"
+#include "CAN_ICS_neoVI_stdafx.h"
 
 // TODO: reference any additional headers you need in STDAFX.H
 // and not in this file

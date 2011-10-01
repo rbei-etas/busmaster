@@ -14,12 +14,12 @@
  */
 
 /**
- * \file      CAN_ETAS_ES581.h
- * \brief     Exports API functions for ETAS ES581 CAN Hardware interface
+ * \file      CAN_ICS_neoVI.h
+ * \brief     Exports API functions for IntrepidCS neoVI CAN Hardware interface
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Exports API functions for ETAS ES581 CAN Hardware interface
+ * Exports API functions for IntrepidCS neoVI CAN Hardware interface
  */
 #pragma once
 
@@ -29,14 +29,14 @@
 
 
 
-// CCAN_ETAS_ES581App
-// See CAN_ETAS_ES581.cpp for the implementation of this class
+// CCAN_ICS_neoVIApp
+// See CAN_ICS_neoVI.cpp for the implementation of this class
 //
 
-class CCAN_ETAS_ES581App : public CWinApp
+class CCAN_ICS_neoVIApp : public CWinApp
 {
 public:
-	CCAN_ETAS_ES581App();
+	CCAN_ICS_neoVIApp();
 
 // Overrides
 public:

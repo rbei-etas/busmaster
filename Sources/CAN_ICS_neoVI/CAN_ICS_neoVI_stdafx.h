@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      CAN_ETAS_ES581_stdafx.h
+ * \file      CAN_ICS_neoVI_stdafx.h
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */

@@ -1,0 +1,6 @@
+; CAN_ICS_neoVI.def : Declares the module parameters for the DLL.
+
+LIBRARY      "CAN_ICS_neoVI"
+
+EXPORTS
+    ; Explicit exports can go here

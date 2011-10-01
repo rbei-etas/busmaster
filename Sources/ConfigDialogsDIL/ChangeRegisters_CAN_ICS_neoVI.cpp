@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      ChangeRegisters_ES581.cpp
+ * \file      ChangeRegisters_CAN_ICS_neoVI.cpp
  * \brief     This file contain definition of all function of 
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
@@ -25,7 +25,7 @@
 #include "CongDlg_stdafx.h"
 #include "ContrConfigPeakUsbDefs.h"
 #include "ConfigDlg_Resource.h"
-#include "ChangeRegisters_ES581.h"
+#include "ChangeRegisters_CAN_ICS_neoVI.h"
 #include "API_Dialog.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -33,12 +33,12 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 /******************************************************************************/
-/*  Function Name    :  CChangeRegisters_ES581                                      */
+/*  Function Name    :  CChangeRegisters_CAN_ICS_neoVI                                      */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  Constructor is called when user create an object of   */
 /*                      this class. Initialisation of all data members        */
-/*  Member of        :  CChangeRegisters_ES581                                      */
+/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                                      */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  15.02.2002                                            */
@@ -46,13 +46,13 @@ static char THIS_FILE[] = __FILE__;
 /*  Modifications    :  Raja N on 14.03.2005, Added init of member variable   */
 /*                      m_pControllerDetails                                  */
 /******************************************************************************/
-CChangeRegisters_ES581::CChangeRegisters_ES581(CWnd* pParent /*=NULL*/, PSCONTROLER_DETAILS psControllerDetails, UINT nHardwareCount)
-    : CDialog(CChangeRegisters_ES581::IDD, pParent)
+CChangeRegisters_CAN_ICS_neoVI::CChangeRegisters_CAN_ICS_neoVI(CWnd* pParent /*=NULL*/, PSCONTROLER_DETAILS psControllerDetails, UINT nHardwareCount)
+    : CDialog(CChangeRegisters_CAN_ICS_neoVI::IDD, pParent)
     //, m_nClock(32)
     , m_omStrPropDelay(_T(""))
     , m_omStrSJW(_T(""))
 {
-    //{{AFX_DATA_INIT(CChangeRegisters_ES581)
+    //{{AFX_DATA_INIT(CChangeRegisters_CAN_ICS_neoVI)
     //m_omStrEditBTR0 = _T("");
     //m_omStrEditBTR1 = _T("");
     m_omStrEditCNF1 = _T("");
@@ -87,7 +87,7 @@ CChangeRegisters_ES581::CChangeRegisters_ES581(CWnd* pParent /*=NULL*/, PSCONTRO
 /*  Functionality    :  Called by the framework to exchange and validate      */
 /*                         dialog data                                        */
 /*                                                                            */
-/*  Member of        :  CChangeRegisters_ES581                                      */
+/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
@@ -95,10 +95,10 @@ CChangeRegisters_ES581::CChangeRegisters_ES581(CWnd* pParent /*=NULL*/, PSCONTRO
 /*  Modifications    :  Raja N on 14.03.2005                                  */
 /*                      Added list variable to include channel information    */
 /******************************************************************************/
-void CChangeRegisters_ES581::DoDataExchange(CDataExchange* pDX)
+void CChangeRegisters_CAN_ICS_neoVI::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);
-    //{{AFX_DATA_MAP(CChangeRegisters_ES581)
+    //{{AFX_DATA_MAP(CChangeRegisters_CAN_ICS_neoVI)
     DDX_Control(pDX, IDC_LIST_CHANNELS, m_omChannelList);
     DDX_Control(pDX, IDC_EDIT_WARNING_LIMIT, m_omEditWarningLimit);
     DDX_Control(pDX, IDC_COMB_SAMPLING, m_omCombSampling);
@@ -118,8 +118,8 @@ void CChangeRegisters_ES581::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CChangeRegisters_ES581, CDialog)
-    //{{AFX_MSG_MAP(CChangeRegisters_ES581)
+BEGIN_MESSAGE_MAP(CChangeRegisters_CAN_ICS_neoVI, CDialog)
+    //{{AFX_MSG_MAP(CChangeRegisters_CAN_ICS_neoVI)
     ON_EN_KILLFOCUS(IDC_EDIT_BAUD_RATE, OnKillfocusEditBaudRate)
     ON_CBN_SELCHANGE(IDC_COMB_SAMPLING, OnSelchangeCombSampling)
     ON_EN_SETFOCUS(IDC_EDIT_BAUD_RATE, OnSetfocusEditBaudRate)
@@ -146,7 +146,7 @@ END_MESSAGE_MAP()
 /*                      the dialog box during DoModal calls,which occur       */
 /*                      immediately before the dialog box is displayed.       */
 /*                      All controls of dialog are initialised in this func.  */
-/*  Member of        :  CChangeRegisters_ES581                                      */
+/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
@@ -178,11 +178,11 @@ END_MESSAGE_MAP()
 /*                      Modifications for setting two newly added combo box   */
 /******************************************************************************/
 
-BOOL CChangeRegisters_ES581::OnInitDialog() 
+BOOL CChangeRegisters_CAN_ICS_neoVI::OnInitDialog() 
 {
     CDialog::OnInitDialog();
     
-    TCHAR acColumnName[defNUMBER_OF_COLUMNS_ES581][50] = { 
+    TCHAR acColumnName[defNUMBER_OF_COLUMNS_CAN_ICS_neoVI][50] = { 
                                  defSTR_CNF1_COL_HEADING,
                                  defSTR_CNF2_COL_HEADING,
                                  defSTR_CNF3_COL_HEADING,
@@ -333,7 +333,7 @@ BOOL CChangeRegisters_ES581::OnInitDialog()
 /*  Output           :                                                        */    
 /*  Functionality    :  message handlers on CANCEL request                    */    
 /*                                                                            */    
-/*  Member of        :  CChangeRegisters_ES581                                      */    
+/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                                      */    
 /*  Friend of        :      -                                                 */    
 /*                                                                            */    
 /*  Author(s)        :  Amitesh Bharti                                        */    
@@ -341,7 +341,7 @@ BOOL CChangeRegisters_ES581::OnInitDialog()
 /*  Modifications    :                                                        */    
 /*                                                                            */    
 /******************************************************************************/
-void CChangeRegisters_ES581::OnCancel() 
+void CChangeRegisters_CAN_ICS_neoVI::OnCancel() 
 {
     // Flag to be checked while validating the edit control input on kill focus
     m_bDialogCancel = TRUE;
@@ -355,7 +355,7 @@ void CChangeRegisters_ES581::OnCancel()
 /*  Output           :                                                        */    
 /*  Functionality    :  Message handlers on Enter Button ( Default OK button) */    
 /*                      Every press of enter key, focus is to next control    */    
-/*  Member of        :  CChangeRegisters_ES581                                      */    
+/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                                      */    
 /*  Friend of        :      -                                                 */    
 /*                                                                            */    
 /*  Author(s)        :  Amitesh Bharti                                        */    
@@ -363,7 +363,7 @@ void CChangeRegisters_ES581::OnCancel()
 /*  Modifications    :                                                        */    
 /*                                                                            */    
 /******************************************************************************/
-void CChangeRegisters_ES581::OnOK() 
+void CChangeRegisters_CAN_ICS_neoVI::OnOK() 
 {
 
  // Dummy virtual function to avoid closing the dialog when ENTER key is 
@@ -377,13 +377,13 @@ void CChangeRegisters_ES581::OnOK()
 /*  Input(s)         :  Register value in UCHAR                              */
 /*  Output           :  CString                                              */
 /*  Functionality    :  Formats the input register value as 0xYY             */
-/*  Member of        :  CChangeRegisters_ES581                                     */
+/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                                     */
 /*  Friend of        :      -                                                */
 /*                                                                           */
 /*  Author(s)        :  Ratnadip Choudhury                                   */
 /*  Date Created     :  19.04.2008                                           */
 /*****************************************************************************/
-CString CChangeRegisters_ES581::omGetFormattedRegVal(UCHAR ucRegVal)
+CString CChangeRegisters_CAN_ICS_neoVI::omGetFormattedRegVal(UCHAR ucRegVal)
 {
     CString omStr = _T("");
     omStr.Format(TEXT("0x%X"), ucRegVal);
@@ -402,7 +402,7 @@ CString CChangeRegisters_ES581::omGetFormattedRegVal(UCHAR ucRegVal)
 /*  Output           :  -                                                     */
 /*  Functionality    :  Insert columns of each row in the list control        */
 /*                      Calls function vSelSetFocusItemList to set focus      */
-/*  Member of        :  CChangeRegisters_ES581                                      */
+/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
@@ -417,7 +417,7 @@ CString CChangeRegisters_ES581::omGetFormattedRegVal(UCHAR ucRegVal)
 /*                      omGetFormattedRegVal is being used to format register */
 /*                      value. Also, proper indentation / formatting is done  */
 /******************************************************************************/
-void CChangeRegisters_ES581:: vDisplayListBox(INT nEntries, INT nItemFocus)
+void CChangeRegisters_CAN_ICS_neoVI:: vDisplayListBox(INT nEntries, INT nItemFocus)
 {
     CString cStrText    = _T("");
 
@@ -484,7 +484,7 @@ void CChangeRegisters_ES581:: vDisplayListBox(INT nEntries, INT nItemFocus)
 /*  Output           :                                                        */
 /*  Functionality    :  Validate the buadrate on kill focus of this edit      */
 /*                      control                                               */
-/*  Member of        :  CChangeRegisters_ES581                                      */
+/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                                      */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  19.02.2002                                            */
@@ -501,7 +501,7 @@ void CChangeRegisters_ES581:: vDisplayListBox(INT nEntries, INT nItemFocus)
 /*  Modification on  :  14.03.2005, Added code to update list control for the */
 /*                      values updated in the baud rate edit control          */
 /******************************************************************************/
-void CChangeRegisters_ES581::OnKillfocusEditBaudRate() 
+void CChangeRegisters_CAN_ICS_neoVI::OnKillfocusEditBaudRate() 
 {
     CString omStrBaudRate   =_T("");
     CString omStrValid      =_T("");
@@ -570,14 +570,14 @@ void CChangeRegisters_ES581::OnKillfocusEditBaudRate()
 /*  Output           :                                                        */
 /*  Functionality    :  Change the content of list control on change in       */
 /*                      selection of number of sampling combo box.            */
-/*  Member of        :  CChangeRegisters_ES581                                      */
+/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  19.02.2002                                            */
 /*  Modifications    :                                                        */
 /******************************************************************************/
-void CChangeRegisters_ES581::OnSelchangeCombSampling()
+void CChangeRegisters_CAN_ICS_neoVI::OnSelchangeCombSampling()
 { 
     INT nGetValue               = 0;
     CString omStrComboEditItem  =_T("");
@@ -602,7 +602,7 @@ void CChangeRegisters_ES581::OnSelchangeCombSampling()
 /*  Functionality    :  Change the content of list control on change in       */
 /*                      selection of number of sampling or clock, or BTR0     */
 /*                      or BTR1 or baudrate combo box.                        */
-/*  Member of        :  CChangeRegisters_ES581                                      */
+/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
@@ -614,7 +614,7 @@ void CChangeRegisters_ES581::OnSelchangeCombSampling()
 /*  Modification     :  19.04.2008, Ratnadip Choudhury                        */
 /*                      Code optimization done.                               */
 /******************************************************************************/
-void CChangeRegisters_ES581::vChangeListBoxValues(INT nflag) 
+void CChangeRegisters_CAN_ICS_neoVI::vChangeListBoxValues(INT nflag) 
 {
     UINT unIndex = 0;
 
@@ -642,7 +642,7 @@ void CChangeRegisters_ES581::vChangeListBoxValues(INT nflag)
 /*  Functionality    :  Called when focus is set on baudrate edit box control */
 /*                      Update all data members associated with Dialog        */
 /*                      control.                                              */
-/*  Member of        :  CChangeRegisters_ES581                                      */
+/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
@@ -650,7 +650,7 @@ void CChangeRegisters_ES581::vChangeListBoxValues(INT nflag)
 /*  Modifications    :                                                        */
 /*                                                                            */
 /******************************************************************************/
-void CChangeRegisters_ES581::OnSetfocusEditBaudRate() 
+void CChangeRegisters_CAN_ICS_neoVI::OnSetfocusEditBaudRate() 
 {
     // To update the data members before editing it and use it in kill focus
     UpdateData(TRUE);
@@ -666,7 +666,7 @@ void CChangeRegisters_ES581::OnSetfocusEditBaudRate()
 /*  Functionality    :  Called when focus is set on baudrate edit box control */
 /*                      Update all data members associated with Dialog        */
 /*                      control.                                              */
-/*  Member of        :  CChangeRegisters_ES581                                      */
+/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
@@ -674,7 +674,7 @@ void CChangeRegisters_ES581::OnSetfocusEditBaudRate()
 /*  Modifications    :                                                        */
 /*                                                                            */
 /******************************************************************************/
-void CChangeRegisters_ES581::vSelSetFocusItemList(INT nItemCount,INT nItem)
+void CChangeRegisters_CAN_ICS_neoVI::vSelSetFocusItemList(INT nItemCount,INT nItem)
 {
   LVITEM sItem;
   // If there is no defualt or last selected item, selection will be at
@@ -700,7 +700,7 @@ void CChangeRegisters_ES581::vSelSetFocusItemList(INT nItemCount,INT nItem)
 /*  Output           :                                                        */    
 /*  Functionality    :  This function will validate the user input value of   */    
 /*                      baud rate. A valid baud rate will be calculated       */    
-/*  Member of        :  CChangeRegisters_ES581                                      */    
+/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                                      */    
 /*  Friend of        :      -                                                 */    
 /*                                                                            */    
 /*  Author(s)        :  Amitesh Bharti                                        */    
@@ -716,7 +716,7 @@ void CChangeRegisters_ES581::vSelSetFocusItemList(INT nItemCount,INT nItem)
 /*                      change the baudrate to nearest possible value. Now it */
 /*                      will automatically change the values                  */
 /******************************************************************************/
-void CChangeRegisters_ES581::vValidateBaudRate()
+void CChangeRegisters_CAN_ICS_neoVI::vValidateBaudRate()
 {
     CString omStrBaudRate       = _T("");
     CString omStrPrvBaudRate    = _T("");
@@ -811,7 +811,7 @@ void CChangeRegisters_ES581::vValidateBaudRate()
 /*  Functionality    :  Message handlers on OK Button.To Remove control       */
 /*                      to close when Enter Button is pressed                 */
 /*                                                                            */    
-/*  Member of        :  CChangeRegisters_ES581                                      */    
+/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                                      */    
 /*  Friend of        :      -                                                 */    
 /*                                                                            */    
 /*  Author(s)        :  Amitesh Bharti                                        */    
@@ -826,13 +826,13 @@ void CChangeRegisters_ES581::vValidateBaudRate()
 /*                      limit.                                                */
 /*  Modifications    :  Raja N on 07.09.2004. Modified code to refer HI layer */
 /*                      for Hardware related functions. Removed code to refer */
-/*                      CChangeRegisters_ES581 static functions as they are moved in*/
+/*                      CChangeRegisters_CAN_ICS_neoVI static functions as they are moved in*/
 /*                      to HI layer                                           */
 /*  Modifications    :  Raja N on 09.03.2005                                  */
 /*                   :  Added code to support multiple contoller information  */
 /*                      in the configuration module                           */
 /******************************************************************************/
-void CChangeRegisters_ES581::OnClickedOK() 
+void CChangeRegisters_CAN_ICS_neoVI::OnClickedOK() 
 {
     // Update modified data
     UpdateData( TRUE);
@@ -858,7 +858,7 @@ void CChangeRegisters_ES581::OnClickedOK()
 /*  Functionality    :  Called when focus is set on Number of sampling        */
 /*                      combo box control. Updates all data members           */
 /*                      associated with Dialog control.                       */
-/*  Member of        :  CChangeRegisters_ES581                                      */
+/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
@@ -866,7 +866,7 @@ void CChangeRegisters_ES581::OnClickedOK()
 /*  Modifications    :                                                        */
 /*                                                                            */
 /******************************************************************************/
-void CChangeRegisters_ES581::OnSetfocusCombSampling() 
+void CChangeRegisters_CAN_ICS_neoVI::OnSetfocusCombSampling() 
 {
     UpdateData(TRUE);
 }
@@ -878,7 +878,7 @@ void CChangeRegisters_ES581::OnSetfocusCombSampling()
 /*  Output           :  baudrate in kbps                                      */
 /*  Functionality    :  This function is called to calcualte the baudrate for */
 /*                      the provided CNF1, CNF2 and CNF3 values.              */
-/*  Member of        :  CChangeRegisters_ES581                                      */
+/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
@@ -886,9 +886,9 @@ void CChangeRegisters_ES581::OnSetfocusCombSampling()
 /*  Modifications    :  25.02.2002, Amitesh Bharti                            */
 /*                      Incorporated review comments                          */
 /*  Modifications    :  Pradeep Kadoor, 10.04.2008                            */
-/*                      Changed the prototype adequate for ES581              */
+/*                      Changed the prototype adequate for ICS neoVI          */
 /******************************************************************************/
-DOUBLE CChangeRegisters_ES581::dCalculateBaudRateFromBTRs(CString omStrCNF1, CString omStrCNF2,
+DOUBLE CChangeRegisters_CAN_ICS_neoVI::dCalculateBaudRateFromBTRs(CString omStrCNF1, CString omStrCNF2,
                                                     CString omStrCNF3)
 {
     uCNF1 uCNF1val; 
@@ -921,7 +921,7 @@ DOUBLE CChangeRegisters_ES581::dCalculateBaudRateFromBTRs(CString omStrCNF1, CSt
 
     BYTE bNBT = static_cast <BYTE> (bTSEG1 + bTSEG2 + bPROPDELAY + 1);
 
-    dBaudRate = (DOUBLE)((defES581Frequency) / (2.0 * bBRP * bNBT));
+    dBaudRate = (DOUBLE)((defICSneoVIFrequency) / (2.0 * bBRP * bNBT));
 
     return dBaudRate / 1000;
 }
@@ -934,7 +934,7 @@ DOUBLE CChangeRegisters_ES581::dCalculateBaudRateFromBTRs(CString omStrCNF1, CSt
 /*  Functionality    : This function is called to read registry  or ini file  */
 /*                     and return the baudrate ( BTR0 and BTR1). If there is */
 /*                     no entry return the default value                      */
-/*  Member of        : CChangeRegisters_ES581                                       */
+/*  Member of        : CChangeRegisters_CAN_ICS_neoVI                                       */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        : Amitesh Bharti                                         */
@@ -946,7 +946,7 @@ DOUBLE CChangeRegisters_ES581::dCalculateBaudRateFromBTRs(CString omStrCNF1, CSt
 /*                   : Added code to support multiple contoller information   */
 /*                     in the configuration module                            */
 /******************************************************************************/
-BOOL CChangeRegisters_ES581::bFillControllerConfig()
+BOOL CChangeRegisters_CAN_ICS_neoVI::bFillControllerConfig()
 {
     BOOL bReturn = FALSE;
     // If successful then set the result to pass
@@ -959,14 +959,14 @@ BOOL CChangeRegisters_ES581::bFillControllerConfig()
 }
 
 /******************************************************************************/
-/*  Function Name    :  ~CChangeRegisters_ES581                                     */
+/*  Function Name    :  ~CChangeRegisters_CAN_ICS_neoVI                                     */
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  This is destructor of the class. It is called when    */
 /*                      object of this class is being destroyed. All memory   */
 /*                      allocation is deleted here.                           */
-/*  Member of        :  CChangeRegisters_ES581                                      */
+/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
@@ -974,7 +974,7 @@ BOOL CChangeRegisters_ES581::bFillControllerConfig()
 /*  Modifications    :  Raja N on 14.03.2005, Added code to clear memory used */
 /*                      to get controller information                         */
 /******************************************************************************/
-CChangeRegisters_ES581::~CChangeRegisters_ES581()
+CChangeRegisters_CAN_ICS_neoVI::~CChangeRegisters_CAN_ICS_neoVI()
 {
 
 }
@@ -987,7 +987,7 @@ CChangeRegisters_ES581::~CChangeRegisters_ES581()
 /*                      list control is changed. Based on the index of        */
 /*                      selected and focused item, the other field will be    */
 /*                      updated by calling vUpdateBTRsBRPEditWindow(..)       */
-/*  Member of        :  CChangeRegisters_ES581                                      */
+/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
@@ -995,7 +995,7 @@ CChangeRegisters_ES581::~CChangeRegisters_ES581()
 /*  Modifications    :                                                        */
 /*                                                                            */
 /******************************************************************************/
-void CChangeRegisters_ES581::OnItemchangedLstcBtrList(NMHDR* pNMHDR, LRESULT* pResult) 
+void CChangeRegisters_CAN_ICS_neoVI::OnItemchangedLstcBtrList(NMHDR* pNMHDR, LRESULT* pResult) 
 {
     NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
     TRACE("OnItemchangedLstcBtrList --- %d\n", pNMListView->iItem);
@@ -1010,12 +1010,12 @@ void CChangeRegisters_ES581::OnItemchangedLstcBtrList(NMHDR* pNMHDR, LRESULT* pR
   Functionality  : This function will be called when the user clicks the channel
                    list item. This will set the focus to the last selected item
                    if user clicks outside
-  Member of      : CChangeRegisters_ES581
+  Member of      : CChangeRegisters_CAN_ICS_neoVI
   Author(s)      : Raja N
   Date Created   : 14.3.2005
   Modifications  : 
 *******************************************************************************/
-void CChangeRegisters_ES581::OnClickListChannels(NMHDR* /*pNMHDR*/, LRESULT* pResult) 
+void CChangeRegisters_CAN_ICS_neoVI::OnClickListChannels(NMHDR* /*pNMHDR*/, LRESULT* pResult) 
 {
     // Get the selection mask
     UINT unItemStateMask = LVNI_SELECTED|LVNI_FOCUSED;
@@ -1038,12 +1038,12 @@ void CChangeRegisters_ES581::OnClickListChannels(NMHDR* /*pNMHDR*/, LRESULT* pRe
   Output         : -
   Functionality  : This function will update baudrate information of selected
                    channel
-  Member of      : CChangeRegisters_ES581
+  Member of      : CChangeRegisters_CAN_ICS_neoVI
   Author(s)      : Raja N
   Date Created   : 14.03.2005
   Modifications  :
 *******************************************************************************/
-void CChangeRegisters_ES581::OnItemchangedListChannels(NMHDR* pNMHDR, LRESULT* pResult) 
+void CChangeRegisters_CAN_ICS_neoVI::OnItemchangedListChannels(NMHDR* pNMHDR, LRESULT* pResult) 
 {
     // Get the List item data from the notification
     NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
@@ -1084,12 +1084,12 @@ void CChangeRegisters_ES581::OnItemchangedListChannels(NMHDR* pNMHDR, LRESULT* p
   Functionality  : This function will be called wher the user double clicks the
                    channel list item. This will set the focus to the last
                    selected item if user clicks outside
-  Member of      : CChangeRegisters_ES581
+  Member of      : CChangeRegisters_CAN_ICS_neoVI
   Author(s)      : Raja N
   Date Created   : 14.3.2005
   Modifications  : 
 *******************************************************************************/
-void CChangeRegisters_ES581::OnDblclkListChannels(NMHDR* /*pNMHDR*/, LRESULT* pResult) 
+void CChangeRegisters_CAN_ICS_neoVI::OnDblclkListChannels(NMHDR* /*pNMHDR*/, LRESULT* pResult) 
 {
     // Create selection mask
     UINT unItemStateMask = LVNI_SELECTED | LVNI_FOCUSED;
@@ -1113,12 +1113,12 @@ void CChangeRegisters_ES581::OnDblclkListChannels(NMHDR* /*pNMHDR*/, LRESULT* pR
                    member variables used. This will also update the BTR0 and
                    BTR1 registers value and list box of possible values for the
                    selected baudrate.
-  Member of      : CChangeRegisters_ES581
+  Member of      : CChangeRegisters_CAN_ICS_neoVI
   Author(s)      : Raja N
   Date Created   : 14.3.2005
   Modifications  : 
 *******************************************************************************/
-void CChangeRegisters_ES581::vFillControllerConfigDetails()
+void CChangeRegisters_CAN_ICS_neoVI::vFillControllerConfigDetails()
 {
     int nIndex = m_nLastSelection;
     /* Add hardware info to the description field */
@@ -1176,12 +1176,12 @@ void CChangeRegisters_ES581::vFillControllerConfigDetails()
   Output         : -
   Functionality  : This function will save the user enter values for baud rate
                    into the controller configuration structure
-  Member of      : CChangeRegisters_ES581
+  Member of      : CChangeRegisters_CAN_ICS_neoVI
   Author(s)      : Raja N
   Date Created   : 14.3.2005
   Modifications  : 
 *******************************************************************************/
-void CChangeRegisters_ES581::vUpdateControllerDetails()
+void CChangeRegisters_CAN_ICS_neoVI::vUpdateControllerDetails()
 {
     TCHAR*    pcStopStr              = NULL;
     CString omStrComboSampling      = _T("");
@@ -1251,12 +1251,12 @@ void CChangeRegisters_ES581::vUpdateControllerDetails()
   Input(s)       : -
   Output         : -
   Functionality  : This function will be called from COM function to set baud rate
-  Member of      : CChangeRegisters_ES581
+  Member of      : CChangeRegisters_CAN_ICS_neoVI
   Author(s)      : Anish
   Date Created   : 21.06.06
   Modifications  : 
 *******************************************************************************/
-BOOL CChangeRegisters_ES581::bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1)
+BOOL CChangeRegisters_CAN_ICS_neoVI::bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1)
 {
     BOOL bReturn = FALSE;
     CString omStrBtr0;
@@ -1321,12 +1321,12 @@ BOOL CChangeRegisters_ES581::bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bB
   Input(s)       : -
   Output         : -
   Functionality  : This function will be called from COM function to set baud rate
-  Member of      : CChangeRegisters_ES581
+  Member of      : CChangeRegisters_CAN_ICS_neoVI
   Author(s)      : Anish
   Date Created   : 21.06.06
   Modifications  : 
 *******************************************************************************/
-BOOL CChangeRegisters_ES581::bGetBaudRateFromCom(int nChannel,BYTE &bBTR0,BYTE &bBTR1)
+BOOL CChangeRegisters_CAN_ICS_neoVI::bGetBaudRateFromCom(int nChannel,BYTE &bBTR0,BYTE &bBTR1)
 {
     BOOL bReturn =FALSE;
     if (m_pControllerDetails != NULL)
@@ -1348,12 +1348,12 @@ BOOL CChangeRegisters_ES581::bGetBaudRateFromCom(int nChannel,BYTE &bBTR0,BYTE &
                   codes otherwise.
  Functionality  : This function will set the filter information if called using 
                   com interface.
- Member of      : CChangeRegisters_ES581
+ Member of      : CChangeRegisters_CAN_ICS_neoVI
  Author(s)      : Anish kr
  Date Created   : 05.06.06
 
 *******************************************************************************/
-BOOL CChangeRegisters_ES581::bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId, 
+BOOL CChangeRegisters_CAN_ICS_neoVI::bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId, 
                                    DWORD dEndMsgId)
 {
     BOOL bReturn = FALSE;
@@ -1432,12 +1432,12 @@ BOOL CChangeRegisters_ES581::bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsg
                   codes otherwise.
  Functionality  : This function will set the filter information if called using 
                   com interface.
- Member of      : CChangeRegisters_ES581
+ Member of      : CChangeRegisters_CAN_ICS_neoVI
  Author(s)      : Anish kr
  Date Created   : 05.06.06
 
 *******************************************************************************/
-BOOL CChangeRegisters_ES581::bGetFilterFromCom(BOOL  &bExtended, double  &dBeginMsgId, 
+BOOL CChangeRegisters_CAN_ICS_neoVI::bGetFilterFromCom(BOOL  &bExtended, double  &dBeginMsgId, 
                                    double &dEndMsgId)
 {
     BOOL bReturn = FALSE;
@@ -1483,7 +1483,7 @@ BOOL CChangeRegisters_ES581::bGetFilterFromCom(BOOL  &bExtended, double  &dBegin
  Output         : void
  Functionality  : Callback function when the user clicks on the list control
                   header.
- Member of      : CChangeRegisters_ES581
+ Member of      : CChangeRegisters_CAN_ICS_neoVI
  Author(s)      : Ratnadip Choudhury
  Date Created   : 19.04.2008
 
@@ -1526,12 +1526,12 @@ int CALLBACK CallbackSortFunction(LPARAM lParam1, LPARAM lParam2, LPARAM lColumn
  Output         : void
  Functionality  : Handler for the event of the user's click on the list control
                   header.
- Member of      : CChangeRegisters_ES581
+ Member of      : CChangeRegisters_CAN_ICS_neoVI
  Author(s)      : Ratnadip Choudhury
  Date Created   : 19.04.2008
 
 *******************************************************************************/
-void CChangeRegisters_ES581::OnHdnItemclickLstcBtrList(NMHDR *pNMHDR, LRESULT *pResult)
+void CChangeRegisters_CAN_ICS_neoVI::OnHdnItemclickLstcBtrList(NMHDR *pNMHDR, LRESULT *pResult)
 {
     NMLISTVIEW *pLV = (NMLISTVIEW *) pNMHDR;
     m_omListCtrlBitTime.SortItems(CallbackSortFunction, pLV->iItem);
@@ -1544,12 +1544,12 @@ void CChangeRegisters_ES581::OnHdnItemclickLstcBtrList(NMHDR *pNMHDR, LRESULT *p
  Input(s)       : void
  Output         : void
  Functionality  : Handler when the user selects a specific value in the SJW list
- Member of      : CChangeRegisters_ES581
+ Member of      : CChangeRegisters_CAN_ICS_neoVI
  Author(s)      : Ratnadip Choudhury
  Date Created   : 19.04.2008
 
 *******************************************************************************/
-void CChangeRegisters_ES581::OnCbnSelchangeCombSjw()
+void CChangeRegisters_CAN_ICS_neoVI::OnCbnSelchangeCombSjw()
 {
     int nSJWCurr = nGetValueFromComboBox(m_omCtrlSJW);
     if (nSJWCurr != m_nSJWCurr)
@@ -1565,12 +1565,12 @@ void CChangeRegisters_ES581::OnCbnSelchangeCombSjw()
  Input(s)       : void
  Output         : void
  Functionality  : Handler when the user selects a specific value in the PD list
- Member of      : CChangeRegisters_ES581
+ Member of      : CChangeRegisters_CAN_ICS_neoVI
  Author(s)      : Ratnadip Choudhury
  Date Created   : 19.04.2008
 
 *******************************************************************************/
-void CChangeRegisters_ES581::OnCbnSelchangeCombPropdelay()
+void CChangeRegisters_CAN_ICS_neoVI::OnCbnSelchangeCombPropdelay()
 {
     int nPropDelay = nGetValueFromComboBox(m_omCtrlPropDelay);
     if (nPropDelay != m_nPropDelay)
@@ -1587,12 +1587,12 @@ void CChangeRegisters_ES581::OnCbnSelchangeCombPropdelay()
  Output         : void
  Functionality  : Based on the present values SJW and PD, this function decides
                   the necessary parameter calculating operation.
- Member of      : CChangeRegisters_ES581
+ Member of      : CChangeRegisters_CAN_ICS_neoVI
  Author(s)      : Ratnadip Choudhury
  Date Created   : 19.04.2008
 
 *******************************************************************************/
-void CChangeRegisters_ES581::bDecideCalculatingOption(void)
+void CChangeRegisters_CAN_ICS_neoVI::bDecideCalculatingOption(void)
 {
     if ((m_nSJWCurr == 0) && (m_nPropDelay == 0))
     {
@@ -1617,18 +1617,18 @@ void CChangeRegisters_ES581::bDecideCalculatingOption(void)
 }
 
 /*******************************************************************************
- Function Name  : GetRegisterValues_ES581
+ Function Name  : GetRegisterValues_CAN_ICS_neoVI
  Input(s)       : Out parameters; BYTE& bCNF1, BYTE& bCNF2, BYTE& bCNF3
  Output         : BOOL
  Functionality  : This function retrieves the values of the registers CNF1, 
                   CNF2 and CNF3 associated with the current selected entry
                   of the register entry list control.
- Member of      : CChangeRegisters_ES581
+ Member of      : CChangeRegisters_CAN_ICS_neoVI
  Author(s)      : Ratnadip Choudhury
  Date Created   : 21.04.2008
 
 *******************************************************************************/
-BOOL CChangeRegisters_ES581::GetRegisterValues_ES581(BYTE& bCNF1, BYTE& bCNF2, BYTE& bCNF3)
+BOOL CChangeRegisters_CAN_ICS_neoVI::GetRegisterValues(BYTE& bCNF1, BYTE& bCNF2, BYTE& bCNF3)
 {
     BOOL bResult = FALSE;
     int nIndexSel = 0;
@@ -1657,12 +1657,12 @@ BOOL CChangeRegisters_ES581::GetRegisterValues_ES581(BYTE& bCNF1, BYTE& bCNF2, B
  Output         : For a selected entry, its 0 based index; else -1
  Functionality  : This function retrieves the 0 based index of the selected
                   entry in the controller register entry list control.
- Member of      : CChangeRegisters_ES581
+ Member of      : CChangeRegisters_CAN_ICS_neoVI
  Author(s)      : Ratnadip Choudhury
  Date Created   : 21.04.2008
 
 *******************************************************************************/
-int CChangeRegisters_ES581::GetSelectedEntryIndex(void)
+int CChangeRegisters_CAN_ICS_neoVI::GetSelectedEntryIndex(void)
 {
     int nResult = -1;
     // First of all - get the current selection
@@ -1681,16 +1681,16 @@ int CChangeRegisters_ES581::GetSelectedEntryIndex(void)
  Output         : TRUE if successful, else FALSE
  Functionality  : This function updates the controller data members with the
                   present selected combination value in the list control
- Member of      : CChangeRegisters_ES581
+ Member of      : CChangeRegisters_CAN_ICS_neoVI
  Author(s)      : Ratnadip Choudhury
  Date Created   : 21.04.2008
 
 *******************************************************************************/
-BOOL CChangeRegisters_ES581::bUpdateControllerDataMembers(void)
+BOOL CChangeRegisters_CAN_ICS_neoVI::bUpdateControllerDataMembers(void)
 {
     BYTE bCNF1, bCNF2, bCNF3;
 
-    BOOL Result = GetRegisterValues_ES581(bCNF1, bCNF2, bCNF3);
+    BOOL Result = GetRegisterValues(bCNF1, bCNF2, bCNF3);
     if (Result)
     {
         m_omStrEditCNF1.Format(_T("%x"), bCNF1);
@@ -1708,12 +1708,12 @@ BOOL CChangeRegisters_ES581::bUpdateControllerDataMembers(void)
                   box. Although helper in broader sense, this assumes the 
                   entries to be 1 based integers and returns 0 when the entry
                   contains the string 'ALL'.
- Member of      : CChangeRegisters_ES581
+ Member of      : CChangeRegisters_CAN_ICS_neoVI
  Author(s)      : Ratnadip Choudhury
  Date Created   : 21.04.2008
 
 *******************************************************************************/
-int CChangeRegisters_ES581::nGetValueFromComboBox(CComboBox& omComboBox)
+int CChangeRegisters_CAN_ICS_neoVI::nGetValueFromComboBox(CComboBox& omComboBox)
 {
     int nResult = 0;
     int nCurrSel =  omComboBox.GetCurSel();
@@ -1729,7 +1729,7 @@ int CChangeRegisters_ES581::nGetValueFromComboBox(CComboBox& omComboBox)
     return nResult;
 }
 
-INT CChangeRegisters_ES581::nGetInitStatus()
+INT CChangeRegisters_CAN_ICS_neoVI::nGetInitStatus()
 {
     return m_nDataConfirmStatus;
 }

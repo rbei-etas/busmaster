@@ -4,7 +4,7 @@ mkdir out
 doxygen Doxyfiles/Application
 doxygen Doxyfiles/BusEmulation
 doxygen Doxyfiles/CAN_ETAS_BOA
-doxygen Doxyfiles/CAN_ETAS_ES581
+doxygen Doxyfiles/CAN_ICS_neoVI
 doxygen Doxyfiles/CAN_STUB
 doxygen Doxyfiles/CommonClass
 doxygen Doxyfiles/ConfigDialogsDIL

@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      CANRegAnalysis_ES581.cpp
+ * \file      CANRegAnalysis_CAN_ICS_neoVI.cpp
  * \brief     This file contains the function which implements the    
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
@@ -27,7 +27,7 @@
 // hash defines for resource ID's
 #include "ConfigDlg_resource.h"
 // CChangeRegisters class defination file.
-#include "ChangeRegisters_ES581.h"
+#include "ChangeRegisters_CAN_ICS_neoVI.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -41,7 +41,7 @@ static char THIS_FILE[] = __FILE__;
 /*  Output           :  NBT and BRP values                                    */    
 /*  Functionality    :  Calculate set of the NBT and BRP value for given      */    
 /*                      baudrate and clock frequency                          */    
-/*  Member of        :  CChangeRegisters_ES581                                      */    
+/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                        */    
 /*  Friend of        :      -                                                 */    
 /*                                                                            */    
 /*  Author(s)        :  Amitesh Bharti                                        */    
@@ -49,7 +49,7 @@ static char THIS_FILE[] = __FILE__;
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modification on  :  28.05.2002, Type casting changed from BYTE to WORD    */
 /******************************************************************************/
-BOOL CChangeRegisters_ES581::nListBoxValues(sCOLUMNS* /*psColListCtrl*/,
+BOOL CChangeRegisters_CAN_ICS_neoVI::nListBoxValues(sCOLUMNS* /*psColListCtrl*/,
                                        DOUBLE dBuadRate, WORD wClockFreq,
                                        UINT *puwIndex, INT nSample)
 {
@@ -80,7 +80,7 @@ BOOL CChangeRegisters_ES581::nListBoxValues(sCOLUMNS* /*psColListCtrl*/,
                 // for one set of NBT and BRP.
                 if (m_bOption == NO_DEF)
                 {
-                    nReturn = bCalculateES581RegValues(wNBT, wBRP, puwIndex, nSample);
+                    nReturn = bCalculateICSneoVIRegValues(wNBT, wBRP, puwIndex, nSample);
                 }
                 else
                 {
@@ -92,7 +92,7 @@ BOOL CChangeRegisters_ES581::nListBoxValues(sCOLUMNS* /*psColListCtrl*/,
                     CurrEntry.usPropDelay = (USHORT)m_nPropDelay;
                     CurrEntry.usSJW = (USHORT)m_nSJWCurr;
 
-                    nReturn = bCalculateES581Params(CurrEntry, *puwIndex, m_bOption);
+                    nReturn = bCalculateICSneoVIParams(CurrEntry, *puwIndex, m_bOption);
                 }
             }
             i++;
@@ -110,7 +110,7 @@ BOOL CChangeRegisters_ES581::nListBoxValues(sCOLUMNS* /*psColListCtrl*/,
 }
 
 /******************************************************************************/
-/*  Function Name    :  bCalculateES581RegValues
+/*  Function Name    :  bCalculateICSneoVIRegValues
 
     Input(s)         :  NBT, BRP and Number of Sampling/bit
     Output           :  true if process of calculation is complete. In case 
@@ -119,20 +119,20 @@ BOOL CChangeRegisters_ES581::nListBoxValues(sCOLUMNS* /*psColListCtrl*/,
                         calculates set of values of CNF1, CNF2, CNF3, PD and
                         SJW saving them in the array
                         and BRP values and stores into a structure.
-    Member of        :  CChangeRegisters_ES581
+    Member of        :  CChangeRegisters_CAN_ICS_neoVI
     Friend of        :  -
 
     Author(s)        :  Pradeep Kadoor
     Date Created     :  03.04.2008
 /******************************************************************************/
-bool CChangeRegisters_ES581::bCalculateES581RegValues(WORD wNbt, WORD wBrp, 
+bool CChangeRegisters_CAN_ICS_neoVI::bCalculateICSneoVIRegValues(WORD wNbt, WORD wBrp, 
                                                UINT *puwIndex, INT nSample)
 {
     bool bContinue = (defREG_VALUE_LIST_COUNT_MAX > *puwIndex);
 
-    WORD  wMinPropDelay = defPropDelayES581;
+    WORD  wMinPropDelay = defPropDelayICSneoVI;
     WORD  wMaxPropDelay = defmcMIN2(defMAXPropDelay, 
-                                    (wNbt - defMIN_TSEG1_ES581 - defMIN_TSEG2 - 1));
+                                    (wNbt - defMIN_TSEG1_ICSneoVI - defMIN_TSEG2 - 1));
     for (INT i = wMinPropDelay; (i <= wMaxPropDelay) && bContinue; i++)
     {
         sBRP_NBT_SAMP_n_SJW CurrEntry;
@@ -142,7 +142,7 @@ bool CChangeRegisters_ES581::bCalculateES581RegValues(WORD wNbt, WORD wBrp,
         CurrEntry.usPropDelay = (USHORT)i;
         CurrEntry.usSample = (USHORT)nSample;
 
-        bContinue = bCalculateES581Params(CurrEntry, *puwIndex, SJW_TS1_TS2);
+        bContinue = bCalculateICSneoVIParams(CurrEntry, *puwIndex, SJW_TS1_TS2);
     }
 
   return bContinue;
@@ -162,7 +162,7 @@ bool CChangeRegisters_ES581::bCalculateES581RegValues(WORD wNbt, WORD wBrp,
 /*  Date Created     :  11.04.2008                                            */
 /*  Modifications    :                                                        */
 /******************************************************************************/
-bool CChangeRegisters_ES581::bCalculateES581Params(sBRP_NBT_SAMP_n_SJW& CurEntry, 
+bool CChangeRegisters_CAN_ICS_neoVI::bCalculateICSneoVIParams(sBRP_NBT_SAMP_n_SJW& CurEntry, 
                                              UINT& unCurrIndex, BYTE bOption)
 {
     bool bContinue    = true;
@@ -184,9 +184,9 @@ bool CChangeRegisters_ES581::bCalculateES581Params(sBRP_NBT_SAMP_n_SJW& CurEntry
 
             bContinue = (defREG_VALUE_LIST_COUNT_MAX > unCurrIndex);
             wTSEG2max = (BYTE)(defmcMIN2(defMAX_TSEG2, 
-                                         wNbt - defMIN_TSEG1_ES581 - 1 - wPropDelay));
+                                         wNbt - defMIN_TSEG1_ICSneoVI - 1 - wPropDelay));
             wTSEG2min = (BYTE)(defmcMAX3(defMIN_TSEG2, 0, 
-                                         wNbt - defMAX_TSEG1_ES81 - 1 - wPropDelay));
+                                         wNbt - defMAX_TSEG1_ICSneoVI - 1 - wPropDelay));
             for (INT j = wTSEG2min; (j < wTSEG2max + 1) && bContinue; j++)
             {
                 wTSEG2 = (BYTE)(j);
@@ -232,14 +232,14 @@ bool CChangeRegisters_ES581::bCalculateES581Params(sBRP_NBT_SAMP_n_SJW& CurEntry
 
         case PD_TS1_TS2:
         {
-            WORD wMinPropDelay = defPropDelayES581;
+            WORD wMinPropDelay = defPropDelayICSneoVI;
             WORD wMaxPropDelay = defmcMIN2(defMAXPropDelay, 
-                           (CurEntry.usNBT - defMIN_TSEG1_ES581 - defMIN_TSEG2 - 1));
+                           (CurEntry.usNBT - defMIN_TSEG1_ICSneoVI - defMIN_TSEG2 - 1));
 
             for (INT i = wMinPropDelay; (i <= wMaxPropDelay) && bContinue; i++)
             {
                 CurEntry.usPropDelay = (USHORT)i;                    
-                bContinue = bCalculateES581Params(CurEntry, unCurrIndex, TS1_TS2);
+                bContinue = bCalculateICSneoVIParams(CurEntry, unCurrIndex, TS1_TS2);
             }
         }
         break;
@@ -248,7 +248,7 @@ bool CChangeRegisters_ES581::bCalculateES581Params(sBRP_NBT_SAMP_n_SJW& CurEntry
             for (INT i = 0; (i < defMAX_SJW) && bContinue; i++)
             {
                 CurEntry.usSJW = (BYTE)(i + 1);
-                bContinue = bCalculateES581Params(CurEntry, unCurrIndex, TS1_TS2);
+                bContinue = bCalculateICSneoVIParams(CurEntry, unCurrIndex, TS1_TS2);
             }
         }
         break;

@@ -14,15 +14,15 @@
  */
 
 /**
- * \file      CAN_ETAS_ES581.cpp
- * \brief     Exports API functions for ETAS ES581 CAN Hardware interface
+ * \file      CAN_ICS_neoVI.cpp
+ * \brief     Exports API functions for IntrepidCS neoVI CAN Hardware interface
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Exports API functions for ETAS ES581 CAN Hardware interface
+ * Exports API functions for IntrepidCS neoVI CAN Hardware interface
  */
-#include "CAN_ETAS_ES581_stdafx.h"
-#include "CAN_ETAS_ES581.h"
+#include "CAN_ICS_neoVI_stdafx.h"
+#include "CAN_ICS_neoVI.h"
 #include "include/Error.h"
 #include "include/basedefs.h"
 #include "DataTypes/Base_WrapperErrorLogger.h"
@@ -31,8 +31,8 @@
 #include "Include/CAN_Error_Defs.h"
 #include "Include/CanUsbDefs.h"
 #include "Include/Struct_CAN.h"
-#include "CAN_ETAS_ES581_Channel.h"
-#include "CAN_ETAS_ES581_Network.h"
+#include "CAN_ICS_neoVI_Channel.h"
+#include "CAN_ICS_neoVI_Network.h"
 #include "Utility/Utility_Thread.h"
 #include "Include/DIL_CommonDefs.h"
 #include "ConfigDialogsDIL/API_dialog.h"
@@ -40,7 +40,7 @@
 
 
 #define USAGE_EXPORT
-#include "CAN_ETAS_ES581_Extern.h"
+#include "CAN_ICS_neoVI_Extern.h"
 
 
 #ifdef _DEBUG
@@ -74,29 +74,29 @@
 //		details.
 //
 
-// CCAN_ETAS_ES581App
+// CCAN_ICS_neoVIApp
 
-BEGIN_MESSAGE_MAP(CCAN_ETAS_ES581App, CWinApp)
+BEGIN_MESSAGE_MAP(CCAN_ICS_neoVIApp, CWinApp)
 END_MESSAGE_MAP()
 
 
-// CCAN_ETAS_ES581App construction
+// CCAN_ICS_neoVIApp construction
 
-CCAN_ETAS_ES581App::CCAN_ETAS_ES581App()
+CCAN_ICS_neoVIApp::CCAN_ICS_neoVIApp()
 {
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
 }
 
 
-// The one and only CCAN_ETAS_ES581App object
+// The one and only CCAN_ICS_neoVIApp object
 
-CCAN_ETAS_ES581App theApp;
+CCAN_ICS_neoVIApp theApp;
 
 
-// CCAN_ETAS_ES581App initialization
+// CCAN_ICS_neoVIApp initialization
 
-BOOL CCAN_ETAS_ES581App::InitInstance()
+BOOL CCAN_ICS_neoVIApp::InitInstance()
 {
 	CWinApp::InitInstance();
 
@@ -333,7 +333,7 @@ typedef struct tagDATINDSTR
 
 static sDatIndStr s_DatIndThread;
 
-HRESULT CAN_ES581_Usb_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
+HRESULT CAN_ICS_neoVI_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
 
 /* HELPER FUNCTIONS START */
 
@@ -349,7 +349,7 @@ static void vInitialiseAllData(void)
     sg_QueryTickCount.QuadPart = 0;
     //INITIALISE_ARRAY(sg_acErrStr);
     memset(sg_acErrStr, 0, sizeof(sg_acErrStr));
-    CAN_ES581_Usb_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
+    CAN_ICS_neoVI_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
 }
 // Function create and set read indication event
 static int nCreateAndSetReadIndicationEvent(HANDLE& hReadEvent)
@@ -858,7 +858,7 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
     {
         //ASSERT(s_CurrIndex < s_Messages);
 
-        //CTimeManager::bReinitOffsetTimeValForES581();
+        //CTimeManager::bReinitOffsetTimeValForICSneoVI();
         icsSpyMessage& CurrSpyMsg = s_asSpyMsg[s_CurrIndex];
         DOUBLE dTimestamp = 0;
         nReturn = (*pFuncPtrGetTimeStampForMsg)(m_anhObject[nChannelIndex], &CurrSpyMsg, &dTimestamp);
@@ -1197,7 +1197,7 @@ static int nCreateMultipleHardwareNetwork()
 		_stprintf(acTempStr, _T("Serial Number: %d, Port ID: %d"), m_anSerialNumbers[nCount], m_anComPorts[nCount]);
 		_tcscpy(sg_HardwareIntr[nCount].m_acDescription, acTempStr);
 	}
-	ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_ETAS_ES581, sg_HardwareIntr, anSelectedItems, nHwCount);
+	ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_ICS_NEOVI, sg_HardwareIntr, anSelectedItems, nHwCount);
     sg_ucNoOfHardware = (UCHAR)nHwCount;
 	//Reorder hardware interface as per the user selection
 	for (int nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
@@ -1340,7 +1340,7 @@ static int nInitHwNetwork()
     // Capture only Driver Not Running event
     // Take action based on number of Hardware Available
     TCHAR acNo_Of_Hw[MAX_STRING] = {0};
-    _stprintf(acNo_Of_Hw, _T("Number of ES581s Available: %d"), nDevices);
+    _stprintf(acNo_Of_Hw, _T("Number of neoVIs Available: %d"), nDevices);
     // No Hardware found
     
     if( nDevices == 0 )
@@ -1408,7 +1408,7 @@ static int nConnectToDriver()
  Modifications  : Raja N on 16.09.2004, Modification to change the device name
                   if the device is not running
  Modifications  : Ratnadip Choudhury, 10.04.2008 
-                  For ES581 just returning m_bIsDriverRunning
+                  For ICS neoVI just returning m_bIsDriverRunning
 *******************************************************************************/
 static BOOL bGetDriverStatus()
 {
@@ -1432,7 +1432,7 @@ static BOOL bGetDriverStatus()
  Modifications  : Raja N on 9.3.2005
                   Modifications to support multi channel
  Modifications  : Ratnadip Choudhury on 21.04.2008
-                  Modification to support valueCAN (ES581)
+                  Modification to support valueCAN
 *******************************************************************************/
 static int nSetBaudRate()
 {
@@ -1696,7 +1696,7 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
             if (nReturn == NEOVI_OK) // Hardware is present
             {
                 // OpenPort and this function must be called together.
-                // CTimeManager::bReinitOffsetTimeValForES581();
+                // CTimeManager::bReinitOffsetTimeValForICSneoVI();
                 // Transit into 'CREATE TIME MAP' state
                 sg_byCurrState = CREATE_MAP_TIMESTAMP;
                 if (i == (sg_podActiveNetwork->m_nNoOfChannels -1))
@@ -1731,7 +1731,7 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
 }
 
 /* Function to set API function pointers */
-HRESULT GetETAS_ES581_APIFuncPtrs(void)
+HRESULT GetICS_neoVI_APIFuncPtrs(void)
 {
     LRESULT unResult = 0;
     if (sg_hDll != NULL)
@@ -1848,16 +1848,16 @@ HRESULT GetETAS_ES581_APIFuncPtrs(void)
 
 /* GENERAL FUNCTION SET STARTS */
 /* Perform initialization operations specific to TZM */
-USAGEMODE HRESULT CAN_ES581_Usb_PerformInitOperations(void)
+USAGEMODE HRESULT CAN_ICS_neoVI_PerformInitOperations(void)
 {
     //Register Monitor client
-    CAN_ES581_Usb_RegisterClient(TRUE, sg_dwClientID, CAN_MONITOR_NODE);
+    CAN_ICS_neoVI_RegisterClient(TRUE, sg_dwClientID, CAN_MONITOR_NODE);
     sg_podActiveNetwork = &sg_odHardwareNetwork;
     return S_OK;
 }
 
 /* Perform closure operations specific to TZM */
-USAGEMODE HRESULT CAN_ES581_Usb_PerformClosureOperations(void)
+USAGEMODE HRESULT CAN_ICS_neoVI_PerformClosureOperations(void)
 {
     HRESULT hResult = S_OK;
     UINT ClientIndex = 0;
@@ -1865,7 +1865,7 @@ USAGEMODE HRESULT CAN_ES581_Usb_PerformClosureOperations(void)
     {
         bRemoveClient(sg_asClientToBufMap[ClientIndex].dwClientID);
     }
-    hResult = CAN_ES581_Usb_DeselectHwInterface();
+    hResult = CAN_ICS_neoVI_DeselectHwInterface();
 
     if (hResult == S_OK)
     {
@@ -1874,7 +1874,7 @@ USAGEMODE HRESULT CAN_ES581_Usb_PerformClosureOperations(void)
     return hResult;
 }
 /* Rrtreive time mode mapping */
-USAGEMODE HRESULT CAN_ES581_Usb_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
+USAGEMODE HRESULT CAN_ICS_neoVI_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
 {
     memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
     TimeStamp = sg_TimeStamp;
@@ -1888,7 +1888,7 @@ USAGEMODE HRESULT CAN_ES581_Usb_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT
 
 /* Function to List Hardware interfaces connect to the system and requests to the 
    user to select*/
-USAGEMODE HRESULT CAN_ES581_Usb_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)    
+USAGEMODE HRESULT CAN_ICS_neoVI_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)    
 {    
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;
@@ -1944,13 +1944,13 @@ static int nResetHardware(BOOL /*bHardwareReset*/)
     return 0;
 }
 /* Function to deselect the chosen hardware interface */
-USAGEMODE HRESULT CAN_ES581_Usb_DeselectHwInterface(void)
+USAGEMODE HRESULT CAN_ICS_neoVI_DeselectHwInterface(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
     HRESULT hResult = S_OK;
     
-    CAN_ES581_Usb_ResetHardware();
+    CAN_ICS_neoVI_ResetHardware();
 
     sg_bCurrState = STATE_HW_INTERFACE_LISTED;
     
@@ -1958,7 +1958,7 @@ USAGEMODE HRESULT CAN_ES581_Usb_DeselectHwInterface(void)
 }
 
 /* Function to select hardware interface chosen by the user */
-USAGEMODE HRESULT CAN_ES581_Usb_SelectHwInterface(const INTERFACE_HW_LIST& asSelHwInterface, INT /*nCount*/)
+USAGEMODE HRESULT CAN_ICS_neoVI_SelectHwInterface(const INTERFACE_HW_LIST& asSelHwInterface, INT /*nCount*/)
 {
     USES_CONVERSION;
 
@@ -1989,7 +1989,7 @@ USAGEMODE HRESULT CAN_ES581_Usb_SelectHwInterface(const INTERFACE_HW_LIST& asSel
 }
 
 /* Function to set controller configuration*/
-USAGEMODE HRESULT CAN_ES581_Usb_SetConfigData(PCHAR ConfigFile, int Length)
+USAGEMODE HRESULT CAN_ICS_neoVI_SetConfigData(PCHAR ConfigFile, int Length)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
@@ -2012,11 +2012,11 @@ USAGEMODE HRESULT CAN_ES581_Usb_SetConfigData(PCHAR ConfigFile, int Length)
 
 BOOL Callback_DILTZM(BYTE /*Argument*/, PBYTE pDatStream, int /*Length*/)
 {
-    return (CAN_ES581_Usb_SetConfigData((CHAR *) pDatStream, 0) == S_OK);
+    return (CAN_ICS_neoVI_SetConfigData((CHAR *) pDatStream, 0) == S_OK);
 }
 
 /* Function to display config dialog */
-USAGEMODE HRESULT CAN_ES581_Usb_DisplayConfigDlg(PCHAR& InitData, int& Length)
+USAGEMODE HRESULT CAN_ICS_neoVI_DisplayConfigDlg(PCHAR& InitData, int& Length)
 {
     HRESULT Result = WARN_INITDAT_NCONFIRM;
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
@@ -2031,7 +2031,7 @@ USAGEMODE HRESULT CAN_ES581_Usb_DisplayConfigDlg(PCHAR& InitData, int& Length)
     if (sg_ucNoOfHardware > 0)
     {
         int nResult = DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DILTZM,
-            pControllerDetails, sg_ucNoOfHardware, DRIVER_CAN_ETAS_ES581);
+            pControllerDetails, sg_ucNoOfHardware, DRIVER_CAN_ICS_NEOVI);
         switch (nResult)
         {
             case WARNING_NOTCONFIRMED:
@@ -2072,7 +2072,7 @@ USAGEMODE HRESULT CAN_ES581_Usb_DisplayConfigDlg(PCHAR& InitData, int& Length)
 }
 
 /* Function to start monitoring the bus */
-USAGEMODE HRESULT CAN_ES581_Usb_StartHardware(void)
+USAGEMODE HRESULT CAN_ICS_neoVI_StartHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
@@ -2114,7 +2114,7 @@ USAGEMODE HRESULT CAN_ES581_Usb_StartHardware(void)
 }
 
 /* Function to stop monitoring the bus */
-USAGEMODE HRESULT CAN_ES581_Usb_StopHardware(void)
+USAGEMODE HRESULT CAN_ICS_neoVI_StopHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
 
@@ -2206,11 +2206,11 @@ static int nGetErrorCounter( UINT unChannel, SERROR_CNT& sErrorCount)
     return nReturn;
 }
 /* Function to reset the hardware, fcClose resets all the buffer */
-USAGEMODE HRESULT CAN_ES581_Usb_ResetHardware(void)
+USAGEMODE HRESULT CAN_ICS_neoVI_ResetHardware(void)
 {
     HRESULT hResult = S_FALSE;
     // Stop the hardware if connected
-    CAN_ES581_Usb_StopHardware(); //return value not necessary
+    CAN_ICS_neoVI_StopHardware(); //return value not necessary
     if (sg_sParmRThread.bTerminateThread())
     {
         if (nResetHardware(TRUE) == CAN_USB_OK)
@@ -2222,7 +2222,7 @@ USAGEMODE HRESULT CAN_ES581_Usb_ResetHardware(void)
 }
 
 /* Function to get Controller status */
-USAGEMODE HRESULT CAN_ES581_Usb_GetCurrStatus(s_STATUSMSG& StatusData)
+USAGEMODE HRESULT CAN_ICS_neoVI_GetCurrStatus(s_STATUSMSG& StatusData)
 {
     if (sg_ucControllerMode == defUSB_MODE_ACTIVE)
     {
@@ -2240,7 +2240,7 @@ USAGEMODE HRESULT CAN_ES581_Usb_GetCurrStatus(s_STATUSMSG& StatusData)
 }
 
 /* Function to get Tx Msg Buffers configured from chi file */
-USAGEMODE HRESULT CAN_ES581_Usb_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
+USAGEMODE HRESULT CAN_ICS_neoVI_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 {
     return S_OK;
 }
@@ -2303,7 +2303,7 @@ static int nWriteMessage(STCAN_MSG sMessage)
 }
 
 /* Function to Send CAN Message to Transmit buffer. This is called only after checking the controller in active mode */
-USAGEMODE HRESULT CAN_ES581_Usb_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessage)
+USAGEMODE HRESULT CAN_ICS_neoVI_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessage)
 {    
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
     static SACK_MAP sAckMap;
@@ -2335,23 +2335,23 @@ USAGEMODE HRESULT CAN_ES581_Usb_SendMsg(DWORD dwClientID, const STCAN_MSG& sMess
     return hResult;
 }
 /* Function get hardware, firmware, driver information*/ 
-USAGEMODE HRESULT CAN_ES581_Usb_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
+USAGEMODE HRESULT CAN_ICS_neoVI_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
 {
     return S_OK;
 }
 
-USAGEMODE HRESULT CAN_ES581_Usb_GetBusConfigInfo(BYTE* /*usInfo*/)
+USAGEMODE HRESULT CAN_ICS_neoVI_GetBusConfigInfo(BYTE* /*usInfo*/)
 {
     return S_OK;
 }
 
-USAGEMODE HRESULT CAN_ES581_Usb_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
+USAGEMODE HRESULT CAN_ICS_neoVI_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
 {
     return S_FALSE;
 }
 
 /* Function to retreive error string of last occurred error*/
-USAGEMODE HRESULT CAN_ES581_Usb_GetLastErrorString(CHAR* acErrorStr, int nLength)
+USAGEMODE HRESULT CAN_ICS_neoVI_GetLastErrorString(CHAR* acErrorStr, int nLength)
 {
     // TODO: Add your implementation code here
     int nCharToCopy = (int) (strlen(sg_acErrStr));
@@ -2365,7 +2365,7 @@ USAGEMODE HRESULT CAN_ES581_Usb_GetLastErrorString(CHAR* acErrorStr, int nLength
 }
 
 /* Set application parameters specific to CAN_USB */
-USAGEMODE HRESULT CAN_ES581_Usb_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
+USAGEMODE HRESULT CAN_ICS_neoVI_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
 {
     sg_hOwnerWnd = hWndOwner;
     sg_pIlog = pILog;
@@ -2404,7 +2404,7 @@ static DWORD dwGetAvailableClientSlot()
     return nClientId;
 }
 /* Register Client */
-USAGEMODE HRESULT CAN_ES581_Usb_RegisterClient(BOOL bRegister,DWORD& ClientID, TCHAR* pacClientName)
+USAGEMODE HRESULT CAN_ICS_neoVI_RegisterClient(BOOL bRegister,DWORD& ClientID, TCHAR* pacClientName)
 {
     USES_CONVERSION;    
     HRESULT hResult = S_FALSE;
@@ -2468,7 +2468,7 @@ USAGEMODE HRESULT CAN_ES581_Usb_RegisterClient(BOOL bRegister,DWORD& ClientID, T
     return hResult;
 }
 
-USAGEMODE HRESULT CAN_ES581_Usb_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
+USAGEMODE HRESULT CAN_ICS_neoVI_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
     HRESULT hResult = S_FALSE;
     if (ClientID != NULL)
@@ -2530,7 +2530,7 @@ USAGEMODE HRESULT CAN_ES581_Usb_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBase
             //clear msg buffer
             for (UINT i = 0; i < sg_unClientCnt; i++)
             {
-                CAN_ES581_Usb_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, NULL);                        
+                CAN_ICS_neoVI_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, NULL);                        
             }
             hResult = S_OK;
         }        
@@ -2539,7 +2539,7 @@ USAGEMODE HRESULT CAN_ES581_Usb_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBase
     return hResult;
 }
 /* Function to load driver CanApi2.dll */
-USAGEMODE HRESULT CAN_ES581_Usb_LoadDriverLibrary(void)
+USAGEMODE HRESULT CAN_ICS_neoVI_LoadDriverLibrary(void)
 {
     USES_CONVERSION;
 
@@ -2561,7 +2561,7 @@ USAGEMODE HRESULT CAN_ES581_Usb_LoadDriverLibrary(void)
         }
         else
         {
-            int nResult = GetETAS_ES581_APIFuncPtrs();
+            int nResult = GetICS_neoVI_APIFuncPtrs();
             if (nResult != 0)
             {
                 // Log list of the function pointers non-retrievable
@@ -2577,10 +2577,10 @@ USAGEMODE HRESULT CAN_ES581_Usb_LoadDriverLibrary(void)
 }
 
 /* Function to Unload Driver library */
-USAGEMODE HRESULT CAN_ES581_Usb_UnloadDriverLibrary(void)
+USAGEMODE HRESULT CAN_ICS_neoVI_UnloadDriverLibrary(void)
 {
     // Don't bother about the success & hence the result
-    CAN_ES581_Usb_DeselectHwInterface();
+    CAN_ICS_neoVI_DeselectHwInterface();
 
     // Store the Boardinfo to global variable
 
@@ -2594,12 +2594,12 @@ USAGEMODE HRESULT CAN_ES581_Usb_UnloadDriverLibrary(void)
 
 
 /* START OF FILTER IN/OUT FUNCTION */
-USAGEMODE HRESULT CAN_ES581_Usb_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punFrames*/, UINT /*nLength*/)
+USAGEMODE HRESULT CAN_ICS_neoVI_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punFrames*/, UINT /*nLength*/)
 {
     return S_OK;
 }
 /* END OF FILTER IN/OUT FUNCTION */
-USAGEMODE HRESULT CAN_ES581_Usb_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus)
+USAGEMODE HRESULT CAN_ICS_neoVI_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus)
 {
     if (hEvent != NULL)
     {
@@ -2609,7 +2609,7 @@ USAGEMODE HRESULT CAN_ES581_Usb_GetCntrlStatus(const HANDLE& hEvent, UINT& unCnt
     return S_OK;
 }
 //
-USAGEMODE HRESULT CAN_ES581_Usb_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
+USAGEMODE HRESULT CAN_ICS_neoVI_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
 {
     HRESULT hResult = S_OK;
     if ((sg_bCurrState == STATE_HW_INTERFACE_SELECTED) || (sg_bCurrState == STATE_CONNECTED))
@@ -2683,7 +2683,7 @@ USAGEMODE HRESULT CAN_ES581_Usb_GetControllerParams(LONG& lParam, UINT nChannel,
 }
 
 
-USAGEMODE HRESULT CAN_ES581_Usb_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM /*eContrParam*/)
+USAGEMODE HRESULT CAN_ICS_neoVI_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM /*eContrParam*/)
 {
     HRESULT hResult = S_FALSE;
     if ((sg_bCurrState == STATE_CONNECTED) || (sg_bCurrState == STATE_HW_INTERFACE_SELECTED))

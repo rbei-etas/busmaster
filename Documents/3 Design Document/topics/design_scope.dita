@@ -35,9 +35,9 @@
             </row>
             <row>
               <entry>3</entry>
-              <entry>CAN DIL ES581</entry>
-              <entry>CAN_ETAS_ES581.dll</entry>
-              <entry>CAN DIL interface to ES581.x controller from ETAS GmbH</entry>
+              <entry>CAN DIL ICS neoVI</entry>
+              <entry>CAN_ICS_neoVI.dll</entry>
+              <entry>CAN DIL interface to neoVI controllers from IntrepidCS</entry>
             </row>
             <row>
               <entry>4</entry>

@@ -89,7 +89,7 @@ enum
     DRIVER_CAN_STUB = 0,
     DRIVER_CAN_PEAK_USB,
     DRIVER_CAN_PEAK_PP,
-    DRIVER_CAN_ETAS_ES581,
+    DRIVER_CAN_ICS_NEOVI,
     DRIVER_CAN_ETAS_BOA,
     DIL_TOTAL,          // Its value must be <= MAX_DILS
     DAL_NONE            = ~0x0

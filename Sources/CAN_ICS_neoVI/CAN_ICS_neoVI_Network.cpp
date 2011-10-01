@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      CAN_ETAS_ES581_Network.cpp
+ * \file      CAN_ICS_neoVI_Network.cpp
  * \brief     Implementation file for CNetwork class
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
@@ -23,9 +23,9 @@
  */
 
 //#include "stdafx.h"         // For standard includes
-#include "CAN_ETAS_ES581_stdafx.h"
-#include "CAN_ETAS_ES581_Channel.h" // For CChannel class declaration
-#include "CAN_ETAS_ES581_Network.h" // For CNetwork class declaration
+#include "CAN_ICS_neoVI_stdafx.h"
+#include "CAN_ICS_neoVI_Channel.h" // For CChannel class declaration
+#include "CAN_ICS_neoVI_Network.h" // For CNetwork class declaration
 
 
 #ifdef _DEBUG

@@ -65,7 +65,7 @@
 
 #define  defFACT_BAUD_RATE               1000.0
 #define  defFACT_FREQUENCY               1000000.0
-#define  defNUMBER_OF_COLUMNS_ES581      6
+#define  defNUMBER_OF_COLUMNS_CAN_ICS_neoVI 6
 #define  defNUMBER_OF_COLUMNS            5
 // Maximum list of values can be displayed in list box
 #define  defREG_VALUE_LIST_COUNT_MAX     200
@@ -95,8 +95,8 @@
 
 // Maximum value of TSEG1   = TSEG1bit + 1 ( BTR1 : 0-3)
 #define  defMAX_TSEG1                      16 
-#define defMAX_TSEG1_ES81                   8
-#define defMIN_TSEG1_ES581                  1
+#define defMAX_TSEG1_ICSneoVI               8
+#define defMIN_TSEG1_ICSneoVI               1
 #define  defMAX_SAMPLING                   50 
 
 // Maximum value of TSEG2   = TSEG2bit + 1 ( BTR1 : 4-6)

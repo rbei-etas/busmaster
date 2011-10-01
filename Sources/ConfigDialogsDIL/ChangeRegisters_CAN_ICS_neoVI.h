@@ -14,29 +14,29 @@
  */
 
 /**
- * \file      ChangeRegisters_ES581.h
+ * \file      ChangeRegisters_CAN_ICS_neoVI.h
  * \brief     This header file contains the defination of class       
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This header file contains the defination of class       
  */
-#if !defined(CHANGEREGISTERS_ES581_H__4EDD5257_B7AF_11D5_A353_00902751AB29__INCLUDED_)
-#define CHANGEREGISTERS_ES581_H__4EDD5257_B7AF_11D5_A353_00902751AB29__INCLUDED_
+#if !defined(CHANGEREGISTERS_CAN_ICS_NEOVI_H__4EDD5257_B7AF_11D5_A353_00902751AB29__INCLUDED_)
+#define CHANGEREGISTERS_CAN_ICS_NEOVI_H__4EDD5257_B7AF_11D5_A353_00902751AB29__INCLUDED_
 
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
 
-// CChangeRegisters_ES581 dialog
+// CChangeRegisters_CAN_ICS_neoVI dialog
 #include "Utility/RadixEdit.h"
 #include "Math.h"
 #include "Include/Struct_Can.h"
 #include "Include/CanUsbDefs.h"
 #include "ChangeRegDefines.h"
 
-#define defES581Frequency (32 * 1000000)
-#define defPropDelayES581 1
+#define defICSneoVIFrequency (32 * 1000000)
+#define defPropDelayICSneoVI 1
 #define defMAXPropDelay 8
 
 enum {NO_DEF = 0, TS1_TS2 = 1, PD_TS1_TS2, SJW_TS1_TS2};
@@ -98,15 +98,15 @@ enum {NO_DEF = 0, TS1_TS2 = 1, PD_TS1_TS2, SJW_TS1_TS2};
         sBRP_NBT_SAMP_n_SJW  sBRPNBTSampNSJW;
     } sCOLUMNS;
 
-class CChangeRegisters_ES581 : public CDialog
+class CChangeRegisters_CAN_ICS_neoVI : public CDialog
 {
 // Construction
 public:
     // To Fill controller information taken from configuration module
     BOOL   bFillControllerConfig();
     // standard constructor
-    CChangeRegisters_ES581(CWnd* pParent = NULL, PSCONTROLER_DETAILS psControllerDetails = NULL, UINT nHardwareCount = 0);
-    virtual ~CChangeRegisters_ES581();
+    CChangeRegisters_CAN_ICS_neoVI(CWnd* pParent = NULL, PSCONTROLER_DETAILS psControllerDetails = NULL, UINT nHardwareCount = 0);
+    virtual ~CChangeRegisters_CAN_ICS_neoVI();
     BOOL bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1);
     BOOL bGetBaudRateFromCom(int nChannel,BYTE &bBTR0,BYTE &bBTR1);
     BOOL bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId, 
@@ -116,8 +116,8 @@ public:
 
 protected:
 // Dialog Data
-    //{{AFX_DATA(CChangeRegisters_ES581)
-    enum { IDD = IDD_DLG_CHANGE_REGISTERS_ES581 };
+    //{{AFX_DATA(CChangeRegisters_CAN_ICS_neoVI)
+    enum { IDD = IDD_DLG_CHANGE_REGISTERS_CAN_ICS_NEOVI };
     CListCtrl   m_omChannelList;
     CRadixEdit  m_omEditWarningLimit;
     CComboBox   m_omCombSampling;
@@ -139,7 +139,7 @@ protected:
     UINT    m_unCombClock;
 // Overrides
     // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CChangeRegisters_ES581)
+    //{{AFX_VIRTUAL(CChangeRegisters_CAN_ICS_neoVI)
     protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
@@ -149,7 +149,7 @@ private:
     sCOLUMNS m_asColListCtrl[defREG_VALUE_LIST_COUNT_MAX];
 
     // Generated message map functions
-    //{{AFX_MSG(CChangeRegisters_ES581)
+    //{{AFX_MSG(CChangeRegisters_CAN_ICS_neoVI)
     virtual void OnCancel();
     virtual void OnOK();
     virtual BOOL OnInitDialog();
@@ -195,14 +195,14 @@ private:
     void vUpdateControllerDetails();
     // To set the backend data to UI
     void vFillControllerConfigDetails();
-    bool bCalculateES581RegValues(WORD wNbt, WORD wBrp, UINT *puwIndex, INT nSample);
-    bool bCalculateES581Params(sBRP_NBT_SAMP_n_SJW& CurEntry, 
+    bool bCalculateICSneoVIRegValues(WORD wNbt, WORD wBrp, UINT *puwIndex, INT nSample);
+    bool bCalculateICSneoVIParams(sBRP_NBT_SAMP_n_SJW& CurEntry, 
                                UINT& unCurrIndex, BYTE bOption);
     BYTE bGetNBT(double fBaudRate);
     int nGetValueFromComboBox(CComboBox& omComboBox);
     CString omGetFormattedRegVal(UCHAR ucRegVal);
     void bDecideCalculatingOption(void);
-    BOOL GetRegisterValues_ES581(BYTE& bCNF1, BYTE& bCNF2, BYTE& bCNF3);
+    BOOL GetRegisterValues(BYTE& bCNF1, BYTE& bCNF2, BYTE& bCNF3);
     int GetSelectedEntryIndex(void);
     BOOL bUpdateControllerDataMembers(void);
 
@@ -216,4 +216,4 @@ public:
     CComboBox m_omCtrlClock;
 };
 
-#endif // !defined(CHANGEREGISTERS_ES581_H__4EDD5257_B7AF_11D5_A353_00902751AB29__INCLUDED_)
+#endif // !defined(CHANGEREGISTERS_CAN_ICS_NEOVI_H__4EDD5257_B7AF_11D5_A353_00902751AB29__INCLUDED_)

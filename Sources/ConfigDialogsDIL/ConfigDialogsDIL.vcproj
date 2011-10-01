@@ -213,7 +213,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CANRegAnalysis_ES581.cpp"
+				RelativePath=".\CANRegAnalysis_CAN_ICS_neoVI.cpp"
 				>
 			</File>
 			<File
@@ -225,7 +225,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ChangeRegisters_ES581.cpp"
+				RelativePath=".\ChangeRegisters_CAN_ICS_neoVI.cpp"
 				>
 			</File>
 			<File
@@ -275,7 +275,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ChangeRegisters_ES581.h"
+				RelativePath=".\ChangeRegisters_CAN_ICS_neoVI.h"
 				>
 			</File>
 			<File

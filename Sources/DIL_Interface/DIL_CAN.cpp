@@ -29,7 +29,7 @@
 #include "DataTypes/DIL_Datatypes.h"
 #include "DILC_Dummy.h"
 #include "CAN_PEAK_USB_Extern.h"
-#include "CAN_ETAS_ES581/CAN_ETAS_ES581_Extern.h"
+#include "CAN_ICS_neoVI/CAN_ICS_neoVI_Extern.h"
 #include "CAN_STUB/CAN_STUB_Extern.h"
 #include "CAN_ETAS_BOA/CAN_ETAS_BOA_Extern.h"
 #include "Dil_CAN.h"
@@ -43,11 +43,11 @@ typedef struct
 
 static ENTRY_DIL sg_ListDIL[DIL_TOTAL] =
 {
-    {DRIVER_CAN_STUB,       _T("CAN_Simulation")},
-    {DRIVER_CAN_ETAS_ES581, _T("CAN_ES581")     },
-    {DRIVER_CAN_ETAS_BOA,        _T("CAN_ETAS_BOA")       },
-    {DRIVER_CAN_PEAK_USB,   _T("CAN_USB_PEAK")  },
-    {DRIVER_CAN_PEAK_PP,    _T("CAN_PP_PEAK")   }
+    {DRIVER_CAN_STUB,       _T("Simulation")       },
+    {DRIVER_CAN_ICS_NEOVI,  _T("IntrepidCS neoVI") },
+    {DRIVER_CAN_ETAS_BOA,   _T("ETAS BOA")         },
+    {DRIVER_CAN_PEAK_USB,   _T("PEAK USB")         },
+    {DRIVER_CAN_PEAK_PP,    _T("PEAK PP")          }
 };
 
 
@@ -168,33 +168,33 @@ void CDIL_CAN::vSelectInterface_CAN_STUB(void)
 }
 
 /**
- * Helper Function for CAN_ETAS_ES581 Interface
+ * Helper Function for CAN_ICS_neoVI Interface
  */
-void CDIL_CAN::vSelectInterface_CAN_ETAS_ES581(void)
+void CDIL_CAN::vSelectInterface_CAN_ICS_neoVI(void)
 {
-    m_pfPerformInitOperations = CAN_ES581_Usb_PerformInitOperations;
-    m_pfPerformClosureOperations = CAN_ES581_Usb_PerformClosureOperations;
-    m_pfGetTimeModeMapping = CAN_ES581_Usb_GetTimeModeMapping;
-    m_pfListHwInterfaces = CAN_ES581_Usb_ListHwInterfaces;
-    m_pfSelectHwInterface = CAN_ES581_Usb_SelectHwInterface;
-    m_pfDeselectHwInterfaces = CAN_ES581_Usb_DeselectHwInterface;
-    m_pfDisplayConfigDlg = CAN_ES581_Usb_DisplayConfigDlg;
-    m_pfSetConfigData = CAN_ES581_Usb_SetConfigData;
-    m_pfStartHardware = CAN_ES581_Usb_StartHardware;
-    m_pfStopHardware = CAN_ES581_Usb_StopHardware;
-    m_pfResetHardware = CAN_ES581_Usb_ResetHardware;
-    m_pfGetTxMsgBuffer = CAN_ES581_Usb_GetTxMsgBuffer;
-    m_pfSendMsg = CAN_ES581_Usb_SendMsg;
-    m_pfGetBoardInfo = CAN_ES581_Usb_GetBoardInfo;
-    m_pfGetBusConfigInfo = CAN_ES581_Usb_GetBusConfigInfo;
-    m_pfGetVersionInfo = CAN_ES581_Usb_GetVersionInfo;
-    m_pfGetLastErrorString = CAN_ES581_Usb_GetLastErrorString;
-    m_pfFilterFrames = CAN_ES581_Usb_FilterFrames;
-    m_pfManageMsgBuf = CAN_ES581_Usb_ManageMsgBuf;
-    m_pfRegisterClient = CAN_ES581_Usb_RegisterClient;
-    m_pfGetCntrlStatus = CAN_ES581_Usb_GetCntrlStatus;
-    m_pfGetControllerParams = CAN_ES581_Usb_GetControllerParams;
-    m_pfGetErrorCount = CAN_ES581_Usb_GetErrorCount;
+    m_pfPerformInitOperations = CAN_ICS_neoVI_PerformInitOperations;
+    m_pfPerformClosureOperations = CAN_ICS_neoVI_PerformClosureOperations;
+    m_pfGetTimeModeMapping = CAN_ICS_neoVI_GetTimeModeMapping;
+    m_pfListHwInterfaces = CAN_ICS_neoVI_ListHwInterfaces;
+    m_pfSelectHwInterface = CAN_ICS_neoVI_SelectHwInterface;
+    m_pfDeselectHwInterfaces = CAN_ICS_neoVI_DeselectHwInterface;
+    m_pfDisplayConfigDlg = CAN_ICS_neoVI_DisplayConfigDlg;
+    m_pfSetConfigData = CAN_ICS_neoVI_SetConfigData;
+    m_pfStartHardware = CAN_ICS_neoVI_StartHardware;
+    m_pfStopHardware = CAN_ICS_neoVI_StopHardware;
+    m_pfResetHardware = CAN_ICS_neoVI_ResetHardware;
+    m_pfGetTxMsgBuffer = CAN_ICS_neoVI_GetTxMsgBuffer;
+    m_pfSendMsg = CAN_ICS_neoVI_SendMsg;
+    m_pfGetBoardInfo = CAN_ICS_neoVI_GetBoardInfo;
+    m_pfGetBusConfigInfo = CAN_ICS_neoVI_GetBusConfigInfo;
+    m_pfGetVersionInfo = CAN_ICS_neoVI_GetVersionInfo;
+    m_pfGetLastErrorString = CAN_ICS_neoVI_GetLastErrorString;
+    m_pfFilterFrames = CAN_ICS_neoVI_FilterFrames;
+    m_pfManageMsgBuf = CAN_ICS_neoVI_ManageMsgBuf;
+    m_pfRegisterClient = CAN_ICS_neoVI_RegisterClient;
+    m_pfGetCntrlStatus = CAN_ICS_neoVI_GetCntrlStatus;
+    m_pfGetControllerParams = CAN_ICS_neoVI_GetControllerParams;
+    m_pfGetErrorCount = CAN_ICS_neoVI_GetErrorCount;
 }
 
 /**
@@ -322,15 +322,15 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
             }
 
         }
-        else if (dwDriverID == DRIVER_CAN_ETAS_ES581)
+        else if (dwDriverID == DRIVER_CAN_ICS_NEOVI)
         {
             pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Selecting DAL_NONE..."));
             // First select the dummy interface
             DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
             // First set the application parameters.
-            hResult = CAN_ES581_Usb_SetAppParams(hWndOwner, pILog);
+            hResult = CAN_ICS_neoVI_SetAppParams(hWndOwner, pILog);
             // Next load the driver library
-            hResult = CAN_ES581_Usb_LoadDriverLibrary();
+            hResult = CAN_ICS_neoVI_LoadDriverLibrary();
             switch (hResult)
             {
                 case S_OK:
@@ -338,8 +338,8 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                 {
                     pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library successful..."));
                     hResult = S_OK;
-                    CAN_ES581_Usb_PerformInitOperations();
-                    vSelectInterface_CAN_ETAS_ES581();
+                    CAN_ICS_neoVI_PerformInitOperations();
+                    vSelectInterface_CAN_ICS_neoVI();
                 }
                 break;
                 default:
@@ -493,9 +493,9 @@ DWORD CDIL_CAN::DILC_GetSelectedDriver(void)
     {
         Result = DRIVER_CAN_STUB;
     }
-    else if (m_pfDisplayConfigDlg == CAN_ES581_Usb_DisplayConfigDlg)
+    else if (m_pfDisplayConfigDlg == CAN_ICS_neoVI_DisplayConfigDlg)
     {
-        Result = DRIVER_CAN_ETAS_ES581;
+        Result = DRIVER_CAN_ICS_NEOVI;
     }
     return Result;
 }

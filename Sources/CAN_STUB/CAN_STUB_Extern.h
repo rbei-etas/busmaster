@@ -15,11 +15,11 @@
 
 /**
  * \file      CAN_STUB_Extern.h
- * \brief     Exports API functions for ETAS ES581 CAN Hardware interface
+ * \brief     Exports API functions for Simulation CAN Hardware interface
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Exports API functions for ETAS ES581 CAN Hardware interface
+ * Exports API functions for Simulation CAN Hardware interface
  */
 #if !defined CAN_STUB_EXTERN_H__INCLUDED_
 #define CAN_STUB_EXTERN_H__INCLUDED_

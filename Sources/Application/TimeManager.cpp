@@ -294,7 +294,7 @@ int CTimeManager::nCalculateElapsedTimeFromTick(const __int64& /*n64CurrTick*/)
 {
     return 0;
 }
-void CTimeManager::bReinitOffsetTimeValForES581(void)
+void CTimeManager::bReinitOffsetTimeValForICSneoVI(void)
 {
     CTimeManager::m_nOffsetTimeValue = nCalculateCurrTimeStamp(TRUE);
 }

@@ -35,8 +35,6 @@
 #include "Include/CanUsbDefs.h"
 #include "ChangeRegDefines.h"
 
-#define defES581Frequency (32 * 1000000)
-#define defPropDelayES581 1
 #define defMAXPropDelay 8
 
 

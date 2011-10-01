@@ -21,7 +21,7 @@
   <topicref href="topics/architecture_design.dita" type="topic">
     <topicref href="topics/dil_interface.dita" type="topic"/>
     <topicref href="topics/idil_can.dita" type="topic">
-      <topicref href="topics/dil_es581.dita" type="topic"/>
+      <topicref href="topics/dil_ics_neovi.dita" type="topic"/>
       <topicref href="topics/dil_etas_boa.dita" type="topic"/>
       <topicref href="topics/dil_stub_can.dita" type="topic"/>
     </topicref>
