@@ -221,7 +221,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ChangeRegisters_CAN_BOA.cpp"
+				RelativePath=".\ChangeRegisters_CAN_ETAS_BOA.cpp"
 				>
 			</File>
 			<File
@@ -271,7 +271,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ChangeRegisters_CAN_BOA.h"
+				RelativePath=".\ChangeRegisters_CAN_ETAS_BOA.h"
 				>
 			</File>
 			<File

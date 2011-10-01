@@ -35,7 +35,7 @@
             <entry>RSI_14_002</entry>
             <entry>HRESULT DILC_SelectDriver(DWORD dwDriverID, HWND hWndParent, Base_WrapperErrorLogger* pILog)</entry>
             <entry>Selects a driver abstraction layer (DAL).</entry>
-            <entry>dwDriverID - The driver abstraction layer id. Possible values are - 1. DRIVER_CAN_STUB, 2. DRIVER_CAN_PEAK_USB, 3. DRIVER_CAN_PEAK_PP, 4. DRIVER_CAN_ETAS_ES581 and 5. DRIVER_CAN_BOA. hWndParent - Window handle if the client application is a GUI application. pILog - Error logging interface. </entry>
+            <entry>dwDriverID - The driver abstraction layer id. Possible values are - 1. DRIVER_CAN_STUB, 2. DRIVER_CAN_PEAK_USB, 3. DRIVER_CAN_PEAK_PP, 4. DRIVER_CAN_ETAS_ES581 and 5. DRIVER_CAN_ETAS_BOA. hWndParent - Window handle if the client application is a GUI application. pILog - Error logging interface. </entry>
             <entry>If support for the intended one isn&apos;t allowed with the present license, this returns NO_LICENSE. Else returns S_OK</entry>
             <entry>Annotation of the ids: 1. Simulation engine without the hardware, 2. PEAK-CAN USB hardware, 3. PEAK-CAN Parallel Port Interface, 4. ETAS ES581 USB hardware and 5. ETAS BOA Framework </entry>
           </row>

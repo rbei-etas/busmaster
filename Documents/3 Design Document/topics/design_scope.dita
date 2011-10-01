@@ -47,8 +47,8 @@
             </row>
             <row>
               <entry>5</entry>
-              <entry>CAN DIL BOA</entry>
-              <entry>CAN_BOA.dll</entry>
+              <entry>CAN DIL ETAS BOA</entry>
+              <entry>CAN_ETAS_BOA.dll</entry>
               <entry>Interface to BOA from ETAS which is an abstraction to its CAN hardware interfaces. This completely decouples the client application from the underlying hardware.</entry>
             </row>
             <row>

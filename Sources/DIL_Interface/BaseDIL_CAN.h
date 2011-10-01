@@ -47,7 +47,7 @@ public:
     DRIVER_CAN_PEAK_USB, // PEAK-CAN USB hardware
     DRIVER_CAN_PEAK_PP,  // PEAK-CAN Parallel Port Interface
     DRIVER_CAN_ETAS_ES581, // ETAS ES581 USB hardware
-    DRIVER_CAN_BOA.     // ETAS BOA Framework 
+    DRIVER_CAN_ETAS_BOA.     // ETAS BOA Framework 
     */
 
     virtual HRESULT DILC_SelectDriver(DWORD dwDriverID, HWND hWndParent,

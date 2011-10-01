@@ -36,7 +36,7 @@
 #include "ConfigDialogsDIL.h"
 #include "ChangeRegisters.h"
 #include "ChangeRegisters_ES581.h"
-#include "ChangeRegisters_CAN_BOA.h"
+#include "ChangeRegisters_CAN_ETAS_BOA.h"
 #include "ControllerPPage.h"
 #include "AcceptanceFilterDlg.h"
 #include "ListHwInterface.h"
@@ -129,9 +129,9 @@ USAGEMODE int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/,
         ouChangeRegister.DoModal();
         nResult = ouChangeRegister.nGetInitStatus();
     }
-    else if (dwDriverID == DRIVER_CAN_BOA)
+    else if (dwDriverID == DRIVER_CAN_ETAS_BOA)
     {
-        CChangeRegisters_CAN_BOA ouChangeRegister(CWnd::FromHandle(hParent), pControllerDetails, nCount);
+        CChangeRegisters_CAN_ETAS_BOA ouChangeRegister(CWnd::FromHandle(hParent), pControllerDetails, nCount);
         ouChangeRegister.DoModal();
         nResult = ouChangeRegister.nGetInitStatus();
     }
@@ -143,7 +143,7 @@ USAGEMODE int ListHardwareInterfaces(HWND hParent, DWORD dwDriver, INTERFACE_HW*
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	int Result = -1;
-    if ((dwDriver == DRIVER_CAN_BOA) ||
+    if ((dwDriver == DRIVER_CAN_ETAS_BOA) ||
         (dwDriver == DRIVER_CAN_PEAK_USB) ||
         (dwDriver == DRIVER_CAN_ETAS_ES581))
     {

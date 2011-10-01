@@ -19,7 +19,7 @@ Sources/TOOLS_EXTERNAL/CAPL_2_C/lexer.h
 # Release dirs (except BIN)
 Sources/Application/Release
 Sources/BusEmulation/Release
-Sources/CAN_BOA/Release
+Sources/CAN_ETAS_BOA/Release
 Sources/CAN_ETAS_ES581/Release
 Sources/CAN_STUB/Release
 Sources/CommonClass/Release
@@ -43,7 +43,7 @@ Sources/TOOLS_EXTERNAL/*/Release
 # Debug dirs (except BIN)
 Sources/Application/Debug
 Sources/BusEmulation/Debug
-Sources/CAN_BOA/Debug
+Sources/CAN_ETAS_BOA/Debug
 Sources/CAN_ETAS_ES581/Debug
 Sources/CAN_STUB/Debug
 Sources/CommonClass/Debug
@@ -73,7 +73,7 @@ Sources/BIN/*/*.h
 Sources/BIN/*/*.ilk
 Sources/BIN/*/*.pdb
 Sources/BIN/*/*.tlb
-Sources/BIN/*/CAN_BOA.dll
+Sources/BIN/*/CAN_ETAS_BOA.dll
 Sources/BIN/*/CAN_ETAS_ES581.dll
 Sources/BIN/*/CAN_STUB.dll
 Sources/BIN/*/ConfigDialogsDIL.dll
@@ -89,7 +89,7 @@ Sources/BIN/*/TXWindow.dll
 Sources/BIN/*/TestSetupEditorGUI.dll
 Sources/BIN/*/TestSuiteExecutorGUI.dll
 Sources/BIN/Libs/*/*.exp
-Sources/BIN/Libs/*/CAN_BOA.lib
+Sources/BIN/Libs/*/CAN_ETAS_BOA.lib
 Sources/BIN/Libs/*/CAN_ETAS_ES581.lib
 Sources/BIN/Libs/*/CAN_STUB.lib
 Sources/BIN/Libs/*/CommonClass.lib

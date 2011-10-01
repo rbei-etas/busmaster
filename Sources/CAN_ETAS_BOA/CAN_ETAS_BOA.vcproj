@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="CAN_BOA"
+	Name="CAN_ETAS_BOA"
 	ProjectGUID="{72D02354-C749-45CC-AE1A-A8445CF3984D}"
 	Keyword="MFCDLLProj"
 	TargetFrameworkVersion="131072"
@@ -51,7 +51,7 @@
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="CAN_BOA_StdAfx.h"
+				PrecompiledHeaderThrough="CAN_ETAS_BOA_StdAfx.h"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
@@ -71,14 +71,14 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/ConfigDialogsDIL.lib&quot;"
-				OutputFile="$(SolutionDir)/bin/$(OutDir)/CAN_BOA.dll"
+				OutputFile="$(SolutionDir)/bin/$(OutDir)/CAN_ETAS_BOA.dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_BOA.lib"
+				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_ETAS_BOA.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -136,7 +136,7 @@
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="CAN_BOA_StdAfx.h"
+				PrecompiledHeaderThrough="CAN_ETAS_BOA_StdAfx.h"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
@@ -157,7 +157,7 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/ConfigDialogsDIL.lib&quot;"
 				AdditionalDependencies="Advapi32.lib"
-				OutputFile="$(SolutionDir)/bin/$(OutDir)/CAN_BOA.dll"
+				OutputFile="$(SolutionDir)/bin/$(OutDir)/CAN_ETAS_BOA.dll"
 				LinkIncremental="1"
 				GenerateManifest="true"
 				ModuleDefinitionFile=""
@@ -167,7 +167,7 @@
 				EnableCOMDATFolding="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_BOA.lib"
+				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_ETAS_BOA.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -202,11 +202,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\CAN_BOA.cpp"
+				RelativePath=".\CAN_ETAS_BOA.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\CAN_BOA_stdafx.cpp"
+				RelativePath=".\CAN_ETAS_BOA_stdafx.cpp"
 				>
 			</File>
 		</Filter>
@@ -216,11 +216,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\CAN_BOA_Extern.h"
+				RelativePath=".\CAN_ETAS_BOA_Extern.h"
 				>
 			</File>
 			<File
-				RelativePath=".\CAN_BOA_stdafx.h"
+				RelativePath=".\CAN_ETAS_BOA_stdafx.h"
 				>
 			</File>
 		</Filter>

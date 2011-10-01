@@ -14,21 +14,21 @@
  */
 
 /**
- * \file      ChangeRegisters_CAN_BOA.h
+ * \file      ChangeRegisters_CAN_ETAS_BOA.h
  * \brief     This header file contains the defination of class       
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This header file contains the defination of class       
  */
-#if !defined(CHANGEREGISTERS_CAN_BOA_H____INCLUDED_)
-#define CHANGEREGISTERS_CAN_BOA_H____INCLUDED_
+#if !defined(CHANGEREGISTERS_CAN_ETAS_BOA_H____INCLUDED_)
+#define CHANGEREGISTERS_CAN_ETAS_BOA_H____INCLUDED_
 
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
 
-// CChangeRegisters_CAN_BOA dialog
+// CChangeRegisters_CAN_ETAS_BOA dialog
 #include "Utility/RadixEdit.h"
 #include "Math.h"
 #include "Include/Struct_Can.h"
@@ -41,15 +41,15 @@
 
 
 
-class CChangeRegisters_CAN_BOA : public CDialog
+class CChangeRegisters_CAN_ETAS_BOA : public CDialog
 {
 // Construction
 public:
     // To Fill controller information taken from configuration module
     BOOL   bFillControllerConfig();
     // standard constructor
-    CChangeRegisters_CAN_BOA(CWnd* pParent = NULL, PSCONTROLER_DETAILS psControllerDetails = NULL, UINT nHardwareCount = 0);
-    virtual ~CChangeRegisters_CAN_BOA();
+    CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent = NULL, PSCONTROLER_DETAILS psControllerDetails = NULL, UINT nHardwareCount = 0);
+    virtual ~CChangeRegisters_CAN_ETAS_BOA();
     BOOL bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1);
     BOOL bGetBaudRateFromCom(int nChannel,BYTE &bBTR0,BYTE &bBTR1);
     BOOL bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId, 
@@ -59,8 +59,8 @@ public:
 
 protected:
 // Dialog Data
-    //{{AFX_DATA(CChangeRegisters_CAN_BOA)
-    enum { IDD = IDD_DLG_CHANGE_REGISTERS_CAN_BOA };
+    //{{AFX_DATA(CChangeRegisters_CAN_ETAS_BOA)
+    enum { IDD = IDD_DLG_CHANGE_REGISTERS_CAN_ETAS_BOA };
     CListCtrl   m_omChannelList;
     CRadixEdit  m_omEditWarningLimit;
     CComboBox   m_omCombSampling;
@@ -81,7 +81,7 @@ protected:
     UINT    m_unCombClock;
 // Overrides
     // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CChangeRegisters_CAN_BOA)
+    //{{AFX_VIRTUAL(CChangeRegisters_CAN_ETAS_BOA)
     protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
@@ -89,7 +89,7 @@ protected:
 // Implementation
 private:
     // Generated message map functions
-    //{{AFX_MSG(CChangeRegisters_CAN_BOA)
+    //{{AFX_MSG(CChangeRegisters_CAN_ETAS_BOA)
     virtual void OnCancel();
     virtual void OnOK();
     virtual BOOL OnInitDialog();
@@ -141,4 +141,4 @@ public:
     CComboBox m_omCtrlSJW;
 };
 
-#endif // !defined(CHANGEREGISTERS_CAN_BOA_H____INCLUDED_)
+#endif // !defined(CHANGEREGISTERS_CAN_ETAS_BOA_H____INCLUDED_)

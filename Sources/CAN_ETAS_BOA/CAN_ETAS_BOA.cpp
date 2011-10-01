@@ -14,31 +14,31 @@
  */
 
 /**
- * \file      CAN_BOA.cpp
+ * \file      CAN_ETAS_BOA.cpp
  * \brief     Source file for BOA DIL functions
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Source file for BOA DIL functions
  */
-// CAN_BOA.cpp : Defines the initialization routines for the DLL.
+// CAN_ETAS_BOA.cpp : Defines the initialization routines for the DLL.
 //
 
-#include "CAN_BOA_stdafx.h"
+#include "CAN_ETAS_BOA_stdafx.h"
 #include "DataTypes/Base_WrapperErrorLogger.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/DIL_Datatypes.h"
 #include "Include/BaseDefs.h"
 #include "Include/DIL_CommonDefs.h"
-#include "BOA_INCLUDE/OCI/ocican.h"
-#include "BOA_INCLUDE/CSI/csisfs.h"
+#include "EXTERNAL_INCLUDE/OCI/ocican.h"
+#include "EXTERNAL_INCLUDE/CSI/csisfs.h"
 #include "Include/CanUsbDefs.h"
 #include "Include/Can_Error_Defs.h"
 #include "ConfigDialogsDIL/API_Dialog.h"
 
 
 #define USAGE_EXPORT
-#include "CAN_BOA_Extern.h"
+#include "CAN_ETAS_BOA_Extern.h"
 
 const BYTE FILTER_ADD = 0x01;
 const BYTE FILTER_REMOVE = 0x02;
@@ -1426,7 +1426,7 @@ void (OCI_CALLBACK ProcessEvents)(void *userData, struct OCI_CANMessage* msg)
     }
 }
 /******************************************************************************
-  Function Name    :  CAN_BOA_SetAppParams
+  Function Name    :  CAN_ETAS_BOA_SetAppParams
   Input(s)         :  HWND hWndOwner, Base_WrapperErrorLogger* pILog
   Output           :  Returns S_OK for sucess, S_FALSE for failure
   Functionality    :  Sets the application params.
@@ -1435,14 +1435,14 @@ void (OCI_CALLBACK ProcessEvents)(void *userData, struct OCI_CANMessage* msg)
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
+USAGEMODE HRESULT CAN_ETAS_BOA_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
 {
     sg_hOwnerWnd = hWndOwner;
     sg_pIlog = pILog;
     return S_OK;
 }
 /******************************************************************************
-  Function Name    :  CAN_BOA_UnloadDriverLibrary
+  Function Name    :  CAN_ETAS_BOA_UnloadDriverLibrary
   Input(s)         :  
   Output           :  Returns S_OK for success, S_FALSE for failure
   Functionality    :  Unloads the driver library.
@@ -1451,7 +1451,7 @@ USAGEMODE HRESULT CAN_BOA_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* 
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_UnloadDriverLibrary(void)
+USAGEMODE HRESULT CAN_ETAS_BOA_UnloadDriverLibrary(void)
 {
     /* Unload OCI library */
     if (sg_hLibOCI != NULL)
@@ -1470,7 +1470,7 @@ USAGEMODE HRESULT CAN_BOA_UnloadDriverLibrary(void)
 }
 
 /******************************************************************************
-  Function Name    :  CAN_BOA_ManageMsgBuf
+  Function Name    :  CAN_ETAS_BOA_ManageMsgBuf
   Input(s)         :  BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj
   Output           :  Returns S_OK for sucess, S_FALSE for failure
   Functionality    :  Registers the buffer pBufObj to the client ClientID
@@ -1479,7 +1479,7 @@ USAGEMODE HRESULT CAN_BOA_UnloadDriverLibrary(void)
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
+USAGEMODE HRESULT CAN_ETAS_BOA_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
     HRESULT hResult = S_FALSE;
     if (ClientID != 0)
@@ -1542,7 +1542,7 @@ USAGEMODE HRESULT CAN_BOA_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBuf
             //clear msg buffer
             for (UINT i = 0; i < sg_unClientCnt; i++)
             {
-                CAN_BOA_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].m_dwClientID, NULL);                        
+                CAN_ETAS_BOA_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].m_dwClientID, NULL);                        
             }
             hResult = S_OK;
         }        
@@ -1553,7 +1553,7 @@ USAGEMODE HRESULT CAN_BOA_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBuf
 
 
 /******************************************************************************
-  Function Name    :  CAN_BOA_RegisterClient
+  Function Name    :  CAN_ETAS_BOA_RegisterClient
   Input(s)         :  BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName
   Output           :  S_OK for sucess, S_FALSE for failure
   Functionality    :  Registers a client to the DIL. ClientID will have client id
@@ -1563,7 +1563,7 @@ USAGEMODE HRESULT CAN_BOA_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBuf
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
+USAGEMODE HRESULT CAN_ETAS_BOA_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
 {
     HRESULT hResult = S_FALSE;
     if (bRegister)
@@ -1627,7 +1627,7 @@ USAGEMODE HRESULT CAN_BOA_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR*
     return hResult;
 }
 /******************************************************************************
-  Function Name    :  CAN_BOA_GetCntrlStatus
+  Function Name    :  CAN_ETAS_BOA_GetCntrlStatus
   Input(s)         :  const HANDLE& hEvent, UINT& unCntrlStatus)
   Output           :  S_OK for sucess, S_FALSE for failure
   Functionality    :  Returns the controller status. hEvent will be registered 
@@ -1638,13 +1638,13 @@ USAGEMODE HRESULT CAN_BOA_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR*
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& unCntrlStatus)
+USAGEMODE HRESULT CAN_ETAS_BOA_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& unCntrlStatus)
 {
     unCntrlStatus = defCONTROLLER_ACTIVE; //Temperory solution. TODO
     return S_OK;
 }
 /******************************************************************************
-  Function Name    :  CAN_BOA_LoadDriverLibrary
+  Function Name    :  CAN_ETAS_BOA_LoadDriverLibrary
   Input(s)         :  
   Output           :  S_OK for sucess, S_FALSE for failure
   Functionality    :  Loads BOA related libraries. Updates BOA API pointers
@@ -1653,7 +1653,7 @@ USAGEMODE HRESULT CAN_BOA_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& unCntrl
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_LoadDriverLibrary(void)
+USAGEMODE HRESULT CAN_ETAS_BOA_LoadDriverLibrary(void)
 {
     HRESULT hResult = S_FALSE;
     /* Load the CSI library to search the controllers */
@@ -1713,7 +1713,7 @@ USAGEMODE HRESULT CAN_BOA_LoadDriverLibrary(void)
     return hResult;
 }
 /******************************************************************************
-  Function Name    :  CAN_BOA_PerformInitOperations
+  Function Name    :  CAN_ETAS_BOA_PerformInitOperations
   Input(s)         :  
   Output           :  S_OK for sucess, S_FALSE for failure
   Functionality    :  Performs intial operations.
@@ -1724,7 +1724,7 @@ USAGEMODE HRESULT CAN_BOA_LoadDriverLibrary(void)
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_PerformInitOperations(void)
+USAGEMODE HRESULT CAN_ETAS_BOA_PerformInitOperations(void)
 {
     /* Create critical section for ensuring thread 
        safeness of read message function */
@@ -1747,7 +1747,7 @@ USAGEMODE HRESULT CAN_BOA_PerformInitOperations(void)
     }
     //Register monitor client
     DWORD dwClient = 0;
-    CAN_BOA_RegisterClient(TRUE, dwClient, CAN_MONITOR_NODE);
+    CAN_ETAS_BOA_RegisterClient(TRUE, dwClient, CAN_MONITOR_NODE);
     return S_OK;
 }
 
@@ -1816,7 +1816,7 @@ void vCopyRBIN_2_OCI_CAN_Data(OCI_CANTxMessage& DestMsg, const STCAN_MSG& SrcMsg
     memcpy(DestMsg.data, SrcMsg.m_ucData, sizeof(UCHAR) * 8);
 }
 /******************************************************************************
-  Function Name    :  CAN_BOA_PerformClosureOperations
+  Function Name    :  CAN_ETAS_BOA_PerformClosureOperations
   Input(s)         :  
   Output           :  S_OK for sucess, S_FALSE for failure
   Functionality    :  Performs closure operations.
@@ -1825,12 +1825,12 @@ void vCopyRBIN_2_OCI_CAN_Data(OCI_CANTxMessage& DestMsg, const STCAN_MSG& SrcMsg
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_PerformClosureOperations(void)
+USAGEMODE HRESULT CAN_ETAS_BOA_PerformClosureOperations(void)
 {
     HRESULT hResult = S_OK;
     
     //deselect hw interface
-    hResult = CAN_BOA_DeselectHwInterface();
+    hResult = CAN_ETAS_BOA_DeselectHwInterface();
 
     /* close the existing handle */
     CloseHandle(sg_hEvent);
@@ -1852,7 +1852,7 @@ USAGEMODE HRESULT CAN_BOA_PerformClosureOperations(void)
     return hResult;
 }
 /******************************************************************************
-  Function Name    :  CAN_BOA_GetTimeModeMapping
+  Function Name    :  CAN_ETAS_BOA_GetTimeModeMapping
   Input(s)         :  SYSTEMTIME& CurrSysTime, UINT64& TimeStamp
   Output           :  S_OK for sucess, S_FALSE for failure
   Functionality    :  Gets the time mode mapping of the hardware. CurrSysTime 
@@ -1863,7 +1863,7 @@ USAGEMODE HRESULT CAN_BOA_PerformClosureOperations(void)
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
+USAGEMODE HRESULT CAN_ETAS_BOA_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
 {
     CurrSysTime = sg_CurrSysTime;
     TimeStamp   = sg_TimeStamp;
@@ -1875,7 +1875,7 @@ USAGEMODE HRESULT CAN_BOA_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& Ti
 }
 
 /******************************************************************************
-  Function Name    :  CAN_BOA_ListHwInterfaces
+  Function Name    :  CAN_ETAS_BOA_ListHwInterfaces
   Input(s)         :  INTERFACE_HW& sSelHwInterface
   Output           :  S_OK for sucess, S_FALSE for failure
   Functionality    :  Lists the hardware interface available. sSelHwInterface 
@@ -1885,7 +1885,7 @@ USAGEMODE HRESULT CAN_BOA_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& Ti
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)
+USAGEMODE HRESULT CAN_ETAS_BOA_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)
 {
     //VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_DRIVER_SELECTED, ERR_IMPROPER_STATE);
     USES_CONVERSION;
@@ -1910,7 +1910,7 @@ USAGEMODE HRESULT CAN_BOA_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, 
 			}
 			if (nCount > 1)// List hw interface if there are more than one hw
 			{
-				ListHardwareInterfaces(NULL, DRIVER_CAN_BOA, psHWInterface, pnSelList, nCount);
+				ListHardwareInterfaces(NULL, DRIVER_CAN_ETAS_BOA, psHWInterface, pnSelList, nCount);
                 /* return value is not necessary as the OUT parameter pnSelList is unaltered 
                    if user has not selected anything */
 			}
@@ -1938,7 +1938,7 @@ USAGEMODE HRESULT CAN_BOA_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, 
     return hResult;
 }
 /******************************************************************************
-  Function Name    :  CAN_BOA_SelectHwInterface
+  Function Name    :  CAN_ETAS_BOA_SelectHwInterface
   Input(s)         :  const INTERFACE_HW& sSelHwInterface)
   Output           :  S_OK for sucess, S_FALSE for failure
   Functionality    :  Selects the hardware interface selected by the user.
@@ -1947,7 +1947,7 @@ USAGEMODE HRESULT CAN_BOA_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, 
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_SelectHwInterface(const INTERFACE_HW_LIST& asSelHwInterface, INT /*nCount*/)
+USAGEMODE HRESULT CAN_ETAS_BOA_SelectHwInterface(const INTERFACE_HW_LIST& asSelHwInterface, INT /*nCount*/)
 {   
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_LISTED, ERR_IMPROPER_STATE);
 
@@ -2029,7 +2029,7 @@ USAGEMODE HRESULT CAN_BOA_SelectHwInterface(const INTERFACE_HW_LIST& asSelHwInte
 }
 
 /******************************************************************************
-  Function Name    :  CAN_BOA_DeselectHwInterface
+  Function Name    :  CAN_ETAS_BOA_DeselectHwInterface
   Input(s)         :  
   Output           :  S_OK for sucess, S_FALSE for failure
   Functionality    :  Deselects the selected hardware interface.
@@ -2038,7 +2038,7 @@ USAGEMODE HRESULT CAN_BOA_SelectHwInterface(const INTERFACE_HW_LIST& asSelHwInte
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_DeselectHwInterface(void)
+USAGEMODE HRESULT CAN_ETAS_BOA_DeselectHwInterface(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
@@ -2098,10 +2098,10 @@ USAGEMODE HRESULT CAN_BOA_DeselectHwInterface(void)
 ******************************************************************************/
 BOOL Callback_DILBOA(BYTE /*Argument*/, PBYTE pDatStream, INT /*Length*/)
 {
-    return (CAN_BOA_SetConfigData((CHAR *) pDatStream, 0) == S_OK);
+    return (CAN_ETAS_BOA_SetConfigData((CHAR *) pDatStream, 0) == S_OK);
 }
 /******************************************************************************
-  Function Name    :  CAN_BOA_DisplayConfigDlg
+  Function Name    :  CAN_ETAS_BOA_DisplayConfigDlg
   Input(s)         :  PCHAR& InitData, INT& Length
   Output           :  S_OK for success, S_FALSE for failure
   Functionality    :  Displays the controller configuration dialog.
@@ -2112,7 +2112,7 @@ BOOL Callback_DILBOA(BYTE /*Argument*/, PBYTE pDatStream, INT /*Length*/)
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_DisplayConfigDlg(PCHAR& InitData, INT& Length)
+USAGEMODE HRESULT CAN_ETAS_BOA_DisplayConfigDlg(PCHAR& InitData, INT& Length)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
     VALIDATE_POINTER_RETURN_VAL(InitData, WARN_INITDAT_NCONFIRM);
@@ -2129,7 +2129,7 @@ USAGEMODE HRESULT CAN_BOA_DisplayConfigDlg(PCHAR& InitData, INT& Length)
 	if (sg_nNoOfChannels > 0)
 	{
 		Result = DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DILBOA,
-						psContrlDets, sg_nNoOfChannels, DRIVER_CAN_BOA);
+						psContrlDets, sg_nNoOfChannels, DRIVER_CAN_ETAS_BOA);
 		switch (Result)
 		{
 			case WARNING_NOTCONFIRMED:
@@ -2140,7 +2140,7 @@ USAGEMODE HRESULT CAN_BOA_DisplayConfigDlg(PCHAR& InitData, INT& Length)
 			case INFO_INIT_DATA_CONFIRMED:
 			{    
 				Length = sizeof(SCONTROLER_DETAILS) * defNO_OF_CHANNELS;
-				Result = CAN_BOA_SetConfigData(InitData, Length);
+				Result = CAN_ETAS_BOA_SetConfigData(InitData, Length);
                 if (Result == S_OK)
                 {
                     Result = INFO_INITDAT_CONFIRM_CONFIG;
@@ -2165,7 +2165,7 @@ USAGEMODE HRESULT CAN_BOA_DisplayConfigDlg(PCHAR& InitData, INT& Length)
     return Result;
 }
 /******************************************************************************
-  Function Name    :  CAN_BOA_SetConfigData
+  Function Name    :  CAN_ETAS_BOA_SetConfigData
   Input(s)         :  PCHAR pInitData, INT Length
   Output           :  S_OK for sucess, S_FALSE for failure
   Functionality    :  Sets the controller configuration data supplied by 
@@ -2175,7 +2175,7 @@ USAGEMODE HRESULT CAN_BOA_DisplayConfigDlg(PCHAR& InitData, INT& Length)
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_SetConfigData(PCHAR pInitData, INT /*Length*/)
+USAGEMODE HRESULT CAN_ETAS_BOA_SetConfigData(PCHAR pInitData, INT /*Length*/)
 {
     HRESULT hResult = WARNING_NOTCONFIRMED;
 
@@ -2218,7 +2218,7 @@ USAGEMODE HRESULT CAN_BOA_SetConfigData(PCHAR pInitData, INT /*Length*/)
 }
 
 /******************************************************************************
-  Function Name    :  CAN_BOA_StartHardware
+  Function Name    :  CAN_ETAS_BOA_StartHardware
   Input(s)         :  
   Output           :  S_OK for sucess, S_FALSE for failure
   Functionality    :  Starts the controller.
@@ -2227,7 +2227,7 @@ USAGEMODE HRESULT CAN_BOA_SetConfigData(PCHAR pInitData, INT /*Length*/)
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_StartHardware(void)
+USAGEMODE HRESULT CAN_ETAS_BOA_StartHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
@@ -2271,7 +2271,7 @@ USAGEMODE HRESULT CAN_BOA_StartHardware(void)
 }
 
 /******************************************************************************
-  Function Name    :  CAN_BOA_StopHardware
+  Function Name    :  CAN_ETAS_BOA_StopHardware
   Input(s)         :  
   Output           :  S_OK for sucess, S_FALSE for failure
   Functionality    :  Stops the controller.
@@ -2280,7 +2280,7 @@ USAGEMODE HRESULT CAN_BOA_StartHardware(void)
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_StopHardware(void)
+USAGEMODE HRESULT CAN_ETAS_BOA_StopHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
 
@@ -2328,7 +2328,7 @@ USAGEMODE HRESULT CAN_BOA_StopHardware(void)
 }
 
 /******************************************************************************
-  Function Name    :  CAN_BOA_ResetHardware
+  Function Name    :  CAN_ETAS_BOA_ResetHardware
   Input(s)         :  
   Output           :  S_OK for sucess, S_FALSE for failure
   Functionality    :  Resets the controller.
@@ -2337,12 +2337,12 @@ USAGEMODE HRESULT CAN_BOA_StopHardware(void)
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_ResetHardware(void)
+USAGEMODE HRESULT CAN_ETAS_BOA_ResetHardware(void)
 {
     return WARN_DUMMY_API;
 }
 /******************************************************************************
-  Function Name    :  CAN_BOA_GetTxMsgBuffer
+  Function Name    :  CAN_ETAS_BOA_GetTxMsgBuffer
   Input(s)         :  
   Output           :  S_OK for sucess, S_FALSE for failure
   Functionality    :  Gets the Tx queue configured.
@@ -2351,13 +2351,13 @@ USAGEMODE HRESULT CAN_BOA_ResetHardware(void)
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
+USAGEMODE HRESULT CAN_ETAS_BOA_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 {
     return WARN_DUMMY_API;
 }
 
 /******************************************************************************
-  Function Name    :  CAN_BOA_SendMsg
+  Function Name    :  CAN_ETAS_BOA_SendMsg
   Input(s)         :  DWORD dwClientID, const STCAN_MSG& sCanTxMsg
   Output           :  
   Functionality    :  Sends STCAN_MSG structure from the client dwClientID.   
@@ -2366,7 +2366,7 @@ USAGEMODE HRESULT CAN_BOA_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
+USAGEMODE HRESULT CAN_ETAS_BOA_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
     HRESULT hResult = S_FALSE;
@@ -2410,7 +2410,7 @@ USAGEMODE HRESULT CAN_BOA_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
 }
 
 /******************************************************************************
-  Function Name    :  CAN_BOA_GetBoardInfo
+  Function Name    :  CAN_ETAS_BOA_GetBoardInfo
   Input(s)         :  s_BOARDINFO& BoardInfo
   Output           :  
   Functionality    :  Gets board info.   
@@ -2419,13 +2419,13 @@ USAGEMODE HRESULT CAN_BOA_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
+USAGEMODE HRESULT CAN_ETAS_BOA_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
 {
     return WARN_DUMMY_API;
 }
 
 /******************************************************************************
-  Function Name    :  CAN_BOA_GetBusConfigInfo
+  Function Name    :  CAN_ETAS_BOA_GetBusConfigInfo
   Input(s)         :  BYTE* BusInfo
   Output           :  
   Functionality    :  Gets bus config info.   
@@ -2434,13 +2434,13 @@ USAGEMODE HRESULT CAN_BOA_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_GetBusConfigInfo(BYTE* /*BusInfo*/)
+USAGEMODE HRESULT CAN_ETAS_BOA_GetBusConfigInfo(BYTE* /*BusInfo*/)
 {
     return WARN_DUMMY_API;
 }
 
 /******************************************************************************
-  Function Name    :  CAN_BOA_GetVersionInfo
+  Function Name    :  CAN_ETAS_BOA_GetVersionInfo
   Input(s)         :  BYTE* BusInfo
   Output           :  
   Functionality    :  Gets driver version info.  
@@ -2449,13 +2449,13 @@ USAGEMODE HRESULT CAN_BOA_GetBusConfigInfo(BYTE* /*BusInfo*/)
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
+USAGEMODE HRESULT CAN_ETAS_BOA_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
 {
     return WARN_DUMMY_API;
 }
 
 /******************************************************************************
-  Function Name    :  CAN_BOA_GetVersionInfo
+  Function Name    :  CAN_ETAS_BOA_GetVersionInfo
   Input(s)         :  CHAR* acErrorStr, INT nLength
   Output           :  
   Functionality    :  Gets last occured error and puts inside acErrorStr.  
@@ -2464,13 +2464,13 @@ USAGEMODE HRESULT CAN_BOA_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_GetLastErrorString(CHAR* /*acErrorStr*/, INT /*nLength*/)
+USAGEMODE HRESULT CAN_ETAS_BOA_GetLastErrorString(CHAR* /*acErrorStr*/, INT /*nLength*/)
 {
     return WARN_DUMMY_API;
 }
 
 /******************************************************************************
-  Function Name    :  CAN_BOA_FilterFrames
+  Function Name    :  CAN_ETAS_BOA_FilterFrames
   Input(s)         :  FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds,
                       UINT nLength.
   Output           :  
@@ -2481,13 +2481,13 @@ USAGEMODE HRESULT CAN_BOA_GetLastErrorString(CHAR* /*acErrorStr*/, INT /*nLength
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
+USAGEMODE HRESULT CAN_ETAS_BOA_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
 {
     return WARN_DUMMY_API;
 }
 
 /******************************************************************************
-  Function Name    :  CAN_BOA_GetControllerParams
+  Function Name    :  CAN_ETAS_BOA_GetControllerParams
   Input(s)         :  LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
   Output           :  
   Functionality    :  Gets the controller param eContrParam of the channel.
@@ -2497,7 +2497,7 @@ USAGEMODE HRESULT CAN_BOA_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL 
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
+USAGEMODE HRESULT CAN_ETAS_BOA_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
 {
     HRESULT hResult = S_OK;
     if ((sg_bCurrState == STATE_HW_INTERFACE_SELECTED) || (sg_bCurrState == STATE_CONNECTED))
@@ -2554,7 +2554,7 @@ USAGEMODE HRESULT CAN_BOA_GetControllerParams(LONG& lParam, UINT nChannel, ECONT
 }
 
 /******************************************************************************
-  Function Name    :  CAN_BOA_GetErrorCount
+  Function Name    :  CAN_ETAS_BOA_GetErrorCount
   Input(s)         :  SERROR_CNT& sErrorCnt, UINT nChannel, 
                       ECONTR_PARAM eContrParam
   Output           :  
@@ -2564,7 +2564,7 @@ USAGEMODE HRESULT CAN_BOA_GetControllerParams(LONG& lParam, UINT nChannel, ECONT
   Author(s)        :  Pradeep Kadoor
   Date Created     :  21.05.2010
 ******************************************************************************/
-USAGEMODE HRESULT CAN_BOA_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam)
+USAGEMODE HRESULT CAN_ETAS_BOA_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam)
 {
     HRESULT hResult = S_OK;
     if ((sg_bCurrState == STATE_CONNECTED) || (sg_bCurrState == STATE_HW_INTERFACE_SELECTED))

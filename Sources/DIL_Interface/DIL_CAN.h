@@ -177,7 +177,7 @@ public:
     void vSelectInterface_CAN_Usb(void);
     void vSelectInterface_CAN_ETAS_ES581(void);
     void vSelectInterface_CAN_STUB(void);
-    void vSelectInterface_CAN_BOA(void);
+    void vSelectInterface_CAN_ETAS_BOA(void);
 
 };
 

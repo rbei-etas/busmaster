@@ -85,7 +85,7 @@
 #define IDD_DLG_CHANGE_REGISTERS1       3003
 #define IDD_DLG_CHANGE_REGISTERS_ES581  3003
 #define IDC_LIST1                       3004
-#define IDD_DLG_CHANGE_REGISTERS_CAN_BOA 3004
+#define IDD_DLG_CHANGE_REGISTERS_CAN_ETAS_BOA 3004
 #define IDC_NAME                        3005
 #define IDC_VENDOR                      3006
 #define IDC_DESC                        3007

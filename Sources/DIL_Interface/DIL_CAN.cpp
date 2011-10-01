@@ -31,7 +31,7 @@
 #include "CAN_PEAK_USB_Extern.h"
 #include "CAN_ETAS_ES581/CAN_ETAS_ES581_Extern.h"
 #include "CAN_STUB/CAN_STUB_Extern.h"
-#include "CAN_BOA/CAN_BOA_Extern.h"
+#include "CAN_ETAS_BOA/CAN_ETAS_BOA_Extern.h"
 #include "Dil_CAN.h"
 
 
@@ -45,7 +45,7 @@ static ENTRY_DIL sg_ListDIL[DIL_TOTAL] =
 {
     {DRIVER_CAN_STUB,       _T("CAN_Simulation")},
     {DRIVER_CAN_ETAS_ES581, _T("CAN_ES581")     },
-    {DRIVER_CAN_BOA,        _T("CAN_BOA")       },
+    {DRIVER_CAN_ETAS_BOA,        _T("CAN_ETAS_BOA")       },
     {DRIVER_CAN_PEAK_USB,   _T("CAN_USB_PEAK")  },
     {DRIVER_CAN_PEAK_PP,    _T("CAN_PP_PEAK")   }
 };
@@ -206,33 +206,33 @@ void CDIL_CAN::vSelectInterface_CAN_Parallel_Port(void)
 }
 
 /**
- * Helper Function for CAN_BOA Interface
+ * Helper Function for CAN_ETAS_BOA Interface
  */
-void CDIL_CAN::vSelectInterface_CAN_BOA(void)
+void CDIL_CAN::vSelectInterface_CAN_ETAS_BOA(void)
 {
-    m_pfPerformInitOperations = CAN_BOA_PerformInitOperations;
-    m_pfPerformClosureOperations = CAN_BOA_PerformClosureOperations;
-    m_pfGetTimeModeMapping = CAN_BOA_GetTimeModeMapping;
-    m_pfListHwInterfaces = CAN_BOA_ListHwInterfaces;
-    m_pfSelectHwInterface = CAN_BOA_SelectHwInterface;
-    m_pfDeselectHwInterfaces = CAN_BOA_DeselectHwInterface;
-    m_pfDisplayConfigDlg = CAN_BOA_DisplayConfigDlg;
-    m_pfSetConfigData = CAN_BOA_SetConfigData;
-    m_pfStartHardware = CAN_BOA_StartHardware;
-    m_pfStopHardware = CAN_BOA_StopHardware;
-    m_pfResetHardware = CAN_BOA_ResetHardware;
-    m_pfGetTxMsgBuffer = CAN_BOA_GetTxMsgBuffer;
-    m_pfSendMsg = CAN_BOA_SendMsg;
-    m_pfGetBoardInfo = CAN_BOA_GetBoardInfo;
-    m_pfGetBusConfigInfo = CAN_BOA_GetBusConfigInfo;
-    m_pfGetVersionInfo = CAN_BOA_GetVersionInfo;
-    m_pfGetLastErrorString = CAN_BOA_GetLastErrorString;
-    m_pfFilterFrames = CAN_BOA_FilterFrames;
-    m_pfManageMsgBuf = CAN_BOA_ManageMsgBuf;
-    m_pfRegisterClient = CAN_BOA_RegisterClient;
-    m_pfGetCntrlStatus = CAN_BOA_GetCntrlStatus;
-    m_pfGetControllerParams = CAN_BOA_GetControllerParams;
-    m_pfGetErrorCount = CAN_BOA_GetErrorCount;
+    m_pfPerformInitOperations = CAN_ETAS_BOA_PerformInitOperations;
+    m_pfPerformClosureOperations = CAN_ETAS_BOA_PerformClosureOperations;
+    m_pfGetTimeModeMapping = CAN_ETAS_BOA_GetTimeModeMapping;
+    m_pfListHwInterfaces = CAN_ETAS_BOA_ListHwInterfaces;
+    m_pfSelectHwInterface = CAN_ETAS_BOA_SelectHwInterface;
+    m_pfDeselectHwInterfaces = CAN_ETAS_BOA_DeselectHwInterface;
+    m_pfDisplayConfigDlg = CAN_ETAS_BOA_DisplayConfigDlg;
+    m_pfSetConfigData = CAN_ETAS_BOA_SetConfigData;
+    m_pfStartHardware = CAN_ETAS_BOA_StartHardware;
+    m_pfStopHardware = CAN_ETAS_BOA_StopHardware;
+    m_pfResetHardware = CAN_ETAS_BOA_ResetHardware;
+    m_pfGetTxMsgBuffer = CAN_ETAS_BOA_GetTxMsgBuffer;
+    m_pfSendMsg = CAN_ETAS_BOA_SendMsg;
+    m_pfGetBoardInfo = CAN_ETAS_BOA_GetBoardInfo;
+    m_pfGetBusConfigInfo = CAN_ETAS_BOA_GetBusConfigInfo;
+    m_pfGetVersionInfo = CAN_ETAS_BOA_GetVersionInfo;
+    m_pfGetLastErrorString = CAN_ETAS_BOA_GetLastErrorString;
+    m_pfFilterFrames = CAN_ETAS_BOA_FilterFrames;
+    m_pfManageMsgBuf = CAN_ETAS_BOA_ManageMsgBuf;
+    m_pfRegisterClient = CAN_ETAS_BOA_RegisterClient;
+    m_pfGetCntrlStatus = CAN_ETAS_BOA_GetCntrlStatus;
+    m_pfGetControllerParams = CAN_ETAS_BOA_GetControllerParams;
+    m_pfGetErrorCount = CAN_ETAS_BOA_GetErrorCount;
 }
 /* ROUTER CODE FINISHES */
 
@@ -351,16 +351,16 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
             }
 
         }
-        else if (dwDriverID == DRIVER_CAN_BOA)
+        else if (dwDriverID == DRIVER_CAN_ETAS_BOA)
         {
             pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Selecting DAL_NONE..."));
             // First select the dummy interface
             DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
 
             // First set the application parameters.
-            hResult = CAN_BOA_SetAppParams(hWndOwner, pILog);
+            hResult = CAN_ETAS_BOA_SetAppParams(hWndOwner, pILog);
             // Next load the driver library
-            hResult = CAN_BOA_LoadDriverLibrary();
+            hResult = CAN_ETAS_BOA_LoadDriverLibrary();
             switch (hResult)
             {
                 case S_OK:
@@ -368,8 +368,8 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                 {
                     pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library successful..."));
                     hResult = S_OK;
-                    CAN_BOA_PerformInitOperations();
-                    vSelectInterface_CAN_BOA();
+                    CAN_ETAS_BOA_PerformInitOperations();
+                    vSelectInterface_CAN_ETAS_BOA();
                 }
                 break;
                 default:
@@ -485,9 +485,9 @@ DWORD CDIL_CAN::DILC_GetSelectedDriver(void)
     {
         Result = DRIVER_CAN_PEAK_USB;
     }
-    else if (m_pfDisplayConfigDlg == CAN_BOA_DisplayConfigDlg)
+    else if (m_pfDisplayConfigDlg == CAN_ETAS_BOA_DisplayConfigDlg)
     {
-        Result = DRIVER_CAN_BOA;
+        Result = DRIVER_CAN_ETAS_BOA;
     }
     else if (m_pfDisplayConfigDlg == CAN_STUB_DisplayConfigDlg)
     {
