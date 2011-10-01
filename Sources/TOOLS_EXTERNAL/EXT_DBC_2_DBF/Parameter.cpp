@@ -217,8 +217,6 @@ to get the Other Value of Attributes form CanoeDB file.
 int CParameters::FormatParamValue(char *pcLine)
 {
     char *pcToken;
-    char acTemp[defCON_TEMP_LEN];
-    char *pcTemp = acTemp;
     CParameterValues pVal;
 
     //get object id
@@ -271,9 +269,9 @@ int CParameters::FormatParamValue(char *pcLine)
 int CParameters::Format(char *pcLine)
 {
     char *pcToken;
-    char acTemp[defCON_TEMP_LEN],*pcTemp;
+    char acTemp[defCON_TEMP_LEN];
+    char *pcTemp = acTemp;
     int success=1;
-    pcTemp = acTemp;
 
     //get object id
 

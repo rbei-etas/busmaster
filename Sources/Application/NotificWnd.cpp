@@ -532,10 +532,10 @@ void CNotificWnd::CopyNFDataFromBuffer(BYTE* SrcBuffer)
 /*****************************************************************************/
 BOOL CNotificWnd::bIsConfigChanged()
 {	
-	int nBufferCount = 0;
 	BOOL bReturn = FALSE;
-	BYTE *SrcBuffer = NULL;
 #if 0
+	int nBufferCount = 0;
+	BYTE *SrcBuffer = NULL;
 	CConfigDetails::ouGetConfigDetailsObject().bGetData((void *&)(SrcBuffer),
 											nBufferCount,NOTIFIC_WND_CONFIG_SECTION_NAME);
 	if (SrcBuffer != NULL)

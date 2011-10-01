@@ -1021,7 +1021,7 @@ BOOL CListCtrlEx::OnEraseBkgnd(CDC* pDC)
         omClientRect.top=omItemPos.y ;
         GetItemPosition(i+1,&omItemPos);
         omClientRect.bottom =omItemPos.y;
-        CBrush omBrush(i %2 ? m_colRow1 : m_colRow2);
+        CBrush omBrush((i % 2) ? m_colRow1 : m_colRow2);
         pDC->FillRect(&omClientRect, &omBrush);
         omBrush.DeleteObject();
     }

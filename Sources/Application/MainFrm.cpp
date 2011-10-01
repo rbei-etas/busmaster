@@ -3184,7 +3184,7 @@ CString CMainFrame::omStrConvByteArrToStr(CByteArray *byteArr)
       //Following piece of code converts
       //the chars to the respective toASCII
       //values before adding to the string
-      if ((firstCh >= 0) && (firstCh <=9))
+      if (firstCh <= 9)
          {
          firstCh+='0';
          }
@@ -3192,7 +3192,7 @@ CString CMainFrame::omStrConvByteArrToStr(CByteArray *byteArr)
          {
          firstCh+=87;
          }
-      if ((secondCh >= 0) && (secondCh <=9))
+      if (secondCh <= 9)
          {
          secondCh+='0';
          }

@@ -409,8 +409,6 @@ void CParameters::Format_ParamDef(char *pcLine,int index)
 void CParameters::GetParam_Def(char *pcLine)
 {
     char *pcToken;
-    char acTemp[defCON_CHAR_LEN];
-	char *pcTemp = acTemp;
 
     //get Param name
     pcToken = strtok(pcLine,"\""); 
@@ -693,18 +691,12 @@ bool CParameters::isValid_hexRange(unsigned int minValue,unsigned int maxValue)
 {
     bool rResult=false;
     //validates the min value
-    if(minValue<0)
-    {
-        m_MinVal.uiValue =0;
-        rResult=rResult|true;
-    }
-    else
-        m_MinVal.uiValue=minValue;
+    m_MinVal.uiValue=minValue;
     //validates the max value
     if(maxValue==0 || maxValue <m_MinVal.uiValue)
     {
         m_MaxVal.uiValue=0xffffffff; 
-        rResult=rResult|true;
+        rResult=true;
     }
     else
         m_MaxVal.uiValue=maxValue;
