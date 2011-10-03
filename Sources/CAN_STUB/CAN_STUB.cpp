@@ -14,11 +14,12 @@
  */
 
 /**
- * \file      CAN_STUB.cpp
+ * \file      CAN_STUB/CAN_STUB.cpp
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Implementation of CStub
  */
-// Stub.cpp : Implementation of CStub
 
 #include "CAN_STUB_stdafx.h"
 #include "CAN_STUB.h"
@@ -78,22 +79,23 @@ BEGIN_MESSAGE_MAP(CCAN_STUBApp, CWinApp)
 END_MESSAGE_MAP()
 
 
-// CCAN_STUBApp construction
-
+/**
+ * CCAN_STUBApp construction
+ */
 CCAN_STUBApp::CCAN_STUBApp()
 {
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
 }
 
-
-// The one and only CCAN_STUBApp object
-
+/**
+ * The one and only CCAN_STUBApp object
+ */
 CCAN_STUBApp theApp;
 
-
-// CCAN_STUBApp initialization
-
+/**
+ * CCAN_STUBApp initialization
+ */
 BOOL CCAN_STUBApp::InitInstance()
 {
 	CWinApp::InitInstance();
@@ -112,17 +114,31 @@ static LARGE_INTEGER    sg_QueryTickCount;
 static UINT64           sg_TimeStampRef     = 0x0;
 static HWND             sg_hOwnerWnd        = NULL;
 
-// Broker thread for the bus emulation
+/**
+ * Broker thread for the bus emulation
+ */
 static CPARAM_THREADPROC sg_sBrokerObjBusEmulation;
 
-// Different action codes
+/**
+ * Different action codes
+ */
 enum
 {
-    CONNECT = 0x64, DISCONNECT, STOP_HARDWARE, START_HARDWARE, SEND_MESSAGE, 
-    GET_TIME_MAP, REGISTER, UNREGISTER,
+    CONNECT = 0x64,
+	DISCONNECT,
+	STOP_HARDWARE,
+	START_HARDWARE,
+	SEND_MESSAGE, 
+    GET_TIME_MAP,
+	REGISTER,
+	UNREGISTER,
 };
-//Buffer to read msg from the PIPE
-/* This buffer include CAN Msg + 1 Byte to indicate TX/RX + UINT64 to indicate timestamp*/
+
+/**
+ * \brief Buffer to read msg from the PIPE
+ *
+ * This buffer include CAN Msg + 1 Byte to indicate TX/RX + UINT64 to indicate timestamp
+ */
 struct tagPIPE_CANMSG
 {
     BYTE m_byTxRxFlag;
@@ -136,7 +152,10 @@ const BYTE SIZE_TIMESTAMP = sizeof(UINT64);
 
 #define MAX_CLIENT_ALLOWED 16
 #define MAX_BUFF_ALLOWED 16
-/* Client and Client Buffer map */
+
+/**
+ * Client and Client Buffer map
+ */
 struct tagClientBufMap
 {
     DWORD dwClientID;
@@ -162,31 +181,34 @@ typedef tagClientBufMap sClientBufMap;
 typedef sClientBufMap SCLIENTBUFMAP;
 typedef sClientBufMap* PSCLIENTBUFMAP;
 
-
-
-//global client count
+/**
+ * global client count
+ */
 UINT sg_unClientCnt = 0;
 static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED];
 // Forward declarations
 
-// Application buffer, logging interface and client id
+/**
+ * Application buffer, logging interface and client id
+ */
 static CPARAM_THREADPROC sg_sParmRThreadStub;
 static Base_WrapperErrorLogger* sg_pIlog   = NULL;
 
 /* Starts definitions of static global variables */
-
 static USHORT sg_ushTempClientID = 0;
 static HANDLE sg_hTmpClientHandle = NULL;
 static HANDLE sg_hTmpPipeHandle = NULL;
-
 /* Ends definitions of static global variables */
 
 
-// Buffer for the driver operation related error messages
+/**
+ * Buffer for the driver operation related error messages
+ */
 static CHAR sg_acErrStr[MAX_STRING] = {'\0'};
 
-/* Starts code for the state machine */
-
+/**
+ * Starts code for the state machine
+ */
 enum
 {
     STATE_PRIMORDIAL    = 0x0,
@@ -496,8 +518,6 @@ USAGEMODE HRESULT CAN_STUB_DisplayConfigDlg(PCHAR& InitData, int& Length)
     return Result;
 }
 
-
-
 static BOOL bClientExist(TCHAR* pcClientName, INT& Index)
 {    
     for (UINT i = 0; i < sg_unClientCnt; i++)
@@ -510,6 +530,7 @@ static BOOL bClientExist(TCHAR* pcClientName, INT& Index)
     }
     return FALSE;
 }
+
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
 {
     BOOL bResult = FALSE;
@@ -524,6 +545,7 @@ static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
     }
     return bResult;
 }
+
 static BOOL bRemoveClient(DWORD dwClientId)
 {
     BOOL bResult = FALSE;
@@ -585,7 +607,10 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
     }
     return bReturn;
 }
-/* Register Client */
+
+/**
+ * Register Client
+ */
 USAGEMODE HRESULT CAN_STUB_RegisterClient(BOOL bRegister,DWORD& ClientID, TCHAR* pacClientName)
 {
     USES_CONVERSION;    
@@ -709,6 +734,7 @@ USAGEMODE HRESULT CAN_STUB_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBu
     
     return hResult;
 }
+
 USAGEMODE HRESULT CAN_STUB_StopHardware(void)
 {
     HRESULT hResult = PerformAnOperation(DISCONNECT);
@@ -856,10 +882,12 @@ USAGEMODE HRESULT CAN_STUB_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& unCntr
 
     return hResult;
 }
+
 USAGEMODE HRESULT CAN_STUB_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
 {
     return S_FALSE;
 }
+
 USAGEMODE HRESULT CAN_STUB_GetBusConfigInfo(BYTE* /*BusInfo*/)
 {
     return S_FALSE;
@@ -869,6 +897,7 @@ USAGEMODE HRESULT CAN_STUB_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
 {
     return S_FALSE;
 }
+
 USAGEMODE HRESULT CAN_STUB_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
 {
     memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
@@ -898,7 +927,6 @@ USAGEMODE HRESULT CAN_STUB_GetLastErrorString(CHAR* acErrorStr, int nLength)
 
     return S_OK;
 }
-
 
 USAGEMODE HRESULT CAN_STUB_PerformInitOperations(void)
 {
@@ -1000,6 +1028,7 @@ USAGEMODE HRESULT CAN_STUB_GetErrorCount(SERROR_CNT& sErrorCnt, UINT /*nChannel*
     memset(&sErrorCnt, 0, sizeof(SERROR_CNT));
     return S_OK;
 }
+
 DWORD WINAPI BrokerThreadBusEmulation(LPVOID pVoid)
 {
 	CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC *) pVoid;
@@ -1100,8 +1129,8 @@ DWORD WINAPI BrokerThreadBusEmulation(LPVOID pVoid)
     return 0;
 }
 
+/* Worker function definitions: start */
 
-// Worker function definitions: start
 HRESULT Worker_Connect(ISimENG* pISimENGLoc, Base_WrapperErrorLogger* pIlogLoc)
 {
     if (GetCurrState() == STATE_PRIMORDIAL)
@@ -1321,5 +1350,4 @@ HRESULT Worker_UnregisterClient(ISimENG* pISimENG, Base_WrapperErrorLogger* /*pI
     return S_OK;
 }
 
-// Worker function definitions: end
-
+/* Worker function definitions: end */

@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      CAN_ICS_neoVI_Channel.cpp
+ * \file      CAN_ICS_neoVI/CAN_ICS_neoVI_Channel.cpp
  * \brief     Implementation file for CChannel class
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
@@ -32,15 +32,9 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-/*******************************************************************************
-  Function Name  : CChannel
-  Description    : Standard default constructor
-  Member of      : CChannel
-  Functionality  : This will initialise local variables
-  Author(s)      : Raja N
-  Date Created   : 21.2.2005
-  Modifications  :
-*******************************************************************************/
+/**
+ * Standard default constructor
+ */
 CChannel::CChannel()
 {
     // Init members with default value
@@ -79,32 +73,21 @@ CChannel::CChannel()
     m_bRxErrorExecuted = FALSE;
 }
 
-/*******************************************************************************
-  Function Name  : ~CChannel
-  Description    : Standard Destructor
-  Member of      : CChannel
-  Functionality  : -
-  Author(s)      : Raja N
-  Date Created   : 21.2.2005
-  Modifications  :
-*******************************************************************************/
+/**
+ * Standard Destructor
+ */
 CChannel::~CChannel()
 {
 
 }
 
-/*******************************************************************************
-  Function Name  : vUpdateErrorCounter
-  Input(s)       : ucTxError - Tx Error Value
-                   ucRxError - Rx Error Value
-  Output         : -
-  Functionality  : Updates the error counter value and controller state as per
-                   the error counter values
-  Member of      : CChannel
-  Author(s)      : Raja N
-  Date Created   : 8.3.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \param[in] ucTxError Tx Error Value
+ * \param[in] ucRxError Rx Error Value
+ *
+ * Updates the error counter value and controller state as per
+ * the error counter values
+ */
 void CChannel::vUpdateErrorCounter(UCHAR ucTxError, UCHAR ucRxError)
 {
     // Update Tx Error counter and peak Tx Error Counter
@@ -143,17 +126,10 @@ void CChannel::vUpdateErrorCounter(UCHAR ucTxError, UCHAR ucRxError)
     }
 }
 
-/*******************************************************************************
-  Function Name  : vResetChannel
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will reset all state related information. This
-                   will be called during the hardware reset of the machine
-  Member of      : CChannel
-  Author(s)      : Raja N
-  Date Created   : 8.3.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function will reset all state related information. This
+ * will be called during the hardware reset of the machine
+ */
 void CChannel::vResetChannel()
 {
      // Controller state

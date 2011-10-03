@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      NotificListbox.h
+ * \file      Application/TraceWnd/NotificListbox.h
  * \brief     Interface file for CNotificListbox class
  * \author    Ravikumar Patil
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.

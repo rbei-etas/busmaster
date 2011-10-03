@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      CAN_STUB.h
+ * \file      CAN_STUB/CAN_STUB.h
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
@@ -25,10 +25,9 @@
 #endif
 
 
-// CCAN_STUBApp
-// See CAN_STUB.cpp for the implementation of this class
-//
-
+/**
+ * See CAN_STUB.cpp for the implementation of this class
+ */
 class CCAN_STUBApp : public CWinApp
 {
 public:

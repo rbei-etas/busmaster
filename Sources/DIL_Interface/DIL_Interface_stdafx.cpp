@@ -14,13 +14,14 @@
  */
 
 /**
- * \file      DIL_Interface_stdafx.cpp
+ * \file      DIL_Interface/DIL_Interface_stdafx.cpp
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * stdafx.cpp : source file that includes just the standard includes
+ * DIL_Interface.pch will be the pre-compiled header
+ * stdafx.obj will contain the pre-compiled type information
  */
-// stdafx.cpp : source file that includes just the standard includes
-// DIL_Interface.pch will be the pre-compiled header
-// stdafx.obj will contain the pre-compiled type information
 
 #include "DIL_Interface_stdafx.h"
 

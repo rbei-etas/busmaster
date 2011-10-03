@@ -14,15 +14,13 @@
  */
 
 /**
- * \file      DILC_Dummy.h
+ * \file      DIL_Interface/DILC_Dummy.h
  * \brief     Declaration file for dummy DIL functions
  * \authors   Ratnadip Choudhury, Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Declaration file for dummy DIL functions
  */
-
-// Dummy.h : Declaration of the functions
 
 HRESULT DILC_Dummy_PerformInitOperations(void);
 HRESULT DILC_Dummy_PerformClosureOperations(void);

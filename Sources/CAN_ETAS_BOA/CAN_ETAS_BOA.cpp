@@ -14,15 +14,14 @@
  */
 
 /**
- * \file      CAN_ETAS_BOA.cpp
+ * \file      CAN_ETAS_BOA/CAN_ETAS_BOA.cpp
  * \brief     Source file for BOA DIL functions
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Source file for BOA DIL functions
+ * Defines the initialization routines for the DLL.
  */
-// CAN_ETAS_BOA.cpp : Defines the initialization routines for the DLL.
-//
 
 #include "CAN_ETAS_BOA_stdafx.h"
 #include "DataTypes/Base_WrapperErrorLogger.h"
@@ -45,30 +44,35 @@ const BYTE FILTER_REMOVE = 0x02;
 const BYTE QUEUE_ADD = 0x01;
 const BYTE QUEUE_DESTROY = 0x02;
 
-/* Channel information */
+/**
+ * Channel information
+ */
 typedef struct tagCHANNEL
 {
-    OCI_URIName m_acURI;// URI of the Controller
-    OCI_ControllerHandle m_OCI_HwHandle;// Controller handle
-    OCI_CANConfiguration m_OCI_CANConfig;// Controller configuration
-    OCI_CANControllerProperties m_OCI_CntrlProp;// Controller properties
-    OCI_QueueHandle m_OCI_RxQueueHandle;// Controller receive queue handle
-    OCI_CANRxQueueConfiguration m_OCI_RxQueueCfg;// Controller receive queue configuration
-    OCI_QueueHandle m_OCI_TxQueueHandle;// Controller transmit queue handle
-    OCI_CANTxQueueConfiguration m_OCI_TxQueueCfg;// Controller transmit queue configuration
-    OCI_CANRxFilter m_OCI_FrameFilter;// Controller frame filter 
-    OCI_CANEventFilter m_OCI_EventFilter;// Controller event filter 
-    OCI_CANErrorFrameFilter m_OCI_ErrorFilter;// Controller error filter
+    OCI_URIName m_acURI; /*< URI of the Controller */
+    OCI_ControllerHandle m_OCI_HwHandle; /*< Controller handle */
+    OCI_CANConfiguration m_OCI_CANConfig; /*< Controller configuration */
+    OCI_CANControllerProperties m_OCI_CntrlProp; /*< Controller properties */
+    OCI_QueueHandle m_OCI_RxQueueHandle; /*< Controller receive queue handle */
+    OCI_CANRxQueueConfiguration m_OCI_RxQueueCfg; /*< Controller receive queue configuration */
+    OCI_QueueHandle m_OCI_TxQueueHandle; /*< Controller transmit queue handle */
+    OCI_CANTxQueueConfiguration m_OCI_TxQueueCfg; /*< Controller transmit queue configuration */
+    OCI_CANRxFilter m_OCI_FrameFilter; /*< Controller frame filter */
+    OCI_CANEventFilter m_OCI_EventFilter; /*< Controller event filter */
+    OCI_CANErrorFrameFilter m_OCI_ErrorFilter; /*< Controller error filter */
     OCI_InternalErrorEventFilter m_OCI_InternalErrorFilter;
-    UCHAR m_ucControllerState;// Controller state
-    UCHAR m_ucTxErrorCounter; // Controller Tx error counter 
-    UCHAR m_ucRxErrorCounter;// Controller Rx error counter
-    UCHAR m_ucPeakRxErrorCounter;// Controller peak Rx error counter
-    UCHAR m_ucPeakTxErrorCounter;// Controller peak Tx error counter
+    UCHAR m_ucControllerState; /*< Controller state */
+    UCHAR m_ucTxErrorCounter; /*< Controller Tx error counter */
+    UCHAR m_ucRxErrorCounter; /*< Controller Rx error counter */
+    UCHAR m_ucPeakRxErrorCounter; /*< Controller peak Rx error counter */
+    UCHAR m_ucPeakTxErrorCounter; /*< Controller peak Tx error counter */
     OCI_TimerCapabilities m_OCI_TimerCapabilities;
     FLOAT m_fResolution;
 }SCHANNEL;
-/* Client and Client Buffer map */
+
+/**
+ * Client and Client Buffer map
+ */
 #define MAX_BUFF_ALLOWED 16
 #define MAX_CLIENT_ALLOWED 16
 static UINT sg_unClientCnt = 0;
@@ -90,7 +94,10 @@ typedef struct tagClientBufMap
     }
 }SCLIENTBUFMAP;
 
-static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED]; //Array of clients
+/**
+ * Array of clients
+ */
+static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED];
 
 const INT MAX_MAP_SIZE = 3000;
 
@@ -109,41 +116,73 @@ typedef struct tagAckMap
 typedef std::list<SACK_MAP> CACK_MAP_LIST;
 static CACK_MAP_LIST sg_asAckMapBuf;
 
-static SCHANNEL sg_asChannel[defNO_OF_CHANNELS];// Channel instances
-static UINT sg_nNoOfChannels = 0; //Number of current channel selected
+/**
+ * Channel instances
+ */
+static SCHANNEL sg_asChannel[defNO_OF_CHANNELS];
+
+/**
+ * Number of current channel selected
+ */
+static UINT sg_nNoOfChannels = 0;
+
 static BOOL sg_bIsDriverRunning = FALSE;
-static SCONTROLER_DETAILS sg_asControllerDets[defNO_OF_CHANNELS];// Controller configuration details
+
+/**
+ * Controller configuration details
+ */
+static SCONTROLER_DETAILS sg_asControllerDets[defNO_OF_CHANNELS];
+
 static HWND sg_hOwnerWnd = NULL;
+
 const BYTE CREATE_MAP_TIMESTAMP = 0x1;
+
 const BYTE CALC_TIMESTAMP_READY = 0x2;
-static BYTE sg_byCurrState = CREATE_MAP_TIMESTAMP; // Current state machine
+
+/**
+ * Current state machine
+ */
+static BYTE sg_byCurrState = CREATE_MAP_TIMESTAMP;
+
 static HANDLE sg_hEvent = NULL;
+
 static CRITICAL_SECTION sg_DIL_CriticalSection; 
 
-//Timer variables
+/**
+ * Timer variables
+ */
 static SYSTEMTIME sg_CurrSysTime;
 static UINT64 sg_TimeStamp = 0;
 static LARGE_INTEGER sg_QueryTickCount;
 
-//Required libraries
+/**
+ * Required libraries
+ */
 static HMODULE sg_hLibCSI = NULL;
 static HMODULE sg_hLibOCI = NULL;
 
-//Declarations of CSI API pointers
+/**
+ * Declarations of CSI API pointers
+ */
 typedef CSI_DECLSPEC OCI_ErrorCode CSI_CALL (*PROC1)(   CSI_SFS_Handle* sfsHandle);
 typedef CSI_DECLSPEC OCI_ErrorCode CSI_CALL (*PROC2)(   CSI_SFS_Handle handle, 
                                                             const BOA_ServiceId* id, 
                                                             OCI_URIName uriName[], INT size, INT* count);
 typedef CSI_DECLSPEC OCI_ErrorCode CSI_CALL (*PROC3)(   CSI_SFS_Handle sfsHandle);
 
-//Macro definitions
+/**
+ * Macro definitions
+ */
 #define BOA_REGISTRY_LOCATION _T("SOFTWARE\\ETAS\\BOA\\1.3")
 #define BOA_REGISTRY_LIB_PATH _T("SOFTWARE\\ETAS\\BOA\\LIB_ACTIVE")
 #define BOA_REGISTRY_LIB_OCI  _T("CAN_INTERFACE")
 #define BOA_REGISTRY_LIB_CSL  _T("HARDWARE_INTERFACE")
 #define LIB_OCI_NAME    _T("OcdProxy_1_3.dll")
 #define LIB_CSL_NAME    _T("CslProxy_1_3.dll")
-// CSI pointers table
+
+/**
+ * CSI pointers table
+ */
 typedef struct tagCSI_VTABLE
 {
     PROC1 createSearchResult;
@@ -152,7 +191,9 @@ typedef struct tagCSI_VTABLE
 
 }CSI_VTABLE;
 
-// Complete pointers of OCI, OCI CAN, CSI
+/**
+ * Complete pointers of OCI, OCI CAN, CSI
+ */
 typedef struct tagBOA_POINTER_TABLE
 {
     CSI_VTABLE       m_sCSI;
@@ -162,8 +203,9 @@ typedef struct tagBOA_POINTER_TABLE
 static SBOA_POINTER_TABLE sBOA_PTRS;
 
 
-/* Starts code for the state machine */
-
+/**
+ * Starts code for the state machine
+ */
 enum
 {
     STATE_DRIVER_SELECTED    = 0x0,
@@ -174,16 +216,21 @@ enum
 
 BYTE sg_bCurrState = STATE_DRIVER_SELECTED;
 
-// Error logger
+/**
+ * Error logger
+ */
 static Base_WrapperErrorLogger* sg_pIlog   = NULL;
 
-/* USEFUL MACROS AND FUNCTIONS: START */
-
-/* USEFUL MACROS AND FUNCTIONS: END */
-
-/*Declarations of ProcessCandata and ProcessEvents. These are call back function
-  which will be called by BOA framework whenever there is a msg or internal events */
+/**
+ * Declarations of ProcessCanData. This is a call back function
+ * which will be called by BOA framework whenever there is a msg
+ */
 static void (OCI_CALLBACK ProcessCanData)(void *userData, struct OCI_CANMessage* msg);
+
+/**
+ * Declarations of ProcessEvents. This is a call back function
+ * which will be called by BOA framework whenever there are internal events
+ */
 static void (OCI_CALLBACK ProcessEvents)(void *userData, struct OCI_CANMessage* msg);
 
 static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFSE* pBuf)
@@ -217,16 +264,9 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
     return bReturn;
 }
 
-/******************************************************************************
-  Function Name    :  bGetLibNames
-  Input(s)         :  
-  Output           :  TCHAR* pcPath, INT& nSize
-  Functionality    :  Gets the OCI, CSI library path
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * Gets the OCI, CSI library path
+ */
 BOOL bGetLibPath(TCHAR* pcLIB_PATH, const TCHAR* pcRegistryPath)
 {
     USES_CONVERSION;
@@ -253,16 +293,10 @@ BOOL bGetLibPath(TCHAR* pcLIB_PATH, const TCHAR* pcRegistryPath)
     }
     return bResult;
 }
-/******************************************************************************
-  Function Name    :  GetBOAInstallationPath
-  Input(s)         :  
-  Output           :  TCHAR* pcPath, INT& nSize
-  Functionality    :  Gets the CSI API function pointer from the cslproxy.dll
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * Gets the CSI API function pointer from the cslproxy.dll
+ */
 BOOL bGetBOAInstallationPath(TCHAR* pcPath, INT& nSize)
 {
     USES_CONVERSION;
@@ -287,16 +321,10 @@ BOOL bGetBOAInstallationPath(TCHAR* pcPath, INT& nSize)
     }
     return bResult;
 }
-/******************************************************************************
-  Function Name    :  GetCSI_API_Pointers
-  Input(s)         :  HMODULE hLibCSI
-  Output           :  -
-  Functionality    :  Gets the CSI API function pointer from the cslproxy.dll
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * Gets the CSI API function pointer from the cslproxy.dll
+ */
 HRESULT GetCSI_API_Pointers(HMODULE hLibCSI)
 {
     HRESULT hResult = S_OK;
@@ -317,56 +345,10 @@ HRESULT GetCSI_API_Pointers(HMODULE hLibCSI)
     }
     return hResult;
 }
-/* Test code
-static INT nTransmitMsg()
-{
-    INT res = 0;
-    OCI_CANMessage	canMessages[2];		// Array of can messages
 
-	OCI_CANTxMessage msg0 = 
-	{
-		0x0101,						// CAN frame ID.
-		OCI_CAN_MSG_FLAG_EXTENDED,	// we use a 27-Bit Identifier here
-		0,							// Reserved must be set to 0
-		7,							// DLC: Number of (valid) data bytes.
-		"Hello  "					// payload
-	};
-
-	OCI_CANTxMessage msg1 = 
-	{
-		0x0102,						// CAN frame ID.
-		OCI_CAN_MSG_FLAG_EXTENDED,	// we use a 27-Bit Identifier here
-		0,							// Reserved must be set to 0
-		7,							// DLC: Number of (valid) data bytes.
-		"World! "					// payload
-	};
-    canMessages[0].type = OCI_CAN_TX_MESSAGE;
-	canMessages[0].reserved = 0;
-	memcpy(&canMessages[0].data.txMessage, &msg0, sizeof(OCI_CANTxMessage));
-
-	canMessages[1].type = OCI_CAN_TX_MESSAGE;
-	canMessages[1].reserved = 0;
-	memcpy(&canMessages[1].data.txMessage, &msg1, sizeof(OCI_CANTxMessage));
-
-	// Write the messages to the transmit queue
-    for (INT i = 0; i < 2; i++)
-    {
-        res |= (*(sBOA_PTRS.m_sOCI.canioVTable.writeCANData))(sg_asChannel[i].m_OCI_TxQueueHandle, OCI_NO_TIME, canMessages, 2, NULL);
-    }
-    return res;
-}
-Test code ends*/
-
-/******************************************************************************
-  Function Name    :  GetOCI_API_Pointers
-  Input(s)         :  HMODULE hLibOCI
-  Output           :  -
-  Functionality    :  Gets the OCI API function pointer from the ocdproxy.dll
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * Gets the OCI API function pointer from the ocdproxy.dll
+ */
 HRESULT GetOCI_API_Pointers(HMODULE hLibOCI)
 {
     HRESULT hResult = S_OK;
@@ -529,17 +511,11 @@ HRESULT GetOCI_API_Pointers(HMODULE hLibOCI)
     }
     return hResult;
 }
-/******************************************************************************
-  Function Name    :  OCI_FindCANController
-  Input(s)         :  OCI_URIName uriName[], nSize (Sizeof the array). 
-  Output           :  OCI_URIName uriName[], nFound(No. of hardwares found).
-  Functionality    :  Search for all connected Hardware, that supports the OCI 
-                      CAN interface and deliver the URI location of the hardware.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * Search for all connected Hardware, that supports the OCI
+ * CAN interface and deliver the URI location of the hardware.
+ */
 OCI_ErrorCode OCI_FindCANController(OCI_URIName uriName[], INT nSize, INT* nFound)
 {   
     OCI_ErrorCode ErrorCode;
@@ -558,17 +534,11 @@ OCI_ErrorCode OCI_FindCANController(OCI_URIName uriName[], INT nSize, INT* nFoun
     return ErrorCode;
 }
 
-/******************************************************************************
-  Function Name    :  bGetClientObj
-  Input(s)         :  DWORD dwClientID, UINT& unClientIndex
-  Output           :  Returns true if found else false. 
-  Functionality    :  unClientIndex will have index to client array which 
-                      has clientId dwClientID .
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * \return Returns true if found else false.
+ *
+ * unClientIndex will have index to client array which has clientId dwClientID.
+ */
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
 {
     BOOL bResult = FALSE;
@@ -584,17 +554,11 @@ static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
     return bResult;
 }
 
-/******************************************************************************
-  Function Name    :  bClientExist
-  Input(s)         :  TCHAR* pcClientName
-  Output           :  TRUE if client exists else FALSE
-  Functionality    :  Checks for the existance of the client with the name 
-                      pcClientName.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * \return TRUE if client exists else FALSE
+ *
+ * Checks for the existance of the client with the name pcClientName.
+ */
 static BOOL bClientExist(TCHAR* pcClientName, INT& Index)
 {    
     for (UINT i = 0; i < sg_unClientCnt; i++)
@@ -607,16 +571,12 @@ static BOOL bClientExist(TCHAR* pcClientName, INT& Index)
     }
     return FALSE;
 }
-/******************************************************************************
-  Function Name    :  bRemoveClient
-  Input(s)         :  DWORD dwClientId
-  Output           :  TRUE if client removed else FALSE
-  Functionality    :  Removes the client with client id dwClientId.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * \return TRUE if client removed else FALSE
+ *
+ * Removes the client with client id dwClientId.
+ */
 static BOOL bRemoveClient(DWORD dwClientId)
 {
     BOOL bResult = FALSE;
@@ -642,16 +602,12 @@ static BOOL bRemoveClient(DWORD dwClientId)
     }
     return bResult;
 }
-/******************************************************************************
-  Function Name    :  bClientIdExist
-  Input(s)         :  const DWORD& dwClientId
-  Output           :  TRUE if client exists else FALSE
-  Functionality    :  Searches for the client with the id dwClientId.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * \return TRUE if client exists else FALSE
+ *
+ * Searches for the client with the id dwClientId.
+ */
 static BOOL bClientIdExist(const DWORD& dwClientId)
 {
     BOOL bReturn = FALSE;
@@ -666,16 +622,9 @@ static BOOL bClientIdExist(const DWORD& dwClientId)
     return bReturn;
 }
 
-/******************************************************************************
-  Function Name    :  dwGetAvailableClientSlot
-  Input(s)         :  
-  Output           :  Returns the available slot
-  Functionality    :  
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * Returns the available slot
+ */
 static DWORD dwGetAvailableClientSlot()
 {
     DWORD nClientId = 2;
@@ -693,31 +642,17 @@ static DWORD dwGetAvailableClientSlot()
     return nClientId;
 }
 
-/******************************************************************************
-  Function Name    :  vMarkEntryIntoMap
-  Input(s)         :  SACK_MAP& RefObj
-  Output           :  
-  Functionality    :  Pushes an entry into the list at the last position
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * Pushes an entry into the list at the last position
+ */
 void vMarkEntryIntoMap(const SACK_MAP& RefObj)
 {
     sg_asAckMapBuf.push_back(RefObj);
 }
 
-/******************************************************************************
-  Function Name    :  bRemoveMapEntry
-  Input(s)         :  SACK_MAP& RefObj
-  Output           :  UINT& ClientID
-  Functionality    :  Removes an entry from the list if exists.Else returns FALSE.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * Removes an entry from the list if exists.Else returns FALSE.
+ */
 BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
 {   
     BOOL bResult = FALSE;
@@ -732,16 +667,12 @@ BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
     }
     return bResult;
 }
-/******************************************************************************
-  Function Name    :  vInitializeControllerConfig
-  Input(s)         :  nChannel, Channel information
-  Output           :  
-  Functionality    :  Initialize default values for controller confgiuration
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * \param[in] nChannel Channel information
+ *
+ * Initialize default values for controller configuration
+ */
 void vInitializeControllerConfig(UINT nChannel)
 {
     sg_asChannel[nChannel].m_OCI_CANConfig.baudrate = 1000000;
@@ -756,16 +687,11 @@ void vInitializeControllerConfig(UINT nChannel)
     sg_asChannel[nChannel].m_OCI_CntrlProp.mode = OCI_CONTROLLER_MODE_SUSPENDED;
 }
 
-/******************************************************************************
-  Function Name    :  vInitializeQueueConfig
-  Input(s)         :  nChannel, Channel information
-  Output           :  
-  Functionality    :  Initialize default values for queue confgiuration
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * \param[in] nChannel Channel information
+ *
+ * Initialize default values for queue confgiuration
+ */
 void vInitializeQueueConfig(UINT nChannel)
 {
     /* configure Rx Queue*/
@@ -776,16 +702,11 @@ void vInitializeQueueConfig(UINT nChannel)
     sg_asChannel[nChannel].m_OCI_TxQueueCfg.reserved = 0;
 }
 
-/******************************************************************************
-  Function Name    :  vInitializeFilterConfig
-  Input(s)         :  nChannel, Channel information
-  Output           :  
-  Functionality    :  Initialize default values for filter confgiuration
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * \param[in] nChannel Channel information
+ *
+ * Initialize default values for filter confgiuration
+ */
 void vInitializeFilterConfig(UINT nChannel)
 {
     /* configure frame filter*/
@@ -805,17 +726,11 @@ void vInitializeFilterConfig(UINT nChannel)
     sg_asChannel[nChannel].m_OCI_InternalErrorFilter.tag = 0;
 }
 
-
-/******************************************************************************
-  Function Name    :  ManageFilters
-  Input(s)         :  BYTE byCode, UINT nChannel
-  Output           :  S_OK for sucess, S_FALSE for failure
-  Functionality    :  Adds or removes the HW filter to/from the channel.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Adds or removes the HW filter to/from the channel.
+ */
 HRESULT ManageFilters(BYTE byCode, UINT nChannel)
 {
     HRESULT hResult = S_FALSE;
@@ -930,16 +845,12 @@ HRESULT ManageFilters(BYTE byCode, UINT nChannel)
     }
     return hResult;
 }
-/******************************************************************************
-  Function Name    :  ManageQueue
-  Input(s)         :  BYTE byCode, UINT nChannel
-  Output           :  S_OK for sucess, S_FALSE for failure
-  Functionality    :  Adds or removes the queue to/from the channel.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Adds or removes the queue to/from the channel.
+ */
 HRESULT ManageQueue(BYTE byCode, UINT nChannel)
 {
     HRESULT hResult = S_FALSE;
@@ -1000,16 +911,10 @@ HRESULT ManageQueue(BYTE byCode, UINT nChannel)
     }
     return hResult;
 }
-/******************************************************************************
-  Function Name    :  vCopyOCI_CAN_RX_2_RBIN_DATA
-  Input(s)         :  const OCI_CANRxMessage* SrcMsg, STCANDATA* DestMsg
-  Output           :  
-  Functionality    :  copies from OCI_CANRxMessage struct into STCANDATA struct
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * copies from OCI_CANRxMessage struct into STCANDATA struct
+ */
 void vCopyOCI_CAN_RX_2_RBIN_DATA(const OCI_CANRxMessage* SrcMsg, STCANDATA* DestMsg)
 {
     DestMsg->m_uDataInfo.m_sCANMsg.m_unMsgID = SrcMsg->frameID;
@@ -1027,16 +932,12 @@ void vCopyOCI_CAN_RX_2_RBIN_DATA(const OCI_CANRxMessage* SrcMsg, STCANDATA* Dest
     DestMsg->m_lTickCount.QuadPart = (LONGLONG)(SrcMsg->timeStamp * sg_asChannel[Channel - 1].m_fResolution);
     memcpy(DestMsg->m_uDataInfo.m_sCANMsg.m_ucData, SrcMsg->data, sizeof(UCHAR) * 8);
 }
-/******************************************************************************
-  Function Name    :  nGetChannel
-  Input(s)         :  const OCI_ControllerHandle hHandle
-  Output           :  Returns channel number
-  Functionality    :  Gets the channel with handle OCI_ControllerHandle
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * \return Returns channel number
+ *
+ * Gets the channel with handle OCI_ControllerHandle
+ */
 UINT nGetChannel(const OCI_ControllerHandle hHandle)
 {
 	UINT i;
@@ -1050,16 +951,9 @@ UINT nGetChannel(const OCI_ControllerHandle hHandle)
     return (i+1);
 }
 
-/******************************************************************************
-  Function Name    :  vCreateTimeModeMapping
-  Input(s)         :  HANDLE hDataEvent
-  Output           :  
-  Functionality    :  Create time mod mapping
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * Create time mod mapping
+ */
 void vCreateTimeModeMapping(HANDLE hEvent)
 {   
     WaitForSingleObject(hEvent, INFINITE);
@@ -1068,7 +962,9 @@ void vCreateTimeModeMapping(HANDLE hEvent)
     QueryPerformanceCounter(&sg_QueryTickCount);
 }
 
-/* This function writes the message to the corresponding clients buffer */
+/**
+ * This function writes the message to the corresponding clients buffer
+ */
 static void vWriteIntoClientsBuffer(STCANDATA& sCanData)
 {
      //Write into the client's buffer and Increment message Count
@@ -1118,23 +1014,15 @@ static void vWriteIntoClientsBuffer(STCANDATA& sCanData)
         }
     }
 }
-/******************************************************************************
-  Function Name    :  vProcessRxMsg
-  Input(s)         :  void *userData, struct OCI_CANMessage* msg
-  Output           :  
-  Functionality    :  Processes Rx msg and writes into regiastered 
-                      clients buffer.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * Processes Rx msg and writes into regiastered clients buffer.
+ */
 void vProcessRxMsg(void *userData, struct OCI_CANMessage* msg)
 {
     /* First calculate timestamp for first message*/
     EnterCriticalSection(&sg_DIL_CriticalSection);
     
-
     static STCANDATA sCanData;
     static OCI_ControllerHandle hHandle;
     
@@ -1151,24 +1039,15 @@ void vProcessRxMsg(void *userData, struct OCI_CANMessage* msg)
         sg_byCurrState = CALC_TIMESTAMP_READY;
     }
 
-    
-    
     //Write the msg into registered client's buffer
     vWriteIntoClientsBuffer(sCanData);
 
     LeaveCriticalSection(&sg_DIL_CriticalSection);
 }
 
-/******************************************************************************
-  Function Name    :  vCopyOCI_CAN_ERR_2_RBIN_DATA
-  Input(s)         :  const OCI_CANErrorFrameMessage* SrcMsg, STCANDATA* DestMsg
-  Output           :  
-  Functionality    :  Copies OCI_CANErrorFrameMessage struct into STCANDATA.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * Copies OCI_CANErrorFrameMessage struct into STCANDATA.
+ */
 void vCopyOCI_CAN_ERR_2_RBIN_DATA(const OCI_CANErrorFrameMessage* SrcMsg, STCANDATA* DestMsg)
 {
     DestMsg->m_uDataInfo.m_sCANMsg.m_unMsgID = SrcMsg->frameID;
@@ -1249,16 +1128,9 @@ void vCopyOCI_CAN_ERR_2_RBIN_DATA(const OCI_CANErrorFrameMessage* SrcMsg, STCAND
     }
 }
 
-/******************************************************************************
-  Function Name    :  vUpdateErrorCounter
-  Input(s)         :  UCHAR ucTxError, UCHAR ucRxError, UINT nChannel
-  Output           :  
-  Functionality    :  Updates Tx & Rx error counter of the nChannel
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * Updates Tx & Rx error counter of the nChannel
+ */
 void vUpdateErrorCounter(UCHAR ucTxError, UCHAR ucRxError, UINT nChannel)
 {
     // Update Tx Error counter and peak Tx Error Counter
@@ -1277,17 +1149,9 @@ void vUpdateErrorCounter(UCHAR ucTxError, UCHAR ucRxError, UINT nChannel)
     }
 }
 
-/******************************************************************************
-  Function Name    :  vProcessErrMsg
-  Input(s)         :  void *userData, struct OCI_CANMessage* msg
-  Output           :  
-  Functionality    :  Processes error msg and writes into regiastered 
-                      clients buffer.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * Processes error msg and writes into registered clients buffer.
+ */
 void vProcessErrMsg(void *userData, struct OCI_CANMessage* msg)
 {
     static STCANDATA sCanData;
@@ -1308,17 +1172,11 @@ void vProcessErrMsg(void *userData, struct OCI_CANMessage* msg)
         }
     }
 }
-/******************************************************************************
-  Function Name    :  ProcessCanData
-  Input(s)         :  void *userData, struct OCI_CANMessage* msg
-  Output           :  
-  Functionality    :  Callback function called by the BOA framework
-                      when there is presence of msg in the bus.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * Callback function called by the BOA framework
+ * when there is presence of msg in the bus.
+ */
 static void (OCI_CALLBACK ProcessCanData)(void *userData, struct OCI_CANMessage* msg)
 {
     if (msg->type == OCI_CAN_RX_MESSAGE)
@@ -1330,58 +1188,34 @@ static void (OCI_CALLBACK ProcessCanData)(void *userData, struct OCI_CANMessage*
         vProcessErrMsg(userData, msg);
     }
 }
-/******************************************************************************
-  Function Name    :  vProcessBusEvent
-  Input(s)         :  void *userData, struct OCI_CANMessage* msg
-  Output           :  
-  Functionality    :  processes bus event.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * processes bus event.
+ */
 static void vProcessBusEvent(void* /*userData*/, struct OCI_CANMessage* /*msg*/)
 {
 
 }
-/******************************************************************************
-  Function Name    :  vProcessInternalErrEvent
-  Input(s)         :  void *userData, struct OCI_CANMessage* msg
-  Output           :  
-  Functionality    :  processes internal event.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * processes internal event.
+ */
 void vProcessInternalErrEvent(void* /*userData*/, struct OCI_CANMessage* /*msg*/)
 {
 
 }
-/******************************************************************************
-  Function Name    :  vProcessQueueEvent
-  Input(s)         :  void *userData, struct OCI_CANMessage* msg
-  Output           :  
-  Functionality    :  process queue event.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * process queue event.
+ */
 void vProcessQueueEvent(void* /*userData*/, struct OCI_CANMessage* /*msg*/)
 {
 
 }
-/******************************************************************************
-  Function Name    :  vProcessTimerEvent
-  Input(s)         :  void *userData, struct OCI_CANMessage* msg
-  Output           :  
-  Functionality    :  process tmer event.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * process tmer event.
+ */
 void vProcessTimerEvent(void* /*userData*/, struct OCI_CANMessage* msg)
 {
     if (msg->data.timerEventMessage.eventCode == OCI_TIMER_EVENT_SYNC_LOCK)
@@ -1395,17 +1229,11 @@ void vProcessTimerEvent(void* /*userData*/, struct OCI_CANMessage* msg)
     }
 
 }
-/******************************************************************************
-  Function Name    :  ProcessEvents
-  Input(s)         :  void *userData, struct OCI_CANMessage* msg
-  Output           :  
-  Functionality    :  Callback function called by the BOA framework
-                      when there is internal bus event.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * Callback function called by the BOA framework
+ * when there is internal bus event.
+ */
 void (OCI_CALLBACK ProcessEvents)(void *userData, struct OCI_CANMessage* msg)
 {    
     if (msg->type == OCI_CAN_BUS_EVENT)
@@ -1425,32 +1253,24 @@ void (OCI_CALLBACK ProcessEvents)(void *userData, struct OCI_CANMessage* msg)
         vProcessTimerEvent(userData, msg);
     }
 }
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_SetAppParams
-  Input(s)         :  HWND hWndOwner, Base_WrapperErrorLogger* pILog
-  Output           :  Returns S_OK for sucess, S_FALSE for failure
-  Functionality    :  Sets the application params.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * \return Returns S_OK for success, S_FALSE for failure
+ *
+ * Sets the application params.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
 {
     sg_hOwnerWnd = hWndOwner;
     sg_pIlog = pILog;
     return S_OK;
 }
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_UnloadDriverLibrary
-  Input(s)         :  
-  Output           :  Returns S_OK for success, S_FALSE for failure
-  Functionality    :  Unloads the driver library.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * \return Returns S_OK for success, S_FALSE for failure
+ *
+ * Unloads the driver library.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_UnloadDriverLibrary(void)
 {
     /* Unload OCI library */
@@ -1469,16 +1289,11 @@ USAGEMODE HRESULT CAN_ETAS_BOA_UnloadDriverLibrary(void)
     return S_OK;
 }
 
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_ManageMsgBuf
-  Input(s)         :  BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj
-  Output           :  Returns S_OK for sucess, S_FALSE for failure
-  Functionality    :  Registers the buffer pBufObj to the client ClientID
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * \return Returns S_OK for success, S_FALSE for failure
+ *
+ * Registers the buffer pBufObj to the client ClientID
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
     HRESULT hResult = S_FALSE;
@@ -1551,18 +1366,12 @@ USAGEMODE HRESULT CAN_ETAS_BOA_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
     return hResult;
 }
 
-
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_RegisterClient
-  Input(s)         :  BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName
-  Output           :  S_OK for sucess, S_FALSE for failure
-  Functionality    :  Registers a client to the DIL. ClientID will have client id
-                      which will be used for further client related calls  
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Registers a client to the DIL. ClientID will have client id
+ * which will be used for further client related calls
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
 {
     HRESULT hResult = S_FALSE;
@@ -1626,33 +1435,25 @@ USAGEMODE HRESULT CAN_ETAS_BOA_RegisterClient(BOOL bRegister, DWORD& ClientID, T
     
     return hResult;
 }
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_GetCntrlStatus
-  Input(s)         :  const HANDLE& hEvent, UINT& unCntrlStatus)
-  Output           :  S_OK for sucess, S_FALSE for failure
-  Functionality    :  Returns the controller status. hEvent will be registered 
-                      and will be set whenever there is change in the controller
-                      status.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Returns the controller status. hEvent will be registered
+ * and will be set whenever there is change in the controller
+ * status.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& unCntrlStatus)
 {
-    unCntrlStatus = defCONTROLLER_ACTIVE; //Temperory solution. TODO
+    unCntrlStatus = defCONTROLLER_ACTIVE; //Temporary solution. TODO
     return S_OK;
 }
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_LoadDriverLibrary
-  Input(s)         :  
-  Output           :  S_OK for sucess, S_FALSE for failure
-  Functionality    :  Loads BOA related libraries. Updates BOA API pointers
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Loads BOA related libraries. Updates BOA API pointers
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_LoadDriverLibrary(void)
 {
     HRESULT hResult = S_FALSE;
@@ -1712,18 +1513,13 @@ USAGEMODE HRESULT CAN_ETAS_BOA_LoadDriverLibrary(void)
     }
     return hResult;
 }
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_PerformInitOperations
-  Input(s)         :  
-  Output           :  S_OK for sucess, S_FALSE for failure
-  Functionality    :  Performs intial operations.
-                      Initializes filter, queue, controller config 
-                      with default values.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Performs intial operations.
+ * Initializes filter, queue, controller config with default values.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_PerformInitOperations(void)
 {
     /* Create critical section for ensuring thread 
@@ -1751,18 +1547,12 @@ USAGEMODE HRESULT CAN_ETAS_BOA_PerformInitOperations(void)
     return S_OK;
 }
 
-
-/******************************************************************************
-  Function Name    :  bLoadDataFromContr
-  Input(s)         :  PSCONTROLER_DETAILS pControllerDetails
-  Output           :  TRUE for sucess, FALSE for failure
-  Functionality    :  Copies the controller config values into channel's 
-                      controller config structure.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * \return TRUE for success, FALSE for failure
+ *
+ * Copies the controller config values into channel's
+ * controller config structure.
+ */
 static BOOL bLoadDataFromContr(PSCONTROLER_DETAILS pControllerDetails)
 {
     BOOL bReturn = FALSE;    
@@ -1795,17 +1585,10 @@ static BOOL bLoadDataFromContr(PSCONTROLER_DETAILS pControllerDetails)
     }
     return bReturn;
 }
-/******************************************************************************
-  Function Name    :  vCopyRBIN_2_OCI_CAN_Data
-  Input(s)         :  OCI_CANTxMessage& DestMsg, const STCAN_MSG& SrcMsg
-  Output           :  
-  Functionality    :  Copies from STCAN_MSG structure into OCI_CANTxMessage
-                      message structure  
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * Copies from STCAN_MSG structure into OCI_CANTxMessage message structure  
+ */
 void vCopyRBIN_2_OCI_CAN_Data(OCI_CANTxMessage& DestMsg, const STCAN_MSG& SrcMsg)
 {
     DestMsg.res     = 0;
@@ -1815,16 +1598,12 @@ void vCopyRBIN_2_OCI_CAN_Data(OCI_CANTxMessage& DestMsg, const STCAN_MSG& SrcMsg
     DestMsg.flags   |= SrcMsg.m_ucRTR ? OCI_CAN_MSG_FLAG_REMOTE_FRAME : 0;
     memcpy(DestMsg.data, SrcMsg.m_ucData, sizeof(UCHAR) * 8);
 }
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_PerformClosureOperations
-  Input(s)         :  
-  Output           :  S_OK for sucess, S_FALSE for failure
-  Functionality    :  Performs closure operations.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Performs closure operations.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_PerformClosureOperations(void)
 {
     HRESULT hResult = S_OK;
@@ -1851,18 +1630,14 @@ USAGEMODE HRESULT CAN_ETAS_BOA_PerformClosureOperations(void)
     }
     return hResult;
 }
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_GetTimeModeMapping
-  Input(s)         :  SYSTEMTIME& CurrSysTime, UINT64& TimeStamp
-  Output           :  S_OK for sucess, S_FALSE for failure
-  Functionality    :  Gets the time mode mapping of the hardware. CurrSysTime 
-                      will be updated with the system time ref.
-                      TimeStamp will be updated with the corresponding timestamp.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Gets the time mode mapping of the hardware. CurrSysTime
+ * will be updated with the system time ref.
+ * TimeStamp will be updated with the corresponding timestamp.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
 {
     CurrSysTime = sg_CurrSysTime;
@@ -1874,17 +1649,12 @@ USAGEMODE HRESULT CAN_ETAS_BOA_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT6
     return S_OK;
 }
 
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_ListHwInterfaces
-  Input(s)         :  INTERFACE_HW& sSelHwInterface
-  Output           :  S_OK for sucess, S_FALSE for failure
-  Functionality    :  Lists the hardware interface available. sSelHwInterface 
-                      will contain the user selected hw interface.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Lists the hardware interface available. sSelHwInterface
+ * will contain the user selected hw interface.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)
 {
     //VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_DRIVER_SELECTED, ERR_IMPROPER_STATE);
@@ -1937,16 +1707,12 @@ USAGEMODE HRESULT CAN_ETAS_BOA_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
     }
     return hResult;
 }
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_SelectHwInterface
-  Input(s)         :  const INTERFACE_HW& sSelHwInterface)
-  Output           :  S_OK for sucess, S_FALSE for failure
-  Functionality    :  Selects the hardware interface selected by the user.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Selects the hardware interface selected by the user.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_SelectHwInterface(const INTERFACE_HW_LIST& asSelHwInterface, INT /*nCount*/)
 {   
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_LISTED, ERR_IMPROPER_STATE);
@@ -2028,16 +1794,11 @@ USAGEMODE HRESULT CAN_ETAS_BOA_SelectHwInterface(const INTERFACE_HW_LIST& asSelH
     return hResult;
 }
 
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_DeselectHwInterface
-  Input(s)         :  
-  Output           :  S_OK for sucess, S_FALSE for failure
-  Functionality    :  Deselects the selected hardware interface.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Deselects the selected hardware interface.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_DeselectHwInterface(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
@@ -2086,32 +1847,24 @@ USAGEMODE HRESULT CAN_ETAS_BOA_DeselectHwInterface(void)
     }
     return hResult;
 }
-/******************************************************************************
-  Function Name    :  Callback_DILBOA
-  Input(s)         :  
-  Output           :  TRUE for sucess, FALSE for failure
-  Functionality    :  Call back function called from ConfigDialogDIL
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * \return TRUE for success, FALSE for failure
+ *
+ * Call back function called from ConfigDialogDIL
+ */
 BOOL Callback_DILBOA(BYTE /*Argument*/, PBYTE pDatStream, INT /*Length*/)
 {
     return (CAN_ETAS_BOA_SetConfigData((CHAR *) pDatStream, 0) == S_OK);
 }
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_DisplayConfigDlg
-  Input(s)         :  PCHAR& InitData, INT& Length
-  Output           :  S_OK for success, S_FALSE for failure
-  Functionality    :  Displays the controller configuration dialog.
-                      Fields are initialized with values supplied by InitData.
-                      InitData will be updated with the user selected values.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Displays the controller configuration dialog.
+ * Fields are initialized with values supplied by InitData.
+ * InitData will be updated with the user selected values.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_DisplayConfigDlg(PCHAR& InitData, INT& Length)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
@@ -2164,17 +1917,12 @@ USAGEMODE HRESULT CAN_ETAS_BOA_DisplayConfigDlg(PCHAR& InitData, INT& Length)
 
     return Result;
 }
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_SetConfigData
-  Input(s)         :  PCHAR pInitData, INT Length
-  Output           :  S_OK for sucess, S_FALSE for failure
-  Functionality    :  Sets the controller configuration data supplied by 
-                      InitData.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Sets the controller configuration data supplied by InitData.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_SetConfigData(PCHAR pInitData, INT /*Length*/)
 {
     HRESULT hResult = WARNING_NOTCONFIRMED;
@@ -2217,16 +1965,11 @@ USAGEMODE HRESULT CAN_ETAS_BOA_SetConfigData(PCHAR pInitData, INT /*Length*/)
     return hResult;
 }
 
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_StartHardware
-  Input(s)         :  
-  Output           :  S_OK for sucess, S_FALSE for failure
-  Functionality    :  Starts the controller.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Starts the controller.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_StartHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
@@ -2270,16 +2013,11 @@ USAGEMODE HRESULT CAN_ETAS_BOA_StartHardware(void)
     return hResult;
 }
 
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_StopHardware
-  Input(s)         :  
-  Output           :  S_OK for sucess, S_FALSE for failure
-  Functionality    :  Stops the controller.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Stops the controller.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_StopHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
@@ -2327,45 +2065,29 @@ USAGEMODE HRESULT CAN_ETAS_BOA_StopHardware(void)
     return hResult;
 }
 
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_ResetHardware
-  Input(s)         :  
-  Output           :  S_OK for sucess, S_FALSE for failure
-  Functionality    :  Resets the controller.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Resets the controller.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_ResetHardware(void)
 {
     return WARN_DUMMY_API;
 }
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_GetTxMsgBuffer
-  Input(s)         :  
-  Output           :  S_OK for sucess, S_FALSE for failure
-  Functionality    :  Gets the Tx queue configured.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Gets the Tx queue configured.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 {
     return WARN_DUMMY_API;
 }
 
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_SendMsg
-  Input(s)         :  DWORD dwClientID, const STCAN_MSG& sCanTxMsg
-  Output           :  
-  Functionality    :  Sends STCAN_MSG structure from the client dwClientID.   
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * Sends STCAN_MSG structure from the client dwClientID.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
@@ -2409,94 +2131,51 @@ USAGEMODE HRESULT CAN_ETAS_BOA_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTx
     return hResult;
 }
 
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_GetBoardInfo
-  Input(s)         :  s_BOARDINFO& BoardInfo
-  Output           :  
-  Functionality    :  Gets board info.   
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * Gets board info.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
 {
     return WARN_DUMMY_API;
 }
 
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_GetBusConfigInfo
-  Input(s)         :  BYTE* BusInfo
-  Output           :  
-  Functionality    :  Gets bus config info.   
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * Gets bus config info.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_GetBusConfigInfo(BYTE* /*BusInfo*/)
 {
     return WARN_DUMMY_API;
 }
 
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_GetVersionInfo
-  Input(s)         :  BYTE* BusInfo
-  Output           :  
-  Functionality    :  Gets driver version info.  
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * Gets driver version info.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
 {
     return WARN_DUMMY_API;
 }
 
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_GetVersionInfo
-  Input(s)         :  CHAR* acErrorStr, INT nLength
-  Output           :  
-  Functionality    :  Gets last occured error and puts inside acErrorStr.  
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * Gets last occured error and puts inside acErrorStr.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_GetLastErrorString(CHAR* /*acErrorStr*/, INT /*nLength*/)
 {
     return WARN_DUMMY_API;
 }
 
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_FilterFrames
-  Input(s)         :  FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds,
-                      UINT nLength.
-  Output           :  
-  Functionality    :  Applies FilterType(PASS/STOP) filter for corresponding 
-                      channel. Frame ids are supplied by punMsgIds.  
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * Applies FilterType(PASS/STOP) filter for corresponding
+ * channel. Frame ids are supplied by punMsgIds.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
 {
     return WARN_DUMMY_API;
 }
 
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_GetControllerParams
-  Input(s)         :  LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
-  Output           :  
-  Functionality    :  Gets the controller param eContrParam of the channel.
-                      Value stored in lParam.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * Gets the controller param eContrParam of the channel.
+ * Value stored in lParam.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
 {
     HRESULT hResult = S_OK;
@@ -2553,17 +2232,9 @@ USAGEMODE HRESULT CAN_ETAS_BOA_GetControllerParams(LONG& lParam, UINT nChannel, 
     return hResult;
 }
 
-/******************************************************************************
-  Function Name    :  CAN_ETAS_BOA_GetErrorCount
-  Input(s)         :  SERROR_CNT& sErrorCnt, UINT nChannel, 
-                      ECONTR_PARAM eContrParam
-  Output           :  
-  Functionality    :  Gets the error counter for corresponding channel.
-  Member of        :  
-  Friend of        :  -                                   
-  Author(s)        :  Pradeep Kadoor
-  Date Created     :  21.05.2010
-******************************************************************************/
+/**
+ * Gets the error counter for corresponding channel.
+ */
 USAGEMODE HRESULT CAN_ETAS_BOA_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam)
 {
     HRESULT hResult = S_OK;
@@ -2593,4 +2264,3 @@ USAGEMODE HRESULT CAN_ETAS_BOA_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChanne
     }
     return hResult;
 }
-

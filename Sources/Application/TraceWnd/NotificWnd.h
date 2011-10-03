@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      NotificWnd.h
+ * \file      Application/TraceWnd/NotificWnd.h
  * \brief     This file contain the definition CNotificWnd class. The user can 
  * \author    Ravikumar Patil
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.

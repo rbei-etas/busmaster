@@ -14,13 +14,14 @@
  */
 
 /**
- * \file      CAN_STUB_stdafx.cpp
+ * \file      CAN_STUB/CAN_STUB_stdafx.cpp
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * stdafx.cpp : source file that includes just the standard includes
+ * CAN_STUB.pch will be the pre-compiled header
+ * stdafx.obj will contain the pre-compiled type information
  */
-// stdafx.cpp : source file that includes just the standard includes
-// CAN_STUB.pch will be the pre-compiled header
-// stdafx.obj will contain the pre-compiled type information
 
 #include "CAN_STUB_stdafx.h"
 

@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      DIL_Interface.cpp
+ * \file      DIL_Interface/DIL_Interface.cpp
  * \brief     Source file for the exported function used to retrieve the
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
@@ -42,8 +42,9 @@ BEGIN_MESSAGE_MAP(CDILApp, CWinApp)
 END_MESSAGE_MAP()
 
 
-// CDILApp construction
-
+/**
+ * CDILApp construction
+ */
 CDILApp::CDILApp()
 {
     // TODO: add construction code here,
@@ -54,13 +55,14 @@ CDILApp::~CDILApp()
     // TODO: add construction code here,
 }
 
-// The one and only CDILApp object
-
+/**
+ * The one and only CDILApp object
+ */
 CDILApp theApp;
 
-
-// CDILApp initialization
-
+/**
+ * CDILApp initialization
+ */
 BOOL CDILApp::InitInstance()
 {
     return TRUE;
@@ -78,7 +80,6 @@ int CDILApp::ExitInstance()
     }
     return nResult;
 }
-
 
 USAGEMODE HRESULT DIL_GetInterface(ETYPE_BUS eBusType, void** ppvInterface)
 {

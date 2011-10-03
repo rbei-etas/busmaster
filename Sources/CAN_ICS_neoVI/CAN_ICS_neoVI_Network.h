@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      CAN_ICS_neoVI_Network.h
+ * \file      CAN_ICS_neoVI/CAN_ICS_neoVI_Network.h
  * \brief     Interface file for CNetwork class
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
@@ -33,21 +33,20 @@
 class CNetwork  
 {
 public:
-    // Methods
+    /** Constructor */
     CNetwork();
+
+	/** Destructor */
     virtual ~CNetwork();
-    // Members
-    // Number of Channels or hardware actually present
+
+	/** Number of Channels or hardware actually present */
     UINT m_nNoOfChannels;
-    // Array of channel objects. The size of this array is maximun number
-    // of channels the application will support.
+
+	/**
+	 * Array of channel objects. The size of this array is maximun number
+     * of channels the application will support.
+	 */
     CChannel m_aodChannels[ defNO_OF_CHANNELS ];
-
-protected:
-    // No protected members right now
-
-private:
-    // No private members right now
 };
 
 #endif // !defined(AFX_NETWORK_H__D5F3ADD7_E79E_4251_B53E_0C8C5B94F3DA__INCLUDED_)

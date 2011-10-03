@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      DIL_Interface_Include.h
+ * \file      DIL_Interface/DIL_Interface_Include.h
  * \brief     Includes for CDIL_McNet class.
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.

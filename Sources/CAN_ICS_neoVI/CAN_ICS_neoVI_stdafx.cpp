@@ -14,13 +14,14 @@
  */
 
 /**
- * \file      CAN_ICS_neoVI_stdafx.cpp
+ * \file      CAN_ICS_neoVI/CAN_ICS_neoVI_stdafx.cpp
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * stdafx.cpp : source file that includes just the standard includes
+ * CAN_ICS_neoVI.pch will be the pre-compiled header
+ * stdafx.obj will contain the pre-compiled type information
  */
-// stdafx.cpp : source file that includes just the standard includes
-// CAN_ICS_neoVI.pch will be the pre-compiled header
-// stdafx.obj will contain the pre-compiled type information
 
 #include "CAN_ICS_neoVI_stdafx.h"
 

@@ -29,10 +29,9 @@
 
 
 
-// CCAN_ICS_neoVIApp
-// See CAN_ICS_neoVI.cpp for the implementation of this class
-//
-
+/**
+ * See CAN_ICS_neoVI.cpp for the implementation of this class
+ */
 class CCAN_ICS_neoVIApp : public CWinApp
 {
 public:

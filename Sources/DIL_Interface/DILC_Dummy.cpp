@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      DILC_Dummy.cpp
+ * \file      DIL_Interface/DILC_Dummy.cpp
  * \brief     Source file for dummy DIL functions
  * \authors   Ratnadip Choudhury, Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
@@ -152,7 +152,6 @@ HRESULT DILC_Dummy_GetControllerParams(LONG& /*lParam*/, UINT /*nChannel*/, ECON
 {
     return WARN_DUMMY_API;
 }
-
 
 HRESULT DILC_Dummy_GetErrorCount(SERROR_CNT& /*sErrorCnt*/, UINT /*nChannel*/, ECONTR_PARAM /*eContrParam*/)
 {

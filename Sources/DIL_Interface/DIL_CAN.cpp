@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      DIL_CAN.cpp
+ * \file      DIL_Interface/DIL_CAN.cpp
  * \brief     Interface file for CAN BUS
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
@@ -34,7 +34,6 @@
 #include "CAN_ETAS_BOA/CAN_ETAS_BOA_Extern.h"
 #include "Dil_CAN.h"
 
-
 typedef struct
 {
     DWORD           m_dwDIL;
@@ -49,7 +48,6 @@ static ENTRY_DIL sg_ListDIL[DIL_TOTAL] =
     {DRIVER_CAN_PEAK_USB,   _T("PEAK USB")         },
     {DRIVER_CAN_PEAK_PP,    _T("PEAK PP")          }
 };
-
 
 CDIL_CAN::CDIL_CAN()
 {
@@ -66,16 +64,15 @@ int CDIL_CAN::ExitInstance()
 }
 /* ROUTER CODE STARTS */
 
-
-/* The router is realised as a set of function pointers */
-/* Start of router implementation along with initialisation with dummy functions */
+/**
+ * The router is realised as a set of function pointers
+ * Initialisation with dummy functions
+ */
 BOOL CDIL_CAN::InitInstance()
 {
     vSelectInterface_Dummy();
     return TRUE;
 }
-
-/* End of router implementation along with initialisation with dummy functions */
 
 /**
  * Helper Function for Dummy Interface

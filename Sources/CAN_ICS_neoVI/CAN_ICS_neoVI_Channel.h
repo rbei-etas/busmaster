@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      CAN_ICS_neoVI_Channel.h
+ * \file      CAN_ICS_neoVI/CAN_ICS_neoVI_Channel.h
  * \brief     Interface file for CChannel class
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
@@ -35,58 +35,71 @@
 class CChannel  
 {
 public:
-    // To Initialise controller state and error counter values
+    /** To Initialise controller state and error counter values */
     void vResetChannel();
-    // To update error counter and controller state
-    // Returns the state transtition state
+
+	/**
+	 * To update error counter and controller state
+     * Returns the state transtition state
+	 */
     void vUpdateErrorCounter(UCHAR ucTxError, UCHAR ucRxError);
-    // Methods
-    // Standard Constructor
+
+    /** Standard Constructor */
     CChannel();
-    // Don't declate it as virtual to avoid VTable as this class will not be
-    // inherited
+
+	/**
+	 * Don't declate it as virtual to avoid VTable as this class will not be
+     * inherited
+	 */
     ~CChannel();
 
-    // Members
     USHORT m_usClock;
     UINT   m_unBaudrate;
     USHORT m_usSampling;
-    // To store baud rate information
+
+	/** To store baud rate information */
     USHORT  m_usBaudRate;
     BYTE    m_bCNF1;
     BYTE    m_bCNF2;
     BYTE    m_bCNF3;
-    // To store controller state
-    // 0 - Active State
-    // 1 - Passive State
-    // 2 - Bus Off State
-    // -1 - For invalid value
+    
+	/**
+	 * To store controller state
+     * 0 - Active State
+     * 1 - Passive State
+     * 2 - Bus Off State
+     * -1 - For invalid value
+	 */
     UCHAR  m_ucControllerState;
-    // Acceptance Filter information
-    SACC_FILTER_INFO     m_sFilter;
-    // Hardware Handle Associated with this channel
-    BYTE m_hHardwareHandle;
-    // Network Handle Associated with this channel
-    BYTE m_hNetworkHandle;
-    // Programmed warning limit of this channel
-    UCHAR m_ucWarningLimit;
-    // Tx Error counter value
-    UCHAR m_ucTxErrorCounter;
-    // Rx Error counter value
-    UCHAR m_ucRxErrorCounter;
-    // Pwak Tx Error counter value
-    UCHAR m_ucPeakTxErrorCounter;
-    // Peak Rx Error counter value
-    UCHAR m_ucPeakRxErrorCounter;
-    // Tx Error Handler execution state
-    BOOL m_bTxErrorExecuted;
-    // Rx Error Handler execution state
-    BOOL m_bRxErrorExecuted;
 
-protected:
-    // No protected members right now
-private:
-    // No private members right now
+	/** Acceptance Filter information */
+    SACC_FILTER_INFO     m_sFilter;
+    
+	/** Hardware Handle Associated with this channel */
+    BYTE m_hHardwareHandle;
+    /** Network Handle Associated with this channel */
+    BYTE m_hNetworkHandle;
+    
+	/** Programmed warning limit of this channel */
+    UCHAR m_ucWarningLimit;
+    
+	/** Tx Error counter value */
+    UCHAR m_ucTxErrorCounter;
+    
+	/** Rx Error counter value */
+    UCHAR m_ucRxErrorCounter;
+    
+	/** Peak Tx Error counter value */
+    UCHAR m_ucPeakTxErrorCounter;
+    
+	/** Peak Rx Error counter value */
+    UCHAR m_ucPeakRxErrorCounter;
+    
+	/** Tx Error Handler execution state */
+    BOOL m_bTxErrorExecuted;
+    
+	/** Rx Error Handler execution state */
+    BOOL m_bRxErrorExecuted;
 };
 
 #endif // !defined(AFX_CHANNEL_H__CDA65E9D_77E5_4058_8F76_85D46585C9D0__INCLUDED_)

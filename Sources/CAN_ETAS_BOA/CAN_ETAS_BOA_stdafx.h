@@ -14,14 +14,14 @@
  */
 
 /**
- * \file      CAN_ETAS_BOA_stdafx.h
+ * \file      CAN_ETAS_BOA/CAN_ETAS_BOA_stdafx.h
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * include file for standard system include files,
+ * or project specific include files that are used frequently, but
+ * are changed infrequently
  */
-// CAN_ETAS_BOA_stdafx.h : include file for standard system include files,
-// or project specific include files that are used frequently, but
-// are changed infrequently
-//
 
 #pragma once
 

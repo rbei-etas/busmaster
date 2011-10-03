@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      CAN_ICS_neoVI_Network.cpp
+ * \file      CAN_ICS_neoVI/CAN_ICS_neoVI_Network.cpp
  * \brief     Implementation file for CNetwork class
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
@@ -34,15 +34,9 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-/*******************************************************************************
-  Function Name  : CNetwork
-  Description    : Standard default constructor
-  Member of      : CNetwork
-  Functionality  : This will initialise local variables
-  Author(s)      : Raja N
-  Date Created   : 21.2.2005
-  Modifications  :
-*******************************************************************************/
+/**
+ * Standard default constructor
+ */
 CNetwork::CNetwork()
 {
     // Initialise members
@@ -50,15 +44,9 @@ CNetwork::CNetwork()
     m_nNoOfChannels = 0;
 }
 
-/*******************************************************************************
-  Function Name  : ~CNetwork
-  Description    : Standard Destructor
-  Member of      : CNetwork
-  Functionality  : -
-  Author(s)      : Raja N
-  Date Created   : 21.2.2005
-  Modifications  :
-*******************************************************************************/
+/**
+ * Standard Destructor
+ */
 CNetwork::~CNetwork()
 {
 

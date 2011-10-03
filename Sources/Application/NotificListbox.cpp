@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      NotificListbox.cpp
+ * \file      Application/NotificListbox.cpp
  * \brief     Inplementation file for CNotificListbox class.
  * \author    Ravikumar Patil
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.

@@ -80,8 +80,9 @@ BEGIN_MESSAGE_MAP(CCAN_ICS_neoVIApp, CWinApp)
 END_MESSAGE_MAP()
 
 
-// CCAN_ICS_neoVIApp construction
-
+/**
+ * CCAN_ICS_neoVIApp construction
+ */
 CCAN_ICS_neoVIApp::CCAN_ICS_neoVIApp()
 {
 	// TODO: add construction code here,
@@ -90,12 +91,12 @@ CCAN_ICS_neoVIApp::CCAN_ICS_neoVIApp()
 
 
 // The one and only CCAN_ICS_neoVIApp object
-
 CCAN_ICS_neoVIApp theApp;
 
 
-// CCAN_ICS_neoVIApp initialization
-
+/**
+ * CCAN_ICS_neoVIApp initialization
+ */
 BOOL CCAN_ICS_neoVIApp::InitInstance()
 {
 	CWinApp::InitInstance();
@@ -109,9 +110,15 @@ BOOL CCAN_ICS_neoVIApp::InitInstance()
 const int CONFIGBYTES_TOTAL = 1024;
 const BYTE CREATE_MAP_TIMESTAMP = 0x1;
 const BYTE CALC_TIMESTAMP_READY = 0x2;
-static BYTE sg_byCurrState = CREATE_MAP_TIMESTAMP; // Current state machine
 
-/* Client and Client Buffer map */
+/**
+ * Current state machine
+ */
+static BYTE sg_byCurrState = CREATE_MAP_TIMESTAMP;
+
+/**
+ * Client and Client Buffer map
+ */
 struct tagClientBufMap
 {
     DWORD dwClientID;
@@ -151,8 +158,9 @@ typedef struct tagAckMap
 typedef std::list<SACK_MAP> CACK_MAP_LIST;
 static CACK_MAP_LIST sg_asAckMapBuf;
 
-/* Starts code for the state machine */
-
+/**
+ * Starts code for the state machine
+ */
 enum
 {
     STATE_DRIVER_SELECTED    = 0x0,
@@ -166,7 +174,10 @@ BYTE sg_bCurrState = STATE_DRIVER_SELECTED;
 
 static SYSTEMTIME sg_CurrSysTime;
 static UINT64 sg_TimeStamp = 0;
-//Query Tick Count
+
+/**
+ * Query Tick Count
+ */
 static LARGE_INTEGER sg_QueryTickCount;
 static HWND sg_hOwnerWnd = NULL;
 
@@ -185,14 +196,20 @@ static int sg_nFRAMES = 128;
 static STCANDATA sg_asMsgBuffer[ENTRIES_IN_GBUF];
 static SCONTROLER_DETAILS sg_ControllerDetails[defNO_OF_CHANNELS];
 static INTERFACE_HW sg_HardwareIntr[defNO_OF_CHANNELS];
-// Network for actual hardware
+
+/**
+ * Network for actual hardware
+ */
 static CNetwork sg_odHardwareNetwork;
-// Create time struct. Use 0 to transmit the message with out any delay
+
+/**
+ * Create time struct. Use 0 to transmit the message with out any delay
+ */
 typedef struct
 {
-    DWORD millis;          // base-value: milliseconds: 0.. 2^32-1
-    WORD  millis_overflow; // roll-arounds of millis
-    WORD  micros;          // microseconds: 0..999
+    DWORD millis;          /*< base-value: milliseconds: 0.. 2^32-1 */
+    WORD  millis_overflow; /*< roll-arounds of millis */
+    WORD  micros;          /*< microseconds: 0..999 */
 } TCANTimestamp;
 
 static TCANTimestamp sg_sTime;
@@ -337,7 +354,9 @@ HRESULT CAN_ICS_neoVI_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE*
 
 /* HELPER FUNCTIONS START */
 
-/* Function to initialize all global data variables */
+/**
+ * Function to initialize all global data variables
+ */
 static void vInitialiseAllData(void)
 {
     // Initialise both the time parameters
@@ -351,7 +370,10 @@ static void vInitialiseAllData(void)
     memset(sg_acErrStr, 0, sizeof(sg_acErrStr));
     CAN_ICS_neoVI_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
 }
-// Function create and set read indication event
+
+/**
+ * Function create and set read indication event
+ */
 static int nCreateAndSetReadIndicationEvent(HANDLE& hReadEvent)
 {
     int nReturn = -1;
@@ -369,7 +391,10 @@ static int nCreateAndSetReadIndicationEvent(HANDLE& hReadEvent)
     }
     return nReturn;
 }
-/* Function to retreive error occurred and log it */
+
+/**
+ * Function to retreive error occurred and log it
+ */
 static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
 {
     USES_CONVERSION;
@@ -388,6 +413,7 @@ static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
         strncpy(sg_acErrStr, acErrText, nStrLen);
     }
 }
+
 static int nSetHardwareMode(UCHAR ucDeviceMode)
 {
 // Make sure to set the network to Hardware
@@ -396,19 +422,14 @@ static int nSetHardwareMode(UCHAR ucDeviceMode)
     return 0;
 }
 
-/*******************************************************************************
- Function Name  : USB_vHandleErrorCounter
- Input(s)       : ucRxErr - Rx Error Counter Value
-                  ucTxErr - Tx Error Counter Valie
- Output         : UCHAR - Type of the error message
-                  Error Bus, Error Warning Limit and Error Interrupt
- Functionality  : Posts message as per the error counter. This function will
-                  update local state variable as per error codes.
- Member of      : CHardwareInterface
- Author(s)      : Raja N
- Date Created   : 15.09.2004
- Modifications  : 
-*******************************************************************************/
+/**
+ * \param[in] ucRxErr Rx Error Counter Value
+ * \param[in] ucTxErr Tx Error Counter Value
+ * \return Type of the error message: Error Bus, Error Warning Limit and Error Interrupt
+ *
+ * Posts message as per the error counter. This function will
+ * update local state variable as per error codes.
+ */
 static UCHAR USB_ucHandleErrorCounter( UCHAR ucChannel,
                                                     UCHAR ucRxErr,
                                                     UCHAR ucTxErr )
@@ -483,18 +504,15 @@ static UCHAR USB_ucHandleErrorCounter( UCHAR ucChannel,
     }
     return ucRetVal;
 }
-/*******************************************************************************
- Function Name  : USB_ucGetErrorCode
- Input(s)       : lError - Error code in Peak USB driver format
-                  byDir  - Error direction Tx/Rx
- Output         : UCHAR  - Error code in BUSMASTER application format
- Functionality  : This will convert the error code from Perk USB driver format
-                  to the format that is used by BUSMASTER.
- Member of      : CHardwareInterface
- Author(s)      : Raja N
- Date Created   : 02.09.2004
- Modifications  : 
-*******************************************************************************/
+
+/**
+ * \param[in] lError Error code in Peak USB driver format
+ * \param[in] byDir  Error direction Tx/Rx
+ * \return Error code in BUSMASTER application format
+ *
+ * This will convert the error code from Perk USB driver format
+ * to the format that is used by BUSMASTER.
+ */
 static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir)
 {
     UCHAR ucReturn = 0;
@@ -535,7 +553,9 @@ static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir)
     return ucReturn;
 }
 
-/* Function to create time mode mapping */
+/**
+ * Function to create time mode mapping
+ */
 static void vCreateTimeModeMapping(HANDLE hDataEvent)
 {   
    WaitForSingleObject(hDataEvent, INFINITE);
@@ -545,6 +565,8 @@ static void vCreateTimeModeMapping(HANDLE hDataEvent)
    QueryPerformanceCounter(&sg_QueryTickCount);
     
 }
+
+
 static BOOL bLoadDataFromContr(PSCONTROLER_DETAILS pControllerDetails)
 {
     BOOL bReturn = FALSE;    
@@ -614,19 +636,15 @@ static BOOL bLoadDataFromContr(PSCONTROLER_DETAILS pControllerDetails)
     return bReturn;
 }
 
-/*******************************************************************************
- Function Name  : vProcessError
- Input(s)       : icsSpyMessage& CurrSpyMsg - The current channel (in parameter)
-                  STCANDATA& sCanData - Application specific data format 
-                  (out parameter), USHORT ushRxErr - Number of Rx error, 
-                  USHORT ushTxErr - Number of Tx error
- Output         : void
- Functionality  : Based on the number of Rx and Tx error, this will take the 
-                  action necessary.
- Member of      : 
- Author(s)      : Ratnadip Choudhury
- Date Created   : 21.04.2008
-*******************************************************************************/
+/**
+ * \param[in]  odChannel The current channel
+ * \param[out] sCanData Application specific data format 
+ * \param[in]  ushRxErr Number of Rx error
+ * \param[in]  ushTxErr Number of Tx error
+ *
+ * Based on the number of Rx and Tx error, this will take the
+ * action necessary.
+ */
 static void vProcessError(STCANDATA& sCanData, CChannel& odChannel,
                                        USHORT ushRxErr, USHORT ushTxErr)
 {
@@ -643,21 +661,17 @@ static void vProcessError(STCANDATA& sCanData, CChannel& odChannel,
     // Update Rx Error Counter Value & Tx Error Counter Value
     odChannel.vUpdateErrorCounter((UCHAR)ushTxErr, (UCHAR)ushRxErr);
 }
-/*******************************************************************************
- Function Name  : bClassifyMsgType
- Input(s)       : icsSpyMessage& CurrSpyMsg - Message polled from the bus in 
-                  neoVI format (in parameter), STCANDATA& sCanData - Application
-                  specific data format (out parameter), UINT unChannel - channel
- Output         : TRUE (always)
- Functionality  : This will classify the messages, which can be one of Rx, Tx or
-                  Error messages. In case of Err messages this identifies under
-                  what broader category (Rx / Tx) does this occur.
- Member of      : 
- Author(s)      : Ratnadip Choudhury
- Date Created   : 21.04.2008
- Modifications  : Pradeep Kadoor on 12.05.2009.
-                  RTR messages are handled.
-*******************************************************************************/
+
+/**
+ * \param[in]  CurrSpyMsg Message polled from the bus in neoVI format
+ * \param[out] sCanData Application specific data format
+ * \param[in]  unChannel channel
+ * \return TRUE (always)
+ *
+ * This will classify the messages, which can be one of Rx, Tx or
+ * Error messages. In case of Err messages this identifies under
+ * what broader category (Rx / Tx) does this occur.
+ */
 static BYTE bClassifyMsgType(icsSpyMessage& CurrSpyMsg, 
                       STCANDATA& sCanData, UINT unChannel)
 {
@@ -773,28 +787,18 @@ static BYTE bClassifyMsgType(icsSpyMessage& CurrSpyMsg,
     }
     return TRUE;
 }
-/*******************************************************************************
- Function Name  : nReadMultiMessage
- Input(s)       : psCanDataArray - Pointer to CAN Message Array of Structures
-                  nMessage - Maximun number of message to read or size of the
-                  CAN Message Array
- Output         : int - Returns defERR_OK if successful otherwise corresponding
-                  Error code.
-                  nMessage - Actual Messages Read
- Functionality  : This function will read multiple CAN messages from the driver.
-                  The other fuctionality is same as single message read. This
-                  will update the variable nMessage with the actual messages
-                  read.
- Member of      : 
- Author(s)      : Raja N
- Date Created   : 02.09.2004
- Modifications  : Raja N on 9.3.2005
-                  Modifications to support multi channel
- Modifications  : Ratnadip Choudhury on 10.04.2008
-                  Added neoVI specific codes.
- Modifications  : Ratnadip Choudhury on 13.05.2008
-                  Solved system crash and application buffer overflow problems.
-*******************************************************************************/
+
+/**
+ * \param[in] psCanDataArray Pointer to CAN Message Array of Structures
+ * \param[in] nMessage Maximun number of message to read or size of the CAN Message Array
+ * \param[out] Message Actual Messages Read
+ * \return Returns defERR_OK if successful otherwise corresponding Error code.
+ *
+ * This function will read multiple CAN messages from the driver.
+ * The other fuctionality is same as single message read. This
+ * will update the variable nMessage with the actual messages
+ * read.
+ */
 static int nReadMultiMessage(PSTCANDATA psCanDataArray,
                                           int &nMessage, int nChannelIndex)
 {
@@ -927,6 +931,7 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
     // neoVI specific codes and simulation related codes need to coexist. 
     // Code for the later still employs Peak API interface.
 }
+
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
 {
     BOOL bResult = FALSE;
@@ -995,6 +1000,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
     }
     return bResult;
 }
+
 static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED], UINT& unCount, CBaseCANBufFSE* BufferToRemove)
 {
     BOOL bReturn = TRUE;
@@ -1011,6 +1017,7 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
     }
     return bReturn;
 }
+
 void vMarkEntryIntoMap(const SACK_MAP& RefObj)
 {
     sg_asAckMapBuf.push_back(RefObj);
@@ -1031,7 +1038,9 @@ BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
     return bResult;
 }
 
-/* This function writes the message to the corresponding clients buffer */
+/**
+ * This function writes the message to the corresponding clients buffer
+ */
 static void vWriteIntoClientsBuffer(STCANDATA& sCanData)
 {
      //Write into the client's buffer and Increment message Count
@@ -1082,7 +1091,9 @@ static void vWriteIntoClientsBuffer(STCANDATA& sCanData)
     }
 }
 
-/* Processing of the received packets from bus */
+/**
+ * Processing of the received packets from bus
+ */
 static void ProcessCANMsg(int nChannelIndex)
 {
     int nSize = sg_nFRAMES;
@@ -1095,8 +1106,9 @@ static void ProcessCANMsg(int nChannelIndex)
     }
 }
 
-/* Read thread procedure */
-
+/**
+ * Read thread procedure
+ */
 DWORD WINAPI CanMsgReadThreadProc_CAN_Usb(LPVOID pVoid)
 {
     USES_CONVERSION;
@@ -1172,18 +1184,10 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_Usb(LPVOID pVoid)
     return 0;
 }
 
-
-/*******************************************************************************
-  Function Name  : nCreateMultipleHardwareNetwork
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will get the hardware selection from the user
-                   and will create essential networks.
-  Member of      : 
-  Author(s)      : Pradeep Kadoor
-  Date Created   : 14.06.2009
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function will get the hardware selection from the user
+ * and will create essential networks.
+ */
 static int nCreateMultipleHardwareNetwork()
 {
 	TCHAR acTempStr[256] = {_T('\0')};
@@ -1223,20 +1227,11 @@ static int nCreateMultipleHardwareNetwork()
     }
     return defERR_OK;
 }
-/******************************************************************************
-  Function Name  : nCreateSingleHardwareNetwork
-  Input(s)       : -
-  Output         : -
-  Functionality  : This is USB Specific Function. This will create a single
-                   network with available single hardware.
-  Member of      : 
-  Author(s)      : Raja N
-  Date Created   : 9.3.2005
-  Modifications  : Raja N on 17.03.2005, Modified the function name to correct
-                   spelling mistake
-  Modifications  : Pradeep Kadoor on 09.05.2008, OpePort function is no more
-                   called from here.
-******************************************************************************/
+
+/**
+ * This is USB Specific Function. This will create a single
+ * network with available single hardware.
+ */
 static int nCreateSingleHardwareNetwork()
 {
     // Create network here with net handle 1
@@ -1254,22 +1249,14 @@ static int nCreateSingleHardwareNetwork()
     
     return defERR_OK;
 }
-/*******************************************************************************
- Function Name  : nGetNoOfConnectedHardware
- Input(s)       : nHardwareCount - Hardware Count
- Output         : int - Returns defERR_OK if successful otherwise corresponding
-                  Error code.
- Functionality  : Finds the number of hardware connected. This is applicable
-                  only for USB device. For parallel port this is not required.
- Member of      : 
- Author(s)      : Raja N
- Date Created   : 02.09.2004
- Modifications  : Raja N on 14.03.2005, Removed assigning hardware index to
-                  invalid value as architecture is changed to support multiple
-                  hardware.
- Modifications  : Ratnadip Choudhury, 10.04.2008
-                  Replaced Peak specific code with neoVI specific codes
-*******************************************************************************/
+
+/**
+ * \param[in] nHardwareCount Hardware Count
+ * \return Returns defERR_OK if successful otherwise corresponding Error code.
+ *
+ * Finds the number of hardware connected. This is applicable
+ * only for USB device. For parallel port this is not required.
+ */
 static int nGetNoOfConnectedHardware(int& nHardwareCount)
 {
     // 0, Query successful, but no device found
@@ -1303,29 +1290,14 @@ static int nGetNoOfConnectedHardware(int& nHardwareCount)
     return nReturn;
 }
 
-/*******************************************************************************
- Function Name  : nInitHwNetwork
- Input(s)       : -
- Output         : int - Operation Result. 0 incase of no errors. Failure Error
-                  codes otherwise.
-                  nMessage - Actual Messages Read
- Functionality  : This is USB Specific function.This function will create
-                  find number of hardware connected. It will create network as
-                  per hardware count. This will popup hardware selection dialog
-                  in case there are more hardware present.
- Member of      : 
- Author(s)      : Raja N
- Date Created   : 02.09.2004
- Modifications  : Raja N on 9.3.2005
-                  Modifications to support multi channel
- Modifications  : Raja N on 17.3.2005
-                  Modifications as per code review comment
- Modifications  : Anish Kumar on 13.09.2006.
-                  Added code for external evaluation copy 
- Modifications  : Pradeep Kadoor on 12.05.2009.
-                  Added a message box to display number of hardware present.                  
-                    
-*******************************************************************************/
+/**
+ * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
+ *
+ * This is USB Specific function.This function will create
+ * find number of hardware connected. It will create network as
+ * per hardware count. This will popup hardware selection dialog
+ * in case there are more hardware present.
+ */
 static int nInitHwNetwork()
 {
     int nDevices = 0;
@@ -1367,23 +1339,15 @@ static int nInitHwNetwork()
     return nReturn;
 }
 
-/*******************************************************************************
- Function Name  : nConnectToDriver
- Input(s)       : -
- Output         : int - Returns defERR_OK if successful otherwise corresponding
-                  Error code.
- Functionality  : This function will initialise hardware handlers of USB. This
-                  will establish the connection with driver. This will create or
-                  connect to the network. This will create client for USB. For
-                  parallel port mode this will initialise connection with the
-                  driver.
- Member of      : 
- Author(s)      : Raja N
- Date Created   : 02.09.2004
- Modifications  : Raja N on 9.3.2005
-                  Modifications to support multi channel archtecture. Added
-                  code to init parallel port channel.
-*******************************************************************************/
+/**
+ * \return Returns defERR_OK if successful otherwise corresponding Error code.
+ *
+ * This function will initialise hardware handlers of USB. This
+ * will establish the connection with driver. This will create or
+ * connect to the network. This will create client for USB. For
+ * parallel port mode this will initialise connection with the
+ * driver.
+ */
 static int nConnectToDriver()
 {
     int nReturn = -1;
@@ -1396,44 +1360,22 @@ static int nConnectToDriver()
     return nReturn;
 }
 
-/*******************************************************************************
- Function Name  : bGetDriverStatus
- Input(s)       : -
- Output         : BOOL - TRUE if the driver is running.
-                  FALSE - IF it is not running
- Functionality  : 
- Member of      : 
- Author(s)      : Raja N
- Date Created   : 02.09.2004
- Modifications  : Raja N on 16.09.2004, Modification to change the device name
-                  if the device is not running
- Modifications  : Ratnadip Choudhury, 10.04.2008 
-                  For ICS neoVI just returning m_bIsDriverRunning
-*******************************************************************************/
+/**
+ * \return TRUE if the driver is running. FALSE - IF it is not running
+ */
 static BOOL bGetDriverStatus()
 {
     sg_bIsDriverRunning = TRUE;
     return TRUE;
 }
 
-/*******************************************************************************
- Function Name  : nSetBaudRate
- Input(s)       : usBaud - Baud rate in BTR0BTR1 format
- Output         : int - Returns defERR_OK if successful otherwise corresponding
-                  Error code.
- Functionality  : This function will set the baud rate of the controller
-                  Parallel Port Mode: Controller will be initialised with all
-                  other parameters after baud rate change.
- Member of      : 
- Author(s)      : Raja N
- Date Created   : 02.09.2004
- Modifications  : Raja N on 16.09.2004, Added check before assignment of new
-                  value to the member variable.
- Modifications  : Raja N on 9.3.2005
-                  Modifications to support multi channel
- Modifications  : Ratnadip Choudhury on 21.04.2008
-                  Modification to support valueCAN
-*******************************************************************************/
+/**
+ * \return defERR_OK if successful otherwise corresponding Error code.
+ *
+ * This function will set the baud rate of the controller
+ * Parallel Port Mode: Controller will be initialised with all
+ * other parameters after baud rate change.
+ */
 static int nSetBaudRate()
 {
     int nReturn = 0;
@@ -1465,24 +1407,12 @@ static int nSetBaudRate()
     return nReturn;
 }
 
-/*******************************************************************************
- Function Name  : nSetWarningLimit
- Input(s)       : ucWarninglimit - Warning Limit Value
- Output         : int - Returns defERR_OK if successful otherwise corresponding
-                  Error code.
- Functionality  : This function will set the warning limit of the controller. In
-                  USB mode this is not supported as the warning limit is
-                  internally set to 96
- Member of      : 
- Author(s)      : Raja N
- Date Created   : 02.09.2004
- Modifications  : Raja N on 16.09.2004, Added check before assignment of new
-                  value to the member variable.
- Modifications  : Raja N on 9.3.2005
-                  Modifications to support multi channel
- Modifications  : Raja N on 17.3.2005
-                  Implemented code review comments
-*******************************************************************************/
+/**
+ * \return Returns defERR_OK if successful otherwise corresponding Error code.
+ * This function will set the warning limit of the controller. In
+ * USB mode this is not supported as the warning limit is
+ * internally set to 96
+ */
 static int nSetWarningLimit()
 {
     for (UINT i = 0; i < sg_podActiveNetwork->m_nNoOfChannels; i++)
@@ -1495,55 +1425,23 @@ static int nSetWarningLimit()
     // Code for the later still employs Peak API interface.
 }
 
-/*******************************************************************************
- Function Name  : nSetFilter
- Input(s)       : sFilter - Filter Structure
- Output         : int - Operation Result. 0 incase of no errors. Failure Error
-                  codes otherwise.
- Functionality  : This function will set the filter information.
- Member of      : 
- Author(s)      : Raja N
- Date Created   : 02.09.2004
- Modifications  : Raja N on 16.09.2004, Added code to check return value and
-                  update only on success.
- Modifications  : Raja N on 9.3.2005
-                  Modifications to support multi channel.
- Modifications  : Raja N on 17.3.2005
-                  Implemented code review comments.
- Modifications  : Changed the filter code back to previous as dual filter is 
-                  not working in USB mode
-*******************************************************************************/
+/**
+ * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
+ *
+ * This function will set the filter information.
+ */
 static int nSetFilter( )
 {
     return 0;
 }
 
-/*******************************************************************************
- Function Name  : nSetApplyConfiguration
- Input(s)       : -
- Output         : int - Operation Result. 0 incase of no errors. Failure Error
-                  codes otherwise.
- Functionality  : This function will set all controller parameters. This will
-                  set Baud rate, Filter, Warning Limit and Controller Mode. In
-                  case of USB the warning limit call will be ignored.
- Member of      : 
- Author(s)      : Raja N
- Date Created   : 02.09.2004
- Modifications  : Raja N on 07.10.2004
-                  Seprated Parallel port code to set baud rate irrespective of
-                  controller mode. This is for the fix of the bug of controller
-                  kept uninitialised if the loaded configuration has
-                  self-reception mode.
- Modifications  : Raja N on 9.3.2005
-                  Modifications to support multi channel.
- Modifications  : Raja N on 22.3.2005
-                  Modifications after testing. Check previous result before
-                  setting baud rate and warning limit to avoid multiple error
-                  messages.
- Modifications  : Pradeep Kadoor on 12.09.2008
-                  Setting of baud rate is removed as it is called 
-                  when connect button is pressed.
-*******************************************************************************/
+/**
+ * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
+ *
+ * This function will set all controller parameters. This will
+ * set Baud rate, Filter, Warning Limit and Controller Mode. In
+ * case of USB the warning limit call will be ignored.
+ */
 static int nSetApplyConfiguration()
 {
     int nReturn = defERR_OK;
@@ -1564,22 +1462,14 @@ static int nSetApplyConfiguration()
     return nReturn;
 }
 
-
-/*******************************************************************************
- Function Name  : nTestHardwareConnection
- Input(s)       : ucaTestResult - Array that will hold test result. TRUE if
-                  hardware present and false if not connected  
- Output         : int - Operation Result. 0 incase of no errors. Failure Error
-                  codes otherwise.
- Functionality  : This function will check all hardware connectivity by getting
-                  hardware parameter. In parallel port mode this will set the
-                  baud rate to test hardware presence.
- Member of      : 
- Author(s)      : Raja N
- Date Created   : 02.09.2004
- Modifications  : Raja N on 9.3.2005
-                  Modifications to support multi channel.
-*******************************************************************************/
+/**
+ * \param[out] ucaTestResult Array that will hold test result. TRUE if hardware present and false if not connected
+ * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
+ *
+ * This function will check all hardware connectivity by getting
+ * hardware parameter. In parallel port mode this will set the
+ * baud rate to test hardware presence.
+ */
 static int nTestHardwareConnection(UCHAR& ucaTestResult, UINT nChannel) //const
 {
     BYTE aucConfigBytes[CONFIGBYTES_TOTAL];
@@ -1599,20 +1489,14 @@ static int nTestHardwareConnection(UCHAR& ucaTestResult, UINT nChannel) //const
     }
     return nReturn;
 }
-/*******************************************************************************
- Function Name  : nDisconnectFromDriver
- Input(s)       : -
- Output         : int - Operation Result. 0 incase of no errors. Failure Error
-                  codes otherwise.
- Functionality  : This will close the connection with the driver. This will be
-                  called before deleting HI layer. This will be called during
-                  application close.
- Member of      : 
- Author(s)      : Raja N
- Date Created   : 02.09.2004
- Modifications  : Ratnadip Choudhury on 10.04.2008
-                  Added neoVI specific codes.
-*******************************************************************************/
+
+/**
+ * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
+ *
+ * This will close the connection with the driver. This will be
+ * called before deleting HI layer. This will be called during
+ * application close.
+ */
 static int nDisconnectFromDriver()
 {
     int nReturn = 0;
@@ -1639,30 +1523,16 @@ static int nDisconnectFromDriver()
 
     return nReturn;
 }
-/*******************************************************************************
- Function Name  : nConnect
- Input(s)       : bConnect - TRUE to Connect, FALSE to Disconnect
- Output         : int - Returns defERR_OK if successful otherwise corresponding
-                  Error code.
- Functionality  : This function will connect the tool with hardware. This will
-                  establish the data link between the application and hardware.
-                  Parallel Port Mode: Controller will be disconnected.
-                  USB: Client will be disconnected from the network
- Member of      : 
- Author(s)      : Raja N
- Date Created   : 02.09.2004
- Modifications  : Raja N on 9.3.2005
-                  Modifications to support multi channel
- Modifications  : Anish on 27.11.2006
-                  CAN_PARAM_SELF_RECEIVE parameter setting code is removed
-                  as setting CAN_PARAM_MARK_SELFRECEIVED_MSG_WITH_MSGTYPE flag
-                  fulfil the requirement
- Modifications  : Ratnadip Choudhury on 10.04.2008
-                  Added neoVI specific codes.
- Modifications  : Pradeep Kadoor on 09.05.2008
-                  Calling functions OpenPort and ClosePort respectively when 
-                  values of bConnect are TRUE and FALSE.
-*******************************************************************************/
+
+/**
+ * \param[in] bConnect TRUE to Connect, FALSE to Disconnect
+ * \return Returns defERR_OK if successful otherwise corresponding Error code.
+ *
+ * This function will connect the tool with hardware. This will
+ * establish the data link between the application and hardware.
+ * Parallel Port Mode: Controller will be disconnected.
+ * USB: Client will be disconnected from the network
+ */
 static int nConnect(BOOL bConnect, BYTE /*hClient*/)
 {
     int nReturn = -1;
@@ -1730,7 +1600,9 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
     return nReturn;
 }
 
-/* Function to set API function pointers */
+/**
+ * Function to set API function pointers
+ */
 HRESULT GetICS_neoVI_APIFuncPtrs(void)
 {
     LRESULT unResult = 0;
@@ -1844,10 +1716,9 @@ HRESULT GetICS_neoVI_APIFuncPtrs(void)
     return (HRESULT) unResult; 
 }
 
-/* HELPER FUNCTIONS END */
-
-/* GENERAL FUNCTION SET STARTS */
-/* Perform initialization operations specific to TZM */
+/**
+ * Perform initialization operations specific to TZM
+ */
 USAGEMODE HRESULT CAN_ICS_neoVI_PerformInitOperations(void)
 {
     //Register Monitor client
@@ -1856,7 +1727,9 @@ USAGEMODE HRESULT CAN_ICS_neoVI_PerformInitOperations(void)
     return S_OK;
 }
 
-/* Perform closure operations specific to TZM */
+/**
+ * Perform closure operations specific to TZM
+ */
 USAGEMODE HRESULT CAN_ICS_neoVI_PerformClosureOperations(void)
 {
     HRESULT hResult = S_OK;
@@ -1873,7 +1746,10 @@ USAGEMODE HRESULT CAN_ICS_neoVI_PerformClosureOperations(void)
     }
     return hResult;
 }
-/* Rrtreive time mode mapping */
+
+/**
+ * Retrieve time mode mapping
+ */
 USAGEMODE HRESULT CAN_ICS_neoVI_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
 {
     memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
@@ -1885,9 +1761,10 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT
     return S_OK;
 }
 
-
-/* Function to List Hardware interfaces connect to the system and requests to the 
-   user to select*/
+/**
+ * Function to List Hardware interfaces connect to the system and requests to the
+ * user to select
+ */
 USAGEMODE HRESULT CAN_ICS_neoVI_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)    
 {    
     USES_CONVERSION;
@@ -1918,32 +1795,21 @@ USAGEMODE HRESULT CAN_ICS_neoVI_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInter
     return hResult;
 }
 
-/*******************************************************************************
- Function Name  : nResetHardware
- Input(s)       : bHardwareReset - Reset Mode
-                  TRUE - Hardware Reset, FALSE - Software Reset
- Output         : int - Operation Result. 0 incase of no errors. Failure Error
-                  codes otherwise.
- Functionality  : This function will do controller reset. In case of USB mode
-                  Software Reset will be simulated by Client Reset.
- Member of      : 
- Author(s)      : Raja N
- Date Created   : 02.09.2004
- Modifications  : Raja N on 16.09.2004, Added message posting code in to the if
-                  condition so that the message will be posted only on
-                  successful reset of hardware.
- Modifications  : Raja N on 9.3.2005
-                  Modifications to support multi channel.
- Modifications  : Raja N on 9.3.2005
-                  Code review points are implemented
- Modifications  : Ratnadip Choudhury on 10.04.2008
-                  Added neoVI specific codes.
-*******************************************************************************/
+/**
+ * \param[in] bHardwareReset Reset Mode: TRUE - Hardware Reset, FALSE - Software Reset
+ * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
+ *
+ * This function will do controller reset. In case of USB mode
+ * Software Reset will be simulated by Client Reset.
+ */
 static int nResetHardware(BOOL /*bHardwareReset*/)
 {
     return 0;
 }
-/* Function to deselect the chosen hardware interface */
+
+/**
+ * Function to deselect the chosen hardware interface
+ */
 USAGEMODE HRESULT CAN_ICS_neoVI_DeselectHwInterface(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
@@ -1957,7 +1823,9 @@ USAGEMODE HRESULT CAN_ICS_neoVI_DeselectHwInterface(void)
     return hResult;
 }
 
-/* Function to select hardware interface chosen by the user */
+/**
+ * Function to select hardware interface chosen by the user
+ */
 USAGEMODE HRESULT CAN_ICS_neoVI_SelectHwInterface(const INTERFACE_HW_LIST& asSelHwInterface, INT /*nCount*/)
 {
     USES_CONVERSION;
@@ -1988,7 +1856,9 @@ USAGEMODE HRESULT CAN_ICS_neoVI_SelectHwInterface(const INTERFACE_HW_LIST& asSel
     return hResult;
 }
 
-/* Function to set controller configuration*/
+/**
+ * Function to set controller configuration
+ */
 USAGEMODE HRESULT CAN_ICS_neoVI_SetConfigData(PCHAR ConfigFile, int Length)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
@@ -2015,7 +1885,9 @@ BOOL Callback_DILTZM(BYTE /*Argument*/, PBYTE pDatStream, int /*Length*/)
     return (CAN_ICS_neoVI_SetConfigData((CHAR *) pDatStream, 0) == S_OK);
 }
 
-/* Function to display config dialog */
+/**
+ * Function to display config dialog
+ */
 USAGEMODE HRESULT CAN_ICS_neoVI_DisplayConfigDlg(PCHAR& InitData, int& Length)
 {
     HRESULT Result = WARN_INITDAT_NCONFIRM;
@@ -2071,7 +1943,9 @@ USAGEMODE HRESULT CAN_ICS_neoVI_DisplayConfigDlg(PCHAR& InitData, int& Length)
     return Result;
 }
 
-/* Function to start monitoring the bus */
+/**
+ * Function to start monitoring the bus
+ */
 USAGEMODE HRESULT CAN_ICS_neoVI_StartHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
@@ -2113,7 +1987,9 @@ USAGEMODE HRESULT CAN_ICS_neoVI_StartHardware(void)
     return hResult;
 }
 
-/* Function to stop monitoring the bus */
+/**
+ * Function to stop monitoring the bus
+ */
 USAGEMODE HRESULT CAN_ICS_neoVI_StopHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
@@ -2140,6 +2016,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_StopHardware(void)
     }
     return hResult;
 }
+
 static BOOL bClientExist(TCHAR* pcClientName, INT& Index)
 {    
     for (UINT i = 0; i < sg_unClientCnt; i++)
@@ -2167,23 +2044,12 @@ static BOOL bClientIdExist(const DWORD& dwClientId)
     return bReturn;
 }
 
-
-/*******************************************************************************
- Function Name  : nGetErrorCounter
- Input(s)       : sErrorCount - Error Counter Structure
- Output         : int - Operation Result. 0 incase of no errors. Failure Error
-                  codes otherwise.
- Functionality  : This function will return the error counter values. In case of
-                  USB this is not supported.
- Member of      : -
- Author(s)      : Raja N
- Date Created   : 02.09.2004
- Modifications  : Raja N on 9.3.2005
-                  Modifications to support multi channel. USB driver supports
-                  indication whenever there is a change in the error counter
-                  value. But parallel port mode this is done in polling. So
-                  update the error counter whenever it is read from the driver.
-*******************************************************************************/
+/**
+ * \param sErrorCount Error Counter Structure
+ * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
+ *
+ * This function will return the error counter values. In case of USB this is not supported.
+ */
 static int nGetErrorCounter( UINT unChannel, SERROR_CNT& sErrorCount)
 {
     int nReturn = -1;
@@ -2205,7 +2071,10 @@ static int nGetErrorCounter( UINT unChannel, SERROR_CNT& sErrorCount)
 
     return nReturn;
 }
-/* Function to reset the hardware, fcClose resets all the buffer */
+
+/**
+ * Function to reset the hardware, fcClose resets all the buffer
+ */
 USAGEMODE HRESULT CAN_ICS_neoVI_ResetHardware(void)
 {
     HRESULT hResult = S_FALSE;
@@ -2221,7 +2090,9 @@ USAGEMODE HRESULT CAN_ICS_neoVI_ResetHardware(void)
     return hResult;
 }
 
-/* Function to get Controller status */
+/**
+ * Function to get Controller status
+ */
 USAGEMODE HRESULT CAN_ICS_neoVI_GetCurrStatus(s_STATUSMSG& StatusData)
 {
     if (sg_ucControllerMode == defUSB_MODE_ACTIVE)
@@ -2239,34 +2110,26 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetCurrStatus(s_STATUSMSG& StatusData)
     return S_OK;
 }
 
-/* Function to get Tx Msg Buffers configured from chi file */
+/**
+ * Function to get Tx Msg Buffers configured from chi file
+ */
 USAGEMODE HRESULT CAN_ICS_neoVI_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 {
     return S_OK;
 }
-/*******************************************************************************
- Function Name  : nWriteMessage
- Input(s)       : sMessage - Message to Transmit
- Output         : int - Operation Result. 0 incase of no errors. Failure Error
-                  codes otherwise.
- Functionality  : This will send a CAN message to the driver. In case of USB
-                  this will write the message in to the driver buffer and will
-                  return. In case if parallel port mode this will write the
-                  message and will wait for the ACK event from the driver. If
-                  the event fired this will return 0. Otherwise this will return
-                  wait time out error. In parallel port it is a blocking call
-                  and in case of failure condition this will take 2 seconds.
- Member of      : 
- Author(s)      : Raja N
- Date Created   : 02.09.2004
- Modifications  : Raja N on 13.09.2004, Added code to post a message on failure.
-                  and added code to check the return value of wait and
-                  incremented the Tx count only on WAIT_OBJECT_0 condition.
- Modifications  : Raja N on 9.3.2005
-                  Modifications to support multi channel
- Modifications  : Ratnadip Choudhury on 21.04.2008
-                  Added neoVI specific codes.
-*******************************************************************************/
+
+/**
+ * \param[in] sMessage Message to Transmit
+ * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
+ *
+ * This will send a CAN message to the driver. In case of USB
+ * this will write the message in to the driver buffer and will
+ * return. In case if parallel port mode this will write the
+ * message and will wait for the ACK event from the driver. If
+ * the event fired this will return 0. Otherwise this will return
+ * wait time out error. In parallel port it is a blocking call
+ * and in case of failure condition this will take 2 seconds.
+ */
 static int nWriteMessage(STCAN_MSG sMessage)
 {
     int nReturn = -1;
@@ -2302,7 +2165,9 @@ static int nWriteMessage(STCAN_MSG sMessage)
     // Code for the later still employs Peak API interface.
 }
 
-/* Function to Send CAN Message to Transmit buffer. This is called only after checking the controller in active mode */
+/**
+ * Function to Send CAN Message to Transmit buffer. This is called only after checking the controller in active mode
+ */
 USAGEMODE HRESULT CAN_ICS_neoVI_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessage)
 {    
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
@@ -2334,7 +2199,10 @@ USAGEMODE HRESULT CAN_ICS_neoVI_SendMsg(DWORD dwClientID, const STCAN_MSG& sMess
     }
     return hResult;
 }
-/* Function get hardware, firmware, driver information*/ 
+
+/**
+ * Function get hardware, firmware, driver information
+ */ 
 USAGEMODE HRESULT CAN_ICS_neoVI_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
 {
     return S_OK;
@@ -2350,7 +2218,9 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
     return S_FALSE;
 }
 
-/* Function to retreive error string of last occurred error*/
+/**
+ * Function to retreive error string of last occurred error
+ */
 USAGEMODE HRESULT CAN_ICS_neoVI_GetLastErrorString(CHAR* acErrorStr, int nLength)
 {
     // TODO: Add your implementation code here
@@ -2364,7 +2234,9 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetLastErrorString(CHAR* acErrorStr, int nLength
     return S_OK;
 }
 
-/* Set application parameters specific to CAN_USB */
+/**
+ * Set application parameters specific to CAN_USB
+ */
 USAGEMODE HRESULT CAN_ICS_neoVI_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
 {
     sg_hOwnerWnd = hWndOwner;
@@ -2403,7 +2275,10 @@ static DWORD dwGetAvailableClientSlot()
     }
     return nClientId;
 }
-/* Register Client */
+
+/**
+ * Register Client
+ */
 USAGEMODE HRESULT CAN_ICS_neoVI_RegisterClient(BOOL bRegister,DWORD& ClientID, TCHAR* pacClientName)
 {
     USES_CONVERSION;    
@@ -2538,7 +2413,10 @@ USAGEMODE HRESULT CAN_ICS_neoVI_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBase
     
     return hResult;
 }
-/* Function to load driver CanApi2.dll */
+
+/**
+ * Function to load driver CanApi2.dll
+ */
 USAGEMODE HRESULT CAN_ICS_neoVI_LoadDriverLibrary(void)
 {
     USES_CONVERSION;
@@ -2576,7 +2454,9 @@ USAGEMODE HRESULT CAN_ICS_neoVI_LoadDriverLibrary(void)
     return hResult;
 }
 
-/* Function to Unload Driver library */
+/**
+ * Function to Unload Driver library
+ */
 USAGEMODE HRESULT CAN_ICS_neoVI_UnloadDriverLibrary(void)
 {
     // Don't bother about the success & hence the result
@@ -2593,12 +2473,11 @@ USAGEMODE HRESULT CAN_ICS_neoVI_UnloadDriverLibrary(void)
 }
 
 
-/* START OF FILTER IN/OUT FUNCTION */
 USAGEMODE HRESULT CAN_ICS_neoVI_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punFrames*/, UINT /*nLength*/)
 {
     return S_OK;
 }
-/* END OF FILTER IN/OUT FUNCTION */
+
 USAGEMODE HRESULT CAN_ICS_neoVI_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus)
 {
     if (hEvent != NULL)
@@ -2608,7 +2487,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetCntrlStatus(const HANDLE& hEvent, UINT& unCnt
     unCntrlStatus = static_cast<UINT>(sg_ucControllerMode);
     return S_OK;
 }
-//
+
 USAGEMODE HRESULT CAN_ICS_neoVI_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
 {
     HRESULT hResult = S_OK;
@@ -2681,7 +2560,6 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetControllerParams(LONG& lParam, UINT nChannel,
     }
     return hResult;
 }
-
 
 USAGEMODE HRESULT CAN_ICS_neoVI_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM /*eContrParam*/)
 {
