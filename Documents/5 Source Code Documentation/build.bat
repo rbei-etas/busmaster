@@ -6,6 +6,7 @@ doxygen Doxyfiles/BusEmulation                 2> out/BusEmulation/doxygen-log.t
 doxygen Doxyfiles/CAN_ETAS_BOA                 2> out/CAN_ETAS_BOA/doxygen-log.txt
 doxygen Doxyfiles/CAN_ICS_neoVI                2> out/CAN_ICS_neoVI/doxygen-log.txt
 doxygen Doxyfiles/CAN_STUB                     2> out/CAN_STUB/doxygen-log.txt
+doxygen Doxyfiles/CAN_Vector_XL                2> out/CAN_Vector_XL/doxygen-log.txt
 doxygen Doxyfiles/CommonClass                  2> out/CommonClass/doxygen-log.txt
 doxygen Doxyfiles/ConfigDialogsDIL             2> out/ConfigDialogsDIL/doxygen-log.txt
 doxygen Doxyfiles/DIL_Interface                2> out/DIL_Interface/doxygen-log.txt

@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = CAN_Vector_XL
+PROJECT_BRIEF          = CAN_Vector_XL
+OUTPUT_DIRECTORY       = out/CAN_Vector_XL
+STRIP_FROM_PATH        = ../../Sources/CAN_Vector_XL
+INPUT                  = ../../Sources/CAN_Vector_XL

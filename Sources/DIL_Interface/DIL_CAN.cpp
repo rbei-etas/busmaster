@@ -32,6 +32,7 @@
 #include "CAN_ICS_neoVI/CAN_ICS_neoVI_Extern.h"
 #include "CAN_STUB/CAN_STUB_Extern.h"
 #include "CAN_ETAS_BOA/CAN_ETAS_BOA_Extern.h"
+#include "CAN_Vector_XL/CAN_Vector_XL_Extern.h"
 #include "Dil_CAN.h"
 
 typedef struct
@@ -46,7 +47,8 @@ static ENTRY_DIL sg_ListDIL[DIL_TOTAL] =
     {DRIVER_CAN_ICS_NEOVI,  _T("IntrepidCS neoVI") },
     {DRIVER_CAN_ETAS_BOA,   _T("ETAS BOA")         },
     {DRIVER_CAN_PEAK_USB,   _T("PEAK USB")         },
-    {DRIVER_CAN_PEAK_PP,    _T("PEAK PP")          }
+    {DRIVER_CAN_PEAK_PP,    _T("PEAK PP")          },
+    {DRIVER_CAN_VECTOR_XL,  _T("Vector XL")        },
 };
 
 CDIL_CAN::CDIL_CAN()
@@ -231,6 +233,36 @@ void CDIL_CAN::vSelectInterface_CAN_ETAS_BOA(void)
     m_pfGetControllerParams = CAN_ETAS_BOA_GetControllerParams;
     m_pfGetErrorCount = CAN_ETAS_BOA_GetErrorCount;
 }
+
+/**
+ * Helper Function for CAN_Vector_XL Interface
+ */
+void CDIL_CAN::vSelectInterface_CAN_Vector_XL(void)
+{
+    m_pfPerformInitOperations = CAN_Vector_XL_PerformInitOperations;
+    m_pfPerformClosureOperations = CAN_Vector_XL_PerformClosureOperations;
+    m_pfGetTimeModeMapping = CAN_Vector_XL_GetTimeModeMapping;
+    m_pfListHwInterfaces = CAN_Vector_XL_ListHwInterfaces;
+    m_pfSelectHwInterface = CAN_Vector_XL_SelectHwInterface;
+    m_pfDeselectHwInterfaces = CAN_Vector_XL_DeselectHwInterface;
+    m_pfDisplayConfigDlg = CAN_Vector_XL_DisplayConfigDlg;
+    m_pfSetConfigData = CAN_Vector_XL_SetConfigData;
+    m_pfStartHardware = CAN_Vector_XL_StartHardware;
+    m_pfStopHardware = CAN_Vector_XL_StopHardware;
+    m_pfResetHardware = CAN_Vector_XL_ResetHardware;
+    m_pfGetTxMsgBuffer = CAN_Vector_XL_GetTxMsgBuffer;
+    m_pfSendMsg = CAN_Vector_XL_SendMsg;
+    m_pfGetBoardInfo = CAN_Vector_XL_GetBoardInfo;
+    m_pfGetBusConfigInfo = CAN_Vector_XL_GetBusConfigInfo;
+    m_pfGetVersionInfo = CAN_Vector_XL_GetVersionInfo;
+    m_pfGetLastErrorString = CAN_Vector_XL_GetLastErrorString;
+    m_pfFilterFrames = CAN_Vector_XL_FilterFrames;
+    m_pfManageMsgBuf = CAN_Vector_XL_ManageMsgBuf;
+    m_pfRegisterClient = CAN_Vector_XL_RegisterClient;
+    m_pfGetCntrlStatus = CAN_Vector_XL_GetCntrlStatus;
+    m_pfGetControllerParams = CAN_Vector_XL_GetControllerParams;
+    m_pfGetErrorCount = CAN_Vector_XL_GetErrorCount;
+}
 /* ROUTER CODE FINISHES */
 
 /**
@@ -292,12 +324,13 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
 
         if (dwDriverID == DRIVER_CAN_PEAK_USB)
         {
-            pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Selecting DAL_NONE..."));
             // First select the dummy interface
             DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
-            // First set the application parameters.
+
+			// First set the application parameters.
             CAN_Usb_SetAppParams(hWndOwner, pILog);
-            // Next load the driver library
+
+			// Next load the driver library
             hResult = CAN_Usb_LoadDriverLibrary();
             switch (hResult)
             {
@@ -321,12 +354,13 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
         }
         else if (dwDriverID == DRIVER_CAN_ICS_NEOVI)
         {
-            pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Selecting DAL_NONE..."));
             // First select the dummy interface
             DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
-            // First set the application parameters.
+
+			// First set the application parameters.
             hResult = CAN_ICS_neoVI_SetAppParams(hWndOwner, pILog);
-            // Next load the driver library
+
+			// Next load the driver library
             hResult = CAN_ICS_neoVI_LoadDriverLibrary();
             switch (hResult)
             {
@@ -350,13 +384,13 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
         }
         else if (dwDriverID == DRIVER_CAN_ETAS_BOA)
         {
-            pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Selecting DAL_NONE..."));
             // First select the dummy interface
             DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
 
             // First set the application parameters.
             hResult = CAN_ETAS_BOA_SetAppParams(hWndOwner, pILog);
-            // Next load the driver library
+
+			// Next load the driver library
             hResult = CAN_ETAS_BOA_LoadDriverLibrary();
             switch (hResult)
             {
@@ -384,7 +418,8 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
 
             // First set the application parameters.
             //CAN_Parallel_Port_SetAppParams(hWndOwner, pILog);
-            // Next load the driver library
+
+			// Next load the driver library
             //hResult = CAN_Parallel_Port_LoadDriverLibrary();
             switch (hResult)
             {
@@ -399,15 +434,44 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
             }
 
         }
+		else if (dwDriverID == DRIVER_CAN_VECTOR_XL)
+		{
+            // First select the dummy interface
+            DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
+
+            // First set the application parameters.
+            hResult = CAN_Vector_XL_SetAppParams(hWndOwner, pILog);
+
+			// Next load the driver library
+            hResult = CAN_Vector_XL_LoadDriverLibrary();
+            switch (hResult)
+            {
+                case S_OK:
+                case DLL_ALREADY_LOADED:
+                {
+                    pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library successful..."));
+                    hResult = S_OK;
+                    CAN_Vector_XL_PerformInitOperations();
+                    vSelectInterface_CAN_Vector_XL();
+                }
+                break;
+                default:
+                {
+                    hResult = ERR_LOAD_DRIVER;
+                    pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library failed..."));
+                }
+                break;
+            }
+		}
         else if (dwDriverID == DRIVER_CAN_STUB)
         {
-            pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Selecting DRIVER_CAN_STUB..."));
             // First select the dummy interface
             DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
 
             // First set the application parameters.
             hResult = CAN_STUB_SetAppParams(hWndOwner, pILog);
-            // Next load the driver library
+
+			// Next load the driver library
             hResult = CAN_STUB_LoadDriverLibrary();
             switch (hResult)
             {

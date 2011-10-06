@@ -22,6 +22,7 @@ Sources/BusEmulation/Release
 Sources/CAN_ETAS_BOA/Release
 Sources/CAN_ICS_neoVI/Release
 Sources/CAN_STUB/Release
+Sources/CAN_Vector_XL/Release
 Sources/CommonClass/Release
 Sources/ConfigDialogsDIL/Release
 Sources/DataTypes/Release
@@ -46,6 +47,7 @@ Sources/BusEmulation/Debug
 Sources/CAN_ETAS_BOA/Debug
 Sources/CAN_ICS_neoVI/Debug
 Sources/CAN_STUB/Debug
+Sources/CAN_Vector_XL/Debug
 Sources/CommonClass/Debug
 Sources/ConfigDialogsDIL/Debug
 Sources/DataTypes/Debug
@@ -76,6 +78,7 @@ Sources/BIN/*/*.tlb
 Sources/BIN/*/CAN_ETAS_BOA.dll
 Sources/BIN/*/CAN_ICS_neoVI.dll
 Sources/BIN/*/CAN_STUB.dll
+Sources/BIN/*/CAN_Vector_XL.dll
 Sources/BIN/*/ConfigDialogsDIL.dll
 Sources/BIN/*/DIL_Interface.dll
 Sources/BIN/*/Filter.dll
@@ -92,6 +95,7 @@ Sources/BIN/Libs/*/*.exp
 Sources/BIN/Libs/*/CAN_ETAS_BOA.lib
 Sources/BIN/Libs/*/CAN_ICS_neoVI.lib
 Sources/BIN/Libs/*/CAN_STUB.lib
+Sources/BIN/Libs/*/CAN_Vector_XL.dll
 Sources/BIN/Libs/*/CommonClass.lib
 Sources/BIN/Libs/*/ConfigDialogsDIL.lib
 Sources/BIN/Libs/*/DIL_Interface.lib

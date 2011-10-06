@@ -91,6 +91,7 @@ enum
     DRIVER_CAN_PEAK_PP,
     DRIVER_CAN_ICS_NEOVI,
     DRIVER_CAN_ETAS_BOA,
+	DRIVER_CAN_VECTOR_XL,
     DIL_TOTAL,          // Its value must be <= MAX_DILS
     DAL_NONE            = ~0x0
 };
