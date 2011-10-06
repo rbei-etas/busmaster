@@ -255,14 +255,6 @@ const long VALUECAN_ERROR_BITS = SPY_STATUS_GLOBAL_ERR | SPY_STATUS_CRC_ERROR |
                        SPY_STATUS_INCOMPLETE_FRAME | SPY_STATUS_UNDEFINED_ERROR
                        | SPY_STATUS_BAD_MESSAGE_BIT_TIME_ERROR;
 
-#define defSTR_ERROR_REPORT_FORMAT          _T("Channel %-2d : %s")
-#define defSTR_WARNING_LIMIT_SET_FAILED     _T("Setting warning limit failed")
-#define defSTR_FILTER_SET_FAILED            _T("Setting hardware filter failed")
-#define defSTR_CONNECT_FAILED               _T("Connect failed")
-#define defSTR_RESET_FAILED                 _T("Hardware reset failed")
-#define defSTR_CLIENT_RESET_FAILED          _T("Software reset failed")
-#define defSTR_CONTROLLER_MODE_SET_FAILED   _T("Setting hardware mode failed")
-
 static UCHAR m_unWarningLimit[defNO_OF_CHANNELS] = {0};
 static UCHAR m_unWarningCount[defNO_OF_CHANNELS] = {0};
 static UCHAR m_unRxError = 0;
@@ -305,19 +297,6 @@ typedef int  (__stdcall *ENABLERXQUEUE)(int hObject, int iEnable);
 static ENABLERXQUEUE icsneoEnableNetworkRXQueue;
 typedef int  (__stdcall *GETTSFORMSG)(int hObject, icsSpyMessage *pMsg, double *pTimeStamp);
 static GETTSFORMSG icsneoGetTimeStampForMsg;
-typedef void (__stdcall *GETISO15765STATUS)(int hObject, int lNetwork, int lClearTxStatus, 
-											int lClearRxStatus, int *lTxStatus, int *lRxStatus);
-static GETISO15765STATUS icsneoGetISO15765Status;
-typedef void (__stdcall *SETISO15765RXPARMS)(int hObject, int lNetwork, int lEnable, 
-			                                spyFilterLong *pFF_CFMsgFilter, icsSpyMessage *pTxMsg, 
-											int lCFTimeOutMs, int lFlowCBlockSize,
-											int lUsesExtendedAddressing, int lUseHardwareIfPresent);
-static SETISO15765RXPARMS icsneoSetISO15765RxParameters;
-typedef int (__stdcall *DOWNLOADISO15765_2_TXSCRIPT)(int hObject, unsigned int NetworkID);
-static DOWNLOADISO15765_2_TXSCRIPT icsneoDownloadISO15765_2_TXScript;
-typedef int (__stdcall *CLEARISO15765_2_TXSCRIPT)(int hObject);
-static CLEARISO15765_2_TXSCRIPT icsneoClearISO15765_2_TxScript;
-typedef int (__stdcall *TXISO15765_2_MESSAGE)(int hObject, stCM_ISO157652_TxMessage *pTxMessage);
 
 /* icsneo40.dll Device Functions */
 typedef int (__stdcall *GETCONFIG)(int hObject, unsigned char * pData, int * lNumBytes);
@@ -361,54 +340,13 @@ static STARTSOCKSERVER icsneoStartSockServer;
 typedef int (__stdcall *STOPSOCKSERVER)(int hObject);
 static STOPSOCKSERVER icsneoStopSockServer;
 
-/* icsneo40.dll CoreMini Script functions */
-typedef int  (__stdcall *SCRIPTSTART)(int hObject, int iLocation);  
-static SCRIPTSTART icsneoScriptStart;
-typedef int  (__stdcall *SCRIPTSTOP)(int hObject);  
-static SCRIPTSTOP icsneoScriptStop;
-typedef int  (__stdcall *SCRIPTLOAD)(int hObject, const unsigned char * bin, unsigned long len_bytes, int iLocation);
-static SCRIPTLOAD icsneoScriptLoad;
-typedef int  (__stdcall *SCRIPTCLEAR)(int hObject, int iLocation);
-static SCRIPTCLEAR icsneoScriptClear;
-typedef int  (__stdcall *SCRIPTSTARTFBLOCK)(int hObject,unsigned int fb_index);
-static SCRIPTSTARTFBLOCK icsneoScriptStartFBlock;
-typedef int  (__stdcall *SCRIPTGETFBLOCKSTATUS)(int hObject, unsigned int fb_index, int *piRunStatus);
-static SCRIPTGETFBLOCKSTATUS icsneoScriptGetFBlockStatus;
-typedef int  (__stdcall *SCRIPTSTOPFBLOCK)(int hObject,unsigned int fb_index);
-static SCRIPTSTOPFBLOCK icsneoScriptStopFBlock;
-typedef int  (__stdcall *SCRIPTGETSCRIPTSTATUS)(int hObject, int *piStatus);
-static SCRIPTGETSCRIPTSTATUS icsneoScriptGetScriptStatus;
-typedef int  (__stdcall *SCRIPTREADAPPSIGNAL)(int hObject, unsigned int iIndex, double *dValue);
-static SCRIPTREADAPPSIGNAL icsneoScriptReadAppSignal;
-typedef int  (__stdcall *SCRIPTWRITEAPPSIGNAL)(int hObject, unsigned int iIndex, double dValue);
-static SCRIPTWRITEAPPSIGNAL icsneoScriptWriteAppSignal;
-typedef int  (__stdcall *SCRIPTREADRXMESSAGE)(int hObject, unsigned int iIndex,
-											  icsSpyMessage *pRxMessageMask, icsSpyMessage *pRxMessageValue);
-static SCRIPTREADRXMESSAGE icsneoScriptReadRxMessage;
-typedef int  (__stdcall *SCRIPTREADTXMESSAGE)(int hObject, unsigned int iIndex, icsSpyMessage *pTxMessage);
-static SCRIPTREADTXMESSAGE icsneoScriptReadTxMessage;
-typedef int  (__stdcall *SCRIPTWRITERXMESSAGE)(int hObject, unsigned int iIndex,
-											   const icsSpyMessage *pRxMessageMask, const icsSpyMessage *pRxMessageValue);
-static SCRIPTWRITERXMESSAGE icsneoScriptWriteRxMessage;
-typedef int  (__stdcall *SCRIPTWRITETXMESSAGE)(int hObject, unsigned int iIndex, const icsSpyMessage *pTxMessage);
-static SCRIPTWRITETXMESSAGE icsneoScriptWriteTxMessage;
-typedef int  (__stdcall *SCRIPTREADISO15765TXMESSAGE)(int hObject, unsigned int iIndex, stCM_ISO157652_TxMessage *pTxMessage);
-typedef int  (__stdcall *SCRIPTWRITEISO15765TXMESSAGE)(int hObject, unsigned int iIndex, const stCM_ISO157652_TxMessage *pTxMessage);
-
 /* icsneo40.dll Deprecated (but still suppored in the DLL) */
 typedef int  (__stdcall *OPENPORTEX)(int lPortSerialNumber, int lPortType, int lDriverType, 
 					                 int lIPAddressMSB, int lIPAddressLSBOrBaudRate,int bConfigRead, 
 				                     unsigned char * bNetworkID, int * hObject);
 static OPENPORTEX icsneoOpenPortEx;
-typedef int  (__stdcall *OPENPORT)(int lPortNumber, int lPortType, int lDriverType, 
-					               unsigned char *bNetworkID, unsigned char *bSCPIDs,  int * hObject);
 typedef int (__stdcall *ENABLENETWORKCOM)(int hObject, int Enable);
 static ENABLENETWORKCOM icsneoEnableNetworkCom;
-typedef int (__stdcall *FINDCOMDEVICES)(int lDriverType,  int lGetSerialNumbers, int lStopAtFirst, int lUSBCommOnly,
-							            int *p_lDeviceTypes, int *p_lComPorts, int *p_lSerialNumbers, int *lNumDevices); 
-static FINDCOMDEVICES icsneoFindCOMDevices;
-typedef int (__stdcall *FINDALLCOMDEVICES)(int,int, int, int, int * ,int *, int *, int *);
-static FINDALLCOMDEVICES icsneoFindAllCOMDevices;
 
 /* The following are valid strings for setting parameters on devices 
  * using the icsneoGetDeviceParameters() and icsneoSetDeviceParameters() functions
@@ -1380,32 +1318,36 @@ static int nGetNoOfConnectedHardware(int& nHardwareCount)
     // 0, Query successful, but no device found
     // > 0, Number of devices found
     // < 0, query for devices unsucessful
-    int nReturn = 0;
+	int nResult; 
+	NeoDevice ndNeoToOpen [10];
+	int iNumberOfDevices;
 
-    for (BYTE i = 0; i < 16; i++)
+	iNumberOfDevices = 16;
+    for (BYTE i = 0; i < iNumberOfDevices; i++)
     {
         m_ucNetworkID[i] = i;
     }
-    // TODO: Add your command handler code here
-    if ((*icsneoFindAllCOMDevices)(0, 1, 0, 1,
-            m_anDeviceTypes, m_anComPorts, m_anSerialNumbers, &nReturn))
-    {
-        if (nReturn == 0)
-        {
-            _tcscpy(m_omErrStr,_T("Query successful, but no device found"));
-        }
-        else
-        {
-            nHardwareCount = nReturn;
-        }
-    }
-    else
-    {
-        nReturn = -1;
-        _tcscpy(m_omErrStr,_T("Query for devices unsuccessful"));
+
+	//Search for attached devices
+	nResult = icsneoFindNeoDevices(65535, ndNeoToOpen, &iNumberOfDevices);
+	if(nResult == false)
+	{
+		_tcscpy(m_omErrStr, _T("Problem Finding Device"));
+		nResult = -1;
+	}
+	else
+	if(iNumberOfDevices<1)
+	{
+		_tcscpy(m_omErrStr, _T("No Devices Found\r\n"));
+		nResult = 0;
+	}
+	else
+	{
+		nHardwareCount = iNumberOfDevices;
+		nResult = iNumberOfDevices;
     }
     // Return the operation result
-    return nReturn;
+    return nResult;
 }
 
 /**
@@ -2440,8 +2382,6 @@ USAGEMODE HRESULT CAN_ICS_neoVI_LoadDriverLibrary(void)
         else
         {
 			icsneoFindNeoDevices =    (FINDNEODEVICES) GetProcAddress(sg_hDll,              "icsneoFindNeoDevices");
-			icsneoFindCOMDevices =    (FINDCOMDEVICES) GetProcAddress(sg_hDll,              "icsneoFindCOMDevices");
-			icsneoFindAllCOMDevices = (FINDALLCOMDEVICES) GetProcAddress(sg_hDll,           "icsneoFindAllCOMDevices");
 			icsneoOpenNeoDevice =     (OPENNEODEVICE) GetProcAddress(sg_hDll,               "icsneoOpenNeoDevice");
 			icsneoClosePort =         (CLOSEPORT) GetProcAddress(sg_hDll,                   "icsneoClosePort");	
 			icsneoFreeObject =        (FREEOBJECT) GetProcAddress(sg_hDll,                  "icsneoFreeObject");
@@ -2454,10 +2394,6 @@ USAGEMODE HRESULT CAN_ICS_neoVI_LoadDriverLibrary(void)
 			icsneoWaitForRxMessagesWithTimeOut = (WAITFORRXMSGS) GetProcAddress(sg_hDll,    "icsneoWaitForRxMessagesWithTimeOut");
 			icsneoGetTimeStampForMsg = (GETTSFORMSG) GetProcAddress(sg_hDll,                "icsneoGetTimeStampForMsg");
 			icsneoEnableNetworkRXQueue = (ENABLERXQUEUE) GetProcAddress(sg_hDll,            "icsneoEnableNetworkRXQueue");
-			icsneoGetISO15765Status = (GETISO15765STATUS) GetProcAddress(sg_hDll,           "icsneoGetISO15765Status");
-			icsneoSetISO15765RxParameters = (SETISO15765RXPARMS) GetProcAddress(sg_hDll,    "icsneoSetISO15765RxParameters");
-			icsneoDownloadISO15765_2_TXScript = (DOWNLOADISO15765_2_TXSCRIPT) GetProcAddress(sg_hDll, "icsneoDownloadISO15765_2_TXScript");
-			icsneoClearISO15765_2_TxScript = (CLEARISO15765_2_TXSCRIPT) GetProcAddress(sg_hDll, "icsneoClearISO15765_2_TxScript");
 
 			icsneoGetConfiguration =  (GETCONFIG) GetProcAddress(sg_hDll,                   "icsneoGetConfiguration");
   			icsneoSendConfiguration = (SENDCONFIG) GetProcAddress(sg_hDll,                  "icsneoSendConfiguration");
@@ -2473,37 +2409,15 @@ USAGEMODE HRESULT CAN_ICS_neoVI_LoadDriverLibrary(void)
 			icsneoGetErrorMessages = (GETERRMSGS) GetProcAddress(sg_hDll,                   "icsneoGetErrorMessages");
 			icsneoGetErrorInfo =     (GETERRORINFO) GetProcAddress(sg_hDll,                 "icsneoGetErrorInfo");
 
-			icsneoScriptLoad =        (SCRIPTLOAD) GetProcAddress(sg_hDll,                  "icsneoScriptLoad");
-			icsneoScriptStart =       (SCRIPTSTART) GetProcAddress(sg_hDll,                 "icsneoScriptStart");
-			icsneoScriptStop =        (SCRIPTSTOP) GetProcAddress(sg_hDll,                  "icsneoScriptStop");
-			icsneoScriptClear =       (SCRIPTCLEAR) GetProcAddress(sg_hDll,                 "icsneoScriptClear");
-			icsneoScriptStartFBlock = (SCRIPTSTARTFBLOCK) GetProcAddress(sg_hDll,           "icsneoScriptStartFBlock");
-			icsneoScriptStopFBlock =  (SCRIPTSTOPFBLOCK) GetProcAddress(sg_hDll,            "icsneoScriptStopFBlock");
-			icsneoScriptGetFBlockStatus = (SCRIPTGETFBLOCKSTATUS) GetProcAddress(sg_hDll,   "icsneoScriptGetFBlockStatus");
-			icsneoScriptGetScriptStatus = (SCRIPTGETSCRIPTSTATUS) GetProcAddress(sg_hDll,   "icsneoScriptGetScriptStatus");
-			icsneoScriptReadAppSignal = (SCRIPTREADAPPSIGNAL) GetProcAddress(sg_hDll,       "icsneoScriptReadAppSignal");
-			icsneoScriptWriteAppSignal = (SCRIPTWRITEAPPSIGNAL) GetProcAddress(sg_hDll,     "icsneoScriptWriteAppSignal");
-
-			icsneoScriptReadRxMessage = (SCRIPTREADRXMESSAGE) GetProcAddress(sg_hDll,       "icsneoScriptReadRxMessage");
-			icsneoScriptReadTxMessage = (SCRIPTREADTXMESSAGE) GetProcAddress(sg_hDll,       "icsneoScriptReadTxMessage");
-			icsneoScriptWriteRxMessage = (SCRIPTWRITERXMESSAGE)GetProcAddress(sg_hDll,      "icsneoScriptWriteRxMessage");
-			icsneoScriptWriteTxMessage = (SCRIPTWRITETXMESSAGE) GetProcAddress(sg_hDll,     "icsneoScriptWriteTxMessage");
-
 			//check for error
 			if(!icsneoFindNeoDevices || !icsneoOpenNeoDevice || !icsneoClosePort || !icsneoFreeObject || !icsneoOpenPortEx ||  
 			   !icsneoEnableNetworkCom || !icsneoTxMessages || !icsneoGetMessages || !icsneoWaitForRxMessagesWithTimeOut ||
-			   !icsneoGetTimeStampForMsg || !icsneoEnableNetworkRXQueue || !icsneoGetISO15765Status ||
-			   !icsneoSetISO15765RxParameters || !icsneoGetConfiguration || !icsneoSendConfiguration ||
+			   !icsneoGetTimeStampForMsg || !icsneoEnableNetworkRXQueue ||
+			   !icsneoGetConfiguration || !icsneoSendConfiguration ||
 			   !icsneoGetFireSettings || !icsneoSetFireSettings || !icsneoGetVCAN3Settings ||
 			   !icsneoSetVCAN3Settings || !icsneoSetBitRate || !icsneoGetDeviceParameters ||
 			   !icsneoSetDeviceParameters || !icsneoGetLastAPIError || !icsneoGetErrorMessages ||
-			   !icsneoGetErrorInfo || !icsneoScriptLoad || !icsneoScriptStart || !icsneoScriptStop ||
-			   !icsneoScriptClear || !icsneoScriptStartFBlock || !icsneoScriptStopFBlock ||
-			   !icsneoScriptGetFBlockStatus || !icsneoScriptGetScriptStatus || !icsneoScriptReadAppSignal ||
-			   !icsneoScriptWriteAppSignal || !icsneoScriptReadRxMessage || !icsneoScriptReadTxMessage ||
-			   !icsneoScriptWriteRxMessage || !icsneoScriptWriteTxMessage || 
-			   !icsneoGetDLLVersion || !icsneoDownloadISO15765_2_TXScript ||
-			   !icsneoClearISO15765_2_TxScript )
+			   !icsneoGetErrorInfo || !icsneoGetDLLVersion )
 			{
 				FreeLibrary(sg_hDll);
                 // Log list of the function pointers non-retrievable
