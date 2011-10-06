@@ -1,312 +1,441 @@
-////////////////////////////////////////////////////////////////////////////////////
-// neovi.h
-// 4/23/2001
-// Header file for using the neoVI API in C/C++
-// Copyright Intrepid Control Systems, Inc. 2000-2006
-// www.intrepidcs.com
-////////////////////////////////////////////////////////////////////////////////////
 
-// include the standard message data structures
-#include        "icsSpyData.h"
-
-// comment the following line out for Visual C++
-//#define		BORLANDC
-
-
-//
-// If borland c is defined we need to have "extern "c" added
-// before each api call and a closing bracket after each api call
-#ifdef BORLANDC
-	#define BORLANDC_HEADER		extern "C" {
-	#define BORLANDC_FOOTER		}
-#else
-	#define BORLANDC_HEADER	
-	#define BORLANDC_FOOTER	
-#endif
+#include "string.h"
+#include <string>
 
 
 // OpenPort "OpenType" Argument Constants
-#define		NEOVI_COMMTYPE_RS232				0
-#define		NEOVI_COMMTYPE_USB_BULK				1
-#define		NEOVI_COMMTYPE_USB_ISO_DONT_USE		2
-#define		NEOVI_COMMTYPE_TCPIP				3
+#define	NEOVI_COMMTYPE_RS232  0
+#define	NEOVI_COMMTYPE_USB_BULK	1
+#define	NEOVI_COMMTYPE_USB_ISO_DONT_USE	2
+#define	NEOVI_COMMTYPE_TCPIP 3
 
-// Driver Type Constants
-#define INTREPIDCS_DRIVER_STANDARD		0
-#define	INTREPIDCS_DRIVER_TEST			1
+//hardware constants
+#define NEODEVICE_BLUE  1
+#define NEODEVICE_DW_VCAN  4
+#define NEODEVICE_FIRE  8
+#define NEODEVICE_VCAN3  16
+#define NEODEVICE_ANY  65535
 
-// device Type IDs
-#define INTREPIDCS_DEVICE_NEO4			0
-#define INTREPIDCS_DEVICE_VCAN			1
-#define INTREPIDCS_DEVICE_NEO6			2
-#define INTREPIDCS_DEVICE_UNKNOWN		3
-#define INTREPIDCS_DEVICE_VCAN2  		4
+//device ID's
+const int NETID_DEVICE  = 0;
+const int NETID_HSCAN = 1;
+const int NETID_MSCAN = 2;
+const int NETID_SWCAN = 3;
+const int NETID_LSFTCAN = 4;
+const int NETID_FORDSCP = 5;
+const int NETID_J1708 = 6;
+const int NETID_AUX = 7;
+const int NETID_JVPW = 8;
+const int NETID_ISO = 9;
+const int NETID_LIN = 9;
+const int NETID_ISOPIC= 10;
+const int NETID_MAIN51 = 11;
+const int NETID_SCI = 13;
+const int NETID_ISO2 = 14;
+const int NETID_FIRE_LIN1 = 16;
+const int NETID_FIRE_HSCAN1 = 41;
+const int NETID_FIRE_HSCAN2 = 42;
+const int NETID_FIRE_MSCAN1 = 43;
+const int NETID_FIRE_MSCAN2 = 44;
+const int NETID_FIRE_HSCAN3 = 44;
+const int NETID_FIRE_SWCAN = 45;
+const int NETID_FIRE_LSFT = 46;
+const int NETID_FIRE_LIN2 = 48;
+const int NETID_FIRE_LIN3 = 49;
+const int NETID_FIRE_LIN4 = 50;
 
-// neoVI Subsystem ID's
-#define		NETID_DEVICE		0
-#define		NETID_HSCAN			1
-#define		NETID_MSCAN			2
-#define		NETID_SWCAN			3
-#define		NETID_LSFTCAN		4
-#define		NETID_FORDSCP		5
-#define		NETID_J1708			6
-#define		NETID_AUX			7
-#define		NETID_JVPW			8
-#define		NETID_ISO			9
-#define		NETID_ISOPIC		10
-#define		NETID_MAIN51		11
-#define		NETID_HOST			12
+const long SPY_STATUS_GLOBAL_ERR = 0x01;
+const long SPY_STATUS_TX_MSG = 0x02;
+const long SPY_STATUS_XTD_FRAME = 0x04;
+const long SPY_STATUS_REMOTE_FRAME = 0x08;
 
-// ISO15765 Status Flags
-#define INTREPIDCS_15765_RX_ERR_GLOBAL			0x0001
-#define INTREPIDCS_15765_RX_ERR_CFRX_EXP_FF		0x0002
-#define INTREPIDCS_15765_RX_ERR_FCRX_EXP_FF		0x0004
-#define INTREPIDCS_15765_RX_ERR_SFRX_EXP_CF		0x0008
-#define INTREPIDCS_15765_RX_ERR_FFRX_EXP_CF		0x0010
-#define INTREPIDCS_15765_RX_ERR_FCRX_EXP_CF		0x0020
-#define	INTREPIDCS_15765_RX_ERR_CF_TIME_OUT		0x0040
-#define	INTREPIDCS_15765_RX_COMPLETE			0x0080
-#define	INTREPIDCS_15765_RX_IN_PROGRESS			0x0100
-#define	INTREPIDCS_15765_RX_ERR_SEQ_ERR_CF		0x0200
+const long SPY_STATUS_CRC_ERROR = 0x10;
+const long SPY_STATUS_CAN_ERROR_PASSIVE = 0x20;
+const long SPY_STATUS_INCOMPLETE_FRAME = 0x40;
+const long SPY_STATUS_LOST_ARBITRATION = 0x80;
 
+const long SPY_STATUS_UNDEFINED_ERROR = 0x100;
+const long SPY_STATUS_CAN_BUS_OFF = 0x200;
+const long SPY_STATUS_CAN_ERROR_WARNING = 0x400;
+const long SPY_STATUS_BUS_SHORTED_PLUS = 0x800;
 
-// Configuration Array addresses
+const long SPY_STATUS_BUS_SHORTED_GND = 0x1000;
+const long SPY_STATUS_CHECKSUM_ERROR = 0x2000;
+const long SPY_STATUS_BAD_MESSAGE_BIT_TIME_ERROR = 0x4000;
+const long SPY_STATUS_IFR_DATA = 0x8000;
 
-// HSCAN neoVI or ValueCAN
-#define		NEO_CFG_MPIC_HS_CAN_CNF1 (512 + 10)
-#define		NEO_CFG_MPIC_HS_CAN_CNF2 (512 + 9)
-#define		NEO_CFG_MPIC_HS_CAN_CNF3 (512 + 8)
-#define		NEO_CFG_MPIC_HS_CAN_MODE (512 + 54)
+const long SPY_STATUS_COMM_IN_OVERFLOW = 0x10000;
+const long SPY_STATUS_COMM_OUT_OVERFLOW = 0x20000;
+const long SPY_STATUS_COMM_MISC_ERROR = 0x40000;
+const long SPY_STATUS_BREAK = 0x80000;
 
-// med speed neoVI CAN
-#define		NEO_CFG_MPIC_MS_CAN_CNF1 (512 + 22)
-#define		NEO_CFG_MPIC_MS_CAN_CNF2 (512 + 21)
-#define		NEO_CFG_MPIC_MS_CAN_CNF3 (512 + 20)
+const long SPY_STATUS_AVSI_REC_OVERFLOW = 0x100000;
+const long SPY_STATUS_TEST_TRIGGER = 0x200000;
+const long SPY_STATUS_AUDIO_COMMENT = 0x400000;
+const long SPY_STATUS_GPS_DATA = 0x800000;
 
-// med speed neoVI CAN
-#define		NEO_CFG_MPIC_SW_CAN_CNF1 (512 + 34)
-#define		NEO_CFG_MPIC_SW_CAN_CNF2 (512 + 33)
-#define		NEO_CFG_MPIC_SW_CAN_CNF3 (512 + 32)
+const long SPY_STATUS_ANALOG_DIGITAL_INPUT = 0x1000000;
+const long SPY_STATUS_TEXT_COMMENT = 0x2000000;
+const long SPY_STATUS_NETWORK_MESSAGE_TYPE = 0x4000000;
+const long SPY_STATUS_VSI_TX_UNDERRUN = 0x8000000;
 
-// med speed neoVI CAN
-#define		NEO_CFG_MPIC_LSFT_CAN_CNF1 (512 + 46)
-#define		NEO_CFG_MPIC_LSFT_CAN_CNF2 (512 + 45)
-#define		NEO_CFG_MPIC_LSFT_CAN_CNF3 (512 + 44)
+const long SPY_STATUS_VSI_IFR_CRC_BIT = 0x10000000;
+const long SPY_STATUS_INIT_MESSAGE = 0x20000000;
+const long SPY_STATUS_HIGH_SPEED = 0x40000000;
 
+// Configuration Array constants
+// high speed CAN neoVI / valuecan baud rate constants
+const long NEO_CFG_MPIC_HS_CAN_CNF1 = 512 + 10;
+const long NEO_CFG_MPIC_HS_CAN_CNF2 = 512 + 9;
+const long NEO_CFG_MPIC_HS_CAN_CNF3 = 512 + 8;
+const long NEO_CFG_MPIC_HS_CAN_MODE = 512 + 54;
+// med speed CAN
+const long NEO_CFG_MPIC_MS_CAN_CNF1 = 512 + 22;
+const long NEO_CFG_MPIC_MS_CAN_CNF2 = 512 + 21;
+const long NEO_CFG_MPIC_MS_CAN_CNF3 = 512 + 20;
+//SW CAN
+const long NEO_CFG_MPIC_SW_CAN_CNF1 = 512 + 34;
+const long NEO_CFG_MPIC_SW_CAN_CNF2 = 512 + 33;
+const long NEO_CFG_MPIC_SW_CAN_CNF3 = 512 + 32;
+//LSFT CAN
+const long NEO_CFG_MPIC_LSFT_CAN_CNF1 = 512 + 46;
+const long NEO_CFG_MPIC_LSFT_CAN_CNF2 = 512 + 45;
+const long NEO_CFG_MPIC_LSFT_CAN_CNF3 = 512 + 44;
 
+// The second status bitfield
+const long SPY_STATUS2_HAS_VALUE = 1;
+const long SPY_STATUS2_VALUE_IS_BOOLEAN = 2;
+const long SPY_STATUS2_HIGH_VOLTAGE = 4;
+const long SPY_STATUS2_LONG_MESSAGE = 8;
 
-
-// neoVI Error Constants ///////////////////////////////////////////////////////////
-const unsigned long NEOVI_ERROR_DLL_TX_BUFFER_OVERFLOW = 0;
-const unsigned long NEOVI_ERROR_DLL_ERROR_BUFFER_OVERFLOW = 1;
-const unsigned long NEOVI_ERROR_DLL_USB_SEND_DATA_ERROR = 2;
-const unsigned long NEOVI_ERROR_DLL_ISO_DATA_BUFFER_ALLOC = 3;
-const unsigned long NEOVI_ERROR_DLL_ISO_DATA_READ_BUFFER = 4;
-const unsigned long NEOVI_ERROR_DLL_ISO_DATA_ZERO_PACKETS =5;
-const unsigned long NEOVI_ERROR_DLL_RX_MSG_BUFFER_OVERFLOW =6;
-const unsigned long NEOVI_ERROR_DLL_STOP_ISO_STREAM =7;
-const unsigned long NEOVI_ERROR_DLL_INVALID_NETID =8;
-const unsigned long NEOVI_ERROR_DLL_PROBLEM_STOPPING_RX_THREAD =9;
-const unsigned long NEOVI_ERROR_DLL_PROBLEM_STOPPING_TX_THREAD =10;
-const unsigned long NEOVI_ERROR_DLL_MAIN_PIC_BUFFER_OVERFLOW =11;
-const unsigned long NEOVI_ERROR_DLL_INVALID_DEVICE_RESPONSE =12;
-const unsigned long NEOVI_ERROR_DLL_ISOTX_DATA_BUFFER_ALLOC =13;
-const unsigned long NEOVI_ERROR_DLL_RX_CMD_BUFFER_OVERFLOW=14;
-const unsigned long NEOVI_ERROR_DLL_RS232_RX_BUFFER_OVERFLOW=15;
-const unsigned long NEOVI_ERROR_DLL_RS232_ERR_READCOMERR =16;
-const unsigned long NEOVI_ERROR_DLL_RS232_ERR_READ=17;
-const unsigned long NEOVI_ERROR_DLL_RS232_BUFFER_ALLOC=18;
-const unsigned long NEOVI_ERROR_DLL_RS232_TX_BUFFER_OVERFLOW=19;
-const unsigned long NEOVI_ERROR_DLL_RS232_MISC_ERROR=20;
-const unsigned long NEOVI_ERROR_DLL_RS232_FIND_WRITE=21;
-const unsigned long NEOVI_ERROR_DLL_RS232_FIND_BUFFER_ALLOC=22;
-const unsigned long NEOVI_ERROR_DLL_RS232_FIND_CLEARCOMM=23;
-const unsigned long NEOVI_ERROR_DLL_RS232_FIND_READCOMM=24;
-const unsigned long NEOVI_ERROR_DLL_RS232_FIND_TIMEOUT=25;
-const unsigned long NEOVI_ERROR_DLL_RS232_ERR_BREAK=26;
-const unsigned long NEOVI_ERROR_DLL_RS232_ERR_FRAME=27;
-const unsigned long NEOVI_ERROR_DLL_RS232_ERR_IOE=28;
-const unsigned long NEOVI_ERROR_DLL_RS232_ERR_OVERRUN=29;
-const unsigned long NEOVI_ERROR_DLL_RS232_ERR_PARITY=30;
-const unsigned long NEOVI_ERROR_DLL_RS232_TXBUFFER_ALLOC=31; 
-const unsigned long NEOVI_ERROR_DLL_USB_TX_RS232_ERROR=32;
-const unsigned long NEOVI_ERROR_DLL_RS232_CREATE_FILE=33;
-const unsigned long NEOVI_ERROR_DLL_RS232_GET_COMM_STATE=34;
-const unsigned long NEOVI_ERROR_DLL_RS232_SET_COMM_STATE=35;
-const unsigned long NEOVI_ERROR_DLL_RS232_START_COMM_RX_THREAD=36;
-const unsigned long NEOVI_ERROR_DLL_RS232_START_COMM_TX_THREAD=37;
-const unsigned long NEOVI_ERROR_DLL_SYNC_COUNT_ERR=38;
-const unsigned long NEOVI_ERROR_DLL_RX_MSG_FRAME_ERR=39;
-const unsigned long NEOVI_ERROR_DLL_RX_MSG_FIFO_OVER=40;
-const unsigned long NEOVI_ERROR_DLL_RX_MSG_CHK_SUM_ERR=41;
-const unsigned long NEOVI_ERROR_DLL_PROBLEM_STOPPING_BULKIN_THREAD=42;
-const unsigned long NEOVI_ERROR_DLL_BULKIN_ERR_READ=43;
-const unsigned long NEOVI_ERROR_DLL_MAIN51_RX_FIFO_OVERFLOW=44;
-const unsigned long NEOVI_ERROR_DLL_MAIN51_TX_FIFO_OVERFLOW=45;
-const unsigned long NEOVI_ERROR_DLL_MAIN51_DEV_FIFO_OVERFLOW=46;
-const unsigned long NEOVI_ERROR_DLL_RESET_STATUS_CHANGED=47;
-const unsigned long NEOVI_ERROR_DLL_ISO_LONG_CACHE_OVERFLOW=48;
-const unsigned long NEOVI_ERROR_DLL_ISORX_LONG_BUFFER_ALLOC=49;
-const unsigned long NEOVI_ERROR_DLL_J1708_LONG_CACHE_OVERFLOW=50;
-const unsigned long NEOVI_ERROR_DLL_J1708_LONG_BUFFER_ALLOC=51;
-const unsigned long NEOVI_ERROR_DLL_MAIN51_TX_FIFO_OVERFLOW_DEVICE =52;
-const unsigned long NEOVI_ERROR_DLL_MAIN51_TX_FIFO_OVERFLOW_HSCAN =53;
-const unsigned long NEOVI_ERROR_DLL_MAIN51_TX_FIFO_OVERFLOW_MSCAN =54;
-const unsigned long NEOVI_ERROR_DLL_MAIN51_TX_FIFO_OVERFLOW_SWCAN =55;
-const unsigned long NEOVI_ERROR_DLL_MAIN51_TX_FIFO_OVERFLOW_LSFTCAN =56;
-const unsigned long NEOVI_ERROR_DLL_MAIN51_TX_FIFO_OVERFLOW_FORDSCP =57;
-const unsigned long NEOVI_ERROR_DLL_MAIN51_TX_FIFO_OVERFLOW_J1708 =58;
-const unsigned long NEOVI_ERROR_DLL_MAIN51_TX_FIFO_OVERFLOW_AUX =59;
-const unsigned long NEOVI_ERROR_DLL_MAIN51_TX_FIFO_OVERFLOW_JVPW =60;
-const unsigned long NEOVI_ERROR_DLL_MAIN51_TX_FIFO_OVERFLOW_ISO =61;
-const unsigned long NEOVI_ERROR_DLL_MAIN51_TX_FIFO_OVERFLOW_ISOPIC =62;
-const unsigned long NEOVI_ERROR_DLL_MAIN51_TX_FIFO_OVERFLOW_MAIN51 =63;
-const unsigned long NEOVI_ERROR_DLL_MAIN51_TX_FIFO_OVERFLOW_HOST =64;
-const unsigned long NEOVI_ERROR_DLL_READ_ENTIRE_DEEPROM_ERROR =65;
-const unsigned long  NEOVI_ERROR_DLL_WRITE_ENTIRE_DEEPROM_ERROR=66;
-const unsigned long  NEOVI_ERROR_DLL_USB_PORT_ALREADY_OPEN=67;
-const unsigned long  NEOVI_ERROR_DLL_JVPW_TX_REPORT_FIFO_ERR_IN=68;
-const unsigned long  NEOVI_ERROR_DLL_ISOJ_TX_REPORT_FIFO_ERR_IN=69;
-const unsigned long  NEOVI_ERROR_DLL_JVPW_TX_REPORT_FIFO_ERR_OUT=70;
-const unsigned long  NEOVI_ERROR_DLL_ISOJ_TX_REPORT_FIFO_ERR_OUT=71;
-const unsigned long  NEOVI_ERROR_DLL_MAIN51_TX_IN_FROM_HOST_FIFO=72;
-const unsigned long  NEOVI_ERROR_DLL_MAIN51_TX_HOST_CHKSUM=73;
-const unsigned long NEOVI_ERROR_DLL_ISOJ_TX_HOST_MISSED_BYTE=74;
-const unsigned long NEOVI_ERROR_DLL_NEOVI_NO_RESPONSE=75;
-const unsigned long NEOVI_ERROR_DLL_RX_SOCKET_FIFO_OVER=76;
-const unsigned long NEOVI_ERROR_DLL_PROBLEM_STOPPING_TXSOCKET_THREAD=77;
-const unsigned long NEOVI_ERROR_DLL_PROBLEM_STOPPING_RXSOCKET_THREAD=78;
-const unsigned long NEOVI_ERROR_DLL_PROBLEM_STOPPING_TXSOCKET_CLIENT_THREAD=78;
-const unsigned long NEOVI_ERROR_DLL_PROBLEM_STOPPING_RXSOCKET_CLIENT_THREAD=79;
-const unsigned long NEOVI_ERROR_DLL_TCP_CLIENT_TX=80;
-const unsigned long NEOVI_ERROR_DLL_TCP_CLIENT_RX=81;
-const unsigned long NEOVI_ERROR_DLL_TCP_CLIENT_RX_SOCK=82;
-const unsigned long NEOVI_ERROR_DLL_UNABLE_CONNECT_TO_SRVR=83;
-const unsigned long NEOVI_ERROR_DLL_UNABLE_CREATE_CLIENT_SOCK=84;
-const unsigned long NEOVI_ERROR_DLL_UNABLE_WSASTARTUP=85;
-const unsigned long NEOVI_ERROR_DLL_SOCK_CL_RD_BUFFER_ALLOC=86;
-const unsigned long NEOVI_ERROR_DLL_SOCK_CL_TX_BUFFER_ALLOC=87;
-const unsigned long NEOVI_ERROR_DLL_SOCK_SRVR_RX_BUFFER_ALLOC=88;
-const unsigned long NEOVI_ERROR_DLL_SOCK_SRVR_TX_BUFFER_ALLOC=89;
-const unsigned long NEOVI_ERROR_DLL_ILLEGAL_TX_NETWORK=90;
-const unsigned long NEOVI_ERROR_DLL_MAIN51_TX_HOST_OVERRUN=91;
-const unsigned long NEOVI_ERROR_DLL_OPEN_GET_COMM_TIMEOUT=92;
-const unsigned long NEOVI_ERROR_DLL_OPEN_SET_COMM_TIMEOUT=93;
-const unsigned long NEOVI_ERROR_DLL_OPEN_READ_DEVICE_TYPE=94;
-const unsigned long NEOVI_ERROR_DLL_OPEN_READ_DEVICE_TYPE_TOUT=95;
-const unsigned long NEOVI_ERROR_DLL_CLOSE_PURGE_COMM=96;
-const unsigned long NEOVI_ERROR_DLL_TX_COM_FIFO_OVERFLOW=97;
-const unsigned long NEOVI_ERROR_DLL_GET_USBSERIAL_DEVICES=98;
-
-// Constants for describing error severity
-const unsigned long icsspyErrCritical=0x10;
-const unsigned long icsspyErrExclamation=0x30;
-const unsigned long icsspyErrInformation=0x40;
-const unsigned long icsspyErrQuestion=0x20;
-
-// Constants used to calculate the timestamp
-const double NEOVI_TIMESTAMP_2 = 0.1048576;
-const double NEOVI_TIMESTAMP_1 = 0.0000016;
-
-// Constants used to calculate the timestamp
-const double NEOVI6_VCAN_TIMESTAMP_2 = 0.065536;
-const double NEOVI6_VCAN_TIMESTAMP_1 = 0.000001;
-
-// Win32 DLL prototypes 
-BORLANDC_HEADER int _stdcall  icsneoOpenPort(int lPortNumber, int lPortType,
-                        int lDriverType,unsigned char * bNetworkID,
-                        unsigned char * bSCPIDs,  int * hObject); BORLANDC_FOOTER
-
-BORLANDC_HEADER int _stdcall icsneoOpenPortEx( int lPortNumber, int lPortType, 
-						int lDriverType, int lIPAddressMSB, int lIPAddressLSBOrBaudRate, 
-						int bConfigRead, unsigned char * bNetworkID, int * hObject); BORLANDC_FOOTER
+const int SPY_PROTOCOL_CUSTOM = 0;
+const int SPY_PROTOCOL_CAN = 1;
+const int SPY_PROTOCOL_GMLAN = 2;
+const int SPY_PROTOCOL_J1850VPW = 3;
+const int SPY_PROTOCOL_J1850PWM = 4;
+const int SPY_PROTOCOL_ISO9141 = 5;
+const int SPY_PROTOCOL_Keyword2000 = 6;
+const int SPY_PROTOCOL_GM_ALDL_UART = 7;
+const int SPY_PROTOCOL_CHRYSLER_CCD = 8;
+const int SPY_PROTOCOL_CHRYSLER_SCI = 9;
+const int SPY_PROTOCOL_FORD_UBP = 10;
+const int SPY_PROTOCOL_BEAN = 11;
+const int SPY_PROTOCOL_LIN = 12;
+const int SPY_PROTOCOL_J1708 = 13;
+const int SPY_PROTOCOL_CHRYSLER_JVPW = 14;
+const int SPY_PROTOCOL_J1939 = 15;
 
 
-BORLANDC_HEADER int _stdcall icsneoClosePort(int hObject, int * pNumberOfErrors); BORLANDC_FOOTER
+// these are used in status2 for Vehicle Spy 3
+const long icsspystatusChangeLength =0x10;
+const long icsspystatusChangeBitH1 = 0x20;
+const long icsspystatusChangeBitH2 = 0x40;
+const long icsspystatusChangeBitH3 = 0x80 ;
+const long icsspystatusChangeBitB1 = 0x100;
+const long icsspystatusChangeBitB2 = 0x200 ;
+const long icsspystatusChangeBitB3 = 0x400 ;
+const long icsspystatusChangeBitB4 = 0x800 ;
+const long icsspystatusChangeBitB5 = 0x1000;
+const long icsspystatusChangeBitB6 = 0x2000;
+const long icsspystatusChangeBitB7 = 0x4000;
+const long icsspystatusChangeBitB8 = 32768  ;
+const long icsspystatusChangedGlobal = 65536 ;
+
+const long SCRIPT_STATUS_STOPPED  = 0;
+const long SCRIPT_STATUS_RUNNING = 1;
+
+const long SCRIPT_LOCATION_FLASH_MEM = 0;		//(Valid only on a neoVI Fire or neoVI Red)
+const long SCRIPT_LOCATION_SDCARD = 1;		//(Valid only on a neoVI Fire or neoVI Red)
+const long SCRIPT_LOCATION_VCAN3_MEM = 2;	 //(Valid only on a ValueCAN 3 device)
+
+//Structure for neoVI device types
 
 
-BORLANDC_HEADER void  _stdcall  icsneoFreeObject(int hObject); BORLANDC_FOOTER
+typedef struct 
+{
+	int DeviceType;
+	int Handle;
+	int NumberOfClients;
+	int SerialNumber;
+	int MaxAllowedClients;
+} NeoDevice;
+
+typedef struct
+{
+    unsigned char Mode;
+    unsigned char SetBaudrate;
+    unsigned char Baudrate;
+    unsigned char NetworkType;
+    unsigned char TqSeg1;
+    unsigned char TqSeg2;
+    unsigned char TqProp;
+    unsigned char TqSync;
+    unsigned short BRP;
+    unsigned short auto_baud;
+} CAN_SETTINGS;
+
+typedef struct
+{
+    unsigned short time_500us;
+    unsigned short k;
+    unsigned short l;
+}ISO9141_KEYWORD2000__INIT_STEP;
+
+typedef struct
+{
+    unsigned int Baudrate;
+    unsigned short spbrg;
+    unsigned short brgh;
+    ISO9141_KEYWORD2000__INIT_STEP init_steps[16]; //See the ISO9141_KW2000__INIT_STEP structure
+    unsigned char init_step_count;
+    unsigned short p2_500us;
+    unsigned short p3_500us;
+    unsigned short p4_500us;
+    unsigned short chksum_enabled;
+} ISO9141_KW2000SETTINGS;
 
 
-BORLANDC_HEADER int _stdcall icsneoGetMessages(int hObject, icsSpyMessage * pMsg,
-                        int * pNumberOfMessages,
-                        int * pNumberOfErrors); BORLANDC_FOOTER
+typedef struct
+{
+    unsigned char Mode;
+    unsigned char SetBaudrate;
+    unsigned char Baudrate;
+    unsigned char NetworkType;
+    unsigned char TqSeg1;
+    unsigned char TqSeg2;
+    unsigned char TqProp;
+    unsigned char TqSync;
+    unsigned short BRP;
+    unsigned short high_speed_auto_switch;
+    unsigned short auto_baud;
+} SWCAN_SETTINGS;
+
+typedef struct _LIN_SETTINGS
+{
+    unsigned int Baudrate;
+    unsigned short spbrg;
+    unsigned short brgh;
+    unsigned char MasterResistor;
+    unsigned char Mode;
+} LIN_SETTINGS;
+
+typedef struct 
+{ 
+    CAN_SETTINGS can1;   
+    CAN_SETTINGS can2;
+    CAN_SETTINGS can3;
+    CAN_SETTINGS can4;
+    SWCAN_SETTINGS swcan;    
+    CAN_SETTINGS lsftcan;
+    LIN_SETTINGS lin1;      
+    LIN_SETTINGS lin2;
+    LIN_SETTINGS lin3;
+    LIN_SETTINGS lin4;
+    unsigned short cgi_enable;
+    unsigned short cgi_baud;
+    unsigned short cgi_tx_ifs_bit_times;
+    unsigned short cgi_rx_ifs_bit_times;
+    unsigned short cgi_chksum_enable;
+    unsigned short network_enables;
+    unsigned short network_enabled_on_boot;
+    unsigned short pwm_man_timeout;
+    unsigned short pwr_man_enable;
+    unsigned short misc_io_initial_ddr;
+    unsigned short misc_io_initial_latch;
+    unsigned short misc_io_analog_enable;
+    unsigned short misc_io_report_period;
+    unsigned short misc_io_on_report_events;
+    unsigned short ain_sample_period;
+    unsigned short ain_threshold;
+    unsigned short iso15765_separation_time_offset; 
+    unsigned short iso9141_kwp_enable;
+    ISO9141_KW2000SETTINGS iso9141_kwp_settings; 
+    unsigned short perf_en;
+    unsigned short iso_parity; 
+    unsigned short iso_msg_termination; 
+}SFireSettings; 
 
 
-BORLANDC_HEADER int _stdcall icsneoTxMessages(int hObject,icsSpyMessage * pMsg,
-                        int lNetworkID, int lNumMessages); BORLANDC_FOOTER
 
 
-BORLANDC_HEADER int _stdcall icsneoGetErrorMessages(int hObject, int * pErrorMsgs,
-                        int * pNumberOfErrors); BORLANDC_FOOTER
+typedef struct 
+{
+    CAN_SETTINGS can1;
+    CAN_SETTINGS can2;
+    unsigned short  network_enables;
+    unsigned short network_enabled_on_boot;
+    short iso15765_separation_time_offset;
+    unsigned short perf_en;
+    unsigned short misc_io_initial_ddr;
+    unsigned short misc_io_initial_latch;
+    unsigned short misc_io_report_period;
+    unsigned short misc_io_on_report_events;
+} SVCAN3Settings;
 
 
-BORLANDC_HEADER int _stdcall icsneoGetErrorInfo(int lErrorNumber,
-						TCHAR * szErrorDescriptionShort,TCHAR * szErrorDescriptionLong,
-						int *lMaxLengthShort,int *lMaxLengthLong,
-						int * lErrorSeverity,
-						int * lRestartNeeded); BORLANDC_FOOTER
+
+typedef struct // matching C structure
+    {
+	unsigned long StatusValue;  // 4
+	unsigned long StatusMask;  // 4
+	unsigned long Status2Value;  // 4
+	unsigned long Status2Mask;  // 4
+	unsigned long Header;	// 4
+	unsigned long HeaderMask;  // 4
+	unsigned long MiscData; // 4
+	unsigned long MiscDataMask;  // 4 
+	unsigned long ByteDataMSB;	// 4
+	unsigned long ByteDataLSB;	// 4
+	unsigned long ByteDataMaskMSB;  // 4
+	unsigned long ByteDataMaskLSB;  // 4
+	unsigned long HeaderLength; // 4 
+	unsigned long ByteDataLength; // 4
+	unsigned long NetworkID;	// 4
+	unsigned short FrameMaster;	// 2
+	unsigned char bUseArbIdRangeFilter;
+	unsigned char bStuff2;
+	unsigned long ExpectedLength;
+	unsigned long NodeID;
+	}  spyFilterLong;
+
+typedef struct // matching C structure
+    {
+    unsigned long StatusBitField;	// 4
+	unsigned long StatusBitField2;	// 4
+    unsigned long TimeHardware;		// 4
+	unsigned long TimeHardware2;	// 4
+    unsigned long TimeSystem;		// 4
+	unsigned long TimeSystem2;		// 4
+	unsigned char TimeStampHardwareID;		// 1
+	unsigned char TimeStampSystemID;
+	unsigned char NetworkID;		// 1
+	unsigned char NodeID;
+	unsigned char Protocol;
+	unsigned char MessagePieceID;	// 1
+	unsigned char ColorID;			// 1
+    unsigned char NumberBytesHeader;// 1
+    unsigned char NumberBytesData;  // 1
+	short DescriptionID;			// 2
+    long ArbIDOrHeader;				// 4
+    unsigned char Data[8];			
+	unsigned char AckBytes[8];			
+    float Value;
+	unsigned char MiscData;
+    }  icsSpyMessage;
+
+typedef struct // matching C structure
+    {
+    unsigned long StatusBitField;	// 4
+	unsigned long StatusBitField2;	// 4
+    unsigned long TimeHardware;		// 4
+	unsigned long TimeHardware2;	// 4
+    unsigned long TimeSystem;		// 4
+	unsigned long TimeSystem2;		// 4
+	unsigned char TimeStampHardwareID;		// 1
+	unsigned char TimeStampSystemID;	// 1
+	unsigned char NetworkID;		// 1
+	unsigned char NodeID;			// 1
+	unsigned char Protocol;			// 1
+	unsigned char MessagePieceID;	// 1
+	unsigned char ColorID;			// 1
+    unsigned char NumberBytesHeader;// 1
+    unsigned char NumberBytesData;  // 1
+	short DescriptionID;			// 2
+    unsigned char Header[4];		// 4
+    unsigned char Data[8];
+	unsigned char AckBytes[8];			
+    float Value;
+	unsigned char MiscData;
+    }  icsSpyMessageJ1850;
 
 
 
-BORLANDC_HEADER int _stdcall icsneoSendConfiguration(int hObject, 
-						unsigned char * pData, 
-						int lNumBytes); BORLANDC_FOOTER
+typedef struct _stCM_ISO157652_TxMessage
+{
+	//transmit message
+	unsigned short vs_netid;	///< The netid of the message (determines which network to transmit on),  not supported
 
+	unsigned char padding;	///< The padding byte to use to fill the unused portion of
+							///  transmitted CAN frames (single frame, first frame, consecutive frame),
+							///  not supported as it is always 0xAA.
+	
+	unsigned char	reserved;
 
-BORLANDC_HEADER int _stdcall icsneoFindAllUSBDevices(int lDriverType,
-						int iGetSerialNumbers,
-						int *iDevices, 
-						int *iSerialNumbers,
-						int *iOpenedStates,
-						int * iNumDevices); BORLANDC_FOOTER
+	unsigned int    id;	///< arbId of transmitted frames (CAN id to transmit to).
+	unsigned int    fc_id;		///< flow control arb id filter value (response id from receiver).
+    unsigned int    fc_id_mask;	///< The flow control arb filter mask (response id from receiver).
 
+	unsigned char		reserved1;
+	unsigned char		reserved2;
+	unsigned char		flowControlExtendedAddress;	///< Expected Extended Address byte of response from receiver.  see fc_ext_address_enable, not supported.
+	unsigned char		extendedAddress;			///< Extended Address byte of transmitter. see ext_address_enable, not supported.
 
-BORLANDC_HEADER int _stdcall icsneoFindAllCOMDevices(int lDriverType,
-						int lGetSerialNumbers,
-						int lStopAtFirst,
-						int lUSBCommOnly,
-						int *p_lDeviceTypes,
-						int *p_lComPorts,
-						int *p_lSerialNumbers,
-						int *lNumDevices); BORLANDC_FOOTER
+	//flow control timeouts
+	unsigned short    fs_timeout;				///< max timeout (ms) for waiting on flow control respons, not supported.
+	unsigned short    fs_wait;				///< max timeout (ms) for waiting on flow control response that does not have 
+											///flow status set to WAIT, not supported.
 
+	unsigned char data[4*1024];	///< The data
 
-BORLANDC_HEADER int _stdcall icsneoStartSockServer(int hObject, int iPort); BORLANDC_FOOTER
+	unsigned int num_bytes;	///< Number of data bytes
 
+	//option bits
+	union
+	{
+		struct
+		{
+			unsigned id_29_bit_enable:1;	///< Enables 29 bit arbId for transmitted frames.  Set to 1 so transmitted frames use 29 bit ids, not supported.
+			unsigned fc_id_29_bit_enable:1;	///< Enables 29 bit arbId for Flow Control filter.  Set to 1 if receiver response uses 29 bit ids, not supported.
+			unsigned ext_address_enable:1;	///< Enables Extended Addressing, Set to 1 if transmitted frames should have extended addres byte, not supported.
+			unsigned fc_ext_address_enable:1;	///< Enables Extended Addressing for Flow Control filter.  Set to 1 if receiver responds with extended address byte, not supported.
+		};
+		unsigned short flags;
+	};
+      
+	
+}stCM_ISO157652_TxMessage;
 
-BORLANDC_HEADER int _stdcall icsneoStopSockServer(int hObject); BORLANDC_FOOTER
+typedef struct _stCM_ISO157652_RxMessage
+{
+	//transmit message
+	unsigned short vs_netid;	///< The netid of the message (determines which network to decode receives),  not supported
 
+	unsigned char padding;	///< The padding byte to use to fill the unused portion of
+							///  transmitted CAN frames (flow control),
+							///  not supported as it is always 0xAA.
 
-BORLANDC_HEADER int _stdcall icsneoGetDLLVersion(); BORLANDC_FOOTER
+	unsigned int    id;			///< ArbId filter value for frames from transmitter (from ECU to neoVI).
+	unsigned int    id_mask;	///< ArbId filter mask for frames from transmitter (from ECU to neoVI).
+	unsigned int    fc_id;		///< flow control arbId to transmit in flow control (from neoVI to ECU).
 
+	unsigned char		flowControlExtendedAddress;	///< Extended Address byte used in flow control (from neoVI to ECU). see fc_ext_address_enable.
+	unsigned char		extendedAddress;	///< Expected Extended Address byte of frames sent by transmitter (from ECU to neoVI).  see ext_address_enable.
 
-BORLANDC_HEADER  void _stdcall icsneoSetISO15765RxParameters(int hObject, 
-                        int lNetwork,
-					    int lEnable, 
-					    spyFilterLong * pFF_CFMsgFilter, 
-					    icsSpyMessage * pFlowCTxMsg, 
-					    int lCFTimeOutMs,
-					    int lFlowCBlockSize,
-					    int lUsesExtendedAddressing, 
-                        int lUseHardwareIfPresent); BORLANDC_FOOTER
+	unsigned char		blockSize;	
+	unsigned char		stMin;				
 
+	//flow control timeouts
+	unsigned short    cf_timeout;				///< max timeout (ms) for waiting on consecutive frame. not supported.
 
-BORLANDC_HEADER   void _stdcall icsneoGetISO15765Status(int hObject,
-                        int lNetwork, int lClearTxStatus, int lClearRxStatus,
-                        int * lTxStatus, 
-                        int * lRxStatus); BORLANDC_FOOTER
+	unsigned char dataValues[4*1024];	///< The filter data byte values
+	unsigned char dataMask[4*1024];	///< The filter data byte mask
 
-									 
-BORLANDC_HEADER	int _stdcall icsneoGetConfiguration(int hObject, 
-						unsigned char * pData, int * lNumBytes); BORLANDC_FOOTER
-													 
-							
-BORLANDC_HEADER	int _stdcall icsneoSendConfiguration(int hObject, unsigned char * pData, int lNumBytes); BORLANDC_FOOTER	
+	unsigned int num_bytes;	///< Number of data bytes
 
-BORLANDC_HEADER	int _stdcall icsneoEnableNetworkCom(int hObject,int lEnable); BORLANDC_FOOTER	
+	//option bits
+	union
+	{
+		struct
+		{
+			unsigned id_29_bit_enable:1;	///< Enables 29 bit arbId filter for frames (from ECU to neoVI).
+			unsigned fc_id_29_bit_enable:1;	///< Enables 29 bit arbId for Flow Control (from neoVI to ECU).
+			unsigned ext_address_enable:1;	///< Enables Extended Addressing (from ECU to neoVI).
+			unsigned fc_ext_address_enable:1;	///< Enables Extended Addressing (from neoVI to ECU).
+			unsigned enableFlowControlTransmission:1;	///< Enables Flow Control frame transmission (from neoVI to ECU).
+		};
+		unsigned int flags;
+	};
 
-
-BORLANDC_HEADER	int _stdcall icsneoGetPerformanceParameters(int hObject, int * iBufferCount, 
-						int * iBufferMax, int * iOverFlowCount, int * iReserved1, 
-						int * iReserved2,int * iReserved3,int * iReserved4,int * iReserved5); BORLANDC_FOOTER	 
+	unsigned char reserved[12];
+        
+}stCM_ISO157652_RxMessage;
