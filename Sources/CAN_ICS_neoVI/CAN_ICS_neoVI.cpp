@@ -32,7 +32,6 @@
 #include "Include/CanUsbDefs.h"
 #include "Include/Struct_CAN.h"
 #include "CAN_ICS_neoVI_Channel.h"
-#include "CAN_ICS_neoVI_Network.h"
 #include "Utility/Utility_Thread.h"
 #include "Include/DIL_CommonDefs.h"
 #include "ConfigDialogsDIL/API_dialog.h"
@@ -186,8 +185,6 @@ static Base_WrapperErrorLogger* sg_pIlog   = NULL;
 
 static CPARAM_THREADPROC sg_sParmRThread;
 static s_STATUSMSG sg_sCurrStatus;
-static CNetwork* sg_podActiveNetwork;
-static CNetwork sg_odSimulationNetwork;
 #define MAX_CANHW 16
 //static BYTE sg_hHardware[ MAX_CANHW ];
 // The message buffer
@@ -197,10 +194,14 @@ static STCANDATA sg_asMsgBuffer[ENTRIES_IN_GBUF];
 static SCONTROLER_DETAILS sg_ControllerDetails[defNO_OF_CHANNELS];
 static INTERFACE_HW sg_HardwareIntr[defNO_OF_CHANNELS];
 
+/** Number of Channels or hardware actually present */
+UINT m_nNoOfChannels = 0;
+
 /**
- * Network for actual hardware
+ * Array of channel objects. The size of this array is maximun number
+ * of channels the application will support.
  */
-static CNetwork sg_odHardwareNetwork;
+CChannel m_aodChannels[ defNO_OF_CHANNELS ];
 
 /**
  * Create time struct. Use 0 to transmit the message with out any delay
@@ -417,7 +418,6 @@ static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
 static int nSetHardwareMode(UCHAR ucDeviceMode)
 {
 // Make sure to set the network to Hardware
-    sg_podActiveNetwork = &sg_odHardwareNetwork;
     sg_ucControllerMode = ucDeviceMode;
     return 0;
 }
@@ -436,7 +436,7 @@ static UCHAR USB_ucHandleErrorCounter( UCHAR ucChannel,
 {
     UCHAR ucRetVal = ERROR_BUS;
 
-    CChannel& odChannel = sg_podActiveNetwork->m_aodChannels[ ucChannel ];
+    CChannel& odChannel = m_aodChannels[ ucChannel ];
 
     // Check for Error Handler Execution
     // Warning Limit Execution
@@ -576,7 +576,7 @@ static BOOL bLoadDataFromContr(PSCONTROLER_DETAILS pControllerDetails)
         for( int nIndex = 0; nIndex < defNO_OF_CHANNELS; nIndex++ )
         {
             TCHAR* pcStopStr = NULL;
-            CChannel& odChannel = sg_odHardwareNetwork.m_aodChannels[ nIndex ];
+            CChannel& odChannel = m_aodChannels[ nIndex ];
             
             // Get Warning Limit
             odChannel.m_ucWarningLimit = static_cast <UCHAR>(
@@ -805,7 +805,7 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
     int i = 0;
     int nReturn = 0;
     // Now the data messages
-    CChannel& odChannel = sg_odHardwareNetwork.m_aodChannels[nChannelIndex];
+    CChannel& odChannel = m_aodChannels[nChannelIndex];
     static int s_CurrIndex = 0, s_Messages = 0;
     static icsSpyMessage s_asSpyMsg[MAX_BUFFER_VALUECAN] = {0};
     int nErrMsg = 0;
@@ -1216,14 +1216,14 @@ static int nCreateMultipleHardwareNetwork()
             s_DatIndThread.m_bToContinue = TRUE;
             s_DatIndThread.m_bIsConnected = FALSE;
             s_DatIndThread.m_unChannels = sg_ucNoOfHardware;
-			sg_odHardwareNetwork.m_nNoOfChannels = (int)sg_ucNoOfHardware;
+			m_nNoOfChannels = (int)sg_ucNoOfHardware;
         }	
 			
 		// Assign hardware handle
-		sg_odHardwareNetwork.m_aodChannels[ nIndex ].m_hHardwareHandle = (BYTE)m_anComPorts[nIndex];
+		m_aodChannels[ nIndex ].m_hHardwareHandle = (BYTE)m_anComPorts[nIndex];
 			
 		// Assign Net Handle
-		sg_odHardwareNetwork.m_aodChannels[ nIndex ].m_hNetworkHandle = m_ucNetworkID[nIndex];
+		m_aodChannels[ nIndex ].m_hNetworkHandle = m_ucNetworkID[nIndex];
     }
     return defERR_OK;
 }
@@ -1240,12 +1240,12 @@ static int nCreateSingleHardwareNetwork()
     s_DatIndThread.m_unChannels = 1;
 
     // Set the number of channels
-    sg_odHardwareNetwork.m_nNoOfChannels = 1;
+    m_nNoOfChannels = 1;
     // Assign hardware handle
-    sg_odHardwareNetwork.m_aodChannels[ 0 ].m_hHardwareHandle = (BYTE)m_anComPorts[0];
+    m_aodChannels[ 0 ].m_hHardwareHandle = (BYTE)m_anComPorts[0];
         
     // Assign Net Handle
-    sg_odHardwareNetwork.m_aodChannels[ 0 ].m_hNetworkHandle = m_ucNetworkID[1];        
+    m_aodChannels[ 0 ].m_hNetworkHandle = m_ucNetworkID[1];        
     
     return defERR_OK;
 }
@@ -1382,7 +1382,7 @@ static int nSetBaudRate()
 
     // Set baud rate to all available hardware
     for( UINT unIndex = 0;
-         unIndex < sg_odHardwareNetwork.m_nNoOfChannels;
+         unIndex < m_nNoOfChannels;
          unIndex++)
     {
         FLOAT fBaudRate = (FLOAT)_tstof(sg_ControllerDetails[unIndex].m_omStrBaudrate);
@@ -1396,7 +1396,7 @@ static int nSetBaudRate()
         (*pFuncPtrEnableNet)(m_anhObject[unIndex], 1);
         if (nReturn != NEOVI_OK)
         {
-            unIndex = sg_odHardwareNetwork.m_nNoOfChannels;
+            unIndex = m_nNoOfChannels;
         }
         else
         {
@@ -1415,9 +1415,9 @@ static int nSetBaudRate()
  */
 static int nSetWarningLimit()
 {
-    for (UINT i = 0; i < sg_podActiveNetwork->m_nNoOfChannels; i++)
+    for (UINT i = 0; i < m_nNoOfChannels; i++)
     {
-        CChannel& odChannel = sg_podActiveNetwork->m_aodChannels[i];
+        CChannel& odChannel = m_aodChannels[i];
         m_unWarningLimit[i] = odChannel.m_ucWarningLimit;
     }
     return defERR_OK; // Multiple return statements had to be added because
@@ -1475,7 +1475,7 @@ static int nTestHardwareConnection(UCHAR& ucaTestResult, UINT nChannel) //const
     BYTE aucConfigBytes[CONFIGBYTES_TOTAL];
     int nReturn = 0;
     int nConfigBytes = 0;
-    if (nChannel < sg_odHardwareNetwork.m_nNoOfChannels)
+    if (nChannel < m_nNoOfChannels)
     {
         if ((pFuncPtrGetConfig(m_anhObject[nChannel], aucConfigBytes, &nConfigBytes) == NEOVI_OK))
         {
@@ -1541,7 +1541,7 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
     
 	if (!sg_bIsConnected && bConnect) // Disconnected and to be connected
     {
-        for (UINT i = 0; i < sg_podActiveNetwork->m_nNoOfChannels; i++)
+        for (UINT i = 0; i < m_nNoOfChannels; i++)
         {
             nReturn = (*pFuncPtrOpenPort)(m_anComPorts[i],
                 NEOVI_COMMTYPE_RS232, INTREPIDCS_DRIVER_STANDARD, 0, 57600,
@@ -1569,7 +1569,7 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
                 // CTimeManager::bReinitOffsetTimeValForICSneoVI();
                 // Transit into 'CREATE TIME MAP' state
                 sg_byCurrState = CREATE_MAP_TIMESTAMP;
-                if (i == (sg_podActiveNetwork->m_nNoOfChannels -1))
+                if (i == (m_nNoOfChannels -1))
                 {
                     //Only at the last it has to be called
                     nSetBaudRate();
@@ -1723,7 +1723,6 @@ USAGEMODE HRESULT CAN_ICS_neoVI_PerformInitOperations(void)
 {
     //Register Monitor client
     CAN_ICS_neoVI_RegisterClient(TRUE, sg_dwClientID, CAN_MONITOR_NODE);
-    sg_podActiveNetwork = &sg_odHardwareNetwork;
     return S_OK;
 }
 
@@ -2055,10 +2054,10 @@ static int nGetErrorCounter( UINT unChannel, SERROR_CNT& sErrorCount)
     int nReturn = -1;
 
     // Check for the valid channel index
-    if( unChannel < sg_podActiveNetwork->m_nNoOfChannels )
+    if( unChannel < m_nNoOfChannels )
     {
         // Get the channel reference
-        CChannel& odChannel = sg_podActiveNetwork->m_aodChannels[ unChannel ];
+        CChannel& odChannel = m_aodChannels[ unChannel ];
         // Assign the error counter value
         sErrorCount.m_ucRxErrCount = odChannel.m_ucRxErrorCounter;
         sErrorCount.m_ucTxErrCount = odChannel.m_ucTxErrorCounter;
@@ -2137,9 +2136,8 @@ static int nWriteMessage(STCAN_MSG sMessage)
     // Return when in disconnected state
     if (!sg_bIsConnected) return nReturn;
     
-    if (sg_podActiveNetwork != NULL &&
-    sMessage.m_ucChannel > 0 &&
-    sMessage.m_ucChannel <= sg_podActiveNetwork->m_nNoOfChannels)
+    if (sMessage.m_ucChannel > 0 &&
+        sMessage.m_ucChannel <= m_nNoOfChannels)
     {
         icsSpyMessage SpyMsg;
         memcpy(&(SpyMsg.ArbIDOrHeader), &(sMessage.m_unMsgID), sizeof(UINT));

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="CAN_ICS_neoVI"
 	ProjectGUID="{18224B50-2726-4431-B701-6437300B6D3F}"
 	Keyword="MFCDLLProj"
@@ -208,10 +208,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CAN_ICS_neoVI_Network.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CAN_ICS_neoVI_stdafx.cpp"
 				>
 			</File>
@@ -231,10 +227,6 @@
 			</File>
 			<File
 				RelativePath=".\CAN_ICS_neoVI_Extern.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CAN_ICS_neoVI_Network.h"
 				>
 			</File>
 			<File
