@@ -57,6 +57,18 @@ enum
  */
 static BYTE sg_byCurrState = CREATE_MAP_TIMESTAMP;
 
+const int MAX_DEVICES = 16;
+
+/**
+ * Device information
+ */
+static NeoDevice neoDevices[MAX_DEVICES];
+
+/**
+ * Number of devices
+ */
+static int nNumberOfDevices = 0;
+
 /**
  * Channel information
  */
@@ -80,14 +92,26 @@ struct CChannel
      * 2 - Bus Off State
      * -1 - For invalid value
 	 */
-    UCHAR  m_ucControllerState;
+    UCHAR m_ucControllerState;
 
-	/** Hardware Handle Associated with this channel */
-    int m_hHardwareHandle;
+	/**
+	 * Pointer to corresponding neoDevice
+	 */
+	NeoDevice *pNeoDevice;
 
-	/** Network Handle Associated with this channel */
-    int m_hNetworkHandle;
-    
+	/**
+	 * Hardware Handle Associated with this channel.
+	 * This is identical to hObject of most icsneo functions.
+	 */
+    int hObject;
+
+	/**
+	 * Network Handle Associated with this channel
+	 * This is identical to bNetworkID of function OpenNeoDevice
+	 * or lNetworkID of function TxMessages.
+	 */
+    int NetworkID;
+
 	/** Programmed warning limit of this channel */
     UCHAR m_ucWarningLimit;
     
@@ -112,11 +136,14 @@ struct CChannel
 		// Controller state
 		m_ucControllerState = defMODE_ACTIVE;
 
+		// Pointer to corresponding neoDevice
+		pNeoDevice = NULL;
+
 		// Hardware Handle Associated with this channel
-		m_hHardwareHandle = 0;
+		hObject = 0;
 
 		// Network Handle Associated with this channel
-		m_hNetworkHandle = 0;
+		NetworkID = 0;
 
 		// Programmed warning limit of this channel
 		m_ucWarningLimit = defWARNING_LIMIT_INT;
@@ -134,6 +161,17 @@ struct CChannel
 		m_bRxErrorExecuted = FALSE;
 	}
 };
+
+/**
+ * Number of Channels
+ */
+static UINT m_nNoOfChannels = 0;
+
+/**
+ * Array of channel objects. The size of this array is maximun number
+ * of channels the application will support.
+ */
+static CChannel m_aodChannels[ defNO_OF_CHANNELS ];
 
 #define MAX_BUFF_ALLOWED 16
 
@@ -206,52 +244,25 @@ static STCANDATA sg_asMsgBuffer[ENTRIES_IN_GBUF];
 static SCONTROLER_DETAILS sg_ControllerDetails[defNO_OF_CHANNELS];
 static INTERFACE_HW sg_HardwareIntr[defNO_OF_CHANNELS];
 
-/**
- * Number of Channels
- */
-UINT m_nNoOfChannels = 0;
-
-/**
- * Array of channel objects. The size of this array is maximun number
- * of channels the application will support.
- */
-CChannel m_aodChannels[ defNO_OF_CHANNELS ];
-// static global variables ends
-
 // TZM specific Global variables
 #define CAN_MAX_ERRSTR 256
-#define MAX_CLIENT_ALLOWED 16
 static char sg_acErrStr[CAN_MAX_ERRSTR] = {'\0'};
 static UINT sg_unClientCnt = 0;
+#define MAX_CLIENT_ALLOWED 16
 static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED];
 static UINT sg_unCntrlrInitialised = 0;
 static HMODULE sg_hDll = NULL;
 static HANDLE m_hDataEvent = NULL;
 static HANDLE sg_hCntrlStateChangeEvent = NULL;
-static DWORD  sg_dwClientID = 0;
 
 // state variables
 static BOOL sg_bIsConnected = FALSE;
 static UCHAR sg_ucControllerMode = defUSB_MODE_ACTIVE;
 
-// Count variables
-static UCHAR sg_ucNoOfHardware = 0;
+#define MAX_BUFFER_VALUECAN     20000
+static TCHAR m_omErrStr[MAX_STRING] = {0};
 
 #define TOTAL_ERROR             600
-#define MAX_BUFFER_VALUECAN     20000
-#define WAITTIME_NEOVI          100
-
-const int NEOVI_OK = 1;
-const long VALUECAN_ERROR_BITS = SPY_STATUS_GLOBAL_ERR | SPY_STATUS_CRC_ERROR |
-                       SPY_STATUS_INCOMPLETE_FRAME | SPY_STATUS_UNDEFINED_ERROR
-                       | SPY_STATUS_BAD_MESSAGE_BIT_TIME_ERROR;
-
-const int MAX_DEVICES  = 255;
-static NeoDevice neoDevices[MAX_DEVICES];
-static int m_anDeviceTypes[MAX_DEVICES] = {0};
-static int m_anComPorts[MAX_DEVICES] = {0};
-static unsigned char m_ucNetworkID[16] = {0};
-static TCHAR m_omErrStr[MAX_STRING] = {0};
 static int s_anErrorCodes[TOTAL_ERROR] = {0};
 
 /* icsneo40.dll Basic Functions */
@@ -595,7 +606,10 @@ static BYTE bClassifyMsgType(icsSpyMessage& CurrSpyMsg,
 	UCHAR m_unRxError = 0;
 	UCHAR m_unTxError = 0;
 
-	if (CurrSpyMsg.StatusBitField & VALUECAN_ERROR_BITS)
+	if (CurrSpyMsg.StatusBitField &
+		(SPY_STATUS_GLOBAL_ERR | SPY_STATUS_CRC_ERROR |
+         SPY_STATUS_INCOMPLETE_FRAME | SPY_STATUS_UNDEFINED_ERROR |
+         SPY_STATUS_BAD_MESSAGE_BIT_TIME_ERROR))
     {
         sCanData.m_ucDataType = ERR_FLAG;
 
@@ -714,8 +728,7 @@ static BYTE bClassifyMsgType(icsSpyMessage& CurrSpyMsg,
 
 /**
  * \param[in] psCanDataArray Pointer to CAN Message Array of Structures
- * \param[in] nMessage Maximun number of message to read or size of the CAN Message Array
- * \param[out] Message Actual Messages Read
+ * \param[inout] nMessage Maximun number of message to read or size of the CAN Message Array, Actual Messages Read
  * \return Returns defERR_OK if successful otherwise corresponding Error code.
  *
  * This function will read multiple CAN messages from the driver.
@@ -734,7 +747,7 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
     int nErrMsg = 0;
     if (s_CurrIndex == 0)
     {
-        nReturn = (*icsneoGetMessages)(m_aodChannels[nChannelIndex].m_hHardwareHandle, s_asSpyMsg,
+        nReturn = (*icsneoGetMessages)(m_aodChannels[nChannelIndex].hObject, s_asSpyMsg,
                                         &s_Messages, &nErrMsg);
     }
 
@@ -743,14 +756,14 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
     if (nErrMsg > 0)
     {
         int nErrors = 0;
-        nReturn = (*icsneoGetErrorMessages)(m_aodChannels[nChannelIndex].m_hHardwareHandle, s_anErrorCodes, &nErrors);
-        if ((nReturn == NEOVI_OK) && (nErrors > 0))
+        nReturn = (*icsneoGetErrorMessages)(m_aodChannels[nChannelIndex].hObject, s_anErrorCodes, &nErrors);
+        if ((nReturn == 1) && (nErrors > 0))
         {
             for (int j = 0; j < nErrors; j++)
             {
+				/*
                 switch (s_anErrorCodes[j])
                 {
-					/*
                     case NEOVI_ERROR_DLL_USB_SEND_DATA_ERROR: 2
                     {
                         ++ushTxErr;
@@ -763,10 +776,10 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
                         ++ushRxErr;
                     }
                     break;
-					*/
                     default:
                     break;
                 }
+				*/
             }
         }
     }
@@ -781,8 +794,8 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
         //CTimeManager::bReinitOffsetTimeValForICSneoVI();
         icsSpyMessage& CurrSpyMsg = s_asSpyMsg[s_CurrIndex];
         DOUBLE dTimestamp = 0;
-        nReturn = (*icsneoGetTimeStampForMsg)(m_aodChannels[nChannelIndex].m_hHardwareHandle, &CurrSpyMsg, &dTimestamp);
-        if (nReturn == NEOVI_OK)
+        nReturn = (*icsneoGetTimeStampForMsg)(m_aodChannels[nChannelIndex].hObject, &CurrSpyMsg, &dTimestamp);
+        if (nReturn == 1)
         {
             QuadPartRef = (LONGLONG)(dTimestamp * 10000);//CurrSpyMsg.TimeHardware2 * 655.36 + CurrSpyMsg.TimeHardware * 0.01;
             sg_byCurrState = CALC_TIMESTAMP_READY;
@@ -802,7 +815,7 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
         icsSpyMessage& CurrSpyMsg = s_asSpyMsg[s_CurrIndex];
 
         sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel = (UCHAR)(nChannelIndex + 1);
-        nReturn = (*icsneoGetTimeStampForMsg)(m_aodChannels[nChannelIndex].m_hHardwareHandle, &CurrSpyMsg, &dCurrTimeStamp);
+        nReturn = (*icsneoGetTimeStampForMsg)(m_aodChannels[nChannelIndex].hObject, &CurrSpyMsg, &dCurrTimeStamp);
         /*sCanData.m_lTickCount.QuadPart = (CurrSpyMsg.TimeHardware2 * 655.36 
                                         + CurrSpyMsg.TimeHardware * 0.01);*/
         sCanData.m_lTickCount.QuadPart = (LONGLONG)(dCurrTimeStamp * 10000);
@@ -1046,9 +1059,9 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_ICS_neoVI(LPVOID pVoid)
     {
         if (s_DatIndThread.m_bIsConnected)
         {
-            for (int i = 0; i < sg_ucNoOfHardware; i++)
+            for (int i = 0; i < (int) m_nNoOfChannels; i++)
             {
-                dwResult = (*icsneoWaitForRxMessagesWithTimeOut)(m_aodChannels[i].m_hHardwareHandle, WAITTIME_NEOVI);
+                dwResult = (*icsneoWaitForRxMessagesWithTimeOut)(m_aodChannels[i].hObject, 100);
                 if (dwResult > 0)
                 {
                     switch (pThreadParam->m_unActionCode)
@@ -1098,28 +1111,21 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_ICS_neoVI(LPVOID pVoid)
 }
 
 /**
- * \param[in] nHardwareCount Hardware Count
  * \return
  *   Returns defERR_OK if successful otherwise corresponding Error code.
  *   0, Query successful, but no device found
  *   > 0, Number of devices found
- *   < 0, query for devices unsucessful
+ *   < 0, query for devices unsuccessful
  *
  * Finds the number of hardware connected.
  */
-static int nGetNoOfConnectedHardware(int& nHardwareCount)
+static int nGetNoOfConnectedHardware(void)
 {
 	int nResult; 
 
-	unsigned char i;
-	int nNumberOfDevices = 16;
-    for (i = 0; i < nNumberOfDevices; i++)
-    {
-        m_ucNetworkID[i] = i;
-    }
-
 	/* Search for attached devices */
-	nResult = icsneoFindNeoDevices(65535, neoDevices, &nNumberOfDevices);
+	nNumberOfDevices = MAX_DEVICES;
+	nResult = icsneoFindNeoDevices(NEODEVICE_ANY, neoDevices, &nNumberOfDevices);
 	if(nResult == false)
 	{
 		_tcscpy(m_omErrStr, _T("Problem Finding Device"));
@@ -1133,74 +1139,55 @@ static int nGetNoOfConnectedHardware(int& nHardwareCount)
 	}
 	else
 	{
-		nHardwareCount = nNumberOfDevices;
 		nResult = nNumberOfDevices;
 
 		m_nNoOfChannels = 0;
-	    for (i = 0; i < nNumberOfDevices; i++)
+	    for (int i = 0; i < nNumberOfDevices; i++)
 	    {
-			switch (neoDevices[i].DeviceType) {
+			NeoDevice *pNeoDevice = &neoDevices[i];
+			switch (pNeoDevice->DeviceType) {
 				/* neoVI Blue */
 				case NEODEVICE_BLUE:
-					m_aodChannels[m_nNoOfChannels].m_hHardwareHandle = neoDevices[i].Handle;
-					m_aodChannels[m_nNoOfChannels].m_hNetworkHandle = NETID_HSCAN;
-					m_nNoOfChannels++;
-
-					m_aodChannels[m_nNoOfChannels].m_hHardwareHandle = neoDevices[i].Handle;
-					m_aodChannels[m_nNoOfChannels].m_hNetworkHandle = NETID_MSCAN;
-					m_nNoOfChannels++;
-
-					m_aodChannels[m_nNoOfChannels].m_hHardwareHandle = neoDevices[i].Handle;
-					m_aodChannels[m_nNoOfChannels].m_hNetworkHandle = NETID_SWCAN;
-					m_nNoOfChannels++;
-
-					m_aodChannels[m_nNoOfChannels].m_hHardwareHandle = neoDevices[i].Handle;
-					m_aodChannels[m_nNoOfChannels].m_hNetworkHandle = NETID_LSFTCAN;
-					m_nNoOfChannels++;
+					m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
+					m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_HSCAN;
+					m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
+					m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_MSCAN;
+					m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
+					m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_SWCAN;
+					m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
+					m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_LSFTCAN;
 					break;
 
 				/* ValueCAN */
 				case NEODEVICE_DW_VCAN:
-					m_aodChannels[m_nNoOfChannels].m_hHardwareHandle = neoDevices[i].Handle;
-					m_aodChannels[m_nNoOfChannels].m_hNetworkHandle = NETID_HSCAN;
-					m_nNoOfChannels++;
+					m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
+					m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_HSCAN;
 					break;
 
 				/* neoVI Fire/Red */
 				case NEODEVICE_FIRE:
-					m_aodChannels[m_nNoOfChannels].m_hHardwareHandle = neoDevices[i].Handle;
-					m_aodChannels[m_nNoOfChannels].m_hNetworkHandle = NETID_FIRE_HSCAN1;
-					m_nNoOfChannels++;
-
-					m_aodChannels[m_nNoOfChannels].m_hHardwareHandle = neoDevices[i].Handle;
-					m_aodChannels[m_nNoOfChannels].m_hNetworkHandle = NETID_FIRE_MSCAN1;
-					m_nNoOfChannels++;
-
-					m_aodChannels[m_nNoOfChannels].m_hHardwareHandle = neoDevices[i].Handle;
-					m_aodChannels[m_nNoOfChannels].m_hNetworkHandle = NETID_FIRE_SWCAN;
-					m_nNoOfChannels++;
-
-					m_aodChannels[m_nNoOfChannels].m_hHardwareHandle = neoDevices[i].Handle;
-					m_aodChannels[m_nNoOfChannels].m_hNetworkHandle = NETID_FIRE_LSFT;
-					m_nNoOfChannels++;
+					m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
+					m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_FIRE_HSCAN1;
+					m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
+					m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_FIRE_MSCAN1;
+					m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
+					m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_FIRE_SWCAN;
+					m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
+					m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_FIRE_LSFT;
 					break;
 
 				/* ValueCAN3 */
 				case NEODEVICE_VCAN3:
-					m_aodChannels[m_nNoOfChannels].m_hHardwareHandle = neoDevices[i].Handle;
-					m_aodChannels[m_nNoOfChannels].m_hNetworkHandle = NETID_HSCAN;
-					m_nNoOfChannels++;
-
-					m_aodChannels[m_nNoOfChannels].m_hHardwareHandle = neoDevices[i].Handle;
-					m_aodChannels[m_nNoOfChannels].m_hNetworkHandle = NETID_MSCAN;
-					m_nNoOfChannels++;
+					m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
+					m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_HSCAN;
+					m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
+					m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_MSCAN;
 					break;
 
 				default:
 					/* Let's assume at least one channel... */
-					m_aodChannels[m_nNoOfChannels].m_hHardwareHandle = neoDevices[i].Handle;
-					m_aodChannels[m_nNoOfChannels].m_hNetworkHandle = NETID_HSCAN;
-					m_nNoOfChannels++;
+					m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
+					m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_HSCAN;
 					break;
 			}
 		}
@@ -1219,23 +1206,19 @@ static int nGetNoOfConnectedHardware(int& nHardwareCount)
  */
 static int nInitHwNetwork()
 {
-    int nDevices = 0;
     int nReturn = -1;
 
 	/* Select Hardware */
-    nReturn = nGetNoOfConnectedHardware(nDevices);
-
-    /* Assign the device count */
-    sg_ucNoOfHardware = (UCHAR)nDevices;
+    nReturn = nGetNoOfConnectedHardware();
 
 	/* Capture only Driver Not Running event
      * Take action based on number of Hardware Available
 	 */
     TCHAR acNo_Of_Hw[MAX_STRING] = {0};
-    _stprintf(acNo_Of_Hw, _T("Number of neoVIs Available: %d"), nDevices);
+    _stprintf(acNo_Of_Hw, _T("Number of neoVIs Available: %d"), nNumberOfDevices);
     
     /* No Hardware found */
-    if( nDevices == 0 )
+    if( nNumberOfDevices == 0 )
     {
         MessageBox(NULL,m_omErrStr, NULL, MB_OK | MB_ICONERROR);
         nReturn = -1;
@@ -1262,16 +1245,14 @@ static int nSetBaudRate()
     int nReturn = 0;
 
     /* Set baud rate to all available hardware */
-    for( UINT unIndex = 0;
-         unIndex < m_nNoOfChannels;
-         unIndex++)
+    for( UINT unIndex = 0; unIndex < m_nNoOfChannels; unIndex++)
     {
         FLOAT fBaudRate = (FLOAT)_tstof(sg_ControllerDetails[unIndex].m_omStrBaudrate);
         int nBitRate = (INT)(fBaudRate * 1000);
 
         /* Set the baudrate */
-        nReturn = (*icsneoSetBitRate)(m_aodChannels[unIndex].m_hHardwareHandle, nBitRate, m_aodChannels[unIndex].m_hNetworkHandle);
-        if (nReturn != NEOVI_OK)
+        nReturn = (*icsneoSetBitRate)(m_aodChannels[unIndex].hObject, nBitRate, m_aodChannels[unIndex].NetworkID);
+        if (nReturn != 1)
         {
             unIndex = m_nNoOfChannels;
         }
@@ -1299,7 +1280,7 @@ static int nTestHardwareConnection(UCHAR& ucaTestResult, UINT nChannel) //const
     int nConfigBytes = 0;
     if (nChannel < m_nNoOfChannels)
     {
-        if ((*icsneoGetConfiguration)(m_aodChannels[nChannel].m_hHardwareHandle, aucConfigBytes, &nConfigBytes) == NEOVI_OK)
+        if ((*icsneoGetConfiguration)(m_aodChannels[nChannel].hObject, aucConfigBytes, &nConfigBytes) == 1)
         {
             ucaTestResult = TRUE;
         }
@@ -1323,16 +1304,17 @@ static int nDisconnectFromDriver()
 {
     int nReturn = 0;
     int nErrors = 0;
-    for (BYTE i = 0; i < sg_ucNoOfHardware; i++)
+	BYTE i;
+    for (i = 0; i < m_nNoOfChannels; i++)
     {
-        if (m_aodChannels[i].m_hHardwareHandle != 0)
+        if (m_aodChannels[i].hObject != 0)
         {
             /* First disconnect the COM */
-            //(*iceneoFreeObj)(m_aodChannels[i].m_hHardwareHandle);
+            //(*iceneoFreeObj)(m_aodChannels[i].hObject);
 
-			if ((*icsneoClosePort)(m_aodChannels[i].m_hHardwareHandle, &nErrors) == 1)
+			if ((*icsneoClosePort)(m_aodChannels[i].hObject, &nErrors) == 1)
             {
-                m_aodChannels[i].m_hHardwareHandle = 0;
+                m_aodChannels[i].hObject = 0;
             }
             else
             {
@@ -1356,45 +1338,27 @@ static int nDisconnectFromDriver()
 static int nConnect(BOOL bConnect, BYTE /*hClient*/)
 {
     int nReturn = -1;
-    BYTE aucConfigBytes[1024];
-    int nConfigBytes = 0;
     
 	if (!sg_bIsConnected && bConnect) // Disconnected and to be connected
     {
-        for (UINT i = 0; i < m_nNoOfChannels; i++)
+		UINT i;
+        for (i = 0; i < m_nNoOfChannels; i++)
         {
-			nReturn = (*icsneoOpenNeoDevice)(neoDevices, &(m_aodChannels[i].m_hHardwareHandle), NULL, 1, 0);
-            if (nReturn != NEOVI_OK)
-            {
-                /* In such a case it is wiser to carry out disconnecting */
-                nDisconnectFromDriver(); // operations from the driver
+			NeoDevice *pNeoDevice = m_aodChannels[i].pNeoDevice;
+			nReturn = (*icsneoOpenNeoDevice)(pNeoDevice, &(m_aodChannels[i].hObject), NULL, 1, 0);
 
-                /* Try again */
-				(*icsneoOpenNeoDevice)(neoDevices, &(m_aodChannels[i].m_hHardwareHandle), NULL, 1, 0);
-
-                /* Checking return value of this function is not important 
-                 * because GetConfig function (called to check for the hardware 
-                 * presence) renders us the necessary information
-				 */
-				nReturn = (*icsneoGetConfiguration)(m_aodChannels[i].m_hHardwareHandle, aucConfigBytes,
-                    &nConfigBytes);
-            }
-            if (nReturn == NEOVI_OK) // Hardware is present
+			if (nReturn == 1) // Hardware is present
             {
-                /* OpenPort and this function must be called together. */
+				/* OpenPort and this function must be called together. */
                 // CTimeManager::bReinitOffsetTimeValForICSneoVI();
 
 				/* Transit into 'CREATE TIME MAP' state */
                 sg_byCurrState = CREATE_MAP_TIMESTAMP;
-                if (i == (m_nNoOfChannels -1))
-                {
-                    //Only at the last it has to be called
-                    nSetBaudRate();
-                    sg_bIsConnected = bConnect;
-                    s_DatIndThread.m_bIsConnected = sg_bIsConnected;
-                }
+                nSetBaudRate();
+                sg_bIsConnected = bConnect;
+                s_DatIndThread.m_bIsConnected = sg_bIsConnected;
                 nReturn = defERR_OK;
-            }
+			}
         }
     }
     else if (sg_bIsConnected && !bConnect) // Connected & to be disconnected
@@ -1417,9 +1381,11 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
  */
 USAGEMODE HRESULT CAN_ICS_neoVI_PerformInitOperations(void)
 {
-    //Register Monitor client
-    CAN_ICS_neoVI_RegisterClient(TRUE, sg_dwClientID, CAN_MONITOR_NODE);
-    return S_OK;
+    /* Register Monitor client */
+    DWORD dwClientID = 0;
+    CAN_ICS_neoVI_RegisterClient(TRUE, dwClientID, CAN_MONITOR_NODE);
+
+	return S_OK;
 }
 
 /**
@@ -1470,13 +1436,11 @@ USAGEMODE HRESULT CAN_ICS_neoVI_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInter
 
 	if (nInitHwNetwork() == 0)
     {  
-        nCount = sg_ucNoOfHardware;
-        for (UINT i = 0; i < sg_ucNoOfHardware; i++)
+		nCount = m_nNoOfChannels;
+        for (UINT i = 0; i < m_nNoOfChannels; i++)
         {
-            asSelHwInterface[i].m_dwIdInterface = m_anComPorts[i];
-			unsigned int serialNumber = neoDevices[i].SerialNumber;
-			if (serialNumber >= 50000)
-				serialNumber -= 50000;
+            asSelHwInterface[i].m_dwIdInterface = i;
+			unsigned int serialNumber = m_aodChannels[i].pNeoDevice->SerialNumber;
             _stprintf(asSelHwInterface[i].m_acDescription, _T("%d"), serialNumber);
             hResult = S_OK;
             sg_bCurrState = STATE_HW_INTERFACE_LISTED;
@@ -1510,7 +1474,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_DeselectHwInterface(void)
 /**
  * Function to select hardware interface chosen by the user
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_SelectHwInterface(const INTERFACE_HW_LIST& asSelHwInterface, INT /*nCount*/)
+USAGEMODE HRESULT CAN_ICS_neoVI_SelectHwInterface(const INTERFACE_HW_LIST& /*asSelHwInterface*/, INT /*nCount*/)
 {
     USES_CONVERSION;
 
@@ -1518,13 +1482,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_SelectHwInterface(const INTERFACE_HW_LIST& asSel
 
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_LISTED, ERR_IMPROPER_STATE);
 
-    //Select the interface
-    for (UINT i = 0; i < sg_ucNoOfHardware; i++)
-    {
-        m_anComPorts[i] = (INT)asSelHwInterface[i].m_dwIdInterface;
-    }
-
-	//Check for the success
+	/* Check for the success */
     sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
 
 	return S_OK;
@@ -1559,27 +1517,98 @@ USAGEMODE HRESULT CAN_ICS_neoVI_DisplayConfigDlg(PCHAR& InitData, int& Length)
 
     VALIDATE_POINTER_RETURN_VAL(InitData, Result);
     PSCONTROLER_DETAILS pControllerDetails = (PSCONTROLER_DETAILS)InitData;
-    //First initialize with existing hw description
-    for (INT i = 0; i < min(Length, sg_ucNoOfHardware); i++)
+
+	/* First initialize with existing hw description */
+    for (UINT i = 0; i < m_nNoOfChannels; i++)
     {
-		unsigned int serialNumber = neoDevices[i].SerialNumber;
-		switch (neoDevices[i].DeviceType) {
+		unsigned int serialNumber = m_aodChannels[i].pNeoDevice->SerialNumber;
+		char netid_str[256];
+		if ((m_aodChannels[i].pNeoDevice->DeviceType == NEODEVICE_VCAN3) && (serialNumber >= 50000)) {
+			switch (m_aodChannels[i].NetworkID) {
+				case NETID_HSCAN:
+					strncpy(&netid_str[0], "CAN 1", sizeof(netid_str));
+					break;
+				case NETID_MSCAN:
+					strncpy(&netid_str[0], "CAN 2", sizeof(netid_str));
+					break;
+			}
+		}
+		else
+		{
+			switch (m_aodChannels[i].NetworkID) {
+				case NETID_HSCAN:
+					strncpy(&netid_str[0], "HSCAN", sizeof(netid_str));
+					break;
+				case NETID_MSCAN:
+					strncpy(&netid_str[0], "MSCAN", sizeof(netid_str));
+					break;
+				case NETID_SWCAN:
+					strncpy(&netid_str[0], "SWCAN", sizeof(netid_str));
+					break;
+				case NETID_LSFTCAN:
+					strncpy(&netid_str[0], "LSFTCAN", sizeof(netid_str));
+					break;
+				case NETID_FIRE_HSCAN1:
+					strncpy(&netid_str[0], "HSCAN1", sizeof(netid_str));
+					break;
+				case NETID_FIRE_MSCAN1:
+					strncpy(&netid_str[0], "MSCAN1", sizeof(netid_str));
+					break;
+				case NETID_FIRE_SWCAN:
+					strncpy(&netid_str[0], "SWCAN", sizeof(netid_str));
+					break;
+				case NETID_FIRE_LSFT:
+					strncpy(&netid_str[0], "LSFT", sizeof(netid_str));
+					break;
+			}
+		}
+
+		switch (m_aodChannels[i].pNeoDevice->DeviceType) {
+			/* neoVI Blue */
+			case NEODEVICE_BLUE:
+				_stprintf(pControllerDetails[i].m_omHardwareDesc,
+					_T("neoVI Blue, Serial Number %d, Network: %s"),
+					serialNumber, &netid_str[0]);
+				break;
+
+			/* ValueCAN */
+			case NEODEVICE_DW_VCAN:
+				_stprintf(pControllerDetails[i].m_omHardwareDesc,
+					_T("ValueCAN, Serial Number %d, Network: %s"),
+					serialNumber, &netid_str[0]);
+				break;
+
+			/* neoVI Fire/Red */
+			case NEODEVICE_FIRE:
+				_stprintf(pControllerDetails[i].m_omHardwareDesc,
+					_T("neoVi Fire/Red, Serial Number %d, Network: %s"),
+					serialNumber, &netid_str[0]);
+				break;
+
+			/* ValueCAN3 */
 			case NEODEVICE_VCAN3:
 				if (serialNumber < 50000) {
-					_stprintf(pControllerDetails[i].m_omHardwareDesc, _T("ICS ValueCAN3 Serial Number %d"), serialNumber);
+					_stprintf(pControllerDetails[i].m_omHardwareDesc,
+						_T("ValueCAN3, Serial Number %d, Network: %s"),
+						serialNumber, &netid_str[0]);
 				} else {
-			        _stprintf(pControllerDetails[i].m_omHardwareDesc, _T("ETAS ES581.3 Serial Number %d"), serialNumber-50000);
+			        _stprintf(pControllerDetails[i].m_omHardwareDesc,
+						_T("ES581.3, Serial Number %d, Network: %s"),
+						serialNumber-50000, &netid_str[0]);
 				}
 				break;
+
 			default:
-				_stprintf(pControllerDetails[i].m_omHardwareDesc, _T("Serial Number %d"), serialNumber);
+				_stprintf(pControllerDetails[i].m_omHardwareDesc,
+					_T("Unknown, Serial Number %d"), serialNumber);
 				break;
 		};
     }
-    if (sg_ucNoOfHardware > 0)
+
+	if (m_nNoOfChannels > 0)
     {
         int nResult = DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DILTZM,
-            pControllerDetails, sg_ucNoOfHardware, DRIVER_CAN_ICS_NEOVI);
+            pControllerDetails, m_nNoOfChannels, DRIVER_CAN_ICS_NEOVI);
         switch (nResult)
         {
             case WARNING_NOTCONFIRMED:
@@ -1723,7 +1752,7 @@ static BOOL bClientIdExist(const DWORD& dwClientId)
  * \param sErrorCount Error Counter Structure
  * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
  *
- * This function will return the error counter values. In case of USB this is not supported.
+ * This function will return the error counter values.
  */
 static int nGetErrorCounter( UINT unChannel, SERROR_CNT& sErrorCount)
 {
@@ -1805,14 +1834,17 @@ static int nWriteMessage(STCAN_MSG sMessage)
 {
     int nReturn = -1;
 
-    /* Return when in disconnected state */
-    if (!sg_bIsConnected) return nReturn;
-    
-    if (sMessage.m_ucChannel > 0 &&
-        sMessage.m_ucChannel <= m_nNoOfChannels)
+	/* Return when in disconnected state */
+    //if (!sg_bIsConnected) return nReturn;
+
+	if ((sMessage.m_ucChannel > 0) &&
+        (sMessage.m_ucChannel <= m_nNoOfChannels))
     {
+		int hObject    = m_aodChannels[sMessage.m_ucChannel - 1].hObject;
+		int lNetworkID = m_aodChannels[sMessage.m_ucChannel - 1].NetworkID;
         icsSpyMessage SpyMsg;
-        memcpy(&(SpyMsg.ArbIDOrHeader), &(sMessage.m_unMsgID), sizeof(UINT));
+		//memset(&SpyMsg, 0, sizeof(SpyMsg));
+        memcpy(&SpyMsg.ArbIDOrHeader, &sMessage.m_unMsgID, sizeof(UINT));
         SpyMsg.NumberBytesData = sMessage.m_ucDataLen;
         SpyMsg.StatusBitField = 0;
         SpyMsg.StatusBitField2 = 0;
@@ -1824,13 +1856,14 @@ static int nWriteMessage(STCAN_MSG sMessage)
         {
             SpyMsg.StatusBitField |= SPY_STATUS_XTD_FRAME;
         }
-        memcpy(SpyMsg.Data, sMessage.m_ucData, sMessage.m_ucDataLen);
-		if ((*icsneoTxMessages)(m_aodChannels[(int)(sMessage.m_ucChannel) - 1].m_hHardwareHandle, &SpyMsg, m_aodChannels[(int)(sMessage.m_ucChannel) - 1].m_hNetworkHandle, 1) != 0)
+        memcpy(&SpyMsg.Data, &sMessage.m_ucData, sMessage.m_ucDataLen);
+		if ((*icsneoTxMessages)(hObject, &SpyMsg, lNetworkID, 1) != 0)
         {
             nReturn = 0;
         }
     }
-    return nReturn;
+
+	return nReturn;
 }
 
 /**
@@ -1838,18 +1871,18 @@ static int nWriteMessage(STCAN_MSG sMessage)
  */
 USAGEMODE HRESULT CAN_ICS_neoVI_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessage)
 {    
-    VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
+	VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
     static SACK_MAP sAckMap;
     HRESULT hResult = S_FALSE;
     if (bClientIdExist(dwClientID))
     {
-        if (sMessage.m_ucChannel <= sg_ucNoOfHardware)
+        if (sMessage.m_ucChannel <= m_nNoOfChannels)
         {
             sAckMap.m_ClientID = dwClientID;
-            sAckMap.m_MsgID = sMessage.m_unMsgID;
-            sAckMap.m_Channel = sMessage.m_ucChannel;
+            sAckMap.m_MsgID    = sMessage.m_unMsgID;
+            sAckMap.m_Channel  = sMessage.m_ucChannel;
 
-			/* Mark an entry in Map. This is helpful to idendify
+			/* Mark an entry in Map. This is helpful to identify
                which client has been sent this message in later stage */
 		    sg_asAckMapBuf.push_back(sAckMap);
             if (nWriteMessage(sMessage) == defERR_OK)
@@ -1978,7 +2011,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_RegisterClient(BOOL bRegister,DWORD& ClientID, T
                 {
                     /* First slot is reserved to monitor node */
                     ClientID = 1;
-                    _tcscpy(sg_asClientToBufMap[0].pacClientName, pacClientName);                
+                    _tcscpy(sg_asClientToBufMap[0].pacClientName, pacClientName);
                     sg_asClientToBufMap[0].dwClientID = ClientID;
                     sg_asClientToBufMap[0].unBufCount = 0;
                 }
@@ -2215,15 +2248,14 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetControllerParams(LONG& lParam, UINT nChannel,
             
             case NUMBER_HW:
             {
-                lParam = sg_ucNoOfHardware;
+                lParam = m_nNoOfChannels;
             }
             break;
             case NUMBER_CONNECTED_HW:
             {
-                int nConHwCnt = 0;
-                if (nGetNoOfConnectedHardware(nConHwCnt) == NEOVI_OK)
+                if (nGetNoOfConnectedHardware() > 0)
                 {
-                    lParam = nConHwCnt;
+                    lParam = m_nNoOfChannels;
                 }
                 else
                 {
@@ -2238,7 +2270,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetControllerParams(LONG& lParam, UINT nChannel,
             break;
             case HW_MODE:
             {
-                if (nChannel < sg_ucNoOfHardware)
+                if (nChannel < m_nNoOfChannels)
                 {
                     lParam = sg_ucControllerMode;
                     if( sg_ucControllerMode == 0 || sg_ucControllerMode > defMODE_SIMULATE )
@@ -2285,7 +2317,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChann
 
 	if ((sg_bCurrState == STATE_CONNECTED) || (sg_bCurrState == STATE_HW_INTERFACE_SELECTED))
     {
-        if (nChannel <= sg_ucNoOfHardware)
+        if (nChannel <= m_nNoOfChannels)
         {
             if (nGetErrorCounter(nChannel, sErrorCnt) == defERR_OK)
             {
