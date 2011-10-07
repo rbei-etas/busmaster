@@ -204,10 +204,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CAN_ICS_neoVI_Channel.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\CAN_ICS_neoVI_stdafx.cpp"
 				>
 			</File>
@@ -219,10 +215,6 @@
 			>
 			<File
 				RelativePath=".\CAN_ICS_neoVI.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CAN_ICS_neoVI_Channel.h"
 				>
 			</File>
 			<File
