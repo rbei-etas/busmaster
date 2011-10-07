@@ -47,7 +47,6 @@ static ENTRY_DIL sg_ListDIL[DIL_TOTAL] =
     {DRIVER_CAN_ICS_NEOVI,  _T("IntrepidCS neoVI") },
     {DRIVER_CAN_ETAS_BOA,   _T("ETAS BOA")         },
     {DRIVER_CAN_PEAK_USB,   _T("PEAK USB")         },
-    {DRIVER_CAN_PEAK_PP,    _T("PEAK PP")          },
     {DRIVER_CAN_VECTOR_XL,  _T("Vector XL")        },
 };
 
@@ -194,14 +193,6 @@ void CDIL_CAN::vSelectInterface_CAN_ICS_neoVI(void)
     m_pfGetCntrlStatus = CAN_ICS_neoVI_GetCntrlStatus;
     m_pfGetControllerParams = CAN_ICS_neoVI_GetControllerParams;
     m_pfGetErrorCount = CAN_ICS_neoVI_GetErrorCount;
-}
-
-/**
- * Helper Function for CAN_Parallel_Port Interface
- */
-void CDIL_CAN::vSelectInterface_CAN_Parallel_Port(void)
-{
-
 }
 
 /**
@@ -410,29 +401,6 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                 }
                 break;
             }
-        }
-        else if (dwDriverID == DRIVER_CAN_PEAK_PP)
-        {
-            // First select the dummy interface
-            DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
-
-            // First set the application parameters.
-            //CAN_Parallel_Port_SetAppParams(hWndOwner, pILog);
-
-			// Next load the driver library
-            //hResult = CAN_Parallel_Port_LoadDriverLibrary();
-            switch (hResult)
-            {
-                case S_OK:
-                case DLL_ALREADY_LOADED:
-                {
-                    hResult = S_OK;
-                    //CAN_Parallel_Port_PerformInitOperations();
-                    vSelectInterface_CAN_Parallel_Port();
-                }
-                break;
-            }
-
         }
 		else if (dwDriverID == DRIVER_CAN_VECTOR_XL)
 		{

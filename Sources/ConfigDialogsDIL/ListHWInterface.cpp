@@ -108,9 +108,17 @@ void CListHWInterface::vUpdateControlsWithCurrSel(void)
     {
         m_omVendor = _T("Peak GmbH");
     }
-    else if ((m_pInterfaceList + i)->m_dwVendor == DRIVER_CAN_PEAK_PP)
+    else if ((m_pInterfaceList + i)->m_dwVendor == DRIVER_CAN_ICS_NEOVI)
     {
-        m_omVendor = _T("Peak GmbH");
+        m_omVendor = _T("Intrepid Control Systems, Inc.");
+    }
+    else if ((m_pInterfaceList + i)->m_dwVendor == DRIVER_CAN_ETAS_BOA)
+    {
+        m_omVendor = _T("ETAS GmbH");
+    }
+    else if ((m_pInterfaceList + i)->m_dwVendor == DRIVER_CAN_VECTOR_XL)
+    {
+        m_omVendor = _T("Vector Informatik GmbH");
     }
 
     UpdateData(FALSE);
