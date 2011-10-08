@@ -30,24 +30,77 @@
 #include "DataTypes/DIL_Datatypes.h"
 #include "Include/BaseDefs.h"
 #include "Include/DIL_CommonDefs.h"
-#include "EXTERNAL_INCLUDE/vxlapi.h"
 #include "Include/CanUsbDefs.h"
 #include "Include/Can_Error_Defs.h"
 #include "ConfigDialogsDIL/API_Dialog.h"
 
+#define DYNAMIC_XLDRIVER_DLL
+#include "EXTERNAL_INCLUDE/vxlapi.h"
 
 #define USAGE_EXPORT
 #include "CAN_Vector_XL_Extern.h"
 
+/* function pointers */
+XLGETAPPLCONFIG                xlGetApplConfig = NULL;
+XLSETAPPLCONFIG                xlSetApplConfig = NULL;
+XLGETDRIVERCONFIG              xlGetDriverConfig = NULL;
+XLGETCHANNELINDEX              xlGetChannelIndex = NULL;
+XLGETCHANNELMASK               xlGetChannelMask = NULL;
+XLOPENPORT                     xlOpenPort = NULL;
+XLSETTIMERRATE                 xlSetTimerRate = NULL;
+XLRESETCLOCK                   xlResetClock = NULL;
+XLSETNOTIFICATION              xlSetNotification = NULL;
+XLFLUSHRECEIVEQUEUE            xlFlushReceiveQueue = NULL;
+XLGETRECEIVEQUEUELEVEL         xlGetReceiveQueueLevel = NULL;
+XLACTIVATECHANNEL              xlActivateChannel = NULL;
+XLRECEIVE                      xlReceive = NULL;                        
+XLGETEVENTSTRING               xlGetEventString = NULL;
+XLGETERRORSTRING               xlGetErrorString = NULL;
+XLGETSYNCTIME                  xlGetSyncTime = NULL;
+XLGENERATESYNCPULSE            xlGenerateSyncPulse = NULL;
+XLPOPUPHWCONFIG                xlPopupHwConfig = NULL;
+XLDEACTIVATECHANNEL            xlDeactivateChannel = NULL;
+XLCLOSEPORT                    xlClosePort = NULL;
+XLSETTIMERBASEDNOTIFY          xlSetTimerBasedNotify = NULL;  
+XLSETTIMERRATEANDCHANNEL       xlSetTimerRateAndChannel = NULL;
+XLGETLICENSEINFO               xlGetLicenseInfo = NULL;
+
+/* CAN specific functions */
+XLCANSETCHANNELOUTPUT          xlCanSetChannelOutput = NULL;    
+XLCANSETCHANNELMODE            xlCanSetChannelMode = NULL; 
+XLCANSETRECEIVEMODE            xlCanSetReceiveMode = NULL; 
+XLCANSETCHANNELTRANSCEIVER     xlCanSetChannelTransceiver = NULL;
+XLCANSETCHANNELPARAMS          xlCanSetChannelParams = NULL;           
+XLCANSETCHANNELPARAMSC200      xlCanSetChannelParamsC200 = NULL;        
+XLCANSETCHANNELBITRATE         xlCanSetChannelBitrate = NULL;   
+XLCANSETCHANNELACCEPTANCE      xlCanSetChannelAcceptance = NULL;       
+XLCANADDACCEPTANCERANGE        xlCanAddAcceptanceRange = NULL;    
+XLCANREMOVEACCEPTANCERANGE     xlCanRemoveAcceptanceRange = NULL; 
+XLCANRESETACCEPTANCE           xlCanResetAcceptance = NULL;   
+XLCANREQUESTCHIPSTATE          xlCanRequestChipState = NULL; 
+XLCANFLUSHTRANSMITQUEUE        xlCanFlushTransmitQueue = NULL;           
+XLCANTRANSMIT                  xlCanTransmit = NULL;
+
+/* Local variables */
+static XLCLOSEDRIVER           xlDllCloseDriver = NULL;
+static XLOPENDRIVER            xlDllOpenDriver = NULL;
+
+static HINSTANCE               hxlDll;
+
+static HWND sg_hOwnerWnd = NULL;
+static Base_WrapperErrorLogger* sg_pIlog   = NULL;
 
 /**
  * \return S_OK for success, S_FALSE for failure
  *
  * Sets the application params.
  */
-USAGEMODE HRESULT CAN_Vector_XL_SetAppParams(HWND /*hWndOwner*/, Base_WrapperErrorLogger* /*pILog*/)
+USAGEMODE HRESULT CAN_Vector_XL_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger *pILog)
 {
-    return WARN_DUMMY_API;
+    sg_hOwnerWnd = hWndOwner;
+    sg_pIlog = pILog;
+
+	return S_OK;
 }
 
 
@@ -58,7 +111,13 @@ USAGEMODE HRESULT CAN_Vector_XL_SetAppParams(HWND /*hWndOwner*/, Base_WrapperErr
  */
 USAGEMODE HRESULT CAN_Vector_XL_UnloadDriverLibrary(void)
 {
-    return WARN_DUMMY_API;
+    if (hxlDll != NULL)
+    {
+        FreeLibrary(hxlDll);
+        hxlDll = NULL;
+    }
+
+    return S_OK;
 }
 
 /**
@@ -68,7 +127,7 @@ USAGEMODE HRESULT CAN_Vector_XL_UnloadDriverLibrary(void)
  */
 USAGEMODE HRESULT CAN_Vector_XL_ManageMsgBuf(BYTE /*bAction*/, DWORD /*ClientID*/, CBaseCANBufFSE* /*pBufObj*/)
 {
-    return WARN_DUMMY_API;
+    return S_OK;
 }
 
 /**
@@ -79,7 +138,7 @@ USAGEMODE HRESULT CAN_Vector_XL_ManageMsgBuf(BYTE /*bAction*/, DWORD /*ClientID*
  */
 USAGEMODE HRESULT CAN_Vector_XL_RegisterClient(BOOL /*bRegister*/, DWORD& /*ClientID*/, TCHAR* /*pacClientName*/)
 {
-    return WARN_DUMMY_API;
+    return S_OK;
 }
 
 /**
@@ -91,7 +150,7 @@ USAGEMODE HRESULT CAN_Vector_XL_RegisterClient(BOOL /*bRegister*/, DWORD& /*Clie
  */
 USAGEMODE HRESULT CAN_Vector_XL_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& /*unCntrlStatus*/)
 {
-    return WARN_DUMMY_API;
+    return S_OK;
 }
 
 /**
@@ -101,7 +160,99 @@ USAGEMODE HRESULT CAN_Vector_XL_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& /
  */
 USAGEMODE HRESULT CAN_Vector_XL_LoadDriverLibrary(void)
 {
-    return WARN_DUMMY_API;
+    HRESULT hResult = S_OK;
+
+	if (hxlDll != NULL)
+    {
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("vxlapi.dll already loaded"));
+        hResult = DLL_ALREADY_LOADED;
+    }
+
+    if (hResult == S_OK)
+    {
+        hxlDll = LoadLibrary("vxlapi.dll");
+        if (hxlDll == NULL)
+        {
+            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("vxlapi.dll loading failed"));
+            hResult = ERR_LOAD_DRIVER;
+        }
+        else
+        {
+			xlDllOpenDriver           = (XLOPENDRIVER)                GetProcAddress(hxlDll,"xlOpenDriver");
+			xlDllCloseDriver          = (XLCLOSEDRIVER)               GetProcAddress(hxlDll,"xlCloseDriver");
+	                                                                                                                                  
+			/* bus independed functions */
+			xlGetApplConfig            = (XLGETAPPLCONFIG)            GetProcAddress(hxlDll,"xlGetApplConfig");
+			xlSetApplConfig            = (XLSETAPPLCONFIG)            GetProcAddress(hxlDll,"xlSetApplConfig");
+			xlGetDriverConfig          = (XLGETDRIVERCONFIG)          GetProcAddress(hxlDll,"xlGetDriverConfig");
+			xlGetChannelIndex          = (XLGETCHANNELINDEX)          GetProcAddress(hxlDll,"xlGetChannelIndex");
+			xlGetChannelMask           = (XLGETCHANNELMASK)           GetProcAddress(hxlDll,"xlGetChannelMask");
+			xlOpenPort                 = (XLOPENPORT)                 GetProcAddress(hxlDll,"xlOpenPort");
+			xlSetTimerRate             = (XLSETTIMERRATE)             GetProcAddress(hxlDll,"xlSetTimerRate");
+			xlResetClock               = (XLRESETCLOCK)               GetProcAddress(hxlDll,"xlResetClock");
+			xlSetNotification          = (XLSETNOTIFICATION)          GetProcAddress(hxlDll,"xlSetNotification");
+			xlFlushReceiveQueue        = (XLFLUSHRECEIVEQUEUE)        GetProcAddress(hxlDll,"xlFlushReceiveQueue");
+			xlGetReceiveQueueLevel     = (XLGETRECEIVEQUEUELEVEL)     GetProcAddress(hxlDll,"xlGetReceiveQueueLevel");
+			xlActivateChannel          = (XLACTIVATECHANNEL)          GetProcAddress(hxlDll,"xlActivateChannel");
+			xlReceive                  = (XLRECEIVE)                  GetProcAddress(hxlDll,"xlReceive");
+			xlGetEventString           = (XLGETEVENTSTRING)           GetProcAddress(hxlDll,"xlGetEventString");
+			xlGetErrorString           = (XLGETERRORSTRING)           GetProcAddress(hxlDll,"xlGetErrorString");
+			xlGenerateSyncPulse        = (XLGENERATESYNCPULSE)        GetProcAddress(hxlDll,"xlGenerateSyncPulse");
+			xlGetSyncTime              = (XLGETSYNCTIME)              GetProcAddress(hxlDll,"xlGetSyncTime");
+			xlPopupHwConfig            = (XLPOPUPHWCONFIG)            GetProcAddress(hxlDll,"xlPopupHwConfig");
+			xlDeactivateChannel        = (XLDEACTIVATECHANNEL)        GetProcAddress(hxlDll,"xlDeactivateChannel");
+			xlClosePort                = (XLCLOSEPORT)                GetProcAddress(hxlDll,"xlClosePort");
+			xlSetTimerBasedNotify      = (XLSETTIMERBASEDNOTIFY)      GetProcAddress(hxlDll,"xlSetTimerBasedNotify");
+			xlSetTimerRateAndChannel   = (XLSETTIMERRATEANDCHANNEL)   GetProcAddress(hxlDll, "xlSetTimerRateAndChannel");
+			xlGetLicenseInfo           = (XLGETLICENSEINFO)           GetProcAddress(hxlDll, "xlGetLicenseInfo");
+	   
+			/* CAN specific functions */
+			xlCanSetChannelOutput      = (XLCANSETCHANNELOUTPUT)      GetProcAddress(hxlDll,"xlCanSetChannelOutput");
+			xlCanSetChannelMode        = (XLCANSETCHANNELMODE)        GetProcAddress(hxlDll,"xlCanSetChannelMode");
+			xlCanSetReceiveMode        = (XLCANSETRECEIVEMODE)        GetProcAddress(hxlDll,"xlCanSetReceiveMode");
+			xlCanSetChannelTransceiver = (XLCANSETCHANNELTRANSCEIVER) GetProcAddress(hxlDll,"xlCanSetChannelTransceiver");
+			xlCanSetChannelParams      = (XLCANSETCHANNELPARAMS)      GetProcAddress(hxlDll,"xlCanSetChannelParams");
+			xlCanSetChannelParamsC200  = (XLCANSETCHANNELPARAMSC200)  GetProcAddress(hxlDll,"xlCanSetChannelParamsC200");
+			xlCanSetChannelBitrate     = (XLCANSETCHANNELBITRATE)     GetProcAddress(hxlDll,"xlCanSetChannelBitrate");
+			xlCanSetChannelAcceptance  = (XLCANSETCHANNELACCEPTANCE)  GetProcAddress(hxlDll,"xlCanSetChannelAcceptance");
+			xlCanAddAcceptanceRange    = (XLCANADDACCEPTANCERANGE)    GetProcAddress(hxlDll,"xlCanAddAcceptanceRange");
+			xlCanRemoveAcceptanceRange = (XLCANREMOVEACCEPTANCERANGE) GetProcAddress(hxlDll,"xlCanRemoveAcceptanceRange");
+			xlCanResetAcceptance	   = (XLCANRESETACCEPTANCE)       GetProcAddress(hxlDll,"xlCanResetAcceptance");
+			xlCanRequestChipState      = (XLCANREQUESTCHIPSTATE)      GetProcAddress(hxlDll,"xlCanRequestChipState");
+			xlCanFlushTransmitQueue	   = (XLCANFLUSHTRANSMITQUEUE)    GetProcAddress(hxlDll,"xlCanFlushTransmitQueue");
+			xlCanTransmit              = (XLCANTRANSMIT)              GetProcAddress(hxlDll,"xlCanTransmit");
+    
+			/* check for error */
+			if (!xlDllOpenDriver || !xlDllCloseDriver ||
+				!xlGetApplConfig || !xlSetApplConfig ||
+				!xlGetDriverConfig || !xlGetChannelIndex ||
+				!xlGetChannelMask || !xlOpenPort ||
+				!xlSetTimerRate || !xlResetClock ||
+				!xlSetNotification || !xlFlushReceiveQueue ||
+				!xlGetReceiveQueueLevel || !xlActivateChannel ||
+				!xlReceive || !xlGetEventString ||
+				!xlGetErrorString || !xlGenerateSyncPulse ||
+				!xlGetSyncTime || !xlPopupHwConfig ||
+				!xlDeactivateChannel || !xlClosePort ||
+				!xlSetTimerBasedNotify || !xlSetTimerRateAndChannel ||
+				!xlGetLicenseInfo || !xlCanSetChannelOutput ||
+				!xlCanSetChannelMode || !xlCanSetReceiveMode ||
+				!xlCanSetChannelTransceiver || !xlCanSetChannelParams ||
+				!xlCanSetChannelParamsC200 || !xlCanSetChannelBitrate ||
+				!xlCanSetChannelAcceptance || !xlCanAddAcceptanceRange ||
+				!xlCanRemoveAcceptanceRange || !xlCanResetAcceptance ||
+				!xlCanRequestChipState || !xlCanFlushTransmitQueue ||
+				!xlCanTransmit)
+			{
+                FreeLibrary(hxlDll);
+                sg_pIlog->vLogAMessage(A2T(__FILE__),
+                                       __LINE__, _T("Getting Process address of the APIs failed"));
+                hResult = ERR_LOAD_DRIVER;
+            }
+        }
+    }
+
+    return hResult;
 }
 
 /**
@@ -113,7 +264,12 @@ USAGEMODE HRESULT CAN_Vector_XL_LoadDriverLibrary(void)
  */
 USAGEMODE HRESULT CAN_Vector_XL_PerformInitOperations(void)
 {
-    return WARN_DUMMY_API;
+	HRESULT hResult = S_FALSE;
+
+	if (xlDllOpenDriver() == XL_SUCCESS)
+		hResult = S_OK;
+
+	return hResult;
 }
 
 /**
@@ -124,7 +280,7 @@ USAGEMODE HRESULT CAN_Vector_XL_PerformInitOperations(void)
  */
 static BOOL bLoadDataFromContr(PSCONTROLER_DETAILS /*pControllerDetails*/)
 {
-    return WARN_DUMMY_API;
+    return S_OK;
 }
 
 /**
@@ -134,7 +290,11 @@ static BOOL bLoadDataFromContr(PSCONTROLER_DETAILS /*pControllerDetails*/)
  */
 USAGEMODE HRESULT CAN_Vector_XL_PerformClosureOperations(void)
 {
-    return WARN_DUMMY_API;
+    HRESULT hResult = S_OK;
+
+	xlDllCloseDriver();
+
+	return hResult;
 }
 
 /**
@@ -146,7 +306,7 @@ USAGEMODE HRESULT CAN_Vector_XL_PerformClosureOperations(void)
  */
 USAGEMODE HRESULT CAN_Vector_XL_GetTimeModeMapping(SYSTEMTIME& /*CurrSysTime*/, UINT64& /*TimeStamp*/, LARGE_INTEGER* /*QueryTickCount*/)
 {
-    return WARN_DUMMY_API;
+    return S_OK;
 }
 
 /**
@@ -155,19 +315,32 @@ USAGEMODE HRESULT CAN_Vector_XL_GetTimeModeMapping(SYSTEMTIME& /*CurrSysTime*/, 
  * Lists the hardware interface available. sSelHwInterface
  * will contain the user selected hw interface.
  */
-USAGEMODE HRESULT CAN_Vector_XL_ListHwInterfaces(INTERFACE_HW_LIST& /*asSelHwInterface*/, INT& /*nCount*/)
+USAGEMODE HRESULT CAN_Vector_XL_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)
 {
-    return WARN_DUMMY_API;
+    USES_CONVERSION;
+    HRESULT hResult = S_FALSE;
+
+    asSelHwInterface[0].m_dwIdInterface = 0;
+	asSelHwInterface[0].m_dwVendor = DRIVER_CAN_VECTOR_XL;
+    _stprintf(asSelHwInterface[0].m_acNameInterface, _T("Vector XL"));
+    _stprintf(asSelHwInterface[0].m_acDescription, _T("PCMCIA to 2xCAN"));
+    _stprintf(asSelHwInterface[0].m_acDeviceName, _T("CANcardXL"));
+	nCount = 1;
+	hResult = S_OK;
+
+    return hResult;
 }
 
 /**
+ * \brief Selects the hardware interface selected by the user.
  * \return S_OK for success, S_FALSE for failure
  *
- * Selects the hardware interface selected by the user.
+ * Function to List Hardware interfaces connect to the system and requests to the
+ * user to select.
  */
 USAGEMODE HRESULT CAN_Vector_XL_SelectHwInterface(const INTERFACE_HW_LIST& /*asSelHwInterface*/, INT /*nCount*/)
 {   
-    return WARN_DUMMY_API;
+    return S_OK;
 }
 
 /**
@@ -177,7 +350,7 @@ USAGEMODE HRESULT CAN_Vector_XL_SelectHwInterface(const INTERFACE_HW_LIST& /*asS
  */
 USAGEMODE HRESULT CAN_Vector_XL_DeselectHwInterface(void)
 {
-    return WARN_DUMMY_API;
+    return S_OK;
 }
 
 /**
@@ -189,7 +362,7 @@ USAGEMODE HRESULT CAN_Vector_XL_DeselectHwInterface(void)
  */
 USAGEMODE HRESULT CAN_Vector_XL_DisplayConfigDlg(PCHAR& /*InitData*/, INT& /*Length*/)
 {
-    return WARN_DUMMY_API;
+    return S_OK;
 }
 
 /**
@@ -199,7 +372,7 @@ USAGEMODE HRESULT CAN_Vector_XL_DisplayConfigDlg(PCHAR& /*InitData*/, INT& /*Len
  */
 USAGEMODE HRESULT CAN_Vector_XL_SetConfigData(PCHAR /*pInitData*/, INT /*Length*/)
 {
-    return WARN_DUMMY_API;
+    return S_OK;
 }
 
 /**
@@ -209,7 +382,7 @@ USAGEMODE HRESULT CAN_Vector_XL_SetConfigData(PCHAR /*pInitData*/, INT /*Length*
  */
 USAGEMODE HRESULT CAN_Vector_XL_StartHardware(void)
 {
-    return WARN_DUMMY_API;
+    return S_OK;
 }
 
 /**
@@ -219,7 +392,7 @@ USAGEMODE HRESULT CAN_Vector_XL_StartHardware(void)
  */
 USAGEMODE HRESULT CAN_Vector_XL_StopHardware(void)
 {
-    return WARN_DUMMY_API;
+    return S_OK;
 }
 
 /**
@@ -229,7 +402,7 @@ USAGEMODE HRESULT CAN_Vector_XL_StopHardware(void)
  */
 USAGEMODE HRESULT CAN_Vector_XL_ResetHardware(void)
 {
-    return WARN_DUMMY_API;
+    return S_OK;
 }
 
 /**
@@ -239,7 +412,7 @@ USAGEMODE HRESULT CAN_Vector_XL_ResetHardware(void)
  */
 USAGEMODE HRESULT CAN_Vector_XL_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 {
-    return WARN_DUMMY_API;
+    return S_OK;
 }
 
 /**
@@ -249,7 +422,7 @@ USAGEMODE HRESULT CAN_Vector_XL_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
  */
 USAGEMODE HRESULT CAN_Vector_XL_SendMsg(DWORD /*dwClientID*/, const STCAN_MSG& /*sCanTxMsg*/)
 {
-    return WARN_DUMMY_API;
+    return S_OK;
 }
 
 /**
@@ -259,7 +432,7 @@ USAGEMODE HRESULT CAN_Vector_XL_SendMsg(DWORD /*dwClientID*/, const STCAN_MSG& /
  */
 USAGEMODE HRESULT CAN_Vector_XL_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
 {
-    return WARN_DUMMY_API;
+    return S_OK;
 }
 
 /**
@@ -269,7 +442,7 @@ USAGEMODE HRESULT CAN_Vector_XL_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
  */
 USAGEMODE HRESULT CAN_Vector_XL_GetBusConfigInfo(BYTE* /*BusInfo*/)
 {
-    return WARN_DUMMY_API;
+    return S_OK;
 }
 
 /**
@@ -279,7 +452,7 @@ USAGEMODE HRESULT CAN_Vector_XL_GetBusConfigInfo(BYTE* /*BusInfo*/)
  */
 USAGEMODE HRESULT CAN_Vector_XL_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
 {
-    return WARN_DUMMY_API;
+    return S_OK;
 }
 
 /**
@@ -289,7 +462,7 @@ USAGEMODE HRESULT CAN_Vector_XL_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
  */
 USAGEMODE HRESULT CAN_Vector_XL_GetLastErrorString(CHAR* /*acErrorStr*/, INT /*nLength*/)
 {
-    return WARN_DUMMY_API;
+    return S_OK;
 }
 
 /**
@@ -300,7 +473,7 @@ USAGEMODE HRESULT CAN_Vector_XL_GetLastErrorString(CHAR* /*acErrorStr*/, INT /*n
  */
 USAGEMODE HRESULT CAN_Vector_XL_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
 {
-    return WARN_DUMMY_API;
+    return S_OK;
 }
 
 /**
@@ -311,7 +484,7 @@ USAGEMODE HRESULT CAN_Vector_XL_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CH
  */
 USAGEMODE HRESULT CAN_Vector_XL_GetControllerParams(LONG& /*lParam*/, UINT /*nChannel*/, ECONTR_PARAM /*eContrParam*/)
 {
-    return WARN_DUMMY_API;
+    return S_OK;
 }
 
 /**
@@ -321,5 +494,5 @@ USAGEMODE HRESULT CAN_Vector_XL_GetControllerParams(LONG& /*lParam*/, UINT /*nCh
  */
 USAGEMODE HRESULT CAN_Vector_XL_GetErrorCount(SERROR_CNT& /*sErrorCnt*/, UINT /*nChannel*/, ECONTR_PARAM /*eContrParam*/)
 {
-    return WARN_DUMMY_API;
+    return S_OK;
 }

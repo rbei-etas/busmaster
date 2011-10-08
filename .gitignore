@@ -95,7 +95,7 @@ Sources/BIN/Libs/*/*.exp
 Sources/BIN/Libs/*/CAN_ETAS_BOA.lib
 Sources/BIN/Libs/*/CAN_ICS_neoVI.lib
 Sources/BIN/Libs/*/CAN_STUB.lib
-Sources/BIN/Libs/*/CAN_Vector_XL.dll
+Sources/BIN/Libs/*/CAN_Vector_XL.lib
 Sources/BIN/Libs/*/CommonClass.lib
 Sources/BIN/Libs/*/ConfigDialogsDIL.lib
 Sources/BIN/Libs/*/DIL_Interface.lib

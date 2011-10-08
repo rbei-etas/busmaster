@@ -223,6 +223,10 @@
 				RelativePath=".\CAN_Vector_XL_stdafx.h"
 				>
 			</File>
+			<File
+				RelativePath=".\EXTERNAL_INCLUDE\vxlapi.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
