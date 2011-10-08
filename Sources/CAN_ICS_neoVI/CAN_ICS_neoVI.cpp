@@ -2190,18 +2190,18 @@ USAGEMODE HRESULT CAN_ICS_neoVI_LoadDriverLibrary(void)
             icsneoGetErrorMessages             = (GETERRMSGS)       GetProcAddress(sg_hDll, "icsneoGetErrorMessages"            );
             icsneoGetErrorInfo                 = (GETERRORINFO)     GetProcAddress(sg_hDll, "icsneoGetErrorInfo"                );
 
-            //check for error
+            /* check for error */
             if(!icsneoFindNeoDevices               || !icsneoOpenNeoDevice       ||
-                    !icsneoClosePort                    || !icsneoFreeObject          ||
-                    !icsneoTxMessages                   || !icsneoGetMessages         ||
-                    !icsneoWaitForRxMessagesWithTimeOut || !icsneoGetTimeStampForMsg  ||
-                    !icsneoEnableNetworkRXQueue         || !icsneoGetConfiguration    ||
-                    !icsneoSendConfiguration            || !icsneoGetFireSettings     ||
-                    !icsneoSetFireSettings              || !icsneoGetVCAN3Settings    ||
-                    !icsneoSetVCAN3Settings             || !icsneoSetBitRate          ||
-                    !icsneoGetDeviceParameters          || !icsneoSetDeviceParameters ||
-                    !icsneoGetLastAPIError              || !icsneoGetErrorMessages    ||
-                    !icsneoGetErrorInfo                 || !icsneoGetDLLVersion)
+               !icsneoClosePort                    || !icsneoFreeObject          ||
+               !icsneoTxMessages                   || !icsneoGetMessages         ||
+               !icsneoWaitForRxMessagesWithTimeOut || !icsneoGetTimeStampForMsg  ||
+               !icsneoEnableNetworkRXQueue         || !icsneoGetConfiguration    ||
+               !icsneoSendConfiguration            || !icsneoGetFireSettings     ||
+               !icsneoSetFireSettings              || !icsneoGetVCAN3Settings    ||
+               !icsneoSetVCAN3Settings             || !icsneoSetBitRate          ||
+               !icsneoGetDeviceParameters          || !icsneoSetDeviceParameters ||
+               !icsneoGetLastAPIError              || !icsneoGetErrorMessages    ||
+               !icsneoGetErrorInfo                 || !icsneoGetDLLVersion)
             {
                 FreeLibrary(sg_hDll);
                 sg_pIlog->vLogAMessage(A2T(__FILE__),
