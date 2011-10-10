@@ -164,28 +164,25 @@ static HMODULE sg_hLibOCI = NULL;
 /**
  * Declarations of CSI API pointers
  */
-typedef void* CSI_SFS_Handle;
-typedef CSI_DECLSPEC BOA_ResultCode CSI_CALL (*PROC1)(   CSI_SFS_Handle* sfsHandle);
-typedef CSI_DECLSPEC BOA_ResultCode CSI_CALL (*PROC2)(   CSI_SFS_Handle handle, 
-                                                            const BOA_ServiceId* id, 
-                                                            OCI_URIName uriName[], INT size, INT* count);
-typedef CSI_DECLSPEC BOA_ResultCode CSI_CALL (*PROC3)(   CSI_SFS_Handle sfsHandle);
+typedef CSI_DECLSPEC OCI_ErrorCode (*PROC1)(const char* uriName, CSI_NodeRange range, CSI_Tree* *tree);
+typedef CSI_DECLSPEC OCI_ErrorCode (*PROC2)(CSI_Tree* tree);
+typedef CSI_DECLSPEC OCI_ErrorCode (*PROC3)(CSI_Tree *tree, const BOA_UuidVersion *uuid, OCI_URIName uriName[], int size, int* count);
 
 /**
  * Macro definitions
  */
-#define BOA_REGISTRY_LOCATION _T("SOFTWARE\\ETAS\\BOA\\1.4")
-#define LIB_OCI_NAME    _T("dll-ocdProxy_1_4.dll")
-#define LIB_CSL_NAME    _T("dll-csiBind_1_4.dll")
+#define BOA_REGISTRY_LOCATION "SOFTWARE\\ETAS\\BOA\\1.4"
+#define LIB_CSL_NAME    "dll-csiBind_1_4.dll"
+#define LIB_OCI_NAME    "dll-ocdProxy_1_4.dll"
 
 /**
  * CSI pointers table
  */
 typedef struct tagCSI_VTABLE
 {
-    PROC1 createSearchResult;
-    PROC2 getUriForServiceId;
-    PROC3 destroySearchResult;
+    PROC1 createProtocolTree;
+    PROC2 destroyProtocolTree;
+    PROC3 getUriForUuid;
 
 }CSI_VTABLE;
 
@@ -298,15 +295,15 @@ HRESULT GetCSI_API_Pointers(HMODULE hLibCSI)
     HRESULT hResult = S_OK;
     if (hLibCSI != NULL)
     {
-        if ((sBOA_PTRS.m_sCSI.createSearchResult   = (PROC1)GetProcAddress(hLibCSI, _T("CSI_CreateSearchResult"))) == NULL)
+        if ((sBOA_PTRS.m_sCSI.createProtocolTree        = (PROC1)GetProcAddress(hLibCSI, "CSI_CreateProtocolTree")) == NULL)
         {
             hResult = S_FALSE;
         }
-        else if ((sBOA_PTRS.m_sCSI.getUriForServiceId   = (PROC2)GetProcAddress(hLibCSI, _T("CSI_GetUriForServiceId"))) == NULL)
+        else if ((sBOA_PTRS.m_sCSI.destroyProtocolTree  = (PROC2)GetProcAddress(hLibCSI, "CSI_DestroyProtocolTree")) == NULL)
         {
             hResult = S_FALSE;
         }
-        else if ((sBOA_PTRS.m_sCSI.destroySearchResult  = (PROC3)GetProcAddress(hLibCSI, _T("CSI_DestroySearchResult"))) == NULL)
+        else if ((sBOA_PTRS.m_sCSI.getUriForUuid        = (PROC3)GetProcAddress(hLibCSI, "CSI_GetUriForUuid")) == NULL)
         {
             hResult = S_FALSE;
         }
@@ -486,20 +483,29 @@ HRESULT GetOCI_API_Pointers(HMODULE hLibOCI)
  */
 BOA_ResultCode OCI_FindCANController(OCI_URIName uriName[], INT nSize, INT* nFound)
 {   
-    BOA_ResultCode ErrorCode;
-    CSI_SFS_Handle sfsHandle = NULL;
-    static const BOA_ServiceId ociCanDllBind = {{UUID_OCICAN, {1,0,0,0}},
-                                                {UUID_DLL_BIND,{1,0,0,0}}};    
-    if((ErrorCode = (*(sBOA_PTRS.m_sCSI.createSearchResult))(&sfsHandle)) == OCI_SUCCESS)
-    {
-        // extract the URI-Names of all hardware, that supports the OCI-CAN-Interface with a DLL-Binding, so that is accessible from this application
-        if((ErrorCode = (*(sBOA_PTRS.m_sCSI.getUriForServiceId))(sfsHandle,&ociCanDllBind, uriName, nSize ,nFound)) == OCI_SUCCESS)
-        {
-            // we need the search result not any longer. So release the resources
-            ErrorCode = (*(sBOA_PTRS.m_sCSI.destroySearchResult))(sfsHandle);
-        }
-    }
-    return ErrorCode;
+    OCI_ErrorCode ec;
+
+    /* Container for search results */
+    CSI_Tree *sfsTree = NULL;
+    /* Specify that we want to search for nodes which implement v1.1.0.0 of OCI_CAN. */
+    static const BOA_UuidVersion ociCanUuid = { UUID_OCICAN, {1,1,0,0} };
+
+	/* Specify that we want to search for any kind of node, not just hardware nodes */
+    const CSI_NodeRange nodeRange = {CSI_NODE_MIN, CSI_NODE_MAX};
+
+   /* Search for all connected hardware and latch the result for further processing */
+   ec = (*(sBOA_PTRS.m_sCSI.createProtocolTree))("", nodeRange, &sfsTree);
+   if (ec == OCI_SUCCESS)
+   {
+	   /* Find the URIs for all nodes which implement v1.1.0.0 of OCI_CAN. */
+       ec = (*(sBOA_PTRS.m_sCSI.getUriForUuid))(sfsTree, &ociCanUuid, uriName, nSize, nFound);
+	   if (ec == OCI_SUCCESS)
+	   {
+           ec = (*(sBOA_PTRS.m_sCSI.destroyProtocolTree))(sfsTree);
+	   }
+   }
+
+   return ec;
 }
 
 /**
@@ -1425,26 +1431,27 @@ USAGEMODE HRESULT CAN_ETAS_BOA_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& un
 USAGEMODE HRESULT CAN_ETAS_BOA_LoadDriverLibrary(void)
 {
     HRESULT hResult = S_FALSE;
-    /* Load the CSI library to search the controllers */
+
+	/* Get BOA installation path from the registery */
     TCHAR acPath[MAX_PATH] = {'\0'};
-    /* Get BOA installation path from the registery */
-    TCHAR acLIB_OCI[MAX_PATH] = {'\0'};
-    TCHAR acLIB_CSL[MAX_PATH] = {'\0'};
 	INT nSize = 0;
     bGetBOAInstallationPath(acPath, nSize);
-    _stprintf(acLIB_OCI, _T("%s\\%s"), acPath, LIB_OCI_NAME);
-    _stprintf(acLIB_CSL, _T("%s\\%s"), acPath, LIB_CSL_NAME);        
 
     /* Load cslproxy.dll library */
-    sg_hLibCSI = LoadLibrary(acLIB_CSL);
-
+    TCHAR acLIB_CSL[MAX_PATH] = {'\0'};
+    sprintf_s(acLIB_CSL, sizeof(acLIB_CSL), "%s\\%s", acPath, LIB_CSL_NAME);
+	// LoadLibraryEx instead of LoadLibrary seems to be necessary under Windows 7 when the library is not in DLL search path (system32)
+    sg_hLibCSI = LoadLibraryEx(acLIB_CSL, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
     if (sg_hLibCSI != NULL)
     {
         hResult = GetCSI_API_Pointers(sg_hLibCSI);
-        //Load the OCI library to use CAN cancontroller
+
+		/* Load the OCI library to use CAN controller */
         if (hResult == S_OK)
         {  
-            sg_hLibOCI = LoadLibrary(acLIB_OCI);
+		    TCHAR acLIB_OCI[MAX_PATH] = {'\0'};
+		    sprintf_s(acLIB_OCI, sizeof(acLIB_OCI), "%s\\%s", acPath, LIB_OCI_NAME);
+            sg_hLibOCI = LoadLibraryEx(acLIB_OCI, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
             if (sg_hLibOCI != NULL)
             {
                 hResult = GetOCI_API_Pointers(sg_hLibOCI);
@@ -1460,7 +1467,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_LoadDriverLibrary(void)
             else
             {
                 hResult = S_FALSE;
-                _stprintf(acPath, _T("%s failed to load"), acLIB_OCI);
+                sprintf_s(acPath, sizeof(acPath), _T("%s failed to load"), acLIB_OCI);
                 sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, acPath);
             }
         }
@@ -1471,7 +1478,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_LoadDriverLibrary(void)
     }
     else
     {
-        _stprintf(acPath, _T("%s failed to load"), acLIB_CSL);
+        sprintf_s(acPath, sizeof(acPath), _T("%s failed to load"), acLIB_CSL);
         sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, acPath);
     }
     return hResult;
