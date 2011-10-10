@@ -651,20 +651,9 @@ void CBusStatisticsDlg::OnSize(UINT nType, int cx, int cy)
 
 	if(m_omStatList.m_hWnd)
 	{
-		CRect cr,crList; 
-		// Get Window Rectangle
-		GetWindowRect(&cr);		
-		// Get list control Rectangle
-		m_omStatList.GetWindowRect(&crList);
-		
-		crList.left   = cr.left;
-		crList.right  = cr.right;
-		crList.bottom = cr.bottom;
-
-		// Convert to client offset
-		ScreenToClient(&crList);
-		// Set the boundary for list control
-		m_omStatList.MoveWindow(&crList);
+		CRect omClientRect;
+        	GetClientRect(&omClientRect);
+        	m_omStatList.MoveWindow(&omClientRect);
 	}
 }
 
