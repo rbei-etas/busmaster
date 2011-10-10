@@ -317,8 +317,8 @@ BOOL CCANMonitorApp::InitInstance()
 	short shUnRegServer = -1; 
 	if (__argc > 1)
 	{
-		shRegServer = strcmpi(__targv[1],"/regserver");	
-		shUnRegServer = strcmpi(__targv[1],"/unregserver");	
+		shRegServer = (short) strcmpi(__targv[1],"/regserver");	
+		shUnRegServer = (short) strcmpi(__targv[1],"/unregserver");	
 	}
 
 
