@@ -473,7 +473,7 @@ int LoadDataFile(char FileName[])
     FILE *pFile = NULL;	
 
     //Check if file exists
-    if ((pFile  = fopen(FileName, "rb")) != NULL)
+    if (fopen_s(&pFile, FileName, "rb") == 0)
     {
         nResult = ReadWriteASection(true, SECTION_SIGNATURE, pFile);
         fclose(pFile);
@@ -493,7 +493,7 @@ int SaveDataFile(char FileName[])
     FILE *pFile = NULL;
 
     //open again with write permission
-    if ((pFile  = fopen(FileName, "wb")) != NULL)
+    if (fopen_s(&pFile, FileName, "wb") == 0)
     {
         nResult = ReadWriteASection(false, SECTION_SIGNATURE, pFile);
         fclose(pFile);
