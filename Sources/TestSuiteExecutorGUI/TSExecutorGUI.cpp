@@ -101,20 +101,17 @@ USAGEMODE HRESULT TS_vShowTSExecutorWindow(void* pParentWnd)
 			
             //// Set the size got from configuration module
             WINDOWPLACEMENT sTxWndPlacement;
-            if (sTxWndPlacement.rcNormalPosition.top == -1 ||
-                sTxWndPlacement.length == 0)//Load default configuration
-            {
-                CRect omRect;
-                CWnd* pWnd = (CWnd*)pParentWnd;
-                pWnd->GetClientRect(&omRect);
-                omRect.NormalizeRect();
-                // Reduce the size propotionally
-                omRect.bottom -= (LONG)(omRect.Height() * defTX_MSG_WND_BOTTOM_MARGIN);
-                omRect.right -= (LONG)(omRect.Width() * defTX_MSG_WND_RIGHT_MARGIN);
-                // Update the size
-                sTxWndPlacement.rcNormalPosition = omRect;
-            }
-            CRect omRect(63, 913, 4, 596);
+            CRect omRect;
+            CWnd* pWnd = (CWnd*)pParentWnd;
+            pWnd->GetClientRect(&omRect);
+            omRect.NormalizeRect();
+            // Reduce the size propotionally
+            omRect.bottom -= (LONG)(omRect.Height() * defTX_MSG_WND_BOTTOM_MARGIN);
+            omRect.right -= (LONG)(omRect.Width() * defTX_MSG_WND_RIGHT_MARGIN);
+            // Update the size
+            sTxWndPlacement.rcNormalPosition = omRect;
+
+			CRect omRect(63, 913, 4, 596);
             if( g_pomTSExecutorChildWindow->Create( strMDIClass,
                                           _T("Test Suite Executor"),
                                           WS_CHILD | WS_OVERLAPPEDWINDOW|WS_THICKFRAME,
