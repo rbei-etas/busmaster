@@ -131,7 +131,6 @@ BOOL CDefineTimerHandler::OnHelpInfo(HELPINFO* pHelpInfo)
 /******************************************************************************/
 void CDefineTimerHandler::OnOK() 
 {
-    INT nCount                      = 0;
     BOOL bNoMoreTimer               = FALSE;
     CString omStrTimerHandlerName(STR_EMPTY);
     CString omStrTimerValue(STR_EMPTY);

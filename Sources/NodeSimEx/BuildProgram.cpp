@@ -109,8 +109,6 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
         LONG lError = 0;    
         //HKEY sKey;
         BYTE acGCCPath[1024];
-        DWORD dwSize = sizeof(BYTE[1024]) ;
-        ULONG ulType = REG_SZ;
 
         // Get the installation path for FRAME
         lError = ERROR_SUCCESS;

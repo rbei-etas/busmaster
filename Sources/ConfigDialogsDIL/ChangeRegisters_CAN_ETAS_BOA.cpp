@@ -920,12 +920,6 @@ void CChangeRegisters_CAN_ETAS_BOA::vUpdateControllerDetails()
         m_ucWarningLimit = static_cast <UCHAR> (unWarningLimit);
 		UCHAR ucBtr0 = 0;
 		UCHAR ucBtr1 = 0;
-        UCHAR ucCNF1 = static_cast<UCHAR>( _tcstol(( LPCTSTR)m_omStrEditCNF1,
-                                        &pcStopStr,defHEXADECIMAL));
-        UCHAR ucCNF2 = static_cast<UCHAR>( _tcstol(( LPCTSTR)m_omStrEditCNF2,
-                                        &pcStopStr,defHEXADECIMAL));
-        UCHAR ucCNF3 = static_cast<UCHAR>( _tcstol(( LPCTSTR)m_omStrEditCNF3,
-                                        &pcStopStr,defHEXADECIMAL));
         // Pack the BTR0 and BTR1 values in two bytes before calling DIL fuction 
         // to initialise.
         m_usBTR0BTR1 = static_cast <USHORT>(((ucBtr0 << 8)| ucBtr1) & 0xffff);

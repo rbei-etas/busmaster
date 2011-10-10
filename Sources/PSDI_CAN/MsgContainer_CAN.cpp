@@ -232,7 +232,7 @@ BOOL CMsgContainerCAN::bIsTransitionInState( UINT unChannel,
 
     return bIsTransition;
 }
-void CMsgContainerCAN::vProcessCurrErrorEntry(const SERROR_INFO& sErrInfo)
+void CMsgContainerCAN::vProcessCurrErrorEntry(const SERROR_INFO& /*sErrInfo*/)
 {
 }
 

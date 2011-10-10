@@ -895,7 +895,6 @@ void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
     }
     else
     {
-         INT nColumnCount = m_omListCtrlBitTime.GetHeaderCtrl()->GetItemCount();
          INT nItemCount   = m_omListCtrlBitTime.GetItemCount();
 
          LVFINDINFO info;
