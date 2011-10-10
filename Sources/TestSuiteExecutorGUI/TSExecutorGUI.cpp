@@ -99,18 +99,6 @@ USAGEMODE HRESULT TS_vShowTSExecutorWindow(void* pParentWnd)
                                 LoadCursor(NULL, IDC_CROSS), 0,
                                 NULL );
 			
-            //// Set the size got from configuration module
-            WINDOWPLACEMENT sTxWndPlacement;
-            CRect omRect;
-            CWnd* pWnd = (CWnd*)pParentWnd;
-            pWnd->GetClientRect(&omRect);
-            omRect.NormalizeRect();
-            // Reduce the size propotionally
-            omRect.bottom -= (LONG)(omRect.Height() * defTX_MSG_WND_BOTTOM_MARGIN);
-            omRect.right -= (LONG)(omRect.Width() * defTX_MSG_WND_RIGHT_MARGIN);
-            // Update the size
-            sTxWndPlacement.rcNormalPosition = omRect;
-
 			CRect omRect(63, 913, 4, 596);
             if( g_pomTSExecutorChildWindow->Create( strMDIClass,
                                           _T("Test Suite Executor"),
