@@ -46,7 +46,7 @@ CString strCopyBSTRToCString(CComVariant& varSrc)
 	TCHAR tChar = NULL;	
 	_bstr_t bstrNodeValue(varSrc.bstrVal);	
 	ULONG ulLen = bstrNodeValue.length();	
-	for (int i = 0; i< ulLen*2; i+=2)
+	for (unsigned int i = 0; i< ulLen*2; i+=2)
 	{
 		tChar = (TCHAR)*(varSrc.pcVal+i);
 		strDest.Insert(i/2, tChar);
