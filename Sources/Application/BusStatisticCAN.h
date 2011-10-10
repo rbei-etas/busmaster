@@ -64,6 +64,9 @@ private:
     INT  m_unPreviousTime;
     static void * sm_pouBSCan;
 
+    UINT m_unBitsStdMsg[9];
+    UINT m_unBitsExdMsg[9];
+
 public:
     CCANBufFSE m_ouCanBufFSE;
 

@@ -141,6 +141,9 @@ typedef sCONTROLERDETAILS*  PSCONTROLER_DETAILS;
 // Bus statistics structure
 struct sBUSSTATISTICS
 {
+    UINT    m_unTotalBitsperSec;
+    //UINT    m_unRxSTDMsgBits;
+
     double  m_dBusLoad;
     double  m_dPeakBusLoad;
     UINT    m_unTotalMsgCount;
