@@ -10,6 +10,8 @@
 *             system.
 * @copyright  Copyright (c) 2008 ETAS GmbH. All rights reserved.
 *
+* $Revision: 4636 $
+*
 *
 * @page PAGE_CSI_FIGURES CSI - Figures
 * <HR>
@@ -35,12 +37,9 @@
 * @htmlinclude "page_boa_addressingscheme.html"
 */
 
+#include "..\Common\boatypes.h"
 #include "csidefs.h"
-#include "..\OCI\ocitypes.h"
 #include "csisfs.h"
-
-#include "..\Common\pshpack1.h"
-
 
 #ifdef __cplusplus
 extern "C" {
@@ -71,11 +70,11 @@ extern "C" {
  @param[out] handle handle to the CSI_ESS-API of the node. CSI_ServiceGetSubItems() can be used 
                     to enumerate all services, that are available at this node.
 */
-CSI_DECLSPEC OCI_ErrorCode 
+CSI_DECLSPEC BOA_ResultCode 
 CSI_CALL CSI_ServiceOpenNode 
     (const char* uriLocation, CSI_Handle* handle);
 
-typedef OCI_ErrorCode (CSI_CALL *PF_CSI_ServiceOpenNode)(const char *uriLocation, CSI_Handle *handle);
+typedef BOA_ResultCode (CSI_CALL *PF_CSI_ServiceOpenNode)(const char *uriLocation, CSI_Handle *handle);
 
 /**
  Get the handle to access a node. This handle can be used to bind the CSI_ESS-Interface
@@ -97,17 +96,17 @@ typedef OCI_ErrorCode (CSI_CALL *PF_CSI_ServiceOpenNode)(const char *uriLocation
                     process fails (e.g. because a binding of a lower interface failed) the call
                     returns OCI_NO_HANDLE
 */
-CSI_DECLSPEC OCI_ErrorCode 
+CSI_DECLSPEC BOA_ResultCode 
 CSI_CALL CSI_ServiceOpenNodeBind 
-    (BOA_ProtocolStack* stack, CSI_Handle* handle);
+    (const BOA_ProtocolStack* stack, CSI_ESS_Handle* handle);
 
-typedef OCI_ErrorCode (CSI_CALL *PF_CSI_ServiceOpenNodeBind)(BOA_ProtocolStack* stack, CSI_Handle *handle);
+typedef BOA_ResultCode (CSI_CALL *PF_CSI_ServiceOpenNodeBind)(const BOA_ProtocolStack* stack, CSI_ESS_Handle *handle);
 
 /** Release the access to a node. */
-CSI_DECLSPEC OCI_ErrorCode 
-CSI_CALL CSI_ServiceCloseNode (CSI_Handle handle);
+CSI_DECLSPEC BOA_ResultCode 
+CSI_CALL CSI_ServiceCloseNode (CSI_ESS_Handle handle);
 
-typedef OCI_ErrorCode (CSI_CALL *PF_CSI_ServiceCloseNode)(CSI_Handle handle);
+typedef BOA_ResultCode (CSI_CALL *PF_CSI_ServiceCloseNode)(CSI_ESS_Handle handle);
 
 /**
  Find all sub-services of a specific node. The node has to be opened by the CSI_ServiceOpenNode()
@@ -127,11 +126,11 @@ typedef OCI_ErrorCode (CSI_CALL *PF_CSI_ServiceCloseNode)(CSI_Handle handle);
          deliver the requested information. When the function fails an error code is returned 
          and the out parameter may contain undefined values.  
 */
-CSI_DECLSPEC OCI_ErrorCode 
+CSI_DECLSPEC BOA_ResultCode 
 CSI_CALL CSI_ServiceGetSubItems
-    (CSI_Handle handle, CSI_SubItem result[], uint32 size, uint32* count);
+    (CSI_ESS_Handle handle, CSI_SubItem result[], uint32 size, uint32* count);
 
-typedef OCI_ErrorCode (CSI_CALL *PF_CSI_ServiceGetSubItems)(CSI_Handle handle,\
+typedef BOA_ResultCode (CSI_CALL *PF_CSI_ServiceGetSubItems)(CSI_ESS_Handle handle,\
                        CSI_SubItem result[], uint32 size, uint32 *count);
 
 #define UUID_CSI_ESS { 0x07, 0xdb, 0x65, 0x38, 0x46, 0x3c, 0x4c, 0x8b,\
@@ -152,7 +151,5 @@ typedef struct CSI_ESS_VTable
 #ifdef __cplusplus
 }
 #endif
-
-#include "..\Common\poppack.h"
 
 #endif

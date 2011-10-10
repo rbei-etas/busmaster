@@ -3,6 +3,8 @@
 * Version 1.3
 *
 * Copyright (c) ETAS GmbH. All rights reserved.
+*
+* $Revision: 4509 $
 */
 
 /** 

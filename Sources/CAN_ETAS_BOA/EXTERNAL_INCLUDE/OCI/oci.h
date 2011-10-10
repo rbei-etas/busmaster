@@ -7,6 +7,8 @@
 *             for all supported I/O media.
 * @copyright  Copyright (c) 2007-2008 ETAS GmbH. All rights reserved.
 *
+* $Revision: 4547 $
+*
 * @remarks    All strings are UNICODE UTF8 encoded.
 *
 * @coding     All pointer parameters can be @c NULL.

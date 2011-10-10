@@ -5,6 +5,8 @@
 * @file       ocibase.h
 * @brief      I/O medium-independent part of the Open Controller Interface (API).
 * @copyright  Copyright (c) 2007-2008 ETAS GmbH. All rights reserved.
+*
+* $Revision: 4509 $
 */
 
 #include "..\Common\boaservice.h"

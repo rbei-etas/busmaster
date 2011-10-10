@@ -6,6 +6,8 @@
 * @brief      Public declaration of Search For Service (SFS) which is 
 *             a part of the Connection Service Interface (CSI).
 * @copyright  Copyright (c) 2008 ETAS GmbH. All rights reserved.
+*
+* $Revision: 4847 $
 */
 
 #include "..\Common\boaservice.h"
@@ -14,8 +16,6 @@
 #include "csitypes.h"
 
 #include "..\OCI\ocierror.h"
-
-#include "..\Common\pshpack1.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -55,7 +55,7 @@ version and the server delivers a version. In general the negotiation is done in
 -# The client selects the major and minor version it wants to use. This version is transmitted as requested 
 version to the server.  
 -# The server receives the request and offers a proposed version. The major version of the proposed version
-must not be identical to the the major version of the requested version. When the server does not offer
+must be identical to the the major version of the requested version. When the server does not offer
 the requested major version it generates an error. The minor version may be not equal to the requested 
 version. A higher minor version than the requested version identifies an server with additional feature.
 The client can ignore this information. A lower version than the requested version identifies an older
@@ -120,9 +120,31 @@ typedef enum CSI_NodeType
        The generation of a tree-view should use the following constants to differ 
        between physical and logical components.*/ 
    CSI_NODE_MAX_PHYSICAL_NODE = 0x2fff,
+
+   /** Special node used for implicit called CSI-ESS interfaces. This mechanism allows
+       implict access to the API when a remote system accesses the system root and explicit
+       access from the local system.
+       This node is visible in a tree, but the SFS algorithm will not access the node ESS
+       routine to expand the node by itself. Nevertheless an application can bind to this
+       API 
+       Using ESS V1.0 (BOA V1.3) the node will not be visible to the application. */
+   CSI_NODE_IMPLICIT_ESS = 0x3800,
+   /** Special node used to signal alternative configurations. 
+       (e.g. A port may be used as K-Line or CAN-Port)
+       All CSI_NODE_IMPLICIT_ESSon the same layer are interpreted as exclusive accessible sets of APIs. 
+       All APIs parallel to the CSI_NODE_ALTERNATIVE are interpreted as parallel accessibe APIs.
+       CSI_NODE_ALTERNATIVE may be cascaded to form more complex dependencies.
+       Using ESS V1.0 (BOA V1.3) the Search for Service will report the first alternative 
+       and remove the "Layer" introduced by the CSI_NODE_IMPLICIT_ESS. */
+   CSI_NODE_ALTERNATIVE = 0x3900, 
+   /** Special node that requests to be implicitly called by the CSI-SFS service, when itself
+       is detected. It will appear in the Search result, but all the nodes detected by the
+       routine will appear on the same layer as the node itself. This allows hiding some
+       logical layer from the URI path. */
+   CSI_NODE_AUTO_FORWARD = 0x3a00,
+
    /** Lower bound of logical components like protocols, which are located on the URI
        endpoint or which are dependent on APIs which must be located on the endpoint.
-       
        The generation of a tree-view should use this constant to limit the view to 
        logical components. The protocols can use the different values in the range 
        [CSI_NODE_MIN_LOGICAL_NODE..CSI_NODE_MAX_LOGICAL_NODE] to express the abstraction 
@@ -169,6 +191,16 @@ typedef struct CSI_NodeRange
    CSI_NodeType max;
 } CSI_NodeRange;
 
+/** Binding feature supported by a detected node. This feature can be used for a generic
+    coding to inform the CSI about the possibilities to cross process boundaries and system
+    boundaries. They are bitcoded, so that a combination of feature can be coded. */
+typedef enum BOA_BindingFeature
+{
+    BOA_BIND_INPROCESS = 1,  /**<binding mechanism is limited to the current process */
+    BOA_BIND_INSYSTEM  = 2,  /**<binding mechanism can cross process boundaries, but not system boundaries. */
+    BOA_BIND_REMOTE_SYSTEM = 4 /**< binding mechanism can cross system boundaries. */
+}BOA_BindingFeature;
+
 /** Elements delivered by the the CSI_ServiceGetSubItems() call. */
 typedef struct CSI_SubItem
 {
@@ -188,11 +220,23 @@ typedef struct CSI_SubItem
        its own namespace. So it is allowed that names in different sub-trees and
        names on different layer are identical. */
    char uriName[CSI_MAX_NAME];
-   /** Visible name used for GUI representation. This name (or a translation) is
-       visible to the user. So it should be identical for the same functions and
-       layer in different sub-trees. When this name is empty (visibleName[0] = 0x00)
-       the uriName is used for data representation. */
-   char visibleName[CSI_MAX_NAME];
+   /** reserved must be set to 0x00,0x00,0x00,0x00. Old Implementation may deliver
+       a copy of the uriName here. */
+   char visibleName[4];
+   /** version of this structure. Use V1.1.0.0 for items that include serverAffinity
+       and requiredAffinity information according to @ref @todo */
+   BOA_Version version;
+   /** reseverd for future use. */
+   char reserved2[CSI_MAX_NAME-2*sizeof(BOA_UuidBin)-8];
+   /** UUID specific to the binding mechanism that identifies the affinity of the server
+       to a specific part. When a binding mechanism is limited to a specific process in
+       a specific system it must identify the system and process by this uuid. When a
+       binding mechnaism can be accessed in a local network, it can must use the network
+       address... */
+   BOA_UuidBin serverAffinity;
+   /** The affinity required by the requiredAPI[0], according to the supported
+       binding mechanism. */
+   BOA_UuidBin requiredAffinity;
    /** Quality of service / cost declaration for different requirements
        (latency, throughput, processing power, etc.). Reserved fields must
        set to 0x00. This element helps to rate different stacks which offer the same
@@ -222,27 +266,25 @@ typedef struct CSI_Tree
 } CSI_Tree;
 
 
-/** Create a tree with all sub-nodes representing a physical instance from a specific location 
-    in the tree.
-    The endpoint of the uriName will be the root of the created tree. The tree includes no 
-    protocols, but only physical representations (@ref CSI_NodeType in the range 
-    [CSI_NODE_MIN_PHYSICAL_NODE, CSI_NODE_MAX_PHYSICAL_NODE]. The memory is allocated and 
-    managed by the driver. It must not be manipulated or released by the application.
-    An implementation may choose to deliver a reference to a statically build tree.*/  
-CSI_DECLSPEC OCI_ErrorCode 
-CSI_CALL CSI_CreateHwTree(const char* uriName, CSI_Tree* *tree);
+/** Create a sub-tree beginning at a specific location in the global tree.
 
-/** Release the access to a Hardware Tree */
-CSI_DECLSPEC OCI_ErrorCode 
-CSI_CALL CSI_DestroyHwTree(CSI_Tree* tree);
+    The sub-tree contains those nodes in the global tree which lie on the specified URI,
+    together with their siblings at each level.
 
+    The sub-tree also contains all nodes in the global tree which are descendants of the endpoint
+    of the specified URI; the endpoint of the URI forms the root of this portion of the sub-tree.
 
-/** Create a tree with all sub-nodes from a specific location in the tree.
-    The endpoint of the uriName will be the root of the created tree. The tree includes  
-    protocols (which never have children) and physical nodes (which have no requiredAPIs).
-    The memory is allocated and managed by the driver. It must not be manipulated or 
-    released by the application.An implementation may choose to deliver a reference to a 
-    statically build tree.*/  
+    @param[in] uriName  A URI of the form "ETAS://..." which identifies the root of the tree
+                        which is to be created. For example, "ETAS://ETH" means that the tree
+                        will contain all ethernet-connected nodes.
+                        As a special case, an empty @a uriName is equivalent to "ETAS://". Note that
+                        @a uriName is not permitted to be NULL.
+    @param[in] range    An object identifying the range of node types which are to be contained
+                        in the tree which is to be created.
+    @param[out] tree    The tree which is created. The memory is allocated and managed by the driver.
+                        It must not be manipulated or released by the application. An 
+                        may choose to deliver a reference to a statically build tree.
+*/
 CSI_DECLSPEC OCI_ErrorCode 
 CSI_CALL CSI_CreateProtocolTree(const char* uriName, CSI_NodeRange range, CSI_Tree* *tree);
 
@@ -253,90 +295,28 @@ CSI_CALL CSI_DestroyProtocolTree(CSI_Tree* tree);
 /*-------------------------------------------------------------------------------------------------------------*/
 
 #define MAX_URI 256
-
-typedef void* CSI_SFS_Handle;
 typedef char OCI_URIName[MAX_URI];
 
-
 /**
- Search for any Hardware and driver, that supports the Connection Service Interface,
- offers some BOA service and latch the result. 
- 
- @param [out] sfsHandle - handle to access the search result for further processing.
+ Fill an array with URI-Paths for a specific BOA_UuidVersion. This service extracts all URI-Paths
+ that support the requested BOA_UuidVersion from a search result created by CSI_CreateProtocolTree().
 
- @return OCI_SUCCESS
-
- @status - preliminary / proposal for BOA V1.2
- */
-CSI_DECLSPEC OCI_ErrorCode CSI_CALL CSI_CreateSearchResult(CSI_SFS_Handle* sfsHandle);
-
-/**
- Release all resources of a search result. The sfsHandle must not be used after this call.
-
- @param [in] sfsHandle - handle to a search result created by CSI_CreateSearchResult().
-
- @return OCI_SUCCESS
-
- @status - preliminary / proposal for BOA V1.2
- */
-CSI_DECLSPEC OCI_ErrorCode CSI_CALL CSI_DestroySearchResult(CSI_SFS_Handle sfsHandle);
-
-/**
- Modifiy a filter for finding virtual driver. Per default a filter will hide any virtual 
- driver component. This call is only needed, when the application wants to access virtual
- driver.
- 
- @param [in] sfsHandle - handle to a search result created by CSI_CreateSearchResult().
-
- @return OCI_SUCCESS
-
- @status - preliminary / proposal for BOA V1.2
-*/
-CSI_DECLSPEC OCI_ErrorCode CSI_CALL CSI_FindVirtualDriver (CSI_SFS_Handle handle, bool doNotIgnoreVirtualDriver);
-
-
-/**
- Fill an array with URI-Paths for a specific BOA_ServiceId. This service extracts all URI-Paths
- that support the requested BOA_SeriveId from a search result created by CSI_CreateSearchResult().
-
- @param [in] sfsHandle  A handle to a search result created by CSI_CreateSearchResult().
- @param [in] id         An id that is used to filter the search result. 
-                        The id consists of an UUID and Version of the interface and an UUID and Version
-						of the binding mechanism.
+ @param [in] tree       The tree of CSI nodes created by CSI_CreateProtocolTree().
+ @param [in] uuid       An id that is used to filter the search result.
+                        The id consists of a UUID and Version of the interface, e.g. { UUID_OCICAN, {1, 0, 0, 0} }.
  @param [out] uriName   Application supplied array of OCI_URIName with @a size elements that will be filled 
                         with the URIs.
- @param [in] size       Size of  the @a uriName array. The function will not deilver more than @a size elements.
-						When more than @size elements are found the function will return with OCI_ERR_BUFFER_OVERFLOW
-						and @a count will deliver the number of found elements.
- @param [out] count     number of valid elements in the @a uriName array.
+ @param [in] size       Size of  the @a uriName array. The function will not deliver more than @a size elements.
+                        When more than @size elements are found the function will return with OCI_ERR_BUFFER_OVERFLOW
+                        and @a count will deliver the number of found elements.
+ @param [out] count     Number of valid elements in the @a uriName array.
 
  @return OCI_SUCCESS
-		 OCI_ERR_BUFFER_OVERFLOW when more than @a size elements are found.
+         OCI_ERR_BUFFER_OVERFLOW when more than @a size elements are found.
 
- @status - preliminary / proposal for BOA V1.2
 */
-CSI_DECLSPEC OCI_ErrorCode CSI_CALL CSI_GetUriForServiceId (CSI_SFS_Handle handle, 
-                                      const BOA_ServiceId* id, 
-                                      OCI_URIName uriName[], int size, int* count);
-
-
-/** information about a BOA interface */
-typedef struct BOA_ApiInfo
-{
-   /** uri path of the interface */
-   char uriName[MAX_URI];
-   /** service id of the interface */
-   BOA_ServiceId service;
-} BOA_ApiInfo;
-
-CSI_DECLSPEC OCI_ErrorCode CSI_CALL CSI_GetInterfaceByServiceId (CSI_SFS_Handle handle, 
-                                           const BOA_ServiceId* id, 
-                                           BOA_ApiInfo* found, int size, int* count);
-
-CSI_DECLSPEC OCI_ErrorCode CSI_CALL CSI_GetInterfaceByNodeRange (CSI_SFS_Handle handle, 
-                                           const CSI_NodeRange* range, 
-                                           BOA_ApiInfo* found, int size, int* count);
-
+CSI_DECLSPEC OCI_ErrorCode
+CSI_CALL CSI_GetUriForUuid (CSI_Tree *tree, const BOA_UuidVersion *uuid, OCI_URIName uriName[], int size, int* count);
 
 /** 
 * @} 
@@ -345,7 +325,5 @@ CSI_DECLSPEC OCI_ErrorCode CSI_CALL CSI_GetInterfaceByNodeRange (CSI_SFS_Handle 
 #ifdef __cplusplus
 }
 #endif
-
-#include "..\Common\poppack.h"
 
 #endif

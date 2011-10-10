@@ -6,12 +6,11 @@
 * @brief      Timer handling functionality of the 
 *             Open Controller Interface (OCI) API.
 * @copyright  Copyright (c) 2007-2008 ETAS GmbH. All rights reserved.
+*
+* $Revision: 4799 $
 */
 
 #include "ocitypes.h"
-
-#include "..\Common\pshpack1.h"
-
 
 #ifdef __cplusplus
 extern "C" {
@@ -28,6 +27,7 @@ extern "C" {
 
 /**
 * @addtogroup GROUP_OCI_TIMER_HANDLING Timer Handling
+* @{
 *
 * @todo Extend ETAS ethernet synchronization to support 64Bit 
 * timestamping. Check possibilities and effort to transmit additional 
@@ -38,8 +38,6 @@ extern "C" {
 * @internal: Existing ETAS system can only be trimmed in a small 
 * range by accessing a VXCO. Any modification on an Ethernet port 
 * must not exceed 50ppm!
-*
-* @{
 */
 
 /**
@@ -783,7 +781,5 @@ typedef struct OCI_Time_VTable
 #ifdef __cplusplus
 }
 #endif
-
-#include "..\Common\poppack.h"
 
 #endif

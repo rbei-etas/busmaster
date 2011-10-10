@@ -6,13 +6,15 @@
 * @brief      Public declaration of Connect To Service (CTS) which is 
 *             a part of the Connection Service Interface (CSI).
 * @copyright  Copyright (c) 2008 ETAS GmbH. All rights reserved.
+*
+* $Revision: 4851 $
 */
 
+#include <stdlib.h> //size_t
 #include "..\Common\boaservice.h"
 #include "csidefs.h"
 #include "csitypes.h"
 #include "..\OCI\ocierror.h"
-#include "..\Common\pshpack1.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -68,16 +70,18 @@ extern "C" {
                            access protocol and version .
                            Must be UUID_DYNAMIC_LOADED_DLL, V1.x for this function.
     @param[out] handle     A handle to the new interface stack. The caller can pass
-                           this handle to functions like @ref CSI_GetProcAddresses to perform
+                           this handle to functions like @ref OCI_CreateCANControllerBind to perform
                            the API binding. The owner of the interface stack is
                            obliged to call @ref CSI_DestroyInterfaceStack once the
                            stack is no longer needed.
 
     @return If the operation was successful @ref OCI_SUCCESS will be returned. */
 
-CSI_DECLSPEC OCI_ErrorCode 
-CSI_CALL CSI_CreateInterfaceStack
-    (const char* uriLocation, BOA_UuidVersion* interfaceId, CSI_Handle *handle);
+CSI_DECLSPEC OCI_ErrorCode CSI_CALL CSI_CreateInterfaceStack
+(
+    const char* uriLocation, const BOA_UuidVersion* interfaceId, BOA_ProtocolStack** stack
+);
+
 
 /** Destroy (close, if necessary, remove and clean up) a service interface stack instance. 
     The handle is no longer valid. Resources required for the InterfaceStack are released.
@@ -87,62 +91,17 @@ CSI_CALL CSI_CreateInterfaceStack
     @return If the operation was successful @ref OCI_SUCCESS will be returned. 
 
     @remark     Depending structures will be closed and destroyed as well. */
-CSI_DECLSPEC OCI_ErrorCode 
-CSI_CALL CSI_DestroyInterfaceStack(CSI_Handle handle);
+CSI_DECLSPEC OCI_ErrorCode CSI_CALL CSI_DestroyInterfaceStack(BOA_ProtocolStack* stack);
 
-/** pointer to a string of the function names used by the CSI_GetProcAddresses() call
-    to bind an API.*/
-typedef const char *CSI_ProcIdent;
 
 /** signature used by microsoft for the non typesafe interface binding */ 
 typedef int (*CSI_ProcAddress)();
 
-/** @brief Obtains pointers to the functions that implement the top-level API in an interface stack.
+typedef void* CSI_VTableHandle;
 
-    @ref CSI_CreateInterfaceStack identifies and loads interface drivers as necessary.
-    Before the driver can be used, an interface-specific binding operation has to be
-    performed using the resulting handle and CSI_GetProcAddresses.
+CSI_DECLSPEC OCI_ErrorCode CSI_CALL CSI_GetVTable(const BOA_ProtocolStack* stack, CSI_ProcAddress **table, const size_t tableSize, CSI_VTableHandle* handle);
 
-    @param[in]   handle  interface instance to bind
-    @param[in]   procIdents An array of @a count procedure identifiers that will be used
-                 to bind the corresponding functions
-    @param[out]  addresses A buffer capable of holding at least @a count procedure
-                           addresses. For each procIdents[i], the corresponding address
-                           is written to addresses[i]. If an identifier could not be resolved,
-                           the corresponding entry will be set to NULL. The caller needs
-                           to be prepared to generate an error condition if mandatory
-                           procedures are missing. The procedure addresses need to be
-                           cast to the correct function pointer type (according to the API),
-                           including the correct calling convention, so they can be safely
-                           used.
-    @param[in]   count The number of procedures to bind, and the minimum number of addresses
-                       that can be written.
-*/
-CSI_DECLSPEC OCI_ErrorCode CSI_CALL CSI_GetProcAddresses(CSI_Handle handle,
-    const CSI_ProcIdent *procIdents, CSI_ProcAddress *addresses, size_t count);
-
-/** @brief Retrieves a protocol stack that contains information for binding an
-           API
-
-    The URI passed to CSI_CreateInterfaceStack contains information for
-    connecting to a specific service. OCI_GetProtocolStack on the other hand
-    provides the caller with access parameters that are necessary to bind the
-    API such as IP addresses and other low-level information available as a
-    result of the Search For Service mechanism.
-
-    This information is gathered during explicit calls to Search For Service
-    functions, or implicitely during the execution of CSI_CreateInterfaceStack.
-
-    If the API to be bound cannot interpret the protocol stack, it is the
-    API proxy's responsibility to translate the information contained therein
-    to a format the API understands.
-
-    @param[in]  handle          interface instance to bind
-    @param[out] protocolStack   pointer to the protocol stack;
-                                owned by the callee
-*/
-CSI_DECLSPEC OCI_ErrorCode CSI_CALL CSI_GetProtocolStack(CSI_Handle handle,
-    const BOA_ProtocolStack **protocolStack);
+CSI_DECLSPEC OCI_ErrorCode CSI_CALL CSI_ReleaseVTable(CSI_VTableHandle handle);
 
 /** 
 * @} 
@@ -151,7 +110,5 @@ CSI_DECLSPEC OCI_ErrorCode CSI_CALL CSI_GetProtocolStack(CSI_Handle handle,
 #ifdef __cplusplus
 }
 #endif
-
-#include "..\Common\poppack.h"
 
 #endif

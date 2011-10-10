@@ -5,9 +5,11 @@
 * @file       ocitypes.h
 * @brief      Global types and constants of the Open Controller Interface (API).
 * @copyright  Copyright (c) 2007-2008 ETAS GmbH. All rights reserved.
+*
+* $Revision: 4509 $
 */
 
-#include "..\Common\stdtypes.h"
+#include "..\Common\boatypes.h"
 #include "ocidefs.h"
 
 #ifdef __cplusplus
@@ -28,7 +30,7 @@ extern "C" {
 /** 
 * Standard definition to indicate missing or undefined values.
 */
-#define OCI_NO_VALUE (-1)
+#define OCI_NO_VALUE BOA_NO_VALUE
 
 /** 
 * Special @ref OCI_Handle value to indicate a missing or
@@ -50,7 +52,7 @@ extern "C" {
 * However, the knowledge about the actual ranges may only 
 * be used internally by the OCI implementer.
 */
-typedef int32 OCI_Handle;
+typedef BOA_Handle OCI_Handle;
 
 /** 
 * All functions return an @ref OCI_ErrorCode value to indicate either 
@@ -59,16 +61,13 @@ typedef int32 OCI_Handle;
 * @coding  Use negative values for error codes to support the usage of 
 *          FAILED() and SUCCEEDED() macros under Windows. 
 *          The practice of the flags @ref OCI_ERR_FLAG_ERROR,
-*          @ref OCI_ERR_FLAG_WARNING and @ref OCI_ERR_FLAG_DEBUG
-*          will enable this feature. 
+*          and @ref OCI_ERR_FLAG_WARNING will enable this feature. 
 * @n       Moreover there are OCI specific macros @ref OCI_FAILED() 
 *          and @ref OCI_SUCCEEDED() with the same functionality such 
-*          as FAILED() and SUCCEEDED(), which should be preferred. 
-* @n       Use the macro @ref OCI_ERRCODE() to extract the native 
-*          error code.
+*          as FAILED() and SUCCEEDED(), which should be preferred.
 * @ingroup GROUP_OCI_ERROR_MANAGEMENT
 */
-typedef uint32 OCI_ErrorCode;
+typedef BOA_ResultCode OCI_ErrorCode;
 
 /** 
 * A one-character boolean type. Actual type (char, bool etc.) 
@@ -85,7 +84,7 @@ typedef char OCI_bool;
 * to query clock ID, tick resolution and accuracy.
 * @ingroup GROUP_OCI_TIMER_HANDLING
 */
-typedef int64 OCI_Time;
+typedef BOA_Time OCI_Time;
 
 /** 
 * Handle for a single hardware port.

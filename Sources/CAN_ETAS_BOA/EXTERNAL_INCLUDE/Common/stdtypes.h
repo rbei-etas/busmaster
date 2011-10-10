@@ -14,6 +14,8 @@
 *                   types are written in lower-case
 *
 * @copyright  Copyright (c) 2007-2008 ETAS GmbH. All rights reserved.
+*
+* $Revision: 4509 $
 */
 
 /**

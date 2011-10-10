@@ -3,6 +3,8 @@
 * Version 1.3
 *
 * Copyright (c) ETAS GmbH. All rights reserved.
+*
+* $Revision: 4794 $
 */
 
 /** 
@@ -38,7 +40,7 @@ namespace ETAS {namespace OLI {
 * the validity or interpretation of the time stamps of all following 
 * messages may change while all previous messages will not be affected.
 *
-* @ref IMessage::GetID returns the @ref TimerEventCode "timer event code".
+* This interface's implementation of @ref IMessage::GetID returns the @ref TimerEventCode "timer event code".
 *
 * @remark All public methods are thread-safe.
 * @remark The lifetime of all objects implementing this interface 

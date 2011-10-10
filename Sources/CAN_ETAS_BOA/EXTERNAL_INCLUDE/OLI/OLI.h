@@ -3,6 +3,8 @@
 * Version 1.3
 *
 * Copyright (c) ETAS GmbH. All rights reserved.
+*
+* $Revision: 4509 $
 */
 
 /** 
@@ -30,6 +32,7 @@
 	\addtogroup GROUP_OLI_COMMON OLI Common
 	@{
 		\defgroup GROUP_OLI_COMMON_BASE Base
+		\defgroup GROUP_OLI_COMMON_ERROR Error Handling
 		\defgroup GROUP_OLI_COMMON_CONFIGURATION Configuration
 		\defgroup GROUP_OLI_COMMON_LINK Link
 		\defgroup GROUP_OLI_COMMON_QUEUES Queues
@@ -164,6 +167,7 @@
 #include "Common\CommonBase.h"
 #include "Common\ErrorInterfaces.h"
 #include "Common\ErrorProxies.h"
+#include "Common\IAPIConnector.h"
 #include "Common\IConfigurationContainer.h"
 #include "Common\IConfigurationObserver.h"
 #include "Common\IConfigurationParameter.h"
@@ -197,6 +201,7 @@
 #include "CAN\ICANErrorFrame.h"
 #include "CAN\ICANErrorFrameFilter.h"
 #include "CAN\ICANEvent.h"
+#include "CAN\ICANEventFilter.h"
 #include "CAN\ICANFrameFilter.h"
 #include "CAN\ICANLink.h"
 #include "CAN\ICANRxFrame.h"
@@ -217,6 +222,8 @@
 #include "LIN\ILINCRCDetectEventFilter.h"
 #include "LIN\ILINDLCDetectEvent.h"
 #include "LIN\ILINDLCDetectEventFilter.h"
+#include "LIN\ILINDataLostEvent.h"
+#include "LIN\ILINDataLostEventFilter.h"
 #include "LIN\ILINErrSyncEvent.h"
 #include "LIN\ILINErrSyncEventFilter.h"
 #include "LIN\ILINFrameFilter.h"

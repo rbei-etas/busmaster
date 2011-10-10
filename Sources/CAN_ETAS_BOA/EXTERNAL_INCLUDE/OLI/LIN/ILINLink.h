@@ -1,7 +1,19 @@
-///////////////////////////////////////////////////////////
-//  ILINLink.h
-//  Specification of the ILINLink interface
-///////////////////////////////////////////////////////////
+/*
+* Basic Open API - Open Link Interface
+* Version 1.3
+*
+* Copyright (c) ETAS GmbH. All rights reserved.
+*
+* $Revision: 4509 $
+*/
+
+/** 
+* @file
+* @brief  ILINLink definition
+* @remark The header structure of the OLI may change
+*         in future releases. Don't include this
+*         header directly. Use @ref OLI.h instead.
+*/
 
 /// @todo update doxygen comments
 
@@ -15,9 +27,15 @@
 #include "../Common/ErrorInterfaces.h"
 #include "../Common/ErrorProxies.h"
 
-/// forward declaration
+// open ETAS::OLI namespace
 
 #include "../Common/BeginNamespace.h"
+
+#ifdef _DOXYGEN
+namespace ETAS {namespace OLI {
+#endif
+
+// forward declaration
 
 class ILINTxFrame;
 
@@ -129,7 +147,11 @@ public:
     }
 };
 
-/// @}
+// close ETAS::OLI namespace
+
+#ifdef _DOXYGEN
+}}
+#endif
 
 #include "../Common/EndNamespace.h"
 

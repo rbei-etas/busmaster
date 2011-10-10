@@ -6,6 +6,8 @@
 * @brief      Doxygen-Documentation of Basic OpenAPI.
 * @copyright  Copyright (c) 2008 ETAS GmbH. All rights reserved.
 *
+* $Revision: 4509 $
+*
 *
 * @mainpage Basic OpenAPI Overview
 * <HR>

@@ -3,6 +3,8 @@
 * Version 1.3
 *
 * Copyright (c) ETAS GmbH. All rights reserved.
+*
+* $Revision: 4794 $
 */
 
 /** 
@@ -52,12 +54,11 @@ namespace ETAS {namespace OLI {
 * }
 * @endcode
 *
-* Application- or bus-specific format information is
-* encoded by the @ref GetID "ID". For frames, it will
-* be the frame ID in some bus-specific encoding. Events
-* may use this member to encode the specific causes
-* Please refer to the documentations of the respective
-* interfaces to learn more about their use of the ID member.
+* The @ref GetID "ID" property is best understood in the case of data frames: here it is usually the frame ID
+* in some bus-specific encoding. However @em any subclass of IMessage must implement the @ref IMessage::GetID
+* method, even subclasses such as IQueueEvent which may not seem to have a property which can be interpreted as
+* an "ID". Please refer to the documentation of the various subclasses of IMessage for information about how
+* each implements @ref IMessage::GetID.
 *
 * @remark All public methods are thread-safe.
 * @remark Receive messages are owned by the receiving queue. 
@@ -101,7 +102,11 @@ public:
 
     /** @brief @ref GetType "Type-specific" format information.
         
-        Usually, this will be either the frame ID or the event code.
+        If IMessage is implemented by an object which represents a data frame, then usually this method returns
+        the frame's bus-specific ID. However @em any subclass of IMessage must implement this method, even
+        subclasses such as IQueueEvent which may not seem to have a property which can be interpreted as
+        an "ID". Please refer to the documentation of the various subclasses of IMessage for information about how
+        each implements @ref IMessage::GetID.
 
         @return The type-specific format ID.
         @exception <none> This function must not throw exceptions.

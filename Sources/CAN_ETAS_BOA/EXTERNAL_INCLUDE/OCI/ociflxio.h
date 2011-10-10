@@ -6,12 +6,12 @@
 * @brief      FlexRay specific part of the Open Controller Interface (OCI) API
 *             excluding the stronly typed controller configuration.
 * @copyright  Copyright (c) 2007-2008 ETAS GmbH. All rights reserved.
+*
+* $Revision: 4801 $
 */
 
 
 #include "ocibase.h"
-
-#include "..\Common\pshpack1.h" 
 
 #ifdef __cplusplus
 extern "C" {
@@ -814,6 +814,22 @@ typedef OCI_ErrorCode
 
 
 /**
+* @anchor  ANCHOR_OCI_FLEXRAY_MESSAGE_FLAGS
+* @name    OCI FlexRay Message Flags.
+* @brief   Flags to specify additional information of a FlexRay message.
+*          These are possible values of @ref OCI_FlexRayRxMessage.flags.
+*/
+
+/** @{ */
+/**
+* The message is a self reception frame.
+*/
+#define OCI_FLEXRAY_MSG_FLAG_SELFRECEPTION      (1 << 0)
+
+/** @} */
+
+
+/**
 * @anchor  ANCHOR_OCI_FLEXRAY_FRAMEINDICATORS_FLAGS
 * @name    FlexRay frame indicator flags
 * @brief   These flags specify the location of the respective frame indicators.
@@ -950,7 +966,10 @@ typedef enum OCI_FlexRayEvent
     /** The status of the communication controller has changed */
     OCI_FLEXRAY_EVENT_POCS_CHANGE = 3,
     
-    /** One or more frames got lost */
+    /** One or more frames got lost.
+    * Use this event only when the data was lost on the bus. If the data was lost due to
+    * queue overflow, use an instance of @ref OCI_QueueEventMessage instead.
+    */
     OCI_FLEXRAY_EVENT_DATA_LOST = 4
     
 } OCI_FlexRayEvent;
@@ -994,6 +1013,9 @@ typedef struct OCI_FlexRayEventMessage
 /** Specific structure for FlexRay bus data frames, transmit direction. */
 typedef struct OCI_FlexRayTxMessage
 {
+    /** Reserved fields adapting to layout of OCI_FlexRayRxMessage. */
+    uint32 reserved[6];
+
     /** Additional information and settings of the FlexRay data message. */    
     uint16 flags;
             
@@ -1248,22 +1270,46 @@ typedef struct OCI_FlexRayRxCallback
 typedef struct OCI_FlexRayRxQueueConfiguration 
 {
     /** 
-    * Callback function for the reception of a FlexRay frame. 
-    * If this callback is set, the callback will be executed for every 
-    * received frame. When this parameter is set to @c NULL, the data 
-    * will be queued.  
+    * Callback function for the reception of a FlexRay frame.
+    *
+    * When a frame arrives which matches one of the frame filters defined for the queue instance,
+    * there are two possibilities:
+    *   - If @ref onFrame is not @c NULL, the frame is passed to @ref onFrame.
+    *   - If @ref onFrame is @c NULL, the frame is added to the RX queue.
+    *
+    * Note that if @ref OCI_DestroyFlexRayRxQueue() is used to destroy the queue while reception is in progress,
+    * it is possible for @ref onFrame to be called a short time @em after OCI_DestroyFlexRayRxQueue() has returned
+    * successfully.
+    *
     * @sa @ref PAGE_OCI_RECEIVE_MESSAGES "Receive Messages"
     */
     OCI_FlexRayRxCallback onFrame;
 
     /** 
-    * Callback function for the reception of a FlexRay event. 
-    * If this callback is set the callback will be executed for every 
-    * received event. 
-    * Setting only @ref onEvent but not @ref onFrame allows a lazy 
-    * reaction on frame reception and a quick reaction on every enabled 
-    * event.
-    * @sa @ref PAGE_OCI_RECEIVE_MESSAGES "Receive Messages"
+    * Callback function for the reception of an event.
+    *
+    * When an event is fired which matches one of the event filters defined for the queue instance,
+    * there are several possibilities:
+    *   - If @ref onEvent is not @c NULL, and if the @c destination member of the matched filter specifies
+    *     @ref OCI_EVENT_DESTINATION_CALLBACK, then the event is passed to @ref onEvent.
+    *   - If the @c destination member of the matched filter specifies @ref OCI_EVENT_DESTINATION_INBAND,
+    *     then the event is delivered to the application in the same way as a data frame.
+    *   - If @ref onEvent is @c NULL, then the event is always delivered to the application in the
+    *     same way as a data frame.
+    *
+    * Note:
+    *   - The @c destination member of a filter can specify both @ref OCI_EVENT_DESTINATION_CALLBACK and
+    *     @ref OCI_EVENT_DESTINATION_INBAND. In other words, the first two possibilities above are not mutually
+    *     exclusive.
+    *   - See @ref onFrame for a description of how received data frames are delivered to the application.
+    *   - If @ref OCI_DestroyFlexRayRxQueue() is used to destroy the queue while reception is in progress, it is
+    *     possible for @ref onEvent to be called a short time @em after OCI_DestroyFlexRayRxQueue() has returned
+    *     successfully.
+    *   - Setting only @ref onEvent but not @ref onFrame allows a lazy reaction on frame reception and a
+    *     quick reaction on every enabled event.
+    *
+    * @sa   @ref PAGE_OCI_RECEIVE_MESSAGES "Receive Messages"
+    * @sa   OCI_QueueEventFilter
     */
     OCI_FlexRayRxCallback onEvent;
 
@@ -1477,6 +1523,9 @@ typedef OCI_ErrorCode
              implementation. When multiple application access the same resource (interface hardware or physical
              controller) the termination of a different application may return the resources required for this 
              instance. </td> 
+   </tr>
+   <tr> <td> @ref OCI_ERR_QUEUE_IS_FULL </td>
+        <td> The specified @a queue is full; at least one message could not be added to the queue. </td> 
    </tr>
    </TABLE> 
 
@@ -1795,7 +1844,7 @@ typedef OCI_ErrorCode
 *         && ((cycle        % cyclePeriod)       == cycleOffset)
 */
 
-typedef struct OCI_FlexRayFrameFilter
+typedef struct OCI_FlexRayRxFilter
 {
     /** 
     * 11-bit value to be compared against the actual frame ID of the received 
@@ -2221,7 +2270,5 @@ typedef struct OCI_FLEXRAYIO_VTable
 #ifdef __cplusplus
 }
 #endif
-
-#include "..\Common\poppack.h"
 
 #endif

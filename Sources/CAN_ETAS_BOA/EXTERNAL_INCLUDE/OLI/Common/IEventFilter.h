@@ -3,6 +3,8 @@
 * Version 1.3
 *
 * Copyright (c) ETAS GmbH. All rights reserved.
+*
+* $Revision: 4509 $
 */
 
 /** 
@@ -29,7 +31,7 @@ namespace ETAS {namespace OLI {
 #endif
 
 /** @ingroup GROUP_OLI_COMMON_FILTERS
-* @brief  Base interface for all @ref IRxEvent "event" filters. 
+* @brief  Base interface for all @ref IEvent "event" filters. 
 *
 * This interface has been introduced for symmetry and structural
 * reasons only. Just like the @ref IEvent, it does not add any

@@ -6,12 +6,12 @@
 * @brief      CAN specific part of the Open Contoller Interface (OCI) API
 *             excluding the stronly typed controller configuration.
 * @copyright  Copyright (c) 2007-2008 ETAS GmbH. All rights reserved.
+*
+* $Revision: 4831 $
 */
 
 
 #include "ocibase.h"
-
-#include "..\Common\pshpack1.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -296,22 +296,45 @@ typedef struct OCI_CANRxCallback
 typedef struct OCI_CANRxQueueConfiguration
 {
     /** 
-    * Specifies an application specific frame arrival callback.
-    * This function is called, when a new frame is received that matches
-    * of the frame filters defined for this controller instance.
-    * May be @c NULL, in which case all frames are queued in the RX queue.
+    * Callback function for the reception of a CAN frame.
+    *
+    * When a frame arrives which matches one of the frame filters defined for the queue instance,
+    * there are two possibilities:
+    *   - If @ref onFrame is not @c NULL, the frame is passed to @ref onFrame.
+    *   - If @ref onFrame is @c NULL, the frame is added to the RX queue.
+    *
+    * Note that if @ref OCI_DestroyCANRxQueue() is used to destroy the queue while reception is in progress,
+    * it is possible for @ref onFrame to be called a short time @em after OCI_DestroyCANRxQueue() has returned
+    * successfully.
+    *
+    * @sa @ref PAGE_OCI_RECEIVE_MESSAGES "Receive Messages"
     */
     OCI_CANRxCallback     onFrame;
     
     /** 
-    * Specifies an application specific event callback.
-    * This function is called, when an event is fired that matches one
-    * of the event filters, and that filter has its destination member
-    * set to be the callback.
-    * Each individual event filter may select the destination of the event. 
-    * Either the event callback defined here, or the RX queue, or both.
-    * May be @c NULL, in which case all events can only be queued in the Rx
-    * queue. 
+    * Callback function for the reception of an event.
+    *
+    * When an event is fired which matches one of the event filters defined for the queue instance,
+    * there are several possibilities:
+    *   - If @ref onEvent is not @c NULL, and if the @c destination member of the matched filter specifies
+    *     @ref OCI_EVENT_DESTINATION_CALLBACK, then the event is passed to @ref onEvent.
+    *   - If the @c destination member of the matched filter specifies @ref OCI_EVENT_DESTINATION_INBAND,
+    *     then the event is delivered to the application in the same way as a data frame.
+    *   - If @ref onEvent is @c NULL, then the event is always delivered to the application in the
+    *     same way as a data frame.
+    *
+    * Note:
+    *   - The @c destination member of a filter can specify both @ref OCI_EVENT_DESTINATION_CALLBACK and
+    *     @ref OCI_EVENT_DESTINATION_INBAND. In other words, the first two possibilities above are not mutually
+    *     exclusive.
+    *   - See @ref onFrame for a description of how received data frames are delivered to the application.
+    *   - If @ref OCI_DestroyCANRxQueue() is used to destroy the queue while reception is in progress, it is
+    *     possible for @ref onEvent to be called a short time @em after OCI_DestroyCANRxQueue() has returned
+    *     successfully.
+    *   - Setting only @ref onEvent but not @ref onFrame allows a lazy reaction on frame reception and a
+    *     quick reaction on every enabled event.
+    *
+    * @sa   @ref PAGE_OCI_RECEIVE_MESSAGES "Receive Messages"
     * @sa   OCI_QueueEventFilter
     */
     OCI_CANRxCallback     onEvent;
@@ -611,7 +634,7 @@ typedef OCI_ErrorCode
 * pass =    ((frame.ID & @a frameIDMask) == @a frameIDValue)
 */
 
-typedef struct OCI_CANFrameFilter
+typedef struct OCI_CANRxFilter
 {
     /** 
     * Value that the frame id must match after AND-gating it with 
@@ -668,7 +691,7 @@ typedef struct OCI_CANFrameFilter
 * Specific structure to define a filter for a CAN bus event. 
 */
 
-typedef struct OCI_CANBusEventFilter
+typedef struct OCI_CANEventFilter
 {
     /** 
     * Specifies which kind of CAN bus event this filter matches 
@@ -1259,7 +1282,7 @@ typedef enum OCI_CANMessageDataType
 
 /** @{ */
 /** 
-* Message with extended 29-bit ID.
+* Message with extended 29-bit ID. If this flag is not set, the message has a standard 11-bit ID.
 */
 #define OCI_CAN_MSG_FLAG_EXTENDED               (0x1u)
 
@@ -1299,13 +1322,17 @@ typedef struct OCI_CANTxMessage
     /** Reserved data field. */
     uint8 res;
 
-    /** 
-    * Number of (valid) data bytes. 
-    * CAN allows for frames to be shorter than 8 bytes.
-    */
+    /**
+     * The data length code (DLC) of the CAN frame to be transmitted. Usually, the DLC indicates the number of data bytes in
+     * the frame, (i.e. the number of valid bytes in @ref data) and is therefore <= 8. However, the CAN specification implicitly
+     * permits DLC values which are > 8 and <= 15, though in such a case the frame will still contain only 8 data bytes.
+     * Consequently, some CAN controllers are able to transmit a frame with DLC > 8, though such a frame still only contains 8
+     * data bytes. The OCI_CAN API allows a caller to request the transmission of such a frame, though the underlying OCD may
+     * refuse to transmit the frame and return an error.
+     */
     uint8 dlc;
     
-    /** Payload. Only the first @a size elements are valid. */
+    /** Payload. If @ref dlc is <= 8, only the first @ref dlc bytes are valid. If @ref dlc is > 8, all 8 bytes are valid. */
     uint8 data[8];
 
 } OCI_CANTxMessage;
@@ -1341,16 +1368,19 @@ typedef struct OCI_CANRxMessage
     /** Reserved data field. */
     uint8 res;
 
-    /** 
-    * Number of (valid) data bytes. 
-    * CAN allows for frames to be shorter than 8 bytes.
-    */
+    /**
+     * The data length code (DLC) of the received CAN frame. Usually, the DLC indicates the number of data bytes in the frame,
+     * (i.e. the number of valid bytes in @ref data) and is therefore <= 8. However, the CAN specification implicitly permits
+     * DLC values which are > 8 and <= 15, though in such a case the frame will still contain only 8 data bytes. Consequently,
+     * some CAN controllers are able to receive a frame with DLC > 8 (though such a frame still only contains 8 data bytes),
+     * and the OCI_CAN API will process such a frame as usual, except that @ref dlc will be > 8 and @ref data will contain 8 bytes.
+     */
     uint8 dlc;
     
     /** keep 64 Bit alignment for first data byte */
     uint8 res1[4];
     
-    /** Payload. Only the first @ref size elements are valid. */
+    /** Payload. If @ref dlc is <= 8, only the first @ref dlc bytes are valid. If @ref dlc is > 8, all 8 bytes are valid. */
     uint8 data[8];
 
 } OCI_CANRxMessage;
@@ -1413,7 +1443,7 @@ typedef struct OCI_CANRxMessage
 * Specific structure for CAN bus data messages.
 */
 
-typedef struct OCI_CANErrorFrame
+typedef struct OCI_CANErrorFrameMessage
 {     
     /** 
     * Global receive time stamp. Depending on the implementation, 
@@ -1487,7 +1517,7 @@ typedef struct OCI_CANErrorFrame
 * Specific structure for CAN bus events.
 */
 
-typedef struct OCI_CANBusEvent
+typedef struct OCI_CANEventMessage
 {     
    /** 
     * Global receive time stamp. Depending on the implementation, 
@@ -1680,6 +1710,9 @@ typedef struct OCI_CANMessage
              controller) the termination of a different application may return the resources required for this 
              instance. </td> 
    </tr>
+   <tr> <td> @ref OCI_ERR_QUEUE_IS_FULL </td>
+        <td> The specified @a queue is full; at least one message could not be added to the queue. </td> 
+   </tr>
    <tr> <td> @ref OCI_ERR_UNEXPECTED_NULL </td> 
         <td> A fatal internal error occured in queue handling. </td> 
    </tr>                              
@@ -1825,7 +1858,5 @@ typedef struct OCI_CANIO_VTable
 #ifdef __cplusplus
 }
 #endif
-
-#include "..\Common\poppack.h"
 
 #endif

@@ -6,11 +6,11 @@
 * @brief      Generic queue part definitions of the 
 *             Open Controller Interface (API).
 * @copyright  Copyright (c) 2007-2008 ETAS GmbH. All rights reserved.
+*
+* $Revision: 4810 $
 */
 
 #include "ocitypes.h"
-
-#include "..\Common\pshpack1.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -107,8 +107,8 @@ typedef struct OCI_QueueProperties
 
 
 /** 
-* Static Information about a queue. This information will never 
-* change.
+* Static information about a queue. This information will never change. Note that this information refers only
+* to the queue implemented by the OCD. Other queues may exist below the OCD, e.g. in the bus controller hardware.
 */
 
 typedef struct OCI_QueueCapabilities
@@ -510,10 +510,10 @@ typedef enum OCI_QueueEvent
 typedef struct OCI_QueueEventMessage
 {
     /** 
-    * Global receive time stamp. Depending on the implementation, 
-    * this may be based on a hardware-internal timer with no global 
-    * synchronization. In particular, the epoch (i.e.\ value 0) may
-    * be the point in time the hardware was switched on.
+    * Global receive timestamp. Depending on the implementation, the timestamp may be based on a
+    * hardware-internal timer with no global synchronization, or the timestamp may be completely
+    * unavailable (in which case the value OCI_NO_TIME is used). In particular, the epoch
+    * (i.e.\ value 0) may be the point in time the hardware was switched on.
     */
     OCI_Time timeStamp;
 
@@ -548,11 +548,23 @@ typedef struct OCI_QueueEventMessage
 typedef struct OCI_QueueEventFilter
 {
     /** 
-      Handle of a valid source queue for which this filter shall match. For receive Queues this handle
-      will be identical to the handle used as parameter in the OCI_AddQueueEventFilter(). For transmit
-      queues the destination must be a receive queue of the same controller. So it is possible to implement
-      a event driver filling routine for a transmit queue (e.g. refill queue, when low watermark is reached
-      to avoid a pause on the related bus system).
+      This handle specifies the queue which is the source of the events which are matched by this filter.
+
+      There are two possible use cases for this filter:
+        -# using this filter to specify how to handle queue events which occur on an RX queue;
+        -# using this filter to specify how to handle queue events which occur on a TX queue. For example it is possible to
+           implement an event driver filling routine for a transmit queue (e.g. refill queue, when low watermark is reached
+           to avoid a pause on the related bus system).
+
+      In both cases, the queue events must be added to an RX queue, namely the RX queue to which this filter is added via
+      OCI_AddQueueEventFilter(). In both cases the queue events are added to the RX queue if they match this filter.
+
+      In the first use case, the RX queue to which the events are added is the same queue on which the events occurred.
+      Therefore @ref sourceQueue must identify the same RX queue to which this filter is added via OCI_AddQueueEventFilter().
+      Alternatively, @ref sourceQueue can be set to @ref OCI_NO_HANDLE to achieve the same result.
+
+      In the second use case, the events occur on a different queue from the one to which this filter is added via
+      OCI_AddQueueEventFilter(). @ref sourceQueue must match the TX queue on which the events occur.
     */
     OCI_QueueHandle sourceQueue;
     
@@ -764,7 +776,5 @@ typedef struct OCI_Queue_VTable
 #ifdef __cplusplus
 }
 #endif
-
-#include "..\Common\poppack.h"
 
 #endif

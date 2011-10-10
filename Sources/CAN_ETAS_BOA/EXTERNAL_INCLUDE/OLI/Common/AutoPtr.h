@@ -3,6 +3,8 @@
 * Version 1.3
 *
 * Copyright (c) ETAS GmbH. All rights reserved.
+*
+* $Revision: 4532 $
 */
 
 /** 
@@ -72,7 +74,7 @@ OLL_API void OLI_CALL __AutoPtr_assignment_unlock() OLI_NOTHROW;
 * thread-safe.
 *
 * @param  I  Type of the wrapped interface pointer. Must be derived
-*            from IRefCountable.
+*            from @ref IRefCountable.
 *
 * @remark Only construction, destruction and assignment are thread-safe.
 * @remark This is client-application-side code. Depending on the 
@@ -88,13 +90,13 @@ class AutoPtr
 {
 private:
 
-    /** @brief  Wrapped pointer instance.
-    *    
-    *   @remark May be @c NULL.
-    *   @since  BOA 1.3 
-    *   @see    IRefCountable
+    /** @brief  Wrapped instance pointer.
+         
+        @remark May be @c NULL.
+        @since  BOA 1.3 
+        @see    IRefCountable
     */
-    I* instance;
+    I* m_instance;
 
 public:
 
@@ -107,7 +109,7 @@ public:
         @since  BOA 1.3 
      */
     AutoPtr() OLI_NOTHROW
-        : instance (NULL)
+        : m_instance (NULL)
     {
     }
 
@@ -127,10 +129,10 @@ public:
         @see    IRefCountable
      */
     AutoPtr (I* instance) OLI_NOTHROW
-        : instance (instance)
+        : m_instance (instance)
     {
-        if (instance)
-            instance->AddRef();
+        if (m_instance)
+            m_instance->AddRef();
     }
 
     /** @brief  Initialize with a new, counted reference.
@@ -153,10 +155,10 @@ public:
         @see    IRefCountable
      */
     AutoPtr (I* instance, bool addRef) OLI_NOTHROW
-        : instance (instance)
+        : m_instance (instance)
     {
-        if ((instance != NULL) && addRef)
-            instance->AddRef();
+        if ((m_instance != NULL) && addRef)
+            m_instance->AddRef();
     }
 
     /** @brief  Duplicate an interface reference.
@@ -181,11 +183,13 @@ public:
      */
     AutoPtr (const AutoPtr& rhs) OLI_NOTHROW
     {
+        // We are about to access rhs.m_instance. It is protected by a singleton mutex.
+        // (We are also accessing m_instance, but it requires no protection during a constructor).
         __AutoPtr_assignment_lock();
 
-        instance = rhs.instance;
-        if (instance)
-            instance->AddRef();
+        m_instance = rhs.m_instance;
+        if (m_instance)
+            m_instance->AddRef();
 
         __AutoPtr_assignment_unlock();
     }
@@ -218,11 +222,13 @@ public:
     template<class Other>
     AutoPtr (const AutoPtr<Other>& rhs) OLI_NOTHROW
     {
+        // We are about to access rhs.m_instance. It is protected by a singleton mutex.
+        // (We are also accessing m_instance, but it requires no protection during a constructor).
         __AutoPtr_assignment_lock();
 
-        instance = rhs.get();
-        if (instance)
-            instance->AddRef();
+        m_instance = rhs.get();
+        if (m_instance)
+            m_instance->AddRef();
 
         __AutoPtr_assignment_unlock();
     }
@@ -245,9 +251,9 @@ public:
         @see    IRefCountable
      */
     AutoPtr (AutoPtr&& rhs) OLI_NOTHROW
-        : instance (rhs.instance)
+        : m_instance (rhs.m_instance)
     {
-        rhs.instance = NULL;
+        rhs.m_instance = NULL;
     }
 #endif // _MSC_VER > 1600
 
@@ -299,17 +305,36 @@ public:
      */
     AutoPtr<I>& operator=(const AutoPtr<I>& rhs) OLI_NOTHROW
     {
+        // We are about to access m_instance and rhs.m_instance. They are both protected by a singleton mutex.
         __AutoPtr_assignment_lock();
 
-        I* temp = rhs.get();
-        if (temp)
-            temp->AddRef();
-        if (instance)
-            instance->Release();
+        // Take a temporary reference to *m_instance. Doing this allows us to release our final reference to
+        // *m_instance outside any mutex, thereby avoiding unnecessary serialisation of a possible destructor call.
+        if( m_instance )
+        {
+            m_instance->AddRef();
+        }
+        I* instance = m_instance;
 
-        instance = temp;
+        // Overwrite m_instance with rhs.m_instance. This requires us to take an additional reference to *rhs.m_instance.
+        if( rhs.m_instance )
+        {
+            rhs.m_instance->AddRef();
+        }
+        if (m_instance)
+        {
+            m_instance->Release();
+        }
+        m_instance = rhs.m_instance;
 
+        // We have finished modifying m_instance and rhs.m_instance.
         __AutoPtr_assignment_unlock();
+
+        // Release our final reference to the previous *m_instance.
+        if (instance)
+        {
+            instance->Release();
+        }
 
         return *this;
     }
@@ -348,17 +373,36 @@ public:
     template<class Other>
     AutoPtr<I>& operator=(const AutoPtr<Other>& rhs) OLI_NOTHROW
     {
+        // We are about to access m_instance and rhs.m_instance. They are both protected by a singleton mutex.
         __AutoPtr_assignment_lock();
 
-        I* temp = rhs.get();
-        if (temp)
-            temp->AddRef();
-        if (instance)
-            instance->Release();
+        // Take a temporary reference to *m_instance. Doing this allows us to release our final reference to
+        // *m_instance outside any mutex, thereby avoiding unnecessary serialisation of a possible destructor call.
+        if( m_instance )
+        {
+            m_instance->AddRef();
+        }
+        I* instance = m_instance;
 
-        instance = temp;
+        // Overwrite m_instance with rhs.m_instance. This requires us to take an additional reference to *rhs.m_instance.
+        if( rhs.get() )
+        {
+            rhs.get()->AddRef();
+        }
+        if (m_instance)
+        {
+            m_instance->Release();
+        }
+        m_instance = rhs.get();
 
+        // We have finished modifying m_instance and rhs.m_instance.
         __AutoPtr_assignment_unlock();
+
+        // Release our final reference to the previous *m_instance.
+        if (instance)
+        {
+            instance->Release();
+        }
 
         return *this;
     }
@@ -394,16 +438,39 @@ public:
      */
     AutoPtr<I>& operator=(AutoPtr<I>&& rhs) OLI_NOTHROW
     {
-        __AutoPtr_assignment_lock();
-        if (instance != rhs.instance)
-        {
-            if (instance)
-                instance->Release();
+        I* instance = NULL;
 
-            instance = rhs.instance;
-            rhs.instance = NULL;
+        // We are about to access m_instance and rhs.m_instance. They are both protected by a singleton mutex.
+        __AutoPtr_assignment_lock();
+
+        if (m_instance != rhs.m_instance)
+        {
+            // Take an additional (temporary) reference to *m_instance. Doing this allows us to release our final
+            // reference to *m_instance outside any mutex, thereby avoiding unnecessary serialisation of a possible
+            // destructor call.
+            if( m_instance )
+            {
+                m_instance->AddRef();
+            }
+            instance = m_instance;
+
+            // Overwrite m_instance. We implicitly transfer the reference held by rhs.m_instance to m_instance.
+            if (m_instance)
+            {
+                m_instance->Release();
+            }
+            m_instance     = rhs.m_instance;
+            rhs.m_instance = NULL;
         }
+
+        // We have finished modifying m_instance and rhs.m_instance.
         __AutoPtr_assignment_unlock();
+
+        // Release our final reference to the previous *m_instance.
+        if (instance)
+        {
+            instance->Release();
+        }
 
         return *this;
     }
@@ -424,7 +491,7 @@ public:
      */
     I* get() const OLI_NOTHROW
     {
-        return instance;
+        return m_instance;
     }
 
     /** @brief  Release the interface reference.
@@ -438,25 +505,43 @@ public:
 
         @remark This method is guarateed to work correctly even while a copy
                 of this reference is being created by a different thread. 
+        @remark May be called even if the internal pointer is @c NULL. 
         @since  BOA 1.3 
         @see    IRefCountable
      */
     void reset() OLI_NOTHROW
     {
-        I* temp = instance;
-        if (temp)
+        // We are about to access m_instance. It is protected by a singleton mutex.
+        __AutoPtr_assignment_lock();
+
+        // Take an additional (temporary) reference to *m_instance. Doing this allows us to release our final
+        // reference to *m_instance outside any mutex, thereby avoiding unnecessary serialisation of a possible
+        // destructor call.
+        if( m_instance )
         {
-            __AutoPtr_assignment_lock();
+            m_instance->AddRef();
+        }
+        I* instance = m_instance;
 
-            instance = NULL;
-            temp->Release();
+        // Release m_instance.
+        if (m_instance)
+        {
+            m_instance->Release();
+        }
+        m_instance = NULL;
 
-            __AutoPtr_assignment_unlock();
+        // We have finished modifying m_instance.
+        __AutoPtr_assignment_unlock();
+
+        // Release our final reference to the previous *m_instance.
+        if (instance)
+        {
+            instance->Release();
         }
     }
 
-    /** @anchor operator_bool
-        @brief  Check for a non-NULL interface reference.
+    /** @brief  Check for a non-NULL interface reference.
+        @anchor operator_bool
         
         @return @c true, if the wrapped pointer is not @c NULL.
                 @c false, otherwise.
@@ -472,8 +557,8 @@ public:
         return get() != NULL;
     }
 
-    /** @anchor operator_not
-        @brief  Check for a NULL interface reference.
+    /** @brief  Check for a NULL interface reference.
+        @anchor operator_not
         
         @return @c true, if the wrapped pointer is @c NULL.
                 @c false, otherwise.
@@ -492,7 +577,6 @@ public:
     /** @brief  Dereference a constant interface pointer.
         
         @return The interface being referenced by this object.
-                May be @c NULL.
         @exception <none> This function must not throw exceptions.
 
         @remark Calling this function for @c NULL references is illegal
@@ -506,13 +590,12 @@ public:
      */
     const I* operator->() const OLI_NOTHROW
     {
-        return instance;
+        return m_instance;
     }
 
     /** @brief  Dereference an interface pointer.
         
         @return The interface being referenced by this object.
-                May be @c NULL.
         @exception <none> This function must not throw exceptions.
 
         @remark Calling this function for @c NULL references is illegal
@@ -526,13 +609,12 @@ public:
      */
     I* operator->() OLI_NOTHROW
     {
-        return instance;
+        return m_instance;
     }
 
     /** @brief  Dereference a constant interface pointer.
         
         @return The interface being referenced by this object.
-                May be @c NULL.
         @exception <none> This function must not throw exceptions.
 
         @remark Calling this function for @c NULL references is illegal
@@ -546,13 +628,12 @@ public:
      */
     const I& operator*() const OLI_NOTHROW
     {
-        return *instance;
+        return *m_instance;
     }
 
     /** @brief  Dereference an interface pointer.
         
         @return The interface being referenced by this object.
-                May be @c NULL.
         @exception <none> This function must not throw exceptions.
 
         @remark Calling this function for @c NULL references is illegal
@@ -566,7 +647,7 @@ public:
      */
     I& operator*() OLI_NOTHROW
     {
-        return *instance;
+        return *m_instance;
     }
 };
 

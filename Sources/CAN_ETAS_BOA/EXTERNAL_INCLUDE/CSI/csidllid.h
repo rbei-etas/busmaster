@@ -1,9 +1,16 @@
+/**
+* @file       csidllid.h
+* @brief      Interface and node IDs for the Connection Service Interface (CSI).
+* @copyright  Copyright (c) 2008 ETAS GmbH. All rights reserved.
+*
+* $Revision: 4636 $
+*/
+
 #ifndef ETAS_CSI_DLL_ID_H
 #define ETAS_CSI_DLL_ID_H
 
 #include "csidefs.h"
 #include "..\OCI\ocitypes.h"
-#include "..\Common\pshpack1.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -61,7 +68,7 @@ typedef OCI_ErrorCode (CSI_CALL *PF_CSI_IdentifyComponent)(BOA_UuidBin* parentNo
 
 typedef struct CSI_ECS_VTable
 {
-	PF_CSI_IdentifyComponent identifyComponent;
+    PF_CSI_IdentifyComponent identifyComponent;
 } CSI_ECS_VTable;
 
 /** 
@@ -71,7 +78,5 @@ typedef struct CSI_ECS_VTable
 #ifdef __cplusplus
 }
 #endif
-
-#include "..\Common\poppack.h"
 
 #endif /* ETAS_CSI_DLL_ID_H */

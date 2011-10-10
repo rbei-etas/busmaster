@@ -3,6 +3,8 @@
 * Version 1.3
 *
 * Copyright (c) ETAS GmbH. All rights reserved.
+*
+* $Revision: 4794 $
 */
 
 /** 
@@ -30,6 +32,8 @@
 #ifdef _DOXYGEN
 namespace ETAS {namespace OLI {
 #endif
+
+// forward declaration
 
 class IInternalErrorEventFilter;
 
@@ -81,7 +85,13 @@ class IInternalErrorEventFilter;
 *         @ref ErrorReporting "error reporting",
 *         IInternalErrorEventFilter
 */
-OLL_API IError* OLI_CALL IInternalErrorEventFilter_Create( uint32 eventCodeMask, uint32 eventCodeValue, uint32 errorCodeMask, uint32 errorCodeValue, IInternalErrorEventFilter** ppInternalErrorEventFilter );
+OLL_API IError* OLI_CALL IInternalErrorEventFilter_Create( 
+    uint32 eventCodeMask, 
+    uint32 eventCodeValue, 
+    uint32 errorCodeMask, 
+    uint32 errorCodeValue, 
+    IInternalErrorEventFilter** ppInternalErrorEventFilter);
+
 
 /** @ingroup GROUP_OLI_COMMON_FILTERS
 * @brief  Extension to @ref IEventFilter that also filters for
@@ -89,6 +99,11 @@ OLL_API IError* OLI_CALL IInternalErrorEventFilter_Create( uint32 eventCodeMask,
 *
 * In addition to the base class conditions, this interface checks
 * for the @ref IInternalErrorEvent::GetErrorCode "error code".
+* The implementation is expected to match @ref IInternalErrorEvent 
+* instances only.
+*
+* This interface's implementation of IFilter::GetIDMask and IFilter::GetIDValue return the event code mask and
+* event code value supplied to IInternalErrorEventFilter::Create.
 *
 * @remark All public methods are thread-safe.
 * @coding Client applications may implement this interface.
@@ -160,7 +175,7 @@ public:
                 The filter will report it in @ref GetErrorCodeValue.
         @return New @ref IInternalErrorEventFilter instance.
         @exception CError This function may throw an exception
-                derived from @ref IError.
+                derived from @ref CError.
 
         @remark This is a helper method which wraps 
                 @ref IInternalErrorEventFilter_Create(): 

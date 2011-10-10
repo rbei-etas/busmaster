@@ -5,12 +5,12 @@
 * @file       ocilin.h
 * @brief      LIN specific part of the Open Contoller Interface (OCI) API.
 * @copyright  Copyright (c) 2007-2008 ETAS GmbH. All rights reserved.
+*
+* $Revision: 4636 $
 */
 
 
 #include "ocilinio.h"
-
-#include "..\Common\pshpack1.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -901,7 +901,5 @@ typedef struct OCI_LIN_VTable
 #ifdef __cplusplus
 }
 #endif
-
-#include "..\Common\poppack.h"
 
 #endif

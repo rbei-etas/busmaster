@@ -3,6 +3,8 @@
 * Version 1.3
 *
 * Copyright (c) ETAS GmbH. All rights reserved.
+*
+* $Revision: 4509 $
 */
 
 /** 
@@ -138,7 +140,7 @@ public:
         @since  BOA 1.3 
         @see    GetFillLevel
      */
-	virtual void OLI_CALL Clear (Time checkpoint) OLI_NOTHROW = 0;
+	virtual void OLI_CALL Clear (RawTime checkpoint) OLI_NOTHROW = 0;
 
     /** @brief  Test whether the queue is active.
         

@@ -3,6 +3,8 @@
 * Version 1.3
 *
 * Copyright (c) ETAS GmbH. All rights reserved.
+*
+* $Revision: 4794 $
 */
 
 /** 
@@ -39,20 +41,19 @@ namespace ETAS {namespace OLI {
 * such as losing the connection between PC and bus controller
 * device. 
 *
-* @ref IMessage::GetID returns the @ref InternalErrorEventCode
-* value given by @ref GetErrorCode.
-*
-* If such events occur, you will need to close the respective 
+* Once such events occur, you will need to close the respective 
 * @ref ILink instance and open a new one. The OLI implementation 
 * will automatically disconnect the old link instance and treat 
 * it as defunc as soon as it detects such an event.
+*
+* This interface's implementation of @ref IMessage::GetID returns an @ref InternalErrorEventCode value.
 *
 * @remark All public methods are thread-safe.
 * @remark The lifetime of all objects implementing this interface 
 *         is defined by the @ref IRxQueue "receive queue" instance
 *         that contains them.
 * @since  BOA 1.3
-* @see    IRxQueue, ILink
+* @see    IRxQueue, ILink, IInternalErrorEventFilter
 */
 
 OLI_INTERFACE IInternalErrorEvent : public IEvent
@@ -72,11 +73,15 @@ protected:
 
 public:
 
-    enum {TYPE = COMMON_TYPE_EVENT_BASE + 1 /**< returned by @ref GetType */};
+    /** The unique identifier for the type of this interface
+        and will be returned by @ref IMessage::GetType.
+     */
+    enum {TYPE = COMMON_TYPE_EVENT_BASE + 1};
 
     /** @brief  Specific OCI error code.
         
-        @return Error code. May be 0, depending on the point of failure.
+        @return The errorCode field of the associated @ref OCI_InternalErrorEventMessage. May be 0, depending on the
+        point of failure.
         @exception <none> This function must not throw exceptions.
 
         @since  BOA 1.3 

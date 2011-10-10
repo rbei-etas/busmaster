@@ -5,9 +5,9 @@
 * @file       ocictrl.h
 * @brief      Public declaration of Block Device Driver API.
 * @copyright  Copyright (c) 2007-2008 ETAS GmbH. All rights reserved.
+*
+* $Revision: 4636 $
 */
-
-#include "..\Common\pshpack1.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -77,6 +77,18 @@ typedef enum OCI_SelfReceptionMode
 
 } OCI_SelfReceptionMode;
 
+#ifndef OCI_DYNAMICDLL
+OCI_DECLSPEC OCI_ErrorCode
+OCI_CALL OCI_GetUnmappedHandle(
+	OCI_ControllerHandle handle,
+    OCI_ControllerHandle* unmappedHandle);
+#endif
+
+typedef OCI_ErrorCode
+(OCI_CALL *PF_OCI_GetUnmappedHandle)(
+	OCI_ControllerHandle handle,
+    OCI_ControllerHandle* unmappedHandle);
+
 /** @} */
 
 /** @} */
@@ -85,7 +97,5 @@ typedef enum OCI_SelfReceptionMode
 #ifdef __cplusplus
 }
 #endif
-
-#include "..\Common\poppack.h"
 
 #endif

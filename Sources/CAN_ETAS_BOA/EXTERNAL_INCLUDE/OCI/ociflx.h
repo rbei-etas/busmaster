@@ -5,11 +5,11 @@
 * @file       ociflx.h
 * @brief      FlexRay specific part of the Open Controller Interface (OCI) API.
 * @copyright  Copyright (c) 2007-2008 ETAS GmbH. All rights reserved.
+*
+* $Revision: 4788 $
 */
 
 #include "ociflxio.h"
-
-#include "..\Common\pshpack1.h" 
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,7 +27,7 @@ extern "C" {
 * @{
 */
 
-/** Structure containing the FlexRay bus configuration parameters. */
+/** Structure containing the FlexRay bus configuration parameters for v1.0 of OCI_FLX. */
 typedef struct OCI_FlexRayBusConfiguration 
 {
     /** @name Cluster wide protocol relevant parameters: */
@@ -295,6 +295,282 @@ typedef struct OCI_FlexRayBusConfiguration
 } OCI_FlexRayBusConfiguration;
 
 
+/** Structure containing the FlexRay bus configuration parameters for v1.1 of OCI_FLX. This is identical to
+ * OCI_FlexRayBusConfiguration, except for the additional field pSecondKeySlotId. */
+typedef struct OCI_FlexRayBusConfigurationEx
+{
+    /** @name Cluster wide protocol relevant parameters: */
+    
+    /** 
+    * Maximum number of times a node in the cluster is permitted to attempt 
+    * to start the cluster by initiating schedule synchronization.
+    */
+    uint32 gColdStartAttempts;
+    
+    /**
+    * Number of macroticks the action point is offset from the beginning of a 
+    * static slots or symbol window. 
+    */        
+    uint32 gdActionPointOffset;
+               
+    /** Upper limit of the CAS acceptance window. */
+    uint32 gdCASRxLowMax;
+    
+    /** Duration of the idle phase within a dynamic slot. */
+    uint32 gdDynamicSlotIdlePhase;
+    
+    /** Duration of a minislot. */
+    uint32 gdMinislot;
+    
+    /** 
+    * Number of macroticks the minislot action point is offset from the 
+    * beginning of a minislot.
+    */
+    uint32 gdMinislotActionPointOffset;
+    
+    /** Duration of a static slot. */
+    uint32 gdStaticSlot;
+    
+    /** Duration of the symbol window. */
+    uint32 gdSymbolWindow;
+    
+    /** Number of bits in the Transmission Start Sequence. */
+    uint32 gdTSSTransmitter;
+    
+    /** 
+    * Number of bits used by the node to test the duration of the 'idle' 
+    * portion of a received wakeup symbol.
+    */
+    uint32 gdWakeupSymbolRxIdle;
+    
+    /**
+    * Number of bits used by the node to test the LOW portion of a received 
+    * wakeup symbol.
+    */
+    uint32 gdWakeupSymbolRxLow;
+    
+    /** The size of the window used to detect wakeups. */
+    uint32 gdWakeupSymbolRxWindow;
+    
+    /** 
+    * Number of bits used by the node to transmit the 'idle' part of a wakeup 
+    * symbol.
+    */
+    uint32 gdWakeupSymbolTxIdle;
+    
+    /**
+    * Number of bits used by the node to transmit the LOW part of a wakeup 
+    * symbol.
+    */
+    uint32 gdWakeupSymbolTxLow;
+    
+    /** 
+    * Upper limit for the start up listen timeout and wake up listen timeout 
+    * in the presence of noise.
+    */
+    uint32 gListenNoise;
+    
+    /** Number of macroticks in a communication cycle. */
+    uint32 gMacroPerCycle;
+    
+    /** 
+    * Defines the number of consecutive even/odd cycle pairs with missing clock 
+    * correction terms that will cause the protocol to transition from the 
+    * POC:normal active or POC:normal passive state into the POC:haltstate.
+    */
+    uint32 gMaxWithoutClockCorrectionFatal;
+
+    /** 
+    * Defines the number of consecutive even/odd cycle pairs with missing clock 
+    * correction terms that will cause the protocol to transition from the 
+    * POC:normal active state to the POC:normal passive state. 
+    */
+    uint32 gMaxWithoutClockCorrectionPassive;
+                              
+    /** Number of minislots in the dynamic segment. */                     
+    uint32 gNumberOfMinislots;
+    
+    /** Number of static slots in the static segment. */
+    uint32 gNumberOfStaticSlots;
+    
+    /**
+    * Start of the offset correction phase within the NIT, expressed as the 
+    * number of macroticks from the start of cycle. 
+    */
+    uint32 gOffsetCorrectionStart;
+
+    /** Payload length of a static frame. */
+    uint32 gPayloadLengthStatic;
+    
+    /**
+    * Maximum number of nodes that may send frames with the sync frame 
+    * indicator bit set to one. 
+    */
+    uint32 gSyncNodeMax;
+    
+    /** @name Local protocol relevant parameters: */
+    
+    /** 
+    * Boolean flag that controls the transition to the POC:halt state due to a 
+    * clock synchronization errors. 
+    */
+    uint32 pAllowHaltDueToClock;
+    
+    /** 
+    * Number of consecutive even/odd cycle pairs that must have valid clock 
+    * correction terms before the CC will be allowed to transition from the 
+    * POC:normal passive state to POC:normal active state.
+    */
+    uint32 pAllowPassiveToActive;
+
+    /** 
+    * Channels to which the node is connected (A, B or both). 
+    * @values  Valid values are @ref OCI_FLEXRAY_CHANNEL_A and @ref OCI_FLEXRAY_CHANNEL_B.
+    * @remark  Both values can be bitwise OR-connected to connect the node to both channels.
+	*/
+    uint32 pChannels;
+    
+    /**
+    * Expanded range of measured clock deviation allowed for startup frames 
+    * during integration.
+    */
+    uint32 pdAcceptedStartupRange;
+    
+    /** Local cluster drift damping factor used for rate correction. */
+    uint32 pClusterDriftDamping;
+    
+    /**
+    * Value used by the receiver to calculate the difference between primary 
+    * time reference point and secondary time reference point.
+    */
+    uint32 pDecodingCorrection;
+
+    /** 
+    * Value used to compensate for reception delays on the indicated channel.
+    */
+    uint32 pDelayCompensationA;
+         
+    /** 
+    * Value used to compensate for reception delays on the indicated channel.
+    */
+    uint32 pDelayCompensationB;
+    
+    /** 
+    * Upper limit for the start up listen timeout and wake up listen timeout.
+    */
+    uint32 pdListenTimeout;
+    
+    /**
+    * Maximum drift offset between two nodes that operate with unsynchronized 
+    * clocks over one communication cycle.
+    */
+    uint32 pdMaxDrift;
+    
+    /**
+    * Number of microticks added or subtracted to the NIT to carry out a 
+    * host-requested external offset correction.
+    */
+    uint32 pExternOffsetCorrection;
+    
+    /**
+    * Number of microticks added or subtracted to the cycle to carry out a 
+    * host-requested external rate correction.
+    */
+    uint32 pExternRateCorrection;
+    
+    /**
+    * ID of the slot used to transmit the startup frame, sync frame, or 
+    * designated single slot frame.
+    */
+    uint32 pKeySlotId;
+    
+    /**
+    * ID of the slot used as a second startup slot, to enable the bus to be started without the presence
+    * of a second Flexray controller. The value in this field is only valid if the busMode field of 
+    * OCI_FlexRayAdvancedConfiguration includes the flag OCI_FLEXRAY_BUSMODE_TWOKEYSLOTS.
+    */
+    uint32 pSecondKeySlotId;
+    
+    /** 
+    * Flag indicating whether the Key Slot is used to transmit a startup frame.
+    */
+    uint32 pKeySlotUsedForStartup;
+    
+    /**
+    * Flag indicating whether the Key Slot is used to transmit a sync frame.
+    */
+    uint32 pKeySlotUsedForSync;
+    
+    /**
+    * Number of the last minislot in which a frame transmission can start in 
+    * the dynamic segment.
+    */
+    uint32 pLatestTx;
+    
+    /**
+    * Integer number of macroticks between the static slot boundary and the 
+    * following macrotick boundary of the secondary time reference point based 
+    * on the nominal macrotick duration.
+    */
+    uint32 pMacroInitialOffsetA;
+
+    /**
+    * Integer number of macroticks between the static slot boundary and the 
+    * following macrotick boundary of the secondary time reference point based 
+    * on the nominal macrotick duration.
+    */
+    uint32 pMacroInitialOffsetB;
+
+    /**
+    * Number of microticks between the closest macrotick boundary described by 
+    * @ref pMacroInitialOffsetA and the secondary time reference point. 
+    */
+    uint32 pMicroInitialOffsetA;
+
+    /**
+    * Number of microticks between the closest macrotick boundary described by 
+    * @ref pMacroInitialOffsetB and the secondary time reference point. 
+    */
+    uint32 pMicroInitialOffsetB;
+
+    /** 
+    * Nominal number of microticks in the communication cycle of the local node.
+    */
+    uint32 pMicroPerCycle;
+    
+    /** Magnitude of the maximum permissible offset correction value. */
+    uint32 pOffsetCorrectionOut;
+    
+    /** Magnitude of the maximum permissible rate correction value. */
+    uint32 pRateCorrectionOut;
+    
+    /** 
+    * Flag indicating whether or not the node shall enter single slot mode 
+    * following startup.
+    */
+    uint32 pSingleSlotEnabled;
+    
+    /** 
+     * Channel used by the node to send a wakeup pattern (A or B). 
+     * @values  Valid values are @ref OCI_FLEXRAY_CHANNEL_A or @ref OCI_FLEXRAY_CHANNEL_B.
+     */
+    uint32 pWakeupChannel;
+    
+    /** 
+    * Number of repetitions of the wakeup symbol that are combined to form 
+    * a wakeup pattern when the node enters the POC:wakeup send state.
+    */
+    uint32 pWakeupPattern;
+    
+
+    /** @name Cluster wide protocol related parameters: */
+    
+    /** Length of the Network Management vector in a cluster. */
+    uint32 gNetworkManagementVectorLength;
+    
+} OCI_FlexRayBusConfigurationEx;
+
+
 /** 
 * Structure containing the FlexRay flow control directives for the 
 * communication controller.
@@ -400,7 +676,13 @@ typedef enum OCI_FlexRayControllerBusMode
     * The controller does not access the bus system, but every frame is handled 
     * in the local system. 
     */
-    OCI_FLEXRAY_BUSMODE_ISOLATEDLOOPBACK = 4
+    OCI_FLEXRAY_BUSMODE_ISOLATEDLOOPBACK = 4,
+
+    /** 
+    * The controller has two key slots and so it is meaningful for the client to get/set the field pSecondKeySlotId
+    * in OCI_FlexRayBusConfigurationEx.
+    */
+    OCI_FLEXRAY_BUSMODE_TWOKEYSLOTS = 8
 
 } OCI_FlexRayControllerBusMode;
 
@@ -411,13 +693,17 @@ typedef struct OCI_FlexRayAdvancedConfiguration
     /** The client requests exclusive access to the controller. */
     uint32 exclusiveAccess;
     
-    /** Supported bus modes. */
-    OCI_FlexRayControllerBusMode busMode;
+    /**
+    * Flags for all bus modes supported by the controller. Any combination of values from @ref OCI_FlexRayControllerBusMode
+    * is allowed, but the behaviour is unspecified if both OCI_FLEXRAY_BUSMODE_NORMAL and OCI_FLEXRAY_BUSMODE_SELFRECEPTION are
+    * specified simultaneously.
+    */
+    uint32 busMode;
 
 } OCI_FlexRayAdvancedConfiguration;
 
 
-/** Structure containing the configuration for generic FlexRay controllers. */
+/** Structure containing the configuration for generic FlexRay controllers for OCI_FLX v1.0. */
 typedef struct OCI_FlexRayConfiguration
 {
     /** General bus configuration. */
@@ -439,6 +725,31 @@ typedef struct OCI_FlexRayConfiguration
     OCI_FlexRayTxBufferConfiguration txBuffer[OCI_FLEXRAY_MAX_BUFFERCOUNT];
 
 } OCI_FlexRayConfiguration;
+
+
+/** Structure containing the configuration for generic FlexRay controllers for OCI_FLX v1.1. This differs from
+ * OCI_FlexRayConfiguration only in the use of OCI_FlexRayBusConfigurationEx instead of OCI_FlexRayBusConfiguration. */
+typedef struct OCI_FlexRayConfigurationEx
+{
+    /** General bus configuration. */
+    OCI_FlexRayBusConfigurationEx bus;
+
+    /** Flow control. */
+    OCI_FlexRayFlowConfiguration flow;
+
+    /** Receive queue configuration. */
+    OCI_FlexRayRxFifoConfiguration rxFifo;
+
+    /** Advanced settings. */
+    OCI_FlexRayAdvancedConfiguration advanced;
+
+    /** Number of valid buffer configurations in the following array. */
+    uint32 validBufferConfigurationCount;
+
+    /** Transmit buffer configurations.*/
+    OCI_FlexRayTxBufferConfiguration txBuffer[OCI_FLEXRAY_MAX_BUFFERCOUNT];
+
+} OCI_FlexRayConfigurationEx;
 
 
 /**
@@ -767,6 +1078,24 @@ typedef OCI_ErrorCode
     OCI_FlexRayConfiguration* configuration,
     OCI_FlexRayControllerProperties* properties);
 
+/**
+  This method is identical to OCI_OpenFlexRayController, except that it accepts an instance of OCI_FlexRayConfigurationEx
+  (instead of OCI_FlexRayConfiguration) as an argument.
+ */
+#ifndef OCI_DYNAMICDLL
+OCI_DECLSPEC OCI_ErrorCode
+OCI_CALL OCI_OpenFlexRayControllerEx(
+    OCI_ControllerHandle controller, 
+    OCI_FlexRayConfigurationEx* configuration,
+    OCI_FlexRayControllerProperties* properties);
+#endif    
+
+typedef OCI_ErrorCode
+(OCI_CALL *PF_OCI_OpenFlexRayControllerEx)(
+    OCI_ControllerHandle controller, 
+    OCI_FlexRayConfigurationEx* configuration,
+    OCI_FlexRayControllerProperties* properties);
+
 
 /**
   Close and unlock the configuration of a FlexRay controller instance. 
@@ -894,6 +1223,22 @@ typedef OCI_ErrorCode
 (OCI_CALL *PF_OCI_GetFlexRayConfiguration)(
     OCI_ControllerHandle controller, 
     OCI_FlexRayConfiguration* configuration);
+
+/**
+  This method is identical to OCI_GetFlexRayConfiguration, except that it accepts an instance of OCI_FlexRayConfigurationEx
+  (instead of OCI_FlexRayConfiguration) as an argument.
+ */
+#ifndef OCI_DYNAMICDLL
+OCI_DECLSPEC OCI_ErrorCode
+OCI_CALL OCI_GetFlexRayConfigurationEx(
+    OCI_ControllerHandle controller, 
+    OCI_FlexRayConfigurationEx* configuration);
+#endif
+
+typedef OCI_ErrorCode
+(OCI_CALL *PF_OCI_GetFlexRayConfigurationEx)(
+    OCI_ControllerHandle controller, 
+    OCI_FlexRayConfigurationEx* configuration);
 
 
 /**
@@ -1087,16 +1432,19 @@ typedef struct OCI_FLEXRAY_VTable
 
     /* ociflx.h */
 
-    PF_OCI_CreateFlexRayController createFlexRayController;
+    PF_OCI_CreateFlexRayController     createFlexRayController;
     PF_OCI_CreateFlexRayControllerBind createFlexRayControllerBind;
-    PF_OCI_DestroyFlexRayController destroyFlexRayController;
+    PF_OCI_DestroyFlexRayController    destroyFlexRayController;
 
-    PF_OCI_OpenFlexRayController openFlexRayController;
-    PF_OCI_CloseFlexRayController closeFlexRayController;
+    PF_OCI_OpenFlexRayController   openFlexRayController;
+    PF_OCI_CloseFlexRayController  closeFlexRayController;
     PF_OCI_GetFlexRayConfiguration getFlexRayConfiguration;
 
     PF_OCI_GetFlexRayControllerProperties getFlexRayControllerProperties;
     PF_OCI_SetFlexRayControllerProperties setFlexRayControllerProperties;
+
+    PF_OCI_OpenFlexRayControllerEx   openFlexRayControllerEx;       /* This method was added for OCI_FLX v1.1 */
+    PF_OCI_GetFlexRayConfigurationEx getFlexRayConfigurationEx;     /* This method was added for OCI_FLX v1.1 */
 
 } OCI_FLEXRAY_VTable;
 
@@ -1107,7 +1455,5 @@ typedef struct OCI_FLEXRAY_VTable
 #ifdef __cplusplus
 }
 #endif
-
-#include "..\Common\poppack.h"
 
 #endif

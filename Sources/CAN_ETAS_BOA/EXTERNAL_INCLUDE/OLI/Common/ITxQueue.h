@@ -1,8 +1,19 @@
-///////////////////////////////////////////////////////////
-//  ITxQueue.h
-//  Implementation of the Interface ITxQueue
-//  Created on:      19-Mrz-2008 01:23:29
-///////////////////////////////////////////////////////////
+/*
+* Basic Open API - Open Link Interface
+* Version 1.3
+*
+* Copyright (c) ETAS GmbH. All rights reserved.
+*
+* $Revision: 4509 $
+*/
+
+/** 
+* @file
+* @brief  ITxQueue definition
+* @remark The header structure of the OLI may change
+*         in future releases. Don't include this
+*         header directly. Use @ref OLI.h instead.
+*/
 
 /// @todo update doxygen comments
 
@@ -15,13 +26,34 @@
 #include "../Common/ErrorInterfaces.h"
 #include "../Common/ErrorProxies.h"
 
+// open ETAS::OLI namespace
+
 #include "BeginNamespace.h"
+
+#ifdef _DOXYGEN
+namespace ETAS {namespace OLI {
+#endif
 
 /// interace forward declarations
 
 class ITxMessage;
 
-/// @ingroup GROUP_OLI_COMMON_QUEUES
+/** 
+* @ingroup GROUP_OLI_COMMON_QUEUES
+* @brief Base interface for all transmit messages.
+*
+* In contrast to @ref IRxMessage "receive messages", these messages are 
+* being created on behalf of the client application. Therefore, the 
+* lifetime of the instances must be controlled by the client application: 
+* To delete transmit messages created by some OLI factory called by the
+* client, that client must call the @ref Destroy method once the message
+* object is no longer needed.
+*
+* @remark All public methods are thread-safe.
+* @coding Client applications may implement this interface.
+* @since  BOA 1.3
+* @see    ITxQueue, AutoDestroyPtr
+*/
 
 /** Send queue. It extends the base interface by a method 
 * to append a message to the queue.
@@ -75,6 +107,12 @@ public:
         CheckAndThrow( AddRaw( messages, count ) );
     }
 };
+
+// close ETAS::OLI namespace
+
+#ifdef _DOXYGEN
+}}
+#endif
 
 #include "EndNamespace.h"
 

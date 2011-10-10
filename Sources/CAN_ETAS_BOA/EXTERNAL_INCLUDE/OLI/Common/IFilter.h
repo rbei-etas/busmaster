@@ -3,6 +3,8 @@
 * Version 1.3
 *
 * Copyright (c) ETAS GmbH. All rights reserved.
+*
+* $Revision: 4794 $
 */
 
 /** 
@@ -71,16 +73,32 @@ class IQuickFilterSupport;
 /** @ingroup GROUP_OLI_COMMON_FILTERS
 * @brief  Base interface for all @ref IRxMessage "message" filters. 
 *
-* This base interface checks for the common @ref IRxMessage part 
-* of a potential @ref IRxQueue "receive queue" entry: the 
-* @ref IMessage::GetID "ID". The @ref IMessage::GetType "message type"
-* will be checked implicitly by the message type specific 
-* filter implementations.
+* This base interface is implemented by any object which is able to filter instances of @ref IRxMessage, usually
+* in order to decide whether such an instance should be  added to a @ref IRxQueue "receive queue".
+* An object implementing @ref IFilter encapsulates a criterion which it applies to the  @ref IMessage::GetID "ID"
+* of any instance of @ref IRxMessage. The criterion takes the form of a (mask, value) pair, as described in
+* @ref filterConcepts "Filter concepts". During the method @ref IFilter::Matches(), the implementation must apply
+* the criterion to the supplied instance of @ref IRxMessage.
 *
-* Although OLI ships with a number of pre-defined filter 
-* implementations, client applications are free to implement their
-* own filter classes. This interface is the only one they need
-* to implement to make their filters work within OLI.
+* The documentation for IMessage discusses how, in some cases, an object which implements a subclass of IMessage
+* may not have a property which can easily be interpreted as an "ID". As a result, the various subclasses of
+* IMessage implement @ref IMessage::GetID in various ways. This also affects the corresponding subclasses of
+* IFilter. For example, if IQueueEvent implements IMessage::GetID by returning an event code, users of
+* IQueueEventFilter must supply an event code mask and value when they construct an instance of IQueueEventFilter,
+* and IQueueEventFilter's implementation of IFilter::GetIDMask and IFilter::GetIDValue will return that event code
+* mask and value. Please refer to the documentation of the various subclasses of IFilter for information about how
+* each implements IFilter::GetIDMask and IFilter::GetIDValue.
+*
+* Clearly it may be necessary to construct a filter which tests more than the @ref IMessage::GetID "ID" of an
+* instance of @ref IRxMessage. An interface derived from @ref IFilter can add other filter criteria specific to
+* a particular subclass of @ref IRxMessage. Then, during the method @ref IFilter::Matches(), the derived filter
+* can use type-specific criteria (plus run-time typing), as well as the "ID" criterion described above, to filter
+* the supplied instance of @ref IRxMessage.
+*
+* Although the OLI ships with a number of pre-defined implementations of interfaces derived from IFilter, client
+* applications are free to implement IFilter themselves, and perhaps to define their own derived filter interfaces.
+* Nevertheless, IFilter is the only interface which a client @em must implement to make their filters work within
+* the OLI.
 *
 * Messages will only be added to the receive queue, if at least
 * one of the filters @ref IRxQueue::AddFilter "added" to that

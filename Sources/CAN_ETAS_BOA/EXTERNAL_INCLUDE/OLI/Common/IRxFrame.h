@@ -3,11 +3,13 @@
 * Version 1.3
 *
 * Copyright (c) ETAS GmbH. All rights reserved.
+*
+* $Revision: 4509 $
 */
 
 /** 
 * @file
-* @brief  IRxMessage definition
+* @brief  IRxFrame definition
 * @remark The header structure of the OLI may change
 *         in future releases. Don't include this
 *         header directly. Use @ref OLI.h instead.

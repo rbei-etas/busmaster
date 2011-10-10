@@ -2,6 +2,8 @@
 //  IRxQueue.h
 //  Implementation of the Interface IRxQueue
 //  Created on:      19-Mrz-2008 01:23:29
+//
+//  $Revision: 4804 $
 ///////////////////////////////////////////////////////////
 
 /// @todo update doxygen comments
@@ -113,7 +115,7 @@ protected:
      * \return A pointer to an interface based on IError, describing the error which occurred during this function, or NULL
      * if no error occurred. See \ref ErrorReporting for more information on how errors are reported.
      */
-	virtual IError* OLI_CALL AddFilter( IFilter* pFilter, uint32* pFilterToken ) OLI_NOTHROW = 0;
+	virtual IError* OLI_CALL AddFilter( const IFilter* pFilter, uint32* pFilterToken ) OLI_NOTHROW = 0;
 
     /**
      * This method removes a filter which was previously added with AddFilter().
@@ -164,7 +166,7 @@ public:
     /**
      * This is a helper method which wraps a corresponding protected method: \ref ErrorReporting for an explanation of why it is needed.
      */
-	uint32 OLI_CALL AddFilter( IFilter* pFilter )
+	uint32 OLI_CALL AddFilter( const IFilter* pFilter )
     {
         uint32 filterToken = 0;
         CheckAndThrow( AddFilter( pFilter, &filterToken ) );

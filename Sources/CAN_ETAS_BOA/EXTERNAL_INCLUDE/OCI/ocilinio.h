@@ -6,12 +6,12 @@
 * @brief      LIN specific part of the Open Controller Interface (OCI) API
 *             excluding the strongly typed controller configuration.
 * @copyright  Copyright (c) 2007-2008 ETAS GmbH. All rights reserved.
+*
+* $Revision: 4801 $
 */
 
 
 #include "ocibase.h"
-
-#include "..\Common\pshpack1.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -820,8 +820,9 @@ typedef struct OCI_LINDlcDetectEventMessage
 } OCI_LINDlcDetectEventMessage;
 
 /** 
-* Specific structure for a message signalling 
-* that data has been lost by the device. 
+* Specific structure for a message signalling that data has been lost by the device. 
+* Use this event only when the data was lost on the bus. If the data was lost due to
+* queue overflow, use an instance of @ref OCI_QueueEventMessage instead.
 */
 typedef struct OCI_LINErrDataLostEventMessage
 {      
@@ -868,7 +869,9 @@ typedef enum OCI_LINEvent
     OCI_LIN_EVENT_DLC_DETECT            = 6,
 
     /**
-    * Data lost error occurred.
+    * Data lost error occurred. Use this event only when the data was lost on the bus.
+    * If the data was lost due to queue overflow, use an instance of @ref OCI_QueueEventMessage
+    * instead.
     */
     OCI_LIN_ERR_DATA_LOST               = 7
 
@@ -1275,6 +1278,9 @@ typedef OCI_ErrorCode
              error, because the driver should fragment the call to small enough sequences and block, until all 
              fragmented messages are queued or send.</td> 
    </tr>
+   <tr> <td> @ref OCI_ERR_QUEUE_IS_FULL </td>
+        <td> The specified @a queue is full; at least one message could not be added to the queue. </td> 
+   </tr>
    </TABLE> 
 
 * @sa         @ref GROUP_OCI_CONTROLLER "Controller Handling" 
@@ -1406,22 +1412,46 @@ typedef struct OCI_LINRxCallback
 */
 typedef struct OCI_LINRxQueueConfiguration {
     /** 
-    * callback function for the reception of a LIN frame.  When
-    * this callback is set the callback will be executed for any 
-    * received frame. When this parameter is set to NULL, the data
-    * will be queued.
+    * Callback function for the reception of a LIN frame.
+    *
+    * When a frame arrives which matches one of the frame filters defined for the queue instance,
+    * there are two possibilities:
+    *   - If @ref onFrame is not @c NULL, the frame is passed to @ref onFrame.
+    *   - If @ref onFrame is @c NULL, the frame is added to the RX queue.
+    *
+    * Note that if @ref OCI_DestroyLINRxQueue() is used to destroy the queue while reception is in progress,
+    * it is possible for @ref onFrame to be called a short time @em after OCI_DestroyLINRxQueue() has returned
+    * successfully.
+    *
+    * @sa @ref PAGE_OCI_RECEIVE_MESSAGES "Receive Messages"
     */
     OCI_LINRxCallback onFrame;
 
     /** 
-    * callback function for the reception of a LIN event.  When
-    * this callback is set the callback will be executed for any 
-    * received event. 
+    * Callback function for the reception of an event.
     *
-    * The combination of OCI_LINRxQueueConfiguration.frame = NULL
-    * and OCI_LINRxQueueConfiguration.event = eventHandler allows
-    * a lazy reaction on frame reception and a quick reaction on any
-    * enabled event.
+    * When an event is fired which matches one of the event filters defined for the queue instance,
+    * there are several possibilities:
+    *   - If @ref onEvent is not @c NULL, and if the @c destination member of the matched filter specifies
+    *     @ref OCI_EVENT_DESTINATION_CALLBACK, then the event is passed to @ref onEvent.
+    *   - If the @c destination member of the matched filter specifies @ref OCI_EVENT_DESTINATION_INBAND,
+    *     then the event is delivered to the application in the same way as a data frame.
+    *   - If @ref onEvent is @c NULL, then the event is always delivered to the application in the
+    *     same way as a data frame.
+    *
+    * Note:
+    *   - The @c destination member of a filter can specify both @ref OCI_EVENT_DESTINATION_CALLBACK and
+    *     @ref OCI_EVENT_DESTINATION_INBAND. In other words, the first two possibilities above are not mutually
+    *     exclusive.
+    *   - See @ref onFrame for a description of how received data frames are delivered to the application.
+    *   - If @ref OCI_DestroyLINRxQueue() is used to destroy the queue while reception is in progress, it is
+    *     possible for @ref onEvent to be called a short time @em after OCI_DestroyLINRxQueue() has returned
+    *     successfully.
+    *   - Setting only @ref onEvent but not @ref onFrame allows a lazy reaction on frame reception and a
+    *     quick reaction on every enabled event.
+    *
+    * @sa   @ref PAGE_OCI_RECEIVE_MESSAGES "Receive Messages"
+    * @sa   OCI_QueueEventFilter
     */
     OCI_LINRxCallback onEvent;
 
@@ -1664,7 +1694,7 @@ typedef OCI_ErrorCode
 /** 
 * Structure that defines a single LIN frame filter.
 */
-typedef struct OCI_LINFrameFilter
+typedef struct OCI_LINRxFilter
 {
     /**
     * Value that the LIN frame ID must match after AND-gating it with 
@@ -2120,7 +2150,5 @@ typedef struct OCI_LINIO_VTable
 #ifdef __cplusplus
 }
 #endif
-
-#include "..\Common\poppack.h"
 
 #endif

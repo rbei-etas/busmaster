@@ -1,6 +1,27 @@
-// open the namespace
+/*
+* Basic Open API - Open Link Interface
+* Version 1.3
+*
+* Copyright (c) ETAS GmbH. All rights reserved.
+*
+* $Revision: 4509 $
+*/
 
-/// @todo update doxygen comments
+/** 
+* @file
+* @brief  Open namespace and initialize structure aligmnent
+* @remark The header structure of the OLI may change
+*         in future releases. Don't include this
+*         header directly. Use @ref OLI.h instead.
+*/
+
+/** @namespace ETAS 
+ * Common namespace for all C++ interfaces published by ETAS GmbH.
+ */
+
+/** @namespace ETAS::OLI
+ * Common namespace for all OLI definitions.
+ */
 
 namespace ETAS { namespace OLI {
 

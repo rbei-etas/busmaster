@@ -1,10 +1,32 @@
 #ifndef ETAS_CSI_DEFS_H
 #define ETAS_CSI_DEFS_H
 
+#ifdef CSI_ESS_DLLEXPORT
+#define CSI_ESS_DECLSPEC __declspec(dllexport)
+#define CSI_ESS_IMPLSPEC __declspec(dllexport)
+#else 
+#define CSI_ESS_DECLSPEC __declspec(dllimport)
+#define CSI_ESS_IMPLSPEC __declspec(dllimport)
+#endif
+
+#ifdef CSI_APP_DLLEXPORT
+#define CSI_APP_DECLSPEC __declspec(dllexport)
+#define CSI_APP_IMPLSPEC __declspec(dllexport)
+#else 
+#define CSI_APP_DECLSPEC __declspec(dllimport)
+#define CSI_APP_IMPLSPEC __declspec(dllimport)
+#endif
+
+
+
+
+
 /**
 * @file       csidefs.h
 * @brief      Global defines for the Connection Service Interface (CSI).
 * @copyright  Copyright (c) 2008 ETAS GmbH. All rights reserved.
+*
+* $Revision: 4640 $
 */
 
 /**
@@ -61,8 +83,14 @@ Set default to CSI_STATICLIB
 
 #if defined (_MSC_VER)
 #define CSI_CALLBACK __cdecl
-#elif defined(__GNUC__) && defined (__PPC__) && defined (__QNX__)
+#elif defined(__GNUC__) && defined (__QNX__)
 #define CSI_CALLBACK
+#define CSI_DECLSPEC __attribute__ ((visibility("default")))
+#define CSI_CALL 
+#elif defined(__GNUC__) && defined (__LINUX__)
+#define CSI_CALLBACK
+#define CSI_DECLSPEC __attribute__ ((visibility("default")))
+#define CSI_CALL 
 #else
 #error Unsupported platform
 #endif
@@ -94,7 +122,6 @@ Set default to CSI_STATICLIB
 * @def CSI_IMPLSPEC
 * @copydoc CSI_DLLEXPORT
 */
-
 #ifdef CSI_DLLEXPORT
 #define CSI_DECLSPEC __declspec(dllexport)
 #define CSI_IMPLSPEC __declspec(dllexport)
@@ -102,11 +129,11 @@ Set default to CSI_STATICLIB
 #define CSI_DECLSPEC __declspec(dllimport)
 #define CSI_IMPLSPEC __declspec(dllimport)
 #endif
-
 #endif /* CSI_DYNAMICDLL */
 
 #else /* CSI_STATICLIB */
 
+#if defined(_MSC_VER)
 /*
 Specify the API for statically-linked library (LIB) 
 */
@@ -115,6 +142,7 @@ Specify the API for statically-linked library (LIB)
 #define CSI_IMPLSPEC
 
 #endif /* CSI_STATICLIB */
+#endif
 
 /** @} */
 

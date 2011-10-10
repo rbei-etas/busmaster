@@ -164,21 +164,19 @@ static HMODULE sg_hLibOCI = NULL;
 /**
  * Declarations of CSI API pointers
  */
-typedef CSI_DECLSPEC OCI_ErrorCode CSI_CALL (*PROC1)(   CSI_SFS_Handle* sfsHandle);
-typedef CSI_DECLSPEC OCI_ErrorCode CSI_CALL (*PROC2)(   CSI_SFS_Handle handle, 
+typedef void* CSI_SFS_Handle;
+typedef CSI_DECLSPEC BOA_ResultCode CSI_CALL (*PROC1)(   CSI_SFS_Handle* sfsHandle);
+typedef CSI_DECLSPEC BOA_ResultCode CSI_CALL (*PROC2)(   CSI_SFS_Handle handle, 
                                                             const BOA_ServiceId* id, 
                                                             OCI_URIName uriName[], INT size, INT* count);
-typedef CSI_DECLSPEC OCI_ErrorCode CSI_CALL (*PROC3)(   CSI_SFS_Handle sfsHandle);
+typedef CSI_DECLSPEC BOA_ResultCode CSI_CALL (*PROC3)(   CSI_SFS_Handle sfsHandle);
 
 /**
  * Macro definitions
  */
-#define BOA_REGISTRY_LOCATION _T("SOFTWARE\\ETAS\\BOA\\1.3")
-#define BOA_REGISTRY_LIB_PATH _T("SOFTWARE\\ETAS\\BOA\\LIB_ACTIVE")
-#define BOA_REGISTRY_LIB_OCI  _T("CAN_INTERFACE")
-#define BOA_REGISTRY_LIB_CSL  _T("HARDWARE_INTERFACE")
-#define LIB_OCI_NAME    _T("OcdProxy_1_3.dll")
-#define LIB_CSL_NAME    _T("CslProxy_1_3.dll")
+#define BOA_REGISTRY_LOCATION _T("SOFTWARE\\ETAS\\BOA\\1.4")
+#define LIB_OCI_NAME    _T("dll-ocdProxy_1_4.dll")
+#define LIB_CSL_NAME    _T("dll-csiBind_1_4.dll")
 
 /**
  * CSI pointers table
@@ -265,36 +263,6 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
 }
 
 /**
- * Gets the OCI, CSI library path
- */
-BOOL bGetLibPath(TCHAR* pcLIB_PATH, const TCHAR* pcRegistryPath)
-{
-    USES_CONVERSION;
-
-    BOOL bResult = FALSE;
-    LONG lError = 0;    
-    HKEY sKey;
-    BYTE acGCCPath[1024] = {0};
-    DWORD dwSize = sizeof(BYTE[1024]) ;
-    ULONG ulType = REG_SZ;
-    // Get the installation path for BOA 1.3
-    lError = RegOpenKeyEx( HKEY_LOCAL_MACHINE, BOA_REGISTRY_LIB_PATH , 0, KEY_READ, &sKey);
-    // If the registry key open successfully, get the value in "path" 
-    // sub key
-    if(lError==ERROR_SUCCESS)
-    {
-        lError = RegQueryValueEx(sKey, pcRegistryPath,0, &ulType, acGCCPath,&dwSize);
-        RegCloseKey(sKey);
-        if (lError == ERROR_SUCCESS)
-        {
-            _tcscpy(pcLIB_PATH, A2T((char*)acGCCPath));
-            bResult = TRUE;
-        }
-    }
-    return bResult;
-}
-
-/**
  * Gets the CSI API function pointer from the cslproxy.dll
  */
 BOOL bGetBOAInstallationPath(TCHAR* pcPath, INT& nSize)
@@ -307,7 +275,7 @@ BOOL bGetBOAInstallationPath(TCHAR* pcPath, INT& nSize)
     BYTE acGCCPath[1024];
     DWORD dwSize = sizeof(BYTE[1024]) ;
     ULONG ulType = REG_SZ;
-    // Get the installation path for BOA 1.3
+    // Get the installation path for BOA 1.4
     lError = RegOpenKeyEx( HKEY_LOCAL_MACHINE, BOA_REGISTRY_LOCATION, 0, KEY_READ, &sKey);
     // If the registry key open successfully, get the value in "path" 
     // sub key
@@ -516,9 +484,9 @@ HRESULT GetOCI_API_Pointers(HMODULE hLibOCI)
  * Search for all connected Hardware, that supports the OCI
  * CAN interface and deliver the URI location of the hardware.
  */
-OCI_ErrorCode OCI_FindCANController(OCI_URIName uriName[], INT nSize, INT* nFound)
+BOA_ResultCode OCI_FindCANController(OCI_URIName uriName[], INT nSize, INT* nFound)
 {   
-    OCI_ErrorCode ErrorCode;
+    BOA_ResultCode ErrorCode;
     CSI_SFS_Handle sfsHandle = NULL;
     static const BOA_ServiceId ociCanDllBind = {{UUID_OCICAN, {1,0,0,0}},
                                                 {UUID_DLL_BIND,{1,0,0,0}}};    
@@ -734,7 +702,7 @@ void vInitializeFilterConfig(UINT nChannel)
 HRESULT ManageFilters(BYTE byCode, UINT nChannel)
 {
     HRESULT hResult = S_FALSE;
-    OCI_ErrorCode ErrCode = OCI_FAILURE;
+    BOA_ResultCode ErrCode = OCI_FAILURE;
     if (byCode == FILTER_ADD)
     {
         // Add Frame filter
@@ -854,7 +822,7 @@ HRESULT ManageFilters(BYTE byCode, UINT nChannel)
 HRESULT ManageQueue(BYTE byCode, UINT nChannel)
 {
     HRESULT hResult = S_FALSE;
-    OCI_ErrorCode Err = OCI_ERR_FLAG_ERROR;
+    BOA_ResultCode Err = OCI_ERR_FLAG_ERROR;
     if (byCode == QUEUE_ADD)
     {
         //Create CAN Rx queue
@@ -1462,15 +1430,10 @@ USAGEMODE HRESULT CAN_ETAS_BOA_LoadDriverLibrary(void)
     /* Get BOA installation path from the registery */
     TCHAR acLIB_OCI[MAX_PATH] = {'\0'};
     TCHAR acLIB_CSL[MAX_PATH] = {'\0'};
-    if ((bGetLibPath(acLIB_OCI, BOA_REGISTRY_LIB_OCI) == FALSE)
-        ||(bGetLibPath(acLIB_CSL, BOA_REGISTRY_LIB_CSL) == FALSE))
-    {   
-        //If registry entry not found
-		INT nSize = 0;
-        bGetBOAInstallationPath(acPath, nSize);
-        _stprintf(acLIB_OCI, _T("%s\\%s"), acPath, LIB_OCI_NAME);
-        _stprintf(acLIB_CSL, _T("%s\\%s"), acPath, LIB_CSL_NAME);        
-    }
+	INT nSize = 0;
+    bGetBOAInstallationPath(acPath, nSize);
+    _stprintf(acLIB_OCI, _T("%s\\%s"), acPath, LIB_OCI_NAME);
+    _stprintf(acLIB_CSL, _T("%s\\%s"), acPath, LIB_CSL_NAME);        
 
     /* Load cslproxy.dll library */
     sg_hLibCSI = LoadLibrary(acLIB_CSL);
@@ -1729,7 +1692,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_SelectHwInterface(const INTERFACE_HW_LIST& asSelH
     // Create the controller instance.
     for (UINT i = 0; i < sg_nNoOfChannels; i++)
     {     
-        OCI_ErrorCode err =  (*(sBOA_PTRS.m_sOCI.createCANController))(sg_asChannel[i].m_acURI,
+        BOA_ResultCode err =  (*(sBOA_PTRS.m_sOCI.createCANController))(sg_asChannel[i].m_acURI,
                                         &(sg_asChannel[i].m_OCI_HwHandle));
         if (err == OCI_SUCCESS)
         {
@@ -1739,7 +1702,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_SelectHwInterface(const INTERFACE_HW_LIST& asSelH
             sg_asChannel[i].m_OCI_RxQueueCfg.onFrame.userData = (void*)sg_asChannel[i].m_OCI_HwHandle;
             sg_asChannel[i].m_OCI_RxQueueCfg.onEvent.userData = (void*)sg_asChannel[i].m_OCI_HwHandle;
             //configure the controller first
-            OCI_ErrorCode ErrorCode = (*(sBOA_PTRS.m_sOCI.openCANController))(sg_asChannel[i].m_OCI_HwHandle,
+            BOA_ResultCode ErrorCode = (*(sBOA_PTRS.m_sOCI.openCANController))(sg_asChannel[i].m_OCI_HwHandle,
                                                 &(sg_asChannel[i].m_OCI_CANConfig),
                                                 &(sg_asChannel[i].m_OCI_CntrlProp));
             if (ErrorCode == OCI_SUCCESS)
@@ -1930,7 +1893,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_SetConfigData(PCHAR pInitData, INT /*Length*/)
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
     VALIDATE_POINTER_RETURN_VAL(pInitData, hResult);
 
-    OCI_ErrorCode ErrCode = OCI_FAILURE;
+    BOA_ResultCode ErrCode = OCI_FAILURE;
     PSCONTROLER_DETAILS pControllerDetails = (PSCONTROLER_DETAILS)pInitData;
     bLoadDataFromContr(pControllerDetails);
     for (UINT i = 0; i < sg_nNoOfChannels; i++)
@@ -2108,7 +2071,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTx
             sAckMap.m_Channel  = sCanTxMsg.m_ucChannel;
             sAckMap.m_MsgID    = sOciCanMsg.data.txMessage.frameID;
             vMarkEntryIntoMap(sAckMap);
-            OCI_ErrorCode ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.writeCANData))
+            BOA_ResultCode ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.writeCANData))
                 (sg_asChannel[sCanTxMsg.m_ucChannel - 1].m_OCI_TxQueueHandle, OCI_NO_TIME, &sOciCanMsg, 1, &nRemaining);
             if (ErrCode == OCI_SUCCESS)
             {

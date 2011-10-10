@@ -3,6 +3,8 @@
 * Version 1.3
 *
 * Copyright (c) ETAS GmbH. All rights reserved.
+*
+* $Revision: 4509 $
 */
 
 /** 
@@ -73,26 +75,39 @@ protected:
 
     friend class CMessageShared;
 
-    /**
-     * This method gets the message reception time stamp on UTC scale. This is a simple transformation of the @ref GetTAITimeStamp
-     * "TAI time stamp" to UTC. If the respective @ref ILink::GetTimer "timer" does not provide enough information, this method
-     * will return a timestamp of 0.
-     *
-     * The conversion is possible, iff the respective @ref  ILink "link" instance's @ref ITimer "timer" uses a local
-     * @ref ITimer::GetLocalReferenceScale "reference scale" other than @ref ITimer::referenceScale_unknown. However, a leap
-     * second file must also have been  imported through @ref ITimer::LoadLeapSecondDataFile.
-     *
-     * \since  BOA 1.3 
-     * \see    GetRawTimeStamp, GetTAITimeStamp, ITimer::LoadLeapSecondDataFile
-     *
-     * \param[out] pUtcTime     Frame reception or event creation time stamp on the  UTC time scale. 0, if unavailable.
-     *
-     * \return A pointer to an interface based on IError, describing the error which occurred during this function. NULL
-     * if no error occurred. IInvalidArgumentError will be returned if the time stamp lies before the first leap second.
-     * IInvalidStateError will be returned if No leap second file has been @ref ITimer::LoadLeapSecondDataFile "imported".
-     * See \ref ErrorReporting for more information on how errors are reported.
+    /** @brief  Message reception time stamp on UTC scale.
+
+        This is a simple transformation of the @ref GetTAITimeStamp
+        "TAI time stamp" to UTC. If the respective 
+        @ref ILink::GetTimer "timer" does not provide enough information, 
+        this method will return a timestamp of 0.
+     
+        The conversion is possible, iff the respective @ref ILink "link" 
+        instance's @ref ITimer "timer" uses a local 
+        @ref ITimer::GetLocalReferenceScale "reference scale" other than 
+        @ref ITimer::referenceScale_unknown. However, a leap second file must
+        also have been imported through @ref ITimer::LoadLeapSecondDataFile.
+     
+        @param[out] pUtcTime     
+                Frame reception or event creation time stamp on the UTC 
+                time scale. @c *pUtcTime will be 0, if unavailable. 
+                @a pUtcTime must not be NULL.
+        @return A pointer to an interface based on @ref IError, describing 
+                the error which occurred during this function. @c NULL if 
+                no error occurred. @ref IInvalidArgumentError will be 
+                returned if the time stamp lies before the first leap second.
+                @ref IInvalidStateError will be returned if no leap second 
+                file has been @ref ITimer::LoadLeapSecondDataFile "imported".
+        @exception <none> This function must not throw exceptions.
+
+        @since  BOA 1.3 
+        @see    GetRawTimeStamp, GetTAITimeStamp, 
+                ITimer::LoadLeapSecondDataFile,
+                @ref ErrorReporting "Error reporting" for more information 
+                on how errors are reported.
      */
-	virtual IError* OLI_CALL GetUTCTimeStamp( UTCTime* pUtcTime ) const OLI_NOTHROW = 0;
+	virtual IError* OLI_CALL 
+        GetUTCTimeStamp( UTCTime* pUtcTime ) const OLI_NOTHROW = 0;
 
 public:
 
@@ -120,8 +135,30 @@ public:
      */
 	virtual RawTime OLI_CALL GetRawTimeStamp() const OLI_NOTHROW = 0;
 
-    /**
-     * This is a helper method which wraps a corresponding protected method: see \ref ErrorReporting for an explanation of why it is needed.
+    /** @brief  Message reception time stamp on UTC scale.
+
+        This is a simple transformation of the @ref GetTAITimeStamp
+        "TAI time stamp" to UTC. If the respective 
+        @ref ILink::GetTimer "timer" does not provide enough information, 
+        this method will return a timestamp of 0.
+     
+        The conversion is possible, iff the respective @ref ILink "link" 
+        instance's @ref ITimer "timer" uses a local 
+        @ref ITimer::GetLocalReferenceScale "reference scale" other than 
+        @ref ITimer::referenceScale_unknown. However, a leap second file must
+        also have been imported through @ref ITimer::LoadLeapSecondDataFile.
+     
+        @return Frame reception or event creation time stamp on the UTC 
+                time scale. 0, if unavailable. 
+        @exception CInvalidArgumentError
+                Time stamp lies before the first leap second.
+        @exception CInvalidStateError
+                No leap second file has been 
+                @ref ITimer::LoadLeapSecondDataFile "imported".
+
+        @since  BOA 1.3 
+        @see    GetRawTimeStamp, GetTAITimeStamp, 
+                ITimer::LoadLeapSecondDataFile
      */
 	UTCTime OLI_CALL GetUTCTimeStamp() const
     {
@@ -144,9 +181,11 @@ public:
         @remark The conversion is possible, iff the respective @ref 
                 ILink "link" instance's @ref ITimer "timer" uses
                 a local @ref ITimer::GetLocalReferenceScale 
-                "reference scale" other than @ref ITimer::referenceScale_unknown.
+                "reference scale" other than 
+                @ref ITimer::referenceScale_unknown.
         @since  BOA 1.3 
-        @see    GetRawTimeStamp, ITimer, ILink::GetTimer, ITimer::GetLocalReferenceScale
+        @see    GetRawTimeStamp, ITimer, ILink::GetTimer, 
+                ITimer::GetLocalReferenceScale
      */
 	virtual TAITime OLI_CALL GetTAITimeStamp() const OLI_NOTHROW = 0;
 };

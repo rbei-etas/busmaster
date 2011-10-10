@@ -6,11 +6,11 @@
 * @brief      Public declaration of service data types;
 *             part of the Basic OpenAPI (BOA).
 * @copyright  Copyright (c) 2008 ETAS GmbH. All rights reserved.
+*
+* $Revision: 4675 $
 */
 
 #include "stdtypes.h"
-
-#include "pshpack1.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -66,27 +66,37 @@ or may stop the binding process and exit with an error.
 
 /* {5DB45414-7D9D-4aa0-AF11-2A741EF978F6} */
 #define UUID_TCP_BIND {0x5d,0xb4,0x54,0x14,0x7d,0x9d,0x4a,0xa0,0xaf,0x11,0x2A,0x74,0x1E,0xF9,0x78,0xF6}
+
+// {8B5B3678-2448-417f-8625-55B3C1C3B4D1} - serialized data stream
+#define UUID_SERIALIZED_DATA_BIND { 0x8b, 0x5b, 0x36, 0x78, 0x24, 0x48, 0x41, 0x7f, 0x86, 0x25, 0x55, 0xb3, 0xc1, 0xc3, 0xb4, 0xd1 }
+
 #define UUID_NULL {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 
-/** binary representation of a UUID. */
-typedef struct BOA_UuidBin
+#if defined (_WIN32)
+#define ALIGN( type, arg ) __declspec(align(arg)) type
+#elif defined(__GNUC__)
+#define ALIGN( type, arg ) type __attribute__ ((aligned (arg)))
+#endif
+
+/** Binary representation of a UUID. We align it on a dword boundary for efficient copying and comparison. */
+ALIGN( typedef struct BOA_UuidBin
 {
    /** binary data representation of the UUID. */
-   uint8 data[16];
-} BOA_UuidBin;
+   uint8  data[16];
+} BOA_UuidBin, 4 );
 
-/** representation of a service API or access method version */
-typedef struct BOA_Version
+/** Representation of a service API or access method version. We align it on a dword boundary for efficient copying and comparison. */
+ALIGN( typedef struct BOA_Version
 {
-   /** major version of the interface identified by this structure. See Also: @ref VersionHandling */ 
+   /** major version of the interface identified by this structure. See Also: @ref VersionHandling */
    uint8 majorVersion;
-   /** minor version of the interface identified by this structure. @sa VersionHandling */ 
+   /** minor version of the interface identified by this structure. @sa VersionHandling */
    uint8 minorVersion;
-   /** bugfix of the interface identified by this structure. See Also: @ref VersionHandling */ 
+   /** bugfix of the interface identified by this structure. See Also: @ref VersionHandling */
    uint8 bugfix;
-    /** build of the interface identified by this structure. See Also: @ref VersionHandling */ 
+    /** build of the interface identified by this structure. See Also: @ref VersionHandling */
    uint8 build;
-} BOA_Version;
+} BOA_Version, 4 );
 
 /** representation of a UUID and Version information. */
 typedef struct BOA_UuidVersion
@@ -151,7 +161,5 @@ bool BOA_IsServiceIdSufficient(const BOA_ServiceId *required, const BOA_ServiceI
 #ifdef __cplusplus
 }
 #endif
-
-#include "poppack.h"
 
 #endif

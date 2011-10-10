@@ -1,8 +1,19 @@
-///////////////////////////////////////////////////////////
-//  IHardwareFinder.h
-//  Implementation of the Interface IHardwareFinder
-//  Created on:      19-Mrz-2008 01:23:29
-///////////////////////////////////////////////////////////
+/*
+* Basic Open API - Open Link Interface
+* Version 1.3
+*
+* Copyright (c) ETAS GmbH. All rights reserved.
+*
+* $Revision: 4412 $
+*/
+
+/** 
+* @file
+* @brief  IHardwareFinder definition
+* @remark The header structure of the OLI may change
+*         in future releases. Don't include this
+*         header directly. Use @ref OLI.h instead.
+*/
 
 /// @todo update doxygen comments
 
@@ -14,7 +25,16 @@
 #include "ErrorProxies.h"
 
 #include "AutoPtr.h"
+
+// open ETAS::OLI namespace
+
 #include "BeginNamespace.h"
+
+#ifdef _DOXYGEN
+namespace ETAS {namespace OLI {
+#endif
+
+// interface forward declaration
 
 class IHardwareFinder;
 
@@ -104,6 +124,12 @@ public:
         return AutoPtr<IHardwareFinder>( pHwFinder, false );
     }
 };
+
+// close ETAS::OLI namespace
+
+#ifdef _DOXYGEN
+}}
+#endif
 
 #include "EndNamespace.h"
 

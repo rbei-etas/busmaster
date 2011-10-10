@@ -1,8 +1,19 @@
-///////////////////////////////////////////////////////////
-//  ILink.h
-//  Implementation of the Interface ILink
-//  Created on:      19-Mrz-2008 01:23:28
-///////////////////////////////////////////////////////////
+/*
+* Basic Open API - Open Link Interface
+* Version 1.3
+*
+* Copyright (c) ETAS GmbH. All rights reserved.
+*
+* $Revision: 4575 $
+*/
+
+/** 
+* @file
+* @brief  ILink definition
+* @remark The header structure of the OLI may change
+*         in future releases. Don't include this
+*         header directly. Use @ref OLI.h instead.
+*/
 
 /// @todo update doxygen comments
 
@@ -15,7 +26,13 @@
 #include "ErrorInterfaces.h"
 #include "ErrorProxies.h"
 
+// open ETAS::OLI namespace
+
 #include "BeginNamespace.h"
+
+#ifdef _DOXYGEN
+namespace ETAS {namespace OLI {
+#endif
 
 // interface forward declarations
 
@@ -55,16 +72,18 @@ protected:
      *
      * \param [in]  watermark
      * \param [in]  autopop
-     * \param [out] ppRxQueue   A pointer to a new RX queue which is associated with this link, and which has already been
-     *                          AddRef-ed. The object must be reference-counted by the caller, using the object's methods
-     *                          AddRef() and Release(). This is easily done by wrapping the object pointer in an instance of
-     *                          the AutoPtr class, which will be done automatically if the caller accesses this method via
-     *                          the wrapper ILink::CreateRxQueue().
+     * \param [in]  enablePrebuf    Enables the queue to handle data which was acquired before the queue was created,
+     *                              and which has been pre-buffered elsewhere.
+     * \param [out] ppRxQueue       A pointer to a new RX queue which is associated with this link, and which has already been
+     *                              AddRef-ed. The object must be reference-counted by the caller, using the object's methods
+     *                              AddRef() and Release(). This is easily done by wrapping the object pointer in an instance of
+     *                              the AutoPtr class, which will be done automatically if the caller accesses this method via
+     *                              the wrapper ILink::CreateRxQueue().
      *
      * \return A pointer to an interface based on IError, describing the error which occurred during this function. NULL
      * if no error occurred. See \ref ErrorReporting for more information on how errors are reported.
      */
-    virtual IError* OLI_CALL CreateRxQueue( uint32 watermark, bool autoPop, IRxQueue** ppRxQueue ) OLI_NOTHROW = 0;
+    virtual IError* OLI_CALL CreateRxQueue( uint32 watermark, bool autoPop, bool enablePrebuf, IRxQueue** ppRxQueue ) OLI_NOTHROW = 0;
 
     /**
      * This method provides access to the driver capabilities.
@@ -150,10 +169,10 @@ public:
      * This is a helper method which wraps a corresponding protected method: see \ref BinaryCompatibility and \ref ErrorReporting
      * for an explanation of why it is needed.
      */
-    AutoPtr<IRxQueue> OLI_CALL CreateRxQueue( uint32 watermark = 1, bool autoPop = true )
+    AutoPtr<IRxQueue> OLI_CALL CreateRxQueue( uint32 watermark = 1, bool autoPop = true, bool enablePrebuf = false )
     {
         IRxQueue* pRxQueue = NULL;
-        CheckAndThrow( CreateRxQueue( watermark, autoPop, &pRxQueue ) );
+        CheckAndThrow( CreateRxQueue( watermark, autoPop, enablePrebuf, &pRxQueue ) );
 
         // The wrapped method has already AddRef-ed the pointer, so we tell AutoPtr to take ownership of the pointer without a
         // further AddRef.
@@ -188,6 +207,12 @@ public:
         return pTxQueue;
     }
 };
+
+// close ETAS::OLI namespace
+
+#ifdef _DOXYGEN
+}}
+#endif
 
 #include "EndNamespace.h"
 

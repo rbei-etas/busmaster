@@ -7,11 +7,12 @@
 * @brief      Error management functionality of the 
 *             Open Controller Interface (OCI) API.
 * @copyright  Copyright (c) 2007-2008 ETAS GmbH. All rights reserved.
+*
+* $Revision: 4861 $
 */
 
+#include "../common/boaerror.h"
 #include "ocitypes.h"
-
-#include "..\Common\pshpack1.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -98,21 +99,21 @@ extern "C" {
 */
 
 /** flag in error code, which classifies an OCI_ErrorCode as an error. */
-#define OCI_ERR_FLAG_ERROR              0x80000000
+#define OCI_ERR_FLAG_ERROR              BOA_RESULT_FLAG_ERROR
 
 /** flag in error code, which classifies an OCI_ErrorCode as a warning. */
-#define OCI_ERR_FLAG_WARNING            0x40000000
+#define OCI_ERR_FLAG_WARNING            BOA_RESULT_FLAG_WARNING
 
 /**  Generic test for failure of an OCI-call. 
      When bit 31 is set an error occured during execution of the service. */
-#define OCI_FAILED(code)       ((int32)(code) < 0)
+#define OCI_FAILED(code)       BOA_FAILED(code)
 
 /** Generic test for successful execution of an OCI-call. Any successful executed service will 
     return with a non negative value. */
-#define OCI_SUCCEEDED(code)    ((int32)(code) >= 0)
+#define OCI_SUCCEEDED(code)    BOA_SUCCEEDED(code)
 
 /**  Generic test for a returned warning from the execution of an OCI-call. */
-#define OCI_WARNED(code)       ((code) & OCI_ERR_FLAG_WARNING)
+#define OCI_WARNED(code)       BOA_WARNED(code)
 
 /** @} */
 
@@ -123,21 +124,21 @@ extern "C" {
 *
 * @{
 */
-#define OCI_ERR_TYPE_RESERVED           0x00000000  /**< currently (01/2009) used for error codes. */
-#define OCI_ERR_TYPE_PARAM              0x00001000  /**< Parameter validation fails. */
-#define OCI_ERR_TYPE_BIND               0x00002000  /**< Binding process of the API failed. When the CSI component
-                                                         is used for searching and binding this can be seen as an
-                                                         internal error. */
-#define OCI_ERR_TYPE_SEMANTIC           0x00003000  /**< Semantic / Precondition validation fails. */
-#define OCI_ERR_TYPE_RESOURCE           0x00004000  /**< Driver runs out of resources. */
-#define OCI_ERR_TYPE_COMMUNICATION      0x00005000  /**< Communication problems to the interface hardware. */
-#define OCI_ERR_TYPE_INTERNAL           0x00006000  /**< Driver internal implementation error. */
-#define OCI_ERR_TYPE_PRIVATE            0x0000F000  /**< Reserved for internal result codes. */
+#define OCI_ERR_TYPE_RESERVED           BOA_RESULT_TYPE_RESERVED  /**< used by old implementations. */
+#define OCI_ERR_TYPE_PARAM              BOA_RESULT_TYPE_PARAM     /**< Parameter validation fails. */
+#define OCI_ERR_TYPE_BIND               BOA_RESULT_TYPE_BIND      /**< Binding process of the API failed. When the CSI component
+                                                                       is used for searching and binding this can be seen as an
+                                                                       internal error. */
+#define OCI_ERR_TYPE_SEMANTIC           BOA_RESULT_TYPE_SEMANTIC  /**< Semantic / Precondition validation fails. */
+#define OCI_ERR_TYPE_RESOURCE           BOA_RESULT_TYPE_RESOURCE  /**< Driver runs out of resources. */
+#define OCI_ERR_TYPE_COMMUNICATION      BOA_RESULT_TYPE_COMMUNICATION  /**< Communication problems to the interface hardware. */
+#define OCI_ERR_TYPE_INTERNAL           BOA_RESULT_TYPE_INTERNAL  /**< Driver internal implementation error. */
+#define OCI_ERR_TYPE_PRIVATE            BOA_RESULT_TYPE_PRIVATE  /**< Reserved for internal result codes. */
 
-#define OCI_ERR_TYPE_MASK               0x0000F000  /** < mask to unmask the error type information from all other
+#define OCI_ERR_TYPE_MASK               BOA_RESULT_TYPE_MASK  /** < mask to unmask the error type information from all other
                                                           error information to allow a generic type specific reaction */  
 
-#define OCI_ERR_TYPE(code) ((code) & OCI_ERR_TYPE_MASK) /**< separate the error type information */
+#define OCI_ERR_TYPE(code)              BOA_RESULT_TYPE(code)  /**< separate the error type information */
 
 /** @} */
 
@@ -152,13 +153,13 @@ extern "C" {
 /** 
  Special @ref OCI_ErrorCode value to indicate that the respective function executed without error.
 */
-#define OCI_SUCCESS                         0
+#define OCI_SUCCESS                         BOA_SUCCESS
 
 /** 
   Special @ref OCI_ErrorCode value to generally indicate a failure of the respective function call.
   @coding  Deprecated code. Prefer returning specific error codes.
 */
-#define OCI_FAILURE                         (OCI_ERR_FLAG_ERROR)
+#define OCI_FAILURE                         BOA_FAILURE
 
 /*----------------------------------------------------------------------------------------------------------*/
 /**
@@ -170,32 +171,20 @@ extern "C" {
 
 /** At least one parameter is wrong or invalid. Typically this error occurs, if a parameter of a function of 
     the OCI API is @c NULL, not initialized or unexpected. */
-#define OCI_ERR_INVALID_PARAMETER           (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_PARAM | 0)
+#define OCI_ERR_INVALID_PARAMETER           BOA_ERR_INVALID_PARAMETER
 
 /** Some Parameter is inplausible. It uses a inplausible combination of settings. */
-#define OCI_ERR_INCONSISTENT_PARAMETER_SET  (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_PARAM | 1)
+#define OCI_ERR_INCONSISTENT_PARAMETER_SET  BOA_ERR_INCONSISTENT_PARAMETER_SET
 
 /** The parameter is no valid handle or the used handle has the wrong type. 
     (e.g.\ A OCI_ControllerHandle is used in a function call that expects a OCI_QueueHandle) */
-#define OCI_ERR_INVALID_HANDLE              (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_PARAM | 2)
+#define OCI_ERR_INVALID_HANDLE              BOA_ERR_INVALID_HANDLE
 
 /** The data was too large to fit into the specified buffer. */
-#define OCI_ERR_BUFFER_OVERFLOW             (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_PARAM | 3)
-
-/* The message type or message format of the parameter is not supported. */
-/*#define OCI_ERR_UNSUPPORTED_MESSAGE         (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_PARAM | 4) --> inconsistent parameter set
-*/
-
-/* One or more filter definitions have invalid values and can not be set. */
-/*#define OCI_ERR_INVALID_FILTER				  (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_PARAM | 5) --> inconsistent parameter set
-*/
-/*  A filter can not be removed from a queue because the filter is not known by the driver.
-     The filter was never set or is already removed. */
-/*#define OCI_ERR_FILTER_UNKNOWN				  (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_PARAM | 6) --> inconsistent parameter set
-*/
+#define OCI_ERR_BUFFER_OVERFLOW             BOA_ERR_BUFFER_OVERFLOW
 
 /** At least one parameter is not supported. */
-#define OCI_ERR_UNSUPPORTED_PARAMETER       (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_PARAM | 4)
+#define OCI_ERR_UNSUPPORTED_PARAMETER       BOA_ERR_UNSUPPORTED_PARAMETER
 
 /** @} */
 
@@ -208,16 +197,15 @@ extern "C" {
  */
 
 /** The driver is not in a valid state to perform this request. */
-#define OCI_ERR_INVALID_STATE               (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_SEMANTIC | 0)
-
+#define OCI_ERR_INVALID_STATE               BOA_ERR_INVALID_STATE
 /**  The controller interface is not opened, no valid configuration is available. */
-#define OCI_ERR_NO_CONFIG                   (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_SEMANTIC | 1)
+#define OCI_ERR_NO_CONFIG                   BOA_ERR_NO_CONFIG
 
 /** @todo Replaced by @ref OCI_ERR_NO_CONFIG */
 #define OCI_ERR_CONTROLLER_IS_NOT_OPENED    OCI_ERR_NO_CONFIG
 
 /**  The queue is full. */
-#define OCI_ERR_QUEUE_IS_FULL               (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_SEMANTIC | 2)
+#define OCI_ERR_QUEUE_IS_FULL               BOA_ERR_QUEUE_IS_FULL
 
 /** @} */
 
@@ -231,13 +219,13 @@ extern "C" {
 
 /** The call tries to use incompatible settings. A second OCI-Instance or a different client has locked the
     configuration. */
-#define OCI_ERR_INCOMPATIBLE_CONFIG         (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_RESOURCE | 0)
+#define OCI_ERR_INCOMPATIBLE_CONFIG         BOA_ERR_INCOMPATIBLE_CONFIG
 
 /** No memory resources available. */
-#define OCI_ERR_OUT_OF_MEMORY               (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_RESOURCE | 1)
+#define OCI_ERR_OUT_OF_MEMORY               BOA_ERR_OUT_OF_MEMORY
 
 /** No resources available. */
-#define OCI_ERR_NO_RESOURCES                (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_RESOURCE | 2)
+#define OCI_ERR_NO_RESOURCES                BOA_ERR_NO_RESOURCES
 
 /** @} */
 
@@ -253,14 +241,14 @@ extern "C" {
     is no information whether the request is executed or not. The request may be lost or the response may be lost.
     All subsequent calls to the same controller will deliver @ref OCI_ERR_DRIVER_DISCONNECTED. The state of the
     controller is set to @a DISCONNECTED. */
-#define OCI_ERR_DRIVER_NO_RESPONSE          (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_COMMUNICATION | 0)
+#define OCI_ERR_DRIVER_NO_RESPONSE          BOA_ERR_DRIVER_NO_RESPONSE
 
 /** The driver for a removable hardware detected a communication problem (in asynchromous communication, 
     by event signaling or during a previous call to the same hardware) and is not able to communicate to 
     the hardware any more. The state of the session is undefined. All subsequent calls to the same 
     Controller will return @ref OCI_ERR_DRIVER_DISCONNECTED. Internal resources are locked until 
     OCI_DestroyXXXController() for the controller handle is called. */
-#define OCI_ERR_DRIVER_DISCONNECTED         (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_COMMUNICATION | 1)
+#define OCI_ERR_DRIVER_DISCONNECTED         BOA_ERR_DRIVER_DISCONNECTED 
 
 /** @} */
 
@@ -275,37 +263,37 @@ extern "C" {
 
 /** Some driver internal software related error occurred. Internal plausibility checks failed. The driver will 
     not work correct. This is a fatal error condition. */
-#define OCI_ERR_UNEXPECTED_NULL             (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_INTERNAL | 0)
+#define OCI_ERR_UNEXPECTED_NULL             BOA_ERR_UNEXPECTED_NULL
 
 /** Some driver internal hardware related error occurred. Internal checks, communication between sub-systems,
 access to hardware resources failed or timed out. */
-#define OCI_ERR_HW_NOT_READY                (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_INTERNAL | 1)
+#define OCI_ERR_HW_NOT_READY                BOA_ERR_HW_NOT_READY
 
 /** An index or value is out of legal range. */
-#define OCI_ERR_OUT_OF_RANGE                (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_INTERNAL | 2)
+#define OCI_ERR_OUT_OF_RANGE                BOA_ERR_OUT_OF_RANGE
 
 /** The driver is not in a valid state to perform this request. */
-#define OCI_ERR_INTERNAL_STATE              (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_INTERNAL | 3)
+#define OCI_ERR_INTERNAL_STATE              BOA_ERR_INTERNAL_STATE
 
 /** A used internal handle is not valid or has the wrong type. */
-#define OCI_ERR_INTERNAL_HANDLE             (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_INTERNAL | 4)
+#define OCI_ERR_INTERNAL_HANDLE             BOA_ERR_INTERNAL_HANDLE
 
 /** Overflow of an internal buffer. */
-#define OCI_ERR_INTERNAL_OVERFLOW           (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_INTERNAL | 5)
+#define OCI_ERR_INTERNAL_OVERFLOW           BOA_ERR_INTERNAL_OVERFLOW
 
 /** The requested function is not implemented. This is a deprecated error code, that must not occur in a
     BOA compatible driver. The BOA defines no optional API functions. The code may be used during driver
     development. */
-#define OCI_ERR_NOT_IMPLEMENTED             (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_INTERNAL | 6)
+#define OCI_ERR_NOT_IMPLEMENTED             BOA_ERR_NOT_IMPLEMENTED
 
 /** Error from an underlying driver or operating system. */
-#define OCI_ERR_SYSTEM_ERROR                (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_INTERNAL | 7)
+#define OCI_ERR_SYSTEM_ERROR                BOA_ERR_SYSTEM_ERROR
 
 /** No data available. */
-#define OCI_ERR_NO_DATA                     (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_INTERNAL | 8)
+#define OCI_ERR_NO_DATA                     BOA_ERR_NO_DATA
 
 /** Data is not initialized. */
-#define OCI_ERR_NOT_INITIALIZED             (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_INTERNAL | 9)
+#define OCI_ERR_NOT_INITIALIZED             BOA_ERR_NOT_INITIALIZED
 
 /* The user called a function with the wrong bus type. This is an internal error because the binding 
     process must not bind APIs to the wrong bus type. */
@@ -325,30 +313,33 @@ access to hardware resources failed or timed out. */
 */
 
 /** The server offers the interface with the requested UUID, but the can not fullfill the required version. */
-#define OCI_ERR_PROTOCOL_VERSION_NOT_SUPPORTED (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_BIND | 0)
+#define OCI_ERR_PROTOCOL_VERSION_NOT_SUPPORTED BOA_ERR_PROTOCOL_VERSION_NOT_SUPPORTED
 
 /** The parsing of the access parameter failed. The driver can not interpret the parameter*/
-#define OCI_ERR_INVALID_ACCESS_SYNTAX          (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_BIND | 1)
+#define OCI_ERR_INVALID_ACCESS_SYNTAX          BOA_ERR_INVALID_ACCESS_SYNTAX
 
 /** An element of the access parameter can not be found/resolved in the protocol stack. The connection can 
     not be established */
-#define OCI_ERR_INVALID_ACCESS_PARAM           (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_BIND | 2)
+#define OCI_ERR_INVALID_ACCESS_PARAM           BOA_ERR_INVALID_ACCESS_PARAM
 
 /** The server offers the interface with the requested UUID, but does not support the required binding mechanism 
     for this interface. The interface can not be used. */
-#define OCI_ERR_INVALID_TRANSFER_SYNTAX        (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_BIND | 3)
+#define OCI_ERR_INVALID_TRANSFER_SYNTAX        BOA_ERR_INVALID_TRANSFER_SYNTAX
 
 /** The interface with the requested UUID is not supported by the addressed node. */
-#define OCI_ERR_NO_INTERFACE                   (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_BIND | 4)          
+#define OCI_ERR_NO_INTERFACE                   BOA_ERR_NO_INTERFACE
 
 /** The requested hardware is not present. */
-#define OCI_ERR_HW_NOT_PRESENT                 (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_BIND | 5)  
+#define OCI_ERR_HW_NOT_PRESENT                 BOA_ERR_HW_NOT_PRESENT
 
 /** The attempt to load or open the driver failed. */
-#define OCI_ERR_CANNOT_OPEN_DRIVER             (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_BIND | 6)  
+#define OCI_ERR_CANNOT_OPEN_DRIVER             BOA_ERR_CANNOT_OPEN_DRIVER
 
 /** The validation of a license failed. */
-#define OCI_ERR_LICENSE_MISSING                (OCI_ERR_FLAG_ERROR | OCI_ERR_TYPE_BIND | 7)
+#define OCI_ERR_LICENSE_MISSING                BOA_ERR_LICENSE_MISSING
+
+/** An error occurred when attempting to enumerate the children of a node. */
+#define OCI_ERR_CANNOT_FIND_CHILDREN           BOA_ERR_CANNOT_FIND_CHILDREN
 
 /** @} */
 
@@ -458,7 +449,8 @@ typedef struct OCI_InternalErrorEventFilter
 typedef struct OCI_InternalErrorEventMessage
 {
     /** 
-    * Global time stamp when the event was triggered on the hardware. 
+    * Global time stamp when the event was triggered on the hardware. This may be OCI_NO_TIME if no timestamp was
+    * available.
     */
     OCI_Time timeStamp;
 
@@ -471,8 +463,8 @@ typedef struct OCI_InternalErrorEventMessage
     OCI_InternalErrorEvent eventCode;
 
     /** 
-    * Reason for link failure or, in most re-connect scenarios, 
-    * @ref OCI_SUCCESS. 
+    * The reason for the error. For example, @ref OCI_ERR_DRIVER_DISCONNECTED indicates that the connection to the
+    * hardware device has been broken. @ref OCI_SUCCESS is used to indicate a recoverable error.
     */
     OCI_ErrorCode errorCode;
 } OCI_InternalErrorEventMessage;
@@ -628,7 +620,5 @@ typedef struct OCI_Error_VTable
 #ifdef __cplusplus
 }
 #endif
-
-#include "..\Common\poppack.h"
 
 #endif
