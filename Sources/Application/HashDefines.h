@@ -1219,6 +1219,7 @@ transmission is ON.\nDo you want to ignore the changes ?")
 
 #define defSTR_EMPTY_ACTIVE_DATABASE _T("There is no active database. Please import database")
 
+#define defBITS_ERR_FRAME                   20 
 #define defBITS_STD_FRAME                   48 //Without databytes.
 #define defBITS_EXTD_FRAME                  68 //Without databytes.
 #define defBITS_ERROR_FRAME                 15 
