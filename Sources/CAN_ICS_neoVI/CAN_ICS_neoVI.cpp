@@ -752,9 +752,9 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
 {
     int i = 0;
     int nReturn = 0;
-    CChannel& odChannel = m_aodChannels[nChannelIndex];
-    static int s_CurrIndex = 0, s_Messages = 0;
+    static int s_CurrIndex = 0;
     static icsSpyMessage s_asSpyMsg[MAX_BUFFER_VALUECAN] = {0};
+	int s_Messages = 0;
     int nErrMsg = 0;
     if (s_CurrIndex == 0)
     {
@@ -825,8 +825,21 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
         STCANDATA& sCanData = psCanDataArray[i];
         icsSpyMessage& CurrSpyMsg = s_asSpyMsg[s_CurrIndex];
 
+		/* correct channel index */
+		for (unsigned int j = 0; j < m_nNoOfChannels; j++)
+		{
+			if ((m_aodChannels[j].hObject   == m_aodChannels[nChannelIndex].hObject) &&
+				(m_aodChannels[j].NetworkID == CurrSpyMsg.NetworkID))
+			{
+				nChannelIndex = j;
+	            break;
+			}
+		}
+	    CChannel& odChannel = m_aodChannels[nChannelIndex];
         sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel = (UCHAR)(nChannelIndex + 1);
-        nReturn = (*icsneoGetTimeStampForMsg)(m_aodChannels[nChannelIndex].hObject, &CurrSpyMsg, &dCurrTimeStamp);
+
+		/* get time stamp */
+		nReturn = (*icsneoGetTimeStampForMsg)(m_aodChannels[nChannelIndex].hObject, &CurrSpyMsg, &dCurrTimeStamp);
         /*sCanData.m_lTickCount.QuadPart = (CurrSpyMsg.TimeHardware2 * 655.36
                                         + CurrSpyMsg.TimeHardware * 0.01);*/
         sCanData.m_lTickCount.QuadPart = (LONGLONG)(dCurrTimeStamp * 10000);
@@ -854,12 +867,13 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
     /* This code is needed when error messages don't occur in the list of
      * the regular message
      */
+#if 0
     if ((ushRxErr != 0) || (ushTxErr != 0))
     {
         STCANDATA sCanData;
         vProcessError(sCanData, odChannel, ushRxErr, ushTxErr);
     }
-
+#endif
 
     nMessage = i;
 
@@ -1150,7 +1164,6 @@ static int nGetNoOfConnectedHardware(void)
     else
     {
         nResult = nNumberOfDevices;
-
         m_nNoOfChannels = 0;
         for (int i = 0; i < nNumberOfDevices; i++)
         {
@@ -1319,12 +1332,12 @@ static int nDisconnectFromDriver()
     {
         if (m_aodChannels[i].hObject != 0)
         {
-            /* First disconnect the COM */
-            //(*iceneoFreeObj)(m_aodChannels[i].hObject);
-
+			/* First disconnect the COM */
             if ((*icsneoClosePort)(m_aodChannels[i].hObject, &nErrors) == 1)
             {
+				(*icsneoFreeObject)(m_aodChannels[i].hObject);
                 m_aodChannels[i].hObject = 0;
+
             }
             else
             {
@@ -1352,23 +1365,30 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
     if (!sg_bIsConnected && bConnect) // Disconnected and to be connected
     {
         UINT i;
+		NeoDevice *pNeoDevice_last = NULL;
         for (i = 0; i < m_nNoOfChannels; i++)
         {
             NeoDevice *pNeoDevice = m_aodChannels[i].pNeoDevice;
-            nReturn = (*icsneoOpenNeoDevice)(pNeoDevice, &(m_aodChannels[i].hObject), NULL, 1, 0);
+			if ((pNeoDevice_last == pNeoDevice) && (m_aodChannels[i-1].hObject != 0)) {
+				/* device is already open */
+				m_aodChannels[i].hObject = m_aodChannels[i-1].hObject;
+			} else {
+				/* open the device */
+				nReturn = (*icsneoOpenNeoDevice)(pNeoDevice, &(m_aodChannels[i].hObject), NULL, 1, 0);
+				if (nReturn == 1) // Hardware is present
+				{
+					/* OpenPort and this function must be called together. */
+					// CTimeManager::bReinitOffsetTimeValForICSneoVI();
 
-            if (nReturn == 1) // Hardware is present
-            {
-                /* OpenPort and this function must be called together. */
-                // CTimeManager::bReinitOffsetTimeValForICSneoVI();
-
-                /* Transit into 'CREATE TIME MAP' state */
-                sg_byCurrState = CREATE_MAP_TIMESTAMP;
-                nSetBaudRate();
-                sg_bIsConnected = bConnect;
-                s_DatIndThread.m_bIsConnected = sg_bIsConnected;
-                nReturn = defERR_OK;
-            }
+					/* Transit into 'CREATE TIME MAP' state */
+					sg_byCurrState = CREATE_MAP_TIMESTAMP;
+					nSetBaudRate();
+					sg_bIsConnected = bConnect;
+					s_DatIndThread.m_bIsConnected = sg_bIsConnected;
+					nReturn = defERR_OK;
+				}
+			}
+			pNeoDevice_last = pNeoDevice;
         }
     }
     else if (sg_bIsConnected && !bConnect) // Connected & to be disconnected
