@@ -147,6 +147,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CAN_Vector_XL", "CAN_Vector
 		{5D1AB9D9-755F-4743-AE73-83B7D5FCCD65} = {5D1AB9D9-755F-4743-AE73-83B7D5FCCD65}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CAN_Kvaser_CAN", "CAN_Kvaser_CAN\CAN_Kvaser_CAN.vcproj", "{191E1FE9-43CB-49C2-BF40-CC5994A586FB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{01DDB13A-F3D4-4EB3-9C4C-6346ABA1302B} = {01DDB13A-F3D4-4EB3-9C4C-6346ABA1302B}
+		{549E1D9D-FB60-4405-B78E-3C7A8221DC15} = {549E1D9D-FB60-4405-B78E-3C7A8221DC15}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -331,6 +337,14 @@ Global
 		{9DF9963F-7938-4A16-B2E2-0BFA167BD3BB}.Unicode Debug|Win32.Build.0 = Debug|Win32
 		{9DF9963F-7938-4A16-B2E2-0BFA167BD3BB}.Unicode Release|Win32.ActiveCfg = Release|Win32
 		{9DF9963F-7938-4A16-B2E2-0BFA167BD3BB}.Unicode Release|Win32.Build.0 = Release|Win32
+		{191E1FE9-43CB-49C2-BF40-CC5994A586FB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{191E1FE9-43CB-49C2-BF40-CC5994A586FB}.Debug|Win32.Build.0 = Debug|Win32
+		{191E1FE9-43CB-49C2-BF40-CC5994A586FB}.Release|Win32.ActiveCfg = Release|Win32
+		{191E1FE9-43CB-49C2-BF40-CC5994A586FB}.Release|Win32.Build.0 = Release|Win32
+		{191E1FE9-43CB-49C2-BF40-CC5994A586FB}.Unicode Debug|Win32.ActiveCfg = Debug|Win32
+		{191E1FE9-43CB-49C2-BF40-CC5994A586FB}.Unicode Debug|Win32.Build.0 = Debug|Win32
+		{191E1FE9-43CB-49C2-BF40-CC5994A586FB}.Unicode Release|Win32.ActiveCfg = Release|Win32
+		{191E1FE9-43CB-49C2-BF40-CC5994A586FB}.Unicode Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

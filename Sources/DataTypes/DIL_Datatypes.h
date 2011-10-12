@@ -90,7 +90,8 @@ enum
     DRIVER_CAN_PEAK_USB,
     DRIVER_CAN_ICS_NEOVI,
     DRIVER_CAN_ETAS_BOA,
-	DRIVER_CAN_VECTOR_XL,
+    DRIVER_CAN_VECTOR_XL,
+    DRIVER_CAN_KVASER_CAN,
     DIL_TOTAL,          // Its value must be <= MAX_DILS
     DAL_NONE            = ~0x0
 };

@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="DIL_Interface"
-	ProjectGUID="{77290670-1DBD-4127-8BAD-7C09990FA5AE}"
-	Keyword="Win32Proj"
+	Name="CAN_Kvaser_CAN"
+	ProjectGUID="{191E1FE9-43CB-49C2-BF40-CC5994A586FB}"
+	Keyword="MFCDLLProj"
 	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
@@ -38,18 +38,20 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="false"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;WINVER=0x0500"
+				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL;WINVER=0x0500"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="DIL_Interface_stdafx.h"
+				PrecompiledHeaderThrough="CAN_Kvaser_CAN_stdafx.h"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
@@ -59,21 +61,24 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_PEAK_USB.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_ICS_neoVI.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_STUB.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_ETAS_BOA.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_Vector_XL.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_Kvaser_CAN.lib&quot;"
-				OutputFile="$(SolutionDir)/bin/$(OutDir)/DIL_Interface.dll"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/ConfigDialogsDIL.lib&quot;"
+				OutputFile="$(SolutionDir)/bin/$(OutDir)/CAN_Kvaser_CAN.dll"
 				LinkIncremental="2"
+				ModuleDefinitionFile=""
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/DIL_Interface.pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_Interface.lib"
+				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_Kvaser_CAN.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -121,15 +126,17 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="false"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS; _USRDLL;WINVER=0x0500"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="DIL_Interface_stdafx.h"
+				PrecompiledHeaderThrough="CAN_Kvaser_CAN_stdafx.h"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
@@ -139,23 +146,26 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_ICS_neoVI.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_STUB.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_ETAS_BOA.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_PEAK_USB.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_Vector_XL.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_Kvaser_CAN.lib&quot;"
-				OutputFile="$(SolutionDir)/bin/$(OutDir)/DIL_Interface.dll"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/ConfigDialogsDIL.lib&quot;"
+				OutputFile="$(SolutionDir)/bin/$(OutDir)/CAN_Kvaser_CAN.dll"
 				LinkIncremental="1"
-				GenerateManifest="true"
-				GenerateDebugInformation="true"
+				ModuleDefinitionFile=""
+				GenerateDebugInformation="false"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_Interface.lib"
+				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_Kvaser_CAN.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -190,19 +200,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\DIL_CAN.cpp"
+				RelativePath=".\CAN_Kvaser_CAN.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\DIL_Interface.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DIL_Interface_stdafx.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DILC_Dummy.cpp"
+				RelativePath=".\CAN_Kvaser_CAN_stdafx.cpp"
 				>
 			</File>
 		</Filter>
@@ -212,27 +214,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\BaseDIL_CAN.h"
+				RelativePath=".\CAN_Kvaser_CAN_Extern.h"
 				>
 			</File>
 			<File
-				RelativePath=".\DIL_CAN.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DIL_Interface.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DIL_Interface_extern.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DIL_Interface_stdafx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DILC_Dummy.h"
+				RelativePath=".\CAN_Kvaser_CAN_stdafx.h"
 				>
 			</File>
 		</Filter>

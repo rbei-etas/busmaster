@@ -33,6 +33,7 @@
 #include "CAN_STUB/CAN_STUB_Extern.h"
 #include "CAN_ETAS_BOA/CAN_ETAS_BOA_Extern.h"
 #include "CAN_Vector_XL/CAN_Vector_XL_Extern.h"
+#include "CAN_Kvaser_CAN/CAN_Kvaser_CAN_Extern.h"
 #include "Dil_CAN.h"
 
 typedef struct
@@ -45,6 +46,7 @@ static ENTRY_DIL sg_ListDIL[DIL_TOTAL] =
 {
     {DRIVER_CAN_STUB,       _T("Simulation")       },
     {DRIVER_CAN_ICS_NEOVI,  _T("IntrepidCS neoVI") },
+    {DRIVER_CAN_KVASER_CAN, _T("Kvaser CAN")       },
     {DRIVER_CAN_ETAS_BOA,   _T("ETAS BOA")         },
     {DRIVER_CAN_PEAK_USB,   _T("PEAK USB")         },
     {DRIVER_CAN_VECTOR_XL,  _T("Vector XL")        },
@@ -254,6 +256,36 @@ void CDIL_CAN::vSelectInterface_CAN_Vector_XL(void)
     m_pfGetControllerParams = CAN_Vector_XL_GetControllerParams;
     m_pfGetErrorCount = CAN_Vector_XL_GetErrorCount;
 }
+
+/**
+ * Helper Function for CAN_Kvaser_CAN Interface
+ */
+void CDIL_CAN::vSelectInterface_CAN_Kvaser_CAN(void)
+{
+    m_pfPerformInitOperations = CAN_Kvaser_CAN_PerformInitOperations;
+    m_pfPerformClosureOperations = CAN_Kvaser_CAN_PerformClosureOperations;
+    m_pfGetTimeModeMapping = CAN_Kvaser_CAN_GetTimeModeMapping;
+    m_pfListHwInterfaces = CAN_Kvaser_CAN_ListHwInterfaces;
+    m_pfSelectHwInterface = CAN_Kvaser_CAN_SelectHwInterface;
+    m_pfDeselectHwInterfaces = CAN_Kvaser_CAN_DeselectHwInterface;
+    m_pfDisplayConfigDlg = CAN_Kvaser_CAN_DisplayConfigDlg;
+    m_pfSetConfigData = CAN_Kvaser_CAN_SetConfigData;
+    m_pfStartHardware = CAN_Kvaser_CAN_StartHardware;
+    m_pfStopHardware = CAN_Kvaser_CAN_StopHardware;
+    m_pfResetHardware = CAN_Kvaser_CAN_ResetHardware;
+    m_pfGetTxMsgBuffer = CAN_Kvaser_CAN_GetTxMsgBuffer;
+    m_pfSendMsg = CAN_Kvaser_CAN_SendMsg;
+    m_pfGetBoardInfo = CAN_Kvaser_CAN_GetBoardInfo;
+    m_pfGetBusConfigInfo = CAN_Kvaser_CAN_GetBusConfigInfo;
+    m_pfGetVersionInfo = CAN_Kvaser_CAN_GetVersionInfo;
+    m_pfGetLastErrorString = CAN_Kvaser_CAN_GetLastErrorString;
+    m_pfFilterFrames = CAN_Kvaser_CAN_FilterFrames;
+    m_pfManageMsgBuf = CAN_Kvaser_CAN_ManageMsgBuf;
+    m_pfRegisterClient = CAN_Kvaser_CAN_RegisterClient;
+    m_pfGetCntrlStatus = CAN_Kvaser_CAN_GetCntrlStatus;
+    m_pfGetControllerParams = CAN_Kvaser_CAN_GetControllerParams;
+    m_pfGetErrorCount = CAN_Kvaser_CAN_GetErrorCount;
+}
 /* ROUTER CODE FINISHES */
 
 /**
@@ -421,6 +453,35 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                     hResult = S_OK;
                     CAN_Vector_XL_PerformInitOperations();
                     vSelectInterface_CAN_Vector_XL();
+                }
+                break;
+                default:
+                {
+                    hResult = ERR_LOAD_DRIVER;
+                    pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library failed..."));
+                }
+                break;
+            }
+		}
+		else if (dwDriverID == DRIVER_CAN_KVASER_CAN)
+		{
+            // First select the dummy interface
+            DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
+
+            // First set the application parameters.
+            hResult = CAN_Kvaser_CAN_SetAppParams(hWndOwner, pILog);
+
+			// Next load the driver library
+            hResult = CAN_Kvaser_CAN_LoadDriverLibrary();
+            switch (hResult)
+            {
+                case S_OK:
+                case DLL_ALREADY_LOADED:
+                {
+                    pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library successful..."));
+                    hResult = S_OK;
+                    CAN_Kvaser_CAN_PerformInitOperations();
+                    vSelectInterface_CAN_Kvaser_CAN();
                 }
                 break;
                 default:

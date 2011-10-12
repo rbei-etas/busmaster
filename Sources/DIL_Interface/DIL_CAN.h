@@ -209,7 +209,8 @@ public:
     void vSelectInterface_CAN_ICS_neoVI(void);
     void vSelectInterface_CAN_STUB(void);
     void vSelectInterface_CAN_ETAS_BOA(void);
-	void vSelectInterface_CAN_Vector_XL(void);
+    void vSelectInterface_CAN_Vector_XL(void);
+    void vSelectInterface_CAN_Kvaser_CAN(void);
 
 private:
     HRESULT (*m_pfPerformInitOperations)(void);

@@ -5,6 +5,7 @@ doxygen Doxyfiles/Application                  2> out/Application/doxygen-log.tx
 doxygen Doxyfiles/BusEmulation                 2> out/BusEmulation/doxygen-log.txt
 doxygen Doxyfiles/CAN_ETAS_BOA                 2> out/CAN_ETAS_BOA/doxygen-log.txt
 doxygen Doxyfiles/CAN_ICS_neoVI                2> out/CAN_ICS_neoVI/doxygen-log.txt
+doxygen Doxyfiles/CAN_Kvaser_CAN               2> out/CAN_Kvaser_CAN/doxygen-log.txt
 doxygen Doxyfiles/CAN_STUB                     2> out/CAN_STUB/doxygen-log.txt
 doxygen Doxyfiles/CAN_Vector_XL                2> out/CAN_Vector_XL/doxygen-log.txt
 doxygen Doxyfiles/CommonClass                  2> out/CommonClass/doxygen-log.txt
