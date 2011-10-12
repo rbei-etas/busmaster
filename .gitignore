@@ -3,10 +3,11 @@
 *.orig
 
 # Visual Studio intermediate files
-*.vcproj.*.user
+*.aps
 *.ncb
 *.sln.cache
 *.suo
+*.vcproj.*.user
 Sources/Application/BUSMASTER_Interface.c
 Sources/Application/BUSMASTER_Interface.h
 Sources/Application/Hlp/BUSMASTER.chm
