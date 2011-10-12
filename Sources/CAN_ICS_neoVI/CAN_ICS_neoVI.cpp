@@ -16,7 +16,7 @@
 /**
  * \file      CAN_ICS_neoVI.cpp
  * \brief     Exports API functions for IntrepidCS neoVI CAN Hardware interface
- * \authors   Pradeep Kadoor, Tobias Lorenz
+ * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Exports API functions for IntrepidCS neoVI CAN Hardware interface
@@ -31,154 +31,95 @@
 #include "Include/CAN_Error_Defs.h"
 #include "Include/CanUsbDefs.h"
 #include "Include/Struct_CAN.h"
+#include "CAN_ICS_neoVI_Channel.h"
+#include "CAN_ICS_neoVI_Network.h"
 #include "Utility/Utility_Thread.h"
 #include "Include/DIL_CommonDefs.h"
 #include "ConfigDialogsDIL/API_dialog.h"
 #include "EXTERNAL_INCLUDE/icsnVC40.h"
 
+
 #define USAGE_EXPORT
 #include "CAN_ICS_neoVI_Extern.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
+//
+//	Note!
+//
+//		If this DLL is dynamically linked against the MFC
+//		DLLs, any functions exported from this DLL which
+//		call into MFC must have the AFX_MANAGE_STATE macro
+//		added at the very beginning of the function.
+//
+//		For example:
+//
+//		extern "C" BOOL PASCAL EXPORT ExportedFunction()
+//		{
+//			AFX_MANAGE_STATE(AfxGetStaticModuleState());
+//			// normal function body here
+//		}
+//
+//		It is very important that this macro appear in each
+//		function, prior to any calls into MFC.  This means that
+//		it must appear as the first statement within the
+//		function, even before any object variable declarations
+//		as their constructors may generate calls into the MFC
+//		DLL.
+//
+//		Please see MFC Technical Notes 33 and 58 for additional
+//		details.
+//
+
+// CCAN_ICS_neoVIApp
+
+BEGIN_MESSAGE_MAP(CCAN_ICS_neoVIApp, CWinApp)
+END_MESSAGE_MAP()
+
+
 /**
- * Current state machine
+ * CCAN_ICS_neoVIApp construction
  */
-enum
+CCAN_ICS_neoVIApp::CCAN_ICS_neoVIApp()
 {
-    CREATE_MAP_TIMESTAMP = 0x1,
-    CALC_TIMESTAMP_READY = 0x2,
-};
+    // TODO: add construction code here,
+    // Place all significant initialization in InitInstance
+}
+
+
+// The one and only CCAN_ICS_neoVIApp object
+CCAN_ICS_neoVIApp theApp;
+
+
+/**
+ * CCAN_ICS_neoVIApp initialization
+ */
+BOOL CCAN_ICS_neoVIApp::InitInstance()
+{
+    CWinApp::InitInstance();
+
+    return TRUE;
+}
+
+#define MAX_BUFF_ALLOWED 16
+#define defSTR_MISSING_HARDWARE _T("Required number of hardware are not present\nRequired: %2d    Available: %2d")
+
+const int CONFIGBYTES_TOTAL = 1024;
+const BYTE CREATE_MAP_TIMESTAMP = 0x1;
+const BYTE CALC_TIMESTAMP_READY = 0x2;
 
 /**
  * Current state machine
  */
 static BYTE sg_byCurrState = CREATE_MAP_TIMESTAMP;
 
-const int MAX_DEVICES = 16;
-
-/**
- * Device information
- */
-static NeoDevice neoDevices[MAX_DEVICES];
-
-/**
- * Number of devices
- */
-static int nNumberOfDevices = 0;
-
-/**
- * Channel information
- */
-struct CChannel
-{
-    /* To store baud rate information */
-    USHORT  m_usClock;
-    USHORT  m_usSampling;
-    UINT    m_unBaudrate;
-
-    /* Bit Timing */
-    USHORT  m_usBaudRate; /*BTR0,BTR1*/
-    BYTE    m_bCNF1;
-    BYTE    m_bCNF2;
-    BYTE    m_bCNF3;
-
-    /**
-     * To store controller state
-     * 0 - Active State
-     * 1 - Passive State
-     * 2 - Bus Off State
-     * -1 - For invalid value
-     */
-    UCHAR m_ucControllerState;
-
-    /**
-     * Pointer to corresponding neoDevice
-     */
-    NeoDevice *pNeoDevice;
-
-    /**
-     * Hardware Handle Associated with this channel.
-     * This is identical to hObject of most icsneo functions.
-     */
-    int hObject;
-
-    /**
-     * Network Handle Associated with this channel
-     * This is identical to bNetworkID of function OpenNeoDevice
-     * or lNetworkID of function TxMessages.
-     */
-    int NetworkID;
-
-    /** Programmed warning limit of this channel */
-    UCHAR m_ucWarningLimit;
-
-    /** Tx Error counter value */
-    UCHAR m_ucTxErrorCounter;
-
-    /** Rx Error counter value */
-    UCHAR m_ucRxErrorCounter;
-
-    /** Tx Error Handler execution state */
-    BOOL m_bTxErrorExecuted;
-
-    /** Rx Error Handler execution state */
-    BOOL m_bRxErrorExecuted;
-
-    // Init members with default value
-    CChannel()
-    {
-        // Baud Rate
-        m_usBaudRate = defBAUD_RATE;
-
-        // Controller state
-        m_ucControllerState = defMODE_ACTIVE;
-
-        // Pointer to corresponding neoDevice
-        pNeoDevice = NULL;
-
-        // Hardware Handle Associated with this channel
-        hObject = 0;
-
-        // Network Handle Associated with this channel
-        NetworkID = 0;
-
-        // Programmed warning limit of this channel
-        m_ucWarningLimit = defWARNING_LIMIT_INT;
-
-        // Tx Error counter value
-        m_ucTxErrorCounter = 0;
-
-        // Rx Error counter value
-        m_ucRxErrorCounter = 0;
-
-        // Tx Error Handler execution state
-        m_bTxErrorExecuted = FALSE;
-
-        // Rx Error Handler execution state
-        m_bRxErrorExecuted = FALSE;
-    }
-};
-
-/**
- * Number of Channels
- */
-static UINT m_nNoOfChannels = 0;
-
-/**
- * Array of channel objects. The size of this array is maximun number
- * of channels the application will support.
- */
-static CChannel m_aodChannels[ defNO_OF_CHANNELS ];
-
-#define MAX_BUFF_ALLOWED 16
-
 /**
  * Client and Client Buffer map
  */
-typedef struct tagClientBufMap
+struct tagClientBufMap
 {
     DWORD dwClientID;
     BYTE hClientHandle;
@@ -197,7 +138,10 @@ typedef struct tagClientBufMap
         }
 
     }
-} SCLIENTBUFMAP;
+};
+typedef tagClientBufMap sClientBufMap;
+typedef sClientBufMap SCLIENTBUFMAP;
+typedef sClientBufMap* PSCLIENTBUFMAP;
 
 typedef struct tagAckMap
 {
@@ -226,6 +170,8 @@ enum
 };
 BYTE sg_bCurrState = STATE_DRIVER_SELECTED;
 
+//#define VALIDATE_VALUE_RETURN_VAL(Val1, Val2, RetVal)   if (Val1 != Val2) {return RetVal;}
+
 static SYSTEMTIME sg_CurrSysTime;
 static UINT64 sg_TimeStamp = 0;
 
@@ -235,35 +181,106 @@ static UINT64 sg_TimeStamp = 0;
 static LARGE_INTEGER sg_QueryTickCount;
 static HWND sg_hOwnerWnd = NULL;
 
+//static CBaseCANBufFSE* sg_pCanBufObj[MAX_BUFF_ALLOWED];
 static Base_WrapperErrorLogger* sg_pIlog   = NULL;
 
 static CPARAM_THREADPROC sg_sParmRThread;
-static int sg_nFRAMES = 128;
+static s_STATUSMSG sg_sCurrStatus;
+static CNetwork* sg_podActiveNetwork;
+static CNetwork sg_odSimulationNetwork;
+#define MAX_CANHW 16
+//static BYTE sg_hHardware[ MAX_CANHW ];
+static NeoDevice neoDevices[MAX_CANHW];
+// The message buffer
 const int ENTRIES_IN_GBUF       = 2000;
+static int sg_nFRAMES = 128;
 static STCANDATA sg_asMsgBuffer[ENTRIES_IN_GBUF];
 static SCONTROLER_DETAILS sg_ControllerDetails[defNO_OF_CHANNELS];
 static INTERFACE_HW sg_HardwareIntr[defNO_OF_CHANNELS];
 
+/**
+ * Network for actual hardware
+ */
+static CNetwork sg_odHardwareNetwork;
+
+/**
+ * Create time struct. Use 0 to transmit the message with out any delay
+ */
+typedef struct
+{
+    DWORD millis;          /*< base-value: milliseconds: 0.. 2^32-1 */
+    WORD  millis_overflow; /*< roll-arounds of millis */
+    WORD  micros;          /*< microseconds: 0..999 */
+} TCANTimestamp;
+
+static TCANTimestamp sg_sTime;
+// static global variables ends
+
+const int SIZE_WORD     = sizeof(WORD);
+const int SIZE_CHAR     = sizeof(TCHAR);
+
 // TZM specific Global variables
 #define CAN_MAX_ERRSTR 256
+#define MAX_CLIENT_ALLOWED 16
 static char sg_acErrStr[CAN_MAX_ERRSTR] = {'\0'};
 static UINT sg_unClientCnt = 0;
-#define MAX_CLIENT_ALLOWED 16
 static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED];
 static UINT sg_unCntrlrInitialised = 0;
 static HMODULE sg_hDll = NULL;
 static HANDLE m_hDataEvent = NULL;
 static HANDLE sg_hCntrlStateChangeEvent = NULL;
+static DWORD  sg_dwClientID = 0;
+
+// Current buffer size
+//static UINT sg_unMsgBufCount = 0;
 
 // state variables
 static BOOL sg_bIsConnected = FALSE;
+static BOOL sg_bIsDriverRunning = FALSE;
 static UCHAR sg_ucControllerMode = defUSB_MODE_ACTIVE;
 
-#define MAX_BUFFER_VALUECAN     20000
-static TCHAR m_omErrStr[MAX_STRING] = {0};
+// Count variables
+static UCHAR sg_ucNoOfHardware = 0;
 
+/*Please recheck and retain only necessary variables*/
+
+
+#define NEW_LINE                _T("\n")
 #define TOTAL_ERROR             600
+#define MAX_BUFFER_VALUECAN     20000
+#define WAITTIME_NEOVI          100
+
+const int NEOVI_OK = 1;
+const long VALUECAN_ERROR_BITS = SPY_STATUS_GLOBAL_ERR | SPY_STATUS_CRC_ERROR |
+                                 SPY_STATUS_INCOMPLETE_FRAME | SPY_STATUS_UNDEFINED_ERROR
+                                 | SPY_STATUS_BAD_MESSAGE_BIT_TIME_ERROR;
+
+#define defSTR_ERROR_REPORT_FORMAT          _T("Channel %-2d : %s")
+#define defSTR_WARNING_LIMIT_SET_FAILED     _T("Setting warning limit failed")
+#define defSTR_FILTER_SET_FAILED            _T("Setting hardware filter failed")
+#define defSTR_CONNECT_FAILED               _T("Connect failed")
+#define defSTR_RESET_FAILED                 _T("Hardware reset failed")
+#define defSTR_CLIENT_RESET_FAILED          _T("Software reset failed")
+#define defSTR_CONTROLLER_MODE_SET_FAILED   _T("Setting hardware mode failed")
+
+static UCHAR m_unWarningLimit[defNO_OF_CHANNELS] = {0};
+static UCHAR m_unWarningCount[defNO_OF_CHANNELS] = {0};
+static UCHAR m_unRxError = 0;
+static UCHAR m_unTxError = 0;
+const int MAX_DEVICES  = 255;
+static int m_anDeviceTypes[MAX_DEVICES] = {0};
+static int m_anComPorts[MAX_DEVICES] = {0};
+static int m_anSerialNumbers[MAX_DEVICES] = {0};
+static unsigned char m_ucNetworkID[16] = {0};
+static int m_anhObject[MAX_DEVICES] = {0};
+static TCHAR m_omErrStr[MAX_STRING] = {0};
+static BOOL m_bInSimMode = FALSE;
+//static CWinThread* m_pomDatInd = NULL;
 static int s_anErrorCodes[TOTAL_ERROR] = {0};
+/* Recheck ends */
+/* Error Definitions */
+#define CAN_USB_OK 0
+#define CAN_QRCV_EMPTY 0x20
 
 /* icsneo40.dll Basic Functions */
 typedef int  (__stdcall *FINDNEODEVICES)(unsigned long DeviceTypes, NeoDevice *pNeoDevice, int *pNumDevices);
@@ -329,13 +346,17 @@ static STARTSOCKSERVER icsneoStartSockServer;
 typedef int (__stdcall *STOPSOCKSERVER)(int hObject);
 static STOPSOCKSERVER icsneoStopSockServer;
 
-/* Function pointers ends*/
+#define MAX_CHAR_SHORT 128
+#define MAX_CHAR_LONG  512
+#define CAN_USBMSGTYPE_DATA 2
 
+/* Function pointers ends*/
 typedef struct tagDATINDSTR
 {
     BOOL    m_bIsConnected;
     HANDLE  m_hHandle;
     BOOL    m_bToContinue;
+    UINT    m_unChannels;
 } sDatIndStr;
 
 static sDatIndStr s_DatIndThread;
@@ -345,6 +366,44 @@ HRESULT CAN_ICS_neoVI_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE*
 /* HELPER FUNCTIONS START */
 
 /**
+ * Function to initialize all global data variables
+ */
+static void vInitialiseAllData(void)
+{
+    // Initialise both the time parameters
+    GetLocalTime(&sg_CurrSysTime);
+    sg_TimeStamp = 0x0;
+    //INITIALISE_DATA(sg_sCurrStatus);
+    memset(&sg_sCurrStatus, 0, sizeof(sg_sCurrStatus));
+    //Query Tick Count
+    sg_QueryTickCount.QuadPart = 0;
+    //INITIALISE_ARRAY(sg_acErrStr);
+    memset(sg_acErrStr, 0, sizeof(sg_acErrStr));
+    CAN_ICS_neoVI_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
+}
+
+/**
+ * Function create and set read indication event
+ */
+static int nCreateAndSetReadIndicationEvent(HANDLE& hReadEvent)
+{
+    int nReturn = -1;
+
+    // Create a event
+    m_hDataEvent = CreateEvent( NULL,           // lpEventAttributes
+                                FALSE,          // bManualReset
+                                FALSE,          // bInitialState
+                                STR_EMPTY);     // Name
+    if (m_hDataEvent != NULL)
+    {
+        s_DatIndThread.m_hHandle = m_hDataEvent;
+        hReadEvent = m_hDataEvent;
+        nReturn = defERR_OK;
+    }
+    return nReturn;
+}
+
+/**
  * Function to retreive error occurred and log it
  */
 static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
@@ -352,16 +411,26 @@ static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
     USES_CONVERSION;
 
     char acErrText[MAX_PATH] = {'\0'};
-
-    /* Get the error text for the corresponding error code */
-    sg_pIlog->vLogAMessage(A2T(File), Line, A2T(acErrText));
-
-    size_t nStrLen = strlen(acErrText);
-    if (nStrLen > CAN_MAX_ERRSTR)
+    // Get the error text for the corresponding error code
+    //if ((*pfCAN_GetErrText)(dwErrorCode, acErrText) == CAN_USB_OK)
     {
-        nStrLen = CAN_MAX_ERRSTR;
+        sg_pIlog->vLogAMessage(A2T(File), Line, A2T(acErrText));
+
+        size_t nStrLen = strlen(acErrText);
+        if (nStrLen > CAN_MAX_ERRSTR)
+        {
+            nStrLen = CAN_MAX_ERRSTR;
+        }
+        strncpy(sg_acErrStr, acErrText, nStrLen);
     }
-    strncpy(sg_acErrStr, acErrText, nStrLen);
+}
+
+static int nSetHardwareMode(UCHAR ucDeviceMode)
+{
+// Make sure to set the network to Hardware
+    sg_podActiveNetwork = &sg_odHardwareNetwork;
+    sg_ucControllerMode = ucDeviceMode;
+    return 0;
 }
 
 /**
@@ -378,32 +447,33 @@ static UCHAR USB_ucHandleErrorCounter( UCHAR ucChannel,
 {
     UCHAR ucRetVal = ERROR_BUS;
 
-    CChannel& odChannel = m_aodChannels[ ucChannel ];
+    CChannel& odChannel = sg_podActiveNetwork->m_aodChannels[ ucChannel ];
 
-    /* Check for Error Handler Execution */
-    /* Warning Limit Execution */
+    // Check for Error Handler Execution
+    // Warning Limit Execution
     if( ucRxErr == odChannel.m_ucWarningLimit &&
             odChannel.m_bRxErrorExecuted == FALSE )
     {
-        /* Set Error type as warning limit and set the handler execution Flag */
+        // Set Error type as warning limit and set the handler execution
+        // Flag
         ucRetVal = ERROR_WARNING_LIMIT_REACHED;
         odChannel.m_bRxErrorExecuted = TRUE;
     }
-    /* Tx Error Value */
+    // Tx Error Value
     else if( ucTxErr == odChannel.m_ucWarningLimit &&
              odChannel.m_bTxErrorExecuted == FALSE )
     {
-        /* Set Error type as warning limit and set the handler execution Flag */
+        // Set Error type as warning limit and set the handler execution
+        // Flag
         ucRetVal = ERROR_WARNING_LIMIT_REACHED;
         odChannel.m_bTxErrorExecuted = TRUE;
     }
-    /* If the error counter value is 95 then execute the warning limit
-     * handler if we are in warning limit state
-     */
+    //  If the error counter value is 95 then execute the warning limit
+    // handler if we are in warning limit state
     if( ucRxErr == odChannel.m_ucWarningLimit - 1 &&
             odChannel.m_bRxErrorExecuted == TRUE )
     {
-        /* Change the type. This is not real error message */
+        // Change the type. This is not real error message
         ucRetVal = ERROR_WARNING_LIMIT_REACHED;
         //ucRetVal = ERROR_UNKNOWN;
         odChannel.m_bRxErrorExecuted = FALSE;
@@ -411,13 +481,13 @@ static UCHAR USB_ucHandleErrorCounter( UCHAR ucChannel,
     if( ucTxErr == odChannel.m_ucWarningLimit - 1 &&
             odChannel.m_bTxErrorExecuted == TRUE )
     {
-        /* Change the type. This is not real error message */
+        // Change the type. This is not real error message
         ucRetVal = ERROR_WARNING_LIMIT_REACHED;
         //ucRetVal = ERROR_UNKNOWN;
         odChannel.m_bTxErrorExecuted = FALSE;
     }
 
-    /* Reset Event handlers state */
+    // Reset Event handlers state
     if( ucRxErr < odChannel.m_ucWarningLimit - 1)
     {
         odChannel.m_bRxErrorExecuted = FALSE;
@@ -427,20 +497,20 @@ static UCHAR USB_ucHandleErrorCounter( UCHAR ucChannel,
         odChannel.m_bTxErrorExecuted = FALSE;
     }
 
-    /* Supress State Change Interrupt messages */
-    /* Active -> Passive */
+    // Supress State Change Interrupt messages
+    // Active -> Passive
     if( ucRxErr == 127 &&
             odChannel.m_ucControllerState == defCONTROLLER_PASSIVE )
     {
-        /* Not an error. This is interrupt message */
+        // Not an error. This is interrupt message
         ucRetVal = ERROR_INTERRUPT;
     }
 
-    /* Active -> Passive */
+    // Active -> Passive
     if( ucTxErr == 127 &&
             odChannel.m_ucControllerState == defCONTROLLER_PASSIVE )
     {
-        /* Not an error. This is interrupt message */
+        // Not an error. This is interrupt message
         ucRetVal = ERROR_INTERRUPT;
     }
     return ucRetVal;
@@ -458,7 +528,7 @@ static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir)
 {
     UCHAR ucReturn = 0;
 
-    /* Tx Errors */
+    // Tx Errors
     if( byDir == 1)
     {
         if (lError & SPY_STATUS_CRC_ERROR)
@@ -474,7 +544,7 @@ static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir)
             ucReturn = OTHER_ERROR_TX;
         }
     }
-    /* Rx Errors */
+    // Rx Errors
     else
     {
         if (lError & SPY_STATUS_CRC_ERROR)
@@ -490,7 +560,7 @@ static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir)
             ucReturn = OTHER_ERROR_RX;
         }
     }
-
+    // Return the error code
     return ucReturn;
 }
 
@@ -502,37 +572,73 @@ static void vCreateTimeModeMapping(HANDLE hDataEvent)
     WaitForSingleObject(hDataEvent, INFINITE);
     //MessageBox(0, L"TIME", L"", 0);
     GetLocalTime(&sg_CurrSysTime);
-
-    /* Query Tick Count */
+    //Query Tick Count
     QueryPerformanceCounter(&sg_QueryTickCount);
 
 }
 
+
 static BOOL bLoadDataFromContr(PSCONTROLER_DETAILS pControllerDetails)
 {
     BOOL bReturn = FALSE;
-
-    /* If successful */
+    // If successful
     if (pControllerDetails != NULL)
     {
         for( int nIndex = 0; nIndex < defNO_OF_CHANNELS; nIndex++ )
         {
             TCHAR* pcStopStr = NULL;
-            CChannel& odChannel = m_aodChannels[ nIndex ];
+            CChannel& odChannel = sg_odHardwareNetwork.m_aodChannels[ nIndex ];
 
-            /* Get Warning Limit */
+            // Get Warning Limit
             odChannel.m_ucWarningLimit = static_cast <UCHAR>(
                                              _tcstol( pControllerDetails[ nIndex ].m_omStrWarningLimit,
                                                      &pcStopStr, defBASE_DEC ));
+            // Get Acceptance Filter
+            odChannel.m_sFilter.m_ucACC_Code0 = static_cast <UCHAR>(
+                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte1,
+                                                            &pcStopStr, defBASE_HEX ));
+            odChannel.m_sFilter.m_ucACC_Code1 = static_cast <UCHAR>(
+                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte2,
+                                                            &pcStopStr, defBASE_HEX ));
+            odChannel.m_sFilter.m_ucACC_Code2 = static_cast <UCHAR>(
+                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte3,
+                                                            &pcStopStr, defBASE_HEX ));
+            odChannel.m_sFilter.m_ucACC_Code3 = static_cast <UCHAR>(
+                                                    _tcstol(pControllerDetails[ nIndex ].m_omStrAccCodeByte4,
+                                                            &pcStopStr, defBASE_HEX));
+            odChannel.m_sFilter.m_ucACC_Mask0 = static_cast <UCHAR>(
+                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte1,
+                                                            &pcStopStr, defBASE_HEX));
+            odChannel.m_sFilter.m_ucACC_Mask1 = static_cast <UCHAR>(
+                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte2,
+                                                            &pcStopStr, defBASE_HEX));
+            odChannel.m_sFilter.m_ucACC_Mask2 = static_cast <UCHAR>(
+                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte3,
+                                                            &pcStopStr, defBASE_HEX));
+            odChannel.m_sFilter.m_ucACC_Mask3 = static_cast <UCHAR>(
+                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte4,
+                                                            &pcStopStr, defBASE_HEX));
+            odChannel.m_sFilter.m_ucACC_Filter_Type = static_cast <UCHAR>(
+                        pControllerDetails[ nIndex ].m_bAccFilterMode );
+            odChannel.m_bCNF1 = static_cast <UCHAR>(
+                                    _tcstol( pControllerDetails[ nIndex ].m_omStrCNF1,
+                                             &pcStopStr, defBASE_HEX));
+            odChannel.m_bCNF2 = static_cast <UCHAR>(
+                                    _tcstol( pControllerDetails[ nIndex ].m_omStrCNF2,
+                                             &pcStopStr, defBASE_HEX));
+            odChannel.m_bCNF3 = static_cast <UCHAR>(
+                                    _tcstol( pControllerDetails[ nIndex ].m_omStrCNF3,
+                                             &pcStopStr, defBASE_HEX));
 
-            /* Get Baud Rate */
+            // Get Baud Rate
             odChannel.m_usBaudRate = static_cast <USHORT>(
                                          pControllerDetails[ nIndex ].m_nBTR0BTR1 );
+
             odChannel.m_unBaudrate = _tstoi( pControllerDetails[ nIndex ].m_omStrBaudrate );
+
             odChannel.m_ucControllerState = pControllerDetails[ nIndex ].m_ucControllerMode;
         }
-
-        /* Get Controller Mode */
+        // Get Controller Mode
         // Consider only the first channel mode as controller mode
         //sg_ucControllerMode = pControllerDetails[ 0 ].m_ucControllerMode;
 
@@ -556,38 +662,15 @@ static void vProcessError(STCANDATA& sCanData, CChannel& odChannel,
     sCanData.m_uDataInfo.m_sErrInfo.m_ucErrType =
         USB_ucHandleErrorCounter(0, (UCHAR)ushRxErr, (UCHAR)ushTxErr);
 
-    /* Update Error Type */
+    // Update Error Type
     if (sCanData.m_uDataInfo.m_sErrInfo.m_ucErrType == ERROR_INTERRUPT)
     {
-        /* This is interrupt message. So change the type */
+        // This is interrupt message. So change the type
         sCanData.m_uDataInfo.m_sErrInfo.m_ucReg_ErrCap = ERROR_UNKNOWN;
     }
 
-    /* Update Tx Error counter and peak Tx Error Counter */
-    odChannel.m_ucTxErrorCounter = (UCHAR) ushTxErr;
-    /* Update Rx Error counter and peak Rx Error Counter */
-    odChannel.m_ucRxErrorCounter = (UCHAR) ushRxErr;
-
-    /* Update Controller state */
-    if ((odChannel.m_ucTxErrorCounter <= 127) && (odChannel.m_ucRxErrorCounter <= 127))
-    {
-        /* Error Active Mode */
-        odChannel.m_ucControllerState = defCONTROLLER_ACTIVE;
-    }
-
-    /* The sudden shift to the third state is to avoid
-     * "else if ((byTxError > 127) || (byRxError > 127))"
-     */
-    else if (odChannel.m_ucTxErrorCounter == 255)
-    {
-        /* Bus off */
-        odChannel.m_ucControllerState = defCONTROLLER_BUSOFF;
-    }
-    else
-    {
-        /* Error passive */
-        odChannel.m_ucControllerState = defCONTROLLER_PASSIVE;
-    }
+    // Update Rx Error Counter Value & Tx Error Counter Value
+    odChannel.vUpdateErrorCounter((UCHAR)ushTxErr, (UCHAR)ushRxErr);
 }
 
 /**
@@ -603,27 +686,16 @@ static void vProcessError(STCANDATA& sCanData, CChannel& odChannel,
 static BYTE bClassifyMsgType(icsSpyMessage& CurrSpyMsg,
                              STCANDATA& sCanData, UINT unChannel)
 {
-    UCHAR m_unRxError = 0;
-    UCHAR m_unTxError = 0;
-
-    if (CurrSpyMsg.StatusBitField &
-            (SPY_STATUS_GLOBAL_ERR | SPY_STATUS_CRC_ERROR |
-             SPY_STATUS_INCOMPLETE_FRAME | SPY_STATUS_UNDEFINED_ERROR |
-             SPY_STATUS_BAD_MESSAGE_BIT_TIME_ERROR))
+    if (CurrSpyMsg.StatusBitField & VALUECAN_ERROR_BITS)
     {
         sCanData.m_ucDataType = ERR_FLAG;
-
-        /* Set bus error as default error. This will be
-         * Modified by the function USB_ucHandleErrorCounter
-         */
+        // Set bus error as default error. This will be
+        // Modified by the function USB_ucHandleErrorCounter
         sCanData.m_uDataInfo.m_sErrInfo.m_ucErrType = ERROR_BUS;
-
-        /* Assign the channel number */
+        // Assign the channel number
         sCanData.m_uDataInfo.m_sErrInfo.m_ucChannel = (UCHAR)unChannel;
-
-        /* Assign error type in the Error Capture register
-         * and the direction of the error
-         */
+        // Assign error type in the Error Capture register
+        // and the direction of the error
         BOOL bIsTxMsg = FALSE;
         if (CurrSpyMsg.StatusBitField & SPY_STATUS_TX_MSG)
         {
@@ -631,11 +703,9 @@ static BYTE bClassifyMsgType(icsSpyMessage& CurrSpyMsg,
         }
         sCanData.m_uDataInfo.m_sErrInfo.m_ucReg_ErrCap =
             USB_ucGetErrorCode(CurrSpyMsg.StatusBitField, (BYTE) bIsTxMsg);
-
-        /* explanation of error bit */
+        //explaination of error bit
         sCanData.m_uDataInfo.m_sErrInfo.m_nSubError= 0;
-
-        /* Update error counter values */
+        // Update error counter values
         if (bIsTxMsg)
         {
             m_unTxError++;
@@ -651,12 +721,10 @@ static BYTE bClassifyMsgType(icsSpyMessage& CurrSpyMsg,
     {
         sCanData.m_ucDataType = ERR_FLAG;
 
-        /* Set bus error as default error. This will be
-         * Modified by the function USB_ucHandleErrorCounter
-         */
+        // Set bus error as default error. This will be
+        // Modified by the function USB_ucHandleErrorCounter
         sCanData.m_uDataInfo.m_sErrInfo.m_ucErrType = ERROR_BUS;
-
-        /* Assign the channel number */
+        // Assign the channel number
         sCanData.m_uDataInfo.m_sErrInfo.m_ucChannel = (UCHAR)unChannel;
 
         for (USHORT j = 0x01; j <= 0x80; j <<= 1)
@@ -700,7 +768,7 @@ static BYTE bClassifyMsgType(icsSpyMessage& CurrSpyMsg,
     }
     else
     {
-        /* Check for RTR Message */
+        //Check for RTR Message
         if (CurrSpyMsg.StatusBitField & SPY_STATUS_REMOTE_FRAME)
         {
             sCanData.m_ucDataType = RX_FLAG;
@@ -718,28 +786,34 @@ static BYTE bClassifyMsgType(icsSpyMessage& CurrSpyMsg,
         {
             sCanData.m_ucDataType = RX_FLAG;
         }
-
-        /* Copy data length */
+        /*else
+        {
+            //ASSERT(FALSE);
+        }*/
+        // Copy data length
         sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen = CurrSpyMsg.NumberBytesData;
 
-        /* Copy the message data */
+        // Copy the message data
         memcpy(sCanData.m_uDataInfo.m_sCANMsg.m_ucData,
                CurrSpyMsg.Data, CurrSpyMsg.NumberBytesData);
 
-        /* Copy the message ID */
+        // Copy the message ID
         memcpy(&(sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID),
                &(CurrSpyMsg.ArbIDOrHeader), sizeof(UINT));
 
-        /* Check for extended message indication */
+        // Check for extended message indication
         sCanData.m_uDataInfo.m_sCANMsg.m_ucEXTENDED =
             (CurrSpyMsg.StatusBitField & SPY_STATUS_XTD_FRAME) ? TRUE : FALSE;
+
+
     }
     return TRUE;
 }
 
 /**
  * \param[in] psCanDataArray Pointer to CAN Message Array of Structures
- * \param[inout] nMessage Maximun number of message to read or size of the CAN Message Array, Actual Messages Read
+ * \param[in] nMessage Maximun number of message to read or size of the CAN Message Array
+ * \param[out] Message Actual Messages Read
  * \return Returns defERR_OK if successful otherwise corresponding Error code.
  *
  * This function will read multiple CAN messages from the driver.
@@ -752,61 +826,69 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
 {
     int i = 0;
     int nReturn = 0;
-    static int s_CurrIndex = 0;
+    // Now the data messages
+    CChannel& odChannel = sg_odHardwareNetwork.m_aodChannels[nChannelIndex];
+    static int s_CurrIndex = 0, s_Messages = 0;
     static icsSpyMessage s_asSpyMsg[MAX_BUFFER_VALUECAN] = {0};
-	int s_Messages = 0;
     int nErrMsg = 0;
     if (s_CurrIndex == 0)
     {
-        nReturn = (*icsneoGetMessages)(m_aodChannels[nChannelIndex].hObject, s_asSpyMsg,
+        nReturn = (*icsneoGetMessages)(m_anhObject[nChannelIndex], s_asSpyMsg,
                                        &s_Messages, &nErrMsg);
+        //TRACE("s_Messages: %d  nErrMsg: %d nMessage: %d\n", s_Messages,
+        //    nErrMsg, nMessage);
     }
 
-    /* Start of first level of error message processing */
+    // Start of first level of error message processing
     USHORT ushRxErr = 0, ushTxErr = 0;
     if (nErrMsg > 0)
     {
         int nErrors = 0;
-        nReturn = (*icsneoGetErrorMessages)(m_aodChannels[nChannelIndex].hObject, s_anErrorCodes, &nErrors);
-        if ((nReturn == 1) && (nErrors > 0))
+        nReturn = (*icsneoGetErrorMessages)(m_anhObject[nChannelIndex], s_anErrorCodes, &nErrors);
+        if ((nReturn == NEOVI_OK) && (nErrors > 0))
         {
             for (int j = 0; j < nErrors; j++)
             {
-                /*
                 switch (s_anErrorCodes[j])
                 {
-                    case NEOVI_ERROR_DLL_USB_SEND_DATA_ERROR: 2
+                    case 2: // NEOVI_ERROR_DLL_USB_SEND_DATA_ERROR:
                     {
                         ++ushTxErr;
                     }
                     break;
-                    case NEOVI_ERROR_DLL_RX_MSG_FRAME_ERR: 39
-                    case NEOVI_ERROR_DLL_RX_MSG_FIFO_OVER: 40
-                    case NEOVI_ERROR_DLL_RX_MSG_CHK_SUM_ERR: 41
+                    case 39: // NEOVI_ERROR_DLL_RX_MSG_FRAME_ERR
+                    case 40: // NEOVI_ERROR_DLL_RX_MSG_FIFO_OVER:
+                    case 41: // NEOVI_ERROR_DLL_RX_MSG_CHK_SUM_ERR:
                     {
                         ++ushRxErr;
                     }
                     break;
                     default:
+                    {
+                        // Do nothing until further clarification is received
+                    }
                     break;
                 }
-                */
             }
         }
     }
     // End of first level of error message processing
 
+    // START
     /* Create the time stamp map. This means getting the local time and assigning
-     * offset value to the QuadPart.
-     */
+    offset value to the QuadPart.
+    */
     static LONGLONG QuadPartRef = 0;
+
     if (CREATE_MAP_TIMESTAMP == sg_byCurrState)
     {
+        //ASSERT(s_CurrIndex < s_Messages);
+
         //CTimeManager::bReinitOffsetTimeValForICSneoVI();
         icsSpyMessage& CurrSpyMsg = s_asSpyMsg[s_CurrIndex];
         DOUBLE dTimestamp = 0;
-        nReturn = (*icsneoGetTimeStampForMsg)(m_aodChannels[nChannelIndex].hObject, &CurrSpyMsg, &dTimestamp);
-        if (nReturn == 1)
+        nReturn = (*icsneoGetTimeStampForMsg)(m_anhObject[nChannelIndex], &CurrSpyMsg, &dTimestamp);
+        if (nReturn == NEOVI_OK)
         {
             QuadPartRef = (LONGLONG)(dTimestamp * 10000);//CurrSpyMsg.TimeHardware2 * 655.36 + CurrSpyMsg.TimeHardware * 0.01;
             sg_byCurrState = CALC_TIMESTAMP_READY;
@@ -818,28 +900,17 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
         }
     }
 
-    int nLimForAppBuf = nMessage; // MIN(nMessage, s_Messages);
+    // END
+
+    int nLimForAppBuf = nMessage;//MIN(nMessage, s_Messages);
     double dCurrTimeStamp;
     for (/*int i = 0*/; (i < nLimForAppBuf) && (s_CurrIndex < s_Messages); i++)
     {
         STCANDATA& sCanData = psCanDataArray[i];
         icsSpyMessage& CurrSpyMsg = s_asSpyMsg[s_CurrIndex];
 
-		/* correct channel index */
-		for (unsigned int j = 0; j < m_nNoOfChannels; j++)
-		{
-			if ((m_aodChannels[j].hObject   == m_aodChannels[nChannelIndex].hObject) &&
-				(m_aodChannels[j].NetworkID == CurrSpyMsg.NetworkID))
-			{
-				nChannelIndex = j;
-	            break;
-			}
-		}
-	    CChannel& odChannel = m_aodChannels[nChannelIndex];
         sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel = (UCHAR)(nChannelIndex + 1);
-
-		/* get time stamp */
-		nReturn = (*icsneoGetTimeStampForMsg)(m_aodChannels[nChannelIndex].hObject, &CurrSpyMsg, &dCurrTimeStamp);
+        nReturn = (*icsneoGetTimeStampForMsg)(m_anhObject[nChannelIndex], &CurrSpyMsg, &dCurrTimeStamp);
         /*sCanData.m_lTickCount.QuadPart = (CurrSpyMsg.TimeHardware2 * 655.36
                                         + CurrSpyMsg.TimeHardware * 0.01);*/
         sCanData.m_lTickCount.QuadPart = (LONGLONG)(dCurrTimeStamp * 10000);
@@ -851,12 +922,16 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
         if (sCanData.m_ucDataType == ERR_FLAG)
         {
             vProcessError(sCanData, odChannel, ushRxErr + 1, ushTxErr + 1);
-            /* Reset to zero */
+            // Reset to zero
             ushRxErr = 0;
             ushTxErr = 0;
         }
         s_CurrIndex++;
     }
+    //TRACE("s_CurrIndex: %d i: %d\n", s_CurrIndex, i);
+
+    //ASSERT(!(s_CurrIndex > MAX_BUFFER_VALUECAN));
+    //ASSERT(!(s_CurrIndex > s_Messages));
 
     if ((s_CurrIndex == MAX_BUFFER_VALUECAN) || (s_CurrIndex == s_Messages))
     {
@@ -864,20 +939,20 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
         s_Messages = 0;
     }
 
-    /* This code is needed when error messages don't occur in the list of
-     * the regular message
-     */
-#if 0
+    // This code is needed when error messages don't occur in the list of
+    // the regular message
     if ((ushRxErr != 0) || (ushTxErr != 0))
     {
         STCANDATA sCanData;
         vProcessError(sCanData, odChannel, ushRxErr, ushTxErr);
     }
-#endif
+
 
     nMessage = i;
 
-    return defERR_OK;
+    return defERR_OK; // Multiple return statements had to be added because
+    // neoVI specific codes and simulation related codes need to coexist.
+    // Code for the later still employs Peak API interface.
 }
 
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
@@ -888,7 +963,7 @@ static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
         if (sg_asClientToBufMap[i].dwClientID == dwClientID)
         {
             unClientIndex = i;
-            i = sg_unClientCnt; // break the loop
+            i = sg_unClientCnt; //break the loop
             bResult = TRUE;
         }
     }
@@ -903,7 +978,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
         UINT unClientIndex = (UINT)-1;
         if (bGetClientObj(dwClientId, unClientIndex))
         {
-            /* clear the client first */
+            //clear the client first
             if (sg_asClientToBufMap[unClientIndex].hClientHandle != NULL)
             {
                 HRESULT hResult = S_OK;//(*pfCAN_RemoveClient)(sg_asClientToBufMap[unClientIndex].hClientHandle);
@@ -956,7 +1031,7 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
     {
         if (RootBufferArray[i] == BufferToRemove)
         {
-            if (i < (unCount - 1)) /* If not the last bufffer */
+            if (i < (unCount - 1)) //If not the last bufffer
             {
                 RootBufferArray[i] = RootBufferArray[unCount - 1];
             }
@@ -964,6 +1039,11 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
         }
     }
     return bReturn;
+}
+
+void vMarkEntryIntoMap(const SACK_MAP& RefObj)
+{
+    sg_asAckMapBuf.push_back(RefObj);
 }
 
 BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
@@ -978,7 +1058,6 @@ BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
         ClientID = (*iResult).m_ClientID;
         sg_asAckMapBuf.erase(iResult);
     }
-
     return bResult;
 }
 
@@ -987,7 +1066,7 @@ BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
  */
 static void vWriteIntoClientsBuffer(STCANDATA& sCanData)
 {
-    /* Write into the client's buffer and Increment message Count */
+    //Write into the client's buffer and Increment message Count
     if (sCanData.m_ucDataType == TX_FLAG)
     {
         static SACK_MAP sAckMap;
@@ -1001,7 +1080,7 @@ static void vWriteIntoClientsBuffer(STCANDATA& sCanData)
             BOOL bClientExists = bGetClientObj(ClientId, Index);
             for (UINT i = 0; i < sg_unClientCnt; i++)
             {
-                /* Tx for monitor nodes and sender node */
+                //Tx for monitor nodes and sender node
                 if ((i == CAN_MONITOR_NODE_INDEX)  || (bClientExists && (i == Index)))
                 {
                     for (UINT j = 0; j < sg_asClientToBufMap[i].unBufCount; j++)
@@ -1011,7 +1090,7 @@ static void vWriteIntoClientsBuffer(STCANDATA& sCanData)
                 }
                 else
                 {
-                    /* Send the other nodes as Rx. */
+                    //Send the other nodes as Rx.
                     for (UINT j = 0; j < sg_asClientToBufMap[i].unBufCount; j++)
                     {
                         static STCANDATA sTempCanData;
@@ -1023,9 +1102,8 @@ static void vWriteIntoClientsBuffer(STCANDATA& sCanData)
             }
         }
     }
-    else
+    else // provide it to everybody
     {
-        /* provide it to everybody */
         for (UINT i = 0; i < sg_unClientCnt; i++)
         {
             for (UINT j = 0; j < sg_asClientToBufMap[i].unBufCount; j++)
@@ -1060,23 +1138,14 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_ICS_neoVI(LPVOID pVoid)
 
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC *) pVoid;
 
-    /* Validate certain required pointers */
+    // Validate certain required pointers
     VALIDATE_POINTER_RETURN_VALUE_LOG(pThreadParam, (DWORD)-1);
-    /* Assign thread action to CREATE_TIME_MAP */
+    // Assign thread action to CREATE_TIME_MAP
     pThreadParam->m_unActionCode = CREATE_TIME_MAP;
+    // Set the event to CAN_ICS_neoVI driver for wakeup and frame arrival notification
+    nCreateAndSetReadIndicationEvent(pThreadParam->m_hActionEvent);
 
-    /* Set the event to CAN_ICS_neoVI driver for wakeup and frame arrival notification */
-    m_hDataEvent = CreateEvent( NULL,           // lpEventAttributes
-                                FALSE,          // bManualReset
-                                FALSE,          // bInitialState
-                                STR_EMPTY);     // Name
-    if (m_hDataEvent != NULL)
-    {
-        s_DatIndThread.m_hHandle = m_hDataEvent;
-        pThreadParam->m_hActionEvent = m_hDataEvent;
-    }
-
-    /* Get the handle to the controller and validate it */
+    // Get the handle to the controller and validate it
     VALIDATE_POINTER_RETURN_VALUE_LOG(pThreadParam->m_hActionEvent, (DWORD)-1);
 
     DWORD dwResult = 0;
@@ -1084,17 +1153,17 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_ICS_neoVI(LPVOID pVoid)
     {
         if (s_DatIndThread.m_bIsConnected)
         {
-            for (int i = 0; i < (int) m_nNoOfChannels; i++)
+            for (int i = 0; i < sg_ucNoOfHardware; i++)
             {
-                dwResult = (*icsneoWaitForRxMessagesWithTimeOut)(m_aodChannels[i].hObject, 100);
+                dwResult = (*icsneoWaitForRxMessagesWithTimeOut)(m_anhObject[i], WAITTIME_NEOVI);
+                //kadoor WaitForSingleObject(pThreadParam->m_hActionEvent, INFINITE);
                 if (dwResult > 0)
                 {
                     switch (pThreadParam->m_unActionCode)
                     {
                         case INVOKE_FUNCTION:
                         {
-                            /* Retrieve message from the driver */
-                            ProcessCANMsg(i);
+                            ProcessCANMsg(i); // Retrieve message from the driver
                         }
                         break;
                         case CREATE_TIME_MAP:
@@ -1106,9 +1175,12 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_ICS_neoVI(LPVOID pVoid)
                             pThreadParam->m_unActionCode = INVOKE_FUNCTION;
                         }
                         break;
-                        case INACTION:
                         default:
-                            break;
+                        case INACTION:
+                        {
+                            // nothing right at this moment
+                        }
+                        break;
                     }
                 }
             }
@@ -1128,7 +1200,7 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_ICS_neoVI(LPVOID pVoid)
     }
     SetEvent(pThreadParam->hGetExitNotifyEvent());
 
-    /* Close the notification event for startup */
+    // Close the notification event for startup
     CloseHandle(pThreadParam->m_hActionEvent);
     pThreadParam->m_hActionEvent = NULL;
 
@@ -1136,124 +1208,216 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_ICS_neoVI(LPVOID pVoid)
 }
 
 /**
- * \return
- *   Returns defERR_OK if successful otherwise corresponding Error code.
- *   0, Query successful, but no device found
- *   > 0, Number of devices found
- *   < 0, query for devices unsuccessful
- *
- * Finds the number of hardware connected.
+ * This function will get the hardware selection from the user
+ * and will create essential networks.
  */
-static int nGetNoOfConnectedHardware(void)
+static int nCreateMultipleHardwareNetwork()
 {
-    int nResult;
-
-    /* Search for attached devices */
-    nNumberOfDevices = MAX_DEVICES;
-    nResult = icsneoFindNeoDevices(NEODEVICE_ANY, neoDevices, &nNumberOfDevices);
-    if(nResult == false)
+    TCHAR acTempStr[256] = {_T('\0')};
+    INT anSelectedItems[defNO_OF_CHANNELS] = {0};
+    int nHwCount = sg_ucNoOfHardware;
+    // Get Hardware Network Map
+    for (int nCount = 0; nCount < nHwCount; nCount++)
     {
-        _tcscpy(m_omErrStr, _T("Problem Finding Device"));
-        nResult = -1;
+        sg_HardwareIntr[nCount].m_dwIdInterface = m_anComPorts[nCount];
+        sg_HardwareIntr[nCount].m_dwVendor = m_anSerialNumbers[nCount];
+        _stprintf(acTempStr, _T("Serial Number: %d, Port ID: %d"), m_anSerialNumbers[nCount], m_anComPorts[nCount]);
+        _tcscpy(sg_HardwareIntr[nCount].m_acDescription, acTempStr);
     }
-    else if(nNumberOfDevices<1)
+    ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_ICS_NEOVI, sg_HardwareIntr, anSelectedItems, nHwCount);
+    sg_ucNoOfHardware = (UCHAR)nHwCount;
+    //Reorder hardware interface as per the user selection
+    for (int nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
     {
-        _tcscpy(m_omErrStr, _T("No Devices Found\r\n"));
-        nResult = 0;
+        m_anComPorts[nCount] = (int)sg_HardwareIntr[anSelectedItems[nCount]].m_dwIdInterface;
+        m_anSerialNumbers[nCount] = (int)sg_HardwareIntr[anSelectedItems[nCount]].m_dwVendor;
+    }
+    for (int nIndex = 0; nIndex < sg_ucNoOfHardware; nIndex++)
+    {
+        if (nIndex == 0)// AFXBeginThread should be called only once.
+        {
+            s_DatIndThread.m_bToContinue = TRUE;
+            s_DatIndThread.m_bIsConnected = FALSE;
+            s_DatIndThread.m_unChannels = sg_ucNoOfHardware;
+            sg_odHardwareNetwork.m_nNoOfChannels = (int)sg_ucNoOfHardware;
+        }
+
+        // Assign hardware handle
+        sg_odHardwareNetwork.m_aodChannels[ nIndex ].m_hHardwareHandle = (BYTE)m_anComPorts[nIndex];
+
+        // Assign Net Handle
+        sg_odHardwareNetwork.m_aodChannels[ nIndex ].m_hNetworkHandle = m_ucNetworkID[nIndex];
+    }
+    return defERR_OK;
+}
+
+/**
+ * This is USB Specific Function. This will create a single
+ * network with available single hardware.
+ */
+static int nCreateSingleHardwareNetwork()
+{
+    // Create network here with net handle 1
+    s_DatIndThread.m_bToContinue = TRUE;
+    s_DatIndThread.m_bIsConnected = FALSE;
+    s_DatIndThread.m_unChannels = 1;
+
+    // Set the number of channels
+    sg_odHardwareNetwork.m_nNoOfChannels = 1;
+    // Assign hardware handle
+    sg_odHardwareNetwork.m_aodChannels[ 0 ].m_hHardwareHandle = (BYTE)m_anComPorts[0];
+
+    // Assign Net Handle
+    sg_odHardwareNetwork.m_aodChannels[ 0 ].m_hNetworkHandle = m_ucNetworkID[1];
+
+    return defERR_OK;
+}
+
+/**
+ * \param[in] nHardwareCount Hardware Count
+ * \return Returns defERR_OK if successful otherwise corresponding Error code.
+ *
+ * Finds the number of hardware connected. This is applicable
+ * only for USB device. For parallel port this is not required.
+ */
+static int nGetNoOfConnectedHardware(int& nHardwareCount)
+{
+    // 0, Query successful, but no device found
+    // > 0, Number of devices found
+    // < 0, query for devices unsucessful
+    int nReturn = 0;
+    int iNumberOfDevices = MAX_DEVICES;
+
+    for (BYTE i = 0; i < 16; i++)
+    {
+        m_ucNetworkID[i] = i;
+    }
+    // TODO: Add your command handler code here
+    nReturn = icsneoFindNeoDevices(NEODEVICE_ANY, neoDevices, &iNumberOfDevices);
+    if (nReturn == false)
+    {
+        _tcscpy(m_omErrStr,_T("Query for devices unsuccessful"));
+        nHardwareCount = 0;
+        nReturn = -1;
+    }
+    else if (iNumberOfDevices == 0)
+    {
+        _tcscpy(m_omErrStr,_T("Query successful, but no device found"));
+        nHardwareCount = 0;
+        nReturn = 0;
     }
     else
     {
-        nResult = nNumberOfDevices;
-        m_nNoOfChannels = 0;
-        for (int i = 0; i < nNumberOfDevices; i++)
+        nHardwareCount = iNumberOfDevices;
+        nReturn = nHardwareCount;
+        for (int j = 0; j < iNumberOfDevices; j++)
         {
-            NeoDevice *pNeoDevice = &neoDevices[i];
-            switch (pNeoDevice->DeviceType) {
+            NeoDevice *pNeoDevice = &neoDevices[j];
+            switch (pNeoDevice->DeviceType)
+            {
                     /* neoVI Blue */
                 case NEODEVICE_BLUE:
-                    m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
-                    m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_HSCAN;
-                    m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
-                    m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_MSCAN;
-                    m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
-                    m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_SWCAN;
-                    m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
-                    m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_LSFTCAN;
                     break;
 
                     /* ValueCAN */
                 case NEODEVICE_DW_VCAN:
-                    m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
-                    m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_HSCAN;
                     break;
 
                     /* neoVI Fire/Red */
                 case NEODEVICE_FIRE:
-                    m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
-                    m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_FIRE_HSCAN1;
-                    m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
-                    m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_FIRE_MSCAN1;
-                    m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
-                    m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_FIRE_SWCAN;
-                    m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
-                    m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_FIRE_LSFT;
                     break;
 
                     /* ValueCAN3 */
                 case NEODEVICE_VCAN3:
-                    m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
-                    m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_HSCAN;
-                    m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
-                    m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_MSCAN;
                     break;
 
-                default:
                     /* Let's assume at least one channel... */
-                    m_aodChannels[m_nNoOfChannels  ].pNeoDevice = pNeoDevice;
-                    m_aodChannels[m_nNoOfChannels++].NetworkID  = NETID_HSCAN;
+                default:
                     break;
             }
         }
     }
-    /* Return the operation result */
-    return nResult;
+    // Return the operation result
+    return nReturn;
 }
 
 /**
  * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
  *
- * This function will create find number of hardware connected.
- * It will create network as per hardware count.
- * This will popup hardware selection dialog in case there are more
- * hardware present.
+ * This is USB Specific function.This function will create
+ * find number of hardware connected. It will create network as
+ * per hardware count. This will popup hardware selection dialog
+ * in case there are more hardware present.
  */
 static int nInitHwNetwork()
 {
+    int nDevices = 0;
     int nReturn = -1;
+    // Select Hardware
+    // This function will be called only for USB mode
+    nReturn = nGetNoOfConnectedHardware(nDevices);
+    m_bInSimMode = (nDevices == 0);
 
-    /* Select Hardware */
-    nReturn = nGetNoOfConnectedHardware();
-
-    /* Capture only Driver Not Running event
-     * Take action based on number of Hardware Available
-     */
+    // Assign the device count
+    sg_ucNoOfHardware = (UCHAR)nDevices;
+    // Capture only Driver Not Running event
+    // Take action based on number of Hardware Available
     TCHAR acNo_Of_Hw[MAX_STRING] = {0};
-    _stprintf(acNo_Of_Hw, _T("Number of neoVIs Available: %d"), nNumberOfDevices);
+    _stprintf(acNo_Of_Hw, _T("Number of neoVIs Available: %d"), nDevices);
+    // No Hardware found
 
-    /* No Hardware found */
-    if( nNumberOfDevices == 0 )
+    if( nDevices == 0 )
     {
         MessageBox(NULL,m_omErrStr, NULL, MB_OK | MB_ICONERROR);
         nReturn = -1;
     }
-    /* Available hardware is lesser then the supported channels */
+    // Available hardware is lesser then the supported channels
     else
     {
-        s_DatIndThread.m_bToContinue = TRUE;
-        s_DatIndThread.m_bIsConnected = FALSE;
-        nReturn = 0;
+        // Check whether channel selection dialog is required
+        if( nDevices > 1 )
+        {
+            // Get the selection from the user. This will also
+            // create and assign the networks
+            nReturn = nCreateMultipleHardwareNetwork();
+        }
+        else
+        {
+            // Use available one hardware
+            nReturn = nCreateSingleHardwareNetwork();
+        }
     }
     return nReturn;
+}
+
+/**
+ * \return Returns defERR_OK if successful otherwise corresponding Error code.
+ *
+ * This function will initialise hardware handlers of USB. This
+ * will establish the connection with driver. This will create or
+ * connect to the network. This will create client for USB. For
+ * parallel port mode this will initialise connection with the
+ * driver.
+ */
+static int nConnectToDriver()
+{
+    int nReturn = -1;
+
+    if( sg_bIsDriverRunning == TRUE )
+    {
+        // Select Hardware or Simulation Network
+        nReturn = nInitHwNetwork();
+    }
+    return nReturn;
+}
+
+/**
+ * \return TRUE if the driver is running. FALSE - IF it is not running
+ */
+static BOOL bGetDriverStatus()
+{
+    sg_bIsDriverRunning = TRUE;
+    return TRUE;
 }
 
 /**
@@ -1267,22 +1431,79 @@ static int nSetBaudRate()
 {
     int nReturn = 0;
 
-    /* Set baud rate to all available hardware */
-    for( UINT unIndex = 0; unIndex < m_nNoOfChannels; unIndex++)
+    // Set baud rate to all available hardware
+    for( UINT unIndex = 0;
+            unIndex < sg_odHardwareNetwork.m_nNoOfChannels;
+            unIndex++)
     {
         FLOAT fBaudRate = (FLOAT)_tstof(sg_ControllerDetails[unIndex].m_omStrBaudrate);
         int nBitRate = (INT)(fBaudRate * 1000);
 
-        /* Set the baudrate */
-        nReturn = (*icsneoSetBitRate)(m_aodChannels[unIndex].hObject, nBitRate, m_aodChannels[unIndex].NetworkID);
-        if (nReturn != 1)
+        // Set the baudrate
+        nReturn = (*icsneoSetBitRate)(m_anhObject[unIndex], nBitRate, NETID_HSCAN);
+        if (nReturn != NEOVI_OK)
         {
-            unIndex = m_nNoOfChannels;
+            unIndex = sg_odHardwareNetwork.m_nNoOfChannels;
         }
         else
         {
             nReturn = 0;
         }
+    }
+
+    return nReturn;
+}
+
+/**
+ * \return Returns defERR_OK if successful otherwise corresponding Error code.
+ * This function will set the warning limit of the controller. In
+ * USB mode this is not supported as the warning limit is
+ * internally set to 96
+ */
+static int nSetWarningLimit()
+{
+    for (UINT i = 0; i < sg_podActiveNetwork->m_nNoOfChannels; i++)
+    {
+        CChannel& odChannel = sg_podActiveNetwork->m_aodChannels[i];
+        m_unWarningLimit[i] = odChannel.m_ucWarningLimit;
+    }
+    return defERR_OK; // Multiple return statements had to be added because
+    // neoVI specific codes and simulation related codes need to coexist.
+    // Code for the later still employs Peak API interface.
+}
+
+/**
+ * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
+ *
+ * This function will set the filter information.
+ */
+static int nSetFilter( )
+{
+    return 0;
+}
+
+/**
+ * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
+ *
+ * This function will set all controller parameters. This will
+ * set Baud rate, Filter, Warning Limit and Controller Mode. In
+ * case of USB the warning limit call will be ignored.
+ */
+static int nSetApplyConfiguration()
+{
+    int nReturn = defERR_OK;
+
+    // Set Hardware Mode
+    if ((nReturn = nSetHardwareMode(sg_ucControllerMode)) == defERR_OK)
+    {
+        // Set Filter
+        nReturn = nSetFilter();
+    }
+    // Set warning limit only for hardware network
+    if ((nReturn == defERR_OK) && (sg_ucControllerMode != defUSB_MODE_SIMULATE))
+    {
+        // Set Warning Limit
+        nReturn = nSetWarningLimit();
     }
 
     return nReturn;
@@ -1298,12 +1519,12 @@ static int nSetBaudRate()
  */
 static int nTestHardwareConnection(UCHAR& ucaTestResult, UINT nChannel) //const
 {
-    BYTE aucConfigBytes[1024];
+    BYTE aucConfigBytes[CONFIGBYTES_TOTAL];
     int nReturn = 0;
     int nConfigBytes = 0;
-    if (nChannel < m_nNoOfChannels)
+    if (nChannel < sg_odHardwareNetwork.m_nNoOfChannels)
     {
-        if ((*icsneoGetConfiguration)(m_aodChannels[nChannel].hObject, aucConfigBytes, &nConfigBytes) == 1)
+        if ((icsneoGetConfiguration(m_anhObject[nChannel], aucConfigBytes, &nConfigBytes) == NEOVI_OK))
         {
             ucaTestResult = TRUE;
         }
@@ -1326,18 +1547,19 @@ static int nTestHardwareConnection(UCHAR& ucaTestResult, UINT nChannel) //const
 static int nDisconnectFromDriver()
 {
     int nReturn = 0;
-    int nErrors = 0;
-    BYTE i;
-    for (i = 0; i < m_nNoOfChannels; i++)
-    {
-        if (m_aodChannels[i].hObject != 0)
-        {
-			/* First disconnect the COM */
-            if ((*icsneoClosePort)(m_aodChannels[i].hObject, &nErrors) == 1)
-            {
-				(*icsneoFreeObject)(m_aodChannels[i].hObject);
-                m_aodChannels[i].hObject = 0;
+    sg_bIsDriverRunning = FALSE;
 
+    int nErrors = 0;
+    for (BYTE i = 0; i < sg_ucNoOfHardware; i++)
+    {
+        if (m_anhObject[i] != 0)
+        {
+            // First disconnect the COM
+            //(*icsneoFreeObject)(m_anhObject[i]);
+
+            if ((*icsneoClosePort)(m_anhObject[i], &nErrors) == 1)
+            {
+                m_anhObject[i] = 0;
             }
             else
             {
@@ -1361,34 +1583,49 @@ static int nDisconnectFromDriver()
 static int nConnect(BOOL bConnect, BYTE /*hClient*/)
 {
     int nReturn = -1;
+    BYTE aucConfigBytes[CONFIGBYTES_TOTAL];
+    int nConfigBytes = 0;
 
     if (!sg_bIsConnected && bConnect) // Disconnected and to be connected
     {
-        UINT i;
-		NeoDevice *pNeoDevice_last = NULL;
-        for (i = 0; i < m_nNoOfChannels; i++)
+        for (UINT i = 0; i < sg_podActiveNetwork->m_nNoOfChannels; i++)
         {
-            NeoDevice *pNeoDevice = m_aodChannels[i].pNeoDevice;
-			if ((pNeoDevice_last == pNeoDevice) && (m_aodChannels[i-1].hObject != 0)) {
-				/* device is already open */
-				m_aodChannels[i].hObject = m_aodChannels[i-1].hObject;
-			} else {
-				/* open the device */
-				nReturn = (*icsneoOpenNeoDevice)(pNeoDevice, &(m_aodChannels[i].hObject), NULL, 1, 0);
-				if (nReturn == 1) // Hardware is present
-				{
-					/* OpenPort and this function must be called together. */
-					// CTimeManager::bReinitOffsetTimeValForICSneoVI();
+            nReturn = (*icsneoOpenNeoDevice)(neoDevices, &(m_anhObject[i]), NULL, 1, 0);
 
-					/* Transit into 'CREATE TIME MAP' state */
-					sg_byCurrState = CREATE_MAP_TIMESTAMP;
-					nSetBaudRate();
-					sg_bIsConnected = bConnect;
-					s_DatIndThread.m_bIsConnected = sg_bIsConnected;
-					nReturn = defERR_OK;
-				}
-			}
-			pNeoDevice_last = pNeoDevice;
+            if (nReturn != NEOVI_OK)
+            {
+                // In such a case it is wiser to carry out disconnecting
+                nDisconnectFromDriver(); // operations from the driver
+
+                // Try again
+                (*icsneoOpenNeoDevice)(neoDevices, &(m_anhObject[i]), NULL, 1, 0);
+
+                /* Checking return value of this function is not important
+                because GetConfig function (called to check for the hardware
+                presence) renders us the necessary information */
+                nReturn = (*icsneoGetConfiguration)(m_anhObject[i], aucConfigBytes,
+                                                    &nConfigBytes);
+            }
+            if (nReturn == NEOVI_OK) // Hardware is present
+            {
+                // OpenPort and this function must be called together.
+                // CTimeManager::bReinitOffsetTimeValForICSneoVI();
+                // Transit into 'CREATE TIME MAP' state
+                sg_byCurrState = CREATE_MAP_TIMESTAMP;
+                if (i == (sg_podActiveNetwork->m_nNoOfChannels -1))
+                {
+                    //Only at the last it has to be called
+                    nSetBaudRate();
+                    sg_bIsConnected = bConnect;
+                    s_DatIndThread.m_bIsConnected = sg_bIsConnected;
+                }
+                nReturn = defERR_OK;
+            }
+            else // Hardware is not present
+            {
+
+                // Display the error message when not called from COM interface
+            }
         }
     }
     else if (sg_bIsConnected && !bConnect) // Connected & to be disconnected
@@ -1407,36 +1644,155 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
 }
 
 /**
- * Perform initialization operations
+ * Function to set API function pointers
+ */
+HRESULT GetICS_neoVI_APIFuncPtrs(void)
+{
+    LRESULT unResult = 0;
+    if (sg_hDll != NULL)
+    {
+        //Check1
+        icsneoFindNeoDevices = (FINDNEODEVICES) GetProcAddress(sg_hDll, "icsneoFindNeoDevices");
+        if (NULL == icsneoFindNeoDevices)
+        {
+            unResult = unResult | (1<<0);
+        }
+        //Check2
+        icsneoOpenNeoDevice = (OPENNEODEVICE) GetProcAddress(sg_hDll, "icsneoOpenNeoDevice");
+        if (NULL == icsneoOpenNeoDevice)
+        {
+            unResult = unResult | (1<<1);
+        }
+        //Check3
+        icsneoClosePort  = (CLOSEPORT) GetProcAddress(sg_hDll, "icsneoClosePort");
+        if (NULL == icsneoClosePort)
+        {
+            unResult = unResult | (1<<2);
+        }
+        //Check4
+        icsneoFreeObject = (FREEOBJECT) GetProcAddress(sg_hDll, "icsneoFreeObject");
+        if (NULL == icsneoFreeObject)
+        {
+            unResult = unResult | (1<<3);
+        }
+
+        //Check5
+        icsneoGetMessages = (GETMESSAGES) GetProcAddress(sg_hDll, "icsneoGetMessages");
+        if (NULL == icsneoGetMessages)
+        {
+            unResult = unResult | (1<<4);
+        }
+        //Check6
+        icsneoTxMessages = (TXMESSAGES) GetProcAddress(sg_hDll, "icsneoTxMessages");
+        if (NULL == icsneoTxMessages)
+        {
+            unResult = unResult | (1<<5);
+        }
+        //Check7
+        icsneoWaitForRxMessagesWithTimeOut = (WAITFORRXMSGS) GetProcAddress(sg_hDll, "icsneoWaitForRxMessagesWithTimeOut");
+        if (NULL == icsneoWaitForRxMessagesWithTimeOut)
+        {
+            unResult = unResult | (1<<6);
+        }
+        //Check8
+        icsneoEnableNetworkRXQueue = (ENABLERXQUEUE) GetProcAddress(sg_hDll, "icsneoEnableNetworkRXQueue");
+        if (NULL == icsneoEnableNetworkRXQueue)
+        {
+            unResult = unResult | (1<<7);
+        }
+        //Check9
+        icsneoGetTimeStampForMsg = (GETTSFORMSG) GetProcAddress(sg_hDll, "icsneoGetTimeStampForMsg");
+        if (NULL == icsneoGetTimeStampForMsg)
+        {
+            unResult = unResult | (1<<8);
+        }
+
+        //Check10
+        icsneoGetConfiguration  = (GETCONFIG) GetProcAddress(sg_hDll, "icsneoGetConfiguration");
+        if (NULL == icsneoGetConfiguration)
+        {
+            unResult = unResult | (1<<9);
+        }
+        //Check11
+        icsneoSendConfiguration  = (SENDCONFIG) GetProcAddress(sg_hDll, "icsneoSendConfiguration");
+        if (NULL == icsneoSendConfiguration)
+        {
+            unResult = unResult | (1<<10);
+        }
+        //Check12
+        icsneoSetBitRate = (SETBITRATE) GetProcAddress(sg_hDll, "icsneoSetBitRate");
+        if (NULL == icsneoSetBitRate)
+        {
+            unResult = unResult | (1<<11);
+        }
+
+        //Check13
+        icsneoGetLastAPIError  = (GETLASTAPIERROR) GetProcAddress(sg_hDll, "icsneoGetLastAPIError");
+        if (NULL == icsneoGetLastAPIError)
+        {
+            unResult = unResult | (1<<12);
+        }
+        //Check14
+        icsneoGetErrorMessages  = (GETERRMSGS) GetProcAddress(sg_hDll, "icsneoGetErrorMessages");
+        if (NULL == icsneoGetErrorMessages)
+        {
+            unResult = unResult | (1<<13);
+        }
+        //Check15
+        icsneoGetErrorInfo = (GETERRORINFO) GetProcAddress(sg_hDll, "icsneoGetErrorInfo");
+        if (NULL == icsneoGetErrorInfo)
+        {
+            unResult = unResult | (1<<14);
+        }
+
+        //Check16
+        icsneoGetDLLVersion  = (GETDLLVERSION) GetProcAddress(sg_hDll, "icsneoGetDLLVersion");
+        if (NULL == icsneoGetDLLVersion)
+        {
+            unResult = unResult | (1<<15);
+        }
+
+        //check for error
+        if (unResult != 0)
+        {
+            FreeLibrary(sg_hDll);
+        }
+    }
+    else
+    {
+        unResult = S_FALSE;
+    }
+    return (HRESULT) unResult;
+}
+
+/**
+ * Perform initialization operations specific to TZM
  */
 USAGEMODE HRESULT CAN_ICS_neoVI_PerformInitOperations(void)
 {
-    /* Register Monitor client */
-    DWORD dwClientID = 0;
-    CAN_ICS_neoVI_RegisterClient(TRUE, dwClientID, CAN_MONITOR_NODE);
-
+    //Register Monitor client
+    CAN_ICS_neoVI_RegisterClient(TRUE, sg_dwClientID, CAN_MONITOR_NODE);
+    sg_podActiveNetwork = &sg_odHardwareNetwork;
     return S_OK;
 }
 
 /**
- * Perform closure operations
+ * Perform closure operations specific to TZM
  */
 USAGEMODE HRESULT CAN_ICS_neoVI_PerformClosureOperations(void)
 {
     HRESULT hResult = S_OK;
-
     UINT ClientIndex = 0;
     while (sg_unClientCnt > 0)
     {
         bRemoveClient(sg_asClientToBufMap[ClientIndex].dwClientID);
     }
-
     hResult = CAN_ICS_neoVI_DeselectHwInterface();
+
     if (hResult == S_OK)
     {
         sg_bCurrState = STATE_DRIVER_SELECTED;
     }
-
     return hResult;
 }
 
@@ -1451,7 +1807,6 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT
     {
         *QueryTickCount = sg_QueryTickCount;
     }
-
     return S_OK;
 }
 
@@ -1463,26 +1818,42 @@ USAGEMODE HRESULT CAN_ICS_neoVI_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInter
 {
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;
-
-    if (nInitHwNetwork() == 0)
+    if (bGetDriverStatus())
     {
-        nCount = m_nNoOfChannels;
-        for (UINT i = 0; i < m_nNoOfChannels; i++)
+        if (nConnectToDriver() == CAN_USB_OK)
         {
-            asSelHwInterface[i].m_dwIdInterface = i;
-            unsigned int serialNumber = m_aodChannels[i].pNeoDevice->SerialNumber;
-            _stprintf(asSelHwInterface[i].m_acDescription, _T("%d"), serialNumber);
-            hResult = S_OK;
-            sg_bCurrState = STATE_HW_INTERFACE_LISTED;
+            nCount = sg_ucNoOfHardware;
+            for (UINT i = 0; i < sg_ucNoOfHardware; i++)
+            {
+                asSelHwInterface[i].m_dwIdInterface = m_anComPorts[i];
+                _stprintf(asSelHwInterface[i].m_acDescription, _T("%d"), m_anSerialNumbers[i]);
+                hResult = S_OK;
+                sg_bCurrState = STATE_HW_INTERFACE_LISTED;
+            }
+        }
+        else
+        {
+            hResult = NO_HW_INTERFACE;
+            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Error connecting to driver"));
         }
     }
     else
     {
-        hResult = NO_HW_INTERFACE;
-        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Error connecting to driver"));
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Error in getting driver status"));
     }
-
     return hResult;
+}
+
+/**
+ * \param[in] bHardwareReset Reset Mode: TRUE - Hardware Reset, FALSE - Software Reset
+ * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
+ *
+ * This function will do controller reset. In case of USB mode
+ * Software Reset will be simulated by Client Reset.
+ */
+static int nResetHardware(BOOL /*bHardwareReset*/)
+{
+    return 0;
 }
 
 /**
@@ -1504,7 +1875,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_DeselectHwInterface(void)
 /**
  * Function to select hardware interface chosen by the user
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_SelectHwInterface(const INTERFACE_HW_LIST& /*asSelHwInterface*/, INT /*nCount*/)
+USAGEMODE HRESULT CAN_ICS_neoVI_SelectHwInterface(const INTERFACE_HW_LIST& asSelHwInterface, INT /*nCount*/)
 {
     USES_CONVERSION;
 
@@ -1512,10 +1883,26 @@ USAGEMODE HRESULT CAN_ICS_neoVI_SelectHwInterface(const INTERFACE_HW_LIST& /*asS
 
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_LISTED, ERR_IMPROPER_STATE);
 
-    /* Check for the success */
-    sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
+    HRESULT hResult = S_FALSE;
 
-    return S_OK;
+    if (bGetDriverStatus())
+    {
+        //Select the interface
+        for (UINT i = 0; i < sg_ucNoOfHardware; i++)
+        {
+            m_anComPorts[i] = (INT)asSelHwInterface[i].m_dwIdInterface;
+            m_anSerialNumbers[i] = _ttoi(asSelHwInterface[i].m_acDescription);
+        }
+        //Check for the success
+        sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
+        hResult = S_OK;
+    }
+    else
+    {
+        hResult = S_FALSE;
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Driver is not running..."));
+    }
+    return hResult;
 }
 
 /**
@@ -1527,9 +1914,19 @@ USAGEMODE HRESULT CAN_ICS_neoVI_SetConfigData(PCHAR ConfigFile, int Length)
 
     USES_CONVERSION;
 
+    HRESULT hResult = S_FALSE;
     memcpy((void*)sg_ControllerDetails, (void*)ConfigFile, Length);
-
-    return S_OK;
+    int nReturn = nSetApplyConfiguration();
+    if (nReturn == defERR_OK)
+    {
+        hResult = S_OK;
+    }
+    else
+    {
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__,
+                               _T("Controller configuration failed"));
+    }
+    return hResult;
 }
 
 BOOL Callback_DILTZM(BYTE /*Argument*/, PBYTE pDatStream, int /*Length*/)
@@ -1547,98 +1944,15 @@ USAGEMODE HRESULT CAN_ICS_neoVI_DisplayConfigDlg(PCHAR& InitData, int& Length)
 
     VALIDATE_POINTER_RETURN_VAL(InitData, Result);
     PSCONTROLER_DETAILS pControllerDetails = (PSCONTROLER_DETAILS)InitData;
-
-    /* First initialize with existing hw description */
-    for (UINT i = 0; i < m_nNoOfChannels; i++)
+    //First initialize with existing hw description
+    for (INT i = 0; i < min(Length, sg_ucNoOfHardware); i++)
     {
-        unsigned int serialNumber = m_aodChannels[i].pNeoDevice->SerialNumber;
-        char netid_str[256];
-        if ((m_aodChannels[i].pNeoDevice->DeviceType == NEODEVICE_VCAN3) && (serialNumber >= 50000)) {
-            switch (m_aodChannels[i].NetworkID) {
-                case NETID_HSCAN:
-                    strncpy(&netid_str[0], "CAN 1", sizeof(netid_str));
-                    break;
-                case NETID_MSCAN:
-                    strncpy(&netid_str[0], "CAN 2", sizeof(netid_str));
-                    break;
-            }
-        }
-        else
-        {
-            switch (m_aodChannels[i].NetworkID) {
-                case NETID_HSCAN:
-                    strncpy(&netid_str[0], "HSCAN", sizeof(netid_str));
-                    break;
-                case NETID_MSCAN:
-                    strncpy(&netid_str[0], "MSCAN", sizeof(netid_str));
-                    break;
-                case NETID_SWCAN:
-                    strncpy(&netid_str[0], "SWCAN", sizeof(netid_str));
-                    break;
-                case NETID_LSFTCAN:
-                    strncpy(&netid_str[0], "LSFTCAN", sizeof(netid_str));
-                    break;
-                case NETID_FIRE_HSCAN1:
-                    strncpy(&netid_str[0], "HSCAN1", sizeof(netid_str));
-                    break;
-                case NETID_FIRE_MSCAN1:
-                    strncpy(&netid_str[0], "MSCAN1", sizeof(netid_str));
-                    break;
-                case NETID_FIRE_SWCAN:
-                    strncpy(&netid_str[0], "SWCAN", sizeof(netid_str));
-                    break;
-                case NETID_FIRE_LSFT:
-                    strncpy(&netid_str[0], "LSFT", sizeof(netid_str));
-                    break;
-            }
-        }
-
-        switch (m_aodChannels[i].pNeoDevice->DeviceType) {
-                /* neoVI Blue */
-            case NEODEVICE_BLUE:
-                _stprintf(pControllerDetails[i].m_omHardwareDesc,
-                          _T("neoVI Blue, Serial Number %d, Network: %s"),
-                          serialNumber, &netid_str[0]);
-                break;
-
-                /* ValueCAN */
-            case NEODEVICE_DW_VCAN:
-                _stprintf(pControllerDetails[i].m_omHardwareDesc,
-                          _T("ValueCAN, Serial Number %d, Network: %s"),
-                          serialNumber, &netid_str[0]);
-                break;
-
-                /* neoVI Fire/Red */
-            case NEODEVICE_FIRE:
-                _stprintf(pControllerDetails[i].m_omHardwareDesc,
-                          _T("neoVi Fire/Red, Serial Number %d, Network: %s"),
-                          serialNumber, &netid_str[0]);
-                break;
-
-                /* ValueCAN3 */
-            case NEODEVICE_VCAN3:
-                if (serialNumber < 50000) {
-                    _stprintf(pControllerDetails[i].m_omHardwareDesc,
-                              _T("ValueCAN3, Serial Number %d, Network: %s"),
-                              serialNumber, &netid_str[0]);
-                } else {
-                    _stprintf(pControllerDetails[i].m_omHardwareDesc,
-                              _T("ES581.3, Serial Number %d, Network: %s"),
-                              serialNumber-50000, &netid_str[0]);
-                }
-                break;
-
-            default:
-                _stprintf(pControllerDetails[i].m_omHardwareDesc,
-                          _T("Unknown, Serial Number %d"), serialNumber);
-                break;
-        };
+        _stprintf(pControllerDetails[i].m_omHardwareDesc, _T("Serial Number %d"), m_anSerialNumbers[i]);
     }
-
-    if (m_nNoOfChannels > 0)
+    if (sg_ucNoOfHardware > 0)
     {
         int nResult = DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DILTZM,
-                                              pControllerDetails, m_nNoOfChannels, DRIVER_CAN_ICS_NEOVI);
+                                              pControllerDetails, sg_ucNoOfHardware, DRIVER_CAN_ICS_NEOVI);
         switch (nResult)
         {
             case WARNING_NOTCONFIRMED:
@@ -1650,6 +1964,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_DisplayConfigDlg(PCHAR& InitData, int& Length)
             {
                 bLoadDataFromContr(pControllerDetails);
                 memcpy(sg_ControllerDetails, pControllerDetails, sizeof (SCONTROLER_DETAILS) * defNO_OF_CHANNELS);
+                nSetApplyConfiguration();
                 memcpy(InitData, (void*)sg_ControllerDetails, sizeof (SCONTROLER_DETAILS) * defNO_OF_CHANNELS);
                 Length = sizeof(SCONTROLER_DETAILS) * defNO_OF_CHANNELS;
                 Result = INFO_INITDAT_CONFIRM_CONFIG;
@@ -1705,7 +2020,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_StartHardware(void)
         {
             BYTE hClient = sg_asClientToBufMap[ClientIndex].hClientHandle;
             hResult = nConnect(TRUE, hClient);
-            if (hResult == defERR_OK)
+            if (hResult == CAN_USB_OK)
             {
                 hResult = S_OK;
                 sg_bCurrState = STATE_CONNECTED;
@@ -1735,7 +2050,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_StopHardware(void)
         BYTE hClient = sg_asClientToBufMap[ClientIndex].hClientHandle;
 
         hResult = nConnect(FALSE, hClient);
-        if (hResult == defERR_OK)
+        if (hResult == CAN_USB_OK)
         {
             hResult = S_OK;
             sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
@@ -1745,7 +2060,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_StopHardware(void)
             //log the error for open port failure
             vRetrieveAndLog(hResult, __FILE__, __LINE__);
             hResult = ERR_LOAD_HW_INTERFACE;
-            ClientIndex = sg_unClientCnt; // break the loop
+            ClientIndex = sg_unClientCnt; //break the loop
         }
     }
     return hResult;
@@ -1782,22 +2097,25 @@ static BOOL bClientIdExist(const DWORD& dwClientId)
  * \param sErrorCount Error Counter Structure
  * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
  *
- * This function will return the error counter values.
+ * This function will return the error counter values. In case of USB this is not supported.
  */
 static int nGetErrorCounter( UINT unChannel, SERROR_CNT& sErrorCount)
 {
     int nReturn = -1;
 
-    /* Check for the valid channel index */
-    if( unChannel < m_nNoOfChannels )
+    // Check for the valid channel index
+    if( unChannel < sg_podActiveNetwork->m_nNoOfChannels )
     {
-        /* Get the channel reference */
-        CChannel& odChannel = m_aodChannels[ unChannel ];
-
-        /* Assign the error counter value */
+        // Get the channel reference
+        CChannel& odChannel = sg_podActiveNetwork->m_aodChannels[ unChannel ];
+        // Assign the error counter value
         sErrorCount.m_ucRxErrCount = odChannel.m_ucRxErrorCounter;
         sErrorCount.m_ucTxErrCount = odChannel.m_ucTxErrorCounter;
         nReturn = defERR_OK;
+    }
+    else
+    {
+        // Invalid channel ID. Help debugging
     }
 
     return nReturn;
@@ -1809,14 +2127,15 @@ static int nGetErrorCounter( UINT unChannel, SERROR_CNT& sErrorCount)
 USAGEMODE HRESULT CAN_ICS_neoVI_ResetHardware(void)
 {
     HRESULT hResult = S_FALSE;
-
-    /* Stop the hardware if connected */
-    CAN_ICS_neoVI_StopHardware(); // return value not necessary
+    // Stop the hardware if connected
+    CAN_ICS_neoVI_StopHardware(); //return value not necessary
     if (sg_sParmRThread.bTerminateThread())
     {
-        hResult = S_OK;
+        if (nResetHardware(TRUE) == CAN_USB_OK)
+        {
+            hResult = S_OK;
+        }
     }
-
     return hResult;
 }
 
@@ -1864,17 +2183,15 @@ static int nWriteMessage(STCAN_MSG sMessage)
 {
     int nReturn = -1;
 
-    /* Return when in disconnected state */
-    //if (!sg_bIsConnected) return nReturn;
+    // Return when in disconnected state
+    if (!sg_bIsConnected) return nReturn;
 
-    if ((sMessage.m_ucChannel > 0) &&
-            (sMessage.m_ucChannel <= m_nNoOfChannels))
+    if (sg_podActiveNetwork != NULL &&
+            sMessage.m_ucChannel > 0 &&
+            sMessage.m_ucChannel <= sg_podActiveNetwork->m_nNoOfChannels)
     {
-        int hObject    = m_aodChannels[sMessage.m_ucChannel - 1].hObject;
-        int lNetworkID = m_aodChannels[sMessage.m_ucChannel - 1].NetworkID;
         icsSpyMessage SpyMsg;
-        //memset(&SpyMsg, 0, sizeof(SpyMsg));
-        memcpy(&SpyMsg.ArbIDOrHeader, &sMessage.m_unMsgID, sizeof(UINT));
+        memcpy(&(SpyMsg.ArbIDOrHeader), &(sMessage.m_unMsgID), sizeof(UINT));
         SpyMsg.NumberBytesData = sMessage.m_ucDataLen;
         SpyMsg.StatusBitField = 0;
         SpyMsg.StatusBitField2 = 0;
@@ -1886,14 +2203,15 @@ static int nWriteMessage(STCAN_MSG sMessage)
         {
             SpyMsg.StatusBitField |= SPY_STATUS_XTD_FRAME;
         }
-        memcpy(&SpyMsg.Data, &sMessage.m_ucData, sMessage.m_ucDataLen);
-        if ((*icsneoTxMessages)(hObject, &SpyMsg, lNetworkID, 1) != 0)
+        memcpy(SpyMsg.Data, sMessage.m_ucData, sMessage.m_ucDataLen);
+        if ((*icsneoTxMessages)(m_anhObject[(int)(sMessage.m_ucChannel) - 1], &SpyMsg, NETID_HSCAN, 1) != 0)
         {
             nReturn = 0;
         }
     }
-
-    return nReturn;
+    return nReturn; // Multiple return statements had to be added because
+    // neoVI specific codes and simulation related codes need to coexist.
+    // Code for the later still employs Peak API interface.
 }
 
 /**
@@ -1906,15 +2224,14 @@ USAGEMODE HRESULT CAN_ICS_neoVI_SendMsg(DWORD dwClientID, const STCAN_MSG& sMess
     HRESULT hResult = S_FALSE;
     if (bClientIdExist(dwClientID))
     {
-        if (sMessage.m_ucChannel <= m_nNoOfChannels)
+        if (sMessage.m_ucChannel <= sg_ucNoOfHardware)
         {
             sAckMap.m_ClientID = dwClientID;
-            sAckMap.m_MsgID    = sMessage.m_unMsgID;
-            sAckMap.m_Channel  = sMessage.m_ucChannel;
-
-            /* Mark an entry in Map. This is helpful to identify
-               which client has been sent this message in later stage */
-            sg_asAckMapBuf.push_back(sAckMap);
+            sAckMap.m_MsgID = sMessage.m_unMsgID;
+            sAckMap.m_Channel = sMessage.m_ucChannel;
+            /*Mark an entry in Map. This is helpful to idendify
+              which client has been sent this message in later stage*/
+            vMarkEntryIntoMap(sAckMap);
             if (nWriteMessage(sMessage) == defERR_OK)
             {
                 hResult = S_OK;
@@ -1929,7 +2246,6 @@ USAGEMODE HRESULT CAN_ICS_neoVI_SendMsg(DWORD dwClientID, const STCAN_MSG& sMess
     {
         hResult = ERR_NO_CLIENT_EXIST;
     }
-
     return hResult;
 }
 
@@ -1956,7 +2272,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
  */
 USAGEMODE HRESULT CAN_ICS_neoVI_GetLastErrorString(CHAR* acErrorStr, int nLength)
 {
-    /* TODO: Add your implementation code here */
+    // TODO: Add your implementation code here
     int nCharToCopy = (int) (strlen(sg_acErrStr));
     if (nCharToCopy > nLength)
     {
@@ -1968,24 +2284,13 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetLastErrorString(CHAR* acErrorStr, int nLength
 }
 
 /**
- * Set application parameters specific to CAN_ICS_neoVI
+ * Set application parameters specific to CAN_USB
  */
 USAGEMODE HRESULT CAN_ICS_neoVI_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
 {
     sg_hOwnerWnd = hWndOwner;
     sg_pIlog = pILog;
-
-    /* Initialise both the time parameters */
-    GetLocalTime(&sg_CurrSysTime);
-    sg_TimeStamp = 0x0;
-
-    /* Query Tick Count */
-    sg_QueryTickCount.QuadPart = 0;
-
-    /* INITIALISE_ARRAY(sg_acErrStr); */
-    memset(sg_acErrStr, 0, sizeof(sg_acErrStr));
-    CAN_ICS_neoVI_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
-
+    vInitialiseAllData();
     return S_OK;
 }
 
@@ -1997,10 +2302,9 @@ static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFS
         if (pBuf == sClientObj.pClientBuf[i])
         {
             bExist = TRUE;
-            i = sClientObj.unBufCount; // break the loop
+            i = sClientObj.unBufCount; //break the loop
         }
     }
-
     return bExist;
 }
 
@@ -2015,10 +2319,9 @@ static DWORD dwGetAvailableClientSlot()
         }
         else
         {
-            i = MAX_CLIENT_ALLOWED; // break the loop
+            i = MAX_CLIENT_ALLOWED; //break the loop
         }
     }
-
     return nClientId;
 }
 
@@ -2036,10 +2339,10 @@ USAGEMODE HRESULT CAN_ICS_neoVI_RegisterClient(BOOL bRegister,DWORD& ClientID, T
             INT Index = 0;
             if (!bClientExist(pacClientName, Index))
             {
-                /* Currently store the client information */
+                //Currently store the client information
                 if (_tcscmp(pacClientName, CAN_MONITOR_NODE) == 0)
                 {
-                    /* First slot is reserved to monitor node */
+                    //First slot is reserved to monitor node
                     ClientID = 1;
                     _tcscpy(sg_asClientToBufMap[0].pacClientName, pacClientName);
                     sg_asClientToBufMap[0].dwClientID = ClientID;
@@ -2086,7 +2389,6 @@ USAGEMODE HRESULT CAN_ICS_neoVI_RegisterClient(BOOL bRegister,DWORD& ClientID, T
             hResult = ERR_NO_CLIENT_EXIST;
         }
     }
-
     return hResult;
 }
 
@@ -2101,7 +2403,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBase
             SCLIENTBUFMAP &sClientObj = sg_asClientToBufMap[unClientIndex];
             if (bAction == MSGBUF_ADD)
             {
-                /* Add msg buffer */
+                //Add msg buffer
                 if (pBufObj != NULL)
                 {
                     if (sClientObj.unBufCount < MAX_BUFF_ALLOWED)
@@ -2120,15 +2422,13 @@ USAGEMODE HRESULT CAN_ICS_neoVI_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBase
             }
             else if (bAction == MSGBUF_CLEAR)
             {
-                /* clear msg buffer */
-                if (pBufObj != NULL)
+                //clear msg buffer
+                if (pBufObj != NULL) //REmove only buffer mentioned
                 {
-                    /* Remove only buffer mentioned */
                     bRemoveClientBuffer(sClientObj.pClientBuf, sClientObj.unBufCount, pBufObj);
                 }
-                else
+                else //Remove all
                 {
-                    /* Remove all */
                     for (UINT i = 0; i < sClientObj.unBufCount; i++)
                     {
                         sClientObj.pClientBuf[i] = NULL;
@@ -2136,6 +2436,10 @@ USAGEMODE HRESULT CAN_ICS_neoVI_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBase
                     sClientObj.unBufCount = 0;
                 }
                 hResult = S_OK;
+            }
+            else
+            {
+                ////ASSERT(FALSE);
             }
         }
         else
@@ -2147,7 +2451,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBase
     {
         if (bAction == MSGBUF_CLEAR)
         {
-            /* clear msg buffer */
+            //clear msg buffer
             for (UINT i = 0; i < sg_unClientCnt; i++)
             {
                 CAN_ICS_neoVI_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, NULL);
@@ -2160,7 +2464,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBase
 }
 
 /**
- * Function to load driver icsneo40.dll
+ * Function to load driver CanApi2.dll
  */
 USAGEMODE HRESULT CAN_ICS_neoVI_LoadDriverLibrary(void)
 {
@@ -2170,60 +2474,25 @@ USAGEMODE HRESULT CAN_ICS_neoVI_LoadDriverLibrary(void)
 
     if (sg_hDll != NULL)
     {
-        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("icsneo40.dll already loaded"));
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("icsneo.dll already loaded"));
         hResult = DLL_ALREADY_LOADED;
     }
 
-    if (hResult == S_OK)
+    if (S_OK == hResult)
     {
-        sg_hDll = LoadLibrary("icsneo40.dll");
+        sg_hDll = LoadLibrary(_T("icsneo40.dll"));
         if (sg_hDll == NULL)
         {
-            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("icsneo40.dll loading failed"));
+            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("CanApi2.dll loading failed"));
             hResult = ERR_LOAD_DRIVER;
         }
         else
         {
-            icsneoFindNeoDevices               = (FINDNEODEVICES)   GetProcAddress(sg_hDll, "icsneoFindNeoDevices"              );
-            icsneoOpenNeoDevice                = (OPENNEODEVICE)    GetProcAddress(sg_hDll, "icsneoOpenNeoDevice"               );
-            icsneoClosePort                    = (CLOSEPORT)        GetProcAddress(sg_hDll, "icsneoClosePort"                   );
-            icsneoFreeObject                   = (FREEOBJECT)       GetProcAddress(sg_hDll, "icsneoFreeObject"                  );
-            icsneoGetDLLVersion                = (GETDLLVERSION)    GetProcAddress(sg_hDll, "icsneoGetDLLVersion"               );
-
-            icsneoTxMessages                   = (TXMESSAGES)       GetProcAddress(sg_hDll, "icsneoTxMessages"                  );
-            icsneoGetMessages                  = (GETMESSAGES)      GetProcAddress(sg_hDll, "icsneoGetMessages"                 );
-            icsneoWaitForRxMessagesWithTimeOut = (WAITFORRXMSGS)    GetProcAddress(sg_hDll, "icsneoWaitForRxMessagesWithTimeOut");
-            icsneoGetTimeStampForMsg           = (GETTSFORMSG)      GetProcAddress(sg_hDll, "icsneoGetTimeStampForMsg"          );
-            icsneoEnableNetworkRXQueue         = (ENABLERXQUEUE)    GetProcAddress(sg_hDll, "icsneoEnableNetworkRXQueue"        );
-
-            icsneoGetConfiguration             = (GETCONFIG)        GetProcAddress(sg_hDll, "icsneoGetConfiguration"            );
-            icsneoSendConfiguration            = (SENDCONFIG)       GetProcAddress(sg_hDll, "icsneoSendConfiguration"           );
-            icsneoGetFireSettings              = (GETFIRESETTINGS)  GetProcAddress(sg_hDll, "icsneoGetFireSettings"             );
-            icsneoSetFireSettings              = (SETFIRESETTINGS)  GetProcAddress(sg_hDll, "icsneoSetFireSettings"             );
-            icsneoGetVCAN3Settings             = (GETVCAN3SETTINGS) GetProcAddress(sg_hDll, "icsneoGetVCAN3Settings"            );
-            icsneoSetVCAN3Settings             = (SETVCAN3SETTINGS) GetProcAddress(sg_hDll, "icsneoSetVCAN3Settings"            );
-            icsneoSetBitRate                   = (SETBITRATE)       GetProcAddress(sg_hDll, "icsneoSetBitRate"                  );
-            icsneoGetDeviceParameters          = (GETDEVICEPARMS)   GetProcAddress(sg_hDll, "icsneoGetDeviceParameters"         );
-            icsneoSetDeviceParameters          = (SETDEVICEPARMS)   GetProcAddress(sg_hDll, "icsneoSetDeviceParameters"         );
-
-            icsneoGetLastAPIError              = (GETLASTAPIERROR)  GetProcAddress(sg_hDll, "icsneoGetLastAPIError"             );
-            icsneoGetErrorMessages             = (GETERRMSGS)       GetProcAddress(sg_hDll, "icsneoGetErrorMessages"            );
-            icsneoGetErrorInfo                 = (GETERRORINFO)     GetProcAddress(sg_hDll, "icsneoGetErrorInfo"                );
-
-            /* check for error */
-            if(!icsneoFindNeoDevices               || !icsneoOpenNeoDevice       ||
-               !icsneoClosePort                    || !icsneoFreeObject          ||
-               !icsneoTxMessages                   || !icsneoGetMessages         ||
-               !icsneoWaitForRxMessagesWithTimeOut || !icsneoGetTimeStampForMsg  ||
-               !icsneoEnableNetworkRXQueue         || !icsneoGetConfiguration    ||
-               !icsneoSendConfiguration            || !icsneoGetFireSettings     ||
-               !icsneoSetFireSettings              || !icsneoGetVCAN3Settings    ||
-               !icsneoSetVCAN3Settings             || !icsneoSetBitRate          ||
-               !icsneoGetDeviceParameters          || !icsneoSetDeviceParameters ||
-               !icsneoGetLastAPIError              || !icsneoGetErrorMessages    ||
-               !icsneoGetErrorInfo                 || !icsneoGetDLLVersion)
+            int nResult = GetICS_neoVI_APIFuncPtrs();
+            if (nResult != 0)
             {
-                FreeLibrary(sg_hDll);
+                // Log list of the function pointers non-retrievable
+                // TO DO: specific information on failure in getting function pointer
                 sg_pIlog->vLogAMessage(A2T(__FILE__),
                                        __LINE__, _T("Getting Process address of the APIs failed"));
                 hResult = ERR_LOAD_DRIVER;
@@ -2242,12 +2511,13 @@ USAGEMODE HRESULT CAN_ICS_neoVI_UnloadDriverLibrary(void)
     // Don't bother about the success & hence the result
     CAN_ICS_neoVI_DeselectHwInterface();
 
+    // Store the Boardinfo to global variable
+
     if (sg_hDll != NULL)
     {
         FreeLibrary(sg_hDll);
         sg_hDll = NULL;
     }
-
     return S_OK;
 }
 
@@ -2264,7 +2534,6 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetCntrlStatus(const HANDLE& hEvent, UINT& unCnt
         sg_hCntrlStateChangeEvent = hEvent;
     }
     unCntrlStatus = static_cast<UINT>(sg_ucControllerMode);
-
     return S_OK;
 }
 
@@ -2278,14 +2547,15 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetControllerParams(LONG& lParam, UINT nChannel,
 
             case NUMBER_HW:
             {
-                lParam = m_nNoOfChannels;
+                lParam = sg_ucNoOfHardware;
             }
             break;
             case NUMBER_CONNECTED_HW:
             {
-                if (nGetNoOfConnectedHardware() > 0)
+                int nConHwCnt = 0;
+                if (nGetNoOfConnectedHardware(nConHwCnt) == NEOVI_OK)
                 {
-                    lParam = m_nNoOfChannels;
+                    lParam = nConHwCnt;
                 }
                 else
                 {
@@ -2295,12 +2565,12 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetControllerParams(LONG& lParam, UINT nChannel,
             break;
             case DRIVER_STATUS:
             {
-                lParam = true;
+                lParam = sg_bIsDriverRunning;
             }
             break;
             case HW_MODE:
             {
-                if (nChannel < m_nNoOfChannels)
+                if (nChannel < sg_ucNoOfHardware)
                 {
                     lParam = sg_ucControllerMode;
                     if( sg_ucControllerMode == 0 || sg_ucControllerMode > defMODE_SIMULATE )
@@ -2337,17 +2607,15 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetControllerParams(LONG& lParam, UINT nChannel,
     {
         hResult = ERR_IMPROPER_STATE;
     }
-
     return hResult;
 }
 
 USAGEMODE HRESULT CAN_ICS_neoVI_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM /*eContrParam*/)
 {
     HRESULT hResult = S_FALSE;
-
     if ((sg_bCurrState == STATE_CONNECTED) || (sg_bCurrState == STATE_HW_INTERFACE_SELECTED))
     {
-        if (nChannel <= m_nNoOfChannels)
+        if (nChannel <= sg_ucNoOfHardware)
         {
             if (nGetErrorCounter(nChannel, sErrorCnt) == defERR_OK)
             {
@@ -2363,6 +2631,5 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChann
     {
         hResult = ERR_IMPROPER_STATE;
     }
-
     return hResult;
 }

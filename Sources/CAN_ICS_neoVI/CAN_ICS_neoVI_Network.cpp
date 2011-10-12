@@ -14,32 +14,40 @@
  */
 
 /**
- * \file      CAN_ICS_neoVI.h
- * \brief     Exports API functions for IntrepidCS neoVI CAN Hardware interface
+ * \file      CAN_ICS_neoVI/CAN_ICS_neoVI_Network.cpp
+ * \brief     Implementation file for CNetwork class
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Exports API functions for IntrepidCS neoVI CAN Hardware interface
+ * Implementation file for CNetwork class
  */
-#pragma once
 
-#ifndef __AFXWIN_H__
-#error include 'stdafx.h' before including this file for PCH
+//#include "stdafx.h"         // For standard includes
+#include "CAN_ICS_neoVI_stdafx.h"
+#include "CAN_ICS_neoVI_Channel.h" // For CChannel class declaration
+#include "CAN_ICS_neoVI_Network.h" // For CNetwork class declaration
+
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char THIS_FILE[]=__FILE__;
+#define new DEBUG_NEW
 #endif
 
-
+/**
+ * Standard default constructor
+ */
+CNetwork::CNetwork()
+{
+    // Initialise members
+    // Number of chennals present or initialised
+    m_nNoOfChannels = 0;
+}
 
 /**
- * See CAN_ICS_neoVI.cpp for the implementation of this class
+ * Standard Destructor
  */
-class CCAN_ICS_neoVIApp : public CWinApp
+CNetwork::~CNetwork()
 {
-public:
-    CCAN_ICS_neoVIApp();
 
-// Overrides
-public:
-    virtual BOOL InitInstance();
-
-    DECLARE_MESSAGE_MAP()
-};
+}
