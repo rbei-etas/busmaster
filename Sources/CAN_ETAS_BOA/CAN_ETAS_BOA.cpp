@@ -1020,6 +1020,13 @@ void vProcessRxMsg(void *userData, struct OCI_CANMessage* msg)
 }
 
 /**
+ * Processes Tx msg.
+ */
+void vProcessTxMsg(void* /*userData*/, OCI_CANMessage* /*msg*/)
+{
+}
+
+/**
  * Copies OCI_CANErrorFrameMessage struct into STCANDATA.
  */
 void vCopyOCI_CAN_ERR_2_RBIN_DATA(const OCI_CANErrorFrameMessage* SrcMsg, STCANDATA* DestMsg)
@@ -1153,13 +1160,17 @@ void vProcessErrMsg(void *userData, struct OCI_CANMessage* msg)
  */
 static void (OCI_CALLBACK ProcessCanData)(void *userData, struct OCI_CANMessage* msg)
 {
-    if (msg->type == OCI_CAN_RX_MESSAGE)
-    {        
-        vProcessRxMsg(userData, msg);
-    }
-    else if (msg->type == OCI_CAN_ERROR_FRAME)
+    switch (msg->type)
     {
-        vProcessErrMsg(userData, msg);
+        case OCI_CAN_RX_MESSAGE:
+            vProcessRxMsg(userData, msg);
+            break;
+        case OCI_CAN_TX_MESSAGE:
+            vProcessTxMsg(userData, msg);
+            break;
+        case OCI_CAN_ERROR_FRAME:
+            vProcessErrMsg(userData, msg);
+            break;
     }
 }
 
@@ -1192,16 +1203,16 @@ void vProcessQueueEvent(void* /*userData*/, struct OCI_CANMessage* /*msg*/)
  */
 void vProcessTimerEvent(void* /*userData*/, struct OCI_CANMessage* msg)
 {
-    if (msg->data.timerEventMessage.eventCode == OCI_TIMER_EVENT_SYNC_LOCK)
+    switch (msg->data.timerEventMessage.eventCode)
     {
-        SetEvent(sg_hEvent);
-        vCreateTimeModeMapping(sg_hEvent);
+        case OCI_TIMER_EVENT_SYNC_LOCK:
+            SetEvent(sg_hEvent);
+            vCreateTimeModeMapping(sg_hEvent);
+            break;
+        case OCI_TIMER_EVENT_SYNC_LOSS:
+            //Nothing at this moment
+            break;
     }
-    if (msg->data.timerEventMessage.eventCode == OCI_TIMER_EVENT_SYNC_LOSS)
-    {
-        //Nothing at this moment
-    }
-
 }
 
 /**
@@ -1209,22 +1220,21 @@ void vProcessTimerEvent(void* /*userData*/, struct OCI_CANMessage* msg)
  * when there is internal bus event.
  */
 void (OCI_CALLBACK ProcessEvents)(void *userData, struct OCI_CANMessage* msg)
-{    
-    if (msg->type == OCI_CAN_BUS_EVENT)
+{
+    switch (msg->type)
     {
-        vProcessBusEvent(userData, msg);
-    }
-    else if (msg->type == OCI_CAN_INTERNAL_ERROR_EVENT)
-    {
-        vProcessInternalErrEvent(userData, msg);
-    }
-    else if (msg->type == OCI_CAN_QUEUE_EVENT)
-    {
-        vProcessQueueEvent(userData, msg);
-    }
-    else if (msg->type == OCI_CAN_TIMER_EVENT)
-    {
-        vProcessTimerEvent(userData, msg);
+        case OCI_CAN_BUS_EVENT:
+            vProcessBusEvent(userData, msg);
+            break;
+        case OCI_CAN_INTERNAL_ERROR_EVENT:
+            vProcessInternalErrEvent(userData, msg);
+            break;
+        case OCI_CAN_QUEUE_EVENT:
+            vProcessQueueEvent(userData, msg);
+            break;
+        case OCI_CAN_TIMER_EVENT:
+            vProcessTimerEvent(userData, msg);
+            break;
     }
 }
 
