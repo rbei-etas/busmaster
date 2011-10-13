@@ -37,17 +37,9 @@ const UINT DEFAULT_FILE_SIZE_IN_BYTES = DEFAULT_FILE_SIZE_IN_MBYTES * MB_VALUE;
 #define MAX_LOG_FILE_IN_GRP              9
 #define FILE_COUNT_STR                    _T("_%d")
 
-//********************************************************************************
-//	Function Name	 	: CBaseLogObject
-//	Input(s)	      	: none
-//	Output				: none
-//	Description			: Contructor
-//	Member of			: CBaseLogObject
-//	Friend of			: None
-//	Author				: Arun Kumar
-//	Creation Date		: 10/11/06
-//	Modifications		:
-//********************************************************************************
+/**
+ * Contructor
+ */
 CBaseLogObject::CBaseLogObject()                       
 {
     // Initialise the logging block
@@ -61,22 +53,18 @@ CBaseLogObject::CBaseLogObject()
     m_dTotalBytes = 0;
     InitializeCriticalSection(&m_CritSection);
 }
-//********************************************************************************
-//	Function Name	 	: ~CBaseLogObject
-//	Input(s)	      	: none
-//	Output				: none
-//	Description			: Destructor
-//	Member of			: CBaseLogObject
-//	Friend of			: None
-//	Author				: Arun Kumar
-//	Creation Date		: 10/11/06
-//	Modifications		: R. Choudhury -- deleting the critical section
-//********************************************************************************
+
+/**
+ * Destructor
+ */
 CBaseLogObject::~CBaseLogObject()
 {
     DeleteCriticalSection(&m_CritSection);
 }
 
+/**
+ * Equal operator
+ */
 CBaseLogObject& CBaseLogObject::operator=(const CBaseLogObject& RefObj)
 {
     RefObj.GetLogInfo(m_sLogInfo);
@@ -89,21 +77,33 @@ CBaseLogObject& CBaseLogObject::operator=(const CBaseLogObject& RefObj)
     return *this;
 }
 
+/**
+ * Enable / disable logging
+ */
 void CBaseLogObject::EnableLogging(BOOL bEnable)
 {
     m_sLogInfo.m_bEnabled = bEnable;
 }
 
+/**
+ * Query - if logging is enable
+ */
 BOOL CBaseLogObject::IsLoggingEnable(void)
 {
     return m_sLogInfo.m_bEnabled;
 }
 
+/**
+ * Get the log info structure
+ */
 void CBaseLogObject::GetLogInfo(SLOGINFO& sLoginfo) const
 {
     sLoginfo = m_sLogInfo;
 }
 
+/**
+ * Set Log info structure
+ */
 void CBaseLogObject::SetLogInfo(const SLOGINFO& sLoginfo)
 {
     m_sLogInfo = sLoginfo;
@@ -113,6 +113,9 @@ void CBaseLogObject::SetLogInfo(const SLOGINFO& sLoginfo)
     vGetNameAndSizeOfCurrentLogFile();
 }
 
+/**
+ * Set configuration data
+ */
 BYTE* CBaseLogObject::SetConfigData(BYTE* pvDataStream)
 {
     BYTE* pbSStream = pvDataStream;
@@ -125,6 +128,9 @@ BYTE* CBaseLogObject::SetConfigData(BYTE* pvDataStream)
     return pbSStream;
 }
 
+/**
+ * Get configuration data
+ */
 BYTE* CBaseLogObject::GetConfigData(BYTE* pvDataStream) const
 {
     BYTE* pbTStream = pvDataStream;
@@ -134,16 +140,25 @@ BYTE* CBaseLogObject::GetConfigData(BYTE* pvDataStream) const
     return pbTStream;
 }
 
+/**
+ * To get the total buffer size
+ */
 UINT CBaseLogObject::unGetBufSize(void) const
 {
 	return (m_sLogInfo.unGetSize() + Der_unGetBufSize());
 }
 
+/**
+ * To get the ID
+ */
 UINT CBaseLogObject::GetID(void)
 {
     return m_sLogInfo.m_ushID;
 }
 
+/**
+ * To log a string
+ */
 BOOL CBaseLogObject::bLogString(CString& omStr)
 {
     if (m_sLogInfo.m_bEnabled == FALSE) 
@@ -251,6 +266,12 @@ CString CBaseLogObject::omRemoveGroupCountFromFileName(CString FileName)
     return FileName;
 }
 
+/**
+ * \brief Start logging
+ * \req RS_12_23 Start logging
+ *
+ * To do actions before logging starts.
+ */
 BOOL CBaseLogObject::bStartLogging(void)
 {
     BOOL bResult = FALSE;
@@ -276,17 +297,12 @@ BOOL CBaseLogObject::bStartLogging(void)
     return bResult;
 }
 
-/*******************************************************************************
-//  Function Name  : bStopLogging
-//  Input(s)       : none
-//  Output         : none
-//  Description    : Logging stops.
-//  Member of      : CBaseLogObject
-//	Friend of	   : None
-//	Author		   : Arun Kumar
-//	Creation Date  : 10/11/06
-//	Modifications  :
-*******************************************************************************/
+/**
+ * \brief Stop logging
+ * \req RS_12_24 Stop logging
+ *
+ * To do actions before logging stop.
+ */
 BOOL CBaseLogObject::bStopLogging()
 {
 	BOOL bResult = FALSE;
@@ -309,6 +325,10 @@ BOOL CBaseLogObject::bStopLogging()
 
 #define MIN_NAME_LENGTH    5
 
+/**
+ * Find the name and size of the file which will be used for logging.
+ * ie. file name which contains max file count
+ */
 void CBaseLogObject::vGetNameAndSizeOfCurrentLogFile()
 {
     //Two conditions to search for the current file present at the main file 
@@ -368,6 +388,9 @@ void CBaseLogObject::vGetNameAndSizeOfCurrentLogFile()
     }
 }
 
+/**
+ * Get size of the file
+ */
 DWORD CBaseLogObject::dwGetFileSize(CString omFileName)
 {
     DWORD dwFileSize = 0;
