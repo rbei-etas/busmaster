@@ -341,7 +341,7 @@ USAGEMODE int GetDatastorageConfig(DATASTORAGEINFO* StorageInfo)
 
 /**
  * \brief Perform data storage operation after selection
- * \param operation is OPEN, SAVE or CLOSE 
+ * \param[in] operation is OPEN, SAVE or CLOSE 
  * \req RS_06_03 - Perform data storage operation after selection
  *
  * Perform data storage operation after selection.
