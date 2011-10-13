@@ -20,26 +20,24 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This contains project configuration class implementation.
+ * Implementation of the ProjConfig class.
  */
-
-// ProjConfig.cpp: implementation of the ProjConfig class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #include "StdAfx_ProjectConfiguration.h"
 #include "ProjectConfiguration_extern.h"
 #include "ProjConfig.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
-
+/**
+ * \brief Construction
+ */
 CProjConfig::CProjConfig()
 {
     vClearMap();
 }
 
+/**
+ * \brief Destruction
+ */
 CProjConfig::~CProjConfig()
 {
 	vClearMap();

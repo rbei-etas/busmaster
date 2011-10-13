@@ -15,15 +15,12 @@
 
 /**
  * \file      ProjectConfiguration.cpp
- * \brief     This contains the dll entry point function and 
+ * \brief     This contains the dll entry point function and defines the entry point for the DLL application.
  * \authors   Anish Kumar, Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This contains the dll entry point function and 
+ * This contains the dll entry point function and defines the entry point for the DLL application.
  */
-
-// ProjectConfiguration.cpp : Defines the entry point for the DLL application.
-//
 
 #include "StdAfx_ProjectConfiguration.h"
 #include "ProjectConfiguration.h"
@@ -81,23 +78,23 @@ static DATASTORAGEINFO sdataStorageInfo;
 BEGIN_MESSAGE_MAP(CProjectConfigurationApp, CWinApp)
 END_MESSAGE_MAP()
 
-
-// CProjectConfigurationApp construction
-
+/**
+ * CProjectConfigurationApp construction
+ */
 CProjectConfigurationApp::CProjectConfigurationApp()
 {
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
 }
 
-
-// The one and only CProjectConfigurationApp object
-
+/**
+ * The one and only CProjectConfigurationApp object
+ */
 CProjectConfigurationApp theApp;
 
-
-// CProjectConfigurationApp initialization
-
+/**
+ * CProjectConfigurationApp initialization
+ */
 BOOL CProjectConfigurationApp::InitInstance()
 {
 	CWinApp::InitInstance();
@@ -105,9 +102,13 @@ BOOL CProjectConfigurationApp::InitInstance()
 	return TRUE;
 }
 
-/*  PROJECT TABLE RELATED FUNCTIONS */
-
-
+/**
+ * \brief Adds a project entry in the project table or modifies an existing one
+ * \req RS_06_06 - Adds a project entry in the project table or modifies an existing one
+ *
+ * Adds a project entry in the project table or modifies an existing one.
+ * This is a project table related function.
+ */
 USAGEMODE int AddModifyProjectTable(string& ProjectName, PROJECTDATA* ProjData)
 {
 	int nReturn = 0;
@@ -121,6 +122,13 @@ USAGEMODE int AddModifyProjectTable(string& ProjectName, PROJECTDATA* ProjData)
 	return nReturn;
 }
 
+/**
+ * \brief Deletes the project entry from the project table
+ * \req RS_06_07 - Deletes the project entry from the project table
+ *
+ * Deletes the project entry from the project table.
+ * This is a project table related function.
+ */
 USAGEMODE int DeleteProjectTable(string& ProjectName)
 {
 	int nReturn = 0;
@@ -134,7 +142,13 @@ USAGEMODE int DeleteProjectTable(string& ProjectName)
 	return nReturn;
 }
 
-// Getters
+/**
+ * \brief Get total number of projects in the project table
+ * \req RS_06_04 - Get total number of projects in the project table
+ *
+ * Get total number of projects in the project table.
+ * This is a project table related function.
+ */
 USAGEMODE int GetProjectCount(void)
 {
 	int nReturn = 0;
@@ -148,6 +162,13 @@ USAGEMODE int GetProjectCount(void)
 	return nReturn;
 }
 
+/**
+ * \brief Get project name list from the project table
+ * \req RS_06_05 - Get project name list from the project table
+ *
+ * Get project name list from the project table.
+ * This is a project table related function.
+ */
 USAGEMODE int GetProjectList(LISTSTR* ProjList)
 {
 	int nReturn = 0;
@@ -161,6 +182,13 @@ USAGEMODE int GetProjectList(LISTSTR* ProjList)
 	return nReturn;
 }
 
+/**
+ * \brief Retrieves project data from the project table
+ * \req RS_06_08 - Retrieves project data from the project table
+ *
+ * Retrieves project data from the project table.
+ * This is a project table related function.
+ */
 USAGEMODE int GetProjectData(string& ProjName, PROJECTDATA& ProjData)
 {
 	int nReturn = 0;
@@ -174,8 +202,13 @@ USAGEMODE int GetProjectData(string& ProjName, PROJECTDATA& ProjData)
 	return nReturn;
 }
 
-/*  PROJECT TABLE RELATED FUNCTIONS */
-
+/**
+ * \brief Add a section or modify an existing one in the section table of the project
+ * \req RS_06_09 - Add a section or modify an existing one in the section table of the project
+ *
+ * Add a section or modify an existing one in the section table of the project.
+ * This is a section data related function.
+ */
 USAGEMODE int AddModifySectionData(string& ProjectName, string& SectionName, SECTIONDATA* SectionData)
 {
 	int nReturn = 0;
@@ -192,6 +225,13 @@ USAGEMODE int AddModifySectionData(string& ProjectName, string& SectionName, SEC
 	return nReturn;
 }
 
+/**
+ * \brief Gets information of that particular section from the section table of the project
+ * \req RS_06_11 - Gets information of that particular section from the section table of the project
+ *
+ * Gets information of that particular section from the section table of the project.
+ * This is a section data related function.
+ */
 USAGEMODE BOOL GetSectionData(string& ProjectName, string& SectionName, SECTIONDATA &SectionData)
 {
 	BOOL bReturn = 0;
@@ -205,6 +245,13 @@ USAGEMODE BOOL GetSectionData(string& ProjectName, string& SectionName, SECTIOND
 	return bReturn;
 }
 
+/**
+ * \brief Receives total number of sections from the section table of the project
+ * \req RS_06_12 - Receives total number of sections from the section table of the project
+ *
+ * Receives total number of sections from the section table of the project.
+ * This is a section data related function.
+ */
 USAGEMODE int GetSectionCount(string& ProjectName)
 {
 	int nReturn = 0;
@@ -218,6 +265,13 @@ USAGEMODE int GetSectionCount(string& ProjectName)
 	return nReturn;
 }
 
+/**
+ * \brief Retrieves list of all the section names from the section table of the project
+ * \req RS_06_13 - Retrieves list of all the section names from the section table of the project
+ *
+ * Retrieves list of all the section names from the section table of the project.
+ * This is a section data related function.
+ */
 USAGEMODE int GetSectionList(string& ProjectName, LISTSTR* SectionList)
 {
 	int nReturn = 0;
@@ -231,8 +285,13 @@ USAGEMODE int GetSectionList(string& ProjectName, LISTSTR* SectionList)
 	return nReturn;
 }
 
-// Basic operations
-
+/**
+ * \brief Set the present data storage configuration
+ * \req RS_06_01 - Set the present data storage configuration
+ *
+ * Set the present data storage configuration.
+ * This is a data storage related function.
+ */
 USAGEMODE int SetDatastorageConfig(DATASTORAGEINFO* StorageInfo)
 {
 	sdataStorageInfo.m_Datastore = StorageInfo->m_Datastore ;
@@ -251,6 +310,13 @@ USAGEMODE int SetDatastorageConfig(DATASTORAGEINFO* StorageInfo)
 	return 0;
 }
 
+/**
+ * \brief Get the presently selected data storage configuration
+ * \req RS_06_02 - Get the presently selected data storage configuration
+ *
+ * Get the presently selected data storage configuration.
+ * This is a data storage related function.
+ */
 USAGEMODE int GetDatastorageConfig(DATASTORAGEINFO* StorageInfo)
 {
 	StorageInfo->m_Datastore = sdataStorageInfo.m_Datastore;
@@ -273,6 +339,14 @@ USAGEMODE int GetDatastorageConfig(DATASTORAGEINFO* StorageInfo)
 	return 0;
 }
 
+/**
+ * \brief Perform data storage operation after selection
+ * \param operation is OPEN, SAVE or CLOSE 
+ * \req RS_06_03 - Perform data storage operation after selection
+ *
+ * Perform data storage operation after selection.
+ * This is a data storage related function.
+ */
 USAGEMODE int DoDatastorageOperation(short operation)
 {
 	int nReturn = 0;

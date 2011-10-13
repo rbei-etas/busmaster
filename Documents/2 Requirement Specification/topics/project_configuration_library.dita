@@ -17,7 +17,10 @@
       <li>Get the presently selected data storage configuration [RS_06_02].</li>
       <li>Perform data storage operation after selection. Options are OPEN, SAVE and CLOSE [RS_06_03].</li>
       <li>Get total number of projects in the project table [RS_06_04].</li>
-      <li>Get project name list from the project table [RS_06_05]. Function that, given name of the project ~</li>
+      <li>Get project name list from the project table [RS_06_05].</li>
+    </ol>
+    <p>Function that, given name of the project ~</p>
+    <ol>
       <li>And project data, adds a project entry in the project table or modifies an existing one [RS_06_06].</li>
       <li>Deletes the project entry from the project table [RS_06_07].</li>
       <li>Retrieves project data from the project table [RS_06_08].</li>
