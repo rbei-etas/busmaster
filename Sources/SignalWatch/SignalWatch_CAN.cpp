@@ -171,6 +171,13 @@ HRESULT CSignalWatch_CAN::SW_DoInitialization()
     //Start the read thread
     return bStartSigWatchReadThread()? S_OK: S_FALSE;
 }
+
+/**
+ * \req RS_18_01 Signal watch configuration dialog box
+ *
+ * Signal watch configuration dialog box
+ * lists frames / messages from the loaded database (combo box / list box).
+ */
 HRESULT CSignalWatch_CAN::SW_ShowAddDelSignalsDlg(CWnd* pParent, CMainEntryList* podMainSubList)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
@@ -187,10 +194,12 @@ HRESULT CSignalWatch_CAN::SW_ShowSigWatchWnd(CWnd* /*pParent*/, INT nCmd)
     }
     return S_FALSE;
 }
+
 HRESULT CSignalWatch_CAN::SW_GetConfigSize(void)
 {
     return (sizeof (WINDOWPLACEMENT) + sizeof(UINT) * defSW_LIST_COLUMN_COUNT);
 }
+
 HRESULT CSignalWatch_CAN::SW_GetConfigData(void* pbyConfigData)
 {
     WINDOWPLACEMENT WndPlace;
@@ -229,6 +238,9 @@ HRESULT CSignalWatch_CAN::SW_SetConfigData(const void* pbyConfigData)
     return S_OK;
 }
 
+/**
+ * \req RS_18_23 Popup menu item 'Clear' (clears the signal watch window)
+ */
 HRESULT CSignalWatch_CAN::SW_ClearSigWatchWnd(void)
 {
     if (m_pouSigWnd != NULL)
@@ -250,6 +262,7 @@ HRESULT CSignalWatch_CAN::SW_UpdateMsgInterpretObj(void* pvRefObj)
     LeaveCriticalSection(&m_omCritSecSW);
     return S_OK;
 }
+
 BOOL CSignalWatch_CAN::SW_IsWindowVisible()
 {
     BOOL bResult = FALSE;
@@ -259,6 +272,7 @@ BOOL CSignalWatch_CAN::SW_IsWindowVisible()
     }
     return bResult;
 }
+
 HRESULT CSignalWatch_CAN::SW_SetDisplayMode(BOOL bHex)
 {
     m_bHex = bHex;
