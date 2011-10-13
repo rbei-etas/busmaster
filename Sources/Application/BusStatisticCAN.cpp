@@ -221,6 +221,7 @@ HRESULT CBusStatisticCAN::BSC_ResetBusStatistic(void)
  * \req RS_24_08 Standard frames are considered.
  * \req RS_24_09 Extended frames are considered.
  * \req RS_24_10 RTR frames are considered.
+ * \req RS_24_16 Total data shall be presented.
  *
  * Returns the total number of valid messages transmitted to or
  * received from the bus.
@@ -481,6 +482,8 @@ HRESULT CBusStatisticCAN::BSC_GetTotalMsgCount(UINT unChannelIndex, eDirection e
  * \param[in] eDir can be DIR_RX, DIR_TX, DIR_ALL
  * \param[out] nErrCount contain the Total error count on function return
  * \return contain Error information
+ * \req RS_24_11 Error frames occurs under the purview of status data
+ * \req RS_24_16 Total data shall be presented.
  *
  * Returns the total number of error messages occurred while
  * receiving or transmitting
@@ -516,6 +519,7 @@ HRESULT CBusStatisticCAN::BSC_GetTotalErrCount(UINT unChannelIndex, eDirection e
  * \param[out] fMsgCount on return it will contain the Average message count per second.
  * \req RS_24_08 Standard frames are considered.
  * \req RS_24_09 Extended frames are considered.
+ * \req RS_24_17 Present moment data shall be presented.
  *
  * Returns average number of msgs per second (Msg/s)
  */
@@ -604,6 +608,8 @@ HRESULT CBusStatisticCAN::BSC_GetAvgMsgCountPerSec(UINT unChannelIndex,
  * \param[in] eDir can be DIR_RX, DIR_TX, DIR_ALL
  * \param[out] fErrCount on return it contain the Average Error count per Second.
  * \return contain Error information
+ * \req RS_24_11 Error frames occurs under the purview of status data
+ * \req RS_24_17 Present moment data shall be presented.
  *
  * Returns average number of errors per second (Err/s)
  */
@@ -636,6 +642,9 @@ HRESULT CBusStatisticCAN::BSC_GetAvgErrCountPerSec(UINT unChannelIndex,
  * \param[in] eLoad can be CURRENT, AVERAGE, PEAK
  * \param[out] dBusLoad on function return it contain Bus Load
  * \return contain Error information
+ * \req RS_24_12 Bus load status data set includes current load
+ * \req RS_24_13 Bus load status data set includes peak load
+ * \req RS_24_14 Bus load status data set includes average load
  *
  * Returns the bus load
  */
@@ -668,6 +677,10 @@ HRESULT CBusStatisticCAN::BSC_GetBusLoad(UINT unChannelIndex, eLOAD eLoad, doubl
  * \param[in] eLoad can be CURRENT, AVERAGE, PEAK
  * \param[out] ucErrCounter on return contains the error counter
  * \return contain Error information
+ * \req RS_24_11 Error frames occurs under the purview of status data
+ * \req RS_24_12 Bus load status data set includes current load
+ * \req RS_24_13 Bus load status data set includes peak load
+ * \req RS_24_14 Bus load status data set includes average load
  *
  * Returns controller status
  */
@@ -738,6 +751,7 @@ HRESULT CBusStatisticCAN::BSC_SetBaudRate(UINT unChannelIndex, double dBaudRate)
 
 /**
  * \return Controller status
+ * \req RS_24_18 Controller status data covers present controller status
  *
  * This Function renders controller status
  */
@@ -770,6 +784,7 @@ void CALLBACK CBusStatisticCAN::OnTimeWrapper(HWND, UINT, UINT_PTR, DWORD)
 
 /**
  * \return return the error state
+ * \req RS_24_15 Measurement period always begins (or resets) from the time of connection
  *
  * Starts the Read thread.
  */
@@ -782,10 +797,12 @@ BOOL CBusStatisticCAN::bStartBSReadThread(void)
 }
 
 /**
- * Initialises the m_sbusstatistics structor
  * \req RS_24_08 Standard frames are considered.
  * \req RS_24_09 Extended frames are considered.
  * \req RS_24_10 RTR frames are considered.
+ * \req RS_24_11 Error frames occurs under the purview of status data
+ *
+ * Initialises the m_sbusstatistics structor
  */
 void CBusStatisticCAN::vInitialiseBSData(void)
 {   
@@ -841,10 +858,12 @@ void CBusStatisticCAN::vCalculateDiffTime(void)
 }
 
 /**
- * Calculate the Bus statistics in m_sBusStatistics structure
  * \req RS_24_08 Standard frames are considered.
  * \req RS_24_09 Extended frames are considered.
  * \req RS_24_10 RTR frames are considered.
+ * \req RS_24_11 Error frames occurs under the purview of status data
+ *
+ * Calculate the Bus statistics in m_sBusStatistics structure
  */
 void CBusStatisticCAN::vUpdateBusStatistics(STCANDATA &sCanData)
 {
@@ -965,10 +984,20 @@ void CBusStatisticCAN::vUpdateBusStatistics(STCANDATA &sCanData)
 }
 
 /**
- * Calculates the Bus Statistics using m_sBusStatistics structure
  * \req RS_24_08 Standard frames are considered.
  * \req RS_24_09 Extended frames are considered.
  * \req RS_24_10 RTR frames are considered.
+ * \req RS_24_11 Error frames occurs under the purview of status data
+ * \req RS_24_12 Bus load status data set includes current load
+ * \req RS_24_13 Bus load status data set includes peak load
+ * \req RS_24_14 Bus load status data set includes average load
+ * \req RS_24_18 Controller status data covers present controller status
+ * \req RS_24_19 Controller status data covers present controller Tx Error Counter (peak)
+ * \req RS_24_20 Controller status data covers present controller Tx Error Counter (present)
+ * \req RS_24_21 Controller status data covers present controller Rx Error Counter (peak)
+ * \req RS_24_22 Controller status data covers present controller Rx Error Counter (present)
+ *
+ * Calculates the Bus Statistics using m_sBusStatistics structure
  */
 void CBusStatisticCAN::vCalculateBusParametres(void)
 {
