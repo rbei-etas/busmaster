@@ -28,18 +28,14 @@
 
 //Can interface to Bus Statistics
 void* CBusStatisticCAN:: sm_pouBSCan;
-/******************************************************************************
-Function Name   : ReadBSDataBuffer
-Input(s)        : CBusStatisticCAN* - contain the CBusStatisticCAN object
-Output          : int - Function return Status
-Functionality   : Updates the busstatistics parameters using 
-                  vUpdateBusStatistics Function
-Member of       : -
-Friend of       : -
-Author(s)       : Venkatanarayana Makam
-Date Created    : 07/09/2010
-Modifications   : 
-******************************************************************************/
+
+/**
+ * \param[in] pBSCan contain the CBusStatisticCAN object
+ * \return Function return Status
+ *
+ * Updates the busstatistics parameters using
+ * vUpdateBusStatistics Function
+ */
 int ReadBSDataBuffer(CBusStatisticCAN* pBSCan)
 {
 
@@ -65,18 +61,13 @@ int ReadBSDataBuffer(CBusStatisticCAN* pBSCan)
     }
     return 0;
 }
-/******************************************************************************
-Function Name  :  BSDataReadThreadProc
-Input(s)       :  pVoid - contains CBusStatisticCAN pointer
-Output         :  DWORD
-Functionality  :  Thread Function that is used to read the driver data and
-                  updates the Bus Statistics. 
-Member of      :  -
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  06/09/2010
-Modifications  :  
-******************************************************************************/
+
+/**
+ * \param[in] pVoid contains CBusStatisticCAN pointer
+ *
+ * Thread Function that is used to read the driver data and
+ * updates the Bus Statistics.
+ */
 DWORD WINAPI BSDataReadThreadProc(LPVOID pVoid)
 {    
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC *) pVoid;
@@ -127,18 +118,10 @@ DWORD WINAPI BSDataReadThreadProc(LPVOID pVoid)
     return 0;
 }
 
-/******************************************************************************
-Function Name  :  CBusStatisticCAN
-Input(s)       :  -
-Output         :  -
-Functionality  :  Constructor for CBusStatisticCAN which initialises
-                  critical section and event mechanism.
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  06/09/2010
-Modifications  :  
-******************************************************************************/
+/**
+ * Constructor for CBusStatisticCAN which initialises
+ * critical section and event mechanism.
+ */
 CBusStatisticCAN::CBusStatisticCAN(void)
 {
     InitializeCriticalSection(&m_omCritSecBS);
@@ -154,18 +137,11 @@ CBusStatisticCAN::CBusStatisticCAN(void)
     memcpy(m_unBitsExdMsg, unBitsEtdMsg, 9*sizeof(UINT));
     
 }
-/******************************************************************************
-Function Name  :  ~CBusStatisticCAN
-Input(s)       :  -
-Output         :  -
-Functionality  :   Destructor of CBusStatisticCAN and which deletes critical 
-                   section and terminates the thread.
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  06/09/2010
-Modifications  :  
-******************************************************************************/
+
+/**
+ * Destructor of CBusStatisticCAN and which deletes critical
+ * section and terminates the thread.
+ */
 CBusStatisticCAN::~CBusStatisticCAN(void)
 {
 
@@ -176,19 +152,12 @@ CBusStatisticCAN::~CBusStatisticCAN(void)
         KillTimer(NULL, m_nTimerHandle);
 }
 
-/******************************************************************************
-Function Name  :  BSC_DoInitialization
-Input(s)       :  -
-Output         :  HRESULT, contain Error information
-Functionality  :  Does the client registration with driver and starts the Read
-                  Tread.
-                    Initialises 
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  06/09/2010
-Modifications  :  
-******************************************************************************/
+/**
+ * \return contain Error information
+ *
+ * Does the client registration with driver and starts the Read
+ * Thread.
+ */
 HRESULT CBusStatisticCAN::BSC_DoInitialization(void)
 {
     if (DIL_GetInterface(CAN, (void**)&m_pouDIL_CAN) == S_OK)
@@ -205,17 +174,12 @@ HRESULT CBusStatisticCAN::BSC_DoInitialization(void)
     
     return bStartBSReadThread()?S_OK:S_FALSE;
 }
-/******************************************************************************
-Function Name  :  BSC_bStartUpdation
-Input(s)       :  bStart, if ture starts the TIMER otherwise kill the thread
-Output         :  BOOL
-Functionality  :  Starts or kills the timer. 
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  13/09/2010
-Modifications  :  
-******************************************************************************/
+
+/**
+ * \param[in] bStart if ture starts the TIMER otherwise kill the thread
+ *
+ * Starts or kills the timer.
+ */
 BOOL CBusStatisticCAN::BSC_bStartUpdation(BOOL bStart)
 {
     if(bStart == TRUE)
@@ -232,18 +196,13 @@ BOOL CBusStatisticCAN::BSC_bStartUpdation(BOOL bStart)
     }
     return 0;
 }
-/******************************************************************************
-Function Name  :  BSC_ResetBusStatistic
-Input(s)       :  -
-Output         :  HRESULT, contain Error information
-Functionality  :  This function resets the bus statistics structure using
-                  vInitialiseBSData() member function.
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  06/09/2010
-Modifications  :  
-******************************************************************************/
+
+/**
+ * \return contain Error information
+ *
+ * This function resets the bus statistics structure using
+ * vInitialiseBSData() member function.
+ */
 HRESULT CBusStatisticCAN::BSC_ResetBusStatistic(void)
 {
     EnterCriticalSection(&m_omCritSecBS);
@@ -253,26 +212,19 @@ HRESULT CBusStatisticCAN::BSC_ResetBusStatistic(void)
     return 0L;
 }
 
-/******************************************************************************
-Function Name  :  BSC_GetTotalMsgCount
-Input(s)       :  1.unChannelIndex can be CAN_CHANNEL_1, CAN_CHANNEL_2,
-                    CAN_CHANNEL_ALL
-                  2.eDir can be DIR_RX, DIR_TX, DIR_ALL
-                  3.byIdType can be TYPE_ID_CAN_STANDARD, TYPE_ID_CAN_EXTENDED,
-                    TYPE_ID_CAN_ALL
-                  4.byMsgType can be TYPE_MSG_CAN_RTR, TYPE_MSG_CAN_NON_RTR,
-                    TYPE_MSG_CAN_ALL
-                  5.nMsgCount Referance variable contains the resulted Total 
-                    message count
-Output         :  HRESULT, contain Error information
-Functionality  :  Returns the total number of valid messages transmitted to or 
-                  received from the bus.
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  06/09/2010
-Modifications  :  
-******************************************************************************/
+/**
+ * \param[in] unChannelIndex can be CAN_CHANNEL_1, CAN_CHANNEL_2, CAN_CHANNEL_ALL
+ * \param[in] eDir can be DIR_RX, DIR_TX, DIR_ALL
+ * \param[in] byIdType can be TYPE_ID_CAN_STANDARD, TYPE_ID_CAN_EXTENDED, TYPE_ID_CAN_ALL
+ * \param[in] byMsgType can be TYPE_MSG_CAN_RTR, TYPE_MSG_CAN_NON_RTR, TYPE_MSG_CAN_ALL
+ * \param[out] nMsgCount Referance variable contains the resulted Total message count
+ * \req RS_24_08 Standard frames are considered.
+ * \req RS_24_09 Extended frames are considered.
+ * \req RS_24_10 RTR frames are considered.
+ *
+ * Returns the total number of valid messages transmitted to or
+ * received from the bus.
+ */
 HRESULT CBusStatisticCAN::BSC_GetTotalMsgCount(UINT unChannelIndex, eDirection eDir, 
                                 BYTE byIdType, BYTE byMsgType, UINT& nMsgCount)
 {
@@ -524,21 +476,15 @@ HRESULT CBusStatisticCAN::BSC_GetTotalMsgCount(UINT unChannelIndex, eDirection e
     return 0;
 }
 
-/******************************************************************************
-Function Name  :  BSC_GetTotalErrCount
-Input(s)       :  1.unChannelIndex can be CAN_CHANNEL_1, CAN_CHANNEL_2,
-                    CAN_CHANNEL_ALL
-                  2.eDir can be DIR_RX, DIR_TX, DIR_ALL
-                  3.nErrCount contain the Total error count on function return
-Output         :  HRESULT, contain Error information
-Functionality  :  Returns the total number of error messages occurred while 
-                  receiving or transmitting  
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  06/09/2010
-Modifications  :  
-******************************************************************************/
+/**
+ * \param[in] unChannelIndex can be CAN_CHANNEL_1, CAN_CHANNEL_2, CAN_CHANNEL_ALL
+ * \param[in] eDir can be DIR_RX, DIR_TX, DIR_ALL
+ * \param[out] nErrCount contain the Total error count on function return
+ * \return contain Error information
+ *
+ * Returns the total number of error messages occurred while
+ * receiving or transmitting
+ */
 HRESULT CBusStatisticCAN::BSC_GetTotalErrCount(UINT unChannelIndex, eDirection eDir, 
                                                UINT& nErrCount)
 {
@@ -563,23 +509,16 @@ HRESULT CBusStatisticCAN::BSC_GetTotalErrCount(UINT unChannelIndex, eDirection e
     return 0;
 }
 
-/******************************************************************************
-Function Name  :  BSC_GetAvgMsgCountPerSec
-Input(s)       :  1.unChannelIndex can be CAN_CHANNEL_1, CAN_CHANNEL_2,
-                    CAN_CHANNEL_ALL
-                  2.eDir can be DIR_RX, DIR_TX, DIR_ALL
-                  3.byIdType can be TYPE_ID_CAN_STANDARD, TYPE_ID_CAN_EXTENDED,
-                    TYPE_ID_CAN_ALL
-                  4.fMsgCount, on return it will contain the Average message 
-                    count per second.
-Output         :  HRESULT, contain Error information
-Functionality  :  Returns average number of msgs per second(Msg/s) 
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  06/09/2010
-Modifications  :  
-******************************************************************************/
+/**
+ * \param[in] unChannelIndex can be CAN_CHANNEL_1, CAN_CHANNEL_2, CAN_CHANNEL_ALL
+ * \param[in] eDir can be DIR_RX, DIR_TX, DIR_ALL
+ * \param[in] byIdType can be TYPE_ID_CAN_STANDARD, TYPE_ID_CAN_EXTENDED, TYPE_ID_CAN_ALL
+ * \param[out] fMsgCount on return it will contain the Average message count per second.
+ * \req RS_24_08 Standard frames are considered.
+ * \req RS_24_09 Extended frames are considered.
+ *
+ * Returns average number of msgs per second (Msg/s)
+ */
 HRESULT CBusStatisticCAN::BSC_GetAvgMsgCountPerSec(UINT unChannelIndex, 
                               eDirection eDir, BYTE byIdType, double& dMsgRate)
 {
@@ -660,21 +599,14 @@ HRESULT CBusStatisticCAN::BSC_GetAvgMsgCountPerSec(UINT unChannelIndex,
     return 0L;
 }
 
-/******************************************************************************
-Function Name  :  BSC_GetAvgErrCountPerSec
-Input(s)       :  1.unChannelIndex can be CAN_CHANNEL_1, CAN_CHANNEL_2,
-                    CAN_CHANNEL_ALL
-                  2.eDir can be DIR_RX, DIR_TX, DIR_ALL
-                  3.fErrCount, on return it contain the Average Error count per
-                    Second.
-Output         :  HRESULT, contain Error information
-Functionality  :  Returns average number of errors per second(Err/s) 
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  06/09/2010
-Modifications  :  
-******************************************************************************/
+/**
+ * \param[in] unChannelIndex can be CAN_CHANNEL_1, CAN_CHANNEL_2, CAN_CHANNEL_ALL
+ * \param[in] eDir can be DIR_RX, DIR_TX, DIR_ALL
+ * \param[out] fErrCount on return it contain the Average Error count per Second.
+ * \return contain Error information
+ *
+ * Returns average number of errors per second (Err/s)
+ */
 HRESULT CBusStatisticCAN::BSC_GetAvgErrCountPerSec(UINT unChannelIndex, 
                                 eDirection eDir, double& dErrCount)
 {
@@ -699,20 +631,14 @@ HRESULT CBusStatisticCAN::BSC_GetAvgErrCountPerSec(UINT unChannelIndex,
     return 0L;
 }
 
-/******************************************************************************
-Function Name  :  BSC_GetBusLoad
-Input(s)       :  1.unChannelIndex can be CAN_CHANNEL_1, CAN_CHANNEL_2,
-                    CAN_CHANNEL_ALL
-                  2.eLoad can be CURRENT, AVERAGE, PEAK
-                  3.dBusLoad, on function return it contain Bus Load
-Output         :  HRESULT, contain Error information
-Functionality  :  Returns the bus load  
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  06/09/2010
-Modifications  :  
-******************************************************************************/
+/**
+ * \param[in] unChannelIndex can be CAN_CHANNEL_1, CAN_CHANNEL_2, CAN_CHANNEL_ALL
+ * \param[in] eLoad can be CURRENT, AVERAGE, PEAK
+ * \param[out] dBusLoad on function return it contain Bus Load
+ * \return contain Error information
+ *
+ * Returns the bus load
+ */
 HRESULT CBusStatisticCAN::BSC_GetBusLoad(UINT unChannelIndex, eLOAD eLoad, double &dBusLoad)
 {
     EnterCriticalSection(&m_omCritSecBS);
@@ -736,21 +662,15 @@ HRESULT CBusStatisticCAN::BSC_GetBusLoad(UINT unChannelIndex, eLOAD eLoad, doubl
     return 0L;
 }
 
-/******************************************************************************
-Function Name  : BSC_GetErrorCounter 
-Input(s)       : 1.unChannelIndex can be CAN_CHANNEL_1, CAN_CHANNEL_2,
-                   CAN_CHANNEL_ALL 
-                 2.eDir can be DIR_RX, DIR_TX, DIR_ALL
-                 3.eLoad can be CURRENT, AVERAGE, PEAK
-                 4.ucErrCounter, on return contains the error counter.
-Output         :  HRESULT, contain Error information
-Functionality  :  Returns controller status  
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  06/09/2010
-Modifications  :  
-******************************************************************************/
+/**
+ * \param[in] unChannelIndex can be CAN_CHANNEL_1, CAN_CHANNEL_2, CAN_CHANNEL_ALL
+ * \param[in] eDir can be DIR_RX, DIR_TX, DIR_ALL
+ * \param[in] eLoad can be CURRENT, AVERAGE, PEAK
+ * \param[out] ucErrCounter on return contains the error counter
+ * \return contain Error information
+ *
+ * Returns controller status
+ */
 HRESULT CBusStatisticCAN::BSC_GetErrorCounter(UINT unChannelIndex, eDirection eDir, 
                                               eLOAD eLoad, UCHAR &ucErrCounter)
 {
@@ -800,17 +720,12 @@ HRESULT CBusStatisticCAN::BSC_GetErrorCounter(UINT unChannelIndex, eDirection eD
     LeaveCriticalSection(&m_omCritSecBS);
     return 0L;
 }
-/******************************************************************************
-Function Name  :  BSC_SetBaudRate
-Input(s)       :  -
-Output         :  BOOL, return the error state
-Functionality  :  Starts the Read thread. 
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  06/09/2010
-Modifications  :  
-******************************************************************************/
+
+/**
+ * \return return the error state
+ *
+ * Starts the Read thread.
+ */
 HRESULT CBusStatisticCAN::BSC_SetBaudRate(UINT unChannelIndex, double dBaudRate)
 {
     EnterCriticalSection(&m_omCritSecBS);
@@ -820,53 +735,32 @@ HRESULT CBusStatisticCAN::BSC_SetBaudRate(UINT unChannelIndex, double dBaudRate)
     LeaveCriticalSection(&m_omCritSecBS);
     return 0L;
 }
-/******************************************************************************
-Function Name  :  BSC_ucGetControllerStatus
-Input(s)       :  1.UINT unChannelIndex
-Output         :  UCHAR Controller status
-Functionality  :  This Function renders controller status
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  09/09/2010
-Modifications  :  
-******************************************************************************/
+
+/**
+ * \return Controller status
+ *
+ * This Function renders controller status
+ */
 UCHAR CBusStatisticCAN::BSC_ucGetControllerStatus(UINT unChannelIndex)
 {
     return m_sBusStatistics[unChannelIndex].m_ucStatus;
 }
-/******************************************************************************
-Function Name  :  BSC_GetBusStatistics
-Input(s)       :  1.UINT unChannelIndex
-                  2.SBUSSTATISTICS will have the required channel's 
-                  BusStatistics
-Output         :  HRESULT function return status
-Functionality  :  This Function returns the required channel's BusStatistics
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  15/09/2010
-Modifications  :  
-******************************************************************************/
+
+/**
+ * \param[in] sBusStatistics will have the required channel's
+ * \return function return status
+ *
+ * This Function returns the required channel's BusStatistics
+ */
 HRESULT CBusStatisticCAN::BSC_GetBusStatistics(UINT unChannelIndex, SBUSSTATISTICS& sBusStatistics)
 {
     sBusStatistics = m_sBusStatistics[unChannelIndex];
     return S_OK;
 }
-/******************************************************************************
-Function Name  :  OnTimeWrapper
-Input(s)       :  1.hwnd - NULL
-                  2.uMsg - 0
-                  3.idEvent - 0
-                  4.dwTime - Time Elapsed
-Output         :  -
-Functionality  :  This Function will be called by the Timer event 
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  09/09/2010
-Modifications  :  
-******************************************************************************/
+
+/**
+ * This Function will be called by the Timer event
+ */
 void CALLBACK CBusStatisticCAN::OnTimeWrapper(HWND, UINT, UINT_PTR, DWORD)
 {
 
@@ -874,17 +768,11 @@ void CALLBACK CBusStatisticCAN::OnTimeWrapper(HWND, UINT, UINT_PTR, DWORD)
     pTempClass->vCalculateBusParametres(); // call non-static function
 }
 
-/******************************************************************************
-Function Name  :  bStartBSReadThread
-Input(s)       :  -
-Output         :  BOOL, return the error state
-Functionality  :  Starts the Read thread. 
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  06/09/2010
-Modifications  :  
-******************************************************************************/
+/**
+ * \return return the error state
+ *
+ * Starts the Read thread.
+ */
 BOOL CBusStatisticCAN::bStartBSReadThread(void)
 {   
     m_ouReadThread.m_pBuffer = this;
@@ -893,17 +781,12 @@ BOOL CBusStatisticCAN::bStartBSReadThread(void)
     return TRUE;
 }
 
-/******************************************************************************
-Function Name  :  vInitialiseBSData
-Input(s)       :  -
-Output         :  -
-Functionality  :  Initialises the m_sbusstatistics structor 
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  06/09/2010
-Modifications  :  
-******************************************************************************/
+/**
+ * Initialises the m_sbusstatistics structor
+ * \req RS_24_08 Standard frames are considered.
+ * \req RS_24_09 Extended frames are considered.
+ * \req RS_24_10 RTR frames are considered.
+ */
 void CBusStatisticCAN::vInitialiseBSData(void)
 {   
     EnterCriticalSection(&m_omCritSecBS);
@@ -936,17 +819,9 @@ void CBusStatisticCAN::vInitialiseBSData(void)
     LeaveCriticalSection(&m_omCritSecBS);
 }
 
-/******************************************************************************
-Function Name  :  vCalculateDiffTime
-Input(s)       :  -
-Output         :  -
-Functionality  :  Calculates the differential time in sec 
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  06/09/2010
-Modifications  :  
-******************************************************************************/
+/**
+ * Calculates the differential time in sec
+ */
 void CBusStatisticCAN::vCalculateDiffTime(void)
 {
 
@@ -965,17 +840,12 @@ void CBusStatisticCAN::vCalculateDiffTime(void)
     }
 }
 
-/******************************************************************************
-Function Name  :  vUpdateBusStatistics 
-Input(s)       :  sCanData 
-Output         :  - 
-Functionality  :  Calculate the Bus statistics in m_sBusStatistics structure
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  06/09/2010
-Modifications  :  
-******************************************************************************/
+/**
+ * Calculate the Bus statistics in m_sBusStatistics structure
+ * \req RS_24_08 Standard frames are considered.
+ * \req RS_24_09 Extended frames are considered.
+ * \req RS_24_10 RTR frames are considered.
+ */
 void CBusStatisticCAN::vUpdateBusStatistics(STCANDATA &sCanData)
 {
     EnterCriticalSection(&m_omCritSecBS);
@@ -1093,18 +963,13 @@ void CBusStatisticCAN::vUpdateBusStatistics(STCANDATA &sCanData)
     
    LeaveCriticalSection(&m_omCritSecBS);
 }
-/******************************************************************************
-Function Name  :  vCalculateBusParametres
-Input(s)       :  -
-Output         :  -
-Functionality  :  Claculates the Bus Statistics using m_sBusStatistics 
-                  structure  
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  09/09/2010
-Modifications  :  
-******************************************************************************/
+
+/**
+ * Calculates the Bus Statistics using m_sBusStatistics structure
+ * \req RS_24_08 Standard frames are considered.
+ * \req RS_24_09 Extended frames are considered.
+ * \req RS_24_10 RTR frames are considered.
+ */
 void CBusStatisticCAN::vCalculateBusParametres(void)
 {
     EnterCriticalSection(&m_omCritSecBS);

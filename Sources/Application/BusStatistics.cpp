@@ -22,20 +22,15 @@
 #include "BusStatisticCAN.h"
 #include "BusStatistics.h"
 static CBusStatisticCAN* sg_pouBS_CAN = NULL;
-/******************************************************************************
-Function Name  :  BS_GetInterface 
-Input(s)       :  ETYPE_BUS - specifies the Type of bus,Either CAN or FRAME 
-                  void** - on function return it will have the pointer
-                  of BusStatistics.
-Output         :  HRESULT - gives the function return status.
-Functionality  :  This function will return the valid busstatistics class 
-                  pointer according to the ETYPE_BUS. 
-Member of      :  -
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  07/09/2010
-Modifications  :  
-******************************************************************************/
+
+/**
+ * \param[in] eBus specifies the Type of bus,Either CAN or FRAME
+ * \param[in] ppvInterface on function return it will have the pointer of BusStatistics.
+ * \return gives the function return status.
+ *
+ * This function will return the valid busstatistics class
+ * pointer according to the ETYPE_BUS.
+ */
 HRESULT BS_GetInterface(ETYPE_BUS eBus, void** ppvInterface)
 {
     HRESULT hResult = S_OK;
