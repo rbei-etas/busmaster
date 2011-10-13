@@ -18,6 +18,7 @@
  * \brief     Implementation file for CFilterConfigDlg class
  * \author    Raja N
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * \req       The Requirement Specification defines no tags.
  *
  * Implementation file for CFilterConfigDlg class
  */
@@ -55,15 +56,9 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 
-/*******************************************************************************
-  Function Name  : CFilterConfigDlg
-  Description    : Standard default constructor
-  Member of      : CFilterConfigDlg
-  Functionality  : This will initialise member variables
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  :
-*******************************************************************************/
+/**
+ * Standard default constructor
+ */
 CFilterConfigDlg::CFilterConfigDlg( SFILTERAPPLIED_CAN* psSrcList,
                                     const SMSGENTRY* pMsgDBDetails,
 									UINT nHardware,
@@ -88,17 +83,12 @@ CFilterConfigDlg::CFilterConfigDlg( SFILTERAPPLIED_CAN* psSrcList,
 	m_nHardware = nHardware;
 }
 
-/*******************************************************************************
-  Function Name  : DoDataExchange
-  Input(s)       : pDX - Pointer to data exchange object
-  Output         : -
-  Functionality  : This will map UI controls will mapped data members. This will
-                   be called during UpdateData funtion call for data update
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 26.7.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \param[in] pDX Pointer to data exchange object
+ *
+ * This will map UI controls will mapped data members. This will
+ * be called during UpdateData funtion call for data update
+ */
 void CFilterConfigDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);
@@ -143,16 +133,11 @@ BEGIN_MESSAGE_MAP(CFilterConfigDlg, CDialog)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-/*******************************************************************************
-  Function Name  : OnInitDialog
-  Input(s)       : -
-  Output         : FALSE - If focus is set to Any UI control explicitly
-  Functionality  : Initialises dialog's UI components
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \return FALSE - If focus is set to Any UI control explicitly
+ *
+ * Initialises dialog's UI components
+ */
 BOOL CFilterConfigDlg::OnInitDialog() 
 {
     CDialog::OnInitDialog();
@@ -184,16 +169,11 @@ BOOL CFilterConfigDlg::OnInitDialog()
     return FALSE;
 }
 
-/*******************************************************************************
-  Function Name  : bCreateImageList
-  Input(s)       : -
-  Output         : Result of the image list creation
-  Functionality  : Creates image list used in list controls
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 7.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \return Result of the image list creation
+ *
+ * Creates image list used in list controls
+ */
 BOOL CFilterConfigDlg::bCreateImageList()
 {
     // Flag to indicate result
@@ -209,16 +189,9 @@ BOOL CFilterConfigDlg::bCreateImageList()
     return bReturn; 
 }
 
-/*******************************************************************************
-  Function Name  : bCreateNamedFilterList
-  Input(s)       : -
-  Output         : -
-  Functionality  : Creates Named filter list control
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * Creates Named filter list control
+ */
 BOOL CFilterConfigDlg::bCreateNamedFilterList()
 {
     BOOL bReturn = TRUE;
@@ -262,17 +235,9 @@ BOOL CFilterConfigDlg::bCreateNamedFilterList()
     return bReturn;
 }
 
-
-/*******************************************************************************
-  Function Name  : bCreateFilterDetailsList
-  Input(s)       : -
-  Output         : -
-  Functionality  : Updates filter details list
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * Updates filter details list
+ */
 BOOL CFilterConfigDlg::bCreateFilterDetailsList()
 {
     BOOL bReturn = TRUE;
@@ -331,16 +296,9 @@ BOOL CFilterConfigDlg::bCreateFilterDetailsList()
     return bReturn;
 }
 
-/*******************************************************************************
-  Function Name  : bCreateFilterComps
-  Input(s)       : -
-  Output         : -
-  Functionality  : Creates Filter components
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * Creates Filter components
+ */
 BOOL CFilterConfigDlg::bCreateFilterComps()
 {
     // Set Message ID Type
@@ -375,20 +333,10 @@ BOOL CFilterConfigDlg::bCreateFilterComps()
     return TRUE;
 }
 
-/*******************************************************************************
-  Function Name  : vPopulateDBMessages
-  Input(s)       : -
-  Output         : -
-  Functionality  : Populates database message combobox with DB messaged from
-                   database module
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modification By  :  ArunKumar K,09.07.10                                        
-  Modification on  :  Modified the MessageID Name display order to: [MsgID]MessageName
-  Modification By  :  Anish,02.02.07                                        
-  Modification on  :  Removed memory leak due to pidArray                    
-*******************************************************************************/
+/**
+ * Populates database message combobox with DB messaged from
+ * database module
+ */
 void CFilterConfigDlg::vPopulateDBMessages()
 {
 	m_omMsgIDFrom.ResetContent();
@@ -418,17 +366,10 @@ void CFilterConfigDlg::vPopulateDBMessages()
 	}
 }
 
-/*******************************************************************************
-  Function Name  : bPopulateNamedFilterList
-  Input(s)       : -
-  Output         : -
-  Functionality  : Populates named filter list with the list of filters from
-                   the input filter list
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * Populates named filter list with the list of filters from
+ * the input filter list
+ */
 BOOL CFilterConfigDlg::bPopulateNamedFilterList()
 {
     // Get the details from Filter List
@@ -479,33 +420,19 @@ BOOL CFilterConfigDlg::bPopulateNamedFilterList()
     return TRUE;
 }
 
-/*******************************************************************************
-  Function Name  : OnOK
-  Input(s)       : -
-  Output         : -
-  Functionality  : Sets the focus to the next control in the dialog
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * Sets the focus to the next control in the dialog
+ */
 void CFilterConfigDlg::OnOK() 
 {
     NextDlgCtrl();
 }
 
-/*******************************************************************************
-  Function Name  : OnItemchangedLstcFilterNames
-  Input(s)       : -
-  Output         : -
-  Functionality  : Updateds the filter details with the newly selected filter.
-                   Updates filter name or type in case it is called because of
-                   editing by the user.
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * Updateds the filter details with the newly selected filter.
+ * Updates filter name or type in case it is called because of
+ * editing by the user.
+ */
 void CFilterConfigDlg::OnItemchangedLstcFilterNames( NMHDR* pNMHDR, 
                                                      LRESULT* pResult) 
 {
@@ -551,16 +478,9 @@ void CFilterConfigDlg::OnItemchangedLstcFilterNames( NMHDR* pNMHDR,
     *pResult = 0;
 }
 
-/*******************************************************************************
-  Function Name  : OnItemchangedLstcFilterDetails
-  Input(s)       : -
-  Output         : -
-  Functionality  : Updates filter components with the selected filter details
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * Updates filter components with the selected filter details
+ */
 void CFilterConfigDlg::OnItemchangedLstcFilterDetails( NMHDR* pNMHDR,
                                                        LRESULT* pResult )
 {
@@ -586,17 +506,12 @@ void CFilterConfigDlg::OnItemchangedLstcFilterDetails( NMHDR* pNMHDR,
     *pResult = 0;
 }
 
-/*******************************************************************************
-  Function Name  : vUpdateFilterDetails
-  Input(s)       : nSelectedItemIndex - List control index
-  Output         : -
-  Functionality  : Updated filter components with the filter details poined by
-                   the input.
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \param[in] nSelectedItemIndex List control index
+ *
+ * Updated filter components with the filter details poined by
+ * the input.
+ */
 void CFilterConfigDlg::vUpdateFilterDetails( int nSelectedItemIndex )
 {
     // Update Filter Details
@@ -610,18 +525,13 @@ void CFilterConfigDlg::vUpdateFilterDetails( int nSelectedItemIndex )
     }
 }
 
-/*******************************************************************************
-  Function Name  : vFormatDisplayString
-  Input(s)       : sFilter - Filter details
-                   sFilterDisplyInfo - formatted Filter details structure
-  Output         : -
-  Functionality  : This function formats the filter details and fills the
-                   sFilterDisplyInfo structure with the formatted strings.
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \param[in] sFilter Filter details
+ * \param[in] sFilterDisplyInfo formatted Filter details structure
+ *
+ * This function formats the filter details and fills the
+ * sFilterDisplyInfo structure with the formatted strings.
+ */
 void CFilterConfigDlg::vFormatDisplayString(
                                     const SFILTER_CAN& sFilter,
                                     SFILTERDISPLAYINFO& sFilterDisplyInfo)
@@ -740,18 +650,13 @@ void CFilterConfigDlg::vFormatDisplayString(
     }
 }
 
-/*******************************************************************************
-  Function Name  : vUpdateFilterListDetails
-  Input(s)       : nIndex - List control index
-                   sDisplayInfo - Display information struct
-  Output         : -
-  Functionality  : Updates the list control row pointed by nIndex with the 
-                   display format info with the input structure sDisplayInfo
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \param[in] nIndex List control index
+ * \param[in] sDisplayInfo Display information struct
+ *
+ * Updates the list control row pointed by nIndex with the
+ * display format info with the input structure sDisplayInfo
+ */
 void CFilterConfigDlg::vUpdateFilterListDetails( int nIndex,
                    const SFILTERDISPLAYINFO& sDisplayInfo )
 {
@@ -793,16 +698,11 @@ void CFilterConfigDlg::vUpdateFilterListDetails( int nIndex,
     m_bUpdating = bOldUpdateValue;
 }
 
-/*******************************************************************************
-  Function Name  : vUpdateFilterDetails
-  Input(s)       : psFilterData - Filter info structure
-  Output         : -
-  Functionality  : Updates UI with the filter information passed.
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \param[in] psFilterData Filter info structure
+ *
+ * Updates UI with the filter information passed.
+ */
 void CFilterConfigDlg::vUpdateFilterDetails( const PSFILTERSET psFilterSet )
 {
     if( psFilterSet != NULL )
@@ -834,18 +734,13 @@ void CFilterConfigDlg::vUpdateFilterDetails( const PSFILTERSET psFilterSet )
     }
 }
 
-/*******************************************************************************
-  Function Name  : vUpdateFromFilterName
-  Input(s)       : nItem - Selected Row, nSubItem - Sub item of the selected row
-  Output         : -
-  Functionality  : This will be called whenever user edits an item in the named
-                   filter list. This will validate the info and save if it is
-                   valid
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \param[in] nItem Selected Row, nSubItem - Sub item of the selected row
+ *
+ * This will be called whenever user edits an item in the named
+ * filter list. This will validate the info and save if it is
+ * valid
+ */
 void CFilterConfigDlg::vUpdateFromFilterName(int nItem, int nSubItem)
 {
     // Find the new name in the map
@@ -887,16 +782,11 @@ void CFilterConfigDlg::vUpdateFromFilterName(int nItem, int nSubItem)
     }
 }
 
-/*******************************************************************************
-  Function Name  : vUpdateFromFilterType
-  Input(s)       : nItem - Row, nSubItem - Sub item in the row
-  Output         : -
-  Functionality  : This function handles filter type change event
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \param[in] nItem Row, nSubItem - Sub item in the row
+ *
+ * This function handles filter type change event
+ */
 void CFilterConfigDlg::vUpdateFromFilterType(int nItem, int nSubItem)
 {
     // Get the Filter Type from the list
@@ -923,16 +813,11 @@ void CFilterConfigDlg::vUpdateFromFilterType(int nItem, int nSubItem)
     }
 }
 
-/*******************************************************************************
-  Function Name  : vUpdateFilterComponents
-  Input(s)       : nSelectedItem - Selected filter item
-  Output         : -
-  Functionality  : This function updates the selected filter details
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \param[in] nSelectedItem Selected filter item
+ *
+ * This function updates the selected filter details
+ */
 void CFilterConfigDlg::vUpdateFilterComponents(int nSelectedItem)
 {
     // Get the Selected filter information
@@ -949,17 +834,12 @@ void CFilterConfigDlg::vUpdateFilterComponents(int nSelectedItem)
     }
 }
 
-/*******************************************************************************
-  Function Name  : vUpdateFilterComponents
-  Input(s)       : sFilter - Filter details struct
-  Output         : -
-  Functionality  : This function updates filter components with given filter
-                   details
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \param[in] sFilter Filter details struct
+ *
+ * This function updates filter components with given filter
+ * details
+ */
 void CFilterConfigDlg::vUpdateFilterComponents(const SFILTER_CAN& sFilter)
 {
     // Disable validation of data while update it
@@ -1087,18 +967,10 @@ void CFilterConfigDlg::vUpdateFilterComponents(const SFILTER_CAN& sFilter)
     m_bDisableFilterCompUpdate = FALSE;
 }
 
-
-/*******************************************************************************
-  Function Name  : psGetSelectedNamedFilter
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function returns the pointer to the selected named
-                   filter.
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function returns the pointer to the selected named
+ * filter.
+ */
 //PSNAMEDFILTER CFilterConfigDlg::psGetSelectedNamedFilter()
 //{
 //    CString omStrFilterName =
@@ -1108,18 +980,11 @@ void CFilterConfigDlg::vUpdateFilterComponents(const SFILTER_CAN& sFilter)
 //    return psSelectedData;
 //}
 
-
-/*******************************************************************************
-  Function Name  : nGetMsgIDFromCombo
-  Input(s)       : omCombo - Constant reference to CCombobox
-  Output         : -
-  Functionality  : This function parses the combobox text to get message ID from
-                   it.
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \param[in] omCombo Constant reference to CCombobox
+ *
+ * This function parses the combobox text to get message ID from it.
+ */
 int CFilterConfigDlg::nGetMsgIDFromCombo( const CComboBox& omCombo )
 {
     CString omStrMsgName( STR_EMPTY );
@@ -1151,18 +1016,10 @@ int CFilterConfigDlg::nGetMsgIDFromCombo( const CComboBox& omCombo )
     return nMsgID;
 }
 
-
-/*******************************************************************************
-  Function Name  : OnSelchangeCombMsgIdFrom
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called during the selection change of
-                   message ID/Name combobox
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function will be called during the selection change of
+ * message ID/Name combobox
+ */
 void CFilterConfigDlg::OnSelchangeCombMsgIdFrom() 
 {
     if( m_bDisableFilterCompUpdate == FALSE )
@@ -1179,18 +1036,10 @@ void CFilterConfigDlg::OnSelchangeCombMsgIdFrom()
     }
 }
 
-
-/*******************************************************************************
-  Function Name  : OnRadioMessageId
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called during the ID/Range radio button
-                   change. This will update the filter details after validation
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function will be called during the ID/Range radio button
+ * change. This will update the filter details after validation
+ */
 void CFilterConfigDlg::OnRadioMessageId() 
 {
     // Disable Range Controls
@@ -1257,17 +1106,10 @@ void CFilterConfigDlg::OnRadioMessageId()
     }
 }
 
-/*******************************************************************************
-  Function Name  : OnRadioRange
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called during the ID/Range radio button
-                   change. This will update the filter details after validation
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function will be called during the ID/Range radio button
+ * change. This will update the filter details after validation
+ */
 void CFilterConfigDlg::OnRadioRange() 
 {
     // Disable Range Controls
@@ -1310,18 +1152,10 @@ void CFilterConfigDlg::OnRadioRange()
 
 }
 
-
-/*******************************************************************************
-  Function Name  : OnUpdateEditRange
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will ve called during range editbox change.
-                   This validates the range and updates if it is valid
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function will ve called during range editbox change.
+ * This validates the range and updates if it is valid
+ */
 void CFilterConfigDlg::OnUpdateEditRange() 
 {
     if( m_bDisableFilterCompUpdate == FALSE )
@@ -1342,19 +1176,11 @@ void CFilterConfigDlg::OnUpdateEditRange()
     }
 }
 
-
-/*******************************************************************************
-  Function Name  : OnEditChangeMsgIDCombo
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called during text change in the
-                   message ID/Name combobox. This will validate the text and
-                   will update filter details if it is valid
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function will be called during text change in the
+ * message ID/Name combobox. This will validate the text and
+ * will update filter details if it is valid
+ */
 void CFilterConfigDlg::OnEditChangeMsgIDCombo() 
 {
     SFILTER_CAN sFilter;
@@ -1388,19 +1214,12 @@ void CFilterConfigDlg::OnEditChangeMsgIDCombo()
     }
 }
 
-/*******************************************************************************
-  Function Name  : OnSelchangeFilterComponentCombo
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called during the change in message ID
-                   type, frame type, direction and channel combo boxes. This
-                   will validate filter components values and will update the
-                   filter details.
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function will be called during the change in message ID
+ * type, frame type, direction and channel combo boxes. This
+ * will validate filter components values and will update the
+ * filter details.
+ */
 void CFilterConfigDlg::OnSelchangeFilterComponentCombo() 
 {
     if( m_bDisableFilterCompUpdate == FALSE )
@@ -1421,34 +1240,23 @@ void CFilterConfigDlg::OnSelchangeFilterComponentCombo()
     }
 }
 
-
-/*******************************************************************************
-  Function Name  : vSetStatusText
-  Input(s)       : omStrText - new status bar text
-  Output         : -
-  Functionality  : Sets the status bar text
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \param[in] omStrText new status bar text
+ *
+ * Sets the status bar text
+ */
 void CFilterConfigDlg::vSetStatusText(CString omStrText)
 {
     // Set the window text
     m_omStatusText.SetWindowText( omStrText );
 }
 
-
-/*******************************************************************************
-  Function Name  : bGetFilterData
-  Input(s)       : sFilter - Reference to filter structure
-  Output         : BOOL - Filter detais valid or not
-  Functionality  : Updates the filter structure with filter details from UI. If
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \param[in] sFilter Reference to filter structure
+ * \return Filter detais valid or not
+ *
+ * Updates the filter structure with filter details from UI.
+ */
 BOOL CFilterConfigDlg::bGetFilterData(SFILTER_CAN& sFilter)
 {
     // Get Filter Type
@@ -1745,18 +1553,11 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_CAN& sFilter)
     return bDataValid;
 }
 
-
-/*******************************************************************************
-  Function Name  : bUpdateSelectedItem
-  Input(s)       : sFilter - Fitler Details
-  Output         : -
-  Functionality  : Updates the selected item in the list with the given filter
-                   details.
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \param[in] sFilter Filter Details
+ * Updates the selected item in the list with the given filter
+ * details.
+ */
 BOOL CFilterConfigDlg::bUpdateSelectedItem(SFILTER_CAN& sFilter)
 {
     BOOL bIsAnytingUpdated = FALSE;
@@ -1788,19 +1589,11 @@ BOOL CFilterConfigDlg::bUpdateSelectedItem(SFILTER_CAN& sFilter)
     return bIsAnytingUpdated;
 }
 
-
-/*******************************************************************************
-  Function Name  : bAddNewItem
-  Input(s)       : sFilter - Adds the user configured filter in to the selected
-                   named filter. If validation fails then return FALSE and
-                   nothing will be added in to the list
-  Output         : -
-  Functionality  : 
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * Adds the user configured filter in to the selected
+ * named filter. If validation fails then return FALSE and
+ * nothing will be added in to the list
+ */
 BOOL CFilterConfigDlg::bAddNewItem(SFILTER_CAN& sFilter)
 {
     BOOL bIsAnytingUpdated = FALSE;
@@ -1846,17 +1639,9 @@ BOOL CFilterConfigDlg::bAddNewItem(SFILTER_CAN& sFilter)
     return bIsAnytingUpdated;
 }
 
-
-/*******************************************************************************
-  Function Name  : OnBtnAddFilterToList
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called when user selects Add button.
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function will be called when user selects Add button.
+ */
 void CFilterConfigDlg::OnBtnAddFilterToList() 
 {
     // Get the Filter Details from the UI
@@ -1875,18 +1660,10 @@ void CFilterConfigDlg::OnBtnAddFilterToList()
     }
 }
 
-
-/*******************************************************************************
-  Function Name  : OnBtnDeleteFilter
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called when user selects delete button.
-                   This will remove selected filter list
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function will be called when user selects delete button.
+ * This will remove selected filter list.
+ */
 void CFilterConfigDlg::OnBtnDeleteFilter() 
 {
     // If selected index is valid
@@ -1930,17 +1707,9 @@ void CFilterConfigDlg::OnBtnDeleteFilter()
     }
 }
 
-
-/*******************************************************************************
-  Function Name  : vInitFilterComps
-  Input(s)       : -
-  Output         : -
-  Functionality  : This will initialise all filter details related UI components
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This will initialise all filter details related UI components
+ */
 void CFilterConfigDlg::vInitFilterComps()
 {
     m_bDisableFilterCompUpdate = TRUE;
@@ -1985,19 +1754,11 @@ void CFilterConfigDlg::vInitFilterComps()
     m_bDisableFilterCompUpdate = FALSE;
 }
 
-
-/*******************************************************************************
-  Function Name  : OnBtnDeleteAllFilter
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called while user selects delete all
-                   button. This will ask for conformation and will clear the
-                   list if user conforms.
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function will be called while user selects delete all
+ * button. This will ask for conformation and will clear the
+ * list if user conforms.
+ */
 void CFilterConfigDlg::OnBtnDeleteAllFilter() 
 {
     if ( AfxMessageBox( "Do you want to delete all filters from the list?", 
@@ -2026,19 +1787,11 @@ void CFilterConfigDlg::OnBtnDeleteAllFilter()
     }
 }
 
-
-/*******************************************************************************
-  Function Name  : OnBeginlabeleditLstcFilterNames
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called during the label edit start.
-                   This will save the filter name before edit to cancel the edit
-                   if new name alteady exist or invalid.
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function will be called during the label edit start.
+ * This will save the filter name before edit to cancel the edit
+ * if new name alteady exist or invalid.
+ */
 void CFilterConfigDlg::OnBeginlabeleditLstcFilterNames( NMHDR* pNMHDR,
                                                         LRESULT* pResult) 
 {
@@ -2053,20 +1806,12 @@ void CFilterConfigDlg::OnBeginlabeleditLstcFilterNames( NMHDR* pNMHDR,
     *pResult = 0;
 }
 
-
-/*******************************************************************************
-  Function Name  : OnBtnDelete
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called while user selects delete of
-                   Named Filer from the list. This will delete the selected
-                   named filter and will clear the list. The item change handler
-                   will set the latest selected filter details.
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function will be called while user selects delete of
+ * Named Filer from the list. This will delete the selected
+ * named filter and will clear the list. The item change handler
+ * will set the latest selected filter details.
+ */
 void CFilterConfigDlg::OnBtnDelete() 
 {
     // Delete selected filter from the map
@@ -2125,19 +1870,11 @@ void CFilterConfigDlg::OnBtnDelete()
     }
 }
 
-
-/*******************************************************************************
-  Function Name  : OnBtnAdd
-  Input(s)       : -
-  Output         : -
-  Functionality  : This will add a new Named filter in to the list. This will
-                   iterate through the list of filters to find unique filter
-                   name and will add the found entry into the named filter list
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This will add a new Named filter in to the list. This will
+ * iterate through the list of filters to find unique filter
+ * name and will add the found entry into the named filter list
+ */
 void CFilterConfigDlg::OnBtnAdd() 
 {
     // To Add new Named Filter
@@ -2228,16 +1965,9 @@ void CFilterConfigDlg::OnBtnAdd()
     }
 }
 
-/*******************************************************************************
-  Function Name  : vEnableDisableButtons
-  Input(s)       : -
-  Output         : -
-  Functionality  : This will update UI controls based on selections
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This will update UI controls based on selections
+ */
 void CFilterConfigDlg::vEnableDisableButtons()
 {
     BOOL bEnable = FALSE;
@@ -2300,18 +2030,10 @@ void CFilterConfigDlg::vEnableDisableButtons()
     vEnableDisableFilterComps( m_omLstcFilterList.GetItemCount() != 0 );
 }
 
-
-/*******************************************************************************
-  Function Name  : vEnableDisableFilterComps
-  Input(s)       : -
-  Output         : -
-  Functionality  : This will update Filter components enable/disable option
-                   based on selection.
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This will update Filter components enable/disable option
+ * based on selection.
+ */
 void CFilterConfigDlg::vEnableDisableFilterComps( BOOL bEnable )
 {
     CWnd *pWnd = NULL;
@@ -2358,17 +2080,10 @@ void CFilterConfigDlg::vEnableDisableFilterComps( BOOL bEnable )
     m_omMsgChannel.EnableWindow( bEnable );
 }
 
-/*******************************************************************************
-  Function Name  : OnOkPress
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called while user selects OK button.
-                   This will call parent class function to end dialog session.
-  Member of      : CFilterConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 10.6.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function will be called while user selects OK button.
+ * This will call parent class function to end dialog session.
+ */
 void CFilterConfigDlg::OnOkPress() 
 {
     // Close the dialog with OK return
