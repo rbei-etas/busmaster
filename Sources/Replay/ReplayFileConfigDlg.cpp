@@ -22,7 +22,7 @@
  * Implementation file for CReplayFileConfigDlg class
  */
 
-#include "Replay_stdafx.h"                 // For standard includes
+#include "Replay_stdafx.h"          // For standard includes
 #include "ReplayFile.h"             // For Replay File class declaration
 #include "MsgReplayWnd.h"           // For message Window class declaration
 #include "ReplayManager.h"          // For Replay Manager class declaration
@@ -45,15 +45,10 @@ static char THIS_FILE[] = __FILE__;
 #define defSTR_DELETE_CONFORMATION          _T("Do you want to remove selected replay file?")
 #define defSTR_REPALY_FILTER_DLG_TITLE      _T("Configure Filter for Replay File: %s")
 
-/*******************************************************************************
-  Function Name  : CReplayFileConfigDlg
-  Description    : Standard default constructor
-  Member of      : CReplayFileConfigDlg
-  Functionality  : This will initialise local variables
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  :
-*******************************************************************************/
+/**
+ * Standard default constructor.
+ * This will initialise local variables
+ */
 CReplayFileConfigDlg::CReplayFileConfigDlg( CReplayManager& rouManager, 
                                             const SFILTERAPPLIED_CAN* psFilterConfigured,
                                             CWnd* pParent /*=NULL*/)
@@ -68,17 +63,12 @@ CReplayFileConfigDlg::CReplayFileConfigDlg( CReplayManager& rouManager,
 	m_nSelecetedNamedLogIndex = -1;
 }
 
-/*******************************************************************************
-  Function Name  : DoDataExchange
-  Input(s)       : pDX - Pointer to data exchange object
-  Output         : -
-  Functionality  : This will map UI controls will mapped data members. This will
-                   be called during UpdateData funtion call for data update
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \param[in] pDX Pointer to data exchange object
+ *
+ * This will map UI controls will mapped data members. This will
+ * be called during UpdateData funtion call for data update
+ */
 void CReplayFileConfigDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);
@@ -92,7 +82,6 @@ void CReplayFileConfigDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Radio(pDX, IDC_RADIO_REPLAY_MODE_MONO, m_nReplayMode);
     //}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CReplayFileConfigDlg, CDialog)
     //{{AFX_MSG_MAP(CReplayFileConfigDlg)
@@ -112,16 +101,11 @@ BEGIN_MESSAGE_MAP(CReplayFileConfigDlg, CDialog)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-/*******************************************************************************
-  Function Name  : OnInitDialog
-  Input(s)       : -
-  Output         : FALSE - If focus is set to Any UI control explicitly
-  Functionality  : Initialises dialog's UI components
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \return FALSE - If focus is set to Any UI control explicitly
+ *
+ * Initialises dialog's UI components
+ */
 BOOL CReplayFileConfigDlg::OnInitDialog() 
 {
     CDialog::OnInitDialog();
@@ -142,16 +126,11 @@ BOOL CReplayFileConfigDlg::OnInitDialog()
                   // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-/*******************************************************************************
-  Function Name  : bCreateImageList
-  Input(s)       : -
-  Output         : BOOL - TRUE if success, FALSE otherwise
-  Functionality  : To create image lists used in the dialog
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \return TRUE if success, FALSE otherwise
+ *
+ * To create image lists used in the dialog
+ */
 BOOL CReplayFileConfigDlg::bCreateImageList()
 {
     // Flag to indicate result
@@ -167,16 +146,9 @@ BOOL CReplayFileConfigDlg::bCreateImageList()
     return bReturn; 
 }
 
-/*******************************************************************************
-  Function Name  : vCreateReplayFileList
-  Input(s)       : -
-  Output         : -
-  Functionality  : To create replay file list control with required columns
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * To create replay file list control with required columns
+ */
 VOID CReplayFileConfigDlg::vCreateReplayFileList()
 {
     // Insert Log File Name Column
@@ -198,32 +170,18 @@ VOID CReplayFileConfigDlg::vCreateReplayFileList()
 
 }
 
-/*******************************************************************************
-  Function Name  : vCreateReplayCopms
-  Input(s)       : -
-  Output         : -
-  Functionality  : Create replay components. There is no component now which
-                   requires creation. For future usage.
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * Create replay components. There is no component now which
+ * requires creation. For future usage.
+ */
 VOID CReplayFileConfigDlg::vCreateReplayCopms()
 {
     // To do any creation
 }
 
-/*******************************************************************************
-  Function Name  : vInitReplayCopms
-  Input(s)       : -
-  Output         : -
-  Functionality  : To initialise replay details UI components 
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * To initialise replay details UI components
+ */
 VOID CReplayFileConfigDlg::vInitReplayCopms()
 {
     // Update Message Delay Edit box
@@ -235,17 +193,9 @@ VOID CReplayFileConfigDlg::vInitReplayCopms()
     m_omEditCycleDelay.vSetBase( BASE_DECIMAL );
 }
 
-/*******************************************************************************
-  Function Name  : vInitReplayFileList
-  Input(s)       : -
-  Output         : -
-  Functionality  : To initialise replay list UI control with the list of replay
-                   files
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * To initialise replay list UI control with the list of replay files
+ */
 VOID CReplayFileConfigDlg::vInitReplayFileList()
 {
     // Get the list of files and populate the list control
@@ -272,17 +222,10 @@ VOID CReplayFileConfigDlg::vInitReplayFileList()
                                          LVIS_SELECTED | LVIS_FOCUSED );
 }
 
-/*******************************************************************************
-  Function Name  : vEnableDisableButtons
-  Input(s)       : -
-  Output         : -
-  Functionality  : To update UI controls with respection to selection and other
-                   related conditions
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * To update UI controls with respection to selection and other
+ * related conditions
+ */
 VOID CReplayFileConfigDlg::vEnableDisableButtons()
 {
     // Get the list item count
@@ -298,18 +241,11 @@ VOID CReplayFileConfigDlg::vEnableDisableButtons()
     }
 }
 
-/*******************************************************************************
-  Function Name  : OnClickListRepalyFiles
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called wher user clicks the list
-                   control. This will update the selection will set the
-                   selection to the last item if nothing is selected by the user
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : Raja N on 26.07.2005, Implemented code review points
-*******************************************************************************/
+/**
+ * This function will be called wher user clicks the list
+ * control. This will update the selection will set the
+ * selection to the last item if nothing is selected by the user
+ */
 void CReplayFileConfigDlg::OnClickListRepalyFiles(NMHDR* /*pNMHDR*/, LRESULT* pResult) 
 {
     // Create selection mask
@@ -329,18 +265,11 @@ void CReplayFileConfigDlg::OnClickListRepalyFiles(NMHDR* /*pNMHDR*/, LRESULT* pR
     }
 }
 
-/*******************************************************************************
-  Function Name  : OnDblclkListRepalyFiles
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called wher user double clicks the list
-                   control. This will update the selection will set the
-                   selection to the last item if nothing is selected by the user
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : Raja N on 26.07.2005, Implemented code review points
-*******************************************************************************/
+/**
+ * This function will be called wher user double clicks the list
+ * control. This will update the selection will set the
+ * selection to the last item if nothing is selected by the user
+ */
 void CReplayFileConfigDlg::OnDblclkListRepalyFiles(NMHDR* /*pNMHDR*/, LRESULT* pResult) 
 {
     // Create selection mask
@@ -360,19 +289,12 @@ void CReplayFileConfigDlg::OnDblclkListRepalyFiles(NMHDR* /*pNMHDR*/, LRESULT* p
     }
 }
 
-/*******************************************************************************
-  Function Name  : OnItemchangedListRepalyFiles
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called wher user changes the selection
-                   in the replay list. This will update UI with the selected
-                   replay file details. This will also be called during check
-                   box press and will update the replay file enable flag.
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : Raja N on 26.07.2005, Implemented code review points
-*******************************************************************************/
+/**
+ * This function will be called wher user changes the selection
+ * in the replay list. This will update UI with the selected
+ * replay file details. This will also be called during check
+ * box press and will update the replay file enable flag.
+ */
 void CReplayFileConfigDlg::OnItemchangedListRepalyFiles( NMHDR* pNMHDR,
                                                          LRESULT* pResult )
 {
@@ -405,17 +327,12 @@ void CReplayFileConfigDlg::OnItemchangedListRepalyFiles( NMHDR* pNMHDR,
     }
 }
 
-/*******************************************************************************
-  Function Name  : vUpdateReplayFileDetails
-  Input(s)       : nSelectedIndex - UI Index of the replay file in the list
-  Output         : -
-  Functionality  : Update the replay information in the UI with the replay file
-                   pointed by the index                   
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \param[in] nSelectedIndex UI Index of the replay file in the list
+ *
+ * Update the replay information in the UI with the replay file
+ * pointed by the index
+ */
 VOID CReplayFileConfigDlg::vUpdateReplayFileDetails( int nSelectedIndex )
 {
     // Check for valid index
@@ -430,16 +347,11 @@ VOID CReplayFileConfigDlg::vUpdateReplayFileDetails( int nSelectedIndex )
     }
 }
 
-/*******************************************************************************
-  Function Name  : vUpdateReplayFileComps
-  Input(s)       : rouFile - Reference to replay file
-  Output         : -
-  Functionality  : Updates UI with the information given by rouFile.
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \param[in] rouFile Reference to replay file
+ *
+ * Updates UI with the information given by rouFile.
+ */
 VOID CReplayFileConfigDlg::vUpdateReplayFileComps( const CReplayFile& rouFile )
 {
     // File Path
@@ -490,18 +402,11 @@ VOID CReplayFileConfigDlg::vUpdateReplayFileComps( const CReplayFile& rouFile )
     UpdateData( FALSE );
 }
 
-/*******************************************************************************
-  Function Name  : OnBtnBrowse
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called when user selects Browse button.
-                   This function will show file selection dialog and will update
-                   replay file data if user selects any file.
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function will be called when user selects Browse button.
+ * This function will show file selection dialog and will update
+ * replay file data if user selects any file.
+ */
 void CReplayFileConfigDlg::OnBtnBrowse() 
 {
     if( m_nSelecetedNamedLogIndex != -1 &&
@@ -535,18 +440,11 @@ void CReplayFileConfigDlg::OnBtnBrowse()
     }
 }
 
-/*******************************************************************************
-  Function Name  : OnChkRetainRecordedDelay
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called when user check/uncheck the
-                   retain reconded delay option. This will update replay file
-                   details
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function will be called when user check/uncheck the
+ * retain reconded delay option. This will update replay file
+ * details
+ */
 void CReplayFileConfigDlg::OnChkRetainRecordedDelay() 
 {
     if( m_nSelecetedNamedLogIndex != -1 &&
@@ -575,17 +473,10 @@ void CReplayFileConfigDlg::OnChkRetainRecordedDelay()
     }
 }
 
-/*******************************************************************************
-  Function Name  : OnUpdateEditMsgDelay
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called during message delay editbox
-                   change. This will update message delay value of replay file
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function will be called during message delay editbox
+ * change. This will update message delay value of replay file
+ */
 void CReplayFileConfigDlg::OnUpdateEditMsgDelay() 
 {
     if( m_nSelecetedNamedLogIndex != -1 &&
@@ -601,18 +492,11 @@ void CReplayFileConfigDlg::OnUpdateEditMsgDelay()
     }
 }
 
-/*******************************************************************************
-  Function Name  : OnRadioReplayModeMono
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called when user changes the replay
-                   mode radio button. This will update replay file and will
-                   enable cyclic delay editbox appropriatly
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function will be called when user changes the replay
+ * mode radio button. This will update replay file and will
+ * enable cyclic delay editbox appropriatly
+ */
 void CReplayFileConfigDlg::OnRadioReplayModeMono() 
 {
     if( m_nSelecetedNamedLogIndex != -1 &&
@@ -638,17 +522,10 @@ void CReplayFileConfigDlg::OnRadioReplayModeMono()
     }
 }
 
-/*******************************************************************************
-  Function Name  : OnUpdateEditCycleDelay
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called during cycle delay editbox
-                   change. This will update cycle delay value of replay file
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function will be called during cycle delay editbox
+ * change. This will update cycle delay value of replay file
+ */
 void CReplayFileConfigDlg::OnUpdateEditCycleDelay() 
 {
     if( m_nSelecetedNamedLogIndex != -1 &&
@@ -664,17 +541,10 @@ void CReplayFileConfigDlg::OnUpdateEditCycleDelay()
     }
 }
 
-/*******************************************************************************
-  Function Name  : OnChkInteractive
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will update interactive option of replay file
-                   with the user selection
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * This function will update interactive option of replay file
+ * with the user selection
+ */
 void CReplayFileConfigDlg::OnChkInteractive() 
 {
     if( m_nSelecetedNamedLogIndex != -1 &&
@@ -690,19 +560,14 @@ void CReplayFileConfigDlg::OnChkInteractive()
     }   
 }
 
-/*******************************************************************************
-  Function Name  : OnBtnAddFile
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called when user selects Add button.
-                   This will show file selection dialog to select replay file
-                   and if the selection is valid this will add the selected file
-                   in to the replay file list.
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \req RS_19_03 It shall be possible to add / remove any log file from the input data source set
+ *
+ * This function will be called when user selects Add button.
+ * This will show file selection dialog to select replay file
+ * and if the selection is valid this will add the selected file
+ * in to the replay file list.
+ */
 void CReplayFileConfigDlg::OnBtnAddFile() 
 {
     // Throw File selection dialog to choose replay log file
@@ -748,18 +613,13 @@ void CReplayFileConfigDlg::OnBtnAddFile()
     }
 }
 
-/*******************************************************************************
-  Function Name  : OnBtnDeleteFile
-  Input(s)       : -
-  Output         : -
-  Functionality  : This functuion will handle Delete button event. This will get
-                   delete conformation from the user and will remove the
-                   selected replay file from the list if user conforms.
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \req RS_19_03 It shall be possible to add / remove any log file from the input data source set
+ *
+ * This functuion will handle Delete button event. This will get
+ * delete conformation from the user and will remove the
+ * selected replay file from the list if user conforms.
+ */
 void CReplayFileConfigDlg::OnBtnDeleteFile() 
 {
     if( m_nSelecetedNamedLogIndex != -1 &&
@@ -800,17 +660,11 @@ void CReplayFileConfigDlg::OnBtnDeleteFile()
     }
 }
 
-/*******************************************************************************
-  Function Name  : vEnableReplayComps
-  Input(s)       : bEnable - TRUE to enable and FALSE to disable
-  Output         : -
-  Functionality  : To enable/disable replay UI components
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : 
-*******************************************************************************/
-
+/**
+ * \param bEnable TRUE to enable and FALSE to disable
+ *
+ * To enable/disable replay UI components
+ */
 VOID CReplayFileConfigDlg::vEnableReplayComps( BOOL bEnable )
 {
     // File Name
@@ -860,6 +714,7 @@ VOID CReplayFileConfigDlg::vEnableReplayComps( BOOL bEnable )
         pWnd->EnableWindow( bEnable );
     }
 }
+
 static void vPopulateMainSubList(CMainEntryList& DestList, const SFILTERAPPLIED_CAN* psFilterConfigured,
                                  const SFILTERAPPLIED_CAN* psFilterApplied)
 {
@@ -902,6 +757,7 @@ static void vPopulateMainSubList(CMainEntryList& DestList, const SFILTERAPPLIED_
     }
     DestList.AddTail(sMainEntry);
 }
+
 static void vPopulateFilterApplied(const SFILTERAPPLIED_CAN* psFilterConfigured, SFILTERAPPLIED_CAN& sFilterApplied, CMainEntryList& SrcList)
 {
     const SMAINENTRY& sMainEntry = SrcList.GetHead();
@@ -920,18 +776,12 @@ static void vPopulateFilterApplied(const SFILTERAPPLIED_CAN* psFilterConfigured,
         sFilterApplied.m_ushTotal++;
     }
 }
-/*******************************************************************************
-  Function Name  : OnBtnFilter
-  Input(s)       : -
-  Output         : -
-  Functionality  : This is filter button handler. This will invoke filter
-                   configuation dialog and will update filter list if user
-                   modifies the filter list of the replay file.
-  Member of      : CReplayFileConfigDlg
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  : 
-*******************************************************************************/
+
+/**
+ * This is filter button handler. This will invoke filter
+ * configuation dialog and will update filter list if user
+ * modifies the filter list of the replay file.
+ */
 void CReplayFileConfigDlg::OnBtnFilter() 
 {
     CStringArray omStrFilers;
