@@ -10367,6 +10367,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 }
  
                 COPY_DATA_2(&m_dwDriverId, pbyTemp, sizeof(DWORD));
+                COPY_DATA_2(&m_dwDriverResourceId, pbyTemp, sizeof(UINT));
                 COPY_DATA_2(&m_byControllerMode, pbyTemp, sizeof(BYTE));
                 COPY_DATA_2(m_asControllerDetails, pbyTemp, (sizeof(SCONTROLER_DETAILS) * unChannelCount));
                 IntializeDIL();
@@ -10758,6 +10759,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 BYTE byVersion = 0x2;
                 COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
                 COPY_DATA(pbyTemp, &m_dwDriverId, sizeof(DWORD));
+                COPY_DATA(pbyTemp, &m_dwDriverResourceId, sizeof(UINT));
                 COPY_DATA(pbyTemp, &m_byControllerMode, sizeof(BYTE));
                 COPY_DATA(pbyTemp, m_asControllerDetails, (sizeof(SCONTROLER_DETAILS) * defNO_OF_CHANNELS));
             }        
@@ -10897,22 +10899,14 @@ void CMainFrame::OnSelectDriver(UINT nID)
     if (psCurrDIL != NULL)
     {
         m_dwDriverId =  psCurrDIL->m_dwDriverID;
+        m_dwDriverResourceId = nID;
         IntializeDIL();
     }    
 }
 
 void CMainFrame::OnUpdateSelectDriver(CCmdUI *pCmdUI)
 {
-    BOOL bSelected = FALSE;
-    // Search for the associated item in the DIL list
-    DILINFO* psCurrDIL = psGetDILEntry(pCmdUI->m_nID);
-    if (psCurrDIL != NULL)
-    {
-        if (g_pouDIL_CAN_Interface != NULL)
-        {
-            bSelected = (psCurrDIL->m_dwDriverID == g_pouDIL_CAN_Interface->DILC_GetSelectedDriver());
-        }
-    }
+    BOOL bSelected = (m_dwDriverResourceId == pCmdUI->m_nID);
     CFlags* pFlag = theApp.pouGetFlagsPtr();
     if (pFlag != NULL)
     {
