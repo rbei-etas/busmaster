@@ -1,32 +1,32 @@
 @echo off
 
-mkdir out
-doxygen Doxyfiles/Application                  2> out/Application/doxygen-log.txt
-doxygen Doxyfiles/BusEmulation                 2> out/BusEmulation/doxygen-log.txt
-doxygen Doxyfiles/CAN_ETAS_BOA                 2> out/CAN_ETAS_BOA/doxygen-log.txt
-doxygen Doxyfiles/CAN_ICS_neoVI                2> out/CAN_ICS_neoVI/doxygen-log.txt
-doxygen Doxyfiles/CAN_Kvaser_CAN               2> out/CAN_Kvaser_CAN/doxygen-log.txt
-doxygen Doxyfiles/CAN_STUB                     2> out/CAN_STUB/doxygen-log.txt
-doxygen Doxyfiles/CAN_Vector_XL                2> out/CAN_Vector_XL/doxygen-log.txt
-doxygen Doxyfiles/CommonClass                  2> out/CommonClass/doxygen-log.txt
-doxygen Doxyfiles/ConfigDialogsDIL             2> out/ConfigDialogsDIL/doxygen-log.txt
-doxygen Doxyfiles/DIL_Interface                2> out/DIL_Interface/doxygen-log.txt
-doxygen Doxyfiles/DataTypes                    2> out/DataTypes/doxygen-log.txt
-doxygen Doxyfiles/Filter                       2> out/Filter/doxygen-log.txt
-doxygen Doxyfiles/FrameProcessor               2> out/FrameProcessor/doxygen-log.txt
-doxygen Doxyfiles/Include                      2> out/Include/doxygen-log.txt
-doxygen Doxyfiles/NodeSimEx                    2> out/NodeSimEx/doxygen-log.txt
-doxygen Doxyfiles/PSDI_CAN                     2> out/PSDI_CAN/doxygen-log.txt
-doxygen Doxyfiles/ProjectConfiguration         2> out/ProjectConfiguration/doxygen-log.txt
-doxygen Doxyfiles/Replay                       2> out/Replay/doxygen-log.txt
-doxygen Doxyfiles/SignalWatch                  2> out/SignalWatch/doxygen-log.txt
-doxygen Doxyfiles/TXWindow                     2> out/TXWindow/doxygen-log.txt
-doxygen Doxyfiles/TestSetupEditorGUI           2> out/TestSetupEditorGUI/doxygen-log.txt
-doxygen Doxyfiles/TestSetupEditorLib           2> out/TestSetupEditorLib/doxygen-log.txt
-doxygen Doxyfiles/TestSuiteExecutorGUI         2> out/TestSuiteExecutorGUI/doxygen-log.txt
-doxygen Doxyfiles/Utility                      2> out/Utility/doxygen-log.txt
+if not exist out mkdir out
+doxygen Doxyfiles\Application                  2> out\Application.log
+doxygen Doxyfiles\BusEmulation                 2> out\BusEmulation.log
+doxygen Doxyfiles\CAN_ETAS_BOA                 2> out\CAN_ETAS_BOA.log
+doxygen Doxyfiles\CAN_ICS_neoVI                2> out\CAN_ICS_neoVI.log
+doxygen Doxyfiles\CAN_Kvaser_CAN               2> out\CAN_Kvaser_CAN.log
+doxygen Doxyfiles\CAN_STUB                     2> out\CAN_STUB.log
+doxygen Doxyfiles\CAN_Vector_XL                2> out\CAN_Vector_XL.log
+doxygen Doxyfiles\CommonClass                  2> out\CommonClass.log
+doxygen Doxyfiles\ConfigDialogsDIL             2> out\ConfigDialogsDIL.log
+doxygen Doxyfiles\DIL_Interface                2> out\DIL_Interface.log
+doxygen Doxyfiles\DataTypes                    2> out\DataTypes.log
+doxygen Doxyfiles\Filter                       2> out\Filter.log
+doxygen Doxyfiles\FrameProcessor               2> out\FrameProcessor.log
+doxygen Doxyfiles\Include                      2> out\Include.log
+doxygen Doxyfiles\NodeSimEx                    2> out\NodeSimEx.log
+doxygen Doxyfiles\PSDI_CAN                     2> out\PSDI_CAN.log
+doxygen Doxyfiles\ProjectConfiguration         2> out\ProjectConfiguration.log
+doxygen Doxyfiles\Replay                       2> out\Replay.log
+doxygen Doxyfiles\SignalWatch                  2> out\SignalWatch.log
+doxygen Doxyfiles\TXWindow                     2> out\TXWindow.log
+doxygen Doxyfiles\TestSetupEditorGUI           2> out\TestSetupEditorGUI.log
+doxygen Doxyfiles\TestSetupEditorLib           2> out\TestSetupEditorLib.log
+doxygen Doxyfiles\TestSuiteExecutorGUI         2> out\TestSuiteExecutorGUI.log
+doxygen Doxyfiles\Utility                      2> out\Utility.log
 
-mkdir out\TOOLS_EXTERNAL
-doxygen Doxyfiles/TOOLS_EXTERNAL/CAPL_2_C      2> out/TOOLS_EXTERNAL/CAPL_2_C/doxygen-log.txt
-doxygen Doxyfiles/TOOLS_EXTERNAL/EXT_DBC_2_DBF 2> out/TOOLS_EXTERNAL/EXT_DBC_2_DBF/doxygen-log.txt
-doxygen Doxyfiles/TOOLS_EXTERNAL/EXT_DBF_2_DBC 2> out/TOOLS_EXTERNAL/EXT_DBF_2_DBC/doxygen-log.txt
+if not exist out\TOOLS_EXTERNAL mkdir out\TOOLS_EXTERNAL
+doxygen Doxyfiles\TOOLS_EXTERNAL\CAPL_2_C      2> out\TOOLS_EXTERNAL\CAPL_2_C.log
+doxygen Doxyfiles\TOOLS_EXTERNAL\EXT_DBC_2_DBF 2> out\TOOLS_EXTERNAL\EXT_DBC_2_DBF.log
+doxygen Doxyfiles\TOOLS_EXTERNAL\EXT_DBF_2_DBC 2> out\TOOLS_EXTERNAL\EXT_DBF_2_DBC.log
