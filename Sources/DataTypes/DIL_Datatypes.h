@@ -115,6 +115,7 @@ typedef struct tagHwInterface
 {
    DWORD    m_dwIdInterface;
    DWORD    m_dwVendor;
+   BYTE     m_bytNetworkID;   
    TCHAR    m_acNameInterface[MAX_CHAR_SHORT];
    TCHAR    m_acDescription[MAX_CHAR_LONG];
    TCHAR    m_acDeviceName[MAX_CHAR_SHORT];
