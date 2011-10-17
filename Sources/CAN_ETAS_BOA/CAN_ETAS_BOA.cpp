@@ -1479,6 +1479,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_LoadDriverLibrary(void)
                 hResult = S_FALSE;
                 sprintf_s(acPath, sizeof(acPath), _T("%s failed to load"), acLIB_OCI);
                 sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, acPath);
+                sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, "Please have a look at: https://github.com/rbei-etas/busmaster/wiki/Hardware-support");
             }
         }
         else
@@ -1490,6 +1491,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_LoadDriverLibrary(void)
     {
         sprintf_s(acPath, sizeof(acPath), _T("%s failed to load"), acLIB_CSL);
         sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, acPath);
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, "Please have a look at: https://github.com/rbei-etas/busmaster/wiki/Hardware-support");
     }
     return hResult;
 }

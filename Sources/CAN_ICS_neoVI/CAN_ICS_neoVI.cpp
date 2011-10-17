@@ -2484,6 +2484,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_LoadDriverLibrary(void)
         if (sg_hDll == NULL)
         {
             sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("icsneo40.dll loading failed"));
+            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Please have a look at: https://github.com/rbei-etas/busmaster/wiki/Hardware-support"));
             hResult = ERR_LOAD_DRIVER;
         }
         else
