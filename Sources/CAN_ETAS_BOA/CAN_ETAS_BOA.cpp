@@ -1442,25 +1442,25 @@ USAGEMODE HRESULT CAN_ETAS_BOA_LoadDriverLibrary(void)
 {
     HRESULT hResult = S_FALSE;
 
-	/* Get BOA installation path from the registery */
+    /* Get BOA installation path from the registery */
     TCHAR acPath[MAX_PATH] = {'\0'};
-	INT nSize = 0;
+    INT nSize = 0;
     bGetBOAInstallationPath(acPath, nSize);
 
     /* Load cslproxy.dll library */
     TCHAR acLIB_CSL[MAX_PATH] = {'\0'};
     sprintf_s(acLIB_CSL, sizeof(acLIB_CSL), "%s\\%s", acPath, LIB_CSL_NAME);
-	// LoadLibraryEx instead of LoadLibrary seems to be necessary under Windows 7 when the library is not in DLL search path (system32)
+    /* LoadLibraryEx instead of LoadLibrary seems to be necessary under Windows 7 when the library is not in DLL search path (system32) */
     sg_hLibCSI = LoadLibraryEx(acLIB_CSL, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
     if (sg_hLibCSI != NULL)
     {
         hResult = GetCSI_API_Pointers(sg_hLibCSI);
 
-		/* Load the OCI library to use CAN controller */
+        /* Load the OCI library to use CAN controller */
         if (hResult == S_OK)
         {  
-		    TCHAR acLIB_OCI[MAX_PATH] = {'\0'};
-		    sprintf_s(acLIB_OCI, sizeof(acLIB_OCI), "%s\\%s", acPath, LIB_OCI_NAME);
+            TCHAR acLIB_OCI[MAX_PATH] = {'\0'};
+            sprintf_s(acLIB_OCI, sizeof(acLIB_OCI), "%s\\%s", acPath, LIB_OCI_NAME);
             sg_hLibOCI = LoadLibraryEx(acLIB_OCI, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
             if (sg_hLibOCI != NULL)
             {
