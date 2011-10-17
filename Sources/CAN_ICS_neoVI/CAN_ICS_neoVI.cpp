@@ -2464,7 +2464,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBase
 }
 
 /**
- * Function to load driver CanApi2.dll
+ * Function to load driver icsneo40.dll
  */
 USAGEMODE HRESULT CAN_ICS_neoVI_LoadDriverLibrary(void)
 {
@@ -2474,7 +2474,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_LoadDriverLibrary(void)
 
     if (sg_hDll != NULL)
     {
-        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("icsneo.dll already loaded"));
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("icsneo40.dll already loaded"));
         hResult = DLL_ALREADY_LOADED;
     }
 
@@ -2483,7 +2483,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_LoadDriverLibrary(void)
         sg_hDll = LoadLibrary(_T("icsneo40.dll"));
         if (sg_hDll == NULL)
         {
-            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("CanApi2.dll loading failed"));
+            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("icsneo40.dll loading failed"));
             hResult = ERR_LOAD_DRIVER;
         }
         else
