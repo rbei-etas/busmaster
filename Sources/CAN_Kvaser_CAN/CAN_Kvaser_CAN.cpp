@@ -15,11 +15,11 @@
 
 /**
  * \file      CAN_Kvaser_CAN.cpp
- * \brief     Source file for Vector XL DIL functions
+ * \brief     Source file for Kvaser CAN DIL functions
  * \author    Tobias Lorenz
  * \copyright Copyright (c) 2011, ETAS GmbH. All rights reserved.
  *
- * Source file for Vector XL DIL functions
+ * Source file for Kvaser CAN DIL functions
  */
 // CAN_Kvaser_CAN.cpp : Defines the initialization routines for the DLL.
 //
