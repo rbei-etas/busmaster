@@ -94,7 +94,6 @@ public:
     //controller mode
     BYTE m_byControllerMode;
     DWORD m_dwDriverId;
-    UINT m_dwDriverResourceId;
     WrapperErrorLogger m_ouWrapperLogger;
     // send toolbar button
     //BOOL m_bEnableSendToolbarButton;
