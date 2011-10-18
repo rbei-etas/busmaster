@@ -49,8 +49,7 @@ static ENTRY_DIL sg_ListDIL[] =
     /* ...all other drivers should be in alphabetical order */
     {DRIVER_CAN_ICS_NEOVI,  _T("IntrepidCS neoVI") },
 //  {DRIVER_CAN_KVASER_CAN, _T("Kvaser CAN")       }, // this is not ready yet...
-    {DRIVER_CAN_ETAS_BOA,   _T("ETAS BOA")         },
-    {DRIVER_CAN_ICS_NEOVI,  _T("ETAS ES581")       },
+    {DRIVER_CAN_ETAS_BOA,   _T("ETAS BOA")         },    
     {DRIVER_CAN_PEAK_USB,   _T("PEAK USB")         },
 //  {DRIVER_CAN_VECTOR_XL,  _T("Vector XL")        }, // this is not ready yet...
 };
