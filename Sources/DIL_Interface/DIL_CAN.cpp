@@ -16,7 +16,7 @@
 /**
  * \file      DIL_Interface/DIL_CAN.cpp
  * \brief     Interface file for CAN BUS
- * \author    Pradeep Kadoor
+ * \author    Pradeep Kadoor, Arunkumar Karri
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Interface file for CAN BUS
@@ -47,15 +47,17 @@ static ENTRY_DIL sg_ListDIL[] =
     /* simulation should be the first entry... */
     {DRIVER_CAN_STUB,       _T("Simulation")       },
     /* ...all other drivers should be in alphabetical order */
+    {DRIVER_CAN_ETAS_BOA,   _T("ETAS BOA")         },    
+    {DRIVER_CAN_ETAS_ES581,  _T("ETAS ES581")      },
     {DRIVER_CAN_ICS_NEOVI,  _T("IntrepidCS neoVI") },
 //  {DRIVER_CAN_KVASER_CAN, _T("Kvaser CAN")       }, // this is not ready yet...
-    {DRIVER_CAN_ETAS_BOA,   _T("ETAS BOA")         },    
     {DRIVER_CAN_PEAK_USB,   _T("PEAK USB")         },
 //  {DRIVER_CAN_VECTOR_XL,  _T("Vector XL")        }, // this is not ready yet...
 };
 
 CDIL_CAN::CDIL_CAN()
 {
+	m_dwDriverID = DAL_NONE;
     vSelectInterface_Dummy();
 }
 
@@ -367,6 +369,7 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                     hResult = S_OK;
                     CAN_Usb_PerformInitOperations();
                     vSelectInterface_CAN_Usb();
+					m_dwDriverID = DRIVER_CAN_PEAK_USB;
                 }
                 break;
                 default:
@@ -378,7 +381,7 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
             }
 
         }
-        else if (dwDriverID == DRIVER_CAN_ICS_NEOVI)
+        else if (dwDriverID == DRIVER_CAN_ICS_NEOVI || dwDriverID == DRIVER_CAN_ETAS_ES581)
         {
             // First select the dummy interface
             DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
@@ -397,6 +400,7 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                     hResult = S_OK;
                     CAN_ICS_neoVI_PerformInitOperations();
                     vSelectInterface_CAN_ICS_neoVI();
+					m_dwDriverID = dwDriverID;
                 }
                 break;
                 default:
@@ -427,6 +431,7 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                     hResult = S_OK;
                     CAN_ETAS_BOA_PerformInitOperations();
                     vSelectInterface_CAN_ETAS_BOA();
+					m_dwDriverID = dwDriverID;
                 }
                 break;
                 default:
@@ -456,6 +461,7 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                     hResult = S_OK;
                     CAN_Vector_XL_PerformInitOperations();
                     vSelectInterface_CAN_Vector_XL();
+					m_dwDriverID = dwDriverID;
                 }
                 break;
                 default:
@@ -485,6 +491,7 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                     hResult = S_OK;
                     CAN_Kvaser_CAN_PerformInitOperations();
                     vSelectInterface_CAN_Kvaser_CAN();
+					m_dwDriverID = dwDriverID;
                 }
                 break;
                 default:
@@ -514,6 +521,7 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                     hResult = S_OK;
                     CAN_STUB_PerformInitOperations();
                     vSelectInterface_CAN_STUB();
+					m_dwDriverID = dwDriverID;
                 }
                 break;
                 default:
@@ -529,10 +537,12 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
         {
             DILC_PerformClosureOperations();
             vSelectInterface_Dummy();
+			m_dwDriverID = DAL_NONE;
         }
         else // invalid driver / DAL id
         {
             hResult = DAL_INVALID;
+			m_dwDriverID = DAL_NONE;
         }
     }
 
@@ -572,25 +582,26 @@ HRESULT CDIL_CAN::DILC_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pa
  */
 DWORD CDIL_CAN::DILC_GetSelectedDriver(void)
 {
-    DWORD Result = (DWORD)DAL_NONE;
+	return m_dwDriverID;
+    //DWORD Result = (DWORD)DAL_NONE;
 
-    if (m_pfDisplayConfigDlg == CAN_Usb_DisplayConfigDlg)
-    {
-        Result = DRIVER_CAN_PEAK_USB;
-    }
-    else if (m_pfDisplayConfigDlg == CAN_ETAS_BOA_DisplayConfigDlg)
-    {
-        Result = DRIVER_CAN_ETAS_BOA;
-    }
-    else if (m_pfDisplayConfigDlg == CAN_STUB_DisplayConfigDlg)
-    {
-        Result = DRIVER_CAN_STUB;
-    }
-    else if (m_pfDisplayConfigDlg == CAN_ICS_neoVI_DisplayConfigDlg)
-    {
-        Result = DRIVER_CAN_ICS_NEOVI;
-    }
-    return Result;
+    //if (m_pfDisplayConfigDlg == CAN_Usb_DisplayConfigDlg)
+    //{
+    //    Result = DRIVER_CAN_PEAK_USB;
+    //}
+    //else if (m_pfDisplayConfigDlg == CAN_ETAS_BOA_DisplayConfigDlg)
+    //{
+    //    Result = DRIVER_CAN_ETAS_BOA;
+    //}
+    //else if (m_pfDisplayConfigDlg == CAN_STUB_DisplayConfigDlg)
+    //{
+    //    Result = DRIVER_CAN_STUB;
+    //}
+    //else if (m_pfDisplayConfigDlg == CAN_ICS_neoVI_DisplayConfigDlg)
+    //{
+    //    Result = DRIVER_CAN_ICS_NEOVI;
+    //}
+    //return Result;
 }
 
 /**
