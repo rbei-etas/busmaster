@@ -1379,15 +1379,15 @@ static int nCreateMultipleHardwareNetwork()
 						(*icsneoClosePort)(hObject, &nErrors);
 
 						//Check if it is ES581.3 Limited version with only one channel support.
-						//if ( nHardwareLic == 8 )	// ES581.3 (Single channel- HSCAN and MSCAN)										
-						//{
-						//	nCntNtwIDs = 1;
-						//	if ( nHwCount == 1 )	//If only one device connected
-						//	{
-						//		nCreateSingleHardwareNetwork();
-						//		return defERR_OK;
-						//	}
-						//}
+						if ( nHardwareLic == 8 )	// ES581.3 (Single channel- HSCAN and MSCAN)										
+						{
+							nCntNtwIDs = 1;
+							if ( nHwCount == 1 )	//If only one device connected
+							{
+								nCreateSingleHardwareNetwork();
+								return defERR_OK;
+							}
+						}
 					}
 					nAddChanneltoHWInterfaceList(narrVCAN3NtwID, nCntNtwIDs, nChannels, nCount);	
 				}
