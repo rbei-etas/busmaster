@@ -231,6 +231,30 @@ static HANDLE m_hDataEvent = NULL;
 static HANDLE sg_hCntrlStateChangeEvent = NULL;
 static DWORD  sg_dwClientID = 0;
 
+struct stAPIFirmwareInfo
+{
+    int iType;  
+     // Date and Time (2nd generation neoVI only. See 2nd Generation neoVI Devices) 
+    int iMainFirmDateDay;
+    int iMainFirmDateMonth;
+    int iMainFirmDateYear;
+    int iMainFirmDateHour;
+    int iMainFirmDateMin;
+    int iMainFirmDateSecond;
+    int iMainFirmChkSum;
+    
+    // Version data (3rd generation neoVI only. See 3rd Generation neoVI Devices) 
+    unsigned char iAppMajor;
+    unsigned char iAppMinor;
+    unsigned char iManufactureDay;
+    unsigned char iManufactureMonth;
+    unsigned short iManufactureYear;
+    unsigned char iBoardRevMajor;
+    unsigned char iBoardRevMinor;
+    unsigned char iBootLoaderVersionMajor;
+    unsigned char iBootLoaderVersionMinor;
+};
+
 // Current buffer size
 //static UINT sg_unMsgBufCount = 0;
 
@@ -329,6 +353,9 @@ typedef int (__stdcall *SETDEVICEPARMS)(int hObject, char *pParmValue, int *pErr
 static SETDEVICEPARMS icsneoSetDeviceParameters;
 typedef int (__stdcall *GETHWLICENSE)(int hObject, int *pnHardwareLic);
 static GETHWLICENSE icsneoGetHardwareLicense;
+typedef int (__stdcall *GETHWFIRMWAREINFO)(int hObject, stAPIFirmwareInfo *pInfo);
+static GETHWFIRMWAREINFO icsneoGetHWFirmwareInfo;
+
 
 /* icsneo40.dll Error Functions */
 typedef int (__stdcall *GETLASTAPIERROR)(int hObject, unsigned long *pErrorNumber);
@@ -1232,13 +1259,34 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_ICS_neoVI(LPVOID pVoid)
 static int nAddChanneltoHWInterfaceList(int narrNetwordID[], int nCntNtwIDs, int& nChannels, const int nDevID)
 {
 	int nResult = 0;
-	TCHAR acTempStr[256] = {_T('\0')};
+	int hObject = NULL;
+	TCHAR acTempStr[512] = {_T('\0')};
+	TCHAR acFirmware[128] = {_T("X.X")};
+
+	nResult = (*icsneoOpenNeoDevice)(&sg_ndNeoToOpen[nDevID], &hObject, NULL, 1, 0);
+	if (nResult == NEOVI_OK && hObject!=NULL)
+	{
+		stAPIFirmwareInfo objstFWInfo;
+		int nErrors = 0;
+		if ( icsneoGetHWFirmwareInfo ) 
+		{
+			nResult = (*icsneoGetHWFirmwareInfo)(hObject, &objstFWInfo);
+			if ( nResult == 1 )
+			{
+				_stprintf(acFirmware, _T("%d.%d"), objstFWInfo.iAppMajor, objstFWInfo.iAppMinor);																
+			}
+		}
+		(*icsneoClosePort)(hObject, &nErrors);
+	}
+
 	for ( int i=0; i<nCntNtwIDs; i++ )
 	{
 		sg_HardwareIntr[nChannels].m_dwIdInterface = sg_ndNeoToOpen[nDevID].Handle;
 		sg_HardwareIntr[nChannels].m_dwVendor = sg_ndNeoToOpen[nDevID].SerialNumber;
-		sg_HardwareIntr[nChannels].m_bytNetworkID = narrNetwordID[i];		
-		_stprintf(sg_HardwareIntr[nChannels].m_acDeviceName, _T("%d"), sg_ndNeoToOpen[nDevID].DeviceType);																
+		sg_HardwareIntr[nChannels].m_bytNetworkID = narrNetwordID[i];	
+
+		_tcscpy(sg_HardwareIntr[nChannels].m_acDeviceName, acFirmware);
+		_stprintf(sg_HardwareIntr[nChannels].m_acNameInterface, _T("%d"), sg_ndNeoToOpen[nDevID].DeviceType);																
 		_stprintf(acTempStr, _T("SN: %d, Port ID: %d-CAN%d"), sg_HardwareIntr[nChannels].m_dwVendor, 
 																sg_HardwareIntr[nChannels].m_dwIdInterface, narrNetwordID[i]);
 		_tcscpy(sg_HardwareIntr[nChannels].m_acDescription, acTempStr);
@@ -1321,6 +1369,9 @@ static int nCreateMultipleHardwareNetwork()
 					nResult = (*icsneoOpenNeoDevice)(pNeoDevice, &hObject, NULL, 1, 0);
 					if (nResult == NEOVI_OK && hObject!=NULL)
 					{
+						stAPIFirmwareInfo objstFWInfo;
+						nResult = (*icsneoGetHWFirmwareInfo)(hObject, &objstFWInfo);
+
 						int nHardwareLic = 0;
 						int nErrors = 0;
 						if ( icsneoGetHardwareLicense )
@@ -1359,7 +1410,7 @@ static int nCreateMultipleHardwareNetwork()
 	{
 		sg_ndNeoToOpen[nCount].Handle       = (int)sg_HardwareIntr[anSelectedItems[nCount]].m_dwIdInterface;
 		sg_ndNeoToOpen[nCount].SerialNumber = (int)sg_HardwareIntr[anSelectedItems[nCount]].m_dwVendor;		
-		_stscanf(sg_HardwareIntr[anSelectedItems[nCount]].m_acDeviceName, "%d", &sg_ndNeoToOpen[nCount].DeviceType);
+		_stscanf(sg_HardwareIntr[anSelectedItems[nCount]].m_acNameInterface, "%d", &sg_ndNeoToOpen[nCount].DeviceType);
 		m_bytNetworkIDs[nCount]				=  sg_HardwareIntr[anSelectedItems[nCount]].m_bytNetworkID;	
 	}
     for (int nIndex = 0; nIndex < sg_ucNoOfHardware; nIndex++)
@@ -1906,6 +1957,12 @@ HRESULT GetICS_neoVI_APIFuncPtrs(void)
         {
             unResult = unResult | (1<<16);
         }		
+        //Check18
+        icsneoGetHWFirmwareInfo = (GETHWFIRMWAREINFO) GetProcAddress(sg_hDll, "icsneoGetHWFirmwareInfo");
+        if (NULL == icsneoGetHWFirmwareInfo)
+        {
+            unResult = unResult | (1<<17);
+        }				
         //check for error
         if (unResult != 0)
         {
