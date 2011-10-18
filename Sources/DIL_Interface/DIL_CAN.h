@@ -39,8 +39,11 @@ public:
 	/* Destructor */
     ~CDIL_CAN();
 
-	BOOL InitInstance(void);
+    BOOL InitInstance(void);
     int ExitInstance(void);
+    
+	/* Variable to maintain currently selected Driver ID */
+	DWORD m_dwDriverID;
     
 	/**
 	 * Based on the parameter this function renders number of the driver interface
