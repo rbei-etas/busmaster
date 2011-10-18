@@ -48,7 +48,7 @@
 #endif
 
 //
-//    Note!
+//	Note!
 //
 //		If this DLL is dynamically linked against the MFC
 //		DLLs, any functions exported from this DLL which
@@ -327,7 +327,7 @@ typedef int (__stdcall *GETDEVICEPARMS)(int hObject, char *pParameter, char *pVa
 static GETDEVICEPARMS icsneoGetDeviceParameters;
 typedef int (__stdcall *SETDEVICEPARMS)(int hObject, char *pParmValue, int *pErrorIndex, int bSaveToEEPROM);
 static SETDEVICEPARMS icsneoSetDeviceParameters;
-typedef int (_stdcall *GETHWLICENSE)(int, int*);
+typedef int (__stdcall *GETHWLICENSE)(int hObject, int *pnHardwareLic);
 static GETHWLICENSE icsneoGetHardwareLicense;
 
 /* icsneo40.dll Error Functions */
@@ -1237,10 +1237,12 @@ static int nAddChanneltoHWInterfaceList(int narrNetwordID[], int nCntNtwIDs, int
 	{
 		sg_HardwareIntr[nChannels].m_dwIdInterface = sg_ndNeoToOpen[nDevID].Handle;
 		sg_HardwareIntr[nChannels].m_dwVendor = sg_ndNeoToOpen[nDevID].SerialNumber;
-		sg_HardwareIntr[nChannels].m_bytNetworkID = narrNetwordID[i];
+		sg_HardwareIntr[nChannels].m_bytNetworkID = narrNetwordID[i];		
+		_stprintf(sg_HardwareIntr[nChannels].m_acDeviceName, _T("%d"), sg_ndNeoToOpen[nDevID].DeviceType);																
 		_stprintf(acTempStr, _T("SN: %d, Port ID: %d-CAN%d"), sg_HardwareIntr[nChannels].m_dwVendor, 
 																sg_HardwareIntr[nChannels].m_dwIdInterface, narrNetwordID[i]);
 		_tcscpy(sg_HardwareIntr[nChannels].m_acDescription, acTempStr);
+		
 		nChannels++;
 	}
 
@@ -1326,15 +1328,15 @@ static int nCreateMultipleHardwareNetwork()
 						(*icsneoClosePort)(hObject, &nErrors);
 
 						//Check if it is ES581.3 Limited version with only one channel support.
-						if ( nHardwareLic == 8 )	// ES581.3 (Single channel- HSCAN and MSCAN)										
-						{
-							nCntNtwIDs = 1;
-							if ( nHwCount == 1 )	//If only one device connected
-							{
-								nCreateSingleHardwareNetwork();
-								return defERR_OK;
-							}
-						}
+						//if ( nHardwareLic == 8 )	// ES581.3 (Single channel- HSCAN and MSCAN)										
+						//{
+						//	nCntNtwIDs = 1;
+						//	if ( nHwCount == 1 )	//If only one device connected
+						//	{
+						//		nCreateSingleHardwareNetwork();
+						//		return defERR_OK;
+						//	}
+						//}
 					}
 					nAddChanneltoHWInterfaceList(narrVCAN3NtwID, nCntNtwIDs, nChannels, nCount);	
 				}
@@ -1357,6 +1359,7 @@ static int nCreateMultipleHardwareNetwork()
 	{
 		sg_ndNeoToOpen[nCount].Handle       = (int)sg_HardwareIntr[anSelectedItems[nCount]].m_dwIdInterface;
 		sg_ndNeoToOpen[nCount].SerialNumber = (int)sg_HardwareIntr[anSelectedItems[nCount]].m_dwVendor;		
+		_stscanf(sg_HardwareIntr[anSelectedItems[nCount]].m_acDeviceName, "%d", &sg_ndNeoToOpen[nCount].DeviceType);
 		m_bytNetworkIDs[nCount]				=  sg_HardwareIntr[anSelectedItems[nCount]].m_bytNetworkID;	
 	}
     for (int nIndex = 0; nIndex < sg_ucNoOfHardware; nIndex++)
