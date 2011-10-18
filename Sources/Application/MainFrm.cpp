@@ -9544,7 +9544,7 @@ HRESULT CMainFrame::IntializeDIL(void)
     }
     if (hResult == S_OK)
     {        				
-        if (g_pouDIL_CAN_Interface->DILC_SelectDriver(m_dwDriverId, m_hWnd, &m_ouWrapperLogger) == S_OK)
+        if ((hResult = g_pouDIL_CAN_Interface->DILC_SelectDriver(m_dwDriverId, m_hWnd, &m_ouWrapperLogger)) == S_OK)
         {			
             g_pouDIL_CAN_Interface->DILC_PerformInitOperations();
             INT nCount = defNO_OF_CHANNELS;
@@ -9599,7 +9599,10 @@ HRESULT CMainFrame::IntializeDIL(void)
         }
         else
         {
-            theApp.bWriteIntoTraceWnd("Driver selection failed");
+		if ( hResult!=DAL_ALREADY_SELECTED )
+		{
+			theApp.bWriteIntoTraceWnd("Driver selection failed");	
+		}            	
         }
 		m_objTxHandler.vSetDILInterfacePtr((void*)g_pouDIL_CAN_Interface);
 		m_objTxHandler.vSetClientID(g_dwClientID);		
