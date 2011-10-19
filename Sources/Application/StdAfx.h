@@ -79,8 +79,8 @@ const float PI = (float) 3.14159265358979323846;
 #include "include/Error.h"
 
 const BYTE VERSION_MAJOR    = 0x1;
-const BYTE VERSION_MINOR    = 0x0;
-const BYTE VERSION_BUILD    = 0x1;
+const BYTE VERSION_MINOR    = 0x1;
+const BYTE VERSION_BUILD    = 0x0;
 
 // Disable warning messages C4996
 #pragma warning(disable: 4996)
