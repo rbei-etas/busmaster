@@ -40,7 +40,7 @@ Outfile "BUSMASTER Installer.exe"
 
 Function .onInit
     # the plugins dir is automatically deleted when the installer exits
-    InitPluginsDir	
+    InitPluginsDir  
     File /oname=$PLUGINSDIR\Splsh16.bmp "..\Sources\BIN\Release\Splsh16.bmp"
     #optional
     #File /oname=$PLUGINSDIR\splash.wav "C:\myprog\sound.wav"
@@ -116,6 +116,7 @@ Section ""
     File ..\Sources\BIN\Release\Language_Converter.exe
     File ..\Sources\BIN\Release\CANDBConverter_Import.exe
     File ..\Sources\BIN\Release\CANDBConverter_Export.exe
+	File ..\Sources\BIN\Release\Changelog.txt	
     Delete "$INSTDIR\Splsh16.bmp"
 
     CreateDirectory "$SMPROGRAMS\BUSMASTER"
@@ -194,6 +195,7 @@ Section "Uninstall"
     Delete "$INSTDIR\MinGW\OBJ\*.*"
     Delete "$INSTDIR\uninst.exe"
     Delete "$INSTDIR\CanApi2.dll"
+	Delete "$INSTDIR\Changelog.txt"	
 
     Delete "$SMPROGRAMS\BUSMASTER\Uninstall.lnk"
     Delete "$SMPROGRAMS\BUSMASTER\BUSMASTER.lnk"
