@@ -64,18 +64,22 @@
       </table>
     </section>
     <section>
+      <title>Requirement</title>
+      <p>DITA requires the installation of the Java Development Kit (JDK). It is not sufficient to have the Java Runtime Environment (JRE) installed. The current version (Oct 2011) is 1.6.0_27. If you change the standard installation folder <filepath>C:\Program Files\Java\jdk1.6.0_27</filepath>, then you also have to adjust the <filepath>build.bat</filepath> files in each of the Documentation folders accordingly.</p>
+    </section>
+    <section>
       <title>Authoring tool</title>
       <p>Serna Free is used as authoring tool. It contains DITA-OT (Open Toolkit) as publishing tool.</p>
       <p>It is available at <xref href="http://www.syntext.com/products/serna-free/" scope="external"/>.</p>
       <p>The current version (Jun 2011) is 4.3.</p>
       <p>The installation folder is  <filepath>C:\Program Files\Syntext\Serna Free 4.3\</filepath>.</p>
-      <p>The DITA-OT comes in versions 1.3.1 and 1.4. They get installed as plugins at <filepath>C:\Program Files\Syntext\Serna Free 4.3\plugins\dita\DITA-OT1.3.1</filepath> and at <filepath>C:\Program Files\Syntext\Serna Free 4.3\plugins\dita\DITA-OT1.4</filepath>.</p>
+      <p>The DITA-OT comes in versions 1.3.1 and 1.4. They get installed as plugins at <filepath>C:\Program Files\Syntext\Serna Free 4.3\plugins\dita\DITA-OT1.3.1</filepath> and at <filepath>C:\Program Files\Syntext\Serna Free 4.3\plugins\dita\DITA-OT1.4</filepath>. If you change the standard installation folders, then you also have to adjust the <filepath>build.bat</filepath> files in each of the Documentation folders accordingly.</p>
     </section>
     <section>
       <title>Publishing tool</title>
       <p>DITA-OT (Open Toolkit) is used as processing tool. It is available at <xref href="http://dita-ot.sourceforge.net/" scope="external"/>.</p>
       <p>The current version (Jun 2011) is 1.5.3, which is prefered over the old version 1.4 coming with Serna Free 4.3.</p>
-      <p>Following the directory structure of Serna, it&apos;s best to install DITA 1.5.3 at <filepath>C:\Program Files\Syntext\Serna Free 4.3\plugins\dita\DITA-OT1.5.3</filepath>. This location is also assumed by the build scripts (<cmdname>build-1.5.3.bat</cmdname>).</p>
+      <p>Following the directory structure of Serna, it&apos;s best to install DITA 1.5.3 at <filepath>C:\Program Files\Syntext\Serna Free 4.3\plugins\dita\DITA-OT1.5.3</filepath>. This location is also assumed by the build scripts (see last section).</p>
     </section>
   </body>
 </topic>
