@@ -104,22 +104,24 @@ void CListHWInterface::vUpdateControlsWithCurrSel(void)
     m_omCardName = (m_pInterfaceList + i)->m_acNameInterface;
     m_omDescription = (m_pInterfaceList + i)->m_acDescription;
 
-    if ((m_pInterfaceList + i)->m_dwVendor == DRIVER_CAN_PEAK_USB)
+    switch ((m_pInterfaceList + i)->m_dwVendor)
     {
-        m_omVendor = _T("Peak GmbH");
-    }
-    else if ((m_pInterfaceList + i)->m_dwVendor == DRIVER_CAN_ICS_NEOVI)
-    {
-        m_omVendor = _T("Intrepid Control Systems, Inc.");
-    }
-    else if (((m_pInterfaceList + i)->m_dwVendor == DRIVER_CAN_ETAS_BOA) ||
-             ((m_pInterfaceList + i)->m_dwVendor == DRIVER_CAN_ETAS_ES581))
-    {
+    case DRIVER_CAN_ETAS_BOA:
+    case DRIVER_CAN_ETAS_ES581:
         m_omVendor = _T("ETAS GmbH");
-    }
-    else if ((m_pInterfaceList + i)->m_dwVendor == DRIVER_CAN_VECTOR_XL)
-    {
+        break;
+    case DRIVER_CAN_ICS_NEOVI:
+        m_omVendor = _T("Intrepid Control Systems, Inc.");
+        break;
+    case DRIVER_CAN_KVASER_CAN:
+        m_omVendor = _T("Kvaser AB");
+        break;
+    case DRIVER_CAN_PEAK_USB:
+        m_omVendor = _T("Peak GmbH");
+        break;
+    case DRIVER_CAN_VECTOR_XL:
         m_omVendor = _T("Vector Informatik GmbH");
+        break;
     }
 
     UpdateData(FALSE);
