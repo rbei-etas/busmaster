@@ -12,7 +12,7 @@
 #define BOA_VERSION_DIGIT1  1
 #define BOA_VERSION_DIGIT2  4
 #define BOA_VERSION_DIGIT3  2
-#define BOA_VERSION_DIGIT4  1
+#define BOA_VERSION_DIGIT4  4
 
 /* This preprocessor definition expands to the full BOA version, with digits separated by commas. */
 #define BOA_VERSION_COMMAS  BOA_VERSION_DIGIT1, BOA_VERSION_DIGIT2, BOA_VERSION_DIGIT3, BOA_VERSION_DIGIT4
