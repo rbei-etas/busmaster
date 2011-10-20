@@ -13,16 +13,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-/******************************************************************************
-  Project       :  BUSMASTER
-  FileName      :  BUSMASTER INSTALL SCRIPT.nsi
-  Description   :  Source script for BUSMASTER installer.
-  Author(s)     :  Arunkumar Karri
-  Date Created  :  11/08/2011
-  Modified By   :
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
+/**
+ * \brief     Source script for BUSMASTER installer
+ * \author    Arunkumar Karri
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
+ * \date      11/08/2011
+ *
+ * Source script for BUSMASTER installer.
+ */
 
 ; Show gradient background
 BGGradient 8080C0 0000FF FFFFFF
