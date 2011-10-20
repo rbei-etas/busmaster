@@ -161,23 +161,7 @@ BEGIN_MESSAGE_MAP(CCANMonitorApp, CWinApp)
     ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
 END_MESSAGE_MAP()
 
-/******************************************************************************/
-/*  Function Name    :  CCANMonitorApp                                        */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :                                                        */
-/*                                                                            */
-/*  Member of        :  CCANMonitorApp                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amarnath Shastry,Amitesh Bharti                       */
-/*  Date Created     :  20.02.2002                                            */
-/*  Modification date:  30.12.2002,                                           */
-/*  Modification By  :  Amitesh Bharti,                                       */
-/*                      Initialise the thread structure.                      */
-/*  Modification date:  22.07.2004,                                           */
-/*  Modification By  :  Amitesh Bharti,                                       */
-/*                      Modofiction due to new DLL Unload thread              */
-/******************************************************************************/
+
 CCANMonitorApp::CCANMonitorApp()
 {
 	
@@ -204,63 +188,7 @@ const WORD _wVerMajor = 1;
 const WORD _wVerMinor = 0;
 
 
-/******************************************************************************/
-/*  Function Name    :  InitInstance                                          */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :                                                        */
-/*                                                                            */
-/*  Member of        :  CCANMonitorApp                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amarnath Shastry,Amitesh Bharti                       */
-/*  Date Created     :  20.02.2002                                            */
-/*  Modifications    :  Ratnadip Choudhury                                    */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modifications on :  23.03.2002, Interface for message filter list is chang*/
-/*  Modification date:  28.11.2002,                                           */
-/*  Modification By  :  Amarnath S                                            */
-/*                      CFlags data member allocated before loading....       */
-/*                      and initialisation of toolbar button members from     */
-/*                      configuration file moved to nLoadConfiguration(...)   */
-/*                      member function.                                      */
-/*  Modification date:  18.12.2002,                                           */
-/*  Modification By  :  Amarnath S                                            */
-/*                      Updates member of CMainFrame if number of msgs        */
-/*                      configured is more than zero in SEND msg module       */
-/*                      to reflect the state of SEND toolbar button.          */
-/*  Modification date:  18.12.2002,                                           */
-/*  Modification By  :  Amitesh Bharti, Ratnadip Choudhury                    */
-/*                      Post a message to message window thread with log file */
-/*                      and status of log flag after getting it from          */
-/*                      configuration module.                                 */
-/*  Modification date:  30.12.2002,                                           */
-/*  Modification By  :  Amitesh Bharti,                                       */
-/*                      Re-arranged the sequence of code to take care of      */
-/*                      double click of configuration file in explore. It will*/
-/*                      get the configuration file name from user double click*/
-/*                      and load that file. If it is null the configuration   */
-/*                      store in registry will be loaded.                     */
-/*  Modification date:  02.05.2003                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*                      Call function bInitialiseConfiguration() to initialise*/
-/*                      setting as stored in configuration file.              */
-/*  Modification By  :  Raja N on 01.08.2004                                  */
-/*                      Added filter init code after the creation of msgwnd   */
-/*                      This will load filter and pass the pointer to msgwnd  */
-/*                      and added code to start logging it is enabled in the  */
-/*                      configuration file                                    */
-/*  Modification By  :  Raja N on 12.12.2004                                  */
-/*                      Added API call AfxEnableControlContainer to enable OLE*/
-/*                      object use in the application.                        */
-/*  Modification By  :  Raja N on 20.07.2005                                  */
-/*                      Added code to init display filter and new log manager */
-/*                      architecture                                          */
-/*  Modification By  :  Pradeep Kadoor on 12.06.2009                          */
-/*                      1. Added code to load a sample database file if       */
-/*                      no configuration file is found.                       */
-/*                      2. Main Frame GUI is created before the initialzation */
-/*                      of configuration                                      */
-/******************************************************************************/
+
 BOOL CCANMonitorApp::InitInstance()
 {
 	InitCommonControls(); 
@@ -477,41 +405,13 @@ BOOL CCANMonitorApp::InitInstance()
     return TRUE;
 }
 
-/******************************************************************************/
-/*  Function Name    :  WinHelp                                               */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :                                                        */
-/*  Member of        :  CCANMonitorApp                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  20.02.2002                                            */
-/*  Modifications    :  Raja N on 17.01.2005                                  */
-/*                      Modified code to invoke HTML help                     */
-/*                      Anish  on 27.04.2006                                  */
-/*                      Modified code for porting to .net                     */
-/******************************************************************************/
+
 
 void CCANMonitorApp::WinHelp(DWORD dwData, UINT nCmd) 
 {
 	CWinApp::WinHelp(dwData,  nCmd) ;
 }
-/******************************************************************************/
-/*  Function Name    :  ExitInstance                                          */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :                                                        */
-/*                                                                            */
-/*  Member of        :  CCANMonitorApp                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  20.02.2002                                            */
-/*  Modifications    :  Ratnadip Choudhury                                    */
-/*  Modifications    :  Amitesh Bharti, 31.12.2002                            */
-/*                      remove thread termination code.                       */
-/******************************************************************************/
+
 int CCANMonitorApp::ExitInstance() 
 {
 
@@ -550,49 +450,29 @@ int CCANMonitorApp::ExitInstance()
     return CWinApp::ExitInstance();
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnAppAbout                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :                                                        */
-/*                                                                            */
-/*  Member of        :  CCANMonitorApp                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amarnath Shastry,Amitesh Bharti                       */
-/*  Date Created     :  20.02.2002                                            */
-/*  Modifications    :                                                        */
-/******************************************************************************/
+
 void CCANMonitorApp::OnAppAbout()
 {
     CAboutDlg aboutDlg;
     aboutDlg.DoModal();
 }
-/******************************************************************************/
-/*  Function Name    :  pouGetFlagsPtr                                        */
-/*  Input(s)         :                                                        */
-/*  Output           :  Pointer to CFlags                                     */
-/*  Functionality    :  Return m_pouFlags data member varible value           */
-/*  Member of        :  CCANMonitorApp                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  20.02.2002                                            */
-/*  Modifications    :                                                        */
-/******************************************************************************/
+
+/**
+ * \brief Return m_pouFlags data member variable value
+ * \return Pointer to CFlags
+ *
+ * Return m_pouFlags data member variable value
+ */
 CFlags* CCANMonitorApp::pouGetFlagsPtr()
 {
     return m_pouFlags; 
 }
-/******************************************************************************/
-/*  Function Name    :  vSetHelpID                                            */
-/*  Input(s)         :  dwHelpID                                              */
-/*  Output           :                                                        */
-/*  Functionality    :  assign the value passed as parameter to m_dwHelpID    */
-/*  Member of        :  CCANMonitorApp                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  20.02.2002                                            */
-/*  Modifications    :                                                        */
-/******************************************************************************/
+
+/**
+ * \brief assign the value passed as parameter to m_dwHelpID
+ *
+ * assign the value passed as parameter to m_dwHelpID
+ */
 void CCANMonitorApp::vSetHelpID(DWORD dwHelpID)
 {
     m_dwHelpID = dwHelpID;
@@ -604,20 +484,13 @@ CWnd* CCANMonitorApp::GetMainWnd()
     
     return CWinApp::GetMainWnd();
 }
-/******************************************************************************/
-/*  Function Name    :  vPopulateCANIDList                                    */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Fills the CANIDList struct with dtabase message ID,
-                        name and color for future use.    
-/*  Member of        :  CCANMonitorApp                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  04.04.2002                                            */
-/*  Modifications    :  03-05-2002                                            */
-/*  Modification By  :  Anish,02.02.07                                        */
-/*  Modification on  :  Removed memory leak due to pidArray                   */
-/******************************************************************************/
+
+/**
+ * \brief Fills the CANIDlist
+ *
+ * Fills the CANIDList struct with dtabase message ID,
+ * name and color for future use.
+ */
 void CCANMonitorApp::vPopulateCANIDList()
 {
     CMessageAttrib& ouMsgAttr = CMessageAttrib::ouGetHandle(CAN);
@@ -669,85 +542,70 @@ void CCANMonitorApp::vPopulateCANIDList()
         }
     }
 }
-/******************************************************************************/
-/*  Function Name    :  omStrGetUnionFilePath                                 */
-/*  Input(s)         :  file name to change                                   */
-/*  Output           :  CString[File path]
-/*  Functionality    :  Returns file path of unions.h
-/*  Member of        :  CCANMonitorApp                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  04.07.2002                                            */
-/*  Modification     :  Anish,19.12.2006
-/*						For MDB,it create union file name for each DB name
-/******************************************************************************/
+
+/**
+ * \brief Returns file path of unions.h
+ * \param file name to change
+ * \return File path
+ *
+ * Returns file path of unions.h
+ */
 CString CCANMonitorApp::omStrGetUnionFilePath(CString omStrTemp)
 {
 	CString omStrHeaderFileName = omStrTemp.Left(omStrTemp.ReverseFind('.'));
     omStrHeaderFileName += defHEADER_FILE_NAME;
     return omStrHeaderFileName;
 }
-/******************************************************************************/
-/*  Function Name    :  bSetData                                              */
-/*  Input(s)         :  eParam : enumeration denoting the information that    */
-/*                               needs to be stored into the config           */
-/*                      lpVoid : pointer where the data should be written     */
-/*  Output           :  TRUE : if the CConfigDetails object successfully      */
-/*                             updates the information                        */
-/*                      FALSE : if any error is encountered while updating the*/
-/*                              information                                   */
-/*  Functionality    :  This is a wrapper around the method                   */
-/*                      CConfigDetails::bSetData(...). It is planned to use   */
-/*                      only one global object, theApp as provided by the     */
-/*                      Wizard.                                               */
-/*  Member of        :  CCANMonitorApp                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Gopi                                                  */
-/*  Date Created     :  11.11.2002                                            */
-/******************************************************************************/
+
+/**
+ * \brief wrapper around the method CConfigDetails::bSetData(...)
+ * \param eParam enumeration denoting the information that
+ *   needs to be stored into the config
+ * \param lpVoid pointer where the data should be written
+ * \return
+ *   TRUE, if the CConfigDetails object successfully updates the information.
+ *   FALSE, if any error is encountered while updating the information.
+ *
+ * This is a wrapper around the method
+ * CConfigDetails::bSetData(...). It is planned to use
+ * only one global object, theApp as provided by the
+ * Wizard.
+ */
 BOOL CCANMonitorApp::bSetData1(eCONFIGDETAILS /*eParam*/, LPVOID /*lpVoid*/)
 {
     return FALSE;//m_oConfigDetails.bSetData(eParam, lpVoid);
 }
 
-/******************************************************************************/
-/*  Function Name    :  bGetData                                              */
-/*  Input(s)         :  eParam : enumeration denoting the information that    */
-/*                               needs to be obtained from the config         */
-/*                      lpVoid : source pointer for data                      */
-/*  Output           :  TRUE : if the CConfigDetails object successfully      */
-/*                             obtains the information                        */
-/*                      FALSE : if any error is encountered while obtaining   */
-/*                              the information                               */
-/*  Functionality    :  This is a wrapper around the method                   */
-/*                      CConfigDetails::bGetData(...). It is planned to use   */
-/*                      only one global object, theApp as provided by the     */
-/*                      Wizard.                                               */
-/*  Member of        :  CCANMonitorApp                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Gopi                                                  */
-/*  Date Created     :  11.11.2002                                            */
-/******************************************************************************/
+/**
+ * \brief wrapper around CConfigDetails::bGetData(...)
+ * \param eParam enumeration denoting the information that
+ *   needs to be obtained from the config
+ * \param lpVoid source pointer for data
+ * \return
+ *   TRUE, if the CConfigDetails object successfully obtains the information.
+ *   FALSE, if any error is encountered while obtaining the information.
+ *
+ * This is a wrapper around the method
+ * CConfigDetails::bGetData(...). It is planned to use
+ * only one global object, theApp as provided by the
+ * Wizard.
+ */
 BOOL CCANMonitorApp::bGetData1(eCONFIGDETAILS /*eParam*/, LPVOID* /*lpData*/)
 {
     return FALSE;//m_oConfigDetails.bGetData(eParam, lpData);
 }
 
-/******************************************************************************/
-/*  Function Name    :  vRelease                                              */
-/*  Input(s)         :  eParam : enumeration denoting the section for which   */
-/*                               the memory should be released                */
-/*                      lpDataPtr : pointer that should be released           */
-/*  Output           :                                                        */
-/*  Functionality    :  This is a wrapper around the method                   */
-/*                      CConfigDetails::bRelease(...). It is planned to use   */
-/*                      only one global object, theApp as provided by the     */
-/*                      Wizard.                                               */
-/*  Member of        :  CCANMonitorApp                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Gopi                                                  */
-/*  Date Created     :  11.11.2002                                            */
-/******************************************************************************/
+/**
+ * \brief wrapper around CConfigDetails::bRelease(...)
+ * \param eParam enumeration denoting the section for which
+ *   the memory should be released
+ * \param lpDataPtr pointer that should be released
+ *
+ * This is a wrapper around the method
+ * CConfigDetails::bRelease(...). It is planned to use
+ * only one global object, theApp as provided by the
+ * Wizard.
+ */
 void CCANMonitorApp::vRelease1(eCONFIGDETAILS /*eParam*/, LPVOID* /*lpDataPtr*/)
 {
     //m_oConfigDetails.vRelease(eParam, lpDataPtr);
@@ -773,32 +631,18 @@ void CCANMonitorApp::GetLoadedConfigFilename(CString &roStrCfgFile)
 {
     roStrCfgFile = m_ostrConfigFilename;
 }
-/******************************************************************************/
-/*  Function Name    :  OnFileOpen                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This is a message handler for ID_FILE_OPEN            */
-/*                      This function will be called when user selects        */
-/*                      File -> Function Editor -> Open menu option.          */
-/*                      Displays open file dialog initialised with *.c filter,*/
-/*                      and the previous selected C file.                     */
-/*                      Opens the selected file if the file is found and      */
-/*                      saves back the selected file into the configuration   */
-/*  Member of        :  CCANMonitorApp                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amarnath S                                            */
-/*  Date Created     :  22.11.2002                                            */
-/*  Modifications    :  Amitesh Bharti                                        */
-/*                      13.03.2003, If function editor is open and CTRL o is  */
-/*                      pressed, don't call OnFileNew function. Check for flag*/
-/*  Modifications    :  Raja N                                                */
-/*                      16.03.2004, Moved the cration of MRU for MDI child to */
-/*                      If block to avoide duplicate entries during cancel to */
-/*                      file selection dialog or file not found               */
-/*  Modifications    :  Anish kumar                                           */
-/*                      13.01.2005, Enable the user to open multiple file at  */
-/*                      a time                                                */
-/******************************************************************************/
+
+/**
+ * \brief message handler for ID_FILE_OPEN
+ *
+ * This is a message handler for ID_FILE_OPEN
+ * This function will be called when user selects
+ * File -> Function Editor -> Open menu option.
+ * Displays open file dialog initialised with *.c filter,
+ * and the previous selected C file.
+ * Opens the selected file if the file is found and
+ * saves back the selected file into the configuration
+ */
 void CCANMonitorApp::OnFileOpen()
 {
     // Display open dialog box with *.c filter
@@ -858,20 +702,13 @@ void CCANMonitorApp::OnFileOpen()
         }
     }
 }
-/******************************************************************************/
-/*  Function Name    :  vDisplayConfigErrMsgbox                               */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Dispaly an appropriate message for the error code     */
-/*                      passed to this method. The message is user friendly.  */
-/*  Member of        :  CCANMonitorApp                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Gopi                                                  */
-/*  Date Created     :  24.11.2002                                            */
-/*  Modifications    :  Pradeep Kadoor on 12.06.2009.                         */                                            
-/*                      Error message displayed in trace window instead of    */
-/*                      message box.                                          */
-/******************************************************************************/
+
+/**
+ * \brief Displays message for the error code
+ *
+ * Displays an appropriate message for the error code
+ * passed to this method. The message is user friendly.
+ */
 void CCANMonitorApp::vDisplayConfigErrMsgbox(UINT unErrorCode, 
                                              BOOL bOperation)
 {    
@@ -974,36 +811,23 @@ Corrupt configuration file found");
         //MessageBox(NULL, m_omConfigErr, _T("BUSMASTER"), unMsgboxType);
     }
 }
-/******************************************************************************/
-/*  Function Name    :  bIsConfigurationModified                              */
-/*  Input(s)         :                                                        */
-/*  Output           :  BOOL                                                  */
-/*  Functionality    :  This method returns the value of  m_bIsDirty          */
-/*  Member of        :  CCANMonitorApp                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath S                                            */
-/*  Date Created     :  29.10.2002                                            */
-/*  Modifications on :                                                        */
-/******************************************************************************/
+
+/**
+ * \brief returns the value of m_bIsDirty
+ *
+ * This method returns the value of m_bIsDirty
+ */
 BOOL CCANMonitorApp::bIsConfigurationModified()
 {
     return FALSE;//m_oConfigDetails.bIsConfigurationModified();
 }
 
-/******************************************************************************/
-/*  Function Name    :  vSetConfigurationModified                             */
-/*  Input(s)         :                                                        */
-/*  Output           :  BOOL                                                  */
-/*  Functionality    :  This method sets the value of                         */
-/*                      m_bIsConfigurationModified                            */
-/*  Member of        :  CCANMonitorApp                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath S                                            */
-/*  Date Created     :  02.12.2002                                            */
-/*  Modifications on :                                                        */
-/******************************************************************************/
+
+/**
+ * \brief sets the value of m_bIsConfigurationModified
+ *
+ * This method sets the value of m_bIsConfigurationModified
+ */
 void CCANMonitorApp::vSetConfigurationModified(BOOL /*bModified = TRUE*/)
 {
     //m_oConfigDetails.vSetConfigurationModified( bModified );
@@ -1014,22 +838,15 @@ BOOL CCANMonitorApp::bGetDefaultSplitterPostion(eCONFIGDETAILS /*eParam*/,
 {
     return FALSE;
 }
-/******************************************************************************/
-/*  Function Name    :  OnFileNew                                             */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This is a message handler for ID_FILE_NEW             */
-/*                      This function will be called when user selects        */
-/*                      File -> Function Editor -> New  menu option.          */
-/*                      Creates the MRU menu only once                        */
-/*  Member of        :  CCANMonitorApp                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amarnath S                                            */
-/*  Date Created     :  14.12.2002                                            */
-/*  Modifications    :  Amitesh Bharti                                        */
-/*                      13.03.2003, If function editor is open and CTRL n is  */
-/*                      pressed, don't call OnFileNew function. Check for flag*/
-/******************************************************************************/
+
+/**
+ * \brief message handler for ID_FILE_NEW
+ *
+ * This is a message handler for ID_FILE_NEW
+ * This function will be called when user selects
+ * File -> Function Editor -> New  menu option.
+ * Creates the MRU menu only once
+ */
 void CCANMonitorApp::OnFileNew()
 {
     BOOL bOneChildWndOpen = FALSE;
@@ -1079,62 +896,21 @@ void CCANMonitorApp::OnFileNew()
         }
     }
 }
-/******************************************************************************/
-/*  Function Name    :  vDestroyUtilThreads                                   */
-/*  Input(s)         :  unMaxWaitTime : Maximum time to wait for event        */
-/*                      byThreadCode  : which thread to terminate             */
-/*                      byThreadCode = 0x01 : Message Handler Thread          */
-/*                      byThreadCode = 0x02 : Key Handler Thread              */
-/*                      byThreadCode = 0x04 : Replay Thread                   */
-/*                      byThreadCode = 0x08 : Selected Message Thread         */
-/*                      byThreadCode = 0x10 : DLL handler Thread.             */
-/*                      byThreadCode = 0x20 : Error Handler Thread.           */
-/*                      byThreadCode = 0x40 : Transmission Msg block thread.  */
-/*  Output           :                                                        */
-/*  Functionality    :  This is a function called from CMainFrm class. It is  */
-/*                      called from OnDestroy() function. This will wait for  */
-/*                      all four thread (Key Handler, Message Handler, Replay */
-/*                      and Send Multiple Message) to terminate. If it does   */
-/*                      each of this thread does not terminate till           */
-/*                      unMaxWaitTime ms then terminate. Before wait,         */
-/*                      respective global flag is set to terminate thread     */
-/*                      Normal termination of thread is indicated by          */
-/*                      event signaled before exit of thread function. Any    */
-/*                      dynamically allocated memory inside thread function   */
-/*                      is deleted here in case it is not deleted in that func*/
-/*  Member of        :  CCANMonitorApp                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  30.12.2002                                            */
-/*  Modifications    :  Amitesh Bharti                                        */
-/*                      25.02.2003, Added thread termination code for Error   */
-/*                      handlers                                              */
-/*  Modifications    :  Amitesh Bharti                                        */
-/*                      30.04.2003, Added thread termination code for DLL     */
-/*                      handlers and SendMsg. Corrected some problems.        */
-/*  Modifications    :  Amitesh Bharti                                        */
-/*                      08.01.2004, Added thread termination code for TX msg  */
-/*                      blocks and selected message.                          */
-/*  Modifications    :  Raja N                                                */
-/*                      10.05.2004, Removed thread termination code for  msg  */
-/*                      handlers as it has been done separately               */
-/*  Modifications    :  Raja N                                                */
-/*                      01.06.2004, Merged thread termination code for  msg   */
-/*                      handlers and added check for thread hadle before wait */
-/*                      and initialising the handle to NULL after terminate   */
-/*  Modifications    :  Amitesh Bharti & Raja N                               */
-/*                      22.07.2004, Added code for dll Unload thread killing  */
-/*                      and destroying key handler threads                    */
-/*  Modifications    :  Raja N                                                */
-/*                      01.08.2004, modified code as per code review. Timer   */
-/*                      thread is killed after waiting for key thread. This   */
-/*                      will reduce TerminateThread calls.                    */
-/*  Modifications    :  Raja N                                                */
-/*                      16.07.2005, modified code to call replay manager to   */
-/*                      kill replay threads                                   */
-/*  Modifications	 :  Anish kumar 
-                        29.12.05 removed node specific thread code            */
-/******************************************************************************/
+
+/**
+ * \param unMaxWaitTime Maximum time to wait for event
+ * \param byThreadCode which thread to terminate
+ *
+ * This is a function called from CMainFrm class. It is called from
+ * OnDestroy() function. This will wait for all four thread
+ * (Key Handler, Message Handler, Replay and Send Multiple Message)
+ * to terminate. If it does each of this thread does not terminate till
+ * unMaxWaitTime ms then terminate. Before wait, respective global
+ * flag is set to terminate thread Normal termination of
+ * thread is indicated by event signaled before exit of thread
+ * function. Any dynamically allocated memory inside thread function
+ * is deleted here in case it is not deleted in that function
+ */
 VOID CCANMonitorApp::vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode)
 {
     DWORD dwResult = WAIT_ABANDONED;
@@ -1262,48 +1038,14 @@ VOID CCANMonitorApp::vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode)
         }
     }
 }
-/******************************************************************************/
-/*  Function Name    :  bInitialiseConfiguration                              */
-/*  Input(s)         :                                                        */
-/*  Output           :  TRUE or FALSE                                         */
-/*  Functionality    :  This method will initialise user selection from       */
-/*                      a configuration module to respective module.          */
-/*  Member of        :  CCANMonitorApp                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  30.04.2003                                            */
-/*  Modification date:  17.06.2003, Amitesh Bharti, updation of toolbar status*/
-/*                      to other done irrespective of if the configuration    */
-/*                      file has been selected or not.                        */
-/*  Modification date:  19.06.2003, Amitesh Bharti, If database file in       */
-/*                      configuration file is deleted from the disk, prompt   */
-/*                      the user and set the file name as empty in config file*/
-/*  Modifications    :  Amitesh Bharti                                        */
-/*                      08.01.2004, Interface for getting message block count */
-/*                      is changed.                                           */
-/*  Modifications    :  Raja N                                                */
-/*                      10.03.2004 Modified to include check while loading the*/
-/*                      configuration to clear signal watch list and to show  */
-/*                      warnning if DLL is loaded                             */
-/*  Modifications    :  Raja N                                                */
-/*                      05.04.2004 Modified to refer latest signal watch list */
-/*                      structure while checking                              */
-/*  Modifications    :  Raja N                                                */
-/*                      22.07.2004 Modified to create message buffer while    */
-/*                      initialising the confguration                         */
-/*  Modifications    :  Raja N                                                */
-/*                      02.08.2004 Implemented code review changes. The return*/
-/*                      value will be set to FALSE in case of buffer creation */
-/*                      failure                                               */
-/*  Modifications    :  Raja N                                                */
-/*                      02.12.2004 Added code to init graph list              */
-/*  Modifications    :  Raja N                                                */
-/*                      02.12.2004 Added code to new filter list and for      */
-/*                      backward compatiblity of filter,log and replay        */
-/*  Modifications    :  Pradeep Kadoor on 12.06.2009.                         */
-/*                      Load database error message is displayed in           */
-/*                      trace window instead of message box.                  */  
-/******************************************************************************/
+
+/**
+ * \brief initialises user selection
+ * \return TRUE or FALSE
+ *
+ * This method will initialise user selection from
+ * a configuration module to respective module.
+ */
 BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
 {
     BOOL bReturn = TRUE;
@@ -1427,53 +1169,44 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
     }
     return bReturn;
 }
-/******************************************************************************/
-/*  Function Name    :  psReturnMsgBlockPointer                               */
-/*  Input(s)         :                                                        */
-/*  Output           :  Pointer to  SMSGBLOCKLIST structure                   */
-/*  Functionality    :  This method will call psReturnMsgBlockPointer()       */
-/*                      a member function of CConfigDetails class.            */
-/*  Member of        :  CCANMonitorApp                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification date:                                                        */
-/******************************************************************************/
+
+/**
+ * \brief calls psReturnMsgBlockPointer()
+ * \return Pointer to SMSGBLOCKLIST structure
+ *
+ * This method will call psReturnMsgBlockPointer()
+ * a member function of CConfigDetails class.
+ */
 PSMSGBLOCKLIST CCANMonitorApp::psReturnMsgBlockPointer()
 {
     return NULL;//m_oConfigDetails.psReturnMsgBlockPointer();
 }
 
-/*******************************************************************************
-  Function Name  : bGetDefaultValue
-  Input(s)       : eParam - Window Identity
-                   sPosition - Reference to Window Placement Structure
-  Output         : -
-  Functionality  : This function will call Config Details class member to get
-                   default window size and position.
-  Member of      : CCAN_Monitor
-  Author(s)      : Raja N
-  Date Created   : 29.4.2005
-  Modifications  : 
-*******************************************************************************/
+
+/**
+ * \brief calls Config Details class member
+ * \param eParam Window Identity
+ * \param sPosition Reference to Window Placement Structure
+ *
+ * This function will call Config Details class member to get
+ * default window size and position.
+ */
 BOOL CCANMonitorApp::bGetDefaultValue(eCONFIGDETAILS /*eParam*/,
                                       WINDOWPLACEMENT& /*sPosition*/)
 {
     return FALSE;//m_oConfigDetails.bGetDefaultValue( eParam, sPosition );
 }
 
-/*******************************************************************************
-  Function Name  : bWriteIntoTraceWnd
-  Input(s)       : omText - Text to be displayed in trace window
-  Output         : TRUE - Success, FALSE - Failure
-  Functionality  : This function will write the text into trace window.
-                   Since this function is asynchronous, caller should not immediately 
-                   deallocate the omText. 
-  Member of      : CCAN_Monitor
-  Author(s)      : Pradeep Kadoor
-  Date Created   : 13.06.2009
-  Modifications  : 
-*******************************************************************************/
+
+/**
+ * \brief writes the text into trace window
+ * \param omText Text to be displayed in trace window
+ * \return TRUE - Success, FALSE - Failure
+ *
+ * This function will write the text into trace window.
+ * Since this function is asynchronous, caller should not immediately
+ * deallocate the omText.
+ */
 BOOL CCANMonitorApp::bWriteIntoTraceWnd(char* omText)
 {
     BOOL bResult = FALSE;

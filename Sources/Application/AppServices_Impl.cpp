@@ -29,48 +29,30 @@
 #include "AppServices_Impl.h"
 
 
-/*******************************************************************************
-  Function Name  : CAppServices_Impl
-  Input(s)       : -
-  Output         : -
-  Functionality  : Constructor
-  Member of      : CAppServices_Impl
-  Author(s)      : Anish
-  Date Created   : 09.2.2010
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \brief Constructor
+ */
 CAppServices_Impl::CAppServices_Impl()
 {
     m_podUIThread = NULL;
 }
 
 
-/*******************************************************************************
-  Function Name  : ~CAppServices_Impl
-  Input(s)       : -
-  Output         : -
-  Functionality  : Constructor
-  Member of      : CAppServices_Impl
-  Author(s)      : Anish
-  Date Created   : 09.2.2010
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \brief Destructor
+ */
 CAppServices_Impl::~CAppServices_Impl()
 {
     m_podUIThread = NULL;
 }
 
 
-/*******************************************************************************
-  Function Name  : bWriteToTrace
-  Input(s)       : Character buffer to be written on trace
-  Output         : -
-  Functionality  : Write the string on trace window
-  Member of      : CAppServices_Impl
-  Author(s)      : Anish
-  Date Created   : 09.2.2010
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \brief Write the string on trace window
+ * \param pcTraceStr Character buffer to be written on trace
+ *
+ * Character buffer to be written on trace
+ */
 BOOL CAppServices_Impl::bWriteToTrace(TCHAR* pcTraceStr)
 {
     BOOL Result = FALSE;
