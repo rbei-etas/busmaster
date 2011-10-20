@@ -114,7 +114,9 @@ Section ""
     File ..\Sources\BIN\Release\Language_Converter.exe
     File ..\Sources\BIN\Release\CANDBConverter_Import.exe
     File ..\Sources\BIN\Release\CANDBConverter_Export.exe
-	File ..\Sources\BIN\Release\Changelog.txt	
+    File ..\Sources\BIN\Release\Changelog.txt
+    File ..\COPYING.LESSER.txt
+    File ..\COPYING.txt
     Delete "$INSTDIR\Splsh16.bmp"
 
     CreateDirectory "$SMPROGRAMS\BUSMASTER"
@@ -193,7 +195,9 @@ Section "Uninstall"
     Delete "$INSTDIR\MinGW\OBJ\*.*"
     Delete "$INSTDIR\uninst.exe"
     Delete "$INSTDIR\CanApi2.dll"
-	Delete "$INSTDIR\Changelog.txt"	
+    Delete "$INSTDIR\Changelog.txt"
+    Delete "$INSTDIR\COPYING.LESSER.txt"
+    Delete "$INSTDIR\COPYING.txt"
 
     Delete "$SMPROGRAMS\BUSMASTER\Uninstall.lnk"
     Delete "$SMPROGRAMS\BUSMASTER\BUSMASTER.lnk"
