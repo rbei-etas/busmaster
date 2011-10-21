@@ -142,7 +142,8 @@ int CValueTable::Format(char *pcLine,CStdioFile &fileInput)
         }
         while(*pcLine && *pcLine != '\"')
         {
-            *pcDesc++ = *pcLine;
+            if ((*pcLine != '\r') && (*pcLine != '\n'))
+              *pcDesc++ = *pcLine;
             pcLine++;
         }
         *pcDesc = '\0';
