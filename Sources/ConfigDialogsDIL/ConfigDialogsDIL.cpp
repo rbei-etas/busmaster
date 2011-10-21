@@ -137,6 +137,9 @@ USAGEMODE int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/,
     }
     else if (dwDriverID == DRIVER_CAN_VECTOR_XL)
     {
+        CChangeRegisters_CAN_ETAS_BOA ouChangeRegister(CWnd::FromHandle(hParent), pControllerDetails, nCount);
+        ouChangeRegister.DoModal();
+        nResult = ouChangeRegister.nGetInitStatus();    	
     }
 
     return nResult;
