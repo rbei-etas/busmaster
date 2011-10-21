@@ -77,15 +77,6 @@ unsigned int CConverter::Convert(CString sCanoeFile,CString sCanMonFile)
         fileInput.Close();
         return SetResultCode(CON_RC_FORMAT_ERROR_INFILE);
     }
-    else // if something was read
-    {
-        // verify the format
-        if(strncmp(acLine,"VERSION ",8) != 0)
-        {
-            fileInput.Close();
-            return SetResultCode(CON_RC_FORMAT_ERROR_INFILE);
-        }
-    }	
 
     // Generate the list of messages
 
