@@ -4,6 +4,7 @@ PROJECT_BRIEF          = CAN_ETAS_BOA
 OUTPUT_DIRECTORY       = out/CAN_ETAS_BOA
 STRIP_FROM_PATH        = ../../Sources/CAN_ETAS_BOA
 INPUT                  = ../../Sources/CAN_ETAS_BOA
+EXCLUDE                = ../../Sources/CAN_ETAS_BOA/EXTERNAL_INCLUDE
 ALIASES               += "capabilities=\par Capabilities:\n" \
                          "coding=\par Coding:\n" \
                          "controllerState=\par Controller state:\n" \

@@ -4,3 +4,4 @@ PROJECT_BRIEF          = CAN_Kvaser_CAN
 OUTPUT_DIRECTORY       = out/CAN_Kvaser_CAN
 STRIP_FROM_PATH        = ../../Sources/CAN_Kvaser_CAN
 INPUT                  = ../../Sources/CAN_Kvaser_CAN
+EXCLUDE                = ../../Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE

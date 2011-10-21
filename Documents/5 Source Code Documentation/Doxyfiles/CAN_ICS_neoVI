@@ -4,3 +4,4 @@ PROJECT_BRIEF          = CAN_ICS_neoVI
 OUTPUT_DIRECTORY       = out/CAN_ICS_neoVI
 STRIP_FROM_PATH        = ../../Sources/CAN_ICS_neoVI
 INPUT                  = ../../Sources/CAN_ICS_neoVI
+EXCLUDE                = ../../Sources/CAN_ICS_neoVI/EXTERNAL_INCLUDE

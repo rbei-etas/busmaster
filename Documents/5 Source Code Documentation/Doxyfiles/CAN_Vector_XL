@@ -4,3 +4,4 @@ PROJECT_BRIEF          = CAN_Vector_XL
 OUTPUT_DIRECTORY       = out/CAN_Vector_XL
 STRIP_FROM_PATH        = ../../Sources/CAN_Vector_XL
 INPUT                  = ../../Sources/CAN_Vector_XL
+EXCLUDE                = ../../Sources/CAN_Vector_XL/EXTERNAL_INCLUDE
