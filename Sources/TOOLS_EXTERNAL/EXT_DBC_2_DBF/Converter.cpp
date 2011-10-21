@@ -135,12 +135,12 @@ unsigned int CConverter::Convert(CString sCanoeFile,CString sCanMonFile)
 
 const char* CConverter::m_pacResultStrings[] =
 {
-    "Conversion completed...NO ERRORS!",
-    "Conversion completed with ERRORS... see log file\n",
-    "Error opening input file",
-    "Error opening output file",
-    "Conversion aborted: input file format error",
-    "Conversion completed with ERRORS... Error Creating Log file"
+    "Conversion completed.",
+    "Conversion completed with errors. See log file.",
+    "Conversion aborted. Error opening input file.",
+    "Conversion aborted. Error creating output file.",
+    "Conversion aborted. Error with input file format.",
+    "Conversion aborted. Error creating log file."
 };
 
 /**
