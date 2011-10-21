@@ -2163,47 +2163,124 @@ USAGEMODE HRESULT CAN_ICS_neoVI_DisplayConfigDlg(PCHAR& InitData, int& Length)
     {
         unsigned int serialNumber = sg_ndNeoToOpen[i].SerialNumber;
         char netid_str[256];
-		if ((sg_ndNeoToOpen[i].DeviceType == NEODEVICE_VCAN3) && (serialNumber >= 50000)) {
-            switch (m_bytNetworkIDs[i]) {
-                case NETID_HSCAN:
-                    strncpy(&netid_str[0], "CAN 1", sizeof(netid_str));
-                    break;
-                case NETID_MSCAN:
-                    strncpy(&netid_str[0], "CAN 2", sizeof(netid_str));
-                    break;
-            }
-        }
-        else
-        {
-            switch (m_bytNetworkIDs[i]) {
-                case NETID_HSCAN:
-                    strncpy(&netid_str[0], "HSCAN", sizeof(netid_str));
-                    break;
-                case NETID_MSCAN:
-                    strncpy(&netid_str[0], "MSCAN", sizeof(netid_str));
-                    break;
-                case NETID_SWCAN:
-                    strncpy(&netid_str[0], "SWCAN", sizeof(netid_str));
-                    break;
-                case NETID_LSFTCAN:
-                    strncpy(&netid_str[0], "LSFTCAN", sizeof(netid_str));
-                    break;
-                case NETID_FIRE_HSCAN1:
-                    strncpy(&netid_str[0], "HSCAN1", sizeof(netid_str));
-                    break;
-                case NETID_FIRE_MSCAN1:
-                    strncpy(&netid_str[0], "MSCAN1", sizeof(netid_str));
-                    break;
-                case NETID_FIRE_SWCAN:
-                    strncpy(&netid_str[0], "SWCAN", sizeof(netid_str));
-                    break;
-                case NETID_FIRE_LSFT:
-                    strncpy(&netid_str[0], "LSFT", sizeof(netid_str));
-                    break;
+
+        int nHardwareLic = 0;
+        if (sg_ndNeoToOpen[i].DeviceType == NEODEVICE_VCAN3) {
+            int hObject = NULL;
+            int nResult = 0;
+
+            nResult = (*icsneoOpenNeoDevice)(&sg_ndNeoToOpen[i], &hObject, NULL, 1, 0);
+            if (nResult == NEOVI_OK && hObject!=NULL)
+            {
+                int nErrors = 0;
+                if ( icsneoGetHardwareLicense )
+                    (*icsneoGetHardwareLicense)(hObject, &nHardwareLic);
+                (*icsneoClosePort)(hObject, &nErrors);
             }
         }
 
-		switch (sg_ndNeoToOpen[i].DeviceType) {
+        switch (sg_ndNeoToOpen[i].DeviceType) {
+                /* neoVI Blue */
+            case NEODEVICE_BLUE:
+                switch (m_bytNetworkIDs[i]) {
+                    case NETID_HSCAN:
+                        strncpy(&netid_str[0], "HSCAN", sizeof(netid_str));
+                        break;
+                    case NETID_MSCAN:
+                        strncpy(&netid_str[0], "MSCAN", sizeof(netid_str));
+                        break;
+                    case NETID_SWCAN:
+                        strncpy(&netid_str[0], "SW CAN", sizeof(netid_str));
+                        break;
+                    case NETID_LSFTCAN:
+                        strncpy(&netid_str[0], "LSFT CAN", sizeof(netid_str));
+                        break;
+                }
+                break;
+
+                /* ValueCAN */
+            case NEODEVICE_DW_VCAN:
+                switch (m_bytNetworkIDs[i]) {
+                    case NETID_HSCAN:
+                        strncpy(&netid_str[0], "CAN", sizeof(netid_str));
+                        break;
+                }
+                break;
+
+                /* neoVI Fire/Red */
+            case NEODEVICE_FIRE:
+                switch (m_bytNetworkIDs[i]) {
+                    case NETID_HSCAN:
+                    case NETID_FIRE_HSCAN1:
+                        strncpy(&netid_str[0], "HS CAN 1", sizeof(netid_str));
+                        break;
+                    case NETID_MSCAN:
+                    case NETID_FIRE_MSCAN1:
+                        strncpy(&netid_str[0], "MS CAN", sizeof(netid_str));
+                        break;
+                    case NETID_SWCAN:
+                    case NETID_FIRE_SWCAN:
+                        strncpy(&netid_str[0], "SW CAN", sizeof(netid_str));
+                        break;
+                    case NETID_LSFTCAN:
+                    case NETID_FIRE_LSFT:
+                        strncpy(&netid_str[0], "LSFT CAN", sizeof(netid_str));
+                        break;
+                }
+                break;
+
+                /* ValueCAN3 */
+            case NEODEVICE_VCAN3:
+                if (nHardwareLic == 8) { // Limited Version with only one channel
+                    switch (m_bytNetworkIDs[i]) {
+                        case NETID_HSCAN:
+                            strncpy(&netid_str[0], "CAN", sizeof(netid_str));
+                            break;
+                    }
+                } else { // Two channels
+                    switch (m_bytNetworkIDs[i]) {
+                        case NETID_HSCAN:
+                            strncpy(&netid_str[0], "CAN 1", sizeof(netid_str));
+                            break;
+                        case NETID_MSCAN:
+                            strncpy(&netid_str[0], "CAN 2", sizeof(netid_str));
+                            break;
+                    }
+                }
+                break;
+        }
+
+        /* default case */
+        if (strlen(&netid_str[0]) == 0) {
+                switch (m_bytNetworkIDs[i]) {
+                    case NETID_HSCAN:
+                        strncpy(&netid_str[0], "HSCAN", sizeof(netid_str));
+                        break;
+                    case NETID_MSCAN:
+                        strncpy(&netid_str[0], "MSCAN", sizeof(netid_str));
+                        break;
+                    case NETID_SWCAN:
+                        strncpy(&netid_str[0], "SWCAN", sizeof(netid_str));
+                        break;
+                    case NETID_LSFTCAN:
+                        strncpy(&netid_str[0], "LSFTCAN", sizeof(netid_str));
+                        break;
+                    case NETID_FIRE_HSCAN1:
+                        strncpy(&netid_str[0], "HSCAN1", sizeof(netid_str));
+                        break;
+                    case NETID_FIRE_MSCAN1:
+                        strncpy(&netid_str[0], "MSCAN1", sizeof(netid_str));
+                        break;
+                    case NETID_FIRE_SWCAN:
+                        strncpy(&netid_str[0], "SWCAN", sizeof(netid_str));
+                        break;
+                    case NETID_FIRE_LSFT:
+                        strncpy(&netid_str[0], "LSFT", sizeof(netid_str));
+                        break;
+                }
+        }
+
+        switch (sg_ndNeoToOpen[i].DeviceType) {
                 /* neoVI Blue */
             case NEODEVICE_BLUE:
                 _stprintf(pControllerDetails[i].m_omHardwareDesc,
@@ -2232,9 +2309,15 @@ USAGEMODE HRESULT CAN_ICS_neoVI_DisplayConfigDlg(PCHAR& InitData, int& Length)
                               _T("ValueCAN3, Serial Number %d, Network: %s"),
                               serialNumber, &netid_str[0]);
                 } else {
-                    _stprintf(pControllerDetails[i].m_omHardwareDesc,
-                              _T("ES581.3, Serial Number %d, Network: %s"),
-                              serialNumber-50000, &netid_str[0]);
+                    if (nHardwareLic == 8) { // Limited Version with only one channel
+                        _stprintf(pControllerDetails[i].m_omHardwareDesc,
+                                  _T("ES581.2, Serial Number %d, Network: %s"),
+                                  serialNumber-50000, &netid_str[0]);
+                    } else { // Two channels
+                        _stprintf(pControllerDetails[i].m_omHardwareDesc,
+                                  _T("ES581.3, Serial Number %d, Network: %s"),
+                                  serialNumber-50000, &netid_str[0]);
+                    }
                 }
                 break;
 
