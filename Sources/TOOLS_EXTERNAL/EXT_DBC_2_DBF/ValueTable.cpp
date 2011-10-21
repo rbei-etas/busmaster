@@ -16,19 +16,11 @@
 /**
  * \file      ValueTable.cpp
  * \brief     Implementation file for the value table.
- * \author    RBIN/EBS1 - Mahesh.B.S
+ * \author    Mahesh.B.S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for the value table.
  */
-/**
-* \file       ValueTable.cpp
-* \brief      Implementation file for the value table.
-* \authors    Mahesh.B.S
-* \date       4.11.2004 Craeted
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
-
 
 #include "stdafx.h"
 #include "ValueTable.h"
@@ -39,38 +31,24 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 /**
-* \brief      CValueTable for CValueDescriptor
-* \param[in]  None 
-* \param[out] None
-* \return     None
-* \authors    
-* \date       
-*/
+ * \brief Constructor
+ */
 CValueTable::CValueTable()
 {
     m_TableName[0] = '\0';
 }
+
 /**
-* \brief      Destructor for CValueTable
-* \param[in]  None 
-* \param[out] None
-* \return     None
-* \authors    
-* \date       
-*/
+ * \brief Destructor
+ */
 CValueTable::~CValueTable()
 {
 
 }
 
 /**
-* \brief      = operator overloading
-* \param[in]  CValueTable& 
-* \param[out] None
-* \return     CValueTable&
-* \authors    
-* \date       
-*/
+ * \brief = operator overloading
+ */
 CValueTable& CValueTable::operator=(CValueTable& Tab)
 {
     strcpy(m_TableName,Tab.m_TableName);
@@ -86,15 +64,12 @@ CValueTable& CValueTable::operator=(CValueTable& Tab)
 
 
 /**
-* \brief      extracts Values and value descriptors from the line 
-* \param[in]  1.char *pcLine
-String having the value table name followed by the
-value, value descriptor as in canoe format
-* \param[out] None
-* \return     int
-* \authors    Mahesh.B.S
-* \date       
-*/
+ * \brief Extracts Values and value descriptors from the line
+ * \param[in] pcLine String having the value table name followed by the
+ *            value, value descriptor as in canoe format
+ *
+ * Extracts Values and value descriptors from the line.
+ */
 int CValueTable::Format(char *pcLine,CStdioFile &fileInput)
 {
     char acValue[defVTAB_MAX_VALU_LEN];
@@ -191,16 +166,12 @@ int CValueTable::Format(char *pcLine,CStdioFile &fileInput)
     return 1;
 }
 /**
-* \brief      writes the value tebles in the given list to the output file
-* \param[in]  1.CStdioFile &fileOutput[in]
-                Pointer to the Output file
-              2.CList<CValueTable,CValueTable&> &vTab [in]
-                List of Value tables
-* \param[out] None
-* \return     void
-* \authors    Mahesh.B.S
-* \date       
-*/
+ * \brief     writes the value tebles in the given list to the output file
+ * \param[in] fileOutput Pointer to the Output file
+ * \param[in] vTab List of Value tables
+ *
+ * Writes the value tebles in the given list to the output file.
+ */
 void CValueTable::writeValueTabToFile(CStdioFile &fileOutput,CList<CValueTable,CValueTable&> &vTab)
 {
     POSITION pos = vTab.GetHeadPosition();

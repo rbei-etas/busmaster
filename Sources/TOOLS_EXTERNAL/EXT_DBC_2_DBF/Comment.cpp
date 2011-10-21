@@ -16,44 +16,28 @@
 /**
  * \file      Comment.cpp
  * \brief     Implementation file for the Comment class.
- * \author    RBIN/EBS1 - Mahesh B S
+ * \author    Mahesh B S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for the Comment class.
  */
-/**
-* \file       Comment.cpp
-* \brief      Implementation file for the Comment class.
-* \authors    RBIN/EBS1 - Mahesh B S
-* \date       4-11-2004 Created
-* \copyright  Copyright &copy; 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 #include "stdafx.h"
 #include "Comment.h"
 
 /**
-* \brief      Constructor of CComment
-* \param[in]  None   
-* \param[out] None   
-* \return     None   
-* \authors    Mahesh.B.S
-* \date       15/11/2004
-*/
+ * \brief Constructor
+ */
 CComment::CComment()
 {
     m_msgType = '\0';
     m_elementName = "\0";
     m_comment = "\0";
 }
+
 /**
-* \brief      destructor of CComment
-* \param[in]  None   
-* \param[out] None   
-* \return     None   
-* \authors    Mahesh.B.S
-* \date       15/11/2004
-*/
+ * \brief Destructor
+ */
 CComment::~CComment()
 {
 

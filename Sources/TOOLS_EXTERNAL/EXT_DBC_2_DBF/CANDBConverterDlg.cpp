@@ -16,18 +16,11 @@
 /**
  * \file      CANDBConverterDlg.cpp
  * \brief     Implementation file for the CCANDBConverterDlg class.
- * \author    RBIN/EBS1 - Mahesh B S
+ * \author    Mahesh B S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for the CCANDBConverterDlg class.
  */
-/**
-* \file       CANDBConverterDlg.cpp
-* \brief      Implementation file for the CCANDBConverterDlg class.
-* \authors    RBIN/EBS1 - Mahesh B S
-* \date       4-11-2004
-* \copyright  Copyright &copy; 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 #include "stdafx.h"
 #include "CANDBConverter.h"
 #include "CANDBConverterDlg.h"
@@ -67,28 +60,16 @@ protected:
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 };
+
 /**
-* \brief      CAboutDlg constructor
-* \param[in]  None   
-* \param[out] None   
-* \return     None   
-* \authors    
-* \date       4-11-2004
-*/
+ * \brief Constructor
+ */
 CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
 {
     //{{AFX_DATA_INIT(CAboutDlg)
     //}}AFX_DATA_INIT
 }
 
-/**
-* \brief      DoDataExchange Function
-* \param[in]  CDataExchange*   
-* \param[out] None   
-* \return     void   
-* \authors    
-* \date       4-11-2004
-*/
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);
@@ -106,13 +87,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 
 /**
-* \brief      CCANDBConverterDlg Constructor
-* \param[in]  CDataExchange*   
-* \param[out] None   
-* \return     void   
-* \authors    
-* \date       4-11-2004
-*/
+ * \brief Constructor
+ */
 CCANDBConverterDlg::CCANDBConverterDlg(CWnd* pParent /*=NULL*/)
 : CDialog(CCANDBConverterDlg::IDD, pParent)
 {
@@ -123,14 +99,6 @@ CCANDBConverterDlg::CCANDBConverterDlg(CWnd* pParent /*=NULL*/)
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-/**
-* \brief      DoDataExchange Function
-* \param[in]  CDataExchange*   
-* \param[out] None   
-* \return     void   
-* \authors    
-* \date       4-11-2004
-*/
 void CCANDBConverterDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);
@@ -155,13 +123,9 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 
 /**
-* \brief      OnInitDialog Function, Called once when the dialog box is created
-* \param[in]  None
-* \param[out] 
-* \return     BOOL, TRUE if dialog has to create otherwise FALSE   
-* \authors    
-* \date       4-11-2004
-*/
+ * \brief  Called once when the dialog box is created
+ * \return TRUE if dialog has to create otherwise FALSE   
+ */
 BOOL CCANDBConverterDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
@@ -196,15 +160,10 @@ BOOL CCANDBConverterDlg::OnInitDialog()
 }
 
 /**
-* \brief      OnSysCommand Function used to handle the ON_WM_SYSCOMMAND
-* \param[in]  UINT, ID of the command
-LPARAM, lparam of the message
-* \param[out] 
-* \return     void   
-* \authors    
-* \date       
-*/
-
+ * \brief     OnSysCommand Function used to handle the ON_WM_SYSCOMMAND
+ * \param[in] nID ID of the command
+ * \param[in] lParam Parameter of the message
+ */
 void CCANDBConverterDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
     if ((nID & 0xFFF0) == IDM_ABOUTBOX)
@@ -218,17 +177,13 @@ void CCANDBConverterDlg::OnSysCommand(UINT nID, LPARAM lParam)
     }
 }
 
-// If you add a minimize button to your dialog, you will need the code below
-//  to draw the icon.  For MFC applications using the document/view model,
-//  this is automatically done for you by the framework.
 /**
-* \brief      OnPaint Message to handle WM_PAINT message
-* \param[in]  void   
-* \param[out] 
-* \return     void      
-* \authors    
-* \date       4-11-2004
-*/
+ * \brief Handles WM_PAINT message
+ *
+ * If you add a minimize button to your dialog, you will need the code below
+ * to draw the icon.  For MFC applications using the document/view model,
+ * this is automatically done for you by the framework.
+ */
 void CCANDBConverterDlg::OnPaint() 
 {
     if (IsIconic())
@@ -254,29 +209,20 @@ void CCANDBConverterDlg::OnPaint()
     }
 }
 
-// The system calls this to obtain the cursor to display while the user drags
-//  the minimized window.
 /**
-* \brief      OnQueryDragIcon to return the icon of the Dialog
-* \param[in]  None   
-* \param[out] None   
-* \return     HCURSOR   
-* \authors    
-* \date       4-11-2004
-*/
+ * \brief Returns the icon of the Dialog
+ *
+ * The system calls this to obtain the cursor to display while the user drags
+ * the minimized window.
+ */
 HCURSOR CCANDBConverterDlg::OnQueryDragIcon()
 {
     return (HCURSOR) m_hIcon;
 }
 
 /**
-* \brief      OnCanoeBrowseBtn is the Handler of ON_BN_CLICKED message for IDC_CANOE_BROWSE_BTN
-* \param[in]  None   
-* \param[out] None   
-* \return     void   
-* \authors    
-* \date       4-11-2004
-*/
+ * \brief Handler of ON_BN_CLICKED message for IDC_CANOE_BROWSE_BTN
+ */
 void CCANDBConverterDlg::OnCanoeBrowseBtn() 
 {
     // Create a file open dlg to select the input file
@@ -301,13 +247,8 @@ void CCANDBConverterDlg::OnCanoeBrowseBtn()
 }
 
 /**
-* \brief      OnCanmonBrowseBtn is the Handler of ON_BN_CLICKED message for IDC_CANMON_BROWSE_BTN
-* \param[in]  None   
-* \param[out] None   
-* \return     void   
-* \authors    
-* \date       4-11-2004
-*/
+ * \brief Handler of ON_BN_CLICKED message for IDC_CANMON_BROWSE_BTN
+ */
 void CCANDBConverterDlg::OnCanmonBrowseBtn() 
 {
     // Create a file save dialog box to select the output file
@@ -326,14 +267,10 @@ void CCANDBConverterDlg::OnCanmonBrowseBtn()
 }
 
 /**
-* \brief      OnCanmonBrowseBtn is the Handler of ON_BN_CLICKED message for IDC_CONVERT_BTN.
-This function converts the CANoe Database to BUSMASTER Database
-* \param[in]  None   
-* \param[out] None   
-* \return     void   
-* \authors    
-* \date       4-11-2004
-*/
+ * \brief Handler of ON_BN_CLICKED message for IDC_CONVERT_BTN.
+ *
+ * This function converts the CANoe Database to BUSMASTER Database
+ */
 void CCANDBConverterDlg::OnConvertBtn() 
 {
 
@@ -410,13 +347,9 @@ void CCANDBConverterDlg::OnConvertBtn()
 }
 
 /**
-* \brief      OnInitDialog Function, Called once when the CAboutDlg dialog box is created
-* \param[in]  None
-* \param[out] 
-* \return     BOOL, TRUE if dialog has to create otherwise FALSE   
-* \authors    
-* \date       4-11-2004
-*/
+ * \brief  Called once when the CAboutDlg dialog box is created
+ * \return TRUE if dialog has to create otherwise FALSE   
+ */
 BOOL CAboutDlg::OnInitDialog() 
 {
     CDialog::OnInitDialog();

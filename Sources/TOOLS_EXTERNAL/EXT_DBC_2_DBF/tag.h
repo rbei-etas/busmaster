@@ -16,18 +16,11 @@
 /**
  * \file      tag.h
  * \brief     Special file represents all the delimiters used in 
- * \authors   RBIN/EBS1 - Padmaja.A., Mahesh.B.S.
+ * \authors   Padmaja.A., Mahesh.B.S.
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Special file represents all the delimiters used in 
  */
-/**
-* \file       tag.h
-* \brief      Special file represents all the delimiters used in CanDBConverter application
-* \authors    Padmaja.A.,Mahesh.B.S.
-* \date       4.11.2004 Created
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 #define T_STRAT_BRAC "["
 #define T_END_BRAC "]"

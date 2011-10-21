@@ -16,18 +16,11 @@
 /**
  * \file      Parameter.cpp
  * \brief     Implementation file for the Parameter class.
- * \author    RBIN/EBS1 - Padmaja A
+ * \author    Padmaja A
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for the Parameter class.
  */
-/**
-* \file       Parameter.cpp
-* \brief      Implementation file for the Parameter class.
-* \authors    RBIN/EBS1 - Padmaja A
-* \date       4.11.2004 Created
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 #include "stdafx.h"
 #include "Parameter.h"
@@ -45,13 +38,8 @@ static char THIS_FILE[]=__FILE__;
 //////////////////////////////////////////////////////////////////////
 
 /**
-* \brief      Constructor of CParameters
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Padmaja.A.
-* \date       4/11/2004
-*/
+ * \brief Constructor
+ */
 CParameters::CParameters()
 {
     m_InitVal.fValue=-1;
@@ -64,27 +52,18 @@ CParameters::CParameters()
     m_RangeError=false;
     m_defError=false;
 }
+
 /**
-* \brief      Destructor of CParameters
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Padmaja.A.
-* \date       4/11/2004
-*/
+ * \brief Destructor
+ */
 CParameters::~CParameters()
 {
     // nothing special to do here
 }
 
 /**
-* \brief      operator overloading for =
-* \param[in]  CParameters& param
-* \param[out] None
-* \return     CParameters&
-* \authors    Padmaja.A.
-* \date       4/11/2004
-*/
+ * \brief Operator overloading for =
+ */
 CParameters& CParameters::operator=( CParameters& param)
 {
     // if there are some elements in the signal list clear them first
@@ -108,16 +87,14 @@ CParameters& CParameters::operator=( CParameters& param)
     return (*this);
 }
 
-
 /**
-* \brief      Writes the parameter definition and default value to the 
-specified output file.
-* \param[in]  OutputFileName,Parameters List.
-* \param[out] None
-* \return     bool
-* \authors    Padmaja.A.
-* \date       4/11/2004
-*/
+ * \brief     Writes the parameter definition
+ * \param[in] fileOutput filename of output file
+ * \param[in] m_listParameter Parameters List
+ *
+ * Writes the parameter definition and default value to the
+ * specified output file.
+ */
 bool WriteParametersToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&> &m_listParameter)
 {
     bool pResult=true;
@@ -206,14 +183,11 @@ bool WriteParametersToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&
 }
 
 /**
-* \brief      This function calls the appropriate function of CParamValues
-to get the Other Value of Attributes form CanoeDB file.
-* \param[in]  char *pcLine
-* \param[out] None
-* \return     int
-* \authors    Padmaja.A.
-* \date       4/11/2004
-*/
+ * \brief Calls the appropriate function of CParamValues
+ *
+ * This function calls the appropriate function of CParamValues
+ * to get the Other Value of Attributes form CanoeDB file.
+ */
 int CParameters::FormatParamValue(char *pcLine)
 {
     char *pcToken;
@@ -257,15 +231,12 @@ int CParameters::FormatParamValue(char *pcLine)
     return 1;
 }
 
-
 /**
-* \brief      Parses the attribute lines from CanoeDB file.
-* \param[in]  InputFile String
-* \param[out] None
-* \return     int
-* \authors    Padmaja.A.
-* \date       4/11/2004
-*/
+ * \brief     Parses the attribute lines from CanoeDB file.
+ * \param[in] pcLine Input file string
+ *
+ * Parses the attribute lines from CanoeDB file.
+ */
 int CParameters::Format(char *pcLine)
 {
     char *pcToken;
@@ -396,15 +367,12 @@ int CParameters::Format(char *pcLine)
     return success;
 }
 
-
 /**
-* \brief      Reads the default value of attribute from the CanoeDB file.
-* \param[in]  InputString 
-* \param[out] None
-* \return     int
-* \authors    Padmaja.A.
-* \date       4/11/2004
-*/
+ * \brief     Reads the default value of attribute from the CanoeDB file
+ * \param[in] pcToken Input string
+ *
+ * Reads the default value of attribute from the CanoeDB file.
+ */
 int CParameters::ReadDefaultVal(char *pcToken)
 {
     char acTemp[defCON_TEMP_LEN];
@@ -481,5 +449,3 @@ int CParameters::ReadDefaultVal(char *pcToken)
     }
     return success;
 }
-
-

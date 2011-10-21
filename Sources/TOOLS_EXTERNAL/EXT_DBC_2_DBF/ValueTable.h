@@ -16,19 +16,11 @@
 /**
  * \file      ValueTable.h
  * \brief     CValueTable class.
- * \author    RBIN/EBS1 - Mahesh B S
+ * \author    Mahesh B S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * CValueTable class.
  */
-/**
-* \file       ValueTable.h
-* \brief      CValueTable class.
-* \authors    Mahesh B S
-* \date       4.11.2004
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
-
 
 #if !defined(AFX_VALUETABLE_H__714FC1B9_4122_443B_A2D4_BDB62EEED1DB__INCLUDED_)
 #define AFX_VALUETABLE_H__714FC1B9_4122_443B_A2D4_BDB62EEED1DB__INCLUDED_

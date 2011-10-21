@@ -16,18 +16,11 @@
 /**
  * \file      Converter.h
  * \brief     CConverter class.
- * \author    RBIN/EBS1 - Mahesh B S
+ * \author    Mahesh B S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * CConverter class.
  */
-/**
-* \file       Converter.h
-* \brief      CConverter class.
-* \authors    Mahesh B S
-* \date       4.11.2004
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 #if !defined(AFX_CONVERTER_H__A66CF773_FD95_4EC8_AA35_8C230C34F8C2__INCLUDED_)
 #define AFX_CONVERTER_H__A66CF773_FD95_4EC8_AA35_8C230C34F8C2__INCLUDED_

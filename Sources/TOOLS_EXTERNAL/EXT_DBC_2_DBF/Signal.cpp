@@ -15,43 +15,10 @@
 
 /**
  * \file      Signal.cpp
- * \author    Ratnadip Choudhury
+ * \brief     implementation of the CSignal class.
+ * \authors   Amitesh Bharti, Pemmaiah BD, Mahesh.B.S 
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-/*********************************************************************
-  Project       :  CANDb convertor
-  FileName      :  ParameterVal.Cpp
-  Description   :  Implementation file for the ParameterValues class.
-  
-  $Log:   X:/Archive/Sources/Ext_tools_DBC_2_DBF/Signal.cpv  $
-   
-      Rev 1.1   04 Aug 2011 19:52:56   CANMNTTM
-    
-   
-      Rev 1.0   03 Aug 2011 15:43:52   rac2kor
-  Modification:
-        Amitesh Bharti
-            Taken care for signal discriptor name having space.
-            The validation for max and min value is corrected for all conditions.
-	    Pemmaiah BD - 3/4/03
-			- Added support for INT64 type
-		Mahesh.B.S - 5/11/2004
-			-Added Support for the receiving node.
-			-Added  Function writeSigToFile to write all the signal to a file
-			 in a given list.
-  Author(s)     :  
-  Date Created  :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*********************************************************************/
-
-/**
-* \file       Signal.cpp
-* \brief      implementation of the CSignal class.
-* \authors    Amitesh Bharti, Pemmaiah BD, Mahesh.B.S 
-* \date       03.04.2003 Created
-* \date       15.04.2011 Added RBEI Copyright information
-* \copyright  Copyright &copy; 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 #include "stdafx.h"
 #include "CANDBConverter.h"
@@ -65,13 +32,8 @@ static char THIS_FILE[]=__FILE__;
 #endif
 
 /**
-* \brief      Constructort for CSignal
-* \param[in]  None 
-* \param[out] None
-* \return     None
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * \brief Constructor
+ */
 CSignal::CSignal()
 {
     m_acMultiplex[0]= '\0';
@@ -92,13 +54,8 @@ CSignal::CSignal()
 }
 
 /**
-* \brief      Destructor for CSignal
-* \param[in]  None 
-* \param[out] None
-* \return     None
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * \brief Destructor
+ */
 CSignal::~CSignal()
 {
     // clear the embedded value descriptor list before destroying the signal
@@ -109,17 +66,12 @@ CSignal::~CSignal()
 }
 
 /**
-* \brief      overloaded operator = 
-Overload assignment operator. We should clear the existing value descriptor
-list and copy contents of the argument's list to this signal. The rest of the 
-members are copied by value
-* \param[in]  CSignal& 
-* \param[out] None
-* \return     CSignal&
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
-
+ * \brief overloaded operator =
+ *
+ * Overload assignment operator. We should clear the existing value descriptor
+ * list and copy contents of the argument's list to this signal. The rest of the
+ * members are copied by value
+ */
 CSignal& CSignal::operator=(CSignal& signal)
 {
     if(!m_listValueDescriptor.IsEmpty())
@@ -148,14 +100,11 @@ CSignal& CSignal::operator=(CSignal& signal)
 }
 
 /**
-* \brief      Extracts the message data from the given Line and populates 
-the message structure.
-* \param[in]  char *pcLine
-* \param[out] None
-* \return     int
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * \brief Extracts the message data from the given Line
+ *
+ * Extracts the message data from the given Line and populates
+ * the message structure.
+ */
 int CSignal::Format(char *pcLine)
 {
     char *pcToken;
@@ -371,14 +320,11 @@ int CSignal::Format(char *pcLine)
 }
 
 /*
-* \brief      Extracts the value descriptor data from the given Line and adds 
-to the signal.
-* \param[in]  char *pcLine
-* \param[out] None
-* \return     int
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * \brief Extracts the value descriptor data from the given Line
+ *
+ * Extracts the value descriptor data from the given Line and adds
+ * to the signal.
+ */
 int CSignal::AddValueDescriptors(char *pcLine,CStdioFile &fileInput)
 {
     char acValue[300];
@@ -446,24 +392,18 @@ int CSignal::AddValueDescriptors(char *pcLine,CStdioFile &fileInput)
 }
 
 /**
-* \brief      validate for conformance to BUSMASTER DB format
-
-Convert single bit INT and UINT to BOOL
-if MAX_value == MIN_value update MAX_value to MAX_default
-else if MAX_value == MIN_value == MAX_default, update MIN_value to MIN_default
-signals with length more than 32 bits shall be discarded
-
-The data format of previous signal is passed as a parameter
-For the first one it will be zero, for then on either INTEL or MOTOROLA
-If this signals format is not matching with previous signal then this signal to be discarded. 
-SIG_EC_NO_ERR, SIG_EC_DATA_FORMAT_ERR,SIG_EC_LENGTH_ERR,SIG_EC_STARTBIT_ERR,SIG_EC_TYPE_ERR
-
-* \param[in]  unsigned char ucFormat
-* \param[out] None
-* \return     unsigned int
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * \brief  Validate for conformance to BUSMASTER DB format
+ * \return SIG_EC_NO_ERR, SIG_EC_DATA_FORMAT_ERR, SIG_EC_LENGTH_ERR, SIG_EC_STARTBIT_ERR, SIG_EC_TYPE_ERR
+ * 
+ * Convert single bit INT and UINT to BOOL.
+ * If MAX_value == MIN_value update MAX_value to MAX_default
+ * else if MAX_value == MIN_value == MAX_default, update MIN_value to MIN_default
+ * signals with length more than 32 bits shall be discarded.
+ *
+ * The data format of previous signal is passed as a parameter.
+ * For the first one it will be zero, for then on either INTEL or MOTOROLA.
+ * If this signals format is not matching with previous signal then this signal to be discarded.
+ */
 unsigned int CSignal::Validate(unsigned char ucFormat)
 {
     // data format mismatch with previous signal
@@ -752,14 +692,13 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
     return (m_uiError);
 }
 
-// SIG_EC_NO_ERR, SIG_EC_DATA_FORMAT_ERR,SIG_EC_LENGTH_ERR,SIG_EC_STARTBIT_ERR,SIG_EC_TYPE_ERR
 const char* CSignal::m_pacErrorStrings[] =
 {
-    "No error",
-    "ERROR:Data format mismatch",
-    "ERROR:Invalid signal length",
-    "ERROR:Invalid start bit",
-    "ERROR:Invalid signal type",	
+    "No error",                         // SIG_EC_NO_ERR
+    "ERROR:Data format mismatch",       // SIG_EC_DATA_FORMAT_ERR
+    "ERROR:Invalid signal length",      // SIG_EC_LENGTH_ERR
+    "ERROR:Invalid start bit",          // SIG_EC_STARTBIT_ERR
+    "ERROR:Invalid signal type",        // SIG_EC_TYPE_ERR
     "WARNING:Invalid Max or Min value."
 };
 
@@ -781,23 +720,15 @@ const char* CSignal::GetErrorAction()
 }
 
 /**
-* \brief      writes the signals in the given list to the output file
-* \param[in]  1.CStdioFile &fileOutput[in]
-Pointer to the Output file
-2.CList<CSignal,CSignal&> &m_listSignals [in]
-List of Signals
-3.int m_ucLength
-Message length
-4.int m_cDataFormat
-If 1 dataformat Intel, 0- Motorola
-5.bool writeErr
-If true write error signals also else write onlt correct signals
-* \param[out] None
-* \return     bool
-* \authors    Mahesh.B.S
-* \date       15.11.2004 Created
-* \date       Raja N on 11.08.2005, Changed signal type for __int64 and unsigned __int64.
-*/
+ * \brief     writes the signals in the given list to the output file
+ * \param[in] fileOutput Pointer to the Output file
+ * \param[in] m_listSignals List of Signals
+ * \param[in] m_ucLength Message length
+ * \param[in] m_cDataFormat If 1 dataformat Intel, 0- Motorola
+ * \param[in] writeErr If true write error signals also else write onlt correct signals
+ *
+ * Writes the signals in the given list to the output file.
+ */
 bool CSignal::WriteSignaltofile(CStdioFile &fileOutput,CList<CSignal,CSignal&> &m_listSignals,int m_ucLength,int m_cDataFormat,bool writeErr)
 {
     bool bResult = true;

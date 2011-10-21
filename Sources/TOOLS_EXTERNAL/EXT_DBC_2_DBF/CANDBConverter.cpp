@@ -16,18 +16,11 @@
 /**
  * \file      CANDBConverter.cpp
  * \brief     Implementation file for the CCANDBConverterApp class.
- * \author    RBIN/EBS1 - Mahesh B S
+ * \author    Mahesh B S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for the CCANDBConverterApp class.
  */
-/**
-* \file       CANDBConverter.cpp
-* \brief      Implementation file for the CCANDBConverterApp class.
-* \authors    RBIN/EBS1 - Mahesh B S
-* \date       4.11.2004
-* \copyright  Copyright &copy; 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 #include "stdafx.h"
 #include "CANDBConverter.h"
@@ -52,10 +45,6 @@ END_MESSAGE_MAP()
 
 /**
 * \brief      CCANDBConverterApp Converter
-* \param[in]     
-* \return     void
-* \authors    
-* \date       
 */
 CCANDBConverterApp::CCANDBConverterApp()
 {
@@ -65,15 +54,13 @@ CCANDBConverterApp::CCANDBConverterApp()
 CCANDBConverterApp theApp;
 
 /**
-* \brief      InitInstance function called when the application is stareted
-The function checks for the licence key from the command line
-parameters and if success application will open
-* \param[in]  None   
-* \return     BOOL - FALSE to  close the application.
-TRUE to start the application   
-* \authors    
-* \date       
-*/
+ * \brief      InitInstance function called when the application is stareted
+ * \return     FALSE to close the application.
+ *             TRUE to start the application.
+ *
+ * The function checks for the licence key from the command line
+ * parameters and if success application will open
+ */
 
 BOOL CCANDBConverterApp::InitInstance()
 {

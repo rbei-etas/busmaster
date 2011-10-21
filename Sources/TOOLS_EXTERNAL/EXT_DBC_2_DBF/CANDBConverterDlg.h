@@ -16,19 +16,11 @@
 /**
  * \file      CANDBConverterDlg.h
  * \brief     CCANDBConverterDlg class.
- * \author    RBIN/EBS1 - Mahesh B S
+ * \author    Mahesh B S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * CCANDBConverterDlg class.
  */
-/**
-* \file       CANDBConverterDlg.h
-* \brief      CCANDBConverterDlg class.
-* \authors    Mahesh B S
-* \date       4.11.2004
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
-
 
 #if !defined(AFX_CANDBCONVERTERDLG_H__BB35E6F0_48F4_4CC8_9F24_473ACBF35E24__INCLUDED_)
 #define AFX_CANDBCONVERTERDLG_H__BB35E6F0_48F4_4CC8_9F24_473ACBF35E24__INCLUDED_

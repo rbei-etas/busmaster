@@ -22,29 +22,6 @@
  * Implementation file for the Comment class.
  */
 
-/**
-* \file       Converter.cpp
-* \brief      implementation of the CConverter class.
-* \authors    Amitesh Bharti
-* \date       3.4.03 Pemmaiah BD 
-*           -   Added support for INT64 type	
-*           -   Added the logic for making the format of the message 
-*               same as that of the format of the majority of the signal
-*               Previouslyy it was assumed to make the format of the 
-*               message same as that of the 1st Signal.	
-* \date       4.11.2004 Mahesh.B.S 
-*               Added Support for Value Table, Comments, Nodes
-*               Added Supported for signals not associated with any Message
-*               Added logic to write the signals in sorted order according to 
-*               there bit position
-*               Included function create_Node_List to create list of nodes in the network
-* \date       4.11.2004 Padmaja 
-*               Added Support for Parameter values,Parameter Definition 
-* \date       4.11.2004 Mahesh.B.S
-*               Included function EncryptData to encrypt not processed lines
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
-
 #include "stdafx.h"
 #include "CANDBConverter.h"
 #include "Converter.h"
@@ -57,13 +34,8 @@ static char THIS_FILE[]=__FILE__;
 #endif
 
 /**
-* \brief         Constructor of CConverter
-* \param[in]     None 
-* \param[out]    None
-* \return        None
-* \authors       Mahesh.B.S
-* \date          15/11/2004
-*/
+ * \brief Constructor
+ */
 CConverter::CConverter()
 {
     m_uiResultCode = CON_RC_NOERROR;
@@ -73,13 +45,8 @@ bool CConverter::valid_msg = TRUE;
 unsigned char CConverter::ucMsg_DLC = 8;
 
 /**
-* \brief      Destructor of CConverter
-* \param[in]  None   
-* \param[out] None   
-* \return     None   
-* \authors    Mahesh.B.S
-* \date       15/11/2004
-*/
+ * \brief      Destructor
+ */
 CConverter::~CConverter()
 {
     if(m_listMessages.IsEmpty())
@@ -91,14 +58,9 @@ CConverter::~CConverter()
 const char CConverter::m_accHeader[] = 
 "//******************************BUSMASTER Messages and signals Database ******************************//\n\n";
 /**
-* \brief         This is the baisc function which is to be called  
-                 to convert any given CANoe  file to a CANMon file
-* \param[in]     sCanoeFile,sCanMonFile,
-* \param[out]    
-* \return        unsigned int
-* \authors       Mahesh.B.S
-* \date          15/11/2004
-*/
+ * This is the basic function which is to be called
+ * to convert any given CANoe file to a CANMon file.
+ */
 unsigned int CConverter::Convert(CString sCanoeFile,CString sCanMonFile)
 {
     CStdioFile fileInput,fileOutput;
@@ -182,40 +144,26 @@ const char* CConverter::m_pacResultStrings[] =
 };
 
 /**
-* \brief      Returns the error string.
-* \param[in]  None   
-* \param[out] None
-* \return     const char*   
-* \authors    Mahesh.B.S
-* \date       15/11/2004
-*/
+ * \brief Returns the error string.
+ */
 const char* CConverter::GetResultString()
 {
     return m_pacResultStrings[m_uiResultCode];
 }
 
 /**
-* \brief      Set result code.
-* \param[in]  None   
-* \param[out] None
-* \return     unsigned int
-* \authors    Mahesh.B.S
-* \date       15/11/2004
-*/
+ * \brief Set result code.
+ */
 unsigned int CConverter::SetResultCode(unsigned int uiCode)
 {
     return (m_uiResultCode = uiCode);
 }
 
 /**
-* \brief      Validates the message list and set the error in each signal 
-if present
-* \param[in]  None   
-* \param[out] None
-* \return     void
-* \authors    Mahesh.B.S
-* \date       15/11/2004
-*/
+ * \brief Validates the message list
+ *
+ * Validates the message list and set the error in each signal if present
+ */
 void CConverter::ValidateMessageList()
 {
     POSITION pos = m_listMessages.GetHeadPosition();  
@@ -376,14 +324,11 @@ void CConverter::ValidateMessageList()
 }
 
 /**
-* \brief      This function will parse the input file and line by line
-              and generates  a list of message,signal,value table,comments,etc
-* \param[in]  None   
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A.,Mahesh.B.S.
-* \date       15/11/2004
-*/
+ * \brief Generates the message list
+ *
+ * This function will parse the input file and line by line
+ * and generates  a list of message,signal,value table,comments,etc
+ */
 void CConverter::GenerateMessageList(CStdioFile& fileInput)
 {
     char acLine[defCON_MAX_LINE_LEN],local_copy[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
@@ -861,15 +806,11 @@ void CConverter::GenerateMessageList(CStdioFile& fileInput)
     }
 }
 
-
 /**
-* \brief      Writes all the data to the output file in CANoe format
-* \param[in]  None   
-* \param[out] None
-* \return     bool
-* \authors    Padmaja.A.,Mahesh.B.S.
-* \date       15/11/2004
-*/
+ * \brief Writes all the data to the output file in CANoe format
+ *
+ * Writes all the data to the output file in CANoe format.
+ */
 bool CConverter::WriteToOutputFile(CStdioFile& fileOutput)
 {
     bool bResult = true;
@@ -1071,15 +1012,11 @@ bool CConverter::WriteToOutputFile(CStdioFile& fileOutput)
     return bResult;
 }
 
-
 /**
-* \brief      Logs the eror info in log file.
-* \param[in]  None   
-* \param[out] None
-* \return     void
-* \authors    Mahesh.B.S
-* \date       15/11/2004
-*/
+ * \brief Logs the eror info in log file
+ *
+ * Logs the eror info in log file.
+ */
 void CConverter::CreateLogFile(CStdioFile& fileLog)
 {
     char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this		
@@ -1156,14 +1093,11 @@ void CConverter::CreateLogFile(CStdioFile& fileLog)
 }
 
 /**
-* \brief      creates a list of nodes inthe network
-* \param[in]  char *pcLine[in]
-String having all the node names
-* \param[out] None
-* \return     void
-* \authors    Mahesh.B.S
-* \date       15/11/2004
-*/
+ * \brief     creates a list of nodes inthe network
+ * \param[in] pcLine String having all the node names
+ *
+ * Creates a list of nodes inthe network.
+ */
 void CConverter::create_Node_List(char *pcLine)
 {
     char* pcToken;
@@ -1178,14 +1112,11 @@ void CConverter::create_Node_List(char *pcLine)
 }
 
 /**
-* \brief      encrypt's all the string's present in the list
-* \param[in]  List<CString,CString& > &m_notProcessed[in]
-List of string's
-* \param[out] None
-* \return     void
-* \authors    Mahesh.B.S
-* \date       15/11/2004
-*/
+ * \brief     encrypts all the strings present in the list
+ * \param[in] m_notProcessed List of strings
+ *
+ * Encrypts all the strings present in the list
+ */
 void CConverter::EncryptData(CList<CString,CString& > &m_notProcessed)
 {
     char c_str[defCON_MAX_LINE_LEN];

@@ -16,18 +16,11 @@
 /**
  * \file      ParameterVal.cpp
  * \brief     Implementation file for the ParameterValues class.
- * \author    RBIN/EBS1 - Padmaja A
+ * \author    Padmaja A
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for the ParameterValues class.
  */
-/**
-* \file       ParameterVal.cpp
-* \brief      Implementation file for the ParameterValues class.
-* \authors    RBIN/EBS1 - Padmaja A
-* \date       4.11.2004 Created
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 #include "stdafx.h"
 #include "ParameterVal.h"
@@ -39,13 +32,8 @@ static char THIS_FILE[]=__FILE__;
 #endif
 
 /**
-* \brief      Default Constructor used to initialse parameterVal class object. 
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Padmaja.A.
-* \date       4.11.2004
-*/
+ * \brief Default Constructor used to initialse parameterVal class object. 
+ */
 CParameterValues::CParameterValues()
 {
     m_NodeName[0]='\0';
@@ -58,26 +46,16 @@ CParameterValues::CParameterValues()
 }
 
 /**
-* \brief      Destructor
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Padmaja.A.
-* \date       4.11.2004
-*/
+ * \brief      Destructor
+ */
 CParameterValues::~CParameterValues()
 {
 
 }
 
 /**
-* \brief      copy constructor
-* \param[in]  CParameterValues&
-* \param[out] None
-* \return     CParameterValues&
-* \authors    Padmaja.A.
-* \date       4.11.2004
-*/
+ * \brief copy operator
+ */
 CParameterValues& CParameterValues::operator=(CParameterValues& param)
 {
 
@@ -91,13 +69,10 @@ CParameterValues& CParameterValues::operator=(CParameterValues& param)
 }
 
 /**
-* \brief      Parses the Node Parameter Values other than Default value from the input CanoeDB file.
-* \param[in]  char *paramType,char *pcLine
-* \param[out] None
-* \return     int
-* \authors    Padmaja.A.
-* \date       15.11.2004
-*/
+ * \brief Parses the Node Parameter Values
+ *
+ * Parses the Node Parameter Values other than Default value from the input CanoeDB file.
+ */
 int CParameterValues::GetNodeParams(char *paramType,char *pcLine)
 {
     char *pcToken;
@@ -119,13 +94,10 @@ int CParameterValues::GetNodeParams(char *paramType,char *pcLine)
 }
 
 /**
-* \brief      Parses the Network Parameter Values other than Default value from the input CanoeDB file.
-* \param[in]  char *paramType,char *pcLine
-* \param[out] None
-* \return     int
-* \authors    Padmaja.A.
-* \date       15.11.2004
-*/
+ * \brief Parses the Network Parameter Values
+ *
+ * Parses the Network Parameter Values other than Default value from the input CanoeDB file.
+ */
 int CParameterValues::GetNetParams(char *paramType,char *pcLine)
 {
     char *pcToken=pcLine;
@@ -137,14 +109,11 @@ int CParameterValues::GetNetParams(char *paramType,char *pcLine)
 }
 
 /**
-* \brief      This function Parses the Message Parameter other Values rather than Default value from the input CanoeDB 
-*             file and finds the frame foramt for that Message ID..
-* \param[in]  char *paramType,char *pcLine
-* \param[out] None
-* \return     int
-* \authors    Padmaja.A.
-* \date       15.11.2004
-*/
+ * \brief Parses the Message Parameter
+ *
+ * This function Parses the Message Parameter other Values rather than Default value from the input CanoeDB
+ * file and finds the frame foramt for that Message ID.
+ */
 int CParameterValues::GetMesgParams( char *paramType,char *pcLine)
 {
     char *pcToken;
@@ -178,15 +147,12 @@ int CParameterValues::GetMesgParams( char *paramType,char *pcLine)
 }
 
 /**
-* \brief     Parses the Signal Parameter Values other than Default value from the 
-*            input CanoeDB file and calculates the frame format 
-*          for the corresponding Message ID. 	 .
-* \param[in]  char *paramType,char *pcLine
-* \param[out] None
-* \return     int
-* \authors    Padmaja.A.
-* \date       15.11.2004
-*/
+ * \brief Parses the Signal Parameter Values
+ *
+ * Parses the Signal Parameter Values other than Default value from the
+ * input CanoeDB file and calculates the frame format
+ * for the corresponding Message ID.
+ */
 int CParameterValues::GetSignalParams(char *paramType,char *pcLine)
 {
     char *pcToken;
@@ -230,13 +196,10 @@ int CParameterValues::GetSignalParams(char *paramType,char *pcLine)
 }
 
 /**
-* \brief      Reads the other vlaue of attributes from CanoeDB file.
-* \param[in]  char *paramType,char *pcLine
-* \param[out] None
-* \return     int
-* \authors    Padmaja.A.
-* \date       
-*/
+ * \brief Reads the other vlaue of attributes from CanoeDB file.
+ *
+ * Reads the other vlaue of attributes from CanoeDB file.
+ */
 int CParameterValues::ReadParamValue(char *paramType,char *pcToken)
 {   
     int success=1;
@@ -276,13 +239,10 @@ int CParameterValues::ReadParamValue(char *paramType,char *pcToken)
 }
 
 /**
-* \brief      WriteNetValuesToFile.
-* \param[in]  CStdioFile& fileOutput,char *paramType,char *paramName
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A.
-* \date       15.11.2004
-*/
+ * \brief Writes network values to file
+ *
+ * Writes network values to file.
+ */
 void CParameterValues::WriteNetValuesToFile(CStdioFile& fileOutput,char *paramType,char *paramName)
 {  
     char acLine[defVAL_MAX_LINE_LEN];
@@ -316,14 +276,12 @@ void CParameterValues::WriteNetValuesToFile(CStdioFile& fileOutput,char *paramTy
         sprintf(acLine,"\"%s\",%s\n",paramName,m_ParamVal.cValue);
     fileOutput.WriteString(acLine);
 }
+
 /**
-* \brief      WriteNodeValuesToFile
-* \param[in]  CStdioFile& fileOutput,char *paramType,char *paramName
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A.
-* \date       15.11.2004
-*/
+ * \brief Writes node value to file
+ *
+ * Writes node value to file.
+ */
 void CParameterValues::WriteNodeValuesToFile(CStdioFile& fileOutput,char *paramType,char *paramName)
 {
     char acLine[defVAL_MAX_LINE_LEN];
@@ -358,13 +316,10 @@ void CParameterValues::WriteNodeValuesToFile(CStdioFile& fileOutput,char *paramT
 }
 
 /**
-* \brief      WriteMesgValuesToFile
-* \param[in]  CStdioFile& fileOutput,char *paramType,char *paramName
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A.
-* \date       15.11.2004
-*/
+ * \brief Writes message values to file
+ *
+ * Writes message values to file.
+ */
 void CParameterValues::WriteMesgValuesToFile(CStdioFile& fileOutput,char *paramType,char *paramName)
 {
     char acLine[defVAL_MAX_LINE_LEN];
@@ -399,13 +354,10 @@ void CParameterValues::WriteMesgValuesToFile(CStdioFile& fileOutput,char *paramT
 }
 
 /**
-* \brief      WriteSigValuesToFile
-* \param[in]  CStdioFile& fileOutput,char *paramType,char *paramName
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A.
-* \date       15.11.2004
-*/
+ * \brief Writes signal values to file
+ *
+ * Writes signal values to file.
+ */
 void CParameterValues::WriteSigValuesToFile(CStdioFile& fileOutput,char *paramType,char *paramName)
 {
     char acLine[defVAL_MAX_LINE_LEN];

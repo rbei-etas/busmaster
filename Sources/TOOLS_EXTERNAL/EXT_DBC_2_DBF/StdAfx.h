@@ -21,13 +21,7 @@
  *
  * include file for standard system include files.
  */
-/**
-* \file       Signal.h
-* \brief      include file for standard system include files.
-* \authors    
-* \date       
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
+
 #if !defined(AFX_STDAFX_H__CCC27482_CB86_48E1_84E7_AC7A6E6C6D2E__INCLUDED_)
 #define AFX_STDAFX_H__CCC27482_CB86_48E1_84E7_AC7A6E6C6D2E__INCLUDED_
 

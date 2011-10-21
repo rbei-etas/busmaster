@@ -16,18 +16,11 @@
 /**
  * \file      Message.cpp
  * \brief     Implementation file for the Message class.
- * \author    RBIN/EBS1 - Mahesh B S
+ * \author    Mahesh B S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for the Message class.
  */
-/**
-* \file       Message.cpp
-* \brief      Implementation file for the Message class.
-* \authors    Mahesh B S
-* \date       4.11.2004 Created
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 #include "stdafx.h"
 #include "CANDBConverter.h"
@@ -40,13 +33,8 @@ static char THIS_FILE[]=__FILE__;
 #endif
 
 /**
-* \brief      Constructor of CMessage
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Mahesh.B.S
-* \date       15/11/2002
-*/
+ * \brief Constructor
+ */
 CMessage::CMessage()
 {
     m_acName[0] = '\0';
@@ -60,13 +48,8 @@ CMessage::CMessage()
 }
 
 /**
-* \brief      Destructor of CMessage
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Mahesh.B.S
-* \date       15/11/2002
-*/
+ * \brief Destructor
+ */
 CMessage::~CMessage()
 {
     if(!m_listSignals.IsEmpty())
@@ -74,14 +57,10 @@ CMessage::~CMessage()
         m_listSignals.RemoveAll();
     }
 }
+
 /**
-* \brief      overloaded operator =  
-* \param[in]  CMessage&
-* \param[out] None
-* \return     CMessage&
-* \authors    Mahesh.B.S
-* \date       15/11/2002
-*/
+ * \brief overloaded operator =
+ */
 CMessage& CMessage::operator=(CMessage& message)
 {
     // if there are some elements in the signal list clear them first
@@ -103,14 +82,11 @@ CMessage& CMessage::operator=(CMessage& message)
 }
 
 /**
-* \brief      Extracts the message data from the given Line and populates 
-              the message structure.
-* \param[in]  char *pcLine
-* \param[out] None
-* \return     int
-* \authors    Mahesh.B.S
-* \date       15/11/2004
-*/
+ * \brief Extracts the message data
+ *
+ * Extracts the message data from the given Line and populates
+ * the message structure.
+ */
 int CMessage::Format(char *pcLine)
 {
     char* pcToken;
@@ -144,17 +120,14 @@ int CMessage::Format(char *pcLine)
 }
 
 /**
-* \brief      writes the Messages in the given list to the output file
-* \param[in]  1.CStdioFile &fileOutput[in] Pointer to the Output file
-*             2.CList<CMessage,CMessage&> &m_listMessages [in] List of Message
-*             3.bool writeErr
-*               If true write error signals also else write only correct signals
-*               associated with the message
-* \param[out] None
-* \return     bool
-* \authors    Mahesh.B.S
-* \date       15/11/2004
-*/
+ * \brief      writes the Messages in the given list to the output file
+ * \param[in]  fileOutput Pointer to the Output file
+ * \param[in]  m_listMessages List of Message
+ * \param[in]  writeErr If true write error signals also else write only correct signals
+ *             associated with the message
+ *
+ * Writes the Messages in the given list to the output file.
+ */
 bool CMessage::writeMessageToFile( CStdioFile &fileOutput,CList<CMessage,CMessage&> &m_listMessages,bool writeErr)
 {
     bool bResult = true;
@@ -175,4 +148,3 @@ bool CMessage::writeMessageToFile( CStdioFile &fileOutput,CList<CMessage,CMessag
     }
     return bResult;
 }
-

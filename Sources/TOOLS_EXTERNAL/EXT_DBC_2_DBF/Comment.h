@@ -16,18 +16,11 @@
 /**
  * \file      Comment.h
  * \brief     CComment class.
- * \author    RBIN/EBS1 - Mahesh B S
+ * \author    Mahesh B S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * CComment class.
  */
-/**
-* \file       Comment.h
-* \brief      CComment class.
-* \authors    Mahesh B S
-* \date       4.11.2004
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 #if !defined(AFX_COMMENT_H__F394E0E9_F6B7_43F5_AB3F_428BBF638B46__INCLUDED_)
 #define AFX_COMMENT_H__F394E0E9_F6B7_43F5_AB3F_428BBF638B46__INCLUDED_

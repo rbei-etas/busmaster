@@ -22,16 +22,6 @@
  * Implementation file for the ParameterValues class.
  */
 
-/**
-* \file       ValueDescriptor.cpp
-* \brief      implementation of the CValueDescriptor class.
-* \authors    
-* \date       5.11.2004 Mahesh.B.S
-                -Added Function writeValuDescToFile to write all the value descriptors to a 
-                file in a given list.
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
-
 #include "stdafx.h"
 #include "CANDBConverter.h"
 #include "ValueDescriptor.h"
@@ -46,13 +36,8 @@ static char THIS_FILE[]=__FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 /**
-* \brief      Constructort for CValueDescriptor
-* \param[in]  None 
-* \param[out] None
-* \return     None
-* \authors    
-* \date       
-*/
+ * \brief Constructor
+ */
 CValueDescriptor::CValueDescriptor()
 {
     m_value.dValue = 1; // assume double type for default constructor
@@ -60,31 +45,21 @@ CValueDescriptor::CValueDescriptor()
 }
 
 /**
-* \brief      Destructor for CValueDescriptor
-* \param[in]  None 
-* \param[out] None
-* \return     None
-* \authors    
-* \date       
-*/
+ * \brief Destructor
+ */
 CValueDescriptor::~CValueDescriptor()
 {
     // nothing special to do here
 }
 
 /**
-* \brief      writes the value descriptors in the given list to the output file
-* \param[in]  1.CStdioFile &fileOutput[in]
-*               Pointer to the Output file
-*             2.char m_ucType [in]
-*               data type of the value
-*             3.CList<CValueDescriptor,CValueDescriptor&> &m_listSignals [in]
-                List of Value descriptors 
-* \param[out] None
-* \return     void
-* \authors    Mahesh.B.S
-* \date       
-*/
+ * \brief writes the value descriptors in the given list to the output file
+ * \param[in] fileOutput Pointer to the Output file
+ * \param[in] m_ucType data type of the value
+ * \param[in] m_listSignals List of Value descriptors
+ *
+ * Writes the value descriptors in the given list to the output file.
+ */
 void CValueDescriptor::writeValuDescToFile(CStdioFile &fileOutput,char m_ucType,CList<CValueDescriptor,CValueDescriptor&> &m_listValueDescriptor)
 {
     char acLine[defVDES_MAX_OUT_STR];

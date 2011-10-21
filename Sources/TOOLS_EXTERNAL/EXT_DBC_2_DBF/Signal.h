@@ -16,21 +16,11 @@
 /**
  * \file      Signal.h
  * \brief     CSignal class declaration file
- * \author    RBIN/EBS1 - Padmaja A
+ * \author    Padmaja A
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * CSignal class declaration file
  */
-/**
-* \file       Signal.h
-* \brief      interface for the CSignal class.
-* \authors    
-* \date       3.4.2003 Pemmaiah BD - 
-*			  - Added support for INT64 type	
-* \date		4.11.2004 Mahesh BS
-*			  - Added support for Receiving node
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 #if !defined(AFX_SIGNAL_H__9A754F62_9FA8_4BC5_9F87_96D1EFB73DAA__INCLUDED_)
 #define AFX_SIGNAL_H__9A754F62_9FA8_4BC5_9F87_96D1EFB73DAA__INCLUDED_

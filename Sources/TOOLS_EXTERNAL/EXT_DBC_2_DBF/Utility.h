@@ -21,13 +21,6 @@
  *
  * Utility functions declarations
  */
-/**
-* \file       Utility.h
-* \brief      Utility functions declarations
-* \authors    venkatanarayna Makam
-* \date       27.07.2011
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 //Physical to value
 UINT unConvertPhysicalToRaw(DOUBLE dMaxVal, DOUBLE dMinVal, DOUBLE dOffset, DOUBLE dScalFactor, UINT64& unMaxVal, UINT64& unMinVal);
@@ -36,7 +29,6 @@ INT nConvertPhysicalToRaw(DOUBLE dMaxVal, DOUBLE dMinVal, DOUBLE dOffset, DOUBLE
 //Raw to Physical value
 UINT unConvertRawToPhysical(UINT64 unMaxRawVal, UINT64 unMinRawVal, DOUBLE dOffset, DOUBLE dScalFactor, DOUBLE& dMaxPhyVal, DOUBLE& dMinPhyVal);
 INT nConvertRawToPhysical(INT64 unMaxRawVal, INT64 unMinRawVal, DOUBLE dOffset, DOUBLE dScalFactor, DOUBLE& dMaxPhyVal, DOUBLE& dMinPhyVal);
-
 
 //Helper function
 UINT64 unRoundOffdoubleValue(DOUBLE dValue);

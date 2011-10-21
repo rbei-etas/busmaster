@@ -16,18 +16,11 @@
 /**
  * \file      ParameterVal.h
  * \brief     CParameterValues class.
- * \author    RBIN/EBS1 - Padmaja A
+ * \author    Padmaja A
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * CParameterValues class.
  */
-/**
-* \file       ParameterVal.h
-* \brief      CParameterValues class.
-* \authors    Padmaja A
-* \date       4.11.2004
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 //if !defined(AFX_PARAMETERVAL_H__3051F3F4_2978_4987_B1DF_BA4CAD29981A__INCLUDED_)
 //#define AFX_PARAMETERVAL_H__3051F3F4_2978_4987_B1DF_BA4CAD29981A__INCLUDED_

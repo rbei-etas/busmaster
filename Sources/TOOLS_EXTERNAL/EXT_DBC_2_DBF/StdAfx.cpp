@@ -19,19 +19,9 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * source file that includes just the standard includes
+ * Source file that includes just the standard includes.
+ * CANDBConverter.pch will be the pre-compiled header.
+ * stdafx.obj will contain the pre-compiled type information.
  */
-/**
-* \file       stdafx.cpp
-* \brief      source file that includes just the standard includes
-*             CANDBConverter.pch will be the pre-compiled header
-*             stdafx.obj will contain the pre-compiled type information
-* \authors    
-* \date       
-* \date       
-* \copyright  Copyright &copy; 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
+
 #include "stdafx.h"
-
-
-

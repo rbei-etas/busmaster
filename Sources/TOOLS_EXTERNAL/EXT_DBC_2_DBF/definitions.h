@@ -21,13 +21,6 @@
  *
  * Defintitons File 
  */
-/**
-* \file       Definitions.h
-* \brief      Defintitons File 
-* \authors    
-* \date       
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 //Comments.cpp
 #define defCON_MAX_LINE_LEN 1026  //Maximum no of char in one line

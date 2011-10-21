@@ -16,19 +16,11 @@
 /**
  * \file      Message.h
  * \brief     CMessage class.
- * \author    RBIN/EBS1 - Mahesh B S
+ * \author    Mahesh B S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * CMessage class.
  */
-
-/**
-* \file       Message.h
-* \brief      CMessage class.
-* \authors    Mahesh B S
-* \date       4.11.2004
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 #if !defined(AFX_MESSAGE_H__F7C7DBC8_F82B_4799_80EF_1C7CDD5DCA42__INCLUDED_)
 #define AFX_MESSAGE_H__F7C7DBC8_F82B_4799_80EF_1C7CDD5DCA42__INCLUDED_

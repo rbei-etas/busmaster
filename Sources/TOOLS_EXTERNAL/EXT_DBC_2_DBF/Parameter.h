@@ -16,18 +16,11 @@
 /**
  * \file      Parameter.h
  * \brief     CParameters class.
- * \author    RBIN/EBS1 - Padmaja A
+ * \author    Padmaja A
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * CParameters class.
  */
-/**
-* \file       Parameter.h
-* \brief      CParameters class.
-* \authors    Padmaja A
-* \date       4.11.2004
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 //#if !defined(AFX_PARAMETER_H__4051F3F4_2978_4987_B1DF_BA4CAD29981A__INCLUDED_)
 //#define AFX_PARAMETER_H__4051F3F4_2978_4987_B1DF_BA4CAD29981A__INCLUDED_
