@@ -1378,8 +1378,8 @@ static int nCreateMultipleHardwareNetwork()
 							(*icsneoGetHardwareLicense)(hObject, &nHardwareLic);		
 						(*icsneoClosePort)(hObject, &nErrors);
 
-						//Check if it is ES581.3 Limited version with only one channel support.
-						if ( nHardwareLic == 8 )	// ES581.3 (Single channel- HSCAN and MSCAN)										
+						// Check if it a Limited version with only one channel support.
+						if ( nHardwareLic == 8 )	// Single channel
 						{
 							nCntNtwIDs = 1;
 							if ( nHwCount == 1 )	//If only one device connected
@@ -2225,7 +2225,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_DisplayConfigDlg(PCHAR& InitData, int& Length)
                           serialNumber, &netid_str[0]);
                 break;
 
-                /* ValueCAN3 */
+                /* ValueCAN3 and ETAS ES581 */
             case NEODEVICE_VCAN3:
                 if (serialNumber < 50000) {
                     _stprintf(pControllerDetails[i].m_omHardwareDesc,
