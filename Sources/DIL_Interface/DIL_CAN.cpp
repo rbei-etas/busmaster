@@ -627,6 +627,7 @@ HRESULT CDIL_CAN::DILC_PerformClosureOperations(void)
 {
     HRESULT hResult =  (*m_pfPerformClosureOperations)();
     vSelectInterface_Dummy();
+    m_dwDriverID = DAL_NONE;    
     return hResult;
 }
 
