@@ -371,7 +371,9 @@ int CSignal::AddValueDescriptors(char *pcLine,CStdioFile &fileInput)
             *pcDesc++=*pcLine++;
             while(*pcLine && *pcLine!='\"')
             {
-                *pcDesc++=*pcLine++;
+                if ((*pcLine != '\r') && (*pcLine != '\n'))
+                    *pcDesc++ = *pcLine;
+                pcLine++;
             }
         }
         *pcDesc='\0';
