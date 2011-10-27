@@ -91,8 +91,8 @@ int CMessage::Format(char *pcLine)
 {
     char* pcToken;
     // get the MSG ID
-    pcToken = strtok(pcLine," :");				
-    m_uiMsgID = (unsigned int)atoi(pcToken);
+    pcToken = strtok(pcLine," :");
+    m_uiMsgID = strtoul(pcToken, NULL, 0);
 
     // get the message name
     pcToken = strtok(NULL," :");
