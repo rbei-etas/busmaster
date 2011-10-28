@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="git" xml:lang="en-us">
+  <title>Git - Version Control System Tool</title>
+  <prolog>
+    <author>Tobias Lorenz</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ETAS GmbH</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <section><title>Description</title><p>BUSMASTER is located in a Git repository on the open source hosting platform <xref href="https://github.com/" scope="external">https://github.com/</xref>. Git for Windows is the implementation of the Git protocol. There is a nice extension available called Git Extensions.</p>There is a good documentation available on how to setup Git for Windows at <xref href="http://help.github.com/win-set-up-git/" scope="external">http://help.github.com/win-set-up-git/</xref>. The most important steps are described in the following paragraphs.</section>
+    <section>
+      <title>Download</title>
+      <p>Git for Windows is available at <xref href="http://code.google.com/p/msysgit/downloads/list" scope="external">http://code.google.com/p/msysgit/downloads/list</xref>. Download the most current version of the installer, e.g. <filepath>Git-1.7.7-preview20111014.exe</filepath> (as of 2011-10-26).</p>
+      <p>Git Extensions is available at <xref href="http://code.google.com/p/gitextensions/" scope="external">http://code.google.com/p/gitextensions/</xref>. Download the most current version of the installer, e.g. <filepath>GitExtensions225SetupComplete.msi</filepath> (as of 2011-10-26).</p>
+    </section>
+    <section>
+      <title>Installation</title>
+      <p>Git for Windows is installed by executing the installer <filepath>Git-1.7.7-preview20111014.exe</filepath>. The standard installation folder is <filepath>C:\Program Files\Git</filepath>.</p>
+      <p>Git Extensions is installed by executing the installer <filepath>GitExtensions225SetupComplete.msi</filepath>. The standard installation folder is <filepath>C:\Program Files\GitExtensions</filepath>.</p>
+    </section>
+    <section>
+      <title>Configuration</title>
+      <p>Git requires a configuration regarding your firewall/proxy server settings and regarding your username and e-mail address for commiting patches into the repository.</p>
+      <p>For configuring Git for Windows, you first have to execute <uicontrol>Git Bash</uicontrol> via the Windows Explorer content menu as shown in the image below:</p>
+      <image placement="break" href="../images/git.png"/>
+      <p>This opens a cygwin bash shell and allows to execute the usual git command line client. To set your proxy (e.g. proxy:8080), user name and email address do the following:</p>
+      <screen>git config --global http.proxy proxy:8080
+git config --global user.name &quot;Firstname Lastname&quot;
+git config --global user.email &quot;your_email@youremail.com&quot;</screen>
+    </section>
+    <section>
+      <title>Usage</title>
+      <p>Git for Windows as well as the Git Extensions are available via the Windows Explorer content menu as shown in the following image:</p>
+      <image placement="break" href="../images/git_extensions.png"/>
+      <p>There is a pretty good documentation on different aspects of Git available for any experience grades at: <xref href="http://help.github.com/" scope="external">http://help.github.com/</xref>. This includes a documentation on how to initiate your local Git repository and clone BUSMASTER from GitHub.com.</p>
+    </section>
+  </body>
+</topic>

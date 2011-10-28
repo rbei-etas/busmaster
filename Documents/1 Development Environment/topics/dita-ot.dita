@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="dita-ot" xml:lang="en-us">
+  <title>DITA-OT - Documentation Publishing Tool</title>
+  <prolog>
+    <author>Tobias Lorenz</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ETAS GmbH</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <section>
+      <title>Description</title>
+      <p>DITA (Darwin Information Typing Architecture) is used as documentation format. It has many beneficial features compared to other documentation formats as the following table shows:</p>
+      <table>
+        <tgroup cols="6">
+          <thead>
+            <row>
+              <entry>Feature</entry>
+              <entry>Word</entry>
+              <entry>HTML</entry>
+              <entry>Latex</entry>
+              <entry>Docbook</entry>
+              <entry>DITA</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Textual format</entry>
+              <entry>No</entry>
+              <entry>Yes</entry>
+              <entry>Yes</entry>
+              <entry>Yes</entry>
+              <entry>Yes</entry>
+            </row>
+            <row>
+              <entry>Separation of content and style</entry>
+              <entry>No</entry>
+              <entry>No</entry>
+              <entry>Partial</entry>
+              <entry>Yes</entry>
+              <entry>Yes</entry>
+            </row>
+            <row>
+              <entry>XML format and checks</entry>
+              <entry>No</entry>
+              <entry>No</entry>
+              <entry>No</entry>
+              <entry>Yes</entry>
+              <entry>Yes</entry>
+            </row>
+            <row>
+              <entry>Separation of topics and content maps</entry>
+              <entry>No</entry>
+              <entry>No</entry>
+              <entry>No</entry>
+              <entry>No</entry>
+              <entry>Yes</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <p>DITA-OT (Open Toolkit) is used as processing tool.</p>
+      <p>Serna Free is used as authoring tool.</p>
+    </section>
+    <section>
+      <title>Download</title>
+      <p>DITA-OT is available for download at <xref href="http://dita-ot.sourceforge.net/" scope="external"/>. The package is named <filepath>DITA-OT1.5.3_full_easy_install_bin.zip</filepath>. The current version (Jun 2011) is 1.5.3.</p>
+    </section>
+    <section>
+      <title>Installation</title>
+      <p>DITA-OT requires the installation of the Java Development Kit (JDK). It is not sufficient to have the Java Runtime Environment (JRE) installed. The current version (Oct 2011) is 1.6.0_27. The standard installation folder is <filepath>C:\Program Files\Java\jdk1.6.0_27</filepath>.</p>
+      <p>DITA-OT is installed in the old versions 1.3.1 and 1.4 by the authoring tool Serna Free 4.3. They get installed as plugins in the folder <filepath>C:\Program Files\Syntext\Serna Free 4.3\plugins\dita\DITA-OT1.3.1</filepath> and at <filepath>C:\Program Files\Syntext\Serna Free 4.3\plugins\dita\DITA-OT1.4</filepath>.</p>
+      <p>Following the directory structure of Serna, it&apos;s best to install DITA 1.5.3 by un-zipping it to the folder <filepath>C:\Program Files\Syntext\Serna Free 4.3\plugins\dita\DITA-OT1.5.3</filepath>.</p>
+    </section>
+    <section>
+      <title>Configuration</title>
+      <p>The is no special configuration of DITA-OT necessary.</p>
+    </section>
+    <section><title>Usage</title><p>BUSMASTER comes with a convenient <filepath>build.bat</filepath> script in the following folders:<ul>
+          <li>
+            <filepath>Documents\1 Development Environment</filepath>
+          </li>
+          <li>
+            <filepath>Documents\2 Requirement Specification</filepath>
+          </li>
+          <li>
+            <filepath>Documents\3 Design Document</filepath>
+          </li>
+          <li>
+            <filepath>Documents\4 Help</filepath>
+          </li>
+        </ul></p>If you change the JDK standard installation folder or the DITA-OT standard installation folder, then you also have to adjust the <filepath>build.bat</filepath> files in each of the mentioned <filepath>Documents</filepath> folders accordingly.</section>
+  </body>
+</topic>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
 <topic id="vc" xml:lang="en-us">
-  <title>Compilation / building of a MFC project in VC++ Express 2008</title>
+  <title>MS Visual C++ Express 2008 - Compiler and IDE</title>
   <prolog>
     <author>Ratnadip Choudhury</author>
     <copyright>
@@ -10,64 +10,88 @@
     </copyright>
   </prolog>
   <body>
-    <p>To compile MFC code within the Express edition of Visual C++, the following four steps are needed:</p>
-    <ol>
-      <li>
-        <p>Go to the Windows Server 2003 driver development kit (DDK) webpage (<xref href="http://www.microsoft.com/downloads/en/details.aspx?displaylang=en&amp;FamilyID=36a2630f-5d56-43b5-b996-7633f2ec14ff" scope="external">DDK 7.1.0 Download Link</xref>), download the DDK ISO file, and burn it to a CD. Most of the time, you can just use the CD burning software that comes with your computer for this task. Alternatively, 7-zip can be used to extract the installation programme from the ISO file.</p>
-      </li>
-      <li>
-        <p>Install the DDK, which provides support to compile the MFC and ATL codes.</p>
-      </li>
-      <li>
-        <p>After Windows DDK installation is over, please access the inc\mfc42 folder. Please open the system header files atldef.h and atlconv.h, to substitute references to the folder &quot;atl30&quot; with &quot;atl71&quot;.</p>
-        <p>Make the following changes in 3 files listed below in C:\WinDDK\7600.16385.1\inc\mfc42 folder:</p>
-        <ol>
-          <li>
-            <p>Afx.h: Commented function call ::AfxThrowInvalidArgException() as it is not supported in MFC 6.0 version.</p>
-          </li>
-          <li>
-            <p>Afx.inl: Added type casting code to avoid warnings for variable m_timeSpan. The inline functions updated with this typecasting ((LONG_PTR)m_timeSpan) are GetDays(), GetTotalHours(),GetTotalMinutes() and GetTotalSeconds() in CTimeSpan class.</p>
-          </li>
-          <li>
-            <p>Afxdisp.h: Commented virtual function declarations GetLicenseKey(...) and VerifyLicenseKey(...) as they are not supported. Make the following changes in 3 files listed below in c:\WinDDK\7600.16385.1\inc\atl71 folder:</p>
-          </li>
-          <li>
-            <p>Atlexcept.h: Replaced AfxThrowOleException(HRESULT) with AtlThrow(hr) as it is not supported.</p>
-          </li>
-          <li>
-            <p>Atlchecked.h: Add the following definition in this file which is missing: #define AFX_CRT_ERRORCHECK(expr) AtlCrtErrorCheck(expr)</p>
-          </li>
-          <li>
-            <p>Cstringt.h: Completely replace this file with the file below. This is done to eliminate errors which creep in while using CString.</p>
-          </li>
-        </ol>
-      </li>
-      <li>
-        <p>A couple of directory paths are needed to be added to the project configuration, to instruct Visual C++ where the MFC related files can be found. This can be done by selecting the &quot;Options...&quot; menu item occurring under the &quot;Tools&quot; menu, like shown in the image below:</p>
-	<image href="../images/vc_options.png" placement="break"/>
-        <p>Clicking the menu item &quot;Options&quot; will result in the following dialog box:</p>
-	<image href="../images/vc_include_files.png" placement="break"/>
-        <p>Please select the node &quot;VC++ Directories&quot; with &quot;Projects and Solutions&quot; as its parent node occurring under the left pane. Please select &quot;Include Files&quot; entry from the dropdown combo box &quot;Show directories for&quot;. As indicated in the picture, the following path entries should be added:
-        <ul>
-            <li>$(DDK_directory)\inc\mfc42</li>
-            <li>$(DDK_directory)\inc\atl71</li>
-          </ul></p>
-        <p>$(DDK_directory) indicates the directory where DDK has been installed (&quot;C:\WinDDK\7600.16385.1&quot; for example)</p>
-        <p>Next, similar procedure should be carried out for &quot;Library files&quot; entry in the already mentioned dropdown combo box, as shown below: </p>
-	<image href="../images/vc_library_files.png" placement="break"/>
-        <p>The addenda are:<ul>
-            <li>$(DDK_directory)\lib\mfc\i386</li>
-            <li>$(DDK_directory)\lib\atl\i386</li>
-          </ul></p>
-      </li>
-    </ol>
-    <p>It show now be possible to convert and compile an MFC application. The limitations are listed as the following:
-   <ul>
-        <li>No plug-in support.</li>
-        <li>Resource editing is not possible</li>
-        <li>Only up to Visual Studio 6.0 MFC libraries are supported by the DDK.</li>
-        <li>The application can be built and run in release mode only. This means debugging the application is not possible.</li>
+    <section>
+      <title>Description</title>
+      <p>The MS Visual Studio is a common build environment and IDE on the Windows platform. MS provides cost-free Express editions that are missing the necessary MFC+ATL libraries. This topic mainly describes how to setup a Visual C++ Express 2008 environment and add the necessary MFC+ATL libraries.</p>
+      <p>With the more feature-rich versions, the compilation should work out-of-the-box.</p>
+    </section>
+    <section>
+      <title>Download</title>
+      <p>Go to the Windows Server 2003 driver development kit (DDK) webpage (<xref href="http://www.microsoft.com/downloads/en/details.aspx?displaylang=en&amp;FamilyID=36a2630f-5d56-43b5-b996-7633f2ec14ff" scope="external">DDK 7.1.0 Download Link</xref>), download the DDK ISO file, and burn it to a CD. Most of the time, you can just use the CD burning software that comes with your computer for this task. Alternatively, 7-zip can be used to extract the installation programme from the ISO file.</p>
+    </section>
+    <section>
+      <title>Installation</title>
+      <p>Install the DDK, which provides support to compile the MFC and ATL codes.</p>
+    </section>
+    <section>
+      <title>Configuration</title>
+      <p>Make the changes in following 5 files listed below in <filepath>C:\WinDDK\7600.16385.1\inc\mfc42</filepath> folder:</p>
+      <ul>
+        <li>
+          <p><filepath>Afx.h</filepath>: Comment the function call <apiname>::AfxThrowInvalidArgException()</apiname> as it is not supported in MFC 6.0 version.</p>
+        </li>
+        <li>
+          <p><filepath>Afx.inl</filepath>: Add type casting code to avoid warnings for variable <varname>m_timeSpan</varname>. The inline functions to update with this typecasting <apiname>(LONG_PTR)m_timeSpan</apiname> are <apiname>GetDays()</apiname>, <apiname>GetTotalHours()</apiname>, <apiname>GetTotalMinutes()</apiname> and <apiname>GetTotalSeconds()</apiname> in <apiname>CTimeSpan</apiname> class.</p>
+        </li>
+        <li>
+          <p><filepath>Afxdisp.h</filepath>: Comment the virtual function declarations <apiname>GetLicenseKey(...)</apiname> and <apiname>VerifyLicenseKey(...)</apiname> as they are not supported.</p>
+        </li>
+        <li><filepath>Atlconv.h</filepath>: Substitute the references to the folder <filepath>atl30</filepath> with <filepath>atl71</filepath>.</li>
+        <li><filepath>Atldef.h</filepath>: Substitute the references to the folder <filepath>atl30</filepath> with <filepath>atl71</filepath>.</li>
       </ul>
+      <p>Make the changes in following 3 files listed below in <filepath>C:\WinDDK\7600.16385.1\inc\atl71</filepath> folder:</p>
+      <ul>
+        <li>
+          <p><filepath>Atlexcept.h</filepath>: Replace <apiname>AfxThrowOleException(HRESULT)</apiname> with <apiname>AtlThrow(hr)</apiname> as it is not supported.</p>
+        </li>
+        <li>
+          <p><filepath>Atlchecked.h</filepath>: Add the following definition in this file which is missing: <codeblock>#define AFX_CRT_ERRORCHECK(expr) AtlCrtErrorCheck(expr)</codeblock></p>
+        </li>
+        <li>
+          <p><filepath>Cstringt.h</filepath>: Completely replace this file with the file below. This is done to eliminate errors which creep in while using <apiname>CString</apiname>.</p>
+        </li>
+      </ul>
+      <p>A couple of directory paths are need to be added to the project configuration, to instruct Visual C++ where the MFC related files are found. This can be done by selecting the <uicontrol>Options...</uicontrol> menu item occurring under the <uicontrol>Tools</uicontrol> menu, like shown in the image below:</p>
+      <image href="../images/vc_options.png" placement="break"/>
+      <p>Clicking the menu item <uicontrol>Options...</uicontrol> will result in the following dialog box:</p>
+      <image href="../images/vc_include_files.png" placement="break"/>
+      <p>Please select the node <uicontrol>VC++ Directories</uicontrol> under its parent node <uicontrol>Projects and Solutions</uicontrol> occurring under the left pane. Please select <uicontrol>Include files</uicontrol> entry from the drop-down combo box <uicontrol>Show directories for</uicontrol>. As indicated in the picture, the following path entries need to be added:
+        <ul>
+          <li>
+            <filepath>$(DDK_directory)\inc\mfc42</filepath>
+          </li>
+          <li>
+            <filepath>$(DDK_directory)\inc\atl71</filepath>
+          </li>
+        </ul></p>
+      <p><filepath>$(DDK_directory)</filepath> indicates the directory where DDK has been installed (<filepath>C:\WinDDK\7600.16385.1</filepath> for example)</p>
+      <p>Next, similar procedure should be carried out for <uicontrol>Library files</uicontrol> entry in the already mentioned drop-down combo box, as shown below: </p>
+      <image href="../images/vc_library_files.png" placement="break"/>
+      <p>Please add there:<ul>
+          <li>
+            <filepath>$(DDK_directory)\lib\mfc\i386</filepath>
+          </li>
+          <li>
+            <filepath>$(DDK_directory)\lib\atl\i386</filepath>
+          </li>
+        </ul></p>
+    </section>
+    <section>
+      <title>Usage</title>
+      <p>It should now be possible to convert and compile an MFC application. The limitations are as follows:
+   <ul>
+          <li>No plug-in support.</li>
+          <li>Resource editing is not possible</li>
+          <li>Only up to Visual Studio 6.0 MFC libraries are supported by the DDK.</li>
+          <li>The application can be built and run in release mode only. This means debugging the application is not possible.</li>
+        </ul>
   </p>
+      <p>Project building guidelines:</p>
+      <p>BUSMASTER project consists of a multitude of sub-projects of various types namely, dynamic link libraries (Win32 DLL, regular DLL using MFC and MFC extension DLL), static link libraries, out-of-proc servers and executables. For obvious reason there are dependencies. For example the static link libraries are the helper libraries employed by all the other modules / components. That&apos;s why all the project dependencies must be suitably defined. The following two guidelines must be strictly adhered throughout the development process:</p>
+      <ul>
+        <li>Ensure every individual sub-project is buildable from a clean state (which means no relevant object files are available prior to the building process).</li>
+        <li>The above must hold for both debug and release modes.</li>
+      </ul>
+    </section>
   </body>
 </topic>

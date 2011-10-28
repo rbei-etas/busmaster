@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="msbuild" xml:lang="en-us">
+  <title>MS Build - Build Tool</title>
+  <prolog>
+    <author>Tobias Lorenz</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ETAS GmbH</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <section>
+      <title>Description</title>
+      <p>MS Build automates the task to compile the sources codes of the project in the appropriate way.</p>
+    </section>
+    <section>
+      <title>Download</title>
+      <p>MS Build is provided as part of the .NET Framework at least in versions 3.5 and 4.0.</p>
+    </section>
+    <section>
+      <title>Installation</title>
+      <p>Depending on the version <filepath>MSBuild.exe</filepath> is installed in the following standard installation folders:</p>
+      <ul>
+        <li>
+          <filepath>C:\Windows\Microsoft.NET\Framework\v3.5</filepath>
+        </li>
+        <li>
+          <filepath>C:\Windows\Microsoft.NET\Framework\v4.0.30319</filepath>
+        </li>
+      </ul>
+    </section>
+    <section>
+      <title>Configuration</title>
+      <p>There is no specific configuration of MSBuild necessary. However if your version of .NET and the MS Build tool is different and thus the installation folder, you need to adjust the provided BUSMASTER build script accordingly. Currently it checks for the mentioned versions and folders. The script is located at <filepath>Sources\build.bat</filepath>.</p>
+    </section>
+    <section>
+      <title>Usage</title>
+      <p>Just execute <filepath>Sources\build.bat</filepath> to build the project in the Release configuration. The output is created in the folder <filepath>Sources\BIN\Release</filepath>.</p>
+      <p>If you want to build in Debug configuration, you need to adjust the <filepath>Sources\build.bat</filepath> accordingly. The output is then created in the folder <filepath>Sources\BIN\Debug</filepath>.</p>
+    </section>
+  </body>
+</topic>

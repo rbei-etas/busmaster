@@ -11,19 +11,26 @@
   </prolog>
   <body>
     <section>
-      <title>Evaluation of Static Source Code Checkers</title>
-      <p>There are multiple commonly used tools in Open Source projects.</p>
-      <p>Splint is probably the most used checker. It seamlessly  integrates into the Visual C++ IDE. See the following documentation: <xref href="http://www.splint.org/win32.html" scope="external"/>. Unfortunately it is limited to C and is not able to parse C++ code.</p>
-      <p>Cppcheck is another Open Source software, which is able to parse C++ code. It is available under: <xref href="http://cppcheck.sourceforge.net/" scope="external"/>.</p>
+      <title>Description</title>
+      <p>There are many static source code checkers available and used by Open Source projects.</p>
+      <p>Splint is probably the most often used checker. It seamlessly  integrates into the Visual C++ IDE. See the following documentation: <xref href="http://www.splint.org/win32.html" scope="external"/>. Unfortunately it is limited to C and is not able to parse C++ code.</p>
+      <p>Cppcheck is another Open Source software, which is able to parse C++ code and is therefore used for BUSMASTER.</p>
     </section>
     <section>
-      <title>Cppcheck configuration</title>
-      <p>Steps to configure the tool.</p>
-      <ol>
-        <li>Download and install the tool. Add the %PATH% variable accordingly.</li>
-        <li>Go to the BUSMASTER sources folder.</li>
-        <li>Execute <cmdname>cppcheck -I. --enable=all %SOURCE_FILES%</cmdname> on the respective files. If you have git-bash or cygwin installed, you can do it over all cpp and h files using <cmdname>find -name &quot;*.[cpp|h]&quot; | xargs cppcheck -I. --enable=all *.cpp *.h</cmdname>.</li>
-      </ol>
+      <title>Download</title>
+      <p>Cppcheck is available under: <xref href="http://cppcheck.sourceforge.net/" scope="external"/>. Just download the most current version, e.g. <filepath>cppcheck-1.50-x86-Setup.msi</filepath> (as of 2011-10-25).</p>
+    </section>
+    <section>
+      <title>Installation</title>
+      <p>Execute the installer. The standard installation folder is <filepath>C:\Program Files\Cppcheck\</filepath>. Cppcheck should automatically be added to your %PATH% environment variable.</p>
+    </section>
+    <section>
+      <title>Configuration</title>
+      <p>There is no specific configuration of Cppcheck necessary.</p>
+    </section>
+    <section>
+      <title>Usage</title>
+      <p>Execute <cmdname>cppcheck -I. --enable=all %SOURCE_FILES%</cmdname> on the respective files. If you have <cmdname>git-bash</cmdname> or <cmdname>cygwin bash</cmdname> installed, you can do it over all <filepath>.cpp</filepath> and <filepath>.h</filepath> files using <cmdname>find -name &quot;*.[cpp|h]&quot; | xargs cppcheck -I. --enable=all *.cpp *.h</cmdname>.</p>
     </section>
   </body>
 </topic>

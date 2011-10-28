@@ -10,77 +10,27 @@
     </copyright>
   </prolog>
   <body>
-    <p>To integrate Doxygen into the Visual C++ IDE, just add it to the external tools. And refer to the config file called Doxyfile use the following documentation:</p>
-    <p>The doxygen manual is available at:</p>
-    <p><xref href="http://www.testcocoon.org/coveragescanner.html#toc77" scope="external"/></p>
-    <p>Comment style has to be changed as follows:</p>
-    <p>Current file headers:
-<codeblock>
-/******************************************************************************
-  Project       :  BUSMASTER                                          
-  FileName      :  BUSMASTER.cpp     
-  Description   :  CBUSMASTERApp class implementation file
-  $Log:   X:/Archive/Sources/Application/CAN_Monitor.cpv  $
-   
-      Rev 1.18   15 Apr 2011 19:59:30   CANMNTTM
-   Added RBEI Copyright information.
-                                                                           
-  Author(s)    :  Amitesh Bharti                                         
-  Date Created  :  20.02.2002 
-  Modified By   :  Amitesh Bharti, Ratnadip Choudhury, Anish kumar 
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
-</codeblock></p>
-    <p>Doxygen file headers:
-<codeblock>
-/**
- * \file       BUSMASTER.cpp
- * \brief      CBUSMASTERApp class implementation file
- * \author     Amitesh Bharti                                  [use author  if there is only one]
- * \authors    Amitesh Bharti, Ratnadip Choudhury, Anish kumar [use authors if there are multiple (modifiers)]
- * \date       20.02.2002 Created
- * \date       15.04.2011 Added RBEI Copyright information
- * \copyright  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
- */
-</codeblock></p>
-    <p>Current funtion headers:
-<codeblock>
-/******************************************************************************/
-/*  Function Name    :  CBUSMASTERApp                                         */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :                                                        */
-/*                                                                            */
-/*  Member of        :  CBUSMASTERApp                                         */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amarnath Shastry,Amitesh Bharti                       */
-/*  Date Created     :  20.02.2002                                            */
-/*  Modification date:  30.12.2002,                                           */
-/*  Modification By  :  Amitesh Bharti,                                       */
-/*                      Initialise the thread structure.                      */
-/*  Modification date:  22.07.2004,                                           */
-/*  Modification By  :  Amitesh Bharti,                                       */
-/*                      Modofiction due to new DLL Unload thread              */
-/******************************************************************************/
-</codeblock></p>
-    <p>Doxygen function headers:
-<codeblock>
-/**
- * \brief         Brief description of function
- * \param[in]     a Description of paramter a, if thats inbound
- * \param[out]    a Description of paramter a, if thats outbound
- * \param[in,out] a Description of paramter a, if thats in- and outbound
- * \param         a Description of paramter a, if the direction is unspecified
- * \return        Description of return value
- * \author        Amitesh Bharti                  [use author  if there is only one]
- * \authors       Amarnath Shastry,Amitesh Bharti [use authors if there are multiple (modifiers)]
- * \date          20.02.2002 Created
- * \date          30.12.2002 Amitesh Bharti, Initialise the thread structure.
- * \date          22.07.2004 Amitesh Bharti, Modofiction due to new DLL Unload thread
- *
- * If a long description is necessary, put it here.
- */
-int foobar( int a )
-</codeblock></p>
+    <section>
+      <title>Description</title>
+      <p>Doxygen is a source code documentation tool. It uses special formatted comments in the source code to generate a complete documentation in several different formats. In BUSMASTER only HTML output is generated.</p>
+      <p>The doxygen manual is available at: <xref href="http://www.testcocoon.org/coveragescanner.html#toc77" scope="external"/>.</p>
+    </section>
+    <section>
+      <title>Download</title>
+      <p>Doxygen is available at <xref href="http://www.stack.nl/~dimitri/doxygen/" scope="external"/>. In the blue box on the right side is a &quot;Download&quot; link. Download the latest installer available, e.g. <filepath>doxygen-1.7.5.1-setup.exe</filepath> (2011-10-25).</p>
+    </section>
+    <section>
+      <title>Installation</title>
+      <p>Execute <filepath>doxygen-1.7.5.1-setup.exe</filepath> to install the application. The standard installation folder is <filepath>C:\Program Files\doxygen</filepath>. It will also be added to the %PATH% environment variable.</p>
+    </section>
+    <section>
+      <title>Configuration</title>
+      <p>Doxygen requires no specific configuration beside the files provided in the <filepath>BUSMASTER\Documents\5 Source Code Documentation\Doxyfiles\*</filepath>.</p>
+      <p>It is helpful to add Doxygen to the list of external tools in the <uicontrol>tools</uicontrol> menu within the Visual C++ IDE.</p>
+    </section>
+    <section>
+      <title>Usage</title>
+      <p>BUSMASTER comes with a <filepath>build.bat</filepath> script that automatically calls Doxygen in the right way. However if doxygen is not in your %PATH% environment variable you need to adjust the script accordingly. After running Doxygen the output for each module is placed in the folder <filepath>Documents\5 Source Code Documentation\out</filepath>. An <filepath>index.html</filepath> is provided as convenient entry point to the generated documentations.</p>
+    </section>
   </body>
 </topic>

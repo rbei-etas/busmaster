@@ -10,7 +10,31 @@
     </copyright>
   </prolog>
   <body>
-	  <p>To integrate TestCocoon into the Visual C++ IDE, use the following documentation:</p>
-	  <p><xref href="http://www.testcocoon.org/coveragescanner.html#toc77" scope="external"/></p>
+    <section>
+      <title>Description</title>
+      <p>TestCocoon is a plugin for certain compilers including Visual C++. It evaluates covered source code lines upon execution of the BUSMASTER application.</p>
+      <p>In combination with the test automation tool AutoIt, it reports the corresponding test coverage.</p>
+    </section>
+    <section>
+      <title>Download</title>
+      <p>TestCocoon is available for download at <xref href="http://www.testcocoon.org/" scope="external">http://www.testcocoon.org/</xref>. Download the latest version of the installer, e.g.  <filepath>TestCocoonSetup_1_6_14_x86.exe</filepath> (as of 2011-10-25).</p>
+    </section>
+    <section>
+      <title>Installation</title>
+      <p>Execute the installer <filepath>TestCocoonSetup_1_6_14_x86.exe</filepath>. The standard installation folder is <filepath>C:\Program Files\TestCocoon</filepath>.</p>
+    </section>
+    <section>
+      <title>Configuration</title>
+      <p>To integrate TestCocoon into the Visual C++ IDE, use the following documentation: <xref href="http://www.testcocoon.org/coveragescanner.html#toc77" scope="external"/></p>
+    </section>
+    <section>
+      <title>Usage</title>
+      <p>TestCocoon generates for each module an instrumentation file with the extension <filepath>.csmes</filepath>.</p>
+      <p>After executing BUSMASTER, an execution report is available in a file with the extension <filepath>.csexe</filepath>.</p>
+      <p>TestCoverage comes with a tool to visualize the corresponding source code coverage. It is called CoverageBrowser and is available in the Windows start menu under <menucascade>
+          <uicontrol>TestCocoon</uicontrol>
+          <uicontrol>CoverageBrowser</uicontrol>
+        </menucascade>. Use this tool to open the <filepath>.csexe</filepath> files.</p>
+    </section>
   </body>
 </topic>

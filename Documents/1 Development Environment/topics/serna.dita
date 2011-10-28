@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="serna" xml:lang="en-us">
+  <title>Serna - Documentation Authoring Tool</title>
+  <prolog>
+    <author>Tobias Lorenz</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ETAS GmbH</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <section>
+      <title>Description</title>
+      <p>DITA (Darwin Information Typing Architecture) is used as documentation format.</p>
+      <p>DITA-OT (Open Toolkit) is used as processing tool.</p>
+      <p>Serna Free is used as authoring tool.</p>
+    </section>
+    <section>
+      <title>Download</title>
+      <p>Serna is available for download at <xref href="http://www.syntext.com/products/serna-free/" scope="external"/>. The current version (Jun 2011) is 4.3. Just download the file <filepath>serna-free-4.3.0-20110207.exe</filepath>.</p>
+    </section>
+    <section>
+      <title>Installation</title>
+      <p>Execute the Serna installer  <filepath>serna-free-4.3.0-20110207.exe</filepath>. The standard installation folder is  <filepath>C:\Program Files\Syntext\Serna Free 4.3\</filepath>.</p>
+    </section>
+    <section>
+      <title>Configuration</title>
+      <p>The is no specific configuration of Serna Free necessary. Serna is automatically associated with the file types <filepath>.xml</filepath>, <filepath>.dita</filepath> and <filepath>.ditamap</filepath>.</p>
+    </section>
+    <section>
+      <title>Usage</title>
+      <p>Just execute Serna by double clicking any of the <filepath>.dita</filepath> or <filepath>.ditamap</filepath> files located under one of the following folders or subfolders:<ul>
+          <li>
+            <filepath>Documents\1 Development Environment</filepath>
+          </li>
+          <li>
+            <filepath>Documents\2 Requirement Specification</filepath>
+          </li>
+          <li>
+            <filepath>Documents\3 Design Document</filepath>
+          </li>
+          <li>
+            <filepath>Documents\4 Help</filepath>
+          </li>
+        </ul></p>
+    </section>
+  </body>
+</topic>
