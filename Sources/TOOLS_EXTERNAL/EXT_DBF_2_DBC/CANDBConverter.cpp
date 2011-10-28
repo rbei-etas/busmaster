@@ -37,7 +37,6 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-#define APPLICATION_STARTUP_KEY _T("12B3BCDD-2EE1-4640-86C5-7C4340442D3C")
 /////////////////////////////////////////////////////////////////////////////
 // CCANDBConverterApp
 
@@ -89,13 +88,6 @@ BOOL CCANDBConverterApp::InitInstance()
 #else
     Enable3dControlsStatic();	// Call this when linking to MFC statically
 #endif
-
-    CString check = GetCommandLine();
-
-    if (check.Find(APPLICATION_STARTUP_KEY) == -1)
-    {
-        return FALSE;
-    }
 
     CCANDBConverterDlg dlg;
     m_pMainWnd = &dlg;

@@ -138,7 +138,6 @@ HANDLE g_hSemaphore = NULL;
 #define defDEFAULTDLLFILENAME   ("*.dll")
 #define TIMER_REFRESH_MAINGUI   0x100
 #define STSBAR_REFRESH_TIME_PERIOD      1000  // in milliseconds
-#define APPLICATION_STARTUP_KEY _T("12B3BCDD-2EE1-4640-86C5-7C4340442D3C")
 #define PROFILE_CAN_MONITOR                   _T("RBEI_ECF2_CAN_Monitor")
 
 const BYTE CAPL_2_C_MASK  = 0x1;
@@ -9378,7 +9377,6 @@ void CMainFrame::OnCAPL_TO_C_Converter()
     sei.hwnd = NULL; 
     sei.lpVerb = _T("open");
     sei.lpFile = omCurrExe;
-    sei.lpParameters= APPLICATION_STARTUP_KEY; 
     sei.nShow = SW_SHOWNORMAL; 
     sei.hInstApp = NULL; 
     sei.lpIDList = NULL; 
@@ -9416,7 +9414,6 @@ void CMainFrame::OnDBC_TO_DBF_Converter()
     sei.hwnd = NULL; 
     sei.lpVerb = _T("open");
     sei.lpFile = omCurrExe;
-    sei.lpParameters= APPLICATION_STARTUP_KEY; 
     sei.nShow = SW_SHOWNORMAL; 
     sei.hInstApp = NULL; 
     sei.lpIDList = NULL; 
@@ -9506,7 +9503,6 @@ void CMainFrame::OnDBF_TO_DBC_Converter()
     sei.hwnd = NULL; 
     sei.lpVerb = "open";
     sei.lpFile = omCurrExe;
-    sei.lpParameters= APPLICATION_STARTUP_KEY; 
     sei.nShow = SW_SHOWNORMAL; 
     sei.hInstApp = NULL; 
     sei.lpIDList = NULL; 
