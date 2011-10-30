@@ -47,8 +47,7 @@
     <p>A. Range of values; e.g., (x &lt;= 10) &amp;&amp; (x &gt;= 50)</p>
     <p>B. Set of discrete values; e.g., (x == 10) || (x == 20) || (x == 50)</p>
     <p>C. Formulation of any other validation procedure.</p>
-    <p>Here is the sample test setup file.</p>
-    <p>SampleTestSetupFile.xml</p>
+    <p>Here is a sample test file: <xref href="https://github.com/rbei-etas/busmaster/tree/master/Documents/4%20Help/files/SampleTestSetupFile.xml" scope="external">SampleTestSetupFile.xml</xref>.</p>
     <p>The table below contains a concise description of each of the section details and error handling procedure in case of absence of any information.</p>
     <table>
       <tgroup cols="4">
