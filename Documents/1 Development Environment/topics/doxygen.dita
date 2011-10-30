@@ -31,6 +31,29 @@
     <section>
       <title>Usage</title>
       <p>BUSMASTER comes with a <filepath>build.bat</filepath> script that automatically calls Doxygen in the right way. However if doxygen is not in your %PATH% environment variable you need to adjust the script accordingly. After running Doxygen the output for each module is placed in the folder <filepath>Documents\5 Source Code Documentation\out</filepath>. An <filepath>index.html</filepath> is provided as convenient entry point to the generated documentations.</p>
+      <p>The preferred Doxygen file header is:</p>
+      <codeblock>/**
+ * \file      &lt;filename&gt;
+ * \brief     &lt;brief description&gt;
+ * \author    &lt;author&gt;                    [if there is only one author]
+ * \authors   &lt;author 1&gt;, &lt;author 2&gt;, ... [if there are multiple authors]
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering
+ *            and Business Solutions. All rights reserved.
+ *
+ * &lt;long description&gt;
+ */</codeblock>
+      <p>The preferred Doxygen function header is:</p>
+      <codeblock>/**
+ * \brief         &lt;brief description&gt;
+ * \param[in]     &lt;param name&gt; &lt;description&gt; [if thats inbound]
+ * \param[out]    &lt;param name&gt; &lt;description&gt; [if thats outbound]
+ * \param[in,out] &lt;param name&gt; &lt;description&gt; [if thats in- and outbound]
+ * \param         &lt;param name&gt; &lt;description&gt; [if direction is unspecified]
+ * \return        &lt;description&gt;
+ *
+ * If a long description is necessary, put it here.
+ */
+void foobar( void )</codeblock>
     </section>
   </body>
 </topic>
