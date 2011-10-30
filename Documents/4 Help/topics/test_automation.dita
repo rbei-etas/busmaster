@@ -237,24 +237,62 @@
     <p>Help Window: Help window will provide Help on every node. Click on any item on right pane to get the details of that node.</p>
     <p>1.2.3 Test Setup Editor Menu:</p>
     <p>The functionalities, provided by the Test Setup editor, are grouped under the Test setup editor Menu. This Menu will be shown in BUSMASTER when the editor is in active mode or user clicked on the Editor. Below figure 1.2.3 will show the main menu of the editor.</p>
-    <p>File: File Menu Contains All most all the functionalities provided by the Editor. It contains the following sub menus.</p>
+    <p><menucascade>
+        <uicontrol>File</uicontrol>
+      </menucascade>: File Menu Contains All most all the functionalities provided by the Editor. It contains the following sub menus.</p>
     <ul>
-      <li>File-&gt;New: Use to create a New Test Setup file. &quot;Ctrl + N&quot; is the keyboard short cut.</li>
-      <li>File-&gt;Open: use to Open an existing test setup file. &quot;Ctrl + O&quot; is the keyboard short cut.</li>
-      <li>File-&gt;Close: Closes the current file.</li>
-      <li>File-&gt;Save: Saves the current changes to the file. &quot;Ctrl + S&quot; is the keyboard short cut.</li>
-      <li>File-&gt;SaveAs: Saves the current data into another file.</li>
-      <li>File-&gt;Validate: Validates the Current file According to the table 1.1.</li>
-      <li>File-&gt;Exit: Closes the Editor.</li>
+      <li><menucascade>
+          <uicontrol>File</uicontrol>
+          <uicontrol>New</uicontrol>
+        </menucascade>: Use to create a New Test Setup file. &quot;Ctrl + N&quot; is the keyboard short cut.</li>
+      <li><menucascade>
+          <uicontrol>File</uicontrol>
+          <uicontrol>Open</uicontrol>
+        </menucascade>: use to Open an existing test setup file. &quot;Ctrl + O&quot; is the keyboard short cut.</li>
+      <li><menucascade>
+          <uicontrol>File</uicontrol>
+          <uicontrol>Close</uicontrol>
+        </menucascade>: Closes the current file.</li>
+      <li><menucascade>
+          <uicontrol>File</uicontrol>
+          <uicontrol>Save</uicontrol>
+        </menucascade>: Saves the current changes to the file. &quot;Ctrl + S&quot; is the keyboard short cut.</li>
+      <li><menucascade>
+          <uicontrol>File</uicontrol>
+          <uicontrol>SaveAs</uicontrol>
+        </menucascade>: Saves the current data into another file.</li>
+      <li><menucascade>
+          <uicontrol>File</uicontrol>
+          <uicontrol>Validate</uicontrol>
+        </menucascade>: Validates the Current file According to the table 1.1.</li>
+      <li><menucascade>
+          <uicontrol>File</uicontrol>
+          <uicontrol>Exit</uicontrol>
+        </menucascade>: Closes the Editor.</li>
     </ul>
-    <p>Edit: Edit menu will provide the operations such as Cut, Copy, and Paste.</p>
+    <p><menucascade>
+        <uicontrol>Edit</uicontrol>
+      </menucascade>: Edit menu will provide the operations such as Cut, Copy, and Paste.</p>
     <ul>
-      <li>Edit-&gt;Copy: Any item on the right pane can be copied using this menu. &quot;Ctrl + C&quot; is the keyboard short cut.</li>
-      <li>Edit-&gt;Cut: Using this menu Any item on the right pane can be deleted by copying it. &quot;Ctrl + X&quot; is the keyboard short cut.</li>
-      <li>Edit-&gt;Paste: The Copied item can be inserted under any parent item by selecting the parent item and this menu. For example the copied &quot;send_message&quot; can be inserted in any send node of any test case.</li>
+      <li><menucascade>
+          <uicontrol>Edit</uicontrol>
+          <uicontrol>Copy</uicontrol>
+        </menucascade>: Any item on the right pane can be copied using this menu. &quot;Ctrl + C&quot; is the keyboard short cut.</li>
+      <li><menucascade>
+          <uicontrol>Edit</uicontrol>
+          <uicontrol>Cut</uicontrol>
+        </menucascade>: Using this menu Any item on the right pane can be deleted by copying it. &quot;Ctrl + X&quot; is the keyboard short cut.</li>
+      <li><menucascade>
+          <uicontrol>Edit</uicontrol>
+          <uicontrol>Paste</uicontrol>
+        </menucascade>: The Copied item can be inserted under any parent item by selecting the parent item and this menu. For example the copied &quot;send_message&quot; can be inserted in any send node of any test case.</li>
     </ul>
-    <p>Display: used to customize the GUI.</p>
-    <p>Help: Help provide the version details about the editor and also opens this help file.</p>
+    <p><menucascade>
+        <uicontrol>Display</uicontrol>
+      </menucascade>: used to customize the GUI.</p>
+    <p><menucascade>
+        <uicontrol>Help</uicontrol>
+      </menucascade>: Help provide the version details about the editor and also opens this help file.</p>
     <p>1.2.4. Using Editor:</p>
     <p>1.2.4.1. Creating a new Test Setup File: Select File-&gt;New Menu. A File browser will be displayed. Select a Required folder and enter the file name. Click on OK. The Editor will create a New Test setup file and a new Test setup with some initial values.</p>
     <p>1.2.4.2. Updating Test Setup: Initially the name of Test Setup will be &lt;New Test SetUp&gt; displayed in right pane. Click on this item (test setup node) and update its details such as test setup name, Description, version, Bus type, Module name, Engineer Info, Report file path and database in left pane. The database path is very important.</p>
