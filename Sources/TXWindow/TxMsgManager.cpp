@@ -824,6 +824,8 @@ UINT CTxMsgManager::s_unSendMsgBlockOnTime(LPVOID pParam )
     Modifiecations   :  Raja N on 25.04.2005, Added code to check for enabled
                         member before transmissting a message and to select
                         next available enabled message
+    Modifiecations   :  ArunKumar K on 28.10.2011, Addition of delay after SendMsg(..)
+	                    to reduce bus overload.
 ******************************************************************************/
 UINT CTxMsgManager::s_unSendMsgBlockOnKey(LPVOID pParam )
 {
@@ -857,10 +859,9 @@ UINT CTxMsgManager::s_unSendMsgBlockOnKey(LPVOID pParam )
 
         if( bMsgFound == TRUE )
         {
-            // Search through the list
-            BOOL bStopMsgBlockTx = CTxMsgManager::s_podGetTxMsgManager()->bGetTxStopFlag();
+            // Search through the list            
 	        LPLONG lpPreviousCount = NULL;
-            while(psTxMsgList != NULL  && bStopMsgBlockTx == FALSE)
+            while(psTxMsgList != NULL  && CTxMsgManager::s_podGetTxMsgManager()->bGetTxStopFlag() == FALSE)
             {
                 // Get the first enabled message
                 // This block will select next available enabled message
@@ -913,7 +914,8 @@ UINT CTxMsgManager::s_unSendMsgBlockOnKey(LPVOID pParam )
 //                    EnterCriticalSection(&psTxMsg->m_sMsgBlocksCriticalSection);
                     WaitForSingleObject(psTxMsg->m_hSemaphore, INFINITE);
                     int nRet = g_pouDIL_CAN_Interface->DILC_SendMsg(g_dwClientID, 
-						                        psTxMsgList->m_sTxMsgDetails.m_sTxMsg);
+						                        psTxMsgList->m_sTxMsgDetails.m_sTxMsg);					
+						Sleep(psTxMsg->m_unTimeInterval);
                     if (nRet != S_OK)
                     {
                         //::PostMessage(GUI_hDisplayWindow, WM_ERROR, 
