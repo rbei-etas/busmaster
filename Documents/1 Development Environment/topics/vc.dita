@@ -25,6 +25,19 @@
     </section>
     <section>
       <title>Configuration</title>
+      <p>All changes described below to the WinDDK installation are also provided in the following patch file: <xref scope="external" href="https://github.com/rbei-etas/busmaster/tree/master/Documents/1%20Development%20Environment/files/WinDDK_7600.16385.1_patch.diff">WinDDK_7600.16385.1_patch.diff</xref>. </p>
+      <p>Make the changes in following 3 files listed below in <filepath>C:\WinDDK\7600.16385.1\inc\atl71</filepath> folder:</p>
+      <ul>
+        <li>
+          <p><filepath>Atlchecked.h</filepath>: Add the following definition in this file which is missing: <codeblock>#define AFX_CRT_ERRORCHECK(expr) AtlCrtErrorCheck(expr)</codeblock></p>
+        </li>
+        <li>
+          <p><filepath>Atlexcept.h</filepath>: Replace <apiname>AfxThrowOleException(HRESULT)</apiname> with <apiname>AtlThrow(hr)</apiname> as it is not supported.</p>
+        </li>
+        <li>
+          <p><filepath>Cstringt.h</filepath>: Substancial parts of the file must be replaced to eliminate errors which creep in while using <apiname>CString</apiname>.</p>
+        </li>
+      </ul>
       <p>Make the changes in following 5 files listed below in <filepath>C:\WinDDK\7600.16385.1\inc\mfc42</filepath> folder:</p>
       <ul>
         <li>
@@ -38,18 +51,6 @@
         </li>
         <li><filepath>Atlconv.h</filepath>: Substitute the references to the folder <filepath>atl30</filepath> with <filepath>atl71</filepath>.</li>
         <li><filepath>Atldef.h</filepath>: Substitute the references to the folder <filepath>atl30</filepath> with <filepath>atl71</filepath>.</li>
-      </ul>
-      <p>Make the changes in following 3 files listed below in <filepath>C:\WinDDK\7600.16385.1\inc\atl71</filepath> folder:</p>
-      <ul>
-        <li>
-          <p><filepath>Atlexcept.h</filepath>: Replace <apiname>AfxThrowOleException(HRESULT)</apiname> with <apiname>AtlThrow(hr)</apiname> as it is not supported.</p>
-        </li>
-        <li>
-          <p><filepath>Atlchecked.h</filepath>: Add the following definition in this file which is missing: <codeblock>#define AFX_CRT_ERRORCHECK(expr) AtlCrtErrorCheck(expr)</codeblock></p>
-        </li>
-        <li>
-          <p><filepath>Cstringt.h</filepath>: Completely replace this file with the file below. This is done to eliminate errors which creep in while using <apiname>CString</apiname>.</p>
-        </li>
       </ul>
       <p>A couple of directory paths are need to be added to the project configuration, to instruct Visual C++ where the MFC related files are found. This can be done by selecting the <uicontrol>Options...</uicontrol> menu item occurring under the <uicontrol>Tools</uicontrol> menu, like shown in the image below:</p>
       <image href="../images/vc_options.png" placement="break"/>
