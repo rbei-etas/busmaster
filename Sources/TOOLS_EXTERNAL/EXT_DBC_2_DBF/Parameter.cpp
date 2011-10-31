@@ -273,7 +273,7 @@ int CParameters::Format(char *pcLine)
     pcToken = strtok(NULL," "); 
     while(*pcToken==' ')
         *pcToken++;
-    while(*pcToken && *pcToken != ' ')
+    while(*pcToken && *pcToken != ' ' && *pcToken != ';')
     {
         *pcTemp++ = *pcToken++; // copy PARAM_TYPE only, i.e. till first 'space'
     }
