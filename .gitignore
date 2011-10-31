@@ -23,8 +23,15 @@ Sources/Application/Release
 Sources/BusEmulation/Release
 Sources/CAN_ETAS_BOA/Release
 Sources/CAN_ICS_neoVI/Release
+Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/canevt.h
+Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/canlib.h
+Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/canstat.h
+Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/poppack.h
+Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/predef.h
+Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/pshpack1.h
 Sources/CAN_Kvaser_CAN/Release
 Sources/CAN_STUB/Release
+Sources/CAN_Vector_XL/EXTERNAL_INCLUDE/vxlapi.h
 Sources/CAN_Vector_XL/Release
 Sources/CommonClass/Release
 Sources/ConfigDialogsDIL/Release
