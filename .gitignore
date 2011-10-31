@@ -4,6 +4,7 @@
 
 # Visual Studio intermediate files
 *.aps
+*.APS
 *.ncb
 *.sln.cache
 *.suo
@@ -83,6 +84,7 @@ Sources/BIN/*/CAN_ICS_neoVI.dll
 Sources/BIN/*/CAN_Kvaser_CAN.dll
 Sources/BIN/*/CAN_STUB.dll
 Sources/BIN/*/CAN_Vector_XL.dll
+Sources/BIN/*/Changelog.txt
 Sources/BIN/*/ConfigDialogsDIL.dll
 Sources/BIN/*/DIL_Interface.dll
 Sources/BIN/*/Filter.dll
