@@ -50,6 +50,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="."
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -548,6 +549,10 @@
 			</File>
 			<File
 				RelativePath="SymbolTable.h"
+				>
+			</File>
+			<File
+				RelativePath=".\unistd.h"
 				>
 			</File>
 			<File
