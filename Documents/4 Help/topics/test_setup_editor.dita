@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="test_setup_editor" xml:lang="en-us">
+  <title>Test Setup Editor</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Test Automation</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>Test setup Editor is useful to create and edit a test setup file. Here is the list of different services rendered by the editor.</p>
+    <section>
+      <title>Features provided by test setup editor</title>
+      <ul>
+        <li>Create a new test setup file</li>
+        <li>Save a test setup file</li>
+        <li>Load an existing test setup file</li>
+        <li>Create, edit and update a test case</li>
+        <li>Define a test case by adding its sub nodes like send, wait, verify, and replay</li>
+        <li>Reposition a test case</li>
+        <li>Delete a test case</li>
+        <li>Create, edit, and update a new test case node</li>
+        <li>Adding, deleting a send message to send node</li>
+        <li>Initialization of a send message node</li>
+        <li>Adding and deleting a verify message node to verify node</li>
+        <li>Create a validation procedure for each signal in the verify message</li>
+        <li>Create a wait node</li>
+        <li>Repositioning a test case sub node</li>
+        <li>Copy, cut, paste operation on Test case and its sub nodes</li>
+        <li>Validate the test setup file</li>
+      </ul>
+    </section>
+    <section>
+      <title>Invoking Test setup editor</title>
+      <p>To open the test setup editor, In BUSMASTER click on menu Item <menucascade>
+          <uicontrol>Functions</uicontrol>
+          <uicontrol>Test Automation</uicontrol>
+          <uicontrol>Editor</uicontrol>
+        </menucascade>.</p>
+      <p>The first look of Automation Editor will be as shown in the figure below. To make things easier the BUSMASTER Menu will be replaced with the Test Automation Editor.</p>
+      <image href="../images/TestSuiteEditor.bmp" placement="break"/>
+      <p><uicontrol>Master Pane</uicontrol>: The master pane or right pane can be used to add or update the test cases.</p>
+      <p><uicontrol>Property Pane</uicontrol>: The user can use the Property pane or Left pane to update the details of a Test case or its sub nodes.</p>
+      <ul>
+        <li>It contains a table with two columns <uicontrol>Category</uicontrol> and <uicontrol>Value</uicontrol>. The value in <uicontrol>Category</uicontrol> field can not be changed and it’s like a question. To update the value in any row of <uicontrol>Value</uicontrol> column double click on the cell item. An edit box or a list control will appear according to the context.</li>
+        <li>Also the pane contains two buttons <uicontrol>Confirm</uicontrol> and <uicontrol>Cancel</uicontrol>. The <uicontrol>Confirm</uicontrol> button can be used to save the current changes made to the node. Note that these changes will not be saved to file. For saving into a file select <menucascade>
+            <uicontrol>File</uicontrol>
+            <uicontrol>Save</uicontrol>
+          </menucascade> (see following section for menus). The <uicontrol>Cancel</uicontrol> button Will cancel all the changes made and display the previously saved data.</li>
+      </ul>
+      <p><uicontrol>Help Window</uicontrol>: The help window will provide help on every node. Click on any item on right pane to get the details of that node.</p>
+    </section>
+    <section>
+      <title>Test Setup Editor Menu</title>
+      <p>The functionalities, provided by the Test Setup editor, are grouped under the Test setup editor Menu. This Menu will be shown in BUSMASTER when the editor is in active mode or user clicked on the Editor.</p>
+      <p><menucascade>
+          <uicontrol>File</uicontrol>
+        </menucascade>: The <uicontrol>File</uicontrol> menu contains all most all the functionalities provided by the editor. It contains the following sub menus.</p>
+      <ul>
+        <li><menucascade>
+            <uicontrol>File</uicontrol>
+            <uicontrol>New</uicontrol>
+          </menucascade>: Use to create a new test setup file. <uicontrol>Ctrl + N</uicontrol> is the keyboard short cut.</li>
+        <li><menucascade>
+            <uicontrol>File</uicontrol>
+            <uicontrol>Open</uicontrol>
+          </menucascade>: Use to Open an existing test setup file. <uicontrol>Ctrl + O</uicontrol> is the keyboard short cut.</li>
+        <li><menucascade>
+            <uicontrol>File</uicontrol>
+            <uicontrol>Close</uicontrol>
+          </menucascade>: Closes the current file.</li>
+        <li><menucascade>
+            <uicontrol>File</uicontrol>
+            <uicontrol>Save</uicontrol>
+          </menucascade>: Saves the current changes to the file. <uicontrol>Ctrl + S</uicontrol> is the keyboard short cut.</li>
+        <li><menucascade>
+            <uicontrol>File</uicontrol>
+            <uicontrol>SaveAs</uicontrol>
+          </menucascade>: Saves the current data into another file.</li>
+        <li><menucascade>
+            <uicontrol>File</uicontrol>
+            <uicontrol>Validate</uicontrol>
+          </menucascade>: Validates the current file according to the table under Test Setup File.</li>
+        <li><menucascade>
+            <uicontrol>File</uicontrol>
+            <uicontrol>Exit</uicontrol>
+          </menucascade>: Closes the editor.</li>
+      </ul>
+      <p><menucascade>
+          <uicontrol>Edit</uicontrol>
+        </menucascade>: The <uicontrol>Edit</uicontrol> menu will provide the operations such as cut, copy, and paste.</p>
+      <ul>
+        <li><menucascade>
+            <uicontrol>Edit</uicontrol>
+            <uicontrol>Copy</uicontrol>
+          </menucascade>: Any item on the right pane can be copied using this menu. <uicontrol>Ctrl + C</uicontrol> is the keyboard short cut.</li>
+        <li><menucascade>
+            <uicontrol>Edit</uicontrol>
+            <uicontrol>Cut</uicontrol>
+          </menucascade>: Using this menu any item on the right pane can be deleted by copying it. <uicontrol>Ctrl + X</uicontrol> is the keyboard short cut.</li>
+        <li><menucascade>
+            <uicontrol>Edit</uicontrol>
+            <uicontrol>Paste</uicontrol>
+          </menucascade>: The copied item can be inserted under any parent item by selecting the parent item and this menu. For example the copied <cmdname>send_message</cmdname> can be inserted in any send node of any test case.</li>
+      </ul>
+      <p><menucascade>
+          <uicontrol>Display</uicontrol>
+        </menucascade>: The <uicontrol>Display</uicontrol> menu is used to customize the GUI.</p>
+      <p><menucascade>
+          <uicontrol>Help</uicontrol>
+        </menucascade>: The <uicontrol>Help</uicontrol> menu provide the version details about the editor and also opens this help file.</p>
+    </section>
+    <section>
+      <title>Using Editor</title>
+      <ul>
+        <li>Creating a new test setup file: Select <menucascade>
+            <uicontrol>File</uicontrol>
+            <uicontrol>New</uicontrol>
+          </menucascade> menu. A file browser will be displayed. Select a required folder and enter the file name. Click on <uicontrol>OK</uicontrol>. The editor will create a new test setup file and a new test setup with some initial values.</li>
+        <li>Updating test setup: Initially the name of test setup will be <uicontrol>&lt;New Test SetUp&gt;</uicontrol> displayed in right pane. Click on this item (test setup node) and update its details such as test setup name, description, version, bus type, module name, engineer info, report file path and database in left pane. The database path is very important.</li>
+        <li>Creating a test case: Right click on the test setup node on right pane. A pop up menu will appear click on <uicontrol>New Test Case</uicontrol>. A new test case with Initial name <uicontrol>Untitled TestCase</uicontrol> will be created.</li>
+        <li>Updating a test case: Click on required test case node. The left pane will show the details of test case and you can edit the details and click <uicontrol>Confirm</uicontrol> button.</li>
+        <li>Deleting a test case: Right click on required test case node. A pop up menu will displayed. Click on <uicontrol>Delete</uicontrol> item. The test case will be deleted from the test setup.</li>
+        <li>Adding a new test sequence: Right click on required test case node. A pop up menu will be displayed. Click on <uicontrol>New</uicontrol> menu and select the required node.</li>
+        <li>Updating a test sequence: Click on any test sequence item. And edit its detail in left pane and click on <uicontrol>Confirm</uicontrol> button.</li>
+        <li>Deleting a test sequence: Right click on any test sequence item. A pop up menu will appear. Click on <uicontrol>Delete</uicontrol> item to delete the node.</li>
+        <li>Adding a message: To add the messages in send, verify etc nodes, Click on the required send node. Double click on the <uicontrol>[Add message]</uicontrol> cell on right side. If a database is added in the Test setup node, A list box containing the messages will appear. Select a message to add in list. After adding a new row with <uicontrol>[Add Message]</uicontrol> will be added in list box in order to add another message.</li>
+        <li>Delete a message: To delete a message double click on that message. Select <uicontrol>[Delete Message]</uicontrol> in list in order to delete the message.</li>
+      </ul>
+    </section>
+  </body>
+</topic>

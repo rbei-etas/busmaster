@@ -40,7 +40,11 @@
   <topicref href="topics/message_window.dita" type="topic"/>
   <topicref href="topics/signal_watch.dita" type="topic"/>
   <topicref href="topics/trace_window.dita" type="topic"/>
-  <topicref href="topics/test_automation.dita" type="topic"/>
+  <topicref href="topics/test_automation.dita" type="topic">
+    <topicref type="topic" href="topics/test_setup_file.dita"/>
+    <topicref type="topic" href="topics/test_setup_editor.dita"/>
+    <topicref type="topic" href="topics/test_suite_executor.dita"/>
+  </topicref>
   <topicref href="topics/reset_controller.dita" type="topic"/>
   <topicref href="topics/network_statistics.dita" type="topic"/>
   <topicref href="topics/configuration_file.dita" type="topic"/>

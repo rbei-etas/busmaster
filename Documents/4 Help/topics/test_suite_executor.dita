@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="test_suite_executor" xml:lang="en-us">
+  <title>Test Suite Executor</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Test Automation</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>Test suite executor is used to execute one or more test setup files sequentially. The result of execution will be logged into the result file specified in test setup file. The collection of test setup files are called test suite. Here is the list of different services rendered by the editor.</p>
+    <section>
+      <title>Features provided by test suite Executor</title>
+      <ul>
+        <li>Adding a test setup files</li>
+        <li>Delete a test setup file from the execution</li>
+        <li>Select/Deselect a test setup file for execution</li>
+        <li>Select/Deselect a test case for execution</li>
+        <li>Execute the test suite</li>
+      </ul>
+    </section>
+    <section>
+      <title>Invoking Test suite Executor</title>
+      <p>To open the test suite editor, in BUSMASTER click on menu Item <menucascade>
+          <uicontrol>Functions</uicontrol>
+          <uicontrol>Test Automation</uicontrol>
+          <uicontrol>Executor</uicontrol>
+        </menucascade>.</p>
+      <p>The first look of test suite is shown in the following figure:</p>
+      <image href="../images/TestSuiteExecutor.bmp" placement="break"/>
+      <p><uicontrol>Master pane</uicontrol>: Using this pane we can add test setup files and select and deselect a test case. All the functionalities described in the following section can be performed using this pane.</p>
+      <p><uicontrol>Result pane</uicontrol>: The <uicontrol>Result pane</uicontrol> will display the current execution status of the test suite.</p>
+    </section>
+    <section>
+      <title>Using Executor</title>
+      <p><ul>
+          <li>Naming a test suite: Double click on the top most tree node (test suite node) on master pane. A edit box will appear, give a suitable name and press <uicontrol>enter</uicontrol>.</li>
+          <li>Adding a test Suite: Right click on the test suite node. A pop up menu will displayed. Click on <uicontrol>Add</uicontrol> Menu. A file browser will appear where you can select a test setup file. If the file is correct one the executor will add it in test suite and displays all its test cases.</li>
+          <li>Select/Deselect a test suite: To select or deselect test setup for execution click on the check box located near the test setup file.</li>
+          <li>Delete a test setup file: Right click on the required test setup file and select <uicontrol>Delete</uicontrol> in the pop up menu.</li>
+          <li>Select/Deselect a test case: Click on the check box of particular test case to enable or disable it for execution. Note that if the test setup is deselected from the execution then all its test cases are nor executed.</li>
+          <li>Execute test suite: Right click on the test suite node and select <uicontrol>Execute</uicontrol> in the pop up menu. Each selected test case is executed and the summary will be displayed in <uicontrol>Result</uicontrol> view.</li>
+        </ul></p>
+    </section>
+  </body>
+</topic>

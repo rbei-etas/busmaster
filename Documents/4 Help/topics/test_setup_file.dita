@@ -1,0 +1,204 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="test_setup_file" xml:lang="en-us">
+  <title>Test Setup File</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Test Automation</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section>
+      <title>Description</title>
+      <p>A test setup is a XML file which contains the instruction set of the various test cases. The contents test setup file can be divided as follows:</p>
+      <p><ul>
+          <li>Test setup := &lt;Header&gt; + &lt;Test case list&gt;</li>
+          <li>Test case list := {test case 1, test case 2, ..., test case N}, where N &gt;= 1</li>
+          <li>Test case := {test step 1, test step 2, ..., test step N}, N &gt;= 2</li>
+          <li>Test step := transmission / wait / replay / verification operation</li>
+        </ul></p>
+    </section>
+    <section>
+      <title>Explanation</title>
+      <ul>
+        <li>Test Setup: Test setup file contains two sections Header and Test Case List</li>
+        <li>Header: Header contains the basic information regarding to the test setup file, like versions, report file path, database file path, ECU name, tester information etc. User has to provide the information. Some values are optional and some are compulsory. Database path is a compulsory value. Check the table below for the required and optional fields.</li>
+        <li>Test Case List: Test Case List contains a collection of test cases. User has to create the test cases.</li>
+        <li>Test case: A test case is the collection of test steps such as send, wait, replay, verify.</li>
+        <li>Send: This is a collection of send_messages. This test step instructs to send the specified messages.</li>
+        <li>Send Message: This provides the details of message to be send. User has to initialize the messages and its signals. The default value assumed to the signals is 0. The message value my be given in engineering value mode or in raw value mode.</li>
+        <li>Wait: Wait node instruct to wait certain period of time, expressed in terms of milliseconds.</li>
+        <li>Replay: Replay node instructs to replay BUSMASTER log file.</li>
+        <li>Verify: This is a collection of verify_messages. This test step instructs to verify the specified messages (both Rx and Tx).</li>
+        <li>Verify Response: This test step verifies the specified message responses (Rx Messages) with in specified time. So this step requires a time interval.</li>
+        <li>Verify Message: This provides the details of message to be verify. The user needs to formulate the validation condition. In the formula current signal value shall be denoted by &apos;x&apos; following the algebraic notation. The presently supported logical operators are the eight: ==, &gt;, &lt;, &gt;=, &lt;=,!= , ||, and &amp;&amp;. By combining them suitably the following validation operations may be carried out:<ul>
+            <li>Range of values; e.g., (x &lt;= 10) &amp;&amp; (x &gt;= 50)</li>
+            <li>Set of discrete values; e.g., (x == 10) || (x == 20) || (x == 50)</li>
+            <li>Formulation of any other validation procedure.</li>
+          </ul></li>
+      </ul>
+    </section>
+    <p>Here is a sample test file: <xref href="https://github.com/rbei-etas/busmaster/tree/master/Documents/4%20Help/files/SampleTestSetupFile.xml" scope="external">SampleTestSetupFile.xml</xref>.</p>
+    <p>The table below contains a concise description of each of the section details and error handling procedure in case of absence of any information.</p>
+    <table>
+      <tgroup cols="4">
+        <thead>
+          <row>
+            <entry>Section (tag)</entry>
+            <entry>Description</entry>
+            <entry>Assumed value if absent</entry>
+            <entry>Error condition if absent</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>Test setup (<cmdname>testsetup</cmdname>)</entry>
+            <entry>The root node. Accompanied by its title (title) and version information (version)</entry>
+            <entry>-</entry>
+            <entry>Fatal</entry>
+          </row>
+          <row>
+            <entry>Database file (<cmdname>database</cmdname>)</entry>
+            <entry>Database file</entry>
+            <entry/>
+            <entry>Fatal</entry>
+          </row>
+          <row>
+            <entry>Version (<cmdname>version</cmdname>)</entry>
+            <entry>Version information of the test setup</entry>
+            <entry>1.0</entry>
+            <entry>No error</entry>
+          </row>
+          <row>
+            <entry>Module Name (<cmdname>module name</cmdname>)</entry>
+            <entry>Module focused on for the testing</entry>
+            <entry>-</entry>
+            <entry>No error</entry>
+          </row>
+          <row>
+            <entry>Engineer’s name</entry>
+            <entry>Test engineer’s name</entry>
+            <entry>-</entry>
+            <entry>No error</entry>
+          </row>
+          <row>
+            <entry>Engineer’s role</entry>
+            <entry>And role / designation</entry>
+            <entry>-</entry>
+            <entry>No error</entry>
+          </row>
+          <row>
+            <entry>Report file path (<cmdname>path</cmdname>)</entry>
+            <entry>Particular of the report file to be generated.</entry>
+            <entry>Current working directory with the name same as the test setup.</entry>
+            <entry>Error</entry>
+          </row>
+          <row>
+            <entry>Report file format (<cmdname>format</cmdname>)</entry>
+            <entry>Format of the report file. Can be one of TXT and HTM</entry>
+            <entry>TXT</entry>
+            <entry>Warning</entry>
+          </row>
+          <row>
+            <entry>Report file time mode (<cmdname>timemode</cmdname>)</entry>
+            <entry>Time mode. Can be one of SYS (system), REL (relative) and ABS (absolute)</entry>
+            <entry>SYS</entry>
+            <entry>Warning</entry>
+          </row>
+          <row>
+            <entry>Bus type (<cmdname>bustype</cmdname>)</entry>
+            <entry>Bus type. At present can be only CAN</entry>
+            <entry>CAN</entry>
+            <entry>Fatal</entry>
+          </row>
+          <row>
+            <entry>Test case list (<cmdname>list_of_test_cases</cmdname>)</entry>
+            <entry>Collection of test cases.</entry>
+            <entry>Nil</entry>
+            <entry>Error. There must be at least one entry.</entry>
+          </row>
+          <row>
+            <entry>Test case (<cmdname>testcase</cmdname>)</entry>
+            <entry>Collection of test steps. A test case contains identifier, title and exception handler. The last one instructs if in case of failure to continue or exit.</entry>
+            <entry>Nil</entry>
+            <entry>Error. There must be at least an entry.</entry>
+          </row>
+          <row>
+            <entry>Test case title (<cmdname>title</cmdname>)</entry>
+            <entry>Test case title</entry>
+            <entry>-</entry>
+            <entry>No error</entry>
+          </row>
+          <row>
+            <entry>Test case exception handler (<cmdname>exp_handler</cmdname>)</entry>
+            <entry>Instructs if in case of failure the testing process exists or continues. Can be one of continue or exit</entry>
+            <entry>continue</entry>
+            <entry>Warning</entry>
+          </row>
+          <row>
+            <entry>Transmission (<cmdname>send</cmdname>)</entry>
+            <entry>Collection of the messages to be transmitted.</entry>
+            <entry>-</entry>
+            <entry>No error</entry>
+          </row>
+          <row>
+            <entry>Transmittion message details (<cmdname>send_message</cmdname>)</entry>
+            <entry>Details of the message list to be transmitted.</entry>
+            <entry>Nil</entry>
+            <entry>Warning</entry>
+          </row>
+          <row>
+            <entry>Send message id (<cmdname>identifier</cmdname>)</entry>
+            <entry>Identifier of the message.</entry>
+            <entry>-</entry>
+            <entry>Error. The test case shall be dropped.</entry>
+          </row>
+          <row>
+            <entry>Send message unit (<cmdname>unit</cmdname>)</entry>
+            <entry>Unit type of the signals. Can be either raw (raw) or engineering (eng)</entry>
+            <entry>Engineering value</entry>
+            <entry>Warning</entry>
+          </row>
+          <row>
+            <entry>Signal (<cmdname>signal</cmdname>)</entry>
+            <entry>Details the signal with its name (name) and value.</entry>
+            <entry>-</entry>
+            <entry>Error. The test case shall be dropped.</entry>
+          </row>
+          <row>
+            <entry>Verification (<cmdname>verify</cmdname>)</entry>
+            <entry>Verification instruction set. Contains a collection of verification messages.</entry>
+            <entry>Nil</entry>
+            <entry>Error. A test case must have a validation routine. Test case shall be dropped.</entry>
+          </row>
+          <row>
+            <entry>Failure classification (<cmdname>failure</cmdname>)</entry>
+            <entry>For a verification procedure – how to classify validation failure. Can be one of warning, error, fatal</entry>
+            <entry>Error</entry>
+            <entry>Warning.</entry>
+          </row>
+          <row>
+            <entry>Verify message details (<cmdname>verify_message</cmdname>)</entry>
+            <entry>Details of the message list to be verified / validated.</entry>
+            <entry>Nil</entry>
+            <entry>Error. The test case shall be dropped.</entry>
+          </row>
+          <row>
+            <entry>Verify message signal detail (<cmdname>signal</cmdname>)</entry>
+            <entry>Details of a signal under a verify message node. The attribute required is the signal’s name (name). The node value shall be a string with formulation of the condition. This shall follow the syntax mentioned in the table below.</entry>
+            <entry>Nil</entry>
+            <entry>Error. The test case shall be dropped.</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <p>So, As explained above the test setup file has to write in XML format. So user has to know the syntax of XML and the test set up file. But To simplify this process BUSMASTER provides an editor called Test Setup Editor.</p>
+  </body>
+</topic>
