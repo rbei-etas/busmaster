@@ -1,1 +1,0 @@
-Make sure there is a Database File stored at following location: d:\BUSMASTER\ConfigFiles\PQ35_46_ACAN_V5_7_6_E_20091013_MH.dbf
