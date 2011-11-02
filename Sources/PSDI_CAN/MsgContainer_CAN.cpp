@@ -265,8 +265,8 @@ void CMsgContainerCAN::vProcessNewData(STCANDATA& sCanData)
         // If its the very first entry, the time stamp must
         if (m_sCANReadDataSpl.m_lTickCount.QuadPart != 0) // be 0 and will
         {                                                     // retain such value.
-            m_sCANReadDataSpl.m_nDeltime = sCanData.m_lTickCount.QuadPart - 
-                                           m_sCANReadDataSpl.m_lTickCount.QuadPart;
+            m_sCANReadDataSpl.m_nDeltime = _abs64(sCanData.m_lTickCount.QuadPart - 
+                                           m_sCANReadDataSpl.m_lTickCount.QuadPart);
         }
         
         STCANDATA *pStcan = &m_sCANReadDataSpl;
@@ -288,8 +288,8 @@ void CMsgContainerCAN::vProcessNewData(STCANDATA& sCanData)
         // If its the very first entry, the time stamp must
         if (m_sCANReadDataSpl.m_lTickCount.QuadPart != 0) // be 0 and will
         {                                                     // retain such value.
-            m_sCANReadDataSpl.m_nDeltime = sCanData.m_lTickCount.QuadPart - 
-                                           m_sCANReadDataSpl.m_lTickCount.QuadPart;
+            m_sCANReadDataSpl.m_nDeltime = _abs64(sCanData.m_lTickCount.QuadPart - 
+                                           m_sCANReadDataSpl.m_lTickCount.QuadPart);
         }
         STCANDATA *pStcan = &m_sCANReadDataSpl;
         *pStcan = sCanData;

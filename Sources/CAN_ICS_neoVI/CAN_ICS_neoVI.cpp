@@ -180,6 +180,7 @@ static UINT64 sg_TimeStamp = 0;
  * Query Tick Count
  */
 static LARGE_INTEGER sg_QueryTickCount;
+static LARGE_INTEGER sg_lnFrequency;
 static HWND sg_hOwnerWnd = NULL;
 
 //static CBaseCANBufFSE* sg_pCanBufObj[MAX_BUFF_ALLOWED];
@@ -355,7 +356,6 @@ typedef int (__stdcall *GETHWLICENSE)(int hObject, int *pnHardwareLic);
 static GETHWLICENSE icsneoGetHardwareLicense;
 typedef int (__stdcall *GETHWFIRMWAREINFO)(int hObject, stAPIFirmwareInfo *pInfo);
 static GETHWFIRMWAREINFO icsneoGetHWFirmwareInfo;
-
 
 /* icsneo40.dll Error Functions */
 typedef int (__stdcall *GETLASTAPIERROR)(int hObject, unsigned long *pErrorNumber);
@@ -600,14 +600,23 @@ static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir)
 /**
  * Function to create time mode mapping
  */
-static void vCreateTimeModeMapping(HANDLE hDataEvent)
-{
-    WaitForSingleObject(hDataEvent, INFINITE);
+static void vCreateTimeModeMapping()
+{    
     //MessageBox(0, L"TIME", L"", 0);
     GetLocalTime(&sg_CurrSysTime);
     //Query Tick Count
-    QueryPerformanceCounter(&sg_QueryTickCount);
-
+    QueryPerformanceCounter(&sg_QueryTickCount);	
+	// Get frequency of the performance counter
+    QueryPerformanceFrequency(&sg_lnFrequency);
+    // Convert it to time stamp with the granularity of hundreds of microsecond
+    if (sg_QueryTickCount.QuadPart * 10000 > sg_QueryTickCount.QuadPart)
+    {
+        sg_TimeStamp = (sg_QueryTickCount.QuadPart * 10000) / sg_lnFrequency.QuadPart;
+    }
+    else
+    {
+        sg_TimeStamp = (sg_QueryTickCount.QuadPart / sg_lnFrequency.QuadPart) * 10000;
+    }	
 }
 
 
@@ -935,8 +944,7 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
 
     // END
 
-    int nLimForAppBuf = nMessage;//MIN(nMessage, s_Messages);
-    double dCurrTimeStamp;
+    int nLimForAppBuf = nMessage;//MIN(nMessage, s_Messages);    
 	bool bChannelCnfgrd = false;
     for (/*int i = 0*/; (i < nLimForAppBuf) && (s_CurrIndex < s_Messages); )
     {
@@ -948,12 +956,8 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
 		{
 			bChannelCnfgrd = true; // Set channel configured flag to true.
 			sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel = (UCHAR)(m_anhObject[nChannelIndex][CurrSpyMsg.NetworkID+1]  );
-        	nReturn = (*icsneoGetTimeStampForMsg)(m_anhObject[nChannelIndex][0], &CurrSpyMsg, &dCurrTimeStamp);
-        	/*sCanData.m_lTickCount.QuadPart = (CurrSpyMsg.TimeHardware2 * 655.36
-             	                           + CurrSpyMsg.TimeHardware * 0.01);*/
-        	sCanData.m_lTickCount.QuadPart = (LONGLONG)(dCurrTimeStamp * 10000);
-        	sg_TimeStamp = sCanData.m_lTickCount.QuadPart =
-                           (sCanData.m_lTickCount.QuadPart - QuadPartRef);
+
+			sCanData.m_lTickCount.QuadPart = (LONGLONG)(CurrSpyMsg.TimeSystem * 10);	
 
         	bClassifyMsgType(CurrSpyMsg, sCanData, sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel);
 
@@ -1216,7 +1220,7 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_ICS_neoVI(LPVOID pVoid)
                         {
                             sg_byCurrState = CREATE_MAP_TIMESTAMP;
                             SetEvent(pThreadParam->m_hActionEvent);
-                            vCreateTimeModeMapping(pThreadParam->m_hActionEvent);
+                            //vCreateTimeModeMapping(pThreadParam->m_hActionEvent);
                             ProcessCANMsg(i);
                             pThreadParam->m_unActionCode = INVOKE_FUNCTION;
                         }
@@ -1785,6 +1789,7 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
                     //Only at the last it has to be called
                     nSetBaudRate();
 					vMapDeviceChannelIndex();
+					vCreateTimeModeMapping();
                     sg_bIsConnected = bConnect;
                     s_DatIndThread.m_bIsConnected = sg_bIsConnected;					
                 }
@@ -1962,7 +1967,7 @@ HRESULT GetICS_neoVI_APIFuncPtrs(void)
         if (NULL == icsneoGetHWFirmwareInfo)
         {
             unResult = unResult | (1<<17);
-        }				
+        }		
         //check for error
         if (unResult != 0)
         {
@@ -2582,7 +2587,7 @@ static int nWriteMessage(STCAN_MSG sMessage)
         {
             SpyMsg.StatusBitField |= SPY_STATUS_XTD_FRAME;
         }
-        memcpy(SpyMsg.Data, sMessage.m_ucData, sMessage.m_ucDataLen);
+        memcpy(SpyMsg.Data, sMessage.m_ucData, sMessage.m_ucDataLen);		
 		if ((*icsneoTxMessages)(m_anhWriteObject[(int)(sMessage.m_ucChannel) - 1], &SpyMsg, 
 							  m_bytNetworkIDs[(int)(sMessage.m_ucChannel) - 1], 1) != 0)
         {
