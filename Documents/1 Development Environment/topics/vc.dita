@@ -51,10 +51,20 @@
         <li><filepath>Atlconv.h</filepath>: Substitute the references to the folder <filepath>atl30</filepath> with <filepath>atl71</filepath>.</li>
         <li><filepath>Atldef.h</filepath>: Substitute the references to the folder <filepath>atl30</filepath> with <filepath>atl71</filepath>.</li>
       </ul>
-      <p>All changes described above are provided in the following patch file: <xref href="https://github.com/rbei-etas/busmaster/tree/master/Documents/1%20Development%20Environment/files/WinDDK_7600.16385.1_patch.diff" scope="external">WinDDK_7600.16385.1_patch.diff</xref>. To run the patch file on the WinDDK installation (assuming it is installed in the default installation folder <filepath>C:\WinDDK</filepath>), copy the file to <filepath>C:\</filepath>, open <cmdname>Git Bash</cmdname> and type the following commands:</p>
-      <screen>cd c:/
-patch -p1 &lt; WinDDK_7600.16385.1_patch.diff</screen>
-      <p>A couple of directory paths are need to be added to the project configuration, to instruct Visual C++ where the MFC related files are found. This can be done by selecting the <uicontrol>Options...</uicontrol> menu item occurring under the <uicontrol>Tools</uicontrol> menu, like shown in the image below:</p>
+      <p>All changes described above are provided in a form of a patch file and  two scripts, one for patching and one for reverting the patch. These files are located at:</p>
+      <ul>
+        <li>
+          <filepath>Documents/1 Development Environment/files/WinDDK_7600.16385.1.diff</filepath>
+        </li>
+        <li>
+          <filepath>Documents/1 Development Environment/files/WinDDK_7600.16385.1_patch.bat</filepath>
+        </li>
+        <li>
+          <filepath>Documents/1 Development Environment/files/WinDDK_7600.16385.1_unpatch.bat</filepath>
+        </li>
+      </ul>
+      <p>The patch scripts assume that you have installed WinDDK in the standard installation folder <filepath>C:\WinDDK</filepath> and that you have installed Git in the standard installation folder <filepath>C:\Program Files\Git</filepath>. If any of these paths differ you need to modify the scripts before using them.</p>
+      <p>A couple of directory paths from WinDDK are need to be added to the project configuration, to instruct Visual C++ where the MFC related files are found. This can be done by selecting the <uicontrol>Options...</uicontrol> menu item occurring under the <uicontrol>Tools</uicontrol> menu, like shown in the image below:</p>
       <image href="../images/vc_options.png" placement="break"/>
       <p>Clicking the menu item <uicontrol>Options...</uicontrol> will result in the following dialog box:</p>
       <image href="../images/vc_include_files.png" placement="break"/>
