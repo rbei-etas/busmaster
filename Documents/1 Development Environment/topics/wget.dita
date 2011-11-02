@@ -24,19 +24,31 @@
     </section>
     <section>
       <title>Configuration</title>
-      <p>Wget must be adjusted to pass the firewall/proxy. This is necessary in any <filepath>download.bat</filepath> script, currently in:</p>
+      <p>Wget must be adjusted to pass the firewall/proxy. This is necessary in any of the download scripts, which are currently located at:</p>
       <p><ul>
           <li>
-            <filepath>Sources\CAN_Kvaser_CAN\EXTERNAL_INCLUDE</filepath>
+            <filepath>Sources\CAN_ICS_neoVI\EXTERNAL_INCLUDE\download_api.bat</filepath>
           </li>
           <li>
-            <filepath>Sources\CAN_Vector_XL\EXTERNAL_INCLUDE</filepath>
+            <filepath>Sources\CAN_ICS_neoVI\EXTERNAL_INCLUDE\download_driver.bat</filepath>
+          </li>
+          <li>
+            <filepath>Sources\CAN_Kvaser_CAN\EXTERNAL_INCLUDE\download_api.bat</filepath>
+          </li>
+          <li>
+            <filepath>Sources\CAN_Kvaser_CAN\EXTERNAL_INCLUDE\download_driver.bat</filepath>
+          </li>
+          <li>
+            <filepath>Sources\CAN_Vector_XL\EXTERNAL_INCLUDE\download_api.bat</filepath>
+          </li>
+          <li>
+            <filepath>Sources\CAN_Vector_XL\EXTERNAL_INCLUDE\download_driver.bat</filepath>
           </li>
         </ul></p>
     </section>
     <section>
       <title>Usage</title>
-      <p>Execute each of the <filepath>download.bat</filepath> scripts in the folders mentioned above. The scripts will download, extract, and setup the necessary components and copy the files in the correct <filepath>Sources</filepath> folder in BUSMASTER.</p>
+      <p>Execute each of the download in the folders mentioned above. The scripts will download, extract, and setup the necessary components and copy the files in the correct <filepath>Sources</filepath> folder in BUSMASTER.</p>
     </section>
   </body>
 </topic>
