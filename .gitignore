@@ -23,15 +23,8 @@ Sources/Application/Release
 Sources/BusEmulation/Release
 Sources/CAN_ETAS_BOA/Release
 Sources/CAN_ICS_neoVI/Release
-Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/canevt.h
-Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/canlib.h
-Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/canstat.h
-Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/poppack.h
-Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/predef.h
-Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/pshpack1.h
 Sources/CAN_Kvaser_CAN/Release
 Sources/CAN_STUB/Release
-Sources/CAN_Vector_XL/EXTERNAL_INCLUDE/vxlapi.h
 Sources/CAN_Vector_XL/Release
 Sources/CommonClass/Release
 Sources/ConfigDialogsDIL/Release
@@ -77,7 +70,7 @@ Sources/TXWindow/Debug
 Sources/Utility/Debug
 Sources/TOOLS_EXTERNAL/*/Debug
 
-# Files in BIN
+# Files in BIN (except hardware specific files)
 Sources/BIN/*/*.bmp
 Sources/BIN/*/*.c
 Sources/BIN/*/*.chm
@@ -126,6 +119,30 @@ Sources/BIN/Libs/*/TestSetupEditorGUI.lib
 Sources/BIN/Libs/*/TestSetupEditorLib.lib
 Sources/BIN/Libs/*/TestSuiteExecutorGUI.lib
 Sources/BIN/Libs/*/Utils.lib
+
+# Intrepid neoVI: Download, API (commented as it's in the repository) and driver
+Sources/CAN_ICS_neoVI/EXTERNAL_INCLUDE/vspy3_Free.zip
+Sources/CAN_ICS_neoVI/EXTERNAL_INCLUDE/vspy3_Free.EXE
+#Sources/CAN_ICS_neoVI/EXTERNAL_INCLUDE/icsnVC40.h
+#Sources/CAN_ICS_neoVI/EXTERNAL_INCLUDE/icsneo40_API.h
+#Sources/CAN_ICS_neoVI/EXTERNAL_INCLUDE/icsSpyData.h
+Sources/BIN/Release/icsneo40.dll
+
+# Kvaser CAN: Download, API and driver files
+Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/canlib.exe
+Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/canevt.h
+Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/canlib.h
+Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/canstat.h
+Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/poppack.h
+Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/predef.h
+Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/pshpack1.h
+Sources/BIN/Release/canlib32.dll
+
+# Vector XL: Download, API and driver files
+Sources/CAN_Vector_XL/EXTERNAL_INCLUDE/xl_lib75.zip
+Sources/CAN_Vector_XL/EXTERNAL_INCLUDE/Setup.exe
+Sources/CAN_Vector_XL/EXTERNAL_INCLUDE/vxlapi.h
+Sources/BIN/Release/vxlapi.dll
 
 # Installation Setup
 Installation Setup/BUSMASTER Installer.exe
