@@ -2,9 +2,7 @@
 
 :SETTINGS
 PATH=%PATH;..\..\..\Tools
-set http_proxy=proxy:8080
-set http_user=
-set http_password=
+call ..\..\proxy.bat
 
 :CHECKS
 if exist ..\..\BIN\Release\vxlapi.dll goto END
