@@ -282,10 +282,6 @@ void CCANDBConverterDlg::OnCanoeBrowseBtn()
     {
         SetDlgItemText(IDC_CANOE_EDIT,fileDlg.GetPathName());
     }
-    else // if cancelled, clear the edit box 
-    {
-        SetDlgItemText(IDC_CANOE_EDIT,"");
-    }
 }
 
 /**
@@ -306,16 +302,39 @@ void CCANDBConverterDlg::OnCanmonBrowseBtn()
     // button
     if(fileDlg.DoModal() == IDOK)
     {
-        SetDlgItemText(IDC_CANMON_EDIT,fileDlg.GetPathName());
-        SetDlgItemText(IDC_CANOE_EDIT,"");
+        CString sCanoeFilePath, sCanMonFilePath;
+
+        // set if output file was set automatically
+        int set_to_default = 0;
+        GetDlgItemText(IDC_CANOE_EDIT, sCanoeFilePath);
+        if (sCanoeFilePath == "")
+        {
+            set_to_default = 1;
+        }
+        else
+        {
+            sCanoeFilePath = sCanoeFilePath.Left(sCanoeFilePath.GetLength()-4);
+            GetDlgItemText(IDC_CANMON_EDIT, sCanMonFilePath);
+            sCanMonFilePath = sCanMonFilePath.Left(sCanMonFilePath.GetLength()-4);
+            if (sCanoeFilePath == sCanMonFilePath)
+            {
+                set_to_default = 1;
+            }
+        }
+
+        sCanMonFilePath = fileDlg.GetPathName();
+        SetDlgItemText(IDC_CANMON_EDIT, sCanMonFilePath);
+
+        // set output file automatically to default
+        if (set_to_default == 1)
+        {
+            sCanoeFilePath = sCanMonFilePath.Left(sCanMonFilePath.GetLength()-4);
+            sCanoeFilePath += ".dbc";
+            SetDlgItemText(IDC_CANOE_EDIT, sCanoeFilePath);
+        }
+
         GetDlgItem(IDC_CONVERT_BTN)->EnableWindow(TRUE);
         SetDlgItemText(IDC_RESULT_STATIC,"Ready for conversion");
-    }
-    else // else clear the edit box and disable the convert button
-    {
-        SetDlgItemText(IDC_CANMON_EDIT,"");
-        GetDlgItem(IDC_CONVERT_BTN)->EnableWindow(FALSE);
-        SetDlgItemText(IDC_RESULT_STATIC,"Choose files for conversion");
     }
 }
 
@@ -336,12 +355,12 @@ void CCANDBConverterDlg::OnConvertBtn()
 
     // Get the input path name from the dialog box
     GetDlgItemText(IDC_CANMON_EDIT,sCanMonFilePath);
-    sExtension = sCanMonFilePath.Right(3);
+    sExtension = sCanMonFilePath.Right(4);
     sExtension.MakeLower();
 
     // validate extension, if invalid clear the edit box
     // and disable the convert button
-    if(sExtension != "dbf")
+    if(sExtension != ".dbf")
     {
         AfxMessageBox("Invalid input file");
         SetDlgItemText(IDC_CANMON_EDIT,"");
@@ -351,36 +370,13 @@ void CCANDBConverterDlg::OnConvertBtn()
 
     // Get output file path name
     GetDlgItemText(IDC_CANOE_EDIT,sCanoeFilePath);
+    sExtension = sCanoeFilePath.Right(4);
+    sExtension.MakeLower();
 
-    // if no output file selected, prompt user whether a default file should 
-    // be created
-    if(sCanoeFilePath == "")
+    if(sExtension != ".dbc")
     {
-        if(AfxMessageBox("No output file selected.\nDo you want a default file created?",MB_YESNO) == IDYES)
-        {
-
-            sCanoeFilePath = sCanMonFilePath.Left(sCanMonFilePath.GetLength()-4);
-            sCanoeFilePath += ".dbc";
-            SetDlgItemText(IDC_CANOE_EDIT,sCanoeFilePath);
-        }
-        else
-        {
-            return;
-        }
-    }
-
-    // if non-null path selected for output file
-    // validate extension,if invalid clear the edit box
-    else 
-    {
-        sExtension = sCanoeFilePath.Right(3);
-        sExtension.MakeLower();
-
-        if(sExtension != "dbc")
-        {
-            AfxMessageBox("Invalid ouput file");
-            SetDlgItemText(IDC_CANOE_EDIT,"");
-        }
+        AfxMessageBox("Invalid ouput file");
+        SetDlgItemText(IDC_CANOE_EDIT,"");
     }
 
     // create a converter module and pass the file names to the conversion module
