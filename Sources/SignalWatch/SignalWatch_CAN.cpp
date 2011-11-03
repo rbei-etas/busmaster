@@ -203,6 +203,7 @@ HRESULT CSignalWatch_CAN::SW_GetConfigSize(void)
 HRESULT CSignalWatch_CAN::SW_GetConfigData(void* pbyConfigData)
 {
     WINDOWPLACEMENT WndPlace;
+    UINT nDebugSize  = 0;
     BYTE* pbyTemp = (BYTE*)pbyConfigData;
     if ((m_pouSigWnd != NULL) && (pbyTemp != NULL))
     {   
@@ -210,13 +211,9 @@ HRESULT CSignalWatch_CAN::SW_GetConfigData(void* pbyConfigData)
         COPY_DATA(pbyTemp, &WndPlace, sizeof (WINDOWPLACEMENT));
         for (UINT i = 0; i < defSW_LIST_COLUMN_COUNT; i++)
         {
-            pbyTemp[i] = (BYTE)m_pouSigWnd->m_omSignalList.GetColumnWidth(i);
+            INT nWidth = m_pouSigWnd->m_omSignalList.GetColumnWidth(i);
+            COPY_DATA(pbyTemp, &nWidth, sizeof (INT));
         }
-    }
-    else
-    {
-        WndPlace.length = 0;
-        COPY_DATA(pbyTemp, &WndPlace, sizeof (WINDOWPLACEMENT));
     }
     return S_OK;
 }
@@ -228,11 +225,27 @@ HRESULT CSignalWatch_CAN::SW_SetConfigData(const void* pbyConfigData)
     {        
         WINDOWPLACEMENT WndPlace;
         memcpy(&WndPlace, pbyConfigData, sizeof (WINDOWPLACEMENT));
-        m_pouSigWnd->MoveWindow(&(WndPlace.rcNormalPosition), FALSE);//SetWindowPlacement(&WndPlace);
+        m_pouSigWnd->MoveWindow(&(WndPlace.rcNormalPosition), FALSE);
         pbyTemp += sizeof (WINDOWPLACEMENT);
         for (UINT i = 0; i < defSW_LIST_COLUMN_COUNT; i++)
         {
             m_pouSigWnd->m_omSignalList.SetColumnWidth(i, pbyTemp[i]);
+        }
+    }
+    if(m_pouSigWnd != NULL)
+    {
+		//Signal watch window will move the List control in OnSize().
+		//So the default values should be as followes.
+        for (UINT i = 0; i < defSW_LIST_COLUMN_COUNT; i++)
+        {
+            RECT sClientRect;
+            m_pouSigWnd->GetClientRect(&sClientRect);
+            int ClientWidth = abs(sClientRect.left - sClientRect.right);
+            m_pouSigWnd->m_omSignalList.SetColumnWidth(0, (int)(0.2 * ClientWidth));
+            m_pouSigWnd->m_omSignalList.SetColumnWidth(1, (int)(0.2 * ClientWidth));
+            m_pouSigWnd->m_omSignalList.SetColumnWidth(2, (int)(0.4 * ClientWidth));
+            m_pouSigWnd->m_omSignalList.SetColumnWidth(3, (int)(0.2 * ClientWidth));
+            m_pouSigWnd->m_omSignalList.MoveWindow(&sClientRect);
         }
     }
     return S_OK;
