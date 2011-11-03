@@ -5,7 +5,7 @@ See paragraph 6 in the following document:
 http://www.vector.com/portal/medien/vector_informatik/TC_Website_01.pdf
 
 Conclusion:
-A download.bat is provided to automate the task of downloading and installing the API include files.
+A download_api.bat is provided to automate the task of downloading and installing the API include files.
 
 
 Distribution of driver library as part of the installer
@@ -15,4 +15,4 @@ See paragraph 6 in the following document:
 http://www.vector.com/portal/medien/vector_informatik/TC_Website_01.pdf
 
 Conclusion:
-The user has to download the driver on its own.
+A download_driver.bat is provided to automate the task of downloading and installing the driver.
