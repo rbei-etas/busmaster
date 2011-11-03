@@ -6,23 +6,16 @@ set http_proxy=proxy:8080
 set http_user=
 set http_password=
 
-:CHECKS_H1
-if exist icsnVC40.h goto CHECKS_H2
+:CHECKS
+if exist icsnVC40.h goto END
+if exist VCneoVI.zip goto UNPACK
 
-:DOWNLOAD_H1
-wget http://intrepidcs.com/support/ICSDocumentation/neoVIDLL/icsnVC40.h
+:DOWNLOAD
+wget http://intrepidcs.com/support/ICSDocumentation/neoVIDLL/VCneoVI.zip
 
-:CHECKS_H2
-if exist icsneo40_API.h goto CHECKS_H3
-
-:DOWNLOAD_H2
-wget http://intrepidcs.com/support/ICSDocumentation/neoVIDLL/icsneo40_API.h
-
-:CHECKS_H3
-if exist icsSpyData.h goto END
-
-:DOWNLOAD_H3
-wget http://intrepidcs.com/support/ICSDocumentation/neoVIDLL/icsSpyData.h
+:UNPACK
+cmd
+unzip VCneoVI.zip icsnVC40.h
 
 :END
 echo Ready.
