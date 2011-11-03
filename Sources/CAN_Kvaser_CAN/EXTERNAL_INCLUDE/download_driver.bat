@@ -9,8 +9,8 @@ if exist "C:\Program Files\Kvaser\Canlib" goto COPY
 if exist canlib.exe goto SETUP
 
 :DOWNLOAD
-echo "Please go to the following site and download canlib.exe"
-echo "http://www.kvaser.com/index.php?option=com_php&Itemid=288&swprod=fb35b0d68f9075389577881fa741ce63"
+echo "Please go to the following site and download the 'Kvaser CANlib SDK'"
+echo "http://www.kvaser.com/en/developer/canlib.html"
 echo "Press enter when you have copied canlib.exe to 'BUSMASTER\Sources\CAN_Kvaser_CAN\EXTERNAL_INCLUDE'"
 pause
 
