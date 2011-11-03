@@ -10648,12 +10648,13 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
 
                 //Msg Attributes
-                COPY_DATA(pbyTemp, &(sMsgAttrib.m_usMsgCount), sizeof(UINT));
+                UINT unTempMsgCount = sMsgAttrib.m_usMsgCount;
+                COPY_DATA(pbyTemp, &unTempMsgCount, sizeof(UINT));
                 for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
                 {
                     TCHAR acName[MAX_PATH] = {_T('\0')};
                     
-                    _tcscpy(acName, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_PATH));
+		    _tcscpy(acName, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_PATH));
                     COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
 
                     COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].unMsgID), sizeof(UINT));
