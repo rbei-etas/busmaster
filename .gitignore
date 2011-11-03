@@ -121,11 +121,10 @@ Sources/BIN/Libs/*/TestSuiteExecutorGUI.lib
 Sources/BIN/Libs/*/Utils.lib
 
 # Intrepid neoVI: Download, API (commented as it's in the repository) and driver
+Sources/CAN_ICS_neoVI/EXTERNAL_INCLUDE/VCneoVI.zip
 Sources/CAN_ICS_neoVI/EXTERNAL_INCLUDE/vspy3_Free.zip
 Sources/CAN_ICS_neoVI/EXTERNAL_INCLUDE/vspy3_Free.EXE
 #Sources/CAN_ICS_neoVI/EXTERNAL_INCLUDE/icsnVC40.h
-#Sources/CAN_ICS_neoVI/EXTERNAL_INCLUDE/icsneo40_API.h
-#Sources/CAN_ICS_neoVI/EXTERNAL_INCLUDE/icsSpyData.h
 Sources/BIN/Release/icsneo40.dll
 
 # Kvaser CAN: Download, API and driver files
