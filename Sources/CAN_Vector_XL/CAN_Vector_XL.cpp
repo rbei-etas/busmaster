@@ -67,6 +67,7 @@ XLCLOSEPORT                    xlClosePort = NULL;
 XLSETTIMERBASEDNOTIFY          xlSetTimerBasedNotify = NULL;  
 XLSETTIMERRATEANDCHANNEL       xlSetTimerRateAndChannel = NULL;
 XLGETLICENSEINFO               xlGetLicenseInfo = NULL;
+XLSETGLOBALTIMESYNC			   xlSetGlobalTimeSync = NULL;
 
 /* CAN specific functions */
 XLCANSETCHANNELOUTPUT          xlCanSetChannelOutput = NULL;    
@@ -185,8 +186,6 @@ static UINT sg_unClientCnt = 0;
 #define MAX_CLIENT_ALLOWED 16
 static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED];
 static UINT m_unDevChannelMap[defNO_OF_CHANNELS] = {-1};
-static UCHAR m_unRxError = 0;
-static UCHAR m_unTxError = 0;
 
 static HINSTANCE               hxlDll;
 
@@ -280,6 +279,12 @@ struct CChannel
     /** Rx Error counter value */
     UCHAR m_ucRxErrorCounter;
 
+    /** Peak Tx Error counter value */
+    UCHAR m_ucPeakTxErrorCounter;
+
+    /** Peak Rx Error counter value */
+    UCHAR m_ucPeakRxErrorCounter;
+
     /** Tx Error Handler execution state */
     BOOL m_bTxErrorExecuted;
 
@@ -306,6 +311,12 @@ struct CChannel
 
         // Rx Error counter value
         m_ucRxErrorCounter = 0;
+
+		// Peak Tx Error counter value
+        m_ucPeakTxErrorCounter = 0;
+
+        // Peak Rx Error counter value
+        m_ucPeakRxErrorCounter = 0;
 
         // Tx Error Handler execution state
         m_bTxErrorExecuted = FALSE;
@@ -573,6 +584,8 @@ USAGEMODE HRESULT CAN_Vector_XL_LoadDriverLibrary(void)
 			xlSetTimerBasedNotify      = (XLSETTIMERBASEDNOTIFY)      GetProcAddress(hxlDll,"xlSetTimerBasedNotify");
 			xlSetTimerRateAndChannel   = (XLSETTIMERRATEANDCHANNEL)   GetProcAddress(hxlDll, "xlSetTimerRateAndChannel");
 			xlGetLicenseInfo           = (XLGETLICENSEINFO)           GetProcAddress(hxlDll, "xlGetLicenseInfo");
+			xlSetGlobalTimeSync        = (XLSETGLOBALTIMESYNC)        GetProcAddress(hxlDll, "xlSetGlobalTimeSync");
+			
 	   
 			/* CAN specific functions */
 			xlCanSetChannelOutput      = (XLCANSETCHANNELOUTPUT)      GetProcAddress(hxlDll,"xlCanSetChannelOutput");
@@ -610,7 +623,7 @@ USAGEMODE HRESULT CAN_Vector_XL_LoadDriverLibrary(void)
 				!xlCanSetChannelAcceptance || !xlCanAddAcceptanceRange ||
 				!xlCanRemoveAcceptanceRange || !xlCanResetAcceptance ||
 				!xlCanRequestChipState || !xlCanFlushTransmitQueue ||
-				!xlCanTransmit)
+				!xlCanTransmit || !xlSetGlobalTimeSync)
 			{
                 FreeLibrary(hxlDll);
                 sg_pIlog->vLogAMessage(A2T(__FILE__),
@@ -810,6 +823,28 @@ BOOL Callback_DILTZM(BYTE /*Argument*/, PBYTE pDatStream, int /*Length*/)
 }
 
 /**
+ * \return defERR_OK if successful otherwise corresponding Error code.
+ *
+ * This function will Get the baud rate of the controller channels
+ * 
+ */
+static int nGetBaudRate()
+{
+    int nReturn = 0;
+	XLaccess xlChanMaskTx = 0;
+	XLstatus xlStatus;
+
+	xlStatus = xlGetDriverConfig(&g_xlDrvConfig);
+
+	if ( xlStatus == XL_SUCCESS )
+	{
+		
+	}
+
+    return nReturn;
+}
+
+/**
  * \return S_OK for success, S_FALSE for failure
  *
  * Displays the controller configuration dialog.
@@ -818,58 +853,19 @@ BOOL Callback_DILTZM(BYTE /*Argument*/, PBYTE pDatStream, int /*Length*/)
  */
 USAGEMODE HRESULT CAN_Vector_XL_DisplayConfigDlg(PCHAR& InitData, INT& Length)
 {
-	HRESULT Result = WARN_INITDAT_NCONFIRM;
-    VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
+	xlPopupHwConfig(NULL, INFINITE);
 
-    VALIDATE_POINTER_RETURN_VAL(InitData, Result);
-    PSCONTROLER_DETAILS pControllerDetails = (PSCONTROLER_DETAILS)InitData;
+	//Get back the baud rate from controller
+	SCONTROLER_DETAILS* pCntrlDetails = (SCONTROLER_DETAILS*)InitData;		
+	XLstatus xlStatus;
 
-    //First initialize with existing hw description
-    for (INT i = 0; i < min(Length, sg_ucNoOfHardware); i++)
-    {   
-		_stprintf(pControllerDetails[i].m_omHardwareDesc, _T("SERIAL NUMBER: %d NAME: %s"), 
-													m_aodChannels[i].m_pXLChannelInfo->serialNumber,
-													m_aodChannels[i].m_pXLChannelInfo->name);
-    }
-
-    if (m_nNoOfChannels > 0)
-    {
-        int nResult = DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DILTZM,
-							pControllerDetails, m_nNoOfChannels, DRIVER_CAN_VECTOR_XL);
-        switch (nResult)
-        {
-            case WARNING_NOTCONFIRMED:
-            {
-                Result = WARN_INITDAT_NCONFIRM;
-            }
-            break;
-            case INFO_INIT_DATA_CONFIRMED:
-            {
-                bLoadDataFromContr(pControllerDetails);
-                memcpy(sg_ControllerDetails, pControllerDetails, sizeof (SCONTROLER_DETAILS) * defNO_OF_CHANNELS);
-                memcpy(InitData, (void*)sg_ControllerDetails, sizeof (SCONTROLER_DETAILS) * defNO_OF_CHANNELS);
-                Length = sizeof(SCONTROLER_DETAILS) * defNO_OF_CHANNELS;
-                Result = INFO_INITDAT_CONFIRM_CONFIG;
-            }
-            break;
-            case INFO_RETAINED_CONFDATA:
-            {
-                Result = INFO_INITDAT_RETAINED;
-            }
-            break;
-            case ERR_CONFIRMED_CONFIGURED: // Not to be addressed at present
-            case INFO_CONFIRMED_CONFIGURED:// Not to be addressed at present
-            default:
-            {
-                // Do nothing... default return value is S_FALSE.
-            }
-            break;
-        }
-    }
-    else
-    {
-        Result = S_OK;
-    }
+	xlStatus = xlGetDriverConfig(&g_xlDrvConfig);
+	for ( int i = 0 ; i < m_nNoOfChannels ; i++ )
+	{
+		sprintf(pCntrlDetails[i].m_omStrBaudrate, ("%0.3f"), float(
+					g_xlDrvConfig.channel[m_aodChannels[i].m_pXLChannelInfo->channelIndex].
+													busParams.data.can.bitRate / 1000.000 ));				
+	}
 
     return S_OK;
 }
@@ -909,8 +905,8 @@ static void vCreateTimeModeMapping()
 {    
     GetLocalTime(&sg_CurrSysTime);
 
-    /* Query Tick Count */
-    QueryPerformanceCounter(&sg_QueryTickCount);
+    /*Query Tick Count*/
+    QueryPerformanceCounter(&sg_QueryTickCount);	
 }
 
 /**
@@ -974,7 +970,7 @@ static BYTE bClassifyMsgType(XLevent& xlEvent, STCANDATA& sCanData)
 {	
     static LONGLONG QuadPartRef = 0;
     if (CREATE_MAP_TIMESTAMP == sg_byCurrState)
-    {
+    {		
 		vCreateTimeModeMapping();
 		QuadPartRef = (LONGLONG)xlEvent.timeStamp / 100000;
 		sg_byCurrState = CALC_TIMESTAMP_READY;
@@ -1049,17 +1045,6 @@ static BYTE bClassifyMsgType(XLevent& xlEvent, STCANDATA& sCanData)
 			USB_ucGetErrorCode(xlEvent.tagData.msg.flags, (BYTE) bIsTxMsg);
         //explaination of error bit
         sCanData.m_uDataInfo.m_sErrInfo.m_nSubError= 0;
-        // Update error counter values
-        if (bIsTxMsg)
-        {
-            m_unTxError++;			
-        }
-        else
-        {
-            m_unRxError++;			
-        }
-        sCanData.m_uDataInfo.m_sErrInfo.m_ucRxErrCount = m_unRxError;
-        sCanData.m_uDataInfo.m_sErrInfo.m_ucTxErrCount = m_unTxError;
 	}
 
 	return TRUE;
@@ -1094,7 +1079,7 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_Vector_XL(LPVOID pVoid)
     /* Set the event to CAN_ICS_neoVI driver for wakeup and frame arrival notification */
 
 	for (UINT i = 0; i < sg_unClientCnt; i++)
-		XLstatus xlStatus = xlSetNotification (g_xlPortHandle[0], &g_hDataEvent[i], 1);	
+		XLstatus xlStatus = xlSetNotification (g_xlPortHandle[i], &g_hDataEvent[i], 1);	
 
     if (g_hDataEvent[0] != NULL)
     {
@@ -1235,49 +1220,6 @@ static int nDisconnectFromDriver()
 }
 
 /**
- * \return defERR_OK if successful otherwise corresponding Error code.
- *
- * This function will set the baud rate of the controller
- * Parallel Port Mode: Controller will be initialised with all
- * other parameters after baud rate change.
- */
-static int nSetBaudRate()
-{
-    int nReturn = 0;
-	XLaccess xlChanMaskTx = 0;
-	XLstatus xlStatus;
-
-    /* Set baud rate to all available hardware */
-    for( UINT unIndex = 0; unIndex < m_nNoOfChannels; unIndex++)
-    {
-        FLOAT fBaudRate = (FLOAT)_tstof(sg_ControllerDetails[unIndex].m_omStrBaudrate);
-        int nBitRate = (INT)(fBaudRate * 1000);
-
-        /* Set the bitrate */
-		if (g_xlChannelMask == g_xlPermissionMask) 
-		{			
-			//Get channel mask for each channel and set bitrate
-			xlChanMaskTx = m_aodChannels[unIndex].m_pXLChannelInfo->channelMask;
-			for ( UINT i = 0; i< sg_unClientCnt; i++ )
-			{				
-				xlStatus = xlCanSetChannelBitrate(g_xlPortHandle[i], xlChanMaskTx, nBitRate);			
-			}
-		} 
-
-		if (XL_SUCCESS == xlStatus)
-        {
-			nReturn = 0;            
-        }
-        else
-        {
-			unIndex = m_nNoOfChannels;            
-        }
-    }
-
-    return nReturn;
-}
-
-/**
  * \return void
  *
  * Function to map device channels with BUSMASTER channel order
@@ -1319,22 +1261,21 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
 		if (XL_SUCCESS == xlStatus) 
 		{			
 			/* Transit into 'CREATE TIME MAP' state */
-            sg_byCurrState = CREATE_MAP_TIMESTAMP;
-			nSetBaudRate();		
+            sg_byCurrState = CREATE_MAP_TIMESTAMP;				
 			vMapDeviceChannelIndex();
 			sg_bIsConnected = bConnect;			
 			s_DatIndThread.m_bIsConnected = sg_bIsConnected;					
 			// ------------------------------------
 			// go with all selected channels on bus
-			// ------------------------------------
+			// ------------------------------------			
 			for ( UINT i = 0; i< sg_unClientCnt; i++ )
 			{
-				xlStatus = xlActivateChannel(g_xlPortHandle[i], g_xlChannelMask, XL_BUS_TYPE_CAN, XL_ACTIVATE_RESET_CLOCK);			
+				xlStatus = xlActivateChannel(g_xlPortHandle[i], g_xlChannelMask, XL_BUS_TYPE_CAN, XL_ACTIVATE_RESET_CLOCK);							
 			}
 			if(xlStatus == XL_SUCCESS) 
 			{
 				nReturn = defERR_OK;			
-			}
+			}			
 		}
     }
     else if (sg_bIsConnected && !bConnect) // Connected & to be disconnected
@@ -1695,9 +1636,34 @@ USAGEMODE HRESULT CAN_Vector_XL_GetControllerParams(LONG& lParam, UINT nChannel,
  *
  * Gets the error counter for corresponding channel.
  */
-USAGEMODE HRESULT CAN_Vector_XL_GetErrorCount(SERROR_CNT& /*sErrorCnt*/, UINT /*nChannel*/, ECONTR_PARAM /*eContrParam*/)
+USAGEMODE HRESULT CAN_Vector_XL_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam)
 {
-    return S_OK;
+    HRESULT hResult = S_OK;
+    if ((sg_bCurrState == STATE_CONNECTED) || (sg_bCurrState == STATE_HW_INTERFACE_SELECTED))
+    {
+        if (nChannel <= m_nNoOfChannels)
+        {
+            if (eContrParam == ERR_CNT)
+            {
+                sErrorCnt.m_ucTxErrCount = m_aodChannels[nChannel].m_ucTxErrorCounter;
+                sErrorCnt.m_ucRxErrCount = m_aodChannels[nChannel].m_ucRxErrorCounter;
+            }
+            else if (eContrParam == PEAK_ERR_CNT)
+            {
+                sErrorCnt.m_ucTxErrCount = m_aodChannels[nChannel].m_ucPeakTxErrorCounter;
+                sErrorCnt.m_ucRxErrCount = m_aodChannels[nChannel].m_ucPeakRxErrorCounter;
+            }
+        }
+        else
+        {
+            hResult = ERR_INVALID_CHANNEL;
+        }
+    }
+    else
+    {
+        hResult = ERR_IMPROPER_STATE;
+    }
+    return hResult;    
 }
 
 /* HELPER FUNCTIONS START */
@@ -1735,9 +1701,9 @@ static int nGetNoOfConnectedHardware(void)
 			// we take all hardware we found and
 			// check that we have only CAN cabs/piggy's
 			// at the moment there is no VN8910 XLAPI support!
-			if ( (g_xlDrvConfig.channel[i].channelBusCapabilities & XL_BUS_ACTIVE_CAP_CAN)
-			  && (g_xlDrvConfig.channel[i].hwType != XL_HWTYPE_VN8900) ) 
-			{ 	        				
+			if ( /*(g_xlDrvConfig.channel[i].channelBusCapabilities & XL_BUS_ACTIVE_CAP_CAN)
+			  &&*/ (g_xlDrvConfig.channel[i].hwType != XL_HWTYPE_VN8900) ) 
+			{ 	        							
 				nResult++;
 			}
 		}
@@ -1773,15 +1739,15 @@ static int nCreateMultipleHardwareNetwork()
 	{
 		// we take all hardware we found and
 		// check that we have only CAN cabs/piggy's
-		// at the moment there is no VN8910 XLAPI support!
-		if ( (g_xlDrvConfig.channel[nCount].channelBusCapabilities & XL_BUS_ACTIVE_CAP_CAN)
-			  && (g_xlDrvConfig.channel[nCount].hwType != XL_HWTYPE_VN8900) ) 
+		// at the moment there is no VN8910 XLAPI support!		
+		if ( /*(g_xlDrvConfig.channel[nCount].channelBusCapabilities & XL_BUS_ACTIVE_CAP_CAN)
+			  && */(g_xlDrvConfig.channel[nCount].hwType != XL_HWTYPE_VN8900) ) 
 		{ 
 			sg_HardwareIntr[nChannels].m_dwIdInterface = nCount;
 			sg_HardwareIntr[nChannels].m_dwVendor = g_xlDrvConfig.channel[nCount].serialNumber;		
 			/*_stprintf(acTempStr, _T("SN: %d, Port ID: %d"), sg_HardwareIntr[nChannels].m_dwVendor, 
 																	sg_HardwareIntr[nChannels].m_dwIdInterface);*/
-			_tcscpy(sg_HardwareIntr[nChannels].m_acDescription, g_xlDrvConfig.channel[nCount].name);
+			_tcscpy(sg_HardwareIntr[nChannels].m_acDescription, g_xlDrvConfig.channel[nCount].name);			
 			nChannels++;
 		}
 	}
