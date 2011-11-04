@@ -1070,6 +1070,8 @@ void CBusStatisticCAN::vCalculateBusParametres(void)
         
        
         SERROR_CNT sErrorCounter;
+		sErrorCounter.m_ucRxErrCount = 0;
+		sErrorCounter.m_ucTxErrCount = 0;
         if (m_pouDIL_CAN->DILC_GetErrorCount( sErrorCounter, nChannelIndex, ERR_CNT) == S_OK)
         {
             m_sBusStatistics[ nChannelIndex ].m_ucTxErrorCounter =
@@ -1077,6 +1079,8 @@ void CBusStatisticCAN::vCalculateBusParametres(void)
             m_sBusStatistics[ nChannelIndex ].m_ucRxErrorCounter =
                                         sErrorCounter.m_ucRxErrCount;
         }
+		sErrorCounter.m_ucRxErrCount = 0;
+		sErrorCounter.m_ucTxErrCount = 0;
         if (m_pouDIL_CAN->DILC_GetErrorCount( sErrorCounter, nChannelIndex, PEAK_ERR_CNT) == S_OK)
         {
             m_sBusStatistics[ nChannelIndex ].m_ucTxPeakErrorCount=
