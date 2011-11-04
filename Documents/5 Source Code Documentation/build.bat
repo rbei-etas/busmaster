@@ -28,5 +28,5 @@ doxygen Doxyfiles\Utility                      2> out\Utility.log
 
 if not exist out\TOOLS_EXTERNAL mkdir out\TOOLS_EXTERNAL
 doxygen Doxyfiles\TOOLS_EXTERNAL\CAPL_2_C      2> out\TOOLS_EXTERNAL\CAPL_2_C.log
-doxygen Doxyfiles\TOOLS_EXTERNAL\EXT_DBC_2_DBF 2> out\TOOLS_EXTERNAL\EXT_DBC_2_DBF.log
-doxygen Doxyfiles\TOOLS_EXTERNAL\EXT_DBF_2_DBC 2> out\TOOLS_EXTERNAL\EXT_DBF_2_DBC.log
+doxygen Doxyfiles\TOOLS_EXTERNAL\DBC_2_DBF     2> out\TOOLS_EXTERNAL\DBC_2_DBF.log
+doxygen Doxyfiles\TOOLS_EXTERNAL\DBF_2_DBC     2> out\TOOLS_EXTERNAL\DBF_2_DBC.log
