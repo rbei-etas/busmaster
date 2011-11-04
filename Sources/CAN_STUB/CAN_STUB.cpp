@@ -960,7 +960,7 @@ USAGEMODE HRESULT CAN_STUB_PerformClosureOperations(void)
     return S_OK;
 }
 
-USAGEMODE HRESULT CAN_STUB_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& /*nCount*/)
+USAGEMODE HRESULT CAN_STUB_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount)
 {
     for (UINT i = 0; i < 4/*defNO_OF_CHANNELS*/; i++)
     {
@@ -968,6 +968,7 @@ USAGEMODE HRESULT CAN_STUB_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, 
         strcpy(sSelHwInterface[i].m_acNameInterface, "Simulation");
         strcpy(sSelHwInterface[i].m_acDescription, "A simulation engine to create a virtual bus system");
     }
+    nCount = 4;
     return S_OK;
 }
 
