@@ -21,7 +21,7 @@
  */
 
 #include "stdafx.h"
-#include "CANDBConverter.h"
+#include "App.h"
 #include "Signal.h"
 #include "Utility.h"
 

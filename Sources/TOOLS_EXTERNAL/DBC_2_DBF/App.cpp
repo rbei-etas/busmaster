@@ -23,8 +23,8 @@
  */
 
 #include "stdafx.h"
-#include "CANDBConverter.h"
-#include "CANDBConverterDlg.h"
+#include "App.h"
+#include "ConverterDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

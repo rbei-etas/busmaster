@@ -9395,7 +9395,7 @@ void CMainFrame::OnCAPL_TO_C_Converter()
     Input(s)         :  -
     Output           :  -
     Functionality    :  Called from frame work. This function will execute
-                        CANDBConverter.exe which resides in the application
+                        DBC_2_DBF.exe which resides in the application
                         directory.
     Member of        :  CMainFrame
     Friend of        :      -
@@ -9408,7 +9408,7 @@ void CMainFrame::OnDBC_TO_DBF_Converter()
 {
     // TODO: Add your command handler code here
     CString omCurrExe;
-    omCurrExe.Format("%s\\CANDBConverter_Import.exe", theApp.m_acApplicationDirectory);
+    omCurrExe.Format("%s\\DBC_2_DBF.exe", theApp.m_acApplicationDirectory);
     SHELLEXECUTEINFO sei;
     sei.cbSize = sizeof(SHELLEXECUTEINFO);
     sei.fMask = NULL; 
