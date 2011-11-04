@@ -9358,7 +9358,7 @@ void CMainFrame::vUpdateAllMsgWndInterpretStatus(BOOL /*bAssociate*/)
     Input(s)         :  -
     Output           :  -
     Functionality    :  Called from frame work. This function will execute
-                        Language_Converter.exe which resides in the application
+                        CAPL_2_C.exe which resides in the application
                         directory.
     Member of        :  CMainFrame
     Friend of        :      -
@@ -9371,7 +9371,7 @@ void CMainFrame::OnCAPL_TO_C_Converter()
 {
     // TODO: Add your command handler code here
     CString omCurrExe;    
-    omCurrExe.Format("%s\\Language_Converter.exe", theApp.m_acApplicationDirectory);
+    omCurrExe.Format("%s\\CAPL_2_C.exe", theApp.m_acApplicationDirectory);
     SHELLEXECUTEINFO sei;
     sei.cbSize = sizeof(SHELLEXECUTEINFO);
     sei.fMask = NULL;

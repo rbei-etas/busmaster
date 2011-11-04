@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      Lang_ConverterApp.h
+ * \file      App.h
  * \brief     Interface file for CLang_ConverterApp class
  * \author    Amit Ranjan
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.

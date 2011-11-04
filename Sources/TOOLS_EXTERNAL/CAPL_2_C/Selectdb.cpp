@@ -24,7 +24,7 @@
 
 
 #include "stdafx.h"
-#include "Lang_ConverterApp.h"
+#include "App.h"
 #include "Selectdb.h"
 
 #ifdef _DEBUG
