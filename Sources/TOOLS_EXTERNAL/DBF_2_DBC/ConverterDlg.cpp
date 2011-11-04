@@ -29,8 +29,8 @@
 * \copyright  Copyright &copy; 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 */
 #include "stdafx.h"
-#include "CANDBConverter.h"
-#include "CANDBConverterDlg.h"
+#include "App.h"
+#include "ConverterDlg.h"
 
 #include "Converter.h"
 
