@@ -11,8 +11,6 @@
 *.vcproj.*.user
 Sources/Application/BUSMASTER_Interface.c
 Sources/Application/BUSMASTER_Interface.h
-Sources/Application/Hlp/BUSMASTER.chm
-Sources/Application/Hlp/BUSMASTER.hm
 Sources/BusEmulation/BusEmulation.h
 Sources/BusEmulation/BusEmulation_i.c
 Sources/BusEmulation/BusEmulation_p.c
