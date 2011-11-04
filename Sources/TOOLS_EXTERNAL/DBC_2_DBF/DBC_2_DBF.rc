@@ -65,7 +65,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_MAINFRAME           ICON                    "res\\CANDBConverter.ico"
+IDR_MAINFRAME           ICON                    "res\\DBC_2_DBF.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -74,11 +74,11 @@ IDR_MAINFRAME           ICON                    "res\\CANDBConverter.ico"
 
 IDD_ABOUTBOX DIALOGEX 0, 0, 235, 71
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "About CANDBConverter"
+CAPTION "About DBC_2_DBF"
 FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,11,17,21,20
-    LTEXT           "CANDBConverter Version 1.1",IDC_VERSION_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "DBC_2_DBF Version 1.1",IDC_VERSION_STATIC,40,10,119,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 2003",IDC_COPYRIGHT_STATIC,40,28,178,27
     DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
 END
@@ -86,7 +86,7 @@ END
 IDD_CANDBCONVERTER_DIALOG DIALOGEX 0, 0, 353, 131
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "CANDBConverter (Import)"
+CAPTION "DBC_2_DBF Converter"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     PUSHBUTTON      "...",IDC_CANOE_BROWSE_BTN,307,27,21,14
@@ -127,12 +127,12 @@ BEGIN
         BEGIN
             VALUE "Comments", "This program converts a dbc database to BUSMASTER database"
             VALUE "CompanyName", "Robert Bosch Engineering and Business Solutions Limited (RBEI)"
-            VALUE "FileDescription", "CANDBConverter MFC Application"
+            VALUE "FileDescription", "DBC_2_DBF MFC Application"
             VALUE "FileVersion", "1.1"
-            VALUE "InternalName", "CANDBConverter"
+            VALUE "InternalName", "DBC_2_DBF"
             VALUE "LegalCopyright", "Copyright (C) 2003"
-            VALUE "OriginalFilename", "CANDBConverter.EXE"
-            VALUE "ProductName", "CANDBConverter"
+            VALUE "OriginalFilename", "DBC_2_DBF.EXE"
+            VALUE "ProductName", "DBC_2_DBF"
             VALUE "ProductVersion", "1.1"
         END
     END
@@ -177,7 +177,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_ABOUTBOX            "&About CANDBConverter..."
+    IDS_ABOUTBOX            "&About DBC_2_DBF..."
 END
 
 #endif    // English (U.S.) resources

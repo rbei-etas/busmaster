@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual C++ Express 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CANDBConverter", "CANDBConverter.vcproj", "{CA8FFB05-ABE1-4CD3-855B-E177C1330D15}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DBC_2_DBF", "DBC_2_DBF.vcproj", "{CA8FFB05-ABE1-4CD3-855B-E177C1330D15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

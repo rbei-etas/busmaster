@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
-	Name="CANDBConverter"
+	Version="9,00"
+	Name="DBC_2_DBF"
 	ProjectGUID="{CA8FFB05-ABE1-4CD3-855B-E177C1330D15}"
-	RootNamespace="CANDBConverter"
+	RootNamespace="DBC_2_DBF"
 	Keyword="MFCProj"
 	TargetFrameworkVersion="131072"
 	>
@@ -44,7 +44,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Release/CANDBConverter.tlb"
+				TypeLibraryName=".\Release/DBC_2_DBF.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -57,7 +57,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\Release/CANDBConverter.pch"
+				PrecompiledHeaderFile=".\Release/DBC_2_DBF.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
@@ -78,10 +78,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="version.lib"
-				OutputFile=".\Release/CANDBConverter_Import.exe"
+				OutputFile=".\Release/DBC_2_DBF.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				ProgramDatabaseFile=".\Release/CANDBConverter.pdb"
+				ProgramDatabaseFile=".\Release/DBC_2_DBF.pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -107,7 +107,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(OutDir)\CANDBConverter_Import.exe&quot; &quot;..\..\bin\$(OutDir)\CANDBConverter_Import.exe&quot;"
+				CommandLine="copy &quot;$(OutDir)\DBC_2_DBF.exe&quot; &quot;..\..\bin\$(OutDir)\DBC_2_DBF.exe&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -138,7 +138,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/CANDBConverter.tlb"
+				TypeLibraryName=".\Debug/DBC_2_DBF.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -149,7 +149,7 @@
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\Debug/CANDBConverter.pch"
+				PrecompiledHeaderFile=".\Debug/DBC_2_DBF.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
@@ -172,11 +172,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="version.lib"
-				OutputFile=".\Debug/CANDBConverter_Import.exe"
+				OutputFile=".\Debug/DBC_2_DBF.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Debug/CANDBConverter.pdb"
+				ProgramDatabaseFile=".\Debug/DBC_2_DBF.pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -202,7 +202,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-                                CommandLine="copy &quot;$(OutDir)\CANDBConverter_Import.exe&quot; &quot;..\..\bin\$(OutDir)\CANDBConverter_Import.exe&quot;"				
+				CommandLine="copy &quot;$(OutDir)\DBC_2_DBF.exe&quot; &quot;..\..\bin\$(OutDir)\DBC_2_DBF.exe&quot;"
 			/>
 		</Configuration>
 	</Configurations>
@@ -214,35 +214,7 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
-				RelativePath="CANDBConverter.cpp"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="CANDBConverter.rc"
-				>
-			</File>
-			<File
-				RelativePath="CANDBConverterDlg.cpp"
+				RelativePath="App.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -312,6 +284,34 @@
 						BrowseInformation="1"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ConverterDlg.cpp"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="DBC_2_DBF.rc"
+				>
 			</File>
 			<File
 				RelativePath="Message.cpp"
@@ -436,7 +436,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\Utility.cpp"
+				RelativePath="Utility.cpp"
 				>
 			</File>
 			<File
@@ -493,11 +493,7 @@
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
-				RelativePath="CANDBConverter.h"
-				>
-			</File>
-			<File
-				RelativePath="CANDBConverterDlg.h"
+				RelativePath="App.h"
 				>
 			</File>
 			<File
@@ -506,6 +502,10 @@
 			</File>
 			<File
 				RelativePath="Converter.h"
+				>
+			</File>
+			<File
+				RelativePath="ConverterDlg.h"
 				>
 			</File>
 			<File
@@ -541,7 +541,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Utility.h"
+				RelativePath="Utility.h"
 				>
 			</File>
 			<File
@@ -558,7 +558,7 @@
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
 			<File
-				RelativePath="res\CANDBConverter.ico"
+				RelativePath="res\DBC_2_DBF.ico"
 				>
 			</File>
 		</Filter>
@@ -566,7 +566,7 @@
 	<Globals>
 		<Global
 			Name="RESOURCE_FILE"
-			Value="CANDBConverter.rc"
+			Value="DBC_2_DBF.rc"
 		/>
 	</Globals>
 </VisualStudioProject>

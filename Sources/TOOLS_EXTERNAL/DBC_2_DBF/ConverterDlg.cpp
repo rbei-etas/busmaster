@@ -22,8 +22,8 @@
  * Implementation file for the CCANDBConverterDlg class.
  */
 #include "stdafx.h"
-#include "CANDBConverter.h"
-#include "CANDBConverterDlg.h"
+#include "App.h"
+#include "ConverterDlg.h"
 
 #include "Converter.h"
 

@@ -23,7 +23,7 @@
  */
 
 #include "stdafx.h"
-#include "CANDBConverter.h"
+#include "App.h"
 #include "ValueDescriptor.h"
 
 #ifdef _DEBUG
