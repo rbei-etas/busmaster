@@ -68,6 +68,7 @@ Section ""
     File ..\Sources\BIN\Release\BUSMASTER.tlb
     File ..\Sources\BIN\Release\BUSMASTER_Interface.c
     File ..\Sources\BIN\Release\BUSMASTER_Interface.h
+<<<<<<< HEAD
     File ..\Sources\BIN\Release\CAN_ETAS_BOA.dll
     File ..\Sources\BIN\Release\CAN_ICS_neoVI.dll
     File ..\Sources\BIN\Release\CAN_Kvaser_CAN.dll
@@ -76,6 +77,14 @@ Section ""
     File ..\Sources\BIN\Release\CAN_Vector_XL.dll
     File ..\Sources\BIN\Release\CANDBConverter_Export.exe
     File ..\Sources\BIN\Release\CANDBConverter_Import.exe
+=======
+    File ..\Sources\BIN\Release\GCCDLLMakeTemplate_CAN    
+    File ..\Sources\BIN\Release\Language_Converter.exe
+    File ..\Sources\BIN\Release\CANDBConverter_Import.exe
+    File ..\Sources\BIN\Release\CANDBConverter_Export.exe
+	File ..\Sources\BIN\Release\CanApi2.dll
+	File ..\Sources\BIN\Release\icsneo40.dll
+>>>>>>> 606eb5381803d13a8a9d2378380ddacb8b00beeb
     File ..\Sources\BIN\Release\Changelog.txt
     File ..\Sources\BIN\Release\ConfigDialogsDIL.dll
     File ..\Sources\BIN\Release\DIL_Interface.dll
@@ -99,7 +108,7 @@ Section ""
     File /r ..\Sources\BIN\Release\MinGW
 
     ; Drivers
-    ;File ..\Sources\BIN\Release\CanApi2.dll	; PEAK USB
+    File ..\Sources\BIN\Release\CanApi2.dll	; PEAK USB
     ;File ..\Sources\BIN\Release\canlib32.dll	; Kvaser CAN
     File ..\Sources\BIN\Release\icsneo40.dll	; ICS neoVI
     ;File ..\Sources\BIN\Release\vxlapi.dll	; Vector XL
@@ -144,6 +153,57 @@ Section "Uninstall"
 
     ; Delete registration entries
     DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER"
+<<<<<<< HEAD
+=======
+    Delete "$INSTDIR\ConfigDialogsDIL.dll"
+    Delete "$INSTDIR\DIL_Interface.dll"
+    Delete "$INSTDIR\Filter.dll"
+    Delete "$INSTDIR\FrameProcessor.dll"
+    Delete "$INSTDIR\NodeSimEx.dll"
+    Delete "$INSTDIR\ProjectConfiguration.dll"
+    Delete "$INSTDIR\PSDI_CAN.dll"
+    Delete "$INSTDIR\Replay.dll"
+    Delete "$INSTDIR\SignalWatch.dll"
+    Delete "$INSTDIR\TestSetupEditorGUI.dll"
+    Delete "$INSTDIR\TestSuiteExecutorGUI.dll"
+    Delete "$INSTDIR\TXWindow.dll"
+    Delete "$INSTDIR\BUSMASTER.exe"
+    Delete "$INSTDIR\BusEmulation.exe"
+    Delete "$INSTDIR\CAN_ETAS_BOA.dll"
+    Delete "$INSTDIR\CAN_ICS_neoVI.dll"
+    Delete "$INSTDIR\CAN_Kvaser_CAN.dll"
+    Delete "$INSTDIR\CAN_PEAK_USB.dll"
+    Delete "$INSTDIR\CAN_STUB.dll"
+    Delete "$INSTDIR\CAN_Vector_XL.dll"
+    Delete "$INSTDIR\BUSMASTER.tlb"
+    Delete "$INSTDIR\BUSMASTER_Interface.h"
+    Delete "$INSTDIR\BUSMASTER_Interface.c"
+    Delete "$INSTDIR\GCCDLLMakeTemplate_CAN"
+    Delete "$INSTDIR\CANDBConverter_Import.exe"
+    Delete "$INSTDIR\CANDBConverter_Export.exe"
+    Delete "$INSTDIR\Language_Converter.exe"
+    Delete "$INSTDIR\BUSMASTER.chm"
+    Delete "$INSTDIR\MinGW\bin\*.*"
+    Delete "$INSTDIR\MinGW\Include\*.*"
+    Delete "$INSTDIR\MinGW\Include\g++-3\*.*"
+    Delete "$INSTDIR\MinGW\Include\g++-3\std\*.*"
+    Delete "$INSTDIR\MinGW\Include\sys\*.*"	
+    Delete "$INSTDIR\MinGW\lib\*.*"
+    Delete "$INSTDIR\MinGW\lib\gcc-lib\mingw32\2.95.3-6\*.*"	
+    Delete "$INSTDIR\MinGW\lib\gcc-lib\mingw32\2.95.3-6\include\*.*"
+    Delete "$INSTDIR\MinGW\lib\gcc-lib\mingw32\2.95.3-6\include\objc\*.*"	
+    Delete "$INSTDIR\MinGW\man\man1\*.*"
+    Delete "$INSTDIR\MinGW\mingw32\include\*.*"
+    Delete "$INSTDIR\MinGW\mingw32\lib\*.*"
+    Delete "$INSTDIR\MinGW\mingw32\lib\ldscripts\*.*"	
+    Delete "$INSTDIR\MinGW\OBJ\*.*"
+    Delete "$INSTDIR\uninst.exe"
+    Delete "$INSTDIR\CanApi2.dll"
+    Delete "$INSTDIR\icsneo40.dll"	
+    Delete "$INSTDIR\Changelog.txt"
+    Delete "$INSTDIR\COPYING.LESSER.txt"
+    Delete "$INSTDIR\COPYING.txt"
+>>>>>>> 606eb5381803d13a8a9d2378380ddacb8b00beeb
 
     ; Delete installation folder
     RMDir /r "$INSTDIR"

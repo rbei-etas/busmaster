@@ -714,12 +714,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     LoadBarState(PROFILE_CAN_MONITOR);
 
     // Set pane info for displaying active database name
-    m_wndStatusBar.SetPaneInfo(0, ID_SEPARATOR, SBPS_NOBORDERS, 400);
+    m_wndStatusBar.SetPaneInfo(0, ID_SEPARATOR, SBPS_NOBORDERS, 340);
 
     m_wndStatusBar.SetPaneInfo( INDEX_CHANNELS, IDS_CHANNELS, 
-                                SBPS_NOBORDERS, 100);
+                                SBPS_NOBORDERS, 280);
     m_wndStatusBar.SetPaneInfo( INDEX_DB_NAME, ID_ACTIVE_DATABASE_NAME, 
                                 SBPS_STRETCH, 0);
+	
     // Set number of channels supported
     CString omStrChannels;
     omStrChannels.Format( defSTR_CHANNELS_SUPPORTED,
@@ -9577,6 +9578,26 @@ HRESULT CMainFrame::IntializeDIL(void)
                         vInitializeBusStatCAN();    
                         //venkat - Initialize Read Thread of TSExecutor. 
                         m_objTSExecutorHandler.vDoInitailization(CAN);
+
+						// Set number of channels, hardware selected and supported channels.
+					    CString omStrChannels;
+						CString omStrChannelDriver;
+						omStrChannels.Format(	defSTR_CHANNELS_SUPPORTED,
+												nCount,
+												defSTR_CHANNEL_NAME );	
+
+						for (int i = 0 ; i < m_nDILCount ; i++)
+						{
+							if ( m_dwDriverId == m_ouList[i].m_dwDriverID )
+							{
+								omStrChannelDriver.Format(  _T("%s - %s  (Allowed channels:%d)"), omStrChannels, 
+														m_ouList[i].m_acName, CHANNEL_ALLOWED);
+								break;
+							}
+						}
+
+						// Set Channel string
+						m_wndStatusBar.SetPaneText(INDEX_CHANNELS, omStrChannelDriver );						
                     }
                     else
                     {
@@ -10647,14 +10668,14 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 BYTE byVersion = 0x1;
                 COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
 
-                //Msg Attributes
-                UINT unTempMsgCount = sMsgAttrib.m_usMsgCount;
-                COPY_DATA(pbyTemp, &unTempMsgCount, sizeof(UINT));
+                //Msg Attributes                
+				UINT unTempMsgCount = sMsgAttrib.m_usMsgCount;
+				COPY_DATA(pbyTemp, &unTempMsgCount, sizeof(UINT));
                 for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
                 {
                     TCHAR acName[MAX_PATH] = {_T('\0')};
                     
-		    _tcscpy(acName, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_PATH));
+                    _tcscpy(acName, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_PATH));
                     COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
 
                     COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].unMsgID), sizeof(UINT));
