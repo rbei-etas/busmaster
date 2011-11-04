@@ -9485,7 +9485,7 @@ LRESULT CMainFrame::OnMessageTraceWnd(WPARAM /*wPAram*/, LPARAM /*lParam*/)
     Input(s)         :  -
     Output           :  -
     Functionality    :  This function is called from framework. when user clicks 
-                        this menu, this function invokes DBF_TO_DBC_COnverter.exe
+                        this menu, this function invokes DBF_2_DBC.exe
     Member of        :  CMainFrame
     Friend of        :      -
 
@@ -9497,7 +9497,7 @@ void CMainFrame::OnDBF_TO_DBC_Converter()
 {   
     // TODO: Add your command handler code here
     CString omCurrExe;
-    omCurrExe.Format("%s\\CANDBConverter_Export.exe", theApp.m_acApplicationDirectory);
+    omCurrExe.Format("%s\\DBF_2_DBC.exe", theApp.m_acApplicationDirectory);
     SHELLEXECUTEINFO sei;
     sei.cbSize = sizeof(SHELLEXECUTEINFO);
     sei.fMask = NULL; 

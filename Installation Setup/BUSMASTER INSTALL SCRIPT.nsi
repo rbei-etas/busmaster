@@ -74,11 +74,11 @@ Section ""
     File ..\Sources\BIN\Release\CAN_PEAK_USB.dll
     File ..\Sources\BIN\Release\CAN_STUB.dll
     File ..\Sources\BIN\Release\CAN_Vector_XL.dll
-    File ..\Sources\BIN\Release\CANDBConverter_Export.exe
     File ..\Sources\BIN\Release\CAPL_2_C.exe
     File ..\Sources\BIN\Release\Changelog.txt
     File ..\Sources\BIN\Release\ConfigDialogsDIL.dll
     File ..\Sources\BIN\Release\DBC_2_DBF.exe
+    File ..\Sources\BIN\Release\DBF_2_DBC.exe
     File ..\Sources\BIN\Release\DIL_Interface.dll
     File ..\Sources\BIN\Release\Filter.dll
     File ..\Sources\BIN\Release\FrameProcessor.dll

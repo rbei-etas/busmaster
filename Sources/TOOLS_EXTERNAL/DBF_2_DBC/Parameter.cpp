@@ -42,7 +42,7 @@ Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights
 * \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
 */
 #include "stdafx.h"
-#include "CANDBConverter.h"
+#include "App.h"
 #include "Parameter.h"
 #include<limits.h>
 #include<float.h>
