@@ -65,11 +65,11 @@ END
 
 IDD_ABOUTBOX DIALOGEX 0, 0, 235, 55
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "About Language Converter"
+CAPTION "About CAPL_2_C Converter"
 FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,9,6,20,20
-    LTEXT           "Language Converter",IDC_STATIC,40,6,65,8,SS_NOPREFIX
+    LTEXT           "CAPL_2_C Converter",IDC_STATIC,40,6,65,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 2004",IDC_STATIC,40,26,58,8
     DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
     LTEXT           "Version 1.1",IDC_STATIC,40,16,36,8,SS_NOPREFIX
@@ -79,7 +79,7 @@ IDD_DLG_LANG_CNVRTR DIALOGEX 0, 0, 301, 178
 STYLE DS_SETFONT | DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | 
     WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "Language Converter"
+CAPTION "CAPL_2_C Converter"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT_INPUT,48,20,182,12,ES_AUTOHSCROLL
@@ -172,12 +172,12 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "FileDescription", "Language Converter"
+            VALUE "FileDescription", "CAPL_2_C Converter"
             VALUE "FileVersion", "1, 0, 0, 1"
-            VALUE "InternalName", "Lang_Converter"
+            VALUE "InternalName", "CAPL_2_C"
             VALUE "LegalCopyright", "Copyright (C) 2004"
-            VALUE "OriginalFilename", "Lang_Converter"
-            VALUE "ProductName", "Language Converter"
+            VALUE "OriginalFilename", "CAPL_2_C"
+            VALUE "ProductName", "CAPL_2_C Converter"
             VALUE "ProductVersion", "1, 0, 0, 1"
         END
     END
@@ -238,7 +238,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_MAINFRAME           ICON                    "res\\lang_converter.ico"
+IDR_MAINFRAME           ICON                    "res\\CAPL_2_C.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -254,7 +254,7 @@ IDC_CURSOR1             CURSOR                  "res\\cursor1.cur"
 
 STRINGTABLE 
 BEGIN
-    IDS_ABOUTBOX            "&About Language Converter..."
+    IDS_ABOUTBOX            "&About CAPL_2_C Converter..."
 END
 
 #endif    // English (U.S.) resources
