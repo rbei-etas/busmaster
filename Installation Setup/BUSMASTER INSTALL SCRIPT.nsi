@@ -34,7 +34,7 @@ BrandingText "RBEI BUSMASTER Installation"
 CRCCheck On
 
 ; Output filename
-Outfile "BUSMASTER_Installer_Ver_1.1.0.exe"
+Outfile "BUSMASTER_Installer_Ver_1.2.0.exe"
 
 Function .onInit
     # the plugins dir is automatically deleted when the installer exits
@@ -110,10 +110,12 @@ Section ""
     File ..\Sources\BIN\Release\BUSMASTER.tlb
     File ..\Sources\BIN\Release\BUSMASTER_Interface.c
     File ..\Sources\BIN\Release\BUSMASTER_Interface.h
-    File ..\Sources\BIN\Release\GCCDLLMakeTemplate_CAN	
+    File ..\Sources\BIN\Release\GCCDLLMakeTemplate_CAN    
     File ..\Sources\BIN\Release\Language_Converter.exe
     File ..\Sources\BIN\Release\CANDBConverter_Import.exe
     File ..\Sources\BIN\Release\CANDBConverter_Export.exe
+	File ..\Sources\BIN\Release\CanApi2.dll
+	File ..\Sources\BIN\Release\icsneo40.dll
     File ..\Sources\BIN\Release\Changelog.txt
     File ..\COPYING.LESSER.txt
     File ..\COPYING.txt
@@ -195,6 +197,7 @@ Section "Uninstall"
     Delete "$INSTDIR\MinGW\OBJ\*.*"
     Delete "$INSTDIR\uninst.exe"
     Delete "$INSTDIR\CanApi2.dll"
+    Delete "$INSTDIR\icsneo40.dll"	
     Delete "$INSTDIR\Changelog.txt"
     Delete "$INSTDIR\COPYING.LESSER.txt"
     Delete "$INSTDIR\COPYING.txt"
