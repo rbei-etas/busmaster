@@ -549,7 +549,7 @@ USAGEMODE HRESULT CAN_Vector_XL_LoadDriverLibrary(void)
 
     if (hResult == S_OK)
     {
-        hxlDll = LoadLibrary("vxlapi.dll");
+        hxlDll = LoadLibrary("C:\\XL Driver Library\\bin\\vxlapi.dll");
         if (hxlDll == NULL)
         {
             sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("vxlapi.dll loading failed"));
