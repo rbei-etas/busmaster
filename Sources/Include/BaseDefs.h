@@ -108,7 +108,7 @@ const TYPE_CHANNEL CHANNEL_All_UNSPECIFIED = (UINT)-1; // Unspecified channel
 const TYPE_CHANNEL CAN_CHANNEL_ALL = 0;     // All channel notation
 const TYPE_CHANNEL CHANNEL_CAN_MIN = 1;     // Minimum value of a CAN channel
 const TYPE_CHANNEL CHANNEL_CAN_MAX = 32;    // Maximum value of a CAN channel
-const TYPE_CHANNEL CHANNEL_ALLOWED = 2;
+const TYPE_CHANNEL CHANNEL_ALLOWED = 16;
 #define defNO_OF_CHANNELS CHANNEL_CAN_MAX
 
 // Starts FlexRay related bus information
