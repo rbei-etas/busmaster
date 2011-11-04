@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      Lang_ConverterApp.cpp
+ * \file      App.cpp
  * \brief     Implementation file for CLang_ConverterApp class
  * \author    Amit Ranjan
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
@@ -24,7 +24,7 @@
 
 
 #include "stdafx.h"
-#include "Lang_ConverterApp.h"
+#include "App.h"
 #include "ConverterDlg.h"
 
 #ifdef _DEBUG

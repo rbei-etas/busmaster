@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
-    ProjectType="Visual C++"
-	Version="9.00"
-	Name="Language_Converter"
+	ProjectType="Visual C++"
+	Version="9,00"
+	Name="CAPL_2_C"
 	ProjectGUID="{06ED9A50-3CF2-4A6D-A72B-201096094C70}"
+	RootNamespace="CAPL_2_C"
 	Keyword="MFCProj"
 	TargetFrameworkVersion="131072"
 	>
@@ -43,7 +44,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Release/Language_Converter.tlb"
+				TypeLibraryName=".\Release/CAPL_2_C.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -57,7 +58,7 @@
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\Release/Language_Converter.pch"
+				PrecompiledHeaderFile=".\Release/CAPL_2_C.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
@@ -78,10 +79,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile=".\Release/Language_Converter.exe"
+				OutputFile=".\Release/CAPL_2_C.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				ProgramDatabaseFile=".\Release/Language_Converter.pdb"
+				ProgramDatabaseFile=".\Release/CAPL_2_C.pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -107,7 +108,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(OutDir)\Language_Converter.exe&quot; &quot;..\..\bin\$(OutDir)\Language_Converter.exe&quot;"
+				CommandLine="copy &quot;$(OutDir)\CAPL_2_C.exe&quot; &quot;..\..\bin\$(OutDir)\CAPL_2_C.exe&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -138,18 +139,19 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/Language_Converter.tlb"
+				TypeLibraryName=".\Debug/CAPL_2_C.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="."
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="1"
 				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\Debug/Language_Converter.pch"
+				PrecompiledHeaderFile=".\Debug/CAPL_2_C.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
@@ -171,11 +173,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile=".\Debug/Language_Converter.exe"
+				OutputFile=".\Debug/CAPL_2_C.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Debug/Language_Converter.pdb"
+				ProgramDatabaseFile=".\Debug/CAPL_2_C.pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -201,7 +203,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(OutDir)\Language_Converter.exe&quot; &quot;..\..\bin\$(OutDir)\Language_Converter.exe&quot;"
+				CommandLine="copy &quot;$(OutDir)\CAPL_2_C.exe&quot; &quot;..\..\bin\$(OutDir)\CAPL_2_C.exe&quot;"
 			/>
 		</Configuration>
 	</Configurations>
@@ -212,6 +214,35 @@
 			Name="Source Files"
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
+			<File
+				RelativePath=".\App.cpp"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						PreprocessorDefinitions=""
+						BrowseInformation="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\CAPL_2_C.rc"
+				>
+			</File>
 			<File
 				RelativePath="Converter.cpp"
 				>
@@ -261,35 +292,6 @@
 						BrowseInformation="1"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="Lang_ConverterApp.cpp"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions=""
-						BrowseInformation="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="Language_Converter.rc"
-				>
 			</File>
 			<File
 				RelativePath="List.cpp"
@@ -474,6 +476,10 @@
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
+				RelativePath=".\App.h"
+				>
+			</File>
+			<File
 				RelativePath="ConstString.h"
 				>
 			</File>
@@ -491,10 +497,6 @@
 			</File>
 			<File
 				RelativePath="Functions.hpp"
-				>
-			</File>
-			<File
-				RelativePath="Lang_ConverterApp.h"
 				>
 			</File>
 			<File
@@ -581,7 +583,7 @@
 	<Globals>
 		<Global
 			Name="RESOURCE_FILE"
-			Value="Language_Converter.rc"
+			Value="CAPL_2_C.rc"
 		/>
 	</Globals>
 </VisualStudioProject>

@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual C++ Express 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Language_Converter", "Language_Converter.vcproj", "{06ED9A50-3CF2-4A6D-A72B-201096094C70}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CAPL_2_C", "CAPL_2_C.vcproj", "{06ED9A50-3CF2-4A6D-A72B-201096094C70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Developer Studio generated include file.
-// Used by Language_Converter.rc
+// Used by CAPL_2_C.rc
 // Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 
 #define IDM_ABOUTBOX                    0x0010
