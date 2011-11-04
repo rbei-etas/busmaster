@@ -137,6 +137,9 @@ Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/predef.h
 Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/pshpack1.h
 Sources/BIN/Release/canlib32.dll
 
+# PEAK USB: driver files
+Sources/BIN/Release/CanApi2.dll
+
 # Vector XL: Download, API and driver files
 Sources/CAN_Vector_XL/EXTERNAL_INCLUDE/xl_lib75.zip
 Sources/CAN_Vector_XL/EXTERNAL_INCLUDE/Setup.exe
@@ -144,7 +147,7 @@ Sources/CAN_Vector_XL/EXTERNAL_INCLUDE/vxlapi.h
 Sources/BIN/Release/vxlapi.dll
 
 # Installation Setup
-Installation Setup/BUSMASTER Installer.exe
+Installation Setup/BUSMASTER_Installer_Ver_*.exe
 
 # Documents
 Documents/1 Development Environment/out
