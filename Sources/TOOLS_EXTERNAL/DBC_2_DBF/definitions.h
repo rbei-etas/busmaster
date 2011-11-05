@@ -43,9 +43,9 @@
 #define	defSIG_MAX_RXNODE_LEN	129	//Maximum length of a given RX node
 
 //ValueDescriptor.h
-#define	defVDES_MAX_DESC_LEN 33 // hopefully nobody puts value descriptor strings
+#define	defVDES_MAX_DESC_LEN 129 // hopefully nobody puts value descriptor strings
 // more than this
-#define defVDES_MAX_OUT_STR  100  // 17(tag)+34(Value descriptor)+ 20(Value)
+#define defVDES_MAX_OUT_STR  (17+defVDES_MAX_DESC_LEN+20)  // 17(tag)+(Value descriptor)+ 20(Value)
 
 //ValueTable.cpp
 #define defVTAB_MAX_LINE_LEN 1026
