@@ -60,7 +60,7 @@ public:
     float			m_fOffset;
     float			m_fScaleFactor;
     char			m_acUnit[defSIG_MAX_UNIT_LEN];
-    CString			m_rxNode;
+    char			m_rxNode[defSIG_MAX_RXNODE_LEN];
     static const char *m_pacErrorStrings[];
 
 

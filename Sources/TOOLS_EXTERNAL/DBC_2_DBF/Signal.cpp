@@ -49,7 +49,7 @@ CSignal::CSignal()
     m_fScaleFactor = 1.0f;
     m_acUnit[0] = '\0';
     m_uiError = SIG_EC_NO_ERR;
-    m_rxNode = "\0";
+    m_rxNode[0] = '\0';
     m_listValueDescriptor.RemoveAll();
 }
 
@@ -92,7 +92,7 @@ CSignal& CSignal::operator=(CSignal& signal)
     m_fOffset = signal.m_fOffset;
     m_fScaleFactor = signal.m_fScaleFactor;
     strcpy(m_acUnit,signal.m_acUnit);
-    m_rxNode = signal.m_rxNode;
+    strcpy(m_rxNode,signal.m_rxNode);
     m_uiError = signal.m_uiError; 
     // now copy the list 
     m_listValueDescriptor.AddTail(&signal.m_listValueDescriptor);
@@ -312,10 +312,10 @@ int CSignal::Format(char *pcLine)
     *pcTemp='\0';
     if(strcmp(acTemp,"Vector__XXX") != 0)
     {
-        m_rxNode = acTemp;
+        strcpy(m_rxNode,acTemp);
     }
     else
-        m_rxNode = "";
+        m_rxNode[0] = '\0';
     return 1;
 }
 

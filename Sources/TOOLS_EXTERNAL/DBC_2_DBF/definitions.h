@@ -40,6 +40,7 @@
 #define defSIG_MAX_NAME_LEN	33 // normally name > 100 chars not expected
 #define	defSIG_MAX_UNIT_LEN	33	//Maximum length of a given unit 
 #define	defSIG_MAX_MULTIPLEX_LEN	33	//Maximum length of a given Mulyiplexing 
+#define	defSIG_MAX_RXNODE_LEN	33	//Maximum length of a given RX node
 
 //ValueDescriptor.h
 #define	defVDES_MAX_DESC_LEN 33 // hopefully nobody puts value descriptor strings
