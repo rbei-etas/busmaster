@@ -170,12 +170,12 @@ unsigned int CConverter::SetResultCode(unsigned int uiCode)
 
 const char* CConverter::m_pacResultStrings[] =
 {
-    "Conversion completed...NO ERRORS!\n",
-    "Conversion completed with ERRORS... see log file\n",
-    "Error opening input file\n see log file",
-    "Error opening output file\n see log file",
-    "Conversion aborted: input file format error\n see log file",
-    "Conversion completed with ERRORS... Error Creating Log file\n"
+    "Conversion completed.\n",
+    "Conversion completed with errors. See log file.\n",
+    "Conversion aborted. Error opening input file.",
+    "Conversion aborted. Error creating output file.",
+    "Conversion aborted. Error with input file format.",
+    "Conversion aborted. Error creating log file.\n"
 };
 
 /**
