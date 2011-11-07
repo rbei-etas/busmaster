@@ -5,6 +5,7 @@
 # Visual Studio intermediate files
 *.aps
 *.APS
+*.bak
 *.ncb
 *.sln.cache
 *.suo
