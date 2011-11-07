@@ -347,6 +347,7 @@ This operation will convert the message code from 11 to 29 bits.\nDo you want to
 #define MAX_LMT_FOR_STD_MSG_ID  2048
 #define defMAX_LMT_EXTD_MSG_ID 0x20000000
 #define defMAX_BITS             64
+#define defMAX_SIGNALS		128
 #define defBITS_IN_BYTE         8
 #define defMAX_BYTE             8
 #define defBITS_IN_FOUR_BYTE    32
