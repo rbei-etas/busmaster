@@ -1,22 +1,28 @@
-Distribution of API include files
----------------------------------
-According to Kvaser only files marked as redistributable are allowed to be deployed.
-The API include files are not mentioned.
-See in the following documents:
-C:\Program Files\Kvaser\Canlib\Doc\Deploy.txt
-C:\Program Files\Kvaser\Canlib\Doc\license.txt
+Distribution of API include files as part of the repository
+-----------------------------------------------------------
+We asked Kvaser, if we are allowed to do upload the API files into our source code repository.
+The answer from Jerry Thorsen from Kvaser to tobias.lorenz@etas.com on 2011-11-07 stated:
+"The answer is yes to all those questions ..."
 
 Conclusion:
-A download_api.bat is provided to automate the task of downloading and installing the API include files.
+The *.h files can be uploaded into our repository.
 
 
 Distribution of driver library as part of the installer
 -------------------------------------------------------
-According to Kvaser only files marked as redistributable are allowed to be deployed.
-The driver files are mentioned.
-See in the following documents:
-C:\Program Files\Kvaser\Canlib\Doc\Deploy.txt
-C:\Program Files\Kvaser\Canlib\Doc\license.txt
+We asked Kvaser, if we are allowed to do upload the API files into our source code repository.
+The answer from Jerry Thorsen from Kvaser to tobias.lorenz@etas.com on 2011-11-07 stated:
+"The answer is yes to all those questions ..."
 
 Conclusion:
-The driver is distributed by the BUSMASTER installer.
+The canapi32.dll can be redistributed as part of the installer.
+
+
+Distribution of driver library as part of the repository
+--------------------------------------------------------
+We asked Kvaser, if we are allowed to do upload the API files into our source code repository.
+The answer from Jerry Thorsen from Kvaser to tobias.lorenz@etas.com on 2011-11-07 stated:
+"The answer is yes to all those questions ..."
+
+Conclusion:
+The canapi32.dll can be uploaded into our repository.

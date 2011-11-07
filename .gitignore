@@ -125,20 +125,20 @@ Sources/CAN_ICS_neoVI/EXTERNAL_INCLUDE/vspy3_Free.EXE
 #Sources/CAN_ICS_neoVI/EXTERNAL_INCLUDE/icsnVC40.h
 Sources/BIN/Release/icsneo40.dll
 
-# Kvaser CAN: Download, API and driver files
+# Kvaser CAN: Download, API (commented as it's in the repository) and driver (commented for the same reason)
 Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/canlib.exe
-Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/canevt.h
-Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/canlib.h
-Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/canstat.h
-Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/poppack.h
-Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/predef.h
-Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/pshpack1.h
-Sources/BIN/Release/canlib32.dll
+#Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/canevt.h
+#Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/canlib.h
+#Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/canstat.h
+#Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/poppack.h
+#Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/predef.h
+#Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/pshpack1.h
+#Sources/BIN/Release/canlib32.dll
 
 # PEAK USB: driver files (commented as it's in the repository)
 #Sources/BIN/Release/CanApi2.dll
 
-# Vector XL: Download, API (commented as it's in the repository) and driver files (commented for the same reason)
+# Vector XL: Download, API (commented as it's in the repository) and driver (commented for the same reason)
 Sources/CAN_Vector_XL/EXTERNAL_INCLUDE/xl_lib75.zip
 Sources/CAN_Vector_XL/EXTERNAL_INCLUDE/Setup.exe
 #Sources/CAN_Vector_XL/EXTERNAL_INCLUDE/vxlapi.h
