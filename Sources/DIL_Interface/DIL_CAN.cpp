@@ -28,7 +28,7 @@
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/DIL_Datatypes.h"
 #include "DILC_Dummy.h"
-#include "CAN_PEAK_USB_Extern.h"
+#include "CAN_PEAK_USB/CAN_PEAK_USB_Extern.h"
 #include "CAN_ICS_neoVI/CAN_ICS_neoVI_Extern.h"
 #include "CAN_STUB/CAN_STUB_Extern.h"
 #include "CAN_ETAS_BOA/CAN_ETAS_BOA_Extern.h"
