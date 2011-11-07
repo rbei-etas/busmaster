@@ -1,18 +1,28 @@
-Distribution of API include files
----------------------------------
-According to Vector Informatik it is "... isadmissible to ... copy ... software in any way."
-See paragraph 6 in the following document:
-http://www.vector.com/portal/medien/vector_informatik/TC_Website_01.pdf
+Distribution of API include files as part of the repository
+-----------------------------------------------------------
+We asked Vector Informatik, if we are allowed to do upload the API files into our source code repository.
+The answer from Markus Stiller from Vector Informatik to tobias.lorenz@etas.com on 2011-11-07 started:
+"Yes you can redistribute our files ..."
 
 Conclusion:
-A download_api.bat is provided to automate the task of downloading and installing the API include files.
+The vxlapi.h can be uploaded into our repository.
 
 
 Distribution of driver library as part of the installer
 -------------------------------------------------------
-According to Vector Informatik it is "... isadmissible to ... copy ... software in any way."
-See paragraph 6 in the following document:
-http://www.vector.com/portal/medien/vector_informatik/TC_Website_01.pdf
+We asked Vector Informatik, if we are allowed to redistribute the driver library as part of the installer.
+The answer from Markus Stiller from Vector Informatik to tobias.lorenz@etas.com on 2011-11-07 started:
+"Yes you can redistribute our files like you wrote below."
 
 Conclusion:
-A download_driver.bat is provided to automate the task of downloading and installing the driver.
+The vxlapi.dll can be redistributed as part of the installer.
+
+
+Distribution of driver library as part of the repository
+--------------------------------------------------------
+We asked Vector Informatik, if we are allowed to redistribute the driver library as part of our repository.
+The answer from Markus Stiller from Vector Informatik to tobias.lorenz@etas.com on 2011-11-07 started:
+"Yes you can redistribute our files like you wrote below."
+
+Conclusion:
+The vxlapi.dll can be uploaded into our repository.
