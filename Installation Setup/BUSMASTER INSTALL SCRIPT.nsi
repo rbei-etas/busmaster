@@ -102,7 +102,7 @@ Section ""
     File ..\Sources\BIN\Release\CanApi2.dll	; PEAK USB
     File ..\Sources\BIN\Release\canlib32.dll	; Kvaser CAN
     File ..\Sources\BIN\Release\icsneo40.dll	; ICS neoVI
-    ;File ..\Sources\BIN\Release\vxlapi.dll	; Vector XL
+    File ..\Sources\BIN\Release\vxlapi.dll	; Vector XL
 
     ; License
     File ..\COPYING.LESSER.txt
