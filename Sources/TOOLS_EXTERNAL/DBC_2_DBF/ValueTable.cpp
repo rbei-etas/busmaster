@@ -22,9 +22,9 @@
  * Implementation file for the value table.
  */
 
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "ValueTable.h"
-#include "signal.h"
+#include "Signal.h"
 
 
 //////////////////////////////////////////////////////////////////////

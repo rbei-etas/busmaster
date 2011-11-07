@@ -28,7 +28,7 @@
 * \date       16.11.2004 Created
 * \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
 */
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "ParameterVal.h"
 
 

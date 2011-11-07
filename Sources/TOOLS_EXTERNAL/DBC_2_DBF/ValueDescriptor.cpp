@@ -22,7 +22,7 @@
  * Implementation file for the ParameterValues class.
  */
 
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "App.h"
 #include "ValueDescriptor.h"
 

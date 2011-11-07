@@ -22,7 +22,7 @@
  * Implementation file for CSignal class
  */
 
-#include "stdafx.h"
+#include "StdAfx.h"
 //#include "CANDBConverter.h"
 #include "Signal.h"
 

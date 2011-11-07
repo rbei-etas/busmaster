@@ -23,11 +23,11 @@
  */
 
 // keyoptionDlg.cpp : implementation file
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "App.h"
 #include "ConverterDlg.h"
-#include "list.h"
-#include "functions.hpp"
+#include "List.h"
+#include "Functions.hpp"
 #include "ConstString.h"
 #include "stdlib.h"
 

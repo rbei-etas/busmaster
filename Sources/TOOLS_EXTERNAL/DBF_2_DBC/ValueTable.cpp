@@ -46,9 +46,9 @@ Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights
 * \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
 */
 
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "ValueTable.h"
-#include "signal.h"
+#include "Signal.h"
 #include "Converter.h"
 
 /**

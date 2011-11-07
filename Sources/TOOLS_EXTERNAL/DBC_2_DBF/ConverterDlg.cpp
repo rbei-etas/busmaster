@@ -21,7 +21,7 @@
  *
  * Implementation file for the CCANDBConverterDlg class.
  */
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "App.h"
 #include "ConverterDlg.h"
 

@@ -30,7 +30,7 @@
 */
 #define     DOUBLEPRECISION       0.5
 
-#include <stdAfx.h>
+#include <StdAfx.h>
 #include "Utility.h"
 /**
 * \brief      Converts the DOUBLE physical values to UINT64 RAW values
