@@ -29,7 +29,7 @@
 * \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
 */
 
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "Message.h"
 #include "Converter.h"
 

@@ -11,7 +11,7 @@
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 *******************************************************************************/
 
-#include "stdafx.h"
+#include "StdAfx.h"
 #ifndef _LEXER_H
 #define _LEXER_H
 #define INVALID 0xffffffff

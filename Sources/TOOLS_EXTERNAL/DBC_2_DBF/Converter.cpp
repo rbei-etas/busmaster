@@ -22,7 +22,7 @@
  * Implementation file for the Comment class.
  */
 
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "App.h"
 #include "Converter.h"
 #include "Signal.h"

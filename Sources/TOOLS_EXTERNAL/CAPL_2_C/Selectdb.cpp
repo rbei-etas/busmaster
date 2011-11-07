@@ -23,7 +23,7 @@
  */
 
 
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "App.h"
 #include "Selectdb.h"
 

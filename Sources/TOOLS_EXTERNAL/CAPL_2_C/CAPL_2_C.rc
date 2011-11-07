@@ -238,14 +238,14 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_MAINFRAME           ICON                    "res\\CAPL_2_C.ico"
+IDR_MAINFRAME           ICON                    "Res/CAPL_2_C.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Cursor
 //
 
-IDC_CURSOR1             CURSOR                  "res\\cursor1.cur"
+IDC_CURSOR1             CURSOR                  "Res/cursor1.cur"
 
 /////////////////////////////////////////////////////////////////////////////
 //

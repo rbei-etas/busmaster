@@ -22,7 +22,7 @@
  * Implementation file for the Parameter class.
  */
 
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "Parameter.h"
 #include<limits.h>
 #include<float.h>

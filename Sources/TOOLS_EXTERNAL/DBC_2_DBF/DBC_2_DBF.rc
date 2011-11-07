@@ -65,7 +65,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_MAINFRAME           ICON                    "res\\DBC_2_DBF.ico"
+IDR_MAINFRAME           ICON                    "Res/DBC_2_DBF.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
