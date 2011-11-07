@@ -135,8 +135,8 @@ Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/predef.h
 Sources/CAN_Kvaser_CAN/EXTERNAL_INCLUDE/pshpack1.h
 Sources/BIN/Release/canlib32.dll
 
-# PEAK USB: driver files
-Sources/BIN/Release/CanApi2.dll
+# PEAK USB: driver files (commented as it's in the repository)
+#Sources/BIN/Release/CanApi2.dll
 
 # Vector XL: Download, API (commented as it's in the repository) and driver files (commented for the same reason)
 Sources/CAN_Vector_XL/EXTERNAL_INCLUDE/xl_lib75.zip
