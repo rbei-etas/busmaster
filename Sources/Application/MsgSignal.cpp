@@ -243,8 +243,8 @@ CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
             omHeaderFile.WriteString(omStrTemp);
 
             CString omStrDLC = STR_EMPTY;
-            UINT aunSigStartBit[defMAX_BITS] ;
-            UINT aunLength[defMAX_BITS] ;
+            UINT aunSigStartBit[defMAX_SIGNALS] ;
+            UINT aunLength[defMAX_SIGNALS] ;
             CStringArray omStrArraySigName;
 //            UINT unCountSig = 0;
             BOOL bReturn = FALSE;
