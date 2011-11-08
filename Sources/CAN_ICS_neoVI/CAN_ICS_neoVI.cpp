@@ -1701,7 +1701,8 @@ static int nDisconnectFromDriver()
             }
         }
     }
-
+    sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
+    
     return nReturn;
 }
 
@@ -2003,6 +2004,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_PerformClosureOperations(void)
     {
         bRemoveClient(sg_asClientToBufMap[ClientIndex].dwClientID);
     }
+    nDisconnectFromDriver();    
     hResult = CAN_ICS_neoVI_DeselectHwInterface();
 
     if (hResult == S_OK)
