@@ -968,7 +968,7 @@ USAGEMODE HRESULT CAN_STUB_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, 
         strcpy(sSelHwInterface[i].m_acNameInterface, "Simulation");
         strcpy(sSelHwInterface[i].m_acDescription, "A simulation engine to create a virtual bus system");
     }
-    nCount = 4;
+    nCount = CHANNEL_ALLOWED;
     return S_OK;
 }
 
