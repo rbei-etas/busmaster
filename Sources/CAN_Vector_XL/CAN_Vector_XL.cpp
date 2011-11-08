@@ -1680,7 +1680,7 @@ USAGEMODE HRESULT CAN_Vector_XL_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChann
 static int nGetNoOfConnectedHardware(void)
 {
     int nResult = 0;
-	XLstatus xlStatus;
+	XLstatus xlStatus = XL_SUCCESS;
 
 	// ------------------------------------
 	// get the hardware configuration
