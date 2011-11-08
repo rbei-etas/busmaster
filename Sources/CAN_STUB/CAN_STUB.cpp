@@ -962,7 +962,7 @@ USAGEMODE HRESULT CAN_STUB_PerformClosureOperations(void)
 
 USAGEMODE HRESULT CAN_STUB_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount)
 {
-    for (UINT i = 0; i < 4/*defNO_OF_CHANNELS*/; i++)
+    for (UINT i = 0; i < CHANNEL_ALLOWED; i++)
     {
         sSelHwInterface[i].m_dwIdInterface = 0x100;
         strcpy(sSelHwInterface[i].m_acNameInterface, "Simulation");
@@ -991,12 +991,14 @@ USAGEMODE HRESULT CAN_STUB_GetControllerParams(LONG& lParam, UINT /*nChannel*/, 
         
         case NUMBER_HW:
         {
-            lParam = 4;//defNO_OF_CHANNELS;
+            //venkat
+            lParam = CHANNEL_ALLOWED;
         }
         break;
         case NUMBER_CONNECTED_HW:
         {
-            lParam = 4;//defNO_OF_CHANNELS;
+            //venkat
+            lParam = CHANNEL_ALLOWED;
         }
         break;
         case DRIVER_STATUS:
