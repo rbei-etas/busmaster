@@ -293,6 +293,7 @@ void CTxMsgDetailsView::vUpdateChannelIDInfo()
 			m_omComboChannelID.AddString( omStr );
 		}
 	}
+	m_omComboChannelID.SetCurSel(0);
 }
 
 /******************************************************************************/
