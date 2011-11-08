@@ -869,9 +869,10 @@ void CBusStatisticsDlg::vUpdateChannelCountInfo(int nChannelCount)
 	{
 		if(m_nChannelCount > nChannelCount)
 		{
+			INT nChannelIndex = nChannelCount+1;
 			for(int i = nChannelCount+1; i <= m_nChannelCount; i++)
 			{
-				m_omStatList.DeleteColumn(i);					
+				m_omStatList.DeleteColumn(nChannelIndex);					
 			}
 		}
 		else
