@@ -167,6 +167,7 @@ static int nGetNoOfConnectedHardware(void);
 BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID);
 static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED], 
 								UINT& unCount, CBaseCANBufFSE* BufferToRemove);
+static int nDisconnectFromDriver();
 
 // state variables
 static BOOL sg_bIsConnected = FALSE;
@@ -708,6 +709,7 @@ USAGEMODE HRESULT CAN_Vector_XL_PerformClosureOperations(void)
 {
     HRESULT hResult = S_OK;
 
+    nDisconnectFromDriver();
 	// ------------------------------------
 	// Close the driver
 	// ------------------------------------
@@ -1216,6 +1218,8 @@ static int nDisconnectFromDriver()
 		}
 	}
 
+    sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
+    
     return nReturn;
 }
 
