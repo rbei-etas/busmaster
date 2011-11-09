@@ -21,7 +21,7 @@
  */
 #define     DOUBLEPRECISION       0.5
 
-#include <StdAfx.h>
+#include "StdAfx.h"
 #include "Utility.h"
 
 /**
