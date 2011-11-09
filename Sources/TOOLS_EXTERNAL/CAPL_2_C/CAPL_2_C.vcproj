@@ -240,7 +240,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\CAPL_2_C.rc"
+				RelativePath=".\Resource.rc"
 				>
 			</File>
 			<File
@@ -583,7 +583,7 @@
 	<Globals>
 		<Global
 			Name="RESOURCE_FILE"
-			Value="CAPL_2_C.rc"
+			Value="Resource.rc"
 		/>
 	</Globals>
 </VisualStudioProject>
