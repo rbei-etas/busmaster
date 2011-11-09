@@ -311,7 +311,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="DBF_2_DBC.rc"
+				RelativePath="Resource.rc"
 				>
 			</File>
 			<File
@@ -565,5 +565,9 @@
 		</Filter>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="Resource.rc"
+		/>
 	</Globals>
 </VisualStudioProject>
