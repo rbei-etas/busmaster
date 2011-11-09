@@ -35,6 +35,7 @@
 #include "Include/Can_Error_Defs.h"
 #include "ConfigDialogsDIL/API_Dialog.h"
 
+#include <search.h>				//For qsort
 
 #define USAGE_EXPORT
 #include "CAN_ETAS_BOA_Extern.h"
@@ -227,6 +228,15 @@ static void (OCI_CALLBACK ProcessCanData)(void *userData, struct OCI_CANMessage*
  * which will be called by BOA framework whenever there are internal events
  */
 static void (OCI_CALLBACK ProcessEvents)(void *userData, struct OCI_CANMessage* msg);
+
+/**
+ * CallBack function used by the qsort Function
+**/
+
+INT nCallBackStrCompareFn( const void *str1, const void *str2)
+{
+	return( strcmp((char *)str1,(char *)str2) );
+}
 
 static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFSE* pBuf)
 {
@@ -1647,6 +1657,8 @@ USAGEMODE HRESULT CAN_ETAS_BOA_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
     if (OCI_FindCANController(acURI, defNO_OF_CHANNELS, &nFound) == OCI_SUCCESS)
     {
         nCount = nFound;
+        
+		qsort((void*)acURI, nCount, sizeof(acURI[0]), nCallBackStrCompareFn);
 		if (nCount > 0)//Success only if there exists alteast one hw
 		{
 
