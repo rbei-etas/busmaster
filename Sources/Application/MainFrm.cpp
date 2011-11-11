@@ -1412,10 +1412,11 @@ DWORD CMainFrame::dLoadDataBaseFile(CString omStrActiveDataBase,BOOL /*bFrmCom*/
 	// Auto Select DB File
 	if (_findfirst( omStrActiveDataBase, &fileinfo)!= -1L)
 	{	
+		BOOL bRetVal;
 		if ( theApp.m_pouMsgSignal !=  NULL )
 		{
 			// Fill data struct with new data base info
-			theApp.m_pouMsgSignal->bFillDataStructureFromDatabaseFile(
+			bRetVal = theApp.m_pouMsgSignal->bFillDataStructureFromDatabaseFile(
 				omStrActiveDataBase);
 			// Create Unions.h in local directory
 			// and fill the file with the latest data structure
@@ -1459,7 +1460,7 @@ DWORD CMainFrame::dLoadDataBaseFile(CString omStrActiveDataBase,BOOL /*bFrmCom*/
 		//    // Clear Message Interpretation Window Content
   //      }
 		//if the file is not present then add its name to file list
-		if(bFilePresent != TRUE)
+		if((bRetVal != FALSE)&&(bFilePresent != TRUE))
 		{
 			//If the DATABASE is added add the file name to theApp class
             theApp.m_pouMsgSignal->bAddDbNameEntry(omStrActiveDataBase);
@@ -10509,11 +10510,12 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 
                 if (theApp.m_pouMsgSignal != NULL)
                 {
-                    theApp.m_pouMsgSignal->vSetDataBaseNames(&omDBNames);
-					for (INT i = 0; i < omDBNames.GetSize(); i++)
+                    for (INT i = 0; i < omDBNames.GetSize(); i++)
                     {
                         //No need to check return value. Error message will be displayed
                         // in trace window
+                        //venkat:dLoadDataBaseFile will associate the database file if.
+                        //it is valid. 
                         dLoadDataBaseFile(omDBNames.GetAt(i), TRUE);
                     }
                 }
