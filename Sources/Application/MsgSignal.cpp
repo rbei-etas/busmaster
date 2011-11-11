@@ -1241,7 +1241,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
     BOOL bIsFileOpen    = FALSE;
 	m_unMessageCount = 0;
     // validate the file
-    if ( bValidateDatabaseFile(strFileName) )
+    bReturnValue = bValidateDatabaseFile(strFileName);
+    if ( bReturnValue )
     {
         // For File I/O
         CStdioFile o_File;
