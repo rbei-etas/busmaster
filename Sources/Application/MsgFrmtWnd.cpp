@@ -747,85 +747,101 @@ void CMsgFrmtWnd::OnParentNotify(UINT message, LPARAM lParam)
         }
     }
 	else if (nEvent == WM_RBUTTONDOWN) 
-    {
+    {		
         int nIndex = -1;
-		POSITION Pos = m_lstMsg.GetFirstSelectedItemPosition();
-        if (Pos != NULL)
-        {
-            nIndex = m_lstMsg.GetNextSelectedItem(Pos);
-        }
 
-        UINT nFlag;
-        // Make sure this event occurs for a valid message item
-        int nItem = m_lstMsg.HitTest(
-                        CPoint(LOWORD(lParam), HIWORD(lParam)),
-                        &nFlag);
+		// Get the mouse click coordinates and get the list ctrl header rectangle
+		CPoint tmpPoint = CPoint(LOWORD(lParam), HIWORD(lParam));
+		CRect headerRect;
+		if (m_lstMsg.m_hWnd != NULL)
+			m_lstMsg.GetHeaderCtrl()->GetClientRect(&headerRect);
 
-        m_lstMsg.SetItemState( nItem,
-			   				   LVIS_SELECTED | LVIS_FOCUSED, 
-							   LVIS_SELECTED | LVIS_FOCUSED);
-        
-        // Take this as selected item
-        nIndex = nItem;
-        
-        if ((nIndex >= 0) && (nFlag & LVHT_ONITEM))
-        {
-            CMenu* pomContextMenu = new CMenu;
-            if (pomContextMenu != NULL)
-            {
-                // Load the Menu from the resource
-                pomContextMenu->DestroyMenu();
-                pomContextMenu->LoadMenu(IDM_MENU_MSG_OPRN);
-                CMenu* pomSubMenu = pomContextMenu->GetSubMenu(0);
-            
-				if( IS_MODE_APPEND(m_bExprnFlag_Disp) || !IS_MODE_INTRP(m_bExprnFlag_Disp))
-					pomContextMenu->EnableMenuItem(IDM_MESSAGE_EXPAND,
-                                           MF_DISABLED |MF_GRAYED);
-                else
+		// Check if the mouse click point is within the header rectangle
+		if (!headerRect.PtInRect(tmpPoint))
+		{
+			POSITION Pos = m_lstMsg.GetFirstSelectedItemPosition();
+			if (Pos != NULL)
+			{
+				nIndex = m_lstMsg.GetNextSelectedItem(Pos);
+			}
+
+			UINT nFlag;
+			// Make sure this event occurs for a valid message item
+			int nItem = m_lstMsg.HitTest(
+							CPoint(LOWORD(lParam), HIWORD(lParam)),
+							&nFlag);
+
+			if (nItem == -1)
+			{
+				int nToStop = 0;
+			}
+
+			m_lstMsg.SetItemState( nItem,
+			   					   LVIS_SELECTED | LVIS_FOCUSED, 
+								   LVIS_SELECTED | LVIS_FOCUSED);
+	        
+			// Take this as selected item
+			nIndex = nItem;
+	        
+			if ((nIndex >= 0) && (nFlag & LVHT_ONITEM))
+			{
+				CMenu* pomContextMenu = new CMenu;
+				if (pomContextMenu != NULL)
 				{
-					SMSGDISPMAPENTRY sTemp;					
-					__int64 nMapIndex = m_omMgsIndexVec[nIndex];
-					if (nMapIndex != nInvalidKey)
-					{        
-						if (m_omMsgDispMap.Lookup(nMapIndex, sTemp))
-						{
-							if (sTemp.m_eInterpretMode == INTERPRETING)
+					// Load the Menu from the resource
+					pomContextMenu->DestroyMenu();
+					pomContextMenu->LoadMenu(IDM_MENU_MSG_OPRN);
+					CMenu* pomSubMenu = pomContextMenu->GetSubMenu(0);
+	            
+					if( IS_MODE_APPEND(m_bExprnFlag_Disp) || !IS_MODE_INTRP(m_bExprnFlag_Disp))
+						pomContextMenu->EnableMenuItem(IDM_MESSAGE_EXPAND,
+											   MF_DISABLED |MF_GRAYED);
+					else
+					{
+						SMSGDISPMAPENTRY sTemp;					
+						__int64 nMapIndex = m_omMgsIndexVec[nIndex];
+						if (nMapIndex != nInvalidKey)
+						{        
+							if (m_omMsgDispMap.Lookup(nMapIndex, sTemp))
 							{
-								pomContextMenu->ModifyMenu( IDM_MESSAGE_EXPAND,
-														    MF_BYCOMMAND,
-															IDM_MESSAGE_EXPAND,
-															defSTR_COLLAPSE_MENU_TEXT);
+								if (sTemp.m_eInterpretMode == INTERPRETING)
+								{
+									pomContextMenu->ModifyMenu( IDM_MESSAGE_EXPAND,
+																MF_BYCOMMAND,
+																IDM_MESSAGE_EXPAND,
+																defSTR_COLLAPSE_MENU_TEXT);
+								}
 							}
 						}
 					}
-				}
-                // Enable/Disable Send Item as per connection status
-                BOOL bConnected = TRUE;
-                // Get flag object
-                CFlags* pouFlags = theApp.pouGetFlagsPtr();
-                // If valid
-                if(pouFlags != NULL )
-                {
-                    bConnected = pouFlags->nGetFlagStatus( CONNECTED );
-                }
-                // If it is not connected then disable it other wise enable
-                if( bConnected == FALSE )
-                {
-                    pomContextMenu->EnableMenuItem( IDM_MESSAGE_SEND,
-                                            MF_DISABLED |MF_GRAYED);
-                }
+					// Enable/Disable Send Item as per connection status
+					BOOL bConnected = TRUE;
+					// Get flag object
+					CFlags* pouFlags = theApp.pouGetFlagsPtr();
+					// If valid
+					if(pouFlags != NULL )
+					{
+						bConnected = pouFlags->nGetFlagStatus( CONNECTED );
+					}
+					// If it is not connected then disable it other wise enable
+					if( bConnected == FALSE )
+					{
+						pomContextMenu->EnableMenuItem( IDM_MESSAGE_SEND,
+												MF_DISABLED |MF_GRAYED);
+					}
 
-                if (pomSubMenu != NULL)
-                {
-                    CPoint omSrcPt(lParam);
-                    ClientToScreen(&omSrcPt);
-                
-                    pomSubMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON, 
-                                        omSrcPt.x, omSrcPt.y, this, NULL);
-                }
-                delete pomContextMenu;
-                pomContextMenu = NULL;
-            }
+					if (pomSubMenu != NULL)
+					{
+						CPoint omSrcPt(lParam);
+						ClientToScreen(&omSrcPt);
+	                
+						pomSubMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON, 
+											omSrcPt.x, omSrcPt.y, this, NULL);
+					}
+					delete pomContextMenu;
+					pomContextMenu = NULL;
+				}
+			}
 		}        
     }
 	CMDIChildWnd::OnParentNotify(message, lParam);
