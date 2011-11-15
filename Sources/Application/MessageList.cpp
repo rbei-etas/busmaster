@@ -316,7 +316,7 @@ void CMessageList::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 						menu.InsertMenu(0, uFlags, i, lvc.pszText);		
 					}
 
-					menu.InsertMenu(0, uFlags, i, lvc.pszText);					
+										
 				}
 
 				menu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this, 0);
