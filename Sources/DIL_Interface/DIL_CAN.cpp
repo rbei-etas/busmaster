@@ -350,6 +350,29 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
             owner window handle. */
         }
 
+        /* Unload the old driver library */
+        switch(dwDriverID) {
+        case DRIVER_CAN_PEAK_USB:
+            CAN_Usb_UnloadDriverLibrary();
+            break;
+        case DRIVER_CAN_ICS_NEOVI:
+        case DRIVER_CAN_ETAS_ES581:
+            CAN_ICS_neoVI_UnloadDriverLibrary();
+            break;
+        case DRIVER_CAN_ETAS_BOA:
+            CAN_ETAS_BOA_UnloadDriverLibrary();
+            break;
+        case DRIVER_CAN_VECTOR_XL:
+            CAN_Vector_XL_UnloadDriverLibrary();
+            break;
+        case DRIVER_CAN_KVASER_CAN:
+            CAN_Kvaser_CAN_UnloadDriverLibrary();
+            break;
+        case DRIVER_CAN_STUB:
+            CAN_STUB_UnloadDriverLibrary();
+            break;
+        }
+
         if (dwDriverID == DRIVER_CAN_PEAK_USB)
         {
             // First select the dummy interface
