@@ -7546,15 +7546,20 @@ void CMainFrame::OnUpdateConfigurePassive(CCmdUI* pCmdUI)
 /*  Modification By  :  Ravikumar Patil                                       */
 /*  Modification on  :  21.03.2003, changes due to change in type of window   */
 /*  Modified On      :  18.04.2003, new member function  bCreateOutputWindow  */
-/*                                of CNotificWnd class is called to create it.*/   
+/*                                of CNotificWnd class is called to create it.*/
+/*  Modification By  :  Saravanan											  */
+/*  Modified On      :  16.11.2011, Window is made visible for first time call*/
 /******************************************************************************/
 void CMainFrame::OnTraceWnd() 
 {   
     if (m_podUIThread == NULL)
     {
         bCreateTraceWindow();
+	//Window should be displayed if thread is created newly
+	m_bNotificWndVisible = FALSE; 
     }    
-	else
+   /*else*/
+    if (m_podUIThread != NULL)
     {   
         m_bNotificWndVisible = !m_bNotificWndVisible;
         UINT nShow = m_bNotificWndVisible? SW_SHOW : SW_HIDE;
