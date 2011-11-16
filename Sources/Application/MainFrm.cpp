@@ -7557,8 +7557,7 @@ void CMainFrame::OnTraceWnd()
         bCreateTraceWindow();
 	//Window should be displayed if thread is created newly
 	m_bNotificWndVisible = FALSE; 
-    }    
-   /*else*/
+    }
     if (m_podUIThread != NULL)
     {   
         m_bNotificWndVisible = !m_bNotificWndVisible;
