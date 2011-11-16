@@ -3805,10 +3805,12 @@ void CMainFrame::OnUpdateConfigureDatabaseSaveas(CCmdUI* pCmdUI)
                         vSaveWindowPostion and made a call to this function
     Modifications    :  02.05.2005, Raja N
                         Added code to stop logging if it is on
-	Modifications    :  30.01.2007, Anish
+    Modifications    :  30.01.2007, Anish
                         Added code to terminate CUIThread & CGraphUIThread properly
-	Modifications    :  20.05.2010, ArunKumar K
+    Modifications    :  20.05.2010, ArunKumar K
                         Added code to Save Toolbar Positions
+    Modifications    :	Saravanan K S, 16-11-2011,
+			Added Cancel button option in the close warning message box
 ******************************************************************************/
 void CMainFrame::OnClose() 
 {
@@ -3819,52 +3821,67 @@ void CMainFrame::OnClose()
     if(oCfgFilename.IsEmpty() == TRUE && bIsConfigurationModified())
     {
 		if(theApp.m_bFromAutomation == FALSE)
-        if ( AfxMessageBox(_T("You have made changes to the configuration.\n\
-        Do you want to save it?"), MB_YESNO) == IDYES )
-        {
-            CFileDialog oCfgFileDlg(FALSE,   // Open dialog as Save as File dlg
-                                    defFILEEXT,  // default extension
-                                    NULL,       // default file name
-                                    defDLGFLAGS, // mode
-                                    defCONFIGFILTER, // filter 
-                                    NULL        // parent wnd
-                                    );
-            oCfgFileDlg.m_ofn.lpstrTitle = _T("Save Configuration File");
-            if(oCfgFileDlg.DoModal() == IDOK)
-            {
-                // get the name of the selected file
-                oCfgFilename = oCfgFileDlg.GetPathName();
-                // This call alone is sufficient to save the 
-                // configuration file.
-                vSetFileStorageInfo(oCfgFilename);
-                if (SaveConfiguration() == 
-                    defCONFIG_FILE_SUCCESS )
-                {
-                    theApp.WriteProfileString(SECTION, 
-                        defCONFIGFILENAME, 
-                        oCfgFilename);
-                }
-            }
+		{
+			UINT unMsgRetVal = AfxMessageBox(_T("You have made changes to the configuration.\nDo you want to save it?"),
+						MB_YESNOCANCEL);
+
+			if ( unMsgRetVal == IDYES )
+			{
+				CFileDialog oCfgFileDlg(FALSE,   // Open dialog as Save as File dlg
+										defFILEEXT,  // default extension
+										NULL,       // default file name
+										defDLGFLAGS, // mode
+										defCONFIGFILTER, // filter 
+										NULL        // parent wnd
+										);
+				oCfgFileDlg.m_ofn.lpstrTitle = _T("Save Configuration File");
+				if(oCfgFileDlg.DoModal() == IDOK)
+				{
+					// get the name of the selected file
+					oCfgFilename = oCfgFileDlg.GetPathName();
+					// This call alone is sufficient to save the 
+					// configuration file.
+					vSetFileStorageInfo(oCfgFilename);
+					if (SaveConfiguration() == 
+						defCONFIG_FILE_SUCCESS )
+					{
+						theApp.WriteProfileString(SECTION, 
+							defCONFIGFILENAME, 
+							oCfgFilename);
+					}
+				}
+			}
+			else if ( unMsgRetVal == IDCANCEL )
+			{
+				return;
+			}
         }
     }
     else 
     {
 		if(theApp.m_bFromAutomation == FALSE)
-        if ( bIsConfigurationModified())
-        {
-            if ( AfxMessageBox(_T("You have made changes to the configuration.\
-Do you want to save it?"), MB_YESNO) == IDYES )
-            {
-                // This call alone is sufficient to save the 
-                // configuration file.
-                vSetFileStorageInfo(oCfgFilename);
-                if ( SaveConfiguration() == defCONFIG_FILE_SUCCESS )
-                {
-                    theApp.WriteProfileString(SECTION, defCONFIGFILENAME, 
-                                                                oCfgFilename);
-                }
-            }
-        }
+		{
+			if ( bIsConfigurationModified())
+			{
+				UINT unMsgRetVal  = AfxMessageBox(_T("You have made changes to the configuration.\nDo you want to save it?"),
+								  MB_YESNOCANCEL);
+				if ( unMsgRetVal == IDYES )
+				{
+					// This call alone is sufficient to save the 
+					// configuration file.
+					vSetFileStorageInfo(oCfgFilename);
+					if ( SaveConfiguration() == defCONFIG_FILE_SUCCESS )
+					{
+						theApp.WriteProfileString(SECTION, defCONFIGFILENAME, 
+																	oCfgFilename);
+					}
+				}
+				else if ( unMsgRetVal == IDCANCEL )
+				{
+					return;
+				}
+			}
+		}
     }
     
     vREP_HandleConnectionStatusChange( FALSE ); //Close reply
