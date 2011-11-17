@@ -430,7 +430,7 @@ void CConverter::GenerateMessageList(CStdioFile& fileInput)
                 pcLine = pcLine + strlen(pcToken) + 1; // to get next token
                 pcToken = strtok(pcLine," "); // msgid
 
-                unsigned int id = (unsigned int)atoi(pcToken);
+                unsigned int id = (unsigned int)strtoul(pcToken, NULL, 10);
 
                 if(id != 3221225472)
                 {
