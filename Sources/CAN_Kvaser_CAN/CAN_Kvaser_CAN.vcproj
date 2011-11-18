@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="CAN_Kvaser_CAN"
 	ProjectGUID="{191E1FE9-43CB-49C2-BF40-CC5994A586FB}"
 	Keyword="MFCDLLProj"
@@ -70,7 +70,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/ConfigDialogsDIL.lib&quot;"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;"
+				AdditionalDependencies="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/canlib32.lib&quot;"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/CAN_Kvaser_CAN.dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile=""
@@ -131,6 +132,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0500"
 				RuntimeLibrary="2"
@@ -139,7 +141,7 @@
 				PrecompiledHeaderThrough="CAN_Kvaser_CAN_stdafx.h"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -155,11 +157,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/ConfigDialogsDIL.lib&quot;"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;"
+				AdditionalDependencies="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/canlib32.lib&quot;"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/CAN_Kvaser_CAN.dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile=""
-				GenerateDebugInformation="false"
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -200,11 +203,31 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\AcceptanceFilterDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CAN_Kvaser_CAN.cpp"
 				>
 			</File>
 			<File
+				RelativePath=".\CAN_Kvaser_CAN.rc"
+				>
+			</File>
+			<File
 				RelativePath=".\CAN_Kvaser_CAN_stdafx.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CANRegAnalysis.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ChangeRegisters.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\HardwareListing.cpp"
 				>
 			</File>
 		</Filter>
@@ -214,11 +237,39 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\AcceptanceFilterDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CAN_Kvaser_CAN.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CAN_Kvaser_CAN_Extern.h"
 				>
 			</File>
 			<File
+				RelativePath=".\CAN_Kvaser_CAN_Resource.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CAN_Kvaser_CAN_stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ChangeRegDefines.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ChangeRegisters.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ContrConfigPeakUsbDefs.h"
+				>
+			</File>
+			<File
+				RelativePath=".\HardwareListing.h"
 				>
 			</File>
 		</Filter>
