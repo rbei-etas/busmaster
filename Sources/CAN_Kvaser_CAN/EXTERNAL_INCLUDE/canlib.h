@@ -1653,7 +1653,7 @@ canStatus CANLIBAPI canGetChannelData (int channel,
 #define canHWTYPE_IRIS               58  ///< Iris
 #define canHWTYPE_BLACKBIRD          58  ///< Kvaser BlackBird
 #define canHWTYPE_MEMORATOR_LIGHT    60  ///< Kvaser Memorator Light
-#define canHWTYPE_MINIHYDRA          62  ///< Eagle née Minihydra
+#define canHWTYPE_MINIHYDRA          62  ///< Eagle nï¿½e Minihydra
 #define canHWTYPE_EAGLE              62  ///< Kvaser Eagle family
  /** @} */
                                  
@@ -3498,7 +3498,7 @@ kvStatus CANLIBAPI kvReadDeviceCustomerData (const CanHandle hnd,
                                              void *data, 
                                              size_t bufsiz);
 
-//¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //
 // APIs for t-script
 // 
@@ -4136,7 +4136,7 @@ kvStatus CANLIBAPI kvPingRequest (const CanHandle hnd,
                                      unsigned int *requestTime, 
                                      unsigned int *pingTime);
 
-//¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 
 //
@@ -4162,10 +4162,6 @@ int CANLIBAPI canOpenMultiple (DWORD bitmask, int flags);
 
 #ifdef __cplusplus
 }
-#endif
-
-#if defined(_WIN32) && !defined(_WIN32_WCE)
-# include "obsolete.h"
 #endif
 
 #endif
