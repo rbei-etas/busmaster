@@ -41,37 +41,7 @@ extern "C" {  // only need to export C interface if used by C++ source code
 #endif
 
 /*  Exported function list */
-USAGEMODE HRESULT CAN_ICS_neoVI_PerformInitOperations(void);
-USAGEMODE HRESULT CAN_ICS_neoVI_PerformClosureOperations(void);
-USAGEMODE HRESULT CAN_ICS_neoVI_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
-USAGEMODE HRESULT CAN_ICS_neoVI_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
-USAGEMODE HRESULT CAN_ICS_neoVI_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
-USAGEMODE HRESULT CAN_ICS_neoVI_DeselectHwInterface(void);
-USAGEMODE HRESULT CAN_ICS_neoVI_DisplayConfigDlg(PCHAR& InitData, int& Length);
-USAGEMODE HRESULT CAN_ICS_neoVI_SetConfigData(PCHAR pInitData, int Length);
-USAGEMODE HRESULT CAN_ICS_neoVI_StartHardware(void);
-USAGEMODE HRESULT CAN_ICS_neoVI_StopHardware(void);
-USAGEMODE HRESULT CAN_ICS_neoVI_ResetHardware(void);
-USAGEMODE HRESULT CAN_ICS_neoVI_GetCurrStatus(s_STATUSMSG& StatusData);
-USAGEMODE HRESULT CAN_ICS_neoVI_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
-USAGEMODE HRESULT CAN_ICS_neoVI_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
-USAGEMODE HRESULT CAN_ICS_neoVI_GetBoardInfo(s_BOARDINFO& BoardInfo);
-USAGEMODE HRESULT CAN_ICS_neoVI_GetBusConfigInfo(BYTE* BusInfo);
-USAGEMODE HRESULT CAN_ICS_neoVI_GetVersionInfo(VERSIONINFO& sVerInfo);
-USAGEMODE HRESULT CAN_ICS_neoVI_GetLastErrorString(CHAR* acErrorStr, int nLength);
-USAGEMODE HRESULT CAN_ICS_neoVI_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
-USAGEMODE HRESULT CAN_ICS_neoVI_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
-USAGEMODE HRESULT CAN_ICS_neoVI_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
-
-// Specific function set
-USAGEMODE HRESULT CAN_ICS_neoVI_LoadDriverLibrary(void);
-USAGEMODE HRESULT CAN_ICS_neoVI_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
-USAGEMODE HRESULT CAN_ICS_neoVI_UnloadDriverLibrary(void);
-USAGEMODE HRESULT CAN_ICS_neoVI_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
-USAGEMODE HRESULT CAN_ICS_neoVI_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
-USAGEMODE HRESULT CAN_ICS_neoVI_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
-
-
+USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface);
 
 #ifdef __cplusplus
 }
