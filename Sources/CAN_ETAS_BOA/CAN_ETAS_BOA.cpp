@@ -24,6 +24,7 @@
  */
 
 #include "CAN_ETAS_BOA_stdafx.h"
+#include "CAN_ETAS_BOA.h"
 #include "DataTypes/Base_WrapperErrorLogger.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/DIL_Datatypes.h"
@@ -33,12 +34,44 @@
 #include "EXTERNAL_INCLUDE/CSI/csisfs.h"
 #include "Include/CanUsbDefs.h"
 #include "Include/Can_Error_Defs.h"
-#include "ConfigDialogsDIL/API_Dialog.h"
+#include "DIL_Interface/BaseDIL_CAN_Controller.h"
+#include "HardwareListing.h"
+#include "ChangeRegisters_CAN_ETAS_BOA.h"
 
 #include <search.h>				//For qsort
 
 #define USAGE_EXPORT
 #include "CAN_ETAS_BOA_Extern.h"
+
+// CCAN_ETAS_BOA
+
+BEGIN_MESSAGE_MAP(CCAN_ETAS_BOA, CWinApp)
+END_MESSAGE_MAP()
+
+
+/**
+ * CCAN_ETAS_BOA construction
+ */
+CCAN_ETAS_BOA::CCAN_ETAS_BOA()
+{
+    // TODO: add construction code here,
+    // Place all significant initialization in InitInstance
+}
+
+
+// The one and only CCAN_ETAS_BOA object
+CCAN_ETAS_BOA theApp;
+
+
+/**
+ * CCAN_ETAS_BOA initialization
+ */
+BOOL CCAN_ETAS_BOA::InitInstance()
+{
+    CWinApp::InitInstance();
+
+    return TRUE;
+}
 
 const BYTE FILTER_ADD = 0x01;
 const BYTE FILTER_REMOVE = 0x02;
@@ -116,6 +149,7 @@ typedef struct tagAckMap
 
 typedef std::list<SACK_MAP> CACK_MAP_LIST;
 static CACK_MAP_LIST sg_asAckMapBuf;
+static  CRITICAL_SECTION sg_CritSectForAckBuf;       // To make it thread safe
 
 /**
  * Channel instances
@@ -211,6 +245,64 @@ enum
 };
 
 BYTE sg_bCurrState = STATE_DRIVER_SELECTED;
+
+/* CDIL_CAN_ETAS_BOA class definition */
+class CDIL_CAN_ETAS_BOA : public CBaseDIL_CAN_Controller
+{
+public:
+	/* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
+	HRESULT CAN_PerformInitOperations(void);
+	HRESULT CAN_PerformClosureOperations(void);
+	HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+	HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
+	HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
+	HRESULT CAN_DeselectHwInterface(void);
+	HRESULT CAN_DisplayConfigDlg(PCHAR& InitData, int& Length);
+	HRESULT CAN_SetConfigData(PCHAR pInitData, int Length);
+	HRESULT CAN_StartHardware(void);
+	HRESULT CAN_StopHardware(void);
+	HRESULT CAN_ResetHardware(void);
+	HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
+	HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
+	HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
+	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
+	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
+	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
+	HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength);
+	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
+	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
+	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
+
+	// Specific function set	
+	HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);	
+	HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
+	HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
+	HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
+	HRESULT CAN_LoadDriverLibrary(void);
+	HRESULT CAN_UnloadDriverLibrary(void);
+};
+
+static CDIL_CAN_ETAS_BOA* sg_pouDIL_CAN_ETAS_BOA = NULL;
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Returns the interface to controller
+ */
+USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
+{	
+	HRESULT hResult = S_OK;
+	if ( NULL == sg_pouDIL_CAN_ETAS_BOA )
+	{
+		if ((sg_pouDIL_CAN_ETAS_BOA = new CDIL_CAN_ETAS_BOA) == NULL)
+		{
+			hResult = S_FALSE;
+		}
+	}
+	*ppvInterface = (void *) sg_pouDIL_CAN_ETAS_BOA; /* Doesn't matter even if sg_pouDIL_CAN_Kvaser is null */
+
+	return hResult;
+}
 
 /**
  * Error logger
@@ -631,24 +723,25 @@ static DWORD dwGetAvailableClientSlot()
  */
 void vMarkEntryIntoMap(const SACK_MAP& RefObj)
 {
-    sg_asAckMapBuf.push_back(RefObj);
+	EnterCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
+    sg_asAckMapBuf.push_back(RefObj);	
+	LeaveCriticalSection(&sg_CritSectForAckBuf); // Unlock the buffer
 }
 
-/**
- * Removes an entry from the list if exists.Else returns FALSE.
- */
 BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
 {   
+	EnterCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
     BOOL bResult = FALSE;
     CACK_MAP_LIST::iterator  iResult = 
-        std::find( sg_asAckMapBuf.begin(), sg_asAckMapBuf.end(), RefObj );  
- 
-    if ((*iResult).m_ClientID > 0)
+        std::find( sg_asAckMapBuf.begin(), sg_asAckMapBuf.end(), RefObj );  			
+    //if ((*iResult).m_ClientID > 0)
+	if (iResult != sg_asAckMapBuf.end())
     {
         bResult = TRUE;
         ClientID = (*iResult).m_ClientID;
         sg_asAckMapBuf.erase(iResult);
     }
+	LeaveCriticalSection(&sg_CritSectForAckBuf); // Unlock the buffer
     return bResult;
 }
 
@@ -1253,7 +1346,7 @@ void (OCI_CALLBACK ProcessEvents)(void *userData, struct OCI_CANMessage* msg)
  *
  * Sets the application params.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
 {
     sg_hOwnerWnd = hWndOwner;
     sg_pIlog = pILog;
@@ -1265,17 +1358,18 @@ USAGEMODE HRESULT CAN_ETAS_BOA_SetAppParams(HWND hWndOwner, Base_WrapperErrorLog
  *
  * Unloads the driver library.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_UnloadDriverLibrary(void)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_UnloadDriverLibrary(void)
 {
+	bool bUnload = false;
     /* Unload OCI library */
     if (sg_hLibOCI != NULL)
     {
-        FreeLibrary(sg_hLibOCI);
+        bUnload = FreeLibrary(sg_hLibOCI);
     }
     /* Unload CSI library */
     if (sg_hLibCSI != NULL)
     {
-        FreeLibrary(sg_hLibCSI);
+        bUnload = FreeLibrary(sg_hLibCSI);
     }
 
     /* Invalidate all API pointers */
@@ -1288,7 +1382,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_UnloadDriverLibrary(void)
  *
  * Registers the buffer pBufObj to the client ClientID
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
     HRESULT hResult = S_FALSE;
     if (ClientID != 0)
@@ -1351,7 +1445,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
             //clear msg buffer
             for (UINT i = 0; i < sg_unClientCnt; i++)
             {
-                CAN_ETAS_BOA_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].m_dwClientID, NULL);                        
+                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].m_dwClientID, NULL);                        
             }
             hResult = S_OK;
         }        
@@ -1366,7 +1460,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
  * Registers a client to the DIL. ClientID will have client id
  * which will be used for further client related calls
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
 {
     HRESULT hResult = S_FALSE;
     if (bRegister)
@@ -1437,7 +1531,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_RegisterClient(BOOL bRegister, DWORD& ClientID, T
  * and will be set whenever there is change in the controller
  * status.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& unCntrlStatus)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& unCntrlStatus)
 {
     unCntrlStatus = defCONTROLLER_ACTIVE; //Temporary solution. TODO
     return S_OK;
@@ -1448,7 +1542,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& un
  *
  * Loads BOA related libraries. Updates BOA API pointers
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_LoadDriverLibrary(void)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_LoadDriverLibrary(void)
 {
     HRESULT hResult = S_FALSE;
 
@@ -1512,7 +1606,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_LoadDriverLibrary(void)
  * Performs intial operations.
  * Initializes filter, queue, controller config with default values.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_PerformInitOperations(void)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_PerformInitOperations(void)
 {
     /* Create critical section for ensuring thread 
        safeness of read message function */
@@ -1535,7 +1629,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_PerformInitOperations(void)
     }
     //Register monitor client
     DWORD dwClient = 0;
-    CAN_ETAS_BOA_RegisterClient(TRUE, dwClient, CAN_MONITOR_NODE);
+    CAN_RegisterClient(TRUE, dwClient, CAN_MONITOR_NODE);
     return S_OK;
 }
 
@@ -1596,12 +1690,12 @@ void vCopyRBIN_2_OCI_CAN_Data(OCI_CANTxMessage& DestMsg, const STCAN_MSG& SrcMsg
  *
  * Performs closure operations.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_PerformClosureOperations(void)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_PerformClosureOperations(void)
 {
     HRESULT hResult = S_OK;
-    
+
     //deselect hw interface
-    hResult = CAN_ETAS_BOA_DeselectHwInterface();
+    hResult = CAN_DeselectHwInterface();
 
     /* close the existing handle */
     CloseHandle(sg_hEvent);
@@ -1615,7 +1709,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_PerformClosureOperations(void)
     }
     
     /* Delete the critical section */
-    DeleteCriticalSection(&sg_DIL_CriticalSection);
+    DeleteCriticalSection(&sg_DIL_CriticalSection);	
     if (hResult == S_OK)
     {
         sg_bCurrState = STATE_DRIVER_SELECTED;
@@ -1630,7 +1724,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_PerformClosureOperations(void)
  * will be updated with the system time ref.
  * TimeStamp will be updated with the corresponding timestamp.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
 {
     CurrSysTime = sg_CurrSysTime;
     TimeStamp   = sg_TimeStamp;
@@ -1642,12 +1736,29 @@ USAGEMODE HRESULT CAN_ETAS_BOA_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT6
 }
 
 /**
+ * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
+ *
+ * This function will popup hardware selection dialog and gets the user selection of channels.
+ *
+ */
+int ListHardwareInterfaces(HWND hParent, DWORD dwDriver, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount)
+{
+    AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+    CHardwareListing HwList(psInterfaces, nCount, NULL);
+    HwList.DoModal();
+    nCount = HwList.nGetSelectedList(pnSelList);    
+
+    return 0;
+}
+
+/**
  * \return S_OK for success, S_FALSE for failure
  *
  * Lists the hardware interface available. sSelHwInterface
  * will contain the user selected hw interface.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)
 {
     //VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_DRIVER_SELECTED, ERR_IMPROPER_STATE);
     USES_CONVERSION;
@@ -1707,7 +1818,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
  *
  * Selects the hardware interface selected by the user.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_SelectHwInterface(const INTERFACE_HW_LIST& asSelHwInterface, INT /*nCount*/)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_SelectHwInterface(const INTERFACE_HW_LIST& asSelHwInterface, INT /*nCount*/)
 {   
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_LISTED, ERR_IMPROPER_STATE);
 
@@ -1793,7 +1904,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_SelectHwInterface(const INTERFACE_HW_LIST& asSelH
  *
  * Deselects the selected hardware interface.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_DeselectHwInterface(void)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_DeselectHwInterface(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
@@ -1849,7 +1960,25 @@ USAGEMODE HRESULT CAN_ETAS_BOA_DeselectHwInterface(void)
  */
 BOOL Callback_DILBOA(BYTE /*Argument*/, PBYTE pDatStream, INT /*Length*/)
 {
-    return (CAN_ETAS_BOA_SetConfigData((CHAR *) pDatStream, 0) == S_OK);
+	return (sg_pouDIL_CAN_ETAS_BOA->CAN_SetConfigData((CHAR *) pDatStream, 0) == S_OK);
+}
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Displays the configuration dialog for controller
+ */
+int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/, 
+                            PSCONTROLER_DETAILS pControllerDetails, UINT nCount)
+{
+    AFX_MANAGE_STATE(AfxGetStaticModuleState());
+    int nResult = WARNING_NOTCONFIRMED;
+
+    CChangeRegisters_CAN_ETAS_BOA ouChangeRegister(CWnd::FromHandle(hParent), pControllerDetails, nCount);
+    ouChangeRegister.DoModal();
+    nResult = ouChangeRegister.nGetInitStatus();
+
+    return nResult;
 }
 
 /**
@@ -1859,7 +1988,7 @@ BOOL Callback_DILBOA(BYTE /*Argument*/, PBYTE pDatStream, INT /*Length*/)
  * Fields are initialized with values supplied by InitData.
  * InitData will be updated with the user selected values.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_DisplayConfigDlg(PCHAR& InitData, INT& Length)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
     VALIDATE_POINTER_RETURN_VAL(InitData, WARN_INITDAT_NCONFIRM);
@@ -1876,7 +2005,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_DisplayConfigDlg(PCHAR& InitData, INT& Length)
 	if (sg_nNoOfChannels > 0)
 	{
 		Result = DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DILBOA,
-						psContrlDets, sg_nNoOfChannels, DRIVER_CAN_ETAS_BOA);
+						psContrlDets, sg_nNoOfChannels);
 		switch (Result)
 		{
 			case WARNING_NOTCONFIRMED:
@@ -1887,7 +2016,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_DisplayConfigDlg(PCHAR& InitData, INT& Length)
 			case INFO_INIT_DATA_CONFIRMED:
 			{    
 				Length = sizeof(SCONTROLER_DETAILS) * defNO_OF_CHANNELS;
-				Result = CAN_ETAS_BOA_SetConfigData(InitData, Length);
+				Result = CAN_SetConfigData(InitData, Length);
                 if (Result == S_OK)
                 {
                     Result = INFO_INITDAT_CONFIRM_CONFIG;
@@ -1917,7 +2046,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_DisplayConfigDlg(PCHAR& InitData, INT& Length)
  *
  * Sets the controller configuration data supplied by InitData.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_SetConfigData(PCHAR pInitData, INT /*Length*/)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_SetConfigData(PCHAR pInitData, INT /*Length*/)
 {
     HRESULT hResult = WARNING_NOTCONFIRMED;
 
@@ -1964,7 +2093,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_SetConfigData(PCHAR pInitData, INT /*Length*/)
  *
  * Starts the controller.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_StartHardware(void)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_StartHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
@@ -1983,7 +2112,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_StartHardware(void)
                                                                      &(sg_asChannel[i].m_OCI_CntrlProp))
                                                                      == OCI_SUCCESS)
                 {
-                    hResult |= S_OK;
+                    hResult |= S_OK;					
                 }
                 else
                 {
@@ -2002,6 +2131,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_StartHardware(void)
     if (hResult == S_OK)
     {
         sg_bCurrState = STATE_CONNECTED;
+		InitializeCriticalSection(&sg_CritSectForAckBuf);
     }
 
     return hResult;
@@ -2012,7 +2142,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_StartHardware(void)
  *
  * Stops the controller.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_StopHardware(void)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_StopHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
 
@@ -2030,7 +2160,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_StopHardware(void)
                                                                      &(sg_asChannel[i].m_OCI_CntrlProp))
                                                                      == OCI_SUCCESS)
                 {
-                    hResult |= S_OK;
+                    hResult |= S_OK;					
                 }
                 else
                 {
@@ -2054,6 +2184,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_StopHardware(void)
     {
         sg_byCurrState = CREATE_MAP_TIMESTAMP;
         sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
+		DeleteCriticalSection(&sg_CritSectForAckBuf);
     }
 
     return hResult;
@@ -2062,9 +2193,21 @@ USAGEMODE HRESULT CAN_ETAS_BOA_StopHardware(void)
 /**
  * \return S_OK for success, S_FALSE for failure
  *
+ * Function to get Controller status
+ */
+HRESULT CDIL_CAN_ETAS_BOA::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
+{
+	StatusData.wControllerStatus = NORMAL_ACTIVE;
+
+	return S_OK;
+}
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
  * Resets the controller.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_ResetHardware(void)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_ResetHardware(void)
 {
     return WARN_DUMMY_API;
 }
@@ -2074,7 +2217,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_ResetHardware(void)
  *
  * Gets the Tx queue configured.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 {
     return WARN_DUMMY_API;
 }
@@ -2082,7 +2225,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 /**
  * Sends STCAN_MSG structure from the client dwClientID.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
     HRESULT hResult = S_FALSE;
@@ -2128,7 +2271,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTx
 /**
  * Gets board info.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
 {
     return WARN_DUMMY_API;
 }
@@ -2136,7 +2279,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
 /**
  * Gets bus config info.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_GetBusConfigInfo(BYTE* /*BusInfo*/)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
 {
     return WARN_DUMMY_API;
 }
@@ -2144,7 +2287,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_GetBusConfigInfo(BYTE* /*BusInfo*/)
 /**
  * Gets driver version info.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
 {
     return WARN_DUMMY_API;
 }
@@ -2152,7 +2295,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
 /**
  * Gets last occured error and puts inside acErrorStr.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_GetLastErrorString(CHAR* /*acErrorStr*/, INT /*nLength*/)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_GetLastErrorString(CHAR* /*acErrorStr*/, INT /*nLength*/)
 {
     return WARN_DUMMY_API;
 }
@@ -2161,7 +2304,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_GetLastErrorString(CHAR* /*acErrorStr*/, INT /*nL
  * Applies FilterType(PASS/STOP) filter for corresponding
  * channel. Frame ids are supplied by punMsgIds.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
 {
     return WARN_DUMMY_API;
 }
@@ -2170,7 +2313,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHA
  * Gets the controller param eContrParam of the channel.
  * Value stored in lParam.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
 {
     HRESULT hResult = S_OK;
     if ((sg_bCurrState == STATE_HW_INTERFACE_SELECTED) || (sg_bCurrState == STATE_CONNECTED))
@@ -2229,7 +2372,7 @@ USAGEMODE HRESULT CAN_ETAS_BOA_GetControllerParams(LONG& lParam, UINT nChannel, 
 /**
  * Gets the error counter for corresponding channel.
  */
-USAGEMODE HRESULT CAN_ETAS_BOA_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam)
 {
     HRESULT hResult = S_OK;
     if ((sg_bCurrState == STATE_CONNECTED) || (sg_bCurrState == STATE_HW_INTERFACE_SELECTED))
