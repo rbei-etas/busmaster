@@ -29,6 +29,7 @@
 #include "DataTypes/DIL_Datatypes.h"
 #include "Include/Basedefs.h"
 #include "BaseDIL_CAN.h"
+#include "BaseDIL_CAN_Controller.h"
 
 class CDIL_CAN : public CBaseDIL_CAN
 {
@@ -44,6 +45,12 @@ public:
     
 	/* Variable to maintain currently selected Driver ID */
 	DWORD m_dwDriverID;
+
+	/* member variable to hold the pointer of currently selected controller interface */
+	CBaseDIL_CAN_Controller* m_pBaseDILCAN_Controller;
+
+	/* Variable to hold handle to currently selected controller DIL */
+	HMODULE m_hDll;
     
 	/**
 	 * Based on the parameter this function renders number of the driver interface
@@ -206,14 +213,7 @@ public:
     HRESULT  DILC_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
 	/* HELPER FUNCTIONS START */
-    void vSelectInterface_Dummy(void);
-    void vSelectInterface_CAN_Parallel_Port(void);
-    void vSelectInterface_CAN_Usb(void);
-    void vSelectInterface_CAN_ICS_neoVI(void);
-    void vSelectInterface_CAN_STUB(void);
-    void vSelectInterface_CAN_ETAS_BOA(void);
-    void vSelectInterface_CAN_Vector_XL(void);
-    void vSelectInterface_CAN_Kvaser_CAN(void);
+    void vSelectInterface_Dummy(void);      
 
 private:
     HRESULT (*m_pfPerformInitOperations)(void);
