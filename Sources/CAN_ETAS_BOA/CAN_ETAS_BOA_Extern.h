@@ -41,37 +41,7 @@ extern "C" {  // only need to export C interface if used by C++ source code
 #endif
 
 /*  Exported function list */
-USAGEMODE HRESULT CAN_ETAS_BOA_PerformInitOperations(void);
-USAGEMODE HRESULT CAN_ETAS_BOA_PerformClosureOperations(void);
-USAGEMODE HRESULT CAN_ETAS_BOA_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
-USAGEMODE HRESULT CAN_ETAS_BOA_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
-USAGEMODE HRESULT CAN_ETAS_BOA_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
-USAGEMODE HRESULT CAN_ETAS_BOA_DeselectHwInterface(void);
-USAGEMODE HRESULT CAN_ETAS_BOA_DisplayConfigDlg(PCHAR& InitData, int& Length);
-USAGEMODE HRESULT CAN_ETAS_BOA_SetConfigData(PCHAR pInitData, int Length);
-USAGEMODE HRESULT CAN_ETAS_BOA_StartHardware(void);
-USAGEMODE HRESULT CAN_ETAS_BOA_StopHardware(void);
-USAGEMODE HRESULT CAN_ETAS_BOA_ResetHardware(void);
-USAGEMODE HRESULT CAN_ETAS_BOA_GetCurrStatus(s_STATUSMSG& StatusData);
-USAGEMODE HRESULT CAN_ETAS_BOA_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
-USAGEMODE HRESULT CAN_ETAS_BOA_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
-USAGEMODE HRESULT CAN_ETAS_BOA_GetBoardInfo(s_BOARDINFO& BoardInfo);
-USAGEMODE HRESULT CAN_ETAS_BOA_GetBusConfigInfo(BYTE* BusInfo);
-USAGEMODE HRESULT CAN_ETAS_BOA_GetVersionInfo(VERSIONINFO& sVerInfo);
-USAGEMODE HRESULT CAN_ETAS_BOA_GetLastErrorString(CHAR* acErrorStr, int nLength);
-USAGEMODE HRESULT CAN_ETAS_BOA_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
-USAGEMODE HRESULT CAN_ETAS_BOA_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
-USAGEMODE HRESULT CAN_ETAS_BOA_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
-
-// Specific function set
-USAGEMODE HRESULT CAN_ETAS_BOA_LoadDriverLibrary(void);
-USAGEMODE HRESULT CAN_ETAS_BOA_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
-USAGEMODE HRESULT CAN_ETAS_BOA_UnloadDriverLibrary(void);
-USAGEMODE HRESULT CAN_ETAS_BOA_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
-USAGEMODE HRESULT CAN_ETAS_BOA_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
-USAGEMODE HRESULT CAN_ETAS_BOA_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
-
-
+USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface);
 
 #ifdef __cplusplus
 }
