@@ -22,7 +22,7 @@
 			IntermediateDirectory="Debug"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
-			UseOfMFC="0"
+			UseOfMFC="2"
 			CharacterSet="2"
 			>
 			<Tool
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/ConfigDialogsDIL.lib&quot;"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/CAN_Vector_XL.dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile=""
@@ -157,7 +157,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/ConfigDialogsDIL.lib&quot;"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;"
 				AdditionalDependencies="Advapi32.lib"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/CAN_Vector_XL.dll"
 				LinkIncremental="1"
@@ -208,7 +208,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CAN_Vector_XL.rc"
+				>
+			</File>
+			<File
 				RelativePath=".\CAN_Vector_XL_stdafx.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\HardwareListing.cpp"
 				>
 			</File>
 		</Filter>
@@ -218,11 +226,23 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\CAN_Vector_XL.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CAN_Vector_XL_Extern.h"
 				>
 			</File>
 			<File
+				RelativePath=".\CAN_Vector_XL_Resource.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CAN_Vector_XL_stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\HardwareListing.h"
 				>
 			</File>
 			<File
