@@ -70,7 +70,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/ConfigDialogsDIL.lib&quot;"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/CAN_ETAS_BOA.dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile=""
@@ -131,6 +131,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0500"
 				RuntimeLibrary="2"
@@ -139,7 +140,7 @@
 				PrecompiledHeaderThrough="CAN_ETAS_BOA_StdAfx.h"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -155,7 +156,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/ConfigDialogsDIL.lib&quot;"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;"
 				AdditionalDependencies="Advapi32.lib"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/CAN_ETAS_BOA.dll"
 				LinkIncremental="1"
@@ -167,6 +168,7 @@
 				EnableCOMDATFolding="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
+				SupportUnloadOfDelayLoadedDLL="false"
 				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_ETAS_BOA.lib"
 				TargetMachine="1"
 			/>
@@ -209,6 +211,14 @@
 				RelativePath=".\CAN_ETAS_BOA_stdafx.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\ChangeRegisters_CAN_ETAS_BOA.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\HardwareListing.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -216,11 +226,47 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\CAN_ETAS_BOA.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CAN_ETAS_BOA_Extern.h"
 				>
 			</File>
 			<File
+				RelativePath=".\CAN_ETAS_BOA_Resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CAN_ETAS_BOA_Resource.hm"
+				>
+			</File>
+			<File
 				RelativePath=".\CAN_ETAS_BOA_stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ChangeRegDefines.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ChangeRegisters_CAN_ETAS_BOA.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ContrConfigPeakUsbDefs.h"
+				>
+			</File>
+			<File
+				RelativePath=".\HardwareListing.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			>
+			<File
+				RelativePath=".\CAN_ETAS_BOA.rc"
 				>
 			</File>
 		</Filter>
