@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="DIL_Interface"
 	ProjectGUID="{77290670-1DBD-4127-8BAD-7C09990FA5AE}"
 	Keyword="Win32Proj"
@@ -65,7 +65,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_PEAK_USB.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_ICS_neoVI.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_STUB.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_ETAS_BOA.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_Vector_XL.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_Kvaser_CAN.lib&quot;"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/DIL_Interface.dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
@@ -73,6 +73,7 @@
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
+				SupportUnloadOfDelayLoadedDLL="true"
 				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_Interface.lib"
 				TargetMachine="1"
 			/>
@@ -145,7 +146,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_ICS_neoVI.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_STUB.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_ETAS_BOA.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_PEAK_USB.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_Vector_XL.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_Kvaser_CAN.lib&quot;"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/DIL_Interface.dll"
 				LinkIncremental="1"
 				GenerateManifest="true"
@@ -155,6 +156,7 @@
 				EnableCOMDATFolding="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
+				SupportUnloadOfDelayLoadedDLL="false"
 				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_Interface.lib"
 				TargetMachine="1"
 			/>
@@ -213,6 +215,10 @@
 			>
 			<File
 				RelativePath=".\BaseDIL_CAN.h"
+				>
+			</File>
+			<File
+				RelativePath=".\BaseDIL_CAN_Controller.h"
 				>
 			</File>
 			<File
