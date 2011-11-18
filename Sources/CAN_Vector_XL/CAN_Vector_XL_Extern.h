@@ -16,7 +16,7 @@
 /**
  * \file      CAN_Vector_XL_Extern.h
  * \brief     Exports API functions for Vector XL CAN Hardware interface
- * \author    Pradeep Kadoor
+ * \author    Arunkumar Karri
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Exports API functions for Vector XL CAN Hardware interface
@@ -41,37 +41,7 @@ extern "C" {  // only need to export C interface if used by C++ source code
 #endif
 
 /*  Exported function list */
-USAGEMODE HRESULT CAN_Vector_XL_PerformInitOperations(void);
-USAGEMODE HRESULT CAN_Vector_XL_PerformClosureOperations(void);
-USAGEMODE HRESULT CAN_Vector_XL_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
-USAGEMODE HRESULT CAN_Vector_XL_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
-USAGEMODE HRESULT CAN_Vector_XL_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
-USAGEMODE HRESULT CAN_Vector_XL_DeselectHwInterface(void);
-USAGEMODE HRESULT CAN_Vector_XL_DisplayConfigDlg(PCHAR& InitData, int& Length);
-USAGEMODE HRESULT CAN_Vector_XL_SetConfigData(PCHAR pInitData, int Length);
-USAGEMODE HRESULT CAN_Vector_XL_StartHardware(void);
-USAGEMODE HRESULT CAN_Vector_XL_StopHardware(void);
-USAGEMODE HRESULT CAN_Vector_XL_ResetHardware(void);
-USAGEMODE HRESULT CAN_Vector_XL_GetCurrStatus(s_STATUSMSG& StatusData);
-USAGEMODE HRESULT CAN_Vector_XL_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
-USAGEMODE HRESULT CAN_Vector_XL_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
-USAGEMODE HRESULT CAN_Vector_XL_GetBoardInfo(s_BOARDINFO& BoardInfo);
-USAGEMODE HRESULT CAN_Vector_XL_GetBusConfigInfo(BYTE* BusInfo);
-USAGEMODE HRESULT CAN_Vector_XL_GetVersionInfo(VERSIONINFO& sVerInfo);
-USAGEMODE HRESULT CAN_Vector_XL_GetLastErrorString(CHAR* acErrorStr, int nLength);
-USAGEMODE HRESULT CAN_Vector_XL_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
-USAGEMODE HRESULT CAN_Vector_XL_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
-USAGEMODE HRESULT CAN_Vector_XL_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
-
-// Specific function set
-USAGEMODE HRESULT CAN_Vector_XL_LoadDriverLibrary(void);
-USAGEMODE HRESULT CAN_Vector_XL_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
-USAGEMODE HRESULT CAN_Vector_XL_UnloadDriverLibrary(void);
-USAGEMODE HRESULT CAN_Vector_XL_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
-USAGEMODE HRESULT CAN_Vector_XL_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
-USAGEMODE HRESULT CAN_Vector_XL_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
-
-
+USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface);
 
 #ifdef __cplusplus
 }
