@@ -35,8 +35,10 @@
 #include "CAN_ICS_neoVI_Network.h"
 #include "Utility/Utility_Thread.h"
 #include "Include/DIL_CommonDefs.h"
-#include "ConfigDialogsDIL/API_dialog.h"
 #include "EXTERNAL_INCLUDE/icsnVC40.h"
+#include "DIL_Interface/BaseDIL_CAN_Controller.h"
+#include "HardwareListing.h"
+#include "ChangeRegisters_CAN_ICS_NeoVI.h"
 
 
 #define USAGE_EXPORT
@@ -394,26 +396,65 @@ typedef struct tagDATINDSTR
 
 static sDatIndStr s_DatIndThread;
 
-HRESULT CAN_ICS_neoVI_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
+/* CDIL_CAN_ICSNeoVI class definition */
+class CDIL_CAN_ICSNeoVI : public CBaseDIL_CAN_Controller
+{
+public:
+	/* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
+	HRESULT CAN_PerformInitOperations(void);
+	HRESULT CAN_PerformClosureOperations(void);
+	HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+	HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
+	HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
+	HRESULT CAN_DeselectHwInterface(void);
+	HRESULT CAN_DisplayConfigDlg(PCHAR& InitData, int& Length);
+	HRESULT CAN_SetConfigData(PCHAR pInitData, int Length);
+	HRESULT CAN_StartHardware(void);
+	HRESULT CAN_StopHardware(void);
+	HRESULT CAN_ResetHardware(void);
+	HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
+	HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
+	HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
+	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
+	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
+	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
+	HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength);
+	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
+	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
+	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
-/* HELPER FUNCTIONS START */
+	// Specific function set	
+	HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);	
+	HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
+	HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
+	HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
+	HRESULT CAN_LoadDriverLibrary(void);
+	HRESULT CAN_UnloadDriverLibrary(void);
+};
+
+static CDIL_CAN_ICSNeoVI* sg_pouDIL_CAN_ICSNeoVI = NULL;
 
 /**
- * Function to initialize all global data variables
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Returns the interface to controller
  */
-static void vInitialiseAllData(void)
-{
-    // Initialise both the time parameters
-    GetLocalTime(&sg_CurrSysTime);
-    sg_TimeStamp = 0x0;
-    //INITIALISE_DATA(sg_sCurrStatus);
-    memset(&sg_sCurrStatus, 0, sizeof(sg_sCurrStatus));
-    //Query Tick Count
-    sg_QueryTickCount.QuadPart = 0;
-    //INITIALISE_ARRAY(sg_acErrStr);
-    memset(sg_acErrStr, 0, sizeof(sg_acErrStr));
-    CAN_ICS_neoVI_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
+USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
+{	
+	HRESULT hResult = S_OK;
+	if ( NULL == sg_pouDIL_CAN_ICSNeoVI )
+	{
+		if ((sg_pouDIL_CAN_ICSNeoVI = new CDIL_CAN_ICSNeoVI) == NULL)
+		{
+			hResult = S_FALSE;
+		}
+	}
+	*ppvInterface = (void *) sg_pouDIL_CAN_ICSNeoVI; /* Doesn't matter even if sg_pouDIL_CAN_Kvaser is null */
+
+	return hResult;
 }
+
+/* HELPER FUNCTIONS START */
 
 /**
  * Function create and set read indication event
@@ -637,28 +678,28 @@ static BOOL bLoadDataFromContr(PSCONTROLER_DETAILS pControllerDetails)
                                                      &pcStopStr, defBASE_DEC ));
             // Get Acceptance Filter
             odChannel.m_sFilter.m_ucACC_Code0 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte1,
+                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte1[0],
                                                             &pcStopStr, defBASE_HEX ));
             odChannel.m_sFilter.m_ucACC_Code1 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte2,
+                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte2[0],
                                                             &pcStopStr, defBASE_HEX ));
             odChannel.m_sFilter.m_ucACC_Code2 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte3,
+                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte3[0],
                                                             &pcStopStr, defBASE_HEX ));
             odChannel.m_sFilter.m_ucACC_Code3 = static_cast <UCHAR>(
-                                                    _tcstol(pControllerDetails[ nIndex ].m_omStrAccCodeByte4,
+                                                    _tcstol(pControllerDetails[ nIndex ].m_omStrAccCodeByte4[0],
                                                             &pcStopStr, defBASE_HEX));
             odChannel.m_sFilter.m_ucACC_Mask0 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte1,
+                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte1[0],
                                                             &pcStopStr, defBASE_HEX));
             odChannel.m_sFilter.m_ucACC_Mask1 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte2,
+                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte2[0],
                                                             &pcStopStr, defBASE_HEX));
             odChannel.m_sFilter.m_ucACC_Mask2 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte3,
+                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte3[0],
                                                             &pcStopStr, defBASE_HEX));
             odChannel.m_sFilter.m_ucACC_Mask3 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte4,
+                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte4[0],
                                                             &pcStopStr, defBASE_HEX));
             odChannel.m_sFilter.m_ucACC_Filter_Type = static_cast <UCHAR>(
                         pControllerDetails[ nIndex ].m_bAccFilterMode );
@@ -1325,6 +1366,23 @@ static int nCreateSingleHardwareNetwork()
 }
 
 /**
+ * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
+ *
+ * This function will popup hardware selection dialog and gets the user selection of channels.
+ *
+ */
+int ListHardwareInterfaces(HWND hParent, DWORD dwDriver, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount)
+{
+    AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+    CHardwareListing HwList(psInterfaces, nCount, NULL);
+    HwList.DoModal();
+    nCount = HwList.nGetSelectedList(pnSelList);    
+
+    return 0;
+}
+
+/**
  * This function will get the hardware selection from the user
  * and will create essential networks.
  */
@@ -1701,8 +1759,8 @@ static int nDisconnectFromDriver()
             }
         }
     }
-    sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
-    
+	sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
+
     return nReturn;
 }
 
@@ -1985,10 +2043,10 @@ HRESULT GetICS_neoVI_APIFuncPtrs(void)
 /**
  * Perform initialization operations specific to TZM
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_PerformInitOperations(void)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_PerformInitOperations(void)
 {
     //Register Monitor client
-    CAN_ICS_neoVI_RegisterClient(TRUE, sg_dwClientID, CAN_MONITOR_NODE);
+    CAN_RegisterClient(TRUE, sg_dwClientID, CAN_MONITOR_NODE);
     sg_podActiveNetwork = &sg_odHardwareNetwork;
     return S_OK;
 }
@@ -1996,28 +2054,28 @@ USAGEMODE HRESULT CAN_ICS_neoVI_PerformInitOperations(void)
 /**
  * Perform closure operations specific to TZM
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_PerformClosureOperations(void)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_PerformClosureOperations(void)
 {
     HRESULT hResult = S_OK;
-    UINT ClientIndex = 0;
+
+    UINT ClientIndex = 0;	
     while (sg_unClientCnt > 0)
     {
         bRemoveClient(sg_asClientToBufMap[ClientIndex].dwClientID);
-    }
-    nDisconnectFromDriver();    
-    hResult = CAN_ICS_neoVI_DeselectHwInterface();
-
+    }    	
+	nDisconnectFromDriver();
+	hResult = CAN_DeselectHwInterface();		
     if (hResult == S_OK)
     {
         sg_bCurrState = STATE_DRIVER_SELECTED;
-    }
+    }	
     return hResult;
 }
 
 /**
  * Retrieve time mode mapping
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
 {
     memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
     TimeStamp = sg_TimeStamp;
@@ -2032,7 +2090,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT
  * Function to List Hardware interfaces connect to the system and requests to the
  * user to select
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)
 {
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;
@@ -2078,13 +2136,13 @@ static int nResetHardware(BOOL /*bHardwareReset*/)
 /**
  * Function to deselect the chosen hardware interface
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_DeselectHwInterface(void)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_DeselectHwInterface(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
     HRESULT hResult = S_OK;
 
-    CAN_ICS_neoVI_ResetHardware();
+    CAN_ResetHardware();
 
     sg_bCurrState = STATE_HW_INTERFACE_LISTED;
 
@@ -2094,7 +2152,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_DeselectHwInterface(void)
 /**
  * Function to select hardware interface chosen by the user
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_SelectHwInterface(const INTERFACE_HW_LIST& asSelHwInterface, INT /*nCount*/)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_SelectHwInterface(const INTERFACE_HW_LIST& asSelHwInterface, INT /*nCount*/)
 {
     USES_CONVERSION;
 
@@ -2128,7 +2186,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_SelectHwInterface(const INTERFACE_HW_LIST& asSel
 /**
  * Function to set controller configuration
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_SetConfigData(PCHAR ConfigFile, int Length)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_SetConfigData(PCHAR ConfigFile, int Length)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
@@ -2151,13 +2209,31 @@ USAGEMODE HRESULT CAN_ICS_neoVI_SetConfigData(PCHAR ConfigFile, int Length)
 
 BOOL Callback_DILTZM(BYTE /*Argument*/, PBYTE pDatStream, int /*Length*/)
 {
-    return (CAN_ICS_neoVI_SetConfigData((CHAR *) pDatStream, 0) == S_OK);
+    return ( sg_pouDIL_CAN_ICSNeoVI->CAN_SetConfigData((CHAR *) pDatStream, 0) == S_OK);
+}
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Displays the configuration dialog for controller
+ */
+int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/, 
+                            PSCONTROLER_DETAILS pControllerDetails, UINT nCount)
+{
+    AFX_MANAGE_STATE(AfxGetStaticModuleState());
+    int nResult = WARNING_NOTCONFIRMED;
+
+    CChangeRegisters_CAN_ICS_neoVI ouChangeRegister(CWnd::FromHandle(hParent), pControllerDetails, nCount);
+    ouChangeRegister.DoModal();
+    nResult = ouChangeRegister.nGetInitStatus();
+
+    return nResult;
 }
 
 /**
  * Function to display config dialog
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_DisplayConfigDlg(PCHAR& InitData, int& Length)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_DisplayConfigDlg(PCHAR& InitData, int& Length)
 {
     HRESULT Result = WARN_INITDAT_NCONFIRM;
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
@@ -2338,7 +2414,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_DisplayConfigDlg(PCHAR& InitData, int& Length)
     if (sg_ucNoOfHardware > 0)
     {
         int nResult = DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DILTZM,
-                                              pControllerDetails, sg_ucNoOfHardware, DRIVER_CAN_ICS_NEOVI);
+                                              pControllerDetails, sg_ucNoOfHardware);
         switch (nResult)
         {
             case WARNING_NOTCONFIRMED:
@@ -2381,7 +2457,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_DisplayConfigDlg(PCHAR& InitData, int& Length)
 /**
  * Function to start monitoring the bus
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_StartHardware(void)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_StartHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
@@ -2425,7 +2501,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_StartHardware(void)
 /**
  * Function to stop monitoring the bus
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_StopHardware(void)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_StopHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
 
@@ -2510,11 +2586,11 @@ static int nGetErrorCounter( UINT unChannel, SERROR_CNT& sErrorCount)
 /**
  * Function to reset the hardware, fcClose resets all the buffer
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_ResetHardware(void)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_ResetHardware(void)
 {
     HRESULT hResult = S_FALSE;
     // Stop the hardware if connected
-    CAN_ICS_neoVI_StopHardware(); //return value not necessary
+    CAN_StopHardware(); //return value not necessary
     if (sg_sParmRThread.bTerminateThread())
     {
         if (nResetHardware(TRUE) == CAN_USB_OK)
@@ -2528,7 +2604,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_ResetHardware(void)
 /**
  * Function to get Controller status
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_GetCurrStatus(s_STATUSMSG& StatusData)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
 {
     if (sg_ucControllerMode == defUSB_MODE_ACTIVE)
     {
@@ -2548,7 +2624,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetCurrStatus(s_STATUSMSG& StatusData)
 /**
  * Function to get Tx Msg Buffers configured from chi file
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 {
     return S_OK;
 }
@@ -2604,7 +2680,7 @@ static int nWriteMessage(STCAN_MSG sMessage)
 /**
  * Function to Send CAN Message to Transmit buffer. This is called only after checking the controller in active mode
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessage)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessage)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
     static SACK_MAP sAckMap;
@@ -2639,17 +2715,17 @@ USAGEMODE HRESULT CAN_ICS_neoVI_SendMsg(DWORD dwClientID, const STCAN_MSG& sMess
 /**
  * Function get hardware, firmware, driver information
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
 {
     return S_OK;
 }
 
-USAGEMODE HRESULT CAN_ICS_neoVI_GetBusConfigInfo(BYTE* /*usInfo*/)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_GetBusConfigInfo(BYTE* /*usInfo*/)
 {
     return S_OK;
 }
 
-USAGEMODE HRESULT CAN_ICS_neoVI_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
 {
     return S_FALSE;
 }
@@ -2657,7 +2733,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
 /**
  * Function to retreive error string of last occurred error
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_GetLastErrorString(CHAR* acErrorStr, int nLength)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_GetLastErrorString(CHAR* acErrorStr, int nLength)
 {
     // TODO: Add your implementation code here
     int nCharToCopy = (int) (strlen(sg_acErrStr));
@@ -2673,11 +2749,22 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetLastErrorString(CHAR* acErrorStr, int nLength
 /**
  * Set application parameters specific to CAN_USB
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
 {
     sg_hOwnerWnd = hWndOwner;
     sg_pIlog = pILog;
-    vInitialiseAllData();
+    
+	// Initialise both the time parameters
+    GetLocalTime(&sg_CurrSysTime);
+    sg_TimeStamp = 0x0;
+    //INITIALISE_DATA(sg_sCurrStatus);
+    memset(&sg_sCurrStatus, 0, sizeof(sg_sCurrStatus));
+    //Query Tick Count
+    sg_QueryTickCount.QuadPart = 0;
+    //INITIALISE_ARRAY(sg_acErrStr);
+    memset(sg_acErrStr, 0, sizeof(sg_acErrStr));
+    CAN_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
+
     return S_OK;
 }
 
@@ -2715,7 +2802,7 @@ static DWORD dwGetAvailableClientSlot()
 /**
  * Register Client
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_RegisterClient(BOOL bRegister,DWORD& ClientID, TCHAR* pacClientName)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, TCHAR* pacClientName)
 {
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;
@@ -2779,7 +2866,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_RegisterClient(BOOL bRegister,DWORD& ClientID, T
     return hResult;
 }
 
-USAGEMODE HRESULT CAN_ICS_neoVI_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
     HRESULT hResult = S_FALSE;
     if (ClientID != NULL)
@@ -2841,7 +2928,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBase
             //clear msg buffer
             for (UINT i = 0; i < sg_unClientCnt; i++)
             {
-                CAN_ICS_neoVI_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, NULL);
+                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, NULL);
             }
             hResult = S_OK;
         }
@@ -2853,7 +2940,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBase
 /**
  * Function to load driver icsneo40.dll
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_LoadDriverLibrary(void)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_LoadDriverLibrary(void)
 {
     USES_CONVERSION;
 
@@ -2867,7 +2954,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_LoadDriverLibrary(void)
 
     if (S_OK == hResult)
     {
-        sg_hDll = LoadLibrary(_T("icsneo40.dll"));
+		sg_hDll = LoadLibrary(_T("icsneo40.dll"));
         if (sg_hDll == NULL)
         {
             sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("icsneo40.dll loading failed"));
@@ -2894,10 +2981,10 @@ USAGEMODE HRESULT CAN_ICS_neoVI_LoadDriverLibrary(void)
 /**
  * Function to Unload Driver library
  */
-USAGEMODE HRESULT CAN_ICS_neoVI_UnloadDriverLibrary(void)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_UnloadDriverLibrary(void)
 {
     // Don't bother about the success & hence the result
-    CAN_ICS_neoVI_DeselectHwInterface();
+    CAN_DeselectHwInterface();
 
     // Store the Boardinfo to global variable
 
@@ -2910,12 +2997,12 @@ USAGEMODE HRESULT CAN_ICS_neoVI_UnloadDriverLibrary(void)
 }
 
 
-USAGEMODE HRESULT CAN_ICS_neoVI_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punFrames*/, UINT /*nLength*/)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punFrames*/, UINT /*nLength*/)
 {
     return S_OK;
 }
 
-USAGEMODE HRESULT CAN_ICS_neoVI_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus)
 {
     if (hEvent != NULL)
     {
@@ -2925,7 +3012,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetCntrlStatus(const HANDLE& hEvent, UINT& unCnt
     return S_OK;
 }
 
-USAGEMODE HRESULT CAN_ICS_neoVI_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
 {
     HRESULT hResult = S_OK;
     if ((sg_bCurrState == STATE_HW_INTERFACE_SELECTED) || (sg_bCurrState == STATE_CONNECTED))
@@ -2998,7 +3085,7 @@ USAGEMODE HRESULT CAN_ICS_neoVI_GetControllerParams(LONG& lParam, UINT nChannel,
     return hResult;
 }
 
-USAGEMODE HRESULT CAN_ICS_neoVI_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM /*eContrParam*/)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM /*eContrParam*/)
 {
     HRESULT hResult = S_FALSE;
     if ((sg_bCurrState == STATE_CONNECTED) || (sg_bCurrState == STATE_HW_INTERFACE_SELECTED))
