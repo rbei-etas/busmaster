@@ -9574,7 +9574,10 @@ HRESULT CMainFrame::IntializeDIL(void)
                 {
                     hResult = g_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, g_dwClientID, _T("CAN_MONITOR"));
                     if ((hResult == S_OK)|| (hResult == ERR_CLIENT_EXISTS))
-                    {						
+                    {				
+		                g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)m_asControllerDetails, 
+															sizeof(SCONTROLER_DETAILS) * nCount);
+
                         bInitFrameProcCAN(); // Initialize logger module											
                         vReRegisterAllCANNodes();//Reinitialize node simulation												
                         if (sg_pouSWInterface[CAN] == NULL)//Signal watch
