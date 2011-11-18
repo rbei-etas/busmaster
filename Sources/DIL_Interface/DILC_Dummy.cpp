@@ -22,138 +22,154 @@
  * Source file for dummy DIL functions
  */
 #include "DIL_Interface_stdafx.h"
+#include "DILC_Dummy.h"
 #include "include/Error.h"
 #include "include/basedefs.h"
 #include "DataTypes/Base_WrapperErrorLogger.h"
 #include "DataTypes/DIL_Datatypes.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
 
-HRESULT DILC_Dummy_PerformInitOperations(void)
+HRESULT CDIL_CAN_DUMMY::CAN_PerformInitOperations(void)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_PerformClosureOperations(void)
+HRESULT CDIL_CAN_DUMMY::CAN_PerformClosureOperations(void)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_GetTimeModeMapping(SYSTEMTIME& /*CurrSysTime*/, UINT64& /*TimeStamp*/, LARGE_INTEGER* /*QueryTickCount*/)
+HRESULT CDIL_CAN_DUMMY::CAN_GetTimeModeMapping(SYSTEMTIME& /*CurrSysTime*/, UINT64& /*TimeStamp*/, LARGE_INTEGER* /*QueryTickCount*/)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_ListHwInterfaces(INTERFACE_HW_LIST& /*asSelHwInterface*/, INT& /*nCount*/)
+HRESULT CDIL_CAN_DUMMY::CAN_ListHwInterfaces(INTERFACE_HW_LIST& /*asSelHwInterface*/, INT& /*nCount*/)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_SelectHwInterface(const INTERFACE_HW_LIST& /*asSelHwInterface*/, INT /*nCount*/)
+HRESULT CDIL_CAN_DUMMY::CAN_SelectHwInterface(const INTERFACE_HW_LIST& /*asSelHwInterface*/, INT /*nCount*/)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_DeselectHwInterface(void)
+HRESULT CDIL_CAN_DUMMY::CAN_DeselectHwInterface(void)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_DisplayConfigDlg(PCHAR& /*InitData*/, int& /*Length*/)
+HRESULT CDIL_CAN_DUMMY::CAN_DisplayConfigDlg(PCHAR& /*InitData*/, int& /*Length*/)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_SetConfigData(PCHAR /*pInitData*/, int /*Length*/)
+HRESULT CDIL_CAN_DUMMY::CAN_SetConfigData(PCHAR /*pInitData*/, int /*Length*/)
 {
     return WARN_DUMMY_API;
 }
 
-/*HRESULT DILC_Dummy_Connect(void)
+/*HRESULT CDIL_CAN_DUMMY::CAN_Connect(void)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_Disconnect(void)
+HRESULT CDIL_CAN_DUMMY::CAN_Disconnect(void)
 {
     return WARN_DUMMY_API;
 }*/
 
-HRESULT DILC_Dummy_StartHardware(void)
+HRESULT CDIL_CAN_DUMMY::CAN_StartHardware(void)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_StopHardware(void)
+HRESULT CDIL_CAN_DUMMY::CAN_StopHardware(void)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_ResetHardware(void)
+HRESULT CDIL_CAN_DUMMY::CAN_ResetHardware(void)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_GetCurrStatus(s_STATUSMSG& /*StatusData*/)
+HRESULT CDIL_CAN_DUMMY::CAN_GetCurrStatus(s_STATUSMSG& /*StatusData*/)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
+HRESULT CDIL_CAN_DUMMY::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_SendMsg(DWORD /*dwClientID*/, const STCAN_MSG& /*sCanTxMsg*/)
+HRESULT CDIL_CAN_DUMMY::CAN_SendMsg(DWORD /*dwClientID*/, const STCAN_MSG& /*sCanTxMsg*/)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
+HRESULT CDIL_CAN_DUMMY::CAN_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_GetBusConfigInfo(BYTE* /*BusInfo*/)
+HRESULT CDIL_CAN_DUMMY::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
+HRESULT CDIL_CAN_DUMMY::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_GetLastErrorString(CHAR* /*acErrorStr*/, int /*nLength*/)
+HRESULT CDIL_CAN_DUMMY::CAN_GetLastErrorString(CHAR* /*acErrorStr*/, int /*nLength*/)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
+HRESULT CDIL_CAN_DUMMY::CAN_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
 {
 	return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_ManageMsgBuf(BYTE /*bAction*/, DWORD /*ClientID*/, CBaseCANBufFSE* /*pBufObj*/)
+HRESULT CDIL_CAN_DUMMY::CAN_ManageMsgBuf(BYTE /*bAction*/, DWORD /*ClientID*/, CBaseCANBufFSE* /*pBufObj*/)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_RegisterClient(BOOL /*bRegister*/, DWORD& /*ClientID*/, TCHAR* /*pacClientName*/)
+HRESULT CDIL_CAN_DUMMY::CAN_RegisterClient(BOOL /*bRegister*/, DWORD& /*ClientID*/, TCHAR* /*pacClientName*/)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& /*unCntrlStatus*/)
+HRESULT CDIL_CAN_DUMMY::CAN_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& /*unCntrlStatus*/)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_GetControllerParams(LONG& /*lParam*/, UINT /*nChannel*/, ECONTR_PARAM /*eContrParam*/)
+HRESULT CDIL_CAN_DUMMY::CAN_GetControllerParams(LONG& /*lParam*/, UINT /*nChannel*/, ECONTR_PARAM /*eContrParam*/)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT DILC_Dummy_GetErrorCount(SERROR_CNT& /*sErrorCnt*/, UINT /*nChannel*/, ECONTR_PARAM /*eContrParam*/)
+HRESULT CDIL_CAN_DUMMY::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
+{
+    return WARN_DUMMY_API;
+}
+
+HRESULT CDIL_CAN_DUMMY::CAN_GetErrorCount(SERROR_CNT& /*sErrorCnt*/, UINT /*nChannel*/, ECONTR_PARAM /*eContrParam*/)
+{
+    return WARN_DUMMY_API;
+}
+
+HRESULT CDIL_CAN_DUMMY::CAN_LoadDriverLibrary(void)
+{
+    return WARN_DUMMY_API;
+}
+
+HRESULT CDIL_CAN_DUMMY::CAN_UnloadDriverLibrary(void)
 {
     return WARN_DUMMY_API;
 }
