@@ -15,7 +15,7 @@
 
 /**
  * \file      CAN_Kvaser_CAN_stdafx.cpp
- * \author    Pradeep Kadoor
+ * \author    Arunkumar Karri
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 // stdafx.cpp : source file that includes just the standard includes
