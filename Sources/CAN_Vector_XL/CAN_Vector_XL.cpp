@@ -25,6 +25,7 @@
 //
 
 #include "CAN_Vector_XL_stdafx.h"
+#include "CAN_Vector_XL.h"
 #include "include/Error.h"
 #include "include/basedefs.h"
 #include "DataTypes/Base_WrapperErrorLogger.h"
@@ -35,13 +36,44 @@
 #include "Include/Struct_CAN.h"
 #include "Utility/Utility_Thread.h"
 #include "Include/DIL_CommonDefs.h"
-#include "ConfigDialogsDIL/API_Dialog.h"
+#include "DIL_Interface/BaseDIL_CAN_Controller.h"
+#include "HardwareListing.h"
 
 #define DYNAMIC_XLDRIVER_DLL
 #include "EXTERNAL_INCLUDE/vxlapi.h"
 
 #define USAGE_EXPORT
 #include "CAN_Vector_XL_Extern.h"
+
+// CCAN_Vector_XL
+
+BEGIN_MESSAGE_MAP(CCAN_Vector_XL, CWinApp)
+END_MESSAGE_MAP()
+
+
+/**
+ * CCAN_Vector_XL construction
+ */
+CCAN_Vector_XL::CCAN_Vector_XL()
+{
+    // TODO: add construction code here,
+    // Place all significant initialization in InitInstance
+}
+
+
+// The one and only CCAN_Vector_XL object
+CCAN_Vector_XL theApp;
+
+
+/**
+ * CCAN_Vector_XL initialization
+ */
+BOOL CCAN_Vector_XL::InitInstance()
+{
+    CWinApp::InitInstance();
+
+    return TRUE;
+}
 
 /* function pointers */
 XLGETAPPLCONFIG                xlGetApplConfig = NULL;
@@ -98,8 +130,6 @@ typedef struct tagAckMap
 }SACK_MAP;
 
 static  CRITICAL_SECTION sg_CritSectForWrite;       // To make it thread safe
-typedef std::list<SACK_MAP> CACK_MAP_LIST;
-static CACK_MAP_LIST sg_asAckMapBuf;
 
 enum
 {
@@ -207,6 +237,64 @@ int             g_silent                    = 0;                      //!< flag 
 unsigned int    g_TimerRate                 = 0;                      //!< Global timerrate (to toggel)
 XLhandle        g_hDataEvent[MAX_CLIENT_ALLOWED]  = {0};
 ////////////////////////////////////////////////////////////////////////////
+
+/* CDIL_CAN_VectorXL class definition */
+class CDIL_CAN_VectorXL : public CBaseDIL_CAN_Controller
+{
+public:
+	/* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
+	HRESULT CAN_PerformInitOperations(void);
+	HRESULT CAN_PerformClosureOperations(void);
+	HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+	HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
+	HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
+	HRESULT CAN_DeselectHwInterface(void);
+	HRESULT CAN_DisplayConfigDlg(PCHAR& InitData, int& Length);
+	HRESULT CAN_SetConfigData(PCHAR pInitData, int Length);
+	HRESULT CAN_StartHardware(void);
+	HRESULT CAN_StopHardware(void);
+	HRESULT CAN_ResetHardware(void);
+	HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
+	HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
+	HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
+	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
+	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
+	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
+	HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength);
+	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
+	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
+	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
+
+	// Specific function set	
+	HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);	
+	HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
+	HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
+	HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
+	HRESULT CAN_LoadDriverLibrary(void);
+	HRESULT CAN_UnloadDriverLibrary(void);
+};
+
+static CDIL_CAN_VectorXL* sg_pouDIL_CAN_VectorXL = NULL;
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Returns the interface to controller
+ */
+USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
+{	
+	HRESULT hResult = S_OK;
+	if ( NULL == sg_pouDIL_CAN_VectorXL )
+	{
+		if ((sg_pouDIL_CAN_VectorXL = new CDIL_CAN_VectorXL) == NULL)
+		{
+			hResult = S_FALSE;
+		}
+	}
+	*ppvInterface = (void *) sg_pouDIL_CAN_VectorXL; /* Doesn't matter even if sg_pouDIL_CAN_Kvaser is null */
+
+	return hResult;
+}
 
 /**
  * Number of Channels
@@ -339,7 +427,7 @@ static CChannel m_aodChannels[ defNO_OF_CHANNELS ];
  *
  * Sets the application params.
  */
-USAGEMODE HRESULT CAN_Vector_XL_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger *pILog)
+HRESULT CDIL_CAN_VectorXL::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger *pILog)
 {
     sg_hOwnerWnd = hWndOwner;
     sg_pIlog = pILog;
@@ -353,7 +441,7 @@ USAGEMODE HRESULT CAN_Vector_XL_SetAppParams(HWND hWndOwner, Base_WrapperErrorLo
 
     /* INITIALISE_ARRAY(sg_acErrStr); */
     memset(sg_acErrStr, 0, sizeof(sg_acErrStr));
-    CAN_Vector_XL_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
+    CAN_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
 
 	return S_OK;
 }
@@ -364,7 +452,7 @@ USAGEMODE HRESULT CAN_Vector_XL_SetAppParams(HWND hWndOwner, Base_WrapperErrorLo
  *
  * Unloads the driver library.
  */
-USAGEMODE HRESULT CAN_Vector_XL_UnloadDriverLibrary(void)
+HRESULT CDIL_CAN_VectorXL::CAN_UnloadDriverLibrary(void)
 {
     if (hxlDll != NULL)
     {
@@ -380,7 +468,7 @@ USAGEMODE HRESULT CAN_Vector_XL_UnloadDriverLibrary(void)
  *
  * Registers the buffer pBufObj to the client ClientID
  */
-USAGEMODE HRESULT CAN_Vector_XL_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
+HRESULT CDIL_CAN_VectorXL::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
     HRESULT hResult = S_FALSE;
     if (ClientID != NULL)
@@ -440,7 +528,7 @@ USAGEMODE HRESULT CAN_Vector_XL_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBase
             /* clear msg buffer */
             for (UINT i = 0; i < sg_unClientCnt; i++)
             {
-                CAN_Vector_XL_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, NULL);
+                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, NULL);
             }
             hResult = S_OK;
         }
@@ -455,7 +543,7 @@ USAGEMODE HRESULT CAN_Vector_XL_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBase
  * Registers a client to the DIL. ClientID will have client id
  * which will be used for further client related calls  
  */
-USAGEMODE HRESULT CAN_Vector_XL_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
+HRESULT CDIL_CAN_VectorXL::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
 {
 	USES_CONVERSION;
     HRESULT hResult = S_FALSE;
@@ -528,7 +616,7 @@ USAGEMODE HRESULT CAN_Vector_XL_RegisterClient(BOOL bRegister, DWORD& ClientID, 
  * and will be set whenever there is change in the controller
  * status.
  */
-USAGEMODE HRESULT CAN_Vector_XL_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& /*unCntrlStatus*/)
+HRESULT CDIL_CAN_VectorXL::CAN_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& /*unCntrlStatus*/)
 {
     return S_OK;
 }
@@ -538,7 +626,7 @@ USAGEMODE HRESULT CAN_Vector_XL_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& /
  *
  * Loads BOA related libraries. Updates BOA API pointers
  */
-USAGEMODE HRESULT CAN_Vector_XL_LoadDriverLibrary(void)
+HRESULT CDIL_CAN_VectorXL::CAN_LoadDriverLibrary(void)
 {
     HRESULT hResult = S_OK;
 
@@ -644,19 +732,21 @@ USAGEMODE HRESULT CAN_Vector_XL_LoadDriverLibrary(void)
  * Initializes filter, queue, controller config
  * with default values.
  */
-USAGEMODE HRESULT CAN_Vector_XL_PerformInitOperations(void)
+HRESULT CDIL_CAN_VectorXL::CAN_PerformInitOperations(void)
 {
 	HRESULT hResult = S_FALSE;
 
     /* Register Monitor client */
     DWORD dwClientID = 0;
-    CAN_Vector_XL_RegisterClient(TRUE, dwClientID, CAN_MONITOR_NODE);
+    CAN_RegisterClient(TRUE, dwClientID, CAN_MONITOR_NODE);
 
 	// ------------------------------------
 	// open the driver
 	// ------------------------------------
-	if (xlDllOpenDriver() == XL_SUCCESS)
+	if (xlDllOpenDriver() == XL_SUCCESS) 
+	{
 		hResult = S_OK;
+	}
 
 	return hResult;
 }
@@ -705,23 +795,26 @@ static BOOL bLoadDataFromContr(PSCONTROLER_DETAILS pControllerDetails)
  *
  * Performs closure operations.
  */
-USAGEMODE HRESULT CAN_Vector_XL_PerformClosureOperations(void)
+HRESULT CDIL_CAN_VectorXL::CAN_PerformClosureOperations(void)
 {
     HRESULT hResult = S_OK;
 
-    nDisconnectFromDriver();
+	//Stop the read thread
+    sg_sParmRThread.bTerminateThread();
+
+	nDisconnectFromDriver();
 	// ------------------------------------
 	// Close the driver
 	// ------------------------------------
 	xlDllCloseDriver();    
-
+	
     UINT ClientIndex = 0;
     while (sg_unClientCnt > 0)
     {
         bRemoveClient(sg_asClientToBufMap[ClientIndex].dwClientID);
-    }
+    }	
+    hResult = CAN_DeselectHwInterface();
 
-    hResult = CAN_Vector_XL_DeselectHwInterface();
     if (hResult == S_OK)
     {
         sg_bCurrState = STATE_DRIVER_SELECTED;
@@ -737,7 +830,7 @@ USAGEMODE HRESULT CAN_Vector_XL_PerformClosureOperations(void)
  * will be updated with the system time ref.
  * TimeStamp will be updated with the corresponding timestamp.
  */
-USAGEMODE HRESULT CAN_Vector_XL_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
+HRESULT CDIL_CAN_VectorXL::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
 {
     memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
     TimeStamp = sg_TimeStamp;
@@ -755,7 +848,7 @@ USAGEMODE HRESULT CAN_Vector_XL_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT
  * Lists the hardware interface available. sSelHwInterface
  * will contain the user selected hw interface.
  */
-USAGEMODE HRESULT CAN_Vector_XL_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)
+HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)
 {
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;
@@ -787,7 +880,7 @@ USAGEMODE HRESULT CAN_Vector_XL_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInter
  * Function to List Hardware interfaces connect to the system and requests to the
  * user to select.
  */
-USAGEMODE HRESULT CAN_Vector_XL_SelectHwInterface(const INTERFACE_HW_LIST& /*asSelHwInterface*/, INT /*nCount*/)
+HRESULT CDIL_CAN_VectorXL::CAN_SelectHwInterface(const INTERFACE_HW_LIST& /*asSelHwInterface*/, INT /*nCount*/)
 {   
     USES_CONVERSION;
 
@@ -806,13 +899,13 @@ USAGEMODE HRESULT CAN_Vector_XL_SelectHwInterface(const INTERFACE_HW_LIST& /*asS
  *
  * Deselects the selected hardware interface.
  */
-USAGEMODE HRESULT CAN_Vector_XL_DeselectHwInterface(void)
+HRESULT CDIL_CAN_VectorXL::CAN_DeselectHwInterface(void)
 {
 	VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
     HRESULT hResult = S_OK;
 
-    CAN_Vector_XL_ResetHardware();
+    CAN_ResetHardware();
 
     sg_bCurrState = STATE_HW_INTERFACE_LISTED;
 
@@ -821,7 +914,7 @@ USAGEMODE HRESULT CAN_Vector_XL_DeselectHwInterface(void)
 
 BOOL Callback_DILTZM(BYTE /*Argument*/, PBYTE pDatStream, int /*Length*/)
 {
-    return (CAN_Vector_XL_SetConfigData((CHAR *) pDatStream, 0) == S_OK);
+	return (sg_pouDIL_CAN_VectorXL->CAN_SetConfigData((CHAR *) pDatStream, 0) == S_OK);
 }
 
 /**
@@ -853,7 +946,7 @@ static int nGetBaudRate()
  * Fields are initialized with values supplied by InitData.
  * InitData will be updated with the user selected values.
  */
-USAGEMODE HRESULT CAN_Vector_XL_DisplayConfigDlg(PCHAR& InitData, INT& Length)
+HRESULT CDIL_CAN_VectorXL::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
 {
 	xlPopupHwConfig(NULL, INFINITE);
 
@@ -877,7 +970,7 @@ USAGEMODE HRESULT CAN_Vector_XL_DisplayConfigDlg(PCHAR& InitData, INT& Length)
  *
  * Sets the controller configuration data supplied by InitData.
  */
-USAGEMODE HRESULT CAN_Vector_XL_SetConfigData(PCHAR ConfigFile, INT Length)
+HRESULT CDIL_CAN_VectorXL::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
@@ -1150,7 +1243,7 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_Vector_XL(LPVOID pVoid)
  *
  * Starts the controller.
  */
-USAGEMODE HRESULT CAN_Vector_XL_StartHardware(void)
+HRESULT CDIL_CAN_VectorXL::CAN_StartHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
@@ -1217,9 +1310,8 @@ static int nDisconnectFromDriver()
 			nReturn = -1;
 		}
 	}
+	sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
 
-    sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
-    
     return nReturn;
 }
 
@@ -1310,7 +1402,7 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
  *
  * Stops the controller.
  */
-USAGEMODE HRESULT CAN_Vector_XL_StopHardware(void)
+HRESULT CDIL_CAN_VectorXL::CAN_StopHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
 
@@ -1334,6 +1426,7 @@ USAGEMODE HRESULT CAN_Vector_XL_StopHardware(void)
             ClientIndex = sg_unClientCnt; // break the loop
         }
     }
+
     return hResult;
 }
 
@@ -1342,12 +1435,12 @@ USAGEMODE HRESULT CAN_Vector_XL_StopHardware(void)
  *
  * Resets the controller.
  */
-USAGEMODE HRESULT CAN_Vector_XL_ResetHardware(void)
+HRESULT CDIL_CAN_VectorXL::CAN_ResetHardware(void)
 {
 	HRESULT hResult = S_FALSE;
 
     /* Stop the hardware if connected */
-    CAN_Vector_XL_StopHardware(); // return value not necessary
+    CAN_StopHardware(); // return value not necessary
     /*if (sg_sParmRThread.bTerminateThread())
     {
         hResult = S_OK;
@@ -1359,9 +1452,21 @@ USAGEMODE HRESULT CAN_Vector_XL_ResetHardware(void)
 /**
  * \return S_OK for success, S_FALSE for failure
  *
+ * Function to get Controller status
+ */
+HRESULT CDIL_CAN_VectorXL::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
+{
+	StatusData.wControllerStatus = NORMAL_ACTIVE;
+
+	return S_OK;
+}
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
  * Gets the Tx queue configured.
  */
-USAGEMODE HRESULT CAN_Vector_XL_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
+HRESULT CDIL_CAN_VectorXL::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 {
     return S_OK;
 }
@@ -1434,22 +1539,15 @@ static int nWriteMessage(STCAN_MSG sMessage, DWORD dwClientID)
  *
  * Sends STCAN_MSG structure from the client dwClientID.   
  */
-USAGEMODE HRESULT CAN_Vector_XL_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessage)
+HRESULT CDIL_CAN_VectorXL::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessage)
 {
 	VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
-    //static SACK_MAP sAckMap;
+
     HRESULT hResult = S_FALSE;
     if (bClientIdExist(dwClientID))
     {
         if (sMessage.m_ucChannel <= m_nNoOfChannels)
         {
-            /*sAckMap.m_ClientID = dwClientID;
-            sAckMap.m_MsgID    = sMessage.m_unMsgID;
-            sAckMap.m_Channel  = sMessage.m_ucChannel;*/
-
-            /* Mark an entry in Map. This is helpful to identify
-               which client has been sent this message in later stage */
-            //vMarkEntryIntoMap(sAckMap);
 			EnterCriticalSection(&sg_CritSectForWrite); // Lock the buffer
             if (nWriteMessage(sMessage, dwClientID) == defERR_OK)
             {
@@ -1475,7 +1573,7 @@ USAGEMODE HRESULT CAN_Vector_XL_SendMsg(DWORD dwClientID, const STCAN_MSG& sMess
  *
  * Gets board info.
  */
-USAGEMODE HRESULT CAN_Vector_XL_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
+HRESULT CDIL_CAN_VectorXL::CAN_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
 {
     return S_OK;
 }
@@ -1485,7 +1583,7 @@ USAGEMODE HRESULT CAN_Vector_XL_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
  *
  * Gets bus config info.
  */
-USAGEMODE HRESULT CAN_Vector_XL_GetBusConfigInfo(BYTE* /*BusInfo*/)
+HRESULT CDIL_CAN_VectorXL::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
 {
     return S_OK;
 }
@@ -1495,7 +1593,7 @@ USAGEMODE HRESULT CAN_Vector_XL_GetBusConfigInfo(BYTE* /*BusInfo*/)
  *
  * Gets driver version info.
  */
-USAGEMODE HRESULT CAN_Vector_XL_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
+HRESULT CDIL_CAN_VectorXL::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
 {
     return S_OK;
 }
@@ -1505,7 +1603,7 @@ USAGEMODE HRESULT CAN_Vector_XL_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
  *
  * Gets last occured error and puts inside acErrorStr.
  */
-USAGEMODE HRESULT CAN_Vector_XL_GetLastErrorString(CHAR* acErrorStr, INT nLength)
+HRESULT CDIL_CAN_VectorXL::CAN_GetLastErrorString(CHAR* acErrorStr, INT nLength)
 {
     int nCharToCopy = (int) (strlen(sg_acErrStr));
     if (nCharToCopy > nLength)
@@ -1523,7 +1621,7 @@ USAGEMODE HRESULT CAN_Vector_XL_GetLastErrorString(CHAR* acErrorStr, INT nLength
  * Applies FilterType(PASS/STOP) filter for corresponding
  * channel. Frame ids are supplied by punMsgIds.
  */
-USAGEMODE HRESULT CAN_Vector_XL_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
+HRESULT CDIL_CAN_VectorXL::CAN_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
 {
     return S_OK;
 }
@@ -1563,7 +1661,7 @@ static int nTestHardwareConnection(UCHAR& ucaTestResult, UINT nChannel) //const
  * Gets the controller param eContrParam of the channel.
  * Value stored in lParam.
  */
-USAGEMODE HRESULT CAN_Vector_XL_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
+HRESULT CDIL_CAN_VectorXL::CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
 {
  HRESULT hResult = S_OK;
     if ((sg_bCurrState == STATE_HW_INTERFACE_SELECTED) || (sg_bCurrState == STATE_CONNECTED))
@@ -1640,7 +1738,7 @@ USAGEMODE HRESULT CAN_Vector_XL_GetControllerParams(LONG& lParam, UINT nChannel,
  *
  * Gets the error counter for corresponding channel.
  */
-USAGEMODE HRESULT CAN_Vector_XL_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam)
+HRESULT CDIL_CAN_VectorXL::CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam)
 {
     HRESULT hResult = S_OK;
     if ((sg_bCurrState == STATE_CONNECTED) || (sg_bCurrState == STATE_HW_INTERFACE_SELECTED))
@@ -1729,6 +1827,23 @@ static int nGetNoOfConnectedHardware(void)
 /**
  * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
  *
+ * This function will popup hardware selection dialog and gets the user selection of channels.
+ *
+ */
+int ListHardwareInterfaces(HWND hParent, DWORD dwDriver, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount)
+{    	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+    CHardwareListing HwList(psInterfaces, nCount, NULL);
+    HwList.DoModal();
+    nCount = HwList.nGetSelectedList(pnSelList);  
+	
+    return 0;
+}
+
+/**
+ * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
+ *
  * This function will get the hardware selection from the user
  * and will create essential networks.
  */
@@ -1757,6 +1872,7 @@ static int nCreateMultipleHardwareNetwork()
 	}
 	nHwCount = nChannels;	//Reassign hardware count according to final list of channels supported.
 	ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_VECTOR_XL, sg_HardwareIntr, anSelectedItems, nHwCount);
+
     sg_ucNoOfHardware = (UCHAR)nHwCount;
 	m_nNoOfChannels = (UINT)nHwCount;
 	g_xlChannelMask = 0;
