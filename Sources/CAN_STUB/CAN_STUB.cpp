@@ -36,6 +36,7 @@
 #include "DataTypes/DIL_DataTypes.h"
 #include "Utility/Utility_Thread.h"
 #include "Utility/Utility.h"
+#include "DIL_Interface/BaseDIL_CAN_Controller.h"
 
 #define USAGE_EXPORT
 #include "CAN_STUB_Extern.h"
@@ -220,6 +221,63 @@ enum
 
 BYTE sg_bCurrState = STATE_PRIMORDIAL;
 
+/* CDIL_CAN_STUB class definition */
+class CDIL_CAN_STUB : public CBaseDIL_CAN_Controller
+{
+public:
+	/* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
+	HRESULT CAN_PerformInitOperations(void);
+	HRESULT CAN_PerformClosureOperations(void);
+	HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+	HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
+	HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
+	HRESULT CAN_DeselectHwInterface(void);
+	HRESULT CAN_DisplayConfigDlg(PCHAR& InitData, int& Length);
+	HRESULT CAN_SetConfigData(PCHAR pInitData, int Length);
+	HRESULT CAN_StartHardware(void);
+	HRESULT CAN_StopHardware(void);
+	HRESULT CAN_ResetHardware(void);
+	HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
+	HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
+	HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
+	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
+	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
+	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
+	HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength);
+	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
+	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
+	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
+
+	// Specific function set	
+	HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);	
+	HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
+	HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
+	HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
+	HRESULT CAN_LoadDriverLibrary(void);
+	HRESULT CAN_UnloadDriverLibrary(void);
+};
+
+static CDIL_CAN_STUB* sg_pouDIL_CAN_STUB = NULL;
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Returns the interface to controller
+ */
+USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
+{	
+	HRESULT hResult = S_OK;
+	if ( NULL == sg_pouDIL_CAN_STUB )
+	{
+		if ((sg_pouDIL_CAN_STUB = new CDIL_CAN_STUB) == NULL)
+		{
+			hResult = S_FALSE;
+		}
+	}
+	*ppvInterface = (void *) sg_pouDIL_CAN_STUB; /* Doesn't matter even if sg_pouDIL_CAN_Kvaser is null */
+
+	return hResult;
+}
 
 // Worker function declarations: start
 HRESULT Worker_Connect(ISimENG*, Base_WrapperErrorLogger*);
@@ -234,7 +292,6 @@ HRESULT Worker_UnregisterClient(ISimENG* pISimENG, Base_WrapperErrorLogger* pIlo
 
 // Prototype declarations
 HRESULT PerformAnOperation(BYTE bActionCode);
-USAGEMODE HRESULT CAN_STUB_SetConfigData(PCHAR pInitData, int Length);
 DWORD WINAPI BrokerThreadBusEmulation(LPVOID pVoid);
 
 BYTE GetCurrState(void)
@@ -449,7 +506,9 @@ HRESULT PerformAnOperation(BYTE bActionCode)
 
 /* END OF READ THREAD FUNCTION WITH ITS HELPER FUNCTION */
 
-USAGEMODE HRESULT CAN_STUB_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
+/* CDIL_CAN_STUB function definitions */
+
+HRESULT CDIL_CAN_STUB::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
 {
     HRESULT hResult = S_FALSE;
 
@@ -477,7 +536,7 @@ USAGEMODE HRESULT CAN_STUB_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger*
     return hResult;
 }
 
-USAGEMODE HRESULT CAN_STUB_DisplayConfigDlg(PCHAR& InitData, int& Length)
+HRESULT CDIL_CAN_STUB::CAN_DisplayConfigDlg(PCHAR& InitData, int& Length)
 {
     HRESULT Result = S_FALSE;
     char acInitFile[MAX_PATH] = {'\0'};
@@ -611,7 +670,7 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
 /**
  * Register Client
  */
-USAGEMODE HRESULT CAN_STUB_RegisterClient(BOOL bRegister,DWORD& ClientID, TCHAR* pacClientName)
+HRESULT CDIL_CAN_STUB::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, TCHAR* pacClientName)
 {
     USES_CONVERSION;    
     HRESULT hResult = S_FALSE;
@@ -658,12 +717,12 @@ USAGEMODE HRESULT CAN_STUB_RegisterClient(BOOL bRegister,DWORD& ClientID, TCHAR*
     return hResult;
 }
 
-USAGEMODE HRESULT CAN_STUB_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
+HRESULT CDIL_CAN_STUB::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 {
     return S_FALSE;
 }
 
-USAGEMODE HRESULT CAN_STUB_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
+HRESULT CDIL_CAN_STUB::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
     HRESULT hResult = S_FALSE;
     if (ClientID != NULL)
@@ -726,7 +785,7 @@ USAGEMODE HRESULT CAN_STUB_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBu
             //clear msg buffer
             for (UINT i = 0; i < sg_unClientCnt; i++)
             {
-                CAN_STUB_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, NULL);                        
+                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, NULL);                        
             }
             hResult = S_OK;
         }        
@@ -735,7 +794,7 @@ USAGEMODE HRESULT CAN_STUB_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBu
     return hResult;
 }
 
-USAGEMODE HRESULT CAN_STUB_StopHardware(void)
+HRESULT CDIL_CAN_STUB::CAN_StopHardware(void)
 {
     HRESULT hResult = PerformAnOperation(DISCONNECT);
     if (hResult == S_OK)
@@ -745,43 +804,7 @@ USAGEMODE HRESULT CAN_STUB_StopHardware(void)
     return hResult;
 }
 
-USAGEMODE HRESULT CAN_STUB_LoadDriverLibrary(void)
-{
-    HRESULT hResult = S_FALSE;
-
-    // Initialize the critical section
-    InitializeCriticalSection(&sg_CSBroker);
-
-    // Create the notification event
-    sg_hNotifyFinish = CreateEvent(NULL, false, false, NULL);
-    if (NULL != sg_hNotifyFinish)
-    {
-        // Then create the broker worker thread
-        sg_sBrokerObjBusEmulation.m_hActionEvent = CreateEvent(NULL, false, 
-                                                               false, NULL);
-        ResetEvent(sg_sBrokerObjBusEmulation.m_hActionEvent);
-        sg_sBrokerObjBusEmulation.m_unActionCode = INACTION;
-        if (sg_sBrokerObjBusEmulation.bStartThread(BrokerThreadBusEmulation))
-        {
-            hResult = S_OK;
-        }
-        else
-        {
-            CloseHandle(sg_hNotifyFinish);
-            sg_hNotifyFinish = NULL;
-        }
-    }
-
-    return hResult;
-}
-
-USAGEMODE HRESULT CAN_STUB_UnloadDriverLibrary(void)
-{
-    // Do nothing
-    return S_OK;
-}
-
-USAGEMODE HRESULT CAN_STUB_SetConfigData(PCHAR /*ConfigFile*/, int /*Length*/)
+HRESULT CDIL_CAN_STUB::CAN_SetConfigData(PCHAR /*ConfigFile*/, int /*Length*/)
 {
     switch (GetCurrState())
     {
@@ -800,11 +823,11 @@ USAGEMODE HRESULT CAN_STUB_SetConfigData(PCHAR /*ConfigFile*/, int /*Length*/)
     }
 
     // First disconnect the node
-    CAN_STUB_StopHardware();
+    CAN_StopHardware();
     return S_OK;
 }
 
-USAGEMODE HRESULT CAN_STUB_StartHardware(void)
+HRESULT CDIL_CAN_STUB::CAN_StartHardware(void)
 {
     //First stop the hardware
     HRESULT hResult = PerformAnOperation(CONNECT);
@@ -815,15 +838,15 @@ USAGEMODE HRESULT CAN_STUB_StartHardware(void)
     return hResult;    
 }
 
-USAGEMODE HRESULT CAN_STUB_ResetHardware(void)
+HRESULT CDIL_CAN_STUB::CAN_ResetHardware(void)
 {
     // Clear the transmitable message list
 
     // Now disconnect the node
-    return CAN_STUB_StopHardware();
+    return CAN_StopHardware();
 }
 
-USAGEMODE HRESULT CAN_STUB_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
+HRESULT CDIL_CAN_STUB::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
 {
     HRESULT hResult = S_FALSE;
 
@@ -849,7 +872,7 @@ USAGEMODE HRESULT CAN_STUB_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
     return hResult;
 }
 
-USAGEMODE HRESULT CAN_STUB_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& unCntrlStatus)
+HRESULT CDIL_CAN_STUB::CAN_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& unCntrlStatus)
 {
     HRESULT hResult = S_OK;
     //EnterCriticalSection(&sg_CSBroker);
@@ -883,22 +906,22 @@ USAGEMODE HRESULT CAN_STUB_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& unCntr
     return hResult;
 }
 
-USAGEMODE HRESULT CAN_STUB_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
+HRESULT CDIL_CAN_STUB::CAN_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
 {
     return S_FALSE;
 }
 
-USAGEMODE HRESULT CAN_STUB_GetBusConfigInfo(BYTE* /*BusInfo*/)
+HRESULT CDIL_CAN_STUB::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
 {
     return S_FALSE;
 }
 
-USAGEMODE HRESULT CAN_STUB_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
+HRESULT CDIL_CAN_STUB::CAN_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
 {
     return S_FALSE;
 }
 
-USAGEMODE HRESULT CAN_STUB_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
+HRESULT CDIL_CAN_STUB::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
 {
     memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
     TimeStamp = sg_TimeStampRef;
@@ -909,13 +932,13 @@ USAGEMODE HRESULT CAN_STUB_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& T
     return S_OK;
 }
 
-USAGEMODE HRESULT CAN_STUB_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
+HRESULT CDIL_CAN_STUB::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
 {
     // Return error value; this doesn't make sense in case of simulation
     return S_FALSE;
 }
 
-USAGEMODE HRESULT CAN_STUB_GetLastErrorString(CHAR* acErrorStr, int nLength)
+HRESULT CDIL_CAN_STUB::CAN_GetLastErrorString(CHAR* acErrorStr, int nLength)
 {
     // TODO: Add your implementation code here
     int nCharToCopy = (int) (strlen(sg_acErrStr));
@@ -928,20 +951,54 @@ USAGEMODE HRESULT CAN_STUB_GetLastErrorString(CHAR* acErrorStr, int nLength)
     return S_OK;
 }
 
-USAGEMODE HRESULT CAN_STUB_PerformInitOperations(void)
+HRESULT CDIL_CAN_STUB::CAN_PerformInitOperations(void)
 {
+	HRESULT hResult = S_FALSE;
+
+    // Initialize the critical section
+    InitializeCriticalSection(&sg_CSBroker);
+
+    // Create the notification event
+    sg_hNotifyFinish = CreateEvent(NULL, false, false, NULL);
+    if (NULL != sg_hNotifyFinish)
+    {
+        // Then create the broker worker thread
+        sg_sBrokerObjBusEmulation.m_hActionEvent = CreateEvent(NULL, false, 
+                                                               false, NULL);
+        ResetEvent(sg_sBrokerObjBusEmulation.m_hActionEvent);
+        sg_sBrokerObjBusEmulation.m_unActionCode = INACTION;
+        if (sg_sBrokerObjBusEmulation.bStartThread(BrokerThreadBusEmulation))
+        {
+            hResult = S_OK;
+        }
+        else
+        {
+            CloseHandle(sg_hNotifyFinish);
+            sg_hNotifyFinish = NULL;
+        }
+    }
+
+    return hResult;
+}
+
+/**
+ * Function to get Controller status
+ */
+HRESULT CDIL_CAN_STUB::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
+{
+	StatusData.wControllerStatus = NORMAL_ACTIVE;
     return S_OK;
 }
 
-USAGEMODE HRESULT CAN_STUB_PerformClosureOperations(void)
+HRESULT CDIL_CAN_STUB::CAN_PerformClosureOperations(void)
 {
     //First remove all the client
     for (UINT nCount = 0; nCount < sg_unClientCnt; nCount++)
     {
-        CAN_STUB_RegisterClient(FALSE, sg_asClientToBufMap[nCount].dwClientID, _T(""));
+        CAN_RegisterClient(FALSE, sg_asClientToBufMap[nCount].dwClientID, _T(""));
     }    
     // First disconnect from the simulation engine
-    CAN_STUB_DeselectHwInterface();
+    CAN_DeselectHwInterface();
     // Then terminate the broker thread
     sg_sBrokerObjBusEmulation.bTerminateThread();
     // Close the notification event
@@ -960,7 +1017,7 @@ USAGEMODE HRESULT CAN_STUB_PerformClosureOperations(void)
     return S_OK;
 }
 
-USAGEMODE HRESULT CAN_STUB_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount)
+HRESULT CDIL_CAN_STUB::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount)
 {
     for (UINT i = 0; i < CHANNEL_ALLOWED; i++)
     {
@@ -972,18 +1029,28 @@ USAGEMODE HRESULT CAN_STUB_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, 
     return S_OK;
 }
 
-USAGEMODE HRESULT CAN_STUB_SelectHwInterface(const INTERFACE_HW_LIST& /*sSelHwInterface*/, INT /*nSize*/)
+HRESULT CDIL_CAN_STUB::CAN_SelectHwInterface(const INTERFACE_HW_LIST& /*sSelHwInterface*/, INT /*nSize*/)
 {
     SetCurrState(STATE_INITIALISED);
     return S_OK;
 }
 
-USAGEMODE HRESULT CAN_STUB_DeselectHwInterface(void)
+HRESULT CDIL_CAN_STUB::CAN_DeselectHwInterface(void)
 {
     return PerformAnOperation(DISCONNECT);
 }
 
-USAGEMODE HRESULT CAN_STUB_GetControllerParams(LONG& lParam, UINT /*nChannel*/, ECONTR_PARAM eContrParam)
+HRESULT CDIL_CAN_STUB::CAN_LoadDriverLibrary(void)
+{
+	return S_OK;
+}
+HRESULT CDIL_CAN_STUB::CAN_UnloadDriverLibrary(void)
+{
+	return S_OK;
+}
+
+
+HRESULT CDIL_CAN_STUB::CAN_GetControllerParams(LONG& lParam, UINT /*nChannel*/, ECONTR_PARAM eContrParam)
 {
     HRESULT hResult = S_OK;
     switch (eContrParam)
@@ -1026,7 +1093,7 @@ USAGEMODE HRESULT CAN_STUB_GetControllerParams(LONG& lParam, UINT /*nChannel*/, 
     return hResult;
 }
 
-USAGEMODE HRESULT CAN_STUB_GetErrorCount(SERROR_CNT& sErrorCnt, UINT /*nChannel*/, ECONTR_PARAM /*eContrParam*/)
+HRESULT CDIL_CAN_STUB::CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT /*nChannel*/, ECONTR_PARAM /*eContrParam*/)
 {
     memset(&sErrorCnt, 0, sizeof(SERROR_CNT));
     return S_OK;
@@ -1211,6 +1278,7 @@ HRESULT Worker_StopHardware(ISimENG* pISimENGLoc, Base_WrapperErrorLogger* pIlog
     }
     else
     {
+		if ( pIlogLoc )
         pIlogLoc->vLogAMessage(__FILE__, __LINE__, 
             ("CAN_STUB_StopHardware called at improper state"));
     }
