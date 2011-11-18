@@ -16,33 +16,47 @@
 /**
  * \file      DIL_Interface/DILC_Dummy.h
  * \brief     Declaration file for dummy DIL functions
- * \authors   Ratnadip Choudhury, Pradeep Kadoor
+ * \authors   Ratnadip Choudhury, Pradeep Kadoor, Arunkumar Karri
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Declaration file for dummy DIL functions
  */
+#include "DataTypes/Base_WrapperErrorLogger.h"
+#include "DataTypes/MsgBufAll_DataTypes.h"
+#include "DataTypes/DIL_DataTypes.h"
+#include "BaseDIL_CAN_Controller.h"
+/* CDIL_CAN_DUMMY class definition */
+class CDIL_CAN_DUMMY : public CBaseDIL_CAN_Controller
+{
+public:
+  /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
+	HRESULT CAN_PerformInitOperations(void);
+	HRESULT CAN_PerformClosureOperations(void);
+	HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+	HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
+	HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
+	HRESULT CAN_DeselectHwInterface(void);
+	HRESULT CAN_DisplayConfigDlg(PCHAR& InitData, int& Length);
+	HRESULT CAN_SetConfigData(PCHAR pInitData, int Length);
+	HRESULT CAN_StartHardware(void);
+	HRESULT CAN_StopHardware(void);
+	HRESULT CAN_ResetHardware(void);
+	HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
+	HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
+	HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
+	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
+	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
+	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
+	HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength);
+	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
+	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
+	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
-HRESULT DILC_Dummy_PerformInitOperations(void);
-HRESULT DILC_Dummy_PerformClosureOperations(void);
-HRESULT DILC_Dummy_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
-HRESULT DILC_Dummy_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
-HRESULT DILC_Dummy_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
-HRESULT DILC_Dummy_DeselectHwInterface(void);
-HRESULT DILC_Dummy_DisplayConfigDlg(PCHAR& InitData, int& Length);
-HRESULT DILC_Dummy_SetConfigData(PCHAR pInitData, int Length);
-HRESULT DILC_Dummy_StartHardware(void);
-HRESULT DILC_Dummy_StopHardware(void);
-HRESULT DILC_Dummy_ResetHardware(void);
-HRESULT DILC_Dummy_GetCurrStatus(s_STATUSMSG& StatusData);
-HRESULT DILC_Dummy_GetTxMsgBuffer(BYTE*& pouTxMsgBuffer);
-HRESULT DILC_Dummy_SendMsg(DWORD dwClientID, const STCAN_MSG& pouTxMsg);
-HRESULT DILC_Dummy_GetBoardInfo(s_BOARDINFO& BoardInfo);
-HRESULT DILC_Dummy_GetBusConfigInfo(BYTE* BusInfo);
-HRESULT DILC_Dummy_GetVersionInfo(VERSIONINFO& sVerInfo);
-HRESULT DILC_Dummy_GetLastErrorString(CHAR* acErrorStr, int nLength);
-HRESULT DILC_Dummy_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL FlexChannel, UINT* punFrames, UINT nLength);
-HRESULT DILC_Dummy_ManageMsgBuf(BYTE, DWORD ClientID, CBaseCANBufFSE*);
-HRESULT DILC_Dummy_RegisterClient(BOOL, DWORD& ClientID, TCHAR* pacClientName);
-HRESULT DILC_Dummy_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
-HRESULT DILC_Dummy_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
-HRESULT DILC_Dummy_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
+	// Specific function set		
+	HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);	
+	HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
+	HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
+	HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
+	HRESULT CAN_LoadDriverLibrary(void);
+	HRESULT CAN_UnloadDriverLibrary(void);
+};
