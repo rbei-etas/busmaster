@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      CAN_ICS_neoVI/CAN_ICS_neoVI_stdafx.h
+ * \file      CAN_Vector_XL/CAN_Vector_XL_stdafx.h
  * \author    Arunkumar Karri
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
@@ -93,3 +93,12 @@
 #include <algorithm>
 
 // TODO: reference additional headers your program requires here
+const int ERR_INVALID_PROCDIL       = -1;
+const int ERR_INVALID_PARENTHANDLE  = -2;
+const int INFO_RETAINED_CONFDATA    = 0;
+const int INFO_CHANGED_CONFDATA     = 1;
+
+const int WARNING_NOTCONFIRMED      = -3;
+const int ERR_CONFIRMED_CONFIGURED  = -4;
+const int INFO_INIT_DATA_CONFIRMED  = 2;
+const int INFO_CONFIRMED_CONFIGURED = 3;
