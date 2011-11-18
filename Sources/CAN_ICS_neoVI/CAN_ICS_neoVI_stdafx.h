@@ -29,7 +29,7 @@
 #define _CRT_SECURE_NO_DEPRECATE
 #endif
 
-#define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
+#define WIN32_LEAN_AND_MEAN  	// Exclude rarely-used stuff from Windows headers
 
 #ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
@@ -93,3 +93,15 @@
 #include <algorithm>
 
 // TODO: reference additional headers your program requires here
+const int ERR_INVALID_PROCDIL       = -1;
+const int ERR_INVALID_PARENTHANDLE  = -2;
+const int INFO_RETAINED_CONFDATA    = 0;
+const int INFO_CHANGED_CONFDATA     = 1;
+
+const int WARNING_NOTCONFIRMED      = -3;
+const int ERR_CONFIRMED_CONFIGURED  = -4;
+const int INFO_INIT_DATA_CONFIRMED  = 2;
+const int INFO_CONFIRMED_CONFIGURED = 3;
+
+// First define the callback function type
+typedef BOOL (*DILCALLBACK)(BYTE Argument, PBYTE pDatStream, int Length);
