@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="CAN_ICS_neoVI"
 	ProjectGUID="{18224B50-2726-4431-B701-6437300B6D3F}"
 	Keyword="MFCDLLProj"
@@ -70,7 +70,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/ConfigDialogsDIL.lib&quot;"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/CAN_ICS_neoVI.dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile=""
@@ -131,6 +131,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0500"
 				RuntimeLibrary="2"
@@ -155,11 +156,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/ConfigDialogsDIL.lib&quot;"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/CAN_ICS_neoVI.dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile=""
-				GenerateDebugInformation="false"
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -215,6 +216,18 @@
 				RelativePath=".\CAN_ICS_neoVI_stdafx.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\CANRegAnalysis_CAN_ICS_neoVI.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ChangeRegisters_CAN_ICS_neoVI.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\HardwareListing.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -238,7 +251,31 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CAN_ICS_neoVI_Resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CAN_ICS_neoVI_Resource.hm"
+				>
+			</File>
+			<File
 				RelativePath=".\CAN_ICS_neoVI_stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ChangeRegDefines.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ChangeRegisters_CAN_ICS_neoVI.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ContrConfigPeakUsbDefs.h"
+				>
+			</File>
+			<File
+				RelativePath=".\HardwareListing.h"
 				>
 			</File>
 			<File
@@ -246,6 +283,10 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\CAN_ICS_neoVI.rc"
+			>
+		</File>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>
