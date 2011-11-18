@@ -64,6 +64,16 @@ enum eERROR_STATE
     ERROR_FRAME
 };
 
+const short CAN_MSG_IDS = 2;
+
+//This enum defines different filter types
+enum eHW_FILTER_TYPES
+{
+	HW_FILTER_ACCEPT_ALL = 0,
+	HW_FILTER_REJECT_ALL,
+	HW_FILTER_MANUAL_SET
+};
+
 
 // Controller details
 // information on the baud rate 
@@ -84,19 +94,23 @@ struct sCONTROLERDETAILS
     TCHAR m_omStrWarningLimit[MAX_STRING];    // Warning limit of CAN Controller
     TCHAR m_omStrPropagationDelay[MAX_STRING];// Propagation Delay
     TCHAR m_omStrSjw[MAX_STRING];
-    TCHAR m_omStrAccCodeByte1[MAX_STRING];    // acceptance code byte1 information
-    TCHAR m_omStrAccCodeByte2[MAX_STRING];    // acceptance code byte2 information
-    TCHAR m_omStrAccCodeByte3[MAX_STRING];    // acceptance code byte3 information
-    TCHAR m_omStrAccCodeByte4[MAX_STRING];    // acceptance code byte4 information
-    TCHAR m_omStrAccMaskByte1[MAX_STRING];    // acceptance mask byte1 information
-    TCHAR m_omStrAccMaskByte2[MAX_STRING];    // acceptance mask byte2 information
-    TCHAR m_omStrAccMaskByte3[MAX_STRING];    // acceptance mask byte3 information
-    TCHAR m_omStrAccMaskByte4[MAX_STRING];    // acceptance mask byte4 information
-    TCHAR m_omHardwareDesc[MAX_STRING];       // Hw description which user can  
+    TCHAR m_omStrAccCodeByte1[CAN_MSG_IDS][MAX_STRING];    // acceptance code byte1 information
+    TCHAR m_omStrAccCodeByte2[CAN_MSG_IDS][MAX_STRING];    // acceptance code byte2 information
+    TCHAR m_omStrAccCodeByte3[CAN_MSG_IDS][MAX_STRING];    // acceptance code byte3 information
+    TCHAR m_omStrAccCodeByte4[CAN_MSG_IDS][MAX_STRING];    // acceptance code byte4 information
+    TCHAR m_omStrAccMaskByte1[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte1 information
+    TCHAR m_omStrAccMaskByte2[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte2 information
+    TCHAR m_omStrAccMaskByte3[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte3 information
+    TCHAR m_omStrAccMaskByte4[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte4 information
+	TCHAR m_omHardwareDesc[MAX_STRING];       // Hw description which user can  
                                               // differentiate betw the channels  
     BOOL  m_bAccFilterMode;       // acceptance filter mode(0: single, 1: Dual)
     UCHAR m_ucControllerMode;                 // Controller mode : 1 : Active, 
-                                              // 2: Passive, 3: Self Reception
+                                              // 2: Passive
+	BOOL m_bSelfReception;
+
+	//Filter type: 1. Accept All 2. Reject All 3. Manual setting
+	eHW_FILTER_TYPES m_enmHWFilterType[CAN_MSG_IDS];	  
     sCONTROLERDETAILS()
     {
         vIntialize();
@@ -120,19 +134,30 @@ struct sCONTROLERDETAILS
         strcpy_s(m_omStrWarningLimit, _T("96"));
         strcpy_s(m_omStrPropagationDelay, _T("ALL"));
         strcpy_s(m_omStrSjw, _T("ALL"));
-        strcpy_s(m_omStrAccCodeByte1, _T("0"));
-        strcpy_s(m_omStrAccCodeByte2, _T("0"));
-        strcpy_s(m_omStrAccCodeByte3, _T("0"));
-        strcpy_s(m_omStrAccCodeByte4, _T("0"));
+        _tcscpy(m_omStrAccCodeByte1[0], _T("0"));
+        _tcscpy(m_omStrAccCodeByte2[0], _T("0"));
+        _tcscpy(m_omStrAccCodeByte3[0], _T("0"));
+        _tcscpy(m_omStrAccCodeByte4[0], _T("0"));
+        _tcscpy(m_omStrAccCodeByte1[1], _T("0"));
+        _tcscpy(m_omStrAccCodeByte2[1], _T("0"));
+        _tcscpy(m_omStrAccCodeByte3[1], _T("0"));
+        _tcscpy(m_omStrAccCodeByte4[1], _T("0"));
 
-        strcpy_s(m_omStrAccMaskByte1, _T("FF"));
-        strcpy_s(m_omStrAccMaskByte2, _T("FF"));
-        strcpy_s(m_omStrAccMaskByte3, _T("FF"));
-        strcpy_s(m_omStrAccMaskByte4, _T("FF"));
-        strcpy_s(m_omHardwareDesc, _T(""));
+        _tcscpy(m_omStrAccMaskByte1[0], _T("FF"));
+        _tcscpy(m_omStrAccMaskByte2[0], _T("FF"));
+        _tcscpy(m_omStrAccMaskByte3[0], _T("FF"));
+        _tcscpy(m_omStrAccMaskByte4[0], _T("FF"));
+        _tcscpy(m_omStrAccMaskByte1[1], _T("FF"));
+        _tcscpy(m_omStrAccMaskByte2[1], _T("FF"));
+        _tcscpy(m_omStrAccMaskByte3[1], _T("FF"));
+        _tcscpy(m_omStrAccMaskByte4[1], _T("FF"));
+		strcpy_s(m_omHardwareDesc, _T(""));
 
         m_bAccFilterMode = FALSE;
         m_ucControllerMode = 0x1;
+		m_enmHWFilterType[0] = HW_FILTER_ACCEPT_ALL;
+		m_enmHWFilterType[1] = HW_FILTER_ACCEPT_ALL;
+		m_bSelfReception = TRUE;
     };
 };
 typedef sCONTROLERDETAILS   SCONTROLER_DETAILS;
