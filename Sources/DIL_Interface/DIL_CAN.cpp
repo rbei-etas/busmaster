@@ -36,6 +36,10 @@
 #include "CAN_Kvaser_CAN/CAN_Kvaser_CAN_Extern.h"
 #include "Dil_CAN.h"
 
+typedef HRESULT (__stdcall *GETIDIL_CAN_CONTROLLER)(void** ppvInterface);
+static GETIDIL_CAN_CONTROLLER pfGetIDILCAN_Controller;
+static CDIL_CAN_DUMMY* sg_pouDIL_CAN_DUMMY = new CDIL_CAN_DUMMY;
+
 typedef struct
 {
     DWORD           m_dwDIL;
@@ -57,12 +61,21 @@ static ENTRY_DIL sg_ListDIL[] =
 
 CDIL_CAN::CDIL_CAN()
 {
+	m_hDll = NULL;
 	m_dwDriverID = DAL_NONE;
+	pfGetIDILCAN_Controller = NULL;
+	m_pBaseDILCAN_Controller = NULL;
     vSelectInterface_Dummy();
 }
 
 CDIL_CAN::~CDIL_CAN()
 {
+	//Free the currently selected DIL library
+	if ( m_hDll )
+	{		
+		FreeLibrary(m_hDll);
+		m_hDll = NULL;
+	}	
 }
 
 int CDIL_CAN::ExitInstance()
@@ -78,6 +91,7 @@ int CDIL_CAN::ExitInstance()
 BOOL CDIL_CAN::InitInstance()
 {
     vSelectInterface_Dummy();
+
     return TRUE;
 }
 
@@ -85,211 +99,10 @@ BOOL CDIL_CAN::InitInstance()
  * Helper Function for Dummy Interface
  */
 void CDIL_CAN::vSelectInterface_Dummy(void)
-{
-    m_pfPerformInitOperations = DILC_Dummy_PerformInitOperations;
-    m_pfPerformClosureOperations = DILC_Dummy_PerformClosureOperations;
-    m_pfGetTimeModeMapping = DILC_Dummy_GetTimeModeMapping;
-    m_pfListHwInterfaces = DILC_Dummy_ListHwInterfaces;
-    m_pfSelectHwInterface = DILC_Dummy_SelectHwInterface;
-    m_pfDeselectHwInterfaces = DILC_Dummy_DeselectHwInterface;
-    m_pfDisplayConfigDlg = DILC_Dummy_DisplayConfigDlg;
-    m_pfSetConfigData = DILC_Dummy_SetConfigData;
-    m_pfStartHardware = DILC_Dummy_StartHardware;
-    m_pfStopHardware = DILC_Dummy_StopHardware;
-    m_pfResetHardware = DILC_Dummy_ResetHardware;
-    m_pfGetTxMsgBuffer = DILC_Dummy_GetTxMsgBuffer;
-    m_pfSendMsg = DILC_Dummy_SendMsg;
-    m_pfGetBoardInfo = DILC_Dummy_GetBoardInfo;
-    m_pfGetBusConfigInfo = DILC_Dummy_GetBusConfigInfo;
-    m_pfGetVersionInfo = DILC_Dummy_GetVersionInfo;
-    m_pfGetLastErrorString = DILC_Dummy_GetLastErrorString;
-    m_pfFilterFrames = DILC_Dummy_FilterFrames;
-    m_pfManageMsgBuf = DILC_Dummy_ManageMsgBuf;
-    m_pfRegisterClient = DILC_Dummy_RegisterClient;
-    m_pfGetCntrlStatus = DILC_Dummy_GetCntrlStatus;
-    m_pfGetControllerParams = DILC_Dummy_GetControllerParams;
-    m_pfGetErrorCount = DILC_Dummy_GetErrorCount;
+{	
+	m_pBaseDILCAN_Controller = (CBaseDIL_CAN_Controller*) sg_pouDIL_CAN_DUMMY;
 }
 
-/**
- * Helper Function for CAN_Usb Interface
- */
-void CDIL_CAN::vSelectInterface_CAN_Usb(void)
-{
-    m_pfPerformInitOperations = CAN_Usb_PerformInitOperations;
-    m_pfPerformClosureOperations = CAN_Usb_PerformClosureOperations;
-    m_pfGetTimeModeMapping = CAN_Usb_GetTimeModeMapping;
-    m_pfListHwInterfaces = CAN_Usb_ListHwInterfaces;
-    m_pfSelectHwInterface = CAN_Usb_SelectHwInterface;
-    m_pfDeselectHwInterfaces = CAN_Usb_DeselectHwInterface;
-    m_pfDisplayConfigDlg = CAN_Usb_DisplayConfigDlg;
-    m_pfSetConfigData = CAN_Usb_SetConfigData;
-    m_pfStartHardware = CAN_Usb_StartHardware;
-    m_pfStopHardware = CAN_Usb_StopHardware;
-    m_pfResetHardware = CAN_Usb_ResetHardware;
-    m_pfGetTxMsgBuffer = CAN_Usb_GetTxMsgBuffer;
-    m_pfSendMsg = CAN_Usb_SendMsg;
-    m_pfGetBoardInfo = CAN_Usb_GetBoardInfo;
-    m_pfGetBusConfigInfo = CAN_Usb_GetBusConfigInfo;
-    m_pfGetVersionInfo = CAN_Usb_GetVersionInfo;
-    m_pfGetLastErrorString = CAN_Usb_GetLastErrorString;
-    m_pfFilterFrames = CAN_Usb_FilterFrames;
-    m_pfManageMsgBuf = CAN_Usb_ManageMsgBuf;
-    m_pfRegisterClient = CAN_Usb_RegisterClient;
-    m_pfGetCntrlStatus = CAN_Usb_GetCntrlStatus;
-    m_pfGetControllerParams = CAN_Usb_GetControllerParams;
-    m_pfGetErrorCount = CAN_Usb_GetErrorCount;
-}
-
-/**
- * Helper Function for CAN_STUB Interface
- */
-void CDIL_CAN::vSelectInterface_CAN_STUB(void)
-{
-    m_pfPerformInitOperations = CAN_STUB_PerformInitOperations;
-    m_pfPerformClosureOperations = CAN_STUB_PerformClosureOperations;
-    m_pfGetTimeModeMapping = CAN_STUB_GetTimeModeMapping;
-    m_pfListHwInterfaces = CAN_STUB_ListHwInterfaces;
-    m_pfSelectHwInterface = CAN_STUB_SelectHwInterface;
-    m_pfDeselectHwInterfaces = CAN_STUB_DeselectHwInterface;
-    m_pfDisplayConfigDlg = CAN_STUB_DisplayConfigDlg;
-    m_pfSetConfigData = CAN_STUB_SetConfigData;
-    m_pfStartHardware = CAN_STUB_StartHardware;
-    m_pfStopHardware = CAN_STUB_StopHardware;
-    m_pfResetHardware = CAN_STUB_ResetHardware;
-    m_pfGetTxMsgBuffer = CAN_STUB_GetTxMsgBuffer;
-    m_pfSendMsg = CAN_STUB_SendMsg;
-    m_pfGetBoardInfo = CAN_STUB_GetBoardInfo;
-    m_pfGetBusConfigInfo = CAN_STUB_GetBusConfigInfo;
-    m_pfGetVersionInfo = CAN_STUB_GetVersionInfo;
-    m_pfGetLastErrorString = CAN_STUB_GetLastErrorString;
-    m_pfFilterFrames = CAN_STUB_FilterFrames;
-    m_pfManageMsgBuf = CAN_STUB_ManageMsgBuf;
-    m_pfRegisterClient = CAN_STUB_RegisterClient;
-    m_pfGetCntrlStatus = CAN_STUB_GetCntrlStatus;
-    m_pfGetControllerParams = CAN_STUB_GetControllerParams;
-    m_pfGetErrorCount = CAN_STUB_GetErrorCount;
-}
-
-/**
- * Helper Function for CAN_ICS_neoVI Interface
- */
-void CDIL_CAN::vSelectInterface_CAN_ICS_neoVI(void)
-{
-    m_pfPerformInitOperations = CAN_ICS_neoVI_PerformInitOperations;
-    m_pfPerformClosureOperations = CAN_ICS_neoVI_PerformClosureOperations;
-    m_pfGetTimeModeMapping = CAN_ICS_neoVI_GetTimeModeMapping;
-    m_pfListHwInterfaces = CAN_ICS_neoVI_ListHwInterfaces;
-    m_pfSelectHwInterface = CAN_ICS_neoVI_SelectHwInterface;
-    m_pfDeselectHwInterfaces = CAN_ICS_neoVI_DeselectHwInterface;
-    m_pfDisplayConfigDlg = CAN_ICS_neoVI_DisplayConfigDlg;
-    m_pfSetConfigData = CAN_ICS_neoVI_SetConfigData;
-    m_pfStartHardware = CAN_ICS_neoVI_StartHardware;
-    m_pfStopHardware = CAN_ICS_neoVI_StopHardware;
-    m_pfResetHardware = CAN_ICS_neoVI_ResetHardware;
-    m_pfGetTxMsgBuffer = CAN_ICS_neoVI_GetTxMsgBuffer;
-    m_pfSendMsg = CAN_ICS_neoVI_SendMsg;
-    m_pfGetBoardInfo = CAN_ICS_neoVI_GetBoardInfo;
-    m_pfGetBusConfigInfo = CAN_ICS_neoVI_GetBusConfigInfo;
-    m_pfGetVersionInfo = CAN_ICS_neoVI_GetVersionInfo;
-    m_pfGetLastErrorString = CAN_ICS_neoVI_GetLastErrorString;
-    m_pfFilterFrames = CAN_ICS_neoVI_FilterFrames;
-    m_pfManageMsgBuf = CAN_ICS_neoVI_ManageMsgBuf;
-    m_pfRegisterClient = CAN_ICS_neoVI_RegisterClient;
-    m_pfGetCntrlStatus = CAN_ICS_neoVI_GetCntrlStatus;
-    m_pfGetControllerParams = CAN_ICS_neoVI_GetControllerParams;
-    m_pfGetErrorCount = CAN_ICS_neoVI_GetErrorCount;
-}
-
-/**
- * Helper Function for CAN_ETAS_BOA Interface
- */
-void CDIL_CAN::vSelectInterface_CAN_ETAS_BOA(void)
-{
-    m_pfPerformInitOperations = CAN_ETAS_BOA_PerformInitOperations;
-    m_pfPerformClosureOperations = CAN_ETAS_BOA_PerformClosureOperations;
-    m_pfGetTimeModeMapping = CAN_ETAS_BOA_GetTimeModeMapping;
-    m_pfListHwInterfaces = CAN_ETAS_BOA_ListHwInterfaces;
-    m_pfSelectHwInterface = CAN_ETAS_BOA_SelectHwInterface;
-    m_pfDeselectHwInterfaces = CAN_ETAS_BOA_DeselectHwInterface;
-    m_pfDisplayConfigDlg = CAN_ETAS_BOA_DisplayConfigDlg;
-    m_pfSetConfigData = CAN_ETAS_BOA_SetConfigData;
-    m_pfStartHardware = CAN_ETAS_BOA_StartHardware;
-    m_pfStopHardware = CAN_ETAS_BOA_StopHardware;
-    m_pfResetHardware = CAN_ETAS_BOA_ResetHardware;
-    m_pfGetTxMsgBuffer = CAN_ETAS_BOA_GetTxMsgBuffer;
-    m_pfSendMsg = CAN_ETAS_BOA_SendMsg;
-    m_pfGetBoardInfo = CAN_ETAS_BOA_GetBoardInfo;
-    m_pfGetBusConfigInfo = CAN_ETAS_BOA_GetBusConfigInfo;
-    m_pfGetVersionInfo = CAN_ETAS_BOA_GetVersionInfo;
-    m_pfGetLastErrorString = CAN_ETAS_BOA_GetLastErrorString;
-    m_pfFilterFrames = CAN_ETAS_BOA_FilterFrames;
-    m_pfManageMsgBuf = CAN_ETAS_BOA_ManageMsgBuf;
-    m_pfRegisterClient = CAN_ETAS_BOA_RegisterClient;
-    m_pfGetCntrlStatus = CAN_ETAS_BOA_GetCntrlStatus;
-    m_pfGetControllerParams = CAN_ETAS_BOA_GetControllerParams;
-    m_pfGetErrorCount = CAN_ETAS_BOA_GetErrorCount;
-}
-
-/**
- * Helper Function for CAN_Vector_XL Interface
- */
-void CDIL_CAN::vSelectInterface_CAN_Vector_XL(void)
-{
-    m_pfPerformInitOperations = CAN_Vector_XL_PerformInitOperations;
-    m_pfPerformClosureOperations = CAN_Vector_XL_PerformClosureOperations;
-    m_pfGetTimeModeMapping = CAN_Vector_XL_GetTimeModeMapping;
-    m_pfListHwInterfaces = CAN_Vector_XL_ListHwInterfaces;
-    m_pfSelectHwInterface = CAN_Vector_XL_SelectHwInterface;
-    m_pfDeselectHwInterfaces = CAN_Vector_XL_DeselectHwInterface;
-    m_pfDisplayConfigDlg = CAN_Vector_XL_DisplayConfigDlg;
-    m_pfSetConfigData = CAN_Vector_XL_SetConfigData;
-    m_pfStartHardware = CAN_Vector_XL_StartHardware;
-    m_pfStopHardware = CAN_Vector_XL_StopHardware;
-    m_pfResetHardware = CAN_Vector_XL_ResetHardware;
-    m_pfGetTxMsgBuffer = CAN_Vector_XL_GetTxMsgBuffer;
-    m_pfSendMsg = CAN_Vector_XL_SendMsg;
-    m_pfGetBoardInfo = CAN_Vector_XL_GetBoardInfo;
-    m_pfGetBusConfigInfo = CAN_Vector_XL_GetBusConfigInfo;
-    m_pfGetVersionInfo = CAN_Vector_XL_GetVersionInfo;
-    m_pfGetLastErrorString = CAN_Vector_XL_GetLastErrorString;
-    m_pfFilterFrames = CAN_Vector_XL_FilterFrames;
-    m_pfManageMsgBuf = CAN_Vector_XL_ManageMsgBuf;
-    m_pfRegisterClient = CAN_Vector_XL_RegisterClient;
-    m_pfGetCntrlStatus = CAN_Vector_XL_GetCntrlStatus;
-    m_pfGetControllerParams = CAN_Vector_XL_GetControllerParams;
-    m_pfGetErrorCount = CAN_Vector_XL_GetErrorCount;
-}
-
-/**
- * Helper Function for CAN_Kvaser_CAN Interface
- */
-void CDIL_CAN::vSelectInterface_CAN_Kvaser_CAN(void)
-{
-    m_pfPerformInitOperations = CAN_Kvaser_CAN_PerformInitOperations;
-    m_pfPerformClosureOperations = CAN_Kvaser_CAN_PerformClosureOperations;
-    m_pfGetTimeModeMapping = CAN_Kvaser_CAN_GetTimeModeMapping;
-    m_pfListHwInterfaces = CAN_Kvaser_CAN_ListHwInterfaces;
-    m_pfSelectHwInterface = CAN_Kvaser_CAN_SelectHwInterface;
-    m_pfDeselectHwInterfaces = CAN_Kvaser_CAN_DeselectHwInterface;
-    m_pfDisplayConfigDlg = CAN_Kvaser_CAN_DisplayConfigDlg;
-    m_pfSetConfigData = CAN_Kvaser_CAN_SetConfigData;
-    m_pfStartHardware = CAN_Kvaser_CAN_StartHardware;
-    m_pfStopHardware = CAN_Kvaser_CAN_StopHardware;
-    m_pfResetHardware = CAN_Kvaser_CAN_ResetHardware;
-    m_pfGetTxMsgBuffer = CAN_Kvaser_CAN_GetTxMsgBuffer;
-    m_pfSendMsg = CAN_Kvaser_CAN_SendMsg;
-    m_pfGetBoardInfo = CAN_Kvaser_CAN_GetBoardInfo;
-    m_pfGetBusConfigInfo = CAN_Kvaser_CAN_GetBusConfigInfo;
-    m_pfGetVersionInfo = CAN_Kvaser_CAN_GetVersionInfo;
-    m_pfGetLastErrorString = CAN_Kvaser_CAN_GetLastErrorString;
-    m_pfFilterFrames = CAN_Kvaser_CAN_FilterFrames;
-    m_pfManageMsgBuf = CAN_Kvaser_CAN_ManageMsgBuf;
-    m_pfRegisterClient = CAN_Kvaser_CAN_RegisterClient;
-    m_pfGetCntrlStatus = CAN_Kvaser_CAN_GetCntrlStatus;
-    m_pfGetControllerParams = CAN_Kvaser_CAN_GetControllerParams;
-    m_pfGetErrorCount = CAN_Kvaser_CAN_GetErrorCount;
-}
 /* ROUTER CODE FINISHES */
 
 /**
@@ -332,7 +145,7 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
 {
     USES_CONVERSION;
 
-    HRESULT hResult = S_FALSE;
+    HRESULT hResult = S_FALSE;	
 
     if (DILC_GetSelectedDriver() == dwDriverID)
     {
@@ -350,223 +163,94 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
             owner window handle. */
         }
 
-        /* Unload the old driver library */
-        switch(dwDriverID) {
-        case DRIVER_CAN_PEAK_USB:
-            CAN_Usb_UnloadDriverLibrary();
-            break;
-        case DRIVER_CAN_ICS_NEOVI:
-        case DRIVER_CAN_ETAS_ES581:
-            CAN_ICS_neoVI_UnloadDriverLibrary();
-            break;
-        case DRIVER_CAN_ETAS_BOA:
-            CAN_ETAS_BOA_UnloadDriverLibrary();
-            break;
-        case DRIVER_CAN_VECTOR_XL:
-            CAN_Vector_XL_UnloadDriverLibrary();
-            break;
-        case DRIVER_CAN_KVASER_CAN:
-            CAN_Kvaser_CAN_UnloadDriverLibrary();
-            break;
-        case DRIVER_CAN_STUB:
-            CAN_STUB_UnloadDriverLibrary();
-            break;
-        }
+		//Free the currently selected DIL library
+		if ( m_hDll )
+		{		
+			FreeLibrary(m_hDll);
+			m_hDll = NULL;
+		}	
 
-        if (dwDriverID == DRIVER_CAN_PEAK_USB)
+		if (dwDriverID == DRIVER_CAN_PEAK_USB)
         {
-            // First select the dummy interface
-            DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
-
-			// First set the application parameters.
-            CAN_Usb_SetAppParams(hWndOwner, pILog);
-
-			// Next load the driver library
-            hResult = CAN_Usb_LoadDriverLibrary();
-            switch (hResult)
-            {
-                case S_OK:
-                case DLL_ALREADY_LOADED:
-                {
-                    pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library successful..."));
-                    hResult = S_OK;
-                    CAN_Usb_PerformInitOperations();
-                    vSelectInterface_CAN_Usb();
-					m_dwDriverID = DRIVER_CAN_PEAK_USB;
-                }
-                break;
-                default:
-                {
-                    hResult = ERR_LOAD_DRIVER;
-                    pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library failed..."));
-                }
-                break;
-            }
-
+			//Load the ICSNeoVI DIL
+			m_hDll = LoadLibrary(_T("CAN_PEAK_USB.dll"));
         }
         else if (dwDriverID == DRIVER_CAN_ICS_NEOVI || dwDriverID == DRIVER_CAN_ETAS_ES581)
         {
-            // First select the dummy interface
-            DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
-
-			// First set the application parameters.
-            hResult = CAN_ICS_neoVI_SetAppParams(hWndOwner, pILog);
-
-			// Next load the driver library
-            hResult = CAN_ICS_neoVI_LoadDriverLibrary();
-            switch (hResult)
-            {
-                case S_OK:
-                case DLL_ALREADY_LOADED:
-                {
-                    pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library successful..."));
-                    hResult = S_OK;
-                    CAN_ICS_neoVI_PerformInitOperations();
-                    vSelectInterface_CAN_ICS_neoVI();
-					m_dwDriverID = dwDriverID;
-                }
-                break;
-                default:
-                {
-                    hResult = ERR_LOAD_DRIVER;
-                    pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library failed..."));
-                }
-                break;
-            }
-
+			//Load the ICSNeoVI DIL
+			m_hDll = LoadLibrary(_T("CAN_ICS_neoVI.dll"));		
         }
         else if (dwDriverID == DRIVER_CAN_ETAS_BOA)
         {
-            // First select the dummy interface
-            DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
-
-            // First set the application parameters.
-            hResult = CAN_ETAS_BOA_SetAppParams(hWndOwner, pILog);
-
-			// Next load the driver library
-            hResult = CAN_ETAS_BOA_LoadDriverLibrary();
-            switch (hResult)
-            {
-                case S_OK:
-                case DLL_ALREADY_LOADED:
-                {
-                    pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library successful..."));
-                    hResult = S_OK;
-                    CAN_ETAS_BOA_PerformInitOperations();
-                    vSelectInterface_CAN_ETAS_BOA();
-					m_dwDriverID = dwDriverID;
-                }
-                break;
-                default:
-                {
-                    hResult = ERR_LOAD_DRIVER;
-                    pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library failed..."));
-                }
-                break;
-            }
+			//Load the ICSNeoVI DIL
+			m_hDll = LoadLibrary(_T("CAN_ETAS_BOA.dll"));
         }
 		else if (dwDriverID == DRIVER_CAN_VECTOR_XL)
 		{
-            // First select the dummy interface
-            DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
-
-            // First set the application parameters.
-            hResult = CAN_Vector_XL_SetAppParams(hWndOwner, pILog);
-
-			// Next load the driver library
-            hResult = CAN_Vector_XL_LoadDriverLibrary();
-            switch (hResult)
-            {
-                case S_OK:
-                case DLL_ALREADY_LOADED:
-                {
-                    pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library successful..."));
-                    hResult = S_OK;
-                    CAN_Vector_XL_PerformInitOperations();
-                    vSelectInterface_CAN_Vector_XL();
-					m_dwDriverID = dwDriverID;
-                }
-                break;
-                default:
-                {
-                    hResult = ERR_LOAD_DRIVER;
-                    pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library failed..."));
-                }
-                break;
-            }
+			//Load the Vector XL DIL
+			m_hDll = LoadLibrary(_T("CAN_Vector_XL.dll"));
 		}
 		else if (dwDriverID == DRIVER_CAN_KVASER_CAN)
-		{
-            // First select the dummy interface
-            DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
-
-            // First set the application parameters.
-            hResult = CAN_Kvaser_CAN_SetAppParams(hWndOwner, pILog);
-
-			// Next load the driver library
-            hResult = CAN_Kvaser_CAN_LoadDriverLibrary();
-            switch (hResult)
-            {
-                case S_OK:
-                case DLL_ALREADY_LOADED:
-                {
-                    pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library successful..."));
-                    hResult = S_OK;
-                    CAN_Kvaser_CAN_PerformInitOperations();
-                    vSelectInterface_CAN_Kvaser_CAN();
-					m_dwDriverID = dwDriverID;
-                }
-                break;
-                default:
-                {
-                    hResult = ERR_LOAD_DRIVER;
-                    pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library failed..."));
-                }
-                break;
-            }
+		{		
+			//Load the Kvaser DIL
+			m_hDll = LoadLibrary(_T("CAN_Kvaser_CAN.dll"));
 		}
         else if (dwDriverID == DRIVER_CAN_STUB)
         {
-            // First select the dummy interface
-            DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
-
-            // First set the application parameters.
-            hResult = CAN_STUB_SetAppParams(hWndOwner, pILog);
-
-			// Next load the driver library
-            hResult = CAN_STUB_LoadDriverLibrary();
-            switch (hResult)
-            {
-                case S_OK:
-                case DLL_ALREADY_LOADED:
-                {
-                    pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library successful..."));
-                    hResult = S_OK;
-                    CAN_STUB_PerformInitOperations();
-                    vSelectInterface_CAN_STUB();
-					m_dwDriverID = dwDriverID;
-                }
-                break;
-                default:
-                {
-                    hResult = ERR_LOAD_DRIVER;
-                    pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library failed..."));
-                }
-                break;
-            }
-
+			//Load the CAN STUB DIL
+			m_hDll = LoadLibrary(_T("CAN_STUB.dll"));
         }
         else if (dwDriverID == DAL_NONE)
         {
             DILC_PerformClosureOperations();
             vSelectInterface_Dummy();
 			m_dwDriverID = DAL_NONE;
+			return hResult;
         }
         else // invalid driver / DAL id
         {
             hResult = DAL_INVALID;
 			m_dwDriverID = DAL_NONE;
+			return hResult;
         }
+
+		if (m_hDll == NULL)
+		{
+			hResult = ERR_LOAD_DRIVER;
+			pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library failed..."));
+		}
+		else
+		{
+            // First select the dummy interface
+            DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
+			
+			pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library successful..."));
+			pfGetIDILCAN_Controller = (GETIDIL_CAN_CONTROLLER)GetProcAddress(m_hDll, "GetIDIL_CAN_Controller");				
+			pfGetIDILCAN_Controller((void**)&m_pBaseDILCAN_Controller);
+			if ( m_pBaseDILCAN_Controller )
+			{
+				// set the application parameters.
+				m_pBaseDILCAN_Controller->CAN_SetAppParams(hWndOwner, pILog);
+				hResult = m_pBaseDILCAN_Controller->CAN_LoadDriverLibrary();
+				switch (hResult)
+				{
+					case S_OK:
+					case DLL_ALREADY_LOADED:
+					{
+						m_pBaseDILCAN_Controller->CAN_PerformInitOperations();				
+						m_dwDriverID = dwDriverID;
+						hResult = S_OK;					
+					}
+					break;
+					default:
+					{
+						hResult = ERR_LOAD_DRIVER;
+						pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library failed..."));
+					}
+					break;
+				}
+			}
+		}	
     }
 
     return hResult;
@@ -580,7 +264,7 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
  */
 HRESULT CDIL_CAN::DILC_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
-    return (*m_pfManageMsgBuf)(bAction, ClientID, pBufObj);
+	return m_pBaseDILCAN_Controller->CAN_ManageMsgBuf(bAction, ClientID, pBufObj);
 }
 
 /**
@@ -593,7 +277,7 @@ HRESULT CDIL_CAN::DILC_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE
  */
 HRESULT CDIL_CAN::DILC_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
 {
-    return (*m_pfRegisterClient)(bRegister, ClientID, pacClientName);
+	return m_pBaseDILCAN_Controller->CAN_RegisterClient(bRegister, ClientID, pacClientName);    
 }
 
 /**
@@ -606,25 +290,6 @@ HRESULT CDIL_CAN::DILC_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pa
 DWORD CDIL_CAN::DILC_GetSelectedDriver(void)
 {
 	return m_dwDriverID;
-    //DWORD Result = (DWORD)DAL_NONE;
-
-    //if (m_pfDisplayConfigDlg == CAN_Usb_DisplayConfigDlg)
-    //{
-    //    Result = DRIVER_CAN_PEAK_USB;
-    //}
-    //else if (m_pfDisplayConfigDlg == CAN_ETAS_BOA_DisplayConfigDlg)
-    //{
-    //    Result = DRIVER_CAN_ETAS_BOA;
-    //}
-    //else if (m_pfDisplayConfigDlg == CAN_STUB_DisplayConfigDlg)
-    //{
-    //    Result = DRIVER_CAN_STUB;
-    //}
-    //else if (m_pfDisplayConfigDlg == CAN_ICS_neoVI_DisplayConfigDlg)
-    //{
-    //    Result = DRIVER_CAN_ICS_NEOVI;
-    //}
-    //return Result;
 }
 
 /**
@@ -636,7 +301,7 @@ DWORD CDIL_CAN::DILC_GetSelectedDriver(void)
  */
 HRESULT CDIL_CAN::DILC_PerformInitOperations(void)
 {
-    return (*m_pfPerformInitOperations)();
+	return m_pBaseDILCAN_Controller->CAN_PerformInitOperations();    
 }
 
 /**
@@ -648,7 +313,13 @@ HRESULT CDIL_CAN::DILC_PerformInitOperations(void)
  */
 HRESULT CDIL_CAN::DILC_PerformClosureOperations(void)
 {
-    HRESULT hResult =  (*m_pfPerformClosureOperations)();
+	HRESULT hResult =  S_FALSE;
+	if ( m_pBaseDILCAN_Controller )
+	{
+		m_pBaseDILCAN_Controller->CAN_PerformClosureOperations();
+		m_pBaseDILCAN_Controller->CAN_UnloadDriverLibrary();
+	}
+
     vSelectInterface_Dummy();
     m_dwDriverID = DAL_NONE;    
     return hResult;
@@ -663,7 +334,7 @@ HRESULT CDIL_CAN::DILC_PerformClosureOperations(void)
  */
 HRESULT CDIL_CAN::DILC_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
 {
-    return (*m_pfGetTimeModeMapping)(CurrSysTime, TimeStamp, QueryTickCount);
+	return m_pBaseDILCAN_Controller->CAN_GetTimeModeMapping(CurrSysTime, TimeStamp, QueryTickCount);    
 }
 
 /**
@@ -675,7 +346,7 @@ HRESULT CDIL_CAN::DILC_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeS
  */
 HRESULT CDIL_CAN::DILC_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount)
 {
-    return (*m_pfListHwInterfaces)(sSelHwInterface, nCount);
+	return m_pBaseDILCAN_Controller->CAN_ListHwInterfaces(sSelHwInterface, nCount);    
 }
 
 /**
@@ -687,7 +358,7 @@ HRESULT CDIL_CAN::DILC_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT&
  */
 HRESULT CDIL_CAN::DILC_SelectHwInterfaces(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount)
 {
-    return (*m_pfSelectHwInterface)(sSelHwInterface, nCount);
+	return m_pBaseDILCAN_Controller->CAN_SelectHwInterface(sSelHwInterface, nCount);    
 }
 
 /**
@@ -699,7 +370,7 @@ HRESULT CDIL_CAN::DILC_SelectHwInterfaces(const INTERFACE_HW_LIST& sSelHwInterfa
  */
 HRESULT CDIL_CAN::DILC_DeselectHwInterfaces(void)
 {
-    return (*m_pfDeselectHwInterfaces)();
+	return m_pBaseDILCAN_Controller->CAN_DeselectHwInterface();    
 }
 
 /**
@@ -714,7 +385,7 @@ HRESULT CDIL_CAN::DILC_DeselectHwInterfaces(void)
  */
 HRESULT CDIL_CAN::DILC_DisplayConfigDlg(PCHAR& InitData, int& Length)
 {
-    return (*m_pfDisplayConfigDlg)(InitData, Length);
+	return m_pBaseDILCAN_Controller->CAN_DisplayConfigDlg(InitData, Length);    
 }
 
 /**
@@ -727,7 +398,7 @@ HRESULT CDIL_CAN::DILC_DisplayConfigDlg(PCHAR& InitData, int& Length)
  */
 HRESULT CDIL_CAN::DILC_SetConfigData(PCHAR pInitData, int Length)
 {
-    return (*m_pfSetConfigData)(pInitData, Length);
+	return m_pBaseDILCAN_Controller->CAN_SetConfigData(pInitData, Length);    
 }
 
 /**
@@ -739,7 +410,7 @@ HRESULT CDIL_CAN::DILC_SetConfigData(PCHAR pInitData, int Length)
  */
 HRESULT CDIL_CAN::DILC_StartHardware(void)
 {
-    return (*m_pfStartHardware)();
+	return m_pBaseDILCAN_Controller->CAN_StartHardware();    
 }
 
 /**
@@ -751,7 +422,7 @@ HRESULT CDIL_CAN::DILC_StartHardware(void)
  */
 HRESULT CDIL_CAN::DILC_StopHardware(void)
 {
-    return (*m_pfStopHardware)();
+	return m_pBaseDILCAN_Controller->CAN_StopHardware();    
 }
 
 /**
@@ -763,7 +434,7 @@ HRESULT CDIL_CAN::DILC_StopHardware(void)
  */
 HRESULT CDIL_CAN::DILC_ResetHardware(void)
 {
-    return (*m_pfResetHardware)();
+	return m_pBaseDILCAN_Controller->CAN_ResetHardware();    
 }
 
 /**
@@ -773,7 +444,7 @@ HRESULT CDIL_CAN::DILC_ResetHardware(void)
  */
 HRESULT CDIL_CAN::DILC_GetTxMsgBuffer(BYTE*& pouTxMsgBuffer)
 {
-    return (*m_pfGetTxMsgBuffer)(pouTxMsgBuffer);
+	return m_pBaseDILCAN_Controller->CAN_GetTxMsgBuffer(pouTxMsgBuffer);    
 }
 
 /**
@@ -785,7 +456,7 @@ HRESULT CDIL_CAN::DILC_GetTxMsgBuffer(BYTE*& pouTxMsgBuffer)
  */
 HRESULT CDIL_CAN::DILC_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
 {
-    return (*m_pfSendMsg)(dwClientID, sCanTxMsg);
+	return m_pBaseDILCAN_Controller->CAN_SendMsg(dwClientID, sCanTxMsg);    
 }
 
 /**
@@ -794,8 +465,8 @@ HRESULT CDIL_CAN::DILC_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
  * Get basic information of the board
  */
 HRESULT CDIL_CAN::DILC_GetBoardInfo(s_BOARDINFO& RBIN_BoardInfo)
-{
-    return (*m_pfGetBoardInfo)(RBIN_BoardInfo);
+{	
+	return m_pBaseDILCAN_Controller->CAN_GetBoardInfo(RBIN_BoardInfo);    
 }
 
 /**
@@ -805,7 +476,7 @@ HRESULT CDIL_CAN::DILC_GetBoardInfo(s_BOARDINFO& RBIN_BoardInfo)
  */
 HRESULT CDIL_CAN::DILC_GetBusConfigInfo(BYTE* RBIN_BusInfo)
 {
-    return (*m_pfGetBusConfigInfo)(RBIN_BusInfo);
+	return m_pBaseDILCAN_Controller->CAN_GetBusConfigInfo(RBIN_BusInfo);    
 }
 
 /**
@@ -817,7 +488,7 @@ HRESULT CDIL_CAN::DILC_GetBusConfigInfo(BYTE* RBIN_BusInfo)
  */
 HRESULT CDIL_CAN::DILC_GetVersionInfo(VERSIONINFO& sVerInfo)
 {
-    return (*m_pfGetVersionInfo)(sVerInfo);
+	return m_pBaseDILCAN_Controller->CAN_GetVersionInfo(sVerInfo);    
 }
 
 /**
@@ -829,7 +500,7 @@ HRESULT CDIL_CAN::DILC_GetVersionInfo(VERSIONINFO& sVerInfo)
  */
 HRESULT CDIL_CAN::DILC_GetLastErrorString(char acErrorStr[], int nLength)
 {
-    return (*m_pfGetLastErrorString)(acErrorStr, nLength);
+	return m_pBaseDILCAN_Controller->CAN_GetLastErrorString(acErrorStr, nLength);    
 }
 
 /**
@@ -842,7 +513,7 @@ HRESULT CDIL_CAN::DILC_GetLastErrorString(char acErrorStr[], int nLength)
  */
 HRESULT CDIL_CAN::DILC_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus)
 {
-    return (*m_pfGetCntrlStatus)(hEvent, unCntrlStatus);
+	return m_pBaseDILCAN_Controller->CAN_GetCntrlStatus(hEvent, unCntrlStatus);    
 }
 
 /**
@@ -853,7 +524,10 @@ HRESULT CDIL_CAN::DILC_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus)
  */
 HRESULT CDIL_CAN::DILC_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
 {
-    return (*m_pfGetControllerParams)(lParam, nChannel, eContrParam);
+	if ( m_pBaseDILCAN_Controller )
+		return m_pBaseDILCAN_Controller->CAN_GetControllerParams(lParam, nChannel, eContrParam);    
+	else
+		return S_FALSE;
 }
 
 /**
@@ -866,7 +540,7 @@ HRESULT CDIL_CAN::DILC_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_P
  */
 HRESULT CDIL_CAN::DILC_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIDs, UINT nLength)
 {
-    return (*m_pfFilterFrames)(FilterType, Channel, punMsgIDs, nLength);
+	return m_pBaseDILCAN_Controller->CAN_FilterFrames(FilterType, Channel, punMsgIDs, nLength);    
 }
 
 /**
@@ -877,5 +551,5 @@ HRESULT CDIL_CAN::DILC_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel
  */
 HRESULT  CDIL_CAN::DILC_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam)
 {
-    return (*m_pfGetErrorCount)(sErrorCnt, nChannel, eContrParam);
+	return m_pBaseDILCAN_Controller->CAN_GetErrorCount(sErrorCnt, nChannel, eContrParam);    
 }
