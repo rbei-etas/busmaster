@@ -531,29 +531,29 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                     psControllerDetails[ nIndex ].m_nItemUnderFocus =
                         m_sControllerDetails[ nIndex ].m_nItemUnderFocus;
                     // acceptance code information
-                    _tcscpy(psControllerDetails[ nIndex ].m_omStrAccCodeByte1,
-                        m_sControllerDetails[ nIndex ].m_omStrAccCodeByte1);
+                    _tcscpy(psControllerDetails[ nIndex ].m_omStrAccCodeByte1[0],
+                        m_sControllerDetails[ nIndex ].m_omStrAccCodeByte1[0]);
                     // acceptance code information
-                    _tcscpy(psControllerDetails[ nIndex ].m_omStrAccCodeByte2,
-                        m_sControllerDetails[ nIndex ].m_omStrAccCodeByte2);
+                    _tcscpy(psControllerDetails[ nIndex ].m_omStrAccCodeByte2[0],
+                        m_sControllerDetails[ nIndex ].m_omStrAccCodeByte2[0]);
                     // acceptance code information
-                    _tcscpy(psControllerDetails[ nIndex ].m_omStrAccCodeByte3,
-                        m_sControllerDetails[ nIndex ].m_omStrAccCodeByte3);
+                    _tcscpy(psControllerDetails[ nIndex ].m_omStrAccCodeByte3[0],
+                        m_sControllerDetails[ nIndex ].m_omStrAccCodeByte3[0]);
                     // acceptance code information
-                    _tcscpy(psControllerDetails[ nIndex ].m_omStrAccCodeByte4,
-                        m_sControllerDetails[ nIndex ].m_omStrAccCodeByte4);
+                    _tcscpy(psControllerDetails[ nIndex ].m_omStrAccCodeByte4[0],
+                        m_sControllerDetails[ nIndex ].m_omStrAccCodeByte4[0]);
                     // acceptance mask information
-                    _tcscpy(psControllerDetails[ nIndex ].m_omStrAccMaskByte1,
-                        m_sControllerDetails[ nIndex ].m_omStrAccMaskByte1);
+                    _tcscpy(psControllerDetails[ nIndex ].m_omStrAccMaskByte1[0],
+                        m_sControllerDetails[ nIndex ].m_omStrAccMaskByte1[0]);
                     // acceptance mask information
-                    _tcscpy(psControllerDetails[ nIndex ].m_omStrAccMaskByte2,
-                        m_sControllerDetails[ nIndex ].m_omStrAccMaskByte2);
+                    _tcscpy(psControllerDetails[ nIndex ].m_omStrAccMaskByte2[0],
+                        m_sControllerDetails[ nIndex ].m_omStrAccMaskByte2[0]);
                     // acceptance mask information
-                    _tcscpy(psControllerDetails[ nIndex ].m_omStrAccMaskByte3,
-                        m_sControllerDetails[ nIndex ].m_omStrAccMaskByte3);
+                    _tcscpy(psControllerDetails[ nIndex ].m_omStrAccMaskByte3[0],
+                        m_sControllerDetails[ nIndex ].m_omStrAccMaskByte3[0]);
                     // acceptance mask information
-                    _tcscpy(psControllerDetails[ nIndex ].m_omStrAccMaskByte4,
-                        m_sControllerDetails[ nIndex ].m_omStrAccMaskByte4);
+                    _tcscpy(psControllerDetails[ nIndex ].m_omStrAccMaskByte4[0],
+                        m_sControllerDetails[ nIndex ].m_omStrAccMaskByte4[0]);
                     // acceptance filter mode
                     psControllerDetails[ nIndex ].m_bAccFilterMode =
                         m_sControllerDetails[ nIndex ].m_bAccFilterMode;
@@ -1085,29 +1085,29 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                     m_sControllerDetails[ nIndex ].m_nItemUnderFocus = 
                         pSrc[ nIndex ].m_nItemUnderFocus;
                     // acceptance code information
-                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccCodeByte1,
-                        pSrc[ nIndex ].m_omStrAccCodeByte1);
+                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccCodeByte1[0],
+                        pSrc[ nIndex ].m_omStrAccCodeByte1[0]);
                     // acceptance code information
-                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccCodeByte2,
-                        pSrc[ nIndex ].m_omStrAccCodeByte2);
+                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccCodeByte2[0],
+                        pSrc[ nIndex ].m_omStrAccCodeByte2[0]);
                     // acceptance code information
-                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccCodeByte3,
-                        pSrc[ nIndex ].m_omStrAccCodeByte3);
+                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccCodeByte3[0],
+                        pSrc[ nIndex ].m_omStrAccCodeByte3[0]);
                     // acceptance code information
-                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccCodeByte4,
-                        pSrc[ nIndex ].m_omStrAccCodeByte4);
+                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccCodeByte4[0],
+                        pSrc[ nIndex ].m_omStrAccCodeByte4[0]);
                     // acceptance mask information
-                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccMaskByte1,
-                        pSrc[ nIndex ].m_omStrAccMaskByte1);
+                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccMaskByte1[0],
+                        pSrc[ nIndex ].m_omStrAccMaskByte1[0]);
                     // acceptance mask information
-                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccMaskByte2,
-                        pSrc[ nIndex ].m_omStrAccMaskByte2);
+                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccMaskByte2[0],
+                        pSrc[ nIndex ].m_omStrAccMaskByte2[0]);
                     // acceptance mask information
-                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccMaskByte3,
-                        pSrc[ nIndex ].m_omStrAccMaskByte3);
+                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccMaskByte3[0],
+                        pSrc[ nIndex ].m_omStrAccMaskByte3[0]);
                     // acceptance mask information
-                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccMaskByte4,
-                        pSrc[ nIndex ].m_omStrAccMaskByte4);
+                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccMaskByte4[0],
+                        pSrc[ nIndex ].m_omStrAccMaskByte4[0]);
                     m_sControllerDetails[ nIndex ].m_bAccFilterMode = 
                         pSrc[ nIndex ].m_bAccFilterMode;
                     _tcscpy(m_sControllerDetails[ nIndex ].m_omStrWarningLimit,
@@ -2526,21 +2526,21 @@ static void vReadControllerDetails(CArchive& roCfgArchive, int& nIndex,
     
     // acceptance code information
     roCfgArchive >> omTemp;
-    _tcscpy(psControllerDetails[nIndex].m_omStrAccCodeByte1, omTemp.GetBuffer(MAX_PATH));
+    _tcscpy(psControllerDetails[nIndex].m_omStrAccCodeByte1[0], omTemp.GetBuffer(MAX_PATH));
     roCfgArchive >> omTemp;
-    _tcscpy(psControllerDetails[nIndex].m_omStrAccCodeByte2, omTemp.GetBuffer(MAX_PATH));
+    _tcscpy(psControllerDetails[nIndex].m_omStrAccCodeByte2[0], omTemp.GetBuffer(MAX_PATH));
     roCfgArchive >> omTemp;
-    _tcscpy(psControllerDetails[nIndex].m_omStrAccCodeByte3, omTemp.GetBuffer(MAX_PATH));
+    _tcscpy(psControllerDetails[nIndex].m_omStrAccCodeByte3[0], omTemp.GetBuffer(MAX_PATH));
     roCfgArchive >> omTemp;
-    _tcscpy(psControllerDetails[nIndex].m_omStrAccCodeByte4, omTemp.GetBuffer(MAX_PATH));
+    _tcscpy(psControllerDetails[nIndex].m_omStrAccCodeByte4[0], omTemp.GetBuffer(MAX_PATH));
     roCfgArchive >> omTemp;
-    _tcscpy(psControllerDetails[nIndex].m_omStrAccMaskByte1, omTemp.GetBuffer(MAX_PATH));
+    _tcscpy(psControllerDetails[nIndex].m_omStrAccMaskByte1[0], omTemp.GetBuffer(MAX_PATH));
     roCfgArchive >> omTemp;
-    _tcscpy(psControllerDetails[nIndex].m_omStrAccMaskByte2, omTemp.GetBuffer(MAX_PATH));
+    _tcscpy(psControllerDetails[nIndex].m_omStrAccMaskByte2[0], omTemp.GetBuffer(MAX_PATH));
     roCfgArchive >> omTemp;
-    _tcscpy(psControllerDetails[nIndex].m_omStrAccMaskByte3, omTemp.GetBuffer(MAX_PATH));
+    _tcscpy(psControllerDetails[nIndex].m_omStrAccMaskByte3[0], omTemp.GetBuffer(MAX_PATH));
     roCfgArchive >> omTemp;
-    _tcscpy(psControllerDetails[nIndex].m_omStrAccMaskByte4, omTemp.GetBuffer(MAX_PATH));
+    _tcscpy(psControllerDetails[nIndex].m_omStrAccMaskByte4[0], omTemp.GetBuffer(MAX_PATH));
     
     // Acceptance Filter mode
     roCfgArchive >> psControllerDetails[ nIndex ].m_bAccFilterMode;

@@ -156,7 +156,7 @@ static LARGE_INTEGER sg_lnFrequency;
  */
 struct CChannel
 {
-    /* Kvaser channel details */
+	/* Kvaser channel details */
 	int        m_nChannel;
 	TCHAR      m_strName[MAX_CHAR_LONG];
 	DWORD      m_dwHwType;
@@ -833,7 +833,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
     //First initialize with existing hw description
     for (INT i = 0; i < min(Length, (INT)m_nNoOfChannels); i++)
     {   
-        _stprintf(pControllerDetails[i].m_omHardwareDesc, _T("%s"), m_aodChannels[i].m_strName);
+		_stprintf(pControllerDetails[i].m_omHardwareDesc , _T("%s"), m_aodChannels[i].m_strName);
     }
     if (sg_ucNoOfHardware > 0)
     {
@@ -1933,6 +1933,8 @@ static int nCreateMultipleHardwareNetwork()
 	INT anSelectedItems[defNO_OF_CHANNELS] = {0};
 	int nHwCount = sg_ucNoOfHardware;	
 	TCHAR acVendor[MAX_CHAR_LONG];
+	DWORD dwFirmWare[2];
+
     // Get Hardware Network Map
 	for (int nCount = 0; nCount < nHwCount; nCount++)
 	{
@@ -1940,11 +1942,16 @@ static int nCreateMultipleHardwareNetwork()
 
 	    canGetChannelData(nCount, canCHANNELDATA_CARD_SERIAL_NO,
 							 acVendor, sizeof(acVendor));
-		sscanf( acVendor, "%ld", &sg_HardwareIntr[nCount].m_dwVendor );
+		sscanf( acVendor, "%ld", &sg_HardwareIntr[nCount].m_dwVendor );		
 
 	    canGetChannelData(nCount, canCHANNELDATA_CHANNEL_NAME,
                   sg_HardwareIntr[nCount].m_acDescription,
-                  sizeof(sg_HardwareIntr[nCount].m_acDescription));		
+                  sizeof(sg_HardwareIntr[nCount].m_acDescription));	
+
+		//Get Firmware info
+		canGetChannelData(nCount, canCHANNELDATA_CARD_FIRMWARE_REV, dwFirmWare, sizeof(dwFirmWare));
+
+		sprintf(sg_HardwareIntr[nCount].m_acDeviceName,"0x%08lx 0x%08lx", dwFirmWare[0], dwFirmWare[1]);
 	}	
 	ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_VECTOR_XL, sg_HardwareIntr, anSelectedItems, nHwCount);
 
@@ -1955,7 +1962,10 @@ static int nCreateMultipleHardwareNetwork()
 	for (int nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
 	{		
 		m_aodChannels[nCount].m_nChannel = sg_HardwareIntr[anSelectedItems[nCount]].m_dwIdInterface;				
-		_tcscpy(m_aodChannels[nCount].m_strName, sg_HardwareIntr[anSelectedItems[nCount]].m_acDescription);
+		_stprintf(m_aodChannels[nCount].m_strName , _T("%s, Serial Number: %ld, Firmware: %s"),
+									sg_HardwareIntr[anSelectedItems[nCount]].m_acDescription,
+									sg_HardwareIntr[anSelectedItems[nCount]].m_dwVendor,
+									sg_HardwareIntr[anSelectedItems[nCount]].m_acDeviceName);		
 	}
 
 	s_DatIndThread.m_bToContinue = TRUE;
