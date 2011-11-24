@@ -1353,6 +1353,16 @@ static int nCreateSingleHardwareNetwork()
     s_DatIndThread.m_bIsConnected = FALSE;
     s_DatIndThread.m_unChannels = 1;
 
+	int hObject = NULL;	
+	int nResult = (*icsneoOpenNeoDevice)(&sg_ndNeoToOpen[0], &hObject, NULL, 1, 0);
+
+	//If connection fails
+	if ( nResult != NEOVI_OK)
+	{
+		return -1;
+	}
+	(*icsneoClosePort)(hObject, &nResult);
+
     // Set the number of channels
     sg_odHardwareNetwork.m_nNoOfChannels = 1;
 	sg_odHardwareNetwork.m_nNoOfDevices  = 1;
@@ -1361,6 +1371,7 @@ static int nCreateSingleHardwareNetwork()
         
     // Assign Net Handle
     sg_odHardwareNetwork.m_aodChannels[ 0 ].m_hNetworkHandle = m_bytNetworkIDs[0] = NETID_HSCAN;  
+	
     
     return defERR_OK;
 }
@@ -1450,8 +1461,8 @@ static int nCreateMultipleHardwareNetwork()
 								return defERR_OK;
 							}
 						}
-					}
-					nAddChanneltoHWInterfaceList(narrVCAN3NtwID, nCntNtwIDs, nChannels, nCount);	
+						nAddChanneltoHWInterfaceList(narrVCAN3NtwID, nCntNtwIDs, nChannels, nCount);	
+					}	
 				}
                 break;
 
@@ -1464,6 +1475,13 @@ static int nCreateMultipleHardwareNetwork()
                 break;
         }		
 	}
+
+	if ( nChannels == 0 )
+	{
+		//No channels selected. this may arise due to already connected devices.
+		return -1;
+	}
+
 	nHwCount = nChannels;	//Reassign hardware count according to final list of channels supported.
 	ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_ICS_NEOVI, sg_HardwareIntr, anSelectedItems, nHwCount);
     sg_ucNoOfHardware = (UCHAR)nHwCount;
