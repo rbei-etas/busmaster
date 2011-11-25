@@ -728,7 +728,8 @@ HRESULT CDIL_CAN_Kvaser::CAN_PerformClosureOperations(void)
 HRESULT CDIL_CAN_Kvaser::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
 {
     memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
-    TimeStamp = sg_TimeStamp;
+    //TimeStamp = sg_TimeStamp;	
+	TimeStamp = 0;	
     if(QueryTickCount != NULL)
     {
         *QueryTickCount = sg_QueryTickCount;
@@ -1210,8 +1211,8 @@ static void ProcessCANMsg(int nChannelIndex, UINT& nFlags, DWORD& dwTime)
     }
 
 	sg_asCANMsg.m_lTickCount.QuadPart = (LONGLONG)(dwTime * 10);
-	sg_TimeStamp = sg_asCANMsg.m_lTickCount.QuadPart =
-                           (sg_asCANMsg.m_lTickCount.QuadPart - QuadPartRef);
+	sg_asCANMsg.m_lTickCount.QuadPart =
+                           _abs64(sg_asCANMsg.m_lTickCount.QuadPart - QuadPartRef);
 
 	if ( !(nFlags & canMSG_ERROR_FRAME) &&
 		 !(nFlags & canMSG_NERR) &&
@@ -1294,6 +1295,9 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_Kvaser_CAN(LPVOID pVoid)
     USES_CONVERSION;
 	canStatus nStatus = canOK;
 	DWORD         active_handle;
+	/* Using different channel handles to read from channels.This is because the channel handles
+	   are not thread safe */
+	canHandle arrHandles[CHANNEL_ALLOWED];
 
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC *) pVoid;
 
@@ -1301,12 +1305,16 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_Kvaser_CAN(LPVOID pVoid)
     VALIDATE_POINTER_RETURN_VALUE_LOG(pThreadParam, (DWORD)-1);
     /* Assign thread action to CREATE_TIME_MAP */
     pThreadParam->m_unActionCode = CREATE_TIME_MAP;
+	
 
 	//get CAN - eventHandles
 	for (UINT i = 0; i < m_nNoOfChannels; i++)
 	{
+		arrHandles[i] = canOpenChannel(m_aodChannels[i].m_nChannel, canOPEN_ACCEPT_VIRTUAL);
+		nStatus = canBusOn(arrHandles[i]);
+
 		HANDLE tmp;
-		nStatus = canIoCtl(m_aodChannels[i].m_hnd,
+		nStatus = canIoCtl(arrHandles[i],
 							canIOCTL_GET_EVENTHANDLE,
 							&tmp,
 							sizeof(tmp)); 
@@ -1327,7 +1335,7 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_Kvaser_CAN(LPVOID pVoid)
 		    active_handle = WaitForMultipleObjects(m_nNoOfChannels,
                                    g_hDataEvent,
                                    FALSE /*any*/,
-                                   INFINITE);					
+                                   100);					
 			// If it is a CAN hardware event			
 			nStatus = canOK;
 			if (((active_handle - WAIT_OBJECT_0) >= 0 ) &&
@@ -1342,7 +1350,7 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_Kvaser_CAN(LPVOID pVoid)
 					for (int i = 0; i < m_nNoOfChannels ; i++) 
 					{
 						//Read CAN Message from channel
-						nStatus = canRead(m_aodChannels[i].m_hnd, (long*)&sg_ReadMsg.m_unMsgID, 
+						nStatus = canRead(arrHandles[i], (long*)&sg_ReadMsg.m_unMsgID, 
 										&sg_ReadMsg.m_ucData[0], (unsigned int*)&sg_ReadMsg.m_ucDataLen, 
 										&unFlags, &dwTime);
 						switch (nStatus) 
@@ -1389,6 +1397,14 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_Kvaser_CAN(LPVOID pVoid)
 	}
 	//ResetEvent(pThreadParam->m_hActionEvent);
     pThreadParam->m_hActionEvent = NULL;
+
+	for ( UINT i =0 ; i < m_nNoOfChannels; i++ )
+	{
+		//Get Off the bus
+		nStatus = canBusOff(arrHandles[i]);	
+		//Close the channel connection
+		nStatus = canClose(arrHandles[i]);
+	}
 
     return 0;
 }
@@ -1845,7 +1861,7 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
 		for( int i = 0; i < m_nNoOfChannels; i++)
 		{			
 			//open CAN channel
-			hnd = canOpenChannel(i, canOPEN_ACCEPT_VIRTUAL);
+			hnd = canOpenChannel(m_aodChannels[i].m_nChannel, canOPEN_ACCEPT_VIRTUAL);
 
 			if (hnd >= 0) 
 			{		
