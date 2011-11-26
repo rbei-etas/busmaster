@@ -15,29 +15,29 @@
 
 /**
  * \file      Comment.h
- * \brief     CComment class.
- * \author    Mahesh B S
+ * \brief     Definition of comment class
+ * \author    Mahesh B S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * CComment class.
+ * Definition of the comment class.
  */
 
-#if !defined(AFX_COMMENT_H__F394E0E9_F6B7_43F5_AB3F_428BBF638B46__INCLUDED_)
-#define AFX_COMMENT_H__F394E0E9_F6B7_43F5_AB3F_428BBF638B46__INCLUDED_
+#ifndef Comment_H
+#define Comment_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#include <string>
+
+using namespace std;
 
 class CComment
 {
 public:
     CComment();
     virtual ~CComment();
-    CString m_elementName;
+    string m_elementName;
     unsigned int m_msgID;
     char m_msgType;
-    CString m_comment;
+    string m_comment;
 };
 
-#endif // !defined(AFX_COMMENT_H__F394E0E9_F6B7_43F5_AB3F_428BBF638B46__INCLUDED_)
+#endif

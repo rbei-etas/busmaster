@@ -15,24 +15,22 @@
 
 /**
  * \file      Message.h
- * \brief     CMessage class.
- * \author    Mahesh B S
+ * \brief     Definition of message class
+ * \author    Mahesh B S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * CMessage class.
+ * Definition of the message class.
  */
 
-#if !defined(AFX_MESSAGE_H__F7C7DBC8_F82B_4799_80EF_1C7CDD5DCA42__INCLUDED_)
-#define AFX_MESSAGE_H__F7C7DBC8_F82B_4799_80EF_1C7CDD5DCA42__INCLUDED_
+#ifndef Message_H
+#define Message_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#include <string>
 
-
-#include <afxtempl.h>
 #include "Signal.h"
-//#include"definitions.h"
+
+using namespace std;
+
 class CMessage
 {
 public:
@@ -43,15 +41,15 @@ public:
     // data members
     enum MSG_FRAME_FROMAT {MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
 
-    char			m_acName[defMSG_MAX_NAME_LEN];
-    CString			m_txNode;
+    string			m_acName;
+    string			m_txNode;
     unsigned int	m_uiMsgID;
     unsigned char	m_ucLength;
     unsigned char	m_ucNumOfSignals;
     char			m_cDataFormat;
     char			m_cFrameFormat;
-    CList<CSignal,CSignal&> m_listSignals;
-    bool writeMessageToFile( CStdioFile &fileOutput,CList<CMessage,CMessage&> &m_listMessages,bool writeErr);
+    list<CSignal>   m_listSignals;
+    bool writeMessageToFile(fstream &fileOutput, list<CMessage> &m_listMessages, bool writeErr);
 };
 
-#endif // !defined(AFX_MESSAGE_H__F7C7DBC8_F82B_4799_80EF_1C7CDD5DCA42__INCLUDED_)
+#endif

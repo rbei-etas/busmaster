@@ -15,29 +15,28 @@
 
 /**
  * \file      Signal.cpp
- * \brief     implementation of the CSignal class.
- * \authors   Amitesh Bharti, Pemmaiah BD, Mahesh.B.S
+ * \brief     Implementation of signal class
+ * \authors   Amitesh Bharti, Pemmaiah BD, Mahesh.B.S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Implementation of the signal class.
  */
 
-#include "StdAfx.h"
-#include "App.h"
+#include <string>
+
+#include "Converter.h"
 #include "Signal.h"
+#include "Tag.h"
 #include "Utility.h"
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
 
 /**
  * \brief Constructor
  */
 CSignal::CSignal()
 {
-    m_acMultiplex[0]= '\0';
-    m_acName[0] = '\0'; //
+    m_acMultiplex = "";
+    m_acName = "";
     m_ucLength = 1; // minimum signal length should be 1 bit
     m_ucWhichByte = 1; // ONE based index
     m_ucStartBit = 0; // ZERO based index
@@ -47,11 +46,12 @@ CSignal::CSignal()
     m_ucDataFormat = SIG_DF_INTEL;
     m_fOffset = 0.0f;
     m_fScaleFactor = 1.0f;
-    m_acUnit[0] = '\0';
+    m_acUnit = "";
     m_uiError = SIG_EC_NO_ERR;
-    m_rxNode[0] = '\0';
-    m_listValueDescriptor.RemoveAll();
+    m_rxNode = "";
+    m_listValueDescriptor.clear();
 }
+
 
 /**
  * \brief Destructor
@@ -59,11 +59,9 @@ CSignal::CSignal()
 CSignal::~CSignal()
 {
     // clear the embedded value descriptor list before destroying the signal
-    if(!m_listValueDescriptor.IsEmpty())
-    {
-        m_listValueDescriptor.RemoveAll();
-    }
+    m_listValueDescriptor.clear();
 }
+
 
 /**
  * \brief overloaded operator =
@@ -74,14 +72,10 @@ CSignal::~CSignal()
  */
 CSignal& CSignal::operator=(CSignal& signal)
 {
-    if(!m_listValueDescriptor.IsEmpty())
-    {
-        m_listValueDescriptor.RemoveAll(); // clear the list first
-    }
-
+    m_listValueDescriptor.clear(); // clear the list first
     // copy all the data members except the list
-    strcpy(m_acMultiplex,signal.m_acMultiplex);
-    strcpy(m_acName,signal.m_acName);
+    m_acMultiplex = signal.m_acMultiplex;
+    m_acName = signal.m_acName;
     m_ucLength = signal.m_ucLength;
     m_ucWhichByte = signal.m_ucWhichByte;
     m_ucStartBit = signal.m_ucStartBit;
@@ -91,13 +85,14 @@ CSignal& CSignal::operator=(CSignal& signal)
     m_ucDataFormat = signal.m_ucDataFormat;
     m_fOffset = signal.m_fOffset;
     m_fScaleFactor = signal.m_fScaleFactor;
-    strcpy(m_acUnit,signal.m_acUnit);
-    strcpy(m_rxNode,signal.m_rxNode);
+    m_acUnit = signal.m_acUnit;
+    m_rxNode = signal.m_rxNode;
     m_uiError = signal.m_uiError;
     // now copy the list
-    m_listValueDescriptor.AddTail(&signal.m_listValueDescriptor);
+    m_listValueDescriptor = signal.m_listValueDescriptor;
     return (*this);
 }
+
 
 /**
  * \brief Extracts the message data from the given Line
@@ -131,10 +126,9 @@ int CSignal::Format(char *pcLine)
     }
     *pcTemp = '\0'; // terminate it
 
-    strcpy(m_acName,acTemp); // copy the name to the signal's data member
+    m_acName = acTemp; // copy the name to the signal's data member
 
     pcTemp = acTemp; // reset pcTemp to start of buffer
-
 
     //leave blank space
     *pcToken++;
@@ -144,7 +138,7 @@ int CSignal::Format(char *pcLine)
         *pcTemp++ = *pcToken++; // copy SIG_NAME only, i.e. till first 'space'
     }
     *pcTemp = '\0'; // terminate it
-    strcpy(m_acMultiplex,acTemp); // copy the name to the signal's data member
+    m_acMultiplex = acTemp; // copy the name to the signal's data member
 
     pcTemp = acTemp; // reset pcTemp to start of buffer
 
@@ -283,41 +277,48 @@ int CSignal::Format(char *pcLine)
     pcTemp = acTemp;
     pcToken++;
 
-    // skip first <">
+    // go to '"'
     while(*pcToken && *pcToken != '\"')
     {
         pcToken++;
     }
-    pcToken++;
+    pcToken++; // skip '"'
 
     // copy everything, but not including the last <">
     while(*pcToken && *pcToken != '\"')
     {
         *pcTemp++ = *pcToken++;
     }
+    pcToken++; // skip '"'
     *pcTemp='\0';
-    strcpy(m_acUnit,acTemp); // copy UNIT to corresponding data member.
-    pcToken++;
+    m_acUnit = acTemp; // copy UNIT to corresponding data member.
 
-    while(*pcToken && *pcToken != ' ')
+    // skip ' '
+    while(*pcToken && *pcToken == ' ')
     {
         pcToken++;
     }
-    pcToken++;
+
     pcTemp = acTemp;
-    while(*pcToken && *pcToken != '\n')
+    while(*pcToken)
     {
-        *pcTemp++ = *pcToken++;
+        if ((*pcToken != '\r') && (*pcToken != ' '))
+            *pcTemp++ = *pcToken++;
+        else
+            pcToken++;
     }
     *pcTemp='\0';
-    if(strcmp(acTemp,"Vector__XXX") != 0)
+
+    // copy rx nodes
+    if(strcmp(acTemp, "Vector__XXX") != 0)
     {
-        strcpy(m_rxNode,acTemp);
+        m_rxNode = acTemp;
     }
     else
-        m_rxNode[0] = '\0';
+        m_rxNode = "";
     return 1;
 }
+
 
 /*
  * \brief Extracts the value descriptor data from the given Line
@@ -325,7 +326,7 @@ int CSignal::Format(char *pcLine)
  * Extracts the value descriptor data from the given Line and adds
  * to the signal.
  */
-int CSignal::AddValueDescriptors(char *pcLine,CStdioFile &fileInput)
+int CSignal::AddValueDescriptors(char *pcLine, fstream &fileInput)
 {
     char acValue[300];
     char acDesc[300];
@@ -336,62 +337,65 @@ int CSignal::AddValueDescriptors(char *pcLine,CStdioFile &fileInput)
 
     char *pcValue = acValue;
     char *pcDesc = acDesc;
-    if(pcLine[strlen(pcLine)-2] != ';')
+    if(pcLine[strlen(pcLine)-1] != ';')
     {
-        true_end  = false;
+        true_end = false;
     }
     // skip leading spaces
-    while(*pcLine && *pcLine == ' ')
+    while(*pcLine && (*pcLine == ' '))
     {
         *pcLine++;
     }
-    while(*pcLine && *pcLine != ';')
-    {   pcTemp[0]='\0';
-        if(strlen(pcLine) < 100 && true_end == false)
+    while(*pcLine && (*pcLine != ';'))
+    {
+        pcTemp[0] = '\0';
+        if(true_end == false)
         {
-            fileInput.ReadString(acLine,1026);
-            strcpy(pcTemp,pcLine);
-            strcat(pcTemp,acLine);
+            fileInput.getline(acLine, 1026);
+            strcpy(pcTemp, pcLine);
+            strcat(pcTemp, acLine);
             pcLine = pcTemp;
-            if(pcLine[strlen(pcLine)-2] == ';')
+
+            if(pcLine[strlen(pcLine)-1] == ';')
                 true_end  = true;
         }
-        pcDesc=acDesc;
-        while(*pcLine && *pcLine==' ')
+        pcDesc = acDesc;
+        while(*pcLine && (*pcLine == ' '))
             pcLine++;
-        pcToken=strtok(pcLine," ");
-        strcpy(acValue,pcToken);
-        pcLine=pcLine+(strlen(pcToken))+1;
+        pcToken = strtok(pcLine, " ");
+        strcpy(acValue, pcToken);
+        pcLine = pcLine + (strlen(pcToken)) + 1;
 
-        if(*pcLine=='\"')
+        if(*pcLine == '\"')
         {
             pcLine++;
-            if(*pcLine!='\"')
+            if(*pcLine != '\"')
             {
-                *pcDesc++=*pcLine++;
-                while(*pcLine && *pcLine!='\"')
+                *pcDesc++ = *pcLine++;
+                while(*pcLine && (*pcLine != '\"'))
                 {
-                    if ((*pcLine != '\r') && (*pcLine != '\n'))
+                    if (*pcLine != '\r')
                         *pcDesc++ = *pcLine;
                     pcLine++;
                 }
             }
-            *pcDesc='\0';
+            *pcDesc = '\0';
         }
         pcLine++;
-        while(*pcLine==' ')
+        while(*pcLine == ' ')
             pcLine++;
         CValueDescriptor valDesc;
         if(this->m_ucLength <= 32)
             valDesc.m_value.dValue = atof(acValue);
         else
             valDesc.m_value.i64Value = _atoi64(acValue);
-        strcpy(valDesc.m_acDescriptor,acDesc);
-        m_listValueDescriptor.AddTail(valDesc);
-        pcDesc=acDesc;
+        valDesc.m_acDescriptor = acDesc;
+        m_listValueDescriptor.push_back(valDesc);
+        pcDesc = acDesc;
     }
     return 1;
 }
+
 
 /**
  * \brief  Validate for conformance to BUSMASTER DB format
@@ -421,18 +425,18 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
     }
 
     // validate start bit and byte
-    if(m_ucWhichByte < 1 || m_ucWhichByte > 8)
+    if((m_ucWhichByte < 1) || (m_ucWhichByte > 8))
     {
         return (m_uiError = SIG_EC_STARTBIT_ERR);
     }
 
-    if(m_ucWhichByte == 8 && m_ucStartBit > 7)
+    if((m_ucWhichByte == 8) && (m_ucStartBit > 7))
     {
         return (m_uiError = SIG_EC_STARTBIT_ERR);
     }
 
     // DOUBLE & FLOAT are not supported right now
-    if(m_ucType == SIG_TYPE_DOUBLE || m_ucType == SIG_TYPE_FLOAT)
+    if((m_ucType == SIG_TYPE_DOUBLE) || (m_ucType == SIG_TYPE_FLOAT))
     {
         return (m_uiError = SIG_EC_TYPE_ERR);
     }
@@ -455,8 +459,8 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
         case SIG_TYPE_BOOL:
         case SIG_TYPE_UINT:
         {
-            UINT64 unMaxVal;
-            UINT64 unMinVal;
+            unsigned long long int unMaxVal;
+            unsigned long long int unMinVal;
             unConvertPhysicalToRaw(m_MaxValue.dValue, m_MinValue.dValue, m_fOffset, m_fScaleFactor, unMaxVal, unMinVal);
             m_MaxValue.uiValue = (unsigned int)unMaxVal;             //m_MaxValue.dValue;
             m_MinValue.uiValue = (unsigned int)unMinVal;             //m_MinValue.dValue;
@@ -470,13 +474,13 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
                 m_uiError = SIG_EC_OVERFLOW;
             }
             //if Max value out of range reset it to maximum possible value
-            if(m_MaxValue.uiValue > uiDefault || m_MaxValue.uiValue < 0)
+            if((m_MaxValue.uiValue > uiDefault) || (m_MaxValue.uiValue < 0))
             {
                 m_MaxValue.uiValue = uiDefault;
                 m_uiError = SIG_EC_OVERFLOW;
             }
             //if Min value out of range reset it to minimum possible value
-            if(m_MinValue.uiValue < 0 || m_MinValue.uiValue > uiDefault )
+            if((m_MinValue.uiValue < 0) || (m_MinValue.uiValue > uiDefault))
             {
                 m_MinValue.uiValue = 0;
                 m_uiError = SIG_EC_OVERFLOW;
@@ -499,8 +503,8 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
 
         case SIG_TYPE_INT:
         {
-            INT64 nMaxVal;
-            INT64 nMinVal;
+            long long int nMaxVal;
+            long long int nMinVal;
             nConvertPhysicalToRaw(m_MaxValue.dValue, m_MinValue.dValue, m_fOffset, m_fScaleFactor, nMaxVal, nMinVal);
             m_MaxValue.iValue = (int)nMaxVal;             //m_MaxValue.dValue;
             m_MinValue.iValue = (int)nMinVal;             //m_MinValue.dValue;
@@ -550,14 +554,14 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
         {
             //Testing required - venkat
             // no need to update MAX and MIN values, already stored as i64Value
-            INT64 nMaxVal;
-            INT64 nMinVal;
+            long long int nMaxVal;
+            long long int nMinVal;
             nConvertPhysicalToRaw(m_MaxValue.dValue, m_MinValue.dValue, m_fOffset, m_fScaleFactor, nMaxVal, nMinVal);
             m_MaxValue.i64Value = nMaxVal;             //m_MaxValue.dValue;
             m_MinValue.i64Value = nMinVal;             //m_MinValue.dValue;
-            UINT unPower;
+            unsigned int unPower;
             __int64 i64Default;
-            UINT i;
+            unsigned int i;
             /*if(m_ucLength == 64 )
             {
             unPower = m_ucLength - 2;
@@ -602,8 +606,8 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
 
         case SIG_TYPE_UINT64:
         {
-            UINT64 unMaxVal;
-            UINT64 unMinVal;
+            unsigned long long int unMaxVal;
+            unsigned long long int unMinVal;
             unConvertPhysicalToRaw(m_MaxValue.dValue, m_MinValue.dValue, m_fOffset, m_fScaleFactor, unMaxVal, unMinVal);
             m_MaxValue.ui64Value = unMaxVal;             //m_MaxValue.dValue;
             m_MinValue.ui64Value = unMinVal;             //m_MinValue.dValue;
@@ -616,7 +620,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
             {
             unPower = m_ucLength - 1;
             }*/
-            UINT unPower = m_ucLength - 1;
+            unsigned int unPower = m_ucLength - 1;
             ui64Default = 1;
             for(int i = 0; i<unPower; i++)
             {
@@ -656,35 +660,33 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
     }
 
     // correct value descriptors according to type of signal
-    POSITION posValDesc = m_listValueDescriptor.GetHeadPosition();
-    while(posValDesc != NULL)
+    list<CValueDescriptor>::iterator rValDesc;
+    for (rValDesc=m_listValueDescriptor.begin(); rValDesc!=m_listValueDescriptor.end(); ++rValDesc)
     {
-        CValueDescriptor& rValDesc = m_listValueDescriptor.GetNext(posValDesc);
-
         switch(m_ucType)
         {
             case SIG_TYPE_BOOL:
             case SIG_TYPE_UINT:
-                rValDesc.m_value.uiValue = (unsigned int)rValDesc.m_value.dValue;
+                rValDesc->m_value.uiValue = (unsigned int)rValDesc->m_value.dValue;
                 break;
 
             case SIG_TYPE_INT:
-                rValDesc.m_value.iValue = (int)rValDesc.m_value.dValue;
+                rValDesc->m_value.iValue = (int)rValDesc->m_value.dValue;
                 break;
 
             case SIG_TYPE_FLOAT:
-                rValDesc.m_value.fValue = (float)rValDesc.m_value.dValue;
+                rValDesc->m_value.fValue = (float)rValDesc->m_value.dValue;
                 break;
 
             case SIG_TYPE_DOUBLE:
                 break;
 
             case SIG_TYPE_INT64:
-                //rValDesc.m_value.i64Value = (LONGLONG)rValDesc.m_value.dValue;
+                //rValDesc->m_value.i64Value = (long long)rValDesc->m_value.dValue;
                 break;
 
             case SIG_TYPE_UINT64:
-                rValDesc.m_value.ui64Value = (ULONGLONG)rValDesc.m_value.i64Value;
+                rValDesc->m_value.ui64Value = (unsigned long long)rValDesc->m_value.i64Value;
                 break;
 
             default:
@@ -693,6 +695,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
     }
     return (m_uiError);
 }
+
 
 const char* CSignal::m_pacErrorStrings[] =
 {
@@ -704,10 +707,12 @@ const char* CSignal::m_pacErrorStrings[] =
     "WARNING:Invalid Max or Min value."
 };
 
+
 const char* CSignal::GetErrorString()
 {
     return m_pacErrorStrings[m_uiError];
 }
+
 
 const char* CSignal::GetErrorAction()
 {
@@ -721,6 +726,7 @@ const char* CSignal::GetErrorAction()
     }
 }
 
+
 /**
  * \brief     writes the signals in the given list to the output file
  * \param[in] fileOutput Pointer to the Output file
@@ -731,81 +737,81 @@ const char* CSignal::GetErrorAction()
  *
  * Writes the signals in the given list to the output file.
  */
-bool CSignal::WriteSignaltofile(CStdioFile &fileOutput,CList<CSignal,CSignal&> &m_listSignals,int m_ucLength,int m_cDataFormat,bool writeErr)
+bool CSignal::WriteSignaltofile(fstream &fileOutput, list<CSignal> &m_listSignals, int m_ucLength, int m_cDataFormat, bool writeErr)
 {
     bool bResult = true;
     char acLine[defCON_MAX_LINE_LEN];
-    POSITION posSig = m_listSignals.GetHeadPosition();
-    while(posSig != NULL)
+    list<CSignal>::iterator sig;
+    for (sig=m_listSignals.begin(); sig!=m_listSignals.end(); ++sig)
     {
         // SIG_NAME,SIG_LENGTH,WHICH_BYTE_IN_MSG,START_BIT,SIG_TYPE,MAX_VAL,MIN_VAL,SIG_DATA_FORMAT,SIG_OFFSET,SIG_FACTOR,SIG_UNIT
-        CSignal& sig = m_listSignals.GetNext(posSig);
         // write signal only if it is valid
-        if(sig.m_uiError == CSignal::SIG_EC_NO_ERR || sig.m_uiError == CSignal::SIG_EC_OVERFLOW || writeErr)
+        if((sig->m_uiError == CSignal::SIG_EC_NO_ERR) || (sig->m_uiError == CSignal::SIG_EC_OVERFLOW) || writeErr)
         {
             // For signal having motoroal format, the message length could be less
             // then eight byte. so in that case the whichByte needs to be shifted
             // accordingly.
 
-            switch(sig.m_ucType)
+            switch(sig->m_ucType)
             {
                 case CSignal::SIG_TYPE_BOOL:
                 case CSignal::SIG_TYPE_UINT:
-                    sprintf(acLine,"%s %s,%u,%u,%u,%c,%u,%u,%c,%f,%f,%s,%s,%s\n",T_SIG,
-                            sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,sig.m_ucType,
-                            sig.m_MaxValue.uiValue,sig.m_MinValue.uiValue,sig.m_ucDataFormat,
-                            sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
-
+                    sprintf(acLine, "%s %s,%u,%u,%u,%c,%u,%u,%c,%f,%f,%s,%s,%s\n", T_SIG,
+                            sig->m_acName.c_str(), sig->m_ucLength, sig->m_ucWhichByte, sig->m_ucStartBit, sig->m_ucType,
+                            sig->m_MaxValue.uiValue, sig->m_MinValue.uiValue, sig->m_ucDataFormat,
+                            sig->m_fOffset, sig->m_fScaleFactor,
+                            sig->m_acUnit.c_str(), sig->m_acMultiplex.c_str(), sig->m_rxNode.c_str());
                     break;
 
                 case CSignal::SIG_TYPE_INT:
-                    sprintf(acLine,"%s %s,%u,%u,%u,%c,%d,%d,%c,%f,%f,%s,%s,%s\n",T_SIG,
-                            sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,sig.m_ucType,
-                            sig.m_MaxValue.iValue,sig.m_MinValue.iValue,sig.m_ucDataFormat,
-                            sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
-
+                    sprintf(acLine, "%s %s,%u,%u,%u,%c,%d,%d,%c,%f,%f,%s,%s,%s\n", T_SIG,
+                            sig->m_acName.c_str(), sig->m_ucLength, sig->m_ucWhichByte, sig->m_ucStartBit, sig->m_ucType,
+                            sig->m_MaxValue.iValue, sig->m_MinValue.iValue, sig->m_ucDataFormat,
+                            sig->m_fOffset, sig->m_fScaleFactor,
+                            sig->m_acUnit.c_str(), sig->m_acMultiplex.c_str(), sig->m_rxNode.c_str());
                     break;
 
 
                 case CSignal::SIG_TYPE_FLOAT:
-                    sprintf(acLine,"%s %s,%u,%u,%u,%c,%f,%f,%c,%f,%f,%s,%s,%s\n",T_SIG,
-                            sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,sig.m_ucType,
-                            sig.m_MaxValue.fValue,sig.m_MinValue.fValue,sig.m_ucDataFormat,
-                            sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
-
+                    sprintf(acLine, "%s %s,%u,%u,%u,%c,%f,%f,%c,%f,%f,%s,%s,%s\n", T_SIG,
+                            sig->m_acName.c_str(), sig->m_ucLength, sig->m_ucWhichByte, sig->m_ucStartBit, sig->m_ucType,
+                            sig->m_MaxValue.fValue, sig->m_MinValue.fValue, sig->m_ucDataFormat,
+                            sig->m_fOffset, sig->m_fScaleFactor,
+                            sig->m_acUnit.c_str(), sig->m_acMultiplex.c_str(), sig->m_rxNode.c_str());
                     break;
 
                 case CSignal::SIG_TYPE_DOUBLE:
-                    sprintf(acLine,"%s %s,%u,%u,%u,%c,%f,%f,%c,%f,%f,%s,%s,%s\n",T_SIG,
-                            sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,sig.m_ucType,
-                            sig.m_MaxValue.dValue,sig.m_MinValue.dValue,sig.m_ucDataFormat,
-                            sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
-
+                    sprintf(acLine, "%s %s,%u,%u,%u,%c,%f,%f,%c,%f,%f,%s,%s,%s\n", T_SIG,
+                            sig->m_acName.c_str(), sig->m_ucLength, sig->m_ucWhichByte, sig->m_ucStartBit, sig->m_ucType,
+                            sig->m_MaxValue.dValue, sig->m_MinValue.dValue, sig->m_ucDataFormat,
+                            sig->m_fOffset, sig->m_fScaleFactor,
+                            sig->m_acUnit.c_str(), sig->m_acMultiplex.c_str(), sig->m_rxNode.c_str());
                     break;
 
-
                 case CSignal::SIG_TYPE_INT64:
-                    sprintf(acLine,"%s %s,%u,%u,%u,%c,%I64d,%I64d,%c,%f,%f,%s,%s,%s\n",T_SIG,
-                            sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,/*sig.m_ucType*/'I',
-                            sig.m_MaxValue.i64Value,sig.m_MinValue.i64Value,sig.m_ucDataFormat,
-                            sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
+                    sprintf(acLine, "%s %s,%u,%u,%u,%c,%I64d,%I64d,%c,%f,%f,%s,%s,%s\n", T_SIG,
+                            sig->m_acName.c_str(), sig->m_ucLength, sig->m_ucWhichByte, sig->m_ucStartBit, /*sig->m_ucType*/'I',
+                            sig->m_MaxValue.i64Value, sig->m_MinValue.i64Value, sig->m_ucDataFormat,
+                            sig->m_fOffset, sig->m_fScaleFactor,
+                            sig->m_acUnit.c_str(), sig->m_acMultiplex.c_str(), sig->m_rxNode.c_str());
                     break;
 
                 case CSignal::SIG_TYPE_UINT64:
-                    sprintf(acLine,"%s %s,%u,%u,%u,%c,%I64u,%I64u,%c,%f,%f,%s,%s,%s\n",T_SIG,
-                            sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,/*sig.m_ucType*/'U',
-                            sig.m_MaxValue.ui64Value,sig.m_MinValue.ui64Value,sig.m_ucDataFormat,
-                            sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
+                    sprintf(acLine, "%s %s,%u,%u,%u,%c,%I64u,%I64u,%c,%f,%f,%s,%s,%s\n", T_SIG,
+                            sig->m_acName.c_str(), sig->m_ucLength, sig->m_ucWhichByte, sig->m_ucStartBit, /*sig->m_ucType*/'U',
+                            sig->m_MaxValue.ui64Value, sig->m_MinValue.ui64Value, sig->m_ucDataFormat,
+                            sig->m_fOffset, sig->m_fScaleFactor,
+                            sig->m_acUnit.c_str(), sig->m_acMultiplex.c_str(), sig->m_rxNode.c_str());
                     break;
 
                 default:
                     break;
             }
-            fileOutput.WriteString(acLine);
+            fileOutput << acLine;
 
             CValueDescriptor val;
-            val.writeValuDescToFile (fileOutput,sig.m_ucType,sig.m_listValueDescriptor);
-            if(sig.m_uiError == CSignal::SIG_EC_OVERFLOW )
+            val.writeValueDescToFile(fileOutput, sig->m_ucType, sig->m_listValueDescriptor);
+            if(sig->m_uiError == CSignal::SIG_EC_OVERFLOW)
                 bResult = false;
         }
         else

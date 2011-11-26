@@ -15,30 +15,30 @@
 
 /**
  * \file      Comment.cpp
- * \brief     Implementation file for the Comment class.
- * \author    Mahesh B S
+ * \brief     Implementation of comment class
+ * \author    Mahesh B S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Implementation file for the Comment class.
+ * Implementation of the comment class.
  */
 
-#include "StdAfx.h"
 #include "Comment.h"
+
 
 /**
  * \brief Constructor
  */
 CComment::CComment()
 {
-    m_msgType = '\0';
-    m_elementName = "\0";
-    m_comment = "\0";
+    m_msgType = 0;
+    m_elementName = "";
+    m_comment = "";
 }
+
 
 /**
  * \brief Destructor
  */
 CComment::~CComment()
 {
-
 }

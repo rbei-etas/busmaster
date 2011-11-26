@@ -15,12 +15,17 @@
 
 /**
  * \file      tag.h
- * \brief     Special file represents all the delimiters used in
- * \authors   Padmaja.A., Mahesh.B.S.
+ * \brief     Special file represents all the delimiters
+ * \authors   Padmaja.A., Mahesh.B.S., Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Special file represents all the delimiters used in
+ * Special file represents all the delimiters.
  */
+
+#ifndef Tag_H
+#define Tag_H
+
+#define T_HEADER "//******************************BUSMASTER Messages and signals Database ******************************//"
 
 #define T_STRAT_BRAC "["
 #define T_END_BRAC "]"
@@ -83,3 +88,4 @@
 #define START_TXVAL_TAG      T_STRAT_BRAC"START_PARAM_NODE_TX_MSG_VAL"T_END_BRAC
 #define END_TXVAL_TAG        T_STRAT_BRAC"END_PARAM_NODE_TX_MSG_VAL"T_END_BRAC
 
+#endif

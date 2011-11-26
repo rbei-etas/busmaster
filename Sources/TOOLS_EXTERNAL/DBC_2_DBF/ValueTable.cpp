@@ -15,52 +15,49 @@
 
 /**
  * \file      ValueTable.cpp
- * \brief     Implementation file for the value table.
- * \author    Mahesh.B.S
+ * \brief     Implementation of the value table class
+ * \author    Mahesh.B.S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Implementation file for the value table.
+ * Implementation of the value table class.
  */
 
-#include "StdAfx.h"
+#include <list>
+#include <string>
+
 #include "ValueTable.h"
 #include "Signal.h"
+#include "Tag.h"
+
+using namespace std;
 
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 /**
  * \brief Constructor
  */
 CValueTable::CValueTable()
 {
-    m_TableName[0] = '\0';
+    m_TableName = "";
 }
+
 
 /**
  * \brief Destructor
  */
 CValueTable::~CValueTable()
 {
-
 }
+
 
 /**
  * \brief = operator overloading
  */
 CValueTable& CValueTable::operator=(CValueTable& Tab)
 {
-    strcpy(m_TableName,Tab.m_TableName);
-    POSITION posMsg = Tab.m_values.GetHeadPosition();
-    while(posMsg != NULL)
-    {
-        CValueDescriptor& vDisp = Tab.m_values.GetNext(posMsg);
-        m_values.AddTail(vDisp );
-    }
+    m_TableName = Tab.m_TableName;
+    m_values = Tab.m_values;
     return (*this);
 }
-
 
 
 /**
@@ -70,7 +67,7 @@ CValueTable& CValueTable::operator=(CValueTable& Tab)
  *
  * Extracts Values and value descriptors from the line.
  */
-int CValueTable::Format(char *pcLine,CStdioFile &fileInput)
+int CValueTable::Format(char *pcLine, fstream &fileInput)
 {
     char acValue[defVTAB_MAX_VALU_LEN];
     char acLine[defVTAB_MAX_LINE_LEN] = {'\0'};
@@ -88,19 +85,22 @@ int CValueTable::Format(char *pcLine,CStdioFile &fileInput)
         *pcLine++;
     }
 
-    //Get the Table name.
+    // get table name
     while(*pcLine && *pcLine != ' ')
     {
-        *pcTab++ = *pcLine++; // copy all but terminating space
+        if (*pcLine != '\r')
+            *pcTab++ = *pcLine;
+        pcLine++;
     }
     *pcTab = '\0';
-    strcpy(m_TableName,table_Name);
+    m_TableName = table_Name;
 
+    // skip spaces
     while(*pcLine && *pcLine == ' ')
     {
         *pcLine++;
     }
-    if(pcLine[strlen(pcLine)-2] != ';')
+    if(pcLine[strlen(pcLine)-1] != ';')
     {
         true_end  = false;
     }
@@ -110,62 +110,72 @@ int CValueTable::Format(char *pcLine,CStdioFile &fileInput)
         //Value table can be of more than 1024 char. So when the we have almost reached
         //the end of the buffer check if we have reached the correct end i.e ";".If not than
         //read the next line and proceed.
-        if(strlen(pcLine) < 100 && true_end == false)
+        if(true_end == false)
         {
-            fileInput.ReadString(acLine,defVTAB_MAX_LINE_LEN);
-            strcpy(pcTemp,pcLine);
-            strcat(pcTemp,acLine);
+            fileInput.getline(acLine, defVTAB_MAX_LINE_LEN);
+            strcpy(pcTemp, pcLine);
+            strcat(pcTemp, acLine);
             pcLine = pcTemp;
-            if(pcLine[strlen(pcLine)-2] == ';')
+            if(pcLine[strlen(pcLine)-1] == ';')
                 true_end  = true;
         }
         pcValue = acValue;
         pcDesc = acDesc;
 
+        // get value
         *pcValue = *pcDesc = '\0';
         while(*pcLine && *pcLine != ' ')
         {
-            *pcValue++ = *pcLine++; // copy all but terminating space
+            if (*pcLine != '\r')
+                *pcValue++ = *pcLine;
+            pcLine++;
         }
         *pcValue = '\0'; // terminate the string
 
-        // skip leading spaces
+        // skip spaces
         while(*pcLine && *pcLine == ' ')
         {
             *pcLine++;
         }
 
-        // skip leading '"'
+        // skip '"'
         while(*pcLine && *pcLine == '\"')
         {
             *pcLine++;
         }
+
+        // get description
         while(*pcLine && *pcLine != '\"')
         {
-            if ((*pcLine != '\r') && (*pcLine != '\n'))
+            if (*pcLine != '\r')
                 *pcDesc++ = *pcLine;
             pcLine++;
         }
         *pcDesc = '\0';
-        // skip trailing '"'.
+
+        // skip trailing '"'
         pcLine++;
+
         // skip spaces if any before next iteration.
         while(*pcLine && *pcLine == ' ')
         {
             *pcLine++;
         }
+
         // if any value read then add it to list
         if(acDesc[0] != '\0')
         {
             CValueDescriptor valDesc;
             valDesc.m_value.i64Value = atoi(acValue);
-            strcpy(valDesc.m_acDescriptor,acDesc);
-            m_values.AddTail(valDesc);
+            valDesc.m_acDescriptor = acDesc;
+            m_values.push_back(valDesc);
         }
     }
 
     return 1;
 }
+
+
 /**
  * \brief     writes the value tebles in the given list to the output file
  * \param[in] fileOutput Pointer to the Output file
@@ -173,19 +183,18 @@ int CValueTable::Format(char *pcLine,CStdioFile &fileInput)
  *
  * Writes the value tebles in the given list to the output file.
  */
-void CValueTable::writeValueTabToFile(CStdioFile &fileOutput,CList<CValueTable,CValueTable&> &vTab)
+void CValueTable::writeValueTabToFile(fstream &fileOutput, list<CValueTable> &vTab)
 {
-    POSITION pos = vTab.GetHeadPosition();
-    while(pos != NULL)
+    list<CValueTable>::iterator tab;
+    for (tab=vTab.begin(); tab!=vTab.end(); ++tab)
     {
-        fileOutput.WriteString(T_ST_TAB" ");
-        CValueTable &tab = vTab.GetNext(pos);
-        fileOutput.WriteString(tab.m_TableName);
-        fileOutput.WriteString("\n");
+        fileOutput << T_ST_TAB " ";
+        fileOutput << tab->m_TableName.c_str();
+        fileOutput << "\n";
+
         CValueDescriptor desc;
-        desc.writeValuDescToFile (fileOutput,CSignal::SIG_TYPE_INT64,tab.m_values);
-        fileOutput.WriteString(T_END_TAB"\n");
+        desc.writeValueDescToFile (fileOutput,CSignal::SIG_TYPE_INT64, tab->m_values);
+
+        fileOutput << T_END_TAB "\n";
     }
 }
-
-

@@ -15,46 +15,45 @@
 
 /**
  * \file      Parameter.h
- * \brief     CParameters class.
- * \author    Padmaja A
+ * \brief     Definition of parameter class
+ * \author    Padmaja A, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * CParameters class.
+ * Definition of the parameter class.
  */
 
-//#if !defined(AFX_PARAMETER_H__4051F3F4_2978_4987_B1DF_BA4CAD29981A__INCLUDED_)
-//#define AFX_PARAMETER_H__4051F3F4_2978_4987_B1DF_BA4CAD29981A__INCLUDED_
-#ifndef PARAMETER_HEADER
-#define PARAMETER_HEADER
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#ifndef Parameter_H
+#define Parameter_H
 
-#include <afxtempl.h>
+#include <list>
+#include <string>
+
 #include "ParameterVal.h"
+
+using namespace std;
 
 class CParameters
 {
 public:
-    char			m_ObjectId[50];
-    char			m_ParamType[10];
+    string			m_ObjectId;
+    string			m_ParamType;
     SIG_VALUE       m_MaxVal;
     SIG_VALUE		m_MinVal;
-    CString    		m_ValRange;
+    string    		m_ValRange;
     SIG_VALUE	    m_InitVal;
-    char			m_ParamName[defVDES_MAX_DESC_LEN];
+    string			m_ParamName;
     bool            m_RangeError;
     bool            m_defError;
-    CList<CParameterValues,CParameterValues&> m_listParamValues[6];
+    list<CParameterValues> m_listParamValues[6];
     CParameters();
     int Format(char *pcLine);
     CParameters& operator=(CParameters& param);
     int FormatParamValue(char *pcLine);
     int ReadDefaultVal(char *pcToken);
-    friend bool WriteParametersToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&>& m_listParameter);
+    friend bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParameter);
     virtual ~CParameters();
 };
 
 
 
-#endif // !defined(AFX_PARAMETER_H__4051F3F4_2978_4987_B1DF_BA4CAD29981A__INCLUDED_)
+#endif

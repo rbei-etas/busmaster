@@ -55,7 +55,7 @@
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\Release/DBC_2_DBF.pch"
 				AssemblerListingLocation=".\Release/"
@@ -147,7 +147,7 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\Debug/DBC_2_DBF.pch"
 				AssemblerListingLocation=".\Debug/"
@@ -310,10 +310,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="Resource.rc"
-				>
-			</File>
-			<File
 				RelativePath="Message.cpp"
 				>
 				<FileConfiguration
@@ -384,6 +380,10 @@
 						BrowseInformation="1"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="Resource.rc"
+				>
 			</File>
 			<File
 				RelativePath="Signal.cpp"

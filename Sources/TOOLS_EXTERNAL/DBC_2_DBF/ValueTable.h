@@ -15,35 +15,32 @@
 
 /**
  * \file      ValueTable.h
- * \brief     CValueTable class.
- * \author    Mahesh B S
+ * \brief     Definition of value table class
+ * \author    Mahesh B S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * CValueTable class.
+ * Definition of the value table class.
  */
 
-#if !defined(AFX_VALUETABLE_H__714FC1B9_4122_443B_A2D4_BDB62EEED1DB__INCLUDED_)
-#define AFX_VALUETABLE_H__714FC1B9_4122_443B_A2D4_BDB62EEED1DB__INCLUDED_
+#ifndef ValueTable_H
+#define ValueTable_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#include <list>
 
-#include <afxtempl.h>
 #include "ValueDescriptor.h"
-#define max_TAB_NAME 50
+
+using namespace std;
 
 class CValueTable
 {
 public:
     CValueTable();
     virtual ~CValueTable();
-    int Format(char *pcLine,CStdioFile &fileInput);
-    CList <CValueDescriptor, CValueDescriptor&> m_values;
+    int Format(char *pcLine, fstream &fileInput);
+    list <CValueDescriptor> m_values;
     CValueTable& operator=(CValueTable& Tab);
-    //CList<CValueDescriptor,CValueDescriptor&>	m_listValueDescriptor;
-    char m_TableName[max_TAB_NAME];
-    void writeValueTabToFile(CStdioFile &fileOutput,CList<CValueTable,CValueTable&> &vTab);
+    string m_TableName;
+    void writeValueTabToFile(fstream &fileOutput, list<CValueTable> &vTab);
 };
 
-#endif // !defined(AFX_VALUETABLE_H__714FC1B9_4122_443B_A2D4_BDB62EEED1DB__INCLUDED_)
+#endif
