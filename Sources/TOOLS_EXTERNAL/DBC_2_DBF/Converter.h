@@ -15,19 +15,17 @@
 
 /**
  * \file      Converter.h
- * \brief     CConverter class.
- * \author    Mahesh B S
+ * \brief     Definition of converter class
+ * \author    Mahesh B S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * CConverter class.
+ * Definition of the converter class.
  */
 
-#if !defined(AFX_CONVERTER_H__A66CF773_FD95_4EC8_AA35_8C230C34F8C2__INCLUDED_)
-#define AFX_CONVERTER_H__A66CF773_FD95_4EC8_AA35_8C230C34F8C2__INCLUDED_
+#ifndef Converter_H
+#define Converter_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#include <utility>
 
 #include "Message.h"
 #include "Comment.h"
@@ -35,10 +33,7 @@
 #include "Parameter.h"
 #include "ParameterVal.h"
 
-#include <utility>
 using namespace std;
-typedef struct pair<CString,CString> PAIR_CM;
-
 
 class CConverter
 {
@@ -50,42 +45,41 @@ public:
 protected:
     static const char m_accHeader[];
 public:
-    unsigned int Convert(CString sCanoeFile,CString sCanMonFile);
+    unsigned int Convert(string sCanoeFile, string sCanMonFile);
 
 private:
     unsigned int m_uiResultCode;
 
     static const char *m_pacResultStrings[];
 public:
-    void CreateLogFile(CStdioFile& fileLog);
-    bool WriteToOutputFile(CStdioFile& fileOutput);
-    void GenerateMessageList(CStdioFile& fileInput);
+    void CreateLogFile(fstream& fileLog);
+    bool WriteToOutputFile(fstream& fileOutput);
+    void GenerateMessageList(fstream& fileInput);
     void ValidateMessageList();
-    void EncryptData(CList<CString,CString& > &m_notProcessed);
+    void EncryptData(list<string> &m_notProcessed);
     enum {CON_RC_NOERROR,CON_RC_COMPLETED_WITH_ERROR,CON_RC_FILEOPEN_ERROR_INFILE,
           CON_RC_FILEOPEN_ERROR_OUTFILE,CON_RC_FORMAT_ERROR_INFILE,CON_RC_FILEOPEN_ERROR_LOGFILE
          };
     unsigned int SetResultCode(unsigned int uiCode);
     const char* GetResultString();
-    CList<CMessage,CMessage&> m_listMessages;
-    CList<CMessage,CMessage&> m_unsupList;
-    CList<CSignal,CSignal&> m_listSignal;
-    CList<CComment,CComment&> m_cmMsg;
-    CList<CComment,CComment&> m_cmNet;
-    CList<CComment,CComment&> m_cmNode;
-    CList<CComment,CComment&> m_cmSig;
-    CList<CValueTable,CValueTable&> m_vTab;
+    list<CMessage> m_listMessages;
+    list<CMessage> m_unsupList;
+    list<CSignal> m_listSignal;
+    list<CComment> m_cmMsg;
+    list<CComment> m_cmNet;
+    list<CComment> m_cmNode;
+    list<CComment> m_cmSig;
+    list<CValueTable> m_vTab;
 
     static bool valid_msg;
-    CString m_omLogFilePath;
+    string m_omLogFilePath;
     void create_Node_List(char *);
-    CList<CString,CString& > m_listNode;
-    CList<CString,CString& > m_notProcessed;
-    CList<CParameters,CParameters&> m_listParameters;
-    CList<CParameters,CParameters&> m_listParameterArray[6];
-    CList<CParameterValues,CParameterValues&> m_listParamValues[6];
-    CList<CString,CString&>defList;
-
+    list<string> m_listNode;
+    list<string> m_notProcessed;
+    list<CParameters> m_listParameters;
+    list<CParameters> m_listParameterArray[6];
+    list<CParameterValues> m_listParamValues[6];
+    list<string> defList;
 };
 
-#endif // !defined(AFX_CONVERTER_H__A66CF773_FD95_4EC8_AA35_8C230C34F8C2__INCLUDED_)
+#endif

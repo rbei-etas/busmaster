@@ -15,14 +15,15 @@
 
 /**
  * \file      Utility.cpp
- * \brief     Defines Global Utility functions
- * \author    Venkatanarayana Makam
+ * \brief     Implementation of global utility functions
+ * \author    Venkatanarayana Makam, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Implementation of global utility functions.
  */
-#define     DOUBLEPRECISION       0.5
 
-#include "StdAfx.h"
 #include "Utility.h"
+
 
 /**
  * \brief      Converts the DOUBLE physical values to UINT64 RAW values
@@ -35,15 +36,16 @@
  *
  * Converts the DOUBLE physical values to UINT64 RAW values.
  */
-UINT unConvertPhysicalToRaw(DOUBLE dMaxVal, DOUBLE dMinVal, DOUBLE dOffset, DOUBLE dScalFactor, UINT64& unMaxVal, UINT64& unMinVal)
+unsigned int unConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double dScalFactor, unsigned long long int& unMaxVal, unsigned long long int& unMinVal)
 {
     double dTempMaxVal = ((dMaxVal - dOffset) / dScalFactor);
     double dTempMinVal = ((dMinVal - dOffset) / dScalFactor);
 
-    unMaxVal = (UINT64)unRoundOffdoubleValue(dTempMaxVal);
-    unMinVal = (UINT64)unRoundOffdoubleValue(dTempMinVal);
+    unMaxVal = (unsigned long long int)unRoundOffdoubleValue(dTempMaxVal);
+    unMinVal = (unsigned long long int)unRoundOffdoubleValue(dTempMinVal);
     return 0;
 }
+
 
 /**
  * \brief      Converts the DOUBLE physical values to INT64 RAW values
@@ -56,15 +58,16 @@ UINT unConvertPhysicalToRaw(DOUBLE dMaxVal, DOUBLE dMinVal, DOUBLE dOffset, DOUB
  *
  * Converts the DOUBLE physical values to INT64 RAW values.
  */
-INT nConvertPhysicalToRaw(DOUBLE dMaxVal, DOUBLE dMinVal, DOUBLE dOffset, DOUBLE dScalFactor, INT64& nMaxVal, INT64& nMinVal)
+int nConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double dScalFactor, long long int& nMaxVal, long long int& nMinVal)
 {
     double dTempMaxVal = ((dMaxVal - dOffset) / dScalFactor);
     double dTempMinVal = ((dMinVal - dOffset) / dScalFactor);
 
-    nMaxVal = (INT64)unRoundOffdoubleValue(dTempMaxVal);
-    nMinVal = (INT64)unRoundOffdoubleValue(dTempMinVal);
+    nMaxVal = (long long int)unRoundOffdoubleValue(dTempMaxVal);
+    nMinVal = (long long int)unRoundOffdoubleValue(dTempMinVal);
     return 0;
 }
+
 
 /**
  * \brief      Converts the DOUBLE physical values to INT64 RAW values
@@ -77,7 +80,7 @@ INT nConvertPhysicalToRaw(DOUBLE dMaxVal, DOUBLE dMinVal, DOUBLE dOffset, DOUBLE
  *
  * Converts the DOUBLE physical values to INT64 RAW values.
  */
-UINT unConvertRawToPhysical(UINT64 unMaxRawVal, UINT64 unMinRawVal, DOUBLE dOffset, DOUBLE dScalFactor, DOUBLE& dMaxPhyVal, DOUBLE& dMinPhyVal)
+unsigned int unConvertRawToPhysical(unsigned long long int unMaxRawVal, unsigned long long int unMinRawVal, double dOffset, double dScalFactor, double& dMaxPhyVal, double& dMinPhyVal)
 {
     //Maximum value
     dMaxPhyVal = static_cast<double>(unMaxRawVal);
@@ -89,6 +92,7 @@ UINT unConvertRawToPhysical(UINT64 unMaxRawVal, UINT64 unMinRawVal, DOUBLE dOffs
     dMinPhyVal += dOffset;
     return 0;
 }
+
 
 /**
  * \brief      Converts the DOUBLE physical values to INT64 RAW values
@@ -101,7 +105,7 @@ UINT unConvertRawToPhysical(UINT64 unMaxRawVal, UINT64 unMinRawVal, DOUBLE dOffs
  *
  * Converts the DOUBLE physical values to INT64 RAW values.
  */
-INT nConvertRawToPhysical(INT64 unMaxRawVal, INT64 unMinRawVal, DOUBLE dOffset, DOUBLE dScalFactor, DOUBLE& dMaxPhyVal, DOUBLE& dMinPhyVal)
+int nConvertRawToPhysical(long long int unMaxRawVal, long long int unMinRawVal, double dOffset, double dScalFactor, double& dMaxPhyVal, double& dMinPhyVal)
 {
     //Maximum value
     dMaxPhyVal = static_cast<double>(unMaxRawVal);
@@ -114,6 +118,7 @@ INT nConvertRawToPhysical(INT64 unMaxRawVal, INT64 unMinRawVal, DOUBLE dOffset, 
     return 0;
 }
 
+
 /**
  * \brief      Convert the double value to UINT64.
  * \param[in]  dValue double value
@@ -122,10 +127,10 @@ INT nConvertRawToPhysical(INT64 unMaxRawVal, INT64 unMinRawVal, DOUBLE dOffset, 
  * This function will convert the double value to UINT64.
  * If the double value precision is more than 0.5 the unit value will be added 1.
  */
-UINT64 unRoundOffdoubleValue(DOUBLE dValue)
+unsigned long long int unRoundOffdoubleValue(double dValue)
 {
-    UINT64 unVal = (UINT64)dValue;
-    DOUBLE dTempVal = dValue - (DOUBLE)unVal;
+    unsigned long long int unVal = (unsigned long long int)dValue;
+    double dTempVal = dValue - (double)unVal;
     if(dTempVal >= 0.5)
     {
         unVal++;

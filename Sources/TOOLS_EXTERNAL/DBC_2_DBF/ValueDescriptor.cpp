@@ -15,42 +15,39 @@
 
 /**
  * \file      ValueDescriptor.cpp
- * \brief     Implementation file for the ParameterValues class.
- * \author    Ratnadip Choudhury
+ * \brief     Implementation of value descriptor class
+ * \author    Ratnadip Choudhury, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Implementation file for the ParameterValues class.
+ * Implementation of the value descriptor class.
  */
 
-#include "StdAfx.h"
-#include "App.h"
+#include <list>
+
+#include "Signal.h"
+#include "Tag.h"
 #include "ValueDescriptor.h"
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
+using namespace std;
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+
 /**
  * \brief Constructor
  */
 CValueDescriptor::CValueDescriptor()
 {
     m_value.dValue = 1; // assume double type for default constructor
-    m_acDescriptor[0] = '\0';
+    m_acDescriptor = "";
 }
+
 
 /**
  * \brief Destructor
  */
 CValueDescriptor::~CValueDescriptor()
 {
-    // nothing special to do here
 }
+
 
 /**
  * \brief writes the value descriptors in the given list to the output file
@@ -60,48 +57,47 @@ CValueDescriptor::~CValueDescriptor()
  *
  * Writes the value descriptors in the given list to the output file.
  */
-void CValueDescriptor::writeValuDescToFile(CStdioFile &fileOutput,char m_ucType,CList<CValueDescriptor,CValueDescriptor&> &m_listValueDescriptor)
+void CValueDescriptor::writeValueDescToFile(fstream &fileOutput, char m_ucType, list<CValueDescriptor> &m_listValueDescriptor)
 {
     char acLine[defVDES_MAX_OUT_STR];
-    POSITION posValDesc = m_listValueDescriptor.GetHeadPosition();
-    while(posValDesc != NULL)
+    list<CValueDescriptor>::iterator desc;
+    for (desc=m_listValueDescriptor.begin(); desc!=m_listValueDescriptor.end(); ++desc)
     {
-        CValueDescriptor& rValDesc = m_listValueDescriptor.GetNext(posValDesc);
         switch(m_ucType)
         {
             case CSignal::SIG_TYPE_BOOL:
             case CSignal::SIG_TYPE_UINT:
-                sprintf(acLine,"%s \"%s\",%u\n",T_VALUE_DESC,rValDesc.m_acDescriptor,rValDesc.m_value.uiValue);
+                sprintf(acLine, "%s \"%s\",%u\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.uiValue);
                 break;
 
             case CSignal::SIG_TYPE_INT:
-                sprintf(acLine,"%s \"%s\",%d\n",T_VALUE_DESC,rValDesc.m_acDescriptor,rValDesc.m_value.iValue);
+                sprintf(acLine, "%s \"%s\",%d\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.iValue);
                 break;
 
                 // when FLOAT and DOUBLE are supported enable this
                 /*
                 case CSignal::SIG_TYPE_FLOAT:
-                sprintf(acLine,"%s \"%s\",%f\n",T_VALUE_DESC,rValDesc.m_acDescriptor,rValDesc.m_value.fValue);
+                sprintf(acLine, "%s \"%s\",%f\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.fValue);
                 break;
 
                 case CSignal::SIG_TYPE_DOUBLE:
-                sprintf(acLine,"%s \"%s\",%f\n",T_VALUE_DESC,rValDesc.m_acDescriptor,rValDesc.m_value.dValue);
+                sprintf(acLine, "%s \"%s\",%f\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.dValue);
                 break;
                 */
 
             case CSignal::SIG_TYPE_INT64:
-                sprintf(acLine,"%s \"%s\",%I64d\n",T_VALUE_DESC,rValDesc.m_acDescriptor,rValDesc.m_value.i64Value);
+                sprintf(acLine, "%s \"%s\",%I64d\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.i64Value);
                 break;
 
             case CSignal::SIG_TYPE_UINT64:
-                sprintf(acLine,"%s \"%s\",%I64u\n",T_VALUE_DESC,rValDesc.m_acDescriptor,rValDesc.m_value.ui64Value);
+                sprintf(acLine, "%s \"%s\",%I64u\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.ui64Value);
                 break;
 
             default:
                 break;
         }
 
-        fileOutput.WriteString(acLine);
+        fileOutput << acLine;
     }
     return;
 }

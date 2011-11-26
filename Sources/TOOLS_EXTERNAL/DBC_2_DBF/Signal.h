@@ -15,22 +15,22 @@
 
 /**
  * \file      Signal.h
- * \brief     CSignal class declaration file
- * \author    Padmaja A
+ * \brief     Definition of signal class
+ * \author    Padmaja A, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * CSignal class declaration file
+ * Definition of the signal class.
  */
 
-#if !defined(AFX_SIGNAL_H__9A754F62_9FA8_4BC5_9F87_96D1EFB73DAA__INCLUDED_)
-#define AFX_SIGNAL_H__9A754F62_9FA8_4BC5_9F87_96D1EFB73DAA__INCLUDED_
+#ifndef Signal_H
+#define Signal_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#include <list>
 
-#include <afxtempl.h>
 #include "ValueDescriptor.h"
+
+using namespace std;
+
 class CSignal
 {
 public:
@@ -38,7 +38,7 @@ public:
     const char* GetErrorAction();
     unsigned int Validate(unsigned char ucFormat = 0);
     unsigned int m_uiError;
-    int AddValueDescriptors(char * pcLine,CStdioFile &fileInput);
+    int AddValueDescriptors(char * pcLine, fstream &fileInput);
     int Format(char *pcLine);
     CSignal();
     virtual ~CSignal();
@@ -48,8 +48,8 @@ public:
     enum SIG_ERROR_CODE {SIG_EC_NO_ERR, SIG_EC_DATA_FORMAT_ERR,SIG_EC_LENGTH_ERR,SIG_EC_STARTBIT_ERR,SIG_EC_TYPE_ERR,SIG_EC_OVERFLOW};
     // data members
 
-    char			m_acName[defSIG_MAX_NAME_LEN];
-    char            m_acMultiplex[defSIG_MAX_MULTIPLEX_LEN];
+    string			m_acName;
+    string          m_acMultiplex;
     unsigned char	m_ucLength;
     unsigned char	m_ucWhichByte;
     unsigned char	m_ucStartBit;
@@ -59,15 +59,15 @@ public:
     unsigned char	m_ucDataFormat;
     float			m_fOffset;
     float			m_fScaleFactor;
-    char			m_acUnit[defSIG_MAX_UNIT_LEN];
-    char			m_rxNode[defSIG_MAX_RXNODE_LEN];
+    string			m_acUnit;
+    string			m_rxNode;
     static const char *m_pacErrorStrings[];
 
 
 
 
-    CList<CValueDescriptor,CValueDescriptor&>	m_listValueDescriptor;
-    bool WriteSignaltofile(CStdioFile &fileOutput,CList<CSignal,CSignal&> &m_listSignals,int m_ucLength,int m_cDataFormat,bool writeErr);
+    list<CValueDescriptor>	m_listValueDescriptor;
+    bool WriteSignaltofile(fstream &fileOutput, list<CSignal> &m_listSignals, int m_ucLength, int m_cDataFormat, bool writeErr);
 };
 
-#endif // !defined(AFX_SIGNAL_H__9A754F62_9FA8_4BC5_9F87_96D1EFB73DAA__INCLUDED_)
+#endif

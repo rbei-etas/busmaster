@@ -334,12 +334,12 @@ void CCANDBConverterDlg::OnConvertBtn()
     }
     else
     {
-        INT nRetVal = pConverter->Convert(sCanoeFilePath,sCanMonFilePath);
+        INT nRetVal = pConverter->Convert((LPCTSTR)sCanoeFilePath,(LPCTSTR)sCanMonFilePath);
         // display final result
         SetDlgItemText(IDC_RESULT_STATIC, pConverter->GetResultString());
         if(nRetVal != 0)
         {
-            SetDlgItemText(IDC_EDIT_LOGPATH, pConverter->m_omLogFilePath);
+            SetDlgItemText(IDC_EDIT_LOGPATH, pConverter->m_omLogFilePath.c_str());
         }
         delete pConverter;
     }

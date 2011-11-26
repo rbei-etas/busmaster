@@ -15,33 +15,23 @@
 
 /**
  * \file      ValueDescriptor.h
- * \brief     CValueDescriptor class.
- * \author    Mahesh B S
+ * \brief     Definition of value descriptor class
+ * \author    Mahesh B S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * CValueDescriptor class.
+ * Definition of the value descriptor class.
  */
 
-//
-//////////////////////////////////////////////////////////////////////
-//#include"definitions.h"
-#if !defined(AFX_VALUEDESCRIPTOR_H__3051F3F4_2978_4987_B1DF_BA4CAD29981A__INCLUDED_)
-#define AFX_VALUEDESCRIPTOR_H__3051F3F4_2978_4987_B1DF_BA4CAD29981A__INCLUDED_
+#ifndef ValueDescriptor_H
+#define ValueDescriptor_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#include <fstream>
+#include <list>
 
-/*
-typedef union _SIG_VALUE {
-int iValue;
-unsigned int uiValue;
-float fValue;
-double	dValue;
-char cValue[defVDES_MAX_DESC_LEN];
-LONGLONG i64Value;
-unsigned __int64 ui64Value;}	SIG_VALUE;
-*/
+#include "Definitions.h"
+
+using namespace std;
+
 class CValueDescriptor
 {
 public:
@@ -49,9 +39,9 @@ public:
     virtual ~CValueDescriptor();
 
     // data members
-    char		m_acDescriptor[defVDES_MAX_DESC_LEN];
+    string		m_acDescriptor;
     SIG_VALUE	m_value;
-    void writeValuDescToFile(CStdioFile &fileOutput,char m_ucType,CList<CValueDescriptor,CValueDescriptor&> &m_listValueDescriptor);
+    void writeValueDescToFile(fstream &fileOutput, char m_ucType, list<CValueDescriptor> &m_listValueDescriptor);
 };
 
-#endif // !defined(AFX_VALUEDESCRIPTOR_H__3051F3F4_2978_4987_B1DF_BA4CAD29981A__INCLUDED_)
+#endif
