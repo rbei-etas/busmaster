@@ -344,6 +344,11 @@ public:
 static CDIL_CAN_Kvaser* sg_pouDIL_CAN_Kvaser = NULL;
 HANDLE g_hDataEvent[defNO_OF_CHANNELS]  = {0};
 
+
+/* Using different channel handles to read from channels.This is because the channel handles
+   are not thread safe */
+canHandle sg_arrReadHandles[CHANNEL_ALLOWED];
+
 /**
  * \return S_OK for success, S_FALSE for failure
  *
@@ -917,45 +922,12 @@ static int nSetBaudRate( )
 static int nSetWarningLimit()
 {
     int nReturn = defERR_OK;
-    //// Keep Byte Array to store the result
-    //int anResult[ defNO_OF_CHANNELS ];
-    //// Set the result to FAIL
-    //memset( anResult, -1, sizeof( anResult ) );
-    //// Set Warning limit to all controller
-    //for( UINT unIndex = 0;
-    //unIndex < m_nNoOfChannels;
-    //unIndex++ )
-    //{
-    //    /*CChannel& odChannel = sg_podActiveNetwork->m_aodChannels[ unIndex ];
-
-    //    int nChannel = (*pfCAN_SetHwParam)( odChannel.m_hHardwareHandle,
-    //                                   CAN_PARAM_ERROR_WARNING_LIMIT,
-    //                                   odChannel.m_ucWarningLimit );*/
-    //    // Get the result and OR with the final result. If all are
-    //    // successful then the final result will be 0
-    //    nReturn |= nChannel;
-    //    // Update the result in the matrix
-    //    anResult [ unIndex ] = nChannel;
-    //}
-    //// Show error message if operation is not successful
-    //if( nReturn != defERR_OK )
-    //{
-    //    TCHAR omStrResult[MAX_STRING] = {L'\0'};
-    //    _stprintf(omStrResult, defSTR_WARNING_LIMIT_SET_FAILED);
-    //    for( UINT unIndex = 0;
-    //         unIndex < sg_podActiveNetwork->m_nNoOfChannels;
-    //         unIndex++ )
-    //    {                
-    //        vRetrieveAndLog( anResult[ unIndex ], __FILE__, __LINE__);
-    //        // Format error report
-    //    
-    //    }
-    //}
     return nReturn;
 }
-static int nSetFilter( )
+static int nSetFilter(BOOL bWrite)
 {
 	canStatus nStatus = canOK;
+	canHandle objHandle;
         
     // Set the client filter
 	for ( UINT unIndex = 0; unIndex < m_nNoOfChannels; unIndex++)
@@ -985,8 +957,21 @@ static int nSetFilter( )
 					 ( sFilter.m_ucACC_Mask2 << nShift * 2 ) |
 					 ( sFilter.m_ucACC_Mask1 << nShift ) |
 					 sFilter.m_ucACC_Mask0;
+
+			//Set handle based on the variable 'bWrite'
+			if ( bWrite )
+			{
+				//Write handle
+				objHandle = m_aodChannels[unIndex].m_hnd;
+			}
+			else
+			{
+				//Read handle
+				objHandle = sg_arrReadHandles[unIndex];
+			}
+
 			// Set the client filter
-			nStatus = canSetAcceptanceFilter(m_aodChannels[unIndex].m_hnd, dwCode, dwMask, sFilter.m_ucACC_Filter_Type);
+			nStatus = canSetAcceptanceFilter(objHandle, dwCode, dwMask, sFilter.m_ucACC_Filter_Type);
 		}
 		if( nStatus != canOK )
 		{
@@ -1021,7 +1006,7 @@ static int nSetApplyConfiguration()
     if( nReturn == defERR_OK )
     {
         // Set Filter
-        nReturn = nSetFilter ( );
+        nReturn = nSetFilter (TRUE);
     }
     // Set warning limit only for hardware network
     if( nReturn == defERR_OK &&
@@ -1092,38 +1077,37 @@ BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
  */
 static void vWriteIntoClientsBuffer(STCANDATA& sCanData)
 {
-    //Write into the client's buffer and Increment message Count
-    if (sCanData.m_ucDataType == TX_FLAG)
-    {
-        static SACK_MAP sAckMap;
-        UINT ClientId = 0;
-        static UINT Index = (UINT)-1;
-        sAckMap.m_Channel = sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel;
-        sAckMap.m_MsgID = sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID;
+    //Write into the client's buffer and Increment message Count    
+    static SACK_MAP sAckMap;
+    UINT ClientId = 0;
+    static UINT Index = (UINT)-1;
+    sAckMap.m_Channel = sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel;
+    sAckMap.m_MsgID = sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID;
 
-        if (bRemoveMapEntry(sAckMap, ClientId))
+	//Check if it is an acknowledgement message
+    if (bRemoveMapEntry(sAckMap, ClientId))
+    {
+        BOOL bClientExists = bGetClientObj(ClientId, Index);
+        for (UINT i = 0; i < sg_unClientCnt; i++)
         {
-            BOOL bClientExists = bGetClientObj(ClientId, Index);
-            for (UINT i = 0; i < sg_unClientCnt; i++)
+            //Tx for monitor nodes and sender node
+            if ((i == CAN_MONITOR_NODE_INDEX)  || (bClientExists && (i == Index)))
             {
-                //Tx for monitor nodes and sender node
-                if ((i == CAN_MONITOR_NODE_INDEX)  || (bClientExists && (i == Index)))
+				sCanData.m_ucDataType = TX_FLAG;
+                for (UINT j = 0; j < sg_asClientToBufMap[i].unBufCount; j++)
                 {
-                    for (UINT j = 0; j < sg_asClientToBufMap[i].unBufCount; j++)
-                    {
-                        sg_asClientToBufMap[i].pClientBuf[j]->WriteIntoBuffer(&sCanData);
-                    }
+                    sg_asClientToBufMap[i].pClientBuf[j]->WriteIntoBuffer(&sCanData);
                 }
-                else
+            }
+            else
+            {
+                //Send the other nodes as Rx.
+                for (UINT j = 0; j < sg_asClientToBufMap[i].unBufCount; j++)
                 {
-                    //Send the other nodes as Rx.
-                    for (UINT j = 0; j < sg_asClientToBufMap[i].unBufCount; j++)
-                    {
-                        static STCANDATA sTempCanData;
-                        sTempCanData = sCanData;
-                        sTempCanData.m_ucDataType = RX_FLAG;
-                        sg_asClientToBufMap[i].pClientBuf[j]->WriteIntoBuffer(&sTempCanData);
-                    }
+                    static STCANDATA sTempCanData;
+                    sTempCanData = sCanData;
+                    sTempCanData.m_ucDataType = RX_FLAG;
+                    sg_asClientToBufMap[i].pClientBuf[j]->WriteIntoBuffer(&sTempCanData);
                 }
             }
         }
@@ -1295,9 +1279,6 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_Kvaser_CAN(LPVOID pVoid)
     USES_CONVERSION;
 	canStatus nStatus = canOK;
 	DWORD         active_handle;
-	/* Using different channel handles to read from channels.This is because the channel handles
-	   are not thread safe */
-	canHandle arrHandles[CHANNEL_ALLOWED];
 
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC *) pVoid;
 
@@ -1310,17 +1291,19 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_Kvaser_CAN(LPVOID pVoid)
 	//get CAN - eventHandles
 	for (UINT i = 0; i < m_nNoOfChannels; i++)
 	{
-		arrHandles[i] = canOpenChannel(m_aodChannels[i].m_nChannel, canOPEN_ACCEPT_VIRTUAL);
-		nStatus = canBusOn(arrHandles[i]);
+		sg_arrReadHandles[i] = canOpenChannel(m_aodChannels[i].m_nChannel, canOPEN_ACCEPT_VIRTUAL);
+		nStatus = canBusOn(sg_arrReadHandles[i]);
 
 		HANDLE tmp;
-		nStatus = canIoCtl(arrHandles[i],
+		nStatus = canIoCtl(sg_arrReadHandles[i],
 							canIOCTL_GET_EVENTHANDLE,
 							&tmp,
 							sizeof(tmp)); 
 		if ( nStatus == canOK )
 			g_hDataEvent[i] = tmp;
 	}
+	//Apply filters for read handles
+	nSetFilter(false);
 
     if (g_hDataEvent[0] != NULL)
     {
@@ -1350,7 +1333,7 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_Kvaser_CAN(LPVOID pVoid)
 					for (int i = 0; i < m_nNoOfChannels ; i++) 
 					{
 						//Read CAN Message from channel
-						nStatus = canRead(arrHandles[i], (long*)&sg_ReadMsg.m_unMsgID, 
+						nStatus = canRead(sg_arrReadHandles[i], (long*)&sg_ReadMsg.m_unMsgID, 
 										&sg_ReadMsg.m_ucData[0], (unsigned int*)&sg_ReadMsg.m_ucDataLen, 
 										&unFlags, &dwTime);
 						switch (nStatus) 
@@ -1375,37 +1358,37 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_Kvaser_CAN(LPVOID pVoid)
         }
         else
         {
-            WaitForSingleObject(pThreadParam->m_hActionEvent, 500);
+            WaitForSingleObject(pThreadParam->m_hActionEvent, 10);
             switch (pThreadParam->m_unActionCode)
             {
                 case EXIT_THREAD:
                 {
                     s_DatIndThread.m_bToContinue = FALSE;
+					for ( UINT i =0 ; i < m_nNoOfChannels; i++ )
+					{
+						//Get Off the bus
+						nStatus = canBusOff(sg_arrReadHandles[i]);	
+						//Close the channel connection
+						nStatus = canClose(sg_arrReadHandles[i]);
+						sg_arrReadHandles[i] = canERR_NOTINITIALIZED;
+					}
+					SetEvent(pThreadParam->hGetExitNotifyEvent());
+
+					/* Close the notification event for startup */
+					//CloseHandle(pThreadParam->m_hActionEvent);
+					for (UINT i = 0; i < m_nNoOfChannels+1; i++)
+					{		
+						ResetEvent(g_hDataEvent[i]);
+						g_hDataEvent[i] = NULL;
+					}
+					//ResetEvent(pThreadParam->m_hActionEvent);
+					pThreadParam->m_hActionEvent = NULL;
+					return 0;
                 }
                 break;
             }
         }
     }
-	SetEvent(pThreadParam->hGetExitNotifyEvent());
-
-    /* Close the notification event for startup */
-    //CloseHandle(pThreadParam->m_hActionEvent);
-	for (UINT i = 0; i < m_nNoOfChannels+1; i++)
-	{		
-		ResetEvent(g_hDataEvent[i]);
-		g_hDataEvent[i] = NULL;
-	}
-	//ResetEvent(pThreadParam->m_hActionEvent);
-    pThreadParam->m_hActionEvent = NULL;
-
-	for ( UINT i =0 ; i < m_nNoOfChannels; i++ )
-	{
-		//Get Off the bus
-		nStatus = canBusOff(arrHandles[i]);	
-		//Close the channel connection
-		nStatus = canClose(arrHandles[i]);
-	}
-
     return 0;
 }
 
