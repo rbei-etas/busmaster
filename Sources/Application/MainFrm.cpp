@@ -10407,7 +10407,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 BYTE* pbyTemp = pbyConfigData;
 
                 BYTE byVersion = 0;
-                UINT unChannelCount = defNO_OF_CHANNELS;				
+                UINT unChannelCount = CHANNEL_ALLOWED;				
                 COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));				
                 if (byVersion == 0x1) // Only two channels supported in version 0x1
                 {
@@ -10798,7 +10798,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             nSize = sizeof(BYTE);//configuration version
             nSize += sizeof(DWORD);// Driver Id
             nSize += sizeof(BYTE); // Controller mode
-            nSize += sizeof(SCONTROLER_DETAILS) * defNO_OF_CHANNELS;
+            nSize += sizeof(SCONTROLER_DETAILS) * CHANNEL_ALLOWED;
             pbyConfigData = new BYTE[nSize];
             
             if (pbyConfigData != NULL)
@@ -10809,7 +10809,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
                 COPY_DATA(pbyTemp, &m_dwDriverId, sizeof(DWORD));
                 COPY_DATA(pbyTemp, &m_byControllerMode, sizeof(BYTE));
-                COPY_DATA(pbyTemp, m_asControllerDetails, (sizeof(SCONTROLER_DETAILS) * defNO_OF_CHANNELS));
+                COPY_DATA(pbyTemp, m_asControllerDetails, (sizeof(SCONTROLER_DETAILS) * CHANNEL_ALLOWED));
             }        
         }
         break;
