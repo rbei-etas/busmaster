@@ -34,7 +34,7 @@ BrandingText "RBEI BUSMASTER Installation"
 CRCCheck On
 
 ; Output filename
-Outfile "BUSMASTER_Installer_Ver_1.2.0.exe"
+Outfile "BUSMASTER_Installer_Ver_1.3.0.exe"
 
 Function .onInit
     # the plugins dir is automatically deleted when the installer exits
