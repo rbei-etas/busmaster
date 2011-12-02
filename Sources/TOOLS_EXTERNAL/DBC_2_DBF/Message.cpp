@@ -101,7 +101,7 @@ int CMessage::Format(char *pcLine)
     // set the message length
     pcToken = strtok(NULL,_T(" :"));
     m_ucLength = (unsigned char)atoi(pcToken);
-    CConverter::ucMsg_DLC = m_ucLength; 
+    CConverter::ucMsg_DLC = m_ucLength;
 
     //get the Tx'ing Node Name
     pcToken = strtok(NULL,_T(" :\n"));
@@ -113,8 +113,8 @@ int CMessage::Format(char *pcLine)
     // set the Data format
     m_cDataFormat = CSignal::SIG_DF_INTEL;
 
-    // set the number of signals 
-    m_ucNumOfSignals = 0;	
+    // set the number of signals
+    m_ucNumOfSignals = 0;
 
     return 1;
 }
@@ -141,7 +141,7 @@ bool CMessage::writeMessageToFile( CStdioFile &fileOutput,CList<CMessage,CMessag
         sprintf(acLine,"%s %s,%u,%u,%u,%c,%c,%s\n",T_START_MSG,msg.m_acName,msg.m_uiMsgID,msg.m_ucLength,msg.m_ucNumOfSignals,msg.m_cDataFormat,msg.m_cFrameFormat,msg.m_txNode);
         fileOutput.WriteString(acLine);
 
-        CSignal sig; 
+        CSignal sig;
         //write all related signals to the messages
         bResult &= sig.WriteSignaltofile (fileOutput,msg.m_listSignals,msg.m_ucLength,msg.m_cDataFormat,writeErr);
         fileOutput.WriteString(T_END_MSG"\n\n");

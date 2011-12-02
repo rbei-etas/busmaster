@@ -31,7 +31,7 @@
 
 #include <afxtempl.h>
 #include "ValueDescriptor.h"
-class CSignal  
+class CSignal
 {
 public:
     const char* GetErrorString();

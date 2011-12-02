@@ -30,10 +30,10 @@
 #endif // _MSC_VER > 1000
 
 #include <afxtempl.h>
-#include "ValueDescriptor.h" 
+#include "ValueDescriptor.h"
 #define max_TAB_NAME 50
 
-class CValueTable  
+class CValueTable
 {
 public:
     CValueTable();

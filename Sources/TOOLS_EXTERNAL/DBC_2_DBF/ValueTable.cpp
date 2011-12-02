@@ -107,7 +107,7 @@ int CValueTable::Format(char *pcLine,CStdioFile &fileInput)
 
     while(*pcLine && *pcLine != ';')
     {
-        //Value table can be of more than 1024 char. So when the we have almost reached 
+        //Value table can be of more than 1024 char. So when the we have almost reached
         //the end of the buffer check if we have reached the correct end i.e ";".If not than
         //read the next line and proceed.
         if(strlen(pcLine) < 100 && true_end == false)
@@ -143,7 +143,7 @@ int CValueTable::Format(char *pcLine,CStdioFile &fileInput)
         while(*pcLine && *pcLine != '\"')
         {
             if ((*pcLine != '\r') && (*pcLine != '\n'))
-              *pcDesc++ = *pcLine;
+                *pcDesc++ = *pcLine;
             pcLine++;
         }
         *pcDesc = '\0';
@@ -159,8 +159,8 @@ int CValueTable::Format(char *pcLine,CStdioFile &fileInput)
         {
             CValueDescriptor valDesc;
             valDesc.m_value.i64Value = atoi(acValue);
-            strcpy(valDesc.m_acDescriptor,acDesc);																		
-            m_values.AddTail(valDesc);		
+            strcpy(valDesc.m_acDescriptor,acDesc);
+            m_values.AddTail(valDesc);
         }
     }
 
@@ -184,7 +184,7 @@ void CValueTable::writeValueTabToFile(CStdioFile &fileOutput,CList<CValueTable,C
         fileOutput.WriteString("\n");
         CValueDescriptor desc;
         desc.writeValuDescToFile (fileOutput,CSignal::SIG_TYPE_INT64,tab.m_values);
-        fileOutput.WriteString(T_END_TAB"\n");	
+        fileOutput.WriteString(T_END_TAB"\n");
     }
 }
 

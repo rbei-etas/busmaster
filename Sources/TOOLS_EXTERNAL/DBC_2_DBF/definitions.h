@@ -15,11 +15,11 @@
 
 /**
  * \file      definitions.h
- * \brief     Defintitons File 
+ * \brief     Defintitons File
  * \author    Amitesh Bharti
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Defintitons File 
+ * Defintitons File
  */
 
 //Comments.cpp
@@ -65,4 +65,4 @@ typedef union _SIG_VALUE
     char cValue[defCON_TEMP_LEN];
     LONGLONG i64Value;
     ULONGLONG ui64Value;
-}SIG_VALUE;
+} SIG_VALUE;

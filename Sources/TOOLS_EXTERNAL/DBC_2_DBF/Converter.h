@@ -40,7 +40,7 @@ using namespace std;
 typedef struct pair<CString,CString> PAIR_CM;
 
 
-class CConverter  
+class CConverter
 {
 public:
     CConverter();
@@ -63,7 +63,8 @@ public:
     void ValidateMessageList();
     void EncryptData(CList<CString,CString& > &m_notProcessed);
     enum {CON_RC_NOERROR,CON_RC_COMPLETED_WITH_ERROR,CON_RC_FILEOPEN_ERROR_INFILE,
-        CON_RC_FILEOPEN_ERROR_OUTFILE,CON_RC_FORMAT_ERROR_INFILE,CON_RC_FILEOPEN_ERROR_LOGFILE};
+          CON_RC_FILEOPEN_ERROR_OUTFILE,CON_RC_FORMAT_ERROR_INFILE,CON_RC_FILEOPEN_ERROR_LOGFILE
+         };
     unsigned int SetResultCode(unsigned int uiCode);
     const char* GetResultString();
     CList<CMessage,CMessage&> m_listMessages;
@@ -73,14 +74,14 @@ public:
     CList<CComment,CComment&> m_cmNet;
     CList<CComment,CComment&> m_cmNode;
     CList<CComment,CComment&> m_cmSig;
-    CList<CValueTable,CValueTable&> m_vTab; 
+    CList<CValueTable,CValueTable&> m_vTab;
 
     static bool valid_msg;
     CString m_omLogFilePath;
     void create_Node_List(char *);
     CList<CString,CString& > m_listNode;
     CList<CString,CString& > m_notProcessed;
-    CList<CParameters,CParameters&> m_listParameters; 
+    CList<CParameters,CParameters&> m_listParameters;
     CList<CParameters,CParameters&> m_listParameterArray[6];
     CList<CParameterValues,CParameterValues&> m_listParamValues[6];
     CList<CString,CString&>defList;

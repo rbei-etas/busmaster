@@ -44,7 +44,7 @@ CParameters::CParameters()
 {
     m_InitVal.fValue=-1;
     strcpy(m_InitVal.cValue,"");
-    m_InitVal.uiValue=0; 
+    m_InitVal.uiValue=0;
     m_ValRange='\0';
     m_ParamType[0]='\0';
     m_ParamName[0]='\0';
@@ -76,13 +76,13 @@ CParameters& CParameters::operator=( CParameters& param)
     strcpy(m_ObjectId,param.m_ObjectId);
     strcpy(m_ParamName,param.m_ParamName);
     m_ValRange=param.m_ValRange;
-    strcpy(m_ParamType,param.m_ParamType); 
+    strcpy(m_ParamType,param.m_ParamType);
     m_InitVal=param.m_InitVal;
     m_MaxVal=param.m_MaxVal;
-    m_MinVal=param.m_MinVal; 
+    m_MinVal=param.m_MinVal;
     m_RangeError=param.m_RangeError;
-    m_defError=param.m_defError; 
-    for(int i=0;i<6;i++)
+    m_defError=param.m_defError;
+    for(int i=0; i<6; i++)
         m_listParamValues[i].AddTail( (&param.m_listParamValues[i]));
     return (*this);
 }
@@ -102,7 +102,7 @@ bool WriteParametersToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&
     POSITION pos=m_listParameter .GetHeadPosition();
 
     // if no parameter in the list then it simply returns true.
-    // otherwise writes definition and default value of all parameters to the o/p file 
+    // otherwise writes definition and default value of all parameters to the o/p file
     while(pos!=NULL)
     {
         //Gets the next parameter from the list.
@@ -116,8 +116,8 @@ bool WriteParametersToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&
         if(strcmp(rParam.m_ParamType,"INT")==0 )
         {
             //Default value is NULL
-            if(rParam.m_InitVal.iValue ==-1) 
-            { 
+            if(rParam.m_InitVal.iValue ==-1)
+            {
                 rParam.m_defError=rParam.m_defError | true;
                 pResult=pResult & false;
                 rParam.m_InitVal.iValue=rParam.m_MinVal.iValue;
@@ -130,10 +130,10 @@ bool WriteParametersToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&
         }
 
         //Parameter : HEX type
-        else if(strcmp(rParam.m_ParamType,"HEX")==0) 
+        else if(strcmp(rParam.m_ParamType,"HEX")==0)
         {
-            //Default value is NULL	  
-            if(rParam.m_InitVal.uiValue ==-1) 
+            //Default value is NULL
+            if(rParam.m_InitVal.uiValue ==-1)
             {
                 rParam.m_defError=rParam.m_defError | true;
                 pResult=pResult & false;
@@ -146,9 +146,9 @@ bool WriteParametersToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&
         }
 
         //Parameter : FLOAT type
-        else if(strcmp(rParam.m_ParamType,"FLOAT")==0) 
-        {   //Default value is NULL 
-            if(rParam.m_InitVal.fValue ==-1) 
+        else if(strcmp(rParam.m_ParamType,"FLOAT")==0)
+        {   //Default value is NULL
+            if(rParam.m_InitVal.fValue ==-1)
             {
                 rParam.m_defError=rParam.m_defError | true;
                 pResult=pResult & false;
@@ -161,11 +161,11 @@ bool WriteParametersToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&
         }
 
         //Parameter : ENUM type
-        else if(strcmp(rParam.m_ParamType,"ENUM")==0) 
+        else if(strcmp(rParam.m_ParamType,"ENUM")==0)
         {
             //Default value is NULL
             if(strcmp(rParam.m_InitVal.cValue,"")==0)
-                sprintf(acLine,"\"%s\",%s,\"\",%s\n",rParam.m_ParamName,rParam.m_ParamType,rParam.m_ValRange);	   
+                sprintf(acLine,"\"%s\",%s,\"\",%s\n",rParam.m_ParamName,rParam.m_ParamType,rParam.m_ValRange);
 
             //Default value is not NULL
             else
@@ -173,7 +173,7 @@ bool WriteParametersToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&
         }
 
         //Parameter : STRING type
-        else 
+        else
             sprintf(acLine,"\"%s\",%s,%s\n",rParam.m_ParamName,rParam.m_ParamType,rParam.m_InitVal.cValue );
 
         //After validation parameter is written to the o/p file.
@@ -202,17 +202,17 @@ int CParameters::FormatParamValue(char *pcLine)
 
     // if object id is node then calls GetNodeParams funtion to read the other values lilke min/max
     if(strcmp(pcToken,"BU_")==0)
-    {  
+    {
         pVal.GetNodeParams(m_ParamType,(pcLine+strlen(pcToken)+1));
         //adds the other calues to the list
-        m_listParamValues[1].AddTail(pVal);  
+        m_listParamValues[1].AddTail(pVal);
     }
     // if object id is Message then calls GetMsgParams funtion to read the other values lilke min/max
     else if(strcmp(pcToken,"BO_")==0)
     {
         pVal.GetMesgParams(m_ParamType,(pcLine+strlen(pcToken)+1));
         //adds the other calues to the list
-        m_listParamValues[2].AddTail(pVal);   
+        m_listParamValues[2].AddTail(pVal);
     }
     // if object id is signal then calls GetSignalParams funtion to read the other values lilke min/max
     else if(strcmp(pcToken,"SG_")==0)
@@ -222,8 +222,8 @@ int CParameters::FormatParamValue(char *pcLine)
         m_listParamValues[3].AddTail(pVal);
     }
     // if object id is net then calls GetNetParams funtion to read the other values lilke min/max
-    else 
-    { 
+    else
+    {
         pVal.GetNetParams(m_ParamType,pcToken);
         //adds the other calues to the list
         m_listParamValues[0].AddTail(pVal);
@@ -246,7 +246,7 @@ int CParameters::Format(char *pcLine)
 
     //get object id
 
-    pcToken = strtok(pcLine,"\""); 
+    pcToken = strtok(pcLine,"\"");
 
     while(*pcToken==' ')
         *pcToken++;
@@ -254,37 +254,37 @@ int CParameters::Format(char *pcLine)
     {
         *pcTemp++ = *pcToken++; // copy OBJECT_ID only, i.e. till first 'space'
     }
-    *pcTemp = '\0'; // terminate it 
+    *pcTemp = '\0'; // terminate it
     strcpy(m_ObjectId,acTemp); // copy the object_id to the parameter's data member
     pcTemp = acTemp; // reset pcTemp to start of buffer
 
 
     //get Attribute name
-    pcToken = strtok(NULL,"\""); 
+    pcToken = strtok(NULL,"\"");
     while(*pcToken && *pcToken != '"')
     {
         *pcTemp++ = *pcToken++; // copy PARAM_NAME only, i.e. till first 'space'
     }
-    *pcTemp = '\0'; // terminate it 
+    *pcTemp = '\0'; // terminate it
     strcpy(m_ParamName,acTemp); // copy the name to the parameter's data member
     pcTemp = acTemp; // reset pcTemp to start of buffer
 
     //get Value Type
-    pcToken = strtok(NULL," "); 
+    pcToken = strtok(NULL," ");
     while(*pcToken==' ')
         *pcToken++;
     while(*pcToken && *pcToken != ' ' && *pcToken != ';')
     {
         *pcTemp++ = *pcToken++; // copy PARAM_TYPE only, i.e. till first 'space'
     }
-    *pcTemp = '\0'; // terminate it 
+    *pcTemp = '\0'; // terminate it
     strcpy(m_ParamType,acTemp); // copy the type to the parameter's data member
     pcTemp = acTemp; // reset pcTemp to start of buffer
 
 
     if(strcmp(m_ParamType,"STRING")!=0)
-    {	
-        pcToken = strtok(NULL,";"); 
+    {
+        pcToken = strtok(NULL,";");
         if(strcmp(m_ParamType,"ENUM")==0)
         {
             while(*pcToken && *pcToken == ' ')
@@ -296,7 +296,7 @@ int CParameters::Format(char *pcLine)
         {
             double temp;
             pcToken=strtok(pcToken," ");
-            temp = atof(pcToken);  
+            temp = atof(pcToken);
             if(temp<FLT_MIN) //min val valildation
             {
                 m_MinVal.fValue=FLT_MIN;
@@ -304,33 +304,33 @@ int CParameters::Format(char *pcLine)
             }
             else
                 m_MinVal.fValue= float(temp);
-            pcToken = strtok(NULL," "); 
+            pcToken = strtok(NULL," ");
             temp=atof(pcToken);
             if(temp>FLT_MAX || temp<m_MinVal.fValue) //max value validation
             {
-                m_MaxVal.fValue=FLT_MAX; 
+                m_MaxVal.fValue=FLT_MAX;
                 m_RangeError=m_RangeError | true;
             }
             else
-                m_MaxVal.fValue =float(temp); 
+                m_MaxVal.fValue =float(temp);
             pcTemp = acTemp; // reset pcTemp to start of buffer
         }
 
         //Reads the flaot min,max values and validates those values.
-        else if(strcmp(m_ParamType,"INT")==0) 
+        else if(strcmp(m_ParamType,"INT")==0)
         {
             LONGLONG temp;
             pcToken=strtok(pcToken," ");
             temp=_atoi64(pcToken);
             if(temp < INT_MIN ) //min value validation
-            {	  
+            {
                 m_MinVal.iValue=INT_MIN;
                 m_RangeError=m_RangeError | true;
             }
             else
                 m_MinVal.iValue =int(temp);
-            pcToken = strtok(NULL," "); 
-            temp=_atoi64(pcToken);  
+            pcToken = strtok(NULL," ");
+            temp=_atoi64(pcToken);
             if(temp>INT_MAX || temp<m_MinVal.iValue) //max value validation
             {
                 m_MaxVal.iValue=INT_MAX;
@@ -351,12 +351,12 @@ int CParameters::Format(char *pcLine)
                 m_MinVal.uiValue =0;
                 m_RangeError=m_RangeError|true;
             }
-            pcToken = strtok(NULL,";"); 
+            pcToken = strtok(NULL,";");
             m_MaxVal.uiValue=atoi(pcToken);
             //max value validation
             if(m_MaxVal.uiValue==0 || m_MaxVal.uiValue <m_MinVal.uiValue)
             {
-                m_MaxVal.uiValue=0xffffffff; 
+                m_MaxVal.uiValue=0xffffffff;
                 m_RangeError=m_RangeError|true;
             }
             pcTemp = acTemp;
@@ -376,13 +376,13 @@ int CParameters::Format(char *pcLine)
 int CParameters::ReadDefaultVal(char *pcToken)
 {
     char acTemp[defCON_TEMP_LEN];
-	char *pcTemp = acTemp;
+    char *pcTemp = acTemp;
     int success=1;
     //Default value validation with respect to max.min values.
 
     //Param Type: ENUM :No need to validate.
     if(strcmp(m_ParamType,"ENUM")==0 )
-    {  
+    {
         //omits all balcnk spaces.
         while(*pcToken && *pcToken == ' ')
         {
@@ -392,21 +392,21 @@ int CParameters::ReadDefaultVal(char *pcToken)
         //reads the enum default value.
         while(*pcToken && *pcToken != '"')
         {
-            *pcTemp++ = *pcToken++; 
+            *pcTemp++ = *pcToken++;
         }
         *pcTemp = '\0';
-        strcpy(m_InitVal.cValue,acTemp); 
+        strcpy(m_InitVal.cValue,acTemp);
         pcTemp=acTemp;
     }
 
-    //Param Type: INT 
+    //Param Type: INT
     else if(strcmp(m_ParamType,"INT")==0 )
     {
         if(strcmp(pcToken," ")!=0)
             m_InitVal.iValue =atoi(pcToken);
-        //if default value is not with in the range then set default vlaue as min value. 
+        //if default value is not with in the range then set default vlaue as min value.
         if(m_InitVal.iValue<m_MinVal.iValue || m_InitVal.iValue>m_MaxVal.iValue)
-        { 
+        {
             m_InitVal.iValue=m_MinVal.iValue;
             m_RangeError=m_RangeError || true;
         }
@@ -417,9 +417,9 @@ int CParameters::ReadDefaultVal(char *pcToken)
     {
         if(strcmp(pcToken," ")!=0)
             m_InitVal.uiValue =atoi(pcToken);
-        //if default value is not with in the range then set default vlaue as min value. 
+        //if default value is not with in the range then set default vlaue as min value.
         if(m_InitVal.uiValue<m_MinVal.uiValue || m_InitVal.uiValue>m_MaxVal.uiValue)
-        { 
+        {
             m_InitVal.uiValue=m_MinVal.uiValue;
             m_RangeError=m_RangeError || true;
         }
@@ -430,9 +430,9 @@ int CParameters::ReadDefaultVal(char *pcToken)
     {
         if(strcmp(pcToken," ")!=0)
             m_InitVal.fValue=float(atof(pcToken));
-        //if default value is not with in the range then set default vlaue as min value. 
+        //if default value is not with in the range then set default vlaue as min value.
         if(m_InitVal.fValue<m_MinVal.fValue || m_InitVal.fValue>m_MaxVal.fValue)
-        { 
+        {
             m_InitVal.fValue=m_MinVal.fValue;
             m_RangeError=m_RangeError || true;
         }
@@ -445,7 +445,7 @@ int CParameters::ReadDefaultVal(char *pcToken)
         {
             *pcToken++;
         }
-        strcpy(m_InitVal.cValue,pcToken); 
+        strcpy(m_InitVal.cValue,pcToken);
     }
     return success;
 }

@@ -24,7 +24,7 @@
 
 //
 //////////////////////////////////////////////////////////////////////
-//#include"definitions.h" 
+//#include"definitions.h"
 #if !defined(AFX_VALUEDESCRIPTOR_H__3051F3F4_2978_4987_B1DF_BA4CAD29981A__INCLUDED_)
 #define AFX_VALUEDESCRIPTOR_H__3051F3F4_2978_4987_B1DF_BA4CAD29981A__INCLUDED_
 
@@ -42,7 +42,7 @@ char cValue[defVDES_MAX_DESC_LEN];
 LONGLONG i64Value;
 unsigned __int64 ui64Value;}	SIG_VALUE;
 */
-class CValueDescriptor  
+class CValueDescriptor
 {
 public:
     CValueDescriptor();

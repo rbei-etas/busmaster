@@ -90,7 +90,7 @@ END_MESSAGE_MAP()
  * \brief Constructor
  */
 CCANDBConverterDlg::CCANDBConverterDlg(CWnd* pParent /*=NULL*/)
-: CDialog(CCANDBConverterDlg::IDD, pParent)
+    : CDialog(CCANDBConverterDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CCANDBConverterDlg)
     // NOTE: the ClassWizard will add member initialization here
@@ -124,7 +124,7 @@ END_MESSAGE_MAP()
 
 /**
  * \brief  Called once when the dialog box is created
- * \return TRUE if dialog has to create otherwise FALSE   
+ * \return TRUE if dialog has to create otherwise FALSE
  */
 BOOL CCANDBConverterDlg::OnInitDialog()
 {
@@ -184,7 +184,7 @@ void CCANDBConverterDlg::OnSysCommand(UINT nID, LPARAM lParam)
  * to draw the icon.  For MFC applications using the document/view model,
  * this is automatically done for you by the framework.
  */
-void CCANDBConverterDlg::OnPaint() 
+void CCANDBConverterDlg::OnPaint()
 {
     if (IsIconic())
     {
@@ -223,7 +223,7 @@ HCURSOR CCANDBConverterDlg::OnQueryDragIcon()
 /**
  * \brief Handler of ON_BN_CLICKED message for IDC_CANOE_BROWSE_BTN
  */
-void CCANDBConverterDlg::OnCanoeBrowseBtn() 
+void CCANDBConverterDlg::OnCanoeBrowseBtn()
 {
     // Create a file open dlg to select the input file
     CFileDialog fileDlg(TRUE,"dbc",NULL,OFN_OVERWRITEPROMPT|OFN_FILEMUSTEXIST|OFN_PATHMUSTEXIST,"Input Database Files(*.dbc)|*.dbc||",this);
@@ -272,7 +272,7 @@ void CCANDBConverterDlg::OnCanoeBrowseBtn()
 /**
  * \brief Handler of ON_BN_CLICKED message for IDC_CANMON_BROWSE_BTN
  */
-void CCANDBConverterDlg::OnCanmonBrowseBtn() 
+void CCANDBConverterDlg::OnCanmonBrowseBtn()
 {
     // Create a file save dialog box to select the output file
     CFileDialog fileDlg(FALSE,"dbf",NULL,OFN_OVERWRITEPROMPT,"Output Database Files(*.dbf)|*.dbf||",this);
@@ -290,7 +290,7 @@ void CCANDBConverterDlg::OnCanmonBrowseBtn()
  *
  * This function converts the CANoe Database to BUSMASTER Database
  */
-void CCANDBConverterDlg::OnConvertBtn() 
+void CCANDBConverterDlg::OnConvertBtn()
 {
 
     CString sCanoeFilePath,sCanMonFilePath;
@@ -347,9 +347,9 @@ void CCANDBConverterDlg::OnConvertBtn()
 
 /**
  * \brief  Called once when the CAboutDlg dialog box is created
- * \return TRUE if dialog has to create otherwise FALSE   
+ * \return TRUE if dialog has to create otherwise FALSE
  */
-BOOL CAboutDlg::OnInitDialog() 
+BOOL CAboutDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
 
