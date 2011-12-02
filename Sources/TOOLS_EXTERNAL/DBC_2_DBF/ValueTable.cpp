@@ -113,8 +113,8 @@ int CValueTable::Format(char *pcLine, fstream &fileInput)
         if(true_end == false)
         {
             fileInput.getline(acLine, defVTAB_MAX_LINE_LEN);
-            strcpy(pcTemp, pcLine);
-            strcat(pcTemp, acLine);
+            strcpy_s(pcTemp, sizeof(pcTemp), pcLine);
+            strcat_s(pcTemp, sizeof(pcTemp), acLine);
             pcLine = pcTemp;
             if(pcLine[strlen(pcLine)-1] == ';')
                 true_end  = true;

@@ -78,22 +78,22 @@ CMessage& CMessage::operator=(CMessage& message)
  */
 int CMessage::Format(char *pcLine)
 {
-    char* pcToken;
+    char *pcToken, *pcTok;
     // get the MSG ID
-    pcToken = strtok(pcLine, " :");
+    pcToken = strtok_s(pcLine, " :", &pcTok);
     m_uiMsgID = strtoul(pcToken, NULL, 0);
 
     // get the message name
-    pcToken = strtok(NULL, " :");
+    pcToken = strtok_s(NULL, " :", &pcTok);
     m_acName = pcToken;
 
     // set the message length
-    pcToken = strtok(NULL, " :");
+    pcToken = strtok_s(NULL, " :", &pcTok);
     m_ucLength = (unsigned char)atoi(pcToken);
     CConverter::ucMsg_DLC = m_ucLength;
 
     //get the Tx'ing Node Name
-    pcToken = strtok(NULL, " :\n");
+    pcToken = strtok_s(NULL, " :\n", &pcTok);
     if(strcmp(pcToken, "Vector__XXX"))
         m_txNode = pcToken;
     else
@@ -127,7 +127,7 @@ bool CMessage::writeMessageToFile(fstream &fileOutput, list<CMessage> &m_listMes
     list<CMessage>::iterator msg;
     for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); ++msg)
     {
-        sprintf(acLine, "%s %s,%u,%u,%u,%c,%c,%s\n",
+        sprintf_s(acLine, sizeof(acLine), "%s %s,%u,%u,%u,%c,%c,%s\n",
                 T_START_MSG,
                 msg->m_acName.c_str(),
                 msg->m_uiMsgID,

@@ -75,12 +75,12 @@ CParameterValues& CParameterValues::operator=(CParameterValues& param)
  */
 int CParameterValues::GetNodeParams(string paramType, char *pcLine)
 {
-    char *pcToken;
+    char *pcToken, *pcTok;
     char acTemp[defCON_TEMP_LEN],*pcTemp;
     pcTemp = acTemp;
     int success=1;
     //reads the nodes name
-    pcToken = strtok(pcLine, ";");
+    pcToken = strtok_s(pcLine, ";", &pcTok);
     while(*pcToken && *pcToken != ' ')
     {
         *pcTemp++ = *pcToken++;
@@ -102,9 +102,10 @@ int CParameterValues::GetNodeParams(string paramType, char *pcLine)
 int CParameterValues::GetNetParams(string paramType, char *pcLine)
 {
     char *pcToken = pcLine;
+    char *pcTok;
     int success = 1;
     //reads the net param value.
-    pcToken=strtok(pcToken, ";");
+    pcToken=strtok_s(pcToken, ";", &pcTok);
     ReadParamValue(paramType, pcToken);
     return success;
 }
@@ -118,13 +119,13 @@ int CParameterValues::GetNetParams(string paramType, char *pcLine)
  */
 int CParameterValues::GetMesgParams(string paramType,char *pcLine)
 {
-    char *pcToken;
-    char acTemp[defCON_TEMP_LEN],*pcTemp;
+    char *pcToken, *pcTok;
+    char acTemp[defCON_TEMP_LEN], *pcTemp;
     int success = 1;
     pcTemp = acTemp;
     //get Message Id.
-    pcToken=strtok(pcLine, ";");
-    while(*pcToken && *pcToken != ' ')
+    pcToken = strtok_s(pcLine, ";", &pcTok);
+    while(*pcToken && (*pcToken != ' '))
     {
         *pcTemp++ = *pcToken++;
     }
@@ -158,20 +159,20 @@ int CParameterValues::GetMesgParams(string paramType,char *pcLine)
  */
 int CParameterValues::GetSignalParams(string paramType,char *pcLine)
 {
-    char *pcToken;
+    char *pcToken, *pcTok;
     char acTemp[defCON_TEMP_LEN],*pcTemp;
     int success=1;
     pcTemp = acTemp;
-    pcToken=strtok(pcLine," ");
+    pcToken = strtok_s(pcLine, " ", &pcTok);
     //get the message Id.
     while(*pcToken && *pcToken != ' ')
     {
         *pcTemp++ = *pcToken++;
     }
     *pcTemp = '\0';
-    m_MsgId=atoi(acTemp);
-    pcTemp=acTemp;
-    pcToken=strtok(NULL,";");
+    m_MsgId = atoi(acTemp);
+    pcTemp = acTemp;
+    pcToken = strtok_s(NULL, ";", &pcTok);
 
     //get signal name.
     while(*pcToken && *pcToken != ' ')
@@ -215,7 +216,7 @@ int CParameterValues::ReadParamValue(string paramType,char *pcToken)
         {
             *pcToken++;
         }
-        strcpy(m_ParamVal.cValue, pcToken);
+        strcpy_s(m_ParamVal.cValue, sizeof(m_ParamVal.cValue), pcToken);
     }
 
     //Param type :INT/HEX
@@ -229,7 +230,7 @@ int CParameterValues::ReadParamValue(string paramType,char *pcToken)
     {
         while(*pcToken == ' ')
             *pcToken++;
-        strcpy(m_ParamVal.cValue, pcToken);
+        strcpy_s(m_ParamVal.cValue, sizeof(m_ParamVal.cValue), pcToken);
     }
 
     //Param type :FLOAT
@@ -256,26 +257,26 @@ void CParameterValues::WriteNetValuesToFile(fstream& fileOutput, string paramTyp
     if((paramType == "INT") || (paramType == "HEX"))
     {
         if(m_ParamVal.iValue ==-1)
-            sprintf(acLine, "\"%s\",\n", paramName.c_str());
+            sprintf_s(acLine, sizeof(acLine), "\"%s\",\n", paramName.c_str());
         else
-            sprintf(acLine, "\"%s\",%d\n", paramName.c_str(), m_ParamVal.iValue);
+            sprintf_s(acLine, sizeof(acLine), "\"%s\",%d\n", paramName.c_str(), m_ParamVal.iValue);
     }
     //writes Float param net values to o/p file and validates initial value.
     else if(paramType == "FLOAT")
     {
         if(m_ParamVal.fValue==-1)
-            sprintf(acLine, "\"%s\",\n", paramName.c_str());
+            sprintf_s(acLine, sizeof(acLine), "\"%s\",\n", paramName.c_str());
         else
-            sprintf(acLine, "\"%s\",%f\n", paramName.c_str(), m_ParamVal.fValue);
+            sprintf_s(acLine, sizeof(acLine), "\"%s\",%f\n", paramName.c_str(), m_ParamVal.fValue);
     }
     //writes enum param net values to o/p file and validates initial value.
     else if(paramType == "ENUM")
     {
-        sprintf(acLine, "\"%s\",\"%s\"\n", paramName.c_str(), m_ParamVal.cValue);
+        sprintf_s(acLine, sizeof(acLine), "\"%s\",\"%s\"\n", paramName.c_str(), m_ParamVal.cValue);
     }
     //writes string param net values to o/p file and validates initial value.
     else if(paramType == "STRING")
-        sprintf(acLine, "\"%s\",%s\n", paramName.c_str(), m_ParamVal.cValue);
+        sprintf_s(acLine, sizeof(acLine), "\"%s\",%s\n", paramName.c_str(), m_ParamVal.cValue);
     fileOutput << acLine;
 }
 
@@ -292,26 +293,26 @@ void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput, string paramTy
     if((paramType == "INT") || (paramType == "HEX"))
     {
         if(m_ParamVal.iValue == -1)
-            sprintf(acLine, "%s,\"%s\",\n", m_NodeName.c_str(), paramName.c_str());
+            sprintf_s(acLine, sizeof(acLine), "%s,\"%s\",\n", m_NodeName.c_str(), paramName.c_str());
         else
-            sprintf(acLine, "%s,\"%s\",%d\n", m_NodeName.c_str(), paramName.c_str(), m_ParamVal.iValue);
+            sprintf_s(acLine, sizeof(acLine), "%s,\"%s\",%d\n", m_NodeName.c_str(), paramName.c_str(), m_ParamVal.iValue);
     }
     //writes enum param node values to o/p file and validates initial value.
     else if(paramType == "ENUM")
     {
-        sprintf(acLine,"%s,\"%s\",\"%s\"\n", m_NodeName.c_str(), paramName.c_str(), m_ParamVal.cValue);
+        sprintf_s(acLine, sizeof(acLine), "%s,\"%s\",\"%s\"\n", m_NodeName.c_str(), paramName.c_str(), m_ParamVal.cValue);
     }
     //writes float param node values to o/p file and validates initial value.
     else if(paramType == "FLOAT")
     {
         if(m_ParamVal.fValue == -1)
-            sprintf(acLine, "%s,\"%s\",\n", m_NodeName.c_str(), paramName.c_str());
+            sprintf_s(acLine, sizeof(acLine), "%s,\"%s\",\n", m_NodeName.c_str(), paramName.c_str());
         else
-            sprintf(acLine, "%s,\"%s\",%f\n", m_NodeName.c_str(), paramName.c_str(), m_ParamVal.fValue);
+            sprintf_s(acLine, sizeof(acLine), "%s,\"%s\",%f\n", m_NodeName.c_str(), paramName.c_str(), m_ParamVal.fValue);
     }
     //writes string param node values to o/p file and validates initial value.
     else if(paramType == "STRING")
-        sprintf(acLine, "%s,\"%s\",%s\n", m_NodeName.c_str(), paramName.c_str(), m_ParamVal.cValue);
+        sprintf_s(acLine, sizeof(acLine), "%s,\"%s\",%s\n", m_NodeName.c_str(), paramName.c_str(), m_ParamVal.cValue);
     fileOutput << acLine;
 }
 
@@ -328,26 +329,26 @@ void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput, string paramTy
     if((paramType == "INT") || (paramType == "HEX"))
     {
         if(m_ParamVal.iValue ==-1)
-            sprintf(acLine, "%u,%c,\"%s\",\n", m_MsgId, m_cFrameFormat, paramName.c_str());
+            sprintf_s(acLine, sizeof(acLine), "%u,%c,\"%s\",\n", m_MsgId, m_cFrameFormat, paramName.c_str());
         else
-            sprintf(acLine, "%u,%c,\"%s\",%d\n", m_MsgId, m_cFrameFormat, paramName.c_str(), m_ParamVal.iValue);
+            sprintf_s(acLine, sizeof(acLine), "%u,%c,\"%s\",%d\n", m_MsgId, m_cFrameFormat, paramName.c_str(), m_ParamVal.iValue);
     }
     //writes enum param mesg values to o/p file and validates initial value.
     else if(paramType == "ENUM")
     {
-        sprintf(acLine,"%u,%c,\"%s\",\"%s\"\n", m_MsgId, m_cFrameFormat, paramName.c_str(), m_ParamVal.cValue);
+        sprintf_s(acLine, sizeof(acLine), "%u,%c,\"%s\",\"%s\"\n", m_MsgId, m_cFrameFormat, paramName.c_str(), m_ParamVal.cValue);
     }
     //writes float param mesg values to o/p file and validates initial value.
     else if(paramType == "FLOAT")
     {
         if(m_ParamVal.fValue==-1)
-            sprintf(acLine, "%u,%c,\"%s\",\n", m_MsgId, m_cFrameFormat, paramName.c_str());
+            sprintf_s(acLine, sizeof(acLine), "%u,%c,\"%s\",\n", m_MsgId, m_cFrameFormat, paramName.c_str());
         else
-            sprintf(acLine, "%u,%c,\"%s\",%f\n", m_MsgId, m_cFrameFormat, paramName.c_str(), m_ParamVal.fValue);
+            sprintf_s(acLine, sizeof(acLine), "%u,%c,\"%s\",%f\n", m_MsgId, m_cFrameFormat, paramName.c_str(), m_ParamVal.fValue);
     }
     //writes string param mesg values to o/p file and validates initial value.
     else if(paramType == "STRING")
-        sprintf(acLine, "%u,%c,\"%s\",%s\n", m_MsgId, m_cFrameFormat, paramName.c_str(), m_ParamVal.cValue);
+        sprintf_s(acLine, sizeof(acLine), "%u,%c,\"%s\",%s\n", m_MsgId, m_cFrameFormat, paramName.c_str(), m_ParamVal.cValue);
     fileOutput << acLine;
 }
 
@@ -364,26 +365,26 @@ void CParameterValues::WriteSigValuesToFile(fstream& fileOutput, string paramTyp
     if((paramType == "INT") || (paramType == "HEX"))
     {
         if(m_ParamVal.iValue ==-1)
-            sprintf(acLine, "%u,%c,%s,\"%s\",\n", m_MsgId, m_cFrameFormat, m_SignalName.c_str(), paramName.c_str());
+            sprintf_s(acLine, sizeof(acLine), "%u,%c,%s,\"%s\",\n", m_MsgId, m_cFrameFormat, m_SignalName.c_str(), paramName.c_str());
         else
-            sprintf(acLine, "%u,%c,%s,\"%s\",%d\n", m_MsgId, m_cFrameFormat, m_SignalName.c_str(), paramName.c_str(), m_ParamVal.iValue);
+            sprintf_s(acLine, sizeof(acLine), "%u,%c,%s,\"%s\",%d\n", m_MsgId, m_cFrameFormat, m_SignalName.c_str(), paramName.c_str(), m_ParamVal.iValue);
     }
     //writes enum param sig values to o/p file and validates initial value.
     else if(paramType == "ENUM")
     {
-        sprintf(acLine,"%u,%c,%s,\"%s\",\"%s\"\n", m_MsgId, m_cFrameFormat, m_SignalName.c_str(), paramName.c_str(), m_ParamVal.cValue);
+        sprintf_s(acLine, sizeof(acLine), "%u,%c,%s,\"%s\",\"%s\"\n", m_MsgId, m_cFrameFormat, m_SignalName.c_str(), paramName.c_str(), m_ParamVal.cValue);
     }
 
     //writes float param sig values to o/p file and validates initial value.
     else if(paramType == "FLOAT")
     {
         if(m_ParamVal.fValue==-1)
-            sprintf(acLine, "%u,%c,%s,\"%s\",\n", m_MsgId, m_cFrameFormat, m_SignalName.c_str(), paramName.c_str());
+            sprintf_s(acLine, sizeof(acLine), "%u,%c,%s,\"%s\",\n", m_MsgId, m_cFrameFormat, m_SignalName.c_str(), paramName.c_str());
         else
-            sprintf(acLine, "%u,%c,%s,\"%s\",%f\n", m_MsgId, m_cFrameFormat, m_SignalName.c_str(), paramName.c_str(), m_ParamVal.fValue);
+            sprintf_s(acLine, sizeof(acLine), "%u,%c,%s,\"%s\",%f\n", m_MsgId, m_cFrameFormat, m_SignalName.c_str(), paramName.c_str(), m_ParamVal.fValue);
     }
     //writes string param sig values to o/p file and validates initial value.
     else if(paramType == "STRING")
-        sprintf(acLine, "%u,%c,%s,\"%s\",%s\n", m_MsgId, m_cFrameFormat, m_SignalName.c_str(), paramName.c_str(), m_ParamVal.cValue);
+        sprintf_s(acLine, sizeof(acLine), "%u,%c,%s,\"%s\",%s\n", m_MsgId, m_cFrameFormat, m_SignalName.c_str(), paramName.c_str(), m_ParamVal.cValue);
     fileOutput << acLine;
 }

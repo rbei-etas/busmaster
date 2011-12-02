@@ -67,30 +67,30 @@ void CValueDescriptor::writeValueDescToFile(fstream &fileOutput, char m_ucType, 
         {
             case CSignal::SIG_TYPE_BOOL:
             case CSignal::SIG_TYPE_UINT:
-                sprintf(acLine, "%s \"%s\",%u\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.uiValue);
+                sprintf_s(acLine, sizeof(acLine), "%s \"%s\",%u\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.uiValue);
                 break;
 
             case CSignal::SIG_TYPE_INT:
-                sprintf(acLine, "%s \"%s\",%d\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.iValue);
+                sprintf_s(acLine, sizeof(acLine), "%s \"%s\",%d\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.iValue);
                 break;
 
                 // when FLOAT and DOUBLE are supported enable this
                 /*
                 case CSignal::SIG_TYPE_FLOAT:
-                sprintf(acLine, "%s \"%s\",%f\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.fValue);
+                sprintf_s(acLine, sizeof(acLine), "%s \"%s\",%f\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.fValue);
                 break;
 
                 case CSignal::SIG_TYPE_DOUBLE:
-                sprintf(acLine, "%s \"%s\",%f\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.dValue);
+                sprintf_s(acLine, sizeof(acLine), "%s \"%s\",%f\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.dValue);
                 break;
                 */
 
             case CSignal::SIG_TYPE_INT64:
-                sprintf(acLine, "%s \"%s\",%I64d\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.i64Value);
+                sprintf_s(acLine, sizeof(acLine), "%s \"%s\",%I64d\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.i64Value);
                 break;
 
             case CSignal::SIG_TYPE_UINT64:
-                sprintf(acLine, "%s \"%s\",%I64u\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.ui64Value);
+                sprintf_s(acLine, sizeof(acLine), "%s \"%s\",%I64u\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.ui64Value);
                 break;
 
             default:

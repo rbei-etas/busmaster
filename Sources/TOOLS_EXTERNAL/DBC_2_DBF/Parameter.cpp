@@ -34,7 +34,7 @@
 CParameters::CParameters()
 {
     m_InitVal.fValue=-1;
-    strcpy(m_InitVal.cValue, "");
+    strcpy_s(m_InitVal.cValue, sizeof(m_InitVal.cValue), "");
     m_InitVal.uiValue = 0;
     m_ValRange = "";
     m_ParamType = "";
@@ -111,7 +111,7 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
                 rParam->m_defError = rParam->m_defError | true;
                 pResult = pResult & false;
                 rParam->m_InitVal.iValue = rParam->m_MinVal.iValue;
-                sprintf(acLine, "\"%s\",%s,%d,%d,%d\n",
+                sprintf_s(acLine, sizeof(acLine), "\"%s\",%s,%d,%d,%d\n",
                         rParam->m_ParamName.c_str(),
                         rParam->m_ParamType.c_str(),
                         rParam->m_InitVal.iValue,
@@ -121,7 +121,7 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
 
             //Default value is not NULL
             else
-                sprintf(acLine, "\"%s\",%s,%d,%d,%d\n",
+                sprintf_s(acLine, sizeof(acLine), "\"%s\",%s,%d,%d,%d\n",
                         rParam->m_ParamName.c_str(),
                         rParam->m_ParamType.c_str(),
                         rParam->m_InitVal.iValue,
@@ -138,7 +138,7 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
                 rParam->m_defError = rParam->m_defError | true;
                 pResult = pResult & false;
                 rParam->m_InitVal.uiValue = rParam->m_MinVal.uiValue;
-                sprintf(acLine, "\"%s\",%s,%u,%u,%u\n",
+                sprintf_s(acLine, sizeof(acLine), "\"%s\",%s,%u,%u,%u\n",
                         rParam->m_ParamName.c_str(),
                         rParam->m_ParamType.c_str(),
                         rParam->m_InitVal.uiValue,
@@ -147,7 +147,7 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
             }
             //Default value is not NULL
             else
-                sprintf(acLine, "\"%s\",%s,%u,%u,%u\n",
+                sprintf_s(acLine, sizeof(acLine), "\"%s\",%s,%u,%u,%u\n",
                         rParam->m_ParamName.c_str(),
                         rParam->m_ParamType.c_str(),
                         rParam->m_InitVal.uiValue,
@@ -163,7 +163,7 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
                 rParam->m_defError = rParam->m_defError | true;
                 pResult = pResult & false;
                 rParam->m_InitVal.fValue = rParam->m_MinVal.fValue;
-                sprintf(acLine, "\"%s\",%s,%f,%f,%f\n",
+                sprintf_s(acLine, sizeof(acLine), "\"%s\",%s,%f,%f,%f\n",
                         rParam->m_ParamName.c_str(),
                         rParam->m_ParamType.c_str(),
                         rParam->m_InitVal.fValue,
@@ -172,7 +172,7 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
             }
             //Default value is not NULL
             else
-                sprintf(acLine, "\"%s\",%s,%f,%f,%f\n",
+                sprintf_s(acLine, sizeof(acLine), "\"%s\",%s,%f,%f,%f\n",
                         rParam->m_ParamName.c_str(),
                         rParam->m_ParamType.c_str(),
                         rParam->m_InitVal.fValue,
@@ -185,14 +185,14 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
         {
             //Default value is NULL
             if(strcmp(rParam->m_InitVal.cValue, "")==0)
-                sprintf(acLine, "\"%s\",%s,\"\",%s\n",
+                sprintf_s(acLine, sizeof(acLine), "\"%s\",%s,\"\",%s\n",
                         rParam->m_ParamName.c_str(),
                         rParam->m_ParamType.c_str(),
                         rParam->m_ValRange.c_str());
 
             //Default value is not NULL
             else
-                sprintf(acLine, "\"%s\",%s,\"%s\",%s\n",
+                sprintf_s(acLine, sizeof(acLine), "\"%s\",%s,\"%s\",%s\n",
                         rParam->m_ParamName.c_str(),
                         rParam->m_ParamType.c_str(),
                         rParam->m_InitVal.cValue,
@@ -201,7 +201,7 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
 
         //Parameter : STRING type
         else
-            sprintf(acLine, "\"%s\",%s,%s\n",
+            sprintf_s(acLine, sizeof(acLine), "\"%s\",%s,%s\n",
                     rParam->m_ParamName.c_str(),
                     rParam->m_ParamType.c_str(),
                     rParam->m_InitVal.cValue);
@@ -221,7 +221,7 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
  */
 int CParameters::FormatParamValue(char *pcLine)
 {
-    char *pcToken;
+    char *pcToken, *pcTok;
     CParameterValues pVal;
 
     //get object id
@@ -229,7 +229,7 @@ int CParameters::FormatParamValue(char *pcLine)
     {
         *pcLine++;
     }
-    pcToken=strtok(pcLine, " ");
+    pcToken = strtok_s(pcLine, " ", &pcTok);
 
     // if object id is node then calls GetNodeParams funtion to read the other values lilke min/max
     if(strcmp(pcToken, "BU_")==0)
@@ -271,14 +271,14 @@ int CParameters::FormatParamValue(char *pcLine)
  */
 int CParameters::Format(char *pcLine)
 {
-    char *pcToken;
+    char *pcToken, *pcTok;
     char acTemp[defCON_TEMP_LEN];
     char *pcTemp = acTemp;
     int success = 1;
 
     //get object id
 
-    pcToken = strtok(pcLine, "\"");
+    pcToken = strtok_s(pcLine, "\"", &pcTok);
 
     while(*pcToken == ' ')
         *pcToken++;
@@ -292,7 +292,7 @@ int CParameters::Format(char *pcLine)
 
 
     //get Attribute name
-    pcToken = strtok(NULL, "\"");
+    pcToken = strtok_s(NULL, "\"", &pcTok);
     while(*pcToken && *pcToken != '"')
     {
         *pcTemp++ = *pcToken++; // copy PARAM_NAME only, i.e. till first 'space'
@@ -302,7 +302,7 @@ int CParameters::Format(char *pcLine)
     pcTemp = acTemp; // reset pcTemp to start of buffer
 
     //get Value Type
-    pcToken = strtok(NULL, " ");
+    pcToken = strtok_s(NULL, " ", &pcTok);
     while(*pcToken == ' ')
         *pcToken++;
     while(*pcToken && *pcToken != ' ' && *pcToken != ';')
@@ -316,7 +316,7 @@ int CParameters::Format(char *pcLine)
 
     if(m_ParamType != "STRING")
     {
-        pcToken = strtok(NULL, ";");
+        pcToken = strtok_s(NULL, ";", &pcTok);
         if(m_ParamType == "ENUM")
         {
             while(*pcToken && *pcToken == ' ')
@@ -327,7 +327,7 @@ int CParameters::Format(char *pcLine)
         else if(m_ParamType == "FLOAT")
         {
             double temp;
-            pcToken = strtok(pcToken, " ");
+            pcToken = strtok_s(pcToken, " ", &pcTok);
             temp = atof(pcToken);
             if(temp < FLT_MIN) //min val valildation
             {
@@ -336,7 +336,7 @@ int CParameters::Format(char *pcLine)
             }
             else
                 m_MinVal.fValue = float(temp);
-            pcToken = strtok(NULL, " ");
+            pcToken = strtok_s(NULL, " ", &pcTok);
             temp=atof(pcToken);
             if((temp>FLT_MAX) || (temp<m_MinVal.fValue)) //max value validation
             {
@@ -352,7 +352,7 @@ int CParameters::Format(char *pcLine)
         else if(m_ParamType == "INT")
         {
             long long temp;
-            pcToken=strtok(pcToken, " ");
+            pcToken = strtok_s(pcToken, " ", &pcTok);
             temp = _atoi64(pcToken);
             if(temp < INT_MIN ) //min value validation
             {
@@ -361,8 +361,8 @@ int CParameters::Format(char *pcLine)
             }
             else
                 m_MinVal.iValue = int(temp);
-            pcToken = strtok(NULL, " ");
-            temp=_atoi64(pcToken);
+            pcToken = strtok_s(NULL, " ", &pcTok);
+            temp = _atoi64(pcToken);
             if((temp>INT_MAX) || (temp<m_MinVal.iValue)) //max value validation
             {
                 m_MaxVal.iValue = INT_MAX;
@@ -376,14 +376,14 @@ int CParameters::Format(char *pcLine)
         //Reads the flaot min,max values and validates those values.
         else if(m_ParamType == "HEX")
         {
-            pcToken = strtok(pcToken, " ");
+            pcToken = strtok_s(pcToken, " ", &pcTok);
             m_MinVal.uiValue = atoi(pcToken);
             if(m_MinVal.uiValue < 0) //min vlaue validation
             {
                 m_MinVal.uiValue = 0;
                 m_RangeError = m_RangeError | true;
             }
-            pcToken = strtok(NULL, ";");
+            pcToken = strtok_s(NULL, ";", &pcTok);
             m_MaxVal.uiValue = atoi(pcToken);
             //max value validation
             if((m_MaxVal.uiValue == 0) || (m_MaxVal.uiValue < m_MinVal.uiValue))
@@ -428,7 +428,7 @@ int CParameters::ReadDefaultVal(char *pcToken)
             *pcTemp++ = *pcToken++;
         }
         *pcTemp = '\0';
-        strcpy(m_InitVal.cValue,acTemp);
+        strcpy_s(m_InitVal.cValue, sizeof(m_InitVal.cValue), acTemp);
         pcTemp=acTemp;
     }
 
@@ -478,7 +478,7 @@ int CParameters::ReadDefaultVal(char *pcToken)
         {
             *pcToken++;
         }
-        strcpy(m_InitVal.cValue,pcToken);
+        strcpy_s(m_InitVal.cValue, sizeof(m_InitVal.cValue), pcToken);
     }
     return success;
 }
