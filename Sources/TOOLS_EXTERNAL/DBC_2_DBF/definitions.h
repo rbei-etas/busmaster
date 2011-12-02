@@ -25,16 +25,9 @@
 #ifndef Definitions_H
 #define Definitions_H
 
-//Comments.cpp
+//Converter.cpp
 #define defCON_MAX_LINE_LEN 1026  //Maximum no of char in one line
-
-//ParameterVal.h
-#define defVAL_MAX_LINE_LEN 1026
-
-//ValueDescriptor.h
-#define	defVDES_MAX_DESC_LEN 257 // hopefully nobody puts value descriptor strings
-// more than this
-#define defVDES_MAX_OUT_STR  (17+defVDES_MAX_DESC_LEN+20)  // 17(tag)+(Value descriptor)+ 20(Value)
+#define defCON_TEMP_LEN 250
 
 //ValueTable.cpp
 #define defVTAB_MAX_LINE_LEN 1026
@@ -42,9 +35,6 @@
 #define defVTAB_MAX_DESC_LEN 65  //Maximum length of a value descriptor
 #define defVTAB_MAX_TNAM_LEN 65  //Maximum length of the table name
 #define defVTAB_MAX_VALU_LEN 65  //Maximum length of value
-
-//tags.h
-#define defCON_TEMP_LEN 250
 
 typedef union _SIG_VALUE
 {

@@ -89,7 +89,6 @@ CParameters& CParameters::operator=( CParameters& param)
 bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParameter)
 {
     bool pResult=true;
-    char acLine[defCON_MAX_LINE_LEN];
 
     // if no parameter in the list then it simply returns true.
     // otherwise writes definition and default value of all parameters to the o/p file
@@ -102,6 +101,12 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
 
         //Validation of  Default value of the parameter before writing to the o/p file.
 
+        fileOutput << "\"";
+        fileOutput << rParam->m_ParamName.c_str();
+        fileOutput << "\",";
+        fileOutput << rParam->m_ParamType.c_str();
+        fileOutput << ",";
+
         //Parameter : INT type
         if(rParam->m_ParamType == "INT")
         {
@@ -111,22 +116,22 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
                 rParam->m_defError = rParam->m_defError | true;
                 pResult = pResult & false;
                 rParam->m_InitVal.iValue = rParam->m_MinVal.iValue;
-                sprintf_s(acLine, sizeof(acLine), "\"%s\",%s,%d,%d,%d",
-                        rParam->m_ParamName.c_str(),
-                        rParam->m_ParamType.c_str(),
-                        rParam->m_InitVal.iValue,
-                        rParam->m_MinVal.iValue,
-                        rParam->m_MaxVal.iValue);
+                fileOutput << dec << rParam->m_InitVal.iValue;
+                fileOutput << ",";
+                fileOutput << dec << rParam->m_MinVal.iValue;
+                fileOutput << ",";
+                fileOutput << dec << rParam->m_MaxVal.iValue;
             }
 
             //Default value is not NULL
             else
-                sprintf_s(acLine, sizeof(acLine), "\"%s\",%s,%d,%d,%d",
-                        rParam->m_ParamName.c_str(),
-                        rParam->m_ParamType.c_str(),
-                        rParam->m_InitVal.iValue,
-                        rParam->m_MinVal.iValue,
-                        rParam->m_MaxVal.iValue);
+            {
+                fileOutput << dec << rParam->m_InitVal.iValue;
+                fileOutput << ",";
+                fileOutput << dec << rParam->m_MinVal.iValue;
+                fileOutput << ",";
+                fileOutput << dec << rParam->m_MaxVal.iValue;
+            }
         }
 
         //Parameter : HEX type
@@ -138,21 +143,21 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
                 rParam->m_defError = rParam->m_defError | true;
                 pResult = pResult & false;
                 rParam->m_InitVal.uiValue = rParam->m_MinVal.uiValue;
-                sprintf_s(acLine, sizeof(acLine), "\"%s\",%s,%u,%u,%u",
-                        rParam->m_ParamName.c_str(),
-                        rParam->m_ParamType.c_str(),
-                        rParam->m_InitVal.uiValue,
-                        rParam->m_MinVal.uiValue,
-                        rParam->m_MaxVal.uiValue);
+                fileOutput << dec << rParam->m_InitVal.uiValue;
+                fileOutput << ",";
+                fileOutput << dec << rParam->m_MinVal.uiValue;
+                fileOutput << ",";
+                fileOutput << dec << rParam->m_MaxVal.uiValue;
             }
             //Default value is not NULL
             else
-                sprintf_s(acLine, sizeof(acLine), "\"%s\",%s,%u,%u,%u",
-                        rParam->m_ParamName.c_str(),
-                        rParam->m_ParamType.c_str(),
-                        rParam->m_InitVal.uiValue,
-                        rParam->m_MinVal.uiValue,
-                        rParam->m_MaxVal.uiValue);
+            {
+                fileOutput << dec << rParam->m_InitVal.uiValue;
+                fileOutput << ",";
+                fileOutput << dec << rParam->m_MinVal.uiValue;
+                fileOutput << ",";
+                fileOutput << dec << rParam->m_MaxVal.uiValue;
+            }
         }
 
         //Parameter : FLOAT type
@@ -163,21 +168,21 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
                 rParam->m_defError = rParam->m_defError | true;
                 pResult = pResult & false;
                 rParam->m_InitVal.fValue = rParam->m_MinVal.fValue;
-                sprintf_s(acLine, sizeof(acLine), "\"%s\",%s,%f,%f,%f",
-                        rParam->m_ParamName.c_str(),
-                        rParam->m_ParamType.c_str(),
-                        rParam->m_InitVal.fValue,
-                        rParam->m_MinVal.fValue,
-                        rParam->m_MaxVal.fValue);
+                fileOutput << fixed << rParam->m_InitVal.fValue;
+                fileOutput << ",";
+                fileOutput << rParam->m_MinVal.fValue;
+                fileOutput << ",";
+                fileOutput << rParam->m_MaxVal.fValue;
             }
             //Default value is not NULL
             else
-                sprintf_s(acLine, sizeof(acLine), "\"%s\",%s,%f,%f,%f",
-                        rParam->m_ParamName.c_str(),
-                        rParam->m_ParamType.c_str(),
-                        rParam->m_InitVal.fValue,
-                        rParam->m_MinVal.fValue,
-                        rParam->m_MaxVal.fValue);
+            {
+                fileOutput << fixed << rParam->m_InitVal.fValue;
+                fileOutput << ",";
+                fileOutput << rParam->m_MinVal.fValue;
+                fileOutput << ",";
+                fileOutput << rParam->m_MaxVal.fValue;
+            }
         }
 
         //Parameter : ENUM type
@@ -185,29 +190,29 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
         {
             //Default value is NULL
             if(strcmp(rParam->m_InitVal.cValue, "")==0)
-                sprintf_s(acLine, sizeof(acLine), "\"%s\",%s,\"\",%s",
-                        rParam->m_ParamName.c_str(),
-                        rParam->m_ParamType.c_str(),
-                        rParam->m_ValRange.c_str());
+            {
+                fileOutput << "\"\",";
+                fileOutput << rParam->m_ValRange.c_str();
+            }
 
             //Default value is not NULL
             else
-                sprintf_s(acLine, sizeof(acLine), "\"%s\",%s,\"%s\",%s",
-                        rParam->m_ParamName.c_str(),
-                        rParam->m_ParamType.c_str(),
-                        rParam->m_InitVal.cValue,
-                        rParam->m_ValRange.c_str());
+            {
+                fileOutput << "\"";
+                fileOutput << rParam->m_InitVal.cValue;
+                fileOutput << "\",";
+                fileOutput << rParam->m_ValRange.c_str();
+            }
         }
 
         //Parameter : STRING type
         else
-            sprintf_s(acLine, sizeof(acLine), "\"%s\",%s,%s",
-                    rParam->m_ParamName.c_str(),
-                    rParam->m_ParamType.c_str(),
-                    rParam->m_InitVal.cValue);
+        {
+            fileOutput << rParam->m_InitVal.cValue;
+        }
 
         //After validation parameter is written to the o/p file.
-        fileOutput << acLine << endl;
+        fileOutput << endl;
     }
     return pResult;
 }

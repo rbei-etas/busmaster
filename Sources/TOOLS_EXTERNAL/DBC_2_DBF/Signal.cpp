@@ -738,7 +738,6 @@ const char* CSignal::GetErrorAction()
 bool CSignal::WriteSignaltofile(fstream &fileOutput, list<CSignal> &m_listSignals, int m_ucLength, int m_cDataFormat, bool writeErr)
 {
     bool bResult = true;
-    char acLine[defCON_MAX_LINE_LEN];
     list<CSignal>::iterator sig;
     for (sig=m_listSignals.begin(); sig!=m_listSignals.end(); ++sig)
     {
@@ -749,63 +748,85 @@ bool CSignal::WriteSignaltofile(fstream &fileOutput, list<CSignal> &m_listSignal
             // For signal having motoroal format, the message length could be less
             // then eight byte. so in that case the whichByte needs to be shifted
             // accordingly.
+            fileOutput << T_SIG;
+            fileOutput << " ";
+            fileOutput << sig->m_acName.c_str();
+            fileOutput << ",";
+            fileOutput << (int) sig->m_ucLength;
+            fileOutput << ",";
+            fileOutput << (int) sig->m_ucWhichByte;
+            fileOutput << ",";
+            fileOutput << (int) sig->m_ucStartBit;
+            fileOutput << ",";
 
             switch(sig->m_ucType)
             {
                 case CSignal::SIG_TYPE_BOOL:
                 case CSignal::SIG_TYPE_UINT:
-                    sprintf_s(acLine, sizeof(acLine), "%s %s,%u,%u,%u,%c,%u,%u,%c,%f,%f,%s,%s,%s", T_SIG,
-                            sig->m_acName.c_str(), sig->m_ucLength, sig->m_ucWhichByte, sig->m_ucStartBit, sig->m_ucType,
-                            sig->m_MaxValue.uiValue, sig->m_MinValue.uiValue, sig->m_ucDataFormat,
-                            sig->m_fOffset, sig->m_fScaleFactor,
-                            sig->m_acUnit.c_str(), sig->m_acMultiplex.c_str(), sig->m_rxNode.c_str());
+                    fileOutput << sig->m_ucType;
+                    fileOutput << ",";
+                    fileOutput << dec << sig->m_MaxValue.uiValue;
+                    fileOutput << ",";
+                    fileOutput << dec << sig->m_MinValue.uiValue;
                     break;
 
                 case CSignal::SIG_TYPE_INT:
-                    sprintf_s(acLine, sizeof(acLine), "%s %s,%u,%u,%u,%c,%d,%d,%c,%f,%f,%s,%s,%s", T_SIG,
-                            sig->m_acName.c_str(), sig->m_ucLength, sig->m_ucWhichByte, sig->m_ucStartBit, sig->m_ucType,
-                            sig->m_MaxValue.iValue, sig->m_MinValue.iValue, sig->m_ucDataFormat,
-                            sig->m_fOffset, sig->m_fScaleFactor,
-                            sig->m_acUnit.c_str(), sig->m_acMultiplex.c_str(), sig->m_rxNode.c_str());
+                    fileOutput << sig->m_ucType;
+                    fileOutput << ",";
+                    fileOutput << dec << sig->m_MaxValue.iValue;
+                    fileOutput << ",";
+                    fileOutput << dec << sig->m_MinValue.iValue;
                     break;
 
 
                 case CSignal::SIG_TYPE_FLOAT:
-                    sprintf_s(acLine, sizeof(acLine), "%s %s,%u,%u,%u,%c,%f,%f,%c,%f,%f,%s,%s,%s", T_SIG,
-                            sig->m_acName.c_str(), sig->m_ucLength, sig->m_ucWhichByte, sig->m_ucStartBit, sig->m_ucType,
-                            sig->m_MaxValue.fValue, sig->m_MinValue.fValue, sig->m_ucDataFormat,
-                            sig->m_fOffset, sig->m_fScaleFactor,
-                            sig->m_acUnit.c_str(), sig->m_acMultiplex.c_str(), sig->m_rxNode.c_str());
+                    fileOutput << sig->m_ucType;
+                    fileOutput << ",";
+                    fileOutput << fixed << sig->m_MaxValue.fValue;
+                    fileOutput << ",";
+                    fileOutput << fixed << sig->m_MinValue.fValue;
                     break;
 
                 case CSignal::SIG_TYPE_DOUBLE:
-                    sprintf_s(acLine, sizeof(acLine), "%s %s,%u,%u,%u,%c,%f,%f,%c,%f,%f,%s,%s,%s", T_SIG,
-                            sig->m_acName.c_str(), sig->m_ucLength, sig->m_ucWhichByte, sig->m_ucStartBit, sig->m_ucType,
-                            sig->m_MaxValue.dValue, sig->m_MinValue.dValue, sig->m_ucDataFormat,
-                            sig->m_fOffset, sig->m_fScaleFactor,
-                            sig->m_acUnit.c_str(), sig->m_acMultiplex.c_str(), sig->m_rxNode.c_str());
+                    fileOutput << sig->m_ucType;
+                    fileOutput << ",";
+                    fileOutput << fixed << sig->m_MaxValue.dValue;
+                    fileOutput << ",";
+                    fileOutput << fixed << sig->m_MinValue.dValue;
                     break;
 
                 case CSignal::SIG_TYPE_INT64:
-                    sprintf_s(acLine, sizeof(acLine), "%s %s,%u,%u,%u,%c,%I64d,%I64d,%c,%f,%f,%s,%s,%s", T_SIG,
-                            sig->m_acName.c_str(), sig->m_ucLength, sig->m_ucWhichByte, sig->m_ucStartBit, /*sig->m_ucType*/'I',
-                            sig->m_MaxValue.i64Value, sig->m_MinValue.i64Value, sig->m_ucDataFormat,
-                            sig->m_fOffset, sig->m_fScaleFactor,
-                            sig->m_acUnit.c_str(), sig->m_acMultiplex.c_str(), sig->m_rxNode.c_str());
+                    fileOutput << "I";
+                    fileOutput << ",";
+                    fileOutput << dec << sig->m_MaxValue.i64Value;
+                    fileOutput << ",";
+                    fileOutput << dec << sig->m_MinValue.i64Value;
                     break;
 
                 case CSignal::SIG_TYPE_UINT64:
-                    sprintf_s(acLine, sizeof(acLine), "%s %s,%u,%u,%u,%c,%I64u,%I64u,%c,%f,%f,%s,%s,%s", T_SIG,
-                            sig->m_acName.c_str(), sig->m_ucLength, sig->m_ucWhichByte, sig->m_ucStartBit, /*sig->m_ucType*/'U',
-                            sig->m_MaxValue.ui64Value, sig->m_MinValue.ui64Value, sig->m_ucDataFormat,
-                            sig->m_fOffset, sig->m_fScaleFactor,
-                            sig->m_acUnit.c_str(), sig->m_acMultiplex.c_str(), sig->m_rxNode.c_str());
+                    fileOutput << "U";
+                    fileOutput << ",";
+                    fileOutput << dec << sig->m_MaxValue.ui64Value;
+                    fileOutput << ",";
+                    fileOutput << dec << sig->m_MinValue.ui64Value;
                     break;
 
                 default:
                     break;
             }
-            fileOutput << acLine << endl;
+            fileOutput << ",";
+            fileOutput << sig->m_ucDataFormat;
+            fileOutput << ",";
+            fileOutput << fixed << sig->m_fOffset;
+            fileOutput << ",";
+            fileOutput << fixed << sig->m_fScaleFactor;
+            fileOutput << ",";
+            fileOutput << sig->m_acUnit.c_str();
+            fileOutput << ",";
+            fileOutput << sig->m_acMultiplex.c_str();
+            fileOutput << ",";
+            fileOutput << sig->m_rxNode.c_str();
+            fileOutput << endl;
 
             CValueDescriptor val;
             val.writeValueDescToFile(fileOutput, sig->m_ucType, sig->m_listValueDescriptor);
