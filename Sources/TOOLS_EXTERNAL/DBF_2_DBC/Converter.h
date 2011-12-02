@@ -43,7 +43,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CConverter  
+class CConverter
 {
 public:
     CConverter();
@@ -61,7 +61,8 @@ public:
 private:
 
     enum {CON_RC_NOERROR,CON_RC_COMPLETED_WITH_ERROR,CON_RC_FILEOPEN_ERROR_INFILE,
-        CON_RC_FILEOPEN_ERROR_OUTFILE,CON_RC_FORMAT_ERROR_INFILE,CON_RC_FILEOPEN_ERROR_LOGFILE};
+          CON_RC_FILEOPEN_ERROR_OUTFILE,CON_RC_FORMAT_ERROR_INFILE,CON_RC_FILEOPEN_ERROR_LOGFILE
+         };
 
     unsigned int SetResultCode(unsigned int uiCode);
     void GenerateMessageList(CStdioFile& fileInput);
@@ -77,7 +78,7 @@ private:
     CList<CString,CString& > m_listNode;
     CList<CMessage,CMessage&> m_listMessages;
     CList<CParameters,CParameters&> m_listParameterArray[6];
-    CList<CValueTable,CValueTable&> m_vTab; 
+    CList<CValueTable,CValueTable&> m_vTab;
     CList<CComment,CComment&> m_listComments[4];
 
 };

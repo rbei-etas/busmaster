@@ -42,9 +42,9 @@
 
 class CParameterValues
 {
-    //public member functions  
+    //public member functions
 public:
-    enum MSG_FRAME_FROMAT{MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
+    enum MSG_FRAME_FROMAT {MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
     char            m_NodeName[defNODE_MAX_LEN];
     unsigned int    m_MsgId;
     char            m_SignalName[defNODE_MAX_LEN];

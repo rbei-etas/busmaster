@@ -33,9 +33,9 @@
 
 /**
 * \brief      Constructor of CComment
-* \param[in]  None   
-* \param[out] None   
-* \return     None   
+* \param[in]  None
+* \param[out] None
+* \return     None
 * \authors    Mahesh.B.S
 * \date       17.11.2004
 */
@@ -48,10 +48,10 @@ CComment::CComment()
 
 /**
 * \brief      operator= overloading
-* \param[in]  CComment& tCmt   
-* \param[out] None   
-* \return     CComment& tCmt   
-* \authors    Padmaja.A. 
+* \param[in]  CComment& tCmt
+* \param[out] None
+* \return     CComment& tCmt
+* \authors    Padmaja.A.
 * \date       17.11.2004
 */
 CComment& CComment::operator=(CComment& tCmt)
@@ -60,16 +60,16 @@ CComment& CComment::operator=(CComment& tCmt)
     m_elementName=tCmt.m_elementName;
     m_comment=tCmt.m_comment;
     m_msgID=tCmt.m_msgID;
-    m_msgType=tCmt.m_msgType; 
+    m_msgType=tCmt.m_msgType;
     return(*this);
 }
 
 /**
 * \brief      destrutor
-* \param[in]  None   
-* \param[out] None   
-* \return     None   
-* \authors    Padmaja.A. 
+* \param[in]  None
+* \param[out] None
+* \return     None
+* \authors    Padmaja.A.
 * \date       17.11.2004
 */
 CComment::~CComment()
@@ -78,11 +78,11 @@ CComment::~CComment()
 }
 
 /**
-* \brief      Parses the net Comments. 
-* \param[in]  CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment   
-* \param[out] None   
-* \return     void   
-* \authors    Padmaja.A. 
+* \brief      Parses the net Comments.
+* \param[in]  CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment
+* \param[out] None
+* \return     void
+* \authors    Padmaja.A.
 * \date       17.11.2004
 */
 void CComment::Format_netComment(CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment)
@@ -102,7 +102,7 @@ void CComment::Format_netComment(CStdioFile &fileInput,CList<CComment,CComment&>
         {
             fileInput.ReadString(acLine,defCON_MAX_LINE_LEN);
             pcToken = acLine;
-            comment = comment + pcToken;	
+            comment = comment + pcToken;
         }
         m_comment= comment;
         //adds the comment to the list.
@@ -111,11 +111,11 @@ void CComment::Format_netComment(CStdioFile &fileInput,CList<CComment,CComment&>
 }
 
 /**
-* \brief      Parses the node Comments. 
-* \param[in]  CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment   
-* \param[out] None   
-* \return     void   
-* \authors    Padmaja.A. 
+* \brief      Parses the node Comments.
+* \param[in]  CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment
+* \param[out] None
+* \return     void
+* \authors    Padmaja.A.
 * \date       17.11.2004
 */
 
@@ -137,14 +137,14 @@ void CComment::Format_nodeComment(CStdioFile &fileInput ,CList<CComment,CComment
 
         //m_elementName = m_elementName.Left(defCON_MAX_MSGN_LEN);
         //get the comment.
-        pcToken = strtok(NULL,""); 
+        pcToken = strtok(NULL,"");
         comment = pcToken;
         while(strstr(pcToken,"\";") == NULL)
         {
             //parses the comment.
             fileInput.ReadString(acLine,defCON_MAX_LINE_LEN);
             pcToken = acLine;
-            comment = comment + pcToken;	
+            comment = comment + pcToken;
         }
         m_comment= comment;
         //adds the comment to the list.
@@ -153,11 +153,11 @@ void CComment::Format_nodeComment(CStdioFile &fileInput ,CList<CComment,CComment
 }
 
 /**
-* \brief      Parses the Message Comments. 
-* \param[in]  CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment   
-* \param[out] None   
-* \return     void   
-* \authors    Padmaja.A. 
+* \brief      Parses the Message Comments.
+* \param[in]  CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment
+* \param[out] None
+* \return     void
+* \authors    Padmaja.A.
 * \date       17.11.2004
 */
 void CComment::Format_msgComment(CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment)
@@ -174,17 +174,17 @@ void CComment::Format_msgComment(CStdioFile &fileInput,CList<CComment,CComment&>
         m_msgID=unsigned int(atoi(pcToken));
         //get the message type and validates the message.
         pcToken=strtok(NULL," ");
-        m_msgType=*pcToken; 
+        m_msgType=*pcToken;
         if(m_msgType =='X')
             m_msgID +=2147483648;
         //get the comment
-        pcToken = strtok(NULL,""); 
+        pcToken = strtok(NULL,"");
         comment = pcToken;
         while(strstr(pcToken,"\";") == NULL)
-        {//parses the comment
+        {   //parses the comment
             fileInput.ReadString(acLine,defCON_MAX_LINE_LEN);
             pcToken = acLine;
-            comment = comment + pcToken;	
+            comment = comment + pcToken;
         }
         m_comment= comment;
         //adds the comment to the list.
@@ -193,11 +193,11 @@ void CComment::Format_msgComment(CStdioFile &fileInput,CList<CComment,CComment&>
 }
 
 /**
-* \brief      Parses the Signal Comments. 
-* \param[in]  CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment   
-* \param[out] None   
-* \return     void   
-* \authors    Padmaja.A. 
+* \brief      Parses the Signal Comments.
+* \param[in]  CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment
+* \param[out] None
+* \return     void
+* \authors    Padmaja.A.
 * \date       17.11.2004
 */
 void CComment::Format_sigComment(CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment)
@@ -214,12 +214,12 @@ void CComment::Format_sigComment(CStdioFile &fileInput,CList<CComment,CComment&>
         m_msgID=unsigned int(atoi(pcToken));
         //get the mesg type and validates.
         pcToken=strtok(NULL," ");
-        m_msgType=*pcToken; 
+        m_msgType=*pcToken;
         if(m_msgType =='X')
             m_msgID +=2147483648;
         //get signal name.
         pcToken = strtok(NULL," ");
-        m_elementName=pcToken; 
+        m_elementName=pcToken;
         if(m_elementName.GetLength() > defCON_MAX_MSGN_LEN)
             Truncate_str("Message name",m_elementName,false);
 
@@ -231,7 +231,7 @@ void CComment::Format_sigComment(CStdioFile &fileInput,CList<CComment,CComment&>
         {
             fileInput.ReadString(acLine,defCON_MAX_LINE_LEN);
             pcToken = acLine;
-            comment = comment + pcToken;	
+            comment = comment + pcToken;
         }
         m_comment= comment;
         //adds the comment to list.

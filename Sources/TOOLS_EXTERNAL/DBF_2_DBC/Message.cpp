@@ -36,7 +36,7 @@
 /**
 * \brief      constructor of CMessage
 * \param[in]  None
-* \param[out] None   
+* \param[out] None
 * \return     None
 * \authors    Mahesh.B.S
 * \date       15.11.2002
@@ -49,7 +49,7 @@ CMessage::CMessage()
 /**
 * \brief      destructor of CMessage
 * \param[in]  None
-* \param[out] None   
+* \param[out] None
 * \return     None
 * \authors    Mahesh.B.S
 * \date       15.11.2002
@@ -62,7 +62,7 @@ CMessage::~CMessage()
 /**
 * \brief      operator= overloading
 * \param[in]  CMessage& message
-* \param[out] None   
+* \param[out] None
 * \return     CMessage& CMessage
 * \authors    Mahesh.B.S
 * \date       15.11.2002
@@ -86,10 +86,10 @@ CMessage& CMessage::operator=(CMessage& message)
 }
 
 /**
-* \brief      Extracts the message data from the given Line and populates 
+* \brief      Extracts the message data from the given Line and populates
 the message structure.
 * \param[in]  char *pcLine
-* \param[out] None   
+* \param[out] None
 * \return     int
 * \authors    Mahesh.B.S
 * \date       15.11.2002
@@ -111,7 +111,7 @@ int CMessage::Format(char *pcLine)
     // set the message length
     pcToken = strtok(NULL," ,");
     m_ucLength = (unsigned char)atoi(pcToken);
-    CConverter::ucMsg_DLC = m_ucLength; 
+    CConverter::ucMsg_DLC = m_ucLength;
     //no.. of signals.
     pcToken = strtok(NULL," ,");
 
@@ -123,7 +123,7 @@ int CMessage::Format(char *pcLine)
     m_cFrameFormat = pcToken[0];
     if(strcmp(pcToken,"X") == 0)
     {
-        m_uiMsgID  = m_uiMsgID + 2147483648; 
+        m_uiMsgID  = m_uiMsgID + 2147483648;
     }
 
     //get the Tx'ing Node Name
@@ -143,7 +143,7 @@ int CMessage::Format(char *pcLine)
 /**
 * \brief      Overloading of == operator
 * \param[in]  const CMessage &message
-* \param[out] None   
+* \param[out] None
 * \return     int
 * \authors    Mahesh.B.S
 * \date       15.11.2002
@@ -158,7 +158,7 @@ int CMessage::operator==(const CMessage &message) const
 /**
 * \brief      Overloading of == operator
 * \param[in]  const CMessage &message
-* \param[out] None   
+* \param[out] None
 * \return     int
 * \authors    Mahesh.B.S
 * \date       15.11.2002
@@ -174,7 +174,7 @@ int CMessage::operator==(const unsigned int uiMsgID) const
 * \brief      Write's the message in the CANoe format and returns false
 if any of the error signal is not stored in the file
 * \param[in]  CStdioFile &fileOutput
-* \param[out] None   
+* \param[out] None
 * \return     bool
 * \authors    Mahesh.B.S
 * \date       15.11.2002

@@ -50,15 +50,15 @@ END_MESSAGE_MAP()
 
 /**
 * \brief      CCANDBConverterApp Converter
-* \param[in]     
-* \return     
-* \authors    
-* \date       
+* \param[in]
+* \return
+* \authors
+* \date
 */
 CCANDBConverterApp::CCANDBConverterApp()
 {
     // TODO: add construction code here,
-    // Place all significant initialization in InitInstance	
+    // Place all significant initialization in InitInstance
 }
 
 
@@ -68,11 +68,11 @@ CCANDBConverterApp theApp;
 * \brief      InitInstance function called when the application is stareted
 *             The function checks for the licence key from the command line
 *             parameters and if success application will open
-* \param[in]  None   
+* \param[in]  None
 * \return     BOOL - FALSE to  close the application.
-*             TRUE to start the application   
-* \authors    
-* \date       
+*             TRUE to start the application
+* \authors
+* \date
 */
 BOOL CCANDBConverterApp::InitInstance()
 {

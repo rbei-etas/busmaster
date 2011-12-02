@@ -15,11 +15,11 @@
 
 /**
  * \file      tag.h
- * \brief     This file has the definetion of all the tags used 
+ * \brief     This file has the definetion of all the tags used
  * \author    RBIN/EBS1 - Mahesh B S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file has the definetion of all the tags used 
+ * This file has the definetion of all the tags used
  */
 /**
 * \file       tag.h

@@ -53,10 +53,10 @@ class CParameters
     bool            m_RangeError;
 
     //public data members & functions
-public:	
+public:
     char			m_ParamName[defVDES_MAX_DESC_LEN];
     char			m_ParamType[10];
-    CList<CParameterValues,CParameterValues&> m_listParamValues[6];    
+    CList<CParameterValues,CParameterValues&> m_listParamValues[6];
     CParameters();
     void Format_ParamDef(char *pcLine,int index);
     CParameters& operator=(CParameters& param);

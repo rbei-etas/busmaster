@@ -35,56 +35,56 @@
 * \brief      This function will truncate any given string to 32 char.
 * \param[in]  char *type,char *pcToken,bool bToLog
 * \param[out] None
-* \return     void   
+* \return     void
 * \authors    Mahesh.B.S
 * \date       15.11.2004
 */
 extern void Truncate_str(char *type,char *pcToken,bool bToLog)
 {
-	CString strTemp = pcToken;
-	strTemp = strTemp.Left(32);
-	char acLine[100];
+    CString strTemp = pcToken;
+    strTemp = strTemp.Left(32);
+    char acLine[100];
 
-	if(bToLog)
-	{
-		sprintf(acLine,"%s %s ",type,pcToken);
-		CConverter::fileLog.WriteString(acLine);
-		CConverter::bLOG_ENTERED = true;
-	}
-	strcpy(pcToken,strTemp.GetBuffer(32));
-	if(bToLog)
-	{
-		sprintf(acLine," changed to %s\n",pcToken);
-		CConverter::fileLog.WriteString(acLine);
-	}
-	return;
+    if(bToLog)
+    {
+        sprintf(acLine,"%s %s ",type,pcToken);
+        CConverter::fileLog.WriteString(acLine);
+        CConverter::bLOG_ENTERED = true;
+    }
+    strcpy(pcToken,strTemp.GetBuffer(32));
+    if(bToLog)
+    {
+        sprintf(acLine," changed to %s\n",pcToken);
+        CConverter::fileLog.WriteString(acLine);
+    }
+    return;
 }
 
 /**
 * \brief      This function will truncate any given string to 32 char.
 * \param[in]  char *type,char *pcToken,bool bToLog
 * \param[out] None
-* \return     void   
+* \return     void
 * \authors    Mahesh.B.S
 * \date       15.11.2004
 */
 extern void Truncate_str(char *type,CString &strTemp,bool bToLog)
 {
 
-	char acLine[100];
-	if(bToLog)
-	{
-		sprintf(acLine,"%s %s ",type,strTemp);
-		CConverter::fileLog.WriteString(acLine);
-		CConverter::bLOG_ENTERED = true;	
-	}
+    char acLine[100];
+    if(bToLog)
+    {
+        sprintf(acLine,"%s %s ",type,strTemp);
+        CConverter::fileLog.WriteString(acLine);
+        CConverter::bLOG_ENTERED = true;
+    }
 
-	strTemp = strTemp.Left(32);
+    strTemp = strTemp.Left(32);
 
-	if(bToLog)
-	{
-		sprintf(acLine," changed to %s\n",strTemp.GetBuffer(32));
-		CConverter::fileLog.WriteString(acLine);
-	}
-	return;
+    if(bToLog)
+    {
+        sprintf(acLine," changed to %s\n",strTemp.GetBuffer(32));
+        CConverter::fileLog.WriteString(acLine);
+    }
+    return;
 }

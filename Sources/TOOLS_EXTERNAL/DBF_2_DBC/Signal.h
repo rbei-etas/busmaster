@@ -24,7 +24,7 @@
 /**
 * \file       Signal.h
 * \brief      interface for the CSignal class.
-* \authors    
+* \authors
 * \date       14.11.2004 Mahesh BS
 *.\date       12.10.2006.amb2kor
               Changes due to multiplex signal.
@@ -40,7 +40,7 @@
 #include "ValueDescriptor.h"
 #include <afxtempl.h>
 
-class CSignal  
+class CSignal
 {
 public:
     CSignal();

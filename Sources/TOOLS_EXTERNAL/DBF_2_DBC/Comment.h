@@ -37,7 +37,7 @@
 #endif // _MSC_VER > 1000
 #include <afxtempl.h>
 
-class CComment  
+class CComment
 {
 
 public:

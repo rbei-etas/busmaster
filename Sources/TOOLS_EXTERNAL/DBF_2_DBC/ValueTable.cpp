@@ -24,9 +24,9 @@ FileName      :  ValueTable.Cpp
 Description   :  Implementation file for the value table.This is atable containing value discriptors.
 
 $Log:   X:/Archive/Sources/Ext_tools_DBF_2_DBC/ValueTable.cpv  $
-   
+
       Rev 1.1   04 Aug 2011 19:55:50   CANMNTTM
-    
+
 
 Rev 1.0   03 Aug 2011 15:47:52   rac2kor
 
@@ -54,7 +54,7 @@ Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights
 /**
 * \brief      Constructor of CValueTable
 * \param[in]  None
-* \param[out] None   
+* \param[out] None
 * \return     None
 * \authors    Padmaja.A.
 * \date       16.11.2004
@@ -67,7 +67,7 @@ CValueTable::CValueTable()
 /**
 * \brief      destructor of CValueTable
 * \param[in]  None
-* \param[out] None   
+* \param[out] None
 * \return     None
 * \authors    Padmaja.A.
 * \date       16.11.2004
@@ -78,9 +78,9 @@ CValueTable::~CValueTable()
 }
 
 /**
-* \brief      overloaded operator =  
+* \brief      overloaded operator =
 * \param[in]  CValueTable&
-* \param[out] None   
+* \param[out] None
 * \return     CValueTable&
 * \authors    Padmaja.A.
 * \date       16.11.2004
@@ -98,10 +98,10 @@ CValueTable& CValueTable::operator=(CValueTable& Tab)
 }
 
 /**
-* \brief      extracts Values and value descriptors from the line 
+* \brief      extracts Values and value descriptors from the line
 * \param[in]  String having the value table name followed by the
 value,value descriptor as in canoe format
-* \param[out] None   
+* \param[out] None
 * \return     void
 * \authors    Padmaja.A.
 * \date       16.11.2004
@@ -142,7 +142,7 @@ void CValueTable::Format_ValueTable(char *pcLine,CStdioFile &fileInput)
                 char logmsg[defCON_MAX_LINE_LEN];
                 sprintf(logmsg,"value Descriptor %s changed as %s\"\n",valDesc.m_sDescriptor,valDesc.m_sDescriptor.Left(defCON_MAX_MSGN_LEN));
                 CConverter::fileLog.WriteString(logmsg);
-                CConverter::bLOG_ENTERED = true;    
+                CConverter::bLOG_ENTERED = true;
 
                 valDesc.m_sDescriptor = valDesc.m_sDescriptor.Left(defCON_MAX_MSGN_LEN);
                 valDesc.m_sDescriptor += "\"";
@@ -158,8 +158,8 @@ void CValueTable::Format_ValueTable(char *pcLine,CStdioFile &fileInput)
 
 /**
 * \brief      writes the value tebles in the given list to the output file.
-* \param[in]  Pointer to the Output file,List of Value tables 
-* \param[out] None   
+* \param[in]  Pointer to the Output file,List of Value tables
+* \param[out] None
 * \return     int
 * \authors    Padmaja.A.
 * \date       17.11.2004

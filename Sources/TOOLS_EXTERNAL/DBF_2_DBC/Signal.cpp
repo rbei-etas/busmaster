@@ -37,7 +37,7 @@
 /**
 * \brief      Constructor of CSignal
 * \param[in]  None
-* \param[out] None   
+* \param[out] None
 * \return     None
 * \authors    Mahesh.B.S
 * \date       15.11.2004
@@ -50,7 +50,7 @@ CSignal::CSignal()
 /**
 * \brief      destructor of CSignal
 * \param[in]  None
-* \param[out] None   
+* \param[out] None
 * \return     None
 * \authors    Mahesh.B.S
 * \date       15.11.2004
@@ -61,9 +61,9 @@ CSignal::~CSignal()
 }
 
 /**
-* \brief      overloaded operator =  
+* \brief      overloaded operator =
 * \param[in]  None
-* \param[out] None   
+* \param[out] None
 * \return     None
 * \authors    Mahesh.B.S
 * \date       15.11.2004
@@ -89,8 +89,8 @@ CSignal& CSignal::operator=(CSignal& signal)
     m_fScaleFactor = signal.m_fScaleFactor;
     m_sUnit = signal.m_sUnit;
     m_sNode = signal.m_sNode;
-    m_uiError = signal.m_uiError; 
-    //  now copy the list 
+    m_uiError = signal.m_uiError;
+    //  now copy the list
     m_listValueDescriptor.AddTail(&signal.m_listValueDescriptor);
     return (*this);
 }
@@ -98,7 +98,7 @@ CSignal& CSignal::operator=(CSignal& signal)
 /**
 * \brief      operator==
 * \param[in]  const CSignal &Signal
-* \param[out] None   
+* \param[out] None
 * \return     int
 * \authors    Mahesh.B.S
 * \date       15.11.2004
@@ -111,10 +111,10 @@ int CSignal::operator==(const CSignal &Signal) const
 }
 
 /**
-* \brief      Extracts the signal data from the given Line and populates 
+* \brief      Extracts the signal data from the given Line and populates
               message structure.
 * \param[in]  char *pcLine
-* \param[out] None   
+* \param[out] None
 * \return     int
 * \authors    Mahesh.B.S
 * \date       15.11.2004
@@ -128,7 +128,7 @@ int CSignal::Format(char *pcLine)
     // get signal name
     pcToken = strtok(pcLine,","); // get upto colon
 
-    // now get the signal name 
+    // now get the signal name
     m_sName = pcToken; // copy the name to the signal's data member
 
     if(m_sName.GetLength() > defCON_MAX_MSGN_LEN)
@@ -170,7 +170,7 @@ int CSignal::Format(char *pcLine)
 
     if(m_ucDataFormat == '0')
     {
-        UINT unByteIndex = m_ucWhichByte - 1; 
+        UINT unByteIndex = m_ucWhichByte - 1;
         UINT nByte = (m_ucLength/8) + ((m_ucLength % 8)?1:0);
         UINT nStartBit = (m_ucWhichByte - nByte) * 8;
         UINT nBitSize = m_ucLength - (8 * (nByte - 1))+ m_ucStartBit;
@@ -202,17 +202,17 @@ int CSignal::Format(char *pcLine)
         *pcTemp++ = *pcToken++;
     }
     *pcTemp='\0';
-    CString strUnit_Temp = acTemp; 
+    CString strUnit_Temp = acTemp;
     m_sUnit = "\"";
     m_sUnit = m_sUnit + acTemp; // copy UNIT to corresponding data member.
     m_sUnit = m_sUnit.Left(defCON_MAX_MSGN_LEN + 1);
-    m_sUnit = m_sUnit + "\""; 
+    m_sUnit = m_sUnit + "\"";
     if(strUnit_Temp.GetLength() > defCON_MAX_MSGN_LEN + 2)
     {
         char logmsg[defCON_MAX_LINE_LEN];
         sprintf(logmsg,"unit %s changed to %s\n",strUnit_Temp,m_sUnit);
         CConverter::fileLog.WriteString(logmsg);
-        CConverter::bLOG_ENTERED = true;    
+        CConverter::bLOG_ENTERED = true;
     }
     //for multiplexing field
     CString strTemp = pcToken;
@@ -240,7 +240,7 @@ int CSignal::Format(char *pcLine)
     //rx'ing nodes
     pcToken = strtok(pcToken,",");
     pcToken = strtok(NULL,",");
-    pcToken = strtok(NULL,"\n"); 
+    pcToken = strtok(NULL,"\n");
     if(pcToken)
         m_sNode = pcToken;
     else
@@ -254,7 +254,7 @@ int CSignal::Format(char *pcLine)
 * \brief      Validates the signal , sets the Max and Min value to the data type
               and if any error sets the error variable accordingly.
 * \param[in]  None
-* \param[out] None   
+* \param[out] None
 * \return     unsigned int
 * \authors    Mahesh.B.S
 * \date       15.11.2004
@@ -264,15 +264,15 @@ unsigned int CSignal::Validate()
     // data format mismatch with previous signal
 
     // if more than 64 bits should be discarded
-    if(m_ucLength > 64) 
+    if(m_ucLength > 64)
     {
-        return (m_uiError = SIG_EC_LENGTH_ERR);        
+        return (m_uiError = SIG_EC_LENGTH_ERR);
     }
 
     // validate start bit and byte
     if(m_ucStartBit > 63)
     {
-        return (m_uiError = SIG_EC_STARTBIT_ERR);        
+        return (m_uiError = SIG_EC_STARTBIT_ERR);
     }
 
 
@@ -286,17 +286,17 @@ unsigned int CSignal::Validate()
     // update MAX value and MIN value based on type
     switch(m_ucType)
     {
-    case SIG_TYPE_BOOL:
-    case SIG_TYPE_UINT:
-    case SIG_TYPE_UINT64:
-        unConvertRawToPhysical(m_MaxValue.ui64Value, m_MinValue.ui64Value, m_fOffset, m_fScaleFactor, m_MaxValue.dValue, m_MinValue.dValue);
-        break;
-    case SIG_TYPE_INT:
-    case SIG_TYPE_INT64:
-        nConvertRawToPhysical(m_MaxValue.ui64Value, m_MinValue.ui64Value, m_fOffset, m_fScaleFactor, m_MaxValue.dValue, m_MinValue.dValue);
-        break;
-    default:
-        break;
+        case SIG_TYPE_BOOL:
+        case SIG_TYPE_UINT:
+        case SIG_TYPE_UINT64:
+            unConvertRawToPhysical(m_MaxValue.ui64Value, m_MinValue.ui64Value, m_fOffset, m_fScaleFactor, m_MaxValue.dValue, m_MinValue.dValue);
+            break;
+        case SIG_TYPE_INT:
+        case SIG_TYPE_INT64:
+            nConvertRawToPhysical(m_MaxValue.ui64Value, m_MinValue.ui64Value, m_fOffset, m_fScaleFactor, m_MaxValue.dValue, m_MinValue.dValue);
+            break;
+        default:
+            break;
     }
     // correct value descriptors according to type of signal
     POSITION posValDesc = m_listValueDescriptor.GetHeadPosition();
@@ -306,21 +306,21 @@ unsigned int CSignal::Validate()
         switch(m_ucType)
         {
 
-        case SIG_TYPE_INT:
-        case SIG_TYPE_FLOAT:
-        case SIG_TYPE_DOUBLE:
-        case SIG_TYPE_INT64:
-            break;
+            case SIG_TYPE_INT:
+            case SIG_TYPE_FLOAT:
+            case SIG_TYPE_DOUBLE:
+            case SIG_TYPE_INT64:
+                break;
 
-        case SIG_TYPE_BOOL:
-        case SIG_TYPE_UINT:
-        case SIG_TYPE_UINT64:
-            rValDesc.m_value.ui64Value = (ULONGLONG)rValDesc.m_value.i64Value;
-            break;
+            case SIG_TYPE_BOOL:
+            case SIG_TYPE_UINT:
+            case SIG_TYPE_UINT64:
+                rValDesc.m_value.ui64Value = (ULONGLONG)rValDesc.m_value.i64Value;
+                break;
 
-        default:
-            break;
-        }            
+            default:
+                break;
+        }
     }
 
     return (m_uiError = SIG_EC_NO_ERR);
@@ -330,7 +330,7 @@ unsigned int CSignal::Validate()
 * \brief      Write's the signal in the CANoe format and returns false
               if any of the error signal is not stored in the file
 * \param[in]  CStdioFile &fileOutput
-* \param[out] None   
+* \param[out] None
 * \return     bool
 * \authors    Mahesh.B.S
 * \date       15.11.2004
@@ -342,9 +342,9 @@ bool CSignal::WriteSignaltofile(CStdioFile &fileOutput)
     if(m_uiError == SIG_EC_NO_ERR)
     {
         sprintf(acLine," SG_ %s %s:  %u|%u@%c+ (%f,%f) [%lf|%lf] %s %s\n"\
-            ,m_sName,m_sMultiplex,m_ucStartBit,m_ucLength,m_ucDataFormat\
-            ,m_fScaleFactor,m_fOffset,m_MinValue.dValue\
-            ,m_MaxValue.dValue,m_sUnit,m_sNode);
+                ,m_sName,m_sMultiplex,m_ucStartBit,m_ucLength,m_ucDataFormat\
+                ,m_fScaleFactor,m_fOffset,m_MinValue.dValue\
+                ,m_MaxValue.dValue,m_sUnit,m_sNode);
         fileOutput.WriteString(acLine);
     }
     else
@@ -363,8 +363,8 @@ const char* CSignal::m_pacErrorStrings[] =
 /**
 * \brief      Returns the error string of the signal
 * \param[in]  None
-* \param[out] None   
-* \return     const char* 
+* \param[out] None
+* \return     const char*
 * \authors    Mahesh.B.S
 * \date       15.11.2004
 */
