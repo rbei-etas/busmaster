@@ -39,6 +39,8 @@
       <p><cmdname>astyle -r -s4 -S *.cpp *.h</cmdname></p>
       <p>This will recursively run over all source code files of BUSMASTER and will adjust the style as necessary. The modifications will directly done in the respective file. The original unmodified files are available with the file name extension <filepath>.orig</filepath>.</p>
       <p>Before you commit these file to the project repository, make sure that the modifications are useful and adjust them if necessary. This could be necessary, e.g. in case you want to define an <codeph>enum</codeph> with &quot;<codeph>=</codeph>&quot; signs all in a row.</p>
+      <p>The recommended options for C++ software at ETAS are:</p>
+      <p><cmdname>astyle --style=ansi --delete-empty-lines --break-blocks --add-brackets --indent-namespaces --indent-preprocessor --indent-switches --convert-tabs --align-pointer=type *.cpp *.h</cmdname></p>
     </section>
   </body>
 </topic>
