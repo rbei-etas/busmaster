@@ -38,38 +38,38 @@ class CSelectdb : public CDialog
 {
 // Construction
 public:
-	void SaveSettings();
-	CSelectdb(CWnd* pParent = NULL);   // standard constructor
+    void SaveSettings();
+    CSelectdb(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
-	//{{AFX_DATA(CSelectdb)
-	enum { IDD = IDD_DLG_ASSIGN_DB };
-	BOOL	m_option;
-	//}}AFX_DATA
+    //{{AFX_DATA(CSelectdb)
+    enum { IDD = IDD_DLG_ASSIGN_DB };
+    BOOL	m_option;
+    //}}AFX_DATA
 
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CSelectdb)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CSelectdb)
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
 
-	// Generated message map functions
-	//{{AFX_MSG(CSelectdb)
-	afx_msg void OnBrowseCANoeDb();
-	afx_msg void OnBrowseBUSMASTERDb();
-	afx_msg void OnChkbOption();
-	virtual void OnOK();
-	afx_msg void OnChangeEditAdcanoe();
-	virtual void OnCancel();
-	afx_msg void OnClose();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+    //{{AFX_MSG(CSelectdb)
+    afx_msg void OnBrowseCANoeDb();
+    afx_msg void OnBrowseBUSMASTERDb();
+    afx_msg void OnChkbOption();
+    virtual void OnOK();
+    afx_msg void OnChangeEditAdcanoe();
+    virtual void OnCancel();
+    afx_msg void OnClose();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

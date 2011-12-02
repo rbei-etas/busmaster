@@ -30,13 +30,13 @@
 
 
 
-char acSptdKey[defINT_SizeofacAltKeyArray];//to store supported keys                           
+char acSptdKey[defINT_SizeofacAltKeyArray];//to store supported keys
 CSymbolTable ouUnSptdKey;
-//to store unsupported keys  
+//to store unsupported keys
 CSymbolTable ouFuncName ;
 //to store the name of utility function
 CSymbolTable ouTimerName;
-//to store the name of timer variable  
+//to store the name of timer variable
 
 char acAltKey[254];  //to store the alternate keys
 CString Footer;   //for header and footer
@@ -50,7 +50,7 @@ char cFlagH = 0 ; //to count the no. of white space (needed)
 char cFlagLog = 1;//to differentiate "write" and "writetolog" function
 int m = 0 ; //neccessary
 char fprestart = 0;//flag for prestart
-char fstart = 0;//flag for start (on load handler) 
+char fstart = 0;//flag for start (on load handler)
 
 
 FILE *logfile ;                    //for log file

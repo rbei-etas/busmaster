@@ -36,26 +36,26 @@
 
 #define defMSG_MAX_NAME_LEN		100 // I don't expect a name more than 100 bytes
 
-class CMessage  
+class CMessage
 {
 public:
-	int Format(char *pcLine);
-	CMessage();
-	virtual ~CMessage();
-	// overload = operator
-	CMessage& operator=(CMessage& message);
-	CMessage(CMessage& message);
+    int Format(char *pcLine);
+    CMessage();
+    virtual ~CMessage();
+    // overload = operator
+    CMessage& operator=(CMessage& message);
+    CMessage(CMessage& message);
 
 // data members
-	enum MSG_FRAME_FROMAT{MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
+    enum MSG_FRAME_FROMAT {MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
 
-	char			m_acName[defMSG_MAX_NAME_LEN];
-	unsigned int	m_uiMsgID;
-	unsigned char	m_ucLength;
-	unsigned char	m_ucNumOfSignals;
-	char			m_cDataFormat;
-	char			m_cFrameFormat;
-	CList<CSignal,CSignal&> m_listSignals;
+    char			m_acName[defMSG_MAX_NAME_LEN];
+    unsigned int	m_uiMsgID;
+    unsigned char	m_ucLength;
+    unsigned char	m_ucNumOfSignals;
+    char			m_cDataFormat;
+    char			m_cFrameFormat;
+    CList<CSignal,CSignal&> m_listSignals;
 };
 
 #endif // !defined(AFX_MESSAGE_H__F7C7DBC8_F82B_4799_80EF_1C7CDD5DCA42__INCLUDED_)
