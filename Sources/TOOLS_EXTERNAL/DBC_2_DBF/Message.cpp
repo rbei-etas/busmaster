@@ -93,7 +93,7 @@ int CMessage::Format(char *pcLine)
     CConverter::ucMsg_DLC = m_ucLength;
 
     //get the Tx'ing Node Name
-    pcToken = strtok_s(NULL, " :\n", &pcTok);
+    pcToken = strtok_s(NULL, " :", &pcTok);
     if(strcmp(pcToken, "Vector__XXX"))
         m_txNode = pcToken;
     else
@@ -121,22 +121,27 @@ int CMessage::Format(char *pcLine)
 bool CMessage::writeMessageToFile(fstream &fileOutput, list<CMessage> &m_listMessages, bool writeErr)
 {
     bool bResult = true;
-    char acLine[defCON_MAX_LINE_LEN];
 
     //Write all the message
     list<CMessage>::iterator msg;
     for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); ++msg)
     {
-        sprintf_s(acLine, sizeof(acLine), "%s %s,%u,%u,%u,%c,%c,%s\n",
-                T_START_MSG,
-                msg->m_acName.c_str(),
-                msg->m_uiMsgID,
-                msg->m_ucLength,
-                msg->m_ucNumOfSignals,
-                msg->m_cDataFormat,
-                msg->m_cFrameFormat,
-                msg->m_txNode.c_str());
-        fileOutput << acLine;
+        fileOutput << T_START_MSG;
+        fileOutput << " ";
+        fileOutput << msg->m_acName.c_str();
+        fileOutput << ",";
+        fileOutput << dec << msg->m_uiMsgID;
+        fileOutput << ",";
+        fileOutput << dec << (int) msg->m_ucLength;
+        fileOutput << ",";
+        fileOutput << dec << (int) msg->m_ucNumOfSignals;
+        fileOutput << ",";
+        fileOutput << msg->m_cDataFormat;
+        fileOutput << ",";
+        fileOutput << msg->m_cFrameFormat;
+        fileOutput << ",";
+        fileOutput << msg->m_txNode.c_str();
+        fileOutput << endl;
 
         CSignal sig;
         //write all related signals to the messages
@@ -145,7 +150,8 @@ bool CMessage::writeMessageToFile(fstream &fileOutput, list<CMessage> &m_listMes
                                          msg->m_ucLength,
                                          msg->m_cDataFormat,
                                          writeErr);
-        fileOutput << T_END_MSG "\n\n";
+        fileOutput << T_END_MSG << endl;
+        fileOutput << endl;
     }
     return bResult;
 }

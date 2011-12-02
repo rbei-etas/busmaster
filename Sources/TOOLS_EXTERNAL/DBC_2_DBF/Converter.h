@@ -25,6 +25,7 @@
 #ifndef Converter_H
 #define Converter_H
 
+#include <list>
 #include <utility>
 
 #include "Message.h"
