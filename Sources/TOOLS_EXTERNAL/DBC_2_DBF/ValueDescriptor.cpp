@@ -22,8 +22,6 @@
  * Implementation of the value descriptor class.
  */
 
-#include <list>
-
 #include "Signal.h"
 #include "Tag.h"
 #include "ValueDescriptor.h"
@@ -59,45 +57,43 @@ CValueDescriptor::~CValueDescriptor()
  */
 void CValueDescriptor::writeValueDescToFile(fstream &fileOutput, char m_ucType, list<CValueDescriptor> &m_listValueDescriptor)
 {
-    char acLine[defVDES_MAX_OUT_STR];
     list<CValueDescriptor>::iterator desc;
     for (desc=m_listValueDescriptor.begin(); desc!=m_listValueDescriptor.end(); ++desc)
     {
+        fileOutput << T_VALUE_DESC " \"";
+        fileOutput << desc->m_acDescriptor.c_str();
+        fileOutput << "\",";
         switch(m_ucType)
         {
             case CSignal::SIG_TYPE_BOOL:
             case CSignal::SIG_TYPE_UINT:
-                sprintf_s(acLine, sizeof(acLine), "%s \"%s\",%u\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.uiValue);
+                fileOutput << dec << desc->m_value.uiValue;
                 break;
 
             case CSignal::SIG_TYPE_INT:
-                sprintf_s(acLine, sizeof(acLine), "%s \"%s\",%d\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.iValue);
+                fileOutput << dec << desc->m_value.iValue;
                 break;
 
-                // when FLOAT and DOUBLE are supported enable this
-                /*
-                case CSignal::SIG_TYPE_FLOAT:
-                sprintf_s(acLine, sizeof(acLine), "%s \"%s\",%f\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.fValue);
+            case CSignal::SIG_TYPE_FLOAT:
+                fileOutput << dec << desc->m_value.fValue;
                 break;
 
-                case CSignal::SIG_TYPE_DOUBLE:
-                sprintf_s(acLine, sizeof(acLine), "%s \"%s\",%f\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.dValue);
+            case CSignal::SIG_TYPE_DOUBLE:
+                fileOutput << dec << desc->m_value.dValue;
                 break;
-                */
 
             case CSignal::SIG_TYPE_INT64:
-                sprintf_s(acLine, sizeof(acLine), "%s \"%s\",%I64d\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.i64Value);
+                fileOutput << dec << desc->m_value.i64Value;
                 break;
 
             case CSignal::SIG_TYPE_UINT64:
-                sprintf_s(acLine, sizeof(acLine), "%s \"%s\",%I64u\n", T_VALUE_DESC, desc->m_acDescriptor.c_str(), desc->m_value.ui64Value);
+                fileOutput << dec << desc->m_value.ui64Value;
                 break;
 
             default:
                 break;
         }
-
-        fileOutput << acLine;
+        fileOutput << endl;
     }
     return;
 }

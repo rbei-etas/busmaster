@@ -22,9 +22,6 @@
  * Implementation of the value table class.
  */
 
-#include <list>
-#include <string>
-
 #include "ValueTable.h"
 #include "Signal.h"
 #include "Tag.h"
@@ -190,11 +187,11 @@ void CValueTable::writeValueTabToFile(fstream &fileOutput, list<CValueTable> &vT
     {
         fileOutput << T_ST_TAB " ";
         fileOutput << tab->m_TableName.c_str();
-        fileOutput << "\n";
+        fileOutput << endl;
 
         CValueDescriptor desc;
-        desc.writeValueDescToFile (fileOutput,CSignal::SIG_TYPE_INT64, tab->m_values);
+        desc.writeValueDescToFile(fileOutput, CSignal::SIG_TYPE_INT64, tab->m_values);
 
-        fileOutput << T_END_TAB "\n";
+        fileOutput << T_END_TAB << endl;
     }
 }

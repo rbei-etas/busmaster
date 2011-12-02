@@ -22,8 +22,6 @@
  * Implementation of the converter class.
  */
 
-#include <list>
-
 #include "Converter.h"
 #include "Signal.h"
 #include "Tag.h"
@@ -696,10 +694,11 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 }
                 if(flag==0)
                 {
-                    string errString="BA_DEF_DEF_ \"";
-                    errString=errString+acTemp+"\" ";
-                    errString=errString+pcToken;
-                    errString+=" : Match not Found in Param List\n";
+                    string errString = "BA_DEF_DEF_ \"";
+                    errString += acTemp;
+                    errString += "\" ";
+                    errString += pcToken;
+                    errString += " : Match not Found in Param List\n";
                     defList.push_back(errString);
                 }
 
@@ -732,10 +731,11 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 }
                 if(flag==0)
                 {
-                    string errString="BA_DEF_DEF_REL \"";
-                    errString=errString+acTemp+"\" ";
-                    errString=errString+pcToken;
-                    errString+=" : Match not Found in Param List\n";
+                    string errString = "BA_DEF_DEF_REL \"";
+                    errString += acTemp;
+                    errString += "\" ";
+                    errString += pcToken;
+                    errString += " : Match not Found in Param List\n";
                     defList.push_back(errString);
 
                 }
@@ -793,14 +793,15 @@ void CConverter::GenerateMessageList(fstream& fileInput)
 bool CConverter::WriteToOutputFile(fstream& fileOutput)
 {
     bool bResult = true;
-    char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
     // write to the output file
     // write header
-    fileOutput << T_HEADER "\n\n";
-    fileOutput << T_DB_VER " " T_VER_NO "\n";
+    fileOutput << T_HEADER << endl << endl;
+    fileOutput << T_DB_VER " " T_VER_NO << endl << endl;
+
     // number of messages
-    sprintf_s(acLine, sizeof(acLine), "\n" T_NUM_OF_MSG " %d\n\n", m_listMessages.size());
-    fileOutput << acLine;
+    fileOutput << T_NUM_OF_MSG " ";
+    fileOutput << dec << m_listMessages.size();
+    fileOutput << endl << endl;
 
     //Write Messagess to the Output file
     CMessage msg;
@@ -809,18 +810,19 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     // write all messages, signals not associated with any Messages
     if(!m_listSignal.empty())
     {
-        fileOutput << T_ST_SIG_LIST "\n";
+        fileOutput << T_ST_SIG_LIST << endl;
         CSignal sig;
         bResult &= sig.WriteSignaltofile(fileOutput, m_listSignal, 0, 0, false);
-        fileOutput << T_END_SIG_LIST "\n\n";
+        fileOutput << T_END_SIG_LIST << endl;
+        fileOutput << endl;
     }
 
     //write value table
-    fileOutput << T_ST_VAL_TAB "\n";
+    fileOutput << T_ST_VAL_TAB << endl;
     CValueTable temp_vtab;
     temp_vtab.writeValueTabToFile (fileOutput,m_vTab);
-    fileOutput << T_END_VAL_TAB "\n";
-    fileOutput << "\n";
+    fileOutput << T_END_VAL_TAB << endl;
+    fileOutput << endl;
 
     //write list of nodes
     fileOutput << T_NODE " ";
@@ -833,35 +835,38 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
         fileOutput << node->c_str();
         comma = true;
     }
-    fileOutput << "\n\n";
+    fileOutput << endl;
+    fileOutput << endl;
 
     //Write Comments
-    fileOutput << T_ST_COMMENT "\n";
+    fileOutput << T_ST_COMMENT << endl;
     //network comments
-    fileOutput << T_ST_CM_NET "\n";
+    fileOutput << T_ST_CM_NET << endl;
     list<CComment>::iterator cmt;
     for(cmt=m_cmNet.begin(); cmt!=m_cmNet.end(); ++cmt)
     {
         fileOutput << cmt->m_elementName.c_str();
         fileOutput << " ";
         fileOutput << cmt->m_comment.c_str();
-        fileOutput << "\n";
+        fileOutput << endl;
     }
-    fileOutput << T_END_CM_NET "\n\n";
+    fileOutput << T_END_CM_NET << endl;
+    fileOutput << endl;
 
     //node comments
-    fileOutput << T_ST_CM_NODE "\n";
+    fileOutput << T_ST_CM_NODE << endl;
     for(cmt=m_cmNode.begin(); cmt!=m_cmNode.end(); ++cmt)
     {
         fileOutput << cmt->m_elementName.c_str();
         fileOutput << " ";
         fileOutput << cmt->m_comment.c_str();
-        fileOutput << "\n";
+        fileOutput << endl;
     }
-    fileOutput << T_END_CM_NODE "\n\n";
+    fileOutput << T_END_CM_NODE << endl;
+    fileOutput << endl;
 
     //message comments
-    fileOutput << T_ST_CM_MSG "\n";
+    fileOutput << T_ST_CM_MSG << endl;
     for(cmt=m_cmMsg.begin(); cmt!=m_cmMsg.end(); ++cmt)
     {
         fileOutput << cmt->m_msgID;
@@ -869,12 +874,13 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
         fileOutput << cmt->m_msgType;
         fileOutput << " ";
         fileOutput << cmt->m_comment.c_str();
-        fileOutput << "\n";
+        fileOutput << endl;
     }
-    fileOutput << T_END_CM_MSG "\n\n";
+    fileOutput << T_END_CM_MSG << endl;
+    fileOutput << endl;
 
     //signal comments
-    fileOutput << T_ST_CM_SIG "\n";
+    fileOutput << T_ST_CM_SIG << endl;
     for(cmt=m_cmSig.begin(); cmt!=m_cmSig.end(); ++cmt)
     {
         fileOutput << cmt->m_msgID;
@@ -884,42 +890,49 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
         fileOutput << cmt->m_elementName.c_str();
         fileOutput << " ";
         fileOutput << cmt->m_comment.c_str();
-        fileOutput << "\n";
+        fileOutput << endl;
     }
-    fileOutput << T_END_CM_SIG "\n";
-    fileOutput << T_END_COMMENT "\n\n";
+    fileOutput << T_END_CM_SIG << endl;
+    fileOutput << T_END_COMMENT << endl;
+    fileOutput << endl;
 
     //Write Parameters to the output file.
-    fileOutput << START_PARAM_TAG "\n";
+    fileOutput << START_PARAM_TAG << endl;
 
-    fileOutput << START_NETPARAM_TAG "\n";
+    fileOutput << START_NETPARAM_TAG << endl;
     bResult=bResult & WriteParametersToFile(fileOutput, m_listParameterArray[0]);
-    fileOutput << END_NETPARAM_TAG "\n\n";
+    fileOutput << END_NETPARAM_TAG << endl;
+    fileOutput << endl;
 
-    fileOutput << START_NODEPARAM_TAG "\n";
+    fileOutput << START_NODEPARAM_TAG << endl;
     bResult=bResult & WriteParametersToFile(fileOutput, m_listParameterArray[1]);
-    fileOutput << END_NODEPARAM_TAG "\n\n";
+    fileOutput << END_NODEPARAM_TAG << endl;
+    fileOutput << endl;
 
-    fileOutput << START_MSGPARAM_TAG "\n";
+    fileOutput << START_MSGPARAM_TAG << endl;
     bResult=bResult & WriteParametersToFile(fileOutput, m_listParameterArray[2]);
-    fileOutput << END_MSGPARAM_TAG "\n\n";
+    fileOutput << END_MSGPARAM_TAG << endl;
+    fileOutput << endl;
 
-    fileOutput << START_SIGPARAM_TAG "\n";
+    fileOutput << START_SIGPARAM_TAG << endl;
     bResult=bResult & WriteParametersToFile(fileOutput, m_listParameterArray[3]);
-    fileOutput << END_SIGPARAM_TAG "\n\n";
+    fileOutput << END_SIGPARAM_TAG << endl;
+    fileOutput << endl;
 
-    fileOutput << START_RXPARAM_TAG "\n";
+    fileOutput << START_RXPARAM_TAG << endl;
     bResult=bResult & WriteParametersToFile(fileOutput, m_listParameterArray[4]);
-    fileOutput << END_RXPARAM_TAG "\n\n";
+    fileOutput << END_RXPARAM_TAG << endl;
+    fileOutput << endl;
 
-    fileOutput << START_TXPARAM_TAG "\n";
+    fileOutput << START_TXPARAM_TAG << endl;
     bResult=bResult & WriteParametersToFile(fileOutput, m_listParameterArray[5]);
-    fileOutput << END_TXPARAM_TAG "\n";
-    fileOutput << END_PARAM_TAG "\n\n";
+    fileOutput << END_TXPARAM_TAG << endl;
+    fileOutput << END_PARAM_TAG << endl;
+    fileOutput << endl;
 
     //Parameter Values
-    fileOutput << START_PARAMVAL_TAG "\n";
-    fileOutput << START_NETVAL_TAG "\n";
+    fileOutput << START_PARAMVAL_TAG << endl;
+    fileOutput << START_NETVAL_TAG << endl;
     list<CParameters>::iterator rParam;
     for(rParam=m_listParameterArray[0].begin(); rParam!=m_listParameterArray[0].end(); ++rParam)
     {
@@ -930,9 +943,10 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
         }
 
     }
-    fileOutput << END_NETVAL_TAG "\n\n";
+    fileOutput << END_NETVAL_TAG << endl;
+    fileOutput << endl;
 
-    fileOutput << START_NODEVAL_TAG "\n";
+    fileOutput << START_NODEVAL_TAG << endl;
     for(rParam=m_listParameterArray[1].begin(); rParam!=m_listParameterArray[1].end(); ++rParam)
     {
         list<CParameterValues>::iterator vParam;
@@ -942,9 +956,10 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
         }
 
     }
-    fileOutput << END_NODEVAL_TAG "\n\n";
+    fileOutput << END_NODEVAL_TAG << endl;
+    fileOutput << endl;
 
-    fileOutput << START_MSGVAL_TAG "\n";
+    fileOutput << START_MSGVAL_TAG << endl;
     for(rParam=m_listParameterArray[2].begin(); rParam!=m_listParameterArray[2].end(); ++rParam)
     {
         list<CParameterValues>::iterator vParam;
@@ -954,9 +969,10 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
         }
 
     }
-    fileOutput << END_MSGVAL_TAG "\n\n";
+    fileOutput << END_MSGVAL_TAG << endl;
+    fileOutput << endl;
 
-    fileOutput << START_SIGVAL_TAG "\n";
+    fileOutput << START_SIGVAL_TAG << endl;
     for(rParam=m_listParameterArray[3].begin(); rParam!=m_listParameterArray[3].end(); ++rParam)
     {
         list<CParameterValues>::iterator vParam;
@@ -965,24 +981,28 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
             vParam->WriteSigValuesToFile(fileOutput, rParam->m_ParamType, rParam->m_ParamName);
         }
     }
-    fileOutput << END_SIGVAL_TAG "\n\n";
-    fileOutput << END_PARAMVAL_TAG "\n\n\n";
+    fileOutput << END_SIGVAL_TAG << endl;
+    fileOutput << endl;
+    fileOutput << END_PARAMVAL_TAG << endl;
+    fileOutput << endl;
+    fileOutput << endl;
 
     //list of not supported
-    fileOutput << T_ST_NOT_SUP "\n";
+    fileOutput << T_ST_NOT_SUP << endl;
     msg.writeMessageToFile(fileOutput, m_unsupList, true);
-    fileOutput << T_END_NOT_SUP "\n";
+    fileOutput << T_END_NOT_SUP << endl;
+    fileOutput << endl;
 
     //lines that were not processed
-    fileOutput << "\n" T_ST_NOT_PRO "\n";
+    fileOutput << T_ST_NOT_PRO << endl;
     list<string>::iterator np;
     for(np=m_notProcessed.begin(); np!=m_notProcessed.end(); ++np)
     {
         fileOutput << np->c_str();
-        fileOutput << "\n";
+        fileOutput << endl;
     }
-    fileOutput << "\n";
-    fileOutput << T_END_NOT_PRO "\n";
+    fileOutput << endl;
+    fileOutput << T_END_NOT_PRO << endl;
 
     return bResult;
 }
@@ -995,16 +1015,16 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
  */
 void CConverter::CreateLogFile(fstream& fileLog)
 {
-    char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
-    // write to the output file
-    char acMsgLine[defCON_MAX_LINE_LEN];
+    char first_msg = 1;
 
-    fileLog << "Conversion Error Log \n\n";
+    // write to the output file
+    fileLog << "Conversion Error Log" << endl;
+    fileLog << endl;
 
     list<CMessage>::iterator msg;
     for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); ++msg)
     {
-        acMsgLine[0] = '\0';
+        first_msg = 1;
         list<CSignal>::iterator sig;
         for(sig=msg->m_listSignals.begin(); sig!=msg->m_listSignals.end(); ++sig)
         {
@@ -1012,21 +1032,31 @@ void CConverter::CreateLogFile(fstream& fileLog)
             if(sig->m_uiError != CSignal::SIG_EC_NO_ERR)
             {
                 // for the first wrong signal, log the message details also
-                if(acMsgLine[0] == '\0')
+                if(first_msg == 1)
                 {
-                    sprintf_s(acMsgLine, sizeof(acMsgLine), "\nMSG_ID: %u \tMSG_TYPE: %c \tMSG_NAME: %s\n",
-                            msg->m_uiMsgID, msg->m_cFrameFormat, msg->m_acName.c_str());
-                    fileLog << acMsgLine;
+                    fileLog << endl;
+                    fileLog << "MSG_ID: ";
+                    fileLog << dec << msg->m_uiMsgID;
+                    fileLog << " \tMSG_TYPE: ";
+                    fileLog << msg->m_cFrameFormat;
+                    fileLog << " \tMSG_NAME: ";
+                    fileLog << msg->m_acName.c_str();
+                    fileLog << endl;
+                    first_msg = 0;
                 }
-                sprintf_s(acLine, sizeof(acLine), "\tSIG_NAME: %s, %s, ACTION: %s\n",
-                        sig->m_acName.c_str(), sig->GetErrorString(), sig->GetErrorAction());
-                fileLog << acLine;
+                fileLog << "\tSIG_NAME: ";
+                fileLog << sig->m_acName.c_str();
+                fileLog << ", ";
+                fileLog << sig->GetErrorString();
+                fileLog << ", ACTION: ";
+                fileLog << sig->GetErrorAction();
+                fileLog << endl;
             }
         }
     }
 
     //log errors in the signal list.
-    acMsgLine[0] = '\0';
+    first_msg = 1;
     list<CSignal>::iterator sig;
     for(sig=m_listSignal.begin(); sig!=m_listSignal.end(); ++sig)
     {
@@ -1034,14 +1064,22 @@ void CConverter::CreateLogFile(fstream& fileLog)
         if(sig->m_uiError != CSignal::SIG_EC_OVERFLOW)
         {
             // for the first wrong signal, log the message details also
-            if(acMsgLine[0] == '\0')
+            if(first_msg == 1)
             {
-                sprintf_s(acMsgLine, sizeof(acMsgLine), "\nMSG_ID: 1073741824 \tMSG_TYPE: X \tMSG_NAME: VECTOR__INDEPENDENT_SIG_MSG\n");
-                fileLog << acMsgLine;
+                fileLog << endl;
+                fileLog << "MSG_ID: 1073741824";
+                fileLog << " \tMSG_TYPE: X";
+                fileLog << " \tMSG_NAME: VECTOR__INDEPENDENT_SIG_MSG";
+                fileLog << endl;
+                first_msg = 0;
             }
-            sprintf_s(acLine, sizeof(acLine), "\tSIG_NAME: %s, %s, ACTION: %s\n",
-                    sig->m_acName.c_str(), sig->GetErrorString(), sig->GetErrorAction());
-            fileLog << acLine;
+            fileLog << "\tSIG_NAME: ";
+            fileLog << sig->m_acName.c_str();
+            fileLog << ", ";
+            fileLog << sig->GetErrorString();
+            fileLog << ", ACTION: ";
+            fileLog << sig->GetErrorAction();
+            fileLog << endl;
         }
     }
     list<string>::iterator str;
@@ -1054,15 +1092,27 @@ void CConverter::CreateLogFile(fstream& fileLog)
     {
         if(rParam->m_defError)
         {
-            sprintf_s(acLine, sizeof(acLine), "OBJECT ID : %s\tPARAM_NAME :\"%s\"\n\tDescription:Default Value tag(BA_DEF_DEF_) doesn;t exist \t Action Taken : Reset to default value\n",
-                    rParam->m_ObjectId.c_str(), rParam->m_ParamName.c_str());
-            fileLog << acLine;
+            fileLog << "OBJECT ID : ";
+            fileLog << rParam->m_ObjectId.c_str();
+            fileLog << "\tPARAM_NAME :\"";
+            fileLog << rParam->m_ParamName.c_str();
+            fileLog << "\"";
+            fileLog << endl;
+            fileLog << "\tDescription:Default Value tag(BA_DEF_DEF_) doesn;t exist ";
+            fileLog << "\t Action Taken : Reset to default value";
+            fileLog << endl;
         }
         if(rParam->m_RangeError)
         {
-            sprintf_s(acLine, sizeof(acLine), "OBJECT ID : %s\tPARAM_NAME :\"%s\"\n\tDescription: Invalid Data Ranges\t Action Taken : Reset to default value\n",
-                    rParam->m_ObjectId.c_str(), rParam->m_ParamName.c_str());
-            fileLog << acLine;
+            fileLog << "OBJECT ID : ";
+            fileLog << rParam->m_ObjectId.c_str();
+            fileLog << "\tPARAM_NAME :\"";
+            fileLog << rParam->m_ParamName.c_str();
+            fileLog << "\"";
+            fileLog << endl;
+            fileLog << "\tDescription: Invalid Data Ranges";
+            fileLog << "\t Action Taken : Reset to default value";
+            fileLog << endl;
         }
     }
 }

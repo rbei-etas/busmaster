@@ -22,8 +22,6 @@
  * Implementation of the signal class.
  */
 
-#include <string>
-
 #include "Converter.h"
 #include "Signal.h"
 #include "Tag.h"
@@ -756,7 +754,7 @@ bool CSignal::WriteSignaltofile(fstream &fileOutput, list<CSignal> &m_listSignal
             {
                 case CSignal::SIG_TYPE_BOOL:
                 case CSignal::SIG_TYPE_UINT:
-                    sprintf_s(acLine, sizeof(acLine), "%s %s,%u,%u,%u,%c,%u,%u,%c,%f,%f,%s,%s,%s\n", T_SIG,
+                    sprintf_s(acLine, sizeof(acLine), "%s %s,%u,%u,%u,%c,%u,%u,%c,%f,%f,%s,%s,%s", T_SIG,
                             sig->m_acName.c_str(), sig->m_ucLength, sig->m_ucWhichByte, sig->m_ucStartBit, sig->m_ucType,
                             sig->m_MaxValue.uiValue, sig->m_MinValue.uiValue, sig->m_ucDataFormat,
                             sig->m_fOffset, sig->m_fScaleFactor,
@@ -764,7 +762,7 @@ bool CSignal::WriteSignaltofile(fstream &fileOutput, list<CSignal> &m_listSignal
                     break;
 
                 case CSignal::SIG_TYPE_INT:
-                    sprintf_s(acLine, sizeof(acLine), "%s %s,%u,%u,%u,%c,%d,%d,%c,%f,%f,%s,%s,%s\n", T_SIG,
+                    sprintf_s(acLine, sizeof(acLine), "%s %s,%u,%u,%u,%c,%d,%d,%c,%f,%f,%s,%s,%s", T_SIG,
                             sig->m_acName.c_str(), sig->m_ucLength, sig->m_ucWhichByte, sig->m_ucStartBit, sig->m_ucType,
                             sig->m_MaxValue.iValue, sig->m_MinValue.iValue, sig->m_ucDataFormat,
                             sig->m_fOffset, sig->m_fScaleFactor,
@@ -773,7 +771,7 @@ bool CSignal::WriteSignaltofile(fstream &fileOutput, list<CSignal> &m_listSignal
 
 
                 case CSignal::SIG_TYPE_FLOAT:
-                    sprintf_s(acLine, sizeof(acLine), "%s %s,%u,%u,%u,%c,%f,%f,%c,%f,%f,%s,%s,%s\n", T_SIG,
+                    sprintf_s(acLine, sizeof(acLine), "%s %s,%u,%u,%u,%c,%f,%f,%c,%f,%f,%s,%s,%s", T_SIG,
                             sig->m_acName.c_str(), sig->m_ucLength, sig->m_ucWhichByte, sig->m_ucStartBit, sig->m_ucType,
                             sig->m_MaxValue.fValue, sig->m_MinValue.fValue, sig->m_ucDataFormat,
                             sig->m_fOffset, sig->m_fScaleFactor,
@@ -781,7 +779,7 @@ bool CSignal::WriteSignaltofile(fstream &fileOutput, list<CSignal> &m_listSignal
                     break;
 
                 case CSignal::SIG_TYPE_DOUBLE:
-                    sprintf_s(acLine, sizeof(acLine), "%s %s,%u,%u,%u,%c,%f,%f,%c,%f,%f,%s,%s,%s\n", T_SIG,
+                    sprintf_s(acLine, sizeof(acLine), "%s %s,%u,%u,%u,%c,%f,%f,%c,%f,%f,%s,%s,%s", T_SIG,
                             sig->m_acName.c_str(), sig->m_ucLength, sig->m_ucWhichByte, sig->m_ucStartBit, sig->m_ucType,
                             sig->m_MaxValue.dValue, sig->m_MinValue.dValue, sig->m_ucDataFormat,
                             sig->m_fOffset, sig->m_fScaleFactor,
@@ -789,7 +787,7 @@ bool CSignal::WriteSignaltofile(fstream &fileOutput, list<CSignal> &m_listSignal
                     break;
 
                 case CSignal::SIG_TYPE_INT64:
-                    sprintf_s(acLine, sizeof(acLine), "%s %s,%u,%u,%u,%c,%I64d,%I64d,%c,%f,%f,%s,%s,%s\n", T_SIG,
+                    sprintf_s(acLine, sizeof(acLine), "%s %s,%u,%u,%u,%c,%I64d,%I64d,%c,%f,%f,%s,%s,%s", T_SIG,
                             sig->m_acName.c_str(), sig->m_ucLength, sig->m_ucWhichByte, sig->m_ucStartBit, /*sig->m_ucType*/'I',
                             sig->m_MaxValue.i64Value, sig->m_MinValue.i64Value, sig->m_ucDataFormat,
                             sig->m_fOffset, sig->m_fScaleFactor,
@@ -797,7 +795,7 @@ bool CSignal::WriteSignaltofile(fstream &fileOutput, list<CSignal> &m_listSignal
                     break;
 
                 case CSignal::SIG_TYPE_UINT64:
-                    sprintf_s(acLine, sizeof(acLine), "%s %s,%u,%u,%u,%c,%I64u,%I64u,%c,%f,%f,%s,%s,%s\n", T_SIG,
+                    sprintf_s(acLine, sizeof(acLine), "%s %s,%u,%u,%u,%c,%I64u,%I64u,%c,%f,%f,%s,%s,%s", T_SIG,
                             sig->m_acName.c_str(), sig->m_ucLength, sig->m_ucWhichByte, sig->m_ucStartBit, /*sig->m_ucType*/'U',
                             sig->m_MaxValue.ui64Value, sig->m_MinValue.ui64Value, sig->m_ucDataFormat,
                             sig->m_fOffset, sig->m_fScaleFactor,
@@ -807,7 +805,7 @@ bool CSignal::WriteSignaltofile(fstream &fileOutput, list<CSignal> &m_listSignal
                 default:
                     break;
             }
-            fileOutput << acLine;
+            fileOutput << acLine << endl;
 
             CValueDescriptor val;
             val.writeValueDescToFile(fileOutput, sig->m_ucType, sig->m_listValueDescriptor);
