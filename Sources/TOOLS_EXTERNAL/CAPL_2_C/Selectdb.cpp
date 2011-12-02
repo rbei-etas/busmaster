@@ -38,32 +38,32 @@ static char THIS_FILE[] = __FILE__;
 
 
 CSelectdb::CSelectdb(CWnd* pParent /*=NULL*/)
-	: CDialog(CSelectdb::IDD, pParent)
+    : CDialog(CSelectdb::IDD, pParent)
 {
-	//{{AFX_DATA_INIT(CSelectdb)
-	m_option = FALSE;
-	//}}AFX_DATA_INIT
+    //{{AFX_DATA_INIT(CSelectdb)
+    m_option = FALSE;
+    //}}AFX_DATA_INIT
 //	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
 
 void CSelectdb::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CSelectdb)
-	DDX_Check(pDX, IDC_CHKB_OPTION, m_option);
-	//}}AFX_DATA_MAP
+    CDialog::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CSelectdb)
+    DDX_Check(pDX, IDC_CHKB_OPTION, m_option);
+    //}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(CSelectdb, CDialog)
-	//{{AFX_MSG_MAP(CSelectdb)
-	ON_BN_CLICKED(IDC_CBTN_CANOEDB, OnBrowseCANoeDb)
-	ON_BN_CLICKED(IDC_CBTN_BUSMASTERDB, OnBrowseBUSMASTERDb)
-	ON_BN_CLICKED(IDC_CHKB_OPTION, OnChkbOption)
-	ON_EN_CHANGE(IDC_EDIT_ADCANOE, OnChangeEditAdcanoe)
-	ON_WM_CLOSE()
-	//}}AFX_MSG_MAP
+    //{{AFX_MSG_MAP(CSelectdb)
+    ON_BN_CLICKED(IDC_CBTN_CANOEDB, OnBrowseCANoeDb)
+    ON_BN_CLICKED(IDC_CBTN_BUSMASTERDB, OnBrowseBUSMASTERDb)
+    ON_BN_CLICKED(IDC_CHKB_OPTION, OnChkbOption)
+    ON_EN_CHANGE(IDC_EDIT_ADCANOE, OnChangeEditAdcanoe)
+    ON_WM_CLOSE()
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -71,15 +71,15 @@ END_MESSAGE_MAP()
 
 void CSelectdb::SaveSettings()
 {
-	//this fuction will save the settings of last selected file in the registry.
-	CString strSection       = "Files";
-	CString strStringItem    = "Database File";
+    //this fuction will save the settings of last selected file in the registry.
+    CString strSection       = "Files";
+    CString strStringItem    = "Database File";
 
-	CWinApp* pApp = AfxGetApp();
-	CString omStrDatabaseName;
-	CWnd * pCAPL = GetDlgItem(IDC_EDIT_ADCANOE);
-	pCAPL->GetWindowText(omStrDatabaseName);
-   pApp->WriteProfileString(strSection, strStringItem,omStrDatabaseName);
+    CWinApp* pApp = AfxGetApp();
+    CString omStrDatabaseName;
+    CWnd * pCAPL = GetDlgItem(IDC_EDIT_ADCANOE);
+    pCAPL->GetWindowText(omStrDatabaseName);
+    pApp->WriteProfileString(strSection, strStringItem,omStrDatabaseName);
 }
 
 

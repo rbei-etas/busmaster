@@ -32,32 +32,33 @@
 
 #include "Message.h"
 
-class CConverter  
+class CConverter
 {
 public:
-	CConverter();
-	virtual ~CConverter();
+    CConverter();
+    virtual ~CConverter();
 
 protected:
-	static const char m_accHeader[];
+    static const char m_accHeader[];
 public:
-	unsigned int Convert(CString sCanoeFile);
+    unsigned int Convert(CString sCanoeFile);
 
 private:
-	unsigned int m_uiResultCode;
-	static const char *m_pacResultStrings[];
+    unsigned int m_uiResultCode;
+    static const char *m_pacResultStrings[];
 public:
-	CMessage ouFindMessage(UINT nMsgID);
-	CMessage ouFindMessage(CString omStrMsgName);
-	void CreateLogFile(CStdioFile& fileLog);
-	bool WriteToOutputFile(CString fileOutput);
-	void GenerateMessageList(CStdioFile& fileInput);
-	void ValidateMessageList();
-	enum {CON_RC_NOERROR,CON_RC_COMPLETED_WITH_ERROR,CON_RC_FILEOPEN_ERROR_INFILE,
-			CON_RC_FILEOPEN_ERROR_OUTFILE,CON_RC_FORMAT_ERROR_INFILE,CON_RC_FILEOPEN_ERROR_LOGFILE};
-	unsigned int SetResultCode(unsigned int uiCode);
-	const char* GetResultString();
-	CList<CMessage,CMessage&> m_listMessages;
+    CMessage ouFindMessage(UINT nMsgID);
+    CMessage ouFindMessage(CString omStrMsgName);
+    void CreateLogFile(CStdioFile& fileLog);
+    bool WriteToOutputFile(CString fileOutput);
+    void GenerateMessageList(CStdioFile& fileInput);
+    void ValidateMessageList();
+    enum {CON_RC_NOERROR,CON_RC_COMPLETED_WITH_ERROR,CON_RC_FILEOPEN_ERROR_INFILE,
+          CON_RC_FILEOPEN_ERROR_OUTFILE,CON_RC_FORMAT_ERROR_INFILE,CON_RC_FILEOPEN_ERROR_LOGFILE
+         };
+    unsigned int SetResultCode(unsigned int uiCode);
+    const char* GetResultString();
+    CList<CMessage,CMessage&> m_listMessages;
 
 };
 

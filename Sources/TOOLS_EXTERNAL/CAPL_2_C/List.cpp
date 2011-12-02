@@ -38,33 +38,33 @@ static char THIS_FILE[] = __FILE__;
 
 
 List::List(CWnd* pParent /*=NULL*/)
-	: CDialog(List::IDD, pParent)
+    : CDialog(List::IDD, pParent)
 {
-	//{{AFX_DATA_INIT(List)
-		// NOTE: the ClassWizard will add member initialization here
-	//}}AFX_DATA_INIT
+    //{{AFX_DATA_INIT(List)
+    // NOTE: the ClassWizard will add member initialization here
+    //}}AFX_DATA_INIT
 //	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
 
 void List::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(List)
-	DDX_Control(pDX, IDC_LSTB_UNSK, m_UnSupKeys);
-	DDX_Control(pDX, IDC_LSTB_AVLK, m_AltKeys);
-	DDX_Control(pDX, IDC_LSTB_ALTK, m_EquiKeys);
-	//}}AFX_DATA_MAP
+    CDialog::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(List)
+    DDX_Control(pDX, IDC_LSTB_UNSK, m_UnSupKeys);
+    DDX_Control(pDX, IDC_LSTB_AVLK, m_AltKeys);
+    DDX_Control(pDX, IDC_LSTB_ALTK, m_EquiKeys);
+    //}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(List, CDialog)
-	//{{AFX_MSG_MAP(List)
-	ON_BN_CLICKED(IDC_CBTN_ADD, OnAdd)
-	ON_BN_CLICKED(IDC_CBTN_OK, OnTerminate)
-	ON_BN_CLICKED(IDC_CBTN_RMV, OnRemove)
-	ON_WM_CLOSE()
-	//}}AFX_MSG_MAP
+    //{{AFX_MSG_MAP(List)
+    ON_BN_CLICKED(IDC_CBTN_ADD, OnAdd)
+    ON_BN_CLICKED(IDC_CBTN_OK, OnTerminate)
+    ON_BN_CLICKED(IDC_CBTN_RMV, OnRemove)
+    ON_WM_CLOSE()
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////

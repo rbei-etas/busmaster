@@ -36,44 +36,44 @@ class CConverterDlg : public CDialog
 {
 // Construction
 public:
-	void SaveSettings();
-	CConverterDlg(CWnd* pParent = NULL);	// standard constructor
+    void SaveSettings();
+    CConverterDlg(CWnd* pParent = NULL);	// standard constructor
 
 // Dialog Data
-	//{{AFX_DATA(CConverterDlg)
-	enum { IDD = IDD_DLG_LANG_CNVRTR };
-	BOOL	m_check;
-	BOOL	m_savedb;
-	//}}AFX_DATA
+    //{{AFX_DATA(CConverterDlg)
+    enum { IDD = IDD_DLG_LANG_CNVRTR };
+    BOOL	m_check;
+    BOOL	m_savedb;
+    //}}AFX_DATA
 
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CConverterDlg)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CConverterDlg)
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
-	HICON m_hIcon;
+    HICON m_hIcon;
 
-	// Generated message map functions
-	//{{AFX_MSG(CConverterDlg)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
-	afx_msg void OnPaint();
-	afx_msg HCURSOR OnQueryDragIcon();
-	afx_msg void OnBrowseSource();
-	afx_msg void OnBrowseDest();
-	afx_msg void OnShowLog();
-	afx_msg void OnConvert();
-	afx_msg void OnCancel();
-	afx_msg void OnChangeEditInput();
-	afx_msg void OnChkbOptn();
-	afx_msg void OnBrowseCANoeDb();
-	afx_msg void OnBrowseBUSMASTERDb();
-	afx_msg void OnChkbSavedb();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+    //{{AFX_MSG(CConverterDlg)
+    virtual BOOL OnInitDialog();
+    afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+    afx_msg void OnPaint();
+    afx_msg HCURSOR OnQueryDragIcon();
+    afx_msg void OnBrowseSource();
+    afx_msg void OnBrowseDest();
+    afx_msg void OnShowLog();
+    afx_msg void OnConvert();
+    afx_msg void OnCancel();
+    afx_msg void OnChangeEditInput();
+    afx_msg void OnChkbOptn();
+    afx_msg void OnBrowseCANoeDb();
+    afx_msg void OnBrowseBUSMASTERDb();
+    afx_msg void OnChkbSavedb();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

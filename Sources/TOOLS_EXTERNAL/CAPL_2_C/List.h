@@ -38,37 +38,37 @@ class List : public CDialog
 {
 // Construction
 public:
-	List(CWnd* pParent = NULL);   // standard constructor
+    List(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
-	//{{AFX_DATA(List)
-	enum { IDD = IDD_DLG_USER_INTER };
-	CListBox	m_UnSupKeys;
-	CListBox    m_AltKeys;
-	CListBox    m_EquiKeys;
-	//}}AFX_DATA
+    //{{AFX_DATA(List)
+    enum { IDD = IDD_DLG_USER_INTER };
+    CListBox	m_UnSupKeys;
+    CListBox    m_AltKeys;
+    CListBox    m_EquiKeys;
+    //}}AFX_DATA
 
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(List)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual void OnCancel();
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(List)
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void OnCancel();
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
 
-	// Generated message map functions
-	//{{AFX_MSG(List)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnAdd();
-	afx_msg void OnTerminate();
-	afx_msg void OnRemove();
-	afx_msg void OnClose();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+    //{{AFX_MSG(List)
+    virtual BOOL OnInitDialog();
+    afx_msg void OnAdd();
+    afx_msg void OnTerminate();
+    afx_msg void OnRemove();
+    afx_msg void OnClose();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 

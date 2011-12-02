@@ -33,15 +33,15 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CSymbolTable  
+class CSymbolTable
 {
-	CStringArray m_omData;
+    CStringArray m_omData;
 public:
-	int nGetSize();
-	const CString omGetAt(int nIndex);
-	void vClearArray();
-	int nFind(CString omValue) const;
-	BOOL bAdd(const CString& omValue);
+    int nGetSize();
+    const CString omGetAt(int nIndex);
+    void vClearArray();
+    int nFind(CString omValue) const;
+    BOOL bAdd(const CString& omValue);
 };
 
 #endif // !defined(AFX_SYMBOLTABLE_H__0CA688F3_9D94_11D8_90D8_0010B5A6E0E0__INCLUDED_)

@@ -40,55 +40,55 @@ static char THIS_FILE[]=__FILE__;
 
 BOOL CSymbolTable::bAdd(const CString& omValue)
 {
-	//this funtion will add a data to the array if it is not in that array.
-	//If that element is already in the arry it will not add that.
-	BOOL bSuccess = FALSE;
-	if( CSymbolTable::nFind( omValue) == -1)
-	{
-		m_omData.Add(omValue);
-		bSuccess = TRUE;
-	}
-	return bSuccess;
+    //this funtion will add a data to the array if it is not in that array.
+    //If that element is already in the arry it will not add that.
+    BOOL bSuccess = FALSE;
+    if( CSymbolTable::nFind( omValue) == -1)
+    {
+        m_omData.Add(omValue);
+        bSuccess = TRUE;
+    }
+    return bSuccess;
 }
 
 
 int CSymbolTable::nFind(CString omValue) const
 {
-	//this will find an element in the array and will retrun the position
-	//of the element the the array. If it will not found in the array the 
-	//function will return -1.
-	omValue.MakeLower();
-	int nPos = -1;
-	int size = m_omData.GetSize();
-	for( int nIndex = 0; nIndex< size ; nIndex++)
-	{
-		CString omElement = m_omData.GetAt(nIndex);
-		omElement.MakeLower();
-		if ( omValue == omElement )
-		{
-			nPos = nIndex;
-			nIndex = size;
-		}
-	}
-	return nPos;
+    //this will find an element in the array and will retrun the position
+    //of the element the the array. If it will not found in the array the
+    //function will return -1.
+    omValue.MakeLower();
+    int nPos = -1;
+    int size = m_omData.GetSize();
+    for( int nIndex = 0; nIndex< size ; nIndex++)
+    {
+        CString omElement = m_omData.GetAt(nIndex);
+        omElement.MakeLower();
+        if ( omValue == omElement )
+        {
+            nPos = nIndex;
+            nIndex = size;
+        }
+    }
+    return nPos;
 }
 
 void CSymbolTable::vClearArray()
 {
-	//this will clear the contents of array.
-	m_omData.RemoveAll();
+    //this will clear the contents of array.
+    m_omData.RemoveAll();
 
 }
 
 const CString CSymbolTable::omGetAt(int nIndex)
 {
-	//this will return the data at a particular index in the array.
-	ASSERT( nIndex < m_omData.GetSize());
-	return m_omData.GetAt( nIndex);
+    //this will return the data at a particular index in the array.
+    ASSERT( nIndex < m_omData.GetSize());
+    return m_omData.GetAt( nIndex);
 }
 
 int CSymbolTable::nGetSize()
 {
-	//this will return the size of an array.
-	return m_omData.GetSize();
+    //this will return the size of an array.
+    return m_omData.GetSize();
 }

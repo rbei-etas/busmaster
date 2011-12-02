@@ -39,12 +39,12 @@ static char THIS_FILE[]=__FILE__;
 
 CValueDescriptor::CValueDescriptor()
 {
-	m_value.dValue = 0; // assume double type for default constructor
-	m_acDescriptor[0] = '\0';
+    m_value.dValue = 0; // assume double type for default constructor
+    m_acDescriptor[0] = '\0';
 }
 
 CValueDescriptor::~CValueDescriptor()
 {
-	// nothing special to do here
+    // nothing special to do here
 }
 

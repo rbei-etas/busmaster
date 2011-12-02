@@ -39,58 +39,58 @@ static char THIS_FILE[]=__FILE__;
 
 CMessage::CMessage()
 {
-	m_acName[0] = '\0';
-	m_cDataFormat = CSignal::SIG_DF_INTEL;
-	m_cFrameFormat = MSG_FF_STANDARD;
-	m_ucLength = 8;
-	m_ucNumOfSignals = 1;
-	m_uiMsgID = 0;
-	m_listSignals.RemoveAll();
+    m_acName[0] = '\0';
+    m_cDataFormat = CSignal::SIG_DF_INTEL;
+    m_cFrameFormat = MSG_FF_STANDARD;
+    m_ucLength = 8;
+    m_ucNumOfSignals = 1;
+    m_uiMsgID = 0;
+    m_listSignals.RemoveAll();
 }
 
 CMessage::~CMessage()
 {
-	if(!m_listSignals.IsEmpty())
-	{
-		m_listSignals.RemoveAll();
-	}
+    if(!m_listSignals.IsEmpty())
+    {
+        m_listSignals.RemoveAll();
+    }
 }
 
 CMessage& CMessage::operator=(CMessage& message)
 {
-	// if there are some elements in the signal list clear them first
-	if(!m_listSignals.IsEmpty())
-	{
-		m_listSignals.RemoveAll();
-	}
-	
-	// now copy the other elements of the new message to this
-	strcpy(m_acName,message.m_acName);
-	m_cDataFormat = message.m_cDataFormat;
-	m_cFrameFormat = message.m_cFrameFormat;
-	m_ucLength = message.m_ucLength;
-	m_ucNumOfSignals = message.m_ucNumOfSignals;
-	m_uiMsgID = message.m_uiMsgID;
-	m_listSignals.AddTail(&message.m_listSignals);
-	return (*this);
+    // if there are some elements in the signal list clear them first
+    if(!m_listSignals.IsEmpty())
+    {
+        m_listSignals.RemoveAll();
+    }
+
+    // now copy the other elements of the new message to this
+    strcpy(m_acName,message.m_acName);
+    m_cDataFormat = message.m_cDataFormat;
+    m_cFrameFormat = message.m_cFrameFormat;
+    m_ucLength = message.m_ucLength;
+    m_ucNumOfSignals = message.m_ucNumOfSignals;
+    m_uiMsgID = message.m_uiMsgID;
+    m_listSignals.AddTail(&message.m_listSignals);
+    return (*this);
 }
 
 CMessage::CMessage(CMessage& message)
 {
-	// if there are some elements in the signal list clear them first
-	if(!m_listSignals.IsEmpty())
-	{
-		m_listSignals.RemoveAll();
-	}
-	
-	// now copy the other elements of the new message to this
-	strcpy(m_acName,message.m_acName);
-	m_cDataFormat = message.m_cDataFormat;
-	m_cFrameFormat = message.m_cFrameFormat;
-	m_ucLength = message.m_ucLength;
-	m_ucNumOfSignals = message.m_ucNumOfSignals;
-	m_uiMsgID = message.m_uiMsgID;
-	m_listSignals.AddTail(&message.m_listSignals);
+    // if there are some elements in the signal list clear them first
+    if(!m_listSignals.IsEmpty())
+    {
+        m_listSignals.RemoveAll();
+    }
+
+    // now copy the other elements of the new message to this
+    strcpy(m_acName,message.m_acName);
+    m_cDataFormat = message.m_cDataFormat;
+    m_cFrameFormat = message.m_cFrameFormat;
+    m_ucLength = message.m_ucLength;
+    m_ucNumOfSignals = message.m_ucNumOfSignals;
+    m_uiMsgID = message.m_uiMsgID;
+    m_listSignals.AddTail(&message.m_listSignals);
 }
 
 
@@ -98,38 +98,38 @@ CMessage::CMessage(CMessage& message)
 // return an appropriate error code if something wrong with messageline
 int CMessage::Format(char *pcLine)
 {
-	char* pcToken;
-	// get the MSG ID
-	pcToken = strtok(pcLine," :");				
-	m_uiMsgID = (unsigned int)atoi(pcToken);
-				
-	/*
-	// set the id and frame format
-	// canoe puts MSbit = 1 for extended ID
-	if(msg.m_uiMsgID < 0x80000000UL)
-	{
-		msg.m_cFrameFormat = CMessage::MSG_FF_STANDARD;					
-	}
-	else
-	{
-		msg.m_cFrameFormat = CMessage::MSG_FF_EXTENDED;
-		msg.m_uiMsgID &= 0x7FFFFFFF;
-	}
-	*/
+    char* pcToken;
+    // get the MSG ID
+    pcToken = strtok(pcLine," :");
+    m_uiMsgID = (unsigned int)atoi(pcToken);
 
-	// get the message name
-	pcToken = strtok(NULL," :");
-	strcpy(m_acName,pcToken);
-				
-	// set the message length
-	pcToken = strtok(NULL," :");
-	m_ucLength = (unsigned char)atoi(pcToken);
-	
-	// set the Data format
-	m_cDataFormat = CSignal::SIG_DF_INTEL;
-	
-	// set the number of signals 
-	m_ucNumOfSignals = 0;	
+    /*
+    // set the id and frame format
+    // canoe puts MSbit = 1 for extended ID
+    if(msg.m_uiMsgID < 0x80000000UL)
+    {
+    	msg.m_cFrameFormat = CMessage::MSG_FF_STANDARD;
+    }
+    else
+    {
+    	msg.m_cFrameFormat = CMessage::MSG_FF_EXTENDED;
+    	msg.m_uiMsgID &= 0x7FFFFFFF;
+    }
+    */
 
-	return 1;
+    // get the message name
+    pcToken = strtok(NULL," :");
+    strcpy(m_acName,pcToken);
+
+    // set the message length
+    pcToken = strtok(NULL," :");
+    m_ucLength = (unsigned char)atoi(pcToken);
+
+    // set the Data format
+    m_cDataFormat = CSignal::SIG_DF_INTEL;
+
+    // set the number of signals
+    m_ucNumOfSignals = 0;
+
+    return 1;
 }
