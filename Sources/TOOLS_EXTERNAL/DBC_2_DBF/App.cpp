@@ -47,7 +47,7 @@ END_MESSAGE_MAP()
 */
 CCANDBConverterApp::CCANDBConverterApp()
 {
-    // Place all significant initialization in InitInstance	
+    // Place all significant initialization in InitInstance
 }
 
 CCANDBConverterApp theApp;

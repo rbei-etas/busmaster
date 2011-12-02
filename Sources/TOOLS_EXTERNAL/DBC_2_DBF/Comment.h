@@ -29,7 +29,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CComment  
+class CComment
 {
 public:
     CComment();

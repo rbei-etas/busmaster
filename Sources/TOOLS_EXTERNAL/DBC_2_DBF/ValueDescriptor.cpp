@@ -69,39 +69,39 @@ void CValueDescriptor::writeValuDescToFile(CStdioFile &fileOutput,char m_ucType,
         CValueDescriptor& rValDesc = m_listValueDescriptor.GetNext(posValDesc);
         switch(m_ucType)
         {
-        case CSignal::SIG_TYPE_BOOL:
-        case CSignal::SIG_TYPE_UINT:
-            sprintf(acLine,"%s \"%s\",%u\n",T_VALUE_DESC,rValDesc.m_acDescriptor,rValDesc.m_value.uiValue);
-            break;
+            case CSignal::SIG_TYPE_BOOL:
+            case CSignal::SIG_TYPE_UINT:
+                sprintf(acLine,"%s \"%s\",%u\n",T_VALUE_DESC,rValDesc.m_acDescriptor,rValDesc.m_value.uiValue);
+                break;
 
-        case CSignal::SIG_TYPE_INT:
-            sprintf(acLine,"%s \"%s\",%d\n",T_VALUE_DESC,rValDesc.m_acDescriptor,rValDesc.m_value.iValue);
-            break;
+            case CSignal::SIG_TYPE_INT:
+                sprintf(acLine,"%s \"%s\",%d\n",T_VALUE_DESC,rValDesc.m_acDescriptor,rValDesc.m_value.iValue);
+                break;
 
-            // when FLOAT and DOUBLE are supported enable this
-            /*
-            case CSignal::SIG_TYPE_FLOAT:			
-            sprintf(acLine,"%s \"%s\",%f\n",T_VALUE_DESC,rValDesc.m_acDescriptor,rValDesc.m_value.fValue);
-            break;
+                // when FLOAT and DOUBLE are supported enable this
+                /*
+                case CSignal::SIG_TYPE_FLOAT:
+                sprintf(acLine,"%s \"%s\",%f\n",T_VALUE_DESC,rValDesc.m_acDescriptor,rValDesc.m_value.fValue);
+                break;
 
-            case CSignal::SIG_TYPE_DOUBLE:
-            sprintf(acLine,"%s \"%s\",%f\n",T_VALUE_DESC,rValDesc.m_acDescriptor,rValDesc.m_value.dValue);
-            break;
-            */
+                case CSignal::SIG_TYPE_DOUBLE:
+                sprintf(acLine,"%s \"%s\",%f\n",T_VALUE_DESC,rValDesc.m_acDescriptor,rValDesc.m_value.dValue);
+                break;
+                */
 
-        case CSignal::SIG_TYPE_INT64:
-            sprintf(acLine,"%s \"%s\",%I64d\n",T_VALUE_DESC,rValDesc.m_acDescriptor,rValDesc.m_value.i64Value);
-            break;
+            case CSignal::SIG_TYPE_INT64:
+                sprintf(acLine,"%s \"%s\",%I64d\n",T_VALUE_DESC,rValDesc.m_acDescriptor,rValDesc.m_value.i64Value);
+                break;
 
-        case CSignal::SIG_TYPE_UINT64:
-            sprintf(acLine,"%s \"%s\",%I64u\n",T_VALUE_DESC,rValDesc.m_acDescriptor,rValDesc.m_value.ui64Value);
-            break;
+            case CSignal::SIG_TYPE_UINT64:
+                sprintf(acLine,"%s \"%s\",%I64u\n",T_VALUE_DESC,rValDesc.m_acDescriptor,rValDesc.m_value.ui64Value);
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
 
-        fileOutput.WriteString(acLine);	
+        fileOutput.WriteString(acLine);
     }
     return;
 }

@@ -45,7 +45,7 @@ public:
     char			m_ParamName[defVDES_MAX_DESC_LEN];
     bool            m_RangeError;
     bool            m_defError;
-    CList<CParameterValues,CParameterValues&> m_listParamValues[6];    
+    CList<CParameterValues,CParameterValues&> m_listParamValues[6];
     CParameters();
     int Format(char *pcLine);
     CParameters& operator=(CParameters& param);

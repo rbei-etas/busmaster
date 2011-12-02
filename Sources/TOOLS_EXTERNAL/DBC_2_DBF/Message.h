@@ -32,8 +32,8 @@
 
 #include <afxtempl.h>
 #include "Signal.h"
-//#include"definitions.h" 
-class CMessage  
+//#include"definitions.h"
+class CMessage
 {
 public:
     int Format(char *pcLine);
@@ -41,7 +41,7 @@ public:
     virtual ~CMessage();
     CMessage& operator=(CMessage& message);
     // data members
-    enum MSG_FRAME_FROMAT{MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
+    enum MSG_FRAME_FROMAT {MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
 
     char			m_acName[defMSG_MAX_NAME_LEN];
     CString			m_txNode;

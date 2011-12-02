@@ -16,7 +16,7 @@
 /**
  * \file      Signal.cpp
  * \brief     implementation of the CSignal class.
- * \authors   Amitesh Bharti, Pemmaiah BD, Mahesh.B.S 
+ * \authors   Amitesh Bharti, Pemmaiah BD, Mahesh.B.S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
@@ -37,9 +37,9 @@ static char THIS_FILE[]=__FILE__;
 CSignal::CSignal()
 {
     m_acMultiplex[0]= '\0';
-    m_acName[0] = '\0'; // 
+    m_acName[0] = '\0'; //
     m_ucLength = 1; // minimum signal length should be 1 bit
-    m_ucWhichByte = 1; // ONE based index 
+    m_ucWhichByte = 1; // ONE based index
     m_ucStartBit = 0; // ZERO based index
     m_ucType = SIG_TYPE_BOOL; // let default be bool type -- match with default length
     m_MaxValue.uiValue = 1; // use unsigned int field for bool also
@@ -93,8 +93,8 @@ CSignal& CSignal::operator=(CSignal& signal)
     m_fScaleFactor = signal.m_fScaleFactor;
     strcpy(m_acUnit,signal.m_acUnit);
     strcpy(m_rxNode,signal.m_rxNode);
-    m_uiError = signal.m_uiError; 
-    // now copy the list 
+    m_uiError = signal.m_uiError;
+    // now copy the list
     m_listValueDescriptor.AddTail(&signal.m_listValueDescriptor);
     return (*this);
 }
@@ -122,14 +122,14 @@ int CSignal::Format(char *pcLine)
     // skip leading spaces first
     while(*pcToken && *pcToken == ' ')
     {
-        pcToken++; 
+        pcToken++;
     }
-    // now get the signal name 
+    // now get the signal name
     while(*pcToken && *pcToken != ' ')
     {
         *pcTemp++ = *pcToken++; // copy SIG_NAME only, i.e. till first 'space'
     }
-    *pcTemp = '\0'; // terminate it 
+    *pcTemp = '\0'; // terminate it
 
     strcpy(m_acName,acTemp); // copy the name to the signal's data member
 
@@ -143,7 +143,7 @@ int CSignal::Format(char *pcLine)
     {
         *pcTemp++ = *pcToken++; // copy SIG_NAME only, i.e. till first 'space'
     }
-    *pcTemp = '\0'; // terminate it 
+    *pcTemp = '\0'; // terminate it
     strcpy(m_acMultiplex,acTemp); // copy the name to the signal's data member
 
     pcTemp = acTemp; // reset pcTemp to start of buffer
@@ -163,11 +163,11 @@ int CSignal::Format(char *pcLine)
     // store the start byte and start bit information
     int uiStartBit = atoi(acTemp);
     int uiStartBitX = uiStartBit;
-    // rajesh: 21-03-2003: begin: 
+    // rajesh: 21-03-2003: begin:
     // based on INTEL/MOTOROLA - the start bit is represnted differently by CANoe.
     // With motorola format, bits are stored in reverse order. BUSMASTER
-    // does not differentiate between INTEL and MOTOROLA at this stage and START_BYTE 
-    // and START_BIT are not depending on this. So process this after identifying the 
+    // does not differentiate between INTEL and MOTOROLA at this stage and START_BYTE
+    // and START_BIT are not depending on this. So process this after identifying the
     // format. Original code commented - moved down.
     // rajesh: 21-03-2003: end_1: continued below
 
@@ -191,8 +191,8 @@ int CSignal::Format(char *pcLine)
         //THe MSB is stored and will be in Big Endian format.
         //Get the LSB
 
-        /*In CANoe if we view the bits as a 8x8 Matrix, for Motorala signals 
-        the numbering will be in the reverse order with in the each row. So to get the 
+        /*In CANoe if we view the bits as a 8x8 Matrix, for Motorala signals
+        the numbering will be in the reverse order with in the each row. So to get the
         proper MSB we need to again swap the bit position with in the row*/
         //i.e here we need to get the left half of the bits to the right and right
         //to the left with in the same row
@@ -216,11 +216,11 @@ int CSignal::Format(char *pcLine)
     m_ucStartBit = uiStartBitX % 8;
 
 
-    // get sign of signal. At this point we know only whether the 
-    // signal is signed or unsigned. Whether it is float or double 
+    // get sign of signal. At this point we know only whether the
+    // signal is signed or unsigned. Whether it is float or double
     // will be known later only when we process "SIG_VALTYPE_"
     if(m_ucLength > 32)
-    {	
+    {
         m_ucType = (*(++pcToken) == '-') ? SIG_TYPE_INT64 : SIG_TYPE_UINT64;
     }
     else
@@ -347,48 +347,48 @@ int CSignal::AddValueDescriptors(char *pcLine,CStdioFile &fileInput)
     }
     while(*pcLine && *pcLine != ';')
     {   pcTemp[0]='\0';
-    if(strlen(pcLine) < 100 && true_end == false)
-    {
-        fileInput.ReadString(acLine,1026);
-        strcpy(pcTemp,pcLine);
-        strcat(pcTemp,acLine);
-        pcLine = pcTemp;
-        if(pcLine[strlen(pcLine)-2] == ';')
-            true_end  = true;
-    }
-    pcDesc=acDesc;
-    while(*pcLine && *pcLine==' ')
-        pcLine++;
-    pcToken=strtok(pcLine," ");
-    strcpy(acValue,pcToken);
-    pcLine=pcLine+(strlen(pcToken))+1;
-
-    if(*pcLine=='\"')
-    {
-        pcLine++;
-        if(*pcLine!='\"')
+        if(strlen(pcLine) < 100 && true_end == false)
         {
-            *pcDesc++=*pcLine++;
-            while(*pcLine && *pcLine!='\"')
-            {
-                if ((*pcLine != '\r') && (*pcLine != '\n'))
-                    *pcDesc++ = *pcLine;
-                pcLine++;
-            }
+            fileInput.ReadString(acLine,1026);
+            strcpy(pcTemp,pcLine);
+            strcat(pcTemp,acLine);
+            pcLine = pcTemp;
+            if(pcLine[strlen(pcLine)-2] == ';')
+                true_end  = true;
         }
-        *pcDesc='\0';
-    }
-    pcLine++;
-    while(*pcLine==' ')
+        pcDesc=acDesc;
+        while(*pcLine && *pcLine==' ')
+            pcLine++;
+        pcToken=strtok(pcLine," ");
+        strcpy(acValue,pcToken);
+        pcLine=pcLine+(strlen(pcToken))+1;
+
+        if(*pcLine=='\"')
+        {
+            pcLine++;
+            if(*pcLine!='\"')
+            {
+                *pcDesc++=*pcLine++;
+                while(*pcLine && *pcLine!='\"')
+                {
+                    if ((*pcLine != '\r') && (*pcLine != '\n'))
+                        *pcDesc++ = *pcLine;
+                    pcLine++;
+                }
+            }
+            *pcDesc='\0';
+        }
         pcLine++;
-    CValueDescriptor valDesc;
-    if(this->m_ucLength <= 32)
-        valDesc.m_value.dValue = atof(acValue);
-    else
-        valDesc.m_value.i64Value = _atoi64(acValue);
-    strcpy(valDesc.m_acDescriptor,acDesc);																		
-    m_listValueDescriptor.AddTail(valDesc);
-    pcDesc=acDesc;
+        while(*pcLine==' ')
+            pcLine++;
+        CValueDescriptor valDesc;
+        if(this->m_ucLength <= 32)
+            valDesc.m_value.dValue = atof(acValue);
+        else
+            valDesc.m_value.i64Value = _atoi64(acValue);
+        strcpy(valDesc.m_acDescriptor,acDesc);
+        m_listValueDescriptor.AddTail(valDesc);
+        pcDesc=acDesc;
     }
     return 1;
 }
@@ -396,7 +396,7 @@ int CSignal::AddValueDescriptors(char *pcLine,CStdioFile &fileInput)
 /**
  * \brief  Validate for conformance to BUSMASTER DB format
  * \return SIG_EC_NO_ERR, SIG_EC_DATA_FORMAT_ERR, SIG_EC_LENGTH_ERR, SIG_EC_STARTBIT_ERR, SIG_EC_TYPE_ERR
- * 
+ *
  * Convert single bit INT and UINT to BOOL.
  * If MAX_value == MIN_value update MAX_value to MAX_default
  * else if MAX_value == MIN_value == MAX_default, update MIN_value to MIN_default
@@ -415,7 +415,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
     }*/
 
     // if more than 64 bits should be discarded
-    if(m_ucLength > 64) 
+    if(m_ucLength > 64)
     {
         return (m_uiError = SIG_EC_LENGTH_ERR);
     }
@@ -452,15 +452,15 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
     // update MAX value and MIN value based on type
     switch(m_ucType)
     {
-    case SIG_TYPE_BOOL:
-    case SIG_TYPE_UINT:
+        case SIG_TYPE_BOOL:
+        case SIG_TYPE_UINT:
         {
             UINT64 unMaxVal;
             UINT64 unMinVal;
             unConvertPhysicalToRaw(m_MaxValue.dValue, m_MinValue.dValue, m_fOffset, m_fScaleFactor, unMaxVal, unMinVal);
             m_MaxValue.uiValue = (unsigned int)unMaxVal;             //m_MaxValue.dValue;
             m_MinValue.uiValue = (unsigned int)unMinVal;             //m_MinValue.dValue;
-            unsigned int uiDefault; 		
+            unsigned int uiDefault;
             uiDefault = (unsigned int)((1 << m_ucLength) - 1);
             //if both max and min value are equal set it to default
             if(m_MaxValue.uiValue == 0 && m_MinValue.uiValue == 0)
@@ -470,7 +470,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
                 m_uiError = SIG_EC_OVERFLOW;
             }
             //if Max value out of range reset it to maximum possible value
-            if(m_MaxValue.uiValue > uiDefault || m_MaxValue.uiValue < 0) 
+            if(m_MaxValue.uiValue > uiDefault || m_MaxValue.uiValue < 0)
             {
                 m_MaxValue.uiValue = uiDefault;
                 m_uiError = SIG_EC_OVERFLOW;
@@ -482,11 +482,11 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
                 m_uiError = SIG_EC_OVERFLOW;
             }
             //if Max and Min are equal reset min.
-            if(m_MaxValue.uiValue == m_MinValue.uiValue) 
+            if(m_MaxValue.uiValue == m_MinValue.uiValue)
             {
                 if(m_MaxValue.uiValue == 0)
                 {
-                    //This is because after setting min value to 0 than if max value is also 0 
+                    //This is because after setting min value to 0 than if max value is also 0
                     //we need to set max value to maximum
                     m_MaxValue.uiValue = uiDefault;
                 }
@@ -497,15 +497,15 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
         }
         break;
 
-    case SIG_TYPE_INT:
+        case SIG_TYPE_INT:
         {
             INT64 nMaxVal;
             INT64 nMinVal;
             nConvertPhysicalToRaw(m_MaxValue.dValue, m_MinValue.dValue, m_fOffset, m_fScaleFactor, nMaxVal, nMinVal);
             m_MaxValue.iValue = (int)nMaxVal;             //m_MaxValue.dValue;
             m_MinValue.iValue = (int)nMinVal;             //m_MinValue.dValue;
-            int iDefault; 		
-            iDefault = (int)(unsigned int)1 << (m_ucLength - 1);		
+            int iDefault;
+            iDefault = (int)(unsigned int)1 << (m_ucLength - 1);
             iDefault -= 1;
             //if both max and min value are equal set it to default
             if(m_MaxValue.iValue == 0 && m_MinValue.iValue == 0)
@@ -515,7 +515,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
                 m_uiError = SIG_EC_OVERFLOW;
             }
             //if Max value out of range reset it to maximum possible value
-            if(m_MaxValue.iValue > iDefault || m_MaxValue.iValue < (-iDefault-1)) 
+            if(m_MaxValue.iValue > iDefault || m_MaxValue.iValue < (-iDefault-1))
             {
                 m_MaxValue.iValue = iDefault;
                 m_uiError = SIG_EC_OVERFLOW;
@@ -527,7 +527,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
                 m_uiError = SIG_EC_OVERFLOW;
             }
             //if Max and Min are equal reset min.
-            if(m_MaxValue.iValue == m_MinValue.iValue) 
+            if(m_MaxValue.iValue == m_MinValue.iValue)
             {
                 m_MinValue.iValue = (-iDefault-1);
                 m_uiError = SIG_EC_OVERFLOW;
@@ -535,18 +535,18 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
             break;
         }
 
-        // float is not supported right now, so no validation  
-    case SIG_TYPE_FLOAT:
-        m_MaxValue.fValue = (float)m_MaxValue.dValue;
-        m_MinValue.fValue = (float)m_MinValue.dValue;	
-        break;
+        // float is not supported right now, so no validation
+        case SIG_TYPE_FLOAT:
+            m_MaxValue.fValue = (float)m_MaxValue.dValue;
+            m_MinValue.fValue = (float)m_MinValue.dValue;
+            break;
 
-        // double is not supported right now, so no validation
-    case SIG_TYPE_DOUBLE:	
-        // no need to update MAX and MIN values, already stored as double
-        break;
+            // double is not supported right now, so no validation
+        case SIG_TYPE_DOUBLE:
+            // no need to update MAX and MIN values, already stored as double
+            break;
 
-    case SIG_TYPE_INT64:
+        case SIG_TYPE_INT64:
         {
             //Testing required - venkat
             // no need to update MAX and MIN values, already stored as i64Value
@@ -555,12 +555,12 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
             nConvertPhysicalToRaw(m_MaxValue.dValue, m_MinValue.dValue, m_fOffset, m_fScaleFactor, nMaxVal, nMinVal);
             m_MaxValue.i64Value = nMaxVal;             //m_MaxValue.dValue;
             m_MinValue.i64Value = nMinVal;             //m_MinValue.dValue;
-            UINT unPower; 
+            UINT unPower;
             __int64 i64Default;
             UINT i;
             /*if(m_ucLength == 64 )
             {
-            unPower = m_ucLength - 2;   
+            unPower = m_ucLength - 2;
             }
             else
             {
@@ -568,7 +568,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
             }*/
             unPower = m_ucLength - 1;
             i64Default = 1;
-            for(i = 0; i<unPower;i++)
+            for(i = 0; i<unPower; i++)
             {
                 i64Default = (__int64)( 2*i64Default);
             }
@@ -580,7 +580,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
                 m_uiError = SIG_EC_OVERFLOW;
             }
             //if Max value out of range reset it to maximum possible value
-            if(m_MaxValue.i64Value > i64Default || m_MaxValue.i64Value < (-i64Default-1)) 
+            if(m_MaxValue.i64Value > i64Default || m_MaxValue.i64Value < (-i64Default-1))
             {
                 m_MaxValue.i64Value = i64Default;
                 m_uiError = SIG_EC_OVERFLOW;
@@ -592,7 +592,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
                 m_uiError = SIG_EC_OVERFLOW;
             }
             //if Max and Min are equal reset min.
-            if(m_MaxValue.i64Value == m_MinValue.i64Value) 
+            if(m_MaxValue.i64Value == m_MinValue.i64Value)
             {
                 m_MinValue.i64Value = (-i64Default-1);
                 m_uiError = SIG_EC_OVERFLOW;
@@ -600,7 +600,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
         }
         break;
 
-    case SIG_TYPE_UINT64:
+        case SIG_TYPE_UINT64:
         {
             UINT64 unMaxVal;
             UINT64 unMinVal;
@@ -610,7 +610,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
             unsigned __int64 ui64Default;
             /*if(m_ucLength == 64 )
             {
-            unPower = m_ucLength - 1;   
+            unPower = m_ucLength - 1;
             }
             else
             {
@@ -618,7 +618,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
             }*/
             UINT unPower = m_ucLength - 1;
             ui64Default = 1;
-            for(int i = 0; i<unPower;i++)
+            for(int i = 0; i<unPower; i++)
             {
                 ui64Default = (unsigned __int64)( 2*ui64Default);
             }
@@ -631,7 +631,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
                 m_uiError = SIG_EC_OVERFLOW;
             }
             //if Max value out of range reset it to maximum possible value
-            if(m_MaxValue.ui64Value > ui64Default || m_MaxValue.ui64Value < 0) 
+            if(m_MaxValue.ui64Value > ui64Default || m_MaxValue.ui64Value < 0)
             {
                 m_MaxValue.ui64Value = ui64Default;
                 m_uiError = SIG_EC_OVERFLOW;
@@ -643,7 +643,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
                 m_uiError = SIG_EC_OVERFLOW;
             }
             //if Max and Min are equal reset min.
-            if(m_MaxValue.ui64Value == m_MinValue.ui64Value) 
+            if(m_MaxValue.ui64Value == m_MinValue.ui64Value)
             {
                 m_MinValue.ui64Value = 0;
                 m_uiError = SIG_EC_OVERFLOW;
@@ -651,8 +651,8 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
 
             break;
         }
-    default:
-        break;
+        default:
+            break;
     }
 
     // correct value descriptors according to type of signal
@@ -663,33 +663,33 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
 
         switch(m_ucType)
         {
-        case SIG_TYPE_BOOL:
-        case SIG_TYPE_UINT:
-            rValDesc.m_value.uiValue = (unsigned int)rValDesc.m_value.dValue;
-            break;
+            case SIG_TYPE_BOOL:
+            case SIG_TYPE_UINT:
+                rValDesc.m_value.uiValue = (unsigned int)rValDesc.m_value.dValue;
+                break;
 
-        case SIG_TYPE_INT:
-            rValDesc.m_value.iValue = (int)rValDesc.m_value.dValue;
-            break;
+            case SIG_TYPE_INT:
+                rValDesc.m_value.iValue = (int)rValDesc.m_value.dValue;
+                break;
 
-        case SIG_TYPE_FLOAT:
-            rValDesc.m_value.fValue = (float)rValDesc.m_value.dValue;
-            break;
+            case SIG_TYPE_FLOAT:
+                rValDesc.m_value.fValue = (float)rValDesc.m_value.dValue;
+                break;
 
-        case SIG_TYPE_DOUBLE:
-            break;
+            case SIG_TYPE_DOUBLE:
+                break;
 
-        case SIG_TYPE_INT64:
-            //rValDesc.m_value.i64Value = (LONGLONG)rValDesc.m_value.dValue;
-            break;
+            case SIG_TYPE_INT64:
+                //rValDesc.m_value.i64Value = (LONGLONG)rValDesc.m_value.dValue;
+                break;
 
-        case SIG_TYPE_UINT64:
-            rValDesc.m_value.ui64Value = (ULONGLONG)rValDesc.m_value.i64Value;
-            break;
+            case SIG_TYPE_UINT64:
+                rValDesc.m_value.ui64Value = (ULONGLONG)rValDesc.m_value.i64Value;
+                break;
 
-        default:
-            break;
-        }			
+            default:
+                break;
+        }
     }
     return (m_uiError);
 }
@@ -749,66 +749,66 @@ bool CSignal::WriteSignaltofile(CStdioFile &fileOutput,CList<CSignal,CSignal&> &
 
             switch(sig.m_ucType)
             {
-            case CSignal::SIG_TYPE_BOOL:
-            case CSignal::SIG_TYPE_UINT:
-                sprintf(acLine,"%s %s,%u,%u,%u,%c,%u,%u,%c,%f,%f,%s,%s,%s\n",T_SIG,
-                    sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,sig.m_ucType,
-                    sig.m_MaxValue.uiValue,sig.m_MinValue.uiValue,sig.m_ucDataFormat,
-                    sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
+                case CSignal::SIG_TYPE_BOOL:
+                case CSignal::SIG_TYPE_UINT:
+                    sprintf(acLine,"%s %s,%u,%u,%u,%c,%u,%u,%c,%f,%f,%s,%s,%s\n",T_SIG,
+                            sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,sig.m_ucType,
+                            sig.m_MaxValue.uiValue,sig.m_MinValue.uiValue,sig.m_ucDataFormat,
+                            sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
 
-                break;
+                    break;
 
-            case CSignal::SIG_TYPE_INT:
-                sprintf(acLine,"%s %s,%u,%u,%u,%c,%d,%d,%c,%f,%f,%s,%s,%s\n",T_SIG,
-                    sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,sig.m_ucType,
-                    sig.m_MaxValue.iValue,sig.m_MinValue.iValue,sig.m_ucDataFormat,
-                    sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
+                case CSignal::SIG_TYPE_INT:
+                    sprintf(acLine,"%s %s,%u,%u,%u,%c,%d,%d,%c,%f,%f,%s,%s,%s\n",T_SIG,
+                            sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,sig.m_ucType,
+                            sig.m_MaxValue.iValue,sig.m_MinValue.iValue,sig.m_ucDataFormat,
+                            sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
 
-                break;
-
-
-            case CSignal::SIG_TYPE_FLOAT:	
-                sprintf(acLine,"%s %s,%u,%u,%u,%c,%f,%f,%c,%f,%f,%s,%s,%s\n",T_SIG,
-                    sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,sig.m_ucType,
-                    sig.m_MaxValue.fValue,sig.m_MinValue.fValue,sig.m_ucDataFormat,
-                    sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
-
-                break;
-
-            case CSignal::SIG_TYPE_DOUBLE:
-                sprintf(acLine,"%s %s,%u,%u,%u,%c,%f,%f,%c,%f,%f,%s,%s,%s\n",T_SIG,
-                    sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,sig.m_ucType,
-                    sig.m_MaxValue.dValue,sig.m_MinValue.dValue,sig.m_ucDataFormat,
-                    sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
-
-                break;
+                    break;
 
 
-            case CSignal::SIG_TYPE_INT64:
-                sprintf(acLine,"%s %s,%u,%u,%u,%c,%I64d,%I64d,%c,%f,%f,%s,%s,%s\n",T_SIG,
-                    sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,/*sig.m_ucType*/'I',
-                    sig.m_MaxValue.i64Value,sig.m_MinValue.i64Value,sig.m_ucDataFormat,
-                    sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
-                break;
+                case CSignal::SIG_TYPE_FLOAT:
+                    sprintf(acLine,"%s %s,%u,%u,%u,%c,%f,%f,%c,%f,%f,%s,%s,%s\n",T_SIG,
+                            sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,sig.m_ucType,
+                            sig.m_MaxValue.fValue,sig.m_MinValue.fValue,sig.m_ucDataFormat,
+                            sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
 
-            case CSignal::SIG_TYPE_UINT64:
-                sprintf(acLine,"%s %s,%u,%u,%u,%c,%I64u,%I64u,%c,%f,%f,%s,%s,%s\n",T_SIG,
-                    sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,/*sig.m_ucType*/'U',
-                    sig.m_MaxValue.ui64Value,sig.m_MinValue.ui64Value,sig.m_ucDataFormat,
-                    sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
-                break;
+                    break;
 
-            default:
-                break;
+                case CSignal::SIG_TYPE_DOUBLE:
+                    sprintf(acLine,"%s %s,%u,%u,%u,%c,%f,%f,%c,%f,%f,%s,%s,%s\n",T_SIG,
+                            sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,sig.m_ucType,
+                            sig.m_MaxValue.dValue,sig.m_MinValue.dValue,sig.m_ucDataFormat,
+                            sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
+
+                    break;
+
+
+                case CSignal::SIG_TYPE_INT64:
+                    sprintf(acLine,"%s %s,%u,%u,%u,%c,%I64d,%I64d,%c,%f,%f,%s,%s,%s\n",T_SIG,
+                            sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,/*sig.m_ucType*/'I',
+                            sig.m_MaxValue.i64Value,sig.m_MinValue.i64Value,sig.m_ucDataFormat,
+                            sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
+                    break;
+
+                case CSignal::SIG_TYPE_UINT64:
+                    sprintf(acLine,"%s %s,%u,%u,%u,%c,%I64u,%I64u,%c,%f,%f,%s,%s,%s\n",T_SIG,
+                            sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,/*sig.m_ucType*/'U',
+                            sig.m_MaxValue.ui64Value,sig.m_MinValue.ui64Value,sig.m_ucDataFormat,
+                            sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
+                    break;
+
+                default:
+                    break;
             }
-            fileOutput.WriteString(acLine);		
+            fileOutput.WriteString(acLine);
 
             CValueDescriptor val;
             val.writeValuDescToFile (fileOutput,sig.m_ucType,sig.m_listValueDescriptor);
             if(sig.m_uiError == CSignal::SIG_EC_OVERFLOW )
                 bResult = false;
         }
-        else 
+        else
             bResult = false;
     }
 

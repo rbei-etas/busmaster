@@ -15,11 +15,11 @@
 
 /**
  * \file      tag.h
- * \brief     Special file represents all the delimiters used in 
+ * \brief     Special file represents all the delimiters used in
  * \authors   Padmaja.A., Mahesh.B.S.
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Special file represents all the delimiters used in 
+ * Special file represents all the delimiters used in
  */
 
 #define T_STRAT_BRAC "["

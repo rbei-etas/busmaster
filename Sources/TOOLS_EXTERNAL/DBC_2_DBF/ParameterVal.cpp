@@ -32,14 +32,14 @@ static char THIS_FILE[]=__FILE__;
 #endif
 
 /**
- * \brief Default Constructor used to initialse parameterVal class object. 
+ * \brief Default Constructor used to initialse parameterVal class object.
  */
 CParameterValues::CParameterValues()
 {
     m_NodeName[0]='\0';
     m_MsgId=0;
     m_ParamVal.dValue =0;
-    m_SignalName[0]='\0'; 
+    m_SignalName[0]='\0';
     m_ParamVal.iValue =-1;
     m_ParamVal.fValue=-1;
     m_ParamVal.uiValue =-1;
@@ -62,8 +62,8 @@ CParameterValues& CParameterValues::operator=(CParameterValues& param)
     // now copy the other elements of the new message to this
     strcpy(m_NodeName,param.m_NodeName);
     strcpy(m_SignalName,param.m_SignalName );
-    m_MsgId=param.m_MsgId; 
-    m_ParamVal=param.m_ParamVal; 
+    m_MsgId=param.m_MsgId;
+    m_ParamVal=param.m_ParamVal;
     m_cFrameFormat=param.m_cFrameFormat;
     return (*this);
 }
@@ -83,7 +83,7 @@ int CParameterValues::GetNodeParams(char *paramType,char *pcLine)
     pcToken=strtok(pcLine,";");
     while(*pcToken && *pcToken != ' ')
     {
-        *pcTemp++ = *pcToken++; 
+        *pcTemp++ = *pcToken++;
     }
     *pcTemp = '\0';
     strcpy(m_NodeName,acTemp);
@@ -105,7 +105,7 @@ int CParameterValues::GetNetParams(char *paramType,char *pcLine)
     //reads the net param value.
     pcToken=strtok(pcToken,";");
     ReadParamValue(paramType,pcToken);
-    return success;			   
+    return success;
 }
 
 /**
@@ -124,7 +124,7 @@ int CParameterValues::GetMesgParams( char *paramType,char *pcLine)
     pcToken=strtok(pcLine,";");
     while(*pcToken && *pcToken != ' ')
     {
-        *pcTemp++ = *pcToken++;  
+        *pcTemp++ = *pcToken++;
     }
     *pcTemp = '\0';
     m_MsgId=(unsigned int)atoi(acTemp);
@@ -133,17 +133,17 @@ int CParameterValues::GetMesgParams( char *paramType,char *pcLine)
     //Validates the MsgId to get frame format.
     if(m_MsgId < 0x80000000UL)
     {
-        m_cFrameFormat =CParameterValues::MSG_FF_STANDARD;					
+        m_cFrameFormat =CParameterValues::MSG_FF_STANDARD;
     }
     else
     {
         m_cFrameFormat = CParameterValues::MSG_FF_EXTENDED;
         m_MsgId &= 0x7FFFFFFF;
     }
-    //pcToken=strtok(NULL,";"); 
+    //pcToken=strtok(NULL,";");
     //get the mesg param value.
     ReadParamValue(paramType,pcToken);
-    return success;	 
+    return success;
 }
 
 /**
@@ -163,17 +163,17 @@ int CParameterValues::GetSignalParams(char *paramType,char *pcLine)
     //get the message Id.
     while(*pcToken && *pcToken != ' ')
     {
-        *pcTemp++ = *pcToken++;  
+        *pcTemp++ = *pcToken++;
     }
     *pcTemp = '\0';
     m_MsgId=atoi(acTemp);
     pcTemp=acTemp;
-    pcToken=strtok(NULL,";"); 
+    pcToken=strtok(NULL,";");
 
     //get signal name.
     while(*pcToken && *pcToken != ' ')
     {
-        *pcTemp++ = *pcToken++;  
+        *pcTemp++ = *pcToken++;
     }
     *pcTemp = '\0';
     strcpy(m_SignalName,acTemp);
@@ -182,7 +182,7 @@ int CParameterValues::GetSignalParams(char *paramType,char *pcLine)
     //validates the msgId to get the frame format.
     if(m_MsgId < 0x80000000UL)
     {
-        m_cFrameFormat =CParameterValues::MSG_FF_STANDARD;					
+        m_cFrameFormat =CParameterValues::MSG_FF_STANDARD;
     }
     else
     {
@@ -201,15 +201,15 @@ int CParameterValues::GetSignalParams(char *paramType,char *pcLine)
  * Reads the other vlaue of attributes from CanoeDB file.
  */
 int CParameterValues::ReadParamValue(char *paramType,char *pcToken)
-{   
+{
     int success=1;
 
     //Param type :STRING
     if(strcmp(paramType,"STRING")==0 )
-    { 
+    {
         while(*pcToken != '"')
         {
-            *pcToken++; 
+            *pcToken++;
         }
         strcpy(m_ParamVal.cValue,pcToken);
     }
@@ -221,18 +221,18 @@ int CParameterValues::ReadParamValue(char *paramType,char *pcToken)
             m_ParamVal.iValue=atoi(pcToken);
     }
     //Param type :ENUM
-    else if (strcmp(paramType,"ENUM")==0) 
+    else if (strcmp(paramType,"ENUM")==0)
     {
         while(*pcToken==' ')
-            *pcToken++; 
-        strcpy(m_ParamVal.cValue,pcToken);  
+            *pcToken++;
+        strcpy(m_ParamVal.cValue,pcToken);
     }
 
     //Param type :FLOAT
-    else if(strcmp(paramType,"FLOAT")==0) 
-    {	  
+    else if(strcmp(paramType,"FLOAT")==0)
+    {
         if(strcmp(pcToken," ")!=0)
-            m_ParamVal.fValue=float(atof(pcToken));  
+            m_ParamVal.fValue=float(atof(pcToken));
     }
 
     return success;
@@ -244,11 +244,11 @@ int CParameterValues::ReadParamValue(char *paramType,char *pcToken)
  * Writes network values to file.
  */
 void CParameterValues::WriteNetValuesToFile(CStdioFile& fileOutput,char *paramType,char *paramName)
-{  
+{
     char acLine[defVAL_MAX_LINE_LEN];
 
     //writes int/hex param net values to o/p file and validates initial value.
-    if(strcmp(paramType,"INT")==0 || strcmp(paramType,"HEX")==0) 
+    if(strcmp(paramType,"INT")==0 || strcmp(paramType,"HEX")==0)
     {
         if(m_ParamVal.iValue ==-1)
             sprintf(acLine,"\"%s\",\n",paramName);
@@ -257,7 +257,7 @@ void CParameterValues::WriteNetValuesToFile(CStdioFile& fileOutput,char *paramTy
     }
     //writes Float param net values to o/p file and validates initial value.
     else if(strcmp(paramType,"FLOAT")==0)
-    { 
+    {
         if(m_ParamVal.fValue==-1)
             sprintf(acLine,"\"%s\",\n",paramName);
         else
@@ -265,7 +265,7 @@ void CParameterValues::WriteNetValuesToFile(CStdioFile& fileOutput,char *paramTy
     }
     //writes enum param net values to o/p file and validates initial value.
     else if(strcmp(paramType,"ENUM")==0)
-    { 
+    {
         if(strcmp(m_ParamVal.cValue,"")==0)
             sprintf(acLine,"\"%s\",\"\"\n",paramName);
         else
@@ -286,9 +286,9 @@ void CParameterValues::WriteNodeValuesToFile(CStdioFile& fileOutput,char *paramT
 {
     char acLine[defVAL_MAX_LINE_LEN];
     //writes int/hex param node values to o/p file and validates initial value.
-    if(strcmp(paramType,"INT")==0  || strcmp(paramType,"HEX")==0) 
-    { 
-        if(m_ParamVal.iValue ==-1) 
+    if(strcmp(paramType,"INT")==0  || strcmp(paramType,"HEX")==0)
+    {
+        if(m_ParamVal.iValue ==-1)
             sprintf(acLine,"%s,\"%s\",\n",m_NodeName,paramName);
         else
             sprintf(acLine,"%s,\"%s\",%d\n",m_NodeName,paramName,m_ParamVal.iValue);
@@ -362,7 +362,7 @@ void CParameterValues::WriteSigValuesToFile(CStdioFile& fileOutput,char *paramTy
 {
     char acLine[defVAL_MAX_LINE_LEN];
     //writes int/hex param sig values to o/p file and validates initial value.
-    if(strcmp(paramType,"INT")==0 || strcmp(paramType,"HEX")==0) 
+    if(strcmp(paramType,"INT")==0 || strcmp(paramType,"HEX")==0)
     {
         if(m_ParamVal.iValue ==-1)
             sprintf(acLine,"%u,%c,%s,\"%s\",\n",m_MsgId,m_cFrameFormat,m_SignalName ,paramName);
