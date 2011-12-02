@@ -24,9 +24,9 @@ FileName      :  Parameter.Cpp
 Description   :  Implementation file for the Parameter class.
 
 $Log:   X:/Archive/Sources/Ext_tools_DBF_2_DBC/Parameter.cpv  $
-   
+
       Rev 1.1   04 Aug 2011 19:55:42   CANMNTTM
-    
+
 
     Rev 1.0   03 Aug 2011 15:47:50   rac2kor
 
@@ -57,7 +57,7 @@ static char THIS_FILE[]=__FILE__;
 /**
 * \brief      Constructor of CParameters
 * \param[in]  None
-* \param[out] None   
+* \param[out] None
 * \return     None
 * \authors    Mahesh.B.S
 * \date       15.11.2004
@@ -66,7 +66,7 @@ CParameters::CParameters()
 {
     m_InitVal.fValue=-1;
     m_InitVal.cValue[0]='\0';
-    m_InitVal.uiValue=0; 
+    m_InitVal.uiValue=0;
     m_ValRange='\0';
     m_ParamType[0]='\0';
     m_ParamName[0]='\0';
@@ -78,7 +78,7 @@ CParameters::CParameters()
 /**
 * \brief      Destructor of CParameters
 * \param[in]  None
-* \param[out] None   
+* \param[out] None
 * \return     None
 * \authors    Mahesh.B.S
 * \date       15.11.2004
@@ -91,7 +91,7 @@ CParameters::~CParameters()
 /**
 * \brief      overloaded operator =
 * \param[in]  CParameters&
-* \param[out] None   
+* \param[out] None
 * \return     CParameters&
 * \authors    Padmaja.A
 * \date       15.11.2004
@@ -108,12 +108,12 @@ CParameters& CParameters::operator=( CParameters& param)
     strcpy(m_ObjectId,param.m_ObjectId);
     strcpy(m_ParamName,param.m_ParamName);
     m_ValRange=param.m_ValRange;
-    strcpy(m_ParamType,param.m_ParamType); 
+    strcpy(m_ParamType,param.m_ParamType);
     m_InitVal=param.m_InitVal;
     m_MaxVal=param.m_MaxVal;
-    m_MinVal=param.m_MinVal; 
-    m_RangeError=param.m_RangeError; 
-    for(int i=0;i<4;i++)
+    m_MinVal=param.m_MinVal;
+    m_RangeError=param.m_RangeError;
+    for(int i=0; i<4; i++)
         m_listParamValues[i].AddTail( (&param.m_listParamValues[i]));
     return (*this);
 }
@@ -121,7 +121,7 @@ CParameters& CParameters::operator=( CParameters& param)
 /**
 * \brief      Writes the parameter definition to the specified output file.
 * \param[in]  OutputFileName,Parameters List.
-* \param[out] None   
+* \param[out] None
 * \return     CParameters&
 * \authors    Padmaja.A
 * \date       15.11.2004
@@ -141,13 +141,13 @@ bool WriteParamToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&> &m_
         //writes param def to the specified o/p file.
         if(strcmp(rParam.m_ParamType,"INT")==0 )
             sprintf(acLine,"BA_DEF_ %s  \"%s\" %s %d %d;\n",rParam.m_ObjectId,rParam.m_ParamName,rParam.m_ParamType, rParam.m_MinVal.iValue,rParam.m_MaxVal.iValue);
-        else if(strcmp(rParam.m_ParamType,"HEX")==0) 
+        else if(strcmp(rParam.m_ParamType,"HEX")==0)
             sprintf(acLine,"BA_DEF_ %s  \"%s\" %s %u %u;\n",rParam.m_ObjectId,rParam.m_ParamName,rParam.m_ParamType,rParam.m_MinVal.uiValue,rParam.m_MaxVal.uiValue);
-        else if(strcmp(rParam.m_ParamType,"FLOAT")==0) 
+        else if(strcmp(rParam.m_ParamType,"FLOAT")==0)
             sprintf(acLine,"BA_DEF_ %s  \"%s\" %s %f %f;\n",rParam.m_ObjectId,rParam.m_ParamName,rParam.m_ParamType,rParam.m_MinVal.fValue,rParam.m_MaxVal.fValue);
-        else if(strcmp(rParam.m_ParamType,"ENUM")==0) 
+        else if(strcmp(rParam.m_ParamType,"ENUM")==0)
             sprintf(acLine,"BA_DEF_ %s  \"%s\" %s%s;\n",rParam.m_ObjectId,rParam.m_ParamName,rParam.m_ParamType,rParam.m_ValRange);
-        else 
+        else
             sprintf(acLine,"BA_DEF_ %s  \"%s\" %s ;\n",rParam.m_ObjectId,rParam.m_ParamName,rParam.m_ParamType);
         fileOutput.WriteString(acLine);
     }
@@ -155,9 +155,9 @@ bool WriteParamToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&> &m_
 }
 
 /**
-* \brief      Format_MesgParam_Value 
+* \brief      Format_MesgParam_Value
 * \param[in]  CStdioFile &fileInput,CList<CParameters,CParameters&>& m_listParam
-* \param[out] None   
+* \param[out] None
 * \return     void
 * \authors    Padmaja.A
 * \date       16.11.2004
@@ -165,7 +165,7 @@ bool WriteParamToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&> &m_
 void CParameters::Format_MesgParam_Value(CStdioFile &fileInput,CList<CParameters,CParameters&>& m_listParam)
 {
     CParameterValues pVal;
-    char acLine[defCON_MAX_LINE_LEN]; 
+    char acLine[defCON_MAX_LINE_LEN];
     char *pcToken, *pcLine;
     char acTemp[defCON_CHAR_LEN],*pcTemp;
     pcTemp = acTemp;
@@ -202,26 +202,26 @@ void CParameters::Format_MesgParam_Value(CStdioFile &fileInput,CList<CParameters
             if(strcmp(rParam.m_ParamName,acTemp)==0 )
             {
                 pVal.Format_Param_Value(rParam.m_ParamType,pcLine,2,msgId);
-                rParam.m_listParamValues[2].AddTail(pVal);    
+                rParam.m_listParamValues[2].AddTail(pVal);
                 pcTemp=acTemp;
                 break;
             }
         }
-    }      
+    }
 }
 
 /**
 * \brief      Parses the Signal Parameter's Other Values(BA_).
 * \param[in]  CStdioFile &fileInput,CList<CParameters,CParameters&>& m_listParam
-* \param[out] None   
+* \param[out] None
 * \return     void
 * \authors    Padmaja.A
 * \date       16.11.2004
 */
 void CParameters::Format_SigParam_Value(CStdioFile &fileInput,CList<CParameters,CParameters&>& m_listParam)
-{	
+{
     CParameterValues pVal;
-    char acLine[defCON_MAX_LINE_LEN]; 
+    char acLine[defCON_MAX_LINE_LEN];
     char *pcToken, *pcLine;
     char acTemp[defCON_CHAR_LEN],*pcTemp;
     pcTemp = acTemp;
@@ -269,13 +269,13 @@ void CParameters::Format_SigParam_Value(CStdioFile &fileInput,CList<CParameters,
                 break;
             }
         }
-    }      
+    }
 }
 
 /**
 * \brief      Parses the Node Parameter's Other Values(BA_).
 * \param[in]  CStdioFile &fileInput,CList<CParameters,CParameters&>& m_listParam
-* \param[out] None   
+* \param[out] None
 * \return     void
 * \authors    Padmaja.A
 * \date       16.11.2004
@@ -283,13 +283,13 @@ void CParameters::Format_SigParam_Value(CStdioFile &fileInput,CList<CParameters,
 void CParameters::Format_NodeParam_Value(CStdioFile &fileInput,CList<CParameters,CParameters&>& m_listParam)
 {
     CParameterValues pVal;
-    char acLine[defCON_MAX_LINE_LEN]; 
+    char acLine[defCON_MAX_LINE_LEN];
     char *pcToken, *pcLine;
     char acTemp[defCON_CHAR_LEN],*pcTemp;
     pcTemp = acTemp;
     //parses the node pram other values.
     while(strcmp((fileInput.ReadString(acLine,defCON_MAX_LINE_LEN)),"[END_PARAM_NODE_VAL]\n")!=0)
-    { 
+    {
         char NodeName[defCON_CHAR_LEN];
         pcLine = acLine;
         //get node name.
@@ -317,32 +317,32 @@ void CParameters::Format_NodeParam_Value(CStdioFile &fileInput,CList<CParameters
             if(strcmp(rParam.m_ParamName,acTemp)==0 )
             {
                 pVal.Format_Param_Value(rParam.m_ParamType,pcLine,1,0,NodeName);
-                rParam.m_listParamValues[1].AddTail(pVal);  
+                rParam.m_listParamValues[1].AddTail(pVal);
                 pcTemp=acTemp;
                 break;
             }
         }
-    }      
+    }
 }
 
 /**
 * \brief      Parses the Net Parameter's Other Values(BA_).
 * \param[in]  CStdioFile &fileInput,CList<CParameters,CParameters&>& m_listParam
-* \param[out] None   
+* \param[out] None
 * \return     void
 * \authors    Padmaja.A
 * \date       16.11.2004
 */
 void CParameters::Format_NetParam_Value(CStdioFile &fileInput,CList<CParameters,CParameters&>& m_listParam)
-{   
+{
     CParameterValues pVal;
-    char acLine[defCON_MAX_LINE_LEN]; 
+    char acLine[defCON_MAX_LINE_LEN];
     char *pcToken, *pcLine;
     char acTemp[defCON_CHAR_LEN],*pcTemp;
     pcTemp = acTemp;
     //parses the mesg pram other values.
     while(strcmp((fileInput.ReadString(acLine,defCON_MAX_LINE_LEN)),"[END_PARAM_NET_VAL]\n")!=0)
-    { 
+    {
         pcLine = acLine;
         //get other values.
         pcToken=strtok(pcLine,",");
@@ -366,14 +366,14 @@ void CParameters::Format_NetParam_Value(CStdioFile &fileInput,CList<CParameters,
                 break;
             }
         }
-    }      
+    }
 }
 
 
 /**
 * \brief      Parses the attribute lines from the given i/p file.
 * \param[in]  char *pcLine,int index
-* \param[out] None   
+* \param[out] None
 * \return     void
 * \authors    Padmaja.A
 * \date       15.11.2004
@@ -401,7 +401,7 @@ void CParameters::Format_ParamDef(char *pcLine,int index)
 /**
 * \brief      Parses the attribute value from the given i/p file.
 * \param[in]  char *pcLine
-* \param[out] None   
+* \param[out] None
 * \return     void
 * \authors    Padmaja.A
 * \date       15.11.2004
@@ -411,7 +411,7 @@ void CParameters::GetParam_Def(char *pcLine)
     char *pcToken;
 
     //get Param name
-    pcToken = strtok(pcLine,"\""); 
+    pcToken = strtok(pcLine,"\"");
 
     if(strlen(pcToken) > 32)
         Truncate_str("parameter Name",pcToken,true);
@@ -428,10 +428,10 @@ void CParameters::GetParam_Def(char *pcLine)
     ReadDefault_Value(pcToken);
 
     if(strcmp(m_ParamType,"ENUM")==0)
-    {   
+    {
         m_ValRange="";
         while(pcToken=strtok(NULL,"\n"))
-            m_ValRange=m_ValRange+" "+pcToken; 
+            m_ValRange=m_ValRange+" "+pcToken;
     }
     //gets the min/max value and validates the range
     else if(strcmp(m_ParamType,"HEX")==0)
@@ -440,30 +440,30 @@ void CParameters::GetParam_Def(char *pcLine)
         pcToken=strtok(NULL,",");
         min_val=atoi(pcToken);
         pcToken = strtok(NULL," ");
-        max_val=atoi(pcToken);  
+        max_val=atoi(pcToken);
         m_RangeError=m_RangeError | isValid_hexRange(min_val,max_val);
-   	}
+    }
     //gets the min/max value and validates the range
     else if(strcmp(m_ParamType,"FLOAT")==0)
     {
         double min_val,max_val;
         pcToken=strtok(NULL,",");
-        min_val= atof(pcToken);  
-        pcToken = strtok(NULL," "); 
+        min_val= atof(pcToken);
+        pcToken = strtok(NULL," ");
         max_val=atof(pcToken);
         m_RangeError=m_RangeError | isValid_floatRange(min_val,max_val);
     }
     //gets the min/max value and validates the range
-    else if(strcmp(m_ParamType,"INT")==0) 
+    else if(strcmp(m_ParamType,"INT")==0)
     {
         LONGLONG min_val,max_val;
         pcToken=strtok(NULL,",");
-        min_val=_atoi64(pcToken);  
-        pcToken = strtok(NULL," "); 
-        max_val=_atoi64(pcToken);  
+        min_val=_atoi64(pcToken);
+        pcToken = strtok(NULL," ");
+        max_val=_atoi64(pcToken);
         m_RangeError=m_RangeError | isValid_intRange(min_val,max_val);
     }
-    //validates the default value 
+    //validates the default value
     m_RangeError=m_RangeError | Check_Default_Value();
 }
 
@@ -471,7 +471,7 @@ void CParameters::GetParam_Def(char *pcLine)
 /**
 * \brief      Reads the default value of attribute from the i/p file.
 * \param[in]  char *pcToken
-* \param[out] None   
+* \param[out] None
 * \return     void
 * \authors    Padmaja.A
 * \date       15.11.2004
@@ -482,7 +482,7 @@ void CParameters::ReadDefault_Value(char *pcToken)
     pcTemp = acTemp;
     //get inital value of type ENUM
     if(strcmp(m_ParamType,"ENUM")==0 )
-    {  
+    {
         //omits all balnk spaces
         while(*pcToken && *pcToken == ' ')
         {
@@ -492,11 +492,11 @@ void CParameters::ReadDefault_Value(char *pcToken)
 
         while(*pcToken && *pcToken != '"')
         {
-            *pcTemp++ = *pcToken++; 
+            *pcTemp++ = *pcToken++;
         }
         *pcTemp = '\0';
         //copies inital value to the object member.
-        strcpy(m_InitVal.cValue,acTemp); 
+        strcpy(m_InitVal.cValue,acTemp);
         pcTemp=acTemp;
     }
     //get inital value of type INT
@@ -520,7 +520,7 @@ void CParameters::ReadDefault_Value(char *pcToken)
             m_InitVal.fValue=float(atof(pcToken));
     }
     //get inital value of type string
-    else if(strcmp(m_ParamType,"STRING")==0 ) 
+    else if(strcmp(m_ParamType,"STRING")==0 )
     {
         while(*pcToken && *pcToken == ' ')
         {
@@ -531,7 +531,7 @@ void CParameters::ReadDefault_Value(char *pcToken)
             *pcTemp++=*pcToken++;
         }
         *pcTemp='\0';
-        strcpy(m_InitVal.cValue,acTemp); 
+        strcpy(m_InitVal.cValue,acTemp);
         pcTemp=acTemp;
     }
 }
@@ -540,7 +540,7 @@ void CParameters::ReadDefault_Value(char *pcToken)
 /**
 * \brief      Writes the parameter default values to the output file.
 * \param[in]  CStdioFile& fileOutput,CList<CParameters,CParameters&> &m_listParameter
-* \param[out] None   
+* \param[out] None
 * \return     bool
 * \authors    Padmaja.A
 * \date       15.11.2004
@@ -561,16 +561,16 @@ bool Write_DefVal_ToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&> 
         if(strcmp(rParam.m_ParamType,"INT")==0 )
             sprintf(acLine,"BA_DEF_DEF_  \"%s\" %d;\n",rParam.m_ParamName,rParam.m_InitVal.iValue);
         //writes def val of type ex to the o/p file.
-        else if(strcmp(rParam.m_ParamType,"HEX")==0) 
+        else if(strcmp(rParam.m_ParamType,"HEX")==0)
             sprintf(acLine,"BA_DEF_DEF_  \"%s\" %u;\n",rParam.m_ParamName,rParam.m_InitVal.uiValue);
         //writes def val of type flaot to the o/p file.
-        else if(strcmp(rParam.m_ParamType,"FLOAT")==0) 
+        else if(strcmp(rParam.m_ParamType,"FLOAT")==0)
             sprintf(acLine,"BA_DEF_DEF_  \"%s\" %f;\n",rParam.m_ParamName,rParam.m_InitVal.fValue);
         //writes def val of type enum to the o/p file.
-        else if(strcmp(rParam.m_ParamType,"ENUM")==0) 
+        else if(strcmp(rParam.m_ParamType,"ENUM")==0)
             sprintf(acLine,"BA_DEF_DEF_  \"%s\" \"%s\";\n",rParam.m_ParamName,rParam.m_InitVal.cValue);
         //writes def val of type string to the o/p file.
-        else 
+        else
             sprintf(acLine,"BA_DEF_DEF_  \"%s\" %s;\n",rParam.m_ParamName,rParam.m_InitVal.cValue);
         fileOutput.WriteString(acLine);
     }
@@ -578,9 +578,9 @@ bool Write_DefVal_ToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&> 
 }
 
 /**
-* \brief      Validates the default value of an attribute. 
+* \brief      Validates the default value of an attribute.
 * \param[in]  None
-* \param[out] None   
+* \param[out] None
 * \return     bool
 * \authors    Padmaja.A
 * \date       16.11.2004
@@ -592,7 +592,7 @@ bool CParameters::Check_Default_Value()
     if(strcmp(m_ParamType,"INT")==0)
     {
         if(m_InitVal.iValue<m_MinVal.iValue || m_InitVal.iValue>m_MaxVal.iValue)
-        { 
+        {
             m_InitVal.iValue=m_MinVal.iValue;
             cResult=true;
         }
@@ -601,7 +601,7 @@ bool CParameters::Check_Default_Value()
     else if(strcmp(m_ParamType,"HEX")==0)
     {
         if(m_InitVal.uiValue<m_MinVal.uiValue || m_InitVal.uiValue>m_MaxVal.uiValue)
-        { 
+        {
             m_InitVal.uiValue=m_MinVal.uiValue;
             cResult= true;
         }
@@ -610,7 +610,7 @@ bool CParameters::Check_Default_Value()
     else if(strcmp(m_ParamType,"FLOAT")==0)
     {
         if(m_InitVal.fValue<m_MinVal.fValue || m_InitVal.fValue>m_MaxVal.fValue)
-        { 
+        {
             m_InitVal.fValue=m_MinVal.fValue;
             cResult=true;
         }
@@ -620,9 +620,9 @@ bool CParameters::Check_Default_Value()
 }
 
 /**
-* \brief      Validates the maximum & minimum int values of an attribute. 
+* \brief      Validates the maximum & minimum int values of an attribute.
 * \param[in]  LONGLONG minValue,LONGLONG maxValue
-* \param[out] None   
+* \param[out] None
 * \return     bool
 * \authors    Padmaja.A
 * \date       18.11.2004
@@ -632,7 +632,7 @@ bool CParameters::isValid_intRange(LONGLONG minValue,LONGLONG maxValue)
     bool rResult=false;
     //validates the min value
     if(minValue < INT_MIN )
-    {	  
+    {
         m_MinVal.iValue=INT_MIN;
         rResult=rResult|true;
     }
@@ -650,9 +650,9 @@ bool CParameters::isValid_intRange(LONGLONG minValue,LONGLONG maxValue)
 }
 
 /**
-* \brief      Validates the maximum & minimum float values of an attribute. 
+* \brief      Validates the maximum & minimum float values of an attribute.
 * \param[in]  double minValue,double maxValue
-* \param[out] None   
+* \param[out] None
 * \return     bool
 * \authors    Padmaja.A
 * \date       18.11.2004
@@ -671,18 +671,18 @@ bool CParameters::isValid_floatRange(double minValue,double maxValue)
     //validates the max value
     if(maxValue>FLT_MAX || maxValue<m_MinVal.fValue)
     {
-        m_MaxVal.fValue=FLT_MAX; 
+        m_MaxVal.fValue=FLT_MAX;
         rResult=rResult | true;
     }
     else
-        m_MaxVal.fValue =float(maxValue);	  
+        m_MaxVal.fValue =float(maxValue);
     return rResult;
 }
 
 /**
-* \brief      Validates the maximum & minimum hex values of an attribute. 
+* \brief      Validates the maximum & minimum hex values of an attribute.
 * \param[in]  unsigned int minValue,unsigned int maxValue
-* \param[out] None   
+* \param[out] None
 * \return     bool
 * \authors    Padmaja.A
 * \date       18.11.2004
@@ -695,7 +695,7 @@ bool CParameters::isValid_hexRange(unsigned int minValue,unsigned int maxValue)
     //validates the max value
     if(maxValue==0 || maxValue <m_MinVal.uiValue)
     {
-        m_MaxVal.uiValue=0xffffffff; 
+        m_MaxVal.uiValue=0xffffffff;
         rResult=true;
     }
     else

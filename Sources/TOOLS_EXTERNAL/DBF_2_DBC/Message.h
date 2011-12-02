@@ -40,7 +40,7 @@
 
 
 
-class CMessage  
+class CMessage
 {
 public:
     CMessage();
@@ -53,7 +53,7 @@ public:
     bool writeMessageToFile( CStdioFile &fileOutput);
 
     // data members
-    enum MSG_FRAME_FROMAT{MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
+    enum MSG_FRAME_FROMAT {MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
     CString			m_sName;
     CString			m_sTxNode;
     unsigned int	m_uiMsgID;

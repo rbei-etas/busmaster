@@ -39,8 +39,8 @@
               DOUBLE dOffset, Offset value
               DOUBLE dScalFactor, Scaling Factor
 * \param[out] UINT64& unMaxVal, UIN64 Maximum vlaue
-              UINT64& unMinVal, UINT64 Minimum RAW value 
-* \return     UINT   
+              UINT64& unMinVal, UINT64 Minimum RAW value
+* \return     UINT
 * \authors    Venkatanarayana Makam
 * \date       27.07.2011
 */
@@ -61,8 +61,8 @@ UINT unConvertPhysicalToRaw(DOUBLE dMaxVal, DOUBLE dMinVal, DOUBLE dOffset, DOUB
               DOUBLE dOffset, Offset Value
               DOUBLE dScalFactor, Scaling Factor
 * \param[out] UINT64& unMaxVal, UIN64 Maximum vlaue
-              UINT64& unMinVal, UINT64 Minimum RAW value    
-* \return     INT   
+              UINT64& unMinVal, UINT64 Minimum RAW value
+* \return     INT
 * \authors    Venkatanarayana Makam
 * \date       27.07.2011
 */
@@ -83,7 +83,7 @@ INT nConvertPhysicalToRaw(DOUBLE dMaxVal, DOUBLE dMinVal, DOUBLE dOffset, DOUBLE
               DOUBLE dScalFactor, Scaling Factor
 * \param[out] DOUBLE& dMaxPhyVal, Maximum physical vlaue
               DOUBLE& dMaxPhyVal, Minimum physical vlaue
-* \return     UINT   
+* \return     UINT
 * \authors    Venkatanarayana Makam
 * \date       27.07.2011
 */
@@ -107,7 +107,7 @@ UINT unConvertRawToPhysical(UINT64 unMaxRawVal, UINT64 unMinRawVal, DOUBLE dOffs
               DOUBLE dScalFactor, Scaling Factor
 * \param[out] DOUBLE& dMaxPhyVal, Maximum physical vlaue
               DOUBLE& dMaxPhyVal, Minimum physical vlaue
-* \return     INT   
+* \return     INT
 * \authors    Venkatanarayana Makam
 * \date       27.07.2011
 */
@@ -128,7 +128,7 @@ INT nConvertRawToPhysical(INT64 unMaxRawVal, INT64 unMinRawVal, DOUBLE dOffset, 
               if the double value precision is more than 0.5 the unit valu will be added 1
 * \param[in]  DOUBLE dValue
 * \param[out] None
-* \return     UINT64  
+* \return     UINT64
 * \authors    Venkatanarayana Makam
 * \date       27.07.2011
 */

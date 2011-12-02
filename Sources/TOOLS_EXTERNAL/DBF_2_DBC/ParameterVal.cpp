@@ -41,7 +41,7 @@ static char THIS_FILE[]=__FILE__;
 /**
 * \brief      Constructor of CParameterValues
 * \param[in]  None
-* \param[out] None   
+* \param[out] None
 * \return     None
 * \authors    Padmaja.A
 * \date       15.11.2004
@@ -51,7 +51,7 @@ CParameterValues::CParameterValues()
     m_NodeName[0]='\0';
     m_MsgId=0;
     m_ParamVal.dValue =0;
-    m_SignalName[0]='\0'; 
+    m_SignalName[0]='\0';
     m_ParamVal.iValue =-1;
     m_ParamVal.fValue=-1;
     m_ParamVal.uiValue =-1;
@@ -60,7 +60,7 @@ CParameterValues::CParameterValues()
 /**
 * \brief      destructor of CParameterValues
 * \param[in]  None
-* \param[out] None   
+* \param[out] None
 * \return     None
 * \authors    Padmaja.A
 * \date       16.11.2004
@@ -71,9 +71,9 @@ CParameterValues::~CParameterValues()
 }
 
 /**
-* \brief      overloaded operator =  
+* \brief      overloaded operator =
 * \param[in]  CParameterValues& param
-* \param[out] None   
+* \param[out] None
 * \return     CParameterValues& param
 * \authors    Padmaja.A
 * \date       16.11.2004
@@ -84,17 +84,17 @@ CParameterValues& CParameterValues::operator=(CParameterValues& param)
     // now copy the other elements of the new message to this
     strcpy(m_NodeName,param.m_NodeName);
     strcpy(m_SignalName,param.m_SignalName );
-    m_MsgId=param.m_MsgId; 
-    m_ParamVal=param.m_ParamVal; 
+    m_MsgId=param.m_MsgId;
+    m_ParamVal=param.m_ParamVal;
     m_cFrameFormat=param.m_cFrameFormat;
     return (*this);
 }
 
 /**
-* \brief      Parses the Parameter Values other than Default value 
+* \brief      Parses the Parameter Values other than Default value
 from the input file.
 * \param[in]  char *paramType,char *pcLine,const int& index,UINT msgId,char *Node_Name
-* \param[out] None   
+* \param[out] None
 * \return     void
 * \authors    Padmaja.A
 * \date       16.11.2004
@@ -120,25 +120,25 @@ void CParameterValues::Format_Param_Value(char *paramType,char *pcLine,const int
 /**
 * \brief      Reads the other vlaue of attributes from i/p file.
 * \param[in]  char *paramType,char *pcToken
-* \param[out] None   
+* \param[out] None
 * \return     void
 * \authors    Padmaja.A
 * \date       16.11.2004
 */
 void CParameterValues::ReadParamValue(char *paramType,char *pcToken)
-{   
+{
     char acTemp[defCON_CHAR_LEN],*pcTemp;
     pcTemp = acTemp;
     //get param value of type String
     if(strcmp(paramType,"STRING")==0 )
-    { pcToken++;
-    while(*pcToken != '"')
-    {
-        *pcTemp++=*pcToken++; 
-    }
-    *pcTemp='\0';
-    strcpy(m_ParamVal.cValue,acTemp);
-    pcTemp=acTemp;
+    {   pcToken++;
+        while(*pcToken != '"')
+        {
+            *pcTemp++=*pcToken++;
+        }
+        *pcTemp='\0';
+        strcpy(m_ParamVal.cValue,acTemp);
+        pcTemp=acTemp;
     }
     //get param value of type int
     else if(strcmp(paramType,"INT")==0 || strcmp(paramType,"HEX")==0)
@@ -147,7 +147,7 @@ void CParameterValues::ReadParamValue(char *paramType,char *pcToken)
             m_ParamVal.iValue=atoi(pcToken);
     }
     //get param value of type enum
-    else if (strcmp(paramType,"ENUM")==0) 
+    else if (strcmp(paramType,"ENUM")==0)
     {
         *pcToken++;
         while(*pcToken!='"')
@@ -159,10 +159,10 @@ void CParameterValues::ReadParamValue(char *paramType,char *pcToken)
         pcTemp=acTemp;
     }
     //get param value of type float
-    else if(strcmp(paramType,"FLOAT")==0) 
-    {	
+    else if(strcmp(paramType,"FLOAT")==0)
+    {
         if(strcmp(pcToken," ")!=0)
-            m_ParamVal.fValue=float(atof(pcToken));  
+            m_ParamVal.fValue=float(atof(pcToken));
     }
 
 }
@@ -170,16 +170,16 @@ void CParameterValues::ReadParamValue(char *paramType,char *pcToken)
 /**
 * \brief      Write the net values into the file
 * \param[in]  CStdioFile& fileOutput,char *paramType,char *paramName
-* \param[out] None   
+* \param[out] None
 * \return     void
 * \authors    Padmaja.A
 * \date       16.11.2004
 */
 void CParameterValues::WriteNetValuesToFile(CStdioFile& fileOutput,char *paramType,char *paramName)
-{  
+{
     char acLine[defCON_MAX_LINE_LEN];
     //writes net values of type int to o/p file.
-    if(strcmp(paramType,"INT")==0 || strcmp(paramType,"HEX")==0) 
+    if(strcmp(paramType,"INT")==0 || strcmp(paramType,"HEX")==0)
     {
         if(m_ParamVal.iValue ==-1)
             sprintf(acLine,"BA_ \"%s\";\n",paramName);
@@ -188,7 +188,7 @@ void CParameterValues::WriteNetValuesToFile(CStdioFile& fileOutput,char *paramTy
     }
     //writes net values of type float to o/p file.
     else if(strcmp(paramType,"FLOAT")==0)
-    { 
+    {
         if(m_ParamVal.fValue==-1)
             sprintf(acLine,"BA_ \"%s\";\n",paramName);
         else
@@ -196,7 +196,7 @@ void CParameterValues::WriteNetValuesToFile(CStdioFile& fileOutput,char *paramTy
     }
     //writes net values of type enum to o/p file.
     else if(strcmp(paramType,"ENUM")==0)
-    { 
+    {
         if(strcmp(m_ParamVal.cValue,"")==0)
             sprintf(acLine,"BA_ \"%s\" """,paramName);
         else
@@ -212,7 +212,7 @@ void CParameterValues::WriteNetValuesToFile(CStdioFile& fileOutput,char *paramTy
 /**
 * \brief      Write the node values into the file
 * \param[in]  CStdioFile& fileOutput,char *paramType,char *paramName
-* \param[out] None   
+* \param[out] None
 * \return     void
 * \authors    Padmaja.A
 * \date       16.11.2004
@@ -221,9 +221,9 @@ void CParameterValues::WriteNodeValuesToFile(CStdioFile& fileOutput,char *paramT
 {
     char acLine[defCON_MAX_LINE_LEN];
     //writes node values of type int/hex to o/p file.
-    if(strcmp(paramType,"INT")==0  || strcmp(paramType,"HEX")==0) 
-    { 
-        if(m_ParamVal.iValue ==-1) 
+    if(strcmp(paramType,"INT")==0  || strcmp(paramType,"HEX")==0)
+    {
+        if(m_ParamVal.iValue ==-1)
             sprintf(acLine,"BA_ \"%s\" BU_ %s;\n",paramName,m_NodeName);
         else
             sprintf(acLine,"BA_ \"%s\" BU_ %s %d;\n",paramName,m_NodeName,m_ParamVal.iValue);
@@ -254,7 +254,7 @@ void CParameterValues::WriteNodeValuesToFile(CStdioFile& fileOutput,char *paramT
 /**
 * \brief      Write the Message values into the file
 * \param[in]  CStdioFile& fileOutput,char *paramType,char *paramName
-* \param[out] None   
+* \param[out] None
 * \return     void
 * \authors    Padmaja.A
 * \date       16.11.2004
@@ -295,16 +295,16 @@ void CParameterValues::WriteMesgValuesToFile(CStdioFile& fileOutput,char *paramT
 /**
 * \brief      Write the Signal values into the file
 * \param[in]  CStdioFile& fileOutput,char *paramType,char *paramName
-* \param[out] None   
+* \param[out] None
 * \return     void
 * \authors    Padmaja.A
 * \date       16.11.2004
 */
 void CParameterValues::WriteSigValuesToFile(CStdioFile& fileOutput,char *paramType,char *paramName)
-{ 
+{
     char acLine[defCON_MAX_LINE_LEN];
     //writes sig values of type int/hex to o/p file.
-    if(strcmp(paramType,"INT")==0 || strcmp(paramType,"HEX")==0) 
+    if(strcmp(paramType,"INT")==0 || strcmp(paramType,"HEX")==0)
     {
         if(m_ParamVal.iValue ==-1)
             sprintf(acLine,"BA_ \"%s\" SG_ %u %s;\n",paramName,m_MsgId,m_SignalName);

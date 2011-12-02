@@ -15,15 +15,15 @@
 
 /**
  * \file      Definitions.h
- * \brief     This file has the definetion of all the constants used 
+ * \brief     This file has the definetion of all the constants used
  * \author    RBIN/EBS1 - Mahesh B S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file has the definetion of all the constants used 
+ * This file has the definetion of all the constants used
  */
 /**
 * \file       Definitions.h
-* \brief      Defintitons File 
+* \brief      Defintitons File
 * \authors    Mahesh B S
 * \date       9.10.2005 Created
 * \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
@@ -44,7 +44,7 @@
 
 
 
-#define defCON_CHAR_LEN 250 
+#define defCON_CHAR_LEN 250
 typedef union _SIG_VALUE {
     int iValue;
     unsigned int uiValue;
@@ -52,4 +52,5 @@ typedef union _SIG_VALUE {
     double	dValue;
     char cValue[defCON_CHAR_LEN];
     LONGLONG i64Value;
-    ULONGLONG ui64Value;}	SIG_VALUE;
+    ULONGLONG ui64Value;
+}	SIG_VALUE;

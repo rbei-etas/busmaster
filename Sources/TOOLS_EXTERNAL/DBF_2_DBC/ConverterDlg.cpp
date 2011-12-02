@@ -69,11 +69,11 @@ protected:
 };
 /**
 * \brief      CAboutDlg constructor
-* \param[in]  None   
-* \param[out] None   
-* \return     None   
-* \authors    
-* \date       
+* \param[in]  None
+* \param[out] None
+* \return     None
+* \authors
+* \date
 */
 CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
 {
@@ -82,11 +82,11 @@ CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
 }
 /**
 * \brief      DoDataExchange Function
-* \param[in]  CDataExchange*   
-* \param[out] None   
-* \return     void   
-* \authors    
-* \date       
+* \param[in]  CDataExchange*
+* \param[out] None
+* \return     void
+* \authors
+* \date
 */
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
@@ -104,14 +104,14 @@ END_MESSAGE_MAP()
 // CCANDBConverterDlg dialog
 /**
 * \brief      CCANDBConverterDlg Constructor
-* \param[in]  CDataExchange*   
-* \param[out] None   
-* \return     void   
-* \authors    
-* \date       
+* \param[in]  CDataExchange*
+* \param[out] None
+* \return     void
+* \authors
+* \date
 */
 CCANDBConverterDlg::CCANDBConverterDlg(CWnd* pParent /*=NULL*/)
-: CDialog(CCANDBConverterDlg::IDD, pParent)
+    : CDialog(CCANDBConverterDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CCANDBConverterDlg)
     // NOTE: the ClassWizard will add member initialization here
@@ -121,11 +121,11 @@ CCANDBConverterDlg::CCANDBConverterDlg(CWnd* pParent /*=NULL*/)
 }
 /**
 * \brief      DoDataExchange Function
-* \param[in]  CDataExchange*   
-* \param[out] None   
-* \return     void   
-* \authors    
-* \date       
+* \param[in]  CDataExchange*
+* \param[out] None
+* \return     void
+* \authors
+* \date
 */
 void CCANDBConverterDlg::DoDataExchange(CDataExchange* pDX)
 {
@@ -152,9 +152,9 @@ END_MESSAGE_MAP()
 * \brief      OnInitDialog Function, Called once when the dialog box is created
 * \param[in]  None
 * \param[out] None
-* \return     BOOL, TRUE if dialog has to create otherwise FALSE   
-* \authors    
-* \date       
+* \return     BOOL, TRUE if dialog has to create otherwise FALSE
+* \authors
+* \date
 */
 BOOL CCANDBConverterDlg::OnInitDialog()
 {
@@ -193,9 +193,9 @@ BOOL CCANDBConverterDlg::OnInitDialog()
 * \param[in]  UINT, ID of the command
               LPARAM, lparam of the message
 * \param[out] None
-* \return     void   
-* \authors    
-* \date       
+* \return     void
+* \authors
+* \date
 */
 void CCANDBConverterDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
@@ -216,13 +216,13 @@ void CCANDBConverterDlg::OnSysCommand(UINT nID, LPARAM lParam)
 
 /**
 * \brief      OnPaint Message to handle WM_PAINT message
-* \param[in]  void   
-* \param[out] 
-* \return     void      
-* \authors    
-* \date       
+* \param[in]  void
+* \param[out]
+* \return     void
+* \authors
+* \date
 */
-void CCANDBConverterDlg::OnPaint() 
+void CCANDBConverterDlg::OnPaint()
 {
     if (IsIconic())
     {
@@ -252,11 +252,11 @@ void CCANDBConverterDlg::OnPaint()
 
 /**
 * \brief      OnQueryDragIcon to return the icon of the Dialog
-* \param[in]  None   
-* \param[out] None   
-* \return     HCURSOR   
-* \authors    
-* \date       
+* \param[in]  None
+* \param[out] None
+* \return     HCURSOR
+* \authors
+* \date
 */
 HCURSOR CCANDBConverterDlg::OnQueryDragIcon()
 {
@@ -265,19 +265,19 @@ HCURSOR CCANDBConverterDlg::OnQueryDragIcon()
 
 /**
 * \brief      OnCanoeBrowseBtn is the Handler of ON_BN_CLICKED message for IDC_CANOE_BROWSE_BTN
-* \param[in]  None   
-* \param[out] None   
-* \return     void   
-* \authors    
-* \date       
+* \param[in]  None
+* \param[out] None
+* \return     void
+* \authors
+* \date
 */
-void CCANDBConverterDlg::OnCanoeBrowseBtn() 
+void CCANDBConverterDlg::OnCanoeBrowseBtn()
 {
     // Create a file open dlg to select the output file
     CFileDialog fileDlg(FALSE,"dbc",NULL,OFN_OVERWRITEPROMPT,"Output Database Files(*.dbc)|*.dbc||",this);
     fileDlg.m_ofn.lpstrTitle = "Select output database file"; // set the title of dlg
 
-    // if OK clicked, display the path name in the edit box 
+    // if OK clicked, display the path name in the edit box
     if(fileDlg.DoModal() == IDOK)
     {
         SetDlgItemText(IDC_CANOE_EDIT,fileDlg.GetPathName());
@@ -286,13 +286,13 @@ void CCANDBConverterDlg::OnCanoeBrowseBtn()
 
 /**
 * \brief      OnCanmonBrowseBtn is the Handler of ON_BN_CLICKED message for IDC_CANMON_BROWSE_BTN
-* \param[in]  None   
-* \param[out] None   
-* \return     void   
-* \authors    
-* \date       
+* \param[in]  None
+* \param[out] None
+* \return     void
+* \authors
+* \date
 */
-void CCANDBConverterDlg::OnCanmonBrowseBtn() 
+void CCANDBConverterDlg::OnCanmonBrowseBtn()
 {
     // Create a file save dialog box to select the input file
     CFileDialog fileDlg(TRUE,"dbf",NULL,OFN_OVERWRITEPROMPT|OFN_FILEMUSTEXIST|OFN_PATHMUSTEXIST,"Input Database Files(*.dbf)|*.dbf||",this);
@@ -341,13 +341,13 @@ void CCANDBConverterDlg::OnCanmonBrowseBtn()
 /**
 * \brief      OnCanmonBrowseBtn is the Handler of ON_BN_CLICKED message for IDC_CONVERT_BTN.
 This function converts the CANoe Database to BUSMASTER Database
-* \param[in]  None   
-* \param[out] None   
-* \return     void   
-* \authors    
-* \date       
+* \param[in]  None
+* \param[out] None
+* \return     void
+* \authors
+* \date
 */
-void CCANDBConverterDlg::OnConvertBtn() 
+void CCANDBConverterDlg::OnConvertBtn()
 {
 
     CString sCanoeFilePath,sCanMonFilePath;
@@ -402,12 +402,12 @@ void CCANDBConverterDlg::OnConvertBtn()
 /**
 * \brief      OnInitDialog Function, Called once when the CAboutDlg dialog box is created
 * \param[in]  None
-* \param[out] 
-* \return     BOOL, TRUE if dialog has to create otherwise FALSE   
-* \authors    
-* \date       
+* \param[out]
+* \return     BOOL, TRUE if dialog has to create otherwise FALSE
+* \authors
+* \date
 */
-BOOL CAboutDlg::OnInitDialog() 
+BOOL CAboutDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
 
