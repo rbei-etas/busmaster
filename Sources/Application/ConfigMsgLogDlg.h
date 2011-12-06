@@ -31,6 +31,44 @@ typedef enum ECONTROLTYPE
     EDITCTRL = 0, COMBOBOX, RADIOBUTTON, BUTTON, CHECKBOX, STATICTEXT,
 };
 
+class CActionFlag
+{
+public:
+
+    static const BYTE ACTIONVAL_RESET  = 0x00;
+    static const BYTE ENABLE_CTRL      = 0x01;
+    static const BYTE CLEAR_CTRL       = 0x02;
+
+    CActionFlag();
+    ~CActionFlag();
+
+    // Query functions
+    static BOOL bCtrlToBeEnabled(BYTE bFlag)
+    {
+        return ((bFlag & ENABLE_CTRL) == ENABLE_CTRL);
+    };
+
+    static BOOL bCtrlToBeCleared(BYTE bFlag)
+    {
+        return ((bFlag & CLEAR_CTRL) == CLEAR_CTRL);
+    };
+
+    // Value setting functions
+    static BYTE bResetActionFlag(void)
+    {
+        return ACTIONVAL_RESET;
+    };
+
+    static BYTE bSetEnableCtrlFlag(BYTE bFlag)
+    {
+        return (bFlag | ENABLE_CTRL);
+    };
+
+    static BYTE bSetClearCtrlFlag(BYTE bFlag)
+    {
+        return (bFlag | CLEAR_CTRL);
+    };
+};
 // CConfigMsgLogDlg dialog
 class CConfigMsgLogDlg : public CDialog
 {
@@ -77,6 +115,7 @@ private:
 	SLOGTRIGGER GetLogTriggerFromGUI(void);
     void vCreateFileList(void);
     void vEnableDisableControl(int nControlID, ECONTROLTYPE eCtrlType, BOOL Enable);
+    void vUpdateControl(int nControlID, ECONTROLTYPE eCtrlType, BYTE bAction);
     void SetGUIFromTimeMode(ETIMERMODE eTimeMode);
     void SetGUIFromChannel(TYPE_CHANNEL CurrChannel);
     CString GetUniqueLogFilePath(void);
@@ -105,13 +144,15 @@ protected:
     afx_msg void OnSelChangeComb(UINT);
     afx_msg void OnStartStopMsgIDEnChange(UINT);
 	afx_msg void OnBnClickedLogFilter(void);
-	afx_msg void OnBnClickedChkbEnableLogOnConnect(void);
     virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 public:
 	afx_msg void OnTimer(UINT nIDEvent);	
 protected:
     CString m_omControlParam;
     CString m_omControlParam2;
+public:
+    afx_msg void OnBnClickedOk();
 };
 
 #endif // CONFIGMSGLOGDLG_H__INCLUDED_
+
