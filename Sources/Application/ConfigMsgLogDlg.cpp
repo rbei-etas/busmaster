@@ -118,9 +118,9 @@ BEGIN_MESSAGE_MAP(CConfigMsgLogDlg, CDialog)
     ON_CONTROL_RANGE(BN_CLICKED, IDC_RBTN_APPEND, IDC_RBTN_OVERWRITE, OnFileRButtonClick)
     ON_CONTROL_RANGE(BN_CLICKED, IDC_CHKB_STARTTRIGGER, IDC_CHKB_STOPTRIGGER, OnChkbTriggerClick)
     ON_CONTROL_RANGE(EN_CHANGE, IDC_EDIT_STARTMSGID, IDC_EDIT_STOPMSGID, OnStartStopMsgIDEnChange)
-	ON_BN_CLICKED(IDC_CHKB_ENABLE_LOG_ONCONNECT, OnBnClickedChkbEnableLogOnConnect)
 	ON_BN_CLICKED(IDC_LOG_FILTER, OnBnClickedLogFilter)
 	ON_WM_TIMER()	
+    ON_BN_CLICKED(IDOK, OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -205,6 +205,35 @@ void CConfigMsgLogDlg::vEnableDisableControl(int nControlID,
     }
 }
 
+void CConfigMsgLogDlg::vUpdateControl(int nControlID, ECONTROLTYPE eCtrlType,
+                                      BYTE bAction)
+{
+    CWnd* pWnd = GetDlgItem(nControlID);
+    if (NULL != pWnd)
+    {
+        // Let's start with enable/disable flag 
+        pWnd->EnableWindow(CActionFlag::bCtrlToBeEnabled(bAction));
+
+        // Clear flag
+        if (CActionFlag::bCtrlToBeCleared(bAction))
+        {
+            switch (eCtrlType)
+            {
+                case EDITCTRL:
+                case COMBOBOX: pWnd->SetWindowText(NULL); break;
+                case RADIOBUTTON:
+                case CHECKBOX: ((CButton*) pWnd)->SetCheck(0); break;
+                case BUTTON: break;
+                case STATICTEXT: break;
+                default: ASSERT(FALSE);
+            }
+        }
+    }
+    else
+    {
+        ASSERT(FALSE);
+    }
+}
 void CConfigMsgLogDlg::vEnableDisableControls(BOOL bValue)
 {
     // Log file Path
@@ -248,7 +277,6 @@ void CConfigMsgLogDlg::vEnableDisableControls(BOOL bValue)
    // Indicator static text controls in trogger group box
    vEnableDisableControl(IDC_STATIC_01, STATICTEXT, bValue);
    vEnableDisableControl(IDC_STATIC_02, STATICTEXT, bValue);
-   vEnableDisableControl(IDC_CHKB_ENABLE_LOG_ONCONNECT, CHECKBOX, bValue);
 }
 
 BOOL CConfigMsgLogDlg::FoundInLogList(CString omFullPath, CString omFileName)
@@ -310,10 +338,7 @@ void CConfigMsgLogDlg::vUpdate_GUI_From_Datastore(USHORT usIndex)
 
     if (GetLoggingBlock(usIndex, sLogStruct) == S_OK)
     {
-		if(m_bLogON)
-			vEnableDisableControls(FALSE);
-		else
-			vEnableDisableControls(TRUE);
+        vEnableDisableControls(!m_bLogON);
     }
     else
     {
@@ -327,10 +352,10 @@ void CConfigMsgLogDlg::vUpdate_GUI_From_Datastore(USHORT usIndex)
     SetGUIFromChannel(sLogStruct.m_ChannelSelected);
 
     int CheckBox = (DEC == sLogStruct.m_eNumFormat) ? IDC_RBTN_DECIMAL : IDC_RBTN_HEX;
-    CheckDlgButton(CheckBox, BST_CHECKED);
+    CheckRadioButton(IDC_RBTN_DECIMAL, IDC_RBTN_HEX, CheckBox);
 
     CheckBox = (APPEND_MODE == sLogStruct.m_eFileMode) ? IDC_RBTN_APPEND : IDC_RBTN_OVERWRITE;
-    CheckDlgButton(CheckBox, BST_CHECKED);
+    CheckRadioButton(IDC_RBTN_APPEND, IDC_RBTN_OVERWRITE, CheckBox);
 
     if (sTrigger.m_unTriggerType != NONE)
     {
@@ -348,18 +373,32 @@ void CConfigMsgLogDlg::vUpdate_GUI_From_Datastore(USHORT usIndex)
                 CheckDlgButton(IDC_CHKB_STARTTRIGGER, BST_CHECKED);
                 m_odStartMsgID.vSetValue((__int64) sTrigger.m_unStartID);
             }
+            else
+            {
+                vUpdateControl(IDC_CHKB_STARTTRIGGER, CHECKBOX, CActionFlag::CLEAR_CTRL);
+                vUpdateControl(IDC_EDIT_STARTMSGID, EDITCTRL, CActionFlag::CLEAR_CTRL);
+            }
             if (sTrigger.m_unTriggerType == STOP) // Stop trigger edit control
             {
                 CheckDlgButton(IDC_CHKB_STOPTRIGGER, BST_CHECKED);
                 m_odStopMsgID.vSetValue((__int64) sTrigger.m_unStopID);
             }
+            else
+            {
+                vUpdateControl(IDC_CHKB_STOPTRIGGER, CHECKBOX, CActionFlag::CLEAR_CTRL);
+                vUpdateControl(IDC_EDIT_STOPMSGID, EDITCTRL, CActionFlag::CLEAR_CTRL);
+            }
         }
     }
     else
     {
-        // Start trigger edit control
+        // Start trigger check box control: clear
+        CheckDlgButton(IDC_CHKB_STARTTRIGGER, BST_UNCHECKED);
+        // Stop trigger check box control: clear
+        CheckDlgButton(IDC_CHKB_STOPTRIGGER, BST_UNCHECKED);
+        // Start trigger edit control: clear and disable
         vEnableDisableControl(IDC_EDIT_STARTMSGID, EDITCTRL, FALSE);
-        // Stop trigger edit control
+        // Stop trigger edit control: clear and disable
         vEnableDisableControl(IDC_EDIT_STOPMSGID, EDITCTRL, FALSE);
     }
 }
@@ -482,11 +521,6 @@ void CConfigMsgLogDlg::OnStartStopMsgIDEnChange(UINT CtrlID)
     vUpdate_Datastore_From_GUI((USHORT) m_nLogIndexSel, CtrlID);
 }
 
-void CConfigMsgLogDlg::OnBnClickedChkbEnableLogOnConnect(void)
-{
-    UpdateData(TRUE);
-    m_bLogOnConnect = m_ChkbEnableLogOnConnect.GetCheck();
-}
 
 void CConfigMsgLogDlg::AddNewItem_GUI(SLOGINFO sLogStructNew, int Index)
 {
@@ -905,3 +939,10 @@ HRESULT CConfigMsgLogDlg::GetFilteringScheme(USHORT ushLogBlk, void* psFilterObj
 }
 // END ABSRACT HELPER FUNCTIONS
 
+
+void CConfigMsgLogDlg::OnBnClickedOk()
+{
+    m_bLogOnConnect = m_ChkbEnableLogOnConnect.GetCheck();
+    // TODO: Add your control notification handler code here
+    OnOK();
+}
