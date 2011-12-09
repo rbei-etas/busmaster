@@ -255,10 +255,12 @@ public:
 CDIL_CAN_VectorXL* g_pouDIL_CAN_VectorXL = NULL;
 
 /**
- * \return S_OK for success, S_FALSE for failure
- *
- * Returns the interface to controller
- */
+* \brief         Returns the CDIL_CAN_VectorXL object
+* \param[out]    ppvInterface, is void pointer to take back the reference to CDIL_CAN_VectorXL object
+* \return        S_OK for success, S_FALSE for failure
+* \authors       Arunkumar Karri
+* \date          07.10.2011 Created
+*/
 USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
 {	
 	HRESULT hResult = S_OK;
@@ -399,10 +401,13 @@ struct CChannel
 static CChannel sg_aodChannels[ defNO_OF_CHANNELS ];
 
 /**
- * \return S_OK for success, S_FALSE for failure
- *
- * Sets the application params.
- */
+* \brief         Sets the application params.
+* \param[in]     hWndOwner, is the main frame HWND value
+* \param[in]     pILog, is pointer to error logger object
+* \return        S_OK (always)
+* \authors       Arunkumar Karri
+* \date          07.10.2011 Created
+*/
 HRESULT CDIL_CAN_VectorXL::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger *pILog)
 {
     sg_hOwnerWnd = hWndOwner;
@@ -424,10 +429,12 @@ HRESULT CDIL_CAN_VectorXL::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLog
 
 
 /**
- * \return S_OK for success, S_FALSE for failure
- *
- * Unloads the driver library.
- */
+* \brief         Unloads verdor's driver lobrary
+* \param		 void
+* \return        S_OK for success, S_FALSE for failure
+* \authors       Arunkumar Karri
+* \date          07.10.2011 Created
+*/
 HRESULT CDIL_CAN_VectorXL::CAN_UnloadDriverLibrary(void)
 {
     if (hxlDll != NULL)
@@ -440,10 +447,14 @@ HRESULT CDIL_CAN_VectorXL::CAN_UnloadDriverLibrary(void)
 }
 
 /**
- * \return S_OK for success, S_FALSE for failure
- *
- * Registers the buffer pBufObj to the client ClientID
- */
+* \brief         Registers the buffer pBufObj to the client ClientID
+* \param[in]     bAction, contains one of the values MSGBUF_ADD or MSGBUF_CLEAR
+* \param[in]     ClientID, is the client ID
+* \param[in]     pBufObj, is pointer to CBaseCANBufFSE object
+* \return        S_OK for success, S_FALSE for failure
+* \authors       Arunkumar Karri
+* \date          07.10.2011 Created
+*/
 HRESULT CDIL_CAN_VectorXL::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
     HRESULT hResult = S_FALSE;
@@ -514,11 +525,14 @@ HRESULT CDIL_CAN_VectorXL::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
 }
 
 /**
- * \return S_OK for success, S_FALSE for failure
- *
- * Registers a client to the DIL. ClientID will have client id
- * which will be used for further client related calls  
- */
+* \brief         Registers a client to the DIL.
+* \param[in]     bRegister, if TRUE signifies 'Register', FALSE indicates 'Unregister'
+* \param[out]    ClientID, is Client ID assigned, will be used for further client related calls  
+* \param[in]     pacClientName, is the client name
+* \return        S_OK for success, S_FALSE for failure
+* \authors       Arunkumar Karri
+* \date          07.10.2011 Created
+*/
 HRESULT CDIL_CAN_VectorXL::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
 {
 	USES_CONVERSION;
@@ -586,22 +600,26 @@ HRESULT CDIL_CAN_VectorXL::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, T
 }
 
 /**
- * \return S_OK for success, S_FALSE for failure
- *
- * Returns the controller status. hEvent will be registered
- * and will be set whenever there is change in the controller
- * status.
- */
+* \brief         Returns the controller status.hEvent will be registered
+*				 and will be set whenever there is change in the controller status.
+* \param[in]     hEvent, is the handle of the event
+* \param[in]    unCntrlStatus, indicates contoller status
+* \return        S_OK for success, S_FALSE for failure
+* \authors       Arunkumar Karri
+* \date          07.10.2011 Created
+*/
 HRESULT CDIL_CAN_VectorXL::CAN_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& /*unCntrlStatus*/)
 {
     return S_OK;
 }
 
 /**
- * \return S_OK for success, S_FALSE for failure
- *
- * Loads BOA related libraries. Updates BOA API pointers
- */
+* \brief         Loads vendor's driver library
+* \param		 void
+* \return        S_OK for success, S_FALSE for failure
+* \authors       Arunkumar Karri
+* \date          07.10.2011 Created
+*/
 HRESULT CDIL_CAN_VectorXL::CAN_LoadDriverLibrary(void)
 {
     HRESULT hResult = S_OK;
