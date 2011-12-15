@@ -21,7 +21,7 @@
 #define IDD_PPAGE_MESSAGE               106
 #define IDB_LICENSEDLG                  110
 #define IDR_CAN_MONITOR                 111
-#define IDR_BUSMASTERINTERFACE             112
+#define IDR_BUSMASTERINTERFACE          112
 #define IDR_MAINFRAME                   128
 #define IDR_NEWEDTYPE                   129
 #define IDR_PGM_EDTYPE                  129
@@ -1040,6 +1040,7 @@
 #define ID_FUNCTIONS_TESTAUTOMATION     33118
 #define ID_TESTAUTOMATION_EDITOR        33119
 #define ID_TESTAUTOMATION_EXECUTOR      33120
+#define ID_CONFIGURE_CHANNELSELECTION   33121
 #define IDS_PROPT_FOR_EMPTY_FILENAME    61446
 #define IDS_INVALID_DB_PROMPT           61447
 #define IDC_COMB_TOOLBAR                61448
@@ -1074,7 +1075,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        301
-#define _APS_NEXT_COMMAND_VALUE         33121
+#define _APS_NEXT_COMMAND_VALUE         33122
 #define _APS_NEXT_CONTROL_VALUE         1350
 #define _APS_NEXT_SYMED_VALUE           111
 #endif
