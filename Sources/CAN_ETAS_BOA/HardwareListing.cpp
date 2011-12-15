@@ -69,7 +69,7 @@ static char THIS_FILE[] = __FILE__;
                   Implemented code review comments
 *******************************************************************************/
 CHardwareListing::CHardwareListing( INTERFACE_HW * psIntrHw,
-                                    int nSize,CWnd* pParent /*=NULL*/)
+                                    int nSize, int* pnSelList, CWnd* pParent /*=NULL*/)
     : CDialog(CHardwareListing::IDD, pParent),
       m_nSize( nSize ),
       m_nSelectedItem( -1)
@@ -78,7 +78,8 @@ CHardwareListing::CHardwareListing( INTERFACE_HW * psIntrHw,
     //}}AFX_DATA_INIT
     // Create Image List for Hardware
     m_omImageList.Create(IDR_BMP_NET, defSIGNAL_ICON_SIZE, 1, WHITE_COLOR);
-    m_psHwInterface = psIntrHw;
+    m_psHwInterface = psIntrHw;	
+	m_pnSelList = pnSelList;
 }
 
 /*******************************************************************************
@@ -180,21 +181,33 @@ void CHardwareListing::vSetHardwareList(INTERFACE_HW * /*psHwIntr*/, int nSize)
 
 	int nImageIndex = 0;
 	CString omStrFormat(STR_EMPTY);
-	// Add List of Hw in to the CListCtrl
-	int index = 0;
+	// Add List of unselected Hw in to the CListCtrl
+	int index = 0;	
+	bool bSelItem;
+	UINT nItemCount = 0;
 	for( ; index < nSize; index++)
 	{
-		omStrFormat.Format( defSTR_HW_DISPLAY_FORMAT, index + 1);
-        nImageIndex = defDISCONNECTED_IMAGE_INDEX;
-		// Insert List Item
-		m_omHardwareList.InsertItem( index, omStrFormat, nImageIndex);
-		// Set the hardware list index as item data
-		m_omHardwareList.SetItemData( index, index );
-	}
-	// Clear selection list
-	for( index = 0; index < CHANNEL_ALLOWED; index++ )
-	{
-		m_anSelectedChannels[ index ] = -1;
+		bSelItem = false;
+		//check if the channel is already in selected list
+		for ( int i = 0 ; i < nSize && m_pnSelList[i]!=-1 ; i++ )
+		{
+			if ( m_pnSelList[i] == index )
+			{
+				bSelItem = true;
+				break;
+			}
+		}
+
+		//Add the channel only if its not in selected list
+		if ( !bSelItem )			
+		{
+			omStrFormat.Format( defSTR_HW_DISPLAY_FORMAT, index + 1);
+			nImageIndex = defDISCONNECTED_IMAGE_INDEX;
+			// Insert List Item
+			m_omHardwareList.InsertItem( nItemCount, omStrFormat, nImageIndex);
+			// Set the hardware list index as item data
+			m_omHardwareList.SetItemData( nItemCount++, index );
+		}
 	}
 	
 	// Set the selection to the first row
@@ -218,7 +231,10 @@ BOOL CHardwareListing::OnInitDialog()
 {
     CDialog::OnInitDialog();
     // Update Hardware List with network details
-    vSetHardwareList(m_psHwInterface, m_nSize);
+    vSetHardwareList(m_psHwInterface, m_nSize);	
+
+	//Update the previously selected channel list
+	vSetSelectedList();
 
     return TRUE;
 }
@@ -700,8 +716,52 @@ INT CHardwareListing::nGetSelectedList(int* pnList)
     {
         pnList[i] = m_anSelectedChannels[i];
     }
+	for ( int i = m_nNoOfHwSelected; i < m_nSize ; i++)
+	{
+		pnList[i] = -1;
+	}
     return m_nNoOfHwSelected;
 }
+
+/**
+* \brief         This function will set the selected channel list
+* \param[in]	 pnList, contains the list of selected channels 
+* \return        void
+* \authors       Arunkumar Karri
+* \date          13.12.2011 Created
+*/
+void CHardwareListing::vSetSelectedList()
+{
+    int nSelected = m_nSelectedItem;
+    // Insert the selected item in to the selected list
+    int nItem;
+    CString omStrChannel;//(STR_EMPTY);
+    CString omStrHardware;
+    int nArrayIndex = -1;
+
+	for ( int i = 0 ; i < m_nSize && m_pnSelList[i]!=-1 ; i++)
+	{
+		nItem = m_omSelectedHwList.GetItemCount();
+		// Format channel information
+		omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
+							 defSTR_CHANNEL_NAME,
+							 nItem + 1 );
+		// Get the Hardware name		
+		omStrHardware.Format( defSTR_HW_DISPLAY_FORMAT, m_pnSelList[i] + 1);				
+		int nImageIndex = defDISCONNECTED_IMAGE_INDEX;
+		// Insert the new item in to the selected list
+		m_omSelectedHwList.InsertItem( nItem, omStrChannel, nImageIndex );
+		// Set the Hardware Name
+		m_omSelectedHwList.SetItemText( nItem, 1, omStrHardware );
+		// Set the array index
+		m_omSelectedHwList.SetItemData( nItem, m_pnSelList[i] );	  
+	}
+	// Set the focus to the first item
+	m_omHardwareList.SetItemState( 0,
+								   LVIS_SELECTED | LVIS_FOCUSED,
+								   LVIS_SELECTED | LVIS_FOCUSED );
+}
+
 void CHardwareListing::OnNMClickLstcHwList(NMHDR *pNMHDR, LRESULT *pResult)
 {
     NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
