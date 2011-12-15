@@ -308,6 +308,8 @@ static BOOL m_bInSimMode = FALSE;
 //static CWinThread* m_pomDatInd = NULL;
 static int s_anErrorCodes[TOTAL_ERROR] = {0};
 
+static INT sg_anSelectedItems[CHANNEL_ALLOWED];
+
 /* Recheck ends */
 /* Error Definitions */
 #define CAN_USB_OK 0
@@ -1386,7 +1388,7 @@ int ListHardwareInterfaces(HWND hParent, DWORD dwDriver, INTERFACE_HW* psInterfa
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-    CHardwareListing HwList(psInterfaces, nCount, NULL);
+    CHardwareListing HwList(psInterfaces, nCount, pnSelList, NULL);
     HwList.DoModal();
     nCount = HwList.nGetSelectedList(pnSelList);    
 
@@ -1398,8 +1400,7 @@ int ListHardwareInterfaces(HWND hParent, DWORD dwDriver, INTERFACE_HW* psInterfa
  * and will create essential networks.
  */
 static int nCreateMultipleHardwareNetwork()
-{	
-	INT anSelectedItems[defNO_OF_CHANNELS] = {0};
+{		
 	int nHwCount = sg_ucNoOfHardware;
 	int nChannels = 0;
     // Get Hardware Network Map
@@ -1483,15 +1484,15 @@ static int nCreateMultipleHardwareNetwork()
 	}
 
 	nHwCount = nChannels;	//Reassign hardware count according to final list of channels supported.
-	ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_ICS_NEOVI, sg_HardwareIntr, anSelectedItems, nHwCount);
+	ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_ICS_NEOVI, sg_HardwareIntr, sg_anSelectedItems, nHwCount);
     sg_ucNoOfHardware = (UCHAR)nHwCount;
 	//Reorder hardware interface as per the user selection
 	for (int nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
 	{
-		sg_ndNeoToOpen[nCount].Handle       = (int)sg_HardwareIntr[anSelectedItems[nCount]].m_dwIdInterface;
-		sg_ndNeoToOpen[nCount].SerialNumber = (int)sg_HardwareIntr[anSelectedItems[nCount]].m_dwVendor;		
-		_stscanf(sg_HardwareIntr[anSelectedItems[nCount]].m_acNameInterface, "%d", &sg_ndNeoToOpen[nCount].DeviceType);
-		m_bytNetworkIDs[nCount]				=  sg_HardwareIntr[anSelectedItems[nCount]].m_bytNetworkID;	
+		sg_ndNeoToOpen[nCount].Handle       = (int)sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwIdInterface;
+		sg_ndNeoToOpen[nCount].SerialNumber = (int)sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwVendor;		
+		_stscanf(sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acNameInterface, "%d", &sg_ndNeoToOpen[nCount].DeviceType);
+		m_bytNetworkIDs[nCount]				=  sg_HardwareIntr[sg_anSelectedItems[nCount]].m_bytNetworkID;	
 	}
     for (int nIndex = 0; nIndex < sg_ucNoOfHardware; nIndex++)
     {   
@@ -2066,6 +2067,13 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_PerformInitOperations(void)
     //Register Monitor client
     CAN_RegisterClient(TRUE, sg_dwClientID, CAN_MONITOR_NODE);
     sg_podActiveNetwork = &sg_odHardwareNetwork;
+
+	//Initialize the selected channel items array to -1
+	for ( UINT i = 0; i< CHANNEL_ALLOWED; i++ )
+	{
+		sg_anSelectedItems[i] = -1;
+	}
+
     return S_OK;
 }
 
