@@ -127,7 +127,7 @@ FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,186,6,50,14
     LTEXT           "",IDC_STATIC_VERSION,38,14,138,8
-    LTEXT           "Copyright© 2003 Robert Bosch Engineering and Business Solutions Ltd",IDC_STATIC,38,27,138,18
+    LTEXT           "CopyrightÂ© 2003 Robert Bosch Engineering and Business Solutions Ltd",IDC_STATIC,38,27,138,18
     ICON            IDR_MAINFRAME,IDC_STATIC,7,11,21,20
     LTEXT           "_________________________________________________________________",IDC_STAT_LINE3,7,69,229,9,WS_DISABLED
     CONTROL         184,IDC_STATIC,"Static",SS_BITMAP,38,84,167,36
@@ -234,7 +234,7 @@ FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,182,7,50,14
     LTEXT           "CAN Driver 1.00.D10",IDC_STAT_DRIVER_VERSION,56,16,122,8
-    LTEXT           "Copyright© 2003 RBEI",IDC_STAT_COPYRIGHT,56,31,122,8
+    LTEXT           "CopyrightÂ© 2003 RBEI",IDC_STAT_COPYRIGHT,56,31,122,8
     ICON            IDR_MAINFRAME,IDC_STATIC,9,13,20,20
     LTEXT           "_________________________________________________________________",IDC_STAT_LINE3,7,45,221,9,WS_DISABLED
     CONTROL         184,IDC_STATIC,"Static",SS_BITMAP,34,59,167,36
@@ -917,7 +917,7 @@ BEGIN
             MENUITEM "&Close",                      32849,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
             MENUITEM MFT_SEPARATOR
             MENUITEM "&Associate...             Ctrl+M", 32860,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-            MENUITEM "&Disassociate...",             33001,MFT_STRING,MFS_ENABLED
+            MENUITEM "&Disassociate...",            33001,MFT_STRING,MFS_ENABLED
         END
         MENUITEM MFT_SEPARATOR
         POPUP "Utilities",                      65535,MFT_STRING,MFS_ENABLED
@@ -945,13 +945,14 @@ BEGIN
             MENUITEM "&Main",                       33046,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
             MENUITEM "Message &Window",             33047,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
             MENUITEM "&Node Simulation",            33049,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
-            MENUITEM "&Configure",                   33073,MFT_STRING,MFS_CHECKED
-            MENUITEM "CAN &Database",                33117,MFT_STRING,MFS_CHECKED
+            MENUITEM "&Configure",                  33073,MFT_STRING,MFS_CHECKED
+            MENUITEM "CAN &Database",               33117,MFT_STRING,MFS_CHECKED
         END
         MENUITEM "&Statusbar",                  59393,MFT_STRING,MFS_ENABLED
     END
     POPUP "&Configure",                     65535,MFT_STRING,MFS_ENABLED
     BEGIN
+        MENUITEM "Hardware Selection",          ID_CONFIGURE_CHANNELSELECTION,MFT_STRING,MFS_ENABLED
         MENUITEM "&Controller",                 32811,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
         MENUITEM "&Message Display",            32809,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
         MENUITEM "L&og",                        32956,MFT_STRING,MFS_ENABLED
@@ -1034,7 +1035,7 @@ BEGIN
         MENUITEM "&Help Topics",                57667,MFT_STRING,MFS_ENABLED
         MENUITEM "&What's This?",               57669,MFT_STRING,MFS_ENABLED
         MENUITEM MFT_SEPARATOR
-        MENUITEM "&About BUSMASTER...",            32869,MFT_STRING,MFS_ENABLED
+        MENUITEM "&About BUSMASTER...",         32869,MFT_STRING,MFS_ENABLED
     END
 END
 
