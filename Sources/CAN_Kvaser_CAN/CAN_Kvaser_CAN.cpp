@@ -234,6 +234,9 @@ struct CChannel
  */
 static CChannel sg_aodChannels[ defNO_OF_CHANNELS ];
 
+static INT sg_anSelectedItems[CHANNEL_ALLOWED];
+
+
 /**
  * Client and Client Buffer map
  */
@@ -591,6 +594,12 @@ HRESULT CDIL_CAN_Kvaser::CAN_PerformInitOperations(void)
 	// Initialize the CANlib driver libray
 	// ------------------------------------		
 	canInitializeLibrary();
+
+	//Initialize the selected channel items array to -1
+	for ( UINT i = 0; i< CHANNEL_ALLOWED; i++ )
+	{
+		sg_anSelectedItems[i] = -1;
+	}
 
 	hResult = S_OK;
 
@@ -2027,7 +2036,7 @@ int ListHardwareInterfaces(HWND /*hParent*/, DWORD /*dwDriver*/, INTERFACE_HW* p
 {    	
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-    CHardwareListing HwList(psInterfaces, nCount, NULL);
+    CHardwareListing HwList(psInterfaces, nCount, pnSelList, NULL);
     HwList.DoModal();
     nCount = HwList.nGetSelectedList(pnSelList);  
 	
@@ -2044,7 +2053,6 @@ int ListHardwareInterfaces(HWND /*hParent*/, DWORD /*dwDriver*/, INTERFACE_HW* p
 */
 static int nCreateMultipleHardwareNetwork()
 {
-	INT anSelectedItems[defNO_OF_CHANNELS] = {0};
 	int nHwCount = sg_ucNoOfHardware;	
 	TCHAR acVendor[MAX_CHAR_LONG];
 	DWORD dwFirmWare[2];
@@ -2067,7 +2075,7 @@ static int nCreateMultipleHardwareNetwork()
 
 		sprintf(sg_HardwareIntr[nCount].m_acDeviceName,"0x%08lx 0x%08lx", dwFirmWare[0], dwFirmWare[1]);
 	}	
-	ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_KVASER_CAN, sg_HardwareIntr, anSelectedItems, nHwCount);
+	ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_KVASER_CAN, sg_HardwareIntr, sg_anSelectedItems, nHwCount);
 
     sg_ucNoOfHardware = (UCHAR)nHwCount;
 	sg_nNoOfChannels = (UINT)nHwCount;
@@ -2075,11 +2083,11 @@ static int nCreateMultipleHardwareNetwork()
 	//Reorder hardware interface as per the user selection
 	for (int nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
 	{		
-		sg_aodChannels[nCount].m_nChannel = sg_HardwareIntr[anSelectedItems[nCount]].m_dwIdInterface;				
+		sg_aodChannels[nCount].m_nChannel = sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwIdInterface;				
 		_stprintf(sg_aodChannels[nCount].m_strName , _T("%s, Serial Number: %ld, Firmware: %s"),
-									sg_HardwareIntr[anSelectedItems[nCount]].m_acDescription,
-									sg_HardwareIntr[anSelectedItems[nCount]].m_dwVendor,
-									sg_HardwareIntr[anSelectedItems[nCount]].m_acDeviceName);		
+									sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDescription,
+									sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwVendor,
+									sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDeviceName);		
 	}
 
 	return defERR_OK;
