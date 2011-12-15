@@ -36,10 +36,10 @@
 #include "Include/CanUsbDefs.h"
 /////////////////////////////////////////////////////////////////////////////
 // CHardwareListing dialog
-
+typedef void (*fnCallBackBlink)(INTERFACE_HW);
 class CHardwareListing : public CDialog
 {
-
+	fnCallBackBlink m_pfnBlinkFunction;
 public:
     // Array of channels
     int m_anSelectedChannels[ CHANNEL_ALLOWED ];
@@ -50,7 +50,7 @@ public:
     // To set List of hardware handles
     void vSetHardwareList(INTERFACE_HW *, int );
     // Constructor
-    CHardwareListing(INTERFACE_HW *, int , int*, CWnd* pParent = NULL);
+    CHardwareListing(INTERFACE_HW *, int , int*, CWnd* pParent = NULL, fnCallBackBlink m_pfnBlinkFunction= NULL);
     // standard constructor
     CHardwareListing();
     //Get selection list
@@ -109,8 +109,4 @@ public:
     afx_msg void OnNMClickLstcHwList(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnNMClickLstcSelectedHwList(NMHDR *pNMHDR, LRESULT *pResult);
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_HARDWARELISTING_H__87D35685_F751_4B55_A2F6_347FFFA3B77A__INCLUDED_)
+#endif
