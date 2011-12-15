@@ -283,7 +283,32 @@ public:
 	HRESULT CAN_LoadDriverLibrary(void);
 	HRESULT CAN_UnloadDriverLibrary(void);
 };
-
+void vBlinkHw(INTERFACE_HW s_HardwareIntr)
+{
+	OCI_ControllerHandle ouOCI_HwHandle;
+	BOA_ResultCode err =  (*(sBOA_PTRS.m_sOCI.createCANController))(s_HardwareIntr.m_acNameInterface,
+                                        &(ouOCI_HwHandle));
+	if (err == OCI_SUCCESS)
+    {
+		SCHANNEL s_asChannel;
+		strcpy(s_asChannel.m_acURI, s_HardwareIntr.m_acNameInterface);
+		s_asChannel.m_OCI_RxQueueCfg.onFrame.userData = (void*)ouOCI_HwHandle;
+        s_asChannel.m_OCI_RxQueueCfg.onEvent.userData = (void*)ouOCI_HwHandle;
+        //configure the controller first
+        BOA_ResultCode ErrorCode = (*(sBOA_PTRS.m_sOCI.openCANController))(ouOCI_HwHandle,
+                                            &(s_asChannel.m_OCI_CANConfig),
+                                            &(s_asChannel.m_OCI_CntrlProp));
+		//HRESULT hResult = S_OK;
+		if (ErrorCode == OCI_SUCCESS)
+		{
+			Sleep(500);
+			if ((*(sBOA_PTRS.m_sOCI.closeCANController))(ouOCI_HwHandle) == OCI_SUCCESS)
+            {
+				(*(sBOA_PTRS.m_sOCI.destroyCANController))(ouOCI_HwHandle) == OCI_SUCCESS;
+			}
+		}	
+	}
+}
 static CDIL_CAN_ETAS_BOA* sg_pouDIL_CAN_ETAS_BOA = NULL;
 
 /**
@@ -1754,7 +1779,7 @@ int ListHardwareInterfaces(HWND hParent, DWORD dwDriver, INTERFACE_HW* psInterfa
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-    CHardwareListing HwList(psInterfaces, nCount, pnSelList, NULL);
+    CHardwareListing HwList(psInterfaces, nCount, pnSelList, NULL, vBlinkHw);
     HwList.DoModal();
     nCount = HwList.nGetSelectedList(pnSelList);    
 
