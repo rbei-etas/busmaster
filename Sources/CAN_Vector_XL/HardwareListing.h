@@ -42,7 +42,7 @@ class CHardwareListing : public CDialog
 
 public:
     // Array of channels
-    int m_anSelectedChannels[ defNO_OF_CHANNELS ];
+    int m_anSelectedChannels[ CHANNEL_ALLOWED ];
     // Array to hold driver handle
     //SHWNETLIST m_sHwNetList[ MAX_HCANNET ];
     // To update selected hardware detaisl
@@ -50,11 +50,13 @@ public:
     // To set List of hardware handles
     void vSetHardwareList(INTERFACE_HW *, int );
     // Constructor
-    CHardwareListing(INTERFACE_HW *, int ,CWnd* pParent = NULL);
+    CHardwareListing(INTERFACE_HW *, int , int*, CWnd* pParent = NULL);
     // standard constructor
     CHardwareListing();
     //Get selection list
     INT nGetSelectedList(int* pnList);
+	//Set selection list
+	void vSetSelectedList();
 
 // Dialog Data
     //{{AFX_DATA(CHardwareListing)
@@ -101,6 +103,8 @@ private:
     CImageList m_omImageList;
     // Selected Item index
     int m_nSelectedItem;
+    // Pointer to Selected List
+    int* m_pnSelList;
 public:
     afx_msg void OnNMClickLstcHwList(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnNMClickLstcSelectedHwList(NMHDR *pNMHDR, LRESULT *pResult);
