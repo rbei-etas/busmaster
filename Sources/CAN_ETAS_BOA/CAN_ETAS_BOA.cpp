@@ -183,6 +183,8 @@ static HANDLE sg_hEvent = NULL;
 
 static CRITICAL_SECTION sg_DIL_CriticalSection; 
 
+static INT sg_anSelectedItems[CHANNEL_ALLOWED];
+
 /**
  * Timer variables
  */
@@ -1630,6 +1632,13 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_PerformInitOperations(void)
     //Register monitor client
     DWORD dwClient = 0;
     CAN_RegisterClient(TRUE, dwClient, CAN_MONITOR_NODE);
+
+	//Initialize the selected channel items array to -1
+	for ( UINT i = 0; i< CHANNEL_ALLOWED; i++ )
+	{
+		sg_anSelectedItems[i] = -1;
+	}
+
     return S_OK;
 }
 
@@ -1745,7 +1754,7 @@ int ListHardwareInterfaces(HWND hParent, DWORD dwDriver, INTERFACE_HW* psInterfa
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-    CHardwareListing HwList(psInterfaces, nCount, NULL);
+    CHardwareListing HwList(psInterfaces, nCount, pnSelList, NULL);
     HwList.DoModal();
     nCount = HwList.nGetSelectedList(pnSelList);    
 
@@ -1773,8 +1782,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 		if (nCount > 0)//Success only if there exists alteast one hw
 		{
 
-			INTERFACE_HW* psHWInterface = new INTERFACE_HW[nCount];
-			INT* pnSelList = new INT[nCount];
+			INTERFACE_HW* psHWInterface = new INTERFACE_HW[nCount];			
 			for (INT i = 0; i < nCount; i++)
 			{                
                 psHWInterface[i].m_dwIdInterface = 0;
@@ -1785,22 +1793,21 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 			}
 			if (nCount > 1)// List hw interface if there are more than one hw
 			{
-				ListHardwareInterfaces(NULL, DRIVER_CAN_ETAS_BOA, psHWInterface, pnSelList, nCount);
-                /* return value is not necessary as the OUT parameter pnSelList is unaltered 
+				ListHardwareInterfaces(NULL, DRIVER_CAN_ETAS_BOA, psHWInterface, sg_anSelectedItems, nCount);
+                /* return value is not necessary as the OUT parameter sg_anSelectedItems is unaltered 
                    if user has not selected anything */
 			}
 			//set the current number of channels
 			sg_nNoOfChannels = min(nCount, defNO_OF_CHANNELS);
 			for (UINT nList = 0; nList < sg_nNoOfChannels; nList++)
 			{
-                _tcscpy(asSelHwInterface[nList].m_acNameInterface, psHWInterface[pnSelList[nList]].m_acNameInterface);
-                _tcscpy(asSelHwInterface[nList].m_acDescription, psHWInterface[pnSelList[nList]].m_acDescription);  
+                _tcscpy(asSelHwInterface[nList].m_acNameInterface, psHWInterface[sg_anSelectedItems[nList]].m_acNameInterface);
+                _tcscpy(asSelHwInterface[nList].m_acDescription, psHWInterface[sg_anSelectedItems[nList]].m_acDescription);  
                 asSelHwInterface[nList].m_dwIdInterface = 100 + nList; // Give a dummy number
                 
 			}
 			//Delete the array 
-			delete[] psHWInterface;
-			delete[] pnSelList;
+			delete[] psHWInterface;			
 	        
             sg_bCurrState = STATE_HW_INTERFACE_LISTED; 
 			hResult = S_OK;
