@@ -409,6 +409,10 @@ protected:
     //venkat
     afx_msg void OnAutomationTSEditor();
     afx_msg void OnAutomationTSExecutor();
+
+	afx_msg void OnConfigChannelSelection();	
+	afx_msg void OnUpdateConfigChannelSelection(CCmdUI* pCmdUI);
+
 	//}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 
