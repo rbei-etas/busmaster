@@ -327,6 +327,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(ID_TESTAUTOMATION_EDITOR, OnAutomationTSEditor)
     ON_COMMAND(ID_TESTAUTOMATION_EXECUTOR, OnAutomationTSExecutor)
 
+	ON_COMMAND(ID_CONFIGURE_CHANNELSELECTION, OnConfigChannelSelection)
+	ON_UPDATE_COMMAND_UI(ID_CONFIGURE_CHANNELSELECTION, OnUpdateConfigChannelSelection)	
+
 	END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -1599,6 +1602,88 @@ void CMainFrame::OnConfigBaudrate()
         GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate));
     }
 }
+
+/******************************************************************************/
+/*  Function Name    :  OnConfigBaudrate                                      */
+/*  Input(s)         :  BTR0 and BTR1                                         */
+/*  Output           :  baudrate                                              */
+/*  Functionality    :  This function is called to invoke the CChangeRegisters*/
+/*                   dialog box. On selection of menu, this function is called*/
+/*  Member of        :  CChangeRegisters                                      */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  22.02.2002                                            */
+/*  Modifications    :                                                        */
+/******************************************************************************/
+
+/**
+* \brief         This function pops out the hardware selection dialog
+* \param		 void
+* \return        void
+* \authors       Arunkumar Karri
+* \date          13.12.2011 Created
+*/
+void CMainFrame::OnConfigChannelSelection() 
+{        
+	INT nCount = CHANNEL_ALLOWED;
+	HRESULT hResult = g_pouDIL_CAN_Interface->DILC_DeselectHwInterfaces();
+
+    if (g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount) == S_OK)
+    {					
+        hResult = g_pouDIL_CAN_Interface->DILC_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
+		if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
+		{
+			// Set number of channels, hardware selected and supported channels.
+		    CString omStrChannels;
+			CString omStrChannelDriver;
+			omStrChannels.Format(	defSTR_CHANNELS_SUPPORTED,
+									nCount,
+									defSTR_CHANNEL_NAME );	
+
+			for (int i = 0 ; i < m_nDILCount ; i++)
+			{
+				if ( m_dwDriverId == m_ouList[i].m_dwDriverID )
+				{
+					omStrChannelDriver.Format(  _T("%s - %s  (Allowed channels:%d)"), omStrChannels, 
+											m_ouList[i].m_acName, CHANNEL_ALLOWED);
+					break;
+				}
+			}
+
+			// Set Channel string
+			m_wndStatusBar.SetPaneText(INDEX_CHANNELS, omStrChannelDriver );
+
+			//Update NW statistics window channel information
+			vUpdateChannelInfo();
+		}
+	}	
+}
+
+void CMainFrame::OnUpdateConfigChannelSelection(CCmdUI* pCmdUI) 
+{
+    if(pCmdUI != NULL)
+    {
+        CFlags* podFlag = theApp.pouGetFlagsPtr();
+        if( podFlag != NULL )
+        {
+            // Disable if it is connected
+            BOOL bDisable = podFlag->nGetFlagStatus(CONNECTED);
+            // In Simulation mode is selected then disable Controller option
+            LONG lParam= 0;
+            if( g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, HW_MODE) == S_OK)
+            {
+                if (lParam == defMODE_SIMULATE)
+                {
+                    bDisable = TRUE;
+                }
+            }
+            // If bDisable = TRUE then set the Enable to FALSE
+            pCmdUI->Enable(!bDisable);
+        }
+    }
+}
+
+
 /******************************************************************************
 FUNCTION:       OnNewDatabase
 DESCRIPTION:    #Called by the framework when user selects new database
