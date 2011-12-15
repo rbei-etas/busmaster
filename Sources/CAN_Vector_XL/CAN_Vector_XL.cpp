@@ -400,6 +400,8 @@ struct CChannel
  */
 static CChannel sg_aodChannels[ defNO_OF_CHANNELS ];
 
+static INT sg_anSelectedItems[CHANNEL_ALLOWED];
+
 /**
 * \brief         Sets the application params.
 * \param[in]     hWndOwner, is the main frame HWND value
@@ -741,6 +743,12 @@ HRESULT CDIL_CAN_VectorXL::CAN_PerformInitOperations(void)
 	if (xlDllOpenDriver() == XL_SUCCESS) 
 	{
 		hResult = S_OK;
+	}
+
+	//Initialize the selected channel items array to -1
+	for ( UINT i = 0; i< CHANNEL_ALLOWED; i++ )
+	{
+		sg_anSelectedItems[i] = -1;
 	}
 
 	return hResult;
@@ -1411,7 +1419,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_ResetHardware(void)
 	HRESULT hResult = S_FALSE;
 
     /* Stop the hardware if connected */
-    CAN_StopHardware(); // return value not necessary
+    hResult = CAN_StopHardware(); // return value not necessary
 
     return hResult;
 }
@@ -1834,7 +1842,7 @@ int ListHardwareInterfaces(HWND /*hParent*/, DWORD /*dwDriver*/, INTERFACE_HW* p
 {    	
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-    CHardwareListing HwList(psInterfaces, nCount, NULL);
+    CHardwareListing HwList(psInterfaces, nCount, pnSelList, NULL);	
     HwList.DoModal();
     nCount = HwList.nGetSelectedList(pnSelList);  
 	
@@ -1850,9 +1858,7 @@ int ListHardwareInterfaces(HWND /*hParent*/, DWORD /*dwDriver*/, INTERFACE_HW* p
 * \date          07.10.2011 Created
 */
 static int nCreateMultipleHardwareNetwork()
-{
-	//TCHAR acTempStr[256] = {_T('\0')};
-	INT anSelectedItems[defNO_OF_CHANNELS] = {0};
+{	
 	int nHwCount = sg_ucNoOfHardware;
 	int nChannels = 0;
     // Get Hardware Network Map
@@ -1873,7 +1879,7 @@ static int nCreateMultipleHardwareNetwork()
 		}
 	}
 	nHwCount = nChannels;	//Reassign hardware count according to final list of channels supported.
-	ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_VECTOR_XL, sg_HardwareIntr, anSelectedItems, nHwCount);
+	ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_VECTOR_XL, sg_HardwareIntr, sg_anSelectedItems, nHwCount);
 
     sg_ucNoOfHardware = (UCHAR)nHwCount;
 	sg_nNoOfChannels = (UINT)nHwCount;
@@ -1881,7 +1887,7 @@ static int nCreateMultipleHardwareNetwork()
 	//Reorder hardware interface as per the user selection
 	for (int nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
 	{
-		sg_aodChannels[nCount].m_pXLChannelInfo  = &g_xlDrvConfig.channel[sg_HardwareIntr[anSelectedItems[nCount]].m_dwIdInterface];		
+		sg_aodChannels[nCount].m_pXLChannelInfo  = &g_xlDrvConfig.channel[sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwIdInterface];		
 		g_xlChannelMask |= sg_aodChannels[nCount].m_pXLChannelInfo->channelMask;
 	}
 	g_xlPermissionMask = g_xlChannelMask;
