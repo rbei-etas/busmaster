@@ -69,7 +69,7 @@ static char THIS_FILE[] = __FILE__;
                   Implemented code review comments
 *******************************************************************************/
 CHardwareListing::CHardwareListing( INTERFACE_HW * psIntrHw,
-                                    int nSize, int* pnSelList, CWnd* pParent /*=NULL*/)
+                                    int nSize, int* pnSelList, CWnd* pParent /*=NULL*/, fnCallBackBlink fnBlink)
     : CDialog(CHardwareListing::IDD, pParent),
       m_nSize( nSize ),
       m_nSelectedItem( -1)
@@ -77,6 +77,7 @@ CHardwareListing::CHardwareListing( INTERFACE_HW * psIntrHw,
     //{{AFX_DATA_INIT(CHardwareListing)
     //}}AFX_DATA_INIT
     // Create Image List for Hardware
+	m_pfnBlinkFunction = fnBlink;
     m_omImageList.Create(IDR_BMP_NET, defSIGNAL_ICON_SIZE, 1, WHITE_COLOR);
     m_psHwInterface = psIntrHw;	
 	m_pnSelList = pnSelList;
@@ -97,6 +98,7 @@ CHardwareListing::CHardwareListing()
 {
     // This dialog will not work with out enough constructor parameters
     // Refer previous constructor for the parameter list
+	m_pfnBlinkFunction = NULL;
     ASSERT( FALSE );
 }
 
@@ -318,63 +320,18 @@ void CHardwareListing::vUpdateHwDetails(int nIndex)
  Modifications  : Raja N on 22.3.2005
                   Modified as per testing. Refered item data for getting Hw
                   index rather then item index.
+				  venkatanarayana Makam on 15.11.2011
+				  Reintrduced blink functionality
 *******************************************************************************/
 void CHardwareListing::OnBlinkHw()
 {
+	INT nIndex = (INT)m_omHardwareList.GetItemData( m_nSelectedItem );
+	if( m_pfnBlinkFunction != NULL)
+	{
+		m_pfnBlinkFunction(m_psHwInterface[nIndex]);
+	}
 }
-//{
-//    // Get the Hardware index
-//    // Get the Item data. Don't refer the index directly as index can be changed
-//    // because of add/remove
-//    int nIndex = m_omHardwareList.GetItemData( m_nSelectedItem );
-//    // If it is valid
-//    if( nIndex != -1 )
-//    {
-//        char cBuff[ defUSB_PARAM_BUFFER_SIZE ];
-//
-//        SHWNETLIST sSelected = m_sHwNetList[ nIndex ];
-//        BOOL bNetCreated = FALSE;
-//        // If net is not yet created
-//        if( sSelected.m_hNet == 0 )
-//        {
-//            int nNetHandle = CHardwareInterface::s_podGetSingletonInstance()->
-//                            nGetFreeNetHandle();
-//            sSelected.m_hNet = static_cast<UCHAR>( nNetHandle );
-//            // Create a temporary network
-//            CAN_RegisterNet( sSelected.m_hNet ,
-//                             defSTR_TEMP_NET_NAME,
-//                             sSelected.m_hHw,
-//                             defBAUD_RATE );
-//            bNetCreated = TRUE;
-//        }
-//
-//        HCANCLIENT hClient;
-//        int nReturn;
-//        // Create Temp Client
-//        nReturn = CAN_RegisterClient( defSTR_TEMP_CLIENT_NAME, 0 , &hClient);
-//        // Set the Hardware in Listen only mode
-//        CAN_SetHwParam( sSelected.m_hHw, CAN_PARAM_LISTEN_ONLY, TRUE );
-//        // Get the network Name
-//        CAN_GetNetParam( sSelected.m_hNet, CAN_PARAM_NAME, cBuff,
-//                           defUSB_PARAM_BUFFER_SIZE );
-//        HCANNET hRetNet;
-//        // Connect to the net. Wait for LED to blink and then disconnect
-//        CAN_ConnectToNet( hClient, cBuff, &hRetNet );
-//        Sleep(250);
-//        CAN_DisconnectFromNet( hClient, sSelected.m_hNet );
-//
-//        // Set the Hardware in Listen only mode
-//        CAN_SetHwParam( sSelected.m_hHw, CAN_PARAM_LISTEN_ONLY, FALSE );
-//        // Delete the Client
-//        CAN_RemoveClient( hClient );
-//
-//        // Delete Temp net if created
-//        if( bNetCreated == TRUE )
-//        {
-//            CAN_RemoveNet( sSelected.m_hNet );
-//        }
-//    }
-//}
+
 
 /*******************************************************************************
   Function Name  : OnButtonSelect
@@ -674,7 +631,14 @@ void CHardwareListing::vEnableDisableButtons()
     pWnd = GetDlgItem( IDC_BUT_BLINK );
     if( pWnd != NULL )
     {
-        pWnd->EnableWindow( FALSE);/*Kadoor bHardwareDetailsEnable );*/
+		if(bSelectEnable == FALSE || m_pfnBlinkFunction == NULL)
+		{
+			pWnd->EnableWindow( FALSE );//venkat 
+		}
+		else
+		{
+			pWnd->EnableWindow( TRUE );
+		}
     }
 }
 
