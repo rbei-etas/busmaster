@@ -140,9 +140,6 @@ HANDLE g_hSemaphore = NULL;
 #define STSBAR_REFRESH_TIME_PERIOD      1000  // in milliseconds
 #define PROFILE_CAN_MONITOR                   _T("RBEI_ECF2_CAN_Monitor")
 
-const BYTE CAPL_2_C_MASK  = 0x1;
-const BYTE DBF_2_DBC_MASK = 0x2;
-const BYTE DBC_2_DBF_MASK = 0x4;
 /////////////////////////////////////////////////////////////////////////////
 // CMainFrame
 
@@ -292,12 +289,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_MESSAGE(WM_ENABLE_DISABLE_HANDLERS, vEnableDisableHandlers)
 	ON_WM_HELPINFO()
 	ON_COMMAND(IDM_DATABASE_DISSOCIATE_DB, OnDissociateDatabase)
-    ON_COMMAND(ID_EXTERNALTOOLS_CAPLTOCCONVERTER, OnCAPL_TO_C_Converter)
-    ON_COMMAND(ID_EXTERNALTOOLS_DBCTODBFCONVERTER, OnDBC_TO_DBF_Converter)
     ON_COMMAND(IDM_SAVE_IMPORT, OnSaveImportDatabase)
     ON_UPDATE_COMMAND_UI(IDM_SAVE_IMPORT, OnUpdateSaveImportDatabase)
-    ON_COMMAND(33012, OnDBF_TO_DBC_Converter)	
-	ON_MESSAGE(WM_GET_DB_PTR, OnProvideMsgDBPtr)
+   	ON_MESSAGE(WM_GET_DB_PTR, OnProvideMsgDBPtr)
     ON_UPDATE_COMMAND_UI(IDM_CFGN_LOG, OnUpdateCfgnLog)
 	ON_COMMAND(ID_DISPLAY_MAIN, OnDisplayMain)
 	ON_UPDATE_COMMAND_UI(ID_DISPLAY_MAIN, OnUpdateDisplayMain)
@@ -326,7 +320,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     //venkat
     ON_COMMAND(ID_TESTAUTOMATION_EDITOR, OnAutomationTSEditor)
     ON_COMMAND(ID_TESTAUTOMATION_EXECUTOR, OnAutomationTSExecutor)
-
+	ON_COMMAND(ID_UTILITY_FILE_CONVERTER, OnFileConverter)
 	ON_COMMAND(ID_CONFIGURE_CHANNELSELECTION, OnConfigChannelSelection)
 	ON_UPDATE_COMMAND_UI(ID_CONFIGURE_CHANNELSELECTION, OnUpdateConfigChannelSelection)	
 
@@ -9460,7 +9454,7 @@ void CMainFrame::vUpdateAllMsgWndInterpretStatus(BOOL /*bAssociate*/)
 }
 
 /******************************************************************************
-    Function Name    :  OnCAPL_TO_C_Converter
+    Function Name    :  OnFileConverter
 
     Input(s)         :  -
     Output           :  -
@@ -9470,55 +9464,18 @@ void CMainFrame::vUpdateAllMsgWndInterpretStatus(BOOL /*bAssociate*/)
     Member of        :  CMainFrame
     Friend of        :      -
 
-    Author(s)        :  Pradeep Kadoor
-    Date Created     :  012.06.2009
+    Author(s)        :  Venkatanarayana Makam
+    Date Created     :  18.12.2011
     Modifications    :  
 ******************************************************************************/
-void CMainFrame::OnCAPL_TO_C_Converter()
+void CMainFrame::OnFileConverter()
 {
     // TODO: Add your command handler code here
     CString omCurrExe;    
-    omCurrExe.Format("%s\\CAPL_2_C.exe", theApp.m_acApplicationDirectory);
+	omCurrExe.Format("%s\\FormatConverter.exe", theApp.m_acApplicationDirectory);
     SHELLEXECUTEINFO sei;
     sei.cbSize = sizeof(SHELLEXECUTEINFO);
     sei.fMask = NULL;
-    sei.hwnd = NULL; 
-    sei.lpVerb = _T("open");
-    sei.lpFile = omCurrExe;
-    sei.nShow = SW_SHOWNORMAL; 
-    sei.hInstApp = NULL; 
-    sei.lpIDList = NULL; 
-    sei.lpClass = NULL; 
-    sei.hkeyClass = NULL; 
-    sei.dwHotKey = NULL; 
-    sei.hIcon = NULL; 
-    sei.hProcess = NULL; 
-    sei.lpDirectory = NULL;
-    /*int ReturnCode =*/ ::ShellExecuteEx(&sei);
-}
-/******************************************************************************
-    Function Name    :  OnDBC_TO_DBF_Converter
-
-    Input(s)         :  -
-    Output           :  -
-    Functionality    :  Called from frame work. This function will execute
-                        DBC_2_DBF.exe which resides in the application
-                        directory.
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Pradeep Kadoor
-    Date Created     :  012.06.2009
-    Modifications    :  
-******************************************************************************/
-void CMainFrame::OnDBC_TO_DBF_Converter()
-{
-    // TODO: Add your command handler code here
-    CString omCurrExe;
-    omCurrExe.Format("%s\\DBC_2_DBF.exe", theApp.m_acApplicationDirectory);
-    SHELLEXECUTEINFO sei;
-    sei.cbSize = sizeof(SHELLEXECUTEINFO);
-    sei.fMask = NULL; 
     sei.hwnd = NULL; 
     sei.lpVerb = _T("open");
     sei.lpFile = omCurrExe;
@@ -9586,42 +9543,6 @@ LRESULT CMainFrame::OnMessageTraceWnd(WPARAM /*wPAram*/, LPARAM /*lParam*/)
     return S_OK;
 }
 
-/******************************************************************************
-    Function Name    :  OnDBF_TO_DBC_Converter
-
-    Input(s)         :  -
-    Output           :  -
-    Functionality    :  This function is called from framework. when user clicks 
-                        this menu, this function invokes DBF_2_DBC.exe
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Pradeep Kadoor
-    Date Created     :  012.06.2009
-    Modifications    :  
-******************************************************************************/
-void CMainFrame::OnDBF_TO_DBC_Converter()
-{   
-    // TODO: Add your command handler code here
-    CString omCurrExe;
-    omCurrExe.Format("%s\\DBF_2_DBC.exe", theApp.m_acApplicationDirectory);
-    SHELLEXECUTEINFO sei;
-    sei.cbSize = sizeof(SHELLEXECUTEINFO);
-    sei.fMask = NULL; 
-    sei.hwnd = NULL; 
-    sei.lpVerb = "open";
-    sei.lpFile = omCurrExe;
-    sei.nShow = SW_SHOWNORMAL; 
-    sei.hInstApp = NULL; 
-    sei.lpIDList = NULL; 
-    sei.lpClass = NULL; 
-    sei.hkeyClass = NULL; 
-    sei.dwHotKey = NULL; 
-    sei.hIcon = NULL; 
-    sei.hProcess = NULL; 
-    sei.lpDirectory = NULL;
-    /*int ReturnCode =*/ ::ShellExecuteEx(&sei);
-}
 void CMainFrame::vReRegisterAllCANNodes(void)
 {
 	//Problem here
@@ -11065,32 +10986,7 @@ void CMainFrame::OnUpdateSelectDriver(CCmdUI *pCmdUI)
 	pCmdUI->SetCheck(bSelected);
 }
 
-BOOL CMainFrame::bCreateExternalToolsMenu(BYTE byValue)
-{
-    BOOL bResult = FALSE;
-    if (byValue != 0)
-    {
-        CMenu* pFileMenu = GetSubMenu(_T("&File"));
-        pFileMenu = pFileMenu->GetSubMenu(3); // Utilities
-        if (pFileMenu != NULL)
-        {
-            bResult = TRUE;
-            if (byValue & CAPL_2_C_MASK)
-            {
-                pFileMenu->AppendMenu(MF_STRING | MF_ENABLED, ID_EXTERNALTOOLS_CAPLTOCCONVERTER, _T("CAPL TO C CONVERTER"));
-            }
-            if (byValue & DBC_2_DBF_MASK)
-            {
-                pFileMenu->AppendMenu(MF_STRING | MF_ENABLED, ID_EXTERNALTOOLS_DBCTODBFCONVERTER, _T("DBC TO DBF CONVERTER"));
-            }
-            if (byValue & DBF_2_DBC_MASK)
-            {
-                pFileMenu->AppendMenu(MF_STRING | MF_ENABLED, ID_EXTERNALTOOLS_DBFTODBCCONVERTER, _T("DBF TO DBC CONVERTER"));
-            }
-        }
-    }
-    return bResult;
-}
+
 BOOL CMainFrame::bUpdatePopupMenuDIL(void)
 {
     USES_CONVERSION;
@@ -11141,11 +11037,7 @@ BOOL CMainFrame::bUpdatePopupMenuDIL(void)
     {
         theApp.bWriteIntoTraceWnd("Could not create DIL menu items");
     }
-	BYTE byValue = DBC_2_DBF_MASK | DBF_2_DBC_MASK | CAPL_2_C_MASK;
-
-    bCreateExternalToolsMenu(byValue);
-
-   
+	
     return bResult;
 }
 DILINFO* CMainFrame::psGetDILEntry(UINT unKeyID, BOOL bKeyMenuItem)

@@ -554,8 +554,7 @@ private:
     
     DILINFO* psGetDILEntry(UINT unKeyID, BOOL bKeyMenuItem = TRUE);
     void vInitializeBusStatCAN(void);
-    BOOL bCreateExternalToolsMenu(BYTE byMask);
-	BOOL bStartGraphReadThread();
+    BOOL bStartGraphReadThread();
     BOOL bStopGraphReadThread();	
 	void vUpdateGraphData(const STCANDATA &sCanData);
     void vClearDbInfo(ETYPE_BUS eBus);
@@ -593,12 +592,9 @@ public:
 	afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
 	virtual void WinHelp(DWORD dwData, UINT nCmd = HELP_CONTEXT);
 	afx_msg void OnDissociateDatabase();
-    afx_msg void OnCAPL_TO_C_Converter();
-    afx_msg void OnDBC_TO_DBF_Converter();
     afx_msg void OnSaveImportDatabase();
     afx_msg void OnUpdateSaveImportDatabase(CCmdUI* pCmdUI);
-    afx_msg void OnDBF_TO_DBC_Converter();
-	//To update the Message DB Pointer	
+    //To update the Message DB Pointer	
 	afx_msg LRESULT OnProvideMsgDBPtr(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnMessageFromUserDll(WPARAM wParam, LPARAM lParam);
     afx_msg void OnConfigureModeActive();
@@ -632,6 +628,7 @@ public:
 	afx_msg void OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI);
 	afx_msg void OnToolbarCandatabase();
 	afx_msg void OnUpdateToolbarCanDatabase(CCmdUI *pCmdUI);
+	afx_msg void OnFileConverter();
 };
 
 /////////////////////////////////////////////////////////////////////////////
