@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FormatConverter", "FormatConverter\FormatConverter.vcproj", "{9374A00F-B768-4724-9B25-7DE7F9467D79}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AscLogConverter", "AscLogConverter\AscLogConverter.vcproj", "{264D2ACF-4A03-488F-8864-3CB4C52FD010}"
+EndProject
+Global
+	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
+		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9374A00F-B768-4724-9B25-7DE7F9467D79}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9374A00F-B768-4724-9B25-7DE7F9467D79}.Debug|Win32.Build.0 = Debug|Win32
+		{9374A00F-B768-4724-9B25-7DE7F9467D79}.Release|Win32.ActiveCfg = Release|Win32
+		{9374A00F-B768-4724-9B25-7DE7F9467D79}.Release|Win32.Build.0 = Release|Win32
+		{264D2ACF-4A03-488F-8864-3CB4C52FD010}.Debug|Win32.ActiveCfg = Debug|Win32
+		{264D2ACF-4A03-488F-8864-3CB4C52FD010}.Debug|Win32.Build.0 = Debug|Win32
+		{264D2ACF-4A03-488F-8864-3CB4C52FD010}.Release|Win32.ActiveCfg = Release|Win32
+		{264D2ACF-4A03-488F-8864-3CB4C52FD010}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
