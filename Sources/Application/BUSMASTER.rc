@@ -922,6 +922,7 @@ BEGIN
         MENUITEM MFT_SEPARATOR
         POPUP "Utilities",                      65535,MFT_STRING,MFS_ENABLED
         BEGIN
+			MENUITEM "Format Converters",				32959,MFT_STRING,MFS_ENABLED 
             MENUITEM "Export &CAN Log File",        32958,MFT_STRING,MFS_ENABLED
         END
         MENUITEM "&Properties",                 62455,MFT_STRING,MFS_ENABLED
