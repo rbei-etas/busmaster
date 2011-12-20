@@ -34,7 +34,7 @@ BrandingText "RBEI BUSMASTER Installation"
 CRCCheck On
 
 ; Output filename
-Outfile "BUSMASTER_Installer_Ver_1.3.0.exe"
+Outfile "BUSMASTER_Installer_Ver_1.4.0.exe"
 
 Function .onInit
     # the plugins dir is automatically deleted when the installer exits
@@ -74,10 +74,7 @@ Section ""
     File ..\Sources\BIN\Release\CAN_PEAK_USB.dll
     File ..\Sources\BIN\Release\CAN_STUB.dll
     File ..\Sources\BIN\Release\CAN_Vector_XL.dll
-    File ..\Sources\BIN\Release\CAPL_2_C.exe
     File ..\Sources\BIN\Release\Changelog.txt
-    File ..\Sources\BIN\Release\DBC_2_DBF.exe
-    File ..\Sources\BIN\Release\DBF_2_DBC.exe
     File ..\Sources\BIN\Release\DIL_Interface.dll
     File ..\Sources\BIN\Release\Filter.dll
     File ..\Sources\BIN\Release\FrameProcessor.dll
@@ -90,7 +87,11 @@ Section ""
     File ..\Sources\BIN\Release\TestSetupEditorGUI.dll
     File ..\Sources\BIN\Release\TestSuiteExecutorGUI.dll
     File ..\Sources\BIN\Release\TXWindow.dll
+    File ..\Sources\BIN\Release\FormatConverter.exe
 
+	; Converters
+    File /r ..\Sources\BIN\Release\ConverterPlugins
+	
     ; Help
     File /oname=BUSMASTER.chm "..\Documents\4 Help\out\help.chm"
 
