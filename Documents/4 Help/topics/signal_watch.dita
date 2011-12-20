@@ -20,9 +20,7 @@
     <section>
       <title>Add/ Delete Signals</title>
       <p>Signal watch list can be interactively populated. The following list describes the steps to Add/Delete signals from Signal Watch List.<ul>
-          <li> Click on the drop-down button associated with the above tool bar button.</li>
-          <li>A pop-up a menu is displayed</li>
-          <li>Select Add/ Delete Signals… menu option</li>
+          <li> Click on <b>Configure --&gt; Signal Watch</b>.</li>
           <li>A dialog box will be displayed with all the database messages listed under the Message list and the list of signals defined in the selected message. The Signal Watch List will show the Watch List.<image href="../images/SignalWatchListDialog.bmp" placement="break"/></li>
           <li>Select a message and select associated signal from the Signal list. Select Add to move the selected signal in to Watch List. Multiple signals can be added by multiple selection and selecting Add button. All signals belonging to a message can be added in to the watch list be selecting Add All button.</li>
           <li>Double clicking the signal name in Signal List will add the signal in to the Watch List.</li>

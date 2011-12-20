@@ -45,7 +45,7 @@
     <topicref type="topic" href="topics/test_setup_editor.dita"/>
     <topicref type="topic" href="topics/test_suite_executor.dita"/>
   </topicref>
-  <topicref href="topics/reset_controller.dita" type="topic"/>
+  <!-- <topicref href="topics/reset_controller.dita" type="topic"/> -->
   <topicref href="topics/network_statistics.dita" type="topic"/>
   <topicref href="topics/configuration_file.dita" type="topic"/>
   <topicref href="topics/connect.dita" type="topic"/>
