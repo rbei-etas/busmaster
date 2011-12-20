@@ -178,7 +178,7 @@ HRESULT CAscLogConverter::ConvertFile(TCHAR* chInputFile, TCHAR* chOutputFile)
         if(NULL != fpOutputFile)
         {
             //yydebug = 1;
-            fprintf(fpOutputFile, "%s\n", "***BUSMASTER Ver 1.3.0***");
+            fprintf(fpOutputFile, "%s\n", "***BUSMASTER Ver 1.4.0***");
             fprintf(fpOutputFile, "%s\n", "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***");
             fprintf(fpOutputFile, "%s\n", "***[START LOGGING SESSION]***");
             fprintf(fpOutputFile, "%s", "***START DATE AND TIME ");
