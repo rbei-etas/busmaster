@@ -38,10 +38,9 @@
 #include "Utility/Utility.h"
 #include "DIL_Interface/BaseDIL_CAN_Controller.h"
 
+
 #define USAGE_EXPORT
 #include "CAN_STUB_Extern.h"
-#include "ConfigDialogsDIL/API_dialog.h"
-
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
