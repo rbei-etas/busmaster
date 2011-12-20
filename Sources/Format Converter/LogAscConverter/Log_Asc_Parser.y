@@ -86,7 +86,7 @@ int nGetAscTimeStamp(char* pchLogTime, char* pchAscTime)
 }
 int nConvertFile(FILE* fpInputFile, FILE* fpOutputFile)
 {
-	if( (NULL != fpOutputFile) && (NULL != fpOutputFile) )
+	if( (NULL != fpInputFile) && (NULL != fpOutputFile) )
 	{ 
 		yyin = fpInputFile;
 		yyout = fpOutputFile;
