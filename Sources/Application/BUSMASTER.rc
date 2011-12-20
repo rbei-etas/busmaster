@@ -128,7 +128,7 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,186,6,50,14
     LTEXT           "",IDC_STATIC_VERSION,38,14,138,8
     LTEXT           "Copyright© 2003 Robert Bosch Engineering and Business Solutions Ltd",IDC_STATIC,38,27,138,18
-    ICON            IDR_MAINFRAME,IDC_STATIC,7,11,21,20
+    ICON            IDR_MAINFRAME,IDC_STATIC,7,11,20,20
     LTEXT           "_________________________________________________________________",IDC_STAT_LINE3,7,69,229,9,WS_DISABLED
     CONTROL         184,IDC_STATIC,"Static",SS_BITMAP,38,84,167,36
     LTEXT           "Entitlement ID",IDC_STATIC,38,60,45,8
@@ -234,7 +234,7 @@ FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,182,7,50,14
     LTEXT           "CAN Driver 1.00.D10",IDC_STAT_DRIVER_VERSION,56,16,122,8
-    LTEXT           "Copyright© 2003 RBEI",IDC_STAT_COPYRIGHT,56,31,122,8
+    LTEXT           "CopyrightÂ© 2003 RBEI",IDC_STAT_COPYRIGHT,56,31,122,8
     ICON            IDR_MAINFRAME,IDC_STATIC,9,13,20,20
     LTEXT           "_________________________________________________________________",IDC_STAT_LINE3,7,45,221,9,WS_DISABLED
     CONTROL         184,IDC_STATIC,"Static",SS_BITMAP,34,59,167,36
@@ -922,7 +922,7 @@ BEGIN
         MENUITEM MFT_SEPARATOR
         POPUP "Utilities",                      65535,MFT_STRING,MFS_ENABLED
         BEGIN
-			MENUITEM "Format Converters",				32959,MFT_STRING,MFS_ENABLED 
+            MENUITEM "Format Converters",           32959,MFT_STRING,MFS_ENABLED
             MENUITEM "Export &CAN Log File",        32958,MFT_STRING,MFS_ENABLED
         END
         MENUITEM "&Properties",                 62455,MFT_STRING,MFS_ENABLED
