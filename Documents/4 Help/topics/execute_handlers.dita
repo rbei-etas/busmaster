@@ -35,14 +35,10 @@
     <section>
       <title>Timer Handlers</title>
       <p>The timer handler functions are those function which will be executed on elapse of selected time interval. Please see section Function Editor for further details. After the DLLs are loaded, timer handlers can be invoked using <menucascade>
-          <uicontrol>User Program</uicontrol>
-          <uicontrol>Execute</uicontrol>
+          <uicontrol>Node Simulation</uicontrol>
           <uicontrol>All Timer Handler(s)</uicontrol>
         </menucascade>. You can also press tool bar button shown in figure below.</p>
       <image href="../images/timer.bmp" placement="break"/>
-      <p>A dialog box will be displayed listing all timer handlers defined. User can select timer handler. Selected timer handler can be configured as Mono Shot or Cyclic by Selecting/Deselecting the respective check boxes. The default time value associated with the timer will be displayed. User can change this to a new time value.</p>
-      <image href="../images/Timer_Dialog.bmp" placement="break"/>
-      <p>The timers are activated on selecting OK button or Apply button in dialog box. Properties of running timer can not be changed with out stopping the timer. Monoshot timer functions are invoked only once at elapse of the time interval. Cyclic timer functions are invoked repeatedly on elapse of specified time until it is manually stopped. Cyclic timers can be stopped by deselecting the timer function after invoking the dialog box again.</p>
       <p>All the timer handler(s) under the simulated system(s) can also be executed by right clicking on any simulated system and selecting Enable All Timer Handlers in simulated system window Pane 1. The timer handler(s) under the node can be executed by selecting the Timer handlers in Handler Details List and clicking Enable Handler in the simulated system window Pane 2.</p>
     </section>
     <section>

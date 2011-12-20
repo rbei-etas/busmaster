@@ -15,13 +15,27 @@
     </metadata>
   </prolog>
   <body>
-    <p>External Tools</p>
-    <p>Currently three external tools are integrated with BUSMASTER. These tools can be used only from BUSMASTER.
-    <ul>
-        <li>CAPL TO C Converter: Converts CAPL (*.can) file into BUSMASTER C (*.c) file.</li>
-        <li>DBC TO DBF Converter: Converts DBC (*.dbc) file into BUSMASTER database (*.dbf) file.</li>
-        <li>DBF TO DBC Converter: Converts BUSMASTER database (*.dbf) file into DBC (*.dbc) file.</li>
+    <p><b>Format Converters:</b></p>
+    <p>Currently Five external tools are integrated with BUSMASTER. </p>
+    <p><ul>
+        <li>CAPL To C Converter: Converts CAPL (*.can) file into BUSMASTER C (*.c) file.</li>
+        <li>DBC To DBF Converter: Converts DBC (*.dbc) file into BUSMASTER database (*.dbf) file.</li>
+        <li>DBF To DBC Converter: Converts BUSMASTER database (*.dbf) file into DBC (*.dbc) file.</li>
+        <li>ASC TO LOG Converter: Converts CANoe log file (*.asc) to BUSMASTER log file(*.log)</li>
+        <li>LOG To ASC Converter: Converts BUSMASTER log file (*.log) to CANoe Log file (*.log)</li>
       </ul></p>
-    <image href="../images/External_Tools.bmp" placement="break"/>
+    <p><b>Usage:</b></p>
+    <p><ul>
+        <li>To use the Converters select File --&gt; Utilities --&gt; Format Converters As Shown in the below figure.</li>
+      </ul>  </p>
+    <image href="../images/External_Tools.bmp"/>
+    <p><ul>
+        <li>A Dialog box as shown in the following figure will be displayed.</li>
+      </ul></p>
+    <image href="../images/Format Converters.bmp"/>
+    <ul>
+      <li>Select the Required converter from the combo box.Give the Input and output file path and click on Convert Button.</li>
+      <li>To use the CAPL to C converter select the CAPL_2_C Converter Tab in the same dialog.</li>
+    </ul>
   </body>
 </topic>
