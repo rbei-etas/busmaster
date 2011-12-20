@@ -24,6 +24,16 @@
 	#error include 'stdafx.h' before including this file for PCH
 #endif
 
+/*Definitions*/
+const int ERR_INVALID_PROCDIL       = -1;
+const int ERR_INVALID_PARENTHANDLE  = -2;
+const int INFO_RETAINED_CONFDATA    = 0;
+const int INFO_CHANGED_CONFDATA     = 1;
+
+const int WARNING_NOTCONFIRMED      = -3;
+const int ERR_CONFIRMED_CONFIGURED  = -4;
+const int INFO_INIT_DATA_CONFIRMED  = 2;
+const int INFO_CONFIRMED_CONFIGURED = 3;
 
 /**
  * See CAN_STUB.cpp for the implementation of this class
