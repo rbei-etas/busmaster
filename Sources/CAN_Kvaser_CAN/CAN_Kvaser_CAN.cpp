@@ -1404,7 +1404,8 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_Kvaser_CAN(LPVOID pVoid)
 	int moreDataExist;				
 	static UINT unFlags = 0;
 	static DWORD dwTime = 0;
-
+	unsigned char   ucData[8];
+	
 	//New approach{{
 	while (bLoopON)
     {
@@ -1420,11 +1421,12 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_Kvaser_CAN(LPVOID pVoid)
 					{
 						//Read CAN Message from channel
 						nStatus = canRead(sg_arrReadHandles[i], (long*)&sg_ReadMsg.m_unMsgID, 
-										&sg_ReadMsg.m_ucData[0], (unsigned int*)&sg_ReadMsg.m_ucDataLen, 
+										&ucData[0], (unsigned int*)&sg_ReadMsg.m_ucDataLen, 
 										&unFlags, &dwTime);
 						switch (nStatus) 
 						{
 							case canOK:
+								memcpy(sg_ReadMsg.m_ucData, ucData, (unsigned int)sg_ReadMsg.m_ucDataLen);
 								ProcessCANMsg(i, unFlags, dwTime);
 								moreDataExist = 1;
 							break;
