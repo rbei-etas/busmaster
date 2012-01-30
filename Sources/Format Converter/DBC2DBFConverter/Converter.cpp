@@ -238,8 +238,9 @@ void CConverter::ValidateMessageList()
                 if(flag == 0)
                 {
                     m_unsupList.push_back(*rMsg);
-                    rMsg->m_listSignals.clear();
-                    rMsg->m_listSignals.push_back(*rSig);
+                    CMessage&msg = m_unsupList.back();
+                    msg.m_listSignals.clear();
+                    msg.m_listSignals.push_back(*rSig);
                 }
             }
         }
