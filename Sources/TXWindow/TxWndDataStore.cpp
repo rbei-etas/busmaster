@@ -262,7 +262,7 @@ BYTE* CTxWndDataStore::pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize)
     unSize += sizeof (UINT); //block count
 
     PSMSGBLOCKLIST psTemp = m_psMsgBlockList;
-    while (psTemp != NULL)
+    while (psTemp != NULL && unBlockCount > 0)
     {                    
         unSize += (sizeof(TCHAR) * MAX_PATH); // To store the block name
         unSize += sizeof(UCHAR); // To store the trigger
@@ -290,7 +290,7 @@ BYTE* CTxWndDataStore::pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize)
     COPY_DATA(pbyTemp, &unBlockCount, sizeof(UINT));
 
     PSMSGBLOCKLIST psTempBlock = m_psMsgBlockList;
-    while (psTempBlock != NULL)
+    while (psTempBlock != NULL && unBlockCount > 0)
     {    
         CString m_omStrBlockName;
         TCHAR acName[MAX_PATH] = {_T('\0')};
@@ -545,7 +545,6 @@ BOOL CTxWndDataStore::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
         if (m_psMsgBlockList == NULL)
         {
             psTail = m_psMsgBlockList =  psTemp;
-
         }
         else
         {

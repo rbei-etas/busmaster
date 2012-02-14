@@ -193,10 +193,10 @@ void CDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
 			}
 		}
 		//Added by Arun to update Data Handler Main entry list.		
-		//pMainFrame->vUpdateMainEntryListInWaveDataHandler();
-		//pMainFrame->vClearSignalInfoList();
-		//if(!pMainFrame->m_ouWaveTransmitter.bIsBlockEnabled())
-		//	theApp.pouGetFlagsPtr()->vSetFlagStatus( SEND_SIGNAL_MSG, FALSE );
+		pMainFrame->vUpdateMainEntryListInWaveDataHandler();
+		pMainFrame->vClearSignalInfoList();
+		if(!pMainFrame->m_ouWaveTransmitter.bIsBlockEnabled())
+			theApp.pouGetFlagsPtr()->vSetFlagStatus( SEND_SIGNAL_MSG, FALSE );
 
 		//Update Message windows
 		pMainFrame->vUpdateAllMsgWndInterpretStatus(FALSE);

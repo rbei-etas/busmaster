@@ -1,0 +1,269 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="signal_watch" xml:lang="en-us">
+  <title>Signal Graph</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2012"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Signal Graph</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section>
+      <title>Graph Support for Signal and Statistics </title>
+      <p>
+BUSMASTER Graph supports plotting graph for signal values and statistics parameters. This includes raw and physical values of a signal. Network statistics parameters can be added to plot graph. The number of graphs plotted is limited to 10. Various types of graph are supported by BUSMASTER. This includes types, color and sample points highlight with symbols. For analysis of the plotted graph various graph manipulation options are provided. The graph data can be exported in various formats ranging from image to report.
+</p>
+    </section>
+    <section>
+      <title>Starting With Graph </title>
+      <image href="../images/Graph_main.bmp"/>
+      <p>To Start with BUSMASTER graph select View --&gt; Signal Graph Window --&gt; CAN menu item. This will show Graph Display with configuration setting option. The left side view will show list of elements added for plotting the graph. Below the element list properties of the selected element will be listed. This includes line type and color, sample point symbol type and color. An element can be hidden from the display and an element can be disabled so that it will not get currently receiving data. To configure element list Configure button is provided. This will show a dialog with database messages and statistics parameters. 
+
+</p>
+      <p>The right side view shows graph window. Below that controls are provided that will manipulate plotted graph. These ranges from basic manipulation of graph like moving, zooming and tracking the value. Advanced features like setting scale values automatically, setting all graph elements one below another and setting manual range. For easy navigation directional navigation keys are provided which will move the graph in the selected direction by one grid position.    
+</p>
+      <p>Graph control shall be configured in terms of performance and view style. Graph buffer size and update rate can be configured by the user to optimize the performance. Graph window view style shall be fully configured by the user including colors of various graph window components. User shall configure the graph window to his known style like oscilloscope or Excel graph. 
+
+</p>
+      <p>Data from graph buffer shall be exported in various formats. This includes exporting data as image, CSV used in excel and detailed HTML report. HTML report shall be printed after creation by BUSMASTER. This report shall be modified by the user after create using any HTML editor externally. This report will include graph elements detail like range, unit, color and min-max values.
+</p>
+    </section>
+    <section>
+      <title>Configuring Graph </title>
+      <p>
+To configure graph for a particular bus with graph elements or statistics elements select Configure à Signal Graph Window menu item. This will show Configure Signal Graph Window dialog.        
+
+</p>
+      <image href="../images/Configure_SigGrphWnd.bmp"/>
+      <p>Select the bus name from the combo box for which you wish to configure graph elements data. 
+
+</p>
+      <p>Click the ‘Configure ...’ button in the Configured Elements: group box shown in the above dialog. Element Selection dialog will be shown.
+
+</p>
+      <image href="../images/Graph_Configure.bmp"/>
+      <p>This dialog will show list of database message-signals and statistics parameters. Each signal will have physical and raw value entries. As soon as a signal value (physical or raw or both) is added in to the list that will be removed from the tree. To add an item, select the item (Physical or Raw value of signal or statistics parameters only) from tree and select Add button. This will add the item in to element list and will remove the item from tree. 
+
+</p>
+      <note>
+        <ul>
+          <li>To add an item quickly, just double click the item. </li>
+          <li>After an element addition element color and sample point type are automatically assigned. </li>
+          <li>Only 10 elements are allowed to add. If elements count exceeds 10 the Add button will be disabled and double clicking the item will show error message. </li>
+        </ul>
+      </note>
+      <p>To delete an item from the element list, select the item from the element list right side and select Delete button. This will remove the selected item from element list and will put the deleted item in to the tree at the appropriate place. 
+
+</p>
+      <p>To delete all item from the element list select Delete All button. This will cleat element list and will refresh tree to include all database messages and statistics parameters. 
+
+</p>
+      <note>
+        <ul>
+          <li>To view details of a database signal just double click the item from element list. This will popup signal details dialog with signal definition. </li>
+          <li>Selecting OK will save changes and will close element selection dialog . </li>
+          <li>To undo changes done in element selection dialog just select Cancel button. This will ignore all changes done by the user. </li>
+        </ul>
+      </note>
+    </section>
+    <section>
+      <title>Graph Element List </title>
+      <p>The graph element list will be shown in left side view of graph window. This will show element name, category and value type. For a database signal this will show signal name, message name and value type. For statistics parameters this will show parameter name. Each element will be displayed in the color of that graph element. Selecting an element will update the element properties below the list. 
+
+</p>
+      <image href="../images/Graph_Element.bmp"/>
+      <p>Select a list item to see the element details and to modify the details. The selected item will be highlighted in the graph using bold solid line. Various line styles and point styles are supported by BUSMASTER. Sample points symbols will be drawn only if the tool is in disconnected state. When to tool is connected, the graph will go to tailored mode or run mode where cosmetic components of the graph will not be drawn. 
+
+</p>
+      <title>Line Type </title>
+      <p>BUSMASTER graph supports various types of lines ranging for different line styles to different line types. The following is the list of supported line types. 
+
+</p>
+      <p><ul>
+          <li>Solid - Graph with solid line </li>
+          <li>Dashed - Graph with Dashed lines </li>
+          <li>Dotted - Graph with Dotted lines </li>
+          <li>Dash-Dot - Graph with Dashed and Dotted lines </li>
+          <li>Dash - Dot - Dotted - Graph with Dash followed by a Dot followed by a Dotted line. </li>
+        </ul></p>
+      <title>Line Color </title>
+      <p>Color of the graph line. User can select standard colors from the palette or user can define own color from the RGB and illumination space. 
+
+</p>
+      <title>Point Type </title>
+      <p>Type of the sample point element. User can select sample point symbols to highlight the points at which graph got samples. This will be disabled by selecting point type as NONE. BUSMASTER supports following symbol types. 
+
+</p>
+      <p><ul>
+          <li>None ( To Disable Sample point Symbols )</li>
+          <li>Dots</li>
+          <li>Rectangles</li>
+          <li>Diamonds</li>
+          <li>Asterics</li>
+          <li>Down Triangles</li>
+          <li>Up Triangles</li>
+          <li>Left Triangles</li>
+          <li>Right Triangles</li>
+        </ul></p>
+      <title>Point Color </title>
+      <p>Color of the sample point symbol. User can select standard colors from the palette or user can define own color from the RGB and illumination space. 
+
+</p>
+      <title>Show/Hide </title>
+      <p>This is to show or hide a graph from graph window. The hidden graphs will not be plotted in graph window. But a hidden graph will receive samples if the tool is connected. User can be able to view the hidden graph at any point of time. This is to hide the graph from drawing. 
+
+</p>
+      <title>Enable/Disable </title>
+      <p>This is to enable or disable a graph element from receiving sample values. If a graph is disabled it will not receive any update for message/signals or statistics parameters. This is to avoid a graph getting samples from message/signals or statistics parameters. If the tool is connected and a graph element is disabled, it will not get latest values. If it is enabled again it will start getting latest values. Changing the enable property will reflect only if the tool is connected. 
+
+</p>
+      <note>
+        <ul>
+          <li>Due to highlight, the line style modification will not be visible during selection. This will be visible if the selection moves to other element </li>
+          <li>Disable is a run time option. This will be considered only if the tool is connected and message activity is on. </li>
+        </ul>
+      </note>
+    </section>
+    <section>
+      <title>Graph Manipulation Controls </title>
+      <image href="../images/Graph_Manipulation.bmp"/>
+      <title>Active Axis</title>
+      <p>This unlocks mouse move only in the enabled axis. If X axis is selected only X axis value of mouse movement will be taken in to account. The behavior is same for Y axis too. If XY is selected then axis local will be removed and both X and Y will be considered for the action specified in the Action frame. 
+
+</p>
+      <title>Action</title>
+      <p>This setting will be taken during mouse drag. Action MOVE will move the graph while dragging the mouse in graph window. If ZOOM is selected the mouse drag will result in zooming the graph. TRACK will show the value at mouse cursor point in terms of selected element Y axis and X time axis values. The actions zoom and move are combined with active axis. If action is MOVE and active axis is X then mouse drag will move the graph only in X Axis. Similarly if action is ZOOM and active axis is X then mouse drag will zoom the graph only in X Axis (time scale zooming). Track will work independent of active axis. It will show both X and Y value of mouse point. This will freeze the graph from mouse drag actions and XY scale will remain same. 
+
+</p>
+      <title>Range </title>
+      <p>To set time axis value for all graphs this range option is given. This has inputs from and to. This will be the time axis min and max values. Valid time scale value shall be set by selecting the button Apply. Apply will validate time entered time scale value and will set the X axis time value. Decimal values could be entered to see the graph more closely. 
+
+</p>
+      <title>E.g. </title>
+      <p><ul>
+          <li>From 1 To 10 (Sec) </li>
+          <li>From 2.23 To 2.24 (Sec) </li>
+        </ul></p>
+      <title>Auto Range </title>
+      <p>To set optimal values for time axis and Y scale for all graphs auto range option is given. This will find the min and max time value to set optimal X Axis value. Each graph will set its own Y axis value such that the graph will occupy whole graph window. All graphs will overlap each other as each graph is utilizing whole graph window. This mode will be useful to find the overlapping between the signal values or to compare value of various signals and statistics parameters. 
+
+</p>
+      <title>Auto Fit </title>
+      <p>To set optimal values for time axis and Y scale will set to a value such that each graph will be displayed one by one. This will be useful to find all graphs with out any overlap. All graph elements will occupy portion of graph window so that its element value will not merge with other graph element. The whole graph area will be shared across all graph elements.
+</p>
+    </section>
+    <section>
+      <title>Cursors for Signal Tracking </title>
+      <image href="../images/Graph_CursorsDesc.bmp"/>
+      <title>Description</title>
+      <p>Cursors for Signal tracking is an offline feature available for viewing the element values at different time values. 
+
+</p>
+      <p>Cursors can be activated by left mouse double clicks on the graph. When the two cursors are activated, user can view the time values at respective cursor postions and the element values in the bottom view of the graph as shown in the above figure.</p>
+      <p>User can deactivate the cursors by right mouse double click on the graph.
+
+</p>
+      <p>The time values at cursors are shown in a read only edit boxes. The list box shown in the above figure presents the interpolated element values at both the cursor positions and the modulus of difference between both the values. 
+
+
+
+</p>
+      <title>Track Mode </title>
+      <p>Track mode is activated by clicking the Track button in Actions group of Graph manipulations controls.
+
+</p>
+      <p>In this mode, user can drag the cursors to new time values. For this user has to position the mouse on the cursor which is to be dragged to a new position. Then keep holding the left mouse and drag the cursor to new position.
+
+</p>
+      <p>The image below shows the dragging of cursor to new time value.
+
+</p>
+      <image href="../images/Graph_CursorTrack.gif"/>
+      <p>If the user wants to clear the cursors on the graph at any point of time, right mouse double click will do the job.
+
+</p>
+    </section>
+    <section>
+      <title>Graph Window Configuration </title>
+      <p>To change look and feel of graph select Configure button from right side view of graph window. This will popup graph configuration dialog. This dialog has various graph view style parameters. 
+
+</p>
+      <image href="../images/Graph_UI_Configure.bmp"/>
+      <title>Buffer Size </title>
+      <p>User can configure graph buffer size in terms of number of entries in the graph. Buffer will be created with this size for each graph elements in the graph. If the graph has two message signals and two statistics signals and the buffer size is 10000 entries, each element can hold 10000 entries and individual buffers will be created to hold 10000 samples. Once the buffer will become full old data will be removed to make room for latest data. For optimal performance of the tool keep this buffer size minimum or with the default value. The supported value for this parameter is between 1000 - 50000 entries. 
+
+</p>
+      <title>Display Update Rate </title>
+      <p>This is the cyclic time delay after which the display will be updated. This refresh timer delay will be set to this value. The default value is 1000 msec or one second. The supported value for this parameter is between 1000 - 20000 millisecond. 
+
+</p>
+      <title>Frame Color </title>
+      <p>This is the color of the Frame. Frame is the rectangle area that covers the graph plotting area. This parameter depends on the frame style also. This color will be considered only for frame styles FLAT and SCOPE. Selecting this button will popup a dialog where standard colors will be displayed. There will be an option to give custom RGB values also. 
+
+</p>
+      <title>Plot Area Color </title>
+      <p>This is the color of graph elements plotting area. This forms the background of the graph area. 
+
+</p>
+      <title>Axis Color </title>
+      <p>This is the color of axis rectangle. Axis rectangle is visible only if the frame style is flat. Other wise this rectangle will be hidden by 3D border of the frame. 
+
+</p>
+      <title>Grid Color </title>
+      <p>This is the color of grid lines. This change will be visible only if grid lines are visible. 
+
+</p>
+      <title>Frame Style</title>
+      <p>Three types of frame styles are supported. FLAT, 3D and FRAME. In flat style axis rectangle will cover graph plotting area. This is a flat rectangle. In 3D style a 3D rectangle will cover graph plotting area. Axis rectangle will be in 3D format. In FRAME style a gradient picture will be used to cover plotting area. 
+
+</p>
+      <title>Grid Lines </title>
+      <p>This will configure number of grid lines displayed on X and Y axis. Supported range is 2 - 10. The grid line starts from left to right in case of X axis. The last grid line will merge with right side boundary. For Y axis grid lines will start from bottom to top. The last Y axis grid will merge with top boundary of the graph. 
+
+</p>
+      <title>Line Display </title>
+      <p>This will configure line display style of grid lines displayed on X and Y axis. Currently three styles of display are supported for graph drawing. They Normal , Step Mode XY (Graph will be advanced in X axis first and then in Y Axis.) and Step Mode YX (Graph will be advanced in Y axis first and then in X Axis.).
+
+</p>
+      <title>Set Default </title>
+      <p>This will set all parameters to default values. View style parameters will be set to default color and style. Buffer size will be set to 10000 entries and display update rate will be set to 1000 msec. 
+
+</p>
+      <note>
+        <ul>
+          <li>All graph window configuration parameters are saved in BUSMASTER configuration file. While loading a configuration file all are restored. </li>
+        </ul>
+      </note>
+    </section>
+    <section>
+      <title>Graph Export </title>
+      <p>
+BUSMASTER graph shall be exported in several types. These are Comma Separated Format or CSV, detailed HTML report and as a bitmap picture. In CSV export graph element details are exported with corresponding time values. 
+
+</p>
+      <p>To make extensive test report HTML format will be handy. This will generate a report in HTML format with graph and elements details. The same shall be printed directly from BUSMASTER if Print option is enabled. 
+
+</p>
+      <p>To save the graph window details as image, image export option is given. This will save the graph windows snapshot in to the specified bitmap file. 
+
+</p>
+      <note>
+        <ul>
+          <li>CSV export will export only the data that is currently in element buffer of the graph.</li>
+          <li>HTML report will take the snapshot of the graph window. This will not modify either time range or y axis appearence. User has freedom to set any time range and Y axis range. This should be done before exporting the report. </li>
+          <li>To optimise printing, select light plot area color. This will make background of the graph lighter and elements can be easily identified.</li>
+          <li>
+            <note>Select Landscape as page format to fit whole report in one page. </note>
+          </li>
+        </ul>
+      </note>
+    </section>
+  </body>
+</topic>

@@ -1,0 +1,23 @@
+HKCR
+{
+	DMGraph.AnnoPropPage.1 = s 'AnnoPropPage Class'
+	{
+		CLSID = s '{273DB50A-E76D-4B95-8E1A-0993E14FFEF0}'
+	}
+	DMGraph.AnnoPropPage = s 'AnnoPropPage Class'
+	{
+		CLSID = s '{273DB50A-E76D-4B95-8E1A-0993E14FFEF0}'
+		CurVer = s 'DMGraph.AnnoPropPage.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {273DB50A-E76D-4B95-8E1A-0993E14FFEF0} = s 'AnnoPropPage Class'
+		{
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

@@ -69,8 +69,7 @@ public:
 	afx_msg void OnLvnItemchangedListSignals(NMHDR *pNMHDR, LRESULT *pResult);
 	int m_nSymbolType;
 	int m_nLineType;
-	afx_msg void OnBnClickedButtonGrpDispConfig();
-	int m_nLineDisplay;
+	afx_msg void OnBnClickedButtonGrpDispConfig();	
 	afx_msg void OnCbnSelchangeComboType();
 	afx_msg void OnCbnSelchangeComboSymbol();
 	afx_msg void OnCbnSelchangeComboDisplay();

@@ -1383,7 +1383,7 @@ transmission is ON.\nDo you want to ignore the changes ?")
 // Configuration
 #define defIMPORT_WARNING_GRAPH   _T("Dissociation will clear Graph element List for all buses.\nDo you want to Clear the List?")
 // Default values
-#define defDEFAULT_BUFFER_SIZE      10000   // 10000 Entries
+#define defDEFAULT_BUFFER_SIZE      5000   // 5000 Entries
 #define defDEFAULT_UPDATE_RATE      1000    // One Second
 
 #define defDEFAULT_FRAME_COLOR      ( RGB( 0, 85, 0 ) )

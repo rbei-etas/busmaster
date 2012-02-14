@@ -1,0 +1,23 @@
+HKCR
+{
+	DMGraph.FormatPropPage.1 = s 'FormatPropPage Class'
+	{
+		CLSID = s '{9EE3E072-2B3F-47AB-8612-B6ED7F0CDAE6}'
+	}
+	DMGraph.FormatPropPage = s 'FormatPropPage Class'
+	{
+		CLSID = s '{9EE3E072-2B3F-47AB-8612-B6ED7F0CDAE6}'
+		CurVer = s 'DMGraph.FormatPropPage.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {9EE3E072-2B3F-47AB-8612-B6ED7F0CDAE6} = s 'FormatPropPage Class'
+		{
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

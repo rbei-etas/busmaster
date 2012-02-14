@@ -79,7 +79,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_Interface.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/ProjectConfiguration.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/NodeSimEx.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/FrameProcessor.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Replay.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/SignalWatch.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Filter.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CommonClass.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/PSDI_CAN.lib&quot;"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_Interface.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/ProjectConfiguration.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/NodeSimEx.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/FrameProcessor.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Replay.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/SignalWatch.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Filter.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CommonClass.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/PSDI_CAN.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/SignalDefiner.lib&quot;"
 				AdditionalDependencies="Winmm.lib shlwapi.lib htmlhelp.lib psapi.lib"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/BUSMASTER.exe"
 				LinkIncremental="1"
@@ -148,8 +148,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
-				InlineFunctionExpansion="1"
+				Optimization="1"
+				InlineFunctionExpansion="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;WINVER=0x0500"
 				StringPooling="true"
@@ -180,14 +180,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_Interface.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/ProjectConfiguration.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/NodeSimEx.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/FrameProcessor.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Replay.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/SignalWatch.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Filter.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CommonClass.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/PSDI_CAN.lib&quot;"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_Interface.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/ProjectConfiguration.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/NodeSimEx.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/FrameProcessor.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Replay.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/SignalWatch.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Filter.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CommonClass.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/PSDI_CAN.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/SignalDefiner.lib&quot;"
 				AdditionalDependencies="Winmm.lib shlwapi.lib htmlhelp.lib psapi.lib"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/BUSMASTER.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				GenerateManifest="true"
 				IgnoreDefaultLibraryNames=""
-				GenerateDebugInformation="true"
+				GenerateDebugInformation="false"
 				ProgramDatabaseFile=".\Release/BUSMASTER.pdb"
 				GenerateMapFile="false"
 				MapFileName=""
@@ -1405,6 +1405,18 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\WaveFormDataHandler.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WaveformSelectionDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WaveformTransmitter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WrapperErrorLogger.cpp"
 				>
 				<FileConfiguration
@@ -1711,6 +1723,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WaveFormDataHandler.h"
+				>
+			</File>
+			<File
+				RelativePath=".\WaveformSelectionDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\WaveformTransmitter.h"
+				>
+			</File>
+			<File
 				RelativePath=".\WrapperErrorLogger.h"
 				>
 			</File>
@@ -1800,6 +1824,14 @@
 				>
 			</File>
 			<File
+				RelativePath="Res\BUSMASTER.ico"
+				>
+			</File>
+			<File
+				RelativePath="Res\BUSMASTERDoc.ico"
+				>
+			</File>
+			<File
 				RelativePath=".\Res\CANDatabase.bmp"
 				>
 			</File>
@@ -1813,14 +1845,6 @@
 			</File>
 			<File
 				RelativePath=".\Res\CANDatabase_Normal.bmp"
-				>
-			</File>
-			<File
-				RelativePath="Res\BUSMASTER.ico"
-				>
-			</File>
-			<File
-				RelativePath="Res\BUSMASTERDoc.ico"
 				>
 			</File>
 			<File

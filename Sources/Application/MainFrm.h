@@ -68,6 +68,8 @@
 #include "MsgWndThread.h"
 #include "CNVTCToolBar.h"
 #include "TxHandler.h"
+#include "WaveFormDataHandler.h"
+#include "WaveformTransmitter.h"
 #include "SigGrphWndHandler.h"
 #include "DataTypes/MsgBufVSE.h"
 #include "ConfigData.h"
@@ -154,9 +156,8 @@ public:
 
 // Implementation
 public:
-
-	//CWaveformTransmitter* m_pWaveTransmitter;
-    //CWaveformTransmitter m_ouWaveTransmitter;
+	
+    CWaveformTransmitter m_ouWaveTransmitter;
 
 	//Get Message Window Thread
 	inline CMsgWndThread* pGetMessageWndThread()
@@ -438,7 +439,7 @@ public:
 	//To send configuration change command to all signal graph windows
 	void vPostConfigChangeCmdToSigGrphWnds();
 
-	//void vClearSignalInfoList(void);
+	void vClearSignalInfoList(void);
 	void vUpdateChannelInfo(void);
 
 private:
@@ -447,7 +448,7 @@ private:
     DILLIST m_ouList;// List of the driver interface layers supported
     INT m_nDILCount; //Count of the driver interface layers supported
     CMenu *m_pDILSubMenu;
-	//CWaveFormDataHandler m_objWaveformDataHandler;
+	CWaveFormDataHandler m_objWaveformDataHandler;
 	CMainEntryList m_odResultingList;		
 	//CMainEntryList m_odResultingList;
 
@@ -582,7 +583,7 @@ public:
     void vInitCFileFunctPtrs();    
     void vUpdateMsgNameCodeList(CMsgSignal* pMsgSig, CMsgNameMsgCodeList& odMsgNameMsgCodeList);
     void vPushConfigFilenameDown ( CString omStrConfigFilename );
-	//void vUpdateMainEntryListInWaveDataHandler();
+	void vUpdateMainEntryListInWaveDataHandler();
 	void vUpdateAllMsgWndInterpretStatus(BOOL bAssociate);
 public:
     afx_msg void OnUpdateSelectDriver(CCmdUI *pCmdUI);
@@ -615,9 +616,9 @@ public:
 	afx_msg void OnDisplayConfig();
 	afx_msg void OnUpdateDisplayConfig(CCmdUI *pCmdUI);
 	afx_msg void OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized);
-	/*afx_msg void OnConfigureWaveformMessages();
+	afx_msg void OnConfigureWaveformMessages();
 	afx_msg void OnStartSignalTransmission();	
-	afx_msg void OnUpdateStartSignalTransmission(CCmdUI *pCmdUI);*/
+	afx_msg void OnUpdateStartSignalTransmission(CCmdUI *pCmdUI);
 	afx_msg void OnConfigureSignalgraphwindow();
 	afx_msg void OnUpdateConfigureSignalgraphwindow(CCmdUI *pCmdUI);
 	afx_msg void OnSignalgraphwindowCAN();

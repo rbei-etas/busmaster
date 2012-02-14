@@ -36,6 +36,8 @@ private:
     int m_nCurrFileCnt;             // Keep the number of log file created
     CString m_omCurrLogFile;        // Current file of the cycle
     DWORD m_dTotalBytes;            // To keep the current file size
+    CString m_omVersion;            // Application suite version information	
+	BOOL m_bNewSession;			// For file overwriting in new session
 
     //Find the name and size of the file which will be used for logging.
     //ie. file name which contains max file count

@@ -473,6 +473,9 @@ void CSimSysDetView::OnButtonEnableDisableallhandlers()
                                                 bEnableAll);
 	    vChangeEDAllHanButtonText(bEnableAll);
 	    vDisplayNodeInformation(m_psNodeInfo);
+
+		// Set the flag status about the enable / disable handler
+		vUpdateHandlerEnableDisableStatus(-1, bEnableAll);
     }
 }
 /******************************************************************************/
@@ -499,7 +502,10 @@ void CSimSysDetView::OnButtonEnableDisablehandler()
         BOOL bEnableHandler = !omStrButtonText.CompareNoCase(_T("Enable Handler"));
         //If button is for enabling then enable the handler and vice versa
         vSetNodeInfoEDHanStatus(nItem , bEnableHandler );
-        vDisplayNodeInformation(m_psNodeInfo);	
+        vDisplayNodeInformation(m_psNodeInfo);
+
+		// Set the flag status about the enable / disable handler
+		vUpdateHandlerEnableDisableStatus(nItem, bEnableHandler);
     }
 }
 /******************************************************************************/
@@ -1546,4 +1552,31 @@ void CSimSysDetView::vUpdateHandlerList()
     {
         vAddItemToHanDetList( m_psNodeInfo );
     }
+}
+
+void CSimSysDetView::vUpdateHandlerEnableDisableStatus(int nItem, BOOL bEnableHandler)
+{	
+	CFlags &ouFlag =  CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags();
+	switch (nItem)
+	{
+	case -1:
+		ouFlag.vSetFlagStatus(H_ALL_HANDLER, bEnableHandler);
+		ouFlag.vSetFlagStatus(H_MSGHANDLERBUTTON, bEnableHandler);
+		ouFlag.vSetFlagStatus(H_TIMERBUTTON, bEnableHandler);
+		ouFlag.vSetFlagStatus(H_KEY_HANDLER_ON, bEnableHandler);
+		ouFlag.vSetFlagStatus(H_ERROR_HANDLER, bEnableHandler);
+		break;
+	case 0:	// Message Handler			
+		ouFlag.vSetFlagStatus(H_MSGHANDLERBUTTON, bEnableHandler);
+		break;
+	case 1:	// Timer Handler			
+		ouFlag.vSetFlagStatus(H_TIMERBUTTON, bEnableHandler);
+		break;
+	case 2:	// Key Handler
+		ouFlag.vSetFlagStatus(H_KEY_HANDLER_ON, bEnableHandler);
+		break;
+	case 3:	// Error Handler
+		ouFlag.vSetFlagStatus(H_ERROR_HANDLER, bEnableHandler);
+		break;
+	}
 }

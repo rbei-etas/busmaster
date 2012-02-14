@@ -593,7 +593,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int &nStreamLength, eSECTION_
             nStreamLength = unSize;
         }
         break;
-        /*case GRAPH_SECTION_ID:
+        case GRAPH_SECTION_ID:
         {
 			BYTE byVersion = 0x1;
             BYTE* pbyConfigData = NULL;
@@ -637,7 +637,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int &nStreamLength, eSECTION_
             lpData = pbyConfigData;
             nStreamLength = unSize;
         }
-        break;*/
+        break;
         case TXWND_SECTION_ID:
         {
             BYTE* pbyCfgData = NULL;
