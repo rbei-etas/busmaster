@@ -36,6 +36,10 @@
       <p>The file path text box will give the selected log file path. To change the path select &quot;...&quot; button. This will show file selection dialog. On selection of a log file, the file path text box will be updated with selected file path.</p>
     </section>
     <section>
+      <title>Log File Size</title>
+      <p>Log file size is fixed to a limit of 50 MB. This limit is set as most of the editors will take lot of time to open if the file size is large.</p>
+    </section>
+    <section>
       <title>Time Mode</title>
       <p>Logging of messages can be done in three different time modes. System time, Absolute time and Relative time mode. In system time mode time stamping of message is done using real time clock of the system. In absolute time mode the time stamping is done with respect the to the absolute timer that will be stated during connect. In relative time mode the time stamping of a message is with respect to previously received message.</p>
     </section>
@@ -46,6 +50,7 @@
     <section>
       <title>File Mode</title>
       <p>In Append file mode, log sessions will be appended at the end of the file. Each logging session will have its own session header and footer. In Overwrite file mode the file will be overwritten for the first session. For consecutive sessions the file name will be suffixed with an incrementing number and each session will be logged in new files. The log file name will be incremented every-time when you stop the logging process.</p>
+      <p>If already log files are created in the previous session and if a new session is started, then the log files created already will be overwritten in both overwrite and append mode. In this case, the successive files already created in the previous session will contain old session data.</p>
     </section>
     <example>
       <title>Example</title>

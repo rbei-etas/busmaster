@@ -27,7 +27,7 @@
 #include "LogObjectCAN.h"            // For CLogObjectCAN class declaration
 
 
-#define CAN_VERSION           _T("***BUSMASTER Ver 1.4.0***")
+#define CAN_VERSION           _T("***BUSMASTER Ver 1.5.0***")
 #define CAN_LOG_HEADER        _T("***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***")
 #define CAN_LOG_START         _T("***[START LOGGING SESSION]***")
 #define CAN_LOG_STOP          _T("***[STOP LOGGING SESSION]***")

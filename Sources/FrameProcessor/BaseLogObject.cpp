@@ -29,7 +29,7 @@
 const int SIZE_CHAR = sizeof(TCHAR);
 #define ENOENT          2
 
-#define DEFAULT_FILE_SIZE_IN_MBYTES       10 //MB 
+#define DEFAULT_FILE_SIZE_IN_MBYTES       50 //MB 
 #define MB_VALUE                         1048576
 
 const UINT DEFAULT_FILE_SIZE_IN_BYTES = DEFAULT_FILE_SIZE_IN_MBYTES * MB_VALUE;
@@ -51,6 +51,7 @@ CBaseLogObject::CBaseLogObject()
     m_CurrTriggerType = NONE;
     m_nCurrFileCnt = 0;
     m_dTotalBytes = 0;
+	m_bNewSession = TRUE;
     InitializeCriticalSection(&m_CritSection);
 }
 
@@ -71,6 +72,19 @@ CBaseLogObject& CBaseLogObject::operator=(const CBaseLogObject& RefObj)
     m_omCurrLogFile = RefObj.m_omCurrLogFile;
     m_nCurrFileCnt = RefObj.m_nCurrFileCnt;
     m_dTotalBytes = RefObj.m_dTotalBytes;
+
+	// Update the log file name based on the current file count to update the data
+	// This occurs when some of the config dialog members are changed
+	if (m_nCurrFileCnt > 0)
+	{		
+		int nIdx = m_omCurrLogFile.Find('_');
+		if (nIdx != -1)
+		{
+			m_omCurrLogFile = m_omCurrLogFile.Left(nIdx);
+			m_omCurrLogFile += ".log";
+		}
+		m_omCurrLogFile = omAddGroupCountToFileName(m_nCurrFileCnt, m_omCurrLogFile.GetBuffer(MAX_PATH));
+	}
 
     Der_CopySpecificData(&RefObj);
 
@@ -282,12 +296,23 @@ BOOL CBaseLogObject::bStartLogging(void)
         TCHAR Mode[2] =  _T(" ");
 		Mode[0] = (m_sLogInfo.m_eFileMode == APPEND_MODE) ? L'a' : L'w';
         EnterCriticalSection(&m_CritSection);
-        m_pLogFile = _tfopen(m_omCurrLogFile, Mode);
+        
         //In case user has deleted the content of the file
         m_dTotalBytes = dwGetFileSize(m_omCurrLogFile);
-        if (m_pLogFile != NULL)
-        {
-            CString omHeader = _T("");
+		//If it is new session always overwrite the file
+		if (m_dTotalBytes >= DEFAULT_FILE_SIZE_IN_BYTES && m_bNewSession)
+		{			
+			Mode[0] = L'w';
+			m_dTotalBytes = 0;
+		}
+		if (m_sLogInfo.m_eFileMode == OVERWRITE_MODE)
+		{
+			m_dTotalBytes = 0;
+		}
+		m_pLogFile = _tfopen(m_omCurrLogFile, Mode);
+		if (m_pLogFile != NULL)
+		{
+			CString omHeader = _T("");
 			vFormatHeader(omHeader);
             _ftprintf(m_pLogFile,  _T("%s"), omHeader.GetBuffer(MAX_PATH));
             bResult = TRUE;
@@ -318,6 +343,7 @@ BOOL CBaseLogObject::bStopLogging()
         fclose(m_pLogFile);
         m_pLogFile = NULL;
         bResult = TRUE;
+		m_bNewSession = FALSE;	// Old session closed
     }
 
 	return bResult;

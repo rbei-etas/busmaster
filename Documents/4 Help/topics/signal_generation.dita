@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="signal_watch" xml:lang="en-us">
+  <title>Signal Generation</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2012"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Signal Generation</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>Signal Generation allows the user to configure each signal in database messages with particular waveform and send the messages with these signal values at a particular sampling time period..</p>
+    <p>Each Signal can have different waveform settings allotted like Signal type, Amplitude, Frequency.</p>
+    <p>All the signals will be having a standard sampling time at which their amplitude will be calculated depending on the wave type and they will be sent out.</p>
+    <p>Currently only two waveforms are supported, Sine Wave and Triangular Wave.</p>
+    <p>To configure signals, go to menu option, Configure  Waveform Messages and user will be shown with the following dialog box.</p>
+    <image href="../images/WaveformSelDlg.bmp"/>
+    <p>The above shown figure contains the list of all the messages in a combo box, “Message list:” which are present in currently selected database file.</p>
+    <p>“Signal List” List control shows the signals in currently selected message in combo box which are not defined with any waveform.</p>
+    <p>“Defined Signal Waveform List” List control shows all the signals in different messages for which the waveforms are defined.</p>
+    <p>Use the “Define Wave” button to define a waveform for a particular signal. Alternatively double click on the unselected signals can be used to do the same. When user triggers this event, the following dialog pops out.</p>
+    <image href="../images/SignalGenerationDlg.bmp"/>
+    <p>The dialog will be loaded with default waveform settings i.e. a sine wave with amplitude 10, frequency 1 and sampling time period 125. User can make appropriate changes to the wave by choosing signal type, desired amplitude and frequency. “Ok” button click will add the signal to Defined signals list.</p>
+    <p>The sampling Time Period which is last modified will be applicable to all the signals. For example, if for first signals you choose the sampling time period as 125 and for the second signal, you choose the sampling time period as 100. Then the sampling time period applicable is 100 for first and second signals.
+</p>
+    <p>Now, if user wants to transmit the defined signals, make sure the application is in connected state and use the menu option TxMessage  Start Send  Waveforms.
+
+</p>
+    <p>Alternatively user can use the toolbar items shown below for configuring and sending waveform signals.
+
+</p>
+    <image href="../images/WaveformToolbarItems.bmp"/>
+    <p>Use the “Delete” button in Fig. 1 to delete previously configured signals defined signals list.
+
+</p>
+    <p>The Waveform Signals defined are saved along with configuration.
+
+</p>
+  </body>
+</topic>

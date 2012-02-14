@@ -34,7 +34,7 @@ BrandingText "RBEI BUSMASTER Installation"
 CRCCheck On
 
 ; Output filename
-Outfile "BUSMASTER_Installer_Ver_1.4.0.exe"
+Outfile "BUSMASTER_Installer_Ver_1.5.0.exe"
 
 Function .onInit
     # the plugins dir is automatically deleted when the installer exits
@@ -88,6 +88,9 @@ Section ""
     File ..\Sources\BIN\Release\TestSuiteExecutorGUI.dll
     File ..\Sources\BIN\Release\TXWindow.dll
     File ..\Sources\BIN\Release\FormatConverter.exe
+    File ..\Sources\BIN\Release\SigGrphWnd.dll
+    File ..\Sources\BIN\Release\SignalDefiner.dll
+    File ..\Sources\BIN\ReleaseUMinSize\DMGraph.dll
 
 	; Converters
     File /r ..\Sources\BIN\Release\ConverterPlugins
@@ -126,6 +129,7 @@ Section ""
     SetOutPath $INSTDIR
     ExecWait 'BusEmulation.exe /regserver'
     ExecWait 'BUSMASTER.exe /regserver'
+    ExecWait 'regsvr32 DMGraph.dll /s'
 
     ; Uninstaller
     WriteUninstaller "uninst.exe"
@@ -138,6 +142,7 @@ Section "Uninstall"
     SetOutPath $INSTDIR
     ExecWait 'BusEmulation.exe /unregserver'
     ExecWait 'BUSMASTER.exe /unregserver'
+	ExecWait 'regsvr32 /u DMGraph.dll /s'
 
     ; Delete registration entries
     DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER"

@@ -102,6 +102,7 @@ CString sWaveformInfo::omGetWaveformName(eWAVEFORMTYPE eWaveform)
     {
         case eWave_SINE: Result = _T("Sine wave"); break;
         case eWave_TRIANGLE: Result = _T("Triangular wave"); break;
+		case eWave_COS: Result = _T("Cos wave"); break;
     }
 
     return Result;

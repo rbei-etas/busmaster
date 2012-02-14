@@ -48,8 +48,7 @@ IMPLEMENT_DYNAMIC(CSigGrphConfigDlg, CDialog)
 CSigGrphConfigDlg::CSigGrphConfigDlg(UINT nHardware , CWnd* pParent /*=NULL*/)
 	: CDialog(CSigGrphConfigDlg::IDD, pParent)
 	, m_nSymbolType(0)
-	, m_nLineType(0)
-	, m_nLineDisplay(0)
+	, m_nLineType(0)	
 {
 	m_pMainFrame = NULL;
 	m_nHardware  = nHardware;
@@ -69,8 +68,7 @@ void CSigGrphConfigDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST_SIGNALS, m_omSignalList);
 	DDX_Control(pDX, IDC_COMBO_BUS_TYPE, m_omCmbBusType);
 	DDX_CBIndex(pDX, IDC_COMBO_SYMBOL, m_nSymbolType);
-	DDX_CBIndex(pDX, IDC_COMBO_TYPE, m_nLineType);
-	DDX_CBIndex(pDX, IDC_COMBO_DISPLAY, m_nLineDisplay);
+	DDX_CBIndex(pDX, IDC_COMBO_TYPE, m_nLineType);	
 }
 
 
@@ -82,8 +80,7 @@ BEGIN_MESSAGE_MAP(CSigGrphConfigDlg, CDialog)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_SIGNALS, OnLvnItemchangedListSignals)
 	ON_BN_CLICKED(IDC_BUTTON_GRP_DISP_CONFIG, OnBnClickedButtonGrpDispConfig)
 	ON_CBN_SELCHANGE(IDC_COMBO_TYPE, OnCbnSelchangeComboType)
-	ON_CBN_SELCHANGE(IDC_COMBO_SYMBOL, OnCbnSelchangeComboSymbol)
-	ON_CBN_SELCHANGE(IDC_COMBO_DISPLAY, OnCbnSelchangeComboDisplay)
+	ON_CBN_SELCHANGE(IDC_COMBO_SYMBOL, OnCbnSelchangeComboSymbol)	
 	ON_MESSAGE( WM_CPN_SELENDOK, OnColorChange)
 END_MESSAGE_MAP()
 
@@ -408,12 +405,6 @@ void CSigGrphConfigDlg::vEnableControls(BOOL bEnable)
     {
         pWnd->EnableWindow( bEnableCtrl );
     }
-	//Line Display Type 
-    pWnd = GetDlgItem( IDC_COMBO_DISPLAY );
-    if( pWnd != NULL )
-    {
-        pWnd->EnableWindow( bEnableCtrl );
-    }	
     // Point Color
     m_omPointColor.EnableWindow( bEnableCtrl );
 
@@ -536,8 +527,6 @@ void CSigGrphConfigDlg::vSetElementDetails( CGraphElement odElement )
     {
         m_omBtnEnable.SetWindowText( defSTR_ENABLE );
     }
-	//Set Line display type
-	m_nLineDisplay = odElement.m_eDisplayType;
     // Update DDX data members
     UpdateData( FALSE );        
 }
@@ -685,44 +674,6 @@ void CSigGrphConfigDlg::OnCbnSelchangeComboSymbol()
             AfxMessageBox( defSTR_ELEMENT_NOT_FOUND, MB_ICONSTOP);
         }	
     }
-}
-
-/*******************************************************************************
-  Function Name  : OnCbnSelchangeComboDisplay
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called by the framework if the item
-                   selection in the combobox got changed. This will update the
-                   selection in the global list.
-  Member of      : CSigGrphConfigDlg
-  Author(s)      : ArunKumar K
-  Date Created   : 27-10-2010
-  Modifications  : 
-*******************************************************************************/
-void CSigGrphConfigDlg::OnCbnSelchangeComboDisplay()
-{
-	UpdateData();
-    CGraphElement odSelectedElement;
-    // Get handle to selected message item
-    int hSelItem = m_omSignalList.GetNextItem(-1, LVNI_SELECTED);
-
-    if ( hSelItem != -1 )
-    {		
-        CGraphList * podList = NULL;		
-        podList = &(m_pMainFrame->m_odGraphList[m_omCmbBusType.GetCurSel()]);
-
-        // Update Element Details
-        if( podList != NULL )
-        {
-            odSelectedElement = podList->m_omElementList[ hSelItem ];
-			odSelectedElement.m_eDisplayType = (eDISPLAY_TYPE)m_nLineDisplay;
-            podList->m_omElementList[ hSelItem ] = odSelectedElement;
-        }
-        else
-        {
-            AfxMessageBox( defSTR_ELEMENT_NOT_FOUND, MB_ICONSTOP);
-        }	
-    }	
 }
 
 /*******************************************************************************

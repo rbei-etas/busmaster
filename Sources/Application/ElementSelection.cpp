@@ -978,6 +978,11 @@ void CElementSelection::OnBtnDelete()
                 // Order is not important
                 CString omStrMsg = m_omElementList.GetItemText( nSelItem, 0 );
                 CString omStrSig = m_omElementList.GetItemText( nSelItem, 1 );
+
+				//Remove the Hexadecimal value in braces
+				if(omStrMsg.Find('[') != -1)	
+					omStrMsg = omStrMsg.Left(omStrMsg.Find('['));
+
                 // remove the entry from UI List
                 m_omElementList.DeleteItem( nSelItem );
                 // Remove the node from the element list
@@ -1012,6 +1017,11 @@ void CElementSelection::OnBtnDelete()
                 // Order is not important
                 CString omStrMsg = m_omElementList.GetItemText( nSelItem, 0 );
                 CString omStrSig = m_omElementList.GetItemText( nSelItem, 1 );
+				
+				//Remove the Hexadecimal value in braces
+				if(omStrMsg.Find('[') != -1)	
+					omStrMsg = omStrMsg.Left(omStrMsg.Find('['));
+
                 // remove the entry from UI List
                 m_omElementList.DeleteItem( nSelItem );
                 // Remove the node from the element list

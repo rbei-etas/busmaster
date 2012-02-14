@@ -71,6 +71,7 @@
 #include "Filter/Filter_extern.h"
 #include "ConfigAdapter.h"
 #include ".\mainfrm.h"
+#include "WaveformSelectionDlg.h"
 
 #include "BusStatistics.h"
 #include "SigGrphConfigDlg.h"
@@ -300,9 +301,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 	ON_COMMAND(ID_DISPLAY_NODE_SIMULATION, OnDisplayNodeSim)
 	ON_UPDATE_COMMAND_UI(ID_DISPLAY_NODE_SIMULATION, OnUpdateDisplayNodeSim)
 	ON_WM_ACTIVATE()
-	//ON_COMMAND(ID_CONFIGURE_WAVEFORM_MESSAGES, OnConfigureWaveformMessages)
-	//ON_COMMAND(IDR_START_SIGNAL_TRANSMISSION, OnStartSignalTransmission)	
-	//ON_UPDATE_COMMAND_UI(IDR_START_SIGNAL_TRANSMISSION, OnUpdateStartSignalTransmission)
+	ON_COMMAND(ID_CONFIGURE_WAVEFORM_MESSAGES, OnConfigureWaveformMessages)
+	ON_COMMAND(IDR_START_SIGNAL_TRANSMISSION, OnStartSignalTransmission)	
+	ON_UPDATE_COMMAND_UI(IDR_START_SIGNAL_TRANSMISSION, OnUpdateStartSignalTransmission)
     ON_MESSAGE(WM_FROM_USER_DLL, OnMessageFromUserDll)
 	ON_COMMAND(ID_CONFIGURE_SIGNALGRAPHWINDOW, OnConfigureSignalgraphwindow)
 	ON_UPDATE_COMMAND_UI(ID_CONFIGURE_SIGNALGRAPHWINDOW, OnUpdateConfigureSignalgraphwindow)
@@ -793,8 +794,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     m_nDILCount = g_pouDIL_CAN_Interface->DILC_GetDILList(false, &m_ouList);
 
     // Do initialisation for the waveform transmission object
-    //m_ouWaveTransmitter.vDoInitialisation(&m_objWaveformDataHandler,
-				//			g_pouDIL_CAN_Interface, &(theApp.m_pouMsgSignal));
+    m_ouWaveTransmitter.vDoInitialisation(&m_objWaveformDataHandler,
+							g_pouDIL_CAN_Interface, &(theApp.m_pouMsgSignal));
 		
     // CG: The following line was added by the Splash Screen component.
     CSplashScreen::DisplaySplashScreen(this, SW_SHOW);
@@ -1369,7 +1370,7 @@ void CMainFrame::OnImportDatabase()
 			::SendMessage(hWnd, WM_DATABASE_CHANGE, (WPARAM)TRUE, NULL);
 
 		//Added by Arun to update Data Handler Main entry list.
-		//vUpdateMainEntryListInWaveDataHandler();
+		vUpdateMainEntryListInWaveDataHandler();
     }
 }
 
@@ -5819,7 +5820,7 @@ void CMainFrame::OnFileConnect()
         g_bStopSelectedMsgTx    = TRUE;
         // If Tx Msg window is active post a message about connection change
 
-		//vUpdateMainEntryListInWaveDataHandler();
+		vUpdateMainEntryListInWaveDataHandler();
 		eUSERSELCTION eUserSel = eCONNECTCMD;
 		for(short eBusType =0; eBusType <MAX_PROTOCOL; eBusType++)
 		{
@@ -5864,9 +5865,8 @@ void CMainFrame::OnFileConnect()
 
         if( bConnected == TRUE)
         {
-			//Start Graph Interpret Thread
-			//Commented by Arun on 08/08/2011
-			//bStartGraphReadThread();
+			//Start Graph Interpret Thread			
+			bStartGraphReadThread();
 			
             ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
                         eWINID_START_READ, 0);
@@ -5899,7 +5899,7 @@ void CMainFrame::OnFileConnect()
 		else
 		{
 			//Stop Graph Interpret Thread
-			//bStopGraphReadThread();
+			bStopGraphReadThread();
 			::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
                         	eWINID_STOP_READ, 0);
 		}
@@ -5948,7 +5948,7 @@ void CMainFrame::OnFileConnect()
             }
 
 			// Enable / disable signal transmission block
-            //m_ouWaveTransmitter.bUpdateBlock(bConnected);            
+            m_ouWaveTransmitter.bUpdateBlock(bConnected);            
 
 			//venkat
             m_objTSExecutorHandler.vStartStopReadThread(CAN, bConnected);
@@ -9024,7 +9024,9 @@ void CMainFrame::OnUpdateGraphWnd(CCmdUI* /*pCmdUI*/)
   Member of      : CMainFrame
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : Raja N on 14.3.2005
+  Modifications  : Arunkumar Karri on 09/02/2012
+			       Moved the Bus statistics code into the If condition.
+				   Raja N on 14.3.2005
                    Added logic to check the channel ID of statistics parameter.
 *******************************************************************************/
 void CMainFrame::vUpdateGraphStatsData()
@@ -9044,17 +9046,18 @@ void CMainFrame::vUpdateGraphStatsData()
             // Get Current element
             CGraphElement odTemp = 
                 pList->m_omElementList.GetAt( nIndex );
-            // Channel Index starts from 0. So sub 1 from the index value
-            odTemp.m_nFrameFormat -= 1;
-            SBUSSTATISTICS sBusStats;
-            GetICANBusStat()->BSC_GetBusStatistics(odTemp.m_nFrameFormat, sBusStats);
-			
-			strcpy(sInterpretList.m_acSigName , "");
-			sInterpretList.m_shType = eSTAT_PARAM;
             // If the element is enabled and of type statistics			
             if( odTemp.m_bEnabled == TRUE &&
                 odTemp.m_nValueType == eSTAT_PARAM )
             {							
+				// Channel Index starts from 0. So sub 1 from the index value
+				odTemp.m_nFrameFormat -= 1;
+				SBUSSTATISTICS sBusStats;
+				GetICANBusStat()->BSC_GetBusStatistics(odTemp.m_nFrameFormat, sBusStats);
+				
+				strcpy(sInterpretList.m_acSigName , "");
+				sInterpretList.m_shType = eSTAT_PARAM;
+
 				sInterpretList.m_unValue.m_nRawValue = -1;
 				sInterpretList.m_unValue.m_dPhysical = -1.0;	
 				sInterpretList.unMsgID = nIndex;
@@ -10446,7 +10449,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             }
         }
         break;
-        /*case GRAPH_SECTION_ID:
+        case GRAPH_SECTION_ID:
         {
             if (pbyConfigData != NULL)
             {
@@ -10492,7 +10495,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
 				}
             }
         }
-        break;*/
+        break;
         case TXWND_SECTION_ID:
         {
             m_objTxHandler.vSetTxWndConfigData(pbyConfigData, nSize);
@@ -10548,16 +10551,15 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                         //it is valid. 
                         dLoadDataBaseFile(omDBNames.GetAt(i), TRUE);
                     }
-                }
-                
+                }                
             }
         }
         break;
-		/*case WAVEFORMDATA_SECTION_ID:
+		case WAVEFORMDATA_SECTION_ID:
 		{
 			m_objWaveformDataHandler.SetConfigData(pbyConfigData);
 		}
-		break;*/
+		break;
 		case BUS_STATISTICS_SECTION_ID:
 		{
 			if(m_bIsStatWndCreated)
@@ -10819,7 +10821,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             }        
         }
         break;
-        /*case GRAPH_SECTION_ID:
+        case GRAPH_SECTION_ID:
         {
 			BYTE byVersion = 0x2;
             nSize = sizeof(BYTE);//configuration version
@@ -10848,7 +10850,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
 				}
             }
         }
-        break;*/
+        break;
         case TXWND_SECTION_ID:
         {
             int nCfgSize = 0;
@@ -10902,11 +10904,11 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             }
         }        
         break;
-		/*case WAVEFORMDATA_SECTION_ID:
+		case WAVEFORMDATA_SECTION_ID:
 		{
 			m_objWaveformDataHandler.GetConfigData(&pbyConfigData, nSize);
 		}
-		break;*/
+		break;
 		case BUS_STATISTICS_SECTION_ID:
 		{			
 			if(m_bIsStatWndCreated)
@@ -11065,65 +11067,74 @@ DILINFO* CMainFrame::psGetDILEntry(UINT unKeyID, BOOL bKeyMenuItem)
     return psResult;
 }
 
-//void CMainFrame::OnConfigureWaveformMessages(void)
-//{
-//	CMsgSignal * pomDatabase = NULL;
-//	pomDatabase = theApp.m_pouMsgSignal;
-//    if( pomDatabase != NULL )
-//    {
-//        if( pomDatabase->unGetNumerOfMessages() > 0)
-//        {			
-//			vUpdateMainEntryListInWaveDataHandler();
-//
-//			LONG lParam = 0;
-//			UINT nHardware = 0;
-//			if(g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
-//			{
-//				nHardware = (UINT)lParam;
-//			}
-//			
-//			CWaveformSelectionDlg dlgWaveForm(this, &m_objWaveformDataHandler, nHardware);
-//			dlgWaveForm.DoModal();	            
-//        }
-//        else
-//        {
-//            // Database is not imported!!
-//            AfxMessageBox( defSTR_EMPTY_ACTIVE_DATABASE );
-//        }
-//    }
-//}
-//void CMainFrame::vUpdateMainEntryListInWaveDataHandler()
-//{
-//	m_odResultingList.RemoveAll();
-//    vPopulateMainEntryList(&m_odResultingList, NULL, theApp.m_pouMsgSignal);			
-//	m_objWaveformDataHandler.vSetCompleteMsgList(&m_odResultingList);
-//
-//	//If in Connected state, update the enable state of signal transmission.
-//	CFlags* pouFlags = theApp.pouGetFlagsPtr();	
-//	BOOL bConnected = pouFlags->nGetFlagStatus(CONNECTED);    
-//    if( bConnected == TRUE )
-//    {		
-//        m_ouWaveTransmitter.bUpdateBlock(bConnected);
-//    }	    
-//}
-//
-///*******************************************************************************
-//  Function Name  : vClearSignalInfoList
-//  Input(s)       : -
-//  Output         : -
-//  Functionality  : Clears signal list data in m_objWaveformDataHandler object
-//  Member of      : CMainFrame
-//  Author(s)      : Arunkumar K
-//  Date Created   : 01-02-2011
-//  Modifications  : 
-//*******************************************************************************/
-//void CMainFrame::vClearSignalInfoList(void)
-//{
-//	m_objWaveformDataHandler.vClearSignalInfoList();
-//}
+void CMainFrame::OnConfigureWaveformMessages(void)
+{
+	CMsgSignal * pomDatabase = NULL;
+	pomDatabase = theApp.m_pouMsgSignal;
+    if( pomDatabase != NULL )
+    {
+        if( pomDatabase->unGetNumerOfMessages() > 0)
+        {			
+			vUpdateMainEntryListInWaveDataHandler();
+
+			LONG lParam = 0;
+			UINT nHardware = 0;
+			if(g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
+			{
+				nHardware = (UINT)lParam;
+			}
+			
+			CWaveformSelectionDlg dlgWaveForm(this, &m_objWaveformDataHandler, nHardware);
+			dlgWaveForm.DoModal();	  
+			//Added by Arun to eliminate the RADAR Defect Seq. No 106. (28/06/2011)
+			//If in Connected state, update the enable state of signal transmission.
+			CFlags* pouFlags = theApp.pouGetFlagsPtr();	
+			BOOL bConnected = pouFlags->nGetFlagStatus(CONNECTED);    
+			if( bConnected == TRUE )
+			{		
+				m_ouWaveTransmitter.bUpdateBlock(bConnected);
+			}	  
+		}
+        else
+        {
+            // Database is not imported!!
+            AfxMessageBox( defSTR_EMPTY_ACTIVE_DATABASE );
+        }
+    }
+}
+
+void CMainFrame::vUpdateMainEntryListInWaveDataHandler()
+{
+	m_odResultingList.RemoveAll();
+    vPopulateMainEntryList(&m_odResultingList, NULL, theApp.m_pouMsgSignal);			
+	m_objWaveformDataHandler.vSetCompleteMsgList(&m_odResultingList);
+
+	//If in Connected state, update the enable state of signal transmission.
+	CFlags* pouFlags = theApp.pouGetFlagsPtr();	
+	BOOL bConnected = pouFlags->nGetFlagStatus(CONNECTED);    
+    if( bConnected == TRUE )
+    {		
+        m_ouWaveTransmitter.bUpdateBlock(bConnected);
+    }	    
+}
 
 /*******************************************************************************
-  Function Name  : OnUpdateStartSignalTransmission
+  Function Name  : vClearSignalInfoList
+  Input(s)       : -
+  Output         : -
+  Functionality  : Clears signal list data in m_objWaveformDataHandler object
+  Member of      : CMainFrame
+  Author(s)      : Arunkumar K
+  Date Created   : 01-02-2011
+  Modifications  : 
+*******************************************************************************/
+void CMainFrame::vClearSignalInfoList(void)
+{
+	m_objWaveformDataHandler.vClearSignalInfoList();
+}
+
+/*******************************************************************************
+  Function Name  : OnStartSignalTransmission
   Input(s)       : pCmdUI
   Output         : -
   Functionality  : Updates the check status of Start Signal Transmission menu item.
@@ -11132,23 +11143,23 @@ DILINFO* CMainFrame::psGetDILEntry(UINT unKeyID, BOOL bKeyMenuItem)
   Date Created   : 27-08-2010
   Modifications  : 
 *******************************************************************************/
-//void CMainFrame::OnStartSignalTransmission(void)
-//{
-//    if (m_ouWaveTransmitter.bIsWaveformTxON())
-//    {
-//        // Waveform transmission is ON. Hence stop the transmission
-//        m_ouWaveTransmitter.vStopSignalTransmission();
-//		// update flag.
-//        theApp.pouGetFlagsPtr()->vSetFlagStatus( SEND_SIGNAL_MSG, FALSE );
-//    }
-//    else
-//    {
-//		 // Now start sending waveform messages, update flag
-//         theApp.pouGetFlagsPtr()->vSetFlagStatus( SEND_SIGNAL_MSG, TRUE );
-//        // Waveform transmission is OFF. Hence start the transmission
-//		m_ouWaveTransmitter.vStartSignalTransmission(g_dwClientID);
-//    }
-//}
+void CMainFrame::OnStartSignalTransmission(void)
+{
+    if (m_ouWaveTransmitter.bIsWaveformTxON())
+    {
+        // Waveform transmission is ON. Hence stop the transmission
+        m_ouWaveTransmitter.vStopSignalTransmission();
+		// update flag.
+        theApp.pouGetFlagsPtr()->vSetFlagStatus( SEND_SIGNAL_MSG, FALSE );
+    }
+    else
+    {
+		 // Now start sending waveform messages, update flag
+         theApp.pouGetFlagsPtr()->vSetFlagStatus( SEND_SIGNAL_MSG, TRUE );
+        // Waveform transmission is OFF. Hence start the transmission
+		m_ouWaveTransmitter.vStartSignalTransmission(g_dwClientID);
+    }
+}
 
 /*******************************************************************************
   Function Name  : OnUpdateStartSignalTransmission
@@ -11160,11 +11171,11 @@ DILINFO* CMainFrame::psGetDILEntry(UINT unKeyID, BOOL bKeyMenuItem)
   Date Created   : 27-08-2010
   Modifications  : Simplified updation code - Ratnadip Choudhury, 30/08/2010
 *******************************************************************************/
-//void CMainFrame::OnUpdateStartSignalTransmission(CCmdUI *pCmdUI)
-//{
-//    pCmdUI->Enable(m_ouWaveTransmitter.bIsBlockEnabled());
-//    pCmdUI->SetCheck(m_ouWaveTransmitter.bIsWaveformTxON());
-//}
+void CMainFrame::OnUpdateStartSignalTransmission(CCmdUI *pCmdUI)
+{
+    pCmdUI->Enable(m_ouWaveTransmitter.bIsBlockEnabled());
+    pCmdUI->SetCheck(m_ouWaveTransmitter.bIsWaveformTxON());
+}
 
 LRESULT CMainFrame::OnMessageFromUserDll(WPARAM wParam, LPARAM lParam)
 {
@@ -11260,34 +11271,37 @@ void CMainFrame::OnConfigureSignalgraphwindow()
 		m_objSigGrphHandler.SetSignalListDetails(eBusType, &m_odGraphList[eBusType]);
 }
 
-void CMainFrame::OnUpdateConfigureSignalgraphwindow(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(FALSE);
+void CMainFrame::OnUpdateConfigureSignalgraphwindow(CCmdUI* /*pCmdUI*/)
+{	
 }
 
 void CMainFrame::OnSignalgraphwindowCAN()
 {
-	m_objSigGrphHandler.CreateGraphWindow(this, CAN);
-	m_objSigGrphHandler.SetSignalListDetails(CAN, &m_odGraphList[CAN]);
+	if ( m_objSigGrphHandler.bIsWindowVisible(CAN) == FALSE )
+	{
+		m_objSigGrphHandler.CreateGraphWindow(this, CAN);
+		m_objSigGrphHandler.SetSignalListDetails(CAN, &m_odGraphList[CAN]);
 
-	CFlags* pouFlags = NULL;
-    pouFlags   = theApp.pouGetFlagsPtr();
-    if(pouFlags != NULL)
-    {        
-        BOOL bConnected = pouFlags->nGetFlagStatus(CONNECTED);
-		eUSERSELCTION eUserSel = eCONNECTCMD;
-		m_objSigGrphHandler.vPostMessageToSGWnd(CAN, WM_USER_CMD, 
-											(WPARAM)eUserSel,bConnected);			
+		CFlags* pouFlags = NULL;
+		pouFlags   = theApp.pouGetFlagsPtr();
+		if(pouFlags != NULL)
+		{        
+			BOOL bConnected = pouFlags->nGetFlagStatus(CONNECTED);
+			eUSERSELCTION eUserSel = eCONNECTCMD;
+			m_objSigGrphHandler.vPostMessageToSGWnd(CAN, WM_USER_CMD, 
+												(WPARAM)eUserSel,bConnected);			
+		}
+		m_objSigGrphHandler.ShowGraphWindow(CAN, SW_SHOW);
 	}
-
-	m_objSigGrphHandler.ShowGraphWindow(CAN, SW_SHOW);
+	else
+	{
+		m_objSigGrphHandler.ShowGraphWindow(CAN, SW_HIDE);
+	}
 }
 
 void CMainFrame::OnUpdateSignalgraphwindowCAN(CCmdUI *pCmdUI)
 {
-	//pCmdUI->SetCheck(m_objSigGrphHandler.bIsWindowVisible(CAN));	
-	pCmdUI->SetCheck(0);
-	pCmdUI->Enable(FALSE);
+	pCmdUI->SetCheck(m_objSigGrphHandler.bIsWindowVisible(CAN));	
 }
 
 void CMainFrame::OnSignalgraphwindowMcnet()

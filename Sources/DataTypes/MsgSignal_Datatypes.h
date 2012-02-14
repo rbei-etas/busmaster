@@ -51,7 +51,8 @@ enum eWAVEFORMTYPE
 {
     eWave_NONE = 0,
 	eWave_SINE,
-    eWave_TRIANGLE
+    eWave_TRIANGLE,
+	eWave_COS
 };
 
 struct sINTERPRETSIGNALINFO

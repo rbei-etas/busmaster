@@ -1,0 +1,429 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "SigGrphWnd_Resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""afxres.rc""     // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "SigGrphWnd.dll"
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "OriginalFilename", "SigGrphWnd.dll"
+            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DLG_GRAPH_RIGHT_TOP DIALOGEX 0, 0, 6, 5
+STYLE DS_SETFONT | WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "",IDC_DMGRAPH_CTRL,
+                    "{AAF89A51-7FC0-43B0-9F81-FFEFF6A8DB43}",WS_TABSTOP,0,0,60,25
+END
+
+IDD_DLG_GRAPH_RIGHT_BOTTOM DIALOGEX 0, 0, 432, 204
+STYLE DS_SETFONT | DS_MODALFRAME | WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "X",IDC_RADIO_AXIS_X,"Button",BS_AUTORADIOBUTTON | BS_PUSHLIKE | WS_GROUP,10,11,21,13
+    CONTROL         "Y",IDC_RADIO_AXIS_Y,"Button",BS_AUTORADIOBUTTON | BS_PUSHLIKE,34,11,21,13
+    CONTROL         "XY",IDC_RADIO_AXIS_XY,"Button",BS_AUTORADIOBUTTON | BS_PUSHLIKE,58,11,21,13
+    CONTROL         "Move",IDC_RADIO_ACTION_MOVE,"Button",BS_AUTORADIOBUTTON | BS_PUSHLIKE | WS_GROUP,96,11,34,13
+    CONTROL         "Zoom",IDC_RADIO_ACTION_ZOOM,"Button",BS_AUTORADIOBUTTON | BS_PUSHLIKE,133,11,34,13
+    CONTROL         "Track",IDC_RADIO_ACTION_TRACK,"Button",BS_AUTORADIOBUTTON | BS_PUSHLIKE,170,11,34,13
+    CONTROL         "None",IDC_RADIO_ACTION_NONE,"Button",BS_AUTORADIOBUTTON | BS_PUSHLIKE | NOT WS_VISIBLE,207,11,34,13
+    EDITTEXT        IDC_EDIT_RANGE_FROM,29,39,33,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_RANGE_TO,76,39,33,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Apply",IDC_BTN_SET,117,39,44,13
+    PUSHBUTTON      "Auto Range",IDC_BTN_AUTO_FIT,165,39,44,13
+    PUSHBUTTON      "Auto Fit",IDC_BTN_FIT_ALL,205,39,41,13,NOT WS_VISIBLE
+    PUSHBUTTON      "Copy",IDC_BTN_COPY,256,13,39,16
+    PUSHBUTTON      "Show Grid",IDC_BTN_GRID,301,13,39,16
+    PUSHBUTTON      "Export",IDC_BTN_EXPORT,256,34,39,16
+    PUSHBUTTON      "Configure",IDC_BTN_CONFIGURE,301,34,39,16
+    GROUPBOX        "Range",IDC_STATIC,5,28,241,30
+    GROUPBOX        "Active Axis",IDC_STATIC,5,1,81,27
+    LTEXT           "From",IDC_STATIC,10,41,15,8
+    LTEXT           "to",IDC_STATIC,66,41,8,8
+    GROUPBOX        "Graph",IDC_STATIC,250,1,96,56
+    GROUPBOX        "Action",IDC_STATIC,91,1,154,27
+    GROUPBOX        "",IDC_STATIC,350,1,78,56
+    PUSHBUTTON      "^",IDC_BTN_UP,378,7,21,17,BS_ICON
+    PUSHBUTTON      "",IDC_BTN_LEFT,356,23,21,17,BS_ICON
+    PUSHBUTTON      "",IDC_BTN_RIGHT,400,23,21,17,BS_ICON
+    PUSHBUTTON      "",IDC_BTN_DOWN,378,39,21,17,BS_ICON
+    GROUPBOX        "Cursor Stats",IDC_STATIC,5,65,423,137
+    CONTROL         "",IDC_LIST_SIG_VALUES,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_OWNERDRAWFIXED | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,13,95,407,103
+    LTEXT           "T1 [s] : ",IDC_STATIC,90,80,22,8
+    LTEXT           "T2 [s] : ",IDC_STATIC,157,80,23,8
+    EDITTEXT        IDC_EDIT_T1,114,78,32,12,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_EDIT_T2,181,78,32,12,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "T2 - T1 [s] : ",IDC_STATIC,227,80,37,8
+    EDITTEXT        IDC_EDIT_DELTA_T,265,78,32,12,ES_AUTOHSCROLL | ES_READONLY
+END
+
+IDD_DLG_GRAPH_LEFT_TOP DIALOGEX 0, 0, 146, 279
+STYLE DS_SETFONT | DS_MODALFRAME | WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "List1",IDC_LIST_SIGNALS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_OWNERDRAWFIXED | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,6,11,135,131
+    COMBOBOX        IDC_COMBO_TYPE,52,159,84,71,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "",IDC_LINE_COLOR,52,175,39,12
+    COMBOBOX        IDC_COMBO_SYMBOL,52,190,84,71,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "",IDC_POINT_COLOR,52,205,39,12
+    PUSHBUTTON      "&Visible",IDC_BTN_VISIBLE,17,223,45,14
+    PUSHBUTTON      "&Enable",IDC_BTN_ENABLE,85,223,45,14
+    GROUPBOX        "Element List",IDC_STATIC,1,1,144,145
+    GROUPBOX        "Properties",IDC_STATIC,1,147,144,97
+    LTEXT           "&Line type:",IDC_STATIC,6,161,37,8
+    LTEXT           "&Point type:",IDC_STATIC,6,194,34,8
+    LTEXT           "&Line Color:",IDC_STATIC,6,177,34,8
+    LTEXT           "&Point Color:",IDC_STATIC,6,208,37,8
+END
+
+IDD_DLG_GRAPH_EXPORT DIALOGEX 0, 0, 248, 202
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Export"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_CSV_FILE_NAME,32,16,182,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BTN_BROWSE_CSV,216,16,16,12
+    PUSHBUTTON      "Export",IDC_BTN_SAVE_CSV,97,34,50,14
+    EDITTEXT        IDC_EDIT_HTML_FILE_NAME,32,70,182,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BTN_BROWSE_HTML,216,70,16,12
+    CONTROL         "Print the report after creation",IDC_CHECK_PRINT_REPORT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,31,89,104,8
+    PUSHBUTTON      "Create",IDC_BTN_SAVE_HTML,97,102,50,14
+    EDITTEXT        IDC_EDIT_IMAGE_FILE_NAME,33,138,182,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BTN_BROWSE_BMP,217,138,16,12
+    PUSHBUTTON      "Save",IDC_BTN_SAVE_IMAGE,97,156,50,14
+    PUSHBUTTON      "&Close",IDCANCEL,98,183,50,14
+    CONTROL         "",IDC_WEB_BROWSER,
+                    "{8856F961-340A-11D0-A96B-00C04FD705A2}",0x0,221,140,6,6
+    GROUPBOX        "CSV Format",IDC_STATIC,5,4,236,49
+    LTEXT           "File",IDC_STATIC,14,16,11,12,SS_CENTERIMAGE
+    GROUPBOX        "Report",IDC_STATIC,5,58,236,64
+    LTEXT           "File",IDC_STATIC,14,70,11,12,SS_CENTERIMAGE
+    GROUPBOX        "Image",IDC_STATIC,6,126,236,49
+    LTEXT           "File",IDC_STATIC,15,138,11,12,SS_CENTERIMAGE
+END
+
+IDD_DLG_MSG_LIST DIALOGEX 0, 0, 320, 234
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Select Element"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "Tree1",IDC_TREE_SIGNAL,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | WS_BORDER | WS_TABSTOP,3,3,131,175
+    PUSHBUTTON      "Add",IDC_BTN_ADD,65,190,50,14
+    PUSHBUTTON      "OK",IDOK,106,216,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,164,216,50,14
+    CONTROL         "List1",IDC_LSTC_GRAPH_ELEMENTS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,138,3,179,175
+    PUSHBUTTON      "Delete",IDC_BTN_DELETE,135,190,50,14
+    PUSHBUTTON      "Delete All",IDC_BTN_DELETE_ALL,205,190,50,14
+    GROUPBOX        "Operations",IDC_STATIC,3,180,313,31
+END
+
+IDD_DLG_GRAPH_WINDOW_CONF DIALOGEX 0, 0, 229, 166
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Graph Window Configuration"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_BUFFER_SIZE,85,11,43,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DISPLAY_UPDATE,85,27,43,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "",IDC_FRAME_COLOR,67,58,28,12
+    PUSHBUTTON      "",IDC_PLOT_COLOR,67,75,28,12
+    PUSHBUTTON      "",IDC_AXIS_COLOR,67,91,28,12
+    PUSHBUTTON      "",IDC_GRID_COLOR,67,107,28,12
+    PUSHBUTTON      "",IDC_LABEL_COLOR,67,123,28,12,NOT WS_VISIBLE
+    COMBOBOX        IDC_COMBO_FRAME,153,59,65,41,CBS_DROPDOWNLIST | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_X_GRIDS,153,75,65,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_Y_GRIDS,153,91,65,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,81,149,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,136,149,50,14
+    PUSHBUTTON      "Set Default",IDC_CBTN_SET_DEFAULT,26,149,50,14
+    GROUPBOX        "Configuration",IDC_STATIC,6,2,216,44
+    LTEXT           "Buffer Size",IDC_STATIC,15,13,68,8
+    LTEXT           "Entries",IDC_STATIC,133,13,29,9
+    LTEXT           "Display Update Rate",IDC_STATIC,14,29,69,11
+    LTEXT           "msec",IDC_STATIC,133,29,29,9
+    GROUPBOX        "View Style",IDC_STATIC,5,49,218,93
+    LTEXT           "Plot Area Color:",IDC_STATIC,15,76,50,8
+    LTEXT           "Frame Color:",IDC_STATIC,15,60,49,8
+    LTEXT           "&Grid Color:",IDC_STATIC,15,108,38,8
+    LTEXT           "&Axis Color:",IDC_STATIC,15,92,38,8
+    LTEXT           "&Label Color:",IDC_STATIC,15,124,38,8,NOT WS_VISIBLE
+    LTEXT           "&Frame Style:",IDC_STATIC,109,60,40,8
+    LTEXT           "&X Axis Grids:",IDC_STATIC,107,76,40,8
+    LTEXT           "&Y Axis Grids:",IDC_STATIC,107,92,40,8
+    LTEXT           "Line Display:",IDC_STATIC,107,109,41,8
+    COMBOBOX        IDC_COMBO_LINE_DISPLAY,153,106,65,43,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_DLG_GRAPH_LEFT_TOP DLGINIT
+BEGIN
+    IDC_COMBO_TYPE, 0x403, 6, 0
+0x6f53, 0x696c, 0x0064, 
+    IDC_COMBO_TYPE, 0x403, 7, 0
+0x6144, 0x6873, 0x6465, "\000" 
+    IDC_COMBO_TYPE, 0x403, 6, 0
+0x6f44, 0x6574, 0x0064, 
+    IDC_COMBO_TYPE, 0x403, 11, 0
+0x6144, 0x6873, 0x442d, 0x746f, 0x6465, "\000" 
+    IDC_COMBO_TYPE, 0x403, 15, 0
+0x6144, 0x6873, 0x442d, 0x746f, 0x442d, 0x746f, 0x6465, "\000" 
+    IDC_COMBO_TYPE, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_COMBO_TYPE, 0x403, 8, 0
+0x5958, 0x5320, 0x6574, 0x0070, 
+    IDC_COMBO_TYPE, 0x403, 8, 0
+0x5859, 0x5320, 0x6574, 0x0070, 
+    IDC_COMBO_TYPE, 0x403, 5, 0
+0x6142, 0x7372, "\000" 
+    IDC_COMBO_TYPE, 0x403, 6, 0
+0x7453, 0x6369, 0x006b, 
+    IDC_COMBO_SYMBOL, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_COMBO_SYMBOL, 0x403, 5, 0
+0x6f44, 0x7374, "\000" 
+    IDC_COMBO_SYMBOL, 0x403, 11, 0
+0x6552, 0x7463, 0x6e61, 0x6c67, 0x7365, "\000" 
+    IDC_COMBO_SYMBOL, 0x403, 9, 0
+0x6944, 0x6d61, 0x6e6f, 0x7364, "\000" 
+    IDC_COMBO_SYMBOL, 0x403, 9, 0
+0x7341, 0x6574, 0x6972, 0x7363, "\000" 
+    IDC_COMBO_SYMBOL, 0x403, 15, 0
+0x6f44, 0x6e77, 0x5420, 0x6972, 0x6e61, 0x6c67, 0x7365, "\000" 
+    IDC_COMBO_SYMBOL, 0x403, 13, 0
+0x7055, 0x5420, 0x6972, 0x6e61, 0x6c67, 0x7365, "\000" 
+    IDC_COMBO_SYMBOL, 0x403, 15, 0
+0x654c, 0x7466, 0x5420, 0x6972, 0x6e61, 0x6c67, 0x7365, "\000" 
+    IDC_COMBO_SYMBOL, 0x403, 16, 0
+0x6952, 0x6867, 0x2074, 0x7254, 0x6169, 0x676e, 0x656c, 0x0073, 
+    0
+END
+
+IDD_DLG_GRAPH_EXPORT DLGINIT
+BEGIN
+    IDC_WEB_BROWSER, 0x376, 160, 0
+0x0000, 0x0000, 0x004c, 0x0000, 0x00ee, 0x0000, 0x0109, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x004c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 
+0x0000, 0xd0e0, 0x0057, 0x3573, 0x11cf, 0x69ae, 0x0008, 0x2e2b, 0x6212, 
+0x0008, 0x0000, 0x0000, 0x0000, 0x004c, 0x0000, 0x1401, 0x0002, 0x0000, 
+0x0000, 0x00c0, 0x0000, 0x0000, 0x4600, 0x0080, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+    0
+END
+
+IDD_DLG_GRAPH_WINDOW_CONF DLGINIT
+BEGIN
+    IDC_COMBO_FRAME, 0x403, 5, 0
+0x6c46, 0x7461, "\000" 
+    IDC_COMBO_FRAME, 0x403, 3, 0
+0x4433, "\000" 
+    IDC_COMBO_FRAME, 0x403, 6, 0
+0x7246, 0x6d61, 0x0065, 
+    IDC_COMBO_LINE_DISPLAY, 0x403, 7, 0
+0x6f4e, 0x6d72, 0x6c61, "\000" 
+    IDC_COMBO_LINE_DISPLAY, 0x403, 10, 0
+0x7453, 0x7065, 0x4d20, 0x646f, 0x0065, 
+    0
+END
+
+IDD_DLG_GRAPH_RIGHT_TOP DLGINIT
+BEGIN
+    IDC_DMGRAPH_CTRL, 0x376, 58, 0
+0x0000, 0x0000, 0x0800, 0x0000, 0x094d, 0x0000, 0x043d, 0x0000, 0x0003, 
+0x0000, 0x0000, 0x0008, 0x001a, 0x0000, 0x0044, 0x004d, 0x0047, 0x0072, 
+0x0061, 0x0070, 0x0068, 0x0043, 0x0074, 0x0072, 0x006c, 0x0031, 0x0000, 
+0x000b, 0x0000, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_DLG_GRAPH_RIGHT_BOTTOM, DIALOG
+    BEGIN
+        TOPMARGIN, 7
+    END
+
+    IDD_DLG_GRAPH_LEFT_TOP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 272
+    END
+
+    IDD_DLG_GRAPH_EXPORT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 139
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 195
+    END
+
+    IDD_DLG_MSG_LIST, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 227
+    END
+
+    IDD_DLG_GRAPH_WINDOW_CONF, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 159
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BMP_GRAPH_ELEMENTS  BITMAP                  "res\\GraphElements.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON_LEFT           ICON                    "res\\LEFTArrow.ico"
+IDI_ICON_DOWN           ICON                    "res\\DOWNArrow.ico"
+IDI_ICON_RIGHT          ICON                    "res\\RIGHTArrow.ico"
+IDI_ICON_UP             ICON                    "res\\UPArrow.ico"
+IDR_ICON_GRAPH          ICON                    "res\\GraphWindow.ico"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "afxres.rc"     // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

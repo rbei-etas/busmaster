@@ -325,6 +325,14 @@ void CExecuteManager::vEnableDisableAllHandlers(BOOL bState)
 	}
 	vManageTimerThreads();
     vUpdateHandlerDetailsInDetView();
+
+	//Update the All Handlers button text
+	CSimSysDetView* pSimSysDetView = 
+		CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysDetView();
+	if (NULL != pSimSysDetView)
+	{
+		pSimSysDetView->vChangeEDAllHanButtonText(bState);
+	}
 }
 
 /***************************************************************************************
@@ -866,6 +874,13 @@ BOOL CExecuteManager::bExecuteDllBuildLoad(PSNODEINFO psNodeInfo)
            }
        }  
   }
+
+  // Create the thread for the timer if a timer is present
+  if (psNodeInfo->m_omStrArrayTimerHandlers.GetSize() > 0)
+  {
+	vStartTimer();
+  }
+
   m_odSetResetTimer.DestroyWindow();
   return bReturn;
 }
@@ -1146,6 +1161,13 @@ BOOL CExecuteManager::bExecuteDllLoad(PSNODEINFO psNodeInfo)
 		}
 		
 	}
+
+	// Create the thread for the timer if a timer is present
+	if (psNodeInfo->m_omStrArrayTimerHandlers.GetSize() > 0)
+	{
+		vStartTimer();
+	}
+
 	m_odSetResetTimer.DestroyWindow();
 	return bReturn;
 }

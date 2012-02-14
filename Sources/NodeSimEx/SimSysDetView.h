@@ -71,6 +71,7 @@ public:
 	void vGetNodeInfo(PSNODEINFO psNodeInfo);
     void vUpdateHandlerList();
 	void vSetNodeAddress(BYTE byAddress);
+	void vUpdateHandlerEnableDisableStatus(int nItem, BOOL bEnableHandler);
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CSimSysDetView)
