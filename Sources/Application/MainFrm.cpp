@@ -9481,6 +9481,7 @@ void CMainFrame::OnFileConverter()
     sei.fMask = NULL;
     sei.hwnd = NULL; 
     sei.lpVerb = _T("open");
+    sei.lpParameters= NULL; 
     sei.lpFile = omCurrExe;
     sei.nShow = SW_SHOWNORMAL; 
     sei.hInstApp = NULL; 
