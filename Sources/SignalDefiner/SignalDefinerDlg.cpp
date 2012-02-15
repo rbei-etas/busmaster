@@ -63,6 +63,38 @@ BOOL CSignalDefinerDlg::OnInitDialog()
 
 	//Get the CWnd reference to the DMGraph ActiveX control
 	m_poDMGraphCtrl = GetDlgItem(IDC_DMGRAPHCTRL);
+	
+	/*Set Graph properties*/
+	if( m_poDMGraphCtrl->m_hWnd != NULL )
+    	{		
+		LPUNKNOWN pUnk = m_poDMGraphCtrl->GetControlUnknown();
+		IDMGraphCtrl* pDMGraphCtrl = NULL;
+
+		pUnk->QueryInterface(IID_IDMGraphCtrl, (void **) &pDMGraphCtrl);
+		if (  pDMGraphCtrl ==NULL )
+		{
+			return TRUE;
+		}
+		// Set Axis Color
+		pDMGraphCtrl->put_AxisColor((OLE_COLOR)0xFF);					
+		// Set Plot Area Color
+		pDMGraphCtrl->put_PlotAreaColor((OLE_COLOR)0x00);					
+		// Set Grid Color
+		pDMGraphCtrl->put_GridColor((OLE_COLOR)0xC0C0C0);
+		// Set Frame Style
+		pDMGraphCtrl->put_FrameStyle((FrameStyle)1);					
+		// Set Frame Color
+		pDMGraphCtrl->put_ControlFrameColor((OLE_COLOR)0x5500);	
+
+		// Set Grid Lines Count					
+		CComPtr<IDMGraphAxis> spAxisX; 
+		pDMGraphCtrl->get_Axis( HorizontalX, &spAxisX);
+		spAxisX->put_GridNumber(10);
+
+		CComPtr<IDMGraphAxis> spAxisY; 
+		pDMGraphCtrl->get_Axis( VerticalY, &spAxisY);
+		spAxisY->put_GridNumber(5);
+	}	
 
 	vGenerateWave();
 	
