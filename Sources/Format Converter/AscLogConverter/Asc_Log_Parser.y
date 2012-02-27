@@ -32,6 +32,10 @@ int yywrap()
 				//0 specifies the parser start the conversion from different
 				//Input
 }
+int nInitialiseDataBytes()
+{
+	memset(data, 0, 256);
+}
 int nSecondToTime(unsigned int nSeconds, int *nHours, int *nMin, int *nSec)
 {
 	*nHours = nSeconds / 3600; 
@@ -126,9 +130,9 @@ Standard_Msg:
 		char chLogTime[256] = {'\0'};
 		
 		nGetLogTimeStamp((char*)$1, chLogTime);
-		fprintf(yyout, "%s %s %s %s %s %s %s\n", chLogTime, $4, $2, $3, "s", $6, data);
+		fprintf(yyout, "\n%s %s %s %s %s %s %s", chLogTime, $4, $2, $3, "s", $6, data);
 		nLen = 0;
-		
+		nInitialiseDataBytes();
 		/*free($1);
 		free($2);
 		free($3);
@@ -148,9 +152,9 @@ Extended_Msg:
 		strcpy(chId, $3);
 		nStrLen = strlen(chId);
 		chId[nStrLen-1] = '\0';
-		fprintf(yyout, "%s %s %s %s %s %s %s\n", chLogTime, $4, $2, chId, "x", $6, data);
+		fprintf(yyout, "\n%s %s %s %s %s %s %s", chLogTime, $4, $2, chId, "x", $6, data);
 		nLen = 0;
-		
+		nInitialiseDataBytes();
 		/*free($1);
 		free($2);
 		free($3);
@@ -165,8 +169,9 @@ RemoteFrame:
 		char chLogTime[256] = {'\0'};
 		
 		nGetLogTimeStamp((char*)$1, chLogTime);
-		fprintf(yyout,"%s %s %s %s %s %s %s\n", chLogTime, $4, $2, $3, "sr", "8",  "00 00 00 00 00 00 00 00");
-		
+		fprintf(yyout,"\n%s %s %s %s %s %s %s", chLogTime, $4, $2, $3, "sr", "0",  "00 00 00 00 00 00 00 00");
+		nLen = 0;
+		nInitialiseDataBytes();
 		/*free($1);
 		free($2);
 		free($3);
@@ -179,23 +184,23 @@ Base_TimeStamps:
 	{
 		if(strcmp("dec", (char*)$2) == 0)
 		{
-			fprintf(yyout,"%s\n", "***DEC***");
+			fprintf(yyout,"\n%s", "***DEC***");
 		}
 		else
 		{
-			fprintf(yyout,"%s\n", "***HEX***");
+			fprintf(yyout,"\n%s", "***HEX***");
 		}
 		if(strcmp("relative", (char*)$4) == 0)
 		{
-			fprintf(yyout,"%s\n", "***RELATIVE MODE***");
+			fprintf(yyout,"\n%s", "***RELATIVE MODE***");
 			nTimeMode = TIME_MODE_RELATIVE;
 		}
 		else
 		{
-			fprintf(yyout,"%s\n", "***ABSOLUTE MODE***");
+			fprintf(yyout,"\n%s", "***ABSOLUTE MODE***");
 			nTimeMode = TIME_MODE_ABSOLUTE;
 		}
-		fprintf(yyout,"%s\n", "***<Time><Tx/Rx><Channel><CAN ID><Type><DLC><DataBytes>***");
+		fprintf(yyout,"\n%s", "***<Time><Tx/Rx><Channel><CAN ID><Type><DLC><DataBytes>***");
 		/*free($1);
 		free($2);
 		free($3);
@@ -206,10 +211,13 @@ Log_Creation_Time:
 	DATETOKEN DAY MONTH NUMBER FULLTIME AM_PM NUMBER
 	{	
 		/*date Wed Dec 7 12:23:39 pm 2011*/
+		
+		
 		char chSeparators[]   = " :,\t\n";
 		char* chTemp;
 		int nMonth;
 		int nHour, nMins, nSec;
+		
 		if( strcmp("Jan", (char*)$3) == 0 )
 			nMonth = 1;
 		else if( strcmp("Feb", (char*)$3) == 0 )
@@ -248,7 +256,7 @@ Log_Creation_Time:
 		{
 			nHour = nHour + 12;
 		}
-		fprintf(yyout,"%s:%d:%s %d:%d:%d:%s%s\n", $4, nMonth, $7, nHour, nMins, nSec, "000", "***");
+		fprintf(yyout,"%s:%d:%s %d:%d:%d:%s%s", $4, nMonth, $7, nHour, nMins, nSec, "000", "***");
 		/*free($1);
 		free($2);
 		free($3);
