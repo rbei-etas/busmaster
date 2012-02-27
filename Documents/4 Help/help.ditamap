@@ -50,7 +50,7 @@
 <!-- <topicref href="topics/reset_controller.dita" type="topic"/> -->  <topicref href="topics/network_statistics.dita" type="topic"/>
   <topicref href="topics/configuration_file.dita" type="topic"/>
   <topicref href="topics/connect.dita" type="topic"/>
-  <topicref href="topics/external_tools.dita" type="topic"/>
+  <topicref href="topics/format_converters.dita" type="topic"/>
   <topicref href="topics/api_reference.dita" type="topic">
     <topicref href="topics/stcan_struct.dita" type="topic"/>
     <topicref href="topics/api_listing.dita" type="topic">
