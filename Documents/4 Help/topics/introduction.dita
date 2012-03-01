@@ -17,7 +17,7 @@
   <body>
     <section>
       <title>BUSMASTER Overview</title>
-      <p>BUSMASTER is a user friendly and cost effective testing and development tool for CAN bus systems that runs on Windows 2000 and Windows XP. It helps in monitoring, analyzing and simulation of CAN messages the bus. Using its powerful functions and user-programmability one can simulate CAN system of any complexity.</p>
+      <p>BUSMASTER is a user friendly and cost effective testing and development tool for CAN bus systems that runs on Windows 2000, Windows XP and Windows 7. It helps in monitoring, analyzing and simulation of CAN messages the bus. Using its powerful functions and user-programmability one can simulate CAN system of any complexity.</p>
       <p>Additionally it provides options to analyze data bytes in raw data format or logical/physical data format and signals can be monitored separately. These two functionality is achieved using a message database. An in-built database editor is provided to create message databases.</p>
       <p>The user can simulate a CAN node’s behavior or enhance the functionality of BUSMASTER. This is done by means of 32 bit windows Dynamic Link Library (DLL). A DLL containing BUSMASTER interface can be loaded dynamically to simulate the node’s behavior. An in-built Function editor is provided to write program in ANSI C and build a DLL. Once DLL is generated, it can be loaded and used dynamically.</p>
       <p>There are many others features that can be used without any programming. The key such features are<ul>
