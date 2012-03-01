@@ -8,8 +8,8 @@
 #define TIME_MODE_ABSOLUTE			 0
 #define TIME_MODE_RELATIVE			 1
 #define	TIME_MODE_UNDEFINED			-1
-#define DEF_LOG_END_TEXT			"***END DATE AND TIME ***\n"
-#define	DEF_LOG_STOP_TEXT			"***[STOP LOGGING SESSION]***"
+#define DEF_LOG_END_TEXT			"\n***END DATE AND TIME ***"
+#define	DEF_LOG_STOP_TEXT			"\n***[STOP LOGGING SESSION]***"
 
 
 int nSize = 0;
