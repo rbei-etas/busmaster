@@ -130,6 +130,25 @@ BOOL CNodeDetailsDlg::OnInitDialog()
     {
         vEnableClearButton(TRUE);
     }
+    if (m_eBus == J1939)
+    {
+        m_omPreferedAddress.vSetBase(BASE_HEXADECIMAL);
+        m_omPreferedAddress.vSetSigned(FALSE);
+        m_omPreferedAddress.LimitText(2);
+        m_omPreferedAddress.vSetValue(0);
+
+        m_omEcuName.vSetBase(BASE_HEXADECIMAL);
+        m_omEcuName.vSetSigned(FALSE);
+        m_omEcuName.LimitText(16);
+        m_omEcuName.vSetValue(0x8000000000000000);
+
+        CWnd* pWnd = (CWnd*)GetDlgItem(IDC_STATIC_ADDRESS);
+        pWnd->ShowWindow(TRUE);
+        pWnd = (CWnd*)GetDlgItem(IDC_STATIC_ECU_NAME);
+        pWnd->ShowWindow(TRUE);
+        m_omPreferedAddress.ShowWindow(TRUE);
+        m_omEcuName.ShowWindow(TRUE);
+    }
     UpdateData(FALSE);
 
     return TRUE;  
@@ -174,6 +193,41 @@ void CNodeDetailsDlg::OnOK()
                 GetDlgItem(IDC_EDIT_ANODE_NAME)->SetFocus();
                 bRetVal = FALSE;
             }            
+        }
+        if (m_eBus == J1939)
+        {            
+            if (bRetVal == TRUE)
+            {
+                //Check for duplicate ECU NAME if the current if J1939
+                UINT64 unEcuName = (UINT64)m_omEcuName.lGetValue();
+                if ( m_psNodeStuctPtr->m_unEcuName != unEcuName)
+                {                
+                    if (pSimSysNodeInfo->bIsDuplicateEcuName(unEcuName))
+                    {
+                        AfxMessageBox( _T("Duplicate ECU NAME found!"), MB_OK|MB_ICONINFORMATION );
+                        GetDlgItem(IDC_EDIT_ECU_NAME)->SetFocus();
+                        bRetVal = FALSE;
+                    }
+                }
+            }
+            if (bRetVal == TRUE)
+            {
+                //Check for duplicate Preffered Address
+                BYTE byPrefAdres = (BYTE)m_omPreferedAddress.lGetValue();
+                if ( m_psNodeStuctPtr->m_byPrefAddress != byPrefAdres)
+                {                
+                    if (pSimSysNodeInfo->bIsDuplicateAddress(byPrefAdres))
+                    {
+                        INT nChoice = AfxMessageBox( _T("Another node is configured to claim the same address.\nDo you want to proceed?"), 
+                                                        MB_YESNO|MB_ICONWARNING );
+                        if (nChoice == IDNO)
+                        {
+                            GetDlgItem(IDC_EDIT_ADDRESS)->SetFocus();
+                            bRetVal = FALSE;
+                        }
+                    }
+                }
+            }
         }
         //Check for duplicate dll
         if( (!m_omStrDllPath.IsEmpty()) && 

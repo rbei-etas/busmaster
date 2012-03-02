@@ -93,7 +93,7 @@ CMsgBufVFSE<SMSGBUFFER>::CMsgBufVFSE()
     m_hNotifyingEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
 
 	// For raw data bytes. It should be equal to the size of SMSGBUFFER
-	m_pbyTempData = new BYTE[2000];
+	m_pbyTempData = new BYTE[MAX_MSG_LEN_J1939];
 	
 }
 

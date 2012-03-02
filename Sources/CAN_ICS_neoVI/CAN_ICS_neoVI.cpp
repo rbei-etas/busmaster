@@ -3002,14 +3002,23 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_LoadDriverLibrary(void)
 
     if (S_OK == hResult)
     {
-		sg_hDll = LoadLibrary(_T("icsneo40.dll"));
+		//First Load the ES581 new driver version i.e ETASneo40.dll 
+		sg_hDll = LoadLibrary(_T("ETASneo40.dll"));
         if (sg_hDll == NULL)
         {
-            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("icsneo40.dll loading failed"));
-            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Please have a look at: https://github.com/rbei-etas/busmaster/wiki/Hardware-support"));
-            hResult = ERR_LOAD_DRIVER;
+            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("ETASneo40.dll loading failed"));
+
+			//Load the Old version i.e icsneo40.dll 
+			sg_hDll = LoadLibrary(_T("icsneo40.dll"));
+			if (sg_hDll == NULL)
+			{
+				sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("icsneo40.dll loading failed"));
+				sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Please have a look at: https://github.com/rbei-etas/busmaster/wiki/Hardware-support"));
+				hResult = ERR_LOAD_DRIVER;
+			}
         }
-        else
+
+        if (sg_hDll != NULL)
         {
             int nResult = GetICS_neoVI_APIFuncPtrs();
             if (nResult != 0)

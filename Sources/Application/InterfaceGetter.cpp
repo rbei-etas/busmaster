@@ -28,10 +28,11 @@
 #include "DataTypes/MsgBufAll_Datatypes.h"
 // For CAN DIL interface
 #include "DIL_Interface/BaseDIL_CAN.h"
+#include "DIL_Interface/BaseDIL_J1939.h"
 #include "DIL_Interface/DIL_Interface_extern.h"
 // For CAN logger interface
 #include "FrameProcessor/BaseFrameProcessor_CAN.h"
-#include "include/ModuleID.h"
+#include "FrameProcessor/BaseFrameProcessor_J1939.h"
 #include "FrameProcessor/FrameProcessor_extern.h"
 // For Bus statistic interface
 #include "BusStatistics.h"
@@ -58,6 +59,17 @@ CBaseFrameProcessor_CAN* GetICANLogger(void)
     return Result;
 }
 
+CBaseFrameProcessor_J1939* GetIJ1939Logger(void)
+{
+    CBaseFrameProcessor_J1939* Result = NULL;
+    if (FP_GetInterface(FRAMEPROC_J1939, (void**) &Result) == S_OK)
+    {
+        // Nothing to do at this moment
+    }
+    ASSERT(NULL != Result);
+    return Result;
+}
+
 CMainFrame* GetIMainFrame(void)
 {
     CMainFrame* Result = (CMainFrame*) (theApp.m_pMainWnd);
@@ -76,6 +88,20 @@ CBaseDIL_CAN* GetICANDIL(void)
 {
     CBaseDIL_CAN* Result = NULL;
     if (DIL_GetInterface(CAN, (void**) &Result) == S_OK)
+    {
+        ASSERT(NULL != Result);
+    }
+    else
+    {
+        ASSERT(FALSE);
+    }
+    return Result;
+}
+
+CBaseDILI_J1939* GetIJ1939DIL(void)
+{
+    CBaseDILI_J1939* Result = NULL;
+    if (DIL_GetInterface(J1939, (void**) &Result) == S_OK)
     {
         ASSERT(NULL != Result);
     }
@@ -116,6 +142,17 @@ CBaseNodeSim* GetICANNodeSim(void)
 {
     CBaseNodeSim* Result = NULL;
     if (NS_GetInterface(CAN, (void**) &Result) == S_OK)
+    {
+        // Nothing to do at this moment
+    }
+    ASSERT(NULL != Result);
+    return Result;
+}
+
+CBaseNodeSim* GetIJ1939NodeSim(void)
+{
+    CBaseNodeSim* Result = NULL;
+    if (NS_GetInterface(J1939, (void**) &Result) == S_OK)
     {
         // Nothing to do at this moment
     }

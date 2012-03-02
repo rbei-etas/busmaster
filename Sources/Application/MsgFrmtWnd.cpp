@@ -361,6 +361,8 @@ int CMsgFrmtWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_podMsgIntprtnDlg = new CMessageInterpretation(this);
 	m_podMsgIntprtnDlg->vCreateMsgIntrprtnDlg(this, FALSE);
+	if(m_eBusType == J1939)
+		m_podMsgIntprtnDlg->vSetCaption(_T("PGN"));
 
 	m_objToolTip.Create(this);
 	m_objToolTip.Activate(TRUE);
@@ -890,6 +892,37 @@ void CMsgFrmtWnd::OnSendSelectedMessageEntry()
                 g_pouDIL_CAN_Interface->DILC_SendMsg(m_dwClientID, sInfo.m_uDataInfo.m_sCANMsg);
 			}
 		}
+		//For J1939 Messages 
+		else if(m_eBusType == J1939)
+		{
+			STJ1939_MSG sJ1939Msg;
+			HRESULT hResult;
+			if( IS_MODE_APPEND(m_bExprnFlag_Disp) )
+			{			
+				hResult = m_pouMsgContainerIntrf->hReadFromAppendBuffer(&sJ1939Msg, nItem);
+				
+			}
+			else
+			{
+				__int64 nMsgKey = m_omMgsIndexVec[nItem];	
+				hResult = m_pouMsgContainerIntrf->hReadFromOWBuffer(&sJ1939Msg, nMsgKey);
+			}
+			// Send only valid messages		
+			//Arun 14-02-2011 -- Need to check for J1939 messages' validness
+			if( hResult == S_OK /*&& IS_A_MESSAGE( sInfo.m_ucDataType )*/ )
+			{				
+				//HRESULT hRet = 
+				(*m_ppouIJ1939DIL)->DILIJ_SendJ1939Msg(m_dwClientID, 
+							sJ1939Msg.m_sMsgProperties.m_byChannel,
+							sJ1939Msg.m_sMsgProperties.m_eType,
+							sJ1939Msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN(),
+							sJ1939Msg.m_pbyData, sJ1939Msg.m_unDLC,
+							sJ1939Msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.m_uPGN.m_sPGN.m_byPriority,
+							sJ1939Msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.m_bySrcAddress,
+							sJ1939Msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Specific);
+							
+			}
+		}
     }
 }
 
@@ -1016,6 +1049,27 @@ void CMsgFrmtWnd::OnTimer(UINT nIDEvent)
 	CMDIChildWnd::OnTimer(nIDEvent);
 }
 
+static void vPopulateMsgEntryFromDB(SMSGENTRY*& psMsgEntry, 
+                                    CMsgSignal* pouMsgSig)
+{
+    if (pouMsgSig != NULL)
+    {
+        UINT nCount = pouMsgSig->unGetNumerOfMessages();
+        UINT* punMsgIds = new UINT[nCount];
+        pouMsgSig->unListGetMessageIDs(punMsgIds);
+        for (UINT i = 0; i < nCount; i++)
+        {
+            sMESSAGE* pMsg = pouMsgSig->
+                            psGetMessagePointer(punMsgIds[i]);
+            if (pMsg != NULL)
+            {
+                SMSGENTRY::bUpdateMsgList(psMsgEntry, pMsg);
+            }
+        }
+        delete[] punMsgIds;
+    }
+}
+
 /*******************************************************************************
   Function Name  : vNotificationFromOtherWin
   Input(s)       : wParam
@@ -1035,6 +1089,13 @@ LRESULT CMsgFrmtWnd::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
         case eLOAD_DATABASE:
         {
             m_ppMsgDB = (CMsgSignal**)lParam;
+
+			if(m_eBusType == J1939)
+			{
+				SMSGENTRY* psMsgEntry = NULL;
+				vPopulateMsgEntryFromDB(psMsgEntry, *m_ppMsgDB);
+				m_ouMsgInterpretJ1939.vSetJ1939Database(psMsgEntry);
+			}
         }
         break;
         case eWINID_START_READ:
@@ -1170,6 +1231,12 @@ LRESULT CMsgFrmtWnd::OnListCtrlMsgDblClick(WPARAM wParam, LPARAM lParam)
 			m_pouMsgContainerIntrf->nCreateMapIndexKey((LPVOID)&sCANMsg);
 			
 		}
+		else if(m_eBusType == J1939)
+		{
+			static STJ1939_MSG sJ1939Msg;
+			m_pouMsgContainerIntrf->hReadFromAppendBuffer(&sJ1939Msg, (int)wParam);		
+			m_pouMsgContainerIntrf->nCreateMapIndexKey((LPVOID)&sJ1939Msg);
+		}
 	}
 	else
 	{
@@ -1263,7 +1330,7 @@ LRESULT CMsgFrmtWnd::vUpdateMsgClr(WPARAM wParam, LPARAM /*lParam*/)
 		else
 			m_lstMsg.vSetMsgColor(m_ouMsgAttr.GetCanIDColour(nMsgCode));		
 	}
-	else
+    else if(m_omMgsIndexVec.size() > wParam)
 	{
 		__int64 nMsgKey = m_omMgsIndexVec[(int)wParam];
 		  
@@ -1361,7 +1428,7 @@ LRESULT CMsgFrmtWnd::vUpdateFormattedMsgStruct(WPARAM wParam, LPARAM /*lParam*/)
 		else
 			m_pouMsgContainerIntrf->vSetCurrMsgName(strGetMsgNameOrCode(nMsgCode));		
     }
-    else
+    else if(m_omMgsIndexVec.size() > psParam->m_nListIndex)
     {
         //The Items interpret state will only be supplied if the display mode is 
         //either overwrite or overwrite interpret mode
@@ -1659,6 +1726,38 @@ void CMsgFrmtWnd::vSetDefaultHeaders()
         break;
         case J1939:
         {
+			int nColCount = 12;
+            //Set the positions for coloumns
+            sHdrCtrlPos.m_byTimePos     = 0;            
+            sHdrCtrlPos.m_byChannel     = 1;
+			sHdrCtrlPos.m_byIDPos	    = 2;            
+			sHdrCtrlPos.m_byPGNPos      = 3;
+			sHdrCtrlPos.m_byCodeNamePos = 4;
+            sHdrCtrlPos.m_byMsgTypePos  = 5;
+			sHdrCtrlPos.m_bySrcPos      = 6;
+			sHdrCtrlPos.m_byDestPos     = 7;
+			sHdrCtrlPos.m_byPriorityPos = 8;
+			sHdrCtrlPos.m_byRxTxPos     = 9;
+			sHdrCtrlPos.m_byDLCPos      = 10;			
+			sHdrCtrlPos.m_byDataPos     = 11;			
+
+            //Set the col string
+            somArrColTitle[sHdrCtrlPos.m_byTimePos]     = _T("Time             ");
+			somArrColTitle[sHdrCtrlPos.m_byChannel]     = _T("Channel    ");
+			somArrColTitle[sHdrCtrlPos.m_byIDPos]       = _T("CAN ID      ");			
+			somArrColTitle[sHdrCtrlPos.m_byPGNPos]      = _T("PGN        ");
+			somArrColTitle[sHdrCtrlPos.m_byCodeNamePos] = _T("PGN Name   ");
+			somArrColTitle[sHdrCtrlPos.m_byMsgTypePos]  = _T("Type       ");   
+			somArrColTitle[sHdrCtrlPos.m_bySrcPos]      = _T("Src    ");   
+			somArrColTitle[sHdrCtrlPos.m_byDestPos]     = _T("Dest       ");  
+			somArrColTitle[sHdrCtrlPos.m_byPriorityPos] = _T("Priority");  
+            somArrColTitle[sHdrCtrlPos.m_byRxTxPos]     = _T("Tx/Rx    ");  			            
+            somArrColTitle[sHdrCtrlPos.m_byDLCPos]      = _T("DLC ");
+            somArrColTitle[sHdrCtrlPos.m_byDataPos]     = _T("Data Byte(s)                                     ");
+        
+            m_MsgHdrInfo.vInitializeColDetails(sHdrCtrlPos, somArrColTitle, nColCount);
+
+            vRearrangeCols();
         }
         break;
     }
@@ -1900,6 +1999,15 @@ void CMsgFrmtWnd::vOnRxMsg(void* pMsg)
 	//LeaveCriticalSection(&m_omCritSecForMapArr);
     //Update the map
 	m_omMsgDispMap[dwMapIndex] = sDispEntry;
+
+	if(m_eBusType == J1939)
+	{
+		static STJ1939_MSG sJ1939Msg;
+		//HRESULT hResult = 
+        m_pouMsgContainerIntrf->hReadFromOWBuffer(&sJ1939Msg, dwMapIndex);
+		m_bUpdate = TRUE;
+		return;
+	}
 
 	static STCANDATA sCANMsg;
 	static char s_cTxMode;
@@ -2374,6 +2482,58 @@ void CMsgFrmtWnd::vGetSignalInfoArray(__int64 nMapIndex, SSignalInfoArray &SigIn
 			}
 		}
 	}
+	else if(m_eBusType == J1939)
+	{		
+		static EFORMAT eNumFormat;
+		static STJ1939_MSG sJ1939Msg;		
+		CString strMsgName;
+		SigInfoArray.RemoveAll();
+		UINT nID = nGetCodefromMapKey(nMapIndex);		
+
+		if (NULL != m_ppMsgDB)
+		{							
+			if (IS_NUM_HEX_SET(m_bExprnFlag_Disp))
+			{
+				eNumFormat = HEXADECIMAL;
+			}
+			else
+			{
+				eNumFormat = DEC;
+			}			
+			
+			PSDI_GetInterface(m_eBusType, (void**)&m_pouMsgContainerIntrf);
+			if(IS_MODE_APPEND(m_bExprnFlag_Disp))		
+			{				
+				int nBuffMsgCnt;			
+				nBuffMsgCnt = m_nIndex;
+
+				HRESULT hResult = m_pouMsgContainerIntrf->hReadFromAppendBuffer(&sJ1939Msg, nBuffMsgCnt);
+				if(sJ1939Msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN() == nID && hResult == S_OK)
+				{						
+					m_ouMsgInterpretJ1939.bInterPretJ1939_MSGS(eNumFormat, nID,
+						sJ1939Msg.m_unDLC, sJ1939Msg.m_pbyData, strMsgName, SigInfoArray);
+				}
+				else if( (theApp.pouGetFlagsPtr()->nGetFlagStatus( SENDMESG ) 
+						|| theApp.pouGetFlagsPtr()->nGetFlagStatus(SEND_SIGNAL_MSG))
+						&& sJ1939Msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN() != nID)
+				{
+					HRESULT hResult = m_pouMsgContainerIntrf->hReadFromOWBuffer(&sJ1939Msg, nMapIndex);
+					if(hResult == S_OK)
+						m_ouMsgInterpretJ1939.bInterPretJ1939_MSGS(eNumFormat, 
+							sJ1939Msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN(),
+							sJ1939Msg.m_unDLC, sJ1939Msg.m_pbyData, strMsgName, SigInfoArray);					
+				}
+			}
+			else
+			{				
+				HRESULT hResult = m_pouMsgContainerIntrf->hReadFromOWBuffer(&sJ1939Msg, nMapIndex);
+				if(hResult == S_OK)
+						m_ouMsgInterpretJ1939.bInterPretJ1939_MSGS(eNumFormat, 
+							sJ1939Msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN(),
+							sJ1939Msg.m_unDLC, sJ1939Msg.m_pbyData, strMsgName, SigInfoArray);					
+			}
+		}
+	}		
 }
 
 /*******************************************************************************
@@ -2457,6 +2617,13 @@ void CMsgFrmtWnd::vExpandMsgEntry( SMSGDISPMAPENTRY &sEntry,
 			static STCANDATA sCANMsg;
 			m_pouMsgContainerIntrf->hReadFromOWBuffer(&sCANMsg, nMsgKey);
 			rgbTreeItem =m_ouMsgAttr.GetCanIDColour(sCANMsg.m_uDataInfo.m_sCANMsg.m_unMsgID);
+		}
+		else if(m_eBusType == J1939)
+		{
+			static STJ1939_MSG sJ1939Msg;
+			m_pouMsgContainerIntrf->hReadFromOWBuffer(&sJ1939Msg, nMsgKey);
+			rgbTreeItem =m_ouMsgAttr.GetCanIDColour(
+							sJ1939Msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN());
 		}
 	}
 	else
@@ -2951,6 +3118,13 @@ void CMsgFrmtWnd::vUpdateAllTreeWnd()
 						m_pouMsgContainerIntrf->hReadFromOWBuffer(&sCANMsg, n64Temp);
 						rgbTreeItem =m_ouMsgAttr.GetCanIDColour(sCANMsg.m_uDataInfo.m_sCANMsg.m_unMsgID);
 					}
+					else if(m_eBusType == J1939)
+					{
+						static STJ1939_MSG sJ1939Msg;
+						m_pouMsgContainerIntrf->hReadFromOWBuffer(&sJ1939Msg, n64Temp);
+						rgbTreeItem =m_ouMsgAttr.GetCanIDColour(
+										sJ1939Msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN());
+					}
 				}
 				else
 					rgbTreeItem = RGB(0,0,0);
@@ -2996,6 +3170,13 @@ void CMsgFrmtWnd::vUpdateMsgTreeWnd(__int64 nMapIndex)
 					static STCANDATA sCANMsg;
 					m_pouMsgContainerIntrf->hReadFromOWBuffer(&sCANMsg, nMapIndex);
 					rgbTreeItem =m_ouMsgAttr.GetCanIDColour(sCANMsg.m_uDataInfo.m_sCANMsg.m_unMsgID);
+				}
+				else if(m_eBusType == J1939)
+				{
+					static STJ1939_MSG sJ1939Msg;
+					m_pouMsgContainerIntrf->hReadFromOWBuffer(&sJ1939Msg, nMapIndex);
+					rgbTreeItem =m_ouMsgAttr.GetCanIDColour(
+									sJ1939Msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN());
 				}
 			}
 			else                            //may not be required
@@ -3085,6 +3266,17 @@ void CMsgFrmtWnd::OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI)
 		case ID_SHOWMESSAGEWINDOW_CAN:
 		{
 			if(m_eBusType == CAN)
+			{
+				if(IsWindowVisible())
+					pCmdUI->SetCheck(1);
+				else
+					pCmdUI->SetCheck(0);
+			}
+		}
+		break;
+		case ID_SHOWMESSAGEWINDOW_J1939:
+		{
+			if(m_eBusType == J1939)
 			{
 				if(IsWindowVisible())
 					pCmdUI->SetCheck(1);
@@ -3462,6 +3654,10 @@ void CMsgFrmtWnd::vSetClientID(DWORD dwClientID)
 	m_dwClientID = dwClientID;
 }
 
+void CMsgFrmtWnd::vSetDILInterfacePointer(void** ppvJ1939DIL)
+{
+	m_ppouIJ1939DIL = (CBaseDILI_J1939**)ppvJ1939DIL;
+}
 BOOL CMsgFrmtWnd::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: Add your specialized code here and/or call the base class

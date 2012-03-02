@@ -59,6 +59,7 @@
 
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/DIL_DataTypes.h"    // DIL_INTERFACE
+#include "DataTypes/J1939_Datatypes.h"  //J1939 related structures
 #include "WrapperErrorLogger.h" //For Logging Error in DIL Interface 
 #include "CFilesDefs_CAN.h"
 //For node simulation interface
@@ -70,6 +71,7 @@
 #include "TxHandler.h"
 #include "WaveFormDataHandler.h"
 #include "WaveformTransmitter.h"
+#include "TxMsgWndJ1939.h"
 #include "SigGrphWndHandler.h"
 #include "DataTypes/MsgBufVSE.h"
 #include "ConfigData.h"
@@ -116,6 +118,8 @@ public:
     CString m_omStrSourceFilePathName;
     // Holds database name for CAN
     CString m_omStrDatabaseName;
+    // Holds database name for J1939
+    CString m_omJ1939DBName;
     // Holds the timer delay in msec for the replay
     UINT m_unReplayTimeDelay;
     // Holds the time delay in msec for the replay cycle
@@ -144,7 +148,9 @@ public:
     BOOL m_bInterPretMsg;
     CTxHandler m_objTxHandler;
 	CSigGrphHandler	m_objSigGrphHandler;
-    S_EXFUNC_PTR    m_sExFuncPtr[BUS_TOTAL];        
+    S_EXFUNC_PTR    m_sExFuncPtr[BUS_TOTAL];
+    CTxMsgWndJ1939* m_pouTxMsgWndJ1939;
+    SJ1939CLIENTPARAM m_sJ1939ClientParam;
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMainFrame)
@@ -246,7 +252,8 @@ public:
     //To display the context menu when user selects the time mode drop down menu
     void vToolBarDropDownMenu( UINT unControlID, int nButtonIndex); 
     // To create the trace window
-    BOOL bCreateTraceWindow();    
+    BOOL bCreateTraceWindow();
+    DWORD dLoadJ1939DBFile(CString omStrActiveDataBase,BOOL bFrmCom);
 	 // To load specified configuration File
     DWORD dLoadDataBaseFile(CString omStrActiveDataBase,BOOL bFrmCom);
     // To clear Message Interpretation Window Content on change of Config. File
@@ -283,7 +290,8 @@ protected:
     CNVTCToolBar    m_wndToolBar;   // Tool bar/*WrapFixed*/
 	CNVTCToolBar    m_wndToolbarNodeSimul;		
     CNVTCToolBar    m_wndToolbarMsgWnd;	
-	CNVTCToolBar    m_wndToolbarConfig;	    
+	CNVTCToolBar    m_wndToolbarConfig;	
+    CNVTCToolBar    m_wndToolbarJ1939;
 	CNVTCToolBar    m_wndToolbarCANDB;
 	
 
@@ -308,7 +316,8 @@ protected:
     afx_msg void OnDLLBuildLoad();
     afx_msg void OnDLLBuild();
     afx_msg void OnDllLoad();
-    afx_msg void OnDllUnload();    
+    afx_msg void OnDllUnload();
+    afx_msg void OnDllUnloadJ1939();
     afx_msg void OnMessageInterpretation();
     afx_msg void OnAddSignalToSignalWindow();
     afx_msg void OnMessageFilter();
@@ -465,8 +474,10 @@ private:
     SGRAPHSPLITTERDATA m_sGraphSplitterPos[AVAILABLE_PROTOCOLS];
 
     SCONTROLER_DETAILS m_asControllerDetails[defNO_OF_CHANNELS];
-    SFILTERAPPLIED_CAN m_sFilterAppliedCAN; // Filter applied struct for CAN    
-    CMsgInterpretation m_ouMsgInterpretSW_C; //Msg interpretation object for signal watch CAN    
+    SFILTERAPPLIED_CAN m_sFilterAppliedCAN; // Filter applied struct for CAN
+    SFILTERAPPLIED_J1939 m_sFilterAppliedJ1939; // Filter applied struct for J1939
+    CMsgInterpretation m_ouMsgInterpretSW_C; //Msg interpretation object for signal watch CAN
+    CMsgInterpretationJ1939 m_ouMsgInterpretSW_J; //Msg interpretation object for signal watch CAN
     CString m_omStrSavedConfigFile;
     STCAN_MSG m_sRxMsgInfo;
     BOOL m_bMsgHandlerRxDataByte;
@@ -505,7 +516,8 @@ private:
     // Pointer to CMsgSgTreeView class
     CMsgSgTreeView* m_pomMsgSgTreeViews[BUS_TOTAL];
     // Pointer to CMsgSignalDBWnd class
-    CMsgSignalDBWnd* m_podMsgSgWnd;    
+    CMsgSignalDBWnd* m_podMsgSgWnd;
+    CMsgSignalDBWnd* m_podMsgSgWndJ1939;
     // To set window place every time at the same 
     // place as it was last closed at.
     WINDOWPLACEMENT m_WinCurrStatus;
@@ -528,7 +540,13 @@ private:
     // Change status of tool bar button
     BOOL bSetPressStatus(int, eCANMONITORFLAG);
     // To stop or start logging during configuration change
-    //inline void vStartStopLogging(BOOL bStart);        
+    //inline void vStartStopLogging(BOOL bStart);
+    // To process J1939 DIL and logger interfaces
+    HRESULT ProcessJ1939Interfaces(void);
+    // To deselect J1939 interfaces
+    HRESULT DeselectJ1939Interfaces(void);
+    // To configure logging for a bus
+    void vConfigureLogFile(ETYPE_BUS eCurrBus);
     // The bus statistics modeless dialog box
     CBusStatisticsDlg* m_podBusStatistics;
     BOOL m_bIsStatWndCreated;
@@ -542,7 +560,8 @@ private:
        data structure */
     void vPopulateSigWatchList(CMainEntryList& odFromList, SMSGENTRY*& psToList, CMsgSignal* pouDatabase);
     /* Helper function to re register all the nodes when driver changes */
-    void vReRegisterAllCANNodes(void);    
+    void vReRegisterAllCANNodes(void);
+    void vReRegisterAllJ1939Nodes(void);
     void vGetLoadedCfgFileName(CString& omFileName);
     BOOL bIsConfigurationModified(void);
     void vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfig, UINT& nSize);
@@ -564,8 +583,11 @@ private:
 	CMsgBufVSE* m_pouMsgInterpretBuffer;   
 	LONGLONG m_nTimeStamp;
 	CMsgInterpretation m_odIntMsg;
+    CMsgSignal* m_pouMsgSigJ1939;
+    CMsgSignal* m_pouActiveDbJ1939;
     BOOL m_abLogOnConnect[BUS_TOTAL];
-public:	
+public:
+	void vPopulateJ1939PGNList();
 	INT ReadGraphDataBuffer(BOOL bCalcTime);
     INT nLoadConfigFile(CString omConfigFileName);
     int  COM_ConnectTool();
@@ -580,7 +602,8 @@ public:
 
     BOOL bUpdatePopupMenuDIL(void);
     CString omStrGetUnionFilePath(CString omStrTemp); 
-    void vInitCFileFunctPtrs();    
+    void vInitCFileFunctPtrs();
+    void NS_InitJ1939SpecInfo();
     void vUpdateMsgNameCodeList(CMsgSignal* pMsgSig, CMsgNameMsgCodeList& odMsgNameMsgCodeList);
     void vPushConfigFilenameDown ( CString omStrConfigFilename );
 	void vUpdateMainEntryListInWaveDataHandler();
@@ -625,7 +648,49 @@ public:
 	afx_msg void OnUpdateSignalgraphwindowCAN(CCmdUI *pCmdUI);
 	afx_msg void OnSignalgraphwindowMcnet();
 	afx_msg void OnUpdateSignalgraphwindowMcnet(CCmdUI *pCmdUI);
-	afx_msg void OnShowHideMessageWindow();
+    afx_msg void OnActivateJ1939();
+    afx_msg void OnUpdateActivateJ1939(CCmdUI *pCmdUI);
+    afx_msg void OnJ1939ConfigLog();
+    afx_msg void OnUpdateJ1939ConfigLog(CCmdUI *pCmdUI);
+    afx_msg void OnActionJ1939Online();
+    afx_msg void OnUpdateActionJ1939Online(CCmdUI *pCmdUI);
+    afx_msg void OnActionJ1939TxMessage();
+    afx_msg void OnUpdateActionJ1939TxMessage(CCmdUI *pCmdUI);
+    afx_msg void OnActionJ1939Log();
+    afx_msg void OnUpdateActionJ1939Log(CCmdUI *pCmdUI);
+    afx_msg void OnToolbarJ1939();
+    afx_msg void OnUpdateToolbarJ1939(CCmdUI *pCmdUI);
+    afx_msg void OnJ1939ConfigureTimeouts();
+    afx_msg void OnUpdateJ1939Timeouts(CCmdUI *pCmdUI);
+    afx_msg void OnJ1939DBNew();
+    afx_msg void OnJ1939DBOpen();
+    afx_msg void OnJ1939DBClose();
+    afx_msg void OnJ1939DBAssociate();
+    afx_msg void OnJ1939DBDissociate();
+    afx_msg void OnJ1939CfgSimSys();
+    afx_msg void OnJ1939LoadAll();
+    afx_msg void OnUpdateJ1939LoadAll(CCmdUI *pCmdUI);
+    afx_msg void OnJ1939UnloadAll();
+    afx_msg void OnUpdateJ1939UnloadAll(CCmdUI *pCmdUI);
+    afx_msg void OnJ1939BuildAndLoadAll();
+    afx_msg void OnUpdateJ1939BuildAndLoadAll(CCmdUI *pCmdUI);
+    afx_msg void OnJ1939BuildAll();
+    afx_msg void OnUpdateJ1939BuildAll(CCmdUI *pCmdUI);
+    afx_msg void OnJ1939AllMessageHandlers();
+    afx_msg void OnUpdateJ1939AllMessageHandlers(CCmdUI *pCmdUI);
+    afx_msg void OnJ1939AllKeyHandlers();
+    afx_msg void OnUpdateJ1939AllKeyHandlers(CCmdUI *pCmdUI);
+    afx_msg void OnJ1939AllTimerHandlers();
+    afx_msg void OnUpdateJ1939AllTimerHandlers(CCmdUI *pCmdUI);
+    afx_msg void OnJ1939AllHandlers();
+    afx_msg void OnUpdateJ1939AllHandlers(CCmdUI *pCmdUI);
+    afx_msg void OnUpdateJ1939CfgSimSys(CCmdUI *pCmdUI);
+    afx_msg void OnJ1939SignalwatchAdd();
+    afx_msg void OnJ1939SignalwatchShow();
+    afx_msg void OnUpdateJ1939SignalwatchShow(CCmdUI *pCmdUI);
+	afx_msg void OnConfigureMessagedisplayJ1939();	
+    afx_msg void OnJ1939Exportlog();
+	afx_msg void OnShowHideMessageWindow(UINT nID);
 	afx_msg void OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI);
 	afx_msg void OnToolbarCandatabase();
 	afx_msg void OnUpdateToolbarCanDatabase(CCmdUI *pCmdUI);

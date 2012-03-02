@@ -70,7 +70,8 @@ typedef enum eCANMONITORFLAG
     LOGTIMEMODE,
     eLOGOVERWRITEMODEON,
     eLOGREPLAYMSGTYPE,
-	SEND_SIGNAL_MSG,    
+	SEND_SIGNAL_MSG,
+    ACTIVATED_J1939,
 };
 
 class CFlags  
@@ -123,7 +124,8 @@ private:
     WORD m_wLogTimeMode;
     int m_nReplayMsgType;
     BOOL m_bLogOverWriteON;
-	BOOL m_bSendSignalMSg;    
+	BOOL m_bSendSignalMSg;
+    BOOL m_bActivatedJ1939;     // Current active bus for configuration.
 
     // Private constructors to make singleton class
     CFlags();

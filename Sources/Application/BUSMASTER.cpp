@@ -612,7 +612,9 @@ void CCANMonitorApp::vRelease1(eCONFIGDETAILS /*eParam*/, LPVOID* /*lpDataPtr*/)
 }
 
 void CCANMonitorApp::vSetFileStorageInfo(CString oCfgFilename)
-{    
+{
+    USES_CONVERSION;
+
 	DATASTORAGEINFO stempDataInfo;
 	FILESTORAGEINFO FileStoreInfo;
 	strcpy (FileStoreInfo.m_FilePath, oCfgFilename.GetBuffer(MAX_PATH));
@@ -1119,7 +1121,8 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
 							// and fill the file with the structure
 							m_pouMsgSignal->bWriteDBHeader(omStrDatabase);
 
-							vPopulateCANIDList();							
+							vPopulateCANIDList();
+							pMainFrame->vPopulateJ1939PGNList();
 							aomNewDatabases.Add(omStrDatabase);
 						}
 					}

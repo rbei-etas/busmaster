@@ -94,7 +94,8 @@ END_MESSAGE_MAP()
 *****************************************************************************/
 BOOL CMessageDetailsDlg::OnInitDialog() 
 {
-    CDialog::OnInitDialog();    
+    CDialog::OnInitDialog();
+    //Set the message Id field's text as 'PGN' if J1939,else 'Msg Id'
     GetDlgItem(IDC_STAT_MSG_CODE)->SetWindowText(m_sDbParams.m_omIdFieldName);
 
     //Select only extended messages
@@ -115,6 +116,15 @@ BOOL CMessageDetailsDlg::OnInitDialog()
     else
     {
         m_nFrameFormat      = 0;
+    }
+    if (m_sDbParams.m_eBus == J1939)
+    {
+        CButton* pButton = (CButton*)GetDlgItem(IDC_RBTN_EXTDED);
+        pButton->SetCheck(BST_CHECKED);
+        pButton = (CButton*)GetDlgItem(IDC_RBTN_STD);
+        pButton->EnableWindow(FALSE);
+        pButton->SetCheck(BST_UNCHECKED);
+        m_nFrameFormat = 1;
     }
     UpdateData(FALSE);
 
@@ -231,6 +241,18 @@ void CMessageDetailsDlg::OnOK()
                 GetDlgItem( IDC_EDIT_MSGCODE )->SetFocus();
                 UpdateData( FALSE);
                 return;         
+            }
+        }
+        else if (m_sDbParams.m_eBus == J1939)
+        {
+            if (unTempMsgCode > MAX_LMT_FOR_PGN)
+            {
+                AfxMessageBox("Invalid message ID!", 
+                   MB_OK|MB_ICONINFORMATION );
+                m_omStrMessageCode.Empty();
+                GetDlgItem( IDC_EDIT_MSGCODE )->SetFocus();
+                UpdateData( FALSE);
+                return;  
             }
         }
         // rajesh: 03-03-2003: END: 

@@ -205,6 +205,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MsgContainer_J1939.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PSDI_CAN.cpp"
 				>
 			</File>
@@ -220,6 +224,10 @@
 			>
 			<File
 				RelativePath=".\MsgContainer_CAN.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MsgContainer_J1939.h"
 				>
 			</File>
 			<File

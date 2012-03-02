@@ -185,10 +185,13 @@ BOOL CFnsTreeView::bPopulateTree()
         HTREEITEM hHdr = omTree.InsertItem( INCLUDE_HEADERS, hItem );
         HTREEITEM hMsg = omTree.InsertItem( MESSAGE_HANDLERS, hItem );
         HTREEITEM hTmr = omTree.InsertItem( TIMER_HANDLERS, hItem );
-        HTREEITEM hKey = omTree.InsertItem( KEY_HANDLERS, hItem );        
-        HTREEITEM hErr = omTree.InsertItem( ERROR_HANDLERS, hItem );
-		HTREEITEM hEvenInd = NULL;
-		
+        HTREEITEM hKey = omTree.InsertItem( KEY_HANDLERS, hItem );
+        HTREEITEM hErr = NULL;
+        if (m_eBus != J1939)
+        {
+             hErr = omTree.InsertItem( ERROR_HANDLERS, hItem );
+        }
+        HTREEITEM hEvenInd = NULL;
         if (m_eBus != CAN)
         {
             hEvenInd = omTree.InsertItem( EVENTIND_HANDLERS, hItem );
@@ -227,7 +230,8 @@ BOOL CFnsTreeView::bPopulateTree()
         }
         omTree.SetItemImage( hHdr, 8, 8 );
         omTree.Expand( hHdr, TVE_EXPAND );
-		omTree.Expand( hErr, TVE_EXPAND );
+        omTree.SetItemImage(hErr,9,9);
+        omTree.Expand( hErr, TVE_EXPAND );
         // Get message handler array from the doc
         CStringArray* pMsgArray = 
             pDoc->omStrGetMessageHandlerPrototypes();

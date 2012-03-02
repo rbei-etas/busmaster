@@ -1085,7 +1085,7 @@ void CSimSysDetView::vHideControls(UINT unEnableHide)
     GetDlgItem(IDC_STAT_NODE_NAME)->ShowWindow(unEnableHide);
     GetDlgItem(IDC_EDIT_NODE_NAME)->ShowWindow(unEnableHide);
 	
-    BOOL bShowHide =  FALSE;
+    BOOL bShowHide =  (m_eBus == J1939) ? unEnableHide : FALSE;
     {
         GetDlgItem(IDC_STATIC_PREF_ADRES)->ShowWindow(bShowHide);
         GetDlgItem(IDC_EDIT_PREF_ADRES)->ShowWindow(bShowHide);

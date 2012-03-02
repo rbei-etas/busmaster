@@ -183,6 +183,10 @@ BOOL CMsgSignalDBWnd::OnCreateClient(LPCREATESTRUCT /*lpcs*/,
     CString omTitle = _T("DatabaseEditor - ");
     omTitle += m_sDbParams.m_omBusName;
     SetWindowText(omTitle.GetBuffer(MAX_PATH));
+    if (m_sDbParams.m_eBus == J1939)
+    {
+        CMsgSignalDBWnd::sm_bValidJ1939Wnd = TRUE;
+    }
     return m_bSplitWndCreated;  
 }
 /******************************************************************************/
@@ -291,6 +295,11 @@ void CMsgSignalDBWnd::OnClose()
                                         pFrame->dLoadDataBaseFile(m_sDbParams.m_omDBPath, FALSE);
                                     }
                                     break;
+                                    case J1939:
+                                    {
+                                        pFrame->dLoadJ1939DBFile(m_sDbParams.m_omDBPath, FALSE);
+                                    }
+                                    break;
                                 };
 
                             }
@@ -337,6 +346,10 @@ void CMsgSignalDBWnd::OnClose()
             {
                 pFlags->vSetFlagStatus( DBOPEN, FALSE );
             }
+        }
+        else if (m_sDbParams.m_eBus == J1939)
+        {
+            CMsgSignalDBWnd::sm_bValidJ1939Wnd = FALSE;
         }
         CMDIChildWnd::OnClose();
     }

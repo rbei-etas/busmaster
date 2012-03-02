@@ -305,7 +305,7 @@ void CFunctionEditorDoc::Serialize(CArchive& ar)
         CString omStrLine = STR_EMPTY;
         BYTE* pbyFileData = new BYTE[m_nMaxLineLength * m_omSourceCodeTextList.GetCount()];
         memset(pbyFileData, 0, m_nMaxLineLength * m_omSourceCodeTextList.GetCount());
-        BYTE pbyFileLine[256] = {'\0'}; 
+        BYTE pbyFileLine[1024] = {'\0'}; 
         POSITION pos = m_omSourceCodeTextList.GetHeadPosition();
         int nIndex = 0;
         while ( pos != NULL )
@@ -338,7 +338,7 @@ void CFunctionEditorDoc::Serialize(CArchive& ar)
                 pFile->Read(pbyFileData, (COMMANUINT)FileLength);
             
                 UINT nIndex = 0;
-                CHAR acFileLine[256];
+                CHAR acFileLine[1024];
                 while (ReadString((LPSTR)pbyFileData, (COMMANUINT)FileLength, acFileLine, nIndex))
                 {   
                 //omTextLine = A2T(acFileLine);
@@ -1268,6 +1268,14 @@ BOOL CFunctionEditorDoc::bGetBusSpecificInfo(SBUS_SPECIFIC_INFO& sBusSpecInfo)
     return bReturn;
 
 }
+static UINT unFormExtIdFromPGN(UINT unPGN)
+{
+    UNION_29_BIT_ID uExtId;
+    uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPriority = DEFAULT_PRIORITY - 1;
+    uExtId.m_s29BitId.m_bySrcAddress = 0x0;
+    uExtId.m_s29BitId.m_uPGN.m_unPGN = unPGN;
+    return uExtId.m_unExtID;
+}
 void CFunctionEditorDoc::vInitialiseBusSpecStructure(CString& omStrTemp, UCHAR ucChannel, 
                                                      SMSG_NAME_CODE& sMsgNameCode, BOOL bInitData)
 {
@@ -1304,6 +1312,43 @@ void CFunctionEditorDoc::vInitialiseBusSpecStructure(CString& omStrTemp, UCHAR u
             // Now form total init string
 		    omStrTemp += defFNS_COMMA;
             omStrTemp += ucChannel;
+            omStrTemp += defCLOSE_PARENTHESIS;
+            omStrTemp += SEMI_COLON;
+        }
+        break;
+        case J1939:
+        {
+            UINT unExtId = unFormExtIdFromPGN(sMsgNameCode.m_dwMsgCode);
+          
+            // Format Message ID, Format, RTR & DLC
+            omStrTemp.Format(defMSG_INIT_FORMAT_J1939,
+                             0, //timestamp
+                             ucChannel, //channel
+                             _T("MSG_TYPE_BROADCAST"), //Msg type. 4 - Broadcast
+                             _T("DIR_TX"), //Direction TX
+                             unExtId, //PGN
+                             sMsgNameCode.m_unMsgLen); //MSG LEN
+
+            // Init data bytes if requested
+            if(bInitData == TRUE && sMsgNameCode.m_unMsgLen > 0)
+            {
+                omStrTemp += defOPEN_PARENTHESIS;
+                // Init to 0xFF
+                omStrTemp += _T("{0xFF}");
+                //for( UINT unIndex = 0; 
+                //        unIndex < sMsgNameCode.m_unMsgLen;
+                //        unIndex++)
+                //        {
+                //            
+                //            // Check for Last zero
+                //            if( unIndex + 1 != sMsgNameCode.m_unMsgLen)
+                //            {
+                //                omStrTemp += defFNS_COMMA;
+                //            }
+
+                //        }
+                omStrTemp += defCLOSE_PARENTHESIS;
+            }
             omStrTemp += defCLOSE_PARENTHESIS;
             omStrTemp += SEMI_COLON;
         }

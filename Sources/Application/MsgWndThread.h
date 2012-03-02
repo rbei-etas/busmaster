@@ -45,7 +45,8 @@ public:
 	void vUpdateClientID(eTYPE_BUS eBusType, DWORD dwClientID);
 	afx_msg void vModifyVisibilityStatus(UINT, LONG);
     afx_msg void vShutdownThread(UINT, LONG);
-    HWND hGetHandleMsgWnd(eTYPE_BUS eBusType);	
+    HWND hGetHandleMsgWnd(eTYPE_BUS eBusType);
+	void vSetDILInterfacePointer(eTYPE_BUS eBusType, void** ppvJ1939DIL);
 
 protected:
 	DECLARE_MESSAGE_MAP()

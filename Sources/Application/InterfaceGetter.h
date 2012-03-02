@@ -27,20 +27,25 @@
 
 // All forward declarations
 class CBaseFrameProcessor_CAN;
+class CBaseFrameProcessor_J1939;
 class CMainFrame;
 class CFlags;
 class CBaseDIL_CAN;
+class CBaseDILI_J1939;
 class CBaseBusStatisticCAN;
 class CBaseNodeSim;
 class CMsgSignal;
 
 // External function prototypes
 extern CBaseFrameProcessor_CAN* GetICANLogger(void);
+extern CBaseFrameProcessor_J1939* GetIJ1939Logger(void);
 extern CMainFrame* GetIMainFrame(void);
 extern CFlags* GetIFlags(void);
 extern CBaseDIL_CAN* GetICANDIL(void);
+extern CBaseDILI_J1939* GetIJ1939DIL(void);
 extern CBaseBusStatisticCAN* GetICANBusStat(void);
 extern CBaseNodeSim* GetICANNodeSim(void);
+extern CBaseNodeSim* GetIJ1939NodeSim(void);
 extern CMsgSignal* GetIMsgDB(void);
 extern DWORD dwGetMonitorClientID(void);
 

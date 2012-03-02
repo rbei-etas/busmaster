@@ -677,6 +677,66 @@ void CExecuteManager::vManageOnErrorHandlerCAN(eERROR_STATE eErrorCode,SCAN_ERR 
 	    psTempNodeObject=psTempNodeObject->m_psNextNode;
    }		
 }
+/**************************************************************************************
+    Function Name    :  vManageOnDataConfHandler
+    Input(s)         :  
+    Output           :  
+    Functionality    :  Calls all key handlers for a key
+    Member of        :  CExecuteManager
+    Author(s)        :  Pradeep Kadoor
+    Date Created     :  01.01.2010
+***************************************************************************************/
+void CExecuteManager::vManageOnDataConfHandlerJ1939(DWORD dwClientId, UINT32 unPGN, BYTE bySrc, BYTE byDest, BOOL bSuccess)
+{
+	PSNODEOBJECT psTempNodeObject = m_psFirstNodeObject;
+    BOOL bContinue = TRUE;
+	while((psTempNodeObject != NULL) && (bContinue == TRUE))
+	{
+        //Since shRemoteLc indicates Receiver, compare the node LCN with it
+        sNODEINFO sNodeInfo(J1939);
+        psTempNodeObject->m_psExecuteFunc->vGetNodeInfo(sNodeInfo);
+        if(dwClientId == sNodeInfo.m_dwClientId)
+		{
+            psTempNodeObject->m_psExecuteFunc->vExecuteOnDataConfHandlerJ1939(unPGN, bySrc, byDest, bSuccess);
+            bContinue = FALSE;
+		}
+		psTempNodeObject=psTempNodeObject->m_psNextNode;
+	}
+}
+/**************************************************************************************
+    Function Name    :  vManageOnDataConfHandler
+    Input(s)         :  
+    Output           :  
+    Functionality    :  Calls all key handlers for a key
+    Member of        :  CExecuteManager
+    Author(s)        :  Pradeep Kadoor
+    Date Created     :  01.01.2010
+***************************************************************************************/
+void CExecuteManager::vManageOnAddressClaimHandlerJ1939(DWORD dwClientId, BYTE byAddress)
+{
+	PSNODEOBJECT psTempNodeObject = m_psFirstNodeObject;
+    BOOL bContinue = TRUE;
+	while((psTempNodeObject != NULL) && (bContinue == TRUE))
+	{
+        //Since shRemoteLc indicates Receiver, compare the node LCN with it
+        sNODEINFO sNodeInfo(J1939);
+        psTempNodeObject->m_psExecuteFunc->vGetNodeInfo(sNodeInfo);
+        if(dwClientId == sNodeInfo.m_dwClientId)
+		{
+            sNodeInfo.m_byPrefAddress = byAddress;
+            CSimSysDetView* pSimSysDetView = NULL;
+            pSimSysDetView = CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysDetView();
+            if (NULL != pSimSysDetView)
+            {
+                pSimSysDetView->vSetNodeAddress(byAddress);
+            }
+            psTempNodeObject->m_psExecuteFunc->vSetNodeInfo(&sNodeInfo);
+            psTempNodeObject->m_psExecuteFunc->vExecuteOnAddressClaimHandlerJ1939(byAddress);
+            bContinue = FALSE;
+		}
+		psTempNodeObject=psTempNodeObject->m_psNextNode;
+	}
+}
 /******************************************************************************/
 /*  Function Name    :  bExecuteDLLBuildLoad                                  */
 /*  Input(s)         :  NOdeInfo structure list from UI                       */

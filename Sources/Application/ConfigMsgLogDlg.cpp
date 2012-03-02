@@ -23,6 +23,7 @@
 #include "stdafx.h"
 #include "Resource.h"
 #include "FrameProcessor/BaseFrameProcessor_CAN.h"
+#include "FrameProcessor/BaseFrameProcessor_J1939.h"
 #include "Datatypes/Filter_Datatypes.h"
 #include "DataTypes/Log_DataTypes.h"
 #include "Utility/RadixEdit.h"
@@ -33,10 +34,11 @@
 #include "DIL_Interface/BaseDIL_CAN.h"
 #include ".\configmsglogdlg.h"
 
-#define STR_FILTER_DIALOG_FORMAT    _T("Configure Filter for Log File: %s")
+#define STR_FILTER_DIALOG_FORMAT        _T("Configure Filter for Log File: %s")
 #define BUSMASTER_LOG_REMOVE			_T("Do you want to remove selected log file entry?")
 #define BUSMASTER_LOG_ALREADYEXISTS 	_T("Log file: %s is already added to the log configuration list!")
 #define BUSMASTER_CAN_LOGFILENAME		_T("BUSMASTERLogFile%d.log")
+#define BUSMASTER_J1939_LOGFILENAME	    _T("BUSMASTERLogFile_J1939_%d.log")
 #define BUSMASTER_LOG_SELECTION_TITLE	_T("Select a Log file")
 #define BUSMASTER_LOG_FILTER			_T("*.log|*.log||")
 #define BUSMASTER_LOG_FILE_EXTENSION	_T("log")
@@ -79,6 +81,15 @@ CConfigMsgLogDlg::CConfigMsgLogDlg(ETYPE_BUS eCurrBus,void* pouBaseLogger, BOOL&
             m_strCurrWndText =_T("Configure Logging for CAN");
             m_omControlParam = _T("Start on Reception of ID 0x");
             m_omControlParam2 = _T("Stop on Reception of ID 0x");
+        }
+        break;
+        case J1939:
+        {
+            m_pouLoggerJ1939 = (CBaseFrameProcessor_J1939 *) pouBaseLogger;
+            m_psJ1939Filter = (SFILTERAPPLIED_J1939 *) psFilter;
+            m_strCurrWndText =_T("Configure Logging for J1939");
+            m_omControlParam = _T("Start on Reception of PGN 0x");
+            m_omControlParam2 = _T("Stop on Reception of PGN 0x");
         }
         break;
         default: ASSERT(FALSE);
@@ -318,6 +329,10 @@ CString CConfigMsgLogDlg::GetUniqueLogFilePath(void)
         {
             omNewLogFileName.Format(BUSMASTER_CAN_LOGFILENAME, Count);
         }
+        else if (J1939 == m_eCurrBus)
+        {
+            omNewLogFileName.Format(BUSMASTER_J1939_LOGFILENAME, Count);
+        }
         omStrFullPath = acPathBuffer; // Full Path
         omStrFullPath = omStrFullPath + _T("\\") + omNewLogFileName;
         // We have two different strings to compare. The first one is the bare
@@ -532,6 +547,8 @@ void CConfigMsgLogDlg::AddNewItem_GUI(SLOGINFO sLogStructNew, int Index)
 
 void CConfigMsgLogDlg::OnBnClickedCbtnAddlog(void)
 {
+    USES_CONVERSION;
+
     // Get unique log file name with full path.
     CString omFilePathNewLog = GetUniqueLogFilePath();
 
@@ -575,6 +592,8 @@ void CConfigMsgLogDlg::OnBnClickedCbtnRemovelog(void)
 
 void CConfigMsgLogDlg::OnBnClickedCbtnLogFilePath(void)
 {
+    USES_CONVERSION;
+
 	CString omStrLogFile = _T("");
     (GetDlgItem(IDC_EDIT_LOGFILEPATH))->GetWindowText(omStrLogFile);
 
@@ -852,7 +871,8 @@ USHORT CConfigMsgLogDlg::GetLoggingBlockCount(void)
     USHORT Result = 0x0;
     switch (m_eCurrBus)
     {
-        case CAN: Result = m_pouFProcCAN->FPC_GetLoggingBlockCount(); break;        
+        case CAN: Result = m_pouFProcCAN->FPC_GetLoggingBlockCount(); break;
+        case J1939: Result = m_pouLoggerJ1939->FPJ1_GetLoggingBlockCount(); break;
         default: ASSERT(FALSE);
     }
     return Result;
@@ -863,7 +883,8 @@ HRESULT CConfigMsgLogDlg::GetLoggingBlock(USHORT ushBlk, SLOGINFO& sLogObject)
     HRESULT Result = S_FALSE;
     switch (m_eCurrBus)
     {
-        case CAN: Result = m_pouFProcCAN->FPC_GetLoggingBlock(ushBlk, sLogObject); break;        
+        case CAN: Result = m_pouFProcCAN->FPC_GetLoggingBlock(ushBlk, sLogObject); break;
+        case J1939: Result = m_pouLoggerJ1939->FPJ1_GetLoggingBlock(ushBlk, sLogObject); break;
         default: ASSERT(FALSE);
     }
     return Result;
@@ -874,7 +895,8 @@ HRESULT CConfigMsgLogDlg::SetLoggingBlock(USHORT ushBlk, const SLOGINFO& sLogObj
     HRESULT Result = S_FALSE;
     switch (m_eCurrBus)
     {
-        case CAN: Result = m_pouFProcCAN->FPC_SetLoggingBlock(ushBlk, sLogObject); break;        
+        case CAN: Result = m_pouFProcCAN->FPC_SetLoggingBlock(ushBlk, sLogObject); break;
+        case J1939: Result = m_pouLoggerJ1939->FPJ1_SetLoggingBlock(ushBlk, sLogObject); break;
         default: ASSERT(FALSE);
     }
     return Result;
@@ -885,7 +907,8 @@ HRESULT CConfigMsgLogDlg::AddLoggingBlock(const SLOGINFO& sLogObject)
     HRESULT Result = S_FALSE;
     switch (m_eCurrBus)
     {
-        case CAN: Result = m_pouFProcCAN->FPC_AddLoggingBlock(sLogObject); break;        
+        case CAN: Result = m_pouFProcCAN->FPC_AddLoggingBlock(sLogObject); break;
+        case J1939: Result = m_pouLoggerJ1939->FPJ1_AddLoggingBlock(sLogObject); break;
         default: ASSERT(FALSE);
     }
     return Result;
@@ -896,7 +919,8 @@ HRESULT CConfigMsgLogDlg::RemoveLoggingBlock(USHORT ushBlk)
     HRESULT Result = S_FALSE;
     switch (m_eCurrBus)
     {
-        case CAN: Result = m_pouFProcCAN->FPC_RemoveLoggingBlock(ushBlk); break;        
+        case CAN: Result = m_pouFProcCAN->FPC_RemoveLoggingBlock(ushBlk); break;
+        case J1939: Result = m_pouLoggerJ1939->FPJ1_RemoveLoggingBlock(ushBlk); break;
         default: ASSERT(FALSE);
     }
     return Result;
@@ -912,6 +936,12 @@ HRESULT CConfigMsgLogDlg::ApplyFilteringScheme(USHORT ushLogBlkID, const void* p
         {
             Result = m_pouFProcCAN->FPC_ApplyFilteringScheme(ushLogBlkID, 
                                    *((const SFILTERAPPLIED_CAN*) psFilterObj));
+        }
+        break;
+        case J1939:
+        {
+            Result = m_pouLoggerJ1939->FPJ1_ApplyFilteringScheme(ushLogBlkID, 
+                                 *((const SFILTERAPPLIED_J1939*) psFilterObj));
         }
         break;
         default: ASSERT(FALSE);
@@ -930,6 +960,12 @@ HRESULT CConfigMsgLogDlg::GetFilteringScheme(USHORT ushLogBlk, void* psFilterObj
         {
             Result = m_pouFProcCAN->FPC_GetFilteringScheme(ushLogBlk, 
                                         *((SFILTERAPPLIED_CAN *) psFilterObj));
+        }
+        break;
+        case J1939:
+        {
+            Result = m_pouLoggerJ1939->FPJ1_GetFilteringScheme(ushLogBlk, 
+                                      *((SFILTERAPPLIED_J1939 *) psFilterObj));
         }
         break;
         default: ASSERT(FALSE);

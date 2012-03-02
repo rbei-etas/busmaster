@@ -161,6 +161,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SigGrphWnd", "SigGrphWnd\Si
 		{5D1AB9D9-755F-4743-AE73-83B7D5FCCD65} = {5D1AB9D9-755F-4743-AE73-83B7D5FCCD65}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "J1939", "DIL_J1939\J1939.vcproj", "{7812969F-7FF6-448C-A19C-78CC07362163}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -420,6 +422,16 @@ Global
 		{11A11CEA-45ED-4FE6-BDE2-643DF9267FAC}.Unicode Release MinSize|Win32.Build.0 = Release|Win32
 		{11A11CEA-45ED-4FE6-BDE2-643DF9267FAC}.Unicode Release|Win32.ActiveCfg = Release|Win32
 		{11A11CEA-45ED-4FE6-BDE2-643DF9267FAC}.Unicode Release|Win32.Build.0 = Release|Win32
+		{7812969F-7FF6-448C-A19C-78CC07362163}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7812969F-7FF6-448C-A19C-78CC07362163}.Debug|Win32.Build.0 = Debug|Win32
+		{7812969F-7FF6-448C-A19C-78CC07362163}.Release|Win32.ActiveCfg = Release|Win32
+		{7812969F-7FF6-448C-A19C-78CC07362163}.Release|Win32.Build.0 = Release|Win32
+		{7812969F-7FF6-448C-A19C-78CC07362163}.Unicode Debug|Win32.ActiveCfg = Debug|Win32
+		{7812969F-7FF6-448C-A19C-78CC07362163}.Unicode Debug|Win32.Build.0 = Debug|Win32
+		{7812969F-7FF6-448C-A19C-78CC07362163}.Unicode Release MinSize|Win32.ActiveCfg = Release|Win32
+		{7812969F-7FF6-448C-A19C-78CC07362163}.Unicode Release MinSize|Win32.Build.0 = Release|Win32
+		{7812969F-7FF6-448C-A19C-78CC07362163}.Unicode Release|Win32.ActiveCfg = Release|Win32
+		{7812969F-7FF6-448C-A19C-78CC07362163}.Unicode Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

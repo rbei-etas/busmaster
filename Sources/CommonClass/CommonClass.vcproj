@@ -172,6 +172,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GUI_FormatMsgJ1939.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MsgContainerBase.cpp"
 				>
 			</File>
@@ -195,6 +199,10 @@
 			</File>
 			<File
 				RelativePath=".\GUI_FormatMsgCommon.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GUI_FormatMsgJ1939.h"
 				>
 			</File>
 			<File

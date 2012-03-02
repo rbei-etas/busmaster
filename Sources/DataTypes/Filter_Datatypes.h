@@ -56,6 +56,12 @@ typedef struct tagSFRAMEINFO_BASIC_MCNET
     DWORD m_dwFrameID;
 } SFRAMEINFO_BASIC_MCNET;
 
+// Basic information needed for filtering when the bus is J1939.
+typedef struct tagSFRAMEINFO_BASIC_J1939
+{
+    DWORD m_dwPGN;
+} SFRAMEINFO_BASIC_J1939;
+
 const int LENGTH_FILTERNAME = 128;
 
 // The descriobes a filter name with type.
@@ -202,6 +208,34 @@ struct SFILTER_MCNET : public SFILTER
     BYTE* pbSetConfigData(BYTE* pbTarget);
 };
 typedef SFILTER_MCNET* PSFILTER_MCNET;
+
+// The below structure describes a filter block for J1939 frames.
+struct SFILTER_J1939 : public SFILTER
+{
+    SFILTER_J1939();    // Standard constructor
+    ~SFILTER_J1939();   // Destructor
+
+    // To assign values from another object. The '=' operator overloaded.
+    SFILTER_J1939& operator=(const SFILTER_J1939& RefObj);
+
+    // To clear the current object.
+    void vClear(void);
+
+    // Query function to know if this filtering block is configured for the
+    // message entry passed.
+    BOOL bDoesFrameOccur(const void* psCurrFrame) const;
+
+    // To get size of the filter block object in bytes.
+    UINT unGetSize(void) const;
+
+    // Called to get the filter object's data into a stream buffer.
+    BYTE* pbGetConfigData(BYTE* pbTarget) const;
+
+    // Called to retrieve a filter object's data from a byte stream and 
+    // initialise the current filter object with the retrieved data.
+    BYTE* pbSetConfigData(BYTE* pbTarget);
+};
+typedef SFILTER_J1939* PSFILTER_J1939;
 
 // This below structure defines a filtering block. 
 typedef struct tagFilterSet
@@ -564,5 +598,8 @@ typedef SFILTERAPPLIED<tagSFRAMEINFO_BASIC_FLEXRAY> SFILTERAPPLIED_FLEXRAY;
 
 // For MCNet
 typedef SFILTERAPPLIED<tagSFRAMEINFO_BASIC_MCNET> SFILTERAPPLIED_MCNET;
+
+// For J1939
+typedef SFILTERAPPLIED<tagSFRAMEINFO_BASIC_J1939> SFILTERAPPLIED_J1939;
 
 #endif // FILTER_DATATYPES_H__INCLUDED_

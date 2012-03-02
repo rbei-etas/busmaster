@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="SendMsg" xml:lang="en-us">
+  <title>SendMsg : To send a J1939 message </title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>UINT SendMsg ( STJ1939_MSG* )</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function will put the message on the J1939 network.
+The message structure STJ1939_MSG will be filled with ID, length, data, channel.                                                            
+</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>STJ1939_MSG* - Pointer to J1939 Message Structure</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>1 on successful transmisstion. 0 value on failure.</p>
+    </section>
+  </refbody>
+</reference>

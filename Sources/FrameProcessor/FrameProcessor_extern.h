@@ -25,6 +25,7 @@
 #if !defined FRAMEPROCESSOR_EXTERN_H__INCLUDED_
 #define FRAMEPROCESSOR_EXTERN_H__INCLUDED_
 
+#include "../Include/ModuleID.h"
 
 #if defined USAGEMODE
 #undef USAGEMODE

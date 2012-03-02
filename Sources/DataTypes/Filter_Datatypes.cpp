@@ -930,6 +930,189 @@ BYTE* SFILTER_MCNET::pbSetConfigData(BYTE* pbTarget)
 }
 /* Ends SFILTER_MCNET */
 
+
+/* Starts SFILTER_J1939 */
+
+/******************************************************************************
+  Function Name    :  SFILTER_J1939
+  Input(s)         :  -
+  Output           :  -
+  Functionality    :  Standard constructor
+  Member of        :  SFILTER_J1939
+  Friend of        :  -                                   
+  Author(s)        :  Ratnadip Choudhury
+  Date Created     :  30.11.2010
+  Modification date:  
+  Modification By  :  
+******************************************************************************/
+SFILTER_J1939::SFILTER_J1939()
+{
+    vClear();
+}
+
+/******************************************************************************
+  Function Name    :  ~SFILTER_J1939
+  Input(s)         :  -
+  Output           :  -
+  Functionality    :  Destructor
+  Member of        :  SFILTER_J1939
+  Friend of        :  -                                   
+  Author(s)        :  Ratnadip Choudhury
+  Date Created     :  30.11.2010
+  Modification date:  
+  Modification By  :  
+******************************************************************************/
+SFILTER_J1939::~SFILTER_J1939()
+{
+    vClear();
+}
+
+/******************************************************************************
+  Function Name    :  operator=
+  Input(s)         :  const SFILTER_J1939& RefObj - The source object
+  Output           :  SFILTER_J1939& - The current object reference.
+  Functionality    :  Copies a source object by '=' operator overloading.
+  Member of        :  SFILTER_J1939
+  Friend of        :  -                                   
+  Author(s)        :  Ratnadip Choudhury
+  Date Created     :  30.11.2010
+  Modification date:  
+  Modification By  :  
+******************************************************************************/
+SFILTER_J1939& SFILTER_J1939::operator=(const SFILTER_J1939& RefObj)
+{
+    this->SFILTER::operator = (RefObj);
+    return *this;
+}
+
+/******************************************************************************
+  Function Name    :  vClear
+  Input(s)         :  void
+  Output           :  void
+  Functionality    :  Clears information inthe current filtering block
+  Member of        :  SFILTER_J1939
+  Friend of        :  -                                   
+  Author(s)        :  Ratnadip Choudhury
+  Date Created     :  30.11.2010
+  Modification date:  
+  Modification By  :  
+******************************************************************************/
+void SFILTER_J1939::vClear(void)
+{
+    this->SFILTER::vClear();
+}
+
+/******************************************************************************
+  Function Name    :  bDoesFrameOccur
+  Input(s)         :  psCurrFrame - The frame in question.
+  Output           :  TRUE if the frame occurs in the filtering block.
+  Functionality    :  Query function to know if this filtering block is 
+                      configured for the message entry passed.
+  Member of        :  SFILTER_J1939
+  Friend of        :  -                                   
+  Author(s)        :  Ratnadip Choudhury
+  Date Created     :  30.11.2010
+  Modification date:  
+  Modification By  :  
+******************************************************************************/
+BOOL SFILTER_J1939::bDoesFrameOccur(const void* psCurrFrame) const
+{
+    BOOL bResult = FALSE;
+
+    SFRAMEINFO_BASIC_J1939& sCurrFrame = *((SFRAMEINFO_BASIC_J1939 *) psCurrFrame);
+    // For Signle Id Filtering
+    if (m_ucFilterType == defFILTER_TYPE_SINGLE_ID)
+    {
+        // Check for Message ID
+        if (m_dwMsgIDFrom == sCurrFrame.m_dwPGN)
+        {
+            bResult = TRUE;
+        }
+    }
+    // For Range Filter
+    else if (m_ucFilterType == defFILTER_TYPE_ID_RANGE)
+    {
+        // Check for message falling in the Range
+        if ( (sCurrFrame.m_dwPGN >= m_dwMsgIDFrom) &&
+             (sCurrFrame.m_dwPGN <= m_dwMsgIDTo) )
+        {
+            bResult = TRUE;
+		}
+    }
+    else
+    {
+        ASSERT(FALSE);
+    }
+
+    return bResult;
+}
+
+/******************************************************************************
+  Function Name    :  unGetSize
+  Input(s)         :  void
+  Output           :  UINT - size of the current filtering block
+  Functionality    :  Returns in bytes size of the current filtering block.
+  Member of        :  SFILTER_J1939
+  Friend of        :  -                                   
+  Author(s)        :  Ratnadip Choudhury
+  Date Created     :  30.11.2010
+  Modification date:  
+  Modification By  :  
+******************************************************************************/
+UINT SFILTER_J1939::unGetSize(void) const
+{
+    UINT Result = this->SFILTER::unGetSize();
+    return Result;
+}
+
+/******************************************************************************
+  Function Name    :  pbGetConfigData
+  Input(s)         :  pbTarget - The target buffer to save filtering data.
+                      It assumes that pbTarget is currently pointing to a loca-
+                      tion having sufficient space.
+  Output           :  BYTE * - Location of the next available buffer.
+  Functionality    :  Saves filtering block information of the current object
+                      into the target buffer. Advances the writing pointer to
+                      the next byte occurring after the written block.
+  Member of        :  SFILTER_J1939
+  Friend of        :  -                                   
+  Author(s)        :  Ratnadip Choudhury
+  Date Created     :  30.11.2010
+  Modification date:  
+  Modification By  :  
+******************************************************************************/
+BYTE* SFILTER_J1939::pbGetConfigData(BYTE* pbTarget) const
+{
+    BYTE* pbTStream = pbTarget;
+    pbTStream = this->SFILTER::pbGetConfigData(pbTStream);
+    return pbTStream;
+}
+
+/******************************************************************************
+  Function Name    :  pbSetConfigData
+  Input(s)         :  pbSource - The source buffer to retrieve filtering data.
+                      It assumes that pbSource is currently pointing to locati-
+                      on of a filtering block data.
+  Output           :  BYTE * - Location of the next byte after the block.
+  Functionality    :  Retrieves filtering block information and copies them
+                      into the current object. Advances the reading pointer to
+                      the next byte occurring after the block.
+  Member of        :  SFILTER_J1939
+  Friend of        :  -                                   
+  Author(s)        :  Ratnadip Choudhury
+  Date Created     :  30.11.2010
+  Modification date:  
+  Modification By  :  
+******************************************************************************/
+BYTE* SFILTER_J1939::pbSetConfigData(BYTE* pbTarget)
+{
+    vClear();
+    BYTE* pbTStream = pbTarget;
+    pbTStream = this->SFILTER::pbSetConfigData(pbTStream);
+    return pbTStream;
+}
+/* Ends SFILTER_J1939 */
+
 /* Starts SFILTERSET / tagFilterSet */
 /******************************************************************************
   Function Name    :  tagFilterSet
@@ -1006,6 +1189,13 @@ void tagFilterSet::vClear(void)
                 PSFILTER_MCNET psFilterMCNet 
                                    = static_cast<PSFILTER_MCNET>(m_psFilterInfo);
                 delete[] psFilterMCNet;
+            }
+            break;
+            case J1939:
+            {
+                PSFILTER_J1939 psFilterJ1939 
+                                   = static_cast<PSFILTER_J1939>(m_psFilterInfo);
+                delete[] psFilterJ1939;
             }
             break;
             default: ASSERT(FALSE);
@@ -1097,6 +1287,25 @@ bool tagFilterSet::bClone(const tagFilterSet& RefObj)
                 }
             }
             break;
+            case J1939:
+            {
+                m_psFilterInfo = new SFILTER_J1939[m_ushFilters];
+                if (NULL != m_psFilterInfo)
+                {
+                    bResult = true;
+                    for (USHORT i = 0; i < m_ushFilters; i++)
+                    {
+                        SFILTER_J1939* pDestObj = ((SFILTER_J1939 *)m_psFilterInfo) + i;
+                        SFILTER_J1939* pSrcObj = ((SFILTER_J1939 *)RefObj.m_psFilterInfo) + i;
+                        *pDestObj = *pSrcObj;
+                    }
+                }
+                else
+                {
+                    m_ushFilters = 0;
+                }
+            }
+            break;
             default: ASSERT(FALSE);
         }
     }
@@ -1153,6 +1362,15 @@ UINT tagFilterSet::unGetSize(void) const
             }
         }
         break;
+        case J1939:
+        {
+            for (UINT i = 0; i < m_ushFilters; i++)
+            {
+
+                Result += (((SFILTER_J1939*) m_psFilterInfo) + i)->unGetSize();
+            }
+        }
+        break;
         default:
         {
             ASSERT(FALSE);            
@@ -1205,6 +1423,11 @@ BYTE* tagFilterSet::pbGetConfigData(BYTE* pbTarget) const
                 pbTStream = (((SFILTER_MCNET*) m_psFilterInfo) + i)->pbGetConfigData(pbTStream);
             }
             break;
+            case J1939:
+            {
+                pbTStream = (((SFILTER_J1939*) m_psFilterInfo) + i)->pbGetConfigData(pbTStream);
+            }
+            break;
             default:
             {
                 ASSERT(FALSE);
@@ -1248,7 +1471,8 @@ BYTE* tagFilterSet::pbSetConfigData(BYTE* pbTarget, bool& Result)
         {
             case CAN: m_psFilterInfo = new SFILTER_CAN[m_ushFilters]; break;
             case FLEXRAY: m_psFilterInfo = new SFILTER_FLEXRAY[m_ushFilters]; break;
-            case MCNET: m_psFilterInfo = new SFILTER_MCNET[m_ushFilters]; break;            
+            case MCNET: m_psFilterInfo = new SFILTER_MCNET[m_ushFilters]; break;
+            case J1939: m_psFilterInfo = new SFILTER_J1939[m_ushFilters]; break;
             default: ASSERT(FALSE);
         }
 
@@ -1282,6 +1506,14 @@ BYTE* tagFilterSet::pbSetConfigData(BYTE* pbTarget, bool& Result)
                     }
                 }
                 break;
+                case J1939:
+                {
+                    for (USHORT i = 0; i < m_ushFilters; i++)
+                    {
+                        pbTStream = (((SFILTER_J1939*) m_psFilterInfo) + i)->pbSetConfigData(pbTStream);
+                    }
+                }
+                break;
                 default:
                 {
                     ASSERT(FALSE);
@@ -1296,7 +1528,8 @@ BYTE* tagFilterSet::pbSetConfigData(BYTE* pbTarget, bool& Result)
             {
                 case CAN: unFilterSize = sizeof(SFILTER_CAN); break;
                 case FLEXRAY: unFilterSize = sizeof(SFILTER_FLEXRAY); break;
-                case MCNET: unFilterSize = sizeof(SFILTER_MCNET); break;                
+                case MCNET: unFilterSize = sizeof(SFILTER_MCNET); break;
+                case J1939: unFilterSize = sizeof(SFILTER_J1939); break;
                 default: ASSERT(FALSE);
             }
             pbTStream += m_ushFilters * unFilterSize;

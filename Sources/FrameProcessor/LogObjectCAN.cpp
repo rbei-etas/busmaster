@@ -27,7 +27,7 @@
 #include "LogObjectCAN.h"            // For CLogObjectCAN class declaration
 
 
-#define CAN_VERSION           _T("***BUSMASTER Ver 1.5.0***")
+#define CAN_VERSION           _T("***BUSMASTER Ver 1.6.0***")
 #define CAN_LOG_HEADER        _T("***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***")
 #define CAN_LOG_START         _T("***[START LOGGING SESSION]***")
 #define CAN_LOG_STOP          _T("***[STOP LOGGING SESSION]***")
@@ -43,7 +43,7 @@
 
 
 
-CLogObjectCAN::CLogObjectCAN()
+CLogObjectCAN::CLogObjectCAN(CString omVersion):CBaseLogObject(omVersion)
 {
     // Initialise the filtering block
     m_sFilterApplied.vClear();
@@ -137,35 +137,7 @@ BOOL CLogObjectCAN::bLogData(const SFORMATTEDDATA_CAN& sDataCAN)
 // To format the header 
 void CLogObjectCAN::vFormatHeader(CString& omHeader)
 {
-    omHeader = _T("");
-
-    omHeader += CAN_VERSION;
-    omHeader += L'\n';
-    omHeader += CAN_LOG_HEADER;
-    omHeader += L'\n';
-    omHeader += CAN_LOG_START;
-    omHeader += L'\n';
-
-    // Log current date and time as the start date and time of logging process
-    SYSTEMTIME CurrSysTime;
-    GetLocalTime(&CurrSysTime);
-    CString omBuf;
-    omBuf.Format(CAN_LOG_START_DATE_TIME, CurrSysTime.wDay, CurrSysTime.wMonth,
-        CurrSysTime.wYear, CurrSysTime.wHour, CurrSysTime.wMinute, 
-        CurrSysTime.wSecond, CurrSysTime.wMilliseconds);
-    omHeader += omBuf;
-    omHeader += L'\n';
-
-    omHeader += (m_sLogInfo.m_eNumFormat == HEXADECIMAL) ? CAN_LOG_HEXFORMAT : CAN_LOG_DECFORMAT;
-    omHeader += L'\n';
-    switch (m_sLogInfo.m_eLogTimerMode) // Time Mode
-    {
-        case TIME_MODE_ABSOLUTE: omHeader += CAN_LOG_ABSMODE; break;
-        case TIME_MODE_RELATIVE: omHeader += CAN_LOG_RELMODE; break;
-        case TIME_MODE_SYSTEM:   omHeader += CAN_LOG_SYSMODE; break;
-        default: ASSERT(FALSE); break;
-    }
-    omHeader += L'\n';
+    CBaseLogObject::vFormatHeader(omHeader);
     omHeader += CAN_LOG_COLUMNS;
     omHeader += L'\n';
 }
@@ -173,18 +145,7 @@ void CLogObjectCAN::vFormatHeader(CString& omHeader)
 // To format the footer 
 void CLogObjectCAN::vFormatFooter(CString& omFooter)
 {
-    // Log current date and time as the stop date and time of logging process
-    SYSTEMTIME CurrSysTime;
-    GetLocalTime(&CurrSysTime);
-    CString omBuf;
-    omBuf.Format(CAN_LOG_END_DATE_TIME, CurrSysTime.wDay, CurrSysTime.wMonth,
-        CurrSysTime.wYear, CurrSysTime.wHour, CurrSysTime.wMinute, 
-        CurrSysTime.wSecond, CurrSysTime.wMilliseconds);
-    omFooter += omBuf;
-    omFooter += L'\n';
-
-    omFooter += CAN_LOG_STOP;
-    omFooter += L'\n';
+    CBaseLogObject::vFormatFooter(omFooter);
 }
 
 /*******************************************************************************

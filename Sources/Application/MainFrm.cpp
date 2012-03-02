@@ -56,12 +56,15 @@
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/Base_WrapperErrorLogger.h"
 #include "Utility/Utility.h"
+#include "Utility/Utility_Thread.h"
 #include "Utility/WaitIndicator.h"
 #include "DIL_Interface/DIL_Interface_extern.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
+#include "DIL_Interface/BaseDIL_J1939.h"
 #include "include/ModuleID.h"
 #include "FrameProcessor/FrameProcessor_extern.h"
 #include "FrameProcessor/BaseFrameProcessor_CAN.h"
+#include "FrameProcessor/BaseFrameProcessor_J1939.h"
 #include "ConfigMsgLogDlg.h"
 #include "Replay/Replay_Extern.h"
 
@@ -76,6 +79,7 @@
 #include "BusStatistics.h"
 #include "SigGrphConfigDlg.h"
 #include <DataTypes/SigGrphWnd_Datatypes.h>
+#include "J1939TimeOutCfg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -132,6 +136,15 @@ DWORD g_dwClientID = 0;
 extern BOOL g_bReadDllMsg;
 HANDLE g_hSemaphore = NULL;
 
+// Related to J1939
+static CBaseFrameProcessor_J1939* sg_pouIJ1939Logger = NULL; // Logger interface
+static CBaseDILI_J1939* sg_pouIJ1939DIL = NULL; // DIL interface
+
+
+//J1939 Database editor window
+BOOL CMsgSignalDBWnd::sm_bValidJ1939Wnd = FALSE;
+SMSGENTRY* CTxMsgWndJ1939::m_psMsgRoot = NULL;
+
 #define CREATE_TOOLBAR(pParentWnd, ToolBarObj, ID, Title) {if (nCreateToolbar(pParentWnd, ToolBarObj, ID, Title) != 0){return -1;}}
 #define defCONFIGFILTER         _T("BUSMASTER Configuration files(*.cfx)|*.cfx||")
 #define defFILEEXT              _T("cfx")
@@ -141,6 +154,9 @@ HANDLE g_hSemaphore = NULL;
 #define STSBAR_REFRESH_TIME_PERIOD      1000  // in milliseconds
 #define PROFILE_CAN_MONITOR                   _T("RBEI_ECF2_CAN_Monitor")
 
+const BYTE CAPL_2_C_MASK  = 0x1;
+const BYTE DBF_2_DBC_MASK = 0x2;
+const BYTE DBC_2_DBF_MASK = 0x4;
 /////////////////////////////////////////////////////////////////////////////
 // CMainFrame
 
@@ -311,10 +327,53 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_SIGNALGRAPHWINDOW_CAN, OnUpdateSignalgraphwindowCAN)
 	ON_COMMAND(ID_SIGNALGRAPHWINDOW_MCNET, OnSignalgraphwindowMcnet)
 	ON_UPDATE_COMMAND_UI(ID_SIGNALGRAPHWINDOW_MCNET, OnUpdateSignalgraphwindowMcnet)
+    ON_COMMAND(33056, OnActivateJ1939)
+    ON_UPDATE_COMMAND_UI(33056, OnUpdateActivateJ1939)
+    ON_COMMAND(ID_J1939_CONFIG_LOG, OnJ1939ConfigLog)
+    ON_UPDATE_COMMAND_UI(ID_J1939_CONFIG_LOG, OnUpdateJ1939ConfigLog)
+    ON_COMMAND(ID_ACTION_J1939_ONLINE, OnActionJ1939Online)
+    ON_UPDATE_COMMAND_UI(ID_ACTION_J1939_ONLINE, OnUpdateActionJ1939Online)
+    ON_COMMAND(ID_ACTION_J1939_TX_MESSAGE, OnActionJ1939TxMessage)
+    ON_UPDATE_COMMAND_UI(ID_ACTION_J1939_TX_MESSAGE, OnUpdateActionJ1939TxMessage)
+    ON_COMMAND(ID_ACTION_J1939_LOG, OnActionJ1939Log)
+    ON_UPDATE_COMMAND_UI(ID_ACTION_J1939_LOG, OnUpdateActionJ1939Log)
+    ON_COMMAND(ID_TOOLBAR_J1939, OnToolbarJ1939)
+    ON_UPDATE_COMMAND_UI(ID_TOOLBAR_J1939, OnUpdateToolbarJ1939)
+    ON_COMMAND(33077, OnJ1939ConfigureTimeouts)
+    ON_UPDATE_COMMAND_UI(33077, OnUpdateJ1939Timeouts)
+    ON_COMMAND(33079, OnJ1939DBNew)
+    ON_COMMAND(33080, OnJ1939DBOpen)
+    ON_COMMAND(33084, OnJ1939DBClose)
+    ON_COMMAND(33082, OnJ1939DBAssociate)
+    ON_COMMAND(33083, OnJ1939DBDissociate)
+    ON_COMMAND(ID_CONFIGURE_SIMULATEDSYSTEMS, OnJ1939CfgSimSys)
+    ON_COMMAND(33087, OnJ1939LoadAll)
+    ON_UPDATE_COMMAND_UI(33087, OnUpdateJ1939LoadAll)
+    ON_COMMAND(33088, OnJ1939UnloadAll)
+    ON_UPDATE_COMMAND_UI(33088, OnUpdateJ1939UnloadAll)
+    ON_COMMAND(33089, OnJ1939BuildAndLoadAll)
+    ON_UPDATE_COMMAND_UI(33089, OnUpdateJ1939BuildAndLoadAll)
+    ON_COMMAND(33090, OnJ1939BuildAll)
+    ON_UPDATE_COMMAND_UI(33090, OnUpdateJ1939BuildAll)
+    ON_COMMAND(33092, OnJ1939AllMessageHandlers)
+    ON_UPDATE_COMMAND_UI(33092, OnUpdateJ1939AllMessageHandlers)
+    ON_COMMAND(33093, OnJ1939AllKeyHandlers)
+    ON_UPDATE_COMMAND_UI(33093, OnUpdateJ1939AllKeyHandlers)
+    ON_COMMAND(33094, OnJ1939AllTimerHandlers)
+    ON_UPDATE_COMMAND_UI(33094, OnUpdateJ1939AllTimerHandlers)
+    ON_COMMAND(33096, OnJ1939AllHandlers)
+    ON_UPDATE_COMMAND_UI(33096, OnUpdateJ1939AllHandlers)
 	ON_COMMAND(ID_DISPLAY_CONFIGURE, OnDisplayConfig)
     ON_UPDATE_COMMAND_UI(ID_DISPLAY_CONFIGURE, OnUpdateDisplayConfig)
-	ON_COMMAND(ID_SHOWMESSAGEWINDOW_CAN, OnShowHideMessageWindow)	
-	ON_UPDATE_COMMAND_UI(ID_SHOWMESSAGEWINDOW_CAN, OnUpdateShowHideMessageWindow)		
+    ON_UPDATE_COMMAND_UI(33085, OnUpdateJ1939CfgSimSys)
+    ON_COMMAND(ID_SIGNALWATCH_ADD, OnJ1939SignalwatchAdd)
+    ON_COMMAND(ID_SIGNALWATCH_SHOWWINDOW, OnJ1939SignalwatchShow)
+    ON_UPDATE_COMMAND_UI(ID_SIGNALWATCH_SHOWWINDOW, OnUpdateJ1939SignalwatchShow)
+	ON_COMMAND(ID_CONFIGURE_MESSAGEDISPLAY_J1939, OnConfigureMessagedisplayJ1939)	
+    ON_COMMAND(ID_FUNCTION_EXPORTLOG, OnJ1939Exportlog)
+	ON_COMMAND_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_J1939, OnShowHideMessageWindow)	
+	ON_UPDATE_COMMAND_UI_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_J1939, OnUpdateShowHideMessageWindow)	
+	//ON_UPDATE_COMMAND_UI_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_J1939, OnUpdateShowHideMessageWindow)	
 	ON_COMMAND(ID_TB_CANDATABASE, OnToolbarCandatabase)
 	ON_UPDATE_COMMAND_UI(ID_TB_CANDATABASE, OnUpdateToolbarCanDatabase)
 
@@ -474,10 +533,15 @@ CMainFrame::CMainFrame()
     m_sMsgInterpretPlacement.length = 0;
     //Driver selection popup menu updation
     m_pDILSubMenu = NULL;
-    m_dwDriverId = DRIVER_CAN_STUB;    
+    m_dwDriverId = DRIVER_CAN_STUB;
+    m_pouTxMsgWndJ1939 = NULL;
+    m_sJ1939ClientParam.m_byAddress = ADDRESS_NULL;
 	m_ouGraphReadThread.m_hActionEvent = NULL;
     m_ouGraphReadThread.m_unActionCode = IDLE;
 	m_nTimeStamp = 0;	
+    m_podMsgSgWndJ1939 = NULL;
+    m_pouMsgSigJ1939   = NULL;
+    m_pouActiveDbJ1939 = NULL;
     for (UINT i = 0; i < BUS_TOTAL; i++)
     {
         m_abLogOnConnect[i] = FALSE;
@@ -506,10 +570,29 @@ CMainFrame::~CMainFrame()
 
 	m_objTxHandler.vDeleteTxBlockMemory();
 
-    vReleaseSignalWatchListMemory(m_psSignalWatchList[CAN]);    
+    vReleaseSignalWatchListMemory(m_psSignalWatchList[CAN]);
+    vReleaseSignalWatchListMemory(m_psSignalWatchList[J1939]);
 
     DELETE_PTR(m_pDILSubMenu);    
     DELETE_PTR(m_podMsgWndThread);
+    if (m_pouMsgSigJ1939 != NULL)
+    {
+        m_pouMsgSigJ1939->bDeAllocateMemory(STR_EMPTY);
+    }
+    DELETE_PTR(m_pouMsgSigJ1939);
+
+    if (m_pouActiveDbJ1939 != NULL)
+    {
+        m_pouActiveDbJ1939->bDeAllocateMemoryInactive();
+    }
+    DELETE_PTR(m_pouActiveDbJ1939);
+
+    if (m_pouTxMsgWndJ1939 != NULL)
+    {
+        m_pouTxMsgWndJ1939->DestroyWindow();
+    }
+    DELETE_PTR(m_pouTxMsgWndJ1939);
+    CTxMsgWndJ1939::vClearDataStore();
 }
 
 /******************************************************************************
@@ -683,7 +766,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     CREATE_TOOLBAR(this, m_wndToolbarNodeSimul, IDR_NODE_SIMULATION, _T("Node Simulation"));		
 	CREATE_TOOLBAR(this, m_wndToolbarMsgWnd, IDR_MSG_WND, _T("Message Window"));	
 	CREATE_TOOLBAR(this, m_wndToolBar, IDR_MAINFRAME, _T("Main"));
-	CREATE_TOOLBAR(this, m_wndToolbarConfig, IDR_TLB_CONFIGURE, _T("Configure"));    
+	CREATE_TOOLBAR(this, m_wndToolbarConfig, IDR_TLB_CONFIGURE, _T("Configure"));
+    CREATE_TOOLBAR(this, m_wndToolbarJ1939, IDR_FUNCTIONS_J1939, _T("J1939"));
 	CREATE_TOOLBAR(this, m_wndToolbarCANDB, IDR_CAN_DATABASE, _T("CAN Database"));	
 	
 	m_wndToolbarNodeSimul.bLoadCNVTCToolBar(20, IDB_NODE_SIMULATION,IDB_NODE_SIMULATION_HOT, IDB_NODE_SIMULATION_DISABLED);		
@@ -696,8 +780,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     
 	DockControlBar(&m_wndToolbarNodeSimul, AFX_IDW_DOCKBAR_TOP);		
 	DockControlBarLeftOf(&m_wndToolbarMsgWnd, &m_wndToolbarNodeSimul);	
-    DockControlBarLeftOf(&m_wndToolbarConfig, &m_wndToolbarMsgWnd); 	
-	DockControlBarLeftOf(&m_wndToolbarCANDB, &m_wndToolbarConfig); 	
+    DockControlBarLeftOf(&m_wndToolbarJ1939, &m_wndToolbarMsgWnd); 
+	DockControlBarLeftOf(&m_wndToolbarConfig, &m_wndToolbarJ1939); 	
+	DockControlBarLeftOf(&m_wndToolbarCANDB, &m_wndToolbarJ1939); 	
 	DockControlBarLeftOf(&m_wndToolBar, &m_wndToolbarCANDB); 
 
     if (!m_wndStatusBar.CreateEx(this,SBT_TOOLTIPS) ||
@@ -1344,6 +1429,7 @@ void CMainFrame::OnImportDatabase()
 				//Add the file name for warning display
 				omStrMsg += strTempFileName;
 				omStrMsg += defNEW_LINE;
+                strFilePathArray.RemoveAt(nCount);
 			}
 		}
 		if(bAllFilesImported == FALSE)
@@ -1374,6 +1460,67 @@ void CMainFrame::OnImportDatabase()
     }
 }
 
+DWORD CMainFrame::dLoadJ1939DBFile(CString omStrActiveDataBase,BOOL bFrmCom)
+{
+    DWORD dReturn= (DWORD)E_FAIL;
+    if (m_pouMsgSigJ1939 == NULL)
+    {
+        sg_asDbParams[J1939].m_ppvActiveDB = (void**)&m_pouActiveDbJ1939;
+        sg_asDbParams[J1939].m_ppvImportedDBs = (void**)&m_pouMsgSigJ1939;
+        m_pouMsgSigJ1939 = new CMsgSignal(sg_asDbParams[J1939], bFrmCom);
+    }
+    if (m_pouMsgSigJ1939 != NULL)
+    {
+	    
+        //Check for same DB path......
+	    CStringArray aomOldDatabases;
+        m_pouMsgSigJ1939->vGetDataBaseNames(&aomOldDatabases);
+		int nFileCount = aomOldDatabases.GetSize();
+	    BOOL bFilePresent = FALSE;
+	    for(int nCount = 0;(nCount < nFileCount)&&(!bFilePresent);nCount++)
+	    {
+		    CString omstrFileName = aomOldDatabases.GetAt(nCount);
+		    if( !omstrFileName.Compare(omStrActiveDataBase) )
+		    {
+			    bFilePresent = TRUE;
+		    }
+	    }
+	    if(bFilePresent == TRUE)
+	    {
+		    //if file is already present remove it and then load the file again
+		    m_pouMsgSigJ1939->bDeAllocateMemory(omStrActiveDataBase);
+	    }
+	    // file-attribute information
+	    struct _finddata_t fileinfo;
+        
+	    // Auto Select DB File
+        BOOL bRetVal;
+	    if (_findfirst( omStrActiveDataBase, &fileinfo)!= -1L)
+	    {	
+			    // Fill data struct with new data base info
+			    bRetVal = m_pouMsgSigJ1939->bFillDataStructureFromDatabaseFile(
+				    omStrActiveDataBase);
+                if((bRetVal != FALSE)&&(bFilePresent != TRUE))
+                {
+                    m_pouMsgSigJ1939->bAddDbNameEntry(omStrActiveDataBase);
+                }
+                //Update in NodeSimEx
+                GetIJ1939NodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[J1939].m_omDefinedMsgHeaders), UPDATE_UNIONS_HEADER_FILES);
+                //Update Msg Name<-->Msg Code List
+                vUpdateMsgNameCodeList(m_pouMsgSigJ1939, m_sExFuncPtr[J1939].m_odMsgNameMsgCodeList);
+                //Update in NodeSimEx
+                GetIJ1939NodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[J1939].m_odMsgNameMsgCodeList), UPDATE_DATABASE_MSGS);
+		
+                dReturn = S_OK;
+			    // Create Unions.h in local directory
+			    // and fill the file with the latest data structure
+			    
+                m_pouMsgSigJ1939->bWriteDBHeader(omStrActiveDataBase);
+        }
+		vPopulateJ1939PGNList();
+    }
+    return dReturn;
+}
 /******************************************************************************
 FUNCTION:       bLoadDataBaseFile
 DESCRIPTION:    Loads a database file selected by the user  
@@ -1410,7 +1557,7 @@ DWORD CMainFrame::dLoadDataBaseFile(CString omStrActiveDataBase,BOOL /*bFrmCom*/
 	// Auto Select DB File
 	if (_findfirst( omStrActiveDataBase, &fileinfo)!= -1L)
 	{	
-		BOOL bRetVal;
+		BOOL bRetVal = FALSE;
 		if ( theApp.m_pouMsgSignal !=  NULL )
 		{
 			// Fill data struct with new data base info
@@ -1622,6 +1769,10 @@ void CMainFrame::OnConfigChannelSelection()
 {        
 	INT nCount = CHANNEL_ALLOWED;
 	HRESULT hResult = g_pouDIL_CAN_Interface->DILC_DeselectHwInterfaces();
+
+	// If the deselection of interfaces is not appropriate the dont proceed further
+	if (S_OK != hResult)
+		return;
 
     if (g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount) == S_OK)
     {					
@@ -2674,6 +2825,101 @@ void CMainFrame::OnDllUnload()
         AfxMessageBox(omStrErrorMsg);
     }
 }
+/******************************************************************************/
+/*  Function Name    :  OnDllUnload                                           */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by frame work when user want to  unload        */
+/*                       all the DLLs under the configuration.				  */
+/*                                                                            */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Harika M	                                          */
+/*  Date Created     :  20.01.2006                                            */    
+/*	Modification By  :														  */
+/******************************************************************************/
+void CMainFrame::OnDllUnloadJ1939()
+{
+    CStringArray omStrBuildFiles;
+	BOOL bSucces = GetIJ1939NodeSim()->NS_DllUnloadAll(&omStrBuildFiles);
+    if(bSucces!=TRUE)  // if the unload is not successfull
+    {       
+		int nFailure = omStrBuildFiles.GetSize();
+        CString omStrErrorMsg =_T("Following file(s) are not properly unloaded:");
+        CString omStrErrorMsgDummy=_T("");
+        for(int i = 0 ;i < nFailure; i++)
+        { 
+            
+           omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+           omStrErrorMsg += omStrErrorMsgDummy;
+        }
+        AfxMessageBox(omStrErrorMsg);
+    }
+}
+
+/******************************************************************************/
+/*  Function Name    :  vPopulateJ1939PGNList                                 */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Fills the J1939PGNList struct with dtabase message ID,
+                        name and color for future use.    
+/*  Member of        :  CMainFrame		                                      */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Arunkumar K                                           */
+/*  Date Created     :  08.03.2011                                            */
+/*  Modifications    :				                                          */
+/*  Modification By  :														  */
+/*  Modification on  :														  */
+/******************************************************************************/
+void CMainFrame::vPopulateJ1939PGNList()
+{     
+    if ( m_pouMsgSigJ1939 != NULL )
+    {
+	    CMessageAttrib& ouMsgAttr = CMessageAttrib::ouGetHandle(J1939);
+        CStringList omStrMsgNameList;
+        UINT unNoOfMsgs = 
+            m_pouMsgSigJ1939->unGetNumerOfMessages();
+
+        UINT* pIDArray = new UINT[unNoOfMsgs];
+
+        m_pouMsgSigJ1939->omStrListGetMessageNames(omStrMsgNameList);
+        
+        if (pIDArray != NULL )
+        {
+            m_pouMsgSigJ1939->unListGetMessageIDs( pIDArray );
+
+             SCanIDList sList;
+
+            POSITION pos = omStrMsgNameList.GetHeadPosition();
+        
+            UINT unCount = 0;
+            POSITION pos1 = pos;
+
+            for ( pos1 = pos, unCount = (unNoOfMsgs - 1);
+            ((pos1 != NULL) && (unCount >= 0)); 
+            unCount--)
+            {
+                sList.nCANID        = pIDArray[unCount];
+                sList.omCANIDName   = omStrMsgNameList.GetNext( pos1 );
+
+                if (ouMsgAttr.nValidateNewID(sList.nCANID) == MSGID_DUPLICATE)
+                {
+                    sList.Colour = ouMsgAttr.GetCanIDColour(sList.nCANID);
+                    ouMsgAttr.nModifyAttrib(sList);
+                }
+                else
+                {
+                    sList.Colour = DEFAULT_MSG_COLOUR;
+                    ouMsgAttr.nAddNewAttrib( sList );
+                }
+            }
+            
+            ouMsgAttr.vDoCommit();
+            delete [] pIDArray;
+            pIDArray = NULL;
+        }
+    }
+}
 
 /******************************************************************************
     Function Name    :  OnMessageInterpretation
@@ -3265,7 +3511,7 @@ CString CMainFrame::omStrConvByteArrToStr(CByteArray *byteArr)
       //Following piece of code converts
       //the chars to the respective toASCII
       //values before adding to the string
-      if (firstCh <= 9)
+      if ((firstCh >= 0) && (firstCh <=9))
          {
          firstCh+='0';
          }
@@ -3273,7 +3519,7 @@ CString CMainFrame::omStrConvByteArrToStr(CByteArray *byteArr)
          {
          firstCh+=87;
          }
-      if (secondCh <= 9)
+      if ((secondCh >= 0) && (secondCh <=9))
          {
          secondCh+='0';
          }
@@ -3969,6 +4215,10 @@ void CMainFrame::OnClose()
     OnDllUnload(); //Unload all the loaded dlls
     GetICANNodeSim()->NS_SetSimSysConfigData(NULL, 0); // Reset SimSysConfig
 
+    //Unload J1939 Node sim dll
+    OnDllUnloadJ1939();
+    GetIJ1939NodeSim()->NS_SetSimSysConfigData(NULL, 0);
+
 	if(m_unTimerSB != 0)
     {
 		::KillTimer(NULL, m_unTimerSB);
@@ -4045,6 +4295,11 @@ BOOL CMainFrame::bCreateMsgWindow()
 			m_podMsgWndThread->CreateMsgWnd(m_hWnd, CAN,
 				               0, NULL);
 		    m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)CAN);
+
+			//J1939 Message Window
+			m_podMsgWndThread->CreateMsgWnd(m_hWnd, J1939,
+				               0, NULL);
+		    m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
         }
         else
         {
@@ -4053,7 +4308,8 @@ BOOL CMainFrame::bCreateMsgWindow()
 	}
 	else
 	{
-		m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)CAN);		
+		m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)CAN);
+		m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
 	}
 
     return TRUE;
@@ -4115,6 +4371,10 @@ void CMainFrame::OnHex_DecButon()
     if (sg_pouSWInterface[CAN] != NULL)
     {
         sg_pouSWInterface[CAN]->SW_SetDisplayMode(bHexON);
+    }
+    if (sg_pouSWInterface[J1939] != NULL)
+    {
+        sg_pouSWInterface[J1939]->SW_SetDisplayMode(bHexON);
     }
 }
 
@@ -4234,8 +4494,13 @@ void CMainFrame::OnUpdateMessageInterpret(CCmdUI* pCmdUI)
         //Store database file names
 		CStringArray aomstrTempDBFilesCAN;
 		theApp.m_pouMsgSignal->vGetDataBaseNames(&aomstrTempDBFilesCAN);
+
+		CStringArray aomstrTempDBFilesJ1939;
+		if(m_pouMsgSigJ1939)
+			m_pouMsgSigJ1939->vGetDataBaseNames(&aomstrTempDBFilesJ1939);
 		
-		if (aomstrTempDBFilesCAN.GetSize() > 0 )
+		if (aomstrTempDBFilesCAN.GetSize() > 0 ||
+			aomstrTempDBFilesJ1939.GetSize() > 0)
         {
             //If fil epresent then check for other status
 		    HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
@@ -4510,7 +4775,7 @@ void CMainFrame::OnClearMsgWindow()
 
 /*******************************************************************************
   Function Name  : OnShowHideMessageWindow
-  Input(s)       : -
+  Input(s)       : UINT nID
   Output         : LRESULT
   Functionality  : Shows/hides Message Window based on the menu click.
   Member of      : CMainFrame
@@ -4518,12 +4783,32 @@ void CMainFrame::OnClearMsgWindow()
   Date Created   : 28-03-2011
   Modifications  : 
 *******************************************************************************/
-void CMainFrame::OnShowHideMessageWindow()
+void CMainFrame::OnShowHideMessageWindow(UINT nID)
 {
-	HWND hWnd;
-	hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);					
-	if(hWnd)
-		::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)TRUE, NULL);
+	switch(nID)
+	{
+		case ID_SHOWMESSAGEWINDOW_CAN:
+		{
+			HWND hWnd;
+			hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);					
+			if(hWnd)
+				::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)TRUE, NULL);
+		}
+		break;
+		case ID_SHOWMESSAGEWINDOW_J1939:
+		{
+			HWND hWnd;
+			hWnd = m_podMsgWndThread->hGetHandleMsgWnd(J1939);					
+			if(hWnd)
+				::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)TRUE, NULL);
+		}
+		break;
+		default:
+		{
+			ASSERT(FALSE);
+		}
+		break;
+	}
 }
 
 /*******************************************************************************
@@ -4544,6 +4829,14 @@ void CMainFrame::OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI)
 		{
 			HWND hWnd;
 			hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);					
+			if(hWnd)
+				::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)FALSE, (LPARAM)pCmdUI); //Set WPARAM FALSE for update UI
+		}
+		break;
+		case ID_SHOWMESSAGEWINDOW_J1939:
+		{
+			HWND hWnd;
+			hWnd = m_podMsgWndThread->hGetHandleMsgWnd(J1939);					
 			if(hWnd)
 				::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)FALSE, (LPARAM)pCmdUI); //Set WPARAM FALSE for update UI
 		}
@@ -4766,7 +5059,8 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
             {
                
                         // Execute key hanlder only if execution is selected by user
-                        GetICANNodeSim()->NS_ManageOnKeyHandler((UCHAR)pMsg->wParam);                        
+                        GetICANNodeSim()->NS_ManageOnKeyHandler((UCHAR)pMsg->wParam);
+                        GetIJ1939NodeSim()->NS_ManageOnKeyHandler((UCHAR)pMsg->wParam);
                         PostMessage(WM_KEY_PRESSED_MSG_WND,
                                         pMsg->wParam, 0);
 
@@ -5085,7 +5379,8 @@ void CMainFrame::OnDestroy()
     theApp.WriteProfileString( defSECTION_MRU, defSECTION_MRU_FILE5,
         m_omStrMRU_ConfigurationFiles[4] );
      // Delete memory associated with signal watch window
-    vReleaseSignalWatchListMemory(m_psSignalWatchList[CAN]);    
+    vReleaseSignalWatchListMemory(m_psSignalWatchList[CAN]);
+    vReleaseSignalWatchListMemory(m_psSignalWatchList[J1939]);
 	vEmptySimsysList();
 
     // Clean Network statistics dialog
@@ -5843,6 +6138,9 @@ void CMainFrame::OnFileConnect()
         // Update Replay Manager to Stop running replay threads
         if( bConnected == FALSE )
         {
+            //Stop transmission of J1939 message if any
+            ::SendMessage(m_pouTxMsgWndJ1939->GetSafeHwnd(), 
+                WM_CONNECT_CHANGE, (WPARAM)FALSE, 0);
             //Handle Replay
             vREP_HandleConnectionStatusChange( FALSE );
         }
@@ -5865,7 +6163,10 @@ void CMainFrame::OnFileConnect()
 
         if( bConnected == TRUE)
         {
-			//Start Graph Interpret Thread			
+            //Inform J1939TxWindow about connect change
+            ::SendMessage(m_pouTxMsgWndJ1939->GetSafeHwnd(), 
+                WM_CONNECT_CHANGE, (WPARAM)TRUE, 0);
+			//Start Graph Interpret Thread
 			bStartGraphReadThread();
 			
             ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
@@ -5937,6 +6238,13 @@ void CMainFrame::OnFileConnect()
             if (m_abLogOnConnect[CAN] == TRUE)
             {
                 vStartStopLogging(bConnected);
+            }
+            if (m_abLogOnConnect[J1939] == TRUE)
+            {
+                if (sg_pouIJ1939Logger != NULL)
+                {
+                    sg_pouIJ1939Logger->FPJ1_EnableLogging(bConnected);
+                }
             }
 			//SGW Code commented by Arun 21-10-2010
             pouFlags->vSetFlagStatus(CONNECTED, bConnected);
@@ -8377,6 +8685,21 @@ VOID CMainFrame::vPostMsgToSendMsgDlg(ETYPE_BUS eBus)
         }
         break;
         case J1939:
+        {
+            SMSGENTRY* psMsgEntry = NULL;
+            vPopulateMsgEntryFromDB(psMsgEntry, m_pouMsgSigJ1939);
+            if (m_pouTxMsgWndJ1939 != NULL)
+            {
+                m_pouTxMsgWndJ1939->vSetDatabaseInfo(psMsgEntry);
+            }
+            else //J1939 Transmit window is not created just update datastore
+            {
+                
+                CTxMsgWndJ1939::vUpdateDataStore(psMsgEntry);
+            }
+            SMSGENTRY::vClearMsgList(psMsgEntry);
+            psMsgEntry = NULL;
+        }
         break;
     }
 }
@@ -9472,10 +9795,17 @@ void CMainFrame::vUpdateAllMsgWndInterpretStatus(BOOL /*bAssociate*/)
     Modifications    :  
 ******************************************************************************/
 void CMainFrame::OnFileConverter()
-{
-    // TODO: Add your command handler code here
-    CString omCurrExe;    
-	omCurrExe.Format("%s\\FormatConverter.exe", theApp.m_acApplicationDirectory);
+{	
+	// Get the working directory
+	CString strPath;
+	TCHAR* pstrExePath = strPath.GetBuffer (MAX_PATH);
+	::GetModuleFileName (0, pstrExePath, MAX_PATH);
+	strPath.ReleaseBuffer ();	
+	strPath = strPath.Left(strPath.ReverseFind(92));
+
+	// Launch the converter utility
+    CString omCurrExe;
+	omCurrExe.Format("%s\\FormatConverter.exe", strPath);
     SHELLEXECUTEINFO sei;
     sei.cbSize = sizeof(SHELLEXECUTEINFO);
     sei.fMask = NULL;
@@ -9559,6 +9889,17 @@ void CMainFrame::vReRegisterAllCANNodes(void)
     vInitCFileFunctPtrs();
     GetICANNodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[CAN]), UPDATE_ALL);
 }
+void CMainFrame::vReRegisterAllJ1939Nodes(void)
+{
+    BYTE* pbyConfigData = NULL;
+    INT nSize = 0;
+    GetIJ1939NodeSim()->NS_GetSimSysConfigData(pbyConfigData, nSize);
+    CStringArray pomErrorFiles;
+    GetIJ1939NodeSim()->NS_DllUnloadAll(&pomErrorFiles);
+    GetIJ1939NodeSim()->NS_SetSimSysConfigData(pbyConfigData, nSize);
+    NS_InitJ1939SpecInfo();
+    GetIJ1939NodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[J1939]), UPDATE_ALL);
+}
 
 HRESULT CMainFrame::IntializeDIL(void)
 {   		
@@ -9569,7 +9910,8 @@ HRESULT CMainFrame::IntializeDIL(void)
     }
     else
     {
-        g_pouDIL_CAN_Interface->DILC_PerformClosureOperations();        
+        g_pouDIL_CAN_Interface->DILC_PerformClosureOperations();
+        DeselectJ1939Interfaces();
     }
     if (hResult == S_OK)
     {        				
@@ -9902,7 +10244,50 @@ void CMainFrame::vInitCFileFunctPtrs()
     //m_sExFuncPtr.m_pNetWorkMcNet = &m_odNetwork;
 
 }
+void CMainFrame::NS_InitJ1939SpecInfo()
+{
+    m_sExFuncPtr[J1939].m_hWmdMDIParentFrame = this->GetSafeHwnd();
+    //m_sExFuncPtr.m_pouTraceWnd = m_podUIThread;
+    m_sExFuncPtr[J1939].m_omAPIList.RemoveAll();
+    for (int i = 0; i < TOTAL_API_COUNT_J1939; i++)
+    {
+        m_sExFuncPtr[J1939].m_omAPIList.Add(sg_omAPIFuncListJ1939[i]);
+    }
 
+    m_sExFuncPtr[J1939].m_omAPINames.RemoveAll();
+    for (int i = 0; i < TOTAL_API_COUNT_J1939; i++)
+    {
+        m_sExFuncPtr[J1939].m_omAPINames.Add(sg_omAPIFuncNamesJ1939[i]);
+    }
+
+    m_sExFuncPtr[J1939].m_omErrorHandlerList.RemoveAll();
+    
+    m_sExFuncPtr[J1939].m_omDefinedMsgHeaders.RemoveAll();
+    CStringArray omDatabaseNames;
+    m_pouMsgSigJ1939->vGetDataBaseNames(&omDatabaseNames);
+	for (int i = 0; i < omDatabaseNames.GetSize(); i++)
+    {
+        CString omHeaderPath = omStrGetUnionFilePath(omDatabaseNames.GetAt(i));
+        m_sExFuncPtr[J1939].m_omDefinedMsgHeaders.Add(omHeaderPath);
+    }
+
+    vUpdateMsgNameCodeList(m_pouMsgSigJ1939, m_sExFuncPtr[J1939].m_odMsgNameMsgCodeList);
+    // Send KeyPanel list pointer
+    //m_sExFuncPtr.m_podNodeToDllMap = &g_odNodeToDllMap;
+    //m_sExFuncPtr.m_podKeyPanelEntryList = &g_odKeyPanelEntryList;
+    m_sExFuncPtr[J1939].m_omAppDirectory = m_omAppDirectory;
+    m_sExFuncPtr[J1939].m_omObjWrapperName = WRAPPER_NAME_J1939;
+    m_sExFuncPtr[J1939].m_omStructFile = STRUCT_FILE_J1939;
+    m_sExFuncPtr[J1939].m_omStructName = MSG_STRUCT_NAME_J1939;
+    m_sExFuncPtr[J1939].Send_Msg = App_SendMsg;
+    m_sExFuncPtr[J1939].DisConnectTool = NULL;
+    m_sExFuncPtr[J1939].EnDisableLog = NULL;
+    m_sExFuncPtr[J1939].WriteToLog = NULL;
+    m_sExFuncPtr[J1939].RestController = NULL;
+    m_sExFuncPtr[J1939].m_pouITraceWndPtr = &sg_ouAppServiceObj;
+    //m_sExFuncPtr.m_pNetWorkMcNet = &m_odNetwork;
+
+}
 void CMainFrame::vUpdateMsgNameCodeList(CMsgSignal* pMsgSig, CMsgNameMsgCodeList& odMsgNameMsgCodeList)
 {
     odMsgNameMsgCodeList.RemoveAll();
@@ -10146,10 +10531,24 @@ void CMainFrame::vClearDbInfo(ETYPE_BUS eBus)
         }
         break;
         case J1939:
+        {
+            if (CMsgSignalDBWnd::sm_bValidJ1939Wnd == TRUE)
+            {
+                OnJ1939DBClose();
+            }
+            if (m_pouMsgSigJ1939 != NULL)
+            {
+                m_pouMsgSigJ1939->bDeAllocateMemory(STR_EMPTY);
+                CStringArray omDatabase;
+                omDatabase.RemoveAll();
+                m_pouMsgSigJ1939->vSetDataBaseNames(&omDatabase);
+            }
+        }
         break;
         case BUS_TOTAL:
         {
-            vClearDbInfo(CAN);            
+            vClearDbInfo(CAN);
+            vClearDbInfo(J1939);
         }
         break;
     }
@@ -10262,11 +10661,42 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             }
         }
         break;
+        case LOG_SECTION_J1939_ID:
+        {
+            if (pbyConfigData != NULL)
+            {
+                BYTE* pbyTemp = pbyConfigData;
+                if (GetIJ1939Logger() != NULL)
+                {
+                    GetIJ1939Logger()->FPJ1_StartEditingSession();
+                    GetIJ1939Logger()->FPJ1_SetConfigData(pbyTemp);
+                    GetIJ1939Logger()->FPJ1_StopEditingSession(TRUE);
+                }
+            }
+            else
+            {
+                if (GetIJ1939Logger() != NULL)
+                {
+                    GetIJ1939Logger()->FPJ1_StartEditingSession();
+                    GetIJ1939Logger()->FPJ1_ClearLoggingBlockList();
+                    GetIJ1939Logger()->FPJ1_StopEditingSession(TRUE);
+                }
+            }
+        }
+        break;
         case SIMSYS_SECTION_ID:
         {
             if (GetICANNodeSim() != NULL)
             {
                 GetICANNodeSim()->NS_SetSimSysConfigData(pbyConfigData, nSize);
+            }
+        }
+        break;
+        case SIMSYS_SECTION_J1939_ID:
+        {
+            if (GetIJ1939NodeSim() != NULL)
+            {
+                GetIJ1939NodeSim()->NS_SetSimSysConfigData(pbyConfigData, nSize);
             }
         }
         break;
@@ -10350,6 +10780,62 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             }
         }
         break;
+		case MSGWND_SECTION_J1939_ID:
+		{
+            if (pbyConfigData != NULL)
+            {
+                BYTE* pbyTemp = pbyConfigData;
+
+                BYTE byVersion = 0;
+                COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
+
+				 //Msg Attributes
+                SMESSAGE_ATTRIB sMsgAttrib; sMsgAttrib.m_psMsgAttribDetails = NULL; sMsgAttrib.m_usMsgCount = 0;
+                COPY_DATA_2(&(sMsgAttrib.m_usMsgCount), pbyTemp, sizeof(UINT));
+
+                PSMESSAGEATTR pMessageAtt = new SMESSAGEATTR[sMsgAttrib.m_usMsgCount];
+                for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
+                {
+                    TCHAR acName[MAX_PATH] = {_T('\0')};
+                    COPY_DATA_2(acName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
+                    pMessageAtt[i].omStrMsgname.Format("%s", acName);
+
+                    COPY_DATA_2(&(pMessageAtt[i].unMsgID), pbyTemp, sizeof(UINT));
+                    COPY_DATA_2(&(pMessageAtt[i].sColor), pbyTemp, sizeof(COLORREF));
+                }
+                sMsgAttrib.m_psMsgAttribDetails = pMessageAtt;
+                CMessageAttrib::ouGetHandle(J1939).vSetMessageAttribData(&sMsgAttrib);                
+
+				vPopulateJ1939PGNList();
+
+                //Msg FormatWnd Details
+				if((pbyTemp - pbyConfigData) < (INT)nSize)          //VENKAT
+				{
+					::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939), 
+									WM_NOTIFICATION_FROM_OTHER, 
+									eWINID_MSG_WND_SET_CONFIG_DATA,
+									(LPARAM)pbyTemp);
+					::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939), 
+									WM_NOTIFICATION_FROM_OTHER,
+									eLOAD_DATABASE,
+									(LPARAM)&(m_pouMsgSigJ1939));				
+				}
+                DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
+                sMsgAttrib.m_usMsgCount = 0;
+            }
+            else
+            {
+				::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939), 
+                              WM_NOTIFICATION_FROM_OTHER, 
+                              eWINID_MSG_WND_SET_CONFIG_DATA,
+                              NULL);
+				::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939), 
+							  WM_NOTIFICATION_FROM_OTHER,
+							  eLOAD_DATABASE,
+							  (LPARAM)&(m_pouMsgSigJ1939));
+            }
+		}
+		break;
         case SIGWATCH_SECTION_ID:
         {
             if (pbyConfigData != NULL)
@@ -10410,6 +10896,66 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             }
         }
         break;        
+        case SIGWATCH_SECTION_J1939_ID:
+        {
+            if (pbyConfigData != NULL)
+            {
+                BYTE* pbyTemp = pbyConfigData;
+
+                BYTE byVersion = 0;
+                COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
+
+                CMainEntryList odMainEntryList;
+                UINT nMainCount = 0;
+                COPY_DATA_2(&nMainCount,pbyTemp, sizeof (UINT));
+                for (UINT i = 0; i < nMainCount; i++)
+                {
+                    SMAINENTRY sMainEntry;
+                    COPY_DATA_2(&(sMainEntry.m_unMainEntryID),pbyTemp, (sizeof (UINT)));
+                    TCHAR acName[MAX_PATH] = {_T('\0')};
+                    COPY_DATA_2(acName, pbyTemp, (sizeof (TCHAR) * MAX_PATH));
+                    sMainEntry.m_omMainEntryName.Format("%s", acName);
+                    UINT nSelCount = 0;
+                    COPY_DATA_2(&nSelCount,pbyTemp, sizeof (UINT));
+                    for (UINT nSelIndex = 0; nSelIndex < nSelCount; nSelIndex++)
+                    {
+                        SSUBENTRY sSelEntry;
+                        COPY_DATA_2(&(sSelEntry.m_unSubEntryID),pbyTemp, (sizeof (UINT)));
+                        COPY_DATA_2(acName, pbyTemp, (sizeof (TCHAR) * MAX_PATH));
+                        sSelEntry.m_omSubEntryName.Format("%s", acName);
+                        sMainEntry.m_odSelEntryList.AddTail(sSelEntry);
+                    }
+                    odMainEntryList.AddTail(sMainEntry);
+                }  
+                vPopulateSigWatchList(odMainEntryList, m_psSignalWatchList[J1939], m_pouMsgSigJ1939);
+                if (sg_pouSWInterface[J1939] == NULL)
+                {
+                    if (SW_GetInterface(J1939, (void**)&sg_pouSWInterface[J1939]) == S_OK)
+                    {
+                        sg_pouSWInterface[J1939]->SW_DoInitialization();
+                    }
+                }
+                m_ouMsgInterpretSW_J.vSetJ1939Database(m_psSignalWatchList[J1939]);
+                sg_pouSWInterface[J1939]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_J);
+                sg_pouSWInterface[J1939]->SW_SetConfigData(pbyTemp);
+            }
+            else
+            {
+                //Set default settings
+                vReleaseSignalWatchListMemory(m_psSignalWatchList[J1939]);
+                if (sg_pouSWInterface[J1939] == NULL)
+                {
+                    if (SW_GetInterface(J1939, (void**)&sg_pouSWInterface[J1939]) == S_OK)
+                    {
+                        sg_pouSWInterface[J1939]->SW_DoInitialization();                        
+                    }
+                }
+                m_ouMsgInterpretSW_J.vSetJ1939Database(m_psSignalWatchList[J1939]);
+                sg_pouSWInterface[J1939]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_J);
+                sg_pouSWInterface[J1939]->SW_SetConfigData(NULL);
+            }
+        }
+        break;
         case DIL_SECTION_ID:
         {			
             if (pbyConfigData != NULL)
@@ -10515,6 +11061,57 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             {
                 m_sFilterAppliedCAN.vClear();
                 //Set default settings
+            }
+        }
+        break;
+        case DATABASE_SECTION_J1939_ID:
+        {
+            //Clear all databases
+            if (m_pouMsgSigJ1939 == NULL)
+            {
+                m_pouMsgSigJ1939 = new CMsgSignal(sg_asDbParams[J1939], FALSE);
+            }
+			vClearDbInfo(J1939);
+            
+            if (pbyConfigData != NULL)
+            {
+                BYTE* pbyTemp = pbyConfigData;
+
+                BYTE byVersion = 0;
+                COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
+
+                UINT unCount = 0;
+                CStringArray omDBNames;
+                
+                COPY_DATA_2(&unCount, pbyTemp, sizeof (UINT));
+                for (UINT i = 0; i < unCount; i++)
+                {
+                    TCHAR acName[MAX_PATH] = {_T('\0')};
+                    COPY_DATA_2(acName, pbyTemp, (sizeof (TCHAR) * MAX_PATH));
+                    CString omDbName;
+                    omDbName.Format("%s", acName);
+                    omDBNames.Add(omDbName);
+                }                
+                if (m_pouMsgSigJ1939 != NULL)
+                {
+                    m_pouMsgSigJ1939->vSetDataBaseNames(&omDBNames);
+                    for (INT i = 0; i < omDBNames.GetSize(); i++)
+                    {
+                        //No need to check return value. Error message will be displayed
+                        // in trace window
+                        dLoadJ1939DBFile(omDBNames.GetAt(i), TRUE);
+                    }
+                    SMSGENTRY* psMsgEntry = NULL;
+                    vPopulateMsgEntryFromDB(psMsgEntry, m_pouMsgSigJ1939);
+                    if (m_pouTxMsgWndJ1939 != NULL)
+                    {
+                        m_pouTxMsgWndJ1939->vSetDatabaseInfo(psMsgEntry);
+                    }
+                    else
+                    {
+                        m_pouTxMsgWndJ1939->vUpdateDataStore(psMsgEntry);
+                    }
+                }
             }
         }
         break;
@@ -10643,6 +11240,14 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
 
         }
         break;
+        case LOG_SECTION_J1939_ID:
+        {
+            if (GetIJ1939Logger() != NULL)
+            {
+                GetIJ1939Logger()->FPJ1_GetConfigData(&pbyConfigData, nSize);
+            }
+        }
+        break;
         case LOG_SECTION_ID:
         {
             if (sg_pouFrameProcCAN != NULL)
@@ -10655,6 +11260,13 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
         {
             int nConfigSize = 0;
             GetICANNodeSim()->NS_GetSimSysConfigData(pbyConfigData, nConfigSize);
+            nSize = nConfigSize;
+        }
+        break;
+        case SIMSYS_SECTION_J1939_ID:
+        {
+            int nConfigSize = 0;
+            GetIJ1939NodeSim()->NS_GetSimSysConfigData(pbyConfigData, nConfigSize);
             nSize = nConfigSize;
         }
         break;
@@ -10733,6 +11345,133 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
 				}			
 			}
             DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
+        }
+        break;
+		case MSGWND_SECTION_J1939_ID:
+		{
+            //FIRST CALC SIZE
+            nSize += sizeof(BYTE); // Configuration version
+
+			nSize += sizeof (UINT);// To store count of MsgAttribs
+            SMESSAGE_ATTRIB sMsgAttrib; sMsgAttrib.m_psMsgAttribDetails = NULL; sMsgAttrib.m_usMsgCount = 0;
+            CMessageAttrib::ouGetHandle(J1939).vGetMessageAttribData(sMsgAttrib);
+            UINT nCount = sMsgAttrib.m_usMsgCount;
+                            //Count             To store Msg Name         MsgId        Msg Color
+            nSize += (nCount * ((sizeof (TCHAR) * MAX_PATH) + sizeof(UINT) + sizeof (COLORREF)));
+
+            //MsgFormat window config data
+            UINT unMsgFrmtWndCfgSize = 0;
+            ASSERT(m_podMsgWndThread != NULL);
+
+			if(m_podMsgWndThread->hGetHandleMsgWnd(J1939))
+			{
+				::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939),
+					WM_NOTIFICATION_FROM_OTHER, eWINID_MSG_WND_GET_CONFIG_SIZE, (LPARAM)&unMsgFrmtWndCfgSize);
+				nSize += unMsgFrmtWndCfgSize;
+			}
+            //CALC SIZE ENDS
+            
+            pbyConfigData = new BYTE[nSize];
+            if (pbyConfigData != NULL)
+            {
+                BYTE* pbyTemp = pbyConfigData;
+                
+				//Version
+                BYTE byVersion = 0x1;
+                COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+
+				//Msg Attributes
+                UINT unTempMsgCount = sMsgAttrib.m_usMsgCount;
+                COPY_DATA(pbyTemp, &unTempMsgCount, sizeof(UINT));
+                
+                for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
+                {
+                    TCHAR acName[MAX_PATH] = {_T('\0')};
+                    
+					_tcscpy(acName, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_CHAR));
+                    COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+
+                    COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].unMsgID), sizeof(UINT));
+                    COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].sColor), sizeof(COLORREF));
+                }
+
+				//Msg Format Data
+				if(m_podMsgWndThread->hGetHandleMsgWnd(J1939))
+				{
+					::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939), 
+							WM_NOTIFICATION_FROM_OTHER,
+							eWINID_MSG_WND_GET_CONFIG_DATA,
+							(LPARAM)pbyTemp);
+				}				
+			}
+            DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
+		}
+		break;
+        case SIGWATCH_SECTION_J1939_ID:
+        {            
+            CMainEntryList odMainEntryList;
+            vPopulateMainEntryList(&odMainEntryList, m_psSignalWatchList[J1939], m_pouMsgSigJ1939);
+
+            //CALCULATE SIZE REQUIRED
+            nSize += sizeof(BYTE); //Configuration version
+
+            POSITION pos = odMainEntryList.GetHeadPosition();
+            nSize += sizeof (UINT); //To store the count of main entry
+            while (pos)
+            {
+                nSize += sizeof (UINT);
+                nSize += (sizeof (TCHAR) * MAX_PATH);
+                SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
+
+                nSize += (sizeof (TCHAR) * MAX_PATH);//To store number of selected entries
+                for (UINT nSelIndex = 0; nSelIndex < (UINT)sMainEntry.m_odSelEntryList.GetCount(); nSelIndex++)
+                {
+                    nSize += sizeof (UINT);
+                    nSize += (sizeof (TCHAR) * MAX_PATH);
+                }
+            }
+            //BYTE* pbySWWndPlacement = NULL;
+            //UINT unSWSize = 0;
+            nSize += sg_pouSWInterface[J1939]->SW_GetConfigSize();
+            //ALLOCATE MEMORY
+            pbyConfigData = new BYTE[nSize];
+            BYTE* pbyTemp = pbyConfigData;
+
+            //UPDATE THE DATA NOW
+            BYTE byVersion = 0x1;
+            COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+
+            pos = odMainEntryList.GetHeadPosition();
+            UINT nMainCount = odMainEntryList.GetCount();
+
+            COPY_DATA(pbyTemp, &nMainCount, sizeof(UINT));
+
+            while (pos)
+            {
+                SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
+                COPY_DATA(pbyTemp, &(sMainEntry.m_unMainEntryID), sizeof(UINT));
+                TCHAR acName[MAX_PATH] = {_T('\0')};
+                _tcscpy(acName, sMainEntry.m_omMainEntryName.GetBuffer(MAX_CHAR));
+                COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+
+                UINT unSelCount = sMainEntry.m_odSelEntryList.GetCount();
+                COPY_DATA(pbyTemp, &unSelCount, sizeof(UINT));
+                POSITION SelPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
+                while (SelPos != NULL)
+                {
+                    SSUBENTRY sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SelPos);
+                    COPY_DATA(pbyTemp, &(sSubEntry.m_unSubEntryID), sizeof(UINT));
+                    _tcscpy(acName, sSubEntry.m_omSubEntryName.GetBuffer(MAX_CHAR));
+                    COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+                }
+            }
+
+            if (sg_pouSWInterface[J1939] != NULL)
+            {
+                UINT nSWSize = 0;
+                sg_pouSWInterface[J1939]->SW_GetConfigData((void*)pbyTemp);
+                pbyTemp += nSWSize;
+            }
         }
         break;
         case SIGWATCH_SECTION_ID:
@@ -10869,6 +11608,39 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 BYTE* pbyTemp = pbyConfigData;
                 //bool bResult = false;
                 pbyTemp = m_sFilterAppliedCAN.pbGetConfigData(pbyTemp);
+            }
+        }
+        break;
+        case DATABASE_SECTION_J1939_ID:
+        {        
+            nSize += sizeof(BYTE);//configuration version
+
+            CStringArray omDbNames;
+            if (m_pouMsgSigJ1939 != NULL)
+            {
+                m_pouMsgSigJ1939->vGetDataBaseNames(&omDbNames);
+            }
+            nSize += sizeof(UINT) + ((sizeof(TCHAR) * MAX_PATH) * omDbNames.GetSize());
+            
+            pbyConfigData = new BYTE[nSize];
+            
+            if (pbyConfigData != NULL)
+            {
+                BYTE* pbyTemp = pbyConfigData;
+
+                BYTE byVersion = 0x1;
+                COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+                //CAN DB NAMES
+                UINT unCount = omDbNames.GetSize();
+                COPY_DATA(pbyTemp, &unCount,  sizeof (UINT));
+                for (UINT i = 0; i < unCount; i++)
+                {
+                    CString omDbName = omDbNames.GetAt(i);
+                    TCHAR acName[MAX_PATH] = {_T('\0')};
+                    _tcscpy(acName, omDbName.GetBuffer(MAX_CHAR));
+
+                    COPY_DATA(pbyTemp, acName, (sizeof (TCHAR) * MAX_PATH));
+                }
             }
         }
         break;
@@ -11333,6 +12105,942 @@ void CMainFrame::vPostConfigChangeCmdToSigGrphWnds()
 		m_objSigGrphHandler.vPostMessageToSGWnd((SHORT)nBusID, WM_USER_CMD,
 												(WPARAM)eCONFIGCHANGECMD, NULL);
 	}
+}
+
+// START J1939 RELATED HANDLERS
+void CMainFrame::OnActivateJ1939()
+{
+    HRESULT Result = S_FALSE;
+    if ((NULL == sg_pouIJ1939DIL) && (NULL == sg_pouIJ1939Logger))
+    {
+        Result = ProcessJ1939Interfaces(); 
+		m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)J1939);
+    }
+    else
+    {
+        Result = DeselectJ1939Interfaces();
+		m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
+    }
+       
+    ASSERT(Result == S_OK);
+}
+
+void CMainFrame::OnUpdateActivateJ1939(CCmdUI *pCmdUI)
+{
+    /* Enable this menu item ONLY when CAN interface is available. The handler
+    is NOT to be invoked after successful querying of J1939 interfaces. So
+    disable it if the former is successful */
+    if (NULL != g_pouDIL_CAN_Interface)
+    {
+        if ((NULL == sg_pouIJ1939DIL) && (NULL == sg_pouIJ1939Logger))
+        {
+            pCmdUI->SetText(_T("Activate"));
+        }
+        else
+        {
+            pCmdUI->SetText(_T("Deactivate"));
+        }
+
+        pCmdUI->Enable(TRUE);
+    }
+    else
+    {
+        pCmdUI->Enable(FALSE);
+    }
+}
+
+void CMainFrame::OnJ1939ConfigLog()
+{
+    vConfigureLogFile(J1939);
+}
+
+void CMainFrame::OnUpdateJ1939ConfigLog(CCmdUI *pCmdUI)
+{
+    pCmdUI->Enable(NULL != sg_pouIJ1939Logger);
+}
+
+void CMainFrame::OnActionJ1939Online()
+{
+    if (sg_pouIJ1939DIL->DILIJ_bIsOnline() == FALSE)
+    {
+        if (sg_pouIJ1939DIL->DILIJ_GoOnline() == S_OK)
+        {
+            theApp.bWriteIntoTraceWnd("DIL.J1939 network started...");
+
+            GetIJ1939DIL()->DILIJ_NM_GetByteAddres(m_sJ1939ClientParam.m_byAddress, 
+                                                m_sJ1939ClientParam.m_dwClientId);
+            if (m_pouTxMsgWndJ1939 != NULL)
+            {
+                m_pouTxMsgWndJ1939->vSetJ1939ClientParam(m_sJ1939ClientParam);
+                CFlags* pouFlags = theApp.pouGetFlagsPtr();
+                if (pouFlags != NULL)
+                {
+                    BOOL bConnected = pouFlags->nGetFlagStatus(CONNECTED);
+                    if (bConnected == TRUE)
+                    {
+                        ::SendMessage(m_pouTxMsgWndJ1939->GetSafeHwnd(), 
+                                        WM_CONNECT_CHANGE, (WPARAM)TRUE, (LPARAM)TRUE);
+                    }
+                }
+            }
+        }
+        else
+        {
+            theApp.bWriteIntoTraceWnd("Network startup failed. Select a valid hardware interface.");
+        }
+    }
+    else
+    {
+        if (m_pouTxMsgWndJ1939 != NULL)
+        {
+            ::SendMessage(m_pouTxMsgWndJ1939->GetSafeHwnd(), 
+                WM_CONNECT_CHANGE, (WPARAM)FALSE, 0);
+        }
+        if (sg_pouIJ1939DIL->DILIJ_GoOffline() == S_OK)
+        {
+            theApp.bWriteIntoTraceWnd("DIL.J1939 network stopped...");
+        }
+    }
+}
+
+void CMainFrame::OnUpdateActionJ1939Online(CCmdUI *pCmdUI)
+{
+    if (NULL != sg_pouIJ1939DIL)
+    {
+        pCmdUI->Enable(TRUE);
+        if (sg_pouIJ1939DIL->DILIJ_bIsOnline() == TRUE)
+        {
+            pCmdUI->SetText(_T("Go Offline"));
+        }
+        else
+        {
+            pCmdUI->SetText(_T("Go Online"));
+        }
+    }
+    else
+    {
+        pCmdUI->Enable(FALSE);
+    }
+}
+
+void CMainFrame::OnActionJ1939TxMessage()
+{
+    if (m_pouTxMsgWndJ1939 == NULL)
+    {        
+        m_pouTxMsgWndJ1939 = new CTxMsgWndJ1939(this, m_sJ1939ClientParam);
+        m_pouTxMsgWndJ1939->Create(IDD_DLG_TX);
+    }
+    m_pouTxMsgWndJ1939->ShowWindow(SW_SHOW);
+}
+
+void CMainFrame::OnUpdateActionJ1939TxMessage(CCmdUI *pCmdUI)
+{   
+    pCmdUI->Enable(sg_pouIJ1939DIL && sg_pouIJ1939DIL->DILIJ_bIsOnline());
+}
+
+void CMainFrame::OnActionJ1939Log()
+{
+    sg_pouIJ1939Logger->FPJ1_EnableLogging(!sg_pouIJ1939Logger->FPJ1_IsLoggingON());
+}
+
+void CMainFrame::OnUpdateActionJ1939Log(CCmdUI *pCmdUI)
+{
+    if (NULL != sg_pouIJ1939Logger)
+    {
+        pCmdUI->Enable(TRUE);
+        pCmdUI->SetCheck(sg_pouIJ1939Logger->FPJ1_IsLoggingON());
+    }
+    else
+    {
+        pCmdUI->Enable(FALSE);
+        pCmdUI->SetCheck(FALSE);
+    }
+}
+
+void CMainFrame::OnToolbarJ1939()
+{
+	ToggleView(m_wndToolbarJ1939);
+}
+
+void CMainFrame::OnUpdateToolbarJ1939(CCmdUI *pCmdUI)
+{
+    pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarJ1939));
+}
+
+// END J1939 RELATED HANDLERS
+
+
+// START J1939 RELATED HELPER FUNCTIONS
+HRESULT CMainFrame::ProcessJ1939Interfaces(void)
+{
+    HRESULT Result = S_FALSE;
+
+    theApp.bWriteIntoTraceWnd("Querying DIL.J1939 ...");
+    if (NULL != (sg_pouIJ1939DIL = GetIJ1939DIL())) // Successfully get the DIL interface
+    {
+        theApp.bWriteIntoTraceWnd("DIL.J1939 query successful...");
+        // Now update the global status
+        GetIFlags()->vSetFlagStatus(ACTIVATED_J1939, (int) TRUE);
+
+        // Initialise the interface and register
+        Result = sg_pouIJ1939DIL->DILIJ_Initialise(&m_ouWrapperLogger, GetICANDIL());
+        if (S_OK == Result)
+        {
+            theApp.bWriteIntoTraceWnd("DIL.J1939 initialisation successful...");
+            Result = sg_pouIJ1939DIL->DILIJ_RegisterClient(TRUE, 
+                    J1939_MONITOR_NODE, J1939_ECU_NAME, 0, m_sJ1939ClientParam.m_dwClientId);
+            if (Result == S_OK || Result == ERR_CLIENT_EXISTS)
+            {
+                _tcscpy(m_sJ1939ClientParam.m_acName, J1939_MONITOR_NODE);
+                m_sJ1939ClientParam.m_unEcuName = J1939_ECU_NAME;
+				m_podMsgWndThread->vUpdateClientID(J1939, m_sJ1939ClientParam.m_dwClientId);
+				m_podMsgWndThread->vSetDILInterfacePointer(J1939, (void**)&(sg_pouIJ1939DIL));
+                vReRegisterAllJ1939Nodes();
+                if (sg_pouSWInterface[J1939] == NULL)//Signal watch J1939
+                {
+                    if (SW_GetInterface(J1939, (void**)&sg_pouSWInterface[J1939]) == S_OK)
+                    {
+                        sg_pouSWInterface[J1939]->SW_DoInitialization();
+                    }
+                }
+                else
+                {
+                    sg_pouSWInterface[J1939]->SW_DoInitialization();
+                }
+            }
+        }
+        else
+        {
+            theApp.bWriteIntoTraceWnd("DIL.J1939 initialisation failed...");
+        }
+        // If everything so far is successful, get hold of the logger interface
+        if (S_OK == Result) 
+        {
+            theApp.bWriteIntoTraceWnd("DIL.J1939 client registration successful...");
+            sg_pouIJ1939Logger = GetIJ1939Logger(); // First query logger interface
+            if (NULL != sg_pouIJ1939Logger)
+            {
+                theApp.bWriteIntoTraceWnd("J1939 logger query successful...");
+
+                // Next initialise the interface
+                CParamLoggerJ1939 ouParam;
+
+                CString omVerStr(_T(""));       // First get the version information
+                omVerStr.Format(IDS_VERSION);   // string from the rsource
+				_tcscpy(ouParam.m_acVersion, omVerStr.GetBuffer(MAX_CHAR));
+
+                ouParam.m_pILog = &m_ouWrapperLogger;
+                ouParam.dwClientID = m_sJ1939ClientParam.m_dwClientId;
+                Result = sg_pouIJ1939Logger->FPJ1_DoInitialisation(&ouParam);
+
+                if (S_OK == Result)
+                {
+                    theApp.bWriteIntoTraceWnd("J1939 logger successfully initialised...");
+                    // That's all. Now return the result.
+                }
+                else
+                {
+                    theApp.bWriteIntoTraceWnd("J1939 logger initialisation failed...");
+                }
+            }
+            else
+            {
+                theApp.bWriteIntoTraceWnd("J1939 logger query failed...");
+            }
+        }
+        else
+        {
+            theApp.bWriteIntoTraceWnd("DIL.J1939 client registration failed...");
+        }
+    }
+    else
+    {
+        theApp.bWriteIntoTraceWnd("Query of DIL.J1939 failed...");
+    }
+    return Result;
+}
+
+HRESULT CMainFrame::DeselectJ1939Interfaces(void)
+{
+    HRESULT Result = S_OK;
+
+    // First stop J1939 logging if it is ON
+    if (NULL != sg_pouIJ1939Logger)
+    {
+        if (sg_pouIJ1939Logger->FPJ1_IsLoggingON() == TRUE)
+        {
+            theApp.bWriteIntoTraceWnd("Stopping J1939 logging...");
+            if (sg_pouIJ1939Logger->FPJ1_EnableLogging(FALSE) != S_OK)
+            {
+                theApp.bWriteIntoTraceWnd("Stopping J1939 logging failed...");
+                Result = S_FALSE;
+            }
+        }
+        // Logger interface needs a reinitialisation next time. Set the pointer to
+        // NULL to update the GUI accordingly.
+        sg_pouIJ1939Logger = NULL;
+    }
+
+    if (NULL != sg_pouIJ1939DIL)
+    {
+        if (m_pouTxMsgWndJ1939 != NULL)
+        {
+            ::SendMessage(m_pouTxMsgWndJ1939->GetSafeHwnd(), WM_CONNECT_CHANGE, (WPARAM)FALSE, 0);
+        }
+        if (sg_pouIJ1939DIL->DILIJ_bIsOnline() == TRUE)
+        {
+            theApp.bWriteIntoTraceWnd("Going Offline...");
+            if (sg_pouIJ1939DIL->DILIJ_GoOffline() != S_OK)
+            {
+                theApp.bWriteIntoTraceWnd("Going Offline failed...");
+                Result = S_FALSE;
+            }
+        }
+        theApp.bWriteIntoTraceWnd("Uninitialising DIL.J1939...");
+        if (sg_pouIJ1939DIL->DILIJ_Uninitialise() != S_OK)
+        {
+            theApp.bWriteIntoTraceWnd("Uninitialising DIL.J1939 failed...");
+            Result = S_FALSE;
+        }
+        else
+        {
+            theApp.bWriteIntoTraceWnd("Done...");
+        }
+        // Update the global status and reset the inteface pointer to NULL.
+        GetIFlags()->vSetFlagStatus(ACTIVATED_J1939, (int) FALSE);
+        sg_pouIJ1939DIL = NULL;
+    }
+
+    return Result;
+}
+
+void CMainFrame::vConfigureLogFile(ETYPE_BUS eCurrBus)
+{
+    if (J1939 == eCurrBus)
+    {
+        if (NULL != sg_pouIJ1939Logger)
+        {		
+            CConfigMsgLogDlg omDlg(J1939, (void *) sg_pouIJ1939Logger, m_abLogOnConnect[J1939], this, 
+                                (void *) &m_sFilterAppliedJ1939);
+            sg_pouIJ1939Logger->FPJ1_StartEditingSession(); // Start the editing session
+            omDlg.vSetLogFileONOFF(sg_pouIJ1939Logger->FPJ1_IsLoggingON());
+            BOOL bToConfirm = (omDlg.DoModal() == IDOK);
+            sg_pouIJ1939Logger->FPJ1_StopEditingSession(bToConfirm);
+        }
+    }
+}
+// END J1939 RELATED HELPER FUNCTIONS
+
+void CMainFrame::OnJ1939ConfigureTimeouts()
+{
+    CJ1939TimeOutCfg omDlg;
+    omDlg.DoModal();
+}
+
+void CMainFrame::OnUpdateJ1939Timeouts(CCmdUI *pCmdUI)
+{
+    pCmdUI->Enable(NULL != sg_pouIJ1939DIL);
+}
+static void vGetNewJ1939DBName(CString& omString)
+{
+    UINT unCount = 1;
+    BOOL bContinue = TRUE;
+    while (bContinue == TRUE)
+    {
+        CString omStrDbName = NEW_DATABASE_NAME_J1939;
+        CString omStr = STR_EMPTY;
+        omStr.Format( "%d", unCount++);
+        omStr += ".";
+        omStr += DATABASE_EXTN;
+        omStrDbName += omStr;
+        // file-attribute information
+        struct _finddata_t fileinfo;    
+        // Auto Select DB File
+        if (_findfirst( omStrDbName, &fileinfo)== -1L)
+        {
+            omString = omStrDbName;
+            bContinue = FALSE;
+        }
+    }
+}
+static BOOL bCreateStudioFile(CString& omDefaultFileName)
+{
+    BOOL bResult = FALSE;
+    CStdioFile om_File;
+    TRY
+    {
+		CFileDialog fileDlg(FALSE, DATABASE_EXTN, omDefaultFileName.GetBuffer(MAX_CHAR), 
+                            OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, DATABASE_FILTER);
+        if (fileDlg.DoModal() == IDOK)
+        {
+            omDefaultFileName = fileDlg.GetPathName();
+            bResult = TRUE;
+        
+            // create the selected file
+            if (om_File.Open(omDefaultFileName,
+                            CFile::modeCreate | CFile::modeRead | 
+                            CFile::typeText))
+            {
+                om_File.Close();
+            }
+        }
+    }
+    CATCH_ALL(om_Fe)
+    {
+        if(om_Fe != NULL )
+        {
+            LPTSTR lpszError = NULL;
+            // Get error
+            om_Fe->GetErrorMessage( lpszError, 255);
+
+            AfxMessageBox( lpszError, NULL, MB_OK );
+        
+            om_Fe->Delete();
+        }
+    }
+    END_CATCH_ALL
+
+    return bResult;
+}
+
+void CMainFrame::OnJ1939DBNew()
+{
+    
+    // Check if any database is already open
+    if (CMsgSignalDBWnd::sm_bValidJ1939Wnd == TRUE)
+    {
+        // Some database is open
+        // Flash a message as to whether the user
+        // wants to open another database
+        INT nReturn = 
+            AfxMessageBox( "Are you sure you want to close the \ndatabase that is already open?", MB_YESNO, MB_ICONINFORMATION);
+        if ( nReturn == IDYES)
+        {
+            // Close the database that was open
+            OnJ1939DBClose();
+        }
+    }
+    if (m_pouActiveDbJ1939 == NULL)
+    {
+        m_pouActiveDbJ1939 = new CMsgSignal(sg_asDbParams[J1939], FALSE);
+    }
+    if (m_podMsgSgWndJ1939 == NULL)
+    {
+        sg_asDbParams[J1939].m_ppvActiveDB = (void**)&m_pouActiveDbJ1939;
+        sg_asDbParams[J1939].m_ppvImportedDBs = (void**)&m_pouMsgSigJ1939;
+        m_podMsgSgWndJ1939 = new CMsgSignalDBWnd(sg_asDbParams[J1939]);
+    }
+    if (m_podMsgSgWndJ1939 != NULL)
+    {        
+        vGetNewJ1939DBName(m_omJ1939DBName);
+		if (bCreateStudioFile(m_omJ1939DBName) == TRUE)
+		{
+			sg_asDbParams[J1939].m_omDBPath = m_omJ1939DBName;
+			m_podMsgSgWndJ1939->vSetDBName(m_omJ1939DBName);
+
+			if ( !m_podMsgSgWndJ1939->Create(  NULL, "Database Editor", WS_CHILD | 
+				WS_VISIBLE | WS_OVERLAPPED | WS_CAPTION |
+				WS_THICKFRAME, rectDefault, this ))
+			{
+				MessageBox( "Create BUSMASTER Database Window Failed!",
+					NULL, MB_OK|MB_ICONERROR );
+				return;
+			}
+
+			CMsgSignalDBWnd::sm_bValidJ1939Wnd = TRUE;
+			m_podMsgSgWndJ1939->ShowWindow( SW_SHOWMAXIMIZED );
+			m_podMsgSgWndJ1939->UpdateWindow();
+		}
+    }
+    
+}
+
+void CMainFrame::OnJ1939DBOpen()
+{
+    // Check if any database is already open
+    if (CMsgSignalDBWnd::sm_bValidJ1939Wnd == TRUE)
+    {
+        // Some database is open
+        // Flash a message as to whether the user
+        // wants to open another database
+        INT nReturn = 
+            AfxMessageBox( "Are you sure you want to close the \ndatabase that is already open?", MB_YESNO, MB_ICONINFORMATION);
+        if ( nReturn == IDYES)
+        {
+            // Close the database that was open
+            OnJ1939DBClose();
+        }
+    }
+    // Display a open file dialog
+    CFileDialog fileDlg( TRUE,      // Open File dialog
+                            "dbf",     // Default Extension,
+                            NULL,                              
+                            OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+                            "J1939 Database File(s)(*.dbf)|*.dbf||",
+                            NULL );
+    // Set Title
+    fileDlg.m_ofn.lpstrTitle  = _T("Select J1939 Database Filename...");
+
+    if ( IDOK == fileDlg.DoModal() )
+    {
+        CString strExtName  = fileDlg.GetFileExt();
+        CString strDbName   = fileDlg.GetPathName();
+        if ( strDbName.ReverseFind('.') )
+        {
+            strDbName = strDbName.Left( strDbName.ReverseFind('.') + 1);
+            strDbName.TrimRight();
+            strDbName += strExtName;
+            m_omJ1939DBName = strDbName;
+        }
+        BOOL bDisplayEditor = FALSE;
+        // file-attribute information
+        struct _finddata_t fileinfo;
+        // Auto Select DB File
+        if (_findfirst( strDbName, &fileinfo)!= -1L)
+        {
+            // Load the File & fill the Structure
+            if (m_pouActiveDbJ1939 == NULL)
+            {
+                sg_asDbParams[J1939].m_ppvActiveDB = (void**)&m_pouActiveDbJ1939;
+                sg_asDbParams[J1939].m_ppvImportedDBs = (void**)&m_pouMsgSigJ1939;
+                m_pouActiveDbJ1939 = new CMsgSignal(sg_asDbParams[J1939], FALSE);
+            }
+            if (m_pouActiveDbJ1939->
+                    bFillDataStructureFromDatabaseFile(strDbName))
+            {
+                // No corruption in database, display the editor
+                bDisplayEditor = TRUE;
+            }
+        }
+        else
+        {
+            AfxMessageBox("Specified database file is not found.\nOperation unsuccessful.", MB_OK|MB_ICONINFORMATION);
+        }
+
+        if ( bDisplayEditor == TRUE )
+        {
+            if ( m_podMsgSgWndJ1939 != NULL )
+            {
+                m_podMsgSgWndJ1939 = NULL;
+            }
+
+            m_podMsgSgWndJ1939 = new CMsgSignalDBWnd(sg_asDbParams[J1939]);
+
+            if ( m_podMsgSgWndJ1939 != NULL )
+            {
+                sg_asDbParams[J1939].m_omDBPath = m_omJ1939DBName;
+                m_podMsgSgWndJ1939->vSetDBName(m_omJ1939DBName);
+                // Create child window
+                if ( !m_podMsgSgWndJ1939->Create(NULL,
+                                            "Database Editor",
+                                            WS_CHILD | WS_VISIBLE |
+                                            WS_OVERLAPPED | WS_CAPTION |
+                                            WS_THICKFRAME, rectDefault,
+                                            this ) )
+                {
+                    MessageBox( "Create J1939 Database Window Failed!",
+                        NULL, MB_OK|MB_ICONERROR );
+                    return;
+                }
+                CMsgSignalDBWnd::sm_bValidJ1939Wnd = TRUE;
+                m_podMsgSgWndJ1939->ShowWindow( SW_SHOWMAXIMIZED );
+                m_podMsgSgWndJ1939->UpdateWindow();
+            }
+            else
+            {
+                AfxMessageBox(MSG_MEMORY_CONSTRAINT, 
+                                MB_OK | MB_ICONINFORMATION);
+            }
+        }
+    }
+}
+
+void CMainFrame::OnJ1939DBClose()
+{
+    if (m_podMsgSgWndJ1939 != NULL)
+    {
+        if (CMsgSignalDBWnd::sm_bValidJ1939Wnd == TRUE)
+        {
+            m_podMsgSgWndJ1939->SendMessage(WM_CLOSE, NULL, NULL);
+            m_podMsgSgWndJ1939 = NULL;
+        }
+        else
+        {
+            m_podMsgSgWndJ1939 = NULL;
+        }
+    }
+}
+
+void CMainFrame::OnJ1939DBAssociate()
+{
+    CStringArray strFilePathArray;
+    // Display a open file dialog
+    TCHAR szFilters[] = _T("All Supported DataBaseFiles (*.dbf;*.dbc)|*.dbf; *.dbc|J1939 Database File(s)(*.dbf)|*.dbf|CANoe Database File(s) (*.dbc)|*.dbc||");
+    CFileDialog fileDlg( TRUE,      // Open File dialog
+                            "dbf",     // Default Extension,
+                            NULL,                              
+                            OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+                            szFilters,
+                            NULL );
+
+    // Set Title
+    fileDlg.m_ofn.lpstrTitle  = _T("Select Active Database Filename...");
+
+    if ( IDOK == fileDlg.DoModal() )
+    {
+		POSITION pos = NULL; 
+		pos = fileDlg.GetStartPosition();
+		while(NULL != pos)
+		{
+			CString strTempFile = fileDlg.GetNextPathName(pos);
+			strFilePathArray.Add(strTempFile);
+		}
+		CString omStrMsg = "Database File: \n ";
+		BOOL bAllFilesImported = TRUE;
+		int nFileCount = strFilePathArray.GetSize();
+		for(int nCount = 0;nCount < nFileCount;nCount++)
+		{
+			CString strTempFileName = strFilePathArray.GetAt(nCount);
+			//FALSE because it is not called using COM 
+			DWORD dError = dLoadJ1939DBFile(strTempFileName,FALSE);
+			if(E_INVALIDARG == dError)
+			{
+				bAllFilesImported = FALSE;
+				//Add the file name for warning display
+				omStrMsg += strTempFileName;
+				omStrMsg += defNEW_LINE;
+			}
+		}
+		if(bAllFilesImported == FALSE)
+		{
+			omStrMsg += " not found!";
+			MessageBox(omStrMsg,"BUSMASTER",MB_OK|MB_ICONERROR);
+		}
+        else
+        {
+			HWND hWnd;
+			hWnd = m_podMsgWndThread->hGetHandleMsgWnd(J1939);					
+			//Set the J1939 DB pointer in MsgFrmtWnd class
+			if(hWnd)
+			{
+				::SendMessage(hWnd, WM_NOTIFICATION_FROM_OTHER,
+								eLOAD_DATABASE,
+								(LPARAM)&(m_pouMsgSigJ1939));
+				::SendMessage(hWnd, WM_DATABASE_CHANGE, (WPARAM)TRUE, NULL);
+			}
+            vPostMsgToSendMsgDlg(J1939);			
+        }
+    }
+}
+
+void CMainFrame::OnJ1939DBDissociate()
+{
+    if (m_pouMsgSigJ1939 == NULL)
+    {
+        m_pouMsgSigJ1939 = new CMsgSignal(sg_asDbParams[J1939], FALSE);
+    }
+    sg_asDbParams[J1939].m_ppvActiveDB = (void**)&(m_pouActiveDbJ1939);
+    sg_asDbParams[J1939].m_ppvImportedDBs = (void**)&(m_pouMsgSigJ1939);
+	CDatabaseDissociateDlg odDBDialog(sg_asDbParams[J1939]);
+	odDBDialog.DoModal();
+    //Update J1939 TxWnd
+    SMSGENTRY* psMsgEntry = NULL;
+    vPopulateMsgEntryFromDB(psMsgEntry, m_pouMsgSigJ1939);
+    if (m_pouTxMsgWndJ1939 != NULL)
+    {
+        m_pouTxMsgWndJ1939->vSetDatabaseInfo(psMsgEntry);
+    }
+    else
+    {
+        CTxMsgWndJ1939::vUpdateDataStore(psMsgEntry);
+    }
+}
+
+void CMainFrame::OnJ1939CfgSimSys()
+{
+    NS_InitJ1939SpecInfo();
+    GetIJ1939NodeSim()->FE_CreateFuncEditorTemplate(this->GetSafeHwnd(), m_sExFuncPtr[J1939]);
+}
+
+void CMainFrame::OnJ1939LoadAll()
+{
+    CStringArray omStrBuildFiles;
+	
+    BOOL bSucces = GetIJ1939NodeSim()->NS_DllLoadAll(&omStrBuildFiles);
+    if(bSucces!=TRUE)  // if the load is not successfull
+    {       
+		int nFailure = omStrBuildFiles.GetSize();
+        CString omStrErrorMsg =_T("Following file(s) are not properly loaded:");
+        CString omStrErrorMsgDummy=_T("");
+        for(int i = 0 ;i < nFailure; i++)
+        {
+            
+           omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+           omStrErrorMsg += omStrErrorMsgDummy;
+        }
+        AfxMessageBox(omStrErrorMsg);
+    } 
+}
+
+void CMainFrame::OnUpdateJ1939LoadAll(CCmdUI *pCmdUI)
+{
+    pCmdUI->Enable(GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_LOAD));
+}
+
+void CMainFrame::OnJ1939UnloadAll()
+{
+    CStringArray omStrBuildFiles;
+	BOOL bSucces = GetIJ1939NodeSim()->NS_DllUnloadAll(&omStrBuildFiles);
+    if(bSucces!=TRUE)  // if the unload is not successfull
+    {       
+		int nFailure = omStrBuildFiles.GetSize();
+        CString omStrErrorMsg =_T("Following file(s) are not properly unloaded:");
+        CString omStrErrorMsgDummy=_T("");
+        for(int i = 0 ;i < nFailure; i++)
+        {
+            
+           omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+           omStrErrorMsg += omStrErrorMsgDummy;
+        }
+        AfxMessageBox(omStrErrorMsg);
+    }
+}
+
+void CMainFrame::OnUpdateJ1939UnloadAll(CCmdUI *pCmdUI)
+{
+    pCmdUI->Enable(GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD));
+}
+
+void CMainFrame::OnJ1939BuildAndLoadAll()
+{
+    CStringArray omStrBuildFiles;
+
+	BOOL bSucces = GetIJ1939NodeSim()->NS_DLLBuildLoadAll(&omStrBuildFiles);
+    if(!bSucces)  // if the build is not successfull
+    {
+		int nFailure = omStrBuildFiles.GetSize();
+        CString omStrErrorMsg =_T("Following file(s) are either not properly build or loaded:");
+        CString omStrErrorMsgDummy=_T("");
+        for(int i = 0 ;i < nFailure; i++)
+        {
+            
+           omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+           omStrErrorMsg += omStrErrorMsgDummy;
+        }       
+        AfxMessageBox(omStrErrorMsg);
+    }
+}
+
+void CMainFrame::OnUpdateJ1939BuildAndLoadAll(CCmdUI *pCmdUI)
+{
+    pCmdUI->Enable(GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_BUILDLOAD));
+}
+
+void CMainFrame::OnJ1939BuildAll()
+{
+    CStringArray omStrBuildFiles;
+
+	BOOL bSucces = GetIJ1939NodeSim()->NS_DLLBuildAll(&omStrBuildFiles);
+    if(!bSucces)  // if the build is not successfull
+    {
+		int nFailure = omStrBuildFiles.GetSize();
+        CString omStrErrorMsg =_T("Following file(s) are either not properly build or loaded:");
+        CString omStrErrorMsgDummy=_T("");
+        for(int i = 0 ;i < nFailure; i++)
+        {
+            
+           omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+           omStrErrorMsg += omStrErrorMsgDummy;
+        }       
+        AfxMessageBox(omStrErrorMsg);
+    }
+}
+
+void CMainFrame::OnUpdateJ1939BuildAll(CCmdUI *pCmdUI)
+{
+    pCmdUI->Enable(GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_BUILD));
+}
+
+void CMainFrame::OnJ1939AllMessageHandlers()
+{
+    //Get present status
+    BOOL bEnable = GetIJ1939NodeSim()->NS_GetHandlerStatus(H_MSGHANDLERBUTTON);
+    //Change the status of handler
+    GetIJ1939NodeSim()->NS_EnableAllMessageHandler( !bEnable );
+}
+
+void CMainFrame::OnUpdateJ1939AllMessageHandlers(CCmdUI *pCmdUI)
+{
+    pCmdUI->SetCheck(GetIJ1939NodeSim()->NS_GetHandlerStatus(H_MSGHANDLERBUTTON));
+    BOOL bEnable = GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);    
+    pCmdUI->Enable(bEnable);
+}
+
+void CMainFrame::OnJ1939AllKeyHandlers()
+{
+    //Get present status
+    BOOL bEnable = GetIJ1939NodeSim()->NS_GetHandlerStatus(H_KEY_HANDLER_ON);
+    //Change the status of handler
+    GetIJ1939NodeSim()->NS_EnableAllKeyHandler( !bEnable );
+}
+
+void CMainFrame::OnUpdateJ1939AllKeyHandlers(CCmdUI *pCmdUI)
+{
+    pCmdUI->SetCheck(GetIJ1939NodeSim()->NS_GetHandlerStatus(H_KEY_HANDLER_ON));
+    BOOL bEnable = GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);    
+    pCmdUI->Enable(bEnable);
+}
+
+void CMainFrame::OnJ1939AllTimerHandlers()
+{
+    //Get present status
+    BOOL bEnable = GetIJ1939NodeSim()->NS_GetHandlerStatus(H_TIMERBUTTON);
+    //Change the status of handler
+    GetIJ1939NodeSim()->NS_EnableAllTimers( !bEnable );
+}
+
+void CMainFrame::OnUpdateJ1939AllTimerHandlers(CCmdUI *pCmdUI)
+{
+    pCmdUI->SetCheck(GetIJ1939NodeSim()->NS_GetHandlerStatus(H_TIMERBUTTON));
+    BOOL bEnable = GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);    
+    pCmdUI->Enable(bEnable);
+}
+
+void CMainFrame::OnJ1939AllHandlers()
+{
+    //Get present status
+    BOOL bEnable = GetIJ1939NodeSim()->NS_GetHandlerStatus(H_ALL_HANDLER);
+    //Change the status of handler
+    GetIJ1939NodeSim()->NS_EnableAllHandlers( !bEnable );
+}
+
+void CMainFrame::OnUpdateJ1939AllHandlers(CCmdUI *pCmdUI)
+{
+    pCmdUI->SetCheck(GetIJ1939NodeSim()->NS_GetHandlerStatus(H_ALL_HANDLER));
+    BOOL bEnable = GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);    
+    pCmdUI->Enable(bEnable);
+}
+
+void CMainFrame::OnUpdateJ1939CfgSimSys(CCmdUI *pCmdUI)
+{
+    pCmdUI->Enable(NULL != sg_pouIJ1939DIL);
+}
+
+void CMainFrame::OnJ1939SignalwatchAdd()
+{
+    CMsgSignal * pomDatabase = NULL;
+    pomDatabase = m_pouMsgSigJ1939;
+    if( pomDatabase != NULL )
+    {
+        if( pomDatabase->unGetNumerOfMessages() > 0)
+        {
+            /* Test code starts*/
+            CMainEntryList odResultingList;
+            vPopulateMainEntryList(&odResultingList, m_psSignalWatchList[J1939], m_pouMsgSigJ1939);
+            if (sg_pouSWInterface[J1939] == NULL)
+            {
+                if (SW_GetInterface(J1939, (void**)&sg_pouSWInterface[J1939]) == S_OK)
+                {
+                    sg_pouSWInterface[J1939]->SW_DoInitialization();
+                }
+            }
+            if (sg_pouSWInterface[J1939] != NULL)
+            {
+                if (sg_pouSWInterface[J1939]->SW_ShowAddDelSignalsDlg(this, &odResultingList) == IDOK)
+                {
+                    vPopulateSigWatchList(odResultingList, m_psSignalWatchList[J1939], m_pouMsgSigJ1939);// This populates m_psSignalWatchList
+                    m_ouMsgInterpretSW_J.vSetJ1939Database(m_psSignalWatchList[J1939]);
+                    sg_pouSWInterface[J1939]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_J);
+                }
+            }
+        }
+        else
+        {
+            // Database is not imported!!
+            AfxMessageBox( defSTR_EMPTY_ACTIVE_DATABASE );
+        }
+    }
+}
+
+void CMainFrame::OnJ1939SignalwatchShow()
+{
+    if (sg_pouSWInterface[J1939] == NULL)
+    {
+        if (SW_GetInterface(J1939, (void**)&sg_pouSWInterface[J1939]) == S_OK)
+        {
+            sg_pouSWInterface[J1939]->SW_DoInitialization();
+        }
+    }
+    if (sg_pouSWInterface[J1939] != NULL)
+    {
+        INT nCmd = sg_pouSWInterface[J1939]->SW_IsWindowVisible() ? SW_HIDE : SW_SHOW;
+        sg_pouSWInterface[J1939]->SW_ShowSigWatchWnd(this, nCmd);
+        BOOL bHexON = theApp.pouGetFlagsPtr()->nGetFlagStatus(HEX);
+        sg_pouSWInterface[J1939]->SW_SetDisplayMode(bHexON);
+    }
+}
+void CMainFrame::OnUpdateJ1939SignalwatchShow(CCmdUI* pCmdUI) 
+{
+    if(pCmdUI != NULL )
+    {
+        if (sg_pouSWInterface[J1939]->SW_IsWindowVisible() == TRUE)
+        {
+            pCmdUI->SetCheck(TRUE);
+        }
+        else
+        {
+            pCmdUI->SetCheck(FALSE);
+        }
+    }
+}
+void CMainFrame::OnConfigureMessagedisplayJ1939()
+{
+	CPPageMessage odDBMsg(TRUE, J1939, m_pouMsgSigJ1939), odNDBMsg(FALSE, J1939, m_pouMsgSigJ1939);
+    CPropertySheet omAllMessages("Configure Message Display - J1939");
+	//CMsgFilterConfigPage omFilter(&m_sFilterAppliedJ1939, m_podMsgWndThread->hGetHandleMsgWnd(J1939));
+
+    /*BOOL bConnected = FALSE;
+    CFlags* pouFlag      = theApp.pouGetFlagsPtr();
+    // Get the connection status
+    if(pouFlag != NULL)
+    {
+        bConnected   = pouFlag->nGetFlagStatus(CONNECTED);
+    }*/
+    
+    omAllMessages.m_psh.dwFlags |= PSH_NOAPPLYNOW;
+    omAllMessages.m_psh.dwFlags &= ~PSH_HASHELP;
+    // Add Filter Page
+    //omAllMessages.AddPage(&omFilter);
+
+    // Add DB & NDB pages
+    omAllMessages.AddPage(&odDBMsg);
+    omAllMessages.AddPage(&odNDBMsg);
+
+	omAllMessages.DoModal();
+
+    // Show display configuration only if it is not connected
+    /*if( bConnected == FALSE )
+    {
+        CMsgBufferConfigPage obMsgBuffConf;
+        obMsgBuffConf.vSetBufferSize(m_anMsgBuffSize);
+        omAllMessages.AddPage(&obMsgBuffConf);
+        omAllMessages.DoModal();
+
+		if (m_podMsgWndThread != NULL)//Msg window
+        {
+			::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
+                            eWINID_MSG_WND_GET_BUFFER_DETAILS, (LPARAM)m_anMsgBuffSize);
+		}
+    }
+    else
+    {
+        omAllMessages.DoModal();
+    }*/
+}
+void CMainFrame::OnJ1939Exportlog()
+{
+    CExportLogFileDlg omDlg(J1939, NULL);
+    omDlg.DoModal();
 }
 
 void CMainFrame::OnToolbarCandatabase()

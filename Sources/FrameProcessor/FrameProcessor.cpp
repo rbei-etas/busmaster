@@ -31,11 +31,13 @@
 #include "FrameProcessor_extern.h"
 
 #include "FrameProcessor_CAN.h"
+#include "FrameProcessor_J1939.h"
+//#include "FrameProcessor_McNet.h"
 #include "FrameProcessor.h"
 
 
 static CFrameProcessor_CAN* sg_pouFP_CAN = NULL;
-
+static CFrameProcessor_J1939* sg_pouFP_J1939 = NULL;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -110,6 +112,12 @@ int CFrameProcessorApp::ExitInstance()
         sg_pouFP_CAN = NULL;
     }
 
+    if (NULL != sg_pouFP_J1939)
+    {
+        sg_pouFP_J1939->ExitInstance();
+        delete sg_pouFP_J1939;
+        sg_pouFP_J1939 = NULL;
+    }
     return CWinApp::ExitInstance();
 }
 
@@ -141,8 +149,25 @@ USAGEMODE HRESULT FP_GetInterface(eID_COMPONENT eInterfaceID, void** ppvInterfac
                                                if sg_pouFP_CAN is null */
         }
         break;
-        case FRAMEPROC_MCNET:
         case FRAMEPROC_J1939:
+        {
+            if (NULL == sg_pouFP_J1939)
+            {
+                if ((sg_pouFP_J1939 = new CFrameProcessor_J1939) == NULL)
+                {
+                    ASSERT(FALSE);
+                    hResult = S_FALSE;
+                }
+                else
+                {
+                    sg_pouFP_J1939->InitInstance();
+                }
+            }
+            // Else the object has been existing already
+            *ppvInterface = (void *) sg_pouFP_J1939; /* Doesn't matter even 
+                                               if sg_pouFP_J1939 is null */
+        }
+		case FRAMEPROC_MCNET:
         default: 
 		{
 				hResult = S_FALSE;

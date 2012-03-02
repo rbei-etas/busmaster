@@ -64,7 +64,7 @@ int CFrameProcessor_CAN::ExitInstance(void)
 
 CBaseLogObject* CFrameProcessor_CAN::CreateNewLogObj(void)
 {
-	CLogObjectCAN* pLogObj = new CLogObjectCAN;
+	CLogObjectCAN* pLogObj = new CLogObjectCAN(CString(m_sCANProcParams.m_acVersion));	
 	return (static_cast<CBaseLogObject *> (pLogObj));
 }
 

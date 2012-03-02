@@ -134,6 +134,12 @@ HWND CMsgWndThread::hGetHandleMsgWnd(eTYPE_BUS eBusType)
 		return NULL;
 }
 
+void CMsgWndThread::vSetDILInterfacePointer(eTYPE_BUS eBusType, void** ppvJ1939DIL)
+{	
+	if(m_pMsgWnd[eBusType])
+		m_pMsgWnd[eBusType]->vSetDILInterfacePointer(ppvJ1939DIL);
+}
+
 /*void CMsgWndThread::vShutdownThread(UINT unParam, LONG lParam)
 {
     PostQuitMessage(0);

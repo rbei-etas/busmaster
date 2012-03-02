@@ -32,6 +32,7 @@
 #endif
 
 static CNodeSim* sg_pouNS_CAN = NULL;
+static CNodeSim* sg_pouNS_J1939 = NULL;
 static CDynLinkLibrary* sg_pomDynLinkLib = NULL;
 
 static AFX_EXTENSION_MODULE NodeSimExDLL = { NULL, NULL };
@@ -72,6 +73,12 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
             sg_pouNS_CAN->ExitInstance();
             delete sg_pouNS_CAN;
             sg_pouNS_CAN = NULL;
+        }
+        if (sg_pouNS_J1939 != NULL)
+        {
+            sg_pouNS_J1939->ExitInstance();
+            delete sg_pouNS_J1939;
+            sg_pouNS_J1939 = NULL;
         }
         if (NULL != sg_pomDynLinkLib)
         {
@@ -117,6 +124,24 @@ USAGEMODE HRESULT NS_GetInterface(ETYPE_BUS eBus,
         }
         break;
         case J1939:
+        {
+            if (NULL == sg_pouNS_J1939)
+            {
+                if ((sg_pouNS_J1939 = new CNodeSim(J1939)) == NULL)
+                {
+                    ASSERT(FALSE);
+                    hResult = S_FALSE;
+                }
+                else
+                {
+                    sg_pouNS_J1939->InitInstance();
+                }
+            }
+            // Else the object has been existing already
+            *ppvInterface = (void *) sg_pouNS_J1939; /* Doesn't matter even 
+                                                if sg_pouFP_J1939 is null */
+        }
+        break;
         default: 
         {
             hResult = S_FALSE;

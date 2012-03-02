@@ -74,7 +74,10 @@ CPPageMessage::CPPageMessage(BOOL bForDBMsg, ETYPE_BUS eBusType, CMsgSignal* pou
 CPPageMessage::~CPPageMessage()
 {
 	if(m_pRGBColors)
+	{
 		delete[] m_pRGBColors;
+		m_pRGBColors = NULL;
+	}
 }
 
 void CPPageMessage::DoDataExchange(CDataExchange* pDX)
@@ -142,7 +145,7 @@ BOOL CPPageMessage::OnInitDialog()
     
     if( punDBMsgs != NULL)
     {
-        delete punDBMsgs;
+        delete[] punDBMsgs;
     }
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -191,7 +194,7 @@ int CPPageMessage::nInitialiseMsgLCtrl(UINT unTotalDBMsgs, UINT* punDBMsgIDs)
 
 		m_pRGBColors = (COLORREF*)malloc(nEntries * sizeof(COLORREF));
         for (int i = 0; i < nEntries; i++)
-        {
+        {			
             m_sNewItem = *(psList + i);
             BOOL bToEnter = !(bIsMsgIDPresent(punDBMsgIDs, unTotalDBMsgs, 
                               m_sNewItem.nCANID) ^ m_bForDBMsg);
@@ -200,11 +203,12 @@ int CPPageMessage::nInitialiseMsgLCtrl(UINT unTotalDBMsgs, UINT* punDBMsgIDs)
                 nLastItem = nEnterMessageAttrib(m_sNewItem, nLastItem);
 				nLastItem++;
                 nMessagesAdded++;
-            }
+            }			
         }
         delete[] psList;
+		psList = NULL;
     }
-
+	
     return nMessagesAdded;
 }
 
