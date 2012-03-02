@@ -57,7 +57,10 @@ public:
 	void vEnableNodeTimerHandler(const PSNODEINFO psNodeInfo,BOOL bState);
 	void vManageOnKeyHandler(UCHAR ucKey);
 	void vManageOnMessageHandlerCAN(STCAN_MSG sRxMsgInfo, DWORD dwClientId);
-	void vManageOnErrorHandlerCAN(eERROR_STATE eErrorCode,SCAN_ERR sErrorVal, DWORD dwClientId);    
+	void vManageOnErrorHandlerCAN(eERROR_STATE eErrorCode,SCAN_ERR sErrorVal, DWORD dwClientId);
+    void vManageOnDataConfHandlerJ1939(DWORD dwClientId, UINT32 unPGN, 
+                                            BYTE bySrc, BYTE byDest, BOOL bSuccess);
+    void vManageOnAddressClaimHandlerJ1939(DWORD dwClientId, BYTE byAddress);
 	void vExSetNodeInfo(const CString NodeName ,const PSNODEINFO psNodeInf);
 	const HMODULE hReturnDllHandle(const CString NodeName);
 	BOOL bDllLoaded;//if any one dll is loaded

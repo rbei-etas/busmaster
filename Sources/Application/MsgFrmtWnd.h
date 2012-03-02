@@ -28,6 +28,7 @@
 #include "DataTypes/MsgBufAll_Datatypes.h"
 #include "DataTypes/DIL_Datatypes.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
+#include "DIL_Interface/BaseDIL_J1939.h"
 #include "MessageInterpretation.h"
 #include "PSDI_Extern.h"
 #include "MsgWndHdrInfo.h"
@@ -87,9 +88,12 @@ public:
 	HRESULT SetConfigData(BYTE* pvDataStream);		
 	UINT nGetMsgFrmtWndConfigSize();
     void vSetMsgDataBasePtr(void** ppvMsgDBPtr);
+	void vSetDILInterfacePointer(void** ppvJ1939DIL);
 private:
 	CMessageAttrib& m_ouMsgAttr;
-    CMsgContainerBase* m_pouMsgContainerIntrf;      
+    CMsgContainerBase* m_pouMsgContainerIntrf;
+	CBaseDILI_J1939** m_ppouIJ1939DIL; // DIL J1939 interface
+	CMsgInterpretationJ1939 m_ouMsgInterpretJ1939;        
 	BOOL m_bInterPretMsg;
     CMsgSignal** m_ppMsgDB;
 	CRITICAL_SECTION       m_omCritSecForMapArr;	

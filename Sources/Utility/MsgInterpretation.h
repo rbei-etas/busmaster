@@ -33,6 +33,32 @@
 #include "Datatypes/SigWatch_datatypes.h" // Signal list selected
 #include "Datatypes/MsgSignal_Datatypes.h"
 
+
+class CMsgInterpretationJ1939
+{
+private:
+    SMSGENTRY*  m_psMsgRoot;
+    EFORMAT     m_eNumFormat;
+public:
+    CMsgInterpretationJ1939();
+    ~CMsgInterpretationJ1939();
+    // Get signal value
+    __int64 n64GetSignalValue(CByteArray*, UINT, UINT, UINT, BYTE, EFORMAT_DATA);
+
+    /* To set the message list root. J1939 database needs to be set before calling the above 
+    function */
+    void vSetJ1939Database(const SMSGENTRY* psCurrMsgEntry);
+
+    /* Interpretation function for J1939 msgs. 
+    Given the PGN it parses the data and calculates signal values */
+    BOOL bInterPretJ1939_MSGS(EFORMAT eNumformat, UINT32 unPGN, UINT unDLC, BYTE* pbyData, 
+                          CString& omMsgName, 
+                          SSignalInfoArray& odSigInfoArray);
+    
+    void vCopy(CMsgInterpretationJ1939* pDest) const;
+    void vClear();
+};
+
 class CMsgInterpretation  
 {
 private:

@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="Disconnect" xml:lang="en-us">
+  <title>Disconnect : To disconnect CAN controller from CAN bus</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>UINT Disconnect (DWORD dwClientId )</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function will disconnect the tool from CAN bus. The return value of this function will be 0 or 1. This function can return 0 in case tool is already disconnected. dwClientId is reserved for future use.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>Client ID. Currently unused.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>A value zero indicate failure condition while a value 1 indicate a success condition.</p>
+    </section>
+  </refbody>
+</reference>

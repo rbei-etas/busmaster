@@ -656,6 +656,7 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
     
     // Get message name from msg code
     sMESSAGE* pMsgs = NULL;
+    omSignalInfo.RemoveAll();
     if (SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgRoot, unMsgCode, pMsgs))
     {            
         // Get message pointer from message name for future use
@@ -1154,6 +1155,211 @@ void CMsgInterpretation::vCopy(CMsgInterpretation* pDest) const
         pDest->vSetMessageList(pDestRoot);
     }
 }
+
+/* IMPLEMENTATION CLASS CMsgInterpretationJ1939 STARTS */
+
+CMsgInterpretationJ1939::CMsgInterpretationJ1939()
+{
+    m_psMsgRoot = NULL;
+}
+
+CMsgInterpretationJ1939::~CMsgInterpretationJ1939()
+{
+    SMSGENTRY::vClearMsgList(m_psMsgRoot);
+}
+
+BOOL CMsgInterpretationJ1939::bInterPretJ1939_MSGS(
+                                        EFORMAT eNumFormat,
+                                        UINT32 unPGN, 
+                                        UINT unDLC, 
+                                        BYTE* pbyData, 
+                                        CString& omMsgName, 
+                                        SSignalInfoArray& odSigInfoArray)
+{   
+    BOOL bReturn = FALSE;
+    sMESSAGE* pMsg = NULL;
+    odSigInfoArray.RemoveAll();
+    SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgRoot, unPGN, pMsg);
+    if ((pMsg != NULL) && (pbyData != NULL) && (unDLC >=  pMsg->m_unMessageLength))
+    {
+        omMsgName = pMsg->m_omStrMessageName;
+        CByteArray omMsgByte;
+        /*Whether it is |Intel or motorola format, Data is fed from\
+                  1st byte to DLC */
+        for ( register UINT nCount = 0; 
+                    nCount < pMsg->m_unMessageLength; 
+                    nCount++)
+        {
+            omMsgByte.Add(pbyData[nCount]);
+        }
+
+        SSignalInfo sSigInfoTmp;
+
+        __int64 n64SigVal = 0;
+
+        sSIGNALS* psCurrSignal = pMsg->m_psSignals;
+
+        while (NULL != psCurrSignal)
+        {
+            // Add the Signal Name First
+            sSigInfoTmp.m_omSigName = psCurrSignal->m_omStrSignalName;
+
+            // Get signal value
+            n64SigVal = n64GetSignalValue(&omMsgByte, psCurrSignal->m_unStartByte, 
+                psCurrSignal->m_byStartBit, psCurrSignal->m_unSignalLength,
+                psCurrSignal->m_bySignalType, psCurrSignal->m_eFormat);
+
+            // Calculate the raw value
+            UINT unSigLen = psCurrSignal->m_unSignalLength;
+            //Calculate the character width required to represent the raw value.
+            //1 character means 1 nibble
+            UINT unWidth = (unSigLen % 4 == 0) ? (unSigLen/4) : (unSigLen/4 + 1);
+            //calculate extra FFs incase of a negative number.
+            __int64 nWidthMask = 0 | (__int64)(pow((float) 16.0, (int) unWidth) - 1);
+            //Mask extra FFs with signal value
+            n64SigVal = n64SigVal &  nWidthMask;
+
+			if(eNumFormat == HEXADECIMAL)
+				sSigInfoTmp.m_omRawValue.Format(_T("0x%X"), n64SigVal);
+			else
+				sSigInfoTmp.m_omRawValue.Format(_T("%d"), n64SigVal);
+
+
+            // Assign the unit, if there is any
+            sSigInfoTmp.m_omUnit = psCurrSignal->m_omStrSignalUnit;
+
+            // Replace signal value if any related signal descriptor is defined
+            CSignalDescVal* pouCurrSigDesc = psCurrSignal->m_oSignalIDVal;
+            BOOL bFoundDesc = FALSE;
+            while ((NULL != pouCurrSigDesc) && !bFoundDesc)
+            {
+                if (pouCurrSigDesc->m_n64SignalVal == n64SigVal)
+                {
+                    sSigInfoTmp.m_omEnggValue = pouCurrSigDesc->m_omStrSignalDescriptor;
+                    bFoundDesc = TRUE;
+                }
+                else
+                {
+                    pouCurrSigDesc = pouCurrSigDesc->m_pouNextSignalSignalDescVal;
+                }
+            }
+
+            if (bFoundDesc == FALSE) // Signal value not defined
+            {
+                // Calculate engineering value
+                double dPhysical = static_cast<double>(n64SigVal);
+                dPhysical *= psCurrSignal->m_fSignalFactor;
+                dPhysical += psCurrSignal->m_fSignalOffset;
+                sSigInfoTmp.m_omEnggValue.Format(defSTR_FORMAT_PHY_VALUE, dPhysical);
+            }
+            odSigInfoArray.Add(sSigInfoTmp); // Finally add it to the target array
+
+            psCurrSignal = psCurrSignal->m_psNextSignalList;
+        }
+    }
+	if (0 < odSigInfoArray.GetSize())
+    {
+        bReturn = TRUE;
+    }
+    return bReturn;
+}
+
+void CMsgInterpretationJ1939::vSetJ1939Database(const SMSGENTRY* psCurrMsgEntry)
+{
+    if (psCurrMsgEntry != NULL)
+    {
+        const SMSGENTRY* psMsgEntry = psCurrMsgEntry;
+        while (psMsgEntry != NULL)
+        {
+            SMSGENTRY::bUpdateMsgList(m_psMsgRoot, psMsgEntry->m_psMsg);
+            psMsgEntry = psMsgEntry->m_psNext;
+        }
+    }
+}
+/*******************************************************************************
+ Function Name    :  n64GetSignalValue
+ Input(s)         :  BYTE byMsgByteVal,
+                     UINT unBitNum,
+                     UINT unLength,
+                     BYTE &bySigVal
+ Output           :  BYTE &bySigVal
+ Functionality    :  Function gets the signal value corresponding to
+                     the byte value and bit passed in the parameter
+                     for given message.
+ Member of        :  CMsgInterpretationJ1939
+ Friend of        :      -
+ Author(s)        : Pradeep Kadoor
+ Date Created     :
+ Modifications    :  
+*******************************************************************************/
+__int64 CMsgInterpretationJ1939::n64GetSignalValue(register CByteArray* pMsgArray,
+                                                UINT byteNumber,
+                                                UINT unBitNum,
+                                                UINT unLength,
+                                                BYTE bySigType, 
+                                                EFORMAT_DATA bSigDataFormat)
+{
+    __int64 n64SigVal = 0;
+
+
+    n64SigVal = n64GetSignalValueInBits(pMsgArray, byteNumber, unBitNum, unLength, bSigDataFormat);
+    //*************************** added on 31/05/2002 ****************
+    // check for negative numbers 
+    if(bySigType == CHAR_INT)
+    {
+        // Extend the sign bit to get signed value
+        // Use Utility class instead of global function
+        CUtilFunctions::s_vExtendSignBit( n64SigVal, unLength);
+    }
+    //**************************************************************
+    return n64SigVal;
+}
+/******************************************************************************
+Function Name  :  vClear
+Input(s)       :  
+Output         :  
+Functionality  :  
+Member of      :  CMsgInterpretationJ1939
+Friend of      :  -
+Author(s)      :  Pradeep Kadoor
+Date Created   :  16/02/2011
+Modifications  :  
+******************************************************************************/
+void CMsgInterpretationJ1939::vClear()
+{
+    SMSGENTRY::vClearMsgList(m_psMsgRoot);
+}
+/******************************************************************************
+Function Name  :  vCopy
+Input(s)       :  
+Output         :  
+Functionality  :  
+Member of      :  CMsgInterpretationJ1939
+Friend of      :  -
+Author(s)      :  Pradeep Kadoor
+Date Created   :  16/02/2011
+Modifications  :  
+******************************************************************************/
+void CMsgInterpretationJ1939::vCopy(CMsgInterpretationJ1939* pDest) const
+{    
+    if ( pDest != NULL)
+    {
+        pDest->vClear();
+        pDest->m_eNumFormat = m_eNumFormat;
+        //Update the Msg list
+        SMSGENTRY* pDestRoot = NULL;
+        SMSGENTRY* pTempSrc = m_psMsgRoot;
+        while (pTempSrc != NULL)
+        {
+            SMSGENTRY::bUpdateMsgList(pDestRoot, pTempSrc->m_psMsg);
+            pTempSrc = pTempSrc->m_psNext;
+        }
+        pDest->vSetJ1939Database(pDestRoot);
+    }
+}
+
+
+/* IMPLEMENTATION CLASS CMsgInterpretationJ1939 ENDS */
 //venkat
 BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
                                         const UCHAR *ucData,

@@ -194,6 +194,10 @@ typedef CList<int,int>      defomIntegerList;
 #define defHEADER_FILE_NAME        _T("_Unions.h")
 #define defUNION                _T("typedef union \n{\n")
 
+/* J1939 structures used in unions.h */
+#define defMSGPROPS_J1939        _T("\tSTJ1939_MSG_PROPERTIES m_sMsgProperties;\n")
+#define defDLCJ1939             _T("\tunsigned int m_unDLC;\n")
+
 /* DEFAULT STRUCTURES USED IN UNIONS.H */
 #define defSIGNALMEMBER         _T("m_sWhichBit")
 #define defTYPEDEF_STRUCT       _T("\ntypedef struct \n{\n")
@@ -215,6 +219,7 @@ typedef CList<int,int>      defomIntegerList;
 #define defINTEGER64            _T("__int64")
 #define defUNION_FORMAT_STRING  _T("\t    %-12s %-16s : %2d ;\n")
 
+#define defDATA_BYTE_ARRAY_J1939   _T("\tunsigned char      m_aucData[%d];\n") 
 #define defDATA_BYTE_ARRAY         _T("\tunsigned char      m_aucData[8];\n")
 #define defDATA_WORD_ARRAY         _T("\tunsigned short int m_auwData[4];\n")
 #define defDATA_LONG_ARRAY         _T("\tunsigned long  int m_aulData[2];\n")
@@ -299,6 +304,13 @@ typedef CList<int,int>      defomIntegerList;
 #define PERIOD                  '.'
 #define DATABASE_FILTER         _T("*.dbf|*.dbf||")
 
+//CANoe Database Support
+#define CANOE_DATABASE_EXTN     _T("DBC")
+
+//For OLD Version Compatiability
+#define CANVAS_DATABASE_HEADER         _T("//******************************CANvas Messages and signals Database Ver1.0******************************//")
+#define CANVAS_DATABASE_HEADER_NEW     _T("//******************************CANvas Messages and signals Database ******************************//")
+
 #define DATABASE_HEADER         _T("//******************************BUSMASTER Messages and signals Database Ver1.0******************************//")
 #define DATABASE_HEADER_NEW     _T("//******************************BUSMASTER Messages and signals Database ******************************//")
 #define DATABASE_HEADER_ALL     _T("//******************************BUSMASTER Messages and signals Database Ver1.0******************************//\n\n// Message Format: MSG,MSGID,MSG_LENGTH,NO_OF_SIGNALS,DATA_FORMAT\n// Signal Format: SIG_NAME,SIG_LENGTH,WHICH_BYTE_IN_MSG,START_BIT,SIG_TYPE,MAX_VAL,MIN_VAL,SIG_DATA_FORMAT,SIG_OFFSET,SIG_FACTOR,SIG_UNIT\n// Value Description Format: DESCRIPTOR,VALUE\n//************************************************************************************************************//\n")
@@ -347,7 +359,7 @@ This operation will convert the message code from 11 to 29 bits.\nDo you want to
 #define MAX_LMT_FOR_STD_MSG_ID  2048
 #define defMAX_LMT_EXTD_MSG_ID 0x20000000
 #define defMAX_BITS             64
-#define defMAX_SIGNALS		128
+#define defMAX_SIGNALS			128
 #define defBITS_IN_BYTE         8
 #define defMAX_BYTE             8
 #define defBITS_IN_FOUR_BYTE    32
@@ -357,6 +369,7 @@ This operation will convert the message code from 11 to 29 bits.\nDo you want to
 #define defSIZE_OF_ERROR_BUFFER 1024
 
 #define NEW_DATABASE_NAME       _T("New_Database")
+#define NEW_DATABASE_NAME_J1939 _T("New_DatabaseJ1939")
 #define CHAR_BOOL               'B'
 #define CHAR_UINT               'U'
 #define CHAR_INT                'I'

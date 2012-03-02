@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="EnableLogging" xml:lang="en-us">
+  <title>EnableLogging : To start logging</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>UINT EnableLogging ( )</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function will enable logging. The return value of this function will be 0 or 1.
+</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>-</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>A value zero indicate failure condition while a value 1 indicate a success condition. This function can return 0 in case logging is already ON</p>
+    </section>
+  </refbody>
+</reference>

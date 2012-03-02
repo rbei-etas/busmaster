@@ -31,10 +31,14 @@
 #include "DIL_Interface_extern.h"
 
 #include "DIL_CAN.h"
+
+#include "DILI_J1939.h"
 #include "DIL_Interface.h"
 
 
 static CDIL_CAN* sg_pouDIL_CAN = NULL;
+
+static CDILI_J1939* sg_pouDILI_J1939 = NULL;
 
 // CDILApp
 
@@ -107,7 +111,26 @@ USAGEMODE HRESULT DIL_GetInterface(ETYPE_BUS eBusType, void** ppvInterface)
         }
         break;
         case MCNET:
-        case J1939: 
+       break;
+        case J1939:
+        {
+            if (NULL == sg_pouDILI_J1939)
+            {
+                if ((sg_pouDILI_J1939 = new CDILI_J1939) == NULL)
+                {
+                    ASSERT(FALSE);
+                    hResult = S_FALSE;
+                }
+                else
+                {
+                    sg_pouDILI_J1939->InitInstance();
+                }
+            }
+            // Else the object has been existing already
+            *ppvInterface = (void *) sg_pouDILI_J1939; /* Doesn't matter even 
+                                                if sg_pouFP_CAN is null */
+        }
+        break;
         default: 
         {
             hResult = S_FALSE;

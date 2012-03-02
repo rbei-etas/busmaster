@@ -45,6 +45,13 @@ BOOL CFunctionEditorBase::bInitBusInfo(SBUS_SPECIFIC_INFO& sInfo, eTYPE_BUS eBus
             sInfo.m_omHeaderFileName = CGlobalObj::ouGetObj(sInfo.m_eBus).m_omMsgStructFile;
         }
         break;
+        case J1939:
+        {
+            sInfo.m_eBus = J1939;
+            sInfo.m_omBusName = _T("J1939");
+            sInfo.m_omHeaderFileName = CGlobalObj::ouGetObj(sInfo.m_eBus).m_omMsgStructFile;
+        }
+        break;
     }
     return bReturn;
 

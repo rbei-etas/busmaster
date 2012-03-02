@@ -38,6 +38,11 @@ CExportLogFileDlg::CExportLogFileDlg(ETYPE_BUS eBus, CWnd* pParent /*=NULL*/)
         m_pacFields = (CHAR_ARRAY_20*) acFields_CAN;
         m_unNoOfFileds = defNO_OF_FIELDS_CAN;
     }
+    else if (m_eBus == J1939)
+    {
+        m_pacFields = (CHAR_ARRAY_20*)acFields_J1939;
+        m_unNoOfFileds = defNO_OF_FIELDS_J1939;
+    }
 }
 
 CExportLogFileDlg::~CExportLogFileDlg()
@@ -164,7 +169,9 @@ void CExportLogFileDlg::vEnableDisableControls()
     m_omRemoveAllFields.EnableWindow( bRemoveAllButtonEnable );
 }
 void CExportLogFileDlg::vPopulateAvailableList()
-{    
+{
+    USES_CONVERSION;
+
 	// Insert filed text
     for( UINT unIndex = 0; unIndex < m_unNoOfFileds; unIndex++)
     {
@@ -174,7 +181,9 @@ void CExportLogFileDlg::vPopulateAvailableList()
 }
 
 void CExportLogFileDlg::OnBnClickedButtonSelectall()
-{    
+{
+    USES_CONVERSION;
+
 	int nSelectedItem = m_omAvailableList.GetCurSel();
 	DWORD_PTR nFieldIndex;
 	if( nSelectedItem != -1 )
@@ -205,6 +214,10 @@ BOOL CExportLogFileDlg::OnInitDialog()
     {
         omTitle += _T("CAN");
     }
+    else if (m_eBus == J1939)
+    {
+        omTitle += _T("J1939");
+    }
     SetWindowText(omTitle);
 	CDialog::OnInitDialog();
 	vPopulateAvailableList();
@@ -213,6 +226,8 @@ BOOL CExportLogFileDlg::OnInitDialog()
 }
 void CExportLogFileDlg::OnBnClickedConvert()
 {
+    USES_CONVERSION;
+
 	// Log File name and Excel File name
 
 	
@@ -269,6 +284,8 @@ void CExportLogFileDlg::OnLbnSelchangeLstSelected()
 
 void CExportLogFileDlg::OnBnClickedButtonSelectone()
 {
+    USES_CONVERSION;
+
 	// Get the selected item index
     int nSelectedItem = m_omAvailableList.GetCurSel();
     // If it is valid
@@ -303,6 +320,8 @@ void CExportLogFileDlg::OnBnClickedButtonSelectone()
 
 void CExportLogFileDlg::OnBnClickedButtonRemoveone()
 {
+    USES_CONVERSION;
+
 	// Get the selected item index
     int nSelectedItem = m_omSelectedList.GetCurSel();
     // If it is a valid index
@@ -351,6 +370,8 @@ void CExportLogFileDlg::OnBnClickedButtonRemoveone()
 
 void CExportLogFileDlg::OnBnClickedButtonRemoveall()
 {
+    USES_CONVERSION;
+
 	int nSelectedItem = m_omSelectedList.GetCurSel();
 	DWORD_PTR nFieldIndex;
 	if( nSelectedItem != -1 )

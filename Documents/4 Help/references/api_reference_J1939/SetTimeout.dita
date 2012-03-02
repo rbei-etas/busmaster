@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="EnableKeyHandlers" xml:lang="en-us">
+  <title>SetTimeout: To configure flow control timeouts of J1939 network </title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>UINT SetTimeout (BYTE TimeoutType, UINT TimeoutValue )</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function can be used to configure flow control timeouts in J1939 network.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+    </section>
+    <section>
+      <lines>TimeoutType - Timeout type. Possible values are
+a. Tb (0): Time interval between two packets in broadcast transmission.
+b. Tr (1): Maximum wait period for a sender without receiving response from the receiver.
+c.Th (2): Time interval between two &apos;Clear to Send&apos; message when delaying the data.
+d.T1 (3): Maximum wait period for a receiver when more packets were expected.
+e.T2 (4): Maximum wait period for a receiver to receive data packets after sending &apos;Clear to Send&apos; message.
+f.T3 (5): Maximum wait period for a sender to receive &apos;End of Message Acknowledgement&apos; after sending last data packet.
+g. T4 (6): Maximum wait period for a sender to receive another &apos;Clear to Send&apos; message after receiving one to delay the data.
+TimeoutValue(ms) - Value to be set for the corresponding timeout type.</lines>
+      <title>Returns</title>
+      <p>TRUE success. FALSE if the handler is already in the specified state</p>
+    </section>
+  </refbody>
+</reference>

@@ -216,6 +216,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Format\FormatMsgJ1939.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\FrameProcessor.cpp"
 				>
 			</File>
@@ -228,11 +232,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\FrameProcessor_J1939.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\FrameProcessor_stdafx.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\LogObjectCAN.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\LogObjectJ1939.cpp"
 				>
 			</File>
 			<File
@@ -250,6 +262,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\BaseFrameProcessor_J1939.h"
+				>
+			</File>
+			<File
 				RelativePath=".\BaseLogObject.h"
 				>
 			</File>
@@ -259,6 +275,10 @@
 			</File>
 			<File
 				RelativePath=".\Format\FormatMsgCommon.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Format\FormatMsgJ1939.h"
 				>
 			</File>
 			<File
@@ -278,11 +298,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\FrameProcessor_J1939.h"
+				>
+			</File>
+			<File
 				RelativePath=".\FrameProcessor_stdafx.h"
 				>
 			</File>
 			<File
+				RelativePath=".\Logger_CommonDataTypes.h"
+				>
+			</File>
+			<File
 				RelativePath=".\LogObjectCAN.h"
+				>
+			</File>
+			<File
+				RelativePath=".\LogObjectJ1939.h"
 				>
 			</File>
 			<File

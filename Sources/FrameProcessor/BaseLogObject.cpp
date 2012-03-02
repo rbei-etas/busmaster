@@ -25,6 +25,7 @@
 
 #include "FrameProcessor_stdafx.h"
 #include "BaseLogObject.h"            // For CBaseLogObject class declaration
+#include "../DataTypes/DIL_Datatypes.h"
 
 const int SIZE_CHAR = sizeof(TCHAR);
 #define ENOENT          2
@@ -37,13 +38,64 @@ const UINT DEFAULT_FILE_SIZE_IN_BYTES = DEFAULT_FILE_SIZE_IN_MBYTES * MB_VALUE;
 #define MAX_LOG_FILE_IN_GRP              9
 #define FILE_COUNT_STR                    _T("_%d")
 
-/**
- * Contructor
- */
-CBaseLogObject::CBaseLogObject()                       
+
+#define BUS_LOG_HEADER        _T("***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***")
+#define BUS_LOG_START         _T("***[START LOGGING SESSION]***")
+#define BUS_LOG_STOP          _T("***[STOP LOGGING SESSION]***")
+#define BUS_LOG_START_DATE_TIME \
+                              _T("***START DATE AND TIME %d:%d:%d %d:%d:%d:%d***")
+#define BUS_LOG_END_DATE_TIME _T("***END DATE AND TIME %d:%d:%d %d:%d:%d:%d***")
+#define BUS_LOG_HEXFORMAT     _T("***HEX***")
+#define BUS_LOG_DECFORMAT     _T("***DEC***")
+#define BUS_LOG_ABSMODE       _T("***ABSOLUTE MODE***")
+#define BUS_LOG_RELMODE       _T("***RELATIVE MODE***")
+#define BUS_LOG_SYSMODE       _T("***SYSTEM MODE***")
+
+
+//********************************************************************************
+//	Function Name	 	: CBaseLogObject
+//	Input(s)	      	: none
+//	Output				: none
+//	Description			: Contructor
+//	Member of			: CBaseLogObject
+//	Friend of			: None
+//	Author				: Arun Kumar
+//	Creation Date		: 10/11/06
+//	Modifications		:
+//********************************************************************************
+/*CBaseLogObject::CBaseLogObject()
 {
-    // Initialise the logging block
-    m_sLogInfo.vClear();
+    vResetValues();
+}*/
+
+/******************************************************************************
+Function Name	: CBaseLogObject
+Input(s)	    : -
+Output			: -
+Description		: Overloaded contructor
+Member of		: CBaseLogObject
+Author			: Ratnadip Choudhury
+Creation Date	: 2/12/11
+Modifications   :
+******************************************************************************/
+CBaseLogObject::CBaseLogObject(CString omVersion):m_omVersion(omVersion)
+{
+    vResetValues();
+}
+
+/******************************************************************************
+Function Name	: vResetValues
+Input(s)	    : -
+Output			: -
+Description		: Resets values of certain data members
+Member of		: CBaseLogObject
+Author			: Ratnadip Choudhury
+Creation Date	: 2/12/11
+Modifications   :
+******************************************************************************/
+void CBaseLogObject::vResetValues(void)
+{
+    m_sLogInfo.vClear();    // Initialise the logging block
 
     m_omCurrLogFile = _T("");
 
@@ -83,7 +135,7 @@ CBaseLogObject& CBaseLogObject::operator=(const CBaseLogObject& RefObj)
 			m_omCurrLogFile = m_omCurrLogFile.Left(nIdx);
 			m_omCurrLogFile += ".log";
 		}
-		m_omCurrLogFile = omAddGroupCountToFileName(m_nCurrFileCnt, m_omCurrLogFile.GetBuffer(MAX_PATH));
+		m_omCurrLogFile = omAddGroupCountToFileName(m_nCurrFileCnt, m_omCurrLogFile.GetBuffer(MAX_CHAR));
 	}
 
     Der_CopySpecificData(&RefObj);
@@ -428,4 +480,54 @@ DWORD CBaseLogObject::dwGetFileSize(CString omFileName)
         omfile.Close();
     }
     return dwFileSize;
+}
+
+void CBaseLogObject::vFormatHeader(CString& omHeader)
+{
+    omHeader = _T("***BUSMASTER ");
+
+    omHeader += m_omVersion;
+    omHeader += _T("***");
+    omHeader += L'\n';
+    omHeader += BUS_LOG_HEADER;
+    omHeader += L'\n';
+    omHeader += BUS_LOG_START;
+    omHeader += L'\n';
+
+    // Log current date and time as the start date and time of logging process
+    SYSTEMTIME CurrSysTime;
+    GetLocalTime(&CurrSysTime);
+    CString omBuf;
+    omBuf.Format(BUS_LOG_START_DATE_TIME, CurrSysTime.wDay, CurrSysTime.wMonth,
+        CurrSysTime.wYear, CurrSysTime.wHour, CurrSysTime.wMinute, 
+        CurrSysTime.wSecond, CurrSysTime.wMilliseconds);
+    omHeader += omBuf;
+    omHeader += L'\n';
+
+    omHeader += (m_sLogInfo.m_eNumFormat == HEXADECIMAL) ? BUS_LOG_HEXFORMAT : BUS_LOG_DECFORMAT;
+    omHeader += L'\n';
+    switch (m_sLogInfo.m_eLogTimerMode) // Time Mode
+    {
+        case TIME_MODE_ABSOLUTE: omHeader += BUS_LOG_ABSMODE; break;
+        case TIME_MODE_RELATIVE: omHeader += BUS_LOG_RELMODE; break;
+        case TIME_MODE_SYSTEM:   omHeader += BUS_LOG_SYSMODE; break;
+        default: ASSERT(FALSE); break;
+    }
+    omHeader += L'\n';
+}
+
+void CBaseLogObject::vFormatFooter(CString& omFooter)
+{
+    // Log current date and time as the stop date and time of logging process
+    SYSTEMTIME CurrSysTime;
+    GetLocalTime(&CurrSysTime);
+    CString omBuf;
+    omBuf.Format(BUS_LOG_END_DATE_TIME, CurrSysTime.wDay, CurrSysTime.wMonth,
+        CurrSysTime.wYear, CurrSysTime.wHour, CurrSysTime.wMinute, 
+        CurrSysTime.wSecond, CurrSysTime.wMilliseconds);
+    omFooter += omBuf;
+    omFooter += L'\n';
+
+    omFooter += BUS_LOG_STOP;
+    omFooter += L'\n';
 }

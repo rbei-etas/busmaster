@@ -1084,6 +1084,17 @@ void CRxMsgList::vSetSortableMsgColumns(SMSGWNDHDRCOL& sHdrColStruct, ETYPE_BUS 
 		m_pbSortableColumn[sHdrColStruct.m_byChannel] = true;
 		m_pbSortableColumn[sHdrColStruct.m_byIDPos]   = true;
 	}
+	else if(eBusType == J1939)
+	//If the BUS is J1939,Set the Time field, Channel, CANID, PGN, Type, Src and Dest fields as Sortable
+	{
+		m_pbSortableColumn[sHdrColStruct.m_byTimePos]   = true;
+		m_pbSortableColumn[sHdrColStruct.m_byChannel]   = true;
+		m_pbSortableColumn[sHdrColStruct.m_byIDPos]	    = true;
+		m_pbSortableColumn[sHdrColStruct.m_byPGNPos]    = true;
+		//m_pbSortableColumn[sHdrColStruct.m_byMsgTypePos]= true;
+		m_pbSortableColumn[sHdrColStruct.m_bySrcPos]    = true;
+		m_pbSortableColumn[sHdrColStruct.m_byDestPos]   = true;
+	}
 }
 
 /*******************************************************************************

@@ -48,12 +48,16 @@ class CExecuteFunc
 public:
     void vEnableDisableAllTimers(BOOL);
     BOOL bInitErrorStruct(CStringArray &omErrorArray);
+    BOOL bInitEventStructJ1939(CStringArray &omErrorArray);
  
     // Execute key handlers
     VOID vExecuteOnKeyHandler(UCHAR ucKey);
     // Execute message handlers
-    VOID vExecuteOnMessageHandlerCAN(STCAN_MSG sRxMsgInfo);    
-    VOID vExecuteOnErrorHandler(eERROR_STATE eErrorCode, SCAN_ERR sErrorVal );        
+    VOID vExecuteOnMessageHandlerCAN(STCAN_MSG sRxMsgInfo);
+    VOID vExecuteOnPGNHandler(void* pRxMsg);
+    VOID vExecuteOnErrorHandler(eERROR_STATE eErrorCode, SCAN_ERR sErrorVal );
+    VOID vExecuteOnDataConfHandlerJ1939(UINT32 unPGN, BYTE bySrc, BYTE byDest, BOOL bSuccess);
+    VOID vExecuteOnAddressClaimHandlerJ1939(BYTE byAddress);
     VOID vExecuteOnDLLHandler(eDLLHANDLER eDLLHandler);
 
     // Initialise all structure
@@ -132,8 +136,10 @@ private:
     BOOL bInitDLLStruct(CStringArray &omErrorArray);
     // Read .Def File and add function name.
     BOOL bReadDefFile(CStringArray &omErrorArray);
-        
-	void vInitialiseInterfaceFnPtrsCAN(HMODULE);    
+    
+    void vInitialiseInterfaceFnPtrsJ1939(HMODULE);
+	void vInitialiseInterfaceFnPtrsCAN(HMODULE);
+    void vExecuteOnEventHandlerJ1939(UINT32 unPGN, BYTE bySrc, BYTE byDest, BOOL bSuccess, BYTE byType);
     CStringArray m_omStrArrayTimerHandlers;
     CStringArray m_omStrArrayKeyHandlers;
     CStringArray m_omStrArrayMsgHandlers;

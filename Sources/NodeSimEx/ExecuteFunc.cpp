@@ -26,11 +26,14 @@
 #include "NodeSimEx_StdAfx.h"
 #include "Include/Basedefs.h"
 #include "Include/Dil_CommonDefs.h"
+#include "Datatypes/J1939_Datatypes.h"
 #include "ExecuteFunc.h"
 #include "AppServicesCAN.h"
+#include "AppServicesJ1939.h"
 #include "GlobalObj.h"
 //defination of exported class to DLL
 #include "Export_UserDllCAN.h"
+#include "Export_UserDllJ1939.h"
 //accessin manager class object
 #include "SimSysManager.h"
 
@@ -281,12 +284,105 @@ BOOL CExecuteFunc::bInitStruct(CStringArray &omErrorArray)
 			    bReturn = bInitErrorStruct(omErrorArray);
             }
 		}
+        if (bReturn == TRUE)
+        {
+            if (m_eBus == J1939)
+            {
+                bReturn = bInitEventStructJ1939(omErrorArray);
+            }
+        }
 		if(bReturn == TRUE)
 		{
 			bReturn = bInitDLLStruct(omErrorArray);
 		}
 	}
     return bReturn;
+}
+
+/******************************************************************************/
+/*  Function Name    :  vExecuteOnPGNHandler                              */    
+/*  Input(s)         :  J1939 msg pointer                                            */    
+/*  Output           :                                                        */    
+/*  Functionality    :  Excutes message handler corresponding to PGN ID   */
+/*                      passed as parameter                                   */
+/*  Member of        :  CExecuteFunc                                          */    
+/*  Friend of        :      -                                                 */    
+/*  Author(s)        :  Pradeep Kadoor                                        */    
+/*  Date Created     :  28.02.2002                                            */    
+/******************************************************************************/
+
+VOID CExecuteFunc::vExecuteOnPGNHandler(void* pRxMsg)
+{
+    VALIDATE_POINTER_RETURN_VOID(pRxMsg);
+
+    STJ1939_MSG* psJ1939Msg = (STJ1939_MSG*)pRxMsg;
+    // Search for msg name and msg ID handler matching the message ID.
+    UINT unPGN = psJ1939Msg->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN();
+
+    // Check for Id in Name/Id specific Handler
+    SMSGHANDLERDATA sMsgData = m_omMsgHandlerMap[unPGN];
+
+    // If not found
+    if ( sMsgData.m_pFMsgHandler == NULL )
+    {
+        // Find the Id in the Range Handlers
+        sMsgData.m_pFMsgHandler = pFSearchMsgIdRangeHandler(unPGN);
+        // If not found
+        if(sMsgData.m_pFMsgHandler == NULL)
+        {
+            // Check for generic Handler
+            if(m_pFGenericMsgHandler != NULL )
+            {
+                sMsgData.m_pFMsgHandler = m_pFGenericMsgHandler;
+                // Add Generic Message Handler Proc Address in to the CMap
+                // This will avoid search for this ID next time
+                m_omMsgHandlerMap[unPGN] = sMsgData;
+            }
+        }
+        // The ID comes under a range. Store the Range Handler in the CMap
+        else
+        {
+            // This will avoide search for the same message ID next time
+            m_omMsgHandlerMap[unPGN] = sMsgData;
+        }
+    }
+    
+    // If the handler found then proceed further
+    if(sMsgData.m_pFMsgHandler != NULL)
+    {
+        m_bStopMsgHandlers = FALSE;
+        // Check for Message Type Big or Little Endian
+        // and reverse data bytes if it is not in intel format
+        if( sMsgData.nMsgFormat != -1 && sMsgData.nMsgFormat != DATA_FORMAT_INTEL)
+        {
+            register BYTE byTmp;
+            register BYTE * pbyMsgData = psJ1939Msg->m_pbyData;
+            register UINT unLimit = sMsgData.unDLC / 2;
+
+            for ( register UINT nIndex = 0; nIndex < unLimit; nIndex++)
+            {
+                register UINT unTempIndex = sMsgData.unDLC - 1 - nIndex;
+                byTmp = pbyMsgData[nIndex];
+                pbyMsgData[nIndex] = pbyMsgData[unTempIndex];
+                pbyMsgData[unTempIndex] = byTmp;
+            }
+        }
+		// Catch user program errors here
+		try
+		{
+			sMsgData.m_pFMsgHandler(psJ1939Msg);
+		}
+		catch(...)
+		{
+			char acError[256];
+			sprintf( acError,
+				     defSTR_ERROR_IN_PGN_PROG,
+                     psJ1939Msg->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN() );
+			// Display the error information in the Trace window
+			gbSendStrToTrace(acError);
+		}
+	}
+        
 }
 
 /******************************************************************************/
@@ -517,6 +613,58 @@ VOID CExecuteFunc::vExecuteOnErrorHandler(eERROR_STATE eErrorCode,SCAN_ERR sErro
             unErrorCount++;
         }
     }
+}
+void CExecuteFunc::vExecuteOnEventHandlerJ1939(UINT32 unPGN, BYTE bySrc, BYTE byDest, BOOL bSuccess, BYTE byType)
+{
+    UINT unEventHandlerCount   = 0;
+    BOOL bEventHandlerExecuted = FALSE;
+    UINT unEventCount          = 0; 
+
+    unEventHandlerCount        = (COMMANUINT)m_omStrArrayEventHandlers.GetSize();
+
+    if(m_asUtilThread[defEVENT_HANDLER_THREAD].m_hThread == NULL )
+    {
+        while((unEventCount < unEventHandlerCount) && (bEventHandlerExecuted != TRUE))
+        {
+            if(m_psOnEventHandlers[unEventCount].m_byEventType == byType)
+            {
+                if(m_psOnEventHandlers[unEventCount].m_pFEventHandlers!=NULL)
+                {
+                    m_psOnEventHandlers[unEventCount].m_unPGN       = unPGN;
+                    m_psOnEventHandlers[unEventCount].m_bySrc       = bySrc;
+                    m_psOnEventHandlers[unEventCount].m_byDest      = byDest;
+                    m_psOnEventHandlers[unEventCount].m_bSuccess    = bSuccess;
+
+					//pass the pointer to this object to access thread
+					m_psOnEventHandlers[unEventCount].m_pCExecuteFunc=this;
+					// Get handle of thread and assign it to pulic data member
+                    // in app class. This will be used to terminate the thread.
+					
+                    CWinThread *pomThread = NULL ;
+                    pomThread = AfxBeginThread(unEventHandlerProc, 
+                           &m_psOnEventHandlers[unEventCount] );
+                    if(pomThread != NULL )
+                    {
+                       m_asUtilThread[defEVENT_HANDLER_THREAD].m_hThread
+                               = pomThread->m_hThread;
+                    }
+                }
+                bEventHandlerExecuted = TRUE;
+            }
+            unEventCount++;
+        }
+    }
+}
+/* Executes data confirmation event */ 
+VOID CExecuteFunc::vExecuteOnDataConfHandlerJ1939(UINT32 unPGN, BYTE bySrc, BYTE byDest, BOOL bSuccess)
+{
+    vExecuteOnEventHandlerJ1939(unPGN, bySrc, byDest, bSuccess, 0x0);
+}
+
+/* Executes address claim event */ 
+VOID CExecuteFunc::vExecuteOnAddressClaimHandlerJ1939(BYTE byAddress)
+{
+    vExecuteOnEventHandlerJ1939(0, byAddress, 0, 0, 0x1);
 }
 /******************************************************************************/
 /*  Function Name    :  vExecuteOnDLLHandler                                  */    
@@ -1202,6 +1350,93 @@ BOOL CExecuteFunc::bInitErrorStruct(CStringArray &omErrorArray)
                                                        sizeof(acErrorMsg));
                         omStrErrorMessage.Format( defSTR_ERROR_LOADING_HANDLER,
                                                   defSTR_ERROR_HANDLER,
+                                                  acErrorMsg );
+                        //Display the error
+                        /*AfxMessageBox( omStrErrorMessage ,
+                                       MB_ICONERROR| MB_SYSTEMMODAL|MB_OK,0);*/
+                        omErrorArray.Add(omStrErrorMessage);
+                        pomException->Delete();
+                    }
+                    bReturn = FALSE;
+                }
+                END_CATCH_ALL
+             }
+        }
+        else
+        {
+             bReturn = FALSE;
+        }
+    }
+    return bReturn;
+}
+
+/******************************************************************************/
+/*  Function Name    :  bInitEventStruct                                      */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :                                                        */
+
+/*  Member of        :  CExecuteFunc                                          */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Pradeep Kadoor                                        */
+/*  Date Created     :  01.03.2003s                                           */
+/******************************************************************************/
+BOOL CExecuteFunc::bInitEventStructJ1939(CStringArray &omErrorArray)
+{
+    UINT unEventHandlerCount = 0;
+    BOOL bReturn     = TRUE;
+    unEventHandlerCount = (COMMANUINT)m_omStrArrayEventHandlers.GetSize();
+    if(unEventHandlerCount > 0)
+    {
+        if(m_psOnEventHandlers != NULL )
+        {
+            delete []m_psOnEventHandlers ;
+            m_psOnEventHandlers = NULL;
+        }
+        else
+        {
+            m_psOnEventHandlers = new SEVENTHANDLER[unEventHandlerCount];
+        }
+        if(m_psOnEventHandlers !=NULL)
+        {
+            for(UINT unCount = 0; unCount < unEventHandlerCount; unCount++)
+            {
+                CString omStrEventHandlerName = _T("");
+                omStrEventHandlerName = 
+                    m_omStrArrayEventHandlers.GetAt(unCount);
+                TRY
+                {
+                    /*USES_CONVERSION;*/
+                    m_psOnEventHandlers[unCount].m_pFEventHandlers = (PFEVENT_HANDLER)GetProcAddress(m_hDllModule, 
+                                                                        omStrEventHandlerName.GetBuffer(MAX_CHAR));
+                    if(m_psOnEventHandlers[unCount].m_pFEventHandlers == NULL)
+                    {
+                        bReturn = FALSE;
+                    }
+                    else
+                    {
+                        if(omStrEventHandlerName.Find(_T("DataConf")) != -1)
+                        {
+                            m_psOnEventHandlers[unCount].m_byEventType = 0x0;                            
+                        }
+                        else if(omStrEventHandlerName.Find(_T("AddressClaim")) != -1)
+                        {
+                            m_psOnEventHandlers[unCount].m_byEventType = 0x1;                            
+                        }
+                    }
+                    
+                }
+                CATCH_ALL(pomException)
+                {
+                    if(pomException != NULL )
+                    {
+                        TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                        CString omStrErrorMessage =_T("");
+                        // Get the exception error message
+                        pomException->GetErrorMessage(acErrorMsg,
+                                                       sizeof(acErrorMsg));
+                        omStrErrorMessage.Format( defSTR_ERROR_LOADING_HANDLER,
+                                                  defSTR_EVENT_HANDLER,
                                                   acErrorMsg );
                         //Display the error
                         /*AfxMessageBox( omStrErrorMessage ,
@@ -2468,7 +2703,199 @@ void CExecuteFunc::vInitialiseInterfaceFnPtrs(HMODULE hLib)
             vInitialiseInterfaceFnPtrsCAN(hLib);
         }
         break;
+        case J1939:
+        {
+            vInitialiseInterfaceFnPtrsJ1939(hLib);
+        }
+        break;
     }
+}
+
+/******************************************************************************/
+/*  Function Name    :  vInitialiseInterfaceFnPtrsJ1939                       */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  This function will be called during dll load to init  */
+/*                      Interface functions                                   */
+/*                                                                            */
+/*  Member of        :  CExecuteManager                                       */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bhart                                         */
+/*  Date Created     :  22.07.2004                                            */ 
+/*  Modification by  :  Anish kumar 
+    Modification on  :  19.12.05,Message enable/disable API initialization
+	                    is added(DllMsgOnOff),moved from CmainFrame,
+/******************************************************************************/
+void CExecuteFunc::vInitialiseInterfaceFnPtrsJ1939(HMODULE hModuleHandle)
+{
+    // For sending message, the DLL should call nWriteToCAN 
+    // function defined in the application. This is possible
+    // only when the DLL has address of nWriteToCAN. The DLL
+    // exports a function which the application must call to
+    // pass address of nWriteToCAN. This same concept is used 
+    // all interface functions.
+    DLLSENDPROC_J DllSendProc = (DLLSENDPROC_J) GetProcAddress(
+                  hModuleHandle, (char *) NAME_FUNC_SENGMSG_J);
+    if (DllSendProc != NULL)
+    {
+        (*DllSendProc)((APPSENDPROC_J)g_unSendMsg_J1939);
+    }
+
+    DLLONLINEOFFLINE_J DllOnlineProc = (DLLONLINEOFFLINE_J)(GetProcAddress(
+                  hModuleHandle, (char *) NAME_FUNC_ONLINE_J));
+    if (DllOnlineProc != NULL)
+    {
+        (*DllOnlineProc)((APPONLINEOFFLINE_J)g_unGoOnline_J1939);
+    }
+
+    DLLONLINEOFFLINE_J DllOfflineProc = (DLLONLINEOFFLINE_J)(GetProcAddress(
+                  hModuleHandle, (char *) NAME_FUNC_OFFLINE_J));
+    if (DllOfflineProc != NULL)
+    {
+        (*DllOfflineProc)((APPONLINEOFFLINE_J)g_unGoOnline_J1939);
+    }
+
+    DLLREQUESTPGN_J DllRequestPGNProc = (DLLREQUESTPGN_J)(GetProcAddress(
+                  hModuleHandle, (char *) NAME_FUNC_REQUESTPGN_J));
+    if (DllRequestPGNProc != NULL)
+    {
+        (*DllRequestPGNProc)((APPREQUESTPGN_J)g_unRequestPGN_J1939);
+    }
+
+    DLLACKMSG_J DllAckMsgProc = (DLLACKMSG_J)(GetProcAddress(
+                  hModuleHandle, (char *) NAME_FUNC_ACKMSG_J));
+    if (DllAckMsgProc != NULL)
+    {
+        (*DllAckMsgProc)((APPACKMSG_J)g_unSendAckMsg_J1939);
+    }
+
+    DLLCLAIMADDRESS_J DllClaimAdresProc = (DLLCLAIMADDRESS_J)(GetProcAddress(
+                  hModuleHandle, (char *) NAME_FUNC_CLAIMADDRESS_J));
+    if (DllClaimAdresProc != NULL)
+    {
+        (*DllClaimAdresProc)((APPCLAIMADDRESS_J)g_unClaimAddress_J1939);
+    }
+
+    DLLRQSTADDRESS_J DllRqstAdresProc = (DLLRQSTADDRESS_J)(GetProcAddress(
+                  hModuleHandle, (char *) NAME_FUNC_RQSTADDRESS_J));
+    if (DllRqstAdresProc != NULL)
+    {
+        (*DllRqstAdresProc)((APPRQSTADDRESS_J)g_unRequestAddress_J1939);
+    }
+
+    DLLCMDADDRESS_J DllCmdAdresProc = (DLLCMDADDRESS_J)(GetProcAddress(
+                  hModuleHandle, (char *) NAME_FUNC_CMDADDRESS_J));
+    if (DllCmdAdresProc != NULL)
+    {
+        (*DllCmdAdresProc)((APPCMDADDRESS_J)g_unCommandAddress_J1939);
+    }
+
+    DLLSETTIMEOUT_J DllSetTimeoutProc = (DLLSETTIMEOUT_J)(GetProcAddress(
+                  hModuleHandle, (char *) NAME_FUNC_TIMEOUT_J));
+    if (DllSetTimeoutProc != NULL)
+    {
+        (*DllSetTimeoutProc)((APPSETTIMEOUT_J)g_unSetTimeout_J1939);
+    }
+
+    DLLLOGPROC DllLogEnableProc = (DLLLOGPROC) 
+        GetProcAddress(hModuleHandle, 
+        (char *) NAME_FUNC_LOG_ENABLE);
+    if (DllLogEnableProc != NULL)
+    {
+        (*DllLogEnableProc)((LOGENABLE)gbEnableDisableLog);
+    }
+    
+    DLLLOGPROC DllLogDisableProc = (DLLLOGPROC) 
+        GetProcAddress(hModuleHandle, 
+        (char *) NAME_FUNC_LOG_DISABLE);
+    if (DllLogDisableProc != NULL)
+    {
+        (*DllLogDisableProc)((LOGENABLE)gbEnableDisableLog);
+    }
+
+    DLLLOGFILEPROC DllLogFileProc = (DLLLOGFILEPROC)
+        GetProcAddress(hModuleHandle,
+        (char *) NAME_FUNC_LOG_FILE);
+    if (DllLogFileProc != NULL)
+    {
+        (*DllLogFileProc)((WRITETOLOGFILE)gbWriteToLog);
+    }
+
+    DLLTRACEPROC DllTraceFileProc = (DLLTRACEPROC)
+        GetProcAddress(hModuleHandle,
+        (char *) NAME_FUNC_TRACE);
+    if (DllTraceFileProc != NULL)
+    {
+        (*DllTraceFileProc)((WRITETOTRACE)gbSendStrToTrace);
+    }
+
+    DLLSTARTSTOPTIMERPROC DllStartProc = 
+    (DLLSTARTSTOPTIMERPROC) GetProcAddress(hModuleHandle,
+    (char *) NAME_FUNC_START_TIMER);
+    if (DllStartProc != NULL)
+    {
+        (*DllStartProc)(gbSetResetTimer) ;
+    }
+
+    DLLSTARTSTOPTIMERPROC DllStopProc = 
+    (DLLSTARTSTOPTIMERPROC) GetProcAddress(hModuleHandle,
+    (char *) NAME_FUNC_STOP_TIMER);
+    if (DllStopProc != NULL)
+    {
+        (*DllStopProc)(gbSetResetTimer) ;
+    }
+
+    DLLSETTIMERVAL pFDllSetTimerValProc = 
+    (DLLSETTIMERVAL) GetProcAddress(hModuleHandle,
+    (char *) defNAME_FUNC_SET_TIMER_VAL);
+    if (pFDllSetTimerValProc != NULL)
+    {
+        (*pFDllSetTimerValProc)(gbSetTimerVal) ;
+    }
+    
+    DLLENABLEDISABLEALLHANDLERS pFDllSetAllHandlersProc = 
+    (DLLENABLEDISABLEALLHANDLERS) GetProcAddress(hModuleHandle,
+    (char *) defNAME_FUNC_ALL_HANDLERS);
+    if (pFDllSetAllHandlersProc != NULL)
+    {
+        (*pFDllSetAllHandlersProc)(gbActivateDeactivateHandlers) ;
+    }
+
+    DLLENABLEDISABLEMSGHANDLERS pFDllSetMsgHandlersProc = 
+    (DLLENABLEDISABLEMSGHANDLERS) GetProcAddress(hModuleHandle,
+    (char *) defNAME_FUNC_MSG_HANDLERS);
+    if (pFDllSetMsgHandlersProc != NULL)
+    {
+        (*pFDllSetMsgHandlersProc)(gbEnableDisableMsgHandlers) ;
+    }
+    
+    DLLENABLEDISABLEKEYHANDLERS pFDllSetKeyHandlersProc = 
+    (DLLENABLEDISABLEKEYHANDLERS) GetProcAddress(hModuleHandle,
+    (char *) defNAME_FUNC_KEY_HANDLERS);
+    if (pFDllSetKeyHandlersProc != NULL)
+    {
+        (*pFDllSetKeyHandlersProc)(gbEnableDisableKeyHandlers) ;
+    }
+
+    DLLENABLEDISABLEERRORHANDLERS pFDllSetErrorHandlersProc = 
+    (DLLENABLEDISABLEERRORHANDLERS) GetProcAddress(hModuleHandle,
+    (char *) defNAME_FUNC_ERROR_HANDLERS);
+    if (pFDllSetErrorHandlersProc != NULL)
+    {
+        (*pFDllSetErrorHandlersProc)(gbEnableDisableErrorHandlers) ;
+    }
+	DLLMSGTXONOFF DllMsgOnOff = (DLLMSGTXONOFF) GetProcAddress(
+                  hModuleHandle, (char *) NAME_FUNC_MSGTX_ON_OFF);
+    if (DllMsgOnOff != NULL)
+    {
+        (*DllMsgOnOff)(gbMsgTransmissionOnOff);
+    }
+	DLLGETNODEHANDLER DllGetNodeHandler = (DLLGETNODEHANDLER)GetProcAddress(
+						hModuleHandle,(char *) NAME_FUNC_SETDLLHANDLE);
+	if(DllGetNodeHandler != NULL)
+	{
+		(*DllGetNodeHandler)(ghGetNodeDllHandler);
+	}
 }
 
 /******************************************************************************/

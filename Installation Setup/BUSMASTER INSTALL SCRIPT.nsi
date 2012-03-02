@@ -34,7 +34,7 @@ BrandingText "RBEI BUSMASTER Installation"
 CRCCheck On
 
 ; Output filename
-Outfile "BUSMASTER_Installer_Ver_1.5.0.exe"
+Outfile "BUSMASTER_Installer_Ver_1.6.0.exe"
 
 Function .onInit
     # the plugins dir is automatically deleted when the installer exits
@@ -76,9 +76,11 @@ Section ""
     File ..\Sources\BIN\Release\CAN_Vector_XL.dll
     File ..\Sources\BIN\Release\Changelog.txt
     File ..\Sources\BIN\Release\DIL_Interface.dll
+	File ..\Sources\BIN\Release\DIL_J1939.dll
     File ..\Sources\BIN\Release\Filter.dll
     File ..\Sources\BIN\Release\FrameProcessor.dll
     File ..\Sources\BIN\Release\GCCDLLMakeTemplate_CAN
+	File ..\Sources\BIN\Release\GCCDLLMakeTemplate_J1939
     File ..\Sources\BIN\Release\NodeSimEx.dll
     File ..\Sources\BIN\Release\ProjectConfiguration.dll
     File ..\Sources\BIN\Release\PSDI_CAN.dll
@@ -104,7 +106,7 @@ Section ""
     ; Drivers
     File ..\Sources\BIN\Release\CanApi2.dll	; PEAK USB
     File ..\Sources\BIN\Release\canlib32.dll	; Kvaser CAN
-    File ..\Sources\BIN\Release\icsneo40.dll	; ICS neoVI
+	File ..\Sources\BIN\Release\ETASneo40.dll	; ES581 new driver    
     File ..\Sources\BIN\Release\vxlapi.dll	; Vector XL
 
     ; License

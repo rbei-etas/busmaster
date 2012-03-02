@@ -23,6 +23,7 @@
 
 
 #define defNO_OF_FIELDS_CAN   7
+#define defNO_OF_FIELDS_J1939 11
 // Fileld names
 
 typedef char CHAR_ARRAY_20[20];
@@ -35,6 +36,19 @@ __declspec( selectany ) char acFields_CAN[defNO_OF_FIELDS_CAN][20] = {  "Time",
                                                                 "DLC",
                                                                 "Data Bytes"
                                                              };
+__declspec( selectany ) char acFields_J1939[defNO_OF_FIELDS_J1939][20] = {  "Time",
+                                                                "Channel",
+                                                                "CAN ID",
+                                                                "PGN",
+                                                                "TYPE",
+                                                                "Source",
+                                                                "Destination", 
+                                                                "Priority",
+                                                                "Direction",
+                                                                "DLC",
+                                                                "Data Bytes"
+                                                             };
+
 #define defSTR_CSV_DIALOG_CAPTION    _T("Select Export File")
 //#define defSTR_CSV_FORMAT_SPECIFIER  _T("Comma Separated Values format (*.xls)|*.xls||")
 //#define defSTR_CSV_FORMAT            _T("xls")
@@ -69,7 +83,7 @@ private:
 	FILE *m_pExcelFile;
 	string m_strBuffer;
 	string m_strFieldBuffer;
-    UINT unSelectedField[defNO_OF_FIELDS_CAN];
+    UINT unSelectedField[defNO_OF_FIELDS_J1939];
 	UINT m_unNumOfFields;
 	UINT unGetLine();
 	void vPrintFields();

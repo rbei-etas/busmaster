@@ -42,6 +42,17 @@ HWND CGlobalObj::sm_hWndMDIParentFrame = NULL;
 CBaseAppServices* CGlobalObj::sm_pouITraceWndPtr = NULL;
 CBaseDIL_CAN* CGlobalObj::sm_pouDilCanInterface = NULL;
 
+static void sg_vDataConfEventFnJ1939(DWORD dwClient, UINT32 unPGN, BYTE bySrc, 
+                                BYTE byDest, BOOL bSuccess)
+{
+    CExecuteManager::ouGetExecuteManager(J1939).vManageOnDataConfHandlerJ1939(dwClient, unPGN, bySrc, 
+                                                                              byDest, bSuccess);
+}
+static void sg_vAddressClaimEventFnJ1939(DWORD dwClient, BYTE byAddress)
+{
+    CExecuteManager::ouGetExecuteManager(J1939).vManageOnAddressClaimHandlerJ1939(dwClient, byAddress);
+}
+
 CGlobalObj::CGlobalObj(ETYPE_BUS eBus)
 {
     m_eBus = eBus;
@@ -79,6 +90,12 @@ CBaseDIL_CAN* CGlobalObj::GetICANDIL()
         DIL_GetInterface(CAN, (void**)&(sm_pouDilCanInterface));
     }
     return sm_pouDilCanInterface;
+}
+CBaseDILI_J1939* CGlobalObj::GetIJ1939DIL(void)
+{
+    CBaseDILI_J1939* Result = NULL;
+    DIL_GetInterface(J1939, (void**)&(Result));
+    return Result;
 }
 CFunctionEditorDoc* CGlobalObj::pGetDocPtrOfFile(CString strTempName)
 {
@@ -289,6 +306,11 @@ CString CGlobalObj::omGetBusName(ETYPE_BUS eBus)
             omBusName = _T("CAN Bus");
         }
         break;
+        case J1939:
+        {
+            omBusName = _T("J1939 Bus");
+        }
+        break;
     }
     return omBusName;
 }
@@ -303,6 +325,11 @@ CString CGlobalObj::omGetBusSpecMsgHndlrName(ETYPE_BUS eBus)
             omName = defMESSAGE_HANDLER;
         }
         break;
+        case J1939:
+        {
+            omName = defPGN_HANDLER;
+        }
+        break;
     }
     return omName;
 }
@@ -314,6 +341,11 @@ CString CGlobalObj::omGetBusSpecMsgFieldName(ETYPE_BUS eBus)
         case CAN:
         {
             omName = _T("Message");
+        }
+        break;
+        case J1939:
+        {
+            omName = _T("PGN");
         }
         break;
     }
@@ -335,6 +367,28 @@ HRESULT CGlobalObj::RegisterNodeToDIL(BOOL bRegister, PSNODEINFO pNodeInfo)
                 //Set the buffer
                 hResult = CGlobalObj::GetICANDIL()->DILC_ManageMsgBuf(MSGBUF_ADD, 
                                     pNodeInfo->m_dwClientId, &(pNodeInfo->m_ouCanBufFSE));
+            }
+        }
+        break;
+        case J1939:
+        {
+            hResult = CGlobalObj::GetIJ1939DIL()->DILIJ_RegisterClient(bRegister, 
+									pNodeInfo->m_omStrNodeName.GetBuffer(MAX_CHAR),
+                                                        pNodeInfo->m_unEcuName,
+                                                        pNodeInfo->m_byPrefAddress,
+                                                        pNodeInfo->m_dwClientId);
+            if (((hResult == S_OK) || (hResult == ERR_CLIENT_EXISTS)) && (bRegister == TRUE))
+            {
+                //Set the buffer
+                hResult = CGlobalObj::GetIJ1939DIL()->DILIJ_ManageMsgBuf(MSGBUF_ADD, 
+                                    pNodeInfo->m_dwClientId, &(pNodeInfo->m_ouMsgBufVSE));
+
+                GetIJ1939DIL()->DILIJ_SetCallBckFuncPtr(pNodeInfo->m_dwClientId, 
+                                                            CLBCK_FN_LDATA_CONF, (PCLBCK_FN_LDATA_CONF)sg_vDataConfEventFnJ1939);
+                GetIJ1939DIL()->DILIJ_SetCallBckFuncPtr(pNodeInfo->m_dwClientId, 
+                                                            CLBCK_FN_BC_LDATA_CONF, (PCLBCK_FN_BC_LDATA_CONF)sg_vDataConfEventFnJ1939);
+                GetIJ1939DIL()->DILIJ_SetCallBckFuncPtr(pNodeInfo->m_dwClientId, 
+                                                            CLBCK_FN_NM_ACL, (PCLBCK_FN_NM_ACL)sg_vAddressClaimEventFnJ1939);
             }
         }
         break;

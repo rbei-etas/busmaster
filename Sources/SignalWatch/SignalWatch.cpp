@@ -23,6 +23,7 @@
 
 #include "SignalWatch_stdafx.h"
 #include "SignalWatch_CAN.h"
+#include "SignalWatch_J1939.h"
 #include "SignalWatch.h"
 
 
@@ -30,6 +31,7 @@
 #include "SignalWatch_extern.h"
 
 static CSignalWatch_CAN* sg_pouSW_CAN = NULL;
+static CSignalWatch_J1939* sg_pouSW_J1939 = NULL;
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -98,6 +100,12 @@ INT CSignalWatchApp::ExitInstance()
         delete sg_pouSW_CAN;
         sg_pouSW_CAN = NULL;
     }
+    if (NULL != sg_pouSW_J1939)
+    {
+        sg_pouSW_J1939->ExitInstance();
+        delete sg_pouSW_J1939;
+        sg_pouSW_J1939 = NULL;
+    }
 	CWinApp::ExitInstance();
 
 	return TRUE;
@@ -131,6 +139,24 @@ USAGEMODE HRESULT SW_GetInterface(ETYPE_BUS eBus,
         }
         break;                  
         case J1939:
+        {
+            if (NULL == sg_pouSW_J1939)
+            {
+                if ((sg_pouSW_J1939 = new CSignalWatch_J1939) == NULL)
+                {
+                    ASSERT(FALSE);
+                    hResult = S_FALSE;
+                }
+                else
+                {
+                    sg_pouSW_J1939->InitInstance();
+                }
+            }
+            // Else the object has been existing already
+            *ppvInterface = (void *) sg_pouSW_J1939; /* Doesn't matter even 
+                                                if sg_pouFP_CAN is null */
+        }
+        break;
         case MCNET:  
         default: hResult = S_FALSE; break;
     }

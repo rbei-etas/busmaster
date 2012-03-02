@@ -167,6 +167,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\J1939_DataTypes.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Log_Datatypes.cpp"
 				>
 			</File>
@@ -222,6 +226,10 @@
 			</File>
 			<File
 				RelativePath=".\Filter_Datatypes.h"
+				>
+			</File>
+			<File
+				RelativePath=".\J1939_DataTypes.h"
 				>
 			</File>
 			<File

@@ -101,8 +101,10 @@ private:
 	int m_nLogIndexSel;
     // To indicate programmed UI update
     BOOL m_bUpdatingUI;
-    CBaseFrameProcessor_CAN* m_pouFProcCAN;    
-    const SFILTERAPPLIED_CAN* m_psFilterConfigured;    
+    CBaseFrameProcessor_CAN* m_pouFProcCAN;
+    CBaseFrameProcessor_J1939* m_pouLoggerJ1939;
+    const SFILTERAPPLIED_CAN* m_psFilterConfigured;
+    const SFILTERAPPLIED_J1939* m_psJ1939Filter;
     BOOL m_bEditingON;
 	BOOL m_bLogON;
 	UINT m_unDispUpdateTimerId;

@@ -1,0 +1,237 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" [
+<!ENTITY Introduction '<xref/>'>]>
+<topic id="signal_watch" xml:lang="en-us">
+  <title>J1939</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2012"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Signal Graph</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section>
+      <title>Introduction</title>
+      <p>
+J1939 is a CAN-based layer 7 protocol mainly used in Truck and Bus control and communications. The typical properties of J1939 are:
+
+
+</p>
+      <ul>
+        <li>29 bit extended CAN identifier. </li>
+        <li>Point-to-point and broadcast communication. </li>
+        <li>Transmission up to 1785 bytes. </li>
+      </ul>
+      <image href="../images/J1939_Architecture.bmp"/>
+      <lines>
+         <b> J1939 Protocol Stack</b>
+       </lines>
+      <title>Parameter Group Number (PGN): </title>
+      <p>PGN identifies the Parameter Group (PG). PGs point to information of parameter assignments within 8 byte CAN data field, repetition rate and priority. The structure of PGN allows a total of 8672 different Parameter Groups per page – 2 pages are available.
+
+</p>
+      <image href="../images/J1939_PGN.bmp"/>
+      <lines>
+         <b> Parameter Group Number</b>
+       </lines>
+      <title>Transport protocol function </title>
+      <p>Transport protocol functions are mainly used for transmission and reception of multi-packet messages which can extend upto 1785 bytes. Function involves packaging into sequence of 8 byte size messages during transmission, re-assemble   of such data at the receiver side.
+
+</p>
+      <title>
+        <i>1. Multi-packet broadcast</i>
+       </title>
+      <p>A broadcast message is broadcasted to all nodes in the network. Sender node must first send a Broadcast Announce  Message (BAM) followed by sequence of 8 byte data.  Receiving nodes can prepare for reception if interested.</p>
+      <p>BAM message contains following information.</p>
+      <p>  
+
+ 1. PGN to be sent
+ </p>
+      <p> 2. Size of multi-packet message
+ </p>
+      <p> 3. Number of packages  
+
+</p>
+      <image href="../images/J1939_BAM.bmp"/>
+      <lines>
+        <b> Multi-packet broadcast data transfer</b>
+       </lines>
+      <title>
+         <i>2. Multi-packet peer-to-peer</i>
+       </title>
+      <p>     For destination specific data transmission, communication needs to be established hence subject to flow control. Transport protocol function is applied in three steps.</p>
+      <p><i>
+          <b> 1. Connection Initialization -</b>
+        </i> The sender of a message transmits a Request to Send message. The receiving node    responds with either a Clear to Send message or a Connection abort message incase it decides not to establish connection.
+
+</p>
+      <p><i>
+          <b> 2. Data Transfer -</b>
+        </i> Sender transmits data after receiving Clear to Send message.
+</p>
+      <p><i>
+          <b> 3. Connection Closure - </b>
+        </i>The receiver of the message , upon reception sends End of Message ACK message.</p>
+      <image href="../images/J1939_PEER_2_PEER.bmp"/>
+      <lines>
+        <b> Multi-packet peer-to-peer data transfer</b>
+       </lines>
+      <title>Network management </title>
+      <p>Each ECU in a J1939 network must hold at least one NAME and claim one 8 bit address for identification purposes. 
+</p>
+      <p><b>
+          <i> 1. ECU NAME - </i>
+        </b>64 bit identifier includes an indication of the ECU&apos;s main function performed at the ECU&apos;s address.
+
+</p>
+      <image href="../images/J1939_ECU_NAME.bmp"/>
+      <lines>
+         <b>J1939 NAME Fields </b>
+      </lines>
+      <p><b>
+          <i>2. ECU Address - </i>
+        </b>8-bit ECU address defines the source or destination for messages.
+</p>
+      <title>Address claiming procedure </title>
+      <p><b>The address claim feature considers two possible scenarios</b>
+
+</p>
+      <p><i>
+          <b>1. Sending an address claimed message (ACL) - </b>
+        </i>At the network startup, an ECU will cliam an address and send Address Claimed message. All ECUs receiving the address claim will record and verify the newly claimed address with their internal address table. In case of an address conflict, the ECU with the lowest NAME will succeed.
+
+</p>
+      <p><i>
+          <b>2. Request for Address Claimed message - </b>
+        </i>An ECU Requests ACL message from all nodes in the network and claims available address.
+</p>
+    </section>
+    <section>
+      <title>BUSMASTER.J1939</title>
+      <title>Initialisation</title>
+      <p>Prerequisite of employing the J1939 functionalities is getting hold of J1939 interface, and this is the sole purpose of this function. This will query for the available J1939 interface. Once this is available, the associated menu item and button will be disabled. The query operation involves DIL.J1939 interface initialisation, a J1939 client registration and finally the J1939 logger interface query and initialisation. Outcome of the query operation can be seen on the Trace window.
+
+</p>
+      <title>Configure Logging </title>
+      <p>This invokes the logging configuration dialog box whose layout and the configuration procedure is exactly same as that of CAN. Only difference is that for J1939 a message is identified not by CAN identifier, but by its PGN number.
+
+</p>
+      <title>Start Network </title>
+      <p>This function connects the application to the J1939 network. Both the associated menu item and toolbar icon are toggling in nature and hence shuttle between &quot;Go Online&quot; and &quot;Go Offline&quot; modes.
+
+</p>
+      <title>Transmit Message </title>
+      <p>This brings in the J1939 transmit message window in which the presently transmittable message can be configured and sent in both monoshot and cylcic mode.
+
+</p>
+      <image href="../images/J1939_TransmitWnd.bmp"/>
+      <lines>
+         <b>J1939 Transmit Message Window</b>
+       </lines>
+      <title>Logging</title>
+      <p>By selecting the associated menu item or clicking on the toolbar icon, the user can start the logging process. This has the characteristics of a toggle switch and hence using the same, ongoing logging process can be stopped too.
+
+</p>
+      <image href="../images/J1939_LogFile.bmp"/>
+      <lines>
+         <b>J1939 Log File</b>
+      </lines>
+      <title>Message Database</title>
+      <title>1. Database Editor:</title>
+      <p>J1939 database editor is similar to CAN database editor. User can define a new message based on its PGN and it can have maximum data size of 1785 bytes. 
+
+</p>
+      <image href="../images/J1939_DB_EDITOR.bmp"/>
+      <title>2. Database Function:</title>
+      <p>User can associate/dissociate J1939 database files. 
+
+</p>
+      <image href="../images/J1939_DB_FUNCTIONS.bmp"/>
+      <title>Toolbar</title>
+      <p>A separate toolbar is available for J1939 option.
+
+</p>
+      <image href="../images/J1939_Toolbar.bmp"/>
+      <title>Configure Timeouts</title>
+      <p>User can configure timeouts which will be considered when flow control messages are being sent or received.
+
+</p>
+      <p>Corresponding dialog box can be invoked by clicking the menu <b>J1939-&gt;Configure-&gt;Timeouts</b>.
+
+</p>
+      <p>Timeout&apos;s description will appear on clicking the corresponding check box.
+
+</p>
+       <image href="../images/J1939_ConfigureTimeouts.bmp"/>
+      <p><b>Tb: </b>Time interval between two packets in broadcast transmission.
+
+</p>
+      <p><b>Tr: </b>Maximum wait period for a sender to receive a response from the receiver.
+
+</p>
+      <p><b>Th: </b>Time interval between two &apos;Clear to Send&apos; message when delaying the data.
+
+</p>
+      <p><b>T1: </b>Maximum wait period for a receiver when more packets were expected.
+
+</p>
+      <p><b>T2: </b>Maximum wait period for a receiver to receive data packets after sending &apos;Clear to Send&apos; message.
+
+</p>
+      <p><b>T3: </b>Maximum wait period for a sender to receive &apos;End of Message Acknowledgement&apos; after sending last data packet.
+
+</p>
+      <p><b>T4: </b>Maximum wait period for a sender to receive another &apos;Clear to Send&apos; message after receiving one to delay the data.
+
+</p>
+      <title>Signal Watch</title>
+      <p>J1939 signal watch window is similar to CAN signal watch window. User can add SPNs(Signals) of the PGN defined in database.
+
+</p>
+      <title>Node Programming</title>
+      <p>Seperate menu items are available for configuring J1939 node programming.                                                                    Use  &apos;<b>J1939-&gt;Configure-&gt;Simulated Systems</b>&apos; menu for configuring nodes and  &apos;<b>J1939-&gt;Function-&gt;User Program</b>&apos; menu for Building, Loading and Execution of user dll handlers. Most of the features of J1939 node programming remain same as that of CAN. Few differences are listed down
+
+</p>
+      <p><b>1. Node Addition : </b>User has to provide following information to create a new node.
+
+</p>
+      <p>a. Node Name                                                b. Preferred Address                   c. 64 bit ECU name. 
+
+</p>
+      <image href="../images/J1939_NODE_DETAILS.bmp"/>
+      <p><b>2. Function Editor : </b>J1939 Function Editor is similar to CAN Function Editor. In addition to the handlers available in the CAN Function Editor it has <b>Event Handlers</b> where user can configure 
+
+</p>
+      <ul>
+        <li><b>Data confirmation event : </b>Handler is executed whenever a long(&gt; 8 bytes) message is transmitted. </li>
+      </ul>
+      <lines>
+         <b>void OnEvent_DataConf(UINT32 unPGN, BYTE bySrc, BYTE byDest, BOOL bSuccess);</b>
+       </lines>
+      <lines> <b>unPGN -</b> PGN of the message transmitted. <b>bySrc - </b>Source node. <b>byDest - </b>Destination node. <b>bSuccess -</b> Result of transmission. ( TRUE-success, FALSE-failure) </lines>
+      <ul>
+        <li><b>Address confirmation event : </b>Handler is executed whenever a node claims or loses an address. </li>
+      </ul>
+      <lines>
+         <b>void OnEvent_AddressClaim(BYTE byAddress) ;</b>
+       </lines>
+      <lines> <b>byAddress - </b>New Address claimed by the node. Address lost If the value is 254. </lines>
+      <note>These event handlers are always enabled once added. </note>
+      <image href="../images/J1939_EVENT_HANDLERS.bmp"/>
+      <p><b>3. J1939 API Reference : </b>A new set of API is introduced in-order to perform functions on J1939 bus. Please refer following section API Reference J1939 for further details. 
+
+</p>
+      <image href="../images/J1939_API_SET.bmp"/>
+    </section>
+    <section>
+      <title>API Listing</title>
+      <title>BUSMASTER.J1939 API Listing</title>
+    </section>
+  </body>
+</topic>

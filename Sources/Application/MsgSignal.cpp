@@ -446,7 +446,8 @@ BOOL CMsgSignal::bValidateDatabaseFile(CString strFileName)
                         o_File.ReadString( sFirstLine );
 
                         // First line of the file 
-                        if ( sFirstLine == DATABASE_HEADER ||sFirstLine == DATABASE_HEADER_NEW)
+                        if ( sFirstLine == DATABASE_HEADER || sFirstLine == DATABASE_HEADER_NEW ||
+							 sFirstLine == CANVAS_DATABASE_HEADER || sFirstLine == CANVAS_DATABASE_HEADER_NEW )
                         {
                             bReturnValue = TRUE;                            
                         }
@@ -2028,6 +2029,9 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
     {
         // Delete occupied memory
         bDeAllocateMemory(strFileName);
+		strFileName += _T(" Is Inavlid DBF File");
+        strcpy (s_acTraceStr, strFileName);
+        vWriteTextToTrace();
     }
     else
     {
@@ -4706,14 +4710,67 @@ BOOL CMsgSignal::bInsertBusSpecStructures(CStdioFile& omHeaderFile,
             omStrcommandLine = defDATATYPE_DLC;
             omHeaderFile.WriteString(omStrcommandLine);
 
+            //Adding the channel number to the message structures.
+            omStrcommandLine = defDATATYPE_CHANNEL_NUM ;
+            omHeaderFile.WriteString( omStrcommandLine );
+
             omStrcommandLine.Format(defDATATYPE_MSG_DATA,
                             pMsg->m_omStrMessageName +
                             defUNDERSCORE, defSIGNALMEMBER);
 
             omHeaderFile.WriteString(omStrcommandLine);
-            //Adding the channel number to the message structures.
-            omStrcommandLine = defDATATYPE_CHANNEL_NUM ;
-            omHeaderFile.WriteString( omStrcommandLine );
+            
+            omStrcommandLine.Format(defEND_OF_STRUCT_DEF,
+                        pMsg->m_omStrMessageName );
+            omHeaderFile.WriteString(omStrcommandLine);
+        }
+        break;
+        case J1939:
+        {
+            // Add New lines
+            omHeaderFile.WriteString(NEW_LINE);
+            omHeaderFile.WriteString(NEW_LINE);
+
+            omHeaderFile.WriteString(omStrcommandLine);
+            
+            CString omDataBytes;
+            omDataBytes.Format(defDATA_BYTE_ARRAY_J1939, pMsg->m_unMessageLength);
+            omHeaderFile.WriteString(omDataBytes);
+
+            omStrcommandLine = defSTART_OF_STRUCT_DEF;
+            
+            // Write the Structure Header
+            omHeaderFile.WriteString(omStrcommandLine);
+            
+            UINT unCountSig = omStrArraySigName.GetSize();
+
+            for(UINT i = 0 ; i < unCountSig; i++ )
+            {
+                // Copy Structure Members
+                omHeaderFile.WriteString(omStrArraySigName.GetAt(i));
+            }
+            // Remove all signal name
+            omStrArraySigName.RemoveAll();
+
+            omStrcommandLine.Format(defEND_OF_UNION_DEF,
+                            pMsg->m_omStrMessageName );
+                    
+            omHeaderFile.WriteString(omStrcommandLine);
+
+            omStrcommandLine = defTYPEDEF_STRUCT;
+            omHeaderFile.WriteString(omStrcommandLine);
+
+            omStrcommandLine = defMSGPROPS_J1939;
+            omHeaderFile.WriteString(omStrcommandLine);
+
+            omStrcommandLine = defDLCJ1939;
+            omHeaderFile.WriteString(omStrcommandLine);
+
+            omStrcommandLine.Format(defDATATYPE_MSG_DATA,
+                            pMsg->m_omStrMessageName +
+                            defUNDERSCORE, defSIGNALMEMBER);
+            omHeaderFile.WriteString(omStrcommandLine);
+
             omStrcommandLine.Format(defEND_OF_STRUCT_DEF,
                         pMsg->m_omStrMessageName );
             omHeaderFile.WriteString(omStrcommandLine);

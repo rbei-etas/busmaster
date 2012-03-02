@@ -30,6 +30,7 @@
 #include "FunctionEditorDoc.h"
 #include "Include/BaseDefs.h"
 #include "DIL_Interface/BaseDIL_Can.h"
+#include "DIL_Interface/BaseDIL_J1939.h"
 class CBaseAppServices;
 
 class CGlobalObj
@@ -60,6 +61,7 @@ public:
     WINDOWPLACEMENT m_wWindowPlacement;
     CFunctionEditorDoc* pGetDocPtrOfFile(CString);
     static CBaseDIL_CAN* GetICANDIL(void);
+	static CBaseDILI_J1939* GetIJ1939DIL(void);
     CFunctionEditorDoc* podGetFunctionEditorDoc();
     CFunctionView* podGetFunctionViewPtr();
     CFnsTreeView* podGetFuncsTreeViewPtr();

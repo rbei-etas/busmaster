@@ -57,7 +57,7 @@ protected:
 
 public:
 
-    CLogObjectCAN();    // Standard Default Constructor
+    CLogObjectCAN(CString omVersion);    // Overloaded constructor
     ~CLogObjectCAN();   // Destructor
 
     // Log a CAN data object

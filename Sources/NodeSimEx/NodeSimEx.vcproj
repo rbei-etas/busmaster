@@ -216,6 +216,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AppServicesJ1939.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\BuildProgram.cpp"
 				>
 			</File>
@@ -432,6 +436,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AppServicesJ1939.h"
+				>
+			</File>
+			<File
 				RelativePath=".\BaseNodeSim.h"
 				>
 			</File>
@@ -481,6 +489,10 @@
 			</File>
 			<File
 				RelativePath=".\Export_UserDllCAN.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Export_UserDllJ1939.h"
 				>
 			</File>
 			<File

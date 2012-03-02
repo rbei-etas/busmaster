@@ -179,7 +179,41 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
             }
         }
         break;
-	}
+        case J1939:
+        {
+            while (psNodeInfo->m_ouMsgBufVSE.GetMsgCount() > 0)
+            {
+                static STJ1939_MSG sJ1939Msg;
+                static BYTE m_byTempData[MAX_MSG_LEN_J1939] = {0};
+                static int nType = 0;
+                int nSize = MAX_MSG_LEN_J1939;
+                INT Result = psNodeInfo->m_ouMsgBufVSE.ReadFromBuffer(nType, m_byTempData, nSize);
+                if (Result == ERR_READ_MEMORY_SHORT)
+                {
+                    TRACE(_T("ERR_READ_MEMORY_SHORT"));
+                    break;
+                }
+                if (Result == EMPTY_APP_BUFFER)
+                {
+                    TRACE(_T("EMPTY_APP_BUFFER"));
+                    break;
+                }
+                // Give the msg to NodeSimx for simulation
+                if (Result == CALL_SUCCESS)
+                {
+                    sJ1939Msg.vSetDataStream(m_byTempData);
+                    CExecuteFunc* pExecFunc = CExecuteManager::ouGetExecuteManager(psNodeInfo->m_eBus).
+                                                pouGetExecuteFunc(psNodeInfo->m_dwClientId);
+                    if ((pExecFunc != NULL) && (pExecFunc->bGetFlagStatus(EXMSG_HANDLER) == TRUE))
+                    {
+                        pExecFunc->vExecuteOnPGNHandler(&sJ1939Msg);
+                    }
+
+                }
+            }
+        }
+        break;
+    }
     return 0;
 }
 

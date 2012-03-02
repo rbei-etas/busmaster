@@ -219,7 +219,8 @@ void CFlags::vInitializeFlags()
     m_wLogTimeMode          = eSYSTEM_MODE; // absolute mode
     m_nReplayMsgType        = eALL_MESSAGE; // All messages
     m_bLogOverWriteON       = TRUE;         // over write by default
-	m_bSendSignalMSg	    = FALSE;    
+	m_bSendSignalMSg	    = FALSE;
+    m_bActivatedJ1939       = FALSE; // CAN is default active bus for configuration.
 }
 /******************************************************************************/
 /*  Function Name    :  ~CFlags                                               */    
@@ -403,7 +404,8 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
             break;
         case eLOGOVERWRITEMODEON: m_bLogOverWriteON = nValue; break;
         case eLOGREPLAYMSGTYPE: m_nReplayMsgType = nValue; break;
-		case SEND_SIGNAL_MSG: m_bSendSignalMSg = nValue; break;        
+		case SEND_SIGNAL_MSG: m_bSendSignalMSg = nValue; break;
+        case ACTIVATED_J1939: m_bActivatedJ1939 = (BOOL) nValue; break;
         default: ASSERT(FALSE); // Invalid flag enum value
     }
     m_omCriticalSec.Unlock();
@@ -561,6 +563,9 @@ int CFlags::nGetFlagStatus(eCANMONITORFLAG eWhichFlag)
 		case SEND_SIGNAL_MSG:
 			nRetValue  = m_bSendSignalMSg;
 			break;
+        case ACTIVATED_J1939: 
+            nRetValue = (int) m_bActivatedJ1939;
+            break;
         default:
             // Invalid flag enum value
             ASSERT ( FALSE );

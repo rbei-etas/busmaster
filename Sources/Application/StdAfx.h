@@ -64,6 +64,7 @@
 #include <io.h>
 #include <stdio.h>
 #include <Psapi.h>
+#include <atlconv.h>
 
 #include <map>
 #include <vector>
@@ -79,7 +80,7 @@ const float PI = (float) 3.14159265358979323846;
 #include "include/Error.h"
 
 const BYTE VERSION_MAJOR    = 1;
-const BYTE VERSION_MINOR    = 5;
+const BYTE VERSION_MINOR    = 6;
 const BYTE VERSION_BUILD    = 0;
 
 // Disable warning messages C4996

@@ -41,6 +41,8 @@ protected:
 
 // Attributes
 public:
+    static BOOL sm_bValidJ1939Wnd;
+public:
     SDBPARAMS m_sDbParams;
 // Operations
 public:

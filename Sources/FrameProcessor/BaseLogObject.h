@@ -39,13 +39,15 @@ private:
     CString m_omVersion;            // Application suite version information	
 	BOOL m_bNewSession;			// For file overwriting in new session
 
-    //Find the name and size of the file which will be used for logging.
-    //ie. file name which contains max file count
+    // Find the name and size of the file which will be used for logging.
+    // i.e., file name which contains max file count
     void vGetNameAndSizeOfCurrentLogFile();
     DWORD dwGetFileSize(CString omFileName); // Get size of the file
     CString omAddGroupCountToFileName(int nCount, TCHAR FileName[]);
     CString omRemoveGroupCountFromFileName(CString FileName);
     void vSetNextFileName(void);
+    // Reset certain data member values
+    void vResetValues(void);
 
 protected:
     //All log info
@@ -58,10 +60,10 @@ protected:
     ELOGTRIGGERSTATE m_CurrTriggerType;
 
 	// To format the header 
-	virtual void vFormatHeader(CString& omHeader) = 0;
+	virtual void vFormatHeader(CString& omHeader);
 
 	// To format the footer 
-	virtual void vFormatFooter(CString& omFooter) = 0;
+	virtual void vFormatFooter(CString& omFooter);
 
     void vWriteTextToFile(CString& om_LogText);
 
@@ -76,8 +78,8 @@ protected:
 	virtual UINT Der_unGetBufSize(void) const = 0;
 
 public:
-    // Standard Default Constructor
-	CBaseLogObject();
+    // Overloaded Constructor
+	CBaseLogObject(CString omVersion);
 
     // Destructor
 	~CBaseLogObject();

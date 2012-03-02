@@ -32,6 +32,9 @@
 const int CAN_MONITOR_NODE_INDEX = 0;
 const int CAN_MONITOR_CLIENT_ID  = 1;
 
+#define J1939_MONITOR_NODE _T("J1939_MONITOR")
+const UINT64 J1939_ECU_NAME     = 0x8000000000000001;
+
 const BYTE MSGBUF_ADD = 0x1;
 const BYTE MSGBUF_CLEAR = 0x0;
 
@@ -111,6 +114,7 @@ typedef enum TXMODE
 
 #define  MAX_CHAR_SHORT       128
 #define  MAX_CHAR_LONG        512
+#define  MAX_CHAR			  1024
 
 typedef struct tagHwInterface
 {

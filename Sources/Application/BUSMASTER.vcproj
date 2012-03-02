@@ -148,7 +148,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="1"
+				Optimization="2"
 				InlineFunctionExpansion="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;WINVER=0x0500"
@@ -180,7 +180,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_Interface.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/ProjectConfiguration.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/NodeSimEx.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/FrameProcessor.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Replay.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/SignalWatch.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Filter.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CommonClass.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/PSDI_CAN.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/SignalDefiner.lib&quot;"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_Interface.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/ProjectConfiguration.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/NodeSimEx.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/FrameProcessor.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Replay.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/SignalWatch.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Filter.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CommonClass.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/PSDI_CAN.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/TXWindow.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/SignalDefiner.lib&quot;"
 				AdditionalDependencies="Winmm.lib shlwapi.lib htmlhelp.lib psapi.lib"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/BUSMASTER.exe"
 				LinkIncremental="1"
@@ -703,6 +703,10 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\J1939TimeOutCfg.cpp"
+				>
 			</File>
 			<File
 				RelativePath=".\LogToExcel.cpp"
@@ -1353,6 +1357,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\TxMsgWndJ1939.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\UIThread.cpp"
 				>
 			</File>
@@ -1555,6 +1563,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\J1939TimeOutCfg.h"
+				>
+			</File>
+			<File
 				RelativePath=".\LogToExcel.h"
 				>
 			</File>
@@ -1708,6 +1720,10 @@
 			</File>
 			<File
 				RelativePath=".\TxHandler.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TxMsgWndJ1939.h"
 				>
 			</File>
 			<File

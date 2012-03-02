@@ -265,7 +265,8 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
             CString omGccMakeFileName = _T("\\GCCDLLMakeTemplate");
             switch (m_eBus)
             {
-                case CAN: omGccMakeFileName += _T("_CAN"); break;                
+                case CAN: omGccMakeFileName += _T("_CAN"); break;
+                case J1939: omGccMakeFileName += _T("_J1939");break;
             }
 
             omStrMakeFileTemplateName += omGccMakeFileName;
