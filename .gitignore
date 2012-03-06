@@ -15,6 +15,11 @@ Sources/Application/BUSMASTER_Interface.h
 Sources/BusEmulation/BusEmulation.h
 Sources/BusEmulation/BusEmulation_i.c
 Sources/BusEmulation/BusEmulation_p.c
+Sources/DmGraph/DMGraph.h
+Sources/DmGraph/DMGraph.tlb
+Sources/DmGraph/DMGraph_i.c
+Sources/DmGraph/DMGraph_p.c
+Sources/DmGraph/dlldata.c
 Sources/TOOLS_EXTERNAL/CAPL_2_C/lexer.h
 
 # Release dirs (except BIN)
@@ -29,6 +34,8 @@ Sources/CommonClass/Release
 Sources/ConfigDialogsDIL/Release
 Sources/DataTypes/Release
 Sources/DIL_Interface/Release
+Sources/DIL_J1939/Release
+Sources/DmGraph/ReleaseUMinSize
 Sources/Filter/Release
 Sources/FrameProcessor/Release
 Sources/NodeSimEx/Release
@@ -55,6 +62,7 @@ Sources/CommonClass/Debug
 Sources/ConfigDialogsDIL/Debug
 Sources/DataTypes/Debug
 Sources/DIL_Interface/Debug
+Sources/DIL_J1939/Debug
 Sources/Filter/Debug
 Sources/FrameProcessor/Debug
 Sources/NodeSimEx/Debug
