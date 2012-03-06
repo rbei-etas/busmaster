@@ -20,7 +20,11 @@ Sources/DmGraph/DMGraph.tlb
 Sources/DmGraph/DMGraph_i.c
 Sources/DmGraph/DMGraph_p.c
 Sources/DmGraph/dlldata.c
-Sources/TOOLS_EXTERNAL/CAPL_2_C/lexer.h
+Sources/Format Converter/AscLogConverter/Asc_Log_Lexer.c
+Sources/Format Converter/AscLogConverter/Asc_Log_Parser.c
+Sources/Format Converter/CAPL2CConvereter/lexer.h
+Sources/Format Converter/LogAscConverter/Log_Asc_Lexer.c
+Sources/Format Converter/LogAscConverter/Log_Asc_Parser.c
 
 # Release dirs (except BIN)
 Sources/Application/Release
@@ -37,6 +41,7 @@ Sources/DIL_Interface/Release
 Sources/DIL_J1939/Release
 Sources/DmGraph/ReleaseUMinSize
 Sources/Filter/Release
+Sources/Format Converter/*/Release
 Sources/FrameProcessor/Release
 Sources/NodeSimEx/Release
 Sources/ProjectConfiguration/Release
@@ -48,7 +53,6 @@ Sources/TestSetupEditorLib/Release
 Sources/TestSuiteExecutorGUI/Release
 Sources/TXWindow/Release
 Sources/Utility/Release
-Sources/TOOLS_EXTERNAL/*/Release
 
 # Debug dirs (except BIN)
 Sources/Application/Debug
@@ -64,6 +68,7 @@ Sources/DataTypes/Debug
 Sources/DIL_Interface/Debug
 Sources/DIL_J1939/Debug
 Sources/Filter/Debug
+Sources/Format Converter/*/Debug
 Sources/FrameProcessor/Debug
 Sources/NodeSimEx/Debug
 Sources/ProjectConfiguration/Debug
@@ -75,7 +80,6 @@ Sources/TestSetupEditorLib/Debug
 Sources/TestSuiteExecutorGUI/Debug
 Sources/TXWindow/Debug
 Sources/Utility/Debug
-Sources/TOOLS_EXTERNAL/*/Debug
 
 # Files in BIN (except hardware specific files)
 Sources/BIN/*/*.bmp
@@ -93,6 +97,10 @@ Sources/BIN/*/CAN_STUB.dll
 Sources/BIN/*/CAN_Vector_XL.dll
 Sources/BIN/*/Changelog.txt
 Sources/BIN/*/ConfigDialogsDIL.dll
+Sources/BIN/*/ConverterPlugins/AscLogConverter.dll
+Sources/BIN/*/ConverterPlugins/DBC2DBFConverter.dll
+Sources/BIN/*/ConverterPlugins/DBF2DBCConverter.dll
+Sources/BIN/*/ConverterPlugins/LogAscConverter.dll
 Sources/BIN/*/DIL_Interface.dll
 Sources/BIN/*/Filter.dll
 Sources/BIN/*/FrameProcessor.dll
