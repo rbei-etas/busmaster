@@ -71,6 +71,7 @@ Section ""
     File ..\Sources\BIN\Release\CAN_ETAS_BOA.dll
     File ..\Sources\BIN\Release\CAN_ICS_neoVI.dll
     File ..\Sources\BIN\Release\CAN_Kvaser_CAN.dll
+    File ..\Sources\BIN\Release\CAN_MHS.dll
     File ..\Sources\BIN\Release\CAN_PEAK_USB.dll
     File ..\Sources\BIN\Release\CAN_STUB.dll
     File ..\Sources\BIN\Release\CAN_Vector_XL.dll
@@ -107,6 +108,7 @@ Section ""
     File ..\Sources\BIN\Release\CanApi2.dll	; PEAK USB
     File ..\Sources\BIN\Release\canlib32.dll	; Kvaser CAN
 	File ..\Sources\BIN\Release\ETASneo40.dll	; ES581 new driver    
+    File ..\Sources\BIN\Release\mhstcan.dll     ; MHS-Elektronik
     File ..\Sources\BIN\Release\vxlapi.dll	; Vector XL
 
     ; License
