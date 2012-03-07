@@ -95,7 +95,7 @@ Section ""
     File ..\Sources\BIN\Release\SignalDefiner.dll
     File ..\Sources\BIN\ReleaseUMinSize\DMGraph.dll
 
-	; Converters
+    ; Converters
     File /r ..\Sources\BIN\Release\ConverterPlugins
 	
     ; Help
@@ -107,7 +107,7 @@ Section ""
     ; Drivers
     File ..\Sources\BIN\Release\CanApi2.dll	; PEAK USB
     File ..\Sources\BIN\Release\canlib32.dll	; Kvaser CAN
-	File ..\Sources\BIN\Release\ETASneo40.dll	; ES581 new driver    
+    File ..\Sources\BIN\Release\ETASneo40.dll	; ETAS ES581 and Intrepid
     File ..\Sources\BIN\Release\mhstcan.dll     ; MHS-Elektronik
     File ..\Sources\BIN\Release\vxlapi.dll	; Vector XL
 

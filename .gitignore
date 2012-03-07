@@ -21,10 +21,10 @@ Sources/DmGraph/DMGraph_i.c
 Sources/DmGraph/DMGraph_p.c
 Sources/DmGraph/dlldata.c
 Sources/Format Converter/AscLogConverter/Asc_Log_Lexer.c
-Sources/Format Converter/AscLogConverter/Asc_Log_Parser.c
+Sources/Format Converter/AscLogConverter/asc_log_parser.c
 Sources/Format Converter/CAPL2CConvereter/lexer.h
 Sources/Format Converter/LogAscConverter/Log_Asc_Lexer.c
-Sources/Format Converter/LogAscConverter/Log_Asc_Parser.c
+Sources/Format Converter/LogAscConverter/log_asc_parser.c
 
 # Release dirs (except BIN)
 Sources/Application/Release
@@ -49,6 +49,8 @@ Sources/NodeSimEx/Release
 Sources/ProjectConfiguration/Release
 Sources/PSDI_CAN/Release
 Sources/Replay/Release
+Sources/SigGrphWnd/Release
+Sources/SignalDefiner/Release
 Sources/SignalWatch/Release
 Sources/TestSetupEditorGUI/Release
 Sources/TestSetupEditorLib/Release
@@ -73,10 +75,13 @@ Sources/DIL_J1939/Debug
 Sources/Filter/Debug
 Sources/Format Converter/*/Debug
 Sources/FrameProcessor/Debug
+Sources/MHS_CNFG/Debug
 Sources/NodeSimEx/Debug
 Sources/ProjectConfiguration/Debug
 Sources/PSDI_CAN/Debug
 Sources/Replay/Debug
+Sources/SigGrphWnd/Debug
+Sources/SignalDefiner/Debug
 Sources/SignalWatch/Debug
 Sources/TestSetupEditorGUI/Debug
 Sources/TestSetupEditorLib/Debug
@@ -102,11 +107,15 @@ Sources/BIN/*/CAN_Vector_XL.dll
 Sources/BIN/*/Changelog.txt
 Sources/BIN/*/ConfigDialogsDIL.dll
 Sources/BIN/*/ConverterPlugins/AscLogConverter.dll
+Sources/BIN/*/ConverterPlugins/CAPL2CConvereter.dll
 Sources/BIN/*/ConverterPlugins/DBC2DBFConverter.dll
 Sources/BIN/*/ConverterPlugins/DBF2DBCConverter.dll
 Sources/BIN/*/ConverterPlugins/LogAscConverter.dll
 Sources/BIN/*/DIL_Interface.dll
 Sources/BIN/*/DIL_J1939.dll
+Sources/BIN/*/DMGraph.dll
+Sources/BIN/*/DMGraph.exp
+Sources/BIN/*/DMGraph.lib
 Sources/BIN/*/Filter.dll
 Sources/BIN/*/FrameProcessor.dll
 Sources/BIN/*/mhsbmcfg.dll
@@ -114,6 +123,8 @@ Sources/BIN/*/NodeSimEx.dll
 Sources/BIN/*/PSDI_CAN.dll
 Sources/BIN/*/ProjectConfiguration.dll
 Sources/BIN/*/Replay.dll
+Sources/BIN/*/SigGrphWnd.dll
+Sources/BIN/*/SignalDefiner.dll
 Sources/BIN/*/SignalWatch.dll
 Sources/BIN/*/TXWindow.dll
 Sources/BIN/*/TestSetupEditorGUI.dll
@@ -136,6 +147,8 @@ Sources/BIN/Libs/*/NodeSimEx.lib
 Sources/BIN/Libs/*/PSDI_CAN.lib
 Sources/BIN/Libs/*/ProjectConfiguration.lib
 Sources/BIN/Libs/*/Replay.lib
+Sources/BIN/Libs/*/SigGrphWnd.lib
+Sources/BIN/Libs/*/SignalDefiner.lib
 Sources/BIN/Libs/*/SignalWatch.lib
 Sources/BIN/Libs/*/TXWindow.lib
 Sources/BIN/Libs/*/TestSetupEditorGUI.lib
