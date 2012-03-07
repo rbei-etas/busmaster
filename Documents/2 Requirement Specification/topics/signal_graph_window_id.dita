@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="signal_graph_window_id" xml:lang="en-us">
+  <title>Signal Graph Window</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <table>
+      <tgroup cols="6">
+        <thead>
+          <row>
+            <entry>Tag</entry>
+            <entry>Name &amp; Prototype</entry>
+            <entry>Functionality</entry>
+            <entry>Parameter Details</entry>
+            <entry>Return value</entry>
+            <entry>Remarks</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>RSI_22_001</entry>
+            <entry>HRESULT CreateGraphWindow([in] CMDIFrameWnd* ParentWnd, [in] short BusType)</entry>
+            <entry>This function is used to create Signal Graph Window for a particular bus. </entry>
+            <entry>ParentWnd – Parent window pointer. BusType – Associated bus with this current Signal Graph window. </entry>
+            <entry>S_OK is successful, else S_FALSE.</entry>
+            <entry/>
+          </row>
+          <row>
+            <entry>RSI_22_002</entry>
+            <entry>HRESULT ShowGraphWindow([in] short BusType, [in] BOOL bShow = TRUE)</entry>
+            <entry>Shows or hides Signal Graph Window of a particular bus type.</entry>
+            <entry>BusType - The bus type. bShow – TRUE to show, FALSE to hide. </entry>
+            <entry>S_OK is successful, else S_FALSE.</entry>
+            <entry/>
+          </row>
+          <row>
+            <entry>RSI_22_003</entry>
+            <entry>BOOL IsWindowVisible([in] short BusType)</entry>
+            <entry>This function is used to get the visibility status of the window of a bus.</entry>
+            <entry>BusType - The bus type.</entry>
+            <entry>TRUE if visible, else FALSE.</entry>
+            <entry/>
+          </row>
+          <row>
+            <entry>RSI_22_004</entry>
+            <entry>HRESULT SetRefreshRate( [in] UINT RefreshRate)</entry>
+            <entry>This function sets the refresh rate of Signal Graph Window.</entry>
+            <entry>RefreshRate – Refresh rate in milliseconds.</entry>
+            <entry>S_OK is successful, else S_FALSE.</entry>
+            <entry/>
+          </row>
+          <row>
+            <entry>RSI_22_005</entry>
+            <entry>UINT GetRefreshRate(void)</entry>
+            <entry>Getter function for refresh rate of Signal Graph window.</entry>
+            <entry>-</entry>
+            <entry>The refresh rate in millisecond</entry>
+            <entry/>
+          </row>
+          <row>
+            <entry>RSI_22_006</entry>
+            <entry>CBaseMsgBufVSE* GetGraphBuffer(void)</entry>
+            <entry>This function returns interface of the common buffer / channel for the messages or frames of any bus supported.</entry>
+            <entry>-</entry>
+            <entry>The common buffer interface pointer if successful, else NULL.</entry>
+            <entry>A message entry is of the format: &lt;BUS&gt;&lt;Length of data bytes&gt;</entry>
+          </row>
+          <row>
+            <entry>RSI_22_007</entry>
+            <entry>HRESULT SetSignalListDetails( [in] short BusType, [in] CGraphList * pSignalList)</entry>
+            <entry>This function is used to pass the selected set of distilled signal information which are necessary to display signal graphs for a particular bus.</entry>
+            <entry>BusType – The bus type. pSignalList - The configured signal data for a particular bus. </entry>
+            <entry>S_OK is successful, else S_FALSE.</entry>
+            <entry/>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </body>
+</topic>

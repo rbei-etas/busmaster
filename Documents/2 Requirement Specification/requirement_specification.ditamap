@@ -33,6 +33,7 @@
       <topicref href="topics/session_replay.dita" type="topic"/>
       <topicref href="topics/filter.dita" type="topic"/>
       <topicref href="topics/signal_watch_window.dita" type="topic"/>
+      <topicref href="topics/signal_graph_window_fr.dita" type="topic"/>
       <topicref href="topics/test_automation_fr.dita" type="topic"/>
       <topicref href="topics/bus_statistics_window.dita" type="topic"/>
       <topicref href="topics/installer.dita" type="topic"/>
@@ -45,6 +46,7 @@
   </topicref>
   <topicref href="topics/interface_details.dita" type="topic">
     <topicref href="topics/simulation_engine.dita" type="topic"/>
+    <topicref href="topics/signal_graph_window_id.dita" type="topic"/>
     <topicref href="topics/idil_can.dita" type="topic"/>
   </topicref>
   <topicref href="topics/project_execution_requirements.dita" type="topic">
