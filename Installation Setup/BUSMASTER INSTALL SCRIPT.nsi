@@ -77,11 +77,11 @@ Section ""
     File ..\Sources\BIN\Release\CAN_Vector_XL.dll
     File ..\Sources\BIN\Release\Changelog.txt
     File ..\Sources\BIN\Release\DIL_Interface.dll
-	File ..\Sources\BIN\Release\DIL_J1939.dll
+    File ..\Sources\BIN\Release\DIL_J1939.dll
     File ..\Sources\BIN\Release\Filter.dll
     File ..\Sources\BIN\Release\FrameProcessor.dll
     File ..\Sources\BIN\Release\GCCDLLMakeTemplate_CAN
-	File ..\Sources\BIN\Release\GCCDLLMakeTemplate_J1939
+    File ..\Sources\BIN\Release\GCCDLLMakeTemplate_J1939
     File ..\Sources\BIN\Release\NodeSimEx.dll
     File ..\Sources\BIN\Release\ProjectConfiguration.dll
     File ..\Sources\BIN\Release\PSDI_CAN.dll
