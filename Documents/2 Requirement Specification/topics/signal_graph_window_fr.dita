@@ -1,0 +1,236 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="signal_graph_window_fr" xml:lang="en-us">
+  <title>Signal Graph Window</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <p>With regard to data presentational content, signal graph window is similar to signal watch window. The basic difference is that instead of textual the presentation here is visual, i.e., values of a signal are shown with a real-time line diagram where the X-axis represents the time axis whereas the Y-axis the signal values. In addition to the ECU data, bus statistics related data are included in signal graph window too. The information is again vehicle bus standard specific.</p>
+    <p>Configuration – The configuration module takes into account both the ECU and bus statistics data. Loading a valid database is a prerequisite for configuring database messages whereas selection of a valid bus standard is the obvious prerequisite for statistical data configuration. Both the engineering and raw values of a signal can be selected for monitoring. So database messages / frames category lists entries frame-wise. On the other hand, statistical category list has channels as the highest level of hierarchy under it. This also ensures that signals are represented by different colours, to make them visually distinguishable from each other.</p>
+    <p>Signal graph window – The already indicated dynamic chart with signal value (both raw and engineering) and time as its two axes is the central theme of this module. This provides analyzing and visual functionalities like showing / hiding of the grid, auto-ranging, auto-fitting of signals, tracking of delta-values of a signal at any two instances of time – based on the choice the values can be either exact or indicative.</p>
+    <p>The detailed tagged requirements are given below:<table>
+        <tgroup cols="6">
+          <thead>
+            <row>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry>CAN</entry>
+              <entry>FlexRay</entry>
+              <entry>J1939</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>22</entry>
+              <entry/>
+              <entry>Signal Graph Window</entry>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry/>
+              <entry>Definition</entry>
+              <entry>Signal Graph Window supports plotting graph for signal values and statistics parameters. This includes raw and physical values of a signal. Network statistics parameters can be added to plot graph. The number of graphs plotted are configured by user.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry>[RS_22_01]</entry>
+              <entry>Feature</entry>
+              <entry>Signal Graph window shall be bus independent.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_22_02]</entry>
+              <entry>Feature</entry>
+              <entry>The number of Signal Graph windows shall be dependent on the number of active buses. This means there shall be one window per bus.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_22_03]</entry>
+              <entry>Feature</entry>
+              <entry>Signal Graph window shall be completely decoupled from application.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_22_04]</entry>
+              <entry>Design</entry>
+              <entry>A common buffer (or channel in abstract jargon) for all the buses.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_22_05]</entry>
+              <entry>Design</entry>
+              <entry>Each entry in buffer shall follow the format: &lt;BUS&gt;&lt;DLC&gt;&lt;Msg Data Bytes&gt; </entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_22_06]</entry>
+              <entry>Design</entry>
+              <entry>Signal Graph Window should be passed the list of signals to be plotted, by the application.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_22_07]</entry>
+              <entry>Design</entry>
+              <entry>There will be a separate interface for each bus to interpret the configured message signals.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_22_08]</entry>
+              <entry>Design</entry>
+              <entry>Using the information of above two listings, the raw / engineering values are calculated and displayed by Signal Graph Window.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_22_09]</entry>
+              <entry>Design</entry>
+              <entry>Interpretation for a particular bus needs &lt;MSG ID&gt;, &lt;Data bytes&gt;, since the interpretation interface is constructed according to reduced set of selected signals which optimises performance.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_22_10]</entry>
+              <entry>Design</entry>
+              <entry>As a configuration procedure, the client passes the following: 1. BUS (ID and Name). 2. Message ID set with their names. 3. For a message, the signal names list and the type of value chosen (raw or engineering).</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_22_11]</entry>
+              <entry>Design</entry>
+              <entry>The client is responsible for pumping bus data, interpreting the message using the respective bus interpreter and supplying the interpreted values to Signal Graph Window for display.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_22_12]</entry>
+              <entry>Design</entry>
+              <entry>The common buffer belongs to Signal Graph. It only passes the base class pointer to the client.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_22_13]</entry>
+              <entry>Design</entry>
+              <entry>There should be another set of configuration data that is purely GUI related. This includes window placement etc.,</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_22_14]</entry>
+              <entry>Design</entry>
+              <entry>Refresh rate should be directly configurable by the user.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_22_15]</entry>
+              <entry>Feature</entry>
+              <entry>The Signal Graph Window should support two display types for signal:<ol>
+                  <li>Normal Line display.</li>
+                  <li>Step Mode display</li>
+                </ol></entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_22_16]</entry>
+              <entry>Feature</entry>
+              <entry>All the signals in a Signal Graph Window shall shuttle between normal line and step mode display whenever the display type changes.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_22_17]</entry>
+              <entry>Feature</entry>
+              <entry>Each signal in Signal Graph Window can be configured to be either Normal Line or Step Mode display.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_22_18]</entry>
+              <entry>Feature</entry>
+              <entry>The Signal Graph supports cursors for signal tracking.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_22_19]</entry>
+              <entry>Feature</entry>
+              <entry>The Signal Graph Window should support show / hide by the user.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+            <row>
+              <entry>[RS_22_20]</entry>
+              <entry>Performance</entry>
+              <entry>If Graph Window is not displayed, then Graph Window module should not claim processor power.</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+              <entry>X</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></p>
+  </body>
+</topic>
