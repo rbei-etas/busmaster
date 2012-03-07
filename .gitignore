@@ -106,6 +106,7 @@ Sources/BIN/*/ConverterPlugins/DBC2DBFConverter.dll
 Sources/BIN/*/ConverterPlugins/DBF2DBCConverter.dll
 Sources/BIN/*/ConverterPlugins/LogAscConverter.dll
 Sources/BIN/*/DIL_Interface.dll
+Sources/BIN/*/DIL_J1939.dll
 Sources/BIN/*/Filter.dll
 Sources/BIN/*/FrameProcessor.dll
 Sources/BIN/*/mhsbmcfg.dll
@@ -127,6 +128,7 @@ Sources/BIN/Libs/*/CAN_Vector_XL.lib
 Sources/BIN/Libs/*/CommonClass.lib
 Sources/BIN/Libs/*/ConfigDialogsDIL.lib
 Sources/BIN/Libs/*/DIL_Interface.lib
+Sources/BIN/Libs/*/DIL_J1939.lib
 Sources/BIN/Libs/*/DataTypes.lib
 Sources/BIN/Libs/*/Filter.lib
 Sources/BIN/Libs/*/FrameProcessor.lib
