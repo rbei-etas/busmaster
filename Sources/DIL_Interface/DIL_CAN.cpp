@@ -28,6 +28,7 @@
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/DIL_Datatypes.h"
 #include "DILC_Dummy.h"
+#include "CAN_MHS/CAN_MHS_Extern.h"
 #include "CAN_PEAK_USB/CAN_PEAK_USB_Extern.h"
 #include "CAN_ICS_neoVI/CAN_ICS_neoVI_Extern.h"
 #include "CAN_STUB/CAN_STUB_Extern.h"
@@ -55,6 +56,7 @@ static ENTRY_DIL sg_ListDIL[] =
     {DRIVER_CAN_ETAS_ES581, _T("ETAS ES581")       },
     {DRIVER_CAN_ICS_NEOVI,  _T("IntrepidCS neoVI") },
     {DRIVER_CAN_KVASER_CAN, _T("Kvaser CAN")       },
+    {DRIVER_CAN_MHS,        _T("MHS Tiny-CAN")     },
     {DRIVER_CAN_PEAK_USB,   _T("PEAK USB")         },
     {DRIVER_CAN_VECTOR_XL,  _T("Vector XL")        },
 };
@@ -199,6 +201,11 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
         {
 			//Load the CAN STUB DIL
 			m_hDll = LoadLibrary(_T("CAN_STUB.dll"));
+        }
+        else if (dwDriverID == DRIVER_CAN_MHS)
+		{
+			//Load the MHS-Elektronik Tiny-CAN DIL
+			m_hDll = LoadLibrary(_T("CAN_MHS.dll"));
         }
         else if (dwDriverID == DAL_NONE)
         {

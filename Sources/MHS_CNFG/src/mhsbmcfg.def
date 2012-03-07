@@ -1,0 +1,5 @@
+LIBRARY "mhsbmcfg"
+;Inhalt der mhsbmcfg.dll
+EXPORTS
+;zu exportierende Funktionen
+ShowCanSetup
