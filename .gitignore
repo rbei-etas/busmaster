@@ -32,6 +32,7 @@ Sources/BusEmulation/Release
 Sources/CAN_ETAS_BOA/Release
 Sources/CAN_ICS_neoVI/Release
 Sources/CAN_Kvaser_CAN/Release
+Sources/CAN_MHS/Release
 Sources/CAN_STUB/Release
 Sources/CAN_Vector_XL/Release
 Sources/CommonClass/Release
@@ -43,6 +44,7 @@ Sources/DmGraph/ReleaseUMinSize
 Sources/Filter/Release
 Sources/Format Converter/*/Release
 Sources/FrameProcessor/Release
+Sources/MHS_CNFG/Release
 Sources/NodeSimEx/Release
 Sources/ProjectConfiguration/Release
 Sources/PSDI_CAN/Release
@@ -60,6 +62,7 @@ Sources/BusEmulation/Debug
 Sources/CAN_ETAS_BOA/Debug
 Sources/CAN_ICS_neoVI/Debug
 Sources/CAN_Kvaser_CAN/Debug
+Sources/CAN_MHS/Debug
 Sources/CAN_STUB/Debug
 Sources/CAN_Vector_XL/Debug
 Sources/CommonClass/Debug
@@ -93,6 +96,7 @@ Sources/BIN/*/*.tlb
 Sources/BIN/*/CAN_ETAS_BOA.dll
 Sources/BIN/*/CAN_ICS_neoVI.dll
 Sources/BIN/*/CAN_Kvaser_CAN.dll
+Sources/BIN/*/CAN_MHS.dll
 Sources/BIN/*/CAN_STUB.dll
 Sources/BIN/*/CAN_Vector_XL.dll
 Sources/BIN/*/Changelog.txt
@@ -104,6 +108,7 @@ Sources/BIN/*/ConverterPlugins/LogAscConverter.dll
 Sources/BIN/*/DIL_Interface.dll
 Sources/BIN/*/Filter.dll
 Sources/BIN/*/FrameProcessor.dll
+Sources/BIN/*/mhsbmcfg.dll
 Sources/BIN/*/NodeSimEx.dll
 Sources/BIN/*/PSDI_CAN.dll
 Sources/BIN/*/ProjectConfiguration.dll
@@ -116,6 +121,7 @@ Sources/BIN/Libs/*/*.exp
 Sources/BIN/Libs/*/CAN_ETAS_BOA.lib
 Sources/BIN/Libs/*/CAN_ICS_neoVI.lib
 Sources/BIN/Libs/*/CAN_Kvaser_CAN.lib
+Sources/BIN/Libs/*/CAN_MHS.lib
 Sources/BIN/Libs/*/CAN_STUB.lib
 Sources/BIN/Libs/*/CAN_Vector_XL.lib
 Sources/BIN/Libs/*/CommonClass.lib
