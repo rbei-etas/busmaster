@@ -46,7 +46,7 @@ J1939 is a CAN-based layer 7 protocol mainly used in Truck and Bus control and c
 </p>
       <title>
         <i>1. Multi-packet broadcast</i>
-       </title>
+      </title>
       <p>A broadcast message is broadcasted to all nodes in the network. Sender node must first send a Broadcast Announce  Message (BAM) followed by sequence of 8 byte data.  Receiving nodes can prepare for reception if interested.</p>
       <p>BAM message contains following information.</p>
       <p>  
@@ -63,8 +63,8 @@ J1939 is a CAN-based layer 7 protocol mainly used in Truck and Bus control and c
         <b> Multi-packet broadcast data transfer</b>
        </lines>
       <title>
-         <i>2. Multi-packet peer-to-peer</i>
-       </title>
+        <i>2. Multi-packet peer-to-peer</i>
+      </title>
       <p>     For destination specific data transmission, communication needs to be established hence subject to flow control. Transport protocol function is applied in three steps.</p>
       <p><i>
           <b> 1. Connection Initialization -</b>
@@ -161,14 +161,14 @@ J1939 is a CAN-based layer 7 protocol mainly used in Truck and Bus control and c
       <title>Configure Timeouts</title>
       <p>User can configure timeouts which will be considered when flow control messages are being sent or received.
 
-</p>
+</p>
       <p>Corresponding dialog box can be invoked by clicking the menu <b>J1939-&gt;Configure-&gt;Timeouts</b>.
 
 </p>
       <p>Timeout&apos;s description will appear on clicking the corresponding check box.
 
 </p>
-       <image href="../images/J1939_ConfigureTimeouts.bmp"/>
+      <image href="../images/J1939_ConfigureTimeouts.bmp"/>
       <p><b>Tb: </b>Time interval between two packets in broadcast transmission.
 
 </p>
@@ -228,10 +228,6 @@ J1939 is a CAN-based layer 7 protocol mainly used in Truck and Bus control and c
 
 </p>
       <image href="../images/J1939_API_SET.bmp"/>
-    </section>
-    <section>
-      <title>API Listing</title>
-      <title>BUSMASTER.J1939 API Listing</title>
     </section>
   </body>
 </topic>
