@@ -47,40 +47,10 @@
     <topicref href="topics/test_setup_editor.dita" type="topic"/>
     <topicref href="topics/test_suite_executor.dita" type="topic"/>
   </topicref>
-<!-- <topicref href="topics/reset_controller.dita" type="topic"/> -->  <topicref href="topics/network_statistics.dita" type="topic"/>
+  <!-- <topicref href="topics/reset_controller.dita" type="topic"/> -->
+  <topicref href="topics/network_statistics.dita" type="topic"/>
   <topicref href="topics/configuration_file.dita" type="topic"/>
-  <topicref href="topics/J1939.dita" type="topic">
-	<topicref href="topics/api_reference_j1939.dita" type="topic">
-		<topicref href="topics/stcan_struct_J1939.dita" type="topic"/>
-		<topicref href="topics/api_listing_J1939.dita" type="topic">
-		<topicref href="references/api_reference_J1939/SendMsg.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/EnableLogging.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/DisableLogging.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/WriteToLogFile.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/Trace.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/ResetController.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/GoOnline.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/GoOffline.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/Disconnect.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/Connect.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/StartTimer.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/StopTimer.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/SetTimerVal.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/EnableMsgHandlers.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/EnableErrorHandlers.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/EnableKeyHandlers.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/EnableDisableMsgTx.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/hGetDllHandle.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/RequestPGN.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/SendAckMsg.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/ClaimAddress.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/RequestAddress.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/CommandAddress.dita" type="reference"/>
-		  <topicref href="references/api_reference_J1939/SetTimeout.dita" type="reference"/>
-		  
-		</topicref>
-	</topicref>
-  </topicref>
+  <topicref href="topics/J1939.dita" type="topic"/>
   <topicref href="topics/connect.dita" type="topic"/>
   <topicref href="topics/format_converters.dita" type="topic"/>
   <topicref href="topics/api_reference.dita" type="topic">
@@ -104,6 +74,35 @@
       <topicref href="references/api_reference/EnableKeyHandlers.dita" type="reference"/>
       <topicref href="references/api_reference/EnableDisableMsgTx.dita" type="reference"/>
       <topicref href="references/api_reference/hGetDllHandle.dita" type="reference"/>
+    </topicref>
+  </topicref>
+  <topicref href="topics/api_reference_j1939.dita" type="topic">
+    <topicref href="topics/stcan_struct_J1939.dita" type="topic"/>
+    <topicref href="topics/api_listing_J1939.dita" type="topic">
+      <topicref href="references/api_reference_J1939/SendMsg.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/EnableLogging.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/DisableLogging.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/WriteToLogFile.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/Trace.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/ResetController.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/GoOnline.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/GoOffline.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/Disconnect.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/Connect.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/StartTimer.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/StopTimer.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/SetTimerVal.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/EnableMsgHandlers.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/EnableErrorHandlers.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/EnableKeyHandlers.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/EnableDisableMsgTx.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/hGetDllHandle.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/RequestPGN.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/SendAckMsg.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/ClaimAddress.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/RequestAddress.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/CommandAddress.dita" type="reference"/>
+      <topicref href="references/api_reference_J1939/SetTimeout.dita" type="reference"/>
     </topicref>
   </topicref>
   <topicref href="topics/c_library.dita" type="topic">
