@@ -24,7 +24,9 @@
     <topicref href="topics/configure_replay.dita" type="topic"/>
     <topicref href="topics/message_display.dita" type="topic"/>
     <topicref href="topics/transmit_messages.dita" type="topic"/>
-    <topicref href="topics/simulated_systems.dita" type="topic"/>
+    <topicref href="topics/simulated_systems.dita" type="topic">
+      <topicref href="topics/function_editor.dita" type="topic"/>
+    </topicref>
   </topicref>
   <topicref href="topics/message_log.dita" type="topic"/>
   <topicref href="topics/replay.dita" type="topic">
@@ -32,10 +34,8 @@
     <topicref href="topics/single_run_mode.dita" type="topic"/>
   </topicref>
   <topicref href="topics/filter.dita" type="topic"/>
-  <topicref href="topics/function_editor.dita" type="topic"/>
-  <topicref href="topics/user_program.dita" type="topic">
-    <topicref href="topics/execute_handlers.dita" type="topic"/>
-  </topicref>
+  <topicref href="topics/node_simulation.dita" type="topic"/>
+  <topicref href="topics/execute_handlers.dita" type="topic"/>
   <topicref href="topics/database_editor.dita" type="topic"/>
   <topicref href="topics/message_window.dita" type="topic"/>
   <topicref href="topics/signal_generation.dita" type="topic"/>

@@ -20,17 +20,16 @@
         <li>Timer Handlers</li>
         <li>Key Handlers</li>
         <li>Error Handlers</li>
-        <li>Dll Handlers</li>
+        <li>DLL Handlers</li>
       </ul></p>
     <section>
       <title>Message Handlers</title>
       <p>Message Handlers are functions written by you to be executed on reception of a specific message, range of messages or all received messages. You can write message handlers using message names defined in active database, the message ID, for a range of messages based on message ID or for all received messages. See section Function Editor for further details. Before enabling message handler, the corresponding DLL should be loaded. Select <menucascade>
-          <uicontrol>User Program</uicontrol>
-          <uicontrol>Execute</uicontrol>
+          <uicontrol>Node Simulation</uicontrol>
           <uicontrol>All Message Handler(s)</uicontrol>
         </menucascade> to enable all the message handler(s) of all the DLLs under the simulated system(s). On reception of a message corresponding message handler will be invoked. You can also execute all the message handlers of all the DLLs under the simulated system(s) using tool bar button shown in figure below.</p>
       <image href="../images/MessageHandler.bmp" placement="break"/>
-      <p>All the message handler(s) under the simulated system(s) can also be executed by right clicking on any simulated system and selecting Enable All Message Handlers in simulated system window Pane 1. The message handler(s) under the node can be executed by selecting the Message handlers in Handler Details List and clicking Enable Handler in the simulated system window Pane 2.</p>
+      <p>All the message handler(s) under the simulated system(s) can also be executed by right clicking on any simulated system and selecting <uicontrol>Enable All Handlers</uicontrol> in <uicontrol>Configure Simulated Systems</uicontrol> window Pane 1. The message handler(s) under the node can be executed by selecting the Message handlers in Handler Details List and clicking <uicontrol>Enable Handler</uicontrol> in the <uicontrol>Configure Simulated Systems</uicontrol> window Pane 2.</p>
     </section>
     <section>
       <title>Timer Handlers</title>
@@ -39,14 +38,14 @@
           <uicontrol>All Timer Handler(s)</uicontrol>
         </menucascade>. You can also press tool bar button shown in figure below.</p>
       <image href="../images/timer.bmp" placement="break"/>
-      <p>All the timer handler(s) under the simulated system(s) can also be executed by right clicking on any simulated system and selecting Enable All Timer Handlers in simulated system window Pane 1. The timer handler(s) under the node can be executed by selecting the Timer handlers in Handler Details List and clicking Enable Handler in the simulated system window Pane 2.</p>
+      <p>All the timer handler(s) under the simulated system(s) can also be executed by right clicking on any simulated system and selecting <uicontrol>Enable All Timer Handlers</uicontrol> in simulated system window Pane 1. The timer handler(s) under the node can be executed by selecting the Timer handlers in Handler Details List and clicking <uicontrol>Enable Handler</uicontrol> in the <uicontrol>Configure Simulated Systems</uicontrol> window Pane 2.</p>
     </section>
     <section>
       <title>Key Handlers</title>
       <p>BUSMASTER supports a maximum of 62 key handlers (Alphanumeric keys – A to Z, a to z, 0 to 9). Additionally a single key handler for handling all the 62 key handlers is supported, for this ‘*’ has to be selected.</p>
       <p>The key handler function can be executed by pressing the corresponding key for which the key handler is written. Pressing the toolbar button shown in the figure below will enable Key handlers. Pressing the same tool bar again will disable key handlers. Please see section Function Editor for further details.</p>
       <image href="../images/keyhandlertoolbar.bmp" placement="break"/>
-      <p>All the key handler(s) under the simulated system(s) can also be executed by right clicking on any simulated system and selecting Enable All Key Handlers in simulated system window Pane 1. The key handler(s) under the node can be executed by selecting the Key handlers in Handler Details List and clicking Enable Handler in the simulated system window Pane 2.</p>
+      <p>All the key handler(s) under the simulated system(s) can also be executed by right clicking on any simulated system and selecting <uicontrol>Enable All Key Handlers</uicontrol> in simulated system window Pane 1. The key handler(s) under the node can be executed by selecting the Key handlers in Handler Details List and clicking <uicontrol>Enable Handler</uicontrol> in the <uicontrol>Configure Simulated Systems</uicontrol> window Pane 2.</p>
     </section>
     <section>
       <title>Error Handlers</title>
@@ -57,16 +56,16 @@
           <li>Passive Error Handler – gets activated when the controller enters error passive state.</li>
           <li>Warning Limit Handler – gets activated when the controller enters crosses the warning limit that has been set. </li>
         </ul></p>
-      <p>These handlers can be added in the code by right clicking on the item Error Handlers and selecting Add from the pop up menu. This brings up a dialog box as shown below, listing the all the supported error handlers, one can select the required handlers and on clicking OK button the framework for the function handler gets added in the .c file.</p>
+      <p>These handlers can be added in the code by right clicking on the item <uicontrol>Error Handlers</uicontrol> and selecting <uicontrol>Add</uicontrol> from the pop up menu. This brings up a dialog box as shown below, listing the all the supported error handlers, one can select the required handlers and on clicking <uicontrol>OK</uicontrol> button the framework for the function handler gets added in the .c file.</p>
       <image href="../images/ErrHandlerDlg.bmp" placement="break"/>
-      <p>To delete error handlers select Error Handlers and right click. Select Delete from popup menu. Select handlers that are to be deleted. Selecting Ok will delete checked handlers.</p>
-      <p>All the error handler(s) under the simulated system(s) can also be executed by right clicking on any simulated system and selecting Enable All Error Handlers in simulated system window Pane 1. The error handler(s) under the node can be executed by selecting the Error handlers in Handler Details List and clicking Enable Handler in the simulated system window Pane 2.</p>
+      <p>To delete error handlers select <uicontrol>Error Handlers</uicontrol> and right click. Select <uicontrol>Delete</uicontrol> from popup menu. Select handlers that are to be deleted. Selecting <uicontrol>Ok</uicontrol> will delete checked handlers.</p>
+      <p>All the error handler(s) under the simulated system(s) can also be executed by right clicking on any simulated system and selecting <uicontrol>Enable All Error Handlers</uicontrol> in <uicontrol>Configure Simulated Systems</uicontrol> window Pane 1. The error handler(s) under the node can be executed by selecting the Error handlers in Handler Details List and clicking <uicontrol>Enable Handler</uicontrol> in the <uicontrol>Configure Simulated Systems</uicontrol> window Pane 2.</p>
     </section>
     <section>
-      <title>Dll Handlers</title>
+      <title>DLL Handlers</title>
       <p>User can write functions to handle initialization and de-initialization at the time of loading and unloading the user program. The two events supported are<ul>
-          <li>Load - When the dll is loaded</li>
-          <li>UnLoad - When the dll is unloaded.</li>
+          <li>Load - When the DLL is loaded</li>
+          <li>UnLoad - When the DLL is unloaded.</li>
         </ul></p>
       <p>Adding &amp; deleting the Dll handlers is same as that of error handlers.</p>
     </section>

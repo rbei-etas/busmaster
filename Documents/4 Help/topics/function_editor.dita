@@ -17,18 +17,18 @@
   <body>
     <p>BUSMASTER can work as a programmable node over a CAN bus. User can program different event handlers using function editor. The programming language is C.</p>
     <p>Five types of event handlers are supported.<ul>
-        <li>Message Handler</li>
-        <li>Timer Handler</li>
-        <li>Key Handler</li>
-        <li>Error Handler</li>
-        <li>Dll Handler</li>
+        <li>Message Handlers</li>
+        <li>Timer Handlers</li>
+        <li>Key Handlers</li>
+        <li>Error Handlers</li>
+        <li>DLL Handlers</li>
       </ul></p>
     <p>These function handlers when built and loaded are executed on<ul>
         <li>Receipt of a Message.</li>
         <li>Elapse of a time interval.</li>
         <li>Press of a Key</li>
         <li>Detection of error or change in error state</li>
-        <li>Loading / unloading of Dll.</li>
+        <li>Loading / unloading of DLL.</li>
       </ul></p>
     <p>User can also include Header File names, add Global Variables and Utility Functions while programming the event handlers. All these functions can be edited and saved in a file with extension &quot;.c&quot;. The source file can be built to a DLL. This DLL can be loaded dynamically.</p>
     <p>There are three panes in function editor as shown below<ul>
@@ -39,84 +39,68 @@
     <p>Pane 1 displays the list of functions, included header files and global variables defined. Pane 2 displays the contents of the source file. Through Pane 3 User can edit the body of function selected.</p>
     <image href="../images/Function_Editor.bmp" placement="break"/>
     <section>
-      <title>Create new source file</title>
-      <p>User can create file by Selecting File Function Editor New menu option OR clicking on the tool bar button shown in figure below.</p>
+      <title>General access to the function editor</title>
+      <p>Go to <menucascade>
+          <uicontrol>Configure</uicontrol>
+          <uicontrol>Simulated Systems</uicontrol>
+        </menucascade> to open the window <uicontrol>Configure Simulated Systems</uicontrol>. Right click on <uicontrol>CAN Bus</uicontrol> in the left pane and select <menucascade>
+          <uicontrol>New Simulated System</uicontrol>
+        </menucascade> or <menucascade>
+          <uicontrol>Add Simulated System</uicontrol>
+        </menucascade>. Select then the &quot;sim&quot; file.</p>
+      <p>Right click on the new simulated system and select <menucascade>
+          <uicontrol>Add Node</uicontrol>
+        </menucascade>. The name will also be used as basename for the generated DLL. The <uicontrol>Node Details</uicontrol> will become visible in the right pane.</p>
     </section>
     <section>
-      <title>Open a source file</title>
-      <p>User can open a source file following the steps given below<ol>
-          <li>Select <menucascade>
-              <uicontrol>File</uicontrol>
-              <uicontrol>Function Editor</uicontrol>
-              <uicontrol>Open</uicontrol>
-            </menucascade>. A File Open dialog will be displayed.</li>
-          <li>Click on the Open tool bar button shown in figure below.<image href="../images/File_new.bmp" placement="break"/></li>
-          <li>Select a source file and click on Open button.</li>
-        </ol></p>
+      <title>Create a new function</title>
+      <p>Follow the description in the previous chapter &quot;General access to the function editor&quot;.</p>
+      <p>Select <menucascade>
+          <uicontrol>Add New File...</uicontrol>
+        </menucascade> in the right pane under <uicontrol>File Details</uicontrol> to add new functions to the node. The function editor will open automatically.</p>
     </section>
     <section>
-      <title>Save a source file</title>
-      <p>User can save a source file by selecting <menucascade>
-          <uicontrol>File</uicontrol>
-          <uicontrol>Function Editor</uicontrol>
-          <uicontrol>Save</uicontrol>
-        </menucascade> menu option. Or by clicking on the tool bar button shown below.<image href="../images/FileOpen.bmp" placement="break"/></p>
-      <p>User also have an option to save the file with different names. User can do this by following the steps given below<ol>
-          <li>Select <menucascade>
-              <uicontrol>File</uicontrol>
-              <uicontrol>Function Editor</uicontrol>
-              <uicontrol>Save As</uicontrol>
-            </menucascade>.</li>
-          <li>A Save As file dialog box will be displayed.</li>
-          <li>Enter the file name. Click on Save button.</li>
-        </ol></p>
+      <title>Edit an existing function</title>
+      <p>Follow the description in the previous chapter &quot;General access to the function editor&quot;.</p>
+      <p>Select <uicontrol>Edit File...</uicontrol> in the right pane under <uicontrol>File Details</uicontrol> to edit an existing function of the node.</p>
     </section>
-    <section>
-      <title>Close a source file</title>
-      <p>User can close a source file by selecting <menucascade>
-          <uicontrol>File</uicontrol>
-          <uicontrol>Function Editor</uicontrol>
-          <uicontrol>Close</uicontrol>
-        </menucascade>. A save message confirmation will be displayed if the file is modified.</p>
-    </section>
-    <image href="../images/FileSave.bmp" placement="break"/>
     <section>
       <title>Include Header file</title>
       <p>User can include a header filename while programming event handlers. To do so please follow the steps given below:<ol>
-          <li>Select Include Headers category in the Pane 1 and right click.</li>
-          <li>A pop-up menu comes up. Select Add. A dialog box appears.</li>
-          <li>Click on Browse button to select the required header file name and click on OK button.</li>
-          <li>The selected header filename will be added to the source file in the Pane 2 and also under Include Headers category in Pane 1.</li>
+          <li>Select <uicontrol>Include Headers</uicontrol> category in the Pane 1 and right click.</li>
+          <li>A pop-up menu comes up. Select <uicontrol>Add</uicontrol>. A dialog box appears.</li>
+          <li>Click on <uicontrol>Browse</uicontrol> button to select the required header file name and click on <uicontrol>OK</uicontrol> button.</li>
+          <li>The selected header filename will be added to the source file in the Pane 2 and also under <uicontrol>Include Headers</uicontrol> category in Pane 1.</li>
         </ol></p>
     </section>
     <section>
       <title>Edit Include Header File Name</title>
       <p>User can edit the name of the header file, to do so please follow the steps given below<ol>
-          <li>Select the Include Header filename under Include Header category to be edited in the Pane 1 and Right click.</li>
+          <li>Select the <uicontrol>Include Header</uicontrol> filename under <uicontrol>Include Header</uicontrol> category to be edited in the Pane 1 and Right click.</li>
           <li>A pop-up menu will be displayed.</li>
-          <li>Select Edit.</li>
+          <li>Select <uicontrol>Edit</uicontrol>.</li>
           <li>A dialog box will be displayed.</li>
-          <li>Click on Browse button to select the required header file and click on OK button.</li>
+          <li>Click on <uicontrol>Browse</uicontrol> button to select the required header file and click on <uicontrol>OK</uicontrol> button.</li>
         </ol></p>
-      <p>The selected header file will be replaced with the previous header file in the source file in the Pane 2 and also under Include Headers category in Pane 1.</p>
+      <p>The selected header file will be replaced with the previous header file in the source file in the Pane 2 and also under <uicontrol>Include Headers</uicontrol> category in Pane 1.</p>
     </section>
     <section>
       <title>Delete Handlers</title>
-      <p>User can delete Header files, Message Handlers. Timer Handlers, Key Handlers, Error handlers, Dll handlers and Utility Functions in source file opened for editing, to do so follow the steps given below:<ol>
+      <p>User can delete Header files, Message Handlers. Timer Handlers, Key Handlers, Error handlers, DLL handlers and Utility Functions in source file opened for editing, to do so follow the steps given below:<ol>
           <li>Select the item to be deleted in the Pane 1 and right click.</li>
           <li>A pop-up menu will be displayed.</li>
-          <li>Select Delete.</li>
+          <li>Select <uicontrol>Delete</uicontrol>.</li>
           <li>A confirmation message is displayed.</li>
-          <li>Select Yes.</li>
+          <li>Select <uicontrol>Yes</uicontrol>.</li>
         </ol></p>
       <p>The selected item’s definition will be deleted from the source file in the Pane 2 and also in Pane 1.</p>
     </section>
     <section>
       <title>Add Message Handler</title>
       <ol>
-        <li>Select Message Handlers category in the Pane 1 and right click.</li>
+        <li>Select <uicontrol>Message Handlers</uicontrol> category in the Pane 1 and right click.</li>
         <li>A pop-up menu will be displayed.</li>
-        <li>On selecting Add menu. A dialog as shown below pops up.<image href="../images/AddMsgHandler.bmp" placement="break"/></li>
+        <li>On selecting <uicontrol>Add</uicontrol> menu. A dialog as shown below pops up.<image href="../images/AddMsgHandler.bmp" placement="break"/></li>
         <li>From this dialog message handlers of different type can be selected. The different types of message handlers supported are<ul>
             <li>Message handler based on the message name.</li>
             <li>Message handler based on message ID.</li>
@@ -124,17 +108,17 @@
             <li>Message handler for all received messages.</li>
           </ul></li>
       </ol>
-      <p>The type of message handler can be selected using the radio buttons. To add handler based on the message name the corresponding message should be available in the imported database. Multiple messages can be added from this dialog box by clicking on Apply button after selecting a message handler.</p>
+      <p>The type of message handler can be selected using the radio buttons. To add handler based on the message name the corresponding message should be available in the imported database. Multiple messages can be added from this dialog box by clicking on <uicontrol>Apply</uicontrol> button after selecting a message handler.</p>
       <p>Function definition will be added to the source file in the Pane 2 and the prototype under Message Handlers category in Pane 1.</p>
     </section>
     <section>
       <title>Add Timer Handler</title>
       <ol>
-        <li>Select Timer Handlers category in the Pane 1 and right click.</li>
+        <li>Select <uicontrol>Timer Handlers</uicontrol> category in the Pane 1 and right click.</li>
         <li>A pop-up menu will be displayed.</li>
-        <li>Select Add. A dialog box appears.</li>
+        <li>Select <uicontrol>Add</uicontrol>. A dialog box appears.</li>
         <li>Enter Timer Handler Name like e.g., &quot;Time_One&quot; and the Timer Value in milliseconds.</li>
-        <li>Select OK button.</li>
+        <li>Select <uicontrol>OK</uicontrol> button.</li>
         <li>Function definition will be added to the source file automatically in the Pane 2 and the prototype under Timer Handlers category in Pane 1.</li>
       </ol>
       <note>
@@ -147,36 +131,36 @@
     <section>
       <title>Add Key Handler</title>
       <ol>
-        <li>Select Key Handlers category in the Pane 1 and right click.</li>
+        <li>Select <uicontrol>Key Handlers</uicontrol> category in the Pane 1 and right click.</li>
         <li>A pop-up menu will be displayed.</li>
-        <li>Select Add. A dialog box appears asking the user to press a key.</li>
+        <li>Select <uicontrol>Add</uicontrol>. A dialog box appears asking the user to press a key.</li>
         <li>Press a key for which User want to write the handler. The same will be displayed in the dialog box.</li>
-        <li>Select OK button or Apply button if more key handlers are to be added from the same dialog.</li>
+        <li>Select <uicontrol>OK</uicontrol> button or <uicontrol>Apply</uicontrol> button if more key handlers are to be added from the same dialog.</li>
       </ol>
       <p>Function definition will be added to the source file automatically in the Pane 2 and the prototype under Key Handlers category in Pane 1.</p>
     </section>
     <section>
       <title>Add Error Handler</title>
       <ol>
-        <li>Select Error Handler’s category in the Pane 1 and right click.</li>
+        <li>Select <uicontrol>Error Handlers</uicontrol> category in the Pane 1 and right click.</li>
         <li>A pop-up menu will be displayed.</li>
-        <li>Select Add. A dialog as shown below pops up from this dialog select the type of error handlers to he handled by your program and click on OK button.<image href="../images/AddErrHandler.bmp" placement="break"/></li>
+        <li>Select <uicontrol>Add</uicontrol>. A dialog as shown below pops up from this dialog select the type of error handlers to he handled by your program and click on <uicontrol>OK</uicontrol> button.<image href="../images/AddErrHandler.bmp" placement="break"/></li>
       </ol>
       <p>Function definition will be added to the source file automatically in the Pane 2 and the prototype under Error Handlers category in Pane 1.</p>
     </section>
     <section>
-      <title>Add DLLHandler</title>
+      <title>Add DLL Handler</title>
       <p>DLL handlers are invoked at the time of loading the DLL or while unloading the DLL. The procedure for adding DLL handlers is similar to that of adding error handlers.</p>
     </section>
     <section>
       <title>Add Utility Function</title>
       <ol>
-        <li>Select Utility Functions category in the Pane 1 and right click.</li>
+        <li>Select <uicontrol>Utility Functions</uicontrol> category in the Pane 1 and right click.</li>
         <li>A pop-up menu comes up.</li>
-        <li>Select Add. A dialog box appears.</li>
+        <li>Select <uicontrol>Add</uicontrol>. A dialog box appears.</li>
         <li>Return Type of the utility function can be selected from the combo box or directly typed. The combo box will have primitive data types and database message structure names.</li>
         <li>Enter the Function Prototype in the Edit control like e.g., &quot;Func_One( int a, int b )&quot;.</li>
-        <li>Select OK button.</li>
+        <li>Select <uicontrol>OK</uicontrol> button.</li>
       </ol>
       <p>Function definition will be added to the source file automatically in the Pane 2 and the prototype under Utility Functions category in Pane 1.</p>
     </section>
@@ -184,7 +168,7 @@
       <title>Global Variables</title>
       <p>To add/delete/modify global variables follow the steps given below.</p>
       <ol>
-        <li>Select Global Variables category in the Pane 1 and double click.</li>
+        <li>Select <uicontrol>Global Variables</uicontrol> category in the Pane 1 and double click.</li>
         <li>The Pane 3 will become editable and will show global variable block.</li>
         <li>Change this block to Add/Delete/Modify the global variables.</li>
       </ol>
@@ -205,10 +189,10 @@
           <li>Edit the function for which database message name is to be added. (Refer: section Edit Function Body)</li>
           <li>Right click in the Pane 3.</li>
           <li>A pop-up menu is displayed.</li>
-          <li>Select Insert Message. A dialog box is displayed with all the database messages under Message list.</li>
+          <li>Select <uicontrol>Insert Message</uicontrol>. A dialog box is displayed with all the database messages under Message list.</li>
           <li>Choose a message from the list.</li>
           <li>Select the check box option in the dialog box.</li>
-          <li>Click on Select button.</li>
+          <li>Click on <uicontrol>Select</uicontrol> button.</li>
         </ol></p>
       <p>The selected message variable will be displayed in the Pane 3 and the same is updated in the Pane 2.</p>
     </section>
@@ -218,8 +202,8 @@
           <li>Edit the function for which database message name is to be added. (Refer: section Edit Function Body)</li>
           <li>Right click in the Pane 3.</li>
           <li>A pop-up menu is displayed.</li>
-          <li>Select Insert Message. A dialog box is displayed with all the database messages under Message list.</li>
-          <li>Choose a message from the list and click on Select button.</li>
+          <li>Select <uicontrol>Insert Message</uicontrol>. A dialog box is displayed with all the database messages under Message list.</li>
+          <li>Choose a message from the list and click on <uicontrol>Select</uicontrol> button.</li>
           <li>The selected message will be displayed in the Pane 3 and the same is updated in the Pane 2.</li>
         </ol></p>
     </section>
@@ -228,9 +212,9 @@
       <p>User can use signal names while programming. The signal names have to be used in conjunction with the corresponding message variable. It is member of message structure. Please follow the steps below to insert a signal name into the function.<ol>
           <li>Edit the function in which signal name is to be added. (Refer: section Edit Function Bodyedit_function_body)</li>
           <li>Right click in the Pane 3. A pop-up menu is displayed.</li>
-          <li>Select Insert Signal. A dialog box is displayed with all the database messages under Message list.</li>
+          <li>Select <uicontrol>Insert Signal</uicontrol>. A dialog box is displayed with all the database messages under Message list.</li>
           <li>Choose a message from the list. A list of signals will be displayed under Signals list.</li>
-          <li>Select a signal and click on Select button.</li>
+          <li>Select a signal and click on <uicontrol>Select</uicontrol> button.</li>
           <li>The selected signal will be displayed in the Pane 3 and the same is updated in the Pane 2.</li>
         </ol></p>
     </section>
@@ -239,8 +223,8 @@
       <p>BUSMASTER provides API functions, which can used while programming. These functions can be used to interact with BUSMASTER application. Please follow the steps below to insert a function<ol>
           <li>Edit the function for which prototype is to be added. (Refer: Editing Function Body)</li>
           <li>Right click in the Pane 3. A pop-up menu is displayed.</li>
-          <li>Select Insert Function. A dialog box is displayed with a set of function prototypes. (API Listing)</li>
-          <li>Choose required function prototype from the list and click on OK button.</li>
+          <li>Select <uicontrol>Insert</uicontrol> Function. A dialog box is displayed with a set of function prototypes. (API Listing)</li>
+          <li>Choose required function prototype from the list and click on <uicontrol>OK</uicontrol> button.</li>
           <li>The selected function prototype will be displayed in the Pane 3 and the same is updated in the Pane 2.</li>
         </ol></p>
     </section>
