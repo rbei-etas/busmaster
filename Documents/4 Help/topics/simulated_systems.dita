@@ -15,8 +15,11 @@
     </metadata>
   </prolog>
   <body>
-    <p>Simulated systems can be configured under the CAN-bus by following the steps given below. Select Configure  Simulated  Systems… menu option. This will display the window as shown is figure below.</p>
-    <p>There are two panes in the Simulated  Systems window as shown in figure below.</p>
+    <p>Simulated systems can be configured under the CAN-bus by following the steps given below. Select <menucascade>
+        <uicontrol>Configure</uicontrol>
+        <uicontrol>Simulated Systems</uicontrol>
+      </menucascade> menu option. This will display the window as shown is figure below.</p>
+    <p>There are two panes in the <uicontrol>Configure Simulated Systems</uicontrol> window as shown in figure below.</p>
     <image href="../images/SimSys_Wnd.bmp" placement="break"/>
     <section>
       <title>Left Pane</title>
@@ -33,9 +36,9 @@
       <ol>
         <li>Select root item in Pane 1 and right click.</li>
         <li>A pop-up menu will be displayed as shown in figure below.</li>
-        <li>Select New Simulated System menu option.</li>
+        <li>Select <uicontrol>New Simulated System</uicontrol> menu option.</li>
         <li>A dialog box will be displayed.</li>
-        <li>Key in the new simulated system name and select Save.</li>
+        <li>Key in the new simulated system name and select <uicontrol>Save</uicontrol>.</li>
       </ol>
       <p>The new simulated system path is added as last item in the Pane 1.</p>
       <image href="../images/CANbus_PopupMenu.bmp" placement="break"/>
@@ -46,15 +49,15 @@
       <ol>
         <li>Select root item in Pane 1 and right click.</li>
         <li>A pop-up menu will be displayed as shown in figure above.</li>
-        <li>Select Add Simulated System menu option.</li>
+        <li>Select <uicontrol>Add Simulated System</uicontrol> menu option.</li>
         <li>A dialog box will be displayed.</li>
-        <li>Select a simulated system and say Add.</li>
+        <li>Select a simulated system and say <uicontrol>Add</uicontrol>.</li>
       </ol>
       <p>The simulated system path and its details are added as last item in the Pane 1.</p>
       <note>
         <ul>
-          <li>The node name and the dll should be unique under the CAN bus across all the simulated systems.</li>
-          <li>Only when the simulated system which is to be added has the node name or the dll which is not present under the CAN Bus , it can be added.</li>
+          <li>The node name and the DLL should be unique under the CAN bus across all the simulated systems.</li>
+          <li>Only when the simulated system which is to be added has the node name or the DLL which is not present under the CAN Bus, it can be added.</li>
         </ul>
       </note>
     </section>
@@ -64,7 +67,7 @@
       <ul>
         <li>Select root item in Pane 1 and right click.</li>
         <li>A pop-up menu will be displayed as shown in figure above.</li>
-        <li>Select Save All Systems menu option.</li>
+        <li>Select <uicontrol>Save All Systems</uicontrol> menu option.</li>
       </ul>
       <p>The simulated system details are saved into its respective &quot;.sim&quot; files.</p>
     </section>
@@ -73,16 +76,21 @@
       <p>To delete all the simulated systems under CAN Bus, please follow the steps given below</p>
       <ul>
         <li>Select root item in Pane 1 and right click.</li>
-        <li>A pop-up menu will be displayed as shown in figure above. * Select Delete All Systems menu option.</li>
+        <li>A pop-up menu will be displayed as shown in figure above.</li>
+        <li>Select <uicontrol>Delete All Systems</uicontrol> menu option.</li>
         <li>A confirmation dialog box will be displayed.</li>
-        <li>On selecting Yes all the simulated systems will be deleted from the Pane 1.</li>
+        <li>On selecting <uicontrol>Yes</uicontrol> all the simulated systems will be deleted from the Pane 1.</li>
       </ul>
       <p>All the simulated systems are deleted from Pane 1 under the CAN Bus.</p>
       <note>
         <ul>
-          <li>Delete All Systems option is enabled only when there are any simulated systems under the CAN Bus.</li>
-          <li>All the systems under the CAN Bus can be deleted only when all the dlls under it are not loaded.</li>
-          <li>The simulated systems under the CAN Bus can be saved by saving the tool&apos;s configuration by File Configuration Save into its respective &quot;.cfx&quot; file.</li>
+          <li><uicontrol>Delete All Systems</uicontrol> option is enabled only when there are any simulated systems under the CAN Bus.</li>
+          <li>All the systems under the CAN Bus can be deleted only when all the DLLs under it are not loaded.</li>
+          <li>The simulated systems under the CAN Bus can be saved by saving the tool&apos;s configuration by <menucascade>
+              <uicontrol>File</uicontrol>
+              <uicontrol>Configuration</uicontrol>
+              <uicontrol>Save</uicontrol>
+            </menucascade> into its respective &quot;.cfx&quot; file.</li>
         </ul>
       </note>
     </section>
@@ -92,7 +100,7 @@
       <ul>
         <li>Select the simulated system in Pane 1 and right click.</li>
         <li>A pop-up menu will be displayed as shown in figure below.</li>
-        <li>Select Save menu option.</li>
+        <li>Select <uicontrol>Save</uicontrol> menu option.</li>
       </ul>
       <p>The selected simulated system details are saved into its &quot;.sim&quot; files.</p>
       <image href="../images/SimSys_PopupMenu.bmp" placement="break"/>
@@ -103,9 +111,9 @@
       <ul>
         <li>Select the simulated system in Pane 1 and right click.</li>
         <li>A pop-up menu will be displayed.</li>
-        <li>Select Save As menu option.</li>
+        <li>Select <uicontrol>Save As</uicontrol> menu option.</li>
         <li>A dialog box will be displayed.</li>
-        <li>Key in the new simulated system name and select Save.</li>
+        <li>Key in the new simulated system name and select <uicontrol>Save</uicontrol>.</li>
       </ul>
     </section>
     <section>
@@ -114,45 +122,49 @@
       <ul>
         <li>Select the simulated system in Pane 1 and right click.</li>
         <li>A pop-up menu will be displayed.</li>
-        <li>Select Delete Simulated System menu option.</li>
+        <li>Select <uicontrol>Delete Simulated System</uicontrol> menu option.</li>
         <li>A confirmation dialog box will be displayed.</li>
-        <li>On selecting Yes the simulated system will be deleted from the Pane 1.</li>
+        <li>On selecting <uicontrol>Yes</uicontrol> the simulated system will be deleted from the Pane 1.</li>
       </ul>
       <note>
         <ul>
-          <li>Simulated System can be deleted only when the dlls under it are not loaded.</li>
-          <li>The simulated systems under the CAN Bus can be saved by saving the tool&apos;s configuration by File Configuration Save into its respective &quot;.cfx&quot; file.</li>
+          <li>Simulated System can be deleted only when the DLLs under it are not loaded.</li>
+          <li>The simulated systems under the CAN Bus can be saved by saving the tool&apos;s configuration by <menucascade>
+              <uicontrol>File</uicontrol>
+              <uicontrol>Configuration</uicontrol>
+              <uicontrol>Save</uicontrol>
+            </menucascade> into its respective &quot;.cfx&quot; file.</li>
         </ul>
       </note>
     </section>
     <section>
       <title>Add Node</title>
-      <p>To configure a node under a simulated system , please follow the steps given below</p>
+      <p>To configure a node under a simulated system, please follow the steps given below</p>
       <ul>
         <li>Select the simulated system in Pane 1 and right click.</li>
         <li>A pop-up menu will be displayed.</li>
-        <li>Select Add Node menu option.</li>
+        <li>Select <uicontrol>Add Node</uicontrol> menu option.</li>
         <li>Dialog box Node Details as in the figure below will be displayed.</li>
-        <li>Enter the Node name and select the dll which is unique under the CAN Bus.</li>
-        <li>Clear button can be used to remove the selected dll from the node.</li>
-        <li>Select OK button to confirm.</li>
+        <li>Enter the Node name and select the DLL which is unique under the CAN Bus.</li>
+        <li><uicontrol>Clear</uicontrol> button can be used to remove the selected DLL from the node.</li>
+        <li>Select <uicontrol>OK</uicontrol> button to confirm.</li>
       </ul>
       <p>The node details will be shown under the selected simulated system in Pane 1.</p>
     </section>
     <section>
       <title>Remove All Nodes</title>
-      <p>To remove all the nodes under a simulated system , please follow the steps given below</p>
+      <p>To remove all the nodes under a simulated system, please follow the steps given below</p>
       <ul>
         <li>Select the simulated system in Pane 1 and right click.</li>
         <li>A pop-up menu will be displayed.</li>
-        <li>Select Remove All Nodes menu option.</li>
+        <li>Select <uicontrol>Remove All Nodes</uicontrol> menu option.</li>
         <li>A confirmation dialog box will be displayed.</li>
-        <li>On selecting Yes all the nodes will be removed from the Pane 1 under the selected simulated system.</li>
+        <li>On selecting <uicontrol>Yes</uicontrol> all the nodes will be removed from the Pane 1 under the selected simulated system.</li>
       </ul>
       <note>
         <ul>
-          <li>Remove All Nodes option is enabled only when there are any nodes under the simulated system.</li>
-          <li>All the nodes from any simulated system can be removed only when the dlls under it are not loaded.</li>
+          <li><uicontrol>Remove All Nodes</uicontrol> option is enabled only when there are any nodes under the simulated system.</li>
+          <li>All the nodes from any simulated system can be removed only when the DLLs under it are not loaded.</li>
           <li>The configuration of the simulated system under the CAN Bus can be saved into the &quot;.sim&quot; file.</li>
         </ul>
       </note>
@@ -163,16 +175,16 @@
       <ul>
         <li>Select the node which is to be edited in Pane 1 and right click.</li>
         <li>A pop-up menu will be displayed.</li>
-        <li>Select Edit Node menu option.</li>
+        <li>Select <uicontrol>Edit Node</uicontrol> menu option.</li>
         <li>Dialog box Node Details as in the figure below will be displayed.</li>
-        <li>Enter the Node name and select the dll which is unique under the CAN Bus.</li>
-        <li>Clear button can be used to remove the selected dll from the node.</li>
-        <li>Select OK button to confirm.</li>
+        <li>Enter the Node name and select the DLL which is unique under the CAN Bus.</li>
+        <li><uicontrol>Clear</uicontrol> button can be used to remove the selected DLL from the node.</li>
+        <li>Select <uicontrol>OK</uicontrol> button to confirm.</li>
       </ul>
       <p>The edited node details will be shown in Pane 1.</p>
       <note>
         <ul>
-          <li>Any node can be edited only when the dll under it is not loaded.</li>
+          <li>Any node can be edited only when the DLL under it is not loaded.</li>
           <li>The configuration of the simulated system under the CAN Bus can be saved into the &quot;.sim&quot; file.</li>
         </ul>
       </note>
@@ -187,7 +199,7 @@
       </ul>
       <note>
         <ul>
-          <li>Any node can be removed only when the dll under it is not loaded.</li>
+          <li>Any node can be removed only when the DLL under it is not loaded.</li>
           <li>The configuration of the simulated system under the CAN Bus can be saved into the &quot;.sim&quot; file.</li>
         </ul>
       </note>
@@ -196,18 +208,18 @@
       <title>Open File</title>
       <p>To change the associated C file with a node and open it, please follow the steps given below</p>
       <ul>
-        <li>Select the node for which you want to change the associated C file in Pane 1 . The details will be displayed in the Pane 2.</li>
-        <li>Click on Open File button in Pane 2.</li>
-        <li>Select Edit Node menu option.</li>
-        <li>A confirmation dialog box will be displayed. Select Yes in it.</li>
+        <li>Select the node for which you want to change the associated C file in Pane 1. The details will be displayed in the Pane 2.</li>
+        <li>Click on <uicontrol>Open File</uicontrol> button in Pane 2.</li>
+        <li>Select <uicontrol>Edit Node</uicontrol> menu option.</li>
+        <li>A confirmation dialog box will be displayed. Select <uicontrol>Yes</uicontrol> in it.</li>
         <li>A dialog box will be displayed which allows you to browse through the directories to select the C file.</li>
-        <li>Select a C file and click Open.</li>
+        <li>Select a C file and click <uicontrol>Open</uicontrol>.</li>
         <li>The selected C file will be opened in Function editor.</li>
       </ul>
       <p>The edited node details will be shown in Pane 1 and also in Pane 2.</p>
       <note>
         <ul>
-          <li>The C file associated with any node can be changed only when the dll under it is not loaded.</li>
+          <li>The C file associated with any node can be changed only when the DLL under it is not loaded.</li>
           <li>The configuration of the simulated system under the CAN Bus can be saved into the &quot;.sim&quot; file.</li>
         </ul>
       </note>
@@ -216,8 +228,8 @@
       <title>Edit File</title>
       <p>To edit the C file associated with a node, please follow the steps given below</p>
       <ul>
-        <li>Select the node for which you want to edit the C file in Pane 1 . The details will be displayed in the Pane 2.</li>
-        <li>Click on Edit File button in Pane 2.</li>
+        <li>Select the node for which you want to edit the C file in Pane 1. The details will be displayed in the Pane 2.</li>
+        <li>Click on <uicontrol>Edit File</uicontrol> button in Pane 2.</li>
         <li>The C file associated with the node will be opened with the Function editor for the user to edit.</li>
       </ul>
     </section>

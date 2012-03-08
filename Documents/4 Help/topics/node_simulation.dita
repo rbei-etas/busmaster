@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="node_simulation" xml:lang="en-us">
+  <title>Node Simulation</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Node Simulation</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>Once the program is written it can be built as a DLL and loaded. The GCC compiler is used for this purpose. The GCC compiler is a freeware shipped along with the BUSMASTER tool. You can either build or build and load on the fly. You can also unload any loaded DLL. Once the DLL is loaded, all the handler function can be invoked/revoked selectively. Once the user program is loaded in to the BUSMASTER application handlers are exposed to the application.</p>
+    <section>
+      <title>Build</title>
+      <p>To make a build the program file should be associated with a node under a simulated system. (Refer section Simulated Systems) Selecting <uicontrol>Build All</uicontrol> from toolbar or  <menucascade>
+          <uicontrol>Node Simulation</uicontrol>
+          <uicontrol>Build All</uicontrol>
+        </menucascade> will start building all the C files under all the simulated systems configured in that session. The building status will be displayed in the Output Window. If any errors found in the program, it will be listed with the line number. Double clicking the error line in the output window will open that particular file in Function editor and highlights the code in source window and will select the corresponding line in the Pane 2 (Refer section Function Editor) and makes the same editable in Pane 3. (Refer section Function Editor) If there is no error in the program, the DLLs will be generated and user will be notified of successful creation of DLLs. User can load these DLLs using <menucascade>
+          <uicontrol>Node Simulation</uicontrol>
+          <uicontrol>Load All</uicontrol>
+        </menucascade> menu.</p>
+      <p>All the program files under the simulated system(s) can also be built by right clicking on any simulated system and selecting <uicontrol>Build All</uicontrol> in simulated system window Pane 1. The program file under the node can be built by selecting <uicontrol>Build</uicontrol> in the simulated system window Pane 2.</p>
+    </section>
+    <section>
+      <title>Build and Load</title>
+      <p>User can build and load a DLL in one step. After associating the program file(s) to the node(s) , select <menucascade>
+          <uicontrol>Node Simulation</uicontrol>
+          <uicontrol>Build &amp; Load All</uicontrol>
+        </menucascade>. It will first build the DLLs. Once the DLLs are built successfully, they will be loaded automatically. The loaded DLLs will be unloaded before loading the selected DLLs. Once DLLs are loaded all handler functions written in the corresponding source files can be invoked.</p>
+      <p>The program file under the node can be built and loaded by selecting <uicontrol>Build and Load</uicontrol> in the <uicontrol>Configure Simulated Systems</uicontrol> window Pane 2.</p>
+    </section>
+    <section>
+      <title>Load</title>
+      <p>User can load BUSMASTER DLLs built earlier. Select <menucascade>
+          <uicontrol>Node Simulation</uicontrol>
+          <uicontrol>Load All</uicontrol>
+        </menucascade> to load the DLLs associated with the nodes under the simulated systems. Once DLLs are loaded successfully you will be notified with message. The already loaded DLLs will be unloaded before loading all the DLL(s). There will be no warning before unloading the DLLs. Once DLLs are loaded all the handler function(s) written in the corresponding source files can be executed.</p>
+      <p>All the DLLs under the simulated system(s) can also be loaded by right clicking on any simulated system and selecting <uicontrol>Load All</uicontrol> in simulated system window Pane 1. The DLL under the node can be loaded by selecting <uicontrol>Load</uicontrol> in the <uicontrol>Configure Simulated Systems</uicontrol> window Pane 2.</p>
+    </section>
+    <section>
+      <title>Unload</title>
+      <p>User can unload the DLLs from BUSMASTER. To unload the DLL select <menucascade>
+          <uicontrol>Node Simulation</uicontrol>
+          <uicontrol>Unload All</uicontrol>
+        </menucascade>. Once the DLLs are unloaded all the handlers defined in those DLLs are no more available. If any handlers are executed that time, those will be informed about unload. If all handlers are completed its execution then the DLLs will be unloaded. If any timer handlers are heavily loaded and didn&apos;t complete its execution, unload will show a warning message and unload will be suspended. In this case user shall initiate unload again to forcibly unload the DLLs.</p>
+      <p>All the DLLs under the simulated system(s) can also be unloaded by right clicking on any simulated system and selecting <uicontrol>UnLoad All</uicontrol> in <uicontrol>Configure Simulated Systems</uicontrol> window Pane 1. The DLL under the node can be unloaded by selecting <uicontrol>UnLoad</uicontrol> in the <uicontrol>Configure Simulated Systems</uicontrol> window Pane 2. </p>
+    </section>
+  </body>
+</topic>
