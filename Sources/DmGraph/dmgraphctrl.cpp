@@ -1899,36 +1899,46 @@ void CDMGraphCtrl::PlotElementLines(HDC hDC, CGraphElement* pElement, BOOL bOpti
 
 	// Lock the plot access		
 	EnterCriticalSection(&pElement->m_CritSectionForPlot);
-	CElementPoint pt = pElement->m_PointList[0];
 
-	VARIANT_BOOL bXLog, bYLog;
-	m_pAxis[ HorizontalX ]->get_Log(&bXLog);
-	m_pAxis[ VerticalY  ]->get_Log(&bYLog);
-
-	if(bXLog)
-		pt.x = log10(pt.x);
-	if(bYLog)
-		pt.y = log10(pt.y);
-
-
-	// calculate the corrdinate of ploting point.
 	POINT point;
-	Corrdinate(pt, &point);
-
-	// Clip the ploting area if it exceed ranged .
-	if (point.x < BoundingRect.left) point.x = BoundingRect.left;
-	if (point.y < BoundingRect.top) point.y = BoundingRect.top;
-	if (point.y > BoundingRect.bottom) point.y = BoundingRect.bottom;
-   				
-	MoveToEx (hDC, point.x, point.y, NULL);		
+	CElementPoint pt;
+	VARIANT_BOOL bXLog, bYLog;
 	POINT oldpt;
-	memcpy(&oldpt, &point, sizeof(POINT));
+	//Proceed only if it contains atleast 2 points
+	if ( pElement->m_PointList.GetSize() > 1 )
+	{
+		pt = pElement->m_PointList[0];
+
+		m_pAxis[ HorizontalX ]->get_Log(&bXLog);
+		m_pAxis[ VerticalY  ]->get_Log(&bYLog);
+
+		if(bXLog)
+			pt.x = log10(pt.x);
+		if(bYLog)
+			pt.y = log10(pt.y);
+
+
+		// calculate the corrdinate of ploting point.
+		point;
+		Corrdinate(pt, &point);
+
+		// Clip the ploting area if it exceed ranged .
+		if (point.x < BoundingRect.left) point.x = BoundingRect.left;
+		if (point.y < BoundingRect.top) point.y = BoundingRect.top;
+		if (point.y > BoundingRect.bottom) point.y = BoundingRect.bottom;
+	   				
+		MoveToEx (hDC, point.x, point.y, NULL);		
+		oldpt;
+		memcpy(&oldpt, &point, sizeof(POINT));
+	}
 
 	//Start plot all available data.
 	int i;
 	for(i=1; i<pElement->m_PointList.GetSize(); i++)
 	{
-		pt = pElement->m_PointList[i];
+		//pt = pElement->m_PointList[i];
+		pt.x = pElement->m_PointList[i].x;
+		pt.y = pElement->m_PointList[i].y;
 
 		if(bXLog)
 			pt.x = log10(pt.x);
@@ -2070,34 +2080,44 @@ void CDMGraphCtrl::PlotElementPoints(HDC hDC, CGraphElement* pElement, BOOL bOpt
 	
 	// Lock the plot access		
 	EnterCriticalSection(&pElement->m_CritSectionForPlot);
-	CElementPoint pt = pElement->m_PointList[0];
 
-	VARIANT_BOOL bXLog, bYLog;
-	m_pAxis[ HorizontalX ]->get_Log(&bXLog);
-	m_pAxis[ VerticalY  ]->get_Log(&bYLog);
-
-	if(bXLog)
-		pt.x = log10(pt.x);
-	if(bYLog)
-		pt.y = log10(pt.y);
-
-
-	// calculate the corrdinate of ploting point.
 	POINT point;
-	Corrdinate(pt, &point);
+	CElementPoint pt;
+	VARIANT_BOOL bXLog, bYLog;
+	POINT oldpt;
+	//Proceed only if it contains any points
+	if ( pElement->m_PointList.GetSize() > 0 )
+	{
+		pt = pElement->m_PointList[0];
+		
+		m_pAxis[ HorizontalX ]->get_Log(&bXLog);
+		m_pAxis[ VerticalY  ]->get_Log(&bYLog);
 
-	// Clip the ploting area if it exceed ranged .
-	if (point.x < BoundingRect.left) point.x = BoundingRect.left;
-	if (point.y < BoundingRect.top) point.y = BoundingRect.top;
-	if (point.y > BoundingRect.bottom) point.y = BoundingRect.bottom;
+		if(bXLog)
+			pt.x = log10(pt.x);
+		if(bYLog)
+			pt.y = log10(pt.y);
+
+
+		// calculate the corrdinate of ploting point.		
+		Corrdinate(pt, &point);
+
+		// Clip the ploting area if it exceed ranged .
+		if (point.x < BoundingRect.left) point.x = BoundingRect.left;
+		if (point.y < BoundingRect.top) point.y = BoundingRect.top;
+		if (point.y > BoundingRect.bottom) point.y = BoundingRect.bottom;
+
+		MoveToEx (hDC, point.x, point.y, NULL);
+		oldpt = point;
+	}
    			
-	MoveToEx (hDC, point.x, point.y, NULL);
-	POINT oldpt = point;
 
 	//Start plot all available data.
 	for(int i=0; i<pElement->m_PointList.GetSize(); i++)
 	{				
-		pt = pElement->m_PointList[i];
+		//pt = pElement->m_PointList[i];
+		pt.x = pElement->m_PointList[i].x;
+		pt.y = pElement->m_PointList[i].y;
 
 		if(bXLog)
 			pt.x = log10(pt.x);
