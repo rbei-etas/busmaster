@@ -10,7 +10,17 @@
     </copyright>
   </prolog>
   <body>
-    <section><title>Description</title><p>BUSMASTER is located in a Git repository on the open source hosting platform <xref href="https://github.com/" scope="external">https://github.com/</xref>. Git for Windows is the implementation of the Git protocol. There is a nice extension available called Git Extensions.</p>There is a good documentation available on how to setup Git for Windows at <xref href="http://help.github.com/win-set-up-git/" scope="external">http://help.github.com/win-set-up-git/</xref>. The most important steps are described in the following paragraphs.</section>
+    <section><title>Description</title><p>BUSMASTER is located in a Git repository on the open source hosting platform <xref href="https://github.com/" scope="external">https://github.com/</xref>. Git for Windows is the standard git client for Windows. There is also an Windows Explorer extension available called Git Extensions.</p><p>There are comprehensive documentation available for any experience grades at GitHub.com:</p><p><ul>
+          <li><xref href="http://help.github.com/" scope="external">http://help.github.com/</xref>: Start page for GitHub help. This includes a documentation on how to clone the BUSMASTER source codes from GitHub.com.</li>
+          <li><xref href="http://help.github.com/win-set-up-git/" scope="external">http://help.github.com/win-set-up-git/</xref>: A specific documentation on how to setup Git for Windows.</li>
+          <li><xref href="http://pages.github.com/" scope="external">http://pages.github.com/</xref>: Documentation on GitHub project homepages.</li>
+        </ul></p>The most important steps and the ones necessary for BUSMASTER are described in the following paragraphs. GitHub usually has to repository branches:</section>
+    <section>
+      <ul>
+        <li>master, which contains the source codes (default checkout)</li>
+        <li>gh-pages, which contains the homepage (explicit checkout necessary)</li>
+      </ul>
+    </section>
     <section>
       <title>Download</title>
       <p>Git for Windows is available at <xref href="http://code.google.com/p/msysgit/downloads/list" scope="external">http://code.google.com/p/msysgit/downloads/list</xref>. Download the most current version of the installer, e.g. <filepath>Git-1.7.7-preview20111014.exe</filepath> (as of 2011-10-26).</p>
@@ -24,18 +34,57 @@
     <section>
       <title>Configuration</title>
       <p>Git requires a configuration regarding your firewall/proxy server settings and regarding your username and e-mail address for commiting patches into the repository.</p>
-      <p>For configuring Git for Windows, you first have to execute <uicontrol>Git Bash</uicontrol> via the Windows Explorer content menu as shown in the image below:</p>
-      <image placement="break" href="../images/git.png"/>
-      <p>This opens a cygwin bash shell and allows to execute the usual git command line client. To set your proxy (e.g. proxy:8080), user name and email address do the following:</p>
+      <p>For configuring Git for Windows, you first have to execute <uicontrol>Git Bash</uicontrol> via the <uicontrol>Windows Start</uicontrol> menu or as shown in the image below via the content menu of the <uicontrol>Windows Explorer</uicontrol>:</p>
+      <image href="../images/git.png" placement="break"/>
+      <p>This opens a shell and allows you to execute the usual git command line client. To globally set your proxy, user name and email address do the following and adjust it to your needs:</p>
       <screen>git config --global http.proxy proxy:8080
 git config --global user.name &quot;Firstname Lastname&quot;
 git config --global user.email &quot;your_email@youremail.com&quot;</screen>
     </section>
     <section>
       <title>Usage</title>
-      <p>Git for Windows as well as the Git Extensions are available via the Windows Explorer content menu as shown in the following image:</p>
-      <image placement="break" href="../images/git_extensions.png"/>
-      <p>There is a pretty good documentation on different aspects of Git available for any experience grades at: <xref href="http://help.github.com/" scope="external">http://help.github.com/</xref>. This includes a documentation on how to initiate your local Git repository and clone BUSMASTER from GitHub.com.</p>
+      <p>Git for Windows is available via the <uicontrol>Windows Start</uicontrol> menu or as shown in the image below via the content menu of the <uicontrol>Windows Explorer</uicontrol>:</p>
+      <image href="../images/git_extensions.png" placement="break"/>
+      <p>To make an initial checkout execute the <uicontrol>Git Gui</uicontrol> and <uicontrol>Clone Existing Repository</uicontrol>. Select the <uicontrol>Target Directory</uicontrol> according to your needs. The <uicontrol>Source Location</uicontrol> of BUSMASTER is mentioned on the GitHub project page:</p>
+      <ul>
+        <li>SSH protocol: <xref href="git@github.com:rbei-etas/busmaster.git" scope="external">git@github.com:rbei-etas/busmaster.git</xref></li>
+        <li>HTTPS protocol using your GitHub account (change accordingly): <xref href="https://etas-lorenz@github.com/rbei-etas/busmaster.git" scope="external">https://etas-lorenz@github.com/rbei-etas/busmaster.git</xref></li>
+        <li>HTTPS protocol using anonymous user: <xref href="https://github.com/rbei-etas/busmaster.git" scope="external">https://github.com/rbei-etas/busmaster.git</xref></li>
+      </ul>
+      <p>Depending on your firewall and proxy servers not every URL might work. Especially company proxies often prohibit direct SSH connections. So try the HTTPS protocol or contact your local IT department if you have problems accessing GitHub.</p>
+      <image href="../images/git_clone.png" placement="break"/>
+      <p>Depending on the URL a window <uicontrol>OpenSSH</uicontrol> will pop up several times and ask you for your GitHub user account password as shown below:</p>
+      <image href="../images/git_openssh.png" placement="break"/>
+      <p>The Target Directory should contain a complete checkout of the master branch. The <uicontrol>Git Gui</uicontrol> starts automatically as shown below:</p>
+      <image href="../images/git_gui.png" placement="break"/>
+      <p>In case you need to checkout another branch (e.g. from branch to gh-pages) for the first time go to <menucascade>
+          <uicontrol>Branch</uicontrol>
+          <uicontrol>Create...</uicontrol>
+        </menucascade> A window <uicontrol>Create Branch</uicontrol> should come up. Under <uicontrol>Branch Name</uicontrol> select <uicontrol>Match Tracking Branch Name</uicontrol>. Under <uicontrol>Starting Revision</uicontrol> select <uicontrol>Tracking Branch</uicontrol> and select the respective branch (e.g. origin/gh-pages) as shown below:</p>
+      <image href="../images/git_create_branch.png" placement="break"/>
+      <p>Press <uicontrol>Create</uicontrol> to start the checkout from the remote branch (e.g. origin/gh-pages) to the newly created local branch (e.g. gh-pages). Again, depending on the URL the window <uicontrol>OpenSSH</uicontrol> will pop up several times and ask you for your GitHub user account password. Afterwards your Target Directory should contain only the new branch.</p>
+      <p>The same can be reached via Git Bash if you execute the following command in the Target Directory:</p>
+      <screen>git checkout origin/gh-pages -b gh-pages</screen>
+      <p>If you open the  <uicontrol>Windows Explorer</uicontrol> content menu in the Target Directory you should be able to switch (checkout) between your local branches as shown below:</p>
+      <image href="../images/git_branch.png" placement="break"/>
+      <p>The Git Gui is pretty helpful. As shown above it consists of four panes:</p>
+      <ul>
+        <li><uicontrol>Unstaged Changes</uicontrol>: This shows the modifications you have done since checkout.</li>
+        <li><uicontrol>Staged Changes (Will Commit)</uicontrol>: This shows what you want to upload (commit).</li>
+        <li><uicontrol>Commit Message</uicontrol>: Here you have to inform what your change is about. The first line is a title. All following lines can be used for a detailed description. You should <uicontrol>Sign Off</uicontrol> your message.</li>
+        <li>Pane on the upper right side: This shows the differences in the file you have select in one of the left panes.</li>
+      </ul>
+      <p>If you want to keep your checkout up to date, you need to pull from the origin and merge the changes into your local branch. This can be done via <uicontrol>Git Bash</uicontrol> in the Target Directory:</p>
+      <screen>git pull origin master</screen>
+      <p>The most helpful commands in the beginning can be accessed via  <uicontrol>Git Gui</uicontrol>:</p>
+      <ul>
+        <li><menucascade>
+            <uicontrol>Commit</uicontrol>
+            <uicontrol>Stage To Commit</uicontrol>
+          </menucascade>: The file(s) selected under <uicontrol>Unstaged Changes</uicontrol> are selected for the commit under <uicontrol>Staged Changes</uicontrol>.</li>
+        <li>Button <uicontrol>Commit</uicontrol>: This will commit your changes into your local branch (e.g. master).</li>
+        <li>Button <uicontrol>Push</uicontrol>: This will push your changes from the local branch (e.g. master) to the remote branch (e.g. origin/master).</li>
+      </ul>
     </section>
   </body>
 </topic>
