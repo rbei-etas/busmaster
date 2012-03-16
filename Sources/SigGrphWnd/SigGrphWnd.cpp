@@ -385,8 +385,8 @@ DWORD WINAPI SignalDataPlotterThread(LPVOID pVoid)
     {
 		//Commented by Arunkumar Karri on 07/02/2012 to make the plotting realtime.
         //Sleep(nRefreshTime);
-		//Introduced a 1 Millisecond delay
-		Sleep(1);
+		//Introduced a 50 Millisecond delay
+		Sleep(50);
 		if(pThreadParam->m_unActionCode == IDLE)
 		{
 			bLoopON = false;
@@ -493,6 +493,8 @@ DWORD WINAPI SignalDataPlotterThread(LPVOID pVoid)
 				if ( unPointsCnt > nBufferSize )
 				{
 					vClearGraphElementPoints(spGraphCollection);
+					//After clearing the Graph, sleep for 100 msec
+					Sleep(100);
 					unPointsCnt = 0;
 				}
 			}
@@ -552,6 +554,3 @@ BOOL bStopGraphReadThread()
     m_ouGraphReadThread.m_unActionCode = IDLE;
     return bReturn;
 }
-
-
-
