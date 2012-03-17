@@ -1,16 +1,16 @@
 @echo off
 
-set JAVA_DIR="C:\Program Files\Java\jdk1.6.0_27"
-if exist %JAVA_DIR%\lib\tools.jar goto DITA
+set JAVA_DIR=%ProgramFiles%\Java\jdk1.6.0_27
+if exist "%JAVA_DIR%\lib\tools.jar" goto DITA
 
 echo Java Development Kit not found. Build failed!
 goto END
 
 :DITA
-set DITA_DIR=C:\Program Files\Syntext\Serna Free 4.3\plugins\dita\DITA-OT1.5.3
+set DITA_DIR=%ProgramFiles%\Syntext\Serna Free 4.3\plugins\dita\DITA-OT1.5.3
 if exist "%DITA_DIR%" goto DITA_1_5_3
 
-set DITA_DIR=C:\Program Files\Syntext\Serna Free 4.3\plugins\dita\DITA-OT1.4
+set DITA_DIR=%ProgramFiles%\Syntext\Serna Free 4.3\plugins\dita\DITA-OT1.4
 if exist "%DITA_DIR%" goto DITA_1_4
 
 echo DITA not found. Build failed!
