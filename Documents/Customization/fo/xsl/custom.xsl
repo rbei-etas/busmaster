@@ -36,7 +36,7 @@
                 <fo:block xsl:use-attribute-sets="__frontmatter">
 		    <!-- set the logo -->
 		    <fo:block xsl:use-attribute-sets="__frontmatter__logo">
-			<fo:external-graphic src="url(../../Logo/BUSMASTER_Logo.svg)" content-width="scale-to-fit" content-height="scale-to-fit" width="100%" scaling="uniform"/>
+			<fo:external-graphic src="url(../../../Logo/BUSMASTER_Logo.svg)" content-width="scale-to-fit" content-height="scale-to-fit" width="100%" scaling="uniform"/>
                     </fo:block>
 
                     <!-- set the title -->
