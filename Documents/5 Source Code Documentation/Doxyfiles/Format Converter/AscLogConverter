@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = AscLogConverter
+PROJECT_BRIEF          = "ASC to LOG converter"
+OUTPUT_DIRECTORY       = "out/Format Converter/AscLogConverter"
+STRIP_FROM_PATH        = "../../Sources/Format Converter/AscLogConverter"
+INPUT                  = "../../Sources/Format Converter/AscLogConverter"
