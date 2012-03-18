@@ -1,0 +1,7 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = CAN_MHS
+PROJECT_BRIEF          = CAN_MHS
+OUTPUT_DIRECTORY       = out/CAN_MHS
+STRIP_FROM_PATH        = ../../Sources/CAN_MHS
+INPUT                  = ../../Sources/CAN_MHS
+EXCLUDE                = ../../Sources/CAN_MHS/EXTERNAL_INCLUDE

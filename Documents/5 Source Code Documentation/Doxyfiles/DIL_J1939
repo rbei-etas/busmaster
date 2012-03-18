@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = DIL_J1939
+PROJECT_BRIEF          = DIL_J1939
+OUTPUT_DIRECTORY       = out/DIL_J1939
+STRIP_FROM_PATH        = ../../Sources/DIL_J1939
+INPUT                  = ../../Sources/DIL_J1939

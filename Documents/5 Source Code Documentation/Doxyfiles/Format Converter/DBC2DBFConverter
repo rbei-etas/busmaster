@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = DBC2DBFConverter
+PROJECT_BRIEF          = "DBC to DBF converter"
+OUTPUT_DIRECTORY       = "out/Format Converter/DBC2DBFConverter"
+STRIP_FROM_PATH        = "../../Sources/Format Converter/DBC2DBFConverter"
+INPUT                  = "../../Sources/Format Converter/DBC2DBFConverter"

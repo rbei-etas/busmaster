@@ -1,6 +1,0 @@
-@INCLUDE               = Doxyfile
-PROJECT_NAME           = DBC_2_DBF
-PROJECT_BRIEF          = "DBC to DBF file converter"
-OUTPUT_DIRECTORY       = out/TOOLS_EXTERNAL/DBC_2_DBF
-STRIP_FROM_PATH        = ../../Sources/TOOLS_EXTERNAL/DBC_2_DBF
-INPUT                  = ../../Sources/TOOLS_EXTERNAL/DBC_2_DBF

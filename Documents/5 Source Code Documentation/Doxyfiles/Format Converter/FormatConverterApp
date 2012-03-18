@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = FormatConverterApp
+PROJECT_BRIEF          = "Format Converter application"
+OUTPUT_DIRECTORY       = "out/Format Converter/FormatConverterApp"
+STRIP_FROM_PATH        = "../../Sources/Format Converter/FormatConverterApp"
+INPUT                  = "../../Sources/Format Converter/FormatConverterApp"

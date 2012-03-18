@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = SigGrphWnd
+PROJECT_BRIEF          = SigGrphWnd
+OUTPUT_DIRECTORY       = out/SigGrphWnd
+STRIP_FROM_PATH        = ../../Sources/SigGrphWnd
+INPUT                  = ../../Sources/SigGrphWnd

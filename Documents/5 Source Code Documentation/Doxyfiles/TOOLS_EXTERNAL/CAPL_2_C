@@ -1,6 +1,0 @@
-@INCLUDE               = Doxyfile
-PROJECT_NAME           = CAPL_2_C
-PROJECT_BRIEF          = "CAPL to C file converter"
-OUTPUT_DIRECTORY       = out/TOOLS_EXTERNAL/CAPL_2_C
-STRIP_FROM_PATH        = ../../Sources/TOOLS_EXTERNAL/CAPL_2_C
-INPUT                  = ../../Sources/TOOLS_EXTERNAL/CAPL_2_C
