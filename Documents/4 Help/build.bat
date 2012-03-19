@@ -65,7 +65,9 @@ goto BUILD
 echo Using JDK found in %JAVA_HOME%
 echo Using DITA found in %DITA_HOME%
 set ANT_HOME=%DITA_HOME%\tools\ant
-set PATH=%JAVA_HOME%\bin;%ANT_HOME%\bin;%PATH%
+set PATH=%JAVA_HOME%\bin;%ANT_HOME%\bin;%ProgramFiles%\HTML Help Workshop;%PATH%
 ant -Ddita.dir="%DITA_HOME%" -f build.xml all
+cd out
+hhc help.hhp
 
 :END
