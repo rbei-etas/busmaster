@@ -433,7 +433,6 @@ Global
 		{11160320-BA40-4253-87ED-04EDB9E4021F}.Debug|Win32.ActiveCfg = Debug|Win32
 		{11160320-BA40-4253-87ED-04EDB9E4021F}.Debug|Win32.Build.0 = Debug|Win32
 		{11160320-BA40-4253-87ED-04EDB9E4021F}.Release|Win32.ActiveCfg = Release|Win32
-		{11160320-BA40-4253-87ED-04EDB9E4021F}.Release|Win32.Build.0 = Release|Win32
 		{11160320-BA40-4253-87ED-04EDB9E4021F}.Unicode Debug|Win32.ActiveCfg = Debug|Win32
 		{11160320-BA40-4253-87ED-04EDB9E4021F}.Unicode Release MinSize|Win32.ActiveCfg = Release|Win32
 		{11160320-BA40-4253-87ED-04EDB9E4021F}.Unicode Release|Win32.ActiveCfg = Release|Win32
