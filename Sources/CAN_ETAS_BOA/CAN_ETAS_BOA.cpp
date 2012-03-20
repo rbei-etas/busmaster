@@ -1728,6 +1728,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_PerformClosureOperations(void)
 {
     HRESULT hResult = S_OK;
 
+    CAN_StopHardware();
     //deselect hw interface
     hResult = CAN_DeselectHwInterface();
 
