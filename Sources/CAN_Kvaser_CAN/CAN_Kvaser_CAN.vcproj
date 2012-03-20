@@ -68,7 +68,7 @@
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
-				CommandLine="copy &quot;%TMP%\canlib32.lib&quot; &quot;.\..\bin\libs\$(IntDir)\canlib32.lib&quot;&#x0D;&#x0A;del &quot;%TMP%\canlib32.lib&quot;"
+				CommandLine="copy &quot;%TMP%\canlib32.lib&quot; &quot;.\..\bin\libs\$(IntDir)\canlib32.lib&quot;&#x0D;&#x0A;del &quot;%TMP%\canlib32.lib&quot;&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCLinkerTool"
@@ -136,7 +136,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
@@ -153,11 +153,11 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
 				Culture="1033"
-				AdditionalIncludeDirectories="$(IntDir)"
+				AdditionalIncludeDirectories="$(IntDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
-				CommandLine="copy &quot;%TMP%\canlib32.lib&quot; &quot;.\..\bin\libs\$(IntDir)\canlib32.lib&quot;&#x0D;&#x0A;del &quot;%TMP%\canlib32.lib&quot;"
+				CommandLine="copy &quot;%TMP%\canlib32.lib&quot; &quot;.\..\bin\libs\$(IntDir)\canlib32.lib&quot;&#x0D;&#x0A;del &quot;%TMP%\canlib32.lib&quot;&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCLinkerTool"
@@ -165,6 +165,7 @@
 				AdditionalDependencies="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/canlib32.lib&quot;"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/CAN_Kvaser_CAN.dll"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 				ModuleDefinitionFile=""
 				GenerateDebugInformation="true"
 				SubSystem="2"

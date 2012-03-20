@@ -125,7 +125,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS; _USRDLL;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
@@ -149,6 +149,7 @@
 				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_ICS_neoVI.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_VECTOR_XL.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_Kvaser_CAN.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_STUB.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_ETAS_BOA.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_J1939.lib&quot;"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/DIL_Interface.dll"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 				GenerateManifest="true"
 				GenerateDebugInformation="true"
 				SubSystem="2"

@@ -132,7 +132,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_AFXEXT;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
@@ -149,7 +149,7 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
 				Culture="1033"
-				AdditionalIncludeDirectories="$(IntDir)"
+				AdditionalIncludeDirectories="$(IntDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -160,6 +160,7 @@
 				AdditionalDependencies="Winmm.lib"
 				OutputFile="$(SolutionDir)/BIN/$(OutDir)/TXWindow.dll"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 				GenerateManifest="true"
 				ModuleDefinitionFile=""
 				GenerateDebugInformation="true"

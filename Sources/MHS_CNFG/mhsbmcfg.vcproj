@@ -50,7 +50,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories=".\Res"
+				AdditionalIncludeDirectories=".\Res;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;MHSBMCFG_EXPORTS"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -69,6 +69,7 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
 				Culture="1031"
+				AdditionalIncludeDirectories="C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -79,6 +80,7 @@
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/mhsbmcfg.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 				ModuleDefinitionFile=""
 				ProgramDatabaseFile=".\Release/MHS_CNFG.pdb"
 				RandomizedBaseAddress="1"

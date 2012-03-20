@@ -131,7 +131,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="$(SolutionDir)"
+				AdditionalIncludeDirectories="$(SolutionDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
@@ -148,7 +148,7 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
 				Culture="1033"
-				AdditionalIncludeDirectories="$(IntDir)"
+				AdditionalIncludeDirectories="$(IntDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -158,6 +158,7 @@
 				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Datatypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_Interface.lib&quot;"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/SignalWatch.dll"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 				GenerateManifest="true"
 				ModuleDefinitionFile=""
 				GenerateDebugInformation="true"
