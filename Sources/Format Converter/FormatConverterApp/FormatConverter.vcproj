@@ -97,7 +97,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(TargetPath)&quot; &quot;..\..\bin\$(IntDir)\&quot;"
+				CommandLine="copy &quot;$(TargetPath)&quot; &quot;..\..\bin\$(IntDir)\&quot;&#x0D;&#x0A;exit 0"
 			/>
 		</Configuration>
 		<Configuration
@@ -182,7 +182,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(TargetPath)&quot; &quot;..\..\bin\$(IntDir)\&quot;"
+				CommandLine="copy &quot;$(TargetPath)&quot; &quot;..\..\bin\$(IntDir)\&quot;&#x0D;&#x0A;exit 0"
 			/>
 		</Configuration>
 	</Configurations>

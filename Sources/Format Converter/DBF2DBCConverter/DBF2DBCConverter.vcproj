@@ -96,7 +96,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="mkdir ..\..\bin\$(IntDir)\ConverterPlugins&#x0D;&#x0A;copy &quot;$(TargetPath) &quot; &quot;..\..\bin\$(IntDir)\ConverterPlugins\&quot;&#x0D;&#x0A;"
+				CommandLine="mkdir ..\..\bin\$(IntDir)\ConverterPlugins&#x0D;&#x0A;copy &quot;$(TargetPath) &quot; &quot;..\..\bin\$(IntDir)\ConverterPlugins\&quot;&#x0D;&#x0A;exit 0"
 			/>
 		</Configuration>
 		<Configuration
