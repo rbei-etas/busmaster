@@ -127,6 +127,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="."
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_AFXEXT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -179,7 +180,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="mkdir ..\..\bin\$(IntDir)\ConverterPlugins&#x0D;&#x0A;copy &quot;$(TargetPath) &quot; &quot;..\..\bin\$(IntDir)\ConverterPlugins\&quot;&#x0D;&#x0A;&#x0D;&#x0A;"
+				CommandLine="mkdir ..\..\bin\$(IntDir)\ConverterPlugins&#x0D;&#x0A;copy &quot;$(TargetPath) &quot; &quot;..\..\bin\$(IntDir)\ConverterPlugins\&quot;&#x0D;&#x0A;exit 0"
 			/>
 		</Configuration>
 	</Configurations>
