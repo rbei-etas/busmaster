@@ -96,7 +96,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="mkdir ..\..\bin\$(IntDir)\ConverterPlugins&#x0D;&#x0A;copy &quot;$(TargetPath) &quot; &quot;..\..\bin\$(IntDir)\ConverterPlugins\&quot;&#x0D;&#x0A;"
+				CommandLine="mkdir ..\..\bin\$(IntDir)\ConverterPlugins&#x0D;&#x0A;copy &quot;$(TargetPath) &quot; &quot;..\..\bin\$(IntDir)\ConverterPlugins\&quot;&#x0D;&#x0A;exit 0"
 			/>
 		</Configuration>
 		<Configuration
@@ -308,7 +308,7 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="flex.exe -i -oLog_Asc_Lexer.c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					CommandLine="..\..\..\Tools\flex.exe -i -oLog_Asc_Lexer.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0"
 					Outputs="Log_Asc_Lexer.c"
 				/>
 			</FileConfiguration>
@@ -317,7 +317,7 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="flex.exe -i -oLog_Asc_Lexer.c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					CommandLine="..\..\..\Tools\flex.exe -i -oLog_Asc_Lexer.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0"
 					Outputs="Log_Asc_Lexer.c"
 				/>
 			</FileConfiguration>
@@ -330,7 +330,7 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="bison.exe -d --output=Log_Asc_Parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					CommandLine="..\..\..\Tools\bison.exe -d --output=Log_Asc_Parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0"
 					Outputs="Log_Asc_Parser.c,Log_Asc_Parser.h"
 				/>
 			</FileConfiguration>
@@ -339,7 +339,7 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="bison.exe -d --output=Log_Asc_Parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					CommandLine="..\..\..\Tools\bison.exe -d --output=Log_Asc_Parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0"
 					Outputs="Log_Asc_Parser.c,Log_Asc_Parser.h"
 				/>
 			</FileConfiguration>

@@ -96,7 +96,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="mkdir ..\..\bin\$(IntDir)\ConverterPlugins&#x0D;&#x0A;copy &quot;$(TargetPath) &quot; &quot;..\..\bin\$(IntDir)\ConverterPlugins\&quot;&#x0D;&#x0A;&#x0D;&#x0A;"
+				CommandLine="mkdir ..\..\bin\$(IntDir)\ConverterPlugins&#x0D;&#x0A;copy &quot;$(TargetPath) &quot; &quot;..\..\bin\$(IntDir)\ConverterPlugins\&quot;&#x0D;&#x0A;exit 0"
 			/>
 		</Configuration>
 		<Configuration
@@ -353,7 +353,7 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="flex.exe -i -olexer.h &quot;$(InputPath)&quot;"
+					CommandLine="..\..\..\Tools\flex.exe -i -olexer.h &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0"
 					Outputs="lexer.h"
 				/>
 			</FileConfiguration>
@@ -362,7 +362,7 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="flex.exe -i -olexer.h &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					CommandLine="..\..\..\Tools\flex.exe -i -olexer.h &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0"
 					Outputs="lexer.h"
 				/>
 			</FileConfiguration>
