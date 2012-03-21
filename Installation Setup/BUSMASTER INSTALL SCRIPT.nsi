@@ -26,9 +26,7 @@
 BGGradient 8080C0 0000FF FFFFFF
 
 ; Title of this installation
-Name "BUSMASTER Installer"
-
-BrandingText "RBEI BUSMASTER Installation"
+Name "BUSMASTER"
 
 ; Do a CRC check when initializing setup
 CRCCheck On
@@ -57,6 +55,22 @@ InstallDirRegKey HKLM "SOFTWARE\BUSMASTER" "Install_Dir"
 
 ; Folder selection prompt
 DirText "Please select an installation folder."
+
+; Pages
+Page license
+;Page components
+Page directory
+Page instfiles
+UninstPage uninstConfirm
+UninstPage instfiles
+
+; Installation Types
+;InstType "Typical"
+;InstType "Full"
+;InstType "Minimal"
+
+; License Text
+LicenseData ../COPYING.LESSER.txt
 
 ; Section Default: This emptily named section will always run
 Section ""
@@ -126,19 +140,18 @@ Section ""
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER" "DisplayName" "BUSMASTER (remove only)"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER" "UninstallString" '"$INSTDIR\uninst.exe"'
 
-    ; Compatibiliy settings
+    ; Compatibility settings
     ;DeleteRegValue HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSMASTER.exe"
     ;DeleteRegValue HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSEmulation.exe"
-	
-    ; Compatibiliy settings for Windows 7
+
+    ; Compatibility settings for Windows 7
     ReadRegStr $1 HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion" CurrentVersion
     StrCmp $1 "6.1" 0 lbl ;StrCmp str1 str2 jump_if_equal [jump_if_not_equal]
     WriteRegStr HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSMASTER.exe" "WIN98"
     WriteRegStr HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSEmulation.exe" "WIN98"
-	
     lbl:
+
     ; Server registration
-    SetOutPath $INSTDIR
     ExecWait 'BusEmulation.exe /regserver'
     ExecWait 'BUSMASTER.exe /regserver'
     ExecWait 'regsvr32 DMGraph.dll /s'
@@ -148,13 +161,12 @@ Section ""
 SectionEnd
 
 ; Uninstall section here...
-UninstallText "This will uninstall BUSMASTER Installer. Press NEXT to continue."
 Section "Uninstall"
     ; Unregister server
     SetOutPath $INSTDIR
     ExecWait 'BusEmulation.exe /unregserver'
     ExecWait 'BUSMASTER.exe /unregserver'
-	ExecWait 'regsvr32 /u DMGraph.dll /s'
+    ExecWait 'regsvr32 /u DMGraph.dll /s'
 
     ; Delete registration entries
     DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER"
