@@ -82,6 +82,7 @@ Section ""
     File ..\Sources\BIN\Release\FrameProcessor.dll
     File ..\Sources\BIN\Release\GCCDLLMakeTemplate_CAN
     File ..\Sources\BIN\Release\GCCDLLMakeTemplate_J1939
+    File ..\Sources\BIN\Release\mhsbmcfg.dll
     File ..\Sources\BIN\Release\NodeSimEx.dll
     File ..\Sources\BIN\Release\ProjectConfiguration.dll
     File ..\Sources\BIN\Release\PSDI_CAN.dll
