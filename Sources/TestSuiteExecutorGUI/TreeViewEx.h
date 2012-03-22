@@ -107,7 +107,7 @@ public:
     afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
     afx_msg void OnMouseMove(UINT nFlags, CPoint point);
     afx_msg void OnNMRclick(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnAddItem(){MessageBox(_T("Hi"));};
+//    afx_msg void OnAddItem(){MessageBox(_T("Hi"));};
     afx_msg void OnAddEntityItem(UINT nId);
     afx_msg void vOnDeleteItem();
     afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
