@@ -34,6 +34,7 @@
 // For DIL datatypes
 #include "DataTypes/DIL_Datatypes.h"
 #include "Include/CanUsbDefs.h"
+#include <map>
 /////////////////////////////////////////////////////////////////////////////
 // CHardwareListing dialog
 typedef void (*fnCallBackBlink)(INTERFACE_HW);
@@ -108,5 +109,25 @@ private:
 public:
     afx_msg void OnNMClickLstcHwList(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnNMClickLstcSelectedHwList(NMHDR *pNMHDR, LRESULT *pResult);
+
+public:
+	// Hardware CONTAINER
+	typedef struct tagHardwareContainer
+	{
+		int		m_omDriverId;
+		CString		m_omHardwareName;
+		CString		m_omFirmware;
+		CString		m_omHardwareDesc;
+	
+	}HARDWARE_CONTAINER, *PHARDWARE_CONTAINER;
+
+	typedef std::pair <int, PHARDWARE_CONTAINER> Int_Pair;
+	std::map <int, PHARDWARE_CONTAINER>::iterator m_pIter;
+	std::map <int, PHARDWARE_CONTAINER> mHardwareListMap;
+
+    //Hardware container object
+	PHARDWARE_CONTAINER m_pouHardwareContainer;
+	void vSortHardwareItems();
+
 };
 #endif
