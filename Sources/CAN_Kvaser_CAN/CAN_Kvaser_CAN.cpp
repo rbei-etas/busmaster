@@ -2174,8 +2174,8 @@ static int nInitHwNetwork()
     /* No Hardware found */
     if( nChannelCount == 0 )
     {
-		MessageBox(NULL,sg_omErrStr, NULL, MB_OK | MB_ICONERROR);
-		nChannelCount = -1;
+	_stprintf(sg_omErrStr, _T("No Kvaser hardwares Available.\nPlease check if Kvaser drivers are installed."));
+	nChannelCount = -1;
     }
     /* Available hardware is lesser then the supported channels */
     else
