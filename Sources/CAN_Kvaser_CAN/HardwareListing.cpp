@@ -794,3 +794,51 @@ void CHardwareListing::OnNMClickLstcSelectedHwList(NMHDR *pNMHDR, LRESULT *pResu
     vEnableDisableButtons();
     *pResult = 0;
 }
+void CHardwareListing::vSortHardwareItems()
+{
+	// clear map data
+	if(mHardwareListMap.size() > 0 )
+		mHardwareListMap.clear();
+
+	int nItemCount = m_omHardwareList.GetItemCount();
+	for(int nIndex = 0; nIndex < nItemCount; nIndex++)
+	{
+		m_pouHardwareContainer = new HARDWARE_CONTAINER();
+		m_pouHardwareContainer->m_omHardwareName  = m_omHardwareList.GetItemText(nIndex,0);
+
+		// Get the array index
+		m_pouHardwareContainer->m_omDriverId  = m_omHardwareList.GetItemData( nIndex );
+
+		// Insert List Item
+		mHardwareListMap.insert ( Int_Pair ( m_pouHardwareContainer->m_omDriverId , m_pouHardwareContainer ) );
+
+	}
+
+	m_omHardwareList.DeleteAllItems(); 
+	int iCount = 0;
+	for(int nIndex = 0; nIndex < m_nSize; nIndex++)
+	{
+		m_pIter = mHardwareListMap.find(nIndex);
+
+		if(m_pIter != mHardwareListMap.end() )//Hardware found
+		{
+			PHARDWARE_CONTAINER pTempHardware = m_pIter->second;
+			
+			//insert List Item
+			m_omHardwareList.InsertItem( iCount, pTempHardware->m_omHardwareName, 0);
+			// Set the hardware list index as item data
+			m_omHardwareList.SetItemData( iCount++, pTempHardware->m_omDriverId );
+
+		}
+	}
+
+	for ( m_pIter = mHardwareListMap.begin( ) ; m_pIter != mHardwareListMap.end( ) ; m_pIter++ )
+	{
+		delete(m_pIter->second); //release Memory
+		m_pIter->second = NULL;
+	}
+
+	// clear map data
+	mHardwareListMap.clear();
+}
+
