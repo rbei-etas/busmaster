@@ -58,7 +58,7 @@ int nGetLogTimeStamp(char* pchAscTime, char* pchLogTime)
 	
 	pchTemp = strtok(NULL, chSeparators);
 	
-	strncpy( chMilliSeconds, pchTemp, 4);
+	strncpy(chMilliSeconds, pchTemp, sizeof(chMilliSeconds));
 	
 	sprintf(pchLogTime, "%u:%u:%u:%s", nHours, nMin, nSec, chMilliSeconds);
 }

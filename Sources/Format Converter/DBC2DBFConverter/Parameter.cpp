@@ -22,8 +22,9 @@
  * Implementation of the parameter class.
  */
 
-#include <limits.h>
 #include <float.h>
+#include <limits.h>
+#include <string.h>
 
 #include "Parameter.h"
 
@@ -34,7 +35,7 @@
 CParameters::CParameters()
 {
     m_InitVal.fValue=-1;
-    strcpy_s(m_InitVal.cValue, sizeof(m_InitVal.cValue), "");
+    strncpy(m_InitVal.cValue, "", sizeof(m_InitVal.cValue));
     m_InitVal.uiValue = 0;
     m_ValRange = "";
     m_ParamType = "";
@@ -433,7 +434,7 @@ int CParameters::ReadDefaultVal(char *pcToken)
             *pcTemp++ = *pcToken++;
         }
         *pcTemp = '\0';
-        strcpy_s(m_InitVal.cValue, sizeof(m_InitVal.cValue), acTemp);
+        strncpy(m_InitVal.cValue, acTemp, sizeof(m_InitVal.cValue));
         pcTemp=acTemp;
     }
 
@@ -483,7 +484,7 @@ int CParameters::ReadDefaultVal(char *pcToken)
         {
             *pcToken++;
         }
-        strcpy_s(m_InitVal.cValue, sizeof(m_InitVal.cValue), pcToken);
+        strncpy(m_InitVal.cValue, pcToken, sizeof(m_InitVal.cValue));
     }
     return success;
 }

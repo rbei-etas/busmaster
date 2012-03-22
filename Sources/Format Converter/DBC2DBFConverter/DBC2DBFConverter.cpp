@@ -1,3 +1,4 @@
+#include <string.h>
 #include "StdAfx.h"
 #include "DBC2DBFConverter.h"
 #include "Definitions.h"
@@ -18,7 +19,7 @@ HRESULT CDBC2DBFConverter::GetConverterName(TCHAR* strConverterName)
 {
     if(strConverterName != NULL)
     {
-        strcpy(strConverterName, _T("DBC TO DBF Conversion"));
+        strncpy(strConverterName, _T("DBC TO DBF Conversion"), sizeof(strConverterName));
     }
     return S_OK;
 }

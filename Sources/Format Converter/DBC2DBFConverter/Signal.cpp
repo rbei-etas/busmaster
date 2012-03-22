@@ -22,6 +22,7 @@
  * Implementation of the signal class.
  */
 
+#include <string.h>
 #include "Converter.h"
 #include "Signal.h"
 #include "Tag.h"
@@ -350,8 +351,8 @@ int CSignal::AddValueDescriptors(char *pcLine, fstream &fileInput)
         if(true_end == false)
         {
             fileInput.getline(acLine, 1026);
-            strcpy_s(pcTemp, sizeof(pcTemp), pcLine);
-            strcat_s(pcTemp, sizeof(pcTemp), acLine);
+            strncpy(pcTemp, pcLine, sizeof(pcTemp));
+            strncat(pcTemp, acLine, sizeof(pcTemp));
             pcLine = pcTemp;
 
             if(pcLine[strlen(pcLine)-1] == ';')
@@ -361,7 +362,7 @@ int CSignal::AddValueDescriptors(char *pcLine, fstream &fileInput)
         while(*pcLine && (*pcLine == ' '))
             pcLine++;
         pcToken = strtok_s(pcLine, " ", &pcTok);
-        strcpy_s(acValue, sizeof(acValue), pcToken);
+        strncpy(acValue, pcToken, sizeof(acValue));
         pcLine = pcLine + (strlen(pcToken)) + 1;
 
         if(*pcLine == '\"')

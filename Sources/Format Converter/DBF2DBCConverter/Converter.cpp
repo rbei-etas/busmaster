@@ -29,6 +29,7 @@
 * \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
 */
 #include "StdAfx.h"
+#include <string.h>
 #include "Converter.h"
 
 #ifdef _DEBUG
@@ -797,7 +798,7 @@ void CConverter::DecryptData(CList<CString,CString& > &m_notProcessed)
         //read the string at the position
         str = m_notProcessed.GetNext(pos);
         //make a local copy
-        strcpy(c_str,str);
+        strncpy(c_str, str, sizeof(c_str));
         for(int i=0; i < (int)strlen(c_str); i++)
         {
             if ((c_str[i] >= 'a' && c_str[i] <= 'm') || (c_str[i] >= 'A' && c_str[i] <= 'M'))
