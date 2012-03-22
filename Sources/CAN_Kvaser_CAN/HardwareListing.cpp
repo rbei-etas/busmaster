@@ -414,6 +414,10 @@ void CHardwareListing::OnButtonSelect()
     
     // Remove the item from the list
     m_omHardwareList.DeleteItem( nSelected );
+
+	//Sort Hardware Items
+	vSortHardwareItems();
+
     // Set the focus to the first item
     m_omHardwareList.SetItemState( 0,
                                    LVIS_SELECTED | LVIS_FOCUSED,
@@ -458,6 +462,10 @@ void CHardwareListing::OnButtonRemove()
                             nImageIndex );
         // Set the hardware list index as item data.
         m_omHardwareList.SetItemData( nItemCount, nArrayIndex );
+
+	//Sort Hardware Items
+	vSortHardwareItems();
+
         // Remove the item from the selected list
         m_omSelectedHwList.DeleteItem( nSelectedItem );
         // Change the channel text approp.
