@@ -23,6 +23,7 @@
  */
 
 #include "stdafx.h"
+#include <string.h>
 #include "LogAscConverter.h"
 
 extern "C" int nConvertFile(FILE* fpInputFile, FILE* fpOutputFile);
@@ -44,7 +45,7 @@ HRESULT CLogAscConverter::GetConverterName(TCHAR* strConverterName)
 {
     if(strConverterName != NULL)
     {
-        strcpy(strConverterName, _T("LOG TO ASC Conversion"));
+        strncpy(strConverterName, _T("LOG TO ASC Conversion"), sizeof(strConverterName));
     }
     return S_OK;
 }

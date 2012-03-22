@@ -22,6 +22,7 @@
  * Implementation of the value table class.
  */
 
+#include <string.h>
 #include "ValueTable.h"
 #include "Signal.h"
 #include "Tag.h"
@@ -110,8 +111,8 @@ int CValueTable::Format(char *pcLine, fstream &fileInput)
         if(true_end == false)
         {
             fileInput.getline(acLine, defVTAB_MAX_LINE_LEN);
-            strcpy_s(pcTemp, sizeof(pcTemp), pcLine);
-            strcat_s(pcTemp, sizeof(pcTemp), acLine);
+            strncpy(pcTemp, pcLine, sizeof(pcTemp));
+            strncat(pcTemp, acLine, sizeof(pcTemp));
             pcLine = pcTemp;
             if(pcLine[strlen(pcLine)-1] == ';')
                 true_end  = true;

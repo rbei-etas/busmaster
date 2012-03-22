@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "StdAfx.h"
 #include "CAPL2CConvereter.h"
 #include "Definitions.h"
@@ -19,7 +21,7 @@ HRESULT CCAPL2CConvereter::GetConverterName(TCHAR* strConverterName)
 {
     /*if(strConverterName != NULL)
     {
-        strcpy(strConverterName, _T("CAPL TO C Conversion"));
+        strncpy(strConverterName, _T("CAPL TO C Conversion"). sizeof(strConverterName));
     }*/
     return S_FALSE;
 }
