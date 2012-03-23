@@ -22,6 +22,7 @@
  * Implementation of the CMainFrame class
  */
 #include "stdafx.h"             // Standard include header
+#include <string.h>
 #include "include/Struct_CAN.h"
 #include "Include/CAN_Error_Defs.h"
 #include "BUSMASTER.h"        // App class definition file
@@ -5993,7 +5994,7 @@ void CMainFrame::vUpdateGraphData(const STCANDATA &sCanData)
 
 					sInterpretList.unMsgID = sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID;
 					sInterpretList.m_nTimeStamp = sCanData.m_lTickCount.QuadPart;
-					strcpy(sInterpretList.m_acSigName,odElement.m_omStrElementName);
+					strncpy(sInterpretList.m_acSigName, odElement.m_omStrElementName, sizeof(sInterpretList.m_acSigName));
                     switch( odElement.m_nValueType )
                     {
 						case eRAW_VALUE:
@@ -9378,7 +9379,7 @@ void CMainFrame::vUpdateGraphStatsData()
 				SBUSSTATISTICS sBusStats;
 				GetICANBusStat()->BSC_GetBusStatistics(odTemp.m_nFrameFormat, sBusStats);
 				
-				strcpy(sInterpretList.m_acSigName , "");
+				strncpy(sInterpretList.m_acSigName, "", sizeof(sInterpretList.m_acSigName));
 				sInterpretList.m_shType = eSTAT_PARAM;
 
 				sInterpretList.m_unValue.m_nRawValue = -1;
@@ -10464,7 +10465,7 @@ void CMainFrame::vSetFileStorageInfo(CString oCfgFilename)
 
 	DATASTORAGEINFO stempDataInfo;
 	FILESTORAGEINFO FileStoreInfo;
-	strcpy (FileStoreInfo.m_FilePath, T2A(oCfgFilename.GetBuffer(MAX_PATH)));
+	strncpy(FileStoreInfo.m_FilePath, T2A(oCfgFilename.GetBuffer(MAX_PATH)), sizeof(FileStoreInfo.m_FilePath));
 	stempDataInfo.FSInfo = &FileStoreInfo;
 	stempDataInfo.m_Datastore = FILEMODE;
 	CConfigData::ouGetConfigDetailsObject().SetConfigDatastorage(&stempDataInfo);

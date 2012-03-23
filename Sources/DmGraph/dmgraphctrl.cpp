@@ -18,6 +18,7 @@
 //
 
 #include "stdafx.h"
+#include <string.h>
 #include "DMGraph.h"
 #include "DMGraphCtrl.h"
 #include "DrawFct.h"
@@ -2772,7 +2773,7 @@ char* LPCTSTRToCharArray(LPCTSTR val)
 		ansistr[lenA] = 0; // Set the null terminator yourself
 	}
 	char* c = new char[lenA + 1]; 
-	strcpy(c,ansistr);
+	strncpy(c, ansistr, sizeof(c));
 	//...use the strings, then free their memory:
 	delete[] ansistr;
 

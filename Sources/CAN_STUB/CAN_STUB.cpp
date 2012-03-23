@@ -23,6 +23,7 @@
 
 #include "CAN_STUB_stdafx.h"
 #include "CAN_STUB.h"
+#include <string.h>
 #include "include/Error.h"
 #include "Include/Struct_CAN.h"
 #include "Include/BaseDefs.h"
@@ -329,7 +330,7 @@ static void GetSystemErrorString()
         NULL );
     if (dwResult <= 0)
     {
-        strcpy(sg_acErrStr, "system error message retrieval operation failed");
+        strncpy(sg_acErrStr, "system error message retrieval operation failed", sizeof(sg_acErrStr));
     }
     else
     {
@@ -524,12 +525,12 @@ HRESULT CDIL_CAN_STUB::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger*
         }
         else
         {
-            strcpy(sg_acErrStr, "Null argument value(s) in SetAppParams");
+            strncpy(sg_acErrStr, "Null argument value(s) in SetAppParams", sizeof(sg_acErrStr));
         }
     }
     else
     {
-        strcpy(sg_acErrStr, "Improper current state to call SetAppParams");
+        strncpy(sg_acErrStr, "Improper current state to call SetAppParams", sizeof(sg_acErrStr));
     }
 
     return hResult;
@@ -541,7 +542,7 @@ HRESULT CDIL_CAN_STUB::CAN_DisplayConfigDlg(PCHAR& InitData, int& Length)
     char acInitFile[MAX_PATH] = {'\0'};
 
     // Assuming that InitData points to a CHAR array with size MAX_PATH
-    strcpy(acInitFile, InitData);
+    strncpy(acInitFile, InitData, sizeof(acInitFile));
 
     int nResult = WARNING_NOTCONFIRMED;//DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DILStub, 
                                           //acInitFile, DRIVER_STUB);
@@ -554,7 +555,7 @@ HRESULT CDIL_CAN_STUB::CAN_DisplayConfigDlg(PCHAR& InitData, int& Length)
         break;
         case INFO_INIT_DATA_CONFIRMED:
         {
-            strcpy(InitData, acInitFile); // Copy init file path
+            strncpy(InitData, acInitFile, sizeof(InitData)); // Copy init file path
             Length = lstrlen(acInitFile) + 1;
             Result = S_OK;
         }
@@ -815,7 +816,7 @@ HRESULT CDIL_CAN_STUB::CAN_SetConfigData(PCHAR /*ConfigFile*/, int /*Length*/)
         case STATE_RESET:
         default:
         {
-            strcpy(sg_acErrStr, "CAN_STUB_SetConfigData called at improper state");
+            strncpy(sg_acErrStr, "CAN_STUB_SetConfigData called at improper state", sizeof(sg_acErrStr));
             return S_FALSE;
         }
         break;
@@ -1021,8 +1022,8 @@ HRESULT CDIL_CAN_STUB::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, 
     for (UINT i = 0; i < CHANNEL_ALLOWED; i++)
     {
         sSelHwInterface[i].m_dwIdInterface = 0x100;
-        strcpy(sSelHwInterface[i].m_acNameInterface, "Simulation");
-        strcpy(sSelHwInterface[i].m_acDescription, "A simulation engine to create a virtual bus system");
+        strncpy(sSelHwInterface[i].m_acNameInterface, "Simulation", sizeof(sSelHwInterface[i].m_acNameInterface));
+        strncpy(sSelHwInterface[i].m_acDescription, "A simulation engine to create a virtual bus system", sizeof(sSelHwInterface[i].m_acDescription));
     }
     nCount = CHANNEL_ALLOWED;
     return S_OK;
@@ -1204,7 +1205,7 @@ HRESULT Worker_Connect(ISimENG* pISimENGLoc, Base_WrapperErrorLogger* pIlogLoc)
 {
     if (GetCurrState() == STATE_PRIMORDIAL)
     {
-        strcpy(sg_acErrStr, "CAN_STUB_Connect called at STATE_PRIMORDIAL");
+        strncpy(sg_acErrStr, "CAN_STUB_Connect called at STATE_PRIMORDIAL", sizeof(sg_acErrStr));
         return S_FALSE;
     }
     else if (GetCurrState() != STATE_INITIALISED)
@@ -1244,7 +1245,7 @@ HRESULT Worker_Disconnect(ISimENG* /*pISimENGLoc*/, Base_WrapperErrorLogger* pIl
 {
     if (GetCurrState() == STATE_PRIMORDIAL)
     {
-        strcpy(sg_acErrStr, "CAN_STUB_DeselectHwInterface called at STATE_PRIMORDIAL");
+        strncpy(sg_acErrStr, "CAN_STUB_DeselectHwInterface called at STATE_PRIMORDIAL", sizeof(sg_acErrStr));
         return S_FALSE;
     }
     else if (GetCurrState() == STATE_RESET)

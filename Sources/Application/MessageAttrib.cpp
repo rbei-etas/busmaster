@@ -24,6 +24,7 @@
 
 // For all standard header file include
 #include "stdafx.h"
+#include <string.h>
 // Interface file for the application class
 #include "BUSMASTER.h"
 // Interface file for CMessageAttrib class
@@ -718,10 +719,10 @@ void CMessageAttrib::vChangeNumericalMode(BOOL bHexON)
 {
     if(bHexON == TRUE)
     {
-        strcpy(m_acMsgIDFormat,"%X");
+        strncpy(m_acMsgIDFormat, "%X", sizeof(m_acMsgIDFormat));
     }
     else
     {
-        strcpy(m_acMsgIDFormat,"%d");
+        strncpy(m_acMsgIDFormat, "%d", sizeof(m_acMsgIDFormat));
     }
 }
