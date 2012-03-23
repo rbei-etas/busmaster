@@ -23,6 +23,7 @@
  */
 
 #include "stdafx.h"
+#include <string.h>
 #include "BUSMASTER.h"
 #include "MsgSgDetView.h"
 #include "MainFrm.h"

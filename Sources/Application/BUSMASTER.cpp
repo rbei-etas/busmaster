@@ -23,6 +23,7 @@
  */
 #include "stdafx.h"
 #include <initguid.h>
+#include <string.h>
 #include "HashDefines.h"
 #include "common.h"
 #include "SectionNames.h"
@@ -617,7 +618,7 @@ void CCANMonitorApp::vSetFileStorageInfo(CString oCfgFilename)
 
 	DATASTORAGEINFO stempDataInfo;
 	FILESTORAGEINFO FileStoreInfo;
-	strcpy (FileStoreInfo.m_FilePath, oCfgFilename.GetBuffer(MAX_PATH));
+	strncpy(FileStoreInfo.m_FilePath, oCfgFilename.GetBuffer(MAX_PATH), sizeof(FileStoreInfo.m_FilePath));
 	stempDataInfo.FSInfo = &FileStoreInfo;
 	stempDataInfo.m_Datastore = FILEMODE;
 	CConfigData::ouGetConfigDetailsObject().SetConfigDatastorage(&stempDataInfo);

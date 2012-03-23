@@ -39,6 +39,7 @@
 #include "ChangeRegisters_CAN_ETAS_BOA.h"
 
 #include <search.h>				//For qsort
+#include <string.h>
 
 #define USAGE_EXPORT
 #include "CAN_ETAS_BOA_Extern.h"
@@ -291,7 +292,7 @@ void vBlinkHw(INTERFACE_HW s_HardwareIntr)
 	if (err == OCI_SUCCESS)
     {
 		SCHANNEL s_asChannel;
-		strcpy(s_asChannel.m_acURI, s_HardwareIntr.m_acNameInterface);
+		strncpy(s_asChannel.m_acURI, s_HardwareIntr.m_acNameInterface, sizeof(s_asChannel.m_acURI));
 		s_asChannel.m_OCI_RxQueueCfg.onFrame.userData = (void*)ouOCI_HwHandle;
         s_asChannel.m_OCI_RxQueueCfg.onEvent.userData = (void*)ouOCI_HwHandle;
         //configure the controller first
@@ -1862,7 +1863,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SelectHwInterface(const INTERFACE_HW_LIST& asSelH
     {
         TCHAR acTmpURL[MAX_CHAR_SHORT] = {_T('\0')};
         _tcscpy(acTmpURL, asSelHwInterface[i].m_acNameInterface);
-        strcpy(sg_asChannel[i].m_acURI, T2A(acTmpURL));
+        strncpy(sg_asChannel[i].m_acURI, T2A(acTmpURL), sizeof(sg_asChannel[i].m_acURI));
     }
     // Create the controller instance.
     for (UINT i = 0; i < sg_nNoOfChannels; i++)
