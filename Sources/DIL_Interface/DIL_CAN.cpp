@@ -276,7 +276,7 @@ HRESULT CDIL_CAN::DILC_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE
 
 /**
  * \brief     Register a client
- * \req       RSI_14_004 - DILC_RegisterClient
+ * \req       RSI_14_003 - DILC_RegisterClient
  * \req       RS_23_04 - Registration of a client to simulate a node
  *
  * This function registers the client. Only registered client's buffer will be
