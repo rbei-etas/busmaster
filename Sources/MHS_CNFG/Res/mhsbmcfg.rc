@@ -13,11 +13,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Deutsch (Deutschland) resources
+// Englisch (USA) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
 #ifdef _WIN32
-LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
 #endif //_WIN32
 
@@ -75,7 +75,7 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDI_ICON_CAN            ICON    DISCARDABLE     "can_green.ico"
-#endif    // Deutsch (Deutschland) resources
+#endif    // Englisch (USA) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -118,11 +118,11 @@ BEGIN
     EDITTEXT        IDC_SNR_EDIT,178,49,72,14,ES_AUTOHSCROLL
     DEFPUSHBUTTON   "OK",IDOK,141,76,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,200,76,50,14
-    RTEXT           "CAN-Übertragungsgeschwindigkeit:",IDC_STATIC,7,7,179,12,
+    RTEXT           "CAN baudrate:",IDC_STATIC,7,7,179,12,
                     SS_CENTERIMAGE
-    RTEXT           "CAN-Übertragungsgeschwindigkeit BTR-Wert:",IDC_STATIC,7,
+    RTEXT           "CAN baudrate BTR value:",IDC_STATIC,7,
                     26,182,14,SS_CENTERIMAGE
-    RTEXT           "Tiny-CAN Seriennummer:",IDC_STATIC,7,49,168,14,
+    RTEXT           "Tiny-CAN serial number:",IDC_STATIC,7,49,168,14,
                     SS_CENTERIMAGE
     COMBOBOX        IDC_CAN_SPEED,188,7,62,123,CBS_DROPDOWNLIST | WS_VSCROLL |
                     WS_TABSTOP
