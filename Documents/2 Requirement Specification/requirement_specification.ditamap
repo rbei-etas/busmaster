@@ -48,6 +48,7 @@
     <topicref href="topics/simulation_engine.dita" type="topic"/>
     <topicref href="topics/signal_graph_window_id.dita" type="topic"/>
     <topicref href="topics/idil_can.dita" type="topic"/>
+    <topicref href="topics/j1939_basic.dita" type="topic"/>
   </topicref>
   <topicref href="topics/project_execution_requirements.dita" type="topic">
     <topicref href="topics/development_environment.dita" type="topic"/>
