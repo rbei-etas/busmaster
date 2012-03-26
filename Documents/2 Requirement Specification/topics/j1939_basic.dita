@@ -10,165 +10,55 @@
     </copyright>
   </prolog>
   <body>
-    <table>
-      <tgroup cols="6">
-        <thead>
-          <row>
-            <entry>Tag</entry>
-            <entry>Name &amp; Prototype</entry>
-            <entry>Functionality</entry>
-            <entry>Parameter Details</entry>
-            <entry>Return value</entry>
-            <entry>Remarks</entry>
-          </row>
-        </thead>
-        <tbody>
-          <row>
-            <entry>RSI_26_001</entry>
-            <entry>HRESULT DILJ1939_Initialise ( Base_WrapperErrorLogger* pILog, CBaseDIL_CAN* pouIDIL_CAN);</entry>
-            <entry>Initializes J1939 network</entry>
-            <entry>pILog – pointer to wrapper_error object. pouIDIL_CAN - Interface to DIL CAN.</entry>
-            <entry>S_OK for success, S_FALSE for failure.</entry>
-            <entry>-</entry>
-          </row>
-          <row>
-            <entry>RSI_26_002</entry>
-            <entry>HRESULT DILJ1939_Uninitialise ( void);</entry>
-            <entry>Uninitializes J1939 network</entry>
-            <entry>-</entry>
-            <entry>S_OK for success, S_FALSE for failure.</entry>
-            <entry>-</entry>
-          </row>
-          <row>
-            <entry>RSI_26_003</entry>
-            <entry>HRESULT DILJ1939_RegisterClient( BOOL bRegister, TCHAR* pacNodeName, UINT64 un64ECUName, DWORD&amp; dwClientId);</entry>
-            <entry>Registers / unregisters a client. This is necessary to simulate a node and to receive messages. Only registered client&apos;s buffer will be updated on receive of a msg in the bus.</entry>
-            <entry>bRegister - TRUE to register, else FALSE. pacNodeName - Client node name. un64ECUName - 64 bit ECU name. dwClientId - [Out Parm] Client&apos;s Id rendered.</entry>
-            <entry>1. ERR_CLIENT_ EXISTS, 2. ERR_ NO_CLIENT_EXIST, 3. ERR_NO_ MORE_CLIENT_ALLOWED &amp; 4. S_OK</entry>
-            <entry>Explanation: 1. Client already registered, 2. No such client with this id exists. 3. No more clients is allowed to register. 4. Success.</entry>
-          </row>
-          <row>
-            <entry>RSI_26_004</entry>
-            <entry>HRESULT DILJ1939_ManageMsgBuf(BYTE bAction, DWORD ClientID, CMsgBufVSE* pBufObj);</entry>
-            <entry>Manages the target client buffer list. Call this function to open a data channel to receive messages.</entry>
-            <entry>bAction - When MSGBUF_ADD, adds pBufObj to the target message buffer list. Removes when MSGBUF_CLEAR. ClientID - Client ID pBufObj - Interface to message buffer object.</entry>
-            <entry>S_OK if successful, else S_FALSE.</entry>
-            <entry>At present maximum number of entries in the list is kept as 8.</entry>
-          </row>
-          <row>
-            <entry>RSI_26_005</entry>
-            <entry>HRESULT DILJ_SendJ1939Msg ( DWORD dwClient, UINT unChannel, EJ1939_MSG_TYPE eMsgType, UINT32 unPGN, BYTE* pbyData, UINT unDLC, BYTE byPriority = DEFAULT_PRIORITY, BYTE byDestAdress = ADDRESS_ALL);</entry>
-            <entry>Sends a J1939 message.</entry>
-            <entry>dwClient - Client Id, unChannel - Channel number, eMsgType - COMMAND, BROADCAST, REQUEST, RESPONSE, unPGN - Parameter group number, pbyData - Data bytes, unDLC - Data length in number of bytes. byPriority - Priority (0-7) byDesrAdress = Destination address.</entry>
-            <entry>S_OK if successful, else S_FALSE.</entry>
-            <entry>-</entry>
-          </row>
-          <row>
-            <entry>RSI_26_006</entry>
-            <entry>HRESULT DILJ_SendAckMsg ( DWORD dwClient, UINT unChannel, ETYPE_ACK eAckType, UINT32 unPGN, BYTE byAddresAck);</entry>
-            <entry>Sends a acknowledgement message. </entry>
-            <entry>dwClientId - Already register node&apos;s client Id, unChannel - Channel number, eAckType - Acknowledge type (ACK_POS, ACK_NEG) unPGN - PGN to be sent. pbyData - PGN data. byAddresAck - Destination address.</entry>
-            <entry>S_OK if successful, else S_FALSE.</entry>
-            <entry>-</entry>
-          </row>
-          <row>
-            <entry>RSI_26_007</entry>
-            <entry>HRESULT DILJ_RequestPGN ( DWORD dwClient, UINT unChannel, UINT32 unPGN, BYTE byPriority = DEFAULT PRIORITY, BYTE byDestAddress = ADDRESS_ALL);</entry>
-            <entry>Requests a PGN from a node</entry>
-            <entry>dwClient - Client Id, unChannel - Channel number, unPGN - Parameter group number to be requested, byPriority - Priority (0-7) byDesrAdress = Destination address.</entry>
-            <entry>S_OK if successful, else S_FALSE.</entry>
-            <entry>-</entry>
-          </row>
-          <row>
-            <entry>RSI_26_008</entry>
-            <entry>HRESULT DILJ1939_GoOnline ( );</entry>
-            <entry>Starts J1939 network. All nodes start sending according to the configuration.</entry>
-            <entry>-</entry>
-            <entry>S_OK if successful, else S_FALSE.</entry>
-            <entry>-</entry>
-          </row>
-          <row>
-            <entry>RSI_26_009</entry>
-            <entry>HRESULT DILJ1939_GoOffline ( );</entry>
-            <entry>Stops J1939 network. All nodes stop sending msgs.</entry>
-            <entry>-</entry>
-            <entry>S_OK if successful, else S_FALSE.</entry>
-            <entry>-</entry>
-          </row>
-          <row>
-            <entry>RSI_26_010</entry>
-            <entry>HRESULT DILJ_NM_GetNodeName ( BYTE byAddress, TCHAR* acNodeName);</entry>
-            <entry>Gets the node name from 8 bit address from J1939 network.</entry>
-            <entry>byAddress - 8 bit node address (0 - 253) acNodeName - [OUT_PARAM] Nodes name.</entry>
-            <entry>S_OK if successful, else S_FALSE.</entry>
-            <entry>-</entry>
-          </row>
-          <row>
-            <entry>RSI_26_011</entry>
-            <entry>HRESULT DILJ_NM_GetNodeAddress ( BYTE&amp; byAddress, DWORD dwClient);</entry>
-            <entry>Gets the node address from Client Id from J1939 network.</entry>
-            <entry>byAddress- [OUT_PARAM] Nodes 8 bit address, dwClient - Client Id. </entry>
-            <entry>S_OK if successful, else S_FALSE.</entry>
-            <entry>-</entry>
-          </row>
-          <row>
-            <entry>RSI_26_012</entry>
-            <entry>BOOL DILJ_NM_bIsAddressClaimed ( BYTE byAddress);</entry>
-            <entry>Returns whether the address is already claimed by another node.</entry>
-            <entry>byAddress - 8 bit node address (0 - 253).</entry>
-            <entry>TRUE if claimed, else FALSE.</entry>
-            <entry>-</entry>
-          </row>
-          <row>
-            <entry>RSI_26_013</entry>
-            <entry>HRESULT DILJ_NM_ClaimAddress ( DWORD dwClientId, UINT unChannel, BYTE byAddress, BYTE byPriority = DEFAULT_PRIORITY);</entry>
-            <entry>Node tries to claim a new address by sending Address Claim message into the network.</entry>
-            <entry>dwClientId - Already register node&apos;s client Id, unChannel - Channel number, byAddress - New address to be claimed, byPriority - Priority (0 - 7).</entry>
-            <entry>S_OK if successful, else S_FALSE.</entry>
-            <entry>-</entry>
-          </row>
-          <row>
-            <entry>RSI_26_014</entry>
-            <entry>HRESULT DILJ_NM_RequestAddress ( DWORD dwClient, UINT unChannel, BYTE byPriority = DEFAULT_PRIORITY, BYTE byDestAddress = ADDRESS_ALL);</entry>
-            <entry>A node requests address from an another node.</entry>
-            <entry>dwClientId - Already register node&apos;s client Id, unChannel - Channel number, byDestAddress - Destination Address, byPriority - Priority (0 - 7).</entry>
-            <entry>S_OK if successful, else S_FALSE.</entry>
-            <entry>-</entry>
-          </row>
-          <row>
-            <entry>RSI_26_015</entry>
-            <entry>HRESULT DILJ_NM_CommandAddress ( DWORD dwClient, UINT unChannel, UINT64 unECU_NAME, BYTE byNewAddress, BYTE byPriority = DEFAULT_PRIORITY, BYTE byDestAddress = ADDRESS_ALL);</entry>
-            <entry>A node commands another node to assume an address.</entry>
-            <entry>dwClientId - Already register node&apos;s client Id, unChannel - Channel number, unECU_NAME - 64 bit ECU NAME of the destination node. byDestAddress - Destination Address, byPriority - Priority (0 - 7).</entry>
-            <entry>S_OK if successful, else S_FALSE.</entry>
-            <entry>-</entry>
-          </row>
-          <row>
-            <entry>RSI_26_016</entry>
-            <entry>HRESULT DILJ_ConfigureTimeOut ( ETYPE_TIMEOUT eTimeOutType, UINT unMiliSeconds);</entry>
-            <entry>Configure timeouts for flow control packets.</entry>
-            <entry>eTimeOutType - Time out type ( TO_BROADCAST, TO_RESPONSE, TO_HOLDING, TO_T1, TO_T2, TO_T3, TO_T4). unMiliSeconds - Timeout value in mili seconds.</entry>
-            <entry>S_OK if successful, else S_FALSE.</entry>
-            <entry>-</entry>
-          </row>
-          <row>
-            <entry>RSI_26_017</entry>
-            <entry>HRESULT DILJ_GetTimeModeMapping ( SYSTEMTIME&amp; CurrSysTime, UINT64&amp; unAbsTime);</entry>
-            <entry>Gets the time mode mapping.</entry>
-            <entry>CurrSysTime - Reference system time. unAbsTime - Absolute time.</entry>
-            <entry>S_OK if successful, else S_FALSE.</entry>
-            <entry>-</entry>
-          </row>
-          <row>
-            <entry>RSI_26_018</entry>
-            <entry>BOOL DILJ_bIsOnline (void);</entry>
-            <entry>Get the network status</entry>
-            <entry>-</entry>
-            <entry>TRUE if Online, else FALSE.</entry>
-            <entry>-</entry>
-          </row>
-        </tbody>
-      </tgroup>
-    </table>
+    <section>
+      <title>Developer Diagrams</title>
+      <p>J1939 bus - abstract view</p>
+      <image placement="break" href="../images/umls/dd_j1939_bus_abstract_view.png"/>
+      <p>J1939 bus - developer&apos;s view</p>
+      <image placement="break" href="../images/umls/dd_j1939_bus_developers_view.png"/>
+    </section>
+    <section>
+      <title>Interface Diagrams</title>
+      <p>DIL-J1939</p>
+      <image placement="break" href="../images/umls/id_dil_j1939.png"/>
+    </section>
+    <section>
+      <title>State Diagrams</title>
+      <p>Init-Uninit</p>
+      <image placement="break" href="../images/umls/sd_init_uninit.png"/>
+      <p>Online-Offline</p>
+      <image placement="break" href="../images/umls/sd_online_offline.png"/>
+      <p>Reading</p>
+      <image placement="break" href="../images/umls/sd_reading.png"/>
+      <p>Register-Unregister</p>
+      <image placement="break" href="../images/umls/sd_register_unregister.png"/>
+      <p>Transmission</p>
+      <image placement="break" href="../images/umls/sd_transmission.png"/>
+    </section>
+    <section>
+      <title>State Machines</title>
+      <p>DIL-J1939</p>
+      <image placement="break" href="../images/umls/sm_dil_j1939.png"/>
+    </section>
+    <section>
+      <title>Usecase Diagrams</title>
+      <p>Features-DIL_J1939</p>
+      <image placement="break" href="../images/umls/ud_features_dil_j1939.png"/>
+    </section>
+    <section>
+      <title>Requirement Tags</title>
+      <ul>
+        <li>Initialise and uninitialise [RS_26_01][RS_26_02]</li>
+        <li>Register / unregister client [RS_26_03][RS_26_04]</li>
+        <li>Include / excluce client buffer [RS_26_05][RS_26_06]</li>
+        <li>Go online / offline &amp; query [RS_26_07][RS_26_08][RS_26_09]</li>
+        <li>Send peer-peer, broadcast, ack, request frames [RS_26_10][RS_26_11][RS_26_12][RS_26_13]</li>
+        <li>Pump received frames into client channel [RS_26_14]</li>
+        <li>Get node name, address &amp; validate address [RS_26_15][RS_26_16][RS_26_17]</li>
+        <li>Claim, request and command address [RS_26_18][RS_26_19][RS_26_20]</li>
+        <li>Timeout configuration [RS_26_21]</li>
+        <li>Get time mode mapping [RS_26_22]</li>
+      </ul>
+    </section>
   </body>
 </topic>

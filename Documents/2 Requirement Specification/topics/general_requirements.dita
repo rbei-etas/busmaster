@@ -13,7 +13,7 @@
     <p>We aim to find out the best user interface for BUSMASTER towards supporting multiple automotive buses under the same application.</p>
     <p>While exploring in the multi-bus dimension, we restrain the buses as three namely, CAN, J1939 and FlexRay. The rationale behind this list is that CAN and FlexRay are totally different from each other directly from architecture and motivational viewpoints and J1939 is a CAN-based automotive bus standard. This exemplification shall help in validating the proposed design and user interface to address the issue of integrating bus standards which are completely different from each other and also when one is a higher layer protocol over a fundamental one.</p>
     <p>We begin by looking at application package from a most obvious point of view in which it is clearly an ensemble (or rather confederation) of a number of sub-packages, each specific to a bus. Naturally, there shall be two additional software modules.
-     <image href="../images/umls/busmaster_suite.png" placement="break"/></p>
+     <image href="../images/umls/cd_user_interface_model.png" placement="break"/></p>
     <p>The first one of them is the common client and the second one is the common server that everyone can access. The services may be utilized both at compile time and run time levels.</p>
     <p>We now proceed on by redefining BUSMASTER tool family.</p>
     <p>“BUSMASTER suite is fundamentally something which provides services to the user for the buses that it presently supports. The services may be rendered in the form of GUI and a set of API functions. For the later, an interface for a particular bus service needs to be queried. For the former, GUI services are manifested in terms of toolbars, menu items and output can be seen on certain windows.”</p>
@@ -21,7 +21,7 @@
 <image href="../images/mockups/windows.png"/></p>
     <p>The GUI is divided broadly into two categories – GUI controls specific to a bus and common GUI controls. Examples of the former are message window, function editor, toolbar panel. Instances of the later are logging configuration dialog box, trace window etc. Moreover, there is the third category – the integrated GUI control. Menu bar is the only control falling under this category. Menu bar combines the entire menu items specific to a bus. Hence,</p>
     <p>{ BUSMASTER Menu Bar } = { CAN menu items } U { FlexRay menu items } U { J1939 menu items }</p>
-    <p>The overall system can be expressed in with the following package diagram.<image href="../images/umls/busmaster_windows.png" placement="break"/></p>
+    <p>The overall system can be expressed in with the following package diagram.<image href="../images/umls/cd_busmaster.png" placement="break"/></p>
     <p>Below shown a sample menu bar:<image href="../images/mockups/menus_2.png" placement="break"/></p>
     <p>Since most of the functionalities / features of a module is the same as another one, assigning separate menu item for each of them shall result in overpopulation and hence incomprehensibility in the menu items. That’s why the user can select the current active bus for all the manual activities like configuration, node programming, signal graph configuration etc. The only apparent disadvantage of such a user interface is that the user will be unable to carry out such operations simultaneously for more than one bus.</p>
   </body>
