@@ -11,7 +11,7 @@
   </prolog>
   <body>
     <p>Simulation engine realizes a virtual bus in the workstation making it possible for any instance of the application to act as a node and communicate via this communication channel. By design this should be able to simulate any bus from the viewpoint of data frame. Also, the same instance of server can cater to any number of buses with any number of nodes simultaneously.</p>
-    <p>Below diagram presents the usage of the simulation engine component.<image placement="break" href="../images/umls/virtual_automotive_bus.png"/></p>
+    <p>Below diagram presents the usage of the simulation engine component.<image placement="break" href="../images/umls/id_virtual_automotive_bus.png"/></p>
     <p>This clearly shows that any DIL can employ the service of the same simulation engine process at any time.</p>
     <p>Tagged requirements:</p>
     <ul>

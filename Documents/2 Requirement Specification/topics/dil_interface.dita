@@ -10,7 +10,7 @@
     </copyright>
   </prolog>
   <body>
-    <p>DIL is abbreviation for driver interface layer. Here the idea is to bring in a necessary abstraction between the application and the driver including the user interfaces for the controller configuration. Additionally in absence of the real driver, this contains the driver simulation. Below goes a component diagram of DIL usage:<image href="../images/umls/dil_components_diagram.png" placement="break"/></p>
+    <p>DIL is abbreviation for driver interface layer. Here the idea is to bring in a necessary abstraction between the application and the driver including the user interfaces for the controller configuration. Additionally in absence of the real driver, this contains the driver simulation. Below goes a component diagram of DIL usage:<image href="../images/umls/id_dil_components_diagram.png" placement="break"/></p>
     <p>Hence the objective of DIL may be outlined in the following way -</p>
     <ul>
       <li>Easy interfacing to stub / any hardware without any change in the DIL interface. So the API set shall be prototyped in such a way to support easy extendibility for any controller for a bus.</li>

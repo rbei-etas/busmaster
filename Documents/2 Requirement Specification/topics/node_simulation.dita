@@ -11,8 +11,8 @@
   </prolog>
   <body>
     <p>This addresses the programming and configuration aspect of the node simulation.</p>
-    <p>At the outset the typical node assembly scenario may be recalled to consider the role of such application in such a scenario. Below goes a schematic view of the node ensemble:<image placement="break" href="../images/umls/can_bus_diagram_1.png"/></p>
-    <p>Node simulation feature makes it possible for the application to simulate one or multiple node characteristics which may be depicted by the following schematic view.<image placement="break" href="../images/umls/can_bus_diagram_2.png"/></p>
+    <p>At the outset the typical node assembly scenario may be recalled to consider the role of such application in such a scenario. Below goes a schematic view of the node ensemble:<image placement="break" href="../images/umls/dd_can_bus_1.png"/></p>
+    <p>Node simulation feature makes it possible for the application to simulate one or multiple node characteristics which may be depicted by the following schematic view.<image placement="break" href="../images/umls/dd_can_bus_2.png"/></p>
     <p>Typically, in BUSMASTER parlance and viewpoint, a simulated system consists of a few nodes and the CAN bus is realized by a number of simulated systems. Hence,</p>
     <p>A CAN bus (full / partial) = {Simulated system 1, Simulated system 2, …, Simulated system N }</p>
     <p>A simulated system = {Node 1, Node 2,  …, Node N }</p>
