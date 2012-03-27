@@ -70,200 +70,237 @@
         </tbody>
       </tgroup>
     </table>
-    <p>Functional requirement is explained with the following concept diagram of the setup:<image placement="break" href="../images/umls/id_components.png"/></p>
-    <p>In a generic perspective executing a test case consists of transmitting one or more messages, waiting for a suitable response (i.e., one or multiple messages), if received - verifying individual signal values, reporting the result and continue / terminate the process. Test cases are most conveniently defined in a test setup file realised as a .xml file. Clearly, this leads to the evolving of another module which may be used to edit a test setup file. The scenario in toto may be depicted with the following component diagram:<image placement="break" href="../images/umls/id_automatic_test_ensemble.png"/></p>
-    <p>To be noted – this is neither a substitute nor a variant of node programming. In the former the actions are predetermined; it is only the parameter set (both in terms of signal value and time axis) that varies, whereas in the later the node behaviour / logic are programmed. The former is an extension of the tool to simplify the process of carrying out tests of a genre and generating the report.</p>
-    <p>This calls for describing the three namely, Test Setup file, Test Setup Editor and Test Suite Editor and Executor.</p>
-    <p>Test Setup File</p>
-    <p>A test setup is realised as a XML file fed to the test case processor, which contains the instruction set of the various test cases.</p>
-    <p>Below is the grammar of the test setup file -</p>
-    <p>Test setup := &lt;Header&gt; + &lt;Test case list&gt;</p>
-    <p>Test case list := {test case 1, test case 2, …, test case N}, where N &gt;= 1</p>
-    <p>Test case := {test step 1, test step 2, …, test step N}, N &gt;= 2</p>
-    <p>Test step := transmission / wait / replay / verification operation</p>
-    <p>The below use case diagram shows the most basic operations needed to run a test case.<image placement="break" href="../images/umls/ud_user_viewpoint.png"/></p>
-    <ol>
-      <li>Transmission of a message: There can be three modes of message transmission namely, mono-shot transmission, cyclic transmission and transmission for a specific number of times. The signals not been specified for the initialisation shall have the default initialisation of 0.</li>
-      <li>Waiting: The time period shall be accepted as milliseconds.</li>
-      <li>Set value of a signal: User shall be entitled to set values of a signal both in engineering value mode and raw value mode. This shall be made possible per test case basis. If nothing is specified, the default mode shall be assumed.</li>
-      <li>A signal must need a message which it is a part of and shall be referred to. The message name should be specified before the signal name.</li>
-      <li>Validation conditions: The user needs to formulate the validation condition. In the formula current signal value shall be denoted by ‘x’ following the algebraic notation. The presently supported logical operators are the eight: ==, &gt;, &lt;, &gt;=, &lt;=, !=, ||, and &amp;&amp;</li>
-    </ol>
-    <p>By combining them suitably the following validation operations may be carried out:<ol>
-        <li>Range of values; e.g., (x &lt;= 10) &amp;&amp; (x &gt;= 50)</li>
-        <li>Set of discrete values; e.g., (x == 10) || (x == 20) || (x == 50)</li>
-        <li>Formulation of any other validation procedure.</li>
-      </ol></p>
-    <p>Here goes a sample test setup file.</p>
-    <p>The table below contains a concise description of each of the section details touching upon the exceptional condition procedures.</p>
-    <table>
-      <title>2</title>
-      <tgroup cols="4">
-        <thead>
-          <row>
-            <entry>Section (tag)</entry>
-            <entry>Description</entry>
-            <entry>If absent, Assumed value</entry>
-            <entry>If absent, Error condition</entry>
-          </row>
-        </thead>
-        <tbody>
-          <row>
-            <entry>Test setup (testsetup)</entry>
-            <entry>The root node. Accompanied by its title (title) and version information (version)</entry>
-            <entry>-</entry>
-            <entry>Fatal [RS_27_39]</entry>
-          </row>
-          <row>
-            <entry>Header (header)</entry>
-            <entry>Header section</entry>
-            <entry>-</entry>
-            <entry>Fatal [RS_27_40]</entry>
-          </row>
-          <row>
-            <entry>Database file (database)</entry>
-            <entry>Database file</entry>
-            <entry/>
-            <entry>Fatal [RS_27_41]</entry>
-          </row>
-          <row>
-            <entry>Version (version)</entry>
-            <entry>Version information of the test setup</entry>
-            <entry>-</entry>
-            <entry>No error [RS_27_42]</entry>
-          </row>
-          <row>
-            <entry>Module Name (module name)</entry>
-            <entry>Module focused on for the testing</entry>
-            <entry>-</entry>
-            <entry>No error [RS_27_43]</entry>
-          </row>
-          <row>
-            <entry>Engineer&apos;s name</entry>
-            <entry>Test engineer’s name</entry>
-            <entry>-</entry>
-            <entry>No error [RS_27_44]</entry>
-          </row>
-          <row>
-            <entry>Engineer&apos;s role</entry>
-            <entry>And role / designation</entry>
-            <entry>-</entry>
-            <entry>No error [RS_27_45]</entry>
-          </row>
-          <row>
-            <entry>Report file path (path)</entry>
-            <entry>Particular of the report file to be generated.</entry>
-            <entry>Current working directory with the name same as the test setup.</entry>
-            <entry>Error [RS_27_46]</entry>
-          </row>
-          <row>
-            <entry>Report file format (format)</entry>
-            <entry>Format of the report file. Can be one of TXT and HTM</entry>
-            <entry>TXT</entry>
-            <entry>Warning [RS_27_47]</entry>
-          </row>
-          <row>
-            <entry>Report file time mode (timemode)</entry>
-            <entry>Time mode. Can be one of SYS (system), REL (relative) and ABS (absolute)</entry>
-            <entry>SYS</entry>
-            <entry>Warning [RS_27_48]</entry>
-          </row>
-          <row>
-            <entry>Bus type (bustype)</entry>
-            <entry>Bus type. At present can be only CAN</entry>
-            <entry>-</entry>
-            <entry>Fatal [RS_27_49]</entry>
-          </row>
-          <row>
-            <entry>Test case list (list_of_test_cases)</entry>
-            <entry>Collection of test cases.</entry>
-            <entry>Nil</entry>
-            <entry>Error. There must be at least one entry. [RS_27_50]</entry>
-          </row>
-          <row>
-            <entry>Test case (testcase)</entry>
-            <entry>Collection of test steps. A test case contains identifier, title and exception handler. The last one instructs if in case of failure to continue or exit.</entry>
-            <entry>Nil</entry>
-            <entry>Error. There must be at least one entry. [RS_27_51]</entry>
-          </row>
-          <row>
-            <entry>Test case identifier (identifier)</entry>
-            <entry>Identifier of the test case. Must be unique.</entry>
-            <entry>Nil</entry>
-            <entry>Error. There must be an identifier. [RS_27_52]</entry>
-          </row>
-          <row>
-            <entry>Test case title (title)</entry>
-            <entry>Test case title</entry>
-            <entry>-</entry>
-            <entry>No error [RS_27_53]</entry>
-          </row>
-          <row>
-            <entry>Test case exception handler (exp_handler)</entry>
-            <entry>Instructs if in case of failure the testing process exists or continues. Can be one of continue or exit</entry>
-            <entry>continue</entry>
-            <entry>Warning [RS_27_54]</entry>
-          </row>
-          <row>
-            <entry>Transmission (send)</entry>
-            <entry>Collection of the messages to be transmitted.</entry>
-            <entry>-</entry>
-            <entry>No error [RS_27_55]</entry>
-          </row>
-          <row>
-            <entry>Transmittion message details (send_message)</entry>
-            <entry>Details of the message list to be transmitted.</entry>
-            <entry>Nil</entry>
-            <entry>Warning [RS_27_56]</entry>
-          </row>
-          <row>
-            <entry>Send message id (identifier)</entry>
-            <entry>Identifier of the message.</entry>
-            <entry>-</entry>
-            <entry>Error. The test case shall be dropped. [RS_27_57]</entry>
-          </row>
-          <row>
-            <entry>Send message unit (unit)</entry>
-            <entry>Unit type of the signals. Can be either raw (raw) or enginneering (engg)</entry>
-            <entry>Engg</entry>
-            <entry>Warning [RS_27_58]</entry>
-          </row>
-          <row>
-            <entry>Signal (signal)</entry>
-            <entry>Details the signal with its name (name) and value.</entry>
-            <entry>-</entry>
-            <entry>Error. The test case shall be dropped. [RS_27_59]</entry>
-          </row>
-          <row>
-            <entry>Verification (verify)</entry>
-            <entry>Verification instruction set. Contains a collection of verification messages.</entry>
-            <entry>Nil</entry>
-            <entry>Error. A test case must have a validation routine. Test case shall be dropped. [RS_27_60]</entry>
-          </row>
-          <row>
-            <entry>Failure classification (failure)</entry>
-            <entry>For a verification procedure – how to classify validation failure. Can be one of warning, error, fatal</entry>
-            <entry>Error</entry>
-            <entry>Warning. [RS_27_61]</entry>
-          </row>
-          <row>
-            <entry>Verify message details (verify_message)</entry>
-            <entry>Details of the message list to be verified / validated.</entry>
-            <entry>Nil</entry>
-            <entry>Error. The test case shall be dropped. [RS_27_62]</entry>
-          </row>
-          <row>
-            <entry>Verify message signal detail (signal)</entry>
-            <entry>Details of a signal under a verify message node. The attribute required is the signal’s name (name). The node value shall be a string with formulation of the condition. This shall follow the syntax mentioned in table 2.</entry>
-            <entry>Nil</entry>
-            <entry>Error. The test case shall be dropped. [RS_27_63]</entry>
-          </row>
-        </tbody>
-      </tgroup>
-    </table>
-    <p>Test Setup Editor</p>
-    <p>This shall be used to create and edit a test setup file. We begin by presenting a use case diagram describing the different services rendered by this module:<image placement="break" href="../images/umls/ud_test_case_editor.png"/></p>
-    <p>Test Suite Editor and Executor</p>
-    <p>This defines / edits a test suite and can run the test setups included under the test suite. The test suite may be saved as a part of the configuration file and accordingly may be retrieved from the same. The services to be rendered by this module are presented by the following use case diagram:<image placement="break" href="../images/umls/ud_ts_editor_and_executor.png"/></p>
+    <section>
+      <title>General concept</title>
+      <p>Functional requirement is explained with the following concept diagram of the setup:</p>
+      <image href="../images/umls/id_components.png" placement="break"/>
+      <p>In a generic perspective executing a test case consists of transmitting one or more messages, waiting for a suitable response (i.e., one or multiple messages), if received - verifying individual signal values, reporting the result and continue / terminate the process. Test cases are most conveniently defined in a test setup file realised as a .xml file. Clearly, this leads to the evolving of another module which may be used to edit a test setup file. The scenario in toto may be depicted with the following component diagram:</p>
+      <image href="../images/umls/id_automatic_test_ensemble.png" placement="break"/>
+      <p>To be noted – this is neither a substitute nor a variant of node programming. In the former the actions are predetermined; it is only the parameter set (both in terms of signal value and time axis) that varies, whereas in the later the node behaviour / logic are programmed. The former is an extension of the tool to simplify the process of carrying out tests of a genre and generating the report.</p>
+      <p>This calls for describing the three namely, Test Setup file, Test Setup Editor and Test Suite Editor and Executor.</p>
+    </section>
+    <section>
+      <title>Test Setup File</title>
+      <p>A test setup is realised as a XML file fed to the test case processor, which contains the instruction set of the various test cases.</p>
+      <p>Below is the grammar of the test setup file -</p>
+      <p>Test setup := &lt;Header&gt; + &lt;Test case list&gt;</p>
+      <p>Test case list := {test case 1, test case 2, …, test case N}, where N &gt;= 1</p>
+      <p>Test case := {test step 1, test step 2, …, test step N}, N &gt;= 2</p>
+      <p>Test step := transmission / wait / replay / verification operation</p>
+      <p>The below use case diagram shows the most basic operations needed to run a test case.</p>
+      <image href="../images/umls/ud_user_viewpoint.png" placement="break"/>
+      <ol>
+        <li>Transmission of a message: There can be three modes of message transmission namely, mono-shot transmission, cyclic transmission and transmission for a specific number of times. The signals not been specified for the initialisation shall have the default initialisation of 0. [RS_27_36]</li>
+        <li>Waiting: The time period shall be accepted as milliseconds. [RS_27_35]</li>
+        <li>Set value of a signal: User shall be entitled to set values of a signal both in engineering value mode and raw value mode. This shall be made possible per test case basis. If nothing is specified, the default mode shall be assumed. [RS_27_34]</li>
+        <li>A signal must need a message which it is a part of and shall be referred to. The message name should be specified before the signal name. [RS_27_38]</li>
+        <li>Validation conditions: The user needs to formulate the validation condition. In the formula current signal value shall be denoted by ‘x’ following the algebraic notation. The presently supported logical operators are the eight: ==, &gt;, &lt;, &gt;=, &lt;=, !=, ||, and &amp;&amp; [RS_27_37]</li>
+      </ol>
+      <p>By combining them suitably the following validation operations may be carried out:<ol>
+          <li>Range of values; e.g., (x &lt;= 10) &amp;&amp; (x &gt;= 50)</li>
+          <li>Set of discrete values; e.g., (x == 10) || (x == 20) || (x == 50)</li>
+          <li>Formulation of any other validation procedure.</li>
+        </ol></p>
+      <p>Here goes a sample test setup file.</p>
+      <p>The table below contains a concise description of each of the section details touching upon the exceptional condition procedures.</p>
+      <table>
+        <title>2</title>
+        <tgroup cols="4">
+          <thead>
+            <row>
+              <entry>Section (tag)</entry>
+              <entry>Description</entry>
+              <entry>If absent, Assumed value</entry>
+              <entry>If absent, Error condition</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Test setup (testsetup)</entry>
+              <entry>The root node. Accompanied by its title (title) and version information (version)</entry>
+              <entry>-</entry>
+              <entry>Fatal [RS_27_39]</entry>
+            </row>
+            <row>
+              <entry>Header (header)</entry>
+              <entry>Header section</entry>
+              <entry>-</entry>
+              <entry>Fatal [RS_27_40]</entry>
+            </row>
+            <row>
+              <entry>Database file (database)</entry>
+              <entry>Database file</entry>
+              <entry/>
+              <entry>Fatal [RS_27_41]</entry>
+            </row>
+            <row>
+              <entry>Version (version)</entry>
+              <entry>Version information of the test setup</entry>
+              <entry>-</entry>
+              <entry>No error [RS_27_42]</entry>
+            </row>
+            <row>
+              <entry>Module Name (module name)</entry>
+              <entry>Module focused on for the testing</entry>
+              <entry>-</entry>
+              <entry>No error [RS_27_43]</entry>
+            </row>
+            <row>
+              <entry>Engineer&apos;s name</entry>
+              <entry>Test engineer’s name</entry>
+              <entry>-</entry>
+              <entry>No error [RS_27_44]</entry>
+            </row>
+            <row>
+              <entry>Engineer&apos;s role</entry>
+              <entry>And role / designation</entry>
+              <entry>-</entry>
+              <entry>No error [RS_27_45]</entry>
+            </row>
+            <row>
+              <entry>Report file path (path)</entry>
+              <entry>Particular of the report file to be generated.</entry>
+              <entry>Current working directory with the name same as the test setup.</entry>
+              <entry>Error [RS_27_46]</entry>
+            </row>
+            <row>
+              <entry>Report file format (format)</entry>
+              <entry>Format of the report file. Can be one of TXT and HTM</entry>
+              <entry>TXT</entry>
+              <entry>Warning [RS_27_47]</entry>
+            </row>
+            <row>
+              <entry>Report file time mode (timemode)</entry>
+              <entry>Time mode. Can be one of SYS (system), REL (relative) and ABS (absolute)</entry>
+              <entry>SYS</entry>
+              <entry>Warning [RS_27_48]</entry>
+            </row>
+            <row>
+              <entry>Bus type (bustype)</entry>
+              <entry>Bus type. At present can be only CAN</entry>
+              <entry>-</entry>
+              <entry>Fatal [RS_27_49]</entry>
+            </row>
+            <row>
+              <entry>Test case list (list_of_test_cases)</entry>
+              <entry>Collection of test cases.</entry>
+              <entry>Nil</entry>
+              <entry>Error. There must be at least one entry. [RS_27_50]</entry>
+            </row>
+            <row>
+              <entry>Test case (testcase)</entry>
+              <entry>Collection of test steps. A test case contains identifier, title and exception handler. The last one instructs if in case of failure to continue or exit.</entry>
+              <entry>Nil</entry>
+              <entry>Error. There must be at least one entry. [RS_27_51]</entry>
+            </row>
+            <row>
+              <entry>Test case identifier (identifier)</entry>
+              <entry>Identifier of the test case. Must be unique.</entry>
+              <entry>Nil</entry>
+              <entry>Error. There must be an identifier. [RS_27_52]</entry>
+            </row>
+            <row>
+              <entry>Test case title (title)</entry>
+              <entry>Test case title</entry>
+              <entry>-</entry>
+              <entry>No error [RS_27_53]</entry>
+            </row>
+            <row>
+              <entry>Test case exception handler (exp_handler)</entry>
+              <entry>Instructs if in case of failure the testing process exists or continues. Can be one of continue or exit</entry>
+              <entry>continue</entry>
+              <entry>Warning [RS_27_54]</entry>
+            </row>
+            <row>
+              <entry>Transmission (send)</entry>
+              <entry>Collection of the messages to be transmitted.</entry>
+              <entry>-</entry>
+              <entry>No error [RS_27_55]</entry>
+            </row>
+            <row>
+              <entry>Transmittion message details (send_message)</entry>
+              <entry>Details of the message list to be transmitted.</entry>
+              <entry>Nil</entry>
+              <entry>Warning [RS_27_56]</entry>
+            </row>
+            <row>
+              <entry>Send message id (identifier)</entry>
+              <entry>Identifier of the message.</entry>
+              <entry>-</entry>
+              <entry>Error. The test case shall be dropped. [RS_27_57]</entry>
+            </row>
+            <row>
+              <entry>Send message unit (unit)</entry>
+              <entry>Unit type of the signals. Can be either raw (raw) or enginneering (engg)</entry>
+              <entry>Engg</entry>
+              <entry>Warning [RS_27_58]</entry>
+            </row>
+            <row>
+              <entry>Signal (signal)</entry>
+              <entry>Details the signal with its name (name) and value.</entry>
+              <entry>-</entry>
+              <entry>Error. The test case shall be dropped. [RS_27_59]</entry>
+            </row>
+            <row>
+              <entry>Verification (verify)</entry>
+              <entry>Verification instruction set. Contains a collection of verification messages.</entry>
+              <entry>Nil</entry>
+              <entry>Error. A test case must have a validation routine. Test case shall be dropped. [RS_27_60]</entry>
+            </row>
+            <row>
+              <entry>Failure classification (failure)</entry>
+              <entry>For a verification procedure – how to classify validation failure. Can be one of warning, error, fatal</entry>
+              <entry>Error</entry>
+              <entry>Warning. [RS_27_61]</entry>
+            </row>
+            <row>
+              <entry>Verify message details (verify_message)</entry>
+              <entry>Details of the message list to be verified / validated.</entry>
+              <entry>Nil</entry>
+              <entry>Error. The test case shall be dropped. [RS_27_62]</entry>
+            </row>
+            <row>
+              <entry>Verify message signal detail (signal)</entry>
+              <entry>Details of a signal under a verify message node. The attribute required is the signal’s name (name). The node value shall be a string with formulation of the condition. This shall follow the syntax mentioned in table 2.</entry>
+              <entry>Nil</entry>
+              <entry>Error. The test case shall be dropped. [RS_27_63]</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>Test Setup Editor</title>
+      <p>This shall be used to create and edit a test setup file. We begin by presenting a use case diagram describing the different services rendered by this module:</p>
+      <image href="../images/umls/ud_test_case_editor.png" placement="break"/>
+      <ul>
+        <li>Load a test setup file [RS_27_01]</li>
+        <li>Save a test setup file [RS_27_02]</li>
+        <li>Addition, updation and deletion of a test case node [RS_27_03][RS_27_04][RS_27_05]</li>
+        <li>Addition and updation of a test setup node [RS_27_06][RS_27_07]</li>
+        <li>Addition, updation and deletion of a test case sub-node [RS_27_08][RS_27_09][RS_27_10]</li>
+        <li>Addition, updation and deletion of a send message node [RS_27_11][RS_27_12][RS_27_13]</li>
+        <li>Addition, updation and deletion of a verify message node [RS_27_14][RS_27_15][RS_27_16]</li>
+        <li>Repositioning of a very_message node [RS_27_17]</li>
+        <li>Repositioning of a send_message node [RS_27_18]</li>
+        <li>Repositioning of a test case sub-node [RS_27_19]</li>
+        <li>Repositioning of a test case node [RS_27_20]</li>
+      </ul>
+    </section>
+    <section>
+      <title>Test Suite Editor and Executor</title>
+      <p>This defines / edits a test suite and can run the test setups included under the test suite. The test suite may be saved as a part of the configuration file and accordingly may be retrieved from the same. The services to be rendered by this module are presented by the following use case diagram:</p>
+      <image href="../images/umls/ud_ts_editor_and_executor.png" placement="break"/>
+      <ul>
+        <li>Define a test suite [RS_27_21]</li>
+        <li>Add, delete and update a test setup node [RS_27_22][RS_27_23][RS_27_24]</li>
+        <li>Repositioning of a test setup node [RS_27_25]</li>
+        <li>Select / deselect a test case [RS_27_26][RS_27_27]</li>
+        <li>Select / deselect a test setup node [RS_27_28][RS_27_29]</li>
+        <li>Execute current test suite [RS_27_30]</li>
+        <li>Route result of each test case to the client [RS_27_31]</li>
+        <li>Loading and saving configuration data [RS_27_32][RS_27_33]</li>
+      </ul>
+    </section>
   </body>
 </topic>
