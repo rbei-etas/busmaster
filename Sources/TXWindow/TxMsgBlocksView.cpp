@@ -352,24 +352,14 @@ void CTxMsgBlocksView::OnInitialUpdate()
     m_omComboAllMsgs.EnableWindow(FALSE);*/
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnAddMsgBlock                                         */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will called when user selects Add button*/
-/*                      or menu. This will add a new message block and        */
-/*                      initialise it.                                        */
-/*                                                                            */
-/*  Member of        :  CTxMsgBlocksView                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  22.07.2004, Changed the default value to              */
-/*                      defTIME_TRUGGER                                       */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  19.07.2004, Changed the default time trigger value    */
-/******************************************************************************/
+/**
+ * \brief On Add Msg Block
+ * \req RS_17_01 - Addition of a transmission block
+ *
+ * This function will called when user selects Add button
+ * or menu. This will add a new message block and
+ * initialise it.
+ */
 void CTxMsgBlocksView::OnAddMsgBlock() 
 {
     PSMSGBLOCKLIST psCurrentMsgBlock  = NULL;
@@ -531,24 +521,17 @@ void CTxMsgBlocksView::vInitMsgBlockInfo(SMSGBLOCKLIST* psMsgBlockList)
     }
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnDeleteSelectedMsgBlock                              */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will be called by frame work when delete*/
-/*                      button or menu is selected. This will be called for   */
-/*                      message block deletion. It will delete the whole block*/
-/*                      by removing it from list and also all message frame in*/
-/*                      the block will be deleted. Memory will be deallocated */
-/*  Member of        :  CTxMsgBlocksView                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  02.08.2004, Added code to disable signal components   */
-/*                      after deleting the message block                      */
-/******************************************************************************/
-void CTxMsgBlocksView::OnDeleteSelectedMsgBlock() 
+/**
+ * \brief On Delete Selected Msg Block
+ * \req RS_17_02 - Deletion of a transmission block
+ *
+ * This function will be called by frame work when delete
+ * button or menu is selected. This will be called for
+ * message block deletion. It will delete the whole block
+ * by removing it from list and also all message frame in
+ * the block will be deleted. Memory will be deallocated
+ */
+void CTxMsgBlocksView::OnDeleteSelectedMsgBlock()
 {
     BOOL bReturn = FALSE;
     if ( AfxMessageBox( defDEL_MSG_BLOCK, 
