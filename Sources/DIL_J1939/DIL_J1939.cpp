@@ -1,54 +1,26 @@
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  J1939Translator.cpp
-  Description   :  Defines the initialization routines for the DLL.
-  $Log:   X:/Archive/Sources/DIL_J1939/DIL_J1939.cpv  $
-   
-      Rev 1.10   07 Jun 2011 11:11:16   CANMNTTM
-   All W4 level Warnings Are removed
-   
-   
-      Rev 1.9   15 Apr 2011 18:48:34   CANMNTTM
-   Added RBEI Copyright information.
-   
-      Rev 1.8   08 Apr 2011 17:30:00   CANMNTTM
-   Clear Message buffer function modified.
-   
-      Rev 1.7   02 Mar 2011 11:36:44   CANMNTTM
-   SetCallBackFuncPtr function is added.
-   
-      Rev 1.6   13 Jan 2011 14:47:00   CANMNTTM
-   GoOnline() return value is used.
-   
-      Rev 1.5   23 Dec 2010 16:52:20   CANMNTTM
-   Macro MAX_MSG_LEN_J1939
-    instead of MAX_DATA_LEN_J1939 wherever applicable.
-   
-      Rev 1.4   22 Dec 2010 19:23:42   CANMNTTM
-   1. Implemented Call back mechanism.
-   2. Exported function SetClBckFnPtrs and GetTimeOut added.
-   
-      Rev 1.3   15 Dec 2010 16:22:58   CANMNTTM
-   Added new function to remove all the register nodes.
-   
-      Rev 1.2   13 Dec 2010 18:46:54   CANMNTTM
-   New API DILJ_bIsOnline(void) added
-   
-      Rev 1.1   13 Dec 2010 16:37:06   CANMNTTM
-   Nodes are made independent of channel.
-   Now nodes can send message in any channel.
-   
-      Rev 1.0   06 Dec 2010 18:47:20   rac2kor
-    
-  Author(s)     :  Pradeep Kadoor
-  Date Created  :  26/10/2010
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-// MCNetTranslator.cpp : 
-//
-
+/**
+ * \file      DIL_J1939/DIL_J1939.cpp
+ * \brief     Defines the initialization routines for the DLL.
+ * \author    Pradeep Kadoor
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Interface file for CAN BUS
+ */
 #include "DIL_J1939_stdafx.h"
 #include "J1939_UtilityFuncs.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
@@ -65,40 +37,8 @@
 #define new DEBUG_NEW
 #endif
 
-//
-//	Note!
-//
-//		If this DLL is dynamically linked against the MFC
-//		DLLs, any functions exported from this DLL which
-//		call into MFC must have the AFX_MANAGE_STATE macro
-//		added at the very beginning of the function.
-//
-//		For example:
-//
-//		extern "C" BOOL PASCAL EXPORT ExportedFunction()
-//		{
-//			AFX_MANAGE_STATE(AfxGetStaticModuleState());
-//			// normal function body here
-//		}
-//
-//		It is very important that this macro appear in each
-//		function, prior to any calls into MFC.  This means that
-//		it must appear as the first statement within the 
-//		function, even before any object variable declarations
-//		as their constructors may generate calls into the MFC
-//		DLL.
-//
-//		Please see MFC Technical Notes 33 and 58 for additional
-//		details.
-//
-
-// CMCNetTranslatorApp
-
 BEGIN_MESSAGE_MAP(CJ1939TranslatorApp, CWinApp)
 END_MESSAGE_MAP()
-
-
-// CMCNetTranslatorApp construction
 
 CJ1939TranslatorApp::CJ1939TranslatorApp()
 {
@@ -106,13 +46,7 @@ CJ1939TranslatorApp::CJ1939TranslatorApp()
 	// Place all significant initialization in InitInstance
 }
 
-
-// The one and only CMCNetTranslatorApp object
-
 CJ1939TranslatorApp theApp;
-
-
-// CMCNetTranslatorApp initialization
 
 BOOL CJ1939TranslatorApp::InitInstance()
 {
@@ -121,11 +55,15 @@ BOOL CJ1939TranslatorApp::InitInstance()
 	return TRUE;
 }
 
-
-
-/*pouNetwork – The object containing assembly information. 
-If null, then only monitor mode of node simulation is allowed.
-pILog – Error logging interface. Can be null.*/
+/**
+ * \brief Initializes J1939 network
+ * \req RSI_26_001 - DILJ1939_Initialise
+ * \param pILog[in] pointer to wrapper_error object.
+ * \param pouIDIL_CAN[in] Interface to DIL CAN.
+ * \return S_OK for success, S_FALSE for failure.
+ *
+ * Initializes J1939 network
+ */
 USAGEMODE HRESULT DILJ_Initialise(Base_WrapperErrorLogger* pILog, CBaseDIL_CAN* pouIDIL_CAN)
 {
     HRESULT hResult = S_OK;
@@ -134,7 +72,13 @@ USAGEMODE HRESULT DILJ_Initialise(Base_WrapperErrorLogger* pILog, CBaseDIL_CAN* 
     return hResult;
 }
 
-/*Performs all uninitialisation / closure operations*/
+/**
+ * \brief Uninitializes J1939 network
+ * \req RSI_26_002 - DILJ1939_Uninitialise
+ * \return S_OK for success, S_FALSE for failure.
+ *
+ * Performs all uninitialisation / closure operations
+ */
 USAGEMODE HRESULT DILJ_Uninitialise(void)
 {
     HRESULT hResult = S_OK;
@@ -143,9 +87,20 @@ USAGEMODE HRESULT DILJ_Uninitialise(void)
     return hResult;
 }
 
-/*Registers / unregisters a client. This is necessary to simulate a node
-and to receive messages. Only registered client's buffer will be updated
-on receive of a msg in the bus.*/
+/**
+ * \brief Registers / unregisters a client.
+ * \req RSI_26_003 - DILJ1939_RegisterClient
+ * \param bRegister[in] TRUE to register, else FALSE.
+ * \param pacNodeName[in] Client node name.
+ * \param un64ECUName[in] 64 bit ECU name.
+ * \param dwClientId[out] Client's Id rendered.
+ * \return 1. ERR_CLIENT_EXISTS, 2. ERR_NO_CLIENT_EXIST, 3. ERR_NO_MORE_CLIENT_ALLOWED & 4. S_OK
+ * \note Explanation: 1. Client already registered, 2. No such client with this id exists. 3. No more clients is allowed to register. 4. Success.
+ *
+ * Registers / unregisters a client. This is necessary to simulate a node
+ * and to receive messages. Only registered client's buffer will be updated
+ * on receive of a msg in the bus.
+ */
 USAGEMODE HRESULT DILJ_RegisterClient(BOOL bRegister, TCHAR* pacNodeName, 
                                       UINT64 un64ECUName, BYTE byPrefAdres,
                                       DWORD& dwClientId)
@@ -163,8 +118,17 @@ USAGEMODE HRESULT DILJ_RegisterClient(BOOL bRegister, TCHAR* pacNodeName,
     return hResult;
 }
 
-/* Manages the target client buffer list. Call this function to open a 
-data channel to receive messages.*/
+/**
+ * \brief Manages the target client buffer list. Call this function to open a data channel to receive messages.
+ * \req RSI_26_004 - DILJ1939_ManageMsgBuf
+ * \param bAction[in] When MSGBUF_ADD, adds pBufObj to the target message buffer list. Removes when MSGBUF_CLEAR.
+ * \param ClientID[in] Client ID
+ * \param pBufObj[in] Interface to message buffer object.
+ * \return S_OK if successful, else S_FALSE.
+ * \note At present maximum number of entries in the list is kept as 8.
+ *
+ * Manages the target client buffer list. Call this function to open a data channel to receive messages.
+ */
 USAGEMODE HRESULT DILJ_ManageMsgBuf(BYTE bAction, DWORD dwClientID, 
                                         CBaseMsgBufVSE* pBufObj)
 {
@@ -193,12 +157,30 @@ USAGEMODE HRESULT DILJ_ManageMsgBuf(BYTE bAction, DWORD dwClientID,
     return hResult;
 }
 
-/*To get the version information.*/
+/**
+ * \brief Get version information.
+ * \return S_OK if successful, else S_FALSE.
+ *
+ * To get the version information.
+ */
 USAGEMODE void DILJ_GetVersionInfo (VERSIONINFO& /*sVerInfo*/)
 {
 }
 
-/* Sends a J1939 message*/
+/**
+ * \brief Sends a J1939 message.
+ * \req RSI_26_005 - DILJ_SendJ1939Msg
+ * \param dwClient[in] Client Id
+ * \param unChannel[in] Channel number
+ * \param eMsgType[in] COMMAND, BROADCAST, REQUEST, RESPONSE
+ * \param unPGN[in] Parameter group number
+ * \param pbyData[in] Data bytes
+ * \param unDLC[in] Data length in number of bytes.
+ * \param byPriority[in] Priority (0-7) byDesrAdress = Destination address.
+ * \return S_OK if successful, else S_FALSE.
+ *
+ * Sends a J1939 message.
+ */
 USAGEMODE HRESULT DILJ_SendJ1939Msg (DWORD dwClientId, UINT unChannel, EJ1939_MSG_TYPE eMsgType, UINT32 unPGN,
                                      BYTE* pbyData, UINT unDLC, BYTE byPriority, BYTE bySrc, BYTE byDestAdres)
 {
@@ -217,18 +199,48 @@ USAGEMODE HRESULT DILJ_SendJ1939Msg (DWORD dwClientId, UINT unChannel, EJ1939_MS
     }
     return hResult;
 }
-/* Gets the node name from 8 bit address from J1939 network.*/
+
+/**
+ * \brief Get node name.
+ * \req RSI_26_010 - DILJ_NM_GetNodeName
+ * \param byAddress[in] 8 bit node address (0 - 253)
+ * \param acNodeName[out] Nodes name.
+ * \return S_OK if successful, else S_FALSE.
+ *
+ * Gets the node name from 8 bit address from J1939 network.
+ */
 USAGEMODE HRESULT DILJ_NM_GetNodeName(BYTE byAddress, TCHAR* acNodeName)
 {
     CNetworkMgmt::ouGetNWManagementObj().vGetNodeName(byAddress, acNodeName);
     return S_OK;
 }
+
+/**
+ * \brief Get node address.
+ * \req RSI_26_011 - DILJ_NM_GetNodeAddress
+ * \param byAddress[out] Nodes 8 bit address
+ * \param dwClient[in] Client Id.
+ * \return S_OK if successful, else S_FALSE.
+ *
+ * Gets the node address from Client Id from J1939 network.
+ */
 USAGEMODE HRESULT DILJ_NM_GetByteAddres(BYTE& byAddress, DWORD dwClient)
 {
     byAddress = CNetworkMgmt::ouGetNWManagementObj().byGetNodeAddress(dwClient);
     return S_OK;
 }
-/* Requests address from the node.*/
+
+/**
+ * \brief Requests address from the node.
+ * \req RSI_26_014 - DILJ_NM_RequestAddress
+ * \param dwClientId[in] Already register node's client Id
+ * \param unChannel[in] Channel number
+ * \param byDestAddress[in] Destination Address
+ * \param byPriority[in] Priority (0 - 7).
+ * \return S_OK if successful, else S_FALSE.
+ *
+ * A node requests address from an another node.
+ */
 USAGEMODE HRESULT DILJ_NM_RequestAddress(DWORD dwClient, UINT unChannel, BYTE byPriority,
                                          BYTE bySrc, BYTE byDestAddress)
 {
@@ -246,12 +258,31 @@ USAGEMODE HRESULT DILJ_NM_RequestAddress(DWORD dwClient, UINT unChannel, BYTE by
     }
     return hResult;
 }
-/* Returns whether the address is already claimed by another node.*/
+
+/**
+ * \brief Check if address claimed
+ * \req RSI_26_012 - DILJ_NM_bIsAddressClaimed
+ * \param byAddress[in] 8 bit node address (0 - 253).
+ * \return TRUE if claimed, else FALSE.
+ *
+ * Returns whether the address is already claimed by another node.
+ */
 USAGEMODE BOOL DILJ_NM_bIsAddressClaimed(BYTE byAddress)
 {
     return CNetworkMgmt::ouGetNWManagementObj().bIsAddressClaimed(byAddress);
 }
-/* Tries to claim 8 bit address to a corresponding node.*/
+
+/**
+ * \brief Claim address
+ * \req RSI_26_013 - DILJ_NM_ClaimAddress
+ * \param dwClientId[in] Already register node's client Id
+ * \param unChannel[in] Channel number
+ * \param byAddress[in] New address to be claimed
+ * \param byPriority[in] Priority (0 - 7)
+ * \return S_OK if successful, else S_FALSE.
+ *
+ * Node tries to claim a new address by sending Address Claim message into the network.
+ */
 USAGEMODE HRESULT DILJ_NM_ClaimAddress (DWORD dwClientId, UINT unChannel, BYTE byAddress, BYTE byPriority)
 {
     HRESULT hResult = S_FALSE; 
@@ -269,7 +300,18 @@ USAGEMODE HRESULT DILJ_NM_ClaimAddress (DWORD dwClientId, UINT unChannel, BYTE b
     return hResult;
 }
 
-/* Commands a node with perticular NAME to assume a address.*/
+/**
+ * \brief Commands a node with perticular NAME to assume a address.
+ * \req RSI_26_015 - DILJ_NM_CommandAddress
+ * \param dwClientId[in] Already register node's client Id
+ * \param unChannel[in] Channel number
+ * \param unECU_NAME[in] 64 bit ECU NAME of the destination node
+ * \param byDestAddress[in] Destination Address
+ * \param byPriority[in] Priority (0 - 7)
+ * \return S_OK if successful, else S_FALSE.
+ *
+ * A node commands another node to assume an address.
+ */
 USAGEMODE HRESULT DILJ_NM_CommandAddress(DWORD dwClient, UINT unChannel, UINT64 unECU_NAME, 
                                          BYTE byNewAddress, BYTE byPriority, BYTE bySrc, BYTE byDestAddress)
 {
@@ -290,7 +332,19 @@ USAGEMODE HRESULT DILJ_NM_CommandAddress(DWORD dwClient, UINT unChannel, UINT64 
     }
     return hResult;
 }
-/* Requests a PGN from the node.*/
+
+/**
+ * \brief Requests a PGN from a node
+ * \req RSI_26_007 - DILJ_RequestPGN
+ * \param dwClient[in] Client Id
+ * \param unChannel[in] Channel number
+ * \param unPGN[in] Parameter group number to be requested
+ * \param byPriority[in] Priority (0-7)
+ * \param byDesrAdress[in] Destination address.
+ * \return S_OK if successful, else S_FALSE.
+ *
+ * Requests a PGN from the node.
+ */
 USAGEMODE HRESULT DILJ_RequestPGN(DWORD dwClient, UINT unChannel, UINT32 unPGN, 
                                   BYTE byPriority, BYTE bySrc, BYTE byDestAddress)
 {
@@ -308,7 +362,20 @@ USAGEMODE HRESULT DILJ_RequestPGN(DWORD dwClient, UINT unChannel, UINT32 unPGN,
     }
     return hResult;
 }
-/* Sends Positive/Negative acknowledgement msg.*/
+
+/**
+ * \brief Sends a acknowledgement message.
+ * \req RSI_26_006 - DILJ_SendAckMsg
+ * \param dwClientId[in] Already register node's client Id
+ * \param unChannel[in] Channel number
+ * \param eAckType[in] Acknowledge type (ACK_POS, ACK_NEG)
+ * \param unPGN[in] PGN to be sent.
+ * \param pbyData[in] PGN data.
+ * \param byAddresAck[in] Destination address.
+ * \return S_OK if successful, else S_FALSE.
+ *
+ * Sends Positive/Negative acknowledgement msg.
+ */
 USAGEMODE HRESULT DILJ_SendAckMsg(DWORD dwClient, UINT unChannel, ETYPE_ACK eAckType, UINT32 unPGN, BYTE bySrc, BYTE byAddresAck)
 {
     HRESULT hResult = S_FALSE; 
@@ -349,20 +416,41 @@ USAGEMODE HRESULT DILJ_SendAckMsg(DWORD dwClient, UINT unChannel, ETYPE_ACK eAck
     }
     return hResult;
 }
-/* Starts J1939 network. All nodes start sending according to the configuration.*/
+
+/**
+ * \brief Starts J1939 network.
+ * \req RSI_26_008 - DILJ1939_GoOnline
+ * \return S_OK if successful, else S_FALSE.
+ *
+ * Starts J1939 network. All nodes start sending according to the configuration.
+ */
 USAGEMODE HRESULT DILJ_GoOnline()
 {
     return CNetworkMgmt::ouGetNWManagementObj().GoOnline(TRUE);
 }
 
-/* Stops J1939 network. All nodes stop sending msgs.*/
+/**
+ * \brief Stops J1939 network.
+ * \req RSI_26_009 - DILJ1939_GoOffline
+ * \return S_OK if successful, else S_FALSE.
+ *
+ * Stops J1939 network. All nodes stop sending msgs.
+ */
 USAGEMODE HRESULT DILJ_GoOffline()
 {
     //HRESULT hResult = S_OK;
     return CNetworkMgmt::ouGetNWManagementObj().GoOnline(FALSE);
 }
 
-/* Configure J1939 timeouts. */
+/**
+ * \brief Configure J1939 timeouts.
+ * \req RSI_26_016 - DILJ_ConfigureTimeOut
+ * \param eTimeOutType[in] Time out type (TO_BROADCAST, TO_RESPONSE, TO_HOLDING, TO_T1, TO_T2, TO_T3, TO_T4).
+ * \param unMiliSeconds[in] Timeout value in mili seconds.
+ * \return S_OK if successful, else S_FALSE.
+ *
+ * Configure timeouts for flow control packets.
+ */
 USAGEMODE HRESULT DILJ_ConfigureTimeOut(ETYPE_TIMEOUT eTimeOutType, UINT unMiliSeconds)
 {
     HRESULT hResult = S_OK;
@@ -370,7 +458,12 @@ USAGEMODE HRESULT DILJ_ConfigureTimeOut(ETYPE_TIMEOUT eTimeOutType, UINT unMiliS
     return hResult;
 }
 
-/* Get J1939 timeouts.*/
+/**
+ * \brief Get J1939 timeouts
+ * \return S_OK if successful, else S_FALSE.
+ *
+ * Get J1939 timeouts.
+ */
 USAGEMODE HRESULT DILJ_GetTimeOut(ETYPE_TIMEOUT eTimeOutType, UINT& unMiliSeconds)
 {
     HRESULT hResult = S_OK;
@@ -378,7 +471,15 @@ USAGEMODE HRESULT DILJ_GetTimeOut(ETYPE_TIMEOUT eTimeOutType, UINT& unMiliSecond
     return hResult;
 }
 
-/* Get time mode mapping */
+/**
+ * \brief Get time mode mapping
+ * \req RSI_26_017 - DILJ_GetTimeModeMapping
+ * \param CurrSysTime[out] Reference system time
+ * \param unAbsTime[out] Absolute time.
+ * \return S_OK if successful, else S_FALSE.
+ *
+ * Get time mode mapping.
+ */
 USAGEMODE HRESULT DILJ_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& unAbsTime)
 {
     HRESULT hResult = S_OK;
@@ -386,12 +487,21 @@ USAGEMODE HRESULT DILJ_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& unAbs
     return hResult;
 }
 
-/* Get J1939 network status */
+/**
+ * \brief Get J1939 network status
+ * \req RSI_26_018 - DILJ_bIsOnline
+ * \return TRUE if Online, else FALSE.
+ *
+ * Get the J1939 network status.
+ */
 USAGEMODE BOOL DILJ_bIsOnline(void)
 {
     return CNetworkMgmt::ouGetNWManagementObj().bIsOnline();
 }
-/* Set call back function pointer*/
+
+/**
+ * Set call back function pointer
+ */
 USAGEMODE HRESULT DILJ_SetCallBckFuncPtr(DWORD dwClient, ETYPE_CLBCK_FN eClBckFnType, 
                                          void* pvClBckFn)
 {
