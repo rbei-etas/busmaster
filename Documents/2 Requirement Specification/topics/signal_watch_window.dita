@@ -110,7 +110,7 @@
               <entry>X</entry>
             </row>
             <row>
-              <entry>[RS_18_04] - [RS_18_09]</entry>
+              <entry>[RS_18_04] [RS_18_05] [RS_18_06] [RS_18_07] [RS_18_08] [RS_18_09]</entry>
               <entry>Feature</entry>
               <entry>Enable / disable status of the buttons:<ol>
                   <li>At least one selected entry in available list - &apos;Add&apos; and &apos;Add All&apos; buttons enabled.</li>
@@ -173,7 +173,7 @@
               <entry>X</entry>
             </row>
             <row>
-              <entry>[RS_18_16] - [RS_18_17]</entry>
+              <entry>[RS_18_16] [RS_18_17]</entry>
               <entry>Feature</entry>
               <entry>Ok&apos; button confirms the selection whereas &apos;Cancel&apos; button causes no change of the current signal watch selection.</entry>
               <entry>X</entry>
@@ -205,7 +205,7 @@
               <entry>X</entry>
             </row>
             <row>
-              <entry>[RS_18_19] - [RS_18_20]</entry>
+              <entry>[RS_18_19] [RS_18_20]</entry>
               <entry>Feature</entry>
               <entry>There are four columns in the window - &apos;Message / frame&apos; showing name of the frame under which the signal occurs, &apos;Signal&apos; which shows the signal name, &apos;Raw value&apos; reflecting raw value of the signal and &apos;Engineering value&apos; under which the fields are updated with the engineering values with unit.</entry>
               <entry>X</entry>
