@@ -1350,17 +1350,14 @@ void CTreeViewEx::OnTvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult)
     m_bEditing = FALSE;
 }
 
-/******************************************************************************
-Function Name  :  OnAddEntityItem
-Input(s)       :  
-Output         :  void
-Functionality  :   
-Member of      :  CTreeViewEx
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  30/03/2011
-Modifications  :  
-******************************************************************************/
+/**
+ * \brief On Add Entity Item
+ * \req RS_27_08 - Addition of a test case sub-node
+ * \req RS_27_11 - Addition of a send message node
+ * \req RS_27_14 - Addition of a verify message node
+ *
+ * On Add Entity Item
+ */
 void CTreeViewEx::OnAddEntityItem(UINT nId)
 {
     eTYPE_ENTITY eEntityType;
@@ -1397,17 +1394,14 @@ void CTreeViewEx::OnAddEntityItem(UINT nId)
     GetEditorWindow()->nAddNewEntity((DWORD)omTempTreeCtrl.GetItemData(hSelectedItem), eEntityType);
 }
 
-/******************************************************************************
-Function Name  :  vOnDeleteItem
-Input(s)       :  
-Output         :  void
-Functionality  :   
-Member of      :  CTreeViewEx
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  30/03/2011
-Modifications  :  
-******************************************************************************/
+/**
+ * \brief On Delete Entity Item
+ * \req RS_27_10 - Deletion of a test case sub-node
+ * \req RS_27_13 - Deletion of a send message node
+ * \req RS_27_16 - Deletion of a verify message node
+ *
+ * On Add Entity Item
+ */
 void CTreeViewEx::vOnDeleteItem()
 {
     CTreeCtrl &omTempTreeCtrl = GetTreeCtrl();
