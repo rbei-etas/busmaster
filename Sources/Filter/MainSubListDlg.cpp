@@ -922,22 +922,15 @@ void CMainSubListDlg::vUpdateSelSubEntryList(BOOL bAllEntries)
 
 }
 
-/*******************************************************************************
-Function Name    : OnSignaldetails
-Input(s)         :  -
-Output           :  -
-Functionality    : This function will be called by framework when the user
-                   selects "Signal Details" from the popup menu. This will show
-                   selected signal details using CSignalDetailsDlg. 
-Member of        : CMainSubListDlg
-Friend of        :  -
-Author(s)        : Raja N
-Date Created     : 25.03.2004
-Modification By  : Raja N
-Modification on  : 22.07.2004, Modified calculating negative signal values in
-                   Hex mode
-*******************************************************************************/
-void CMainSubListDlg::OnSignaldetails() 
+/**
+ * \brief Show selected signal details
+ * \todo Function needs to be implemented.
+ *
+ * This function will be called by framework when the user
+ * selects "Signal Details" from the popup menu. This will show
+ * selected signal details using CSignalDetailsDlg.
+ */
+void CMainSubListDlg::OnSignaldetails()
 { 
 }
 
