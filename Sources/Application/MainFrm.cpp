@@ -4379,20 +4379,13 @@ void CMainFrame::OnHex_DecButon()
     }
 }
 
-/******************************************************************************
-    Function Name    :  OnDisplayMessagewindowOverwrite
-
-    Input(s)         :      -
-    Output           :  void
-    Functionality    :  Toggles overwrite button and switches between 
-                        overwriting state to appending state
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Ratnadip Choudhury
-    Date Created     :  25.03.2002
-    Modifications    :  
-******************************************************************************/
+/**
+ * \brief Display Message window Overwrite
+ * \req RS_16_01 - Two display modes namely, overwrite and append shall be supported.
+ *
+ * Toggles overwrite button and switches between
+ * overwriting state to appending state.
+ */
 void CMainFrame::OnDisplayMessagewindowOverwrite() 
 {
 	if (m_podMsgWndThread != NULL)

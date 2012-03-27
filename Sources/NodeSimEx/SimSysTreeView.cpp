@@ -1566,22 +1566,13 @@ void CSimSysTreeView::vAddEditNode(BOOL bMode)
     }
     omTree.Invalidate();
 }
-/******************************************************************************/
-/*  Function Name    :  OnNewSimsys                                           */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  New sim sys is created and added tio the data structure
-/*  Member of        :  CSimSysTreeView                                       */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  27.12.2005                                            */
-/*  Modifications    :  22.01.07,anish
-						remove code for setting node info
-/*  Modifications    :  26.02.09,anish
-						Restructured
-/******************************************************************************/
+
+/**
+ * \brief New Simulated System
+ * \req RS_13_1 - Option "New Simulated System"
+ *
+ * New sim sys is created and added to the data structure
+ */
 void CSimSysTreeView::OnNewSimsys()
 {
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
