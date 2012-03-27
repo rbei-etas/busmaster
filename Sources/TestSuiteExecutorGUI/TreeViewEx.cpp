@@ -799,6 +799,13 @@ void CTreeViewEx::OnTvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult)
     }
     m_bEditing = FALSE;
 }
+
+/**
+ * \brief Execute current test suite
+ * \req RS_27_30 - Execute current test suite
+ *
+ * Execute current test suite
+ */
 void CTreeViewEx::onUpdateExecute(CCmdUI* pCmdUI) 
 {   
     if(GetExecutorWindow() != NULL)
