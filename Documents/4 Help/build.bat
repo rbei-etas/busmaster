@@ -79,4 +79,3 @@ ant -Ddita.dir="%DITA_HOME%" -f build.xml all
 REM hhc out\help.hhp
 
 :END
-pause
