@@ -39,7 +39,7 @@ set CLASSPATH=%CLASSPATH%;%DITA_HOME%\lib\xercesImpl.jar
 set CLASSPATH=%CLASSPATH%;%DITA_HOME%\lib\xml-apis.jar
 set CLASSPATH=%CLASSPATH%;%DITA_HOME%\lib\icu4j.jar
 set ANT_OPTS=-Xmx512m %ANT_OPTS%
-goto BUILD
+goto HTMLHELP_FIND
 
 :DITA_1_5
 set CLASSPATH=%CLASSPATH%;%DITA_HOME%\lib
@@ -59,15 +59,23 @@ set CLASSPATH=%CLASSPATH%;%DITA_HOME%\lib\saxon\saxon9-xpath.jar
 set CLASSPATH=%CLASSPATH%;%DITA_HOME%\lib\saxon\saxon9-xqj.jar
 set ANT_OPTS=-Xmx512m %ANT_OPTS%
 set ANT_OPTS=%ANT_OPTS% -Djavax.xml.transform.TransformerFactory=net.sf.saxon.TransformerFactoryImpl
-goto BUILD
+goto HTMLHELP_FIND
+
+:HTMLHELP_FIND
+set HTMLHELP_HOME=%ProgramFiles%\HTML Help Workshop
+if exist "%HTMLHELP_HOME%" goto BUILD
+
+:HTMLHTLP_NOT_FOUND
+echo HTML Help Workshop not found. Build failed!
+goto END
 
 :BUILD
 echo Using JDK found in %JAVA_HOME%
 echo Using DITA found in %DITA_HOME%
+echo Using HTML Help Workshop found in %HTMLHELP_HOME%
 set ANT_HOME=%DITA_HOME%\tools\ant
-set PATH=%JAVA_HOME%\bin;%ANT_HOME%\bin;%ProgramFiles%\HTML Help Workshop;%PATH%
+set PATH=%JAVA_HOME%\bin;%ANT_HOME%\bin;%HTMLHELP_HOME%;%PATH%
 ant -Ddita.dir="%DITA_HOME%" -f build.xml all
-cd out
-hhc help.hhp
+REM hhc out\help.hhp
 
 :END
