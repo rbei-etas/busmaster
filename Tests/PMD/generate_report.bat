@@ -38,6 +38,7 @@ echo PMD not found. Build failed!
 goto END
 
 :CPD
+echo Using PMD found in %PMD_HOME%
 set ARGS=--minimum-tokens 75 --files ..\..\Sources --language cpp --format xml
 java %OPTS% -Djava.ext.dirs="%PMD_HOME%\lib" net.sourceforge.pmd.cpd.CPD %ARGS% > cpd.xml
 
