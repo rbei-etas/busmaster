@@ -43,6 +43,7 @@ sub get_from_requirement_specification()
   foreach(bsd_glob("../../Documents/2 Requirement Specification/out/topics/*.html"))
   {
     my $filename = $_;
+    print "$filename\n";
     open($infile, "<$filename");
     while(<$infile>) {
       foreach(/(RS[I]*_[0-9]+_[0-9]+)/g) {
@@ -61,6 +62,7 @@ sub get_from_design_document()
   foreach(bsd_glob("../../Documents/3 Design Document/out/topics/*.html"))
   {
     my $filename = $_;
+    print "$filename\n";
     open($infile, "<$filename");
     while(<$infile>) {
       foreach(/(RS[I]*_[0-9]+_[0-9]+)/g) {
@@ -79,6 +81,7 @@ sub get_from_source_code_documentation()
   foreach(bsd_glob("../../Documents/5 Source Code Documentation/out/*/html/req.html"))
   {
     my $filename = $_;
+    print "$filename\n";
     open($infile, "<$filename");
     while(<$infile>) {
       foreach(/(RS[I]*_[0-9]+_[0-9]+)/g) {

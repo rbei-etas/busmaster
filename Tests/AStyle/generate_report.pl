@@ -51,7 +51,7 @@ foreach(sort(@dirs)) {
     my $filename = $_;
     next if $filename eq "DIL_Datatypes.h"; # don't know why AStyle runs amok...
     unlink("new.txt");
-    print "astyle $astyle_args < \"$filename\" > new.txt\n";
+    print "astyle $astyle_args \"$filename\"\n";
     print `astyle $astyle_args < \"$filename\" > new.txt`;
     my @diffstat = `diff -Naur "$filename" new.txt | diffstat -t`;
     unlink("new.txt");
