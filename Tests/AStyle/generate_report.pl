@@ -5,12 +5,6 @@ use File::Glob qw(bsd_glob);
 
 my $astyle_args = "-s4 -S"; # indent by four spaces, indent switches
 
-# for astyle:
-$ENV{'PATH'} .= ":/c/Program\ Files/AStyle/bin";
-# for diff and diffstat:
-$ENV{'PATH'} .= ":/c/MinGW/msys/1.0/bin";
-#$ENV{'PATH'} .= ":/c/cygwin/bin";
-
 my $infile;
 my $outfile;
 
