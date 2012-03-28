@@ -177,3 +177,12 @@ Documents/3 Design Document/temp
 Documents/4 Help/out
 Documents/4 Help/temp
 Documents/5 Source Code Documentation/out
+
+# Tests
+Tests/AStyle/new.txt
+Tests/AStyle/report.html
+Tests/CCCC/files.txt
+Tests/CCCC/report
+Tests/Cppcheck/cppcheck.xml
+Tests/PMD/cpd.xml
+Tests/Requirements Traceability Matrix/report.html
