@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="pmd" xml:lang="en-us">
+  <title>PMD - Code Redundancy Checker</title>
+  <prolog>
+    <author>Tobias Lorenz</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ETAS GmbH</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <section>
+      <title>Description</title>
+      <p>PMD&apos;s Copy/Paste Detector (CPD) is used to check for redundant code fragments. It requires the Java Runtime Environment and is able to parse at least Java, C and C++ codes.</p>
+    </section>
+    <section>
+      <title>Download</title>
+      <p>PMD is available for download at <xref href="http://pmd.sourceforge.net/cpd.html" scope="external"/>. The current version (Mar 2012) is 5.0 Alpha. Just download the file <filepath>pmd-bin-5.0-alpha.zip</filepath>.</p>
+    </section>
+    <section>
+      <title>Installation</title>
+      <p>Extract the archive  <filepath>pmd-bin-5.0-alpha.zip</filepath> in the recommended installation folder <filepath>C:\Program Files\PMD\</filepath>.</p>
+    </section>
+    <section>
+      <title>Configuration</title>
+      <p>The is no specific configuration of PMD necessary.</p>
+    </section>
+    <section>
+      <title>Usage</title>
+      <p>PMD can run on the command line and generate reports in XML format. It also has a GUI that can be started by executing <filepath>C:\Program Files\PMD\bin\cpdgui.bat</filepath>. Select C++ as language and run it recursively on the <filepath>Sources</filepath> folder.</p>
+    </section>
+  </body>
+</topic>

@@ -14,20 +14,21 @@
     <topicref href="topics/git.dita" type="topic"/>
     <topicref href="topics/wget.dita" type="topic"/>
   </topichead>
-  <topichead navtitle="Development">
-    <topicref href="topics/vc.dita" type="topic"/>
+  <topichead navtitle="Build">
     <topicref href="topics/msbuild.dita" type="topic"/>
+    <topicref href="topics/vc.dita" type="topic"/>
   </topichead>
   <topichead navtitle="Documentation">
     <topicref href="topics/dita-ot.dita" type="topic"/>
-    <topicref href="topics/serna.dita" type="topic"/>
     <topicref href="topics/doxygen.dita" type="topic"/>
+    <topicref href="topics/serna.dita" type="topic"/>
   </topichead>
-  <topichead navtitle="Testing">
-    <topicref href="topics/testcocoon.dita" type="topic"/>
+  <topichead navtitle="Tests">
+    <topicref href="topics/astyle.dita" type="topic"/>
     <topicref href="topics/autoit.dita" type="topic"/>
     <topicref href="topics/cppcheck.dita" type="topic"/>
-    <topicref href="topics/astyle.dita" type="topic"/>
+    <topicref href="topics/pmd.dita" type="topic"/>
+    <topicref href="topics/testcocoon.dita" type="topic"/>
   </topichead>
   <topichead navtitle="Installation">
     <topicref href="topics/nsis.dita" type="topic"/>
