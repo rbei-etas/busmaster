@@ -76,6 +76,10 @@ echo Using HTML Help Workshop found in %HTMLHELP_HOME%
 set ANT_HOME=%DITA_HOME%\tools\ant
 set PATH=%JAVA_HOME%\bin;%ANT_HOME%\bin;%HTMLHELP_HOME%;%PATH%
 ant -Ddita.dir="%DITA_HOME%" -f build.xml all
-REM hhc out\help.hhp
+if exist out\help.chm goto END
+
+:HHC_TRY_AGAIN
+echo CHM was not build. I try again.
+hhc out\help.hhp
 
 :END
