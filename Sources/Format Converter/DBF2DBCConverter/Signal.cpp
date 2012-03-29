@@ -16,18 +16,11 @@
 /**
  * \file      Signal.cpp
  * \brief     Implementation of the CSignal class.
- * \author    RBIN/EBS1 - Mahesh.B.S
+ * \author    Mahesh.B.S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of the CSignal class.
  */
-/**
-* \file       Signal.cpp
-* \brief      implementation of the CSignal class.
-* \authors    Mahesh.B.S
-* \date       15.11.2004 Created
-* \copyright  Copyright &copy; 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 #include "StdAfx.h"
 #include "Signal.h"
@@ -35,39 +28,24 @@
 #include "Utility.h"
 
 /**
-* \brief      Constructor of CSignal
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * Constructor of CSignal
+ */
 CSignal::CSignal()
 {
 
 }
 
 /**
-* \brief      destructor of CSignal
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * Destructor of CSignal
+ */
 CSignal::~CSignal()
 {
 
 }
 
 /**
-* \brief      overloaded operator =
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * Overloaded operator =
+ */
 CSignal& CSignal::operator=(CSignal& signal)
 {
     if(!m_listValueDescriptor.IsEmpty())
@@ -96,13 +74,8 @@ CSignal& CSignal::operator=(CSignal& signal)
 }
 
 /**
-* \brief      operator==
-* \param[in]  const CSignal &Signal
-* \param[out] None
-* \return     int
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * Operator==
+ */
 int CSignal::operator==(const CSignal &Signal) const
 {
     if (m_sName == Signal.m_sName)
@@ -111,14 +84,9 @@ int CSignal::operator==(const CSignal &Signal) const
 }
 
 /**
-* \brief      Extracts the signal data from the given Line and populates
-              message structure.
-* \param[in]  char *pcLine
-* \param[out] None
-* \return     int
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * Extracts the signal data from the given Line and populates
+ * message structure.
+ */
 int CSignal::Format(char *pcLine)
 {
     char *pcToken;
@@ -251,14 +219,9 @@ int CSignal::Format(char *pcLine)
 
 
 /**
-* \brief      Validates the signal , sets the Max and Min value to the data type
-              and if any error sets the error variable accordingly.
-* \param[in]  None
-* \param[out] None
-* \return     unsigned int
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * Validates the signal , sets the Max and Min value to the data type
+ * and if any error sets the error variable accordingly.
+ */
 unsigned int CSignal::Validate()
 {
     // data format mismatch with previous signal
@@ -327,14 +290,9 @@ unsigned int CSignal::Validate()
 }
 
 /**
-* \brief      Write's the signal in the CANoe format and returns false
-              if any of the error signal is not stored in the file
-* \param[in]  CStdioFile &fileOutput
-* \param[out] None
-* \return     bool
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * Write's the signal in the CANoe format and returns false
+ * if any of the error signal is not stored in the file
+ */
 bool CSignal::WriteSignaltofile(CStdioFile &fileOutput)
 {
     char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
@@ -361,13 +319,8 @@ const char* CSignal::m_pacErrorStrings[] =
 };
 
 /**
-* \brief      Returns the error string of the signal
-* \param[in]  None
-* \param[out] None
-* \return     const char*
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * Returns the error string of the signal
+ */
 const char* CSignal::GetErrorString()
 {
     return m_pacErrorStrings[m_uiError];
