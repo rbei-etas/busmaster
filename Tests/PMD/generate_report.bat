@@ -39,7 +39,7 @@ goto END
 
 :CPD
 echo Using PMD found in %PMD_HOME%
-set ARGS=--minimum-tokens 75 --files ..\..\Sources --language cpp --format xml
+set ARGS=--minimum-tokens 75 --files ..\..\Sources --language cpp --format xml --encoding utf-8
 java %OPTS% -Djava.ext.dirs="%PMD_HOME%\lib" net.sourceforge.pmd.cpd.CPD %ARGS% > cpd.xml
 
 :END
