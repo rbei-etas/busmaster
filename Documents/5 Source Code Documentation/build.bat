@@ -38,3 +38,5 @@ doxygen "Doxyfiles\Format Converter\DBC2DBFConverter"
 doxygen "Doxyfiles\Format Converter\DBF2DBCConverter"
 doxygen "Doxyfiles\Format Converter\FormatConverterApp"
 doxygen "Doxyfiles\Format Converter\LogAscConverter"
+
+exit 0

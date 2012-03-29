@@ -14,3 +14,4 @@ set PATH=%PERL_HOME%\bin;%PATH%
 perl generate_report.pl
 
 :END
+exit 0

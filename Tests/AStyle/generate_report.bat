@@ -34,3 +34,4 @@ set PATH=%ASTYLE_HOME%\bin;%PERL_HOME%\bin;%DIFF_HOME%\bin;%PATH%
 perl generate_report.pl
 
 :END
+exit 0

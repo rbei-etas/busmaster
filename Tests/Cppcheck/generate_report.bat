@@ -14,3 +14,4 @@ set PATH=%PATH%;%CPPCHECK_HOME%
 cppcheck --xml ../../Sources 2> cppcheck.xml
 
 :END
+exit 0

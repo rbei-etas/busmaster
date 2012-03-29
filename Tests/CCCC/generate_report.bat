@@ -15,3 +15,4 @@ dir /s /b ..\..\Sources\*.cpp ..\..\Sources\*.h ..\..\Sources\*.c > files.txt
 cccc --outdir=report - < files.txt
 
 :END
+exit 0

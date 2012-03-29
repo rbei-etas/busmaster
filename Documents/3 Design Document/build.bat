@@ -69,3 +69,4 @@ set PATH=%JAVA_HOME%\bin;%ANT_HOME%\bin;%PATH%
 call ant -Ddita.dir="%DITA_HOME%" -f build.xml all
 
 :END
+exit 0
