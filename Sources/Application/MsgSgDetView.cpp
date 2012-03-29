@@ -1381,8 +1381,8 @@ void CMsgSgDetView::OnSignalEdit()
         m_omListCtrlSignal.SetItemState(nItemCount - 1,
                                         LVIS_SELECTED ,
                                         LVIS_SELECTED ) ;
-        AfxMessageBox( "Double click on the list item to select the signal \
-details dialog",
+        AfxMessageBox( "Double click on the list item to select the signal "
+"details dialog",
             MB_OK|MB_ICONINFORMATION);
         
     }

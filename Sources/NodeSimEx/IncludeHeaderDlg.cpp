@@ -120,8 +120,8 @@ void CIncludeHeaderDlg::OnOk()
 
         if (bRetVal == FALSE)
         {
-            AfxMessageBox(_T("Please make sure to include the filename in between\n\
- double quotes or in angle brackets appropriately.."),
+            AfxMessageBox(_T("Please make sure to include the filename in between\n"
+"double quotes or in angle brackets appropriately.."),
                     MB_OK|MB_ICONINFORMATION);
         }
         else
@@ -196,7 +196,7 @@ void CIncludeHeaderDlg::OnBrowse()
                     TRUE,  //open an existing file
                     NULL,  //extension to file
                     STR_EMPTY,  //initial file name
-                    OFN_FILEMUSTEXIST| OFN_HIDEREADONLY|\
+                    OFN_FILEMUSTEXIST| OFN_HIDEREADONLY|
                     OFN_PATHMUSTEXIST, 
                     _T("C Header Files(*.h)|*.h||"), 
                     NULL 

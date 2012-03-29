@@ -61,7 +61,7 @@ tagFilterName::tagFilterName()
 ******************************************************************************/
 void tagFilterName::vClear(void)
 {
-    _tcsset(m_acFilterName, L'');
+    _tcsset(m_acFilterName, L'\0');
     m_bFilterType = FALSE;
 }
 

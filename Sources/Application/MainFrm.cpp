@@ -1017,8 +1017,8 @@ void CMainFrame::OnOpenDatabase()
         // Flash a message as to whether the user
         // wants to open another database
         nReturn = 
-            AfxMessageBox( "Are yor sure you want to close the \n\
-database that is already open?", MB_YESNO, MB_ICONINFORMATION);
+            AfxMessageBox( "Are yor sure you want to close the \n"
+"database that is already open?", MB_YESNO, MB_ICONINFORMATION);
         if ( nReturn == IDYES)
         {
             // Close the database that was open
@@ -1080,8 +1080,8 @@ database that is already open?", MB_YESNO, MB_ICONINFORMATION);
             }
             else
             {
-                AfxMessageBox("Specified database file is not found.\n\
-Operation unsuccessful.", MB_OK|MB_ICONINFORMATION);
+                AfxMessageBox("Specified database file is not found.\n"
+"Operation unsuccessful.", MB_OK|MB_ICONINFORMATION);
             }
 
             if ( bDisplayEditor == TRUE )
