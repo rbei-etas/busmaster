@@ -75,7 +75,7 @@ echo Using DITA found in %DITA_HOME%
 echo Using HTML Help Workshop found in %HTMLHELP_HOME%
 set ANT_HOME=%DITA_HOME%\tools\ant
 set PATH=%JAVA_HOME%\bin;%ANT_HOME%\bin;%HTMLHELP_HOME%;%PATH%
-ant -Ddita.dir="%DITA_HOME%" -f build.xml all
+call ant -Ddita.dir="%DITA_HOME%" -f build.xml all
 if exist out\help.chm goto END
 
 :HHC_TRY_AGAIN
