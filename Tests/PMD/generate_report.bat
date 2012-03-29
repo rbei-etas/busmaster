@@ -43,3 +43,4 @@ set ARGS=--minimum-tokens 75 --files ..\..\Sources --language cpp --format xml
 java %OPTS% -Djava.ext.dirs="%PMD_HOME%\lib" net.sourceforge.pmd.cpd.CPD %ARGS% > cpd.xml
 
 :END
+exit 0
