@@ -341,10 +341,10 @@ bool CSignal::WriteSignaltofile(CStdioFile &fileOutput)
     bool bResult = true;
     if(m_uiError == SIG_EC_NO_ERR)
     {
-        sprintf(acLine," SG_ %s %s:  %u|%u@%c+ (%f,%f) [%lf|%lf] %s %s\n"\
-                ,m_sName,m_sMultiplex,m_ucStartBit,m_ucLength,m_ucDataFormat\
-                ,m_fScaleFactor,m_fOffset,m_MinValue.dValue\
-                ,m_MaxValue.dValue,m_sUnit,m_sNode);
+        sprintf(acLine," SG_ %s %s:  %u|%u@%c+ (%f,%f) [%lf|%lf] %s %s\n",
+                m_sName, m_sMultiplex, m_ucStartBit, m_ucLength, m_ucDataFormat,
+                m_fScaleFactor, m_fOffset, m_MinValue.dValue,
+                m_MaxValue.dValue, m_sUnit, m_sNode);
         fileOutput.WriteString(acLine);
     }
     else

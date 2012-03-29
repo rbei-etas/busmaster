@@ -287,11 +287,11 @@ void CMessageDetailsDlg::OnOK()
                 {
                     // Get the delete confirmation from the user
                     if ( AfxMessageBox(
-_T("You have signals defined for this message for previous message length.\n\
-Reducing message length will delete redundent signals and associated description\n\
-defined for this message.Do you want to delete these signals?\n\n\
-Select \"Yes\" to delete the signal(s) and to accept new message length value.\n\
-Select \"No\" to retain the previous message length."), MB_YESNO) == IDYES)
+_T("You have signals defined for this message for previous message length.\n"
+"Reducing message length will delete redundent signals and associated description\n"
+"defined for this message.Do you want to delete these signals?\n\n"
+"Select \"Yes\" to delete the signal(s) and to accept new message length value.\n"
+"Select \"No\" to retain the previous message length."), MB_YESNO) == IDYES)
                     {
                         // Delete redundent signals and update new message length
                         if ( bDeleteRedundentSignals() == FALSE )
