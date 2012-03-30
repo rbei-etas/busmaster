@@ -58,23 +58,22 @@ DirText "Please select an installation folder."
 
 ; Pages
 Page license
-Page components
+;Page components
 Page directory
 Page instfiles
 UninstPage uninstConfirm
 UninstPage instfiles
 
 ; Installation Types
-InstType "Typical"
-InstType "Full"
-InstType "Minimal"
+;InstType "Typical"
+;InstType "Full"
+;InstType "Minimal"
 
 ; License Text
 LicenseData ../COPYING.LESSER.txt
 
-SectionGroup "Main"
-Section "BUSMASTER"
-    SectionIn RO 1 2 3
+; Section Default: This emptily named section will always run
+Section ""
     SetOutPath $INSTDIR
 
     ; BUSMASTER
@@ -117,6 +116,17 @@ Section "BUSMASTER"
     ; Help
     File /oname=BUSMASTER.chm "..\Documents\4 Help\out\help.chm"
 
+    ; MinGW
+    File /r ..\Sources\BIN\Release\MinGW
+
+    ; Drivers
+    File ..\Sources\BIN\Release\ETASneo40.dll ; ETAS ES581
+    File ..\Sources\BIN\Release\icsneo40.dll  ; Intrepid neoVI
+    File ..\Sources\BIN\Release\canlib32.dll  ; Kvaser CAN
+    File ..\Sources\BIN\Release\mhstcan.dll   ; MHS-Elektronik Tiny-CAN
+    File ..\Sources\BIN\Release\CanApi2.dll   ; PEAK USB
+    File ..\Sources\BIN\Release\vxlapi.dll    ; Vector XL
+
     ; License
     File ..\COPYING.LESSER.txt
     File ..\COPYING.txt
@@ -150,56 +160,6 @@ Section "BUSMASTER"
     ; Uninstaller
     WriteUninstaller "uninst.exe"
 SectionEnd
-Section "DMGraph"
-    SectionIn RO 1 2 3
-    SetOutPath $INSTDIR
-    File ..\Sources\BIN\ReleaseUMinSize\DMGraph.dll
-    ExecWait 'regsvr32 DMGraph.dll /s'
-SectionEnd
-SectionGroupEnd
-
-SectionGroup "Hardware Libraries"
-Section "ETAS ES581"
-    SectionIn 1 2
-    SetOutPath $INSTDIR
-    File ..\Sources\BIN\Release\ETASneo40.dll
-SectionEnd
-Section "Intrepid neoVI"
-    SectionIn 1 2
-    SetOutPath $INSTDIR
-    File ..\Sources\BIN\Release\icsneo40.dll
-SectionEnd
-Section "Kvaser CAN"
-    SectionIn 1 2
-    SetOutPath $INSTDIR
-    File ..\Sources\BIN\Release\canlib32.dll
-SectionEnd
-Section "MHS-Elektronik Tiny-CAN"
-    SectionIn 1 2
-    SetOutPath $INSTDIR
-    File ..\Sources\BIN\Release\mhstcan.dll
-SectionEnd
-Section "Peak USB"
-    SectionIn 1 2
-    SetOutPath $INSTDIR
-    File ..\Sources\BIN\Release\CanApi2.dll
-SectionEnd
-Section "Vector XL"
-    SectionIn 1 2
-    SetOutPath $INSTDIR
-    File ..\Sources\BIN\Release\vxlapi.dll
-SectionEnd
-SectionGroupEnd
-
-SectionGroup "Node Simulation"
-Section "MinGW"
-    SectionIn 2
-    SetOutPath $INSTDIR
-
-    ; MinGW
-    File /r ..\Sources\BIN\Release\MinGW
-SectionEnd
-SectionGroupEnd
 
 ; Uninstall section here...
 Section "Uninstall"
