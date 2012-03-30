@@ -47,7 +47,6 @@ Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights
 */
 
 #include "StdAfx.h"
-#include <string.h>
 #include "ValueTable.h"
 #include "Signal.h"
 #include "Converter.h"
@@ -88,7 +87,7 @@ CValueTable::~CValueTable()
 */
 CValueTable& CValueTable::operator=(CValueTable& Tab)
 {
-    strncpy(m_TableName, Tab.m_TableName, sizeof(m_TableName));
+    strcpy(m_TableName,Tab.m_TableName);
     POSITION posMsg = Tab.m_values.GetHeadPosition();
     while(posMsg != NULL)
     {
@@ -119,7 +118,7 @@ void CValueTable::Format_ValueTable(char *pcLine,CStdioFile &fileInput)
     }
     pcToken=strtok(pcLine,"\n");
     //get value table name.
-    strncpy(m_TableName, pcToken, sizeof(m_TableName));
+    strcpy(m_TableName,pcToken);
     //parses value table.
     while(strcmp((fileInput.ReadString(acLine,defCON_MAX_LINE_LEN)),"[END_TABLE]\n")!=0)
     {

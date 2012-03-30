@@ -22,7 +22,6 @@
  * Implementation file for CSignal class
  */
 
-#include <string.h>
 #include "StdAfx.h"
 //#include "CANDBConverter.h"
 #include "Signal.h"
@@ -78,8 +77,8 @@ CSignal& CSignal::operator=(CSignal& signal)
     }
 
     // copy all the data members except the list
-    strncpy(m_acMultiplex, signal.m_acMultiplex, sizeof(m_acMultiplex));
-    strncpy(m_acName, signal.m_acName, sizeof(m_acName));
+    strcpy(m_acMultiplex,signal.m_acMultiplex);
+    strcpy(m_acName,signal.m_acName);
     m_ucLength = signal.m_ucLength;
     m_ucWhichByte = signal.m_ucWhichByte;
     m_ucStartBit = signal.m_ucStartBit;
@@ -89,7 +88,7 @@ CSignal& CSignal::operator=(CSignal& signal)
     m_ucDataFormat = signal.m_ucDataFormat;
     m_fOffset = signal.m_fOffset;
     m_fScaleFactor = signal.m_fScaleFactor;
-    strncpy(m_acUnit, signal.m_acUnit, sizeof(m_acUnit));
+    strcpy(m_acUnit,signal.m_acUnit);
     m_rxNode = signal.m_rxNode;
     // now copy the list
     m_listValueDescriptor.AddTail(&signal.m_listValueDescriptor);
@@ -126,7 +125,7 @@ int CSignal::Format(char *pcLine)
     }
     *pcTemp = '\0'; // terminate it
 
-    strncpy(m_acName, acTemp, sizeof(m_acName)); // copy the name to the signal's data member
+    strcpy(m_acName,acTemp); // copy the name to the signal's data member
     pcTemp = acTemp; // reset pcTemp to start of buffer
 
 
@@ -138,7 +137,7 @@ int CSignal::Format(char *pcLine)
         *pcTemp++ = *pcToken++; // copy SIG_NAME only, i.e. till first 'space'
     }
     *pcTemp = '\0'; // terminate it
-    strncpy(m_acMultiplex, acTemp, sizeof(m_acMultiplex)); // copy the name to the signal's data member
+    strcpy(m_acMultiplex,acTemp); // copy the name to the signal's data member
 
     pcTemp = acTemp; // reset pcTemp to start of buffer
 
@@ -293,7 +292,7 @@ int CSignal::Format(char *pcLine)
         *pcTemp++ = *pcToken++;
     }
     *pcTemp='\0';
-    strncpy(m_acUnit, acTemp, sizeof(m_acUnit)); // copy UNIT to corresponding data member.
+    strcpy(m_acUnit,acTemp); // copy UNIT to corresponding data member.
     pcToken++;
 
     while(*pcToken && *pcToken != ' ')
@@ -372,7 +371,7 @@ int CSignal::AddValueDescriptors(char *pcLine)
         {
             CValueDescriptor valDesc;
             valDesc.m_value.dValue = atof(acValue);
-            strncpy(valDesc.m_acDescriptor, acDesc, sizeof(valDesc.m_acDescriptor));
+            strcpy(valDesc.m_acDescriptor,acDesc);
 
             m_listValueDescriptor.AddTail(valDesc);
         }

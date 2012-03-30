@@ -22,7 +22,6 @@
  * Implementation of the converter class.
  */
 
-#include <string.h>
 #include "Converter.h"
 #include "Signal.h"
 #include "Tag.h"
@@ -335,7 +334,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
         // avoid leading <spaces> before tokenising, so passing the
         // starting point will be correct in each case, when calling
         // msg.Format, sig.Format etc.
-        strncpy(local_copy, acLine, sizeof(local_copy));
+        strcpy_s(local_copy, sizeof(local_copy), acLine);
         pcLine = acLine;
 
         while(*pcLine && *pcLine == ' ')

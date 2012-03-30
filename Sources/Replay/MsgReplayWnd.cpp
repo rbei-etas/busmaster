@@ -24,7 +24,6 @@
 // For all standard header file include
 #include "Replay_stdafx.h"
 #include "Replay_resource.h"
-#include <string.h>
 #include "MsgReplayWnd.h"
 // Definition of CSplFileDlg class
 //#include "Utility/SplFileDlg.h"
@@ -697,7 +696,7 @@ LRESULT CMsgReplayWnd::vHandleListControlDataReq( WPARAM wParam, LPARAM /*lParam
         if( pItem->iSubItem == 0 &&
             pItem->iItem < m_ouReplayDetails.m_omEntries.GetSize() )
         {
-            strncpy(pItem->pszText, m_ouReplayDetails.m_omEntries[ pItem->iItem], sizeof(pItem->pszText));
+            strcpy(pItem->pszText, m_ouReplayDetails.m_omEntries[ pItem->iItem]);   
         }
     }
 

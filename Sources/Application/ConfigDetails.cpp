@@ -22,7 +22,6 @@
  * Contains the description of the class CConfigDetails
  */
 #include "stdafx.h" // standard includes present in this header
-#include <string.h>
 #include "struct.h" // definitions of the structures used in this application
 #include "hashdefines.h" // contains hash defines used across classes
 #include "BUSMASTER.h"    // For application class definition
@@ -5430,7 +5429,7 @@ BOOL static bLogFileSerialize(CArchive& omArchive, SLOGFILEDETS& sLogFileDets)
             {
                 CString omTemp;
                 omArchive >> omTemp;
-                strncpy(sFilter.m_omFilterName, omTemp.GetBuffer(MAX_PATH), sizeof(sFilter.m_omFilterName));
+                strcpy (sFilter.m_omFilterName, omTemp.GetBuffer(MAX_PATH));
                 omArchive >> sFilter.m_bEnabled;
             }
             sLogFileDets.m_omFilter.Add( sFilter );
@@ -5525,7 +5524,7 @@ static BOOL bLoadReplayFile(CArchive& omArchive, SREPLAYFILE& sRepalyFile)
         omArchive >> omFilterName;
         omArchive >> sFilter.m_bEnabled;
         
-        strncpy(sFilter.m_omFilterName, omFilterName.GetBuffer(MAX_PATH), sizeof(sFilter.m_omFilterName));
+        strcpy(sFilter.m_omFilterName, omFilterName.GetBuffer(MAX_PATH));
         // Add the filter in to the list
         sRepalyFile.m_omFilter.Add( sFilter );
     }

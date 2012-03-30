@@ -25,10 +25,9 @@
 /// All the utility function defined here
 
 #include "Utils_stdafx.h"
-#include <cstringt.h>
 #include <math.h>
 #include <shlwapi.h>
-#include <string.h>
+#include <cstringt.h>
 
 #define defBASE_DEC                 10
 #define defBASE_HEX                 16
@@ -99,7 +98,7 @@ void FilterOut_NonHexChar(char acSource[])
     }
 
     memset(acSource, '\0', Length); // Clear the source string
-    strncpy(acSource, acTmp, sizeof(acSource));        // Copy back the filtered string
+    strcpy(acSource, acTmp);        // Copy back the filtered string
 }
 
 /* Given the string representation of a hexadecimal number, this function 
@@ -250,7 +249,7 @@ bool bGetSystemErrorString(HRESULT hResult, CHAR acErrStr[256])
                     (LPTSTR) &lpMsgBuf, 0, NULL );
     if (dwResult <= 0)
     {
-        strncpy(acErrStr, "system error message retrieval operation failed", sizeof(acErrStr));
+        strcpy(acErrStr, "system error message retrieval operation failed");
         bResult = false;
     }
     else
@@ -316,7 +315,7 @@ BOOL CopyTextToClipboard(LPSTR lpstrText, HWND hWnd = NULL)
 	if (hGlobal == NULL) return FALSE;
 	// Lock the memory and store the text into it
 	lpszData = (LPSTR) GlobalLock(hGlobal);
-    strncpy(lpszData, lpstrText, sizeof(lpszData));
+    strcpy(lpszData, lpstrText);
     //_tcsncpy(lpszData, lpctstrText, nSize + 1);
 
 	GlobalUnlock(hGlobal);  // Unlock the memory
