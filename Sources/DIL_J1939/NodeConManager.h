@@ -93,7 +93,7 @@ private:
     BOOL bProcessConLevelMsg(const STCANDATA& sCanMsg);
     void vProcBAMMsg(const STCAN_MSG& sCanMsg);    
     
-    void CNodeConManager::vReInitConDet();
+    void vReInitConDet();
     void vProcessBroadCastData(const STCANDATA& sCanMsg);
     void vProcessLongData(const STCANDATA& sCanMsg);
     void vSendConAbortMsg(UINT32 unExtId, BYTE byReason, UINT unChannel);
@@ -118,7 +118,7 @@ public:
     virtual void vTransmitMessage(STJ1939_MSG* psMsg);
     HRESULT TransmitRequestToSend(BYTE byDestAddress, BYTE byPriority, 
                                   UINT unDLC, UINT32 unPGN, UINT unChannel);
-    HRESULT CNodeConManager::StartAdresClaimProc(BYTE byAddress);
+    HRESULT StartAdresClaimProc(BYTE byAddress);
     void vSendBAM(UINT unMsgSize, UINT32 unPGN, BYTE byDestAddress, 
                   BYTE byPriority, UINT unChannel);
     void vSendBroadCastData(BYTE* pbyData, UINT unMsgSize, BYTE byDestAddress, 
@@ -150,9 +150,9 @@ public:
     void vClearMsgBuffer(CBaseMsgBufVSE* pBufObj);
     void vSendMessage(UINT unChannel, EJ1939_MSG_TYPE eMsgType, UINT32 unPGN,
                       BYTE* pbyData, UINT unDLC,BYTE byPriority, BYTE byDestAdres);
-    void CNodeConManager::vActivate(void);
-    void CNodeConManager::vDeactivate(void);
-    BOOL CNodeConManager::bIsActive(void);
+    void vActivate(void);
+    void vDeactivate(void);
+    BOOL bIsActive(void);
     BOOL bIsMonitorNode(void);
     void vSetNodeAddress(BYTE byAddress);
     HRESULT SetCallBackFuncPtr(ETYPE_CLBCK_FN eClBckFnType, void* pvClBckFn);
