@@ -22,7 +22,6 @@
  * Implementation of the LogAscConverter class.
  */
 #include "stdafx.h"
-#include <string.h>
 
 extern "C" int nGetDayFromDate(char* pchDate, char* pchMonth, char* chWeekDay)
 {
@@ -50,25 +49,25 @@ extern "C" int nGetDayFromDate(char* pchDate, char* pchMonth, char* chWeekDay)
 	switch(nDay)
 	{
 		case 1:
-			strncpy(chWeekDay, _T("Sun"), sizeof(chWeekDay));
+			strcpy(chWeekDay, _T("Sun"));
 			break;
 		case 2:
-			strncpy(chWeekDay, _T("Mon"), sizeof(chWeekDay));
+			strcpy(chWeekDay, _T("Mon"));
 			break;
 		case 3:
-			strncpy(chWeekDay, _T("Tue"), sizeof(chWeekDay));
+			strcpy(chWeekDay, _T("Tue"));
 			break;
 		case 4:
-			strncpy(chWeekDay, _T("Wed"), sizeof(chWeekDay));
+			strcpy(chWeekDay, _T("Wed"));
 			break;
 		case 5:
-			strncpy(chWeekDay, _T("Thu"), sizeof(chWeekDay));
+			strcpy(chWeekDay, _T("Thu"));
 			break;
 		case 6:
-			strncpy(chWeekDay, _T("Fri"), sizeof(chWeekDay));
+			strcpy(chWeekDay, _T("Fri"));
 			break;
 		case 7:
-			strncpy(chWeekDay, _T("Sat"), sizeof(chWeekDay));
+			strcpy(chWeekDay, _T("Sat"));
 			break;
 	}
 
@@ -76,40 +75,40 @@ extern "C" int nGetDayFromDate(char* pchDate, char* pchMonth, char* chWeekDay)
 	switch(nMonth)
 	{
 		case 1:
-			strncpy(pchMonth, "Jan", sizeof(chWeekDay));
+			strcpy(pchMonth, "Jan");
 			break;
 		case 2:
-			strncpy(pchMonth, "Feb", sizeof(chWeekDay));
+			strcpy(pchMonth, "Feb");
 			break;
 		case 3:
-			strncpy(pchMonth, "Mar", sizeof(chWeekDay));
+			strcpy(pchMonth, "Mar");
 			break;
 		case 4:
-			strncpy(pchMonth, "Apr", sizeof(chWeekDay));
+			strcpy(pchMonth, "Apr");
 			break;
 		case 5:
-			strncpy(pchMonth, "May", sizeof(chWeekDay));
+			strcpy(pchMonth, "May");
 			break;
 		case 6:
-			strncpy(pchMonth, "Jun", sizeof(chWeekDay));
+			strcpy(pchMonth, "Jun");
 			break;
 		case 7:
-			strncpy(pchMonth, "Jul", sizeof(chWeekDay));
+			strcpy(pchMonth, "Jul");
 			break;
 		case 8:
-			strncpy(pchMonth, "Aug", sizeof(chWeekDay));
+			strcpy(pchMonth, "Aug");
 			break;
 		case 9:
-			strncpy(pchMonth, "Sep", sizeof(chWeekDay));
+			strcpy(pchMonth, "Sep");
 			break;
 		case 10:
-			strncpy(pchMonth, "Oct", sizeof(chWeekDay));
+			strcpy(pchMonth, "Oct");
 			break;
 		case 11:
-			strncpy(pchMonth, "Nov", sizeof(chWeekDay));
+			strcpy(pchMonth, "Nov");
 			break;
 		case 12:
-			strncpy(pchMonth, "Dec", sizeof(chWeekDay));
+			strcpy(pchMonth, "Dec");
 			break;
 	}
 	return 0;

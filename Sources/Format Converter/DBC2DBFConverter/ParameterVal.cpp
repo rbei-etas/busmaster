@@ -22,7 +22,6 @@
  * Implementation of the parameter value class.
  */
 
-#include <string.h>
 #include "ParameterVal.h"
 
 using namespace std;
@@ -215,7 +214,7 @@ int CParameterValues::ReadParamValue(string paramType,char *pcToken)
         {
             *pcToken++;
         }
-        strncpy(m_ParamVal.cValue, pcToken, sizeof(m_ParamVal.cValue));
+        strcpy_s(m_ParamVal.cValue, sizeof(m_ParamVal.cValue), pcToken);
     }
 
     //Param type :INT/HEX
@@ -229,7 +228,7 @@ int CParameterValues::ReadParamValue(string paramType,char *pcToken)
     {
         while(*pcToken == ' ')
             *pcToken++;
-        strncpy(m_ParamVal.cValue, pcToken, sizeof(m_ParamVal.cValue));
+        strcpy_s(m_ParamVal.cValue, sizeof(m_ParamVal.cValue), pcToken);
     }
 
     //Param type :FLOAT

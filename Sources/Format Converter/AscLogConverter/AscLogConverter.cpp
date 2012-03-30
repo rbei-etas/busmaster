@@ -25,7 +25,6 @@
  *
  * Implementation of the AscLogConverter class.
  */
-#include <string.h>
 #include <afxdllx.h>
 #include "AscLogConverter.h"
 
@@ -116,7 +115,7 @@ HRESULT CAscLogConverter::GetConverterName(TCHAR* strConverterName)
 {
     if(strConverterName != NULL)
     {
-        strncpy(strConverterName, _T("ASC TO LOG Conversion"), sizeof(strConverterName));
+        strcpy(strConverterName, _T("ASC TO LOG Conversion"));
     }
     return S_OK;
 }

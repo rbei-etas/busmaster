@@ -29,7 +29,6 @@
 * \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
 */
 #include "StdAfx.h"
-#include <string.h>
 #include "Converter.h"
 
 /**
@@ -52,7 +51,7 @@ extern void Truncate_str(char *type,char *pcToken,bool bToLog)
         CConverter::fileLog.WriteString(acLine);
         CConverter::bLOG_ENTERED = true;
     }
-    strncpy(pcToken, strTemp.GetBuffer(32), sizeof(pcToken));
+    strcpy(pcToken,strTemp.GetBuffer(32));
     if(bToLog)
     {
         sprintf(acLine," changed to %s\n",pcToken);

@@ -43,10 +43,9 @@ Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights
 */
 #include "StdAfx.h"
 #include "Parameter.h"
-#include <limits.h>
-#include <float.h>
+#include<limits.h>
+#include<float.h>
 #include <string>
-#include <string.h>
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -105,10 +104,10 @@ CParameters& CParameters::operator=( CParameters& param)
     }
 
     // now copy the other elements of the new message to this
-    strncpy(m_ObjectId, param.m_ObjectId, sizeof(m_ObjectId));
-    strncpy(m_ParamName, param.m_ParamName, sizeof(m_ParamName));
+    strcpy(m_ObjectId,param.m_ObjectId);
+    strcpy(m_ParamName,param.m_ParamName);
     m_ValRange=param.m_ValRange;
-    strncpy(m_ParamType, param.m_ParamType, sizeof(m_ParamType));
+    strcpy(m_ParamType,param.m_ParamType);
     m_InitVal=param.m_InitVal;
     m_MaxVal=param.m_MaxVal;
     m_MinVal=param.m_MinVal;
@@ -180,7 +179,7 @@ void CParameters::Format_MesgParam_Value(CStdioFile &fileInput,CList<CParameters
         pcLine=pcLine+strlen(pcToken)+1;
         //get message type and validates teh type.
         pcToken=strtok(pcLine,",");
-        strncpy(type, pcToken, sizeof(type));
+        strcpy(type,pcToken);
         if(strcmp(type,"X")==0)
             msgId=msgId+2147483648;
         pcLine=pcLine+strlen(pcToken)+1;
@@ -236,7 +235,7 @@ void CParameters::Format_SigParam_Value(CStdioFile &fileInput,CList<CParameters,
         pcLine=pcLine+strlen(pcToken)+1;
         //get message type and validates the mtype.
         pcToken=strtok(pcLine,",");
-        strncpy(temp, pcToken, sizeof(temp));
+        strcpy(temp,pcToken);
         if(strcmp(temp,"X")==0)
             msgId=msgId+2147483648;
         pcLine=pcLine+strlen(pcToken)+1;
@@ -244,7 +243,7 @@ void CParameters::Format_SigParam_Value(CStdioFile &fileInput,CList<CParameters,
         pcToken=strtok(pcLine,",");
         if(strlen(pcToken) > 32)
             Truncate_str("signal name",pcToken,false);
-        strncpy(sname, pcToken, sizeof(sname));
+        strcpy(sname,pcToken);
         pcLine=pcLine+strlen(pcToken)+1;
         //get other values.
         pcToken=strtok(pcLine,",");
@@ -297,7 +296,7 @@ void CParameters::Format_NodeParam_Value(CStdioFile &fileInput,CList<CParameters
         if(strlen(pcToken) > 32)
             Truncate_str("parameter Name",pcToken,false);
 
-        strncpy(NodeName, pcToken, sizeof(NodeName));
+        strcpy(NodeName,pcToken);
         pcLine=pcLine+strlen(pcToken)+1;
         //get other values.
         pcToken=strtok(NULL,",");
@@ -382,17 +381,17 @@ void CParameters::Format_ParamDef(char *pcLine,int index)
 {
     //get object id and stores m_object Id with the valid value.
     if(index==0)
-        strncpy(m_ObjectId, "\0", sizeof(m_ObjectId));
+        strcpy(m_ObjectId,"\0");
     else if(index==1)
-        strncpy(m_ObjectId, "BU_", sizeof(m_ObjectId));
+        strcpy(m_ObjectId,"BU_");
     else if(index==2)
-        strncpy(m_ObjectId, "BO_", sizeof(m_ObjectId));
+        strcpy(m_ObjectId,"BO_");
     else if(index==3)
-        strncpy(m_ObjectId, "SG_", sizeof(m_ObjectId));
+        strcpy(m_ObjectId,"SG_");
     else if(index==4)
-        strncpy(m_ObjectId, "BU_SG_REL_", sizeof(m_ObjectId));
+        strcpy(m_ObjectId,"BU_SG_REL_");
     else if(index==5)
-        strncpy(m_ObjectId, "BU_BO_REL_", sizeof(m_ObjectId));
+        strcpy(m_ObjectId,"BU_BO_REL_");
     //reads the param defintion.
     GetParam_Def(pcLine);
 }
@@ -415,10 +414,10 @@ void CParameters::GetParam_Def(char *pcLine)
 
     if(strlen(pcToken) > 32)
         Truncate_str("parameter Name",pcToken,true);
-    strncpy(m_ParamName, pcToken, sizeof(m_ParamName));
+    strcpy(m_ParamName,pcToken);
     //get Param type
     pcToken=strtok(NULL,",");
-    strncpy(m_ParamType, pcToken, sizeof(m_ParamType));
+    strcpy(m_ParamType,pcToken);
 
     if(strcmp(m_ParamType,"STRING")==0)
         pcToken=strtok(NULL,"\n");
@@ -496,7 +495,7 @@ void CParameters::ReadDefault_Value(char *pcToken)
         }
         *pcTemp = '\0';
         //copies inital value to the object member.
-        strncpy(m_InitVal.cValue, acTemp, sizeof(m_InitVal.cValue));
+        strcpy(m_InitVal.cValue,acTemp);
         pcTemp=acTemp;
     }
     //get inital value of type INT
@@ -531,7 +530,7 @@ void CParameters::ReadDefault_Value(char *pcToken)
             *pcTemp++=*pcToken++;
         }
         *pcTemp='\0';
-        strncpy(m_InitVal.cValue, acTemp, sizeof(m_InitVal.cValue));
+        strcpy(m_InitVal.cValue,acTemp);
         pcTemp=acTemp;
     }
 }

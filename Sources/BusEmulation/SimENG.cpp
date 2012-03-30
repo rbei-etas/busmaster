@@ -23,7 +23,6 @@
  */
 
 #include "stdafx_BusSim.h"
-#include <string.h>
 #include "DataTypes/MsgBufVSE.h"
 #include "DataTypes/DIL_Datatypes.h"
 #include "SimENG.h"
@@ -91,7 +90,7 @@ static void GetSystemErrorString()
         NULL );
     if (dwResult <= 0)
     {
-        strncpy(sg_acErrStr, "system error message retrieval operation failed", sizeof(sg_acErrStr));
+        strcpy(sg_acErrStr, "system error message retrieval operation failed");
     }
     else
     {

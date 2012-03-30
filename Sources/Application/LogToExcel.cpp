@@ -19,7 +19,6 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 #include "stdafx.h"
-#include <string.h>
 #include "LogToExcel.h"
 #include "Common.h"
 
@@ -67,7 +66,7 @@ void CLogToExcel::fnSetSelectedFields(CListBox *omSelectedList)
 		memset( strFieldName,'\0',n );
         CString omFieldName;
 		omSelectedList->GetText( unIndex,omFieldName);
-        strncpy(strFieldName, omFieldName.GetBuffer(MAX_PATH), sizeof(strFieldName));
+        strcpy(strFieldName, omFieldName.GetBuffer(MAX_PATH));
 		pMapValue = pFieldMapTbl.find(strFieldName);
 		unSelectedField[pMapValue->second] = pMapValue->second;
 	}

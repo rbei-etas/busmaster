@@ -39,7 +39,7 @@ int nGetDate(char* pchDateString,  int* nDate, char* pchMonth, char* pchDay, int
 	char chTempDate[18] = {'\0'};
 	char chTemp;
 	int nMonth;
-	strncpy(chTempDate, pchDateString, sizeof(chTempDate));
+	strcpy(chTempDate, pchDateString);
 	nGetDayFromDate(chTempDate, pchMonth, pchDay);
 	sscanf(pchDateString, "%d%c%d%c%d", nDate, &chTemp, &nMonth, &chTemp, nYear);
 	/*printf("%d, %d, %d\n", nDay, nMonth, *nYear);*/
@@ -49,11 +49,11 @@ int nGetTime( char* pchTimeString, int* nHour, int* nMin, int* nSec, char* pchAm
 {
 	char chTemp;
 	sscanf(pchTimeString, "%d%c%d%c%d", nHour, &chTemp, nMin, &chTemp, nSec);
-	strncpy(pchAmPm, "am", sizeof(pchAmPm));
+	strcpy(pchAmPm, "am");
 	if(*nHour > 12)
 	{
 		*nHour = *nHour - 12;
-		strncpy(pchAmPm, "pm", sizeof(pchAmPm));
+		strcpy(pchAmPm, "pm");
 	}
 	return 0;
 }

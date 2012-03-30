@@ -22,7 +22,6 @@
  * This contains the dll entry point function and defines the entry point for the DLL application.
  */
 
-#include <string.h>
 #include "StdAfx_ProjectConfiguration.h"
 #include "ProjectConfiguration.h"
 #include "include/utils_macro.h"
@@ -302,7 +301,7 @@ USAGEMODE int SetDatastorageConfig(DATASTORAGEINFO* StorageInfo)
 		{
 			sdataStorageInfo.FSInfo = new FILESTORAGEINFO; //Change
 		}
-		strncpy(sdataStorageInfo.FSInfo->m_FilePath, StorageInfo->FSInfo->m_FilePath, sizeof(sdataStorageInfo.FSInfo->m_FilePath));
+		strcpy_s(sdataStorageInfo.FSInfo->m_FilePath,StorageInfo->FSInfo->m_FilePath);
 	}
 	else
 	{
@@ -326,7 +325,7 @@ USAGEMODE int GetDatastorageConfig(DATASTORAGEINFO* StorageInfo)
 		if (sdataStorageInfo.FSInfo != NULL)
 		{
 			StorageInfo->FSInfo = new FILESTORAGEINFO;
-			strncpy(StorageInfo->FSInfo->m_FilePath, sdataStorageInfo.FSInfo->m_FilePath, sizeof(StorageInfo->FSInfo->m_FilePath));
+			strcpy_s(StorageInfo->FSInfo->m_FilePath,sdataStorageInfo.FSInfo->m_FilePath);
 		}
 		else
 		{

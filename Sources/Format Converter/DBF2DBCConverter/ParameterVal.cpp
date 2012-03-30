@@ -29,7 +29,6 @@
 * \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
 */
 #include "StdAfx.h"
-#include <string.h>
 #include "ParameterVal.h"
 
 
@@ -83,8 +82,8 @@ CParameterValues& CParameterValues::operator=(CParameterValues& param)
 {
 
     // now copy the other elements of the new message to this
-    strncpy(m_NodeName, param.m_NodeName, sizeof(m_NodeName));
-    strncpy(m_SignalName,param.m_SignalName, sizeof(m_SignalName));
+    strcpy(m_NodeName,param.m_NodeName);
+    strcpy(m_SignalName,param.m_SignalName );
     m_MsgId=param.m_MsgId;
     m_ParamVal=param.m_ParamVal;
     m_cFrameFormat=param.m_cFrameFormat;
@@ -104,7 +103,7 @@ void CParameterValues::Format_Param_Value(char *paramType,char *pcLine,const int
 {
     //copies the node name to the member
     if(index==1)
-        strncpy(m_NodeName, Node_Name, sizeof(m_NodeName));
+        strcpy(m_NodeName,Node_Name);
     //copies the message id.
     else if(index==2)
         m_MsgId=msgId;
@@ -112,7 +111,7 @@ void CParameterValues::Format_Param_Value(char *paramType,char *pcLine,const int
     else if(index==3)
     {
         m_MsgId =msgId;
-        strncpy(m_SignalName, Node_Name, sizeof(m_SignalName));
+        strcpy(m_SignalName,Node_Name);
     }
     //get param value.
     ReadParamValue(paramType,pcLine);
@@ -138,7 +137,7 @@ void CParameterValues::ReadParamValue(char *paramType,char *pcToken)
             *pcTemp++=*pcToken++;
         }
         *pcTemp='\0';
-        strncpy(m_ParamVal.cValue, acTemp, sizeof(m_ParamVal.cValue));
+        strcpy(m_ParamVal.cValue,acTemp);
         pcTemp=acTemp;
     }
     //get param value of type int
@@ -156,7 +155,7 @@ void CParameterValues::ReadParamValue(char *paramType,char *pcToken)
             *pcTemp++=*pcToken++;
         }
         *pcTemp='\0';
-        strncpy(m_ParamVal.cValue, acTemp, sizeof(m_ParamVal.cValue));
+        strcpy(m_ParamVal.cValue,acTemp);
         pcTemp=acTemp;
     }
     //get param value of type float
