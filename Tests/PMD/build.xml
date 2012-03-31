@@ -26,5 +26,5 @@
     <xslt in="cpd-fixed.xml" style="cpdhtml.xslt" out="cpd.html"/>
   </target>
 
-  <target name="all" depends="sed, cpdhtml"/>
+  <target name="all" depends="cpd, sed, cpdhtml"/>
 </project>
