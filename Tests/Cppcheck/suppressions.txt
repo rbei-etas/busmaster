@@ -1,0 +1,7 @@
+*:..\..\Sources\BIN
+*:..\..\Sources\CAN_ETAS_BOA\EXTERNAL_INCLUDE
+*:..\..\Sources\CAN_ICS_neoVI\EXTERNAL_INCLUDE
+*:..\..\Sources\CAN_Kvaser_CAN\EXTERNAL_INCLUDE
+*:..\..\Sources\CAN_Vector_XL\EXTERNAL_INCLUDE
+*:C:\WinDDK\7600.16385.1\inc\atl71
+*:C:\WinDDK\7600.16385.1\inc\mfc42
