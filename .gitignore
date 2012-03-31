@@ -184,5 +184,6 @@ Tests/AStyle/report.html
 Tests/CCCC/files.txt
 Tests/CCCC/report
 Tests/Cppcheck/cppcheck.xml
+Tests/Cppcheck/report
 Tests/PMD/cpd.xml
 Tests/Requirements Traceability Matrix/report.html
