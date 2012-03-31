@@ -142,7 +142,7 @@ DWORD WINAPI MsgDelegatingThread(LPVOID pParam)
                     // the message
                     LARGE_INTEGER CurrCounter;
                     QueryPerformanceCounter(&CurrCounter);
-                    // Convert it to time stamp with the granularity of hundreds of µs
+                    // Convert it to time stamp with the granularity of hundreds of us
                     if (CurrCounter.QuadPart * 10000 > CurrCounter.QuadPart)
                     {
                         TimeStamp = 
