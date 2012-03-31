@@ -63,7 +63,7 @@ while (*str)
 
 /*
 ******************** strupc ********************
-Funktion  : Einen String in Großbuchstaben umwandeln
+Funktion  : Einen String in Grossbuchstaben umwandeln
 
 Eingaben  : str => Zu wandelnder String
 
@@ -83,7 +83,7 @@ while (*str)
 
 /*
 ******************** strskp ********************
-Funktion  : Führende Leerzeichen des Strings überspringen
+Funktion  : Fuehrende Leerzeichen des Strings ueberspringen
 
 Eingaben  : str => Input String
 
@@ -106,7 +106,7 @@ while (isspace((int)*s))
 
 /*
 ******************** strcrop ********************
-Funktion  : Abschliesende Leerzeichen des Strings löschen
+Funktion  : Abschliesende Leerzeichen des Strings loeschen
 
 Eingaben  : str => Zu bearbeitender String
 
@@ -133,8 +133,8 @@ last++;
 
 /*
 ******************** strstrip ********************
-Funktion  : Führende Leerzeichen des Strings überspringen
-            und abschliesende Leerzeichen löschen
+Funktion  : Fuehrende Leerzeichen des Strings ueberspringen
+            und abschliesende Leerzeichen loeschen
 
 Eingaben  : str => Input String
 
@@ -346,7 +346,7 @@ return((now.tv_sec * 1000) + (now.tv_usec / 1000));
 ******************** get_unix_time ********************
 Funktion  : Unix Zeit unter Windows ermitteln
 
-Eingaben  : p => Buffer für Ergebnis
+Eingaben  : p => Buffer fuer Ergebnis
 
 Ausgaben  : *p => Unix Zeit
 
@@ -401,8 +401,8 @@ time_stamp->Sec = (uint32_t)t.tv_sec;
 /*
 ******************** mhs_diff_time ********************
 Funktion  : Differenzeit zwischen now und stamp
-            berechnen unter berücksichtigung eines
-            Überlaufs
+            berechnen unter beruecksichtigung eines
+            Ueberlaufs
 
 Eingaben  : now => Aktuelle Zeit
             stamp => Zeitstempel in der Vergangenheit
@@ -438,7 +438,7 @@ if (!s)
   SET_RESULT(result, -1);
   return(NULL);
   }
-// Führende Leerzeichen überspringen
+// Fuehrende Leerzeichen ueberspringen
 while (*s == ' ')
   s++;
 if (*s == '\0')
@@ -480,7 +480,7 @@ for (s = end; *s; s++)
   if (hit)
     break;
   }
-// Abschliesende Leerzeichen löschen
+// Abschliesende Leerzeichen loeschen
 if ((l = strlen(item)))
   {
   s = item + (l-1);

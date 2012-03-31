@@ -124,7 +124,7 @@ void CGraphRightView::Dump(CDumpContext& dc) const
                    cx - Specifies the new width of the client area
                    cy - Specifies the new height of the client area
   Output         : -
-  Functionality  : The framework calls this member function after the window’s
+  Functionality  : The framework calls this member function after the window's
                    size has changed. 
   Member of      : CGraphRightView
   Author(s)      : Raja N

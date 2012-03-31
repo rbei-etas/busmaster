@@ -43,8 +43,8 @@ public:
     int ExitInstance(void);
     /*Initializes J1939 network
     Parameters: 
-    1.pouSAE_J1939 – Pointer to the object which contains list of all SAE defined PGNS and SPNs. 
-    2.pILog – pointer to wrapper_error object. 
+    1.pouSAE_J1939 - Pointer to the object which contains list of all SAE defined PGNS and SPNs. 
+    2.pILog - pointer to wrapper_error object. 
     Return value:
     1.S_OK for success or
     2.S_FALSE for failure.

@@ -296,7 +296,7 @@ BOOL COutWnd::OnHelpInfo(HELPINFO* pHelpInfo)
 /*  Input(s)         :  Type of Resize request, new height and new width      */
 /*  Output           :                                                        */
 /*  Functionality    :  This function is called by frame work after the       */
-/*                      window’s size has changed. List box attached to this  */
+/*                      window's size has changed. List box attached to this  */
 /*                      is moved accordingly.                                 */
 
 /*  Member of        :  COutWnd                                               */

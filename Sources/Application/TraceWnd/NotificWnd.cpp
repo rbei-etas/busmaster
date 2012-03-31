@@ -194,7 +194,7 @@ BOOL CNotificWnd::OnHelpInfo(HELPINFO* pHelpInfo)
 /*  Input(s)         :  Type of Resize request, new height and new width      */
 /*  Output           :                                                        */
 /*  Functionality    :  This function is called by frame work after the       */
-/*                      window’s size has changed. List box attached to this  */
+/*                      window's size has changed. List box attached to this  */
 /*                      is moved accordingly.                                 */
 /*  Member of        :  CNotificWnd                                           */
 /*  Friend of        :      -                                                 */    
@@ -324,7 +324,7 @@ void CNotificWnd::OnShowWindow(BOOL bShow, UINT nStatus)
     Date Created     :  
     Modified by      :  
     Modification     :  
-/*****************************************************************************/
+*****************************************************************************/
 void CNotificWnd::vAddString(CString omStr)
 {
     if (! omStr.IsEmpty())
@@ -361,7 +361,7 @@ void CNotificWnd::vAddString(CString omStr)
     Author(s)        :  Pradeep Kadoor
     Date Created     :  12.01.2009    
     Modification     :  
-/*****************************************************************************/
+*****************************************************************************/
 void CNotificWnd::vSaveNotificWndConfig()
 {
 	//UINT unBufferSize = unGetStoreNFBufferSize(); //Get the required size
@@ -386,7 +386,7 @@ void CNotificWnd::vSaveNotificWndConfig()
     Author(s)        :  Pradeep Kadoor
     Date Created     :  19.01.2009    
     Modification     :  
-/*****************************************************************************/
+*****************************************************************************/
 UINT CNotificWnd::unGetStoreNFBufferSize()
 {
 	//size for windows related things PLACEMENT,FLAG, LOG
@@ -405,7 +405,7 @@ UINT CNotificWnd::unGetStoreNFBufferSize()
     Author(s)        :  Pradeep Kadoor
     Date Created     :  19.01.2009    
     Modification     :  
-/*****************************************************************************/
+*****************************************************************************/
 void CNotificWnd::SaveNFDataIntoBuffer(BYTE* DesBuffer)
 {
 	BYTE *tempBuffAddress = DesBuffer;	
@@ -425,7 +425,7 @@ void CNotificWnd::SaveNFDataIntoBuffer(BYTE* DesBuffer)
     Author(s)        :  Pradeep Kadoor
     Date Created     :  19.01.2009 
     Modification     :  
-/*****************************************************************************/
+*****************************************************************************/
 LRESULT CNotificWnd::DoConfigOperation(WPARAM WParam, LPARAM LParam)
 {
 	switch ((UINT)WParam)
@@ -467,7 +467,7 @@ LRESULT CNotificWnd::DoConfigOperation(WPARAM WParam, LPARAM LParam)
     Author(s)        :  Pradeep Kadoor
     Date Created     :  19.01.2009  
     Modification     :  
-/*****************************************************************************/
+*****************************************************************************/
 void CNotificWnd :: vLoadNotificWndConfig()
 {
 #if 0
@@ -505,7 +505,7 @@ void CNotificWnd :: vLoadNotificWndConfig()
     Author(s)        :  Pradeep Kadoor
     Date Created     :  19.01.2009   
     Modification     :  
-/*****************************************************************************/
+*****************************************************************************/
 void CNotificWnd::CopyNFDataFromBuffer(BYTE* SrcBuffer)
 {
 	BYTE *tempBuffAddress = SrcBuffer;
@@ -530,7 +530,7 @@ void CNotificWnd::CopyNFDataFromBuffer(BYTE* SrcBuffer)
     Author(s)        :  Pradeep Kadoor
     Date Created     :  19.01.2009    
     Modification     :  
-/*****************************************************************************/
+*****************************************************************************/
 BOOL CNotificWnd::bIsConfigChanged()
 {	
 	BYTE *SrcBuffer = NULL;
