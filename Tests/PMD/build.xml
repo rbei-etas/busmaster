@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="pmd" default="all" basedir=".">
+  <target name="cpd">
+    <taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask"/>
+    <cpd encoding="UTF-8" format="xml" language="cpp" minimumTokenCount="75" outputFile="cpd.xml">
+      <fileset dir="../../Sources">
+        <include name="**/*.c"/>
+        <include name="**/*.cpp"/>
+        <include name="**/*.h"/>
+        <exclude name="**/MinGW/**"/>
+        <exclude name="**/EXTERNAL_INCLUDE/**"/>
+      </fileset>
+    </cpd>
+  </target>
+
+  <target name="sed">
+    <exec executable="sed" output="cpd-fixed.xml">
+      <arg value="-r"/>
+      <arg value="s/\&amp;#xD;/\r\n/g"/>
+      <arg value="cpd.xml"/>
+    </exec>
+  </target>
+
+  <target name="cpdhtml">
+    <xslt in="cpd-fixed.xml" style="cpdhtml.xslt" out="cpd.html"/>
+  </target>
+
+  <target name="all" depends="sed, cpdhtml"/>
+</project>
