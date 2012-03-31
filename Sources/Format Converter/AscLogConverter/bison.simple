@@ -152,7 +152,7 @@ int yydebug;			/*  nonzero means print parse trace	*/
 #ifdef __GNUC__
 int yyparse (void);
 #endif
-
+
 #if __GNUC__ > 1		/* GNU C and GNU C++ define this.  */
 #define __yy_memcpy(FROM,TO,COUNT)	__builtin_memcpy(TO,FROM,COUNT)
 #else				/* not GNU C or C++ */
@@ -191,7 +191,7 @@ __yy_memcpy (char *from, char *to, int count)
 
 #endif
 #endif
-
+
 #line 192 "bison.simple"
 
 /* The user can define YYPARSE_PARAM as the name of an argument to be passed
@@ -489,7 +489,7 @@ yyreduce:
 
 $   /* the action file gets copied in in place of this dollarsign */
 #line 487 "bison.simple"
-
+
   yyvsp -= yylen;
   yyssp -= yylen;
 #ifdef YYLSP_NEEDED
