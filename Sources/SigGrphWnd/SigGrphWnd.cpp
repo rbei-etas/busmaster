@@ -50,6 +50,7 @@
 #include "Utility/Utility_Thread.h"
 // For Timer Manager interface
 #include "TimeManager.h"
+#include "Include/BaseDefs.h"
 
 
 #ifdef _DEBUG
@@ -393,8 +394,8 @@ DWORD WINAPI SignalDataPlotterThread(LPVOID pVoid)
 		}		
 		while(m_ouMsgInterpretBuffer.GetMsgCount() > 0)
 		{
-			INT nType;
-			INT nSize;
+			INT nType = 0;
+			INT nSize = MAX_DATA_LEN_J1939;
 			SINTERPRETDATA_LIST sInterpretList;	
 			sInterpretList.m_unValue.m_dPhysical = 0;
 			sInterpretList.m_unValue.m_nRawValue = 0;

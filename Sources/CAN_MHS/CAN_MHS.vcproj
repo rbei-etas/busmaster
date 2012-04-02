@@ -143,7 +143,7 @@
 				PrecompiledHeaderThrough="CAN_MHS_StdAfx.h"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="4"
+				DebugInformationFormat="0"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

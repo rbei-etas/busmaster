@@ -144,7 +144,7 @@
 				PrecompiledHeaderThrough="CAN_Kvaser_CAN_stdafx.h"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="4"
+				DebugInformationFormat="0"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

@@ -69,8 +69,8 @@
 #define defINIT_MASK_VALUE                  0xFF
 //
 #define defERR_OK                           0
-#define defBAUD_RATE_VAL                    125
-#define defBAUD_RATE                        0x4714 // 100 KBPS
+#define defBAUD_RATE_VAL                    500
+#define defBAUD_RATE                        0xC03A // 500 KBPS
 #define defClockVal                         16
 #define defSamplingVal                      1
 

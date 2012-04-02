@@ -70,6 +70,10 @@ CGraphRightView::CGraphRightView()
 *******************************************************************************/
 CGraphRightView::~CGraphRightView()
 {	
+	if (NULL != m_pDMGraphCtrl)
+	{
+		m_pDMGraphCtrl->Release ();
+	}
 }
 
 /*******************************************************************************
