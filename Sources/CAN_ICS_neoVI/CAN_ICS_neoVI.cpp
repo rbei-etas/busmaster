@@ -271,6 +271,7 @@ static UCHAR sg_ucNoOfHardware = 0;
 
 static int nGetChannelsInNeoVI(int nDevIndex);
 static void vMapDeviceChannelIndex();
+HRESULT hFillHardwareDesc(PSCONTROLER_DETAILS pControllerDetails);
 
 /*Please recheck and retain only necessary variables*/
 
@@ -992,14 +993,36 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
         //ASSERT(s_CurrIndex < s_Messages);
 
         //CTimeManager::bReinitOffsetTimeValForICSneoVI();
-        icsSpyMessage& CurrSpyMsg = s_asSpyMsg[s_CurrIndex];
+        /*icsSpyMessage& CurrSpyMsg = s_asSpyMsg[s_CurrIndex];
         DOUBLE dTimestamp = 0;
         nReturn = (*icsneoGetTimeStampForMsg)(m_anhObject[nChannelIndex][0], &CurrSpyMsg, &dTimestamp);
         if (nReturn == NEOVI_OK)
         {
             QuadPartRef = (LONGLONG)(dTimestamp * 10000);//CurrSpyMsg.TimeHardware2 * 655.36 + CurrSpyMsg.TimeHardware * 0.01;
+            
+			sg_byCurrState = CALC_TIMESTAMP_READY;
+            nReturn = defERR_OK;
+			sg_TimeStamp =  ((LONGLONG)((CurrSpyMsg.TimeHardware2* 104.8576)/1000 + CurrSpyMsg.TimeHardware * 1.6))/10000;	
+			//sg_TimeStamp /= 10;
+			//sg_TimeStamp = (LONGLONG)(CurrSpyMsg.TimeSystem * 10);
+        }
+        else
+        {
+            nReturn = -1;
+        }*/
+		icsSpyMessage& CurrSpyMsg = s_asSpyMsg[s_CurrIndex];
+        DOUBLE dTimestamp = 0;
+        nReturn = (*icsneoGetTimeStampForMsg)(m_anhObject[nChannelIndex][0], &CurrSpyMsg, &dTimestamp);
+        if (nReturn == NEOVI_OK)
+        {
             sg_byCurrState = CALC_TIMESTAMP_READY;
             nReturn = defERR_OK;
+            
+            LARGE_INTEGER g_QueryTickCount;
+            QueryPerformanceCounter(&g_QueryTickCount);	
+            UINT64 unConnectionTime;
+	        unConnectionTime = ((g_QueryTickCount.QuadPart * 10000) / sg_lnFrequency.QuadPart) - sg_TimeStamp;
+            sg_TimeStamp  = (LONGLONG)((dTimestamp * 10000) - unConnectionTime);
         }
         else
         {
@@ -1022,8 +1045,11 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
 			bChannelCnfgrd = true; // Set channel configured flag to true.
 			sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel = (UCHAR)(m_anhObject[nChannelIndex][CurrSpyMsg.NetworkID+1]  );
 
-			sCanData.m_lTickCount.QuadPart = (LONGLONG)(CurrSpyMsg.TimeSystem * 10);	
-
+			//sCanData.m_lTickCount.QuadPart = (LONGLONG)(CurrSpyMsg.TimeSystem * 10);	
+			
+            DOUBLE dTimestamp = 0;           
+            nReturn = (*icsneoGetTimeStampForMsg)(m_anhObject[nChannelIndex][0], &CurrSpyMsg, &dTimestamp);
+            sCanData.m_lTickCount.QuadPart = (dTimestamp*10000); //+ sg_TimeStamp// + (CurrSpyMsg.TimeHardware2* 0.1048576 + CurrSpyMsg.TimeHardware2 * 0.0000016);	
         	bClassifyMsgType(CurrSpyMsg, sCanData, sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel);
 
 			if (sCanData.m_ucDataType == ERR_FLAG)
@@ -2240,6 +2266,9 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SetConfigData(PCHAR ConfigFile, int Length)
 
     USES_CONVERSION;
 
+	/* Fill the hardware description details */
+	hFillHardwareDesc((PSCONTROLER_DETAILS)ConfigFile);
+
     HRESULT hResult = S_FALSE;
     memcpy((void*)sg_ControllerDetails, (void*)ConfigFile, Length);
     int nReturn = nSetApplyConfiguration();
@@ -2278,17 +2307,12 @@ int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/,
     return nResult;
 }
 
+
 /**
- * Function to display config dialog
- */
-HRESULT CDIL_CAN_ICSNeoVI::CAN_DisplayConfigDlg(PCHAR& InitData, int& Length)
+*  Function to fill the hardware description details
+*/
+HRESULT hFillHardwareDesc(PSCONTROLER_DETAILS pControllerDetails)
 {
-    HRESULT Result = WARN_INITDAT_NCONFIRM;
-    VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
-
-    VALIDATE_POINTER_RETURN_VAL(InitData, Result);
-    PSCONTROLER_DETAILS pControllerDetails = (PSCONTROLER_DETAILS)InitData;
-
     /* First initialize with existing hw description */
     for (UINT i = 0; i < (UINT)sg_ucNoOfHardware; i++)
     {
@@ -2458,6 +2482,22 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_DisplayConfigDlg(PCHAR& InitData, int& Length)
                 break;
         };
     }
+	return S_OK;
+}
+
+/**
+ * Function to display config dialog
+ */
+HRESULT CDIL_CAN_ICSNeoVI::CAN_DisplayConfigDlg(PCHAR& InitData, int& Length)
+{
+    HRESULT Result = WARN_INITDAT_NCONFIRM;
+    VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
+
+    VALIDATE_POINTER_RETURN_VAL(InitData, Result);
+    PSCONTROLER_DETAILS pControllerDetails = (PSCONTROLER_DETAILS)InitData;
+
+	/* Fill the hardware description details */
+	hFillHardwareDesc(pControllerDetails);
 
     if (sg_ucNoOfHardware > 0)
     {

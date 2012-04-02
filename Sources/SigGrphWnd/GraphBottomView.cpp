@@ -1171,7 +1171,8 @@ void CGraphBottomView::vHandleConnectionStatusChange(BOOL bConnectStatus)
 
 		CGraphList * podList = NULL;
 
-		pParentWnd->m_pomBottomView = this;	
+		if(pParentWnd != NULL)
+			pParentWnd->m_pomBottomView = this;	
 
 		if(pParentWnd != NULL)
 			podList = pParentWnd->pGetSignalListDetails();

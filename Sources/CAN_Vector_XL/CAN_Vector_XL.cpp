@@ -306,6 +306,7 @@ static UINT64 sg_TimeStamp = 0;
  * Query Tick Count
  */
 static LARGE_INTEGER sg_QueryTickCount;
+static LARGE_INTEGER sg_lnFrequency;
 
 /**
  * Channel information
@@ -830,7 +831,11 @@ HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
         {
             asSelHwInterface[i].m_dwIdInterface = i;
 			unsigned int serialNumber = sg_aodChannels[i].m_pXLChannelInfo->serialNumber;
-            _stprintf(asSelHwInterface[i].m_acDescription, _T("%d"), serialNumber);			
+            _stprintf(asSelHwInterface[i].m_acDescription, _T("%d"), serialNumber);		
+			_stprintf(sg_ControllerDetails[i].m_omHardwareDesc, _T("Vector - %s SN - %d Channel Index - %d"),
+										sg_aodChannels[i].m_pXLChannelInfo->name,
+										serialNumber, 
+										sg_aodChannels[i].m_pXLChannelInfo->channelIndex);
             sg_bCurrState = STATE_HW_INTERFACE_LISTED;
         }
 		hResult = S_OK;
@@ -925,6 +930,13 @@ HRESULT CDIL_CAN_VectorXL::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
     USES_CONVERSION;
+
+	/* Fill the hardware description details */
+    for (UINT nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
+	{		
+		_tcscpy(((PSCONTROLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc, 
+				sg_ControllerDetails[nCount].m_omHardwareDesc);		
+	}
 
     memcpy((void*)sg_ControllerDetails, (void*)ConfigFile, Length);
 
@@ -1028,8 +1040,13 @@ static BYTE bClassifyMsgType(XLevent& xlEvent, STCANDATA& sCanData)
 
     if (CREATE_MAP_TIMESTAMP == sg_byCurrState)
     {						
-		sg_TimeStamp = sCanData.m_lTickCount.QuadPart;
-		sg_byCurrState = CALC_TIMESTAMP_READY;
+		LARGE_INTEGER g_QueryTickCount;
+        QueryPerformanceCounter(&g_QueryTickCount);	
+        UINT64 unConnectionTime;
+	    unConnectionTime = ((g_QueryTickCount.QuadPart * 10000) / sg_lnFrequency.QuadPart) - sg_TimeStamp;
+        sg_TimeStamp  = (LONGLONG)(sCanData.m_lTickCount.QuadPart - unConnectionTime );
+		
+        sg_byCurrState = CALC_TIMESTAMP_READY;
     }	
 	
 	if ( !(xlEvent.tagData.msg.flags & XL_CAN_MSG_FLAG_ERROR_FRAME) &&
@@ -1336,7 +1353,21 @@ static int nConnect(BOOL bConnect)
 
 		if (XL_SUCCESS == xlStatus) 
 		{			
-			/* Transit into 'CREATE TIME MAP' state */
+			//Calculate connected Timestamp
+            QueryPerformanceCounter(&sg_QueryTickCount);	
+	        // Get frequency of the performance counter
+            QueryPerformanceFrequency(&sg_lnFrequency);
+            // Convert it to time stamp with the granularity of hundreds of microsecond
+            if (sg_QueryTickCount.QuadPart * 10000 > sg_QueryTickCount.QuadPart)
+            {
+                sg_TimeStamp = (sg_QueryTickCount.QuadPart * 10000) / sg_lnFrequency.QuadPart;
+            }
+            else
+            {
+                sg_TimeStamp = (sg_QueryTickCount.QuadPart / sg_lnFrequency.QuadPart) * 10000;
+            }	
+
+            /* Transit into 'CREATE TIME MAP' state */
             sg_byCurrState = CREATE_MAP_TIMESTAMP;				
 			vMapDeviceChannelIndex();
 			sg_bIsConnected = bConnect;											

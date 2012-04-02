@@ -66,7 +66,7 @@ BOOL CSignalDefinerDlg::OnInitDialog()
 	
 	/*Set Graph properties*/
 	if( m_poDMGraphCtrl->m_hWnd != NULL )
-    	{		
+    {		
 		LPUNKNOWN pUnk = m_poDMGraphCtrl->GetControlUnknown();
 		IDMGraphCtrl* pDMGraphCtrl = NULL;
 
@@ -94,6 +94,12 @@ BOOL CSignalDefinerDlg::OnInitDialog()
 		CComPtr<IDMGraphAxis> spAxisY; 
 		pDMGraphCtrl->get_Axis( VerticalY, &spAxisY);
 		spAxisY->put_GridNumber(5);
+		
+		if (NULL != pDMGraphCtrl)
+		{
+			pDMGraphCtrl->Release();
+			pDMGraphCtrl = NULL;
+		}
 	}	
 
 	vGenerateWave();
@@ -130,7 +136,14 @@ void CSignalDefinerDlg::OnEnChangeEditSignalSamplingTime()
 	vGenerateWave();
 }
 void CSignalDefinerDlg::OnBnClickedOk()
-{
+{	
+	long lCount = 0;
+	spElements->get_Count(&lCount);
+	for (long lIdx = 0; lIdx < lCount; lIdx++)
+	{		
+		spElements->Delete(lIdx);
+		spElements = NULL;
+	}	
 	OnOK();
 }
 
@@ -158,7 +171,7 @@ double DegreesToRadians(double dblDegrees)
 */
 double CalculateYatXForTriangleWave(double dblXSamplingPoint,float fAmplitude,double dblTimePeriod)
 {
-        double dblYResult;
+        double dblYResult = 0;
 
         if ( dblXSamplingPoint <= dblTimePeriod / 4 )
 		{
@@ -276,7 +289,9 @@ void CSignalDefinerDlg::SetGraphData(VARIANT* pvarrX, VARIANT* pvarrY)
 	CComBSTR bsName("Signal");
 
 	IDMGraphCtrl* pDMGraphCtrl = NULL;
-	CComPtr<IDMGraphCollection> spElements;
+	
+	/*CComPtr<IDMGraphCollection> spElements;*/
+	
 	CComPtr<IDMGraphElement> spGraphElement;
 
 	if( m_poDMGraphCtrl->m_hWnd != NULL )
@@ -332,4 +347,12 @@ void CSignalDefinerDlg::SetGraphData(VARIANT* pvarrX, VARIANT* pvarrY)
 
 
 	hr = pDMGraphCtrl->AutoRange();
+	
+	if (NULL != pDMGraphCtrl)
+	{
+		pDMGraphCtrl->Release();
+		pDMGraphCtrl = NULL;
+	}		
+
+	SysFreeString(bsName);	
 }
