@@ -261,6 +261,11 @@ DWORD WINAPI TransmissionThreadProc(LPVOID pVoid)
 	}
     SetEvent(pThreadParam->hGetExitNotifyEvent());
 
+	if(Result != 0)
+	{
+		Result = timeKillEvent(Result);
+	}
+
 	return 0;
 }
 // End of helper functions

@@ -191,6 +191,7 @@ static INT sg_anSelectedItems[CHANNEL_ALLOWED];
 static SYSTEMTIME sg_CurrSysTime;
 static UINT64 sg_TimeStamp = 0;
 static LARGE_INTEGER sg_QueryTickCount;
+static LARGE_INTEGER sg_lnFrequency;
 
 /**
  * Required libraries
@@ -779,11 +780,11 @@ BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
  */
 void vInitializeControllerConfig(UINT nChannel)
 {
-    sg_asChannel[nChannel].m_OCI_CANConfig.baudrate = 1000000;
-    sg_asChannel[nChannel].m_OCI_CANConfig.samplePoint = 50;
+    sg_asChannel[nChannel].m_OCI_CANConfig.baudrate = 500000;
+    sg_asChannel[nChannel].m_OCI_CANConfig.samplePoint = 70;
     sg_asChannel[nChannel].m_OCI_CANConfig.samplesPerBit = OCI_CAN_THREE_SAMPLES_PER_BIT;
     sg_asChannel[nChannel].m_OCI_CANConfig.BTL_Cycles = 10;
-    sg_asChannel[nChannel].m_OCI_CANConfig.SJW = 1;
+    sg_asChannel[nChannel].m_OCI_CANConfig.SJW = 4;
     sg_asChannel[nChannel].m_OCI_CANConfig.syncEdge = OCI_CAN_SINGLE_SYNC_EDGE;
     sg_asChannel[nChannel].m_OCI_CANConfig.physicalMedia = OCI_CAN_MEDIA_HIGH_SPEED;
     sg_asChannel[nChannel].m_OCI_CANConfig.selfReceptionMode = OCI_SELF_RECEPTION_ON;
@@ -1137,10 +1138,17 @@ void vProcessRxMsg(void *userData, struct OCI_CANMessage* msg)
 
     if (sg_byCurrState == CREATE_MAP_TIMESTAMP)
     {
-        sg_TimeStamp = sCanData.m_lTickCount.QuadPart;
+        //sg_TimeStamp = sCanData.m_lTickCount.QuadPart;
         SetEvent(sg_hEvent);
         vCreateTimeModeMapping(sg_hEvent);
         sg_byCurrState = CALC_TIMESTAMP_READY;
+
+
+        LARGE_INTEGER g_QueryTickCount;
+        QueryPerformanceCounter(&g_QueryTickCount);	
+        UINT64 unConnectionTime;
+        unConnectionTime = ((g_QueryTickCount.QuadPart * 10000) / sg_lnFrequency.QuadPart) - sg_TimeStamp;
+        sg_TimeStamp  = (LONGLONG)(sCanData.m_lTickCount.QuadPart - unConnectionTime);
     }
 
     //Write the msg into registered client's buffer
@@ -2101,6 +2109,11 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SetConfigData(PCHAR pInitData, INT /*Length*/)
         ErrCode = (*sBOA_PTRS.m_sOCI.openCANController)(sg_asChannel[i].m_OCI_HwHandle, 
                                                     &(sg_asChannel[i].m_OCI_CANConfig),
                                                     &(sg_asChannel[i].m_OCI_CntrlProp));
+
+		/* Fill the hardware description details */
+		_tcscpy(((PSCONTROLER_DETAILS)pInitData)[i].m_omHardwareDesc, 
+				sg_asChannel[i].m_acURI);	
+
         if (ErrCode == OCI_SUCCESS)
         {
             // Rx Tx queue
@@ -2165,6 +2178,20 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_StartHardware(void)
     {
         sg_bCurrState = STATE_CONNECTED;
 		InitializeCriticalSection(&sg_CritSectForAckBuf);
+        
+        
+        QueryPerformanceCounter(&sg_QueryTickCount);	
+	    // Get frequency of the performance counter
+        QueryPerformanceFrequency(&sg_lnFrequency);
+        // Convert it to time stamp with the granularity of hundreds of microsecond
+        if (sg_QueryTickCount.QuadPart * 10000 > sg_QueryTickCount.QuadPart)
+        {
+            sg_TimeStamp = (sg_QueryTickCount.QuadPart * 10000) / sg_lnFrequency.QuadPart;
+        }
+        else
+        {
+            sg_TimeStamp = (sg_QueryTickCount.QuadPart / sg_lnFrequency.QuadPart) * 10000;
+        }	
     }
 
     return hResult;

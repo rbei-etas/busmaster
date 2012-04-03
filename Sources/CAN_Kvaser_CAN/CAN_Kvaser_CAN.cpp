@@ -754,8 +754,8 @@ HRESULT CDIL_CAN_Kvaser::CAN_PerformClosureOperations(void)
 HRESULT CDIL_CAN_Kvaser::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
 {
     memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
-    //TimeStamp = sg_TimeStamp;	
-	TimeStamp = 0;	
+    TimeStamp = sg_TimeStamp;	
+	//TimeStamp = 0;	
     if(QueryTickCount != NULL)
     {
         *QueryTickCount = sg_QueryTickCount;
@@ -1098,6 +1098,14 @@ HRESULT CDIL_CAN_Kvaser::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
     USES_CONVERSION;     
+
+	/* Fill the hardware description details */
+    for (UINT nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
+	{		
+		_tcscpy(((PSCONTROLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc, 
+				sg_aodChannels[nCount].m_strName);		
+	}
+
     memcpy((void*)sg_ControllerDetails, (void*)ConfigFile, Length);
 
     return S_OK;
@@ -1279,11 +1287,18 @@ static void ProcessCANMsg(int nChannelIndex, UINT& nFlags, DWORD& dwTime)
     {				
 		QuadPartRef = (LONGLONG)dwTime *10;
 		sg_byCurrState = CALC_TIMESTAMP_READY;
+        
+        LARGE_INTEGER g_QueryTickCount;
+        QueryPerformanceCounter(&g_QueryTickCount);	
+        UINT64 unConnectionTime;
+        unConnectionTime = ((g_QueryTickCount.QuadPart * 10000) / sg_lnFrequency.QuadPart) - sg_TimeStamp;
+        sg_TimeStamp  = (LONGLONG)(dwTime * 10 - unConnectionTime);
+
     }
 
 	sg_asCANMsg.m_lTickCount.QuadPart = (LONGLONG)(dwTime * 10);
-	sg_asCANMsg.m_lTickCount.QuadPart =
-                           _abs64(sg_asCANMsg.m_lTickCount.QuadPart - QuadPartRef);
+	/*sg_asCANMsg.m_lTickCount.QuadPart =
+                           _abs64(sg_asCANMsg.m_lTickCount.QuadPart - QuadPartRef);*/
 
 	if ( !(nFlags & canMSG_ERROR_FRAME) &&
 		 !(nFlags & canMSG_NERR) &&
@@ -2016,6 +2031,19 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
 	if ( sg_bIsConnected )
 	{
 		InitializeCriticalSection(&sg_CritSectForAckBuf);
+
+        QueryPerformanceCounter(&sg_QueryTickCount);	
+	    // Get frequency of the performance counter
+        QueryPerformanceFrequency(&sg_lnFrequency);
+        // Convert it to time stamp with the granularity of hundreds of microsecond
+        if (sg_QueryTickCount.QuadPart * 10000 > sg_QueryTickCount.QuadPart)
+        {
+            sg_TimeStamp = (sg_QueryTickCount.QuadPart * 10000) / sg_lnFrequency.QuadPart;
+        }
+        else
+        {
+            sg_TimeStamp = (sg_QueryTickCount.QuadPart / sg_lnFrequency.QuadPart) * 10000;
+        }	
 	}
 	else
 	{
@@ -2086,7 +2114,7 @@ static int nCreateMultipleHardwareNetwork()
 	for (int nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
 	{		
 		sg_aodChannels[nCount].m_nChannel = sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwIdInterface;				
-		_stprintf(sg_aodChannels[nCount].m_strName , _T("%s, Serial Number: %ld, Firmware: %s"),
+		_stprintf(sg_aodChannels[nCount].m_strName , _T("Kvaser - %s, Serial Number- %ld, Firmware- %s"),
 									sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDescription,
 									sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwVendor,
 									sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDeviceName);		
@@ -2104,14 +2132,34 @@ static int nCreateMultipleHardwareNetwork()
 */
 static int nCreateSingleHardwareNetwork()
 {    
-    // Set the number of channels as 1
+    /* Set the number of channels as 1 */
 	sg_ucNoOfHardware = (UCHAR)1;
 	sg_nNoOfChannels = 1;		        
 
 	sg_aodChannels[0].m_nChannel = 0;
+
+	/* Update channel info */
+
+	TCHAR acVendor[MAX_CHAR_LONG];
+	DWORD dwFirmWare[2];
+
+	canGetChannelData(0, canCHANNELDATA_CARD_SERIAL_NO,
+						 acVendor, sizeof(acVendor));
+	sscanf( acVendor, "%ld", &sg_HardwareIntr[0].m_dwVendor );		
+
     canGetChannelData(0, canCHANNELDATA_CHANNEL_NAME,
-              sg_aodChannels[0].m_strName,
-              sizeof(sg_aodChannels[0].m_strName));			
+              sg_HardwareIntr[0].m_acDescription,
+              sizeof(sg_HardwareIntr[0].m_acDescription));	
+
+	/* Get Firmware info */
+	canGetChannelData(0, canCHANNELDATA_CARD_FIRMWARE_REV, dwFirmWare, sizeof(dwFirmWare));
+
+	sprintf(sg_HardwareIntr[0].m_acDeviceName,"0x%08lx 0x%08lx", dwFirmWare[0], dwFirmWare[1]);
+
+	_stprintf(sg_aodChannels[0].m_strName , _T("%s, Serial Number: %ld, Firmware: %s"),
+								sg_HardwareIntr[0].m_acDescription,
+								sg_HardwareIntr[0].m_dwVendor,
+								sg_HardwareIntr[0].m_acDeviceName);	
     
     return defERR_OK;
 }

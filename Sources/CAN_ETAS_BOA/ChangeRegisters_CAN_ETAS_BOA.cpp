@@ -47,7 +47,7 @@ static char THIS_FILE[] = __FILE__;
 /******************************************************************************/
 CChangeRegisters_CAN_ETAS_BOA::CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent /*=NULL*/, PSCONTROLER_DETAILS psControllerDetails, UINT nHardwareCount)
     : CDialog(CChangeRegisters_CAN_ETAS_BOA::IDD, pParent)
-    , m_omStrSamplePoint(_T("50"))
+    , m_omStrSamplePoint(_T("70"))
     , m_omStrSJW(_T(""))
 {
     //{{AFX_DATA_INIT(CChangeRegisters_CAN_ETAS_BOA)
@@ -247,7 +247,9 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
     }
     else
     {
-        m_omCtrlSamplePoint.SetCurSel (0);
+		//Set the default selection as 70% and update the controller structure
+        m_omCtrlSamplePoint.SetCurSel (7);			
+		_tcscpy(m_pControllerDetails->m_omStrSamplePercentage , "70");
     }
     nIndex = m_omCtrlSJW.FindStringExact (-1, m_pControllerDetails->m_omStrSjw);
     if (CB_ERR != nIndex)

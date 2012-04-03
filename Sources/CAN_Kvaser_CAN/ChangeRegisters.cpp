@@ -1154,7 +1154,33 @@ void CChangeRegisters::vSelSetFocusItemList(INT nItemCount,INT nItem)
     // item number middle of the total item numbers.
     if(nItem ==-1 || nItem>=nItemCount)
     {
-        nItem = nItemCount/2;
+        nItem = nItemCount/2;		
+
+		/* Make the current BTR0, BTR1 values as default selection */
+		CString omStrItems[defNUMBER_OF_COLUMNS];
+
+	    CString omStrBTR0   = _T("");
+		CString omStrBTR1   = _T("");
+
+		m_omEditBTR0.GetWindowText(omStrBTR0);
+		m_omEditBTR1.GetWindowText(omStrBTR1);
+
+		// Get the values of subitems having item index as nItem.  
+		for(INT i=0 ; i<nItemCount ; i++)
+		{
+			for(INT j=0 ; j<defNUMBER_OF_COLUMNS ; j++)
+			{
+			 omStrItems[j] = m_omListCtrlBitTime.GetItemText(i,j);
+			}
+			omStrItems[defBRT0_COLUNM_POS-1].Replace(defHEX_STRING,defEMPTY_STRING);
+			omStrItems[defBRT1_COLUNM_POS-1].Replace(defHEX_STRING,defEMPTY_STRING);
+			
+			if ( omStrBTR0 == omStrItems[defBRT0_COLUNM_POS-1] &&
+				 omStrBTR1 == omStrItems[defBRT1_COLUNM_POS-1] )
+			{
+				nItem = i;
+			}
+		}				
     }
 
     sItem.mask      = LVIF_STATE;

@@ -159,7 +159,7 @@
 				ProgramDataBaseFileName=".\ReleaseUMinSize/"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
-				DebugInformationFormat="4"
+				DebugInformationFormat="0"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
