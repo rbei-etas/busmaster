@@ -934,7 +934,8 @@ void CDMGraphCtrl::CalcRect(HDC hDC)
 	int offset = 15;
 
 	SIZE txtXLabelSize, txtYLabelSize = {0,0}, txtTitleSize ;
-	CComBSTR str ;
+	/*CComBSTR str;*/
+	BSTR str;
 	HFONT hOldFont, hSaveFont ;
 
 	hOldFont = SelectFontObject(hDC, m_fontTick);
@@ -952,19 +953,24 @@ void CDMGraphCtrl::CalcRect(HDC hDC)
            
 		m_pAxis[ VerticalY ]->FormatAxisLabel(y, &str);
         
-		GetTextExtentPoint32W(hDC, str, str.Length(), &sz);
+		/*GetTextExtentPoint32W(hDC, str, str.Length(), &sz);*/
+		GetTextExtentPoint32W(hDC, str, SysStringLen(str), &sz);
 
 		if (txtYLabelSize.cx < sz.cx) 
 			txtYLabelSize = sz;
+
+		SysFreeString(str);
 	}
 
 	//Calculate X Label sizes.
-	str.Empty();
+	/*str.Empty();*/
 	m_pAxis[ HorizontalX ]->FormatAxisLabel(dRangeX[MAX], &str);
 
-	GetTextExtentPoint32W(hDC, str, str.Length(), &txtXLabelSize);
+	/*GetTextExtentPoint32W(hDC, str, str.Length(), &txtXLabelSize);*/
+	GetTextExtentPoint32W(hDC, str, SysStringLen(str), &txtXLabelSize);
 
 	SelectObject(hDC, hOldFont);
+	SysFreeString(str);
 	// AT 10.07.2003 original code: pSaveFont = SelectFontObject(hDC,m_fontTick);
 
 	// AT 10.07.2003 Begin 
@@ -1075,61 +1081,61 @@ void CDMGraphCtrl::DrawGraphOffScreen(HDC hDC, LPCRECT prcBounds, BOOL bOptimize
 	ATLASSERT(hDC);
 	ATLASSERT(prcBounds);
 
-   HDC dcMem;
-  
-   HBITMAP bitOff;
-   RECT rcBoundsDP;
-   memcpy(&rcBoundsDP, prcBounds, sizeof(RECT)) ;
+	HDC dcMem;
 
-   // Convert bounds to device units. 
-   LPtoDP(hDC, (LPPOINT)&rcBoundsDP, 2) ;
+	HBITMAP bitOff;
+	RECT rcBoundsDP;
+	memcpy(&rcBoundsDP, prcBounds, sizeof(RECT)) ;
 
-   // The bitmap bounds have 0,0 in the upper-left corner.
-   RECT rcBitmapBounds = {0,0, rcBoundsDP.right-rcBoundsDP.left, rcBoundsDP.bottom - rcBoundsDP.top };
+	// Convert bounds to device units. 
+	LPtoDP(hDC, (LPPOINT)&rcBoundsDP, 2) ;
 
-   // Create a DC that is compatible with the screen.
-   //dcMem.CreateCompatibleDC(&screenDC) ;
-   dcMem = CreateCompatibleDC(hDC) ;
+	// The bitmap bounds have 0,0 in the upper-left corner.
+	RECT rcBitmapBounds = {0,0, rcBoundsDP.right-rcBoundsDP.left, rcBoundsDP.bottom - rcBoundsDP.top };
 
-   // Create a really compatible bitmap.
-   bitOff = CreateCompatibleBitmap(hDC, 
-	   rcBitmapBounds.right-rcBitmapBounds.left, rcBitmapBounds.bottom-rcBitmapBounds.top);
+	// Create a DC that is compatible with the screen.
+	//dcMem.CreateCompatibleDC(&screenDC) ;
+	dcMem = CreateCompatibleDC(hDC) ;
 
-   // Select the bitmap into the memory DC.
-   HBITMAP hOldBitmap = (HBITMAP)SelectObject(dcMem, bitOff) ;
+	// Create a really compatible bitmap.
+	bitOff = CreateCompatibleBitmap(hDC, 
+		rcBitmapBounds.right-rcBitmapBounds.left, rcBitmapBounds.bottom-rcBitmapBounds.top);
 
-   // Save the memory DC state, since DrawMe might change it.
-   int iSavedDC = SaveDC(dcMem);
+	// Select the bitmap into the memory DC.
+	HBITMAP hOldBitmap = (HBITMAP)SelectObject(dcMem, bitOff) ;
 
-   // Draw our control on the memory DC.
-   DrawGraph(dcMem, &rcBitmapBounds, bOptimized) ;
+	// Save the memory DC state, since DrawMe might change it.
+	int iSavedDC = SaveDC(dcMem);
 
-   // Restore the DC, since DrawMe might have changed mapping modes.
-   RestoreDC(dcMem, iSavedDC) ;
+	// Draw our control on the memory DC.
+	DrawGraph(dcMem, &rcBitmapBounds, bOptimized) ;
 
-   // We don't know what mapping mode pdc is using.
-   // BitBlt uses logical coordinates.
-   // Easiest thing is to change to MM_TEXT.
-   SetMapMode(hDC, MM_TEXT) ;
-   SetWindowOrgEx(hDC, 0,0, NULL) ;
-   SetViewportOrgEx(hDC, 0,0, NULL) ;
+	// Restore the DC, since DrawMe might have changed mapping modes.
+	RestoreDC(dcMem, iSavedDC) ;
 
-    // Blt the memory device context to the screen.
-   BitBlt(hDC, rcBoundsDP.left,
-                rcBoundsDP.top,
-                rcBoundsDP.right - rcBoundsDP.left,
-                rcBoundsDP.bottom - rcBoundsDP.top,
-                dcMem,
-                0,
-                0,
-                SRCCOPY) ;
+	// We don't know what mapping mode pdc is using.
+	// BitBlt uses logical coordinates.
+	// Easiest thing is to change to MM_TEXT.
+	SetMapMode(hDC, MM_TEXT) ;
+	SetWindowOrgEx(hDC, 0,0, NULL) ;
+	SetViewportOrgEx(hDC, 0,0, NULL) ;
+
+	// Blt the memory device context to the screen.
+	BitBlt(hDC, rcBoundsDP.left,
+		rcBoundsDP.top,
+		rcBoundsDP.right - rcBoundsDP.left,
+		rcBoundsDP.bottom - rcBoundsDP.top,
+		dcMem,
+		0,
+		0,
+		SRCCOPY) ;
 
 
-   // Clean up.
-   SelectObject(dcMem, hOldBitmap) ;
-   
-   DeleteObject(bitOff);
-   DeleteDC(dcMem);
+	// Clean up.
+	SelectObject(dcMem, hOldBitmap) ;
+
+	DeleteObject(bitOff);
+	DeleteDC(dcMem);
 }
 
 void CDMGraphCtrl::DrawGraph(HDC hdc, LPCRECT prcBounds, BOOL bOptimized)
@@ -1750,7 +1756,8 @@ void CDMGraphCtrl::DrawAxisLabel(HDC hDC)
 		point.y -= txtSize.cy/2 ;
 
 		TextOutW(hDC, point.x, point.y, str, str.Length()) ;
-		str.Empty();
+		/*str.Empty();*/
+		SysFreeString(str);
 	}
 
 
@@ -1770,7 +1777,8 @@ void CDMGraphCtrl::DrawAxisLabel(HDC hDC)
 		point.y += 5 ;
 
 		TextOutW(hDC, point.x,point.y, str, str.Length());
-		str.Empty();
+		/*str.Empty();*/
+		SysFreeString(str);
 	}
 	 
     ////////////////////////////////////////////////
@@ -2761,7 +2769,7 @@ STDMETHODIMP CDMGraphCtrl::ShiftDisplay(SHORT xShift,SHORT yShift)
 /****************************************/
 char* LPCTSTRToCharArray(LPCTSTR val)
 {
-	char *ansistr;
+	char *ansistr = NULL;
 
 	int lenW = _tcslen(val);
 	int lenA = ::WideCharToMultiByte(CP_ACP, 0, val, lenW, 0, 0, NULL, NULL);
@@ -2772,9 +2780,12 @@ char* LPCTSTRToCharArray(LPCTSTR val)
 		ansistr[lenA] = 0; // Set the null terminator yourself
 	}
 	char* c = new char[lenA + 1]; 
-	strcpy(c,ansistr);
-	//...use the strings, then free their memory:
-	delete[] ansistr;
+	if (NULL != ansistr)
+	{
+		strcpy(c,ansistr);
+		//...use the strings, then free their memory:
+		delete[] ansistr;
+	}
 
 	return c;
 }
@@ -3245,7 +3256,13 @@ void CDMGraphCtrl::Annotate(HDC hDC)
 		{
 			DeleteObject(m_annoBrush);
 			m_annoBrush = NULL;
-		}
+		}		
+		
+		if(m_fontVLabel)
+		{
+			DeleteObject(m_fontVLabel);
+			m_fontVLabel = NULL;
+		}		
 	}
 }
 
@@ -3597,7 +3614,8 @@ void CDMGraphCtrl::UpdateToolTip(const LPPOINT pt, WPARAM wParam)
 			}
 			if(found_i >=0 && found_j >= 0)
 			{
-				CComBSTR bsX, bsY, bsName;
+				/*CComBSTR bsX, bsY, bsName;*/
+				BSTR bsX, bsY, bsName;
 				CGraphElement* pElement = (*m_pElementList)[found_i];
 
 				m_pAxis[ HorizontalX ]->FormatAxisLabel(pElement->m_PointList[found_j].x, &bsX);
@@ -3605,6 +3623,9 @@ void CDMGraphCtrl::UpdateToolTip(const LPPOINT pt, WPARAM wParam)
 				pElement->get_Name(&bsName);
 
 				_sntprintf(m_ToolTipText, TOOLTIP_TXT_LEN, _T("%s: %s, %s"), bsName, bsX, bsY);
+				SysFreeString(bsX);
+				SysFreeString(bsY);
+				SysFreeString(bsName);
 			}
 			else
 				m_ToolTipText[0] = '\0';
@@ -3623,7 +3644,8 @@ void CDMGraphCtrl::UpdateToolTip(const LPPOINT pt, WPARAM wParam)
 			m_ToolTipText[0] = '\0';
 		else
 		{
-			CComBSTR bsX, bsY, bsName;
+			/*CComBSTR bsX, bsY, bsName;*/
+			BSTR bsX, bsY, bsName;
 			CGraphCursor* pCursor = (*m_pCursorList)[ nCursorIdx ];
 			ATLASSERT(pCursor);
 
@@ -3632,6 +3654,10 @@ void CDMGraphCtrl::UpdateToolTip(const LPPOINT pt, WPARAM wParam)
 			pCursor->get_Name(&bsName);
 
 			_sntprintf(m_ToolTipText, TOOLTIP_TXT_LEN, _T("%s: %s, %s"), bsName, bsX, bsY);
+
+			SysFreeString(bsX);
+			SysFreeString(bsY);
+			SysFreeString(bsName);
 		}
 	}
 

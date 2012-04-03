@@ -117,23 +117,23 @@ struct sCONTROLERDETAILS
     }
     void vIntialize()
     {
-        // The default baudrate is taken as 100 kbps
+        // The default baudrate is taken as 500 kbps
         m_nItemUnderFocus = 64;
-        m_nBTR0BTR1 = 18708;
+        m_nBTR0BTR1 = 49210;
 
 		//_tcscpy(m_omStrCNF1, _T("7"));
 		strcpy_s(m_omStrCNF1, _T("7"));        
         strcpy_s(m_omStrCNF2, _T("B8"));
         strcpy_s(m_omStrCNF3, _T("5"));
-        strcpy_s(m_omStrBTR0, _T("47"));
-        strcpy_s(m_omStrBTR1, _T("14"));
-        strcpy_s(m_omStrBaudrate, _T("125"));
+        strcpy_s(m_omStrBTR0, _T("C0"));
+        strcpy_s(m_omStrBTR1, _T("3A"));
+        strcpy_s(m_omStrBaudrate, _T("500"));
         strcpy_s(m_omStrClock, _T("16"));
         strcpy_s(m_omStrSamplePercentage, _T("75"));
         strcpy_s(m_omStrSampling, _T("1"));
         strcpy_s(m_omStrWarningLimit, _T("96"));
         strcpy_s(m_omStrPropagationDelay, _T("ALL"));
-        strcpy_s(m_omStrSjw, _T("ALL"));
+        strcpy_s(m_omStrSjw, _T("4"));
         _tcscpy(m_omStrAccCodeByte1[0], _T("0"));
         _tcscpy(m_omStrAccCodeByte2[0], _T("0"));
         _tcscpy(m_omStrAccCodeByte3[0], _T("0"));

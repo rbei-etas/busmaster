@@ -342,6 +342,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(33077, OnJ1939ConfigureTimeouts)
     ON_UPDATE_COMMAND_UI(33077, OnUpdateJ1939Timeouts)
     ON_COMMAND(33079, OnJ1939DBNew)
+	ON_UPDATE_COMMAND_UI(33079, OnUpdateJ1939DBNew)
     ON_COMMAND(33080, OnJ1939DBOpen)
     ON_COMMAND(33084, OnJ1939DBClose)
     ON_COMMAND(33082, OnJ1939DBAssociate)
@@ -10039,7 +10040,11 @@ BOOL CMainFrame::bInitFrameProcCAN(void)
     BOOL bReturn = FALSE;
     if (FP_GetInterface(FRAMEPROC_CAN, (void**)&sg_pouFrameProcCAN) == S_OK)
     {      
+		CString omVerStr(_T(""));
         SCANPROC_PARAMS sCANProcParams;
+		    
+		omVerStr.Format(IDS_VERSION);
+		strncpy(sCANProcParams.m_acVersion, omVerStr, omVerStr.GetLength());		
         sCANProcParams.dwClientID = g_dwClientID;
         sCANProcParams.m_pouCANBuffer = &g_ouCANBufFSE;
         sCANProcParams.m_pILog = &m_ouWrapperLogger;
@@ -11719,8 +11724,15 @@ void CMainFrame::OnSelectDriver(UINT nID)
     // Above lines have to be changed.
         
     if (psCurrDIL != NULL)
-    {
+    {		
         m_dwDriverId =  psCurrDIL->m_dwDriverID;
+
+		//Retain default values for all channels
+		for (int i = 0; i < defNO_OF_CHANNELS; i++)
+		{
+			m_asControllerDetails[i].vIntialize();
+		}
+
         IntializeDIL();
     }    
 }
@@ -12434,6 +12446,12 @@ void CMainFrame::OnUpdateJ1939Timeouts(CCmdUI *pCmdUI)
 {
     pCmdUI->Enable(NULL != sg_pouIJ1939DIL);
 }
+
+void CMainFrame::OnUpdateJ1939DBNew(CCmdUI *pCmdUI)
+{    
+	pCmdUI->Enable( !CMsgSignalDBWnd::sm_bValidJ1939Wnd );
+}
+
 static void vGetNewJ1939DBName(CString& omString)
 {
     UINT unCount = 1;
@@ -12516,13 +12534,20 @@ void CMainFrame::OnJ1939DBNew()
     if (m_pouActiveDbJ1939 == NULL)
     {
         m_pouActiveDbJ1939 = new CMsgSignal(sg_asDbParams[J1939], FALSE);
-    }
-    if (m_podMsgSgWndJ1939 == NULL)
+    }	
+
+	if (NULL != m_podMsgSgWndJ1939 && !IsWindow(m_podMsgSgWndJ1939->m_hWnd))
+	{
+		m_podMsgSgWndJ1939 = NULL;
+	}
+
+	if (m_podMsgSgWndJ1939 == NULL)
     {
         sg_asDbParams[J1939].m_ppvActiveDB = (void**)&m_pouActiveDbJ1939;
         sg_asDbParams[J1939].m_ppvImportedDBs = (void**)&m_pouMsgSigJ1939;
         m_podMsgSgWndJ1939 = new CMsgSignalDBWnd(sg_asDbParams[J1939]);
     }
+
     if (m_podMsgSgWndJ1939 != NULL)
     {        
         vGetNewJ1939DBName(m_omJ1939DBName);
@@ -12563,6 +12588,10 @@ void CMainFrame::OnJ1939DBOpen()
             // Close the database that was open
             OnJ1939DBClose();
         }
+		else
+		{
+			return;
+		}
     }
     // Display a open file dialog
     CFileDialog fileDlg( TRUE,      // Open File dialog

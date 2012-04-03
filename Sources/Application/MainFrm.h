@@ -662,6 +662,7 @@ public:
     afx_msg void OnUpdateToolbarJ1939(CCmdUI *pCmdUI);
     afx_msg void OnJ1939ConfigureTimeouts();
     afx_msg void OnUpdateJ1939Timeouts(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateJ1939DBNew(CCmdUI *pCmdUI);
     afx_msg void OnJ1939DBNew();
     afx_msg void OnJ1939DBOpen();
     afx_msg void OnJ1939DBClose();

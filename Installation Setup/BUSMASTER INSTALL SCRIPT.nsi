@@ -32,7 +32,7 @@ Name "BUSMASTER"
 CRCCheck On
 
 ; Output filename
-Outfile "BUSMASTER_Installer_Ver_1.6.0.exe"
+Outfile "BUSMASTER_Installer_Ver_1.6.1.exe"
 
 Function .onInit
     # the plugins dir is automatically deleted when the installer exits

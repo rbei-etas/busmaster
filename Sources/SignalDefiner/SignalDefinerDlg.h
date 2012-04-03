@@ -25,6 +25,7 @@ public:
 	int m_nSelCycle;
 	double m_dblSamplingTimePeriod;
 	BSTR m_strSignalName;
+	CComPtr<IDMGraphCollection> spElements;
 	
 	afx_msg void OnCbnSelchangeComboSignalType();
 	afx_msg void OnCbnSelchangeComboCycles();
