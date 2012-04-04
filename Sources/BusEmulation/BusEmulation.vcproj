@@ -52,7 +52,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;WINVER=0x0500"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -71,7 +71,7 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
 				Culture="1033"
-				AdditionalIncludeDirectories="$(IntDir)"
+				AdditionalIncludeDirectories="$(IntDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -82,6 +82,7 @@
 				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;"
 				OutputFile="$(SolutionDir)/BIN/$(OutDir)/BusEmulation.exe"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"

@@ -42,7 +42,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;WINVER=0x0500"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -68,6 +68,7 @@
 				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/DIL_Interface.dll"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/DIL_Interface.pdb"
 				SubSystem="2"

@@ -50,7 +50,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="_DEBUG;WIN32;_WINDOWS;WINVER=0x0500"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -73,6 +73,7 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG;PEAK_USB_BUILD"
 				Culture="1033"
+				AdditionalIncludeDirectories="C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -84,6 +85,7 @@
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/BUSMASTER.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/BUSMASTER.pdb"
 				SubSystem="2"
