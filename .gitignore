@@ -72,6 +72,7 @@ Sources/ConfigDialogsDIL/Debug
 Sources/DataTypes/Debug
 Sources/DIL_Interface/Debug
 Sources/DIL_J1939/Debug
+Sources/DmGraph/DebugU
 Sources/Filter/Debug
 Sources/Format Converter/*/Debug
 Sources/FrameProcessor/Debug
