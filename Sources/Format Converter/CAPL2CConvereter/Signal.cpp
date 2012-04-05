@@ -32,10 +32,9 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
+/**
+ * Construction
+ */
 CSignal::CSignal()
 {
     m_acMultiplex[0]= '\0';
@@ -55,6 +54,9 @@ CSignal::CSignal()
     m_listValueDescriptor.RemoveAll();
 }
 
+/**
+ * Destruction
+ */
 CSignal::~CSignal()
 {
     // clear the embedded value descriptor list before destroying the signal
@@ -64,11 +66,11 @@ CSignal::~CSignal()
     }
 }
 
-
-// Overload assignment operator. We should clear the existing value descriptor
-// list and copy contents of the argument's list to this signal. The rest of the
-// members are copied by value
-
+/**
+ * Overload assignment operator. We should clear the existing value descriptor
+ * list and copy contents of the argument's list to this signal.
+ * The rest of the members are copied by value.
+ */
 CSignal& CSignal::operator=(CSignal& signal)
 {
     if(!m_listValueDescriptor.IsEmpty())
@@ -96,9 +98,10 @@ CSignal& CSignal::operator=(CSignal& signal)
     return (*this);
 }
 
-
-// extract the signal info from the line and store it in the signal object
-// return an appropriate error code if something wrong with signalline
+/**
+ * Extract the signal info from the line and store it in the signal object
+ * return an appropriate error code if something wrong with signalline
+ */
 int CSignal::Format(char *pcLine)
 {
     char *pcToken;
@@ -315,10 +318,10 @@ int CSignal::Format(char *pcLine)
     return 1;
 }
 
-
-// extracts Values and value descriptors from the line and
-// stores them to the Signal
-
+/**
+ * Extracts Values and value descriptors from the line and
+ * stores them to the Signal
+ */
 int CSignal::AddValueDescriptors(char *pcLine)
 {
     char acValue[100];
@@ -380,19 +383,21 @@ int CSignal::AddValueDescriptors(char *pcLine)
     return 1;
 }
 
-// validate for conformance to BUSMASTER DB format
-
-// Convert single bit INT and UINT to BOOL
-// if MAX_value == MIN_value update MAX_value to MAX_default
-// else if MAX_value == MIN_value == MAX_default, update MIN_value to MIN_default
-// signals with length more than 32 bits shall be discarded
-
-// The data format of previous signal is passed as a parameter
-// For the first one it will be zero, for then on either INTEL or MOTOROLA
-// If this signals format is not matching with previous signal then this signal to be
-// discarded.
-// SIG_EC_NO_ERR, SIG_EC_DATA_FORMAT_ERR,SIG_EC_LENGTH_ERR,SIG_EC_STARTBIT_ERR,SIG_EC_TYPE_ERR
-
+/**
+ * \brief validate for conformance to BUSMASTER DB format
+ * \param[in] ucFormat Data format of previous signal
+ *
+ * Convert single bit INT and UINT to BOOL
+ * if MAX_value == MIN_value update MAX_value to MAX_default
+ * else if MAX_value == MIN_value == MAX_default, update MIN_value to MIN_default
+ * signals with length more than 32 bits shall be discarded
+ *
+ * The data format of previous signal is passed as a parameter
+ * For the first one it will be zero, for then on either INTEL or MOTOROLA
+ * If this signals format is not matching with previous signal then this signal to be
+ * discarded.
+ * SIG_EC_NO_ERR, SIG_EC_DATA_FORMAT_ERR,SIG_EC_LENGTH_ERR,SIG_EC_STARTBIT_ERR,SIG_EC_TYPE_ERR
+ */
 unsigned int CSignal::Validate(unsigned char ucFormat)
 {
     // data format mismatch with previous signal
@@ -634,7 +639,9 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
     return (m_uiError = SIG_EC_NO_ERR);
 }
 
-// SIG_EC_NO_ERR, SIG_EC_DATA_FORMAT_ERR,SIG_EC_LENGTH_ERR,SIG_EC_STARTBIT_ERR,SIG_EC_TYPE_ERR
+/**
+ * SIG_EC_NO_ERR, SIG_EC_DATA_FORMAT_ERR,SIG_EC_LENGTH_ERR,SIG_EC_STARTBIT_ERR,SIG_EC_TYPE_ERR
+ */
 const char* CSignal::m_pacErrorStrings[] =
 {
     "No error",

@@ -22,13 +22,6 @@
  * Interface file for CSignal class
  */
 
-// Signal.h: interface for the CSignal class.
-//
-// Modification:
-//			Pemmaiah BD - 3/4/03
-//			- Added support for INT64 type
-//////////////////////////////////////////////////////////////////////
-
 #if !defined(AFX_SIGNAL_H__9A754F62_9FA8_4BC5_9F87_96D1EFB73DAA__INCLUDED_)
 #define AFX_SIGNAL_H__9A754F62_9FA8_4BC5_9F87_96D1EFB73DAA__INCLUDED_
 
