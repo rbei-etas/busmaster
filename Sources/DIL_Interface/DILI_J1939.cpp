@@ -36,7 +36,7 @@ CDILI_J1939::CDILI_J1939()
 }
 
 /**
- * Desstructor
+ * Destructor
  */
 CDILI_J1939::~CDILI_J1939()
 {
@@ -89,9 +89,13 @@ HRESULT CDILI_J1939::DILIJ_Uninitialise(void)
     return DILJ_Uninitialise();
 }
 
-/*Registers / unregisters a client. This is necessary to simulate a node
-and to receive messages. Only registered client's buffer will be updated
-on receive of a msg in the bus.*/
+/**
+ * \brief Registers / unregisters a client.
+ *
+ * This is necessary to simulate a node
+ * and to receive messages. Only registered client's buffer will be updated
+ * on receive of a msg in the bus.
+ */
 HRESULT CDILI_J1939::DILIJ_RegisterClient(BOOL bRegister, TCHAR* pacNodeName, 
                                           UINT64 un64ECUName, BYTE byPrefAdres, 
                                           DWORD& dwClientId)
@@ -100,21 +104,27 @@ HRESULT CDILI_J1939::DILIJ_RegisterClient(BOOL bRegister, TCHAR* pacNodeName,
                                byPrefAdres, dwClientId);
 }
 
-/* Manages the target client buffer list. Call this function to open a 
-data channel to receive messages.*/
+/**
+ * Manages the target client buffer list. Call this function to open a 
+ * data channel to receive messages.
+ */
 HRESULT CDILI_J1939::DILIJ_ManageMsgBuf(BYTE bAction, DWORD dwClientID, 
                                         CBaseMsgBufVSE* pBufObj)
 {   
     return DILJ_ManageMsgBuf(bAction, dwClientID, pBufObj);
 }
 
-/*To get the version information.*/
+/**
+ * To get the version information.
+ */
 void CDILI_J1939::DILIJ_GetVersionInfo (VERSIONINFO& sVerInfo)
 {
     DILJ_GetVersionInfo(sVerInfo);
 }
 
-/* Sends a J1939 message*/
+/**
+ * Sends a J1939 message
+ */
 HRESULT CDILI_J1939::DILIJ_SendJ1939Msg (DWORD dwClientId, UINT unChannel, EJ1939_MSG_TYPE eMsgType, UINT32 unPGN,
                                      BYTE* pbyData, UINT unDLC, BYTE byPriority, BYTE bySrc, BYTE byDestAdres)
 {
@@ -122,86 +132,124 @@ HRESULT CDILI_J1939::DILIJ_SendJ1939Msg (DWORD dwClientId, UINT unChannel, EJ193
                                unDLC, byPriority, bySrc, byDestAdres);
 
 }
-/* Gets the node name from 8 bit address from J1939 network.*/
+
+/**
+ * Gets the node name from 8 bit address from J1939 network.
+ */
 HRESULT CDILI_J1939::DILIJ_NM_GetNodeName(BYTE byAddress, TCHAR* acNodeName)
 {
     return DILJ_NM_GetNodeName(byAddress, acNodeName);
 }
+
 HRESULT CDILI_J1939::DILIJ_NM_GetByteAddres(BYTE& byAddress, DWORD dwClient)
 {
     return DILJ_NM_GetByteAddres(byAddress, dwClient);
 }
-/* Requests address from the node.*/
+
+/**
+ * Requests address from the node.
+ */
 HRESULT CDILI_J1939::DILIJ_NM_RequestAddress(DWORD dwClient, UINT unChannel, BYTE byPriority,
                                          BYTE bySrc, BYTE byDestAddress)
 {
     return DILJ_NM_RequestAddress(dwClient, unChannel, byPriority, bySrc, byDestAddress);
 }
-/* Returns whether the address is already claimed by another node.*/
+
+/**
+ * Returns whether the address is already claimed by another node.
+ */
 BOOL CDILI_J1939::DILIJ_NM_bIsAddressClaimed(BYTE byAddress)
 {
     return DILJ_NM_bIsAddressClaimed(byAddress);
 }
-/* Tries to claim 8 bit address to a corresponding node.*/
+
+/**
+ * Tries to claim 8 bit address to a corresponding node.
+ */
 HRESULT CDILI_J1939::DILIJ_NM_ClaimAddress(DWORD dwClientId, UINT unChannel, BYTE byAddress, BYTE byPriority)
 {
     return DILJ_NM_ClaimAddress(dwClientId, unChannel, byAddress, byPriority);
 }
 
-/* Commands a node with perticular NAME to assume a address.*/
+/**
+ * Commands a node with perticular NAME to assume a address.
+ */
 HRESULT CDILI_J1939::DILIJ_NM_CommandAddress(DWORD dwClient, UINT unChannel, UINT64 unECU_NAME, 
                                          BYTE byNewAddress, BYTE byPriority, BYTE bySrc, BYTE byDestAddress)
 {  
     return DILJ_NM_CommandAddress(dwClient, unChannel, unECU_NAME, byNewAddress, 
                                                 byPriority, bySrc, byDestAddress);
 }
-/* Requests a PGN from the node.*/
+
+/**
+ * Requests a PGN from the node.
+ */
 HRESULT CDILI_J1939::DILIJ_RequestPGN(DWORD dwClient, UINT unChannel, UINT32 unPGN, 
                                       BYTE byPriority, BYTE bySrc, BYTE byDestAddress)
 {
    return DILJ_RequestPGN(dwClient, unChannel, unPGN, byPriority, bySrc, byDestAddress);
 }
-/* Sends Positive/Negative acknowledgement msg.*/
+
+/**
+ * Sends Positive/Negative acknowledgement msg.
+ */
 HRESULT CDILI_J1939::DILIJ_SendAckMsg(DWORD dwClient, UINT unChannel, ETYPE_ACK eAckType, UINT32 unPGN, BYTE bySrc, BYTE byAddresAck)
 {
     return DILJ_SendAckMsg(dwClient, unChannel, eAckType, unPGN, bySrc, byAddresAck);
 }
-/* Starts J1939 network. All nodes start sending according to the configuration.*/
+
+/**
+ * Starts J1939 network. All nodes start sending according to the configuration.
+ */
 HRESULT CDILI_J1939::DILIJ_GoOnline()
 {                            
     return DILJ_GoOnline();
 }
 
-/* Stops J1939 network. All nodes stop sending msgs.*/
+/**
+ * Stops J1939 network. All nodes stop sending msgs.
+ */
 HRESULT CDILI_J1939::DILIJ_GoOffline()
 {
     return DILJ_GoOffline();
 }
 
-/* Get J1939 timeouts. */
+/**
+ * Get J1939 timeouts.
+ */
 HRESULT CDILI_J1939::DILIJ_GetTimeOut(ETYPE_TIMEOUT eTimeOutType, UINT& unMiliSeconds)
 {
     return DILJ_GetTimeOut(eTimeOutType, unMiliSeconds);
 }
 
-/* Configure J1939 timeouts. */
+/**
+ * Configure J1939 timeouts.
+ */
 HRESULT CDILI_J1939::DILIJ_ConfigureTimeOut(ETYPE_TIMEOUT eTimeOutType, UINT unMiliSeconds)
 {
     return DILJ_ConfigureTimeOut(eTimeOutType, unMiliSeconds);
 }
 
-/* Get time mode mapping */
+/**
+ * Get time mode mapping
+ */
 HRESULT CDILI_J1939::DILIJ_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, 
 												UINT64& unAbsTime)
 {
     return DILJ_GetTimeModeMapping(CurrSysTime, unAbsTime);
 }
- /*Returns J1939 network status.*/
+
+/**
+ * Returns J1939 network status.
+ */
 BOOL CDILI_J1939::DILIJ_bIsOnline(void)
 {
     return DILJ_bIsOnline();
 }
- /*Set call back function pointer.*/
+
+/**
+ * Set call back function pointer.
+ */
 HRESULT CDILI_J1939::DILIJ_SetCallBckFuncPtr(DWORD dwClientId, ETYPE_CLBCK_FN eClBckFnType, 
                                             void* pvClBckFn)
 {

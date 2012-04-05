@@ -1,15 +1,26 @@
-/*******************************************************************************
-  Project       :  Language Converter
-  FileName      :  Functions.hpp
-  Description   :  Implementation file for parsing functions
-  $Log:   Y:/EMC2/Projects/CAN_Monitor_Maintenance/Archives/Source/LanguageConverter/Functions.hpv  $
-   
-      Rev 1.0   17 Aug 2005 13:46:12   amb2kor
-   Initial Version.
-  Author        :  Amit Ranjan
-  Date Created  :  21.04.2004
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*******************************************************************************/
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * \file      Functions.hpp
+ * \brief     Implementation file for parsing functions
+ * \author    Amit Ranjan
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Implementation file for parsing functions
+ */
 
 #include "StdAfx.h"
 #ifndef _LEXER_H
@@ -25,20 +36,11 @@
 #include "ValueDescriptor.h"
 
 
-/*******************************************************************************
- Function Name    : vKeyStoreHeader
- Input(s)         :     -
- Output           :     -
- Functionality    : This will extract the name of the key from yytext. If key is
-                    supported by BUSMASTER it will be stored in" acSptdKey " else 
-                    it will be stored in " acUnSptdKey ".
-                    
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 21.04.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will extract the name of the key from yytext. If key is
+ * supported by BUSMASTER it will be stored in" acSptdKey " else
+ * it will be stored in " acUnSptdKey ".
+ */
 void vKeyStoreHeader()
 {
     //yytext-- /*@@key:'a':*/   or /*@@key:pageup:*/
@@ -91,21 +93,10 @@ void vKeyStoreHeader()
     }
 }
 
-/********end of function*******************************************************/
-
-/*******************************************************************************
- Function Name    : vEnvVar
- Input(s)         :     -
- Output           :     -
- Functionality    : This will extract the name of the Environment Handler from 
-                    yytext and store it into " auUnSptdKey ".
-                    
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 21.04.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will extract the name of the Environment Handler from
+ * yytext and store it into " auUnSptdKey ".
+ */
 void vEnvVar()   
 {
     //yytext--/*@@envVar:.*:*/
@@ -133,21 +124,10 @@ void vEnvVar()
     
 }
 
-/********************end of function*******************************************/
-
-/*******************************************************************************
- Function Name    : vCaplFunc
- Input(s)         :     -
- Output           :     -
- Functionality    : This will extract the name of the capl function from 
-                    yytext and store it into " ouFuncName ".
-                    
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 21.04.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will extract the name of the capl function from
+ * yytext and store it into " ouFuncName ".
+ */                    
 void vCaplFunc()
 {
     //yytext -- /*@@caplFunc:abc(para1,...):*/
@@ -176,25 +156,14 @@ void vCaplFunc()
 
 }
 
-/**********************end of function*****************************************/
-
-/*******************************************************************************
- Function Name    : vKeyStoreCase
- Input(s)         :     -
- Output           :     -
- Functionality    : This will extract the name of the key from yytext.If the
-                    length is more than one then key will be compared with the 
-                    menbers of UnSptdKeyList.If it will match then key will be
-                    stored in " acUnSptdKey ".Before storing it is checked that 
-                    whether the key is already existing in the acUnSptdKey array
-                    or not.If it is not there then only the key will be stored.
-                    
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 27.04.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will extract the name of the key from yytext.If the
+ * length is more than one then key will be compared with the
+ * menbers of UnSptdKeyList.If it will match then key will be
+ * stored in " acUnSptdKey ".Before storing it is checked that
+ * whether the key is already existing in the acUnSptdKey array
+ * or not.If it is not there then only the key will be stored.
+ */
 void vKeyStoreCase()
 {
     //yytext -- case .* :
@@ -251,19 +220,9 @@ void vKeyStoreCase()
     
 }   
 
-/**************************end of function*************************************/
-
-/*******************************************************************************
- Function Name    : vHeader
- Input(s)         :     -
- Output           :     -
- Functionality    : This will take care of header and footer.
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 21.04.2004
- Modifications    :
-*******************************************************************************/ 
+/**
+ * This will take care of header and footer.
+ */
 void vHeader()
 {
     try
@@ -567,21 +526,10 @@ void vHeader()
     }
 }   
 
-
-/**************************end of function*************************************/
-
-/*******************************************************************************
- Function Name    : vDelete
- Input(s)         :     -
- Output           :     -
- Functionality    : On incounter of '{' the function will push the flow into 
-                    "VarDecl" state or it will come out of the previous state. 
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 21.04.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * On incounter of '{' the function will push the flow into
+ * "VarDecl" state or it will come out of the previous state.
+ */
 void vDelete()
 {
     // yytext '{'
@@ -608,22 +556,11 @@ void vDelete()
 
 }
 
-/******************end of function*********************************************/
-
-/*******************************************************************************
- Function Name    : vEndBody
- Input(s)         :     -
- Output           :     -
- Functionality    : On encounter of '}' the function will check the value of 
-                   "counter".If it is not 0 then it will simply echo otherwise
-                   it will go in "Footer"state.
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 03.05.2004
- Modifications    :
-*******************************************************************************/
-
+/**
+ * On encounter of '}' the function will check the value of
+ * "counter".If it is not 0 then it will simply echo otherwise
+ * it will go in "Footer"state.
+ */
 void vEndBody()
 {
     try
@@ -657,21 +594,11 @@ void vEndBody()
     }
 }
 
-
-
-/*******************************************************************************
- Function Name    : vTimerFunc
- Input(s)         :     -
- Output           :     -
- Functionality    : This will check whether the variable is of type  " timer " 
-                    or " mstimer ".If it "timer" then it will store the name of
-                    variables in "ouTimerName".
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 21.04.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will check whether the variable is of type  " timer "
+ * or " mstimer ".If it "timer" then it will store the name of
+ * variables in "ouTimerName".
+ */
 void vTimerFunc()
 {
     try
@@ -713,21 +640,9 @@ void vTimerFunc()
     }
 }
 
-/*****************************end of function**********************************/
-
-
-
-/*******************************************************************************
- Function Name    : vCnvrtByte
- Input(s)         :     -
- Output           :     -
- Functionality    :This will replace " byte " , " word " or "long ".
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 21.04.2004
- Modifications    :
-*******************************************************************************/                                  
+/**
+ * This will replace " byte " , " word " or "long ".
+ */
 void vCnvrtByte()
 {
     try
@@ -795,24 +710,14 @@ void vCnvrtByte()
 
 }
 
-/***************end of function************************************************/
-
-/*******************************************************************************
- Function Name    : vPutKeyCase
- Input(s)         :     -
- Output           :     -
- Functionality    : This will extract the name of the key from yytext.Then it 
-                    will match the key with the elements of acUnSptdKey array.
-                    If it will match with any element it will replace the key
-                    with the element stored at the exact position in acAltKey 
-                    array .If the key is not in the arrya then it will simply
-                    ECHO the yytext.
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 21.04.2004
- Modifications    :
-*******************************************************************************/ 
+/**
+ * This will extract the name of the key from yytext.Then it
+ * will match the key with the elements of acUnSptdKey array.
+ * If it will match with any element it will replace the key
+ * with the element stored at the exact position in acAltKey
+ * array .If the key is not in the arrya then it will simply
+ * ECHO the yytext.
+ */
 void vPutKeyCase()
 {
     try
@@ -883,20 +788,10 @@ void vPutKeyCase()
     }
 }
 
-/***********end of function -- vPutKeyCase ************************************/
-
-/*******************************************************************************
- Function Name    : vWrite
- Input(s)         :     -
- Output           :     -
- Functionality    : This will replace write with sprintf.This will also take
-                    care of "writetolog" function.
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 21.04.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will replace write with sprintf.This will also take
+ * care of "writetolog" function.
+ */
 void vWrite()
 {
     try
@@ -933,20 +828,10 @@ void vWrite()
     }
 }
 
-/***********end of function -- vWrite *****************************************/
-
-/*******************************************************************************
- Function Name    : vMsgID
- Input(s)         :     -
- Output           :     -
- Functionality    : This will replace " id " of message with " m_unMsgID" and 
-                    "dlc" with "m_ucDLC".
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 22.04.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will replace " id " of message with " m_unMsgID" and
+ * "dlc" with "m_ucDLC".
+ */
 void vMsgID()
 {
     try
@@ -1003,19 +888,9 @@ void vMsgID()
     }
 }
 
-/***********end of function -- vMsgID  ****************************************/
-
-/*******************************************************************************
- Function Name    : vWriteDot
- Input(s)         :     -
- Output           :     -
- Functionality    : This will replece '.' with m_sWhichBit
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 21.04.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will replace '.' with m_sWhichBit
+ */
 void vWriteDot()
 {
     try
@@ -1047,17 +922,6 @@ void vWriteDot()
 
 }
 
-/***********end of function -- vWriteDot **************************************/
-/*******************************************************************************
-  Function Name  : vRemovePhys
-  Input(s)       : -
-  Output         : -
-  Functionality  : 
-  Member of      : CFunctions
-  Author(s)      : Raja N
-  Date Created   : 7.1.2005
-  Modifications  : 
-*******************************************************************************/
 void vRemovePhys()
 {
     try
@@ -1083,17 +947,9 @@ void vRemovePhys()
     }
 }
 
-/*******************************************************************************
- Function Name    : vCnvrtThis
- Input(s)         :     -
- Output           :     -
- Functionality    : This will replace "this" keyword .
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 21.04.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will replace "this" keyword .
+ */
 void vCnvrtThis()
 {
     try
@@ -1120,19 +976,9 @@ void vCnvrtThis()
 
 }
 
-/***********end of function  vCnvrtThis ***************************************/
-
-/*******************************************************************************
- Function Name    : vWriteTerminator
- Input(s)         :     -
- Output           :     -
- Functionality    : This will terminate write() function
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 23.04.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will terminate write() function
+ */
 void vWriteTerminator()
 {
     try
@@ -1188,27 +1034,14 @@ void vWriteTerminator()
     
 }
 
-/*********end of function -- vWriteTerminator *********************************/
-
-
-/*******************************************************************************
- Function Name    : vSetTimer
- Input(s)         :     -
- Output           :     -
- Functionality    : This will extract the name of vaiable and elapse time from
-                    the function and match the name with the elements of
-                    "ouTimerName".If it will match with any element of that
-                    array it means it is of type "timer" and then it will 
-                    append "*1000" in the value of elapse time.And finally it
-                    will call "StartTimer" function.
-                    
- Member of        :     -
- Friend of        :     -
-
- Author(s)        : Amit Ranjan
- Date Created     : 21.04.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will extract the name of vaiable and elapse time from
+ * the function and match the name with the elements of
+ * "ouTimerName".If it will match with any element of that
+ * array it means it is of type "timer" and then it will
+ * append "*1000" in the value of elapse time.And finally it
+ * will call "StartTimer" function.
+ */
 void vSetTimer()
 {
     try
@@ -1269,20 +1102,10 @@ void vSetTimer()
     }
 }
 
-/*********end of function -- vSetTimer ****************************************/
-
-/*******************************************************************************
- Function Name    : vOutput
- Input(s)         :     -
- Output           :     -
- Functionality    : This will extract the parameter from yytext and replce 
-                    "output" with "SendMsg".
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 21.04.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will extract the parameter from yytext and replace
+ * "output" with "SendMsg".
+ */
 void vOutput()
 {
     try
@@ -1314,19 +1137,9 @@ void vOutput()
     
 }
 
-/*******end of function -- vOutput ********************************************/
-
-/*******************************************************************************
- Function Name    : vCancelTimer
- Input(s)         :     -
- Output           :     -
- Functionality    :This will replce "canceltimer" with "StopTimer".
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 21.04.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will replce "canceltimer" with "StopTimer".
+ */
 void vCancelTimer()
 {
     try
@@ -1355,106 +1168,50 @@ void vCancelTimer()
     
 }
 
-/**************end of function -- vCancelTimer ********************************/
-
-/*******************************************************************************
- Function Name    : vOnLine
- Input(s)         :     -
- Output           :     -
- Functionality    : This will replace "canOnline" with "GoOnline".
-                    
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 22.04.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will replace "canOnline" with "GoOnline".
+ */
 void vOnLine()
 {
     fprintf(yyout,defSTR_GoOnline);              
 }
-/*******************************************************************************
- Function Name    : vOffLine
- Input(s)         :     -
- Output           :     -
- Functionality    : This will replace "canOffline" with "GoOffline".
-                   
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 22.04.2004
- Modifications    :
-*******************************************************************************/
+
+/**
+ * This will replace "canOffline" with "GoOffline".
+ */
 void vOffLine()
 {
      fprintf(yyout,defSTR_GoOffline);             
 }
-/*******************************************************************************
- Function Name    : vTrigger
- Input(s)         :     -
- Output           :     -
- Functionality    : This will replace "triger" with "EnableLogging".
-                   
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 22.04.2004
- Modifications    :
-*******************************************************************************/
+
+/**
+ * This will replace "triger" with "EnableLogging".
+ */
 void vTrigger()
 {
     fprintf(yyout,defSTR_EnableLogging);         
 }
-/*******************************************************************************
- Function Name    : vResetCan
- Input(s)         :     -
- Output           :     -
- Functionality    : This will replace "resetCan" with "ResetController".
-                  
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 22.04.2004
- Modifications    :
-*******************************************************************************/
+
+/**
+ * This will replace "resetCan" with "ResetController".
+ */
 void vResetCan()
 {
     fprintf(yyout,defSTR_ResetController);                
 }
-/*******************************************************************************
- Function Name    : vDisconnect
- Input(s)         :     -
- Output           :     -
- Functionality    : This will replace "stop" with "Disconnect".
-                   
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 22.04.2004
- Modifications    :
-*******************************************************************************/
+
+/**
+ * This will replace "stop" with "Disconnect".
+ */
 void vDisconnect()
 {
     fprintf(yyout,defSTR_Disconnect);   
 }
 
-/***********end of function****************************************************/
-
-
-
-
-/*******************************************************************************
- Function Name    : vUnSptdFunc
- Input(s)         :     -
- Output           :     -
- Functionality    : This will make unsupported functions as comment and write
-                    name of the function and line no. in the log file.
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 22.04.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will make unsupported functions as comment and write
+ * name of the function and line no. in the log file.
+ */
 void vUnSptdFunc()
 {
     fprintf(yyout,"/*");
@@ -1465,23 +1222,11 @@ void vUnSptdFunc()
     nUnCnvrtdLine = nUnCnvrtdLine + 1 ; //weighted 1
 }
 
-/**************end of function -- vUnsptdFunc *********************************/
-
-
-
-/*******************************************************************************
- Function Name    : vFuncCall
- Input(s)         :     -
- Output           :     -
- Functionality    : This will extract the name of function and check with
-                    acFuncName arry.If it will match with any entry it will
-                    prefix "Utils_".
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 21.04.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will extract the name of function and check with
+ * acFuncName arry.If it will match with any entry it will
+ * prefix "Utils_".
+ */
 void vFuncCall()
 {
     try
@@ -1513,19 +1258,9 @@ void vFuncCall()
     }
 }
 
-/*********end of function -- vFuncCall ****************************************/
-
-/*******************************************************************************
- Function Name    : vAddLine
- Input(s)         :     -
- Output           :     -
- Functionality    : It will increse the counter on arrival of '\n'.
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 22.04.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * It will increse the counter on arrival of '\n'.
+ */
 void vAddLine()
 {
     // yytext '\n'
@@ -1533,19 +1268,9 @@ void vAddLine()
      ECHO;   
 }
 
-/********end of function -- vAddLine ******************************************/
-
-/*******************************************************************************
- Function Name    : vFooter
- Input(s)         :     -
- Output           :     -
- Functionality    : This will take care of footer.                    
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 21.04.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will take care of footer.
+ */
 void vFooter()
 {
     if( yy_top_state() == VarDecl )//VarDecl State
@@ -1568,26 +1293,15 @@ void vFooter()
     yy_pop_state();
 }   
 
-/*******end of function vFooter ***********************************************/
-
-/*******************************************************************************
- Function Name    : nConvert
- Input(s)         :     -
- Output           :     -
- Functionality    : This is the function that takes care of conversion.It takes
-                    three parameters ( input file name , output file name and
-                    log file name) and does conversion.If user has assign 
-                    database then it cinverts it and if he wants to save it,
-                    the function saves the converted database in appropriate
-                    output file.This function return the percentage of CANoe
-                    file converted into BUSMASTER.
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 21.04.2004
- Modifications    :
-*******************************************************************************/
-
+/**
+ * This is the function that takes care of conversion.It takes
+ * three parameters ( input file name , output file name and
+ * log file name) and does conversion.If user has assign
+ * database then it cinverts it and if he wants to save it,
+ * the function saves the converted database in appropriate
+ * output file.This function return the percentage of CANoe
+ * file converted into BUSMASTER.
+ */
 int nConvert( CString srs,CString dest ,CString dest1)
 {
     
@@ -1649,19 +1363,10 @@ int nConvert( CString srs,CString dest ,CString dest1)
  
 }
 
-/*******************************************************************************
- Function Name    : OnBrowseBUSMASTERDb
- Input(s)         :     -
- Output           :     -
- Functionality    : This will pop-up a comman dialog box to select the input 
-                    BUSMASTER database file.
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 15.05.2004
- Modifications    :
-*******************************************************************************/    
-
+/**
+ * This will pop-up a comman dialog box to select the input
+ * BUSMASTER database file.
+ */
 void CSelectdb::OnBrowseBUSMASTERDb() 
 {
     CString omStrPath;
@@ -1695,19 +1400,10 @@ void CSelectdb::OnBrowseBUSMASTERDb()
     
 }
 
-/*******************************************************************************
- Function Name    : OnBrowseCANoeDb
- Input(s)         :     -
- Output           :     -
- Functionality    : This will pop-up a comman dialog box to select the  
-                    CANoe database file.
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 15.05.2004
- Modifications    :
-*******************************************************************************/    
-
+/**
+ * This will pop-up a comman dialog box to select the
+ * CANoe database file.
+ */
 void CSelectdb::OnBrowseCANoeDb() 
 {
     CString omStrPath;
@@ -1740,18 +1436,10 @@ void CSelectdb::OnBrowseCANoeDb()
     
 }
 
-/*******************************************************************************
- Function Name    : OnChkbOption
- Input(s)         :     -
- Output           :     -
- Functionality    : This will enable or diable the controls according to the
-                    state of checkbox button.
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 15.05.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will enable or diable the controls according to the
+ * state of checkbox button.
+ */
 void CSelectdb::OnChkbOption() 
 {
     UpdateData();
@@ -1772,19 +1460,10 @@ void CSelectdb::OnChkbOption()
     
 }
 
-/*******************************************************************************
- Function Name    : OnOK
- Input(s)         :     -
- Output           :     -
- Functionality    : This will verify the correctness of CANoe and BUSMASTER databse
-                    files.
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 15.05.2004
- Modifications    :
-*******************************************************************************/
-
+/**
+ * This will verify the correctness of CANoe and BUSMASTER databse
+ * files.
+ */
 void CSelectdb::OnOK() 
 {
 //  "canoedb" and "busmasterdb" are global CString objects
@@ -1858,23 +1537,15 @@ void CSelectdb::OnOK()
     }
 }
 
-/*******************************************************************************
- Function Name    : OnConvert
- Input(s)         :     -
- Output           :     -
- Functionality    : This will convert the input can file into C file.This will
-                    check whether the input file is correct or not.If name of
-                    output file is not there then it will  create a default
-                    output file with the name of input file with extention C.
-                    The log file will be created with default name of input file 
-                    withe extention "txt".This function will intialize acAltkey
-                    with -1.
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 21.04.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will convert the input can file into C file.This will
+ * check whether the input file is correct or not.If name of
+ * output file is not there then it will  create a default
+ * output file with the name of input file with extention C.
+ * The log file will be created with default name of input file
+ * withe extention "txt".This function will intialize acAltkey
+ * with -1.
+ */
 void CCAPL2CPropertyPage::OnConvert() 
 {
     CString dest , srs ;//to store the destination file and source file
@@ -2050,11 +1721,13 @@ void CCAPL2CPropertyPage::OnConvert()
     }
 }
 
+/**
+ * this function will be called every time when the user will make any
+ * change in the name if input file.If the edit box is blank,"ok" button
+ * will be disabled.
+ */
 void CSelectdb::OnChangeEditAdcanoe() 
 {
-    //this function will be called every time when the user will make any
-    //change in the name if input file.If the edit box is blank,"ok" button
-    //will be disabled.
     CString omStrPath;
     GetDlgItemText( IDC_EDIT_ADCANOE,omStrPath );
 
@@ -2075,23 +1748,15 @@ void CSelectdb::OnCancel()
     CDialog::OnCancel();
 }
 
-/*******************************************************************************
- Function Name    : vMsgDecl
- Input(s)         :     -
- Output           :     -
- Functionality    : This will convert the input can file into C file.This will
-                    check whether the input file is correct or not.If name of
-                    output file is not there then it will  create a default
-                    output file with the name of input file with extention C.
-                    The log file will be created with default name of input file 
-                    withe extention "txt".This function will intialize acAltkey
-                    with -1.
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 15.05.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will convert the input can file into C file.This will
+ * check whether the input file is correct or not.If name of
+ * output file is not there then it will  create a default
+ * output file with the name of input file with extention C.
+ * The log file will be created with default name of input file
+ * withe extention "txt".This function will intialize acAltkey
+ * with -1.
+ */
 void vMsgDecl()
 {
     try
@@ -2426,19 +2091,11 @@ void vMsgDecl()
     
 }
 
-/*******************************************************************************
- Function Name    : vMsgCpy
- Input(s)         :     -
- Output           :     -
- Functionality    : This will extract the name of the message vaiable from 
-                    yytext and use "memcpy" function to copy the containts
-                    from "rxMsg".
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 15.05.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will extract the name of the message vaiable from
+ * yytext and use "memcpy" function to copy the containts
+ * from "rxMsg".
+ */
 void vMsgCpy()
 {
     // yytext  abc = (message *)this;
@@ -2457,17 +2114,9 @@ void vMsgCpy()
     fprintf(yyout,"memcpy( &%s, &RxMsg , sizeof( RxMsg ) );",val);
 }
 
-/*******************************************************************************
- Function Name    : velCount
- Input(s)         :     -
- Output           :     -
- Functionality    : This will replace "elCount" function.
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 15.05.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This will replace "elCount" function.
+ */
 void velCount()
 {
     //yytect elCount(ar)
@@ -2487,25 +2136,16 @@ void velCount()
     fprintf(yyout,"( sizeof(%s)/sizeof(%s[0]) )",val,val);
 }
 
-        
 void CSelectdb::OnClose() 
 {
     OnCancel();
     CDialog::OnClose();
 }
 
-/*******************************************************************************
- Function Name    : vUtilFunc
- Input(s)         :     -
- Output           :     -
- Functionality    : This function will extract the return type and parameter of
-                    of a caplFunction.
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 05.06.2004
- Modifications    :
-*******************************************************************************/
+/**
+ * This function will extract the return type and parameter of
+ * of a caplFunction.
+ */
 void vUtilFunc()
 {
     CString val, parameter;

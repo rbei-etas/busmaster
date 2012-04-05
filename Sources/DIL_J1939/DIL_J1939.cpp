@@ -58,8 +58,8 @@ BOOL CJ1939TranslatorApp::InitInstance()
 /**
  * \brief Initializes J1939 network
  * \req RSI_26_001 - DILJ1939_Initialise
- * \param pILog[in] pointer to wrapper_error object.
- * \param pouIDIL_CAN[in] Interface to DIL CAN.
+ * \param[in] pILog pointer to wrapper_error object.
+ * \param[in] pouIDIL_CAN Interface to DIL CAN.
  * \return S_OK for success, S_FALSE for failure.
  *
  * Initializes J1939 network
@@ -90,10 +90,10 @@ USAGEMODE HRESULT DILJ_Uninitialise(void)
 /**
  * \brief Registers / unregisters a client.
  * \req RSI_26_003 - DILJ1939_RegisterClient
- * \param bRegister[in] TRUE to register, else FALSE.
- * \param pacNodeName[in] Client node name.
- * \param un64ECUName[in] 64 bit ECU name.
- * \param dwClientId[out] Client's Id rendered.
+ * \param[in] bRegister TRUE to register, else FALSE.
+ * \param[in] pacNodeName Client node name.
+ * \param[in] un64ECUName 64 bit ECU name.
+ * \param[out] dwClientId Client's Id rendered.
  * \return 1. ERR_CLIENT_EXISTS, 2. ERR_NO_CLIENT_EXIST, 3. ERR_NO_MORE_CLIENT_ALLOWED & 4. S_OK
  * \note Explanation: 1. Client already registered, 2. No such client with this id exists. 3. No more clients is allowed to register. 4. Success.
  *
@@ -121,9 +121,9 @@ USAGEMODE HRESULT DILJ_RegisterClient(BOOL bRegister, TCHAR* pacNodeName,
 /**
  * \brief Manages the target client buffer list. Call this function to open a data channel to receive messages.
  * \req RSI_26_004 - DILJ1939_ManageMsgBuf
- * \param bAction[in] When MSGBUF_ADD, adds pBufObj to the target message buffer list. Removes when MSGBUF_CLEAR.
- * \param ClientID[in] Client ID
- * \param pBufObj[in] Interface to message buffer object.
+ * \param[in] bAction When MSGBUF_ADD, adds pBufObj to the target message buffer list. Removes when MSGBUF_CLEAR.
+ * \param[in] ClientID Client ID
+ * \param[in] pBufObj Interface to message buffer object.
  * \return S_OK if successful, else S_FALSE.
  * \note At present maximum number of entries in the list is kept as 8.
  *
@@ -170,13 +170,13 @@ USAGEMODE void DILJ_GetVersionInfo (VERSIONINFO& /*sVerInfo*/)
 /**
  * \brief Sends a J1939 message.
  * \req RSI_26_005 - DILJ_SendJ1939Msg
- * \param dwClient[in] Client Id
- * \param unChannel[in] Channel number
- * \param eMsgType[in] COMMAND, BROADCAST, REQUEST, RESPONSE
- * \param unPGN[in] Parameter group number
- * \param pbyData[in] Data bytes
- * \param unDLC[in] Data length in number of bytes.
- * \param byPriority[in] Priority (0-7) byDesrAdress = Destination address.
+ * \param[in] dwClient Client Id
+ * \param[in] unChannel Channel number
+ * \param[in] eMsgType COMMAND, BROADCAST, REQUEST, RESPONSE
+ * \param[in] unPGN Parameter group number
+ * \param[in] pbyData Data bytes
+ * \param[in] unDLC Data length in number of bytes.
+ * \param[in] byPriority Priority (0-7) byDesrAdress = Destination address.
  * \return S_OK if successful, else S_FALSE.
  *
  * Sends a J1939 message.
@@ -203,8 +203,8 @@ USAGEMODE HRESULT DILJ_SendJ1939Msg (DWORD dwClientId, UINT unChannel, EJ1939_MS
 /**
  * \brief Get node name.
  * \req RSI_26_010 - DILJ_NM_GetNodeName
- * \param byAddress[in] 8 bit node address (0 - 253)
- * \param acNodeName[out] Nodes name.
+ * \param[in] byAddress 8 bit node address (0 - 253)
+ * \param[out] acNodeName Nodes name.
  * \return S_OK if successful, else S_FALSE.
  *
  * Gets the node name from 8 bit address from J1939 network.
@@ -218,8 +218,8 @@ USAGEMODE HRESULT DILJ_NM_GetNodeName(BYTE byAddress, TCHAR* acNodeName)
 /**
  * \brief Get node address.
  * \req RSI_26_011 - DILJ_NM_GetNodeAddress
- * \param byAddress[out] Nodes 8 bit address
- * \param dwClient[in] Client Id.
+ * \param[out] byAddress Nodes 8 bit address
+ * \param[in] dwClient Client Id.
  * \return S_OK if successful, else S_FALSE.
  *
  * Gets the node address from Client Id from J1939 network.
@@ -233,10 +233,10 @@ USAGEMODE HRESULT DILJ_NM_GetByteAddres(BYTE& byAddress, DWORD dwClient)
 /**
  * \brief Requests address from the node.
  * \req RSI_26_014 - DILJ_NM_RequestAddress
- * \param dwClientId[in] Already register node's client Id
- * \param unChannel[in] Channel number
- * \param byDestAddress[in] Destination Address
- * \param byPriority[in] Priority (0 - 7).
+ * \param[in] dwClientId Already register node's client Id
+ * \param[in] unChannel Channel number
+ * \param[in] byDestAddress Destination Address
+ * \param[in] byPriority Priority (0 - 7).
  * \return S_OK if successful, else S_FALSE.
  *
  * A node requests address from an another node.
@@ -262,7 +262,7 @@ USAGEMODE HRESULT DILJ_NM_RequestAddress(DWORD dwClient, UINT unChannel, BYTE by
 /**
  * \brief Check if address claimed
  * \req RSI_26_012 - DILJ_NM_bIsAddressClaimed
- * \param byAddress[in] 8 bit node address (0 - 253).
+ * \param[in] byAddress 8 bit node address (0 - 253).
  * \return TRUE if claimed, else FALSE.
  *
  * Returns whether the address is already claimed by another node.
@@ -275,10 +275,10 @@ USAGEMODE BOOL DILJ_NM_bIsAddressClaimed(BYTE byAddress)
 /**
  * \brief Claim address
  * \req RSI_26_013 - DILJ_NM_ClaimAddress
- * \param dwClientId[in] Already register node's client Id
- * \param unChannel[in] Channel number
- * \param byAddress[in] New address to be claimed
- * \param byPriority[in] Priority (0 - 7)
+ * \param[in] dwClientId Already register node's client Id
+ * \param[in] unChannel Channel number
+ * \param[in] byAddress New address to be claimed
+ * \param[in] byPriority Priority (0 - 7)
  * \return S_OK if successful, else S_FALSE.
  *
  * Node tries to claim a new address by sending Address Claim message into the network.
@@ -303,11 +303,11 @@ USAGEMODE HRESULT DILJ_NM_ClaimAddress (DWORD dwClientId, UINT unChannel, BYTE b
 /**
  * \brief Commands a node with perticular NAME to assume a address.
  * \req RSI_26_015 - DILJ_NM_CommandAddress
- * \param dwClientId[in] Already register node's client Id
- * \param unChannel[in] Channel number
- * \param unECU_NAME[in] 64 bit ECU NAME of the destination node
- * \param byDestAddress[in] Destination Address
- * \param byPriority[in] Priority (0 - 7)
+ * \param[in] dwClientId Already register node's client Id
+ * \param[in] unChannel Channel number
+ * \param[in] unECU_NAME 64 bit ECU NAME of the destination node
+ * \param[in] byDestAddress Destination Address
+ * \param[in] byPriority Priority (0 - 7)
  * \return S_OK if successful, else S_FALSE.
  *
  * A node commands another node to assume an address.
@@ -336,11 +336,11 @@ USAGEMODE HRESULT DILJ_NM_CommandAddress(DWORD dwClient, UINT unChannel, UINT64 
 /**
  * \brief Requests a PGN from a node
  * \req RSI_26_007 - DILJ_RequestPGN
- * \param dwClient[in] Client Id
- * \param unChannel[in] Channel number
- * \param unPGN[in] Parameter group number to be requested
- * \param byPriority[in] Priority (0-7)
- * \param byDesrAdress[in] Destination address.
+ * \param[in] dwClient Client Id
+ * \param[in] unChannel Channel number
+ * \param[in] unPGN Parameter group number to be requested
+ * \param[in] byPriority Priority (0-7)
+ * \param[in] byDesrAdress Destination address.
  * \return S_OK if successful, else S_FALSE.
  *
  * Requests a PGN from the node.
@@ -366,12 +366,12 @@ USAGEMODE HRESULT DILJ_RequestPGN(DWORD dwClient, UINT unChannel, UINT32 unPGN,
 /**
  * \brief Sends a acknowledgement message.
  * \req RSI_26_006 - DILJ_SendAckMsg
- * \param dwClientId[in] Already register node's client Id
- * \param unChannel[in] Channel number
- * \param eAckType[in] Acknowledge type (ACK_POS, ACK_NEG)
- * \param unPGN[in] PGN to be sent.
- * \param pbyData[in] PGN data.
- * \param byAddresAck[in] Destination address.
+ * \param[in] dwClientId Already register node's client Id
+ * \param[in] unChannel Channel number
+ * \param[in] eAckType Acknowledge type (ACK_POS, ACK_NEG)
+ * \param[in] unPGN PGN to be sent.
+ * \param[in] pbyData PGN data.
+ * \param[in] byAddresAck Destination address.
  * \return S_OK if successful, else S_FALSE.
  *
  * Sends Positive/Negative acknowledgement msg.
@@ -445,8 +445,8 @@ USAGEMODE HRESULT DILJ_GoOffline()
 /**
  * \brief Configure J1939 timeouts.
  * \req RSI_26_016 - DILJ_ConfigureTimeOut
- * \param eTimeOutType[in] Time out type (TO_BROADCAST, TO_RESPONSE, TO_HOLDING, TO_T1, TO_T2, TO_T3, TO_T4).
- * \param unMiliSeconds[in] Timeout value in mili seconds.
+ * \param[in] eTimeOutType Time out type (TO_BROADCAST, TO_RESPONSE, TO_HOLDING, TO_T1, TO_T2, TO_T3, TO_T4).
+ * \param[in] unMiliSeconds Timeout value in mili seconds.
  * \return S_OK if successful, else S_FALSE.
  *
  * Configure timeouts for flow control packets.
@@ -474,8 +474,8 @@ USAGEMODE HRESULT DILJ_GetTimeOut(ETYPE_TIMEOUT eTimeOutType, UINT& unMiliSecond
 /**
  * \brief Get time mode mapping
  * \req RSI_26_017 - DILJ_GetTimeModeMapping
- * \param CurrSysTime[out] Reference system time
- * \param unAbsTime[out] Absolute time.
+ * \param[out] CurrSysTime Reference system time
+ * \param[out] unAbsTime Absolute time.
  * \return S_OK if successful, else S_FALSE.
  *
  * Get time mode mapping.
