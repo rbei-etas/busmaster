@@ -91,6 +91,7 @@ CSignal& CSignal::operator=(CSignal& signal)
     m_fOffset = signal.m_fOffset;
     m_fScaleFactor = signal.m_fScaleFactor;
     strcpy(m_acUnit,signal.m_acUnit);
+    m_uiError = signal.m_uiError;
     m_rxNode = signal.m_rxNode;
     // now copy the list
     m_listValueDescriptor.AddTail(&signal.m_listValueDescriptor);
@@ -656,4 +657,3 @@ const char* CSignal::GetErrorString()
 {
     return m_pacErrorStrings[m_uiError];
 }
-
