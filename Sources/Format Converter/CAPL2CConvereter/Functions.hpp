@@ -837,7 +837,6 @@ void vMsgID()
     CString val , name , type;
     int start;
     val = yytext;
-    end=val.GetLength();
     start = val.Find(".",0);
     name = val.Mid(0,start);
 
