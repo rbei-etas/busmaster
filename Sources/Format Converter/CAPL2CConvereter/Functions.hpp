@@ -47,8 +47,6 @@ void vKeyStoreHeader()
     try
     {
     char acKeyName[defSTR_MaxSizeBreadth];
-    int m = 8; //length of /*@@key:
-    int n = 0;
     
     if( yytext[8] == '\'' )//if yytext is not /*@@key:*:*/
     {
@@ -67,8 +65,8 @@ void vKeyStoreHeader()
     }
     else
     {
-        n = 0;
-        m = 8;
+        int m = 8; //length of /*@@key:
+        int n = 0;
         if( yytext[m] != '*')
         {
             while( yytext[m] != NULL && yytext[m] != ':')
@@ -837,7 +835,7 @@ void vMsgID()
     try
     {
     CString val , name , type;
-    int start , end;
+    int start;
     val = yytext;
     end=val.GetLength();
     start = val.Find(".",0);
@@ -983,7 +981,6 @@ void vWriteTerminator()
 {
     try
     {
-    int n = 0;
     // yytext -- ';' / ',', /'(' ')'
     
     if(yytext[0] == '(')
@@ -1000,6 +997,7 @@ void vWriteTerminator()
     }
     if(  yytext[0] == ';' || ( yytext[0] == ',' && cFlag == 0 ) )
     {
+        int n = 0;
         // cFlag == 0 to check parantheses
         fprintf(yyout,",\n");
         for(n = 0;n < cFlagH; n++ )
@@ -1049,7 +1047,8 @@ void vSetTimer()
     //yytext--SetTimer( Timer_Variable_Name, Time_delay )
     CString text,name , val;
     int start , end;
-    char wsp , index = 0;
+    char wsp;
+	int index = 0;
 
     while( !isalpha(yytext [index] ) )
     {//to count no. of white spaces
@@ -1744,7 +1743,7 @@ void CSelectdb::OnChangeEditAdcanoe()
 
 void CSelectdb::OnCancel() 
 {
-    fprintf(logfile,"You have not assigned the Databaase.\n");
+    fprintf(logfile,"You have not assigned the Database.\n");
     CDialog::OnCancel();
 }
 
