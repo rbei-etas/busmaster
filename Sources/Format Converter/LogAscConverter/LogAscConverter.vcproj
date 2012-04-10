@@ -311,7 +311,7 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="..\..\..\Tools\flex.exe -i -oLog_Asc_Lexer.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
+					CommandLine="..\..\..\Tools\flex\flex.exe -i -oLog_Asc_Lexer.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
 					Outputs="Log_Asc_Lexer.c"
 				/>
 			</FileConfiguration>
@@ -320,7 +320,7 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="..\..\..\Tools\flex.exe -i -oLog_Asc_Lexer.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
+					CommandLine="..\..\..\Tools\flex\flex.exe -i -oLog_Asc_Lexer.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
 					Outputs="Log_Asc_Lexer.c"
 				/>
 			</FileConfiguration>
