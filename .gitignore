@@ -182,6 +182,8 @@ Documents/5 Source Code Documentation/out
 # Tests
 Tests/AStyle/new.txt
 Tests/AStyle/report.html
+Tests/AutoIt/*/*_err.txt
+Tests/AutoIt/*/*_out.txt
 Tests/CCCC/files.txt
 Tests/CCCC/report
 Tests/Cppcheck/cppcheck.xml
