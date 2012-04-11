@@ -40,12 +40,9 @@ HRESULT CLogAscConverter::GetHelpText(TCHAR* pchHelpText)
     return S_FALSE;
 }
 
-HRESULT CLogAscConverter::GetConverterName(TCHAR* strConverterName)
+HRESULT CLogAscConverter::GetConverterName(string& strConverterName)
 {
-    if(strConverterName != NULL)
-    {
-        strcpy(strConverterName, _T("LOG TO ASC Conversion"));
-    }
+	strConverterName = "LOG TO ASC Conversion";
     return S_OK;
 }
 HRESULT CLogAscConverter::GetErrorStatus(HRESULT hResult, CString& omstrStatus)

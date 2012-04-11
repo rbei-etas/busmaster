@@ -158,6 +158,7 @@ typedef struct tagFormattedData_CAN
     TCHAR	m_acDataHex[LENGTH_STR_DATA_CAN];         // Data in hex
     TCHAR	m_acDataDec[LENGTH_STR_DATA_CAN];         // Data in dec
 
+    TCHAR	m_acTimeAbsReset[LENGTH_STR_TIMESTAMP_CAN];    // Absolute time stamp Reset
     TCHAR	m_acTimeAbs[LENGTH_STR_TIMESTAMP_CAN];    // Absolute time stamp 
     TCHAR	m_acTimeRel[LENGTH_STR_TIMESTAMP_CAN];    // Relative time stamp
     TCHAR	m_acTimeSys[LENGTH_STR_TIMESTAMP_CAN];    // System time stamp

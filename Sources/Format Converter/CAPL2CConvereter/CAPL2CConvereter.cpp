@@ -15,7 +15,7 @@ HRESULT CCAPL2CConvereter::GetHelpText(TCHAR* pchHelpText)
     }*/
     return S_FALSE;
 }
-HRESULT CCAPL2CConvereter::GetConverterName(TCHAR* strConverterName)
+HRESULT CCAPL2CConvereter::GetConverterName(string& strConverterName)
 {
     /*if(strConverterName != NULL)
     {

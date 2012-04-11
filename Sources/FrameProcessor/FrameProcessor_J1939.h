@@ -133,6 +133,13 @@ public:
     // Setter for the logging configuration data
     HRESULT FPJ1_SetConfigData(BYTE* pvDataStream);
 
+	// To update the associated database list to logger
+	HRESULT FPJ1_SetDatabaseFiles(const CStringArray& omList);
+
+	// To update the channel baud rate info to logger
+	HRESULT FPJ1_SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
+															int nNumChannels);
+
     /* ENDS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
 };
 

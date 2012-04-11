@@ -94,6 +94,7 @@ private:
 	// Dialog control variables
 	CComboBox m_omComboChannel;
 	CComboBox m_omComboTimeMode;
+	CButton m_ChkbResetTimeStamp;
 	CListCtrl m_omListLogFiles;
     CRadixEdit m_odStartMsgID;
     CRadixEdit m_odStopMsgID;

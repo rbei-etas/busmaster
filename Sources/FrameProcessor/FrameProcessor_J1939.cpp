@@ -182,6 +182,13 @@ void CFrameProcessor_J1939::vRetrieveDataFromBuffer(void)
 
         if (m_bLogEnabled == TRUE)
         {
+			//check for new logging session
+			if(m_bResetAbsTime == TRUE)
+			{
+				//update msg reset flag
+				m_ouFormatMsgJ1939.m_bResetMsgAbsTime = m_bResetAbsTime;
+				m_bResetAbsTime = FALSE;
+			}
             // Save it into the J1939 message structure
             m_sJ1939Data.vSetDataStream(m_pbyJ1939Data);
 
@@ -420,4 +427,21 @@ void CFrameProcessor_J1939::vEmptyLogObjArray(CLogObjArray& omLogObjArray)
     }
     omLogObjArray.RemoveAll();
 }
+
+//Setter for database files associated
+HRESULT CFrameProcessor_J1939::FPJ1_SetDatabaseFiles(const CStringArray& omList)
+{
+	return SetDatabaseFiles(omList);
+}
+
+// To update the channel baud rate info to logger
+HRESULT CFrameProcessor_J1939::FPJ1_SetChannelBaudRateDetails
+							(SCONTROLER_DETAILS* controllerDetails, 
+							int nNumChannels)
+{
+	HRESULT hResult = S_OK;
+	SetChannelBaudRateDetails(controllerDetails, nNumChannels);
+	return hResult;
+}
+
 // USE COMMON BASE CLASS ALIAS FUNCTIONS: END

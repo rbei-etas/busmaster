@@ -1290,55 +1290,48 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_ICS_neoVI(LPVOID pVoid)
     VALIDATE_POINTER_RETURN_VALUE_LOG(pThreadParam->m_hActionEvent, (DWORD)-1);
 
     DWORD dwResult = 0;
-    while (s_DatIndThread.m_bToContinue)
-    {
-        if (s_DatIndThread.m_bIsConnected)
+	bool bLoopON = true;
+
+	while (bLoopON)
+	{
+		for (UINT i = 0; i < sg_odHardwareNetwork.m_nNoOfDevices && bLoopON ; i++)
         {
-			for (UINT i = 0; i < sg_odHardwareNetwork.m_nNoOfDevices ; i++)
+            dwResult = (*icsneoWaitForRxMessagesWithTimeOut)(m_anhObject[i][0], WAITTIME_NEOVI);
+            //kadoor WaitForSingleObject(pThreadParam->m_hActionEvent, INFINITE);
+            if (dwResult > 0)
             {
-                dwResult = (*icsneoWaitForRxMessagesWithTimeOut)(m_anhObject[i][0], WAITTIME_NEOVI);
-                //kadoor WaitForSingleObject(pThreadParam->m_hActionEvent, INFINITE);
-                if (dwResult > 0)
+                switch (pThreadParam->m_unActionCode)
                 {
-                    switch (pThreadParam->m_unActionCode)
+                    case INVOKE_FUNCTION:
                     {
-                        case INVOKE_FUNCTION:
-                        {
-                            ProcessCANMsg(i); // Retrieve message from the driver
-                        }
-                        break;
-                        case CREATE_TIME_MAP:
-                        {
-                            sg_byCurrState = CREATE_MAP_TIMESTAMP;
-                            SetEvent(pThreadParam->m_hActionEvent);
-                            //vCreateTimeModeMapping(pThreadParam->m_hActionEvent);
-                            ProcessCANMsg(i);
-                            pThreadParam->m_unActionCode = INVOKE_FUNCTION;
-                        }
-                        break;
-                        default:
-                        case INACTION:
-                        {
-                            // nothing right at this moment
-                        }
-                        break;
+                        ProcessCANMsg(i); // Retrieve message from the driver
                     }
+                    break;
+                    case CREATE_TIME_MAP:
+                    {
+                        sg_byCurrState = CREATE_MAP_TIMESTAMP;
+                        SetEvent(pThreadParam->m_hActionEvent);
+                        //vCreateTimeModeMapping(pThreadParam->m_hActionEvent);
+                        ProcessCANMsg(i);
+                        pThreadParam->m_unActionCode = INVOKE_FUNCTION;
+                    }
+                    break;
+					case EXIT_THREAD:
+					{
+						bLoopON = false;						
+					}
+					break;
+                    default:
+                    case INACTION:
+                    {
+                        // nothing right at this moment
+                    }
+                    break;
                 }
             }
         }
-        else
-        {
-            WaitForSingleObject(pThreadParam->m_hActionEvent, 500);
-            switch (pThreadParam->m_unActionCode)
-            {
-                case EXIT_THREAD:
-                {
-                    s_DatIndThread.m_bToContinue = FALSE;
-                }
-                break;
-            }
-        }
-    }
+	}
+
     SetEvent(pThreadParam->hGetExitNotifyEvent());
 
     // Close the notification event for startup
@@ -1923,7 +1916,7 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
             }
             else // Hardware is not present
             {
-                
+                nReturn = -1;
                 // Display the error message when not called from COM interface                
             }
         }
@@ -2551,38 +2544,38 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_StartHardware(void)
 
     USES_CONVERSION;
     HRESULT hResult = S_OK;
-    //Restart the read thread
-    sg_sParmRThread.bTerminateThread();
     sg_sParmRThread.m_pBuffer = (LPVOID) &s_DatIndThread;
-    s_DatIndThread.m_bToContinue = TRUE;
-    if (sg_sParmRThread.bStartThread(CanMsgReadThreadProc_CAN_ICS_neoVI))
+    s_DatIndThread.m_bToContinue = TRUE;    
+	/* connect to the network */        
+    for (UINT ClientIndex = 0; ClientIndex < sg_unClientCnt; ClientIndex++)
     {
-        hResult = S_OK;
-    }
-    else
-    {
-        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Could not start the read thread" ));
-    }
-    //If everything is ok connect to the network
-    if (hResult == S_OK)
-    {
-        for (UINT ClientIndex = 0; ClientIndex < sg_unClientCnt; ClientIndex++)
+        BYTE hClient = sg_asClientToBufMap[ClientIndex].hClientHandle;
+        hResult = nConnect(TRUE, hClient);
+        if (hResult == CAN_USB_OK)
         {
-            BYTE hClient = sg_asClientToBufMap[ClientIndex].hClientHandle;
-            hResult = nConnect(TRUE, hClient);
-            if (hResult == CAN_USB_OK)
-            {
-                hResult = S_OK;
-                sg_bCurrState = STATE_CONNECTED;
-            }
-            else
-            {
-                //log the error for open port failure
-                vRetrieveAndLog(hResult, __FILE__, __LINE__);
-                hResult = ERR_LOAD_HW_INTERFACE;
-            }
+            hResult = S_OK;
+            sg_bCurrState = STATE_CONNECTED;
         }
-    }
+        else
+        {
+            //log the error for open port failure
+            vRetrieveAndLog(hResult, __FILE__, __LINE__);
+            hResult = ERR_LOAD_HW_INTERFACE;
+        }
+    }    
+	/* If everything is ok, start the read thread */ 
+	if (hResult == S_OK)
+	{
+		if (sg_sParmRThread.bStartThread(CanMsgReadThreadProc_CAN_ICS_neoVI))
+		{
+			hResult = S_OK;
+		}
+		else
+		{
+			sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Could not start the read thread" ));
+		}
+	}
+
     return hResult;
 }
 
@@ -2594,6 +2587,9 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_StopHardware(void)
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
 
     HRESULT hResult = S_OK;
+
+	//Terminate the read thread
+	sg_sParmRThread.bTerminateThread();	
 
     for (UINT ClientIndex = 0; ClientIndex < sg_unClientCnt; ClientIndex++)
     {

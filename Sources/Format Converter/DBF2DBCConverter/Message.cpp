@@ -123,7 +123,7 @@ int CMessage::Format(char *pcLine)
     m_cFrameFormat = pcToken[0];
     if(strcmp(pcToken,"X") == 0)
     {
-        m_uiMsgID  = m_uiMsgID + 2147483648;
+        m_uiMsgID  = m_uiMsgID - 2147483648;
     }
 
     //get the Tx'ing Node Name

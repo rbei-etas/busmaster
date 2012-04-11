@@ -202,9 +202,12 @@ DWORD WINAPI Cyclic_Transmission_Thread(LPVOID pVoid)
         if ((eTransState == TRANS_TO_BE_STOPPED)
             || (eTransState == TRANS_STOPPED))
         {
-            pTxMsgWndJ1939->vProcessTransmission(FALSE);
-            dwMiliSecs = INFINITE;
-            ResetEvent(pThreadParam->m_hActionEvent);
+			if (NULL != pTxMsgWndJ1939 && IsWindow(pTxMsgWndJ1939->m_hWnd))
+			{
+				pTxMsgWndJ1939->vProcessTransmission(FALSE);
+				dwMiliSecs = INFINITE;
+				ResetEvent(pThreadParam->m_hActionEvent);
+			}
         }
         else if (eTransState == TRANS_STARTED)
         {

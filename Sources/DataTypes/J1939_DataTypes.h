@@ -256,6 +256,7 @@ typedef struct tagFormattedData_J1939
     TCHAR  m_acTimeSys[LEN_STR_TIMESTAMP_J1939];    // System time stamp
     TCHAR  m_acTimeRel[LEN_STR_TIMESTAMP_J1939];    // Relative time stamp
     TCHAR  m_acTimeAbs[LEN_STR_TIMESTAMP_J1939];    // Absolute time stamp 
+    TCHAR  m_acTimeAbsReset[LEN_STR_TIMESTAMP_J1939];    // Absolute time stamp Reset
 
     TCHAR  m_acMsgType[LEN_STR_TYPE_J1939];         // Type indicator
     TCHAR  m_acChannel[LEN_STR_CHANNEL_J1939];      // Channel/controller indicator

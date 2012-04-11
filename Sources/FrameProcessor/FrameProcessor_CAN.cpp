@@ -110,6 +110,14 @@ void CFrameProcessor_CAN::vRetrieveDataFromBuffer(void)
 
             if (m_bLogEnabled == TRUE)
             {
+				//check for new logging session
+				if(m_bResetAbsTime == TRUE)
+				{
+					//update msg reset flag
+					m_ouFormatMsgCAN.m_bResetMsgAbsTime = m_bResetAbsTime;
+					m_bResetAbsTime = FALSE;
+				}
+
                 // Format current frame in the necessary settings
                 m_ouFormatMsgCAN.vFormatCANDataMsg(&CurrMsgCAN, &CurrDataCAN, m_bExprnFlag_Log);
 
@@ -381,4 +389,21 @@ void CFrameProcessor_CAN::vEmptyLogObjArray(CLogObjArray& omLogObjArray)
     }
     omLogObjArray.RemoveAll();
 }
+
+//Setter for database files associated
+HRESULT CFrameProcessor_CAN::FPC_SetDatabaseFiles(const CStringArray& omList)
+{
+	return SetDatabaseFiles(omList);
+}
+
+// To update the channel baud rate info to logger
+HRESULT CFrameProcessor_CAN::FPC_SetChannelBaudRateDetails
+							(SCONTROLER_DETAILS* controllerDetails, 
+							int nNumChannels)
+{
+	HRESULT hResult = S_OK;
+	SetChannelBaudRateDetails(controllerDetails, nNumChannels);
+	return hResult;
+}
+
 // USE COMMON BASE CLASS ALIAS FUNCTIONS: END

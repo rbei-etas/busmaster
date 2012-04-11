@@ -38,7 +38,14 @@ void CFormatMsgCAN::vFormatTime(BYTE bExprnFlag,
                                 SFORMATTEDDATA_CAN* CurrDataCAN)
 {
     BYTE bTmpExprnFlag = bExprnFlag;
-    if (IS_TM_ABS_SET(bExprnFlag))
+    if (IS_TM_ABS_RES(bExprnFlag))//for Absolute reset timestamp
+    {
+        CLEAR_EXPR_TM_BITS(bTmpExprnFlag);
+        SET_TM_ABS_RES(bTmpExprnFlag);
+        vCalculateAndFormatTM(bTmpExprnFlag, CurrDataCAN->m_u64TimeStamp, 
+                              CurrDataCAN->m_acTimeAbsReset);
+    }
+    if (IS_TM_ABS_SET(bExprnFlag))//for Absolute non-reset timestamp
     {
         CLEAR_EXPR_TM_BITS(bTmpExprnFlag);
         SET_TM_ABS(bTmpExprnFlag);

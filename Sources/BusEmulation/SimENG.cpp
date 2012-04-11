@@ -225,15 +225,9 @@ DWORD WINAPI MsgDelegatingThread(LPVOID pParam)
     sg_MessageBuf.WriteIntoBuffer(&CurrMsgDat);
 }*/
 
-CSimENG::CSimENG()
+static void vCreateTimeModeMapping()
 {
-    InitializeCriticalSection(&sg_CriticalSection);
-    InitializeCriticalSection(&sg_CSMsgEntry);
-    //MessageBox(NULL, "in CSimENG()", "Member function", MB_OK);
-    // First save the current system time
-    GetLocalTime(&sg_CurrSysTime);
-
-    // Now save the current value of the high-resolution performance counter,
+    // Save the current value of the high-resolution performance counter,
     // associated to the saved system time to the closest proximity.
     QueryPerformanceCounter(&sg_lnCurrCounter);
 
@@ -252,6 +246,19 @@ CSimENG::CSimENG()
                                             / sg_lnFrequency.QuadPart) * 10000;
     }
 }
+
+CSimENG::CSimENG()
+{
+    InitializeCriticalSection(&sg_CriticalSection);
+    InitializeCriticalSection(&sg_CSMsgEntry);
+    //MessageBox(NULL, "in CSimENG()", "Member function", MB_OK);
+    // First save the current system time
+    GetLocalTime(&sg_CurrSysTime);
+
+	vCreateTimeModeMapping();
+
+}
+
 
 HRESULT CSimENG::FinalConstruct()
 {
@@ -512,6 +519,8 @@ STDMETHODIMP CSimENG::ConnectNode(USHORT ClientID)
         itr->second.m_bCurrState = NORMAL_ACTIVE;
         Result = S_OK;
     }
+
+	vCreateTimeModeMapping();
 
     return Result;
 }

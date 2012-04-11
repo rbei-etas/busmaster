@@ -120,8 +120,8 @@ void CIncludeHeaderDlg::OnOk()
 
         if (bRetVal == FALSE)
         {
-            AfxMessageBox(_T("Please make sure to include the filename in between\n"
-"double quotes or in angle brackets appropriately.."),
+            AfxMessageBox(_T("Please make sure to include the filename in between\n\
+ double quotes or in angle brackets appropriately.."),
                     MB_OK|MB_ICONINFORMATION);
         }
         else

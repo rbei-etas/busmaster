@@ -125,6 +125,14 @@ public:
 
     // To stop logging block editing session
     virtual HRESULT FPJ1_StopEditingSession(BOOL bConfirm) = 0;
+
+	// To update the associated database list to logger
+	virtual HRESULT FPJ1_SetDatabaseFiles(const CStringArray& omList) = 0;
+
+	// To update the channel baud rate info to logger
+	virtual HRESULT FPJ1_SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
+														int nNumChannels) = 0;
+
 };
 
 #endif // BASEFRAMEPROCESSOR_J1939_H__INCLUDED_

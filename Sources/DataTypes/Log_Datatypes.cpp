@@ -67,6 +67,7 @@ void tagLogInfo::vClear(void)
     m_eLogTimerMode      = TIME_MODE_SYSTEM;
     m_eNumFormat         = HEXADECIMAL;
     m_eFileMode          = APPEND_MODE;
+    m_bResetAbsTimeStamp = FALSE;
     m_ChannelSelected    = CHANNEL_All_UNSPECIFIED;
     _tcscpy(m_sLogFileName, _T(""));
 
@@ -92,7 +93,7 @@ UINT tagLogInfo::unGetSize(void) const
 {
     UINT Result = 
         sizeof(m_bIsUpdated) + sizeof(m_bEnabled) + sizeof(m_eLogTimerMode) + 
-        sizeof(m_eNumFormat) + sizeof(m_eFileMode) + sizeof(m_ChannelSelected)
+        sizeof(m_eNumFormat) + sizeof(m_eFileMode) + sizeof(m_bResetAbsTimeStamp) + sizeof(m_ChannelSelected)
         + sizeof(m_sLogFileName) + sizeof(m_sLogTrigger);
 
     return Result;
@@ -123,6 +124,7 @@ BYTE* tagLogInfo::pbGetConfigData(BYTE* pbTarget) const
     COPY_DATA(pbTStream, &m_eLogTimerMode,    sizeof(m_eLogTimerMode     ));
     COPY_DATA(pbTStream, &m_eNumFormat,       sizeof(m_eNumFormat        ));
     COPY_DATA(pbTStream, &m_eFileMode,        sizeof(m_eFileMode         ));
+    COPY_DATA(pbTStream, &m_bResetAbsTimeStamp, sizeof(m_bResetAbsTimeStamp));
     COPY_DATA(pbTStream, &m_ChannelSelected,  sizeof(m_ChannelSelected   ));
     COPY_DATA(pbTStream, m_sLogFileName,      sizeof(m_sLogFileName      ));
     COPY_DATA(pbTStream, &m_sLogTrigger,      sizeof(m_sLogTrigger       ));
@@ -146,7 +148,7 @@ BYTE* tagLogInfo::pbGetConfigData(BYTE* pbTarget) const
   Modification date:  
   Modification By  :  
 ******************************************************************************/
-BYTE* tagLogInfo::pbSetConfigData(BYTE* pbSource)
+BYTE* tagLogInfo::pbSetConfigData(BYTE* pbSource, BYTE bytLogVersion)
 {
     BYTE* pbSStream = pbSource;
 
@@ -155,7 +157,12 @@ BYTE* tagLogInfo::pbSetConfigData(BYTE* pbSource)
     COPY_DATA_2(&m_eLogTimerMode,    pbSStream, sizeof(m_eLogTimerMode   ));
     COPY_DATA_2(&m_eNumFormat,       pbSStream, sizeof(m_eNumFormat      ));
     COPY_DATA_2(&m_eFileMode,        pbSStream, sizeof(m_eFileMode       ));
-    COPY_DATA_2(&m_ChannelSelected,  pbSStream, sizeof(m_ChannelSelected ));
+
+	/* If version is 1.6.2 and above */
+	if ( bytLogVersion > 0x1 )
+		COPY_DATA_2(&m_bResetAbsTimeStamp, pbSStream, sizeof(m_bResetAbsTimeStamp));
+    
+	COPY_DATA_2(&m_ChannelSelected,  pbSStream, sizeof(m_ChannelSelected ));
     COPY_DATA_2(m_sLogFileName,      pbSStream, sizeof(m_sLogFileName    ));
     COPY_DATA_2(&m_sLogTrigger,      pbSStream, sizeof(m_sLogTrigger     ));
 

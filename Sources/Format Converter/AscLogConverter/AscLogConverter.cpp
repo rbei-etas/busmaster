@@ -111,12 +111,9 @@ HRESULT CAscLogConverter::GetHelpText(TCHAR* pchHelpText)
     return S_FALSE;
 }
 
-HRESULT CAscLogConverter::GetConverterName(TCHAR* strConverterName)
+HRESULT CAscLogConverter::GetConverterName(string& strConverterName)
 {
-    if(strConverterName != NULL)
-    {
-        strcpy(strConverterName, _T("ASC TO LOG Conversion"));
-    }
+	strConverterName = "ASC TO LOG Conversion";
     return S_OK;
 }
 HRESULT CAscLogConverter::GetErrorStatus(HRESULT hResult, CString& omstrStatus)
@@ -201,7 +198,7 @@ HRESULT CAscLogConverter::ConvertFile(TCHAR* chInputFile, TCHAR* chOutputFile)
         if(NULL != fpOutputFile)
         {
             //yydebug = 1;
-            fprintf(fpOutputFile, "%s\n", "***BUSMASTER Ver 1.4.0***");
+            fprintf(fpOutputFile, "%s\n", "***BUSMASTER Ver 1.6.2***");
             fprintf(fpOutputFile, "%s\n", "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***");
             fprintf(fpOutputFile, "%s\n", "***[START LOGGING SESSION]***");
             fprintf(fpOutputFile, "%s", "***START DATE AND TIME ");

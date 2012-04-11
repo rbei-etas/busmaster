@@ -71,8 +71,8 @@ and creates a list of the same
 */
 int CValueDescriptor::Format(char *pcLine)
 {
-    char acValue[100];
-    char acDesc[100];
+	char acValue[256] = {'\0'};
+    char acDesc[256] = {'\0'};
 
     char *pcValue = acValue;
     char *pcDesc = acDesc;

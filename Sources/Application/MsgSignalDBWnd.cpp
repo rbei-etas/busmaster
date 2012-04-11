@@ -307,6 +307,12 @@ void CMsgSignalDBWnd::OnClose()
                     }
                 }
                 //Checking ends
+
+				// Set the modified flag as saved
+				if (NULL != (*ppTempMsgSg))
+				{
+					(*ppTempMsgSg)->vSetModifiedFlag(TRUE);
+				}
             }
             else if( bRetVal == IDNO )
             {

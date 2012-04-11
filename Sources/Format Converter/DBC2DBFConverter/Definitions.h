@@ -26,7 +26,7 @@
 #define Definitions_H
 
 //Converter.cpp
-#define defCON_MAX_LINE_LEN 1026  //Maximum no of char in one line
+#define defCON_MAX_LINE_LEN 2052  //Maximum no of char in one line
 #define defCON_TEMP_LEN 250
 
 //ValueTable.cpp

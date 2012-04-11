@@ -2959,7 +2959,7 @@ STDMETHODIMP CDMGraphCtrl::GenerateCSVReport(LPCTSTR pFilename)
                 }
                 // Now Export the data
                 //Write CSV File Header
-                fprintf(pFile,"CANvas Generated Report\n\n");
+                fprintf(pFile,"BUSMASTER Generated Report\n\n");
                 // Write Signal Names
                 for( UINT nIndex = 0; nIndex < lElementCount; nIndex++ )
                 {

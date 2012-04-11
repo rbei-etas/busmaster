@@ -38,18 +38,21 @@
 #define BIT_TM_SYS              0x04
 #define BIT_NUM_HEX             0x08
 #define BIT_NUM_DEC             0x10
+#define BIT_TM_ABS_RES          0x20
 
 #define SET_TM_ABS(Flag)        (Flag |= BIT_TM_ABS)
 #define SET_TM_REL(Flag)        (Flag |= BIT_TM_REL)
 #define SET_TM_SYS(Flag)        (Flag |= BIT_TM_SYS)
 #define SET_NUM_HEX(Flag)       (Flag |= BIT_NUM_HEX)
 #define SET_NUM_DEC(Flag)       (Flag |= BIT_NUM_DEC)
+#define SET_TM_ABS_RES(Flag)    (Flag |= BIT_TM_ABS_RES)
 
 #define IS_TM_ABS_SET(Flag)     (Flag & BIT_TM_ABS)
 #define IS_TM_REL_SET(Flag)     (Flag & BIT_TM_REL)
 #define IS_TM_SYS_SET(Flag)     (Flag & BIT_TM_SYS)
 #define IS_NUM_HEX_SET(Flag)    (Flag & BIT_NUM_HEX)
 #define IS_NUM_DEC_SET(Flag)    (Flag & BIT_NUM_DEC)
+#define IS_TM_ABS_RES(Flag)    (Flag & BIT_TM_ABS_RES)
 
 #define CLEAR_EXPR_FLAG(Flag)   (Flag &= 0x0)
 

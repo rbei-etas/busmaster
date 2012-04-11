@@ -139,7 +139,14 @@ public:
     // Setter for the logging configuration data
     HRESULT FPC_SetConfigData(BYTE* pvDataStream);
 
-    /* ENDS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
+	// To update the associated database list to logger
+	HRESULT FPC_SetDatabaseFiles(const CStringArray& omList);
+
+	// To update the channel baud rate info to logger
+	HRESULT FPC_SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
+															int nNumChannels);
+
+	/* ENDS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
 };
 
 #endif // FRAMEPROCESSOR_CAN_H__INCLUDED_

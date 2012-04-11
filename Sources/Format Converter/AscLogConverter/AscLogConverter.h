@@ -13,7 +13,7 @@ public:
     virtual HRESULT GetInputFileFilters(TCHAR*, TCHAR* );
     virtual HRESULT GetOutputFileFilters(TCHAR*, TCHAR* );
     virtual HRESULT ConvertFile(TCHAR* chInputFile, TCHAR* chOutputFile);
-    virtual HRESULT GetConverterName(TCHAR* strConverterName);
+    virtual HRESULT GetConverterName(string& strConverterName);
     virtual HRESULT GetErrorStatus(HRESULT hResult, CString& omstrStatus);
     virtual HRESULT GetLastConversionStatus(HRESULT& hResult, CString& omstrStatus);
     virtual HRESULT GetHelpText(TCHAR* pchHelpText);

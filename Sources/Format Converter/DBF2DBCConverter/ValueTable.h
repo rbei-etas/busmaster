@@ -38,7 +38,7 @@
 
 #include <afxtempl.h>
 #include "ValueDescriptor.h"
-#define max_TAB_NAME 50
+#define max_TAB_NAME 1024
 
 class CValueTable
 {

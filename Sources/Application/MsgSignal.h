@@ -120,6 +120,9 @@ public:
     // Returns the value of "m_bIsDatabaseSaved" flag
     BOOL bGetModifiedFlag();
 
+	// sets the value of "m_bIsDatabaseSaved" flag
+	void vSetModifiedFlag(BOOL bSaved);
+
     // Gives a list of message names
     void omStrListGetMessageNames(CStringList& );
 	 // Gives a list of message names for editing database

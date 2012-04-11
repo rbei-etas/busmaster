@@ -483,10 +483,8 @@
 #define IDC_STAT_DELAY_CYLCES           1078
 #define IDC_CHKB_TIMER3                 1079
 #define IDC_EDIT_TIME_DELAY_BETN_CYCLES 1079
-#define IDC_RBTN_APPEND                 1079
 #define IDC_CHKB_TIMER4                 1080
 #define IDC_STAT_MSEC                   1080
-#define IDC_RBTN_OVERWRITE              1080
 #define IDC_CHKB_TIMER5                 1081
 #define IDC_EDIT_TIME_DELAY_BETN_MSGS   1081
 #define IDC_RBTN_DECIMAL                1081
@@ -827,6 +825,9 @@
 #define IDC_EDIT5                       1348
 #define IDC_EDIT_PRIORITY               1348
 #define IDC_STATIC_CHANNEL              1349
+#define IDC_RBTN_APPEND                 1350
+#define IDC_RBTN_OVERWRITE              1351
+#define IDC_CHECK_RESET_TIMESTAMP       1352
 #define IDB_J1939TXMSG                  10004
 #define DLG_TEMPLATE_LOCKING_KEY        13030
 #define IDR_TOOL_BUTTON_SIGNAL_WATCH    32784
@@ -1092,7 +1093,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        301
 #define _APS_NEXT_COMMAND_VALUE         33123
-#define _APS_NEXT_CONTROL_VALUE         1350
+#define _APS_NEXT_CONTROL_VALUE         1353
 #define _APS_NEXT_SYMED_VALUE           111
 #endif
 #endif

@@ -58,6 +58,10 @@ protected:
 
 public:
 
+	CStringArray		m_omListDBFiles;
+	SCONTROLER_DETAILS*	m_pasControllerDetails;
+	int					m_nNumChannels;
+
     CLogObjectJ1939(CString omVersion);    // Overloaded constructor
     ~CLogObjectJ1939();   // Destructor
 
@@ -71,6 +75,18 @@ public:
     void GetFilterInfo(SFILTERAPPLIED_J1939& sFilterInfo) const;
     // Set the filter info structure
     void SetFilterInfo(const SFILTERAPPLIED_J1939& sFilterInfo);
+	
+	// Get the list of database files associated
+	void Der_GetDatabaseFiles(CStringArray& omList);
+	// Set the list of database files associated
+	void Der_SetDatabaseFiles(const CStringArray& omList);
+	// Set the baud rate details for each channel
+	void Der_SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails, 
+										int nNumChannels);
+	// To get the channel baud rate info for each channel
+	void Der_GetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
+											int& nNumChannels);
+
 };
 
 #endif // LOGOBJECTJ1939_H__INCLUDED_

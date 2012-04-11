@@ -39,17 +39,23 @@ const UINT DEFAULT_FILE_SIZE_IN_BYTES = DEFAULT_FILE_SIZE_IN_MBYTES * MB_VALUE;
 #define FILE_COUNT_STR                    _T("_%d")
 
 
-#define BUS_LOG_HEADER        _T("***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***")
-#define BUS_LOG_START         _T("***[START LOGGING SESSION]***")
-#define BUS_LOG_STOP          _T("***[STOP LOGGING SESSION]***")
-#define BUS_LOG_START_DATE_TIME \
-                              _T("***START DATE AND TIME %d:%d:%d %d:%d:%d:%d***")
-#define BUS_LOG_END_DATE_TIME _T("***END DATE AND TIME %d:%d:%d %d:%d:%d:%d***")
-#define BUS_LOG_HEXFORMAT     _T("***HEX***")
-#define BUS_LOG_DECFORMAT     _T("***DEC***")
-#define BUS_LOG_ABSMODE       _T("***ABSOLUTE MODE***")
-#define BUS_LOG_RELMODE       _T("***RELATIVE MODE***")
-#define BUS_LOG_SYSMODE       _T("***SYSTEM MODE***")
+#define BUS_LOG_HEADER			_T("***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***")
+#define BUS_LOG_START			_T("***[START LOGGING SESSION]***")
+#define BUS_LOG_STOP			_T("***[STOP LOGGING SESSION]***")
+#define BUS_LOG_START_DATE_TIME	\
+								_T("***START DATE AND TIME %d:%d:%d %d:%d:%d:%d***")
+#define BUS_LOG_END_DATE_TIME	_T("***END DATE AND TIME %d:%d:%d %d:%d:%d:%d***")
+#define BUS_LOG_HEXFORMAT		_T("***HEX***")
+#define BUS_LOG_DECFORMAT		_T("***DEC***")
+#define BUS_LOG_ABSMODE			_T("***ABSOLUTE MODE***")
+#define BUS_LOG_RELMODE			_T("***RELATIVE MODE***")
+#define BUS_LOG_SYSMODE			_T("***SYSTEM MODE***")
+#define BUS_LOG_BAUDRATE		_T("***CHANNEL %d BAUD RATE %d kbps***")
+#define BUS_LOG_DATABASE_START	_T("***START DATABASE FILES (DBF/DBC)***")
+#define BUS_LOG_DATABASE_END	_T("***END DATABASE FILES (DBF/DBC)***")
+#define BUS_LOG_BAUDRATE_START	_T("***START CHANNEL BAUD RATE***")
+#define BUS_LOG_BAUDRATR_END	_T("***END CHANNEL BAUD RATE***")
+#define BUS_LOG_CHANNEL			_T("***CHANNEL %d - %s - %s Kbps***")
 
 
 //********************************************************************************
@@ -182,10 +188,10 @@ void CBaseLogObject::SetLogInfo(const SLOGINFO& sLoginfo)
 /**
  * Set configuration data
  */
-BYTE* CBaseLogObject::SetConfigData(BYTE* pvDataStream)
+BYTE* CBaseLogObject::SetConfigData(BYTE* pvDataStream, BYTE bytLogVersion)
 {
     BYTE* pbSStream = pvDataStream;
-    pbSStream = m_sLogInfo.pbSetConfigData(pbSStream);
+	pbSStream = m_sLogInfo.pbSetConfigData(pbSStream, bytLogVersion);
     pbSStream = Der_SetConfigData(pbSStream);
 
     // The default value of current log file should be the log file name
@@ -514,6 +520,37 @@ void CBaseLogObject::vFormatHeader(CString& omHeader)
         default: ASSERT(FALSE); break;
     }
     omHeader += L'\n';
+
+	// Update the channel and its baudrate information	
+	sCONTROLERDETAILS controllerDetails[defNO_OF_CHANNELS];
+	int nNumChannels = 0;
+	GetChannelBaudRateDetails(controllerDetails, nNumChannels);
+	omHeader += BUS_LOG_BAUDRATE_START;
+	omHeader += L'\n';
+	CString strChannelNum = "";
+	for (int nChannelNum = 1; nChannelNum <= nNumChannels; nChannelNum++)
+	{
+		strChannelNum.Format(BUS_LOG_CHANNEL, nChannelNum, 
+						controllerDetails[nChannelNum - 1].m_omHardwareDesc,
+						controllerDetails[nChannelNum - 1].m_omStrBaudrate);
+		omHeader += strChannelNum;
+		omHeader += L'\n';
+	}
+	omHeader += BUS_LOG_BAUDRATR_END;
+	omHeader += L'\n';
+
+	//Update Baud Rate and Associated DBC and DBF files
+	CStringArray aomList;
+	GetDatabaseFiles(aomList);
+	omHeader += BUS_LOG_DATABASE_START;
+	omHeader += L'\n';
+	for (int nIdx = 0; nIdx < aomList.GetSize(); nIdx++)
+	{
+		omHeader += "***" + aomList.GetAt(nIdx) + "***";
+		omHeader += L'\n';
+	}
+	omHeader += BUS_LOG_DATABASE_END;
+	omHeader += L'\n';
 }
 
 void CBaseLogObject::vFormatFooter(CString& omFooter)
@@ -530,4 +567,29 @@ void CBaseLogObject::vFormatFooter(CString& omFooter)
 
     omFooter += BUS_LOG_STOP;
     omFooter += L'\n';
+}
+
+void CBaseLogObject::GetDatabaseFiles(CStringArray& omList)
+{
+	Der_GetDatabaseFiles(omList);
+}
+
+void CBaseLogObject::SetDatabaseFiles(const CStringArray& omList)
+{
+	Der_SetDatabaseFiles(omList);
+}
+
+// Set the baud rate details for each channel
+void CBaseLogObject::Der_SetChannelBaudRateDetails
+					(SCONTROLER_DETAILS* controllerDetails, 
+					int nNumChannels)
+{
+	Der_SetChannelBaudRateDetails(controllerDetails, nNumChannels);
+}
+
+// To get the channel baud rate
+void CBaseLogObject::GetChannelBaudRateDetails
+					(SCONTROLER_DETAILS* controllerDetails, int& nNumChannels)
+{
+	Der_GetChannelBaudRateDetails(controllerDetails, nNumChannels);
 }

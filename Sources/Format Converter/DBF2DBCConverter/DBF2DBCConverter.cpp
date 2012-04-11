@@ -14,12 +14,9 @@ HRESULT CDBF2DBCConverter::GetHelpText(TCHAR* pchHelpText)
     }
     return S_FALSE;
 }
-HRESULT CDBF2DBCConverter::GetConverterName(TCHAR* strConverterName)
+HRESULT CDBF2DBCConverter::GetConverterName(string& strConverterName)
 {
-    if(strConverterName != NULL)
-    {
-        strcpy(strConverterName, _T("DBF TO DBC Conversion"));
-    }
+	strConverterName = "DBF TO DBC Conversion";
     return S_OK;
 }
 HRESULT CDBF2DBCConverter::GetErrorStatus(HRESULT hResult, CString& omstrStatus)

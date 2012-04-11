@@ -138,6 +138,13 @@ public:
 
     // To stop logging block editing session
     virtual HRESULT FPC_StopEditingSession(BOOL bConfirm) = 0;
+    
+	// To update the associated database list to logger
+	virtual HRESULT FPC_SetDatabaseFiles(const CStringArray& omList) = 0;
+
+	// To update the channel baud rate info to logger
+	virtual HRESULT FPC_SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
+														int nNumChannels) = 0;
 };
 
 #endif // BASEFRAMEPROCESSOR_CAN_H__INCLUDED_

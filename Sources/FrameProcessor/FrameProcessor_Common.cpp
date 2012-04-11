@@ -31,7 +31,10 @@
 #include "FrameProcessor_Common.h"
 #include "RefTimeKeeper.h"
 
-#define VERSION_CURR    0x01
+/* Log version..applicable for log files from ver 1.6.2 */
+#define VERSION_CURR    0x02
+/* Log version..applicable for log files before ver 1.6.2 */
+/*#define VERSION_CURR    0x01*/
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -116,13 +119,8 @@ CFrameProcessor_Common::~CFrameProcessor_Common()
 
 HRESULT CFrameProcessor_Common::DoInitialisation(void)
 {
-    //HRESULT hResult = S_FALSE;
-
     m_sDataCopyThread.m_unActionCode = CREATE_TIME_MAP;	
-    /*if (m_sDataCopyThread.bStartThread(DataCopyThreadProc) == TRUE)
-    {
-        hResult = S_OK;
-    }*/
+
     return S_OK;
 }
 
@@ -190,8 +188,7 @@ UINT CFrameProcessor_Common::unGetBufSize(void)
 void CFrameProcessor_Common::InitTimeParams(void)
 {
     SYSTEMTIME CurrSysTime;
-    UINT64 unAbsTime;
-    //WaitForSingleObject(m_sDataCopyThread.m_hActionEvent, INFINITE);
+    UINT64 unAbsTime;    
     CreateTimeModeMapping(CurrSysTime, unAbsTime);
     CRefTimeKeeper::vSetTimeParams(CurrSysTime, unAbsTime);
 }
@@ -214,9 +211,15 @@ void CFrameProcessor_Common::vUpdateLoggingFlag(void)
             continue;
         }
 
-        switch (sLogInfo.m_eLogTimerMode)
+		BYTE* pbResFlag = sLogInfo.m_bResetAbsTimeStamp ? &m_bLogFlagTmp : &m_bExprnFlag_Log;
+
+		switch (sLogInfo.m_eLogTimerMode)
         {
-            case TIME_MODE_ABSOLUTE: SET_TM_ABS(*pbCurrFlag); break;
+            case TIME_MODE_ABSOLUTE: 
+				SET_TM_ABS(*pbCurrFlag); 
+				SET_TM_ABS_RES(*pbResFlag); 
+				break;
+
             case TIME_MODE_RELATIVE: SET_TM_REL(*pbCurrFlag); break;
             case TIME_MODE_SYSTEM:   SET_TM_SYS(*pbCurrFlag); break;
         }
@@ -298,11 +301,15 @@ first assign FALSE to m_bLogEnabled and then only perform the other tasks. Else
 crash / unexpected behaviour may result */
 	USHORT ushBlocks = (USHORT) (m_omLogObjectArray.GetSize());
 
+	//update reset flag
+	m_bResetAbsTime = bEnable;
+
     if (ushBlocks > 0)
     {
         if (FALSE == bEnable)
         {
             m_bLogEnabled = bEnable;
+			m_sDataCopyThread.m_unActionCode = INACTION;
         }
         for (USHORT i = 0; i < ushBlocks; i++)
         {
@@ -320,7 +327,9 @@ crash / unexpected behaviour may result */
         if (TRUE == bEnable)
         {
             m_bLogEnabled = bEnable;
+			m_sDataCopyThread.m_unActionCode = CREATE_TIME_MAP;
         }
+
         hResult = S_OK;
     }
     return hResult;
@@ -462,7 +471,7 @@ HRESULT CFrameProcessor_Common::SetConfigData(BYTE* pvDataStream)
 	for (USHORT i = 0; i < ushLogBlks; i++)
 	{
         CBaseLogObject* pouBaseLogObj = CreateNewLogObj();
-        pbBuff = pouBaseLogObj->SetConfigData(pbBuff);
+		pbBuff = pouBaseLogObj->SetConfigData(pbBuff, bVersion);
         m_omLogListTmp.Add(pouBaseLogObj);
 	}
 
@@ -616,4 +625,51 @@ HRESULT CFrameProcessor_Common::StopEditingSession(BOOL bConfirm)
  
     return hResult;
 }
+
+HRESULT CFrameProcessor_Common::SetDatabaseFiles(const CStringArray& omList)
+{
+	HRESULT hResult = S_OK; // Success is default assumption
+
+	CLogObjArray* pomCurrArray = GetActiveLogObjArray();
+	if (NULL != pomCurrArray)
+	{
+		for (int nIdx = 0; nIdx < pomCurrArray->GetSize(); nIdx++)
+		{
+			CBaseLogObject* pouCurrLogObj = pomCurrArray->GetAt(nIdx);
+
+			if (NULL != pouCurrLogObj)
+			{
+				pouCurrLogObj->Der_SetDatabaseFiles(omList);
+			}
+		}
+	}
+
+	return hResult;
+}
+
+void CFrameProcessor_Common::GetDatabaseFiles(CStringArray& omList)
+{
+	//return m_omListDBFiles;
+}
+
+void CFrameProcessor_Common::SetChannelBaudRateDetails
+							(SCONTROLER_DETAILS* controllerDetails, 
+							int nNumChannels)
+{
+	CLogObjArray* pomCurrArray = GetActiveLogObjArray();
+	if (NULL != pomCurrArray)
+	{
+		for (int nIdx = 0; nIdx < pomCurrArray->GetSize(); nIdx++)
+		{
+			CBaseLogObject* pouCurrLogObj = pomCurrArray->GetAt(nIdx);
+
+			if (NULL != pouCurrLogObj)
+			{
+				pouCurrLogObj->Der_SetChannelBaudRateDetails(controllerDetails,
+															nNumChannels);
+			}
+		}
+	}
+}
+
 /* End of alias functions in CFrameProcessor_Common */

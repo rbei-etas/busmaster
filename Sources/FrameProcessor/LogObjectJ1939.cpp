@@ -57,10 +57,17 @@ CLogObjectJ1939::CLogObjectJ1939(CString omVersion):CBaseLogObject(omVersion)
 {
     // Initialise the filtering block
     m_sFilterApplied.vClear();
+	m_pasControllerDetails = NULL;
+	m_nNumChannels = 0;
 }
 
 CLogObjectJ1939::~CLogObjectJ1939()
 {
+	if (NULL != m_pasControllerDetails)
+	{
+		delete[] m_pasControllerDetails;
+		m_pasControllerDetails = NULL;
+	}
 }
 
 void CLogObjectJ1939::Der_CopySpecificData(const CBaseLogObject* pouLogObjRef)
@@ -295,4 +302,53 @@ void CLogObjectJ1939::GetFilterInfo(SFILTERAPPLIED_J1939& sFilterInfo) const
 void CLogObjectJ1939::SetFilterInfo(const SFILTERAPPLIED_J1939& sFilterInfo)
 {
     m_sFilterApplied.bClone(sFilterInfo);
+}
+
+void CLogObjectJ1939::Der_SetDatabaseFiles(const CStringArray& omList)
+{
+	// Clear before updating
+	m_omListDBFiles.RemoveAll();
+
+	for (int nIdx = 0; nIdx < omList.GetSize(); nIdx++)
+	{
+		m_omListDBFiles.Add(omList.GetAt(nIdx));			
+	}
+}
+
+// Get the list of database files associated
+void CLogObjectJ1939::Der_GetDatabaseFiles(CStringArray& omList)
+{	
+	omList.Append(m_omListDBFiles);
+}
+
+void CLogObjectJ1939::Der_SetChannelBaudRateDetails
+						(SCONTROLER_DETAILS* controllerDetails,
+						int nNumChannels)
+{
+	if (NULL != m_pasControllerDetails)
+	{
+		delete[] m_pasControllerDetails;		
+	}
+	m_pasControllerDetails = NULL;
+
+	m_pasControllerDetails = new SCONTROLER_DETAILS [nNumChannels];
+	for (int nIdx = 0; nIdx < nNumChannels; nIdx++)
+	{
+		memcpy(m_pasControllerDetails + nIdx, controllerDetails + nIdx, sizeof(SCONTROLER_DETAILS));
+	}
+	m_nNumChannels = nNumChannels;
+}
+
+// To get the channel baud rate info for each channel
+void CLogObjectJ1939::Der_GetChannelBaudRateDetails
+					(SCONTROLER_DETAILS* controllerDetails, int& nNumChannels)
+{
+	if (NULL != m_pasControllerDetails)
+	{
+		for (int nIdx = 0; nIdx < m_nNumChannels; nIdx++)
+		{
+			memcpy(controllerDetails + nIdx, m_pasControllerDetails + nIdx, sizeof(SCONTROLER_DETAILS));
+		}		
+		nNumChannels = m_nNumChannels;
+	}
 }

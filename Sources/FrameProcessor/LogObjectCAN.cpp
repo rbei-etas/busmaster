@@ -27,7 +27,7 @@
 #include "LogObjectCAN.h"            // For CLogObjectCAN class declaration
 
 
-#define CAN_VERSION           _T("***BUSMASTER Ver 1.6.1***")
+#define CAN_VERSION           _T("***BUSMASTER Ver 1.6.2***")
 #define CAN_LOG_HEADER        _T("***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***")
 #define CAN_LOG_START         _T("***[START LOGGING SESSION]***")
 #define CAN_LOG_STOP          _T("***[STOP LOGGING SESSION]***")
@@ -47,10 +47,17 @@ CLogObjectCAN::CLogObjectCAN(CString omVersion):CBaseLogObject(omVersion)
 {
     // Initialise the filtering block
     m_sFilterApplied.vClear();
+	m_pasControllerDetails = NULL;
+	m_nNumChannels = 0;
 }
 
 CLogObjectCAN::~CLogObjectCAN()
 {
+	if (NULL != m_pasControllerDetails)
+	{
+		delete[] m_pasControllerDetails;
+		m_pasControllerDetails = NULL;
+	}
 }
 
 void CLogObjectCAN::Der_CopySpecificData(const CBaseLogObject* pouLogObjRef)
@@ -86,7 +93,10 @@ BOOL CLogObjectCAN::bLogData(const SFORMATTEDDATA_CAN& sDataCAN)
     {
         case TIME_MODE_ABSOLUTE: 
         {
-            pTimeData = (TCHAR *) (sDataCAN.m_acTimeAbs);
+			if(m_sLogInfo.m_bResetAbsTimeStamp)
+				pTimeData = (TCHAR *) (sDataCAN.m_acTimeAbsReset);
+			else
+				pTimeData = (TCHAR *) (sDataCAN.m_acTimeAbs);
         }
         break;
         case TIME_MODE_RELATIVE: 
@@ -286,3 +296,53 @@ void CLogObjectCAN::SetFilterInfo(const SFILTERAPPLIED_CAN& sFilterInfo)
 {
     m_sFilterApplied.bClone(sFilterInfo);
 }
+
+void CLogObjectCAN::Der_SetDatabaseFiles(const CStringArray& omList)
+{
+	// Clear before updating
+	m_omListDBFiles.RemoveAll();
+
+	for (int nIdx = 0; nIdx < omList.GetSize(); nIdx++)
+	{
+		m_omListDBFiles.Add(omList.GetAt(nIdx));			
+	}
+}
+
+// Get the list of database files associated
+void CLogObjectCAN::Der_GetDatabaseFiles(CStringArray& omList)
+{	
+	omList.Append(m_omListDBFiles);
+}
+
+void CLogObjectCAN::Der_SetChannelBaudRateDetails
+					(SCONTROLER_DETAILS* controllerDetails,
+					int nNumChannels)
+{	
+	if (NULL != m_pasControllerDetails)
+	{
+		delete[] m_pasControllerDetails;		
+	}
+	m_pasControllerDetails = NULL;
+
+	m_pasControllerDetails = new SCONTROLER_DETAILS [nNumChannels];
+	for (int nIdx = 0; nIdx < nNumChannels; nIdx++)
+	{
+		memcpy(m_pasControllerDetails + nIdx, controllerDetails + nIdx, sizeof(SCONTROLER_DETAILS));
+	}
+	m_nNumChannels = nNumChannels;
+}
+
+// To get the channel baud rate info for each channel
+void CLogObjectCAN::Der_GetChannelBaudRateDetails
+					(SCONTROLER_DETAILS* controllerDetails, int& nNumChannels)
+{
+	if (NULL != m_pasControllerDetails)
+	{
+		for (int nIdx = 0; nIdx < m_nNumChannels; nIdx++)
+		{
+			memcpy(controllerDetails + nIdx, m_pasControllerDetails + nIdx, sizeof(SCONTROLER_DETAILS));
+		}		
+		nNumChannels = m_nNumChannels;
+	}
+}
+

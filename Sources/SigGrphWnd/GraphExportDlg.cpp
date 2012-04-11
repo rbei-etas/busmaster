@@ -364,5 +364,10 @@ BOOL CGraphExportDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
 
+	CRect rect;
+	GetClientRect(&rect);
+	ClientToScreen(&rect);
+	rect.bottom -= 90;
+	SetWindowPos(NULL, rect.left, rect.top, rect.Width(), rect.Height(), SWP_SHOWWINDOW);
     return TRUE;
 }

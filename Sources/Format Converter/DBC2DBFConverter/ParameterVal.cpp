@@ -128,7 +128,7 @@ int CParameterValues::GetMesgParams(string paramType,char *pcLine)
         *pcTemp++ = *pcToken++;
     }
     *pcTemp = '\0';
-    m_MsgId = (unsigned int)atoi(acTemp);
+    m_MsgId = (unsigned int)strtoul(acTemp, NULL, 10);
     pcTemp = acTemp;
 
     //Validates the MsgId to get frame format.
@@ -168,7 +168,7 @@ int CParameterValues::GetSignalParams(string paramType,char *pcLine)
         *pcTemp++ = *pcToken++;
     }
     *pcTemp = '\0';
-    m_MsgId = atoi(acTemp);
+    m_MsgId = strtoul(acTemp, NULL, 10);
     pcTemp = acTemp;
     pcToken = strtok_s(NULL, ";", &pcTok);
 

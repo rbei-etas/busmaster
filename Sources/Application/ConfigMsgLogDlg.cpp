@@ -111,6 +111,7 @@ void CConfigMsgLogDlg::DoDataExchange(CDataExchange* pDX)
 
     DDX_Control(pDX, IDC_COMB_CHANNEL, m_omComboChannel);
     DDX_Control(pDX, IDC_COMB_TIMEMODE, m_omComboTimeMode);
+    DDX_Control(pDX, IDC_CHECK_RESET_TIMESTAMP, m_ChkbResetTimeStamp);
     DDX_Control(pDX, IDC_LOGBLOCK_LST, m_omListLogFiles);
     DDX_Control(pDX, IDC_CHKB_ENABLE_LOG_ONCONNECT, m_ChkbEnableLogOnConnect);
     DDX_Control(pDX, IDC_EDIT_STARTMSGID, m_odStartMsgID);
@@ -126,7 +127,7 @@ BEGIN_MESSAGE_MAP(CConfigMsgLogDlg, CDialog)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LOGBLOCK_LST, OnLvnItemchangedLogBlockLst)
     ON_CONTROL_RANGE(CBN_SELCHANGE, IDC_COMB_TIMEMODE, IDC_COMB_CHANNEL, OnSelChangeComb)
     ON_CONTROL_RANGE(BN_CLICKED, IDC_RBTN_DECIMAL, IDC_RBTN_HEX, OnNumRButtonClick)
-    ON_CONTROL_RANGE(BN_CLICKED, IDC_RBTN_APPEND, IDC_RBTN_OVERWRITE, OnFileRButtonClick)
+    ON_CONTROL_RANGE(BN_CLICKED, IDC_RBTN_APPEND, IDC_CHECK_RESET_TIMESTAMP, OnFileRButtonClick)
     ON_CONTROL_RANGE(BN_CLICKED, IDC_CHKB_STARTTRIGGER, IDC_CHKB_STOPTRIGGER, OnChkbTriggerClick)
     ON_CONTROL_RANGE(EN_CHANGE, IDC_EDIT_STARTMSGID, IDC_EDIT_STOPMSGID, OnStartStopMsgIDEnChange)
 	ON_BN_CLICKED(IDC_LOG_FILTER, OnBnClickedLogFilter)
@@ -152,7 +153,10 @@ void CConfigMsgLogDlg::SetGUIFromTimeMode(ETIMERMODE eTimeMode)
 {
     switch (eTimeMode)
     {
-        case TIME_MODE_ABSOLUTE: m_omComboTimeMode.SetCurSel(TIME_ABS_INDEX); break;
+        case TIME_MODE_ABSOLUTE:
+			m_omComboTimeMode.SetCurSel(TIME_ABS_INDEX);
+			m_ChkbResetTimeStamp.EnableWindow(1); 
+			break;
         case TIME_MODE_RELATIVE: m_omComboTimeMode.SetCurSel(TIME_REL_INDEX); break;
         case TIME_MODE_SYSTEM: 
         default: m_omComboTimeMode.SetCurSel(TIME_SYS_INDEX); break;
@@ -268,7 +272,10 @@ void CConfigMsgLogDlg::vEnableDisableControls(BOOL bValue)
     // Overwrite file mode radio button
     vEnableDisableControl(IDC_RBTN_OVERWRITE, RADIOBUTTON, bValue);
 
-    // Start trigger check box and edit control
+    // Overwrite file mode radio button
+    vEnableDisableControl(IDC_CHECK_RESET_TIMESTAMP, CHECKBOX, bValue);
+
+	// Start trigger check box and edit control
     vEnableDisableControl(IDC_CHKB_STARTTRIGGER, CHECKBOX, bValue);
     vEnableDisableControl(IDC_EDIT_STARTMSGID, EDITCTRL, bValue);
 
@@ -372,6 +379,16 @@ void CConfigMsgLogDlg::vUpdate_GUI_From_Datastore(USHORT usIndex)
     CheckBox = (APPEND_MODE == sLogStruct.m_eFileMode) ? IDC_RBTN_APPEND : IDC_RBTN_OVERWRITE;
     CheckRadioButton(IDC_RBTN_APPEND, IDC_RBTN_OVERWRITE, CheckBox);
 
+	if(sLogStruct.m_eLogTimerMode  == TIME_MODE_ABSOLUTE)
+		m_ChkbResetTimeStamp.EnableWindow(1);
+	else
+		m_ChkbResetTimeStamp.EnableWindow(0);
+
+	if(sLogStruct.m_bResetAbsTimeStamp == TRUE)
+		m_ChkbResetTimeStamp.SetCheck(1);
+	else
+		m_ChkbResetTimeStamp.SetCheck(0);
+
     if (sTrigger.m_unTriggerType != NONE)
     {
         if (sTrigger.m_unTriggerType == BOTH) // Start and stop trigger edit
@@ -447,14 +464,29 @@ void CConfigMsgLogDlg::vUpdate_Datastore_From_GUI(USHORT ushIndex, int CtrlID)
             sLogStruct.m_eFileMode = OVERWRITE_MODE;
         }
         break;
+        case IDC_CHECK_RESET_TIMESTAMP:
+        {
+			if(m_ChkbResetTimeStamp.GetCheck()) 
+	            sLogStruct.m_bResetAbsTimeStamp = TRUE;
+			else
+	            sLogStruct.m_bResetAbsTimeStamp = FALSE;
+        }
+        break;
         case IDC_COMB_TIMEMODE:
         {
             switch (m_omComboTimeMode.GetCurSel())
             {
-                case TIME_ABS_INDEX: sLogStruct.m_eLogTimerMode = TIME_MODE_ABSOLUTE; break;
-                case TIME_REL_INDEX: sLogStruct.m_eLogTimerMode = TIME_MODE_RELATIVE; break;
+                case TIME_ABS_INDEX:
+					sLogStruct.m_eLogTimerMode = TIME_MODE_ABSOLUTE;
+					m_ChkbResetTimeStamp.EnableWindow(1); 
+					break;
+                case TIME_REL_INDEX: sLogStruct.m_eLogTimerMode = TIME_MODE_RELATIVE;
+					m_ChkbResetTimeStamp.EnableWindow(0); 
+					break;
                 case TIME_SYS_INDEX: 
-                default: sLogStruct.m_eLogTimerMode = TIME_MODE_SYSTEM; break;
+                default: sLogStruct.m_eLogTimerMode = TIME_MODE_SYSTEM; 
+					m_ChkbResetTimeStamp.EnableWindow(0); 
+					break;
             }
         }
         break;
@@ -643,7 +675,10 @@ void CConfigMsgLogDlg::OnLvnItemchangedLogBlockLst(NMHDR *pNMHDR, LRESULT *pResu
             vUpdate_GUI_From_Datastore((USHORT) m_nLogIndexSel);
 
 			if(m_bLogON)
+			{
 				m_bEditingON = FALSE;
+				GetDlgItem(IDC_CHECK_RESET_TIMESTAMP)->EnableWindow(FALSE);
+			}
 			else
 				m_bEditingON = TRUE;
         }
@@ -657,6 +692,7 @@ void CConfigMsgLogDlg::OnLvnItemchangedLogBlockLst(NMHDR *pNMHDR, LRESULT *pResu
             m_bEditingON = FALSE;
             // Update Button Status
             vEnableDisableControls(FALSE);
+			GetDlgItem(IDC_CHECK_RESET_TIMESTAMP)->EnableWindow(FALSE);
         }
     }
 	*pResult = 0;
@@ -721,12 +757,23 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
 		if(m_omListLogFiles.GetItemCount()>0)
 			vUpdate_GUI_From_Datastore(0);
 		GetDlgItem(IDC_CBTN_ADDLOG)->EnableWindow(FALSE);
+		GetDlgItem(IDC_CHECK_RESET_TIMESTAMP)->EnableWindow(FALSE);
 
 		GetWindowText(m_strCurrWndText);
 		m_strCurrWndText+=_T(" - Read Only as Logging is ON");
 		//SetWindowText(m_strCurrWndText);
 		SetWindowText(_T(""));
 		m_unDispUpdateTimerId = SetTimer(600, 600, NULL);		
+	}
+
+	// Hide or show the Filters button in the dialog based on the protocol
+	if (CAN == m_eCurrBus)
+	{
+		GetDlgItem(IDC_LOG_FILTER)->ShowWindow(1);
+	}
+	else if (J1939 == m_eCurrBus)
+	{
+		GetDlgItem(IDC_LOG_FILTER)->ShowWindow(0);
 	}
 
 	return TRUE;

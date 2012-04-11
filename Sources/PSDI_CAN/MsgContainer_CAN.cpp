@@ -738,7 +738,7 @@ void CMsgContainerCAN::vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL &sHdrColStruct,
                                                 BYTE bExprnFlag_Disp)
 {
     //Time mode
-    if (IS_TM_ABS_SET(bExprnFlag_Disp))
+    if (IS_TM_ABS_SET(bExprnFlag_Disp)) //for Absolute non-reset timestamp
     {
         pomDataPtrArr[sHdrColStruct.m_byTimePos] = m_sOutFormattedData.m_acTimeAbs;
     }

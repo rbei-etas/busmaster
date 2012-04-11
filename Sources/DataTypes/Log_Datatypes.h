@@ -58,6 +58,7 @@ typedef struct tagLogInfo
     eTimerMode	 m_eLogTimerMode;    // The time mode - system / relative
 	eFormat		 m_eNumFormat;       // Numeric mode - hexadecimal / decimal
 	eMode		 m_eFileMode;        // Mode - overwrite / append
+    BOOL         m_bResetAbsTimeStamp; // To indicate if Absolute Time Stamp is Reseted
     TYPE_CHANNEL m_ChannelSelected;  // The current channel
 	TCHAR		 m_sLogFileName[_MAX_PATH]; // Log file name with absolute path
     SLOGTRIGGER  m_sLogTrigger;      // The triggering condition
@@ -66,7 +67,7 @@ typedef struct tagLogInfo
     void vClear(void);               // To clear the logging information
     UINT unGetSize(void) const;      // To get the size of the block in bytes
     BYTE* pbGetConfigData(BYTE* pbTarget) const; // To get configuration data
-    BYTE* pbSetConfigData(BYTE* pbTarget); // To set configuration data
+    BYTE* pbSetConfigData(BYTE* pbTarget, BYTE bytLogVersion); // To set configuration data
 
 } SLOGINFO,*PSLOGINFO;
 
