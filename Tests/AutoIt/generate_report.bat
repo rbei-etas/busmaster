@@ -2,5 +2,19 @@
 
 set PATH=%PATH%;%ProgramFiles%\AutoIt3
 
+REM Installer
 cd Installer
-autoit3 TS_XX_001.au3 > TS_XX_001_out.txt 2> TS_XX_001_err.txt
+set TEST=TS_XX_install_full
+echo %TEST%
+call autoit3 %TEST%.au3 > %TEST%_out.txt 2> %TEST%_err.txt
+cd ..
+
+REM Other Tests
+
+
+REM Uninstaller
+cd Installer
+set TEST=TS_XX_uninstall
+echo %TEST%
+call autoit3 %TEST%.au3 > %TEST%_out.txt 2> %TEST%_err.txt
+cd ..
