@@ -70,6 +70,9 @@ public:
 	CLogToExcel(string strLogFileName, string strExcelFileName, UINT unNoOfFields, CHAR_ARRAY_20* pacFields) ; // Open spreadsheet for reading and writing
 	~CLogToExcel(); 
 	BOOL bConvert();
+	BOOL bValidateFile();
+	BOOL bIsValidFile();
+	BOOL bIsFilesOpened();
 	void fnSetSelectedFields(CListBox *);
 	void fnSetFields();
 
@@ -87,7 +90,11 @@ private:
 	UINT m_unNumOfFields;
 	UINT unGetLine();
 	void vPrintFields();
-	BOOL m_bFilesOpened;	
+	BOOL bIsValidMsgData( CONST CString& omSendMsgLine, BOOL bHexON);
+	BOOL m_bFilesOpened;
+	BOOL m_bIsValidFile;
+	BOOL m_bHexMode;
+	std::string m_strLogVersion;
 };
 
 #endif;

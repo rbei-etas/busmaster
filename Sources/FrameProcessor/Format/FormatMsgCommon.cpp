@@ -30,6 +30,8 @@
 CFormatMsgCommon::CFormatMsgCommon(void)
 {
     m_qwRelBaseTime = 0;
+	m_qwResTime = 0;
+	m_bResetMsgAbsTime = FALSE;
 }
 
 CFormatMsgCommon::~CFormatMsgCommon(void)
@@ -56,18 +58,44 @@ void CFormatMsgCommon::vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,
         {
             m_qwRelBaseTime = TimeStamp;
         }
-        dwTSTmp = (DWORD) (TimeStamp - m_qwRelBaseTime);
+		//Time difference should be +ve value
+//		if(TimeStamp >= m_qwRelBaseTime) 
+	        dwTSTmp = (DWORD) (TimeStamp - m_qwRelBaseTime);
+//		else
+//	        dwTSTmp = (DWORD) (m_qwRelBaseTime - TimeStamp);
 
         m_qwRelBaseTime = TimeStamp;
     }
     else if (IS_TM_ABS_SET(bExprnFlag))
     {
-        dwTSTmp = (DWORD) (TimeStamp - qwAbsBaseTime);
+		//Time difference should be +ve value
+//		if(TimeStamp >= qwAbsBaseTime) 
+			dwTSTmp = (DWORD) (TimeStamp - qwAbsBaseTime);
+//		else
+//			dwTSTmp = (DWORD) (qwAbsBaseTime - TimeStamp);
+
+    }
+    else if (IS_TM_ABS_RES(bExprnFlag))
+    {
+		if (m_bResetMsgAbsTime == TRUE) 
+		{
+			//reset the time for new logging session
+			m_qwResTime = TimeStamp - qwAbsBaseTime;
+			m_bResetMsgAbsTime = FALSE;
+
+		}
+		//Time difference should be +ve value
+//		if((TimeStamp - qwAbsBaseTime) >= m_qwResTime)
+			dwTSTmp = (DWORD) (TimeStamp - qwAbsBaseTime - m_qwResTime);
+//		else
+//			dwTSTmp = (DWORD) (m_qwResTime + qwAbsBaseTime - TimeStamp );
+
     }
     else
     {
         ASSERT(FALSE);
     }
+
     vFormatTimeStamp(dwTSTmp, acTime);
 }
 

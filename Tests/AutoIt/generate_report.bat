@@ -2,41 +2,19 @@
 
 set PATH=%PATH%;%ProgramFiles%\AutoIt3
 
-
-:INSTALL
-set TESTGROUP=Installer
-echo %TESTGROUP%
-cd %TESTGROUP%
-
+REM Installer
+cd Installer
 set TEST=TS_XX_install_full
-echo   %TEST%
+echo %TEST%
 call autoit3 %TEST%.au3 > %TEST%_out.txt 2> %TEST%_err.txt
-
 cd ..
 
-
-:TESTS
-set TESTGROUP=Format Converter
-echo %TESTGROUP%
-cd %TESTGROUP%
-
-set TEST=TS_XX_DBC2DBF_001
-echo   %TEST%
-call autoit3 %TEST%.au3 > %TEST%_out.txt 2> %TEST%_err.txt
-
-cd ..
+REM Other Tests
 
 
-:UNINSTALL
-set TESTGROUP=Installer
-echo %TESTGROUP%
-cd %TESTGROUP%
-
+REM Uninstaller
+cd Installer
 set TEST=TS_XX_uninstall
-echo   %TEST%
+echo %TEST%
 call autoit3 %TEST%.au3 > %TEST%_out.txt 2> %TEST%_err.txt
-
 cd ..
-
-
-:END

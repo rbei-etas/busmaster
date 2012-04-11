@@ -46,7 +46,7 @@
 #define ABSOLUTE_MODE   "***ABSOLUTE MODE***"
 #define RELATIVE_MODE   "***RELATIVE MODE***"
 
-#define END_SESSION     "***[END LOGGING SESSION]***"
+#define END_SESSION     "***[STOP LOGGING SESSION]***"
 #define START_SESSION   "***[START LOGGING SESSION]***"
 #define defLOG_NOTE        "\n***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***"
 #define defINVALID_HEADER "Invalid File Header. Replay File Operation Failed"

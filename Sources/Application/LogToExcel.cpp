@@ -21,6 +21,7 @@
 #include "stdafx.h"
 #include "LogToExcel.h"
 #include "Common.h"
+#include "HashDefines.h"
 
 //**************************************************************************************************
 // Function Name        : fnSetFields
@@ -87,6 +88,7 @@ CLogToExcel::CLogToExcel(string strLogFileName, string strExcelFileName, UINT un
     m_pLogFile = NULL;
 	m_pExcelFile = NULL;
 
+	m_strLogVersion = STR_EMPTY;
 	m_strLogFileName = strLogFileName;
 	m_strExcelFileName = strExcelFileName;
 
@@ -97,9 +99,22 @@ CLogToExcel::CLogToExcel(string strLogFileName, string strExcelFileName, UINT un
 		//log file could not be opened
 		MessageBox(NULL,EXPORTTOEXCEL_LOGFILEOPENERROR,APPLICATION_NAME,MB_OK); 
 		m_bFilesOpened = FALSE;
+		m_bIsValidFile = FALSE;
 	}
 	else
 	{
+		// Validate the log file
+		if (!bValidateFile())
+		{
+			m_bFilesOpened = FALSE;
+			m_bIsValidFile = FALSE;
+			return;
+		}
+		else
+		{
+			m_bIsValidFile = TRUE;
+		}
+
 		//open Excel file in write 
 		m_pExcelFile = fopen(m_strExcelFileName.c_str(),"w");
 		if(m_pExcelFile == NULL)
@@ -107,11 +122,17 @@ CLogToExcel::CLogToExcel(string strLogFileName, string strExcelFileName, UINT un
 			//Excel file could not be opened
 			MessageBox(NULL,EXPORTTOEXCEL_CSVFILEOPENERROR,APPLICATION_NAME,MB_OK); 
 			m_bFilesOpened = FALSE;
+			if (NULL != m_pLogFile)
+			{
+				fclose(m_pLogFile);
+			}
+			return;
 		}
 		else
 		{
             m_unNumOfFields = unNoOfFields;
 			m_bFilesOpened = TRUE;
+			m_bIsValidFile = TRUE;
 		}
 	}
 	//set selected fields
@@ -164,19 +185,19 @@ UINT CLogToExcel::unGetLine()
 //**************************************************************************************************
 void CLogToExcel::vPrintFields()
 {
-		// ignore the headers in log file
+	// ignore the headers in log file
    if( (m_strBuffer.empty() ) ||(m_strBuffer[0] == '*') ||(m_strBuffer[0] == ' ')  )
 		return;
-   /*if(m_strBuffer[0] != '<')
-	   return;*/
+
+   // Check for the baudrate and database information
+   if (!bIsValidMsgData(m_strBuffer.c_str(), m_bHexMode))
+	   return;
 
 	UINT unBufferIndex = 0;		//index to traverse m_strBuffer string
 	UINT unFieldBufferIndex=0;	//index to traverse m_strFieldBuffer string
 	UINT unFieldIndex = 0;		// field index
 	bool bFieldIndexExists  = false;
 	fprintf(m_pExcelFile,"<TR>");
-
-
     
 	while( unFieldIndex != m_unNumOfFields && m_strBuffer[unBufferIndex] != '\0' )
 	{
@@ -272,4 +293,206 @@ BOOL CLogToExcel::bConvert()
 		return TRUE;
 	}
 	return FALSE;
+}
+
+BOOL CLogToExcel::bValidateFile()
+{
+	// Check for all the tags in the log file
+	// Read the file line by line.
+	BOOL bReturn		= TRUE;
+    BOOL bModeFound		= FALSE;
+    BOOL bFileEndFlag	= FALSE;
+    BOOL bMsgModeFound	= FALSE;    
+    BOOL bVersionFound	= FALSE;
+	CString omStrLine	= STR_EMPTY;
+	int nIndex = 0;
+	
+    while (( bMsgModeFound == FALSE  || bModeFound == FALSE || 
+			 bVersionFound == FALSE ) && !unGetLine())
+    {        
+        omStrLine = m_strBuffer.c_str();
+        omStrLine.TrimLeft();
+        omStrLine.TrimRight();
+
+        // Version check
+        if( omStrLine.Find(defSTR_BUSMASTER_VERSION_STRING) != -1 )
+        {
+			nIndex = omStrLine.Replace("***", "");
+			nIndex = omStrLine.Replace(defSTR_BUSMASTER_VERSION_STRING, "");
+			omStrLine.TrimLeft();
+			omStrLine.TrimRight();
+			m_strLogVersion = omStrLine;
+			if (!m_strLogVersion.empty())
+				bVersionFound = TRUE;
+        }
+        
+        // Display Mode check
+        if( omStrLine.Find(HEX_MODE) == 0)
+        {
+            bMsgModeFound = TRUE;
+			m_bHexMode = TRUE;
+        }
+        else if (omStrLine.Find(DEC_MODE) == 0)
+        {
+            bMsgModeFound = TRUE;
+			m_bHexMode = FALSE;
+        }
+
+		// Time Mode check
+        if( omStrLine.Find(SYSTEM_MODE) == 0)
+        {            
+            bModeFound = TRUE;
+        }
+        else if( omStrLine.Find(ABSOLUTE_MODE) == 0)
+        {            
+            bModeFound = TRUE;
+        }
+        else if( omStrLine.Find(RELATIVE_MODE) == 0)
+        {            
+            bModeFound = TRUE;
+        }
+
+		m_strBuffer.clear();
+    }
+
+	if( bReturn == TRUE &&
+        ( bModeFound == FALSE || bMsgModeFound == FALSE ||
+          bVersionFound == FALSE ) )
+    {        
+        bReturn = FALSE;
+        
+    }
+	return bReturn;
+}
+
+BOOL CLogToExcel::bIsValidFile()
+{
+	return m_bIsValidFile;
+}
+
+BOOL CLogToExcel::bIsFilesOpened()
+{
+	return m_bFilesOpened;
+}
+
+
+BOOL CLogToExcel::bIsValidMsgData( CONST CString& omSendMsgLine, BOOL bHexON)
+{
+    CString omStrTemp       =_T("");
+    CString omStrMsgID      =_T("");
+    CString omStrDLC        =_T("");
+    CString omStrData       =_T("");
+    CString omStrMsgIDType  =_T("");
+    CHAR* pcStopString      = NULL;
+    BOOL nReturn            = FALSE;
+	BOOL bDirectionTx		= TRUE;
+
+    CByteArray omByteArrayDataTx;
+    // Get the string before first white space charactor
+    omStrTemp = omSendMsgLine.SpanExcluding("\t ");
+    if(omStrTemp.IsEmpty()==0)
+    {
+        INT nIndex = omStrTemp.GetLength();
+        if(nIndex>0)
+        {
+            // Remove the time stamp string
+            omStrTemp = omSendMsgLine.Right(omSendMsgLine.GetLength() -
+                                            nIndex -1);
+            if(omStrTemp.IsEmpty() ==0)
+            {
+                omStrTemp.TrimLeft();
+                omStrTemp.TrimRight();
+                // Get the message ID after removing Tx/Rx string
+                omStrMsgID = omStrTemp.SpanExcluding("\t ");
+                if( omStrMsgID.Compare("Tx") == 0 )
+                {
+					bDirectionTx = TRUE;
+                }
+                else
+                {
+					bDirectionTx = FALSE;
+                }
+
+                nIndex     = omStrMsgID.GetLength();
+                omStrTemp  = omStrTemp.Right(omStrTemp.GetLength() - nIndex - 1);
+                omStrTemp.TrimLeft();
+                // Channel ID
+                omStrMsgID = omStrTemp.SpanExcluding("\t ");
+                UCHAR ucChannel    = 
+                        (UCHAR) strtol( (LPCTSTR )omStrMsgID,&pcStopString ,10);
+                nIndex     = omStrMsgID.GetLength();
+                omStrTemp  = omStrTemp.Right(omStrTemp.GetLength() - nIndex -1);
+
+                omStrTemp.TrimLeft();
+                // Get the message with name
+                omStrMsgID = omStrTemp.SpanExcluding("\t ");
+                // Get the rest of the string.
+                nIndex     = omStrMsgID.GetLength();
+                omStrTemp  = omStrTemp.Right(omStrTemp.GetLength() - nIndex -1);
+                omStrTemp.TrimLeft();
+
+                // Get message ID string after removing any message name.
+                omStrMsgID = omStrMsgID.SpanExcluding(defMSGID_NAME_DELIMITER);
+				UINT unMsgID = 0;
+                if( bHexON == TRUE)
+                {
+                    unMsgID    = 
+                        (UINT) strtol( (LPCTSTR )omStrMsgID,&pcStopString ,16);
+                }
+                else
+                {
+                    unMsgID    = 
+                        (UINT) strtol( (LPCTSTR )omStrMsgID,&pcStopString ,10);
+                }
+
+                // Get the message ID Type
+                omStrMsgIDType = omStrTemp.SpanExcluding("\t ");
+                // Message Id type is EXTENDED
+                if(omStrMsgIDType.Find(defMSGID_EXTENDED) != -1)
+                {                    
+                }// Message Id type is STD
+                else if(omStrMsgIDType.Find(defMSGID_STD)!= -1)
+                {                    
+                }
+
+                // Message Id type is RTR
+                if(omStrMsgIDType.Find(defMSGID_RTR)!= -1)
+                {                    
+                }
+                else
+                {                    
+                }
+                nIndex     = omStrMsgIDType.GetLength();
+                omStrTemp  = omStrTemp.Right(omStrTemp.GetLength() - nIndex -1);
+                omStrTemp.TrimLeft();
+
+                // Get the DLC
+                omStrDLC   = omStrTemp.SpanExcluding("\t ");
+                nIndex     = omStrDLC.GetLength();
+                UINT unDLC = (UINT) strtol((LPCTSTR)omStrDLC,&pcStopString ,16);
+                omStrTemp  = omStrTemp.Right(omStrTemp.GetLength() - nIndex -1);
+
+                omStrTemp.TrimLeft();
+                // Get the data string
+                omStrData  = omStrTemp;
+
+                // Check if Message ID and DLC is valid.
+                if(unMsgID>0 && unDLC<=8 && unDLC>0)
+                {
+                    //nIndex = omStrData.GetLength();
+                    //vConvStrtoByteArray(&omByteArrayDataTx,
+                    //                    omStrData.GetBuffer(nIndex),bHexON);
+                    //omStrData.ReleaseBuffer(nIndex);
+                    //INT nTotalData = (INT)omByteArrayDataTx.GetSize();
+                    //// Check if String to Byte array conversion
+                    //// has return a valid data
+                    //if(nTotalData<=8 )
+                    {
+                        nReturn = TRUE;
+                    }
+                }
+            }
+        }
+    }
+    return nReturn;
 }

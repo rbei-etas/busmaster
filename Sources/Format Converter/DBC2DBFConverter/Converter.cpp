@@ -392,11 +392,11 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                     list<CSignal>::iterator sig1 = msg.m_listSignals.end();
                     while(sig1!=msg.m_listSignals.begin())
                     {
-                        sig1--;
-                        count++;
+                        --sig1;
+                        ++count;
                         if(((sig1->m_ucWhichByte * 8) + sig1->m_ucStartBit) > ((sig.m_ucWhichByte * 8) + sig.m_ucStartBit))
                         {
-                            sig1++;
+                            ++sig1;
                             msg.m_listSignals.insert(sig1, sig);
                             flag = 1;
                             break;
@@ -564,10 +564,11 @@ void CConverter::GenerateMessageList(fstream& fileInput)
             //comments
             else if(strcmp(pcToken, "CM_") == 0)
             {
-                pcLine = pcLine + strlen(pcToken) + 1;
+                string comment = pcTok;	// for network node - venkat
+				pcLine = pcLine + strlen(pcToken) + 1;
                 pcToken = strtok_s(pcLine, " ", &pcTok);
                 CComment cm;
-                string comment;
+				
                 //comments related to node
                 if(strcmp(pcToken, "BU_") == 0)
                 {
@@ -616,7 +617,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 else if(strcmp(pcToken, "SG_") == 0)
                 {
                     pcToken = strtok_s(NULL, " ", &pcTok);
-                    cm.m_msgID = atoi(pcToken);
+                    cm.m_msgID = strtoul(pcToken, NULL, 10);
                     if(cm.m_msgID < 0x80000000UL)
                     {
                         cm.m_msgType = 'S';
@@ -642,13 +643,16 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 //comments related to network
                 else
                 {
-                    comment = pcToken;
-                    while(strstr(pcToken, "\";") == NULL)
-                    {
-                        fileInput.getline(acLine, defCON_MAX_LINE_LEN);
-                        pcToken = acLine;
-                        comment = comment + pcToken;
-                    }
+                    //comment = pcToken;
+					if(comment.find(";") < 0)
+					{
+						while(strstr(pcToken, "\";") == NULL)
+						{
+							fileInput.getline(acLine, defCON_MAX_LINE_LEN);
+							pcToken = acLine;
+							comment = comment + pcToken;
+						}
+					}
                     cm.m_comment= comment;
                     m_cmNet.push_back(cm);
                 }
@@ -1152,7 +1156,7 @@ void CConverter::EncryptData(list<string> &m_notProcessed)
     {
         //read the string at the position
         string::iterator ch;
-        for(ch=str->begin() ; ch<str->end(); ch++)
+        for(ch=str->begin() ; ch<str->end(); ++ch)
         {
             if ((*ch >= 'a' && *ch <= 'm') || (*ch >= 'A' && *ch <= 'M'))
             {

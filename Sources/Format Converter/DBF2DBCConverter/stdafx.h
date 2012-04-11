@@ -51,7 +51,8 @@
 #include "tag.h"
 #include "Definitions.h"
 #endif // _AFX_NO_AFXCMN_SUPPORT
-
+#include <iostream>
+using namespace std;
 extern void Truncate_str(char *type,char *pcToken,bool bToLog);
 extern void Truncate_str(char *type,CString &strTemp,bool bToLog);
 //{{AFX_INSERT_LOCATION}}

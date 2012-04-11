@@ -44,6 +44,7 @@ CComment::CComment()
     m_msgType = '\0';
     m_elementName = "\0";
     m_comment = "\0";
+	m_msgID = 0;
 }
 
 /**
@@ -176,7 +177,7 @@ void CComment::Format_msgComment(CStdioFile &fileInput,CList<CComment,CComment&>
         pcToken=strtok(NULL," ");
         m_msgType=*pcToken;
         if(m_msgType =='X')
-            m_msgID +=2147483648;
+            m_msgID -=2147483648;
         //get the comment
         pcToken = strtok(NULL,"");
         comment = pcToken;
@@ -216,7 +217,7 @@ void CComment::Format_sigComment(CStdioFile &fileInput,CList<CComment,CComment&>
         pcToken=strtok(NULL," ");
         m_msgType=*pcToken;
         if(m_msgType =='X')
-            m_msgID +=2147483648;
+            m_msgID -=2147483648;
         //get signal name.
         pcToken = strtok(NULL," ");
         m_elementName=pcToken;

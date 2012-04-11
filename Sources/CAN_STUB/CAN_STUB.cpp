@@ -429,6 +429,12 @@ DWORD WINAPI FlexMsgReadThreadProc_Stub(LPVOID pVoid)
     pThreadParam->m_unActionCode = CREATE_TIME_MAP;
     // Validate certain required pointers
    
+	//Set the action event
+	if ( sg_unClientCnt > 0 )
+	{
+		pThreadParam->m_hActionEvent = sg_asClientToBufMap[0].hClientHandle;
+	}
+
     bool bLoopON = true;
 
 	while (bLoopON)
@@ -803,7 +809,7 @@ HRESULT CDIL_CAN_STUB::CAN_StopHardware(void)
     return hResult;
 }
 
-HRESULT CDIL_CAN_STUB::CAN_SetConfigData(PCHAR /*ConfigFile*/, int /*Length*/)
+HRESULT CDIL_CAN_STUB::CAN_SetConfigData(PCHAR ConfigFile, int /*Length*/)
 {
     switch (GetCurrState())
     {
@@ -820,6 +826,13 @@ HRESULT CDIL_CAN_STUB::CAN_SetConfigData(PCHAR /*ConfigFile*/, int /*Length*/)
         }
         break;
     }
+
+	/* Fill the hardware description details */
+    for (UINT nCount = 0; nCount < defNO_OF_CHANNELS; nCount++)
+	{		
+		_tcscpy(((PSCONTROLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc, 
+				"Simulation");		
+	}    
 
     // First disconnect the node
     CAN_StopHardware();

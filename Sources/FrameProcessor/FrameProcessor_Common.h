@@ -57,6 +57,7 @@ private:
 protected:
     CPARAM_THREADPROC   m_sDataCopyThread;
     BOOL                m_bLogEnabled;
+    BOOL				m_bResetAbsTime;
     BOOL                m_bClientBufferON;
     CLogObjArray        m_omLogObjectArray;
     CLogObjArray        m_omLogListTmp;
@@ -95,6 +96,10 @@ public:
     HRESULT Confirm(void);
     HRESULT StartEditingSession(void);
     HRESULT StopEditingSession(BOOL bConfirm);
+	HRESULT SetDatabaseFiles(const CStringArray& omList);
+	void GetDatabaseFiles(CStringArray& omList);
+	void SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails, 
+									int nNumChannels);
     // Alias functions - end
 
 // Overrides

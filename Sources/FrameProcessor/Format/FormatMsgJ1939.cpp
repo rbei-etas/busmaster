@@ -47,6 +47,13 @@ void CFormatMsgJ1939::vFormatTime(BYTE bExprnFlag,
                                   PSFORMATTEDATA_J1939 psJ1939FData)
 {
     BYTE bTmpExprnFlag = bExprnFlag;
+    if (IS_TM_ABS_RES(bExprnFlag))//for Absolute reset timestamp
+    {
+        CLEAR_EXPR_TM_BITS(bTmpExprnFlag);
+        SET_TM_ABS_RES(bTmpExprnFlag);
+        vCalculateAndFormatTM(bTmpExprnFlag, psJ1939BData->m_sMsgProperties.m_un64TimeStamp, 
+                              psJ1939FData->m_acTimeAbsReset);
+    }
     if (IS_TM_ABS_SET(bExprnFlag))
     {
         CLEAR_EXPR_TM_BITS(bTmpExprnFlag);

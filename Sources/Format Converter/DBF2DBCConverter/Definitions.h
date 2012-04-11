@@ -31,20 +31,20 @@
 #pragma once
 //Convertor.cpp
 #define defCON_MAX_MSGID_LEN 20 //maximum length of Message ID
-#define defCON_MAX_MSGN_LEN 32
+#define defCON_MAX_MSGN_LEN 1024
 //Signal.Cpp
 #define defCON_MAX_LINE_LEN 1026  //Maximum length of one line
 #define defCON_MAX_TOKN_LEN 1026   //Maximum length that any field can be
 
 
 //Valuedescriptor.cpp
-#define	defVDES_MAX_DESC_LEN 150 // hopefully nobody puts value descriptor strings
+#define	defVDES_MAX_DESC_LEN 1024 // hopefully nobody puts value descriptor strings
 // more than this
-#define defVDES_MAX_OUT_STR  150  // I don't expect a name more than 150 bytes
+#define defVDES_MAX_OUT_STR  1024  // I don't expect a name more than 150 bytes
 
 
 
-#define defCON_CHAR_LEN 250
+#define defCON_CHAR_LEN 1024
 typedef union _SIG_VALUE {
     int iValue;
     unsigned int uiValue;

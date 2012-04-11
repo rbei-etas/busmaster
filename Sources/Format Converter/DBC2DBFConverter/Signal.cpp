@@ -26,6 +26,7 @@
 #include "Signal.h"
 #include "Tag.h"
 #include "Utility.h"
+#include <algorithm>
 
 
 /**
@@ -290,6 +291,7 @@ int CSignal::Format(char *pcLine)
     pcToken++; // skip '"'
     *pcTemp='\0';
     m_acUnit = acTemp; // copy UNIT to corresponding data member.
+	replace(m_acUnit.begin(), m_acUnit.end(), ',', '_'); //" not supported
 
     // skip ' '
     while(*pcToken && *pcToken == ' ')

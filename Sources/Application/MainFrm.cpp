@@ -801,7 +801,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     m_wndStatusBar.SetPaneInfo(0, ID_SEPARATOR, SBPS_NOBORDERS, 340);
 
     m_wndStatusBar.SetPaneInfo( INDEX_CHANNELS, IDS_CHANNELS, 
-                                SBPS_NOBORDERS, 280);
+                                SBPS_NOBORDERS, 320);
     m_wndStatusBar.SetPaneInfo( INDEX_DB_NAME, ID_ACTIVE_DATABASE_NAME, 
                                 SBPS_STRETCH, 0);
 	
@@ -1017,8 +1017,8 @@ void CMainFrame::OnOpenDatabase()
         // Flash a message as to whether the user
         // wants to open another database
         nReturn = 
-            AfxMessageBox( "Are yor sure you want to close the \n"
-"database that is already open?", MB_YESNO, MB_ICONINFORMATION);
+            AfxMessageBox( "Are yor sure you want to close the \n\
+database that is already open?", MB_YESNO, MB_ICONINFORMATION);
         if ( nReturn == IDYES)
         {
             // Close the database that was open
@@ -1080,8 +1080,8 @@ void CMainFrame::OnOpenDatabase()
             }
             else
             {
-                AfxMessageBox("Specified database file is not found.\n"
-"Operation unsuccessful.", MB_OK|MB_ICONINFORMATION);
+                AfxMessageBox("Specified database file is not found.\n\
+Operation unsuccessful.", MB_OK|MB_ICONINFORMATION);
             }
 
             if ( bDisplayEditor == TRUE )
@@ -1739,11 +1739,15 @@ void CMainFrame::OnConfigBaudrate()
         //Set Controller to ConfigDetails
         memcpy(m_asControllerDetails, pInitData, nSize);
     }
-    //update baudrate details in global statistics buffer
-    for (int i = 0; i < defNO_OF_CHANNELS; i++)
-    {
-        GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate));
-    }
+	//Update hardware info in status bar
+	vUpdateHWStatusInfo();
+
+	//update baudrate details in global statistics buffer
+	for (int i = 0; i < defNO_OF_CHANNELS; i++)
+	{
+		GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate));
+	}
+
 }
 
 /******************************************************************************/
@@ -1780,25 +1784,11 @@ void CMainFrame::OnConfigChannelSelection()
         hResult = g_pouDIL_CAN_Interface->DILC_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
 		if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
 		{
-			// Set number of channels, hardware selected and supported channels.
-		    CString omStrChannels;
-			CString omStrChannelDriver;
-			omStrChannels.Format(	defSTR_CHANNELS_SUPPORTED,
-									nCount,
-									defSTR_CHANNEL_NAME );	
+			/* Updates the number of channels selected */
+			m_nNumChannels = nCount; 
 
-			for (int i = 0 ; i < m_nDILCount ; i++)
-			{
-				if ( m_dwDriverId == m_ouList[i].m_dwDriverID )
-				{
-					omStrChannelDriver.Format(  _T("%s - %s  (Allowed channels:%d)"), omStrChannels, 
-											m_ouList[i].m_acName, CHANNEL_ALLOWED);
-					break;
-				}
-			}
-
-			// Set Channel string
-			m_wndStatusBar.SetPaneText(INDEX_CHANNELS, omStrChannelDriver );
+			//Update hardware info in status bar
+			vUpdateHWStatusInfo();
 
 			//Update NW statistics window channel information
 			vUpdateChannelInfo();
@@ -2116,6 +2106,8 @@ void CMainFrame::OnConfigDatabaseSave()
                     // Set all the items in the tree view to normal font
                     if ( m_pomMsgSgTreeViews[CAN] != NULL)
                         m_pomMsgSgTreeViews[CAN]->vSetAllItemsNormal();
+
+					pTempMsgSg->vSetModifiedFlag(TRUE);
                 }
            }
         }
@@ -3285,6 +3277,15 @@ void CMainFrame::OnLogEnable()
         bLogON = sg_pouFrameProcCAN->FPC_IsLoggingON();
     }
     bLogON = bLogON ? FALSE : TRUE;
+
+	// Set the status of logging
+	CFlags *pouFlags = NULL;
+	pouFlags = theApp.pouGetFlagsPtr();
+	if (NULL != pouFlags)
+	{
+		pouFlags->vSetFlagStatus(LOGTOFILE, bLogON);
+	}
+
     vStartStopLogging( bLogON );
 }
 void CMainFrame::OnButtonMsgDispButton() 
@@ -9540,11 +9541,86 @@ void CMainFrame::vRestoreWindowPostion()
 void CMainFrame::vStartStopLogging(BOOL bStart)
 {
     // Enable Logging or stop logging
-    if (sg_pouFrameProcCAN != NULL)
+    if (NULL != sg_pouFrameProcCAN)
     {
-        sg_pouFrameProcCAN->FPC_EnableLogging(bStart);
+		// To reduce the unwanted functional call incase of stop logging
+		if (bStart)
+		{
+			vSetAssociatedDatabaseFiles(CAN);	// Update the db file names associated
+			vSetBaudRateInfo(CAN);				// Update the baud rate details
+		}
+
+        sg_pouFrameProcCAN->FPC_EnableLogging(bStart);		
     }
     //LogKadoor CLogManager::ouGetLogManager().vStartStopLogging( bStart );
+}
+
+/*******************************************************************************
+  Function Name  : vSetAssociatedDatabaseFiles
+  Input(s)       : -
+  Output         : -
+  Functionality  : To update the associated database file names for logging
+  Member of      : CMainFrame
+  Author(s)      : Saravanan K S
+  Date Created   : 22.03.2012
+  Modifications  : 
+*******************************************************************************/
+void CMainFrame::vSetAssociatedDatabaseFiles(ETYPE_BUS eBus)
+{
+	// Get the list of files associated to the application
+	CStringArray aomDataBaseFiles;
+	if (CAN == eBus)
+	{
+		theApp.m_pouMsgSignal->vGetDataBaseNames(&aomDataBaseFiles);
+	}
+	else if (J1939 == eBus)
+	{
+		m_pouMsgSigJ1939->vGetDataBaseNames(&aomDataBaseFiles);
+	}
+
+	if (aomDataBaseFiles.GetSize() > 0 && NULL != sg_pouFrameProcCAN)
+	{
+		if (CAN == eBus)
+		{
+			sg_pouFrameProcCAN->FPC_SetDatabaseFiles(aomDataBaseFiles);
+		}
+		else if (J1939 == eBus)
+		{
+			sg_pouIJ1939Logger->FPJ1_SetDatabaseFiles(aomDataBaseFiles);
+		}
+	}
+}
+
+/*******************************************************************************
+  Function Name  : vSetBaudRateInfo
+  Input(s)       : -
+  Output         : -
+  Functionality  : To update the channel baudrate information for logging
+  Member of      : CMainFrame
+  Author(s)      : Saravanan K S
+  Date Created   : 22.03.2012
+  Modifications  : 
+*******************************************************************************/
+void CMainFrame::vSetBaudRateInfo(ETYPE_BUS eBus)
+{
+	if (CAN == eBus)
+	{
+		if (NULL != sg_pouFrameProcCAN)
+		{
+			// Update the baudrate info and the number of channels used
+			sg_pouFrameProcCAN->FPC_SetChannelBaudRateDetails
+								(m_asControllerDetails, m_nNumChannels);
+		}
+	}
+	else if (J1939 == eBus)
+	{
+		if (NULL != sg_pouIJ1939Logger)
+		{
+			// Update the baudrate info and the number of channels used
+			sg_pouIJ1939Logger->FPJ1_SetChannelBaudRateDetails
+								(m_asControllerDetails, m_nNumChannels);
+		}
+	}
 }
 
 /*******************************************************************************
@@ -9914,7 +9990,7 @@ HRESULT CMainFrame::IntializeDIL(void)
             g_pouDIL_CAN_Interface->DILC_PerformInitOperations();
             INT nCount = defNO_OF_CHANNELS;
             if (g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount) == S_OK)
-            {				
+            {
                 HRESULT hResult = g_pouDIL_CAN_Interface->DILC_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
                 if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
                 {
@@ -9950,25 +10026,11 @@ HRESULT CMainFrame::IntializeDIL(void)
                         //venkat - Initialize Read Thread of TSExecutor. 
                         m_objTSExecutorHandler.vDoInitailization(CAN);
 
-						// Set number of channels, hardware selected and supported channels.
-					    CString omStrChannels;
-						CString omStrChannelDriver;
-						omStrChannels.Format(	defSTR_CHANNELS_SUPPORTED,
-												nCount,
-												defSTR_CHANNEL_NAME );	
+						/* Updates the number of channels selected */
+						m_nNumChannels = nCount; 
 
-						for (int i = 0 ; i < m_nDILCount ; i++)
-						{
-							if ( m_dwDriverId == m_ouList[i].m_dwDriverID )
-							{
-								omStrChannelDriver.Format(  _T("%s - %s  (Allowed channels:%d)"), omStrChannels, 
-														m_ouList[i].m_acName, CHANNEL_ALLOWED);
-								break;
-							}
-						}
-
-						// Set Channel string
-						m_wndStatusBar.SetPaneText(INDEX_CHANNELS, omStrChannelDriver );						
+						/*Update hardware info in status bar*/
+						vUpdateHWStatusInfo();					
                     }
                     else
                     {
@@ -10026,6 +10088,45 @@ void CMainFrame::vUpdateChannelInfo(void)
 		m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel,0);	
 
 	}
+}
+
+/*******************************************************************************
+  Function Name  : vUpdateHWStatusInfo
+  Input(s)       : -
+  Output         : -
+  Functionality  : Updates the hardware selection and baud rate inforation in
+                   status bar.
+  Member of      : CMainFrame
+  Author(s)      : Arunkumar K
+  Date Created   : 04-04-2012
+  Modifications  :  
+*******************************************************************************/
+void CMainFrame::vUpdateHWStatusInfo(void)
+{
+	// Set number of channels, hardware selected and supported channels.
+	CString omStrChannels;
+	CString omStrChannelDriver;
+	omStrChannels.Format(	defSTR_CHANNELS_SUPPORTED,
+							m_nNumChannels,
+							defSTR_CHANNEL_NAME );	
+
+	for (int i = 0 ; i < m_nDILCount ; i++)
+	{
+		if ( m_dwDriverId == m_ouList[i].m_dwDriverID )
+		{
+			if ( _tcscmp(m_asControllerDetails->m_omStrBaudrate, _T("")) == 0)
+			{
+				_tcscpy(m_asControllerDetails->m_omStrBaudrate, _T("500"));
+			}
+			omStrChannelDriver.Format(  _T("%s - %s - %s Kbps (Allowed channels:%d)"), 
+							 omStrChannels, m_ouList[i].m_acName, 
+							 m_asControllerDetails->m_omStrBaudrate, CHANNEL_ALLOWED);
+			break;
+		}
+	}
+
+	// Set Channel string
+	m_wndStatusBar.SetPaneText(INDEX_CHANNELS, omStrChannelDriver );
 }
 
 LRESULT CMainFrame::OnProvideMsgDBPtr(WPARAM wParam, LPARAM /*lParam*/)
@@ -12245,7 +12346,19 @@ void CMainFrame::OnUpdateActionJ1939TxMessage(CCmdUI *pCmdUI)
 
 void CMainFrame::OnActionJ1939Log()
 {
-    sg_pouIJ1939Logger->FPJ1_EnableLogging(!sg_pouIJ1939Logger->FPJ1_IsLoggingON());
+	// Enable Logging or stop logging
+    if (NULL != sg_pouIJ1939Logger)
+    {
+		BOOL bEnable = !sg_pouIJ1939Logger->FPJ1_IsLoggingON();		
+		if (bEnable)
+		{
+			vSetAssociatedDatabaseFiles(J1939);	// Update the db file names associated
+			vSetBaudRateInfo(J1939);				// Update the baud rate details
+		}
+		sg_pouIJ1939Logger->FPJ1_EnableLogging(bEnable);
+    }
+
+    /*sg_pouIJ1939Logger->FPJ1_EnableLogging(!sg_pouIJ1939Logger->FPJ1_IsLoggingON());*/
 }
 
 void CMainFrame::OnUpdateActionJ1939Log(CCmdUI *pCmdUI)

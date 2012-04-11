@@ -57,6 +57,10 @@ protected:
 
 public:
 
+	CStringArray		m_omListDBFiles;
+	SCONTROLER_DETAILS*	m_pasControllerDetails;
+	int					m_nNumChannels;
+
     CLogObjectCAN(CString omVersion);    // Overloaded constructor
     ~CLogObjectCAN();   // Destructor
 
@@ -70,6 +74,17 @@ public:
     void GetFilterInfo(SFILTERAPPLIED_CAN& sFilterInfo) const;
     // Set the filter info structure
     void SetFilterInfo(const SFILTERAPPLIED_CAN& sFilterInfo);
+
+	// Get the list of database files associated
+	void Der_GetDatabaseFiles(CStringArray& omList);
+	// Set the list of database files associated
+	void Der_SetDatabaseFiles(const CStringArray& omList);
+	// Set the baud rate details for each channel
+	void Der_SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails, 
+									int nNumChannels);
+	// To get the channel baud rate info for each channel
+	void Der_GetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
+											int& nNumChannels);
 };
 
 #endif // LOGOBJECTCAN_H__INCLUDED_

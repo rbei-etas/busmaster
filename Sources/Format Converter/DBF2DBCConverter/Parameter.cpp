@@ -175,13 +175,13 @@ void CParameters::Format_MesgParam_Value(CStdioFile &fileInput,CList<CParameters
         pcLine = acLine;
         //get mesg id.
         pcToken=strtok(pcLine,",");
-        UINT msgId=unsigned int(atoi(pcToken));
+        UINT msgId=unsigned int(strtoul(pcToken, NULL, 10));
         pcLine=pcLine+strlen(pcToken)+1;
         //get message type and validates teh type.
         pcToken=strtok(pcLine,",");
         strcpy(type,pcToken);
         if(strcmp(type,"X")==0)
-            msgId=msgId+2147483648;
+            msgId=msgId-2147483648;
         pcLine=pcLine+strlen(pcToken)+1;
         //get other param values.
         pcToken=strtok(pcLine,",");
@@ -231,13 +231,13 @@ void CParameters::Format_SigParam_Value(CStdioFile &fileInput,CList<CParameters,
         pcLine = acLine;
         //get mesg id.
         pcToken=strtok(pcLine,",");
-        UINT msgId=unsigned int(atoi(pcToken));
+        UINT msgId=unsigned int(strtoul(pcToken, NULL, 10));
         pcLine=pcLine+strlen(pcToken)+1;
         //get message type and validates the mtype.
         pcToken=strtok(pcLine,",");
         strcpy(temp,pcToken);
         if(strcmp(temp,"X")==0)
-            msgId=msgId+2147483648;
+            msgId=msgId-2147483648;
         pcLine=pcLine+strlen(pcToken)+1;
         //get signal name.
         pcToken=strtok(pcLine,",");
@@ -437,9 +437,9 @@ void CParameters::GetParam_Def(char *pcLine)
     {
         unsigned int min_val,max_val;
         pcToken=strtok(NULL,",");
-        min_val=atoi(pcToken);
+        min_val=strtoul(pcToken, NULL, 10);
         pcToken = strtok(NULL," ");
-        max_val=atoi(pcToken);
+        max_val= strtoul(pcToken, NULL, 10);
         m_RangeError=m_RangeError | isValid_hexRange(min_val,max_val);
     }
     //gets the min/max value and validates the range
@@ -508,7 +508,7 @@ void CParameters::ReadDefault_Value(char *pcToken)
     else if(strcmp(m_ParamType,"HEX")==0 )
     {
         if(strcmp(pcToken," ")!=0)
-            m_InitVal.uiValue =atoi(pcToken);
+            m_InitVal.uiValue =strtoul(pcToken, NULL, 10);
         else
             m_InitVal.uiValue =-1;
     }

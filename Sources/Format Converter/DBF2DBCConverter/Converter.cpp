@@ -78,7 +78,7 @@ unsigned int CConverter::Convert(CString sCanMonFile,CString sCanoeFile)
 {
     CStdioFile fileInput,fileOutput;
     char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
-    if(!fileInput.Open(sCanMonFile,CFile::modeRead))
+	if(!fileInput.Open(sCanMonFile,CFile::modeRead))
     {
         return SetResultCode(CON_RC_FILEOPEN_ERROR_INFILE);
     }
@@ -139,8 +139,8 @@ unsigned int CConverter::Convert(CString sCanMonFile,CString sCanoeFile)
     {
         CreateLogFile(fileLog);
         fileLog.Close();
+		CConverter::bLOG_ENTERED = true;
         return SetResultCode(CON_RC_COMPLETED_WITH_ERROR);
-        CConverter::bLOG_ENTERED = true;
     }
     fileLog.Close();
     //If log file is empty delete it
@@ -150,7 +150,7 @@ unsigned int CConverter::Convert(CString sCanMonFile,CString sCanoeFile)
     }
     else
         return SetResultCode(CON_RC_COMPLETED_WITH_ERROR);
-    return m_uiResultCode;
+	return m_uiResultCode;
 }
 
 /**
@@ -788,7 +788,8 @@ the tag [START_NOT_PROCESSED] and [END_NOT_PROCESSED]
 */
 void CConverter::DecryptData(CList<CString,CString& > &m_notProcessed)
 {
-    char c_str[defCON_MAX_LINE_LEN];
+    //char c_str[defCON_MAX_LINE_LEN];
+	string c_str;
     CString str;
     POSITION prev_pos,pos = m_notProcessed.GetHeadPosition();
     while(pos != NULL)
@@ -797,8 +798,8 @@ void CConverter::DecryptData(CList<CString,CString& > &m_notProcessed)
         //read the string at the position
         str = m_notProcessed.GetNext(pos);
         //make a local copy
-        strcpy(c_str,str);
-        for(int i=0; i < (int)strlen(c_str); i++)
+		c_str = (LPCSTR)str;
+		for(int i=0; i < (int)c_str.length(); i++)
         {
             if ((c_str[i] >= 'a' && c_str[i] <= 'm') || (c_str[i] >= 'A' && c_str[i] <= 'M'))
             {
@@ -807,7 +808,7 @@ void CConverter::DecryptData(CList<CString,CString& > &m_notProcessed)
             else if ((c_str[i] >= 'n' && c_str[i] <= 'z') || (c_str[i] >= 'N' && c_str[i] <= 'Z'))
                 c_str[i] = c_str[i] - 13;
         }
-        str = c_str;
+		str = c_str.c_str();
         //put it back at the same position
         m_notProcessed.SetAt(prev_pos,str);
     }

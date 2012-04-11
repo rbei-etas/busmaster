@@ -151,6 +151,8 @@ public:
     S_EXFUNC_PTR    m_sExFuncPtr[BUS_TOTAL];
     CTxMsgWndJ1939* m_pouTxMsgWndJ1939;
     SJ1939CLIENTPARAM m_sJ1939ClientParam;
+
+	int				m_nNumChannels;
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMainFrame)
@@ -268,8 +270,12 @@ public:
 	BOOL bDLLBuild(CStringArray *omStrBuildFiles) ;
 	BOOL bDllLoad(CStringArray *omStrBuildFiles) ;
 	BOOL bDllUnload(CStringArray *omStrBuildFiles) ;
-	   // To stop or start logging during configuration change
+	// To stop or start logging during configuration change
     inline void vStartStopLogging(BOOL bStart);
+	// To set the associated database file names for logging
+	void vSetAssociatedDatabaseFiles(ETYPE_BUS eBus);	
+	// To set the baudrate for the selected channels
+	void vSetBaudRateInfo(ETYPE_BUS eBus);
 	//Wrapper function around the inline function,to be called from com function 
 	void vComStartStopLog(BOOL bStart);
 
@@ -450,6 +456,7 @@ public:
 
 	void vClearSignalInfoList(void);
 	void vUpdateChannelInfo(void);
+	void vUpdateHWStatusInfo(void);
 
 private:
     PROJECTDATA m_sProjData;

@@ -26,7 +26,8 @@
 #include "Signal.h"
 #include "Converter.h"
 #include "Utility.h"
-
+#include <string>
+using namespace std;
 /**
  * Constructor of CSignal
  */
@@ -60,8 +61,10 @@ CSignal& CSignal::operator=(CSignal& signal)
     m_ucWhichByte = signal.m_ucWhichByte;
     m_ucStartBit = signal.m_ucStartBit;
     m_ucType = signal.m_ucType;
-    m_MaxValue = signal.m_MaxValue;
-    m_MinValue = signal.m_MinValue;
+	memcpy((void*)&m_MaxValue, (void*)&(signal.m_MaxValue), sizeof(signal.m_MaxValue));
+	memcpy((void*)&m_MinValue, (void*)&(signal.m_MinValue), sizeof(signal.m_MinValue));
+	//m_MaxValue = signal.m_MaxValue;
+    //m_MinValue = signal.m_MinValue;
     m_ucDataFormat = signal.m_ucDataFormat;
     m_fOffset = signal.m_fOffset;
     m_fScaleFactor = signal.m_fScaleFactor;
@@ -138,7 +141,6 @@ int CSignal::Format(char *pcLine)
 
     if(m_ucDataFormat == '0')
     {
-        UINT unByteIndex = m_ucWhichByte - 1;
         UINT nByte = (m_ucLength/8) + ((m_ucLength % 8)?1:0);
         UINT nStartBit = (m_ucWhichByte - nByte) * 8;
         UINT nBitSize = m_ucLength - (8 * (nByte - 1))+ m_ucStartBit;
@@ -206,13 +208,31 @@ int CSignal::Format(char *pcLine)
 
 
     //rx'ing nodes
-    pcToken = strtok(pcToken,",");
-    pcToken = strtok(NULL,",");
-    pcToken = strtok(NULL,"\n");
-    if(pcToken)
-        m_sNode = pcToken;
+	string strNodes = pcToken;
+	nIndex = strNodes.find(",", 0);
+	strNodes = strNodes.substr(nIndex+1, strNodes.length());
+	nIndex = strNodes.find(",", nIndex);
+	strNodes = strNodes.substr(nIndex+1, strNodes.length());
+	/*nIndex = strNodes.find("\n", nIndex);
+	if(nIndex >= 0)
+	{
+		strNodes = strNodes.erase(nIndex, 1);
+	}*/
+	m_sNode = strNodes.c_str();
+	m_sNode.Replace("\n", "");
+	//strNodes. replace("\n", "", 1);
+	if(m_sNode.IsEmpty() == TRUE)
+	{
+		m_sNode = "Vector__XXX";
+	}
+	
+	/*token = strtok(pcToken,",");
+    token = strtok(NULL,",");
+    token = strtok(NULL,"\n");
+    if(token)
+        m_sNode = token;
     else
-        m_sNode = "Vector__XXX";
+        m_sNode = "Vector__XXX";*/
 
     return 1;
 }

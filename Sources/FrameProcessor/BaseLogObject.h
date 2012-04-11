@@ -111,14 +111,38 @@ public:
     void SetLogInfo(const SLOGINFO& sLoginfo);
 
     // Set configuration data
-    BYTE* SetConfigData(BYTE* pvDataStream);
+    BYTE* SetConfigData(BYTE* pvDataStream, BYTE bytLogVersion);
     // Get configuration data
     BYTE* GetConfigData(BYTE* pvDataStream) const;
     // To get the total buffer size
 	UINT unGetBufSize(void) const;
 
     // To get the ID
-    UINT GetID(void);
+    UINT GetID(void);	
+
+	// To get the list of associated database files
+	virtual void Der_GetDatabaseFiles(CStringArray& omList) = 0;
+	// To set the list of database files associated
+	virtual void Der_SetDatabaseFiles(const CStringArray& omList) = 0;
+		
+	// To get the list of associated database files
+	void GetDatabaseFiles(CStringArray& omList);
+	
+	// To set the list of database files associated
+	void SetDatabaseFiles(const CStringArray& omList);
+
+	// To update the channel baud rate info to logger
+	virtual void Der_SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
+											int nNumChannels) = 0;
+	// To update the channel baud rate info to logger
+	void SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails, 
+									int nNumChannels);
+	// To update the channel baud rate info to logger
+	virtual void Der_GetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
+											int& nNumChannels) = 0;
+	// To get the channel baud rate
+	void GetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails, 
+									int& nNumChannels);
 };
 
 #endif // BASELOGOBJECT_H__INCLUDED_

@@ -28,7 +28,7 @@
 #include "Utility/Utility.h"
 #include "MsgSignal.h"      // Class defintion file
 #include "MessageAttrib.h"   //Saving contents on dissocation of database
-
+#include "BUSMASTER.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -41,6 +41,8 @@ static CHAR s_acTraceStr[1024] = {""};
 
 //Trace window ptr
 CUIThread* CMsgSignal::m_pUIThread = NULL;
+
+extern CCANMonitorApp theApp;       // Application object
 
 
 /* Helper function to calculate how many bytes the signal consumes */
@@ -3676,6 +3678,23 @@ BOOL CMsgSignal::bGetModifiedFlag()
 {
     return (m_bIsDatabaseSaved);
 }
+
+/******************************************************************************
+  Function Name    :  bGetModifiedFlag
+  Input(s)         :  BOOL
+  Output           :  
+  Functionality    :  sets the value of m_bIsDatabaseSaved
+  Member of        :  CMsgSignal                                        
+  Friend of        :      -                                                 
+  Author(s)        :  Saravanan K S                                      
+  Date Created     :  04.04.2012                                            
+  Modifications    :  
+******************************************************************************/
+void CMsgSignal::vSetModifiedFlag(BOOL bSaved)
+{
+    m_bIsDatabaseSaved = bSaved;
+}
+
 /******************************************************************************
   Function Name    :  vUpdateSignalMatrix
   Input(s)         :  BYTE *pByte,
@@ -4647,9 +4666,10 @@ void CMsgSignal::vSetTraceWndObj(CUIThread* pUIThread)
 }
 void CMsgSignal::vWriteTextToTrace()
 {
-    if (m_pUIThread != NULL)
+    //if (m_pUIThread != NULL)
     {
-        m_pUIThread->PostThreadMessage(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
+        /*m_pUIThread->PostThreadMessage(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);*/		
+		theApp.bWriteIntoTraceWnd(s_acTraceStr);
     }
 }
 BOOL CMsgSignal::bInsertBusSpecStructures(CStdioFile& omHeaderFile, 

@@ -235,9 +235,7 @@ void CExportLogFileDlg::OnBnClickedConvert()
 	CString strCSVFileName = m_omStrCSVFileName;  
 
 
-	// filename have been entered
-
-	
+	// filename have been entered	
 	if( strLogFileName != "" && strCSVFileName != "" )
 	{
 		if( m_omSelectedList.GetCount() != 0 ) 
@@ -245,6 +243,19 @@ void CExportLogFileDlg::OnBnClickedConvert()
 			//fields have been selected
 			//open the files
             CLogToExcel oExport( strLogFileName.GetBuffer(MAX_PATH),strCSVFileName.GetBuffer(MAX_PATH), m_unNoOfFileds, m_pacFields);
+
+			if (!oExport.bIsValidFile())
+			{
+				MessageBox(EXPORTTOEXCEL_INVALIDFILE,APPLICATION_NAME,MB_OK);
+				return;
+			}
+
+			// Check if all files are opened an d ready to convert
+			if (!oExport.bIsFilesOpened())
+			{
+				return;
+			}
+
 			//set the selected fields
 			oExport.fnSetSelectedFields( &(this->m_omSelectedList) );
 			//convert log file to excel file

@@ -789,9 +789,9 @@ void CCANMonitorApp::vDisplayConfigErrMsgbox(UINT unErrorCode,
         break;
     case defCONFIG_FILE_CORRUPT:
         {
-            m_omConfigErr = _T("An attempt"
-" to edit the file has been made from outside the application.\n"
-"Corrupt configuration file found");
+            m_omConfigErr = _T("An attempt\
+ to edit the file has been made from outside the application.\n\
+Corrupt configuration file found");
         }
         break;
     case defCONFIG_FILE_HDR_CORRUPT:
