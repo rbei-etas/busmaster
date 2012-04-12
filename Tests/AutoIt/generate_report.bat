@@ -20,6 +20,7 @@ call:test "TS_XX_uninstall"
 REM --- Final setup ---
 cd ..
 call:htmlfooter
+exit
 
 
 REM --- Utility functions ---
@@ -28,12 +29,13 @@ set TESTGROUP=%~1
 cd ..
 echo %TESTGROUP%
 cd %TESTGROUP%
+mkdir out 2> NUL
 goto:eof
 
 :test
 set TEST=%~1
 echo   %TEST%
-call autoit3 %TEST%.au3 > %TEST%_out.txt 2> %TEST%_err.txt
+call autoit3 %TEST%.au3 > out\%TEST%_stdout.txt 2> out\%TEST%_stderr.txt
 call:htmltestresult
 goto:eof
 
@@ -59,9 +61,9 @@ goto:eof
 echo ^<tr^>                                                                      >> ..\report.html
 echo ^<td^>%TESTGROUP%^</td^>                                                    >> ..\report.html
 echo ^<td^>%TEST%^</td^>                                                         >> ..\report.html
-echo ^<td^>^<a href="%TESTGROUP%/%TEST%_out.txt"^>X^</a^>^</td^>                 >> ..\report.html
-echo ^<td^>^<a href="%TESTGROUP%/%TEST%_err.txt"^>X^</a^>^</td^>                 >> ..\report.html
-for %%R in (%TEST%_err.txt) do if %%~zR equ 0 goto :pass
+echo ^<td^>^<a href="%TESTGROUP%/out/%TEST%_stdout.txt"^>X^</a^>^</td^>          >> ..\report.html
+echo ^<td^>^<a href="%TESTGROUP%/out/%TEST%_stderr.txt"^>X^</a^>^</td^>          >> ..\report.html
+for %%R in (out\%TEST%_stderr.txt) do if %%~zR equ 0 goto :pass
 echo ^<td style='background-color:#FF7777'^>Fail^</a^>^</td^>                    >> ..\report.html
 goto :done
 :pass
