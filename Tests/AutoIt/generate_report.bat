@@ -49,7 +49,7 @@ echo ^<table border="1"^>^<tbody^>                                              
 echo ^<tr^>                                                                      >>    report.html
 echo ^<th^>Test group^</th^>                                                     >>    report.html
 echo ^<th^>Test^</th^>                                                           >>    report.html
-echo ^<th^>Output^</th^>                                                         >>    report.html
+echo ^<th^>Outputs^</th^>                                                        >>    report.html
 echo ^<th^>Errors^</th^>                                                         >>    report.html
 echo ^<th^>Status^</th^>                                                         >>    report.html
 echo ^</tr^>                                                                     >>    report.html
