@@ -27,7 +27,7 @@ WinWaitClose("", "CANoe Database File(s) (*.dbc)", 3)
 ; Output File
 Send("{TAB}{TAB}{ENTER}")
 WinWaitActive("", "BUSMASTER Database File(s) (*.dbf)", 3)
-Send(@ScriptDir & "\TS_XX_DBC2DBF_001.dbf{ENTER}")
+Send(@ScriptDir & "\out\TS_XX_DBC2DBF_001.dbf{ENTER}")
 WinWaitClose("", "BUSMASTER Database File(s) (*.dbf)", 3)
 
 ; Convert
@@ -55,13 +55,13 @@ if (WinActive("", "debug")) Then
 EndIf
 
 ; Compare generated/expected log file
-$Ret = RunWait(@ComSpec & " /c FC /B TS_XX_DBC2DBF_001.log TS_XX_DBC2DBF_001_expected.log", @ScriptDir, @SW_HIDE)
+$Ret = RunWait(@ComSpec & " /c FC /B out\TS_XX_DBC2DBF_001.log TS_XX_DBC2DBF_001_expected.log", @ScriptDir, @SW_HIDE)
 If $Ret Then
 	ConsoleWriteError("Unexpected log file" & @CRLF)
 EndIf
 
 ; Compare generated/expected dbf file
-$Ret = RunWait(@ComSpec & " /c FC /B TS_XX_DBC2DBF_001.dbf TS_XX_DBC2DBF_001_expected.dbf", @ScriptDir, @SW_HIDE)
+$Ret = RunWait(@ComSpec & " /c FC /B out\TS_XX_DBC2DBF_001.dbf TS_XX_DBC2DBF_001_expected.dbf", @ScriptDir, @SW_HIDE)
 If $Ret Then
 	ConsoleWriteError("Unexpected dbf file" & @CRLF)
 EndIf
