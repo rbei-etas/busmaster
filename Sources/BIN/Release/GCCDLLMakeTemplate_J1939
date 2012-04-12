@@ -1,14 +1,14 @@
 #Make file for building DLL
 
-<FILENAME>.dll : <INSTALLDIR>\MINGW\Obj\wrapper_J1939.o <FILENAME>.o 
+<FILENAME>.dll : <INSTALLDIR>\SimulatedSystems\Obj\wrapper_J1939.o <FILENAME>.o 
 	dllwrap --def=<SRCDIR>\<FILENAME>.def \
---dllname=<SRCDIR>\<FILENAME>.dll --driver-name=gcc <INSTALLDIR>\MINGW\Obj\wrapper_J1939.o <SRCDIR>\<FILENAME>.o 
+--dllname=<SRCDIR>\<FILENAME>.dll --driver-name=gcc <INSTALLDIR>\SimulatedSystems\Obj\wrapper_J1939.o <SRCDIR>\<FILENAME>.o 
 
 
-#wrapper.o : c:\test\wrapper_J1939.c c:\test\wrapper_J1939.h
+#wrapper_J1939.o : c:\test\wrapper_J1939.c c:\test\wrapper_J1939.h
 #	gcc -c c:\test\wrapper_J1939.c -o C:\test\wrapper_J1939.o -mwindows
 
 <FILENAME>.o : <SRCDIR>\<FILENAME>.c
-	gcc -c <SRCDIR>\<FILENAME>.c  -o <SRCDIR>\<FILENAME>.o -mwindows
+	gcc -c -I<INSTALLDIR>\SimulatedSystems\include <SRCDIR>\<FILENAME>.c  -o <SRCDIR>\<FILENAME>.o -mwindows
 
 

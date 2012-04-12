@@ -303,6 +303,7 @@ crash / unexpected behaviour may result */
 
 	//update reset flag
 	m_bResetAbsTime = bEnable;
+	GetLocalTime(&m_LogSysTime);
 
     if (ushBlocks > 0)
     {

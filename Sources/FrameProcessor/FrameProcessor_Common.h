@@ -61,6 +61,7 @@ protected:
     BOOL                m_bClientBufferON;
     CLogObjArray        m_omLogObjectArray;
     CLogObjArray        m_omLogListTmp;
+	SYSTEMTIME			m_LogSysTime;
 
     BYTE     m_bExprnFlag_Log;
 

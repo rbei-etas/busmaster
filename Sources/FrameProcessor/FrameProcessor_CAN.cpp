@@ -115,6 +115,7 @@ void CFrameProcessor_CAN::vRetrieveDataFromBuffer(void)
 				{
 					//update msg reset flag
 					m_ouFormatMsgCAN.m_bResetMsgAbsTime = m_bResetAbsTime;
+					m_ouFormatMsgCAN.m_LogSysTime = m_LogSysTime ;
 					m_bResetAbsTime = FALSE;
 				}
 

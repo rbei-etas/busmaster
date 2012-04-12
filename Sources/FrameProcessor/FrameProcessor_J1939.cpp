@@ -187,6 +187,7 @@ void CFrameProcessor_J1939::vRetrieveDataFromBuffer(void)
 			{
 				//update msg reset flag
 				m_ouFormatMsgJ1939.m_bResetMsgAbsTime = m_bResetAbsTime;
+				m_ouFormatMsgJ1939.m_LogSysTime = m_LogSysTime;
 				m_bResetAbsTime = FALSE;
 			}
             // Save it into the J1939 message structure
