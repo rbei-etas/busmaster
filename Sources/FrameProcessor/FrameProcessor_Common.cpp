@@ -309,7 +309,6 @@ crash / unexpected behaviour may result */
         if (FALSE == bEnable)
         {
             m_bLogEnabled = bEnable;
-			m_sDataCopyThread.m_unActionCode = INACTION;
         }
         for (USHORT i = 0; i < ushBlocks; i++)
         {
