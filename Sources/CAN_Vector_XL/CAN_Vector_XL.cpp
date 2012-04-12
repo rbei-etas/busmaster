@@ -1044,8 +1044,12 @@ static BYTE bClassifyMsgType(XLevent& xlEvent, STCANDATA& sCanData)
         QueryPerformanceCounter(&g_QueryTickCount);	
         UINT64 unConnectionTime;
 	    unConnectionTime = ((g_QueryTickCount.QuadPart * 10000) / sg_lnFrequency.QuadPart) - sg_TimeStamp;
-        sg_TimeStamp  = (LONGLONG)(sCanData.m_lTickCount.QuadPart - unConnectionTime );
-		
+		//Time difference should be +ve value
+		if(sCanData.m_lTickCount.QuadPart >= unConnectionTime) 
+	        sg_TimeStamp  = (LONGLONG)(sCanData.m_lTickCount.QuadPart - unConnectionTime);
+		else
+	        sg_TimeStamp  = (LONGLONG)(unConnectionTime - sCanData.m_lTickCount.QuadPart);
+
         sg_byCurrState = CALC_TIMESTAMP_READY;
     }	
 	
@@ -1358,7 +1362,8 @@ static int nConnect(BOOL bConnect)
 	        // Get frequency of the performance counter
             QueryPerformanceFrequency(&sg_lnFrequency);
             // Convert it to time stamp with the granularity of hundreds of microsecond
-            if (sg_QueryTickCount.QuadPart * 10000 > sg_QueryTickCount.QuadPart)
+            //if (sg_QueryTickCount.QuadPart * 10000 > sg_QueryTickCount.QuadPart)
+            if ((sg_QueryTickCount.QuadPart * 10000) > sg_lnFrequency.QuadPart)
             {
                 sg_TimeStamp = (sg_QueryTickCount.QuadPart * 10000) / sg_lnFrequency.QuadPart;
             }

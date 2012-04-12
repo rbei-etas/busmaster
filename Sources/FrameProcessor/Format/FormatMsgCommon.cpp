@@ -32,6 +32,7 @@ CFormatMsgCommon::CFormatMsgCommon(void)
     m_qwRelBaseTime = 0;
 	m_qwResTime = 0;
 	m_bResetMsgAbsTime = FALSE;
+	m_qwLogDelayTime =0;
 }
 
 CFormatMsgCommon::~CFormatMsgCommon(void)
@@ -59,20 +60,20 @@ void CFormatMsgCommon::vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,
             m_qwRelBaseTime = TimeStamp;
         }
 		//Time difference should be +ve value
-//		if(TimeStamp >= m_qwRelBaseTime) 
+		if(TimeStamp >= m_qwRelBaseTime) 
 	        dwTSTmp = (DWORD) (TimeStamp - m_qwRelBaseTime);
-//		else
-//	        dwTSTmp = (DWORD) (m_qwRelBaseTime - TimeStamp);
+		else
+	        dwTSTmp = (DWORD) (m_qwRelBaseTime - TimeStamp);
 
         m_qwRelBaseTime = TimeStamp;
     }
     else if (IS_TM_ABS_SET(bExprnFlag))
     {
 		//Time difference should be +ve value
-//		if(TimeStamp >= qwAbsBaseTime) 
+		if(TimeStamp >= qwAbsBaseTime) 
 			dwTSTmp = (DWORD) (TimeStamp - qwAbsBaseTime);
-//		else
-//			dwTSTmp = (DWORD) (qwAbsBaseTime - TimeStamp);
+		else
+			dwTSTmp = (DWORD) (qwAbsBaseTime - TimeStamp);
 
     }
     else if (IS_TM_ABS_RES(bExprnFlag))
@@ -80,15 +81,29 @@ void CFormatMsgCommon::vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,
 		if (m_bResetMsgAbsTime == TRUE) 
 		{
 			//reset the time for new logging session
+			SYSTEMTIME LocalMsgTime;
+			GetLocalTime(&LocalMsgTime);
+
+			UINT64 RefMsgTime = (LocalMsgTime.wHour * 3600 + LocalMsgTime.wMinute * 60 +
+               + LocalMsgTime.wSecond) * 10000 + LocalMsgTime.wMilliseconds * 10;
+
+			UINT64 RefLogTime = (m_LogSysTime.wHour * 3600 + m_LogSysTime.wMinute * 60 +
+               + m_LogSysTime.wSecond) * 10000 + m_LogSysTime.wMilliseconds * 10;
+
+			m_qwLogDelayTime = (DWORD)(RefMsgTime - RefLogTime);//for log & msg time difference
+
 			m_qwResTime = TimeStamp - qwAbsBaseTime;
+
 			m_bResetMsgAbsTime = FALSE;
 
 		}
 		//Time difference should be +ve value
-//		if((TimeStamp - qwAbsBaseTime) >= m_qwResTime)
-			dwTSTmp = (DWORD) (TimeStamp - qwAbsBaseTime - m_qwResTime);
-//		else
-//			dwTSTmp = (DWORD) (m_qwResTime + qwAbsBaseTime - TimeStamp );
+		if(TimeStamp >= (qwAbsBaseTime + m_qwResTime))
+			dwTSTmp = (DWORD) (TimeStamp - qwAbsBaseTime - m_qwResTime );
+		else
+			dwTSTmp = (DWORD) (m_qwResTime + qwAbsBaseTime - TimeStamp );
+		
+		dwTSTmp = dwTSTmp + m_qwLogDelayTime; //add msg delay time
 
     }
     else

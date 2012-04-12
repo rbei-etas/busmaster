@@ -116,8 +116,10 @@ Section ""
     ; Help
     File /oname=BUSMASTER.chm "..\Documents\4 Help\out\help.chm"
 
+	; Simulated Systems
+	File /r ..\Sources\BIN\Release\SimulatedSystems
     ; MinGW
-    File /r ..\Sources\BIN\Release\MinGW
+    File /r ..\EXTERNAL_SOURCE\MinGW
 
     ; Drivers
     File ..\Sources\BIN\Release\ETASneo40.dll ; ETAS ES581

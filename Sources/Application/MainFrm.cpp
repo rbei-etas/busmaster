@@ -6236,10 +6236,22 @@ void CMainFrame::OnFileConnect()
             }
             if (m_abLogOnConnect[J1939] == TRUE)
             {
-                if (sg_pouIJ1939Logger != NULL)
-                {
-                    sg_pouIJ1939Logger->FPJ1_EnableLogging(bConnected);
-                }
+                //if (sg_pouIJ1939Logger != NULL)
+                //{
+                //    sg_pouIJ1939Logger->FPJ1_EnableLogging(bConnected);
+                //}
+				
+				// Enable Logging or stop logging
+				if (NULL != sg_pouIJ1939Logger)
+				{					
+					if (bConnected)
+					{
+						vSetAssociatedDatabaseFiles(J1939);	// Update the db file names associated
+						vSetBaudRateInfo(J1939);				// Update the baud rate details
+					}
+					sg_pouIJ1939Logger->FPJ1_EnableLogging(bConnected);
+				}
+
             }
 			//SGW Code commented by Arun 21-10-2010
             pouFlags->vSetFlagStatus(CONNECTED, bConnected);
@@ -9578,7 +9590,7 @@ void CMainFrame::vSetAssociatedDatabaseFiles(ETYPE_BUS eBus)
 		m_pouMsgSigJ1939->vGetDataBaseNames(&aomDataBaseFiles);
 	}
 
-	if (aomDataBaseFiles.GetSize() > 0 && NULL != sg_pouFrameProcCAN)
+	if (NULL != sg_pouFrameProcCAN)
 	{
 		if (CAN == eBus)
 		{

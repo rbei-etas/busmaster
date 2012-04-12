@@ -36,7 +36,7 @@ protected:
     //The relative base time will be diff. for each read thread so it is made member
     //Variable. Thus for each read thread an object of class derivedfrom this class
     //should be present
-	UINT64 m_qwResTime;
+	UINT64 m_qwResTime;//for reset log time
 	UINT64   m_qwRelBaseTime;
     void vFormatTimeStamp(DWORD dwTimeStamp, TCHAR acTime[]);
 public:
@@ -45,6 +45,9 @@ public:
     void vCalAndFormatTM_Offline(BYTE bExprnFlag,  UINT64 TimeStamp, TCHAR acTime[]);
     void vSetRelBaseTime(INT64 qwRelBaseTime); //Called to sart afresh for append mode
 	BOOL m_bResetMsgAbsTime;
+	SYSTEMTIME m_LogSysTime;
+	DWORD m_qwLogDelayTime; //for log-msg difference
+
 };
 
 #endif //FORMAT_MSG_COMMON_H_INCLUDED

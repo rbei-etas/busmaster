@@ -675,7 +675,7 @@ static void vCreateTimeModeMapping()
 	// Get frequency of the performance counter
     QueryPerformanceFrequency(&sg_lnFrequency);
     // Convert it to time stamp with the granularity of hundreds of microsecond
-    if (sg_QueryTickCount.QuadPart * 10000 > sg_QueryTickCount.QuadPart)
+    if ((sg_QueryTickCount.QuadPart * 10000) > sg_lnFrequency.QuadPart)
     {
         sg_TimeStamp = (sg_QueryTickCount.QuadPart * 10000) / sg_lnFrequency.QuadPart;
     }
@@ -1022,7 +1022,13 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
             QueryPerformanceCounter(&g_QueryTickCount);	
             UINT64 unConnectionTime;
 	        unConnectionTime = ((g_QueryTickCount.QuadPart * 10000) / sg_lnFrequency.QuadPart) - sg_TimeStamp;
-            sg_TimeStamp  = (LONGLONG)((dTimestamp * 10000) - unConnectionTime);
+
+			//Time difference should be +ve value
+			if((dTimestamp * 10000) >= unConnectionTime) 
+				sg_TimeStamp  = (LONGLONG)((dTimestamp * 10000) - unConnectionTime);
+			else
+				sg_TimeStamp  = (LONGLONG)(unConnectionTime - (dTimestamp * 10000));
+
         }
         else
         {
