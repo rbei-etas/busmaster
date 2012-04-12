@@ -8,13 +8,13 @@ cd Installer
 
 REM --- List of tests to be executed ---
 call:testgroup "Installer"
-call:test "TS_XX_install_full"
+call:test "install_full"
 
 call:testgroup "Format Converter"
 call:test "TS_XX_DBC2DBF_001"
 
 call:testgroup "Installer"
-call:test "TS_XX_uninstall"
+call:test "uninstall"
 
 
 REM --- Final setup ---
