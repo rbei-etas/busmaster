@@ -42,6 +42,7 @@
     <section>
       <title>Time Mode</title>
       <p>Logging of messages can be done in three different time modes. System time, Absolute time and Relative time mode. In system time mode time stamping of message is done using real time clock of the system. In absolute time mode the time stamping is done with respect the to the absolute timer that will be stated during connect. In relative time mode the time stamping of a message is with respect to previously received message.</p>
+      <p>Reset Timestamp for every enable logging is provided. If this option is selected then the absolute time will be reset whenever the logging is enabled.</p>
     </section>
     <section>
       <title>Numeric Mode</title>
