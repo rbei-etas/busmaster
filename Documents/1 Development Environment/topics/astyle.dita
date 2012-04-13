@@ -36,7 +36,7 @@
     <section>
       <title>Usage</title>
       <p>Go to your command line (e.g. by executing <filepath>cmd</filepath> in the start menu). And type:</p>
-      <p><cmdname>astyle -r -s4 -S *.cpp *.h</cmdname></p>
+      <p><cmdname>astyle -r -s4 -S -c *.cpp *.h</cmdname></p>
       <p>This will recursively run over all source code files of BUSMASTER and will adjust the style as necessary. The modifications will directly done in the respective file. The original unmodified files are available with the file name extension <filepath>.orig</filepath>.</p>
       <p>Before you commit these file to the project repository, make sure that the modifications are useful and adjust them if necessary. This could be necessary, e.g. in case you want to define an <codeph>enum</codeph> with &quot;<codeph>=</codeph>&quot; signs all in a row.</p>
       <p>The recommended options for C++ software at ETAS are:</p>
