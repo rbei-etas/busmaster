@@ -3,10 +3,12 @@
 #include "Definitions.h"
 #include "Converter.h"
 #include "CAPL2CPropertyPage.h"
+
 CCAPL2CConvereter::CCAPL2CConvereter(void)
 {
 }
-HRESULT CCAPL2CConvereter::GetHelpText(TCHAR* pchHelpText)
+
+HRESULT CCAPL2CConvereter::GetHelpText(string& pchHelpText)
 {
     /*if(pchHelpText != NULL)
     {
@@ -15,6 +17,7 @@ HRESULT CCAPL2CConvereter::GetHelpText(TCHAR* pchHelpText)
     }*/
     return S_FALSE;
 }
+
 HRESULT CCAPL2CConvereter::GetConverterName(string& strConverterName)
 {
     /*if(strConverterName != NULL)
@@ -23,7 +26,8 @@ HRESULT CCAPL2CConvereter::GetConverterName(string& strConverterName)
     }*/
     return S_FALSE;
 }
-HRESULT CCAPL2CConvereter::GetErrorStatus(HRESULT hResult, CString& omstrStatus)
+
+HRESULT CCAPL2CConvereter::GetErrorStatus(HRESULT hResult, string& omstrStatus)
 {
     /*switch( hResult )
     {
@@ -45,7 +49,8 @@ HRESULT CCAPL2CConvereter::GetErrorStatus(HRESULT hResult, CString& omstrStatus)
     }*/
     return S_FALSE;
 }
-HRESULT CCAPL2CConvereter::GetInputFileFilters(TCHAR* pchInputDefFilters, TCHAR* pchInputFilters)
+
+HRESULT CCAPL2CConvereter::GetInputFileFilters(string& pchInputDefFilters, string& pchInputFilters)
 {
     /*HRESULT hResult = S_FALSE;
     if(NULL != pchInputDefFilters)
@@ -64,14 +69,15 @@ HRESULT CCAPL2CConvereter::GetInputFileFilters(TCHAR* pchInputDefFilters, TCHAR*
     }*/
     return S_FALSE;
 }
-HRESULT CCAPL2CConvereter::GetLastConversionStatus(HRESULT& hResult, CString& omstrStatus)
+
+HRESULT CCAPL2CConvereter::GetLastConversionStatus(HRESULT& hResult, string& omstrStatus)
 {
     /*hResult = m_hResult;
     omstrStatus = m_omstrConversionStatus;*/
     return S_FALSE;
 }
 
-HRESULT CCAPL2CConvereter::GetOutputFileFilters(TCHAR* pchOutputDefFilters, TCHAR* pchOutputFilters)
+HRESULT CCAPL2CConvereter::GetOutputFileFilters(string& pchOutputDefFilters, string& pchOutputFilters)
 {
     /*HRESULT hResult = S_FALSE;
     if(NULL != pchOutputDefFilters)
@@ -90,14 +96,17 @@ HRESULT CCAPL2CConvereter::GetOutputFileFilters(TCHAR* pchOutputDefFilters, TCHA
     }*/
     return S_FALSE;
 }
-HRESULT CCAPL2CConvereter::ConvertFile(TCHAR* chInputFile, TCHAR* chOutputFile)
+
+HRESULT CCAPL2CConvereter::ConvertFile(string& chInputFile, string& chOutputFile)
 {
     return S_FALSE;
 }
+
 BOOL CCAPL2CConvereter::bHaveOwnWindow()
 {
     return TRUE;
 }
+
 CCAPL2CConvereter::~CCAPL2CConvereter(void)
 {
 };

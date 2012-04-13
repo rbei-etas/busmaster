@@ -54,7 +54,7 @@ CConverter::~CConverter()
  * This is the basic function which is to be called
  * to convert any given CANoe file to a CANMon file.
  */
-unsigned int CConverter::Convert(string sCanoeFile, string sCanMonFile)
+unsigned int CConverter::Convert(string &sCanoeFile, string &sCanMonFile)
 {
     fstream fileInput, fileOutput;
     char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this

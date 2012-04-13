@@ -2,98 +2,72 @@
 #include "DBF2DBCConverter.h"
 #include "Definitions.h"
 #include "Converter.h"
+
 CDBF2DBCConverter::CDBF2DBCConverter(void)
 {
 }
-HRESULT CDBF2DBCConverter::GetHelpText(TCHAR* pchHelpText)
+
+HRESULT CDBF2DBCConverter::GetHelpText(string& pchHelpText)
 {
-    if(pchHelpText != NULL)
-    {
-        _tcscpy(pchHelpText, _T("Converts the BUSMASTER Database(.dbf) file to CANoe Database(.dbc) file"));
-        return S_OK;
-    }
-    return S_FALSE;
+    pchHelpText = "Converts the BUSMASTER Database(.dbf) file to CANoe Database(.dbc) file";
+    return S_OK;
 }
+
 HRESULT CDBF2DBCConverter::GetConverterName(string& strConverterName)
 {
 	strConverterName = "DBF TO DBC Conversion";
     return S_OK;
 }
-HRESULT CDBF2DBCConverter::GetErrorStatus(HRESULT hResult, CString& omstrStatus)
+
+HRESULT CDBF2DBCConverter::GetErrorStatus(HRESULT hResult, string& omstrStatus)
 {
     switch( hResult )
     {
        /* case ERR_OUTPUT_FILE_NOTFOUND:
-            m_omstrConversionStatus = _T("Output File path is not found");
+            m_omstrConversionStatus = "Output File path is not found";
             break;
         case ERR_INPUT_FILE_NOTFOUND:
-            m_omstrConversionStatus = _T("Input File path is not found");
+            m_omstrConversionStatus = "Input File path is not found";
             break;*/
         case S_OK:
-            m_omstrConversionStatus = _T("Conversion success");
+            m_omstrConversionStatus = "Conversion success";
             break;
         case S_FALSE:
-            m_omstrConversionStatus = _T("Conversion failed");
+            m_omstrConversionStatus = "Conversion failed";
             break;
         default:
-            m_omstrConversionStatus = _T("Unknown Error");
+            m_omstrConversionStatus = "Unknown Error";
             break;
     }   
     return S_OK;
 }
-HRESULT CDBF2DBCConverter::GetInputFileFilters(TCHAR* pchInputDefFilters, TCHAR* pchInputFilters)
+
+HRESULT CDBF2DBCConverter::GetInputFileFilters(string& pchInputDefFilters, string& pchInputFilters)
 {
-    HRESULT hResult = S_FALSE;
-    if(NULL != pchInputDefFilters)
-    {
-        _tcscpy(pchInputDefFilters, _T("dbf"));
-        hResult = S_OK;
-    }
-    else
-    {
-        hResult = S_FALSE;
-    }
-    if(NULL != pchInputFilters)
-    {
-        _tcscpy(pchInputFilters, _T("BUSMASTER Database File(s) (*.dbf)|*.dbf||"));
-        hResult = S_OK;
-    }
-    return hResult;
-}
-HRESULT CDBF2DBCConverter::GetLastConversionStatus(HRESULT& hResult, CString& omstrStatus)
-{
-    hResult = m_hResult;
-    omstrStatus = m_omstrConversionStatus;
+    pchInputDefFilters = "dbf";
+    pchInputFilters = "BUSMASTER Database File(s) (*.dbf)|*.dbf||";
     return S_OK;
 }
 
-HRESULT CDBF2DBCConverter::GetOutputFileFilters(TCHAR* pchOutputDefFilters, TCHAR* pchOutputFilters)
+HRESULT CDBF2DBCConverter::GetLastConversionStatus(HRESULT& hResult, string& omstrStatus)
 {
-    HRESULT hResult = S_FALSE;
-    if(NULL != pchOutputDefFilters)
-    {
-        _tcscpy(pchOutputDefFilters, _T("dbc"));
-        hResult = S_OK;
-    }
-    else
-    {
-        hResult = S_FALSE;
-    }
-    if(NULL != pchOutputFilters)
-    {
-        _tcscpy(pchOutputFilters, _T("CANoe Database File(s) (*.dbc)|*.dbc||"));
-        hResult = S_OK;
-    }
-    return hResult;
+    hResult = m_hResult;
+    omstrStatus = (LPCTSTR) m_omstrConversionStatus;
+    return S_OK;
 }
-HRESULT CDBF2DBCConverter::ConvertFile(TCHAR* chInputFile, TCHAR* chOutputFile)
+
+HRESULT CDBF2DBCConverter::GetOutputFileFilters(string& pchOutputDefFilters, string& pchOutputFilters)
+{
+    pchOutputDefFilters = "dbc";
+    pchOutputFilters = "CANoe Database File(s) (*.dbc)|*.dbc||";
+    return S_OK;
+}
+
+HRESULT CDBF2DBCConverter::ConvertFile(string& chInputFile, string& chOutputFile)
 {
     HRESULT hResult = S_OK;
-    /*extern FILE*  yyin;
-	extern FILE*  yyout;
-    */
     CConverter ouConverter;
-    INT nRetVal = ouConverter.Convert((LPCTSTR)chInputFile,(LPCTSTR)chOutputFile);
+	INT nRetVal = ouConverter.Convert(chInputFile.c_str(), chOutputFile.c_str());
     m_omstrConversionStatus = ouConverter.GetResultString();
     if(nRetVal != 0)
     {
@@ -102,10 +76,12 @@ HRESULT CDBF2DBCConverter::ConvertFile(TCHAR* chInputFile, TCHAR* chOutputFile)
     }
     return hResult;
 }
+
 BOOL CDBF2DBCConverter::bHaveOwnWindow()
 {
     return FALSE;
 }
+
 CDBF2DBCConverter::~CDBF2DBCConverter(void)
 {
-};
+}

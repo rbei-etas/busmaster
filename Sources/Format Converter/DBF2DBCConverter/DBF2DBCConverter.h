@@ -8,13 +8,13 @@ class CDBF2DBCConverter : public CBaseConverter
     HRESULT m_hResult;
 public:
     CDBF2DBCConverter(void);
-    virtual HRESULT GetInputFileFilters(TCHAR*, TCHAR* );
-    virtual HRESULT GetOutputFileFilters(TCHAR*, TCHAR* );
-    virtual HRESULT ConvertFile(TCHAR* chInputFile, TCHAR* chOutputFile);
+    virtual HRESULT GetInputFileFilters(string&, string& );
+    virtual HRESULT GetOutputFileFilters(string&, string& );
+    virtual HRESULT ConvertFile(string& chInputFile, string& chOutputFile);
     virtual HRESULT GetConverterName(string& strConverterName); 
-    virtual HRESULT GetErrorStatus(HRESULT hResult, CString& omstrStatus);
-    virtual HRESULT GetLastConversionStatus(HRESULT& hResult, CString& omstrStatus);
-    virtual HRESULT GetHelpText(TCHAR* pchHelpText);
+    virtual HRESULT GetErrorStatus(HRESULT hResult, string& omstrStatus);
+    virtual HRESULT GetLastConversionStatus(HRESULT& hResult, string& omstrStatus);
+    virtual HRESULT GetHelpText(string& pchHelpText);
     virtual BOOL bHaveOwnWindow();
     virtual HRESULT GetPropertyPage(CPropertyPage*& pPage ){return S_FALSE;};
     ~CDBF2DBCConverter(void);
