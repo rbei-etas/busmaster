@@ -3,7 +3,7 @@
 use strict;
 use File::Glob qw(bsd_glob);
 
-my $astyle_args = "-s4 -S"; # indent by four spaces, indent switches
+my $astyle_args = "-s4 -S -c"; # indent by four spaces, indent switches, convert tabs
 
 my $infile;
 my $outfile;
