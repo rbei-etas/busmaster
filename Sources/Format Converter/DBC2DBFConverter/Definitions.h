@@ -22,8 +22,7 @@
  * Definitions file.
  */
 
-#ifndef Definitions_H
-#define Definitions_H
+#pragma once
 
 //Converter.cpp
 #define defCON_MAX_LINE_LEN 2052  //Maximum no of char in one line
@@ -46,5 +45,3 @@ typedef union _SIG_VALUE
     long long i64Value;
     unsigned long long ui64Value;
 } SIG_VALUE;
-
-#endif

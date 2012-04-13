@@ -22,8 +22,7 @@
  * Definition of the comment class.
  */
 
-#ifndef Comment_H
-#define Comment_H
+#pragma once
 
 #include <string>
 
@@ -39,5 +38,3 @@ public:
     char m_msgType;
     string m_comment;
 };
-
-#endif

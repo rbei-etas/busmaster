@@ -22,8 +22,7 @@
  * Special file represents all the delimiters.
  */
 
-#ifndef Tag_H
-#define Tag_H
+#pragma once
 
 #define T_HEADER "//******************************BUSMASTER Messages and signals Database ******************************//"
 
@@ -87,5 +86,3 @@
 #define END_RXVAL_TAG        T_STRAT_BRAC"END_PARAM_NODE_RX_SIG_VAL"T_END_BRAC
 #define START_TXVAL_TAG      T_STRAT_BRAC"START_PARAM_NODE_TX_MSG_VAL"T_END_BRAC
 #define END_TXVAL_TAG        T_STRAT_BRAC"END_PARAM_NODE_TX_MSG_VAL"T_END_BRAC
-
-#endif

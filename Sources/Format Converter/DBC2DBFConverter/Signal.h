@@ -22,8 +22,7 @@
  * Definition of the signal class.
  */
 
-#ifndef Signal_H
-#define Signal_H
+#pragma once
 
 #include <list>
 
@@ -70,4 +69,3 @@ public:
     bool WriteSignaltofile(fstream &fileOutput, list<CSignal> &m_listSignals, int m_ucLength, int m_cDataFormat, bool writeErr);
 };
 
-#endif

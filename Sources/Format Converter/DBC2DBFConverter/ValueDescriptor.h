@@ -22,8 +22,7 @@
  * Definition of the value descriptor class.
  */
 
-#ifndef ValueDescriptor_H
-#define ValueDescriptor_H
+#pragma once
 
 #include <fstream>
 #include <list>
@@ -43,5 +42,3 @@ public:
     SIG_VALUE	m_value;
     void writeValueDescToFile(fstream &fileOutput, char m_ucType, list<CValueDescriptor> &m_listValueDescriptor);
 };
-
-#endif
