@@ -565,10 +565,10 @@ void CConverter::GenerateMessageList(fstream& fileInput)
             else if(strcmp(pcToken, "CM_") == 0)
             {
                 string comment = pcTok;	// for network node - venkat
-				pcLine = pcLine + strlen(pcToken) + 1;
+                pcLine = pcLine + strlen(pcToken) + 1;
                 pcToken = strtok_s(pcLine, " ", &pcTok);
                 CComment cm;
-				
+
                 //comments related to node
                 if(strcmp(pcToken, "BU_") == 0)
                 {
@@ -644,15 +644,15 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 else
                 {
                     //comment = pcToken;
-					if(comment.find(";") < 0)
-					{
-						while(strstr(pcToken, "\";") == NULL)
-						{
-							fileInput.getline(acLine, defCON_MAX_LINE_LEN);
-							pcToken = acLine;
-							comment = comment + pcToken;
-						}
-					}
+                    if(comment.find(";") < 0)
+                    {
+                        while(strstr(pcToken, "\";") == NULL)
+                        {
+                            fileInput.getline(acLine, defCON_MAX_LINE_LEN);
+                            pcToken = acLine;
+                            comment = comment + pcToken;
+                        }
+                    }
                     cm.m_comment= comment;
                     m_cmNet.push_back(cm);
                 }

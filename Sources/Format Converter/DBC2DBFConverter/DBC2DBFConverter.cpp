@@ -15,7 +15,7 @@ HRESULT CDBC2DBFConverter::GetHelpText(string& pchHelpText)
 
 HRESULT CDBC2DBFConverter::GetConverterName(string& strConverterName)
 {
-	strConverterName = "DBC TO DBF Conversion";
+    strConverterName = "DBC TO DBF Conversion";
     return S_OK;
 }
 
@@ -23,12 +23,12 @@ HRESULT CDBC2DBFConverter::GetErrorStatus(HRESULT hResult, string& omstrStatus)
 {
     switch( hResult )
     {
-       /* case ERR_OUTPUT_FILE_NOTFOUND:
-            m_omstrConversionStatus = "Output File path is not found";
-            break;
-        case ERR_INPUT_FILE_NOTFOUND:
-            m_omstrConversionStatus = "Input File path is not found";
-            break;*/
+            /* case ERR_OUTPUT_FILE_NOTFOUND:
+                 m_omstrConversionStatus = "Output File path is not found";
+                 break;
+             case ERR_INPUT_FILE_NOTFOUND:
+                 m_omstrConversionStatus = "Input File path is not found";
+                 break;*/
         case S_OK:
             m_omstrConversionStatus = "Conversion success";
             break;
@@ -38,14 +38,14 @@ HRESULT CDBC2DBFConverter::GetErrorStatus(HRESULT hResult, string& omstrStatus)
         default:
             m_omstrConversionStatus = "Unknown Error";
             break;
-    }   
+    }
     return S_OK;
 }
 
 HRESULT CDBC2DBFConverter::GetInputFileFilters(string& pchInputDefFilters, string& pchInputFilters)
 {
-	pchInputDefFilters = "dbc";
-	pchInputFilters = "CANoe Database File(s) (*.dbc)|*.dbc||";
+    pchInputDefFilters = "dbc";
+    pchInputFilters = "CANoe Database File(s) (*.dbc)|*.dbc||";
     return S_OK;
 }
 
@@ -67,7 +67,7 @@ HRESULT CDBC2DBFConverter::ConvertFile(string& chInputFile, string& chOutputFile
 {
     HRESULT hResult = S_OK;
     /*extern FILE*  yyin;
-	extern FILE*  yyout;
+    extern FILE*  yyout;
     */
     CConverter ouConverter;
 
@@ -76,7 +76,7 @@ HRESULT CDBC2DBFConverter::ConvertFile(string& chInputFile, string& chOutputFile
     m_omstrConversionStatus = ouConverter.GetResultString();
     if(nRetVal != 0)
     {
-		m_omstrConversionStatus += ouConverter.m_omLogFilePath.data();
+        m_omstrConversionStatus += ouConverter.m_omLogFilePath.data();
         m_hResult = nRetVal;
     }
     return hResult;
