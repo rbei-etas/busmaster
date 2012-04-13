@@ -564,7 +564,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
             //comments
             else if(strcmp(pcToken, "CM_") == 0)
             {
-                string comment = pcTok;	// for network node - venkat
+                string comment = pcTok; // for network node - venkat
                 pcLine = pcLine + strlen(pcToken) + 1;
                 pcToken = strtok_s(pcLine, " ", &pcTok);
                 CComment cm;

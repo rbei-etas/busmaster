@@ -7,11 +7,11 @@
 #ifdef _MANAGED
 #error Please read instructions in DBC2DBFConverter.cpp to compile with /clr
 // If you want to add /clr to your project you must do the following:
-//	1. Remove the above include for afxdllx.h
-//	2. Add a .cpp file to your project that does not have /clr thrown and has
-//	   Precompiled headers disabled, with the following text:
-//			#include <afxwin.h>
-//			#include <afxdllx.h>
+//  1. Remove the above include for afxdllx.h
+//  2. Add a .cpp file to your project that does not have /clr thrown and has
+//     Precompiled headers disabled, with the following text:
+//          #include <afxwin.h>
+//          #include <afxdllx.h>
 #endif
 
 #ifdef _DEBUG
