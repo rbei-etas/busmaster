@@ -71,7 +71,7 @@ CParameterValues& CParameterValues::operator=(CParameterValues& param)
  *
  * Parses the Node Parameter Values other than Default value from the input CanoeDB file.
  */
-int CParameterValues::GetNodeParams(string paramType, char *pcLine)
+int CParameterValues::GetNodeParams(string &paramType, char *pcLine)
 {
     char *pcToken, *pcTok;
     char acTemp[defCON_TEMP_LEN],*pcTemp;
@@ -97,7 +97,7 @@ int CParameterValues::GetNodeParams(string paramType, char *pcLine)
  *
  * Parses the Network Parameter Values other than Default value from the input CanoeDB file.
  */
-int CParameterValues::GetNetParams(string paramType, char *pcLine)
+int CParameterValues::GetNetParams(string &paramType, char *pcLine)
 {
     char *pcToken = pcLine;
     char *pcTok;
@@ -115,7 +115,7 @@ int CParameterValues::GetNetParams(string paramType, char *pcLine)
  * This function Parses the Message Parameter other Values rather than Default value from the input CanoeDB
  * file and finds the frame foramt for that Message ID.
  */
-int CParameterValues::GetMesgParams(string paramType,char *pcLine)
+int CParameterValues::GetMesgParams(string &paramType,char *pcLine)
 {
     char *pcToken, *pcTok;
     char acTemp[defCON_TEMP_LEN], *pcTemp;
@@ -155,7 +155,7 @@ int CParameterValues::GetMesgParams(string paramType,char *pcLine)
  * input CanoeDB file and calculates the frame format
  * for the corresponding Message ID.
  */
-int CParameterValues::GetSignalParams(string paramType,char *pcLine)
+int CParameterValues::GetSignalParams(string &paramType,char *pcLine)
 {
     char *pcToken, *pcTok;
     char acTemp[defCON_TEMP_LEN],*pcTemp;
@@ -203,7 +203,7 @@ int CParameterValues::GetSignalParams(string paramType,char *pcLine)
  *
  * Reads the other vlaue of attributes from CanoeDB file.
  */
-int CParameterValues::ReadParamValue(string paramType,char *pcToken)
+int CParameterValues::ReadParamValue(string &paramType,char *pcToken)
 {
     int success = 1;
 
@@ -247,7 +247,7 @@ int CParameterValues::ReadParamValue(string paramType,char *pcToken)
  *
  * Writes network values to file.
  */
-void CParameterValues::WriteNetValuesToFile(fstream& fileOutput, string paramType, string paramName)
+void CParameterValues::WriteNetValuesToFile(fstream& fileOutput, string &paramType, string &paramName)
 {
     fileOutput << "\"";
     fileOutput << paramName.c_str();
@@ -286,7 +286,7 @@ void CParameterValues::WriteNetValuesToFile(fstream& fileOutput, string paramTyp
  *
  * Writes node value to file.
  */
-void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput, string paramType, string paramName)
+void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput, string &paramType, string &paramName)
 {
     fileOutput << m_NodeName.c_str();
     fileOutput << ",\"";
@@ -324,7 +324,7 @@ void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput, string paramTy
  *
  * Writes message values to file.
  */
-void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput, string paramType, string paramName)
+void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput, string &paramType, string &paramName)
 {
     fileOutput << dec << m_MsgId;
     fileOutput << ",";
@@ -363,7 +363,7 @@ void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput, string paramTy
  *
  * Writes signal values to file.
  */
-void CParameterValues::WriteSigValuesToFile(fstream& fileOutput, string paramType, string paramName)
+void CParameterValues::WriteSigValuesToFile(fstream& fileOutput, string &paramType, string &paramName)
 {
     fileOutput << m_MsgId;
     fileOutput << ",";

@@ -98,17 +98,15 @@ extern "C" __declspec(dllexport) HRESULT GetBaseConverter(CBaseConverter*& pouCo
     pouConverter = new CAscLogConverter();
     return S_OK;
 }
+
 CAscLogConverter::CAscLogConverter(void)
 {
 }
-HRESULT CAscLogConverter::GetHelpText(TCHAR* pchHelpText)
+
+HRESULT CAscLogConverter::GetHelpText(string& pchHelpText)
 {
-    if(pchHelpText != NULL)
-    {
-        _tcscpy(pchHelpText, _T("Converts the CANoe log file(.asc) to BUSMASTER log file(.log)"));
-        return S_OK;
-    }
-    return S_FALSE;
+    pchHelpText = "Converts the CANoe log file(.asc) to BUSMASTER log file(.log)";
+    return S_OK;
 }
 
 HRESULT CAscLogConverter::GetConverterName(string& strConverterName)
@@ -116,85 +114,60 @@ HRESULT CAscLogConverter::GetConverterName(string& strConverterName)
 	strConverterName = "ASC TO LOG Conversion";
     return S_OK;
 }
-HRESULT CAscLogConverter::GetErrorStatus(HRESULT hResult, CString& omstrStatus)
+
+HRESULT CAscLogConverter::GetErrorStatus(HRESULT hResult, string& omstrStatus)
 {
     switch( hResult )
     {
         /*case ERR_OUTPUT_FILE_NOTFOUND:
-            m_omstrConversionStatus = _T("Output File path is not found");
+            m_omstrConversionStatus = "Output File path is not found";
             break;
         case ERR_INPUT_FILE_NOTFOUND:
-            m_omstrConversionStatus = _T("Input File path is not found");
+            m_omstrConversionStatus = "Input File path is not found";
             break;*/
         case S_OK:
-            m_omstrConversionStatus = _T("Conversion success");
+            m_omstrConversionStatus = "Conversion success";
             break;
         case S_FALSE:
-            m_omstrConversionStatus = _T("Conversion failed");
+            m_omstrConversionStatus = "Conversion failed";
             break;
         default:
-            m_omstrConversionStatus = _T("Unknown Error");
+            m_omstrConversionStatus = "Unknown Error";
             break;
     }   
     return S_OK;
 }
-HRESULT CAscLogConverter::GetInputFileFilters(TCHAR* pchInputDefFilters, TCHAR* pchInputFilters)
+
+HRESULT CAscLogConverter::GetInputFileFilters(string& pchInputDefFilters, string& pchInputFilters)
 {
-    HRESULT hResult = S_FALSE;
-    if(NULL != pchInputDefFilters)
-    {
-        _tcscpy(pchInputDefFilters, _T("asc"));
-        hResult = S_OK;
-    }
-    else
-    {
-        hResult = S_FALSE;
-    }
-    if(NULL != pchInputFilters)
-    {
-        _tcscpy(pchInputFilters, _T("CANoe Log File(s) (*.asc)|*.asc||"));
-        hResult = S_OK;
-    }
-    return hResult;
+    pchInputDefFilters = "asc";
+    pchInputFilters = "CANoe Log File(s) (*.asc)|*.asc||";
+    return S_OK;
 }
-HRESULT CAscLogConverter::GetLastConversionStatus(HRESULT& hResult, CString& omstrStatus)
+
+HRESULT CAscLogConverter::GetLastConversionStatus(HRESULT& hResult, string& omstrStatus)
 {
     hResult = m_hResult;
     omstrStatus = m_omstrConversionStatus;
     return S_OK;
 }
 
-HRESULT CAscLogConverter::GetOutputFileFilters(TCHAR* pchOutputDefFilters, TCHAR* pchOutputFilters)
+HRESULT CAscLogConverter::GetOutputFileFilters(string& pchOutputDefFilters, string& pchOutputFilters)
 {
-    HRESULT hResult = S_FALSE;
-    if(NULL != pchOutputDefFilters)
-    {
-        _tcscpy(pchOutputDefFilters, _T("log"));
-        hResult = S_OK;
-    }
-    else
-    {
-        hResult = S_FALSE;
-    }
-    if(NULL != pchOutputFilters)
-    {
-        _tcscpy(pchOutputFilters, _T("BUSMASTER Log File(s) (*.log)|*.log||"));
-        hResult = S_OK;
-    }
-    return hResult;
+    pchOutputDefFilters = "log";
+    pchOutputFilters = "BUSMASTER Log File(s) (*.log)|*.log||";
+    return S_OK;
 }
-HRESULT CAscLogConverter::ConvertFile(TCHAR* chInputFile, TCHAR* chOutputFile)
+
+HRESULT CAscLogConverter::ConvertFile(string& chInputFile, string& chOutputFile)
 {
     HRESULT hResult = S_OK;
-    /*extern FILE*  yyin;
-	extern FILE*  yyout;
-    */
     FILE* fpInputFile = NULL;
     FILE* fpOutputFile = NULL;
-    fpInputFile = _tfopen(chInputFile, _T("r"));
+    fpInputFile = _tfopen(chInputFile.c_str(), _T("r"));
     if(NULL != fpInputFile)
     {
-        fpOutputFile = _tfopen(chOutputFile, _T("w"));
+        fpOutputFile = _tfopen(chOutputFile.c_str(), _T("w"));
         if(NULL != fpOutputFile)
         {
             //yydebug = 1;
@@ -221,6 +194,7 @@ HRESULT CAscLogConverter::ConvertFile(TCHAR* chInputFile, TCHAR* chOutputFile)
     m_hResult = hResult;
     return hResult;
 }
+
 BOOL CAscLogConverter::bHaveOwnWindow()
 {
     return FALSE;

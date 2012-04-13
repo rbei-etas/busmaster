@@ -45,7 +45,7 @@ public:
 protected:
     static const char m_accHeader[];
 public:
-    unsigned int Convert(string sCanoeFile, string sCanMonFile);
+    unsigned int Convert(string &sCanoeFile, string &sCanMonFile);
 
 private:
     unsigned int m_uiResultCode;

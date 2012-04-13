@@ -29,11 +29,11 @@ void CDefConverterPage::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_COMBO_CONVERSIONS, m_omComboConverterNames);
     DDX_Control(pDX, IDC_EDIT_INPUTFILEPATH, m_omEditInputPath);
     DDX_Control(pDX, IDC_EDIT_OUTPUTFILEPATH, m_omEditOutputPath);
-    DDX_Text(pDX, IDC_EDIT_INPUTFILEPATH, m_omStrInputFilePath);
-    DDX_Text(pDX, IDC_EDIT_OUTPUTFILEPATH, m_omStrOutputFilePath);
-    DDX_Text(pDX, IDC_EDIT_COMMENT, m_omstrConversionComment);
-    DDX_Text(pDX, IDC_EDIT_HELP, m_omstrEditHelp);
-	DDV_MaxChars(pDX, m_omstrEditHelp, 1024);
+    DDX_Text(pDX, IDC_EDIT_INPUTFILEPATH, CString(m_omStrInputFilePath.c_str()));
+    DDX_Text(pDX, IDC_EDIT_OUTPUTFILEPATH, CString(m_omStrOutputFilePath.c_str()));
+    DDX_Text(pDX, IDC_EDIT_COMMENT, CString(m_omstrConversionComment.c_str()));
+    DDX_Text(pDX, IDC_EDIT_HELP, CString(m_omstrEditHelp.c_str()));
+	DDV_MaxChars(pDX, CString(m_omstrEditHelp.c_str()), 1024);
 }
 
 
@@ -89,8 +89,8 @@ BOOL CDefConverterPage::OnInitDialog()
 void CDefConverterPage::OnBnClickedBtnInput()
 {
     // TODO: Add your control notification handler code here
-    TCHAR strFileExt[1024];
-    TCHAR strFileFilters[1024];
+    string strFileExt;
+    string strFileFilters;
     INT nSelected = GetConverterPos();
     if( nSelected < m_pouPluginManager->m_ConverterList.GetCount())
     {
@@ -102,11 +102,11 @@ void CDefConverterPage::OnBnClickedBtnInput()
         }
     
 		CFileDialog fileDlg( TRUE,     // Open File dialog
-							 strFileExt,     // Default Extension,
+							 strFileExt.c_str(),     // Default Extension,
 							 NULL,     // Initial file name.
 							 OFN_OVERWRITEPROMPT|OFN_FILEMUSTEXIST|
 							 OFN_PATHMUSTEXIST,
-							 strFileFilters,
+							 strFileFilters.c_str(),
 							 this );
 		INT_PTR nRetVal = fileDlg.DoModal();
 
@@ -114,14 +114,14 @@ void CDefConverterPage::OnBnClickedBtnInput()
 		if(IDOK == nRetVal)
 		{
 			m_omEditInputPath.SetWindowText(fileDlg.GetPathName());
-			CString omStrOutputFile = fileDlg.GetPathName();
+			CString omStrOutputFile = (LPCTSTR) fileDlg.GetPathName();
 			INT nIndex = omStrOutputFile.ReverseFind('.');
 			if ( nIndex >= 0)
 			{
 				omStrOutputFile = omStrOutputFile.Left(nIndex);
 				ouConverterInfo.m_pouConverter->GetOutputFileFilters(strFileExt, strFileFilters);
 				omStrOutputFile += ".";
-				omStrOutputFile += strFileExt;
+				omStrOutputFile += strFileExt.c_str();
 				m_omEditOutputPath.SetWindowText(omStrOutputFile);
 			}
 			GetDlgItem(IDC_EDIT_COMMENT)->SetWindowText("");
@@ -131,8 +131,8 @@ void CDefConverterPage::OnBnClickedBtnInput()
 
 void CDefConverterPage::OnBnClickedBtnOutput()
 {
-    TCHAR strFileExt[1024];
-    TCHAR strFileFilters[1024];
+    string strFileExt;
+    string strFileFilters;
     INT nSelected = GetConverterPos();
     if( nSelected < m_pouPluginManager->m_ConverterList.GetCount())
     {
@@ -144,10 +144,10 @@ void CDefConverterPage::OnBnClickedBtnOutput()
         }
     }
     CFileDialog fileDlg( TRUE,     // Open File dialog
-                         strFileExt,     // Default Extension,
+                         strFileExt.c_str(),     // Default Extension,
                          NULL,     // Initial file name.
                          OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-                         strFileFilters,
+                         strFileFilters.c_str(),
                          this );
     INT_PTR nRetVal = fileDlg.DoModal();
     
@@ -163,22 +163,18 @@ void CDefConverterPage::OnBnClickedBtnConvert()
     INT nSelected = GetConverterPos();
 	TRY
 	{
-    if( (nSelected >= 0 ) && (nSelected < m_pouPluginManager->m_ConverterList.GetCount()))
-    {
-        POSITION pos = m_pouPluginManager->m_ConverterList.FindIndex(nSelected);
-        ConverterInfo &ouConverterInfo = m_pouPluginManager->m_ConverterList.GetAt(pos);
-        if( ouConverterInfo.m_pouConverter != NULL)
-        {
-            UpdateData();
-            TCHAR strInputFilePath[1026];
-            TCHAR strOutputFilePath[1026];
-            StringCbCopy(strInputFilePath, sizeof(strInputFilePath), m_omStrInputFilePath);
-            StringCbCopy(strOutputFilePath, sizeof(strOutputFilePath), m_omStrOutputFilePath);
-            HRESULT hResult = ouConverterInfo.m_pouConverter->ConvertFile(strInputFilePath, strOutputFilePath);
-            ouConverterInfo.m_pouConverter->GetLastConversionStatus(hResult, m_omstrConversionComment);
-            UpdateData(FALSE);
-        }
-    }
+		if( (nSelected >= 0 ) && (nSelected < m_pouPluginManager->m_ConverterList.GetCount()))
+		{
+			POSITION pos = m_pouPluginManager->m_ConverterList.FindIndex(nSelected);
+			ConverterInfo &ouConverterInfo = m_pouPluginManager->m_ConverterList.GetAt(pos);
+			if( ouConverterInfo.m_pouConverter != NULL)
+			{
+				UpdateData();
+				HRESULT hResult = ouConverterInfo.m_pouConverter->ConvertFile(m_omStrInputFilePath, m_omStrOutputFilePath);
+				ouConverterInfo.m_pouConverter->GetLastConversionStatus(hResult, m_omstrConversionComment);
+				UpdateData(FALSE);
+			}
+		}
 	}
 	CATCH(CException, e)
 	{
@@ -193,26 +189,26 @@ void CDefConverterPage::OnCbnSelchangeComboConversions()
     m_omStrInputFilePath = _T("");
     m_omStrOutputFilePath = _T("");
     m_omstrConversionComment = _T("");
-    CString omstrConversionName;
+    string m_omstrConversionName;
     INT nSelectedItemIndex = GetConverterPos();
     if( nSelectedItemIndex >= 0 )
     {
-        TCHAR chHelpText[1024];
+        string chHelpText;
         string chConversionName;
         POSITION pos = m_pouPluginManager->m_ConverterList.FindIndex(nSelectedItemIndex);
         ConverterInfo &ouConverterInfo = m_pouPluginManager->m_ConverterList.GetAt(pos);
         ouConverterInfo.m_pouConverter->GetHelpText(chHelpText);
         ouConverterInfo.m_pouConverter->GetConverterName(chConversionName);
         
-        m_omstrEditHelp = chHelpText;
-        omstrConversionName = chConversionName.c_str();
+        m_omstrEditHelp = chHelpText.c_str();
+        m_omstrConversionName = chConversionName.c_str();
         //TODO::Require some more knowledge on how to change 
         //propertypage title.
         TC_ITEM tcItem;
         tcItem.mask = TCIF_TEXT;
-        tcItem.pszText = (LPTSTR)((LPCTSTR)omstrConversionName);
+        tcItem.pszText = (LPTSTR)(m_omstrConversionName.c_str());
         ((CPropertySheet*)GetParent())->GetTabControl()->SetItem(0, &tcItem );
-        SetWindowText(omstrConversionName);
+		SetWindowText(m_omstrConversionName.c_str());
     }
     UpdateData(FALSE);
 }
