@@ -22,8 +22,7 @@
  * Definition of the parameter class.
  */
 
-#ifndef Parameter_H
-#define Parameter_H
+#pragma once
 
 #include <list>
 #include <string>
@@ -53,7 +52,3 @@ public:
     friend bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParameter);
     virtual ~CParameters();
 };
-
-
-
-#endif

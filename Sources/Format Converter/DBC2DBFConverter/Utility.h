@@ -22,8 +22,7 @@
  * Definition of the global utility functions.
  */
 
-#ifndef Utility_H
-#define Utility_H
+#pragma once
 
 //Physical to value
 unsigned int unConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double dScalFactor, unsigned long long int& unMaxVal, unsigned long long int& unMinVal);
@@ -35,5 +34,3 @@ int nConvertRawToPhysical(long long int unMaxRawVal, long long int unMinRawVal, 
 
 //Helper function
 unsigned long long int unRoundOffdoubleValue(double dValue);
-
-#endif

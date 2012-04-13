@@ -22,8 +22,7 @@
  * Definition of the value table class.
  */
 
-#ifndef ValueTable_H
-#define ValueTable_H
+#pragma once
 
 #include <list>
 
@@ -42,5 +41,3 @@ public:
     string m_TableName;
     void writeValueTabToFile(fstream &fileOutput, list<CValueTable> &vTab);
 };
-
-#endif

@@ -22,8 +22,7 @@
  * Definition of the parameter value class.
  */
 
-#ifndef ParameterVal_H
-#define ParameterVal_H
+#pragma once
 
 #include <fstream>
 #include <string>
@@ -54,5 +53,3 @@ public:
     void WriteSigValuesToFile(fstream &fileOutput, string paramType, string paramName);
     virtual ~CParameterValues();
 };
-
-#endif

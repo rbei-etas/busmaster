@@ -22,8 +22,7 @@
  * Definition of the message class.
  */
 
-#ifndef Message_H
-#define Message_H
+#pragma once
 
 #include <string>
 
@@ -51,5 +50,3 @@ public:
     list<CSignal>   m_listSignals;
     bool writeMessageToFile(fstream &fileOutput, list<CMessage> &m_listMessages, bool writeErr);
 };
-
-#endif

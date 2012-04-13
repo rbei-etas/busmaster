@@ -22,8 +22,7 @@
  * Definition of the converter class.
  */
 
-#ifndef Converter_H
-#define Converter_H
+#pragma once
 
 #include <list>
 #include <utility>
@@ -82,5 +81,3 @@ public:
     list<CParameterValues> m_listParamValues[6];
     list<string> defList;
 };
-
-#endif
