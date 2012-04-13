@@ -1,4 +1,3 @@
-
 /******************************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  LogObjectJ1939.cpp
@@ -105,7 +104,10 @@ BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
     {
         case TIME_MODE_ABSOLUTE: 
         {
-            pTimeData = (TCHAR *) (sDataJ1939.m_acTimeAbs);
+			if(m_sLogInfo.m_bResetAbsTimeStamp)
+				pTimeData = (TCHAR *) (sDataJ1939.m_acTimeAbsReset);
+			else
+				pTimeData = (TCHAR *) (sDataJ1939.m_acTimeAbs);            
         }
         break;
         case TIME_MODE_RELATIVE: 
