@@ -40,13 +40,13 @@ public:
     // data members
     enum MSG_FRAME_FROMAT {MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
 
-    string			m_acName;
-    string			m_txNode;
-    unsigned int	m_uiMsgID;
-    unsigned char	m_ucLength;
-    unsigned char	m_ucNumOfSignals;
-    char			m_cDataFormat;
-    char			m_cFrameFormat;
+    string          m_acName;
+    string          m_txNode;
+    unsigned int    m_uiMsgID;
+    unsigned char   m_ucLength;
+    unsigned char   m_ucNumOfSignals;
+    char            m_cDataFormat;
+    char            m_cFrameFormat;
     list<CSignal>   m_listSignals;
     bool writeMessageToFile(fstream &fileOutput, list<CMessage> &m_listMessages, bool writeErr);
 };

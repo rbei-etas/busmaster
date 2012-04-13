@@ -38,7 +38,7 @@ public:
     string          m_NodeName;
     unsigned int    m_MsgId;
     string          m_SignalName;
-    char			m_cFrameFormat;
+    char            m_cFrameFormat;
     SIG_VALUE       m_ParamVal;
     CParameterValues();
     CParameterValues& operator=(CParameterValues& param);

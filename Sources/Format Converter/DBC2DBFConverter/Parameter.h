@@ -34,13 +34,13 @@ using namespace std;
 class CParameters
 {
 public:
-    string			m_ObjectId;
-    string			m_ParamType;
+    string          m_ObjectId;
+    string          m_ParamType;
     SIG_VALUE       m_MaxVal;
-    SIG_VALUE		m_MinVal;
-    string    		m_ValRange;
-    SIG_VALUE	    m_InitVal;
-    string			m_ParamName;
+    SIG_VALUE       m_MinVal;
+    string          m_ValRange;
+    SIG_VALUE       m_InitVal;
+    string          m_ParamName;
     bool            m_RangeError;
     bool            m_defError;
     list<CParameterValues> m_listParamValues[6];

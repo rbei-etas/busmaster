@@ -47,25 +47,25 @@ public:
     enum SIG_ERROR_CODE {SIG_EC_NO_ERR, SIG_EC_DATA_FORMAT_ERR,SIG_EC_LENGTH_ERR,SIG_EC_STARTBIT_ERR,SIG_EC_TYPE_ERR,SIG_EC_OVERFLOW};
     // data members
 
-    string			m_acName;
+    string          m_acName;
     string          m_acMultiplex;
-    unsigned char	m_ucLength;
-    unsigned char	m_ucWhichByte;
-    unsigned char	m_ucStartBit;
-    char			m_ucType;
-    SIG_VALUE		m_MaxValue;
-    SIG_VALUE		m_MinValue;
-    unsigned char	m_ucDataFormat;
-    float			m_fOffset;
-    float			m_fScaleFactor;
-    string			m_acUnit;
-    string			m_rxNode;
+    unsigned char   m_ucLength;
+    unsigned char   m_ucWhichByte;
+    unsigned char   m_ucStartBit;
+    char            m_ucType;
+    SIG_VALUE       m_MaxValue;
+    SIG_VALUE       m_MinValue;
+    unsigned char   m_ucDataFormat;
+    float           m_fOffset;
+    float           m_fScaleFactor;
+    string          m_acUnit;
+    string          m_rxNode;
     static const char *m_pacErrorStrings[];
 
 
 
 
-    list<CValueDescriptor>	m_listValueDescriptor;
+    list<CValueDescriptor>  m_listValueDescriptor;
     bool WriteSignaltofile(fstream &fileOutput, list<CSignal> &m_listSignals, int m_ucLength, int m_cDataFormat, bool writeErr);
 };
 
