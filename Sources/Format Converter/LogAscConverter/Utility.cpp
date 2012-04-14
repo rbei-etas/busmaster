@@ -30,7 +30,6 @@ extern "C" int nGetDayFromDate(char* pchDate, char* pchMonth, char* chWeekDay)
 		return -1;
 	}
 	int nDate, nMonth, nYear;
-	char chTemp;
 	char chDelim[] = ":. ";
 	
 	char* pchTemp = strtok(pchDate, chDelim);
