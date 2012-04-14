@@ -22,7 +22,7 @@ Sources/DmGraph/DMGraph_p.c
 Sources/DmGraph/dlldata.c
 Sources/Format Converter/AscLogConverter/Asc_Log_Lexer.c
 Sources/Format Converter/AscLogConverter/asc_log_parser.c
-Sources/Format Converter/CAPL2CConvereter/lexer.h
+Sources/Format Converter/CAPL2CConverter/lexer.h
 Sources/Format Converter/LogAscConverter/Log_Asc_Lexer.c
 Sources/Format Converter/LogAscConverter/log_asc_parser.c
 
@@ -108,7 +108,7 @@ Sources/BIN/*/CAN_Vector_XL.dll
 Sources/BIN/*/Changelog.txt
 Sources/BIN/*/ConfigDialogsDIL.dll
 Sources/BIN/*/ConverterPlugins/AscLogConverter.dll
-Sources/BIN/*/ConverterPlugins/CAPL2CConvereter.dll
+Sources/BIN/*/ConverterPlugins/CAPL2CConverter.dll
 Sources/BIN/*/ConverterPlugins/DBC2DBFConverter.dll
 Sources/BIN/*/ConverterPlugins/DBF2DBCConverter.dll
 Sources/BIN/*/ConverterPlugins/LogAscConverter.dll
