@@ -54,10 +54,12 @@ CMessage::~CMessage()
 
 /**
  * \brief overloaded operator =
+ * \param[in] message Message to copy content from
+ *
+ * Copy the elements of the given message to this
  */
 CMessage& CMessage::operator=(CMessage& message)
 {
-    // now copy the other elements of the new message to this
     m_acName = message.m_acName;
     m_txNode = message.m_txNode;
     m_cDataFormat = message.m_cDataFormat;
