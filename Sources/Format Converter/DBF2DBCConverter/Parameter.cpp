@@ -15,32 +15,12 @@
 
 /**
  * \file      Parameter.cpp
- * \author    Ratnadip Choudhury
+ * \brief     Implementation file for the Parameter class.
+ * \author    Ratnadip Choudhury, Padmaja A
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Implementation file for the Parameter class.
  */
-/*********************************************************************
-Project       :  CANDb convertor
-FileName      :  Parameter.Cpp
-Description   :  Implementation file for the Parameter class.
-
-$Log:   X:/Archive/Sources/Ext_tools_DBF_2_DBC/Parameter.cpv  $
-
-      Rev 1.1   04 Aug 2011 19:55:42   CANMNTTM
-
-
-    Rev 1.0   03 Aug 2011 15:47:50   rac2kor
-
-Author(s)     :  RBIN/EBS1 - Padmaja A
-Date Created  :  15-11-2004
-Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*********************************************************************/
-/**
-* \file       Parameter.cpp
-* \brief      Implementation file for the Parameter class.
-* \authors    RBIN/EBS1 - Padmaja A
-* \date       15.11.2004 Created
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 #include "StdAfx.h"
 #include "Parameter.h"
 #include<limits.h>
@@ -54,13 +34,8 @@ static char THIS_FILE[]=__FILE__;
 #endif
 
 /**
-* \brief      Constructor of CParameters
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * Constructor of CParameters
+ */
 CParameters::CParameters()
 {
     m_InitVal.fValue=-1;
@@ -75,26 +50,18 @@ CParameters::CParameters()
 }
 
 /**
-* \brief      Destructor of CParameters
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * Destructor of CParameters
+ */
 CParameters::~CParameters()
 {
     // nothing special to do here
 }
 
 /**
-* \brief      overloaded operator =
-* \param[in]  CParameters&
-* \param[out] None
-* \return     CParameters&
-* \authors    Padmaja.A
-* \date       15.11.2004
-*/
+ * \brief overloaded operator =
+ *
+ * Copy the other elements of the new message to this.
+ */
 CParameters& CParameters::operator=( CParameters& param)
 {
     // if there are some elements in the signal list clear them first
@@ -118,13 +85,12 @@ CParameters& CParameters::operator=( CParameters& param)
 }
 
 /**
-* \brief      Writes the parameter definition to the specified output file.
-* \param[in]  OutputFileName,Parameters List.
-* \param[out] None
-* \return     CParameters&
-* \authors    Padmaja.A
-* \date       15.11.2004
-*/
+ * \brief      Writes the parameter definition to the specified output file.
+ * \param[in]  fileOutput OutputFileName
+ * \param[in]  m_listParameter Parameters List
+ *
+ * Writes the parameter definition to the specified output file.
+ */
 bool WriteParamToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&> &m_listParameter)
 {
     bool pResult=true;
@@ -154,13 +120,8 @@ bool WriteParamToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&> &m_
 }
 
 /**
-* \brief      Format_MesgParam_Value
-* \param[in]  CStdioFile &fileInput,CList<CParameters,CParameters&>& m_listParam
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A
-* \date       16.11.2004
-*/
+ * Format Message Parameter Value
+ */
 void CParameters::Format_MesgParam_Value(CStdioFile &fileInput,CList<CParameters,CParameters&>& m_listParam)
 {
     CParameterValues pVal;
@@ -210,13 +171,8 @@ void CParameters::Format_MesgParam_Value(CStdioFile &fileInput,CList<CParameters
 }
 
 /**
-* \brief      Parses the Signal Parameter's Other Values(BA_).
-* \param[in]  CStdioFile &fileInput,CList<CParameters,CParameters&>& m_listParam
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A
-* \date       16.11.2004
-*/
+ * Parses the Signal Parameter's Other Values(BA_).
+ */
 void CParameters::Format_SigParam_Value(CStdioFile &fileInput,CList<CParameters,CParameters&>& m_listParam)
 {
     CParameterValues pVal;
@@ -272,13 +228,8 @@ void CParameters::Format_SigParam_Value(CStdioFile &fileInput,CList<CParameters,
 }
 
 /**
-* \brief      Parses the Node Parameter's Other Values(BA_).
-* \param[in]  CStdioFile &fileInput,CList<CParameters,CParameters&>& m_listParam
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A
-* \date       16.11.2004
-*/
+ * Parses the Node Parameter's Other Values(BA_).
+ */
 void CParameters::Format_NodeParam_Value(CStdioFile &fileInput,CList<CParameters,CParameters&>& m_listParam)
 {
     CParameterValues pVal;
@@ -325,13 +276,8 @@ void CParameters::Format_NodeParam_Value(CStdioFile &fileInput,CList<CParameters
 }
 
 /**
-* \brief      Parses the Net Parameter's Other Values(BA_).
-* \param[in]  CStdioFile &fileInput,CList<CParameters,CParameters&>& m_listParam
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A
-* \date       16.11.2004
-*/
+ * Parses the Net Parameter's Other Values(BA_).
+ */
 void CParameters::Format_NetParam_Value(CStdioFile &fileInput,CList<CParameters,CParameters&>& m_listParam)
 {
     CParameterValues pVal;
@@ -370,13 +316,8 @@ void CParameters::Format_NetParam_Value(CStdioFile &fileInput,CList<CParameters,
 
 
 /**
-* \brief      Parses the attribute lines from the given i/p file.
-* \param[in]  char *pcLine,int index
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A
-* \date       15.11.2004
-*/
+ * Parses the attribute lines from the given i/p file.
+ */
 void CParameters::Format_ParamDef(char *pcLine,int index)
 {
     //get object id and stores m_object Id with the valid value.
@@ -398,13 +339,8 @@ void CParameters::Format_ParamDef(char *pcLine,int index)
 
 
 /**
-* \brief      Parses the attribute value from the given i/p file.
-* \param[in]  char *pcLine
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A
-* \date       15.11.2004
-*/
+ * Parses the attribute value from the given i/p file.
+ */
 void CParameters::GetParam_Def(char *pcLine)
 {
     char *pcToken;
@@ -468,13 +404,8 @@ void CParameters::GetParam_Def(char *pcLine)
 
 
 /**
-* \brief      Reads the default value of attribute from the i/p file.
-* \param[in]  char *pcToken
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A
-* \date       15.11.2004
-*/
+ * Reads the default value of attribute from the i/p file.
+ */
 void CParameters::ReadDefault_Value(char *pcToken)
 {
     char acTemp[defCON_CHAR_LEN],*pcTemp;
@@ -537,13 +468,8 @@ void CParameters::ReadDefault_Value(char *pcToken)
 
 
 /**
-* \brief      Writes the parameter default values to the output file.
-* \param[in]  CStdioFile& fileOutput,CList<CParameters,CParameters&> &m_listParameter
-* \param[out] None
-* \return     bool
-* \authors    Padmaja.A
-* \date       15.11.2004
-*/
+ * Writes the parameter default values to the output file.
+ */
 bool Write_DefVal_ToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&> &m_listParameter)
 {
     bool pResult=true;
@@ -577,13 +503,8 @@ bool Write_DefVal_ToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&> 
 }
 
 /**
-* \brief      Validates the default value of an attribute.
-* \param[in]  None
-* \param[out] None
-* \return     bool
-* \authors    Padmaja.A
-* \date       16.11.2004
-*/
+ * Validates the default value of an attribute.
+ */
 bool CParameters::Check_Default_Value()
 {
     bool cResult=false;
@@ -619,13 +540,8 @@ bool CParameters::Check_Default_Value()
 }
 
 /**
-* \brief      Validates the maximum & minimum int values of an attribute.
-* \param[in]  LONGLONG minValue,LONGLONG maxValue
-* \param[out] None
-* \return     bool
-* \authors    Padmaja.A
-* \date       18.11.2004
-*/
+ * Validates the maximum & minimum int values of an attribute.
+ */
 bool CParameters::isValid_intRange(LONGLONG minValue,LONGLONG maxValue)
 {
     bool rResult=false;
@@ -649,13 +565,8 @@ bool CParameters::isValid_intRange(LONGLONG minValue,LONGLONG maxValue)
 }
 
 /**
-* \brief      Validates the maximum & minimum float values of an attribute.
-* \param[in]  double minValue,double maxValue
-* \param[out] None
-* \return     bool
-* \authors    Padmaja.A
-* \date       18.11.2004
-*/
+ * Validates the maximum & minimum float values of an attribute.
+ */
 bool CParameters::isValid_floatRange(double minValue,double maxValue)
 {
     bool rResult=false;
@@ -679,13 +590,8 @@ bool CParameters::isValid_floatRange(double minValue,double maxValue)
 }
 
 /**
-* \brief      Validates the maximum & minimum hex values of an attribute.
-* \param[in]  unsigned int minValue,unsigned int maxValue
-* \param[out] None
-* \return     bool
-* \authors    Padmaja.A
-* \date       18.11.2004
-*/
+ * Validates the maximum & minimum hex values of an attribute.
+ */
 bool CParameters::isValid_hexRange(unsigned int minValue,unsigned int maxValue)
 {
     bool rResult=false;

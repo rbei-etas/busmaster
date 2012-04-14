@@ -16,57 +16,37 @@
 /**
  * \file      Message.cpp
  * \brief     Implementation of the CMessage class.
- * \author    RBIN/EBS1 - Mahesh.B.S
+ * \author    Mahesh.B.S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of the CMessage class.
  */
-/**
-* \file       Message.cpp
-* \brief      Implementation file for the Message class.
-* \authors    Mahesh B S
-* \date       15-11-2004 Created
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 #include "StdAfx.h"
 #include "Message.h"
 #include "Converter.h"
 
 /**
-* \brief      constructor of CMessage
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Mahesh.B.S
-* \date       15.11.2002
-*/
+ * constructor of CMessage
+ */
 CMessage::CMessage()
 {
 
 }
 
 /**
-* \brief      destructor of CMessage
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Mahesh.B.S
-* \date       15.11.2002
-*/
+ * destructor of CMessage
+ */
 CMessage::~CMessage()
 {
 
 }
 
 /**
-* \brief      operator= overloading
-* \param[in]  CMessage& message
-* \param[out] None
-* \return     CMessage& CMessage
-* \authors    Mahesh.B.S
-* \date       15.11.2002
-*/
+ * \brief operator= overloading
+ *
+ * Copy the other elements of the new message to this
+ */
 CMessage& CMessage::operator=(CMessage& message)
 {
     // if there are some elements in the signal list clear them first
@@ -86,15 +66,9 @@ CMessage& CMessage::operator=(CMessage& message)
 }
 
 /**
-* \brief      Extracts the message data from the given Line and populates
-the message structure.
-* \param[in]  char *pcLine
-* \param[out] None
-* \return     int
-* \authors    Mahesh.B.S
-* \date       15.11.2002
-*/
-
+ * Extracts the message data from the given Line and populates
+ * the message structure.
+ */
 int CMessage::Format(char *pcLine)
 {
     char* pcToken;
@@ -141,13 +115,8 @@ int CMessage::Format(char *pcLine)
 }
 
 /**
-* \brief      Overloading of == operator
-* \param[in]  const CMessage &message
-* \param[out] None
-* \return     int
-* \authors    Mahesh.B.S
-* \date       15.11.2002
-*/
+ * Overloading of == operator
+ */
 int CMessage::operator==(const CMessage &message) const
 {
     if (message.m_uiMsgID == m_uiMsgID)
@@ -156,13 +125,8 @@ int CMessage::operator==(const CMessage &message) const
 }
 
 /**
-* \brief      Overloading of == operator
-* \param[in]  const CMessage &message
-* \param[out] None
-* \return     int
-* \authors    Mahesh.B.S
-* \date       15.11.2002
-*/
+ * Overloading of == operator
+ */
 int CMessage::operator==(const unsigned int uiMsgID) const
 {
     if (uiMsgID == m_uiMsgID)
@@ -171,15 +135,9 @@ int CMessage::operator==(const unsigned int uiMsgID) const
 }
 
 /**
-* \brief      Write's the message in the CANoe format and returns false
-if any of the error signal is not stored in the file
-* \param[in]  CStdioFile &fileOutput
-* \param[out] None
-* \return     bool
-* \authors    Mahesh.B.S
-* \date       15.11.2002
-*/
-
+ * Write's the message in the CANoe format and returns false
+ * if any of the error signal is not stored in the file
+ */
 bool CMessage::writeMessageToFile( CStdioFile &fileOutput)
 {
     bool bResult = true;
@@ -196,4 +154,3 @@ bool CMessage::writeMessageToFile( CStdioFile &fileOutput)
     fileOutput.WriteString("\n");
     return bResult;
 }
-
