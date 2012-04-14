@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "CAPL2CConvereter.h"
+#include "CAPL2CConverter.h"
 #include "CAPL2CPropertyPage.h"
 #include "List.h"
 #include "Functions.hpp"

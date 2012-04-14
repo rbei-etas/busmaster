@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="CAPL2CConvereter"
+	Name="CAPL2CConverter"
 	ProjectGUID="{8A7CA724-4B42-4DCA-9237-0AF94AA8B35F}"
-	RootNamespace="CAPL2CConvereter"
+	RootNamespace="CAPL2CConverter"
 	Keyword="MFCDLLProj"
 	TargetFrameworkVersion="131072"
 	>
@@ -195,11 +195,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\CAPL2CConvereter.cpp"
+				RelativePath=".\CAPL2CConverter.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\CAPL2CConvereterDLL.cpp"
+				RelativePath=".\CAPL2CConverterDLL.cpp"
 				>
 			</File>
 			<File
@@ -261,7 +261,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\CAPL2CConvereter.h"
+				RelativePath=".\CAPL2CConverter.h"
 				>
 			</File>
 			<File

@@ -11,7 +11,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DBC2DBFConverter", "DBC2DBF
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LogAscConverter", "LogAscConverter\LogAscConverter.vcproj", "{317B836D-9AC9-48F9-ADF7-8C069E3EE447}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CAPL2CConvereter", "CAPL2CConvereter\CAPL2CConvereter.vcproj", "{8A7CA724-4B42-4DCA-9237-0AF94AA8B35F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CAPL2CConverter", "CAPL2CConverter\CAPL2CConverter.vcproj", "{8A7CA724-4B42-4DCA-9237-0AF94AA8B35F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

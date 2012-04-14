@@ -1,11 +1,11 @@
-// CAPL2CConvereter.cpp : Defines the initialization routines for the DLL.
+// CAPL2CConverter.cpp : Defines the initialization routines for the DLL.
 //
 
 #include "stdafx.h"
 #include <afxdllx.h>
-#include "CAPL2CConvereter.h"
+#include "CAPL2CConverter.h"
 #ifdef _MANAGED
-#error Please read instructions in CAPL2CConvereter.cpp to compile with /clr
+#error Please read instructions in CAPL2CConverter.cpp to compile with /clr
 // If you want to add /clr to your project you must do the following:
 //	1. Remove the above include for afxdllx.h
 //	2. Add a .cpp file to your project that does not have /clr thrown and has
@@ -19,7 +19,7 @@
 #endif
 
 
-static AFX_EXTENSION_MODULE CAPL2CConvereterDLL = { NULL, NULL };
+static AFX_EXTENSION_MODULE CAPL2CConverterDLL = { NULL, NULL };
 
 #ifdef _MANAGED
 #pragma managed(push, off)
@@ -33,10 +33,10 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 
 	if (dwReason == DLL_PROCESS_ATTACH)
 	{
-		TRACE0("CAPL2CConvereter.DLL Initializing!\n");
+		TRACE0("CAPL2CConverter.DLL Initializing!\n");
 		
 		// Extension DLL one-time initialization
-		if (!AfxInitExtensionModule(CAPL2CConvereterDLL, hInstance))
+		if (!AfxInitExtensionModule(CAPL2CConverterDLL, hInstance))
 			return 0;
 
 		// Insert this DLL into the resource chain
@@ -51,15 +51,15 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 		//  Regular DLL's resource chain, and serious problems will
 		//  result.
 
-		new CDynLinkLibrary(CAPL2CConvereterDLL);
+		new CDynLinkLibrary(CAPL2CConverterDLL);
 
 	}
 	else if (dwReason == DLL_PROCESS_DETACH)
 	{
-		TRACE0("CAPL2CConvereter.DLL Terminating!\n");
+		TRACE0("CAPL2CConverter.DLL Terminating!\n");
 
 		// Terminate the library before destructors are called
-		AfxTermExtensionModule(CAPL2CConvereterDLL);
+		AfxTermExtensionModule(CAPL2CConverterDLL);
 	}
 	return 1;   // ok
 }
@@ -72,6 +72,6 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 
 extern "C" __declspec(dllexport) HRESULT GetBaseConverter(CBaseConverter*& pouConverter)
 {
-    pouConverter = new CCAPL2CConvereter();
+    pouConverter = new CCAPL2CConverter();
     return S_OK;
 }
