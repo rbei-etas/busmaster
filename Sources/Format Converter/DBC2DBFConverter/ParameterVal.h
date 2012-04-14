@@ -34,7 +34,7 @@ using namespace std;
 class CParameterValues
 {
 public:
-    enum MSG_FRAME_FROMAT {MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
+    enum MSG_FRAME_FORMAT {MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
     string          m_NodeName;
     unsigned int    m_MsgId;
     string          m_SignalName;

@@ -141,7 +141,7 @@ int CSignal::Format(char *pcLine)
 
     pcTemp = acTemp; // reset pcTemp to start of buffer
 
-    // next token (START_BIT|LENGTH@DATA_FROMAT(+/-))
+    // next token (START_BIT|LENGTH@DATA_FORMAT(+/-))
     pcToken = strtok_s(NULL, " :", &pcTok);
 
 
