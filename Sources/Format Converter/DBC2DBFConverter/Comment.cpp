@@ -30,8 +30,9 @@
  */
 CComment::CComment()
 {
-    m_msgType = 0;
     m_elementName = "";
+    m_msgID = 0;
+    m_msgType = 0;
     m_comment = "";
 }
 
