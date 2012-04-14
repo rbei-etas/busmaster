@@ -36,6 +36,7 @@ CParameterValues::CParameterValues()
     m_MsgId = 0;
     m_ParamVal.dValue = 0;
     m_SignalName = "";
+	m_cFrameFormat = MSG_FF_STANDARD;
     m_ParamVal.iValue = -1;
     m_ParamVal.fValue = -1;
     m_ParamVal.uiValue = -1;
