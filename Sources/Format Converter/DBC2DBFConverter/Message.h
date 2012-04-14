@@ -38,7 +38,7 @@ public:
     virtual ~CMessage();
     CMessage& operator=(CMessage& message);
     // data members
-    enum MSG_FRAME_FROMAT {MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
+    enum MSG_FRAME_FORMAT {MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
 
     string          m_acName;
     string          m_txNode;

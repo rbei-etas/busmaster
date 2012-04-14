@@ -47,7 +47,7 @@ public:
     CMessage(CMessage& message);
 
 // data members
-    enum MSG_FRAME_FROMAT {MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
+    enum MSG_FRAME_FORMAT {MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
 
     char			m_acName[defMSG_MAX_NAME_LEN];
     unsigned int	m_uiMsgID;
