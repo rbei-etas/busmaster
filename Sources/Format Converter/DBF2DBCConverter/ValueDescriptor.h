@@ -31,12 +31,7 @@
 
 #include <afxtempl.h>
 
-#if !defined(AFX_VALUEDESCRIPTOR_H__A82ECC4A_9341_46DB_8153_D133A81DC9C3__INCLUDED_)
-#define AFX_VALUEDESCRIPTOR_H__A82ECC4A_9341_46DB_8153_D133A81DC9C3__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 class CValueDescriptor
 {
@@ -46,8 +41,6 @@ public:
     int Format(char *pcLine);
     //	CValueDescriptor& operator=(CValueDescriptor& valDesc);
     void writeValuDescToFile(CStdioFile &fileOutput,char m_ucType,CList<CValueDescriptor,CValueDescriptor&> &m_listValueDescriptor);
-    CString		m_sDescriptor;
+    string		m_sDescriptor;
     SIG_VALUE	m_value;
 };
-
-#endif // !defined(AFX_VALUEDESCRIPTOR_H__A82ECC4A_9341_46DB_8153_D133A81DC9C3__INCLUDED_)

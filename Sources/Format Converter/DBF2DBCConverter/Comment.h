@@ -29,12 +29,8 @@
 * \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
 */
 
-#if !defined(AFX_COMMENT_H__F394E0E9_F6B7_43F5_AB3F_428BBF638B46__INCLUDED_)
-#define AFX_COMMENT_H__F394E0E9_F6B7_43F5_AB3F_428BBF638B46__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
 #include <afxtempl.h>
 
 class CComment
@@ -44,8 +40,8 @@ public:
     //data members
     unsigned int m_msgID;
     char m_msgType;
-    CString m_comment;
-    CString m_elementName;
+    string m_comment;
+    string m_elementName;
 
     //member functions
     CComment();
@@ -56,5 +52,3 @@ public:
     void Format_msgComment(CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment);
     void Format_sigComment(CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment);
 };
-
-#endif // !defined(AFX_COMMENT_H__F394E0E9_F6B7_43F5_AB3F_428BBF638B46__INCLUDED_)

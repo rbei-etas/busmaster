@@ -28,13 +28,8 @@
 * \date       14.11.2004
 * \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
 */
-//#if !defined(AFX_PARAMETER_H__4051F3F4_2978_4987_B1DF_BA4CAD29981A__INCLUDED_)
-//#define AFX_PARAMETER_H__4051F3F4_2978_4987_B1DF_BA4CAD29981A__INCLUDED_
-#ifndef PARAMETER_HEADER
-#define PARAMETER_HEADER
-#if _MSC_VER > 1000
+
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include <afxtempl.h>
 #include "ParameterVal.h"
@@ -48,7 +43,7 @@ class CParameters
     char			m_ObjectId[50];
     SIG_VALUE       m_MaxVal;
     SIG_VALUE		m_MinVal;
-    CString    		m_ValRange;
+    string    		m_ValRange;
     SIG_VALUE	    m_InitVal;
     bool            m_RangeError;
 
@@ -74,7 +69,3 @@ public:
     bool isValid_hexRange(unsigned int minValue,unsigned int maxValue);
     virtual ~CParameters();
 };
-
-
-
-#endif // !defined(AFX_PARAMETER_H__4051F3F4_2978_4987_B1DF_BA4CAD29981A__INCLUDED_)

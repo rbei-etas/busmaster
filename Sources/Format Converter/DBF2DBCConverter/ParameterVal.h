@@ -29,13 +29,7 @@
 * \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
 */
 
-//if !defined(AFX_PARAMETERVAL_H__3051F3F4_2978_4987_B1DF_BA4CAD29981A__INCLUDED_)
-//#define AFX_PARAMETERVAL_H__3051F3F4_2978_4987_B1DF_BA4CAD29981A__INCLUDED_
-#ifndef PARAMETERVAL_HEADER
-#define PARAMETERVAL_HEADER
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include <afxtempl.h>
 #define	defNODE_MAX_LEN 50 // hopefully nobody puts value descriptor strings
@@ -61,5 +55,3 @@ public:
     void WriteSigValuesToFile(CStdioFile& fileOutput,char *paramType,char *paramName);
     virtual ~CParameterValues();
 };
-
-#endif

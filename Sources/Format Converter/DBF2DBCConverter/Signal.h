@@ -31,12 +31,8 @@
 * \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
 */
 
-#if !defined(AFX_SIGNAL_H__D8BDC026_351F_4FBF_AFF1_B53373502225__INCLUDED_)
-#define AFX_SIGNAL_H__D8BDC026_351F_4FBF_AFF1_B53373502225__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
 #include "ValueDescriptor.h"
 #include <afxtempl.h>
 
@@ -56,8 +52,8 @@ public:
     enum SIG_ERROR_CODE {SIG_EC_NO_ERR,SIG_EC_LENGTH_ERR,SIG_EC_STARTBIT_ERR};
 
     //members
-    CString			m_sName;
-    CString			m_sMultiplex;
+    string			m_sName;
+    string			m_sMultiplex;
     unsigned char	m_ucLength;
     unsigned char	m_ucWhichByte;
     unsigned char	m_ucStartBit;
@@ -69,10 +65,8 @@ public:
     float			m_fScaleFactor;
     unsigned int	m_uiError;
 
-    CString			m_sUnit;
-    CString			m_sNode;
+    string			m_sUnit;
+    string			m_sNode;
     CList<CValueDescriptor,CValueDescriptor&>	m_listValueDescriptor;
     static const char *m_pacErrorStrings[];
 };
-
-#endif // !defined(AFX_SIGNAL_H__D8BDC026_351F_4FBF_AFF1_B53373502225__INCLUDED_)

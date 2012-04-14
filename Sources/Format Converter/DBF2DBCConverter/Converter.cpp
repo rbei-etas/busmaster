@@ -16,19 +16,14 @@
 /**
  * \file      Converter.cpp
  * \brief     Implementation of the CConverter class.
- * \authors   RBIN/EBS1 - Mahesh.B.S, Padmaja.A
+ * \authors   Mahesh.B.S, Padmaja.A
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of the CConverter class.
  */
-/**
-* \file       Converter.cpp
-* \brief      implementation of the CConverter class.
-* \authors    Mahesh.B.S, Padmaja.A
-* \date       15/11/04
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
+
 #include "StdAfx.h"
+#include <string.h>
 #include "Converter.h"
 
 #ifdef _DEBUG
@@ -68,17 +63,17 @@ CConverter::~CConverter()
 /**
 * \brief      This is the baisc function which is to be called
 to convert any given CANMon file to a CANoe file
-* \param[in]  CString sCanMonFile,CString sCanoeFile
+* \param[in]  string sCanMonFile,string sCanoeFile
 * \param[out] None
 * \return     unsigned int
 * \authors    Mahesh.B.S
 * \date       15.11.2004
 */
-unsigned int CConverter::Convert(CString sCanMonFile,CString sCanoeFile)
+unsigned int CConverter::Convert(string sCanMonFile,string sCanoeFile)
 {
     CStdioFile fileInput,fileOutput;
     char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
-	if(!fileInput.Open(sCanMonFile,CFile::modeRead))
+	if(!fileInput.Open(sCanMonFile.c_str(), CFile::modeRead))
     {
         return SetResultCode(CON_RC_FILEOPEN_ERROR_INFILE);
     }
@@ -103,10 +98,10 @@ unsigned int CConverter::Convert(CString sCanMonFile,CString sCanoeFile)
     }
     //Create log file
     CConverter::bLOG_ENTERED = false;
-    CString sLogFile = sCanoeFile.Left(sCanoeFile.GetLength()-4);
+    string sLogFile = sCanoeFile.substr(0, sCanoeFile.length()-4);
     sLogFile += ".log";
     m_omLogFilePath = sLogFile;
-    if(!fileLog.Open(sLogFile,CFile::modeWrite | CFile::modeCreate))
+    if(!fileLog.Open(sLogFile.c_str(), CFile::modeWrite | CFile::modeCreate))
     {
         return SetResultCode(CON_RC_FILEOPEN_ERROR_LOGFILE);
     }
@@ -122,7 +117,7 @@ unsigned int CConverter::Convert(CString sCanMonFile,CString sCanoeFile)
     ValidateMessageList();
 
     // the format is OK then open the output file
-    if(!fileOutput.Open(sCanoeFile,CFile::modeWrite | CFile::modeCreate))
+    if(!fileOutput.Open(sCanoeFile.c_str(), CFile::modeWrite | CFile::modeCreate))
     {
         // if output file cannot be opened the close the input file
         // and return the error code
@@ -146,7 +141,7 @@ unsigned int CConverter::Convert(CString sCanMonFile,CString sCanoeFile)
     //If log file is empty delete it
     if(!CConverter::bLOG_ENTERED)
     {
-        DeleteFile(sLogFile);
+        DeleteFile(sLogFile.c_str());
     }
     else
         return SetResultCode(CON_RC_COMPLETED_WITH_ERROR);
@@ -434,7 +429,7 @@ void CConverter::GenerateMessageList(CStdioFile& fileInput)
                 fileInput.ReadString(acLine,defCON_MAX_LINE_LEN);
                 while(strcmp(pcToken,"[END_NOT_PROCESSED]\n") != 0)
                 {
-                    CString str = acLine;
+                    string str = acLine;
                     m_notProcessed.AddTail(str);
                     fileInput.ReadString(acLine,defCON_MAX_LINE_LEN);
                 }
@@ -497,8 +492,8 @@ bool CConverter::WriteToOutputFile(CStdioFile& fileOutput)
     while(pos != NULL)
     {
         fileOutput.WriteString(" ");
-        CString &node = m_listNode.GetNext(pos);
-        fileOutput.WriteString(node);
+        string &node = m_listNode.GetNext(pos);
+        fileOutput.WriteString(node.c_str());
     }
     fileOutput.WriteString("\n");
 
@@ -519,22 +514,25 @@ bool CConverter::WriteToOutputFile(CStdioFile& fileOutput)
     pos = m_notProcessed.GetHeadPosition();
     while(pos != NULL)
     {
-        CString &str = m_notProcessed.GetNext(pos);
-        if(str.Left(3) == "EV_")
+        string str = m_notProcessed.GetNext(pos);
+        if(strcmp(str.substr(0, 3).c_str(), "EV_") == 0)
         {
-            fileOutput.WriteString(str);
+            fileOutput.WriteString(str.c_str());
             fileOutput.WriteString("\n");
         }
     }
 
     //Comments ----- Net
-    CString s_cmt;
+    string s_cmt;
     pos=m_listComments[0].GetHeadPosition();
     while(pos!=NULL)
     {
         CComment &cmt = m_listComments[0].GetNext(pos);
-        s_cmt="CM_ "+cmt.m_elementName+" "+cmt.m_comment;
-        fileOutput.WriteString(s_cmt);
+        s_cmt = "CM_ ";
+		s_cmt += cmt.m_elementName;
+		s_cmt += " ";
+		s_cmt += cmt.m_comment;
+        fileOutput.WriteString(s_cmt.c_str());
     }
 
     //Comments ----- Node
@@ -542,8 +540,11 @@ bool CConverter::WriteToOutputFile(CStdioFile& fileOutput)
     while(pos!=NULL)
     {
         CComment &cmt = m_listComments[1].GetNext(pos);
-        s_cmt = "CM_ BU_ "+cmt.m_elementName+" "+cmt.m_comment;
-        fileOutput.WriteString(s_cmt);
+        s_cmt = "CM_ BU_ ";
+		s_cmt += cmt.m_elementName;
+		s_cmt += " ";
+		s_cmt += cmt.m_comment;
+        fileOutput.WriteString(s_cmt.c_str());
     }
     //Comments ----- Mesg
     pos=m_listComments[2].GetHeadPosition();
@@ -553,9 +554,9 @@ bool CConverter::WriteToOutputFile(CStdioFile& fileOutput)
         char c_msgID[defCON_MAX_MSGID_LEN + 10];
         sprintf(c_msgID,"CM_ BO_ %u",cmt.m_msgID);
         s_cmt = c_msgID;
-        s_cmt = s_cmt + " ";
-        s_cmt = s_cmt  + cmt.m_comment;
-        fileOutput.WriteString(s_cmt);
+        s_cmt += " ";
+        s_cmt += cmt.m_comment;
+		fileOutput.WriteString(s_cmt.c_str());
 
     }
     //Comments ----- Signal
@@ -567,9 +568,9 @@ bool CConverter::WriteToOutputFile(CStdioFile& fileOutput)
         char c_msgID[defCON_MAX_MSGID_LEN + defCON_MAX_MSGN_LEN + 10];
         sprintf(c_msgID,"CM_ SG_ %u %s",cmt.m_msgID,cmt.m_elementName);
         s_cmt = c_msgID;
-        s_cmt = s_cmt + " ";
-        s_cmt = s_cmt  + cmt.m_comment;
-        fileOutput.WriteString(s_cmt);
+        s_cmt += " ";
+        s_cmt += cmt.m_comment;
+        fileOutput.WriteString(s_cmt.c_str());
     }
 
 
@@ -644,7 +645,7 @@ bool CConverter::WriteToOutputFile(CStdioFile& fileOutput)
                     while(posSig != NULL)
                     {
                         CSignal &sig = msg.m_listSignals.GetNext(posSig);
-                        if(strcmp(sig.m_sName,vParam.m_SignalName) == 0 && sig.m_uiError == CSignal::SIG_EC_NO_ERR )
+                        if((strcmp(sig.m_sName.c_str(), vParam.m_SignalName) == 0) && (sig.m_uiError == CSignal::SIG_EC_NO_ERR))
                         {
                             vParam.WriteSigValuesToFile(fileOutput,rParam.m_ParamType,rParam.m_ParamName);
                             break;
@@ -658,10 +659,10 @@ bool CConverter::WriteToOutputFile(CStdioFile& fileOutput)
     pos = m_notProcessed.GetHeadPosition();
     while(pos != NULL)
     {
-        CString &str = m_notProcessed.GetNext(pos);
-        if(str.Left(3) == "BA_")
+        string &str = m_notProcessed.GetNext(pos);
+        if(strcmp(str.substr(0, 3).c_str(), "BA_") == 0)
         {
-            fileOutput.WriteString(str);
+			fileOutput.WriteString(str.c_str());
             fileOutput.WriteString("\n");
         }
     }
@@ -768,8 +769,8 @@ void CConverter::create_Node_List(char *pcLine)
     pcToken = strtok(pcLine,",");
     while(pcToken)
     {
-        CString str = pcToken;
-        if(str.GetLength() > defCON_MAX_MSGN_LEN)
+        string str = pcToken;
+        if(str.length() > defCON_MAX_MSGN_LEN)
             Truncate_str("Node name",str,true);
 
         m_listNode.AddTail(str);
@@ -780,17 +781,17 @@ void CConverter::create_Node_List(char *pcLine)
 /**
 * \brief      Decrypts the not processed lines which are read from between
 the tag [START_NOT_PROCESSED] and [END_NOT_PROCESSED]
-* \param[in]  CList<CString,CString& > &m_notProcessed
+* \param[in]  CList<string,string& > &m_notProcessed
 * \param[out] None
 * \return     void
 * \authors    Mahesh.B.S
 * \date       15.11.2004
 */
-void CConverter::DecryptData(CList<CString,CString& > &m_notProcessed)
+void CConverter::DecryptData(CList<string,string& > &m_notProcessed)
 {
     //char c_str[defCON_MAX_LINE_LEN];
 	string c_str;
-    CString str;
+    string str;
     POSITION prev_pos,pos = m_notProcessed.GetHeadPosition();
     while(pos != NULL)
     {
@@ -798,8 +799,8 @@ void CConverter::DecryptData(CList<CString,CString& > &m_notProcessed)
         //read the string at the position
         str = m_notProcessed.GetNext(pos);
         //make a local copy
-		c_str = (LPCSTR)str;
-		for(int i=0; i < (int)c_str.length(); i++)
+        c_str = str;
+        for(int i=0; i < (int)c_str.length(); i++)
         {
             if ((c_str[i] >= 'a' && c_str[i] <= 'm') || (c_str[i] >= 'A' && c_str[i] <= 'M'))
             {

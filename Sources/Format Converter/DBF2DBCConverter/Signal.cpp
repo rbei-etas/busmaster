@@ -102,7 +102,7 @@ int CSignal::Format(char *pcLine)
     // now get the signal name
     m_sName = pcToken; // copy the name to the signal's data member
 
-    if(m_sName.GetLength() > defCON_MAX_MSGN_LEN)
+    if(m_sName.length() > defCON_MAX_MSGN_LEN)
         Truncate_str("Signal name",m_sName,true);
 
     // Signal length
@@ -172,12 +172,11 @@ int CSignal::Format(char *pcLine)
         *pcTemp++ = *pcToken++;
     }
     *pcTemp='\0';
-    CString strUnit_Temp = acTemp;
+    string strUnit_Temp = acTemp;
     m_sUnit = "\"";
     m_sUnit = m_sUnit + acTemp; // copy UNIT to corresponding data member.
-    m_sUnit = m_sUnit.Left(defCON_MAX_MSGN_LEN + 1);
     m_sUnit = m_sUnit + "\"";
-    if(strUnit_Temp.GetLength() > defCON_MAX_MSGN_LEN + 2)
+    if(strUnit_Temp.length() > defCON_MAX_MSGN_LEN + 2)
     {
         char logmsg[defCON_MAX_LINE_LEN];
         sprintf(logmsg,"unit %s changed to %s\n",strUnit_Temp,m_sUnit);
@@ -185,22 +184,22 @@ int CSignal::Format(char *pcLine)
         CConverter::bLOG_ENTERED = true;
     }
     //for multiplexing field
-    CString strTemp = pcToken;
-    int nIndex = strTemp.Find(',');
+    string strTemp = pcToken;
+    int nIndex = strTemp.find(',');
     if(nIndex != -1)
     {
-        int nLength = strTemp.GetLength();
-        strTemp = strTemp.Right(nLength - nIndex -1);
-        nIndex = strTemp.Find(',');
+        int nLength = strTemp.length();
+        strTemp = strTemp.substr(nLength - nIndex -1, nIndex + 1);
+        nIndex = strTemp.find(',');
         if(nIndex != -1)
         {
             if(nIndex != 0)
             {
-                strTemp = strTemp.Left(nIndex);
+                strTemp = strTemp.substr(0, nIndex);
             }
             else
             {
-                strTemp.Empty();
+                strTemp.empty();
             }
             m_sMultiplex = strTemp;
         }
@@ -219,9 +218,8 @@ int CSignal::Format(char *pcLine)
 		strNodes = strNodes.erase(nIndex, 1);
 	}*/
 	m_sNode = strNodes.c_str();
-	m_sNode.Replace("\n", "");
-	//strNodes. replace("\n", "", 1);
-	if(m_sNode.IsEmpty() == TRUE)
+	m_sNode.replace(m_sNode.begin(), m_sNode.end(), '\n', ' ');
+	if(m_sNode.length() == 0)
 	{
 		m_sNode = "Vector__XXX";
 	}
