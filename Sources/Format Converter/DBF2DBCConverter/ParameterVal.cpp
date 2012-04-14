@@ -16,21 +16,14 @@
 /**
  * \file      ParameterVal.cpp
  * \brief     Implementation file for the ParameterValues class.
- * \author    RBIN/EBS1 - Padmaja A
+ * \author    Padmaja A
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for the ParameterValues class.
  */
-/**
-* \file       ParameterVal.cpp
-* \brief      Implementation file for the ParameterValues class.
-* \authors    RBIN/EBS1 - Padmaja A
-* \date       16.11.2004 Created
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
+
 #include "StdAfx.h"
 #include "ParameterVal.h"
-
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -39,13 +32,8 @@ static char THIS_FILE[]=__FILE__;
 #endif
 
 /**
-* \brief      Constructor of CParameterValues
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Padmaja.A
-* \date       15.11.2004
-*/
+ * Constructor of CParameterValues
+ */
 CParameterValues::CParameterValues()
 {
     m_NodeName[0]='\0';
@@ -58,29 +46,18 @@ CParameterValues::CParameterValues()
 }
 
 /**
-* \brief      destructor of CParameterValues
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Padmaja.A
-* \date       16.11.2004
-*/
+ * destructor of CParameterValues
+ */
 CParameterValues::~CParameterValues()
 {
 
 }
 
 /**
-* \brief      overloaded operator =
-* \param[in]  CParameterValues& param
-* \param[out] None
-* \return     CParameterValues& param
-* \authors    Padmaja.A
-* \date       16.11.2004
-*/
+ * overloaded operator =
+ */
 CParameterValues& CParameterValues::operator=(CParameterValues& param)
 {
-
     // now copy the other elements of the new message to this
     strcpy(m_NodeName,param.m_NodeName);
     strcpy(m_SignalName,param.m_SignalName );
@@ -91,14 +68,9 @@ CParameterValues& CParameterValues::operator=(CParameterValues& param)
 }
 
 /**
-* \brief      Parses the Parameter Values other than Default value
-from the input file.
-* \param[in]  char *paramType,char *pcLine,const int& index,UINT msgId,char *Node_Name
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A
-* \date       16.11.2004
-*/
+ * Parses the Parameter Values other than Default value
+ * from the input file.
+ */
 void CParameterValues::Format_Param_Value(char *paramType,char *pcLine,const int& index,UINT msgId,char *Node_Name)
 {
     //copies the node name to the member
@@ -118,13 +90,8 @@ void CParameterValues::Format_Param_Value(char *paramType,char *pcLine,const int
 }
 
 /**
-* \brief      Reads the other vlaue of attributes from i/p file.
-* \param[in]  char *paramType,char *pcToken
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A
-* \date       16.11.2004
-*/
+ * Reads the other vlaue of attributes from i/p file.
+ */
 void CParameterValues::ReadParamValue(char *paramType,char *pcToken)
 {
     char acTemp[defCON_CHAR_LEN],*pcTemp;
@@ -168,13 +135,8 @@ void CParameterValues::ReadParamValue(char *paramType,char *pcToken)
 }
 
 /**
-* \brief      Write the net values into the file
-* \param[in]  CStdioFile& fileOutput,char *paramType,char *paramName
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A
-* \date       16.11.2004
-*/
+ * Write the net values into the file
+ */
 void CParameterValues::WriteNetValuesToFile(CStdioFile& fileOutput,char *paramType,char *paramName)
 {
     char acLine[defCON_MAX_LINE_LEN];
@@ -210,13 +172,8 @@ void CParameterValues::WriteNetValuesToFile(CStdioFile& fileOutput,char *paramTy
 }
 
 /**
-* \brief      Write the node values into the file
-* \param[in]  CStdioFile& fileOutput,char *paramType,char *paramName
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A
-* \date       16.11.2004
-*/
+ * Write the node values into the file
+ */
 void CParameterValues::WriteNodeValuesToFile(CStdioFile& fileOutput,char *paramType,char *paramName)
 {
     char acLine[defCON_MAX_LINE_LEN];
@@ -252,13 +209,8 @@ void CParameterValues::WriteNodeValuesToFile(CStdioFile& fileOutput,char *paramT
 }
 
 /**
-* \brief      Write the Message values into the file
-* \param[in]  CStdioFile& fileOutput,char *paramType,char *paramName
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A
-* \date       16.11.2004
-*/
+ * Write the Message values into the file
+ */
 void CParameterValues::WriteMesgValuesToFile(CStdioFile& fileOutput,char *paramType,char *paramName)
 {
     char acLine[defCON_MAX_LINE_LEN];
@@ -293,13 +245,8 @@ void CParameterValues::WriteMesgValuesToFile(CStdioFile& fileOutput,char *paramT
 }
 
 /**
-* \brief      Write the Signal values into the file
-* \param[in]  CStdioFile& fileOutput,char *paramType,char *paramName
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A
-* \date       16.11.2004
-*/
+ * Write the Signal values into the file
+ */
 void CParameterValues::WriteSigValuesToFile(CStdioFile& fileOutput,char *paramType,char *paramName)
 {
     char acLine[defCON_MAX_LINE_LEN];
