@@ -1,3 +1,27 @@
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * \file      DBC2DBFConverter.cpp
+ * \brief     Definition of converter class
+ * \author    Tobias Lorenz
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Definition of the converter class.
+ */
+
 #include "StdAfx.h"
 #include "DBC2DBFConverter.h"
 #include "Definitions.h"
@@ -66,9 +90,6 @@ HRESULT CDBC2DBFConverter::GetOutputFileFilters(string& pchOutputDefFilters, str
 HRESULT CDBC2DBFConverter::ConvertFile(string& chInputFile, string& chOutputFile)
 {
     HRESULT hResult = S_OK;
-    /*extern FILE*  yyin;
-    extern FILE*  yyout;
-    */
     CConverter ouConverter;
 
     INT nRetVal = ouConverter.Convert(chInputFile, chOutputFile);
