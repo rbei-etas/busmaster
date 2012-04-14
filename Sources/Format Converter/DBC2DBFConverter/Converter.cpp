@@ -120,24 +120,34 @@ unsigned int CConverter::Convert(string &sCanoeFile, string &sCanMonFile)
     return m_uiResultCode;
 }
 
-
-const char* CConverter::m_pacResultStrings[] =
-{
-    "Conversion completed.",
-    "Conversion completed with errors. See log file.",
-    "Conversion aborted. Error opening input file.",
-    "Conversion aborted. Error creating output file.",
-    "Conversion aborted. Error with input file format.",
-    "Conversion aborted. Error creating log file."
-};
-
-
 /**
  * \brief Returns the error string.
  */
-const char* CConverter::GetResultString()
+void CConverter::GetResultString(string& str)
 {
-    return m_pacResultStrings[m_uiResultCode];
+	switch(m_uiResultCode) {
+		case 0:
+			str = "Conversion completed.";
+			break;
+		case 1:
+			str = "Conversion completed with errors. See log file.";
+			break;
+		case 2:
+			str = "Conversion aborted. Error opening input file.";
+			break;
+		case 3:
+			str = "Conversion aborted. Error creating output file.";
+			break;
+		case 4:
+			str = "Conversion aborted. Error with input file format.";
+			break;
+		case 5:
+			str = "Conversion aborted. Error creating log file.";
+			break;
+		default:
+			str = "Unknown";
+			break;
+	}
 }
 
 
