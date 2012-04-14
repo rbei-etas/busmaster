@@ -353,7 +353,7 @@ int CSignal::AddValueDescriptors(char *pcLine, fstream &fileInput)
         {
             fileInput.getline(acLine, 1026);
             strncpy(pcTemp, pcLine, sizeof(pcTemp));
-            strncat(pcTemp, acLine, sizeof(pcTemp));
+            strncat(pcTemp, acLine, sizeof(pcTemp)-strlen(pcTemp));
             pcLine = pcTemp;
 
             if(pcLine[strlen(pcLine)-1] == ';')
