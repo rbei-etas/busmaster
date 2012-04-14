@@ -696,36 +696,44 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
     return (m_uiError);
 }
 
-
-const char* CSignal::m_pacErrorStrings[] =
+void CSignal::GetErrorString(string &str)
 {
-    "No error",                         // SIG_EC_NO_ERR
-    "ERROR:Data format mismatch",       // SIG_EC_DATA_FORMAT_ERR
-    "ERROR:Invalid signal length",      // SIG_EC_LENGTH_ERR
-    "ERROR:Invalid start bit",          // SIG_EC_STARTBIT_ERR
-    "ERROR:Invalid signal type",        // SIG_EC_TYPE_ERR
-    "WARNING:Invalid Max or Min value."
-};
-
-
-const char* CSignal::GetErrorString()
-{
-    return m_pacErrorStrings[m_uiError];
+	switch(m_uiError) {
+		case SIG_EC_NO_ERR:
+			str = "No error";
+			break;
+		case SIG_EC_DATA_FORMAT_ERR:
+			str = "ERROR:Data format mismatch";
+			break;
+		case SIG_EC_LENGTH_ERR:
+			str = "ERROR:Invalid signal length";
+			break;
+		case SIG_EC_STARTBIT_ERR:
+			str = "ERROR:Invalid start bit";
+			break;
+		case SIG_EC_TYPE_ERR:
+			str = "ERROR:Invalid signal type";
+			break;
+		case SIG_EC_OVERFLOW:
+			str = "WARNING:Invalid Max or Min value.";
+			break;
+		default:
+			str = "Unknown";
+			break;
+	}
 }
 
-
-const char* CSignal::GetErrorAction()
+void CSignal::GetErrorAction(string &str)
 {
-    if(m_uiError == SIG_EC_OVERFLOW)
-    {
-        return "Value Set to default";
-    }
-    else
-    {
-        return "Signal Discarded";
+	switch(m_uiError) {
+		case SIG_EC_OVERFLOW:
+			str = "Value Set to default";
+			break;
+		default:
+			str = "Signal Discarded";
+			break;
     }
 }
-
 
 /**
  * \brief     writes the signals in the given list to the output file
