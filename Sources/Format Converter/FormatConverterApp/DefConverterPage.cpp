@@ -30,6 +30,7 @@ IMPLEMENT_DYNAMIC(CDefConverterPage, CPropertyPage)
 
 CDefConverterPage::CDefConverterPage()
 	: CPropertyPage(CDefConverterPage::IDD)
+	, m_pouPluginManager(0)
     , m_omStrInputFilePath(_T(""))
     , m_omStrOutputFilePath(_T(""))
     , m_omstrConversionComment(_T(""))
