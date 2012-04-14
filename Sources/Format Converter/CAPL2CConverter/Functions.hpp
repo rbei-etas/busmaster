@@ -66,9 +66,9 @@ void vKeyStoreHeader()
     else
     {
         int m = 8; //length of /*@@key:
-        int n = 0;
         if( yytext[m] != '*')
         {
+            int n = 0;
             while( yytext[m] != NULL && yytext[m] != ':')
             {
                 acKeyName[n++] = yytext[m++];
