@@ -137,14 +137,13 @@ void CValueTable::Format_ValueTable(char *pcLine,CStdioFile &fileInput)
             CValueDescriptor valDesc;
             //get the descriptor value.
             valDesc.m_sDescriptor =pcToken;
-            if(    valDesc.m_sDescriptor.GetLength() > defCON_MAX_MSGN_LEN + 2)
+            if(    valDesc.m_sDescriptor.length() > defCON_MAX_MSGN_LEN + 2)
             {
                 char logmsg[defCON_MAX_LINE_LEN];
-                sprintf(logmsg,"value Descriptor %s changed as %s\"\n",valDesc.m_sDescriptor,valDesc.m_sDescriptor.Left(defCON_MAX_MSGN_LEN));
+                sprintf(logmsg,"value Descriptor %s changed as %s\"\n",valDesc.m_sDescriptor,valDesc.m_sDescriptor.c_str());
                 CConverter::fileLog.WriteString(logmsg);
                 CConverter::bLOG_ENTERED = true;
 
-                valDesc.m_sDescriptor = valDesc.m_sDescriptor.Left(defCON_MAX_MSGN_LEN);
                 valDesc.m_sDescriptor += "\"";
             }
 

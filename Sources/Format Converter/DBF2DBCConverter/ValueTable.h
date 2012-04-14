@@ -29,12 +29,7 @@
 * \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
 */
 
-#if !defined(AFX_VALUETABLE_H__714FC1B9_4122_443B_A2D4_BDB62EEED1DB__INCLUDED_)
-#define AFX_VALUETABLE_H__714FC1B9_4122_443B_A2D4_BDB62EEED1DB__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include <afxtempl.h>
 #include "ValueDescriptor.h"
@@ -54,5 +49,3 @@ public:
     CValueTable& operator=(CValueTable& Tab);
     void writeValueTabToFile(CStdioFile &fileOutput,CList<CValueTable,CValueTable&> &vTab);
 };
-
-#endif // !defined(AFX_VALUETABLE_H__714FC1B9_4122_443B_A2D4_BDB62EEED1DB__INCLUDED_)

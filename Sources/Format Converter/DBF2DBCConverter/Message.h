@@ -29,16 +29,10 @@
 * \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
 */
 
-#if !defined(AFX_MESSAGE_H__D0A9151B_B785_410E_B9A0_FCBE58C9508F__INCLUDED_)
-#define AFX_MESSAGE_H__D0A9151B_B785_410E_B9A0_FCBE58C9508F__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
 #include <afxtempl.h>
 #include "Signal.h"
-
-
 
 class CMessage
 {
@@ -54,12 +48,10 @@ public:
 
     // data members
     enum MSG_FRAME_FORMAT {MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
-    CString			m_sName;
-    CString			m_sTxNode;
+    string			m_sName;
+    string			m_sTxNode;
     unsigned int	m_uiMsgID;
     unsigned char	m_ucLength;
     char			m_cFrameFormat;
     CList<CSignal,CSignal&> m_listSignals;
 };
-
-#endif // !defined(AFX_MESSAGE_H__D0A9151B_B785_410E_B9A0_FCBE58C9508F__INCLUDED_)

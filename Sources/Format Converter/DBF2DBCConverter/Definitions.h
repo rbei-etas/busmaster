@@ -29,6 +29,7 @@
 * \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
 */
 #pragma once
+
 //Convertor.cpp
 #define defCON_MAX_MSGID_LEN 20 //maximum length of Message ID
 #define defCON_MAX_MSGN_LEN 1024

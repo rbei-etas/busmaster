@@ -90,7 +90,7 @@ void CComment::Format_netComment(CStdioFile &fileInput,CList<CComment,CComment&>
 {
     char *pcToken, *pcLine;
     char acLine[defCON_MAX_LINE_LEN];
-    CString comment;
+    string comment;
     //Reads all the net comments,parses the comments and stores them to a list.
     while(strcmp((fileInput.ReadString(acLine,defCON_MAX_LINE_LEN)),"[END_DESC_NET]\n")!=0)
     {
@@ -103,7 +103,7 @@ void CComment::Format_netComment(CStdioFile &fileInput,CList<CComment,CComment&>
         {
             fileInput.ReadString(acLine,defCON_MAX_LINE_LEN);
             pcToken = acLine;
-            comment = comment + pcToken;
+            comment += pcToken;
         }
         m_comment= comment;
         //adds the comment to the list.
@@ -124,7 +124,7 @@ void CComment::Format_nodeComment(CStdioFile &fileInput ,CList<CComment,CComment
 {
     char *pcToken, *pcLine;
     char acLine[defCON_MAX_LINE_LEN];
-    CString comment;
+    string comment;
 
     //Reads all the node comments,parses the comments and stores them to a list.
     while(strcmp((fileInput.ReadString(acLine,defCON_MAX_LINE_LEN)),"[END_DESC_NODE]\n")!=0)
@@ -133,7 +133,7 @@ void CComment::Format_nodeComment(CStdioFile &fileInput ,CList<CComment,CComment
         //reads the node name.
         pcToken=strtok(pcLine," ");
         m_elementName=pcToken;
-        if(m_elementName.GetLength() > defCON_MAX_MSGN_LEN)
+        if(m_elementName.length() > defCON_MAX_MSGN_LEN)
             Truncate_str("Message name",m_elementName,false);
 
         //m_elementName = m_elementName.Left(defCON_MAX_MSGN_LEN);
@@ -145,7 +145,7 @@ void CComment::Format_nodeComment(CStdioFile &fileInput ,CList<CComment,CComment
             //parses the comment.
             fileInput.ReadString(acLine,defCON_MAX_LINE_LEN);
             pcToken = acLine;
-            comment = comment + pcToken;
+            comment += pcToken;
         }
         m_comment= comment;
         //adds the comment to the list.
@@ -165,7 +165,7 @@ void CComment::Format_msgComment(CStdioFile &fileInput,CList<CComment,CComment&>
 {
     char *pcToken, *pcLine;
     char acLine[defCON_MAX_LINE_LEN];
-    CString comment;
+    string comment;
     //Reads all the mesg comments,parses the comments and stores them to a list.
     while(strcmp((fileInput.ReadString(acLine,defCON_MAX_LINE_LEN)),"[END_DESC_MSG]\n")!=0)
     {
@@ -185,7 +185,7 @@ void CComment::Format_msgComment(CStdioFile &fileInput,CList<CComment,CComment&>
         {   //parses the comment
             fileInput.ReadString(acLine,defCON_MAX_LINE_LEN);
             pcToken = acLine;
-            comment = comment + pcToken;
+            comment += pcToken;
         }
         m_comment= comment;
         //adds the comment to the list.
@@ -205,7 +205,7 @@ void CComment::Format_sigComment(CStdioFile &fileInput,CList<CComment,CComment&>
 {
     char *pcToken, *pcLine;
     char acLine[defCON_MAX_LINE_LEN];
-    CString comment;
+    string comment;
     //Reads all the signal comments,parses the comments and stores them to a list.
     while(strcmp((fileInput.ReadString(acLine,defCON_MAX_LINE_LEN)),"[END_DESC_SIG]\n")!=0)
     {
@@ -221,7 +221,7 @@ void CComment::Format_sigComment(CStdioFile &fileInput,CList<CComment,CComment&>
         //get signal name.
         pcToken = strtok(NULL," ");
         m_elementName=pcToken;
-        if(m_elementName.GetLength() > defCON_MAX_MSGN_LEN)
+        if(m_elementName.length() > defCON_MAX_MSGN_LEN)
             Truncate_str("Message name",m_elementName,false);
 
         //	m_elementName = m_elementName.Left(defCON_MAX_MSGN_LEN);
@@ -232,7 +232,7 @@ void CComment::Format_sigComment(CStdioFile &fileInput,CList<CComment,CComment&>
         {
             fileInput.ReadString(acLine,defCON_MAX_LINE_LEN);
             pcToken = acLine;
-            comment = comment + pcToken;
+            comment += pcToken;
         }
         m_comment= comment;
         //adds the comment to list.

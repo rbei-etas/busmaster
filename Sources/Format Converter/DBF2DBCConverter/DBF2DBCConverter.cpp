@@ -52,7 +52,7 @@ HRESULT CDBF2DBCConverter::GetInputFileFilters(string& pchInputDefFilters, strin
 HRESULT CDBF2DBCConverter::GetLastConversionStatus(HRESULT& hResult, string& omstrStatus)
 {
     hResult = m_hResult;
-    omstrStatus = (LPCTSTR) m_omstrConversionStatus;
+    omstrStatus = m_omstrConversionStatus;
     return S_OK;
 }
 

@@ -4,7 +4,7 @@
 
 class CDBF2DBCConverter : public CBaseConverter
 {
-    CString m_omstrConversionStatus;
+    string m_omstrConversionStatus;
     HRESULT m_hResult;
 public:
     CDBF2DBCConverter(void);

@@ -118,13 +118,12 @@ int CValueDescriptor::Format(char *pcLine)
     {
         m_value.i64Value = _atoi64(acValue);
         m_sDescriptor = acDesc;
-        if(    m_sDescriptor.GetLength() > defCON_MAX_MSGN_LEN + 2)
+        if(    m_sDescriptor.length() > defCON_MAX_MSGN_LEN + 2)
         {
             char logmsg[defCON_MAX_LINE_LEN];
-            sprintf(logmsg,"value Descriptor %s changed as %s\n",m_sDescriptor,m_sDescriptor.Left(defCON_MAX_MSGN_LEN));
+            sprintf(logmsg,"value Descriptor %s changed as %s\n",m_sDescriptor,m_sDescriptor.c_str());
             CConverter::fileLog.WriteString(logmsg);
             CConverter::bLOG_ENTERED = true;
-            m_sDescriptor = m_sDescriptor.Left(defCON_MAX_MSGN_LEN);
         }
     }
     return 1;

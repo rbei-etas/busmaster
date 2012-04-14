@@ -41,8 +41,7 @@
 */
 extern void Truncate_str(char *type,char *pcToken,bool bToLog)
 {
-    CString strTemp = pcToken;
-    strTemp = strTemp.Left(32);
+    string strTemp = pcToken;
     char acLine[100];
 
     if(bToLog)
@@ -51,7 +50,7 @@ extern void Truncate_str(char *type,char *pcToken,bool bToLog)
         CConverter::fileLog.WriteString(acLine);
         CConverter::bLOG_ENTERED = true;
     }
-    strcpy(pcToken,strTemp.GetBuffer(32));
+    strcpy(pcToken,strTemp.c_str());
     if(bToLog)
     {
         sprintf(acLine," changed to %s\n",pcToken);
@@ -68,7 +67,7 @@ extern void Truncate_str(char *type,char *pcToken,bool bToLog)
 * \authors    Mahesh.B.S
 * \date       15.11.2004
 */
-extern void Truncate_str(char *type,CString &strTemp,bool bToLog)
+extern void Truncate_str(char *type,string &strTemp,bool bToLog)
 {
 
     char acLine[100];
@@ -79,11 +78,9 @@ extern void Truncate_str(char *type,CString &strTemp,bool bToLog)
         CConverter::bLOG_ENTERED = true;
     }
 
-    strTemp = strTemp.Left(32);
-
     if(bToLog)
     {
-        sprintf(acLine," changed to %s\n",strTemp.GetBuffer(32));
+        sprintf(acLine," changed to %s\n",strTemp.c_str());
         CConverter::fileLog.WriteString(acLine);
     }
     return;

@@ -75,7 +75,7 @@ int CMessage::Format(char *pcLine)
     // get the MSG Name
     pcToken = strtok(pcLine,",");
     m_sName = pcToken;
-    if(m_sName.GetLength() > defCON_MAX_MSGN_LEN)
+    if(m_sName.length() > defCON_MAX_MSGN_LEN)
         Truncate_str("Message name",m_sName,true);
 
     // get the MSG ID
