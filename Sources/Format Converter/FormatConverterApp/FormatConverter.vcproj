@@ -293,10 +293,6 @@
 				RelativePath=".\FormatConverter.rc"
 				>
 			</File>
-			<File
-				RelativePath=".\res\FormatConverter.rc2"
-				>
-			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
