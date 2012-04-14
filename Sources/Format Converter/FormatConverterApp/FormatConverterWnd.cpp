@@ -32,12 +32,14 @@ IMPLEMENT_DYNAMIC(CFormatConverterWnd, CPropertySheet)
 CFormatConverterWnd::CFormatConverterWnd(UINT nIDCaption, CWnd* pParentWnd, UINT iSelectPage)
 	:CPropertySheet(nIDCaption, pParentWnd, iSelectPage)
 {
+	m_pouPluginManager = NULL;
     m_pomDefConverterPage = NULL;
 }
 
 CFormatConverterWnd::CFormatConverterWnd(LPCTSTR pszCaption, CWnd* pParentWnd, UINT iSelectPage)
 	:CPropertySheet(pszCaption, pParentWnd, iSelectPage)
 {
+	m_pouPluginManager = NULL;
     m_pomDefConverterPage = NULL;
 }
 
