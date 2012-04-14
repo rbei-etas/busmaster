@@ -1046,7 +1046,9 @@ void CConverter::CreateLogFile(fstream& fileLog)
             // write signal only if it is not valid
             if(sig->m_uiError != CSignal::SIG_EC_NO_ERR)
             {
-                // for the first wrong signal, log the message details also
+				string str;
+
+				// for the first wrong signal, log the message details also
                 if(first_msg == 1)
                 {
                     fileLog << endl;
@@ -1062,9 +1064,11 @@ void CConverter::CreateLogFile(fstream& fileLog)
                 fileLog << "\tSIG_NAME: ";
                 fileLog << sig->m_acName.c_str();
                 fileLog << ", ";
-                fileLog << sig->GetErrorString();
+				sig->GetErrorString(str);
+                fileLog << str;
                 fileLog << ", ACTION: ";
-                fileLog << sig->GetErrorAction();
+				sig->GetErrorAction(str);
+                fileLog << str;
                 fileLog << endl;
             }
         }
@@ -1078,6 +1082,7 @@ void CConverter::CreateLogFile(fstream& fileLog)
         // write signal only if it is not valid
         if(sig->m_uiError != CSignal::SIG_EC_OVERFLOW)
         {
+			string str;
             // for the first wrong signal, log the message details also
             if(first_msg == 1)
             {
@@ -1091,9 +1096,11 @@ void CConverter::CreateLogFile(fstream& fileLog)
             fileLog << "\tSIG_NAME: ";
             fileLog << sig->m_acName.c_str();
             fileLog << ", ";
-            fileLog << sig->GetErrorString();
+			sig->GetErrorString(str);
+            fileLog << str;
             fileLog << ", ACTION: ";
-            fileLog << sig->GetErrorAction();
+			sig->GetErrorAction(str);
+            fileLog << str;
             fileLog << endl;
         }
     }

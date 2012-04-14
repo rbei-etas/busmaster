@@ -33,8 +33,8 @@ using namespace std;
 class CSignal
 {
 public:
-    const char* GetErrorString();
-    const char* GetErrorAction();
+    void GetErrorString(string &str);
+    void GetErrorAction(string &str);
     unsigned int Validate(unsigned char ucFormat = 0);
     unsigned int m_uiError;
     int AddValueDescriptors(char * pcLine, fstream &fileInput);
