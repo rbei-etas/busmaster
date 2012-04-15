@@ -91,7 +91,7 @@ CParameters& CParameters::operator=( CParameters& param)
  *
  * Writes the parameter definition to the specified output file.
  */
-bool WriteParamToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&> &m_listParameter)
+bool WriteParamToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_listParameter)
 {
     bool pResult=true;
     char acLine[defCON_MAX_LINE_LEN];
@@ -114,7 +114,7 @@ bool WriteParamToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&> &m_
             sprintf(acLine,"BA_DEF_ %s  \"%s\" %s%s;\n",rParam.m_ObjectId,rParam.m_ParamName,rParam.m_ParamType,rParam.m_ValRange);
         else
             sprintf(acLine,"BA_DEF_ %s  \"%s\" %s ;\n",rParam.m_ObjectId,rParam.m_ParamName,rParam.m_ParamType);
-        fileOutput.WriteString(acLine);
+        fileOutput << acLine;
     }
     return pResult;
 }
@@ -122,7 +122,7 @@ bool WriteParamToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&> &m_
 /**
  * Format Message Parameter Value
  */
-void CParameters::Format_MesgParam_Value(CStdioFile &fileInput,CList<CParameters,CParameters&>& m_listParam)
+void CParameters::Format_MesgParam_Value(fstream &fileInput,CList<CParameters,CParameters&>& m_listParam)
 {
     CParameterValues pVal;
     char acLine[defCON_MAX_LINE_LEN];
@@ -130,7 +130,7 @@ void CParameters::Format_MesgParam_Value(CStdioFile &fileInput,CList<CParameters
     char acTemp[defCON_CHAR_LEN],*pcTemp;
     pcTemp = acTemp;
     //parses the mesg pram other values.
-    while(strcmp((fileInput.ReadString(acLine,defCON_MAX_LINE_LEN)),"[END_PARAM_MSG_VAL]\n")!=0)
+    while(fileInput.getline(acLine,defCON_MAX_LINE_LEN) && strcmp(acLine,"[END_PARAM_MSG_VAL]\n")!=0)
     {
         char type[defCON_CHAR_LEN];
         pcLine = acLine;
@@ -173,7 +173,7 @@ void CParameters::Format_MesgParam_Value(CStdioFile &fileInput,CList<CParameters
 /**
  * Parses the Signal Parameter's Other Values(BA_).
  */
-void CParameters::Format_SigParam_Value(CStdioFile &fileInput,CList<CParameters,CParameters&>& m_listParam)
+void CParameters::Format_SigParam_Value(fstream &fileInput,CList<CParameters,CParameters&>& m_listParam)
 {
     CParameterValues pVal;
     char acLine[defCON_MAX_LINE_LEN];
@@ -181,7 +181,7 @@ void CParameters::Format_SigParam_Value(CStdioFile &fileInput,CList<CParameters,
     char acTemp[defCON_CHAR_LEN],*pcTemp;
     pcTemp = acTemp;
     //parses the signal pram other values.
-    while(strcmp((fileInput.ReadString(acLine,defCON_MAX_LINE_LEN)),"[END_PARAM_SIG_VAL]\n")!=0)
+    while(fileInput.getline(acLine,defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_SIG_VAL]\n")!=0)
     {
         char temp[defCON_CHAR_LEN],sname[defCON_CHAR_LEN];
         pcLine = acLine;
@@ -230,7 +230,7 @@ void CParameters::Format_SigParam_Value(CStdioFile &fileInput,CList<CParameters,
 /**
  * Parses the Node Parameter's Other Values(BA_).
  */
-void CParameters::Format_NodeParam_Value(CStdioFile &fileInput,CList<CParameters,CParameters&>& m_listParam)
+void CParameters::Format_NodeParam_Value(fstream &fileInput,CList<CParameters,CParameters&>& m_listParam)
 {
     CParameterValues pVal;
     char acLine[defCON_MAX_LINE_LEN];
@@ -238,7 +238,7 @@ void CParameters::Format_NodeParam_Value(CStdioFile &fileInput,CList<CParameters
     char acTemp[defCON_CHAR_LEN],*pcTemp;
     pcTemp = acTemp;
     //parses the node pram other values.
-    while(strcmp((fileInput.ReadString(acLine,defCON_MAX_LINE_LEN)),"[END_PARAM_NODE_VAL]\n")!=0)
+    while(fileInput.getline(acLine,defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_NODE_VAL]\n")!=0)
     {
         char NodeName[defCON_CHAR_LEN];
         pcLine = acLine;
@@ -278,7 +278,7 @@ void CParameters::Format_NodeParam_Value(CStdioFile &fileInput,CList<CParameters
 /**
  * Parses the Net Parameter's Other Values(BA_).
  */
-void CParameters::Format_NetParam_Value(CStdioFile &fileInput,CList<CParameters,CParameters&>& m_listParam)
+void CParameters::Format_NetParam_Value(fstream &fileInput,CList<CParameters,CParameters&>& m_listParam)
 {
     CParameterValues pVal;
     char acLine[defCON_MAX_LINE_LEN];
@@ -286,7 +286,7 @@ void CParameters::Format_NetParam_Value(CStdioFile &fileInput,CList<CParameters,
     char acTemp[defCON_CHAR_LEN],*pcTemp;
     pcTemp = acTemp;
     //parses the mesg pram other values.
-    while(strcmp((fileInput.ReadString(acLine,defCON_MAX_LINE_LEN)),"[END_PARAM_NET_VAL]\n")!=0)
+    while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_NET_VAL]\n")!=0)
     {
         pcLine = acLine;
         //get other values.
@@ -470,7 +470,7 @@ void CParameters::ReadDefault_Value(char *pcToken)
 /**
  * Writes the parameter default values to the output file.
  */
-bool Write_DefVal_ToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&> &m_listParameter)
+bool Write_DefVal_ToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_listParameter)
 {
     bool pResult=true;
     char acLine[defCON_MAX_LINE_LEN];
@@ -497,7 +497,7 @@ bool Write_DefVal_ToFile(CStdioFile& fileOutput,CList<CParameters,CParameters&> 
         //writes def val of type string to the o/p file.
         else
             sprintf(acLine,"BA_DEF_DEF_  \"%s\" %s;\n",rParam.m_ParamName,rParam.m_InitVal.cValue);
-        fileOutput.WriteString(acLine);
+        fileOutput << acLine;
     }
     return pResult;
 }

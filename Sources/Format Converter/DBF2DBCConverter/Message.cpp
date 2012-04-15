@@ -138,19 +138,19 @@ int CMessage::operator==(const unsigned int uiMsgID) const
  * Write's the message in the CANoe format and returns false
  * if any of the error signal is not stored in the file
  */
-bool CMessage::writeMessageToFile( CStdioFile &fileOutput)
+bool CMessage::writeMessageToFile( fstream &fileOutput)
 {
     bool bResult = true;
     char acLine[defCON_MAX_LINE_LEN];
 
     sprintf(acLine,"BO_ %u %s: %u %s\n",m_uiMsgID,m_sName,m_ucLength,m_sTxNode);
-    fileOutput.WriteString(acLine);
+    fileOutput << acLine;
     POSITION possig = m_listSignals.GetHeadPosition();
     while(possig != NULL)
     {
         CSignal& sig = m_listSignals.GetNext(possig);
         bResult = bResult & sig.WriteSignaltofile(fileOutput);
     }
-    fileOutput.WriteString("\n");
+    fileOutput << "\n";
     return bResult;
 }

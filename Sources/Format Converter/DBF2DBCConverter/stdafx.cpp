@@ -47,14 +47,14 @@ extern void Truncate_str(char *type,char *pcToken,bool bToLog)
     if(bToLog)
     {
         sprintf(acLine,"%s %s ",type,pcToken);
-        CConverter::fileLog.WriteString(acLine);
+        CConverter::fileLog << acLine;
         CConverter::bLOG_ENTERED = true;
     }
     strcpy(pcToken,strTemp.c_str());
     if(bToLog)
     {
         sprintf(acLine," changed to %s\n",pcToken);
-        CConverter::fileLog.WriteString(acLine);
+        CConverter::fileLog << acLine;
     }
     return;
 }
@@ -74,14 +74,14 @@ extern void Truncate_str(char *type,string &strTemp,bool bToLog)
     if(bToLog)
     {
         sprintf(acLine,"%s %s ",type,strTemp);
-        CConverter::fileLog.WriteString(acLine);
+        CConverter::fileLog << acLine;
         CConverter::bLOG_ENTERED = true;
     }
 
     if(bToLog)
     {
         sprintf(acLine," changed to %s\n",strTemp.c_str());
-        CConverter::fileLog.WriteString(acLine);
+        CConverter::fileLog << acLine;
     }
     return;
 }

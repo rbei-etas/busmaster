@@ -16,22 +16,16 @@
 /**
  * \file      Comment.h
  * \brief     CComment class.
- * \author    RBIN/EBS1 - Mahesh B S
+ * \author    Mahesh B S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * CComment class.
  */
-/**
-* \file       Comment.h
-* \brief      CComment class.
-* \authors    Mahesh B S
-* \date       17.11.2004
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 #pragma once
 
 #include <afxtempl.h>
+#include <fstream>
 
 class CComment
 {
@@ -47,8 +41,8 @@ public:
     CComment();
     CComment& operator=(CComment& tCmt);
     virtual ~CComment();
-    void Format_netComment(CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment);
-    void Format_nodeComment(CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment);
-    void Format_msgComment(CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment);
-    void Format_sigComment(CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment);
+    void Format_netComment(fstream &fileInput,CList<CComment,CComment&>& m_listComment);
+    void Format_nodeComment(fstream &fileInput,CList<CComment,CComment&>& m_listComment);
+    void Format_msgComment(fstream &fileInput,CList<CComment,CComment&>& m_listComment);
+    void Format_sigComment(fstream &fileInput,CList<CComment,CComment&>& m_listComment);
 };

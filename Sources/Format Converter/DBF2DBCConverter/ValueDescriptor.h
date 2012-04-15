@@ -40,7 +40,7 @@ public:
     virtual ~CValueDescriptor();
     int Format(char *pcLine);
     //	CValueDescriptor& operator=(CValueDescriptor& valDesc);
-    void writeValuDescToFile(CStdioFile &fileOutput,char m_ucType,CList<CValueDescriptor,CValueDescriptor&> &m_listValueDescriptor);
+    void writeValuDescToFile(fstream &fileOutput,char m_ucType,CList<CValueDescriptor,CValueDescriptor&> &m_listValueDescriptor);
     string		m_sDescriptor;
     SIG_VALUE	m_value;
 };

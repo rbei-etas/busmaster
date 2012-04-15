@@ -107,7 +107,7 @@ value,value descriptor as in canoe format
 * \date       16.11.2004
 */
 
-void CValueTable::Format_ValueTable(char *pcLine,CStdioFile &fileInput)
+void CValueTable::Format_ValueTable(char *pcLine,fstream &fileInput)
 {
     char *pcToken;
     char acLine[defCON_MAX_LINE_LEN] = {'\0'};
@@ -120,7 +120,7 @@ void CValueTable::Format_ValueTable(char *pcLine,CStdioFile &fileInput)
     //get value table name.
     strcpy(m_TableName,pcToken);
     //parses value table.
-    while(strcmp((fileInput.ReadString(acLine,defCON_MAX_LINE_LEN)),"[END_TABLE]\n")!=0)
+    while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine,"[END_TABLE]\n")!=0)
     {
 
         pcLine=acLine;
@@ -141,7 +141,7 @@ void CValueTable::Format_ValueTable(char *pcLine,CStdioFile &fileInput)
             {
                 char logmsg[defCON_MAX_LINE_LEN];
                 sprintf(logmsg,"value Descriptor %s changed as %s\"\n",valDesc.m_sDescriptor,valDesc.m_sDescriptor.c_str());
-                CConverter::fileLog.WriteString(logmsg);
+                CConverter::fileLog << logmsg;
                 CConverter::bLOG_ENTERED = true;
 
                 valDesc.m_sDescriptor += "\"";
@@ -163,7 +163,7 @@ void CValueTable::Format_ValueTable(char *pcLine,CStdioFile &fileInput)
 * \authors    Padmaja.A.
 * \date       17.11.2004
 */
-void CValueTable::writeValueTabToFile(CStdioFile &fileOutput,CList<CValueTable,CValueTable&> &vTab)
+void CValueTable::writeValueTabToFile(fstream &fileOutput,CList<CValueTable,CValueTable&> &vTab)
 {
     //get value table.
     POSITION pos = vTab.GetHeadPosition();
@@ -174,7 +174,7 @@ void CValueTable::writeValueTabToFile(CStdioFile &fileOutput,CList<CValueTable,C
         //write value table name to the o/p file.
         CValueTable &tab = vTab.GetNext(pos);
         sprintf(acLine,"VAL_TABLE_ %s ",tab.m_TableName);
-        fileOutput.WriteString(acLine);
+        fileOutput << acLine;
         //writes descriptors values to the o/p file.
         CValueDescriptor desc;
         desc.writeValuDescToFile (fileOutput,CSignal::SIG_TYPE_INT64,tab.m_values);

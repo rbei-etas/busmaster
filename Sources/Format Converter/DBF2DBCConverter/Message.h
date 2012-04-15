@@ -44,7 +44,7 @@ public:
     CMessage& operator=(CMessage& message);
     int operator==(const CMessage &message) const;
     int operator==(const unsigned int uiMsgID) const;
-    bool writeMessageToFile( CStdioFile &fileOutput);
+    bool writeMessageToFile( fstream &fileOutput);
 
     // data members
     enum MSG_FRAME_FORMAT {MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
