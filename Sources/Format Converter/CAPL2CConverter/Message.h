@@ -22,14 +22,7 @@
  * Interface file for CMessage class
  */
 
-
-#if !defined(AFX_MESSAGE_H__F7C7DBC8_F82B_4799_80EF_1C7CDD5DCA42__INCLUDED_)
-#define AFX_MESSAGE_H__F7C7DBC8_F82B_4799_80EF_1C7CDD5DCA42__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-
 
 #include <afxtempl.h>
 #include "Signal.h"
@@ -57,5 +50,3 @@ public:
     char			m_cFrameFormat;
     CList<CSignal,CSignal&> m_listSignals;
 };
-
-#endif // !defined(AFX_MESSAGE_H__F7C7DBC8_F82B_4799_80EF_1C7CDD5DCA42__INCLUDED_)
