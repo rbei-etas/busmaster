@@ -25,7 +25,6 @@
 #include "stdafx.h"
 #include "FormatConverterWnd.h"
 #include "DefConverterPage.h"
-// CFormatConverterWnd
 
 IMPLEMENT_DYNAMIC(CFormatConverterWnd, CPropertySheet)
 
@@ -78,8 +77,6 @@ BOOL CFormatConverterWnd::OnInitDialog()
 
 	omBtn = reinterpret_cast<CButton *>(GetDlgItem(IDOK));
 	omBtn->ShowWindow(SW_HIDE);
-	
-	
 
 	omBtn = reinterpret_cast<CButton *>(GetDlgItem(IDCANCEL));
 	omBtn->SetWindowText("Close");
@@ -134,9 +131,7 @@ HRESULT CFormatConverterWnd::LoadConverters()
         }
     }
     
-    
     return S_OK;
-
 }
 
 BOOL CFormatConverterWnd::PreCreateWindow(CREATESTRUCT& cs)

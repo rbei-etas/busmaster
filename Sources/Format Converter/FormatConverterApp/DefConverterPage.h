@@ -57,9 +57,9 @@ public:
     afx_msg void OnBnClickedBtnInput();
     afx_msg void OnBnClickedBtnOutput();
     afx_msg void OnBnClickedBtnConvert();
-    string m_omStrInputFilePath;
-    string m_omStrOutputFilePath;
+    CString m_omStrInputFilePath;
+    CString m_omStrOutputFilePath;
     afx_msg void OnCbnSelchangeComboConversions();
-    string m_omstrConversionComment;
-    string m_omstrEditHelp;
+    CString m_omstrConversionComment;
+    CString m_omstrEditHelp;
 };

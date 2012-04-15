@@ -94,7 +94,6 @@ CParameters& CParameters::operator=( CParameters& param)
 bool WriteParamToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_listParameter)
 {
     bool pResult=true;
-    char acLine[defCON_MAX_LINE_LEN];
 
     //gets the frst param in the list.
     POSITION pos=m_listParameter .GetHeadPosition();
@@ -104,17 +103,24 @@ bool WriteParamToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_lis
         if(rParam.m_RangeError)
             pResult=false;
         //writes param def to the specified o/p file.
-        if(strcmp(rParam.m_ParamType,"INT")==0 )
-            sprintf(acLine,"BA_DEF_ %s  \"%s\" %s %d %d;\n",rParam.m_ObjectId,rParam.m_ParamName,rParam.m_ParamType, rParam.m_MinVal.iValue,rParam.m_MaxVal.iValue);
-        else if(strcmp(rParam.m_ParamType,"HEX")==0)
-            sprintf(acLine,"BA_DEF_ %s  \"%s\" %s %u %u;\n",rParam.m_ObjectId,rParam.m_ParamName,rParam.m_ParamType,rParam.m_MinVal.uiValue,rParam.m_MaxVal.uiValue);
-        else if(strcmp(rParam.m_ParamType,"FLOAT")==0)
-            sprintf(acLine,"BA_DEF_ %s  \"%s\" %s %f %f;\n",rParam.m_ObjectId,rParam.m_ParamName,rParam.m_ParamType,rParam.m_MinVal.fValue,rParam.m_MaxVal.fValue);
-        else if(strcmp(rParam.m_ParamType,"ENUM")==0)
-            sprintf(acLine,"BA_DEF_ %s  \"%s\" %s%s;\n",rParam.m_ObjectId,rParam.m_ParamName,rParam.m_ParamType,rParam.m_ValRange);
-        else
-            sprintf(acLine,"BA_DEF_ %s  \"%s\" %s ;\n",rParam.m_ObjectId,rParam.m_ParamName,rParam.m_ParamType);
-        fileOutput << acLine;
+		fileOutput << "BA_DEF_ " << rParam.m_ObjectId;
+		fileOutput << "  \"" << rParam.m_ParamName << "\"";
+		fileOutput << " " << rParam.m_ParamType;
+		if(strcmp(rParam.m_ParamType,"INT")==0 ) {
+			fileOutput << " " << dec << rParam.m_MinVal.iValue;
+			fileOutput << " " << dec << rParam.m_MaxVal.iValue;
+		} else if(strcmp(rParam.m_ParamType,"HEX")==0) {
+			fileOutput << " " << dec << rParam.m_MinVal.uiValue;
+			fileOutput << " " << dec << rParam.m_MaxVal.uiValue;
+		} else if(strcmp(rParam.m_ParamType,"FLOAT")==0) {
+			fileOutput << " " << fixed << rParam.m_MinVal.fValue;
+			fileOutput << " " << fixed << rParam.m_MaxVal.fValue;
+		} else if(strcmp(rParam.m_ParamType,"ENUM")==0) {
+			fileOutput << rParam.m_ValRange;
+		} else {
+			fileOutput << " ";
+		}
+		fileOutput << ";" << endl;
     }
     return pResult;
 }
@@ -197,8 +203,6 @@ void CParameters::Format_SigParam_Value(fstream &fileInput,CList<CParameters,CPa
         pcLine=pcLine+strlen(pcToken)+1;
         //get signal name.
         pcToken=strtok(pcLine,",");
-        if(strlen(pcToken) > 32)
-            Truncate_str("signal name",pcToken,false);
         strcpy(sname,pcToken);
         pcLine=pcLine+strlen(pcToken)+1;
         //get other values.
@@ -244,8 +248,6 @@ void CParameters::Format_NodeParam_Value(fstream &fileInput,CList<CParameters,CP
         pcLine = acLine;
         //get node name.
         pcToken=strtok(pcLine,",");
-        if(strlen(pcToken) > 32)
-            Truncate_str("parameter Name",pcToken,false);
 
         strcpy(NodeName,pcToken);
         pcLine=pcLine+strlen(pcToken)+1;
@@ -348,8 +350,6 @@ void CParameters::GetParam_Def(char *pcLine)
     //get Param name
     pcToken = strtok(pcLine,"\"");
 
-    if(strlen(pcToken) > 32)
-        Truncate_str("parameter Name",pcToken,true);
     strcpy(m_ParamName,pcToken);
     //get Param type
     pcToken=strtok(NULL,",");
@@ -473,7 +473,6 @@ void CParameters::ReadDefault_Value(char *pcToken)
 bool Write_DefVal_ToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_listParameter)
 {
     bool pResult=true;
-    char acLine[defCON_MAX_LINE_LEN];
     //gets the first param from the list.
     POSITION pos=m_listParameter .GetHeadPosition();
     while(pos!=NULL)
@@ -483,21 +482,23 @@ bool Write_DefVal_ToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_
         if(rParam.m_RangeError)
             pResult=false;
         //writes def val of type int to the o/p file.
-        if(strcmp(rParam.m_ParamType,"INT")==0 )
-            sprintf(acLine,"BA_DEF_DEF_  \"%s\" %d;\n",rParam.m_ParamName,rParam.m_InitVal.iValue);
+		fileOutput << "BA_DEF_DEF_";
+		fileOutput << "  \"" << rParam.m_ParamName << "\"";
+		if(strcmp(rParam.m_ParamType,"INT")==0 )
+			fileOutput << " " << dec << rParam.m_InitVal.iValue;
         //writes def val of type ex to the o/p file.
         else if(strcmp(rParam.m_ParamType,"HEX")==0)
-            sprintf(acLine,"BA_DEF_DEF_  \"%s\" %u;\n",rParam.m_ParamName,rParam.m_InitVal.uiValue);
+			fileOutput << " " << dec << rParam.m_InitVal.uiValue;
         //writes def val of type flaot to the o/p file.
         else if(strcmp(rParam.m_ParamType,"FLOAT")==0)
-            sprintf(acLine,"BA_DEF_DEF_  \"%s\" %f;\n",rParam.m_ParamName,rParam.m_InitVal.fValue);
+			fileOutput << " " << fixed << rParam.m_InitVal.fValue;
         //writes def val of type enum to the o/p file.
         else if(strcmp(rParam.m_ParamType,"ENUM")==0)
-            sprintf(acLine,"BA_DEF_DEF_  \"%s\" \"%s\";\n",rParam.m_ParamName,rParam.m_InitVal.cValue);
+			fileOutput << " \"" << rParam.m_InitVal.cValue << "\"";
         //writes def val of type string to the o/p file.
         else
-            sprintf(acLine,"BA_DEF_DEF_  \"%s\" %s;\n",rParam.m_ParamName,rParam.m_InitVal.cValue);
-        fileOutput << acLine;
+			fileOutput << " " << rParam.m_InitVal.cValue;
+		fileOutput << ";" << endl;
     }
     return pResult;
 }

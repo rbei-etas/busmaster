@@ -39,5 +39,3 @@
 #include <iostream>
 #include <string.h>
 using namespace std;
-extern void Truncate_str(char *type,char *pcToken,bool bToLog);
-extern void Truncate_str(char *type,string &strTemp,bool bToLog);

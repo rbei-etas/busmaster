@@ -45,9 +45,9 @@ public:
     //members
     string			m_sName;
     string			m_sMultiplex;
-    unsigned char	m_ucLength;
-    unsigned char	m_ucWhichByte;
-    unsigned char	m_ucStartBit;
+    unsigned int	m_ucLength;
+    unsigned int	m_ucWhichByte;
+    unsigned int	m_ucStartBit;
     char			m_ucType;
     SIG_VALUE		m_MaxValue;
     SIG_VALUE		m_MinValue;

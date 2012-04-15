@@ -102,9 +102,6 @@ int CSignal::Format(char *pcLine)
     // now get the signal name
     m_sName = pcToken; // copy the name to the signal's data member
 
-    if(m_sName.length() > defCON_MAX_MSGN_LEN)
-        Truncate_str("Signal name",m_sName,true);
-
     // Signal length
     pcToken = strtok(NULL,",");
     m_ucLength = atoi(pcToken); // store signal length
@@ -178,9 +175,8 @@ int CSignal::Format(char *pcLine)
     m_sUnit = m_sUnit + "\"";
     if(strUnit_Temp.length() > defCON_MAX_MSGN_LEN + 2)
     {
-        char logmsg[defCON_MAX_LINE_LEN];
-        sprintf(logmsg,"unit %s changed to %s\n",strUnit_Temp,m_sUnit);
-        CConverter::fileLog << logmsg;
+        CConverter::fileLog << "unit " << strUnit_Temp;
+		CConverter::fileLog << " changed to " << m_sUnit << endl;
         CConverter::bLOG_ENTERED = true;
     }
     //for multiplexing field
@@ -189,13 +185,13 @@ int CSignal::Format(char *pcLine)
     if(nIndex != -1)
     {
         int nLength = strTemp.length();
-        strTemp = strTemp.substr(nLength - nIndex -1, nIndex + 1);
+        strTemp = strTemp.substr(nLength - nIndex -1, nIndex);
         nIndex = strTemp.find(',');
         if(nIndex != -1)
         {
             if(nIndex != 0)
             {
-                strTemp = strTemp.substr(0, nIndex);
+                strTemp = strTemp.substr(0, nIndex-1);
             }
             else
             {
@@ -209,28 +205,17 @@ int CSignal::Format(char *pcLine)
     //rx'ing nodes
 	string strNodes = pcToken;
 	nIndex = strNodes.find(",", 0);
-	strNodes = strNodes.substr(nIndex+1, strNodes.length());
+	strNodes = strNodes.substr(nIndex+1, strNodes.length()-1);
 	nIndex = strNodes.find(",", nIndex);
-	strNodes = strNodes.substr(nIndex+1, strNodes.length());
-	/*nIndex = strNodes.find("\n", nIndex);
-	if(nIndex >= 0)
-	{
-		strNodes = strNodes.erase(nIndex, 1);
-	}*/
-	m_sNode = strNodes.c_str();
-	m_sNode.replace(m_sNode.begin(), m_sNode.end(), '\n', ' ');
+	strNodes = strNodes.substr(nIndex+1, strNodes.length()-1);
+	m_sNode = strNodes;
+	while ((nIndex = m_sNode.find('\n', 0)) != string::npos) {
+		m_sNode.replace(nIndex, 1, " ");
+	}
 	if(m_sNode.length() == 0)
 	{
 		m_sNode = "Vector__XXX";
 	}
-	
-	/*token = strtok(pcToken,",");
-    token = strtok(NULL,",");
-    token = strtok(NULL,"\n");
-    if(token)
-        m_sNode = token;
-    else
-        m_sNode = "Vector__XXX";*/
 
     return 1;
 }
@@ -313,15 +298,20 @@ unsigned int CSignal::Validate()
  */
 bool CSignal::WriteSignaltofile(fstream &fileOutput)
 {
-    char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
     bool bResult = true;
     if(m_uiError == SIG_EC_NO_ERR)
     {
-        sprintf(acLine," SG_ %s %s:  %u|%u@%c+ (%f,%f) [%lf|%lf] %s %s\n",
-                m_sName, m_sMultiplex, m_ucStartBit, m_ucLength, m_ucDataFormat,
-                m_fScaleFactor, m_fOffset, m_MinValue.dValue,
-                m_MaxValue.dValue, m_sUnit, m_sNode);
-        fileOutput << acLine;
+		fileOutput << " SG_ " << m_sName;
+		fileOutput << " " << m_sMultiplex;
+		fileOutput << ":  " << dec << m_ucStartBit;
+		fileOutput << "|" << dec << m_ucLength;
+		fileOutput << "@" << m_ucDataFormat;
+		fileOutput << "+ (" << fixed << m_fScaleFactor;
+		fileOutput << "," << fixed << m_fOffset;
+		fileOutput << ") [" << fixed << m_MinValue.dValue;
+		fileOutput << "|" << fixed << m_MaxValue.dValue;
+		fileOutput << "] " << m_sUnit;
+		fileOutput << " " << m_sNode << endl;
     }
     else
         bResult = false;

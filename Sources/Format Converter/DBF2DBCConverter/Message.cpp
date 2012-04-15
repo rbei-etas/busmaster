@@ -75,8 +75,6 @@ int CMessage::Format(char *pcLine)
     // get the MSG Name
     pcToken = strtok(pcLine,",");
     m_sName = pcToken;
-    if(m_sName.length() > defCON_MAX_MSGN_LEN)
-        Truncate_str("Message name",m_sName,true);
 
     // get the MSG ID
     pcToken = strtok(NULL," ,");
@@ -84,7 +82,7 @@ int CMessage::Format(char *pcLine)
 
     // set the message length
     pcToken = strtok(NULL," ,");
-    m_ucLength = (unsigned char)atoi(pcToken);
+    m_ucLength = (unsigned int)atoi(pcToken);
     CConverter::ucMsg_DLC = m_ucLength;
     //no.. of signals.
     pcToken = strtok(NULL," ,");
@@ -141,16 +139,17 @@ int CMessage::operator==(const unsigned int uiMsgID) const
 bool CMessage::writeMessageToFile( fstream &fileOutput)
 {
     bool bResult = true;
-    char acLine[defCON_MAX_LINE_LEN];
 
-    sprintf(acLine,"BO_ %u %s: %u %s\n",m_uiMsgID,m_sName,m_ucLength,m_sTxNode);
-    fileOutput << acLine;
+	fileOutput << "BO_ " << dec << m_uiMsgID;
+	fileOutput << " " << m_sName.c_str();
+	fileOutput << ": " << dec << m_ucLength;
+	fileOutput << " " << m_sTxNode.c_str() << endl;
     POSITION possig = m_listSignals.GetHeadPosition();
     while(possig != NULL)
     {
         CSignal& sig = m_listSignals.GetNext(possig);
         bResult = bResult & sig.WriteSignaltofile(fileOutput);
     }
-    fileOutput << "\n";
+    fileOutput << endl;
     return bResult;
 }

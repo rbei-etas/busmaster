@@ -22,6 +22,7 @@
  * Implementation of the converter class.
  */
 
+#include <fstream>
 #include "Converter.h"
 #include "Signal.h"
 #include "Tag.h"
@@ -73,12 +74,10 @@ unsigned int CConverter::Convert(string &sCanoeFile, string &sCanMonFile)
     }
 
     // Generate the list of messages
-
     GenerateMessageList(fileInput);
 
     // All information gathered, validate and update if necessary
     // Make appropriate changes in the contents of the list
-
     ValidateMessageList();
 
     // the format is OK then open the output file

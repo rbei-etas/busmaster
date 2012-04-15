@@ -140,36 +140,31 @@ void CParameterValues::ReadParamValue(char *paramType,char *pcToken)
  */
 void CParameterValues::WriteNetValuesToFile(fstream& fileOutput,char *paramType,char *paramName)
 {
-    char acLine[defCON_MAX_LINE_LEN];
-    //writes net values of type int to o/p file.
+	fileOutput << "BA_ \"" << paramName << "\"";
+	//writes net values of type int to o/p file.
     if(strcmp(paramType,"INT")==0 || strcmp(paramType,"HEX")==0)
     {
-        if(m_ParamVal.iValue ==-1)
-            sprintf(acLine,"BA_ \"%s\";\n",paramName);
-        else
-            sprintf(acLine,"BA_ \"%s\" %d;\n",paramName,m_ParamVal.iValue);
+        if(m_ParamVal.iValue != -1)
+			fileOutput << " " << dec << m_ParamVal.iValue;
     }
     //writes net values of type float to o/p file.
     else if(strcmp(paramType,"FLOAT")==0)
     {
-        if(m_ParamVal.fValue==-1)
-            sprintf(acLine,"BA_ \"%s\";\n",paramName);
-        else
-            sprintf(acLine,"BA_ \"%s\" %f;\n",paramName,m_ParamVal.fValue);
+        if(m_ParamVal.fValue != -1)
+            fileOutput << " " << fixed << m_ParamVal.fValue;
     }
     //writes net values of type enum to o/p file.
     else if(strcmp(paramType,"ENUM")==0)
     {
-        if(strcmp(m_ParamVal.cValue,"")==0)
-            sprintf(acLine,"BA_ \"%s\" """,paramName);
+        if(strcmp(m_ParamVal.cValue,"") == 0)
+			fileOutput << " \"\"";
         else
-            sprintf(acLine,"BA_ \"%s\" %s;\n",paramName,m_ParamVal.cValue);
+			fileOutput << " " << m_ParamVal.cValue;
     }
     //writes net values of type string to o/p file.
     else if(strcmp(paramType,"STRING")==0)
-        sprintf(acLine,"BA_ \"%s\" \"%s\";\n",paramName,m_ParamVal.cValue);
-    fileOutput << acLine;
-
+		fileOutput << " \"" << m_ParamVal.cValue << "\"";
+	fileOutput << ";" << endl;
 }
 
 /**
@@ -177,36 +172,32 @@ void CParameterValues::WriteNetValuesToFile(fstream& fileOutput,char *paramType,
  */
 void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput,char *paramType,char *paramName)
 {
-    char acLine[defCON_MAX_LINE_LEN];
+	fileOutput << "BA_ \"" << paramName << "\"";
+	fileOutput << " BU_ " << m_NodeName;
     //writes node values of type int/hex to o/p file.
     if(strcmp(paramType,"INT")==0  || strcmp(paramType,"HEX")==0)
     {
-        if(m_ParamVal.iValue ==-1)
-            sprintf(acLine,"BA_ \"%s\" BU_ %s;\n",paramName,m_NodeName);
-        else
-            sprintf(acLine,"BA_ \"%s\" BU_ %s %d;\n",paramName,m_NodeName,m_ParamVal.iValue);
+        if(m_ParamVal.iValue != -1)
+			fileOutput << " " << dec << m_ParamVal.iValue;
     }
     //writes node values of type enum to o/p file.
     else if(strcmp(paramType,"ENUM")==0)
     {
-        if(strcmp(m_ParamVal.cValue,"")==0)
-            sprintf(acLine,"BA_ \"%s\" %s "";",paramName,m_NodeName);
+        if(strcmp(m_ParamVal.cValue,"") == 0)
+			fileOutput << " \"\"";
         else
-            sprintf(acLine,"BA_ \"%s\" BU_ %s %s;\n", paramName,m_NodeName, m_ParamVal.cValue);
+			fileOutput << " \"" << m_ParamVal.cValue << "\"";
     }
     //writes node values of type float to o/p file.
     else if(strcmp(paramType,"FLOAT")==0)
     {
-        if(m_ParamVal.fValue==-1)
-            sprintf(acLine,"BA_ \"%s\" BU_ %s;\n",paramName,m_NodeName);
-        else
-            sprintf(acLine,"BA_ \"%s\" BU_ %s %f;\n",paramName,m_NodeName,m_ParamVal.fValue);
+        if(m_ParamVal.fValue != -1)
+			fileOutput << fixed << m_ParamVal.fValue;
     }
     //writes node values of type string to o/p file.
     else if(strcmp(paramType,"STRING")==0)
-        sprintf(acLine,"BA_ \"%s\" BU_ %s \"%s\";\n",paramName,m_NodeName,m_ParamVal.cValue);
-    fileOutput << acLine;
-
+		fileOutput << " \"" << m_ParamVal.cValue << "\"";
+	fileOutput << ";" << endl;
 }
 
 /**
@@ -214,35 +205,32 @@ void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput,char *paramType
  */
 void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput,char *paramType,char *paramName)
 {
-    char acLine[defCON_MAX_LINE_LEN];
+	fileOutput << "BA_ \"" << paramName << "\"";
+	fileOutput << " BO_ " << dec << m_MsgId;
     //writes mesg values of type int/hex to o/p file.
     if(strcmp(paramType,"INT")==0   || strcmp(paramType,"HEX")==0)
     {
-        if(m_ParamVal.iValue ==-1)
-            sprintf(acLine,"BA_ \"%s\" BO_ %u;\n",paramName,m_MsgId);
-        else
-            sprintf(acLine,"BA_ \"%s\" BO_ %u %d;\n",paramName,m_MsgId , m_ParamVal.iValue);
+        if(m_ParamVal.iValue != -1)
+			fileOutput << " " << dec << m_ParamVal.iValue;
     }
     //writes mesg values of type enum to o/p file.
     else if(strcmp(paramType,"ENUM")==0)
     {
-        if(strcmp(m_ParamVal.cValue,"")==0)
-            sprintf(acLine,"BA_ \"%s\" BO_ %u "";\n",paramName,m_MsgId);
+        if(strcmp(m_ParamVal.cValue, "") == 0)
+			fileOutput << " \"\"";
         else
-            sprintf(acLine,"BA_ \"%s\" BO_ %u %s;\n", paramName,m_MsgId ,m_ParamVal.cValue);
+			fileOutput << " " << m_ParamVal.cValue;
     }
     //writes mesg values of type float to o/p file.
     else if(strcmp(paramType,"FLOAT")==0)
     {
-        if(m_ParamVal.fValue==-1)
-            sprintf(acLine,"BA_ \"%s\" BO_ %u;\n",paramName,m_MsgId);
-        else
-            sprintf(acLine,"BA_ \"%s\" BO_ %u %f;\n",paramName,m_MsgId,m_ParamVal.fValue);
+        if(m_ParamVal.fValue != -1)
+			fileOutput << " " << fixed << m_ParamVal.fValue;
     }
     //writes mesg values of type string to o/p file.
     else if(strcmp(paramType,"STRING")==0)
-        sprintf(acLine,"BA_ \"%s\" BO_ %u \"%s\";\n",paramName,m_MsgId,m_ParamVal.cValue);
-    fileOutput << acLine;
+		fileOutput << " \"" << m_ParamVal.cValue << "\"";
+	fileOutput << ";" << endl;
 }
 
 /**
@@ -250,33 +238,31 @@ void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput,char *paramType
  */
 void CParameterValues::WriteSigValuesToFile(fstream& fileOutput,char *paramType,char *paramName)
 {
-    char acLine[defCON_MAX_LINE_LEN];
+	fileOutput << "BA_ \"" << paramName << "\"";
+	fileOutput << " SG_ " << dec << m_MsgId;
+	fileOutput << " " << m_SignalName;
     //writes sig values of type int/hex to o/p file.
     if(strcmp(paramType,"INT")==0 || strcmp(paramType,"HEX")==0)
     {
-        if(m_ParamVal.iValue ==-1)
-            sprintf(acLine,"BA_ \"%s\" SG_ %u %s;\n",paramName,m_MsgId,m_SignalName);
-        else
-            sprintf(acLine,"BA_ \"%s\" SG_ %u %s %d;\n",paramName,m_MsgId,m_SignalName ,m_ParamVal.iValue);
+        if(m_ParamVal.iValue != -1)
+			fileOutput << " " << dec << m_ParamVal.iValue;
     }
     //writes sig values of type enum to o/p file.
     else if(strcmp(paramType,"ENUM")==0)
     {
-        if(strcmp(m_ParamVal.cValue,"")==0)
-            sprintf(acLine,"BA_ \"%s\" SG_ %u %s "";\n",paramName,m_MsgId,m_SignalName);
+        if(strcmp(m_ParamVal.cValue, "") == 0)
+			fileOutput << " \"\"";
         else
-            sprintf(acLine,"BA_ \"%s\" SG_ %u %s %s;\n",paramName,m_MsgId ,m_SignalName ,m_ParamVal.cValue);
+			fileOutput << " " << m_ParamVal.cValue;
     }
     //writes sig values of type flaot to o/p file.
     else if(strcmp(paramType,"FLOAT")==0)
     {
-        if(m_ParamVal.fValue==-1)
-            sprintf(acLine,"BA_ \"%s\" SG_ %u %s;\n",paramName,m_MsgId,m_SignalName);
-        else
-            sprintf(acLine,"BA_ \"%s\" SG_ %u %s %f;\n",paramName,m_MsgId ,m_SignalName ,m_ParamVal.fValue);
+        if(m_ParamVal.fValue != -1)
+			fileOutput << " " << fixed << m_ParamVal.fValue;
     }
     //writes sig values of type string to o/p file.
     else if(strcmp(paramType,"STRING")==0)
-        sprintf(acLine,"BA_ \"%s\" SG_ %u %s \"%s\";\n",paramName,m_MsgId ,m_SignalName,m_ParamVal.cValue);
-    fileOutput << acLine;
+		fileOutput << " \"" << m_ParamVal.cValue << "\"";
+	fileOutput << ";" << endl;
 }

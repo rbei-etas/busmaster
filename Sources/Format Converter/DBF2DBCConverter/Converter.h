@@ -25,6 +25,7 @@
 #pragma once
 
 #include <fstream>
+#include <string>
 #include "Message.h"
 #include "Parameter.h"
 #include "ValueTable.h"
@@ -42,10 +43,10 @@ protected:
     static const char m_accHeader[];
 public:
     unsigned int Convert(string sCanoeFile,string sCanMonFile);
-    const char* GetResultString();
+    void GetResultString(string &str);
     static fstream fileLog;
     static bool bLOG_ENTERED;
-    static unsigned char ucMsg_DLC;
+    static unsigned int ucMsg_DLC;
     string m_omLogFilePath;
 private:
 

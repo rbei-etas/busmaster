@@ -123,19 +123,31 @@ unsigned int CConverter::Convert(CString sCanoeFile)
     return 1;
 }
 
-const char* CConverter::m_pacResultStrings[] =
+void CConverter::GetResultString(string &str)
 {
-    "Conversion completed...NO ERRORS!",
-    "Conversion completed with ERRORS... see log file",
-    "Error opening input file",
-    "Error opening output file",
-    "Conversion aborted: input file format error"
-    "Conversion completed with ERRORS... Error Creating Log file"
-};
-
-const char* CConverter::GetResultString()
-{
-    return m_pacResultStrings[m_uiResultCode];
+	switch(m_uiResultCode) {
+		case 0:
+			str = "Conversion completed.";
+			break;
+		case 1:
+			str = "Conversion completed with errors. See log file.";
+			break;
+		case 2:
+			str = "Conversion aborted. Error opening input file.";
+			break;
+		case 3:
+			str = "Conversion aborted. Error creating output file.";
+			break;
+		case 4:
+			str = "Conversion aborted. Error with input file format.";
+			break;
+		case 5:
+			str = "Conversion aborted. Error creating log file.";
+			break;
+		default:
+			str = "Unknown";
+			break;
+	}
 }
 
 unsigned int CConverter::SetResultCode(unsigned int uiCode)

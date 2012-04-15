@@ -44,7 +44,7 @@ public:
     string			m_sName;
     string			m_sTxNode;
     unsigned int	m_uiMsgID;
-    unsigned char	m_ucLength;
+    unsigned int	m_ucLength;
     char			m_cFrameFormat;
     CList<CSignal,CSignal&> m_listSignals;
 };
