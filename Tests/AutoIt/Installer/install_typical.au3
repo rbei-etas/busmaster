@@ -46,7 +46,6 @@ if @error Then
 	ConsoleWriteError("Installation Options didn't activate" & @CRLF)
 	Exit
 EndIf
-send("{DOWN}") ; Full
 send("!N") ; Next
 WinWaitClose("BUSMASTER Setup: Installation Options", "", 3)
 if @error Then
@@ -121,7 +120,7 @@ If Not FileExists(@ProgramFilesDir & "\BUSMASTER\vxlapi.dll") Then
 	ConsoleWriteError("vxlapi.dll didn't install" & @CRLF)
 	Exit
 EndIf
-If Not FileExists(@ProgramFilesDir & "\BUSMASTER\MinGW") Then
-	ConsoleWriteError("MinGW didn't install" & @CRLF)
+If FileExists(@ProgramFilesDir & "\BUSMASTER\MinGW") Then
+	ConsoleWriteError("MinGW did install" & @CRLF)
 	Exit
 EndIf

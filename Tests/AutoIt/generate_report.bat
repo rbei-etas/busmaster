@@ -8,6 +8,10 @@ cd Installer
 
 REM --- List of tests to be executed ---
 call:testgroup "Installer"
+call:test "install_minimal"
+call:test "uninstall"
+call:test "install_typical"
+call:test "uninstall"
 call:test "install_full"
 
 call:testgroup "Format Converter"
