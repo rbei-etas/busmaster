@@ -16,18 +16,11 @@
 /**
  * \file      Parameter.h
  * \brief     CParameters class.
- * \author    RBIN/EBS1 - Padmaja.A.
+ * \author    Padmaja.A.
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * CParameters class.
  */
-/**
-* \file       Parameter.h
-* \brief      CParameters class.
-* \authors    Padmaja A
-* \date       14.11.2004
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 #pragma once
 

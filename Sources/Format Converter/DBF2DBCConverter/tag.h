@@ -16,18 +16,11 @@
 /**
  * \file      tag.h
  * \brief     This file has the definetion of all the tags used
- * \author    RBIN/EBS1 - Mahesh B S
+ * \author    Mahesh B S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This file has the definetion of all the tags used
  */
-/**
-* \file       tag.h
-* \brief      This file has the definetion of all the tags used  and all the constant's are defined here.
-* \authors    Mahesh B S
-* \date       4.11.2004 Created
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 #define T_STRAT_BRAC "["
 #define T_END_BRAC "]"
 #define T_DB_VER		T_STRAT_BRAC"DATABASE_VERSION"T_END_BRAC

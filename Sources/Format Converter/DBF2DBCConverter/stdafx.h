@@ -16,18 +16,11 @@
 /**
  * \file      StdAfx.h
  * \brief     include file for standard system include files.
- * \authors   RBIN/EBS1 - Mahesh.B.S, Padmaja.A
+ * \authors   Mahesh.B.S, Padmaja.A
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * include file for standard system include files.
  */
-/**
-* \file       Signal.h
-* \brief      include file for standard system include files.
-* \authors    Mahesh.B.S, Padmaja.A
-* \date       15.11.2004 Created
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 #pragma once
 

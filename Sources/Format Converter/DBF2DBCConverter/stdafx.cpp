@@ -16,18 +16,12 @@
 /**
  * \file      StdAfx.cpp
  * \brief     Implementation of the common functions.
- * \authors   RBIN/EBS1 - Mahesh.B.S, Padmaja.A
+ * \authors   Mahesh.B.S, Padmaja.A
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of the common functions.
  */
-/**
-* \file       stdafx.Cpp
-* \brief      Implementation of the common functions.
-* \authors    Mahesh.B.S, Padmaja.A
-* \date       15.11.2004
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
+
 #include "StdAfx.h"
 #include "Converter.h"
 

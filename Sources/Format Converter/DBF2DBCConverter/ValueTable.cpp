@@ -15,36 +15,12 @@
 
 /**
  * \file      ValueTable.cpp
+ * \brief     Implementation file for the value table.This is atable containing value discriptors.
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Implementation file for the value table.This is atable containing value discriptors.
  */
-/*********************************************************************
-Project       :  CANDb convertor
-FileName      :  ValueTable.Cpp
-Description   :  Implementation file for the value table.This is atable containing value discriptors.
-
-$Log:   X:/Archive/Sources/Ext_tools_DBF_2_DBC/ValueTable.cpv  $
-
-      Rev 1.1   04 Aug 2011 19:55:50   CANMNTTM
-
-
-Rev 1.0   03 Aug 2011 15:47:52   rac2kor
-
-
-Rev 1.0   17 Aug 2005 13:35:02   amb2kor
-Initial Version.
-
-Author(s)     :  RBIN/EBS1 - Padmaja.A
-Date Created  :  16-11-2004
-Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*********************************************************************/
-/**
-* \file       ValueTable.cpp
-* \brief      Implementation file for the value table.
-* \authors    Padmaja.A.
-* \date       16.11.2004 Craeted
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 #include "StdAfx.h"
 #include "ValueTable.h"
