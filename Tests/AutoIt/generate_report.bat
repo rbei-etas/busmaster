@@ -40,6 +40,8 @@ goto:eof
 :test
 set TEST=%~1
 echo   %TEST%
+del out\%TEST%_stdout.txt 2> NUL
+del out\%TEST%_stderr.txt 2> NUL
 call autoit3 %TEST%.au3 > out\%TEST%_stdout.txt 2> out\%TEST%_stderr.txt
 call:htmltestresult
 goto:eof
