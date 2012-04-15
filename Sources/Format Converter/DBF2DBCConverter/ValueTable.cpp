@@ -113,15 +113,6 @@ void CValueTable::Format_ValueTable(char *pcLine,fstream &fileInput)
             CValueDescriptor valDesc;
             //get the descriptor value.
             valDesc.m_sDescriptor =pcToken;
-            if(    valDesc.m_sDescriptor.length() > defCON_MAX_MSGN_LEN + 2)
-            {
-                char logmsg[defCON_MAX_LINE_LEN];
-                sprintf(logmsg,"value Descriptor %s changed as %s\"\n",valDesc.m_sDescriptor,valDesc.m_sDescriptor.c_str());
-                CConverter::fileLog << logmsg;
-                CConverter::bLOG_ENTERED = true;
-
-                valDesc.m_sDescriptor += "\"";
-            }
 
             pcToken=strtok(NULL,",");
             valDesc.m_value.i64Value = atoi(pcToken);
@@ -143,14 +134,12 @@ void CValueTable::writeValueTabToFile(fstream &fileOutput,CList<CValueTable,CVal
 {
     //get value table.
     POSITION pos = vTab.GetHeadPosition();
-    char acLine[defCON_MAX_LINE_LEN];
     //repeats till value tables exists in the list.
     while(pos != NULL)
     {
         //write value table name to the o/p file.
         CValueTable &tab = vTab.GetNext(pos);
-        sprintf(acLine,"VAL_TABLE_ %s ",tab.m_TableName);
-        fileOutput << acLine;
+        fileOutput << "VAL_TABLE_ " << tab.m_TableName << " ";
         //writes descriptors values to the o/p file.
         CValueDescriptor desc;
         desc.writeValuDescToFile (fileOutput,CSignal::SIG_TYPE_INT64,tab.m_values);

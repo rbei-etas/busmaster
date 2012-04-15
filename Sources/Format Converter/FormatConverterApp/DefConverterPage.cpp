@@ -45,15 +45,16 @@ CDefConverterPage::~CDefConverterPage()
 
 void CDefConverterPage::DoDataExchange(CDataExchange* pDX)
 {
+	CString str;
     CPropertyPage::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_COMBO_CONVERSIONS, m_omComboConverterNames);
     DDX_Control(pDX, IDC_EDIT_INPUTFILEPATH, m_omEditInputPath);
     DDX_Control(pDX, IDC_EDIT_OUTPUTFILEPATH, m_omEditOutputPath);
-    DDX_Text(pDX, IDC_EDIT_INPUTFILEPATH, CString(m_omStrInputFilePath.c_str()));
-    DDX_Text(pDX, IDC_EDIT_OUTPUTFILEPATH, CString(m_omStrOutputFilePath.c_str()));
-    DDX_Text(pDX, IDC_EDIT_COMMENT, CString(m_omstrConversionComment.c_str()));
-    DDX_Text(pDX, IDC_EDIT_HELP, CString(m_omstrEditHelp.c_str()));
-	DDV_MaxChars(pDX, CString(m_omstrEditHelp.c_str()), 1024);
+	DDX_Text(pDX, IDC_EDIT_INPUTFILEPATH, m_omStrInputFilePath);
+    DDX_Text(pDX, IDC_EDIT_OUTPUTFILEPATH, m_omStrOutputFilePath);
+    DDX_Text(pDX, IDC_EDIT_COMMENT, m_omstrConversionComment);
+    DDX_Text(pDX, IDC_EDIT_HELP, m_omstrEditHelp);
+	DDV_MaxChars(pDX, m_omstrEditHelp, 1024);
 }
 
 
@@ -130,7 +131,6 @@ void CDefConverterPage::OnBnClickedBtnInput()
 							 this );
 		INT_PTR nRetVal = fileDlg.DoModal();
 
-
 		if(IDOK == nRetVal)
 		{
 			m_omEditInputPath.SetWindowText(fileDlg.GetPathName());
@@ -190,8 +190,12 @@ void CDefConverterPage::OnBnClickedBtnConvert()
 			if( ouConverterInfo.m_pouConverter != NULL)
 			{
 				UpdateData();
-				HRESULT hResult = ouConverterInfo.m_pouConverter->ConvertFile(m_omStrInputFilePath, m_omStrOutputFilePath);
-				ouConverterInfo.m_pouConverter->GetLastConversionStatus(hResult, m_omstrConversionComment);
+				string inputFilePath  = (LPCTSTR) m_omStrInputFilePath;
+				string outputFilePath = (LPCTSTR) m_omStrOutputFilePath;
+				HRESULT hResult = ouConverterInfo.m_pouConverter->ConvertFile(inputFilePath, outputFilePath);
+				string conversionComment;
+				ouConverterInfo.m_pouConverter->GetLastConversionStatus(hResult, conversionComment);
+				m_omstrConversionComment = conversionComment.c_str();
 				UpdateData(FALSE);
 			}
 		}

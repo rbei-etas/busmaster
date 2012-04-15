@@ -29,7 +29,7 @@
 
 fstream CConverter::fileLog;
 bool CConverter::bLOG_ENTERED = false;
-unsigned char CConverter::ucMsg_DLC = 8;
+unsigned int CConverter::ucMsg_DLC = 8;
 
 /**
  * Constructor of CConverter
@@ -141,22 +141,34 @@ unsigned int CConverter::SetResultCode(unsigned int uiCode)
     return (m_uiResultCode = uiCode);
 }
 
-const char* CConverter::m_pacResultStrings[] =
-{
-    "Conversion completed.\n",
-    "Conversion completed with errors. See log file.\n",
-    "Conversion aborted. Error opening input file.",
-    "Conversion aborted. Error creating output file.",
-    "Conversion aborted. Error with input file format.",
-    "Conversion aborted. Error creating log file.\n"
-};
-
 /**
  * Returns the error string.
  */
-const char* CConverter::GetResultString()
+void CConverter::GetResultString(string &str)
 {
-    return m_pacResultStrings[m_uiResultCode];
+	switch(m_uiResultCode) {
+		case 0:
+			str = "Conversion completed.";
+			break;
+		case 1:
+			str = "Conversion completed with errors. See log file.";
+			break;
+		case 2:
+			str = "Conversion aborted. Error opening input file.";
+			break;
+		case 3:
+			str = "Conversion aborted. Error creating output file.";
+			break;
+		case 4:
+			str = "Conversion aborted. Error with input file format.";
+			break;
+		case 5:
+			str = "Conversion aborted. Error creating log file.";
+			break;
+		default:
+			str = "Unknown";
+			break;
+	}
 }
 
 /**
@@ -439,13 +451,12 @@ void CConverter::ValidateMessageList()
 bool CConverter::WriteToOutputFile(fstream& fileOutput)
 {
     bool bResult = true;
-    char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
     // write to the output file
-    // write header
 
+	// write header
     fileOutput << "VERSION \"\"\n\nBS_:";
     fileOutput << "\n";
-    fileOutput << "\nBU_:";
+    fileOutput << "\nBU_: ";
     //write all nodes
     POSITION pos = m_listNode.GetHeadPosition();
     while(pos != NULL)
@@ -510,13 +521,8 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     while(pos!=NULL)
     {
         CComment &cmt = m_listComments[2].GetNext(pos);
-        char c_msgID[defCON_MAX_MSGID_LEN + 10];
-        sprintf(c_msgID,"CM_ BO_ %u",cmt.m_msgID);
-        s_cmt = c_msgID;
-        s_cmt += " ";
-        s_cmt += cmt.m_comment;
-		fileOutput << s_cmt.c_str();
-
+		fileOutput << "CM_ BO_ " << dec << cmt.m_msgID;
+		fileOutput << " " << cmt.m_comment.c_str();
     }
     //Comments ----- Signal
     pos=m_listComments[3].GetHeadPosition();
@@ -524,14 +530,10 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     while(pos!=NULL)
     {
         CComment &cmt = m_listComments[3].GetNext(pos);
-        char c_msgID[defCON_MAX_MSGID_LEN + defCON_MAX_MSGN_LEN + 10];
-        sprintf(c_msgID,"CM_ SG_ %u %s",cmt.m_msgID,cmt.m_elementName);
-        s_cmt = c_msgID;
-        s_cmt += " ";
-        s_cmt += cmt.m_comment;
-        fileOutput << s_cmt.c_str();
+		fileOutput << "CM_ SG_ " << dec << cmt.m_msgID;
+		fileOutput << " " << cmt.m_elementName.c_str();
+		fileOutput << " " << cmt.m_comment.c_str();
     }
-
 
     //Param definition
     WriteParamToFile(fileOutput,m_listParameterArray[0]);
@@ -637,8 +639,9 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
             CSignal& sig = msg.m_listSignals.GetNext(possig);
             if(sig.m_listValueDescriptor.IsEmpty() == 0 && sig.m_uiError == CSignal::SIG_EC_NO_ERR)
             {
-                sprintf(acLine," VAL_ %u %s ",msg.m_uiMsgID,sig.m_sName);
-                fileOutput << acLine;
+                fileOutput << " VAL_ " << dec << msg.m_uiMsgID;
+				fileOutput << " " << sig.m_sName.c_str();
+                fileOutput << " ";
                 CValueDescriptor temp;
                 temp.writeValuDescToFile(fileOutput,sig.m_ucType,sig.m_listValueDescriptor);
             }
@@ -657,13 +660,15 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
             CSignal& sig = msg.m_listSignals.GetNext(possig);
             if(sig.m_ucType == 'F')
             {
-                sprintf(acLine," SIG_VALTYPE_ %u %s : 1;\n",msg.m_uiMsgID,sig.m_sName);
-                fileOutput << acLine;
+				fileOutput << " SIG_VALTYPE_ " << dec << msg.m_uiMsgID;
+				fileOutput << " " << sig.m_sName.c_str();
+				fileOutput << " : 1;" << endl;
             }
             if(sig.m_ucType == 'D')
             {
-                sprintf(acLine," SIG_VALTYPE_ %u %s : 2;\n",msg.m_uiMsgID,sig.m_sName);
-                fileOutput << acLine;
+				fileOutput << " SIG_VALTYPE_ " << dec << msg.m_uiMsgID;
+				fileOutput << " " << sig.m_sName.c_str();
+				fileOutput << " : 2;" << endl;
             }
         }
     }
@@ -675,12 +680,10 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
  */
 void CConverter::CreateLogFile(fstream &fileLog)
 {
-    char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
     // write to the output file
     char acMsgLine[200];
 
-    sprintf(acLine,"Conversion Error Log \n\n");
-    fileLog << acLine;
+    fileLog << "Conversion Error Log " << endl << endl;
 
     POSITION pos = m_listMessages.GetHeadPosition();
     while(pos != NULL)
@@ -697,15 +700,15 @@ void CConverter::CreateLogFile(fstream &fileLog)
                 // for the first wrong signal, log the message details also
                 if(acMsgLine[0] == '\0')
                 {
-                    sprintf(acMsgLine,"\nMSG_ID: %u \tMSG_NAME: %s\n", msg.m_uiMsgID,msg.m_sName);
-                    fileLog << acMsgLine;
+					fileLog << endl;
+					fileLog << "MSG_ID: " << dec << msg.m_uiMsgID;
+					fileLog << " \tMSG_NAME: " << msg.m_sName.c_str() << endl;
                 }
-                sprintf(acLine,"\tSignal Discarded SIG_NAME: %s, REASON: %s \n",sig.m_sName,sig.GetErrorString());
-                fileLog << acLine;
+				fileLog << "\tSignal Discarded SIG_NAME: " << sig.m_sName.c_str();
+				fileLog << ", Reason: " << sig.GetErrorString() << " " << endl;
             }
         }
     }
-    return ;
 }
 
 /**
@@ -719,8 +722,6 @@ void CConverter::create_Node_List(char *pcLine)
     while(pcToken)
     {
         string str = pcToken;
-        if(str.length() > defCON_MAX_MSGN_LEN)
-            Truncate_str("Node name",str,true);
 
         m_listNode.AddTail(str);
         pcToken = strtok(NULL,",");

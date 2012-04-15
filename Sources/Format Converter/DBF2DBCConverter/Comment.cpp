@@ -101,8 +101,6 @@ void CComment::Format_nodeComment(fstream &fileInput ,CList<CComment,CComment&>&
         //reads the node name.
         pcToken=strtok(pcLine," ");
         m_elementName=pcToken;
-        if(m_elementName.length() > defCON_MAX_MSGN_LEN)
-            Truncate_str("Message name",m_elementName,false);
 
         //m_elementName = m_elementName.Left(defCON_MAX_MSGN_LEN);
         //get the comment.
@@ -179,8 +177,6 @@ void CComment::Format_sigComment(fstream &fileInput,CList<CComment,CComment&>& m
         //get signal name.
         pcToken = strtok(NULL," ");
         m_elementName=pcToken;
-        if(m_elementName.length() > defCON_MAX_MSGN_LEN)
-            Truncate_str("Message name",m_elementName,false);
 
         //	m_elementName = m_elementName.Left(defCON_MAX_MSGN_LEN);
         //get comment.

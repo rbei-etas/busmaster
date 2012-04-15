@@ -109,17 +109,8 @@ int CValueDescriptor::Format(char *pcLine)
     }
     *pcValue = '\0'; // terminate the string
     // if any value read then add it to list
-    {
-        m_value.i64Value = _atoi64(acValue);
-        m_sDescriptor = acDesc;
-        if(    m_sDescriptor.length() > defCON_MAX_MSGN_LEN + 2)
-        {
-            char logmsg[defCON_MAX_LINE_LEN];
-            sprintf(logmsg,"value Descriptor %s changed as %s\n",m_sDescriptor,m_sDescriptor.c_str());
-            CConverter::fileLog << logmsg;
-            CConverter::bLOG_ENTERED = true;
-        }
-    }
+    m_value.i64Value = _atoi64(acValue);
+    m_sDescriptor = acDesc;
     return 1;
 }
 
@@ -133,7 +124,6 @@ int CValueDescriptor::Format(char *pcLine)
 */
 void CValueDescriptor::writeValuDescToFile(fstream &fileOutput,char m_ucType,CList<CValueDescriptor,CValueDescriptor&> &m_listValueDescriptor)
 {
-    char acLine[defVDES_MAX_OUT_STR];
     POSITION posValDesc = m_listValueDescriptor.GetHeadPosition();
     while(posValDesc != NULL)
     {
@@ -144,20 +134,20 @@ void CValueDescriptor::writeValuDescToFile(fstream &fileOutput,char m_ucType,CLi
             case CSignal::SIG_TYPE_FLOAT:
             case CSignal::SIG_TYPE_DOUBLE:
             case CSignal::SIG_TYPE_INT64:
-                sprintf(acLine,"%I64d \"%s\" ",rValDesc.m_value.i64Value,rValDesc.m_sDescriptor);
+				fileOutput << dec << rValDesc.m_value.i64Value;
+				fileOutput << " \"" << rValDesc.m_sDescriptor.c_str() << "\" ";
                 break;
 
             case CSignal::SIG_TYPE_BOOL:
             case CSignal::SIG_TYPE_UINT:
             case CSignal::SIG_TYPE_UINT64:
-                sprintf(acLine,"%I64u \"%s\" ",rValDesc.m_value.ui64Value,rValDesc.m_sDescriptor);
+				fileOutput << dec << rValDesc.m_value.ui64Value;
+				fileOutput << " \"" << rValDesc.m_sDescriptor.c_str() << "\" ";
                 break;
 
             default:
                 break;
         }
-
-        fileOutput << acLine;
     }
     fileOutput << ";\n";
     return;

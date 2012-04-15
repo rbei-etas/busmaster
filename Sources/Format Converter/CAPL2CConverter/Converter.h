@@ -24,7 +24,11 @@
 
 #pragma once
 
+#include <string>
+
 #include "Message.h"
+
+using namespace std;
 
 class CConverter
 {
@@ -39,7 +43,6 @@ public:
 
 private:
     unsigned int m_uiResultCode;
-    static const char *m_pacResultStrings[];
 public:
     CMessage ouFindMessage(UINT nMsgID);
     CMessage ouFindMessage(CString omStrMsgName);
@@ -51,7 +54,6 @@ public:
           CON_RC_FILEOPEN_ERROR_OUTFILE,CON_RC_FORMAT_ERROR_INFILE,CON_RC_FILEOPEN_ERROR_LOGFILE
          };
     unsigned int SetResultCode(unsigned int uiCode);
-    const char* GetResultString();
+    void GetResultString(string &str);
     CList<CMessage,CMessage&> m_listMessages;
-
 };

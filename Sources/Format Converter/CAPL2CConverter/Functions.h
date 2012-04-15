@@ -102,5 +102,4 @@ void vMsgCpy();
 void velCount();
 void vUtilFunc();
 
-int  nConvert(CString Source , CString Destination , CString dest1);
-
+int nConvert(CString Source, CString Destination, CString dest1);

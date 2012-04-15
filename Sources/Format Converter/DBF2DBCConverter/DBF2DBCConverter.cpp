@@ -92,7 +92,7 @@ HRESULT CDBF2DBCConverter::ConvertFile(string& chInputFile, string& chOutputFile
     HRESULT hResult = S_OK;
     CConverter ouConverter;
 	INT nRetVal = ouConverter.Convert(chInputFile.c_str(), chOutputFile.c_str());
-    m_omstrConversionStatus = ouConverter.GetResultString();
+	ouConverter.GetResultString(m_omstrConversionStatus);
     if(nRetVal != 0)
     {
         m_omstrConversionStatus += ouConverter.m_omLogFilePath;
