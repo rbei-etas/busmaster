@@ -183,6 +183,7 @@ Documents/5 Source Code Documentation/out
 Tests/AStyle/new.txt
 Tests/AStyle/report.html
 Tests/AutoIt/*/out
+Tests/AutoIt/report.html
 Tests/CCCC/files.txt
 Tests/CCCC/report
 Tests/Cppcheck/cppcheck.xml
