@@ -122,6 +122,9 @@ Section "BUSMASTER"
     ; License
     File ..\COPYING.LESSER.txt
     File ..\COPYING.txt
+    
+    ; Readme
+    File ..\Readme.txt
 
     ; Start menu entries
     CreateDirectory "$SMPROGRAMS\BUSMASTER"
