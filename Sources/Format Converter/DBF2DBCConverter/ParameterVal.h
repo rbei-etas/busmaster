@@ -32,6 +32,8 @@
 #pragma once
 
 #include <afxtempl.h>
+#include <fstream>
+
 #define	defNODE_MAX_LEN 50 // hopefully nobody puts value descriptor strings
 
 class CParameterValues
@@ -49,9 +51,9 @@ public:
     CParameterValues& operator=(CParameterValues& param);
     void Format_Param_Value(char *paramType,char *pcLine,const int& index,UINT msgId=0,char *Node_Name="");
     void ReadParamValue(char *paramType,char *pcToken);
-    void WriteNetValuesToFile(CStdioFile& fileOutput,char *paramType,char *paramName);
-    void WriteNodeValuesToFile(CStdioFile& fileOutput,char *paramType,char *paramName);
-    void WriteMesgValuesToFile(CStdioFile& fileOutput,char *paramType,char *paramName);
-    void WriteSigValuesToFile(CStdioFile& fileOutput,char *paramType,char *paramName);
+    void WriteNetValuesToFile(fstream& fileOutput,char *paramType,char *paramName);
+    void WriteNodeValuesToFile(fstream& fileOutput,char *paramType,char *paramName);
+    void WriteMesgValuesToFile(fstream& fileOutput,char *paramType,char *paramName);
+    void WriteSigValuesToFile(fstream& fileOutput,char *paramType,char *paramName);
     virtual ~CParameterValues();
 };

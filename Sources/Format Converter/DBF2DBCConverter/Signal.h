@@ -44,7 +44,7 @@ public:
     int Format(char *pcLine);
     CSignal& operator=(CSignal& signal);
     unsigned int Validate();
-    bool WriteSignaltofile(CStdioFile &fileOutput);
+    bool WriteSignaltofile(fstream &fileOutput);
     const char* GetErrorString();
     int operator==(const CSignal &Signal) const;
     enum SIG_DATA_FORMAT {SIG_DF_MOTOROLA='0',SIG_DF_INTEL = '1'};

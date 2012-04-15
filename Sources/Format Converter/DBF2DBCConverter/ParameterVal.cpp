@@ -138,7 +138,7 @@ void CParameterValues::ReadParamValue(char *paramType,char *pcToken)
 /**
  * Write the net values into the file
  */
-void CParameterValues::WriteNetValuesToFile(CStdioFile& fileOutput,char *paramType,char *paramName)
+void CParameterValues::WriteNetValuesToFile(fstream& fileOutput,char *paramType,char *paramName)
 {
     char acLine[defCON_MAX_LINE_LEN];
     //writes net values of type int to o/p file.
@@ -168,14 +168,14 @@ void CParameterValues::WriteNetValuesToFile(CStdioFile& fileOutput,char *paramTy
     //writes net values of type string to o/p file.
     else if(strcmp(paramType,"STRING")==0)
         sprintf(acLine,"BA_ \"%s\" \"%s\";\n",paramName,m_ParamVal.cValue);
-    fileOutput.WriteString(acLine);
+    fileOutput << acLine;
 
 }
 
 /**
  * Write the node values into the file
  */
-void CParameterValues::WriteNodeValuesToFile(CStdioFile& fileOutput,char *paramType,char *paramName)
+void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput,char *paramType,char *paramName)
 {
     char acLine[defCON_MAX_LINE_LEN];
     //writes node values of type int/hex to o/p file.
@@ -205,14 +205,14 @@ void CParameterValues::WriteNodeValuesToFile(CStdioFile& fileOutput,char *paramT
     //writes node values of type string to o/p file.
     else if(strcmp(paramType,"STRING")==0)
         sprintf(acLine,"BA_ \"%s\" BU_ %s \"%s\";\n",paramName,m_NodeName,m_ParamVal.cValue);
-    fileOutput.WriteString(acLine);
+    fileOutput << acLine;
 
 }
 
 /**
  * Write the Message values into the file
  */
-void CParameterValues::WriteMesgValuesToFile(CStdioFile& fileOutput,char *paramType,char *paramName)
+void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput,char *paramType,char *paramName)
 {
     char acLine[defCON_MAX_LINE_LEN];
     //writes mesg values of type int/hex to o/p file.
@@ -242,13 +242,13 @@ void CParameterValues::WriteMesgValuesToFile(CStdioFile& fileOutput,char *paramT
     //writes mesg values of type string to o/p file.
     else if(strcmp(paramType,"STRING")==0)
         sprintf(acLine,"BA_ \"%s\" BO_ %u \"%s\";\n",paramName,m_MsgId,m_ParamVal.cValue);
-    fileOutput.WriteString(acLine);
+    fileOutput << acLine;
 }
 
 /**
  * Write the Signal values into the file
  */
-void CParameterValues::WriteSigValuesToFile(CStdioFile& fileOutput,char *paramType,char *paramName)
+void CParameterValues::WriteSigValuesToFile(fstream& fileOutput,char *paramType,char *paramName)
 {
     char acLine[defCON_MAX_LINE_LEN];
     //writes sig values of type int/hex to o/p file.
@@ -278,5 +278,5 @@ void CParameterValues::WriteSigValuesToFile(CStdioFile& fileOutput,char *paramTy
     //writes sig values of type string to o/p file.
     else if(strcmp(paramType,"STRING")==0)
         sprintf(acLine,"BA_ \"%s\" SG_ %u %s \"%s\";\n",paramName,m_MsgId ,m_SignalName,m_ParamVal.cValue);
-    fileOutput.WriteString(acLine);
+    fileOutput << acLine;
 }

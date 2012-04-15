@@ -122,7 +122,7 @@ int CValueDescriptor::Format(char *pcLine)
         {
             char logmsg[defCON_MAX_LINE_LEN];
             sprintf(logmsg,"value Descriptor %s changed as %s\n",m_sDescriptor,m_sDescriptor.c_str());
-            CConverter::fileLog.WriteString(logmsg);
+            CConverter::fileLog << logmsg;
             CConverter::bLOG_ENTERED = true;
         }
     }
@@ -131,13 +131,13 @@ int CValueDescriptor::Format(char *pcLine)
 
 /**
 * \brief      Write's the Value Descriptor in the CANoe format
-* \param[in]  CStdioFile &fileOutput,char ,CList<CValueDescriptor,CValueDescriptor&>
+* \param[in]  fstream &fileOutput,char ,CList<CValueDescriptor,CValueDescriptor&>
 * \param[out] None
 * \return     int
 * \authors    Mahesh.B.S
 * \date       15.11.2002
 */
-void CValueDescriptor::writeValuDescToFile(CStdioFile &fileOutput,char m_ucType,CList<CValueDescriptor,CValueDescriptor&> &m_listValueDescriptor)
+void CValueDescriptor::writeValuDescToFile(fstream &fileOutput,char m_ucType,CList<CValueDescriptor,CValueDescriptor&> &m_listValueDescriptor)
 {
     char acLine[defVDES_MAX_OUT_STR];
     POSITION posValDesc = m_listValueDescriptor.GetHeadPosition();
@@ -163,8 +163,8 @@ void CValueDescriptor::writeValuDescToFile(CStdioFile &fileOutput,char m_ucType,
                 break;
         }
 
-        fileOutput.WriteString(acLine);
+        fileOutput << acLine;
     }
-    fileOutput.WriteString(";\n");
+    fileOutput << ";\n";
     return;
 }

@@ -80,19 +80,19 @@ CComment::~CComment()
 
 /**
 * \brief      Parses the net Comments.
-* \param[in]  CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment
+* \param[in]  fstream &fileInput,CList<CComment,CComment&>& m_listComment
 * \param[out] None
 * \return     void
 * \authors    Padmaja.A.
 * \date       17.11.2004
 */
-void CComment::Format_netComment(CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment)
+void CComment::Format_netComment(fstream &fileInput,CList<CComment,CComment&>& m_listComment)
 {
     char *pcToken, *pcLine;
     char acLine[defCON_MAX_LINE_LEN];
     string comment;
     //Reads all the net comments,parses the comments and stores them to a list.
-    while(strcmp((fileInput.ReadString(acLine,defCON_MAX_LINE_LEN)),"[END_DESC_NET]\n")!=0)
+    while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_DESC_NET]\n")!=0)
     {
         pcLine=acLine;
         m_elementName="";
@@ -101,7 +101,7 @@ void CComment::Format_netComment(CStdioFile &fileInput,CList<CComment,CComment&>
         //parses net comment.
         while(strstr(pcToken,"\";") == NULL)
         {
-            fileInput.ReadString(acLine,defCON_MAX_LINE_LEN);
+            fileInput.getline(acLine,defCON_MAX_LINE_LEN);
             pcToken = acLine;
             comment += pcToken;
         }
@@ -113,21 +113,21 @@ void CComment::Format_netComment(CStdioFile &fileInput,CList<CComment,CComment&>
 
 /**
 * \brief      Parses the node Comments.
-* \param[in]  CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment
+* \param[in]  fstream &fileInput,CList<CComment,CComment&>& m_listComment
 * \param[out] None
 * \return     void
 * \authors    Padmaja.A.
 * \date       17.11.2004
 */
 
-void CComment::Format_nodeComment(CStdioFile &fileInput ,CList<CComment,CComment&>& m_listComment)
+void CComment::Format_nodeComment(fstream &fileInput ,CList<CComment,CComment&>& m_listComment)
 {
     char *pcToken, *pcLine;
     char acLine[defCON_MAX_LINE_LEN];
     string comment;
 
     //Reads all the node comments,parses the comments and stores them to a list.
-    while(strcmp((fileInput.ReadString(acLine,defCON_MAX_LINE_LEN)),"[END_DESC_NODE]\n")!=0)
+    while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_DESC_NODE]\n")!=0)
     {
         pcLine=acLine;
         //reads the node name.
@@ -143,7 +143,7 @@ void CComment::Format_nodeComment(CStdioFile &fileInput ,CList<CComment,CComment
         while(strstr(pcToken,"\";") == NULL)
         {
             //parses the comment.
-            fileInput.ReadString(acLine,defCON_MAX_LINE_LEN);
+            fileInput.getline(acLine,defCON_MAX_LINE_LEN);
             pcToken = acLine;
             comment += pcToken;
         }
@@ -155,19 +155,19 @@ void CComment::Format_nodeComment(CStdioFile &fileInput ,CList<CComment,CComment
 
 /**
 * \brief      Parses the Message Comments.
-* \param[in]  CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment
+* \param[in]  fstream &fileInput,CList<CComment,CComment&>& m_listComment
 * \param[out] None
 * \return     void
 * \authors    Padmaja.A.
 * \date       17.11.2004
 */
-void CComment::Format_msgComment(CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment)
+void CComment::Format_msgComment(fstream &fileInput,CList<CComment,CComment&>& m_listComment)
 {
     char *pcToken, *pcLine;
     char acLine[defCON_MAX_LINE_LEN];
     string comment;
     //Reads all the mesg comments,parses the comments and stores them to a list.
-    while(strcmp((fileInput.ReadString(acLine,defCON_MAX_LINE_LEN)),"[END_DESC_MSG]\n")!=0)
+    while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_DESC_MSG]\n")!=0)
     {
         pcLine=acLine;
         //get msgid
@@ -183,7 +183,7 @@ void CComment::Format_msgComment(CStdioFile &fileInput,CList<CComment,CComment&>
         comment = pcToken;
         while(strstr(pcToken,"\";") == NULL)
         {   //parses the comment
-            fileInput.ReadString(acLine,defCON_MAX_LINE_LEN);
+            fileInput.getline(acLine,defCON_MAX_LINE_LEN);
             pcToken = acLine;
             comment += pcToken;
         }
@@ -195,19 +195,19 @@ void CComment::Format_msgComment(CStdioFile &fileInput,CList<CComment,CComment&>
 
 /**
 * \brief      Parses the Signal Comments.
-* \param[in]  CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment
+* \param[in]  fstream &fileInput,CList<CComment,CComment&>& m_listComment
 * \param[out] None
 * \return     void
 * \authors    Padmaja.A.
 * \date       17.11.2004
 */
-void CComment::Format_sigComment(CStdioFile &fileInput,CList<CComment,CComment&>& m_listComment)
+void CComment::Format_sigComment(fstream &fileInput,CList<CComment,CComment&>& m_listComment)
 {
     char *pcToken, *pcLine;
     char acLine[defCON_MAX_LINE_LEN];
     string comment;
     //Reads all the signal comments,parses the comments and stores them to a list.
-    while(strcmp((fileInput.ReadString(acLine,defCON_MAX_LINE_LEN)),"[END_DESC_SIG]\n")!=0)
+    while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_DESC_SIG]\n")!=0)
     {
         pcLine=acLine;
         //get the mesgid.
@@ -230,7 +230,7 @@ void CComment::Format_sigComment(CStdioFile &fileInput,CList<CComment,CComment&>
         comment = pcToken;
         while(strstr(pcToken,"\";") == NULL)
         {
-            fileInput.ReadString(acLine,defCON_MAX_LINE_LEN);
+            fileInput.getline(acLine,defCON_MAX_LINE_LEN);
             pcToken = acLine;
             comment += pcToken;
         }

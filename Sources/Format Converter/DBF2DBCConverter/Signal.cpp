@@ -180,7 +180,7 @@ int CSignal::Format(char *pcLine)
     {
         char logmsg[defCON_MAX_LINE_LEN];
         sprintf(logmsg,"unit %s changed to %s\n",strUnit_Temp,m_sUnit);
-        CConverter::fileLog.WriteString(logmsg);
+        CConverter::fileLog << logmsg;
         CConverter::bLOG_ENTERED = true;
     }
     //for multiplexing field
@@ -311,7 +311,7 @@ unsigned int CSignal::Validate()
  * Write's the signal in the CANoe format and returns false
  * if any of the error signal is not stored in the file
  */
-bool CSignal::WriteSignaltofile(CStdioFile &fileOutput)
+bool CSignal::WriteSignaltofile(fstream &fileOutput)
 {
     char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
     bool bResult = true;
@@ -321,7 +321,7 @@ bool CSignal::WriteSignaltofile(CStdioFile &fileOutput)
                 m_sName, m_sMultiplex, m_ucStartBit, m_ucLength, m_ucDataFormat,
                 m_fScaleFactor, m_fOffset, m_MinValue.dValue,
                 m_MaxValue.dValue, m_sUnit, m_sNode);
-        fileOutput.WriteString(acLine);
+        fileOutput << acLine;
     }
     else
         bResult = false;

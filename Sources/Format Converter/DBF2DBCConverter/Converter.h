@@ -31,6 +31,7 @@
 
 #pragma once
 
+#include <fstream>
 #include "Message.h"
 #include "Parameter.h"
 #include "ValueTable.h"
@@ -49,7 +50,7 @@ protected:
 public:
     unsigned int Convert(string sCanoeFile,string sCanMonFile);
     const char* GetResultString();
-    static CStdioFile fileLog;
+    static fstream fileLog;
     static bool bLOG_ENTERED;
     static unsigned char ucMsg_DLC;
     string m_omLogFilePath;
@@ -60,10 +61,10 @@ private:
          };
 
     unsigned int SetResultCode(unsigned int uiCode);
-    void GenerateMessageList(CStdioFile& fileInput);
+    void GenerateMessageList(fstream& fileInput);
     void ValidateMessageList();
-    bool WriteToOutputFile(CStdioFile& fileOutput);
-    void CreateLogFile(CStdioFile &fileLog);
+    bool WriteToOutputFile(fstream& fileOutput);
+    void CreateLogFile(fstream &fileLog);
     void create_Node_List(char *);
     void DecryptData(CList<string,string& > &m_notProcessed);
 
@@ -75,5 +76,4 @@ private:
     CList<CParameters,CParameters&> m_listParameterArray[6];
     CList<CValueTable,CValueTable&> m_vTab;
     CList<CComment,CComment&> m_listComments[4];
-
 };
