@@ -22,16 +22,7 @@
  * Interface file for CSymbolTable class
  */
 
-// SymbolTable.h: interface for the CSymbolTable class.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_SYMBOLTABLE_H__0CA688F3_9D94_11D8_90D8_0010B5A6E0E0__INCLUDED_)
-#define AFX_SYMBOLTABLE_H__0CA688F3_9D94_11D8_90D8_0010B5A6E0E0__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 class CSymbolTable
 {
@@ -43,5 +34,3 @@ public:
     int nFind(CString omValue) const;
     BOOL bAdd(const CString& omValue);
 };
-
-#endif // !defined(AFX_SYMBOLTABLE_H__0CA688F3_9D94_11D8_90D8_0010B5A6E0E0__INCLUDED_)

@@ -22,12 +22,8 @@
  * Interface file for CSignal class
  */
 
-#if !defined(AFX_SIGNAL_H__9A754F62_9FA8_4BC5_9F87_96D1EFB73DAA__INCLUDED_)
-#define AFX_SIGNAL_H__9A754F62_9FA8_4BC5_9F87_96D1EFB73DAA__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
 #include "ValueDescriptor.h"
 #include <afxtempl.h>
 
@@ -70,5 +66,3 @@ public:
 
     CList<CValueDescriptor,CValueDescriptor>	m_listValueDescriptor;
 };
-
-#endif // !defined(AFX_SIGNAL_H__9A754F62_9FA8_4BC5_9F87_96D1EFB73DAA__INCLUDED_)

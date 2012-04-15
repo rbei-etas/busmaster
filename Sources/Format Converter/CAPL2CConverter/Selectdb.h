@@ -22,14 +22,7 @@
  * Interface file for CSelectdb class
  */
 
-#if !defined(AFX_SELECTDB_H__EDFDED33_A7AE_11D8_90DB_0010B5A6E0E0__INCLUDED_)
-#define AFX_SELECTDB_H__EDFDED33_A7AE_11D8_90DB_0010B5A6E0E0__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// Selectdb.h : header file
-//
 
 /////////////////////////////////////////////////////////////////////////////
 // CSelectdb dialog
@@ -71,8 +64,3 @@ protected:
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_SELECTDB_H__EDFDED33_A7AE_11D8_90DB_0010B5A6E0E0__INCLUDED_)

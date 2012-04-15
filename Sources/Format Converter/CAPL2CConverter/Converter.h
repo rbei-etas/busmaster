@@ -22,13 +22,7 @@
  * Interface file for CConverter class
  */
 
-
-#if !defined(AFX_CONVERTER_H__A66CF773_FD95_4EC8_AA35_8C230C34F8C2__INCLUDED_)
-#define AFX_CONVERTER_H__A66CF773_FD95_4EC8_AA35_8C230C34F8C2__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "Message.h"
 
@@ -61,5 +55,3 @@ public:
     CList<CMessage,CMessage&> m_listMessages;
 
 };
-
-#endif // !defined(AFX_CONVERTER_H__A66CF773_FD95_4EC8_AA35_8C230C34F8C2__INCLUDED_)
