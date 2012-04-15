@@ -4,7 +4,6 @@ BS_:
 
 BU_: 
 
-
 BO_ 817 Message_311_8_M_D: 8 Vector__XXX
  SG_ Signal_32_Motorola_Double :  7|64@0+ (1.000000,0.000000) [0.000000|0.000000] "" Vector__XXX
 
@@ -37,8 +36,6 @@ BO_ 2147484168 Message_208_E_8: 8 Vector__XXX
 
 BO_ 264 Message_108_S_8: 8 Vector__XXX
 
-BA_DEF_   "BusType" STRING ;
-BA_DEF_DEF_  "BusType" "";
  SIG_VALTYPE_ 817 Signal_32_Motorola_Double : 2;
  SIG_VALTYPE_ 816 Signal_32_Intel_Double : 2;
  SIG_VALTYPE_ 801 Signal_32_Motorola_Float : 1;
