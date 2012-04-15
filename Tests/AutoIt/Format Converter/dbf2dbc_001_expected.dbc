@@ -1,0 +1,45 @@
+VERSION ""
+
+BS_:
+
+BU_: 
+
+
+BO_ 817 Message_311_8_M_D: 8 Vector__XXX
+ SG_ Signal_32_Motorola_Double :  7|64@0+ (1.000000,0.000000) [0.000000|0.000000] "" Vector__XXX
+
+BO_ 816 Message_330_8_I_D: 8 Vector__XXX
+ SG_ Signal_32_Intel_Double :  0|64@1+ (1.000000,0.000000) [0.000000|0.000000] "" Vector__XXX
+
+BO_ 801 Message_321_32_M_F: 4 Vector__XXX
+ SG_ Signal_32_Motorola_Float :  7|32@0+ (1.000000,0.000000) [0.000000|0.000000] "" Vector__XXX
+
+BO_ 800 Message_320_32_I_F: 4 Vector__XXX
+ SG_ Signal_32_Intel_Float :  0|32@1+ (1.000000,0.000000) [0.000000|0.000000] "" Vector__XXX
+
+BO_ 785 Message_311_8_M_U: 1 Vector__XXX
+ SG_ Signal_8_Motorola_Unsigned :  7|8@0+ (1.000000,0.000000) [0.000000|255.000000] "" Vector__XXX
+
+BO_ 784 Message_310_8_I_U: 1 Vector__XXX
+ SG_ Signal_8_Intel_Unsigned :  0|8@1+ (1.000000,0.000000) [0.000000|255.000000] "" Vector__XXX
+
+BO_ 769 Message_301_8_M_S: 1 Vector__XXX
+ SG_ Signal_8_Motorola_Signed :  7|8@0+ (1.000000,0.000000) [0.000000|127.000000] "" Vector__XXX
+
+BO_ 768 Message_300_8_I_S: 1 Vector__XXX
+ SG_ Signal_8_Intel_Signed :  0|8@1+ (1.000000,0.000000) [0.000000|127.000000] "" Vector__XXX
+
+BO_ 2147484160 Message_200_E_0: 0 Vector__XXX
+
+BO_ 256 Message_100_S_0: 0 Vector__XXX
+
+BO_ 2147484168 Message_208_E_8: 8 Vector__XXX
+
+BO_ 264 Message_108_S_8: 8 Vector__XXX
+
+BA_DEF_   "BusType" STRING ;
+BA_DEF_DEF_  "BusType" "";
+ SIG_VALTYPE_ 817 Signal_32_Motorola_Double : 2;
+ SIG_VALTYPE_ 816 Signal_32_Intel_Double : 2;
+ SIG_VALTYPE_ 801 Signal_32_Motorola_Float : 1;
+ SIG_VALTYPE_ 800 Signal_32_Intel_Float : 1;
