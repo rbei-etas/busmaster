@@ -50,11 +50,11 @@ If @error Then
 EndIf
 
 ; There should be no crash window
-WinWaitActive("", "debug", 3)
-If Not @error Then
-	ConsoleWriteError("Format Conversions crashed after close" & @CRLF)
-	Send("{ENTER}")
-EndIf
+;WinWaitActive("", "debug", 3)
+;If Not @error Then
+;	ConsoleWriteError("Format Conversions crashed after close" & @CRLF)
+;	Send("{ENTER}")
+;EndIf
 
 ; Compare generated/expected log file
 If FileExists($TestName & ".log") Then
