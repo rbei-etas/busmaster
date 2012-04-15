@@ -16,29 +16,18 @@
 /**
  * \file      Comment.cpp
  * \brief     Implementation file for the Comment class.
- * \author    RBIN/EBS1 - Padmaja A
+ * \author    Padmaja A
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for the Comment class.
  */
-/**
-* \file       Comment.cpp
-* \brief      Implementation file for the Comment class.
-* \authors    RBIN/EBS1 - Mahesh B S
-* \date       17-11-2004 Created
-* \copyright  Copyright &copy; 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
+
 #include "StdAfx.h"
 #include "Comment.h"
 
 /**
-* \brief      Constructor of CComment
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Mahesh.B.S
-* \date       17.11.2004
-*/
+ * Constructor of CComment
+ */
 CComment::CComment()
 {
     m_msgType = '\0';
@@ -48,13 +37,8 @@ CComment::CComment()
 }
 
 /**
-* \brief      operator= overloading
-* \param[in]  CComment& tCmt
-* \param[out] None
-* \return     CComment& tCmt
-* \authors    Padmaja.A.
-* \date       17.11.2004
-*/
+ * operator= overloading
+ */
 CComment& CComment::operator=(CComment& tCmt)
 {
     //copies all members of tCmt object to this object.
@@ -66,26 +50,16 @@ CComment& CComment::operator=(CComment& tCmt)
 }
 
 /**
-* \brief      destrutor
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Padmaja.A.
-* \date       17.11.2004
-*/
+ * destrutor
+ */
 CComment::~CComment()
 {
 
 }
 
 /**
-* \brief      Parses the net Comments.
-* \param[in]  fstream &fileInput,CList<CComment,CComment&>& m_listComment
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A.
-* \date       17.11.2004
-*/
+ * Parses the net Comments.
+ */
 void CComment::Format_netComment(fstream &fileInput,CList<CComment,CComment&>& m_listComment)
 {
     char *pcToken, *pcLine;
@@ -112,14 +86,8 @@ void CComment::Format_netComment(fstream &fileInput,CList<CComment,CComment&>& m
 }
 
 /**
-* \brief      Parses the node Comments.
-* \param[in]  fstream &fileInput,CList<CComment,CComment&>& m_listComment
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A.
-* \date       17.11.2004
-*/
-
+ * Parses the node Comments.
+ */
 void CComment::Format_nodeComment(fstream &fileInput ,CList<CComment,CComment&>& m_listComment)
 {
     char *pcToken, *pcLine;
@@ -154,13 +122,8 @@ void CComment::Format_nodeComment(fstream &fileInput ,CList<CComment,CComment&>&
 }
 
 /**
-* \brief      Parses the Message Comments.
-* \param[in]  fstream &fileInput,CList<CComment,CComment&>& m_listComment
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A.
-* \date       17.11.2004
-*/
+ * Parses the Message Comments.
+ */
 void CComment::Format_msgComment(fstream &fileInput,CList<CComment,CComment&>& m_listComment)
 {
     char *pcToken, *pcLine;
@@ -194,13 +157,8 @@ void CComment::Format_msgComment(fstream &fileInput,CList<CComment,CComment&>& m
 }
 
 /**
-* \brief      Parses the Signal Comments.
-* \param[in]  fstream &fileInput,CList<CComment,CComment&>& m_listComment
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A.
-* \date       17.11.2004
-*/
+ * Parses the Signal Comments.
+ */
 void CComment::Format_sigComment(fstream &fileInput,CList<CComment,CComment&>& m_listComment)
 {
     char *pcToken, *pcLine;

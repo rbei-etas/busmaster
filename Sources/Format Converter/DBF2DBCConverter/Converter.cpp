@@ -27,49 +27,29 @@
 #include <fstream>
 #include "Converter.h"
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
 fstream CConverter::fileLog;
 bool CConverter::bLOG_ENTERED = false;
 unsigned char CConverter::ucMsg_DLC = 8;
 
 /**
-* \brief      Constructor of CConverter
-* \param[in]  None
-* \param[out] None
-* \return     void
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * Constructor of CConverter
+ */
 CConverter::CConverter()
 {
     m_uiResultCode = CON_RC_NOERROR;
 }
 
 /**
-* \brief      Destructort of CConverter
-* \param[in]  None
-* \param[out] None
-* \return     void
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * Destructort of CConverter
+ */
 CConverter::~CConverter()
 {
 }
 
 /**
-* \brief      This is the baisc function which is to be called
-to convert any given CANMon file to a CANoe file
-* \param[in]  string sCanMonFile,string sCanoeFile
-* \param[out] None
-* \return     unsigned int
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * This is the baisc function which is to be called
+ * to convert any given CANMon file to a CANoe file
+ */
 unsigned int CConverter::Convert(string sCanMonFile,string sCanoeFile)
 {
     fstream fileInput,fileOutput;
@@ -153,14 +133,9 @@ unsigned int CConverter::Convert(string sCanMonFile,string sCanoeFile)
 }
 
 /**
-* \brief      Set the result code for the convertor class.This function
-is called only on error
-* \param[in]  unsigned int uiCode
-* \param[out] None
-* \return     unsigned int
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * Set the result code for the convertor class.This function
+ * is called only on error
+ */
 unsigned int CConverter::SetResultCode(unsigned int uiCode)
 {
     return (m_uiResultCode = uiCode);
@@ -177,27 +152,17 @@ const char* CConverter::m_pacResultStrings[] =
 };
 
 /**
-* \brief      Returns the error string.
-* \param[in]  None
-* \param[out] None
-* \return     const char*
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * Returns the error string.
+ */
 const char* CConverter::GetResultString()
 {
     return m_pacResultStrings[m_uiResultCode];
 }
 
 /**
-* \brief      This function will parse the input file and line by line
-and generates  a list of message,signal,value table,comments,etc
-* \param[in]  fstream& fileInput
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A.,Mahesh.B.S.
-* \date       15.11.2004
-*/
+ * This function will parse the input file and line by line
+ * and generates a list of message,signal,value table,comments,etc
+ */
 void CConverter::GenerateMessageList(fstream& fileInput)
 {
     char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
@@ -448,14 +413,9 @@ void CConverter::GenerateMessageList(fstream& fileInput)
 }
 
 /**
-* \brief      Validates the message list and set the error in each signal
-if present
-* \param[in]  void
-* \param[out] None
-* \return     void
-* \authors    Mahesh.B.S
-* \date       15.11.2002
-*/
+ * Validates the message list and set the error in each signal
+ * if present
+ */
 void CConverter::ValidateMessageList()
 {
     POSITION pos = m_listMessages.GetHeadPosition();
@@ -474,13 +434,8 @@ void CConverter::ValidateMessageList()
 }
 
 /**
-* \brief      Writes all the data to the output file in CANoe format
-* \param[in]  fstream& fileOutput
-* \param[out] None
-* \return     bool
-* \authors    Padmaja.A.,Mahesh.B.S.
-* \date       15.11.2002
-*/
+ * Writes all the data to the output file in CANoe format
+ */
 bool CConverter::WriteToOutputFile(fstream& fileOutput)
 {
     bool bResult = true;
@@ -716,13 +671,8 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
 }
 
 /**
-* \brief      Logs the eror info in log file.
-* \param[in]  fstream& fileOutput
-* \param[out] None
-* \return     void
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * Logs the eror info in log file.
+ */
 void CConverter::CreateLogFile(fstream &fileLog)
 {
     char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
@@ -759,13 +709,8 @@ void CConverter::CreateLogFile(fstream &fileLog)
 }
 
 /**
-* \brief      creates a list of nodes in the network
-* \param[in]  char *pcLine
-* \param[out] None
-* \return     void
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * creates a list of nodes in the network
+ */
 void CConverter::create_Node_List(char *pcLine)
 {
     char* pcToken;
@@ -783,14 +728,9 @@ void CConverter::create_Node_List(char *pcLine)
 }
 
 /**
-* \brief      Decrypts the not processed lines which are read from between
-the tag [START_NOT_PROCESSED] and [END_NOT_PROCESSED]
-* \param[in]  CList<string,string& > &m_notProcessed
-* \param[out] None
-* \return     void
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-*/
+ * Decrypts the not processed lines which are read from between
+ * the tag [START_NOT_PROCESSED] and [END_NOT_PROCESSED]
+ */
 void CConverter::DecryptData(CList<string,string& > &m_notProcessed)
 {
     //char c_str[defCON_MAX_LINE_LEN];
@@ -818,5 +758,3 @@ void CConverter::DecryptData(CList<string,string& > &m_notProcessed)
         m_notProcessed.SetAt(prev_pos,str);
     }
 }
-
-

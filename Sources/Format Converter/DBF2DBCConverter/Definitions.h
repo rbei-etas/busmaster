@@ -16,18 +16,12 @@
 /**
  * \file      Definitions.h
  * \brief     This file has the definetion of all the constants used
- * \author    RBIN/EBS1 - Mahesh B S
+ * \author    Mahesh B S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This file has the definetion of all the constants used
  */
-/**
-* \file       Definitions.h
-* \brief      Defintitons File
-* \authors    Mahesh B S
-* \date       9.10.2005 Created
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
+
 #pragma once
 
 //Convertor.cpp

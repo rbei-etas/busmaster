@@ -16,18 +16,12 @@
 /**
  * \file      ValueDescriptor.cpp
  * \brief     Implementation of the CValueDescriptor class.
- * \author    RBIN/EBS1 - Mahesh.B.S
+ * \author    Mahesh.B.S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of the CValueDescriptor class.
  */
-/**
-* \file       ValueDescriptor.cpp
-* \brief      implementation of the CValueDescriptor class.
-* \authors    Mahesh.B.S
-* \date       15.11.2004
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
+
 #include "StdAfx.h"
 #include "ValueDescriptor.h"
 #include "Signal.h"

@@ -16,20 +16,11 @@
 /**
  * \file      Signal.h
  * \brief     CSignal class.
- * \author    RBIN/EBS1 - Mahesh B S
+ * \author    Mahesh B S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * CSignal class.
  */
-/**
-* \file       Signal.h
-* \brief      interface for the CSignal class.
-* \authors
-* \date       14.11.2004 Mahesh BS
-*.\date       12.10.2006.amb2kor
-              Changes due to multiplex signal.
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 #pragma once
 

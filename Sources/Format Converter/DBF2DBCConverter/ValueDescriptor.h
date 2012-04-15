@@ -16,18 +16,11 @@
 /**
  * \file      ValueDescriptor.h
  * \brief     CValueDescriptor class.
- * \author    RBIN/EBS1 - Mahesh B S
+ * \author    Mahesh B S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * CValueDescriptor class.
  */
-/**
-* \file       ValueDescriptor.h
-* \brief      CValueDescriptor class.
-* \authors    Mahesh B S
-* \date       14.11.2004
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 
 #include <afxtempl.h>
 

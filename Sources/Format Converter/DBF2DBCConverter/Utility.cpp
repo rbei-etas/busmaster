@@ -15,19 +15,12 @@
 
 /**
  * \file      Utility.cpp
- * \brief     Implementation of the CValueDescriptor class.
+ * \brief     Defines Global Utility functions
  * \author    Venkatanarayana Makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Implementation of the CValueDescriptor class.
+ * Defines Global Utility functions
  */
-/**
-* \file       Utility.cpp
-* \brief      Defines Global Utility functions
-* \authors    Venkatanarayana Makam
-* \date       27.07.2011
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
 #define     DOUBLEPRECISION       0.5
 
 #include "StdAfx.h"
