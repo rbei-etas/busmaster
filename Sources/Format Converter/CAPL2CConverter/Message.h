@@ -25,6 +25,7 @@
 #pragma once
 
 #include <afxtempl.h>
+#include <string>
 #include "Signal.h"
 
 #define defMSG_MAX_NAME_LEN		100 // I don't expect a name more than 100 bytes
@@ -42,7 +43,7 @@ public:
 // data members
     enum MSG_FRAME_FORMAT {MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
 
-    char			m_acName[defMSG_MAX_NAME_LEN];
+    string			m_acName;
     unsigned int	m_uiMsgID;
     unsigned char	m_ucLength;
     unsigned char	m_ucNumOfSignals;
