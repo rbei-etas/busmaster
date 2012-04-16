@@ -166,7 +166,6 @@ unsigned int CConverter::SetResultCode(unsigned int uiCode)
 bool CConverter::WriteToOutputFile(CString sCanMonFile)
 {
     bool bResult = true;
-    char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
     fstream fileOutput;
     // write to the output file
     // write header
@@ -184,9 +183,10 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
     //Version no.
     fileOutput << defSTR_DB_VER " " defSTR_VER_NO;
     fileOutput << endl;
+    fileOutput << endl;
     // number of messages
-    sprintf(acLine, "\n[NUMBER_OF_MESSAGES] %d\n\n",m_listMessages.GetCount());
-    fileOutput << acLine;
+	fileOutput << "[NUMBER_OF_MESSAGES] " << m_listMessages.GetCount() << endl;
+	fileOutput << endl;
 
     // write all messages, signals and value descriptors
     POSITION pos = m_listMessages.GetHeadPosition();
@@ -194,9 +194,12 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
     {
         CMessage& msg = m_listMessages.GetNext(pos);
         // MSG,MSGID,MSG_LENGTH,NO_OF_SIGNALS,DATA_FORMAT,FRAME_FORMAT
-
-        sprintf(acLine,"[START_MSG] %s,%u,%u,%u,%c,%c\n",msg.m_acName,msg.m_uiMsgID,msg.m_ucLength,msg.m_ucNumOfSignals,msg.m_cDataFormat,msg.m_cFrameFormat);
-        fileOutput << acLine;
+		fileOutput << "[START_MSG] " << msg.m_acName;
+		fileOutput << "," << dec << msg.m_uiMsgID;
+		fileOutput << "," << dec << msg.m_ucLength;
+		fileOutput << "," << dec << msg.m_ucNumOfSignals;
+		fileOutput << "," << msg.m_cDataFormat;
+		fileOutput << "," << msg.m_cFrameFormat << endl;
 
 //		fprintf(message,"%s,%u,%u\n",msg.m_acName,msg.m_uiMsgID,msg.m_ucLength);
         POSITION posSig = msg.m_listSignals.GetHeadPosition();
@@ -218,19 +221,35 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
                 {
                     case CSignal::SIG_TYPE_BOOL:
                     case CSignal::SIG_TYPE_UINT:
-                        sprintf(acLine,"[START_SIGNALS] %s,%u,%u,%u,%c,%u,%u,%c,%f,%f,%s,%s,%s\n",
-                                sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,sig.m_ucType,
-                                sig.m_MaxValue.uiValue,sig.m_MinValue.uiValue,sig.m_ucDataFormat,
-                                sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
-
+						fileOutput << "[START_SIGNALS] " << sig.m_acName;
+						fileOutput << "," << dec << sig.m_ucLength;
+						fileOutput << "," << dec << sig.m_ucWhichByte;
+						fileOutput << "," << dec << sig.m_ucStartBit;
+						fileOutput << "," << sig.m_ucType;
+						fileOutput << "," << dec << sig.m_MaxValue.uiValue;
+						fileOutput << "," << dec << sig.m_MinValue.uiValue;
+						fileOutput << "," << sig.m_ucDataFormat;
+						fileOutput << "," << fixed << sig.m_fOffset;
+						fileOutput << "," << fixed << sig.m_fScaleFactor;
+						fileOutput << "," << sig.m_acUnit;
+						fileOutput << "," << sig.m_acMultiplex;
+						fileOutput << "," << sig.m_rxNode << endl;
                         break;
 
                     case CSignal::SIG_TYPE_INT:
-                        sprintf(acLine,"[START_SIGNALS] %s,%u,%u,%u,%c,%d,%d,%c,%f,%f,%s,%s,%s\n",
-                                sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,sig.m_ucType,
-                                sig.m_MaxValue.iValue,sig.m_MinValue.iValue,sig.m_ucDataFormat,
-                                sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
-
+						fileOutput << "[START_SIGNALS] " << sig.m_acName;
+						fileOutput << "," << dec << sig.m_ucLength;
+						fileOutput << "," << dec << sig.m_ucWhichByte;
+						fileOutput << "," << dec << sig.m_ucStartBit;
+						fileOutput << "," << sig.m_ucType;
+						fileOutput << "," << dec << sig.m_MaxValue.iValue;
+						fileOutput << "," << dec << sig.m_MinValue.iValue;
+						fileOutput << "," << sig.m_ucDataFormat;
+						fileOutput << "," << fixed << sig.m_fOffset;
+						fileOutput << "," << fixed << sig.m_fScaleFactor;
+						fileOutput << "," << sig.m_acUnit;
+						fileOutput << "," << sig.m_acMultiplex;
+						fileOutput << "," << sig.m_rxNode << endl;
                         break;
 
                         // Enable these when FLOAT and DOUBLE are supported
@@ -253,24 +272,40 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
                         */
 
                     case CSignal::SIG_TYPE_INT64:
-                        sprintf(acLine,"[START_SIGNALS] %s,%u,%u,%u,%c,%I64d,%I64d,%c,%f,%f,%s,%s,%s\n",
-                                sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,'I'/*sig.m_ucType*/,
-                                sig.m_MaxValue.dValue,sig.m_MinValue.dValue,sig.m_ucDataFormat,
-                                sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
+						fileOutput << "[START_SIGNALS] " << sig.m_acName;
+						fileOutput << "," << dec << sig.m_ucLength;
+						fileOutput << "," << dec << sig.m_ucWhichByte;
+						fileOutput << "," << dec << sig.m_ucStartBit;
+						fileOutput << "," << 'I'; /* sig.m_ucType */
+						fileOutput << "," << dec << sig.m_MaxValue.dValue;
+						fileOutput << "," << dec << sig.m_MinValue.dValue;
+						fileOutput << "," << sig.m_ucDataFormat;
+						fileOutput << "," << fixed << sig.m_fOffset;
+						fileOutput << "," << fixed << sig.m_fScaleFactor;
+						fileOutput << "," << sig.m_acUnit;
+						fileOutput << "," << sig.m_acMultiplex;
+						fileOutput << "," << sig.m_rxNode << endl;
                         break;
 
                     case CSignal::SIG_TYPE_UINT64:
-                        sprintf(acLine,"[START_SIGNALS] %s,%u,%u,%u,%c,%I64u,%I64u,%c,%f,%f,%s,%s,%s\n",
-                                sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,'U'/*sig.m_ucType*/,
-                                sig.m_MaxValue.dValue,sig.m_MinValue.dValue,sig.m_ucDataFormat,
-                                sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit,sig.m_acMultiplex,sig.m_rxNode);
+						fileOutput << "[START_SIGNALS] " << sig.m_acName;
+						fileOutput << "," << dec << sig.m_ucLength;
+						fileOutput << "," << dec << sig.m_ucWhichByte;
+						fileOutput << "," << dec << sig.m_ucStartBit;
+						fileOutput << "," << 'U'; /* sig.m_ucType */
+						fileOutput << "," << dec << sig.m_MaxValue.dValue;
+						fileOutput << "," << dec << sig.m_MinValue.dValue;
+						fileOutput << "," << sig.m_ucDataFormat;
+						fileOutput << "," << fixed << sig.m_fOffset;
+						fileOutput << "," << fixed << sig.m_fScaleFactor;
+						fileOutput << "," << sig.m_acUnit;
+						fileOutput << "," << sig.m_acMultiplex;
+						fileOutput << "," << sig.m_rxNode << endl;
                         break;
 
                     default:
                         break;
                 }
-
-                fileOutput << acLine;
 
                 // now write value descriptors for this signal
                 POSITION posValDesc = sig.m_listValueDescriptor.GetHeadPosition();
@@ -281,11 +316,13 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
                     {
                         case CSignal::SIG_TYPE_BOOL:
                         case CSignal::SIG_TYPE_UINT:
-                            sprintf(acLine,"[VALUE_DESCRIPTION] %s,%u\n",rValDesc.m_acDescriptor,rValDesc.m_value.uiValue);
+							fileOutput << "[VALUE_DESCRIPTION] " << rValDesc.m_acDescriptor;
+							fileOutput << "," << dec << rValDesc.m_value.uiValue << endl;
                             break;
 
                         case CSignal::SIG_TYPE_INT:
-                            sprintf(acLine,"[VALUE_DESCRIPTION] %s,%d\n",rValDesc.m_acDescriptor,rValDesc.m_value.iValue);
+							fileOutput << "[VALUE_DESCRIPTION] " << rValDesc.m_acDescriptor;
+							fileOutput << "," << dec << rValDesc.m_value.iValue << endl;
                             break;
 
                             // when FLOAT and DOUBLE are supported enable this
@@ -300,18 +337,18 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
                             */
 
                         case CSignal::SIG_TYPE_INT64:
-                            sprintf(acLine,"[VALUE_DESCRIPTION] %s,%I64d\n",rValDesc.m_acDescriptor,rValDesc.m_value.i64Value);
+							fileOutput << "[VALUE_DESCRIPTION] " << rValDesc.m_acDescriptor;
+							fileOutput << "," << dec << rValDesc.m_value.i64Value << endl;
                             break;
 
                         case CSignal::SIG_TYPE_UINT64:
-                            sprintf(acLine,"[VALUE_DESCRIPTION] %s,%I64u\n",rValDesc.m_acDescriptor,rValDesc.m_value.ui64Value);
+							fileOutput << "[VALUE_DESCRIPTION] " << rValDesc.m_acDescriptor;
+							fileOutput << "," << dec << rValDesc.m_value.ui64Value << endl;
                             break;
 
                         default:
                             break;
                     }
-
-                    fileOutput << acLine;
                 }
             }
             else
@@ -596,12 +633,11 @@ void CConverter::GenerateMessageList(fstream& fileInput)
 // file name  = Inputfile with extension changed to ".log"
 void CConverter::CreateLogFile(fstream& fileLog)
 {
-    char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
     // write to the output file
     char acMsgLine[200];
 
-    sprintf(acLine,"Conversion Error Log \n\n");
-    fileLog << acLine;
+    fileLog << "Conversion Error Log" << endl;
+	fileLog << endl;
 
     // write all signals & messages which encountered errors
     // MSG_ID ,MAG_NAME,SIG_NAME:
@@ -621,12 +657,13 @@ void CConverter::CreateLogFile(fstream& fileLog)
                 // for the first wrong signal, log the message details also
                 if(acMsgLine[0] == '\0')
                 {
-                    sprintf(acMsgLine,"\nMSG_ID: %u\tMSG_NAME: %s\n", msg.m_uiMsgID,msg.m_acName);
-                    fileLog << acMsgLine;
+					fileLog << endl;
+					fileLog << "MSG_ID: " << dec << msg.m_uiMsgID;
+					fileLog << "\tMSG_NAME: " << msg.m_acName << endl;
                 }
 				sig.GetErrorString(str);
-                sprintf(acLine,"\tDiscarded SIG_NAME: %s, Reason: %s\n",sig.m_acName,str.c_str());
-                fileLog << acLine;
+				fileLog << "\tDiscarded SIG_NAME: " << sig.m_acName;
+				fileLog << ", Reason: " << str.c_str() << endl;
             }
         }
     }
