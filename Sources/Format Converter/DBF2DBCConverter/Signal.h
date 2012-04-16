@@ -24,8 +24,9 @@
 
 #pragma once
 
+/* Project includes */
+#include "stdafx.h"
 #include "ValueDescriptor.h"
-#include <afxtempl.h>
 
 class CSignal
 {

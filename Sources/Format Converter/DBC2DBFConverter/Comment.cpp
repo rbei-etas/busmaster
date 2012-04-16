@@ -22,8 +22,8 @@
  * Implementation of the comment class.
  */
 
+/* Project includes */
 #include "Comment.h"
-
 
 /**
  * \brief Constructor

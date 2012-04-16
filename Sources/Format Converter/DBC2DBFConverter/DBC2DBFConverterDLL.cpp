@@ -22,9 +22,17 @@
  * Defines the initialization routines for the DLL.
  */
 
-#include "stdafx.h"
+#define VC_EXTRALEAN        // Exclude rarely-used stuff from Windows headers
+
+/* C++ includes */
+#include <afxcmn.h>         // MFC support for Windows Common Controls
 #include <afxdllx.h>
+
+/* Project includes */
 #include "DBC2DBFConverter.h"
+#include "tag.h"
+#include "definitions.h"
+
 #ifdef _MANAGED
 #error Please read instructions in DBC2DBFConverter.cpp to compile with /clr
 // If you want to add /clr to your project you must do the following:
@@ -38,7 +46,6 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
 
 static AFX_EXTENSION_MODULE DBC2DBFConverterDLL = { NULL, NULL };
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="DBF2DBCConverter"
 	ProjectGUID="{66B69D87-43BF-42DA-AC95-513B0ECE1B57}"
 	RootNamespace="DBF2DBCConverter"
@@ -21,7 +21,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
-			UseOfMFC="2"
+			UseOfMFC="0"
 			CharacterSet="2"
 			>
 			<Tool
@@ -49,7 +49,7 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
@@ -106,7 +106,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
-			UseOfMFC="2"
+			UseOfMFC="0"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -227,26 +227,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath=".\Utility.cpp"
 				>
 			</File>
@@ -293,10 +273,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Resource.h"
-				>
-			</File>
-			<File
 				RelativePath=".\Signal.h"
 				>
 			</File>
@@ -321,24 +297,6 @@
 				>
 			</File>
 		</Filter>
-		<Filter
-			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
-			>
-			<File
-				RelativePath=".\DBF2DBCConverter.rc"
-				>
-			</File>
-			<File
-				RelativePath=".\res\DBF2DBCConverter.rc2"
-				>
-			</File>
-		</Filter>
-		<File
-			RelativePath=".\ReadMe.txt"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

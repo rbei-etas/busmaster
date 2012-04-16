@@ -24,14 +24,16 @@
 
 #pragma once
 
+/* C++ includes */
 #include <fstream>
 #include <string>
+
+/* Project includes */
+#include "Comment.h"
 #include "Message.h"
 #include "Parameter.h"
-#include "ValueTable.h"
-#include "Comment.h"
 #include "ParameterVal.h"
-#include <afxtempl.h>
+#include "ValueTable.h"
 
 class CConverter
 {

@@ -22,10 +22,10 @@
  * Implementation of the parameter value class.
  */
 
+/* Project includes */
 #include "ParameterVal.h"
 
 using namespace std;
-
 
 /**
  * \brief Default Constructor used to initialse parameterVal class object.

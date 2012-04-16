@@ -22,9 +22,9 @@
  * Implementation of the CMessage class.
  */
 
-#include "StdAfx.h"
-#include "Message.h"
+/* Project includes */
 #include "Converter.h"
+#include "Message.h"
 
 /**
  * constructor of CMessage

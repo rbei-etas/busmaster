@@ -22,7 +22,10 @@
  * Implementation of the converter class.
  */
 
+/* C++ includes */
 #include <fstream>
+
+/* Project includes */
 #include "Converter.h"
 #include "Signal.h"
 #include "Tag.h"

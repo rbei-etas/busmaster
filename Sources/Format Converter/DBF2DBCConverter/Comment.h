@@ -24,16 +24,12 @@
 
 #pragma once
 
-/* C includes */
-// none
-
 /* C++ includes */
 #include <fstream>
 #include <list>
 #include <string>
 
-/* Project includes */
-// none
+using namespace std;
 
 class CComment
 {

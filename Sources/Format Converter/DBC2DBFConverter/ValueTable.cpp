@@ -22,12 +22,12 @@
  * Implementation of the value table class.
  */
 
-#include "ValueTable.h"
+/* Project includes */
 #include "Signal.h"
 #include "Tag.h"
+#include "ValueTable.h"
 
 using namespace std;
-
 
 /**
  * \brief Constructor

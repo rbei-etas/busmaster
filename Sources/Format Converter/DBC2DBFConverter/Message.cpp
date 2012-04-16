@@ -22,10 +22,10 @@
  * Implementation of the message class.
  */
 
+/* Project includes */
 #include "Converter.h"
 #include "Message.h"
 #include "Tag.h"
-
 
 /**
  * \brief Constructor

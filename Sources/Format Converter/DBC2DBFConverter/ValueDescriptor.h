@@ -24,9 +24,11 @@
 
 #pragma once
 
+/* C++ includes */
 #include <fstream>
 #include <list>
 
+/* Project includes */
 #include "Definitions.h"
 
 using namespace std;

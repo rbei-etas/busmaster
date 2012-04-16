@@ -44,8 +44,8 @@ typedef union _SIG_VALUE {
     int iValue;
     unsigned int uiValue;
     float fValue;
-    double	dValue;
+    double dValue;
     char cValue[defCON_CHAR_LEN];
-    LONGLONG i64Value;
-    ULONGLONG ui64Value;
+    long long int i64Value;
+    unsigned long long int ui64Value;
 }	SIG_VALUE;

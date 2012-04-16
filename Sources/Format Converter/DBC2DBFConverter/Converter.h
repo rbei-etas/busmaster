@@ -24,14 +24,16 @@
 
 #pragma once
 
+/* C++ includes */
 #include <list>
 #include <utility>
 
-#include "Message.h"
+/* Project includes */
 #include "Comment.h"
-#include "ValueTable.h"
+#include "Message.h"
 #include "Parameter.h"
 #include "ParameterVal.h"
+#include "ValueTable.h"
 
 using namespace std;
 

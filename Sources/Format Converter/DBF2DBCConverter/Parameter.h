@@ -24,8 +24,11 @@
 
 #pragma once
 
-#include <afxtempl.h>
+/* C++ includes */
 #include <fstream>
+
+/* Project includes */
+#include "stdafx.h"
 #include "ParameterVal.h"
 
 //#define	defVDES_MAX_DESC_LEN 50 // hopefully nobody puts value descriptor strings

@@ -21,11 +21,16 @@
  *
  * Implementation file for the Parameter class.
  */
-#include "StdAfx.h"
-#include "Parameter.h"
-#include<limits.h>
-#include<float.h>
+
+/* C includes */
+#include <float.h>
+#include <limits.h>
+
+/* C++ includes */
 #include <string>
+
+/* Project includes */
+#include "Parameter.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE

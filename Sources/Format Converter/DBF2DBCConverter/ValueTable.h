@@ -24,8 +24,9 @@
 
 #pragma once
 
-#include <afxtempl.h>
+/* Project includes */
 #include "ValueDescriptor.h"
+
 #define max_TAB_NAME 1024
 
 class CValueTable

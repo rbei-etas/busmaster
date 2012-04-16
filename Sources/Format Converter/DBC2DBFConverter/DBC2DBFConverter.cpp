@@ -22,10 +22,10 @@
  * Definition of the converter class.
  */
 
-#include "StdAfx.h"
+/* Project includes */
+#include "Converter.h"
 #include "DBC2DBFConverter.h"
 #include "Definitions.h"
-#include "Converter.h"
 
 CDBC2DBFConverter::CDBC2DBFConverter(void)
 {

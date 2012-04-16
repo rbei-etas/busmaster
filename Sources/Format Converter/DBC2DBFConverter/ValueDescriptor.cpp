@@ -22,12 +22,12 @@
  * Implementation of the value descriptor class.
  */
 
+/* Project includes */
 #include "Signal.h"
 #include "Tag.h"
 #include "ValueDescriptor.h"
 
 using namespace std;
-
 
 /**
  * \brief Constructor
