@@ -50,7 +50,6 @@ int nGetLogTimeStamp(char* pchAscTime, char* pchLogTime)
 	char chMilliSeconds[5] = {'\0'};
 	int nHours, nMin, nSec;
 	unsigned int unSeconds;
-	unsigned int unMilliSeconds;
 	
 	pchTemp = strtok(pchAscTime, chSeparators);
 	unSeconds = strtoul(pchTemp, NULL, 10);

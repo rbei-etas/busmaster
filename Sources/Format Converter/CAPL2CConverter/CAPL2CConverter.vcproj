@@ -340,7 +340,7 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="..\..\..\Tools\flex\flex.exe -i -olexer.h &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
+					CommandLine="..\..\..\Tools\flex\flex.exe -i -L -olexer.h &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
 					Outputs="lexer.h"
 				/>
 			</FileConfiguration>
