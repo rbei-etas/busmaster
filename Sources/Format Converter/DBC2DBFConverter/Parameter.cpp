@@ -22,11 +22,12 @@
  * Implementation of the parameter class.
  */
 
-#include <limits.h>
+/* C includes */
 #include <float.h>
+#include <limits.h>
 
+/* Project includes */
 #include "Parameter.h"
-
 
 /**
  * \brief Constructor

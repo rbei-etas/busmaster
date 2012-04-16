@@ -22,8 +22,9 @@
  * Implementation file for the Comment class.
  */
 
-#include "StdAfx.h"
+/* Project includes */
 #include "Comment.h"
+#include "Definitions.h"
 
 /**
  * Constructor of CComment

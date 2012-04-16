@@ -22,9 +22,10 @@
  * CValueDescriptor class.
  */
 
-#include <afxtempl.h>
-
 #pragma once
+
+/* Project includes */
+#include "stdafx.h"
 
 class CValueDescriptor
 {

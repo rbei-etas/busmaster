@@ -22,7 +22,7 @@
  * Implementation file for the ParameterValues class.
  */
 
-#include "StdAfx.h"
+/* Project includes */
 #include "ParameterVal.h"
 
 #ifdef _DEBUG
@@ -72,7 +72,7 @@ CParameterValues& CParameterValues::operator=(CParameterValues& param)
  * Parses the Parameter Values other than Default value
  * from the input file.
  */
-void CParameterValues::Format_Param_Value(char *paramType,char *pcLine,const int& index,UINT msgId,char *Node_Name)
+void CParameterValues::Format_Param_Value(char *paramType,char *pcLine,const int& index,unsigned int msgId,char *Node_Name)
 {
     //copies the node name to the member
     if(index==1)

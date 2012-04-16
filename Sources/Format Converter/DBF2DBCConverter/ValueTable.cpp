@@ -22,10 +22,10 @@
  * Implementation file for the value table.This is atable containing value discriptors.
  */
 
-#include "StdAfx.h"
-#include "ValueTable.h"
-#include "Signal.h"
+/* Project inclues */
 #include "Converter.h"
+#include "Signal.h"
+#include "ValueTable.h"
 
 /**
 * \brief      Constructor of CValueTable

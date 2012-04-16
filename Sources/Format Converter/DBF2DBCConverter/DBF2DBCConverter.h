@@ -24,6 +24,8 @@
 
 #pragma once
 
+/* Project includes */
+#include "stdafx.h"
 #include "../FormatConverterApp/BaseConverter.h"
 
 class CDBF2DBCConverter : public CBaseConverter

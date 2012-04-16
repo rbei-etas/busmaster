@@ -22,12 +22,16 @@
  * Implementation of the CSignal class.
  */
 
-#include "StdAfx.h"
-#include "Signal.h"
-#include "Converter.h"
-#include "Utility.h"
+/* C++ includes */
 #include <string>
+
+/* Project inclues */
+#include "Converter.h"
+#include "Signal.h"
+#include "Utility.h"
+
 using namespace std;
+
 /**
  * Constructor of CSignal
  */

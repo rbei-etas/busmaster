@@ -22,10 +22,11 @@
  * Implementation of the CDBF2DBCConverter class.
  */
 
-#include "StdAfx.h"
+/* Project includes */
+#include "stdafx.h"
+#include "Converter.h"
 #include "DBF2DBCConverter.h"
 #include "Definitions.h"
-#include "Converter.h"
 
 CDBF2DBCConverter::CDBF2DBCConverter(void)
 {

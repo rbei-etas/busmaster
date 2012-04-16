@@ -22,9 +22,13 @@
  * Defines the initialization routines for the DLL.
  */
 
+/* C++ includes */
 #include "stdafx.h"
 #include <afxdllx.h>
+
+/* Project includes */
 #include "DBF2DBCConverter.h"
+
 #ifdef _MANAGED
 #error Please read instructions in DBF2DBCConverter.cpp to compile with /clr
 // If you want to add /clr to your project you must do the following:

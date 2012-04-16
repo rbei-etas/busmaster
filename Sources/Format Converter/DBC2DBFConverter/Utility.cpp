@@ -22,8 +22,8 @@
  * Implementation of global utility functions.
  */
 
+/* Project includes */
 #include "Utility.h"
-
 
 /**
  * \brief      Converts the DOUBLE physical values to UINT64 RAW values

@@ -22,9 +22,11 @@
  * Implementation of the CConverter class.
  */
 
-#include "StdAfx.h"
-#include <string.h>
+/* C++ includes */
 #include <fstream>
+#include <string>
+
+/* Project includes */
 #include "Converter.h"
 
 fstream CConverter::fileLog;

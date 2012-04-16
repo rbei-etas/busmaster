@@ -22,11 +22,10 @@
  * Implementation of the CValueDescriptor class.
  */
 
-#include "StdAfx.h"
-#include "ValueDescriptor.h"
-#include "Signal.h"
+/* Project includes */
 #include "Converter.h"
-
+#include "Signal.h"
+#include "ValueDescriptor.h"
 
 /**
 * \brief      Constructor of CValueDescriptor

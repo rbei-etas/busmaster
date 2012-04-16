@@ -22,12 +22,14 @@
  * Implementation of the signal class.
  */
 
+/* C++ includes */
+#include <algorithm>
+
+/* Project includes */
 #include "Converter.h"
 #include "Signal.h"
 #include "Tag.h"
 #include "Utility.h"
-#include <algorithm>
-
 
 /**
  * \brief Constructor

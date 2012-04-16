@@ -24,8 +24,13 @@
 
 #pragma once
 
-#include <afxtempl.h>
+/* C++ includes */
 #include <fstream>
+
+/* Project includes */
+#include "Definitions.h"
+
+using namespace std;
 
 #define	defNODE_MAX_LEN 50 // hopefully nobody puts value descriptor strings
 
@@ -42,7 +47,7 @@ public:
 
     CParameterValues();
     CParameterValues& operator=(CParameterValues& param);
-    void Format_Param_Value(char *paramType,char *pcLine,const int& index,UINT msgId=0,char *Node_Name="");
+    void Format_Param_Value(char *paramType,char *pcLine,const int& index,unsigned int msgId=0,char *Node_Name="");
     void ReadParamValue(char *paramType,char *pcToken);
     void WriteNetValuesToFile(fstream& fileOutput,char *paramType,char *paramName);
     void WriteNodeValuesToFile(fstream& fileOutput,char *paramType,char *paramName);

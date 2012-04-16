@@ -24,8 +24,10 @@
 
 #pragma once
 
+/* C++ includes */
 #include <string>
 
+/* Project includes */
 #include "Signal.h"
 
 using namespace std;

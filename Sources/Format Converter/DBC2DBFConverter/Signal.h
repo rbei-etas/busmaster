@@ -24,8 +24,10 @@
 
 #pragma once
 
+/* C++ includes */
 #include <list>
 
+/* Project includes */
 #include "ValueDescriptor.h"
 
 using namespace std;

@@ -21,6 +21,7 @@
  *
  * This file has the definetion of all the tags used
  */
+
 #define T_STRAT_BRAC "["
 #define T_END_BRAC "]"
 #define T_DB_VER		T_STRAT_BRAC"DATABASE_VERSION"T_END_BRAC
