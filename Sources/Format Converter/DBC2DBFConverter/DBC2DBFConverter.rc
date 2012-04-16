@@ -7,7 +7,6 @@
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
-#include "afxres.h"
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
@@ -25,7 +24,6 @@ END
 
 2 TEXTINCLUDE  
 BEGIN
-    "#include ""afxres.h""\r\n"
     "\0"
 END
 
@@ -39,9 +37,6 @@ BEGIN
 	"#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
 	"LANGUAGE 9, 1\r\n"
 	"#pragma code_page(1252)\r\n"
-#ifndef _AFXDLL
-    "#include ""afxres.rc""  	// Standard components\r\n"
-#endif
     "#endif\r\n"
     "\0"
 END
@@ -107,11 +102,7 @@ END
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 LANGUAGE 9, 1
 #pragma code_page(1252)
-#ifndef _AFXDLL
-#include "afxres.rc"  	// Standard components
-#endif
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
-
