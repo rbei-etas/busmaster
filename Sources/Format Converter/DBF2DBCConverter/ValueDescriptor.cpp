@@ -148,6 +148,6 @@ void CValueDescriptor::writeValuDescToFile(fstream &fileOutput,char m_ucType,CLi
                 break;
         }
     }
-    fileOutput << ";\n";
+    fileOutput << ";" << endl;
     return;
 }

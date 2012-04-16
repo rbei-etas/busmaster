@@ -812,13 +812,14 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     bool bResult = true;
     // write to the output file
     // write header
-    fileOutput << T_HEADER << endl << endl;
-    fileOutput << T_DB_VER " " T_VER_NO << endl << endl;
+    fileOutput << T_HEADER << endl;
+    fileOutput << endl;
+    fileOutput << T_DB_VER " " T_VER_NO << endl;
+    fileOutput << endl;
 
     // number of messages
-    fileOutput << T_NUM_OF_MSG " ";
-    fileOutput << dec << m_listMessages.size();
-    fileOutput << endl << endl;
+    fileOutput << T_NUM_OF_MSG " " << dec << m_listMessages.size() << endl;
+    fileOutput << endl;
 
     //Write Messagess to the Output file
     CMessage msg;
@@ -863,9 +864,7 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     for(cmt=m_cmNet.begin(); cmt!=m_cmNet.end(); ++cmt)
     {
         fileOutput << cmt->m_elementName.c_str();
-        fileOutput << " ";
-        fileOutput << cmt->m_comment.c_str();
-        fileOutput << endl;
+        fileOutput << " " << fileOutput << cmt->m_comment.c_str() << endl;
     }
     fileOutput << T_END_CM_NET << endl;
     fileOutput << endl;
@@ -875,9 +874,7 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     for(cmt=m_cmNode.begin(); cmt!=m_cmNode.end(); ++cmt)
     {
         fileOutput << cmt->m_elementName.c_str();
-        fileOutput << " ";
-        fileOutput << cmt->m_comment.c_str();
-        fileOutput << endl;
+        fileOutput << " " << cmt->m_comment.c_str() << endl;
     }
     fileOutput << T_END_CM_NODE << endl;
     fileOutput << endl;
@@ -887,11 +884,8 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     for(cmt=m_cmMsg.begin(); cmt!=m_cmMsg.end(); ++cmt)
     {
         fileOutput << cmt->m_msgID;
-        fileOutput << " ";
-        fileOutput << cmt->m_msgType;
-        fileOutput << " ";
-        fileOutput << cmt->m_comment.c_str();
-        fileOutput << endl;
+        fileOutput << " " << cmt->m_msgType;
+        fileOutput << " " << cmt->m_comment.c_str() << endl;
     }
     fileOutput << T_END_CM_MSG << endl;
     fileOutput << endl;
@@ -901,13 +895,9 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     for(cmt=m_cmSig.begin(); cmt!=m_cmSig.end(); ++cmt)
     {
         fileOutput << cmt->m_msgID;
-        fileOutput << " ";
-        fileOutput << cmt->m_msgType;
-        fileOutput << " ";
-        fileOutput << cmt->m_elementName.c_str();
-        fileOutput << " ";
-        fileOutput << cmt->m_comment.c_str();
-        fileOutput << endl;
+        fileOutput << " " << cmt->m_msgType;
+        fileOutput << " " << cmt->m_elementName.c_str();
+        fileOutput << " " << cmt->m_comment.c_str() << endl;
     }
     fileOutput << T_END_CM_SIG << endl;
     fileOutput << T_END_COMMENT << endl;
@@ -1015,8 +1005,7 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     list<string>::iterator np;
     for(np=m_notProcessed.begin(); np!=m_notProcessed.end(); ++np)
     {
-        fileOutput << np->c_str();
-        fileOutput << endl;
+        fileOutput << np->c_str() << endl;
     }
     fileOutput << endl;
     fileOutput << T_END_NOT_PRO << endl;
@@ -1054,24 +1043,16 @@ void CConverter::CreateLogFile(fstream& fileLog)
                 if(first_msg == 1)
                 {
                     fileLog << endl;
-                    fileLog << "MSG_ID: ";
-                    fileLog << dec << msg->m_uiMsgID;
-                    fileLog << " \tMSG_TYPE: ";
-                    fileLog << msg->m_cFrameFormat;
-                    fileLog << " \tMSG_NAME: ";
-                    fileLog << msg->m_acName.c_str();
-                    fileLog << endl;
+                    fileLog << "MSG_ID: " << dec << msg->m_uiMsgID;
+                    fileLog << " \tMSG_TYPE: " << msg->m_cFrameFormat;
+                    fileLog << " \tMSG_NAME: " << msg->m_acName.c_str() << endl;
                     first_msg = 0;
                 }
-                fileLog << "\tSIG_NAME: ";
-                fileLog << sig->m_acName.c_str();
-                fileLog << ", ";
-				sig->GetErrorString(str);
-                fileLog << str;
-                fileLog << ", ACTION: ";
-				sig->GetErrorAction(str);
-                fileLog << str;
-                fileLog << endl;
+                fileLog << "\tSIG_NAME: " << sig->m_acName.c_str();
+                sig->GetErrorString(str);
+                fileLog << ", " << str;
+                sig->GetErrorAction(str);
+                fileLog << ", ACTION: " << str << endl;
             }
         }
     }
@@ -1091,19 +1072,14 @@ void CConverter::CreateLogFile(fstream& fileLog)
                 fileLog << endl;
                 fileLog << "MSG_ID: 1073741824";
                 fileLog << " \tMSG_TYPE: X";
-                fileLog << " \tMSG_NAME: VECTOR__INDEPENDENT_SIG_MSG";
-                fileLog << endl;
+                fileLog << " \tMSG_NAME: VECTOR__INDEPENDENT_SIG_MSG" << endl;
                 first_msg = 0;
             }
-            fileLog << "\tSIG_NAME: ";
-            fileLog << sig->m_acName.c_str();
-            fileLog << ", ";
-			sig->GetErrorString(str);
-            fileLog << str;
-            fileLog << ", ACTION: ";
-			sig->GetErrorAction(str);
-            fileLog << str;
-            fileLog << endl;
+            fileLog << "\tSIG_NAME: " << sig->m_acName.c_str();
+            sig->GetErrorString(str);
+            fileLog << ", " << str.c_str();
+            sig->GetErrorAction(str);
+            fileLog << ", ACTION: " << str.c_str() << endl;
         }
     }
     list<string>::iterator str;
@@ -1116,27 +1092,17 @@ void CConverter::CreateLogFile(fstream& fileLog)
     {
         if(rParam->m_defError)
         {
-            fileLog << "OBJECT ID : ";
-            fileLog << rParam->m_ObjectId.c_str();
-            fileLog << "\tPARAM_NAME :\"";
-            fileLog << rParam->m_ParamName.c_str();
-            fileLog << "\"";
-            fileLog << endl;
+            fileLog << "OBJECT ID : " << rParam->m_ObjectId.c_str();
+            fileLog << "\tPARAM_NAME :\"" << rParam->m_ParamName.c_str() << "\"" << endl;
             fileLog << "\tDescription:Default Value tag(BA_DEF_DEF_) doesn;t exist ";
-            fileLog << "\t Action Taken : Reset to default value";
-            fileLog << endl;
+            fileLog << "\t Action Taken : Reset to default value" << endl;
         }
         if(rParam->m_RangeError)
         {
-            fileLog << "OBJECT ID : ";
-            fileLog << rParam->m_ObjectId.c_str();
-            fileLog << "\tPARAM_NAME :\"";
-            fileLog << rParam->m_ParamName.c_str();
-            fileLog << "\"";
-            fileLog << endl;
+            fileLog << "OBJECT ID : " << rParam->m_ObjectId.c_str();
+            fileLog << "\tPARAM_NAME :\"" << rParam->m_ParamName.c_str() << "\"" << endl;
             fileLog << "\tDescription: Invalid Data Ranges";
-            fileLog << "\t Action Taken : Reset to default value";
-            fileLog << endl;
+            fileLog << "\t Action Taken : Reset to default value" << endl;
         }
     }
 }
