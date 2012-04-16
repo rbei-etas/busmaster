@@ -640,7 +640,7 @@ CMessage CConverter::ouFindMessage(CString omStrMsgName)
         // store the data
         omTemp = m_listMessages.GetNext(pos);
         // compare with message name
-        if( omStrMsgName == omTemp.m_acName)
+        if(omStrMsgName == omTemp.m_acName.c_str())
         {
             // send the result
             return omTemp;

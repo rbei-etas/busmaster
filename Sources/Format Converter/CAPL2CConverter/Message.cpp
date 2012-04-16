@@ -65,7 +65,7 @@ CMessage& CMessage::operator=(CMessage& message)
     }
 
     // now copy the other elements of the new message to this
-    strcpy(m_acName,message.m_acName);
+    m_acName = message.m_acName;
     m_cDataFormat = message.m_cDataFormat;
     m_cFrameFormat = message.m_cFrameFormat;
     m_ucLength = message.m_ucLength;
@@ -84,7 +84,7 @@ CMessage::CMessage(CMessage& message)
     }
 
     // now copy the other elements of the new message to this
-    strcpy(m_acName,message.m_acName);
+    m_acName = message.m_acName;
     m_cDataFormat = message.m_cDataFormat;
     m_cFrameFormat = message.m_cFrameFormat;
     m_ucLength = message.m_ucLength;
@@ -119,7 +119,7 @@ int CMessage::Format(char *pcLine)
 
     // get the message name
     pcToken = strtok(NULL," :");
-    strcpy(m_acName,pcToken);
+    m_acName = pcToken;
 
     // set the message length
     pcToken = strtok(NULL," :");
