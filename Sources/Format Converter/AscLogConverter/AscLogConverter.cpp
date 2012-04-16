@@ -44,8 +44,6 @@
 #define _WIN32_IE 0x0600	/* Change this to the appropriate value to target other versions of IE. */
 #endif
 
-#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	/* some CString constructors will be explicit */
-
 #include <afxwin.h>         /* MFC core and standard components */
 #include <afxext.h>         /* MFC extensions */
 

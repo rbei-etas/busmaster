@@ -8,7 +8,7 @@
 
 class CAscLogConverter : public CBaseConverter
 {
-    CString m_omstrConversionStatus;
+    string m_omstrConversionStatus;
     HRESULT m_hResult;
 public:
     CAscLogConverter(void);
