@@ -22,8 +22,20 @@
  * Defines the initialization routines for the DLL.
  */
 
+#define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
+
+#include <afxwin.h>         // MFC core and standard components
+#include <afxext.h>         // MFC extensions
+#include <afxdisp.h>        // MFC Automation classes
+#include <afxdtctl.h>		// MFC support for Internet Explorer 4 Common Controls
+#ifndef _AFX_NO_AFXCMN_SUPPORT
+#include <afxcmn.h>			// MFC support for Windows Common Controls
+#include <afxtempl.h>
+#include "tag.h"
+#include "Definitions.h"
+#endif // _AFX_NO_AFXCMN_SUPPORT
+
 /* C++ includes */
-#include "stdafx.h"
 #include <afxdllx.h>
 
 /* Project includes */
@@ -42,7 +54,6 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
 
 static AFX_EXTENSION_MODULE DBC2DBFConverterDLL = { NULL, NULL };
 

@@ -24,8 +24,9 @@
 
 #pragma once
 
+#include <afxtempl.h>
+
 /* Project includes */
-#include "stdafx.h"
 #include "Signal.h"
 
 class CMessage

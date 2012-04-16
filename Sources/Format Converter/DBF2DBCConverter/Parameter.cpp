@@ -22,6 +22,17 @@
  * Implementation file for the Parameter class.
  */
 
+#define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
+
+#include <afxwin.h>         // MFC core and standard components
+#include <afxext.h>         // MFC extensions
+#include <afxdisp.h>        // MFC Automation classes
+#include <afxdtctl.h>		// MFC support for Internet Explorer 4 Common Controls
+#ifndef _AFX_NO_AFXCMN_SUPPORT
+#include <afxcmn.h>			// MFC support for Windows Common Controls
+#include <afxtempl.h>
+#endif // _AFX_NO_AFXCMN_SUPPORT
+
 /* C includes */
 #include <float.h>
 #include <limits.h>
@@ -30,7 +41,9 @@
 #include <string>
 
 /* Project includes */
+#include "Definitions.h"
 #include "Parameter.h"
+#include "tag.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE

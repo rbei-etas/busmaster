@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <afxtempl.h>
+
 /* C++ includes */
 #include <fstream>
 #include <string>
