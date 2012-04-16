@@ -553,7 +553,7 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
         while(vPos!=NULL)
         {
             CParameterValues& vParam=rParam.m_listParamValues[0].GetNext(vPos);
-            vParam.WriteNetValuesToFile(fileOutput,rParam.m_ParamType,rParam.m_ParamName);
+            vParam.WriteNetValuesToFile(fileOutput, rParam.m_ParamType, rParam.m_ParamName);
         }
     }
     pos=m_listParameterArray[1].GetHeadPosition();

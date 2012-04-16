@@ -22,8 +22,13 @@
  * Implementation file for the ParameterValues class.
  */
 
+/* C++ includes */
+#include <string>
+
 /* Project includes */
 #include "ParameterVal.h"
+
+using namespace std;
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -72,7 +77,7 @@ CParameterValues& CParameterValues::operator=(CParameterValues& param)
  * Parses the Parameter Values other than Default value
  * from the input file.
  */
-void CParameterValues::Format_Param_Value(char *paramType,char *pcLine,const int& index,unsigned int msgId,char *Node_Name)
+void CParameterValues::Format_Param_Value(string &paramType, char *pcLine,const int& index,unsigned int msgId,char *Node_Name)
 {
     //copies the node name to the member
     if(index==1)
@@ -87,19 +92,20 @@ void CParameterValues::Format_Param_Value(char *paramType,char *pcLine,const int
         m_SignalName = Node_Name;
     }
     //get param value.
-    ReadParamValue(paramType,pcLine);
+    ReadParamValue(paramType, pcLine);
 }
 
 /**
  * Reads the other vlaue of attributes from i/p file.
  */
-void CParameterValues::ReadParamValue(char *paramType,char *pcToken)
+void CParameterValues::ReadParamValue(string &paramType, char *pcToken)
 {
     char acTemp[defCON_CHAR_LEN],*pcTemp;
     pcTemp = acTemp;
     //get param value of type String
-    if(strcmp(paramType,"STRING")==0 )
-    {   pcToken++;
+    if(paramType == "STRING")
+    {
+        pcToken++;
         while(*pcToken != '"')
         {
             *pcTemp++=*pcToken++;
@@ -109,13 +115,13 @@ void CParameterValues::ReadParamValue(char *paramType,char *pcToken)
         pcTemp=acTemp;
     }
     //get param value of type int
-    else if(strcmp(paramType,"INT")==0 || strcmp(paramType,"HEX")==0)
+    else if((paramType == "INT") || (paramType == "HEX"))
     {
         if(strcmp(pcToken," ")!=0)
             m_ParamVal.iValue=atoi(pcToken);
     }
     //get param value of type enum
-    else if (strcmp(paramType,"ENUM")==0)
+    else if (paramType == "ENUM")
     {
         *pcToken++;
         while(*pcToken!='"')
@@ -127,7 +133,7 @@ void CParameterValues::ReadParamValue(char *paramType,char *pcToken)
         pcTemp=acTemp;
     }
     //get param value of type float
-    else if(strcmp(paramType,"FLOAT")==0)
+    else if(paramType == "FLOAT")
     {
         if(strcmp(pcToken," ")!=0)
             m_ParamVal.fValue=float(atof(pcToken));
@@ -138,23 +144,23 @@ void CParameterValues::ReadParamValue(char *paramType,char *pcToken)
 /**
  * Write the net values into the file
  */
-void CParameterValues::WriteNetValuesToFile(fstream& fileOutput,char *paramType,char *paramName)
+void CParameterValues::WriteNetValuesToFile(fstream& fileOutput, string &paramType, string &paramName)
 {
-	fileOutput << "BA_ \"" << paramName << "\"";
+	fileOutput << "BA_ \"" << paramName.c_str() << "\"";
 	//writes net values of type int to o/p file.
-    if(strcmp(paramType,"INT")==0 || strcmp(paramType,"HEX")==0)
+    if((paramType == "INT") || (paramType == "HEX"))
     {
         if(m_ParamVal.iValue != -1)
 			fileOutput << " " << dec << m_ParamVal.iValue;
     }
     //writes net values of type float to o/p file.
-    else if(strcmp(paramType,"FLOAT")==0)
+    else if(paramType == "FLOAT")
     {
         if(m_ParamVal.fValue != -1)
             fileOutput << " " << fixed << m_ParamVal.fValue;
     }
     //writes net values of type enum to o/p file.
-    else if(strcmp(paramType,"ENUM")==0)
+    else if(paramType == "ENUM")
     {
         if(strcmp(m_ParamVal.cValue,"") == 0)
 			fileOutput << " \"\"";
@@ -162,7 +168,7 @@ void CParameterValues::WriteNetValuesToFile(fstream& fileOutput,char *paramType,
 			fileOutput << " " << m_ParamVal.cValue;
     }
     //writes net values of type string to o/p file.
-    else if(strcmp(paramType,"STRING")==0)
+    else if(paramType == "STRING")
 		fileOutput << " \"" << m_ParamVal.cValue << "\"";
 	fileOutput << ";" << endl;
 }
@@ -170,18 +176,18 @@ void CParameterValues::WriteNetValuesToFile(fstream& fileOutput,char *paramType,
 /**
  * Write the node values into the file
  */
-void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput,char *paramType,char *paramName)
+void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput, string &paramType, string &paramName)
 {
-	fileOutput << "BA_ \"" << paramName << "\"";
+	fileOutput << "BA_ \"" << paramName.c_str() << "\"";
 	fileOutput << " BU_ " << m_NodeName.c_str();
     //writes node values of type int/hex to o/p file.
-    if(strcmp(paramType,"INT")==0  || strcmp(paramType,"HEX")==0)
+    if((paramType == "INT") || (paramType == "HEX"))
     {
         if(m_ParamVal.iValue != -1)
 			fileOutput << " " << dec << m_ParamVal.iValue;
     }
     //writes node values of type enum to o/p file.
-    else if(strcmp(paramType,"ENUM")==0)
+    else if(paramType == "ENUM")
     {
         if(strcmp(m_ParamVal.cValue,"") == 0)
 			fileOutput << " \"\"";
@@ -189,13 +195,13 @@ void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput,char *paramType
 			fileOutput << " \"" << m_ParamVal.cValue << "\"";
     }
     //writes node values of type float to o/p file.
-    else if(strcmp(paramType,"FLOAT")==0)
+    else if(paramType == "FLOAT")
     {
         if(m_ParamVal.fValue != -1)
 			fileOutput << fixed << m_ParamVal.fValue;
     }
     //writes node values of type string to o/p file.
-    else if(strcmp(paramType,"STRING")==0)
+    else if(paramType == "STRING")
 		fileOutput << " \"" << m_ParamVal.cValue << "\"";
 	fileOutput << ";" << endl;
 }
@@ -203,18 +209,18 @@ void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput,char *paramType
 /**
  * Write the Message values into the file
  */
-void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput,char *paramType,char *paramName)
+void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput, string &paramType, string &paramName)
 {
-	fileOutput << "BA_ \"" << paramName << "\"";
+	fileOutput << "BA_ \"" << paramName.c_str() << "\"";
 	fileOutput << " BO_ " << dec << m_MsgId;
     //writes mesg values of type int/hex to o/p file.
-    if(strcmp(paramType,"INT")==0   || strcmp(paramType,"HEX")==0)
+    if((paramType == "INT") || (paramType == "HEX"))
     {
         if(m_ParamVal.iValue != -1)
 			fileOutput << " " << dec << m_ParamVal.iValue;
     }
     //writes mesg values of type enum to o/p file.
-    else if(strcmp(paramType,"ENUM")==0)
+    else if(paramType == "ENUM")
     {
         if(strcmp(m_ParamVal.cValue, "") == 0)
 			fileOutput << " \"\"";
@@ -222,13 +228,13 @@ void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput,char *paramType
 			fileOutput << " " << m_ParamVal.cValue;
     }
     //writes mesg values of type float to o/p file.
-    else if(strcmp(paramType,"FLOAT")==0)
+    else if(paramType == "FLOAT")
     {
         if(m_ParamVal.fValue != -1)
 			fileOutput << " " << fixed << m_ParamVal.fValue;
     }
     //writes mesg values of type string to o/p file.
-    else if(strcmp(paramType,"STRING")==0)
+    else if(paramType == "STRING")
 		fileOutput << " \"" << m_ParamVal.cValue << "\"";
 	fileOutput << ";" << endl;
 }
@@ -236,19 +242,19 @@ void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput,char *paramType
 /**
  * Write the Signal values into the file
  */
-void CParameterValues::WriteSigValuesToFile(fstream& fileOutput,char *paramType,char *paramName)
+void CParameterValues::WriteSigValuesToFile(fstream& fileOutput, string &paramType, string &paramName)
 {
-	fileOutput << "BA_ \"" << paramName << "\"";
+	fileOutput << "BA_ \"" << paramName.c_str() << "\"";
 	fileOutput << " SG_ " << dec << m_MsgId;
 	fileOutput << " " << m_SignalName.c_str();
     //writes sig values of type int/hex to o/p file.
-    if(strcmp(paramType,"INT")==0 || strcmp(paramType,"HEX")==0)
+    if((paramType == "INT") || (paramType == "HEX"))
     {
         if(m_ParamVal.iValue != -1)
 			fileOutput << " " << dec << m_ParamVal.iValue;
     }
     //writes sig values of type enum to o/p file.
-    else if(strcmp(paramType,"ENUM")==0)
+    else if(paramType == "ENUM")
     {
         if(strcmp(m_ParamVal.cValue, "") == 0)
 			fileOutput << " \"\"";
@@ -256,13 +262,13 @@ void CParameterValues::WriteSigValuesToFile(fstream& fileOutput,char *paramType,
 			fileOutput << " " << m_ParamVal.cValue;
     }
     //writes sig values of type flaot to o/p file.
-    else if(strcmp(paramType,"FLOAT")==0)
+    else if(paramType == "FLOAT")
     {
         if(m_ParamVal.fValue != -1)
 			fileOutput << " " << fixed << m_ParamVal.fValue;
     }
     //writes sig values of type string to o/p file.
-    else if(strcmp(paramType,"STRING")==0)
+    else if(paramType == "STRING")
 		fileOutput << " \"" << m_ParamVal.cValue << "\"";
 	fileOutput << ";" << endl;
 }

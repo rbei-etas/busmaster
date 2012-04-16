@@ -37,7 +37,7 @@
 class CParameters
 {
     //private data members
-    char			m_ObjectId[50];
+    string			m_ObjectId;
     SIG_VALUE       m_MaxVal;
     SIG_VALUE		m_MinVal;
     string    		m_ValRange;
@@ -46,8 +46,8 @@ class CParameters
 
     //public data members & functions
 public:
-    char			m_ParamName[defVDES_MAX_DESC_LEN];
-    char			m_ParamType[10];
+    string			m_ParamName;
+    string			m_ParamType;
     CList<CParameterValues,CParameterValues&> m_listParamValues[6];
     CParameters();
     void Format_ParamDef(char *pcLine,int index);

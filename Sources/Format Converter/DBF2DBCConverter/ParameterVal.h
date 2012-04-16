@@ -47,11 +47,11 @@ public:
 
     CParameterValues();
     CParameterValues& operator=(CParameterValues& param);
-    void Format_Param_Value(char *paramType,char *pcLine,const int& index,unsigned int msgId=0,char *Node_Name="");
-    void ReadParamValue(char *paramType,char *pcToken);
-    void WriteNetValuesToFile(fstream& fileOutput,char *paramType,char *paramName);
-    void WriteNodeValuesToFile(fstream& fileOutput,char *paramType,char *paramName);
-    void WriteMesgValuesToFile(fstream& fileOutput,char *paramType,char *paramName);
-    void WriteSigValuesToFile(fstream& fileOutput,char *paramType,char *paramName);
+    void Format_Param_Value(string &paramType, char *pcLine, const int& index, unsigned int msgId=0, char *Node_Name="");
+    void ReadParamValue(string &paramType, char *pcToken);
+    void WriteNetValuesToFile(fstream& fileOutput, string &paramType, string &paramName);
+    void WriteNodeValuesToFile(fstream& fileOutput, string &paramType, string &paramName);
+    void WriteMesgValuesToFile(fstream& fileOutput, string &paramType, string &paramName);
+    void WriteSigValuesToFile(fstream& fileOutput, string &paramType, string &paramName);
     virtual ~CParameterValues();
 };
