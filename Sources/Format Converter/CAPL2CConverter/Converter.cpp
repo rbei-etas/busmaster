@@ -38,15 +38,18 @@ static char THIS_FILE[]=__FILE__;
 #endif
 
 #define defCON_MAX_LINE_LEN 1024
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 
+/**
+ * Construction
+ */
 CConverter::CConverter()
 {
     m_uiResultCode = CON_RC_NOERROR;
 }
 
+/**
+ * Destruction
+ */
 CConverter::~CConverter()
 {
 
@@ -54,33 +57,33 @@ CConverter::~CConverter()
 
 }
 
-
 const char CConverter::m_accHeader[] =
     "//******************************BUSMASTER Messages and signals Database ******************************//\n";
 
 unsigned int CConverter::Convert(CString sCanoeFile)
 {
-    CStdioFile fileInput,fileOutput;
+    fstream fileInput,fileOutput;
     char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
 
-    if(!fileInput.Open(sCanoeFile,CFile::modeRead))
+	fileInput.open(sCanoeFile, fstream::in);
+	if(!fileInput.is_open())
     {
         return SetResultCode(CON_RC_FILEOPEN_ERROR_INFILE);
     }
 
     // first line of input file starts with keyword "VERSION", else file format error
-    if(fileInput.ReadString(acLine,defCON_MAX_LINE_LEN) == NULL)
+    if(fileInput.getline(acLine, defCON_MAX_LINE_LEN) == NULL)
     {
         // eof file reached without reading anything
-        fileInput.Close();
+        fileInput.close();
         return SetResultCode(CON_RC_FORMAT_ERROR_INFILE);
     }
     else // if something was read
     {
         // verify the format
-        if(strncmp(acLine,"VERSION ",8) != 0)
+        if(strncmp(acLine, "VERSION ",8) != 0)
         {
-            fileInput.Close();
+            fileInput.close();
             return SetResultCode(CON_RC_FORMAT_ERROR_INFILE);
         }
     }
@@ -99,15 +102,16 @@ unsigned int CConverter::Convert(CString sCanoeFile)
 
 
 //	bool bRes = WriteToOutputFile(fileOutput);
-    fileInput.Close();
-//	fileOutput.Close();
+    fileInput.close();
+//	fileOutput.close();
     BOOL bRes = FALSE;
     if(!bRes)
     {
         CString sLogFile = sCanoeFile.Left(sCanoeFile.GetLength()-4);
         sLogFile += ".log";
-        CStdioFile fileLog;
-        if(!fileLog.Open(sLogFile,CFile::modeWrite | CFile::modeCreate))
+        fstream fileLog;
+		fileLog.open(sLogFile, fstream::out);
+		if(!fileLog.is_open())
         {
             // if log file cannot be opened return the error code
             return SetResultCode(CON_RC_FILEOPEN_ERROR_LOGFILE);
@@ -115,7 +119,7 @@ unsigned int CConverter::Convert(CString sCanoeFile)
         else
         {
             CreateLogFile(fileLog);
-            fileLog.Close();
+            fileLog.close();
             return SetResultCode(CON_RC_COMPLETED_WITH_ERROR);
         }
     }
@@ -163,25 +167,26 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
 {
     bool bResult = true;
     char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
-    CStdioFile fileOutput;
+    fstream fileOutput;
     // write to the output file
     // write header
 //	FILE *message = fopen("d:\\message.txt","w");
-    if(!fileOutput.Open(sCanMonFile,CFile::modeWrite | CFile::modeCreate))
+	fileOutput.open(sCanMonFile, fstream::out);
+	if(!fileOutput.is_open())
     {
         // if output file cannot be opened the close the input file
         // and return the error code
         return SetResultCode(CON_RC_FILEOPEN_ERROR_OUTFILE);
     }
 
-    fileOutput.WriteString(CConverter::m_accHeader);
-    fileOutput.WriteString("\n");
+    fileOutput << CConverter::m_accHeader;
+    fileOutput << endl;
     //Version no.
-    fileOutput.WriteString( defSTR_DB_VER" "defSTR_VER_NO );
-    fileOutput.WriteString("\n");
+    fileOutput << defSTR_DB_VER " " defSTR_VER_NO;
+    fileOutput << endl;
     // number of messages
-    sprintf(acLine,"\n[NUMBER_OF_MESSAGES] %d\n\n",m_listMessages.GetCount());
-    fileOutput.WriteString(acLine);
+    sprintf(acLine, "\n[NUMBER_OF_MESSAGES] %d\n\n",m_listMessages.GetCount());
+    fileOutput << acLine;
 
     // write all messages, signals and value descriptors
     POSITION pos = m_listMessages.GetHeadPosition();
@@ -191,7 +196,7 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
         // MSG,MSGID,MSG_LENGTH,NO_OF_SIGNALS,DATA_FORMAT,FRAME_FORMAT
 
         sprintf(acLine,"[START_MSG] %s,%u,%u,%u,%c,%c\n",msg.m_acName,msg.m_uiMsgID,msg.m_ucLength,msg.m_ucNumOfSignals,msg.m_cDataFormat,msg.m_cFrameFormat);
-        fileOutput.WriteString(acLine);
+        fileOutput << acLine;
 
 //		fprintf(message,"%s,%u,%u\n",msg.m_acName,msg.m_uiMsgID,msg.m_ucLength);
         POSITION posSig = msg.m_listSignals.GetHeadPosition();
@@ -265,9 +270,7 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
                         break;
                 }
 
-
-
-                fileOutput.WriteString(acLine);
+                fileOutput << acLine;
 
                 // now write value descriptors for this signal
                 POSITION posValDesc = sig.m_listValueDescriptor.GetHeadPosition();
@@ -308,7 +311,7 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
                             break;
                     }
 
-                    fileOutput.WriteString(acLine);
+                    fileOutput << acLine;
                 }
             }
             else
@@ -318,10 +321,10 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
         }
 
 //		fclose(message);
-        fileOutput.WriteString("[END_MSG]\n\n");
+        fileOutput << "[END_MSG]" << endl << endl;
     }
 
-    fileOutput.Close();
+    fileOutput.close();
 
     return bResult;
 }
@@ -423,13 +426,13 @@ void CConverter::ValidateMessageList()
 }
 
 // generates the message list with signals and value descriptors
-void CConverter::GenerateMessageList(CStdioFile& fileInput)
+void CConverter::GenerateMessageList(fstream& fileInput)
 {
     char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
     // Flag to skip signal parsing of independent messages
     BOOL bSkipSignalParsing = FALSE;
     // parsing the input file
-    while(fileInput.ReadString(acLine,defCON_MAX_LINE_LEN))
+    while(fileInput.getline(acLine, defCON_MAX_LINE_LEN))
     {
         char *pcToken, *pcLine;
 
@@ -591,14 +594,14 @@ void CConverter::GenerateMessageList(CStdioFile& fileInput)
 
 // Create a log file of errors encountered
 // file name  = Inputfile with extension changed to ".log"
-void CConverter::CreateLogFile(CStdioFile& fileLog)
+void CConverter::CreateLogFile(fstream& fileLog)
 {
     char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
     // write to the output file
     char acMsgLine[200];
 
     sprintf(acLine,"Conversion Error Log \n\n");
-    fileLog.WriteString(acLine);
+    fileLog << acLine;
 
     // write all signals & messages which encountered errors
     // MSG_ID ,MAG_NAME,SIG_NAME:
@@ -619,11 +622,11 @@ void CConverter::CreateLogFile(CStdioFile& fileLog)
                 if(acMsgLine[0] == '\0')
                 {
                     sprintf(acMsgLine,"\nMSG_ID: %u\tMSG_NAME: %s\n", msg.m_uiMsgID,msg.m_acName);
-                    fileLog.WriteString(acMsgLine);
+                    fileLog << acMsgLine;
                 }
 				sig.GetErrorString(str);
                 sprintf(acLine,"\tDiscarded SIG_NAME: %s, Reason: %s\n",sig.m_acName,str.c_str());
-                fileLog.WriteString(acLine);
+                fileLog << acLine;
             }
         }
     }

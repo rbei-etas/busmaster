@@ -24,6 +24,8 @@
 
 #pragma once
 
+/* C++ includes */
+#include <fstream>
 #include <string>
 
 #include "Message.h"
@@ -46,9 +48,9 @@ private:
 public:
     CMessage ouFindMessage(UINT nMsgID);
     CMessage ouFindMessage(CString omStrMsgName);
-    void CreateLogFile(CStdioFile& fileLog);
+    void CreateLogFile(fstream& fileLog);
     bool WriteToOutputFile(CString fileOutput);
-    void GenerateMessageList(CStdioFile& fileInput);
+    void GenerateMessageList(fstream& fileInput);
     void ValidateMessageList();
     enum {CON_RC_NOERROR,CON_RC_COMPLETED_WITH_ERROR,CON_RC_FILEOPEN_ERROR_INFILE,
           CON_RC_FILEOPEN_ERROR_OUTFILE,CON_RC_FORMAT_ERROR_INFILE,CON_RC_FILEOPEN_ERROR_LOGFILE
