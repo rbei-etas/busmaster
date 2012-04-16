@@ -12,35 +12,29 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
+
 /**
  * \file      Definitions.h
- * \brief     This file has the definetion of all the constants used
- * \author    RBIN/EBS1 - Mahesh B S
+ * \brief     This file has the definition of all the constants used
+ * \author    Mahesh B S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file has the definetion of all the constants used
+ * This file has the definition of all the constants used
  */
-/**
-* \file       Definitions.h
-* \brief      Defintitons File
-* \authors    Mahesh B S
-* \date       9.10.2005 Created
-* \copyright  Copyright &copy; 2011 Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*/
+
+#pragma once
 
 //Convertor.cpp
 #define defCON_MAX_MSGID_LEN 20 //maximum length of Message ID
 #define defCON_MAX_MSGN_LEN 32
+
 //Signal.Cpp
 #define defCON_MAX_LINE_LEN 1026  //Maximum length of one line
 #define defCON_MAX_TOKN_LEN 1026   //Maximum length that any field can be
 
-
 //Valuedescriptor.cpp
 #define	defVDES_MAX_DESC_LEN 150 // hopefully nobody puts value descriptor strings
-// more than this
 #define defVDES_MAX_OUT_STR  150  // I don't expect a name more than 150 bytes
 
 #define ERR_INPUT_FILE_NOTFOUND          -1
-#define ERR_OUTPUT_FILE_NOTFOUND         -2   
+#define ERR_OUTPUT_FILE_NOTFOUND         -2
