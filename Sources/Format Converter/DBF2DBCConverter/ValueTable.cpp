@@ -28,42 +28,27 @@
 #include "ValueTable.h"
 
 /**
-* \brief      Constructor of CValueTable
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Padmaja.A.
-* \date       16.11.2004
-*/
+ * Constructor of CValueTable
+ */
 CValueTable::CValueTable()
 {
     m_TableName[0] = '\0';
 }
 
 /**
-* \brief      destructor of CValueTable
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Padmaja.A.
-* \date       16.11.2004
-*/
+ * destructor of CValueTable
+ */
 CValueTable::~CValueTable()
 {
 
 }
 
 /**
-* \brief      overloaded operator =
-* \param[in]  CValueTable&
-* \param[out] None
-* \return     CValueTable&
-* \authors    Padmaja.A.
-* \date       16.11.2004
-*/
+ * overloaded operator =
+ */
 CValueTable& CValueTable::operator=(CValueTable& Tab)
 {
-    strcpy(m_TableName,Tab.m_TableName);
+    m_TableName = Tab.m_TableName;
     POSITION posMsg = Tab.m_values.GetHeadPosition();
     while(posMsg != NULL)
     {
@@ -74,15 +59,11 @@ CValueTable& CValueTable::operator=(CValueTable& Tab)
 }
 
 /**
-* \brief      extracts Values and value descriptors from the line
-* \param[in]  String having the value table name followed by the
-value,value descriptor as in canoe format
-* \param[out] None
-* \return     void
-* \authors    Padmaja.A.
-* \date       16.11.2004
-*/
-
+ * \brief     extracts Values and value descriptors from the line
+ * \param[in] pcline String having the value table name followed by the value, value descriptor as in canoe format
+ *
+ * extracts Values and value descriptors from the line
+ */
 void CValueTable::Format_ValueTable(char *pcLine,fstream &fileInput)
 {
     char *pcToken;
@@ -94,7 +75,7 @@ void CValueTable::Format_ValueTable(char *pcLine,fstream &fileInput)
     }
     pcToken=strtok(pcLine,"\n");
     //get value table name.
-    strcpy(m_TableName,pcToken);
+    m_TableName = pcToken;
     //parses value table.
     while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine,"[END_TABLE]\n")!=0)
     {
@@ -123,13 +104,12 @@ void CValueTable::Format_ValueTable(char *pcLine,fstream &fileInput)
 }
 
 /**
-* \brief      writes the value tebles in the given list to the output file.
-* \param[in]  Pointer to the Output file,List of Value tables
-* \param[out] None
-* \return     int
-* \authors    Padmaja.A.
-* \date       17.11.2004
-*/
+ * \brief     writes the value tebles in the given list to the output file.
+ * \param[in] fileOutput Pointer to the Output file
+ * \param[in] vTab List of Value tables
+ *
+ * writes the value tebles in the given list to the output file.
+ */
 void CValueTable::writeValueTabToFile(fstream &fileOutput,CList<CValueTable,CValueTable&> &vTab)
 {
     //get value table.

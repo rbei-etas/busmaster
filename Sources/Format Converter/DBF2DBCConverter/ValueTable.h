@@ -24,15 +24,20 @@
 
 #pragma once
 
+/* C++ includes */
+#include <string>
+
 /* Project includes */
 #include "ValueDescriptor.h"
+
+using namespace std;
 
 #define max_TAB_NAME 1024
 
 class CValueTable
 {
     //private data members
-    char m_TableName[max_TAB_NAME];
+    string m_TableName;
     CList <CValueDescriptor, CValueDescriptor&> m_values;
 
     //public member functions
