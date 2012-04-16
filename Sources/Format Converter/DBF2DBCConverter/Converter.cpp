@@ -387,19 +387,19 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                     CComment tCmt;
                     if(strcmp(pcLine,"[START_DESC_NET]\n")==0)
                     {
-                        tCmt.Format_netComment(fileInput,m_listComments[0]);
+                        tCmt.Format_netComment(fileInput, m_listComments[0]);
                     }
                     else if(strcmp(pcLine,"[START_DESC_NODE]\n")==0)
                     {
-                        tCmt.Format_nodeComment(fileInput,m_listComments[1]);
+                        tCmt.Format_nodeComment(fileInput, m_listComments[1]);
                     }
                     else if(strcmp(pcLine,"[START_DESC_MSG]\n")==0)
                     {
-                        tCmt.Format_msgComment(fileInput,m_listComments[2]);
+                        tCmt.Format_msgComment(fileInput, m_listComments[2]);
                     }
                     else if(strcmp(pcLine,"[START_DESC_SIG]\n")==0)
                     {
-                        tCmt.Format_sigComment(fileInput,m_listComments[3]);
+                        tCmt.Format_sigComment(fileInput, m_listComments[3]);
                     }
                 }
 
@@ -494,60 +494,53 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
 
     //Comments ----- Net
     string s_cmt;
-    pos=m_listComments[0].GetHeadPosition();
-    while(pos!=NULL)
+	list<CComment>::iterator cmt;
+	for(cmt=m_listComments[0].begin(); cmt!=m_listComments[0].end(); ++cmt)
     {
-        CComment &cmt = m_listComments[0].GetNext(pos);
         s_cmt = "CM_ ";
-		s_cmt += cmt.m_elementName;
+		s_cmt += cmt->m_elementName;
 		s_cmt += " ";
-		s_cmt += cmt.m_comment;
+		s_cmt += cmt->m_comment;
         fileOutput << s_cmt.c_str();
     }
 
     //Comments ----- Node
-    pos=m_listComments[1].GetHeadPosition();
-    while(pos!=NULL)
+	for (cmt=m_listComments[1].begin(); cmt!=m_listComments[1].end(); ++cmt)
     {
-        CComment &cmt = m_listComments[1].GetNext(pos);
         s_cmt = "CM_ BU_ ";
-		s_cmt += cmt.m_elementName;
+		s_cmt += cmt->m_elementName;
 		s_cmt += " ";
-		s_cmt += cmt.m_comment;
+		s_cmt += cmt->m_comment;
         fileOutput << s_cmt.c_str();
     }
     //Comments ----- Mesg
-    pos=m_listComments[2].GetHeadPosition();
-    while(pos!=NULL)
+	for (cmt=m_listComments[2].begin(); cmt!=m_listComments[2].end(); ++cmt)
     {
-        CComment &cmt = m_listComments[2].GetNext(pos);
-		fileOutput << "CM_ BO_ " << dec << cmt.m_msgID;
-		fileOutput << " " << cmt.m_comment.c_str();
+		fileOutput << "CM_ BO_ " << dec << cmt->m_msgID;
+		fileOutput << " " << cmt->m_comment.c_str();
     }
     //Comments ----- Signal
-    pos=m_listComments[3].GetHeadPosition();
-
+	for (cmt=m_listComments[3].begin(); cmt!=m_listComments[3].end(); ++cmt)
     while(pos!=NULL)
     {
-        CComment &cmt = m_listComments[3].GetNext(pos);
-		fileOutput << "CM_ SG_ " << dec << cmt.m_msgID;
-		fileOutput << " " << cmt.m_elementName.c_str();
-		fileOutput << " " << cmt.m_comment.c_str();
+		fileOutput << "CM_ SG_ " << dec << cmt->m_msgID;
+		fileOutput << " " << cmt->m_elementName.c_str();
+		fileOutput << " " << cmt->m_comment.c_str();
     }
 
     //Param definition
-    WriteParamToFile(fileOutput,m_listParameterArray[0]);
-    WriteParamToFile(fileOutput,m_listParameterArray[1]);
-    WriteParamToFile(fileOutput,m_listParameterArray[2]);
-    WriteParamToFile(fileOutput,m_listParameterArray[3]);
-    WriteParamToFile(fileOutput,m_listParameterArray[4]);
-    WriteParamToFile(fileOutput,m_listParameterArray[5]);
+    WriteParamToFile(fileOutput, m_listParameterArray[0]);
+    WriteParamToFile(fileOutput, m_listParameterArray[1]);
+    WriteParamToFile(fileOutput, m_listParameterArray[2]);
+    WriteParamToFile(fileOutput, m_listParameterArray[3]);
+    WriteParamToFile(fileOutput, m_listParameterArray[4]);
+    WriteParamToFile(fileOutput, m_listParameterArray[5]);
 
     //Param Default values
-    Write_DefVal_ToFile(fileOutput,m_listParameterArray[0]);
-    Write_DefVal_ToFile(fileOutput,m_listParameterArray[1]);
-    Write_DefVal_ToFile(fileOutput,m_listParameterArray[2]);
-    Write_DefVal_ToFile(fileOutput,m_listParameterArray[3]);
+    Write_DefVal_ToFile(fileOutput, m_listParameterArray[0]);
+    Write_DefVal_ToFile(fileOutput, m_listParameterArray[1]);
+    Write_DefVal_ToFile(fileOutput, m_listParameterArray[2]);
+    Write_DefVal_ToFile(fileOutput, m_listParameterArray[3]);
 
     //Param Other values
     pos=m_listParameterArray[0].GetHeadPosition();

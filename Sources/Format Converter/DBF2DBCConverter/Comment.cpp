@@ -60,7 +60,7 @@ CComment::~CComment()
 /**
  * Parses the net Comments.
  */
-void CComment::Format_netComment(fstream &fileInput,CList<CComment,CComment&>& m_listComment)
+void CComment::Format_netComment(fstream &fileInput, list<CComment>& m_listComment)
 {
     char *pcToken, *pcLine;
     char acLine[defCON_MAX_LINE_LEN];
@@ -81,14 +81,14 @@ void CComment::Format_netComment(fstream &fileInput,CList<CComment,CComment&>& m
         }
         m_comment= comment;
         //adds the comment to the list.
-        m_listComment.AddTail(*this);
+        m_listComment.push_back(*this);
     }
 }
 
 /**
  * Parses the node Comments.
  */
-void CComment::Format_nodeComment(fstream &fileInput ,CList<CComment,CComment&>& m_listComment)
+void CComment::Format_nodeComment(fstream &fileInput, list<CComment>& m_listComment)
 {
     char *pcToken, *pcLine;
     char acLine[defCON_MAX_LINE_LEN];
@@ -115,14 +115,14 @@ void CComment::Format_nodeComment(fstream &fileInput ,CList<CComment,CComment&>&
         }
         m_comment= comment;
         //adds the comment to the list.
-        m_listComment.AddTail(*this);
+        m_listComment.push_back(*this);
     }
 }
 
 /**
  * Parses the Message Comments.
  */
-void CComment::Format_msgComment(fstream &fileInput,CList<CComment,CComment&>& m_listComment)
+void CComment::Format_msgComment(fstream &fileInput, list<CComment>& m_listComment)
 {
     char *pcToken, *pcLine;
     char acLine[defCON_MAX_LINE_LEN];
@@ -150,14 +150,14 @@ void CComment::Format_msgComment(fstream &fileInput,CList<CComment,CComment&>& m
         }
         m_comment= comment;
         //adds the comment to the list.
-        m_listComment.AddTail(*this);
+        m_listComment.push_back(*this);
     }
 }
 
 /**
  * Parses the Signal Comments.
  */
-void CComment::Format_sigComment(fstream &fileInput,CList<CComment,CComment&>& m_listComment)
+void CComment::Format_sigComment(fstream &fileInput, list<CComment>& m_listComment)
 {
     char *pcToken, *pcLine;
     char acLine[defCON_MAX_LINE_LEN];
@@ -190,6 +190,6 @@ void CComment::Format_sigComment(fstream &fileInput,CList<CComment,CComment&>& m
         }
         m_comment= comment;
         //adds the comment to list.
-        m_listComment.AddTail(*this);
+        m_listComment.push_back(*this);
     }
 }

@@ -69,5 +69,5 @@ private:
     CList<CMessage,CMessage&> m_listMessages;
     CList<CParameters,CParameters&> m_listParameterArray[6];
     CList<CValueTable,CValueTable&> m_vTab;
-    CList<CComment,CComment&> m_listComments[4];
+    list<CComment> m_listComments[4];
 };
