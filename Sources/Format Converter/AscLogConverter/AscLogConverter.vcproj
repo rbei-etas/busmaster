@@ -49,7 +49,7 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
@@ -132,7 +132,7 @@
 				AdditionalIncludeDirectories="C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_AFXEXT;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="0"
 			/>
@@ -238,26 +238,6 @@
 				RelativePath=".\AscLogConverter.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\stdafx.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -276,10 +256,6 @@
 				RelativePath=".\Resource.h"
 				>
 			</File>
-			<File
-				RelativePath=".\stdafx.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -288,10 +264,6 @@
 			>
 			<File
 				RelativePath=".\AscLogConverter.rc"
-				>
-			</File>
-			<File
-				RelativePath=".\res\AscLogConverter.rc2"
 				>
 			</File>
 		</Filter>
@@ -338,10 +310,6 @@
 					Outputs="Asc_Log_Parser.c,Asc_Log_Parser.h"
 				/>
 			</FileConfiguration>
-		</File>
-		<File
-			RelativePath=".\ReadMe.txt"
-			>
 		</File>
 	</Files>
 	<Globals>

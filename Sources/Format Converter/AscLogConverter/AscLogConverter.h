@@ -1,8 +1,10 @@
 #pragma once
 
+/* Project includes */
+#include "../FormatConverterApp/BaseConverter.h"
+
 #define ERR_INPUT_FILE_NOTFOUND          -1
 #define ERR_OUTPUT_FILE_NOTFOUND         -2   
-#include "../FormatConverterApp/BaseConverter.h"
 
 class CAscLogConverter : public CBaseConverter
 {
