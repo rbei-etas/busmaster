@@ -15,29 +15,21 @@
 
 /**
  * \file      Definitions.h
- * \brief     This file has the definetion of all the constants used
+ * \brief     This file has the definition of all the constants used
  * \author    Mahesh B S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file has the definetion of all the constants used
+ * This file has the definition of all the constants used
  */
 
 #pragma once
 
-//Convertor.cpp
-#define defCON_MAX_MSGID_LEN 20 //maximum length of Message ID
+//Converter.cpp
 #define defCON_MAX_MSGN_LEN 1024
+
 //Signal.Cpp
-#define defCON_MAX_LINE_LEN 1026  //Maximum length of one line
-#define defCON_MAX_TOKN_LEN 1026   //Maximum length that any field can be
-
-
-//Valuedescriptor.cpp
-#define	defVDES_MAX_DESC_LEN 1024 // hopefully nobody puts value descriptor strings
-// more than this
-#define defVDES_MAX_OUT_STR  1024  // I don't expect a name more than 150 bytes
-
-
+#define defCON_MAX_LINE_LEN 1026  /* Maximum length of one line */
+#define defCON_MAX_TOKN_LEN 1026  /* Maximum length that any field can be */
 
 #define defCON_CHAR_LEN 1024
 typedef union _SIG_VALUE {

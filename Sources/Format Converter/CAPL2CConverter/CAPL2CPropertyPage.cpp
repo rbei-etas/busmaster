@@ -22,18 +22,14 @@
  * Implementation file for CCAPL2CPropertyPage class
  */
 
-// keyoptionDlg.cpp : implementation file
-#include "StdAfx.h"
+/* C include */
+#include <stdlib.h>
+
+/* Project includes */
 #include "CAPL2CPropertyPage.h"
-#include "List.h"
-#include "Functions.hpp"
 #include "ConstString.h"
-#include "stdlib.h"
-
-
-
-/////////////////////////////////////////////////////////////////////////////
-// CAboutDlg dialog used for App About
+#include "Functions.hpp"
+#include "List.h"
 
 class CAboutDlg : public CDialog
 {
@@ -717,4 +713,3 @@ void List::OnClose()
     OnTerminate();
     CDialog::OnClose();
 }
-

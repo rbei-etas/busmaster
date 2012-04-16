@@ -31,9 +31,6 @@
 #include "stdafx.h"
 #include "ParameterVal.h"
 
-//#define	defVDES_MAX_DESC_LEN 50 // hopefully nobody puts value descriptor strings
-// more than this
-
 class CParameters
 {
     //private data members

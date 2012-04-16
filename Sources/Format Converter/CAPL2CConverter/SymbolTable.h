@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <afxcoll.h>
+
 class CSymbolTable
 {
     CStringArray m_omData;

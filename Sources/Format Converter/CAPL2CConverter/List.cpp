@@ -22,8 +22,7 @@
  * Implementation file for CList class
  */
 
-
-#include "StdAfx.h"
+/* Project includes */
 #include "List.h"
 
 #ifdef _DEBUG

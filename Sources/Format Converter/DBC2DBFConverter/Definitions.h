@@ -25,15 +25,15 @@
 #pragma once
 
 //Converter.cpp
-#define defCON_MAX_LINE_LEN 2052  //Maximum no of char in one line
+#define defCON_MAX_LINE_LEN 2052  /* Maximum no of char in one line */
 #define defCON_TEMP_LEN 250
 
 //ValueTable.cpp
 #define defVTAB_MAX_LINE_LEN 1026
 #define defVTAB_MAX_TEMP_LEN 1126
-#define defVTAB_MAX_DESC_LEN 65  //Maximum length of a value descriptor
-#define defVTAB_MAX_TNAM_LEN 65  //Maximum length of the table name
-#define defVTAB_MAX_VALU_LEN 65  //Maximum length of value
+#define defVTAB_MAX_DESC_LEN 65  /* Maximum length of a value descriptor */
+#define defVTAB_MAX_TNAM_LEN 65  /* Maximum length of the table name */
+#define defVTAB_MAX_VALU_LEN 65  /* Maximum length of value */
 
 typedef union _SIG_VALUE
 {

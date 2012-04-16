@@ -1,4 +1,3 @@
-#include "StdAfx.h"
 #include "CAPL2CConverter.h"
 #include "Definitions.h"
 #include "Converter.h"

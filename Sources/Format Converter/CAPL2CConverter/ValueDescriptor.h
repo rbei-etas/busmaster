@@ -24,6 +24,7 @@
 
 #pragma once
 
+/* C++ includes */
 #include <string>
 
 using namespace std;
@@ -35,8 +36,8 @@ typedef union _SIG_VALUE {
     unsigned int uiValue;
     float fValue;
     double	dValue;
-    LONGLONG i64Value;
-    ULONGLONG ui64Value;
+    long long int i64Value;
+    unsigned long long int ui64Value;
 }	SIG_VALUE;
 
 class CValueDescriptor

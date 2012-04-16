@@ -24,8 +24,10 @@
 
 #pragma once
 
-#include <afxtempl.h>
+/* C++ includes */
 #include <string>
+
+/* Project includes */
 #include "Signal.h"
 
 #define defMSG_MAX_NAME_LEN		100 // I don't expect a name more than 100 bytes

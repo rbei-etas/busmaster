@@ -22,17 +22,21 @@
  * Interface file for CCAPL2CPropertyPage class
  */
 
-
-#if !defined(AFX_KEYOPTIONDLG_H__0AAD69C7_73D0_11D8_90D3_0010B5A6E0E0__INCLUDED_)
-#define AFX_KEYOPTIONDLG_H__0AAD69C7_73D0_11D8_90D3_0010B5A6E0E0__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
-/////////////////////////////////////////////////////////////////////////////
-// CCAPL2CPropertyPage dialog
+#define VC_EXTRALEAN		/* Exclude rarely-used stuff from Windows headers */
+#include <afxwin.h>         /* MFC core and standard components */
+#include <afxext.h>         /* MFC extensions */
+#include <afxdisp.h>        /* MFC Automation classes */
+#include <afxdtctl.h>		/* MFC support for Internet Explorer 4 Common Controls */
+#ifndef _AFX_NO_AFXCMN_SUPPORT
+#include <afxcmn.h>			/* MFC support for Windows Common Controls */
+#endif /* _AFX_NO_AFXCMN_SUPPORT */
+#include <afxdlgs.h>
+
+/* Project includes */
 #include "resource.h"
+
 class CCAPL2CPropertyPage : public CPropertyPage
 {
 // Construction
@@ -76,8 +80,3 @@ protected:
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_KEYOPTIONDLG_H__0AAD69C7_73D0_11D8_90D3_0010B5A6E0E0__INCLUDED_)

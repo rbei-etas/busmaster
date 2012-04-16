@@ -32,8 +32,6 @@
 
 using namespace std;
 
-#define max_TAB_NAME 1024
-
 class CValueTable
 {
     //private data members

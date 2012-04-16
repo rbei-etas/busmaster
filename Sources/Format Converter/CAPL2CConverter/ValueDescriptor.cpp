@@ -22,9 +22,7 @@
  * Implementation file for CValueDescriptor class
  */
 
-
-#include "StdAfx.h"
-//#include "CANDBConverter.h"
+/* Project includes */
 #include "ValueDescriptor.h"
 
 #ifdef _DEBUG
