@@ -24,6 +24,10 @@
 
 #pragma once
 
+#include <string>
+
+using namespace std;
+
 #define	defVDES_MAX_DESC_LEN 50 // hopefully nobody puts value descriptor strings
 // more than this
 typedef union _SIG_VALUE {
@@ -42,6 +46,6 @@ public:
     virtual ~CValueDescriptor();
 
 // data members
-    char		m_acDescriptor[defVDES_MAX_DESC_LEN];
+    string		m_acDescriptor;
     SIG_VALUE	m_value;
 };

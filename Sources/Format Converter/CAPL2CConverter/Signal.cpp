@@ -368,7 +368,7 @@ int CSignal::AddValueDescriptors(char *pcLine)
         {
             CValueDescriptor valDesc;
             valDesc.m_value.dValue = atof(acValue);
-            strcpy(valDesc.m_acDescriptor,acDesc);
+            valDesc.m_acDescriptor = acDesc;
 
             m_listValueDescriptor.AddTail(valDesc);
         }
