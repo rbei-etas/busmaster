@@ -24,11 +24,12 @@
 
 #pragma once
 
+#include <afxtempl.h>
+
 /* C++ includes */
 #include <fstream>
 
 /* Project includes */
-#include "stdafx.h"
 #include "ParameterVal.h"
 
 class CParameters

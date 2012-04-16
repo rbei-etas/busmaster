@@ -23,7 +23,6 @@
  */
 
 /* Project includes */
-#include "stdafx.h"
 #include "Converter.h"
 #include "DBF2DBCConverter.h"
 #include "Definitions.h"

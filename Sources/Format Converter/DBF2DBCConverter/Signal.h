@@ -25,7 +25,6 @@
 #pragma once
 
 /* Project includes */
-#include "stdafx.h"
 #include "ValueDescriptor.h"
 
 class CSignal

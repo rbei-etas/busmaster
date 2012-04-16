@@ -24,8 +24,10 @@
 
 #pragma once
 
+#include <afxtempl.h>
+
 /* Project includes */
-#include "stdafx.h"
+#include "Definitions.h"
 
 class CValueDescriptor
 {

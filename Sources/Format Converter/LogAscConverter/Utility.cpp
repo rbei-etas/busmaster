@@ -22,7 +22,9 @@
  * Implementation of the LogAscConverter class.
  */
 
-#include "stdafx.h"
+/* C includes */
+#include <atltime.h>
+#include <string.h>
 
 extern "C" int nGetDayFromDate(char* pchDate, char* pchMonth, char* chWeekDay)
 {
