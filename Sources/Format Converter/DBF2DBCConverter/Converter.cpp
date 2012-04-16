@@ -456,23 +456,24 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     // write to the output file
 
 	// write header
-    fileOutput << "VERSION \"\"\n\nBS_:";
-    fileOutput << "\n";
-    fileOutput << "\nBU_: ";
+    fileOutput << "VERSION \"\"" << endl;
+	fileOutput << endl;
+	fileOutput << "BS_:" << endl;
+	fileOutput << endl;
+    fileOutput << "BU_: ";
     //write all nodes
     POSITION pos = m_listNode.GetHeadPosition();
     while(pos != NULL)
     {
-        fileOutput << " ";
         string &node = m_listNode.GetNext(pos);
-        fileOutput << node.c_str();
+        fileOutput << " " << node.c_str();
     }
-    fileOutput << "\n";
+    fileOutput << endl;
 
     //Value Table
     CValueTable temp_vtab;
     temp_vtab.writeValueTabToFile (fileOutput,m_vTab);
-    fileOutput << "\n";
+    fileOutput << endl;
 
     //write messages
     pos = m_listMessages.GetHeadPosition();
@@ -489,8 +490,7 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
         string str = m_notProcessed.GetNext(pos);
         if(strcmp(str.substr(0, 3).c_str(), "EV_") == 0)
         {
-            fileOutput << str.c_str();
-            fileOutput << "\n";
+            fileOutput << str.c_str() << endl;
         }
     }
 
@@ -499,21 +499,15 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
 	list<CComment>::iterator cmt;
 	for(cmt=m_listComments[0].begin(); cmt!=m_listComments[0].end(); ++cmt)
     {
-        s_cmt = "CM_ ";
-		s_cmt += cmt->m_elementName;
-		s_cmt += " ";
-		s_cmt += cmt->m_comment;
-        fileOutput << s_cmt.c_str();
+		fileOutput << "CM_ " << cmt->m_elementName.c_str();
+		fileOutput << " " << cmt->m_comment.c_str();
     }
 
     //Comments ----- Node
 	for (cmt=m_listComments[1].begin(); cmt!=m_listComments[1].end(); ++cmt)
     {
-        s_cmt = "CM_ BU_ ";
-		s_cmt += cmt->m_elementName;
-		s_cmt += " ";
-		s_cmt += cmt->m_comment;
-        fileOutput << s_cmt.c_str();
+		fileOutput << "CM_ BU_ " << cmt->m_elementName.c_str();
+		fileOutput << " " << cmt->m_comment.c_str();
     }
     //Comments ----- Mesg
 	for (cmt=m_listComments[2].begin(); cmt!=m_listComments[2].end(); ++cmt)
@@ -618,8 +612,7 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
         string &str = m_notProcessed.GetNext(pos);
         if(strcmp(str.substr(0, 3).c_str(), "BA_") == 0)
         {
-			fileOutput << str.c_str();
-            fileOutput << "\n";
+            fileOutput << str.c_str() << endl;
         }
     }
     //VAL_
@@ -678,7 +671,8 @@ void CConverter::CreateLogFile(fstream &fileLog)
     // write to the output file
     char acMsgLine[200];
 
-    fileLog << "Conversion Error Log " << endl << endl;
+    fileLog << "Conversion Error Log" << endl;
+	fileLog << endl;
 
     POSITION pos = m_listMessages.GetHeadPosition();
     while(pos != NULL)
