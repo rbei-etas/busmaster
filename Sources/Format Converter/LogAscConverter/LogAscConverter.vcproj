@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="LogAscConverter"
 	ProjectGUID="{317B836D-9AC9-48F9-ADF7-8C069E3EE447}"
 	RootNamespace="LogAscConverter"
@@ -132,7 +132,7 @@
 				AdditionalIncludeDirectories="C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_AFXEXT;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="0"
 			/>
@@ -243,26 +243,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath=".\Utility.cpp"
 				>
 			</File>
@@ -284,10 +264,6 @@
 				RelativePath=".\Resource.h"
 				>
 			</File>
-			<File
-				RelativePath=".\stdafx.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -296,10 +272,6 @@
 			>
 			<File
 				RelativePath=".\LogAscConverter.rc"
-				>
-			</File>
-			<File
-				RelativePath=".\res\LogAscConverter.rc2"
 				>
 			</File>
 		</Filter>
@@ -346,10 +318,6 @@
 					Outputs="Log_Asc_Parser.c,Log_Asc_Parser.h"
 				/>
 			</FileConfiguration>
-		</File>
-		<File
-			RelativePath=".\ReadMe.txt"
-			>
 		</File>
 	</Files>
 	<Globals>
