@@ -29,7 +29,6 @@
 
 using namespace std;
 
-#define	defVDES_MAX_DESC_LEN 50 // hopefully nobody puts value descriptor strings
 // more than this
 typedef union _SIG_VALUE {
     int iValue;

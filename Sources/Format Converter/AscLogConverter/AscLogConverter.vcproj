@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="AscLogConverter"
 	ProjectGUID="{264D2ACF-4A03-488F-8864-3CB4C52FD010}"
 	RootNamespace="AscLogConverter"
@@ -257,16 +257,6 @@
 				>
 			</File>
 		</Filter>
-		<Filter
-			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
-			>
-			<File
-				RelativePath=".\AscLogConverter.rc"
-				>
-			</File>
-		</Filter>
 		<File
 			RelativePath=".\Asc_Log_Lexer.l"
 			>
@@ -284,7 +274,7 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="..\..\..\Tools\flex\flex.exe -i -oAsc_Log_Lexer.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
+					CommandLine="..\..\..\Tools\flex\flex.exe -i -L -oAsc_Log_Lexer.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
 					Outputs="ASC_LOG_Lexer.c"
 				/>
 			</FileConfiguration>
@@ -306,7 +296,7 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="..\..\..\Tools\bison\bison.exe -d --output=Asc_Log_Parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
+					CommandLine="..\..\..\Tools\bison\bison.exe -d -l --output=Asc_Log_Parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
 					Outputs="Asc_Log_Parser.c,Asc_Log_Parser.h"
 				/>
 			</FileConfiguration>

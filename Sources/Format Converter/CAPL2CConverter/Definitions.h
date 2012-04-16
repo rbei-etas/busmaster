@@ -24,17 +24,8 @@
 
 #pragma once
 
-//Converter.cpp
-#define defCON_MAX_MSGID_LEN 20 /* maximum length of Message ID */
-#define defCON_MAX_MSGN_LEN 32
-
 //Signal.Cpp
 #define defCON_MAX_LINE_LEN 1026  /* Maximum length of one line */
-#define defCON_MAX_TOKN_LEN 1026  /* Maximum length that any field can be */
-
-//Valuedescriptor.cpp
-#define	defVDES_MAX_DESC_LEN 150  /* hopefully nobody puts value descriptor strings */
-#define defVDES_MAX_OUT_STR  150  /* I don't expect a name more than 150 bytes */
 
 #define ERR_INPUT_FILE_NOTFOUND          -1
 #define ERR_OUTPUT_FILE_NOTFOUND         -2
