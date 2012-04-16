@@ -518,7 +518,7 @@ void CConverter::GenerateMessageList(CStdioFile& fileInput)
                         {
                             //	char *pcToken1;
                             CSignal& rSig =  rMsg.m_listSignals.GetNext(posSig);
-                            if(strcmp(rSig.m_acName,pcToken) == 0)
+                            if(strcmp(rSig.m_acName.c_str(),pcToken) == 0)
                             {
                                 rSig.AddValueDescriptors(pcLine + strlen(pcToken) + 1);
                                 break; // if we got the signal we wanted
@@ -553,7 +553,7 @@ void CConverter::GenerateMessageList(CStdioFile& fileInput)
                         while(posSig != NULL)
                         {
                             CSignal& rSig =  rMsg.m_listSignals.GetNext(posSig);
-                            if(strcmp(rSig.m_acName,pcToken) == 0)
+                            if(strcmp(rSig.m_acName.c_str(),pcToken) == 0)
                             {
                                 if(pcToken = strtok(NULL," :;")) // qualifier (1 or 2)
                                 {
@@ -614,13 +614,15 @@ void CConverter::CreateLogFile(CStdioFile& fileLog)
             // write signal only if it is valid
             if(sig.m_uiError != CSignal::SIG_EC_NO_ERR)
             {
+				string str;
                 // for the first wrong signal, log the message details also
                 if(acMsgLine[0] == '\0')
                 {
                     sprintf(acMsgLine,"\nMSG_ID: %u\tMSG_NAME: %s\n", msg.m_uiMsgID,msg.m_acName);
                     fileLog.WriteString(acMsgLine);
                 }
-                sprintf(acLine,"\tDiscarded SIG_NAME: %s, Reason: %s\n",sig.m_acName,sig.GetErrorString());
+				sig.GetErrorString(str);
+                sprintf(acLine,"\tDiscarded SIG_NAME: %s, Reason: %s\n",sig.m_acName,str.c_str());
                 fileLog.WriteString(acLine);
             }
         }

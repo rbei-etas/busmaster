@@ -25,8 +25,10 @@
 #pragma once
 
 #include "ValueDescriptor.h"
+#include <string>
 #include <afxtempl.h>
 
+using namespace std;
 
 #define defSIG_MAX_NAME_LEN	100 // normally name > 100 chars not expected
 #define defSIG_MAX_MULTIPLEX_LEN 33
@@ -36,7 +38,7 @@ class CValueDescriptor;
 class CSignal
 {
 public:
-    const char* GetErrorString();
+    void GetErrorString(string &str);
     unsigned int Validate(unsigned char ucFormat = 0);
     unsigned int m_uiError;
     int AddValueDescriptors(char * pcLine);
@@ -49,20 +51,19 @@ public:
     enum SIG_ERROR_CODE {SIG_EC_NO_ERR, SIG_EC_DATA_FORMAT_ERR,SIG_EC_LENGTH_ERR,SIG_EC_STARTBIT_ERR,SIG_EC_TYPE_ERR, SIG_EC_OVERLAP};
 // data members
 
-    char			m_acName[defSIG_MAX_NAME_LEN];
-    char            m_acMultiplex[defSIG_MAX_MULTIPLEX_LEN];
-    unsigned char	m_ucLength;
-    unsigned char	m_ucWhichByte;
-    unsigned char	m_ucStartBit;
+    string          m_acName;
+    string          m_acMultiplex;
+    unsigned int	m_ucLength;
+    unsigned int	m_ucWhichByte;
+    unsigned int	m_ucStartBit;
     char			m_ucType;
     SIG_VALUE		m_MaxValue;
     SIG_VALUE		m_MinValue;
     unsigned char	m_ucDataFormat;
     float			m_fOffset;
     float			m_fScaleFactor;
-    char			m_acUnit[defSIG_MAX_UNIT_LEN];
-    CString			m_rxNode;
-    static const char *m_pacErrorStrings[];
+    string			m_acUnit;
+    string			m_rxNode;
 
     CList<CValueDescriptor,CValueDescriptor>	m_listValueDescriptor;
 };

@@ -23,22 +23,15 @@
  */
 
 #include "StdAfx.h"
-//#include "CANDBConverter.h"
 #include "Signal.h"
-
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
 
 /**
  * Construction
  */
 CSignal::CSignal()
 {
-    m_acMultiplex[0]= '\0';
-    m_acName[0] = '\0'; //
+    m_acMultiplex = "";
+    m_acName = "";
     m_ucLength = 1; // minimum signal length should be 1 bit
     m_ucWhichByte = 1; // ONE based index
     m_ucStartBit = 0; // ZERO based index
@@ -48,9 +41,9 @@ CSignal::CSignal()
     m_ucDataFormat = SIG_DF_INTEL;
     m_fOffset = 0.0f;
     m_fScaleFactor = 1.0f;
-    m_acUnit[0] = '\0';
+    m_acUnit = "";
     m_uiError = SIG_EC_NO_ERR;
-    m_rxNode = "\0";
+    m_rxNode = "";
     m_listValueDescriptor.RemoveAll();
 }
 
@@ -79,8 +72,8 @@ CSignal& CSignal::operator=(CSignal& signal)
     }
 
     // copy all the data members except the list
-    strcpy(m_acMultiplex,signal.m_acMultiplex);
-    strcpy(m_acName,signal.m_acName);
+    m_acMultiplex = signal.m_acMultiplex;
+    m_acName = signal.m_acName;
     m_ucLength = signal.m_ucLength;
     m_ucWhichByte = signal.m_ucWhichByte;
     m_ucStartBit = signal.m_ucStartBit;
@@ -90,7 +83,7 @@ CSignal& CSignal::operator=(CSignal& signal)
     m_ucDataFormat = signal.m_ucDataFormat;
     m_fOffset = signal.m_fOffset;
     m_fScaleFactor = signal.m_fScaleFactor;
-    strcpy(m_acUnit,signal.m_acUnit);
+    m_acUnit = signal.m_acUnit;
     m_uiError = signal.m_uiError;
     m_rxNode = signal.m_rxNode;
     // now copy the list
@@ -129,7 +122,7 @@ int CSignal::Format(char *pcLine)
     }
     *pcTemp = '\0'; // terminate it
 
-    strcpy(m_acName,acTemp); // copy the name to the signal's data member
+    m_acName = acTemp; // copy the name to the signal's data member
     pcTemp = acTemp; // reset pcTemp to start of buffer
 
 
@@ -141,7 +134,7 @@ int CSignal::Format(char *pcLine)
         *pcTemp++ = *pcToken++; // copy SIG_NAME only, i.e. till first 'space'
     }
     *pcTemp = '\0'; // terminate it
-    strcpy(m_acMultiplex,acTemp); // copy the name to the signal's data member
+    m_acMultiplex = acTemp; // copy the name to the signal's data member
 
     pcTemp = acTemp; // reset pcTemp to start of buffer
 
@@ -296,7 +289,7 @@ int CSignal::Format(char *pcLine)
         *pcTemp++ = *pcToken++;
     }
     *pcTemp='\0';
-    strcpy(m_acUnit,acTemp); // copy UNIT to corresponding data member.
+    m_acUnit = acTemp; // copy UNIT to corresponding data member.
     pcToken++;
 
     while(*pcToken && *pcToken != ' ')
@@ -640,20 +633,29 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
     return (m_uiError = SIG_EC_NO_ERR);
 }
 
-/**
- * SIG_EC_NO_ERR, SIG_EC_DATA_FORMAT_ERR,SIG_EC_LENGTH_ERR,SIG_EC_STARTBIT_ERR,SIG_EC_TYPE_ERR
- */
-const char* CSignal::m_pacErrorStrings[] =
+void CSignal::GetErrorString(string &str)
 {
-    "No error",
-    "Data format mismatch",
-    "Invalid signal length",
-    "Invalid start bit",
-    "Invalid signal type",
-    "Overlapping signal"
-};
-
-const char* CSignal::GetErrorString()
-{
-    return m_pacErrorStrings[m_uiError];
+	switch(m_uiError) {
+		case SIG_EC_NO_ERR:
+			str = "No error";
+			break;
+		case SIG_EC_DATA_FORMAT_ERR:
+			str = "Data format mismatch";
+			break;
+		case SIG_EC_LENGTH_ERR:
+			str = "Invalid signal length";
+			break;
+		case SIG_EC_STARTBIT_ERR:
+			str = "Invalid start bit";
+			break;
+		case SIG_EC_TYPE_ERR:
+			str = "Invalid signal type";
+			break;
+		case SIG_EC_OVERLAP:
+			str = "Overlapping signal";
+			break;
+		default:
+			str = "Unknown";
+			break;
+	}
 }
