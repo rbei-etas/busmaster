@@ -31,7 +31,7 @@
 
 class CLogAscConverter : public CBaseConverter
 {
-    CString m_omstrConversionStatus;
+    string m_omstrConversionStatus;
     HRESULT m_hResult;
 public:
     CLogAscConverter(void);
