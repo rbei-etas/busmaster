@@ -601,7 +601,7 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
                     while(posSig != NULL)
                     {
                         CSignal &sig = msg.m_listSignals.GetNext(posSig);
-                        if((strcmp(sig.m_sName.c_str(), vParam.m_SignalName) == 0) && (sig.m_uiError == CSignal::SIG_EC_NO_ERR))
+                        if((sig.m_sName == vParam.m_SignalName) && (sig.m_uiError == CSignal::SIG_EC_NO_ERR))
                         {
                             vParam.WriteSigValuesToFile(fileOutput,rParam.m_ParamType,rParam.m_ParamName);
                             break;
