@@ -329,10 +329,6 @@
 				RelativePath=".\DBC2DBFConverter.rc"
 				>
 			</File>
-			<File
-				RelativePath=".\res\DBC2DBFConverter.rc2"
-				>
-			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
