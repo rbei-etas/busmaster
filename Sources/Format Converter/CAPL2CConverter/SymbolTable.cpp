@@ -22,8 +22,7 @@
  * Implementation file for CSymbolTable class
  */
 
-
-#include "StdAfx.h"
+/* Project includes */
 #include "SymbolTable.h"
 
 #ifdef _DEBUG

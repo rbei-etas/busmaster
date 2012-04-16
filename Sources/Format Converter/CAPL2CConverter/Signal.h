@@ -24,9 +24,12 @@
 
 #pragma once
 
-#include "ValueDescriptor.h"
+/* C++ includes */
 #include <string>
 #include <afxtempl.h>
+
+/* Project includes */
+#include "ValueDescriptor.h"
 
 using namespace std;
 

@@ -32,6 +32,7 @@ class CDBF2DBCConverter : public CBaseConverter
 {
     string m_omstrConversionStatus;
     HRESULT m_hResult;
+
 public:
     CDBF2DBCConverter(void);
     virtual HRESULT GetInputFileFilters(string&, string& );

@@ -22,7 +22,7 @@
  * Implementation file for CSignal class
  */
 
-#include "StdAfx.h"
+/* Project includes */
 #include "Signal.h"
 
 /**

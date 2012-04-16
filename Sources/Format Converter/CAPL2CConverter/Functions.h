@@ -24,13 +24,16 @@
 
 #pragma once
 
-#include<string.h>
-#include<stdlib.h>
+/* C includes */
+#include <stdlib.h>
+
+/* C++ includes */
+#include <string>
+
+/* Project includes */
 #include "ConstString.h"
-#include "SymbolTable.h"
 #include "Converter.h"
-
-
+#include "SymbolTable.h"
 
 char acSptdKey[defINT_SizeofacAltKeyArray];//to store supported keys
 CSymbolTable ouUnSptdKey;

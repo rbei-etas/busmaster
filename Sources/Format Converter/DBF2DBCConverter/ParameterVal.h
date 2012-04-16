@@ -32,8 +32,6 @@
 
 using namespace std;
 
-#define	defNODE_MAX_LEN 50 // hopefully nobody puts value descriptor strings
-
 class CParameterValues
 {
     //public member functions

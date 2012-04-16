@@ -22,19 +22,20 @@
  * Implementation file for parsing functions
  */
 
-#include "StdAfx.h"
 #ifndef _LEXER_H
 #define _LEXER_H
 #define INVALID 0xffffffff
 #include "lexer.h"
 #endif
+
+/* Project includes */
 #include "ConstString.h"
 #include "Selectdb.h"
 #include "Converter.h"
+#include "List.h"
 #include "Message.h"
 #include "Signal.h"
 #include "ValueDescriptor.h"
-
 
 /**
  * This will extract the name of the key from yytext. If key is

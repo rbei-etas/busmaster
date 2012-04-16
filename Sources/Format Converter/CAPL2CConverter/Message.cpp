@@ -22,9 +22,7 @@
  * Implementation file for CMessage class
  */
 
-
-#include "StdAfx.h"
-//#include "CANDBConverter.h"
+/* Project includes */
 #include "Message.h"
 
 #ifdef _DEBUG

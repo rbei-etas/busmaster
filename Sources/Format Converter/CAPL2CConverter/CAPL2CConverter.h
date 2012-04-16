@@ -23,6 +23,8 @@
  */
 
 #pragma once
+
+/* Project includes */
 #include "../FormatConverterApp/BaseConverter.h"
 
 class CCAPL2CConverter : public CBaseConverter

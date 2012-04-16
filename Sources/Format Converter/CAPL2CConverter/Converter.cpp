@@ -22,14 +22,10 @@
  * Implementation file for CConverter class
  */
 
-
-#include "StdAfx.h"
-//#include "CANDBConverter.h"
-#include "Signal.h"
-#include "Converter.h"
+/* Project includes */
 #include "ConstString.h"
-
-
+#include "Converter.h"
+#include "Signal.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE

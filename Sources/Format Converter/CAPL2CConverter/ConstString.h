@@ -165,14 +165,3 @@
 #define defSTR_END_BRAC "]"
 #define defSTR_DB_VER		defSTR_START_BRAC"DATABASE_VERSION"defSTR_END_BRAC
 #define defSTR_VER_NO		"1.1"
-
-
-
-
-
-
-
-
-
-
-

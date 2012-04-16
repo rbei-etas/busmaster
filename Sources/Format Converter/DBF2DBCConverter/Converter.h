@@ -41,8 +41,6 @@ public:
     CConverter();
     virtual ~CConverter();
 
-protected:
-    static const char m_accHeader[];
 public:
     unsigned int Convert(string sCanoeFile,string sCanMonFile);
     void GetResultString(string &str);
@@ -50,9 +48,9 @@ public:
     static bool bLOG_ENTERED;
     static unsigned int ucMsg_DLC;
     string m_omLogFilePath;
-private:
 
-    enum {CON_RC_NOERROR,CON_RC_COMPLETED_WITH_ERROR,CON_RC_FILEOPEN_ERROR_INFILE,
+private:
+    enum {CON_RC_NOERROR=0,CON_RC_COMPLETED_WITH_ERROR,CON_RC_FILEOPEN_ERROR_INFILE,
           CON_RC_FILEOPEN_ERROR_OUTFILE,CON_RC_FORMAT_ERROR_INFILE,CON_RC_FILEOPEN_ERROR_LOGFILE
          };
 
@@ -65,7 +63,6 @@ private:
     void DecryptData(CList<string,string& > &m_notProcessed);
 
     unsigned int m_uiResultCode;
-    static const char *m_pacResultStrings[];
     CList<string,string& > m_notProcessed;
     CList<string,string& > m_listNode;
     CList<CMessage,CMessage&> m_listMessages;

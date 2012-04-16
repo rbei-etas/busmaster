@@ -22,8 +22,7 @@
  * Implementation file for CSelectdb class
  */
 
-
-#include "StdAfx.h"
+/* Project includes */
 #include "Selectdb.h"
 
 #ifdef _DEBUG
