@@ -39,9 +39,9 @@ class CParameterValues
     //public member functions
 public:
     enum MSG_FRAME_FORMAT {MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
-    char            m_NodeName[defNODE_MAX_LEN];
+    string          m_NodeName;
     unsigned int    m_MsgId;
-    char            m_SignalName[defNODE_MAX_LEN];
+    string          m_SignalName;
     char			m_cFrameFormat;
     SIG_VALUE       m_ParamVal;
 
