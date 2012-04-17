@@ -71,8 +71,8 @@
     <section>
       <title>Installation</title>
       <p>DITA-OT requires the installation of the Java Development Kit (JDK). It is not sufficient to have the Java Runtime Environment (JRE) installed. The current version (Oct 2011) is 1.6.0_27. The standard installation folder is <filepath>C:\Program Files\Java\jdk1.6.0_27</filepath>.</p>
-      <p>DITA-OT is installed in the old versions 1.3.1 and 1.4 by the authoring tool Serna Free 4.3. They get installed as plugins in the folder <filepath>C:\Program Files\Syntext\Serna Free 4.3\plugins\dita\DITA-OT1.3.1</filepath> and at <filepath>C:\Program Files\Syntext\Serna Free 4.3\plugins\dita\DITA-OT1.4</filepath>.</p>
-      <p>Following the directory structure of Serna, it&apos;s best to install DITA 1.5.3 by un-zipping it to the folder <filepath>C:\Program Files\Syntext\Serna Free 4.3\plugins\dita\DITA-OT1.5.3</filepath>.</p>
+      <p>DITA-OT is installed in the old versions 1.3.1 and 1.4 by the authoring tool Serna Free 4.3. They get installed as plugins in the folder <filepath>%ProgramFiles%\Syntext\Serna Free 4.3\plugins\dita\DITA-OT1.3.1</filepath> and at <filepath>%ProgramFiles%\Syntext\Serna Free 4.3\plugins\dita\DITA-OT1.4</filepath>.</p>
+      <p>Following the directory structure of Serna, it&apos;s best to install DITA 1.5.3 by un-zipping it to the folder <filepath>%ProgramFiles%\Syntext\Serna Free 4.3\plugins\dita\DITA-OT1.5.3</filepath>.</p>
     </section>
     <section>
       <title>Configuration</title>

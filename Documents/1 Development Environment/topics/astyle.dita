@@ -20,14 +20,14 @@
     </section>
     <section>
       <title>Installation</title>
-      <p>Extract the <filepath>AStyle_2.02_windows.zip</filepath> file. It will create the following folders:</p>
+      <p>Extract the <filepath>AStyle_2.02_windows.zip</filepath> file to <filepath>%ProgramFiles%\AStyle</filepath>. It will create the following folders:</p>
       <ul>
         <li><filepath>bin</filepath>: Contains the program <filepath>AStyle.exe</filepath>.</li>
         <li><filepath>build</filepath> : Contains files to build the source code of AStyle. This is not necessary for BUSMASTER.</li>
         <li><filepath>doc</filepath>: Contains the documentation, which could be helpful for the usage.</li>
         <li><filepath>src</filepath>: Contains the source code of AStyle. This is not necessary for BUSMASTER.</li>
       </ul>
-      <p>Only the program <filepath>AStyle.exe</filepath> is necessary for the usage with BUSMASTER. It&apos;s recommended to copy to an existing folder that is in your %PATH% environmental variable.</p>
+      <p>Only the program <filepath>AStyle.exe</filepath> is necessary for the usage with BUSMASTER. It&apos;s recommended to add the <filepath>bin</filepath> folder to your %PATH% environmental variable.</p>
     </section>
     <section>
       <title>Configuration</title>
@@ -38,9 +38,12 @@
       <p>Go to your command line (e.g. by executing <filepath>cmd</filepath> in the start menu). And type:</p>
       <p><cmdname>astyle -r -s4 -S -c *.cpp *.h</cmdname></p>
       <p>This will recursively run over all source code files of BUSMASTER and will adjust the style as necessary. The modifications will directly done in the respective file. The original unmodified files are available with the file name extension <filepath>.orig</filepath>.</p>
-      <p>Before you commit these file to the project repository, make sure that the modifications are useful and adjust them if necessary. This could be necessary, e.g. in case you want to define an <codeph>enum</codeph> with &quot;<codeph>=</codeph>&quot; signs all in a row.</p>
+      <p>Before you commit these file to the project repository, make sure that the modifications are useful and adjust them if necessary.</p>
       <p>The recommended options for C++ software at ETAS are:</p>
-      <p><cmdname>astyle --style=ansi --delete-empty-lines --break-blocks --add-brackets --indent-namespaces --indent-preprocessor --indent-switches --convert-tabs --align-pointer=type *.cpp *.h</cmdname></p>
+      <note>
+        <cmdname>astyle --style=ansi --delete-empty-lines --break-blocks --add-brackets --indent-namespaces --indent-preprocessor --indent-switches --convert-tabs --align-pointer=type *.cpp *.h</cmdname>
+      </note>
+      <note>In <filepath>Tests\AStyle</filepath> there is a test defined that executes AStyle and reports difference between the existing files and the generated files from AStyle.</note>
     </section>
   </body>
 </topic>
