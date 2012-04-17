@@ -16,7 +16,9 @@ call:test "install_full"
 
 call:testgroup "Format Converter"
 call:test "dbc2dbf_001"
+call:test "dbc2dbf_002"
 call:test "dbf2dbc_001"
+call:test "dbf2dbc_002"
 
 call:testgroup "Installer"
 call:test "uninstall"
