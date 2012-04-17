@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="jenkins" xml:lang="en-us">
+  <title>Jenkins - Continuous Integration Server</title>
+  <prolog>
+    <author>Tobias Lorenz</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <section>
+      <title>Description</title>
+      <p>Continuous Integration environments fulfills the following tasks:</p>
+      <ul>
+        <li>Automatic building (incl. download of source code)</li>
+        <li>Automatic testing (incl. upload of test results)</li>
+        <li>Automatic delivery (incl. upload of installer, e.g. in form of nightly builds)</li>
+      </ul>
+      <p>There are many continuous integration systems available and used by Open Source projects.</p>
+      <p>Jenkins is nowadays the most advanced and most often used continuous integration system. It only requires a JDK installation on the target system to run. If the jobs within the system require tools they need to be installed too, e.g. Visual C++.</p>
+      <p>As Jenkins is written in Java it runs on any platform, e.g. Windows and Linux.</p>
+      <p>We&apos;ve choosen Jenkins for BUSMASTER due to the aforementioned arguments.</p>
+    </section>
+    <section>
+      <title>Download</title>
+      <p>Jenkins is available under: <xref href="http://cppcheck.sourceforge.net/" scope="external">http://jenkins-ci.org</xref>. Just download the most current version, e.g. version 1.457 (as of 2012-04-17).</p>
+    </section>
+    <section>
+      <title>Installation</title>
+      <p>Jenkins only need to be installed on the master node. The slaves can be started via Java Web Start.</p>
+      <p>On the master start the installer. The standard installation folder is <filepath>%ProgramFiles%\Jenkins</filepath>.</p>
+    </section>
+    <section>
+      <title>Configuration</title>
+      <p>All BUSMASTER components incl. builds, tests and the installer can be executed with a <filepath>build.bat</filepath> script. Create a Jenkins job for any of these scripts and bring them in dependency.</p>
+    </section>
+    <section>
+      <title>Usage</title>
+      <p>The Jenkins server is accessable on port 8080 of the server it is running on.</p>
+      <p>Jenkins can be usually configured to automatically poll a source code management system or a timely manner. It can also  get automatically triggered by a platform like <xref href="http://github.com" scope="external">http://github.com</xref>. In this case this needs to be configured on the platform.</p>
+    </section>
+  </body>
+</topic>
