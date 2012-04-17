@@ -12,7 +12,6 @@
   <topicref href="topics/license_information.dita" type="topic" toc="no"/>
   <topichead navtitle="Download">
     <topicref href="topics/git.dita" type="topic"/>
-    <topicref href="topics/wget.dita" type="topic"/>
   </topichead>
   <topichead navtitle="Build">
     <topicref href="topics/msbuild.dita" type="topic"/>
