@@ -32,4 +32,7 @@
   <topichead navtitle="Installation">
     <topicref href="topics/nsis.dita" type="topic"/>
   </topichead>
+  <topichead navtitle="Continuous Integration Server">
+    <topicref href="topics/jenkins.dita" type="topic"/>
+  </topichead>
 </map>
