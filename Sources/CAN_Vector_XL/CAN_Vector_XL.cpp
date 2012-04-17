@@ -1846,7 +1846,12 @@ static int nGetNoOfConnectedHardware(void)
 			// at the moment there is no VN8910 XLAPI support!
 			if ( /*(g_xlDrvConfig.channel[i].channelBusCapabilities & XL_BUS_ACTIVE_CAP_CAN)
 			  &&*/ (g_xlDrvConfig.channel[i].hwType != XL_HWTYPE_VN8900) ) 
-			{ 	        							
+			{ 	    
+				if ( (g_xlDrvConfig.channel[i].hwType == XL_HWTYPE_CANCASEXL) &&
+					 !(g_xlDrvConfig.channel[i].channelBusCapabilities & XL_BUS_ACTIVE_CAP_CAN) )
+				{	
+					continue;
+				}	
 				nResult++;
 			}
 		}
@@ -1898,7 +1903,7 @@ static int nCreateMultipleHardwareNetwork()
 	int nHwCount = sg_ucNoOfHardware;
 	int nChannels = 0;
     // Get Hardware Network Map
-	for (int nCount = 0; nCount < nHwCount; nCount++)
+	for (int nCount = 0; nCount < g_xlDrvConfig.channelCount; nCount++)
 	{
 		// we take all hardware we found and
 		// check that we have only CAN cabs/piggy's
@@ -1906,12 +1911,17 @@ static int nCreateMultipleHardwareNetwork()
 		if ( /*(g_xlDrvConfig.channel[nCount].channelBusCapabilities & XL_BUS_ACTIVE_CAP_CAN)
 			  && */(g_xlDrvConfig.channel[nCount].hwType != XL_HWTYPE_VN8900) ) 
 		{ 
+			if ( (g_xlDrvConfig.channel[nCount].hwType == XL_HWTYPE_CANCASEXL) &&
+				 !(g_xlDrvConfig.channel[nCount].channelBusCapabilities & XL_BUS_ACTIVE_CAP_CAN) )
+			{
+				continue;
+			}
 			sg_HardwareIntr[nChannels].m_dwIdInterface = nCount;
 			sg_HardwareIntr[nChannels].m_dwVendor = g_xlDrvConfig.channel[nCount].serialNumber;		
 			/*_stprintf(acTempStr, _T("SN: %d, Port ID: %d"), sg_HardwareIntr[nChannels].m_dwVendor, 
 																	sg_HardwareIntr[nChannels].m_dwIdInterface);*/
 			_tcscpy(sg_HardwareIntr[nChannels].m_acDescription, g_xlDrvConfig.channel[nCount].name);			
-			nChannels++;
+			nChannels++;			
 		}
 	}
 	nHwCount = nChannels;	//Reassign hardware count according to final list of channels supported.
