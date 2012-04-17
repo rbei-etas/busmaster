@@ -28,8 +28,8 @@
     </section>
     <section>
       <title>Installation</title>
-      <p>Git for Windows is installed by executing the installer <filepath>Git-1.7.7-preview20111014.exe</filepath>. The standard installation folder is <filepath>C:\Program Files\Git</filepath>.</p>
-      <p>Git Extensions is installed by executing the installer <filepath>GitExtensions225SetupComplete.msi</filepath>. The standard installation folder is <filepath>C:\Program Files\GitExtensions</filepath>.</p>
+      <p>Git for Windows is installed by executing the installer <filepath>Git-1.7.7-preview20111014.exe</filepath>. The standard installation folder is <filepath>%ProgramFiles%\Git</filepath>.</p>
+      <p>Git Extensions is installed by executing the installer <filepath>GitExtensions225SetupComplete.msi</filepath>. The standard installation folder is <filepath>%ProgramFiles%\GitExtensions</filepath>.</p>
     </section>
     <section>
       <title>Configuration</title>
