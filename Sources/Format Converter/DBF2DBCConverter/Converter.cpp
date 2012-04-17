@@ -458,9 +458,10 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
 	// write header
     fileOutput << "VERSION \"\"" << endl;
 	fileOutput << endl;
+	fileOutput << endl;
 	fileOutput << "BS_:" << endl;
 	fileOutput << endl;
-    fileOutput << "BU_: ";
+    fileOutput << "BU_:";
     //write all nodes
     POSITION pos = m_listNode.GetHeadPosition();
     while(pos != NULL)
@@ -469,6 +470,7 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
         fileOutput << " " << node.c_str();
     }
     fileOutput << endl;
+	fileOutput << endl;
 
     //Value Table
     CValueTable temp_vtab;
@@ -605,7 +607,10 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
             }
         }
     }
+	fileOutput << endl;
+	fileOutput << endl;
 
+	//BA_
     pos = m_notProcessed.GetHeadPosition();
     while(pos != NULL)
     {
@@ -648,18 +653,19 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
             CSignal& sig = msg.m_listSignals.GetNext(possig);
             if(sig.m_ucType == 'F')
             {
-				fileOutput << " SIG_VALTYPE_ " << dec << msg.m_uiMsgID;
+				fileOutput << "SIG_VALTYPE_ " << dec << msg.m_uiMsgID;
 				fileOutput << " " << sig.m_sName.c_str();
 				fileOutput << " : 1;" << endl;
             }
             if(sig.m_ucType == 'D')
             {
-				fileOutput << " SIG_VALTYPE_ " << dec << msg.m_uiMsgID;
+				fileOutput << "SIG_VALTYPE_ " << dec << msg.m_uiMsgID;
 				fileOutput << " " << sig.m_sName.c_str();
 				fileOutput << " : 2;" << endl;
             }
         }
     }
+	fileOutput << endl;
     return bResult;
 }
 

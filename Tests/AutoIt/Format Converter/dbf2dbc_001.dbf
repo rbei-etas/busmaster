@@ -25,11 +25,11 @@
 [END_MSG]
 
 [START_MSG] Message_301_8_M_S,769,1,1,0,S,
-[START_SIGNALS] Signal_8_Motorola_Signed,8,1,0,I,127,0,0,0.000000,1.000000,,,
+[START_SIGNALS] Signal_8_Motorola_Signed,8,1,0,I,127,-128,0,0.000000,1.000000,,,
 [END_MSG]
 
 [START_MSG] Message_300_8_I_S,768,1,1,1,S,
-[START_SIGNALS] Signal_8_Intel_Signed,8,1,0,I,127,0,1,0.000000,1.000000,,,
+[START_SIGNALS] Signal_8_Intel_Signed,8,1,0,I,127,-128,1,0.000000,1.000000,,,
 [END_MSG]
 
 [START_MSG] Message_200_E_0,512,0,0,1,X,
