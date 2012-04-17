@@ -101,7 +101,7 @@ unsigned int CConverter::Convert(string &sCanoeFile, string &sCanMonFile)
 
     if(!bRes)
     {
-        string sLogFile = sCanoeFile.substr(0, sCanoeFile.length()-4);
+        string sLogFile = sCanMonFile.substr(0, sCanoeFile.length()-4);
         sLogFile += ".log";
         m_omLogFilePath = sLogFile;
         fstream fileLog;
