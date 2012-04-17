@@ -517,7 +517,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
             if(m_MaxValue.iValue == 0 && m_MinValue.iValue == 0)
             {
                 m_MaxValue.iValue = iDefault;
-                m_MinValue.iValue = 0;
+                m_MinValue.iValue = -iDefault-1;
                 m_uiError = SIG_EC_OVERFLOW;
             }
             //if Max value out of range reset it to maximum possible value
@@ -582,7 +582,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
             if(m_MaxValue.i64Value == 0 && m_MinValue.i64Value == 0)
             {
                 m_MaxValue.i64Value = i64Default;
-                m_MinValue.i64Value = 0;
+                m_MinValue.i64Value = -i64Default-1;
                 m_uiError = SIG_EC_OVERFLOW;
             }
             //if Max value out of range reset it to maximum possible value

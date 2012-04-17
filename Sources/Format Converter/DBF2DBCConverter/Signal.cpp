@@ -189,7 +189,7 @@ int CSignal::Format(char *pcLine)
     if(nIndex != -1)
     {
         int nLength = strTemp.length();
-        strTemp = strTemp.substr(nLength - nIndex -1, nIndex);
+        strTemp = strTemp.substr(nLength - nIndex - 1, nIndex);
         nIndex = strTemp.find(',');
         if(nIndex != -1)
         {
@@ -209,9 +209,9 @@ int CSignal::Format(char *pcLine)
     //rx'ing nodes
 	string strNodes = pcToken;
 	nIndex = strNodes.find(",", 0);
-	strNodes = strNodes.substr(nIndex+1, strNodes.length()-1);
+	strNodes = strNodes.substr(nIndex+1);
 	nIndex = strNodes.find(",", nIndex);
-	strNodes = strNodes.substr(nIndex+1, strNodes.length()-1);
+	strNodes = strNodes.substr(nIndex+1);
 	m_sNode = strNodes;
 	while ((nIndex = m_sNode.find('\n', 0)) != string::npos) {
 		m_sNode.replace(nIndex, 1, " ");
@@ -307,13 +307,18 @@ bool CSignal::WriteSignaltofile(fstream &fileOutput)
     {
 		fileOutput << " SG_ " << m_sName;
 		fileOutput << " " << m_sMultiplex;
-		fileOutput << ":  " << dec << m_ucStartBit;
+		fileOutput << ": " << dec << m_ucStartBit;
 		fileOutput << "|" << dec << m_ucLength;
 		fileOutput << "@" << m_ucDataFormat;
-		fileOutput << "+ (" << fixed << m_fScaleFactor;
-		fileOutput << "," << fixed << m_fOffset;
-		fileOutput << ") [" << fixed << m_MinValue.dValue;
-		fileOutput << "|" << fixed << m_MaxValue.dValue;
+		if ((m_ucType == SIG_TYPE_UINT) || (m_ucType == SIG_TYPE_UINT64)) {
+			fileOutput << "+";
+		} else {
+			fileOutput << "-";
+		}
+		fileOutput << " (" << m_fScaleFactor;
+		fileOutput << "," << m_fOffset;
+		fileOutput << ") [" << m_MinValue.dValue;
+		fileOutput << "|" << m_MaxValue.dValue;
 		fileOutput << "] " << m_sUnit;
 		fileOutput << " " << m_sNode << endl;
     }
