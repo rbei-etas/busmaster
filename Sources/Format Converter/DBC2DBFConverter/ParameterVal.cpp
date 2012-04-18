@@ -16,7 +16,7 @@
 /**
  * \file      ParameterVal.cpp
  * \brief     Implementation of parameter value class
- * \author    Padmaja A, Tobias Lorenz
+ * \authors   Padmaja A, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of the parameter value class.
@@ -28,7 +28,9 @@
 using namespace std;
 
 /**
- * \brief Default Constructor used to initialse parameterVal class object.
+ * \brief Constructor of CParameterValues
+ *
+ * Default Constructor used to initialse parameterVal class object.
  */
 CParameterValues::CParameterValues()
 {
@@ -36,24 +38,28 @@ CParameterValues::CParameterValues()
     m_MsgId = 0;
     m_ParamVal.dValue = 0;
     m_SignalName = "";
-	m_cFrameFormat = MSG_FF_STANDARD;
+    m_cFrameFormat = MSG_FF_STANDARD;
     m_ParamVal.iValue = -1;
     m_ParamVal.fValue = -1;
     m_ParamVal.uiValue = -1;
 }
 
-
 /**
  * \brief Destructor
+ *
+ * Destructor of CParameterValues
  */
 CParameterValues::~CParameterValues()
 {
-
 }
 
 
 /**
- * \brief copy operator
+ * \brief     copy operator
+ * \param[in] param Data to assign from
+ * \return    Reference to local object with new contents
+ *
+ * Copies the contents of param to the local object.
  */
 CParameterValues& CParameterValues::operator=(CParameterValues& param)
 {
@@ -68,7 +74,10 @@ CParameterValues& CParameterValues::operator=(CParameterValues& param)
 
 
 /**
- * \brief Parses the Node Parameter Values
+ * \brief     Parses the Node Parameter Values
+ * \param[in] paramType Parameter Type
+ * \param[in] pcLine Input line
+ * \return    Status code
  *
  * Parses the Node Parameter Values other than Default value from the input CanoeDB file.
  */
@@ -92,9 +101,11 @@ int CParameterValues::GetNodeParams(string &paramType, char *pcLine)
     return success;
 }
 
-
 /**
- * \brief Parses the Network Parameter Values
+ * \brief     Parses the Network Parameter Values
+ * \param[in] paramType Parameter Type
+ * \param[in] pcLine Input line
+ * \return    Status code
  *
  * Parses the Network Parameter Values other than Default value from the input CanoeDB file.
  */
@@ -109,9 +120,11 @@ int CParameterValues::GetNetParams(string &paramType, char *pcLine)
     return success;
 }
 
-
 /**
- * \brief Parses the Message Parameter
+ * \brief     Parses the Message Parameter
+ * \param[in] paramType Parameter Type
+ * \param[in] pcLine Input line
+ * \return    Status code
  *
  * This function Parses the Message Parameter other Values rather than Default value from the input CanoeDB
  * file and finds the frame foramt for that Message ID.
@@ -148,9 +161,11 @@ int CParameterValues::GetMesgParams(string &paramType,char *pcLine)
     return success;
 }
 
-
 /**
- * \brief Parses the Signal Parameter Values
+ * \brief     Parses the Signal Parameter Values
+ * \param[in] paramType Parameter Type
+ * \param[in] pcLine Input line
+ * \return    Status code
  *
  * Parses the Signal Parameter Values other than Default value from the
  * input CanoeDB file and calculates the frame format
@@ -198,9 +213,11 @@ int CParameterValues::GetSignalParams(string &paramType,char *pcLine)
     return success;
 }
 
-
 /**
- * \brief Reads the other vlaue of attributes from CanoeDB file.
+ * \brief     Reads the other vlaue of attributes from CanoeDB file.
+ * \param[in] paramType Parameter Type
+ * \param[in] pcToken Input line
+ * \return    Status code
  *
  * Reads the other vlaue of attributes from CanoeDB file.
  */
@@ -242,9 +259,11 @@ int CParameterValues::ReadParamValue(string &paramType,char *pcToken)
     return success;
 }
 
-
 /**
- * \brief Writes network values to file
+ * \brief     Writes network values to file
+ * \param[in] fileOutput Output file
+ * \param[in] paramType Parameter Type
+ * \param[in] paramName Parameter Name
  *
  * Writes network values to file.
  */
@@ -264,7 +283,7 @@ void CParameterValues::WriteNetValuesToFile(fstream& fileOutput, string &paramTy
     else if(paramType == "FLOAT")
     {
         if(m_ParamVal.fValue != -1)
-            fileOutput << fixed << m_ParamVal.fValue;
+            fileOutput << m_ParamVal.fValue;
     }
     //writes enum param net values to o/p file and validates initial value.
     else if(paramType == "ENUM")
@@ -281,9 +300,11 @@ void CParameterValues::WriteNetValuesToFile(fstream& fileOutput, string &paramTy
     fileOutput << endl;
 }
 
-
 /**
- * \brief Writes node value to file
+ * \brief     Writes node value to file
+ * \param[in] fileOutput Output file
+ * \param[in] paramType Parameter Type
+ * \param[in] paramName Parameter Name
  *
  * Writes node value to file.
  */
@@ -311,7 +332,7 @@ void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput, string &paramT
     else if(paramType == "FLOAT")
     {
         if(m_ParamVal.fValue != -1)
-            fileOutput << fixed << m_ParamVal.fValue;
+            fileOutput << m_ParamVal.fValue;
     }
     //writes string param node values to o/p file and validates initial value.
     else if(paramType == "STRING")
@@ -319,9 +340,11 @@ void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput, string &paramT
     fileOutput << endl;
 }
 
-
 /**
- * \brief Writes message values to file
+ * \brief     Writes message values to file
+ * \param[in] fileOutput Output file
+ * \param[in] paramType Parameter Type
+ * \param[in] paramName Parameter Name
  *
  * Writes message values to file.
  */
@@ -350,7 +373,7 @@ void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput, string &paramT
     else if(paramType == "FLOAT")
     {
         if(m_ParamVal.fValue != -1)
-            fileOutput << fixed << m_ParamVal.fValue;
+            fileOutput << m_ParamVal.fValue;
     }
     //writes string param mesg values to o/p file and validates initial value.
     else if(paramType == "STRING")
@@ -358,9 +381,11 @@ void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput, string &paramT
     fileOutput << endl;
 }
 
-
 /**
- * \brief Writes signal values to file
+ * \brief     Writes signal values to file
+ * \param[in] fileOutput Output file
+ * \param[in] paramType Parameter Type
+ * \param[in] paramName Parameter Name
  *
  * Writes signal values to file.
  */
@@ -393,7 +418,7 @@ void CParameterValues::WriteSigValuesToFile(fstream& fileOutput, string &paramTy
     else if(paramType == "FLOAT")
     {
         if(m_ParamVal.fValue != -1)
-            fileOutput << fixed << m_ParamVal.fValue;
+            fileOutput << m_ParamVal.fValue;
     }
     //writes string param sig values to o/p file and validates initial value.
     else if(paramType == "STRING")

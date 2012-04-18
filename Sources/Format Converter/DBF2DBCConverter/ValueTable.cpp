@@ -16,7 +16,7 @@
 /**
  * \file      ValueTable.cpp
  * \brief     Implementation file for the value table.This is atable containing value discriptors.
- * \author    Ratnadip Choudhury
+ * \authors   Ratnadip Choudhury, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for the value table.This is atable containing value discriptors.
@@ -28,6 +28,8 @@
 #include "ValueTable.h"
 
 /**
+ * \brief Constructor
+ *
  * Constructor of CValueTable
  */
 CValueTable::CValueTable()
@@ -36,15 +38,20 @@ CValueTable::CValueTable()
 }
 
 /**
- * destructor of CValueTable
+ * \brief Destructor
+ *
+ * Destructor of CValueTable
  */
 CValueTable::~CValueTable()
 {
-
 }
 
 /**
- * overloaded operator =
+ * \brief     overloaded operator =
+ * \param[in] Tab Object to copy data from
+ * \return    Local object with new contents
+ *
+ * Copy contents from Tab to local object.
  */
 CValueTable& CValueTable::operator=(CValueTable& Tab)
 {
@@ -60,11 +67,12 @@ CValueTable& CValueTable::operator=(CValueTable& Tab)
 
 /**
  * \brief     extracts Values and value descriptors from the line
- * \param[in] pcline String having the value table name followed by the value, value descriptor as in canoe format
+ * \param[in] pcLine String having the value table name followed by the value, value descriptor as in canoe format
+ * \param[in] fileInput Input file
  *
  * extracts Values and value descriptors from the line
  */
-void CValueTable::Format_ValueTable(char *pcLine,fstream &fileInput)
+void CValueTable::Format_ValueTable(char *pcLine, fstream &fileInput)
 {
     char *pcToken;
     char acLine[defCON_MAX_LINE_LEN] = {'\0'};
@@ -100,7 +108,6 @@ void CValueTable::Format_ValueTable(char *pcLine,fstream &fileInput)
             m_values.AddTail(valDesc);
         }
     }
-
 }
 
 /**

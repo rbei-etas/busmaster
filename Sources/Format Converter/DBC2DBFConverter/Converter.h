@@ -16,7 +16,7 @@
 /**
  * \file      Converter.h
  * \brief     Definition of converter class
- * \author    Mahesh B S, Tobias Lorenz
+ * \authors   Mahesh B S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition of the converter class.

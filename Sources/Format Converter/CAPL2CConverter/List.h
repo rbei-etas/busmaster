@@ -16,7 +16,7 @@
 /**
  * \file      List.h
  * \brief     Interface file for List class
- * \author    Amit Ranjan
+ * \authors   Amit Ranjan
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Interface file for List class

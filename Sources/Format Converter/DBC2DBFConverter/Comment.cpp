@@ -16,7 +16,7 @@
 /**
  * \file      Comment.cpp
  * \brief     Implementation of comment class
- * \author    Mahesh B S, Tobias Lorenz
+ * \authors   Mahesh B S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of the comment class.
@@ -27,6 +27,8 @@
 
 /**
  * \brief Constructor
+ *
+ * Constructor of CComment
  */
 CComment::CComment()
 {
@@ -36,9 +38,10 @@ CComment::CComment()
     m_comment = "";
 }
 
-
 /**
  * \brief Destructor
+ *
+ * Destructor of CComment
  */
 CComment::~CComment()
 {

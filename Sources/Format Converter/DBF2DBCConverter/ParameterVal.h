@@ -16,7 +16,7 @@
 /**
  * \file      ParameterVal.h
  * \brief     CParameterValues class.
- * \author    Padmaja.A
+ * \authors   Padmaja.A, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * CParameterValues class.

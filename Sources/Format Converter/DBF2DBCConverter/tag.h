@@ -16,14 +16,14 @@
 /**
  * \file      tag.h
  * \brief     This file has the definition of all the tags used
- * \author    Mahesh B S
+ * \authors   Mahesh B S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This file has the definition of all the tags used
  */
 
-#define T_STRAT_BRAC "["
-#define T_END_BRAC "]"
+#define T_STRAT_BRAC    "["
+#define T_END_BRAC      "]"
 #define T_DB_VER		T_STRAT_BRAC"DATABASE_VERSION"T_END_BRAC
 #define T_VER_NO		"3.0"
 #define T_NUM_OF_MSG	T_STRAT_BRAC"NUMBER_OF_MESSAGES"T_END_BRAC

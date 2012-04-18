@@ -16,7 +16,7 @@
 /**
  * \file      Definitions.h
  * \brief     This file has the definition of all the constants used
- * \author    Mahesh B S
+ * \authors   Mahesh B S
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This file has the definition of all the constants used

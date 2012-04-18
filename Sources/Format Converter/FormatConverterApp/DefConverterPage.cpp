@@ -16,7 +16,7 @@
 /**
  * \file      DefConverterPage.h
  * \brief     Implementation of CDefConverterPage dialog
- * \author    Tobias Lorenz
+ * \authors   Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of CDefConverterPage dialog

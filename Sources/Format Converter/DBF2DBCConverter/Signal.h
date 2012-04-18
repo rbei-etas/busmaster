@@ -16,7 +16,7 @@
 /**
  * \file      Signal.h
  * \brief     CSignal class.
- * \author    Mahesh B S
+ * \authors   Mahesh B S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * CSignal class.
@@ -36,7 +36,7 @@ public:
     CSignal& operator=(CSignal& signal);
     unsigned int Validate();
     bool WriteSignaltofile(fstream &fileOutput);
-    const char* GetErrorString();
+    void GetErrorString(string &str);
     int operator==(const CSignal &Signal) const;
     enum SIG_DATA_FORMAT {SIG_DF_MOTOROLA='0',SIG_DF_INTEL = '1'};
     enum SIG_TYPE {SIG_TYPE_BOOL = 'B',SIG_TYPE_INT = 'I',SIG_TYPE_UINT = 'U',SIG_TYPE_FLOAT = 'F', SIG_TYPE_DOUBLE = 'D', SIG_TYPE_INT64 = 'X',SIG_TYPE_UINT64 = 'Y'};
@@ -59,5 +59,4 @@ public:
     string			m_sUnit;
     string			m_sNode;
     CList<CValueDescriptor,CValueDescriptor&>	m_listValueDescriptor;
-    static const char *m_pacErrorStrings[];
 };

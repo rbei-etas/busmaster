@@ -16,7 +16,7 @@
 /**
  * \file      Converter.cpp
  * \brief     Implementation of the CConverter class.
- * \authors   Mahesh.B.S, Padmaja.A
+ * \authors   Mahesh.B.S, Padmaja.A, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of the CConverter class.
@@ -34,6 +34,8 @@ bool CConverter::bLOG_ENTERED = false;
 unsigned int CConverter::ucMsg_DLC = 8;
 
 /**
+ * \brief Constructor
+ *
  * Constructor of CConverter
  */
 CConverter::CConverter()
@@ -42,15 +44,22 @@ CConverter::CConverter()
 }
 
 /**
- * Destructort of CConverter
+ * \brief Destructor
+ *
+ * Destructor of CConverter
  */
 CConverter::~CConverter()
 {
 }
 
 /**
- * This is the baisc function which is to be called
- * to convert any given CANMon file to a CANoe file
+ * \brief     Converter function
+ * \param[in] sCanMonFile Input file name
+ * \param[in] sCanoeFile Output file name
+ * \return    Status code
+ *
+ * This is the basic function which is to be called
+ * to convert any given CANMon file to a CANoe file.
  */
 unsigned int CConverter::Convert(string sCanMonFile,string sCanoeFile)
 {
@@ -135,6 +144,10 @@ unsigned int CConverter::Convert(string sCanMonFile,string sCanoeFile)
 }
 
 /**
+ * \brief     Set Result Code
+ * \param[in] uiCode Result code
+ * \return    Result code
+ *
  * Set the result code for the convertor class.This function
  * is called only on error
  */
@@ -144,7 +157,10 @@ unsigned int CConverter::SetResultCode(unsigned int uiCode)
 }
 
 /**
- * Returns the error string.
+ * \brief      Get Result String
+ * \param[out] str Result String depending on m_uiResultCode
+ *
+ * Returns the result string.
  */
 void CConverter::GetResultString(string &str)
 {
@@ -174,6 +190,9 @@ void CConverter::GetResultString(string &str)
 }
 
 /**
+ * \brief     Generate Message List
+ * \param[in] fileInput Input file
+ *
  * This function will parse the input file and line by line
  * and generates a list of message,signal,value table,comments,etc
  */
@@ -427,10 +446,12 @@ void CConverter::GenerateMessageList(fstream& fileInput)
 }
 
 /**
+ * \brief Validate Message List
+ *
  * Validates the message list and set the error in each signal
- * if present
+ * if present.
  */
-void CConverter::ValidateMessageList()
+void CConverter::ValidateMessageList(void)
 {
     POSITION pos = m_listMessages.GetHeadPosition();
     while(pos != NULL)
@@ -443,11 +464,13 @@ void CConverter::ValidateMessageList()
             sig.Validate();
         }
     }
-
-    return ;
 }
 
 /**
+ * \brief     Write to Output File
+ * \param[in] fileOutput Output file
+ * \return    Status code
+ *
  * Writes all the data to the output file in CANoe format
  */
 bool CConverter::WriteToOutputFile(fstream& fileOutput)
@@ -670,6 +693,9 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
 }
 
 /**
+ * \brief     Create Log File
+ * \param[in] fileLog Log file
+ *
  * Logs the eror info in log file.
  */
 void CConverter::CreateLogFile(fstream &fileLog)
@@ -692,6 +718,7 @@ void CConverter::CreateLogFile(fstream &fileLog)
             // write signal only if it is not valid
             if(sig.m_uiError != CSignal::SIG_EC_NO_ERR)
             {
+				string str;
                 // for the first wrong signal, log the message details also
                 if(acMsgLine[0] == '\0')
                 {
@@ -700,14 +727,18 @@ void CConverter::CreateLogFile(fstream &fileLog)
 					fileLog << " \tMSG_NAME: " << msg.m_sName.c_str() << endl;
                 }
 				fileLog << "\tSignal Discarded SIG_NAME: " << sig.m_sName.c_str();
-				fileLog << ", Reason: " << sig.GetErrorString() << " " << endl;
+				sig.GetErrorString(str);
+				fileLog << ", Reason: " << str << " " << endl;
             }
         }
     }
 }
 
 /**
- * creates a list of nodes in the network
+ * \brief     Create Node List
+ * \param[in] pcLine Input line
+ *
+ * Creates a list of nodes in the network.
  */
 void CConverter::create_Node_List(char *pcLine)
 {
@@ -724,8 +755,11 @@ void CConverter::create_Node_List(char *pcLine)
 }
 
 /**
+ * \brief     Decrypt Data
+ * \param[in] m_notProcessed List of not processed strings
+ *
  * Decrypts the not processed lines which are read from between
- * the tag [START_NOT_PROCESSED] and [END_NOT_PROCESSED]
+ * the tag START_NOT_PROCESSED and END_NOT_PROCESSED
  */
 void CConverter::DecryptData(CList<string,string& > &m_notProcessed)
 {

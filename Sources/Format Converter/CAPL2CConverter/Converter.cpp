@@ -16,7 +16,7 @@
 /**
  * \file      Converter.cpp
  * \brief     Implementation file for CConverter class
- * \author    Amit Ranjan
+ * \authors   Amit Ranjan
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for CConverter class
@@ -225,8 +225,8 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
 						fileOutput << "," << dec << sig.m_MaxValue.uiValue;
 						fileOutput << "," << dec << sig.m_MinValue.uiValue;
 						fileOutput << "," << sig.m_ucDataFormat;
-						fileOutput << "," << fixed << sig.m_fOffset;
-						fileOutput << "," << fixed << sig.m_fScaleFactor;
+						fileOutput << "," << sig.m_fOffset;
+						fileOutput << "," << sig.m_fScaleFactor;
 						fileOutput << "," << sig.m_acUnit;
 						fileOutput << "," << sig.m_acMultiplex;
 						fileOutput << "," << sig.m_rxNode << endl;
@@ -241,8 +241,8 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
 						fileOutput << "," << dec << sig.m_MaxValue.iValue;
 						fileOutput << "," << dec << sig.m_MinValue.iValue;
 						fileOutput << "," << sig.m_ucDataFormat;
-						fileOutput << "," << fixed << sig.m_fOffset;
-						fileOutput << "," << fixed << sig.m_fScaleFactor;
+						fileOutput << "," << sig.m_fOffset;
+						fileOutput << "," << sig.m_fScaleFactor;
 						fileOutput << "," << sig.m_acUnit;
 						fileOutput << "," << sig.m_acMultiplex;
 						fileOutput << "," << sig.m_rxNode << endl;
@@ -276,8 +276,8 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
 						fileOutput << "," << dec << sig.m_MaxValue.dValue;
 						fileOutput << "," << dec << sig.m_MinValue.dValue;
 						fileOutput << "," << sig.m_ucDataFormat;
-						fileOutput << "," << fixed << sig.m_fOffset;
-						fileOutput << "," << fixed << sig.m_fScaleFactor;
+						fileOutput << "," << sig.m_fOffset;
+						fileOutput << "," << sig.m_fScaleFactor;
 						fileOutput << "," << sig.m_acUnit;
 						fileOutput << "," << sig.m_acMultiplex;
 						fileOutput << "," << sig.m_rxNode << endl;
@@ -292,8 +292,8 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
 						fileOutput << "," << dec << sig.m_MaxValue.dValue;
 						fileOutput << "," << dec << sig.m_MinValue.dValue;
 						fileOutput << "," << sig.m_ucDataFormat;
-						fileOutput << "," << fixed << sig.m_fOffset;
-						fileOutput << "," << fixed << sig.m_fScaleFactor;
+						fileOutput << "," << sig.m_fOffset;
+						fileOutput << "," << sig.m_fScaleFactor;
 						fileOutput << "," << sig.m_acUnit;
 						fileOutput << "," << sig.m_acMultiplex;
 						fileOutput << "," << sig.m_rxNode << endl;

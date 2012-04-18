@@ -16,7 +16,7 @@
 /**
  * \file      BaseConverter.h
  * \brief     Definition of base converter class
- * \author    Tobias Lorenz
+ * \authors   Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition of the base converter class.

@@ -16,7 +16,7 @@
 /**
  * \file      Parameter.h
  * \brief     CParameters class.
- * \author    Padmaja.A.
+ * \authors   Padmaja.A., Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * CParameters class.
@@ -24,6 +24,7 @@
 
 #pragma once
 
+/* MFC includes */
 #include <afxtempl.h>
 
 /* C++ includes */
@@ -59,7 +60,7 @@ public:
     bool Check_Default_Value();
     friend bool WriteParamToFile(fstream& fileOutput,CList<CParameters,CParameters&>& m_listParameter);
     friend bool Write_DefVal_ToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_listParameter);
-    bool isValid_intRange(LONGLONG minValue,LONGLONG maxValue);
+    bool isValid_intRange(long long int minValue,long long int maxValue);
     bool isValid_floatRange(double minValue,double maxValue);
     bool isValid_hexRange(unsigned int minValue,unsigned int maxValue);
     virtual ~CParameters();

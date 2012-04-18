@@ -16,7 +16,7 @@
 /**
  * \file      Signal.h
  * \brief     Interface file for CSignal class
- * \author    Amit Ranjan
+ * \authors   Amit Ranjan
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Interface file for CSignal class

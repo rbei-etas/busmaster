@@ -16,7 +16,7 @@
 /**
  * \file      FormatConverterApp.h
  * \brief     Main header file for the Format Converter application
- * \author    Tobias Lorenz
+ * \authors   Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Main header file for the Format Converter application

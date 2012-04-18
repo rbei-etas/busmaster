@@ -16,22 +16,23 @@
 /**
  * \file      Parameter.cpp
  * \brief     Implementation file for the Parameter class.
- * \author    Ratnadip Choudhury, Padmaja A
+ * \authors   Ratnadip Choudhury, Padmaja A, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for the Parameter class.
  */
 
-#define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
+#define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers */
 
-#include <afxwin.h>         // MFC core and standard components
-#include <afxext.h>         // MFC extensions
-#include <afxdisp.h>        // MFC Automation classes
-#include <afxdtctl.h>		// MFC support for Internet Explorer 4 Common Controls
+/* MFC includes */
+#include <afxwin.h>         /* MFC core and standard components */
+#include <afxext.h>         /* MFC extensions */
+#include <afxdisp.h>        /* MFC Automation classes */
+#include <afxdtctl.h>		/* MFC support for Internet Explorer 4 Common Controls */
 #ifndef _AFX_NO_AFXCMN_SUPPORT
-#include <afxcmn.h>			// MFC support for Windows Common Controls
+#include <afxcmn.h>			/* MFC support for Windows Common Controls */
 #include <afxtempl.h>
-#endif // _AFX_NO_AFXCMN_SUPPORT
+#endif /* _AFX_NO_AFXCMN_SUPPORT */
 
 /* C includes */
 #include <float.h>
@@ -45,13 +46,9 @@
 #include "Parameter.h"
 #include "tag.h"
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 /**
+ * \brief Constructor
+ *
  * Constructor of CParameters
  */
 CParameters::CParameters()
@@ -59,12 +56,11 @@ CParameters::CParameters()
     m_InitVal.fValue=-1;
     m_InitVal.cValue[0]='\0';
     m_InitVal.uiValue=0;
-    m_ValRange='\0';
-    m_ParamType[0]='\0';
-    m_ParamName[0]='\0';
+    m_ValRange = "";
+    m_ParamType = "";
+    m_ParamName = "";
     m_InitVal.iValue =-1;
     m_RangeError=false;
-
 }
 
 /**
@@ -76,7 +72,9 @@ CParameters::~CParameters()
 }
 
 /**
- * \brief overloaded operator =
+ * \brief     overloaded operator =
+ * \param[in] param Other element to copy data from
+ * \return    Local object with new data
  *
  * Copy the other elements of the new message to this.
  */
@@ -104,7 +102,7 @@ CParameters& CParameters::operator=( CParameters& param)
 
 /**
  * \brief      Writes the parameter definition to the specified output file.
- * \param[in]  fileOutput OutputFileName
+ * \param[in]  fileOutput Output File
  * \param[in]  m_listParameter Parameters List
  *
  * Writes the parameter definition to the specified output file.
@@ -131,8 +129,8 @@ bool WriteParamToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_lis
 			fileOutput << " " << dec << rParam.m_MinVal.uiValue;
 			fileOutput << " " << dec << rParam.m_MaxVal.uiValue;
 		} else if(rParam.m_ParamType == "FLOAT") {
-			fileOutput << " " << fixed << rParam.m_MinVal.fValue;
-			fileOutput << " " << fixed << rParam.m_MaxVal.fValue;
+			fileOutput << " " << rParam.m_MinVal.fValue;
+			fileOutput << " " << rParam.m_MaxVal.fValue;
 		} else if(rParam.m_ParamType == "ENUM") {
 			fileOutput << rParam.m_ValRange;
 		} else {
@@ -144,7 +142,11 @@ bool WriteParamToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_lis
 }
 
 /**
- * Format Message Parameter Value
+ * \brief     Format Message Parameter Value
+ * \param[in] fileInput Input file
+ * \param[in] m_listParam List of CParameters
+ *
+ * Format the message parameter value and write to output file.
  */
 void CParameters::Format_MesgParam_Value(fstream &fileInput,CList<CParameters,CParameters&>& m_listParam)
 {
@@ -195,7 +197,11 @@ void CParameters::Format_MesgParam_Value(fstream &fileInput,CList<CParameters,CP
 }
 
 /**
- * Parses the Signal Parameter's Other Values(BA_).
+ * \brief    Parses the Signal Parameter's Other Values.
+ * \param[in] fileInput Input file
+ * \param[in] m_listParam List of CParameters
+ *
+ * Parses the Signal Parameter's Other Values.
  */
 void CParameters::Format_SigParam_Value(fstream &fileInput,CList<CParameters,CParameters&>& m_listParam)
 {
@@ -250,7 +256,11 @@ void CParameters::Format_SigParam_Value(fstream &fileInput,CList<CParameters,CPa
 }
 
 /**
- * Parses the Node Parameter's Other Values(BA_).
+ * \brief     Parses the Node Parameter's Other Values
+ * \param[in] fileInput Input file
+ * \param[in] m_listParam List of CParameters
+ *
+ * Parses the Node Parameter's Other Values.
  */
 void CParameters::Format_NodeParam_Value(fstream &fileInput,CList<CParameters,CParameters&>& m_listParam)
 {
@@ -296,7 +306,11 @@ void CParameters::Format_NodeParam_Value(fstream &fileInput,CList<CParameters,CP
 }
 
 /**
- * Parses the Net Parameter's Other Values(BA_).
+ * \brief Parses the Net Parameter's Other Values
+ * \param[in] fileInput Input file
+ * \param[in] m_listParam List of CParameters
+ *
+ * Parses the Net Parameter's Other Values.
  */
 void CParameters::Format_NetParam_Value(fstream &fileInput,CList<CParameters,CParameters&>& m_listParam)
 {
@@ -336,29 +350,44 @@ void CParameters::Format_NetParam_Value(fstream &fileInput,CList<CParameters,CPa
 
 
 /**
+ * \brief     Parses the attribute lines from the given i/p file.
+ * \param[in] pcLine Attribute line
+ * \param[in] index Index
+ *
  * Parses the attribute lines from the given i/p file.
  */
 void CParameters::Format_ParamDef(char *pcLine,int index)
 {
     //get object id and stores m_object Id with the valid value.
-    if(index==0)
-        m_ObjectId = "";
-    else if(index==1)
-        m_ObjectId = "BU_";
-    else if(index==2)
-        m_ObjectId = "BO_";
-    else if(index==3)
-        m_ObjectId = "SG_";
-    else if(index==4)
-        m_ObjectId = "BU_SG_REL_";
-    else if(index==5)
-        m_ObjectId = "BU_BO_REL_";
+	switch(index) {
+		case 0:
+			m_ObjectId = "";
+			break;
+		case 1:
+			m_ObjectId = "BU_";
+			break;
+		case 2:
+			m_ObjectId = "BO_";
+			break;
+		case 3:
+			m_ObjectId = "SG_";
+			break;
+		case 4:
+			m_ObjectId = "BU_SG_REL_";
+			break;
+		case 5:
+			m_ObjectId = "BU_BO_REL_";
+			break;
+	}
+
     //reads the param defintion.
     GetParam_Def(pcLine);
 }
 
-
 /**
+ * \brief     Parses the attribute value from the given i/p file
+ * \param[in] pcLine Attribute value
+ *
  * Parses the attribute value from the given i/p file.
  */
 void CParameters::GetParam_Def(char *pcLine)
@@ -420,8 +449,10 @@ void CParameters::GetParam_Def(char *pcLine)
     m_RangeError=m_RangeError | Check_Default_Value();
 }
 
-
 /**
+ * \brief     Reads the default value of attribute from the i/p file
+ * \param[in] pcToken Default value of attribute
+ *
  * Reads the default value of attribute from the i/p file.
  */
 void CParameters::ReadDefault_Value(char *pcToken)
@@ -486,6 +517,11 @@ void CParameters::ReadDefault_Value(char *pcToken)
 
 
 /**
+ * \brief     Writes the parameter default values to the output file
+ * \param[in] fileOutput Output file
+ * \param[in] m_listParameter List of CParameters
+ * \return    Return code
+ *
  * Writes the parameter default values to the output file.
  */
 bool Write_DefVal_ToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_listParameter)
@@ -509,7 +545,7 @@ bool Write_DefVal_ToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_
 			fileOutput << " " << dec << rParam.m_InitVal.uiValue;
         //writes def val of type flaot to the o/p file.
         else if(rParam.m_ParamType == "FLOAT")
-			fileOutput << " " << fixed << rParam.m_InitVal.fValue;
+			fileOutput << " " << rParam.m_InitVal.fValue;
         //writes def val of type enum to the o/p file.
         else if(rParam.m_ParamType == "ENUM")
 			fileOutput << " \"" << rParam.m_InitVal.cValue << "\"";
@@ -522,9 +558,12 @@ bool Write_DefVal_ToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_
 }
 
 /**
+ * \brief  Validates the default value of an attribute
+ * \return Status code
+ *
  * Validates the default value of an attribute.
  */
-bool CParameters::Check_Default_Value()
+bool CParameters::Check_Default_Value(void)
 {
     bool cResult=false;
     //validates def val of type int
@@ -559,9 +598,14 @@ bool CParameters::Check_Default_Value()
 }
 
 /**
- * Validates the maximum & minimum int values of an attribute.
+ * \brief     Validates the maximum and minimum int values of an attribute
+ * \param[in] minValue minimum value of attribute
+ * \param[in] maxValue maximum value of attribute
+ * \return    Status code
+ *
+ * Validates the maximum and minimum int values of an attribute.
  */
-bool CParameters::isValid_intRange(LONGLONG minValue,LONGLONG maxValue)
+bool CParameters::isValid_intRange(long long int minValue, long long int maxValue)
 {
     bool rResult=false;
     //validates the min value
@@ -584,7 +628,12 @@ bool CParameters::isValid_intRange(LONGLONG minValue,LONGLONG maxValue)
 }
 
 /**
- * Validates the maximum & minimum float values of an attribute.
+ * \brief     Validates the maximum and minimum float values of an attribute
+ * \param[in] minValue minimum value of an attribute
+ * \param[in] maxValue maximum value of an attribute
+ * \return    Status code
+ *
+ * Validates the maximum and minimum float values of an attribute.
  */
 bool CParameters::isValid_floatRange(double minValue,double maxValue)
 {
@@ -609,9 +658,14 @@ bool CParameters::isValid_floatRange(double minValue,double maxValue)
 }
 
 /**
- * Validates the maximum & minimum hex values of an attribute.
+ * \brief     Validates the maximum and minimum hex values of an attribute.
+ * \param[in] minValue Minimum hex value of an attribute
+ * \param[in] maxValue Maximum hex value of an attribute
+ * \return    Status code
+ *
+ * Validates the maximum and minimum hex values of an attribute.
  */
-bool CParameters::isValid_hexRange(unsigned int minValue,unsigned int maxValue)
+bool CParameters::isValid_hexRange(unsigned int minValue, unsigned int maxValue)
 {
     bool rResult=false;
     //validates the min value

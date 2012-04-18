@@ -33,6 +33,8 @@
 
 /**
  * \brief Constructor
+ *
+ * Constructor of CSignal
  */
 CSignal::CSignal()
 {
@@ -56,6 +58,8 @@ CSignal::CSignal()
 
 /**
  * \brief Destructor
+ *
+ * Destructor of CSignal
  */
 CSignal::~CSignal()
 {
@@ -65,7 +69,9 @@ CSignal::~CSignal()
 
 
 /**
- * \brief overloaded operator =
+ * \brief     overloaded operator =
+ * \param[in] signal Data to assign
+ * \return    Reference to local object
  *
  * Overload assignment operator. We should clear the existing value descriptor
  * list and copy contents of the argument's list to this signal. The rest of the
@@ -96,7 +102,9 @@ CSignal& CSignal::operator=(CSignal& signal)
 
 
 /**
- * \brief Extracts the message data from the given Line
+ * \brief     Extracts the message data from the given Line
+ * \param[in] pcLine the given Line
+ * \return    Status code
  *
  * Extracts the message data from the given Line and populates
  * the message structure.
@@ -322,8 +330,11 @@ int CSignal::Format(char *pcLine)
 }
 
 
-/*
+/**
  * \brief Extracts the value descriptor data from the given Line
+ * \param[in] pcLine The given Line
+ * \param[in] fileInput Input file
+ * \return    Status Code
  *
  * Extracts the value descriptor data from the given Line and adds
  * to the signal.
@@ -400,8 +411,9 @@ int CSignal::AddValueDescriptors(char *pcLine, fstream &fileInput)
 
 
 /**
- * \brief  Validate for conformance to BUSMASTER DB format
- * \return SIG_EC_NO_ERR, SIG_EC_DATA_FORMAT_ERR, SIG_EC_LENGTH_ERR, SIG_EC_STARTBIT_ERR, SIG_EC_TYPE_ERR
+ * \brief     Validate for conformance to BUSMASTER DB format
+ * \param[in] ucFormat data format
+ * \return    SIG_EC_NO_ERR, SIG_EC_DATA_FORMAT_ERR, SIG_EC_LENGTH_ERR, SIG_EC_STARTBIT_ERR, SIG_EC_TYPE_ERR
  *
  * Convert single bit INT and UINT to BOOL.
  * If MAX_value == MIN_value update MAX_value to MAX_default
@@ -453,7 +465,6 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
     m_uiError = SIG_EC_NO_ERR;
 
     //Conversion from the physical to raw value required.
-
 
     // update MAX value and MIN value based on type
     switch(m_ucType)
@@ -698,6 +709,12 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
     return (m_uiError);
 }
 
+/**
+ * \brief      Get error string
+ * \param[out] str The error string
+ *
+ * This returns an error string in accordance with m_uiError.
+ */
 void CSignal::GetErrorString(string &str)
 {
 	switch(m_uiError) {
@@ -725,6 +742,12 @@ void CSignal::GetErrorString(string &str)
 	}
 }
 
+/**
+ * \brief      Get error action
+ * \param[out] str The error action string
+ *
+ * This returns a string to describe the action taken in accordance with m_uiError.
+ */
 void CSignal::GetErrorAction(string &str)
 {
 	switch(m_uiError) {
@@ -744,6 +767,7 @@ void CSignal::GetErrorAction(string &str)
  * \param[in] m_ucLength Message length
  * \param[in] m_cDataFormat If 1 dataformat Intel, 0- Motorola
  * \param[in] writeErr If true write error signals also else write onlt correct signals
+ * \return    Status code
  *
  * Writes the signals in the given list to the output file.
  */
@@ -760,85 +784,60 @@ bool CSignal::WriteSignaltofile(fstream &fileOutput, list<CSignal> &m_listSignal
             // For signal having motoroal format, the message length could be less
             // then eight byte. so in that case the whichByte needs to be shifted
             // accordingly.
-            fileOutput << T_SIG;
-            fileOutput << " ";
-            fileOutput << sig->m_acName.c_str();
-            fileOutput << ",";
-            fileOutput << (int) sig->m_ucLength;
-            fileOutput << ",";
-            fileOutput << (int) sig->m_ucWhichByte;
-            fileOutput << ",";
-            fileOutput << (int) sig->m_ucStartBit;
-            fileOutput << ",";
+            fileOutput << T_SIG << " " << sig->m_acName.c_str();
+            fileOutput << "," << dec << sig->m_ucLength;
+            fileOutput << "," << dec << sig->m_ucWhichByte;
+            fileOutput << "," << dec << sig->m_ucStartBit;
 
             switch(sig->m_ucType)
             {
                 case CSignal::SIG_TYPE_BOOL:
                 case CSignal::SIG_TYPE_UINT:
-                    fileOutput << sig->m_ucType;
-                    fileOutput << ",";
-                    fileOutput << dec << sig->m_MaxValue.uiValue;
-                    fileOutput << ",";
-                    fileOutput << dec << sig->m_MinValue.uiValue;
+                    fileOutput << "," << sig->m_ucType;
+                    fileOutput << "," << dec << sig->m_MaxValue.uiValue;
+                    fileOutput << "," << dec << sig->m_MinValue.uiValue;
                     break;
 
                 case CSignal::SIG_TYPE_INT:
-                    fileOutput << sig->m_ucType;
-                    fileOutput << ",";
-                    fileOutput << dec << sig->m_MaxValue.iValue;
-                    fileOutput << ",";
-                    fileOutput << dec << sig->m_MinValue.iValue;
+                    fileOutput << "," << sig->m_ucType;
+                    fileOutput << "," << dec << sig->m_MaxValue.iValue;
+                    fileOutput << "," << dec << sig->m_MinValue.iValue;
                     break;
 
 
                 case CSignal::SIG_TYPE_FLOAT:
-                    fileOutput << sig->m_ucType;
-                    fileOutput << ",";
-                    fileOutput << fixed << sig->m_MaxValue.fValue;
-                    fileOutput << ",";
-                    fileOutput << fixed << sig->m_MinValue.fValue;
+                    fileOutput << "," << sig->m_ucType;
+                    fileOutput << "," << sig->m_MaxValue.fValue;
+                    fileOutput << "," << sig->m_MinValue.fValue;
                     break;
 
                 case CSignal::SIG_TYPE_DOUBLE:
-                    fileOutput << sig->m_ucType;
-                    fileOutput << ",";
-                    fileOutput << fixed << sig->m_MaxValue.dValue;
-                    fileOutput << ",";
-                    fileOutput << fixed << sig->m_MinValue.dValue;
+                    fileOutput << "," << sig->m_ucType;
+                    fileOutput << "," << sig->m_MaxValue.dValue;
+                    fileOutput << "," << sig->m_MinValue.dValue;
                     break;
 
                 case CSignal::SIG_TYPE_INT64:
-                    fileOutput << "I";
-                    fileOutput << ",";
-                    fileOutput << dec << sig->m_MaxValue.i64Value;
-                    fileOutput << ",";
-                    fileOutput << dec << sig->m_MinValue.i64Value;
+                    fileOutput << ",I";
+                    fileOutput << "," << dec << sig->m_MaxValue.i64Value;
+                    fileOutput << "," << dec << sig->m_MinValue.i64Value;
                     break;
 
                 case CSignal::SIG_TYPE_UINT64:
-                    fileOutput << "U";
-                    fileOutput << ",";
-                    fileOutput << dec << sig->m_MaxValue.ui64Value;
-                    fileOutput << ",";
-                    fileOutput << dec << sig->m_MinValue.ui64Value;
+                    fileOutput << ",U";
+                    fileOutput << "," << dec << sig->m_MaxValue.ui64Value;
+                    fileOutput << "," << dec << sig->m_MinValue.ui64Value;
                     break;
 
                 default:
                     break;
             }
-            fileOutput << ",";
-            fileOutput << sig->m_ucDataFormat;
-            fileOutput << ",";
-            fileOutput << fixed << sig->m_fOffset;
-            fileOutput << ",";
-            fileOutput << fixed << sig->m_fScaleFactor;
-            fileOutput << ",";
-            fileOutput << sig->m_acUnit.c_str();
-            fileOutput << ",";
-            fileOutput << sig->m_acMultiplex.c_str();
-            fileOutput << ",";
-            fileOutput << sig->m_rxNode.c_str();
-            fileOutput << endl;
+            fileOutput << "," << sig->m_ucDataFormat;
+            fileOutput << "," << sig->m_fOffset;
+            fileOutput << "," << sig->m_fScaleFactor;
+            fileOutput << "," << sig->m_acUnit.c_str();
+            fileOutput << "," << sig->m_acMultiplex.c_str();
+            fileOutput << "," << sig->m_rxNode.c_str() << endl;
 
             CValueDescriptor val;
             val.writeValueDescToFile(fileOutput, sig->m_ucType, sig->m_listValueDescriptor);

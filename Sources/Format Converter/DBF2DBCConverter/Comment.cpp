@@ -16,7 +16,7 @@
 /**
  * \file      Comment.cpp
  * \brief     Implementation file for the Comment class.
- * \author    Padmaja A
+ * \authors   Padmaja A, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for the Comment class.
@@ -27,18 +27,24 @@
 #include "Definitions.h"
 
 /**
+ * \brief Constructor
+ *
  * Constructor of CComment
  */
 CComment::CComment()
 {
     m_msgType = '\0';
-    m_elementName = "\0";
-    m_comment = "\0";
+    m_elementName = "";
+    m_comment = "";
 	m_msgID = 0;
 }
 
 /**
- * operator= overloading
+ * \brief     operator= overloading
+ * \param[in] tCmt Comment to copy content from
+ * \return    Local comment with new content
+ *
+ * Copies the content from tCmt into the local object.
  */
 CComment& CComment::operator=(CComment& tCmt)
 {
@@ -51,15 +57,20 @@ CComment& CComment::operator=(CComment& tCmt)
 }
 
 /**
- * destrutor
+ * \brief Destrutor
+ *
+ * Destructor of CComment
  */
 CComment::~CComment()
 {
-
 }
 
 /**
- * Parses the net Comments.
+ * \brief     Format the net comment
+ * \param[in] fileInput Input file
+ * \param[in] m_listComment list of CComments
+ *
+ * Parses the net comments.
  */
 void CComment::Format_netComment(fstream &fileInput, list<CComment>& m_listComment)
 {
@@ -87,7 +98,11 @@ void CComment::Format_netComment(fstream &fileInput, list<CComment>& m_listComme
 }
 
 /**
- * Parses the node Comments.
+ * \brief     Format the node comments
+ * \param[in] fileInput Input file
+ * \param[in] m_listComment List of CComments
+ *
+ * Parses the node comments.
  */
 void CComment::Format_nodeComment(fstream &fileInput, list<CComment>& m_listComment)
 {
@@ -121,7 +136,11 @@ void CComment::Format_nodeComment(fstream &fileInput, list<CComment>& m_listComm
 }
 
 /**
- * Parses the Message Comments.
+ * \brief     Format message comments
+ * \param[in] fileInput Input file
+ * \param[in] m_listComment List of CComments
+ *
+ * Parses the message comments.
  */
 void CComment::Format_msgComment(fstream &fileInput, list<CComment>& m_listComment)
 {
@@ -156,7 +175,11 @@ void CComment::Format_msgComment(fstream &fileInput, list<CComment>& m_listComme
 }
 
 /**
- * Parses the Signal Comments.
+ * \brief     Format signal comments
+ * \param[in] fileInput Input file
+ * \param[in] m_listComment List of CComments
+ *
+ * Parses the signal comments.
  */
 void CComment::Format_sigComment(fstream &fileInput, list<CComment>& m_listComment)
 {

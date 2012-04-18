@@ -16,7 +16,7 @@
 /**
  * \file      Message.h
  * \brief     Definition of message class
- * \author    Mahesh B S, Tobias Lorenz
+ * \authors   Mahesh B S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition of the message class.
@@ -45,8 +45,8 @@ public:
     string          m_acName;
     string          m_txNode;
     unsigned int    m_uiMsgID;
-    unsigned char   m_ucLength;
-    unsigned char   m_ucNumOfSignals;
+    unsigned int    m_ucLength;
+    unsigned int    m_ucNumOfSignals;
     char            m_cDataFormat;
     char            m_cFrameFormat;
     list<CSignal>   m_listSignals;

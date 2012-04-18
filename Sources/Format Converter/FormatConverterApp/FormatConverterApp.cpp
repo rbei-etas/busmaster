@@ -16,7 +16,7 @@
 /**
  * \file      FormatConverterApp.h
  * \brief     Defines the class behaviors for the application.
- * \author    Tobias Lorenz
+ * \authors   Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Defines the class behaviors for the application.

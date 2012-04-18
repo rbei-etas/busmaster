@@ -16,7 +16,7 @@
 /**
  * \file      Definitions.h
  * \brief     Definition
- * \author    Tobias Lorenz
+ * \authors   Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition

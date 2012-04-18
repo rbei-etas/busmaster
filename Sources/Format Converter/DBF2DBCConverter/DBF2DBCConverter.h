@@ -16,7 +16,7 @@
 /**
  * \file      DBF2DBCConverter.h
  * \brief     CDBF2DBCConverter class.
- * \author    Mahesh B S
+ * \authors   Mahesh B S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * CDBF2DBCConverter class.
@@ -34,6 +34,7 @@ class CDBF2DBCConverter : public CBaseConverter
 
 public:
     CDBF2DBCConverter(void);
+    ~CDBF2DBCConverter(void);
     virtual HRESULT GetInputFileFilters(string&, string& );
     virtual HRESULT GetOutputFileFilters(string&, string& );
     virtual HRESULT ConvertFile(string& chInputFile, string& chOutputFile);
@@ -43,5 +44,4 @@ public:
     virtual HRESULT GetHelpText(string& pchHelpText);
     virtual BOOL bHaveOwnWindow();
     virtual HRESULT GetPropertyPage(CPropertyPage*& pPage ){return S_FALSE;};
-    ~CDBF2DBCConverter(void);
 };

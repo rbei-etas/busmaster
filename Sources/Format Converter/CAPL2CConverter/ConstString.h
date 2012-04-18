@@ -16,7 +16,7 @@
 /**
  * \file      ConstString.h
  * \brief     Interface file for standard definitions
- * \author    Amit Ranjan
+ * \authors   Amit Ranjan
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Interface file for standard definitions

@@ -16,7 +16,7 @@
 /**
  * \file      Signal.cpp
  * \brief     Implementation of the CSignal class.
- * \author    Mahesh.B.S
+ * \authors   Mahesh.B.S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of the CSignal class.
@@ -33,23 +33,29 @@
 using namespace std;
 
 /**
+ * \brief Constructor
+ *
  * Constructor of CSignal
  */
 CSignal::CSignal()
 {
-
 }
 
 /**
+ * \brief Destructor
+ *
  * Destructor of CSignal
  */
 CSignal::~CSignal()
 {
-
 }
 
 /**
- * Overloaded operator =
+ * \brief     Overloaded operator =
+ * \param[in] signal Object to copy content from
+ * \return    Local object with new contents
+ *
+ * Copies the contents of signal into the local object.
  */
 CSignal& CSignal::operator=(CSignal& signal)
 {
@@ -81,16 +87,24 @@ CSignal& CSignal::operator=(CSignal& signal)
 }
 
 /**
- * Operator==
+ * \brief     Operator==
+ * \param[in] signal Reference signal
+ * \return    1 if identical, 0 if not.
+ *
+ * Compare content of signal with local object.
  */
-int CSignal::operator==(const CSignal &Signal) const
+int CSignal::operator==(const CSignal &signal) const
 {
-    if (m_sName == Signal.m_sName)
+    if (m_sName == signal.m_sName)
         return 1;
     else return 0;
 }
 
 /**
+ * \brief     Extracts the signal data from the given Line
+ * \param[in] pcLine The given line
+ * \return    Return code
+ *
  * Extracts the signal data from the given Line and populates
  * message structure.
  */
@@ -205,7 +219,6 @@ int CSignal::Format(char *pcLine)
         }
     }
 
-
     //rx'ing nodes
 	string strNodes = pcToken;
 	nIndex = strNodes.find(",", 0);
@@ -224,8 +237,10 @@ int CSignal::Format(char *pcLine)
     return 1;
 }
 
-
 /**
+ * \brief  Validates the signal
+ * \return Content of m_uiError
+ *
  * Validates the signal , sets the Max and Min value to the data type
  * and if any error sets the error variable accordingly.
  */
@@ -297,7 +312,11 @@ unsigned int CSignal::Validate()
 }
 
 /**
- * Write's the signal in the CANoe format and returns false
+ * \brief     Writes the signal in the CANoe format
+ * \param[in] fileOutput Output file
+ * \return    Return code
+ *
+ * Writes the signal in the CANoe format and returns false
  * if any of the error signal is not stored in the file
  */
 bool CSignal::WriteSignaltofile(fstream &fileOutput)
@@ -327,18 +346,23 @@ bool CSignal::WriteSignaltofile(fstream &fileOutput)
     return bResult;
 }
 
-
-const char* CSignal::m_pacErrorStrings[] =
-{
-    "No error",
-    "ERROR:Invalid signal length",
-    "ERROR:Invalid start bit"
-};
-
 /**
- * Returns the error string of the signal
+ * \brief      Returns the error string of the signal
+ * \param[out] str Error string depending on m_uiError
+ *
+ * Returns the error string of the signal.
  */
-const char* CSignal::GetErrorString()
+void CSignal::GetErrorString(string &str)
 {
-    return m_pacErrorStrings[m_uiError];
+	switch(m_uiError) {
+		case 0:
+			str = "No error";
+			break;
+		case 1:
+			str = "ERROR:Invalid signal length";
+			break;
+		case 2:
+			str = "ERROR:Invalid start bit";
+			break;
+	}
 }

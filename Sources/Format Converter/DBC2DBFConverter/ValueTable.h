@@ -16,7 +16,7 @@
 /**
  * \file      ValueTable.h
  * \brief     Definition of value table class
- * \author    Mahesh B S, Tobias Lorenz
+ * \authors   Mahesh B S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition of the value table class.

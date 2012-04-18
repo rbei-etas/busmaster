@@ -16,7 +16,7 @@
 /**
  * \file      Signal.h
  * \brief     Definition of signal class
- * \author    Padmaja A, Tobias Lorenz
+ * \authors   Padmaja A, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition of the signal class.
@@ -51,9 +51,9 @@ public:
 
     string          m_acName;
     string          m_acMultiplex;
-    unsigned char   m_ucLength;
-    unsigned char   m_ucWhichByte;
-    unsigned char   m_ucStartBit;
+    unsigned int    m_ucLength;
+    unsigned int    m_ucWhichByte;
+    unsigned int    m_ucStartBit;
     char            m_ucType;
     SIG_VALUE       m_MaxValue;
     SIG_VALUE       m_MinValue;
@@ -62,12 +62,7 @@ public:
     float           m_fScaleFactor;
     string          m_acUnit;
     string          m_rxNode;
-    static const char *m_pacErrorStrings[];
-
-
-
 
     list<CValueDescriptor>  m_listValueDescriptor;
     bool WriteSignaltofile(fstream &fileOutput, list<CSignal> &m_listSignals, int m_ucLength, int m_cDataFormat, bool writeErr);
 };
-

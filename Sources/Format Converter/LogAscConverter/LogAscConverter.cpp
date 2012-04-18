@@ -16,7 +16,7 @@
 /**
  * \file      LogAscConverter.cpp
  * \brief     Implementation of the AscLogConverter class.
- * \author    Venkatanarayana Makam
+ * \authors   Venkatanarayana Makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of the LogAscConverter class.

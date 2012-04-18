@@ -16,7 +16,7 @@
 /**
  * \file      definitions.h
  * \brief     Definitions file
- * \author    Amitesh Bharti, Tobias Lorenz
+ * \authors   Amitesh Bharti, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definitions file.

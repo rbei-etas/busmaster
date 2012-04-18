@@ -22,24 +22,23 @@
  * Defines the initialization routines for the DLL.
  */
 
-#define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
+#define VC_EXTRALEAN		/* Exclude rarely-used stuff from Windows headers */
 
-#include <afxwin.h>         // MFC core and standard components
-#include <afxext.h>         // MFC extensions
-#include <afxdisp.h>        // MFC Automation classes
-#include <afxdtctl.h>		// MFC support for Internet Explorer 4 Common Controls
+/* MFC includes */
+#include <afxwin.h>         /* MFC core and standard components */
+#include <afxext.h>         /* MFC extensions */
+#include <afxdisp.h>        /* MFC Automation classes */
+#include <afxdtctl.h>		/* MFC support for Internet Explorer 4 Common Controls */
 #ifndef _AFX_NO_AFXCMN_SUPPORT
-#include <afxcmn.h>			// MFC support for Windows Common Controls
+#include <afxcmn.h>			/* MFC support for Windows Common Controls */
 #include <afxtempl.h>
-#include "tag.h"
-#include "Definitions.h"
-#endif // _AFX_NO_AFXCMN_SUPPORT
-
-/* C++ includes */
+#endif /* _AFX_NO_AFXCMN_SUPPORT */
 #include <afxdllx.h>
 
 /* Project includes */
 #include "DBF2DBCConverter.h"
+#include "Definitions.h"
+#include "tag.h"
 
 #ifdef _MANAGED
 #error Please read instructions in DBF2DBCConverter.cpp to compile with /clr
@@ -49,10 +48,6 @@
 //	   Precompiled headers disabled, with the following text:
 //			#include <afxwin.h>
 //			#include <afxdllx.h>
-#endif
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
 #endif
 
 static AFX_EXTENSION_MODULE DBC2DBFConverterDLL = { NULL, NULL };

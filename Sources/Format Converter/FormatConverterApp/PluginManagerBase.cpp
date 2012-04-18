@@ -16,7 +16,7 @@
 /**
  * \file      PluginManagerBase.cpp
  * \brief     Implementation of Plugin Manager Base
- * \author    Tobias Lorenz
+ * \authors   Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of Plugin Manager Base
