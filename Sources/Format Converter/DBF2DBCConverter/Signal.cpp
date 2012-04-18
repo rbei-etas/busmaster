@@ -39,6 +39,17 @@ using namespace std;
  */
 CSignal::CSignal()
 {
+    m_ucLength = 1; // minimum signal length should be 1 bit
+    m_ucWhichByte = 1; // ONE based index
+    m_ucStartBit = 0; // ZERO based index
+    m_ucType = SIG_TYPE_BOOL; // let default be bool type -- match with default length
+    m_MaxValue.uiValue = 1; // use unsigned int field for bool also
+    m_MinValue.uiValue = 0; //
+    m_ucDataFormat = SIG_DF_INTEL;
+    m_fOffset = 0.0f;
+    m_fScaleFactor = 1.0f;
+    m_uiError = SIG_EC_NO_ERR;
+    m_listValueDescriptor.RemoveAll();
 }
 
 /**
