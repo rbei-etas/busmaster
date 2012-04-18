@@ -16,7 +16,7 @@
 /**
  * \file      ValueTable.cpp
  * \brief     Implementation of the value table class
- * \author    Mahesh.B.S, Tobias Lorenz
+ * \authors   Mahesh.B.S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of the value table class.
@@ -31,23 +31,28 @@ using namespace std;
 
 /**
  * \brief Constructor
+ *
+ * Constructor of CValueTable
  */
 CValueTable::CValueTable()
 {
     m_TableName = "";
 }
 
-
 /**
  * \brief Destructor
+ *
+ * Destructor of CValueTable
  */
 CValueTable::~CValueTable()
 {
 }
 
-
 /**
- * \brief = operator overloading
+ * \brief     = operator overloading
+ * \param[in] Tab Data to assign
+ *
+ * Copyies the contents of Tab to the local instance.
  */
 CValueTable& CValueTable::operator=(CValueTable& Tab)
 {
@@ -56,11 +61,11 @@ CValueTable& CValueTable::operator=(CValueTable& Tab)
     return (*this);
 }
 
-
 /**
- * \brief Extracts Values and value descriptors from the line
+ * \brief     Extracts Values and value descriptors from the line
  * \param[in] pcLine String having the value table name followed by the
  *            value, value descriptor as in canoe format
+ * \param[in] fileInput Input file
  *
  * Extracts Values and value descriptors from the line.
  */
@@ -171,7 +176,6 @@ int CValueTable::Format(char *pcLine, fstream &fileInput)
 
     return 1;
 }
-
 
 /**
  * \brief     writes the value tebles in the given list to the output file

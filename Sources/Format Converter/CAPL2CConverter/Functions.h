@@ -16,7 +16,7 @@
 /**
  * \file      Functions.h
  * \brief     Interface file for parsing functions
- * \author    Amit Ranjan
+ * \authors   Amit Ranjan
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Interface file for parsing functions

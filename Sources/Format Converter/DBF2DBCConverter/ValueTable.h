@@ -16,7 +16,7 @@
 /**
  * \file      ValueTable.h
  * \brief     CValueTable class.
- * \author    Padmaja.A.
+ * \authors   Padmaja.A., Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * CValueTable class.
@@ -24,6 +24,7 @@
 
 #pragma once
 
+/* MFC includes */
 #include <afxtempl.h>
 
 /* C++ includes */

@@ -16,7 +16,7 @@
 /**
  * \file      CAPL2Converter.h
  * \brief     Definition of CCAPL2Converter
- * \author    Tobias Lorenz
+ * \authors   Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition of CCAPL2Converter

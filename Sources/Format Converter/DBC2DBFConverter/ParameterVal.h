@@ -16,7 +16,7 @@
 /**
  * \file      ParameterVal.h
  * \brief     Definition of parameter value class
- * \author    Padmaja A, Tobias Lorenz
+ * \authors   Padmaja A, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition of the parameter value class.

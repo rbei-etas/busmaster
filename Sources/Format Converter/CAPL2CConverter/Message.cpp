@@ -16,7 +16,7 @@
 /**
  * \file      Message.cpp
  * \brief     Implementation file for CMessage class
- * \author    Amit Ranjan
+ * \authors   Amit Ranjan
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for CMessage class

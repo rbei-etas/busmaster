@@ -16,7 +16,7 @@
 /**
  * \file      PluginManagerDLL.h
  * \brief     Definition of CPluginManagerDLL command target
- * \author    Tobias Lorenz
+ * \authors   Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition of CPluginManagerDLL command target

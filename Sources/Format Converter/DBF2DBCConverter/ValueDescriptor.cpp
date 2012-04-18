@@ -16,7 +16,7 @@
 /**
  * \file      ValueDescriptor.cpp
  * \brief     Implementation of the CValueDescriptor class.
- * \author    Mahesh.B.S
+ * \authors   Mahesh.B.S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of the CValueDescriptor class.
@@ -28,40 +28,31 @@
 #include "ValueDescriptor.h"
 
 /**
-* \brief      Constructor of CValueDescriptor
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Mahesh.B.S
-* \date       15.11.2002
-*/
+ * \brief Constructor
+ *
+ * Constructor of CValueDescriptor
+ */
 CValueDescriptor::CValueDescriptor()
 {
-
 }
 
 /**
-* \brief      destructor of CValueDescriptor
-* \param[in]  None
-* \param[out] None
-* \return     None
-* \authors    Mahesh.B.S
-* \date       15.11.2002
-*/
+ * \brief Destructor
+ *
+ * Destructor of CValueDescriptor
+ */
 CValueDescriptor::~CValueDescriptor()
 {
-
 }
 
 /**
-* \brief      Extracts the Value Descriptor pair from the given Line
-and creates a list of the same
-* \param[in]  char *pcLine
-* \param[out] None
-* \return     int
-* \authors    Mahesh.B.S
-* \date       15.11.2002
-*/
+ * \brief      Extracts the Value Descriptor pair from the given Line
+ * \param[in]  pcLine The given line
+ * \return     Status code
+ *
+ * Extracts the Value Descriptor pair from the given Line
+ * and creates a list of the same
+ */
 int CValueDescriptor::Format(char *pcLine)
 {
 	char acValue[256] = {'\0'};
@@ -114,13 +105,13 @@ int CValueDescriptor::Format(char *pcLine)
 }
 
 /**
-* \brief      Write's the Value Descriptor in the CANoe format
-* \param[in]  fstream &fileOutput,char ,CList<CValueDescriptor,CValueDescriptor&>
-* \param[out] None
-* \return     int
-* \authors    Mahesh.B.S
-* \date       15.11.2002
-*/
+ * \brief     Writes the Value Descriptor in the CANoe format
+ * \param[in] fileOutput Output file
+ * \param[in] m_ucType Value Descriptor Type
+ * \param[in] m_listValueDescriptor List of Value Descriptors
+ *
+ * Writes the Value Descriptor in the CANoe format in the output file
+ */
 void CValueDescriptor::writeValuDescToFile(fstream &fileOutput,char m_ucType,CList<CValueDescriptor,CValueDescriptor&> &m_listValueDescriptor)
 {
     POSITION posValDesc = m_listValueDescriptor.GetHeadPosition();

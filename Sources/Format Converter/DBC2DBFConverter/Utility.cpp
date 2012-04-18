@@ -16,7 +16,7 @@
 /**
  * \file      Utility.cpp
  * \brief     Implementation of global utility functions
- * \author    Venkatanarayana Makam, Tobias Lorenz
+ * \authors   Venkatanarayana Makam, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of global utility functions.
@@ -30,94 +30,90 @@
  * \param[in]  dMaxVal Maximum physical value
  * \param[in]  dMinVal Minimum physical value
  * \param[in]  dOffset Offset value
- * \param[in]  dScalFactor Scaling Factor
+ * \param[in]  dScaleFactor Scaling Factor
  * \param[out] unMaxVal Maximum RAW value
  * \param[out] unMinVal Minimum RAW value
  *
  * Converts the DOUBLE physical values to UINT64 RAW values.
  */
-unsigned int unConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double dScalFactor, unsigned long long int& unMaxVal, unsigned long long int& unMinVal)
+unsigned int unConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double dScaleFactor, unsigned long long int& unMaxVal, unsigned long long int& unMinVal)
 {
-    double dTempMaxVal = ((dMaxVal - dOffset) / dScalFactor);
-    double dTempMinVal = ((dMinVal - dOffset) / dScalFactor);
+    double dTempMaxVal = ((dMaxVal - dOffset) / dScaleFactor);
+    double dTempMinVal = ((dMinVal - dOffset) / dScaleFactor);
 
     unMaxVal = (unsigned long long int)unRoundOffdoubleValue(dTempMaxVal);
     unMinVal = (unsigned long long int)unRoundOffdoubleValue(dTempMinVal);
     return 0;
 }
 
-
 /**
  * \brief      Converts the DOUBLE physical values to INT64 RAW values
  * \param[in]  dMaxVal Maximum physical value
  * \param[in]  dMinVal Minimum physical value
  * \param[in]  dOffset Offset Value
- * \param[in]  dScalFactor Scaling Factor
- * \param[out] unMaxVal Maximum RAW value
- *             unMinVal Minimum RAW value
+ * \param[in]  dScaleFactor Scaling Factor
+ * \param[out] nMaxVal Maximum RAW value
+ * \param[out] nMinVal Minimum RAW value
  *
  * Converts the DOUBLE physical values to INT64 RAW values.
  */
-int nConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double dScalFactor, long long int& nMaxVal, long long int& nMinVal)
+int nConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double dScaleFactor, long long int& nMaxVal, long long int& nMinVal)
 {
-    double dTempMaxVal = ((dMaxVal - dOffset) / dScalFactor);
-    double dTempMinVal = ((dMinVal - dOffset) / dScalFactor);
+    double dTempMaxVal = ((dMaxVal - dOffset) / dScaleFactor);
+    double dTempMinVal = ((dMinVal - dOffset) / dScaleFactor);
 
     nMaxVal = (long long int)unRoundOffdoubleValue(dTempMaxVal);
     nMinVal = (long long int)unRoundOffdoubleValue(dTempMinVal);
     return 0;
 }
 
-
 /**
  * \brief      Converts the DOUBLE physical values to INT64 RAW values
  * \param[in]  unMaxRawVal Maximum raw value
- * \param[in]  unMaxRawVal Minimum raw value
+ * \param[in]  unMinRawVal Minimum raw value
  * \param[in]  dOffset Offset Value
- * \param[in]  dScalFactor Scaling Factor
+ * \param[in]  dScaleFactor Scaling Factor
  * \param[out] dMaxPhyVal Maximum physical vlaue
- * \param[out] dMaxPhyVal Minimum physical vlaue
+ * \param[out] dMinPhyVal Minimum physical vlaue
  *
  * Converts the DOUBLE physical values to INT64 RAW values.
  */
-unsigned int unConvertRawToPhysical(unsigned long long int unMaxRawVal, unsigned long long int unMinRawVal, double dOffset, double dScalFactor, double& dMaxPhyVal, double& dMinPhyVal)
+unsigned int unConvertRawToPhysical(unsigned long long int unMaxRawVal, unsigned long long int unMinRawVal, double dOffset, double dScaleFactor, double& dMaxPhyVal, double& dMinPhyVal)
 {
     //Maximum value
     dMaxPhyVal = static_cast<double>(unMaxRawVal);
-    dMaxPhyVal *= dScalFactor;
+    dMaxPhyVal *= dScaleFactor;
     dMaxPhyVal += dOffset;
     //Minimum value
     dMinPhyVal = static_cast<double>(unMinRawVal);
-    dMinPhyVal *= dScalFactor;
+    dMinPhyVal *= dScaleFactor;
     dMinPhyVal += dOffset;
     return 0;
 }
-
 
 /**
  * \brief      Converts the DOUBLE physical values to INT64 RAW values
  * \param[in]  unMaxRawVal Maximum raw value
- *             unMaxRawVal Minimum raw value
- *             dOffset Offset Value
- *             dScalFactor Scaling Factor
+ * \param[in]  unMinRawVal Minimum raw value
+ * \param[in]  dOffset Offset Value
+ * \param[in]  dScaleFactor Scaling Factor
  * \param[out] dMaxPhyVal Maximum physical value
- *             dMaxPhyVal Minimum physical value
+ * \param[out] dMinPhyVal Minimum physical value
  *
  * Converts the DOUBLE physical values to INT64 RAW values.
  */
-int nConvertRawToPhysical(long long int unMaxRawVal, long long int unMinRawVal, double dOffset, double dScalFactor, double& dMaxPhyVal, double& dMinPhyVal)
+int nConvertRawToPhysical(long long int unMaxRawVal, long long int unMinRawVal, double dOffset, double dScaleFactor, double& dMaxPhyVal, double& dMinPhyVal)
 {
     //Maximum value
     dMaxPhyVal = static_cast<double>(unMaxRawVal);
-    dMaxPhyVal *= dScalFactor;
+    dMaxPhyVal *= dScaleFactor;
     dMaxPhyVal += dOffset;
     //Minimum value
     dMinPhyVal = static_cast<double>(unMinRawVal);
-    dMinPhyVal *= dScalFactor;
+    dMinPhyVal *= dScaleFactor;
     dMinPhyVal += dOffset;
     return 0;
 }
-
 
 /**
  * \brief      Convert the double value to UINT64.

@@ -16,16 +16,16 @@
 /**
  * \file      DBC2DBFConverterDLL.cpp
  * \brief     Definition of initialization routines for the DLL
- * \author    Tobias Lorenz
+ * \authors   Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Defines the initialization routines for the DLL.
  */
 
-#define VC_EXTRALEAN        // Exclude rarely-used stuff from Windows headers
+#define VC_EXTRALEAN        /* Exclude rarely-used stuff from Windows headers */
 
 /* C++ includes */
-#include <afxcmn.h>         // MFC support for Windows Common Controls
+#include <afxcmn.h>
 #include <afxdllx.h>
 
 /* Project includes */
@@ -41,10 +41,6 @@
 //     Precompiled headers disabled, with the following text:
 //          #include <afxwin.h>
 //          #include <afxdllx.h>
-#endif
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
 #endif
 
 static AFX_EXTENSION_MODULE DBC2DBFConverterDLL = { NULL, NULL };

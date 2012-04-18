@@ -16,7 +16,7 @@
 /**
  * \file      ConverterDlg.cpp
  * \brief     Implementation file for CCAPL2CPropertyPage class
- * \author    Amit Ranjan
+ * \authors   Amit Ranjan
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for CCAPL2CPropertyPage class

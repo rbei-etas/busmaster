@@ -16,7 +16,7 @@
 /**
  * \file      Functions.hpp
  * \brief     Implementation file for parsing functions
- * \author    Amit Ranjan
+ * \authors   Amit Ranjan
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for parsing functions

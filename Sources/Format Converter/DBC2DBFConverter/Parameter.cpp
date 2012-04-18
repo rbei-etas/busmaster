@@ -16,7 +16,7 @@
 /**
  * \file      Parameter.cpp
  * \brief     Implementation of parameter class
- * \author    Padmaja A, Tobias Lorenz
+ * \authors   Padmaja A, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of the parameter class.
@@ -31,6 +31,8 @@
 
 /**
  * \brief Constructor
+ *
+ * Constructor of CParameters
  */
 CParameters::CParameters()
 {
@@ -62,18 +64,22 @@ CParameters::CParameters()
     m_defError = false;
 }
 
-
 /**
  * \brief Destructor
+ *
+ * Destructor of CParameters
  */
 CParameters::~CParameters()
 {
     // nothing special to do here
 }
 
-
 /**
- * \brief Operator overloading for =
+ * \brief     Operator overloading for =
+ * \param[in] param Data to copy from
+ * \return    Reference to local object with new data
+ *
+ * Copies the data from param to the local object.
  */
 CParameters& CParameters::operator=( CParameters& param)
 {
@@ -95,11 +101,11 @@ CParameters& CParameters::operator=( CParameters& param)
     return (*this);
 }
 
-
 /**
  * \brief     Writes the parameter definition
  * \param[in] fileOutput filename of output file
  * \param[in] m_listParameter Parameters List
+ * \return    Status code
  *
  * Writes the parameter definition and default value to the
  * specified output file.
@@ -119,11 +125,8 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
 
         //Validation of  Default value of the parameter before writing to the o/p file.
 
-        fileOutput << "\"";
-        fileOutput << rParam->m_ParamName.c_str();
-        fileOutput << "\",";
-        fileOutput << rParam->m_ParamType.c_str();
-        fileOutput << ",";
+        fileOutput << "\"" << rParam->m_ParamName.c_str() << "\"";
+        fileOutput << "," << rParam->m_ParamType.c_str();
 
         //Parameter : INT type
         if(rParam->m_ParamType == "INT")
@@ -134,21 +137,17 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
                 rParam->m_defError = rParam->m_defError | true;
                 pResult = pResult & false;
                 rParam->m_InitVal.iValue = rParam->m_MinVal.iValue;
-                fileOutput << dec << rParam->m_InitVal.iValue;
-                fileOutput << ",";
-                fileOutput << dec << rParam->m_MinVal.iValue;
-                fileOutput << ",";
-                fileOutput << dec << rParam->m_MaxVal.iValue;
+                fileOutput << "," << dec << rParam->m_InitVal.iValue;
+                fileOutput << "," << dec << rParam->m_MinVal.iValue;
+                fileOutput << "," << dec << rParam->m_MaxVal.iValue;
             }
 
             //Default value is not NULL
             else
             {
-                fileOutput << dec << rParam->m_InitVal.iValue;
-                fileOutput << ",";
-                fileOutput << dec << rParam->m_MinVal.iValue;
-                fileOutput << ",";
-                fileOutput << dec << rParam->m_MaxVal.iValue;
+                fileOutput << "," << dec << rParam->m_InitVal.iValue;
+                fileOutput << "," << dec << rParam->m_MinVal.iValue;
+                fileOutput << "," << dec << rParam->m_MaxVal.iValue;
             }
         }
 
@@ -161,20 +160,16 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
                 rParam->m_defError = rParam->m_defError | true;
                 pResult = pResult & false;
                 rParam->m_InitVal.uiValue = rParam->m_MinVal.uiValue;
-                fileOutput << dec << rParam->m_InitVal.uiValue;
-                fileOutput << ",";
-                fileOutput << dec << rParam->m_MinVal.uiValue;
-                fileOutput << ",";
-                fileOutput << dec << rParam->m_MaxVal.uiValue;
+                fileOutput << "," << dec << rParam->m_InitVal.uiValue;
+                fileOutput << "," << dec << rParam->m_MinVal.uiValue;
+                fileOutput << "," << dec << rParam->m_MaxVal.uiValue;
             }
             //Default value is not NULL
             else
             {
-                fileOutput << dec << rParam->m_InitVal.uiValue;
-                fileOutput << ",";
-                fileOutput << dec << rParam->m_MinVal.uiValue;
-                fileOutput << ",";
-                fileOutput << dec << rParam->m_MaxVal.uiValue;
+                fileOutput << "," << dec << rParam->m_InitVal.uiValue;
+                fileOutput << "," << dec << rParam->m_MinVal.uiValue;
+                fileOutput << "," << dec << rParam->m_MaxVal.uiValue;
             }
         }
 
@@ -186,20 +181,16 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
                 rParam->m_defError = rParam->m_defError | true;
                 pResult = pResult & false;
                 rParam->m_InitVal.fValue = rParam->m_MinVal.fValue;
-                fileOutput << fixed << rParam->m_InitVal.fValue;
-                fileOutput << ",";
-                fileOutput << rParam->m_MinVal.fValue;
-                fileOutput << ",";
-                fileOutput << rParam->m_MaxVal.fValue;
+                fileOutput << "," << rParam->m_InitVal.fValue;
+                fileOutput << "," << rParam->m_MinVal.fValue;
+                fileOutput << "," << rParam->m_MaxVal.fValue;
             }
             //Default value is not NULL
             else
             {
-                fileOutput << fixed << rParam->m_InitVal.fValue;
-                fileOutput << ",";
-                fileOutput << rParam->m_MinVal.fValue;
-                fileOutput << ",";
-                fileOutput << rParam->m_MaxVal.fValue;
+                fileOutput << "," << rParam->m_InitVal.fValue;
+                fileOutput << "," << rParam->m_MinVal.fValue;
+                fileOutput << "," << rParam->m_MaxVal.fValue;
             }
         }
 
@@ -209,24 +200,22 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
             //Default value is NULL
             if(strcmp(rParam->m_InitVal.cValue, "")==0)
             {
-                fileOutput << "\"\",";
-                fileOutput << rParam->m_ValRange.c_str();
+                fileOutput << ",\"\"";
+                fileOutput << "," << rParam->m_ValRange.c_str();
             }
 
             //Default value is not NULL
             else
             {
-                fileOutput << "\"";
-                fileOutput << rParam->m_InitVal.cValue;
-                fileOutput << "\",";
-                fileOutput << rParam->m_ValRange.c_str();
+                fileOutput << ",\"" << rParam->m_InitVal.cValue << "\"";
+                fileOutput << "," << rParam->m_ValRange.c_str();
             }
         }
 
         //Parameter : STRING type
         else
         {
-            fileOutput << rParam->m_InitVal.cValue;
+            fileOutput << "," << rParam->m_InitVal.cValue;
         }
 
         //After validation parameter is written to the o/p file.
@@ -235,9 +224,10 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
     return pResult;
 }
 
-
 /**
- * \brief Calls the appropriate function of CParamValues
+ * \brief     Calls the appropriate function of CParamValues
+ * \param[in] pcLine Input line
+ * \return    Status code
  *
  * This function calls the appropriate function of CParamValues
  * to get the Other Value of Attributes form CanoeDB file.
@@ -285,10 +275,10 @@ int CParameters::FormatParamValue(char *pcLine)
     return 1;
 }
 
-
 /**
  * \brief     Parses the attribute lines from CanoeDB file.
  * \param[in] pcLine Input file string
+ * \return    Status code
  *
  * Parses the attribute lines from CanoeDB file.
  */
@@ -422,10 +412,10 @@ int CParameters::Format(char *pcLine)
     return success;
 }
 
-
 /**
  * \brief     Reads the default value of attribute from the CanoeDB file
  * \param[in] pcToken Input string
+ * \return    Status code
  *
  * Reads the default value of attribute from the CanoeDB file.
  */

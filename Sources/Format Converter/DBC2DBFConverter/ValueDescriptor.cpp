@@ -16,7 +16,7 @@
 /**
  * \file      ValueDescriptor.cpp
  * \brief     Implementation of value descriptor class
- * \author    Ratnadip Choudhury, Tobias Lorenz
+ * \authors   Ratnadip Choudhury, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of the value descriptor class.
@@ -31,6 +31,8 @@ using namespace std;
 
 /**
  * \brief Constructor
+ *
+ * Constructor of CValueDescriptor
  */
 CValueDescriptor::CValueDescriptor()
 {
@@ -38,26 +40,27 @@ CValueDescriptor::CValueDescriptor()
     m_value.uiValue = 1;
     m_value.fValue = 1;
     m_value.dValue = 1;
-	memset(&m_value.cValue, 0, sizeof(m_value.cValue));
-	m_value.i64Value = 1;
-	m_value.ui64Value = 1;
+    memset(&m_value.cValue, 0, sizeof(m_value.cValue));
+    m_value.i64Value = 1;
+    m_value.ui64Value = 1;
     m_acDescriptor = "";
 }
 
 
 /**
  * \brief Destructor
+ *
+ * Destructor of CValueDescriptor
  */
 CValueDescriptor::~CValueDescriptor()
 {
 }
 
-
 /**
- * \brief writes the value descriptors in the given list to the output file
+ * \brief     writes the value descriptors in the given list to the output file
  * \param[in] fileOutput Pointer to the Output file
  * \param[in] m_ucType data type of the value
- * \param[in] m_listSignals List of Value descriptors
+ * \param[in] m_listValueDescriptor List of Value descriptors
  *
  * Writes the value descriptors in the given list to the output file.
  */

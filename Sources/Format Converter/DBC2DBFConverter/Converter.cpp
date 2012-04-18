@@ -16,7 +16,7 @@
 /**
  * \file      Converter.cpp
  * \brief     Implementation of converter class
- * \author    Amitesh Bharti, Tobias Lorenz
+ * \authors   Amitesh Bharti, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of the converter class.
@@ -35,26 +35,32 @@ using namespace std;
 bool CConverter::valid_msg = true;
 unsigned char CConverter::ucMsg_DLC = 8;
 
-
 /**
  * \brief Constructor
+ *
+ * Constructor of CConverter
  */
 CConverter::CConverter()
 {
     m_uiResultCode = CON_RC_NOERROR;
 }
 
-
 /**
- * \brief      Destructor
+ * \brief Destructor
+ *
+ * Destructor of CConverter
  */
 CConverter::~CConverter()
 {
     m_listMessages.clear();
 }
 
-
 /**
+ * \brief     Conversion function
+ * \param[in] sCanoeFile name of input file
+ * \param[in] sCanMonFile name of output file
+ * \return    Status code
+ *
  * This is the basic function which is to be called
  * to convert any given CANoe file to a CANMon file.
  */
@@ -123,7 +129,10 @@ unsigned int CConverter::Convert(string &sCanoeFile, string &sCanMonFile)
 }
 
 /**
- * \brief Returns the error string.
+ * \brief      Get result string
+ * \param[out] str Result String
+ *
+ * Returns the error string
  */
 void CConverter::GetResultString(string& str)
 {
@@ -152,20 +161,22 @@ void CConverter::GetResultString(string& str)
 	}
 }
 
-
 /**
- * \brief Set result code.
+ * \brief     Set result code
+ * \param[in] uiCode Result code
+ * \return    Result code
+ *
+ * Sets and returns the result code
  */
 unsigned int CConverter::SetResultCode(unsigned int uiCode)
 {
     return (m_uiResultCode = uiCode);
 }
 
-
 /**
  * \brief Validates the message list
  *
- * Validates the message list and set the error in each signal if present
+ * Validates the message list and set the error in each signal if present.
  */
 void CConverter::ValidateMessageList()
 {
@@ -315,9 +326,9 @@ void CConverter::ValidateMessageList()
     }
 }
 
-
 /**
- * \brief Generates the message list
+ * \brief     Generates the message list
+ * \param[in] fileInput Input file
  *
  * This function will parse the input file and line by line
  * and generates  a list of message,signal,value table,comments,etc
@@ -801,9 +812,10 @@ void CConverter::GenerateMessageList(fstream& fileInput)
     }
 }
 
-
 /**
- * \brief Writes all the data to the output file in CANoe format
+ * \brief     Writes all the data to the output file in CANoe format
+ * \param[in] fileOutput Output file
+ * \return    Status code
  *
  * Writes all the data to the output file in CANoe format.
  */
@@ -1013,9 +1025,9 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     return bResult;
 }
 
-
 /**
- * \brief Logs the eror info in log file
+ * \brief     Logs the eror info in log file
+ * \param[in] fileLog Log file
  *
  * Logs the eror info in log file.
  */
@@ -1037,9 +1049,9 @@ void CConverter::CreateLogFile(fstream& fileLog)
             // write signal only if it is not valid
             if(sig->m_uiError != CSignal::SIG_EC_NO_ERR)
             {
-				string str;
+                string str;
 
-				// for the first wrong signal, log the message details also
+                // for the first wrong signal, log the message details also
                 if(first_msg == 1)
                 {
                     fileLog << endl;
@@ -1065,7 +1077,7 @@ void CConverter::CreateLogFile(fstream& fileLog)
         // write signal only if it is not valid
         if(sig->m_uiError != CSignal::SIG_EC_OVERFLOW)
         {
-			string str;
+            string str;
             // for the first wrong signal, log the message details also
             if(first_msg == 1)
             {
@@ -1107,7 +1119,6 @@ void CConverter::CreateLogFile(fstream& fileLog)
     }
 }
 
-
 /**
  * \brief     creates a list of nodes inthe network
  * \param[in] pcLine String having all the node names
@@ -1126,7 +1137,6 @@ void CConverter::create_Node_List(char *pcLine)
         pcToken = strtok_s(NULL, " ,", &pcTok);
     }
 }
-
 
 /**
  * \brief     encrypts all the strings present in the list

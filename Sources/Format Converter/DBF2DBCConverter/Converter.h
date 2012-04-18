@@ -16,7 +16,7 @@
 /**
  * \file      Converter.h
  * \brief     CConverter class.
- * \author    Mahesh B S
+ * \authors   Mahesh B S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * CConverter class.
@@ -24,6 +24,7 @@
 
 #pragma once
 
+/* MFC includes */
 #include <afxtempl.h>
 
 /* C++ includes */

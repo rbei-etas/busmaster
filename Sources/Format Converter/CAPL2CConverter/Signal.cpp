@@ -16,7 +16,7 @@
 /**
  * \file      Signal.cpp
  * \brief     Implementation file for CSignal class
- * \author    Amit Ranjan
+ * \authors   Amit Ranjan
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for CSignal class

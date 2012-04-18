@@ -16,7 +16,7 @@
 /**
  * \file      AscLogConverter.cpp
  * \brief     Implementation of the AscLogConverter class and DLLMain Function.
- * \author    Venkatanarayana Makam
+ * \authors   Venkatanarayana Makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of the AscLogConverter class.

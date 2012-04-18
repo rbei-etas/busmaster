@@ -16,7 +16,7 @@
 /**
  * \file      Message.cpp
  * \brief     Implementation of message class
- * \author    Mahesh B S, Tobias Lorenz
+ * \authors   Mahesh B S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of the message class.
@@ -29,6 +29,8 @@
 
 /**
  * \brief Constructor
+ *
+ * Constructor of CMessage
  */
 CMessage::CMessage()
 {
@@ -42,19 +44,20 @@ CMessage::CMessage()
     m_listSignals.clear();
 }
 
-
 /**
  * \brief Destructor
+ *
+ * Destructor of CMessage
  */
 CMessage::~CMessage()
 {
     m_listSignals.clear();
 }
 
-
 /**
- * \brief overloaded operator =
+ * \brief     overloaded operator =
  * \param[in] message Message to copy content from
+ * \return    Reference to local object with new content
  *
  * Copy the elements of the given message to this
  */
@@ -71,9 +74,10 @@ CMessage& CMessage::operator=(CMessage& message)
     return (*this);
 }
 
-
 /**
- * \brief Extracts the message data
+ * \brief     Extracts the message data
+ * \param[in] pcLine Message data
+ * \return    Status code
  *
  * Extracts the message data from the given Line and populates
  * the message structure.
@@ -110,13 +114,13 @@ int CMessage::Format(char *pcLine)
     return 1;
 }
 
-
 /**
  * \brief      writes the Messages in the given list to the output file
  * \param[in]  fileOutput Pointer to the Output file
  * \param[in]  m_listMessages List of Message
  * \param[in]  writeErr If true write error signals also else write only correct signals
  *             associated with the message
+ * \return     Status code
  *
  * Writes the Messages in the given list to the output file.
  */
@@ -128,22 +132,13 @@ bool CMessage::writeMessageToFile(fstream &fileOutput, list<CMessage> &m_listMes
     list<CMessage>::iterator msg;
     for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); ++msg)
     {
-        fileOutput << T_START_MSG;
-        fileOutput << " ";
-        fileOutput << msg->m_acName.c_str();
-        fileOutput << ",";
-        fileOutput << dec << msg->m_uiMsgID;
-        fileOutput << ",";
-        fileOutput << dec << (int) msg->m_ucLength;
-        fileOutput << ",";
-        fileOutput << dec << (int) msg->m_ucNumOfSignals;
-        fileOutput << ",";
-        fileOutput << msg->m_cDataFormat;
-        fileOutput << ",";
-        fileOutput << msg->m_cFrameFormat;
-        fileOutput << ",";
-        fileOutput << msg->m_txNode.c_str();
-        fileOutput << endl;
+        fileOutput << T_START_MSG << " " << msg->m_acName.c_str();
+        fileOutput << "," << dec << msg->m_uiMsgID;
+        fileOutput << "," << dec << msg->m_ucLength;
+        fileOutput << "," << dec << msg->m_ucNumOfSignals;
+        fileOutput << "," << msg->m_cDataFormat;
+        fileOutput << "," << msg->m_cFrameFormat;
+        fileOutput << "," << msg->m_txNode.c_str() << endl;
 
         CSignal sig;
         //write all related signals to the messages

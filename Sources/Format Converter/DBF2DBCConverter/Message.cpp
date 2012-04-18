@@ -16,7 +16,7 @@
 /**
  * \file      Message.cpp
  * \brief     Implementation of the CMessage class.
- * \author    Mahesh.B.S
+ * \authors   Mahesh.B.S, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of the CMessage class.
@@ -27,23 +27,27 @@
 #include "Message.h"
 
 /**
+ * \brief Constructor
+ *
  * constructor of CMessage
  */
 CMessage::CMessage()
 {
-
 }
 
 /**
+ * \brief Destructor
+ *
  * destructor of CMessage
  */
 CMessage::~CMessage()
 {
-
 }
 
 /**
- * \brief operator= overloading
+ * \brief     operator= overloading
+ * \param[in] message Message to copy content from
+ * \return    Local object with new content
  *
  * Copy the other elements of the new message to this
  */
@@ -66,6 +70,10 @@ CMessage& CMessage::operator=(CMessage& message)
 }
 
 /**
+ * \brief     Extracts the message data from the given Line
+ * \param[in] pcLine The given line
+ * \return    Status code
+ *
  * Extracts the message data from the given Line and populates
  * the message structure.
  */
@@ -113,7 +121,11 @@ int CMessage::Format(char *pcLine)
 }
 
 /**
- * Overloading of == operator
+ * \brief     Overloading of == operator
+ * \param[in] message Reference message to compare with
+ * \return    1 if identical, 0 if not.
+ *
+ * Compares message with local object.
  */
 int CMessage::operator==(const CMessage &message) const
 {
@@ -123,7 +135,11 @@ int CMessage::operator==(const CMessage &message) const
 }
 
 /**
- * Overloading of == operator
+ * \brief     Overloading of == operator
+ * \param[in] uiMsgID Reference message ID to compare with
+ * \return    1 if identical, 0 if not.
+ *
+ * Compares message ID with local object.
  */
 int CMessage::operator==(const unsigned int uiMsgID) const
 {
@@ -133,7 +149,11 @@ int CMessage::operator==(const unsigned int uiMsgID) const
 }
 
 /**
- * Write's the message in the CANoe format and returns false
+ * \brief     Writes the message in the CANoe format
+ * \param[in] fileOutput Output file
+ * \return    Status code
+ *
+ * Writes the message in the CANoe format and returns false
  * if any of the error signal is not stored in the file
  */
 bool CMessage::writeMessageToFile( fstream &fileOutput)

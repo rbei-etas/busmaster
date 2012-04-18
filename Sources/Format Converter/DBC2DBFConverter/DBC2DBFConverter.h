@@ -16,7 +16,7 @@
 /**
  * \file      DBC2DBFConverter.h
  * \brief     Definition of converter class
- * \author    Tobias Lorenz
+ * \authors   Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition of converter class.
@@ -33,6 +33,7 @@ class CDBC2DBFConverter : public CBaseConverter
     HRESULT m_hResult;
 public:
     CDBC2DBFConverter(void);
+    ~CDBC2DBFConverter(void);
     virtual HRESULT GetInputFileFilters(string&, string&);
     virtual HRESULT GetOutputFileFilters(string&, string&);
     virtual HRESULT ConvertFile(string& chInputFile, string& chOutputFile);
@@ -44,5 +45,4 @@ public:
     virtual HRESULT GetPropertyPage(CPropertyPage*& pPage) {
         return S_FALSE;
     };
-    ~CDBC2DBFConverter(void);
 };

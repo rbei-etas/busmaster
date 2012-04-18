@@ -16,7 +16,7 @@
 /**
  * \file      ParameterVal.cpp
  * \brief     Implementation file for the ParameterValues class.
- * \author    Padmaja A
+ * \authors   Padmaja A, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for the ParameterValues class.
@@ -30,13 +30,9 @@
 
 using namespace std;
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 /**
+ * \brief Constructor
+ *
  * Constructor of CParameterValues
  */
 CParameterValues::CParameterValues()
@@ -52,15 +48,20 @@ CParameterValues::CParameterValues()
 }
 
 /**
- * destructor of CParameterValues
+ * \brief Destructor
+ *
+ * Destructor of CParameterValues
  */
 CParameterValues::~CParameterValues()
 {
-
 }
 
 /**
- * overloaded operator =
+ * \brief     overloaded operator =
+ * \param[in] param Parameter to copy content from
+ * \return    Local parameter with new contents
+ *
+ * Copies the contents of param to local object.
  */
 CParameterValues& CParameterValues::operator=(CParameterValues& param)
 {
@@ -74,29 +75,44 @@ CParameterValues& CParameterValues::operator=(CParameterValues& param)
 }
 
 /**
+ * \brief Format Parameter Value
+ * \param[in] paramType Parameter Type
+ * \param[in] pcLine Input line
+ * \param[in] index Index
+ * \param[in] msgId Message Identifier
+ * \param[in] Node_Name Node Name
+ *
  * Parses the Parameter Values other than Default value
  * from the input file.
  */
 void CParameterValues::Format_Param_Value(string &paramType, char *pcLine,const int& index,unsigned int msgId,char *Node_Name)
 {
-    //copies the node name to the member
-    if(index==1)
-        m_NodeName = Node_Name;
-    //copies the message id.
-    else if(index==2)
-        m_MsgId=msgId;
-    //store the signal name.
-    else if(index==3)
-    {
-        m_MsgId =msgId;
-        m_SignalName = Node_Name;
-    }
-    //get param value.
+	switch(index) {
+		case 1:
+			//copies the node name to the member
+			m_NodeName = Node_Name;
+			break;
+		case 2:
+			//copies the message id.
+			m_MsgId=msgId;
+			break;
+		case 3:
+			//store the signal name.
+	        m_MsgId =msgId;
+		    m_SignalName = Node_Name;
+			break;
+	}
+
+	//get param value.
     ReadParamValue(paramType, pcLine);
 }
 
 /**
- * Reads the other vlaue of attributes from i/p file.
+ * \brief     Read Parameter Value
+ * \param[in] paramType Parameter type
+ * \param[in] pcToken   Input token
+ *
+ * Reads the other value of attributes from i/p file.
  */
 void CParameterValues::ReadParamValue(string &paramType, char *pcToken)
 {
@@ -142,7 +158,12 @@ void CParameterValues::ReadParamValue(string &paramType, char *pcToken)
 }
 
 /**
- * Write the net values into the file
+ * \brief     Write the net values into the file
+ * \param[in] fileOutput Output file
+ * \param[in] paramType Parameter Type
+ * \param[in] paramName Parameter Name
+ *
+ * Write the net values into the file.
  */
 void CParameterValues::WriteNetValuesToFile(fstream& fileOutput, string &paramType, string &paramName)
 {
@@ -157,7 +178,7 @@ void CParameterValues::WriteNetValuesToFile(fstream& fileOutput, string &paramTy
     else if(paramType == "FLOAT")
     {
         if(m_ParamVal.fValue != -1)
-            fileOutput << " " << fixed << m_ParamVal.fValue;
+            fileOutput << " " << m_ParamVal.fValue;
     }
     //writes net values of type enum to o/p file.
     else if(paramType == "ENUM")
@@ -174,7 +195,12 @@ void CParameterValues::WriteNetValuesToFile(fstream& fileOutput, string &paramTy
 }
 
 /**
- * Write the node values into the file
+ * \brief     Write the node values into the file
+ * \param[in] fileOutput Output file
+ * \param[in] paramType Parameter Type
+ * \param[in] paramName Parameter Name
+ *
+ * Write the node values into the file.
  */
 void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput, string &paramType, string &paramName)
 {
@@ -198,7 +224,7 @@ void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput, string &paramT
     else if(paramType == "FLOAT")
     {
         if(m_ParamVal.fValue != -1)
-			fileOutput << fixed << m_ParamVal.fValue;
+			fileOutput << m_ParamVal.fValue;
     }
     //writes node values of type string to o/p file.
     else if(paramType == "STRING")
@@ -207,7 +233,12 @@ void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput, string &paramT
 }
 
 /**
- * Write the Message values into the file
+ * \brief     Write the Message values into the file
+ * \param[in] fileOutput Output file
+ * \param[in] paramType Parameter Type
+ * \param[in] paramName Parameter Name
+ *
+ * Write the Message values into the file.
  */
 void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput, string &paramType, string &paramName)
 {
@@ -231,7 +262,7 @@ void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput, string &paramT
     else if(paramType == "FLOAT")
     {
         if(m_ParamVal.fValue != -1)
-			fileOutput << " " << fixed << m_ParamVal.fValue;
+			fileOutput << " " << m_ParamVal.fValue;
     }
     //writes mesg values of type string to o/p file.
     else if(paramType == "STRING")
@@ -240,7 +271,12 @@ void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput, string &paramT
 }
 
 /**
- * Write the Signal values into the file
+ * \brief     Write the Signal values into the file
+ * \param[in] fileOutput Output file
+ * \param[in] paramType Parameter Type
+ * \param[in] paramName Parameter Name
+ *
+ * Write the Signal values into the file.
  */
 void CParameterValues::WriteSigValuesToFile(fstream& fileOutput, string &paramType, string &paramName)
 {
@@ -265,7 +301,7 @@ void CParameterValues::WriteSigValuesToFile(fstream& fileOutput, string &paramTy
     else if(paramType == "FLOAT")
     {
         if(m_ParamVal.fValue != -1)
-			fileOutput << " " << fixed << m_ParamVal.fValue;
+			fileOutput << " " << m_ParamVal.fValue;
     }
     //writes sig values of type string to o/p file.
     else if(paramType == "STRING")

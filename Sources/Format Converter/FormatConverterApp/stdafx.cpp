@@ -16,7 +16,7 @@
 /**
  * \file      stdafx.cpp
  * \brief     Source file that includes just the standard includes
- * \author    Tobias Lorenz
+ * \authors   Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Source file that includes just the standard includes

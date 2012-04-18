@@ -16,7 +16,7 @@
 /**
  * \file      Utility.cpp
  * \brief     Defines Global Utility functions
- * \author    Venkatanarayana Makam
+ * \authors   Venkatanarayana Makam, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Defines Global Utility functions
@@ -25,24 +25,22 @@
 /* Project includes */
 #include "Utility.h"
 
-#define     doublePRECISION       0.5
-
 /**
-* \brief      Converts the double physical values to unsigned long long int RAW values
-* \param[in]  double dMaxVal, Maximum physical value
-              double dMinVal, Minimum physical value
-              double dOffset, Offset value
-              double dScalFactor, Scaling Factor
-* \param[out] unsigned long long int& unMaxVal, UIN64 Maximum vlaue
-              unsigned long long int& unMinVal, unsigned long long int Minimum RAW value
-* \return     unsigned int
-* \authors    Venkatanarayana Makam
-* \date       27.07.2011
-*/
-unsigned int unConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double dScalFactor, unsigned long long int& unMaxVal, unsigned long long int& unMinVal)
+ * \brief      Converts the double physical values to unsigned long long int values
+ * \param[in]  dMaxVal Maximum physical value
+ * \param[in]  dMinVal Minimum physical value
+ * \param[in]  dOffset Offset value
+ * \param[in]  dScaleFactor Scaling Factor
+ * \param[out] unMaxVal Maximum vlaue
+ * \param[out] unMinVal Minimum value
+ * \return     Return code
+ *
+ * Converts the double physical values to unsigned long long int values
+ */
+unsigned int unConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double dScaleFactor, unsigned long long int& unMaxVal, unsigned long long int& unMinVal)
 {
-    double dTempMaxVal = ((dMaxVal - dOffset) / dScalFactor);
-    double dTempMinVal = ((dMinVal - dOffset) / dScalFactor);
+    double dTempMaxVal = ((dMaxVal - dOffset) / dScaleFactor);
+    double dTempMinVal = ((dMinVal - dOffset) / dScaleFactor);
 
     unMaxVal = (unsigned long long int)unRoundOffdoubleValue(dTempMaxVal);
     unMinVal = (unsigned long long int)unRoundOffdoubleValue(dTempMinVal);
@@ -50,83 +48,85 @@ unsigned int unConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffs
 }
 
 /**
-* \brief      Converts the double physical values to long long int RAW values
-* \param[in]  double dMaxVal, Maximum physical value
-              double dMinVal, Minimum physical value
-              double dOffset, Offset Value
-              double dScalFactor, Scaling Factor
-* \param[out] unsigned long long int& unMaxVal, UIN64 Maximum vlaue
-              unsigned long long int& unMinVal, unsigned long long int Minimum RAW value
-* \return     int
-* \authors    Venkatanarayana Makam
-* \date       27.07.2011
-*/
-int nConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double dScalFactor, long long int& nMaxVal, long long int& nMinVal)
+ * \brief      Converts the double physical values to long long int values
+ * \param[in]  dMaxVal Maximum physical value
+ * \param[in]  dMinVal Minimum physical value
+ * \param[in]  dOffset Offset Value
+ * \param[in]  dScaleFactor Scaling Factor
+ * \param[out] nMaxVal Maximum value
+ * \param[out] nMinVal Minimum value
+ * \return     Status code
+ *
+ * Converts the double physical values to long long int values
+ */
+int nConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double dScaleFactor, long long int& nMaxVal, long long int& nMinVal)
 {
-    double dTempMaxVal = ((dMaxVal - dOffset) / dScalFactor);
-    double dTempMinVal = ((dMinVal - dOffset) / dScalFactor);
+    double dTempMaxVal = ((dMaxVal - dOffset) / dScaleFactor);
+    double dTempMinVal = ((dMinVal - dOffset) / dScaleFactor);
 
     nMaxVal = (long long int)unRoundOffdoubleValue(dTempMaxVal);
     nMinVal = (long long int)unRoundOffdoubleValue(dTempMinVal);
     return 0;
 }
+
 /**
-* \brief      Converts the double physical values to long long int RAW values
-* \param[in]  unsigned long long int unMaxRawVal, Maximum raw value
-              unsigned long long int unMaxRawVal, Minimum raw value
-              double dOffset, Offset Value
-              double dScalFactor, Scaling Factor
-* \param[out] double& dMaxPhyVal, Maximum physical vlaue
-              double& dMaxPhyVal, Minimum physical vlaue
-* \return     unsigned int
-* \authors    Venkatanarayana Makam
-* \date       27.07.2011
-*/
-unsigned int unConvertRawToPhysical(unsigned long long int unMaxRawVal, unsigned long long int unMinRawVal, double dOffset, double dScalFactor, double& dMaxPhyVal, double& dMinPhyVal)
+ * \brief      Converts the double physical values to long long int values
+ * \param[in]  unMaxRawVal Maximum raw value
+ * \param[in]  unMinRawVal Minimum raw value
+ * \param[in]  dOffset Offset Value
+ * \param[in]  dScaleFactor Scaling Factor
+ * \param[out] dMaxPhyVal Maximum physical vlaue
+ * \param[out] dMinPhyVal Minimum physical vlaue
+ * \return     Status code
+ *
+ * Converts the double physical values to long long int values.
+ */
+unsigned int unConvertRawToPhysical(unsigned long long int unMaxRawVal, unsigned long long int unMinRawVal, double dOffset, double dScaleFactor, double& dMaxPhyVal, double& dMinPhyVal)
 {
     //Maximum value
     dMaxPhyVal = static_cast<double>(unMaxRawVal);
-    dMaxPhyVal *= dScalFactor;
+    dMaxPhyVal *= dScaleFactor;
     dMaxPhyVal += dOffset;
     //Minimum value
     dMinPhyVal = static_cast<double>(unMinRawVal);
-    dMinPhyVal *= dScalFactor;
+    dMinPhyVal *= dScaleFactor;
     dMinPhyVal += dOffset;
     return 0;
 }
+
 /**
-* \brief      Converts the double physical values to long long int RAW values
-* \param[in]  long long int unMaxRawVal, Maximum raw value
-              long long int unMaxRawVal, Minimum raw value
-              double dOffset, Offset Value
-              double dScalFactor, Scaling Factor
-* \param[out] double& dMaxPhyVal, Maximum physical vlaue
-              double& dMaxPhyVal, Minimum physical vlaue
-* \return     int
-* \authors    Venkatanarayana Makam
-* \date       27.07.2011
-*/
-int nConvertRawToPhysical(long long int unMaxRawVal, long long int unMinRawVal, double dOffset, double dScalFactor, double& dMaxPhyVal, double& dMinPhyVal)
+ * \brief      Converts the double physical values to long long int raw values
+ * \param[in]  unMaxRawVal Maximum raw value
+ * \param[in]  unMinRawVal Minimum raw value
+ * \param[in]  dOffset Offset Value
+ * \param[in]  dScaleFactor Scaling Factor
+ * \param[out] dMaxPhyVal Maximum physical vlaue
+ * \param[out] dMinPhyVal Minimum physical vlaue
+ * \return     Status code
+ *
+ * Converts the double physical values to long long int raw values.
+ */
+int nConvertRawToPhysical(long long int unMaxRawVal, long long int unMinRawVal, double dOffset, double dScaleFactor, double& dMaxPhyVal, double& dMinPhyVal)
 {
     //Maximum value
     dMaxPhyVal = static_cast<double>(unMaxRawVal);
-    dMaxPhyVal *= dScalFactor;
+    dMaxPhyVal *= dScaleFactor;
     dMaxPhyVal += dOffset;
     //Minimum value
     dMinPhyVal = static_cast<double>(unMinRawVal);
-    dMinPhyVal *= dScalFactor;
+    dMinPhyVal *= dScaleFactor;
     dMinPhyVal += dOffset;
     return 0;
 }
+
 /**
-* \brief      This function will convert the double value to UIN64.
-              if the double value precision is more than 0.5 the unit valu will be added 1
-* \param[in]  double dValue
-* \param[out] None
-* \return     unsigned long long int
-* \authors    Venkatanarayana Makam
-* \date       27.07.2011
-*/
+ * \brief      This function will convert the double value to unsigned long long int.
+ * \param[in]  dValue double Value
+ * \return     unsigned long long int Value
+ *
+ * This function will convert the double value to unsigned long long int.
+ * If the double value precision is more than 0.5 the unit value will be added 1.
+ */
 unsigned long long int unRoundOffdoubleValue(double dValue)
 {
     unsigned long long int unVal = (unsigned long long int)dValue;
