@@ -40,6 +40,8 @@
 #include "Definitions.h"
 #include "tag.h"
 
+using namespace std;
+
 #ifdef _MANAGED
 #error Please read instructions in DBF2DBCConverter.cpp to compile with /clr
 // If you want to add /clr to your project you must do the following:

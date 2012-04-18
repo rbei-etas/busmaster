@@ -22,12 +22,13 @@
  * Implementation of the CConverter class.
  */
 
-/* C++ includes */
-#include <fstream>
-#include <string>
+/* C includes */
+#include <stdio.h>
 
 /* Project includes */
 #include "Converter.h"
+
+using namespace std;
 
 fstream CConverter::fileLog;
 bool CConverter::bLOG_ENTERED = false;
@@ -138,7 +139,7 @@ unsigned int CConverter::Convert(string sCanMonFile,string sCanoeFile)
     //If log file is empty delete it
     if(!CConverter::bLOG_ENTERED)
     {
-        DeleteFile(sLogFile.c_str());
+        remove(sLogFile.c_str());
     }
     else
     {

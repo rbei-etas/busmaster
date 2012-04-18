@@ -22,9 +22,6 @@
  * Implementation of the CSignal class.
  */
 
-/* C++ includes */
-#include <string>
-
 /* Project inclues */
 #include "Converter.h"
 #include "Signal.h"

@@ -22,9 +22,6 @@
  * Implementation file for the ParameterValues class.
  */
 
-/* C++ includes */
-#include <string>
-
 /* Project includes */
 #include "ParameterVal.h"
 
