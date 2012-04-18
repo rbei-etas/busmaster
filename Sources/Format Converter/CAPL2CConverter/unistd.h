@@ -1,1 +1,1 @@
-/* This file is only provided to satisfy lexer.h, which always contains #include <unistd.h> */
+/* This file is only provided to satisfy the unistd.h dependency in lexer.h */
