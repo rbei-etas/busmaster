@@ -42,5 +42,5 @@ public:
     // data members
     string      m_acDescriptor;
     SIG_VALUE   m_value;
-    void writeValueDescToFile(fstream &fileOutput, char m_ucType, list<CValueDescriptor> &m_listValueDescriptor);
+    void writeValueDescToFile(fstream& fileOutput, char m_ucType, list<CValueDescriptor> &m_listValueDescriptor);
 };

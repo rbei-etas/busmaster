@@ -30,22 +30,22 @@
 
 class CDefConverterPage : public CPropertyPage
 {
-	DECLARE_DYNAMIC(CDefConverterPage)
+    DECLARE_DYNAMIC(CDefConverterPage)
     CPluginManagerBase* m_pouPluginManager;
 public:
     CDefConverterPage();
-	HRESULT SetPluginManager(CPluginManagerBase *m_pouPluginManager);
-    
+    HRESULT SetPluginManager(CPluginManagerBase* m_pouPluginManager);
+
 
     virtual ~CDefConverterPage();
 
-// Dialog Data
-	enum { IDD = IDD_PROPPAGE_DEF_CONVERTER };
+    // Dialog Data
+    enum { IDD = IDD_PROPPAGE_DEF_CONVERTER };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 private:
     CComboBox m_omComboConverterNames;
     HRESULT LoadConverters();

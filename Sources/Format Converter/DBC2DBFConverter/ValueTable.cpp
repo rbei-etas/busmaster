@@ -69,7 +69,7 @@ CValueTable& CValueTable::operator=(CValueTable& Tab)
  *
  * Extracts Values and value descriptors from the line.
  */
-int CValueTable::Format(char *pcLine, fstream &fileInput)
+int CValueTable::Format(char* pcLine, fstream& fileInput)
 {
     char acValue[defVTAB_MAX_VALU_LEN];
     char acLine[defVTAB_MAX_LINE_LEN] = {'\0'};
@@ -77,9 +77,9 @@ int CValueTable::Format(char *pcLine, fstream &fileInput)
     char table_Name[defVTAB_MAX_TNAM_LEN];
     bool true_end = true;
     char pcTemp[defVTAB_MAX_TEMP_LEN];
-    char *pcValue = acValue;
-    char *pcDesc = acDesc;
-    char *pcTab = table_Name;
+    char* pcValue = acValue;
+    char* pcDesc = acDesc;
+    char* pcTab = table_Name;
 
     // skip leading spaces
     while(*pcLine && *pcLine == ' ')
@@ -91,9 +91,13 @@ int CValueTable::Format(char *pcLine, fstream &fileInput)
     while(*pcLine && *pcLine != ' ')
     {
         if (*pcLine != '\r')
+        {
             *pcTab++ = *pcLine;
+        }
+
         pcLine++;
     }
+
     *pcTab = '\0';
     m_TableName = table_Name;
 
@@ -102,6 +106,7 @@ int CValueTable::Format(char *pcLine, fstream &fileInput)
     {
         *pcLine++;
     }
+
     if(pcLine[strlen(pcLine)-1] != ';')
     {
         true_end  = false;
@@ -118,20 +123,28 @@ int CValueTable::Format(char *pcLine, fstream &fileInput)
             strncpy(pcTemp, pcLine, sizeof(pcTemp));
             strncat(pcTemp, acLine, sizeof(pcTemp)-strlen(pcTemp));
             pcLine = pcTemp;
+
             if(pcLine[strlen(pcLine)-1] == ';')
+            {
                 true_end  = true;
+            }
         }
+
         pcValue = acValue;
         pcDesc = acDesc;
-
         // get value
         *pcValue = *pcDesc = '\0';
+
         while(*pcLine && *pcLine != ' ')
         {
             if (*pcLine != '\r')
+            {
                 *pcValue++ = *pcLine;
+            }
+
             pcLine++;
         }
+
         *pcValue = '\0'; // terminate the string
 
         // skip spaces
@@ -150,11 +163,14 @@ int CValueTable::Format(char *pcLine, fstream &fileInput)
         while(*pcLine && *pcLine != '\"')
         {
             if (*pcLine != '\r')
+            {
                 *pcDesc++ = *pcLine;
+            }
+
             pcLine++;
         }
-        *pcDesc = '\0';
 
+        *pcDesc = '\0';
         // skip trailing '"'
         pcLine++;
 
@@ -184,18 +200,17 @@ int CValueTable::Format(char *pcLine, fstream &fileInput)
  *
  * Writes the value tebles in the given list to the output file.
  */
-void CValueTable::writeValueTabToFile(fstream &fileOutput, list<CValueTable> &vTab)
+void CValueTable::writeValueTabToFile(fstream& fileOutput, list<CValueTable> &vTab)
 {
     list<CValueTable>::iterator tab;
+
     for (tab=vTab.begin(); tab!=vTab.end(); ++tab)
     {
         fileOutput << T_ST_TAB " ";
         fileOutput << tab->m_TableName.c_str();
         fileOutput << endl;
-
         CValueDescriptor desc;
         desc.writeValueDescToFile(fileOutput, CSignal::SIG_TYPE_INT64, tab->m_values);
-
         fileOutput << T_END_TAB << endl;
     }
 }

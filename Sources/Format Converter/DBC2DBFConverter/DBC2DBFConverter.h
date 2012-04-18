@@ -42,7 +42,8 @@ public:
     virtual HRESULT GetLastConversionStatus(HRESULT& hResult, string& omstrStatus);
     virtual HRESULT GetHelpText(string& pchHelpText);
     virtual BOOL bHaveOwnWindow();
-    virtual HRESULT GetPropertyPage(CPropertyPage*& pPage) {
+    virtual HRESULT GetPropertyPage(CPropertyPage*& pPage)
+    {
         return S_FALSE;
     };
 };

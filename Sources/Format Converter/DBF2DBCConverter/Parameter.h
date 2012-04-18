@@ -36,27 +36,27 @@
 class CParameters
 {
     //private data members
-    string			m_ObjectId;
+    string          m_ObjectId;
     SIG_VALUE       m_MaxVal;
-    SIG_VALUE		m_MinVal;
-    string    		m_ValRange;
-    SIG_VALUE	    m_InitVal;
+    SIG_VALUE       m_MinVal;
+    string          m_ValRange;
+    SIG_VALUE       m_InitVal;
     bool            m_RangeError;
 
     //public data members & functions
 public:
-    string			m_ParamName;
-    string			m_ParamType;
+    string          m_ParamName;
+    string          m_ParamType;
     CList<CParameterValues,CParameterValues&> m_listParamValues[6];
     CParameters();
-    void Format_ParamDef(char *pcLine,int index);
+    void Format_ParamDef(char* pcLine,int index);
     CParameters& operator=(CParameters& param);
-    void GetParam_Def(char *pcLine);
-    void Format_NodeParam_Value(fstream &fileInput,CList<CParameters,CParameters&>& m_listParam);
-    void Format_NetParam_Value(fstream &fileInput,CList<CParameters,CParameters&>& m_listParam);
-    void Format_MesgParam_Value(fstream &fileInput,CList<CParameters,CParameters&>& m_listParam);
-    void Format_SigParam_Value(fstream &fileInput,CList<CParameters,CParameters&>& m_listParam);
-    void ReadDefault_Value(char *pcToken);
+    void GetParam_Def(char* pcLine);
+    void Format_NodeParam_Value(fstream& fileInput,CList<CParameters,CParameters&>& m_listParam);
+    void Format_NetParam_Value(fstream& fileInput,CList<CParameters,CParameters&>& m_listParam);
+    void Format_MesgParam_Value(fstream& fileInput,CList<CParameters,CParameters&>& m_listParam);
+    void Format_SigParam_Value(fstream& fileInput,CList<CParameters,CParameters&>& m_listParam);
+    void ReadDefault_Value(char* pcToken);
     bool Check_Default_Value();
     friend bool WriteParamToFile(fstream& fileOutput,CList<CParameters,CParameters&>& m_listParameter);
     friend bool Write_DefVal_ToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_listParameter);

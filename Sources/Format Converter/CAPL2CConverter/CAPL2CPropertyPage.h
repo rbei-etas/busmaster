@@ -24,13 +24,13 @@
 
 #pragma once
 
-#define VC_EXTRALEAN		/* Exclude rarely-used stuff from Windows headers */
+#define VC_EXTRALEAN        /* Exclude rarely-used stuff from Windows headers */
 #include <afxwin.h>         /* MFC core and standard components */
 #include <afxext.h>         /* MFC extensions */
 #include <afxdisp.h>        /* MFC Automation classes */
-#include <afxdtctl.h>		/* MFC support for Internet Explorer 4 Common Controls */
+#include <afxdtctl.h>       /* MFC support for Internet Explorer 4 Common Controls */
 #ifndef _AFX_NO_AFXCMN_SUPPORT
-#include <afxcmn.h>			/* MFC support for Windows Common Controls */
+#include <afxcmn.h>         /* MFC support for Windows Common Controls */
 #endif /* _AFX_NO_AFXCMN_SUPPORT */
 #include <afxdlgs.h>
 
@@ -39,25 +39,25 @@
 
 class CCAPL2CPropertyPage : public CPropertyPage
 {
-// Construction
+    // Construction
 public:
     void SaveSettings();
-    CCAPL2CPropertyPage(CWnd* pParent = NULL);	// standard constructor
+    CCAPL2CPropertyPage(CWnd* pParent = NULL);  // standard constructor
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CCAPL2CPropertyPage)
     enum { IDD = IDD_DLG_LANG_CNVRTR };
-    BOOL	m_check;
-    BOOL	m_savedb;
+    BOOL    m_check;
+    BOOL    m_savedb;
     //}}AFX_DATA
 
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CCAPL2CPropertyPage)
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     HICON m_hIcon;
 

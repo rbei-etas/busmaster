@@ -77,30 +77,27 @@ CMessage& CMessage::operator=(CMessage& message)
  * Extracts the message data from the given Line and populates
  * the message structure.
  */
-int CMessage::Format(char *pcLine)
+int CMessage::Format(char* pcLine)
 {
     char* pcToken;
     // get the MSG Name
     pcToken = strtok(pcLine,",");
     m_sName = pcToken;
-
     // get the MSG ID
     pcToken = strtok(NULL," ,");
     m_uiMsgID = (unsigned int)atoi(pcToken);
-
     // set the message length
     pcToken = strtok(NULL," ,");
     m_ucLength = (unsigned int)atoi(pcToken);
     CConverter::ucMsg_DLC = m_ucLength;
     //no.. of signals.
     pcToken = strtok(NULL," ,");
-
     //data format.
     pcToken = strtok(NULL," ,");
-
     //frame format.
     pcToken = strtok(NULL," ,");
     m_cFrameFormat = pcToken[0];
+
     if(strcmp(pcToken,"X") == 0)
     {
         m_uiMsgID  = m_uiMsgID - 2147483648;
@@ -108,6 +105,7 @@ int CMessage::Format(char *pcLine)
 
     //get the Tx'ing Node Name
     pcToken = strtok(NULL,"\n");
+
     if(pcToken)
     {
         m_sTxNode = pcToken;
@@ -127,11 +125,16 @@ int CMessage::Format(char *pcLine)
  *
  * Compares message with local object.
  */
-int CMessage::operator==(const CMessage &message) const
+int CMessage::operator==(const CMessage& message) const
 {
     if (message.m_uiMsgID == m_uiMsgID)
+    {
         return 1;
-    else return 0;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 /**
@@ -144,8 +147,13 @@ int CMessage::operator==(const CMessage &message) const
 int CMessage::operator==(const unsigned int uiMsgID) const
 {
     if (uiMsgID == m_uiMsgID)
+    {
         return 1;
-    else return 0;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 /**
@@ -156,20 +164,21 @@ int CMessage::operator==(const unsigned int uiMsgID) const
  * Writes the message in the CANoe format and returns false
  * if any of the error signal is not stored in the file
  */
-bool CMessage::writeMessageToFile( fstream &fileOutput)
+bool CMessage::writeMessageToFile( fstream& fileOutput)
 {
     bool bResult = true;
-
-	fileOutput << "BO_ " << dec << m_uiMsgID;
-	fileOutput << " " << m_sName.c_str();
-	fileOutput << ": " << dec << m_ucLength;
-	fileOutput << " " << m_sTxNode.c_str() << endl;
+    fileOutput << "BO_ " << dec << m_uiMsgID;
+    fileOutput << " " << m_sName.c_str();
+    fileOutput << ": " << dec << m_ucLength;
+    fileOutput << " " << m_sTxNode.c_str() << endl;
     POSITION possig = m_listSignals.GetHeadPosition();
+
     while(possig != NULL)
     {
         CSignal& sig = m_listSignals.GetNext(possig);
         bResult = bResult & sig.WriteSignaltofile(fileOutput);
     }
+
     fileOutput << endl;
     return bResult;
 }

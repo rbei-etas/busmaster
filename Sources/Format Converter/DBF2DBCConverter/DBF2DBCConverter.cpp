@@ -67,7 +67,7 @@ HRESULT CDBF2DBCConverter::GetHelpText(string& pchHelpText)
  */
 HRESULT CDBF2DBCConverter::GetConverterName(string& strConverterName)
 {
-	strConverterName = "DBF TO DBC Conversion";
+    strConverterName = "DBF TO DBC Conversion";
     return S_OK;
 }
 
@@ -83,22 +83,19 @@ HRESULT CDBF2DBCConverter::GetErrorStatus(HRESULT hResult, string& omstrStatus)
 {
     switch( hResult )
     {
-       /* case ERR_OUTPUT_FILE_NOTFOUND:
-            m_omstrConversionStatus = "Output File path is not found";
-            break;
-        case ERR_INPUT_FILE_NOTFOUND:
-            m_omstrConversionStatus = "Input File path is not found";
-            break;*/
         case S_OK:
             m_omstrConversionStatus = "Conversion success";
             break;
+
         case S_FALSE:
             m_omstrConversionStatus = "Conversion failed";
             break;
+
         default:
-            m_omstrConversionStatus = "Unknown Error";
+            m_omstrConversionStatus = "Unknown";
             break;
-    }   
+    }
+
     return S_OK;
 }
 
@@ -161,13 +158,15 @@ HRESULT CDBF2DBCConverter::ConvertFile(string& chInputFile, string& chOutputFile
 {
     HRESULT hResult = S_OK;
     CConverter ouConverter;
-	INT nRetVal = ouConverter.Convert(chInputFile.c_str(), chOutputFile.c_str());
-	ouConverter.GetResultString(m_omstrConversionStatus);
+    INT nRetVal = ouConverter.Convert(chInputFile.c_str(), chOutputFile.c_str());
+    ouConverter.GetResultString(m_omstrConversionStatus);
+
     if(nRetVal != 0)
     {
         m_omstrConversionStatus += ouConverter.m_omLogFilePath;
         m_hResult = nRetVal;
     }
+
     return hResult;
 }
 

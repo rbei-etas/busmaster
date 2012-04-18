@@ -35,7 +35,7 @@ using namespace std;
 class CMessage
 {
 public:
-    int Format(char *pcLine);
+    int Format(char* pcLine);
     CMessage();
     virtual ~CMessage();
     CMessage& operator=(CMessage& message);
@@ -50,5 +50,5 @@ public:
     char            m_cDataFormat;
     char            m_cFrameFormat;
     list<CSignal>   m_listSignals;
-    bool writeMessageToFile(fstream &fileOutput, list<CMessage> &m_listMessages, bool writeErr);
+    bool writeMessageToFile(fstream& fileOutput, list<CMessage> &m_listMessages, bool writeErr);
 };

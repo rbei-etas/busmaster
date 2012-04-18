@@ -47,10 +47,10 @@ public:
     bool            m_defError;
     list<CParameterValues> m_listParamValues[6];
     CParameters();
-    int Format(char *pcLine);
+    int Format(char* pcLine);
     CParameters& operator=(CParameters& param);
-    int FormatParamValue(char *pcLine);
-    int ReadDefaultVal(char *pcToken);
+    int FormatParamValue(char* pcLine);
+    int ReadDefaultVal(char* pcToken);
     friend bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParameter);
     virtual ~CParameters();
 };

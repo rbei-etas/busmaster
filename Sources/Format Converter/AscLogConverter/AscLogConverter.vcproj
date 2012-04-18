@@ -252,10 +252,6 @@
 				RelativePath=".\AscLogConverter.h"
 				>
 			</File>
-			<File
-				RelativePath=".\Resource.h"
-				>
-			</File>
 		</Filter>
 		<File
 			RelativePath=".\Asc_Log_Lexer.l"

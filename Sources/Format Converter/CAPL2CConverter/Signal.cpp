@@ -88,7 +88,6 @@ CSignal& CSignal::operator=(CSignal& signal)
     m_rxNode = signal.m_rxNode;
     // now copy the list
     m_listValueDescriptor.AddTail(&signal.m_listValueDescriptor);
-
     return (*this);
 }
 
@@ -96,58 +95,57 @@ CSignal& CSignal::operator=(CSignal& signal)
  * Extract the signal info from the line and store it in the signal object
  * return an appropriate error code if something wrong with signalline
  */
-int CSignal::Format(char *pcLine)
+int CSignal::Format(char* pcLine)
 {
-    char *pcToken;
+    char* pcToken;
     char acTemp[defVTAB_MAX_LINE_LEN],*pcTemp;
     pcTemp = acTemp;
-
     // get signal name
     // in older versions of CANoe it can be in any of this format
     // <SIG_NAME :> -- standard signal
     // <SIG_NAME M :> -- mode signal
     // <SIG_NAME mk :> -- mode dependent signal
-
     pcToken = strtok(pcLine,":"); // get upto colon
+
     // copy only signal name because we BUSMASTER does not support modes
     // skip leading spaces first
     while(*pcToken && *pcToken == ' ')
     {
         pcToken++;
     }
+
     // now get the signal name
     while(*pcToken && *pcToken != ' ')
     {
         *pcTemp++ = *pcToken++; // copy SIG_NAME only, i.e. till first 'space'
     }
-    *pcTemp = '\0'; // terminate it
 
+    *pcTemp = '\0'; // terminate it
     m_acName = acTemp; // copy the name to the signal's data member
     pcTemp = acTemp; // reset pcTemp to start of buffer
-
-
     //leave blank space
     *pcToken++;
+
     //Find the signal's multiplexing details
     while(*pcToken && *pcToken != ' ')
     {
         *pcTemp++ = *pcToken++; // copy SIG_NAME only, i.e. till first 'space'
     }
+
     *pcTemp = '\0'; // terminate it
     m_acMultiplex = acTemp; // copy the name to the signal's data member
-
     pcTemp = acTemp; // reset pcTemp to start of buffer
-
     // next token (START_BIT|LENGTH@DATA_FORMAT(+/-))
     pcToken = strtok(NULL," :");
+
     // get start bit
     while(*pcToken && *pcToken != '|')
     {
         *pcTemp++ = *pcToken++;
     }
+
     *pcTemp='\0';
     pcToken++; // skip '|'
-
     // store the start byte and start bit information
     unsigned int uiStartBit = atoi(acTemp);
     // rajesh: 21-03-2003: begin:
@@ -161,25 +159,24 @@ int CSignal::Format(char *pcLine)
     m_ucStartBit = uiStartBit % 8;
     */
     // rajesh: 21-03-2003: end_1: continued below
-
     // get signal length
     pcTemp = acTemp;
+
     while(*pcToken && *pcToken != '@')
     {
         *pcTemp++ = *pcToken++;
     }
+
     *pcTemp='\0';
     pcToken++; // skip '@'
-
     m_ucLength = atoi(acTemp); // store signal length
-
     // get DATA_FORMAT (intel or motorola)
     m_ucDataFormat = *pcToken;
 
     // rajesh: 21-03-2003: begin_1: modification continued
     if(SIG_DF_MOTOROLA == m_ucDataFormat)
     {
-        /*	if(m_ucLength>=8)
+        /*  if(m_ucLength>=8)
             {
                 uiStartBit = ( 65 - ( (uiStartBit/8*8) + (8-uiStartBit%8) + m_ucLength));
             }
@@ -199,10 +196,10 @@ int CSignal::Format(char *pcLine)
         nTemp = 8 * ( 8 - ( 2 * ( uiStartBit/8 ) + 1 ) );
         uiStartBit = uiStartBit + nTemp ;
     }
+
     m_ucWhichByte = uiStartBit / 8 + 1;
     m_ucStartBit = uiStartBit % 8;
     // rajesh: 21-03-2003:end:
-
 
     // get sign of signal. At this point we know only whether the
     // signal is signed or unsigned. Whether it is float or double
@@ -220,57 +217,68 @@ int CSignal::Format(char *pcLine)
     // next token - (SCALE_FACTOR,OFFSET)
     pcToken = strtok(NULL," (");
     pcTemp = acTemp;
+
     // get scale factor
     while(*pcToken && *pcToken != ',')
     {
         *pcTemp++ = *pcToken++;
     }
+
     *pcTemp='\0';
     pcToken++; // skip ','
-
     m_fScaleFactor = (float)atof(acTemp); // store scale factor
-
     // Get offset
     pcTemp = acTemp;
+
     while(*pcToken && *pcToken != ')')
     {
         *pcTemp++ = *pcToken++;
     }
+
     *pcTemp='\0';
-
     m_fOffset = (float)atof(acTemp); // store Offset
-
-
     // next token [MIN|MAX]
     pcToken = strtok(NULL," [");
-
     // get MIN
     pcTemp = acTemp;
+
     while(*pcToken && *pcToken != '|')
     {
         *pcTemp++ = *pcToken++;
     }
+
     *pcTemp='\0';
     pcToken++; // skip '|'
 
     // now store as double until we parse till SIG_VALTYPE_
     if(m_ucLength <= 32)
-        m_MinValue.dValue = atof(acTemp); // store MIN value
+    {
+        m_MinValue.dValue = atof(acTemp);    // store MIN value
+    }
     else
+    {
         m_MinValue.i64Value = _atoi64(acTemp);
+    }
 
     // get MAX value
     pcTemp = acTemp;
+
     while(*pcToken && *pcToken != ']')
     {
         *pcTemp++ = *pcToken++;
     }
+
     *pcTemp='\0';
     pcToken++; // skip ']'
+
     if(m_ucLength <= 32)
-        m_MaxValue.dValue = atof(acTemp); // store MAX value
+    {
+        m_MaxValue.dValue = atof(acTemp);    // store MAX value
+    }
     else
+    {
         m_MaxValue.i64Value = _atoi64(acTemp);
+    }
 
     // next token -- "UNIT", ""
     pcTemp = acTemp;
@@ -281,6 +289,7 @@ int CSignal::Format(char *pcLine)
     {
         pcToken++;
     }
+
     pcToken++;
 
     // copy everything, but not including the last <">
@@ -288,6 +297,7 @@ int CSignal::Format(char *pcLine)
     {
         *pcTemp++ = *pcToken++;
     }
+
     *pcTemp='\0';
     m_acUnit = acTemp; // copy UNIT to corresponding data member.
     pcToken++;
@@ -296,19 +306,26 @@ int CSignal::Format(char *pcLine)
     {
         pcToken++;
     }
+
     pcToken++;
     pcTemp = acTemp;
+
     while(*pcToken && *pcToken != '\n')
     {
         *pcTemp++ = *pcToken++;
     }
+
     *pcTemp='\0';
+
     if(strcmp(acTemp,"Vector__XXX") != 0)
     {
         m_rxNode = acTemp;
     }
     else
+    {
         m_rxNode = "";
+    }
+
     return 1;
 }
 
@@ -316,27 +333,30 @@ int CSignal::Format(char *pcLine)
  * Extracts Values and value descriptors from the line and
  * stores them to the Signal
  */
-int CSignal::AddValueDescriptors(char *pcLine)
+int CSignal::AddValueDescriptors(char* pcLine)
 {
     char acValue[100];
     char acDesc[100];
-    char *pcValue = acValue;
-    char *pcDesc = acDesc;
+    char* pcValue = acValue;
+    char* pcDesc = acDesc;
+
     // skip leading spaces
     while(*pcLine && *pcLine == ' ')
     {
         *pcLine++;
     }
+
     while(*pcLine && *pcLine != ';')
     {
         pcValue = acValue;
         pcDesc = acDesc;
-
         *pcValue = *pcDesc = '\0';
+
         while(*pcLine && *pcLine != ' ')
         {
             *pcValue++ = *pcLine++; // copy all but terminating space
         }
+
         *pcValue = '\0'; // terminate the string
 
         // skip leading spaces
@@ -350,26 +370,29 @@ int CSignal::AddValueDescriptors(char *pcLine)
         {
             *pcLine++;
         }
+
         while(*pcLine && *pcLine != '\"')
         {
             *pcDesc++ = *pcLine;
             pcLine++;
         }
+
         *pcDesc = '\0';
         // skip trailing '"'.
         pcLine++;
+
         // skip spaces if any before next iteration.
         while(*pcLine && *pcLine == ' ')
         {
             *pcLine++;
         }
+
         // if any value read then add it to list
         if(acDesc[0] != '\0')
         {
             CValueDescriptor valDesc;
             valDesc.m_value.dValue = atof(acValue);
             valDesc.m_acDescriptor = acDesc;
-
             m_listValueDescriptor.AddTail(valDesc);
         }
     }
@@ -438,6 +461,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
             m_MinValue.uiValue = (unsigned int)m_MinValue.dValue;
             unsigned int uiDefault;
             uiDefault = (1 << m_ucLength) - 1;
+
             if(m_MaxValue.uiValue == m_MinValue.uiValue)
             {
                 if(m_MaxValue.uiValue <= uiDefault && m_MaxValue.uiValue >0)
@@ -456,11 +480,13 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
                 {
                     m_MaxValue.uiValue = uiDefault;
                 }
+
                 if(m_MinValue.uiValue >m_MaxValue.uiValue )
                 {
                     m_MinValue.uiValue = 0;
                 }
             }
+
             break;
 
         case SIG_TYPE_INT:
@@ -468,6 +494,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
             m_MinValue.iValue = (int)m_MinValue.dValue;
             int iDefault;
             iDefault = (1 << (m_ucLength - 1)) - 1;
+
             if(m_MaxValue.iValue == m_MinValue.iValue)
             {
                 if(m_MaxValue.iValue <= iDefault)
@@ -486,11 +513,13 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
                 {
                     m_MaxValue.iValue = iDefault;
                 }
+
                 if(m_MinValue.iValue >m_MaxValue.iValue )
                 {
                     m_MinValue.iValue = -1*iDefault - 1;
                 }
             }
+
             break;
 
             // float is not supported right now, so no validation
@@ -510,6 +539,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
             UINT unPower;
             __int64 i64Default;
             UINT i;
+
             if(m_ucLength == 64 )
             {
                 unPower = m_ucLength - 1;
@@ -518,11 +548,14 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
             {
                 unPower = m_ucLength;
             }
+
             i64Default = 1;
+
             for(i = 0; i<unPower; i++)
             {
                 i64Default = (__int64)( 2*i64Default);
             }
+
             if(m_MaxValue.ui64Value == m_MinValue.ui64Value)
             {
                 if(m_MaxValue.i64Value <= i64Default && m_MaxValue.i64Value >0)
@@ -541,17 +574,20 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
                 {
                     m_MaxValue.i64Value = i64Default - 1;
                 }
+
                 if(m_MinValue.i64Value > m_MaxValue.i64Value )
                 {
                     m_MinValue.i64Value = -(i64Default + 1);
                 }
             }
+
             break;
 
         case SIG_TYPE_UINT64:
             m_MaxValue.ui64Value = (ULONGLONG)m_MaxValue.dValue;
             m_MinValue.ui64Value = (ULONGLONG)m_MinValue.dValue;
             unsigned __int64 ui64Default;
+
             if(m_ucLength == 64 )
             {
                 unPower = m_ucLength - 1;
@@ -560,11 +596,14 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
             {
                 unPower = m_ucLength;
             }
+
             ui64Default = 1;
+
             for(i = 0; i<unPower; i++)
             {
                 ui64Default = (unsigned __int64)( 2*ui64Default);
             }
+
             if(m_MaxValue.ui64Value == m_MinValue.ui64Value)
             {
                 if(m_MaxValue.ui64Value <= ui64Default - 1 && m_MaxValue.ui64Value > 0)
@@ -583,11 +622,13 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
                 {
                     m_MaxValue.ui64Value = ui64Default-1;
                 }
+
                 if(m_MinValue.ui64Value >m_MaxValue.ui64Value )
                 {
                     m_MinValue.ui64Value = 0;
                 }
             }
+
             break;
 
         default:
@@ -596,9 +637,11 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
 
     // correct value descriptors according to type of signal
     POSITION posValDesc = m_listValueDescriptor.GetHeadPosition();
+
     while(posValDesc != NULL)
     {
         CValueDescriptor& rValDesc = m_listValueDescriptor.GetNext(posValDesc);
+
         switch(m_ucType)
         {
             case SIG_TYPE_BOOL:
@@ -633,29 +676,36 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
     return (m_uiError = SIG_EC_NO_ERR);
 }
 
-void CSignal::GetErrorString(string &str)
+void CSignal::GetErrorString(string& str)
 {
-	switch(m_uiError) {
-		case SIG_EC_NO_ERR:
-			str = "No error";
-			break;
-		case SIG_EC_DATA_FORMAT_ERR:
-			str = "Data format mismatch";
-			break;
-		case SIG_EC_LENGTH_ERR:
-			str = "Invalid signal length";
-			break;
-		case SIG_EC_STARTBIT_ERR:
-			str = "Invalid start bit";
-			break;
-		case SIG_EC_TYPE_ERR:
-			str = "Invalid signal type";
-			break;
-		case SIG_EC_OVERLAP:
-			str = "Overlapping signal";
-			break;
-		default:
-			str = "Unknown";
-			break;
-	}
+    switch(m_uiError)
+    {
+        case SIG_EC_NO_ERR:
+            str = "No error";
+            break;
+
+        case SIG_EC_DATA_FORMAT_ERR:
+            str = "Data format mismatch";
+            break;
+
+        case SIG_EC_LENGTH_ERR:
+            str = "Invalid signal length";
+            break;
+
+        case SIG_EC_STARTBIT_ERR:
+            str = "Invalid start bit";
+            break;
+
+        case SIG_EC_TYPE_ERR:
+            str = "Invalid signal type";
+            break;
+
+        case SIG_EC_OVERLAP:
+            str = "Overlapping signal";
+            break;
+
+        default:
+            str = "Unknown";
+            break;
+    }
 }

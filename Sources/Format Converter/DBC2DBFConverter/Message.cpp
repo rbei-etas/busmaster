@@ -82,35 +82,35 @@ CMessage& CMessage::operator=(CMessage& message)
  * Extracts the message data from the given Line and populates
  * the message structure.
  */
-int CMessage::Format(char *pcLine)
+int CMessage::Format(char* pcLine)
 {
-    char *pcToken, *pcTok;
+    char* pcToken, *pcTok;
     // get the MSG ID
     pcToken = strtok_s(pcLine, " :", &pcTok);
     m_uiMsgID = strtoul(pcToken, NULL, 0);
-
     // get the message name
     pcToken = strtok_s(NULL, " :", &pcTok);
     m_acName = pcToken;
-
     // set the message length
     pcToken = strtok_s(NULL, " :", &pcTok);
     m_ucLength = (unsigned char)atoi(pcToken);
     CConverter::ucMsg_DLC = m_ucLength;
-
     //get the Tx'ing Node Name
     pcToken = strtok_s(NULL, " :", &pcTok);
+
     if(strcmp(pcToken, "Vector__XXX"))
+    {
         m_txNode = pcToken;
+    }
     else
+    {
         m_txNode = "";
+    }
 
     // set the Data format
     m_cDataFormat = CSignal::SIG_DF_INTEL;
-
     // set the number of signals
     m_ucNumOfSignals = 0;
-
     return 1;
 }
 
@@ -124,12 +124,12 @@ int CMessage::Format(char *pcLine)
  *
  * Writes the Messages in the given list to the output file.
  */
-bool CMessage::writeMessageToFile(fstream &fileOutput, list<CMessage> &m_listMessages, bool writeErr)
+bool CMessage::writeMessageToFile(fstream& fileOutput, list<CMessage> &m_listMessages, bool writeErr)
 {
     bool bResult = true;
-
     //Write all the message
     list<CMessage>::iterator msg;
+
     for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); ++msg)
     {
         fileOutput << T_START_MSG << " " << msg->m_acName.c_str();
@@ -139,7 +139,6 @@ bool CMessage::writeMessageToFile(fstream &fileOutput, list<CMessage> &m_listMes
         fileOutput << "," << msg->m_cDataFormat;
         fileOutput << "," << msg->m_cFrameFormat;
         fileOutput << "," << msg->m_txNode.c_str() << endl;
-
         CSignal sig;
         //write all related signals to the messages
         bResult &= sig.WriteSignaltofile(fileOutput,
@@ -150,5 +149,6 @@ bool CMessage::writeMessageToFile(fstream &fileOutput, list<CMessage> &m_listMes
         fileOutput << T_END_MSG << endl;
         fileOutput << endl;
     }
+
     return bResult;
 }

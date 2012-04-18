@@ -46,7 +46,7 @@ public:
 
 public:
     unsigned int Convert(string sCanoeFile,string sCanMonFile);
-    void GetResultString(string &str);
+    void GetResultString(string& str);
     static fstream fileLog;
     static bool bLOG_ENTERED;
     static unsigned int ucMsg_DLC;
@@ -61,8 +61,8 @@ private:
     void GenerateMessageList(fstream& fileInput);
     void ValidateMessageList();
     bool WriteToOutputFile(fstream& fileOutput);
-    void CreateLogFile(fstream &fileLog);
-    void create_Node_List(char *);
+    void CreateLogFile(fstream& fileLog);
+    void create_Node_List(char*);
     void DecryptData(CList<string,string& > &m_notProcessed);
 
     unsigned int m_uiResultCode;

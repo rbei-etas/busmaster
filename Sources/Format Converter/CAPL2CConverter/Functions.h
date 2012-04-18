@@ -58,7 +58,7 @@ char fprestart = 0;//flag for prestart
 char fstart = 0;//flag for start (on load handler)
 
 
-FILE *logfile ;                    //for log file
+FILE* logfile ;                    //for log file
 CString dest1;  //to store the path of log file (needed)
 
 

@@ -57,11 +57,13 @@ CValueTable& CValueTable::operator=(CValueTable& Tab)
 {
     m_TableName = Tab.m_TableName;
     POSITION posMsg = Tab.m_values.GetHeadPosition();
+
     while(posMsg != NULL)
     {
         CValueDescriptor& vDisp = Tab.m_values.GetNext(posMsg);
         m_values.AddTail(vDisp );
     }
+
     return (*this);
 }
 
@@ -72,37 +74,41 @@ CValueTable& CValueTable::operator=(CValueTable& Tab)
  *
  * extracts Values and value descriptors from the line
  */
-void CValueTable::Format_ValueTable(char *pcLine, fstream &fileInput)
+void CValueTable::Format_ValueTable(char* pcLine, fstream& fileInput)
 {
-    char *pcToken;
+    char* pcToken;
     char acLine[defCON_MAX_LINE_LEN] = {'\0'};
+
     //skip all balnk spaces.
     while(*pcLine && *pcLine==' ')
     {
         *pcLine++;
     }
+
     pcToken=strtok(pcLine,"\n");
     //get value table name.
     m_TableName = pcToken;
+
     //parses value table.
     while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine,"[END_TABLE]\n")!=0)
     {
-
         pcLine=acLine;
+
         //skip white spaces
         while(*pcLine && *pcLine==' ')
         {
             *pcLine++;
         }
+
         //get value descriptor.
         pcToken=strtok(pcLine," ");
+
         if(strcmp(pcToken,"[VALUE_DESCRIPTION]")==0)
         {
             pcToken=strtok(NULL,"\"");
             CValueDescriptor valDesc;
             //get the descriptor value.
             valDesc.m_sDescriptor =pcToken;
-
             pcToken=strtok(NULL,",");
             valDesc.m_value.i64Value = atoi(pcToken);
             m_values.AddTail(valDesc);
@@ -117,15 +123,16 @@ void CValueTable::Format_ValueTable(char *pcLine, fstream &fileInput)
  *
  * writes the value tebles in the given list to the output file.
  */
-void CValueTable::writeValueTabToFile(fstream &fileOutput,CList<CValueTable,CValueTable&> &vTab)
+void CValueTable::writeValueTabToFile(fstream& fileOutput,CList<CValueTable,CValueTable&> &vTab)
 {
     //get value table.
     POSITION pos = vTab.GetHeadPosition();
+
     //repeats till value tables exists in the list.
     while(pos != NULL)
     {
         //write value table name to the o/p file.
-        CValueTable &tab = vTab.GetNext(pos);
+        CValueTable& tab = vTab.GetNext(pos);
         fileOutput << "VAL_TABLE_ " << tab.m_TableName << " ";
         //writes descriptors values to the o/p file.
         CValueDescriptor desc;

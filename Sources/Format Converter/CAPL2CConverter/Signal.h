@@ -33,40 +33,40 @@
 
 using namespace std;
 
-#define defSIG_MAX_NAME_LEN	100 // normally name > 100 chars not expected
+#define defSIG_MAX_NAME_LEN 100 // normally name > 100 chars not expected
 #define defSIG_MAX_MULTIPLEX_LEN 33
 #define defVTAB_MAX_LINE_LEN 1026
-#define	defSIG_MAX_UNIT_LEN	20	// 
+#define defSIG_MAX_UNIT_LEN 20  // 
 class CValueDescriptor;
 class CSignal
 {
 public:
-    void GetErrorString(string &str);
+    void GetErrorString(string& str);
     unsigned int Validate(unsigned char ucFormat = 0);
     unsigned int m_uiError;
-    int AddValueDescriptors(char * pcLine);
-    int Format(char *pcLine);
+    int AddValueDescriptors(char* pcLine);
+    int Format(char* pcLine);
     CSignal();
     virtual ~CSignal();
     CSignal& operator=(CSignal& signal);
     enum SIG_DATA_FORMAT {SIG_DF_MOTOROLA='0',SIG_DF_INTEL = '1'};
     enum SIG_TYPE {SIG_TYPE_BOOL = 'B',SIG_TYPE_INT = 'I',SIG_TYPE_UINT = 'U',SIG_TYPE_FLOAT = 'F', SIG_TYPE_DOUBLE = 'D', SIG_TYPE_INT64 = 'X',SIG_TYPE_UINT64 = 'Y'};
     enum SIG_ERROR_CODE {SIG_EC_NO_ERR, SIG_EC_DATA_FORMAT_ERR,SIG_EC_LENGTH_ERR,SIG_EC_STARTBIT_ERR,SIG_EC_TYPE_ERR, SIG_EC_OVERLAP};
-// data members
+    // data members
 
     string          m_acName;
     string          m_acMultiplex;
-    unsigned int	m_ucLength;
-    unsigned int	m_ucWhichByte;
-    unsigned int	m_ucStartBit;
-    char			m_ucType;
-    SIG_VALUE		m_MaxValue;
-    SIG_VALUE		m_MinValue;
-    unsigned char	m_ucDataFormat;
-    float			m_fOffset;
-    float			m_fScaleFactor;
-    string			m_acUnit;
-    string			m_rxNode;
+    unsigned int    m_ucLength;
+    unsigned int    m_ucWhichByte;
+    unsigned int    m_ucStartBit;
+    char            m_ucType;
+    SIG_VALUE       m_MaxValue;
+    SIG_VALUE       m_MinValue;
+    unsigned char   m_ucDataFormat;
+    float           m_fOffset;
+    float           m_fScaleFactor;
+    string          m_acUnit;
+    string          m_rxNode;
 
-    CList<CValueDescriptor,CValueDescriptor>	m_listValueDescriptor;
+    CList<CValueDescriptor,CValueDescriptor>    m_listValueDescriptor;
 };

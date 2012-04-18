@@ -30,14 +30,15 @@
 using namespace std;
 
 // more than this
-typedef union _SIG_VALUE {
+typedef union _SIG_VALUE
+{
     int iValue;
     unsigned int uiValue;
     float fValue;
-    double	dValue;
+    double  dValue;
     long long int i64Value;
     unsigned long long int ui64Value;
-}	SIG_VALUE;
+}   SIG_VALUE;
 
 class CValueDescriptor
 {
@@ -45,7 +46,7 @@ public:
     CValueDescriptor();
     virtual ~CValueDescriptor();
 
-// data members
-    string		m_acDescriptor;
-    SIG_VALUE	m_value;
+    // data members
+    string      m_acDescriptor;
+    SIG_VALUE   m_value;
 };

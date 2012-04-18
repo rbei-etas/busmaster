@@ -45,7 +45,7 @@ class CValueTable
 public:
     CValueTable();
     virtual ~CValueTable();
-    void Format_ValueTable(char *pcLine,fstream &fileInput);
+    void Format_ValueTable(char* pcLine,fstream& fileInput);
     CValueTable& operator=(CValueTable& Tab);
-    void writeValueTabToFile(fstream &fileOutput,CList<CValueTable,CValueTable&> &vTab);
+    void writeValueTabToFile(fstream& fileOutput,CList<CValueTable,CValueTable&> &vTab);
 };

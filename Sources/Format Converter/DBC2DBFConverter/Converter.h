@@ -47,7 +47,7 @@ public:
 protected:
     static const char m_accHeader[];
 public:
-    unsigned int Convert(string &sCanoeFile, string &sCanMonFile);
+    unsigned int Convert(string& sCanoeFile, string& sCanMonFile);
 
 private:
     unsigned int m_uiResultCode;
@@ -74,7 +74,7 @@ public:
 
     static bool valid_msg;
     string m_omLogFilePath;
-    void create_Node_List(char *);
+    void create_Node_List(char*);
     list<string> m_listNode;
     list<string> m_notProcessed;
     list<CParameters> m_listParameters;

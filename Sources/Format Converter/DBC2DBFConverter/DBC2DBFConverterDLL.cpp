@@ -61,7 +61,9 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 
         // Extension DLL one-time initialization
         if (!AfxInitExtensionModule(DBC2DBFConverterDLL, hInstance))
+        {
             return 0;
+        }
 
         // Insert this DLL into the resource chain
         // NOTE: If this Extension DLL is being implicitly linked to by
@@ -74,17 +76,15 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         //  the CDynLinkLibrary object will not be attached to the
         //  Regular DLL's resource chain, and serious problems will
         //  result.
-
         new CDynLinkLibrary(DBC2DBFConverterDLL);
-
     }
     else if (dwReason == DLL_PROCESS_DETACH)
     {
         TRACE0("DBC2DBFConverter.DLL Terminating!\n");
-
         // Terminate the library before destructors are called
         AfxTermExtensionModule(DBC2DBFConverterDLL);
     }
+
     return 1;   // ok
 }
 

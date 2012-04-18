@@ -71,9 +71,9 @@ CSignal& CSignal::operator=(CSignal& signal)
     m_ucWhichByte = signal.m_ucWhichByte;
     m_ucStartBit = signal.m_ucStartBit;
     m_ucType = signal.m_ucType;
-	memcpy((void*)&m_MaxValue, (void*)&(signal.m_MaxValue), sizeof(signal.m_MaxValue));
-	memcpy((void*)&m_MinValue, (void*)&(signal.m_MinValue), sizeof(signal.m_MinValue));
-	//m_MaxValue = signal.m_MaxValue;
+    memcpy((void*)&m_MaxValue, (void*)&(signal.m_MaxValue), sizeof(signal.m_MaxValue));
+    memcpy((void*)&m_MinValue, (void*)&(signal.m_MinValue), sizeof(signal.m_MinValue));
+    //m_MaxValue = signal.m_MaxValue;
     //m_MinValue = signal.m_MinValue;
     m_ucDataFormat = signal.m_ucDataFormat;
     m_fOffset = signal.m_fOffset;
@@ -93,11 +93,16 @@ CSignal& CSignal::operator=(CSignal& signal)
  *
  * Compare content of signal with local object.
  */
-int CSignal::operator==(const CSignal &signal) const
+int CSignal::operator==(const CSignal& signal) const
 {
     if (m_sName == signal.m_sName)
+    {
         return 1;
-    else return 0;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 /**
@@ -108,48 +113,37 @@ int CSignal::operator==(const CSignal &signal) const
  * Extracts the signal data from the given Line and populates
  * message structure.
  */
-int CSignal::Format(char *pcLine)
+int CSignal::Format(char* pcLine)
 {
-    char *pcToken;
+    char* pcToken;
     char acTemp[defCON_MAX_TOKN_LEN],*pcTemp;
     pcTemp = acTemp;
-
     // get signal name
     pcToken = strtok(pcLine,","); // get upto colon
-
     // now get the signal name
     m_sName = pcToken; // copy the name to the signal's data member
-
     // Signal length
     pcToken = strtok(NULL,",");
     m_ucLength = atoi(pcToken); // store signal length
-
     // get which byte
     pcToken = strtok(NULL,",");
     m_ucWhichByte = atoi(pcToken);
-
     // get start bit
     UCHAR ucStartBit;
     pcToken = strtok(NULL,",");
     m_ucStartBit = atoi(pcToken);
     ucStartBit = m_ucStartBit + (m_ucWhichByte - 1) * 8;
-
     //get Data type
     pcToken = strtok(NULL,",");
     m_ucType = *pcToken;
-
     // get MAX
     pcToken = strtok(NULL,",");
     // now store as double until we parse till SIG_VALTYPE_
-
     m_MaxValue.ui64Value = _strtoui64(pcToken, NULL, 10);
-
     // get MIN value
     pcToken = strtok(NULL,",");
-
     //venkat - unsiged __int64 is enough to store any value
     m_MinValue.ui64Value = _strtoui64(pcToken, NULL, 10);
-
     // get DATA_FORMAT (intel or motorola)
     pcToken = strtok(NULL,",");
     m_ucDataFormat = *pcToken;
@@ -159,6 +153,7 @@ int CSignal::Format(char *pcLine)
         UINT nByte = (m_ucLength/8) + ((m_ucLength % 8)?1:0);
         UINT nStartBit = (m_ucWhichByte - nByte) * 8;
         UINT nBitSize = m_ucLength - (8 * (nByte - 1))+ m_ucStartBit;
+
         if(nBitSize == 0)
         {
             ucStartBit = ucStartBit + m_ucLength;
@@ -168,43 +163,48 @@ int CSignal::Format(char *pcLine)
             ucStartBit = nStartBit + nBitSize-1;
         }
     }
+
     m_ucStartBit = ucStartBit;
     // next token - (SCALE_FACTOR,OFFSET)
     pcToken = strtok(NULL,",");
     m_fOffset = (float)atof(pcToken); // store scale factor
-
     // Get offset
     pcToken = strtok(NULL,",");
     m_fScaleFactor = (float)atof(pcToken); // store Offset
-
     // next token -- "UNIT", ""
     pcTemp = acTemp;
     pcToken = strtok(NULL,"");
+
     //pcToken++;
     // copy everything, but not including the last <">
     while(*pcToken && *pcToken != ',' && *pcToken != 0xa)
     {
         *pcTemp++ = *pcToken++;
     }
+
     *pcTemp='\0';
     string strUnit_Temp = acTemp;
     m_sUnit = "\"";
     m_sUnit = m_sUnit + acTemp; // copy UNIT to corresponding data member.
     m_sUnit = m_sUnit + "\"";
+
     if(strUnit_Temp.length() > defCON_MAX_MSGN_LEN + 2)
     {
         CConverter::fileLog << "unit " << strUnit_Temp;
-		CConverter::fileLog << " changed to " << m_sUnit << endl;
+        CConverter::fileLog << " changed to " << m_sUnit << endl;
         CConverter::bLOG_ENTERED = true;
     }
+
     //for multiplexing field
     string strTemp = pcToken;
     int nIndex = strTemp.find(',');
+
     if(nIndex != -1)
     {
         int nLength = strTemp.length();
         strTemp = strTemp.substr(nLength - nIndex - 1, nIndex);
         nIndex = strTemp.find(',');
+
         if(nIndex != -1)
         {
             if(nIndex != 0)
@@ -215,24 +215,28 @@ int CSignal::Format(char *pcLine)
             {
                 strTemp.empty();
             }
+
             m_sMultiplex = strTemp;
         }
     }
 
     //rx'ing nodes
-	string strNodes = pcToken;
-	nIndex = strNodes.find(",", 0);
-	strNodes = strNodes.substr(nIndex+1);
-	nIndex = strNodes.find(",", nIndex);
-	strNodes = strNodes.substr(nIndex+1);
-	m_sNode = strNodes;
-	while ((nIndex = m_sNode.find('\n', 0)) != string::npos) {
-		m_sNode.replace(nIndex, 1, " ");
-	}
-	if(m_sNode.length() == 0)
-	{
-		m_sNode = "Vector__XXX";
-	}
+    string strNodes = pcToken;
+    nIndex = strNodes.find(",", 0);
+    strNodes = strNodes.substr(nIndex+1);
+    nIndex = strNodes.find(",", nIndex);
+    strNodes = strNodes.substr(nIndex+1);
+    m_sNode = strNodes;
+
+    while ((nIndex = m_sNode.find('\n', 0)) != string::npos)
+    {
+        m_sNode.replace(nIndex, 1, " ");
+    }
+
+    if(m_sNode.length() == 0)
+    {
+        m_sNode = "Vector__XXX";
+    }
 
     return 1;
 }
@@ -260,13 +264,11 @@ unsigned int CSignal::Validate()
         return (m_uiError = SIG_EC_STARTBIT_ERR);
     }
 
-
     // errors eliminated now do necessary conversions
     if(m_ucLength == 1) // single bit - change type to bool
     {
         m_ucType = SIG_TYPE_BOOL;
     }
-
 
     // update MAX value and MIN value based on type
     switch(m_ucType)
@@ -276,21 +278,25 @@ unsigned int CSignal::Validate()
         case SIG_TYPE_UINT64:
             unConvertRawToPhysical(m_MaxValue.ui64Value, m_MinValue.ui64Value, m_fOffset, m_fScaleFactor, m_MaxValue.dValue, m_MinValue.dValue);
             break;
+
         case SIG_TYPE_INT:
         case SIG_TYPE_INT64:
             nConvertRawToPhysical(m_MaxValue.ui64Value, m_MinValue.ui64Value, m_fOffset, m_fScaleFactor, m_MaxValue.dValue, m_MinValue.dValue);
             break;
+
         default:
             break;
     }
+
     // correct value descriptors according to type of signal
     POSITION posValDesc = m_listValueDescriptor.GetHeadPosition();
+
     while(posValDesc != NULL)
     {
         CValueDescriptor& rValDesc = m_listValueDescriptor.GetNext(posValDesc);
+
         switch(m_ucType)
         {
-
             case SIG_TYPE_INT:
             case SIG_TYPE_FLOAT:
             case SIG_TYPE_DOUBLE:
@@ -319,30 +325,39 @@ unsigned int CSignal::Validate()
  * Writes the signal in the CANoe format and returns false
  * if any of the error signal is not stored in the file
  */
-bool CSignal::WriteSignaltofile(fstream &fileOutput)
+bool CSignal::WriteSignaltofile(fstream& fileOutput)
 {
     bool bResult = true;
+
     if(m_uiError == SIG_EC_NO_ERR)
     {
-		fileOutput << " SG_ " << m_sName;
-		fileOutput << " " << m_sMultiplex;
-		fileOutput << ": " << dec << m_ucStartBit;
-		fileOutput << "|" << dec << m_ucLength;
-		fileOutput << "@" << m_ucDataFormat;
-		if ((m_ucType == SIG_TYPE_UINT) || (m_ucType == SIG_TYPE_UINT64)) {
-			fileOutput << "+";
-		} else {
-			fileOutput << "-";
-		}
-		fileOutput << " (" << m_fScaleFactor;
-		fileOutput << "," << m_fOffset;
-		fileOutput << ") [" << m_MinValue.dValue;
-		fileOutput << "|" << m_MaxValue.dValue;
-		fileOutput << "] " << m_sUnit;
-		fileOutput << " " << m_sNode << endl;
+        fileOutput << " SG_ " << m_sName;
+        fileOutput << " " << m_sMultiplex;
+        fileOutput << ": " << dec << m_ucStartBit;
+        fileOutput << "|" << dec << m_ucLength;
+        fileOutput << "@" << m_ucDataFormat;
+
+        if ((m_ucType == SIG_TYPE_UINT) || (m_ucType == SIG_TYPE_UINT64))
+        {
+            fileOutput << "+";
+        }
+        else
+        {
+            fileOutput << "-";
+        }
+
+        fileOutput << " (" << m_fScaleFactor;
+        fileOutput << "," << m_fOffset;
+        fileOutput << ") [" << m_MinValue.dValue;
+        fileOutput << "|" << m_MaxValue.dValue;
+        fileOutput << "] " << m_sUnit;
+        fileOutput << " " << m_sNode << endl;
     }
     else
+    {
         bResult = false;
+    }
+
     return bResult;
 }
 
@@ -352,17 +367,20 @@ bool CSignal::WriteSignaltofile(fstream &fileOutput)
  *
  * Returns the error string of the signal.
  */
-void CSignal::GetErrorString(string &str)
+void CSignal::GetErrorString(string& str)
 {
-	switch(m_uiError) {
-		case 0:
-			str = "No error";
-			break;
-		case 1:
-			str = "ERROR:Invalid signal length";
-			break;
-		case 2:
-			str = "ERROR:Invalid start bit";
-			break;
-	}
+    switch(m_uiError)
+    {
+        case 0:
+            str = "No error";
+            break;
+
+        case 1:
+            str = "ERROR:Invalid signal length";
+            break;
+
+        case 2:
+            str = "ERROR:Invalid start bit";
+            break;
+    }
 }

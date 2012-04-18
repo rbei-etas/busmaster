@@ -48,9 +48,7 @@ CConverter::CConverter()
  */
 CConverter::~CConverter()
 {
-
     m_listMessages.RemoveAll();
-
 }
 
 const char CConverter::m_accHeader[] =
@@ -60,9 +58,9 @@ unsigned int CConverter::Convert(CString sCanoeFile)
 {
     fstream fileInput,fileOutput;
     char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
+    fileInput.open(sCanoeFile, fstream::in);
 
-	fileInput.open(sCanoeFile, fstream::in);
-	if(!fileInput.is_open())
+    if(!fileInput.is_open())
     {
         return SetResultCode(CON_RC_FILEOPEN_ERROR_INFILE);
     }
@@ -85,29 +83,24 @@ unsigned int CConverter::Convert(CString sCanoeFile)
     }
 
     // Generate the list of messages
-
     GenerateMessageList(fileInput);
-
     // All information gathered, validate and update if necessary
     // Make appropriate changes in the contents of the list
-
     ValidateMessageList();
-
     // the format is OK then open the output file
-
-
-
-//	bool bRes = WriteToOutputFile(fileOutput);
+    //  bool bRes = WriteToOutputFile(fileOutput);
     fileInput.close();
-//	fileOutput.close();
+    //  fileOutput.close();
     BOOL bRes = FALSE;
+
     if(!bRes)
     {
         CString sLogFile = sCanoeFile.Left(sCanoeFile.GetLength()-4);
         sLogFile += ".log";
         fstream fileLog;
-		fileLog.open(sLogFile, fstream::out);
-		if(!fileLog.is_open())
+        fileLog.open(sLogFile, fstream::out);
+
+        if(!fileLog.is_open())
         {
             // if log file cannot be opened return the error code
             return SetResultCode(CON_RC_FILEOPEN_ERROR_LOGFILE);
@@ -123,31 +116,38 @@ unsigned int CConverter::Convert(CString sCanoeFile)
     return 1;
 }
 
-void CConverter::GetResultString(string &str)
+void CConverter::GetResultString(string& str)
 {
-	switch(m_uiResultCode) {
-		case 0:
-			str = "Conversion completed.";
-			break;
-		case 1:
-			str = "Conversion completed with errors. See log file.";
-			break;
-		case 2:
-			str = "Conversion aborted. Error opening input file.";
-			break;
-		case 3:
-			str = "Conversion aborted. Error creating output file.";
-			break;
-		case 4:
-			str = "Conversion aborted. Error with input file format.";
-			break;
-		case 5:
-			str = "Conversion aborted. Error creating log file.";
-			break;
-		default:
-			str = "Unknown";
-			break;
-	}
+    switch(m_uiResultCode)
+    {
+        case 0:
+            str = "Conversion completed.";
+            break;
+
+        case 1:
+            str = "Conversion completed with warnings. See log file.";
+            break;
+
+        case 2:
+            str = "Conversion aborted. Error opening input file.";
+            break;
+
+        case 3:
+            str = "Conversion aborted. Error creating output file.";
+            break;
+
+        case 4:
+            str = "Conversion aborted. Error with input file format.";
+            break;
+
+        case 5:
+            str = "Conversion aborted. Error creating log file.";
+            break;
+
+        default:
+            str = "Unknown";
+            break;
+    }
 }
 
 unsigned int CConverter::SetResultCode(unsigned int uiCode)
@@ -165,9 +165,10 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
     fstream fileOutput;
     // write to the output file
     // write header
-//	FILE *message = fopen("d:\\message.txt","w");
-	fileOutput.open(sCanMonFile, fstream::out);
-	if(!fileOutput.is_open())
+    //  FILE *message = fopen("d:\\message.txt","w");
+    fileOutput.open(sCanMonFile, fstream::out);
+
+    if(!fileOutput.is_open())
     {
         // if output file cannot be opened the close the input file
         // and return the error code
@@ -181,28 +182,29 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
     fileOutput << endl;
     fileOutput << endl;
     // number of messages
-	fileOutput << "[NUMBER_OF_MESSAGES] " << m_listMessages.GetCount() << endl;
-	fileOutput << endl;
-
+    fileOutput << "[NUMBER_OF_MESSAGES] " << m_listMessages.GetCount() << endl;
+    fileOutput << endl;
     // write all messages, signals and value descriptors
     POSITION pos = m_listMessages.GetHeadPosition();
+
     while(pos != NULL)
     {
         CMessage& msg = m_listMessages.GetNext(pos);
         // MSG,MSGID,MSG_LENGTH,NO_OF_SIGNALS,DATA_FORMAT,FRAME_FORMAT
-		fileOutput << "[START_MSG] " << msg.m_acName;
-		fileOutput << "," << dec << msg.m_uiMsgID;
-		fileOutput << "," << dec << msg.m_ucLength;
-		fileOutput << "," << dec << msg.m_ucNumOfSignals;
-		fileOutput << "," << msg.m_cDataFormat;
-		fileOutput << "," << msg.m_cFrameFormat << endl;
-
-//		fprintf(message,"%s,%u,%u\n",msg.m_acName,msg.m_uiMsgID,msg.m_ucLength);
+        fileOutput << "[START_MSG] " << msg.m_acName;
+        fileOutput << "," << dec << msg.m_uiMsgID;
+        fileOutput << "," << dec << msg.m_ucLength;
+        fileOutput << "," << dec << msg.m_ucNumOfSignals;
+        fileOutput << "," << msg.m_cDataFormat;
+        fileOutput << "," << msg.m_cFrameFormat << endl;
+        //      fprintf(message,"%s,%u,%u\n",msg.m_acName,msg.m_uiMsgID,msg.m_ucLength);
         POSITION posSig = msg.m_listSignals.GetHeadPosition();
+
         while(posSig != NULL)
         {
             // SIG_NAME,SIG_LENGTH,WHICH_BYTE_IN_MSG,START_BIT,SIG_TYPE,MAX_VAL,MIN_VAL,SIG_DATA_FORMAT,SIG_OFFSET,SIG_FACTOR,SIG_UNIT
             CSignal& sig = msg.m_listSignals.GetNext(posSig);
+
             // write signal only if it is valid
             if(sig.m_uiError == CSignal::SIG_EC_NO_ERR)
             {
@@ -213,90 +215,91 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
                 {
                     sig.m_ucWhichByte = sig.m_ucWhichByte - (8 - msg.m_ucLength);
                 }
+
                 switch(sig.m_ucType)
                 {
                     case CSignal::SIG_TYPE_BOOL:
                     case CSignal::SIG_TYPE_UINT:
-						fileOutput << "[START_SIGNALS] " << sig.m_acName;
-						fileOutput << "," << dec << sig.m_ucLength;
-						fileOutput << "," << dec << sig.m_ucWhichByte;
-						fileOutput << "," << dec << sig.m_ucStartBit;
-						fileOutput << "," << sig.m_ucType;
-						fileOutput << "," << dec << sig.m_MaxValue.uiValue;
-						fileOutput << "," << dec << sig.m_MinValue.uiValue;
-						fileOutput << "," << sig.m_ucDataFormat;
-						fileOutput << "," << sig.m_fOffset;
-						fileOutput << "," << sig.m_fScaleFactor;
-						fileOutput << "," << sig.m_acUnit;
-						fileOutput << "," << sig.m_acMultiplex;
-						fileOutput << "," << sig.m_rxNode << endl;
+                        fileOutput << "[START_SIGNALS] " << sig.m_acName;
+                        fileOutput << "," << dec << sig.m_ucLength;
+                        fileOutput << "," << dec << sig.m_ucWhichByte;
+                        fileOutput << "," << dec << sig.m_ucStartBit;
+                        fileOutput << "," << sig.m_ucType;
+                        fileOutput << "," << dec << sig.m_MaxValue.uiValue;
+                        fileOutput << "," << dec << sig.m_MinValue.uiValue;
+                        fileOutput << "," << sig.m_ucDataFormat;
+                        fileOutput << "," << sig.m_fOffset;
+                        fileOutput << "," << sig.m_fScaleFactor;
+                        fileOutput << "," << sig.m_acUnit;
+                        fileOutput << "," << sig.m_acMultiplex;
+                        fileOutput << "," << sig.m_rxNode << endl;
                         break;
 
                     case CSignal::SIG_TYPE_INT:
-						fileOutput << "[START_SIGNALS] " << sig.m_acName;
-						fileOutput << "," << dec << sig.m_ucLength;
-						fileOutput << "," << dec << sig.m_ucWhichByte;
-						fileOutput << "," << dec << sig.m_ucStartBit;
-						fileOutput << "," << sig.m_ucType;
-						fileOutput << "," << dec << sig.m_MaxValue.iValue;
-						fileOutput << "," << dec << sig.m_MinValue.iValue;
-						fileOutput << "," << sig.m_ucDataFormat;
-						fileOutput << "," << sig.m_fOffset;
-						fileOutput << "," << sig.m_fScaleFactor;
-						fileOutput << "," << sig.m_acUnit;
-						fileOutput << "," << sig.m_acMultiplex;
-						fileOutput << "," << sig.m_rxNode << endl;
+                        fileOutput << "[START_SIGNALS] " << sig.m_acName;
+                        fileOutput << "," << dec << sig.m_ucLength;
+                        fileOutput << "," << dec << sig.m_ucWhichByte;
+                        fileOutput << "," << dec << sig.m_ucStartBit;
+                        fileOutput << "," << sig.m_ucType;
+                        fileOutput << "," << dec << sig.m_MaxValue.iValue;
+                        fileOutput << "," << dec << sig.m_MinValue.iValue;
+                        fileOutput << "," << sig.m_ucDataFormat;
+                        fileOutput << "," << sig.m_fOffset;
+                        fileOutput << "," << sig.m_fScaleFactor;
+                        fileOutput << "," << sig.m_acUnit;
+                        fileOutput << "," << sig.m_acMultiplex;
+                        fileOutput << "," << sig.m_rxNode << endl;
                         break;
 
                         // Enable these when FLOAT and DOUBLE are supported
                         /*
                         case CSignal::SIG_TYPE_FLOAT:
-                        	sprintf(acLine,"[START_SIGNALS] %s,%u,%u,%u,%c,%f,%f,%c,%f,%f,%s\n",
-                        	sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,sig.m_ucType,
-                        	sig.m_MaxValue.fValue,sig.m_MinValue.fValue,sig.m_ucDataFormat,
-                        	sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit);
+                            sprintf(acLine,"[START_SIGNALS] %s,%u,%u,%u,%c,%f,%f,%c,%f,%f,%s\n",
+                            sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,sig.m_ucType,
+                            sig.m_MaxValue.fValue,sig.m_MinValue.fValue,sig.m_ucDataFormat,
+                            sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit);
 
-                        	break;
+                            break;
 
                         case CSignal::SIG_TYPE_DOUBLE:
-                        	sprintf(acLine,"[START_SIGNALS] %s,%u,%u,%u,%c,%f,%f,%c,%f,%f,%s\n",
-                        	sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,sig.m_ucType,
-                        	sig.m_MaxValue.dValue,sig.m_MinValue.dValue,sig.m_ucDataFormat,
-                        	sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit);
+                            sprintf(acLine,"[START_SIGNALS] %s,%u,%u,%u,%c,%f,%f,%c,%f,%f,%s\n",
+                            sig.m_acName,sig.m_ucLength,sig.m_ucWhichByte,sig.m_ucStartBit,sig.m_ucType,
+                            sig.m_MaxValue.dValue,sig.m_MinValue.dValue,sig.m_ucDataFormat,
+                            sig.m_fOffset,sig.m_fScaleFactor,sig.m_acUnit);
 
-                        	break;
+                            break;
                         */
 
                     case CSignal::SIG_TYPE_INT64:
-						fileOutput << "[START_SIGNALS] " << sig.m_acName;
-						fileOutput << "," << dec << sig.m_ucLength;
-						fileOutput << "," << dec << sig.m_ucWhichByte;
-						fileOutput << "," << dec << sig.m_ucStartBit;
-						fileOutput << "," << 'I'; /* sig.m_ucType */
-						fileOutput << "," << dec << sig.m_MaxValue.dValue;
-						fileOutput << "," << dec << sig.m_MinValue.dValue;
-						fileOutput << "," << sig.m_ucDataFormat;
-						fileOutput << "," << sig.m_fOffset;
-						fileOutput << "," << sig.m_fScaleFactor;
-						fileOutput << "," << sig.m_acUnit;
-						fileOutput << "," << sig.m_acMultiplex;
-						fileOutput << "," << sig.m_rxNode << endl;
+                        fileOutput << "[START_SIGNALS] " << sig.m_acName;
+                        fileOutput << "," << dec << sig.m_ucLength;
+                        fileOutput << "," << dec << sig.m_ucWhichByte;
+                        fileOutput << "," << dec << sig.m_ucStartBit;
+                        fileOutput << "," << 'I'; /* sig.m_ucType */
+                        fileOutput << "," << dec << sig.m_MaxValue.dValue;
+                        fileOutput << "," << dec << sig.m_MinValue.dValue;
+                        fileOutput << "," << sig.m_ucDataFormat;
+                        fileOutput << "," << sig.m_fOffset;
+                        fileOutput << "," << sig.m_fScaleFactor;
+                        fileOutput << "," << sig.m_acUnit;
+                        fileOutput << "," << sig.m_acMultiplex;
+                        fileOutput << "," << sig.m_rxNode << endl;
                         break;
 
                     case CSignal::SIG_TYPE_UINT64:
-						fileOutput << "[START_SIGNALS] " << sig.m_acName;
-						fileOutput << "," << dec << sig.m_ucLength;
-						fileOutput << "," << dec << sig.m_ucWhichByte;
-						fileOutput << "," << dec << sig.m_ucStartBit;
-						fileOutput << "," << 'U'; /* sig.m_ucType */
-						fileOutput << "," << dec << sig.m_MaxValue.dValue;
-						fileOutput << "," << dec << sig.m_MinValue.dValue;
-						fileOutput << "," << sig.m_ucDataFormat;
-						fileOutput << "," << sig.m_fOffset;
-						fileOutput << "," << sig.m_fScaleFactor;
-						fileOutput << "," << sig.m_acUnit;
-						fileOutput << "," << sig.m_acMultiplex;
-						fileOutput << "," << sig.m_rxNode << endl;
+                        fileOutput << "[START_SIGNALS] " << sig.m_acName;
+                        fileOutput << "," << dec << sig.m_ucLength;
+                        fileOutput << "," << dec << sig.m_ucWhichByte;
+                        fileOutput << "," << dec << sig.m_ucStartBit;
+                        fileOutput << "," << 'U'; /* sig.m_ucType */
+                        fileOutput << "," << dec << sig.m_MaxValue.dValue;
+                        fileOutput << "," << dec << sig.m_MinValue.dValue;
+                        fileOutput << "," << sig.m_ucDataFormat;
+                        fileOutput << "," << sig.m_fOffset;
+                        fileOutput << "," << sig.m_fScaleFactor;
+                        fileOutput << "," << sig.m_acUnit;
+                        fileOutput << "," << sig.m_acMultiplex;
+                        fileOutput << "," << sig.m_rxNode << endl;
                         break;
 
                     default:
@@ -305,41 +308,43 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
 
                 // now write value descriptors for this signal
                 POSITION posValDesc = sig.m_listValueDescriptor.GetHeadPosition();
+
                 while(posValDesc != NULL)
                 {
                     CValueDescriptor& rValDesc = sig.m_listValueDescriptor.GetNext(posValDesc);
+
                     switch(sig.m_ucType)
                     {
                         case CSignal::SIG_TYPE_BOOL:
                         case CSignal::SIG_TYPE_UINT:
-							fileOutput << "[VALUE_DESCRIPTION] " << rValDesc.m_acDescriptor;
-							fileOutput << "," << dec << rValDesc.m_value.uiValue << endl;
+                            fileOutput << "[VALUE_DESCRIPTION] " << rValDesc.m_acDescriptor;
+                            fileOutput << "," << dec << rValDesc.m_value.uiValue << endl;
                             break;
 
                         case CSignal::SIG_TYPE_INT:
-							fileOutput << "[VALUE_DESCRIPTION] " << rValDesc.m_acDescriptor;
-							fileOutput << "," << dec << rValDesc.m_value.iValue << endl;
+                            fileOutput << "[VALUE_DESCRIPTION] " << rValDesc.m_acDescriptor;
+                            fileOutput << "," << dec << rValDesc.m_value.iValue << endl;
                             break;
 
                             // when FLOAT and DOUBLE are supported enable this
                             /*
                             case CSignal::SIG_TYPE_FLOAT:
-                            	sprintf(acLine,"[VALUE_DESCRIPTION] %s,%f\n",rValDesc.m_acDescriptor,rValDesc.m_value.fValue);
-                            	break;
+                                sprintf(acLine,"[VALUE_DESCRIPTION] %s,%f\n",rValDesc.m_acDescriptor,rValDesc.m_value.fValue);
+                                break;
 
                             case CSignal::SIG_TYPE_DOUBLE:
-                            	sprintf(acLine,"[VALUE_DESCRIPTION] %s,%f\n",rValDesc.m_acDescriptor,rValDesc.m_value.dValue);
-                            	break;
+                                sprintf(acLine,"[VALUE_DESCRIPTION] %s,%f\n",rValDesc.m_acDescriptor,rValDesc.m_value.dValue);
+                                break;
                             */
 
                         case CSignal::SIG_TYPE_INT64:
-							fileOutput << "[VALUE_DESCRIPTION] " << rValDesc.m_acDescriptor;
-							fileOutput << "," << dec << rValDesc.m_value.i64Value << endl;
+                            fileOutput << "[VALUE_DESCRIPTION] " << rValDesc.m_acDescriptor;
+                            fileOutput << "," << dec << rValDesc.m_value.i64Value << endl;
                             break;
 
                         case CSignal::SIG_TYPE_UINT64:
-							fileOutput << "[VALUE_DESCRIPTION] " << rValDesc.m_acDescriptor;
-							fileOutput << "," << dec << rValDesc.m_value.ui64Value << endl;
+                            fileOutput << "[VALUE_DESCRIPTION] " << rValDesc.m_acDescriptor;
+                            fileOutput << "," << dec << rValDesc.m_value.ui64Value << endl;
                             break;
 
                         default:
@@ -353,12 +358,11 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
             }
         }
 
-//		fclose(message);
+        //      fclose(message);
         fileOutput << "[END_MSG]" << endl << endl;
     }
 
     fileOutput.close();
-
     return bResult;
 }
 
@@ -367,6 +371,7 @@ bool CConverter::WriteToOutputFile(CString sCanMonFile)
 void CConverter::ValidateMessageList()
 {
     POSITION pos = m_listMessages.GetHeadPosition();
+
     while(pos != NULL)
     {
         CMessage& rMsg = m_listMessages.GetNext(pos);
@@ -388,22 +393,27 @@ void CConverter::ValidateMessageList()
         rMsg.m_ucNumOfSignals = 0; // reset number of signals to 0
         // this should be updated to number of
         // valid signals as we parse the Signal list
-
         //pems - Start
         //Scan the message list and make the message format same as the
         //one that has maximum number of signals.
         POSITION posSigx = rMsg.m_listSignals.GetHeadPosition();
         int iCntMotorolaSignals = 0;
         int iCntIntelSignals = 0;
+
         while(posSigx != NULL)
         {
             CSignal& rSig = rMsg.m_listSignals.GetNext(posSigx);
 
             if(rSig.m_ucDataFormat == CSignal::SIG_DF_INTEL)
+            {
                 iCntIntelSignals++;
+            }
             else if(rSig.m_ucDataFormat == CSignal::SIG_DF_MOTOROLA)
+            {
                 iCntMotorolaSignals++;
+            }
         }
+
         // Update the message data format
         if(iCntIntelSignals >= iCntMotorolaSignals)
         {
@@ -415,22 +425,24 @@ void CConverter::ValidateMessageList()
             ucDataFormat = CSignal::SIG_DF_MOTOROLA;
             rMsg.m_cDataFormat = ucDataFormat;
         }
-        //pems - end
 
+        //pems - end
         POSITION posSig = rMsg.m_listSignals.GetHeadPosition();
+
         while(posSig != NULL)
         {
             CSignal& rSig = rMsg.m_listSignals.GetNext(posSig);
             uiResult = rSig.Validate(ucDataFormat);
+
             // if the signal is valid
             if(uiResult == CSignal::SIG_EC_NO_ERR)
             {
                 /*Pems Start
-                	if(ucDataFormat == 0)
-                	{
-                		ucDataFormat = rSig.m_ucDataFormat; // now this is updated to the first valid signal's format
-                		rMsg.m_cDataFormat = ucDataFormat; // set message data format to this i.e format of first valid signal
-                	}
+                    if(ucDataFormat == 0)
+                    {
+                        ucDataFormat = rSig.m_ucDataFormat; // now this is updated to the first valid signal's format
+                        rMsg.m_cDataFormat = ucDataFormat; // set message data format to this i.e format of first valid signal
+                    }
                 Pems End*/
                 rMsg.m_ucNumOfSignals++; // increment the signal count for this message
             }
@@ -445,6 +457,7 @@ void CConverter::ValidateMessageList()
             __int64 n64Mask = ( 1 << rSig.m_ucLength ) - 1;
             n64Mask <<=
                 ( rSig.m_ucWhichByte - 1 ) * 8 + rSig.m_ucStartBit;
+
             if( n64Matrix & n64Mask )
             {
                 rSig.m_uiError = CSignal::SIG_EC_OVERLAP;
@@ -464,22 +477,23 @@ void CConverter::GenerateMessageList(fstream& fileInput)
     char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
     // Flag to skip signal parsing of independent messages
     BOOL bSkipSignalParsing = FALSE;
+
     // parsing the input file
     while(fileInput.getline(acLine, defCON_MAX_LINE_LEN))
     {
-        char *pcToken, *pcLine;
-
+        char* pcToken, *pcLine;
         // avoid leading <spaces> before tokenising, so passing the
         // starting point will be correct in each case, when calling
         // msg.Format, sig.Format etc.
-
         pcLine = acLine;
+
         while(*pcLine && *pcLine == ' ')
         {
             *pcLine++;
         }
 
         pcToken = strtok(pcLine," :");
+
         if(pcToken)
         {
             //compare token to known types to interpret the line further
@@ -489,13 +503,12 @@ void CConverter::GenerateMessageList(fstream& fileInput)
             {
                 continue;
             }
-
             // message
             else if(strcmp(pcToken,"BO_") == 0)
             {
-
                 CMessage msg;
                 msg.Format(pcLine + strlen(pcToken)+1);
+
                 if( msg.m_uiMsgID != 0xc0000000 ) // Vector independent message
                 {
                     bSkipSignalParsing = FALSE;
@@ -507,7 +520,6 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                     bSkipSignalParsing = TRUE;
                 }
             }
-
             // signal
             else if(strcmp(pcToken,"SG_") == 0)
             {
@@ -515,16 +527,13 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 {
                     CSignal sig;
                     sig.Format(pcLine + strlen(pcToken)+1);
-
                     POSITION pos = m_listMessages.GetTailPosition();
                     CMessage& msg = m_listMessages.GetAt(pos);
-
                     msg.m_listSignals.AddTail(sig);
                     // this signal should belong to the last message
                     msg.m_ucNumOfSignals++; // increment the signal count
                 }
             }
-
             // value descriptor
             else if(strcmp(pcToken,"VAL_") == 0)
             {
@@ -532,39 +541,39 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 // get MsgId, find the message from the messagelist.
                 // find the signal from the message, then add the value descritors
                 // to the respective signals
-
                 pcLine = pcLine + strlen(pcToken) + 1; // to get next token
                 pcToken = strtok(pcLine," "); // msgid
-
                 unsigned int id = (unsigned int)atoi(pcToken);
                 POSITION posMsg = m_listMessages.GetHeadPosition();
+
                 while(posMsg != NULL)
                 {
                     CMessage& rMsg = m_listMessages.GetNext(posMsg);
+
                     // find matching message from list
                     if(rMsg.m_uiMsgID == id)
                     {
                         pcLine = pcLine + strlen(pcToken) + 1; // to get next token
                         pcToken = strtok(pcLine," "); // Signal name
-
                         POSITION posSig = rMsg.m_listSignals.GetHeadPosition();
 
                         // find matching signal
                         while(posSig != NULL)
                         {
-                            //	char *pcToken1;
+                            //  char *pcToken1;
                             CSignal& rSig =  rMsg.m_listSignals.GetNext(posSig);
+
                             if(strcmp(rSig.m_acName.c_str(),pcToken) == 0)
                             {
                                 rSig.AddValueDescriptors(pcLine + strlen(pcToken) + 1);
                                 break; // if we got the signal we wanted
                             }
                         }
+
                         break; // we got the message we wanted
                     }
                 }
             }
-
             // signal value qualifier
             else if(strcmp(pcToken,"SIG_VALTYPE_") == 0)
             {
@@ -576,9 +585,11 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 pcToken = strtok(NULL," :;"); // msgid
                 unsigned int id = (unsigned int)atoi(pcToken);
                 POSITION posMsg = m_listMessages.GetHeadPosition();
+
                 while(posMsg != NULL)
                 {
                     CMessage& rMsg = m_listMessages.GetNext(posMsg);
+
                     // find matching message from list
                     if(rMsg.m_uiMsgID == id)
                     {
@@ -589,6 +600,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                         while(posSig != NULL)
                         {
                             CSignal& rSig =  rMsg.m_listSignals.GetNext(posSig);
+
                             if(strcmp(rSig.m_acName.c_str(),pcToken) == 0)
                             {
                                 if(pcToken = strtok(NULL," :;")) // qualifier (1 or 2)
@@ -599,13 +611,16 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                                         case '1':
                                             rSig.m_ucType = CSignal::SIG_TYPE_FLOAT;
                                             break;
+
                                         case '2':
                                             rSig.m_ucType = CSignal::SIG_TYPE_DOUBLE;
                                             break;
+
                                         default:
                                             break;
                                     }
                                 }
+
                                 break; // we got the signal we wanted
                             }
                         }
@@ -614,7 +629,6 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                     }
                 }
             }
-
             // anything else skip
             else
             {
@@ -631,35 +645,38 @@ void CConverter::CreateLogFile(fstream& fileLog)
 {
     // write to the output file
     char acMsgLine[200];
-
     fileLog << "Conversion Error Log" << endl;
-	fileLog << endl;
-
+    fileLog << endl;
     // write all signals & messages which encountered errors
     // MSG_ID ,MAG_NAME,SIG_NAME:
     POSITION pos = m_listMessages.GetHeadPosition();
+
     while(pos != NULL)
     {
         acMsgLine[0] = '\0';
         CMessage& msg = m_listMessages.GetNext(pos);
         POSITION posSig = msg.m_listSignals.GetHeadPosition();
+
         while(posSig != NULL)
         {
             CSignal& sig = msg.m_listSignals.GetNext(posSig);
+
             // write signal only if it is valid
             if(sig.m_uiError != CSignal::SIG_EC_NO_ERR)
             {
-				string str;
+                string str;
+
                 // for the first wrong signal, log the message details also
                 if(acMsgLine[0] == '\0')
                 {
-					fileLog << endl;
-					fileLog << "MSG_ID: " << dec << msg.m_uiMsgID;
-					fileLog << "\tMSG_NAME: " << msg.m_acName << endl;
+                    fileLog << endl;
+                    fileLog << "MSG_ID: " << dec << msg.m_uiMsgID;
+                    fileLog << "\tMSG_NAME: " << msg.m_acName << endl;
                 }
-				sig.GetErrorString(str);
-				fileLog << "\tDiscarded SIG_NAME: " << sig.m_acName;
-				fileLog << ", Reason: " << str.c_str() << endl;
+
+                sig.GetErrorString(str);
+                fileLog << "\tDiscarded SIG_NAME: " << sig.m_acName;
+                fileLog << ", Reason: " << str.c_str() << endl;
             }
         }
     }
@@ -675,6 +692,7 @@ CMessage CConverter::ouFindMessage(CString omStrMsgName)
     {
         // store the data
         omTemp = m_listMessages.GetNext(pos);
+
         // compare with message name
         if(omStrMsgName == omTemp.m_acName.c_str())
         {
@@ -682,10 +700,10 @@ CMessage CConverter::ouFindMessage(CString omStrMsgName)
             return omTemp;
         }
     }
+
     // if not found then
     omTemp.m_uiMsgID = 0xffffffff;
     return omTemp;
-
 }
 
 
@@ -699,14 +717,15 @@ CMessage CConverter::ouFindMessage(UINT nMsgID)
     {
         // store the data
         omTemp = m_listMessages.GetNext(pos);
+
         // compare with message name
         if( nMsgID == omTemp.m_uiMsgID)
         {
             // send the result
             return omTemp;
         }
-
     }
+
     // if not found
     omTemp.m_uiMsgID = 0xffffffff;
     return omTemp;

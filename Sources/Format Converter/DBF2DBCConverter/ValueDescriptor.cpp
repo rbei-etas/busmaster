@@ -53,13 +53,12 @@ CValueDescriptor::~CValueDescriptor()
  * Extracts the Value Descriptor pair from the given Line
  * and creates a list of the same
  */
-int CValueDescriptor::Format(char *pcLine)
+int CValueDescriptor::Format(char* pcLine)
 {
-	char acValue[256] = {'\0'};
+    char acValue[256] = {'\0'};
     char acDesc[256] = {'\0'};
-
-    char *pcValue = acValue;
-    char *pcDesc = acDesc;
+    char* pcValue = acValue;
+    char* pcDesc = acDesc;
     pcValue = acValue;
     pcDesc = acDesc;
 
@@ -77,26 +76,31 @@ int CValueDescriptor::Format(char *pcLine)
             *pcLine++;
             break;
         }
+
         *pcLine++;
     }
+
     if(*pcLine != '\"')
         while(*pcLine && *pcLine != '\"')
         {
             *pcDesc++ = *pcLine;
             pcLine++;
         }
-    *pcDesc = '\0';
 
+    *pcDesc = '\0';
     pcLine++;
+
     // skip spaces if any before next iteration.
     while(*pcLine && *pcLine == ',')
     {
         *pcLine++;
     }
+
     while(*pcLine && *pcLine != ' ')
     {
         *pcValue++ = *pcLine++; // copy all but terminating space
     }
+
     *pcValue = '\0'; // terminate the string
     // if any value read then add it to list
     m_value.i64Value = _atoi64(acValue);
@@ -112,33 +116,36 @@ int CValueDescriptor::Format(char *pcLine)
  *
  * Writes the Value Descriptor in the CANoe format in the output file
  */
-void CValueDescriptor::writeValuDescToFile(fstream &fileOutput,char m_ucType,CList<CValueDescriptor,CValueDescriptor&> &m_listValueDescriptor)
+void CValueDescriptor::writeValuDescToFile(fstream& fileOutput,char m_ucType,CList<CValueDescriptor,CValueDescriptor&> &m_listValueDescriptor)
 {
     POSITION posValDesc = m_listValueDescriptor.GetHeadPosition();
+
     while(posValDesc != NULL)
     {
         CValueDescriptor& rValDesc = m_listValueDescriptor.GetNext(posValDesc);
+
         switch(m_ucType)
         {
             case CSignal::SIG_TYPE_INT:
             case CSignal::SIG_TYPE_FLOAT:
             case CSignal::SIG_TYPE_DOUBLE:
             case CSignal::SIG_TYPE_INT64:
-				fileOutput << dec << rValDesc.m_value.i64Value;
-				fileOutput << " \"" << rValDesc.m_sDescriptor.c_str() << "\" ";
+                fileOutput << dec << rValDesc.m_value.i64Value;
+                fileOutput << " \"" << rValDesc.m_sDescriptor.c_str() << "\" ";
                 break;
 
             case CSignal::SIG_TYPE_BOOL:
             case CSignal::SIG_TYPE_UINT:
             case CSignal::SIG_TYPE_UINT64:
-				fileOutput << dec << rValDesc.m_value.ui64Value;
-				fileOutput << " \"" << rValDesc.m_sDescriptor.c_str() << "\" ";
+                fileOutput << dec << rValDesc.m_value.ui64Value;
+                fileOutput << " \"" << rValDesc.m_sDescriptor.c_str() << "\" ";
                 break;
 
             default:
                 break;
         }
     }
+
     fileOutput << ";" << endl;
     return;
 }

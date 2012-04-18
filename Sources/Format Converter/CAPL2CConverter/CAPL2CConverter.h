@@ -36,7 +36,7 @@ public:
     virtual HRESULT GetInputFileFilters(string&, string& );
     virtual HRESULT GetOutputFileFilters(string&, string& );
     virtual HRESULT ConvertFile(string& chInputFile, string& chOutputFile);
-    virtual HRESULT GetConverterName(string& strConverterName); 
+    virtual HRESULT GetConverterName(string& strConverterName);
     virtual HRESULT GetErrorStatus(HRESULT hResult, string& omstrStatus);
     virtual HRESULT GetLastConversionStatus(HRESULT& hResult, string& omstrStatus);
     virtual HRESULT GetHelpText(string& pchHelpText);
