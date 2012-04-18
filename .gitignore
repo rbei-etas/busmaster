@@ -22,9 +22,11 @@ Sources/DmGraph/DMGraph_p.c
 Sources/DmGraph/dlldata.c
 Sources/Format Converter/AscLogConverter/Asc_Log_Lexer.c
 Sources/Format Converter/AscLogConverter/asc_log_parser.c
+Sources/Format Converter/AscLogConverter/asc_log_parser.h
 Sources/Format Converter/CAPL2CConverter/lexer.h
 Sources/Format Converter/LogAscConverter/Log_Asc_Lexer.c
 Sources/Format Converter/LogAscConverter/log_asc_parser.c
+Sources/Format Converter/LogAscConverter/log_asc_parser.h
 
 # Release dirs (except BIN)
 Sources/Application/Release
