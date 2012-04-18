@@ -64,14 +64,16 @@ CValueDescriptor::~CValueDescriptor()
  *
  * Writes the value descriptors in the given list to the output file.
  */
-void CValueDescriptor::writeValueDescToFile(fstream &fileOutput, char m_ucType, list<CValueDescriptor> &m_listValueDescriptor)
+void CValueDescriptor::writeValueDescToFile(fstream& fileOutput, char m_ucType, list<CValueDescriptor> &m_listValueDescriptor)
 {
     list<CValueDescriptor>::iterator desc;
+
     for (desc=m_listValueDescriptor.begin(); desc!=m_listValueDescriptor.end(); ++desc)
     {
         fileOutput << T_VALUE_DESC " \"";
         fileOutput << desc->m_acDescriptor.c_str();
         fileOutput << "\",";
+
         switch(m_ucType)
         {
             case CSignal::SIG_TYPE_BOOL:
@@ -102,7 +104,9 @@ void CValueDescriptor::writeValueDescToFile(fstream &fileOutput, char m_ucType, 
             default:
                 break;
         }
+
         fileOutput << endl;
     }
+
     return;
 }

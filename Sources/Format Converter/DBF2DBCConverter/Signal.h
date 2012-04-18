@@ -32,31 +32,31 @@ class CSignal
 public:
     CSignal();
     virtual ~CSignal();
-    int Format(char *pcLine);
+    int Format(char* pcLine);
     CSignal& operator=(CSignal& signal);
     unsigned int Validate();
-    bool WriteSignaltofile(fstream &fileOutput);
-    void GetErrorString(string &str);
-    int operator==(const CSignal &Signal) const;
+    bool WriteSignaltofile(fstream& fileOutput);
+    void GetErrorString(string& str);
+    int operator==(const CSignal& Signal) const;
     enum SIG_DATA_FORMAT {SIG_DF_MOTOROLA='0',SIG_DF_INTEL = '1'};
     enum SIG_TYPE {SIG_TYPE_BOOL = 'B',SIG_TYPE_INT = 'I',SIG_TYPE_UINT = 'U',SIG_TYPE_FLOAT = 'F', SIG_TYPE_DOUBLE = 'D', SIG_TYPE_INT64 = 'X',SIG_TYPE_UINT64 = 'Y'};
     enum SIG_ERROR_CODE {SIG_EC_NO_ERR,SIG_EC_LENGTH_ERR,SIG_EC_STARTBIT_ERR};
 
     //members
-    string			m_sName;
-    string			m_sMultiplex;
-    unsigned int	m_ucLength;
-    unsigned int	m_ucWhichByte;
-    unsigned int	m_ucStartBit;
-    char			m_ucType;
-    SIG_VALUE		m_MaxValue;
-    SIG_VALUE		m_MinValue;
-    unsigned char	m_ucDataFormat;
-    float			m_fOffset;
-    float			m_fScaleFactor;
-    unsigned int	m_uiError;
+    string          m_sName;
+    string          m_sMultiplex;
+    unsigned int    m_ucLength;
+    unsigned int    m_ucWhichByte;
+    unsigned int    m_ucStartBit;
+    char            m_ucType;
+    SIG_VALUE       m_MaxValue;
+    SIG_VALUE       m_MinValue;
+    unsigned char   m_ucDataFormat;
+    float           m_fOffset;
+    float           m_fScaleFactor;
+    unsigned int    m_uiError;
 
-    string			m_sUnit;
-    string			m_sNode;
-    CList<CValueDescriptor,CValueDescriptor&>	m_listValueDescriptor;
+    string          m_sUnit;
+    string          m_sNode;
+    CList<CValueDescriptor,CValueDescriptor&>   m_listValueDescriptor;
 };

@@ -41,11 +41,13 @@ BOOL CSymbolTable::bAdd(const CString& omValue)
     //this funtion will add a data to the array if it is not in that array.
     //If that element is already in the arry it will not add that.
     BOOL bSuccess = FALSE;
+
     if( CSymbolTable::nFind( omValue) == -1)
     {
         m_omData.Add(omValue);
         bSuccess = TRUE;
     }
+
     return bSuccess;
 }
 
@@ -58,16 +60,19 @@ int CSymbolTable::nFind(CString omValue) const
     omValue.MakeLower();
     int nPos = -1;
     int size = m_omData.GetSize();
+
     for( int nIndex = 0; nIndex< size ; nIndex++)
     {
         CString omElement = m_omData.GetAt(nIndex);
         omElement.MakeLower();
+
         if ( omValue == omElement )
         {
             nPos = nIndex;
             nIndex = size;
         }
     }
+
     return nPos;
 }
 
@@ -75,7 +80,6 @@ void CSymbolTable::vClearArray()
 {
     //this will clear the contents of array.
     m_omData.RemoveAll();
-
 }
 
 const CString CSymbolTable::omGetAt(int nIndex)

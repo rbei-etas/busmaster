@@ -64,11 +64,12 @@ CConverter::~CConverter()
  * This is the basic function which is to be called
  * to convert any given CANoe file to a CANMon file.
  */
-unsigned int CConverter::Convert(string &sCanoeFile, string &sCanMonFile)
+unsigned int CConverter::Convert(string& sCanoeFile, string& sCanMonFile)
 {
     fstream fileInput, fileOutput;
     char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
     fileInput.open(sCanoeFile.c_str(), fstream::in);
+
     if(!fileInput.is_open())
     {
         return SetResultCode(CON_RC_FILEOPEN_ERROR_INFILE);
@@ -84,13 +85,12 @@ unsigned int CConverter::Convert(string &sCanoeFile, string &sCanMonFile)
 
     // Generate the list of messages
     GenerateMessageList(fileInput);
-
     // All information gathered, validate and update if necessary
     // Make appropriate changes in the contents of the list
     ValidateMessageList();
-
     // the format is OK then open the output file
     fileOutput.open(sCanMonFile.c_str(), fstream::out);
+
     if(!fileOutput.is_open())
     {
         // if output file cannot be opened the close the input file
@@ -101,7 +101,6 @@ unsigned int CConverter::Convert(string &sCanoeFile, string &sCanMonFile)
 
     EncryptData(m_notProcessed);
     bool bRes = WriteToOutputFile(fileOutput);
-
     fileInput.close();
     fileOutput.close();
 
@@ -112,6 +111,7 @@ unsigned int CConverter::Convert(string &sCanoeFile, string &sCanMonFile)
         m_omLogFilePath = sLogFile;
         fstream fileLog;
         fileLog.open(sLogFile.c_str(), fstream::out);
+
         if(!fileLog.is_open())
         {
             // if log file cannot be opened return the error code
@@ -136,29 +136,36 @@ unsigned int CConverter::Convert(string &sCanoeFile, string &sCanMonFile)
  */
 void CConverter::GetResultString(string& str)
 {
-	switch(m_uiResultCode) {
-		case 0:
-			str = "Conversion completed.";
-			break;
-		case 1:
-			str = "Conversion completed with errors. See log file.";
-			break;
-		case 2:
-			str = "Conversion aborted. Error opening input file.";
-			break;
-		case 3:
-			str = "Conversion aborted. Error creating output file.";
-			break;
-		case 4:
-			str = "Conversion aborted. Error with input file format.";
-			break;
-		case 5:
-			str = "Conversion aborted. Error creating log file.";
-			break;
-		default:
-			str = "Unknown";
-			break;
-	}
+    switch(m_uiResultCode)
+    {
+        case 0:
+            str = "Conversion completed.";
+            break;
+
+        case 1:
+            str = "Conversion completed with warnings. See log file.";
+            break;
+
+        case 2:
+            str = "Conversion aborted. Error opening input file.";
+            break;
+
+        case 3:
+            str = "Conversion aborted. Error creating output file.";
+            break;
+
+        case 4:
+            str = "Conversion aborted. Error with input file format.";
+            break;
+
+        case 5:
+            str = "Conversion aborted. Error creating log file.";
+            break;
+
+        default:
+            str = "Unknown";
+            break;
+    }
 }
 
 /**
@@ -182,6 +189,7 @@ void CConverter::ValidateMessageList()
 {
     list<CMessage>::iterator rMsg;
     unsigned int uiResult;
+
     for(rMsg=m_listMessages.begin(); rMsg!=m_listMessages.end(); ++rMsg)
     {
         unsigned char ucDataFormat = 0;
@@ -201,20 +209,25 @@ void CConverter::ValidateMessageList()
         rMsg->m_ucNumOfSignals = 0; // reset number of signals to 0
         // this should be updated to number of
         // valid signals as we parse the Signal list
-
         //pems - Start
         //Scan the message list and make the message format same as the
         //one that has maximum number of signals.
         int iCntMotorolaSignals = 0;
         int iCntIntelSignals = 0;
         list<CSignal>::iterator rSig;
+
         for(rSig=rMsg->m_listSignals.begin(); rSig!=rMsg->m_listSignals.end(); ++rSig)
         {
             if(rSig->m_ucDataFormat == CSignal::SIG_DF_INTEL)
+            {
                 iCntIntelSignals++;
+            }
             else if(rSig->m_ucDataFormat == CSignal::SIG_DF_MOTOROLA)
+            {
                 iCntMotorolaSignals++;
+            }
         }
+
         // Update the message data format
         if(iCntIntelSignals >= iCntMotorolaSignals)
         {
@@ -226,6 +239,7 @@ void CConverter::ValidateMessageList()
             ucDataFormat = CSignal::SIG_DF_MOTOROLA;
             rMsg->m_cDataFormat = ucDataFormat;
         }
+
         //pems - end
 
         for(rSig=rMsg->m_listSignals.begin(); rSig!=rMsg->m_listSignals.end(); ++rSig)
@@ -248,6 +262,7 @@ void CConverter::ValidateMessageList()
             {
                 int flag = 0;
                 list<CMessage>::iterator usMsg;
+
                 for(usMsg=m_unsupList.begin(); usMsg!=m_unsupList.end(); ++usMsg)
                 {
                     // find matching message from list
@@ -256,23 +271,26 @@ void CConverter::ValidateMessageList()
                         usMsg->m_listSignals.push_back(*rSig);
                         flag = 1;
                     }
-
                 }
+
                 if(flag == 0)
                 {
                     m_unsupList.push_back(*rMsg);
-                    CMessage&msg = m_unsupList.back();
+                    CMessage& msg = m_unsupList.back();
                     msg.m_listSignals.clear();
                     msg.m_listSignals.push_back(*rSig);
                 }
             }
         }
     }
+
     //vaildate signals not associated with any messages.
     list<CSignal>::iterator rSig;
+
     for(rSig=m_listSignal.begin(); rSig!=m_listSignal.end(); ++rSig)
     {
         uiResult = rSig->Validate(rSig->m_ucDataFormat);
+
         // if the signal is valid
         if((uiResult == CSignal::SIG_EC_NO_ERR) || (uiResult == CSignal::SIG_EC_OVERFLOW))
         {
@@ -288,6 +306,7 @@ void CConverter::ValidateMessageList()
         {
             int flag = 0;
             list<CMessage>::iterator usMsg;
+
             for(usMsg=m_unsupList.begin(); usMsg!=m_unsupList.end(); ++usMsg)
             {
                 if((usMsg->m_uiMsgID == 1073741824) && (usMsg->m_cFrameFormat == 'X'))
@@ -295,8 +314,8 @@ void CConverter::ValidateMessageList()
                     usMsg->m_listSignals.push_back(*rSig);
                     flag = 1;
                 }
-
             }
+
             if(flag == 0)
             {
                 CMessage def_msg;
@@ -308,21 +327,35 @@ void CConverter::ValidateMessageList()
             }
         }
     }
+
     list<CParameters>::iterator rParam;
+
     for(rParam=m_listParameters.begin(); rParam!=m_listParameters.end(); ++rParam)
     {
         if(rParam->m_ObjectId == "BU_")
+        {
             m_listParameterArray[1].push_back(*rParam);
+        }
         else if(rParam->m_ObjectId == "BO_")
+        {
             m_listParameterArray[2].push_back(*rParam);
+        }
         else if(rParam->m_ObjectId == "SG_")
+        {
             m_listParameterArray[3].push_back(*rParam);
+        }
         else if(rParam->m_ObjectId == "")
+        {
             m_listParameterArray[0].push_back(*rParam);
+        }
         else if(rParam->m_ObjectId == "BU_SG_REL_")
+        {
             m_listParameterArray[4].push_back(*rParam);
+        }
         else if(rParam->m_ObjectId == "BU_BO_REL_")
+        {
             m_listParameterArray[5].push_back(*rParam);
+        }
     }
 }
 
@@ -336,23 +369,29 @@ void CConverter::ValidateMessageList()
 void CConverter::GenerateMessageList(fstream& fileInput)
 {
     char acLine[defCON_MAX_LINE_LEN],local_copy[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
-    char *pcTok;
+    char* pcTok;
     int flag=0;
+
     // parsing the input file
     while(fileInput.getline(acLine, defCON_MAX_LINE_LEN))
     {
-        char *pcToken, *pcLine;
+        char* pcToken, *pcLine;
 
-        for (;;) {
+        for (;;)
+        {
             pcLine = acLine;
             pcLine += strlen(pcLine); // go to last position
             pcLine --;
-            if (*pcLine == '\r')
-                fileInput.getline(pcLine, defCON_MAX_LINE_LEN);
-            else
-                break;
-        }
 
+            if (*pcLine == '\r')
+            {
+                fileInput.getline(pcLine, defCON_MAX_LINE_LEN);
+            }
+            else
+            {
+                break;
+            }
+        }
 
         // avoid leading <spaces> before tokenising, so passing the
         // starting point will be correct in each case, when calling
@@ -376,7 +415,6 @@ void CConverter::GenerateMessageList(fstream& fileInput)
             {
                 continue;
             }
-
             // message
             else if(strcmp(pcToken, "BO_") == 0)
             {
@@ -390,15 +428,16 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                     m_listMessages.push_back(msg);
                 }
                 else
+                {
                     CConverter::valid_msg = false;
-
+                }
             }
-
             // signal
             else if(strcmp(pcToken, "SG_") == 0)
             {
                 CSignal sig;
                 sig.Format(pcLine + strlen(pcToken) + 1);
+
                 //if signal associated with a msg add it to that perticular list
                 //elses add it to msg independent list
                 if(CConverter::valid_msg == true)
@@ -406,17 +445,22 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                     //insert signals in sorted order
                     int flag = 0;
                     CMessage& msg = m_listMessages.back();
-                    if (msg.m_listSignals.empty()) {
+
+                    if (msg.m_listSignals.empty())
+                    {
                         msg.m_listSignals.push_front(sig);
                         flag = 1;
                         continue;
                     }
+
                     int count = 0;
                     list<CSignal>::iterator sig1 = msg.m_listSignals.end();
+
                     while(sig1!=msg.m_listSignals.begin())
                     {
                         --sig1;
                         ++count;
+
                         if(((sig1->m_ucWhichByte * 8) + sig1->m_ucStartBit) > ((sig.m_ucWhichByte * 8) + sig.m_ucStartBit))
                         {
                             ++sig1;
@@ -425,10 +469,12 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                             break;
                         }
                     }
+
                     if (flag == 0)
                     {
                         msg.m_listSignals.push_front(sig);
                     }
+
                     // this signal should belong to the last message
                     msg.m_ucNumOfSignals++; // increment the signal count
                 }
@@ -439,7 +485,6 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                     m_listSignal.push_back(sig);
                 }
             }
-
             // value descriptor
             else if(strcmp(pcToken, "VAL_") == 0)
             {
@@ -447,15 +492,14 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 // get MsgId, find the message from the messagelist.
                 // find the signal from the message, then add the value descritors
                 // to the respective signals
-
                 pcLine = pcLine + strlen(pcToken) + 1; // to get next token
                 pcToken = strtok_s(pcLine, " ", &pcTok); // msgid
-
                 unsigned int id = (unsigned int) strtoul(pcToken, NULL, 10);
 
                 if(id != 3221225472)
                 {
                     list<CMessage>::iterator rMsg;
+
                     for(rMsg=m_listMessages.begin(); rMsg!=m_listMessages.end(); ++rMsg)
                     {
                         // find matching message from list
@@ -464,6 +508,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                             pcLine = pcLine + strlen(pcToken) + 1; // to get next token
                             pcToken = strtok_s(pcLine, " ", &pcTok); // Signal name
                             list<CSignal>::iterator rSig;
+
                             // find matching signal
                             for(rSig=rMsg->m_listSignals.begin(); rSig!=rMsg->m_listSignals.end(); ++rSig)
                             {
@@ -473,17 +518,17 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                                     break; // if we got the signal we wanted
                                 }
                             }
+
                             break; // we got the message we wanted
                         }
                     }
                 }
-
                 else
                 {
                     pcLine = pcLine + strlen(pcToken) + 1; // to get next token
                     pcToken = strtok_s(pcLine, " ", &pcTok); // Signal name
-
                     list<CSignal>::iterator rSig;
+
                     // find matching signal
                     for(rSig=m_listSignal.begin(); rSig!=m_listSignal.end(); ++rSig)
                     {
@@ -493,9 +538,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                             break; // if we got the signal we wanted
                         }
                     }
-
                 }
-
             }
             // signal value qualifier
             else if(strcmp(pcToken, "SIG_VALTYPE_") == 0)
@@ -505,20 +548,21 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 // get MsgId, find the message from the messagelist.
                 // find the signal from the message, then update the
                 // signal type appropriately of the respective signal
-
                 pcToken = strtok_s(NULL, " :;", &pcTok); // msgid
                 unsigned int id = (unsigned int)atoi(pcToken);
+
                 if(id != 3221225472)
                 {
                     list<CMessage>::iterator rMsg;
+
                     for(rMsg=m_listMessages.begin(); rMsg!=m_listMessages.end(); ++rMsg)
                     {
                         // find matching message from list
                         if(rMsg->m_uiMsgID == id)
                         {
                             pcToken = strtok_s(NULL, " :;", &pcTok); // Signal name
-
                             list<CSignal>::iterator rSig;
+
                             // find matching signal
                             for(rSig=rMsg->m_listSignals.begin(); rSig!=rMsg->m_listSignals.end(); ++rSig)
                             {
@@ -532,13 +576,16 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                                             case '1':
                                                 rSig->m_ucType = CSignal::SIG_TYPE_FLOAT;
                                                 break;
+
                                             case '2':
                                                 rSig->m_ucType = CSignal::SIG_TYPE_DOUBLE;
                                                 break;
+
                                             default:
                                                 break;
                                         }
                                     }
+
                                     break; // we got the signal we wanted
                                 }
                             }
@@ -552,6 +599,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                     pcToken = strtok_s(NULL, " :;", &pcTok); // Signal name
                     // find matching signal
                     list<CSignal>::iterator rSig;
+
                     for(rSig=m_listSignal.begin(); rSig!=m_listSignal.end(); ++rSig)
                     {
                         if(rSig->m_acName == pcToken)
@@ -564,13 +612,16 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                                     case '1':
                                         rSig->m_ucType = CSignal::SIG_TYPE_FLOAT;
                                         break;
+
                                     case '2':
                                         rSig->m_ucType = CSignal::SIG_TYPE_DOUBLE;
                                         break;
+
                                     default:
                                         break;
                                 }
                             }
+
                             break; // we got the signal we wanted
                         }
                     }
@@ -599,12 +650,14 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                     cm.m_elementName= pcToken;
                     pcToken = strtok_s(NULL, "", &pcTok);
                     comment = pcToken;
+
                     while(strstr(pcToken, "\";") == NULL)
                     {
                         fileInput.getline(acLine, defCON_MAX_LINE_LEN);
                         pcToken = acLine;
                         comment = comment + pcToken;
                     }
+
                     cm.m_comment= comment;
                     m_cmNode.push_back(cm);
                 }
@@ -625,14 +678,17 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                         cm.m_msgType= 'X';
                         cm.m_msgID  &= 0x7FFFFFFF;
                     }
+
                     pcToken = strtok_s(NULL, "", &pcTok);
                     comment = pcToken;
+
                     while(strstr(pcToken, "\";") == NULL)
                     {
                         fileInput.getline(acLine, defCON_MAX_LINE_LEN);
                         pcToken = acLine;
                         comment = comment + pcToken;
                     }
+
                     cm.m_comment= comment;
                     m_cmMsg.push_back(cm);
                 }
@@ -641,6 +697,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 {
                     pcToken = strtok_s(NULL, " ", &pcTok);
                     cm.m_msgID = strtoul(pcToken, NULL, 10);
+
                     if(cm.m_msgID < 0x80000000UL)
                     {
                         cm.m_msgType = 'S';
@@ -650,16 +707,19 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                         cm.m_msgType = 'X';
                         cm.m_msgID &= 0x7FFFFFFF;
                     }
+
                     pcToken = strtok_s(NULL, " ", &pcTok);
                     cm.m_elementName = pcToken;
                     pcToken = strtok_s(NULL, "", &pcTok);
                     comment = pcToken;
+
                     while(strstr(pcToken, "\";") == NULL)
                     {
                         fileInput.getline(acLine, defCON_MAX_LINE_LEN);
                         pcToken = acLine;
                         comment = comment + pcToken;
                     }
+
                     cm.m_comment= comment;
                     m_cmSig.push_back(cm);
                 }
@@ -676,24 +736,22 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                             comment = comment + pcToken;
                         }
                     }
+
                     cm.m_comment= comment;
                     m_cmNet.push_back(cm);
                 }
-
             }
             // node
             else if(strcmp(pcToken, "BU_") == 0)
             {
                 create_Node_List(pcLine + strlen(pcToken)+1);
             }
-
             else if ((strcmp(pcToken, "BA_DEF_")==0) || (strcmp(pcToken, "BA_DEF_REL_")==0))
             {
                 CParameters pObj;
                 pObj.Format(pcLine + strlen(pcToken) + 1); // to get next token
                 m_listParameters.push_back(pObj);
             }
-
             //Param Initial Values
             else if(strcmp(pcToken, "BA_DEF_DEF_")==0 )
             {
@@ -702,12 +760,15 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 pcToken = strtok_s(NULL, "\"", &pcTok);
                 pcToken = strtok_s(NULL, "\"", &pcTok);
                 flag=0;
+
                 while(*pcToken && *pcToken != '"')
                 {
                     *pcTemp++ = *pcToken++;
                 }
+
                 *pcTemp = '\0';
                 list<CParameters>::iterator rParam;
+
                 for(rParam=m_listParameters.begin(); rParam!=m_listParameters.end(); ++rParam)
                 {
                     // find matching Parameter from list
@@ -720,6 +781,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                         break;
                     }
                 }
+
                 if(flag==0)
                 {
                     string errString = "BA_DEF_DEF_ \"";
@@ -729,9 +791,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                     errString += " : Match not Found in Param List\n";
                     defList.push_back(errString);
                 }
-
             }
-
             //RX,Tx Parameter Definition
             else if(strcmp(pcToken,"BA_DEF_DEF_REL_")==0)
             {
@@ -739,12 +799,15 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 pcTemp = acTemp;
                 flag = 0;
                 pcToken = strtok_s(NULL, "\"", &pcTok);
+
                 while(*pcToken && (*pcToken != '"'))
                 {
                     *pcTemp++ = *pcToken++; // copy SIG_NAME only, i.e. till first 'space'
                 }
+
                 *pcTemp = '\0';
                 list<CParameters>::iterator rParam;
+
                 for(rParam=m_listParameters.begin(); rParam!=m_listParameters.end(); ++rParam)
                 {
                     // find matching Parameter from list
@@ -757,6 +820,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                         break;
                     }
                 }
+
                 if(flag==0)
                 {
                     string errString = "BA_DEF_DEF_REL \"";
@@ -765,15 +829,14 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                     errString += pcToken;
                     errString += " : Match not Found in Param List\n";
                     defList.push_back(errString);
-
                 }
             }
-
             // Parameter Other values //
             else if(strcmp(pcToken, "BA_")==0)
             {
                 char acTemp[defCON_TEMP_LEN],*pcTemp;
                 pcTemp = acTemp;
+
                 while(*pcLine && (*pcLine == ' '))
                 {
                     *pcLine++;
@@ -787,9 +850,10 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 {
                     *pcTemp++ = *pcToken++;
                 }
-                *pcTemp = '\0';
 
+                *pcTemp = '\0';
                 list<CParameters>::iterator rParam;
+
                 for(rParam=m_listParameters.begin(); rParam!=m_listParameters.end(); ++rParam)
                 {
                     // find matching Parameter from list
@@ -828,11 +892,9 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     fileOutput << endl;
     fileOutput << T_DB_VER " " T_VER_NO << endl;
     fileOutput << endl;
-
     // number of messages
     fileOutput << T_NUM_OF_MSG " " << dec << m_listMessages.size() << endl;
     fileOutput << endl;
-
     //Write Messagess to the Output file
     CMessage msg;
     bResult &= msg.writeMessageToFile(fileOutput, m_listMessages, false);
@@ -853,57 +915,64 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     temp_vtab.writeValueTabToFile (fileOutput,m_vTab);
     fileOutput << T_END_VAL_TAB << endl;
     fileOutput << endl;
-
     //write list of nodes
     fileOutput << T_NODE " ";
     bool comma = false;
     list<string>::iterator node;
+
     for(node=m_listNode.begin(); node!=m_listNode.end(); ++node)
     {
         if(comma)
+        {
             fileOutput << ",";
+        }
+
         fileOutput << node->c_str();
         comma = true;
     }
-    fileOutput << endl;
-    fileOutput << endl;
 
+    fileOutput << endl;
+    fileOutput << endl;
     //Write Comments
     fileOutput << T_ST_COMMENT << endl;
     //network comments
     fileOutput << T_ST_CM_NET << endl;
     list<CComment>::iterator cmt;
+
     for(cmt=m_cmNet.begin(); cmt!=m_cmNet.end(); ++cmt)
     {
         fileOutput << cmt->m_elementName.c_str();
         fileOutput << " " << fileOutput << cmt->m_comment.c_str() << endl;
     }
+
     fileOutput << T_END_CM_NET << endl;
     fileOutput << endl;
-
     //node comments
     fileOutput << T_ST_CM_NODE << endl;
+
     for(cmt=m_cmNode.begin(); cmt!=m_cmNode.end(); ++cmt)
     {
         fileOutput << cmt->m_elementName.c_str();
         fileOutput << " " << cmt->m_comment.c_str() << endl;
     }
+
     fileOutput << T_END_CM_NODE << endl;
     fileOutput << endl;
-
     //message comments
     fileOutput << T_ST_CM_MSG << endl;
+
     for(cmt=m_cmMsg.begin(); cmt!=m_cmMsg.end(); ++cmt)
     {
         fileOutput << cmt->m_msgID;
         fileOutput << " " << cmt->m_msgType;
         fileOutput << " " << cmt->m_comment.c_str() << endl;
     }
+
     fileOutput << T_END_CM_MSG << endl;
     fileOutput << endl;
-
     //signal comments
     fileOutput << T_ST_CM_SIG << endl;
+
     for(cmt=m_cmSig.begin(); cmt!=m_cmSig.end(); ++cmt)
     {
         fileOutput << cmt->m_msgID;
@@ -911,117 +980,115 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
         fileOutput << " " << cmt->m_elementName.c_str();
         fileOutput << " " << cmt->m_comment.c_str() << endl;
     }
+
     fileOutput << T_END_CM_SIG << endl;
     fileOutput << T_END_COMMENT << endl;
     fileOutput << endl;
-
     //Write Parameters to the output file.
     fileOutput << START_PARAM_TAG << endl;
-
     fileOutput << START_NETPARAM_TAG << endl;
     bResult=bResult & WriteParametersToFile(fileOutput, m_listParameterArray[0]);
     fileOutput << END_NETPARAM_TAG << endl;
     fileOutput << endl;
-
     fileOutput << START_NODEPARAM_TAG << endl;
     bResult=bResult & WriteParametersToFile(fileOutput, m_listParameterArray[1]);
     fileOutput << END_NODEPARAM_TAG << endl;
     fileOutput << endl;
-
     fileOutput << START_MSGPARAM_TAG << endl;
     bResult=bResult & WriteParametersToFile(fileOutput, m_listParameterArray[2]);
     fileOutput << END_MSGPARAM_TAG << endl;
     fileOutput << endl;
-
     fileOutput << START_SIGPARAM_TAG << endl;
     bResult=bResult & WriteParametersToFile(fileOutput, m_listParameterArray[3]);
     fileOutput << END_SIGPARAM_TAG << endl;
     fileOutput << endl;
-
     fileOutput << START_RXPARAM_TAG << endl;
     bResult=bResult & WriteParametersToFile(fileOutput, m_listParameterArray[4]);
     fileOutput << END_RXPARAM_TAG << endl;
     fileOutput << endl;
-
     fileOutput << START_TXPARAM_TAG << endl;
     bResult=bResult & WriteParametersToFile(fileOutput, m_listParameterArray[5]);
     fileOutput << END_TXPARAM_TAG << endl;
     fileOutput << END_PARAM_TAG << endl;
     fileOutput << endl;
-
     //Parameter Values
     fileOutput << START_PARAMVAL_TAG << endl;
     fileOutput << START_NETVAL_TAG << endl;
     list<CParameters>::iterator rParam;
+
     for(rParam=m_listParameterArray[0].begin(); rParam!=m_listParameterArray[0].end(); ++rParam)
     {
         list<CParameterValues>::iterator vParam;
+
         for(vParam=rParam->m_listParamValues[0].begin(); vParam!=rParam->m_listParamValues[0].end(); ++vParam)
         {
             vParam->WriteNetValuesToFile(fileOutput, rParam->m_ParamType, rParam->m_ParamName);
         }
-
     }
+
     fileOutput << END_NETVAL_TAG << endl;
     fileOutput << endl;
-
     fileOutput << START_NODEVAL_TAG << endl;
+
     for(rParam=m_listParameterArray[1].begin(); rParam!=m_listParameterArray[1].end(); ++rParam)
     {
         list<CParameterValues>::iterator vParam;
+
         for(vParam=rParam->m_listParamValues[1].begin(); vParam!=rParam->m_listParamValues[1].end(); ++vParam)
         {
             vParam->WriteNodeValuesToFile(fileOutput, rParam->m_ParamType, rParam->m_ParamName);
         }
-
     }
+
     fileOutput << END_NODEVAL_TAG << endl;
     fileOutput << endl;
-
     fileOutput << START_MSGVAL_TAG << endl;
+
     for(rParam=m_listParameterArray[2].begin(); rParam!=m_listParameterArray[2].end(); ++rParam)
     {
         list<CParameterValues>::iterator vParam;
+
         for(vParam=rParam->m_listParamValues[2].begin(); vParam!=rParam->m_listParamValues[2].end(); ++vParam)
         {
             vParam->WriteMesgValuesToFile(fileOutput, rParam->m_ParamType, rParam->m_ParamName);
         }
-
     }
+
     fileOutput << END_MSGVAL_TAG << endl;
     fileOutput << endl;
-
     fileOutput << START_SIGVAL_TAG << endl;
+
     for(rParam=m_listParameterArray[3].begin(); rParam!=m_listParameterArray[3].end(); ++rParam)
     {
         list<CParameterValues>::iterator vParam;
+
         for(vParam=rParam->m_listParamValues[3].begin(); vParam!=rParam->m_listParamValues[3].end(); ++vParam)
         {
             vParam->WriteSigValuesToFile(fileOutput, rParam->m_ParamType, rParam->m_ParamName);
         }
     }
+
     fileOutput << END_SIGVAL_TAG << endl;
     fileOutput << endl;
     fileOutput << END_PARAMVAL_TAG << endl;
     fileOutput << endl;
     fileOutput << endl;
-
     //list of not supported
     fileOutput << T_ST_NOT_SUP << endl;
     msg.writeMessageToFile(fileOutput, m_unsupList, true);
     fileOutput << T_END_NOT_SUP << endl;
     fileOutput << endl;
-
     //lines that were not processed
     fileOutput << T_ST_NOT_PRO << endl;
     list<string>::iterator np;
+
     for(np=m_notProcessed.begin(); np!=m_notProcessed.end(); ++np)
     {
         fileOutput << np->c_str() << endl;
     }
+
     fileOutput << endl;
     fileOutput << T_END_NOT_PRO << endl;
-
     return bResult;
 }
 
@@ -1034,16 +1101,16 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
 void CConverter::CreateLogFile(fstream& fileLog)
 {
     char first_msg = 1;
-
     // write to the output file
     fileLog << "Conversion Error Log" << endl;
     fileLog << endl;
-
     list<CMessage>::iterator msg;
+
     for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); ++msg)
     {
         first_msg = 1;
         list<CSignal>::iterator sig;
+
         for(sig=msg->m_listSignals.begin(); sig!=msg->m_listSignals.end(); ++sig)
         {
             // write signal only if it is not valid
@@ -1060,6 +1127,7 @@ void CConverter::CreateLogFile(fstream& fileLog)
                     fileLog << " \tMSG_NAME: " << msg->m_acName.c_str() << endl;
                     first_msg = 0;
                 }
+
                 fileLog << "\tSIG_NAME: " << sig->m_acName.c_str();
                 sig->GetErrorString(str);
                 fileLog << ", " << str;
@@ -1072,12 +1140,14 @@ void CConverter::CreateLogFile(fstream& fileLog)
     //log errors in the signal list.
     first_msg = 1;
     list<CSignal>::iterator sig;
+
     for(sig=m_listSignal.begin(); sig!=m_listSignal.end(); ++sig)
     {
         // write signal only if it is not valid
         if(sig->m_uiError != CSignal::SIG_EC_OVERFLOW)
         {
             string str;
+
             // for the first wrong signal, log the message details also
             if(first_msg == 1)
             {
@@ -1087,6 +1157,7 @@ void CConverter::CreateLogFile(fstream& fileLog)
                 fileLog << " \tMSG_NAME: VECTOR__INDEPENDENT_SIG_MSG" << endl;
                 first_msg = 0;
             }
+
             fileLog << "\tSIG_NAME: " << sig->m_acName.c_str();
             sig->GetErrorString(str);
             fileLog << ", " << str.c_str();
@@ -1094,12 +1165,16 @@ void CConverter::CreateLogFile(fstream& fileLog)
             fileLog << ", ACTION: " << str.c_str() << endl;
         }
     }
+
     list<string>::iterator str;
+
     for(str=defList.begin(); str!=defList.end(); ++str)
     {
         fileLog << str->c_str();
     }
+
     list<CParameters>::iterator rParam;
+
     for(rParam=m_listParameters.begin(); rParam!=m_listParameters.end(); ++rParam)
     {
         if(rParam->m_defError)
@@ -1109,6 +1184,7 @@ void CConverter::CreateLogFile(fstream& fileLog)
             fileLog << "\tDescription:Default Value tag(BA_DEF_DEF_) doesn;t exist ";
             fileLog << "\t Action Taken : Reset to default value" << endl;
         }
+
         if(rParam->m_RangeError)
         {
             fileLog << "OBJECT ID : " << rParam->m_ObjectId.c_str();
@@ -1125,11 +1201,12 @@ void CConverter::CreateLogFile(fstream& fileLog)
  *
  * Creates a list of nodes in the network.
  */
-void CConverter::create_Node_List(char *pcLine)
+void CConverter::create_Node_List(char* pcLine)
 {
     char* pcToken, *pcTok;
     // get the MSG ID
     pcToken = strtok_s(pcLine, " ,", &pcTok);
+
     while(pcToken)
     {
         string str = pcToken;
@@ -1147,10 +1224,12 @@ void CConverter::create_Node_List(char *pcLine)
 void CConverter::EncryptData(list<string> &m_notProcessed)
 {
     list<string>::iterator str;
+
     for(str=m_notProcessed.begin(); str!=m_notProcessed.end(); ++str)
     {
         //read the string at the position
         string::iterator ch;
+
         for(ch=str->begin() ; ch<str->end(); ++ch)
         {
             if ((*ch >= 'a' && *ch <= 'm') || (*ch >= 'A' && *ch <= 'M'))
@@ -1158,7 +1237,9 @@ void CConverter::EncryptData(list<string> &m_notProcessed)
                 *ch = *ch + 13;
             }
             else if ((*ch >= 'n' && *ch <= 'z') || (*ch >= 'N' && *ch <= 'Z'))
+            {
                 *ch = *ch - 13;
+            }
         }
     }
 }

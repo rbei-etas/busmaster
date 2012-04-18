@@ -36,7 +36,7 @@ CComment::CComment()
     m_msgType = '\0';
     m_elementName = "";
     m_comment = "";
-	m_msgID = 0;
+    m_msgID = 0;
 }
 
 /**
@@ -72,11 +72,12 @@ CComment::~CComment()
  *
  * Parses the net comments.
  */
-void CComment::Format_netComment(fstream &fileInput, list<CComment>& m_listComment)
+void CComment::Format_netComment(fstream& fileInput, list<CComment>& m_listComment)
 {
-    char *pcToken, *pcLine;
+    char* pcToken, *pcLine;
     char acLine[defCON_MAX_LINE_LEN];
     string comment;
+
     //Reads all the net comments,parses the comments and stores them to a list.
     while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_DESC_NET]\n")!=0)
     {
@@ -84,6 +85,7 @@ void CComment::Format_netComment(fstream &fileInput, list<CComment>& m_listComme
         m_elementName="";
         pcToken=pcLine;
         comment = pcToken;
+
         //parses net comment.
         while(strstr(pcToken,"\";") == NULL)
         {
@@ -91,6 +93,7 @@ void CComment::Format_netComment(fstream &fileInput, list<CComment>& m_listComme
             pcToken = acLine;
             comment += pcToken;
         }
+
         m_comment= comment;
         //adds the comment to the list.
         m_listComment.push_back(*this);
@@ -104,9 +107,9 @@ void CComment::Format_netComment(fstream &fileInput, list<CComment>& m_listComme
  *
  * Parses the node comments.
  */
-void CComment::Format_nodeComment(fstream &fileInput, list<CComment>& m_listComment)
+void CComment::Format_nodeComment(fstream& fileInput, list<CComment>& m_listComment)
 {
-    char *pcToken, *pcLine;
+    char* pcToken, *pcLine;
     char acLine[defCON_MAX_LINE_LEN];
     string comment;
 
@@ -117,11 +120,11 @@ void CComment::Format_nodeComment(fstream &fileInput, list<CComment>& m_listComm
         //reads the node name.
         pcToken=strtok(pcLine," ");
         m_elementName=pcToken;
-
         //m_elementName = m_elementName.Left(defCON_MAX_MSGN_LEN);
         //get the comment.
         pcToken = strtok(NULL,"");
         comment = pcToken;
+
         while(strstr(pcToken,"\";") == NULL)
         {
             //parses the comment.
@@ -129,6 +132,7 @@ void CComment::Format_nodeComment(fstream &fileInput, list<CComment>& m_listComm
             pcToken = acLine;
             comment += pcToken;
         }
+
         m_comment= comment;
         //adds the comment to the list.
         m_listComment.push_back(*this);
@@ -142,11 +146,12 @@ void CComment::Format_nodeComment(fstream &fileInput, list<CComment>& m_listComm
  *
  * Parses the message comments.
  */
-void CComment::Format_msgComment(fstream &fileInput, list<CComment>& m_listComment)
+void CComment::Format_msgComment(fstream& fileInput, list<CComment>& m_listComment)
 {
-    char *pcToken, *pcLine;
+    char* pcToken, *pcLine;
     char acLine[defCON_MAX_LINE_LEN];
     string comment;
+
     //Reads all the mesg comments,parses the comments and stores them to a list.
     while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_DESC_MSG]\n")!=0)
     {
@@ -157,17 +162,24 @@ void CComment::Format_msgComment(fstream &fileInput, list<CComment>& m_listComme
         //get the message type and validates the message.
         pcToken=strtok(NULL," ");
         m_msgType=*pcToken;
+
         if(m_msgType =='X')
+        {
             m_msgID -=2147483648;
+        }
+
         //get the comment
         pcToken = strtok(NULL,"");
         comment = pcToken;
+
         while(strstr(pcToken,"\";") == NULL)
-        {   //parses the comment
+        {
+            //parses the comment
             fileInput.getline(acLine,defCON_MAX_LINE_LEN);
             pcToken = acLine;
             comment += pcToken;
         }
+
         m_comment= comment;
         //adds the comment to the list.
         m_listComment.push_back(*this);
@@ -181,11 +193,12 @@ void CComment::Format_msgComment(fstream &fileInput, list<CComment>& m_listComme
  *
  * Parses the signal comments.
  */
-void CComment::Format_sigComment(fstream &fileInput, list<CComment>& m_listComment)
+void CComment::Format_sigComment(fstream& fileInput, list<CComment>& m_listComment)
 {
-    char *pcToken, *pcLine;
+    char* pcToken, *pcLine;
     char acLine[defCON_MAX_LINE_LEN];
     string comment;
+
     //Reads all the signal comments,parses the comments and stores them to a list.
     while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_DESC_SIG]\n")!=0)
     {
@@ -196,22 +209,27 @@ void CComment::Format_sigComment(fstream &fileInput, list<CComment>& m_listComme
         //get the mesg type and validates.
         pcToken=strtok(NULL," ");
         m_msgType=*pcToken;
+
         if(m_msgType =='X')
+        {
             m_msgID -=2147483648;
+        }
+
         //get signal name.
         pcToken = strtok(NULL," ");
         m_elementName=pcToken;
-
-        //	m_elementName = m_elementName.Left(defCON_MAX_MSGN_LEN);
+        //  m_elementName = m_elementName.Left(defCON_MAX_MSGN_LEN);
         //get comment.
         pcToken = strtok(NULL,"");
         comment = pcToken;
+
         while(strstr(pcToken,"\";") == NULL)
         {
             fileInput.getline(acLine,defCON_MAX_LINE_LEN);
             pcToken = acLine;
             comment += pcToken;
         }
+
         m_comment= comment;
         //adds the comment to list.
         m_listComment.push_back(*this);

@@ -65,8 +65,9 @@ unsigned int CConverter::Convert(string sCanMonFile,string sCanoeFile)
 {
     fstream fileInput,fileOutput;
     char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
-	fileInput.open(sCanMonFile.c_str(), fstream::in);
-	if(!fileInput.is_open())
+    fileInput.open(sCanMonFile.c_str(), fstream::in);
+
+    if(!fileInput.is_open())
     {
         return SetResultCode(CON_RC_FILEOPEN_ERROR_INFILE);
     }
@@ -89,12 +90,14 @@ unsigned int CConverter::Convert(string sCanMonFile,string sCanoeFile)
         return SetResultCode(CON_RC_FORMAT_ERROR_INFILE);
         }*/
     }
+
     //Create log file
     CConverter::bLOG_ENTERED = false;
     string sLogFile = sCanoeFile.substr(0, sCanoeFile.length()-4);
     sLogFile += ".log";
     m_omLogFilePath = sLogFile;
     fileLog.open(sLogFile.c_str(), fstream::out);
+
     if(!fileLog.is_open())
     {
         return SetResultCode(CON_RC_FILEOPEN_ERROR_LOGFILE);
@@ -102,16 +105,13 @@ unsigned int CConverter::Convert(string sCanMonFile,string sCanoeFile)
 
     // Generate the list of messages
     GenerateMessageList(fileInput);
-
     DecryptData(m_notProcessed);
-
     // All information gathered, validate and update if necessary
     // Make appropriate changes in the contents of the list
-
     ValidateMessageList();
-
     // the format is OK then open the output file
-	fileOutput.open(sCanoeFile.c_str(), fstream::out);
+    fileOutput.open(sCanoeFile.c_str(), fstream::out);
+
     if(!fileOutput.is_open())
     {
         // if output file cannot be opened the close the input file
@@ -121,26 +121,31 @@ unsigned int CConverter::Convert(string sCanMonFile,string sCanoeFile)
     }
 
     bool bRes = WriteToOutputFile(fileOutput);
-
     fileInput.close();
     fileOutput.close();
+
     //If any error log it in the log file.
     if(!bRes)
     {
         CreateLogFile(fileLog);
         fileLog.close();
-		CConverter::bLOG_ENTERED = true;
+        CConverter::bLOG_ENTERED = true;
         return SetResultCode(CON_RC_COMPLETED_WITH_ERROR);
     }
+
     fileLog.close();
+
     //If log file is empty delete it
     if(!CConverter::bLOG_ENTERED)
     {
         DeleteFile(sLogFile.c_str());
     }
     else
+    {
         return SetResultCode(CON_RC_COMPLETED_WITH_ERROR);
-	return m_uiResultCode;
+    }
+
+    return m_uiResultCode;
 }
 
 /**
@@ -162,31 +167,38 @@ unsigned int CConverter::SetResultCode(unsigned int uiCode)
  *
  * Returns the result string.
  */
-void CConverter::GetResultString(string &str)
+void CConverter::GetResultString(string& str)
 {
-	switch(m_uiResultCode) {
-		case 0:
-			str = "Conversion completed.";
-			break;
-		case 1:
-			str = "Conversion completed with errors. See log file.";
-			break;
-		case 2:
-			str = "Conversion aborted. Error opening input file.";
-			break;
-		case 3:
-			str = "Conversion aborted. Error creating output file.";
-			break;
-		case 4:
-			str = "Conversion aborted. Error with input file format.";
-			break;
-		case 5:
-			str = "Conversion aborted. Error creating log file.";
-			break;
-		default:
-			str = "Unknown";
-			break;
-	}
+    switch(m_uiResultCode)
+    {
+        case 0:
+            str = "Conversion completed.";
+            break;
+
+        case 1:
+            str = "Conversion completed with warnings. See log file.";
+            break;
+
+        case 2:
+            str = "Conversion aborted. Error opening input file.";
+            break;
+
+        case 3:
+            str = "Conversion aborted. Error creating output file.";
+            break;
+
+        case 4:
+            str = "Conversion aborted. Error with input file format.";
+            break;
+
+        case 5:
+            str = "Conversion aborted. Error creating log file.";
+            break;
+
+        default:
+            str = "Unknown";
+            break;
+    }
 }
 
 /**
@@ -200,26 +212,26 @@ void CConverter::GenerateMessageList(fstream& fileInput)
 {
     char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
     bool valTab = false;
-    CMessage &msg();
-    CSignal &sig();
+    CMessage& msg();
+    CSignal& sig();
     POSITION posMsg,posSig;
     // parsing the input file
 
     while(fileInput.getline(acLine,defCON_MAX_LINE_LEN))
     {
-
-        char *pcToken, *pcLine;
-
+        char* pcToken, *pcLine;
         // avoid leading <spaces> before tokenising, so passing the
         // starting point will be correct in each case, when calling
         // msg.Format, sig.Format etc.
         pcLine = acLine;
+
         while(*pcLine && *pcLine == ' ')
         {
             *pcLine++;
         }
 
         pcToken = strtok(pcLine," ");
+
         if(pcToken)
         {
             //compare token to known types to interpret the line further
@@ -229,15 +241,17 @@ void CConverter::GenerateMessageList(fstream& fileInput)
             {
                 continue;
             }
-
             // message
             else if(strcmp(pcToken,"[START_MSG]") == 0)
             {
                 CMessage msg;
                 msg.Format(pcLine + strlen(pcToken)+1);
                 posMsg = m_listMessages.Find(msg);
+
                 if(posMsg == NULL)
+                {
                     posMsg = m_listMessages.AddTail(msg);
+                }
             }
             else if(strcmp(pcToken,"[START_SIG_LIST]\n") == 0)
             {
@@ -250,25 +264,28 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 posMsg = m_listMessages.AddHead(msg);
                 fileInput.getline(acLine,defCON_MAX_LINE_LEN);
                 pcToken = strtok(pcLine," ");
+
                 while(strcmp(acLine,"[END_SIG_LIST]\n") != 0)
                 {
                     CSignal sig;
                     pcToken = strtok(pcLine," ");
+
                     if(strcmp(pcToken,"[START_SIGNALS]") == 0)
                     {
                         sig.Format(pcLine + strlen(pcToken)+1);
                         sig.m_ucStartBit = 0;
-                        CMessage &inMsg = m_listMessages.GetHead();
+                        CMessage& inMsg = m_listMessages.GetHead();
                         posSig = inMsg.m_listSignals.AddHead(sig);
                     }
                     else if(strcmp(pcToken,"[VALUE_DESCRIPTION]") == 0)
                     {
                         CValueDescriptor val;
                         val.Format(pcLine + strlen(pcToken)+1);
-                        CMessage &inMsg = m_listMessages.GetHead();
+                        CMessage& inMsg = m_listMessages.GetHead();
                         CSignal& inSig = inMsg.m_listSignals.GetAt(posSig);
                         inSig.m_listValueDescriptor.AddHead(val);
                     }
+
                     fileInput.getline(acLine,defCON_MAX_LINE_LEN);
                 }
             }
@@ -287,23 +304,21 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 CSignal& sig = msg.m_listSignals.GetAt(posSig);
                 sig.m_listValueDescriptor.AddHead(val);
             }
-
             else if(strcmp(pcToken,"[START_NOT_SUPPORTED]\n") == 0)
             {
-
             }
             //nodes
             else if(strcmp(pcToken,"[NODE]") == 0)
             {
                 create_Node_List(pcLine + strlen(pcToken)+1);
             }
-
             else if(strcmp(pcToken,"[START_VALUE_TABLE]\n")==0)
             {
                 while(fileInput.getline(acLine,defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_VALUE_TABLE]\n")!=0)
                 {
                     pcLine = acLine;
                     pcToken=strtok(pcLine," ");
+
                     if(strcmp(pcToken,"[START_TABLE]")==0)
                     {
                         CValueTable vTab;
@@ -318,6 +333,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 {
                     pcLine = acLine;
                     CParameters rParam;
+
                     if(strcmp(pcLine,"[START_PARAM_NET]\n")==0)
                     {
                         while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_NET]\n")!=0)
@@ -380,6 +396,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 {
                     pcLine = acLine;
                     CParameters tParam;
+
                     if(strcmp(pcLine,"[START_PARAM_NET_VAL]\n")==0)
                     {
                         tParam.Format_NetParam_Value(fileInput,m_listParameterArray[0]);
@@ -391,14 +408,12 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                     else if(strcmp(pcLine,"[START_PARAM_MSG_VAL]\n")==0)
                     {
                         tParam.Format_MesgParam_Value(fileInput,m_listParameterArray[2]);
-
                     }
                     else if(strcmp(pcLine,"[START_PARAM_SIG_VAL]\n")==0)
                     {
                         tParam.Format_SigParam_Value(fileInput,m_listParameterArray[3]);
                     }
                 }
-
             }
             else if(strcmp(pcToken,"[START_DESC]\n")==0)
             {
@@ -406,6 +421,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 {
                     pcLine = acLine;
                     CComment tCmt;
+
                     if(strcmp(pcLine,"[START_DESC_NET]\n")==0)
                     {
                         tCmt.Format_netComment(fileInput, m_listComments[0]);
@@ -423,25 +439,28 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                         tCmt.Format_sigComment(fileInput, m_listComments[3]);
                     }
                 }
-
             }
-
             else if(strcmp(pcToken,"[START_NOT_PROCESSED]\n") == 0)
             {
                 fileInput.getline(acLine,defCON_MAX_LINE_LEN);
+
                 while(strcmp(pcToken,"[END_NOT_PROCESSED]\n") != 0)
                 {
                     string str = acLine;
                     m_notProcessed.AddTail(str);
                     fileInput.getline(acLine, defCON_MAX_LINE_LEN);
                 }
+
                 continue;
             }
             //if any other tag continue
             else
+            {
                 continue;
+            }
         }
     }
+
     return ;
 }
 
@@ -454,10 +473,12 @@ void CConverter::GenerateMessageList(fstream& fileInput)
 void CConverter::ValidateMessageList(void)
 {
     POSITION pos = m_listMessages.GetHeadPosition();
+
     while(pos != NULL)
     {
         CMessage& msg = m_listMessages.GetNext(pos);
         POSITION possig = msg.m_listSignals.GetHeadPosition();
+
         while(possig != NULL)
         {
             CSignal& sig = msg.m_listSignals.GetNext(possig);
@@ -477,31 +498,31 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
 {
     bool bResult = true;
     // write to the output file
-
-	// write header
+    // write header
     fileOutput << "VERSION \"\"" << endl;
-	fileOutput << endl;
-	fileOutput << endl;
-	fileOutput << "BS_:" << endl;
-	fileOutput << endl;
+    fileOutput << endl;
+    fileOutput << endl;
+    fileOutput << "BS_:" << endl;
+    fileOutput << endl;
     fileOutput << "BU_:";
     //write all nodes
     POSITION pos = m_listNode.GetHeadPosition();
+
     while(pos != NULL)
     {
-        string &node = m_listNode.GetNext(pos);
+        string& node = m_listNode.GetNext(pos);
         fileOutput << " " << node.c_str();
     }
-    fileOutput << endl;
-	fileOutput << endl;
 
+    fileOutput << endl;
+    fileOutput << endl;
     //Value Table
     CValueTable temp_vtab;
     temp_vtab.writeValueTabToFile (fileOutput,m_vTab);
     fileOutput << endl;
-
     //write messages
     pos = m_listMessages.GetHeadPosition();
+
     while(pos != NULL)
     {
         CMessage& msg = m_listMessages.GetNext(pos);
@@ -510,9 +531,11 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
 
     //write environment variables if any
     pos = m_notProcessed.GetHeadPosition();
+
     while(pos != NULL)
     {
         string str = m_notProcessed.GetNext(pos);
+
         if(strcmp(str.substr(0, 3).c_str(), "EV_") == 0)
         {
             fileOutput << str.c_str() << endl;
@@ -521,33 +544,36 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
 
     //Comments ----- Net
     string s_cmt;
-	list<CComment>::iterator cmt;
-	for(cmt=m_listComments[0].begin(); cmt!=m_listComments[0].end(); ++cmt)
+    list<CComment>::iterator cmt;
+
+    for(cmt=m_listComments[0].begin(); cmt!=m_listComments[0].end(); ++cmt)
     {
-		fileOutput << "CM_ " << cmt->m_elementName.c_str();
-		fileOutput << " " << cmt->m_comment.c_str();
+        fileOutput << "CM_ " << cmt->m_elementName.c_str();
+        fileOutput << " " << cmt->m_comment.c_str();
     }
 
     //Comments ----- Node
-	for (cmt=m_listComments[1].begin(); cmt!=m_listComments[1].end(); ++cmt)
+    for (cmt=m_listComments[1].begin(); cmt!=m_listComments[1].end(); ++cmt)
     {
-		fileOutput << "CM_ BU_ " << cmt->m_elementName.c_str();
-		fileOutput << " " << cmt->m_comment.c_str();
+        fileOutput << "CM_ BU_ " << cmt->m_elementName.c_str();
+        fileOutput << " " << cmt->m_comment.c_str();
     }
+
     //Comments ----- Mesg
-	for (cmt=m_listComments[2].begin(); cmt!=m_listComments[2].end(); ++cmt)
+    for (cmt=m_listComments[2].begin(); cmt!=m_listComments[2].end(); ++cmt)
     {
-		fileOutput << "CM_ BO_ " << dec << cmt->m_msgID;
-		fileOutput << " " << cmt->m_comment.c_str();
+        fileOutput << "CM_ BO_ " << dec << cmt->m_msgID;
+        fileOutput << " " << cmt->m_comment.c_str();
     }
+
     //Comments ----- Signal
-	for (cmt=m_listComments[3].begin(); cmt!=m_listComments[3].end(); ++cmt)
-    while(pos!=NULL)
-    {
-		fileOutput << "CM_ SG_ " << dec << cmt->m_msgID;
-		fileOutput << " " << cmt->m_elementName.c_str();
-		fileOutput << " " << cmt->m_comment.c_str();
-    }
+    for (cmt=m_listComments[3].begin(); cmt!=m_listComments[3].end(); ++cmt)
+        while(pos!=NULL)
+        {
+            fileOutput << "CM_ SG_ " << dec << cmt->m_msgID;
+            fileOutput << " " << cmt->m_elementName.c_str();
+            fileOutput << " " << cmt->m_comment.c_str();
+        }
 
     //Param definition
     WriteParamToFile(fileOutput, m_listParameterArray[0]);
@@ -556,30 +582,33 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     WriteParamToFile(fileOutput, m_listParameterArray[3]);
     WriteParamToFile(fileOutput, m_listParameterArray[4]);
     WriteParamToFile(fileOutput, m_listParameterArray[5]);
-
     //Param Default values
     Write_DefVal_ToFile(fileOutput, m_listParameterArray[0]);
     Write_DefVal_ToFile(fileOutput, m_listParameterArray[1]);
     Write_DefVal_ToFile(fileOutput, m_listParameterArray[2]);
     Write_DefVal_ToFile(fileOutput, m_listParameterArray[3]);
-
     //Param Other values
     pos=m_listParameterArray[0].GetHeadPosition();
+
     while(pos!=NULL)
     {
         CParameters& rParam=m_listParameterArray[0].GetNext(pos);
         POSITION vPos=rParam.m_listParamValues[0].GetHeadPosition();
+
         while(vPos!=NULL)
         {
             CParameterValues& vParam=rParam.m_listParamValues[0].GetNext(vPos);
             vParam.WriteNetValuesToFile(fileOutput, rParam.m_ParamType, rParam.m_ParamName);
         }
     }
+
     pos=m_listParameterArray[1].GetHeadPosition();
+
     while(pos!=NULL)
     {
         CParameters& rParam=m_listParameterArray[1].GetNext(pos);
         POSITION vPos=rParam.m_listParamValues[1].GetHeadPosition();
+
         while(vPos!=NULL)
         {
             CParameterValues& vParam=rParam.m_listParamValues[1].GetNext(vPos);
@@ -588,11 +617,12 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     }
 
     pos=m_listParameterArray[2].GetHeadPosition();
+
     while(pos!=NULL)
     {
-
         CParameters& rParam=m_listParameterArray[2].GetNext(pos);
         POSITION vPos=rParam.m_listParamValues[2].GetHeadPosition();
+
         while(vPos!=NULL)
         {
             CParameterValues& vParam=rParam.m_listParamValues[2].GetNext(vPos);
@@ -607,19 +637,24 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
         CParameters& rParam=m_listParameterArray[3].GetNext(pos);
         POSITION vPos=rParam.m_listParamValues[3].GetHeadPosition();
         POSITION posMsg,posSig;
+
         while(vPos!=NULL)
         {
             CParameterValues& vParam=rParam.m_listParamValues[3].GetNext(vPos);
             posMsg = m_listMessages.GetHeadPosition();
+
             while(posMsg != NULL)
             {
-                CMessage &msg = m_listMessages.GetNext(posMsg);
+                CMessage& msg = m_listMessages.GetNext(posMsg);
+
                 if(msg.m_uiMsgID == vParam.m_MsgId)
                 {
                     posSig = msg.m_listSignals.GetHeadPosition();
+
                     while(posSig != NULL)
                     {
-                        CSignal &sig = msg.m_listSignals.GetNext(posSig);
+                        CSignal& sig = msg.m_listSignals.GetNext(posSig);
+
                         if((sig.m_sName == vParam.m_SignalName) && (sig.m_uiError == CSignal::SIG_EC_NO_ERR))
                         {
                             vParam.WriteSigValuesToFile(fileOutput,rParam.m_ParamType,rParam.m_ParamName);
@@ -630,33 +665,38 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
             }
         }
     }
-	fileOutput << endl;
-	fileOutput << endl;
 
-	//BA_
+    fileOutput << endl;
+    fileOutput << endl;
+    //BA_
     pos = m_notProcessed.GetHeadPosition();
+
     while(pos != NULL)
     {
-        string &str = m_notProcessed.GetNext(pos);
+        string& str = m_notProcessed.GetNext(pos);
+
         if(strcmp(str.substr(0, 3).c_str(), "BA_") == 0)
         {
             fileOutput << str.c_str() << endl;
         }
     }
+
     //VAL_
     pos = m_listMessages.GetHeadPosition();
+
     while(pos != NULL)
     {
         CMessage& msg = m_listMessages.GetNext(pos);
-
         POSITION possig = msg.m_listSignals.GetHeadPosition();
+
         while(possig != NULL)
         {
             CSignal& sig = msg.m_listSignals.GetNext(possig);
+
             if(sig.m_listValueDescriptor.IsEmpty() == 0 && sig.m_uiError == CSignal::SIG_EC_NO_ERR)
             {
                 fileOutput << " VAL_ " << dec << msg.m_uiMsgID;
-				fileOutput << " " << sig.m_sName.c_str();
+                fileOutput << " " << sig.m_sName.c_str();
                 fileOutput << " ";
                 CValueDescriptor temp;
                 temp.writeValuDescToFile(fileOutput,sig.m_ucType,sig.m_listValueDescriptor);
@@ -666,29 +706,33 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
 
     //write SIG_VALTYPE_
     pos = m_listMessages.GetHeadPosition();
+
     while(pos != NULL)
     {
         CMessage& msg = m_listMessages.GetNext(pos);
-
         POSITION possig = msg.m_listSignals.GetHeadPosition();
+
         while(possig != NULL)
         {
             CSignal& sig = msg.m_listSignals.GetNext(possig);
+
             if(sig.m_ucType == 'F')
             {
-				fileOutput << "SIG_VALTYPE_ " << dec << msg.m_uiMsgID;
-				fileOutput << " " << sig.m_sName.c_str();
-				fileOutput << " : 1;" << endl;
+                fileOutput << "SIG_VALTYPE_ " << dec << msg.m_uiMsgID;
+                fileOutput << " " << sig.m_sName.c_str();
+                fileOutput << " : 1;" << endl;
             }
+
             if(sig.m_ucType == 'D')
             {
-				fileOutput << "SIG_VALTYPE_ " << dec << msg.m_uiMsgID;
-				fileOutput << " " << sig.m_sName.c_str();
-				fileOutput << " : 2;" << endl;
+                fileOutput << "SIG_VALTYPE_ " << dec << msg.m_uiMsgID;
+                fileOutput << " " << sig.m_sName.c_str();
+                fileOutput << " : 2;" << endl;
             }
         }
     }
-	fileOutput << endl;
+
+    fileOutput << endl;
     return bResult;
 }
 
@@ -698,37 +742,40 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
  *
  * Logs the eror info in log file.
  */
-void CConverter::CreateLogFile(fstream &fileLog)
+void CConverter::CreateLogFile(fstream& fileLog)
 {
     // write to the output file
     char acMsgLine[200];
-
     fileLog << "Conversion Error Log" << endl;
-	fileLog << endl;
-
+    fileLog << endl;
     POSITION pos = m_listMessages.GetHeadPosition();
+
     while(pos != NULL)
     {
         acMsgLine[0] = '\0';
         CMessage& msg = m_listMessages.GetNext(pos);
         POSITION posSig = msg.m_listSignals.GetHeadPosition();
+
         while(posSig != NULL)
         {
             CSignal& sig = msg.m_listSignals.GetNext(posSig);
+
             // write signal only if it is not valid
             if(sig.m_uiError != CSignal::SIG_EC_NO_ERR)
             {
-				string str;
+                string str;
+
                 // for the first wrong signal, log the message details also
                 if(acMsgLine[0] == '\0')
                 {
-					fileLog << endl;
-					fileLog << "MSG_ID: " << dec << msg.m_uiMsgID;
-					fileLog << " \tMSG_NAME: " << msg.m_sName.c_str() << endl;
+                    fileLog << endl;
+                    fileLog << "MSG_ID: " << dec << msg.m_uiMsgID;
+                    fileLog << " \tMSG_NAME: " << msg.m_sName.c_str() << endl;
                 }
-				fileLog << "\tSignal Discarded SIG_NAME: " << sig.m_sName.c_str();
-				sig.GetErrorString(str);
-				fileLog << ", Reason: " << str << " " << endl;
+
+                fileLog << "\tSignal Discarded SIG_NAME: " << sig.m_sName.c_str();
+                sig.GetErrorString(str);
+                fileLog << ", Reason: " << str << " " << endl;
             }
         }
     }
@@ -740,15 +787,15 @@ void CConverter::CreateLogFile(fstream &fileLog)
  *
  * Creates a list of nodes in the network.
  */
-void CConverter::create_Node_List(char *pcLine)
+void CConverter::create_Node_List(char* pcLine)
 {
     char* pcToken;
     // get the MSG ID
     pcToken = strtok(pcLine,",");
+
     while(pcToken)
     {
         string str = pcToken;
-
         m_listNode.AddTail(str);
         pcToken = strtok(NULL,",");
     }
@@ -764,9 +811,10 @@ void CConverter::create_Node_List(char *pcLine)
 void CConverter::DecryptData(CList<string,string& > &m_notProcessed)
 {
     //char c_str[defCON_MAX_LINE_LEN];
-	string c_str;
+    string c_str;
     string str;
     POSITION prev_pos,pos = m_notProcessed.GetHeadPosition();
+
     while(pos != NULL)
     {
         prev_pos = pos;
@@ -774,6 +822,7 @@ void CConverter::DecryptData(CList<string,string& > &m_notProcessed)
         str = m_notProcessed.GetNext(pos);
         //make a local copy
         c_str = str;
+
         for(int i=0; i < (int)c_str.length(); i++)
         {
             if ((c_str[i] >= 'a' && c_str[i] <= 'm') || (c_str[i] >= 'A' && c_str[i] <= 'M'))
@@ -781,9 +830,12 @@ void CConverter::DecryptData(CList<string,string& > &m_notProcessed)
                 c_str[i] = c_str[i] + 13;
             }
             else if ((c_str[i] >= 'n' && c_str[i] <= 'z') || (c_str[i] >= 'N' && c_str[i] <= 'Z'))
+            {
                 c_str[i] = c_str[i] - 13;
+            }
         }
-		str = c_str.c_str();
+
+        str = c_str.c_str();
         //put it back at the same position
         m_notProcessed.SetAt(prev_pos,str);
     }

@@ -94,40 +94,34 @@ CMessage::CMessage(CMessage& message)
 
 // extract the message info from the line and store it in the Message object
 // return an appropriate error code if something wrong with messageline
-int CMessage::Format(char *pcLine)
+int CMessage::Format(char* pcLine)
 {
     char* pcToken;
     // get the MSG ID
     pcToken = strtok(pcLine," :");
     m_uiMsgID = (unsigned int)atoi(pcToken);
-
     /*
     // set the id and frame format
     // canoe puts MSbit = 1 for extended ID
     if(msg.m_uiMsgID < 0x80000000UL)
     {
-    	msg.m_cFrameFormat = CMessage::MSG_FF_STANDARD;
+        msg.m_cFrameFormat = CMessage::MSG_FF_STANDARD;
     }
     else
     {
-    	msg.m_cFrameFormat = CMessage::MSG_FF_EXTENDED;
-    	msg.m_uiMsgID &= 0x7FFFFFFF;
+        msg.m_cFrameFormat = CMessage::MSG_FF_EXTENDED;
+        msg.m_uiMsgID &= 0x7FFFFFFF;
     }
     */
-
     // get the message name
     pcToken = strtok(NULL," :");
     m_acName = pcToken;
-
     // set the message length
     pcToken = strtok(NULL," :");
     m_ucLength = (unsigned char)atoi(pcToken);
-
     // set the Data format
     m_cDataFormat = CSignal::SIG_DF_INTEL;
-
     // set the number of signals
     m_ucNumOfSignals = 0;
-
     return 1;
 }

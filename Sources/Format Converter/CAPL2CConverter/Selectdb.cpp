@@ -41,7 +41,7 @@ CSelectdb::CSelectdb(CWnd* pParent /*=NULL*/)
     //{{AFX_DATA_INIT(CSelectdb)
     m_option = FALSE;
     //}}AFX_DATA_INIT
-//	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+    //  m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
 
@@ -72,10 +72,9 @@ void CSelectdb::SaveSettings()
     //this fuction will save the settings of last selected file in the registry.
     CString strSection       = "Files";
     CString strStringItem    = "Database File";
-
     CWinApp* pApp = AfxGetApp();
     CString omStrDatabaseName;
-    CWnd * pCAPL = GetDlgItem(IDC_EDIT_ADCANOE);
+    CWnd* pCAPL = GetDlgItem(IDC_EDIT_ADCANOE);
     pCAPL->GetWindowText(omStrDatabaseName);
     pApp->WriteProfileString(strSection, strStringItem,omStrDatabaseName);
 }

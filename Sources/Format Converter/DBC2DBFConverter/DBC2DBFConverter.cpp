@@ -83,22 +83,19 @@ HRESULT CDBC2DBFConverter::GetErrorStatus(HRESULT hResult, string& omstrStatus)
 {
     switch( hResult )
     {
-            /* case ERR_OUTPUT_FILE_NOTFOUND:
-                 m_omstrConversionStatus = "Output File path is not found";
-                 break;
-             case ERR_INPUT_FILE_NOTFOUND:
-                 m_omstrConversionStatus = "Input File path is not found";
-                 break;*/
         case S_OK:
             m_omstrConversionStatus = "Conversion success";
             break;
+
         case S_FALSE:
             m_omstrConversionStatus = "Conversion failed";
             break;
+
         default:
-            m_omstrConversionStatus = "Unknown Error";
+            m_omstrConversionStatus = "Unknown";
             break;
     }
+
     return S_OK;
 }
 
@@ -161,15 +158,16 @@ HRESULT CDBC2DBFConverter::ConvertFile(string& chInputFile, string& chOutputFile
 {
     HRESULT hResult = S_OK;
     CConverter ouConverter;
-
     INT nRetVal = ouConverter.Convert(chInputFile, chOutputFile);
     // display final result
-	ouConverter.GetResultString(m_omstrConversionStatus);
+    ouConverter.GetResultString(m_omstrConversionStatus);
+
     if(nRetVal != 0)
     {
         m_omstrConversionStatus += ouConverter.m_omLogFilePath.data();
         m_hResult = nRetVal;
     }
+
     return hResult;
 }
 

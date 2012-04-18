@@ -30,26 +30,26 @@
 /* Project includes */
 #include "Signal.h"
 
-#define defMSG_MAX_NAME_LEN		100 // I don't expect a name more than 100 bytes
+#define defMSG_MAX_NAME_LEN     100 // I don't expect a name more than 100 bytes
 
 class CMessage
 {
 public:
-    int Format(char *pcLine);
+    int Format(char* pcLine);
     CMessage();
     virtual ~CMessage();
     // overload = operator
     CMessage& operator=(CMessage& message);
     CMessage(CMessage& message);
 
-// data members
+    // data members
     enum MSG_FRAME_FORMAT {MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
 
-    string			m_acName;
-    unsigned int	m_uiMsgID;
-    unsigned char	m_ucLength;
-    unsigned char	m_ucNumOfSignals;
-    char			m_cDataFormat;
-    char			m_cFrameFormat;
+    string          m_acName;
+    unsigned int    m_uiMsgID;
+    unsigned char   m_ucLength;
+    unsigned char   m_ucNumOfSignals;
+    char            m_cDataFormat;
+    char            m_cFrameFormat;
     CList<CSignal,CSignal&> m_listSignals;
 };

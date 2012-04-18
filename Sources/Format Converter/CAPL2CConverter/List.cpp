@@ -41,7 +41,7 @@ List::List(CWnd* pParent /*=NULL*/)
     //{{AFX_DATA_INIT(List)
     // NOTE: the ClassWizard will add member initialization here
     //}}AFX_DATA_INIT
-//	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+    //  m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
 

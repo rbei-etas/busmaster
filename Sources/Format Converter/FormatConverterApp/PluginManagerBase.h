@@ -28,7 +28,7 @@
 #include "afxtempl.h"
 typedef struct tagConverterInfo
 {
-    CBaseConverter *m_pouConverter;
+    CBaseConverter* m_pouConverter;
     HMODULE m_hModule;
     CString m_strFileName;
     CPropertyPage* m_pomPage;
@@ -38,16 +38,16 @@ typedef struct tagConverterInfo
         m_pouConverter = NULL;
         m_hModule = NULL;
     }
-}ConverterInfo;
+} ConverterInfo;
 
 typedef CList<ConverterInfo, ConverterInfo& > ConvertersInfoList;
 
 class CPluginManagerBase
 {
-//Member variables
+    //Member variables
 public:
     ConvertersInfoList m_ConverterList;
-//Member functions
+    //Member functions
 public:
     CPluginManagerBase(void);
     virtual ~CPluginManagerBase(void);

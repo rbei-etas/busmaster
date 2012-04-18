@@ -16,18 +16,19 @@
 /**
  * \file      LogAscConverter.cpp
  * \brief     Definition of the LogAscConverter class.
- * \authors   Venkatanarayana Makam
+ * \authors   Venkatanarayana Makam, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of the LogAscConverter class.
  */
+
 #pragma once
 
 /* Project includes */
 #include "../FormatConverterApp/BaseConverter.h"
 
-#define ERR_INPUT_FILE_NOTFOUND          -1
-#define ERR_OUTPUT_FILE_NOTFOUND         -2
+#define ERR_INPUT_FILE_NOTFOUND          (-1)
+#define ERR_OUTPUT_FILE_NOTFOUND         (-2)
 
 class CLogAscConverter : public CBaseConverter
 {
@@ -35,6 +36,7 @@ class CLogAscConverter : public CBaseConverter
     HRESULT m_hResult;
 public:
     CLogAscConverter(void);
+    ~CLogAscConverter(void);
     virtual HRESULT GetInputFileFilters(string&, string& );
     virtual HRESULT GetOutputFileFilters(string&, string& );
     virtual HRESULT ConvertFile(string& chInputFile, string& chOutputFile);
@@ -43,6 +45,8 @@ public:
     virtual HRESULT GetLastConversionStatus(HRESULT& hResult, string& omstrStatus);
     virtual HRESULT GetHelpText(string& pchHelpText);
     virtual BOOL bHaveOwnWindow();
-    virtual HRESULT GetPropertyPage(CPropertyPage*& pPage){return S_FALSE;};
-    ~CLogAscConverter(void);
+    virtual HRESULT GetPropertyPage(CPropertyPage*& pPage)
+    {
+        return S_FALSE;
+    };
 };

@@ -35,12 +35,12 @@ using namespace std;
 class CSignal
 {
 public:
-    void GetErrorString(string &str);
-    void GetErrorAction(string &str);
+    void GetErrorString(string& str);
+    void GetErrorAction(string& str);
     unsigned int Validate(unsigned char ucFormat = 0);
     unsigned int m_uiError;
-    int AddValueDescriptors(char * pcLine, fstream &fileInput);
-    int Format(char *pcLine);
+    int AddValueDescriptors(char* pcLine, fstream& fileInput);
+    int Format(char* pcLine);
     CSignal();
     virtual ~CSignal();
     CSignal& operator=(CSignal& signal);
@@ -64,5 +64,5 @@ public:
     string          m_rxNode;
 
     list<CValueDescriptor>  m_listValueDescriptor;
-    bool WriteSignaltofile(fstream &fileOutput, list<CSignal> &m_listSignals, int m_ucLength, int m_cDataFormat, bool writeErr);
+    bool WriteSignaltofile(fstream& fileOutput, list<CSignal> &m_listSignals, int m_ucLength, int m_cDataFormat, bool writeErr);
 };

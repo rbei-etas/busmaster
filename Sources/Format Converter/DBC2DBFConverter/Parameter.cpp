@@ -85,7 +85,6 @@ CParameters& CParameters::operator=( CParameters& param)
 {
     // if there are some elements in the signal list clear them first
     m_listParamValues[0].clear();
-
     // now copy the other elements of the new message to this
     m_ObjectId = param.m_ObjectId;
     m_ParamName = param.m_ParamName;
@@ -96,8 +95,12 @@ CParameters& CParameters::operator=( CParameters& param)
     m_MinVal = param.m_MinVal;
     m_RangeError = param.m_RangeError;
     m_defError = param.m_defError;
+
     for(int i=0; i<6; i++)
+    {
         m_listParamValues[i] = param.m_listParamValues[i];
+    }
+
     return (*this);
 }
 
@@ -113,18 +116,19 @@ CParameters& CParameters::operator=( CParameters& param)
 bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParameter)
 {
     bool pResult=true;
-
     // if no parameter in the list then it simply returns true.
     // otherwise writes definition and default value of all parameters to the o/p file
     list<CParameters>::iterator rParam;
+
     for(rParam=m_listParameter.begin(); rParam!=m_listParameter.end(); ++rParam)
     {
         //Gets the next parameter from the list.
         if(rParam->m_RangeError)
+        {
             pResult=false;
+        }
 
         //Validation of  Default value of the parameter before writing to the o/p file.
-
         fileOutput << "\"" << rParam->m_ParamName.c_str() << "\"";
         fileOutput << "," << rParam->m_ParamType.c_str();
 
@@ -141,7 +145,6 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
                 fileOutput << "," << dec << rParam->m_MinVal.iValue;
                 fileOutput << "," << dec << rParam->m_MaxVal.iValue;
             }
-
             //Default value is not NULL
             else
             {
@@ -150,7 +153,6 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
                 fileOutput << "," << dec << rParam->m_MaxVal.iValue;
             }
         }
-
         //Parameter : HEX type
         else if(rParam->m_ParamType == "HEX")
         {
@@ -172,10 +174,10 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
                 fileOutput << "," << dec << rParam->m_MaxVal.uiValue;
             }
         }
-
         //Parameter : FLOAT type
         else if(rParam->m_ParamType == "FLOAT")
-        {   //Default value is NULL
+        {
+            //Default value is NULL
             if(rParam->m_InitVal.fValue == -1)
             {
                 rParam->m_defError = rParam->m_defError | true;
@@ -193,7 +195,6 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
                 fileOutput << "," << rParam->m_MaxVal.fValue;
             }
         }
-
         //Parameter : ENUM type
         else if(rParam->m_ParamType == "ENUM")
         {
@@ -203,7 +204,6 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
                 fileOutput << ",\"\"";
                 fileOutput << "," << rParam->m_ValRange.c_str();
             }
-
             //Default value is not NULL
             else
             {
@@ -211,7 +211,6 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
                 fileOutput << "," << rParam->m_ValRange.c_str();
             }
         }
-
         //Parameter : STRING type
         else
         {
@@ -221,6 +220,7 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
         //After validation parameter is written to the o/p file.
         fileOutput << endl;
     }
+
     return pResult;
 }
 
@@ -232,9 +232,9 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
  * This function calls the appropriate function of CParamValues
  * to get the Other Value of Attributes form CanoeDB file.
  */
-int CParameters::FormatParamValue(char *pcLine)
+int CParameters::FormatParamValue(char* pcLine)
 {
-    char *pcToken, *pcTok;
+    char* pcToken, *pcTok;
     CParameterValues pVal;
 
     //get object id
@@ -242,6 +242,7 @@ int CParameters::FormatParamValue(char *pcLine)
     {
         *pcLine++;
     }
+
     pcToken = strtok_s(pcLine, " ", &pcTok);
 
     // if object id is node then calls GetNodeParams funtion to read the other values lilke min/max
@@ -272,6 +273,7 @@ int CParameters::FormatParamValue(char *pcLine)
         //adds the other calues to the list
         m_listParamValues[0].push_back(pVal);
     }
+
     return 1;
 }
 
@@ -282,58 +284,67 @@ int CParameters::FormatParamValue(char *pcLine)
  *
  * Parses the attribute lines from CanoeDB file.
  */
-int CParameters::Format(char *pcLine)
+int CParameters::Format(char* pcLine)
 {
-    char *pcToken, *pcTok;
+    char* pcToken, *pcTok;
     char acTemp[defCON_TEMP_LEN];
-    char *pcTemp = acTemp;
+    char* pcTemp = acTemp;
     int success = 1;
-
     //get object id
-
     pcToken = strtok_s(pcLine, "\"", &pcTok);
 
     while(*pcToken == ' ')
+    {
         *pcToken++;
+    }
+
     while(*pcToken && *pcToken != ' ')
     {
         *pcTemp++ = *pcToken++; // copy OBJECT_ID only, i.e. till first 'space'
     }
+
     *pcTemp = '\0'; // terminate it
     m_ObjectId = acTemp; // copy the object_id to the parameter's data member
     pcTemp = acTemp; // reset pcTemp to start of buffer
-
-
     //get Attribute name
     pcToken = strtok_s(NULL, "\"", &pcTok);
+
     while(*pcToken && *pcToken != '"')
     {
         *pcTemp++ = *pcToken++; // copy PARAM_NAME only, i.e. till first 'space'
     }
+
     *pcTemp = '\0'; // terminate it
     m_ParamName = acTemp; // copy the name to the parameter's data member
     pcTemp = acTemp; // reset pcTemp to start of buffer
-
     //get Value Type
     pcToken = strtok_s(NULL, " ", &pcTok);
+
     while(*pcToken == ' ')
+    {
         *pcToken++;
+    }
+
     while(*pcToken && *pcToken != ' ' && *pcToken != ';')
     {
         *pcTemp++ = *pcToken++; // copy PARAM_TYPE only, i.e. till first 'space'
     }
+
     *pcTemp = '\0'; // terminate it
     m_ParamType = acTemp; // copy the type to the parameter's data member
     pcTemp = acTemp; // reset pcTemp to start of buffer
 
-
     if(m_ParamType != "STRING")
     {
         pcToken = strtok_s(NULL, ";", &pcTok);
+
         if(m_ParamType == "ENUM")
         {
             while(*pcToken && *pcToken == ' ')
+            {
                 *pcToken++;
+            }
+
             m_ValRange = pcToken;
         }
         //Reads the flaot min,max values and validates those values.
@@ -342,71 +353,88 @@ int CParameters::Format(char *pcLine)
             double temp;
             pcToken = strtok_s(pcToken, " ", &pcTok);
             temp = atof(pcToken);
+
             if(temp < FLT_MIN) //min val valildation
             {
                 m_MinVal.fValue = FLT_MIN;
                 m_RangeError = m_RangeError | true;
             }
             else
+            {
                 m_MinVal.fValue = float(temp);
+            }
+
             pcToken = strtok_s(NULL, " ", &pcTok);
             temp=atof(pcToken);
+
             if((temp>FLT_MAX) || (temp<m_MinVal.fValue)) //max value validation
             {
                 m_MaxVal.fValue = FLT_MAX;
                 m_RangeError = m_RangeError | true;
             }
             else
+            {
                 m_MaxVal.fValue = float(temp);
+            }
+
             pcTemp = acTemp; // reset pcTemp to start of buffer
         }
-
         //Reads the flaot min,max values and validates those values.
         else if(m_ParamType == "INT")
         {
             long long temp;
             pcToken = strtok_s(pcToken, " ", &pcTok);
             temp = _atoi64(pcToken);
+
             if(temp < INT_MIN ) //min value validation
             {
                 m_MinVal.iValue = INT_MIN;
                 m_RangeError = m_RangeError | true;
             }
             else
+            {
                 m_MinVal.iValue = int(temp);
+            }
+
             pcToken = strtok_s(NULL, " ", &pcTok);
             temp = _atoi64(pcToken);
+
             if((temp>INT_MAX) || (temp<m_MinVal.iValue)) //max value validation
             {
                 m_MaxVal.iValue = INT_MAX;
                 m_RangeError = m_RangeError | true;
             }
             else
+            {
                 m_MaxVal.iValue = int(temp);
+            }
+
             pcTemp = acTemp; // reset pcTemp to start of buffer*/
         }
-
         //Reads the flaot min,max values and validates those values.
         else if(m_ParamType == "HEX")
         {
             pcToken = strtok_s(pcToken, " ", &pcTok);
             m_MinVal.uiValue = atoi(pcToken);
+
             if(m_MinVal.uiValue < 0) //min vlaue validation
             {
                 m_MinVal.uiValue = 0;
                 m_RangeError = m_RangeError | true;
             }
+
             pcToken = strtok_s(NULL, ";", &pcTok);
             m_MaxVal.uiValue = atoi(pcToken);
+
             //max value validation
             if((m_MaxVal.uiValue == 0) || (m_MaxVal.uiValue < m_MinVal.uiValue))
             {
                 m_MaxVal.uiValue = 0xffffffff;
                 m_RangeError = m_RangeError | true;
             }
+
             pcTemp = acTemp;
         }
-
     }
 
     return success;
@@ -419,10 +447,10 @@ int CParameters::Format(char *pcLine)
  *
  * Reads the default value of attribute from the CanoeDB file.
  */
-int CParameters::ReadDefaultVal(char *pcToken)
+int CParameters::ReadDefaultVal(char* pcToken)
 {
     char acTemp[defCON_TEMP_LEN];
-    char *pcTemp = acTemp;
+    char* pcTemp = acTemp;
     int success=1;
     //Default value validation with respect to max.min values.
 
@@ -434,22 +462,27 @@ int CParameters::ReadDefaultVal(char *pcToken)
         {
             *pcToken++;
         }
+
         pcToken++;
+
         //reads the enum default value.
         while(*pcToken && *pcToken != '"')
         {
             *pcTemp++ = *pcToken++;
         }
+
         *pcTemp = '\0';
         strncpy(m_InitVal.cValue, acTemp, sizeof(m_InitVal.cValue));
         pcTemp=acTemp;
     }
-
     //Param Type: INT
     else if(m_ParamType == "INT")
     {
         if(strcmp(pcToken, " ") != 0)
+        {
             m_InitVal.iValue = atoi(pcToken);
+        }
+
         //if default value is not with in the range then set default vlaue as min value.
         if((m_InitVal.iValue<m_MinVal.iValue) || (m_InitVal.iValue>m_MaxVal.iValue))
         {
@@ -457,12 +490,14 @@ int CParameters::ReadDefaultVal(char *pcToken)
             m_RangeError = m_RangeError | true;
         }
     }
-
     //PArameter Type: HEX
     else if(m_ParamType == "HEX")
     {
         if(strcmp(pcToken, " ") != 0)
+        {
             m_InitVal.uiValue = atoi(pcToken);
+        }
+
         //if default value is not with in the range then set default vlaue as min value.
         if((m_InitVal.uiValue<m_MinVal.uiValue) || (m_InitVal.uiValue>m_MaxVal.uiValue))
         {
@@ -470,12 +505,14 @@ int CParameters::ReadDefaultVal(char *pcToken)
             m_RangeError = m_RangeError | true;
         }
     }
-
     //Parameter Type : FLOAT
     else if(m_ParamType == "FLOAT")
     {
         if(strcmp(pcToken," ")!=0)
+        {
             m_InitVal.fValue=float(atof(pcToken));
+        }
+
         //if default value is not with in the range then set default vlaue as min value.
         if(m_InitVal.fValue<m_MinVal.fValue || m_InitVal.fValue>m_MaxVal.fValue)
         {
@@ -483,7 +520,6 @@ int CParameters::ReadDefaultVal(char *pcToken)
             m_RangeError=m_RangeError | true;
         }
     }
-
     ////Parameter Type :String : Not Required.
     else if(m_ParamType == "STRING")
     {
@@ -491,7 +527,9 @@ int CParameters::ReadDefaultVal(char *pcToken)
         {
             *pcToken++;
         }
+
         strncpy(m_InitVal.cValue, pcToken, sizeof(m_InitVal.cValue));
     }
+
     return success;
 }

@@ -35,19 +35,19 @@ class CMessage
 public:
     CMessage();
     virtual ~CMessage();
-    int Format(char *pcLine);
+    int Format(char* pcLine);
 
     CMessage& operator=(CMessage& message);
-    int operator==(const CMessage &message) const;
+    int operator==(const CMessage& message) const;
     int operator==(const unsigned int uiMsgID) const;
-    bool writeMessageToFile( fstream &fileOutput);
+    bool writeMessageToFile( fstream& fileOutput);
 
     // data members
     enum MSG_FRAME_FORMAT {MSG_FF_STANDARD = 'S', MSG_FF_EXTENDED = 'X'};
-    string			m_sName;
-    string			m_sTxNode;
-    unsigned int	m_uiMsgID;
-    unsigned int	m_ucLength;
-    char			m_cFrameFormat;
+    string          m_sName;
+    string          m_sTxNode;
+    unsigned int    m_uiMsgID;
+    unsigned int    m_ucLength;
+    char            m_cFrameFormat;
     CList<CSignal,CSignal&> m_listSignals;
 };

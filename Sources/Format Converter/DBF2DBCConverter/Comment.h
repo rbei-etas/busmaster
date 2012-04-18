@@ -45,8 +45,8 @@ public:
     CComment();
     CComment& operator=(CComment& tCmt);
     virtual ~CComment();
-    void Format_netComment(fstream &fileInput, list<CComment>& m_listComment);
-    void Format_nodeComment(fstream &fileInput, list<CComment>& m_listComment);
-    void Format_msgComment(fstream &fileInput, list<CComment>& m_listComment);
-    void Format_sigComment(fstream &fileInput, list<CComment>& m_listComment);
+    void Format_netComment(fstream& fileInput, list<CComment>& m_listComment);
+    void Format_nodeComment(fstream& fileInput, list<CComment>& m_listComment);
+    void Format_msgComment(fstream& fileInput, list<CComment>& m_listComment);
+    void Format_sigComment(fstream& fileInput, list<CComment>& m_listComment);
 };

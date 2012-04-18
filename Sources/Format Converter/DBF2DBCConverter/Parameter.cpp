@@ -22,15 +22,15 @@
  * Implementation file for the Parameter class.
  */
 
-#define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers */
+#define VC_EXTRALEAN        // Exclude rarely-used stuff from Windows headers */
 
 /* MFC includes */
 #include <afxwin.h>         /* MFC core and standard components */
 #include <afxext.h>         /* MFC extensions */
 #include <afxdisp.h>        /* MFC Automation classes */
-#include <afxdtctl.h>		/* MFC support for Internet Explorer 4 Common Controls */
+#include <afxdtctl.h>       /* MFC support for Internet Explorer 4 Common Controls */
 #ifndef _AFX_NO_AFXCMN_SUPPORT
-#include <afxcmn.h>			/* MFC support for Windows Common Controls */
+#include <afxcmn.h>         /* MFC support for Windows Common Controls */
 #include <afxtempl.h>
 #endif /* _AFX_NO_AFXCMN_SUPPORT */
 
@@ -95,8 +95,12 @@ CParameters& CParameters::operator=( CParameters& param)
     m_MaxVal=param.m_MaxVal;
     m_MinVal=param.m_MinVal;
     m_RangeError=param.m_RangeError;
+
     for(int i=0; i<4; i++)
+    {
         m_listParamValues[i].AddTail( (&param.m_listParamValues[i]));
+    }
+
     return (*this);
 }
 
@@ -110,34 +114,50 @@ CParameters& CParameters::operator=( CParameters& param)
 bool WriteParamToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_listParameter)
 {
     bool pResult=true;
-
     //gets the frst param in the list.
     POSITION pos=m_listParameter .GetHeadPosition();
+
     while(pos!=NULL)
     {
         CParameters& rParam=m_listParameter.GetNext(pos);
+
         if(rParam.m_RangeError)
+        {
             pResult=false;
+        }
+
         //writes param def to the specified o/p file.
-		fileOutput << "BA_DEF_ " << rParam.m_ObjectId;
-		fileOutput << "  \"" << rParam.m_ParamName << "\"";
-		fileOutput << " " << rParam.m_ParamType;
-		if(rParam.m_ParamType == "INT") {
-			fileOutput << " " << dec << rParam.m_MinVal.iValue;
-			fileOutput << " " << dec << rParam.m_MaxVal.iValue;
-		} else if(rParam.m_ParamType == "HEX") {
-			fileOutput << " " << dec << rParam.m_MinVal.uiValue;
-			fileOutput << " " << dec << rParam.m_MaxVal.uiValue;
-		} else if(rParam.m_ParamType == "FLOAT") {
-			fileOutput << " " << rParam.m_MinVal.fValue;
-			fileOutput << " " << rParam.m_MaxVal.fValue;
-		} else if(rParam.m_ParamType == "ENUM") {
-			fileOutput << rParam.m_ValRange;
-		} else {
-			fileOutput << " ";
-		}
-		fileOutput << ";" << endl;
+        fileOutput << "BA_DEF_ " << rParam.m_ObjectId;
+        fileOutput << "  \"" << rParam.m_ParamName << "\"";
+        fileOutput << " " << rParam.m_ParamType;
+
+        if(rParam.m_ParamType == "INT")
+        {
+            fileOutput << " " << dec << rParam.m_MinVal.iValue;
+            fileOutput << " " << dec << rParam.m_MaxVal.iValue;
+        }
+        else if(rParam.m_ParamType == "HEX")
+        {
+            fileOutput << " " << dec << rParam.m_MinVal.uiValue;
+            fileOutput << " " << dec << rParam.m_MaxVal.uiValue;
+        }
+        else if(rParam.m_ParamType == "FLOAT")
+        {
+            fileOutput << " " << rParam.m_MinVal.fValue;
+            fileOutput << " " << rParam.m_MaxVal.fValue;
+        }
+        else if(rParam.m_ParamType == "ENUM")
+        {
+            fileOutput << rParam.m_ValRange;
+        }
+        else
+        {
+            fileOutput << " ";
+        }
+
+        fileOutput << ";" << endl;
     }
+
     return pResult;
 }
 
@@ -148,13 +168,14 @@ bool WriteParamToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_lis
  *
  * Format the message parameter value and write to output file.
  */
-void CParameters::Format_MesgParam_Value(fstream &fileInput,CList<CParameters,CParameters&>& m_listParam)
+void CParameters::Format_MesgParam_Value(fstream& fileInput,CList<CParameters,CParameters&>& m_listParam)
 {
     CParameterValues pVal;
     char acLine[defCON_MAX_LINE_LEN];
-    char *pcToken, *pcLine;
+    char* pcToken, *pcLine;
     char acTemp[defCON_CHAR_LEN],*pcTemp;
     pcTemp = acTemp;
+
     //parses the mesg pram other values.
     while(fileInput.getline(acLine,defCON_MAX_LINE_LEN) && strcmp(acLine,"[END_PARAM_MSG_VAL]\n")!=0)
     {
@@ -167,27 +188,35 @@ void CParameters::Format_MesgParam_Value(fstream &fileInput,CList<CParameters,CP
         //get message type and validates teh type.
         pcToken=strtok(pcLine,",");
         strcpy(type,pcToken);
+
         if(strcmp(type,"X")==0)
+        {
             msgId=msgId-2147483648;
+        }
+
         pcLine=pcLine+strlen(pcToken)+1;
         //get other param values.
         pcToken=strtok(pcLine,",");
         pcLine=pcLine+strlen(pcToken)+1;
         pcToken++;
+
         while(*pcToken && *pcToken!='"')
         {
             *pcTemp++=*pcToken++;
         }
+
         *pcTemp='\0';
         POSITION posMsg = m_listParam.GetHeadPosition();
+
         //assigns other values to the matching param defintion.
         while(posMsg != NULL)
         {
             CParameters& rParam = m_listParam.GetNext(posMsg);
+
             // find matching Parameter from list
-			if(strcmp(rParam.m_ParamName.c_str(), acTemp)==0 )
+            if(strcmp(rParam.m_ParamName.c_str(), acTemp)==0 )
             {
-				pVal.Format_Param_Value(rParam.m_ParamType, pcLine, 2, msgId);
+                pVal.Format_Param_Value(rParam.m_ParamType, pcLine, 2, msgId);
                 rParam.m_listParamValues[2].AddTail(pVal);
                 pcTemp=acTemp;
                 break;
@@ -203,13 +232,14 @@ void CParameters::Format_MesgParam_Value(fstream &fileInput,CList<CParameters,CP
  *
  * Parses the Signal Parameter's Other Values.
  */
-void CParameters::Format_SigParam_Value(fstream &fileInput,CList<CParameters,CParameters&>& m_listParam)
+void CParameters::Format_SigParam_Value(fstream& fileInput,CList<CParameters,CParameters&>& m_listParam)
 {
     CParameterValues pVal;
     char acLine[defCON_MAX_LINE_LEN];
-    char *pcToken, *pcLine;
+    char* pcToken, *pcLine;
     char acTemp[defCON_CHAR_LEN],*pcTemp;
     pcTemp = acTemp;
+
     //parses the signal pram other values.
     while(fileInput.getline(acLine,defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_SIG_VAL]\n")!=0)
     {
@@ -222,8 +252,12 @@ void CParameters::Format_SigParam_Value(fstream &fileInput,CList<CParameters,CPa
         //get message type and validates the mtype.
         pcToken=strtok(pcLine,",");
         strcpy(temp,pcToken);
+
         if(strcmp(temp,"X")==0)
+        {
             msgId=msgId-2147483648;
+        }
+
         pcLine=pcLine+strlen(pcToken)+1;
         //get signal name.
         pcToken=strtok(pcLine,",");
@@ -233,20 +267,24 @@ void CParameters::Format_SigParam_Value(fstream &fileInput,CList<CParameters,CPa
         pcToken=strtok(pcLine,",");
         pcLine=pcLine+strlen(pcToken)+1;
         pcToken++;
+
         while(*pcToken && *pcToken!='"')
         {
             *pcTemp++=*pcToken++;
         }
+
         *pcTemp='\0';
         //assigns other values to the matching param.
         POSITION posMsg = m_listParam.GetHeadPosition();
+
         while(posMsg != NULL)
         {
             CParameters& rParam = m_listParam.GetNext(posMsg);
+
             // find matching Parameter from list
-			if(strcmp(rParam.m_ParamName.c_str(),acTemp)==0 )
+            if(strcmp(rParam.m_ParamName.c_str(),acTemp)==0 )
             {
-				pVal.Format_Param_Value(rParam.m_ParamType, pcLine, 3, msgId, sname);
+                pVal.Format_Param_Value(rParam.m_ParamType, pcLine, 3, msgId, sname);
                 rParam.m_listParamValues[3].AddTail(pVal);
                 pcTemp=acTemp;
                 break;
@@ -262,13 +300,14 @@ void CParameters::Format_SigParam_Value(fstream &fileInput,CList<CParameters,CPa
  *
  * Parses the Node Parameter's Other Values.
  */
-void CParameters::Format_NodeParam_Value(fstream &fileInput,CList<CParameters,CParameters&>& m_listParam)
+void CParameters::Format_NodeParam_Value(fstream& fileInput,CList<CParameters,CParameters&>& m_listParam)
 {
     CParameterValues pVal;
     char acLine[defCON_MAX_LINE_LEN];
-    char *pcToken, *pcLine;
+    char* pcToken, *pcLine;
     char acTemp[defCON_CHAR_LEN],*pcTemp;
     pcTemp = acTemp;
+
     //parses the node pram other values.
     while(fileInput.getline(acLine,defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_NODE_VAL]\n")!=0)
     {
@@ -276,27 +315,30 @@ void CParameters::Format_NodeParam_Value(fstream &fileInput,CList<CParameters,CP
         pcLine = acLine;
         //get node name.
         pcToken=strtok(pcLine,",");
-
         strcpy(NodeName,pcToken);
         pcLine=pcLine+strlen(pcToken)+1;
         //get other values.
         pcToken=strtok(NULL,",");
         pcLine=pcLine+strlen(pcToken)+1;
         pcToken++;
+
         while(*pcToken && *pcToken!='"')
         {
             *pcTemp++=*pcToken++;
         }
+
         *pcTemp='\0';
         //assigns other values to the matching param.
         POSITION posMsg = m_listParam.GetHeadPosition();
+
         while(posMsg != NULL)
         {
             CParameters& rParam = m_listParam.GetNext(posMsg);
+
             // find matching Parameter from list
-			if(strcmp(rParam.m_ParamName.c_str(),acTemp)==0 )
+            if(strcmp(rParam.m_ParamName.c_str(),acTemp)==0 )
             {
-				pVal.Format_Param_Value(rParam.m_ParamType, pcLine, 1, 0, NodeName);
+                pVal.Format_Param_Value(rParam.m_ParamType, pcLine, 1, 0, NodeName);
                 rParam.m_listParamValues[1].AddTail(pVal);
                 pcTemp=acTemp;
                 break;
@@ -312,13 +354,14 @@ void CParameters::Format_NodeParam_Value(fstream &fileInput,CList<CParameters,CP
  *
  * Parses the Net Parameter's Other Values.
  */
-void CParameters::Format_NetParam_Value(fstream &fileInput,CList<CParameters,CParameters&>& m_listParam)
+void CParameters::Format_NetParam_Value(fstream& fileInput,CList<CParameters,CParameters&>& m_listParam)
 {
     CParameterValues pVal;
     char acLine[defCON_MAX_LINE_LEN];
-    char *pcToken, *pcLine;
+    char* pcToken, *pcLine;
     char acTemp[defCON_CHAR_LEN],*pcTemp;
     pcTemp = acTemp;
+
     //parses the mesg pram other values.
     while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_NET_VAL]\n")!=0)
     {
@@ -326,20 +369,24 @@ void CParameters::Format_NetParam_Value(fstream &fileInput,CList<CParameters,CPa
         //get other values.
         pcToken=strtok(pcLine,",");
         pcToken++;
+
         while(*pcToken && *pcToken!='"')
         {
             *pcTemp++=*pcToken++;
         }
+
         *pcTemp='\0';
         //assigns other values to the matching param.
         POSITION posMsg = m_listParam.GetHeadPosition();
+
         while(posMsg != NULL)
         {
             CParameters& rParam = m_listParam.GetNext(posMsg);
+
             // find matching Parameter from list
-			if(strcmp(rParam.m_ParamName.c_str(),acTemp)==0 )
+            if(strcmp(rParam.m_ParamName.c_str(),acTemp)==0 )
             {
-				pVal.Format_Param_Value(rParam.m_ParamType, (pcLine+strlen(acTemp)+3), 0);
+                pVal.Format_Param_Value(rParam.m_ParamType, (pcLine+strlen(acTemp)+3), 0);
                 rParam.m_listParamValues[0].AddTail(pVal);
                 pcTemp=acTemp;
                 break;
@@ -356,29 +403,35 @@ void CParameters::Format_NetParam_Value(fstream &fileInput,CList<CParameters,CPa
  *
  * Parses the attribute lines from the given i/p file.
  */
-void CParameters::Format_ParamDef(char *pcLine,int index)
+void CParameters::Format_ParamDef(char* pcLine,int index)
 {
     //get object id and stores m_object Id with the valid value.
-	switch(index) {
-		case 0:
-			m_ObjectId = "";
-			break;
-		case 1:
-			m_ObjectId = "BU_";
-			break;
-		case 2:
-			m_ObjectId = "BO_";
-			break;
-		case 3:
-			m_ObjectId = "SG_";
-			break;
-		case 4:
-			m_ObjectId = "BU_SG_REL_";
-			break;
-		case 5:
-			m_ObjectId = "BU_BO_REL_";
-			break;
-	}
+    switch(index)
+    {
+        case 0:
+            m_ObjectId = "";
+            break;
+
+        case 1:
+            m_ObjectId = "BU_";
+            break;
+
+        case 2:
+            m_ObjectId = "BO_";
+            break;
+
+        case 3:
+            m_ObjectId = "SG_";
+            break;
+
+        case 4:
+            m_ObjectId = "BU_SG_REL_";
+            break;
+
+        case 5:
+            m_ObjectId = "BU_BO_REL_";
+            break;
+    }
 
     //reads the param defintion.
     GetParam_Def(pcLine);
@@ -390,30 +443,36 @@ void CParameters::Format_ParamDef(char *pcLine,int index)
  *
  * Parses the attribute value from the given i/p file.
  */
-void CParameters::GetParam_Def(char *pcLine)
+void CParameters::GetParam_Def(char* pcLine)
 {
-    char *pcToken;
-
+    char* pcToken;
     //get Param name
     pcToken = strtok(pcLine,"\"");
-
     m_ParamName = pcToken;
     //get Param type
     pcToken=strtok(NULL,",");
     m_ParamType = pcToken;
 
     if(m_ParamType == "STRING")
+    {
         pcToken=strtok(NULL,"\n");
+    }
     else
+    {
         pcToken=strtok(NULL,",");
+    }
+
     //get the default value of parameter
     ReadDefault_Value(pcToken);
 
     if(m_ParamType == "ENUM")
     {
         m_ValRange="";
+
         while(pcToken=strtok(NULL,"\n"))
+        {
             m_ValRange=m_ValRange+" "+pcToken;
+        }
     }
     //gets the min/max value and validates the range
     else if(m_ParamType == "HEX")
@@ -445,6 +504,7 @@ void CParameters::GetParam_Def(char *pcLine)
         max_val=_atoi64(pcToken);
         m_RangeError=m_RangeError | isValid_intRange(min_val,max_val);
     }
+
     //validates the default value
     m_RangeError=m_RangeError | Check_Default_Value();
 }
@@ -455,10 +515,11 @@ void CParameters::GetParam_Def(char *pcLine)
  *
  * Reads the default value of attribute from the i/p file.
  */
-void CParameters::ReadDefault_Value(char *pcToken)
+void CParameters::ReadDefault_Value(char* pcToken)
 {
     char acTemp[defCON_CHAR_LEN],*pcTemp;
     pcTemp = acTemp;
+
     //get inital value of type ENUM
     if(m_ParamType == "ENUM")
     {
@@ -467,12 +528,14 @@ void CParameters::ReadDefault_Value(char *pcToken)
         {
             *pcToken++;
         }
+
         pcToken++;
 
         while(*pcToken && *pcToken != '"')
         {
             *pcTemp++ = *pcToken++;
         }
+
         *pcTemp = '\0';
         //copies inital value to the object member.
         strcpy(m_InitVal.cValue,acTemp);
@@ -482,21 +545,29 @@ void CParameters::ReadDefault_Value(char *pcToken)
     else if(m_ParamType == "INT")
     {
         if(strcmp(pcToken," ")!=0)
+        {
             m_InitVal.iValue =atoi(pcToken);
+        }
     }
     //get inital value of type HEX
     else if(m_ParamType == "HEX")
     {
         if(strcmp(pcToken," ")!=0)
+        {
             m_InitVal.uiValue =strtoul(pcToken, NULL, 10);
+        }
         else
+        {
             m_InitVal.uiValue =-1;
+        }
     }
     //get inital value of type Float
     else if(m_ParamType == "FLOAT")
     {
         if(strcmp(pcToken," ")!=0)
+        {
             m_InitVal.fValue=float(atof(pcToken));
+        }
     }
     //get inital value of type string
     else if(m_ParamType == "STRING")
@@ -505,10 +576,12 @@ void CParameters::ReadDefault_Value(char *pcToken)
         {
             *pcToken++;
         }
+
         while(*pcToken && *pcToken!='\n')
         {
             *pcTemp++=*pcToken++;
         }
+
         *pcTemp='\0';
         strcpy(m_InitVal.cValue,acTemp);
         pcTemp=acTemp;
@@ -529,31 +602,49 @@ bool Write_DefVal_ToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_
     bool pResult=true;
     //gets the first param from the list.
     POSITION pos=m_listParameter .GetHeadPosition();
+
     while(pos!=NULL)
     {
         CParameters& rParam=m_listParameter.GetNext(pos);
+
         //checks whether def val is with in the range or not.
         if(rParam.m_RangeError)
+        {
             pResult=false;
+        }
+
         //writes def val of type int to the o/p file.
-		fileOutput << "BA_DEF_DEF_";
-		fileOutput << "  \"" << rParam.m_ParamName << "\"";
-		if(rParam.m_ParamType == "INT")
-			fileOutput << " " << dec << rParam.m_InitVal.iValue;
+        fileOutput << "BA_DEF_DEF_";
+        fileOutput << "  \"" << rParam.m_ParamName << "\"";
+
+        if(rParam.m_ParamType == "INT")
+        {
+            fileOutput << " " << dec << rParam.m_InitVal.iValue;
+        }
         //writes def val of type ex to the o/p file.
         else if(rParam.m_ParamType == "HEX")
-			fileOutput << " " << dec << rParam.m_InitVal.uiValue;
+        {
+            fileOutput << " " << dec << rParam.m_InitVal.uiValue;
+        }
         //writes def val of type flaot to the o/p file.
         else if(rParam.m_ParamType == "FLOAT")
-			fileOutput << " " << rParam.m_InitVal.fValue;
+        {
+            fileOutput << " " << rParam.m_InitVal.fValue;
+        }
         //writes def val of type enum to the o/p file.
         else if(rParam.m_ParamType == "ENUM")
-			fileOutput << " \"" << rParam.m_InitVal.cValue << "\"";
+        {
+            fileOutput << " \"" << rParam.m_InitVal.cValue << "\"";
+        }
         //writes def val of type string to the o/p file.
         else
-			fileOutput << " " << rParam.m_InitVal.cValue;
-		fileOutput << ";" << endl;
+        {
+            fileOutput << " " << rParam.m_InitVal.cValue;
+        }
+
+        fileOutput << ";" << endl;
     }
+
     return pResult;
 }
 
@@ -566,6 +657,7 @@ bool Write_DefVal_ToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_
 bool CParameters::Check_Default_Value(void)
 {
     bool cResult=false;
+
     //validates def val of type int
     if(m_ParamType == "INT")
     {
@@ -608,6 +700,7 @@ bool CParameters::Check_Default_Value(void)
 bool CParameters::isValid_intRange(long long int minValue, long long int maxValue)
 {
     bool rResult=false;
+
     //validates the min value
     if(minValue < INT_MIN )
     {
@@ -615,7 +708,10 @@ bool CParameters::isValid_intRange(long long int minValue, long long int maxValu
         rResult=rResult|true;
     }
     else
+    {
         m_MinVal.iValue =int(minValue);
+    }
+
     //validates the max value
     if(maxValue>INT_MAX || maxValue<m_MinVal.iValue)
     {
@@ -623,7 +719,10 @@ bool CParameters::isValid_intRange(long long int minValue, long long int maxValu
         rResult=rResult | true;
     }
     else
+    {
         m_MaxVal.iValue=int(maxValue);
+    }
+
     return rResult;
 }
 
@@ -638,6 +737,7 @@ bool CParameters::isValid_intRange(long long int minValue, long long int maxValu
 bool CParameters::isValid_floatRange(double minValue,double maxValue)
 {
     bool rResult=false;
+
     //validates the min value
     if(minValue<FLT_MIN)
     {
@@ -645,7 +745,10 @@ bool CParameters::isValid_floatRange(double minValue,double maxValue)
         rResult=rResult | true;
     }
     else
+    {
         m_MinVal.fValue= float(minValue);
+    }
+
     //validates the max value
     if(maxValue>FLT_MAX || maxValue<m_MinVal.fValue)
     {
@@ -653,7 +756,10 @@ bool CParameters::isValid_floatRange(double minValue,double maxValue)
         rResult=rResult | true;
     }
     else
+    {
         m_MaxVal.fValue =float(maxValue);
+    }
+
     return rResult;
 }
 
@@ -670,6 +776,7 @@ bool CParameters::isValid_hexRange(unsigned int minValue, unsigned int maxValue)
     bool rResult=false;
     //validates the min value
     m_MinVal.uiValue=minValue;
+
     //validates the max value
     if(maxValue==0 || maxValue <m_MinVal.uiValue)
     {
@@ -677,6 +784,9 @@ bool CParameters::isValid_hexRange(unsigned int minValue, unsigned int maxValue)
         rResult=true;
     }
     else
+    {
         m_MaxVal.uiValue=maxValue;
+    }
+
     return rResult;
 }

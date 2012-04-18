@@ -109,60 +109,57 @@ CSignal& CSignal::operator=(CSignal& signal)
  * Extracts the message data from the given Line and populates
  * the message structure.
  */
-int CSignal::Format(char *pcLine)
+int CSignal::Format(char* pcLine)
 {
-    char *pcToken;
+    char* pcToken;
     char acTemp[defVTAB_MAX_LINE_LEN],*pcTemp,*pcTok;
     pcTemp = acTemp;
-
     // get signal name
     // in older versions of CANoe it can be in any of this format
     // <SIG_NAME :> -- standard signal
     // <SIG_NAME M :> -- mode signal
     // <SIG_NAME mk :> -- mode dependent signal
-
     pcToken = strtok_s(pcLine, ":", &pcTok); // get upto colon
+
     // copy only signal name because we BUSMASTER does not support modes
     // skip leading spaces first
     while(*pcToken && *pcToken == ' ')
     {
         pcToken++;
     }
+
     // now get the signal name
     while(*pcToken && *pcToken != ' ')
     {
         *pcTemp++ = *pcToken++; // copy SIG_NAME only, i.e. till first 'space'
     }
+
     *pcTemp = '\0'; // terminate it
-
     m_acName = acTemp; // copy the name to the signal's data member
-
     pcTemp = acTemp; // reset pcTemp to start of buffer
-
     //leave blank space
     *pcToken++;
+
     //Find the signal's multiplexing details
     while(*pcToken && *pcToken != ' ')
     {
         *pcTemp++ = *pcToken++; // copy SIG_NAME only, i.e. till first 'space'
     }
+
     *pcTemp = '\0'; // terminate it
     m_acMultiplex = acTemp; // copy the name to the signal's data member
-
     pcTemp = acTemp; // reset pcTemp to start of buffer
-
     // next token (START_BIT|LENGTH@DATA_FORMAT(+/-))
     pcToken = strtok_s(NULL, " :", &pcTok);
-
 
     // get start bit
     while(*pcToken && *pcToken != '|')
     {
         *pcTemp++ = *pcToken++;
     }
+
     *pcTemp='\0';
     pcToken++; // skip '|'
-
     // store the start byte and start bit information
     int uiStartBit = atoi(acTemp);
     int uiStartBitX = uiStartBit;
@@ -173,18 +170,17 @@ int CSignal::Format(char *pcLine)
     // and START_BIT are not depending on this. So process this after identifying the
     // format. Original code commented - moved down.
     // rajesh: 21-03-2003: end_1: continued below
-
     // get signal length
     pcTemp = acTemp;
+
     while(*pcToken && *pcToken != '@')
     {
         *pcTemp++ = *pcToken++;
     }
+
     *pcTemp='\0';
     pcToken++; // skip '@'
-
     m_ucLength = atoi(acTemp); // store signal length
-
     // get DATA_FORMAT (intel or motorola)
     m_ucDataFormat = *pcToken;
 
@@ -193,31 +189,39 @@ int CSignal::Format(char *pcLine)
         //The following is done because if signal type is of MOTOROLA
         //THe MSB is stored and will be in Big Endian format.
         //Get the LSB
-
         /*In CANoe if we view the bits as a 8x8 Matrix, for Motorala signals
         the numbering will be in the reverse order with in the each row. So to get the
         proper MSB we need to again swap the bit position with in the row*/
         //i.e here we need to get the left half of the bits to the right and right
         //to the left with in the same row
         int ntemp;
+
         if(uiStartBit == 0)
+        {
             ntemp = 0;
+        }
         else
-            ntemp = uiStartBit % 4;//get the bit position with its the row.
+        {
+            ntemp = uiStartBit % 4;    //get the bit position with its the row.
+        }
+
         //swap left bits to the right and right bits to the left.
         if(uiStartBit % 8 <= 3)
+        {
             uiStartBit = uiStartBit + 7 - ntemp * 2;
+        }
         else
+        {
             uiStartBit = uiStartBit - 1 - ntemp * 2;
+        }
 
         uiStartBit = uiStartBit + m_ucLength-1;
         //Invert the bit position (Converting to little endian format)
         uiStartBitX = (CConverter::ucMsg_DLC*8)-1 - uiStartBit;
-
     }
+
     m_ucWhichByte = uiStartBit / 8 + 1;
     m_ucStartBit = uiStartBitX % 8;
-
 
     // get sign of signal. At this point we know only whether the
     // signal is signed or unsigned. Whether it is float or double
@@ -234,52 +238,50 @@ int CSignal::Format(char *pcLine)
     // next token - (SCALE_FACTOR,OFFSET)
     pcToken = strtok_s(NULL, " (", &pcTok);
     pcTemp = acTemp;
+
     // get scale factor
     while(*pcToken && *pcToken != ',')
     {
         *pcTemp++ = *pcToken++;
     }
+
     *pcTemp='\0';
     pcToken++; // skip ','
-
     m_fScaleFactor = (float)atof(acTemp); // store scale factor
-
     // Get offset
     pcTemp = acTemp;
+
     while(*pcToken && *pcToken != ')')
     {
         *pcTemp++ = *pcToken++;
     }
+
     *pcTemp='\0';
-
     m_fOffset = (float)atof(acTemp); // store Offset
-
-
     // next token [MIN|MAX]
     pcToken = strtok_s(NULL, " [", &pcTok);
-
     // get MIN
     pcTemp = acTemp;
+
     while(*pcToken && *pcToken != '|')
     {
         *pcTemp++ = *pcToken++;
     }
+
     *pcTemp='\0';
     pcToken++; // skip '|'
-
     //venkat
     m_MinValue.dValue = atof(acTemp); // store MIN
-
-
     // get MAX value
     pcTemp = acTemp;
+
     while(*pcToken && *pcToken != ']')
     {
         *pcTemp++ = *pcToken++;
     }
+
     *pcTemp='\0';
     pcToken++; // skip ']'
-
     //venkat
     m_MaxValue.dValue = atof(acTemp); // store MAX value
     // next token -- "UNIT", ""
@@ -291,6 +293,7 @@ int CSignal::Format(char *pcLine)
     {
         pcToken++;
     }
+
     pcToken++; // skip '"'
 
     // copy everything, but not including the last <">
@@ -298,6 +301,7 @@ int CSignal::Format(char *pcLine)
     {
         *pcTemp++ = *pcToken++;
     }
+
     pcToken++; // skip '"'
     *pcTemp='\0';
     m_acUnit = acTemp; // copy UNIT to corresponding data member.
@@ -310,13 +314,19 @@ int CSignal::Format(char *pcLine)
     }
 
     pcTemp = acTemp;
+
     while(*pcToken)
     {
         if ((*pcToken != '\r') && (*pcToken != ' '))
+        {
             *pcTemp++ = *pcToken++;
+        }
         else
+        {
             pcToken++;
+        }
     }
+
     *pcTemp='\0';
 
     // copy rx nodes
@@ -325,7 +335,10 @@ int CSignal::Format(char *pcLine)
         m_rxNode = acTemp;
     }
     else
+    {
         m_rxNode = "";
+    }
+
     return 1;
 }
 
@@ -339,29 +352,32 @@ int CSignal::Format(char *pcLine)
  * Extracts the value descriptor data from the given Line and adds
  * to the signal.
  */
-int CSignal::AddValueDescriptors(char *pcLine, fstream &fileInput)
+int CSignal::AddValueDescriptors(char* pcLine, fstream& fileInput)
 {
     char acValue[300];
     char acDesc[300];
     char acLine[defVTAB_MAX_LINE_LEN] = {'\0'};
     char pcTemp[defVTAB_MAX_TEMP_LEN];
-    char *pcToken, *pcTok;
+    char* pcToken, *pcTok;
     bool true_end = true;
+    char* pcValue = acValue;
+    char* pcDesc = acDesc;
 
-    char *pcValue = acValue;
-    char *pcDesc = acDesc;
     if(pcLine[strlen(pcLine)-1] != ';')
     {
         true_end = false;
     }
+
     // skip leading spaces
     while(*pcLine && (*pcLine == ' '))
     {
         *pcLine++;
     }
+
     while(*pcLine && (*pcLine != ';'))
     {
         pcTemp[0] = '\0';
+
         if(true_end == false)
         {
             fileInput.getline(acLine, 1026);
@@ -370,11 +386,18 @@ int CSignal::AddValueDescriptors(char *pcLine, fstream &fileInput)
             pcLine = pcTemp;
 
             if(pcLine[strlen(pcLine)-1] == ';')
+            {
                 true_end  = true;
+            }
         }
+
         pcDesc = acDesc;
+
         while(*pcLine && (*pcLine == ' '))
+        {
             pcLine++;
+        }
+
         pcToken = strtok_s(pcLine, " ", &pcTok);
         strncpy(acValue, pcToken, sizeof(acValue));
         pcLine = pcLine + (strlen(pcToken)) + 1;
@@ -382,30 +405,48 @@ int CSignal::AddValueDescriptors(char *pcLine, fstream &fileInput)
         if(*pcLine == '\"')
         {
             pcLine++;
+
             if(*pcLine != '\"')
             {
                 *pcDesc++ = *pcLine++;
+
                 while(*pcLine && (*pcLine != '\"'))
                 {
                     if (*pcLine != '\r')
+                    {
                         *pcDesc++ = *pcLine;
+                    }
+
                     pcLine++;
                 }
             }
+
             *pcDesc = '\0';
         }
+
         pcLine++;
+
         while(*pcLine == ' ')
+        {
             pcLine++;
+        }
+
         CValueDescriptor valDesc;
+
         if(this->m_ucLength <= 32)
+        {
             valDesc.m_value.dValue = atof(acValue);
+        }
         else
+        {
             valDesc.m_value.i64Value = _atoi64(acValue);
+        }
+
         valDesc.m_acDescriptor = acDesc;
         m_listValueDescriptor.push_back(valDesc);
         pcDesc = acDesc;
     }
+
     return 1;
 }
 
@@ -461,7 +502,6 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
         m_ucType = SIG_TYPE_BOOL;
     }
 
-
     m_uiError = SIG_EC_NO_ERR;
 
     //Conversion from the physical to raw value required.
@@ -479,6 +519,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
             m_MinValue.uiValue = (unsigned int)unMinVal;             //m_MinValue.dValue;
             unsigned int uiDefault;
             uiDefault = (unsigned int)((1 << m_ucLength) - 1);
+
             //if both max and min value are equal set it to default
             if(m_MaxValue.uiValue == 0 && m_MinValue.uiValue == 0)
             {
@@ -486,18 +527,21 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
                 m_MinValue.uiValue = 0;
                 m_uiError = SIG_EC_OVERFLOW;
             }
+
             //if Max value out of range reset it to maximum possible value
             if((m_MaxValue.uiValue > uiDefault) || (m_MaxValue.uiValue < 0))
             {
                 m_MaxValue.uiValue = uiDefault;
                 m_uiError = SIG_EC_OVERFLOW;
             }
+
             //if Min value out of range reset it to minimum possible value
             if((m_MinValue.uiValue < 0) || (m_MinValue.uiValue > uiDefault))
             {
                 m_MinValue.uiValue = 0;
                 m_uiError = SIG_EC_OVERFLOW;
             }
+
             //if Max and Min are equal reset min.
             if(m_MaxValue.uiValue == m_MinValue.uiValue)
             {
@@ -524,6 +568,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
             int iDefault;
             iDefault = (int)(unsigned int)1 << (m_ucLength - 1);
             iDefault -= 1;
+
             //if both max and min value are equal set it to default
             if(m_MaxValue.iValue == 0 && m_MinValue.iValue == 0)
             {
@@ -531,24 +576,28 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
                 m_MinValue.iValue = -iDefault-1;
                 m_uiError = SIG_EC_OVERFLOW;
             }
+
             //if Max value out of range reset it to maximum possible value
             if(m_MaxValue.iValue > iDefault || m_MaxValue.iValue < (-iDefault-1))
             {
                 m_MaxValue.iValue = iDefault;
                 m_uiError = SIG_EC_OVERFLOW;
             }
+
             //if Min value out of range reset it to minimum possible value
             if(m_MinValue.iValue < (-iDefault-1) || m_MinValue.iValue > iDefault )
             {
                 m_MinValue.iValue = (-iDefault-1);
                 m_uiError = SIG_EC_OVERFLOW;
             }
+
             //if Max and Min are equal reset min.
             if(m_MaxValue.iValue == m_MinValue.iValue)
             {
                 m_MinValue.iValue = (-iDefault-1);
                 m_uiError = SIG_EC_OVERFLOW;
             }
+
             break;
         }
 
@@ -585,29 +634,35 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
             }*/
             unPower = m_ucLength - 1;
             i64Default = 1;
+
             for(i = 0; i<unPower; i++)
             {
                 i64Default = (__int64)( 2*i64Default);
             }
+
             i64Default -= 1;
+
             if(m_MaxValue.i64Value == 0 && m_MinValue.i64Value == 0)
             {
                 m_MaxValue.i64Value = i64Default;
                 m_MinValue.i64Value = -i64Default-1;
                 m_uiError = SIG_EC_OVERFLOW;
             }
+
             //if Max value out of range reset it to maximum possible value
             if(m_MaxValue.i64Value > i64Default || m_MaxValue.i64Value < (-i64Default-1))
             {
                 m_MaxValue.i64Value = i64Default;
                 m_uiError = SIG_EC_OVERFLOW;
             }
+
             //if Min value out of range reset it to minimum possible value
             if(m_MinValue.i64Value < (-i64Default-1) || m_MinValue.i64Value > i64Default )
             {
                 m_MinValue.i64Value = (-i64Default-1);
                 m_uiError = SIG_EC_OVERFLOW;
             }
+
             //if Max and Min are equal reset min.
             if(m_MaxValue.i64Value == m_MinValue.i64Value)
             {
@@ -635,11 +690,14 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
             }*/
             unsigned int unPower = m_ucLength - 1;
             ui64Default = 1;
+
             for(unsigned int i = 0; i < unPower; i++)
             {
                 ui64Default = (unsigned __int64)( 2*ui64Default);
             }
+
             ui64Default -= 1;
+
             //if both max and min value are equal set it to default
             if(m_MaxValue.ui64Value == 0 && m_MinValue.ui64Value == 0)
             {
@@ -647,18 +705,21 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
                 m_MinValue.ui64Value = 0;
                 m_uiError = SIG_EC_OVERFLOW;
             }
+
             //if Max value out of range reset it to maximum possible value
             if(m_MaxValue.ui64Value > ui64Default || m_MaxValue.ui64Value < 0)
             {
                 m_MaxValue.ui64Value = ui64Default;
                 m_uiError = SIG_EC_OVERFLOW;
             }
+
             //if Min value out of range reset it to minimum possible value
             if(m_MinValue.ui64Value < 0 || m_MinValue.ui64Value > ui64Default )
             {
                 m_MinValue.ui64Value = 0;
                 m_uiError = SIG_EC_OVERFLOW;
             }
+
             //if Max and Min are equal reset min.
             if(m_MaxValue.ui64Value == m_MinValue.ui64Value)
             {
@@ -668,12 +729,14 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
 
             break;
         }
+
         default:
             break;
     }
 
     // correct value descriptors according to type of signal
     list<CValueDescriptor>::iterator rValDesc;
+
     for (rValDesc=m_listValueDescriptor.begin(); rValDesc!=m_listValueDescriptor.end(); ++rValDesc)
     {
         switch(m_ucType)
@@ -706,6 +769,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
                 break;
         }
     }
+
     return (m_uiError);
 }
 
@@ -715,31 +779,38 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
  *
  * This returns an error string in accordance with m_uiError.
  */
-void CSignal::GetErrorString(string &str)
+void CSignal::GetErrorString(string& str)
 {
-	switch(m_uiError) {
-		case SIG_EC_NO_ERR:
-			str = "No error";
-			break;
-		case SIG_EC_DATA_FORMAT_ERR:
-			str = "ERROR:Data format mismatch";
-			break;
-		case SIG_EC_LENGTH_ERR:
-			str = "ERROR:Invalid signal length";
-			break;
-		case SIG_EC_STARTBIT_ERR:
-			str = "ERROR:Invalid start bit";
-			break;
-		case SIG_EC_TYPE_ERR:
-			str = "ERROR:Invalid signal type";
-			break;
-		case SIG_EC_OVERFLOW:
-			str = "WARNING:Invalid Max or Min value.";
-			break;
-		default:
-			str = "Unknown";
-			break;
-	}
+    switch(m_uiError)
+    {
+        case SIG_EC_NO_ERR:
+            str = "No error";
+            break;
+
+        case SIG_EC_DATA_FORMAT_ERR:
+            str = "Data format mismatch";
+            break;
+
+        case SIG_EC_LENGTH_ERR:
+            str = "Invalid signal length";
+            break;
+
+        case SIG_EC_STARTBIT_ERR:
+            str = "Invalid start bit";
+            break;
+
+        case SIG_EC_TYPE_ERR:
+            str = "Invalid signal type";
+            break;
+
+        case SIG_EC_OVERFLOW:
+            str = "Invalid Max or Min value.";
+            break;
+
+        default:
+            str = "Unknown";
+            break;
+    }
 }
 
 /**
@@ -748,15 +819,17 @@ void CSignal::GetErrorString(string &str)
  *
  * This returns a string to describe the action taken in accordance with m_uiError.
  */
-void CSignal::GetErrorAction(string &str)
+void CSignal::GetErrorAction(string& str)
 {
-	switch(m_uiError) {
-		case SIG_EC_OVERFLOW:
-			str = "Value Set to default";
-			break;
-		default:
-			str = "Signal Discarded";
-			break;
+    switch(m_uiError)
+    {
+        case SIG_EC_OVERFLOW:
+            str = "Value Set to default";
+            break;
+
+        default:
+            str = "Signal Discarded";
+            break;
     }
 }
 
@@ -771,10 +844,11 @@ void CSignal::GetErrorAction(string &str)
  *
  * Writes the signals in the given list to the output file.
  */
-bool CSignal::WriteSignaltofile(fstream &fileOutput, list<CSignal> &m_listSignals, int m_ucLength, int m_cDataFormat, bool writeErr)
+bool CSignal::WriteSignaltofile(fstream& fileOutput, list<CSignal> &m_listSignals, int m_ucLength, int m_cDataFormat, bool writeErr)
 {
     bool bResult = true;
     list<CSignal>::iterator sig;
+
     for (sig=m_listSignals.begin(); sig!=m_listSignals.end(); ++sig)
     {
         // SIG_NAME,SIG_LENGTH,WHICH_BYTE_IN_MSG,START_BIT,SIG_TYPE,MAX_VAL,MIN_VAL,SIG_DATA_FORMAT,SIG_OFFSET,SIG_FACTOR,SIG_UNIT
@@ -804,7 +878,6 @@ bool CSignal::WriteSignaltofile(fstream &fileOutput, list<CSignal> &m_listSignal
                     fileOutput << "," << dec << sig->m_MinValue.iValue;
                     break;
 
-
                 case CSignal::SIG_TYPE_FLOAT:
                     fileOutput << "," << sig->m_ucType;
                     fileOutput << "," << sig->m_MaxValue.fValue;
@@ -832,20 +905,25 @@ bool CSignal::WriteSignaltofile(fstream &fileOutput, list<CSignal> &m_listSignal
                 default:
                     break;
             }
+
             fileOutput << "," << sig->m_ucDataFormat;
             fileOutput << "," << sig->m_fOffset;
             fileOutput << "," << sig->m_fScaleFactor;
             fileOutput << "," << sig->m_acUnit.c_str();
             fileOutput << "," << sig->m_acMultiplex.c_str();
             fileOutput << "," << sig->m_rxNode.c_str() << endl;
-
             CValueDescriptor val;
             val.writeValueDescToFile(fileOutput, sig->m_ucType, sig->m_listValueDescriptor);
+
             if(sig->m_uiError == CSignal::SIG_EC_OVERFLOW)
+            {
                 bResult = false;
+            }
         }
         else
+        {
             bResult = false;
+        }
     }
 
     return bResult;

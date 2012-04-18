@@ -40,7 +40,6 @@ unsigned int unConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffs
 {
     double dTempMaxVal = ((dMaxVal - dOffset) / dScaleFactor);
     double dTempMinVal = ((dMinVal - dOffset) / dScaleFactor);
-
     unMaxVal = (unsigned long long int)unRoundOffdoubleValue(dTempMaxVal);
     unMinVal = (unsigned long long int)unRoundOffdoubleValue(dTempMinVal);
     return 0;
@@ -61,7 +60,6 @@ int nConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double
 {
     double dTempMaxVal = ((dMaxVal - dOffset) / dScaleFactor);
     double dTempMinVal = ((dMinVal - dOffset) / dScaleFactor);
-
     nMaxVal = (long long int)unRoundOffdoubleValue(dTempMaxVal);
     nMinVal = (long long int)unRoundOffdoubleValue(dTempMinVal);
     return 0;
@@ -127,9 +125,11 @@ unsigned long long int unRoundOffdoubleValue(double dValue)
 {
     unsigned long long int unVal = (unsigned long long int)dValue;
     double dTempVal = dValue - (double)unVal;
+
     if(dTempVal >= 0.5)
     {
         unVal++;
     }
+
     return unVal;
 }

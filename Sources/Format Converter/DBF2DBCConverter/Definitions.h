@@ -32,7 +32,8 @@
 #define defCON_MAX_TOKN_LEN 1026  /* Maximum length that any field can be */
 
 #define defCON_CHAR_LEN 1024
-typedef union _SIG_VALUE {
+typedef union _SIG_VALUE
+{
     int iValue;
     unsigned int uiValue;
     float fValue;
@@ -40,4 +41,4 @@ typedef union _SIG_VALUE {
     char cValue[defCON_CHAR_LEN];
     long long int i64Value;
     unsigned long long int ui64Value;
-}	SIG_VALUE;
+}   SIG_VALUE;

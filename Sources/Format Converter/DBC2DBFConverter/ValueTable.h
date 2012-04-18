@@ -37,9 +37,9 @@ class CValueTable
 public:
     CValueTable();
     virtual ~CValueTable();
-    int Format(char *pcLine, fstream &fileInput);
+    int Format(char* pcLine, fstream& fileInput);
     list <CValueDescriptor> m_values;
     CValueTable& operator=(CValueTable& Tab);
     string m_TableName;
-    void writeValueTabToFile(fstream &fileOutput, list<CValueTable> &vTab);
+    void writeValueTabToFile(fstream& fileOutput, list<CValueTable> &vTab);
 };
