@@ -25,6 +25,7 @@
 #pragma once
 
 /* C++ includes */
+#include <fstream>
 #include <list>
 #include <string>
 
@@ -33,7 +34,7 @@
 
 using namespace std;
 
-class CParameters
+class CParameter
 {
 public:
     string          m_ObjectId;
@@ -46,11 +47,11 @@ public:
     bool            m_RangeError;
     bool            m_defError;
     list<CParameterValues> m_listParamValues[6];
-    CParameters();
+    CParameter();
     int Format(char* pcLine);
-    CParameters& operator=(CParameters& param);
+    CParameter& operator=(CParameter& param);
     int FormatParamValue(char* pcLine);
     int ReadDefaultVal(char* pcToken);
-    friend bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParameter);
-    virtual ~CParameters();
+    friend bool WriteParametersToFile(fstream& fileOutput, list<CParameter> &m_listParameter);
+    virtual ~CParameter();
 };

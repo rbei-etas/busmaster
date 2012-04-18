@@ -27,6 +27,8 @@
 #include "DBC2DBFConverter.h"
 #include "Definitions.h"
 
+using namespace std;
+
 /**
  * \brief Constructor
  *

@@ -204,7 +204,7 @@ void CValueTable::writeValueTabToFile(fstream& fileOutput, list<CValueTable> &vT
 {
     list<CValueTable>::iterator tab;
 
-    for (tab=vTab.begin(); tab!=vTab.end(); ++tab)
+    for (tab=vTab.begin(); tab!=vTab.end(); tab++)
     {
         fileOutput << T_ST_TAB " ";
         fileOutput << tab->m_TableName.c_str();

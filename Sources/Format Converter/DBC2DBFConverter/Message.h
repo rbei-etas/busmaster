@@ -25,6 +25,8 @@
 #pragma once
 
 /* C++ includes */
+#include <fstream>
+#include <list>
 #include <string>
 
 /* Project includes */

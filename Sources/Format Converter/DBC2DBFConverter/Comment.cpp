@@ -25,6 +25,8 @@
 /* Project includes */
 #include "Comment.h"
 
+using namespace std;
+
 /**
  * \brief Constructor
  *

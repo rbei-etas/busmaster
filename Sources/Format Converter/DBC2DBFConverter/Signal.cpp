@@ -31,6 +31,8 @@
 #include "Tag.h"
 #include "Utility.h"
 
+using namespace std;
+
 /**
  * \brief Constructor
  *
@@ -737,7 +739,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
     // correct value descriptors according to type of signal
     list<CValueDescriptor>::iterator rValDesc;
 
-    for (rValDesc=m_listValueDescriptor.begin(); rValDesc!=m_listValueDescriptor.end(); ++rValDesc)
+    for (rValDesc=m_listValueDescriptor.begin(); rValDesc!=m_listValueDescriptor.end(); rValDesc++)
     {
         switch(m_ucType)
         {
@@ -849,7 +851,7 @@ bool CSignal::WriteSignaltofile(fstream& fileOutput, list<CSignal> &m_listSignal
     bool bResult = true;
     list<CSignal>::iterator sig;
 
-    for (sig=m_listSignals.begin(); sig!=m_listSignals.end(); ++sig)
+    for (sig=m_listSignals.begin(); sig!=m_listSignals.end(); sig++)
     {
         // SIG_NAME,SIG_LENGTH,WHICH_BYTE_IN_MSG,START_BIT,SIG_TYPE,MAX_VAL,MIN_VAL,SIG_DATA_FORMAT,SIG_OFFSET,SIG_FACTOR,SIG_UNIT
         // write signal only if it is valid
