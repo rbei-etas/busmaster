@@ -68,7 +68,7 @@ void CValueDescriptor::writeValueDescToFile(fstream& fileOutput, char m_ucType, 
 {
     list<CValueDescriptor>::iterator desc;
 
-    for (desc=m_listValueDescriptor.begin(); desc!=m_listValueDescriptor.end(); ++desc)
+    for (desc=m_listValueDescriptor.begin(); desc!=m_listValueDescriptor.end(); desc++)
     {
         fileOutput << T_VALUE_DESC " \"";
         fileOutput << desc->m_acDescriptor.c_str();

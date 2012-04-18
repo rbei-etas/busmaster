@@ -33,6 +33,8 @@
 #include "tag.h"
 #include "definitions.h"
 
+using namespace std;
+
 #ifdef _MANAGED
 #error Please read instructions in DBC2DBFConverter.cpp to compile with /clr
 // If you want to add /clr to your project you must do the following:

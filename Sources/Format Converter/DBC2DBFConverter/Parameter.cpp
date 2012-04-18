@@ -29,12 +29,14 @@
 /* Project includes */
 #include "Parameter.h"
 
+using namespace std;
+
 /**
  * \brief Constructor
  *
- * Constructor of CParameters
+ * Constructor of CParameter
  */
-CParameters::CParameters()
+CParameter::CParameter()
 {
     strncpy(m_MaxVal.cValue, "", sizeof(m_MaxVal.cValue));
     m_MaxVal.dValue = -1;
@@ -67,9 +69,9 @@ CParameters::CParameters()
 /**
  * \brief Destructor
  *
- * Destructor of CParameters
+ * Destructor of CParameter
  */
-CParameters::~CParameters()
+CParameter::~CParameter()
 {
     // nothing special to do here
 }
@@ -81,7 +83,7 @@ CParameters::~CParameters()
  *
  * Copies the data from param to the local object.
  */
-CParameters& CParameters::operator=( CParameters& param)
+CParameter& CParameter::operator=( CParameter& param)
 {
     // if there are some elements in the signal list clear them first
     m_listParamValues[0].clear();
@@ -113,14 +115,14 @@ CParameters& CParameters::operator=( CParameters& param)
  * Writes the parameter definition and default value to the
  * specified output file.
  */
-bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParameter)
+bool WriteParametersToFile(fstream& fileOutput, list<CParameter> &m_listParameter)
 {
     bool pResult=true;
     // if no parameter in the list then it simply returns true.
     // otherwise writes definition and default value of all parameters to the o/p file
-    list<CParameters>::iterator rParam;
+    list<CParameter>::iterator rParam;
 
-    for(rParam=m_listParameter.begin(); rParam!=m_listParameter.end(); ++rParam)
+    for(rParam=m_listParameter.begin(); rParam!=m_listParameter.end(); rParam++)
     {
         //Gets the next parameter from the list.
         if(rParam->m_RangeError)
@@ -232,7 +234,7 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameters> &m_listParamet
  * This function calls the appropriate function of CParamValues
  * to get the Other Value of Attributes form CanoeDB file.
  */
-int CParameters::FormatParamValue(char* pcLine)
+int CParameter::FormatParamValue(char* pcLine)
 {
     char* pcToken, *pcTok;
     CParameterValues pVal;
@@ -284,7 +286,7 @@ int CParameters::FormatParamValue(char* pcLine)
  *
  * Parses the attribute lines from CanoeDB file.
  */
-int CParameters::Format(char* pcLine)
+int CParameter::Format(char* pcLine)
 {
     char* pcToken, *pcTok;
     char acTemp[defCON_TEMP_LEN];
@@ -447,7 +449,7 @@ int CParameters::Format(char* pcLine)
  *
  * Reads the default value of attribute from the CanoeDB file.
  */
-int CParameters::ReadDefaultVal(char* pcToken)
+int CParameter::ReadDefaultVal(char* pcToken)
 {
     char acTemp[defCON_TEMP_LEN];
     char* pcTemp = acTemp;

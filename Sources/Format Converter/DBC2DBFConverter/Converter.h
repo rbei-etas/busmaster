@@ -25,8 +25,9 @@
 #pragma once
 
 /* C++ includes */
+#include <fstream>
 #include <list>
-#include <utility>
+#include <string>
 
 /* Project includes */
 #include "Comment.h"
@@ -77,8 +78,8 @@ public:
     void create_Node_List(char*);
     list<string> m_listNode;
     list<string> m_notProcessed;
-    list<CParameters> m_listParameters;
-    list<CParameters> m_listParameterArray[6];
+    list<CParameter> m_listParameters;
+    list<CParameter> m_listParameterArray[6];
     list<CParameterValues> m_listParamValues[6];
     list<string> defList;
 };

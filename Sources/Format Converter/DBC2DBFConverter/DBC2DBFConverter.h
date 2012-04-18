@@ -24,6 +24,9 @@
 
 #pragma once
 
+/* C++ includes */
+#include <string>
+
 /* Project includes */
 #include "../FormatConverterApp/BaseConverter.h"
 
