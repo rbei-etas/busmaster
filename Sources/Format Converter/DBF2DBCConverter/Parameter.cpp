@@ -53,14 +53,31 @@
  */
 CParameters::CParameters()
 {
-    m_InitVal.fValue=-1;
-    m_InitVal.cValue[0]='\0';
-    m_InitVal.uiValue=0;
+    strncpy(m_MaxVal.cValue, "", sizeof(m_MaxVal.cValue));
+    m_MaxVal.dValue = -1;
+    m_MaxVal.fValue = -1;
+    m_MaxVal.i64Value = -1;
+    m_MaxVal.iValue = -1;
+    m_MaxVal.ui64Value = 0;
+    m_MaxVal.uiValue = 0;
+    strncpy(m_MinVal.cValue, "", sizeof(m_MinVal.cValue));
+    m_MinVal.dValue = -1;
+    m_MinVal.fValue = -1;
+    m_MinVal.i64Value = -1;
+    m_MinVal.iValue = -1;
+    m_MinVal.ui64Value = 0;
+    m_MinVal.uiValue = 0;
+    strncpy(m_InitVal.cValue, "", sizeof(m_InitVal.cValue));
+    m_InitVal.dValue = -1;
+    m_InitVal.fValue = -1;
+    m_InitVal.i64Value = -1;
+    m_InitVal.iValue = -1;
+    m_InitVal.ui64Value = 0;
+    m_InitVal.uiValue = 0;
     m_ValRange = "";
     m_ParamType = "";
     m_ParamName = "";
-    m_InitVal.iValue =-1;
-    m_RangeError=false;
+    m_RangeError = false;
 }
 
 /**

@@ -33,6 +33,11 @@
  */
 CMessage::CMessage()
 {
+    m_sName = "";
+    m_sTxNode = "";
+    m_uiMsgID = 0;
+    m_ucLength = 0;
+    m_cFrameFormat = MSG_FF_STANDARD;
 }
 
 /**
