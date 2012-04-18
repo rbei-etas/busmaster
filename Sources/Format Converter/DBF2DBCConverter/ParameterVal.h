@@ -26,6 +26,7 @@
 
 /* C++ includes */
 #include <fstream>
+#include <string>
 
 /* Project includes */
 #include "Definitions.h"

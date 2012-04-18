@@ -27,6 +27,8 @@
 #include "Signal.h"
 #include "ValueDescriptor.h"
 
+using namespace std;
+
 /**
  * \brief Constructor
  *

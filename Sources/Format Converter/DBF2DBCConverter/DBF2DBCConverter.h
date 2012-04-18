@@ -24,8 +24,13 @@
 
 #pragma once
 
+/* C++ includes */
+#include <string>
+
 /* Project includes */
 #include "../FormatConverterApp/BaseConverter.h"
+
+using namespace std;
 
 class CDBF2DBCConverter : public CBaseConverter
 {

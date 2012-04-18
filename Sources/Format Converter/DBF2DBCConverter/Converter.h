@@ -29,6 +29,7 @@
 
 /* C++ includes */
 #include <fstream>
+#include <list>
 #include <string>
 
 /* Project includes */
@@ -37,6 +38,8 @@
 #include "Parameter.h"
 #include "ParameterVal.h"
 #include "ValueTable.h"
+
+using namespace std;
 
 class CConverter
 {

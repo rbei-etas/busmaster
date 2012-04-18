@@ -27,6 +27,8 @@
 #include "Signal.h"
 #include "ValueTable.h"
 
+using namespace std;
+
 /**
  * \brief Constructor
  *

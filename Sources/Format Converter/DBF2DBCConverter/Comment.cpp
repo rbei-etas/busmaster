@@ -26,6 +26,8 @@
 #include "Comment.h"
 #include "Definitions.h"
 
+using namespace std;
+
 /**
  * \brief Constructor
  *

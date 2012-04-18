@@ -24,11 +24,17 @@
 
 #pragma once
 
+/* C++ includes */
+#include <fstream>
+#include <list>
+#include <string>
 /* MFC includes */
 #include <afxtempl.h>
 
 /* Project includes */
 #include "Signal.h"
+
+using namespace std;
 
 class CMessage
 {

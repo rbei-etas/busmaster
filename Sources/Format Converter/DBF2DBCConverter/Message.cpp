@@ -26,6 +26,8 @@
 #include "Converter.h"
 #include "Message.h"
 
+using namespace std;
+
 /**
  * \brief Constructor
  *

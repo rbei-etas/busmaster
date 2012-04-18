@@ -38,13 +38,12 @@
 #include <float.h>
 #include <limits.h>
 
-/* C++ includes */
-#include <string>
-
 /* Project includes */
 #include "Definitions.h"
 #include "Parameter.h"
 #include "tag.h"
+
+using namespace std;
 
 /**
  * \brief Constructor
