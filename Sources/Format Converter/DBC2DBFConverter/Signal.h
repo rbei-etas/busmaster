@@ -30,6 +30,7 @@
 #include <string>
 
 /* Project includes */
+#include "SignalValue.h"
 #include "ValueDescriptor.h"
 
 using namespace std;
@@ -57,8 +58,8 @@ public:
     unsigned int    m_ucWhichByte;
     unsigned int    m_ucStartBit;
     char            m_ucType;
-    SIG_VALUE       m_MaxValue;
-    SIG_VALUE       m_MinValue;
+    CSignalValue    m_MaxValue;
+    CSignalValue    m_MinValue;
     unsigned char   m_ucDataFormat;
     float           m_fOffset;
     float           m_fScaleFactor;

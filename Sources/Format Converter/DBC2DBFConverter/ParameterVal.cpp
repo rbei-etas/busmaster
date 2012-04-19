@@ -36,12 +36,15 @@ CParameterValues::CParameterValues()
 {
     m_NodeName = "";
     m_MsgId = 0;
-    m_ParamVal.dValue = 0;
     m_SignalName = "";
     m_cFrameFormat = MSG_FF_STANDARD;
     m_ParamVal.iValue = -1;
+    m_ParamVal.uiValue = 0;
     m_ParamVal.fValue = -1;
-    m_ParamVal.uiValue = -1;
+    m_ParamVal.dValue = -1;
+    m_ParamVal.cValue = "";
+    m_ParamVal.i64Value = -1;
+    m_ParamVal.ui64Value = 0;
 }
 
 /**
@@ -241,7 +244,7 @@ int CParameterValues::ReadParamValue(string& paramType,char* pcToken)
             *pcToken++;
         }
 
-        strncpy(m_ParamVal.cValue, pcToken, sizeof(m_ParamVal.cValue));
+        m_ParamVal.cValue = pcToken;
     }
     //Param type :INT/HEX
     else if((paramType == "INT") || (paramType == "HEX"))
@@ -259,7 +262,7 @@ int CParameterValues::ReadParamValue(string& paramType,char* pcToken)
             *pcToken++;
         }
 
-        strncpy(m_ParamVal.cValue, pcToken, sizeof(m_ParamVal.cValue));
+        m_ParamVal.cValue = pcToken;
     }
     //Param type :FLOAT
     else if(paramType == "FLOAT")
