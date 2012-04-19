@@ -47,7 +47,6 @@
 #include "TimeManager.h"
 #include "MsgBufferConfigPage.h"    // For Message Buffer Configuration PPage
 #include "MsgFilterConfigPage.h"    // For Filter configuration page
-#include "ExportLogFileDlg.h"       // For Log file export dialog interface
 #include "DatabaseDissociateDlg.h"
 #include "AppServices_Impl.h"
 #include "include/utils_macro.h"
@@ -281,7 +280,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_GRAPH_WND, OnGraphWindow)
     ON_UPDATE_COMMAND_UI(IDM_GRAPH_WND, OnUpdateGraphWnd)
     ON_COMMAND(IDM_CFGN_REPLAY, OnCfgnReplay)
-    ON_COMMAND(ID_OPTION_EXPORT_LOGFILE, OnOptionExportLogfile)
     ON_UPDATE_COMMAND_UI(IDM_CFGN_REPLAY, OnUpdateCfgnReplay)
 	ON_COMMAND(IDM_CONFIGURE_SIMULATEDSYSTEMS, OnConfigureSimulatedsystems)
 	ON_UPDATE_COMMAND_UI(IDM_DLL_LOADALLDLL, OnUpdateDllLoadAll)
@@ -9668,23 +9666,6 @@ void CMainFrame::OnCfgnReplay()
 }
 
 /*******************************************************************************
-  Function Name  : OnOptionExportLogfile
-  Input(s)       : -
-  Output         : -
-  Functionality  : Message handler for exporting log file
-  Member of      : CMainFrame
-  Author(s)      : Raja N
-  Date Created   : 19.7.2005
-  Modifications  : 
-*******************************************************************************/
-void CMainFrame::OnOptionExportLogfile() 
-{
-    // Show log file export dialog
-    CExportLogFileDlg omDlg(CAN);
-    omDlg.DoModal();
-}
-
-/*******************************************************************************
   Function Name  : OnUpdateCfgnReplay
   Input(s)       : -
   Output         : -
@@ -13183,11 +13164,6 @@ void CMainFrame::OnConfigureMessagedisplayJ1939()
     {
         omAllMessages.DoModal();
     }*/
-}
-void CMainFrame::OnJ1939Exportlog()
-{
-    CExportLogFileDlg omDlg(J1939, NULL);
-    omDlg.DoModal();
 }
 
 void CMainFrame::OnToolbarCandatabase()
