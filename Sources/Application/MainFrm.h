@@ -696,8 +696,7 @@ public:
     afx_msg void OnJ1939SignalwatchShow();
     afx_msg void OnUpdateJ1939SignalwatchShow(CCmdUI *pCmdUI);
 	afx_msg void OnConfigureMessagedisplayJ1939();	
-    afx_msg void OnJ1939Exportlog();
-	afx_msg void OnShowHideMessageWindow(UINT nID);
+    afx_msg void OnShowHideMessageWindow(UINT nID);
 	afx_msg void OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI);
 	afx_msg void OnToolbarCandatabase();
 	afx_msg void OnUpdateToolbarCanDatabase(CCmdUI *pCmdUI);
