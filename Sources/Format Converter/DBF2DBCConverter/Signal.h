@@ -65,5 +65,5 @@ public:
 
     string          m_sUnit;
     string          m_sNode;
-    CList<CValueDescriptor,CValueDescriptor&>   m_listValueDescriptor;
+    list<CValueDescriptor>   m_listValueDescriptor;
 };

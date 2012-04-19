@@ -24,9 +24,6 @@
 
 #pragma once
 
-/* MFC includes */
-#include <afxtempl.h>
-
 /* C++ includes */
 #include <fstream>
 #include <list>
@@ -66,13 +63,13 @@ private:
     bool WriteToOutputFile(fstream& fileOutput);
     void CreateLogFile(fstream& fileLog);
     void create_Node_List(char*);
-    void DecryptData(CList<string,string& > &m_notProcessed);
+    void DecryptData(list<string> &m_notProcessed);
 
     unsigned int m_uiResultCode;
-    CList<string,string& > m_notProcessed;
-    CList<string,string& > m_listNode;
-    CList<CMessage,CMessage&> m_listMessages;
-    CList<CParameters,CParameters&> m_listParameterArray[6];
-    CList<CValueTable,CValueTable&> m_vTab;
+    list<string> m_notProcessed;
+    list<string> m_listNode;
+    list<CMessage> m_listMessages;
+    list<CParameter> m_listParameterArray[6];
+    list<CValueTable> m_vTab;
     list<CComment> m_listComments[4];
 };

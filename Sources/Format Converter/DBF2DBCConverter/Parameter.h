@@ -15,17 +15,14 @@
 
 /**
  * \file      Parameter.h
- * \brief     CParameters class.
+ * \brief     CParameter class.
  * \authors   Padmaja.A., Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * CParameters class.
+ * CParameter class.
  */
 
 #pragma once
-
-/* MFC includes */
-#include <afxtempl.h>
 
 /* C++ includes */
 #include <fstream>
@@ -37,7 +34,7 @@
 
 using namespace std;
 
-class CParameters
+class CParameter
 {
     //private data members
     string          m_ObjectId;
@@ -51,21 +48,21 @@ class CParameters
 public:
     string          m_ParamName;
     string          m_ParamType;
-    CList<CParameterValues,CParameterValues&> m_listParamValues[6];
-    CParameters();
+    list<CParameterValues> m_listParamValues[6];
+    CParameter();
+    virtual ~CParameter();
     void Format_ParamDef(char* pcLine,int index);
-    CParameters& operator=(CParameters& param);
+    CParameter& operator=(CParameter& param);
     void GetParam_Def(char* pcLine);
-    void Format_NodeParam_Value(fstream& fileInput,CList<CParameters,CParameters&>& m_listParam);
-    void Format_NetParam_Value(fstream& fileInput,CList<CParameters,CParameters&>& m_listParam);
-    void Format_MesgParam_Value(fstream& fileInput,CList<CParameters,CParameters&>& m_listParam);
-    void Format_SigParam_Value(fstream& fileInput,CList<CParameters,CParameters&>& m_listParam);
+    void Format_NodeParam_Value(fstream& fileInput, list<CParameter>& m_listParam);
+    void Format_NetParam_Value(fstream& fileInput, list<CParameter>& m_listParam);
+    void Format_MesgParam_Value(fstream& fileInput, list<CParameter>& m_listParam);
+    void Format_SigParam_Value(fstream& fileInput, list<CParameter>& m_listParam);
     void ReadDefault_Value(char* pcToken);
     bool Check_Default_Value();
-    friend bool WriteParamToFile(fstream& fileOutput,CList<CParameters,CParameters&>& m_listParameter);
-    friend bool Write_DefVal_ToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_listParameter);
+    friend bool WriteParamToFile(fstream& fileOutput, list<CParameter>& m_listParameter);
+    friend bool Write_DefVal_ToFile(fstream& fileOutput, list<CParameter>& m_listParameter);
     bool isValid_intRange(long long int minValue,long long int maxValue);
     bool isValid_floatRange(double minValue,double maxValue);
     bool isValid_hexRange(unsigned int minValue,unsigned int maxValue);
-    virtual ~CParameters();
 };

@@ -24,9 +24,6 @@
 
 #pragma once
 
-/* MFC includes */
-#include <afxtempl.h>
-
 /* C++ includes */
 #include <fstream>
 #include <list>
@@ -41,7 +38,7 @@ class CValueTable
 {
     //private data members
     string m_TableName;
-    CList <CValueDescriptor, CValueDescriptor&> m_values;
+    list<CValueDescriptor> m_values;
 
     //public member functions
 public:
@@ -49,5 +46,5 @@ public:
     virtual ~CValueTable();
     void Format_ValueTable(char* pcLine, fstream& fileInput);
     CValueTable& operator=(CValueTable& Tab);
-    void writeValueTabToFile(fstream& fileOutput,CList<CValueTable,CValueTable&> &vTab);
+    void writeValueTabToFile(fstream& fileOutput, list<CValueTable> &vTab);
 };

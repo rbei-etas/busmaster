@@ -48,9 +48,9 @@ using namespace std;
 /**
  * \brief Constructor
  *
- * Constructor of CParameters
+ * Constructor of CParameter
  */
-CParameters::CParameters()
+CParameter::CParameter()
 {
     strncpy(m_MaxVal.cValue, "", sizeof(m_MaxVal.cValue));
     m_MaxVal.dValue = -1;
@@ -80,9 +80,9 @@ CParameters::CParameters()
 }
 
 /**
- * Destructor of CParameters
+ * Destructor of CParameter
  */
-CParameters::~CParameters()
+CParameter::~CParameter()
 {
     // nothing special to do here
 }
@@ -94,14 +94,8 @@ CParameters::~CParameters()
  *
  * Copy the other elements of the new message to this.
  */
-CParameters& CParameters::operator=( CParameters& param)
+CParameter& CParameter::operator=( CParameter& param)
 {
-    // if there are some elements in the signal list clear them first
-    if(!m_listParamValues[0].IsEmpty())
-    {
-        m_listParamValues[0].RemoveAll();
-    }
-
     // now copy the other elements of the new message to this
     m_ObjectId = param.m_ObjectId;
     m_ParamName = param.m_ParamName;
@@ -114,7 +108,7 @@ CParameters& CParameters::operator=( CParameters& param)
 
     for(int i=0; i<4; i++)
     {
-        m_listParamValues[i].AddTail( (&param.m_listParamValues[i]));
+        m_listParamValues[i] = param.m_listParamValues[i];
     }
 
     return (*this);
@@ -127,44 +121,41 @@ CParameters& CParameters::operator=( CParameters& param)
  *
  * Writes the parameter definition to the specified output file.
  */
-bool WriteParamToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_listParameter)
+bool WriteParamToFile(fstream& fileOutput, list<CParameter> &m_listParameter)
 {
     bool pResult=true;
     //gets the frst param in the list.
-    POSITION pos=m_listParameter .GetHeadPosition();
-
-    while(pos!=NULL)
+    list<CParameter>::iterator rParam;
+    for(rParam=m_listParameter.begin(); rParam!=m_listParameter.end(); rParam++)
     {
-        CParameters& rParam=m_listParameter.GetNext(pos);
-
-        if(rParam.m_RangeError)
+        if(rParam->m_RangeError)
         {
             pResult=false;
         }
 
         //writes param def to the specified o/p file.
-        fileOutput << "BA_DEF_ " << rParam.m_ObjectId;
-        fileOutput << "  \"" << rParam.m_ParamName << "\"";
-        fileOutput << " " << rParam.m_ParamType;
+        fileOutput << "BA_DEF_ " << rParam->m_ObjectId;
+        fileOutput << "  \"" << rParam->m_ParamName << "\"";
+        fileOutput << " " << rParam->m_ParamType;
 
-        if(rParam.m_ParamType == "INT")
+        if(rParam->m_ParamType == "INT")
         {
-            fileOutput << " " << dec << rParam.m_MinVal.iValue;
-            fileOutput << " " << dec << rParam.m_MaxVal.iValue;
+            fileOutput << " " << dec << rParam->m_MinVal.iValue;
+            fileOutput << " " << dec << rParam->m_MaxVal.iValue;
         }
-        else if(rParam.m_ParamType == "HEX")
+        else if(rParam->m_ParamType == "HEX")
         {
-            fileOutput << " " << dec << rParam.m_MinVal.uiValue;
-            fileOutput << " " << dec << rParam.m_MaxVal.uiValue;
+            fileOutput << " " << dec << rParam->m_MinVal.uiValue;
+            fileOutput << " " << dec << rParam->m_MaxVal.uiValue;
         }
-        else if(rParam.m_ParamType == "FLOAT")
+        else if(rParam->m_ParamType == "FLOAT")
         {
-            fileOutput << " " << rParam.m_MinVal.fValue;
-            fileOutput << " " << rParam.m_MaxVal.fValue;
+            fileOutput << " " << rParam->m_MinVal.fValue;
+            fileOutput << " " << rParam->m_MaxVal.fValue;
         }
-        else if(rParam.m_ParamType == "ENUM")
+        else if(rParam->m_ParamType == "ENUM")
         {
-            fileOutput << rParam.m_ValRange;
+            fileOutput << rParam->m_ValRange;
         }
         else
         {
@@ -180,11 +171,11 @@ bool WriteParamToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_lis
 /**
  * \brief     Format Message Parameter Value
  * \param[in] fileInput Input file
- * \param[in] m_listParam List of CParameters
+ * \param[in] m_listParam List of CParameter
  *
  * Format the message parameter value and write to output file.
  */
-void CParameters::Format_MesgParam_Value(fstream& fileInput,CList<CParameters,CParameters&>& m_listParam)
+void CParameter::Format_MesgParam_Value(fstream& fileInput, list<CParameter>& m_listParam)
 {
     CParameterValues pVal;
     char acLine[defCON_MAX_LINE_LEN];
@@ -222,18 +213,15 @@ void CParameters::Format_MesgParam_Value(fstream& fileInput,CList<CParameters,CP
         }
 
         *pcTemp='\0';
-        POSITION posMsg = m_listParam.GetHeadPosition();
-
+        list<CParameter>::iterator rParam;
+        for(rParam=m_listParam.begin(); rParam!=m_listParam.end(); rParam++)
         //assigns other values to the matching param defintion.
-        while(posMsg != NULL)
         {
-            CParameters& rParam = m_listParam.GetNext(posMsg);
-
             // find matching Parameter from list
-            if(strcmp(rParam.m_ParamName.c_str(), acTemp)==0 )
+            if(strcmp(rParam->m_ParamName.c_str(), acTemp)==0 )
             {
-                pVal.Format_Param_Value(rParam.m_ParamType, pcLine, 2, msgId);
-                rParam.m_listParamValues[2].AddTail(pVal);
+                pVal.Format_Param_Value(rParam->m_ParamType, pcLine, 2, msgId);
+                rParam->m_listParamValues[2].push_back(pVal);
                 pcTemp=acTemp;
                 break;
             }
@@ -244,11 +232,11 @@ void CParameters::Format_MesgParam_Value(fstream& fileInput,CList<CParameters,CP
 /**
  * \brief    Parses the Signal Parameter's Other Values.
  * \param[in] fileInput Input file
- * \param[in] m_listParam List of CParameters
+ * \param[in] m_listParam List of CParameter
  *
  * Parses the Signal Parameter's Other Values.
  */
-void CParameters::Format_SigParam_Value(fstream& fileInput,CList<CParameters,CParameters&>& m_listParam)
+void CParameter::Format_SigParam_Value(fstream& fileInput, list<CParameter>& m_listParam)
 {
     CParameterValues pVal;
     char acLine[defCON_MAX_LINE_LEN];
@@ -290,18 +278,16 @@ void CParameters::Format_SigParam_Value(fstream& fileInput,CList<CParameters,CPa
         }
 
         *pcTemp='\0';
+
         //assigns other values to the matching param.
-        POSITION posMsg = m_listParam.GetHeadPosition();
-
-        while(posMsg != NULL)
+        list<CParameter>::iterator rParam;
+        for(rParam=m_listParam.begin(); rParam!=m_listParam.end(); rParam++)
         {
-            CParameters& rParam = m_listParam.GetNext(posMsg);
-
             // find matching Parameter from list
-            if(strcmp(rParam.m_ParamName.c_str(),acTemp)==0 )
+            if(strcmp(rParam->m_ParamName.c_str(),acTemp)==0 )
             {
-                pVal.Format_Param_Value(rParam.m_ParamType, pcLine, 3, msgId, sname);
-                rParam.m_listParamValues[3].AddTail(pVal);
+                pVal.Format_Param_Value(rParam->m_ParamType, pcLine, 3, msgId, sname);
+                rParam->m_listParamValues[3].push_back(pVal);
                 pcTemp=acTemp;
                 break;
             }
@@ -312,11 +298,11 @@ void CParameters::Format_SigParam_Value(fstream& fileInput,CList<CParameters,CPa
 /**
  * \brief     Parses the Node Parameter's Other Values
  * \param[in] fileInput Input file
- * \param[in] m_listParam List of CParameters
+ * \param[in] m_listParam List of CParameter
  *
  * Parses the Node Parameter's Other Values.
  */
-void CParameters::Format_NodeParam_Value(fstream& fileInput,CList<CParameters,CParameters&>& m_listParam)
+void CParameter::Format_NodeParam_Value(fstream& fileInput, list<CParameter>& m_listParam)
 {
     CParameterValues pVal;
     char acLine[defCON_MAX_LINE_LEN];
@@ -345,17 +331,14 @@ void CParameters::Format_NodeParam_Value(fstream& fileInput,CList<CParameters,CP
 
         *pcTemp='\0';
         //assigns other values to the matching param.
-        POSITION posMsg = m_listParam.GetHeadPosition();
-
-        while(posMsg != NULL)
+        list<CParameter>::iterator rParam;
+        for(rParam=m_listParam.begin(); rParam!=m_listParam.end(); rParam++)
         {
-            CParameters& rParam = m_listParam.GetNext(posMsg);
-
             // find matching Parameter from list
-            if(strcmp(rParam.m_ParamName.c_str(),acTemp)==0 )
+            if(strcmp(rParam->m_ParamName.c_str(), acTemp)==0)
             {
-                pVal.Format_Param_Value(rParam.m_ParamType, pcLine, 1, 0, NodeName);
-                rParam.m_listParamValues[1].AddTail(pVal);
+                pVal.Format_Param_Value(rParam->m_ParamType, pcLine, 1, 0, NodeName);
+                rParam->m_listParamValues[1].push_back(pVal);
                 pcTemp=acTemp;
                 break;
             }
@@ -366,11 +349,11 @@ void CParameters::Format_NodeParam_Value(fstream& fileInput,CList<CParameters,CP
 /**
  * \brief Parses the Net Parameter's Other Values
  * \param[in] fileInput Input file
- * \param[in] m_listParam List of CParameters
+ * \param[in] m_listParam List of CParameter
  *
  * Parses the Net Parameter's Other Values.
  */
-void CParameters::Format_NetParam_Value(fstream& fileInput,CList<CParameters,CParameters&>& m_listParam)
+void CParameter::Format_NetParam_Value(fstream& fileInput, list<CParameter>& m_listParam)
 {
     CParameterValues pVal;
     char acLine[defCON_MAX_LINE_LEN];
@@ -393,17 +376,14 @@ void CParameters::Format_NetParam_Value(fstream& fileInput,CList<CParameters,CPa
 
         *pcTemp='\0';
         //assigns other values to the matching param.
-        POSITION posMsg = m_listParam.GetHeadPosition();
-
-        while(posMsg != NULL)
+        list<CParameter>::iterator rParam;
+        for(rParam=m_listParam.begin(); rParam!=m_listParam.end(); rParam++)
         {
-            CParameters& rParam = m_listParam.GetNext(posMsg);
-
             // find matching Parameter from list
-            if(strcmp(rParam.m_ParamName.c_str(),acTemp)==0 )
+            if(strcmp(rParam->m_ParamName.c_str(),acTemp)==0 )
             {
-                pVal.Format_Param_Value(rParam.m_ParamType, (pcLine+strlen(acTemp)+3), 0);
-                rParam.m_listParamValues[0].AddTail(pVal);
+                pVal.Format_Param_Value(rParam->m_ParamType, (pcLine+strlen(acTemp)+3), 0);
+                rParam->m_listParamValues[0].push_back(pVal);
                 pcTemp=acTemp;
                 break;
             }
@@ -419,7 +399,7 @@ void CParameters::Format_NetParam_Value(fstream& fileInput,CList<CParameters,CPa
  *
  * Parses the attribute lines from the given i/p file.
  */
-void CParameters::Format_ParamDef(char* pcLine,int index)
+void CParameter::Format_ParamDef(char* pcLine, int index)
 {
     //get object id and stores m_object Id with the valid value.
     switch(index)
@@ -459,7 +439,7 @@ void CParameters::Format_ParamDef(char* pcLine,int index)
  *
  * Parses the attribute value from the given i/p file.
  */
-void CParameters::GetParam_Def(char* pcLine)
+void CParameter::GetParam_Def(char* pcLine)
 {
     char* pcToken;
     //get Param name
@@ -498,7 +478,7 @@ void CParameters::GetParam_Def(char* pcLine)
         min_val=strtoul(pcToken, NULL, 10);
         pcToken = strtok(NULL," ");
         max_val= strtoul(pcToken, NULL, 10);
-        m_RangeError=m_RangeError | isValid_hexRange(min_val,max_val);
+        m_RangeError |= isValid_hexRange(min_val,max_val);
     }
     //gets the min/max value and validates the range
     else if(m_ParamType == "FLOAT")
@@ -508,7 +488,7 @@ void CParameters::GetParam_Def(char* pcLine)
         min_val= atof(pcToken);
         pcToken = strtok(NULL," ");
         max_val=atof(pcToken);
-        m_RangeError=m_RangeError | isValid_floatRange(min_val,max_val);
+        m_RangeError |= isValid_floatRange(min_val,max_val);
     }
     //gets the min/max value and validates the range
     else if(m_ParamType == "INT")
@@ -518,11 +498,11 @@ void CParameters::GetParam_Def(char* pcLine)
         min_val=_atoi64(pcToken);
         pcToken = strtok(NULL," ");
         max_val=_atoi64(pcToken);
-        m_RangeError=m_RangeError | isValid_intRange(min_val,max_val);
+        m_RangeError |= isValid_intRange(min_val,max_val);
     }
 
     //validates the default value
-    m_RangeError=m_RangeError | Check_Default_Value();
+    m_RangeError |= Check_Default_Value();
 }
 
 /**
@@ -531,7 +511,7 @@ void CParameters::GetParam_Def(char* pcLine)
  *
  * Reads the default value of attribute from the i/p file.
  */
-void CParameters::ReadDefault_Value(char* pcToken)
+void CParameter::ReadDefault_Value(char* pcToken)
 {
     char acTemp[defCON_CHAR_LEN],*pcTemp;
     pcTemp = acTemp;
@@ -608,54 +588,51 @@ void CParameters::ReadDefault_Value(char* pcToken)
 /**
  * \brief     Writes the parameter default values to the output file
  * \param[in] fileOutput Output file
- * \param[in] m_listParameter List of CParameters
+ * \param[in] m_listParameter List of CParameter
  * \return    Return code
  *
  * Writes the parameter default values to the output file.
  */
-bool Write_DefVal_ToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_listParameter)
+bool Write_DefVal_ToFile(fstream& fileOutput,list<CParameter> &m_listParameter)
 {
     bool pResult=true;
     //gets the first param from the list.
-    POSITION pos=m_listParameter .GetHeadPosition();
-
-    while(pos!=NULL)
+    list<CParameter>::iterator rParam;
+    for(rParam=m_listParameter.begin(); rParam!=m_listParameter.end(); rParam++)
     {
-        CParameters& rParam=m_listParameter.GetNext(pos);
-
         //checks whether def val is with in the range or not.
-        if(rParam.m_RangeError)
+        if(rParam->m_RangeError)
         {
             pResult=false;
         }
 
         //writes def val of type int to the o/p file.
         fileOutput << "BA_DEF_DEF_";
-        fileOutput << "  \"" << rParam.m_ParamName << "\"";
+        fileOutput << "  \"" << rParam->m_ParamName << "\"";
 
-        if(rParam.m_ParamType == "INT")
+        if(rParam->m_ParamType == "INT")
         {
-            fileOutput << " " << dec << rParam.m_InitVal.iValue;
+            fileOutput << " " << dec << rParam->m_InitVal.iValue;
         }
         //writes def val of type ex to the o/p file.
-        else if(rParam.m_ParamType == "HEX")
+        else if(rParam->m_ParamType == "HEX")
         {
-            fileOutput << " " << dec << rParam.m_InitVal.uiValue;
+            fileOutput << " " << dec << rParam->m_InitVal.uiValue;
         }
         //writes def val of type flaot to the o/p file.
-        else if(rParam.m_ParamType == "FLOAT")
+        else if(rParam->m_ParamType == "FLOAT")
         {
-            fileOutput << " " << rParam.m_InitVal.fValue;
+            fileOutput << " " << rParam->m_InitVal.fValue;
         }
         //writes def val of type enum to the o/p file.
-        else if(rParam.m_ParamType == "ENUM")
+        else if(rParam->m_ParamType == "ENUM")
         {
-            fileOutput << " \"" << rParam.m_InitVal.cValue << "\"";
+            fileOutput << " \"" << rParam->m_InitVal.cValue << "\"";
         }
         //writes def val of type string to the o/p file.
         else
         {
-            fileOutput << " " << rParam.m_InitVal.cValue;
+            fileOutput << " " << rParam->m_InitVal.cValue;
         }
 
         fileOutput << ";" << endl;
@@ -670,7 +647,7 @@ bool Write_DefVal_ToFile(fstream& fileOutput,CList<CParameters,CParameters&> &m_
  *
  * Validates the default value of an attribute.
  */
-bool CParameters::Check_Default_Value(void)
+bool CParameter::Check_Default_Value(void)
 {
     bool cResult=false;
 
@@ -713,7 +690,7 @@ bool CParameters::Check_Default_Value(void)
  *
  * Validates the maximum and minimum int values of an attribute.
  */
-bool CParameters::isValid_intRange(long long int minValue, long long int maxValue)
+bool CParameter::isValid_intRange(long long int minValue, long long int maxValue)
 {
     bool rResult=false;
 
@@ -750,7 +727,7 @@ bool CParameters::isValid_intRange(long long int minValue, long long int maxValu
  *
  * Validates the maximum and minimum float values of an attribute.
  */
-bool CParameters::isValid_floatRange(double minValue,double maxValue)
+bool CParameter::isValid_floatRange(double minValue,double maxValue)
 {
     bool rResult=false;
 
@@ -787,7 +764,7 @@ bool CParameters::isValid_floatRange(double minValue,double maxValue)
  *
  * Validates the maximum and minimum hex values of an attribute.
  */
-bool CParameters::isValid_hexRange(unsigned int minValue, unsigned int maxValue)
+bool CParameter::isValid_hexRange(unsigned int minValue, unsigned int maxValue)
 {
     bool rResult=false;
     //validates the min value
