@@ -31,6 +31,7 @@
 
 /* Project includes */
 #include "ParameterVal.h"
+#include "SignalValue.h"
 
 using namespace std;
 
@@ -39,10 +40,10 @@ class CParameter
 public:
     string          m_ObjectId;
     string          m_ParamType;
-    SIG_VALUE       m_MaxVal;
-    SIG_VALUE       m_MinVal;
+    CSignalValue    m_MaxVal;
+    CSignalValue    m_MinVal;
     string          m_ValRange;
-    SIG_VALUE       m_InitVal;
+    CSignalValue    m_InitVal;
     string          m_ParamName;
     bool            m_RangeError;
     bool            m_defError;

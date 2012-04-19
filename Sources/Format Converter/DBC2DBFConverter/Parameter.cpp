@@ -38,27 +38,27 @@ using namespace std;
  */
 CParameter::CParameter()
 {
-    strncpy(m_MaxVal.cValue, "", sizeof(m_MaxVal.cValue));
-    m_MaxVal.dValue = -1;
-    m_MaxVal.fValue = -1;
-    m_MaxVal.i64Value = -1;
     m_MaxVal.iValue = -1;
-    m_MaxVal.ui64Value = 0;
     m_MaxVal.uiValue = 0;
-    strncpy(m_MinVal.cValue, "", sizeof(m_MinVal.cValue));
-    m_MinVal.dValue = -1;
-    m_MinVal.fValue = -1;
-    m_MinVal.i64Value = -1;
+    m_MaxVal.fValue = -1;
+    m_MaxVal.dValue = -1;
+    m_MaxVal.cValue = "";
+    m_MaxVal.i64Value = -1;
+    m_MaxVal.ui64Value = 0;
     m_MinVal.iValue = -1;
-    m_MinVal.ui64Value = 0;
     m_MinVal.uiValue = 0;
-    strncpy(m_InitVal.cValue, "", sizeof(m_InitVal.cValue));
-    m_InitVal.dValue = -1;
-    m_InitVal.fValue = -1;
-    m_InitVal.i64Value = -1;
+    m_MinVal.fValue = -1;
+    m_MinVal.dValue = -1;
+    m_MinVal.cValue = "";
+    m_MinVal.i64Value = -1;
+    m_MinVal.ui64Value = 0;
     m_InitVal.iValue = -1;
-    m_InitVal.ui64Value = 0;
     m_InitVal.uiValue = 0;
+    m_InitVal.fValue = -1;
+    m_InitVal.dValue = -1;
+    m_InitVal.cValue = "";
+    m_InitVal.i64Value = -1;
+    m_InitVal.ui64Value = 0;
     m_ValRange = "";
     m_ParamType = "";
     m_ParamName = "";
@@ -201,7 +201,7 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameter> &m_listParamete
         else if(rParam->m_ParamType == "ENUM")
         {
             //Default value is NULL
-            if(strcmp(rParam->m_InitVal.cValue, "")==0)
+            if(rParam->m_InitVal.cValue.length() == 0)
             {
                 fileOutput << ",\"\"";
                 fileOutput << "," << rParam->m_ValRange.c_str();
@@ -474,7 +474,7 @@ int CParameter::ReadDefaultVal(char* pcToken)
         }
 
         *pcTemp = '\0';
-        strncpy(m_InitVal.cValue, acTemp, sizeof(m_InitVal.cValue));
+        m_InitVal.cValue = acTemp;
         pcTemp=acTemp;
     }
     //Param Type: INT
@@ -530,7 +530,7 @@ int CParameter::ReadDefaultVal(char* pcToken)
             *pcToken++;
         }
 
-        strncpy(m_InitVal.cValue, pcToken, sizeof(m_InitVal.cValue));
+        m_InitVal.cValue = pcToken;
     }
 
     return success;

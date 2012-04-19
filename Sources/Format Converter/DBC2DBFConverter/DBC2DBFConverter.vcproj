@@ -276,6 +276,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SignalValue.h"
+				>
+			</File>
+			<File
 				RelativePath=".\tag.h"
 				>
 			</File>

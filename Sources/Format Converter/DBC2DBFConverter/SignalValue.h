@@ -14,34 +14,29 @@
  */
 
 /**
- * \file      ValueDescriptor.h
- * \brief     Definition of value descriptor class
- * \authors   Mahesh B S, Tobias Lorenz
+ * \file      SignalValue.h
+ * \brief     Definition of the signal value class
+ * \authors   Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Definition of the value descriptor class.
+ * Definition of the signal value class.
  */
 
 #pragma once
 
 /* C++ includes */
-#include <fstream>
-#include <list>
 #include <string>
-
-/* Project includes */
-#include "Definitions.h"
 
 using namespace std;
 
-class CValueDescriptor
+class CSignalValue
 {
 public:
-    CValueDescriptor();
-    virtual ~CValueDescriptor();
-
-    // data members
-    string       m_acDescriptor;
-    CSignalValue m_value;
-    void writeValueDescToFile(fstream& fileOutput, char m_ucType, list<CValueDescriptor> &m_listValueDescriptor);
+    int iValue;
+    unsigned int uiValue;
+    float fValue;
+    double dValue;
+    string cValue;
+    long long i64Value;
+    unsigned long long ui64Value;
 };

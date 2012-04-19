@@ -34,14 +34,3 @@
 #define defVTAB_MAX_DESC_LEN 65  /* Maximum length of a value descriptor */
 #define defVTAB_MAX_TNAM_LEN 65  /* Maximum length of the table name */
 #define defVTAB_MAX_VALU_LEN 65  /* Maximum length of value */
-
-typedef union _SIG_VALUE
-{
-    int iValue;
-    unsigned int uiValue;
-    float fValue;
-    double dValue;
-    char cValue[defCON_TEMP_LEN];
-    long long i64Value;
-    unsigned long long ui64Value;
-} SIG_VALUE;
