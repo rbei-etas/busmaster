@@ -359,7 +359,6 @@ int CSignal::AddValueDescriptors(char* pcLine, fstream& fileInput)
     char acValue[300];
     char acDesc[300];
     char acLine[defVTAB_MAX_LINE_LEN] = {'\0'};
-    char pcTemp[defVTAB_MAX_TEMP_LEN];
     char* pcToken, *pcTok;
     bool true_end = true;
     char* pcValue = acValue;
@@ -378,14 +377,13 @@ int CSignal::AddValueDescriptors(char* pcLine, fstream& fileInput)
 
     while(*pcLine && (*pcLine != ';'))
     {
-        pcTemp[0] = '\0';
-
         if(true_end == false)
         {
+            string pcTemp;
             fileInput.getline(acLine, 1026);
-            strncpy(pcTemp, pcLine, sizeof(pcTemp));
-            strncat(pcTemp, acLine, sizeof(pcTemp)-strlen(pcTemp));
-            pcLine = pcTemp;
+            pcTemp = pcLine;
+            pcTemp += acLine;
+            strncpy(pcLine, pcTemp.c_str(), sizeof(pcLine));
 
             if(pcLine[strlen(pcLine)-1] == ';')
             {
