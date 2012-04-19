@@ -418,7 +418,6 @@ protected:
     afx_msg void OnGraphWindow();
     afx_msg void OnUpdateGraphWnd(CCmdUI* pCmdUI);
     afx_msg void OnCfgnReplay();
-    afx_msg void OnOptionExportLogfile();
     afx_msg void OnUpdateCfgnReplay(CCmdUI* pCmdUI);
 	afx_msg void OnConfigureSimulatedsystems();
 	afx_msg void OnUpdateDllLoadAll(CCmdUI* pCmdUI);	
