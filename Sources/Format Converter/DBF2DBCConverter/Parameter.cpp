@@ -52,27 +52,27 @@ using namespace std;
  */
 CParameter::CParameter()
 {
-    strncpy(m_MaxVal.cValue, "", sizeof(m_MaxVal.cValue));
-    m_MaxVal.dValue = -1;
-    m_MaxVal.fValue = -1;
-    m_MaxVal.i64Value = -1;
     m_MaxVal.iValue = -1;
-    m_MaxVal.ui64Value = 0;
     m_MaxVal.uiValue = 0;
-    strncpy(m_MinVal.cValue, "", sizeof(m_MinVal.cValue));
-    m_MinVal.dValue = -1;
-    m_MinVal.fValue = -1;
-    m_MinVal.i64Value = -1;
+    m_MaxVal.fValue = -1;
+    m_MaxVal.dValue = -1;
+    m_MaxVal.cValue = "";
+    m_MaxVal.i64Value = -1;
+    m_MaxVal.ui64Value = 0;
     m_MinVal.iValue = -1;
-    m_MinVal.ui64Value = 0;
     m_MinVal.uiValue = 0;
-    strncpy(m_InitVal.cValue, "", sizeof(m_InitVal.cValue));
-    m_InitVal.dValue = -1;
-    m_InitVal.fValue = -1;
-    m_InitVal.i64Value = -1;
+    m_MinVal.fValue = -1;
+    m_MinVal.dValue = -1;
+    m_MinVal.cValue = "";
+    m_MinVal.i64Value = -1;
+    m_MinVal.ui64Value = 0;
     m_InitVal.iValue = -1;
-    m_InitVal.ui64Value = 0;
     m_InitVal.uiValue = 0;
+    m_InitVal.fValue = -1;
+    m_InitVal.dValue = -1;
+    m_InitVal.cValue = "";
+    m_InitVal.i64Value = -1;
+    m_InitVal.ui64Value = 0;
     m_ValRange = "";
     m_ParamType = "";
     m_ParamName = "";
@@ -534,7 +534,7 @@ void CParameter::ReadDefault_Value(char* pcToken)
 
         *pcTemp = '\0';
         //copies inital value to the object member.
-        strcpy(m_InitVal.cValue,acTemp);
+        m_InitVal.cValue = acTemp;
         pcTemp=acTemp;
     }
     //get inital value of type INT
@@ -579,7 +579,7 @@ void CParameter::ReadDefault_Value(char* pcToken)
         }
 
         *pcTemp='\0';
-        strcpy(m_InitVal.cValue,acTemp);
+        m_InitVal.cValue = acTemp;
         pcTemp=acTemp;
     }
 }

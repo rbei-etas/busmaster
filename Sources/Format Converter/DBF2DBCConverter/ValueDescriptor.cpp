@@ -40,7 +40,7 @@ CValueDescriptor::CValueDescriptor()
     m_value.uiValue = 1;
     m_value.fValue = 1;
     m_value.dValue = 1;
-    memset(&m_value.cValue, 0, sizeof(m_value.cValue));
+    m_value.cValue = "";
     m_value.i64Value = 1;
     m_value.ui64Value = 1;
 }

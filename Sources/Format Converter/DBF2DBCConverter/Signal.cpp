@@ -74,10 +74,8 @@ CSignal& CSignal::operator=(CSignal& signal)
     m_ucWhichByte = signal.m_ucWhichByte;
     m_ucStartBit = signal.m_ucStartBit;
     m_ucType = signal.m_ucType;
-    memcpy((void*)&m_MaxValue, (void*)&(signal.m_MaxValue), sizeof(signal.m_MaxValue));
-    memcpy((void*)&m_MinValue, (void*)&(signal.m_MinValue), sizeof(signal.m_MinValue));
-    //m_MaxValue = signal.m_MaxValue;
-    //m_MinValue = signal.m_MinValue;
+    m_MaxValue = signal.m_MaxValue;
+    m_MinValue = signal.m_MinValue;
     m_ucDataFormat = signal.m_ucDataFormat;
     m_fOffset = signal.m_fOffset;
     m_fScaleFactor = signal.m_fScaleFactor;
