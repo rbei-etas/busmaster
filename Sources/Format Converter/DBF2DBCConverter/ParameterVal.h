@@ -30,6 +30,7 @@
 
 /* Project includes */
 #include "Definitions.h"
+#include "SignalValue.h"
 
 using namespace std;
 
@@ -42,7 +43,7 @@ public:
     unsigned int    m_MsgId;
     string          m_SignalName;
     char            m_cFrameFormat;
-    SIG_VALUE       m_ParamVal;
+    CSignalValue       m_ParamVal;
 
     CParameterValues();
     CParameterValues& operator=(CParameterValues& param);

@@ -14,21 +14,29 @@
  */
 
 /**
- * \file      Definitions.h
- * \brief     This file has the definition of all the constants used
- * \authors   Mahesh B S, Tobias Lorenz
+ * \file      SignalValue.h
+ * \brief     Definition of the signal value class
+ * \authors   Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file has the definition of all the constants used
+ * Definition of the signal value class.
  */
 
 #pragma once
 
-//Converter.cpp
-#define defCON_MAX_MSGN_LEN 1024
+/* C++ includes */
+#include <string>
 
-//Signal.Cpp
-#define defCON_MAX_LINE_LEN 1026  /* Maximum length of one line */
-#define defCON_MAX_TOKN_LEN 1026  /* Maximum length that any field can be */
+using namespace std;
 
-#define defCON_CHAR_LEN 1024
+class CSignalValue
+{
+public:
+    int iValue;
+    unsigned int uiValue;
+    float fValue;
+    double dValue;
+    string cValue;
+    long long i64Value;
+    unsigned long long ui64Value;
+};

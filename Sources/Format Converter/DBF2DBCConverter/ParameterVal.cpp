@@ -130,7 +130,7 @@ void CParameterValues::ReadParamValue(string& paramType, char* pcToken)
         }
 
         *pcTemp='\0';
-        strcpy(m_ParamVal.cValue,acTemp);
+        m_ParamVal.cValue = acTemp;
         pcTemp=acTemp;
     }
     //get param value of type int
@@ -152,7 +152,7 @@ void CParameterValues::ReadParamValue(string& paramType, char* pcToken)
         }
 
         *pcTemp='\0';
-        strcpy(m_ParamVal.cValue,acTemp);
+        m_ParamVal.cValue = acTemp;
         pcTemp=acTemp;
     }
     //get param value of type float
@@ -196,7 +196,7 @@ void CParameterValues::WriteNetValuesToFile(fstream& fileOutput, string& paramTy
     //writes net values of type enum to o/p file.
     else if(paramType == "ENUM")
     {
-        if(strcmp(m_ParamVal.cValue,"") == 0)
+        if(m_ParamVal.cValue.length() == 0)
         {
             fileOutput << " \"\"";
         }
@@ -238,7 +238,7 @@ void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput, string& paramT
     //writes node values of type enum to o/p file.
     else if(paramType == "ENUM")
     {
-        if(strcmp(m_ParamVal.cValue,"") == 0)
+        if(m_ParamVal.cValue.length() == 0)
         {
             fileOutput << " \"\"";
         }
@@ -288,7 +288,7 @@ void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput, string& paramT
     //writes mesg values of type enum to o/p file.
     else if(paramType == "ENUM")
     {
-        if(strcmp(m_ParamVal.cValue, "") == 0)
+        if(m_ParamVal.cValue.length() == 0)
         {
             fileOutput << " \"\"";
         }
@@ -339,7 +339,7 @@ void CParameterValues::WriteSigValuesToFile(fstream& fileOutput, string& paramTy
     //writes sig values of type enum to o/p file.
     else if(paramType == "ENUM")
     {
-        if(strcmp(m_ParamVal.cValue, "") == 0)
+        if(m_ParamVal.cValue.length() == 0)
         {
             fileOutput << " \"\"";
         }

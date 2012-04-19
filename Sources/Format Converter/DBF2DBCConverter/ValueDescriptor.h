@@ -31,6 +31,7 @@
 
 /* Project includes */
 #include "Definitions.h"
+#include "SignalValue.h"
 
 using namespace std;
 
@@ -43,5 +44,5 @@ public:
     //  CValueDescriptor& operator=(CValueDescriptor& valDesc);
     void writeValueDescToFile(fstream& fileOutput, char m_ucType, list<CValueDescriptor> &m_listValueDescriptor);
     string      m_sDescriptor;
-    SIG_VALUE   m_value;
+    CSignalValue   m_value;
 };
