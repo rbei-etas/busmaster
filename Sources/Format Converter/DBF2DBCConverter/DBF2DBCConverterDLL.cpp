@@ -26,14 +26,7 @@
 
 /* MFC includes */
 #include <afxwin.h>         /* MFC core and standard components */
-#include <afxext.h>         /* MFC extensions */
-#include <afxdisp.h>        /* MFC Automation classes */
-#include <afxdtctl.h>       /* MFC support for Internet Explorer 4 Common Controls */
-#ifndef _AFX_NO_AFXCMN_SUPPORT
-#include <afxcmn.h>         /* MFC support for Windows Common Controls */
-#include <afxtempl.h>
-#endif /* _AFX_NO_AFXCMN_SUPPORT */
-#include <afxdllx.h>
+#include <afxdllx.h>        /* MFC dynamic link library extension */
 
 /* Project includes */
 #include "DBF2DBCConverter.h"

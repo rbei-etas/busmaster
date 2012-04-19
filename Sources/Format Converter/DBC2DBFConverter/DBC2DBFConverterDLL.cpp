@@ -24,9 +24,9 @@
 
 #define VC_EXTRALEAN        /* Exclude rarely-used stuff from Windows headers */
 
-/* C++ includes */
-#include <afxcmn.h>
-#include <afxdllx.h>
+/* MFC includes */
+#include <afxwin.h>         /* MFC core and standard components */
+#include <afxdllx.h>        /* MFC dynamic link library extension */
 
 /* Project includes */
 #include "DBC2DBFConverter.h"
@@ -93,8 +93,6 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 #ifdef _MANAGED
 #pragma managed(pop)
 #endif
-
-
 
 extern "C" __declspec(dllexport) HRESULT GetBaseConverter(CBaseConverter*& pouConverter)
 {
