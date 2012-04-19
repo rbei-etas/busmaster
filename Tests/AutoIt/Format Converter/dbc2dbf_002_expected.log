@@ -2,157 +2,157 @@ Conversion Error Log
 
 
 MSG_ID: 1606 	MSG_TYPE: S 	MSG_NAME: Message_64_6
-	SIG_NAME: Signal_64_Motorola_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_64_Motorola_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 1605 	MSG_TYPE: S 	MSG_NAME: Message_64_5
-	SIG_NAME: Signal_64_Motorola_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_64_Motorola_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 1604 	MSG_TYPE: S 	MSG_NAME: Message_64_4
-	SIG_NAME: Signal_64_Motorola_Double, ERROR:Invalid signal type, ACTION: Signal Discarded
+	SIG_NAME: Signal_64_Motorola_Double, STATUS: Invalid signal type, ACTION: Signal Discarded
 
 MSG_ID: 1603 	MSG_TYPE: S 	MSG_NAME: Message_64_3
-	SIG_NAME: Signal_64_Intel_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_64_Intel_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 1602 	MSG_TYPE: S 	MSG_NAME: Message_64_2
-	SIG_NAME: Signal_64_Intel_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_64_Intel_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 1601 	MSG_TYPE: S 	MSG_NAME: Message_64_1
-	SIG_NAME: Signal_64_Intel_Double, ERROR:Invalid signal type, ACTION: Signal Discarded
+	SIG_NAME: Signal_64_Intel_Double, STATUS: Invalid signal type, ACTION: Signal Discarded
 
 MSG_ID: 1588 	MSG_TYPE: S 	MSG_NAME: Message_63_4
-	SIG_NAME: Signal_63_Motorola_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_63_Motorola_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 1587 	MSG_TYPE: S 	MSG_NAME: Message_63_3
-	SIG_NAME: Signal_63_Motorola_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_63_Motorola_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 1586 	MSG_TYPE: S 	MSG_NAME: Message_63_2
-	SIG_NAME: Signal_63_Intel_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_63_Intel_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 1585 	MSG_TYPE: S 	MSG_NAME: Message_63_1
-	SIG_NAME: Signal_63_Intel_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_63_Intel_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 820 	MSG_TYPE: S 	MSG_NAME: Message_33_4
-	SIG_NAME: Signal_33_Motorola_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_33_Motorola_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 819 	MSG_TYPE: S 	MSG_NAME: Message_33_3
-	SIG_NAME: Signal_33_Motorola_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_33_Motorola_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 818 	MSG_TYPE: S 	MSG_NAME: Message_33_2
-	SIG_NAME: Signal_33_Intel_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_33_Intel_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 817 	MSG_TYPE: S 	MSG_NAME: Message_33_1
-	SIG_NAME: Signal_33_Intel_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_33_Intel_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 806 	MSG_TYPE: S 	MSG_NAME: Message_32_6
-	SIG_NAME: Signal_32_Motorola_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_32_Motorola_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 805 	MSG_TYPE: S 	MSG_NAME: Message_32_5
-	SIG_NAME: Signal_32_Motorola_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_32_Motorola_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 804 	MSG_TYPE: S 	MSG_NAME: Message_32_4
-	SIG_NAME: Signal_32_Motorola_Float, ERROR:Invalid signal type, ACTION: Signal Discarded
+	SIG_NAME: Signal_32_Motorola_Float, STATUS: Invalid signal type, ACTION: Signal Discarded
 
 MSG_ID: 803 	MSG_TYPE: S 	MSG_NAME: Message_32_3
-	SIG_NAME: Signal_32_Intel_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_32_Intel_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 802 	MSG_TYPE: S 	MSG_NAME: Message_32_2
-	SIG_NAME: Signal_32_Intel_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_32_Intel_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 801 	MSG_TYPE: S 	MSG_NAME: Message_32_1
-	SIG_NAME: Signal_32_Intel_Float, ERROR:Invalid signal type, ACTION: Signal Discarded
+	SIG_NAME: Signal_32_Intel_Float, STATUS: Invalid signal type, ACTION: Signal Discarded
 
 MSG_ID: 788 	MSG_TYPE: S 	MSG_NAME: Message_31_4
-	SIG_NAME: Signal_31_Motorola_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_31_Motorola_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 787 	MSG_TYPE: S 	MSG_NAME: Message_31_3
-	SIG_NAME: Signal_31_Motorola_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_31_Motorola_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 786 	MSG_TYPE: S 	MSG_NAME: Message_31_2
-	SIG_NAME: Signal_31_Intel_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_31_Intel_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 785 	MSG_TYPE: S 	MSG_NAME: Message_31_1
-	SIG_NAME: Signal_31_Intel_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_31_Intel_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 372 	MSG_TYPE: S 	MSG_NAME: Message_17_4
-	SIG_NAME: Signal_17_Motorola_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_17_Motorola_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 371 	MSG_TYPE: S 	MSG_NAME: Message_17_3
-	SIG_NAME: Signal_17_Motorola_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_17_Motorola_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 370 	MSG_TYPE: S 	MSG_NAME: Message_17_2
-	SIG_NAME: Signal_17_Intel_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_17_Intel_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 369 	MSG_TYPE: S 	MSG_NAME: Message_17_1
-	SIG_NAME: Signal_17_Intel_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_17_Intel_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 356 	MSG_TYPE: S 	MSG_NAME: Message_16_4
-	SIG_NAME: Signal_16_Motorola_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_16_Motorola_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 355 	MSG_TYPE: S 	MSG_NAME: Message_16_3
-	SIG_NAME: Signal_16_Motorola_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_16_Motorola_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 354 	MSG_TYPE: S 	MSG_NAME: Message_16_2
-	SIG_NAME: Signal_16_Intel_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_16_Intel_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 353 	MSG_TYPE: S 	MSG_NAME: Message_16_1
-	SIG_NAME: Signal_16_Intel_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_16_Intel_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 340 	MSG_TYPE: S 	MSG_NAME: Message_15_4
-	SIG_NAME: Signal_15_Motorola_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_15_Motorola_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 339 	MSG_TYPE: S 	MSG_NAME: Message_15_3
-	SIG_NAME: Signal_15_Motorola_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_15_Motorola_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 338 	MSG_TYPE: S 	MSG_NAME: Message_15_2
-	SIG_NAME: Signal_15_Intel_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_15_Intel_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 337 	MSG_TYPE: S 	MSG_NAME: Message_15_1
-	SIG_NAME: Signal_15_Intel_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_15_Intel_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 148 	MSG_TYPE: S 	MSG_NAME: Message_09_4
-	SIG_NAME: Signal_09_Motorola_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_09_Motorola_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 147 	MSG_TYPE: S 	MSG_NAME: Message_09_3
-	SIG_NAME: Signal_09_Motorola_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_09_Motorola_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 146 	MSG_TYPE: S 	MSG_NAME: Message_09_2
-	SIG_NAME: Signal_09_Intel_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_09_Intel_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 145 	MSG_TYPE: S 	MSG_NAME: Message_09_1
-	SIG_NAME: Signal_09_Intel_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_09_Intel_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 132 	MSG_TYPE: S 	MSG_NAME: Message_08_4
-	SIG_NAME: Signal_08_Motorola_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_08_Motorola_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 131 	MSG_TYPE: S 	MSG_NAME: Message_08_3
-	SIG_NAME: Signal_08_Motorola_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_08_Motorola_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 130 	MSG_TYPE: S 	MSG_NAME: Message_08_2
-	SIG_NAME: Signal_08_Intel_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_08_Intel_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 129 	MSG_TYPE: S 	MSG_NAME: Message_08_1
-	SIG_NAME: Signal_08_Intel_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_08_Intel_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 116 	MSG_TYPE: S 	MSG_NAME: Message_07_4
-	SIG_NAME: Signal_07_Motorola_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_07_Motorola_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 115 	MSG_TYPE: S 	MSG_NAME: Message_07_3
-	SIG_NAME: Signal_07_Motorola_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_07_Motorola_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 114 	MSG_TYPE: S 	MSG_NAME: Message_07_2
-	SIG_NAME: Signal_07_Intel_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_07_Intel_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 113 	MSG_TYPE: S 	MSG_NAME: Message_07_1
-	SIG_NAME: Signal_07_Intel_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_07_Intel_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 20 	MSG_TYPE: S 	MSG_NAME: Message_01_4
-	SIG_NAME: Signal_01_Motorola_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_01_Motorola_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 19 	MSG_TYPE: S 	MSG_NAME: Message_01_3
-	SIG_NAME: Signal_01_Motorola_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_01_Motorola_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 18 	MSG_TYPE: S 	MSG_NAME: Message_01_2
-	SIG_NAME: Signal_01_Intel_Unsigned, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_01_Intel_Unsigned, STATUS: Invalid Max or Min value., ACTION: Value Set to default
 
 MSG_ID: 17 	MSG_TYPE: S 	MSG_NAME: Message_01_1
-	SIG_NAME: Signal_01_Intel_Signed, WARNING:Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: Signal_01_Intel_Signed, STATUS: Invalid Max or Min value., ACTION: Value Set to default
