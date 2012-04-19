@@ -21,6 +21,8 @@
  *
  * Interface file for CAN BUS
  */
+
+/* Project includes */
 #include "DIL_Interface_stdafx.h"
 #include "include/Error.h"
 #include "include/basedefs.h"
@@ -37,7 +39,7 @@
 #include "CAN_Kvaser_CAN/CAN_Kvaser_CAN_Extern.h"
 #include "Dil_CAN.h"
 
-typedef HRESULT (__stdcall *GETIDIL_CAN_CONTROLLER)(void** ppvInterface);
+typedef HRESULT (__stdcall* GETIDIL_CAN_CONTROLLER)(void** ppvInterface);
 static GETIDIL_CAN_CONTROLLER pfGetIDILCAN_Controller;
 static CDIL_CAN_DUMMY* sg_pouDIL_CAN_DUMMY = new CDIL_CAN_DUMMY;
 
@@ -52,7 +54,7 @@ static ENTRY_DIL sg_ListDIL[] =
     /* simulation should be the first entry... */
     {DRIVER_CAN_STUB,       _T("Simulation")       },
     /* ...all other drivers should be in alphabetical order */
-    {DRIVER_CAN_ETAS_BOA,   _T("ETAS BOA")         },    
+    {DRIVER_CAN_ETAS_BOA,   _T("ETAS BOA")         },
     {DRIVER_CAN_ETAS_ES581, _T("ETAS ES581")       },
     {DRIVER_CAN_ICS_NEOVI,  _T("IntrepidCS neoVI") },
     {DRIVER_CAN_KVASER_CAN, _T("Kvaser CAN")       },
@@ -61,56 +63,73 @@ static ENTRY_DIL sg_ListDIL[] =
     {DRIVER_CAN_VECTOR_XL,  _T("Vector XL")        },
 };
 
+/**
+ * \brief Constructor
+ *
+ * Constructor of CDIL_CAN
+ */
 CDIL_CAN::CDIL_CAN()
 {
-	m_hDll = NULL;
-	m_dwDriverID = DAL_NONE;
-	pfGetIDILCAN_Controller = NULL;
-	m_pBaseDILCAN_Controller = NULL;
+    m_hDll = NULL;
+    m_dwDriverID = DAL_NONE;
+    pfGetIDILCAN_Controller = NULL;
+    m_pBaseDILCAN_Controller = NULL;
     vSelectInterface_Dummy();
 }
 
+/**
+ * \brief Destructor
+ *
+ * Destructor of CDIL_CAN
+ */
 CDIL_CAN::~CDIL_CAN()
 {
-	//Free the currently selected DIL library
-	if ( m_hDll )
-	{		
-		FreeLibrary(m_hDll);
-		m_hDll = NULL;
-	}	
+    //Free the currently selected DIL library
+    if ( m_hDll )
+    {
+        FreeLibrary(m_hDll);
+        m_hDll = NULL;
+    }
 }
-
-int CDIL_CAN::ExitInstance()
-{
-    return 0;
-}
-/* ROUTER CODE STARTS */
 
 /**
+ * \brief Init instance
+ *
  * The router is realised as a set of function pointers
  * Initialisation with dummy functions
  */
 BOOL CDIL_CAN::InitInstance()
 {
     vSelectInterface_Dummy();
-
     return TRUE;
 }
 
 /**
+ * \brief Exit instance
+ *
+ * Deinitialization
+ */
+int CDIL_CAN::ExitInstance()
+{
+    return 0;
+}
+
+/**
+ * \brief Helper Function for Dummy Interface
+ *
  * Helper Function for Dummy Interface
  */
 void CDIL_CAN::vSelectInterface_Dummy(void)
-{	
-	m_pBaseDILCAN_Controller = (CBaseDIL_CAN_Controller*) sg_pouDIL_CAN_DUMMY;
+{
+    m_pBaseDILCAN_Controller = (CBaseDIL_CAN_Controller*) sg_pouDIL_CAN_DUMMY;
 }
 
-/* ROUTER CODE FINISHES */
-
 /**
- * \brief     Get DIL list
- * \req       RSI_14_001 - DILC_GetDILList
- * \req       RS_23_01 - Getter for the DIL List
+ * \brief      Get DIL list
+ * \req        RSI_14_001 - DILC_GetDILList
+ * \req        RS_23_01 - Getter for the DIL List
+ * \param[out] Returns the DIL list
+ * \return     Status code
  *
  * Based on the parameter this function renders number of the driver interface
  * layers supported or available. If 'bAvailable' is true, this returns number of
@@ -127,7 +146,7 @@ DWORD CDIL_CAN::DILC_GetDILList(bool /*bAvailable*/, DILLIST* List)
         {
             _tcscpy((*List)[i].m_acName, sg_ListDIL[i].m_acDIL);
             (*List)[i].m_dwDriverID = sg_ListDIL[i].m_dwDIL;
-			Result++;
+            Result++;
         }
     }
 
@@ -143,11 +162,10 @@ DWORD CDIL_CAN::DILC_GetDILList(bool /*bAvailable*/, DILLIST* List)
  * intended one isn't allowed with the present license, this returns NO_LICENSE.
  */
 HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
-              Base_WrapperErrorLogger* pILog)
+                                    Base_WrapperErrorLogger* pILog)
 {
     USES_CONVERSION;
-
-    HRESULT hResult = S_FALSE;	
+    HRESULT hResult = S_FALSE;
 
     if (DILC_GetSelectedDriver() == dwDriverID)
     {
@@ -165,99 +183,91 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
             owner window handle. */
         }
 
-		//Free the currently selected DIL library
-		if ( m_hDll )
-		{		
-			FreeLibrary(m_hDll);
-			m_hDll = NULL;
-		}	
-
-		if (dwDriverID == DRIVER_CAN_PEAK_USB)
+        //Free the currently selected DIL library
+        if ( m_hDll )
         {
-			//Load the ICSNeoVI DIL
-			m_hDll = LoadLibrary(_T("CAN_PEAK_USB.dll"));
-        }
-        else if (dwDriverID == DRIVER_CAN_ICS_NEOVI || dwDriverID == DRIVER_CAN_ETAS_ES581)
-        {
-			//Load the ICSNeoVI DIL
-			m_hDll = LoadLibrary(_T("CAN_ICS_neoVI.dll"));		
-        }
-        else if (dwDriverID == DRIVER_CAN_ETAS_BOA)
-        {
-			//Load the ICSNeoVI DIL
-			m_hDll = LoadLibrary(_T("CAN_ETAS_BOA.dll"));
-        }
-		else if (dwDriverID == DRIVER_CAN_VECTOR_XL)
-		{
-			//Load the Vector XL DIL
-			m_hDll = LoadLibrary(_T("CAN_Vector_XL.dll"));
-		}
-		else if (dwDriverID == DRIVER_CAN_KVASER_CAN)
-		{		
-			//Load the Kvaser DIL
-			m_hDll = LoadLibrary(_T("CAN_Kvaser_CAN.dll"));
-		}
-        else if (dwDriverID == DRIVER_CAN_STUB)
-        {
-			//Load the CAN STUB DIL
-			m_hDll = LoadLibrary(_T("CAN_STUB.dll"));
-        }
-        else if (dwDriverID == DRIVER_CAN_MHS)
-		{
-			//Load the MHS-Elektronik Tiny-CAN DIL
-			m_hDll = LoadLibrary(_T("CAN_MHS.dll"));
-        }
-        else if (dwDriverID == DAL_NONE)
-        {
-            DILC_PerformClosureOperations();
-            vSelectInterface_Dummy();
-			m_dwDriverID = DAL_NONE;
-			return hResult;
-        }
-        else // invalid driver / DAL id
-        {
-            hResult = DAL_INVALID;
-			m_dwDriverID = DAL_NONE;
-			return hResult;
+            FreeLibrary(m_hDll);
+            m_hDll = NULL;
         }
 
-		if (m_hDll == NULL)
-		{
-			hResult = ERR_LOAD_DRIVER;
-			pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library failed..."));
-		}
-		else
-		{
+        switch(dwDriverID)
+        {
+            case DRIVER_CAN_PEAK_USB:
+                m_hDll = LoadLibrary(_T("CAN_PEAK_USB.dll"));
+                break;
+
+            case DRIVER_CAN_ICS_NEOVI:
+            case DRIVER_CAN_ETAS_ES581:
+                m_hDll = LoadLibrary(_T("CAN_ICS_neoVI.dll"));
+                break;
+
+            case DRIVER_CAN_ETAS_BOA:
+                m_hDll = LoadLibrary(_T("CAN_ETAS_BOA.dll"));
+                break;
+
+            case DRIVER_CAN_VECTOR_XL:
+                m_hDll = LoadLibrary(_T("CAN_Vector_XL.dll"));
+                break;
+
+            case DRIVER_CAN_KVASER_CAN:
+                m_hDll = LoadLibrary(_T("CAN_Kvaser_CAN.dll"));
+                break;
+
+            case DRIVER_CAN_STUB:
+                m_hDll = LoadLibrary(_T("CAN_STUB.dll"));
+                break;
+
+            case DRIVER_CAN_MHS:
+                m_hDll = LoadLibrary(_T("CAN_MHS.dll"));
+                break;
+
+            case DAL_NONE:
+                DILC_PerformClosureOperations();
+                vSelectInterface_Dummy();
+                m_dwDriverID = DAL_NONE;
+                return hResult;
+
+            default:
+                hResult = DAL_INVALID;
+                m_dwDriverID = DAL_NONE;
+                return hResult;
+        }
+
+        if (m_hDll == NULL)
+        {
+            hResult = ERR_LOAD_DRIVER;
+            pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library failed..."));
+        }
+        else
+        {
             // First select the dummy interface
             DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
-			
-			pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library successful..."));
-			pfGetIDILCAN_Controller = (GETIDIL_CAN_CONTROLLER)GetProcAddress(m_hDll, "GetIDIL_CAN_Controller");				
-			pfGetIDILCAN_Controller((void**)&m_pBaseDILCAN_Controller);
-			if ( m_pBaseDILCAN_Controller )
-			{
-				// set the application parameters.
-				m_pBaseDILCAN_Controller->CAN_SetAppParams(hWndOwner, pILog);
-				hResult = m_pBaseDILCAN_Controller->CAN_LoadDriverLibrary();
-				switch (hResult)
-				{
-					case S_OK:
-					case DLL_ALREADY_LOADED:
-					{
-						m_pBaseDILCAN_Controller->CAN_PerformInitOperations();				
-						m_dwDriverID = dwDriverID;
-						hResult = S_OK;					
-					}
-					break;
-					default:
-					{
-						hResult = ERR_LOAD_DRIVER;
-						pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library failed..."));
-					}
-					break;
-				}
-			}
-		}	
+            pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library successful..."));
+            pfGetIDILCAN_Controller = (GETIDIL_CAN_CONTROLLER)GetProcAddress(m_hDll, "GetIDIL_CAN_Controller");
+            pfGetIDILCAN_Controller((void**)&m_pBaseDILCAN_Controller);
+
+            if ( m_pBaseDILCAN_Controller )
+            {
+                // set the application parameters.
+                m_pBaseDILCAN_Controller->CAN_SetAppParams(hWndOwner, pILog);
+                hResult = m_pBaseDILCAN_Controller->CAN_LoadDriverLibrary();
+
+                switch (hResult)
+                {
+                    case S_OK:
+                    case DLL_ALREADY_LOADED:
+                        m_pBaseDILCAN_Controller->CAN_PerformInitOperations();
+                        m_dwDriverID = dwDriverID;
+                        hResult = S_OK;
+                        break;
+
+                    default:
+                        hResult = ERR_LOAD_DRIVER;
+                        pILog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Load library failed..."));
+                        break;
+                }
+            }
+        }
     }
 
     return hResult;
@@ -271,7 +281,7 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
  */
 HRESULT CDIL_CAN::DILC_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
-	return m_pBaseDILCAN_Controller->CAN_ManageMsgBuf(bAction, ClientID, pBufObj);
+    return m_pBaseDILCAN_Controller->CAN_ManageMsgBuf(bAction, ClientID, pBufObj);
 }
 
 /**
@@ -279,12 +289,12 @@ HRESULT CDIL_CAN::DILC_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE
  * \req       RSI_14_003 - DILC_RegisterClient
  * \req       RS_23_04 - Registration of a client to simulate a node
  *
- * This function registers the client. Only registered client's buffer will be
+ * This function registers the client. Only registered client buffers will be
  * updated on receive of a msg in the bus.
  */
 HRESULT CDIL_CAN::DILC_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
 {
-	return m_pBaseDILCAN_Controller->CAN_RegisterClient(bRegister, ClientID, pacClientName);    
+    return m_pBaseDILCAN_Controller->CAN_RegisterClient(bRegister, ClientID, pacClientName);
 }
 
 /**
@@ -296,7 +306,7 @@ HRESULT CDIL_CAN::DILC_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pa
  */
 DWORD CDIL_CAN::DILC_GetSelectedDriver(void)
 {
-	return m_dwDriverID;
+    return m_dwDriverID;
 }
 
 /**
@@ -308,7 +318,7 @@ DWORD CDIL_CAN::DILC_GetSelectedDriver(void)
  */
 HRESULT CDIL_CAN::DILC_PerformInitOperations(void)
 {
-	return m_pBaseDILCAN_Controller->CAN_PerformInitOperations();    
+    return m_pBaseDILCAN_Controller->CAN_PerformInitOperations();
 }
 
 /**
@@ -320,15 +330,16 @@ HRESULT CDIL_CAN::DILC_PerformInitOperations(void)
  */
 HRESULT CDIL_CAN::DILC_PerformClosureOperations(void)
 {
-	HRESULT hResult =  S_FALSE;
-	if ( m_pBaseDILCAN_Controller )
-	{
-		m_pBaseDILCAN_Controller->CAN_PerformClosureOperations();
-		m_pBaseDILCAN_Controller->CAN_UnloadDriverLibrary();
-	}
+    HRESULT hResult = S_FALSE;
+
+    if ( m_pBaseDILCAN_Controller )
+    {
+        m_pBaseDILCAN_Controller->CAN_PerformClosureOperations();
+        m_pBaseDILCAN_Controller->CAN_UnloadDriverLibrary();
+    }
 
     vSelectInterface_Dummy();
-    m_dwDriverID = DAL_NONE;    
+    m_dwDriverID = DAL_NONE;
     return hResult;
 }
 
@@ -341,7 +352,7 @@ HRESULT CDIL_CAN::DILC_PerformClosureOperations(void)
  */
 HRESULT CDIL_CAN::DILC_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
 {
-	return m_pBaseDILCAN_Controller->CAN_GetTimeModeMapping(CurrSysTime, TimeStamp, QueryTickCount);    
+    return m_pBaseDILCAN_Controller->CAN_GetTimeModeMapping(CurrSysTime, TimeStamp, QueryTickCount);
 }
 
 /**
@@ -353,7 +364,7 @@ HRESULT CDIL_CAN::DILC_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeS
  */
 HRESULT CDIL_CAN::DILC_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount)
 {
-	return m_pBaseDILCAN_Controller->CAN_ListHwInterfaces(sSelHwInterface, nCount);    
+    return m_pBaseDILCAN_Controller->CAN_ListHwInterfaces(sSelHwInterface, nCount);
 }
 
 /**
@@ -365,7 +376,7 @@ HRESULT CDIL_CAN::DILC_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT&
  */
 HRESULT CDIL_CAN::DILC_SelectHwInterfaces(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount)
 {
-	return m_pBaseDILCAN_Controller->CAN_SelectHwInterface(sSelHwInterface, nCount);    
+    return m_pBaseDILCAN_Controller->CAN_SelectHwInterface(sSelHwInterface, nCount);
 }
 
 /**
@@ -377,7 +388,7 @@ HRESULT CDIL_CAN::DILC_SelectHwInterfaces(const INTERFACE_HW_LIST& sSelHwInterfa
  */
 HRESULT CDIL_CAN::DILC_DeselectHwInterfaces(void)
 {
-	return m_pBaseDILCAN_Controller->CAN_DeselectHwInterface();    
+    return m_pBaseDILCAN_Controller->CAN_DeselectHwInterface();
 }
 
 /**
@@ -392,7 +403,7 @@ HRESULT CDIL_CAN::DILC_DeselectHwInterfaces(void)
  */
 HRESULT CDIL_CAN::DILC_DisplayConfigDlg(PCHAR& InitData, int& Length)
 {
-	return m_pBaseDILCAN_Controller->CAN_DisplayConfigDlg(InitData, Length);    
+    return m_pBaseDILCAN_Controller->CAN_DisplayConfigDlg(InitData, Length);
 }
 
 /**
@@ -405,7 +416,7 @@ HRESULT CDIL_CAN::DILC_DisplayConfigDlg(PCHAR& InitData, int& Length)
  */
 HRESULT CDIL_CAN::DILC_SetConfigData(PCHAR pInitData, int Length)
 {
-	return m_pBaseDILCAN_Controller->CAN_SetConfigData(pInitData, Length);    
+    return m_pBaseDILCAN_Controller->CAN_SetConfigData(pInitData, Length);
 }
 
 /**
@@ -417,7 +428,7 @@ HRESULT CDIL_CAN::DILC_SetConfigData(PCHAR pInitData, int Length)
  */
 HRESULT CDIL_CAN::DILC_StartHardware(void)
 {
-	return m_pBaseDILCAN_Controller->CAN_StartHardware();    
+    return m_pBaseDILCAN_Controller->CAN_StartHardware();
 }
 
 /**
@@ -429,7 +440,7 @@ HRESULT CDIL_CAN::DILC_StartHardware(void)
  */
 HRESULT CDIL_CAN::DILC_StopHardware(void)
 {
-	return m_pBaseDILCAN_Controller->CAN_StopHardware();    
+    return m_pBaseDILCAN_Controller->CAN_StopHardware();
 }
 
 /**
@@ -441,7 +452,7 @@ HRESULT CDIL_CAN::DILC_StopHardware(void)
  */
 HRESULT CDIL_CAN::DILC_ResetHardware(void)
 {
-	return m_pBaseDILCAN_Controller->CAN_ResetHardware();    
+    return m_pBaseDILCAN_Controller->CAN_ResetHardware();
 }
 
 /**
@@ -451,7 +462,7 @@ HRESULT CDIL_CAN::DILC_ResetHardware(void)
  */
 HRESULT CDIL_CAN::DILC_GetTxMsgBuffer(BYTE*& pouTxMsgBuffer)
 {
-	return m_pBaseDILCAN_Controller->CAN_GetTxMsgBuffer(pouTxMsgBuffer);    
+    return m_pBaseDILCAN_Controller->CAN_GetTxMsgBuffer(pouTxMsgBuffer);
 }
 
 /**
@@ -463,7 +474,7 @@ HRESULT CDIL_CAN::DILC_GetTxMsgBuffer(BYTE*& pouTxMsgBuffer)
  */
 HRESULT CDIL_CAN::DILC_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
 {
-	return m_pBaseDILCAN_Controller->CAN_SendMsg(dwClientID, sCanTxMsg);    
+    return m_pBaseDILCAN_Controller->CAN_SendMsg(dwClientID, sCanTxMsg);
 }
 
 /**
@@ -472,8 +483,8 @@ HRESULT CDIL_CAN::DILC_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
  * Get basic information of the board
  */
 HRESULT CDIL_CAN::DILC_GetBoardInfo(s_BOARDINFO& RBIN_BoardInfo)
-{	
-	return m_pBaseDILCAN_Controller->CAN_GetBoardInfo(RBIN_BoardInfo);    
+{
+    return m_pBaseDILCAN_Controller->CAN_GetBoardInfo(RBIN_BoardInfo);
 }
 
 /**
@@ -483,7 +494,7 @@ HRESULT CDIL_CAN::DILC_GetBoardInfo(s_BOARDINFO& RBIN_BoardInfo)
  */
 HRESULT CDIL_CAN::DILC_GetBusConfigInfo(BYTE* RBIN_BusInfo)
 {
-	return m_pBaseDILCAN_Controller->CAN_GetBusConfigInfo(RBIN_BusInfo);    
+    return m_pBaseDILCAN_Controller->CAN_GetBusConfigInfo(RBIN_BusInfo);
 }
 
 /**
@@ -495,7 +506,7 @@ HRESULT CDIL_CAN::DILC_GetBusConfigInfo(BYTE* RBIN_BusInfo)
  */
 HRESULT CDIL_CAN::DILC_GetVersionInfo(VERSIONINFO& sVerInfo)
 {
-	return m_pBaseDILCAN_Controller->CAN_GetVersionInfo(sVerInfo);    
+    return m_pBaseDILCAN_Controller->CAN_GetVersionInfo(sVerInfo);
 }
 
 /**
@@ -507,7 +518,7 @@ HRESULT CDIL_CAN::DILC_GetVersionInfo(VERSIONINFO& sVerInfo)
  */
 HRESULT CDIL_CAN::DILC_GetLastErrorString(char acErrorStr[], int nLength)
 {
-	return m_pBaseDILCAN_Controller->CAN_GetLastErrorString(acErrorStr, nLength);    
+    return m_pBaseDILCAN_Controller->CAN_GetLastErrorString(acErrorStr, nLength);
 }
 
 /**
@@ -520,7 +531,7 @@ HRESULT CDIL_CAN::DILC_GetLastErrorString(char acErrorStr[], int nLength)
  */
 HRESULT CDIL_CAN::DILC_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus)
 {
-	return m_pBaseDILCAN_Controller->CAN_GetCntrlStatus(hEvent, unCntrlStatus);    
+    return m_pBaseDILCAN_Controller->CAN_GetCntrlStatus(hEvent, unCntrlStatus);
 }
 
 /**
@@ -531,10 +542,14 @@ HRESULT CDIL_CAN::DILC_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus)
  */
 HRESULT CDIL_CAN::DILC_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
 {
-	if ( m_pBaseDILCAN_Controller )
-		return m_pBaseDILCAN_Controller->CAN_GetControllerParams(lParam, nChannel, eContrParam);    
-	else
-		return S_FALSE;
+    if ( m_pBaseDILCAN_Controller )
+    {
+        return m_pBaseDILCAN_Controller->CAN_GetControllerParams(lParam, nChannel, eContrParam);
+    }
+    else
+    {
+        return S_FALSE;
+    }
 }
 
 /**
@@ -547,7 +562,7 @@ HRESULT CDIL_CAN::DILC_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_P
  */
 HRESULT CDIL_CAN::DILC_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIDs, UINT nLength)
 {
-	return m_pBaseDILCAN_Controller->CAN_FilterFrames(FilterType, Channel, punMsgIDs, nLength);    
+    return m_pBaseDILCAN_Controller->CAN_FilterFrames(FilterType, Channel, punMsgIDs, nLength);
 }
 
 /**
@@ -558,5 +573,5 @@ HRESULT CDIL_CAN::DILC_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel
  */
 HRESULT  CDIL_CAN::DILC_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam)
 {
-	return m_pBaseDILCAN_Controller->CAN_GetErrorCount(sErrorCnt, nChannel, eContrParam);    
+    return m_pBaseDILCAN_Controller->CAN_GetErrorCount(sErrorCnt, nChannel, eContrParam);
 }
