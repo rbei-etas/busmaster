@@ -76,7 +76,6 @@ int CValueTable::Format(char* pcLine, fstream& fileInput)
     char acDesc[defVTAB_MAX_DESC_LEN];
     char table_Name[defVTAB_MAX_TNAM_LEN];
     bool true_end = true;
-    char pcTemp[defVTAB_MAX_TEMP_LEN];
     char* pcValue = acValue;
     char* pcDesc = acDesc;
     char* pcTab = table_Name;
@@ -119,10 +118,11 @@ int CValueTable::Format(char* pcLine, fstream& fileInput)
         //read the next line and proceed.
         if(true_end == false)
         {
+            string pcTemp;
             fileInput.getline(acLine, defVTAB_MAX_LINE_LEN);
-            strncpy(pcTemp, pcLine, sizeof(pcTemp));
-            strncat(pcTemp, acLine, sizeof(pcTemp)-strlen(pcTemp));
-            pcLine = pcTemp;
+            pcTemp = pcLine;
+            pcTemp += acLine;
+            strncpy(pcLine, pcTemp.c_str(), sizeof(pcLine));
 
             if(pcLine[strlen(pcLine)-1] == ';')
             {
