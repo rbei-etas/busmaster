@@ -58,12 +58,10 @@ CValueTable::~CValueTable()
 CValueTable& CValueTable::operator=(CValueTable& Tab)
 {
     m_TableName = Tab.m_TableName;
-    POSITION posMsg = Tab.m_values.GetHeadPosition();
-
-    while(posMsg != NULL)
+    list<CValueDescriptor>::iterator vDisp;
+    for(vDisp=Tab.m_values.begin(); vDisp!=Tab.m_values.end(); vDisp++)
     {
-        CValueDescriptor& vDisp = Tab.m_values.GetNext(posMsg);
-        m_values.AddTail(vDisp );
+        m_values.push_back(*vDisp);
     }
 
     return (*this);
@@ -113,7 +111,7 @@ void CValueTable::Format_ValueTable(char* pcLine, fstream& fileInput)
             valDesc.m_sDescriptor =pcToken;
             pcToken=strtok(NULL,",");
             valDesc.m_value.i64Value = atoi(pcToken);
-            m_values.AddTail(valDesc);
+            m_values.push_back(valDesc);
         }
     }
 }
@@ -125,19 +123,17 @@ void CValueTable::Format_ValueTable(char* pcLine, fstream& fileInput)
  *
  * writes the value tebles in the given list to the output file.
  */
-void CValueTable::writeValueTabToFile(fstream& fileOutput,CList<CValueTable,CValueTable&> &vTab)
+void CValueTable::writeValueTabToFile(fstream& fileOutput,list<CValueTable> &vTab)
 {
+    list<CValueTable>::iterator tab;
     //get value table.
-    POSITION pos = vTab.GetHeadPosition();
-
     //repeats till value tables exists in the list.
-    while(pos != NULL)
+    for(tab = vTab.begin(); tab != vTab.end(); tab++)
     {
         //write value table name to the o/p file.
-        CValueTable& tab = vTab.GetNext(pos);
-        fileOutput << "VAL_TABLE_ " << tab.m_TableName << " ";
+        fileOutput << "VAL_TABLE_ " << tab->m_TableName << " ";
         //writes descriptors values to the o/p file.
         CValueDescriptor desc;
-        desc.writeValuDescToFile (fileOutput,CSignal::SIG_TYPE_INT64,tab.m_values);
+        desc.writeValueDescToFile(fileOutput, CSignal::SIG_TYPE_INT64, tab->m_values);
     }
 }

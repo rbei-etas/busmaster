@@ -28,8 +28,6 @@
 #include <fstream>
 #include <list>
 #include <string>
-/* MFC includes */
-#include <afxtempl.h>
 
 /* Project includes */
 #include "Signal.h"
@@ -55,5 +53,5 @@ public:
     unsigned int    m_uiMsgID;
     unsigned int    m_ucLength;
     char            m_cFrameFormat;
-    CList<CSignal,CSignal&> m_listSignals;
+    list<CSignal> m_listSignals;
 };

@@ -60,19 +60,13 @@ CMessage::~CMessage()
  */
 CMessage& CMessage::operator=(CMessage& message)
 {
-    // if there are some elements in the signal list clear them first
-    if(!m_listSignals.IsEmpty())
-    {
-        m_listSignals.RemoveAll();
-    }
-
     // now copy the other elements of the new message to this
     m_sName = message.m_sName;
     m_sTxNode = message.m_sTxNode;
     m_cFrameFormat = message.m_cFrameFormat;
     m_ucLength = message.m_ucLength;
     m_uiMsgID = message.m_uiMsgID;
-    m_listSignals.AddTail(&message.m_listSignals);
+    m_listSignals = message.m_listSignals;
     return (*this);
 }
 
@@ -178,12 +172,11 @@ bool CMessage::writeMessageToFile( fstream& fileOutput)
     fileOutput << " " << m_sName.c_str();
     fileOutput << ": " << dec << m_ucLength;
     fileOutput << " " << m_sTxNode.c_str() << endl;
-    POSITION possig = m_listSignals.GetHeadPosition();
 
-    while(possig != NULL)
+    list<CSignal>::iterator sig;
+    for(sig=m_listSignals.begin(); sig!=m_listSignals.end(); sig++)
     {
-        CSignal& sig = m_listSignals.GetNext(possig);
-        bResult = bResult & sig.WriteSignaltofile(fileOutput);
+        bResult &= sig->WriteSignaltofile(fileOutput);
     }
 
     fileOutput << endl;

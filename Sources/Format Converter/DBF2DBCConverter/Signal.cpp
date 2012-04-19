@@ -46,7 +46,7 @@ CSignal::CSignal()
     m_fOffset = 0.0f;
     m_fScaleFactor = 1.0f;
     m_uiError = SIG_EC_NO_ERR;
-    m_listValueDescriptor.RemoveAll();
+    m_listValueDescriptor.clear();
 }
 
 /**
@@ -67,11 +67,6 @@ CSignal::~CSignal()
  */
 CSignal& CSignal::operator=(CSignal& signal)
 {
-    if(!m_listValueDescriptor.IsEmpty())
-    {
-        m_listValueDescriptor.RemoveAll(); // clear the list first
-    }
-
     // copy all the data members except the list
     m_sName = signal.m_sName;
     m_sMultiplex = signal.m_sMultiplex;
@@ -90,7 +85,7 @@ CSignal& CSignal::operator=(CSignal& signal)
     m_sNode = signal.m_sNode;
     m_uiError = signal.m_uiError;
     //  now copy the list
-    m_listValueDescriptor.AddTail(&signal.m_listValueDescriptor);
+    m_listValueDescriptor = signal.m_listValueDescriptor;
     return (*this);
 }
 
@@ -137,7 +132,7 @@ int CSignal::Format(char* pcLine)
     pcToken = strtok(NULL,",");
     m_ucWhichByte = atoi(pcToken);
     // get start bit
-    UCHAR ucStartBit;
+    unsigned int ucStartBit;
     pcToken = strtok(NULL,",");
     m_ucStartBit = atoi(pcToken);
     ucStartBit = m_ucStartBit + (m_ucWhichByte - 1) * 8;
@@ -158,9 +153,9 @@ int CSignal::Format(char* pcLine)
 
     if(m_ucDataFormat == '0')
     {
-        UINT nByte = (m_ucLength/8) + ((m_ucLength % 8)?1:0);
-        UINT nStartBit = (m_ucWhichByte - nByte) * 8;
-        UINT nBitSize = m_ucLength - (8 * (nByte - 1))+ m_ucStartBit;
+        unsigned int nByte = (m_ucLength/8) + ((m_ucLength % 8)?1:0);
+        unsigned int nStartBit = (m_ucWhichByte - nByte) * 8;
+        unsigned int nBitSize = m_ucLength - (8 * (nByte - 1))+ m_ucStartBit;
 
         if(nBitSize == 0)
         {
@@ -297,12 +292,9 @@ unsigned int CSignal::Validate()
     }
 
     // correct value descriptors according to type of signal
-    POSITION posValDesc = m_listValueDescriptor.GetHeadPosition();
-
-    while(posValDesc != NULL)
+    list<CValueDescriptor>::iterator rValDesc;
+    for(rValDesc=m_listValueDescriptor.begin(); rValDesc!=m_listValueDescriptor.end(); rValDesc++)
     {
-        CValueDescriptor& rValDesc = m_listValueDescriptor.GetNext(posValDesc);
-
         switch(m_ucType)
         {
             case SIG_TYPE_INT:
@@ -314,7 +306,7 @@ unsigned int CSignal::Validate()
             case SIG_TYPE_BOOL:
             case SIG_TYPE_UINT:
             case SIG_TYPE_UINT64:
-                rValDesc.m_value.ui64Value = (ULONGLONG)rValDesc.m_value.i64Value;
+                rValDesc->m_value.ui64Value = (unsigned long long int)rValDesc->m_value.i64Value;
                 break;
 
             default:

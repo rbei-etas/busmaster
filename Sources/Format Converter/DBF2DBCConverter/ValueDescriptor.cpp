@@ -125,29 +125,26 @@ int CValueDescriptor::Format(char* pcLine)
  *
  * Writes the Value Descriptor in the CANoe format in the output file
  */
-void CValueDescriptor::writeValuDescToFile(fstream& fileOutput,char m_ucType,CList<CValueDescriptor,CValueDescriptor&> &m_listValueDescriptor)
+void CValueDescriptor::writeValueDescToFile(fstream& fileOutput,char m_ucType,list<CValueDescriptor> &m_listValueDescriptor)
 {
-    POSITION posValDesc = m_listValueDescriptor.GetHeadPosition();
-
-    while(posValDesc != NULL)
+    list<CValueDescriptor>::iterator rValDesc;
+    for(rValDesc=m_listValueDescriptor.begin(); rValDesc!=m_listValueDescriptor.end(); rValDesc++)
     {
-        CValueDescriptor& rValDesc = m_listValueDescriptor.GetNext(posValDesc);
-
         switch(m_ucType)
         {
             case CSignal::SIG_TYPE_INT:
             case CSignal::SIG_TYPE_FLOAT:
             case CSignal::SIG_TYPE_DOUBLE:
             case CSignal::SIG_TYPE_INT64:
-                fileOutput << dec << rValDesc.m_value.i64Value;
-                fileOutput << " \"" << rValDesc.m_sDescriptor.c_str() << "\" ";
+                fileOutput << dec << rValDesc->m_value.i64Value;
+                fileOutput << " \"" << rValDesc->m_sDescriptor.c_str() << "\" ";
                 break;
 
             case CSignal::SIG_TYPE_BOOL:
             case CSignal::SIG_TYPE_UINT:
             case CSignal::SIG_TYPE_UINT64:
-                fileOutput << dec << rValDesc.m_value.ui64Value;
-                fileOutput << " \"" << rValDesc.m_sDescriptor.c_str() << "\" ";
+                fileOutput << dec << rValDesc->m_value.ui64Value;
+                fileOutput << " \"" << rValDesc->m_sDescriptor.c_str() << "\" ";
                 break;
 
             default:

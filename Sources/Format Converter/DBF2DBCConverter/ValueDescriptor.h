@@ -28,8 +28,6 @@
 #include <fstream>
 #include <list>
 #include <string>
-/* MFC includes */
-#include <afxtempl.h>
 
 /* Project includes */
 #include "Definitions.h"
@@ -43,7 +41,7 @@ public:
     virtual ~CValueDescriptor();
     int Format(char* pcLine);
     //  CValueDescriptor& operator=(CValueDescriptor& valDesc);
-    void writeValuDescToFile(fstream& fileOutput,char m_ucType,CList<CValueDescriptor,CValueDescriptor&> &m_listValueDescriptor);
+    void writeValueDescToFile(fstream& fileOutput, char m_ucType, list<CValueDescriptor> &m_listValueDescriptor);
     string      m_sDescriptor;
     SIG_VALUE   m_value;
 };
