@@ -1128,7 +1128,7 @@ void CConverter::CreateLogFile(fstream& fileLog)
 
                 fileLog << "\tSIG_NAME: " << sig->m_acName.c_str();
                 sig->GetErrorString(str);
-                fileLog << ", " << str;
+                fileLog << ", STATUS: " << str;
                 sig->GetErrorAction(str);
                 fileLog << ", ACTION: " << str << endl;
             }
@@ -1158,7 +1158,7 @@ void CConverter::CreateLogFile(fstream& fileLog)
 
             fileLog << "\tSIG_NAME: " << sig->m_acName.c_str();
             sig->GetErrorString(str);
-            fileLog << ", " << str.c_str();
+            fileLog << ", STATUS: " << str.c_str();
             sig->GetErrorAction(str);
             fileLog << ", ACTION: " << str.c_str() << endl;
         }

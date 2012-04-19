@@ -376,11 +376,11 @@ void CSignal::GetErrorString(string& str)
             break;
 
         case 1:
-            str = "ERROR:Invalid signal length";
+            str = "Invalid signal length";
             break;
 
         case 2:
-            str = "ERROR:Invalid start bit";
+            str = "Invalid start bit";
             break;
     }
 }
