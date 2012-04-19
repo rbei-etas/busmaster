@@ -26,7 +26,12 @@
     <section>
       <title>Configuration</title>
       <p>Doxygen requires no specific configuration beside the files provided in the <filepath>BUSMASTER\Documents\5 Source Code Documentation\Doxyfiles\*</filepath>.</p>
-      <p>It is helpful to add Doxygen to the list of external tools in the <uicontrol>tools</uicontrol> menu within the Visual C++ IDE.</p>
+      <p>It is helpful to add Doxygen to the list of external tools in the <uicontrol>Tools</uicontrol> menu within the Visual C++ IDE.</p>
+      <p>For BUSMASTER we defined two specific tags (see below for examples):</p>
+      <ul>
+        <li><cmdname>copyright</cmdname>: This contains a copyright note</li>
+        <li><cmdname>req</cmdname>: This contains a requirement tag and a brief tag description. The requirement tag must be character-identical to the tags in the requirement specification.</li>
+      </ul>
     </section>
     <section>
       <title>Usage</title>
@@ -35,7 +40,7 @@
       <codeblock>/**
  * \file      &lt;filename&gt;
  * \brief     &lt;brief description&gt;
- * \author    &lt;author&gt;                    [if there is only one author]
+ * \authors   &lt;author&gt;                    [if there is only one author]
  * \authors   &lt;author 1&gt;, &lt;author 2&gt;, ... [if there are multiple authors]
  * \copyright Copyright (c) 2011, Robert Bosch Engineering
  *            and Business Solutions. All rights reserved.
@@ -45,9 +50,10 @@
       <p>The preferred Doxygen function header contains:</p>
       <codeblock>/**
  * \brief         &lt;brief description&gt;
- * \param[in]     &lt;param name&gt; &lt;description&gt; [if thats inbound]
- * \param[out]    &lt;param name&gt; &lt;description&gt; [if thats outbound]
- * \param[in,out] &lt;param name&gt; &lt;description&gt; [if thats in- and outbound]
+ * \req           &lt;req tag&gt; - &lt;brief tag description&gt;
+ * \param[in]     &lt;param name&gt; &lt;description&gt; [if that is inbound]
+ * \param[out]    &lt;param name&gt; &lt;description&gt; [if that is outbound]
+ * \param[in,out] &lt;param name&gt; &lt;description&gt; [if that is bidirectional]
  * \param         &lt;param name&gt; &lt;description&gt; [if direction is unspecified]
  * \return        &lt;description&gt;
  *
@@ -62,6 +68,7 @@ void foobar(void)</codeblock>
       <p>Detailed example:</p>
       <codeblock>/**
  * \brief     Converter from foo to bar
+ * \req       RS_12_34 - Converter from foo to bar
  * \param[in] fooFile Input file in foo format
  * \param[in] barFile Output file in bar format
  * \return    Result code
