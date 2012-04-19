@@ -274,11 +274,11 @@
 [END_MSG]
 
 [START_MSG] Message_32_4,804,4,0,0,S,
-[START_SIGNALS] Signal_32_Motorola_Float,32,4,0,F,0,0,0,0,1,,,
+[START_SIGNALS] Signal_32_Motorola_Float,32,4,0,F,1,0,0,0,1,,,
 [END_MSG]
 
 [START_MSG] Message_32_1,801,4,0,1,S,
-[START_SIGNALS] Signal_32_Intel_Float,32,1,0,F,0,0,1,0,1,,,
+[START_SIGNALS] Signal_32_Intel_Float,32,1,0,F,1,0,1,0,1,,,
 [END_MSG]
 
 [END_NOT_SUPPORTED]
