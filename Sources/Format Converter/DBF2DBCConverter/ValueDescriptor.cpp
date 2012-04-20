@@ -128,6 +128,7 @@ int CValueDescriptor::Format(char* pcLine)
 void CValueDescriptor::writeValueDescToFile(fstream& fileOutput,char m_ucType,list<CValueDescriptor> &m_listValueDescriptor)
 {
     list<CValueDescriptor>::iterator rValDesc;
+
     for(rValDesc=m_listValueDescriptor.begin(); rValDesc!=m_listValueDescriptor.end(); rValDesc++)
     {
         switch(m_ucType)

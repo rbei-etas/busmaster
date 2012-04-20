@@ -104,7 +104,10 @@ BOOL CFormatConverterWnd::Create(CWnd* pParentWnd , DWORD dwStyle , DWORD dwExSt
 HRESULT CFormatConverterWnd::LoadConverters()
 {
     if (m_pouPluginManager != NULL)
+    {
         delete m_pouPluginManager;
+    }
+
     m_pouPluginManager = new CPluginManagerDLL();
     m_pouPluginManager->LoadConvertersFromFolder();
     INT nCount = m_pouPluginManager->m_ConverterList.GetCount();

@@ -172,8 +172,8 @@ bool CMessage::writeMessageToFile( fstream& fileOutput)
     fileOutput << " " << m_sName.c_str();
     fileOutput << ": " << dec << m_ucLength;
     fileOutput << " " << m_sTxNode.c_str() << endl;
-
     list<CSignal>::iterator sig;
+
     for(sig=m_listSignals.begin(); sig!=m_listSignals.end(); sig++)
     {
         bResult &= sig->WriteSignaltofile(fileOutput);
