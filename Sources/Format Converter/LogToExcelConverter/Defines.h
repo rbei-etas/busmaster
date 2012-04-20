@@ -1,60 +1,29 @@
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  common.h
-  Description   :  
-  $Log:   X:/Archive/Sources/Application/common.h_v  $
- * 
- *    Rev 1.10   06 Sep 2011 19:55:26   CANMNTTM
- * CANvas name is replaced with BUSMATER
- * 
- *    Rev 1.9   15 Apr 2011 20:02:22   CANMNTTM
- * Added RBEI Copyright information.
- * 
- *    Rev 1.8   29 Mar 2011 12:01:08   CANMNTTM
- * Updated to have show/hide functionality for all message windows and also disabling buffer updates when a message window is hidden.
- * 
- *    Rev 1.7   02 Mar 2011 15:38:32   CANMNTTM
- * 1. Support to J1939 Nodesimulation
- * 3. Support to J1939 Message window
- * 2. Removed unwanted macros
- * 
- *    Rev 1.6   22 Sep 2010 15:22:48   CANMNTTM
- * Old configuration is loaded according to the 
- * license validator.
- * 
- *    Rev 1.5   16 Sep 2010 15:51:56   CANMNTTM
- * Added new definition
- * eWINID_MSG_WND_GET_BUFFER_DETAILS.
- * 
- *    Rev 1.4   13 Sep 2010 10:30:20   CANMNTTM
- * Added new definition WM_UPDATE_TREE_ITEMS_POS.
- * 
- *    Rev 1.3   06 Sep 2010 19:56:16   CANMNTTM
- * Added new definition
- * WM_UPDATE_MSG_INTRP_WND_PLC
- * 
- *    Rev 1.2   03 Sep 2010 19:54:50   CANMNTTM
- * 1. Message WM_ENABLE_MSGWND_FILTER
- * has been added.
- * 
- *    Rev 1.1   01 Sep 2010 21:28:44   CANMNTTM
- * Three more message 
- * 1. eWINID_MSG_WND_SET_CONFIG_DATA
- * 2. eWINID_MSG_WND_GET_CONFIG_DATA
- * 3. eWINID_MSG_WND_GET_CONFIG_SIZE
- * are added to load/save msg window configuration.
- * 
- * 
- *    Rev 1.0   16 Aug 2010 21:20:50   rac2kor
- *  
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-  Author(s)     :  
-  Date Created  :  
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
-#if !defined COMMON_DEFS_H__INCLUDED_
-#define COMMON_DEFS_H__INCLUDED_
+/**
+ * \file      Defines.h
+ * \brief     Definitions
+ * \authors   Tobias Lorenz
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Definitions.
+ */
+
+#pragma once
+
 typedef enum
 {
 	LOAD_CONFIG,
@@ -192,6 +161,3 @@ typedef enum eTYPE_BUS
     BUS_TOTAL,
     BUS_INVALID
 } ETYPE_BUS;
-
-
-#endif // COMMON_DEFS_H__INCLUDED_
