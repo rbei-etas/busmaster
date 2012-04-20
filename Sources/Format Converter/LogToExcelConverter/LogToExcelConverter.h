@@ -24,23 +24,34 @@
 
 #pragma once
 
+#define VC_EXTRALEAN		/* Exclude rarely-used stuff from Windows headers */
+
+/* MFC includes */
+#include <afxwin.h>         /* MFC core and standard components */
+#include <afxext.h>         /* MFC extensions */
+#include <afxdllx.h>        /* MFC DLL extension */
+
+/* C++ includes */
+#include <string>
+
 /* Project includes */
 #include "../FormatConverterApp/BaseConverter.h"
 
+using namespace std;
+
 class CLogToExcelConverter : public CBaseConverter
 {
-    CString m_omstrConversionStatus;
     HRESULT m_hResult;
 public:
     CLogToExcelConverter(void);
+    ~CLogToExcelConverter(void);
     virtual HRESULT GetInputFileFilters(string&, string&);
     virtual HRESULT GetOutputFileFilters(string&, string& );
     virtual HRESULT ConvertFile(string& chInputFile, string& chOutputFile);
-    virtual HRESULT GetConverterName(string& strConverterName); 
+    virtual HRESULT GetConverterName(string& strConverterName);
     virtual HRESULT GetErrorStatus(HRESULT hResult, string& omstrStatus);
     virtual HRESULT GetLastConversionStatus(HRESULT& hResult, string& omstrStatus);
     virtual HRESULT GetHelpText(string& pchHelpText);
     virtual BOOL bHaveOwnWindow();
     virtual HRESULT GetPropertyPage(CPropertyPage*& pPage);
-    ~CLogToExcelConverter(void);
 };

@@ -22,8 +22,6 @@
  * Implementation of the CExportLogFileDlg class.
  */
 
-#include "stdafx.h"
-
 /* Project includes */
 #include "Defines.h"
 #include "ExportLogFileDlg.h"
