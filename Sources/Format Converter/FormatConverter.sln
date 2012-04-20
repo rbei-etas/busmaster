@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LogAscConverter", "LogAscCo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CAPL2CConverter", "CAPL2CConverter\CAPL2CConverter.vcproj", "{8A7CA724-4B42-4DCA-9237-0AF94AA8B35F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LogToExcelConverter", "LogToExcelConverter\LogToExcelConverter.vcproj", "{77E7E3DA-F9A1-4983-B094-ED128B81E5FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -43,6 +45,10 @@ Global
 		{8A7CA724-4B42-4DCA-9237-0AF94AA8B35F}.Debug|Win32.Build.0 = Debug|Win32
 		{8A7CA724-4B42-4DCA-9237-0AF94AA8B35F}.Release|Win32.ActiveCfg = Release|Win32
 		{8A7CA724-4B42-4DCA-9237-0AF94AA8B35F}.Release|Win32.Build.0 = Release|Win32
+		{77E7E3DA-F9A1-4983-B094-ED128B81E5FF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{77E7E3DA-F9A1-4983-B094-ED128B81E5FF}.Debug|Win32.Build.0 = Debug|Win32
+		{77E7E3DA-F9A1-4983-B094-ED128B81E5FF}.Release|Win32.ActiveCfg = Release|Win32
+		{77E7E3DA-F9A1-4983-B094-ED128B81E5FF}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

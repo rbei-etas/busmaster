@@ -1,34 +1,31 @@
-/*
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+/******************************************************************************
+  Project       :  Auto-SAT_Tools
+  FileName      :  ExportLogFileDlg.cpp
+  Description   :  
+  $Log:   X:/Archive/Sources/Application/ExportLogFileDlg.cpv  $
+   
+      Rev 1.2   09 Jun 2011 11:52:38   CANMNTTM
+    
+   
+      Rev 1.1   15 Apr 2011 20:00:04   CANMNTTM
+   Added RBEI Copyright information.
 
-/**
- * \file      ExportLogFileDlg.cpp
- * \author    Pradeep Kadoor
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
- */
+  Author(s)     :  Pradeep Kadoor
+  Date Created  :  15/04/2011
+  Modified By   :  
+  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
+******************************************************************************/
 // ExportLogFileDlg.cpp : implementation file
 //
 
 #include "stdafx.h"
 #include "resource.h"
 #include "ExportLogFileDlg.h"
-#include "Common.h"
+#include "Defines.h"
 
-IMPLEMENT_DYNAMIC(CExportLogFileDlg, CDialog)
+IMPLEMENT_DYNAMIC(CExportLogFileDlg, CPropertyPage)
 CExportLogFileDlg::CExportLogFileDlg(ETYPE_BUS eBus, CWnd* pParent /*=NULL*/)
-	: CDialog(CExportLogFileDlg::IDD, pParent)
+	: CPropertyPage(CExportLogFileDlg::IDD)
 	, m_omStrLogFileName(_T(""))
 	, m_omStrCSVFileName(_T(""))
 {
@@ -51,19 +48,20 @@ CExportLogFileDlg::~CExportLogFileDlg()
 
 void CExportLogFileDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_EDIT_LOG_FILE_NAME, m_omStrLogFileName);
-	DDX_Text(pDX, IDC_EDIT_CSV_FILE_NAME, m_omStrCSVFileName);
-	DDX_Control(pDX, IDC_LST_AVAILABLE, m_omAvailableList);
-	DDX_Control(pDX, IDC_LST_SELECTED, m_omSelectedList);
-	DDX_Control(pDX, IDC_BUTTON_SELECTALL, m_omSelectAllFields);
-	DDX_Control(pDX, IDC_BUTTON_SELECTONE, m_omSelectOneField);
-	DDX_Control(pDX, IDC_BUTTON_REMOVEONE, m_omRemoveOneField);
-	DDX_Control(pDX, IDC_BUTTON_REMOVEALL, m_omRemoveAllFields);
+    CPropertyPage::DoDataExchange(pDX);
+    DDX_Text(pDX, IDC_EDIT_LOG_FILE_NAME, m_omStrLogFileName);
+    DDX_Text(pDX, IDC_EDIT_CSV_FILE_NAME, m_omStrCSVFileName);
+    DDX_Control(pDX, IDC_LST_AVAILABLE, m_omAvailableList);
+    DDX_Control(pDX, IDC_LST_SELECTED, m_omSelectedList);
+    DDX_Control(pDX, IDC_BUTTON_SELECTALL, m_omSelectAllFields);
+    DDX_Control(pDX, IDC_BUTTON_SELECTONE, m_omSelectOneField);
+    DDX_Control(pDX, IDC_BUTTON_REMOVEONE, m_omRemoveOneField);
+    DDX_Control(pDX, IDC_BUTTON_REMOVEALL, m_omRemoveAllFields);
+    DDX_Control(pDX, IDC_COMBO_BUSTYPE, m_omBusType);
 }
 
 
-BEGIN_MESSAGE_MAP(CExportLogFileDlg, CDialog)
+BEGIN_MESSAGE_MAP(CExportLogFileDlg, CPropertyPage)
 	ON_BN_CLICKED(IDC_BTN_LOG_BROWSE, OnBnClickedBtnLogBrowse)
 	ON_BN_CLICKED(IDC_BTN_CSV_BROWSE, OnBnClickedBtnCsvBrowse)
 	ON_BN_CLICKED(IDC_BUTTON_SELECTALL, OnBnClickedButtonSelectall)
@@ -74,6 +72,7 @@ BEGIN_MESSAGE_MAP(CExportLogFileDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON_SELECTONE, OnBnClickedButtonSelectone)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVEONE, OnBnClickedButtonRemoveone)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVEALL, OnBnClickedButtonRemoveall)
+    ON_CBN_SELCHANGE(IDC_COMBO_BUSTYPE, OnCbnSelchangeComboBustype)
 END_MESSAGE_MAP()
 
 
@@ -108,6 +107,14 @@ void CExportLogFileDlg::OnBnClickedBtnLogBrowse()
     {
         // Save the selected path
         m_omStrLogFileName = omSaveAsDlg.GetPathName();
+        
+        INT nIndex = m_omStrLogFileName.ReverseFind('.');
+        if ( nIndex >= 0)
+        {
+            CString omStrOutputFile = m_omStrLogFileName.Left(nIndex);
+            omStrOutputFile += ".xls";
+            m_omStrCSVFileName = omStrOutputFile;
+        }
         UpdateData( FALSE );
     }
 }
@@ -170,9 +177,10 @@ void CExportLogFileDlg::vEnableDisableControls()
 }
 void CExportLogFileDlg::vPopulateAvailableList()
 {
-    USES_CONVERSION;
-
+    
 	// Insert filed text
+    m_omAvailableList.ResetContent();
+    m_omSelectedList.ResetContent();
     for( UINT unIndex = 0; unIndex < m_unNoOfFileds; unIndex++)
     {
         m_omAvailableList.InsertString( unIndex, m_pacFields[unIndex]);
@@ -182,8 +190,7 @@ void CExportLogFileDlg::vPopulateAvailableList()
 
 void CExportLogFileDlg::OnBnClickedButtonSelectall()
 {
-    USES_CONVERSION;
-
+    
 	int nSelectedItem = m_omAvailableList.GetCurSel();
 	DWORD_PTR nFieldIndex;
 	if( nSelectedItem != -1 )
@@ -209,25 +216,24 @@ void CExportLogFileDlg::OnBnClickedButtonSelectall()
 }
 BOOL CExportLogFileDlg::OnInitDialog()
 {   
-    CString omTitle("Export Log File - ");
+    CPropertyPage::OnInitDialog();
+    CString omStrBus;
     if (m_eBus == CAN)
     {
-        omTitle += _T("CAN");
+        omStrBus = "CAN";
     }
     else if (m_eBus == J1939)
     {
-        omTitle += _T("J1939");
+        omStrBus = "J1939";
     }
-    SetWindowText(omTitle);
-	CDialog::OnInitDialog();
-	vPopulateAvailableList();
+    m_omBusType.SelectString(0, omStrBus);
+    vPopulateAvailableList();
 	vEnableDisableControls();
 	return TRUE;  
 }
 void CExportLogFileDlg::OnBnClickedConvert()
 {
-    USES_CONVERSION;
-
+    
 	// Log File name and Excel File name
 
 	
@@ -235,7 +241,9 @@ void CExportLogFileDlg::OnBnClickedConvert()
 	CString strCSVFileName = m_omStrCSVFileName;  
 
 
-	// filename have been entered	
+	// filename have been entered
+
+	
 	if( strLogFileName != "" && strCSVFileName != "" )
 	{
 		if( m_omSelectedList.GetCount() != 0 ) 
@@ -243,19 +251,6 @@ void CExportLogFileDlg::OnBnClickedConvert()
 			//fields have been selected
 			//open the files
             CLogToExcel oExport( strLogFileName.GetBuffer(MAX_PATH),strCSVFileName.GetBuffer(MAX_PATH), m_unNoOfFileds, m_pacFields);
-
-			if (!oExport.bIsValidFile())
-			{
-				MessageBox(EXPORTTOEXCEL_INVALIDFILE,APPLICATION_NAME,MB_OK);
-				return;
-			}
-
-			// Check if all files are opened an d ready to convert
-			if (!oExport.bIsFilesOpened())
-			{
-				return;
-			}
-
 			//set the selected fields
 			oExport.fnSetSelectedFields( &(this->m_omSelectedList) );
 			//convert log file to excel file
@@ -295,8 +290,7 @@ void CExportLogFileDlg::OnLbnSelchangeLstSelected()
 
 void CExportLogFileDlg::OnBnClickedButtonSelectone()
 {
-    USES_CONVERSION;
-
+    
 	// Get the selected item index
     int nSelectedItem = m_omAvailableList.GetCurSel();
     // If it is valid
@@ -317,7 +311,7 @@ void CExportLogFileDlg::OnBnClickedButtonSelectone()
             // Add it in to the selected list
             int nNewItemIndex = m_omSelectedList.InsertString(
                                            m_omSelectedList.GetCount(),
-                                           m_pacFields[ nFieldIndex ]);
+                                           m_pacFields[ nFieldIndex ] );
             // Set Field index as item data
             m_omSelectedList.SetItemData( nNewItemIndex, nFieldIndex );
             // Set the selection
@@ -331,8 +325,7 @@ void CExportLogFileDlg::OnBnClickedButtonSelectone()
 
 void CExportLogFileDlg::OnBnClickedButtonRemoveone()
 {
-    USES_CONVERSION;
-
+    
 	// Get the selected item index
     int nSelectedItem = m_omSelectedList.GetCurSel();
     // If it is a valid index
@@ -381,8 +374,7 @@ void CExportLogFileDlg::OnBnClickedButtonRemoveone()
 
 void CExportLogFileDlg::OnBnClickedButtonRemoveall()
 {
-    USES_CONVERSION;
-
+    
 	int nSelectedItem = m_omSelectedList.GetCurSel();
 	DWORD_PTR nFieldIndex;
 	if( nSelectedItem != -1 )
@@ -425,4 +417,29 @@ void CExportLogFileDlg::OnBnClickedButtonRemoveall()
 		}
     }
 	vEnableDisableControls();
+}
+
+void CExportLogFileDlg::OnCbnSelchangeComboBustype()
+{
+    CString omStrBus;
+    m_omBusType.GetWindowText(omStrBus);
+    CString omTitle("Export Log File - ");
+    if( omStrBus == "CAN")
+    {
+        omTitle += _T("CAN");
+        m_eBus = CAN;
+        m_pacFields = (CHAR_ARRAY_20*) acFields_CAN;
+        m_unNoOfFileds = defNO_OF_FIELDS_CAN;
+    }
+    else if ( omStrBus == "J1939")
+    {
+        omTitle += _T("J1939");
+        m_eBus = J1939;
+        m_pacFields = (CHAR_ARRAY_20*)acFields_J1939;
+        m_unNoOfFileds = defNO_OF_FIELDS_J1939;
+    }
+    SetWindowText(omTitle);
+	vPopulateAvailableList();
+	vEnableDisableControls();
+
 }
