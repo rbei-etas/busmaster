@@ -1,23 +1,28 @@
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  LogToExcel.h
-  Description   :  
-  $Log:   X:/Archive/Sources/Application/LogToExcel.h_v  $
- * 
- *    Rev 1.2   09 Jun 2011 11:52:38   CANMNTTM
- *  
- * 
- *    Rev 1.1   15 Apr 2011 20:01:00   CANMNTTM
- * Added RBEI Copyright information.
-  
-  Author(s)     :  Pradeep Kadoor
-  Date Created  :  15/04/2011
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
- ******************************************************************************/
-#ifndef __LOGTOEXCEL_H
-#define __LOGTOEXCEL_H
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
+/**
+ * \file      LogToExcel.h
+ * \brief     Definition of CLogToExcel class
+ * \authors   Pradeep Kadoor, Tobias Lorenz
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Definition of the CLogToExcel class.
+ */
+
+#pragma once
 
 #define defNO_OF_FIELDS_CAN   7
 #define defNO_OF_FIELDS_J1939 11
@@ -86,5 +91,3 @@ private:
 	void vPrintFields();
 	BOOL m_bFilesOpened;	
 };
-
-#endif;

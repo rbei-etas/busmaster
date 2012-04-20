@@ -1,32 +1,32 @@
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  LogToExcel.cpp
-  Description   :  
-  $Log:   X:/Archive/Sources/Application/LogToExcel.cpv  $
-   
-      Rev 1.5   10 Jan 2012 17:27:40   CANMNTTM
-   End of line check is added. This is to avoid the crash if the header is in the log is without asteriks.
-   
-      Rev 1.4   06 Sep 2011 19:55:24   CANMNTTM
-   CANvas name is replaced with BUSMATER
-   
-      Rev 1.3   09 Jun 2011 18:03:48   CANMNTTM
-    
-   
-      Rev 1.2   09 Jun 2011 11:28:06   CANMNTTM
-    
-   
-      Rev 1.1   15 Apr 2011 20:01:00   CANMNTTM
-   Added RBEI Copyright information.
-  
-  Author(s)     :  Pradeep Kadoor
-  Date Created  :  15/04/2011
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
- ******************************************************************************/
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * \file      LogToExcel.cpp
+ * \brief     Definition of CLogToExcel class
+ * \authors   Pradeep Kadoor, Tobias Lorenz
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Definition of the CLogToExcel class.
+ */
+
 #include "stdafx.h"
-#include "LogToExcel.h"
+
+/* Project includes */
 #include "Defines.h"
+#include "LogToExcel.h"
 
 //**************************************************************************************************
 // Function Name        : fnSetFields

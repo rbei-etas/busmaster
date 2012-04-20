@@ -1,8 +1,36 @@
-// LogToExcelConverter.cpp : Defines the initialization routines for the DLL.
-//
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * \file      LogToExcelConverter.cpp
+ * \brief     Definition of CLogToExcelConverter class
+ * \authors   Pradeep Kadoor, Tobias Lorenz
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Defines the initialization routines for the DLL.
+ */
 
 #include "stdafx.h"
+
+/* MFC includes*/
 #include <afxdllx.h>
+
+/* Project includes */
+#include "ExportLogFileDlg.h"
+#include "LogToExcelConverter.h"
+
 #ifdef _MANAGED
 #error Please read instructions in LogToExcelConverter.cpp to compile with /clr
 // If you want to add /clr to your project you must do the following:
@@ -13,11 +41,6 @@
 //			#include <afxdllx.h>
 #endif
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-#include "ExportLogFileDlg.h"
-#include "LogToExcelConverter.h"
 static AFX_EXTENSION_MODULE LogToExcelConverterDLL = { NULL, NULL };
 
 #ifdef _MANAGED
@@ -76,6 +99,11 @@ extern "C" __declspec(dllexport) HRESULT GetBaseConverter(CBaseConverter*& pouCo
 CLogToExcelConverter::CLogToExcelConverter(void)
 {
 }
+
+CLogToExcelConverter::~CLogToExcelConverter(void)
+{
+};
+
 HRESULT CLogToExcelConverter::GetHelpText(string&)
 {
     return S_FALSE;
@@ -109,9 +137,6 @@ BOOL CLogToExcelConverter::bHaveOwnWindow()
 {
     return TRUE;
 }
-CLogToExcelConverter::~CLogToExcelConverter(void)
-{
-};
 
 HRESULT CLogToExcelConverter::GetPropertyPage(CPropertyPage*& pPage)
 {
