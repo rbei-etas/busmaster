@@ -195,6 +195,68 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\Asc_Log_Lexer.l"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="..\..\..\Tools\flex\flex.exe -i -oAsc_Log_Lexer.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
+						Outputs="ASC_LOG_Lexer.c"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="..\..\..\Tools\flex\flex.exe -i -L -oAsc_Log_Lexer.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
+						Outputs="ASC_LOG_Lexer.c"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\Asc_Log_Parser.y"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="..\..\..\Tools\bison\bison.exe -d --output=Asc_Log_Parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
+						Outputs="Asc_Log_Parser.c,Asc_Log_Parser.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="..\..\..\Tools\bison\bison.exe -d -l --output=Asc_Log_Parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
+						Outputs="Asc_Log_Parser.c,Asc_Log_Parser.h"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\AscLogConverter.cpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			>
+			<File
+				RelativePath=".\AscLogConverter.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Generated Files"
+			>
+			<File
 				RelativePath=".\Asc_Log_Lexer.c"
 				>
 				<FileConfiguration
@@ -235,68 +297,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\AscLogConverter.cpp"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
-			>
-			<File
 				RelativePath=".\Asc_Log_Parser.h"
 				>
 			</File>
-			<File
-				RelativePath=".\AscLogConverter.h"
-				>
-			</File>
 		</Filter>
-		<File
-			RelativePath=".\Asc_Log_Lexer.l"
-			>
-			<FileConfiguration
-				Name="Debug|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="..\..\..\Tools\flex\flex.exe -i -oAsc_Log_Lexer.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
-					Outputs="ASC_LOG_Lexer.c"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="..\..\..\Tools\flex\flex.exe -i -L -oAsc_Log_Lexer.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
-					Outputs="ASC_LOG_Lexer.c"
-				/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath=".\Asc_Log_Parser.y"
-			>
-			<FileConfiguration
-				Name="Debug|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="..\..\..\Tools\bison\bison.exe -d --output=Asc_Log_Parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
-					Outputs="Asc_Log_Parser.c,Asc_Log_Parser.h"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="..\..\..\Tools\bison\bison.exe -d -l --output=Asc_Log_Parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
-					Outputs="Asc_Log_Parser.c,Asc_Log_Parser.h"
-				/>
-			</FileConfiguration>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
