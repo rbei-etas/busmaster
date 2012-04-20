@@ -24,6 +24,9 @@
 
 #pragma once
 
+/* MFC includes */
+#include "afxwin.h"
+
 typedef enum
 {
 	LOAD_CONFIG,

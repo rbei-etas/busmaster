@@ -22,8 +22,6 @@
  * Definition of the CLogToExcel class.
  */
 
-#include "stdafx.h"
-
 /* Project includes */
 #include "Defines.h"
 #include "LogToExcel.h"

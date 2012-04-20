@@ -24,6 +24,18 @@
 
 #pragma once
 
+#define VC_EXTRALEAN		/* Exclude rarely-used stuff from Windows headers */
+
+/* MFC includes */
+#include <afxwin.h>         /* MFC core and standard components */
+#include <afxext.h>         /* MFC extensions */
+
+/* C++ includes */
+#include <map>
+#include <string>
+
+using namespace std;
+
 #define defNO_OF_FIELDS_CAN   7
 #define defNO_OF_FIELDS_J1939 11
 // Fileld names
@@ -77,8 +89,8 @@ public:
 
 private:
     CHAR_ARRAY_20* m_pacFields;
-	std::map<string, DWORD> pFieldMapTbl;
-    std::map<string, DWORD> :: const_iterator pMapValue;
+	map<string, DWORD> pFieldMapTbl;
+    map<string, DWORD> :: const_iterator pMapValue;
 	string m_strLogFileName;
 	string m_strExcelFileName;
 	FILE *m_pLogFile;

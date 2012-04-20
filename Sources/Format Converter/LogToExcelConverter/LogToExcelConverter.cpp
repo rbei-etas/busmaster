@@ -22,11 +22,6 @@
  * Defines the initialization routines for the DLL.
  */
 
-#include "stdafx.h"
-
-/* MFC includes*/
-#include <afxdllx.h>
-
 /* Project includes */
 #include "ExportLogFileDlg.h"
 #include "LogToExcelConverter.h"

@@ -24,13 +24,16 @@
 
 #pragma once
 
+#define VC_EXTRALEAN		/* Exclude rarely-used stuff from Windows headers */
+
+/* MFC includes */
+#include <afxwin.h>         /* MFC core and standard components */
+#include <afxext.h>         /* MFC extensions */
+
 /* Project includes */
 #include "Defines.h"
 #include "LogToExcel.h"
 #include "resource.h"
-
-/* MFC includes */
-#include "afxwin.h"
 
 class CExportLogFileDlg : public CPropertyPage
 {
