@@ -291,6 +291,7 @@ unsigned int CSignal::Validate()
 
     // correct value descriptors according to type of signal
     list<CValueDescriptor>::iterator rValDesc;
+
     for(rValDesc=m_listValueDescriptor.begin(); rValDesc!=m_listValueDescriptor.end(); rValDesc++)
     {
         switch(m_ucType)

@@ -59,6 +59,7 @@ CValueTable& CValueTable::operator=(CValueTable& Tab)
 {
     m_TableName = Tab.m_TableName;
     list<CValueDescriptor>::iterator vDisp;
+
     for(vDisp=Tab.m_values.begin(); vDisp!=Tab.m_values.end(); vDisp++)
     {
         m_values.push_back(*vDisp);
@@ -126,6 +127,7 @@ void CValueTable::Format_ValueTable(char* pcLine, fstream& fileInput)
 void CValueTable::writeValueTabToFile(fstream& fileOutput,list<CValueTable> &vTab)
 {
     list<CValueTable>::iterator tab;
+
     //get value table.
     //repeats till value tables exists in the list.
     for(tab = vTab.begin(); tab != vTab.end(); tab++)

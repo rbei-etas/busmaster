@@ -24,7 +24,7 @@
 
 #pragma once
 
-#define VC_EXTRALEAN		/* Exclude rarely-used stuff from Windows headers */
+#define VC_EXTRALEAN        /* Exclude rarely-used stuff from Windows headers */
 
 /* MFC includes */
 #include <afxwin.h>         /* MFC core and standard components */
@@ -42,26 +42,26 @@ using namespace std;
 
 typedef char CHAR_ARRAY_20[20];
 
-__declspec( selectany ) char acFields_CAN[defNO_OF_FIELDS_CAN][20] = {  "Time",                                                                
-                                                                "Direction",
-                                                                "Channel",
-                                                                "CAN ID",
-                                                                "Type",
-                                                                "DLC",
-                                                                "Data Bytes"
-                                                             };
+__declspec( selectany ) char acFields_CAN[defNO_OF_FIELDS_CAN][20] = {  "Time",
+        "Direction",
+        "Channel",
+        "CAN ID",
+        "Type",
+        "DLC",
+        "Data Bytes"
+                                                                     };
 __declspec( selectany ) char acFields_J1939[defNO_OF_FIELDS_J1939][20] = {  "Time",
-                                                                "Channel",
-                                                                "CAN ID",
-                                                                "PGN",
-                                                                "TYPE",
-                                                                "Source",
-                                                                "Destination", 
-                                                                "Priority",
-                                                                "Direction",
-                                                                "DLC",
-                                                                "Data Bytes"
-                                                             };
+        "Channel",
+        "CAN ID",
+        "PGN",
+        "TYPE",
+        "Source",
+        "Destination",
+        "Priority",
+        "Direction",
+        "DLC",
+        "Data Bytes"
+                                                                         };
 
 #define defSTR_CSV_DIALOG_CAPTION    _T("Select Export File")
 //#define defSTR_CSV_FORMAT_SPECIFIER  _T("Comma Separated Values format (*.xls)|*.xls||")
@@ -81,25 +81,25 @@ __declspec( selectany ) char acFields_J1939[defNO_OF_FIELDS_J1939][20] = {  "Tim
 class CLogToExcel
 {
 public:
-	CLogToExcel(string strLogFileName, string strExcelFileName, UINT unNoOfFields, CHAR_ARRAY_20* pacFields) ; // Open spreadsheet for reading and writing
-	~CLogToExcel(); 
-	BOOL bConvert();
-	void fnSetSelectedFields(CListBox *);
-	void fnSetFields();
+    CLogToExcel(string strLogFileName, string strExcelFileName, UINT unNoOfFields, CHAR_ARRAY_20* pacFields) ; // Open spreadsheet for reading and writing
+    ~CLogToExcel();
+    BOOL bConvert();
+    void fnSetSelectedFields(CListBox*);
+    void fnSetFields();
 
 private:
     CHAR_ARRAY_20* m_pacFields;
-	map<string, DWORD> pFieldMapTbl;
+    map<string, DWORD> pFieldMapTbl;
     map<string, DWORD> :: const_iterator pMapValue;
-	string m_strLogFileName;
-	string m_strExcelFileName;
-	FILE *m_pLogFile;
-	FILE *m_pExcelFile;
-	string m_strBuffer;
-	string m_strFieldBuffer;
+    string m_strLogFileName;
+    string m_strExcelFileName;
+    FILE* m_pLogFile;
+    FILE* m_pExcelFile;
+    string m_strBuffer;
+    string m_strFieldBuffer;
     UINT unSelectedField[defNO_OF_FIELDS_J1939];
-	UINT m_unNumOfFields;
-	UINT unGetLine();
-	void vPrintFields();
-	BOOL m_bFilesOpened;	
+    UINT m_unNumOfFields;
+    UINT unGetLine();
+    void vPrintFields();
+    BOOL m_bFilesOpened;
 };
