@@ -21,9 +21,11 @@
  *
  * Source file for Vector XL DIL functions
  */
-// CAN_Vector_XL.cpp : Defines the initialization routines for the DLL.
-//
 
+/* C++ includes */
+#include <string>
+
+/* Project includes */
 #include "CAN_Vector_XL_stdafx.h"
 #include "CAN_Vector_XL.h"
 #include "include/Error.h"
@@ -44,6 +46,8 @@
 
 #define USAGE_EXPORT
 #include "CAN_Vector_XL_Extern.h"
+
+using namespace std;
 
 // CCAN_Vector_XL
 
@@ -238,7 +242,7 @@ public:
 	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
 	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
 	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
-	HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength);
+	HRESULT CAN_GetLastErrorString(string& acErrorStr);
 	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
 	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -1621,23 +1625,17 @@ HRESULT CDIL_CAN_VectorXL::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
 }
 
 /**
-* \brief         Gets last occured error and puts inside acErrorStr.
-* \param[out]    acErrorStr, is CHAR contains error string
-* \param[in]     nLength, is INT
-* \return        S_OK for success, S_FALSE for failure
-* \authors       Arunkumar Karri
-* \date          07.10.2011 Created
-*/
-HRESULT CDIL_CAN_VectorXL::CAN_GetLastErrorString(CHAR* acErrorStr, INT nLength)
+ * \brief         Gets last occured error and puts inside acErrorStr.
+ * \param[out]    acErrorStr contains error string
+ * \return        S_OK for success, S_FALSE for failure
+ *
+ * Gets last occured error and puts inside acErrorStr.
+ */
+HRESULT CDIL_CAN_VectorXL::CAN_GetLastErrorString(string& acErrorStr)
 {
-    int nCharToCopy = (int) (strlen(sg_acErrStr));
-    if (nCharToCopy > nLength)
-    {
-        nCharToCopy = nLength;
-    }
-    strncpy(acErrorStr, sg_acErrStr, nCharToCopy);
+    acErrorStr = sg_acErrStr;
 
-    return S_OK;    
+    return S_OK;
 }
 
 /**

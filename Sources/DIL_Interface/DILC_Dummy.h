@@ -14,18 +14,27 @@
  */
 
 /**
- * \file      DIL_Interface/DILC_Dummy.h
+ * \file      DILC_Dummy.h
  * \brief     Declaration file for dummy DIL functions
  * \authors   Ratnadip Choudhury, Pradeep Kadoor, Arunkumar Karri
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Declaration file for dummy DIL functions
  */
+
+#pragma once
+
+/* C++ includes */
+#include <string>
+
+/* Project includes */
 #include "DataTypes/Base_WrapperErrorLogger.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/DIL_DataTypes.h"
 #include "BaseDIL_CAN_Controller.h"
-/* CDIL_CAN_DUMMY class definition */
+
+using namespace std;
+
 class CDIL_CAN_DUMMY : public CBaseDIL_CAN_Controller
 {
 public:
@@ -47,7 +56,7 @@ public:
 	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
 	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
 	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
-	HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength);
+	HRESULT CAN_GetLastErrorString(string& acErrorStr);
 	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
 	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);

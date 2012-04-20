@@ -22,8 +22,12 @@
  * Base class for CAN controller classes.
  */
 
-#if !defined BASEDIL_CAN_CONTROLLER_H__INCLUDED_
-#define BASEDIL_CAN_CONTROLLER_H__INCLUDED_
+#pragma once
+
+/* C++ includes */
+#include <string>
+
+using namespace std;
 
 class CBaseDIL_CAN_Controller
 {
@@ -45,7 +49,7 @@ public:
 	virtual HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo) = 0;
 	virtual HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo) = 0;
 	virtual HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo) = 0;
-	virtual HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength) = 0;
+	virtual HRESULT CAN_GetLastErrorString(string& acErrorStr) = 0;
 	virtual HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength) = 0;
 	virtual HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam) = 0;
 	virtual HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam) = 0;
@@ -58,5 +62,3 @@ public:
 	virtual HRESULT CAN_LoadDriverLibrary(void) = 0;
 	virtual HRESULT CAN_UnloadDriverLibrary(void) = 0;
 };
-
-#endif // BASEDIL_CAN_CONTROLLER_H__INCLUDED_

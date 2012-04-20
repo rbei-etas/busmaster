@@ -14,16 +14,16 @@
  */
 
 /**
- * \file      DIL_Interface/DIL_Interface.h
+ * \file      DIL_Interface.h
  * \brief     Definition file for CDILApp class.
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition file for CDILApp class.
  */
+
 #pragma once
 
-// CDILApp
 // See FrameProcessor.cpp for the implementation of this class
 //
 #ifndef __AFXWIN_H__

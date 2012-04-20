@@ -21,6 +21,10 @@
  * Implementation of CStub
  */
 
+/* C++ includes */
+#include <string>
+
+/* Project includes */
 #include "CAN_STUB_stdafx.h"
 #include "CAN_STUB.h"
 #include "include/Error.h"
@@ -28,7 +32,6 @@
 #include "Include/BaseDefs.h"
 #include "Include/CanUSBDefs.h"
 #include "Include/DIL_CommonDefs.h"
-
 #include "DataTypes/Base_WrapperErrorLogger.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "BusEmulation/BusEmulation.h"
@@ -45,6 +48,8 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
+
+using namespace std;
 
 //
 //	Note!
@@ -242,7 +247,7 @@ public:
 	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
 	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
 	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
-	HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength);
+	HRESULT CAN_GetLastErrorString(string& acErrorStr);
 	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
 	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -950,15 +955,9 @@ HRESULT CDIL_CAN_STUB::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
     return S_FALSE;
 }
 
-HRESULT CDIL_CAN_STUB::CAN_GetLastErrorString(CHAR* acErrorStr, int nLength)
+HRESULT CDIL_CAN_STUB::CAN_GetLastErrorString(string& acErrorStr)
 {
-    // TODO: Add your implementation code here
-    int nCharToCopy = (int) (strlen(sg_acErrStr));
-    if (nCharToCopy > nLength)
-    {
-        nCharToCopy = nLength;
-    }
-    strncpy(acErrorStr, sg_acErrStr, nCharToCopy);
+    acErrorStr = sg_acErrStr;
 
     return S_OK;
 }

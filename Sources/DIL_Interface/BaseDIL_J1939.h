@@ -1,37 +1,30 @@
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  BaseDIL_J1939.h
-  Description   :  
-  $Log:   X:/Archive/Sources/DIL/BaseDIL_J1939.h_v  $
- * 
- *    Rev 1.5   15 Apr 2011 18:48:18   CANMNTTM
- * Added RBEI Copyright information.
- * 
- *    Rev 1.4   02 Mar 2011 11:43:34   CANMNTTM
- *  
- * 
- *    Rev 1.3   22 Dec 2010 19:20:28   CANMNTTM
- * Added two more exported function
- * 1. SetCallBckFnPtrs
- * 2. GetTimeOut
- * 
- *    Rev 1.2   13 Dec 2010 18:46:38   CANMNTTM
- * New API DILIJ_bIsOnline(void) added.
- * 
- *    Rev 1.1   13 Dec 2010 16:41:32   CANMNTTM
- * Protocol of send message modified.
- * 
- *    Rev 1.0   06 Dec 2010 18:41:12   rac2kor
- *  
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-  Author(s)     :  Pradeep Kadoor
-  Date Created  :  02/12/2010
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
-#if !defined BASEDIL_IJ1939_H__INCLUDED_
-#define BASEDIL_IJ1939_H__INCLUDED_
+/**
+ * \file      BaseDIL_J1939.h
+ * \brief     Base class for CDIL_J1939 class.
+ * \author    Pradeep Kadoor
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Base class for J1939 classes.
+ */
 
+#pragma once
+
+/* Project includes */
 #include "Include/BaseDefs.h"
 #include "Datatypes/J1939_DataTypes.h"
 #include "DataTypes/MsgBufVSE.h"
@@ -308,5 +301,3 @@ public:
                                             void* pvClBckFn) = 0;
 
 };
-
-#endif //BASEDILI_J1939_H__INCLUDED_

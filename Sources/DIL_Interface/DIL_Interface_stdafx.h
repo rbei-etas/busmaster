@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      DIL_Interface/DIL_Interface_stdafx.h
+ * \file      DIL_Interface_stdafx.h
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
@@ -25,14 +25,12 @@
 
 #pragma once
 
-#ifndef _CRT_SECURE_NO_DEPRECATE
-#define _CRT_SECURE_NO_DEPRECATE
-#endif
+#define WIN32_LEAN_AND_MEAN /* Exclude rarely-used stuff from Windows headers */
 
-#define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
-// Windows Header Files:
+/* MFC includes */
 #include <afxwin.h>
-// C RunTime Header Files
+
+/* C includes */
 #include <stdlib.h>
 #include <malloc.h>
 #include <memory.h>
@@ -40,5 +38,3 @@
 #include <atlconv.h>
 #include <wtypes.h>
 #include <afxtempl.h>
-
-// TODO: reference additional headers your program requires here

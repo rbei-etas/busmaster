@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      DIL_Interface/DIL_CAN.cpp
+ * \file      DIL_CAN.cpp
  * \brief     Interface file for CAN BUS
  * \author    Pradeep Kadoor, Arunkumar Karri
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
@@ -516,9 +516,9 @@ HRESULT CDIL_CAN::DILC_GetVersionInfo(VERSIONINFO& sVerInfo)
  *
  * Call to get descriptive string of the last error occurred
  */
-HRESULT CDIL_CAN::DILC_GetLastErrorString(char acErrorStr[], int nLength)
+HRESULT CDIL_CAN::DILC_GetLastErrorString(string& acErrorStr)
 {
-    return m_pBaseDILCAN_Controller->CAN_GetLastErrorString(acErrorStr, nLength);
+    return m_pBaseDILCAN_Controller->CAN_GetLastErrorString(acErrorStr);
 }
 
 /**
