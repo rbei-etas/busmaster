@@ -114,6 +114,7 @@ Sources/BIN/*/ConverterPlugins/CAPL2CConverter.dll
 Sources/BIN/*/ConverterPlugins/DBC2DBFConverter.dll
 Sources/BIN/*/ConverterPlugins/DBF2DBCConverter.dll
 Sources/BIN/*/ConverterPlugins/LogAscConverter.dll
+Sources/BIN/*/ConverterPlugins/LogToExcelConverter.dll
 Sources/BIN/*/DIL_Interface.dll
 Sources/BIN/*/DIL_J1939.dll
 Sources/BIN/*/DMGraph.dll
