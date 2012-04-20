@@ -321,7 +321,7 @@ public:
 	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
 	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
 	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
-	HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength);
+	HRESULT CAN_GetLastErrorString(string& acErrorStr);
 	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
 	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -1731,14 +1731,11 @@ HRESULT CDIL_CAN_Kvaser::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
 }
 
 /**
-* \brief         Gets last occured error and puts inside acErrorStr.
-* \param[out]    acErrorStr, is CHAR contains error string
-* \param[in]     nLength, is INT
-* \return        S_OK for success, S_FALSE for failure
-* \authors       Arunkumar Karri
-* \date          12.10.2011 Created
-*/
-HRESULT CDIL_CAN_Kvaser::CAN_GetLastErrorString(CHAR* /*acErrorStr*/, INT /*nLength*/)
+ * \brief         Gets last occured error and puts inside acErrorStr.
+ * \param[out]    acErrorStr contains error string
+ * \return        S_OK for success, S_FALSE for failure
+ */
+HRESULT CDIL_CAN_Kvaser::CAN_GetLastErrorString(string& /*acErrorStr*/)
 {
     return WARN_DUMMY_API;
 }

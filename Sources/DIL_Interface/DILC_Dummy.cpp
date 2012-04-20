@@ -14,13 +14,15 @@
  */
 
 /**
- * \file      DIL_Interface/DILC_Dummy.cpp
+ * \file      DILC_Dummy.cpp
  * \brief     Source file for dummy DIL functions
  * \authors   Ratnadip Choudhury, Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Source file for dummy DIL functions
  */
+
+/* Project includes */
 #include "DIL_Interface_stdafx.h"
 #include "DILC_Dummy.h"
 #include "include/Error.h"
@@ -124,7 +126,7 @@ HRESULT CDIL_CAN_DUMMY::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_CAN_DUMMY::CAN_GetLastErrorString(CHAR* /*acErrorStr*/, int /*nLength*/)
+HRESULT CDIL_CAN_DUMMY::CAN_GetLastErrorString(string& /*acErrorStr*/)
 {
     return WARN_DUMMY_API;
 }

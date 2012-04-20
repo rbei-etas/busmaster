@@ -21,6 +21,11 @@
  *
  * Exports API functions for IntrepidCS neoVI CAN Hardware interface
  */
+
+/* C++ includes */
+#include <string>
+
+/* Project includes */
 #include "CAN_ICS_neoVI_stdafx.h"
 #include "CAN_ICS_neoVI.h"
 #include "include/Error.h"
@@ -44,10 +49,11 @@
 #define USAGE_EXPORT
 #include "CAN_ICS_neoVI_Extern.h"
 
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
+
+using namespace std;
 
 //
 //	Note!
@@ -421,7 +427,7 @@ public:
 	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
 	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
 	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
-	HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength);
+	HRESULT CAN_GetLastErrorString(string& acErrorStr);
 	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
 	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -2823,15 +2829,9 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
 /**
  * Function to retreive error string of last occurred error
  */
-HRESULT CDIL_CAN_ICSNeoVI::CAN_GetLastErrorString(CHAR* acErrorStr, int nLength)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_GetLastErrorString(string& acErrorStr)
 {
-    // TODO: Add your implementation code here
-    int nCharToCopy = (int) (strlen(sg_acErrStr));
-    if (nCharToCopy > nLength)
-    {
-        nCharToCopy = nLength;
-    }
-    strncpy(acErrorStr, sg_acErrStr, nCharToCopy);
+    acErrorStr = sg_acErrStr;
 
     return S_OK;
 }

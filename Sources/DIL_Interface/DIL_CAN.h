@@ -14,22 +14,27 @@
  */
 
 /**
- * \file      DIL_Interface/DIL_CAN.h
+ * \file      DIL_CAN.h
  * \brief     Definition file for CDIL_CAN class.
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition file for CDIL_CAN class.
  */
-#if !defined DIL_CAN_H__INCLUDED_
-#define DIL_CAN_H__INCLUDED_
 
+#pragma once
+
+/* C++ includes */
+
+/* Project includes */
 #include "DataTypes/Base_WrapperErrorLogger.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/DIL_Datatypes.h"
 #include "Include/Basedefs.h"
 #include "BaseDIL_CAN.h"
 #include "BaseDIL_CAN_Controller.h"
+
+using namespace std;
 
 class CDIL_CAN : public CBaseDIL_CAN
 {
@@ -185,7 +190,7 @@ public:
     /**
 	 * Call to get descriptive string of the last error occurred
 	 */
-    HRESULT DILC_GetLastErrorString(char acErrorStr[], int nLength);
+    HRESULT DILC_GetLastErrorString(string &acErrorStr);
 
     /**
 	 * Call to set PASS/STOP filter
@@ -240,5 +245,3 @@ private:
     HRESULT (*m_pfGetControllerParams)(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     HRESULT (*m_pfGetErrorCount)(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 };
-
-#endif // DIL_CAN_H__INCLUDED_

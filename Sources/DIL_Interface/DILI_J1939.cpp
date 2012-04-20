@@ -14,13 +14,15 @@
  */
 
 /**
- * \file      DIL_Interface/DILI_J1939.cpp
+ * \file      DILI_J1939.cpp
  * \brief     Interface file for J1939 BUS
  * \author    Pradeep Kadoor, Arunkumar Karri
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Interface file for J1939 BUS
  */
+
+/* Project includes */
 #include "DIL_Interface_stdafx.h"
 #include "Include/BaseDefs.h"
 #include "Datatypes/MsgBufAll_Datatypes.h"

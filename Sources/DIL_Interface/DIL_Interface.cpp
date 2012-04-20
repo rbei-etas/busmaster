@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      DIL_Interface/DIL_Interface.cpp
+ * \file      DIL_Interface.cpp
  * \brief     Source file for the exported function used to retrieve the
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
@@ -22,8 +22,7 @@
  * Source file for the exported function used to retrieve the
  */
 
-
-// DIL_Interface.cpp : 
+/* Project includes */
 #include "DIL_Interface_stdafx.h"
 #include "Include/BaseDefs.h"
 
@@ -31,10 +30,8 @@
 #include "DIL_Interface_extern.h"
 
 #include "DIL_CAN.h"
-
 #include "DILI_J1939.h"
 #include "DIL_Interface.h"
-
 
 static CDIL_CAN* sg_pouDIL_CAN = NULL;
 

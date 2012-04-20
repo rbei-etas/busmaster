@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="J1939"
 	ProjectGUID="{7812969F-7FF6-448C-A19C-78CC07362163}"
 	RootNamespace="DIL_J1939"
@@ -144,7 +144,7 @@
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderThrough="DIL_J1939_stdafx.h"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 			/>
 			<Tool

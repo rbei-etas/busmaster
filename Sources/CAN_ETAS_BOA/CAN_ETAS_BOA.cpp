@@ -23,6 +23,13 @@
  * Defines the initialization routines for the DLL.
  */
 
+/* C includes */
+#include <search.h>				/* For qsort */
+
+/* C++ includes */
+#include <string>
+
+/* Project includes */
 #include "CAN_ETAS_BOA_stdafx.h"
 #include "CAN_ETAS_BOA.h"
 #include "DataTypes/Base_WrapperErrorLogger.h"
@@ -38,12 +45,10 @@
 #include "HardwareListing.h"
 #include "ChangeRegisters_CAN_ETAS_BOA.h"
 
-#include <search.h>				//For qsort
-
 #define USAGE_EXPORT
 #include "CAN_ETAS_BOA_Extern.h"
 
-// CCAN_ETAS_BOA
+using namespace std;
 
 BEGIN_MESSAGE_MAP(CCAN_ETAS_BOA, CWinApp)
 END_MESSAGE_MAP()
@@ -271,7 +276,7 @@ public:
 	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
 	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
 	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
-	HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength);
+	HRESULT CAN_GetLastErrorString(string& acErrorStr);
 	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
 	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -2360,7 +2365,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
 /**
  * Gets last occured error and puts inside acErrorStr.
  */
-HRESULT CDIL_CAN_ETAS_BOA::CAN_GetLastErrorString(CHAR* /*acErrorStr*/, INT /*nLength*/)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_GetLastErrorString(string& /*acErrorStr*/)
 {
     return WARN_DUMMY_API;
 }

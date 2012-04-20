@@ -196,7 +196,7 @@ public:
 	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
 	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
 	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
-	HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength);
+	HRESULT CAN_GetLastErrorString(string& acErrorStr);
 	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
 	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -954,22 +954,12 @@ return(S_OK);
 
 /**
 * \brief         Gets last occured error and puts inside acErrorStr.
-* \param[out]    acErrorStr, is CHAR contains error string
-* \param[in]     nLength, is INT
+* \param[out]    acErrorStr contains error string
 * \return        S_OK for success, S_FALSE for failure
 */
-HRESULT CDIL_CAN_MHS::CAN_GetLastErrorString(CHAR* acErrorStr, INT nLength)
+HRESULT CDIL_CAN_MHS::CAN_GetLastErrorString(string& acErrorStr)
 {
-(void)acErrorStr;
-(void)nLength;
-/*int nCharToCopy;
-
-nCharToCopy = (int) (strlen(sg_acErrStr));
-if (nCharToCopy > nLength)
-  nCharToCopy = nLength;
-strncpy(acErrorStr, sg_acErrStr, nCharToCopy);
-*/
-return(S_OK);
+    return WARN_DUMMY_API;
 }
 
 
