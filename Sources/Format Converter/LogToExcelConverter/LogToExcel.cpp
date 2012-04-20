@@ -46,7 +46,6 @@ void CLogToExcel::fnSetFields()
  */
 void CLogToExcel::fnSetSelectedFields(CListBox* omSelectedList)
 {
-    char strFieldName[20];
     int n;
     DWORD unMaxIndex = omSelectedList->GetCount();
     //initialising the SelectedField array to -1
@@ -60,11 +59,11 @@ void CLogToExcel::fnSetSelectedFields(CListBox* omSelectedList)
     //setting the appropriate value for each field
     for(unIndex = 0; unIndex < unMaxIndex; unIndex++)
     {
+        string strFieldName;
         n = omSelectedList->GetTextLen(unIndex);
-        memset( strFieldName,'\0',n );
         CString omFieldName;
         omSelectedList->GetText( unIndex,omFieldName);
-        strcpy(strFieldName, omFieldName.GetBuffer(MAX_PATH));
+        strFieldName = omFieldName.GetBuffer(MAX_PATH);
         pMapValue = pFieldMapTbl.find(strFieldName);
         unSelectedField[pMapValue->second] = pMapValue->second;
     }
@@ -78,14 +77,12 @@ void CLogToExcel::fnSetSelectedFields(CListBox* omSelectedList)
 CLogToExcel::CLogToExcel(string strLogFileName, string strExcelFileName, UINT unNoOfFields, CHAR_ARRAY_20* pacFields)
 {
     m_pacFields = pacFields;
-    m_pLogFile = NULL;
-    m_pExcelFile = NULL;
     m_strLogFileName = strLogFileName;
     m_strExcelFileName = strExcelFileName;
     //open log file in read mode
-    m_pLogFile = fopen(m_strLogFileName.c_str(), "r");
+    m_pLogFile.open(m_strLogFileName.c_str(), fstream::in);
 
-    if( m_pLogFile == NULL )
+    if(!m_pLogFile.is_open())
     {
         //log file could not be opened
         MessageBox(NULL,EXPORTTOEXCEL_LOGFILEOPENERROR,APPLICATION_NAME,MB_OK);
@@ -94,9 +91,9 @@ CLogToExcel::CLogToExcel(string strLogFileName, string strExcelFileName, UINT un
     else
     {
         //open Excel file in write
-        m_pExcelFile = fopen(m_strExcelFileName.c_str(),"w");
+        m_pExcelFile.open(m_strExcelFileName.c_str(), fstream::out);
 
-        if(m_pExcelFile == NULL)
+        if(!m_pExcelFile.is_open())
         {
             //Excel file could not be opened
             MessageBox(NULL,EXPORTTOEXCEL_CSVFILEOPENERROR,APPLICATION_NAME,MB_OK);
@@ -113,6 +110,11 @@ CLogToExcel::CLogToExcel(string strLogFileName, string strExcelFileName, UINT un
     fnSetFields();
 }
 
+/**
+ * \brief Destructor
+ *
+ * Destructor of CLogToExcel
+ */
 CLogToExcel::~CLogToExcel()
 {
 }
@@ -128,7 +130,7 @@ UINT CLogToExcel::unGetLine()
     char ch;               // stores each character read from the file
 
     //reads log file till end of line is not reached
-    while ( (ch = (char)getc(m_pLogFile)) != '\n' )
+    while ( (ch = (char)m_pLogFile.get()) != '\n' )
     {
         //m_strBuffer contains each line read from log file
         m_strBuffer.append(1,ch);
@@ -165,7 +167,7 @@ void CLogToExcel::vPrintFields()
     UINT unFieldBufferIndex=0;  //index to traverse m_strFieldBuffer string
     UINT unFieldIndex = 0;      // field index
     bool bFieldIndexExists  = false;
-    fprintf(m_pExcelFile,"<TR>");
+    m_pExcelFile << "<TR>";
     int nFieldCurPosition = 0;
 
     while( unFieldIndex != m_unNumOfFields && m_strBuffer[unBufferIndex] != '\0' )
@@ -222,7 +224,7 @@ void CLogToExcel::vPrintFields()
 
         if ( bFieldIndexExists )
         {
-            fprintf(m_pExcelFile,"<TD>%s</TD>",m_strFieldBuffer.c_str());
+            m_pExcelFile << "<TD>" << m_strFieldBuffer.c_str() << "</TD>";
             bFieldIndexExists = false;
         }
         else
@@ -234,7 +236,7 @@ void CLogToExcel::vPrintFields()
     }// While - field navigation
 
     m_strFieldBuffer.clear();
-    fprintf(m_pExcelFile,"</TR>");
+    m_pExcelFile << "</TR>";
 }
 
 /**
@@ -246,19 +248,19 @@ BOOL CLogToExcel::bConvert()
 {
     if(m_bFilesOpened)
     {
-        fputs( "<HTML><HEAD></HEAD><BODY>",m_pExcelFile );
-        fprintf( m_pExcelFile,"<FONT COLOR =\"GREEN\"><CENTER><B>BUSMASTER - Exported Log File Report</B></CENTER>" );
-        fprintf( m_pExcelFile,"<BR><BR>");
-        fprintf( m_pExcelFile," <TABLE BORDER COLOR=\"BLACK\"><TR> " );
+        m_pExcelFile << "<HTML><HEAD></HEAD><BODY>" << endl;
+        m_pExcelFile << "<FONT COLOR =\"GREEN\"><CENTER><B>BUSMASTER - Exported Log File Report</B></CENTER>";
+        m_pExcelFile << "<BR><BR>";
+        m_pExcelFile << "<TABLE BORDER COLOR=\"BLACK\"><TR>";
 
         // write column headers
         for( UINT unIndex = 0; unIndex < m_unNumOfFields; unIndex++)
             if(unSelectedField[unIndex]!=-1)
             {
-                fprintf( m_pExcelFile,"<TD><FONT COLOR=\"Green\"><B> %s </B></TD>",m_pacFields[unIndex] );
+                m_pExcelFile << "<TD><FONT COLOR=\"Green\"><B> " << m_pacFields[unIndex] << " </B></TD>";
             }
 
-        fprintf( m_pExcelFile,"</TR>" );
+        m_pExcelFile << "</TR>";
 
         // write each column
         while(!unGetLine())
@@ -267,10 +269,10 @@ BOOL CLogToExcel::bConvert()
             m_strBuffer.clear();
         }
 
-        fputs( "</TABLE></BODY></HTML>",m_pExcelFile );
+        m_pExcelFile << "</TABLE></BODY></HTML>" << endl;
         //close file
-        fclose(m_pExcelFile);
-        fclose(m_pLogFile);
+        m_pExcelFile.close();
+        m_pLogFile.close();
         return TRUE;
     }
 

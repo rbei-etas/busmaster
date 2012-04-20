@@ -31,6 +31,7 @@
 #include <afxext.h>         /* MFC extensions */
 
 /* C++ includes */
+#include <fstream>
 #include <map>
 #include <string>
 
@@ -93,8 +94,8 @@ private:
     map<string, DWORD> :: const_iterator pMapValue;
     string m_strLogFileName;
     string m_strExcelFileName;
-    FILE* m_pLogFile;
-    FILE* m_pExcelFile;
+    fstream m_pLogFile;
+    fstream m_pExcelFile;
     string m_strBuffer;
     string m_strFieldBuffer;
     UINT unSelectedField[defNO_OF_FIELDS_J1939];

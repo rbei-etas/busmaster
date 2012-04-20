@@ -268,35 +268,35 @@ HRESULT CAscLogConverter::GetOutputFileFilters(string& pchOutputDefFilters, stri
 HRESULT CAscLogConverter::ConvertFile(string& chInputFile, string& chOutputFile)
 {
     HRESULT hResult = S_OK;
-    FILE* fpInputFile = NULL;
-    FILE* fpOutputFile = NULL;
-    fpInputFile = _tfopen(chInputFile.c_str(), _T("r"));
+    fstream fpInputFile;
+    fstream fpOutputFile;
+    fpInputFile.open(chInputFile.c_str(), fstream::in);
 
-    if(NULL != fpInputFile)
+    if(fpInputFile.is_open())
     {
-        fpOutputFile = _tfopen(chOutputFile.c_str(), _T("w"));
+        fpOutputFile.open(chOutputFile.c_str(), fstream::out);
 
-        if(NULL != fpOutputFile)
+        if(fpOutputFile.is_open())
         {
             //yydebug = 1;
-            fprintf(fpOutputFile, "%s\n", "***BUSMASTER Ver 1.6.2***");
-            fprintf(fpOutputFile, "%s\n", "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***");
-            fprintf(fpOutputFile, "%s\n", "***[START LOGGING SESSION]***");
-            fprintf(fpOutputFile, "%s", "***START DATE AND TIME ");
+            fpOutputFile << "***BUSMASTER Ver 1.6.2***" << endl;
+            fpOutputFile << "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***" << endl;
+            fpOutputFile << "***[START LOGGING SESSION]***" << endl;
+            fpOutputFile << "***START DATE AND TIME ";
             nConvertFile(fpInputFile, fpOutputFile);
-            m_omstrConversionStatus = _T("Conversion Completed Successfully");
-            fclose(fpInputFile);
-            fclose(fpOutputFile);
+            m_omstrConversionStatus = "Conversion Completed Successfully";
+            fpInputFile.close();
+            fpOutputFile.close();
         }
         else
         {
-            m_omstrConversionStatus = _T("Output File path is not found");
+            m_omstrConversionStatus = "Output File path is not found";
             hResult = ERR_OUTPUT_FILE_NOTFOUND;
         }
     }
     else
     {
-        m_omstrConversionStatus = _T("Input File path is not found");
+        m_omstrConversionStatus = "Input File path is not found";
         hResult = ERR_INPUT_FILE_NOTFOUND;
     }
 
