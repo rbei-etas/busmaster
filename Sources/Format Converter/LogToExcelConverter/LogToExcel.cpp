@@ -26,15 +26,11 @@
 #include "Defines.h"
 #include "LogToExcel.h"
 
-//**************************************************************************************************
-// Function Name        : fnSetFields
-// Input(s)             : 
-// Output               : 
-// Description          : Initializing the Column fields map table
-// Author               : Sajith Kumar
-// Creation Date        : 15/09/2006
-// Modifications        :
-//**************************************************************************************************
+/**
+ * \brief Initializing the Column fields map table
+ *
+ * Initializing the Column fields map table
+ */
 void CLogToExcel::fnSetFields()
 {
     for(UINT unIndex = 0; unIndex < m_unNumOfFields; unIndex++)
@@ -43,15 +39,11 @@ void CLogToExcel::fnSetFields()
 	}
 }
 
-//**************************************************************************************************
-// Function Name        : fnSetSelectedFields
-// Input(s)             : CListBox *
-// Output               : 
-// Description          : set the fields which are selected by the user
-// Author               : Sajith Kumar
-// Creation Date        : 15/09/2006
-// Modifications        :
-//**************************************************************************************************
+/**
+ * \brief set the fields which are selected by the user
+ *
+ * set the fields which are selected by the user
+ */
 void CLogToExcel::fnSetSelectedFields(CListBox *omSelectedList)
 {
     
@@ -77,15 +69,11 @@ void CLogToExcel::fnSetSelectedFields(CListBox *omSelectedList)
 	}
 }
 
-//**************************************************************************************************
-// Function Name        : CLogToExcel
-// Input(s)             : string strLogFileName, string strExcelFileName
-// Output               : 
-// Description          : opens the log file for reading and excel file for writing
-// Author               : Sajith Kumar
-// Creation Date        : 15/09/2006
-// Modifications        :
-//******************************************************************************************
+/**
+ * \brief opens the log file for reading and excel file for writing
+ *
+ * opens the log file for reading and excel file for writing
+ */
 CLogToExcel::CLogToExcel(string strLogFileName, string strExcelFileName, UINT unNoOfFields, CHAR_ARRAY_20* pacFields)
 {
     m_pacFields = pacFields;
@@ -127,16 +115,11 @@ CLogToExcel::~CLogToExcel()
 {
 }
 
-//**************************************************************************************************
-// Function Name        : unGetLine()
-// Input(s)             : 
-// Output               : unsigned int
-// Description          : Retrieves each line from the file and stores it in m_strBuffer
-// Author               : Sajith Kumar.V.R
-// Creation Date        : 15/09/2006
-// Modifications        :
-//**************************************************************************************************
-
+/**
+ * \brief Retrieves each line from the file and stores it in m_strBuffer
+ *
+ * Retrieves each line from the file and stores it in m_strBuffer
+ */
 UINT CLogToExcel::unGetLine()
 {
 	UINT unBufferIndex = 0;  //index to traverse m_strBuffer string
@@ -158,15 +141,11 @@ UINT CLogToExcel::unGetLine()
 	return 0;
 }
 
-//**************************************************************************************************
-// Function Name        : vPrintFields()
-// Input(s)             : 
-// Output               : 
-// Description          : Retrieves each field from m_strBuffer and writes it into Excel file.
-// Author               : Sajith Kumar.V.R
-// Creation Date        : 15/09/2006
-// Modifications        :
-//**************************************************************************************************
+/**
+ * \brief Retrieves each field from m_strBuffer and writes it into Excel file.
+ *
+ * Retrieves each field from m_strBuffer and writes it into Excel file.
+ */
 void CLogToExcel::vPrintFields()
 {
 		// ignore the headers in log file
@@ -182,8 +161,6 @@ void CLogToExcel::vPrintFields()
 	fprintf(m_pExcelFile,"<TR>");
 	int nFieldCurPosition = 0;
 
-
-    
 	while( unFieldIndex != m_unNumOfFields && m_strBuffer[unBufferIndex] != '\0' )
 	{
 		unFieldBufferIndex = 0;
@@ -240,18 +217,13 @@ void CLogToExcel::vPrintFields()
 	}// While - field navigation
 	m_strFieldBuffer.clear();
 	fprintf(m_pExcelFile,"</TR>");
-
 }
 
-//**************************************************************************************************
-// Function Name        : bConvert()
-// Input(s)             : 
-// Output               : BOOL
-// Description          : Converts the .log file to .xls file
-// Author               : Sajith Kumar.V.R
-// Creation Date        : 15/09/2006
-// Modifications        :
-//**************************************************************************************************
+/**
+ * \brief Converts the .log file to .xls file
+ *
+ * Converts the .log file to .xls file
+ */
 BOOL CLogToExcel::bConvert()
 {
 	if(m_bFilesOpened)

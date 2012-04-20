@@ -37,8 +37,8 @@ class CDBC2DBFConverter : public CBaseConverter
 public:
     CDBC2DBFConverter(void);
     ~CDBC2DBFConverter(void);
-    virtual HRESULT GetInputFileFilters(string&, string&);
-    virtual HRESULT GetOutputFileFilters(string&, string&);
+    virtual HRESULT GetInputFileFilters(string& pchInputDefFilters, string& pchInputFilters);
+    virtual HRESULT GetOutputFileFilters(string& pchOutputDefFilters, string& pchOutputFilters);
     virtual HRESULT ConvertFile(string& chInputFile, string& chOutputFile);
     virtual HRESULT GetConverterName(string& strConverterName);
     virtual HRESULT GetErrorStatus(HRESULT hResult, string& omstrStatus);

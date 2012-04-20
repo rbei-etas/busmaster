@@ -138,4 +138,3 @@ HRESULT CLogToExcelConverter::GetPropertyPage(CPropertyPage*& pPage)
     pPage = new CExportLogFileDlg();
     return S_FALSE;
 };
-
