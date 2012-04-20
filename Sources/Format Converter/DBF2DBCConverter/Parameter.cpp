@@ -194,7 +194,7 @@ void CParameter::Format_MesgParam_Value(fstream& fileInput, list<CParameter>& m_
         pcLine=pcLine+strlen(pcToken)+1;
         //get message type and validates teh type.
         pcToken=strtok(pcLine,",");
-        strcpy(type,pcToken);
+        strncpy(type, pcToken, sizeof(type));
 
         if(strcmp(type,"X")==0)
         {
@@ -255,7 +255,7 @@ void CParameter::Format_SigParam_Value(fstream& fileInput, list<CParameter>& m_l
         pcLine=pcLine+strlen(pcToken)+1;
         //get message type and validates the mtype.
         pcToken=strtok(pcLine,",");
-        strcpy(temp,pcToken);
+        strncpy(temp, pcToken, sizeof(temp));
 
         if(strcmp(temp,"X")==0)
         {
@@ -265,7 +265,7 @@ void CParameter::Format_SigParam_Value(fstream& fileInput, list<CParameter>& m_l
         pcLine=pcLine+strlen(pcToken)+1;
         //get signal name.
         pcToken=strtok(pcLine,",");
-        strcpy(sname,pcToken);
+        strncpy(sname, pcToken, sizeof(sname));
         pcLine=pcLine+strlen(pcToken)+1;
         //get other values.
         pcToken=strtok(pcLine,",");
@@ -317,7 +317,7 @@ void CParameter::Format_NodeParam_Value(fstream& fileInput, list<CParameter>& m_
         pcLine = acLine;
         //get node name.
         pcToken=strtok(pcLine,",");
-        strcpy(NodeName,pcToken);
+        strncpy(NodeName, pcToken, sizeof(NodeName));
         pcLine=pcLine+strlen(pcToken)+1;
         //get other values.
         pcToken=strtok(NULL,",");
