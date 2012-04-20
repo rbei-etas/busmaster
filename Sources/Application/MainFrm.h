@@ -418,7 +418,6 @@ protected:
     afx_msg void OnGraphWindow();
     afx_msg void OnUpdateGraphWnd(CCmdUI* pCmdUI);
     afx_msg void OnCfgnReplay();
-    afx_msg void OnOptionExportLogfile();
     afx_msg void OnUpdateCfgnReplay(CCmdUI* pCmdUI);
 	afx_msg void OnConfigureSimulatedsystems();
 	afx_msg void OnUpdateDllLoadAll(CCmdUI* pCmdUI);	
@@ -697,8 +696,7 @@ public:
     afx_msg void OnJ1939SignalwatchShow();
     afx_msg void OnUpdateJ1939SignalwatchShow(CCmdUI *pCmdUI);
 	afx_msg void OnConfigureMessagedisplayJ1939();	
-    afx_msg void OnJ1939Exportlog();
-	afx_msg void OnShowHideMessageWindow(UINT nID);
+    afx_msg void OnShowHideMessageWindow(UINT nID);
 	afx_msg void OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI);
 	afx_msg void OnToolbarCandatabase();
 	afx_msg void OnUpdateToolbarCanDatabase(CCmdUI *pCmdUI);

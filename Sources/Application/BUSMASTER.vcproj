@@ -574,19 +574,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\ExportLogFileDlg.cpp"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						BrowseInformation="0"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="Flags.cpp"
 				>
 				<FileConfiguration
@@ -711,19 +698,6 @@
 			<File
 				RelativePath=".\J1939TimeOutCfg.cpp"
 				>
-			</File>
-			<File
-				RelativePath=".\LogToExcel.cpp"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						BrowseInformation="0"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="MainFrm.cpp"
@@ -1535,10 +1509,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ExportLogFileDlg.h"
-				>
-			</File>
-			<File
 				RelativePath="Flags.h"
 				>
 			</File>
@@ -1568,10 +1538,6 @@
 			</File>
 			<File
 				RelativePath=".\J1939TimeOutCfg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\LogToExcel.h"
 				>
 			</File>
 			<File
