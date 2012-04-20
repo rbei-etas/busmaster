@@ -19,11 +19,36 @@
  * \author    Klaus Demlehner
  * \copyright Copyright (c) 2011, MHS-Elektronik GmbH & Co. KG
  *
+ * Defines the initialization routines for the DLL.
  */
-// CAN_MHS.cpp : Defines the initialization routines for the DLL.
-//
 
-#include "CAN_MHS_stdafx.h"
+#define WIN32_LEAN_AND_MEAN /* Exclude rarely-used stuff from Windows headers */
+#define VC_EXTRALEAN        /* Exclude rarely-used stuff from Windows headers */
+
+#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
+
+/* MFC includes */
+#include <afxwin.h>         // MFC core and standard components
+#include <afxext.h>         // MFC extensions
+#include <atlconv.h>
+#include <tchar.h>
+#include <windows.h>
+#include <wtypes.h>
+
+/* C includes */
+#include <stdio.h>
+#include <stdlib.h>
+#include <malloc.h>
+#include <memory.h>
+
+/* C++ includes */
+#include <algorithm>
+#include <iostream>
+#include <iterator>
+#include <list>
+#include <string>
+
+/* Project includes */
 #include "CAN_MHS.h"
 #include "include/Error.h"
 #include "include/basedefs.h"
@@ -43,6 +68,7 @@
 #define USAGE_EXPORT
 #include "CAN_MHS_Extern.h"
 
+using namespace std;
 
 //#define CAN_DRIVER_DEBUG
 
@@ -50,7 +76,6 @@
 
 BEGIN_MESSAGE_MAP(CCAN_MHS, CWinApp)
 END_MESSAGE_MAP()
-
 
 /**
  * CCAN_MHS construction
