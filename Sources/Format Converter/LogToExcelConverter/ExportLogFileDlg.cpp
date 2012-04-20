@@ -64,7 +64,6 @@ void CExportLogFileDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_COMBO_BUSTYPE, m_omBusType);
 }
 
-
 BEGIN_MESSAGE_MAP(CExportLogFileDlg, CPropertyPage)
 	ON_BN_CLICKED(IDC_BTN_LOG_BROWSE, OnBnClickedBtnLogBrowse)
 	ON_BN_CLICKED(IDC_BTN_CSV_BROWSE, OnBnClickedBtnCsvBrowse)
@@ -80,19 +79,11 @@ BEGIN_MESSAGE_MAP(CExportLogFileDlg, CPropertyPage)
 END_MESSAGE_MAP()
 
 
-// CExportLogFileDlg message handlers
-/*******************************************************************************
-  Function Name  : OnBnClickedBtnLogBrowse
-  Input(s)       : -
-  Output         : -
-  Functionality  : To show file selection dialog for log File
-  Member of      : CExportLogFileDlg
-  Author(s)      : S.Ramakrishnan
-  Date Created   : 14.11.2006
-  Modifications  : 
-*******************************************************************************/
-
-
+/**
+ * \brief On Button Clicked Button Log Browse
+ *
+ * To show file selection dialog for log File
+ */
 void CExportLogFileDlg::OnBnClickedBtnLogBrowse()
 {
 	 UpdateData( TRUE );
@@ -122,17 +113,12 @@ void CExportLogFileDlg::OnBnClickedBtnLogBrowse()
         UpdateData( FALSE );
     }
 }
-/*******************************************************************************
-  Function Name  : OnBnClickedBtnCsvBrowse
-  Input(s)       : -
-  Output         : -
-  Functionality  : To show file selection dialog for CSV File
-  Member of      : CExportLogFileDlg
-  Author(s)      : S.Ramakrishnan
-  Date Created   : 14.11.2006
-  Modifications  : 
-*******************************************************************************/
 
+/**
+ * \brief On Button Clicked Button CSV Browse
+ *
+ * To show file selection dialog for CSV File
+ */
 void CExportLogFileDlg::OnBnClickedBtnCsvBrowse()
 {
 	    UpdateData( TRUE );
@@ -152,8 +138,13 @@ void CExportLogFileDlg::OnBnClickedBtnCsvBrowse()
         m_omStrCSVFileName = omSaveAsDlg.GetPathName();
         UpdateData( FALSE );
     }
-
 }
+
+/**
+ * \brief Enable/Disable Controls
+ *
+ * Enable/Disable Controls
+ */
 void CExportLogFileDlg::vEnableDisableControls()
 {
 	BOOL bSelectAllButtonEnable = FALSE;
@@ -179,10 +170,15 @@ void CExportLogFileDlg::vEnableDisableControls()
     m_omRemoveOneField.EnableWindow( bRemoveOneButtonEnable );
     m_omRemoveAllFields.EnableWindow( bRemoveAllButtonEnable );
 }
+
+/**
+ * \brief Populate Available List
+ *
+ * Populate Available List
+ */
 void CExportLogFileDlg::vPopulateAvailableList()
 {
-    
-	// Insert filed text
+    // Insert filed text
     m_omAvailableList.ResetContent();
     m_omSelectedList.ResetContent();
     for( UINT unIndex = 0; unIndex < m_unNoOfFileds; unIndex++)
@@ -192,6 +188,11 @@ void CExportLogFileDlg::vPopulateAvailableList()
     }
 }
 
+/**
+ * \brief On Button Clicked Button Select All
+ *
+ * Message handler for select all button
+ */
 void CExportLogFileDlg::OnBnClickedButtonSelectall()
 {
     
@@ -218,6 +219,12 @@ void CExportLogFileDlg::OnBnClickedButtonSelectall()
 	// Update UI buttons status
 	vEnableDisableControls();
 }
+
+/**
+ * \brief On Init Dialog
+ *
+ * Init dialog
+ */
 BOOL CExportLogFileDlg::OnInitDialog()
 {   
     CPropertyPage::OnInitDialog();
@@ -235,6 +242,12 @@ BOOL CExportLogFileDlg::OnInitDialog()
 	vEnableDisableControls();
 	return TRUE;  
 }
+
+/**
+ * \brief On Button Clicked Convert
+ *
+ * Message handler for convert button
+ */
 void CExportLogFileDlg::OnBnClickedConvert()
 {
     
@@ -273,28 +286,46 @@ void CExportLogFileDlg::OnBnClickedConvert()
 	}
 	else
 				MessageBox(EXPORTTOEXCEL_FILEERROR,APPLICATION_NAME,MB_OK);
-
-
 }
+
+/**
+ * \brief On Button Clicked Button Cancel Export
+ *
+ * Message handler for cancel export button
+ */
 void CExportLogFileDlg::OnBnClickedCbtnCancelexport()
 {
 	OnCancel(); 
 }
 
+/**
+ * \brief On Listbutton Select Change List Available
+ *
+ * Message handler for selection change on availbale list
+ */
 void CExportLogFileDlg::OnLbnSelchangeLstAvailable()
 {
 	// TODO: Add your control notification handler code here
 	vEnableDisableControls();
 }
 
+/**
+ * \brief On Listbutton Select Change List Selected
+ *
+ * Message handler for selection change
+ */
 void CExportLogFileDlg::OnLbnSelchangeLstSelected()
 {
 	vEnableDisableControls();
 }
 
+/**
+ * \brief On Button Clicked Button Select One
+ *
+ * Message handler for select one button
+ */
 void CExportLogFileDlg::OnBnClickedButtonSelectone()
 {
-    
 	// Get the selected item index
     int nSelectedItem = m_omAvailableList.GetCurSel();
     // If it is valid
@@ -327,6 +358,11 @@ void CExportLogFileDlg::OnBnClickedButtonSelectone()
 
 }
 
+/**
+ * \brief On Button Clicked Button Remove One
+ *
+ * Message handler for remove one button
+ */
 void CExportLogFileDlg::OnBnClickedButtonRemoveone()
 {
     
@@ -376,6 +412,11 @@ void CExportLogFileDlg::OnBnClickedButtonRemoveone()
     }
 }
 
+/**
+ * \brief On Button Clicked Button Remove All
+ *
+ * Message handler for remove all button
+ */
 void CExportLogFileDlg::OnBnClickedButtonRemoveall()
 {
     
@@ -423,6 +464,11 @@ void CExportLogFileDlg::OnBnClickedButtonRemoveall()
 	vEnableDisableControls();
 }
 
+/**
+ * \brief On ComboBox Selection Change Combo Bus Type
+ *
+ * Message handler for selection change in bus type combo box.
+ */
 void CExportLogFileDlg::OnCbnSelchangeComboBustype()
 {
     CString omStrBus;
@@ -445,5 +491,4 @@ void CExportLogFileDlg::OnCbnSelchangeComboBustype()
     SetWindowText(omTitle);
 	vPopulateAvailableList();
 	vEnableDisableControls();
-
 }

@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = LogToExcelConverter
+PROJECT_BRIEF          = "LOG to Excel converter"
+OUTPUT_DIRECTORY       = "out/Format Converter/LogToExcelConverter"
+STRIP_FROM_PATH        = "../../Sources/Format Converter/LogToExcelConverter"
+INPUT                  = "../../Sources/Format Converter/LogToExcelConverter"
