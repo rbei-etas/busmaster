@@ -139,7 +139,7 @@
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderThrough="CAN_MHS_StdAfx.h"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
@@ -214,10 +214,6 @@
 				RelativePath=".\CAN_MHS.rc"
 				>
 			</File>
-			<File
-				RelativePath=".\CAN_MHS_stdafx.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -234,10 +230,6 @@
 			</File>
 			<File
 				RelativePath=".\CAN_MHS_Resource.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CAN_MHS_stdafx.h"
 				>
 			</File>
 			<File
