@@ -15,8 +15,6 @@
 #endif
 #define _ATL_APARTMENT_THREADED
 
-#define _CRT_SECURE_NO_WARNINGS
-
 #pragma comment(lib, "atlthunk.lib")
 
 #include <atlbase.h>

@@ -18,6 +18,9 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
+
+#pragma once
+
 #define WM_REMOVE_SIGNAL            WM_USER + 41
 #define defSTR_PHYSICAL_COLUMN      _T("Physical Value")
 #define defSTR_RAW_COLUMN           _T("Raw Value")

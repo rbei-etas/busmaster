@@ -19,8 +19,7 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
-#if !defined DEFINES_TSX_TSEXECUTION_H__INCLUDED_
-#define DEFINES_TSX_TSEXECUTION_H__INCLUDED_
+#pragma once
 
 #include "Utility/Utility_Thread.h"
 #include "Utility/MsgInterpretation.h"
@@ -99,5 +98,3 @@ private:
     BOOL bMakeCanMessage(sMESSAGE*& pMsg, CSend_MessageData& ouSendData, UCHAR aucData[8], STCAN_MSG& stCanMsg);
     
 };
-
-#endif

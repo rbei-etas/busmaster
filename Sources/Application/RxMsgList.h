@@ -22,11 +22,8 @@
  * Definition of CRxMsgList class
  */
 
-
-#if !defined RXMSGLIST_H__INCLUDED_
-#define RXMSGLIST_H__INCLUDED_
-
 #pragma once
+
 #include "Utility/flickerfreelistctrl.h"
 #include "include/BaseDefs.h"
 
@@ -132,5 +129,3 @@ public:
 	void SetConnectionStatus(bool bConnected);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 };
-
-#endif //RXMSGLIST_H__INCLUDED_

@@ -52,12 +52,6 @@
 #define STR_CUSTOM_TEXT          _T("More Colours...")
 
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 /*******************************************************************************
   Function Name  : DDX_ColourPicker
   Input(s)       : pDX - Pointer to Data exchange object

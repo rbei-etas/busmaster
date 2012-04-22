@@ -22,18 +22,7 @@
  * This contains project configuration class definition.
  */
 
-// ProjConfig.h: interface for the ProjConfig class.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_PROJCONFIG_H__B9B4B9B5_BA2F_47AC_98D9_8933DB6DFC55__INCLUDED_)
-#define AFX_PROJCONFIG_H__B9B4B9B5_BA2F_47AC_98D9_8933DB6DFC55__INCLUDED_
-
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-
 
 typedef std::map <string, SECTIONDATA*> SECTIONMAP;
 
@@ -63,5 +52,3 @@ public:
 	bool AddModifySectionDetail(const SECTIONDATA& SectionData);
 	void ModifyProjValues(const PROJECTDATA& ProjDATA);
 };
-
-#endif // !defined(AFX_PROJCONFIG_H__B9B4B9B5_BA2F_47AC_98D9_8933DB6DFC55__INCLUDED_)

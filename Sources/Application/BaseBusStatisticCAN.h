@@ -21,8 +21,8 @@
  *
  * CBaseBusStatisticCAN declaration.
  */
-#if !defined BASEBUSSTATISTICCAN_H__INCLUDED_
-#define BASEBUSSTATISTICCAN_H__INCLUDED_
+
+#pragma once
 
 enum eLOAD 
 {
@@ -72,5 +72,3 @@ class CBaseBusStatisticCAN
         //Get the required channel's BusStistic structure.
         virtual HRESULT BSC_GetBusStatistics(UINT unChannelIndex, SBUSSTATISTICS& sBusStatistics) = 0;
 };
-
-#endif //BASEBUSSTATISTICCAN_H__INCLUDED_

@@ -28,9 +28,6 @@
 #include "MainSubListDlg.h"
 #define USAGE_EXPORT
 #include "Filter_extern.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 static AFX_EXTENSION_MODULE FilterDLL = { NULL, NULL };
 

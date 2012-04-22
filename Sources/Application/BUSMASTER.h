@@ -21,16 +21,8 @@
  *
  * This header file for CCANMonitorApp class
  */
-#if !defined(AFX_CAN_MONITOR_H__E02A6C5C_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)
-#define AFX_CAN_MONITOR_H__E02A6C5C_1005_11D6_A606_00D0B76BEBF5__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-
-#ifndef __AFXWIN_H__
-    #error include 'stdafx.h' before including this file for PCH
-#endif
 
 #include "resource.h"       // main symbols
 #include "MsgSignal.h"      // Added by ClassView
@@ -131,11 +123,3 @@ public:
     INT COM_nSaveConfiguration(CString omStrCfgFilename);
     BOOL bWriteIntoTraceWnd(char* omText);
 };
-
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_CAN_MONITOR_H__E02A6C5C_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)

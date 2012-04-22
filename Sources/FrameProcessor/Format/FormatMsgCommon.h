@@ -22,12 +22,7 @@
  * Definition of CFormatMsgCommon class.
  */
 
-
-#ifndef FORMAT_MSG_COMMON_H_INCLUDED
-#define FORMAT_MSG_COMMON_H_INCLUDED
 #pragma once
-
-
 
 class CFormatMsgCommon
 {
@@ -49,5 +44,3 @@ public:
 	DWORD m_qwLogDelayTime; //for log-msg difference
 
 };
-
-#endif //FORMAT_MSG_COMMON_H_INCLUDED

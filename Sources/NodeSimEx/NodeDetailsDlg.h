@@ -21,14 +21,9 @@
  *
  * Interface file for CNodeDetailsDlg class
  */
-#if !defined(AFX_NODEDETAILSDLG_H__D0159585_D173_4BD3_809C_2384AD5EFEF4__INCLUDED_)
-#define AFX_NODEDETAILSDLG_H__D0159585_D173_4BD3_809C_2384AD5EFEF4__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// NodeDetailsDlg.h : header file
-//
+
 #include "SimSysNodeInfo.h"		// For CSimSysNodeInfo class decl
 #include "NodeSimEx_resource.h"
 #include "Utility\radixedit.h"
@@ -79,8 +74,3 @@ public:
     CRadixEdit m_omPreferedAddress;
     CRadixEdit m_omEcuName;
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_NODEDETAILSDLG_H__D0159585_D173_4BD3_809C_2384AD5EFEF4__INCLUDED_)

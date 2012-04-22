@@ -41,11 +41,6 @@ static const GUID guidProjectConfig =
 
 static DATASTORAGEINFO sdataStorageInfo;
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 //
 //	Note!
 //

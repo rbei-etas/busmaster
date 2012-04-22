@@ -31,13 +31,6 @@
 #include "SigWatchDlg.h"
 // Interface file for CMsgInterpretation class
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 static const int LSB_MOTOROLA = 0x7; // 7th bit is the LSB for motorola
 
 extern HWND GUI_hDisplayWindow;

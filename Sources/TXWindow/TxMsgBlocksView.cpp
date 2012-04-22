@@ -36,14 +36,6 @@
 #include "TxMsgChildFrame.h"    // For Parent window class declaration
 #include "TxWindow_resource.h"
 
-
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 // Global App object declaration
 //extern CCANMonitorApp theApp;
 

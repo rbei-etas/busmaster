@@ -22,9 +22,7 @@
  * Definition of MCsgContainer class
  */
 
-#if !defined MSGCONTAINERBASE_H__INCLUDED_
-#define MSGCONTAINERBASE_H__INCLUDED_
-
+#pragma once
 
 #include "Utility/Utility_Thread.h"
 #include "include/BaseDefs.h"
@@ -79,6 +77,3 @@ public:
 	BOOL bStopReadThread();
 	BOOL bCopyStringToTCHARArr(TCHAR acDesStr[], CString omSrc, int MaxDesLen);
 };
-
-
-#endif //MSGCONTAINERBASE_H__INCLUDED_

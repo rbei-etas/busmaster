@@ -18,9 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined FILTER_DEFINES_H__INCLUDED_
-#define FILTER_DEFINES_H__INCLUDED_
 
+#pragma once
 
 // Filter
 #define defFILTER_TYPE_SINGLE_ID                0
@@ -122,5 +121,3 @@ struct sMESSAGEFILTERDETAILS
 };
 typedef sMESSAGEFILTERDETAILS   SMESSAGE_FILTER_DETAILS;
 typedef sMESSAGEFILTERDETAILS*   PSMESSAGE_FILTER_DETAILS;
-
-#endif //FILTER_DEFINES_H__INCLUDED_

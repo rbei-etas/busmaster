@@ -80,13 +80,6 @@
 #include <DataTypes/SigGrphWnd_Datatypes.h>
 #include "J1939TimeOutCfg.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 // For bus statistics information
 extern SBUSSTATISTICS g_sBusStatistics[ defNO_OF_CHANNELS ];
 

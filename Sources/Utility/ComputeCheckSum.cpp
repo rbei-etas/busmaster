@@ -26,12 +26,6 @@
 #include "ComputeCheckSum.h"    // For CComputeCheckSum class definition
 
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 #define defSIZE_OF_ERROR_BUFFER 1024
 #define defPROJECT_NAME         _T("MCNet")
 /*******************************************************************************

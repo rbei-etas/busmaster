@@ -21,14 +21,8 @@
  *
  * This file contain the definition of CErrHandlerDlg class 
  */
-#if !defined(AFX_ERRHANDLERDLG_H__38C4D237_3752_11D7_80A0_0010B599CE39__INCLUDED_)
-#define AFX_ERRHANDLERDLG_H__38C4D237_3752_11D7_80A0_0010B599CE39__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// ErrHandlerDlg.h : header file
-//
 
 #include "NodeSimEx_resource.h"
 /////////////////////////////////////////////////////////////////////////////
@@ -69,8 +63,3 @@ private:
     CFunctionEditorDoc* m_pDoc;
 	BOOL m_bIsDelete;
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_ERRHANDLERDLG_H__38C4D237_3752_11D7_80A0_0010B599CE39__INCLUDED_)

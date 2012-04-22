@@ -25,7 +25,7 @@
 #include "StdAfx.h"
 #include "include/Error.h"
 
-#include "TraceWnd/UIThread.h"
+#include "UIThread.h"
 #include "AppServices_Impl.h"
 
 

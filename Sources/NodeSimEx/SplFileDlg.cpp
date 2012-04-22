@@ -24,12 +24,6 @@
 #include "NodeSimEx_stdafx.h"
 #include "SplFileDlg.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 IMPLEMENT_DYNAMIC(CSplFileDlg, CFileDialog)
 
 /******************************************************************************/

@@ -34,12 +34,6 @@
 // DIL CAN interface
 extern CBaseDIL_CAN* g_pouDIL_CAN_Interface;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 /////////////////////////////////////////////////////////////////////////////
 // CDriverInfoDlg dialog
 

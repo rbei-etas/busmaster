@@ -18,8 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined TXWND_DEFS_H_
-#define TXWND_DEFS_H_
+
+#pragma once
 
 #include "include/struct_can.h"
 #define defTX_MSG_WND_BOTTOM_MARGIN        0.14
@@ -292,6 +292,3 @@ typedef union tagUBYTE
 
 
 #define CHAR_INT                'I'
-
-
-#endif //TXWND_DEFS_H_

@@ -18,9 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#pragma once
 
-//#include "MsgFrmtWnd.h"
+#pragma once
 
 //#define WM_MODIFY_VISIBILITY		(WM_USER + 14)
 #define WM_SHUTDOWN_MSGWNDTHREAD    (WM_USER + 15)
@@ -51,5 +50,3 @@ public:
 protected:
 	DECLARE_MESSAGE_MAP()
 };
-
-

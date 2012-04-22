@@ -48,10 +48,6 @@
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
 
-#ifndef _CRT_SECURE_NO_DEPRECATE
-#define _CRT_SECURE_NO_DEPRECATE
-#endif
-
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
 
@@ -74,4 +70,3 @@
 #include <afxcmn.h>			// MFC support for Windows Common Controls
 #include <afxtempl.h>
 #endif // _AFX_NO_AFXCMN_SUPPORT
-

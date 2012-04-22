@@ -21,14 +21,8 @@
  *
  * Interface file for CMessageList class
  */
-#if !defined(AFX_MESSAGELIST_H__5E48819F_A933_4E00_A57F_BE7B97361541__INCLUDED_)
-#define AFX_MESSAGELIST_H__5E48819F_A933_4E00_A57F_BE7B97361541__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// MessageList.h : header file
-//
 
 // Definition of Flicker Free List Control
 #include "Utility/FFListCtrl.h"
@@ -98,10 +92,3 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_MESSAGELIST_H__5E48819F_A933_4E00_A57F_BE7B97361541__INCLUDED_)

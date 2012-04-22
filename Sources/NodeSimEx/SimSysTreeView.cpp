@@ -38,11 +38,6 @@
 
 //const BYTE MSGBUF_ADD = 0x01;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 #define defSIMSYSCONFIGFILTER	_T("BUSMASTER Simulated system Configuration files(*.sim)|*.sim||")
 #define defSIMSYSCONFEXT        _T("sim")
 #define defDLGFLAGS             OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST

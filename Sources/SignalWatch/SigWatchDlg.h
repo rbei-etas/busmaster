@@ -22,15 +22,7 @@
  * Interface file for CSigWatchDlg class
  */
 
-
-#if !defined(AFX_SIGWATCHDLG_H__B3BAC2B5_452A_11D6_9670_0002A5838FC1__INCLUDED_)
-#define AFX_SIGWATCHDLG_H__B3BAC2B5_452A_11D6_9670_0002A5838FC1__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// SigWatchDlg.h : header file
-//
 
 // Interface file for CSignalWatchListBox
 #include "SignalWatchListBox.h"
@@ -117,8 +109,3 @@ private:
 public:
     afx_msg void OnTimer(UINT nIDEvent);
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_SIGWATCHDLG_H__B3BAC2B5_452A_11D6_9670_0002A5838FC1__INCLUDED_)

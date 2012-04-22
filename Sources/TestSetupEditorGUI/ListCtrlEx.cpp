@@ -36,11 +36,6 @@
 #include "TSEditorGUI_Definitions.h"
 #include ".\listctrlex.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 // ID for Combobox
 #define IDC_CONTROL         0x12345
 #define def_HEIGHT_BUTTON       27

@@ -15,20 +15,20 @@
 
 /**
  * \file      NodeSimEx_stdafx.h
+ * \brief     include file for standard system include files
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * include file for standard system include files,
+ * or project specific include files that are used frequently, but
+ * are changed infrequently
  */
-// NodeSimEx_stdafx.h : include file for standard system include files,
-// or project specific include files that are used frequently, but
-// are changed infrequently
 
 #pragma once
 
 #ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 #endif
-
-
 
 // Modify the following defines if you have to target a platform prior to the ones specified below.
 // Refer to MSDN for the latest info on corresponding values for different platforms.
@@ -49,13 +49,6 @@
 #endif
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
-
-#ifndef _CRT_SECURE_NO_DEPRECATE
-#define _CRT_SECURE_NO_DEPRECATE
-#endif
-
-// Disable warning messages C4996
-#pragma warning(disable: 4996)
 
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
@@ -96,6 +89,3 @@
 
 
 using namespace std;
-
-
-

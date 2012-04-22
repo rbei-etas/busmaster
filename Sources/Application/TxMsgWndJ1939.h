@@ -1,38 +1,24 @@
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  TxMsgWndJ1939.h
-  Description   :  
-  $Log:   X:/Archive/Sources/Application/TxMsgWndJ1939.h_v  $
- * 
- *    Rev 1.7   15 Apr 2011 20:02:20   CANMNTTM
- * Added RBEI Copyright information.
- * 
- *    Rev 1.6   23 Mar 2011 14:49:22   CANMNTTM
- * Support upto 32 channels
- * 
- *    Rev 1.5   13 Jan 2011 14:55:50   CANMNTTM
- * Implemented J1939 database specific functions.
- * 
- *    Rev 1.4   23 Dec 2010 16:43:26   CANMNTTM
- * Transmission stopped before disconnecting.
- * 
- *    Rev 1.3   22 Dec 2010 19:13:48   CANMNTTM
- * Added Cyclic transmission feature.
- * 
- *    Rev 1.2   15 Dec 2010 17:06:46   CANMNTTM
- * Added new function to set J1939 client parameter.
- * 
- *    Rev 1.1   13 Dec 2010 19:06:22   CANMNTTM
- * Removed absolute path inclusion
- * 
- *    Rev 1.0   13 Dec 2010 18:41:54   CANMNTTM
- *  
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-  Author(s)     :  Pradeep Kadoor
-  Date Created  :  10/12/2010
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
+/**
+ * \file      TxMsgWndJ1939.h
+ * \author    Pradeep Kadoor
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ */
+
 #pragma once
 
 #include "Utility/RadixEdit.h"

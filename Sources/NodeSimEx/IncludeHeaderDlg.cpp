@@ -29,11 +29,6 @@
 #include "GlobalObj.h"
 #include "IncludeHeaderDlg.h"   // Class definition file
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 /******************************************************************************/
 /*  Function Name    :  CIncludeHeaderDlg                                     */
 /*                                                                            */

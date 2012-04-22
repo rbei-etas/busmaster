@@ -22,9 +22,7 @@
  * Definition file for CBaseLogObject class
  */
 
-
-#if !defined BASELOGOBJECT_H__INCLUDED_
-#define BASELOGOBJECT_H__INCLUDED_
+#pragma once
 
 #include "DataTypes/Log_Datatypes.h"
 
@@ -144,5 +142,3 @@ public:
 	void GetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails, 
 									int& nNumChannels);
 };
-
-#endif // BASELOGOBJECT_H__INCLUDED_

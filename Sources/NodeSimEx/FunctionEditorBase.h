@@ -18,8 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined FUNCTIONEDITORBASE_H__INCLUDED_
-#define FUNCTIONEDITORBASE_H__INCLUDED_
+
+#pragma once
 
 #include "include\basedefs.h"
 
@@ -35,4 +35,3 @@ public:
        CFunctionEditorDoc */ 
     static CFunctionEditorDoc* pCreateNewDocument(eTYPE_BUS eBus);
 };
-#endif // FUNCTIONEDITORBASE_H__INCLUDED_

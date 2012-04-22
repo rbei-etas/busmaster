@@ -22,17 +22,11 @@
  * Interface file for CElementSelection class
  */
 
-#if !defined(AFX_ELEMENTSELECTION_H__597336ED_797E_42CB_BAFB_D2E6032ADEA2__INCLUDED_)
-#define AFX_ELEMENTSELECTION_H__597336ED_797E_42CB_BAFB_D2E6032ADEA2__INCLUDED_
+#pragma once
 
 // For Main Frame Definition
 #include "MainFrm.h"
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
- 
 class CElementSelection : public CDialog
 {
 // Construction
@@ -126,8 +120,3 @@ private:
 public:
 	afx_msg void OnBnClickedOk();
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_ELEMENTSELECTION_H__597336ED_797E_42CB_BAFB_D2E6032ADEA2__INCLUDED_)

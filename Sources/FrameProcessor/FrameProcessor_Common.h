@@ -22,12 +22,7 @@
  * Definition file for CFrameProcessor_Common class realising 
  */
 
-// FrameProcessor.h : main header file for the FrameProcessor DLL
-//
-
-#if !defined FRAMEPROCESSOR_COMMON_H__INCLUDED
-#define FRAMEPROCESSOR_COMMON_H__INCLUDED
-
+#pragma once
 
 //#include "FrameProcessor_resource.h"		// main symbols
 #include "Utility/Utility_Thread.h"
@@ -115,5 +110,3 @@ public:
 	virtual BOOL InitInstance(void);
     virtual int ExitInstance(void);
 };
-
-#endif // FRAMEPROCESSOR_COMMON_H__INCLUDED

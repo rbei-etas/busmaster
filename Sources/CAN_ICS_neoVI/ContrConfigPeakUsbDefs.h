@@ -22,7 +22,7 @@
  * Macro definitions for controller configuration.
  */
 
-
+#pragma once
 
 #define defBITS_IN_BYTE         8
 

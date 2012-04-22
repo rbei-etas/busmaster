@@ -20,6 +20,7 @@
  */
 
 #pragma once
+
 #include "afxwin.h"
 #include "EditItem.h" 
 class CButtonItem;
@@ -55,6 +56,3 @@ public:
     afx_msg void OnKillFocus(CWnd* pNewWnd);
     afx_msg void OnBnClicked();
 };
-
-
-

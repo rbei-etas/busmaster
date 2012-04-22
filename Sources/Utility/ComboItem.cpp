@@ -25,12 +25,6 @@
 #include "Utils_stdafx.h"       // For standard include
 #include "ComboItem.h"          // Definition of class
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 /////////////////////////////////////////////////////////////////////////////
 // CComboItem
 

@@ -37,11 +37,6 @@
 
 #define defMAX_TEXT_ACCEPTANCE  2
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 /******************************************************************************/
 /*  Function Name    :  CAcceptanceFilterDlg                                  */ 
 /*  Input(s)         :  CWnd* pParent: Pointer to parent class                */

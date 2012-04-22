@@ -21,14 +21,9 @@
  *
  * This header file contains the defintion of class
  */
-#if !defined(AFX_SIMSYSTREEVIEW_H__6358DCB6_3749_4AC4_9E17_1A3385B08D35__INCLUDED_)
-#define AFX_SIMSYSTREEVIEW_H__6358DCB6_3749_4AC4_9E17_1A3385B08D35__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// SimSysTreeView.h : header file
-//
+
 #include "Include/Basedefs.h"
 #include "SimSysConfigDetails.h"  // For CSimSysConfigDetails class decl
 /////////////////////////////////////////////////////////////////////////////
@@ -150,10 +145,3 @@ public:
     PSSIMSYSINFO psGetCurrentSimSysInfo();
 
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_SIMSYSTREEVIEW_H__6358DCB6_3749_4AC4_9E17_1A3385B08D35__INCLUDED_)

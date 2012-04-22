@@ -32,9 +32,6 @@
 
 static CSignalWatch_CAN* sg_pouSW_CAN = NULL;
 static CSignalWatch_J1939* sg_pouSW_J1939 = NULL;
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 //
 //	Note!

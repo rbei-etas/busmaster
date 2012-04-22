@@ -26,11 +26,7 @@
 #include "ContrConfigPeakUsbDefs.h"
 #include "CAN_ETAS_BOA_Resource.h"
 #include "ChangeRegisters_CAN_ETAS_BOA.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
+
 /******************************************************************************/
 /*  Function Name    :  CChangeRegisters_CAN_ETAS_BOA                                      */
 /*  Input(s)         :                                                        */

@@ -27,10 +27,6 @@
 #define USAGE_EXPORT
 #include "NodeSimEx_extern.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 static CNodeSim* sg_pouNS_CAN = NULL;
 static CNodeSim* sg_pouNS_J1939 = NULL;
 static CDynLinkLibrary* sg_pomDynLinkLib = NULL;

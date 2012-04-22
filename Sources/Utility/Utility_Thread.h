@@ -22,9 +22,7 @@
  * Definition file for CPARAM_THREADPROC class.
  */
 
-
-#if !defined UTILITY_THREAD_H__INCLUDED_
-#define UTILITY_THREAD_H__INCLUDED_
+#pragma once
 
 #if !defined _ETHREAD_ACTION_
 #define _ETHREAD_ACTION_
@@ -94,5 +92,3 @@ public:
     BOOL bTransitToActiveState(void); // This function brings the thread back
     // into the previous state.
 };
-
-#endif  //UTILITY_THREAD_H__INCLUDED_

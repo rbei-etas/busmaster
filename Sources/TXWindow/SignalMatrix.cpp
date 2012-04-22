@@ -27,12 +27,6 @@
 #include "Utility/OffScreenDC.h"        // For Memory DC class Implementation
 #include "SignalMatrix.h"       // For CSignalMatrix class declaration
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #define HIGHLIGHT_COLOR     RGB(0x20,0x20,0xaa)
 #define NO_HIGHLIGHT_COLOR  RGB(255,255,255)
 #define DISABLED_COLOR      RGB(212,208,200)

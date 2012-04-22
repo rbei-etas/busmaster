@@ -1,29 +1,28 @@
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  LogObjectJ1939.h
-  Description   :  Definition file for CLogObjectJ1939 class.
-  $Log:   X:/Archive/Sources/FrameProcessor/LogObjectJ1939.h_v  $
- * 
- *    Rev 1.2   02 Dec 2011 20:16:50   rac2kor
- * Removed hard coding of version information 
- * string in the log file by accepting it as a parameter
- * from the application / client.
- * 
- *    Rev 1.1   15 Apr 2011 19:20:38   rac2kor
- * Inserted RBEI Copyright information text into the file header.
- * 
- *    Rev 1.0   06 Dec 2010 18:53:02   rac2kor
- *  
+/**
+ * \file      LogObjectJ1939.h
+ * \brief     Declaration file for the exported function used to get the 
+ * \author    Ratnadip Choudhury
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Declaration file for the exported function used to get the 
+ */
 
-  Author(s)     :  Ratnadip Choudhury
-  Date Created  :  30.11.2010
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
-
-#if !defined LOGOBJECTJ1939_H__INCLUDED_
-#define LOGOBJECTJ1939_H__INCLUDED_
+#pragma once
 
 #include "include/BaseDefs.h"
 #include "DataTypes/Log_Datatypes.h"
@@ -88,5 +87,3 @@ public:
 											int& nNumChannels);
 
 };
-
-#endif // LOGOBJECTJ1939_H__INCLUDED_

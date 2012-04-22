@@ -21,13 +21,8 @@
  *
  * Exports API functions for Kvaser CAN Hardware interface
  */
+
 #pragma once
-
-#ifndef __AFXWIN_H__
-#error include 'stdafx.h' before including this file for PCH
-#endif
-
-
 
 /**
  * See CAN_Kvaser_CAN.cpp for the implementation of this class

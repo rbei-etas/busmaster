@@ -27,13 +27,6 @@
 // Definition of CFlags class
 #include "Flags.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 /******************************************************************************/
 /*  Function Name    :  CFlags                                                */    
 /*  Input(s)         :  PSTOOLBARINFO psToolBarInfo                           */    

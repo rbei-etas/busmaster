@@ -18,7 +18,9 @@
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
+
 #pragma once
+
 #include "SigGrphWnd_Extern.h"
 #include "DataTypes/MsgBufVSE.h"
 #include "struct.h"

@@ -19,8 +19,8 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
-#if !defined DEFINES_TSEXECUTORGUI_EXPREESION_H__INCLUDED_
-#define DEFINES_TSEXECUTORGUI_EXPREESION_H__INCLUDED_
+#pragma once
+
 #include "Afxtempl.h"
 
 const int SIZE_CHAR = sizeof(CHAR);
@@ -53,5 +53,3 @@ public:
     BOOL bGetEnggValue(DWORD dwRawValue, CString& omEnggVal) const;
     ~CExpressionExecutor();
 };
-
-#endif // DEFINES_EXPREESION_H__INCLUDED_

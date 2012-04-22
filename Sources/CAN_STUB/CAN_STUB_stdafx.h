@@ -25,10 +25,6 @@
 
 #pragma once
 
-#ifndef _CRT_SECURE_NO_DEPRECATE
-#define _CRT_SECURE_NO_DEPRECATE
-#endif
-
 #ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 #endif
@@ -76,9 +72,6 @@
 #include "afxtempl.h"
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
-// Disable warning messages C4996
-#pragma warning(disable: 4996)
-
 // Windows Header Files:
 #include <windows.h>
 //#include <afxwin.h>
@@ -91,5 +84,3 @@
 #include <atlconv.h>
 #include <stdio.h>
 //#include <objbase.h>
-
-// TODO: reference additional headers your program requires here

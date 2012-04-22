@@ -21,12 +21,8 @@
  *
  * This file contains definition of CComputeCheckSum class
  */
-#if !defined COMPUTECHECKSUM_H__INCLUDED_
-#define COMPUTECHECKSUM_H__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 class CComputeCheckSum  
 {
@@ -48,4 +44,3 @@ protected:
                                         UCHAR* pucCheckSum, CString &strError);
 
 };
-#endif //COMPUTECHECKSUM_H__INCLUDED_

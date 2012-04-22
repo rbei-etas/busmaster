@@ -19,8 +19,7 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
-#if !defined(_TSEDITORLIB_SENDMESSAGE_H_INCLUDED_)
-#define _TSEDITORLIB_SENDMESSAGE_H_INCLUDED_
+#pragma once
 
 #include "BaseEntityTA.h"
 #include "TSdefinitions.h"
@@ -105,4 +104,3 @@ public:
 	CSendData& operator=(const CSendData& RefObj);
     virtual ~CSendData(void);
 };
-#endif

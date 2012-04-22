@@ -34,13 +34,6 @@
 #include "TxFunctionsView.h"    // For Tx Function View class declaration
 #include "TxMsgChildFrame.h"    // For Parent Window class declaration
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 IMPLEMENT_DYNCREATE(CTxFunctionsView, CFormView)
 
 /*******************************************************************************

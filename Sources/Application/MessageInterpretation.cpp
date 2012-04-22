@@ -33,13 +33,6 @@
 #include ".\messageinterpretation.h"
 //#include "MsgInterpretation.h"
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 /////////////////////////////////////////////////////////////////////////////
 // CMessageInterpretation dialog
 

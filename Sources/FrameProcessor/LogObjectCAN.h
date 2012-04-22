@@ -22,8 +22,7 @@
  * Definition file for CLogObjectCAN class.
  */
 
-#if !defined LOGOBJECTCAN_H__INCLUDED_
-#define LOGOBJECTCAN_H__INCLUDED_
+#pragma once
 
 #include "DataTypes/Log_Datatypes.h"
 #include "DataTypes/Filter_Datatypes.h"
@@ -86,5 +85,3 @@ public:
 	void Der_GetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
 											int& nNumChannels);
 };
-
-#endif // LOGOBJECTCAN_H__INCLUDED_

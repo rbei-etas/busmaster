@@ -1,5 +1,4 @@
-#ifndef __GLOBAL_H__
-#define __GLOBAL_H__
+#pragma once
 
 #define MHS_STR_SIZE 255
 
@@ -43,6 +42,4 @@
 #define DRV_LOCK_ENTER(x) pthread_mutex_lock((x))
 #define DRV_LOCK_LEAVE(x) pthread_mutex_unlock((x))
 #define mhs_sleep(x) usleep((x) * 1000)
-#endif
-
 #endif

@@ -30,13 +30,6 @@
 #include "MessageAttrib.h"   //Saving contents on dissocation of database
 #include "BUSMASTER.h"
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
-
 static CHAR s_acTraceStr[1024] = {""};
 
 //Trace window ptr

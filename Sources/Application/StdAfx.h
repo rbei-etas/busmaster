@@ -22,16 +22,7 @@
  * This header file contains the standard include header files
  */
 
-#if !defined(AFX_STDAFX_H__E02A6C5E_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)
-#define AFX_STDAFX_H__E02A6C5E_1005_11D6_A606_00D0B76BEBF5__INCLUDED_
-
-#ifndef _CRT_SECURE_NO_DEPRECATE
-#define _CRT_SECURE_NO_DEPRECATE
-#endif
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #define VC_EXTRALEAN        // Exclude rarely-used stuff from Windows headers
 
@@ -83,12 +74,6 @@ const BYTE VERSION_MAJOR    = 1;
 const BYTE VERSION_MINOR    = 6;
 const BYTE VERSION_BUILD    = 2;
 
-// Disable warning messages C4996
-#pragma warning(disable: 4996)
-
-
 #define FOR_ETIN
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_STDAFX_H__E02A6C5E_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)

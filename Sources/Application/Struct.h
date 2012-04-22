@@ -21,14 +21,15 @@
  *
  * This file contain the definition of all structures used in 
  */
+
+#pragma once
+
 #include "include/Struct_CAN.h"
 #include "HashDefines.h"
 //#include "canapi2.h"
 #include "include/Basedefs.h"
 #include "DataTypes/Filter_DataTypes.h"
 
-#ifndef _STRUCT_H_
-#define _STRUCT_H_
 // All function prototype is used in function editor.
 typedef VOID (__cdecl *PFMSG_HANDLER)(STCAN_MSG Rx_Msg); 
 typedef VOID (__cdecl *PFTIMER_HANDLER)(); 
@@ -539,7 +540,7 @@ struct tagModuleFilter
 
     tagModuleFilter& operator=(tagModuleFilter& TempObj)
     {
-        _tcscpy(m_omFilterName, TempObj.m_omFilterName);
+        strcpy(m_omFilterName, TempObj.m_omFilterName);
         m_bEnabled = TempObj.m_bEnabled;
         return *this;
     }
@@ -635,5 +636,3 @@ enum eLogFileStates { LOGGING_YET_TO_START, LOGGING_STARTED, LOGGING_STOPPED } ;
 
 // Replay States
 enum eReplayStates { REPLAY_TO_START, REPLAY_RUNNING, REPLAY_INVALID };
-
-#endif

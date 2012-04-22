@@ -21,11 +21,8 @@
  *
  * This contains the dll entry point function and 
  */
-#pragma once
 
-#ifndef __AFXWIN_H__
-	#error include 'stdafx.h' before including this file for PCH
-#endif
+#pragma once
 
 #include "resource.h"		// main symbols
 

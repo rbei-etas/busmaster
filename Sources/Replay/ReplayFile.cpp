@@ -25,12 +25,6 @@
 #include "Replay_stdafx.h"             // For standard Include
 #include "ReplayFile.h"         // For replay file class declaration
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 /*******************************************************************************
   Function Name  : CReplayFile
   Description    : Standard default constructor

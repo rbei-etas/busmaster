@@ -18,8 +18,8 @@
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined CFILESDEFS_CAN_H__INCLUDED_
-#define CFILESDEFS_CAN_H__INCLUDED_
+
+#pragma once
 
 #define STRUCT_FILE                    _T("struct.h")
 #define MSG_STRUCT_NAME                _T("STCAN_MSG");
@@ -127,4 +127,3 @@ static const CString sg_omAPIFuncNamesJ1939[TOTAL_API_COUNT_J1939] =
 
 
 static const CString sg_omMcNetErrorHandlerList[TOTAL_ERROR_COUNT] = {_T("Error Active"), _T("Error Passive"), _T("Warning Limit"), _T("Bus Off"), _T("Error Frame")};
-#endif //CFILESDEFS_CAN_H__INCLUDED_

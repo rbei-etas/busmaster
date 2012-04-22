@@ -15,15 +15,17 @@
 
 /**
  * \file      SimENG.h
+ * \brief     Declaration of the CSimENG
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Declaration of the CSimENG
  */
-// SimENG.h : Declaration of the CSimENG
 
 #pragma once
+
 #include "resource_BusSim.h"       // main symbols
 #include "BusEmulation.h"
-
 
 // CSimENG
 

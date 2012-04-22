@@ -1,34 +1,28 @@
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  DIL_J1939_Extern.h
-  Description   :  All the exported functions from J1939 DIL DLL
-  $Log:   X:/Archive/Sources/DIL_J1939/DIL_J1939_Extern.h_v  $
- * 
- *    Rev 1.4   15 Apr 2011 18:48:34   CANMNTTM
- * Added RBEI Copyright information.
- * 
- *    Rev 1.3   02 Mar 2011 11:36:44   CANMNTTM
- * SetCallBackFuncPtr function is added.
- * 
- *    Rev 1.2   22 Dec 2010 19:23:42   CANMNTTM
- * 1. Implemented Call back mechanism.
- * 2. Exported function SetClBckFnPtrs and GetTimeOut added.
- * 
- *    Rev 1.1   13 Dec 2010 16:37:06   CANMNTTM
- * Nodes are made independent of channel.
- * Now nodes can send message in any channel.
- * 
- *    Rev 1.0   06 Dec 2010 18:47:20   rac2kor
- *  
-  Author(s)     :  Pradeep Kadoor
-  Date Created  :  22/10/2010
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
+/**
+ * \file      DIL_J1939_Extern.h
+ * \brief     Definition file for DIL J1939
+ * \author    Pradeep Kadoor
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Definition file for DIL J1939
+ */
 
-#if !defined DIL_J1939_EXTERN_H__INCLUDED_
-#define DIL_J1939_EXTERN_H__INCLUDED_
+#pragma once
 
 #if defined USAGEMODE
 #undef USAGEMODE
@@ -332,6 +326,3 @@ USAGEMODE HRESULT DILJ_SetCallBckFuncPtr(DWORD dwClient, ETYPE_CLBCK_FN eClBckFn
 #ifdef __cplusplus
 }
 #endif
-
-
-#endif // DIL_J1939_EXTERN_H__INCLUDED_

@@ -18,8 +18,8 @@
  * \author    Venkatanarayana makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined TSEDITOR_SETTINGSDLG_H__INCLUDED_
-#define TSEDITOR_SETTINGSDLG_H__INCLUDED_
+
+#pragma once
 
 #include "TSEditorGUI_resource.h"
 #include "Utility/ColourPicker.h"
@@ -49,5 +49,3 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 };
-
-#endif

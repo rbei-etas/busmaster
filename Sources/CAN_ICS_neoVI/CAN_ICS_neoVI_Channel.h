@@ -22,13 +22,7 @@
  * Interface file for CChannel class
  */
 
-
-#if !defined(AFX_CHANNEL_H__CDA65E9D_77E5_4058_8F76_85D46585C9D0__INCLUDED_)
-#define AFX_CHANNEL_H__CDA65E9D_77E5_4058_8F76_85D46585C9D0__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "include/struct_can.h"
 
@@ -101,5 +95,3 @@ public:
     /** Rx Error Handler execution state */
     BOOL m_bRxErrorExecuted;
 };
-
-#endif // !defined(AFX_CHANNEL_H__CDA65E9D_77E5_4058_8F76_85D46585C9D0__INCLUDED_)

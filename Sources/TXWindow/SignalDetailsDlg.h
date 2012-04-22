@@ -21,14 +21,9 @@
  *
  * This header file contains the defintion of class
  */
-#if !defined(AFX_SIGNALDETAILSDLG_H__70C2D904_2743_11D6_A61C_00D0B76BEBF5__INCLUDED_)
-#define AFX_SIGNALDETAILSDLG_H__70C2D904_2743_11D6_A61C_00D0B76BEBF5__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// SignalDetailsDlg.h : header file
-//
+
 #include "TxWindow_resource.h"
 #include "Utility/RadixEdit.h"
 #include "Utility/AlphanumiricEdit.h"
@@ -139,8 +134,3 @@ private:
     afx_msg void OnBnClickedRadioIntel();
     afx_msg void OnBnClickedRadioMotorola();
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_SIGNALDETAILSDLG_H__70C2D904_2743_11D6_A61C_00D0B76BEBF5__INCLUDED_)

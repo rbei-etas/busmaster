@@ -1,5 +1,4 @@
-#ifndef __GUI_UTIL_H__
-#define __GUI_UTIL_H__
+#pragma once
 
 #include "global.h"
 
@@ -36,6 +35,4 @@ WORD GetCheckButton(HWND ctrl_wnd);
 
 #ifdef __cplusplus
   }
-#endif
-
 #endif

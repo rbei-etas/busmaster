@@ -22,8 +22,7 @@
  * Base class definition for error logger module
  */
 
-#if !defined BASE_WRAPPERERRORLOGGER_H__INCLUDED_
-#define BASE_WRAPPERERRORLOGGER_H__INCLUDED_
+#pragma once
 
 #define LOG_MESSAGE(WrapperErr, Msg)  {WrapperErr->vLogAMessage(A2T(__FILE__), __LINE__, Msg);}
 
@@ -36,5 +35,3 @@ public:
     // Maximum characters in File and Msg are FILENAME_MAX and BUFSIZ respectively
     virtual void vLogAMessage(TCHAR File[], int Line, TCHAR Msg[]) = 0;
 };
-
-#endif // BASE_WRAPPERERRORLOGGER_H__INCLUDED_

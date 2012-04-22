@@ -22,9 +22,7 @@
  * This contains exported function declarations, that can be
  */
 
-#if !defined PROJECTCONFIGURATION_EXTERN__H_INCLUDED_
-#define PROJECTCONFIGURATION_EXTERN__H_INCLUDED_
-
+#pragma once
 
 #if defined USAGEMODE
 #undef USAGEMODE
@@ -73,6 +71,3 @@ USAGEMODE int GetSectionList(string& ProjectName, LISTSTR* SectionList);
 #ifdef __cplusplus
 }
 #endif
-
-
-#endif //PROJECTCONFIGURATION_EXTERN__H_INCLUDED_

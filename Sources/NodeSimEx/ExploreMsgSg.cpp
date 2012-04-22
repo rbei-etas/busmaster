@@ -27,14 +27,6 @@
 #include "FunctionEditorDoc.h"  // Document defintion file
 #include "ExploreMsgSg.h"       // Class defintion file
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
-
 /******************************************************************************/
 /*  Function Name    :  CExploreMsgSg                                         */
 /*                                                                            */

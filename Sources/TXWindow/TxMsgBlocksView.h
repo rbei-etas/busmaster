@@ -22,12 +22,7 @@
  * Interface file for CTxMsgBlocksView class
  */
 
-#if !defined(AFX_TXMSGBLOCKSVIEW_H__781C8957_456A_4F37_ACEC_A94CFFA454E1__INCLUDED_)
-#define AFX_TXMSGBLOCKSVIEW_H__781C8957_456A_4F37_ACEC_A94CFFA454E1__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #ifndef __AFXEXT_H__
 #include <afxext.h>
@@ -160,10 +155,3 @@ public:
     CComboBox m_omComboAllMsgs;
     afx_msg void OnCbnSelchangeComboMsgs();
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_TXMSGBLOCKSVIEW_H__781C8957_456A_4F37_ACEC_A94CFFA454E1__INCLUDED_)

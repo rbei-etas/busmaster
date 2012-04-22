@@ -18,9 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#ifndef NODE_GLOBAL_OBJ_H
-#define NODE_GLOBAL_OBJ_H
 
+#pragma once
 
 #include "NodeSimEx_Struct.h"
 #include "FileView.h"
@@ -92,5 +91,3 @@ public:
     static CString omGetBusSpecMsgFieldName(ETYPE_BUS eBus);
     static CString omGetBusName(ETYPE_BUS eBus);
 };
-
-#endif         //#define NODE_GLOBAL_OBJ_H

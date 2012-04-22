@@ -52,11 +52,6 @@
 #include "TimeManager.h"
 #include "Include/BaseDefs.h"
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 static AFX_EXTENSION_MODULE SigGrphWndDLL = { NULL, NULL };
 WINDOWPLACEMENT m_sGraphWndPlacement[AVAILABLE_PROTOCOLS];
 SGRAPHSPLITTERDATA m_sGraphSplitterPos[AVAILABLE_PROTOCOLS];

@@ -32,12 +32,6 @@
 // For CNumEdit Class definition
 #include "NumEdit.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 /////////////////////////////////////////////////////////////////////////////
 // CEditItem
 #define IDC_NUM_CONTROL         0x12345

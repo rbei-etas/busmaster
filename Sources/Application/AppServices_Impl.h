@@ -22,9 +22,7 @@
  * Concrete class definition for the application service layer
  */
 
-#if !defined APPSERVICES_IMPL_H__INCLUDED_
-#define APPSERVICES_IMPL_H__INCLUDED_
-
+#pragma once
 
 #include "DataTypes/BaseAppServices.h"
 
@@ -41,5 +39,3 @@ public:
     // Functions
     BOOL bWriteToTrace(TCHAR* pcTraceStr);
 };
-
-#endif // APPSERVICES_IMPL_H__INCLUDED_

@@ -1,31 +1,30 @@
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-/******************************************************************************
-  Project       :  Frame_McNet
-  FileName      :  Macros.h
-  Description   :  All the macro definitions
-  $Log:   X:/Archive/Sources/DIL_J1939/Macros.h_v  $
- * 
- *    Rev 1.1   15 Apr 2011 18:48:38   CANMNTTM
- * Added RBEI Copyright information.
- * 
- *    Rev 1.0   06 Dec 2010 18:47:22   rac2kor
- *  
- * 
- *    Rev 1.1   04 Jan 2010 14:46:12   mcnetpl
- *  
- * 
- *    Rev 1.0   02 Dec 2009 17:53:04   mcnetpl
- * Initial version
+/**
+ * \file      Macros.h
+ * \brief     Definition file for macros
+ * \author    Anish Kumar
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Definition file for macros
+ */
 
-  Author(s)     :  Anish Kumar
-  Date Created  :  15/09/2009
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
+Author(s)     :  Anish Kumar
 
-#if !defined MACRO_H__INCLUDED_
-#define MACRO_H__INCLUDED_
-
+#pragma once
 
 #define Def_TPCI_SEQ_NO_MASK              0x0F
 #define Def_TPCI_BLK_SIZE_MASK            0x0F
@@ -80,6 +79,3 @@
 #define MAKE_SERVICE_EXP_TPCI(byTPCI)((byTPCI) |= Def_TPCI_DATA_TYPE_MASK )
 #define MAKE_RXR(byTPCI)((byTPCI) |= Def_TPCI_RXR_MASK )
 #define MAKE_RXNR(byTPCI)((byTPCI) &= (~Def_TPCI_RXR_MASK))
-
-
-#endif //MACRO_H__INCLUDED_

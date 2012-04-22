@@ -30,14 +30,6 @@
 #include "MsgSgDetView.h"       // Forms the right pane
 #include "Flags.h"              // DBOPEN flag to be set/reset is defined here
 
-
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 extern CCANMonitorApp theApp;
 
 SDBPARAMS CMsgSgTreeView::sm_sDbParams = sg_asDbParams[CAN];

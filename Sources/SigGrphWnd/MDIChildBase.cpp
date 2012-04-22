@@ -23,12 +23,6 @@
 #include "SigGrphWnd_stdafx.h"             // For Standard Includes
 #include "MDIChildBase.h"       // For MDI Base class definition
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 IMPLEMENT_DYNCREATE(CMDIChildBase, CMDIChildWnd)
 
 /*******************************************************************************

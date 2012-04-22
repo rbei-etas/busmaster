@@ -22,17 +22,7 @@
  * Interface file for CMsgFilterConfigPage class
  */
 
-#if !defined(AFX_MSGFILTERCONFIGPAGE_H__C3E3D6DB_2AEE_49A7_8957_03E840EC1639__INCLUDED_)
-#define AFX_MSGFILTERCONFIGPAGE_H__C3E3D6DB_2AEE_49A7_8957_03E840EC1639__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// MsgFilterConfigPage.h : header file
-//
-
-/////////////////////////////////////////////////////////////////////////////
-// CMsgFilterConfigPage dialog
 
 class CMsgFilterConfigPage : public CPropertyPage
 {
@@ -89,11 +79,4 @@ private:
     HWND m_hMsgWnd; //Msg window handle
     const SFILTERAPPLIED_CAN* m_psFilterConfigured;
     SFILTERAPPLIED_CAN m_sFilterAppliedCan;
-
-
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_MSGFILTERCONFIGPAGE_H__C3E3D6DB_2AEE_49A7_8957_03E840EC1639__INCLUDED_)

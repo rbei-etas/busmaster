@@ -21,8 +21,8 @@
  *
  * This header file contains the definition of the class
  */
-#ifndef __CCONFIGDETAILS_H__
-#define __CCONFIGDETAILS_H__
+
+#pragma once
 
 // For Graph Parameter Class
 #include "GraphParameters.h"
@@ -322,5 +322,3 @@ public:
 
 	
 };
-
-#endif //__CCONFIGDETAILS_H__

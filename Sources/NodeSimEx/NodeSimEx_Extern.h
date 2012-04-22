@@ -22,9 +22,7 @@
  * Declaration file for the exported function used to get the 
  */
 
-#if !defined NODESIMEX_EXTERN_H__INCLUDED_
-#define NODESIMEX_EXTERN_H__INCLUDED_
-
+#pragma once
 
 #if defined USAGEMODE
 #undef USAGEMODE
@@ -46,5 +44,3 @@ USAGEMODE HRESULT NS_GetInterface(ETYPE_BUS eBus, void** ppvInterface);
 #ifdef __cplusplus
 }
 #endif
-
-#endif // NODESIMEX_EXTERN_H__INCLUDED_

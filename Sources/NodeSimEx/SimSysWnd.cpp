@@ -27,12 +27,6 @@
 #include "SimSysWnd.h"			// Class defintion included here
 #include "SimSysManager.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 ETYPE_BUS CSimSysDetView::sm_eBus = CAN;
 ETYPE_BUS CSimSysTreeView::sm_eBus = CAN;
 /////////////////////////////////////////////////////////////////////////////

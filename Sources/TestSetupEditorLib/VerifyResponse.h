@@ -19,8 +19,7 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
-#if !defined(_TSEDITORLIB_TESTSETUPCVerifyResponse_H_INCLUDED_)
-#define _TSEDITORLIB_TESTSETUPCVerifyResponse_H_INCLUDED_
+#pragma once
 
 #include "VerifyEntity.h"
 
@@ -57,4 +56,3 @@ public:
     HRESULT ValidateEntity(CString& omStrResult);
     virtual ~CVerifyResponse(void);
 };
-#endif

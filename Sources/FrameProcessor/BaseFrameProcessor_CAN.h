@@ -22,8 +22,7 @@
  * Definition file for CBaseFrameProcessor_CAN class which des-
  */
 
-#if !defined BASEFRAMEPROCESSOR_CAN_H__INCLUDED_
-#define BASEFRAMEPROCESSOR_CAN_H__INCLUDED_
+#pragma once
 
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/Log_DataTypes.h"
@@ -146,5 +145,3 @@ public:
 	virtual HRESULT FPC_SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
 														int nNumChannels) = 0;
 };
-
-#endif // BASEFRAMEPROCESSOR_CAN_H__INCLUDED_

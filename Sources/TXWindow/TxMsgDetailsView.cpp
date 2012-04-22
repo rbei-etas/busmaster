@@ -42,14 +42,6 @@
 #include "DataTypes/MsgBufAll_Datatypes.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
 
-
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 // Definition for image indices
 #define defIMAGE_DIRTY 2
 #define defIMAGE_GOOD  0

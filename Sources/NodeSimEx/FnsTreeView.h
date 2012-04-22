@@ -21,14 +21,9 @@
  *
  * This header file contains the defintion of class
  */
-#if !defined(AFX_FNSTREEVIEW_H__E02A6C8A_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)
-#define AFX_FNSTREEVIEW_H__E02A6C8A_1005_11D6_A606_00D0B76BEBF5__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// FnsTreeView.h : header file
-//
+
 //#include <afxcview.h>   // Standard tree view header file
 #include "FunctionEditorDoc.h"
 
@@ -123,10 +118,3 @@ private:
 public:
     afx_msg void OnFunctionEditorSave();
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_FNSTREEVIEW_H__E02A6C8A_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)

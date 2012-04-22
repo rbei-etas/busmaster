@@ -22,12 +22,8 @@
  * This file contain the definition of CBuildProgram class
  */
 
-#if !defined(AFX_BUILDPROGRAM_H__4A0E8487_2F20_11D6_BFE9_0010B599CE39__INCLUDED_)
-#define AFX_BUILDPROGRAM_H__4A0E8487_2F20_11D6_BFE9_0010B599CE39__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
 #include"OutWnd.h"
 #include"SimSysNodeInfo.h"
 class CBuildProgram  
@@ -65,5 +61,3 @@ private:
     // CString array to hold string to be displayed on output window
     CStringArray m_omStrArray;
 };
-
-#endif // !defined(AFX_BUILDPROGRAM_H__4A0E8487_2F20_11D6_BFE9_0010B599CE39__INCLUDED_)

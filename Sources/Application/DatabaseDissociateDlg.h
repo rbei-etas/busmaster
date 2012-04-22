@@ -21,7 +21,9 @@
  *
  * This header file contains the defintion of class       
  */
+
 #pragma once
+
 #include "Datatypes/MsgSignal_Datatypes.h"
 
 // CDatabaseDissociateDlg dialog

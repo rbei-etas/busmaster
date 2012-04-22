@@ -30,12 +30,6 @@
 #include "FunctionView.h"   // Editable function view defintion file
 #include "editframewnd.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 ETYPE_BUS CFunctionView::sm_eBus = CAN;
 ETYPE_BUS CFnsTreeView::sm_eBus  = CAN;
 IMPLEMENT_DYNCREATE(CEditFrameWnd, CMDIChildWnd)

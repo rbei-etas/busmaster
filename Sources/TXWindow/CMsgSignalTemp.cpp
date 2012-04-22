@@ -25,13 +25,6 @@
 #include "Include/BaseDefs.h"
 #include "CMsgSignalTemp.h"      // Class defintion file
 
-
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 static CHAR s_acTraceStr[1024] = {""};
 
 /* Helper function to calculate how many bytes the signal consumes */

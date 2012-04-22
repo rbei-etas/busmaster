@@ -18,8 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined HANDLERFUNC_H__INCLUDED_
-#define HANDLERFUNC_H__INCLUDED_
+
+#pragma once
 
 #include "HashDefines.h"
 
@@ -47,5 +47,3 @@ UINT unTimerHandlerProc(LPVOID pParam);
 UINT unReadNodeMsgHandlerBuffer(LPVOID pParam);
 // to read ExecuteManager buffer of message queue
 UINT unReadDllMsgBuffer(LPVOID pParam);
-
-#endif // HANDLERFUNC_H__INCLUDED_

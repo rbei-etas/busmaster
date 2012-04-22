@@ -22,15 +22,7 @@
  * Interface file for CSignalMatrix class
  */
 
-
-#if !defined(AFX_SIGNALMATRIX_H__C23EEDF9_B670_410A_9E4C_FE24C9492F1C__INCLUDED_)
-#define AFX_SIGNALMATRIX_H__C23EEDF9_B670_410A_9E4C_FE24C9492F1C__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// SignalMatrix.h : header file
-//
 
 #define MAX_SIGNALS 64
 
@@ -94,10 +86,3 @@ private:
     // Signal data
     BOOL m_abSignalData[MAX_SIGNALS];
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_SIGNALMATRIX_H__C23EEDF9_B670_410A_9E4C_FE24C9492F1C__INCLUDED_)

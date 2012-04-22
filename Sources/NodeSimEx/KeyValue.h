@@ -21,14 +21,8 @@
  *
  * This file contain the definition all of CKeyValue class
  */
-#if !defined(AFX_KEYVALUE_H__051FC127_3176_11D6_BFEB_0010B599CE39__INCLUDED_)
-#define AFX_KEYVALUE_H__051FC127_3176_11D6_BFEB_0010B599CE39__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-/////////////////////////////////////////////////////////////////////////////
-// CKeyValue dialog
 
 #include "NodeSimEx_resource.h"
 
@@ -75,9 +69,3 @@ private:
     BOOL bValidateDuplicateKeyHandler(CFunctionEditorDoc* pDoc);
 
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before 
-// the previous line.
-
-#endif // !defined(AFX_KEYVALUE_H__051FC127_3176_11D6_BFEB_0010B599CE39__INCLUDED_)

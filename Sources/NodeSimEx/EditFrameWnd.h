@@ -21,14 +21,8 @@
  *
  * This header file contains the defintion of class
  */
-/////////////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_EDITFRAMEWND_H__E02A6C62_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)
-#define AFX_EDITFRAMEWND_H__E02A6C62_1005_11D6_A606_00D0B76BEBF5__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "HashDefines.h"    // #define file
 #include "NodeSimEx_resource.h"
@@ -77,10 +71,3 @@ public:
     static ETYPE_BUS sm_eBus;
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_EDITFRAMEWND_H__E02A6C62_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)
