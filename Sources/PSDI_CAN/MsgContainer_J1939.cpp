@@ -4,12 +4,6 @@
   Description   :  
   $Log:   X:/Archive/Sources/PSDI_CAN/MsgContainer_J1939.cpv  $
    
-      Rev 1.4   06 Jun 2011 11:57:32   CANMNTTM
-    
-   
-      Rev 1.3   15 Apr 2011 19:28:10   CANMNTTM
-   Added RBEI Copyright information.
-
   Author(s)     :  Pradeep Kadoor
   Date Created  :  15/04/2011
   Modified By   :  

@@ -3,28 +3,6 @@
   FileName      :  DataTypes_J1939.cpp
   Description   :  
   $Log:   X:/Archive/Sources/DataTypes/J1939_DataTypes.cpv  $
-   
-      Rev 1.5   15 Apr 2011 18:55:06   rac2kor
-   Inserted RBEI Copyright information text into the file header.
-   
-      Rev 1.4   04 Mar 2011 17:30:38   CANMNTTM
-   Updated to solve the issues in J1939 MsgWnd:
-   1. Sorting issues in J1939 Msg Wnd.
-   2. Problem with J1939 messages with DLC > 150.
-   
-      Rev 1.3   18 Feb 2011 12:06:46   CANMNTTM
-   Updated to suite multiple message windows for buses.
-   
-      Rev 1.2   14 Dec 2010 17:52:16   CANMNTTM
-   Added a member function vSetPGN for STRUCT_29_BIT_ID.
-   
-   
-      Rev 1.1   13 Dec 2010 21:21:46   rac2kor
-   1. Added a data member for message type in SFORMATTEDATA_J1939
-   2. Added a helper function to get the associated text for a type.
-   
-      Rev 1.0   06 Dec 2010 18:34:32   rac2kor
-    
 
   Author(s)     :  Pradeep Kadoor
   Date Created  :  23/11/2010

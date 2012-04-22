@@ -1025,7 +1025,7 @@ HRESULT ManageQueue(BYTE byCode, UINT nChannel)
 /**
  * copies from OCI_CANRxMessage struct into STCANDATA struct
  */
-void vCopyOCI_CAN_RX_2_RBIN_DATA(const OCI_CANRxMessage* SrcMsg, STCANDATA* DestMsg)
+void vCopyOCI_CAN_RX_2_DATA(const OCI_CANRxMessage* SrcMsg, STCANDATA* DestMsg)
 {
     DestMsg->m_uDataInfo.m_sCANMsg.m_unMsgID = SrcMsg->frameID;
     DestMsg->m_uDataInfo.m_sCANMsg.m_ucDataLen = SrcMsg->dlc;
@@ -1139,7 +1139,7 @@ void vProcessRxMsg(void *userData, struct OCI_CANMessage* msg)
     hHandle = (OCI_ControllerHandle)userData;
     sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel = (UCHAR)nGetChannel(hHandle);
 
-    vCopyOCI_CAN_RX_2_RBIN_DATA(&(msg->data.rxMessage), &sCanData);
+    vCopyOCI_CAN_RX_2_DATA(&(msg->data.rxMessage), &sCanData);
 
     if (sg_byCurrState == CREATE_MAP_TIMESTAMP)
     {
@@ -1177,7 +1177,7 @@ void vProcessTxMsg(void* /*userData*/, OCI_CANMessage* /*msg*/)
 /**
  * Copies OCI_CANErrorFrameMessage struct into STCANDATA.
  */
-void vCopyOCI_CAN_ERR_2_RBIN_DATA(const OCI_CANErrorFrameMessage* SrcMsg, STCANDATA* DestMsg)
+void vCopyOCI_CAN_ERR_2_DATA(const OCI_CANErrorFrameMessage* SrcMsg, STCANDATA* DestMsg)
 {
     DestMsg->m_uDataInfo.m_sCANMsg.m_unMsgID = SrcMsg->frameID;
     DestMsg->m_uDataInfo.m_sCANMsg.m_ucDataLen = SrcMsg->dlc;
@@ -1284,7 +1284,7 @@ void vUpdateErrorCounter(UCHAR ucTxError, UCHAR ucRxError, UINT nChannel)
 void vProcessErrMsg(void *userData, struct OCI_CANMessage* msg)
 {
     static STCANDATA sCanData;
-    vCopyOCI_CAN_ERR_2_RBIN_DATA(&(msg->data.errorFrameMessage), &sCanData);
+    vCopyOCI_CAN_ERR_2_DATA(&(msg->data.errorFrameMessage), &sCanData);
     int32* pUserData = (int32*)userData;
     sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel = (UCHAR)nGetChannel(*pUserData);
     sCanData.m_uDataInfo.m_sErrInfo.m_ucChannel = sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel;
@@ -1727,7 +1727,7 @@ static BOOL bLoadDataFromContr(PSCONTROLER_DETAILS pControllerDetails)
 /**
  * Copies from STCAN_MSG structure into OCI_CANTxMessage message structure  
  */
-void vCopyRBIN_2_OCI_CAN_Data(OCI_CANTxMessage& DestMsg, const STCAN_MSG& SrcMsg)
+void vCopy_2_OCI_CAN_Data(OCI_CANTxMessage& DestMsg, const STCAN_MSG& SrcMsg)
 {
     DestMsg.res     = 0;
     DestMsg.frameID = SrcMsg.m_unMsgID;
@@ -2306,7 +2306,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTx
             static OCI_CANMessage sOciCanMsg;
             static OCI_CANTxMessage sOciTxCanMsg;
             static SACK_MAP sAckMap;
-            vCopyRBIN_2_OCI_CAN_Data(sOciTxCanMsg, sCanTxMsg);
+            vCopy_2_OCI_CAN_Data(sOciTxCanMsg, sCanTxMsg);
             sOciCanMsg.type = OCI_CAN_TX_MESSAGE;
             sOciCanMsg.reserved = 0;
             uint32 nRemaining = 0;

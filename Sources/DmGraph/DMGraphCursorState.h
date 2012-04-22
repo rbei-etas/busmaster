@@ -3,9 +3,6 @@
   FileName      :  CCGCtrlStateMachine.h
   Description   :  
   $Log:   X:/Archive/Sources/CGCtrl/CGCtrlStateMachine.h_v  $
- * 
- *    Rev 1.1   15 Apr 2011 19:29:16   rac2kor
- * Inserted RBEI Copyright information text into the file header.
 
   Author(s)     :  Raja N
   Date Created  :  12/12/2004

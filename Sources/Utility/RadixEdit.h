@@ -16,7 +16,7 @@
 /**
  * \file      RadixEdit.h
  * \brief     This file contains the definition of CRadixEdit class     
- * \authors   RBIN/EMC2 - Soj Thomas, Ratnadip Choudhury, Amarnath Shastry
+ * \authors   Soj Thomas, Ratnadip Choudhury, Amarnath Shastry
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This file contains the definition of CRadixEdit class     

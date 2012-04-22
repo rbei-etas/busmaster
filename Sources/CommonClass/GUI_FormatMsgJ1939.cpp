@@ -5,12 +5,6 @@
   Description	:	Implementation of CRefTimeKeeper class
   $Log:   X:/Archive/Sources/CommonClass/GUI_FormatMsgJ1939.cpv  $
    
-      Rev 1.3   10 Jun 2011 15:14:36   CANMNTTM
-   All W4 warnings are removed
-   
-      Rev 1.2   15 Apr 2011 19:07:08   rac2kor
-   Inserted RBEI Copyright information text into the file header.
-
   Author(s)     :	
   Date Created	:	04/11/2009
   Modified By   :  

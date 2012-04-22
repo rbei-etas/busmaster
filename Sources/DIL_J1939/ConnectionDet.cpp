@@ -4,22 +4,6 @@
   Description   :  
   $Log:   X:/Archive/Sources/DIL_J1939/ConnectionDet.cpv  $
    
-      Rev 1.4   15 Apr 2011 18:48:34   CANMNTTM
-   Added RBEI Copyright information.
-   
-      Rev 1.3   23 Mar 2011 14:58:04   CANMNTTM
-   Support for PDU format 2 message
-   
-      Rev 1.2   29 Dec 2010 19:32:38   CANMNTTM
-   Connection mode for both transmission and reception added.
-   
-      Rev 1.1   23 Dec 2010 16:52:20   CANMNTTM
-   Macro MAX_MSG_LEN_J1939
-    instead of MAX_DATA_LEN_J1939 wherever applicable.
-   
-      Rev 1.0   06 Dec 2010 18:47:20   rac2kor
-    
-
   Author(s)     :  Pradeep Kadoor
   Date Created  :  23/11/2010
   Modified By   :  

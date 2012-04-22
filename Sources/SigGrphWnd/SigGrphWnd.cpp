@@ -4,27 +4,6 @@
   Description   :  
   $Log:   X:/Archive/Sources/SigGrphWnd/SigGrphWnd.cpv  $
    
-      Rev 1.10   22 Jul 2011 11:46:06   CANMNTTM
-   Updation of SIgnal plotter thread: Timings of signal data plotting.
-   
-      Rev 1.9   09 Jun 2011 18:05:32   CANMNTTM
-   All errors in VS2005 are removed
-   
-      Rev 1.8   06 Jun 2011 11:51:38   CANMNTTM
-    
-   
-      Rev 1.7   06 May 2011 14:29:52   CANMNTTM
-   Updated with resource switch.
-   
-      Rev 1.6   06 May 2011 14:24:04   CANMNTTM
-   Updated with resource switching code in necessary functions.
-   
-      Rev 1.5   21 Apr 2011 14:28:08   CANMNTTM
-   Updated SG_GetWindowSplitterPos(..) function to get window config data from datastore.
-   
-      Rev 1.4   15 Apr 2011 19:43:34   rac2kor
-   Inserted RBEI Copyright information text into the file header.
-
   Author(s)     :  
   Date Created  :  
   Modified By   :  

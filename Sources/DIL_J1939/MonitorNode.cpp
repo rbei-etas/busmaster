@@ -4,42 +4,6 @@
   Description   :  
   $Log:   X:/Archive/Sources/DIL_J1939/MonitorNode.cpv  $
    
-      Rev 1.11   07 Jun 2011 11:11:16   CANMNTTM
-    
-   
-      Rev 1.10   15 Apr 2011 18:48:38   CANMNTTM
-   Added RBEI Copyright information.
-   
-      Rev 1.9   23 Mar 2011 14:58:04   CANMNTTM
-   Support for PDU format 2 message
-   
-      Rev 1.8   02 Mar 2011 11:36:44   CANMNTTM
-   SetCallBackFuncPtr function is added.
-   
-      Rev 1.7   30 Dec 2010 18:48:48   CANMNTTM
-    
-   
-      Rev 1.6   29 Dec 2010 19:32:38   CANMNTTM
-   Connection mode for both transmission and reception added.
-   
-      Rev 1.5   23 Dec 2010 16:52:20   CANMNTTM
-   Macro MAX_MSG_LEN_J1939
-    instead of MAX_DATA_LEN_J1939 wherever applicable.
-   
-      Rev 1.4   22 Dec 2010 19:23:42   CANMNTTM
-   1. Implemented Call back mechanism.
-   2. Exported function SetClBckFnPtrs and GetTimeOut added.
-   
-      Rev 1.3   14 Dec 2010 17:53:04   CANMNTTM
-   Defined a virtual function vTransmitMessage.
-   
-      Rev 1.1   13 Dec 2010 16:37:06   CANMNTTM
-   Nodes are made independent of channel.
-   Now nodes can send message in any channel.
-   
-      Rev 1.0   06 Dec 2010 18:47:22   rac2kor
-    
-
   Author(s)     :  Pradeep Kadoor
   Date Created  :  23/11/2010
   Modified By   :  

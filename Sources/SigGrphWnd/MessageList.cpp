@@ -4,18 +4,6 @@
   Description   :  Implementation file for CMessageList class
   $Log:   X:/Archive/Sources/SigGrphWnd/MessageList.cpv  $
    
-      Rev 1.2   06 Jun 2011 11:51:38   CANMNTTM
-    
-   
-      Rev 1.1   15 Apr 2011 19:43:34   rac2kor
-   Inserted RBEI Copyright information text into the file header.
-   
-      Rev 1.0   13 Dec 2010 22:00:36   CANMNTTM
-    
-   
-      Rev 1.0   16 Aug 2010 21:20:36   rac2kor
-    
-
   Author(s)     :  Ratnadip Choudhury
   Date Created  :  31.01.2004
   Modified By   :  Amitesh Bharti

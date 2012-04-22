@@ -4,18 +4,6 @@
   Description   :  Implementation file for CGraphParameters class
   $Log:   X:/Archive/Sources/SigGrphWnd/GraphParameters.cpv  $
    
-      Rev 1.1   15 Apr 2011 19:43:32   rac2kor
-   Inserted RBEI Copyright information text into the file header.
-   
-      Rev 1.0   13 Dec 2010 22:00:36   CANMNTTM
-    
-   
-      Rev 1.1   18 Aug 2010 19:01:06   CANMNTTM
-   Default configuration function has been implemented
-   
-      Rev 1.0   16 Aug 2010 21:20:32   rac2kor
-    
-
   Author(s)     :  Raja N
   Date Created  :  01.12.2004
   Modified By   :  

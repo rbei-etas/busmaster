@@ -4,21 +4,6 @@
   Description   :  Implementation file for CGraphExportDlg class
   $Log:   X:/Archive/Sources/SigGrphWnd/GraphExportDlg.cpv  $
    
-      Rev 1.3   05 Aug 2011 11:06:56   CANMNTTM
-   Updated with Graph control pointer sharing.
-   
-      Rev 1.2   06 Jun 2011 11:51:38   CANMNTTM
-    
-   
-      Rev 1.1   15 Apr 2011 19:43:32   rac2kor
-   Inserted RBEI Copyright information text into the file header.
-   
-      Rev 1.0   13 Dec 2010 22:00:34   CANMNTTM
-    
-   
-      Rev 1.0   16 Aug 2010 21:20:32   rac2kor
-    
-
   Author(s)     :  Raja N
   Date Created  :  10/12/2004
   Modified By   : 

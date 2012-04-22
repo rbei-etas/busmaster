@@ -3,21 +3,6 @@
   FileName      :  J1939TimeOutCfg.cpp
   Description   :  
   $Log:   X:/Archive/Sources/Application/J1939TimeOutCfg.cpv  $
-   
-      Rev 1.3   09 Jun 2011 11:28:04   CANMNTTM
-    
-   
-      Rev 1.2   15 Apr 2011 20:00:40   CANMNTTM
-   Added RBEI Copyright information.
-   
-      Rev 1.1   02 Mar 2011 15:38:14   CANMNTTM
-   1. Support to J1939 Nodesimulation
-   3. Support to J1939 Message window
-   2. Removed unwanted macros
-   
-      Rev 1.0   22 Dec 2010 19:06:28   CANMNTTM
-    
-
   Author(s)     :  Pradeep Kadoor
   Date Created  :  22/12/2010
   Modified By   :  

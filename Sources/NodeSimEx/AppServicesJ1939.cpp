@@ -4,17 +4,6 @@
   Description   :  
   $Log:   X:/Archive/Sources/NodeSimEx/AppServicesJ1939.cpv  $
    
-      Rev 1.3   07 Jun 2011 14:58:50   CANMNTTM
-    
-   
-      Rev 1.2   15 Apr 2011 18:59:10   CANMNTTM
-   Added RBEI Copyright information.
-   
-      Rev 1.1   23 Mar 2011 15:01:14   CANMNTTM
-   Minor improvements while adding a J1939 node.
-   
-      Rev 1.0   01 Mar 2011 17:07:52   CANMNTTM
-    
   Author(s)     :  
   Date Created  :  
   Modified By   :  

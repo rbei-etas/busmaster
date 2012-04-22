@@ -482,9 +482,9 @@ HRESULT CDIL_CAN::DILC_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
  *
  * Get basic information of the board
  */
-HRESULT CDIL_CAN::DILC_GetBoardInfo(s_BOARDINFO& RBIN_BoardInfo)
+HRESULT CDIL_CAN::DILC_GetBoardInfo(s_BOARDINFO& BoardInfo)
 {
-    return m_pBaseDILCAN_Controller->CAN_GetBoardInfo(RBIN_BoardInfo);
+    return m_pBaseDILCAN_Controller->CAN_GetBoardInfo(BoardInfo);
 }
 
 /**
@@ -492,9 +492,9 @@ HRESULT CDIL_CAN::DILC_GetBoardInfo(s_BOARDINFO& RBIN_BoardInfo)
  *
  * Get salient informations on current bus configuration
  */
-HRESULT CDIL_CAN::DILC_GetBusConfigInfo(BYTE* RBIN_BusInfo)
+HRESULT CDIL_CAN::DILC_GetBusConfigInfo(BYTE* BusInfo)
 {
-    return m_pBaseDILCAN_Controller->CAN_GetBusConfigInfo(RBIN_BusInfo);
+    return m_pBaseDILCAN_Controller->CAN_GetBusConfigInfo(BusInfo);
 }
 
 /**

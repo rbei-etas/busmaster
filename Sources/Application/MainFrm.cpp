@@ -16,7 +16,7 @@
 /**
  * \file      MainFrm.cpp
  * \brief     Implementation of the CMainFrame class
- * \authors   RBIN/EMC2 - Amarnath Shastry, Amitesh Bharti, Anish Kumar, Arunkumar Karri
+ * \authors   Amarnath Shastry, Amitesh Bharti, Anish Kumar, Arunkumar Karri
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of the CMainFrame class
@@ -982,7 +982,7 @@ FUNCTION:           OnOpenDatabase
 DESCRIPTION:        Opens a database file for editing   
 PARAMETERS:     
 RETURN VALUE:
-AUTHOR:             RBIN/EMC2 - Amarnath Shastry
+AUTHOR:             Amarnath Shastry
 HISTORY:        
 20-02-2002          Initial Version     Amarnath Shastry
 Modification Date:  01.04.2002
@@ -1133,7 +1133,7 @@ FUNCTION:       pomGetMsgSgWnd
 DESCRIPTION:    Opens a database file for editing   
 PARAMETERS:     
 RETURN VALUE:   Pointer to "CMsgSignalDBWnd" class
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
+AUTHOR:         Amarnath Shastry
 HISTORY:        
 20-02-2002      Initial Version     Amarnath Shastry    
 *******************************************************************************/
@@ -1179,7 +1179,7 @@ FUNCTION:       OnCloseDatabase
 DESCRIPTION:    Closes a database file  
 PARAMETERS:     
 RETURN VALUE:
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
+AUTHOR:         Amarnath Shastry
 HISTORY:        
 20-02-2002      Initial Version     Amarnath Shastry
 25.03.2002      Added flag closing  Amarnath Shastry
@@ -1236,7 +1236,7 @@ FUNCTION:       podGetMsgSgDetView
 DESCRIPTION:    Returns pointer to CMsgSgDetView class  
 PARAMETERS:     
 RETURN VALUE:   Pointer to "CMsgSgDetView" class
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
+AUTHOR:         Amarnath Shastry
 HISTORY:        
 20-02-2002      Initial Version     Amarnath Shastry    
 *******************************************************************************/
@@ -1249,7 +1249,7 @@ FUNCTION:       podGetMsgSgTreeView
 DESCRIPTION:    Returns pointer to CMsgSgTreeView class  
 PARAMETERS:     
 RETURN VALUE:   Pointer to "CMsgSgTreeView" class
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
+AUTHOR:         Amarnath Shastry
 HISTORY:        
 20-02-2002      Initial Version     Amarnath Shastry    
 *******************************************************************************/
@@ -1262,7 +1262,7 @@ FUNCTION:       podSetMsgSgTreeView
 DESCRIPTION:    Sets pointer to CMsgSgTreeView class  
 PARAMETERS:     Pointer to "CMsgSgTreeView" class
 RETURN VALUE:   
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
+AUTHOR:         Amarnath Shastry
 HISTORY:        
 20-02-2002      Initial Version     Amarnath Shastry    
 *******************************************************************************/
@@ -1275,7 +1275,7 @@ FUNCTION:       podSetMsgSgDetView
 DESCRIPTION:    Sets pointer to CMsgSgDetView class  
 PARAMETERS:     Pointer to "CMsgSgDetView" class
 RETURN VALUE:   
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
+AUTHOR:         Amarnath Shastry
 HISTORY:        
 20-02-2002      Initial Version     Amarnath Shastry    
 *******************************************************************************/
@@ -1316,7 +1316,7 @@ FUNCTION:       podSetSimSysTreeView
 DESCRIPTION:    Sets pointer to CMsgSgTreeView class  
 PARAMETERS:     Pointer to "CSimSysTreeView" class
 RETURN VALUE:   
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
+AUTHOR:         Amarnath Shastry
 HISTORY:        
 20-02-2002      Initial Version     Amarnath Shastry    
 *******************************************************************************/
@@ -1329,7 +1329,7 @@ FUNCTION:       podSetSimSysDetView
 DESCRIPTION:    Sets pointer to CMsgSgDetView class  
 PARAMETERS:     Pointer to "CSimSysDetView" class
 RETURN VALUE:   
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
+AUTHOR:         Amarnath Shastry
 HISTORY:        
 20-02-2002      Initial Version     Amarnath Shastry    
 *******************************************************************************/
@@ -1348,7 +1348,7 @@ FUNCTION:       OnImportDatabase
 DESCRIPTION:    Loads a database file selected by the user  
 PARAMETERS:     
 RETURN VALUE:
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
+AUTHOR:         Amarnath Shastry
 HISTORY:        
 20-02-2002      Initial Version     Amarnath Shastry    
 12-11-2002      Modifications       Gopi, Changed usage to configuration from 
@@ -1616,7 +1616,7 @@ FUNCTION:       nConvertStringToInt
 DESCRIPTION:    Closes a database file  
 PARAMETERS:     CString omStrHexNo -- Hex number
 RETURN VALUE:   Equivalent decimal number
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
+AUTHOR:         Amarnath Shastry
 HISTORY:        
 20-02-2002      Initial Version     Amarnath Shastry    
 02.06.2003      Changed the int to __int64 Amitesh Bharti
@@ -1819,7 +1819,7 @@ DESCRIPTION:    #Called by the framework when user selects new database
                 database editior
 PARAMETERS:     
 RETURN VALUE:
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
+AUTHOR:         Amarnath Shastry
 HISTORY:        
 20-02-2002      Initial Version     Amarnath Shastry    
 29.05.2002      Get the current working directory and add it 
@@ -1948,7 +1948,7 @@ DESCRIPTION:    #Called by the framework when user selects SaveAs...
                 #Saves the datastructure contents into the selected file
 PARAMETERS:     
 RETURN VALUE:
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
+AUTHOR:         Amarnath Shastry
 HISTORY:        
 20-02-2002      Initial Version     Amarnath Shastry    
 29.05.2002      Added code to change the font after saving the file -- Amitesh
@@ -2025,7 +2025,7 @@ DESCRIPTION:    #Called by the framework when user selects Save...
                 #Saves the datastructure contents into the selected file
 PARAMETERS:     
 RETURN VALUE:
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
+AUTHOR:         Amarnath Shastry
 HISTORY:        
 20-02-2002      Initial Version     Amarnath Shastry
 Modification    Raja N
@@ -2110,7 +2110,7 @@ DESCRIPTION:    #Called by the framework when user selects Configure Message...
                 #Displays message attribute dialog
 PARAMETERS:     
 RETURN VALUE:
-AUTHOR:         RBIN/EMC2 - Ratnadip Choudhury
+AUTHOR:         Ratnadip Choudhury
 HISTORY:        
 20-02-2002      Initial Version     Ratnadip Choudhury
 04-11-2003      Change to have property page for database and non database 
