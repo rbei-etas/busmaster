@@ -4,19 +4,6 @@
   Description   :  
   $Log:   X:/Archive/Sources/SignalWatch/SignalWatch_J1939.cpv  $
    
-      Rev 1.3   03 Nov 2011 14:31:14   CANMNTTM
-   SW_SetConfigData is updated to solve the conguration
-   saving problem.
-   
-      Rev 1.2   06 Jun 2011 12:08:32   CANMNTTM
-    
-   
-      Rev 1.1   15 Apr 2011 19:18:46   CANMNTTM
-   Added RBEI Copyright information.
-   
-      Rev 1.0   01 Mar 2011 17:05:30   CANMNTTM
-    
-
   Author(s)     :  Pradeep Kadoor
   Date Created  :  16/02/2011
   Modified By   : 

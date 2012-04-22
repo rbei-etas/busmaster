@@ -5,44 +5,6 @@
   Description   :  Source file for CFrameProcessor_J1939 class.
   $Log:   X:/Archive/Sources/FrameProcessor/FrameProcessor_J1939.cpv  $
    
-      Rev 1.9   02 Dec 2011 20:16:48   rac2kor
-   Removed hard coding of version information 
-   string in the log file by accepting it as a parameter
-   from the application / client.
-   
-      Rev 1.8   15 Apr 2011 19:20:32   rac2kor
-   Inserted RBEI Copyright information text into the file header.
-   
-      Rev 1.7   28 Dec 2010 18:53:24   CANMNTTM
-   rac2kor:
-   1. DoInitialisation function now only clears the message buffer.
-   2. Setting of the action event of the thread is now done in the 
-   constructor, as there there is no way the same is going to change
-   throughout the lifetime of the process.
-   
-      Rev 1.6   23 Dec 2010 16:53:30   CANMNTTM
-   macro MAX_MSG_LEN_J1939 is used instead of MAX_DATA_LEN_J1939.
-   
-      Rev 1.5   14 Dec 2010 19:35:06   CANMNTTM
-   BugFix: Data size is set appropriately.
-   
-      Rev 1.4   14 Dec 2010 17:24:40   rac2kor
-   Function has been called as a parameter of ASSERT(...).
-   As a result in release mode this doesn't compile and is an error.
-   
-      Rev 1.3   14 Dec 2010 10:21:52   CANMNTTM
-   BugFix: To get number of  messages inside the buffer GetMsgCount( ) is used instead of GetBufferSize( )
-   
-      Rev 1.2   13 Dec 2010 19:38:16   CANMNTTM
-   DLC value is set properly.
-   
-      Rev 1.1   10 Dec 2010 22:28:50   rac2kor
-   Bugfixing done: Return value of DIL_GetInterface(...)
-   was wrongly asserted against S_OK.
-   
-      Rev 1.0   06 Dec 2010 18:53:02   rac2kor
-    
-
   Author(s)     :  Ratnadip Choudhury
   Date Created  :  1.12.2010
   Modified By   :  

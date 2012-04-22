@@ -16,7 +16,7 @@
 /**
  * \file      MsgIDAttr.cpp
  * \brief     This file contain the implementation of CMsgIDAttr class
- * \author    RBIN/EMC2 - Ratnadip Choudhury
+ * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This file contain the implementation of CMsgIDAttr class

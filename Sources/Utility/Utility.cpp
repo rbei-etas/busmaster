@@ -365,7 +365,7 @@ BOOL CopyTextToClipboard(LPCTSTR lpctstrText, HWND hWnd = NULL)
 FUNCTION:       nConvertStringToInt
 PARAMETERS:     CString omStrHexNo -- Hex number
 RETURN VALUE:   Equivalent decimal number
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
+AUTHOR:         Amarnath Shastry
 HISTORY:        
 20-02-2002      Initial Version     Amarnath Shastry    
 02.06.2003      Changed the int to __int64 Amitesh Bharti

@@ -4,21 +4,6 @@
   Description   :  Implementation file for CTimeManager class
   $Log:   X:/Archive/Sources/SigGrphWnd/TimeManager.cpv  $
    
-      Rev 1.2   06 Jun 2011 11:51:38   CANMNTTM
-    
-   
-      Rev 1.1   15 Apr 2011 19:43:52   rac2kor
-   Inserted RBEI Copyright information text into the file header.
-   
-      Rev 1.0   13 Dec 2010 22:00:52   CANMNTTM
-    
-   
-      Rev 1.1   03 Sep 2010 20:36:18   rac2kor
-   Removed commented codes and objects that are unreferenced.
-   
-      Rev 1.0   16 Aug 2010 21:20:46   rac2kor
-    
-
   Author(s)     :  Raja N
   Date Created  :  23.06.2004
   Modified By   :  

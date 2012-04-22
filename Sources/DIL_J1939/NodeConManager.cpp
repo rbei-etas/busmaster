@@ -4,48 +4,6 @@
   Description   :  
   $Log:   X:/Archive/Sources/DIL_J1939/NodeConManager.cpv  $
    
-      Rev 1.12   07 Jun 2011 11:11:16   CANMNTTM
-    
-   
-      Rev 1.11   15 Apr 2011 18:48:38   CANMNTTM
-   Added RBEI Copyright information.
-   
-      Rev 1.10   15 Apr 2011 16:01:12   CANMNTTM
-   Minor modification to remove warnings.
-   
-      Rev 1.9   07 Apr 2011 12:22:58   CANMNTTM
-   'vClearBuffer' modified inorder to remove individual buffers.
-   
-      Rev 1.8   23 Mar 2011 14:58:04   CANMNTTM
-   Support for PDU format 2 message
-   
-      Rev 1.7   02 Mar 2011 11:36:44   CANMNTTM
-   SetCallBackFuncPtr function is added.
-   
-      Rev 1.6   13 Jan 2011 14:47:02   CANMNTTM
-   GoOnline() return value is used.
-   
-      Rev 1.5   29 Dec 2010 19:32:38   CANMNTTM
-   Connection mode for both transmission and reception added.
-   
-      Rev 1.4   23 Dec 2010 16:52:20   CANMNTTM
-   Macro MAX_MSG_LEN_J1939
-    instead of MAX_DATA_LEN_J1939 wherever applicable.
-   
-      Rev 1.3   22 Dec 2010 19:23:42   CANMNTTM
-   1. Implemented Call back mechanism.
-   2. Exported function SetClBckFnPtrs and GetTimeOut added.
-   
-      Rev 1.2   14 Dec 2010 16:01:26   CANMNTTM
-   BugFix: Seq number for a packet set to 1 instead of 0.
-   
-      Rev 1.1   13 Dec 2010 16:37:06   CANMNTTM
-   Nodes are made independent of channel.
-   Now nodes can send message in any channel.
-   
-      Rev 1.0   06 Dec 2010 18:47:22   rac2kor
-    
-
   Author(s)     :  Pradeep Kadoor
   Date Created  :  23/11/2010
   Modified By   :  

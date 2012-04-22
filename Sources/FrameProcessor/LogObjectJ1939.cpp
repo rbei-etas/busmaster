@@ -4,40 +4,6 @@
   Description   :  Source file for CLogObjectJ1939 class.
   $Log:   X:/Archive/Sources/FrameProcessor/LogObjectJ1939.cpv  $
    
-      Rev 1.9   02 Dec 2011 20:16:50   rac2kor
-   Removed hard coding of version information 
-   string in the log file by accepting it as a parameter
-   from the application / client.
-   
-      Rev 1.8   30 Nov 2011 20:46:44   CANMNTTM
-   Version number is changed
-   
-      Rev 1.7   13 Sep 2011 11:50:44   CANMNTTM
-    
-   
-      Rev 1.6   07 Sep 2011 14:33:38   rac2kor
-   Updated application version number
-   
-      Rev 1.5   06 Sep 2011 20:06:12   CANMNTTM
-   CANvas Name is changed to BUSMASTER
-   
-      Rev 1.4   15 Apr 2011 19:20:38   rac2kor
-   Inserted RBEI Copyright information text into the file header.
-   
-      Rev 1.3   13 Dec 2010 21:24:36   rac2kor
-   Added message type field in the log file.
-   Also, corrected the ordering of fields PGN and CANID.
-   
-      Rev 1.2   10 Dec 2010 17:40:54   rac2kor
-   Updated version information
-   
-      Rev 1.1   10 Dec 2010 11:58:46   rac2kor
-    
-   
-      Rev 1.0   06 Dec 2010 18:53:02   rac2kor
-    
-   
-
   Author(s)     :  Ratnadip Choudhury
   Date Created  :  30.11.2010
   Modified By   :  

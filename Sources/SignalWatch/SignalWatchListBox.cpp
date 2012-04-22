@@ -16,7 +16,7 @@
 /**
  * \file      SignalWatchListBox.cpp
  * \brief     Implementation file for CSignalWatchListBox class
- * \authors   RBIN/EMC2 - Ratnadip Choudhury, Amarnath Shastri
+ * \authors   Ratnadip Choudhury, Amarnath Shastri
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for CSignalWatchListBox class

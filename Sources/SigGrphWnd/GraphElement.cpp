@@ -4,15 +4,6 @@
   Description   :  Implementation file for CGraphElement class
   $Log:   X:/Archive/Sources/SigGrphWnd/GraphElement.cpv  $
    
-      Rev 1.1   15 Apr 2011 19:43:30   rac2kor
-   Inserted RBEI Copyright information text into the file header.
-   
-      Rev 1.0   13 Dec 2010 22:00:34   CANMNTTM
-    
-   
-      Rev 1.0   16 Aug 2010 21:20:32   rac2kor
-    
-
   Author(s)     :  Raja N
   Date Created  :  01.12.2004
   Modified By   : 

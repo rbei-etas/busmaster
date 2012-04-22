@@ -16,7 +16,7 @@
 /**
  * \file      SigWatchDlg.cpp
  * \brief     Implementation file for CSigWatchDlg class
- * \authors   RBIN/EMC2 - Amarnath Shastri, Ratnadip Choudhury
+ * \authors   Amarnath Shastri, Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for CSigWatchDlg class

@@ -4,19 +4,6 @@
   Description   :  
   $Log:   X:/Archive/Sources/DIL_J1939/TransferLayer.cpv  $
    
-      Rev 1.3   07 Jun 2011 11:11:18   CANMNTTM
-    
-   
-      Rev 1.2   15 Apr 2011 18:48:38   CANMNTTM
-   Added RBEI Copyright information.
-   
-      Rev 1.1   13 Dec 2010 16:37:06   CANMNTTM
-   Nodes are made independent of channel.
-   Now nodes can send message in any channel.
-   
-      Rev 1.0   06 Dec 2010 18:47:22   rac2kor
-    
-
   Author(s)     :  Pradeep Kadoor
   Date Created  :  23/11/2010
   Modified By   :  

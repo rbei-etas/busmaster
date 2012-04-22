@@ -4,32 +4,6 @@
   Description   :  Implementation file for CGraphLeftView class
   $Log:   X:/Archive/Sources/SigGrphWnd/GraphLeftView.cpv  $
    
-      Rev 1.5   08 Aug 2011 13:04:32   CANMNTTM
-   Updated function 'vPopulateGraphControl()'with following changes:
-   1. Removed dead code
-   2. Improve readability by inserting a space after a keyword, using braces in if .... else statements.
-   
-      Rev 1.4   25 Jul 2011 11:44:54   CANMNTTM
-   Updated to make the graph clearing done only in two scenarios:
-   1. When initially connected.
-   2. DIsconnected and connected back.
-   
-      Rev 1.3   06 Jun 2011 11:51:38   CANMNTTM
-    
-   
-      Rev 1.2   15 Apr 2011 19:43:32   rac2kor
-   Inserted RBEI Copyright information text into the file header.
-   
-      Rev 1.1   23 Dec 2010 18:04:44   CANMNTTM
-   Updated to support cursors feature in 
-   graph control.
-   
-      Rev 1.0   13 Dec 2010 22:00:34   CANMNTTM
-    
-   
-      Rev 1.0   16 Aug 2010 21:20:32   rac2kor
-    
-
   Author(s)     :  Raja N
   Date Created  :  09/12/2004
   Modified By   :  

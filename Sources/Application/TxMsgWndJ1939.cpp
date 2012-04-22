@@ -4,40 +4,6 @@
   Description   :  
   $Log:   X:/Archive/Sources/Application/TxMsgWndJ1939.cpv  $
    
-      Rev 1.10   09 Jun 2011 11:28:26   CANMNTTM
-    
-   
-      Rev 1.9   15 Apr 2011 20:02:20   CANMNTTM
-   Added RBEI Copyright information.
-   
-      Rev 1.8   23 Mar 2011 14:49:22   CANMNTTM
-   Support upto 32 channels
-   
-      Rev 1.7   02 Mar 2011 15:38:18   CANMNTTM
-   1. Support to J1939 Nodesimulation
-   3. Support to J1939 Message window
-   2. Removed unwanted macros
-   
-      Rev 1.6   07 Feb 2011 10:59:28   CANMNTTM
-   FOR Ver. 6.1.3.I.U310
-      Rev 1.5   13 Jan 2011 14:55:50   CANMNTTM
-   Implemented J1939 database specific functions.
-   
-      Rev 1.4   23 Dec 2010 16:43:26   CANMNTTM
-   Transmission stopped before disconnecting.
-   
-      Rev 1.3   22 Dec 2010 19:13:48   CANMNTTM
-   Added Cyclic transmission feature.
-   
-      Rev 1.2   15 Dec 2010 17:06:46   CANMNTTM
-   Added new function to set J1939 client parameter.
-   
-      Rev 1.1   14 Dec 2010 10:22:40   CANMNTTM
-   Channel information is passed for each SendMsg call.
-   
-      Rev 1.0   13 Dec 2010 18:41:54   CANMNTTM
-    
-
   Author(s)     :  Pradeep Kadoor
   Date Created  :  10/12/2010
   Modified By   :  

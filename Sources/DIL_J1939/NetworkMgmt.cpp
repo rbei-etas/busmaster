@@ -4,42 +4,6 @@
   Description   :  
   $Log:   X:/Archive/Sources/DIL_J1939/NetworkMgmt.cpv  $
    
-      Rev 1.11   07 Jun 2011 11:11:16   CANMNTTM
-    
-   
-      Rev 1.10   15 Apr 2011 18:48:38   CANMNTTM
-   Added RBEI Copyright information.
-   
-      Rev 1.9   02 Mar 2011 11:36:44   CANMNTTM
-   SetCallBackFuncPtr function is added.
-   
-      Rev 1.7   02 Feb 2011 14:10:16   CANMNTTM
-   DIL_CAN interface pointer is validated.
-   
-      Rev 1.6   13 Jan 2011 14:47:00   CANMNTTM
-   GoOnline() return value is used.
-   
-      Rev 1.5   23 Dec 2010 16:52:20   CANMNTTM
-   Macro MAX_MSG_LEN_J1939
-    instead of MAX_DATA_LEN_J1939 wherever applicable.
-   
-      Rev 1.4   22 Dec 2010 19:23:42   CANMNTTM
-   1. Implemented Call back mechanism.
-   2. Exported function SetClBckFnPtrs and GetTimeOut added.
-   
-      Rev 1.3   15 Dec 2010 16:22:58   CANMNTTM
-   Added new function to remove all the register nodes.
-   
-      Rev 1.2   13 Dec 2010 18:46:54   CANMNTTM
-   New API DILJ_bIsOnline(void) added
-   
-      Rev 1.1   13 Dec 2010 16:37:06   CANMNTTM
-   Nodes are made independent of channel.
-   Now nodes can send message in any channel.
-   
-      Rev 1.0   06 Dec 2010 18:47:22   rac2kor
-    
-
   Author(s)     :  Pradeep Kadoor
   Date Created  :  23/11/2010
   Modified By   :  

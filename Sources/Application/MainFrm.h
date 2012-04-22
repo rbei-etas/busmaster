@@ -16,7 +16,7 @@
 /**
  * \file      MainFrm.h
  * \brief     This file contain the definition of CMainFrame class
- * \authors   RBIN/EMC2 - Amarnath Shastry, Amitesh Bharti, Ratnadip Choudhury, Ravikumar Patil, Anish kumar, Arunkumar Karri
+ * \authors   Amarnath Shastry, Amitesh Bharti, Ratnadip Choudhury, Ravikumar Patil, Anish kumar, Arunkumar Karri
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This file contain the definition of CMainFrame class
