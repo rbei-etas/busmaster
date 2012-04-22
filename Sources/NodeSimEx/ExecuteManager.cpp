@@ -29,14 +29,6 @@
 #include "SimSysManager.h"
 #include "GlobalObj.h"
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
-
-
 //flag for exiting from thread
 extern BOOL g_bReadDllMsg;
 //read dll msg thread pointer

@@ -49,10 +49,6 @@
 #define USAGE_EXPORT
 #include "CAN_ICS_neoVI_Extern.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 using namespace std;
 
 //

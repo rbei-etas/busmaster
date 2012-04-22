@@ -21,14 +21,8 @@
  *
  * This header file contains the defintion of class
  */
-#if !defined(AFX_UTLITYDLG_H__BEB9A628_2CC3_11D6_A620_00D0B76BEBF5__INCLUDED_)
-#define AFX_UTLITYDLG_H__BEB9A628_2CC3_11D6_A620_00D0B76BEBF5__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// UtlityDlg.h : header file
-//
 
 #include "NodeSimEx_resource.h"
 
@@ -79,8 +73,3 @@ private:
 public:
 	afx_msg void OnCbnSelchangeCombFnReturnType();
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_UTLITYDLG_H__BEB9A628_2CC3_11D6_A620_00D0B76BEBF5__INCLUDED_)

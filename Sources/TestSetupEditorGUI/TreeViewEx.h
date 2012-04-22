@@ -18,8 +18,8 @@
  * \author    Venkatanarayana Makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined(_TSEDITORGUI_TREEVIEW_H_INCLUDED_)
-#define _TSEDITORGUI_TREEVIEW_H_INCLUDED_
+
+#pragma once
 
 class CTSEditorChildFrame;
 #define def_COLOR_TREE_BKG      RGB(237, 239, 254)
@@ -131,5 +131,3 @@ public:
     VOID vGetTreeCtrlColor(COLORREF& omBkColor, COLORREF& omTextColor);
     VOID vSetDefaultColors();
 };
-
-#endif

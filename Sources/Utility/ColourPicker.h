@@ -37,12 +37,8 @@
 //          9 Jan 1999 - minor vis update
 
 // Reference http://www.codeproject.com/KB/miscctrl/colour_picker.aspx*/
-#if !defined(AFX_COLOURPICKER_H__D0B75901_9830_11D1_9C0F_00A0243D1382__INCLUDED_)
-#define AFX_COLOURPICKER_H__D0B75901_9830_11D1_9C0F_00A0243D1382__INCLUDED_
 
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #define WM_CPN_SELCHANGE            WM_USER + 52 // Colour Picker Selection change
 #define WM_CPN_DROPDOWN             WM_USER + 53 // Colour Picker drop down
@@ -161,10 +157,3 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Developer Studio will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_COLOURPICKER_H__D0B75901_9830_11D1_9C0F_00A0243D1382__INCLUDED_)

@@ -22,11 +22,8 @@
  * Definition of CFormatMsgCAN class.
  */
 
-
-#ifndef FORMAT_MSG_CAN_H_INCLUDED
-#define FORMAT_MSG_CAN_H_INCLUDED
-
 #pragma once
+
 #include "FormatMsgCommon.h"
 #include "include/BaseDefs.h"
 #include "include/struct_can.h"
@@ -43,5 +40,3 @@ public:
                            SFORMATTEDDATA_CAN* CurrDataCAN,
                            BYTE bExprnFlag_Log);
 };
-
-#endif //FORMAT_MSG_CAN_H_INCLUDED

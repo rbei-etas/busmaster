@@ -1,23 +1,33 @@
-/*****************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  Export_UserDllJ1939.h
-  Description   :  This header file contains name and prototype of the 
-                   exported function from user-defined DLL which should be 
-                   called by the application to initialise a function pointer
-                   in that DLL to enable it to call a function from the 
-                   application.
-  $Log:   X:/Archive/Sources/NodeSimEx/Export_UserDllJ1939.h_v  $
- * 
- *    Rev 1.1   15 Apr 2011 18:59:12   CANMNTTM
- * Added RBEI Copyright information.
- * 
- *    Rev 1.0   01 Mar 2011 17:07:52   CANMNTTM
- *  
-  Author(s)     :  
-  Date Created  :  28.11.2002
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*****************************************************************************/
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * \file      Export_UserDllJ1939.h
+ * \brief     This header file contains name and prototype of the 
+ * \author    Ratnadip Choudhury
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * This header file contains name and prototype of the 
+ * exported function from user-defined DLL which should be 
+ * called by the application to initialise a function pointer
+ * in that DLL to enable it to call a function from the 
+ * application.
+*/
+
+#pragma once
+
 #include "Export_UserDll.h"
 
 typedef UINT (*APPSENDPROC_J) (STJ1939_MSG*, HMODULE);

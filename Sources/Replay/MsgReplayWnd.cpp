@@ -30,13 +30,6 @@
 // For replay manager class declaration
 #include "ReplayManager.h"
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 extern BOOL bGetMsgInfoFromMsgStr(CONST CString& omSendMsgLine,
                            PSTCANDATA psCANData,
                            BOOL bHexON);

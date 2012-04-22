@@ -22,13 +22,7 @@
  * Include file for precompiled header
  */
 
-// stdafx.h : include file for standard system include files,
-// or project specific include files that are used frequently, but
-// are changed infrequently
-//
-
 #pragma once
-
 
 #define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
@@ -36,13 +30,6 @@
 #ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 #endif
-
-#ifndef _CRT_SECURE_NO_DEPRECATE
-#define _CRT_SECURE_NO_DEPRECATE
-#endif
-
-// Disable warning messages C4996
-#pragma warning(disable: 4996)
 
 #include <math.h>           // For abs function call
 #include <afx.h>
@@ -59,10 +46,3 @@
 #include <afxtempl.h>
 #include <afxcmn.h>
 #include <afxdlgs.h>
-
-
-/*#import <msxml6.dll> 
-using namespace MSXML2;*/
-
-// TODO: reference additional headers your program requires here
-

@@ -29,11 +29,6 @@
 #include "Utility.h"         
 //#include "UtilFunctions.h"  // For all utility functions
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 // Epsilon Value. Used for floating value Comparison
 // This has been taken from  ** Float.h **
 #define defEPS 2.2204460492503131e-016 /* smallest such that 1.0+DBL_EPSILON != 1.0 */

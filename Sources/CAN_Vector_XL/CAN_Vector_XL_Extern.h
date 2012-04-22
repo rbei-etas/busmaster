@@ -21,9 +21,8 @@
  *
  * Exports API functions for Vector XL CAN Hardware interface
  */
-#if !defined CAN_Vector_XL_EXTERN_H__INCLUDED_
-#define CAN_Vector_XL_EXTERN_H__INCLUDED_
 
+#pragma once
 
 #if defined USAGEMODE
 #undef USAGEMODE
@@ -46,5 +45,3 @@ USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface);
 #ifdef __cplusplus
 }
 #endif
-
-#endif // CAN_Vector_XL_EXTERN_H__INCLUDED_

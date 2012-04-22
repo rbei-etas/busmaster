@@ -21,12 +21,8 @@
  *
  * This file contain the declaration of CBusStatisticsDlg class
  */
-#if !defined(AFX_BUSSTATISTICSDLG_H__F78625B6_448A_11D7_80A8_0010B599CE39__INCLUDED_)
-#define AFX_BUSSTATISTICSDLG_H__F78625B6_448A_11D7_80A8_0010B599CE39__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 // For Color ListBox
 #include "MessageList.h"
@@ -101,8 +97,3 @@ private:
 public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_BUSSTATISTICSDLG_H__F78625B6_448A_11D7_80A8_0010B599CE39__INCLUDED_)

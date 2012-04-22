@@ -22,9 +22,7 @@
  * Defines DIL related data types
  */
 
-
-#if !defined DIL_DATATYPES_H__INCLUDED_
-#define DIL_DATATYPES_H__INCLUDED_
+#pragma once
 
 #define NO_SELECTION_HI 0xCDCD
 
@@ -149,6 +147,3 @@ typedef struct
 } DILINFO;
 
 typedef DILINFO DILLIST[MAX_DILS];
-
-
-#endif // DIL_DATATYPES_H__INCLUDED_

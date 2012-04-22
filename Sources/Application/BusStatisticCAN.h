@@ -21,6 +21,7 @@
  *
  * This File contains the BusStatics Class Declaration.
  */
+
 #pragma once
 
 #include "Utility/Utility_Thread.h"

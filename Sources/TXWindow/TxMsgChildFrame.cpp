@@ -29,12 +29,6 @@
 
 extern CTxMsgChildFrame* g_pomTxMsgChildWindow;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 // Application object declaration
 //extern CCANMonitorApp theApp;
 

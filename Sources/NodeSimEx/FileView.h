@@ -21,12 +21,8 @@
  *
  * This header file contains the defintion of class ileView. All 
  */
-#if !defined(AFX_FILEVIEW_H__E02A6C66_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)
-#define AFX_FILEVIEW_H__E02A6C66_1005_11D6_A606_00D0B76BEBF5__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "HashDefines.h"        // #defines defintion file
 #include "FunctionEditorDoc.h"  // Document defintion file
@@ -89,5 +85,3 @@ private:
     // character width information
     int     m_nCharWidth;
 };
-
-#endif // !defined(AFX_FILEVIEW_H__E02A6C66_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)

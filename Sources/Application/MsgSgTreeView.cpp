@@ -31,11 +31,6 @@
 #include "MsgSgDetView.h"   // uses functions of this class to update right pane
 // Dialog class for new message
 #include "MessageDetailsDlg.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 extern CCANMonitorApp theApp;
 /////////////////////////////////////////////////////////////////////////////

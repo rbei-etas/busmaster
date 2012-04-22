@@ -22,10 +22,7 @@
  * This file contains the codes when configuration procedure 
  */
 
-
-#if !defined OPERATIONS_FILE__H_INCLUDED_
-#define OPERATIONS_FILE__H_INCLUDED_
-
+#pragma once
 
 // Project getters
 int FileGetProjectCount(void);
@@ -53,6 +50,3 @@ void CloseDataFile();
 int SaveDataFile(char FileName[]);
 
 int GetTheErrorType(FILE *dbFile);
-
-
-#endif // OPERATIONS_FILE__H_INCLUDED_

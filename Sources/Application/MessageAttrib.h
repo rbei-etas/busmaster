@@ -21,12 +21,8 @@
  *
  * Interface for the CMessageAttrib class
  */
-#if !defined(_MESSAGEATTRIB_H_INCLUDED_)
-#define _MESSAGEATTRIB_H_INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 // Developer defined message parameters
 #include "datatype.h"
@@ -109,5 +105,3 @@ private:
     // to store the format of display depending on the user mode
     char m_acMsgIDFormat[3];
 };
-
-#endif // !defined(_MESSAGEATTRIB_H_INCLUDED_)

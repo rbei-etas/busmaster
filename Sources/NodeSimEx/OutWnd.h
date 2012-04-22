@@ -21,12 +21,8 @@
  *
  * This file contain the definition COutWnd class. The output of
  */
-#if !defined(AFX_OUTWND_H__051FC126_3176_11D6_BFEB_0010B599CE39__INCLUDED_)
-#define AFX_OUTWND_H__051FC126_3176_11D6_BFEB_0010B599CE39__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "Sim_MDIChildBase.h"       // For Common MDI base class
 
@@ -77,10 +73,3 @@ private:
     // Set the font of window
     VOID vSetWindowFont();
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_OUTWND_H__051FC126_3176_11D6_BFEB_0010B599CE39__INCLUDED_)

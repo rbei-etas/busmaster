@@ -25,12 +25,6 @@
 #include "Replay_stdafx.h"                 // For Standard Includes
 #include "OwnerDataListCtrl.h"      // For Owner data class declaration
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 /*******************************************************************************
   Function Name  : COwnerDataListCtrl
   Description    : Standard default constructor

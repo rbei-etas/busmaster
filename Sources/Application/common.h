@@ -18,8 +18,9 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined COMMON_DEFS_H__INCLUDED_
-#define COMMON_DEFS_H__INCLUDED_
+
+#pragma once
+
 typedef enum
 {
 	LOAD_CONFIG,
@@ -144,5 +145,3 @@ enum
 #define defSTR_EMPTY_ACTIVE_DATABASE		_T("There is no active database. Please import database")
 #define defNEW_LINE							_T("\n")
 #define DEFAULT_RULE_FILE					_T("MCNet_Example.xml")
-
-#endif // COMMON_DEFS_H__INCLUDED_

@@ -33,13 +33,6 @@
 #include "DataTypes/BaseAppServices.h"
 #include "Filter/Filter_extern.h"
 
-
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 // Flag to indicate object creation
 BOOL CReplayManager::m_bCreated = FALSE;
 // One instance of Replay Manager

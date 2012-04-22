@@ -32,12 +32,6 @@
 #include "DIL_Interface/BaseDIL_CAN.h"
 #include "include/CAN_Error_Defs.h"
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 //CLient Id from the DIL
 static DWORD g_dwClientID = 0;
 //DIL Interface	

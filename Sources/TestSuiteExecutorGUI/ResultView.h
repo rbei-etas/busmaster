@@ -18,8 +18,8 @@
  * \author    Venkatanarayana makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined DEFINES_TSX_RESULTVIEW_H__INCLUDED_
-#define DEFINES_TSX_RESULTVIEW_H__INCLUDED_
+
+#pragma once
 
 // CResultView view
 
@@ -50,5 +50,3 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 };
-
-#endif  //DEFINES_TSX_RESULTVIEW_H__INCLUDED_

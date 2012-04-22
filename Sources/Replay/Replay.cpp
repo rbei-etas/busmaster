@@ -30,10 +30,6 @@
 
 #include "ReplayManager.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 static AFX_EXTENSION_MODULE ReplayDLL = { NULL, NULL };
 
 extern "C" int APIENTRY

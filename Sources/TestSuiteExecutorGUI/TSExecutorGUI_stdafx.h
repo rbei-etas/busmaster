@@ -22,11 +22,6 @@
  * Include file for standard system include files
  */
 
-
-// stdafx.h : 
-// or project specific include files that are used frequently, but
-// are changed infrequently
-
 #pragma once
 
 #ifndef VC_EXTRALEAN
@@ -52,10 +47,6 @@
 #endif
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
-
-#ifndef _CRT_SECURE_NO_DEPRECATE
-#define _CRT_SECURE_NO_DEPRECATE
-#endif
 
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions

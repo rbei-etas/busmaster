@@ -22,14 +22,8 @@
  * Interface file for CTimeManager class 
  */
 
-#if !defined(AFX_TIMEMANAGER_H__03C4B0FC_5A6E_4330_821C_F4109863D8C0__INCLUDED_)
-#define AFX_TIMEMANAGER_H__03C4B0FC_5A6E_4330_821C_F4109863D8C0__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// For Message Buffer definition
-//#include "MsgBuffer.h"
+
 // For standard datatypes definition
 #include "Struct.h"
 
@@ -80,4 +74,3 @@ public:
     static void bReinitOffsetTimeValForICSneoVI(void);
     
 };
-#endif // !defined(AFX_TIMEMANAGER_H__03C4B0FC_5A6E_4330_821C_F4109863D8C0__INCLUDED_)

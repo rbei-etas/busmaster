@@ -35,12 +35,6 @@
 // Definition of CAcceptanceFilterDlg class
 #include "AcceptanceFilterDlg.h"
 // For HI Layer definition
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 
 long lFromStrTCHAR_2_Long(TCHAR acStr[], TCHAR** pccEndPtr, int nBase)
 {

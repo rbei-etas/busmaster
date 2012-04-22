@@ -1,22 +1,28 @@
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  Logger_CommonDataTypes.h
-  Description   :  Definition of CParamLoggerBUS class.
-  $Log:   X:/Archive/Sources/FrameProcessor/Logger_CommonDataTypes.h_v  $
- * 
- *    Rev 1.0   02 Dec 2011 20:20:56   rac2kor
- *  
+/**
+ * \file      Logger_CommonDataTypes.h
+ * \brief     Definition of CParamLoggerBUS class.
+ * \author    Ratnadip Choudhury
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Definition of CParamLoggerBUS class.
+ */
 
-  Author(s)     :  Ratnadip Choudhury
-  Date Created  :  2.12.2011
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
-
-#if !defined LOGGER_COMMONDATATYPES_H__INCLUDED_
-#define LOGGER_COMMONDATATYPES_H__INCLUDED_
-
+#pragma once
 
 class CParamLoggerBUS
 {
@@ -48,5 +54,3 @@ public:
         return *this;
     }
 };
-
-#endif // LOGGER_COMMONDATATYPES_H__INCLUDED_

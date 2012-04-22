@@ -21,8 +21,8 @@
  *
  * This header file contains the defintion of class
  */
-#pragma once
 
+#pragma once
 
 // CAlphanumiricEdit
 
@@ -39,5 +39,3 @@ protected:
 public:
 	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
-
-

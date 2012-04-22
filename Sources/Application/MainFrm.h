@@ -22,12 +22,7 @@
  * This file contain the definition of CMainFrame class
  */
 
-#if !defined(AFX_MAINFRM_H__E02A6C60_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)
-#define AFX_MAINFRM_H__E02A6C60_1005_11D6_A606_00D0B76BEBF5__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "Flags.h"                  // Definition of CFlags class
 #include "SectionNames.h"           // Different section names and section ID
@@ -51,9 +46,9 @@
 #include "GraphElement.h"           // For Graph Element class
 #include "GraphList.h"              // For CGraphList class declaration
 //#include "GraphChildframe.h"        // For Graph Child Window
-////#include "GraphUIThread.h"          // For Graph UI Thread Definition
+//#include "GraphUIThread.h"          // For Graph UI Thread Definition
 #include "CGCtrl.h"                 // For BUSMASTER Graph Control interface
-#include "TraceWnd/UIThread.h"      // For Trace window UI Thread definition
+#include "UIThread.h"               // For Trace window UI Thread definition
 #include "Utility/FlexListCtrl.h"   // For editable list control implementation
 #include "Utility/Utility_Thread.h"
 
@@ -702,10 +697,3 @@ public:
 	afx_msg void OnUpdateToolbarCanDatabase(CCmdUI *pCmdUI);
 	afx_msg void OnFileConverter();
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_MAINFRM_H__E02A6C60_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)

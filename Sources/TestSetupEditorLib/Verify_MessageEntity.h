@@ -18,8 +18,8 @@
  * \author    Venkatanarayana makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined(_TSEDITORLIB_TESTSETUPVERIFYMESSAGEENTITY_H_INCLUDED_)
-#define _TSEDITORLIB_TESTSETUPVERIFYMESSAGEENTITY_H_INCLUDED_
+
+#pragma once
 
 #include "BaseEntityTA.h"
 #include "TSdefinitions.h"
@@ -101,4 +101,3 @@ public:
     CVerifyData& operator=(const CVerifyData& RefObj);
 
 };
-#endif

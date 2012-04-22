@@ -22,8 +22,7 @@
  * Definition file for CFlickerFreeTree class.
  */
 
-#if !defined FLICKERFREETREE_H__INCLUDED_
-#define FLICKERFREETREE_H__INCLUDED_
+#pragma once
 
 class CFlickerFreeTree : public CTreeCtrl
 {
@@ -34,5 +33,3 @@ public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnPaint();
 };
-
-#endif // FLICKERFREETREE_H__INCLUDED_

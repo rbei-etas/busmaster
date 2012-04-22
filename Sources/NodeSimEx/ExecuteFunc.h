@@ -21,12 +21,9 @@
  *
  * This header file contain definition ofCExecuteFunc class. 
  */
-#if !defined(AFX_EXECUTEFUNC_H__5A542614_2BFB_11D6_BFE9_0010B599CE39__INCLUDED_)
-#define AFX_EXECUTEFUNC_H__5A542614_2BFB_11D6_BFE9_0010B599CE39__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
 #include "NodeSimEx_stdafx.h"
 #include "HashDefines.h"
 #include "SimSysNodeInfo.h"
@@ -189,6 +186,4 @@ private:
 	BOOL m_bTimerThreadStarted;
 	//to start stop message transmission from DLL
 	BOOL m_bMsgTxOnFlag;
-    };
-
-#endif // !defined(AFX_EXECUTEFUNC_H__5A542614_2BFB_11D6_BFE9_0010B599CE39__INCLUDED_)
+};

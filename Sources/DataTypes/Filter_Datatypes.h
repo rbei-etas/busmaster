@@ -22,8 +22,7 @@
  * Definition file for filter data types.
  */
 
-#if !defined FILTER_DATATYPES_H__INCLUDED_
-#define FILTER_DATATYPES_H__INCLUDED_
+#pragma once
 
 #include "include/BaseDefs.h"
 #include "include/Utils_macro.h"
@@ -601,5 +600,3 @@ typedef SFILTERAPPLIED<tagSFRAMEINFO_BASIC_MCNET> SFILTERAPPLIED_MCNET;
 
 // For J1939
 typedef SFILTERAPPLIED<tagSFRAMEINFO_BASIC_J1939> SFILTERAPPLIED_J1939;
-
-#endif // FILTER_DATATYPES_H__INCLUDED_

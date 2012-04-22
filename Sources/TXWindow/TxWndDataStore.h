@@ -18,8 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined TXWND_DATASTORE_H_INCLUDED_
-#define TXWND_DATASTORE_H_INCLUDED_
+
+#pragma once
 
 typedef enum eTXWNDDETAILS
 {
@@ -61,5 +61,3 @@ private:
     void vInitialiseMsgDetails(PSTXCANMSGLIST& psMsgDetails);
     void vInitialiseMsgBlock(PSMSGBLOCKLIST& psMsgBlockList);
 };
-
-#endif //TXWND_DATASTORE_H_INCLUDED_

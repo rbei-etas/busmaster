@@ -22,9 +22,7 @@
  * Defines and implements the template class for circular queue
  */
 
-
-#if !defined MSGBUFFSE_H__INCLUDED_
-#define MSGBUFFSE_H__INCLUDED_
+#pragma once
 
 #include "include/Error.h"
 #include "BaseMsgBufAll.h"
@@ -289,5 +287,3 @@ int CMsgBufFSE<SMSGBUFFER>::nSetBufferMsgSize(int /*nMsgDataSize*/)
 {
     return ERR_NOT_SUPPORTED;
 }
-
-#endif //MSGBUFFSE_H__INCLUDED_

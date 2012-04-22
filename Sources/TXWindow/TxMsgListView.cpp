@@ -35,13 +35,6 @@
 #include "TxMsgListView.h"      // For CTxMsgListView class definition
 #include "TxMsgChildFrame.h"    // For Tx Child Window definition
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 // For Glodal Application Object
 //extern CCANMonitorApp theApp;
 // For global stop flag for Message Transmission

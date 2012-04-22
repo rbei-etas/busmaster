@@ -36,20 +36,8 @@
 #include "ConfigAdapter.h"
 #include "InterfaceGetter.h"
 
-//#include "ExecuteManager.h"
-//disable the deprecated Enable3dControls() function warning
-#pragma warning(disable : 4996)
-
 #include "BUSMASTER_Interface.h"
 #include "BUSMASTER_Interface.c"
-
- 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 //extern DWORD GUI_dwThread_MsgDisp;
 extern BOOL g_bStopSendMultMsg;

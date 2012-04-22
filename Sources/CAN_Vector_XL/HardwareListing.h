@@ -21,13 +21,8 @@
  *
  * Interface file for CHardwareListing class
  */
-#if !defined(AFX_HARDWARELISTING_H__87D35685_F751_4B55_A2F6_347FFFA3B77A__INCLUDED_)
-#define AFX_HARDWARELISTING_H__87D35685_F751_4B55_A2F6_347FFFA3B77A__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// HardwareListing.h : header file
 
 // For resource symbols
 #include "CAN_Vector_XL_Resource.h"
@@ -130,8 +125,3 @@ public:
 	void vSortHardwareItems();
 
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_HARDWARELISTING_H__87D35685_F751_4B55_A2F6_347FFFA3B77A__INCLUDED_)

@@ -24,13 +24,6 @@
 #include "TSEditorGUI_PropertyView.h"
 #include "TSEditorGUI_Definitions.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 #define def_HEIGHT_PROPERTYVIEW     0.65
 #define def_WINDOW_GAP              18          //Looks Good
 #define def_WINDOW_SEMIGAP          9

@@ -22,9 +22,7 @@
  * Defines and implements the template class for circular queue
  */
 
-
-#if !defined MSGBUFCANVFSE_H__INCLUDED_
-#define MSGBUFCANVFSE_H__INCLUDED_
+#pragma once
 
 #include "include/Error.h"
 #include "BaseMsgBufAll.h"
@@ -426,5 +424,3 @@ template <typename SMSGBUFFER> void CMsgBufCANVFSE<SMSGBUFFER>::
         }
     }
 }
-
-#endif //MSGBUFCANVFSE_H__INCLUDED_

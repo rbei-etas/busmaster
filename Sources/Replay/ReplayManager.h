@@ -22,13 +22,7 @@
  * Interface file for CReplayManager class
  */
 
-
-#if !defined(AFX_REPLAYMANAGER_H__69B3771B_310A_43DC_8AEA_FE22AA1D7FD5__INCLUDED_)
-#define AFX_REPLAYMANAGER_H__69B3771B_310A_43DC_8AEA_FE22AA1D7FD5__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "ReplayFile.h"
 
@@ -113,5 +107,3 @@ private:
     // Connection Status
     BOOL m_bConnection;
 };
-
-#endif // !defined(AFX_REPLAYMANAGER_H__69B3771B_310A_43DC_8AEA_FE22AA1D7FD5__INCLUDED_)

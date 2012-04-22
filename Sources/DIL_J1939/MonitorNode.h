@@ -1,19 +1,27 @@
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
+/**
+ * \file      MonitorNode.h
+ * \brief     Definition file for Monitor Node
+ * \author    Anish Kumar
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Definition file for Monitor Node
+ */
 
-/******************************************************************************
-  Project       :  Frame_McNet
-  FileName      :  MonitorNode.h
-  Description   :  MAnage Monitor Node
-  $Log:   
-
-  Author(s)     :  Anish Kumar
-  Date Created  :  05/01/2010
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
-
-#if !defined MONITORNODE_H__INCLUDED_
-#define MONITORNODE_H__INCLUDED_
 #pragma once
 
 #include "NodeConManager.h"
@@ -43,5 +51,3 @@ public:
     void vProcessCANMsgByMonNode(const sTCANDATA CurrMsgCAN);
     CConnectionDet* pouCreateAndAddConnnection(UINT unId);
 };
-
-#endif //MONITORNODE_H__INCLUDED_

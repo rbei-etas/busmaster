@@ -23,12 +23,6 @@
 #include "TSEditorGUI_Definitions.h"
 #include ".\tseditorgui_settingsdlg.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 IMPLEMENT_DYNCREATE(CTSEditorSettingsDlg, CDialog)
 
 BEGIN_MESSAGE_MAP(CTSEditorSettingsDlg, CDialog)

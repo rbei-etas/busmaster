@@ -18,8 +18,8 @@
  * \author    Venkatanarayana makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined(_TSEDITORLIB_SENDENTITY_H_INCLUDED_)
-#define _TSEDITORLIB_SENDENTITY_H_INCLUDED_
+
+#pragma once
 
 #include "TestCaseEntity.h"
 #include "Send_MessageEntity.h"
@@ -49,7 +49,3 @@ public:
 private:
 	CSendData m_ouData;
 };
-
-
-
-#endif

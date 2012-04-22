@@ -36,10 +36,6 @@
 /* Log version..applicable for log files before ver 1.6.2 */
 /*#define VERSION_CURR    0x01*/
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 // CFrameProcessor_Common
 
 

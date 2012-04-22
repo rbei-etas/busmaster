@@ -26,13 +26,6 @@
 #include "TSEditorGUI_ChildFrame.h"
 #include "TSEditorGUI_resource.h"
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
-
-
 BYTE* m_pbyTEConfigData = NULL;
 UINT m_unTEConfigSize = 0;
 

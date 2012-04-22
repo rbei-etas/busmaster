@@ -21,8 +21,8 @@
  *
  * This header file contains name and prototype of the 
  */
-#ifndef EXPORT_USERDLL_H__INCLUDED_
-#define EXPORT_USERDLL_H__INCLUDED_
+
+#pragma once
 
 typedef int (*LOGENABLE) (BOOL);
 // Prototype of the exported function from user-defined DLL
@@ -83,5 +83,3 @@ typedef void (*DLLGETNODEHANDLER)(GETNODEHANDLER);
 #define defNAME_FUNC_GET_PRG_VER        "bGetProgramVersion"
 #define NAME_FUNC_MSGTX_ON_OFF          "vSetEnableDisableMsgTxProcAddress"
 #define NAME_FUNC_SETDLLHANDLE          "vSetGetDllHandleProcAddress"
-
-#endif //EXPORT_USERDLL_H__INCLUDED_

@@ -22,9 +22,7 @@
  * This file contains utility function declarations
  */
 
-// Deaclaration of utility functions 
-#if !defined _UTILITY_H_INCLUDED_
-#define _UTILITY_H_INCLUDED_
+#pragma once
 
 #include <cstringt.h>
 #include <atlstr.h>
@@ -65,4 +63,3 @@ void s_vExtendSignBit( __int64& n64Val, int nSize);
 BOOL bConvertStringToInt64( CString omStrHexNo,    // String
                             __int64& n64Value,     // Value
                             int nBase);       
-#endif //_UTILITY_H_INCLUDED_

@@ -27,10 +27,6 @@
 #include "MsgContainer_CAN.h"
 #include "MsgContainer_J1939.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 #define USAGE_EXPORT
 #include "Application/PSDI_Extern.h"
 //

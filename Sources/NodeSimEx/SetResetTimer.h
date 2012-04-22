@@ -21,12 +21,8 @@
  *
  * This file contain declaration of all function and data  
  */
-#if !defined(AFX_SETRESETTIMER_H__4A0E8484_2F20_11D6_BFE9_0010B599CE39__INCLUDED_)
-#define AFX_SETRESETTIMER_H__4A0E8484_2F20_11D6_BFE9_0010B599CE39__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif //
 
 #include "NodeSimEx_resource.h"
 #include "HashDefines.h"
@@ -124,4 +120,3 @@ private:
 public:
     static ETYPE_BUS sm_eBus;
 };
-#endif // !defined(AFX_SETRESETTIMER_H__4A0E8484_2F20_11D6_BFE9_0010B599CE39__INCLUDED_)

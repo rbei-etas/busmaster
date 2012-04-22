@@ -18,8 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined SIGNALWATCH_EXTERN_H__INCLUDED_
-#define SIGNALWATCH_EXTERN_H__INCLUDED_
+
+#pragma once
 
 #include "DataTypes/MainSubEntry.h"
 #include "Utility/MsgInterpretation.h"
@@ -43,5 +43,3 @@ USAGEMODE HRESULT SW_GetInterface(ETYPE_BUS eBus, void** ppvInterface);
 #ifdef __cplusplus
 }
 #endif
-
-#endif //SIGNALWATCH_EXTERN_H__INCLUDED_

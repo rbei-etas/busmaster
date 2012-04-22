@@ -22,8 +22,7 @@
  * Defines base class for circular queue, both FSE and VSE.
  */
 
-#if !defined BASEMSGBUFALL_H__INCLUDED_
-#define BASEMSGBUFALL_H__INCLUDED_
+#pragma once
 
 /* This is the interface class of a circular queue where each entry is of fixed 
 size. Implemented as a template class so as to cater to any data type. Here 
@@ -176,5 +175,3 @@ public:
 //    // To set the current queue length    
 //	virtual int nSetBufferMsgSize(int nMsgDataSize)= 0;
 //};
-
-#endif // BASEMSGBUFALL_H__INCLUDED_

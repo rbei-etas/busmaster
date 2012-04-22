@@ -28,7 +28,6 @@
 #include "ProjConfig.h"
 #include "projConfigManager.h"
 
-#define _CRT_SECURE_NO_WARNINGS
 #define DATABASE_SIGNATURE    "/************* FrameFileDB **************/"
 #define VERSIONLINE           "/************* Version 1.0 **************/"
 #define PROJECT_TABLE_SIG     "  PROJECT_TABLE :: PROJECT_TABLE "

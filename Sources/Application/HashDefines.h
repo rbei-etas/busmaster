@@ -22,8 +22,7 @@
  * This header file contains the hash define               
  */
 
-#ifndef _DEFINES_H_
-#define _DEFINES_H_
+#pragma once
 
 //#define defNO_OF_CHANNELS           2
 #define MAX_PROTOCOL			   20
@@ -1759,6 +1758,3 @@ transmission is ON.\nDo you want to ignore the changes ?")
 #define defMINOR_VERSION_POSITION                   0
 //This line is used to separate two files Build,Build&load messages on output window
 #define defSTR_BUILD_TRACE_LINE_MARK               _T(" ")
-
-
-#endif

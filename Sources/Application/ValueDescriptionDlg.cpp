@@ -27,12 +27,6 @@
 #include "MainFrm.h"                // Hex validation definition is here
 #include "HashDefines.h"            // All hash defines sre here
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 extern CCANMonitorApp theApp;
 /////////////////////////////////////////////////////////////////////////////
 // CValueDescriptionDlg dialog

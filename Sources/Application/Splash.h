@@ -19,14 +19,7 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
-#ifndef _SPLASH_SCRN_
-#define _SPLASH_SCRN_
-
-// Splash.h : header file
-//
-
-/////////////////////////////////////////////////////////////////////////////
-//   Splash Screen class
+#pragma once
 
 class CSplashScreen : public CWnd
 {
@@ -68,6 +61,3 @@ protected:
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 };
-
-
-#endif

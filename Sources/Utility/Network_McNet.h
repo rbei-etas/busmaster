@@ -22,8 +22,7 @@
  * This contains definitions of some classes/ structures 
  */
 
-#if !defined NETWORK_MCNETRULES_H_INCLUDED_
-#define NETWORK_MCNETRULES_H_INCLUDED_
+#pragma once
 
 #include "AfxTempl.h"
 #include "DataTypes/McNet_Datatypes.h"
@@ -146,5 +145,3 @@ public:
     // Call this to check presence of the LCN
     BOOL bIsNodePresent(DWORD dwLCN) const;
 };
-
-#endif // NETWORK_MCNETRULES_H_INCLUDED_

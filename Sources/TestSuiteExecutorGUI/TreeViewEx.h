@@ -22,7 +22,6 @@
  * Definition file for the class CTSExecutorChildFrame
  */
 
-
 #pragma once
 
 // CTreeViewEx view
@@ -134,5 +133,3 @@ public:
     afx_msg void OnTvnSelchanged(NMHDR *pNMHDR, LRESULT *pResult);
     virtual BOOL CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, LPVOID lpParam = NULL);
 };
-
-

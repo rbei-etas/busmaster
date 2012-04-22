@@ -22,14 +22,7 @@
  * This file contains definition of CComboItem class
  */
 
-#if !defined(AFX_COMBOITEM_H__834127E7_9297_11D5_8AFA_DAC6E5A1C54B__INCLUDED_)
-#define AFX_COMBOITEM_H__834127E7_9297_11D5_8AFA_DAC6E5A1C54B__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// ComboItem.h : header file
-//
 
 /////////////////////////////////////////////////////////////////////////////
 // CComboItem window
@@ -78,10 +71,3 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_COMBOITEM_H__834127E7_9297_11D5_8AFA_DAC6E5A1C54B__INCLUDED_)

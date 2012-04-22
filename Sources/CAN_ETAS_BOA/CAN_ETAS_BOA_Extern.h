@@ -21,9 +21,8 @@
  *
  * Exports API functions for BOA CAN Hardware interface
  */
-#if !defined CAN_ETAS_BOA_EXTERN_H__INCLUDED_
-#define CAN_ETAS_BOA_EXTERN_H__INCLUDED_
 
+#pragma once
 
 #if defined USAGEMODE
 #undef USAGEMODE
@@ -46,5 +45,3 @@ USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface);
 #ifdef __cplusplus
 }
 #endif
-
-#endif // CAN_ETAS_BOA_EXTERN_H__INCLUDED_

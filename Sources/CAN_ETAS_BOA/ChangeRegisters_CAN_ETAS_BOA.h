@@ -21,12 +21,8 @@
  *
  * This header file contains the defination of class       
  */
-#if !defined(CHANGEREGISTERS_CAN_ETAS_BOA_H____INCLUDED_)
-#define CHANGEREGISTERS_CAN_ETAS_BOA_H____INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 // CChangeRegisters_CAN_ETAS_BOA dialog
 #include "Utility/RadixEdit.h"
@@ -138,5 +134,3 @@ public:
     CComboBox m_omCtrlSamplePoint;
     CComboBox m_omCtrlSJW;
 };
-
-#endif // !defined(CHANGEREGISTERS_CAN_ETAS_BOA_H____INCLUDED_)

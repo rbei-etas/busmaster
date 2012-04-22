@@ -27,12 +27,6 @@
 #include "BUSMASTER.h"        // For App class Definition
 #include "MDIChildBase.h"       // For MDI Base class definition
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 // App object declaration
 extern CCANMonitorApp theApp;
 

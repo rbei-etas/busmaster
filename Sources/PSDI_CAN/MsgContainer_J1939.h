@@ -1,22 +1,28 @@
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  MsgContainer_J1939.h
-  Description   :  
-  $Log:   X:/Archive/Sources/PSDI_CAN/MsgContainer_J1939.h_v  $
- * 
- *    Rev 1.4   06 Jun 2011 11:57:32   CANMNTTM
- *  
- * 
- *    Rev 1.3   15 Apr 2011 19:28:10   CANMNTTM
- * Added RBEI Copyright information.
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-  Author(s)     :  Pradeep Kadoor
-  Date Created  :  15/04/2011
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
-#if !defined  MSGCONTAINERJ1939_H_INCLUDED_
-#define MSGCONTAINERJ1939_H_INCLUDED_
+/**
+ * \file      MsgContainer_J1939.h
+ * \brief     Definition of CMsgContainerJ1939 class
+ * \authors   Anish Kumar, Arunkumar Karri
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Definition of CMsgContainerJ1939 class
+ */
+
+#pragma once
 
 #include "afxtempl.h"
 #include "Utility/Utility_Thread.h"
@@ -116,6 +122,3 @@ public:
     HRESULT EnableFilterApplied(BOOL bEnable);
 	__int64 nCreateMapIndexKey(LPVOID pMsgData);
 };
-
-
-#endif //MSGCONTAINERJ1939_H_INCLUDED_

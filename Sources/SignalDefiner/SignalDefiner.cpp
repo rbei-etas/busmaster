@@ -26,10 +26,6 @@
 #include "SignalDefiner.h"
 #include "SignalDefinerDlg.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 #define USAGE_EXPORT
 #include "SignalDefiner_Extern.h"
 

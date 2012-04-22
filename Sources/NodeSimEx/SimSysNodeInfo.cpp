@@ -34,12 +34,6 @@
 #include "DIL_Interface/DIL_Interface_extern.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 #define DefDUPNODEINSYS    _T("The node in the simulated system you are trying to add is already present!!")
 #define DefDUPCFILEINSYS   _T("The C file in the simulated system you are trying to add is already present!!")
 #define DefDUPDLLINSYS     _T("The dll in the simulated system you are trying to add is already present!!")

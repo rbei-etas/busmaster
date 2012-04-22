@@ -21,8 +21,8 @@
  *
  * This header file contains the defintion of class
  */
-#if !defined(AFX_EXPLOREMSGSG_H__BEB9A624_2CC3_11D6_A620_00D0B76BEBF5__INCLUDED_)
-#define AFX_EXPLOREMSGSG_H__BEB9A624_2CC3_11D6_A620_00D0B76BEBF5__INCLUDED_
+
+#pragma once
 
 #include "HashDefines.h"    // #define file
 #include "GlobalObj.h"
@@ -94,8 +94,3 @@ private:
     //Get Signal Names from Message Id
     void vGetSigNamesFromMsgCode(DWORD dwMsgCode, CStringList& omSignalNames);
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_EXPLOREMSGSG_H__BEB9A624_2CC3_11D6_A620_00D0B76BEBF5__INCLUDED_)

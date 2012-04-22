@@ -22,20 +22,10 @@
  * Interface file for CGraphConfiguration class
  */
 
-#if !defined(AFX_GRAPHCONFIGURATION_H__E87E37B8_80BB_4902_858D_254B5872D20E__INCLUDED_)
-#define AFX_GRAPHCONFIGURATION_H__E87E37B8_80BB_4902_858D_254B5872D20E__INCLUDED_
+#pragma once
 
 // For Graph Parameter Class definition
 #include "GraphParameters.h"
-
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// GraphConfiguration.h : header file
-//
-
-/////////////////////////////////////////////////////////////////////////////
-// CGraphConfiguration dialog
 
 class CGraphConfiguration : public CDialog
 {
@@ -85,8 +75,3 @@ private:
 public:
 	int m_nLineDisplay;
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_GRAPHCONFIGURATION_H__E87E37B8_80BB_4902_858D_254B5872D20E__INCLUDED_)

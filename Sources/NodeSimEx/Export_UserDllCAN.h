@@ -21,6 +21,9 @@
  *
  * This header file contains name and prototype of the 
  */
+
+#pragma once
+
 #include "Export_UserDll.h"
 
 typedef int (*APPFUNCPROC) (STCAN_MSG,HMODULE);

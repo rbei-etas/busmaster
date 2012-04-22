@@ -21,19 +21,15 @@
  *
  * This header file contains the defintion of class
  */
-#if !defined(AFX_MSGSIGNAL_H__0CECD8C4_1AAF_11D6_A611_00D0B76BEBF5__INCLUDED_)
-#define AFX_MSGSIGNAL_H__0CECD8C4_1AAF_11D6_A611_00D0B76BEBF5__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include <IO.H>             // i/0 header definitions
 #include <stdlib.h>         // standard library definitions
 #include "HashDefines.h"    // #defines definitions    
 #include "TreeItemParam.h"
 #include "Datatypes/MsgSignal_Datatypes.h"
-#include "TraceWnd/UIThread.h"
+#include "UIThread.h"
 
 
 
@@ -274,5 +270,3 @@ private:
                                     CStringArray &omStrArraySigName,
                                     const INT nIndex );
 };
-
-#endif // !defined(AFX_MSGSIGNAL_H__0CECD8C4_1AAF_11D6_A611_00D0B76BEBF5__INCLUDED_)

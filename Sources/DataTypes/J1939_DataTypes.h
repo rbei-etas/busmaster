@@ -1,58 +1,28 @@
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  J1939_Datatypes.h
-  Description   :  
-  $Log:   X:/Archive/Sources/DataTypes/J1939_DataTypes.h_v  $
- * 
- *    Rev 1.11   Jun 07 2011 16:16:54   rac2kor
- * Removed compiler warnings
- * 
- *    Rev 1.10   15 Apr 2011 18:55:06   rac2kor
- * Inserted RBEI Copyright information text into the file header.
- * 
- *    Rev 1.9   04 Mar 2011 17:30:38   CANMNTTM
- * Updated to solve the issues in J1939 MsgWnd:
- * 1. Sorting issues in J1939 Msg Wnd.
- * 2. Problem with J1939 messages with DLC > 150.
- * 
- *    Rev 1.8   02 Mar 2011 11:47:08   CANMNTTM
- * Support to multiple bus
- * 
- *    Rev 1.7   13 Jan 2011 14:49:12   CANMNTTM
- * MAX_LEN for respective messages moved to
- * Include/Basedefs.h
- * 
- *    Rev 1.6   23 Dec 2010 16:46:06   CANMNTTM
- * MAX_MSG_LEN_J1939 macro is added.
- * 
- *    Rev 1.5   22 Dec 2010 19:18:00   CANMNTTM
- * Call back function prototype has been added.
- * 
- *    Rev 1.4   14 Dec 2010 17:52:16   CANMNTTM
- * Added a member function vSetPGN for STRUCT_29_BIT_ID.
- * 
- * 
- *    Rev 1.3   13 Dec 2010 22:00:22   CANMNTTM
- * Required number of characters for storing "Direction" in log file is reduced to 3 from 4.
- * 
- *    Rev 1.2   13 Dec 2010 21:21:48   rac2kor
- * 1. Added a data member for message type in SFORMATTEDATA_J1939
- * 2. Added a helper function to get the associated text for a type.
- * 
- *    Rev 1.1   13 Dec 2010 16:43:36   CANMNTTM
- * Structure J1939 client params introduced.
- * 
- *    Rev 1.0   06 Dec 2010 18:34:34   rac2kor
- *  
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-  Author(s)     :  Pradeep Kadoor
-  Date Created  :  23/11/2010
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
-#if !defined STRUCT_J1939_H__INCLUDED_
-#define STRUCT_J1939_H__INCLUDED_
+/**
+ * \file      J1939_Datatypes.h
+ * \brief     Definition file for filter data types.
+ * \author    Pradeep Kadoor
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Definition file for filter data types.
+ */
 
+#pragma once
 
 /* TYPES OF TIMEOUT */
 const BYTE DEFAULT_PRIORITY     = 0x7;
@@ -291,5 +261,3 @@ typedef struct tagFormattedData_J1939
 void GetMessageTypeStr(EJ1939_MSG_TYPE eType, TCHAR acResult[LEN_STR_TYPE_J1939]);
 
 const int MAX_MSG_LEN_J1939 = sizeof (STJ1939_MSG_PROPERTIES) + sizeof (UINT) + MAX_DATA_LEN_J1939;
-
-#endif // STRUCT_J1939_H__INCLUDED_

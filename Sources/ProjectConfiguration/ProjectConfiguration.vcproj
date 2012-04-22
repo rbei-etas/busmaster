@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="ProjectConfiguration"
 	ProjectGUID="{5CD856C4-FD55-4CA5-ACA9-36B48F29255B}"
 	Keyword="MFCDLLProj"
@@ -210,10 +210,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\operations_db.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\operations_file.cpp"
 				>
 			</File>
@@ -239,10 +235,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath=".\operations_db.h"
-				>
-			</File>
 			<File
 				RelativePath=".\operations_file.h"
 				>

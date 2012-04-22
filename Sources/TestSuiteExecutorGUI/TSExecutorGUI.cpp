@@ -24,9 +24,6 @@
 #include "TSExecutorGUI_Extern.h"
 #include "TSExecutionCAN.h" 
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 #include <afxdllx.h>
 static AFX_EXTENSION_MODULE TestSuiteExecutor = { NULL, NULL };
 

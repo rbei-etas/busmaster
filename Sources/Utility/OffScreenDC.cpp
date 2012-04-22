@@ -27,13 +27,6 @@
 // OffScreenDC class definition File
 #include "OffScreenDC.h"
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 // For common definitions
 #define WHITE_COLOR             RGB(255,255,255)
 //////////////////////////////////////////////////////////////////////

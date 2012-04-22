@@ -22,9 +22,7 @@
  * Defines concrete class for circular queue in VSE.
  */
 
-
-#if !defined MSGBUFVSE_H__INCLUDED_
-#define MSGBUFVSE_H__INCLUDED_
+#pragma once
 
 #include "BaseMsgBufAll.h"
 
@@ -78,5 +76,3 @@ public:
     /* Gets no of skipped msgs because of buffer overrun */
     int GetSkippedMsgCount(void) const;
 };
-
-#endif // MSGBUFVSE_H__INCLUDED_

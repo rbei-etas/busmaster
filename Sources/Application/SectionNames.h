@@ -18,8 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#ifndef _SECTIONNAMES__H_
-#define _SECTIONNAMES__H_
+
+#pragma once
 
 enum eSECTION_ID // These IDs should be maintained with load sequence 
 {
@@ -69,4 +69,3 @@ static TCHAR SectionName[SECTION_TOTAL][MAX_PATH] = {
 														_T("TestSetupEditorSectionName"),
 														_T("TestSuiteExecutorSectionName")
                                                     };
-#endif // _SECTIONNAMES__H_

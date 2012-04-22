@@ -21,14 +21,9 @@
  *
  * This file contain the declaration of CAcceptanceFilterDlg class
  */
-#if !defined(AFX_ACCEPTANCEFILTERDLG_H__80C9C246_59BF_11D7_80AD_0010B599CE39__INCLUDED_)
-#define AFX_ACCEPTANCEFILTERDLG_H__80C9C246_59BF_11D7_80AD_0010B599CE39__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// AcceptanceFilterDlg.h : header file
-//
+
 #include "CAN_Kvaser_CAN_Resource.h"
 /////////////////////////////////////////////////////////////////////////////
 // CAcceptanceFilterDlg dialog
@@ -113,8 +108,3 @@ private:
 	void vEnableDisableCodeMaskFields(bool bEnable);
 	void vSetHWFilterTypeDetails();
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_ACCEPTANCEFILTERDLG_H__80C9C246_59BF_11D7_80AD_0010B599CE39__INCLUDED_)

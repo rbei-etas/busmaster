@@ -21,12 +21,8 @@
  *
  * This header file contains the defination of class       
  */
-#if !defined(CHANGEREGISTERS_CAN_ICS_NEOVI_H__4EDD5257_B7AF_11D5_A353_00902751AB29__INCLUDED_)
-#define CHANGEREGISTERS_CAN_ICS_NEOVI_H__4EDD5257_B7AF_11D5_A353_00902751AB29__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 // CChangeRegisters_CAN_ICS_neoVI dialog
 #include "Utility/RadixEdit.h"
@@ -215,5 +211,3 @@ public:
     CComboBox m_omCtrlSJW;
     CComboBox m_omCtrlClock;
 };
-
-#endif // !defined(CHANGEREGISTERS_CAN_ICS_NEOVI_H__4EDD5257_B7AF_11D5_A353_00902751AB29__INCLUDED_)

@@ -21,9 +21,8 @@
  *
  * Defines a variant of circular queue class in FSE.
  */
-#if !defined MSGBUFVFSE_H__INCLUDED_
-#define MSGBUFVFSE_H__INCLUDED_
 
+#pragma once
 
 #include "BaseMsgBufAll.h"
 #include "include/Utils_macro.h"
@@ -459,4 +458,3 @@ HRESULT CMsgBufVFSE<SMSGBUFFER>::WriteIntoBuffer(SMSGBUFFER* /*psMsgBuffer*/)
 {
     return ERR_NOT_SUPPORTED;
 }
-#endif // MSGBUFVFSE_H__INCLUDED_

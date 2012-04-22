@@ -43,12 +43,6 @@
 extern CBaseDIL_CAN* g_pouDIL_CAN_Interface;
 extern UINT unGetMsgIDFromName(CString omMsgName);
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 // Application object Declaration
 extern CCANMonitorApp theApp;
 

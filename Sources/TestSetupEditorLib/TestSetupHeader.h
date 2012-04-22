@@ -18,8 +18,8 @@
  * \author    Venkatanarayana makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined(_TSEDITORLIB_TESTSETUPHEADER_H_INCLUDED_)
-#define _TSEDITORLIB_TESTSETUPHEADER_H_INCLUDED_
+
+#pragma once
 
 #include "TSDefinitions.h"
 #include "Include/BaseDefs.h"
@@ -48,4 +48,3 @@ public:
     HRESULT ValidateEntity(CString& omStrResult);
     virtual ~CTestSetupHeader(void);
 };
-#endif // !defined(_TSEDITORLIB_TESTSETUPHEADER_H_INCLUDED_)

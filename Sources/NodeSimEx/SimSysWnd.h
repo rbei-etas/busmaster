@@ -22,14 +22,8 @@
  * Interface file for CSimSysWnd class
  */
 
-#if !defined(AFX_SIMSYSWND_H__DD755039_8690_4732_8F81_7463F8690F70__INCLUDED_)
-#define AFX_SIMSYSWND_H__DD755039_8690_4732_8F81_7463F8690F70__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// SimSysWnd.h : header file
-//
+
 #include "Sim_MDIChildBase.h"
 /////////////////////////////////////////////////////////////////////////////
 // CSimSysWnd frame
@@ -81,10 +75,3 @@ public:
     WINDOWPLACEMENT m_wWndPlacement;
     afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_SIMSYSWND_H__DD755039_8690_4732_8F81_7463F8690F70__INCLUDED_)

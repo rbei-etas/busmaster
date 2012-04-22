@@ -41,12 +41,6 @@
 #include "MainFrm.h"
 #include "common.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 // Appliction global object
 extern CCANMonitorApp theApp;
 

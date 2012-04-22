@@ -39,10 +39,6 @@
 static CFrameProcessor_CAN* sg_pouFP_CAN = NULL;
 static CFrameProcessor_J1939* sg_pouFP_J1939 = NULL;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 //
 //	Note!
 //

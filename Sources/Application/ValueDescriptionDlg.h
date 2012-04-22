@@ -21,17 +21,8 @@
  *
  * This header file contains the defintion of class
  */
-#if !defined(AFX_VALUEDESCRIPTIONDLG_H__38992DE4_2B2F_11D6_A61F_00D0B76BEBF5__INCLUDED_)
-#define AFX_VALUEDESCRIPTIONDLG_H__38992DE4_2B2F_11D6_A61F_00D0B76BEBF5__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// ValueDescriptionDlg.h : header file
-//
-
-/////////////////////////////////////////////////////////////////////////////
-// CValueDescriptionDlg dialog
 
 class CValueDescriptionDlg : public CDialog
 {
@@ -81,8 +72,3 @@ private:
     BOOL m_bIsCanceled;
     INT m_nIndex;
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_VALUEDESCRIPTIONDLG_H__38992DE4_2B2F_11D6_A61F_00D0B76BEBF5__INCLUDED_)

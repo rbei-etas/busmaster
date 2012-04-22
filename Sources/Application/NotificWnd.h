@@ -22,22 +22,11 @@
  * This file contain the definition CNotificWnd class. The user can 
  */
 
-
-#if !defined(AFX_NOTIFICWND_H__E81A5585_2DDD_11D7_BFC8_00096B9231A9__INCLUDED_)
-#define AFX_NOTIFICWND_H__E81A5585_2DDD_11D7_BFC8_00096B9231A9__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// NotificWnd.h : header file
-//
 
-//Definition of CNotificListbox class
 #include "NotificListbox.h"
 #include "MDIChildBase.h"   // For Common MDI base class
-//#include "Structs.h"
-/////////////////////////////////////////////////////////////////////////////
-// CNotificWnd 
+
 typedef struct tagNOTIFICWNDPARAMS
 {
     //LOGPARAMS           m_sLogParams;    
@@ -108,10 +97,3 @@ public:
     afx_msg void OnDestroy();
     afx_msg void OnTimer(UINT nIDEvent);
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_NOTIFICWND_H__051FC126_3176_11D6_BFEB_0010B599CE39__INCLUDED_)

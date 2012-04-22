@@ -22,12 +22,7 @@
  * This header file contains the defintion of class
  */
 
-#if !defined(AFX_SIMSYSNODEINFO_H__6A581C41_0B51_445E_855D_B394D3A154DE__INCLUDED_)
-#define AFX_SIMSYSNODEINFO_H__6A581C41_0B51_445E_855D_B394D3A154DE__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "Include/Basedefs.h"
 #include "Datatypes/MsgBufVse.h"
@@ -238,5 +233,3 @@ private:
     PSSIMSYSINFO m_psSimSysInfo;
     ETYPE_BUS m_eBus;
 };
-
-#endif // !defined(AFX_SIMSYSNODEINFO_H__6A581C41_0B51_445E_855D_B394D3A154DE__INCLUDED_)

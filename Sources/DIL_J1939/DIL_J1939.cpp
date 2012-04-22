@@ -32,11 +32,6 @@
 #include "DIL_J1939.h"
 #include "NetworkMgmt.h"
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 BEGIN_MESSAGE_MAP(CJ1939TranslatorApp, CWinApp)
 END_MESSAGE_MAP()
 

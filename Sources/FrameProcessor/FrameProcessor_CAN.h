@@ -22,8 +22,7 @@
  * Definition file for CFrameProcessor_CAN class.
  */
 
-#if !defined FRAMEPROCESSOR_CAN_H__INCLUDED_
-#define FRAMEPROCESSOR_CAN_H__INCLUDED_
+#pragma once
 
 #include "Include/BaseDefs.h"
 #include "BaseFrameProcessor_CAN.h"
@@ -148,5 +147,3 @@ public:
 
 	/* ENDS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
 };
-
-#endif // FRAMEPROCESSOR_CAN_H__INCLUDED_

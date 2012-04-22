@@ -15,18 +15,14 @@
 
 /**
  * \file      CNVTCImageList.h
+ * \brief     CNVTCImageList class interface
  * \authors   Ratnadip Choudhury, Arunkumar Karri
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * CNVTCImageList class interface.
  */
-// CNVTCImageList.h: CNVTCImageList class interface.
-//////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_CNVTCIMAGELIST_H__472D3CUE_84CA_24DB_009A_FBD6FCD70BDE__INCLUDED_)
-#define AFX_CNVTCIMAGELIST_H__472D3CUE_84CA_24DB_009A_FBD6FCD70BDE__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include <afxcmn.h>
 
@@ -45,5 +41,3 @@ public:
 	CNVTCImageList();
 	virtual ~CNVTCImageList();
 };
-
-#endif // !defined(AFX_CNVTCIMAGELIST_H__472D3CUE_84CA_24DB_009A_FBD6FCD70BDE__INCLUDED_)

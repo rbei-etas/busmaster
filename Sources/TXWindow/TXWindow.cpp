@@ -29,10 +29,6 @@
 #include "TxMsgManager.h"
 #include "TxMsgChildFrame.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 static AFX_EXTENSION_MODULE TXWindowDLL = { NULL, NULL };
 
 extern "C" int APIENTRY

@@ -18,8 +18,8 @@
  * \author    Venkatanarayana makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined(_TSEDITORGUI_DATABASEMSGLIST_H_INCLUDED_)
-#define _TSEDITORGUI_DATABASEMSGLIST_H_INCLUDED_
+
+#pragma once
 
 #include "DataTypes\MsgSignal_Datatypes.h"
 #include "Application\DataType.h"
@@ -50,4 +50,3 @@ private:
 private:
     
 };
-#endif

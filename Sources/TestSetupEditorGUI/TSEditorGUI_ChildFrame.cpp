@@ -30,10 +30,6 @@
 #include "TSEditorGUI_MDIChildBase.h"
 #include <htmlhelp.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 #define def_STR_SIGNAL_FORMAT   _T("%-50s %8d %8d %8d\r\n")
 #define def_STR_SIGNAL_HEADING  _T("%-50s %8s %8s %8s\r\n\r\n")
 #define CHECKENTITY(pEntity) if( pEntity == NULL){return;}

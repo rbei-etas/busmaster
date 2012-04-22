@@ -1,22 +1,31 @@
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  J1939TimeOutCfg.h
-  Description   :  
-  $Log:   X:/Archive/Sources/Application/J1939TimeOutCfg.h_v  $
- * 
- *    Rev 1.1   15 Apr 2011 20:00:40   CANMNTTM
- * Added RBEI Copyright information.
- * 
- *    Rev 1.0   22 Dec 2010 19:06:28   CANMNTTM
- *  
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-  Author(s)     :  Pradeep Kadoor
-  Date Created  :  22/12/2010
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
-// CJ1939TimeOutCfg dialog
+/**
+ * \file      J1939TimeOutCfg.h
+ * \brief     Declaration file for CJ1939TimeOutCfg dialog
+ * \author    Pradeep Kadoor
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Declaration file for CJ1939TimeOutCfg dialog
+ */
+
+#pragma once
+
 #include "Utility/RadixEdit.h"
+
 class CJ1939TimeOutCfg : public CDialog
 {
 	DECLARE_DYNAMIC(CJ1939TimeOutCfg)

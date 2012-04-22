@@ -31,12 +31,6 @@
 #include "GraphConfiguration.h"
 #include "SigGrphWnd_Defines.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 //SGW Code commented by Arun 21-10-2010
 // App declaration
 //extern CCANMonitorApp theApp;

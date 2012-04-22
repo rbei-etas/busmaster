@@ -22,12 +22,7 @@
  * This header file contains the definition of the class
  */
 
-#if !defined(AFX_SIMSYSCONFIGDETAILS_H__862C5C1A_F336_4D65_91FC_AC542D934323__INCLUDED_)
-#define AFX_SIMSYSCONFIGDETAILS_H__862C5C1A_F336_4D65_91FC_AC542D934323__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "Utility/ComputeCheckSum.h"
 #include "SimSysNodeInfo.h"
@@ -60,5 +55,3 @@ private:
 
 		
 };
-
-#endif // !defined(AFX_SIMSYSCONFIGDETAILS_H__862C5C1A_F336_4D65_91FC_AC542D934323__INCLUDED_)

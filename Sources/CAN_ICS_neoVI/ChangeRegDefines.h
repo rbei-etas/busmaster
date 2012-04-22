@@ -21,8 +21,8 @@
  *
  * This header file contains the hash define and micro     
  */
-#if !defined Include_Change_Register_Defines_Header
-#define Include_Change_Register_Defines_Header
+
+#pragma once
 
 #define  defSECTION_CHANGE_REG       "Change Registers"
 #define  defITEM_BAUD_RATE           "Baud Rate"
@@ -124,7 +124,3 @@
 #define  defmcMIN3(X,Y,Z)  ( ( ( ( X<Y ) ? X:Y ) < Z ) ? ( ( X<Y ) ? X:Y ) : Z )
 // Round to next interger value if decimal value is >=0.5 else remove decimal value.
 #define  defmcROUND5(X)        X - (unsigned int)X >= 0.5 ? (unsigned int)(X+0.5):(unsigned int)(X)
-
-
-
-#endif

@@ -28,11 +28,6 @@
 #include "FunctionEditorDoc.h"
 #include "GlobalObj.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 TCHAR* pcHandlerNames[] =                   {_T("Message Handlers"),
                                              _T("Timer Handlers"),
                                              _T("Key Handlers"),

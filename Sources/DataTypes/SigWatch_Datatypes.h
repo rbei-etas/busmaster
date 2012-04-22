@@ -22,8 +22,8 @@
  * Definition file for signal watch data types.
  */
 
-#if !defined SIGWATCH_H__INCLUDED_
-#define SIGWATCH_H__INCLUDED_
+#pragma once
+
 // Structure for Signal Watch Implementation
 struct tagSignalWatchList
 {
@@ -40,5 +40,3 @@ struct tagSignalWatchList
 
 typedef tagSignalWatchList sSignalWatchList;
 typedef sSignalWatchList * PSSIGNALWATCHLIST;
-
-#endif //SIGWATCH_H__INCLUDED_

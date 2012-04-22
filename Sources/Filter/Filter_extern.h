@@ -18,9 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined FILTER_EXTERN_H__INCLUDED_
-#define FILTER_EXTERN_H__INCLUDED_
 
+#pragma once
 
 #if defined USAGEMODE
 #undef USAGEMODE
@@ -50,5 +49,3 @@ USAGEMODE HRESULT Filter_ReUpdateAppliedFilter(void* pvFilterApplied,
 #ifdef __cplusplus
 }
 #endif
-
-#endif //FILTER_EXTERN_H__INCLUDED_

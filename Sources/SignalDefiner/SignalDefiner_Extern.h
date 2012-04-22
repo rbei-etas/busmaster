@@ -22,9 +22,7 @@
  * Exports API functions for Signal Definer interface
  */
 
-#if !defined SIGNAL_DEFINER_EXTERN_H__INCLUDED_
-#define SIGNAL_DEFINER_EXTERN_H__INCLUDED_
-
+#pragma once
 
 #if defined USAGEMODE
 #undef USAGEMODE
@@ -66,5 +64,3 @@ USAGEMODE HRESULT SignalDefiner_SetFrequency(float fFrequency);
 #ifdef __cplusplus
 }
 #endif
-
-#endif // SIGNAL_DEFINER_EXTERN_H__INCLUDED_

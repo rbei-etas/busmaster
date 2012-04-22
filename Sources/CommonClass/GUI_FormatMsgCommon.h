@@ -22,9 +22,7 @@
  * Definition of CFormatMsgCommon class
  */
 
-#if !defined FORMAT_MSG_COMMON_H_INCLUDED_
-#define FORMAT_MSG_COMMON_H_INCLUDED_
-
+#pragma once
 
 #include "CommonClass/RefTimeKeeper.h"
 
@@ -39,5 +37,3 @@ public:
     void vCalAndFormatTM_Offline(BYTE bExprnFlag,  UINT64 TimeStamp, TCHAR acTime[]);
     //void vSetRelBaseTime(INT64 qwRelBaseTime); //Called to sart afresh for append mode
 };
-
-#endif //FORMAT_MSG_COMMON_H_INCLUDED_

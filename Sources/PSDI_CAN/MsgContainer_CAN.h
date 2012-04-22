@@ -22,8 +22,7 @@
  * Definition of CMsgContainerCAN class
  */
 
-#if !defined  MSGCONTAINER_H_INCLUDED_
-#define MSGCONTAINER_H_INCLUDED_
+#pragma once
 
 #include "afxtempl.h"
 #include "Utility/Utility_Thread.h"
@@ -124,6 +123,3 @@ public:
     HRESULT EnableFilterApplied(BOOL bEnable);
 	__int64 nCreateMapIndexKey( LPVOID pMsgData );
 };
-
-
-#endif //MSGCONTAINER_H_INCLUDED_

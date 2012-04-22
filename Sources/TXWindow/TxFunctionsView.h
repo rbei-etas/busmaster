@@ -22,12 +22,8 @@
  * Interface file for CTxFunctionsView class
  */
 
-#if !defined(AFX_TXFUNCTIONSVIEW_H__443DECC3_4220_4BF0_99C0_DF653DA74D1D__INCLUDED_)
-#define AFX_TXFUNCTIONSVIEW_H__443DECC3_4220_4BF0_99C0_DF653DA74D1D__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
 // TxFunctionsView.h : header file
 #include "TxWindow_resource.h"
 
@@ -95,10 +91,3 @@ private:
     // To Get CTxMsgDetailsView Pointer
     CWnd * pomGetDetailsViewPointer() const;
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_TXFUNCTIONSVIEW_H__443DECC3_4220_4BF0_99C0_DF653DA74D1D__INCLUDED_)

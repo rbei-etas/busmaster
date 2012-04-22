@@ -22,18 +22,7 @@
  * This file contains the definition of CMsgIDAttr class     
  */
 
-
-#if !defined(AFX_MSGIDATTR_H__78CFE523_31A8_11D6_AE7B_0040057399A2__INCLUDED_)
-#define AFX_MSGIDATTR_H__78CFE523_31A8_11D6_AE7B_0040057399A2__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// MsgIDAttr.h : header file
-//
-
-/////////////////////////////////////////////////////////////////////////////
-// CMsgIDAttr dialog
 
 class CRadixEdit;   // forward declaration
 
@@ -83,8 +72,3 @@ private:
     // To draw a solid box with a specified colour
     //void vDrawColourBox();
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_MSGIDATTR_H__78CFE523_31A8_11D6_AE7B_0040057399A2__INCLUDED_)

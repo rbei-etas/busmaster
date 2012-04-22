@@ -18,8 +18,8 @@
  * \author    Venkatanarayana makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined(_TSEDITORLIB_TESTSETUPENTITY_H_INCLUDED_)
-#define _TSEDITORLIB_TESTSETUPENTITY_H_INCLUDED_
+
+#pragma once
 
 #include <atlbase.h>
 #include "TestSetupHeader.h"
@@ -84,4 +84,3 @@ private:
     BOOL bAddChildToNode(MSXML2::IXMLDOMElementPtr& pNodeElement, CString omNodeName, CString omNodeval);
     void vDeleteAllEntities(void);
 };
-#endif // !defined(_TSEDITORLIB_TESTSETUPENTITY_H_INCLUDED_)

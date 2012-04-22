@@ -22,12 +22,7 @@
  * This header file contains the defination of class
  */
 
-#if !defined(AFX_CHANGEREGISTERS_H__4EDD5257_B7AF_11D5_A353_00902751AB29__INCLUDED_)
-#define AFX_CHANGEREGISTERS_H__4EDD5257_B7AF_11D5_A353_00902751AB29__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 // CChangeRegisters dialog
 #include "CAN_Kvaser_CAN_resource.h"
@@ -189,8 +184,3 @@ private:
     // To set the backend data to UI
     void vFillControllerConfigDetails();
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_CHANGEREGISTERS_H__4EDD5257_B7AF_11D5_A353_00902751AB29__INCLUDED_)

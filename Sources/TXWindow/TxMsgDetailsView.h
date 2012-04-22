@@ -22,13 +22,7 @@
  * Interface file for CTxMsgDetailsView class
  */
 
-#if !defined(AFX_TXMSGDETAILSVIEW_H__E9E06EAD_85C7_4D43_B953_09D9619E3F01__INCLUDED_)
-#define AFX_TXMSGDETAILSVIEW_H__E9E06EAD_85C7_4D43_B953_09D9619E3F01__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-
 
 #ifndef __AFXEXT_H__
 #include <afxext.h>
@@ -189,10 +183,3 @@ private:
     void vSetDefaultValues();
     void vUpdateSignalMatrix(void);
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_TXMSGDETAILSVIEW_H__E9E06EAD_85C7_4D43_B953_09D9619E3F01__INCLUDED_)

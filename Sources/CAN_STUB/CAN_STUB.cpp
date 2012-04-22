@@ -45,10 +45,6 @@
 #define USAGE_EXPORT
 #include "CAN_STUB_Extern.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 using namespace std;
 
 //

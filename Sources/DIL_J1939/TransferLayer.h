@@ -1,28 +1,28 @@
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  TransferLayer.h
-  Description   :  
-  $Log:   X:/Archive/Sources/DIL_J1939/TransferLayer.h_v  $
- * 
- *    Rev 1.2   15 Apr 2011 18:48:38   CANMNTTM
- * Added RBEI Copyright information.
- * 
- *    Rev 1.1   13 Dec 2010 16:37:06   CANMNTTM
- * Nodes are made independent of channel.
- * Now nodes can send message in any channel.
- * 
- *    Rev 1.0   06 Dec 2010 18:47:24   rac2kor
- *  
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-  Author(s)     :  Pradeep Kadoor
-  Date Created  :  23/11/2010
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
+/**
+ * \file      ConnectionDet.h
+ * \brief     Definition file for Transfer Layer
+ * \author    Pradeep Kadoor
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Definition file for Transfer Layer
+ */
 
-
-#if !defined TRANSFERLAYER_H__INCLUDED_
-#define TRANSFERLAYER_H__INCLUDED_
+#pragma once
 
 #include "DIL_Interface/BaseDIL_CAN.h"
 
@@ -61,5 +61,3 @@ public:
     void vSetIDIL_CAN(CBaseDIL_CAN* pIDIL_CAN);
 
 };
-
-#endif //TRANSFERLAYER_H__INCLUDED_

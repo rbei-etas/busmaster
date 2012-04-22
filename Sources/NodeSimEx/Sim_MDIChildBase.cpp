@@ -27,14 +27,6 @@
 #include "Hashdefines.h"
 #include "Sim_MDIChildBase.h"       // For MDI Base class definition
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
-
 IMPLEMENT_DYNCREATE(CMDIChildBase, CMDIChildWnd)
 
 /*******************************************************************************

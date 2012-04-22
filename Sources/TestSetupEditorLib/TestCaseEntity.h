@@ -18,8 +18,8 @@
  * \author    Venkatanarayana makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined(_TSEDITORLIB_TESTCASEENTITY_H_INCLUDED_)
-#define _TSEDITORLIB_TESTCASEENTITY_H_INCLUDED_
+
+#pragma once
 
 #include "BaseEntityTA.h"
 
@@ -138,5 +138,3 @@ public:
 private:
 	CWaitEntityData m_ouData;
 };
-
-#endif

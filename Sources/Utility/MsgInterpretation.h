@@ -22,12 +22,7 @@
  * This file contain the definition of CMsgInterpretation class
  */
 
-#if !defined(AFX_MSGINTERPRETATION_H__94E95C57_363E_11D6_BFEF_0010B599CE39__INCLUDED_)
-#define AFX_MSGINTERPRETATION_H__94E95C57_363E_11D6_BFEF_0010B599CE39__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "Include/Basedefs.h"
 #include "Datatypes/SigWatch_datatypes.h" // Signal list selected
@@ -123,5 +118,3 @@ public:
     void vCopy(CMsgInterpretation* pDest) const;
     void vClear();
 };
-
-#endif // !defined(AFX_MSGINTERPRETATION_H__94E95C57_363E_11D6_BFEF_0010B599CE39__INCLUDED_)

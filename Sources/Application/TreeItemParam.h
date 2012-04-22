@@ -18,8 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined TREEITEMPARAM_H__INCLUDED_
-#define TREEITEMPARAM_H__INCLUDED_
+
+#pragma once
 
 #include "Utility/FlickerFreeTree.h"
 
@@ -50,5 +50,3 @@ public:
     void vShiftWindowTop(LONG lExtent);
 	void vUpdateTreeItemRect(RECT& rcNewPos);
 };
-
-#endif // TREEITEMPARAM_H__INCLUDED_

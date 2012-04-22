@@ -30,12 +30,6 @@
 #include "ValueDescriptionDlg.h"
 #include "Datatype.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 extern CCANMonitorApp theApp;
 /////////////////////////////////////////////////////////////////////////////
 // CMsgSgDetView

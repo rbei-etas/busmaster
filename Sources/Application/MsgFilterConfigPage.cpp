@@ -28,12 +28,6 @@
 #include "MsgFilterConfigPage.h"    // For Filter conf property page class decl
 #include "Filter/Filter_extern.h"   // For filter
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #define defFILTER_IMAGE_INDEX			2
 
 #define defSTR_WINDOW_TITLE             _T("Filter")

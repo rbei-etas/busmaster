@@ -22,13 +22,10 @@
  * Base class definition for the application service layer
  */
 
-#if !defined BASEAPPSERVICES_MCNET_H__INCLUDED_
-#define BASEAPPSERVICES_MCNET_H__INCLUDED_
+#pragma once
 
 class CBaseAppServices
 {
 public:
     virtual BOOL bWriteToTrace(TCHAR* pcTraceStr) = 0;
 };
-
-#endif // BASEAPPSERVICES_MCNET_H__INCLUDED_

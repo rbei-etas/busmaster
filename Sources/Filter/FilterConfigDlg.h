@@ -22,13 +22,7 @@
  * Interface file for CFilterConfigDlg class
  */
 
-
-#if !defined(AFX_FILTERCONFIGDLG_H__67AACFB6_E3C8_41BB_97E3_0CAECF408BA2__INCLUDED_)
-#define AFX_FILTERCONFIGDLG_H__67AACFB6_E3C8_41BB_97E3_0CAECF408BA2__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "Utility/ComboItem.h"              // For Custom Combobox Implementation
 #include "Utility/EditItem.h"               // For Custom Editbox Implementation
@@ -161,8 +155,3 @@ private:
     void vEnableDisableFilterComps( BOOL bEnable );
 
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_FILTERCONFIGDLG_H__67AACFB6_E3C8_41BB_97E3_0CAECF408BA2__INCLUDED_)

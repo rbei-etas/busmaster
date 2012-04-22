@@ -15,18 +15,14 @@
 
 /**
  * \file      CNVTCToolBar.h
+ * \brief     CNVTCToolBar class interface
  * \author    Ratnadip Choudhury, Arunkumar Karri
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * CNVTCToolBar class interface.
  */
-// CNVTCToolBar.h: CNVTCToolBar class interface.
-//////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_CNVTCTOOLBAR_H__E8324075_4523_4E72_C475_D7W9233D5E8Y__INCLUDED_)
-#define AFX_CNVTCTOOLBAR_H__E8324075_4523_4E72_C475_D7W9233D5E8Y__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include <afxext.h>
 
@@ -42,5 +38,3 @@ public:
 	CNVTCToolBar();
 	virtual ~CNVTCToolBar();
 };
-
-#endif // !defined(AFX_CNVTCTOOLBAR_H__E8324075_4523_4E72_C475_D7W9233D5E8Y__INCLUDED_)

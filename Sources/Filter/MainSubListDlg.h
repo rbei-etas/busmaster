@@ -21,12 +21,8 @@
  *
  * Interface file for CMainSubListDlg class
  */
-#if !defined(AFX_SIGWATCHADDDELDLG_H__4DC6FFE9_566B_47FB_850E_D746C0B37B40__INCLUDED_)
-#define AFX_SIGWATCHADDDELDLG_H__4DC6FFE9_566B_47FB_850E_D746C0B37B40__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 // CMainSubListDlg.h : header file
 #include "Filter_Resource.h"
@@ -115,8 +111,3 @@ private:
     //Extract Id from Message name [MsgName0xID]
     UINT unGetMainEntryIDFromName(CString omMsgName);
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_SIGWATCHADDDELDLG_H__4DC6FFE9_566B_47FB_850E_D746C0B37B40__INCLUDED_)

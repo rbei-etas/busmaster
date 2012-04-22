@@ -22,13 +22,8 @@
  * Interface file for CTxMsgManager class
  */
 
-
-#if !defined(AFX_TXMSGMANAGER_H__7EAA7CD8_1350_469D_A668_A624E3125348__INCLUDED_)
-#define AFX_TXMSGMANAGER_H__7EAA7CD8_1350_469D_A668_A624E3125348__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
 #include "TxFlags.h"
 #include "Utility/Utility_Thread.h"
 
@@ -90,5 +85,3 @@ private:
     BOOL m_bStopMsgBlockTx;
     int nGetSizeOfTxWndConfigData();    
 };
-
-#endif // !defined(AFX_TXMSGMANAGER_H__7EAA7CD8_1350_469D_A668_A624E3125348__INCLUDED_)

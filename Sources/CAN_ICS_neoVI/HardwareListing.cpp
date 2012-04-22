@@ -27,12 +27,6 @@
 
 #include "HardwareListing.h"
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 // Macro to find minimum number
 #define MIN(a,b)  ((a) < (b) ? (a) : (b))
 /* - Hardware Interface Layer - */

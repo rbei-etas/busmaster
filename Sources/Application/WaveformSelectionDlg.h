@@ -22,20 +22,11 @@
  * Interface file for CWaveformSelectionDlg class
  */
 
-#if !defined(AFX_SIGWATCHADDDELDLG_H__4DC6FFE9_566B_47FB_850E_D746C0B37B40__INCLUDED_)
-#define AFX_SIGWATCHADDDELDLG_H__4DC6FFE9_566B_47FB_850E_D746C0B37B40__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// WaveformSelectionDlg.h : header file
 
 #include "Resource.h"
 #include "WaveFormDataHandler.h"
 #include "afxwin.h"
-
-/////////////////////////////////////////////////////////////////////////////
-// CWaveformSelectionDlg dialog
 
 class CWaveformSelectionDlg : public CDialog
 {
@@ -129,8 +120,3 @@ public:
 	afx_msg void OnEnChangeEditDefaultSignalValue();
 	CComboBox m_omMsgChannel;
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_SIGWATCHADDDELDLG_H__4DC6FFE9_566B_47FB_850E_D746C0B37B40__INCLUDED_)

@@ -26,12 +26,6 @@
 #include "UtilFunctions.h"      // For all utility functions implementation
 #include "include/utils_macro.h"
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 //Later put in a different file
 #define defSTR_FORMAT_PHY_VALUE_WITH_UNIT_FOR_IPT  _T("%-16s %s")
 #define defMAX_BITS             64

@@ -29,13 +29,6 @@
 #include "Common.h"
 #include "resource.h"
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #define NOTIFIC_WND_CONFIG_SECTION_NAME "NotificWndProperty"
 #define TIMER_INVALID       0x0
 using namespace std;
