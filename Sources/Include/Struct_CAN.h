@@ -163,6 +163,27 @@ struct sCONTROLERDETAILS
 typedef sCONTROLERDETAILS   SCONTROLER_DETAILS;
 typedef sCONTROLERDETAILS*  PSCONTROLER_DETAILS;
 
+struct sSUBBUSSTATISTICS
+{
+	UINT    m_unErrorTxCount;
+	UINT    m_unTotalTxMsgCount;
+	UINT    m_unTxSTDMsgCount;
+	UINT    m_unTotalBitsperSec;
+	UINT    m_unTxEXTDMsgCount;
+	UINT    m_unTxSTD_RTRMsgCount;
+	UINT    m_unTxEXTD_RTRMsgCount;
+	UINT    m_unTotalRxMsgCount;
+	UINT    m_unRxSTDMsgCount;
+	UINT    m_unRxEXTDMsgCount;
+	UINT    m_unRxSTD_RTRMsgCount;
+	UINT    m_unRxEXTD_RTRMsgCount;
+	UINT    m_unErrorTotalCount;
+	UINT    m_unErrorRxCount;
+	UINT    m_unDLCCount;
+};
+typedef sSUBBUSSTATISTICS SSUBBUSSTATISTICS;
+typedef sSUBBUSSTATISTICS *PSSUBBUSSTATISTICS;
+
 // Bus statistics structure
 struct sBUSSTATISTICS
 {
@@ -217,6 +238,25 @@ struct sBUSSTATISTICS
     UCHAR   m_ucTxPeakErrorCount;
     UCHAR   m_ucRxPeakErrorCount;
     UCHAR   m_ucStatus;
+	sBUSSTATISTICS& operator = (sSUBBUSSTATISTICS& objRef)
+	{
+		m_unErrorTxCount = objRef.m_unErrorTxCount;
+		m_unTotalTxMsgCount = objRef.m_unTotalTxMsgCount;
+		m_unTxSTDMsgCount = objRef.m_unTxSTDMsgCount;
+		m_unTotalBitsperSec = objRef.m_unTotalBitsperSec;
+		m_unTxEXTDMsgCount = objRef.m_unTxEXTDMsgCount;
+		m_unTxSTD_RTRMsgCount = objRef.m_unTxSTD_RTRMsgCount;
+		m_unTxEXTD_RTRMsgCount = objRef.m_unTxEXTD_RTRMsgCount;
+		m_unTotalRxMsgCount = objRef.m_unTotalRxMsgCount;
+		m_unRxSTDMsgCount = objRef.m_unRxSTDMsgCount;
+		m_unRxEXTDMsgCount = objRef.m_unRxEXTDMsgCount;
+		m_unRxSTD_RTRMsgCount = objRef.m_unRxSTD_RTRMsgCount;
+		m_unRxEXTD_RTRMsgCount = objRef.m_unRxEXTD_RTRMsgCount;
+		m_unErrorTotalCount = objRef.m_unErrorTotalCount;
+		m_unErrorRxCount = objRef.m_unErrorRxCount;
+		m_unDLCCount = objRef.m_unDLCCount;
+		return *this;
+	}
 };
 typedef sBUSSTATISTICS SBUSSTATISTICS;
 typedef sBUSSTATISTICS *PBUSSTATISTICS;
