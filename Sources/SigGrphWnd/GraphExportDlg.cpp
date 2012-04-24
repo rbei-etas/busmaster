@@ -196,7 +196,7 @@ void CGraphExportDlg::OnBtnSaveHtml()
 			//omParams.Add( omStr );
 #if 0
             // Get the Baud Rate
-            PSCONTROLER_DETAILS  pBaudDetails = NULL;
+            PSCONTROLLER_DETAILS  pBaudDetails = NULL;
             // Get the Baud Rate
             theApp.bGetData( CONTROLLER_DETAILS, (void**)&pBaudDetails);
             if( pBaudDetails != NULL )

@@ -66,7 +66,7 @@ long lFromCString_2_Long(CString omStr, TCHAR** pccEndPtr, int nBase)
 /*                      m_pControllerDetails                                  */
 /******************************************************************************/
 //IMPLEMENT_DYNAMIC(CChangeRegisters, CPropertyPage)
-CChangeRegisters::CChangeRegisters(CWnd* pParent /*=NULL*/, PSCONTROLER_DETAILS psControllerDetails, UINT nCount)
+CChangeRegisters::CChangeRegisters(CWnd* pParent /*=NULL*/, PSCONTROLLER_DETAILS psControllerDetails, UINT nCount)
     : CDialog(CChangeRegisters::IDD, pParent)
     //: CPropertyPage(CChangeRegisters::IDD, IDS_PPAGE_CHANGE_REGISTER)
 {    

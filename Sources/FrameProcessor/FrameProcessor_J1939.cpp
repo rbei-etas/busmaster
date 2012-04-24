@@ -399,7 +399,7 @@ HRESULT CFrameProcessor_J1939::FPJ1_SetDatabaseFiles(const CStringArray& omList)
 
 // To update the channel baud rate info to logger
 HRESULT CFrameProcessor_J1939::FPJ1_SetChannelBaudRateDetails
-							(SCONTROLER_DETAILS* controllerDetails, 
+							(SCONTROLLER_DETAILS* controllerDetails, 
 							int nNumChannels)
 {
 	HRESULT hResult = S_OK;

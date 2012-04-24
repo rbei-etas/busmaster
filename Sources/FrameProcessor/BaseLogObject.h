@@ -130,15 +130,15 @@ public:
 	void SetDatabaseFiles(const CStringArray& omList);
 
 	// To update the channel baud rate info to logger
-	virtual void Der_SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
+	virtual void Der_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
 											int nNumChannels) = 0;
 	// To update the channel baud rate info to logger
-	void SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails, 
+	void SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails, 
 									int nNumChannels);
 	// To update the channel baud rate info to logger
-	virtual void Der_GetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
+	virtual void Der_GetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
 											int& nNumChannels) = 0;
 	// To get the channel baud rate
-	void GetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails, 
+	void GetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails, 
 									int& nNumChannels);
 };

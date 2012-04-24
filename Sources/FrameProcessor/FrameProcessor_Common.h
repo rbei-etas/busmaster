@@ -94,7 +94,7 @@ public:
     HRESULT StopEditingSession(BOOL bConfirm);
 	HRESULT SetDatabaseFiles(const CStringArray& omList);
 	void GetDatabaseFiles(CStringArray& omList);
-	void SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails, 
+	void SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails, 
 									int nNumChannels);
     // Alias functions - end
 

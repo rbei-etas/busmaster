@@ -564,13 +564,13 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int &nStreamLength, eSECTION_
         break;
         case DIL_SECTION_ID:
         {
-            PSCONTROLER_DETAILS psContrlDets;
+            PSCONTROLLER_DETAILS psContrlDets;
             BYTE* pbyConfigData = NULL;
             UINT unSize = 0;
             unSize += sizeof(BYTE);//Configuration version
             unSize += sizeof(DWORD);
             unSize += sizeof(BYTE);
-            unSize += (sizeof(SCONTROLER_DETAILS) * defNO_OF_CHANNELS);
+            unSize += (sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
             if (m_ouConfigDetails.bGetData(CONTROLLER_DETAILS, (void**)(&psContrlDets)))
             {
                 pbyConfigData = new BYTE[unSize];

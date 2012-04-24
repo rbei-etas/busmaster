@@ -474,7 +474,7 @@ private:
     WINDOWPLACEMENT m_sGraphWndPlacement[AVAILABLE_PROTOCOLS];
     SGRAPHSPLITTERDATA m_sGraphSplitterPos[AVAILABLE_PROTOCOLS];
 
-    SCONTROLER_DETAILS m_asControllerDetails[defNO_OF_CHANNELS];
+    SCONTROLLER_DETAILS m_asControllerDetails[defNO_OF_CHANNELS];
     SFILTERAPPLIED_CAN m_sFilterAppliedCAN; // Filter applied struct for CAN
     SFILTERAPPLIED_J1939 m_sFilterAppliedJ1939; // Filter applied struct for J1939
     CMsgInterpretation m_ouMsgInterpretSW_C; //Msg interpretation object for signal watch CAN

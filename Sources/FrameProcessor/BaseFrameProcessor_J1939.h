@@ -126,7 +126,7 @@ public:
 	virtual HRESULT FPJ1_SetDatabaseFiles(const CStringArray& omList) = 0;
 
 	// To update the channel baud rate info to logger
-	virtual HRESULT FPJ1_SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
+	virtual HRESULT FPJ1_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
 														int nNumChannels) = 0;
 
 };
