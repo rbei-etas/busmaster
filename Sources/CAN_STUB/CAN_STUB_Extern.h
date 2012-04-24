@@ -39,8 +39,8 @@
 extern "C" {  // only need to export C interface if used by C++ source code
 #endif
 
-/*  Exported function list */
-USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface);
+    /*  Exported function list */
+    USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface);
 
 
 

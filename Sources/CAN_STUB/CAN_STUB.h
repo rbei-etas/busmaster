@@ -38,11 +38,11 @@ const int INFO_CONFIRMED_CONFIGURED = 3;
 class CCAN_STUBApp : public CWinApp
 {
 public:
-	CCAN_STUBApp();
+    CCAN_STUBApp();
 
-// Overrides
+    // Overrides
 public:
-	virtual BOOL InitInstance();
+    virtual BOOL InitInstance();
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };

@@ -32,7 +32,7 @@ class CCAN_ETAS_BOA : public CWinApp
 public:
     CCAN_ETAS_BOA();
 
-// Overrides
+    // Overrides
 public:
     virtual BOOL InitInstance();
 

@@ -72,7 +72,6 @@ CChannel::CChannel()
  */
 CChannel::~CChannel()
 {
-
 }
 
 /**
@@ -86,13 +85,16 @@ void CChannel::vUpdateErrorCounter(UCHAR ucTxError, UCHAR ucRxError)
 {
     // Update Tx Error counter and peak Tx Error Counter
     m_ucTxErrorCounter = ucTxError;
+
     // Update Peak Value
     if( m_ucTxErrorCounter > m_ucPeakTxErrorCounter )
     {
         m_ucPeakTxErrorCounter = m_ucTxErrorCounter;
     }
+
     // Update Rx Error counter and peak Rx Error Counter
     m_ucRxErrorCounter = ucRxError;
+
     // Update Peak Value
     if( m_ucRxErrorCounter > m_ucPeakRxErrorCounter )
     {
@@ -105,7 +107,6 @@ void CChannel::vUpdateErrorCounter(UCHAR ucTxError, UCHAR ucRxError)
         // Error Active Mode
         m_ucControllerState = defCONTROLLER_ACTIVE;
     }
-
     // The sudden shift to the third state is to avoid
     // "else if ((byTxError > 127) || (byRxError > 127))"
     else if (m_ucTxErrorCounter == 255)

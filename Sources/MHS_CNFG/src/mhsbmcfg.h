@@ -4,11 +4,11 @@
 #include "mhs_types.h"
 
 #ifdef __cplusplus
-  extern "C" {
+extern "C" {
 #endif
 
-int WINAPI ShowCanSetup(HWND hwnd, struct TMhsCanCfg *setup);
+    int WINAPI ShowCanSetup(HWND hwnd, struct TMhsCanCfg* setup);
 
 #ifdef __cplusplus
-  }
+}
 #endif

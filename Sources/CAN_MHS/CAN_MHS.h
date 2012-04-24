@@ -32,7 +32,7 @@ class CCAN_MHS : public CWinApp
 public:
     CCAN_MHS();
 
-// Overrides
+    // Overrides
 public:
     virtual BOOL InitInstance();
 

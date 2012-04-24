@@ -32,7 +32,7 @@ class CCAN_ICS_neoVIApp : public CWinApp
 public:
     CCAN_ICS_neoVIApp();
 
-// Overrides
+    // Overrides
 public:
     virtual BOOL InitInstance();
 

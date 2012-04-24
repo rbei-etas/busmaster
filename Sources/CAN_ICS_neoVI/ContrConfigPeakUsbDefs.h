@@ -27,9 +27,9 @@
 #define defBITS_IN_BYTE         8
 
 #define defCLOCK            _T("16")
-#ifdef EVAL_COPY_EXT 
+#ifdef EVAL_COPY_EXT
 #define defCONTROLLER_MODE  3 // Simulation mode
-#else 
+#else
 #define defCONTROLLER_MODE  1 // Active mode
 # endif
 

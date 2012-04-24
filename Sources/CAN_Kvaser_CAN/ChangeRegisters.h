@@ -34,23 +34,23 @@
 class CChangeRegisters : public CDialog//CPropertyPage
 {
     //DECLARE_DYNCREATE(CChangeRegisters)
-// Construction
+    // Construction
 public:
     // To Fill controller information taken from configuration module
     BOOL   bFillControllerConfig();
-   // standard constructor
+    // standard constructor
     CChangeRegisters(CWnd* pParent = NULL, PSCONTROLLER_DETAILS psControllerDetails = NULL, UINT nHardwareCount = 0);
     virtual ~CChangeRegisters();
-	BOOL bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1);
-	BOOL bGetBaudRateFromCom(int nChannel,BYTE &bBTR0,BYTE &bBTR1);
-	BOOL bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId, 
-								   DWORD dEndMsgId);
-	BOOL bGetFilterFromCom(BOOL  &bExtended, double  &dBeginMsgId, 
-								   double &dEndMsgId);
+    BOOL bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1);
+    BOOL bGetBaudRateFromCom(int nChannel,BYTE& bBTR0,BYTE& bBTR1);
+    BOOL bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId,
+                           DWORD dEndMsgId);
+    BOOL bGetFilterFromCom(BOOL&  bExtended, double&  dBeginMsgId,
+                           double& dEndMsgId);
     INT nGetInitStatus();
 
 protected:
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CChangeRegisters)
     enum { IDD = IDD_DLG_CHANGE_REGISTERS };
     CListCtrl   m_omChannelList;
@@ -72,59 +72,59 @@ protected:
     //}}AFX_DATA
     DOUBLE  m_dEditBaudRate;
     UINT    m_unCombClock;
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CChangeRegisters)    
-    protected:
+    //{{AFX_VIRTUAL(CChangeRegisters)
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 private:
 
     // Defination of BTR0 Register
     struct sBTR0
     {
-     UCHAR  ucBRPbit   : 6;    // 0..5   (6 bits)
-     UCHAR  ucSJWbit   : 2;    // 6..7   (2 bits)
+        UCHAR  ucBRPbit   : 6;    // 0..5   (6 bits)
+        UCHAR  ucSJWbit   : 2;    // 6..7   (2 bits)
     };
 
     // Packing of Struct BTR0 in one Byte
     union uBTR0
     {
-     UCHAR ucBTR0;
-     sBTR0 sBTR0Bit;
+        UCHAR ucBTR0;
+        sBTR0 sBTR0Bit;
     };
 
     // Defination of BTR1 Register
     struct sBTR1
     {
-     UCHAR ucTSEG1bit  : 4;    // 0..3   (4 bits)
-     UCHAR ucTSEG2bit  : 3;    // 4..7   (3 bits)
-     UCHAR ucSAMbit    : 1;    // 8      (1 bit )
+        UCHAR ucTSEG1bit  : 4;    // 0..3   (4 bits)
+        UCHAR ucTSEG2bit  : 3;    // 4..7   (3 bits)
+        UCHAR ucSAMbit    : 1;    // 8      (1 bit )
     };
 
     // Packing of Struct BTR1 in one Byte
     union  uBTR1
     {
-     UCHAR ucBTR1;
-     sBTR1 sBTR1Bit;
+        UCHAR ucBTR1;
+        sBTR1 sBTR1Bit;
     } ;
 
     // For Values of BRP, NBT , Sampling Percentage and SJW
     struct sBRP_NBT_SAMP_n_SJW
     {
-     USHORT usBRP;
-     USHORT usNBT;
-     USHORT usSampling;
-     USHORT usSJW;
+        USHORT usBRP;
+        USHORT usNBT;
+        USHORT usSampling;
+        USHORT usSJW;
     } ;
-    // structure defination of all five columns in the list control    
+    // structure defination of all five columns in the list control
     struct sCOLUMNS
     {
-     uBTR1                uBTRReg1;
-     uBTR0                uBTRReg0;
-     sBRP_NBT_SAMP_n_SJW  sBRPNBTSampNSJW ;
+        uBTR1                uBTRReg1;
+        uBTR0                uBTRReg0;
+        sBRP_NBT_SAMP_n_SJW  sBRPNBTSampNSJW ;
     } m_asColListCtrl[defREG_VALUE_LIST_COUNT_MAX];
 
     // Generated message map functions
@@ -156,7 +156,7 @@ private:
     // Pointer to hold controller information
     PSCONTROLLER_DETAILS  m_pControllerDetails;
     int m_nLastSelection;
-    CImageList m_omChannelImageList;    
+    CImageList m_omChannelImageList;
     USHORT   m_usBTR0BTR1;
     UCHAR    m_ucWarningLimit;
     UCHAR    m_ucControllerMode;
@@ -173,12 +173,12 @@ private:
     void    vSelSetFocusItemList(INT nItemCount,INT nItem);
     void    vValidateBaudRate();
     DOUBLE  dCalculateBaudRateFromBTRs(CString omStrBTR0, CString omStrBTR1);
-    BOOL nListBoxValues(struct sCOLUMNS *psColListCtrl,
-                                  DOUBLE dBuadRate,WORD usClockFreq,
-                                  UINT *puwIndex,INT nSample);
-    BOOL nCalculateRegValues (struct sCOLUMNS *psColListCtrl,
-                                            WORD wNbt,WORD wBrp,UINT *puwIndex,
-                                            INT nSample);
+    BOOL nListBoxValues(struct sCOLUMNS* psColListCtrl,
+                        DOUBLE dBuadRate,WORD usClockFreq,
+                        UINT* puwIndex,INT nSample);
+    BOOL nCalculateRegValues (struct sCOLUMNS* psColListCtrl,
+                              WORD wNbt,WORD wBrp,UINT* puwIndex,
+                              INT nSample);
     // To save user given values in to the backend data
     void vUpdateControllerDetails();
     // To set the backend data to UI

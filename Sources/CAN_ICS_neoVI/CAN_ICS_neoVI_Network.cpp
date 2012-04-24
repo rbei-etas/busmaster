@@ -35,7 +35,7 @@ CNetwork::CNetwork()
     // Initialise members
     // Number of chennals present or initialised
     m_nNoOfChannels = 0;
-    m_nNoOfDevices  = 0;    
+    m_nNoOfDevices  = 0;
 }
 
 /**
@@ -43,5 +43,4 @@ CNetwork::CNetwork()
  */
 CNetwork::~CNetwork()
 {
-
 }

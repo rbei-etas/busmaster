@@ -32,7 +32,7 @@ class CCAN_Vector_XL : public CWinApp
 public:
     CCAN_Vector_XL();
 
-// Overrides
+    // Overrides
 public:
     virtual BOOL InitInstance();
 
