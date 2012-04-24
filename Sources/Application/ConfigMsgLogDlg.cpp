@@ -588,7 +588,7 @@ void CConfigMsgLogDlg::OnBnClickedCbtnAddlog(void)
     SLOGINFO sLogStruct;
     //Select All CAN channels
     sLogStruct.m_ChannelSelected = CAN_CHANNEL_ALL;
-    _tcscpy(sLogStruct.m_sLogFileName, omFilePathNewLog.GetBuffer(MAX_PATH));
+    strcpy_s(sLogStruct.m_sLogFileName, omFilePathNewLog.GetBuffer(MAX_PATH));
     AddLoggingBlock(sLogStruct);
 
     // Added in data store updated. Now do the same in the GUI

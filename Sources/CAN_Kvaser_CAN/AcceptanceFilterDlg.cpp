@@ -172,15 +172,15 @@ void CAcceptanceFilterDlg::OnCbtnAccetanceOk()
 	{
 		m_psControllerInfo->m_enmHWFilterType[i] = m_enmHWFilterType[i];
 
-		_tcscpy(m_psControllerInfo->m_omStrAccCodeByte1[i], m_omStrLocalAccCodeByte1[i].GetBuffer(MAX_PATH));
-		_tcscpy(m_psControllerInfo->m_omStrAccCodeByte2[i], m_omStrLocalAccCodeByte2[i].GetBuffer(MAX_PATH));
-		_tcscpy(m_psControllerInfo->m_omStrAccCodeByte3[i], m_omStrLocalAccCodeByte3[i].GetBuffer(MAX_PATH));
-		_tcscpy(m_psControllerInfo->m_omStrAccCodeByte4[i], m_omStrLocalAccCodeByte4[i].GetBuffer(MAX_PATH));
+		strcpy_s(m_psControllerInfo->m_omStrAccCodeByte1[i], m_omStrLocalAccCodeByte1[i].GetBuffer(MAX_PATH));
+		strcpy_s(m_psControllerInfo->m_omStrAccCodeByte2[i], m_omStrLocalAccCodeByte2[i].GetBuffer(MAX_PATH));
+		strcpy_s(m_psControllerInfo->m_omStrAccCodeByte3[i], m_omStrLocalAccCodeByte3[i].GetBuffer(MAX_PATH));
+		strcpy_s(m_psControllerInfo->m_omStrAccCodeByte4[i], m_omStrLocalAccCodeByte4[i].GetBuffer(MAX_PATH));
 
-		_tcscpy(m_psControllerInfo->m_omStrAccMaskByte1[i], m_omStrLocalAccMaskByte1[i].GetBuffer(MAX_PATH));
-		_tcscpy(m_psControllerInfo->m_omStrAccMaskByte2[i], m_omStrLocalAccMaskByte2[i].GetBuffer(MAX_PATH));
-		_tcscpy(m_psControllerInfo->m_omStrAccMaskByte3[i], m_omStrLocalAccMaskByte3[i].GetBuffer(MAX_PATH));
-		_tcscpy(m_psControllerInfo->m_omStrAccMaskByte4[i], m_omStrLocalAccMaskByte4[i].GetBuffer(MAX_PATH));				
+		strcpy_s(m_psControllerInfo->m_omStrAccMaskByte1[i], m_omStrLocalAccMaskByte1[i].GetBuffer(MAX_PATH));
+		strcpy_s(m_psControllerInfo->m_omStrAccMaskByte2[i], m_omStrLocalAccMaskByte2[i].GetBuffer(MAX_PATH));
+		strcpy_s(m_psControllerInfo->m_omStrAccMaskByte3[i], m_omStrLocalAccMaskByte3[i].GetBuffer(MAX_PATH));
+		strcpy_s(m_psControllerInfo->m_omStrAccMaskByte4[i], m_omStrLocalAccMaskByte4[i].GetBuffer(MAX_PATH));				
 	}
 
 	m_psControllerInfo->m_bAccFilterMode    = m_bAccFilterMode;

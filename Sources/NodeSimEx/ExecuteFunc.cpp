@@ -369,7 +369,7 @@ VOID CExecuteFunc::vExecuteOnPGNHandler(void* pRxMsg)
 		catch(...)
 		{
 			char acError[256];
-			sprintf( acError,
+			sprintf_s( acError,
 				     defSTR_ERROR_IN_PGN_PROG,
                      psJ1939Msg->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN() );
 			// Display the error information in the Trace window
@@ -457,7 +457,7 @@ VOID CExecuteFunc::vExecuteOnMessageHandlerCAN(STCAN_MSG sRxMsgInfo)
 		catch(...)
 		{
 			char acError[256];
-			sprintf( acError,
+			sprintf_s( acError,
 				     defSTR_ERROR_IN_MSG_PROG,
 				sExecuteMsgHandler.m_sRxMsg.m_unMsgID );
 			// Display the error information in the Trace window

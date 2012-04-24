@@ -106,7 +106,7 @@ struct sMSGBLOCKLIST
         m_psTxCANMsgList      = NULL;
         m_ucKeyValue          = 0;
         m_unTimeInterval      = defDEFAULT_TIME_VAL;
-        _tcscpy( m_acStrBlockName, defDEFAULT_MSG_BLOCK_NAME);
+        strcpy_s(m_acStrBlockName, defDEFAULT_MSG_BLOCK_NAME);
 
     }
 };

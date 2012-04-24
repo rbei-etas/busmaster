@@ -406,27 +406,27 @@ void CRadixEdit::vSetValue(__int64 n64NewVal)
     {
         if(m_bSigned == true)
 		{
-			_tcscpy(acFormat, _T("%I64d"));
+			strcpy_s(acFormat, _T("%I64d"));
 		}
 		else
 		{
-			_tcscpy(acFormat, _T("%I64u"));
+			strcpy_s(acFormat, _T("%I64u"));
 		}
     }
     else 
     {
         if (m_bSigned == true && n64NewVal < 0) 
         {
-             _tcscpy(acFormat, _T("-"));
+             strcpy_s(acFormat, _T("-"));
              n64NewVal = -n64NewVal;
         }
         if (m_nBase == BASE_HEXADECIMAL)
         {
-            _tcscat(acFormat, _T("%I64X"));
+            strcat_s(acFormat, _T("%I64X"));
         }
         else if (m_nBase == BASE_OCTAL) 
         {
-            _tcscat(acFormat, _T("%I64o"));
+            strcat_s(acFormat, _T("%I64o"));
         }       
     }
 	// rajesh: 05.03.2003: END:

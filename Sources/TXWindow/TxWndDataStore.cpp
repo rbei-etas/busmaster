@@ -205,7 +205,7 @@ BYTE* CTxWndDataStore::pbySetConfigData(BYTE* pbyConfigData, INT /*nConfigSize*/
             PSMSGBLOCKLIST psTempBlock = new SMSGBLOCKLIST;
             TCHAR acName[MAX_PATH] = {_T('\0')};
             COPY_DATA_2(acName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
-            _tcscpy(psTempBlock->m_acStrBlockName, acName);
+            strcpy_s(psTempBlock->m_acStrBlockName, acName);
             COPY_DATA_2(&(psTempBlock->m_ucTrigger),pbyTemp,  sizeof(UCHAR));
             COPY_DATA_2(&(psTempBlock->m_bActive), pbyTemp, sizeof(BOOL));
             COPY_DATA_2(&(psTempBlock->m_ucKeyValue), pbyTemp, sizeof(UCHAR));
@@ -294,7 +294,7 @@ BYTE* CTxWndDataStore::pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize)
     {    
         CString m_omStrBlockName;
         TCHAR acName[MAX_PATH] = {_T('\0')};
-        _tcscpy(acName, psTempBlock->m_acStrBlockName);
+        strcpy_s(acName, psTempBlock->m_acStrBlockName);
         COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
         COPY_DATA(pbyTemp, &(psTempBlock->m_ucTrigger), sizeof(UCHAR));
         COPY_DATA(pbyTemp, &(psTempBlock->m_bActive), sizeof(BOOL));
@@ -384,7 +384,7 @@ BOOL CTxWndDataStore::bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList)
             psDestMsgBlockList->m_unTimeInterval = 
                 psSrcMsgBlockList->m_unTimeInterval;
 
-            _tcscpy( psDestMsgBlockList->m_acStrBlockName, 
+            strcpy_s( psDestMsgBlockList->m_acStrBlockName, 
                 psSrcMsgBlockList->m_acStrBlockName);
 
             if (psSrcMsgBlockList->m_unMsgCount > 0)
@@ -471,7 +471,7 @@ static void vCopyBlockDetails(PSMSGBLOCKLIST psDest, const PSMSGBLOCKLIST psSrc)
 {
     ASSERT((psDest != NULL) && (psSrc != NULL));
 
-    _tcscpy(psDest->m_acStrBlockName, psSrc->m_acStrBlockName);
+    strcpy_s(psDest->m_acStrBlockName, psSrc->m_acStrBlockName);
     psDest->m_bActive              = psSrc->m_bActive;
     psDest->m_bTxAllFrame          = psSrc->m_bTxAllFrame;
     psDest->m_bType                = psSrc->m_bType;    
@@ -805,7 +805,7 @@ void CTxWndDataStore::vInitialiseMsgBlock(PSMSGBLOCKLIST& psMsgBlockList)
         psMsgBlockList->m_psTxCANMsgList      = NULL;
         psMsgBlockList->m_ucKeyValue          = defDEFAULT_KEY_VAL;
         psMsgBlockList->m_unTimeInterval      = defDEFAULT_TIME_VAL;
-        _tcscpy( psMsgBlockList->m_acStrBlockName, defDEFAULT_MSG_BLOCK_NAME);
+        strcpy_s( psMsgBlockList->m_acStrBlockName, defDEFAULT_MSG_BLOCK_NAME);
     }
 }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="TXWindow"
 	ProjectGUID="{D12A1B79-CA60-4D7F-BA6F-79130C986BF9}"
 	Keyword="MFCDLLProj"
@@ -53,7 +53,6 @@
 				UsePrecompiledHeader="1"
 				PrecompiledHeaderThrough="TxWindow_StdAfx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -140,7 +139,6 @@
 				UsePrecompiledHeader="1"
 				PrecompiledHeaderThrough="TxWindow_StdAfx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 			/>
 			<Tool

@@ -72,13 +72,13 @@ BYTE* CGraphElement::pbyGetConfigData(BYTE* pbyTrgData)
         COPY_DATA(pbyTemp, &m_nMsgID, sizeof(int));
 		// Message Name	 
 		TCHAR MsgName[MAX_PATH] = {_T('\0')};
-        _tcscpy(MsgName, m_strMsgName.GetBuffer(MAX_PATH));
+        strcpy_s(MsgName, m_strMsgName.GetBuffer(MAX_PATH));
         COPY_DATA(pbyTemp, MsgName, (sizeof(TCHAR) * MAX_PATH));
         // Frame Format - Standard
         COPY_DATA(pbyTemp, &m_nFrameFormat, sizeof(short));
         // Element Name String
         TCHAR acName[MAX_PATH] = {_T('\0')};
-        _tcscpy(acName, m_omStrElementName.GetBuffer(MAX_PATH));
+        strcpy_s(acName, m_omStrElementName.GetBuffer(MAX_PATH));
         COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
         // Type of the element val
         COPY_DATA(pbyTemp, &m_nValueType, sizeof(int));

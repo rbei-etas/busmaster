@@ -186,7 +186,7 @@ VOID COutWnd::vSetWindowFont()
    LF.lfOutPrecision = OUT_CHARACTER_PRECIS;
    LF.lfClipPrecision = CLIP_CHARACTER_PRECIS;
    LF.lfPitchAndFamily  = FIXED_PITCH | FF_SWISS;
-   _tcscpy(LF.lfFaceName, _T("Courier"));
+   strcpy_s(LF.lfFaceName, _T("Courier"));
 
    LF.lfWeight = FW_NORMAL; 
    if (m_omNewFont.CreateFontIndirect(&LF) == TRUE) 

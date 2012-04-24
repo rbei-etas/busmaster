@@ -240,7 +240,7 @@ void CSimSysManager::SaveSIMDataIntoBuffer(BYTE* DesBuffer)
 		UINT unSize = 0;
 		CString omTmp = pSimSysInfo->m_omStrSimSysName;		
 		TCHAR acFilename[MAX_PATH];
-        _tcscpy(acFilename, omTmp.GetBuffer(MAX_PATH));
+        strcpy_s(acFilename, omTmp.GetBuffer(MAX_PATH));
 		COPY_DATA(tempBuffAddress, acFilename, sizeof(TCHAR) * MAX_PATH);
 		pSimSysInfo = pSimSysInfo->m_psSimsysNext;
 	}

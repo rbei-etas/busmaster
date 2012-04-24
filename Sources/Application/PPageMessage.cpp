@@ -211,7 +211,7 @@ int CPPageMessage::nEnterMessageAttrib(const SCanIDList& sMsgAttrib, int nItem)
     int nResult;
 
     // Copy message ID
-    sprintf(m_acMsgEntry, "  %X", sMsgAttrib.nCANID);
+    sprintf_s(m_acMsgEntry, "  %X", sMsgAttrib.nCANID);
     nResult = m_odMsgList.InsertItem(LVIF_STATE | LVIF_TEXT| LVIF_PARAM, nItem,
         m_acMsgEntry, LVIS_FOCUSED | LVIS_SELECTED, 0x7, 0, sMsgAttrib.Colour);	
 
@@ -223,7 +223,7 @@ int CPPageMessage::nEnterMessageAttrib(const SCanIDList& sMsgAttrib, int nItem)
         {
             CharToCopy = 128;
         }
-        strncpy(m_acMsgEntry, (LPCTSTR) sMsgAttrib.omCANIDName, CharToCopy);
+        strncpy_s(m_acMsgEntry, (LPCTSTR) sMsgAttrib.omCANIDName, CharToCopy);
 
         if (m_odMsgList.SetItemText(nItem, 1, m_acMsgEntry) == FALSE)
         {
@@ -270,7 +270,7 @@ void CPPageMessage::OnButtonEdit()
         CString omARow = m_odMsgList.GetItemText(nCurrSel, 0);
 
         UINT unMsgID;
-        sscanf((LPCTSTR) omARow, "%X", &unMsgID);
+        sscanf_s((LPCTSTR) omARow, "%X", &unMsgID);
         ouMsg.nGetAttrib(unMsgID, m_sNewItem);
 
         CMsgIDAttr odMsgDlg(m_eBusType);
@@ -305,7 +305,7 @@ void CPPageMessage::OnButtonRemove()
 		
         CString omARow = m_odMsgList.GetItemText(nCurrSel, 0);
         UINT unMsgID;
-        sscanf((LPCTSTR) omARow, "%X", &unMsgID);
+        sscanf_s((LPCTSTR) omARow, "%X", &unMsgID);
         ouMsg.nGetAttrib(unMsgID, m_sNewItem);
 
        /* CString omWarningMsg;

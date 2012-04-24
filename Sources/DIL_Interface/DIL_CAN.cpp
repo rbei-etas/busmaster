@@ -144,7 +144,7 @@ DWORD CDIL_CAN::DILC_GetDILList(bool /*bAvailable*/, DILLIST* List)
     {
         for (int i = 0; i < sizeof(sg_ListDIL)/sizeof(ENTRY_DIL); i++)
         {
-            _tcscpy((*List)[i].m_acName, sg_ListDIL[i].m_acDIL);
+            strcpy_s((*List)[i].m_acName, sg_ListDIL[i].m_acDIL);
             (*List)[i].m_dwDriverID = sg_ListDIL[i].m_dwDIL;
             Result++;
         }

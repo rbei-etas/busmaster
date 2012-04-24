@@ -111,7 +111,7 @@ static void vPopulateLogInfo(SLOGINFO& Dest, const SLOGFILEDETS& Src)
         }
         break;
     }
-    _tcscpy(Dest.m_sLogFileName, Src.m_omStrFileName);
+    strcpy_s(Dest.m_sLogFileName, Src.m_omStrFileName);
     Dest.m_sLogTrigger = Src.m_sLogTrigger;
 }
 
@@ -125,7 +125,7 @@ static BYTE* pbGetReplayFileConfig(SREPLAYFILE& sReplayFile, BYTE* pbTarget)
     COPY_DATA(pbTemp, &(sReplayFile.m_unCycleTimeDelay), sizeof(sReplayFile.m_unCycleTimeDelay));
     COPY_DATA(pbTemp, &(sReplayFile.m_unMsgTimeDelay), sizeof(sReplayFile.m_unMsgTimeDelay));
     TCHAR acName[MAX_PATH] = {_T('\0')};
-    _tcscpy(acName, sReplayFile.m_omStrFileName.GetBuffer(MAX_PATH));
+    strcpy_s(acName, sReplayFile.m_omStrFileName.GetBuffer(MAX_PATH));
     COPY_DATA(pbTemp, acName, sizeof(TCHAR) * MAX_PATH);
 
     return pbTemp;
@@ -227,7 +227,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int &nStreamLength, eSECTION_
             m_ouConfigDetails.bGetData(MRU_C_FILE_NAME, (void **)(&pomMRU_C_FILE_NAME));
             TCHAR acName[MAX_PATH] = {_T('0')};
             ASSERT(pomMRU_C_FILE_NAME != NULL);
-            _tcscpy(acName, pomMRU_C_FILE_NAME->GetBuffer(MAX_PATH));
+            strcpy_s(acName, pomMRU_C_FILE_NAME->GetBuffer(MAX_PATH));
             delete pomMRU_C_FILE_NAME;            
             COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
 
@@ -343,7 +343,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int &nStreamLength, eSECTION_
             while (psTemp != NULL)
             {
                 TCHAR acFilePath[MAX_PATH] = {_T('\0')};
-                _tcscpy(acFilePath, psTemp->m_omStrSimSysPath.GetBuffer(MAX_PATH));
+                strcpy_s(acFilePath, psTemp->m_omStrSimSysPath.GetBuffer(MAX_PATH));
                 COPY_DATA(pbyTemp, acFilePath, (sizeof(TCHAR) * MAX_PATH));
                 psTemp = psTemp->psNextSimsys;
             }
@@ -469,7 +469,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int &nStreamLength, eSECTION_
                 for (INT i = 0; i < psMsgAttrib->m_usMsgCount; i++)
                 {
                     TCHAR acName[MAX_PATH] = {_T('\0')};
-                    _tcscpy(acName, psMsgAttrib->m_psMsgAttribDetails[i].omStrMsgname);
+                    strcpy_s(acName, psMsgAttrib->m_psMsgAttribDetails[i].omStrMsgname);
                     COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
                     COPY_DATA(pbyTemp, &(psMsgAttrib->m_psMsgAttribDetails[i].unMsgID), sizeof(UINT));
                     COPY_DATA(pbyTemp, &(psMsgAttrib->m_psMsgAttribDetails[i].sColor), sizeof(COLORREF));                
@@ -545,7 +545,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int &nStreamLength, eSECTION_
                     CString omSigName = psTemp->omCSASignals.GetAt(i);
                     UINT unSigId = 0;
                     COPY_DATA(pbyTemp, &(unSigId), sizeof (UINT));
-                    _tcscpy(acName, omSigName.GetBuffer(MAX_PATH));
+                    strcpy_s(acName, omSigName.GetBuffer(MAX_PATH));
                     COPY_DATA(pbyTemp, acName, (sizeof (TCHAR) * MAX_PATH));
                 }
                 psTemp = psTemp->psNextMessageNode;
@@ -689,7 +689,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int &nStreamLength, eSECTION_
             
                 CString m_omStrBlockName;
                 TCHAR acName[MAX_PATH] = {_T('\0')};
-                _tcscpy(acName, psTempBlock->m_omStrBlockName.GetBuffer(MAX_PATH));
+                strcpy_s(acName, psTempBlock->m_omStrBlockName.GetBuffer(MAX_PATH));
                 COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
                 COPY_DATA(pbyTemp, &(psTempBlock->m_ucTrigger), sizeof(UCHAR));
                 COPY_DATA(pbyTemp, &(psTempBlock->m_bActive), sizeof(BOOL));
@@ -762,7 +762,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int &nStreamLength, eSECTION_
             {
                 CString omName = pomStrDBArray->GetAt(i);
                 TCHAR acName[MAX_PATH] = {_T('\0')};
-                _tcscpy(acName, omName.GetBuffer(MAX_PATH));
+                strcpy_s(acName, omName.GetBuffer(MAX_PATH));
                 COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
             }
             m_ouConfigDetails.vRelease(DATABASE_FILE_NAME,(LPVOID*)&pomStrDBArray);

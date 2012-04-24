@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="DMGraph"
 	ProjectGUID="{9D8AF453-01BC-44C9-9753-568BCEA38D4E}"
 	RootNamespace="DMGraph"
@@ -61,6 +61,7 @@
 				ProgramDataBaseFileName=".\DebugU/"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -162,6 +163,7 @@
 				ProgramDataBaseFileName=".\ReleaseUMinSize/"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
 			/>
 			<Tool

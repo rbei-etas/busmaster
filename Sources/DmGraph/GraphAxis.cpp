@@ -133,13 +133,13 @@ STDMETHODIMP CGraphAxis::put_ShowGrid(VARIANT_BOOL newVal)
 
 void CGraphAxis::FormatAxisLabel(double data, BSTR* pbsString)
 {
-	OLECHAR buffer[128];  
+	OLECHAR buffer[128];
 	ATLASSERT(pbsString);
 	*pbsString = NULL;
 
 	DWORD dwCode;
 	if(m_bLog)
-		_snwprintf(buffer, 128, L"1E%d", ROUND(data)); // Log Scale
+		sprintf_s((char *) buffer, sizeof(buffer), "1E%d", ROUND(data)); // Log Scale
 	else if (m_bTime)
 	{
 		tm tmTemp;
@@ -161,7 +161,7 @@ void CGraphAxis::FormatAxisLabel(double data, BSTR* pbsString)
 	{
 		__try
 		{
-			_snwprintf(buffer, 128, m_bsFormat, data);
+			sprintf_s((char *) buffer, sizeof(buffer), (char *) m_bsFormat.m_str, data);
 		}
 		__except(dwCode = GetExceptionCode(), EXCEPTION_EXECUTE_HANDLER)
 		{

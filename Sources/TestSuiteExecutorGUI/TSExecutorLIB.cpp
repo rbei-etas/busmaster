@@ -650,7 +650,7 @@ HRESULT CTSExecutorLIB::GetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize
         
         //TestSuite name
         TCHAR acTestSuiteName[MAX_PATH] = {_T('\0')};
-        _tcscpy(acTestSuiteName, m_omstrTestSuiteName);
+        strcpy_s(acTestSuiteName, m_omstrTestSuiteName);
         COPY_DATA(pbyTemp, acTestSuiteName, (sizeof (TCHAR) * MAX_PATH));
     
         //TestSuite Status
@@ -668,7 +668,7 @@ HRESULT CTSExecutorLIB::GetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize
             
             //File Path
             TCHAR acName[MAX_PATH] = {_T('\0')};
-            _tcscpy(acName, ouTestSetupEntity.m_omstrCurrentTSFile.GetBuffer(MAX_PATH));
+            strcpy_s(acName, ouTestSetupEntity.m_omstrCurrentTSFile.GetBuffer(MAX_PATH));
             COPY_DATA(pbyTemp, acName, (sizeof (TCHAR) * MAX_PATH));
 
             //Selection Status

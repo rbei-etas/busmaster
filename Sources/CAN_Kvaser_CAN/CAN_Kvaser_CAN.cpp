@@ -511,7 +511,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCH
                 {
                     /* First slot is reserved to monitor node */
                     ClientID = 1;
-                    _tcscpy(sg_asClientToBufMap[0].pacClientName, pacClientName);
+                    strcpy_s(sg_asClientToBufMap[0].pacClientName, pacClientName);
                     sg_asClientToBufMap[0].dwClientID = ClientID;
                     sg_asClientToBufMap[0].unBufCount = 0;
                 }
@@ -526,7 +526,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCH
                         Index = sg_unClientCnt;
                     }
                     ClientID = dwGetAvailableClientSlot();
-                    _tcscpy(sg_asClientToBufMap[Index].pacClientName, pacClientName);
+                    strcpy_s(sg_asClientToBufMap[Index].pacClientName, pacClientName);
 
                     sg_asClientToBufMap[Index].dwClientID = ClientID;
                     sg_asClientToBufMap[Index].unBufCount = 0;
@@ -883,7 +883,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
     //First initialize with existing hw description
     for (INT i = 0; i < min(Length, (INT)sg_nNoOfChannels); i++)
     {   
-		_stprintf(pControllerDetails[i].m_omHardwareDesc , _T("%s"), sg_aodChannels[i].m_strName);
+		sprintf_s(pControllerDetails[i].m_omHardwareDesc, _T("%s"), sg_aodChannels[i].m_strName);
     }
     if (sg_ucNoOfHardware > 0)
     {
@@ -1102,7 +1102,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
 	/* Fill the hardware description details */
     for (UINT nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
 	{		
-		_tcscpy(((PSCONTROLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc, 
+		strcpy_s(((PSCONTROLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc, 
 				sg_aodChannels[nCount].m_strName);		
 	}
 
@@ -2095,7 +2095,7 @@ static int nCreateMultipleHardwareNetwork()
 
 	    canGetChannelData(nCount, canCHANNELDATA_CARD_SERIAL_NO,
 							 acVendor, sizeof(acVendor));
-		sscanf( acVendor, "%ld", &sg_HardwareIntr[nCount].m_dwVendor );		
+		sscanf_s( acVendor, "%ld", &sg_HardwareIntr[nCount].m_dwVendor );		
 
 	    canGetChannelData(nCount, canCHANNELDATA_CHANNEL_NAME,
                   sg_HardwareIntr[nCount].m_acDescription,
@@ -2104,7 +2104,7 @@ static int nCreateMultipleHardwareNetwork()
 		//Get Firmware info
 		canGetChannelData(nCount, canCHANNELDATA_CARD_FIRMWARE_REV, dwFirmWare, sizeof(dwFirmWare));
 
-		sprintf(sg_HardwareIntr[nCount].m_acDeviceName,"0x%08lx 0x%08lx", dwFirmWare[0], dwFirmWare[1]);
+		sprintf_s(sg_HardwareIntr[nCount].m_acDeviceName,"0x%08lx 0x%08lx", dwFirmWare[0], dwFirmWare[1]);
 	}	
 	ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_KVASER_CAN, sg_HardwareIntr, sg_anSelectedItems, nHwCount);
 
@@ -2115,7 +2115,7 @@ static int nCreateMultipleHardwareNetwork()
 	for (int nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
 	{		
 		sg_aodChannels[nCount].m_nChannel = sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwIdInterface;				
-		_stprintf(sg_aodChannels[nCount].m_strName , _T("Kvaser - %s, Serial Number- %ld, Firmware- %s"),
+		sprintf_s(sg_aodChannels[nCount].m_strName , _T("Kvaser - %s, Serial Number- %ld, Firmware- %s"),
 									sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDescription,
 									sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwVendor,
 									sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDeviceName);		
@@ -2146,7 +2146,7 @@ static int nCreateSingleHardwareNetwork()
 
 	canGetChannelData(0, canCHANNELDATA_CARD_SERIAL_NO,
 						 acVendor, sizeof(acVendor));
-	sscanf( acVendor, "%ld", &sg_HardwareIntr[0].m_dwVendor );		
+	sscanf_s( acVendor, "%ld", &sg_HardwareIntr[0].m_dwVendor );		
 
     canGetChannelData(0, canCHANNELDATA_CHANNEL_NAME,
               sg_HardwareIntr[0].m_acDescription,
@@ -2155,9 +2155,9 @@ static int nCreateSingleHardwareNetwork()
 	/* Get Firmware info */
 	canGetChannelData(0, canCHANNELDATA_CARD_FIRMWARE_REV, dwFirmWare, sizeof(dwFirmWare));
 
-	sprintf(sg_HardwareIntr[0].m_acDeviceName,"0x%08lx 0x%08lx", dwFirmWare[0], dwFirmWare[1]);
+	sprintf_s(sg_HardwareIntr[0].m_acDeviceName,"0x%08lx 0x%08lx", dwFirmWare[0], dwFirmWare[1]);
 
-	_stprintf(sg_aodChannels[0].m_strName , _T("%s, Serial Number: %ld, Firmware: %s"),
+	sprintf_s(sg_aodChannels[0].m_strName, _T("%s, Serial Number: %ld, Firmware: %s"),
 								sg_HardwareIntr[0].m_acDescription,
 								sg_HardwareIntr[0].m_dwVendor,
 								sg_HardwareIntr[0].m_acDeviceName);	
@@ -2187,7 +2187,7 @@ static int nGetNoOfConnectedHardware(void)
 
 	if (nStatus != canOK ) 
 	{
-        _tcscpy(sg_omErrStr, _T("Problem Finding Device!"));
+        strcpy_s(sg_omErrStr, _T("Problem Finding Device!"));
         nChannelCount = -1;
 	}	
     /* Return the channel count */
@@ -2218,12 +2218,12 @@ static int nInitHwNetwork()
      * Take action based on number of Hardware Available
      */
     TCHAR acNo_Of_Hw[MAX_STRING] = {0};
-    _stprintf(acNo_Of_Hw, _T("Number of Kvaser hardwares Available: %d"), nChannelCount);
+    sprintf_s(acNo_Of_Hw, _T("Number of Kvaser hardwares Available: %d"), nChannelCount);
 
     /* No Hardware found */
     if( nChannelCount == 0 )
     {
-	_stprintf(sg_omErrStr, _T("No Kvaser hardwares Available.\nPlease check if Kvaser drivers are installed."));
+	sprintf_s(sg_omErrStr, _T("No Kvaser hardwares Available.\nPlease check if Kvaser drivers are installed."));
 	nChannelCount = -1;
     }
     /* Available hardware is lesser then the supported channels */
@@ -2372,7 +2372,7 @@ static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
     {
         nStrLen = CAN_MAX_ERRSTR;
     }
-    strncpy(sg_acErrStr, acErrText, nStrLen);
+    strncpy_s(sg_acErrStr, acErrText, nStrLen);
 }
 
 /**

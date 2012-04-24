@@ -152,9 +152,9 @@ void CRxMsgList::OnLvnGetdispinfo(NMHDR *pNMHDR, LRESULT *pResult)
             }
             else
             {
-                _tcsncpy(pItem->pszText, m_pomDataPtrArr[pItem->iSubItem-1], nMAX_PSZTEXT_SIZE);
-            }			
-		}      
+                _tcsncpy_s(pItem->pszText, sizeof(pItem->pszText), m_pomDataPtrArr[pItem->iSubItem-1], nMAX_PSZTEXT_SIZE);
+            }
+        }
         if ((pItem->mask & LVIF_IMAGE))
         {
 			BOOL bInterpret = FALSE;

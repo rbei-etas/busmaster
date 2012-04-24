@@ -49,7 +49,7 @@ public:
     {
         m_pILog     = RefObj.m_pILog;
         dwClientID  = RefObj.dwClientID;
-        _tcscpy(m_acVersion, RefObj.m_acVersion);
+        strcpy_s(m_acVersion, RefObj.m_acVersion);
 
         return *this;
     }

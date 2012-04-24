@@ -93,7 +93,7 @@ BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
     {
         case HEXADECIMAL: 
         {
-            sprintf(acID, "%x", sDataJ1939.m_dwMsgID);
+            sprintf_s(acID, "%x", sDataJ1939.m_dwMsgID);
             pPGN = (TCHAR *) (sDataJ1939.m_acPGNHex);
             pData = (TCHAR *) (sDataJ1939.m_pcDataHex);
             psSrcNode = (TCHAR *) (sDataJ1939.m_acSrcHex);
@@ -102,7 +102,7 @@ BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
         break;
         case DEC: 
         {
-            sprintf(acID, "%d", sDataJ1939.m_dwMsgID);
+            sprintf_s(acID, "%d", sDataJ1939.m_dwMsgID);
             pPGN = (TCHAR *) (sDataJ1939.m_acPGNDec);
             pData = (TCHAR *) (sDataJ1939.m_pcDataDec);
             psSrcNode = (TCHAR *) (sDataJ1939.m_acSrcDec);

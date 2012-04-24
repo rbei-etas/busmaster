@@ -91,7 +91,8 @@ CFunctionEditorDoc::~CFunctionEditorDoc()
 BOOL CFunctionEditorDoc::bCreateNewDocument(CString& omStrFileName )
 {
     BOOL bSuccess = FALSE;
-    FILE * pCFile = fopen( /*T2A*/(omStrFileName.GetBuffer(MAX_PATH)), "at");
+    FILE * pCFile;
+    fopen_s(&pCFile, /*T2A*/(omStrFileName.GetBuffer(MAX_PATH)), "at");
     CString omStrCFileName = STR_EMPTY;
     CString omStr = STR_EMPTY;
     if( pCFile != NULL )
@@ -101,17 +102,17 @@ BOOL CFunctionEditorDoc::bCreateNewDocument(CString& omStrFileName )
         char buffer[2500]= {'\0'};
         CString omStr = BUS_INCLUDE_HDR;
         omStr.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), m_sBusSpecInfo.m_omBusName);
-        strcat(buffer ,/*T2A*/(omStr.GetBuffer(MAX_PATH)));
-        strcat(buffer, "\n#include <Windows.h>");
+        strcat_s(buffer ,/*T2A*/(omStr.GetBuffer(MAX_PATH)));
+        strcat_s(buffer, "\n#include <Windows.h>");
         if (m_sBusSpecInfo.m_omHeaderFileName.IsEmpty())
         {
             ASSERT(FALSE);
         }
         
         omStr.Format(STR_INCLUDE_FILE, m_sBusSpecInfo.m_omHeaderFileName);
-		strcat(buffer, /*T2A*/(omStr.GetBuffer(MAX_PATH)));
+		strcat_s(buffer, /*T2A*/(omStr.GetBuffer(MAX_PATH)));
 
-	    strcat(buffer, "\n");
+	    strcat_s(buffer, "\n");
 
         CStringArray* paomstrDBFiles = &(CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).m_omDefinedMsgHeaders);
 		int nTotalCount = (COMMANINT)paomstrDBFiles->GetSize();
@@ -122,40 +123,40 @@ BOOL CFunctionEditorDoc::bCreateNewDocument(CString& omStrFileName )
 			{
 				omStr.Insert( 0,_T("#include \""));
 				omStr += _T("\"");
-                strcat(buffer, /*T2A*/(omStr));
-                strcat(buffer, "\n");
+                strcat_s(buffer, /*T2A*/(omStr));
+                strcat_s(buffer, "\n");
 			}
 		}
-        strcat(buffer, "\n");
+        strcat_s(buffer, "\n");
         omStr = BUS_INCLUDE_FOOTER;
         omStr.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), m_sBusSpecInfo.m_omBusName);
-        strcat(buffer, /*T2A*/(omStr));
+        strcat_s(buffer, /*T2A*/(omStr));
 
-        strcat(buffer, "\n\n\n");
+        strcat_s(buffer, "\n\n\n");
 
         omStr = BUS_VAR_HDR;
         omStr.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), m_sBusSpecInfo.m_omBusName);
-        strcat(buffer, /*T2A*/(omStr));
+        strcat_s(buffer, /*T2A*/(omStr));
 
-        strcat(buffer, "\n\n");
+        strcat_s(buffer, "\n\n");
 
         omStr = BUS_VAR_FOOTER;
         omStr.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), m_sBusSpecInfo.m_omBusName);
-        strcat(buffer, /*T2A*/(omStr));
+        strcat_s(buffer, /*T2A*/(omStr));
 
-        strcat(buffer, "\n\n\n");
+        strcat_s(buffer, "\n\n\n");
 
         omStr = BUS_FN_PROTOTYPE_HDR;
         omStr.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), m_sBusSpecInfo.m_omBusName);
-        strcat(buffer, /*T2A*/(omStr));
+        strcat_s(buffer, /*T2A*/(omStr));
 
-        strcat(buffer, "\n");
+        strcat_s(buffer, "\n");
 
         omStr = BUS_FN_PROTOTYPE_FOOTER;
         omStr.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), m_sBusSpecInfo.m_omBusName);
-        strcat(buffer, /*T2A*/(omStr));
+        strcat_s(buffer, /*T2A*/(omStr));
 
-        strcat(buffer, "\n\n");
+        strcat_s(buffer, "\n\n");
         int nLength = (COMMANINT)strlen(buffer); 
         fwrite( buffer, sizeof( char ), nLength, pCFile );
         fclose(pCFile);

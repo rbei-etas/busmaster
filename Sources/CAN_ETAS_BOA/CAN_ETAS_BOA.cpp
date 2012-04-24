@@ -1520,7 +1520,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, T
                 {
                     //First slot is reserved to monitor node
                     ClientID = 1;
-                    _tcscpy(sg_asClientToBufMap[0].m_acClientName, pacClientName);                
+                    strcpy_s(sg_asClientToBufMap[0].m_acClientName, pacClientName);
                     sg_asClientToBufMap[0].m_dwClientID = ClientID;
                     sg_asClientToBufMap[0].m_unBufCount = 0;
                 }
@@ -1535,7 +1535,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, T
                         Index = sg_unClientCnt;
                     }
                     ClientID = dwGetAvailableClientSlot();
-                    _tcscpy(sg_asClientToBufMap[Index].m_acClientName, pacClientName);
+                    strcpy_s(sg_asClientToBufMap[Index].m_acClientName, pacClientName);
             
                     sg_asClientToBufMap[Index].m_dwClientID = ClientID;
                     sg_asClientToBufMap[Index].m_unBufCount = 0;
@@ -1794,7 +1794,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT6
  * This function will popup hardware selection dialog and gets the user selection of channels.
  *
  */
-int ListHardwareInterfaces(HWND hParent, DWORD dwDriver, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount)
+int ListHardwareInterfaces(HWND /*hParent*/, DWORD /*dwDriver*/, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
@@ -1831,9 +1831,9 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 			{                
                 psHWInterface[i].m_dwIdInterface = 0;
                 psHWInterface[i].m_dwVendor = 0;
-                _tcscpy(psHWInterface[i].m_acDeviceName, _T(""));
-				_tcscpy(psHWInterface[i].m_acNameInterface, A2T(acURI[i]));
-				_tcscpy(psHWInterface[i].m_acDescription, A2T(acURI[i]));
+                strcpy_s(psHWInterface[i].m_acDeviceName, _T(""));
+                strcpy_s(psHWInterface[i].m_acNameInterface, A2T(acURI[i]));
+                strcpy_s(psHWInterface[i].m_acDescription, A2T(acURI[i]));
 			}
 			if (nCount > 1)// List hw interface if there are more than one hw
 			{
@@ -1845,8 +1845,8 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 			sg_nNoOfChannels = min(nCount, defNO_OF_CHANNELS);
 			for (UINT nList = 0; nList < sg_nNoOfChannels; nList++)
 			{
-                _tcscpy(asSelHwInterface[nList].m_acNameInterface, psHWInterface[sg_anSelectedItems[nList]].m_acNameInterface);
-                _tcscpy(asSelHwInterface[nList].m_acDescription, psHWInterface[sg_anSelectedItems[nList]].m_acDescription);  
+                strcpy_s(asSelHwInterface[nList].m_acNameInterface, psHWInterface[sg_anSelectedItems[nList]].m_acNameInterface);
+                strcpy_s(asSelHwInterface[nList].m_acDescription, psHWInterface[sg_anSelectedItems[nList]].m_acDescription);  
                 asSelHwInterface[nList].m_dwIdInterface = 100 + nList; // Give a dummy number
                 
 			}
@@ -1879,7 +1879,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SelectHwInterface(const INTERFACE_HW_LIST& asSelH
     for (UINT i = 0; i < sg_nNoOfChannels; i++)
     {
         TCHAR acTmpURL[MAX_CHAR_SHORT] = {_T('\0')};
-        _tcscpy(acTmpURL, asSelHwInterface[i].m_acNameInterface);
+        strcpy_s(acTmpURL, asSelHwInterface[i].m_acNameInterface);
         strcpy(sg_asChannel[i].m_acURI, T2A(acTmpURL));
     }
     // Create the controller instance.
@@ -2051,7 +2051,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
     //First initialize with existing hw description
     for (INT i = 0; i < min(Length, (INT)sg_nNoOfChannels); i++)
     {   
-        _tcscpy(psContrlDets[i].m_omHardwareDesc, T2A(sg_asChannel[i].m_acURI));
+        strcpy_s(psContrlDets[i].m_omHardwareDesc, T2A(sg_asChannel[i].m_acURI));
     }
 	if (sg_nNoOfChannels > 0)
 	{
@@ -2121,7 +2121,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SetConfigData(PCHAR pInitData, INT /*Length*/)
                                                     &(sg_asChannel[i].m_OCI_CntrlProp));
 
 		/* Fill the hardware description details */
-		_tcscpy(((PSCONTROLER_DETAILS)pInitData)[i].m_omHardwareDesc, 
+		strcpy_s(((PSCONTROLER_DETAILS)pInitData)[i].m_omHardwareDesc, 
 				sg_asChannel[i].m_acURI);	
 
         if (ErrCode == OCI_SUCCESS)

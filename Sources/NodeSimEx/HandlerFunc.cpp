@@ -61,7 +61,7 @@ UINT unKeyHandlerProc(LPVOID pParam)
         catch(...)
         {
             CHAR acError[256];
-            sprintf( acError,
+            sprintf_s( acError,
                      defSTR_ERROR_IN_KEY_PROG,
                      psExecuteKeyHandler->m_ucKeyValue );
             // Display the error information in the Trace window
@@ -395,7 +395,7 @@ UINT unTimerHandlerProc(LPVOID pParam)
 					catch(...)
 					{
 						CHAR acError[256];
-						sprintf( acError,
+						sprintf_s( acError,
 							defSTR_ERROR_IN_TIMER_PROG,
 							psTimerStruct->omStrTimerHandlerName );
 						// Display the error information in the Trace window

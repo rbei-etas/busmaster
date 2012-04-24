@@ -657,7 +657,7 @@ BOOL CMessageAttrib::bMsgIDFromMsgName(const CString &omMsgName, UINT &unMsgID
 
     if (bFound == FALSE) 
     {
-        if (sscanf((LPCTSTR) omMsgName, m_acMsgIDFormat, &unMsgID) == 1)
+        if (sscanf_s((LPCTSTR) omMsgName, m_acMsgIDFormat, &unMsgID) == 1)
         {
             bFound = TRUE;
         }
@@ -711,10 +711,10 @@ void CMessageAttrib::vChangeNumericalMode(BOOL bHexON)
 {
     if(bHexON == TRUE)
     {
-        strcpy(m_acMsgIDFormat,"%X");
+        strcpy_s(m_acMsgIDFormat,"%X");
     }
     else
     {
-        strcpy(m_acMsgIDFormat,"%d");
+        strcpy_s(m_acMsgIDFormat,"%d");
     }
 }

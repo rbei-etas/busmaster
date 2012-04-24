@@ -32,10 +32,10 @@ SGUIPARAMS::SGUIPARAMS()
     m_acUnSelListName[MAX_PATH - 1] = _T('\0');
     m_acSelListName[MAX_PATH - 1]   = _T('\0');
 
-    _tcsset(m_acTitleName, _T('\0'));
-    _tcsset(m_acMainListName, _T('\0'));
-    _tcsset(m_acUnSelListName, _T('\0'));
-    _tcsset(m_acSelListName, _T('\0'));
+    _tcsset_s(m_acTitleName, _T('\0'));
+    _tcsset_s(m_acMainListName, _T('\0'));
+    _tcsset_s(m_acUnSelListName, _T('\0'));
+    _tcsset_s(m_acSelListName, _T('\0'));
 
     m_pomImageList      = NULL;
     m_unUnSelIconIndex  = 0;

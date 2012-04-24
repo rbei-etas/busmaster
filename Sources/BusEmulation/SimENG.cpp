@@ -90,7 +90,7 @@ static void GetSystemErrorString()
         NULL );
     if (dwResult <= 0)
     {
-        strcpy(sg_acErrStr, "system error message retrieval operation failed");
+        strcpy_s(sg_acErrStr, "system error message retrieval operation failed");
     }
     else
     {
@@ -378,10 +378,10 @@ STDMETHODIMP CSimENG::RegisterClient(USHORT Bus, USHORT MaxLenFrame,
     // From the client identifier we will now generate a pipe & mutex name
     // First generate mutex name
     char EventName[32] = {'\0'};
-    sprintf(EventName, "%X", ushTempID);
+    sprintf_s(EventName, "%X", ushTempID);
     // followed by the pipe name
     char PipeName[64] = BASE_PIPENAME;
-    strcat(PipeName, EventName);
+    strcat_s(PipeName, EventName);
 
     // Pipe name; convert from ASCII string to BSTR
     BSTR bstrPipe = A2BSTR(PipeName);

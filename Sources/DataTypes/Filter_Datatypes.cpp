@@ -61,7 +61,7 @@ tagFilterName::tagFilterName()
 ******************************************************************************/
 void tagFilterName::vClear(void)
 {
-    _tcsset(m_acFilterName, L'\0');
+    _tcsset_s(m_acFilterName, L'\0');
     m_bFilterType = FALSE;
 }
 
@@ -79,7 +79,7 @@ void tagFilterName::vClear(void)
 ******************************************************************************/
 tagFilterName& tagFilterName::operator=(const tagFilterName& RefObj)
 {
-    _tcscpy(m_acFilterName, RefObj.m_acFilterName);
+    strcpy_s(m_acFilterName, RefObj.m_acFilterName);
     m_bFilterType = RefObj.m_bFilterType;
 
     return *this;

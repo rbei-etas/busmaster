@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="CommonClass"
 	ProjectGUID="{549E1D9D-FB60-4405-B78E-3C7A8221DC15}"
 	Keyword="Win32Proj"
@@ -51,7 +51,6 @@
 				UsePrecompiledHeader="1"
 				PrecompiledHeaderThrough="CommonClass_stdafx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -118,7 +117,6 @@
 				UsePrecompiledHeader="1"
 				PrecompiledHeaderThrough="CommonClass_stdafx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 			/>
 			<Tool

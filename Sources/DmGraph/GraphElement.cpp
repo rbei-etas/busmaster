@@ -48,7 +48,7 @@ void CGraphElement::AttachToGraph(CDMGraphCtrl* pCtrl, int id)
 
 	const int TXT_LEN = 128;
 	OLECHAR szText[ TXT_LEN ];
-	_snwprintf(szText, TXT_LEN, L"Element-%d", m_nID);
+	sprintf_s((char *) szText, TXT_LEN, "Element-%d", m_nID);
 	m_strName = szText;
 }
 
