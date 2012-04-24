@@ -14,7 +14,7 @@
 #include "SigGrphWnd_stdafx.h"
 // For definition of resource symbols
 #include "SigGrphWnd_resource.h"
-#include "CGCtrl.h"
+#include "..\Application\CGCtrl.h"
 // For CGraphBottomView class definition
 #include "GraphBottomView.h"
 // For Export Dialog interface
