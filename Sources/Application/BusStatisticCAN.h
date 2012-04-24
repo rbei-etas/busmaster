@@ -42,6 +42,8 @@ private:
     CRITICAL_SECTION m_omCritSecBS;
     //Bus Statictics Structure
     SBUSSTATISTICS m_sBusStatistics[ defNO_OF_CHANNELS ];
+    //Sub BusStatistics
+    SSUBBUSSTATISTICS m_sSubBusStatistics[ defNO_OF_CHANNELS ];
     //Temporary Referance of STCAN_MSG
     STCAN_MSG m_sCurrEntry;
     //variable to hold current channel
