@@ -515,8 +515,8 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
         case CONTROLLER_DETAILS:
         {
             *lpData = NULL;
-            PSCONTROLER_DETAILS  psControllerDetails = 
-                new SCONTROLER_DETAILS[ defNO_OF_CHANNELS ];
+            PSCONTROLLER_DETAILS  psControllerDetails = 
+                new SCONTROLLER_DETAILS[ defNO_OF_CHANNELS ];
             // baud rate information
             if (psControllerDetails != NULL)
             {
@@ -1073,8 +1073,8 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
             case CONTROLLER_DETAILS:
             {
                 // baud rate information
-                PSCONTROLER_DETAILS pSrc = 
-                    static_cast<PSCONTROLER_DETAILS>(lpVoid);
+                PSCONTROLLER_DETAILS pSrc = 
+                    static_cast<PSCONTROLLER_DETAILS>(lpVoid);
                 // packed value of bit timing register 0 
                 // and bit timing register 1
                 for (int nIndex = 0; nIndex < defNO_OF_CHANNELS; nIndex++)
@@ -2503,7 +2503,7 @@ void CConfigDetails::vInitToolbarInfo()
 /******************************************************************************/
 
 static void vReadControllerDetails(CArchive& roCfgArchive, int& nIndex,
-                                   PSCONTROLER_DETAILS psControllerDetails)
+                                   PSCONTROLLER_DETAILS psControllerDetails)
 {
     // the item under focus
     roCfgArchive >> psControllerDetails[ nIndex ].m_nItemUnderFocus;
@@ -2589,7 +2589,7 @@ void CConfigDetails::vLoadStoreBaudRateDetails(CArchive& roCfgArchive)
         // distrubed
         if (bDummyRead == TRUE)
         {
-            sCONTROLERDETAILS sDummy;
+            sCONTROLLERDETAILS sDummy;
             
             for (int nIndex = 0; nIndex < nTimes; nIndex++)
             {
@@ -4251,8 +4251,8 @@ void CConfigDetails::vRelease(eCONFIGDETAILS eParam, LPVOID* lpDataPtr)
         {
             if (*lpDataPtr != NULL)
             {
-                PSCONTROLER_DETAILS  psControllerDetails =
-                    static_cast<PSCONTROLER_DETAILS>( *lpDataPtr);
+                PSCONTROLLER_DETAILS  psControllerDetails =
+                    static_cast<PSCONTROLLER_DETAILS>( *lpDataPtr);
                 delete [] psControllerDetails;
                 *lpDataPtr = NULL;
             }

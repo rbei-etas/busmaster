@@ -41,7 +41,7 @@
 /*  Modifications    :  Raja N on 14.03.2005, Added init of member variable   */
 /*                      m_pControllerDetails                                  */
 /******************************************************************************/
-CChangeRegisters_CAN_ETAS_BOA::CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent /*=NULL*/, PSCONTROLER_DETAILS psControllerDetails, UINT nHardwareCount)
+CChangeRegisters_CAN_ETAS_BOA::CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent /*=NULL*/, PSCONTROLLER_DETAILS psControllerDetails, UINT nHardwareCount)
     : CDialog(CChangeRegisters_CAN_ETAS_BOA::IDD, pParent)
     , m_omStrSamplePoint(_T("70"))
     , m_omStrSJW(_T(""))

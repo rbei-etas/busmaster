@@ -296,7 +296,7 @@ static int sg_nFRAMES = 128;
 const int ENTRIES_IN_GBUF       = 2000;
 static STCANDATA sg_asCANMsg;
 static STCAN_MSG sg_ReadMsg;
-static SCONTROLER_DETAILS sg_ControllerDetails[defNO_OF_CHANNELS];
+static SCONTROLLER_DETAILS sg_ControllerDetails[defNO_OF_CHANNELS];
 static INTERFACE_HW sg_HardwareIntr[defNO_OF_CHANNELS];
 
 /* CDIL_CAN_Kvaser class definition */
@@ -607,7 +607,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_PerformInitOperations(void)
  * Copies the controller config values into channel's
  * controller config structure.
  */
-static BOOL bLoadDataFromContr(PSCONTROLER_DETAILS pControllerDetails)
+static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
 {
     BOOL bReturn = FALSE;    
     // If successful
@@ -828,7 +828,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_DeselectHwInterface(void)
 
 /**
 * \brief         Callback function for configuration dialog
-* \param[in]     pDatStream, contains SCONTROLER_DETAILS structure
+* \param[in]     pDatStream, contains SCONTROLLER_DETAILS structure
 * \return        TRUE if CAN_SetConfigData call succeeds, else FALSE
 * \authors       Arunkumar Karri
 * \date          12.10.2011 Created
@@ -840,14 +840,14 @@ BOOL Callback_DILTZM(BYTE /*Argument*/, PBYTE pDatStream, int /*Length*/)
 
 /**
 * \brief         Helper function to display configuration dialog
-* \param[in]     pControllerDetails, is SCONTROLER_DETAILS structure
+* \param[in]     pControllerDetails, is SCONTROLLER_DETAILS structure
 * \param[in]     nCount , is the channel count
 * \return        returns configuration confirmation status
 * \authors       Arunkumar Karri
 * \date          12.10.2011 Created
 */
 int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/, 
-                            PSCONTROLER_DETAILS pControllerDetails, UINT nCount)
+                            PSCONTROLLER_DETAILS pControllerDetails, UINT nCount)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     int nResult = WARNING_NOTCONFIRMED;
@@ -861,7 +861,7 @@ int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/,
 
 /**
 * \brief         Displays the controller configuration dialog.
-* \param[out]    InitData, is SCONTROLER_DETAILS structure
+* \param[out]    InitData, is SCONTROLLER_DETAILS structure
 * \param[out]    Length , is INT
 * \return        S_OK for success
 * \authors       Arunkumar Karri
@@ -874,7 +874,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
 
     HRESULT Result = S_FALSE;
     
-    PSCONTROLER_DETAILS pControllerDetails = (PSCONTROLER_DETAILS)InitData;
+    PSCONTROLLER_DETAILS pControllerDetails = (PSCONTROLLER_DETAILS)InitData;
     //First initialize with existing hw description
     for (INT i = 0; i < min(Length, (INT)sg_nNoOfChannels); i++)
     {   
@@ -894,9 +894,9 @@ HRESULT CDIL_CAN_Kvaser::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
             case INFO_INIT_DATA_CONFIRMED:
             {
                 bLoadDataFromContr(pControllerDetails);
-                memcpy(sg_ControllerDetails, pControllerDetails, sizeof (SCONTROLER_DETAILS) * defNO_OF_CHANNELS);                
-                memcpy(InitData, (void*)sg_ControllerDetails, sizeof (SCONTROLER_DETAILS) * defNO_OF_CHANNELS);
-                Length = sizeof(SCONTROLER_DETAILS) * defNO_OF_CHANNELS;
+                memcpy(sg_ControllerDetails, pControllerDetails, sizeof (SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);                
+                memcpy(InitData, (void*)sg_ControllerDetails, sizeof (SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
+                Length = sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS;
                 Result = S_OK;
             }
             break;
@@ -1082,7 +1082,7 @@ static int nSetApplyConfiguration()
 
 /**
 * \brief         Sets the controller configuration data supplied by ConfigFile.
-* \param[in]     ConfigFile, is SCONTROLER_DETAILS structure
+* \param[in]     ConfigFile, is SCONTROLLER_DETAILS structure
 * \param[in]     Length , is INT
 * \return        S_OK for success
 * \authors       Arunkumar Karri
@@ -1097,7 +1097,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
 	/* Fill the hardware description details */
     for (UINT nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
 	{		
-		strcpy_s(((PSCONTROLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc, 
+		strcpy_s(((PSCONTROLLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc, 
 				sg_aodChannels[nCount].m_strName);		
 	}
 

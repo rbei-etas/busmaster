@@ -290,7 +290,7 @@ void CLogObjectJ1939::Der_GetDatabaseFiles(CStringArray& omList)
 }
 
 void CLogObjectJ1939::Der_SetChannelBaudRateDetails
-						(SCONTROLER_DETAILS* controllerDetails,
+						(SCONTROLLER_DETAILS* controllerDetails,
 						int nNumChannels)
 {
 	if (NULL != m_pasControllerDetails)
@@ -299,23 +299,23 @@ void CLogObjectJ1939::Der_SetChannelBaudRateDetails
 	}
 	m_pasControllerDetails = NULL;
 
-	m_pasControllerDetails = new SCONTROLER_DETAILS [nNumChannels];
+	m_pasControllerDetails = new SCONTROLLER_DETAILS [nNumChannels];
 	for (int nIdx = 0; nIdx < nNumChannels; nIdx++)
 	{
-		memcpy(m_pasControllerDetails + nIdx, controllerDetails + nIdx, sizeof(SCONTROLER_DETAILS));
+		memcpy(m_pasControllerDetails + nIdx, controllerDetails + nIdx, sizeof(SCONTROLLER_DETAILS));
 	}
 	m_nNumChannels = nNumChannels;
 }
 
 // To get the channel baud rate info for each channel
 void CLogObjectJ1939::Der_GetChannelBaudRateDetails
-					(SCONTROLER_DETAILS* controllerDetails, int& nNumChannels)
+					(SCONTROLLER_DETAILS* controllerDetails, int& nNumChannels)
 {
 	if (NULL != m_pasControllerDetails)
 	{
 		for (int nIdx = 0; nIdx < m_nNumChannels; nIdx++)
 		{
-			memcpy(controllerDetails + nIdx, m_pasControllerDetails + nIdx, sizeof(SCONTROLER_DETAILS));
+			memcpy(controllerDetails + nIdx, m_pasControllerDetails + nIdx, sizeof(SCONTROLLER_DETAILS));
 		}		
 		nNumChannels = m_nNumChannels;
 	}

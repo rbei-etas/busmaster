@@ -399,7 +399,7 @@ HRESULT CFrameProcessor_CAN::FPC_SetDatabaseFiles(const CStringArray& omList)
 
 // To update the channel baud rate info to logger
 HRESULT CFrameProcessor_CAN::FPC_SetChannelBaudRateDetails
-							(SCONTROLER_DETAILS* controllerDetails, 
+							(SCONTROLLER_DETAILS* controllerDetails, 
 							int nNumChannels)
 {
 	HRESULT hResult = S_OK;

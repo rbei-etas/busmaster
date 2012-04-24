@@ -581,7 +581,7 @@ return hResult;
 
 /**
 * \brief         Displays the controller configuration dialog.
-* \param[out]    InitData, is SCONTROLER_DETAILS structure
+* \param[out]    InitData, is SCONTROLLER_DETAILS structure
 * \param[out]    Length , is INT
 * \return        S_OK for success
 */
@@ -590,11 +590,11 @@ HRESULT CDIL_CAN_MHS::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
 (void)Length;
 HRESULT result;
 struct TMhsCanCfg cfg;
-SCONTROLER_DETAILS* cntrl;
+SCONTROLLER_DETAILS* cntrl;
 TCHAR *str;
 
 result = WARN_INITDAT_NCONFIRM;
-cntrl = (SCONTROLER_DETAILS*)InitData;
+cntrl = (SCONTROLLER_DETAILS*)InitData;
 if (!str_has_char(cntrl[0].m_omStrBaudrate))
   {
   cfg.CanSpeed = _tcstol(cntrl[0].m_omStrBaudrate, &str, 0);
@@ -628,18 +628,18 @@ return(result);
 
 /**
 * \brief         Sets the controller configuration data supplied by ConfigFile.
-* \param[in]     ConfigFile, is SCONTROLER_DETAILS structure
+* \param[in]     ConfigFile, is SCONTROLLER_DETAILS structure
 * \param[in]     Length , is INT
 * \return        S_OK for success
 */
 HRESULT CDIL_CAN_MHS::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
 {
 (void)Length;
-SCONTROLER_DETAILS* cntrl;
+SCONTROLLER_DETAILS* cntrl;
 TCHAR *str;
 
 //VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
-cntrl = (SCONTROLER_DETAILS*)ConfigFile;
+cntrl = (SCONTROLLER_DETAILS*)ConfigFile;
 if (!str_has_char(cntrl[0].m_omStrBaudrate))
   {
   sg_MhsCanCfg.CanSpeed = _tcstol(cntrl[0].m_omStrBaudrate, &str, 0);

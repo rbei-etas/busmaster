@@ -522,7 +522,7 @@ void CBaseLogObject::vFormatHeader(CString& omHeader)
     omHeader += L'\n';
 
 	// Update the channel and its baudrate information	
-	sCONTROLERDETAILS controllerDetails[defNO_OF_CHANNELS];
+	sCONTROLLERDETAILS controllerDetails[defNO_OF_CHANNELS];
 	int nNumChannels = 0;
 	GetChannelBaudRateDetails(controllerDetails, nNumChannels);
 	omHeader += BUS_LOG_BAUDRATE_START;
@@ -581,7 +581,7 @@ void CBaseLogObject::SetDatabaseFiles(const CStringArray& omList)
 
 // Set the baud rate details for each channel
 void CBaseLogObject::Der_SetChannelBaudRateDetails
-					(SCONTROLER_DETAILS* controllerDetails, 
+					(SCONTROLLER_DETAILS* controllerDetails, 
 					int nNumChannels)
 {
 	Der_SetChannelBaudRateDetails(controllerDetails, nNumChannels);
@@ -589,7 +589,7 @@ void CBaseLogObject::Der_SetChannelBaudRateDetails
 
 // To get the channel baud rate
 void CBaseLogObject::GetChannelBaudRateDetails
-					(SCONTROLER_DETAILS* controllerDetails, int& nNumChannels)
+					(SCONTROLLER_DETAILS* controllerDetails, int& nNumChannels)
 {
 	Der_GetChannelBaudRateDetails(controllerDetails, nNumChannels);
 }

@@ -135,7 +135,7 @@ public:
 	HRESULT FPJ1_SetDatabaseFiles(const CStringArray& omList);
 
 	// To update the channel baud rate info to logger
-	HRESULT FPJ1_SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
+	HRESULT FPJ1_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
 															int nNumChannels);
 
     /* ENDS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */

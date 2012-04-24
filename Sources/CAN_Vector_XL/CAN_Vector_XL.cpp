@@ -188,7 +188,7 @@ static CPARAM_THREADPROC sg_sParmRThread;
 static int sg_nFRAMES = 128;
 const int ENTRIES_IN_GBUF       = 2000;
 static STCANDATA sg_asCANMsg;
-static SCONTROLER_DETAILS sg_ControllerDetails[defNO_OF_CHANNELS];
+static SCONTROLLER_DETAILS sg_ControllerDetails[defNO_OF_CHANNELS];
 static INTERFACE_HW sg_HardwareIntr[defNO_OF_CHANNELS];
 
 
@@ -891,7 +891,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_DeselectHwInterface(void)
 
 /**
 * \brief         Displays the controller configuration dialog.
-* \param[out]    InitData, is SCONTROLER_DETAILS structure
+* \param[out]    InitData, is SCONTROLLER_DETAILS structure
 * \param[out]    Length , is INT
 * \return        S_OK for success
 * \authors       Arunkumar Karri
@@ -902,7 +902,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_DisplayConfigDlg(PCHAR& InitData, INT& /*Length*/
 	xlPopupHwConfig(NULL, INFINITE);
 
 	//Get back the baud rate from controller
-	SCONTROLER_DETAILS* pCntrlDetails = (SCONTROLER_DETAILS*)InitData;		
+	SCONTROLLER_DETAILS* pCntrlDetails = (SCONTROLLER_DETAILS*)InitData;		
 	XLstatus xlStatus;
 
 	xlStatus = xlGetDriverConfig(&g_xlDrvConfig);
@@ -918,7 +918,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_DisplayConfigDlg(PCHAR& InitData, INT& /*Length*/
 
 /**
 * \brief         Sets the controller configuration data supplied by ConfigFile.
-* \param[in]     ConfigFile, is SCONTROLER_DETAILS structure
+* \param[in]     ConfigFile, is SCONTROLLER_DETAILS structure
 * \param[in]     Length , is INT
 * \return        S_OK for success
 * \authors       Arunkumar Karri
@@ -933,7 +933,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
 	/* Fill the hardware description details */
     for (UINT nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
 	{		
-		strcpy_s(((PSCONTROLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc, 
+		strcpy_s(((PSCONTROLLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc, 
 				sg_ControllerDetails[nCount].m_omHardwareDesc);		
 	}
 

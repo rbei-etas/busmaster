@@ -56,7 +56,7 @@
 /******************************************************************************/
 //IMPLEMENT_DYNAMIC(CAcceptanceFilterDlg, CPropertyPage)
 CAcceptanceFilterDlg::CAcceptanceFilterDlg(CWnd* pParent /*=NULL*/,
-                                           PSCONTROLER_DETAILS psControllerInfo)
+                                           PSCONTROLLER_DETAILS psControllerInfo)
                         : CDialog(CAcceptanceFilterDlg::IDD, pParent)
     //: CPropertyPage(CAcceptanceFilterDlg::IDD, IDS_PPAGE_ACCEPTANCE_FILTER)
 {
@@ -212,7 +212,7 @@ BOOL CAcceptanceFilterDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
     
-    PSCONTROLER_DETAILS  psControllerDetails = m_psControllerInfo;
+    PSCONTROLLER_DETAILS  psControllerDetails = m_psControllerInfo;
     
     if(psControllerDetails != NULL)
     {

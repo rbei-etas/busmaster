@@ -171,7 +171,7 @@ static BOOL sg_bIsDriverRunning = FALSE;
 /**
  * Controller configuration details
  */
-static SCONTROLER_DETAILS sg_asControllerDets[defNO_OF_CHANNELS];
+static SCONTROLLER_DETAILS sg_asControllerDets[defNO_OF_CHANNELS];
 
 static HWND sg_hOwnerWnd = NULL;
 
@@ -1686,7 +1686,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_PerformInitOperations(void)
  * Copies the controller config values into channel's
  * controller config structure.
  */
-static BOOL bLoadDataFromContr(PSCONTROLER_DETAILS pControllerDetails)
+static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
 {
     BOOL bReturn = FALSE;    
     // If successful
@@ -2015,7 +2015,7 @@ BOOL Callback_DILBOA(BYTE /*Argument*/, PBYTE pDatStream, INT /*Length*/)
  * Displays the configuration dialog for controller
  */
 int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/, 
-                            PSCONTROLER_DETAILS pControllerDetails, UINT nCount)
+                            PSCONTROLLER_DETAILS pControllerDetails, UINT nCount)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     int nResult = WARNING_NOTCONFIRMED;
@@ -2042,7 +2042,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
     USES_CONVERSION;
 
     INT Result = WARN_INITDAT_NCONFIRM;
-    PSCONTROLER_DETAILS psContrlDets = (PSCONTROLER_DETAILS)InitData;
+    PSCONTROLLER_DETAILS psContrlDets = (PSCONTROLLER_DETAILS)InitData;
     //First initialize with existing hw description
     for (INT i = 0; i < min(Length, (INT)sg_nNoOfChannels); i++)
     {   
@@ -2061,7 +2061,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
 			break;
 			case INFO_INIT_DATA_CONFIRMED:
 			{    
-				Length = sizeof(SCONTROLER_DETAILS) * defNO_OF_CHANNELS;
+				Length = sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS;
 				Result = CAN_SetConfigData(InitData, Length);
                 if (Result == S_OK)
                 {
@@ -2100,7 +2100,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SetConfigData(PCHAR pInitData, INT /*Length*/)
     VALIDATE_POINTER_RETURN_VAL(pInitData, hResult);
 
     BOA_ResultCode ErrCode = OCI_FAILURE;
-    PSCONTROLER_DETAILS pControllerDetails = (PSCONTROLER_DETAILS)pInitData;
+    PSCONTROLLER_DETAILS pControllerDetails = (PSCONTROLLER_DETAILS)pInitData;
     bLoadDataFromContr(pControllerDetails);
     for (UINT i = 0; i < sg_nNoOfChannels; i++)
     {
@@ -2116,7 +2116,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SetConfigData(PCHAR pInitData, INT /*Length*/)
                                                     &(sg_asChannel[i].m_OCI_CntrlProp));
 
 		/* Fill the hardware description details */
-		strcpy_s(((PSCONTROLER_DETAILS)pInitData)[i].m_omHardwareDesc, 
+		strcpy_s(((PSCONTROLLER_DETAILS)pInitData)[i].m_omHardwareDesc, 
 				sg_asChannel[i].m_acURI);	
 
         if (ErrCode == OCI_SUCCESS)

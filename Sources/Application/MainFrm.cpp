@@ -1723,7 +1723,7 @@ __int64 CMainFrame::nConvertStringToInt(CString omStrHexNo)
 void CMainFrame::OnConfigBaudrate() 
 {
     PCHAR pInitData = (PCHAR)m_asControllerDetails;
-    int nSize = sizeof(SCONTROLER_DETAILS) * defNO_OF_CHANNELS;
+    int nSize = sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS;
     if (g_pouDIL_CAN_Interface->DILC_DisplayConfigDlg(pInitData, nSize) == S_OK)
     {
         //Set Controller to ConfigDetails
@@ -6600,7 +6600,7 @@ void CMainFrame::OnNewConfigFile()
 //                    m_asControllerDetails[i].vIntialize();
 //                }
 //                if (g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)m_asControllerDetails, 
-//                                sizeof(SCONTROLER_DETAILS)) == S_OK)
+//                                sizeof(SCONTROLLER_DETAILS)) == S_OK)
 //                {
 //                    bReturn = TRUE;
 //                }
@@ -7089,7 +7089,7 @@ void CMainFrame::OnFilePropeties()
 
     // Get Controller information
 
-    PSCONTROLER_DETAILS  pBaudDetails = NULL;
+    PSCONTROLLER_DETAILS  pBaudDetails = NULL;
     UINT nHardware = 0;
     LONG lParam = 0;
     if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
@@ -8958,13 +8958,13 @@ Modifications    : Anish on 05.02.2007
 //    BOOL bReturn = FALSE;
 //    // Fill the controller configuration information
 //
-//    PSCONTROLER_DETAILS pControllerDetails = NULL;
+//    PSCONTROLLER_DETAILS pControllerDetails = NULL;
 //    //theApp.bGetData(CONTROLLER_DETAILS, (void**) &pControllerDetails);
 //    //HRESULT hResult = S_FALSE;
 //    if (pControllerDetails != NULL)
 //    {
 //        if (g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)pControllerDetails, 
-//                        sizeof(SCONTROLER_DETAILS)) == S_OK)
+//                        sizeof(SCONTROLLER_DETAILS)) == S_OK)
 //        {
 ////            theApp.vRelease(CONTROLLER_DETAILS, (void**) &pControllerDetails);
 //            bReturn = TRUE;
@@ -9983,7 +9983,7 @@ HRESULT CMainFrame::IntializeDIL(void)
                     if ((hResult == S_OK)|| (hResult == ERR_CLIENT_EXISTS))
                     {				
 		                g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)m_asControllerDetails, 
-															sizeof(SCONTROLER_DETAILS) * nCount);
+															sizeof(SCONTROLLER_DETAILS) * nCount);
 
                         bInitFrameProcCAN(); // Initialize logger module											
                         vReRegisterAllCANNodes();//Reinitialize node simulation												
@@ -11056,12 +11056,12 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
  
                 COPY_DATA_2(&m_dwDriverId, pbyTemp, sizeof(DWORD));
                 COPY_DATA_2(&m_byControllerMode, pbyTemp, sizeof(BYTE));
-                COPY_DATA_2(m_asControllerDetails, pbyTemp, (sizeof(SCONTROLER_DETAILS) * unChannelCount));
+                COPY_DATA_2(m_asControllerDetails, pbyTemp, (sizeof(SCONTROLLER_DETAILS) * unChannelCount));
                 IntializeDIL();
                 ASSERT(g_pouDIL_CAN_Interface != NULL);
                 //HRESULT hResult = 
                 g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)m_asControllerDetails, 
-                                                    sizeof(SCONTROLER_DETAILS) * defNO_OF_CHANNELS);
+                                                    sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
 
             }
             else
@@ -11075,7 +11075,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 }				
                 //HRESULT hResult = 
                 g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)m_asControllerDetails, 
-                                                    sizeof(SCONTROLER_DETAILS) * defNO_OF_CHANNELS);
+                                                    sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
                 //Set default settings
             }
         }
@@ -11630,7 +11630,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             nSize = sizeof(BYTE);//configuration version
             nSize += sizeof(DWORD);// Driver Id
             nSize += sizeof(BYTE); // Controller mode
-            nSize += sizeof(SCONTROLER_DETAILS) * CHANNEL_ALLOWED;
+            nSize += sizeof(SCONTROLLER_DETAILS) * CHANNEL_ALLOWED;
             pbyConfigData = new BYTE[nSize];
             
             if (pbyConfigData != NULL)
@@ -11641,7 +11641,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
                 COPY_DATA(pbyTemp, &m_dwDriverId, sizeof(DWORD));
                 COPY_DATA(pbyTemp, &m_byControllerMode, sizeof(BYTE));
-                COPY_DATA(pbyTemp, m_asControllerDetails, (sizeof(SCONTROLER_DETAILS) * CHANNEL_ALLOWED));
+                COPY_DATA(pbyTemp, m_asControllerDetails, (sizeof(SCONTROLLER_DETAILS) * CHANNEL_ALLOWED));
             }        
         }
         break;

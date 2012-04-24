@@ -77,7 +77,7 @@ enum eHW_FILTER_TYPES
 
 // Controller details
 // information on the baud rate 
-struct sCONTROLERDETAILS
+struct sCONTROLLERDETAILS
 {
     INT     m_nItemUnderFocus;      // item number under focus
     INT     m_nBTR0BTR1;            // packed value of bit timing register 0 
@@ -111,7 +111,7 @@ struct sCONTROLERDETAILS
 
 	//Filter type: 1. Accept All 2. Reject All 3. Manual setting
 	eHW_FILTER_TYPES m_enmHWFilterType[CAN_MSG_IDS];	  
-    sCONTROLERDETAILS()
+    sCONTROLLERDETAILS()
     {
         vIntialize();
     }
@@ -159,8 +159,8 @@ struct sCONTROLERDETAILS
 		m_bSelfReception = TRUE;
     };
 };
-typedef sCONTROLERDETAILS   SCONTROLER_DETAILS;
-typedef sCONTROLERDETAILS*  PSCONTROLER_DETAILS;
+typedef sCONTROLLERDETAILS   SCONTROLLER_DETAILS;
+typedef sCONTROLLERDETAILS*  PSCONTROLLER_DETAILS;
 
 struct sSUBBUSSTATISTICS
 {

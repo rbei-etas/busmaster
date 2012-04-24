@@ -41,7 +41,7 @@
 /*  Modifications    :  Raja N on 14.03.2005, Added init of member variable   */
 /*                      m_pControllerDetails                                  */
 /******************************************************************************/
-CChangeRegisters_CAN_ICS_neoVI::CChangeRegisters_CAN_ICS_neoVI(CWnd* pParent /*=NULL*/, PSCONTROLER_DETAILS psControllerDetails, UINT nHardwareCount)
+CChangeRegisters_CAN_ICS_neoVI::CChangeRegisters_CAN_ICS_neoVI(CWnd* pParent /*=NULL*/, PSCONTROLLER_DETAILS psControllerDetails, UINT nHardwareCount)
     : CDialog(CChangeRegisters_CAN_ICS_neoVI::IDD, pParent)
     //, m_nClock(32)
     , m_omStrPropDelay(_T(""))

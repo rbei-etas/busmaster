@@ -142,7 +142,7 @@ public:
 	HRESULT FPC_SetDatabaseFiles(const CStringArray& omList);
 
 	// To update the channel baud rate info to logger
-	HRESULT FPC_SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
+	HRESULT FPC_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
 															int nNumChannels);
 
 	/* ENDS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */

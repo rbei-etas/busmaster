@@ -200,7 +200,7 @@ static CNetwork sg_odSimulationNetwork;
 const int ENTRIES_IN_GBUF       = 2000;
 static int sg_nFRAMES = 128;
 static STCANDATA sg_asMsgBuffer[ENTRIES_IN_GBUF];
-static SCONTROLER_DETAILS sg_ControllerDetails[defNO_OF_CHANNELS];
+static SCONTROLLER_DETAILS sg_ControllerDetails[defNO_OF_CHANNELS];
 static INTERFACE_HW sg_HardwareIntr[defNO_OF_CHANNELS];
 
 /**
@@ -273,7 +273,7 @@ static UCHAR sg_ucNoOfHardware = 0;
 
 static int nGetChannelsInNeoVI(int nDevIndex);
 static void vMapDeviceChannelIndex();
-HRESULT hFillHardwareDesc(PSCONTROLER_DETAILS pControllerDetails);
+HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails);
 
 /*Please recheck and retain only necessary variables*/
 
@@ -683,7 +683,7 @@ static void vCreateTimeModeMapping()
 }
 
 
-static BOOL bLoadDataFromContr(PSCONTROLER_DETAILS pControllerDetails)
+static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
 {
     BOOL bReturn = FALSE;
     // If successful
@@ -2263,7 +2263,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SetConfigData(PCHAR ConfigFile, int Length)
     USES_CONVERSION;
 
 	/* Fill the hardware description details */
-	hFillHardwareDesc((PSCONTROLER_DETAILS)ConfigFile);
+	hFillHardwareDesc((PSCONTROLLER_DETAILS)ConfigFile);
 
     HRESULT hResult = S_FALSE;
     memcpy((void*)sg_ControllerDetails, (void*)ConfigFile, Length);
@@ -2291,7 +2291,7 @@ BOOL Callback_DILTZM(BYTE /*Argument*/, PBYTE pDatStream, int /*Length*/)
  * Displays the configuration dialog for controller
  */
 int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/, 
-                            PSCONTROLER_DETAILS pControllerDetails, UINT nCount)
+                            PSCONTROLLER_DETAILS pControllerDetails, UINT nCount)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     int nResult = WARNING_NOTCONFIRMED;
@@ -2307,7 +2307,7 @@ int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/,
 /**
 *  Function to fill the hardware description details
 */
-HRESULT hFillHardwareDesc(PSCONTROLER_DETAILS pControllerDetails)
+HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
 {
     /* First initialize with existing hw description */
     for (UINT i = 0; i < (UINT)sg_ucNoOfHardware; i++)
@@ -2490,7 +2490,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_DisplayConfigDlg(PCHAR& InitData, int& Length)
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
     VALIDATE_POINTER_RETURN_VAL(InitData, Result);
-    PSCONTROLER_DETAILS pControllerDetails = (PSCONTROLER_DETAILS)InitData;
+    PSCONTROLLER_DETAILS pControllerDetails = (PSCONTROLLER_DETAILS)InitData;
 
 	/* Fill the hardware description details */
 	hFillHardwareDesc(pControllerDetails);
@@ -2509,10 +2509,10 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_DisplayConfigDlg(PCHAR& InitData, int& Length)
             case INFO_INIT_DATA_CONFIRMED:
             {
                 bLoadDataFromContr(pControllerDetails);
-                memcpy(sg_ControllerDetails, pControllerDetails, sizeof (SCONTROLER_DETAILS) * defNO_OF_CHANNELS);
+                memcpy(sg_ControllerDetails, pControllerDetails, sizeof (SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
                 nSetApplyConfiguration();
-                memcpy(InitData, (void*)sg_ControllerDetails, sizeof (SCONTROLER_DETAILS) * defNO_OF_CHANNELS);
-                Length = sizeof(SCONTROLER_DETAILS) * defNO_OF_CHANNELS;
+                memcpy(InitData, (void*)sg_ControllerDetails, sizeof (SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
+                Length = sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS;
                 Result = INFO_INITDAT_CONFIRM_CONFIG;
             }
             break;

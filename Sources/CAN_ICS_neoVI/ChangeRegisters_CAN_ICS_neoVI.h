@@ -101,7 +101,7 @@ public:
     // To Fill controller information taken from configuration module
     BOOL   bFillControllerConfig();
     // standard constructor
-    CChangeRegisters_CAN_ICS_neoVI(CWnd* pParent = NULL, PSCONTROLER_DETAILS psControllerDetails = NULL, UINT nHardwareCount = 0);
+    CChangeRegisters_CAN_ICS_neoVI(CWnd* pParent = NULL, PSCONTROLLER_DETAILS psControllerDetails = NULL, UINT nHardwareCount = 0);
     virtual ~CChangeRegisters_CAN_ICS_neoVI();
     BOOL bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1);
     BOOL bGetBaudRateFromCom(int nChannel,BYTE &bBTR0,BYTE &bBTR1);
@@ -162,7 +162,7 @@ private:
     DECLARE_MESSAGE_MAP()
 private:
     // Pointer to hold controller information
-    PSCONTROLER_DETAILS  m_pControllerDetails;
+    PSCONTROLLER_DETAILS  m_pControllerDetails;
     int m_nLastSelection;
     CImageList m_omChannelImageList;
     SACC_FILTER_INFO m_sAccFilterInfo;

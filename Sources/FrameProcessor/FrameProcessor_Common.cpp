@@ -649,7 +649,7 @@ void CFrameProcessor_Common::GetDatabaseFiles(CStringArray& /*omList*/)
 }
 
 void CFrameProcessor_Common::SetChannelBaudRateDetails
-							(SCONTROLER_DETAILS* controllerDetails, 
+							(SCONTROLLER_DETAILS* controllerDetails, 
 							int nNumChannels)
 {
 	CLogObjArray* pomCurrArray = GetActiveLogObjArray();

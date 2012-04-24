@@ -35,7 +35,7 @@ class CAcceptanceFilterDlg : public CDialog//CPropertyPage
 public:
     // standard constructor
     CAcceptanceFilterDlg(CWnd* pParent = NULL, 
-                         PSCONTROLER_DETAILS psAccFilterInfo = NULL); 
+                         PSCONTROLLER_DETAILS psAccFilterInfo = NULL); 
     virtual ~CAcceptanceFilterDlg();
 // Dialog Data
     //{{AFX_DATA(CAcceptanceFilterDlg)
@@ -96,7 +96,7 @@ protected:
 private:
     BOOL m_bAccFilterMode;
 	eHW_FILTER_TYPES m_enmHWFilterType[CAN_MSG_IDS];
-    PSCONTROLER_DETAILS m_psControllerInfo;
+    PSCONTROLLER_DETAILS m_psControllerInfo;
 	afx_msg void OnBnClickedRbtnDualFilterMode();
 	afx_msg void OnBnClickedRbtnSingleFilterMode();
 	afx_msg void OnBnClickedRbtnFilterAcceptAll();
