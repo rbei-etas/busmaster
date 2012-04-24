@@ -125,16 +125,6 @@ HRESULT CDILI_J1939::DILIJ_ManageMsgBuf(BYTE bAction, DWORD dwClientID,
 }
 
 /**
- * \brief Get Version Information
- *
- * To get the version information.
- */
-void CDILI_J1939::DILIJ_GetVersionInfo (VERSIONINFO& sVerInfo)
-{
-    DILJ_GetVersionInfo(sVerInfo);
-}
-
-/**
  * \brief Send J1939 Message
  *
  * Sends a J1939 message

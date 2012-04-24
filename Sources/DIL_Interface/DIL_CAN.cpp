@@ -456,16 +456,6 @@ HRESULT CDIL_CAN::DILC_ResetHardware(void)
 }
 
 /**
- * \brief     Get transmittable messages
- *
- * Call to receive list of the transmittable messages
- */
-HRESULT CDIL_CAN::DILC_GetTxMsgBuffer(BYTE*& pouTxMsgBuffer)
-{
-    return m_pBaseDILCAN_Controller->CAN_GetTxMsgBuffer(pouTxMsgBuffer);
-}
-
-/**
  * \brief     Send messages
  * \req       RSI_14_017 - DILC_SendMsg
  * \req       RS_23_19 - Transmit a frame
@@ -475,38 +465,6 @@ HRESULT CDIL_CAN::DILC_GetTxMsgBuffer(BYTE*& pouTxMsgBuffer)
 HRESULT CDIL_CAN::DILC_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
 {
     return m_pBaseDILCAN_Controller->CAN_SendMsg(dwClientID, sCanTxMsg);
-}
-
-/**
- * \brief     Get basic board info
- *
- * Get basic information of the board
- */
-HRESULT CDIL_CAN::DILC_GetBoardInfo(s_BOARDINFO& BoardInfo)
-{
-    return m_pBaseDILCAN_Controller->CAN_GetBoardInfo(BoardInfo);
-}
-
-/**
- * \brief     Get bus configuration info
- *
- * Get salient informations on current bus configuration
- */
-HRESULT CDIL_CAN::DILC_GetBusConfigInfo(BYTE* BusInfo)
-{
-    return m_pBaseDILCAN_Controller->CAN_GetBusConfigInfo(BusInfo);
-}
-
-/**
- * \brief     Get version information
- * \req       RSI_14_018 - DILC_GetVersionInfo
- * \req       RS_23_20 - Getter for the version information of the DIL for the present bus
- *
- * Call to receive the version informations
- */
-HRESULT CDIL_CAN::DILC_GetVersionInfo(VERSIONINFO& sVerInfo)
-{
-    return m_pBaseDILCAN_Controller->CAN_GetVersionInfo(sVerInfo);
 }
 
 /**
@@ -550,19 +508,6 @@ HRESULT CDIL_CAN::DILC_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_P
     {
         return S_FALSE;
     }
-}
-
-/**
- * \brief     Set PASS/STOP filter
- * \req       RSI_14_020 - DILC_FilterFrames
- * \req       RS_23_22 - To set pass filters at hardware level
- * \req       RS_23_23 - To set stop filters at hardware level
- *
- * Call to set PASS/STOP filter
- */
-HRESULT CDIL_CAN::DILC_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIDs, UINT nLength)
-{
-    return m_pBaseDILCAN_Controller->CAN_FilterFrames(FilterType, Channel, punMsgIDs, nLength);
 }
 
 /**

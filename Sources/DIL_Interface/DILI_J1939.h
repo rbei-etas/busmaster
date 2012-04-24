@@ -87,9 +87,6 @@ public:
     HRESULT DILIJ_ManageMsgBuf(BYTE bAction, DWORD ClientID, 
                                             CBaseMsgBufVSE* pBufObj);
 
-    /*To get the version information.*/
-    void DILIJ_GetVersionInfo (VERSIONINFO& sVerInfo);
-
     /* Sends a J1939 message.
     Parameters:
     1. dwClient - Id of registered client

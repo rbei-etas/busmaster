@@ -104,9 +104,6 @@ Return value:
 USAGEMODE HRESULT DILJ_ManageMsgBuf(BYTE bAction, DWORD ClientID, 
                                         CBaseMsgBufVSE* pBufObj);
 
-/*To get the version information.*/
-USAGEMODE void DILJ_GetVersionInfo (VERSIONINFO& sVerInfo);
-
 /* Sends a J1939 message.
 Parameters:
 1. dwClient - Id of registered client

@@ -51,13 +51,8 @@ public:
 	HRESULT CAN_StopHardware(void);
 	HRESULT CAN_ResetHardware(void);
 	HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
-	HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
 	HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
-	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
-	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
-	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
 	HRESULT CAN_GetLastErrorString(string& acErrorStr);
-	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
 	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 

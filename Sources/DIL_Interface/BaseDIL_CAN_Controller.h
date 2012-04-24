@@ -44,13 +44,8 @@ public:
 	virtual HRESULT CAN_StopHardware(void) = 0;
 	virtual HRESULT CAN_ResetHardware(void) = 0;
 	virtual HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData) = 0;
-	virtual HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer) = 0;
 	virtual HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg) = 0;
-	virtual HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo) = 0;
-	virtual HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo) = 0;
-	virtual HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo) = 0;
 	virtual HRESULT CAN_GetLastErrorString(string& acErrorStr) = 0;
-	virtual HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength) = 0;
 	virtual HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam) = 0;
 	virtual HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam) = 0;
 

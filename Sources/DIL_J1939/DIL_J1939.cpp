@@ -153,16 +153,6 @@ USAGEMODE HRESULT DILJ_ManageMsgBuf(BYTE bAction, DWORD dwClientID,
 }
 
 /**
- * \brief Get version information.
- * \return S_OK if successful, else S_FALSE.
- *
- * To get the version information.
- */
-USAGEMODE void DILJ_GetVersionInfo (VERSIONINFO& /*sVerInfo*/)
-{
-}
-
-/**
  * \brief Sends a J1939 message.
  * \req RSI_26_005 - DILJ_SendJ1939Msg
  * \param[in] dwClient Client Id

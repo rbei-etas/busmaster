@@ -191,13 +191,8 @@ public:
 	HRESULT CAN_StopHardware(void);
 	HRESULT CAN_ResetHardware(void);
 	HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
-	HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
 	HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
-	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
-	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
-	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
 	HRESULT CAN_GetLastErrorString(string& acErrorStr);
-	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
 	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
@@ -859,18 +854,6 @@ StatusData.wControllerStatus = NORMAL_ACTIVE;
 return(S_OK);
 }
 
-
-/**
-* \brief         Gets the Tx queue configured.
-* \param[out]    pouFlxTxMsgBuffer, is BYTE*
-* \return        S_OK for success, S_FALSE for failure
-*/
-HRESULT CDIL_CAN_MHS::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
-{
-return(S_OK);
-}
-
-
 /**
 * \brief         Sends STCAN_MSG structure from the client dwClientID.
 * \param[in]     dwClientID is the client ID
@@ -920,38 +903,6 @@ else
 return(hResult);
 }
 
-
-/**
-* \brief         Gets board info.
-* \param[out]    BoardInfo is the s_BOARDINFO structure
-* \return        S_OK for success, S_FALSE for failure
-*/
-HRESULT CDIL_CAN_MHS::CAN_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
-{
-return(S_OK);
-}
-
-
-/**
-* \brief         Gets bus config info.
-* \param[out]    BusInfo, is BYTE
-* \return        S_OK for success, S_FALSE for failure
-*/
-HRESULT CDIL_CAN_MHS::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
-{
-return(S_OK);
-}
-
-/**
-* \brief         Gets driver version info.
-* \param[out]    sVerInfo, is VERSIONINFO structure
-* \return        S_OK for success, S_FALSE for failure
-*/
-HRESULT CDIL_CAN_MHS::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
-{
-return(S_OK);
-}
-
 /**
 * \brief         Gets last occured error and puts inside acErrorStr.
 * \param[out]    acErrorStr contains error string
@@ -960,21 +911,6 @@ return(S_OK);
 HRESULT CDIL_CAN_MHS::CAN_GetLastErrorString(string& /*acErrorStr*/)
 {
     return WARN_DUMMY_API;
-}
-
-
-/**
-* \brief         Applies FilterType(PASS/STOP) filter for corresponding
-*				 channel. Frame ids are supplied by punMsgIds.
-* \param[in]     FilterType, holds one of the FILTER_TYPE enum value.
-* \param[in]     Channel, is TYPE_CHANNEL
-* \param[in]     punMsgIds, is UINT*
-* \param[in]     nLength, is UINT
-* \return        S_OK for success, S_FALSE for failure
-*/
-HRESULT CDIL_CAN_MHS::CAN_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
-{
-return(S_OK);
 }
 
 

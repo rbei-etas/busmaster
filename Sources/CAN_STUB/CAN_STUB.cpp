@@ -41,41 +41,12 @@
 #include "Utility/Utility.h"
 #include "DIL_Interface/BaseDIL_CAN_Controller.h"
 
-
 #define USAGE_EXPORT
 #include "CAN_STUB_Extern.h"
 
 using namespace std;
 
-//
-//	Note!
-//
-//		If this DLL is dynamically linked against the MFC
-//		DLLs, any functions exported from this DLL which
-//		call into MFC must have the AFX_MANAGE_STATE macro
-//		added at the very beginning of the function.
-//
-//		For example:
-//
-//		extern "C" BOOL PASCAL EXPORT ExportedFunction()
-//		{
-//			AFX_MANAGE_STATE(AfxGetStaticModuleState());
-//			// normal function body here
-//		}
-//
-//		It is very important that this macro appear in each
-//		function, prior to any calls into MFC.  This means that
-//		it must appear as the first statement within the 
-//		function, even before any object variable declarations
-//		as their constructors may generate calls into the MFC
-//		DLL.
-//
-//		Please see MFC Technical Notes 33 and 58 for additional
-//		details.
-//
-
 // CCAN_STUBApp
-
 BEGIN_MESSAGE_MAP(CCAN_STUBApp, CWinApp)
 END_MESSAGE_MAP()
 
@@ -85,8 +56,6 @@ END_MESSAGE_MAP()
  */
 CCAN_STUBApp::CCAN_STUBApp()
 {
-	// TODO: add construction code here,
-	// Place all significant initialization in InitInstance
 }
 
 /**
@@ -104,8 +73,10 @@ BOOL CCAN_STUBApp::InitInstance()
 	return TRUE;
 }
 
-/* Parameters to relay outcome of the requested action by any thread to the 
-   broker thread to the bus simulation component */
+/*
+ * Parameters to relay outcome of the requested action by any thread to the 
+ * broker thread to the bus simulation component
+ */
 static CRITICAL_SECTION sg_CSBroker;
 static HRESULT          sg_hResult          = S_FALSE;
 static HANDLE           sg_hNotifyFinish    = NULL;
@@ -238,13 +209,8 @@ public:
 	HRESULT CAN_StopHardware(void);
 	HRESULT CAN_ResetHardware(void);
 	HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
-	HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
 	HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
-	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
-	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
-	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
 	HRESULT CAN_GetLastErrorString(string& acErrorStr);
-	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
 	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
@@ -723,11 +689,6 @@ HRESULT CDIL_CAN_STUB::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, TCHAR*
     return hResult;
 }
 
-HRESULT CDIL_CAN_STUB::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
-{
-    return S_FALSE;
-}
-
 HRESULT CDIL_CAN_STUB::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
     HRESULT hResult = S_FALSE;
@@ -919,21 +880,6 @@ HRESULT CDIL_CAN_STUB::CAN_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& unCntr
     return hResult;
 }
 
-HRESULT CDIL_CAN_STUB::CAN_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
-{
-    return S_FALSE;
-}
-
-HRESULT CDIL_CAN_STUB::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
-{
-    return S_FALSE;
-}
-
-HRESULT CDIL_CAN_STUB::CAN_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
-{
-    return S_FALSE;
-}
-
 HRESULT CDIL_CAN_STUB::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
 {
     memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
@@ -943,12 +889,6 @@ HRESULT CDIL_CAN_STUB::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& T
         *QueryTickCount = sg_QueryTickCount;
     }
     return S_OK;
-}
-
-HRESULT CDIL_CAN_STUB::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
-{
-    // Return error value; this doesn't make sense in case of simulation
-    return S_FALSE;
 }
 
 HRESULT CDIL_CAN_STUB::CAN_GetLastErrorString(string& acErrorStr)
