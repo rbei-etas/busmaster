@@ -156,7 +156,7 @@ HRESULT CDIL_CAN_DUMMY::CAN_GetControllerParams(LONG& /*lParam*/, UINT /*nChanne
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_CAN_DUMMY::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
+HRESULT CDIL_CAN_DUMMY::CAN_SetAppParams(HWND /*hWndOwner*/, Base_WrapperErrorLogger* /*pILog*/)
 {
     return WARN_DUMMY_API;
 }
