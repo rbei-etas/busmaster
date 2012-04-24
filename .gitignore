@@ -191,5 +191,7 @@ Tests/CCCC/files.txt
 Tests/CCCC/report
 Tests/Cppcheck/cppcheck.xml
 Tests/Cppcheck/report
+Tests/PMD/cpd.html
 Tests/PMD/cpd.xml
+Tests/PMD/cpd-fixed.xml
 Tests/Requirements Traceability Matrix/report.html
