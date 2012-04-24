@@ -22,8 +22,7 @@
  * This contains identifier of various modules.
  */
 
-#if !defined MODULEID_H__INCLUDED_
-#define MODULEID_H__INCLUDED_
+#pragma once
 
 #include <guiddef.h>
 
@@ -60,7 +59,3 @@ const GUID ID_FRAME_PROCESSOR =
 
 const GUID ID_PROJECT_CONFIGURATION = 
 { 0xae124d3, 0x2af9, 0x455e, { 0xae, 0x26, 0xfa, 0x86, 0xc8, 0x41, 0xe0, 0x36 } };
-
-
-
-#endif // MODULEID_H__INCLUDED_

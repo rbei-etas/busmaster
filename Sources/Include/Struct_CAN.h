@@ -22,12 +22,7 @@
  * This contains definitions of various CAN related structures.
  */
 
-#ifndef STRUCT_CAN_H__INCLUDED_
-#define STRUCT_CAN_H__INCLUDED_
-
-#ifndef _CRT_SECURE_NO_DEPRECATE
-#define _CRT_SECURE_NO_DEPRECATE
-#endif
+#pragma once
 
 #include <TCHAR.H>
 const int MAX_STRING = 256;
@@ -383,6 +378,3 @@ the foll 2 values shall be returned - STS_TX_BUFF_LOCKED or STS_TX_BUFF_RELEASED
 #define IS_A_MESSAGE(a)         ((a) & 0x03)
 #define IS_ERR_MESSAGE(a)       (a & ERR_FLAG)
 #define IS_INTR_MESSAGE(a)      (((a) & INTR_FLAG))
-
-
-#endif //STRUCT_CAN_H__INCLUDED_
