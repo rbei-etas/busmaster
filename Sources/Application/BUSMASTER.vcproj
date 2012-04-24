@@ -222,7 +222,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;.\BUSMASTER_Interface.h&quot; &quot;$(SolutionDir)\bin\$(OutDir)\BUSMASTER_Interface.h&quot;&#x0D;&#x0A;copy &quot;.\BUSMASTER_Interface.c&quot; &quot;$(SolutionDir)\bin\$(OutDir)\BUSMASTER_Interface.c&quot;&#x0D;&#x0A;copy &quot;.\$(OutDir)\BUSMASTER.tlb&quot; &quot;$(SolutionDir)\bin\$(OutDir)\BUSMASTER.tlb&quot;&#x0D;&#x0A;copy &quot;.\Res\Splsh16.bmp&quot; &quot;$(SolutionDir)\bin\$(OutDir)\Splsh16.bmp&quot;&#x0D;&#x0A;"
+				CommandLine="copy &quot;.\$(OutDir)\BUSMASTER.tlb&quot; &quot;$(SolutionDir)\bin\$(OutDir)\BUSMASTER.tlb&quot;&#x0D;&#x0A;copy &quot;.\Res\Splsh16.bmp&quot; &quot;$(SolutionDir)\bin\$(OutDir)\Splsh16.bmp&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 	</Configurations>
