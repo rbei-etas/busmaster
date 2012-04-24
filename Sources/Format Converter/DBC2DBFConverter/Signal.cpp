@@ -411,7 +411,7 @@ int CSignal::AddValueDescriptors(char* pcLine, fstream& fileInput)
         }
 
         pcToken = strtok_s(pcLine, " ", &pcTok);
-        strncpy(acValue, pcToken, sizeof(acValue));
+        strncpy_s(acValue, pcToken, sizeof(acValue));
         pcLine = pcLine + (strlen(pcToken)) + 1;
 
         if(*pcLine == '\"')

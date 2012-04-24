@@ -167,11 +167,11 @@ HRESULT CLogAscConverter::ConvertFile(string& chInputFile, string& chOutputFile)
     HRESULT hResult = S_OK;
     FILE* fpInputFile = NULL;
     FILE* fpOutputFile = NULL;
-    fpInputFile = _tfopen(chInputFile.c_str(), _T("r"));
+    fopen_s(&fpInputFile, chInputFile.c_str(), _T("r"));
 
     if(NULL != fpInputFile)
     {
-        fpOutputFile = _tfopen(chOutputFile.c_str(), _T("w"));
+        fopen_s(&fpOutputFile, chOutputFile.c_str(), _T("w"));
 
         if(NULL != fpOutputFile)
         {
