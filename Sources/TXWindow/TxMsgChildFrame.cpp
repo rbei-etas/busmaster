@@ -22,10 +22,10 @@
  * Implementation file for CTxMsgChildFrame class
  */
 
-#include "TxWindow_stdafx.h"             // Stander Header file
+#include "TxWindow_stdafx.h"       // Stander Header file
 #include "TxWindow_resource.h"  
-#include "SignalMatrix.h"       // For Signal Matrix declaration
-#include "TxMsgChildFrame.h"    // For CTxMsgChildFrame class defintions
+#include "Utility/SignalMatrix.h"  // For Signal Matrix declaration
+#include "TxMsgChildFrame.h"       // For CTxMsgChildFrame class defintions
 
 extern CTxMsgChildFrame* g_pomTxMsgChildWindow;
 

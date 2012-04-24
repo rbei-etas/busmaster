@@ -23,8 +23,8 @@
  */
 
 
-#include "TxWindow_stdafx.h"             // For Standard Includes
-#include "Utility/OffScreenDC.h"        // For Memory DC class Implementation
+#include "Utils_stdafx.h"       // For Standard Includes
+#include "OffScreenDC.h"        // For Memory DC class Implementation
 #include "SignalMatrix.h"       // For CSignalMatrix class declaration
 
 #define HIGHLIGHT_COLOR     RGB(0x20,0x20,0xaa)

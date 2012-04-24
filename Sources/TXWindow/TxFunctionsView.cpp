@@ -23,7 +23,7 @@
  */
 
 #include "TxWindow_stdafx.h"             // For Standard Includes
-#include "SignalMatrix.h"       // For Signal Matrix Class Definition
+#include "Utility/SignalMatrix.h"       // For Signal Matrix Class Definition
 #include "Utility/ComboItem.h"          // For Custom Combobox Implementation
 #include "Utility/EditItem.h"           // For Custom Editbox Implementation
 #include "Utility/RadixEdit.h"          // For the RAdix Edit control definition
