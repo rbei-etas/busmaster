@@ -22,9 +22,7 @@
  * This contains various necessary macro definitions.
  */
 
-
-#if !defined UTILS_MACRO_H__INCLUDED_
-#define UTILS_MACRO_H__INCLUDED_
+#pragma once
 
 #define FORMAT_STR_ID_HEX		_T("%03X")
 #define FORMAT_STR_ID_DEC       _T("%04d")
@@ -100,5 +98,3 @@ const BYTE BITS_EXPRN           = (BITS_TM | BITS_NUM);
                                         delete[] PtrVal; PtrVal = NULL; \
                                     }                                   \
                                 }
-
-#endif // UTILS_MACRO_H__INCLUDED_

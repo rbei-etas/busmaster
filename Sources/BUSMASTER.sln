@@ -172,6 +172,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CAN_MHS", "CAN_MHS\CAN_MHS.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "J1939", "DIL_J1939\J1939.vcproj", "{7812969F-7FF6-448C-A19C-78CC07362163}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Include", "Include\Include.vcproj", "{4890AE40-CF77-41F3-BBC6-066AE26DF77C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -454,6 +456,16 @@ Global
 		{7812969F-7FF6-448C-A19C-78CC07362163}.Unicode Release MinSize|Win32.Build.0 = Release|Win32
 		{7812969F-7FF6-448C-A19C-78CC07362163}.Unicode Release|Win32.ActiveCfg = Release|Win32
 		{7812969F-7FF6-448C-A19C-78CC07362163}.Unicode Release|Win32.Build.0 = Release|Win32
+		{4890AE40-CF77-41F3-BBC6-066AE26DF77C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4890AE40-CF77-41F3-BBC6-066AE26DF77C}.Debug|Win32.Build.0 = Debug|Win32
+		{4890AE40-CF77-41F3-BBC6-066AE26DF77C}.Release|Win32.ActiveCfg = Release|Win32
+		{4890AE40-CF77-41F3-BBC6-066AE26DF77C}.Release|Win32.Build.0 = Release|Win32
+		{4890AE40-CF77-41F3-BBC6-066AE26DF77C}.Unicode Debug|Win32.ActiveCfg = Debug|Win32
+		{4890AE40-CF77-41F3-BBC6-066AE26DF77C}.Unicode Debug|Win32.Build.0 = Debug|Win32
+		{4890AE40-CF77-41F3-BBC6-066AE26DF77C}.Unicode Release MinSize|Win32.ActiveCfg = Release|Win32
+		{4890AE40-CF77-41F3-BBC6-066AE26DF77C}.Unicode Release MinSize|Win32.Build.0 = Release|Win32
+		{4890AE40-CF77-41F3-BBC6-066AE26DF77C}.Unicode Release|Win32.ActiveCfg = Release|Win32
+		{4890AE40-CF77-41F3-BBC6-066AE26DF77C}.Unicode Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

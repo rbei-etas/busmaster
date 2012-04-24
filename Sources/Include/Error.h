@@ -22,10 +22,7 @@
  * This contains various error code definitions.
  */
 
-
-#if !defined ERROR_H__INCLUDED_
-#define ERROR_H__INCLUDED_
-
+#pragma once
 
 const HRESULT CALL_SUCCESS          = 0;
 
@@ -162,5 +159,3 @@ const HRESULT ERR_WRONG_ID         = MASK_ERR | TSEXEC | 0X02;
 const HRESULT ERR_WRONG_ID_REF     = MASK_ERR | TSEXEC | 0X03; 
 const HRESULT ERR_WRONG_INDEX      = MASK_ERR | TSEXEC | 0x04;  // Wrong Index
 /*ENDS TESTSUITE EXECUTOR MESSAGES */
-
-#endif // ERROR_H__INCLUDED_

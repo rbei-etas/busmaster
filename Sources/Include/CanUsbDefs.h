@@ -21,6 +21,9 @@
  *
  * Includes PEAK CAN USB related macro definition
  */
+
+#pragma once
+
 #include "BaseDefs.h"
 
 

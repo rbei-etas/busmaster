@@ -22,8 +22,7 @@
  * This contains various basic definitions.
  */
 
-#if !defined BASEDEFS_H__INCLUDED_
-#define BASEDEFS_H__INCLUDED_
+#pragma once
 
 #include "Struct_CAN.h"
 
@@ -208,5 +207,3 @@ typedef struct sMsgWndHdrCol
 		m_byPriorityPos = (BYTE) -1;		
     }
 }SMSGWNDHDRCOL;
-
-#endif // BASEDEFS_H__INCLUDED_
