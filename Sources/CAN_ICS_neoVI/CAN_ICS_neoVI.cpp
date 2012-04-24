@@ -418,13 +418,8 @@ public:
 	HRESULT CAN_StopHardware(void);
 	HRESULT CAN_ResetHardware(void);
 	HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
-	HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
 	HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
-	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
-	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
-	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
 	HRESULT CAN_GetLastErrorString(string& acErrorStr);
-	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
 	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
@@ -2714,14 +2709,6 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
 }
 
 /**
- * Function to get Tx Msg Buffers configured from chi file
- */
-HRESULT CDIL_CAN_ICSNeoVI::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
-{
-    return S_OK;
-}
-
-/**
  * \param[in] sMessage Message to Transmit
  * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
  *
@@ -2802,24 +2789,6 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessa
         hResult = ERR_NO_CLIENT_EXIST;
     }
     return hResult;
-}
-
-/**
- * Function get hardware, firmware, driver information
- */
-HRESULT CDIL_CAN_ICSNeoVI::CAN_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
-{
-    return S_OK;
-}
-
-HRESULT CDIL_CAN_ICSNeoVI::CAN_GetBusConfigInfo(BYTE* /*usInfo*/)
-{
-    return S_OK;
-}
-
-HRESULT CDIL_CAN_ICSNeoVI::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
-{
-    return S_FALSE;
 }
 
 /**
@@ -3091,11 +3060,6 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_UnloadDriverLibrary(void)
     return S_OK;
 }
 
-
-HRESULT CDIL_CAN_ICSNeoVI::CAN_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punFrames*/, UINT /*nLength*/)
-{
-    return S_OK;
-}
 
 HRESULT CDIL_CAN_ICSNeoVI::CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus)
 {

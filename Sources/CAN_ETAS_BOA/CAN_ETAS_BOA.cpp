@@ -271,13 +271,8 @@ public:
 	HRESULT CAN_StopHardware(void);
 	HRESULT CAN_ResetHardware(void);
 	HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
-	HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
 	HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
-	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
-	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
-	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
 	HRESULT CAN_GetLastErrorString(string& acErrorStr);
-	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
 	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
@@ -2283,16 +2278,6 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ResetHardware(void)
 }
 
 /**
- * \return S_OK for success, S_FALSE for failure
- *
- * Gets the Tx queue configured.
- */
-HRESULT CDIL_CAN_ETAS_BOA::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
-{
-    return WARN_DUMMY_API;
-}
-
-/**
  * Sends STCAN_MSG structure from the client dwClientID.
  */
 HRESULT CDIL_CAN_ETAS_BOA::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
@@ -2339,42 +2324,9 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTx
 }
 
 /**
- * Gets board info.
- */
-HRESULT CDIL_CAN_ETAS_BOA::CAN_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
-{
-    return WARN_DUMMY_API;
-}
-
-/**
- * Gets bus config info.
- */
-HRESULT CDIL_CAN_ETAS_BOA::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
-{
-    return WARN_DUMMY_API;
-}
-
-/**
- * Gets driver version info.
- */
-HRESULT CDIL_CAN_ETAS_BOA::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
-{
-    return WARN_DUMMY_API;
-}
-
-/**
  * Gets last occured error and puts inside acErrorStr.
  */
 HRESULT CDIL_CAN_ETAS_BOA::CAN_GetLastErrorString(string& /*acErrorStr*/)
-{
-    return WARN_DUMMY_API;
-}
-
-/**
- * Applies FilterType(PASS/STOP) filter for corresponding
- * channel. Frame ids are supplied by punMsgIds.
- */
-HRESULT CDIL_CAN_ETAS_BOA::CAN_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
 {
     return WARN_DUMMY_API;
 }

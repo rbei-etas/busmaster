@@ -157,39 +157,14 @@ public:
     virtual HRESULT DILC_ResetHardware(void) = 0;
 
     /**
-	 * Call to receive list of the transmittable messages
-	 */
-    virtual HRESULT DILC_GetTxMsgBuffer(BYTE*& pbyFlxTxMsgBuffer) = 0;
-
-    /**
 	 * Send messages
 	 */
     virtual HRESULT DILC_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg) = 0;
 
     /**
-	 * Get basic info of the board
-	 */
-    virtual HRESULT DILC_GetBoardInfo(s_BOARDINFO& BoardInfo) = 0;
-
-    /**
-	 * Get salient informations on current bus configuration
-	 */
-    virtual HRESULT DILC_GetBusConfigInfo(BYTE* pbyBusInfo) = 0;
-
-    /**
-	 * Call to receive the version informations
-	 */
-    virtual HRESULT DILC_GetVersionInfo(VERSIONINFO& sVerInfo) = 0;
-
-    /**
 	 * Call to get descriptive string of the last error occurred
 	 */
     virtual HRESULT DILC_GetLastErrorString(string &acErrorStr) = 0;
-
-    /**
-	 * Call to set PASS/STOP filter
-	 */
-    virtual HRESULT DILC_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIDs, UINT nLength) = 0;
 
 	/**
 	 * Call to get controller status. Caller has to give the handle of a

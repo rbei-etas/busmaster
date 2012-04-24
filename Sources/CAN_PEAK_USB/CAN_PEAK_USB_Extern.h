@@ -21,9 +21,8 @@
  *
  * Exports API functions for PEAK CAN Hardware interface
  */
-#if !defined CAN_PEAK_USB_EXTERN_H__INCLUDED_
-#define CAN_PEAK_USB_EXTERN_H__INCLUDED_
 
+#pragma once
 
 #if defined USAGEMODE
 #undef USAGEMODE
@@ -53,13 +52,8 @@ USAGEMODE HRESULT CAN_Usb_StartHardware(void);
 USAGEMODE HRESULT CAN_Usb_StopHardware(void);
 USAGEMODE HRESULT CAN_Usb_ResetHardware(void);
 USAGEMODE HRESULT CAN_Usb_GetCurrStatus(s_STATUSMSG& StatusData);
-USAGEMODE HRESULT CAN_Usb_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
 USAGEMODE HRESULT CAN_Usb_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
-USAGEMODE HRESULT CAN_Usb_GetBoardInfo(s_BOARDINFO& BoardInfo);
-USAGEMODE HRESULT CAN_Usb_GetBusConfigInfo(BYTE* BusInfo);
-USAGEMODE HRESULT CAN_Usb_GetVersionInfo(VERSIONINFO& sVerInfo);
 USAGEMODE HRESULT CAN_Usb_GetLastErrorString(CHAR* acErrorStr, int nLength);
-USAGEMODE HRESULT CAN_Usb_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
 USAGEMODE HRESULT CAN_Usb_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 USAGEMODE HRESULT CAN_Usb_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
@@ -76,5 +70,3 @@ USAGEMODE HRESULT CAN_Usb_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStat
 #ifdef __cplusplus
 }
 #endif
-
-#endif // CAN_PEAK_USB_EXTERN_H__INCLUDED_

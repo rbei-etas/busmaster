@@ -163,39 +163,14 @@ public:
     HRESULT DILC_ResetHardware(void);
 
     /**
-	 * Call to receive list of the transmittable messages
-	 */
-    HRESULT DILC_GetTxMsgBuffer(BYTE*& pbyFlxTxMsgBuffer);
-
-    /**
 	 * Send messages
 	 */
     HRESULT DILC_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
 
     /**
-	 * Get basic info of the board
-	 */
-    HRESULT DILC_GetBoardInfo(s_BOARDINFO& BoardInfo);
-
-    /**
-	 * Get salient informations on current bus configuration
-	 */
-    HRESULT DILC_GetBusConfigInfo(BYTE* pbyBusInfo);
-
-    /**
-	 * Call to receive the version informations
-	 */
-    HRESULT DILC_GetVersionInfo(VERSIONINFO& sVerInfo);
-
-    /**
 	 * Call to get descriptive string of the last error occurred
 	 */
     HRESULT DILC_GetLastErrorString(string &acErrorStr);
-
-    /**
-	 * Call to set PASS/STOP filter
-	 */
-    HRESULT DILC_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIDs, UINT nLength);
 
 	/**
 	 * Call to get controller status. Caller has to give the handle of a 
@@ -232,13 +207,8 @@ private:
     HRESULT (*m_pfStartHardware)(void);
     HRESULT (*m_pfStopHardware)(void);
     HRESULT (*m_pfResetHardware)(void);
-    HRESULT (*m_pfGetTxMsgBuffer)(BYTE *&pouTxMsgBuffer);
     HRESULT (*m_pfSendMsg)(DWORD dwClientID, const STCAN_MSG& pouFlxTxMsg);
-    HRESULT (*m_pfGetBoardInfo)(s_BOARDINFO& BoardInfo);
-    HRESULT (*m_pfGetBusConfigInfo)(BYTE* BusInfo);
-    HRESULT (*m_pfGetVersionInfo)(VERSIONINFO& sVerInfo);
     HRESULT (*m_pfGetLastErrorString)(CHAR *acErrorStr, int nLength);
-    HRESULT (*m_pfFilterFrames)(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIDs, UINT nLength);
     HRESULT (*m_pfManageMsgBuf)(BYTE, DWORD ClientID, CBaseCANBufFSE*);
     HRESULT (*m_pfRegisterClient)(BOOL bRegister, DWORD&, TCHAR*);
     HRESULT (*m_pfGetCntrlStatus)(const HANDLE& hEvent, UINT& unCntrlStatus);

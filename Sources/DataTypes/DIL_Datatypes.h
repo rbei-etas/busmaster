@@ -24,6 +24,11 @@
 
 #pragma once
 
+/* C++ includes */
+#include <string>
+
+using namespace std;
+
 #define NO_SELECTION_HI 0xCDCD
 
 #define CAN_MONITOR_NODE _T("CAN_MONITOR")
@@ -46,22 +51,6 @@ enum ECONTR_PARAM
     NUMBER_HW = 0, NUMBER_CONNECTED_HW, PEAK_ERR_CNT, DRIVER_STATUS, ERR_CNT, HW_MODE, CNTR_STATUS, CON_TEST
 };
 
-//----------------------------------------------------------------------------
-// declaration of Board Info structure
-//----------------------------------------------------------------------------
-typedef struct tagBOARDINFO
-{
-  WORD      m_wHWVersion;         // Hardware version e.g.: 01.00 as 0x100
-  WORD      m_wFWVersion;         // Firmware version (0xFFFF if not available)
-  WORD      m_wDDVersion;         // device driver version 
-                                  // (0xFFFF if not available)
-  WORD      m_wUCIVersion;        // UCI software version
-  BYTE      m_bCanNum;            // Number of supported CAN controllers
-  BYTE      m_bBftNum;            // Number of supported byteflight controllers 
-  BYTE      m_bFlxNum;            // Number of supported FlexRay controllers  
-  char      m_acSerialNum[16];    // hw serial number as string, e.g "12345678"
-  char      m_acHardwareType[40]; // hw type as string e.g: "PCI04-ISA"
-} s_BOARDINFO;
 //----------------------------------------------------------------------------
 // declaration of FlexRay status message
 //----------------------------------------------------------------------------
@@ -128,13 +117,13 @@ typedef struct tagHwInterface
 const int MAX_HW = 32;
 typedef INTERFACE_HW INTERFACE_HW_LIST[MAX_HW];
 
-typedef struct tagVersionInfo
+class VERSIONINFO
 {
-   char     m_acDIL[MAX_CHAR_LONG];
-   char     m_acController[MAX_CHAR_LONG];
-   char     m_acDriver[MAX_CHAR_LONG];
-} VERSIONINFO;
-
+public:
+   string     m_acDIL;
+   string     m_acController;
+   string     m_acDriver;
+};
 
 #define     MAX_DILS                16
 #define     MAX_DILNAME             32

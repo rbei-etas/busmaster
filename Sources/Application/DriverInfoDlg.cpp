@@ -58,7 +58,6 @@ CDriverInfoDlg::CDriverInfoDlg(CWnd* pParent /*=NULL*/)
     //}}AFX_DATA_INIT
     CString omStrFormatDriverInfo;
 
-    // Use DILC_GetVersionInfo to retrieve driver info
     m_omStrDriverInfo = _T("");
 }
 

@@ -237,13 +237,8 @@ public:
 	HRESULT CAN_StopHardware(void);
 	HRESULT CAN_ResetHardware(void);
 	HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
-	HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
 	HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
-	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
-	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
-	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
 	HRESULT CAN_GetLastErrorString(string& acErrorStr);
-	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
 	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
@@ -1479,18 +1474,6 @@ HRESULT CDIL_CAN_VectorXL::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
 }
 
 /**
-* \brief         Gets the Tx queue configured.
-* \param[out]    pouFlxTxMsgBuffer, is BYTE*
-* \return        S_OK for success, S_FALSE for failure
-* \authors       Arunkumar Karri
-* \date          07.10.2011 Created
-*/
-HRESULT CDIL_CAN_VectorXL::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
-{
-    return S_OK;
-}
-
-/**
 * \brief         This will send a CAN message to the driver. In case of USB
 *				 this will write the message in to the driver buffer and will
 *				 return. In case if parallel port mode this will write the
@@ -1589,42 +1572,6 @@ HRESULT CDIL_CAN_VectorXL::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessa
 }
 
 /**
-* \brief         Gets board info.
-* \param[out]    BoardInfo is the s_BOARDINFO structure
-* \return        S_OK for success, S_FALSE for failure
-* \authors       Arunkumar Karri
-* \date          07.10.2011 Created
-*/
-HRESULT CDIL_CAN_VectorXL::CAN_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
-{
-    return S_OK;
-}
-
-/**
-* \brief         Gets bus config info.
-* \param[out]    BusInfo, is BYTE
-* \return        S_OK for success, S_FALSE for failure
-* \authors       Arunkumar Karri
-* \date          07.10.2011 Created
-*/
-HRESULT CDIL_CAN_VectorXL::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
-{
-    return S_OK;
-}
-
-/**
-* \brief         Gets driver version info.
-* \param[out]    sVerInfo, is VERSIONINFO structure
-* \return        S_OK for success, S_FALSE for failure
-* \authors       Arunkumar Karri
-* \date          07.10.2011 Created
-*/
-HRESULT CDIL_CAN_VectorXL::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
-{
-    return S_OK;
-}
-
-/**
  * \brief         Gets last occured error and puts inside acErrorStr.
  * \param[out]    acErrorStr contains error string
  * \return        S_OK for success, S_FALSE for failure
@@ -1635,22 +1582,6 @@ HRESULT CDIL_CAN_VectorXL::CAN_GetLastErrorString(string& acErrorStr)
 {
     acErrorStr = sg_acErrStr;
 
-    return S_OK;
-}
-
-/**
-* \brief         Applies FilterType(PASS/STOP) filter for corresponding
-*				 channel. Frame ids are supplied by punMsgIds.
-* \param[in]     FilterType, holds one of the FILTER_TYPE enum value.
-* \param[in]     Channel, is TYPE_CHANNEL
-* \param[in]     punMsgIds, is UINT*
-* \param[in]     nLength, is UINT
-* \return        S_OK for success, S_FALSE for failure
-* \authors       Arunkumar Karri
-* \date          07.10.2011 Created
-*/
-HRESULT CDIL_CAN_VectorXL::CAN_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
-{
     return S_OK;
 }
 
