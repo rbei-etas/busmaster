@@ -52,23 +52,16 @@ extern  CRITICAL_SECTION g_CritSectNodeBufferRead;
 
 extern CEvent omMainTimerEvent;
 extern CRITICAL_SECTION g_omDllMsgCritiSec;
- 
 
-
-/******************************************************************************/
-/*  Function Name    :  bGetMsgInfo                                           */
-/*  Input(s)         :  UINT unMsgIndex,                                      */
-/*                      UCHAR aunData[]                                       */
-/*                      PSENDMULTIMSGINFO psSendMultipleMsgInfo               */
-/*  Output           :  BOOL                                                  */
-/*  Functionality    :  Gets data bytes                                       */
-/*  Member of        :  Global function                                       */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amarnath S                                            */
-/*  Date Created     :  08.11.2002                                            */
-/*  Modifications By :  Amitesh Bharti                                        */
-/*  Modifications on :  31.12.2002, function name & second parameter changed. */
-/******************************************************************************/
+/**
+ * \brief Gets data bytes
+ * \param[in]  unMsgIndex Message Index
+ * \param[out] aunData Message Data Bytes
+ * \param[in]  psSendMultipleMsgInfo Pointer to Message database
+ * \return     Status code
+ *
+ * Gets data bytes
+ */
 BOOL bGetMsgData(UINT unMsgIndex,
                  UCHAR aunData[],
                  PSENDMULTIMSGINFO psSendMultipleMsgInfo)
@@ -86,7 +79,7 @@ BOOL bGetMsgData(UINT unMsgIndex,
         }
         bReturn = TRUE;
     }
-    return 1;
+    return bReturn;
 }
 
 
