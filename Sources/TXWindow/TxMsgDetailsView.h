@@ -32,7 +32,7 @@
 #include "Utility/RadixEdit.h"          // For the RAdix Edit control definition
 #include "FlexListCtrl.h"
 #include "CMsgSignalTemp.h" 
-#include "SignalMatrix.h"
+#include "Utility/SignalMatrix.h"
 #include "Utility/MsgInterpretation.h"  // For message interpretation
 class CTxMsgDetailsView : public CFormView
 {

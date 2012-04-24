@@ -230,6 +230,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\SignalMatrix.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\UtilFunctions.cpp"
 				>
 			</File>
@@ -329,6 +333,10 @@
 			</File>
 			<File
 				RelativePath=".\RadixEdit.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SignalMatrix.h"
 				>
 			</File>
 			<File

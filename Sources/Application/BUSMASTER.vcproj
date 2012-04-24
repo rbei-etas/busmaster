@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="BUSMASTER"
 	ProjectGUID="{B3C78624-42F9-4A8D-9572-16D17F52DC14}"
 	RootNamespace="CAN_Monitor"
@@ -1170,30 +1170,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="SignalMatrix.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions=""
-						BrowseInformation="0"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath=".\Splash.cpp"
 				>
 				<FileConfiguration
@@ -1650,10 +1626,6 @@
 			</File>
 			<File
 				RelativePath="SignalDetailsDlg.h"
-				>
-			</File>
-			<File
-				RelativePath="SignalMatrix.h"
 				>
 			</File>
 			<File

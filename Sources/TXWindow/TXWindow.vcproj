@@ -231,10 +231,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SignalMatrix.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Tx_MDIChildBase.cpp"
 				>
 			</File>
@@ -298,10 +294,6 @@
 			</File>
 			<File
 				RelativePath=".\SignalDetailsDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SignalMatrix.h"
 				>
 			</File>
 			<File

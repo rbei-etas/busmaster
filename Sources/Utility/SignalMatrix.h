@@ -24,7 +24,8 @@
 
 #pragma once
 
-#include "hashdefines.h"
+#define defBITS_IN_BYTE         8
+#define defMAX_BYTE             8
 
 #define MAX_SIGNALS 64
 
