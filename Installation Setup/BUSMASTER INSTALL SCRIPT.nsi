@@ -81,8 +81,8 @@ Section "BUSMASTER"
     File ..\Sources\BIN\Release\BusEmulation.exe
     File ..\Sources\BIN\Release\BUSMASTER.exe
     File ..\Sources\BIN\Release\BUSMASTER.tlb
-    File ..\Sources\BIN\Release\BUSMASTER_Interface.c
-    File ..\Sources\BIN\Release\BUSMASTER_Interface.h
+    File ..\Sources\Application\BUSMASTER_Interface.c
+    File ..\Sources\Application\BUSMASTER_Interface.h
     File ..\Sources\BIN\Release\CAN_ETAS_BOA.dll
     File ..\Sources\BIN\Release\CAN_ICS_neoVI.dll
     File ..\Sources\BIN\Release\CAN_Kvaser_CAN.dll
