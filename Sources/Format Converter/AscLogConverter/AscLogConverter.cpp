@@ -23,7 +23,6 @@
  */
 
 /* MFC includes */
-
 #define VC_EXTRALEAN        /* Exclude rarely-used stuff from Windows headers */
 
 #include <afxwin.h>         /* MFC core and standard components */
@@ -233,25 +232,25 @@ HRESULT CAscLogConverter::GetOutputFileFilters(string& pchOutputDefFilters, stri
 HRESULT CAscLogConverter::ConvertFile(string& chInputFile, string& chOutputFile)
 {
     HRESULT hResult = S_OK;
-    fstream fpInputFile;
-    fstream fpOutputFile;
-    fpInputFile.open(chInputFile.c_str(), fstream::in);
+    FILE* fpInputFile = NULL;
+    FILE* fpOutputFile = NULL;
+    fopen_s(&fpInputFile, chInputFile.c_str(), _T("r"));
 
-    if(fpInputFile.is_open())
+    if(NULL != fpInputFile)
     {
-        fpOutputFile.open(chOutputFile.c_str(), fstream::out);
+        fopen_s(&fpOutputFile, chOutputFile.c_str(), _T("w"));
 
-        if(fpOutputFile.is_open())
+        if(NULL != fpOutputFile)
         {
             //yydebug = 1;
-            fpOutputFile << "***BUSMASTER Ver 1.6.2***" << endl;
-            fpOutputFile << "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***" << endl;
-            fpOutputFile << "***[START LOGGING SESSION]***" << endl;
-            fpOutputFile << "***START DATE AND TIME ";
+            fprintf(fpOutputFile, "***BUSMASTER Ver 1.6.2***\n");
+            fprintf(fpOutputFile, "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n");
+            fprintf(fpOutputFile, "***[START LOGGING SESSION]***\n");
+            fprintf(fpOutputFile, "***START DATE AND TIME ");
             nConvertFile(fpInputFile, fpOutputFile);
             m_omstrConversionStatus = "Conversion Completed Successfully";
-            fpInputFile.close();
-            fpOutputFile.close();
+            fclose(fpInputFile);
+            fclose(fpOutputFile);
         }
         else
         {
