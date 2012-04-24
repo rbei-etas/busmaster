@@ -308,18 +308,6 @@ public:
 /*****************************************************************************/
 
 
-// This structure holds Version info of the driver
-struct sVERSION_INFO
-{
-    UCHAR m_ucMajVer;
-    UCHAR m_ucMinVer;
-    UCHAR m_ucDriverType;   //'D' - Dongle, 'P' - PCI
-    UCHAR m_ucDriverInfo;   // e.g. 10 -> NT Verson & HW is from PEAK
-};
-typedef sVERSION_INFO SVERSION_INFO;
-typedef sVERSION_INFO *PSVERSION_INFO;
-
-
 // This structure holds acceptance filter details
 struct sACC_FILTER_INFO
 {
