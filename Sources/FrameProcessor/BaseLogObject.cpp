@@ -367,7 +367,7 @@ BOOL CBaseLogObject::bStartLogging(void)
 		{
 			m_dTotalBytes = 0;
 		}
-		m_pLogFile = _tfopen(m_omCurrLogFile, Mode);
+		fopen_s(&m_pLogFile, m_omCurrLogFile, Mode);
 		if (m_pLogFile != NULL)
 		{
 			CString omHeader = _T("");

@@ -557,7 +557,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, T
                 {
                     /* First slot is reserved to monitor node */
                     ClientID = 1;
-                    _tcscpy(sg_asClientToBufMap[0].pacClientName, pacClientName);
+                    strcpy_s(sg_asClientToBufMap[0].pacClientName, pacClientName);
                     sg_asClientToBufMap[0].dwClientID = ClientID;
                     sg_asClientToBufMap[0].unBufCount = 0;
                 }
@@ -572,7 +572,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, T
                         Index = sg_unClientCnt;
                     }
                     ClientID = dwGetAvailableClientSlot();
-                    _tcscpy(sg_asClientToBufMap[Index].pacClientName, pacClientName);
+                    strcpy_s(sg_asClientToBufMap[Index].pacClientName, pacClientName);
 
                     sg_asClientToBufMap[Index].dwClientID = ClientID;
                     sg_asClientToBufMap[Index].unBufCount = 0;
@@ -835,8 +835,8 @@ HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
         {
             asSelHwInterface[i].m_dwIdInterface = i;
 			unsigned int serialNumber = sg_aodChannels[i].m_pXLChannelInfo->serialNumber;
-            _stprintf(asSelHwInterface[i].m_acDescription, _T("%d"), serialNumber);		
-			_stprintf(sg_ControllerDetails[i].m_omHardwareDesc, _T("Vector - %s SN - %d Channel Index - %d"),
+            sprintf_s(asSelHwInterface[i].m_acDescription, _T("%d"), serialNumber);		
+			sprintf_s(sg_ControllerDetails[i].m_omHardwareDesc, _T("Vector - %s SN - %d Channel Index - %d"),
 										sg_aodChannels[i].m_pXLChannelInfo->name,
 										serialNumber, 
 										sg_aodChannels[i].m_pXLChannelInfo->channelIndex);
@@ -913,7 +913,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_DisplayConfigDlg(PCHAR& InitData, INT& /*Length*/
 	xlStatus = xlGetDriverConfig(&g_xlDrvConfig);
 	for ( UINT i = 0 ; i < sg_nNoOfChannels ; i++ )
 	{
-		sprintf(pCntrlDetails[i].m_omStrBaudrate, ("%0.3f"), float(
+		sprintf_s(pCntrlDetails[i].m_omStrBaudrate, ("%0.3f"), float(
 					g_xlDrvConfig.channel[sg_aodChannels[i].m_pXLChannelInfo->channelIndex].
 													busParams.data.can.bitRate / 1000.000 ));				
 	}
@@ -938,7 +938,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
 	/* Fill the hardware description details */
     for (UINT nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
 	{		
-		_tcscpy(((PSCONTROLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc, 
+		strcpy_s(((PSCONTROLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc, 
 				sg_ControllerDetails[nCount].m_omHardwareDesc);		
 	}
 
@@ -1855,13 +1855,13 @@ static int nGetNoOfConnectedHardware(void)
 		}
 		if (!nResult) 
 		{			
-			_tcscpy(sg_omErrStr, _T("No available channels found! (e.g. no CANcabs...)\r\n"));
+			strcpy_s(sg_omErrStr, _T("No available channels found! (e.g. no CANcabs...)\r\n"));
 			xlStatus = XL_ERROR;			
 		}
 	}
 	else
 	{
-        _tcscpy(sg_omErrStr, _T("Problem Finding Device!"));
+        strcpy_s(sg_omErrStr, _T("Problem Finding Device!"));
         nResult = -1;
 	}	
     /* Return the operation result */
@@ -1918,7 +1918,7 @@ static int nCreateMultipleHardwareNetwork()
 			sg_HardwareIntr[nChannels].m_dwVendor = g_xlDrvConfig.channel[nCount].serialNumber;		
 			/*_stprintf(acTempStr, _T("SN: %d, Port ID: %d"), sg_HardwareIntr[nChannels].m_dwVendor, 
 																	sg_HardwareIntr[nChannels].m_dwIdInterface);*/
-			_tcscpy(sg_HardwareIntr[nChannels].m_acDescription, g_xlDrvConfig.channel[nCount].name);			
+			strcpy_s(sg_HardwareIntr[nChannels].m_acDescription, g_xlDrvConfig.channel[nCount].name);			
 			nChannels++;			
 		}
 	}
@@ -1997,7 +1997,7 @@ static int nInitHwNetwork()
      * Take action based on number of Hardware Available
      */
     TCHAR acNo_Of_Hw[MAX_STRING] = {0};
-    _stprintf(acNo_Of_Hw, _T("Number of Vector hardwares Available: %d"), nChannelCount);
+    sprintf_s(acNo_Of_Hw, _T("Number of Vector hardwares Available: %d"), nChannelCount);
 
     /* No Hardware found */
     if( nChannelCount == 0 )
@@ -2197,7 +2197,7 @@ static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
     {
         nStrLen = CAN_MAX_ERRSTR;
     }
-    strncpy(sg_acErrStr, acErrText, nStrLen);
+    strncpy_s(sg_acErrStr, acErrText, nStrLen);
 }
 
 /**

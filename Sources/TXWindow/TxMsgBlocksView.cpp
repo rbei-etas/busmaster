@@ -509,7 +509,7 @@ void CTxMsgBlocksView::vInitMsgBlockInfo(SMSGBLOCKLIST* psMsgBlockList)
         psMsgBlockList->m_psTxCANMsgList      = NULL;
         psMsgBlockList->m_ucKeyValue          = defDEFAULT_KEY_VAL;
         psMsgBlockList->m_unTimeInterval      = defDEFAULT_TIME_VAL;
-        _tcscpy( psMsgBlockList->m_acStrBlockName, defDEFAULT_MSG_BLOCK_NAME);
+        strcpy_s( psMsgBlockList->m_acStrBlockName, defDEFAULT_MSG_BLOCK_NAME);
     }
 }
 
@@ -1040,7 +1040,7 @@ VOID CTxMsgBlocksView::vUpdateMsgBlockDetials(SMSGBLOCKLIST* psCurrentMsgBlock)
             psCurrentMsgBlock->m_bTxAllFrame = FALSE;
         }
         
-        _tcscpy(psCurrentMsgBlock->m_acStrBlockName, m_omStrMsgBlockName.GetBuffer(MAX_PATH));
+        strcpy_s(psCurrentMsgBlock->m_acStrBlockName, m_omStrMsgBlockName.GetBuffer(MAX_PATH));
       //check the Monoshot radio button state
       BOOL bMonoshot = FALSE;
       CButton *pRadioMonoshot = (CButton*)GetDlgItem(IDC_RADIOMONOSHOT);
@@ -2011,7 +2011,7 @@ void CTxMsgBlocksView::vSaveCurrentBlockFirst()
             psCurrentMsgBlock->m_bTxAllFrame = FALSE;
         }
         
-        _tcscpy(psCurrentMsgBlock->m_acStrBlockName, m_omStrMsgBlockName.GetBuffer(MAX_PATH));
+        strcpy_s(psCurrentMsgBlock->m_acStrBlockName, m_omStrMsgBlockName.GetBuffer(MAX_PATH));
         //check the Monoshot radio button state
         BOOL bMonoshot = FALSE;
         CButton *pRadioMonoshot = (CButton*)GetDlgItem(IDC_RADIOMONOSHOT);

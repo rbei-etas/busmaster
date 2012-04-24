@@ -121,10 +121,10 @@ USAGEMODE HRESULT Filter_ShowSelDlg(CWnd* pParent, CMainEntryList* podMainSubLis
     /* Update GUI related information */
     /* 1. Title Name, Main entry combo box name, 
             Name of the list controls */
-    _tcscpy(sGuiParams.m_acTitleName, _T("Filter Selection Dialog"));
-    _tcscpy(sGuiParams.m_acMainListName, _T("Bus"));
-    _tcscpy(sGuiParams.m_acUnSelListName, _T("Configured Filters"));
-    _tcscpy(sGuiParams.m_acSelListName, _T("Selected Filters"));
+    strcpy_s(sGuiParams.m_acTitleName, _T("Filter Selection Dialog"));
+    strcpy_s(sGuiParams.m_acMainListName, _T("Bus"));
+    strcpy_s(sGuiParams.m_acUnSelListName, _T("Configured Filters"));
+    strcpy_s(sGuiParams.m_acSelListName, _T("Selected Filters"));
     /* Whether to combine main entry Id with sub entry name or not*/
     sGuiParams.m_bCombine = FALSE;
     /* What image to be loaded */

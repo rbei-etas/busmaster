@@ -138,12 +138,12 @@ void CFormatMsgCAN::vFormatDataAndId(BYTE bExprnFlag,
 {
     if (IS_NUM_HEX_SET(bExprnFlag))
     {
-        _stprintf(CurrDataCAN->m_acMsgIDHex, FORMAT_STR_ID_HEX, CurrDataCAN->m_dwMsgID);
+        sprintf_s(CurrDataCAN->m_acMsgIDHex, FORMAT_STR_ID_HEX, CurrDataCAN->m_dwMsgID);
         int j = 0;  // j declared outside
         for (int i = 0; i < CurrDataCAN->m_byDataLength; i++)
         {
             BYTE CurrDat = CurrDataCAN->m_abData[i];
-            _stprintf(&(CurrDataCAN->m_acDataHex[j]), FORMAT_STR_DATA_HEX, CurrDat);
+            sprintf_s(&(CurrDataCAN->m_acDataHex[j]), sizeof(CurrDataCAN->m_acDataHex[j]), FORMAT_STR_DATA_HEX, CurrDat);
             j += 3;
         }
         CurrDataCAN->m_acDataHex[j] = L'\0';
@@ -151,12 +151,12 @@ void CFormatMsgCAN::vFormatDataAndId(BYTE bExprnFlag,
 
     if (IS_NUM_DEC_SET(bExprnFlag))
     {
-        _stprintf(CurrDataCAN->m_acMsgIDDec, FORMAT_STR_ID_DEC, CurrDataCAN->m_dwMsgID);
+        sprintf_s(CurrDataCAN->m_acMsgIDDec, FORMAT_STR_ID_DEC, CurrDataCAN->m_dwMsgID);
         int j = 0;
         for (int i = 0; i < CurrDataCAN->m_byDataLength; i++)
         {
             BYTE CurrDat = CurrDataCAN->m_abData[i];
-            _stprintf(&(CurrDataCAN->m_acDataDec[j]), FORMAT_STR_DATA_DEC, CurrDat);
+            sprintf_s(&(CurrDataCAN->m_acDataDec[j]), sizeof(CurrDataCAN->m_acDataDec[j]), FORMAT_STR_DATA_DEC, CurrDat);
 			j += 4;
 			CurrDataCAN->m_acDataDec[j-1] = L' ';            
         }
@@ -259,7 +259,7 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
     TYPE_CHANNEL CurrChannel = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucChannel;
     if ((CurrChannel >= CHANNEL_CAN_MIN) && (CurrChannel <= CHANNEL_CAN_MAX ))
     {
-        _stprintf(CurrDataCAN->m_acChannel, _T("%d"), CurrChannel);
+        sprintf_s(CurrDataCAN->m_acChannel, _T("%d"), CurrChannel);
     }
 
 	memset(CurrDataCAN->m_acType,_T('\0'),sizeof(CurrDataCAN->m_acType));
@@ -279,8 +279,8 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
         CurrDataCAN->m_byMsgType |= TYPE_MSG_CAN_RTR;
         CurrDataCAN->m_acType[1] = _T('r');
     }
-    _itot(pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen, CurrDataCAN->m_acDataLen, 10);	
-    _tcscpy(CurrDataCAN->m_acMsgDesc, _T("Description"));	
+    _itoa_s(pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen, CurrDataCAN->m_acDataLen, 10);	
+    strcpy_s(CurrDataCAN->m_acMsgDesc, _T("Description"));	
 
     CurrDataCAN->m_u64TimeStamp = pMsgCAN->m_lTickCount.QuadPart;
     CurrDataCAN->m_dwMsgID = pMsgCAN->m_uDataInfo.m_sCANMsg.m_unMsgID;
@@ -301,14 +301,14 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
             ptrStrErrName = vFormatCurrErrorEntry(usErrCode);	
 			if(ptrStrErrName)
 			{
-				_tcscpy(CurrDataCAN->m_acDataDec, ptrStrErrName);			
-				_tcscpy(CurrDataCAN->m_acDataHex, ptrStrErrName);			
+				strcpy_s(CurrDataCAN->m_acDataDec, ptrStrErrName);			
+				strcpy_s(CurrDataCAN->m_acDataHex, ptrStrErrName);			
 			}
 		}
 		CurrDataCAN->m_dwMsgID = pMsgCAN->m_uDataInfo.m_sCANMsg.m_unMsgID;
-		_stprintf(CurrDataCAN->m_acMsgIDDec, FORMAT_STR_ID_DEC, CurrDataCAN->m_dwMsgID);
+		sprintf_s(CurrDataCAN->m_acMsgIDDec, FORMAT_STR_ID_DEC, CurrDataCAN->m_dwMsgID);
 		
-		_tcscpy(CurrDataCAN->m_acType, _T("ERR"));					
+		strcpy_s(CurrDataCAN->m_acType, _T("ERR"));					
 	}
 	/* PROCESS ERROR MSGS ENDS */
 

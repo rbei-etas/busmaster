@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="SigGrphWnd"
 	ProjectGUID="{11A11CEA-45ED-4FE6-BDE2-643DF9267FAC}"
 	RootNamespace="SigGrphWnd"
@@ -54,7 +54,6 @@
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderThrough="SigGrphWnd_stdafx.h"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -140,7 +139,6 @@
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderThrough="SigGrphWnd_stdafx.h"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool

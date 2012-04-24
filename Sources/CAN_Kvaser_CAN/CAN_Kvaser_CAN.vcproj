@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="CAN_Kvaser_CAN"
 	ProjectGUID="{191E1FE9-43CB-49C2-BF40-CC5994A586FB}"
 	Keyword="MFCDLLProj"
@@ -54,7 +54,6 @@
 				UsePrecompiledHeader="1"
 				PrecompiledHeaderThrough="CAN_Kvaser_CAN_stdafx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -144,7 +143,6 @@
 				UsePrecompiledHeader="1"
 				PrecompiledHeaderThrough="CAN_Kvaser_CAN_stdafx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
 			/>
 			<Tool

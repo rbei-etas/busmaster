@@ -828,7 +828,7 @@ void CSimSysDetView::OnInitialUpdate()
     LF.lfHeight = 10;
     LF.lfWeight = FW_HEAVY;
     LF.lfPitchAndFamily = VARIABLE_PITCH | FF_SWISS;
-    _tcscpy(LF.lfFaceName, _T("Ms Sans Serif"));
+    strcpy_s(LF.lfFaceName, _T("Ms Sans Serif"));
     if (!om_tFont.CreateFontIndirect(&LF))
     {
         TRACE(_T("MMI: CMainFrame::OnCreate() Could not create font for Combo Box\n"));

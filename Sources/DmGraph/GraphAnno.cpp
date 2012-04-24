@@ -25,7 +25,7 @@ void CGraphAnnotation::AttachToGraph(CDMGraphCtrl* pCtrl, int id)
 
 	const int TXT_LEN = 128;
 	OLECHAR szText[ TXT_LEN ];
-	_snwprintf(szText, TXT_LEN, L"Annotation-%d", m_nID);
+	sprintf_s((char *) szText, TXT_LEN, "Annotation-%d", m_nID);
 	m_Caption = szText;
 }
 

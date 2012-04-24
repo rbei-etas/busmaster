@@ -219,7 +219,7 @@ CNodeConManager::CNodeConManager(int nNodeNo, TCHAR* pacNodeName, UINT64 un64ECU
     m_bIsActive    = FALSE;
     //m_byNodeNo   = nNodeNo;
     m_byNodeNo   = (CHAR)nNodeNo;
-    _tcscpy(m_acNodeName, pacNodeName);
+    strcpy_s(m_acNodeName, pacNodeName);
     m_byConCount = 0;
     m_dwClientID = nNodeNo;
     m_byNodeAddress = ADDRESS_NULL;

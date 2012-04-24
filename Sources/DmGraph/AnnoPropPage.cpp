@@ -77,9 +77,9 @@ void CAnnoPropPage::UpdateControls(IDMGraphCtrl* pGraphCtrl)
 		hr = spAnnotation->get_LabelY(&y);
 	}
 
-	_sntprintf(szText, 128, _T("%g"), x);
+	sprintf_s((char *) szText, sizeof(szText), "%g", x);
 	SetDlgItemText (IDC_EDIT_X, szText);
-	_sntprintf(szText, 128, _T("%g"), y);
+	sprintf_s((char *) szText, sizeof(szText), "%g", y);
 	SetDlgItemText (IDC_EDIT_Y, szText);
 
 	if(spAnnotation)
@@ -254,7 +254,7 @@ LRESULT CAnnoPropPage::OnGetdispinfoElement_list(int idCtrl, LPNMHDR pnmh, BOOL&
 			return hr;
 		
 		USES_CONVERSION;
-		_sntprintf(pHmLv->item.pszText, pHmLv->item.cchTextMax, _T("%s"), OLE2T(bsName));
+		sprintf_s((char *) pHmLv->item.pszText, pHmLv->item.cchTextMax, "%s", OLE2T(bsName));
 	}
 	return 0;
 }

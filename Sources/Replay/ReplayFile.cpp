@@ -267,7 +267,7 @@ BYTE* CReplayFile::pbySaveConfig(BYTE* pDesBuffer)
     pDesBuffer += sizeof(m_bInteractive);
     //Save file name size
     TCHAR acName[MAX_PATH] = {_T('\0')};
-    _tcscpy(acName, m_omStrFileName.GetBuffer(MAX_PATH));
+    strcpy_s(acName, m_omStrFileName.GetBuffer(MAX_PATH));
     memcpy(pDesBuffer, acName, sizeof(TCHAR) * MAX_PATH);
     pDesBuffer += sizeof(TCHAR) * MAX_PATH;
     //To store filters   

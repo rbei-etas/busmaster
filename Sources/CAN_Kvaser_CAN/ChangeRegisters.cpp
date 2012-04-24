@@ -803,7 +803,7 @@ void CChangeRegisters:: vUpdateBTRsBRPEditWindow(INT /*nColumnCount*/, INT nItem
     }
     //Convert UINT to string.
     TCHAR acBrpStr[32] = {L'\0'};
-    _itot(unBrp, acBrpStr, 10);
+    _itoa_s(unBrp, acBrpStr, 10);
     omStrBrp = acBrpStr;
     m_omEditBRP.SetWindowText(omStrBrp);   
 
@@ -926,7 +926,7 @@ void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
                     unBrp     = unProductNbtNBrp/unNbt;
                  }
                  TCHAR acStrBrp[32] = {L'\0'};
-                 _itot(unBrp, acStrBrp, 10);
+                 _itoa_s(unBrp, acStrBrp, 10);
                  omStrBrp = acStrBrp;
 
                  m_omEditBRP.SetWindowText(omStrBrp);
@@ -1108,7 +1108,7 @@ void CChangeRegisters:: vCalculateBaudRateNBTR0(CString omStrBtr1)
                  }
 
                  TCHAR acStrBrp[32] = {L'\0'};
-                 _itot(unBrp, acStrBrp, 10);
+                 _itoa_s(unBrp, acStrBrp, 10);
                  omStrBrp = acStrBrp;
                  m_omEditBRP.SetWindowText(omStrBrp);
 
@@ -1843,12 +1843,12 @@ void CChangeRegisters::vUpdateControllerDetails()
         m_pControllerDetails[ m_nLastSelection ].m_nItemUnderFocus   =
                                                             nItemUnderFocus;
 
-        _tcscpy(m_pControllerDetails[m_nLastSelection].m_omStrBaudrate, m_omStrEditBaudRate.GetBuffer(MAX_PATH));
-        _tcscpy(m_pControllerDetails[m_nLastSelection].m_omStrBTR0, m_omStrEditBTR0.GetBuffer(MAX_PATH));
-        _tcscpy(m_pControllerDetails[m_nLastSelection].m_omStrBTR1, m_omStrEditBTR1.GetBuffer(MAX_PATH));
-        _tcscpy(m_pControllerDetails[m_nLastSelection].m_omStrClock, m_omStrComboClock.GetBuffer(MAX_PATH));
-        _tcscpy(m_pControllerDetails[m_nLastSelection].m_omStrSampling, m_omStrComboSampling.GetBuffer(MAX_PATH));
-        _tcscpy(m_pControllerDetails[m_nLastSelection].m_omStrWarningLimit, m_omStrEditWarningLimit.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[m_nLastSelection].m_omStrBaudrate, m_omStrEditBaudRate.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[m_nLastSelection].m_omStrBTR0, m_omStrEditBTR0.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[m_nLastSelection].m_omStrBTR1, m_omStrEditBTR1.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[m_nLastSelection].m_omStrClock, m_omStrComboClock.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[m_nLastSelection].m_omStrSampling, m_omStrComboSampling.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[m_nLastSelection].m_omStrWarningLimit, m_omStrEditWarningLimit.GetBuffer(MAX_PATH));
 
 		//Get the self reception option
 		CButton* pCheckSelfRec = (CButton*)GetDlgItem(IDC_CHKB_SELF_RECEPTION);
@@ -1948,10 +1948,10 @@ BOOL CChangeRegisters::bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1)
 	}
 	m_pControllerDetails[ nChannel-1 ].m_nBTR0BTR1 = m_usBTR0BTR1;
 
-    _tcscpy(m_pControllerDetails[ nChannel-1 ].m_omStrBaudrate, omStrBaudRate.GetBuffer(MAX_PATH));
-    _tcscpy(m_pControllerDetails[ nChannel-1 ].m_omStrBTR0, omStrBtr0.GetBuffer(MAX_PATH));
-    _tcscpy(m_pControllerDetails[ nChannel-1 ].m_omStrBTR1, omStrBtr1.GetBuffer(MAX_PATH));
-    _stprintf(m_pControllerDetails[ nChannel-1  ].m_omStrSampling, _T("%d"), unSample);
+    strcpy_s(m_pControllerDetails[ nChannel-1 ].m_omStrBaudrate, omStrBaudRate.GetBuffer(MAX_PATH));
+    strcpy_s(m_pControllerDetails[ nChannel-1 ].m_omStrBTR0, omStrBtr0.GetBuffer(MAX_PATH));
+    strcpy_s(m_pControllerDetails[ nChannel-1 ].m_omStrBTR1, omStrBtr1.GetBuffer(MAX_PATH));
+    sprintf_s(m_pControllerDetails[ nChannel-1  ].m_omStrSampling, _T("%d"), unSample);
 
 	m_nLastSelection = nChannel-1;
 
@@ -2014,29 +2014,29 @@ BOOL CChangeRegisters::bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId,
 		CString omStrTempByte;
 		// Create Code
 		omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte4[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte4[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
 
 		omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId >> nShift)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte3[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte3[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
 
 		omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId >> nShift * 2)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte2[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte2[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
 
 		omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId >> nShift * 3)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte1[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte1[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
 
         // Create Mask
 		omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId )));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte4[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte4[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
 
 		omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId >> nShift)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte3[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte3[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
 
 		omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId >> nShift * 2)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte2[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte2[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
 
 		omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId >> nShift * 3)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte1[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte1[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
 
 		m_pControllerDetails[ unIndex ].m_bAccFilterMode = bExtended;
 	}

@@ -441,7 +441,7 @@ void vBlinkHw(INTERFACE_HW s_HardwareIntr)
 	NeoDevice pNeoDevice;
 	pNeoDevice.Handle       = (int)s_HardwareIntr.m_dwIdInterface;
 	pNeoDevice.SerialNumber = (int)s_HardwareIntr.m_dwVendor;		
-	_stscanf(s_HardwareIntr.m_acNameInterface, "%d", &pNeoDevice.DeviceType);
+	sscanf_s(s_HardwareIntr.m_acNameInterface, "%d", &pNeoDevice.DeviceType);
 	
 	int hObject = NULL;
 	int nErrors;
@@ -522,7 +522,7 @@ static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
         {
             nStrLen = CAN_MAX_ERRSTR;
         }
-        strncpy(sg_acErrStr, acErrText, nStrLen);
+        strncpy_s(sg_acErrStr, acErrText, nStrLen);
     }
 }
 
@@ -1369,7 +1369,7 @@ static int nAddChanneltoHWInterfaceList(int narrNetwordID[], int nCntNtwIDs, int
 			nResult = (*icsneoGetHWFirmwareInfo)(hObject, &objstFWInfo);
 			if ( nResult == 1 )
 			{
-				_stprintf(acFirmware, _T("%d.%d"), objstFWInfo.iAppMajor, objstFWInfo.iAppMinor);																
+				sprintf_s(acFirmware, _T("%d.%d"), objstFWInfo.iAppMajor, objstFWInfo.iAppMinor);																
 			}
 		}
 		(*icsneoClosePort)(hObject, &nErrors);
@@ -1381,11 +1381,11 @@ static int nAddChanneltoHWInterfaceList(int narrNetwordID[], int nCntNtwIDs, int
 		sg_HardwareIntr[nChannels].m_dwVendor = sg_ndNeoToOpen[nDevID].SerialNumber;
 		sg_HardwareIntr[nChannels].m_bytNetworkID = narrNetwordID[i];	
 
-		_tcscpy(sg_HardwareIntr[nChannels].m_acDeviceName, acFirmware);
-		_stprintf(sg_HardwareIntr[nChannels].m_acNameInterface, _T("%d"), sg_ndNeoToOpen[nDevID].DeviceType);																
-		_stprintf(acTempStr, _T("SN: %d, Port ID: %d-CAN%d"), sg_HardwareIntr[nChannels].m_dwVendor, 
+		strcpy_s(sg_HardwareIntr[nChannels].m_acDeviceName, acFirmware);
+		sprintf_s(sg_HardwareIntr[nChannels].m_acNameInterface, _T("%d"), sg_ndNeoToOpen[nDevID].DeviceType);																
+		sprintf_s(acTempStr, _T("SN: %d, Port ID: %d-CAN%d"), sg_HardwareIntr[nChannels].m_dwVendor, 
 																sg_HardwareIntr[nChannels].m_dwIdInterface, narrNetwordID[i]);
-		_tcscpy(sg_HardwareIntr[nChannels].m_acDescription, acTempStr);
+		strcpy_s(sg_HardwareIntr[nChannels].m_acDescription, acTempStr);
 		
 		nChannels++;
 	}
@@ -1540,7 +1540,7 @@ static int nCreateMultipleHardwareNetwork()
 	{
 		sg_ndNeoToOpen[nCount].Handle       = (int)sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwIdInterface;
 		sg_ndNeoToOpen[nCount].SerialNumber = (int)sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwVendor;		
-		_stscanf(sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acNameInterface, "%d", &sg_ndNeoToOpen[nCount].DeviceType);
+		sscanf_s(sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acNameInterface, "%d", &sg_ndNeoToOpen[nCount].DeviceType);
 		m_bytNetworkIDs[nCount]				=  sg_HardwareIntr[sg_anSelectedItems[nCount]].m_bytNetworkID;	
 	}
     for (int nIndex = 0; nIndex < sg_ucNoOfHardware; nIndex++)
@@ -1586,7 +1586,7 @@ static int nGetNoOfConnectedHardware(int& nHardwareCount)
     {
         if (nHardwareCount == 0)
         {
-            _tcscpy(m_omErrStr,_T("Query successful, but no device found"));
+            strcpy_s(m_omErrStr,_T("Query successful, but no device found"));
         }		
 		nReturn = nHardwareCount;
     }
@@ -1594,7 +1594,7 @@ static int nGetNoOfConnectedHardware(int& nHardwareCount)
     {
         nReturn = -1;
 		nHardwareCount = 0;
-        _tcscpy(m_omErrStr,_T("Query for devices unsuccessful"));
+        strcpy_s(m_omErrStr,_T("Query for devices unsuccessful"));
     }
     // Return the operation result
     return nReturn;
@@ -1622,7 +1622,7 @@ static int nInitHwNetwork()
     // Capture only Driver Not Running event
     // Take action based on number of Hardware Available
     TCHAR acNo_Of_Hw[MAX_STRING] = {0};
-    _stprintf(acNo_Of_Hw, _T("Number of neoVIs Available: %d"), nDevices);
+    sprintf_s(acNo_Of_Hw, _T("Number of neoVIs Available: %d"), nDevices);
     // No Hardware found
 
     if( nDevices == 0 )
@@ -2177,7 +2177,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
             for (UINT i = 0; i < sg_ucNoOfHardware; i++)
             {
 				asSelHwInterface[i].m_dwIdInterface = (DWORD)sg_ndNeoToOpen[i].Handle;
-				_stprintf(asSelHwInterface[i].m_acDescription, _T("%d"), sg_ndNeoToOpen[i].SerialNumber);
+				sprintf_s(asSelHwInterface[i].m_acDescription, _T("%d"), sg_ndNeoToOpen[i].SerialNumber);
 				asSelHwInterface[i].m_bytNetworkID = m_bytNetworkIDs[i];				
                 hResult = S_OK;
                 sg_bCurrState = STATE_HW_INTERFACE_LISTED;
@@ -2340,16 +2340,16 @@ HRESULT hFillHardwareDesc(PSCONTROLER_DETAILS pControllerDetails)
             case NEODEVICE_BLUE:
                 switch (m_bytNetworkIDs[i]) {
                     case NETID_HSCAN:
-                        strncpy(&netid_str[0], "HSCAN", sizeof(netid_str));
+                        strncpy_s(netid_str, "HSCAN", sizeof(netid_str));
                         break;
                     case NETID_MSCAN:
-                        strncpy(&netid_str[0], "MSCAN", sizeof(netid_str));
+                        strncpy_s(netid_str, "MSCAN", sizeof(netid_str));
                         break;
                     case NETID_SWCAN:
-                        strncpy(&netid_str[0], "SW CAN", sizeof(netid_str));
+                        strncpy_s(netid_str, "SW CAN", sizeof(netid_str));
                         break;
                     case NETID_LSFTCAN:
-                        strncpy(&netid_str[0], "LSFT CAN", sizeof(netid_str));
+                        strncpy_s(netid_str, "LSFT CAN", sizeof(netid_str));
                         break;
                 }
                 break;
@@ -2358,7 +2358,7 @@ HRESULT hFillHardwareDesc(PSCONTROLER_DETAILS pControllerDetails)
             case NEODEVICE_DW_VCAN:
                 switch (m_bytNetworkIDs[i]) {
                     case NETID_HSCAN:
-                        strncpy(&netid_str[0], "CAN", sizeof(netid_str));
+                        strncpy_s(netid_str, "CAN", sizeof(netid_str));
                         break;
                 }
                 break;
@@ -2368,19 +2368,19 @@ HRESULT hFillHardwareDesc(PSCONTROLER_DETAILS pControllerDetails)
                 switch (m_bytNetworkIDs[i]) {
                     case NETID_HSCAN:
                     case NETID_FIRE_HSCAN1:
-                        strncpy(&netid_str[0], "HS CAN 1", sizeof(netid_str));
+                        strncpy_s(netid_str, "HS CAN 1", sizeof(netid_str));
                         break;
                     case NETID_MSCAN:
                     case NETID_FIRE_MSCAN1:
-                        strncpy(&netid_str[0], "MS CAN", sizeof(netid_str));
+                        strncpy_s(netid_str, "MS CAN", sizeof(netid_str));
                         break;
                     case NETID_SWCAN:
                     case NETID_FIRE_SWCAN:
-                        strncpy(&netid_str[0], "SW CAN", sizeof(netid_str));
+                        strncpy_s(netid_str, "SW CAN", sizeof(netid_str));
                         break;
                     case NETID_LSFTCAN:
                     case NETID_FIRE_LSFT:
-                        strncpy(&netid_str[0], "LSFT CAN", sizeof(netid_str));
+                        strncpy_s(netid_str, "LSFT CAN", sizeof(netid_str));
                         break;
                 }
                 break;
@@ -2390,16 +2390,16 @@ HRESULT hFillHardwareDesc(PSCONTROLER_DETAILS pControllerDetails)
                 if (nHardwareLic == 8) { // Limited Version with only one channel
                     switch (m_bytNetworkIDs[i]) {
                         case NETID_HSCAN:
-                            strncpy(&netid_str[0], "CAN", sizeof(netid_str));
+                            strncpy_s(netid_str, "CAN", sizeof(netid_str));
                             break;
                     }
                 } else { // Two channels
                     switch (m_bytNetworkIDs[i]) {
                         case NETID_HSCAN:
-                            strncpy(&netid_str[0], "CAN 1", sizeof(netid_str));
+                            strncpy_s(netid_str, "CAN 1", sizeof(netid_str));
                             break;
                         case NETID_MSCAN:
-                            strncpy(&netid_str[0], "CAN 2", sizeof(netid_str));
+                            strncpy_s(netid_str, "CAN 2", sizeof(netid_str));
                             break;
                     }
                 }
@@ -2410,28 +2410,28 @@ HRESULT hFillHardwareDesc(PSCONTROLER_DETAILS pControllerDetails)
         if (strlen(&netid_str[0]) == 0) {
                 switch (m_bytNetworkIDs[i]) {
                     case NETID_HSCAN:
-                        strncpy(&netid_str[0], "HSCAN", sizeof(netid_str));
+                        strncpy_s(netid_str, "HSCAN", sizeof(netid_str));
                         break;
                     case NETID_MSCAN:
-                        strncpy(&netid_str[0], "MSCAN", sizeof(netid_str));
+                        strncpy_s(netid_str, "MSCAN", sizeof(netid_str));
                         break;
                     case NETID_SWCAN:
-                        strncpy(&netid_str[0], "SWCAN", sizeof(netid_str));
+                        strncpy_s(netid_str, "SWCAN", sizeof(netid_str));
                         break;
                     case NETID_LSFTCAN:
-                        strncpy(&netid_str[0], "LSFTCAN", sizeof(netid_str));
+                        strncpy_s(netid_str, "LSFTCAN", sizeof(netid_str));
                         break;
                     case NETID_FIRE_HSCAN1:
-                        strncpy(&netid_str[0], "HSCAN1", sizeof(netid_str));
+                        strncpy_s(netid_str, "HSCAN1", sizeof(netid_str));
                         break;
                     case NETID_FIRE_MSCAN1:
-                        strncpy(&netid_str[0], "MSCAN1", sizeof(netid_str));
+                        strncpy_s(netid_str, "MSCAN1", sizeof(netid_str));
                         break;
                     case NETID_FIRE_SWCAN:
-                        strncpy(&netid_str[0], "SWCAN", sizeof(netid_str));
+                        strncpy_s(netid_str, "SWCAN", sizeof(netid_str));
                         break;
                     case NETID_FIRE_LSFT:
-                        strncpy(&netid_str[0], "LSFT", sizeof(netid_str));
+                        strncpy_s(netid_str, "LSFT", sizeof(netid_str));
                         break;
                 }
         }
@@ -2439,21 +2439,21 @@ HRESULT hFillHardwareDesc(PSCONTROLER_DETAILS pControllerDetails)
         switch (sg_ndNeoToOpen[i].DeviceType) {
                 /* neoVI Blue */
             case NEODEVICE_BLUE:
-                _stprintf(pControllerDetails[i].m_omHardwareDesc,
+                sprintf_s(pControllerDetails[i].m_omHardwareDesc,
                           _T("neoVI Blue, Serial Number %d, Network: %s"),
                           serialNumber, &netid_str[0]);
                 break;
 
                 /* ValueCAN */
             case NEODEVICE_DW_VCAN:
-                _stprintf(pControllerDetails[i].m_omHardwareDesc,
+                sprintf_s(pControllerDetails[i].m_omHardwareDesc,
                           _T("ValueCAN, Serial Number %d, Network: %s"),
                           serialNumber, &netid_str[0]);
                 break;
 
                 /* neoVI Fire/Red */
             case NEODEVICE_FIRE:
-                _stprintf(pControllerDetails[i].m_omHardwareDesc,
+                sprintf_s(pControllerDetails[i].m_omHardwareDesc,
                           _T("neoVi Fire/Red, Serial Number %d, Network: %s"),
                           serialNumber, &netid_str[0]);
                 break;
@@ -2461,16 +2461,16 @@ HRESULT hFillHardwareDesc(PSCONTROLER_DETAILS pControllerDetails)
                 /* ValueCAN3 and ETAS ES581 */
             case NEODEVICE_VCAN3:
                 if (serialNumber < 50000) {
-                    _stprintf(pControllerDetails[i].m_omHardwareDesc,
+                    sprintf_s(pControllerDetails[i].m_omHardwareDesc,
                               _T("ValueCAN3, Serial Number %d, Network: %s"),
                               serialNumber, &netid_str[0]);
                 } else {
                     if (nHardwareLic == 8) { // Limited Version with only one channel
-                        _stprintf(pControllerDetails[i].m_omHardwareDesc,
+                        sprintf_s(pControllerDetails[i].m_omHardwareDesc,
                                   _T("ES581.2, Serial Number %d, Network: %s"),
                                   serialNumber-50000, &netid_str[0]);
                     } else { // Two channels
-                        _stprintf(pControllerDetails[i].m_omHardwareDesc,
+                        sprintf_s(pControllerDetails[i].m_omHardwareDesc,
                                   _T("ES581.3, Serial Number %d, Network: %s"),
                                   serialNumber-50000, &netid_str[0]);
                     }
@@ -2478,7 +2478,7 @@ HRESULT hFillHardwareDesc(PSCONTROLER_DETAILS pControllerDetails)
                 break;
 
             default:
-                _stprintf(pControllerDetails[i].m_omHardwareDesc,
+                sprintf_s(pControllerDetails[i].m_omHardwareDesc,
                           _T("Unknown, Serial Number %d"), serialNumber);
                 break;
         };
@@ -2904,7 +2904,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, TC
                 {
                     //First slot is reserved to monitor node
                     ClientID = 1;
-                    _tcscpy(sg_asClientToBufMap[0].pacClientName, pacClientName);
+                    strcpy_s(sg_asClientToBufMap[0].pacClientName, pacClientName);
                     sg_asClientToBufMap[0].dwClientID = ClientID;
                     sg_asClientToBufMap[0].unBufCount = 0;
                 }
@@ -2919,7 +2919,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, TC
                         Index = sg_unClientCnt;
                     }
                     ClientID = dwGetAvailableClientSlot();
-                    _tcscpy(sg_asClientToBufMap[Index].pacClientName, pacClientName);
+                    strcpy_s(sg_asClientToBufMap[Index].pacClientName, pacClientName);
 
                     sg_asClientToBufMap[Index].dwClientID = ClientID;
                     sg_asClientToBufMap[Index].unBufCount = 0;

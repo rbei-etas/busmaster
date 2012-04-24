@@ -5978,7 +5978,7 @@ void CMainFrame::vUpdateGraphData(const STCANDATA &sCanData)
 
 					sInterpretList.unMsgID = sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID;
 					sInterpretList.m_nTimeStamp = sCanData.m_lTickCount.QuadPart;
-					strcpy(sInterpretList.m_acSigName,odElement.m_omStrElementName);
+					strcpy_s(sInterpretList.m_acSigName,odElement.m_omStrElementName);
                     switch( odElement.m_nValueType )
                     {
 						case eRAW_VALUE:
@@ -7853,7 +7853,7 @@ BOOL gbSendStrToTrace(CHAR* pcOutStrTrace)
              static CHAR s_acTraceStr[1024] = {""};
             WaitForSingleObject(g_hSemaphore, MAX_TIME_LIMIT);
 			//CHAR *p_acTraceStr = new CHAR[1024];
-            strncpy(s_acTraceStr,pcOutStrTrace,1024);
+            strncpy_s(s_acTraceStr,pcOutStrTrace,1024);
             bResult = ::PostThreadMessage(g_dwUIThread, WM_WRITE_TO_TRACE, 0, 
                                           (LPARAM) s_acTraceStr);
             Sleep(0);
@@ -9375,7 +9375,7 @@ void CMainFrame::vUpdateGraphStatsData()
 				SBUSSTATISTICS sBusStats;
 				GetICANBusStat()->BSC_GetBusStatistics(odTemp.m_nFrameFormat, sBusStats);
 				
-				strcpy(sInterpretList.m_acSigName , "");
+				strcpy_s(sInterpretList.m_acSigName , "");
 				sInterpretList.m_shType = eSTAT_PARAM;
 
 				sInterpretList.m_unValue.m_nRawValue = -1;
@@ -10101,7 +10101,7 @@ void CMainFrame::vUpdateHWStatusInfo(void)
 		{
 			if ( _tcscmp(m_asControllerDetails->m_omStrBaudrate, _T("")) == 0)
 			{
-				_tcscpy(m_asControllerDetails->m_omStrBaudrate, _T("500"));
+				strcpy_s(m_asControllerDetails->m_omStrBaudrate, _T("500"));
 			}
 			omStrChannelDriver.Format(  _T("%s - %s - %s Kbps (Allowed channels:%d)"), 
 							 omStrChannels, m_ouList[i].m_acName, 
@@ -10130,7 +10130,7 @@ BOOL CMainFrame::bInitFrameProcCAN(void)
         SCANPROC_PARAMS sCANProcParams;
 		    
 		omVerStr.Format(IDS_VERSION);
-		strncpy(sCANProcParams.m_acVersion, omVerStr, omVerStr.GetLength());		
+		strncpy_s(sCANProcParams.m_acVersion, omVerStr, omVerStr.GetLength());		
         sCANProcParams.dwClientID = g_dwClientID;
         sCANProcParams.m_pouCANBuffer = &g_ouCANBufFSE;
         sCANProcParams.m_pILog = &m_ouWrapperLogger;
@@ -10548,7 +10548,7 @@ void CMainFrame::vSetFileStorageInfo(CString oCfgFilename)
 
 	DATASTORAGEINFO stempDataInfo;
 	FILESTORAGEINFO FileStoreInfo;
-	strcpy (FileStoreInfo.m_FilePath, T2A(oCfgFilename.GetBuffer(MAX_PATH)));
+	strcpy_s(FileStoreInfo.m_FilePath, T2A(oCfgFilename.GetBuffer(MAX_PATH)));
 	stempDataInfo.FSInfo = &FileStoreInfo;
 	stempDataInfo.m_Datastore = FILEMODE;
 	CConfigData::ouGetConfigDetailsObject().SetConfigDatastorage(&stempDataInfo);
@@ -11306,7 +11306,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
 
                 TCHAR acName[MAX_PATH] = {_T('\0')};
-                _tcscpy(acName, m_omMRU_C_Filename.GetBuffer(MAX_PATH));
+                strcpy_s(acName, m_omMRU_C_Filename.GetBuffer(MAX_PATH));
                 COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
 
                 
@@ -11406,7 +11406,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 {
                     TCHAR acName[MAX_PATH] = {_T('\0')};
                     
-                    _tcscpy(acName, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_PATH));
+                    strcpy_s(acName, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_PATH));
                     COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
 
                     COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].unMsgID), sizeof(UINT));
@@ -11472,7 +11472,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 {
                     TCHAR acName[MAX_PATH] = {_T('\0')};
                     
-					_tcscpy(acName, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_CHAR));
+					strcpy_s(acName, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_CHAR));
                     COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
 
                     COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].unMsgID), sizeof(UINT));
@@ -11535,7 +11535,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
                 COPY_DATA(pbyTemp, &(sMainEntry.m_unMainEntryID), sizeof(UINT));
                 TCHAR acName[MAX_PATH] = {_T('\0')};
-                _tcscpy(acName, sMainEntry.m_omMainEntryName.GetBuffer(MAX_CHAR));
+                strcpy_s(acName, sMainEntry.m_omMainEntryName.GetBuffer(MAX_CHAR));
                 COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
 
                 UINT unSelCount = sMainEntry.m_odSelEntryList.GetCount();
@@ -11545,7 +11545,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 {
                     SSUBENTRY sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SelPos);
                     COPY_DATA(pbyTemp, &(sSubEntry.m_unSubEntryID), sizeof(UINT));
-                    _tcscpy(acName, sSubEntry.m_omSubEntryName.GetBuffer(MAX_CHAR));
+                    strcpy_s(acName, sSubEntry.m_omSubEntryName.GetBuffer(MAX_CHAR));
                     COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
                 }
             }
@@ -11602,7 +11602,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
                 COPY_DATA(pbyTemp, &(sMainEntry.m_unMainEntryID), sizeof(UINT));
                 TCHAR acName[MAX_PATH] = {_T('\0')};
-                _tcscpy(acName, sMainEntry.m_omMainEntryName.GetBuffer(MAX_PATH));
+                strcpy_s(acName, sMainEntry.m_omMainEntryName.GetBuffer(MAX_PATH));
                 COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
 
                 UINT unSelCount = sMainEntry.m_odSelEntryList.GetCount();
@@ -11612,7 +11612,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 {
                     SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SelPos);
                     COPY_DATA(pbyTemp, &(sSubEntry.m_unSubEntryID), sizeof(UINT));
-                    _tcscpy(acName, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
+                    strcpy_s(acName, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
                     COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
                 }
             }
@@ -11721,7 +11721,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 {
                     CString omDbName = omDbNames.GetAt(i);
                     TCHAR acName[MAX_PATH] = {_T('\0')};
-                    _tcscpy(acName, omDbName.GetBuffer(MAX_CHAR));
+                    strcpy_s(acName, omDbName.GetBuffer(MAX_CHAR));
 
                     COPY_DATA(pbyTemp, acName, (sizeof (TCHAR) * MAX_PATH));
                 }
@@ -11754,7 +11754,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 {
                     CString omDbName = omDbNames.GetAt(i);
                     TCHAR acName[MAX_PATH] = {_T('\0')};
-                    _tcscpy(acName, omDbName.GetBuffer(MAX_PATH));
+                    strcpy_s(acName, omDbName.GetBuffer(MAX_PATH));
 
                     COPY_DATA(pbyTemp, acName, (sizeof (TCHAR) * MAX_PATH));
                 }
@@ -12394,7 +12394,7 @@ HRESULT CMainFrame::ProcessJ1939Interfaces(void)
                     J1939_MONITOR_NODE, J1939_ECU_NAME, 0, m_sJ1939ClientParam.m_dwClientId);
             if (Result == S_OK || Result == ERR_CLIENT_EXISTS)
             {
-                _tcscpy(m_sJ1939ClientParam.m_acName, J1939_MONITOR_NODE);
+                strcpy_s(m_sJ1939ClientParam.m_acName, J1939_MONITOR_NODE);
                 m_sJ1939ClientParam.m_unEcuName = J1939_ECU_NAME;
 				m_podMsgWndThread->vUpdateClientID(J1939, m_sJ1939ClientParam.m_dwClientId);
 				m_podMsgWndThread->vSetDILInterfacePointer(J1939, (void**)&(sg_pouIJ1939DIL));
@@ -12430,7 +12430,7 @@ HRESULT CMainFrame::ProcessJ1939Interfaces(void)
 
                 CString omVerStr(_T(""));       // First get the version information
                 omVerStr.Format(IDS_VERSION);   // string from the rsource
-				_tcscpy(ouParam.m_acVersion, omVerStr.GetBuffer(MAX_CHAR));
+				strcpy_s(ouParam.m_acVersion, omVerStr.GetBuffer(MAX_CHAR));
 
                 ouParam.m_pILog = &m_ouWrapperLogger;
                 ouParam.dwClientID = m_sJ1939ClientParam.m_dwClientId;

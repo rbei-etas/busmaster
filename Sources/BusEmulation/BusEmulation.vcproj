@@ -61,7 +61,6 @@
 				UsePrecompiledHeader="1"
 				PrecompiledHeaderThrough="stdafx_BusSim.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -157,7 +156,6 @@
 				UsePrecompiledHeader="1"
 				PrecompiledHeaderThrough="stdafx_BusSim.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 			/>
 			<Tool

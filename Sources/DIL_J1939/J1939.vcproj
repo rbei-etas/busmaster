@@ -54,7 +54,6 @@
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderThrough="DIL_J1939_stdafx.h"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -144,7 +143,6 @@
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderThrough="DIL_J1939_stdafx.h"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 			/>
 			<Tool

@@ -245,7 +245,7 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
     {
 		//Set the default selection as 70% and update the controller structure
         m_omCtrlSamplePoint.SetCurSel (7);			
-		_tcscpy(m_pControllerDetails->m_omStrSamplePercentage , "70");
+		strcpy_s(m_pControllerDetails->m_omStrSamplePercentage , "70");
     }
     nIndex = m_omCtrlSJW.FindStringExact (-1, m_pControllerDetails->m_omStrSjw);
     if (CB_ERR != nIndex)
@@ -918,17 +918,17 @@ void CChangeRegisters_CAN_ETAS_BOA::vUpdateControllerDetails()
         // Update controller information
         m_pControllerDetails[ m_nLastSelection ].m_nItemUnderFocus   =
                                                             nItemUnderFocus;
-        _tcscpy(m_pControllerDetails[ m_nLastSelection ].m_omStrBaudrate, m_omStrEditBaudRate.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[ m_nLastSelection ].m_omStrBaudrate, m_omStrEditBaudRate.GetBuffer(MAX_PATH));
         //m_pControllerDetails[ m_nLastSelection ].m_omStrClock        =
         //                                                    m_omStrComboClock;
-        _tcscpy(m_pControllerDetails[m_nLastSelection].m_omStrCNF1, m_omStrEditCNF1.GetBuffer(MAX_PATH));
-        _tcscpy(m_pControllerDetails[m_nLastSelection].m_omStrCNF2, m_omStrEditCNF2.GetBuffer(MAX_PATH));
-        _tcscpy(m_pControllerDetails[m_nLastSelection].m_omStrCNF3, m_omStrEditCNF3.GetBuffer(MAX_PATH));
-        _stprintf(m_pControllerDetails[m_nLastSelection].m_omStrClock, _T("%d"), m_unCombClock);
-        _tcscpy(m_pControllerDetails[ m_nLastSelection ].m_omStrSampling, m_omStrComboSampling.GetBuffer(MAX_PATH));
-        _tcscpy(m_pControllerDetails[ m_nLastSelection ].m_omStrWarningLimit, m_omStrEditWarningLimit.GetBuffer(MAX_PATH));
-        _tcscpy(m_pControllerDetails[ m_nLastSelection ].m_omStrSamplePercentage, m_omStrSamplePoint.GetBuffer(MAX_PATH));
-		_tcscpy(m_pControllerDetails[ m_nLastSelection ].m_omStrSjw, m_omStrSJW.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[m_nLastSelection].m_omStrCNF1, m_omStrEditCNF1.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[m_nLastSelection].m_omStrCNF2, m_omStrEditCNF2.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[m_nLastSelection].m_omStrCNF3, m_omStrEditCNF3.GetBuffer(MAX_PATH));
+        sprintf_s(m_pControllerDetails[m_nLastSelection].m_omStrClock, _T("%d"), m_unCombClock);
+        strcpy_s(m_pControllerDetails[ m_nLastSelection ].m_omStrSampling, m_omStrComboSampling.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[ m_nLastSelection ].m_omStrWarningLimit, m_omStrEditWarningLimit.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[ m_nLastSelection ].m_omStrSamplePercentage, m_omStrSamplePoint.GetBuffer(MAX_PATH));
+        strcpy_s(m_pControllerDetails[ m_nLastSelection ].m_omStrSjw, m_omStrSJW.GetBuffer(MAX_PATH));
     }
     else
     {
@@ -998,36 +998,36 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::bSetFilterFromCom(BOOL  bExtended, DWORD  dB
         CString omStrTempByte;
         // Create Code
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte4[bExtended], 
+        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte4[bExtended], 
             omStrTempByte.GetBuffer(MAX_PATH));
 
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId >> nShift)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte3[bExtended], 
+        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte3[bExtended], 
             omStrTempByte.GetBuffer(MAX_PATH));
 
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId >> nShift * 2)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte2[bExtended],
+        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte2[bExtended],
             omStrTempByte.GetBuffer(MAX_PATH));
 
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId >> nShift * 3)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte1[bExtended],
+        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte1[bExtended],
             omStrTempByte.GetBuffer(MAX_PATH));
 
         // Create Mask
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte4[bExtended],
+        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte4[bExtended],
             omStrTempByte.GetBuffer(MAX_PATH));
 
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId >> nShift)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte3[bExtended],
+        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte3[bExtended],
             omStrTempByte.GetBuffer(MAX_PATH));
 
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId >> nShift * 2)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte2[bExtended],
+        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte2[bExtended],
             omStrTempByte.GetBuffer(MAX_PATH));
 
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId >> nShift * 3)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte1[bExtended],
+        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte1[bExtended],
             omStrTempByte.GetBuffer(MAX_PATH));
 
         m_pControllerDetails[ unIndex ].m_bAccFilterMode = bExtended;

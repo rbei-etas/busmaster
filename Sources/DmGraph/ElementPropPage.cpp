@@ -289,7 +289,7 @@ LRESULT CElementPropPage::OnGetdispinfoElement_list(int idCtrl, LPNMHDR pnmh, BO
 			return hr;
 		
 		USES_CONVERSION;
-		_sntprintf(pHmLv->item.pszText, pHmLv->item.cchTextMax, _T("%s"), OLE2T(bsName));
+		sprintf_s((char *) pHmLv->item.pszText, pHmLv->item.cchTextMax, "%s", OLE2T(bsName));
 	}
 	return 0;
 }

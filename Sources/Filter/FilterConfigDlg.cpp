@@ -768,7 +768,7 @@ void CFilterConfigDlg::vUpdateFromFilterName(int nItem, int nSubItem)
                 psTemp = SFILTERSET::psGetFilterSetPointer(m_psFilterApplied->m_psFilters, 
                                     m_psFilterApplied->m_ushTotal,m_omStrSelectedFilterNameBeforeEdit.GetBuffer(MAX_PATH));
                 ASSERT(psTemp != NULL);
-                _tcscpy(psTemp->m_sFilterName.m_acFilterName, omStrNewName.GetBuffer(MAX_PATH));
+                strcpy_s(psTemp->m_sFilterName.m_acFilterName, omStrNewName.GetBuffer(MAX_PATH));
                 m_omStrSelectedFilterNameBeforeEdit = omStrNewName;
             }
         }
@@ -1903,7 +1903,7 @@ void CFilterConfigDlg::OnBtnAdd()
         {
             psSetIndex->m_sFilterName.m_bFilterType = 0;  // Stop Filter
             // Add the filter in to the map
-            _tcscpy(psSetIndex->m_sFilterName.m_acFilterName, omStrFilterName.GetBuffer(MAX_PATH));
+            strcpy_s(psSetIndex->m_sFilterName.m_acFilterName, omStrFilterName.GetBuffer(MAX_PATH));
             ++(m_psFilterApplied->m_ushTotal);
 
             m_psFilterApplied->m_psFilters = psNewSet;

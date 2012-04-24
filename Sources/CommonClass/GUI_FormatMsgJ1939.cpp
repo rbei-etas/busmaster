@@ -128,15 +128,15 @@ void CFormatMsgJ1939::vFormatDataAndId(BYTE bExprnFlag,
 {
 	if (IS_NUM_HEX_SET(bExprnFlag))
     {
-        _stprintf(psJ1939FData->m_acPGNHex, FORMAT_PGN_ID_HEX, 
+        sprintf_s(psJ1939FData->m_acPGNHex, FORMAT_PGN_ID_HEX, 
                   psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN());
 
-		_stprintf(psJ1939FData->m_acMsgIDHex, FORMAT_STR_ID_HEX, psJ1939FData->m_dwMsgID);
+		sprintf_s(psJ1939FData->m_acMsgIDHex, FORMAT_STR_ID_HEX, psJ1939FData->m_dwMsgID);
         USHORT j  = 0;  //j is declared outside the for loop.
         for (USHORT i = 0; i < psJ1939BData->m_unDLC; i++)
         {
             BYTE CurrDat = *(psJ1939BData->m_pbyData + i);
-            _stprintf(&(psJ1939FData->m_pcDataHex[j]), FORMAT_STR_DATA_HEX, CurrDat);
+            sprintf_s(&(psJ1939FData->m_pcDataHex[j]), sizeof(psJ1939FData->m_pcDataHex[j]), FORMAT_STR_DATA_HEX, CurrDat);
             j += 3;
         }
         psJ1939FData->m_pcDataHex[j] = L'\0';
@@ -144,15 +144,15 @@ void CFormatMsgJ1939::vFormatDataAndId(BYTE bExprnFlag,
 
     if (IS_NUM_DEC_SET(bExprnFlag))
     {
-        _stprintf(psJ1939FData->m_acPGNDec, FORMAT_PGN_ID_DEC, 
+        sprintf_s(psJ1939FData->m_acPGNDec, FORMAT_PGN_ID_DEC, 
                   psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN());
 
-		_stprintf(psJ1939FData->m_acMsgIDDec, FORMAT_STR_ID_DEC, psJ1939FData->m_dwMsgID);
+		sprintf_s(psJ1939FData->m_acMsgIDDec, FORMAT_STR_ID_DEC, psJ1939FData->m_dwMsgID);
         USHORT j = 0;   // j is declared outside of the for loop
         for (USHORT i = 0; i < psJ1939BData->m_unDLC; i++)
         {
             BYTE CurrDat = *(psJ1939BData->m_pbyData + i);
-            _stprintf(&(psJ1939FData->m_pcDataDec[j]), FORMAT_STR_DATA_DEC, CurrDat);
+            sprintf_s(&(psJ1939FData->m_pcDataDec[j]), sizeof(psJ1939FData->m_pcDataDec[j]), FORMAT_STR_DATA_DEC, CurrDat);
 			psJ1939FData->m_pcDataDec[j + 3] = L' ';
             j += 4;
         }
@@ -245,22 +245,22 @@ void CFormatMsgJ1939::vFormatJ1939DataMsg(PSTJ1939_MSG psJ1939BData,
     TYPE_CHANNEL CurrChannel = psJ1939BData->m_sMsgProperties.m_byChannel;
     if ((CurrChannel >= CHANNEL_CAN_MIN) && (CurrChannel <= CHANNEL_CAN_MAX ))
     {
-        _stprintf(psJ1939FData->m_acChannel, _T("%d"), CurrChannel);
+        sprintf_s(psJ1939FData->m_acChannel, _T("%d"), CurrChannel);
     }
 
     if (IS_NUM_HEX_SET(bExprnFlag_Log))
     {
-        _stprintf(psJ1939FData->m_acSrcHex, FORMAT_STR_DATA_HEX, psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_bySrcAddress);
-        _stprintf(psJ1939FData->m_acDestHex, FORMAT_STR_DATA_HEX, psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Specific);
+        sprintf_s(psJ1939FData->m_acSrcHex, FORMAT_STR_DATA_HEX, psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_bySrcAddress);
+        sprintf_s(psJ1939FData->m_acDestHex, FORMAT_STR_DATA_HEX, psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Specific);
     }
 
     if (IS_NUM_DEC_SET(bExprnFlag_Log))
     {
-        _stprintf(psJ1939FData->m_acSrcDec, FORMAT_STR_DATA_DEC, psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_bySrcAddress);
-        _stprintf(psJ1939FData->m_acDestDec, FORMAT_STR_DATA_DEC, psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Specific);
+        sprintf_s(psJ1939FData->m_acSrcDec, FORMAT_STR_DATA_DEC, psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_bySrcAddress);
+        sprintf_s(psJ1939FData->m_acDestDec, FORMAT_STR_DATA_DEC, psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Specific);
     }
 
-    _stprintf(psJ1939FData->m_acPriority, FORMAT_STR_DATA_DEC, psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_uPGN.m_sPGN.m_byPriority);
+    sprintf_s(psJ1939FData->m_acPriority, FORMAT_STR_DATA_DEC, psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_uPGN.m_sPGN.m_byPriority);
     if (DIR_RX == psJ1939BData->m_sMsgProperties.m_eDirection)
     {
         psJ1939FData->m_acMsgDir[0] = L'R';
@@ -273,7 +273,7 @@ void CFormatMsgJ1939::vFormatJ1939DataMsg(PSTJ1939_MSG psJ1939BData,
     {
         ASSERT(FALSE);
     }
-    _itot(psJ1939BData->m_unDLC, psJ1939FData->m_acDataLen, 10);
+    _itoa_s(psJ1939BData->m_unDLC, psJ1939FData->m_acDataLen, 10);
 
     vFormatTime(bExprnFlag_Log, psJ1939BData, psJ1939FData);
     vFormatDataAndId(bExprnFlag_Log, psJ1939BData, psJ1939FData);

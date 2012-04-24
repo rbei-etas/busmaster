@@ -377,7 +377,7 @@ if (bRegister)
         {
         //First slot is reserved to monitor node
         ClientID = 1;
-        _tcscpy(sg_asClientToBufMap[0].m_acClientName, pacClientName);
+        strcpy_s(sg_asClientToBufMap[0].m_acClientName, pacClientName);
         sg_asClientToBufMap[0].m_dwClientID = ClientID;
         sg_asClientToBufMap[0].m_unBufCount = 0;
         }
@@ -388,7 +388,7 @@ if (bRegister)
         else
           Index = sg_unClientCnt;
         ClientID = dwGetAvailableClientSlot();
-        _tcscpy(sg_asClientToBufMap[Index].m_acClientName, pacClientName);
+        strcpy_s(sg_asClientToBufMap[Index].m_acClientName, pacClientName);
         sg_asClientToBufMap[Index].m_dwClientID = ClientID;
         sg_asClientToBufMap[Index].m_unBufCount = 0;
         }
@@ -542,7 +542,7 @@ nCount = 1;
 //set the current number of channels
 sg_nNoOfChannels = 1;
 asSelHwInterface[0].m_dwIdInterface = 0;
-_stprintf(asSelHwInterface[0].m_acDescription, _T("0"));
+sprintf_s(asSelHwInterface[0].m_acDescription, _T("0"));
 sg_bCurrState = STATE_HW_INTERFACE_LISTED;
 return(S_OK);
 }
@@ -610,18 +610,18 @@ else
   cfg.CanSpeed = 0;
   cfg.CanBtrValue = _tcstol(cntrl[0].m_omStrBTR0, &str, 0);
   }
-_tcscpy(cfg.CanSnrStr, cntrl[0].m_omHardwareDesc);
+strcpy_s(cfg.CanSnrStr, cntrl[0].m_omHardwareDesc);
 if (ShowCanSetup(sg_hOwnerWnd, &cfg))
   {
-  _tcscpy(cntrl[0].m_omHardwareDesc, cfg.CanSnrStr);
+  strcpy_s(cntrl[0].m_omHardwareDesc, cfg.CanSnrStr);
   if (cfg.CanBtrValue)
     {
     cntrl[0].m_omStrBaudrate[0] = '\0';
-    _stprintf(cntrl[0].m_omStrBTR0, _T("%d"), cfg.CanBtrValue);
+    sprintf_s(cntrl[0].m_omStrBTR0, _T("%d"), cfg.CanBtrValue);
     }
   else
     {
-    _stprintf(cntrl[0].m_omStrBaudrate, _T("%d"), cfg.CanSpeed);
+    sprintf_s(cntrl[0].m_omStrBaudrate, _T("%d"), cfg.CanSpeed);
     cntrl[0].m_omStrBTR0[0] = '\0';
     }
   if ((result = CAN_SetConfigData(InitData, 1)) == S_OK)
@@ -655,7 +655,7 @@ else
   sg_MhsCanCfg.CanSpeed = 0;
   sg_MhsCanCfg.CanBtrValue = _tcstol(cntrl[0].m_omStrBTR0, &str, 0);
   }
-_tcscpy(sg_MhsCanCfg.CanSnrStr, cntrl[0].m_omHardwareDesc);
+strcpy_s(sg_MhsCanCfg.CanSnrStr, cntrl[0].m_omHardwareDesc);
 
 // **** Übertragungsgeschwindigkeit einstellen
 if (sg_MhsCanCfg.CanSpeed)
@@ -728,7 +728,7 @@ else // provide it to everybody
 }
 
 // Plug & Play Event-Funktion
-static void CALLBACK_TYPE CanPnPEvent(uint32_t index, int32_t status)
+static void CALLBACK_TYPE CanPnPEvent(uint32_t /*index*/, int32_t status)
 {
 if (status)
   {
@@ -742,7 +742,7 @@ else
 
 
 // Status Event-Funktion
-static void CALLBACK_TYPE CanStatusEvent(uint32_t index, struct TDeviceStatus *status)
+static void CALLBACK_TYPE CanStatusEvent(uint32_t /*index*/, struct TDeviceStatus * /*status*/)
 {
 
 }
@@ -797,7 +797,7 @@ char str[100];
 
 //VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 if (!str_has_char(sg_MhsCanCfg.CanSnrStr))
-  sprintf(str, "Snr=%s", sg_MhsCanCfg.CanSnrStr);
+  sprintf_s(str, "Snr=%s", sg_MhsCanCfg.CanSnrStr);
 else
   str[0]='\0';
 if (!CanDeviceOpen(0, str))
@@ -957,7 +957,7 @@ return(S_OK);
 * \param[out]    acErrorStr contains error string
 * \return        S_OK for success, S_FALSE for failure
 */
-HRESULT CDIL_CAN_MHS::CAN_GetLastErrorString(string& acErrorStr)
+HRESULT CDIL_CAN_MHS::CAN_GetLastErrorString(string& /*acErrorStr*/)
 {
     return WARN_DUMMY_API;
 }

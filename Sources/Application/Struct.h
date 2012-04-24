@@ -540,7 +540,7 @@ struct tagModuleFilter
 
     tagModuleFilter& operator=(tagModuleFilter& TempObj)
     {
-        strcpy(m_omFilterName, TempObj.m_omFilterName);
+        strcpy_s(m_omFilterName, TempObj.m_omFilterName);
         m_bEnabled = TempObj.m_bEnabled;
         return *this;
     }

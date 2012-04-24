@@ -53,7 +53,6 @@
 				UsePrecompiledHeader="1"
 				PrecompiledHeaderThrough="StdAfx_ProjectConfiguration.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -144,7 +143,6 @@
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 			/>
 			<Tool

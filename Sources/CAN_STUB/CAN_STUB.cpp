@@ -330,7 +330,7 @@ static void GetSystemErrorString()
         NULL );
     if (dwResult <= 0)
     {
-        strcpy(sg_acErrStr, "system error message retrieval operation failed");
+        strcpy_s(sg_acErrStr, "system error message retrieval operation failed");
     }
     else
     {
@@ -531,12 +531,12 @@ HRESULT CDIL_CAN_STUB::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger*
         }
         else
         {
-            strcpy(sg_acErrStr, "Null argument value(s) in SetAppParams");
+            strcpy_s(sg_acErrStr, "Null argument value(s) in SetAppParams");
         }
     }
     else
     {
-        strcpy(sg_acErrStr, "Improper current state to call SetAppParams");
+        strcpy_s(sg_acErrStr, "Improper current state to call SetAppParams");
     }
 
     return hResult;
@@ -548,7 +548,7 @@ HRESULT CDIL_CAN_STUB::CAN_DisplayConfigDlg(PCHAR& InitData, int& Length)
     char acInitFile[MAX_PATH] = {'\0'};
 
     // Assuming that InitData points to a CHAR array with size MAX_PATH
-    strcpy(acInitFile, InitData);
+    strcpy_s(acInitFile, InitData);
 
     int nResult = WARNING_NOTCONFIRMED;//DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DILStub, 
                                           //acInitFile, DRIVER_STUB);
@@ -687,7 +687,7 @@ HRESULT CDIL_CAN_STUB::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, TCHAR*
             INT Index = 0;
             if (!bClientExist(pacClientName, Index))
             {   
-                _tcscpy(sg_asClientToBufMap[sg_unClientCnt].pacClientName, pacClientName);
+                strcpy_s(sg_asClientToBufMap[sg_unClientCnt].pacClientName, pacClientName);
                 if (PerformAnOperation(REGISTER) == S_OK)
                 {
                     ClientID = sg_asClientToBufMap[sg_unClientCnt].dwClientID = sg_ushTempClientID;
@@ -822,7 +822,7 @@ HRESULT CDIL_CAN_STUB::CAN_SetConfigData(PCHAR ConfigFile, int /*Length*/)
         case STATE_RESET:
         default:
         {
-            strcpy(sg_acErrStr, "CAN_STUB_SetConfigData called at improper state");
+            strcpy_s(sg_acErrStr, "CAN_STUB_SetConfigData called at improper state");
             return S_FALSE;
         }
         break;
@@ -831,7 +831,7 @@ HRESULT CDIL_CAN_STUB::CAN_SetConfigData(PCHAR ConfigFile, int /*Length*/)
 	/* Fill the hardware description details */
     for (UINT nCount = 0; nCount < defNO_OF_CHANNELS; nCount++)
 	{		
-		_tcscpy(((PSCONTROLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc, 
+		strcpy_s(((PSCONTROLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc, 
 				"Simulation");		
 	}    
 
@@ -1029,8 +1029,8 @@ HRESULT CDIL_CAN_STUB::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, 
     for (UINT i = 0; i < CHANNEL_ALLOWED; i++)
     {
         sSelHwInterface[i].m_dwIdInterface = 0x100;
-        strcpy(sSelHwInterface[i].m_acNameInterface, "Simulation");
-        strcpy(sSelHwInterface[i].m_acDescription, "A simulation engine to create a virtual bus system");
+        strcpy_s(sSelHwInterface[i].m_acNameInterface, "Simulation");
+        strcpy_s(sSelHwInterface[i].m_acDescription, "A simulation engine to create a virtual bus system");
     }
     nCount = CHANNEL_ALLOWED;
     return S_OK;
@@ -1212,7 +1212,7 @@ HRESULT Worker_Connect(ISimENG* pISimENGLoc, Base_WrapperErrorLogger* pIlogLoc)
 {
     if (GetCurrState() == STATE_PRIMORDIAL)
     {
-        strcpy(sg_acErrStr, "CAN_STUB_Connect called at STATE_PRIMORDIAL");
+        strcpy_s(sg_acErrStr, "CAN_STUB_Connect called at STATE_PRIMORDIAL");
         return S_FALSE;
     }
     else if (GetCurrState() != STATE_INITIALISED)
@@ -1252,7 +1252,7 @@ HRESULT Worker_Disconnect(ISimENG* /*pISimENGLoc*/, Base_WrapperErrorLogger* pIl
 {
     if (GetCurrState() == STATE_PRIMORDIAL)
     {
-        strcpy(sg_acErrStr, "CAN_STUB_DeselectHwInterface called at STATE_PRIMORDIAL");
+        strcpy_s(sg_acErrStr, "CAN_STUB_DeselectHwInterface called at STATE_PRIMORDIAL");
         return S_FALSE;
     }
     else if (GetCurrState() == STATE_RESET)

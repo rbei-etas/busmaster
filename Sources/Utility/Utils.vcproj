@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="Utils"
 	ProjectGUID="{4A20171C-51DB-4E82-BCE0-5E3EEB070566}"
 	Keyword="Win32Proj"
@@ -52,7 +52,6 @@
 				UsePrecompiledHeader="1"
 				PrecompiledHeaderThrough="Utils_stdafx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -118,7 +117,6 @@
 				UsePrecompiledHeader="1"
 				PrecompiledHeaderThrough="Utils_stdafx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 			/>
 			<Tool

@@ -2782,7 +2782,7 @@ char* LPCTSTRToCharArray(LPCTSTR val)
 	char* c = new char[lenA + 1]; 
 	if (NULL != ansistr)
 	{
-		strcpy(c,ansistr);
+		strcpy(c, ansistr);
 		//...use the strings, then free their memory:
 		delete[] ansistr;
 	}
@@ -2923,7 +2923,7 @@ STDMETHODIMP CDMGraphCtrl::GenerateCSVReport(LPCTSTR pFilename)
 
 		char* pchFileName = NULL;
 		pchFileName = LPCTSTRToCharArray(pFilename);
-        pFile = fopen( pchFileName,"w+");
+        fopen_s(&pFile, pchFileName,"w+");
 		delete pchFileName;
         // If successful
         if( pFile != NULL )
@@ -3458,7 +3458,7 @@ void CDMGraphCtrl::vSendCursorDetails()
 		hr = spGraphCollection->get_Item(nIndex, &spItem);
 		spItem.QueryInterface(&spCursor);
 
-		POINT ptCursor;
+		/* POINT ptCursor; */
 		DOUBLE dLogX,dLogY;
 		short shCursorID;
 		spCursor->get_X(&dLogX);
@@ -3622,7 +3622,7 @@ void CDMGraphCtrl::UpdateToolTip(const LPPOINT pt, WPARAM wParam)
 				m_pAxis[ VerticalY ]->FormatAxisLabel(pElement->m_PointList[found_j].y, &bsY);
 				pElement->get_Name(&bsName);
 
-				_sntprintf(m_ToolTipText, TOOLTIP_TXT_LEN, _T("%s: %s, %s"), bsName, bsX, bsY);
+				sprintf_s((char *) m_ToolTipText, TOOLTIP_TXT_LEN, "%s: %s, %s", (char *) bsName, bsX, bsY);
 				SysFreeString(bsX);
 				SysFreeString(bsY);
 				SysFreeString(bsName);
@@ -3653,7 +3653,7 @@ void CDMGraphCtrl::UpdateToolTip(const LPPOINT pt, WPARAM wParam)
 			m_pAxis[ VerticalY ]->FormatAxisLabel(ry, &bsY);
 			pCursor->get_Name(&bsName);
 
-			_sntprintf(m_ToolTipText, TOOLTIP_TXT_LEN, _T("%s: %s, %s"), bsName, bsX, bsY);
+			sprintf_s((char *) m_ToolTipText, TOOLTIP_TXT_LEN, "%s: %s, %s", (char *) bsName, bsX, bsY);
 
 			SysFreeString(bsX);
 			SysFreeString(bsY);
