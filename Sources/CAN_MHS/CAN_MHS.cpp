@@ -25,7 +25,7 @@
 #define WIN32_LEAN_AND_MEAN /* Exclude rarely-used stuff from Windows headers */
 #define VC_EXTRALEAN        /* Exclude rarely-used stuff from Windows headers */
 
-#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
+#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS  // some CString constructors will be explicit
 
 /* MFC includes */
 #include <afxwin.h>         // MFC core and standard components
@@ -96,9 +96,8 @@ CCAN_MHS theApp;
  */
 BOOL CCAN_MHS::InitInstance()
 {
-CWinApp::InitInstance();
-
-return(TRUE);
+    CWinApp::InitInstance();
+    return(TRUE);
 }
 
 /**
@@ -120,29 +119,33 @@ static char CanInitStr[] = {"MainThreadPriority=4;CanRxDMode=1;CanTxDFifoSize=20
  * Starts code for the state machine
  */
 enum
-  {
-  STATE_DRIVER_SELECTED    = 0x0,
-  STATE_HW_INTERFACE_LISTED,
-  STATE_HW_INTERFACE_SELECTED,
-  STATE_CONNECTED
-  };
+{
+    STATE_DRIVER_SELECTED    = 0x0,
+    STATE_HW_INTERFACE_LISTED,
+    STATE_HW_INTERFACE_SELECTED,
+    STATE_CONNECTED
+};
 
 
-typedef struct tagClientBufMap
-  {
-  DWORD m_dwClientID;
-  CBaseCANBufFSE* m_pClientBuf[MAX_BUFF_ALLOWED];
-  TCHAR m_acClientName[MAX_PATH];
-  UINT m_unBufCount;
-  tagClientBufMap()
-   {
-    m_dwClientID = 0;
-    m_unBufCount = 0;
-    memset(m_acClientName, 0, sizeof (TCHAR) * MAX_PATH);
-    for (INT i = 0; i < MAX_BUFF_ALLOWED; i++)
-      m_pClientBuf[i] = NULL;
+class SCLIENTBUFMAP
+{
+public:
+    DWORD m_dwClientID;
+    CBaseCANBufFSE* m_pClientBuf[MAX_BUFF_ALLOWED];
+    string m_acClientName;
+    UINT m_unBufCount;
+    SCLIENTBUFMAP()
+    {
+        m_dwClientID = 0;
+        m_unBufCount = 0;
+        m_acClientName = "";
+
+        for (INT i = 0; i < MAX_BUFF_ALLOWED; i++)
+        {
+            m_pClientBuf[i] = NULL;
+        }
     }
-  }SCLIENTBUFMAP;
+};
 
 
 /**
@@ -162,7 +165,7 @@ typedef struct tagAckMap
     {
         return ((m_MsgID == RefObj.m_MsgID) && (m_Channel == RefObj.m_Channel));
     }
-}SACK_MAP;
+} SACK_MAP;
 
 typedef std::list<SACK_MAP> CACK_MAP_LIST;
 static CACK_MAP_LIST sg_asAckMapBuf;
@@ -178,41 +181,41 @@ static struct TMhsCanCfg sg_MhsCanCfg;
 class CDIL_CAN_MHS : public CBaseDIL_CAN_Controller
 {
 public:
-	/* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
-	HRESULT CAN_PerformInitOperations(void);
-	HRESULT CAN_PerformClosureOperations(void);
-	HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
-	HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
-	HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
-	HRESULT CAN_DeselectHwInterface(void);
-	HRESULT CAN_DisplayConfigDlg(PCHAR& InitData, int& Length);
-	HRESULT CAN_SetConfigData(PCHAR pInitData, int Length);
-	HRESULT CAN_StartHardware(void);
-	HRESULT CAN_StopHardware(void);
-	HRESULT CAN_ResetHardware(void);
-	HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
-	HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
-	HRESULT CAN_GetLastErrorString(string& acErrorStr);
-	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
-	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
+    /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
+    HRESULT CAN_PerformInitOperations(void);
+    HRESULT CAN_PerformClosureOperations(void);
+    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
+    HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
+    HRESULT CAN_DeselectHwInterface(void);
+    HRESULT CAN_DisplayConfigDlg(PCHAR& InitData, int& Length);
+    HRESULT CAN_SetConfigData(PCHAR pInitData, int Length);
+    HRESULT CAN_StartHardware(void);
+    HRESULT CAN_StopHardware(void);
+    HRESULT CAN_ResetHardware(void);
+    HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
+    HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
+    HRESULT CAN_GetLastErrorString(string& acErrorStr);
+    HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
+    HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
-	// Specific function set
-	HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
-	HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
-	HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
-	HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
-	HRESULT CAN_LoadDriverLibrary(void);
-	HRESULT CAN_UnloadDriverLibrary(void);
+    // Specific function set
+    HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
+    HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
+    HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
+    HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
+    HRESULT CAN_LoadDriverLibrary(void);
+    HRESULT CAN_UnloadDriverLibrary(void);
 };
 
-CDIL_CAN_MHS *g_pouDIL_CAN_MHS = NULL;
+CDIL_CAN_MHS* g_pouDIL_CAN_MHS = NULL;
 
 
 #define CALLBACK_TYPE __stdcall
 
 static void CALLBACK_TYPE CanPnPEvent(uint32_t index, int32_t status);
-static void CALLBACK_TYPE CanStatusEvent(uint32_t index, struct TDeviceStatus *status);
-static void CALLBACK_TYPE CanRxEvent(uint32_t index, struct TCanMsg *msg, int32_t count);
+static void CALLBACK_TYPE CanStatusEvent(uint32_t index, struct TDeviceStatus* status);
+static void CALLBACK_TYPE CanRxEvent(uint32_t index, struct TCanMsg* msg, int32_t count);
 
 static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFSE* pBuf);
 static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED], UINT& unCount, CBaseCANBufFSE* BufferToRemove);
@@ -224,7 +227,7 @@ static BOOL bClientIdExist(const DWORD& dwClientId);
 static DWORD dwGetAvailableClientSlot(void);
 static void vMarkEntryIntoMap(const SACK_MAP& RefObj);
 static BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID);
-static int str_has_char(char *s);
+static int str_has_char(char* s);
 
 
 /**
@@ -234,18 +237,21 @@ static int str_has_char(char *s);
  */
 USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
 {
-HRESULT hResult;
+    HRESULT hResult;
+    hResult = S_OK;
 
-hResult = S_OK;
-if (!g_pouDIL_CAN_MHS)
-  {
-  g_pouDIL_CAN_MHS = new CDIL_CAN_MHS;
-  if (!(g_pouDIL_CAN_MHS))
-    hResult = S_FALSE;
-  }
-*ppvInterface = (void *)g_pouDIL_CAN_MHS; /* Doesn't matter even if g_pouDIL_CAN_MHS is null */
+    if (!g_pouDIL_CAN_MHS)
+    {
+        g_pouDIL_CAN_MHS = new CDIL_CAN_MHS;
 
-return(hResult);
+        if (!(g_pouDIL_CAN_MHS))
+        {
+            hResult = S_FALSE;
+        }
+    }
+
+    *ppvInterface = (void*)g_pouDIL_CAN_MHS;  /* Doesn't matter even if g_pouDIL_CAN_MHS is null */
+    return(hResult);
 }
 
 
@@ -266,12 +272,12 @@ MessageBox(NULL, out, title, MB_ICONEXCLAMATION | MB_OK);
  *
  * Sets the application params.
  */
-HRESULT CDIL_CAN_MHS::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger *pILog)
+HRESULT CDIL_CAN_MHS::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
 {
-sg_hOwnerWnd = hWndOwner;
-sg_pIlog = pILog;
-CAN_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
-return(S_OK);
+    sg_hOwnerWnd = hWndOwner;
+    sg_pIlog = pILog;
+    CAN_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
+    return(S_OK);
 }
 
 
@@ -282,7 +288,7 @@ return(S_OK);
  */
 HRESULT CDIL_CAN_MHS::CAN_UnloadDriverLibrary(void)
 {
-return(S_OK);
+    return(S_OK);
 }
 
 
@@ -293,59 +299,78 @@ return(S_OK);
  */
 HRESULT CDIL_CAN_MHS::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
-HRESULT hResult = S_FALSE;
-UINT unClientIndex;
-UINT i;
+    HRESULT hResult = S_FALSE;
+    UINT unClientIndex;
+    UINT i;
 
-if (ClientID != 0)
-  {
-  if (bGetClientObj(ClientID, unClientIndex))
+    if (ClientID != 0)
     {
-    SCLIENTBUFMAP &sClientObj = sg_asClientToBufMap[unClientIndex];
-    if (bAction == MSGBUF_ADD)
-      {  // **** Add msg buffer
-      if (pBufObj)
+        if (bGetClientObj(ClientID, unClientIndex))
         {
-        if (sClientObj.m_unBufCount < MAX_BUFF_ALLOWED)
-          {
-          if (bIsBufferExists(sClientObj, pBufObj) == FALSE)
+            SCLIENTBUFMAP& sClientObj = sg_asClientToBufMap[unClientIndex];
+
+            if (bAction == MSGBUF_ADD)
             {
-            sClientObj.m_pClientBuf[sClientObj.m_unBufCount++] = pBufObj;
-            hResult = S_OK;
+                // **** Add msg buffer
+                if (pBufObj)
+                {
+                    if (sClientObj.m_unBufCount < MAX_BUFF_ALLOWED)
+                    {
+                        if (bIsBufferExists(sClientObj, pBufObj) == FALSE)
+                        {
+                            sClientObj.m_pClientBuf[sClientObj.m_unBufCount++] = pBufObj;
+                            hResult = S_OK;
+                        }
+                        else
+                        {
+                            hResult = ERR_BUFFER_EXISTS;
+                        }
+                    }
+                }
             }
-          else
-            hResult = ERR_BUFFER_EXISTS;
-          }
+            else if (bAction == MSGBUF_CLEAR)
+            {
+                // **** Clear msg buffer
+                if (pBufObj != NULL) //REmove only buffer mentioned
+                {
+                    bRemoveClientBuffer(sClientObj.m_pClientBuf, sClientObj.m_unBufCount, pBufObj);
+                }
+                else // Remove all
+                {
+                    for (i = 0; i < sClientObj.m_unBufCount; i++)
+                    {
+                        sClientObj.m_pClientBuf[i] = NULL;
+                    }
+
+                    sClientObj.m_unBufCount = 0;
+                }
+
+                hResult = S_OK;
+            }
+
+            ////else
+            ////  ASSERT(FALSE);
         }
-      }
-    else if (bAction == MSGBUF_CLEAR)
-      {  // **** Clear msg buffer
-      if (pBufObj != NULL) //REmove only buffer mentioned
-        bRemoveClientBuffer(sClientObj.m_pClientBuf, sClientObj.m_unBufCount, pBufObj);
-      else // Remove all
+        else
         {
-        for (i = 0; i < sClientObj.m_unBufCount; i++)
-          sClientObj.m_pClientBuf[i] = NULL;
-        sClientObj.m_unBufCount = 0;
+            hResult = ERR_NO_CLIENT_EXIST;
         }
-      hResult = S_OK;
-      }
-    ////else
-    ////  ASSERT(FALSE);
     }
-  else
-    hResult = ERR_NO_CLIENT_EXIST;
-  }
-else
-  {
-  if (bAction == MSGBUF_CLEAR)
-    {  // **** clear msg buffer
-    for (UINT i = 0; i < sg_unClientCnt; i++)
-      CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].m_dwClientID, NULL);
+    else
+    {
+        if (bAction == MSGBUF_CLEAR)
+        {
+            // **** clear msg buffer
+            for (UINT i = 0; i < sg_unClientCnt; i++)
+            {
+                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].m_dwClientID, NULL);
+            }
+        }
+
+        hResult = S_OK;
     }
-  hResult = S_OK;
-  }
-return(hResult);
+
+    return(hResult);
 }
 
 
@@ -357,56 +382,70 @@ return(hResult);
  */
 HRESULT CDIL_CAN_MHS::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
 {
-HRESULT hResult = S_FALSE;
-INT Index;
+    HRESULT hResult = S_FALSE;
+    INT Index;
 
-if (bRegister)
-  {
-  if (sg_unClientCnt < MAX_CLIENT_ALLOWED)
+    if (bRegister)
     {
-    Index = 0;
-    if (!bClientExist(pacClientName, Index))
-      {
-      //Currently store the client information
-      if (_tcscmp(pacClientName, CAN_MONITOR_NODE) == 0)
+        if (sg_unClientCnt < MAX_CLIENT_ALLOWED)
         {
-        //First slot is reserved to monitor node
-        ClientID = 1;
-        strcpy_s(sg_asClientToBufMap[0].m_acClientName, pacClientName);
-        sg_asClientToBufMap[0].m_dwClientID = ClientID;
-        sg_asClientToBufMap[0].m_unBufCount = 0;
+            Index = 0;
+
+            if (!bClientExist(pacClientName, Index))
+            {
+                //Currently store the client information
+                if (_tcscmp(pacClientName, CAN_MONITOR_NODE) == 0)
+                {
+                    //First slot is reserved to monitor node
+                    ClientID = 1;
+                    sg_asClientToBufMap[0].m_acClientName = pacClientName;
+                    sg_asClientToBufMap[0].m_dwClientID = ClientID;
+                    sg_asClientToBufMap[0].m_unBufCount = 0;
+                }
+                else
+                {
+                    if (!bClientExist(CAN_MONITOR_NODE, Index))
+                    {
+                        Index = sg_unClientCnt + 1;
+                    }
+                    else
+                    {
+                        Index = sg_unClientCnt;
+                    }
+
+                    ClientID = dwGetAvailableClientSlot();
+                    sg_asClientToBufMap[Index].m_acClientName = pacClientName;
+                    sg_asClientToBufMap[Index].m_dwClientID = ClientID;
+                    sg_asClientToBufMap[Index].m_unBufCount = 0;
+                }
+
+                sg_unClientCnt++;
+                hResult = S_OK;
+            }
+            else
+            {
+                ClientID = sg_asClientToBufMap[Index].m_dwClientID;
+                hResult = ERR_CLIENT_EXISTS;
+            }
         }
-      else
-        {
-        if (!bClientExist(CAN_MONITOR_NODE, Index))
-          Index = sg_unClientCnt + 1;
         else
-          Index = sg_unClientCnt;
-        ClientID = dwGetAvailableClientSlot();
-        strcpy_s(sg_asClientToBufMap[Index].m_acClientName, pacClientName);
-        sg_asClientToBufMap[Index].m_dwClientID = ClientID;
-        sg_asClientToBufMap[Index].m_unBufCount = 0;
+        {
+            hResult = ERR_NO_MORE_CLIENT_ALLOWED;
         }
-      sg_unClientCnt++;
-      hResult = S_OK;
-      }
-    else
-      {
-      ClientID = sg_asClientToBufMap[Index].m_dwClientID;
-      hResult = ERR_CLIENT_EXISTS;
-      }
     }
-  else
-    hResult = ERR_NO_MORE_CLIENT_ALLOWED;
-  }
-else
-  {
-  if (bRemoveClient(ClientID))
-    hResult = S_OK;
-  else
-    hResult = ERR_NO_CLIENT_EXIST;
-  }
-return(hResult);
+    else
+    {
+        if (bRemoveClient(ClientID))
+        {
+            hResult = S_OK;
+        }
+        else
+        {
+            hResult = ERR_NO_CLIENT_EXIST;
+        }
+    }
+
+    return(hResult);
 }
 
 
@@ -419,11 +458,10 @@ return(hResult);
  */
 HRESULT CDIL_CAN_MHS::CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus)
 {
-(void)unCntrlStatus;
-(void)hEvent;
-
-//unCntrlStatus = defCONTROLLER_ACTIVE; //Temporary solution. TODO
-return(S_OK);
+    (void)unCntrlStatus;
+    (void)hEvent;
+    //unCntrlStatus = defCONTROLLER_ACTIVE; //Temporary solution. TODO
+    return(S_OK);
 }
 
 /**
@@ -433,46 +471,47 @@ return(S_OK);
  */
 HRESULT CDIL_CAN_MHS::CAN_LoadDriverLibrary(void)
 {
-return(S_OK);
+    return(S_OK);
 }
 
 /**
 * \brief         Performs intial operations.
-*			     Initializes filter, queue, controller config with default values.
+*                Initializes filter, queue, controller config with default values.
 * \param         void
 * \return        S_OK if the open driver call successfull otherwise S_FALSE
 */
 HRESULT CDIL_CAN_MHS::CAN_PerformInitOperations(void)
 {
-HRESULT hResult;
-DWORD dwClientID;
+    HRESULT hResult;
+    DWORD dwClientID;
+    hResult = S_FALSE;
+    sg_MhsCanCfg.CanSnrStr[0] = '\0';
+    sg_MhsCanCfg.CanSpeed = 125;
+    sg_MhsCanCfg.CanBtrValue = 0;
+    /* Create critical section for ensuring thread
+    safeness of read message function */
+    InitializeCriticalSection(&sg_DIL_CriticalSection);
+    /* Register Monitor client */
+    dwClientID = 0;
+    CAN_RegisterClient(TRUE, dwClientID, CAN_MONITOR_NODE);
 
-hResult = S_FALSE;
-sg_MhsCanCfg.CanSnrStr[0] = '\0';
-sg_MhsCanCfg.CanSpeed = 125;
-sg_MhsCanCfg.CanBtrValue = 0;
-/* Create critical section for ensuring thread
-safeness of read message function */
-InitializeCriticalSection(&sg_DIL_CriticalSection);
-/* Register Monitor client */
-dwClientID = 0;
-CAN_RegisterClient(TRUE, dwClientID, CAN_MONITOR_NODE);
-// ------------------------------------
-// Init Driver
-// ------------------------------------
-if (CanInitDriver(CanInitStr) >= 0)
-  {
-  // **** AutoConnect auf 1
-  //CanSetOptions("AutoConnect=1;AutoReopen=0");
-  // **** Event Funktionen setzen
-  CanSetPnPEventCallback(&CanPnPEvent);
-  CanSetStatusEventCallback(&CanStatusEvent);
-  CanSetRxEventCallback(&CanRxEvent);
-  // **** Alle Events freigeben
-  CanSetEvents(EVENT_ENABLE_ALL);
-  hResult = S_OK;
-  }
-return(hResult);
+    // ------------------------------------
+    // Init Driver
+    // ------------------------------------
+    if (CanInitDriver(CanInitStr) >= 0)
+    {
+        // **** AutoConnect auf 1
+        //CanSetOptions("AutoConnect=1;AutoReopen=0");
+        // **** Event Funktionen setzen
+        CanSetPnPEventCallback(&CanPnPEvent);
+        CanSetStatusEventCallback(&CanStatusEvent);
+        CanSetRxEventCallback(&CanRxEvent);
+        // **** Alle Events freigeben
+        CanSetEvents(EVENT_ENABLE_ALL);
+        hResult = S_OK;
+    }
+
+    return(hResult);
 }
 
 
@@ -483,21 +522,23 @@ return(hResult);
 */
 HRESULT CDIL_CAN_MHS::CAN_PerformClosureOperations(void)
 {
-HRESULT hResult = S_OK;
+    HRESULT hResult = S_OK;
+    hResult = CAN_StopHardware();
+    // ------------------------------------
+    // Close driver
+    // ------------------------------------
+    CanDownDriver();
 
-hResult = CAN_StopHardware();
-// ------------------------------------
-// Close driver
-// ------------------------------------
-CanDownDriver();
+    // Remove all the existing clients
+    while (sg_unClientCnt > 0)
+    {
+        bRemoveClient(sg_asClientToBufMap[0].m_dwClientID);
+    }
 
-// Remove all the existing clients
-while (sg_unClientCnt > 0)
-  bRemoveClient(sg_asClientToBufMap[0].m_dwClientID);
-/* Delete the critical section */
-DeleteCriticalSection(&sg_DIL_CriticalSection);
-sg_bCurrState = STATE_DRIVER_SELECTED;
-return(hResult);
+    /* Delete the critical section */
+    DeleteCriticalSection(&sg_DIL_CriticalSection);
+    sg_bCurrState = STATE_DRIVER_SELECTED;
+    return(hResult);
 }
 
 
@@ -512,14 +553,14 @@ return(hResult);
 */
 HRESULT CDIL_CAN_MHS::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
 {
-(void)CurrSysTime;
-(void)TimeStamp;
-(void)QueryTickCount;
-/*CurrSysTime = sg_CurrSysTime;
-TimeStamp   = sg_TimeStamp;
-if(QueryTickCount != NULL)
-  *QueryTickCount = sg_QueryTickCount; */
-return(S_OK);
+    (void)CurrSysTime;
+    (void)TimeStamp;
+    (void)QueryTickCount;
+    /*CurrSysTime = sg_CurrSysTime;
+    TimeStamp   = sg_TimeStamp;
+    if(QueryTickCount != NULL)
+      *QueryTickCount = sg_QueryTickCount; */
+    return(S_OK);
 }
 
 
@@ -531,15 +572,14 @@ return(S_OK);
 */
 HRESULT CDIL_CAN_MHS::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)
 {
-USES_CONVERSION;
-
-nCount = 1;
-//set the current number of channels
-sg_nNoOfChannels = 1;
-asSelHwInterface[0].m_dwIdInterface = 0;
-sprintf_s(asSelHwInterface[0].m_acDescription, _T("0"));
-sg_bCurrState = STATE_HW_INTERFACE_LISTED;
-return(S_OK);
+    USES_CONVERSION;
+    nCount = 1;
+    //set the current number of channels
+    sg_nNoOfChannels = 1;
+    asSelHwInterface[0].m_dwIdInterface = 0;
+    sprintf_s(asSelHwInterface[0].m_acDescription, _T("0"));
+    sg_bCurrState = STATE_HW_INTERFACE_LISTED;
+    return(S_OK);
 }
 
 
@@ -551,12 +591,11 @@ return(S_OK);
 */
 HRESULT CDIL_CAN_MHS::CAN_SelectHwInterface(const INTERFACE_HW_LIST& /*asSelHwInterface*/, INT /*nCount*/)
 {
-USES_CONVERSION;
-
-VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_LISTED, ERR_IMPROPER_STATE);
-/* Check for the success */
-sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
-return(S_OK);
+    USES_CONVERSION;
+    VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_LISTED, ERR_IMPROPER_STATE);
+    /* Check for the success */
+    sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
+    return(S_OK);
 }
 
 
@@ -567,15 +606,11 @@ return(S_OK);
 */
 HRESULT CDIL_CAN_MHS::CAN_DeselectHwInterface(void)
 {
-VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
-
-HRESULT hResult = S_OK;
-
-hResult = CAN_ResetHardware();
-
-sg_bCurrState = STATE_HW_INTERFACE_LISTED;
-
-return hResult;
+    VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
+    HRESULT hResult = S_OK;
+    hResult = CAN_ResetHardware();
+    sg_bCurrState = STATE_HW_INTERFACE_LISTED;
+    return hResult;
 }
 
 
@@ -587,42 +622,49 @@ return hResult;
 */
 HRESULT CDIL_CAN_MHS::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
 {
-(void)Length;
-HRESULT result;
-struct TMhsCanCfg cfg;
-SCONTROLLER_DETAILS* cntrl;
-TCHAR *str;
+    (void)Length;
+    HRESULT result;
+    struct TMhsCanCfg cfg;
+    SCONTROLLER_DETAILS* cntrl;
+    TCHAR* str;
+    result = WARN_INITDAT_NCONFIRM;
+    cntrl = (SCONTROLLER_DETAILS*)InitData;
 
-result = WARN_INITDAT_NCONFIRM;
-cntrl = (SCONTROLLER_DETAILS*)InitData;
-if (!str_has_char(cntrl[0].m_omStrBaudrate))
-  {
-  cfg.CanSpeed = _tcstol(cntrl[0].m_omStrBaudrate, &str, 0);
-  cfg.CanBtrValue = 0;
-  }
-else
-  {
-  cfg.CanSpeed = 0;
-  cfg.CanBtrValue = _tcstol(cntrl[0].m_omStrBTR0, &str, 0);
-  }
-strcpy_s(cfg.CanSnrStr, cntrl[0].m_omHardwareDesc);
-if (ShowCanSetup(sg_hOwnerWnd, &cfg))
-  {
-  strcpy_s(cntrl[0].m_omHardwareDesc, cfg.CanSnrStr);
-  if (cfg.CanBtrValue)
+    if (!str_has_char(cntrl[0].m_omStrBaudrate))
     {
-    cntrl[0].m_omStrBaudrate[0] = '\0';
-    sprintf_s(cntrl[0].m_omStrBTR0, _T("%d"), cfg.CanBtrValue);
+        cfg.CanSpeed = _tcstol(cntrl[0].m_omStrBaudrate, &str, 0);
+        cfg.CanBtrValue = 0;
     }
-  else
+    else
     {
-    sprintf_s(cntrl[0].m_omStrBaudrate, _T("%d"), cfg.CanSpeed);
-    cntrl[0].m_omStrBTR0[0] = '\0';
+        cfg.CanSpeed = 0;
+        cfg.CanBtrValue = _tcstol(cntrl[0].m_omStrBTR0, &str, 0);
     }
-  if ((result = CAN_SetConfigData(InitData, 1)) == S_OK)
-    result = INFO_INITDAT_CONFIRM_CONFIG;
-  }
-return(result);
+
+    strcpy_s(cfg.CanSnrStr, cntrl[0].m_omHardwareDesc);
+
+    if (ShowCanSetup(sg_hOwnerWnd, &cfg))
+    {
+        strcpy_s(cntrl[0].m_omHardwareDesc, cfg.CanSnrStr);
+
+        if (cfg.CanBtrValue)
+        {
+            cntrl[0].m_omStrBaudrate[0] = '\0';
+            sprintf_s(cntrl[0].m_omStrBTR0, _T("%d"), cfg.CanBtrValue);
+        }
+        else
+        {
+            sprintf_s(cntrl[0].m_omStrBaudrate, _T("%d"), cfg.CanSpeed);
+            cntrl[0].m_omStrBTR0[0] = '\0';
+        }
+
+        if ((result = CAN_SetConfigData(InitData, 1)) == S_OK)
+        {
+            result = INFO_INITDAT_CONFIRM_CONFIG;
+        }
+    }
+
+    return(result);
 }
 
 
@@ -634,36 +676,42 @@ return(result);
 */
 HRESULT CDIL_CAN_MHS::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
 {
-(void)Length;
-SCONTROLLER_DETAILS* cntrl;
-TCHAR *str;
+    (void)Length;
+    SCONTROLLER_DETAILS* cntrl;
+    TCHAR* str;
+    //VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
+    cntrl = (SCONTROLLER_DETAILS*)ConfigFile;
 
-//VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
-cntrl = (SCONTROLLER_DETAILS*)ConfigFile;
-if (!str_has_char(cntrl[0].m_omStrBaudrate))
-  {
-  sg_MhsCanCfg.CanSpeed = _tcstol(cntrl[0].m_omStrBaudrate, &str, 0);
-  sg_MhsCanCfg.CanBtrValue = 0;
-  }
-else
-  {
-  sg_MhsCanCfg.CanSpeed = 0;
-  sg_MhsCanCfg.CanBtrValue = _tcstol(cntrl[0].m_omStrBTR0, &str, 0);
-  }
-strcpy_s(sg_MhsCanCfg.CanSnrStr, cntrl[0].m_omHardwareDesc);
+    if (!str_has_char(cntrl[0].m_omStrBaudrate))
+    {
+        sg_MhsCanCfg.CanSpeed = _tcstol(cntrl[0].m_omStrBaudrate, &str, 0);
+        sg_MhsCanCfg.CanBtrValue = 0;
+    }
+    else
+    {
+        sg_MhsCanCfg.CanSpeed = 0;
+        sg_MhsCanCfg.CanBtrValue = _tcstol(cntrl[0].m_omStrBTR0, &str, 0);
+    }
 
-// **** Übertragungsgeschwindigkeit einstellen
-if (sg_MhsCanCfg.CanSpeed)
-  {
-  if (CanSetSpeed(0, (uint16_t)sg_MhsCanCfg.CanSpeed) < 0)
-    return(S_FALSE);
-  }
-else
-  {
-  if (CanSetSpeedUser(0, sg_MhsCanCfg.CanBtrValue) < 0)
-    return(S_FALSE);
-  }
-return(S_OK);
+    strcpy_s(sg_MhsCanCfg.CanSnrStr, cntrl[0].m_omHardwareDesc);
+
+    // **** Übertragungsgeschwindigkeit einstellen
+    if (sg_MhsCanCfg.CanSpeed)
+    {
+        if (CanSetSpeed(0, (uint16_t)sg_MhsCanCfg.CanSpeed) < 0)
+        {
+            return(S_FALSE);
+        }
+    }
+    else
+    {
+        if (CanSetSpeedUser(0, sg_MhsCanCfg.CanBtrValue) < 0)
+        {
+            return(S_FALSE);
+        }
+    }
+
+    return(S_OK);
 }
 
 
@@ -672,104 +720,107 @@ return(S_OK);
  */
 static void vWriteIntoClientsBuffer(STCANDATA& can_data)
 {
-UINT ClientId, i, j;
-BOOL bClientExists;
-static SACK_MAP sAckMap;
-static UINT Index = (UINT)-1;
-static STCANDATA sTempCanData;
+    UINT ClientId, i, j;
+    BOOL bClientExists;
+    static SACK_MAP sAckMap;
+    static UINT Index = (UINT)-1;
+    static STCANDATA sTempCanData;
 
-// Write into the client's buffer and Increment message Count
-if (can_data.m_ucDataType == TX_FLAG)
-  {
-  ClientId = 0;
-  sAckMap.m_Channel = can_data.m_uDataInfo.m_sCANMsg.m_ucChannel;
-  sAckMap.m_MsgID = can_data.m_uDataInfo.m_sCANMsg.m_unMsgID;
-  if (bRemoveMapEntry(sAckMap, ClientId))
+    // Write into the client's buffer and Increment message Count
+    if (can_data.m_ucDataType == TX_FLAG)
     {
-    bClientExists = bGetClientObj(ClientId, Index);
-    for (i = 0; i < sg_unClientCnt; i++)
-      {
-      //Tx for monitor nodes and sender node
-      if ((i == CAN_MONITOR_NODE_INDEX)  || (bClientExists && (i == Index)))
+        ClientId = 0;
+        sAckMap.m_Channel = can_data.m_uDataInfo.m_sCANMsg.m_ucChannel;
+        sAckMap.m_MsgID = can_data.m_uDataInfo.m_sCANMsg.m_unMsgID;
+
+        if (bRemoveMapEntry(sAckMap, ClientId))
         {
-        for (j = 0; j < sg_asClientToBufMap[i].m_unBufCount; j++)
-          {
-          sg_asClientToBufMap[i].m_pClientBuf[j]->WriteIntoBuffer(&can_data);
-          }
+            bClientExists = bGetClientObj(ClientId, Index);
+
+            for (i = 0; i < sg_unClientCnt; i++)
+            {
+                //Tx for monitor nodes and sender node
+                if ((i == CAN_MONITOR_NODE_INDEX)  || (bClientExists && (i == Index)))
+                {
+                    for (j = 0; j < sg_asClientToBufMap[i].m_unBufCount; j++)
+                    {
+                        sg_asClientToBufMap[i].m_pClientBuf[j]->WriteIntoBuffer(&can_data);
+                    }
+                }
+                else
+                {
+                    //Send the other nodes as Rx.
+                    for (UINT j = 0; j < sg_asClientToBufMap[i].m_unBufCount; j++)
+                    {
+                        sTempCanData = can_data;
+                        sTempCanData.m_ucDataType = RX_FLAG;
+                        sg_asClientToBufMap[i].m_pClientBuf[j]->WriteIntoBuffer(&sTempCanData);
+                    }
+                }
+            }
         }
-      else
-        {
-        //Send the other nodes as Rx.
-        for (UINT j = 0; j < sg_asClientToBufMap[i].m_unBufCount; j++)
-          {
-          sTempCanData = can_data;
-          sTempCanData.m_ucDataType = RX_FLAG;
-          sg_asClientToBufMap[i].m_pClientBuf[j]->WriteIntoBuffer(&sTempCanData);
-          }
-        }
-      }
     }
-  }
-else // provide it to everybody
-  {
-  for (i = 0; i < sg_unClientCnt; i++)
+    else // provide it to everybody
     {
-    for (j = 0; j < sg_asClientToBufMap[i].m_unBufCount; j++)
-      {
-      sg_asClientToBufMap[i].m_pClientBuf[j]->WriteIntoBuffer(&can_data);
-      }
+        for (i = 0; i < sg_unClientCnt; i++)
+        {
+            for (j = 0; j < sg_asClientToBufMap[i].m_unBufCount; j++)
+            {
+                sg_asClientToBufMap[i].m_pClientBuf[j]->WriteIntoBuffer(&can_data);
+            }
+        }
     }
-  }
 }
 
 // Plug & Play Event-Funktion
 static void CALLBACK_TYPE CanPnPEvent(uint32_t /*index*/, int32_t status)
 {
-if (status)
-  {
-
-  }
-else
-  {
-
-  }
+    if (status)
+    {
+    }
+    else
+    {
+    }
 }
 
 
 // Status Event-Funktion
-static void CALLBACK_TYPE CanStatusEvent(uint32_t /*index*/, struct TDeviceStatus * /*status*/)
+static void CALLBACK_TYPE CanStatusEvent(uint32_t /*index*/, struct TDeviceStatus* /*status*/)
 {
-
 }
 
 
 // RxD Event-Funktion
-static void CALLBACK_TYPE CanRxEvent(uint32_t index, struct TCanMsg *msg, int32_t count)
+static void CALLBACK_TYPE CanRxEvent(uint32_t index, struct TCanMsg* msg, int32_t count)
 {
-(void)index;
-static STCANDATA can_data;
+    (void)index;
+    static STCANDATA can_data;
 
-for (; count; count--)
-  {
-  EnterCriticalSection(&sg_DIL_CriticalSection);
+    for (; count; count--)
+    {
+        EnterCriticalSection(&sg_DIL_CriticalSection);
+        can_data.m_uDataInfo.m_sCANMsg.m_ucChannel = 1;
+        can_data.m_uDataInfo.m_sCANMsg.m_unMsgID = msg->Id;
+        can_data.m_uDataInfo.m_sCANMsg.m_ucDataLen = msg->MsgLen;
+        can_data.m_uDataInfo.m_sCANMsg.m_ucEXTENDED = msg->MsgEFF;
+        can_data.m_uDataInfo.m_sCANMsg.m_ucRTR = msg->MsgRTR;
 
-  can_data.m_uDataInfo.m_sCANMsg.m_ucChannel = 1;
-  can_data.m_uDataInfo.m_sCANMsg.m_unMsgID = msg->Id;
-  can_data.m_uDataInfo.m_sCANMsg.m_ucDataLen = msg->MsgLen;
-  can_data.m_uDataInfo.m_sCANMsg.m_ucEXTENDED = msg->MsgEFF;
-  can_data.m_uDataInfo.m_sCANMsg.m_ucRTR = msg->MsgRTR;
-  if (msg->MsgTxD)
-    can_data.m_ucDataType = TX_FLAG;
-  else
-    can_data.m_ucDataType = RX_FLAG;
-  //can_data.m_lTickCount.QuadPart = (LONGLONG)(msg->TimeStamp);
-  memcpy(can_data.m_uDataInfo.m_sCANMsg.m_ucData, msg->MsgData, 8);
+        if (msg->MsgTxD)
+        {
+            can_data.m_ucDataType = TX_FLAG;
+        }
+        else
+        {
+            can_data.m_ucDataType = RX_FLAG;
+        }
 
-  //Write the msg into registered client's buffer
-  vWriteIntoClientsBuffer(can_data);
-  LeaveCriticalSection(&sg_DIL_CriticalSection);
-  msg++;
-  }
+        //can_data.m_lTickCount.QuadPart = (LONGLONG)(msg->TimeStamp);
+        memcpy(can_data.m_uDataInfo.m_sCANMsg.m_ucData, msg->MsgData, 8);
+        //Write the msg into registered client's buffer
+        vWriteIntoClientsBuffer(can_data);
+        LeaveCriticalSection(&sg_DIL_CriticalSection);
+        msg++;
+    }
 }
 
 
@@ -786,35 +837,45 @@ for (; count; count--)
 */
 HRESULT CDIL_CAN_MHS::CAN_StartHardware(void)
 {
-USES_CONVERSION;
-HRESULT hResult;
-char str[100];
+    USES_CONVERSION;
+    HRESULT hResult;
+    char str[100];
 
-//VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
-if (!str_has_char(sg_MhsCanCfg.CanSnrStr))
-  sprintf_s(str, "Snr=%s", sg_MhsCanCfg.CanSnrStr);
-else
-  str[0]='\0';
-if (!CanDeviceOpen(0, str))
-  {
-  (void)CanSetOptions("CanTxAckEnable=1");
-  // **** CAN Bus Start
-  if (CanSetMode(0, OP_CAN_START, CAN_CMD_FIFOS_ERROR_CLEAR) >= 0)
-    hResult = S_OK;
-  else
+    //VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
+    if (!str_has_char(sg_MhsCanCfg.CanSnrStr))
     {
-    hResult = S_FALSE;
-    sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("could not start the controller in running mode"));
+        sprintf_s(str, "Snr=%s", sg_MhsCanCfg.CanSnrStr);
     }
-  sg_bCurrState = STATE_CONNECTED;
-  }
-else
-  {
-  //log the error for open port failure
-  sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("error opening \"Tiny-CAN\" interface"));
-  hResult = ERR_LOAD_HW_INTERFACE;
-  }
-return(hResult);
+    else
+    {
+        str[0]='\0';
+    }
+
+    if (!CanDeviceOpen(0, str))
+    {
+        (void)CanSetOptions("CanTxAckEnable=1");
+
+        // **** CAN Bus Start
+        if (CanSetMode(0, OP_CAN_START, CAN_CMD_FIFOS_ERROR_CLEAR) >= 0)
+        {
+            hResult = S_OK;
+        }
+        else
+        {
+            hResult = S_FALSE;
+            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("could not start the controller in running mode"));
+        }
+
+        sg_bCurrState = STATE_CONNECTED;
+    }
+    else
+    {
+        //log the error for open port failure
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("error opening \"Tiny-CAN\" interface"));
+        hResult = ERR_LOAD_HW_INTERFACE;
+    }
+
+    return(hResult);
 }
 
 
@@ -825,9 +886,9 @@ return(hResult);
 */
 HRESULT CDIL_CAN_MHS::CAN_StopHardware(void)
 {
-VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
-(void)CanDeviceClose(0);
-return(S_OK);
+    VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
+    (void)CanDeviceClose(0);
+    return(S_OK);
 }
 
 
@@ -838,8 +899,8 @@ return(S_OK);
 */
 HRESULT CDIL_CAN_MHS::CAN_ResetHardware(void)
 {
-(void)CAN_StopHardware();
-return(S_OK);
+    (void)CAN_StopHardware();
+    return(S_OK);
 }
 
 
@@ -850,8 +911,8 @@ return(S_OK);
 */
 HRESULT CDIL_CAN_MHS::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
 {
-StatusData.wControllerStatus = NORMAL_ACTIVE;
-return(S_OK);
+    StatusData.wControllerStatus = NORMAL_ACTIVE;
+    return(S_OK);
 }
 
 /**
@@ -862,45 +923,59 @@ return(S_OK);
 */
 HRESULT CDIL_CAN_MHS::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessage)
 {
-struct TCanMsg msg;
-static SACK_MAP sAckMap;
-HRESULT hResult;
+    struct TCanMsg msg;
+    static SACK_MAP sAckMap;
+    HRESULT hResult;
+    VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
+    hResult = S_FALSE;
 
-VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
-
-hResult = S_FALSE;
-if (bClientIdExist(dwClientID))
-  {
-  if (sMessage.m_ucChannel <= sg_nNoOfChannels)
+    if (bClientIdExist(dwClientID))
     {
-    // msg Variable Initialisieren
-    msg.MsgFlags = 0L;   // Alle Flags löschen, Stanadrt Frame Format,
-                         // keine RTR, Datenlänge auf 0
-    if (sMessage.m_ucEXTENDED == 1)
-      msg.MsgEFF = 1;    // Nachricht im EFF (Ext. Frame Format) versenden
-    if (sMessage.m_ucRTR == 1)
-      msg.MsgRTR = 1;    // Nachricht als RTR Frame versenden
-    msg.Id = sMessage.m_unMsgID;
-    msg.MsgLen = sMessage.m_ucDataLen;
-    memcpy(msg.MsgData, &sMessage.m_ucData, msg.MsgLen);
-    sAckMap.m_ClientID = dwClientID;
-    sAckMap.m_Channel  = sMessage.m_ucChannel;
-    sAckMap.m_MsgID    = msg.Id;
-    vMarkEntryIntoMap(sAckMap);
-    if (CanTransmit(0, &msg, 1) >= 0)
-      hResult = S_OK;
-    else
-      {
-      hResult = S_FALSE;
-      sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("could not write can data into bus"));
-      }
+        if (sMessage.m_ucChannel <= sg_nNoOfChannels)
+        {
+            // msg Variable Initialisieren
+            msg.MsgFlags = 0L;   // Alle Flags löschen, Stanadrt Frame Format,
+
+            // keine RTR, Datenlänge auf 0
+            if (sMessage.m_ucEXTENDED == 1)
+            {
+                msg.MsgEFF = 1;    // Nachricht im EFF (Ext. Frame Format) versenden
+            }
+
+            if (sMessage.m_ucRTR == 1)
+            {
+                msg.MsgRTR = 1;    // Nachricht als RTR Frame versenden
+            }
+
+            msg.Id = sMessage.m_unMsgID;
+            msg.MsgLen = sMessage.m_ucDataLen;
+            memcpy(msg.MsgData, &sMessage.m_ucData, msg.MsgLen);
+            sAckMap.m_ClientID = dwClientID;
+            sAckMap.m_Channel  = sMessage.m_ucChannel;
+            sAckMap.m_MsgID    = msg.Id;
+            vMarkEntryIntoMap(sAckMap);
+
+            if (CanTransmit(0, &msg, 1) >= 0)
+            {
+                hResult = S_OK;
+            }
+            else
+            {
+                hResult = S_FALSE;
+                sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("could not write can data into bus"));
+            }
+        }
+        else
+        {
+            hResult = ERR_INVALID_CHANNEL;
+        }
     }
-  else
-    hResult = ERR_INVALID_CHANNEL;
-  }
-else
-  hResult = ERR_NO_CLIENT_EXIST;
-return(hResult);
+    else
+    {
+        hResult = ERR_NO_CLIENT_EXIST;
+    }
+
+    return(hResult);
 }
 
 /**
@@ -923,40 +998,56 @@ HRESULT CDIL_CAN_MHS::CAN_GetLastErrorString(string& /*acErrorStr*/)
 */
 HRESULT CDIL_CAN_MHS::CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
 {
-HRESULT hResult;
+    HRESULT hResult;
+    hResult = S_OK;
 
-hResult = S_OK;
-switch (eContrParam)
-  {
-  case NUMBER_HW     : {
-                       lParam = 1;
-                       break;
-                       }
-  case NUMBER_CONNECTED_HW :
-                       {
-                       lParam = 1;
-                       //hResult = S_FALSE;
-                       break;
-                       }
-  case DRIVER_STATUS : {
-                       lParam = true;
-                       break;
-                       }
-  case HW_MODE       : {
-                       if (nChannel < sg_nNoOfChannels)
-                         lParam = defMODE_ACTIVE;
-                       else
-                       //unknown
-                       lParam = defCONTROLLER_BUSOFF + 1;
-                       break;
-                       }
-  case CON_TEST      : {
-                       lParam = TRUE;
-                       break;
-                       }
-  default            : hResult = S_FALSE;
-  }
-return hResult;
+    switch (eContrParam)
+    {
+        case NUMBER_HW     :
+        {
+            lParam = 1;
+            break;
+        }
+
+        case NUMBER_CONNECTED_HW :
+        {
+            lParam = 1;
+            //hResult = S_FALSE;
+            break;
+        }
+
+        case DRIVER_STATUS :
+        {
+            lParam = true;
+            break;
+        }
+
+        case HW_MODE       :
+        {
+            if (nChannel < sg_nNoOfChannels)
+            {
+                lParam = defMODE_ACTIVE;
+            }
+            else
+                //unknown
+            {
+                lParam = defCONTROLLER_BUSOFF + 1;
+            }
+
+            break;
+        }
+
+        case CON_TEST      :
+        {
+            lParam = TRUE;
+            break;
+        }
+
+        default            :
+            hResult = S_FALSE;
+    }
+
+    return hResult;
 }
 
 
@@ -969,50 +1060,55 @@ return hResult;
 */
 HRESULT CDIL_CAN_MHS::CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam)
 {
-(void)eContrParam;
-(void)nChannel;
-// Tiny-CAN not support CAN-Bus Error counters
-sErrorCnt.m_ucTxErrCount = 0;
-sErrorCnt.m_ucRxErrCount = 0;
-return(S_OK);
+    (void)eContrParam;
+    (void)nChannel;
+    // Tiny-CAN not support CAN-Bus Error counters
+    sErrorCnt.m_ucTxErrCount = 0;
+    sErrorCnt.m_ucRxErrCount = 0;
+    return(S_OK);
 }
 
 
 
 static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFSE* pBuf)
 {
-UINT i;
-BOOL bExist;
+    UINT i;
+    BOOL bExist;
+    bExist = FALSE;
 
-bExist = FALSE;
-for (i = 0; i < sClientObj.m_unBufCount; i++)
-  {
-  if (pBuf == sClientObj.m_pClientBuf[i])
+    for (i = 0; i < sClientObj.m_unBufCount; i++)
     {
-    bExist = TRUE;
-    i = sClientObj.m_unBufCount; //break the loop
+        if (pBuf == sClientObj.m_pClientBuf[i])
+        {
+            bExist = TRUE;
+            i = sClientObj.m_unBufCount; //break the loop
+        }
     }
-  }
-return(bExist);
+
+    return(bExist);
 }
 
 
 static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED], UINT& unCount, CBaseCANBufFSE* BufferToRemove)
 {
-UINT i;
-BOOL bReturn;
+    UINT i;
+    BOOL bReturn;
+    bReturn = TRUE;
 
-bReturn = TRUE;
-for (i = 0; i < unCount; i++)
-  {
-  if (RootBufferArray[i] == BufferToRemove)
+    for (i = 0; i < unCount; i++)
     {
-    if (i < (unCount - 1)) //If not the last bufffer
-      RootBufferArray[i] = RootBufferArray[unCount - 1];
-    unCount--;
+        if (RootBufferArray[i] == BufferToRemove)
+        {
+            if (i < (unCount - 1)) //If not the last bufffer
+            {
+                RootBufferArray[i] = RootBufferArray[unCount - 1];
+            }
+
+            unCount--;
+        }
     }
-  }
-return(bReturn);
+
+    return(bReturn);
 }
 
 
@@ -1023,19 +1119,20 @@ return(bReturn);
  */
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
 {
-BOOL bResult;
+    BOOL bResult;
+    bResult = FALSE;
 
-bResult = FALSE;
-for (UINT i = 0; i < sg_unClientCnt; i++)
-  {
-  if (sg_asClientToBufMap[i].m_dwClientID == dwClientID)
+    for (UINT i = 0; i < sg_unClientCnt; i++)
     {
-    unClientIndex = i;
-    i = sg_unClientCnt; //break the loop
-    bResult = TRUE;
+        if (sg_asClientToBufMap[i].m_dwClientID == dwClientID)
+        {
+            unClientIndex = i;
+            i = sg_unClientCnt; //break the loop
+            bResult = TRUE;
+        }
     }
-  }
-return(bResult);
+
+    return(bResult);
 }
 
 
@@ -1046,16 +1143,18 @@ return(bResult);
  */
 static BOOL bClientExist(TCHAR* pcClientName, INT& Index)
 {
-UINT i;
-for (i = 0; i < sg_unClientCnt; i++)
-  {
-  if (!_tcscmp(pcClientName, sg_asClientToBufMap[i].m_acClientName))
+    UINT i;
+
+    for (i = 0; i < sg_unClientCnt; i++)
     {
-    Index = i;
-    return(TRUE);
+        if (!_tcscmp(pcClientName, sg_asClientToBufMap[i].m_acClientName.c_str()))
+        {
+            Index = i;
+            return(TRUE);
+        }
     }
-  }
-return(FALSE);
+
+    return(FALSE);
 }
 
 
@@ -1066,27 +1165,37 @@ return(FALSE);
  */
 static BOOL bRemoveClient(DWORD dwClientId)
 {
-INT i;
-BOOL bResult = FALSE;
+    INT i;
+    BOOL bResult = FALSE;
+    bResult = FALSE;
 
-bResult = FALSE;
-if (sg_unClientCnt > 0)
-  {
-  UINT unClientIndex = 0;
-  if (bGetClientObj(dwClientId, unClientIndex))
+    if (sg_unClientCnt > 0)
     {
-    sg_asClientToBufMap[unClientIndex].m_dwClientID = 0;
-    memset (sg_asClientToBufMap[unClientIndex].m_acClientName, 0, sizeof (TCHAR) * MAX_PATH);
-    for (i = 0; i < MAX_BUFF_ALLOWED; i++)
-      sg_asClientToBufMap[unClientIndex].m_pClientBuf[i] = NULL;
-    sg_asClientToBufMap[unClientIndex].m_unBufCount = 0;
-    if ((unClientIndex + 1) < sg_unClientCnt)
-      sg_asClientToBufMap[unClientIndex] = sg_asClientToBufMap[sg_unClientCnt - 1];
-    sg_unClientCnt--;
-    bResult = TRUE;
+        UINT unClientIndex = 0;
+
+        if (bGetClientObj(dwClientId, unClientIndex))
+        {
+            sg_asClientToBufMap[unClientIndex].m_dwClientID = 0;
+            sg_asClientToBufMap[unClientIndex].m_acClientName = "";
+
+            for (i = 0; i < MAX_BUFF_ALLOWED; i++)
+            {
+                sg_asClientToBufMap[unClientIndex].m_pClientBuf[i] = NULL;
+            }
+
+            sg_asClientToBufMap[unClientIndex].m_unBufCount = 0;
+
+            if ((unClientIndex + 1) < sg_unClientCnt)
+            {
+                sg_asClientToBufMap[unClientIndex] = sg_asClientToBufMap[sg_unClientCnt - 1];
+            }
+
+            sg_unClientCnt--;
+            bResult = TRUE;
+        }
     }
-  }
-return(bResult);
+
+    return(bResult);
 }
 
 
@@ -1097,19 +1206,20 @@ return(bResult);
  */
 static BOOL bClientIdExist(const DWORD& dwClientId)
 {
-UINT i;
-BOOL bReturn;
+    UINT i;
+    BOOL bReturn;
+    bReturn = FALSE;
 
-bReturn = FALSE;
-for (i = 0; i < sg_unClientCnt; i++)
-  {
-  if (sg_asClientToBufMap[i].m_dwClientID == dwClientId)
+    for (i = 0; i < sg_unClientCnt; i++)
     {
-    bReturn = TRUE;
-    i = sg_unClientCnt; // break the loop
+        if (sg_asClientToBufMap[i].m_dwClientID == dwClientId)
+        {
+            bReturn = TRUE;
+            i = sg_unClientCnt; // break the loop
+        }
     }
-  }
-return(bReturn);
+
+    return(bReturn);
 }
 
 
@@ -1118,18 +1228,23 @@ return(bReturn);
  */
 static DWORD dwGetAvailableClientSlot(void)
 {
-INT i;
-DWORD nClientId;
+    INT i;
+    DWORD nClientId;
+    nClientId = 2;
 
-nClientId = 2;
-for (i = 0; i < MAX_CLIENT_ALLOWED; i++)
-  {
-  if (bClientIdExist(nClientId))
-    nClientId += 1;
-  else
-    i = MAX_CLIENT_ALLOWED; //break the loop
-  }
-return(nClientId);
+    for (i = 0; i < MAX_CLIENT_ALLOWED; i++)
+    {
+        if (bClientIdExist(nClientId))
+        {
+            nClientId += 1;
+        }
+        else
+        {
+            i = MAX_CLIENT_ALLOWED;    //break the loop
+        }
+    }
+
+    return(nClientId);
 }
 
 
@@ -1138,40 +1253,51 @@ return(nClientId);
  */
 static void vMarkEntryIntoMap(const SACK_MAP& RefObj)
 {
-EnterCriticalSection(&sg_DIL_CriticalSection); // Lock the buffer
-sg_asAckMapBuf.push_back(RefObj);
-LeaveCriticalSection(&sg_DIL_CriticalSection); // Unlock the buffer
+    EnterCriticalSection(&sg_DIL_CriticalSection); // Lock the buffer
+    sg_asAckMapBuf.push_back(RefObj);
+    LeaveCriticalSection(&sg_DIL_CriticalSection); // Unlock the buffer
 }
 
 static BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
 {
-BOOL bResult = FALSE;
-CACK_MAP_LIST::iterator  iResult =
-std::find( sg_asAckMapBuf.begin(), sg_asAckMapBuf.end(), RefObj );
-    
-if (iResult != sg_asAckMapBuf.end())
-  {
-  bResult = TRUE;
-  ClientID = (*iResult).m_ClientID;
-  sg_asAckMapBuf.erase(iResult);
-  }	
-return bResult;
+    BOOL bResult = FALSE;
+    CACK_MAP_LIST::iterator  iResult =
+        std::find( sg_asAckMapBuf.begin(), sg_asAckMapBuf.end(), RefObj );
+
+    if (iResult != sg_asAckMapBuf.end())
+    {
+        bResult = TRUE;
+        ClientID = (*iResult).m_ClientID;
+        sg_asAckMapBuf.erase(iResult);
+    }
+
+    return bResult;
 }
 
 
-static int str_has_char(char *s)
+static int str_has_char(char* s)
 {
-char c;
+    char c;
 
-if (!s)
-  return(-1);
-while ((c = *s++))
-  {
-  if (c != ' ')
-    break;
-  }
-if (c)
-  return(0);
-else
-  return(-1);
+    if (!s)
+    {
+        return(-1);
+    }
+
+    while ((c = *s++))
+    {
+        if (c != ' ')
+        {
+            break;
+        }
+    }
+
+    if (c)
+    {
+        return(0);
+    }
+    else
+    {
+        return(-1);
+    }
 }

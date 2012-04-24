@@ -35,7 +35,7 @@
 typedef void (*fnCallBackBlink)(INTERFACE_HW);
 class CHardwareListing : public CDialog
 {
-	fnCallBackBlink m_pfnBlinkFunction;
+    fnCallBackBlink m_pfnBlinkFunction;
 public:
     // Array of channels
     int m_anSelectedChannels[ CHANNEL_ALLOWED ];
@@ -44,17 +44,17 @@ public:
     // To update selected hardware detaisl
     void vUpdateHwDetails( int nIndex );
     // To set List of hardware handles
-    void vSetHardwareList(INTERFACE_HW *, int );
+    void vSetHardwareList(INTERFACE_HW*, int );
     // Constructor
-    CHardwareListing(INTERFACE_HW *, int , int*, CWnd* pParent = NULL, fnCallBackBlink m_pfnBlinkFunction= NULL);
+    CHardwareListing(INTERFACE_HW*, int , int*, CWnd* pParent = NULL, fnCallBackBlink m_pfnBlinkFunction= NULL);
     // standard constructor
     CHardwareListing();
     //Get selection list
     INT nGetSelectedList(int* pnList);
-	//Set selection list
-	void vSetSelectedList();
+    //Set selection list
+    void vSetSelectedList();
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CHardwareListing)
     enum { IDD = IDD_DLG_HW_LISTING };
     CListCtrl   m_omSelectedHwList;
@@ -65,14 +65,14 @@ public:
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CHardwareListing)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
@@ -90,7 +90,7 @@ protected:
 private:
     void vEnableDisableButtons();
     // Pointer to Hardware List
-    INTERFACE_HW * m_psHwInterface;
+    INTERFACE_HW* m_psHwInterface;
     // Size of the array
     int m_nSize;
     //Number of selected items
@@ -102,27 +102,27 @@ private:
     // Pointer to Selected List
     int* m_pnSelList;
 public:
-    afx_msg void OnNMClickLstcHwList(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnNMClickLstcSelectedHwList(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnNMClickLstcHwList(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnNMClickLstcSelectedHwList(NMHDR* pNMHDR, LRESULT* pResult);
 
 public:
-	// Hardware CONTAINER
-	typedef struct tagHardwareContainer
-	{
-		int				m_omDriverId;
-		CString				m_omHardwareName;
-		CString				m_omFirmware;
-		CString				m_omHardwareDesc;
-	
-	}HARDWARE_CONTAINER, *PHARDWARE_CONTAINER;
+    // Hardware CONTAINER
+    typedef struct tagHardwareContainer
+    {
+        int             m_omDriverId;
+        CString             m_omHardwareName;
+        CString             m_omFirmware;
+        CString             m_omHardwareDesc;
 
-	typedef std::pair <int, PHARDWARE_CONTAINER> Int_Pair;
-	std::map <int, PHARDWARE_CONTAINER>::iterator m_pIter;
-	std::map <int, PHARDWARE_CONTAINER> mHardwareListMap;
+    } HARDWARE_CONTAINER, *PHARDWARE_CONTAINER;
+
+    typedef std::pair <int, PHARDWARE_CONTAINER> Int_Pair;
+    std::map <int, PHARDWARE_CONTAINER>::iterator m_pIter;
+    std::map <int, PHARDWARE_CONTAINER> mHardwareListMap;
 
     //Hardware container object
-	PHARDWARE_CONTAINER m_pouHardwareContainer;
-	void vSortHardwareItems();
+    PHARDWARE_CONTAINER m_pouHardwareContainer;
+    void vSortHardwareItems();
 
 
 };

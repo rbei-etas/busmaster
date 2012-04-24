@@ -38,26 +38,26 @@
 #define defMAX_TEXT_ACCEPTANCE  2
 
 /******************************************************************************/
-/*  Function Name    :  CAcceptanceFilterDlg                                  */ 
+/*  Function Name    :  CAcceptanceFilterDlg                                  */
 /*  Input(s)         :  CWnd* pParent: Pointer to parent class                */
-/*                      PSACC_FILTER_INFO psAccFilterInfo: Acceptance Filter  */    
+/*                      PSACC_FILTER_INFO psAccFilterInfo: Acceptance Filter  */
 /*                                                         information        */
-/*  Output           :                                                        */    
+/*  Output           :                                                        */
 /*  Functionality    :  Constructor is called when user create an object of   */
 /*                      this class. Initialisation of all data members        */
-/*  Member of        :  CAcceptanceFilterDlg                                  */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :  Amitesh Bharti                                        */    
-/*  Date Created     :  25.03.2003                                            */    
-/*  Modifications    :  Raja N on 11.03.2005                                  */    
+/*  Member of        :  CAcceptanceFilterDlg                                  */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  25.03.2003                                            */
+/*  Modifications    :  Raja N on 11.03.2005                                  */
 /*                      Modified the parameter type to get complete controller*/
 /*                      details. Now this dialog will modifiy this data only  */
 /*                      and will not directly modify the configuration module */
 /******************************************************************************/
 //IMPLEMENT_DYNAMIC(CAcceptanceFilterDlg, CPropertyPage)
 CAcceptanceFilterDlg::CAcceptanceFilterDlg(CWnd* pParent /*=NULL*/,
-                                           PSCONTROLLER_DETAILS psControllerInfo)
-                        : CDialog(CAcceptanceFilterDlg::IDD, pParent)
+        PSCONTROLLER_DETAILS psControllerInfo)
+    : CDialog(CAcceptanceFilterDlg::IDD, pParent)
     //: CPropertyPage(CAcceptanceFilterDlg::IDD, IDS_PPAGE_ACCEPTANCE_FILTER)
 {
     //{{AFX_DATA_INIT(CAcceptanceFilterDlg)
@@ -70,23 +70,23 @@ CAcceptanceFilterDlg::CAcceptanceFilterDlg(CWnd* pParent /*=NULL*/,
     m_omStrAccMaskByte3 = _T("");
     m_omStrAccMaskByte4 = _T("");
 
-	for (int i = 0; i < CAN_MSG_IDS ; i++)
-	{
-		m_omStrLocalAccCodeByte1[i] = _T("");
-		m_omStrLocalAccCodeByte2[i] = _T("");
-		m_omStrLocalAccCodeByte3[i] = _T("");
-		m_omStrLocalAccCodeByte4[i] = _T("");
-		m_omStrLocalAccMaskByte1[i] = _T("");
-		m_omStrLocalAccMaskByte2[i] = _T("");
-		m_omStrLocalAccMaskByte3[i] = _T("");
-		m_omStrLocalAccMaskByte4[i] = _T("");
-	}
-//}}AFX_DATA_INIT
+    for (int i = 0; i < CAN_MSG_IDS ; i++)
+    {
+        m_omStrLocalAccCodeByte1[i] = _T("");
+        m_omStrLocalAccCodeByte2[i] = _T("");
+        m_omStrLocalAccCodeByte3[i] = _T("");
+        m_omStrLocalAccCodeByte4[i] = _T("");
+        m_omStrLocalAccMaskByte1[i] = _T("");
+        m_omStrLocalAccMaskByte2[i] = _T("");
+        m_omStrLocalAccMaskByte3[i] = _T("");
+        m_omStrLocalAccMaskByte4[i] = _T("");
+    }
+
+    //}}AFX_DATA_INIT
     // Set the Filter mode to Single
     m_bAccFilterMode = 0;
     // Copy controller information pointer
-    m_psControllerInfo = psControllerInfo;	
-
+    m_psControllerInfo = psControllerInfo;
 }
 /******************************************************************************/
 /*  Function Name    :  DoDataExchange                                        */
@@ -136,11 +136,11 @@ BEGIN_MESSAGE_MAP(CAcceptanceFilterDlg, CDialog)
     ON_EN_MAXTEXT(IDC_EDIT_ACCEPTANCE_MASK2, OnMaxtextEditAcceptanceMask2)
     ON_EN_MAXTEXT(IDC_EDIT_ACCEPTANCE_MASK3, OnMaxtextEditAcceptanceMask3)
     //}}AFX_MSG_MAP
-	ON_BN_CLICKED(IDC_RBTN_DUAL_FILTER_MODE,   OnBnClickedRbtnDualFilterMode)
-	ON_BN_CLICKED(IDC_RBTN_SINGLE_FILTER_MODE, OnBnClickedRbtnSingleFilterMode)
-	ON_BN_CLICKED(IDC_RBTN_FILTER_ACCEPT_ALL,  OnBnClickedRbtnFilterAcceptAll)
-	ON_BN_CLICKED(IDC_RBTN_FILTER_REJECT_ALL,  OnBnClickedRbtnFilterRejectAll)
-	ON_BN_CLICKED(IDC_RBTN_FILTER_MANUAL_SET,  OnBnClickedRbtnFilterManualSet)
+    ON_BN_CLICKED(IDC_RBTN_DUAL_FILTER_MODE,   OnBnClickedRbtnDualFilterMode)
+    ON_BN_CLICKED(IDC_RBTN_SINGLE_FILTER_MODE, OnBnClickedRbtnSingleFilterMode)
+    ON_BN_CLICKED(IDC_RBTN_FILTER_ACCEPT_ALL,  OnBnClickedRbtnFilterAcceptAll)
+    ON_BN_CLICKED(IDC_RBTN_FILTER_REJECT_ALL,  OnBnClickedRbtnFilterRejectAll)
+    ON_BN_CLICKED(IDC_RBTN_FILTER_MANUAL_SET,  OnBnClickedRbtnFilterManualSet)
 END_MESSAGE_MAP()
 
 /******************************************************************************/
@@ -160,32 +160,28 @@ END_MESSAGE_MAP()
 /*                      Removed the code that updates the configuration module*/
 /*                      and added code to update controller information object*/
 /******************************************************************************/
-void CAcceptanceFilterDlg::OnCbtnAccetanceOk() 
+void CAcceptanceFilterDlg::OnCbtnAccetanceOk()
 {
     BOOL bButtonChecked = TRUE;
-    
     UpdateData(TRUE);
+    vSaveFilterDetails(!m_bAccFilterMode);
 
-	vSaveFilterDetails(!m_bAccFilterMode);
     // Set only acceptance filter information for both standard and extended envelopes.
-	for ( int i = 0; i < CAN_MSG_IDS; i++ )
-	{
-		m_psControllerInfo->m_enmHWFilterType[i] = m_enmHWFilterType[i];
+    for ( int i = 0; i < CAN_MSG_IDS; i++ )
+    {
+        m_psControllerInfo->m_enmHWFilterType[i] = m_enmHWFilterType[i];
+        strcpy_s(m_psControllerInfo->m_omStrAccCodeByte1[i], m_omStrLocalAccCodeByte1[i].GetBuffer(MAX_PATH));
+        strcpy_s(m_psControllerInfo->m_omStrAccCodeByte2[i], m_omStrLocalAccCodeByte2[i].GetBuffer(MAX_PATH));
+        strcpy_s(m_psControllerInfo->m_omStrAccCodeByte3[i], m_omStrLocalAccCodeByte3[i].GetBuffer(MAX_PATH));
+        strcpy_s(m_psControllerInfo->m_omStrAccCodeByte4[i], m_omStrLocalAccCodeByte4[i].GetBuffer(MAX_PATH));
+        strcpy_s(m_psControllerInfo->m_omStrAccMaskByte1[i], m_omStrLocalAccMaskByte1[i].GetBuffer(MAX_PATH));
+        strcpy_s(m_psControllerInfo->m_omStrAccMaskByte2[i], m_omStrLocalAccMaskByte2[i].GetBuffer(MAX_PATH));
+        strcpy_s(m_psControllerInfo->m_omStrAccMaskByte3[i], m_omStrLocalAccMaskByte3[i].GetBuffer(MAX_PATH));
+        strcpy_s(m_psControllerInfo->m_omStrAccMaskByte4[i], m_omStrLocalAccMaskByte4[i].GetBuffer(MAX_PATH));
+    }
 
-		strcpy_s(m_psControllerInfo->m_omStrAccCodeByte1[i], m_omStrLocalAccCodeByte1[i].GetBuffer(MAX_PATH));
-		strcpy_s(m_psControllerInfo->m_omStrAccCodeByte2[i], m_omStrLocalAccCodeByte2[i].GetBuffer(MAX_PATH));
-		strcpy_s(m_psControllerInfo->m_omStrAccCodeByte3[i], m_omStrLocalAccCodeByte3[i].GetBuffer(MAX_PATH));
-		strcpy_s(m_psControllerInfo->m_omStrAccCodeByte4[i], m_omStrLocalAccCodeByte4[i].GetBuffer(MAX_PATH));
-
-		strcpy_s(m_psControllerInfo->m_omStrAccMaskByte1[i], m_omStrLocalAccMaskByte1[i].GetBuffer(MAX_PATH));
-		strcpy_s(m_psControllerInfo->m_omStrAccMaskByte2[i], m_omStrLocalAccMaskByte2[i].GetBuffer(MAX_PATH));
-		strcpy_s(m_psControllerInfo->m_omStrAccMaskByte3[i], m_omStrLocalAccMaskByte3[i].GetBuffer(MAX_PATH));
-		strcpy_s(m_psControllerInfo->m_omStrAccMaskByte4[i], m_omStrLocalAccMaskByte4[i].GetBuffer(MAX_PATH));				
-	}
-
-	m_psControllerInfo->m_bAccFilterMode    = m_bAccFilterMode;
-
-	CDialog::OnOK();
+    m_psControllerInfo->m_bAccFilterMode    = m_bAccFilterMode;
+    CDialog::OnOK();
 }
 /******************************************************************************/
 /*  Function Name    :  OnInitDialog                                          */
@@ -208,15 +204,15 @@ void CAcceptanceFilterDlg::OnCbtnAccetanceOk()
 /*  Modifications    :  Raja N on 20.07.2005                                  */
 /*                      Added code rename single and dual filter text         */
 /******************************************************************************/
-BOOL CAcceptanceFilterDlg::OnInitDialog() 
+BOOL CAcceptanceFilterDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    
     PSCONTROLLER_DETAILS  psControllerDetails = m_psControllerInfo;
-    
+
     if(psControllerDetails != NULL)
     {
-		m_bAccFilterMode    = psControllerDetails->m_bAccFilterMode;		
+        m_bAccFilterMode    = psControllerDetails->m_bAccFilterMode;
+
         if(m_bAccFilterMode == 0)
         {
             CheckDlgButton(IDC_RBTN_SINGLE_FILTER_MODE,BST_CHECKED);
@@ -225,21 +221,24 @@ BOOL CAcceptanceFilterDlg::OnInitDialog()
         {
             CheckDlgButton(IDC_RBTN_DUAL_FILTER_MODE,BST_CHECKED);
         }
+
         // Get the acceptance mask and code value with type of filter
-		for (int i = 0 ; i < CAN_MSG_IDS ; i++)
-		{
-			m_omStrLocalAccCodeByte1[i] = psControllerDetails->m_omStrAccCodeByte1[i];
-			m_omStrLocalAccCodeByte2[i] = psControllerDetails->m_omStrAccCodeByte2[i];
-			m_omStrLocalAccCodeByte3[i] = psControllerDetails->m_omStrAccCodeByte3[i];
-			m_omStrLocalAccCodeByte4[i] = psControllerDetails->m_omStrAccCodeByte4[i];
-			m_omStrLocalAccMaskByte1[i] = psControllerDetails->m_omStrAccMaskByte1[i];
-			m_omStrLocalAccMaskByte2[i] = psControllerDetails->m_omStrAccMaskByte2[i];
-			m_omStrLocalAccMaskByte3[i] = psControllerDetails->m_omStrAccMaskByte3[i];
-			m_omStrLocalAccMaskByte4[i] = psControllerDetails->m_omStrAccMaskByte4[i];     
-			m_enmHWFilterType[i]        = psControllerDetails->m_enmHWFilterType[i];
-		}		
-		vSetFilterDetails(false);		
+        for (int i = 0 ; i < CAN_MSG_IDS ; i++)
+        {
+            m_omStrLocalAccCodeByte1[i] = psControllerDetails->m_omStrAccCodeByte1[i];
+            m_omStrLocalAccCodeByte2[i] = psControllerDetails->m_omStrAccCodeByte2[i];
+            m_omStrLocalAccCodeByte3[i] = psControllerDetails->m_omStrAccCodeByte3[i];
+            m_omStrLocalAccCodeByte4[i] = psControllerDetails->m_omStrAccCodeByte4[i];
+            m_omStrLocalAccMaskByte1[i] = psControllerDetails->m_omStrAccMaskByte1[i];
+            m_omStrLocalAccMaskByte2[i] = psControllerDetails->m_omStrAccMaskByte2[i];
+            m_omStrLocalAccMaskByte3[i] = psControllerDetails->m_omStrAccMaskByte3[i];
+            m_omStrLocalAccMaskByte4[i] = psControllerDetails->m_omStrAccMaskByte4[i];
+            m_enmHWFilterType[i]        = psControllerDetails->m_enmHWFilterType[i];
+        }
+
+        vSetFilterDetails(false);
     }
+
     // Set the base of all edit control
     m_omEditAccCodeByte1.vSetBase(BASE_HEXADECIMAL);
     m_omEditAccCodeByte2.vSetBase(BASE_HEXADECIMAL);
@@ -258,25 +257,26 @@ BOOL CAcceptanceFilterDlg::OnInitDialog()
     m_omEditAccMaskByte2.LimitText(defMAX_TEXT_ACCEPTANCE);
     m_omEditAccMaskByte3.LimitText(defMAX_TEXT_ACCEPTANCE);
     m_omEditAccMaskByte4.LimitText(defMAX_TEXT_ACCEPTANCE);
-
     // Change the text in case of USB Mode
-    CWnd * pWnd = GetDlgItem(IDC_RBTN_SINGLE_FILTER_MODE);
+    CWnd* pWnd = GetDlgItem(IDC_RBTN_SINGLE_FILTER_MODE);
+
     if( pWnd != NULL )
     {
         // Set the text to Standard
         pWnd->SetWindowText( defSTR_MSG_ID_STANDARD );
     }
+
     pWnd = GetDlgItem(IDC_RBTN_DUAL_FILTER_MODE);
+
     if( pWnd != NULL )
     {
         // Set the text to Extended
         pWnd->SetWindowText( defSTR_MSG_ID_EXTENDED );
-    }	
+    }
 
     UpdateData(FALSE);
-
     return TRUE;  // return TRUE unless you set the focus to a control
-                  // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 /******************************************************************************/
@@ -292,7 +292,7 @@ BOOL CAcceptanceFilterDlg::OnInitDialog()
 /*  Date Created     :  27.03.2003                                            */
 /*  Modifications    :                                                        */
 /******************************************************************************/
-void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceCode1() 
+void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceCode1()
 {
     NextDlgCtrl();
 }
@@ -310,7 +310,7 @@ void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceCode1()
 /*  Date Created     :  27.03.2003                                            */
 /*  Modifications    :                                                        */
 /******************************************************************************/
-void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceCode2() 
+void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceCode2()
 {
     NextDlgCtrl();
 }
@@ -328,7 +328,7 @@ void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceCode2()
 /*  Date Created     :  27.03.2003                                            */
 /*  Modifications    :                                                        */
 /******************************************************************************/
-void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceCode3() 
+void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceCode3()
 {
     NextDlgCtrl( );
 }
@@ -346,7 +346,7 @@ void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceCode3()
 /*  Date Created     :  27.03.2003                                            */
 /*  Modifications    :                                                        */
 /******************************************************************************/
-void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceCode4() 
+void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceCode4()
 {
     NextDlgCtrl();
 }
@@ -364,7 +364,7 @@ void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceCode4()
 /*  Date Created     :  27.03.2003                                            */
 /*  Modifications    :                                                        */
 /******************************************************************************/
-void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceMask1() 
+void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceMask1()
 {
     NextDlgCtrl();
 }
@@ -382,7 +382,7 @@ void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceMask1()
 /*  Date Created     :  27.03.2003                                            */
 /*  Modifications    :                                                        */
 /******************************************************************************/
-void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceMask2() 
+void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceMask2()
 {
     NextDlgCtrl();
 }
@@ -400,7 +400,7 @@ void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceMask2()
 /*  Date Created     :  27.03.2003                                            */
 /*  Modifications    :                                                        */
 /******************************************************************************/
-void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceMask3() 
+void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceMask3()
 {
     NextDlgCtrl();
 }
@@ -437,9 +437,9 @@ void CAcceptanceFilterDlg::OnOK()
  */
 void CAcceptanceFilterDlg::OnBnClickedRbtnDualFilterMode()
 {
-	UpdateData(TRUE);
-	m_bAccFilterMode = 1;
-	vSetFilterDetails(true);	
+    UpdateData(TRUE);
+    m_bAccFilterMode = 1;
+    vSetFilterDetails(true);
 }
 
 /**
@@ -449,9 +449,9 @@ void CAcceptanceFilterDlg::OnBnClickedRbtnDualFilterMode()
  */
 void CAcceptanceFilterDlg::OnBnClickedRbtnSingleFilterMode()
 {
-	UpdateData(TRUE);
-	m_bAccFilterMode = 0;
-	vSetFilterDetails(true);	
+    UpdateData(TRUE);
+    m_bAccFilterMode = 0;
+    vSetFilterDetails(true);
 }
 
 /**
@@ -461,8 +461,8 @@ void CAcceptanceFilterDlg::OnBnClickedRbtnSingleFilterMode()
  */
 void CAcceptanceFilterDlg::OnBnClickedRbtnFilterAcceptAll()
 {
-	m_enmHWFilterType[m_bAccFilterMode] = HW_FILTER_ACCEPT_ALL;
-	vEnableDisableCodeMaskFields(false);
+    m_enmHWFilterType[m_bAccFilterMode] = HW_FILTER_ACCEPT_ALL;
+    vEnableDisableCodeMaskFields(false);
 }
 
 /**
@@ -472,8 +472,8 @@ void CAcceptanceFilterDlg::OnBnClickedRbtnFilterAcceptAll()
  */
 void CAcceptanceFilterDlg::OnBnClickedRbtnFilterRejectAll()
 {
-	m_enmHWFilterType[m_bAccFilterMode] = HW_FILTER_REJECT_ALL;
-	vEnableDisableCodeMaskFields(false);
+    m_enmHWFilterType[m_bAccFilterMode] = HW_FILTER_REJECT_ALL;
+    vEnableDisableCodeMaskFields(false);
 }
 
 /**
@@ -483,8 +483,8 @@ void CAcceptanceFilterDlg::OnBnClickedRbtnFilterRejectAll()
  */
 void CAcceptanceFilterDlg::OnBnClickedRbtnFilterManualSet()
 {
-	m_enmHWFilterType[m_bAccFilterMode] = HW_FILTER_MANUAL_SET;
-	vEnableDisableCodeMaskFields(true);
+    m_enmHWFilterType[m_bAccFilterMode] = HW_FILTER_MANUAL_SET;
+    vEnableDisableCodeMaskFields(true);
 }
 
 /**
@@ -493,21 +493,22 @@ void CAcceptanceFilterDlg::OnBnClickedRbtnFilterManualSet()
  * Call this function to set the currently selected filter mode code, mask fields.
  */
 void CAcceptanceFilterDlg::vSetFilterDetails(bool bSave)
-{		
-	if ( bSave )
-		vSaveFilterDetails(m_bAccFilterMode);
-	m_omStrAccCodeByte1 = m_omStrLocalAccCodeByte1[m_bAccFilterMode];
-	m_omStrAccCodeByte2 = m_omStrLocalAccCodeByte2[m_bAccFilterMode];
-	m_omStrAccCodeByte3 = m_omStrLocalAccCodeByte3[m_bAccFilterMode];
-	m_omStrAccCodeByte4 = m_omStrLocalAccCodeByte4[m_bAccFilterMode];
-	m_omStrAccMaskByte1 = m_omStrLocalAccMaskByte1[m_bAccFilterMode];
-	m_omStrAccMaskByte2 = m_omStrLocalAccMaskByte2[m_bAccFilterMode];
-	m_omStrAccMaskByte3 = m_omStrLocalAccMaskByte3[m_bAccFilterMode];
-	m_omStrAccMaskByte4 = m_omStrLocalAccMaskByte4[m_bAccFilterMode];	
+{
+    if ( bSave )
+    {
+        vSaveFilterDetails(m_bAccFilterMode);
+    }
 
-	vSetHWFilterTypeDetails();
-
-	UpdateData(FALSE);
+    m_omStrAccCodeByte1 = m_omStrLocalAccCodeByte1[m_bAccFilterMode];
+    m_omStrAccCodeByte2 = m_omStrLocalAccCodeByte2[m_bAccFilterMode];
+    m_omStrAccCodeByte3 = m_omStrLocalAccCodeByte3[m_bAccFilterMode];
+    m_omStrAccCodeByte4 = m_omStrLocalAccCodeByte4[m_bAccFilterMode];
+    m_omStrAccMaskByte1 = m_omStrLocalAccMaskByte1[m_bAccFilterMode];
+    m_omStrAccMaskByte2 = m_omStrLocalAccMaskByte2[m_bAccFilterMode];
+    m_omStrAccMaskByte3 = m_omStrLocalAccMaskByte3[m_bAccFilterMode];
+    m_omStrAccMaskByte4 = m_omStrLocalAccMaskByte4[m_bAccFilterMode];
+    vSetHWFilterTypeDetails();
+    UpdateData(FALSE);
 }
 
 /**
@@ -517,14 +518,14 @@ void CAcceptanceFilterDlg::vSetFilterDetails(bool bSave)
  */
 void CAcceptanceFilterDlg::vSaveFilterDetails(BOOL bAccFilterMode)
 {
-	m_omStrLocalAccCodeByte1[!bAccFilterMode] = m_omStrAccCodeByte1;
-	m_omStrLocalAccCodeByte2[!bAccFilterMode] = m_omStrAccCodeByte2;
-	m_omStrLocalAccCodeByte3[!bAccFilterMode] = m_omStrAccCodeByte3;
-	m_omStrLocalAccCodeByte4[!bAccFilterMode] = m_omStrAccCodeByte4;
-	m_omStrLocalAccMaskByte1[!bAccFilterMode] = m_omStrAccMaskByte1;
-	m_omStrLocalAccMaskByte2[!bAccFilterMode] = m_omStrAccMaskByte2;
-	m_omStrLocalAccMaskByte3[!bAccFilterMode] = m_omStrAccMaskByte3;
-	m_omStrLocalAccMaskByte4[!bAccFilterMode] = m_omStrAccMaskByte4;
+    m_omStrLocalAccCodeByte1[!bAccFilterMode] = m_omStrAccCodeByte1;
+    m_omStrLocalAccCodeByte2[!bAccFilterMode] = m_omStrAccCodeByte2;
+    m_omStrLocalAccCodeByte3[!bAccFilterMode] = m_omStrAccCodeByte3;
+    m_omStrLocalAccCodeByte4[!bAccFilterMode] = m_omStrAccCodeByte4;
+    m_omStrLocalAccMaskByte1[!bAccFilterMode] = m_omStrAccMaskByte1;
+    m_omStrLocalAccMaskByte2[!bAccFilterMode] = m_omStrAccMaskByte2;
+    m_omStrLocalAccMaskByte3[!bAccFilterMode] = m_omStrAccMaskByte3;
+    m_omStrLocalAccMaskByte4[!bAccFilterMode] = m_omStrAccMaskByte4;
 }
 
 /**
@@ -534,7 +535,7 @@ void CAcceptanceFilterDlg::vSaveFilterDetails(BOOL bAccFilterMode)
  */
 void CAcceptanceFilterDlg::vEnableDisableCodeMaskFields(bool bEnable)
 {
-	GetDlgItem(IDC_EDIT_ACCEPTANCE_CODE1)->EnableWindow(bEnable);
+    GetDlgItem(IDC_EDIT_ACCEPTANCE_CODE1)->EnableWindow(bEnable);
     GetDlgItem(IDC_EDIT_ACCEPTANCE_CODE2)->EnableWindow(bEnable);
     GetDlgItem(IDC_EDIT_ACCEPTANCE_CODE3)->EnableWindow(bEnable);
     GetDlgItem(IDC_EDIT_ACCEPTANCE_CODE4)->EnableWindow(bEnable);
@@ -551,23 +552,24 @@ void CAcceptanceFilterDlg::vEnableDisableCodeMaskFields(bool bEnable)
  */
 void CAcceptanceFilterDlg::vSetHWFilterTypeDetails()
 {
-	CheckDlgButton(IDC_RBTN_FILTER_ACCEPT_ALL,BST_UNCHECKED);
-	CheckDlgButton(IDC_RBTN_FILTER_REJECT_ALL,BST_UNCHECKED);
-	CheckDlgButton(IDC_RBTN_FILTER_MANUAL_SET,BST_UNCHECKED);
-	if ( m_enmHWFilterType[m_bAccFilterMode] == HW_FILTER_ACCEPT_ALL )
-	{
-		CheckDlgButton(IDC_RBTN_FILTER_ACCEPT_ALL,BST_CHECKED);		
-		vEnableDisableCodeMaskFields(false);
-	}
-	else if ( m_enmHWFilterType[m_bAccFilterMode] == HW_FILTER_REJECT_ALL )
-	{
-		CheckDlgButton(IDC_RBTN_FILTER_REJECT_ALL,BST_CHECKED);
-		vEnableDisableCodeMaskFields(false);
-	}
-	else
-	{
-		CheckDlgButton(IDC_RBTN_FILTER_MANUAL_SET,BST_CHECKED);			
-		vEnableDisableCodeMaskFields(true);
-	}
+    CheckDlgButton(IDC_RBTN_FILTER_ACCEPT_ALL,BST_UNCHECKED);
+    CheckDlgButton(IDC_RBTN_FILTER_REJECT_ALL,BST_UNCHECKED);
+    CheckDlgButton(IDC_RBTN_FILTER_MANUAL_SET,BST_UNCHECKED);
+
+    if ( m_enmHWFilterType[m_bAccFilterMode] == HW_FILTER_ACCEPT_ALL )
+    {
+        CheckDlgButton(IDC_RBTN_FILTER_ACCEPT_ALL,BST_CHECKED);
+        vEnableDisableCodeMaskFields(false);
+    }
+    else if ( m_enmHWFilterType[m_bAccFilterMode] == HW_FILTER_REJECT_ALL )
+    {
+        CheckDlgButton(IDC_RBTN_FILTER_REJECT_ALL,BST_CHECKED);
+        vEnableDisableCodeMaskFields(false);
+    }
+    else
+    {
+        CheckDlgButton(IDC_RBTN_FILTER_MANUAL_SET,BST_CHECKED);
+        vEnableDisableCodeMaskFields(true);
+    }
 }
 

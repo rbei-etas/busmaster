@@ -37,7 +37,7 @@ public:
     /** Number of Channels or hardware actually present */
     UINT m_nNoOfChannels;
     /** Number of devices connected. */
-	UINT m_nNoOfDevices;    
+    UINT m_nNoOfDevices;
 
     /**
      * Array of channel objects. The size of this array is maximun number

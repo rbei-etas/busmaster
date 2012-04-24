@@ -32,7 +32,7 @@ class CCAN_Kvaser_CAN : public CWinApp
 public:
     CCAN_Kvaser_CAN();
 
-// Overrides
+    // Overrides
 public:
     virtual BOOL InitInstance();
 

@@ -15,11 +15,11 @@
 
 /**
  * \file      ChangeRegisters_CAN_ETAS_BOA.h
- * \brief     This header file contains the defination of class       
+ * \brief     This header file contains the defination of class
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This header file contains the defination of class       
+ * This header file contains the defination of class
  */
 
 #pragma once
@@ -37,7 +37,7 @@
 
 class CChangeRegisters_CAN_ETAS_BOA : public CDialog
 {
-// Construction
+    // Construction
 public:
     // To Fill controller information taken from configuration module
     BOOL   bFillControllerConfig();
@@ -45,14 +45,14 @@ public:
     CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent = NULL, PSCONTROLLER_DETAILS psControllerDetails = NULL, UINT nHardwareCount = 0);
     virtual ~CChangeRegisters_CAN_ETAS_BOA();
     BOOL bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1);
-    BOOL bGetBaudRateFromCom(int nChannel,BYTE &bBTR0,BYTE &bBTR1);
-    BOOL bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId, 
-                                   DWORD dEndMsgId);
+    BOOL bGetBaudRateFromCom(int nChannel,BYTE& bBTR0,BYTE& bBTR1);
+    BOOL bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId,
+                           DWORD dEndMsgId);
     BOOL bGetFilterFromCom(BOOL& bExtended, double& dBeginMsgId, double& dEndMsgId);
     INT nGetInitStatus();
 
 protected:
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CChangeRegisters_CAN_ETAS_BOA)
     enum { IDD = IDD_DLG_CHANGE_REGISTERS_CAN_ETAS_BOA };
     CListCtrl   m_omChannelList;
@@ -73,14 +73,14 @@ protected:
     //}}AFX_DATA
     DOUBLE  m_dEditBaudRate;
     UINT    m_unCombClock;
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CChangeRegisters_CAN_ETAS_BOA)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 private:
     // Generated message map functions
     //{{AFX_MSG(CChangeRegisters_CAN_ETAS_BOA)
