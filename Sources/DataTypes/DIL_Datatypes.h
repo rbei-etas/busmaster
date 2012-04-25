@@ -43,12 +43,24 @@ const BYTE MSGBUF_CLEAR = 0x0;
 
 enum
 {
-    RESET_STATE = 0, INITIALISED, WAITING, NORMAL_ACTIVE, NORMAL_PASSIVE, NOT_DEFINED
+    RESET_STATE = 0,
+    INITIALISED,
+    WAITING,
+    NORMAL_ACTIVE,
+    NORMAL_PASSIVE,
+    NOT_DEFINED,
 };
 
 enum ECONTR_PARAM
 {
-    NUMBER_HW = 0, NUMBER_CONNECTED_HW, PEAK_ERR_CNT, DRIVER_STATUS, ERR_CNT, HW_MODE, CNTR_STATUS, CON_TEST
+    NUMBER_HW = 0,
+    NUMBER_CONNECTED_HW,
+    PEAK_ERR_CNT,
+    DRIVER_STATUS,
+    ERR_CNT,
+    HW_MODE,
+    CNTR_STATUS,
+    CON_TEST,
 };
 
 //----------------------------------------------------------------------------
@@ -67,13 +79,6 @@ typedef struct struct_STATUSMSG
   DWORD dwStatusInfoFlags;                  // Flagfield of status information (UCI_FLXSTSINFO_???)
 } s_STATUSMSG, *ps_STATUSMSG;
 
-enum
-{
-    DRIVER_MCNET_PEAK_USB = 0,
-    DIL_MCNET_TOTAL,
-    DAL_MCNET_NONE = ~0x0
-};
-
 enum 
 {
     DRIVER_CAN_STUB = 0,
@@ -83,7 +88,7 @@ enum
     DRIVER_CAN_ETAS_ES581,
     DRIVER_CAN_VECTOR_XL,
     DRIVER_CAN_KVASER_CAN,
-	DRIVER_CAN_MHS,
+    DRIVER_CAN_MHS,
     DIL_TOTAL,          // Its value must be <= MAX_DILS
     DAL_NONE            = ~0x0
 };
@@ -91,18 +96,18 @@ enum
 typedef enum FILTER_TYPE
 {
     PASS_FILTER,
-    STOP_FILTER,  
+    STOP_FILTER,
 }FILTER_TYPE;
 
 typedef enum TXMODE
 {
     SINGLE_SHOT,
-    CONTINOUS,  
+    CONTINOUS,
 }TXMODE;
 
 #define  MAX_CHAR_SHORT       128
 #define  MAX_CHAR_LONG        512
-#define  MAX_CHAR			  1024
+#define  MAX_CHAR             1024
 
 typedef struct tagHwInterface
 {
@@ -125,7 +130,6 @@ public:
    string     m_acDriver;
 };
 
-#define     MAX_DILS                16
 #define     MAX_DILNAME             32
 
 typedef struct 
@@ -135,4 +139,5 @@ typedef struct
     UINT    m_ResourceID;
 } DILINFO;
 
+const int MAX_DILS = 16;
 typedef DILINFO DILLIST[MAX_DILS];
