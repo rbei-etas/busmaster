@@ -186,7 +186,7 @@ void CValueDescriptionDlg::OnClickedOk()
                         // Update the desc into the data structure
                         CSignalDescVal* pNew = new CSignalDescVal;
                         CMainFrame* pMainFrame = 
-                            (CMainFrame*)AfxGetApp()->m_pMainWnd; 
+                            static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
                         if ( pNew       != NULL &&
                              pMainFrame != NULL)
                         {

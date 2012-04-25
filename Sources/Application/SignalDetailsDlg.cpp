@@ -1387,7 +1387,7 @@ BOOL CSignalDetailsDlg::bIsMaximumValueValid()
     SIG_VALUE  minVal,maxVal;
     CString strSignalType;
     m_omComboSgType.GetLBText(m_omComboSgType.GetCurSel(), strSignalType);
-    CMainFrame* pMainFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+    CMainFrame* pMainFrame = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
     if(strSignalType == defSIGNED_INT)
     {
         __int64 n64;         
@@ -1495,7 +1495,7 @@ BOOL CSignalDetailsDlg::bIsMinimumValueValid()
     SIG_VALUE  minVal,maxVal;
     CString strSignalType;
     m_omComboSgType.GetLBText(m_omComboSgType.GetCurSel(), strSignalType);
-    CMainFrame* pMainFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+    CMainFrame* pMainFrame = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
     if(strSignalType == defSIGNED_INT)
     {
         __int64 n64 = 0;

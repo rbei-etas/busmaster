@@ -3693,7 +3693,7 @@ void CMsgFrmtWnd::vDisplayToolTip(MSG* pMsg)
 
 	if (strClassName==_T("SysListView32")) 
 	{
-		CRxMsgList* ptrListCtrl = (CRxMsgList*)CRxMsgList::FromHandle(pMsg->hwnd);		
+		CRxMsgList* ptrListCtrl = static_cast<CRxMsgList*> (CRxMsgList::FromHandle(pMsg->hwnd));
 
 
 		POINT pt(pMsg->pt);

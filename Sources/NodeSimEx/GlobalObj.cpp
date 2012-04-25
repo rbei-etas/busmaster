@@ -107,7 +107,7 @@ CFunctionEditorDoc* CGlobalObj::pGetDocPtrOfFile(CString strTempName)
         POSITION pos = m_pEditorDocTemplate->GetFirstDocPosition();
         while (pos && !pDocRet)
         {
-            pDoc = (CFunctionEditorDoc*)m_pEditorDocTemplate->GetNextDoc(pos);
+            pDoc = static_cast<CFunctionEditorDoc*> (m_pEditorDocTemplate->GetNextDoc(pos));
             if (pDoc->IsKindOf(RUNTIME_CLASS(CFunctionEditorDoc)))
             {
                 strPath = pDoc->GetPathName();
@@ -125,12 +125,12 @@ CFunctionEditorDoc* CGlobalObj::podGetFunctionEditorDoc()
     CFunctionEditorDoc* pDoc = NULL;
     //Get the active window frame and document attached to it
     CFrameWnd* pParent = (CFrameWnd*)CWnd::FromHandle(sm_hWndMDIParentFrame);
-    CEditFrameWnd* pWnd = (CEditFrameWnd*)pParent->GetActiveFrame();
+    CEditFrameWnd* pWnd = static_cast<CEditFrameWnd*> (pParent->GetActiveFrame());
     if (pWnd != NULL)
     {
         if (pWnd->IsKindOf(RUNTIME_CLASS(CEditFrameWnd)))
         {
-            pDoc = (CFunctionEditorDoc*)pWnd->GetActiveDocument();         
+            pDoc = static_cast<CFunctionEditorDoc*> (pWnd->GetActiveDocument());
         }
     }
     return pDoc;
@@ -150,7 +150,7 @@ CFunctionView* CGlobalObj::podGetFunctionViewPtr()
             pTempView = pDoc->GetNextView(pos);
             if (pTempView->IsKindOf(RUNTIME_CLASS(CFunctionView)))
             {
-                pFunctionView = (CFunctionView*)pTempView;
+                pFunctionView = static_cast<CFunctionView*> (pTempView);
                 bFound = TRUE;
             }
         }
@@ -172,7 +172,7 @@ CFnsTreeView* CGlobalObj::podGetFuncsTreeViewPtr()
             pTempView = pDoc->GetNextView(pos);
             if (pTempView->IsKindOf(RUNTIME_CLASS(CFnsTreeView)))
             {
-                pFnTreeView = (CFnsTreeView*)pTempView;
+                pFnTreeView = static_cast<CFnsTreeView*> (pTempView);
                 bFound = TRUE;
             }
         }
@@ -200,7 +200,7 @@ BOOL CGlobalObj::bOpenFunctioneditorfile(CString omStrNewCFileName)
             pDoc->OnOpenDocument(omStrNewCFileName);
             CMultiDocTemplate* pTemplate = m_pEditorDocTemplate;
             CEditFrameWnd* pNewFrame
-                = (CEditFrameWnd*)(pTemplate->CreateNewFrame(pDoc, NULL));
+                = static_cast<CEditFrameWnd*> (pTemplate->CreateNewFrame(pDoc, NULL));
             //If null is passed as parameter the m_pdoc->GetNextView(pos)  will 
             // give null value
             if (pNewFrame != NULL)
@@ -227,7 +227,7 @@ CFileView* CGlobalObj::podGetFileViewPtr()
             pTempView = pDoc->GetNextView(pos);
             if (pTempView->IsKindOf(RUNTIME_CLASS(CFileView)))
             {
-                pFileView = (CFileView*)pTempView;
+                pFileView = static_cast<CFileView*> (pTempView);
                 bFound = TRUE;
             }
         }

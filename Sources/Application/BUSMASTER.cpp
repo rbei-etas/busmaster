@@ -610,7 +610,7 @@ void CCANMonitorApp::vSetFileStorageInfo(CString oCfgFilename)
 	stempDataInfo.m_Datastore = FILEMODE;
 	CConfigData::ouGetConfigDetailsObject().SetConfigDatastorage(&stempDataInfo);
 	CConfigData::ouGetConfigDetailsObject().vSetCurrProjName(DEFAULT_PROJECT_NAME);
-    CMainFrame* pMainFrame= (CMainFrame*)m_pMainWnd;
+    CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
     if (pMainFrame != NULL)
     {
         pMainFrame->vPushConfigFilenameDown(oCfgFilename);
@@ -666,7 +666,7 @@ void CCANMonitorApp::OnFileOpen()
         if (_findfirst( omStrNewCFileName.GetBuffer(MAX_PATH), &fileinfo) != -1L)
         {
             // Now open the selected file
-            CMainFrame* pMainFrame = (CMainFrame*)m_pMainWnd;
+            CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
             GetICANNodeSim()->FE_OpenFunctioneditorFile(omStrNewCFileName, pMainFrame->GetSafeHwnd(),
                 pMainFrame->m_sExFuncPtr[CAN]);
             // Save the selected filename into the configuration details
@@ -866,7 +866,7 @@ void CCANMonitorApp::OnFileNew()
                 bStop = TRUE;
             }
         }
-        CMainFrame* pMainFrame= (CMainFrame*)m_pMainWnd;
+        CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
 
         GetICANNodeSim()->FE_OpenFunctioneditorFile(strFilePath, pMainFrame->GetSafeHwnd(),
                     pMainFrame->m_sExFuncPtr[CAN]);
@@ -1039,7 +1039,7 @@ VOID CCANMonitorApp::vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode)
 BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
 {
     BOOL bReturn = TRUE;
-    CMainFrame* pMainFrame= (CMainFrame*)m_pMainWnd;	
+    CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
     if(pMainFrame != NULL )
     {
         BOOL bIsDatabaseFoundInConfigFile = FALSE;		
@@ -1201,7 +1201,7 @@ BOOL CCANMonitorApp::bGetDefaultValue(eCONFIGDETAILS /*eParam*/,
 BOOL CCANMonitorApp::bWriteIntoTraceWnd(char* omText)
 {
     BOOL bResult = FALSE;
-    CMainFrame* pMainFrame= (CMainFrame*)m_pMainWnd;
+    CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
     if (pMainFrame != NULL)
     {   
         pMainFrame->SendMessage(IDM_TRACE_WND);                

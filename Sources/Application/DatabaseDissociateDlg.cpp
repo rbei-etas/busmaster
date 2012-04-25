@@ -112,7 +112,7 @@ void CDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
 {
 	//TO store the path of files dissociated
 	CStringArray aomStrFilesDissociated;
-	CMainFrame* pMainFrame = (CMainFrame*)theApp.m_pMainWnd;
+	CMainFrame* pMainFrame = static_cast<CMainFrame*> (theApp.m_pMainWnd);
 	// Get the indexes of all the selected items.
 	int nCount = m_omDissociateDbLst.GetSelCount();
 	if(nCount > 0)

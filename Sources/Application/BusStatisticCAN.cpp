@@ -75,7 +75,7 @@ DWORD WINAPI BSDataReadThreadProc(LPVOID pVoid)
     {
         return ((DWORD)-1);
     }
-    CBusStatisticCAN* pBusStatistics = (CBusStatisticCAN*)pThreadParam->m_pBuffer;
+    CBusStatisticCAN* pBusStatistics = static_cast<CBusStatisticCAN*> (pThreadParam->m_pBuffer);
     if (pBusStatistics == NULL)
     {
         return ((DWORD)-1);
@@ -778,8 +778,7 @@ HRESULT CBusStatisticCAN::BSC_GetBusStatistics(UINT unChannelIndex, SBUSSTATISTI
  */
 void CALLBACK CBusStatisticCAN::OnTimeWrapper(HWND, UINT, UINT_PTR, DWORD)
 {
-
-    CBusStatisticCAN *pTempClass = (CBusStatisticCAN*)sm_pouBSCan; // cast the void pointer
+    CBusStatisticCAN *pTempClass = static_cast<CBusStatisticCAN*> (sm_pouBSCan); // cast the void pointer
     pTempClass->vCalculateBusParametres(); // call non-static function
 }
 

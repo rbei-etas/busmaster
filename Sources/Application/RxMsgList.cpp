@@ -353,7 +353,7 @@ void CRxMsgList::OnHdnItemchanged(NMHDR* /*pNMHDR*/, LRESULT *pResult)
 
 UINT UpDateThread(LPVOID lParams)
 {
-	CRxMsgList* pList = (CRxMsgList*)lParams;	
+	CRxMsgList* pList = static_cast<CRxMsgList*> (lParams);
 	for(int i =0 ;i<3;i++)
 	{
 		Sleep(50);

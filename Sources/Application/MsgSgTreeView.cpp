@@ -302,7 +302,7 @@ void CMsgSgTreeView::OnInitialUpdate()
     CTreeView::OnInitialUpdate();
 
     // Update this pointer to the mainframe for future reference
-    CMainFrame* pMainFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+    CMainFrame* pMainFrame = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
     pMainFrame->podSetMsgSgTreeView( this, m_sDbParams.m_eBus );
 
     // Populate tree with message names
@@ -446,7 +446,7 @@ void CMsgSgTreeView::OnRightClickTreeItem(NMHDR* /*pNMHDR*/, LRESULT* pResult)
     CMsgSgDetView* pMsgSgDetView = NULL;
     sMESSAGE* pMsg = NULL;
 
-    CMainFrame* pMainFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+    CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
     if ( pMainFrm != NULL )
     {
         pMsgSgDetView =  
@@ -613,7 +613,7 @@ void CMsgSgTreeView::OnDeleteMessage()
                 // Remove the item from the tree
                 om_tree.DeleteItem( hItem );
 
-                CMainFrame* pMainFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+                CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 
                 // Get form view pointer
                 CMsgSgDetView* pMsgSgDetView = pMainFrm->podGetMsgSgDetView(m_sDbParams.m_eBus);
@@ -856,7 +856,7 @@ void CMsgSgTreeView::vAddEditMessage(BOOL bMode)
         sMESSAGE* pMsg = 
             pTempMsgSg->psGetMessagePointerInactive(odMsgDlg.m_omStrMessageName);
 
-        CMainFrame* pMainFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+        CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 
         if ( pMainFrm != NULL )
         {
@@ -921,7 +921,7 @@ void CMsgSgTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
 
     pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
 
-    CMainFrame* pMainFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+    CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
     if ( pMainFrm != NULL )
     {
         pMsgSgDetView =  

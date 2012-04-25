@@ -1459,7 +1459,7 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
 INT  CConfigDetails::
 nLoadConfiguration(CString& omStrFilename/*= defDEFAULTCFGFILE*/)
 {
-    CMainFrame* pMainFrm = (CMainFrame*)theApp.m_pMainWnd;
+    CMainFrame* pMainFrm = static_cast<CMainFrame*> (theApp.m_pMainWnd);
     //CSimSysWnd* pSimSysWnd = NULL;
     //CSimSysTreeView* pSimSysTree = NULL;
     // If the user loads configuration file,
@@ -5169,7 +5169,7 @@ BOOL CConfigDetails::bGetDefaultValue(eCONFIGDETAILS eParam,
         GetSystemMetrics( SM_CXBORDER);
     // Get Main Frame window size and toolbar size
     CMainFrame * pMainFrame = NULL;
-    pMainFrame = (CMainFrame *)theApp.m_pMainWnd;
+    pMainFrame = static_cast<CMainFrame *> (theApp.m_pMainWnd);
     // If it is a valid window pointer
     if (pMainFrame != NULL &&
         IsWindow(pMainFrame->m_hWnd))
