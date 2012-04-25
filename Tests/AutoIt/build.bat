@@ -44,6 +44,7 @@ set TEST=%~1
 echo   %TEST%
 del out\%TEST%_stdout.txt 2> NUL
 del out\%TEST%_stderr.txt 2> NUL
+if not exist %TEST%.au3 goto:eof
 call autoit3 %TEST%.au3 > out\%TEST%_stdout.txt 2> out\%TEST%_stderr.txt
 call:htmltestresult
 goto:eof
