@@ -236,7 +236,7 @@ void CMsgSignalDBWnd::OnClose()
 {
     // Get active frame
     CMainFrame *pFrame = 
-                (CMainFrame*)AfxGetApp()->m_pMainWnd;
+                static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
     
     if (pFrame != NULL)
     {

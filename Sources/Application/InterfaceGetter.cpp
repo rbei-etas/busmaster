@@ -72,7 +72,7 @@ CBaseFrameProcessor_J1939* GetIJ1939Logger(void)
 
 CMainFrame* GetIMainFrame(void)
 {
-    CMainFrame* Result = (CMainFrame*) (theApp.m_pMainWnd);
+    CMainFrame* Result = static_cast<CMainFrame*> (theApp.m_pMainWnd);
     ASSERT(NULL != Result);
     return Result;
 }

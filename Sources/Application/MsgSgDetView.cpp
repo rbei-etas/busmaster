@@ -165,7 +165,7 @@ void CMsgSgDetView::OnInitialUpdate()
     CFormView::OnInitialUpdate();
 
     // Update this pointer to mainframe for future use
-    CMainFrame* pMainFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+    CMainFrame* pMainFrame = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
     if (pMainFrame)
         pMainFrame->podSetMsgSgDetView( this, m_sDbParams.m_eBus );
     
@@ -596,7 +596,7 @@ void CMsgSgDetView::OnDeleteSignal()
                     // Set message name in the tree view to bold 
                     // to indicate changes
                     CMainFrame* pMainFrm = 
-                        (CMainFrame*)AfxGetApp()->m_pMainWnd;
+                        static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
                     if(pMainFrm != NULL )
                     {
                         CMsgSgTreeView* pTreeViewPtr = 
@@ -646,7 +646,7 @@ void CMsgSgDetView::OnKillfocusEditMsgName()
     if ( IsWindowVisible())
     {
         // get tree view ptr
-        CMainFrame* pMainFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+        CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
         if(pMainFrm != NULL )
         {
             CMsgSgTreeView* podTreeViewPtr = pMainFrm->podGetMsgSgTreeView(m_sDbParams.m_eBus);
@@ -765,7 +765,7 @@ void CMsgSgDetView::OnChangeEditMsgName()
         CString omStr;
         GetDlgItem(IDC_EDIT_MSG_NAME)->GetWindowText(omStr);
         vEnableControls(omStr);
-        CMainFrame* pMainFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+        CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
         if (pMainFrm != NULL )
         {
             pMainFrm->podGetMsgSgTreeView(m_sDbParams.m_eBus)->vSetMessageName(omStr);
@@ -876,7 +876,7 @@ void CMsgSgDetView::OnKillfocusEditMsgcode()
                         // Bold the message name to indicate
                         // the change
                         CMainFrame* pMainFrame = 
-                            (CMainFrame*)AfxGetApp()->m_pMainWnd;
+                            static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
                         if(pMainFrame != NULL )
                         {
                             CMsgSgTreeView* pTreeViewPtr = NULL;
@@ -1149,7 +1149,7 @@ void CMsgSgDetView::OnSignalNew()
 
 					// set the message in the tree view to bold
 					// indicating it has changed
-					CMainFrame* pMainFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+					CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 					if(pMainFrm != NULL )
 					{
 						CMsgSgTreeView* pTreeViewPtr = 
@@ -1264,8 +1264,8 @@ void CMsgSgDetView::OnSignalEdit()
         if ( pMsg != NULL)
         {
             // Get signalpointer
-            CMainFrame* pFrame = (CMainFrame*)
-                AfxGetApp()->m_pMainWnd;
+            CMainFrame* pFrame = static_cast<CMainFrame*>
+                (AfxGetApp()->m_pMainWnd);
 
             if ( pFrame != NULL )
             {
@@ -1323,7 +1323,7 @@ void CMsgSgDetView::OnSignalEdit()
 						// set the message in the tree view to bold
 						// indicating it has changed
 						CMainFrame* pMainFrm = 
-							(CMainFrame*)AfxGetApp()->m_pMainWnd;
+							static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 						if(pMainFrm != NULL )
 						{
 							CMsgSgTreeView* pTreeViewPtr = 
@@ -1699,7 +1699,7 @@ void CMsgSgDetView::OnSignal_Desc_Delete()
                     GetDlgItem(IDC_CBTN_EDIT_DESC)->EnableWindow(FALSE);
                                     // set the message in the tree view to bold
                     // indicating it has changed
-                    CMainFrame* pMainFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+                    CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
                     if(pMainFrm != NULL )
                     {
                         CMsgSgTreeView* pTreeViewPtr = 
@@ -1784,7 +1784,7 @@ void CMsgSgDetView::OnSignal_Desc_Edit()
 
                 // make the message name bold to indicate
                 // the change
-                CMainFrame* pMainFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+                CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
                 if(pMainFrm != NULL )
                 {
                     CMsgSgTreeView* pTreeViewPtr = 
@@ -1872,7 +1872,7 @@ void CMsgSgDetView::OnSignal_Desc_New()
 
             // make the message name bold to indicate
             // the change
-            CMainFrame* pMainFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+            CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
             if(pMainFrm != NULL )
             {
                 CMsgSgTreeView* pTreeViewPtr = 
@@ -1972,7 +1972,7 @@ void CMsgSgDetView::OnChangeEditMsgLength()
             vEnableSignalDetails(TRUE);
 
         // Highlight corresponding message in tree view
-        CMainFrame* pMainFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+        CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
         if (pMainFrm)
         {
             CMsgSgTreeView* pTreeViewPtr = pMainFrm->podGetMsgSgTreeView(m_sDbParams.m_eBus);
@@ -2369,7 +2369,7 @@ void CMsgSgDetView::OnItemchangedLstcSignalDetails(NMHDR* pNMHDR, LRESULT* pResu
 void CMsgSgDetView::PostNcDestroy() 
 {
     // Update this pointer to mainframe to initialise it to NULL.
-    CMainFrame* pMainFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+    CMainFrame* pMainFrame = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
     if (pMainFrame)
         pMainFrame->podSetMsgSgDetView( NULL, m_sDbParams.m_eBus );
 	CFormView::PostNcDestroy();

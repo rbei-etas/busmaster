@@ -197,7 +197,7 @@ DWORD WINAPI TransmissionThreadProc(LPVOID pVoid)
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC *) pVoid;
     ASSERT(NULL != pThreadParam);
 
-	CWaveformTransmitter* pCurrObj = (CWaveformTransmitter *) pThreadParam->m_pBuffer;
+    CWaveformTransmitter* pCurrObj = static_cast<CWaveformTransmitter *> (pThreadParam->m_pBuffer);
     ASSERT(NULL != pCurrObj);
 
 	UINT SamplingRate = pCurrObj->shGetSamplingTimePeriod();

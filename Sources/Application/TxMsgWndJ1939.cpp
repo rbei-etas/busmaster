@@ -151,7 +151,7 @@ DWORD WINAPI Cyclic_Transmission_Thread(LPVOID pVoid)
     {
         return (DWORD)-1;
     }
-    CTxMsgWndJ1939* pTxMsgWndJ1939 = (CTxMsgWndJ1939*) pThreadParam->m_pBuffer;
+    CTxMsgWndJ1939* pTxMsgWndJ1939 = static_cast<CTxMsgWndJ1939*> (pThreadParam->m_pBuffer);
     if (pTxMsgWndJ1939 == NULL)
     {
         return (DWORD)-1;

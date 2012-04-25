@@ -133,7 +133,7 @@ void CGraphConfiguration::OnSetDefault()
 void CGraphConfiguration::OnOK() 
 {	
     // Update Global Structure
-    CMainFrame *pMainFrame = (CMainFrame *)theApp.m_pMainWnd;
+    CMainFrame *pMainFrame = static_cast<CMainFrame *> (theApp.m_pMainWnd);
     if( pMainFrame != NULL )
     {
         CGraphList *pList = &(pMainFrame->m_odGraphList[m_eBusType]);
@@ -173,7 +173,7 @@ BOOL CGraphConfiguration::OnInitDialog()
 {
     CDialog::OnInitDialog();	
     // Update Data from Global Structure
-    CMainFrame *pMainFrame = (CMainFrame *)theApp.m_pMainWnd;
+    CMainFrame *pMainFrame = static_cast<CMainFrame *> (theApp.m_pMainWnd);
     if( pMainFrame != NULL )
     {
         CGraphList *pList = &(pMainFrame->m_odGraphList[m_eBusType]);

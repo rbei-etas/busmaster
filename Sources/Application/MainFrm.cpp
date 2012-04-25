@@ -5785,7 +5785,7 @@ DWORD WINAPI InterpretThreadProc(LPVOID pVoid)
     {
         return (DWORD)-1;
     }
-    CMainFrame* pouMainFrm =  (CMainFrame*)pThreadParam->m_pBuffer;
+    CMainFrame* pouMainFrm = static_cast<CMainFrame*> (pThreadParam->m_pBuffer);
     if (pouMainFrm == NULL)
     {
         return (DWORD)-1;
@@ -7838,7 +7838,7 @@ BOOL gbSendStrToTrace(CHAR* pcOutStrTrace)
 
     if (g_dwUIThread == 0)
     {
-        CMainFrame* pMainFrm = (CMainFrame* )theApp.GetMainWnd();
+        CMainFrame* pMainFrm = static_cast<CMainFrame*> (theApp.GetMainWnd());
         if (pMainFrm != NULL)
         {
             pMainFrm->SendMessage(WM_CREATE_TRACEWIN, 0, 0);
@@ -8843,8 +8843,8 @@ BOOL CMainFrame::bCreateTraceWindow(void)
 
     if (m_podUIThread == NULL)
     {
-        m_podUIThread = (CUIThread *) AfxBeginThread(RUNTIME_CLASS(CUIThread), 
-                                                 THREAD_PRIORITY_NORMAL, 0, 0);
+        m_podUIThread = static_cast<CUIThread *> (AfxBeginThread(RUNTIME_CLASS(CUIThread),
+                                                 THREAD_PRIORITY_NORMAL, 0, 0));
         if (m_podUIThread != NULL)
         {
             bResult = m_podUIThread->bCreateTraceWindow(this);

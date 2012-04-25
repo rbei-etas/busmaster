@@ -328,7 +328,7 @@ Select \"No\" to retain the previous message length."), MB_YESNO) == IDYES)
         else
         {
             // Get form view pointer
-            CMainFrame* pMainFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+            CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
             int nMsgCode = -1;
             if ( pMainFrm != NULL )
             {

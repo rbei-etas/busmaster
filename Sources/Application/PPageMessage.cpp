@@ -345,7 +345,7 @@ void CPPageMessage::OnOK()
 	for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
 	{
 		HWND hWnd;
-		hWnd = ((CMainFrame*)AfxGetMainWnd())->m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);					
+		hWnd = (static_cast<CMainFrame*> (AfxGetMainWnd()))->m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
 		if(hWnd)
 			::PostMessage(hWnd,WM_INVALIDATE_LIST_DISPLAY, 0 , 0);			
 	}		

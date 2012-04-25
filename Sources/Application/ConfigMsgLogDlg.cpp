@@ -76,8 +76,8 @@ CConfigMsgLogDlg::CConfigMsgLogDlg(ETYPE_BUS eCurrBus,void* pouBaseLogger, BOOL&
     {
         case CAN:
         {
-            m_pouFProcCAN = (CBaseFrameProcessor_CAN *) pouBaseLogger;
-            m_psFilterConfigured = (SFILTERAPPLIED_CAN *) psFilter;
+            m_pouFProcCAN = static_cast<CBaseFrameProcessor_CAN *> (pouBaseLogger);
+            m_psFilterConfigured = (SFILTERAPPLIED_CAN *) (psFilter);
             m_strCurrWndText =_T("Configure Logging for CAN");
             m_omControlParam = _T("Start on Reception of ID 0x");
             m_omControlParam2 = _T("Stop on Reception of ID 0x");
