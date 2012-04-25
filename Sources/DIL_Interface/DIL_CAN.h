@@ -25,6 +25,7 @@
 #pragma once
 
 /* C++ includes */
+#include <string>
 
 /* Project includes */
 #include "DataTypes/Base_WrapperErrorLogger.h"
@@ -193,7 +194,7 @@ public:
     HRESULT  DILC_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
 	/* HELPER FUNCTIONS START */
-    void vSelectInterface_Dummy(void);      
+    void vSelectInterface_Dummy(void);
 
 private:
     HRESULT (*m_pfPerformInitOperations)(void);

@@ -23,6 +23,7 @@
  */
 
 #pragma once
+#pragma warning( disable : 4505 )
 
 #include "include/Error.h"
 #include "BaseMsgBufAll.h"
