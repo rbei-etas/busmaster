@@ -31,12 +31,12 @@
 #include "DataTypes/Filter_DataTypes.h"
 
 // All function prototype is used in function editor.
-typedef VOID (__cdecl *PFMSG_HANDLER)(STCAN_MSG Rx_Msg); 
-typedef VOID (__cdecl *PFTIMER_HANDLER)(); 
-typedef VOID (__cdecl *PFKEY_HANDLER)(UCHAR ucKeyVal);
-typedef VOID (__cdecl *PFERROR_HANDLER)(SCAN_ERR ErrorMsg);
-typedef VOID (__cdecl *PFDLL_HANDLER)();
-typedef BOOL (__cdecl *PFGET_PRG_VER)(int*,int*,HMODULE);
+typedef VOID (*PFMSG_HANDLER)(STCAN_MSG Rx_Msg); 
+typedef VOID (*PFTIMER_HANDLER)(); 
+typedef VOID (*PFKEY_HANDLER)(UCHAR ucKeyVal);
+typedef VOID (*PFERROR_HANDLER)(SCAN_ERR ErrorMsg);
+typedef VOID (*PFDLL_HANDLER)();
+typedef BOOL (*PFGET_PRG_VER)(int*,int*,HMODULE);
 // Used is application call back function
 typedef VOID (CALLBACK *APPTIMERPOINTER)(UINT,UINT,DWORD,DWORD,DWORD);
 

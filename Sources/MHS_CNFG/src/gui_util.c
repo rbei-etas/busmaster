@@ -36,7 +36,7 @@
 static const char *HexFormatTab[] = {"%02X", "%03X", "%04X", "%08X",
                                      "0x%02X", "0x%03X", "0x%04X", "0x%08X"};
 
-void __cdecl ShowErrorMessage(const char *title, const char *text, ...)
+void ShowErrorMessage(const char *title, const char *text, ...)
 {
 va_list argptr;
 char out[512];
