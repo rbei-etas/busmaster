@@ -1283,7 +1283,8 @@ void CFunctionEditorDoc::vInitialiseBusSpecStructure(CString& omStrTemp, UCHAR u
                             sMsgNameCode.m_dwMsgCode,
                             DATA_FORMAT_INTEL,
                             0,
-                            sMsgNameCode.m_unMsgLen);
+                            sMsgNameCode.m_unMsgLen,
+			    ucChannel);
 
             // Init data bytes if requested
             if(bInitData == TRUE && sMsgNameCode.m_unMsgLen > 0)
@@ -1305,8 +1306,8 @@ void CFunctionEditorDoc::vInitialiseBusSpecStructure(CString& omStrTemp, UCHAR u
                 omStrTemp += defCLOSE_PARENTHESIS;
             }
             // Now form total init string
-		    omStrTemp += defFNS_COMMA;
-            omStrTemp += ucChannel;
+		    /*omStrTemp += defFNS_COMMA;
+            omStrTemp += ucChannel;*/
             omStrTemp += defCLOSE_PARENTHESIS;
             omStrTemp += SEMI_COLON;
         }
