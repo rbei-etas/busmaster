@@ -46,7 +46,6 @@ void CLogToExcel::fnSetFields()
  */
 void CLogToExcel::fnSetSelectedFields(CListBox* omSelectedList)
 {
-    int n;
     DWORD unMaxIndex = omSelectedList->GetCount();
     //initialising the SelectedField array to -1
     UINT unIndex;   //unIndex declared outside for loop
@@ -60,7 +59,6 @@ void CLogToExcel::fnSetSelectedFields(CListBox* omSelectedList)
     for(unIndex = 0; unIndex < unMaxIndex; unIndex++)
     {
         string strFieldName;
-        n = omSelectedList->GetTextLen(unIndex);
         CString omFieldName;
         omSelectedList->GetText( unIndex,omFieldName);
         strFieldName = omFieldName.GetBuffer(MAX_PATH);
@@ -168,7 +166,6 @@ void CLogToExcel::vPrintFields()
     UINT unFieldIndex = 0;      // field index
     bool bFieldIndexExists  = false;
     m_pExcelFile << "<TR>";
-    int nFieldCurPosition = 0;
 
     while( unFieldIndex != m_unNumOfFields && m_strBuffer[unBufferIndex] != '\0' )
     {
@@ -207,7 +204,6 @@ void CLogToExcel::vPrintFields()
                 unBufferIndex++;
             }
 
-            nFieldCurPosition = unFieldIndex;
         } // else
 
         m_strFieldBuffer.append(1,'\0');
