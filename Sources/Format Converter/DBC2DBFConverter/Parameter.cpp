@@ -122,7 +122,7 @@ bool WriteParametersToFile(fstream& fileOutput, list<CParameter> &m_listParamete
     // otherwise writes definition and default value of all parameters to the o/p file
     list<CParameter>::iterator rParam;
 
-    for(rParam=m_listParameter.begin(); rParam!=m_listParameter.end(); rParam++)
+    for(rParam=m_listParameter.begin(); rParam!=m_listParameter.end(); ++rParam)
     {
         //Gets the next parameter from the list.
         if(rParam->m_RangeError)
