@@ -50,9 +50,9 @@ public:
     int GetSignalParams(string& paramType, char* pcLine);
     int GetNetParams(string& paramType, char* pcLine);
     int ReadParamValue(string& paramType, char* pcToken);
-    void WriteNetValuesToFile(fstream& fileOutput, string& paramType, string& paramName);
-    void WriteNodeValuesToFile(fstream& fileOutput, string& paramType, string& paramName);
-    void WriteMesgValuesToFile(fstream& fileOutput, string& paramType, string& paramName);
-    void WriteSigValuesToFile(fstream& fileOutput, string& paramType, string& paramName);
+    const void WriteNetValuesToFile(fstream& fileOutput, string& paramType, string& paramName);
+    const void WriteNodeValuesToFile(fstream& fileOutput, string& paramType, string& paramName);
+    const void WriteMesgValuesToFile(fstream& fileOutput, string& paramType, string& paramName);
+    const void WriteSigValuesToFile(fstream& fileOutput, string& paramType, string& paramName);
     virtual ~CParameterValues();
 };

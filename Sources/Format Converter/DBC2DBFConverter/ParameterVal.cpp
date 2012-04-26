@@ -284,7 +284,7 @@ int CParameterValues::ReadParamValue(string& paramType,char* pcToken)
  *
  * Writes network values to file.
  */
-void CParameterValues::WriteNetValuesToFile(fstream& fileOutput, string& paramType, string& paramName)
+const void CParameterValues::WriteNetValuesToFile(fstream& fileOutput, string& paramType, string& paramName)
 {
     fileOutput << "\"";
     fileOutput << paramName.c_str();
@@ -330,7 +330,7 @@ void CParameterValues::WriteNetValuesToFile(fstream& fileOutput, string& paramTy
  *
  * Writes node value to file.
  */
-void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput, string& paramType, string& paramName)
+const void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput, string& paramType, string& paramName)
 {
     fileOutput << m_NodeName.c_str();
     fileOutput << ",\"";
@@ -377,7 +377,7 @@ void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput, string& paramT
  *
  * Writes message values to file.
  */
-void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput, string& paramType, string& paramName)
+const void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput, string& paramType, string& paramName)
 {
     fileOutput << dec << m_MsgId;
     fileOutput << ",";
@@ -426,7 +426,7 @@ void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput, string& paramT
  *
  * Writes signal values to file.
  */
-void CParameterValues::WriteSigValuesToFile(fstream& fileOutput, string& paramType, string& paramName)
+const void CParameterValues::WriteSigValuesToFile(fstream& fileOutput, string& paramType, string& paramName)
 {
     fileOutput << m_MsgId;
     fileOutput << ",";
