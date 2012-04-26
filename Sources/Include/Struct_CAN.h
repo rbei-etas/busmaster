@@ -34,8 +34,8 @@ struct sTCAN_MSG
     UCHAR m_ucEXTENDED; // true, for (29 Bit) Frame
     UCHAR m_ucRTR;      // true, for remote request
     UCHAR m_ucDataLen;  // Data len (0..8)
+    UCHAR m_ucChannel;	// Message Length
     UCHAR m_ucData[8];  // Databytes 0..7
-    UCHAR m_ucChannel;
 };
 typedef sTCAN_MSG STCAN_MSG;
 typedef sTCAN_MSG *PSTCAN_MSG;
