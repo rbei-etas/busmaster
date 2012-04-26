@@ -219,7 +219,9 @@ void CConverter::GenerateMessageList(fstream& fileInput)
 
     while(fileInput.getline(acLine,defCON_MAX_LINE_LEN))
     {
-        char* pcToken, *pcLine;
+        char* pcToken;
+        char* pcNextToken;
+        char* pcLine;
         // avoid leading <spaces> before tokenising, so passing the
         // starting point will be correct in each case, when calling
         // msg.Format, sig.Format etc.
@@ -230,7 +232,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
             *pcLine++;
         }
 
-        pcToken = strtok(pcLine," ");
+        pcToken = strtok_s(pcLine, " ", &pcNextToken);
 
         if(pcToken)
         {
@@ -276,11 +278,11 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 m_listMessages.push_front(msg);
                 posMsg = m_listMessages.begin();
                 fileInput.getline(acLine,defCON_MAX_LINE_LEN);
-                pcToken = strtok(pcLine," ");
+                pcToken = strtok_s(pcLine, " ", &pcNextToken);
 
                 while(strcmp(acLine,"[END_SIG_LIST]\n") != 0)
                 {
-                    pcToken = strtok(pcLine," ");
+                    pcToken = strtok_s(pcLine, " ", &pcNextToken);
 
                     if(strcmp(pcToken,"[START_SIGNALS]") == 0)
                     {
@@ -326,7 +328,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 while(fileInput.getline(acLine,defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_VALUE_TABLE]\n")!=0)
                 {
                     pcLine = acLine;
-                    pcToken=strtok(pcLine," ");
+                    pcToken=strtok_s(pcLine, " ", &pcNextToken);
 
                     if(strcmp(pcToken,"[START_TABLE]")==0)
                     {
@@ -756,14 +758,15 @@ void CConverter::CreateLogFile(fstream& fileLog)
 void CConverter::create_Node_List(char* pcLine)
 {
     char* pcToken;
+    char* pcNextToken;
     // get the MSG ID
-    pcToken = strtok(pcLine,",");
+    pcToken = strtok_s(pcLine, ",", &pcNextToken);
 
     while(pcToken)
     {
         string str = pcToken;
         m_listNode.push_back(str);
-        pcToken = strtok(NULL, ",");
+        pcToken = strtok_s(NULL, ",", &pcNextToken);
     }
 }
 

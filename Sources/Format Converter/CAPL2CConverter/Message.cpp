@@ -97,8 +97,9 @@ CMessage::CMessage(CMessage& message)
 int CMessage::Format(char* pcLine)
 {
     char* pcToken;
+    char *pcNextToken;
     // get the MSG ID
-    pcToken = strtok(pcLine," :");
+    pcToken = strtok_s(pcLine, " :", &pcNextToken);
     m_uiMsgID = (unsigned int)atoi(pcToken);
     /*
     // set the id and frame format
@@ -114,10 +115,10 @@ int CMessage::Format(char* pcLine)
     }
     */
     // get the message name
-    pcToken = strtok(NULL," :");
+    pcToken = strtok_s(NULL, " :", &pcNextToken);
     m_acName = pcToken;
     // set the message length
-    pcToken = strtok(NULL," :");
+    pcToken = strtok_s(NULL, " :", &pcNextToken);
     m_ucLength = (unsigned char)atoi(pcToken);
     // set the Data format
     m_cDataFormat = CSignal::SIG_DF_INTEL;

@@ -481,7 +481,9 @@ void CConverter::GenerateMessageList(fstream& fileInput)
     // parsing the input file
     while(fileInput.getline(acLine, defCON_MAX_LINE_LEN))
     {
-        char* pcToken, *pcLine;
+        char* pcToken;
+        char* pcNextToken;
+        char* pcLine;
         // avoid leading <spaces> before tokenising, so passing the
         // starting point will be correct in each case, when calling
         // msg.Format, sig.Format etc.
@@ -492,7 +494,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
             *pcLine++;
         }
 
-        pcToken = strtok(pcLine," :");
+        pcToken = strtok_s(pcLine, " :", &pcNextToken);
 
         if(pcToken)
         {
@@ -542,7 +544,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 // find the signal from the message, then add the value descritors
                 // to the respective signals
                 pcLine = pcLine + strlen(pcToken) + 1; // to get next token
-                pcToken = strtok(pcLine," "); // msgid
+                pcToken = strtok_s(pcLine, " ", &pcNextToken); // msgid
                 unsigned int id = (unsigned int)atoi(pcToken);
                 POSITION posMsg = m_listMessages.GetHeadPosition();
 
@@ -554,7 +556,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                     if(rMsg.m_uiMsgID == id)
                     {
                         pcLine = pcLine + strlen(pcToken) + 1; // to get next token
-                        pcToken = strtok(pcLine," "); // Signal name
+                        pcToken = strtok_s(pcLine, " ", &pcNextToken); // Signal name
                         POSITION posSig = rMsg.m_listSignals.GetHeadPosition();
 
                         // find matching signal
@@ -582,7 +584,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 // get MsgId, find the message from the messagelist.
                 // find the signal from the message, then update the
                 // signal type appropriately of the respective signal
-                pcToken = strtok(NULL," :;"); // msgid
+                pcToken = strtok_s(NULL, " :;", &pcNextToken); // msgid
                 unsigned int id = (unsigned int)atoi(pcToken);
                 POSITION posMsg = m_listMessages.GetHeadPosition();
 
@@ -593,7 +595,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                     // find matching message from list
                     if(rMsg.m_uiMsgID == id)
                     {
-                        pcToken = strtok(NULL," :;"); // Signal name
+                        pcToken = strtok_s(NULL, " :;", &pcNextToken); // Signal name
                         POSITION posSig = rMsg.m_listSignals.GetHeadPosition();
 
                         // find matching signal
@@ -603,7 +605,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
 
                             if(strcmp(rSig.m_acName.c_str(),pcToken) == 0)
                             {
-                                if(pcToken = strtok(NULL," :;")) // qualifier (1 or 2)
+                                if(pcToken = strtok_s(NULL, " :;", &pcNextToken)) // qualifier (1 or 2)
                                 {
                                     // update signal type based on qualifier
                                     switch(*pcToken)

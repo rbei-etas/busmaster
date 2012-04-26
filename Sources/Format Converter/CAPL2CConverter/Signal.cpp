@@ -98,6 +98,7 @@ CSignal& CSignal::operator=(CSignal& signal)
 int CSignal::Format(char* pcLine)
 {
     char* pcToken;
+    char* pcNextToken;
     char acTemp[defVTAB_MAX_LINE_LEN],*pcTemp;
     pcTemp = acTemp;
     // get signal name
@@ -105,7 +106,7 @@ int CSignal::Format(char* pcLine)
     // <SIG_NAME :> -- standard signal
     // <SIG_NAME M :> -- mode signal
     // <SIG_NAME mk :> -- mode dependent signal
-    pcToken = strtok(pcLine,":"); // get upto colon
+    pcToken = strtok_s(pcLine, ":", &pcNextToken); // get upto colon
 
     // copy only signal name because we BUSMASTER does not support modes
     // skip leading spaces first
@@ -136,7 +137,7 @@ int CSignal::Format(char* pcLine)
     m_acMultiplex = acTemp; // copy the name to the signal's data member
     pcTemp = acTemp; // reset pcTemp to start of buffer
     // next token (START_BIT|LENGTH@DATA_FORMAT(+/-))
-    pcToken = strtok(NULL," :");
+    pcToken = strtok_s(NULL, " :", &pcNextToken);
 
     // get start bit
     while(*pcToken && *pcToken != '|')
@@ -215,7 +216,7 @@ int CSignal::Format(char* pcLine)
     }
 
     // next token - (SCALE_FACTOR,OFFSET)
-    pcToken = strtok(NULL," (");
+    pcToken = strtok_s(NULL, " (", &pcNextToken);
     pcTemp = acTemp;
 
     // get scale factor
@@ -238,7 +239,7 @@ int CSignal::Format(char* pcLine)
     *pcTemp='\0';
     m_fOffset = (float)atof(acTemp); // store Offset
     // next token [MIN|MAX]
-    pcToken = strtok(NULL," [");
+    pcToken = strtok_s(NULL, " [", &pcNextToken);
     // get MIN
     pcTemp = acTemp;
 

@@ -78,6 +78,7 @@ CValueTable& CValueTable::operator=(CValueTable& Tab)
 void CValueTable::Format_ValueTable(char* pcLine, fstream& fileInput)
 {
     char* pcToken;
+    char* pcNextToken;
     char acLine[defCON_MAX_LINE_LEN] = {'\0'};
 
     //skip all balnk spaces.
@@ -86,7 +87,7 @@ void CValueTable::Format_ValueTable(char* pcLine, fstream& fileInput)
         *pcLine++;
     }
 
-    pcToken=strtok(pcLine,"\n");
+    pcToken = strtok_s(pcLine, "\n", &pcNextToken);
     //get value table name.
     m_TableName = pcToken;
 
@@ -102,15 +103,15 @@ void CValueTable::Format_ValueTable(char* pcLine, fstream& fileInput)
         }
 
         //get value descriptor.
-        pcToken=strtok(pcLine," ");
+        pcToken = strtok_s(pcLine, " ", &pcNextToken);
 
         if(strcmp(pcToken,"[VALUE_DESCRIPTION]")==0)
         {
-            pcToken=strtok(NULL,"\"");
+            pcToken=strtok_s(NULL, "\"", &pcNextToken);
             CValueDescriptor valDesc;
             //get the descriptor value.
             valDesc.m_sDescriptor =pcToken;
-            pcToken=strtok(NULL,",");
+            pcToken = strtok_s(NULL, ",", &pcNextToken);
             valDesc.m_value.i64Value = atoi(pcToken);
             m_values.push_back(valDesc);
         }
