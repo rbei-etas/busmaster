@@ -81,8 +81,7 @@ int CProjConfigManager::GetProjectCount()
 int CProjConfigManager::GetProjectList(list<string>& ProjectList)
 {
 	ProjectList.clear();
-    for (PROJECTMAP::iterator i = m_MapOfProject.begin();
-         i != m_MapOfProject.end(); i++)
+    for (PROJECTMAP::iterator i = m_MapOfProject.begin(); i != m_MapOfProject.end(); ++i)
     {
         ProjectList.push_front(i->first);
     }
