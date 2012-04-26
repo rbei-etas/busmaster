@@ -157,8 +157,8 @@ DWORD WINAPI MsgDelegatingThread(LPVOID pParam)
                     // Now save the time stamp calculated
                     memcpy(pbCurrEntry + 1, &TimeStamp, SIZE_TIMESTAMP);
 
-                    CLIENT_MAP::iterator itr = sg_ClientMap.begin();
-                    while (itr != sg_ClientMap.end())
+                    CLIENT_MAP::iterator itr;
+                    for (itr= sg_ClientMap.begin(); itr != sg_ClientMap.end(); ++itr)
                     {
                         BOOL Result = TRUE;
                         // If the current client is meant for the same bus, 
@@ -188,7 +188,6 @@ DWORD WINAPI MsgDelegatingThread(LPVOID pParam)
                                 *pbCurrEntry = 0x0;
                             }
                         }
-                        itr++;
                     }
                     LeaveCriticalSection(&sg_CriticalSection);
                 }

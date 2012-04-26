@@ -329,8 +329,7 @@ static int ReadWriteASection(bool bToRead, short SectionID,
                 LISTSTR ProjectList;
                 g_ProjCfgManager.GetProjectList(ProjectList);
                 
-                for (LISTSTR::iterator i = ProjectList.begin();
-                     (i != ProjectList.end()) && bAllWell; i++)
+                for (LISTSTR::iterator i = ProjectList.begin(); (i != ProjectList.end()) && bAllWell; ++i)
                 {
                     PROJECTDATA ProjData;
                     if (bAllWell = g_ProjCfgManager.GetProjectData(*i, ProjData))
@@ -394,8 +393,7 @@ static int ReadWriteASection(bool bToRead, short SectionID,
             {
                 LISTSTR ProjectList;
                 g_ProjCfgManager.GetProjectList(ProjectList);
-                for (LISTSTR::iterator i = ProjectList.begin();
-                     (i != ProjectList.end()) && bAllWell; i++)
+                for (LISTSTR::iterator i = ProjectList.begin(); (i != ProjectList.end()) && bAllWell; ++i)
                 {
                     const char* str = i->c_str();
                     if ((nResult = WriteAString(pFile, (char *) str)) == 0)
@@ -407,8 +405,7 @@ static int ReadWriteASection(bool bToRead, short SectionID,
                         {
                             bAllWell = false;
                         }
-                        for (LISTSTR::iterator j = SectionList.begin();
-                             (j != SectionList.end()) && bAllWell; j++)
+                        for (LISTSTR::iterator j = SectionList.begin(); (j != SectionList.end()) && bAllWell; ++j)
                         {
                             SECTIONDATA CurrSecData;
                             bAllWell = g_ProjCfgManager.GetSectionData(*i, *j, CurrSecData);

@@ -857,7 +857,7 @@ void CHardwareListing::vSortHardwareItems()
         }
     }
 
-    for ( m_pIter = mHardwareListMap.begin( ) ; m_pIter != mHardwareListMap.end( ) ; m_pIter++ )
+    for (m_pIter = mHardwareListMap.begin(); m_pIter != mHardwareListMap.end(); ++m_pIter)
     {
         delete(m_pIter->second); //release Memory
         m_pIter->second = NULL;
