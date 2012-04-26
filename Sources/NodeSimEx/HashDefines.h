@@ -205,7 +205,7 @@ Are you sure you want to delete?")
 #define defFNS_INIT_SIG_FORMAT   _T("%s\n\n%s.%s")
 #define defFNS_INIT_VAL          _T(" 0")
 #define defSPACE_STR            _T(" ")
-#define defMSG_INIT_FORMAT_CAN       _T("= { 0x%X, %d, %d, %d")
+#define defMSG_INIT_FORMAT_CAN       _T("= { 0x%X, %d, %d, %d, %c")
 #define defMSG_INIT_FORMAT_MCNET       _T("= { %d, 0x%X, %d, %d, %d, %d")
 #define defMSG_INIT_FORMAT_J1939       _T("= { {%d, %c, %s, %s, 0x%X}, %d")
 
