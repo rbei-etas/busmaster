@@ -81,22 +81,23 @@ CMessage& CMessage::operator=(CMessage& message)
 int CMessage::Format(char* pcLine)
 {
     char* pcToken;
+    char* pcNextToken;
     // get the MSG Name
-    pcToken = strtok(pcLine,",");
+    pcToken = strtok_s(pcLine, ",", &pcNextToken);
     m_sName = pcToken;
     // get the MSG ID
-    pcToken = strtok(NULL," ,");
+    pcToken = strtok_s(NULL, " ,", &pcNextToken);
     m_uiMsgID = (unsigned int)atoi(pcToken);
     // set the message length
-    pcToken = strtok(NULL," ,");
+    pcToken = strtok_s(NULL, " ,", &pcNextToken);
     m_ucLength = (unsigned int)atoi(pcToken);
     CConverter::ucMsg_DLC = m_ucLength;
     //no.. of signals.
-    pcToken = strtok(NULL," ,");
+    pcToken = strtok_s(NULL, " ,", &pcNextToken);
     //data format.
-    pcToken = strtok(NULL," ,");
+    pcToken = strtok_s(NULL, " ,", &pcNextToken);
     //frame format.
-    pcToken = strtok(NULL," ,");
+    pcToken = strtok_s(NULL, " ,", &pcNextToken);
     m_cFrameFormat = pcToken[0];
 
     if(strcmp(pcToken,"X") == 0)
@@ -105,7 +106,7 @@ int CMessage::Format(char* pcLine)
     }
 
     //get the Tx'ing Node Name
-    pcToken = strtok(NULL,"\n");
+    pcToken = strtok_s(NULL, "\n", &pcNextToken);
 
     if(pcToken)
     {

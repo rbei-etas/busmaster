@@ -111,7 +111,9 @@ void CComment::Format_netComment(fstream& fileInput, list<CComment>& m_listComme
  */
 void CComment::Format_nodeComment(fstream& fileInput, list<CComment>& m_listComment)
 {
-    char* pcToken, *pcLine;
+    char* pcToken;
+    char* pcNextToken;
+    char* pcLine;
     char acLine[defCON_MAX_LINE_LEN];
     string comment;
 
@@ -120,11 +122,11 @@ void CComment::Format_nodeComment(fstream& fileInput, list<CComment>& m_listComm
     {
         pcLine=acLine;
         //reads the node name.
-        pcToken=strtok(pcLine," ");
+        pcToken=strtok_s(pcLine, " ", &pcNextToken);
         m_elementName=pcToken;
         //m_elementName = m_elementName.Left(defCON_MAX_MSGN_LEN);
         //get the comment.
-        pcToken = strtok(NULL,"");
+        pcToken = strtok_s(NULL, "", &pcNextToken);
         comment = pcToken;
 
         while(strstr(pcToken,"\";") == NULL)
@@ -150,7 +152,9 @@ void CComment::Format_nodeComment(fstream& fileInput, list<CComment>& m_listComm
  */
 void CComment::Format_msgComment(fstream& fileInput, list<CComment>& m_listComment)
 {
-    char* pcToken, *pcLine;
+    char* pcToken;
+    char* pcNextToken;
+    char* pcLine;
     char acLine[defCON_MAX_LINE_LEN];
     string comment;
 
@@ -159,10 +163,10 @@ void CComment::Format_msgComment(fstream& fileInput, list<CComment>& m_listComme
     {
         pcLine=acLine;
         //get msgid
-        pcToken=strtok(pcLine," ");
+        pcToken=strtok_s(pcLine, " ", &pcNextToken);
         m_msgID=unsigned int(atoi(pcToken));
         //get the message type and validates the message.
-        pcToken=strtok(NULL," ");
+        pcToken=strtok_s(NULL, " ", &pcNextToken);
         m_msgType=*pcToken;
 
         if(m_msgType =='X')
@@ -171,7 +175,7 @@ void CComment::Format_msgComment(fstream& fileInput, list<CComment>& m_listComme
         }
 
         //get the comment
-        pcToken = strtok(NULL,"");
+        pcToken = strtok_s(NULL, "", &pcNextToken);
         comment = pcToken;
 
         while(strstr(pcToken,"\";") == NULL)
@@ -197,7 +201,9 @@ void CComment::Format_msgComment(fstream& fileInput, list<CComment>& m_listComme
  */
 void CComment::Format_sigComment(fstream& fileInput, list<CComment>& m_listComment)
 {
-    char* pcToken, *pcLine;
+    char* pcToken;
+    char* pcNextToken;
+    char* pcLine;
     char acLine[defCON_MAX_LINE_LEN];
     string comment;
 
@@ -206,10 +212,10 @@ void CComment::Format_sigComment(fstream& fileInput, list<CComment>& m_listComme
     {
         pcLine=acLine;
         //get the mesgid.
-        pcToken=strtok(pcLine," ");
+        pcToken = strtok_s(pcLine, " ", &pcNextToken);
         m_msgID=unsigned int(atoi(pcToken));
         //get the mesg type and validates.
-        pcToken=strtok(NULL," ");
+        pcToken = strtok_s(NULL, " ", &pcNextToken);
         m_msgType=*pcToken;
 
         if(m_msgType =='X')
@@ -218,11 +224,11 @@ void CComment::Format_sigComment(fstream& fileInput, list<CComment>& m_listComme
         }
 
         //get signal name.
-        pcToken = strtok(NULL," ");
+        pcToken = strtok_s(NULL, " ", &pcNextToken);
         m_elementName=pcToken;
         //  m_elementName = m_elementName.Left(defCON_MAX_MSGN_LEN);
         //get comment.
-        pcToken = strtok(NULL,"");
+        pcToken = strtok_s(NULL, "", &pcNextToken);
         comment = pcToken;
 
         while(strstr(pcToken,"\";") == NULL)

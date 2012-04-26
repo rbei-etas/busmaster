@@ -117,36 +117,37 @@ int CSignal::operator==(const CSignal& signal) const
 int CSignal::Format(char* pcLine)
 {
     char* pcToken;
+    char* pcNextToken;
     char acTemp[defCON_MAX_TOKN_LEN],*pcTemp;
     pcTemp = acTemp;
     // get signal name
-    pcToken = strtok(pcLine,","); // get upto colon
+    pcToken = strtok_s(pcLine, ",", &pcNextToken); // get upto colon
     // now get the signal name
     m_sName = pcToken; // copy the name to the signal's data member
     // Signal length
-    pcToken = strtok(NULL,",");
+    pcToken = strtok_s(NULL, ",", &pcNextToken);
     m_ucLength = atoi(pcToken); // store signal length
     // get which byte
-    pcToken = strtok(NULL,",");
+    pcToken = strtok_s(NULL, ",", &pcNextToken);
     m_ucWhichByte = atoi(pcToken);
     // get start bit
     unsigned int ucStartBit;
-    pcToken = strtok(NULL,",");
+    pcToken = strtok_s(NULL, ",", &pcNextToken);
     m_ucStartBit = atoi(pcToken);
     ucStartBit = m_ucStartBit + (m_ucWhichByte - 1) * 8;
     //get Data type
-    pcToken = strtok(NULL,",");
+    pcToken = strtok_s(NULL, ",", &pcNextToken);
     m_ucType = *pcToken;
     // get MAX
-    pcToken = strtok(NULL,",");
+    pcToken = strtok_s(NULL, ",", &pcNextToken);
     // now store as double until we parse till SIG_VALTYPE_
     m_MaxValue.ui64Value = _strtoui64(pcToken, NULL, 10);
     // get MIN value
-    pcToken = strtok(NULL,",");
+    pcToken = strtok_s(NULL, ",", &pcNextToken);
     //venkat - unsiged __int64 is enough to store any value
     m_MinValue.ui64Value = _strtoui64(pcToken, NULL, 10);
     // get DATA_FORMAT (intel or motorola)
-    pcToken = strtok(NULL,",");
+    pcToken = strtok_s(NULL, ",", &pcNextToken);
     m_ucDataFormat = *pcToken;
 
     if(m_ucDataFormat == '0')
@@ -167,14 +168,14 @@ int CSignal::Format(char* pcLine)
 
     m_ucStartBit = ucStartBit;
     // next token - (SCALE_FACTOR,OFFSET)
-    pcToken = strtok(NULL,",");
+    pcToken = strtok_s(NULL, ",", &pcNextToken);
     m_fOffset = (float)atof(pcToken); // store scale factor
     // Get offset
-    pcToken = strtok(NULL,",");
+    pcToken = strtok_s(NULL, ",", &pcNextToken);
     m_fScaleFactor = (float)atof(pcToken); // store Offset
     // next token -- "UNIT", ""
     pcTemp = acTemp;
-    pcToken = strtok(NULL,"");
+    pcToken = strtok_s(NULL, "", &pcNextToken);
 
     //pcToken++;
     // copy everything, but not including the last <">

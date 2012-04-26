@@ -180,7 +180,9 @@ void CParameter::Format_MesgParam_Value(fstream& fileInput, list<CParameter>& m_
 {
     CParameterValues pVal;
     char acLine[defCON_MAX_LINE_LEN];
-    char* pcToken, *pcLine;
+    char* pcToken;
+    char* pcLine;
+    char* pcNextToken;
     char acTemp[defCON_CHAR_LEN],*pcTemp;
     pcTemp = acTemp;
 
@@ -190,11 +192,11 @@ void CParameter::Format_MesgParam_Value(fstream& fileInput, list<CParameter>& m_
         char type[defCON_CHAR_LEN];
         pcLine = acLine;
         //get mesg id.
-        pcToken=strtok(pcLine,",");
+        pcToken = strtok_s(pcLine, ",", &pcNextToken);
         UINT msgId=unsigned int(strtoul(pcToken, NULL, 10));
         pcLine=pcLine+strlen(pcToken)+1;
         //get message type and validates teh type.
-        pcToken=strtok(pcLine,",");
+        pcToken = strtok_s(pcLine, ",", &pcNextToken);
         strncpy_s(type, pcToken, sizeof(type));
 
         if(strcmp(type,"X")==0)
@@ -204,7 +206,7 @@ void CParameter::Format_MesgParam_Value(fstream& fileInput, list<CParameter>& m_
 
         pcLine=pcLine+strlen(pcToken)+1;
         //get other param values.
-        pcToken=strtok(pcLine,",");
+        pcToken = strtok_s(pcLine, ",", &pcNextToken);
         pcLine=pcLine+strlen(pcToken)+1;
         pcToken++;
 
@@ -242,7 +244,9 @@ void CParameter::Format_SigParam_Value(fstream& fileInput, list<CParameter>& m_l
 {
     CParameterValues pVal;
     char acLine[defCON_MAX_LINE_LEN];
-    char* pcToken, *pcLine;
+    char* pcToken;
+    char* pcNextToken;
+    char* pcLine;
     char acTemp[defCON_CHAR_LEN],*pcTemp;
     pcTemp = acTemp;
 
@@ -252,11 +256,11 @@ void CParameter::Format_SigParam_Value(fstream& fileInput, list<CParameter>& m_l
         char temp[defCON_CHAR_LEN],sname[defCON_CHAR_LEN];
         pcLine = acLine;
         //get mesg id.
-        pcToken=strtok(pcLine,",");
+        pcToken=strtok_s(pcLine, ",", &pcNextToken);
         UINT msgId=unsigned int(strtoul(pcToken, NULL, 10));
         pcLine=pcLine+strlen(pcToken)+1;
         //get message type and validates the mtype.
-        pcToken=strtok(pcLine,",");
+        pcToken=strtok_s(pcLine, ",", &pcNextToken);
         strncpy_s(temp, pcToken, sizeof(temp));
 
         if(strcmp(temp,"X")==0)
@@ -266,11 +270,11 @@ void CParameter::Format_SigParam_Value(fstream& fileInput, list<CParameter>& m_l
 
         pcLine=pcLine+strlen(pcToken)+1;
         //get signal name.
-        pcToken=strtok(pcLine,",");
+        pcToken=strtok_s(pcLine, ",", &pcNextToken);
         strncpy_s(sname, pcToken, sizeof(sname));
         pcLine=pcLine+strlen(pcToken)+1;
         //get other values.
-        pcToken=strtok(pcLine,",");
+        pcToken=strtok_s(pcLine, ",", &pcNextToken);
         pcLine=pcLine+strlen(pcToken)+1;
         pcToken++;
 
@@ -308,7 +312,9 @@ void CParameter::Format_NodeParam_Value(fstream& fileInput, list<CParameter>& m_
 {
     CParameterValues pVal;
     char acLine[defCON_MAX_LINE_LEN];
-    char* pcToken, *pcLine;
+    char* pcToken;
+    char* pcNextToken;
+    char* pcLine;
     char acTemp[defCON_CHAR_LEN],*pcTemp;
     pcTemp = acTemp;
 
@@ -318,11 +324,11 @@ void CParameter::Format_NodeParam_Value(fstream& fileInput, list<CParameter>& m_
         char NodeName[defCON_CHAR_LEN];
         pcLine = acLine;
         //get node name.
-        pcToken=strtok(pcLine,",");
+        pcToken=strtok_s(pcLine, ",", &pcNextToken);
         strncpy_s(NodeName, pcToken, sizeof(NodeName));
         pcLine=pcLine+strlen(pcToken)+1;
         //get other values.
-        pcToken=strtok(NULL,",");
+        pcToken = strtok_s(NULL, ",", &pcNextToken);
         pcLine=pcLine+strlen(pcToken)+1;
         pcToken++;
 
@@ -360,7 +366,9 @@ void CParameter::Format_NetParam_Value(fstream& fileInput, list<CParameter>& m_l
 {
     CParameterValues pVal;
     char acLine[defCON_MAX_LINE_LEN];
-    char* pcToken, *pcLine;
+    char* pcToken;
+    char* pcNextToken;
+    char* pcLine;
     char acTemp[defCON_CHAR_LEN],*pcTemp;
     pcTemp = acTemp;
 
@@ -369,7 +377,7 @@ void CParameter::Format_NetParam_Value(fstream& fileInput, list<CParameter>& m_l
     {
         pcLine = acLine;
         //get other values.
-        pcToken=strtok(pcLine,",");
+        pcToken = strtok_s(pcLine, ",", &pcNextToken);
         pcToken++;
 
         while(*pcToken && *pcToken!='"')
@@ -446,20 +454,21 @@ void CParameter::Format_ParamDef(char* pcLine, int index)
 void CParameter::GetParam_Def(char* pcLine)
 {
     char* pcToken;
+    char* pcNextToken;
     //get Param name
-    pcToken = strtok(pcLine,"\"");
+    pcToken = strtok_s(pcLine, "\"", &pcNextToken);
     m_ParamName = pcToken;
     //get Param type
-    pcToken=strtok(NULL,",");
+    pcToken = strtok_s(NULL, ",", &pcNextToken);
     m_ParamType = pcToken;
 
     if(m_ParamType == "STRING")
     {
-        pcToken=strtok(NULL,"\n");
+        pcToken = strtok_s(NULL, "\n", &pcNextToken);
     }
     else
     {
-        pcToken=strtok(NULL,",");
+        pcToken = strtok_s(NULL, ",", &pcNextToken);
     }
 
     //get the default value of parameter
@@ -469,7 +478,7 @@ void CParameter::GetParam_Def(char* pcLine)
     {
         m_ValRange="";
 
-        while(pcToken=strtok(NULL,"\n"))
+        while(pcToken = strtok_s(NULL, "\n", &pcNextToken))
         {
             m_ValRange=m_ValRange+" "+pcToken;
         }
@@ -478,9 +487,9 @@ void CParameter::GetParam_Def(char* pcLine)
     else if(m_ParamType == "HEX")
     {
         unsigned int min_val,max_val;
-        pcToken=strtok(NULL,",");
+        pcToken = strtok_s(NULL, ",", &pcNextToken);
         min_val=strtoul(pcToken, NULL, 10);
-        pcToken = strtok(NULL," ");
+        pcToken = strtok_s(NULL, " ", &pcNextToken);
         max_val= strtoul(pcToken, NULL, 10);
         m_RangeError |= isValid_hexRange(min_val,max_val);
     }
@@ -488,9 +497,9 @@ void CParameter::GetParam_Def(char* pcLine)
     else if(m_ParamType == "FLOAT")
     {
         double min_val,max_val;
-        pcToken=strtok(NULL,",");
+        pcToken = strtok_s(NULL, ",", &pcNextToken);
         min_val= atof(pcToken);
-        pcToken = strtok(NULL," ");
+        pcToken = strtok_s(NULL, " ", &pcNextToken);
         max_val=atof(pcToken);
         m_RangeError |= isValid_floatRange(min_val,max_val);
     }
@@ -498,9 +507,9 @@ void CParameter::GetParam_Def(char* pcLine)
     else if(m_ParamType == "INT")
     {
         LONGLONG min_val,max_val;
-        pcToken=strtok(NULL,",");
+        pcToken = strtok_s(NULL, ",", &pcNextToken);
         min_val=_atoi64(pcToken);
-        pcToken = strtok(NULL," ");
+        pcToken = strtok_s(NULL, " ", &pcNextToken);
         max_val=_atoi64(pcToken);
         m_RangeError |= isValid_intRange(min_val,max_val);
     }
