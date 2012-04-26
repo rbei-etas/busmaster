@@ -249,7 +249,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 msg.Format(pcLine + strlen(pcToken)+1);
 
                 // find the message
-                for(posMsg=m_listMessages.begin(); posMsg!=m_listMessages.end(); posMsg++)
+                for(posMsg=m_listMessages.begin(); posMsg!=m_listMessages.end(); ++posMsg)
                 {
                     if((posMsg->m_uiMsgID == msg.m_uiMsgID) && (posMsg->m_cFrameFormat == msg.m_cFrameFormat))
                     {
@@ -262,7 +262,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 {
                     m_listMessages.push_back(msg);
                     posMsg = m_listMessages.end();
-                    posMsg--;
+                    --posMsg;
                 }
             }
             else if(strcmp(pcToken,"[START_SIG_LIST]\n") == 0)
@@ -483,11 +483,11 @@ void CConverter::ValidateMessageList(void)
 {
     list<CMessage>::iterator msg;
 
-    for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); msg++)
+    for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); ++msg)
     {
         list<CSignal>::iterator sig;
 
-        for(sig=msg->m_listSignals.begin(); sig!=msg->m_listSignals.end(); sig++)
+        for(sig=msg->m_listSignals.begin(); sig!=msg->m_listSignals.end(); ++sig)
         {
             sig->Validate();
         }
@@ -515,7 +515,7 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     //write all nodes
     list<string>::iterator node;
 
-    for(node = m_listNode.begin(); node != m_listNode.end(); node++)
+    for(node = m_listNode.begin(); node != m_listNode.end(); ++node)
     {
         fileOutput << " " << node->c_str();
     }
@@ -529,7 +529,7 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     //write messages
     list<CMessage>::iterator msg;
 
-    for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); msg++)
+    for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); ++msg)
     {
         bResult &= msg->writeMessageToFile(fileOutput);
     }
@@ -537,7 +537,7 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     //write environment variables if any
     list<string>::iterator str;
 
-    for(str=m_notProcessed.begin(); str!=m_notProcessed.end(); str++)
+    for(str=m_notProcessed.begin(); str!=m_notProcessed.end(); ++str)
     {
         if(strcmp(str->substr(0, 3).c_str(), "EV_") == 0)
         {
@@ -548,28 +548,28 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     //Comments ----- Net
     list<CComment>::iterator cmt;
 
-    for(cmt=m_listComments[0].begin(); cmt!=m_listComments[0].end(); cmt++)
+    for(cmt=m_listComments[0].begin(); cmt!=m_listComments[0].end(); ++cmt)
     {
         fileOutput << "CM_ " << cmt->m_elementName.c_str();
         fileOutput << " " << cmt->m_comment.c_str();
     }
 
     //Comments ----- Node
-    for (cmt=m_listComments[1].begin(); cmt!=m_listComments[1].end(); cmt++)
+    for (cmt=m_listComments[1].begin(); cmt!=m_listComments[1].end(); ++cmt)
     {
         fileOutput << "CM_ BU_ " << cmt->m_elementName.c_str();
         fileOutput << " " << cmt->m_comment.c_str();
     }
 
     //Comments ----- Mesg
-    for (cmt=m_listComments[2].begin(); cmt!=m_listComments[2].end(); cmt++)
+    for (cmt=m_listComments[2].begin(); cmt!=m_listComments[2].end(); ++cmt)
     {
         fileOutput << "CM_ BO_ " << dec << cmt->m_msgID;
         fileOutput << " " << cmt->m_comment.c_str();
     }
 
     //Comments ----- Signal
-    for (cmt=m_listComments[3].begin(); cmt!=m_listComments[3].end(); cmt++)
+    for (cmt=m_listComments[3].begin(); cmt!=m_listComments[3].end(); ++cmt)
     {
         fileOutput << "CM_ SG_ " << dec << cmt->m_msgID;
         fileOutput << " " << cmt->m_elementName.c_str();
@@ -591,51 +591,51 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     //Param Other values
     list<CParameter>::iterator rParam;
 
-    for(rParam=m_listParameterArray[0].begin(); rParam!=m_listParameterArray[0].end(); rParam++)
+    for(rParam=m_listParameterArray[0].begin(); rParam!=m_listParameterArray[0].end(); ++rParam)
     {
         list<CParameterValues>::iterator vParam;
 
-        for(vParam=rParam->m_listParamValues[0].begin(); vParam!=rParam->m_listParamValues[0].end(); vParam++)
+        for(vParam=rParam->m_listParamValues[0].begin(); vParam!=rParam->m_listParamValues[0].end(); ++vParam)
         {
             vParam->WriteNetValuesToFile(fileOutput, rParam->m_ParamType, rParam->m_ParamName);
         }
     }
 
-    for(rParam=m_listParameterArray[1].begin(); rParam!=m_listParameterArray[1].end(); rParam++)
+    for(rParam=m_listParameterArray[1].begin(); rParam!=m_listParameterArray[1].end(); ++rParam)
     {
         list<CParameterValues>::iterator vParam;
 
-        for(vParam=rParam->m_listParamValues[1].begin(); vParam!=rParam->m_listParamValues[1].end(); vParam++)
+        for(vParam=rParam->m_listParamValues[1].begin(); vParam!=rParam->m_listParamValues[1].end(); ++vParam)
         {
             vParam->WriteNodeValuesToFile(fileOutput, rParam->m_ParamType, rParam->m_ParamName);
         }
     }
 
-    for(rParam=m_listParameterArray[2].begin(); rParam!=m_listParameterArray[2].end(); rParam++)
+    for(rParam=m_listParameterArray[2].begin(); rParam!=m_listParameterArray[2].end(); ++rParam)
     {
         list<CParameterValues>::iterator vParam;
 
-        for(vParam=rParam->m_listParamValues[2].begin(); vParam!=rParam->m_listParamValues[2].end(); vParam++)
+        for(vParam=rParam->m_listParamValues[2].begin(); vParam!=rParam->m_listParamValues[2].end(); ++vParam)
         {
             vParam->WriteMesgValuesToFile(fileOutput, rParam->m_ParamType, rParam->m_ParamName);
         }
     }
 
-    for(rParam=m_listParameterArray[3].begin(); rParam!=m_listParameterArray[3].end(); rParam++)
+    for(rParam=m_listParameterArray[3].begin(); rParam!=m_listParameterArray[3].end(); ++rParam)
     {
         list<CParameterValues>::iterator vParam;
 
-        for(vParam=rParam->m_listParamValues[3].begin(); vParam!=rParam->m_listParamValues[3].end(); vParam++)
+        for(vParam=rParam->m_listParamValues[3].begin(); vParam!=rParam->m_listParamValues[3].end(); ++vParam)
         {
             list<CMessage>::iterator msg;
 
-            for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); msg++)
+            for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); ++msg)
             {
                 if(msg->m_uiMsgID == vParam->m_MsgId)
                 {
                     list<CSignal>::iterator sig;
 
-                    for(sig=msg->m_listSignals.begin(); sig!=msg->m_listSignals.end(); sig++)
+                    for(sig=msg->m_listSignals.begin(); sig!=msg->m_listSignals.end(); ++sig)
                     {
                         if((sig->m_sName == vParam->m_SignalName) && (sig->m_uiError == CSignal::SIG_EC_NO_ERR))
                         {
@@ -652,7 +652,7 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     fileOutput << endl;
 
     //BA_
-    for(str = m_notProcessed.begin(); str != m_notProcessed.end(); str++)
+    for(str = m_notProcessed.begin(); str != m_notProcessed.end(); ++str)
     {
         if(strcmp(str->substr(0, 3).c_str(), "BA_") == 0)
         {
@@ -661,11 +661,11 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     }
 
     //VAL_
-    for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); msg++)
+    for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); ++msg)
     {
         list<CSignal>::iterator sig;
 
-        for(sig=msg->m_listSignals.begin(); sig!=msg->m_listSignals.end(); sig++)
+        for(sig=msg->m_listSignals.begin(); sig!=msg->m_listSignals.end(); ++sig)
         {
             if(sig->m_listValueDescriptor.empty() == 0 && sig->m_uiError == CSignal::SIG_EC_NO_ERR)
             {
@@ -679,11 +679,11 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     }
 
     //write SIG_VALTYPE_
-    for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); msg++)
+    for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); ++msg)
     {
         list<CSignal>::iterator sig;
 
-        for(sig=msg->m_listSignals.begin(); sig!=msg->m_listSignals.end(); sig++)
+        for(sig=msg->m_listSignals.begin(); sig!=msg->m_listSignals.end(); ++sig)
         {
             if(sig->m_ucType == 'F')
             {
@@ -718,12 +718,12 @@ void CConverter::CreateLogFile(fstream& fileLog)
     fileLog << endl;
     list<CMessage>::iterator msg;
 
-    for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); msg++)
+    for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); ++msg)
     {
         first_sig = true;
         list<CSignal>::iterator sig;
 
-        for(sig=msg->m_listSignals.begin(); sig!=msg->m_listSignals.end(); sig++)
+        for(sig=msg->m_listSignals.begin(); sig!=msg->m_listSignals.end(); ++sig)
         {
             // write signal only if it is not valid
             if(sig->m_uiError != CSignal::SIG_EC_NO_ERR)
@@ -778,12 +778,12 @@ void CConverter::DecryptData(list<string> &m_notProcessed)
 {
     list<string>::iterator str;
 
-    for(str=m_notProcessed.begin(); str!=m_notProcessed.end(); str++)
+    for(str=m_notProcessed.begin(); str!=m_notProcessed.end(); ++str)
     {
         //read the string at the position
         string::iterator ch;
 
-        for(ch=str->begin(); ch<str->end(); ch++)
+        for(ch=str->begin(); ch<str->end(); ++ch)
         {
             if ((*ch >= 'a' && *ch <= 'm') || (*ch >= 'A' && *ch <= 'M'))
             {

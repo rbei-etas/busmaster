@@ -132,7 +132,7 @@ bool CMessage::writeMessageToFile(fstream& fileOutput, list<CMessage> &m_listMes
     //Write all the message
     list<CMessage>::iterator msg;
 
-    for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); msg++)
+    for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); ++msg)
     {
         fileOutput << T_START_MSG << " " << msg->m_acName.c_str();
         fileOutput << "," << dec << msg->m_uiMsgID;

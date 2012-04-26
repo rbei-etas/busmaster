@@ -129,7 +129,7 @@ void CValueDescriptor::writeValueDescToFile(fstream& fileOutput,char m_ucType,li
 {
     list<CValueDescriptor>::iterator rValDesc;
 
-    for(rValDesc=m_listValueDescriptor.begin(); rValDesc!=m_listValueDescriptor.end(); rValDesc++)
+    for(rValDesc=m_listValueDescriptor.begin(); rValDesc!=m_listValueDescriptor.end(); ++rValDesc)
     {
         switch(m_ucType)
         {

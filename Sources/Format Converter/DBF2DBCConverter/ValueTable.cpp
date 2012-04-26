@@ -60,7 +60,7 @@ CValueTable& CValueTable::operator=(CValueTable& Tab)
     m_TableName = Tab.m_TableName;
     list<CValueDescriptor>::iterator vDisp;
 
-    for(vDisp=Tab.m_values.begin(); vDisp!=Tab.m_values.end(); vDisp++)
+    for(vDisp=Tab.m_values.begin(); vDisp!=Tab.m_values.end(); ++vDisp)
     {
         m_values.push_back(*vDisp);
     }
@@ -130,7 +130,7 @@ void CValueTable::writeValueTabToFile(fstream& fileOutput,list<CValueTable> &vTa
 
     //get value table.
     //repeats till value tables exists in the list.
-    for(tab = vTab.begin(); tab != vTab.end(); tab++)
+    for(tab = vTab.begin(); tab != vTab.end(); ++tab)
     {
         //write value table name to the o/p file.
         fileOutput << "VAL_TABLE_ " << tab->m_TableName << " ";

@@ -127,7 +127,7 @@ bool WriteParamToFile(fstream& fileOutput, list<CParameter> &m_listParameter)
     //gets the frst param in the list.
     list<CParameter>::iterator rParam;
 
-    for(rParam=m_listParameter.begin(); rParam!=m_listParameter.end(); rParam++)
+    for(rParam=m_listParameter.begin(); rParam!=m_listParameter.end(); ++rParam)
     {
         if(rParam->m_RangeError)
         {
@@ -216,7 +216,7 @@ void CParameter::Format_MesgParam_Value(fstream& fileInput, list<CParameter>& m_
         *pcTemp='\0';
         list<CParameter>::iterator rParam;
 
-        for(rParam=m_listParam.begin(); rParam!=m_listParam.end(); rParam++)
+        for(rParam=m_listParam.begin(); rParam!=m_listParam.end(); ++rParam)
             //assigns other values to the matching param defintion.
         {
             // find matching Parameter from list
@@ -283,7 +283,7 @@ void CParameter::Format_SigParam_Value(fstream& fileInput, list<CParameter>& m_l
         //assigns other values to the matching param.
         list<CParameter>::iterator rParam;
 
-        for(rParam=m_listParam.begin(); rParam!=m_listParam.end(); rParam++)
+        for(rParam=m_listParam.begin(); rParam!=m_listParam.end(); ++rParam)
         {
             // find matching Parameter from list
             if(strcmp(rParam->m_ParamName.c_str(),acTemp)==0 )
@@ -335,7 +335,7 @@ void CParameter::Format_NodeParam_Value(fstream& fileInput, list<CParameter>& m_
         //assigns other values to the matching param.
         list<CParameter>::iterator rParam;
 
-        for(rParam=m_listParam.begin(); rParam!=m_listParam.end(); rParam++)
+        for(rParam=m_listParam.begin(); rParam!=m_listParam.end(); ++rParam)
         {
             // find matching Parameter from list
             if(strcmp(rParam->m_ParamName.c_str(), acTemp)==0)
@@ -381,7 +381,7 @@ void CParameter::Format_NetParam_Value(fstream& fileInput, list<CParameter>& m_l
         //assigns other values to the matching param.
         list<CParameter>::iterator rParam;
 
-        for(rParam=m_listParam.begin(); rParam!=m_listParam.end(); rParam++)
+        for(rParam=m_listParam.begin(); rParam!=m_listParam.end(); ++rParam)
         {
             // find matching Parameter from list
             if(strcmp(rParam->m_ParamName.c_str(),acTemp)==0 )
@@ -603,7 +603,7 @@ bool Write_DefVal_ToFile(fstream& fileOutput,list<CParameter> &m_listParameter)
     //gets the first param from the list.
     list<CParameter>::iterator rParam;
 
-    for(rParam=m_listParameter.begin(); rParam!=m_listParameter.end(); rParam++)
+    for(rParam=m_listParameter.begin(); rParam!=m_listParameter.end(); ++rParam)
     {
         //checks whether def val is with in the range or not.
         if(rParam->m_RangeError)
