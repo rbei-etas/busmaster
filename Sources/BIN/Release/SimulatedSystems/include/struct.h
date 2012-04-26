@@ -35,15 +35,13 @@ typedef struct sTCAN_MSG
     unsigned char m_ucEXTENDED; // true, for (29 Bit) Frame
     unsigned char m_ucRTR;      // true, for remote request
     unsigned char m_ucDLC;  // Data len (0..8)
+    unsigned char m_ucChannel;	//Message Length
     union
 	{
 		unsigned char      m_aucData[8];
 		unsigned short int m_auwData[4];
 		unsigned long  int m_aulData[2];
 	}m_sWhichBit;
-
-	unsigned char m_ucChannel;
-
 } STCAN_MSG;
 
 //This structure holds the error and the channel number
