@@ -177,6 +177,7 @@ private:
     void vUpdateFromRawValue(int nItem, int nSubItem);
     // To update CAN message data bytes
     void vUpdateDataBytes();
+    void vUpdateStateDataBytes();
     // To pack signal value in to the CAN message data bytes
     void vUpdateSignalData(sSIGNALS* psSignal,
                            __int64 nI64SignVal );
