@@ -605,7 +605,7 @@ void CCANMonitorApp::vSetFileStorageInfo(CString oCfgFilename)
 
 	DATASTORAGEINFO stempDataInfo;
 	FILESTORAGEINFO FileStoreInfo;
-	strcpy (FileStoreInfo.m_FilePath, oCfgFilename.GetBuffer(MAX_PATH));
+	strcpy_s(FileStoreInfo.m_FilePath, oCfgFilename.GetBuffer(MAX_PATH));
 	stempDataInfo.FSInfo = &FileStoreInfo;
 	stempDataInfo.m_Datastore = FILEMODE;
 	CConfigData::ouGetConfigDetailsObject().SetConfigDatastorage(&stempDataInfo);
@@ -1130,7 +1130,7 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
                     {
                         TCHAR acName[MAX_PATH] = {_T('\0')};
                         CString omDBName = aomNewDatabases.GetAt(i);
-                        _tcscpy(acName, omDBName.GetBuffer(MAX_PATH));
+                        strcpy_s(acName, omDBName.GetBuffer(MAX_PATH));
                         COPY_DATA(pbyTemp, acName, sizeof(TCHAR) * MAX_PATH);
                     }
                     CConfigData::ouGetConfigDetailsObject().bSetData(pbyTemp, unSize, SectionName[DATABASE_SECTION_ID]);
