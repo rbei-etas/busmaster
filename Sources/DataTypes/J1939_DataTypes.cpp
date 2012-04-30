@@ -271,24 +271,24 @@ void GetMessageTypeStr(EJ1939_MSG_TYPE eType, TCHAR acResult[LEN_STR_TYPE_J1939]
 {
     switch (eType)
     {
-        case MSG_TYPE_NONE:            strcpy_s(acResult, sizeof(acResult), _T("NONE"));      break;
-        case MSG_TYPE_COMMAND:         strcpy_s(acResult, sizeof(acResult), _T("CMD"));       break;
-        case MSG_TYPE_REQUEST:         strcpy_s(acResult, sizeof(acResult), _T("RQST"));      break;
-        case MSG_TYPE_DATA:            strcpy_s(acResult, sizeof(acResult), _T("DATA"));      break;
-        case MSG_TYPE_BROADCAST:       strcpy_s(acResult, sizeof(acResult), _T("BROADCAST")); break;
-        case MSG_TYPE_ACKNOWLEDGEMENT: strcpy_s(acResult, sizeof(acResult), _T("ACK"));       break;
-        case MSG_TYPE_GROUP_FUNCTIONS: strcpy_s(acResult, sizeof(acResult), _T("GRP_FUNC"));  break;
+        case MSG_TYPE_NONE:            strcpy_s(acResult, LEN_STR_TYPE_J1939, _T("NONE"));      break;
+        case MSG_TYPE_COMMAND:         strcpy_s(acResult, LEN_STR_TYPE_J1939, _T("CMD"));       break;
+        case MSG_TYPE_REQUEST:         strcpy_s(acResult, LEN_STR_TYPE_J1939, _T("RQST"));      break;
+        case MSG_TYPE_DATA:            strcpy_s(acResult, LEN_STR_TYPE_J1939, _T("DATA"));      break;
+        case MSG_TYPE_BROADCAST:       strcpy_s(acResult, LEN_STR_TYPE_J1939, _T("BROADCAST")); break;
+        case MSG_TYPE_ACKNOWLEDGEMENT: strcpy_s(acResult, LEN_STR_TYPE_J1939, _T("ACK"));       break;
+        case MSG_TYPE_GROUP_FUNCTIONS: strcpy_s(acResult, LEN_STR_TYPE_J1939, _T("GRP_FUNC"));  break;
              
-        case MSG_TYPE_NM_ACL:          strcpy_s(acResult, sizeof(acResult), _T("ACL"));       break;
-        case MSG_TYPE_NM_RQST_ACL:     strcpy_s(acResult, sizeof(acResult), _T("RQST_ACL"));  break;
-        case MSG_TYPE_NM_CMD_ADDRESS:  strcpy_s(acResult, sizeof(acResult), _T("CA"));        break;
-        case MSG_TYPE_NM_TPCM_BAM:     strcpy_s(acResult, sizeof(acResult), _T("BAM"));       break;
-        case MSG_TYPE_NM_TPCM_RTS:     strcpy_s(acResult, sizeof(acResult), _T("RTS"));       break;
-        case MSG_TYPE_NM_TPCM_CTS:     strcpy_s(acResult, sizeof(acResult), _T("CTS"));       break;
-        case MSG_TYPE_NM_TPCM_EOM_ACK: strcpy_s(acResult, sizeof(acResult), _T("EOM"));       break;
+        case MSG_TYPE_NM_ACL:          strcpy_s(acResult, LEN_STR_TYPE_J1939, _T("ACL"));       break;
+        case MSG_TYPE_NM_RQST_ACL:     strcpy_s(acResult, LEN_STR_TYPE_J1939, _T("RQST_ACL"));  break;
+        case MSG_TYPE_NM_CMD_ADDRESS:  strcpy_s(acResult, LEN_STR_TYPE_J1939, _T("CA"));        break;
+        case MSG_TYPE_NM_TPCM_BAM:     strcpy_s(acResult, LEN_STR_TYPE_J1939, _T("BAM"));       break;
+        case MSG_TYPE_NM_TPCM_RTS:     strcpy_s(acResult, LEN_STR_TYPE_J1939, _T("RTS"));       break;
+        case MSG_TYPE_NM_TPCM_CTS:     strcpy_s(acResult, LEN_STR_TYPE_J1939, _T("CTS"));       break;
+        case MSG_TYPE_NM_TPCM_EOM_ACK: strcpy_s(acResult, LEN_STR_TYPE_J1939, _T("EOM"));       break;
         case MSG_TYPE_NM_TPCM_CON_ABORT: 
-                                       strcpy_s(acResult, sizeof(acResult), _T("CON_ABORT")); break;
-        case MSG_TYPE_NM_TPDT:         strcpy_s(acResult, sizeof(acResult), _T("TPDT"));      break;
+                                       strcpy_s(acResult, LEN_STR_TYPE_J1939, _T("CON_ABORT")); break;
+        case MSG_TYPE_NM_TPDT:         strcpy_s(acResult, LEN_STR_TYPE_J1939, _T("TPDT"));      break;
         default: ASSERT(FALSE);
     }
 }
