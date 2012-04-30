@@ -294,7 +294,7 @@ void vBlinkHw(INTERFACE_HW s_HardwareIntr)
     if (err == OCI_SUCCESS)
     {
         SCHANNEL s_asChannel;
-        strcpy(s_asChannel.m_acURI, s_HardwareIntr.m_acNameInterface);
+        strcpy_s(s_asChannel.m_acURI, s_HardwareIntr.m_acNameInterface);
         s_asChannel.m_OCI_RxQueueCfg.onFrame.userData = (void*)ouOCI_HwHandle;
         s_asChannel.m_OCI_RxQueueCfg.onEvent.userData = (void*)ouOCI_HwHandle;
         //configure the controller first
@@ -1963,7 +1963,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SelectHwInterface(const INTERFACE_HW_LIST& asSelH
     {
         TCHAR acTmpURL[MAX_CHAR_SHORT] = {_T('\0')};
         strcpy_s(acTmpURL, asSelHwInterface[i].m_acNameInterface);
-        strcpy(sg_asChannel[i].m_acURI, T2A(acTmpURL));
+        strcpy_s(sg_asChannel[i].m_acURI, T2A(acTmpURL));
     }
 
     // Create the controller instance.
