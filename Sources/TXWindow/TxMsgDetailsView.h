@@ -76,6 +76,7 @@ public:
     BOOL bSetStatusText(const char* pStrText);
     // To populate Message Name combobox with database messages
     void vPopulateMessageComboBox();
+    void vAdjustWidthMessageComboBox();
     // To set properties of controls used
     void vSetControlProperties();
     void vUpdateChannelIDInfo();
