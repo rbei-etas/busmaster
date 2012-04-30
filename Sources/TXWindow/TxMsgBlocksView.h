@@ -34,7 +34,7 @@
 
 class CTxMsgBlocksView : public CFormView
 {
-// Form Data
+    // Form Data
 public:
     //{{AFX_DATA(CTxMsgBlocksView)
     enum { IDD = IDD_DLG_TX_MSG_BLOCKS };
@@ -56,7 +56,7 @@ public:
     //BOOL    m_bTXAllFrame;
     //}}AFX_DATA
 
-// Attributes
+    // Attributes
 public:
     // To denote modifications after connect
     BOOL m_bModified;
@@ -70,7 +70,7 @@ public:
     // To keep track of message block count
     UINT m_unMsgBlockCount;
 
-// Operations
+    // Operations
 public:
     // To get message block pointer denoted by the index from the given
     // list of blocks
@@ -85,12 +85,12 @@ public:
     // To set control properties like limit text, base etc.
     void vSetControlProperties();
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CTxMsgBlocksView)
-    public:
+public:
     virtual void OnInitialUpdate();
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
@@ -99,7 +99,7 @@ protected:
     CTxMsgBlocksView();
     DECLARE_DYNCREATE(CTxMsgBlocksView)
 
-// Implementation
+    // Implementation
 protected:
     virtual ~CTxMsgBlocksView();
 
@@ -130,7 +130,7 @@ private:
     // To store trigger type of message block
     unsigned char m_nRBTNTriggerType;
 
-// Functions
+    // Functions
     // To add a message block
     BOOL bAddBlock(SMSGBLOCKLIST* &psMsgCurrentBlock);
     // To initialise message block with default values
@@ -138,16 +138,16 @@ private:
     // To delete selected message block
     BOOL bDeleteBlock();
     // To get parent window pointer
-    CWnd * pomGetParentWindow() const;
+    CWnd* pomGetParentWindow() const;
     // To get CTxMsgListView pointer
-    CWnd * pomGetListViewPointer() const;
+    CWnd* pomGetListViewPointer() const;
     // To get CTxFunctionsView Pointer
-    CWnd * pomGetFunctionsViewPointer() const;
+    CWnd* pomGetFunctionsViewPointer() const;
     // To get CTxMsgDetailsView Pointer
-    CWnd * pomGetDetailsViewPointer() const;
+    CWnd* pomGetDetailsViewPointer() const;
     // To show popup memu
     BOOL bDisplayPopMenu(CListCtrl& omList, UINT nIDResource );
-    // Save the current msg block 
+    // Save the current msg block
     void vSaveCurrentBlockFirst(void);
 public:
     afx_msg void OnBnClickedRadiomonoshot();

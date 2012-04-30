@@ -26,7 +26,7 @@
 
 // Definition of PSTOOLBARINFO structure is here
 
-// enumeration for all flags 
+// enumeration for all flags
 typedef enum eTXWNDFLAG
 {
     TX_HEX,
@@ -34,7 +34,7 @@ typedef enum eTXWNDFLAG
     TX_CONNECTED
 };
 
-class CFlags  
+class CFlags
 {
 public:
     int nGetFlagStatus(eTXWNDFLAG WhichFlag);
