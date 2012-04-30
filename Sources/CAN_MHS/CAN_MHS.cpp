@@ -1284,8 +1284,9 @@ static int str_has_char(char* s)
         return(-1);
     }
 
-    while ((c = *s++))
+    while (*s)
     {
+        c = *s++;
         if (c != ' ')
         {
             break;
