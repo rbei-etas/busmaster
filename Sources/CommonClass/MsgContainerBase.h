@@ -40,40 +40,40 @@ protected:
 public:
     ~CMsgContainerBase(void);
     virtual void InitTimeParams(void) = 0;
-	virtual void vRetrieveDataFromBuffer() = 0;
+    virtual void vRetrieveDataFromBuffer() = 0;
 
-	virtual void vInit(void* pParam) = 0;
+    virtual void vInit(void* pParam) = 0;
     virtual void vEditClearAll() = 0;
     virtual int nGetAppendBufferCount() = 0;
     virtual int nGetOWBufferCount() = 0;
-    virtual BOOL bStartReadThread() = 0;        
+    virtual BOOL bStartReadThread() = 0;
 
-    virtual void vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL &sHdrColStruct,
-                                     TCHAR *pomDataPtrArr[MAX_MSG_WND_COL_CNT], 
-                                     BYTE bExprnFlag_Disp) = 0;
-    virtual HRESULT hReadFromOWBuffer(void *psMsg, __int64 nMapIndex) = 0;
-	virtual HRESULT hReadFromAppendBuffer(void *psMsg, int nMsgIndex) = 0;
-    virtual HRESULT hUpdateFormattedMsgStruct(int nListIndex, int &nMsgCode,
-                                      BYTE bExprnFlag_Disp, __int64 nTimeOffset = 0) = 0;
+    virtual void vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL& sHdrColStruct,
+            TCHAR* pomDataPtrArr[MAX_MSG_WND_COL_CNT],
+            BYTE bExprnFlag_Disp) = 0;
+    virtual HRESULT hReadFromOWBuffer(void* psMsg, __int64 nMapIndex) = 0;
+    virtual HRESULT hReadFromAppendBuffer(void* psMsg, int nMsgIndex) = 0;
+    virtual HRESULT hUpdateFormattedMsgStruct(int nListIndex, int& nMsgCode,
+            BYTE bExprnFlag_Disp, __int64 nTimeOffset = 0) = 0;
     virtual void vSetCurrMsgName(CString strMsgNameOrCode) = 0;
     virtual void vClearFormattedMsgStruct() = 0;
-    virtual void vSaveOWandGetDetails(void *pMsg, __int64 &dwMapIndex, 
-                              __int64 &dwTimeStamp, UINT &nMsgCode, int &nBufferIndex ) = 0;
+    virtual void vSaveOWandGetDetails(void* pMsg, __int64& dwMapIndex,
+                                      __int64& dwTimeStamp, UINT& nMsgCode, int& nBufferIndex ) = 0;
 
-	virtual void SetClientID(DWORD dwClientID) = 0;
-	virtual void DoSortBuffer(int nField,bool bAscending) = 0;
-	virtual void GetMapIndexAtID(int nIndex,__int64& nMapIndex) = 0;
+    virtual void SetClientID(DWORD dwClientID) = 0;
+    virtual void DoSortBuffer(int nField,bool bAscending) = 0;
+    virtual void GetMapIndexAtID(int nIndex,__int64& nMapIndex) = 0;
     virtual HRESULT ApplyFilterScheme(void* pvFilterApplied) = 0;
     virtual HRESULT GetFilterScheme(void* pvFilterApplied) = 0;
     virtual HRESULT EnableFilterApplied(BOOL bEnable) = 0;
-	virtual BOOL bGetDilInterFace() = 0;	
-	virtual __int64 nCreateMapIndexKey(LPVOID pMsgData) = 0;
-	virtual HRESULT hToggleDILBufferRead(BOOL bRead) = 0;
+    virtual BOOL bGetDilInterFace() = 0;
+    virtual __int64 nCreateMapIndexKey(LPVOID pMsgData) = 0;
+    virtual HRESULT hToggleDILBufferRead(BOOL bRead) = 0;
 
 public:
     //Exported functions
-	void vSetRxMsgCallBkPtr(MSG_RX_CALL_BK pFuncPtr);
-	BOOL bStartReadThread(HANDLE hActionEvent);
-	BOOL bStopReadThread();
-	BOOL bCopyStringToTCHARArr(TCHAR acDesStr[], CString omSrc, int MaxDesLen);
+    void vSetRxMsgCallBkPtr(MSG_RX_CALL_BK pFuncPtr);
+    BOOL bStartReadThread(HANDLE hActionEvent);
+    BOOL bStopReadThread();
+    BOOL bCopyStringToTCHARArr(TCHAR acDesStr[], CString omSrc, int MaxDesLen);
 };
