@@ -231,27 +231,26 @@ void tagSTJ1939_MSG::vClear(void)
 /* Starts tagFormattedData_J1939 related codes */
 tagFormattedData_J1939::tagFormattedData_J1939()
 {
-    _tcsnset_s(m_acTimeSys,   L'\0', LEN_STR_TIMESTAMP_J1939);
-    _tcsnset_s(m_acTimeRel,   L'\0', LEN_STR_TIMESTAMP_J1939);
-    _tcsnset_s(m_acTimeAbs,   L'\0', LEN_STR_TIMESTAMP_J1939);
+    memset(m_acTimeSys,    0, sizeof(m_acTimeSys));
+    memset(m_acTimeRel,    0, sizeof(m_acTimeRel));
+    memset(m_acTimeAbs,    0, sizeof(m_acTimeAbs));
 
-    _tcsnset_s(m_acMsgType,   L'\0', LEN_STR_TYPE_J1939     );
-    _tcsnset_s(m_acChannel,   L'\0', LEN_STR_CHANNEL_J1939  );
+    memset(m_acMsgType,    0, sizeof(m_acMsgType));
+    memset(m_acChannel,    0, sizeof(m_acChannel));
 
-    _tcsnset_s(m_acPGNHex,    L'\0', LEN_STR_PGN_J1939      );
-    _tcsnset_s(m_acPGNDec,    L'\0', LEN_STR_PGN_J1939      );
-    _tcsnset_s(m_acMsgName,   L'\0', LEN_STR_NAME_J1939     );
-    _tcsnset_s(m_acSenderName,L'\0', LEN_STR_SENDNODE_J1939 );
+    memset(m_acPGNHex,     0, sizeof(m_acPGNHex));
+    memset(m_acPGNDec,     0, sizeof(m_acPGNDec));
+    memset(m_acMsgName,    0, sizeof(m_acMsgName));
+    memset(m_acSenderName, 0, sizeof(m_acSenderName));
 
-    _tcsnset_s(m_acSrcHex,    L'\0', LEN_STR_SRC_J1939      );
-    _tcsnset_s(m_acSrcDec,    L'\0', LEN_STR_SRC_J1939      );
-    _tcsnset_s(m_acDestHex,   L'\0', LEN_STR_DEST_J1939     );
-    _tcsnset_s(m_acDestDec,   L'\0', LEN_STR_DEST_J1939     );
+    memset(m_acSrcHex,     0, sizeof(m_acSrcHex));
+    memset(m_acSrcDec,     0, sizeof(m_acSrcDec));
+    memset(m_acDestHex,    0, sizeof(m_acDestHex));
+    memset(m_acDestDec,    0, sizeof(m_acDestDec));
 
-
-    _tcsnset_s(m_acPriority,  L'\0', LEN_STR_PRIO_J1939     );
-    _tcsnset_s(m_acMsgDir,    L'\0', LEN_STR_DIR_J1939      );
-    _tcsnset_s(m_acDataLen,   L'\0', LEN_STR_DLC_J1939      );
+    memset(m_acPriority,   0, sizeof(m_acPriority));
+    memset(m_acMsgDir,     0, sizeof(m_acMsgDir));
+    memset(m_acDataLen,    0, sizeof(m_acDataLen));
 
     m_acMsgDir[LEN_STR_DIR_J1939 - 2] = L'x'; // It will be either Tx or Rx
 
