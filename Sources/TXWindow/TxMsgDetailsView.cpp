@@ -22,6 +22,7 @@
  * Implementation file for CTxMsgDetailsView class
  */
 
+/* Project includes */
 #include "TxWindow_stdafx.h"             // For standard includes
 #include "include/BaseDefs.h"
 #include "include/struct_can.h"
@@ -46,16 +47,13 @@
 #define defIMAGE_DIRTY 2
 #define defIMAGE_GOOD  0
 
-//extern UINT unGetMsgIDFromName(CString omMsgName);
-/*************************************************************************
-    Function Name    : unGetMsgIDFromName
-    Input(s)         : Message name with ID attached in it MsgName[0xMsgID]
-    Output           :  
-    Functionality    : 
-    Member of        : 
-    Author(s)        :  Anish kumar
-    Date Created     :  
-**************************************************************************/
+/**
+ * \brief     Get Message ID from Message Name
+ * \param[in] omMsgName Message name with ID attached in it MsgName[0xMsgID]
+ * \return    Message ID
+ *
+ * Get Message ID from Message Name
+ */
 UINT unGetMsgIDFromName(CString omMsgName)
 {
 	CString omStrMsgID;
@@ -73,15 +71,11 @@ UINT unGetMsgIDFromName(CString omMsgName)
 
 IMPLEMENT_DYNCREATE(CTxMsgDetailsView, CFormView)
 
-/*******************************************************************************
-  Function Name  : CTxMsgDetailsView
-  Description    : Standard default constructor
-  Member of      : CTxMsgDetailsView
-  Functionality  : This will initialise local variables
-  Author(s)      : Raja N
-  Date Created   : 27.4.2005
-  Modifications  :
-*******************************************************************************/
+/**
+ * \brief Standard default constructor
+ *
+ * This will initialise local variables
+ */
 CTxMsgDetailsView::CTxMsgDetailsView() : CFormView(CTxMsgDetailsView::IDD),
                                          m_odSignalMatrix(8)
 {
@@ -99,30 +93,21 @@ CTxMsgDetailsView::CTxMsgDetailsView() : CFormView(CTxMsgDetailsView::IDD),
     m_pouDBPtr = NULL;
 }
 
-/*******************************************************************************
-  Function Name  : ~CTxMsgDetailsView
-  Description    : Standard Destructor
-  Member of      : CTxMsgDetailsView
-  Functionality  : -
-  Author(s)      : Raja N
-  Date Created   : 27.4.2005
-  Modifications  :
-*******************************************************************************/
+/**
+ * \brief Standard Destructor
+ *
+ * Standard Destructor
+ */
 CTxMsgDetailsView::~CTxMsgDetailsView()
 {
 }
 
-/*******************************************************************************
-  Function Name  : DoDataExchange
-  Input(s)       : pDX - Pointer to DDX object
-  Output         : -
-  Functionality  : This function will map DDX object with UI control for data
-                   exchange
-  Member of      : CTxMsgDetailsView
-  Author(s)      : Raja N
-  Date Created   : 27.4.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \brief     Do Data Exchange
+ * \param[in] pDX Pointer to DDX object
+ *
+ * This function will map DDX object with UI control for data exchange.
+ */
 void CTxMsgDetailsView::DoDataExchange(CDataExchange* pDX)
 {
     CFormView::DoDataExchange(pDX);
@@ -148,7 +133,6 @@ void CTxMsgDetailsView::DoDataExchange(CDataExchange* pDX)
     //}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(CTxMsgDetailsView, CFormView)
     //{{AFX_MSG_MAP(CTxMsgDetailsView)
     ON_CBN_EDITCHANGE(IDC_COMB_MSG_ID_NAME, OnEditchangeCombMsgIdName)
@@ -171,34 +155,16 @@ BEGIN_MESSAGE_MAP(CTxMsgDetailsView, CFormView)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-#ifdef _DEBUG
-void CTxMsgDetailsView::AssertValid() const
-{
-    CFormView::AssertValid();
-}
-
-void CTxMsgDetailsView::Dump(CDumpContext& dc) const
-{
-    CFormView::Dump(dc);
-}
-#endif //_DEBUG
-
-
-/*******************************************************************************
-  Function Name  : OnInitialUpdate
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called by the framework during initial
-                   show of this view. This function will register iteself in to
-                   parent window class so that other views shall access it. And
-                   this function will initialise signal list, message ID/Name
-                   combobox and other UI components
-  Member of      : CTxMsgDetailsView
-  Author(s)      : Raja N
-  Date Created   : 27.4.2005
-  Modifications  : 
-*******************************************************************************/
-void CTxMsgDetailsView::OnInitialUpdate() 
+/**
+ * \brief On Initial Update
+ *
+ * This function will be called by the framework during initial
+ * show of this view. This function will register iteself in to
+ * parent window class so that other views shall access it. And
+ * this function will initialise signal list, message ID/Name
+ * combobox and other UI components
+ */
+void CTxMsgDetailsView::OnInitialUpdate()
 {
     // Call Parent function to do init
     CFormView::OnInitialUpdate();
@@ -250,20 +216,12 @@ void CTxMsgDetailsView::OnInitialUpdate()
     m_omButtonUpdateMsg.EnableWindow( FALSE );
 }
 
-/******************************************************************************/
-/*  Function Name    :  vUpdateChannelIDInfo                                  */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Updates the channel count value when a hardware       */
-/*                        interface is updated.                               */
-/*                                                                            */
-/*  Member of        :  CTxMsgDetailsView                                     */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.04.2011                                            */
-/*  Modification By  :  ArunKumar k                                           */
-/*  Modification on  :                                                        */
-/******************************************************************************/
+/**
+ * \brief Update Channel ID Information
+ *
+ * Updates the channel count value when a hardware
+ * interface is updated.
+ */
 void CTxMsgDetailsView::vUpdateChannelIDInfo()
 {
 	// Update Channel ID Combobox	
@@ -288,20 +246,11 @@ void CTxMsgDetailsView::vUpdateChannelIDInfo()
 	m_omComboChannelID.SetCurSel(0);
 }
 
-/******************************************************************************/
-/*  Function Name    :  vSetControlProperties                                 */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function changed the control properties for hex  */
-/*                      and decimal settings.                                 */
-/*                                                                            */
-/*  Member of        :  CTxMsgDetailsView                                     */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  01.08.2004, Added Timer value and Key value controls  */
-/******************************************************************************/
+/**
+ * \brief Set Control Properties
+ *
+ * This function changed the control properties for hex and decimal settings.
+ */
 void CTxMsgDetailsView::vSetControlProperties()
 {
     // Temp base holder
@@ -362,21 +311,11 @@ void CTxMsgDetailsView::vSetControlProperties()
     m_odDB8.vSetSigned( FALSE );
 }
 
-/*******************************************************************************
- Function Name    : vInitSignalListCtrl
- Input(s)         : -
- Output           : -
- Functionality    : This function will be called from OnInitDialog to init
-                    signal list.
- Member of        : CTxMsgDetailsView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification By  : Raja N
- Modification on  : 02.08.2004, Removed Hardcoded values, Moved all create
-                    functions in to OnCreate handler, fixes for 64 bit signal
-                    value problem
-*******************************************************************************/
+/**
+ * \brief Initialie Signal List Control
+ *
+ * This function will be called from OnInitDialog to init signal list.
+ */
 void CTxMsgDetailsView::vInitSignalListCtrl()
 {
     CHAR caColumnName[][defSIGNAL_LIST_STRING_MAX_LENGTH] 
@@ -458,24 +397,17 @@ void CTxMsgDetailsView::vInitSignalListCtrl()
     // Disable that after create
 }
 
-/*******************************************************************************
- Function Name    : vSignalNameHandler
- Input(s)         : pList       - Pointer to List Control
-                    nItem       - Item Index
-                    nSubItem    - Sub Item Index
-                    uParam      - User Parameter (Here it is this pointer)
-
- Output           : -
- Functionality    : This function will be called when the user double clicks the
-                    Signal Name from the list. This will display the signal
-                    details.
- Member of        : CTxMsgDetailsView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification By  :
- Modification on  :
-*******************************************************************************/
+/**
+ * \brief     Signal Name Handler
+ * \param[in] pList Pointer to List Control
+ * \param[in] nItem Item Index
+ * \param[in] nSubItem Sub Item Index
+ * \param[in] uParam User Parameter (Here it is this pointer)
+ *
+ * This function will be called when the user double clicks the
+ * Signal Name from the list. This will display the signal
+ * details.
+ */
 void CTxMsgDetailsView::vSignalNameHandler( CListCtrl*, //pList,
                                            int nItem,
                                            int nSubItem,
@@ -503,19 +435,14 @@ void CTxMsgDetailsView::vSignalNameHandler( CListCtrl*, //pList,
     }
 }
 
-/*******************************************************************************
- Function Name    : psGetSelectedSignalStruct
- Input(s)         : nIndex      -  Selected Signal index
- Output           : sSIGNALS *  - Selected Signal Pointer
- Functionality    : This function will return the signal pointer of the signal
-                    pointed by the index. If it is not found it will return NULL
- Member of        : CTxMsgDetailsView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification By  :
- Modification on  :
-*******************************************************************************/
+/**
+ * \brief      Get Selected Signal Structure
+ * \param[in]  nIndex Selected Signal index
+ * \param[out] sSIGNALS Selected Signal Pointer
+ *
+ * This function will return the signal pointer of the signal
+ * pointed by the index. If it is not found it will return NULL.
+ */
 sSIGNALS * CTxMsgDetailsView::psGetSelectedSignalStruct(int nIndex)
 {
     // Init the pointer
@@ -554,27 +481,13 @@ void CTxMsgDetailsView::vSetMsgDBPtr(void* pMsgDB)
 	m_pouDBPtr = (CMsgSignal*)pMsgDB;
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnEditchangeCombMsgIdName                             */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function is called when user changes the edit    */
-/*                      control value of combo box for message ID             */
-/*                                                                            */
-/*  Member of        :  CTxMsgDetailsView                                     */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  22.07.2004, Added code to Update message details on   */
-/*                      change of text or selection                           */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  02.08.2004, Added code to Update add button status on */
-/*                      change of message mane/ID text                        */
-/*  Modifications    :  Raja N on 11.05.2005, Aded code to init signal matrix */
-/*                      in case of RTR message                                */
-/******************************************************************************/
-void CTxMsgDetailsView::OnEditchangeCombMsgIdName() 
+/**
+ * \brief On Edit Change Combo Message ID Name
+ *
+ * This function is called when user changes the edit
+ * control value of combo box for message ID
+ */
+void CTxMsgDetailsView::OnEditchangeCombMsgIdName()
 {
     BOOL bIDValid = FALSE;
     INT nMsgID = -1;
@@ -672,20 +585,15 @@ void CTxMsgDetailsView::OnEditchangeCombMsgIdName()
     }
 }
 
-/*******************************************************************************
- Function Name    : bSetStatusText
- Input(s)         : pStrText - Pointer to the Display Text
- Output           : bool - Success or Failure
- Functionality    : This function is will update the status bar in this dialog.
-                    This is used to give an indication to the user about invalid
-                    inputs entered if any.
- Member of        : CTxMsgDetailsView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification By  :
- Modification on  :
-*******************************************************************************/
+/**
+ * \brief     Set Status Text
+ * \param[in] pStrText Pointer to the Display Text
+ * \return    Success or Failure
+ *
+ * This function is will update the status bar in this dialog.
+ * This is used to give an indication to the user about invalid
+ * inputs entered if any.
+ */
 BOOL CTxMsgDetailsView::bSetStatusText(const char *pStrText)
 {
     BOOL bSuccess = FALSE;
@@ -700,6 +608,7 @@ BOOL CTxMsgDetailsView::bSetStatusText(const char *pStrText)
     }
     return bSuccess;
 }
+
 void CTxMsgDetailsView::vUpdateSignalMatrix(void)
 {
 // Set the bit matrix
@@ -722,20 +631,14 @@ void CTxMsgDetailsView::vUpdateSignalMatrix(void)
     // Update Signal Matrix List
     m_odSignalMatrix.Invalidate();
 }
-/******************************************************************************/
-/*  Function Name    :  bUpdateMessageDetail                                  */
-/*  Input(s)         :  PSTCAN_MSG psMsgDetails:pointer to current msg details*/
-/*  Output           :  TRUE or FALSE                                         */
-/*  Functionality    :  This function will update message details from the    */
-/*                      control.                                              */
-/*                                                                            */
-/*  Member of        :  CTxMsgDetailsView                                     */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */    
-/*  Modification     :  Raja N on 27.04.2005                                  */
-/*                      Added update code for channel ID                      */
-/******************************************************************************/
+
+/**
+ * \brief     Update Message Detail
+ * \param[in] psMsgDetails Pointer to current msg details
+ * \return    TRUE or FALSE
+ *
+ * This function will update message details from the control.
+ */
 BOOL CTxMsgDetailsView::bUpdateMessageDetail(STCAN_MSG* psMsgDetails)
 {
     BOOL bReturn = TRUE;
@@ -762,21 +665,15 @@ BOOL CTxMsgDetailsView::bUpdateMessageDetail(STCAN_MSG* psMsgDetails)
     return bReturn;
 }
 
-/*******************************************************************************
- Function Name    : bUpdateSignalList
- Input(s)         : sMsg   - CAN information
- Output           : -
- Functionality    : This function will update the signal list with the CAN
-                    message signals. It will do nothing if it is not a database
-                    message. This will be called from the onitemchange of
-                    message list.
- Member of        : CTxMsgDetailsView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification By  :
- Modification on  :
-*******************************************************************************/
+/**
+ * \brief Update Signal List
+ * \param[in] sMsg CAN information
+ *
+ * This function will update the signal list with the CAN
+ * message signals. It will do nothing if it is not a database
+ * message. This will be called from the onitemchange of
+ * message list.
+ */
 BOOL CTxMsgDetailsView::bUpdateSignalList(STCAN_MSG sMsg)
 {
     CMsgSignal * podDatabase = NULL;
@@ -885,20 +782,13 @@ BOOL CTxMsgDetailsView::bUpdateSignalList(STCAN_MSG sMsg)
     return bSuccess;
 }
 
-/******************************************************************************/
-/*  Function Name    :  nGetMessageID                                         */
-/*  Input(s)         :  Message ID: INT                                       */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will return a valid messsage Id or -1   */
-/*                      from combo box edit box                               */
-/*                                                                            */
-/*  Member of        :  CTxMsgDetailsView                                     */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */    
-/* Modification      : Anish
-/*					   12.12.2006, Added code to extract MsgId from MsgName[code]
-/******************************************************************************/
+/**
+ * \brief  Get Message ID
+ * \return Message ID
+ *
+ * This function will return a valid messsage Id or -1
+ * from combo box edit box
+ */
 INT CTxMsgDetailsView::nGetMessageID()
 {
     CString omStrMsgName( STR_EMPTY );
@@ -939,20 +829,13 @@ INT CTxMsgDetailsView::nGetMessageID()
     return nMsgID;
 }
 
-/*******************************************************************************
- Function Name    : vEnableAddButton
- Input(s)         : bEnable - Enable / Disable
- Output           :
- Functionality    : Enables add button if the selected message block count is
-                    lesser then the maximum
- Member of        : CTxMsgDetailsView
- Friend of        : -
- Author(s)        : Raja N
- Date Created     : 31.07.2004
- Modifications    : Raja N on 10.08.2004
-                    Added enabling Apply button too. *#*#*#*#*This function will
-                    update Apply Button too *#*#*#*#*
-/******************************************************************************/
+/**
+ * \brief     Enable Add Button
+ * \param[in] bEnable Enable / Disable
+ *
+ * Enables add button if the selected message block count is
+ * lesser then the maximum.
+ */
 void CTxMsgDetailsView::vEnableAddButton(BOOL bEnable)
 {
     // Get Block View Pointer
@@ -1014,20 +897,13 @@ void CTxMsgDetailsView::vEnableAddButton(BOOL bEnable)
     }
 }
 
-/*******************************************************************************
- Function Name    : vUpdateSelectedMessageDetails
- Input(s)         :  -
- Output           :  -
- Functionality    : This function will be called to update the data from the UI
-                    in to the shared global data structure. This will be called
-                    from various UI controls to get immediate update
- Member of        : CTxMsgDetailsView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification     : Raja N on 02.08.2004
-                    Removed vApplyChanges call to avoid online update
-*******************************************************************************/
+/**
+ * \brief Update Selected Message Details
+ *
+ * This function will be called to update the data from the UI
+ * in to the shared global data structure. This will be called
+ * from various UI controls to get immediate update
+ */
 BOOL CTxMsgDetailsView::vUpdateSelectedMessageDetails()
 {
     BOOL bDataValid = FALSE;
@@ -1090,20 +966,14 @@ BOOL CTxMsgDetailsView::vUpdateSelectedMessageDetails()
     return bDataValid;
 }
 
-/*******************************************************************************
- Function Name    : vShowSignalValues
- Input(s)         : romSigInfo   - Reference to Interpretted Signal Information
- Output           : -
- Functionality    : This function will update the signal list with the
-                    interpretted value. This will reuse the exising rows by
-                    setting the new text if bDeleteExistingEntries is FALSE
- Member of        : CTxMsgDetailsView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification By  :
- Modification on  :
-*******************************************************************************/
+/**
+ * \brief     Show Signal Values
+ * \param[in] romSigInfo Reference to Interpretted Signal Information
+ *
+ * This function will update the signal list with the
+ * interpretted value. This will reuse the exising rows by
+ * setting the new text if bDeleteExistingEntries is FALSE
+ */
 void CTxMsgDetailsView::vShowSignalValues(const CSignalInfoArray &romSigInfo)
 {
     // Get Other view pointers
@@ -1436,20 +1306,14 @@ void CTxMsgDetailsView::vShowSignalValues(const CSignalInfoArray &romSigInfo)
     }
 }
 
-/*******************************************************************************
- Function Name    : nGetValidMessageID
- Input(s)         :  -
- Output           : int - Message ID or -1
- Functionality    : This function will be called to validate and get the message
-                    ID.Incase of invalid input found in the UI this funtion will
-                    return -1.
- Member of        : CTxMsgDetailsView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification By  :
- Modification on  :
-*******************************************************************************/
+/**
+ * \brief  Get Valid Message ID
+ * \return Message ID or -1
+ *
+ * This function will be called to validate and get the message
+ * ID.Incase of invalid input found in the UI this funtion will
+ * return -1.
+ */
 int CTxMsgDetailsView::nGetValidMessageID()
 {
     UINT unMsgCode = nGetMessageID();
@@ -1465,18 +1329,14 @@ int CTxMsgDetailsView::nGetValidMessageID()
     return unMsgCode;
 }
 
-/*******************************************************************************
-  Function Name  : pomGetParentWindow
-  Input(s)       : -
-  Output         : CWnd * - Pointer to CTxMsgChildFrame
-  Functionality  : This Function will return parent window pointer. That is
-                   pointer to CTxMsgChildFrame. This will return NULL incase of
-                   failure
-  Member of      : CTxMsgDetailsView
-  Author(s)      : Raja N
-  Date Created   : 25.4.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \brief  Get Parent Window
+ * \return Pointer to CTxMsgChildFrame
+ *
+ * This Function will return parent window pointer. That is
+ * pointer to CTxMsgChildFrame. This will return NULL incase of
+ * failure
+ */
 CWnd * CTxMsgDetailsView::pomGetParentWindow() const
 {
     CWnd * pWnd = NULL;
@@ -1501,18 +1361,13 @@ CWnd * CTxMsgDetailsView::pomGetParentWindow() const
     return pWnd;
 }
 
-/*******************************************************************************
-  Function Name  : pomGetBlocksViewPointer
-  Input(s)       : -
-  Output         : CWnd * - Pointer to CTxMsgBlocksView or NULL incase of
-                   failure
-  Functionality  : This function will return CTxMsgBlocksView pointer. This will
-                   get child window pointer to get view pointer.
-  Member of      : CTxMsgDetailsView
-  Author(s)      : Raja N
-  Date Created   : 25.4.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \brief  Get Blocks View Pointer
+ * \return Pointer to CTxMsgBlocksView or NULL incase of failure
+ *
+ * This function will return CTxMsgBlocksView pointer. This will
+ * get child window pointer to get view pointer.
+ */
 CWnd * CTxMsgDetailsView::pomGetBlocksViewPointer() const
 {
     CWnd * pView = NULL;
@@ -1529,18 +1384,13 @@ CWnd * CTxMsgDetailsView::pomGetBlocksViewPointer() const
     return pView;
 }
 
-/*******************************************************************************
-  Function Name  : pomGetListViewPointer
-  Input(s)       : -
-  Output         : CWnd * - Pointer to CTxMsgListView or NULL incase of
-                   failure
-  Functionality  : This function will return CTxMsgListView pointer. This will
-                   get child window pointer to get view pointer.
-  Member of      : CTxMsgDetailsView
-  Author(s)      : Raja N
-  Date Created   : 25.4.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \brief  Get List View Pointer
+ * \return Pointer to CTxMsgListView or NULL incase of failure
+ *
+ * This function will return CTxMsgListView pointer. This will
+ * get child window pointer to get view pointer.
+ */
 CWnd * CTxMsgDetailsView::pomGetListViewPointer() const
 {
     CWnd * pView = NULL;
@@ -1557,18 +1407,13 @@ CWnd * CTxMsgDetailsView::pomGetListViewPointer() const
     return pView;
 }
 
-/*******************************************************************************
-  Function Name  : pomGetFunctionsViewPointer
-  Input(s)       : -
-  Output         : CWnd * - Pointer to CTxFunctionsView or NULL incase of
-                   failure
-  Functionality  : This function will return CTxFunctionsView pointer. This
-                   will get child window pointer to get view pointer.
-  Member of      : CTxMsgDetailsView
-  Author(s)      : Raja N
-  Date Created   : 25.4.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \brief  Get Functions View Pointer
+ * \return Pointer to CTxFunctionsView or NULL incase of failure
+ *
+ * This function will return CTxFunctionsView pointer. This
+ * will get child window pointer to get view pointer.
+ */
 CWnd * CTxMsgDetailsView::pomGetFunctionsViewPointer() const
 {
     CWnd * pView = NULL;
@@ -1585,20 +1430,13 @@ CWnd * CTxMsgDetailsView::pomGetFunctionsViewPointer() const
     return pView;
 }
 
-/******************************************************************************/
-/*  Function Name    :  bValidateData                                         */
-/*  Input(s)         :                                                        */
-/*  Output           :  TRUE or FALSE                                         */
-/*  Functionality    :  This function will validate if the user has entered   */
-/*                        valid data in Code and DLC edit controls            */
-/*                                                                            */
-/*  Member of        :  CTxMsgDetailsView                                     */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */    
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
-/******************************************************************************/
+/**
+ * \brief  Validate Data
+ * \return TRUE or FALSE
+ *
+ * This function will validate if the user has entered
+ * valid data in Code and DLC edit controls
+ */
 BOOL CTxMsgDetailsView::bValidateData()
 {
     // Assume Failure
@@ -1643,19 +1481,15 @@ BOOL CTxMsgDetailsView::bValidateData()
     return bIsValid;
 }
 
-/******************************************************************************
- Function Name  :   bCheckIfValueIsMoreThan255
- Description    :   Called by OnButtonUpdate function
- Input          :   USHORT usNoOfEditCtrlsToCheck
- Output         :   TRUE/FALSE
- Member of      :   CTxMsgDetailsView
- Functionality  :   This function will validate the values in the edit controls
-                    for data bytes in Decimal mode. 
- Author(s)      :   Amarnath S
- Date Created   :   17-10-2002
- Modifications  :   Raja N on 03.08.2004, Removed setfocus and added error msg
-                    display code.
-******************************************************************************/
+/**
+ * \brief     Check If Value Is More Than 255
+ * \param[in] usNoOfEditCtrlsToCheck Number of Edit Controls to Check
+ * \return    TRUE or FALSE
+ *
+ * Called by OnButtonUpdate function.
+ * This function will validate the values in the edit controls
+ * for data bytes in Decimal mode.
+ */
 BOOL CTxMsgDetailsView::bCheckIfValueIsMoreThan255(
                                             USHORT usNoOfEditCtrlsToCheck )
 {
@@ -1697,20 +1531,12 @@ BOOL CTxMsgDetailsView::bCheckIfValueIsMoreThan255(
     return bResult;
 }
 
-/******************************************************************************/
-/*  Function Name    :  vPopulateMessageComboBox                              */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Fills database message combo box with database        */
-/*                      messages                                              */
-/*                                                                            */
-/*  Member of        :  CTxMsgDetailsView                                     */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */    
-/*  Modification By  :  Anish,02.02.07                                        */
-/*  Modification on  :  Removed memory leak due to pidArray                   */
-/******************************************************************************/
+/**
+ * \brief Populate Message Combo Box
+ *
+ * Fills database message combo box with database
+ * messages.
+ */
 void CTxMsgDetailsView::vPopulateMessageComboBox()
 {
 	m_omComboMsgIDorName.ResetContent();
@@ -1749,27 +1575,14 @@ void CTxMsgDetailsView::vPopulateMessageComboBox()
 	}
 }
 
-/*******************************************************************************
- Function Name    : OnSelchangeCombMsgIdName
- Input(s)         :     -
- Output           :     -
- Functionality    : This function will be called when the Message Name/ID
-                    combobox content got modified. This will update DLC, signal
-                    list and Signal Matrix.
- Member of        : CTxMsgDetailsView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification By  : Raja N
- Modification on  : 02.08.2004, Removed setting message length to Signal Matrix
-                    as it is already done in the function bUpdateSignalList and
-                    Added code to enable Add button.
- Modification on  : 12.08.2004, Added code to set the window text to combobox
-                    in case of selection
- Modification     : Anish
-					12.12.2006, Added code to extract MsgId from MsgName[code]
-*******************************************************************************/
-void CTxMsgDetailsView::OnSelchangeCombMsgIdName() 
+/**
+ * \brief On Selection Change Combo Message ID Name
+ *
+ * This function will be called when the Message Name/ID
+ * combobox content got modified. This will update DLC, signal
+ * list and Signal Matrix.
+ */
+void CTxMsgDetailsView::OnSelchangeCombMsgIdName()
 {
     // Get Other view pointers	
     CTxMsgBlocksView * pomBlockView = NULL;
@@ -1875,19 +1688,12 @@ void CTxMsgDetailsView::OnSelchangeCombMsgIdName()
     }
 }
 
-/*******************************************************************************
- Function Name    : OnUpdateEditDLC
- Input(s)         : 
- Output           : 
- Functionality    : This function will be called by frame work when user  
-                    changes DLC edit box value
-
- Member of        : CTxMsgDetailsView
- Friend of        :     -
- Author(s)        : Raja N
- Date Created     : 31.07.2004
- Modification     : Raja N on 10.08.2004, Added update of list data OnUpdate
-/******************************************************************************/
+/**
+ * \brief On Update Edit DLC
+ *
+ * This function will be called by frame work when user
+ * changes DLC edit box value
+ */
 void CTxMsgDetailsView::OnUpdateEditDLC() 
 {
     CWnd * pomWnd = GetFocus();
@@ -1950,22 +1756,15 @@ void CTxMsgDetailsView::OnUpdateEditDLC()
     }
 }
 
-
-/*******************************************************************************
- Function Name    : SetDirty
- Input(s)         : bDirty - Dirty or Not
- Output           :
- Functionality    : This function will update the dirty flag of the message. The
-                    dirty flag will be set if the databytes are directly edited.
-                    The flag will be cleared if the data got updated from signal
-                    list with validation.
- Member of        : CTxMsgDetailsView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification By  :
- Modification on  :
-*******************************************************************************/
+/**
+ * \brief     Set Dirty
+ * \param[in] bDirty Dirty or Not
+ *
+ * This function will update the dirty flag of the message. The
+ * dirty flag will be set if the databytes are directly edited.
+ * The flag will be cleared if the data got updated from signal
+ * list with validation.
+ */
 void CTxMsgDetailsView::SetDirty(BOOL bDirty /* = TRUE */)
 {
     int nItems = m_omLctrSigList.GetItemCount();
@@ -1982,19 +1781,12 @@ void CTxMsgDetailsView::SetDirty(BOOL bDirty /* = TRUE */)
     m_bIsMsgDirty = bDirty;
 }
 
-/*******************************************************************************
- Function Name    : OnUpdateEditDataBytes
- Input(s)         :     -
- Output           :     -
- Functionality    : This function will validate data bytes and update Add and
-                    Apply buttons
- Member of        : CTxMsgDetailsView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 10.08.2004
- Modification By  : Raja N
- Modification on  : 
-*******************************************************************************/
+/**
+ * \brief On Update Edit Data Bytes
+ *
+ * This function will validate data bytes and update Add and
+ * Apply buttons
+ */
 void CTxMsgDetailsView::OnUpdateEditDataBytes() 
 {
     CWnd * pomWnd = GetFocus();
@@ -2053,20 +1845,13 @@ void CTxMsgDetailsView::OnUpdateEditDataBytes()
     }
 }
 
-/*******************************************************************************
- Function Name    : OnRbtnMsgtypeStd
- Input(s)         :  -
- Output           :
- Functionality    : This function will be called during Standard/Extended type
-                    change. This will validate the message parameters and will
-                    update the data if found ok.
- Member of        : CTxMsgDetailsView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification on  : 02.08.2004, Added vEnableAddButton function call to update
-                    Add button status
-*******************************************************************************/
+/**
+ * \brief On Rbtn Message Type Standard
+ *
+ * This function will be called during Standard/Extended type
+ * change. This will validate the message parameters and will
+ * update the data if found ok.
+ */
 void CTxMsgDetailsView::OnRbtnMsgtypeStd() 
 {
     BOOL bEntryValid = FALSE;
@@ -2116,20 +1901,12 @@ void CTxMsgDetailsView::OnRbtnMsgtypeStd()
     }            
 }
 
-/*******************************************************************************
- Function Name    : OnChkbMsgtypeRtr
- Input(s)         :  -
- Output           :  -
- Functionality    : This function will be called when the message name combobox
-                    losses the focus. This will update the dependent data.
- Member of        : CTxMsgDetailsView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification By  : Raja N
- Modification on  : 02.08.2004, Added vEnableAddButton function call to update
-                    Add button status
-*******************************************************************************/
+/**
+ * \brief On Check Message Type Rtr
+ *
+ * This function will be called when the message name combobox
+ * losses the focus. This will update the dependent data.
+ */
 void CTxMsgDetailsView::OnChkbMsgtypeRtr() 
 {
     // RTR is changed
@@ -2206,25 +1983,14 @@ void CTxMsgDetailsView::OnChkbMsgtypeRtr()
     }
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnButtonAddMsg                                        */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    : This function will update the data in the controls to  */
-/*                     the message frame list of the message block currently  */
-/*                     selected. It added as new item if selected item index  */
-/*                     is invalid or update to the selected index.            */
-/*                                                                            */
-/*  Member of        :  CTxMsgDetailsView                                     */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  22.07.2004, Removed updating messase code in case of  */
-/*                      selection. Now it will add message always             */
-/*  Modification on  :  02.08.2004, Removed updating global messase block. It */
-/*                      will update only the UI information                   */
-/******************************************************************************/
+/**
+ * \brief On Button Add Message
+ *
+ * This function will update the data in the controls to
+ * the message frame list of the message block currently
+ * selected. It added as new item if selected item index
+ * is invalid or update to the selected index.
+ */
 void CTxMsgDetailsView::OnButtonAddMsg() 
 {
     BOOL bDataValid = FALSE;
@@ -2247,20 +2013,14 @@ void CTxMsgDetailsView::OnButtonAddMsg()
     }
 }
 
-/******************************************************************************/
-/*  Function Name    :  bAddMsgInBlock                                        */
-/*  Input(s)         :                                                        */
-/*  Output           :  TRUE or FALSE                                         */
-/*  Functionality    :  This function will be called from OnUpdateMessage. The*/
-/*                      new message frame will be added in the currently      */
-/*                      message block at the end as node in the list of frame.*/
-/*  Member of        :  CTxMsgDetailsView                                     */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */    
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
-/******************************************************************************/
+/**
+ * \brief Add Message In Block
+ * \return TRUE or FALSE
+ *
+ * This function will be called from OnUpdateMessage. The
+ * new message frame will be added in the currently
+ * message block at the end as node in the list of frame.
+ */
 BOOL CTxMsgDetailsView::bAddMsgInBlock()
 {
     BOOL bReturn = TRUE;
@@ -2329,23 +2089,16 @@ BOOL CTxMsgDetailsView::bAddMsgInBlock()
     return bReturn;
 }
 
-/*******************************************************************************
- Function Name    : OnItemchangedLstcSigDetails
- Input(s)         : 
- Output           : 
- Functionality    : This function will be called when there is a change in the
-                    list control. The change could be because of selection
-                    change by the user or due to the editing of the list item.
-                    This will update signal matrix in case of selection change
-                    and will update Global Tx data for data change after proper
-                    validation.
- Member of        : CTxMsgDetailsView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification By  :
- Modification on  :
-*******************************************************************************/
+/**
+ * \brief On Item Changed List Signal Details
+ *
+ * This function will be called when there is a change in the
+ * list control. The change could be because of selection
+ * change by the user or due to the editing of the list item.
+ * This will update signal matrix in case of selection change
+ * and will update Global Tx data for data change after proper
+ * validation.
+ */
 void CTxMsgDetailsView::OnItemchangedLstcSigDetails( NMHDR* pNMHDR, 
                                                      LRESULT* pResult )
 {
@@ -2386,19 +2139,13 @@ void CTxMsgDetailsView::OnItemchangedLstcSigDetails( NMHDR* pNMHDR,
     *pResult = 0;
 }
 
-/*******************************************************************************
- Function Name    : vUpdateSignalMatrix
- Input(s)         : nSelectedIndex      -  Selected Signal index
- Output           :     -
- Functionality    : This function will update the highlight of the signal matrix
-                    with the selected signal information
- Member of        : CTxMsgDetailsView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification By  :
- Modification on  :
-*******************************************************************************/
+/**
+ * \brief     Update Signal Matrix
+ * \param[in] nSelectedIndex Selected Signal index
+ *
+ * This function will update the highlight of the signal matrix
+ * with the selected signal information.
+ */
 void CTxMsgDetailsView::vUpdateSignalMatrix(int nSelectedIndex)
 {
     sSIGNALS * psSignal = NULL;
@@ -2425,23 +2172,15 @@ void CTxMsgDetailsView::vUpdateSignalMatrix(int nSelectedIndex)
     }
 }
 
-/*******************************************************************************
- Function Name    : vUpdateFromRawValue
- Input(s)         : nItem       - Item Index
-                    nSubItem    - SubItem Index
- Output           :  -
- Functionality    : This function will validate and update the raw value
-                    after edit. This will update Signal Matrix, data bytes. This
-                    will finally update Global Tx block data.
- Member of        : CTxMsgDetailsView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification By  : Raja N
- Modification on  : 02.08.2004, Modified nConvertStringToInt with 
-                   bConvertStringToInt64 global utility
-                    function call
-*******************************************************************************/
+/**
+ * \brief     Update From Raw Value
+ * \param[in] nItem Item Index
+ * \param[in] nSubItem SubItem Index
+ *
+ * This function will validate and update the raw value
+ * after edit. This will update Signal Matrix, data bytes. This
+ * will finally update Global Tx block data.
+ */
 void CTxMsgDetailsView::vUpdateFromRawValue(int nItem, int nSubItem)
 {
     CString omStrSignalName;
@@ -2599,22 +2338,15 @@ void CTxMsgDetailsView::vUpdateFromRawValue(int nItem, int nSubItem)
     }
 }
 
-/*******************************************************************************
- Function Name    : vUpdateFromPhysicalValue
- Input(s)         : nItem       - Item Index
-                    nSubItem    - SubItem Index
- Output           :  -
- Functionality    : This function will validate and update the physical value
-                    after edit. This will update Signal Matrix, data bytes. This
-                    will finally update Global Tx block data.
- Member of        : CTxMsgDetailsView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification By  : Raja N
- Modification on  : 02.08.2004, Int 64 problem fix and changed type casting in
-                    to C++ version operators
-*******************************************************************************/
+/**
+ * \brief     Update From Physical Value
+ * \param[in] nItem Item Index
+ * \param[in] nSubItem SubItem Index
+ *
+ * This function will validate and update the physical value
+ * after edit. This will update Signal Matrix, data bytes. This
+ * will finally update Global Tx block data.
+ */
 void CTxMsgDetailsView::vUpdateFromPhysicalValue(int nItem, int nSubItem)
 {
     CString omStrSignalName;
@@ -2786,21 +2518,16 @@ void CTxMsgDetailsView::vUpdateFromPhysicalValue(int nItem, int nSubItem)
         vUpdateSelectedMessageDetails();
     }
 }
-/*******************************************************************************
- Function Name    : vUpdateSignalData
- Input(s)         : psSignal - Pointer to Signal Details
-                    nI64SignVal - 64 bit Data
- Output           :  -
- Functionality    : This function will update internal signal matrix and data
-                    array. These two will be used to form data bytes from the
-                    signal values.
- Member of        : CTxMsgDetailsView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification By  :
- Modification on  :
-*******************************************************************************/
+
+/**
+ * \brief     Update Signal Data
+ * \param[in] psSignal Pointer to Signal Details
+ * \param[in] nI64SignVal 64 bit Data
+ *
+ * This function will update internal signal matrix and data
+ * array. These two will be used to form data bytes from the
+ * signal values.
+ */
 void CTxMsgDetailsView::vUpdateSignalData(sSIGNALS * psSignal,
                                          __int64 nI64SignVal )
 {
@@ -2847,20 +2574,13 @@ void CTxMsgDetailsView::vUpdateSignalData(sSIGNALS * psSignal,
     }
 }
 
-/*******************************************************************************
- Function Name    : vUpdateDataBytes
- Input(s)         :  -
- Output           :  -
- Functionality    : This function will be called to update the data bytes with
-                    the signal values from the signal list. This will take care
-                    of frame format Big/Little endian.
- Member of        : CTxMsgDetailsView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification By  :
- Modification on  :
-*******************************************************************************/
+/**
+ * \brief Update Data Bytes
+ *
+ * This function will be called to update the data bytes with
+ * the signal values from the signal list. This will take care
+ * of frame format Big/Little endian.
+ */
 void CTxMsgDetailsView::vUpdateDataBytes()
 {
     // Display databytes
@@ -2897,27 +2617,14 @@ void CTxMsgDetailsView::vUpdateDataBytes()
     }
 }
 
-/******************************************************************************/
-/*  Function Name    :  vSetValues                                            */
-/*  Input(s)         :  psTxMsg : pointer to message frame detail             */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will format the data passed as parameter*/
-/*                      and update the details into the controls below the    */
-/*                      message frame list.                                   */
-/*                                                                            */
-/*  Member of        :  CTxMsgDetailsView                                     */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  22.07.2004, Added init of DLC field on Message ID chg */
-/*  Modification By  :  ANISH                                                 */
-/*  Modification on  :  18.12.2006,Changed for MDB,show Msg Name with ID in   */
-/*						in combobox											  */
-/*  Modification By  :  ANISH                                                 */
-/*  Modification on  :  09.01.2007,Added UpdateData to fix the bug related to */
-/*						extended msg ID 									  */
-/******************************************************************************/
+/**
+ * \brief     Set Values
+ * \param[in] psTxMsg pointer to message frame detail
+ *
+ * This function will format the data passed as parameter
+ * and update the details into the controls below the
+ * message frame list.
+ */
 void CTxMsgDetailsView::vSetValues(STXCANMSGDETAILS* psTxMsg)
 {
     CString omStr            = _T("");
@@ -3025,20 +2732,13 @@ void CTxMsgDetailsView::vSetValues(STXCANMSGDETAILS* psTxMsg)
 	UpdateData(TRUE);	
 }
 
-/*******************************************************************************
- Function Name    : vDisableSignalComponents
- Input(s)         :  -
- Output           :
- Functionality    : This function is used to disable signal details related
-                    components. This will be called if the numeric mode has been
-                    changed by the user.
- Member of        : CTxMsgDetailsView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification By  :
- Modification on  :
-*******************************************************************************/
+/**
+ * \brief Disable Signal Components
+ *
+ * This function is used to disable signal details related
+ * components. This will be called if the numeric mode has been
+ * changed by the user.
+ */
 void CTxMsgDetailsView::vDisableSignalComponents()
 {
     m_omLctrSigList.DeleteAllItems();
@@ -3053,18 +2753,13 @@ void CTxMsgDetailsView::vDisableSignalComponents()
     }
 }
 
-/*******************************************************************************
-  Function Name  : OnSelchangeCombChannelId
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called by the framework during combobox
-                   item selection change. This handler will update CAN message
-                   data with the selected channel ID
-  Member of      : CTxMsgDetailsView
-  Author(s)      : Raja N
-  Date Created   : 27.4.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \brief On Selection Change Combo Channel ID
+ *
+ * This function will be called by the framework during combobox
+ * item selection change. This handler will update CAN message
+ * data with the selected channel ID.
+ */
 void CTxMsgDetailsView::OnSelchangeCombChannelId() 
 {
     BOOL bEntryValid = FALSE;
@@ -3111,16 +2806,11 @@ void CTxMsgDetailsView::OnSelchangeCombChannelId()
     }
 }
 
-/*******************************************************************************
-  Function Name  : vSetDefaultValues
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will set default values to UI controls
-  Member of      : CTxMsgDetailsView
-  Author(s)      : Raja N
-  Date Created   : 27.4.2005
-  Modifications  : 
-*******************************************************************************/
+/**
+ * \brief Set Default Values
+ *
+ * This function will set default values to UI controls
+ */
 void CTxMsgDetailsView::vSetDefaultValues()
 {
     // Set Message ID/Name
@@ -3155,20 +2845,16 @@ void CTxMsgDetailsView::vSetDefaultValues()
     m_omComboChannelID.SetCurSel(0);
 }
 
-/*******************************************************************************
-  Function Name  : PreTranslateMessage
-  Input(s)       : pMsg - Pointer to Message
-  Output         : -
-  Functionality  : This function will be called by the framework before
-                   despatching the message. This functioin shall be overriden to
-                   process Enter key press to set the focus to next dialog
-                   control as per the tab order
-  Member of      : CTxMsgDetailsView
-  Author(s)      : Raja N
-  Date Created   : 27.4.2005 
-  Modifications  : 
-*******************************************************************************/
-BOOL CTxMsgDetailsView::PreTranslateMessage(MSG* pMsg) 
+/**
+ * \brief     Pre Translate Message
+ * \param[in] pMsg Pointer to Message
+ *
+ * This function will be called by the framework before
+ * despatching the message. This functioin shall be overriden to
+ * process Enter key press to set the focus to next dialog
+ * control as per the tab order.
+ */
+BOOL CTxMsgDetailsView::PreTranslateMessage(MSG* pMsg)
 {
     BOOL bSkip = FALSE;
     // If it is key press message
