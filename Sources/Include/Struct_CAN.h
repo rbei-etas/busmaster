@@ -34,18 +34,18 @@ struct sTCAN_MSG
     UCHAR m_ucEXTENDED; // true, for (29 Bit) Frame
     UCHAR m_ucRTR;      // true, for remote request
     UCHAR m_ucDataLen;  // Data len (0..8)
-    UCHAR m_ucChannel;	// Message Length
+    UCHAR m_ucChannel;  // Message Length
     UCHAR m_ucData[8];  // Databytes 0..7
 };
 typedef sTCAN_MSG STCAN_MSG;
-typedef sTCAN_MSG *PSTCAN_MSG;
+typedef sTCAN_MSG* PSTCAN_MSG;
 
 // This structure holds the error and the channel number
 typedef struct sCAN_ERR
 {
-	UCHAR m_ucTxError ;
-	UCHAR m_ucRxError ;
-	UCHAR m_ucChannel ;
+    UCHAR m_ucTxError ;
+    UCHAR m_ucRxError ;
+    UCHAR m_ucChannel ;
 
 } SCAN_ERR, *SPCAN_ERR;
 
@@ -64,19 +64,19 @@ const short CAN_MSG_IDS = 2;
 //This enum defines different filter types
 enum eHW_FILTER_TYPES
 {
-	HW_FILTER_ACCEPT_ALL = 0,
-	HW_FILTER_REJECT_ALL,
-	HW_FILTER_MANUAL_SET
+    HW_FILTER_ACCEPT_ALL = 0,
+    HW_FILTER_REJECT_ALL,
+    HW_FILTER_MANUAL_SET
 };
 
 
 // Controller details
-// information on the baud rate 
+// information on the baud rate
 struct sCONTROLLERDETAILS
 {
     INT     m_nItemUnderFocus;      // item number under focus
-    INT     m_nBTR0BTR1;            // packed value of bit timing register 0 
-                                    // and bit timing register 1
+    INT     m_nBTR0BTR1;            // packed value of bit timing register 0
+    // and bit timing register 1
     TCHAR m_omStrCNF1[MAX_STRING];            // bit timing register 1 information
     TCHAR m_omStrCNF2[MAX_STRING];            // bit timing register 2 information
     TCHAR m_omStrCNF3[MAX_STRING];            // bit timing register 3 information
@@ -97,15 +97,15 @@ struct sCONTROLLERDETAILS
     TCHAR m_omStrAccMaskByte2[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte2 information
     TCHAR m_omStrAccMaskByte3[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte3 information
     TCHAR m_omStrAccMaskByte4[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte4 information
-	TCHAR m_omHardwareDesc[MAX_STRING];       // Hw description which user can  
-                                              // differentiate betw the channels  
+    TCHAR m_omHardwareDesc[MAX_STRING];       // Hw description which user can
+    // differentiate betw the channels
     BOOL  m_bAccFilterMode;       // acceptance filter mode(0: single, 1: Dual)
-    UCHAR m_ucControllerMode;                 // Controller mode : 1 : Active, 
-                                              // 2: Passive
-	BOOL m_bSelfReception;
+    UCHAR m_ucControllerMode;                 // Controller mode : 1 : Active,
+    // 2: Passive
+    BOOL m_bSelfReception;
 
-	//Filter type: 1. Accept All 2. Reject All 3. Manual setting
-	eHW_FILTER_TYPES m_enmHWFilterType[CAN_MSG_IDS];	  
+    //Filter type: 1. Accept All 2. Reject All 3. Manual setting
+    eHW_FILTER_TYPES m_enmHWFilterType[CAN_MSG_IDS];
     sCONTROLLERDETAILS()
     {
         vIntialize();
@@ -115,9 +115,8 @@ struct sCONTROLLERDETAILS
         // The default baudrate is taken as 500 kbps
         m_nItemUnderFocus = 64;
         m_nBTR0BTR1 = 49210;
-
-		//_tcscpy(m_omStrCNF1, _T("7"));
-		strcpy_s(m_omStrCNF1, _T("7"));        
+        //_tcscpy(m_omStrCNF1, _T("7"));
+        strcpy_s(m_omStrCNF1, _T("7"));
         strcpy_s(m_omStrCNF2, _T("B8"));
         strcpy_s(m_omStrCNF3, _T("5"));
         strcpy_s(m_omStrBTR0, _T("C0"));
@@ -146,12 +145,11 @@ struct sCONTROLLERDETAILS
         strcpy_s(m_omStrAccMaskByte3[1], _T("FF"));
         strcpy_s(m_omStrAccMaskByte4[1], _T("FF"));
         strcpy_s(m_omHardwareDesc, _T(""));
-
         m_bAccFilterMode = FALSE;
         m_ucControllerMode = 0x1;
-		m_enmHWFilterType[0] = HW_FILTER_ACCEPT_ALL;
-		m_enmHWFilterType[1] = HW_FILTER_ACCEPT_ALL;
-		m_bSelfReception = TRUE;
+        m_enmHWFilterType[0] = HW_FILTER_ACCEPT_ALL;
+        m_enmHWFilterType[1] = HW_FILTER_ACCEPT_ALL;
+        m_bSelfReception = TRUE;
     };
 };
 typedef sCONTROLLERDETAILS   SCONTROLLER_DETAILS;
@@ -159,24 +157,24 @@ typedef sCONTROLLERDETAILS*  PSCONTROLLER_DETAILS;
 
 struct sSUBBUSSTATISTICS
 {
-	UINT    m_unErrorTxCount;
-	UINT    m_unTotalTxMsgCount;
-	UINT    m_unTxSTDMsgCount;
-	UINT    m_unTotalBitsperSec;
-	UINT    m_unTxEXTDMsgCount;
-	UINT    m_unTxSTD_RTRMsgCount;
-	UINT    m_unTxEXTD_RTRMsgCount;
-	UINT    m_unTotalRxMsgCount;
-	UINT    m_unRxSTDMsgCount;
-	UINT    m_unRxEXTDMsgCount;
-	UINT    m_unRxSTD_RTRMsgCount;
-	UINT    m_unRxEXTD_RTRMsgCount;
-	UINT    m_unErrorTotalCount;
-	UINT    m_unErrorRxCount;
-	UINT    m_unDLCCount;
+    UINT    m_unErrorTxCount;
+    UINT    m_unTotalTxMsgCount;
+    UINT    m_unTxSTDMsgCount;
+    UINT    m_unTotalBitsperSec;
+    UINT    m_unTxEXTDMsgCount;
+    UINT    m_unTxSTD_RTRMsgCount;
+    UINT    m_unTxEXTD_RTRMsgCount;
+    UINT    m_unTotalRxMsgCount;
+    UINT    m_unRxSTDMsgCount;
+    UINT    m_unRxEXTDMsgCount;
+    UINT    m_unRxSTD_RTRMsgCount;
+    UINT    m_unRxEXTD_RTRMsgCount;
+    UINT    m_unErrorTotalCount;
+    UINT    m_unErrorRxCount;
+    UINT    m_unDLCCount;
 };
 typedef sSUBBUSSTATISTICS SSUBBUSSTATISTICS;
-typedef sSUBBUSSTATISTICS *PSSUBBUSSTATISTICS;
+typedef sSUBBUSSTATISTICS* PSSUBBUSSTATISTICS;
 
 // Bus statistics structure
 struct sBUSSTATISTICS
@@ -232,54 +230,54 @@ struct sBUSSTATISTICS
     UCHAR   m_ucTxPeakErrorCount;
     UCHAR   m_ucRxPeakErrorCount;
     UCHAR   m_ucStatus;
-	sBUSSTATISTICS& operator = (sSUBBUSSTATISTICS& objRef)
-	{
-		m_unErrorTxCount = objRef.m_unErrorTxCount;
-		m_unTotalTxMsgCount = objRef.m_unTotalTxMsgCount;
-		m_unTxSTDMsgCount = objRef.m_unTxSTDMsgCount;
-		m_unTotalBitsperSec = objRef.m_unTotalBitsperSec;
-		m_unTxEXTDMsgCount = objRef.m_unTxEXTDMsgCount;
-		m_unTxSTD_RTRMsgCount = objRef.m_unTxSTD_RTRMsgCount;
-		m_unTxEXTD_RTRMsgCount = objRef.m_unTxEXTD_RTRMsgCount;
-		m_unTotalRxMsgCount = objRef.m_unTotalRxMsgCount;
-		m_unRxSTDMsgCount = objRef.m_unRxSTDMsgCount;
-		m_unRxEXTDMsgCount = objRef.m_unRxEXTDMsgCount;
-		m_unRxSTD_RTRMsgCount = objRef.m_unRxSTD_RTRMsgCount;
-		m_unRxEXTD_RTRMsgCount = objRef.m_unRxEXTD_RTRMsgCount;
-		m_unErrorTotalCount = objRef.m_unErrorTotalCount;
-		m_unErrorRxCount = objRef.m_unErrorRxCount;
-		m_unDLCCount = objRef.m_unDLCCount;
-		return *this;
-	}
+    sBUSSTATISTICS& operator = (sSUBBUSSTATISTICS& objRef)
+    {
+        m_unErrorTxCount = objRef.m_unErrorTxCount;
+        m_unTotalTxMsgCount = objRef.m_unTotalTxMsgCount;
+        m_unTxSTDMsgCount = objRef.m_unTxSTDMsgCount;
+        m_unTotalBitsperSec = objRef.m_unTotalBitsperSec;
+        m_unTxEXTDMsgCount = objRef.m_unTxEXTDMsgCount;
+        m_unTxSTD_RTRMsgCount = objRef.m_unTxSTD_RTRMsgCount;
+        m_unTxEXTD_RTRMsgCount = objRef.m_unTxEXTD_RTRMsgCount;
+        m_unTotalRxMsgCount = objRef.m_unTotalRxMsgCount;
+        m_unRxSTDMsgCount = objRef.m_unRxSTDMsgCount;
+        m_unRxEXTDMsgCount = objRef.m_unRxEXTDMsgCount;
+        m_unRxSTD_RTRMsgCount = objRef.m_unRxSTD_RTRMsgCount;
+        m_unRxEXTD_RTRMsgCount = objRef.m_unRxEXTD_RTRMsgCount;
+        m_unErrorTotalCount = objRef.m_unErrorTotalCount;
+        m_unErrorRxCount = objRef.m_unErrorRxCount;
+        m_unDLCCount = objRef.m_unDLCCount;
+        return *this;
+    }
 };
 typedef sBUSSTATISTICS SBUSSTATISTICS;
-typedef sBUSSTATISTICS *PBUSSTATISTICS;
+typedef sBUSSTATISTICS* PBUSSTATISTICS;
 
 // This structure holds Error info
 struct sERROR_INFO
 {
     UCHAR m_ucErrType;    // ERROR_BUS, ERROR_DEVICE_BUFF_OVERFLOW
-                          // ERROR_DRIVER_BUFF_OVERFLOW, ERROR_UNKNOWN
+    // ERROR_DRIVER_BUFF_OVERFLOW, ERROR_UNKNOWN
     UCHAR m_ucReg_ErrCap; // Stores the value of err capture register in
-                          // case of bus error
+    // case of bus error
     UCHAR m_ucTxErrCount;
     UCHAR m_ucRxErrCount;
     UCHAR m_ucChannel;
-	int m_nSubError;   //added for providing Error bit details
+    int m_nSubError;   //added for providing Error bit details
 };
 typedef sERROR_INFO SERROR_INFO;
-typedef sERROR_INFO *PSERROR_INFO;
+typedef sERROR_INFO* PSERROR_INFO;
 
 
 /*****************************************************************************/
 /*This structure is used for communicating between Driver & CAN Application*/
 union sTDATAINFO
 {
-   STCAN_MSG     m_sCANMsg;      //The received / transmitted message
-   SERROR_INFO   m_sErrInfo;
+    STCAN_MSG     m_sCANMsg;      //The received / transmitted message
+    SERROR_INFO   m_sErrInfo;
 };
 typedef sTDATAINFO STDATAINFO;
-typedef sTDATAINFO *PSTDATAINFO;
+typedef sTDATAINFO* PSTDATAINFO;
 
 /*****************************************************************************/
 
@@ -293,15 +291,15 @@ private:
     static int  m_nMFactor;     // Multiplication factor
 
 public:
-	UCHAR            m_ucDataType;  //Type of the message
-	LARGE_INTEGER    m_lTickCount;  //Time stamp, Contains the val returned from
-                                   //QueryPerf..Counter()
-	STDATAINFO       m_uDataInfo;
+    UCHAR            m_ucDataType;  //Type of the message
+    LARGE_INTEGER    m_lTickCount;  //Time stamp, Contains the val returned from
+    //QueryPerf..Counter()
+    STDATAINFO       m_uDataInfo;
 
     static void vSetSortField(int nField);
-	static void vSetSortAscending(bool bAscending);
+    static void vSetSortAscending(bool bAscending);
     static int DoCompareIndiv(const void* pEntry1, const void* pEntry2);
-	static __int64 GetSlotID(sTCANDATA& pDatCAN);
+    static __int64 GetSlotID(sTCANDATA& pDatCAN);
 
 } STCANDATA, *PSTCANDATA;
 
@@ -312,17 +310,17 @@ public:
 struct sACC_FILTER_INFO
 {
     UCHAR m_ucACC_Filter_Type;
-    UCHAR m_ucACC_Code0; 
-    UCHAR m_ucACC_Code1; 
+    UCHAR m_ucACC_Code0;
+    UCHAR m_ucACC_Code1;
     UCHAR m_ucACC_Code2;
     UCHAR m_ucACC_Code3;
-    UCHAR m_ucACC_Mask0; 
-    UCHAR m_ucACC_Mask1; 
-    UCHAR m_ucACC_Mask2; 
+    UCHAR m_ucACC_Mask0;
+    UCHAR m_ucACC_Mask1;
+    UCHAR m_ucACC_Mask2;
     UCHAR m_ucACC_Mask3;
 };
 typedef sACC_FILTER_INFO SACC_FILTER_INFO;
-typedef sACC_FILTER_INFO *PSACC_FILTER_INFO;
+typedef sACC_FILTER_INFO* PSACC_FILTER_INFO;
 
 
 // This structure holds Error count of Rx & Tx Process
@@ -332,7 +330,7 @@ struct sERROR_CNT
     UCHAR m_ucRxErrCount;
 };
 typedef sERROR_CNT SERROR_CNT;
-typedef sERROR_CNT *SPERROR_CNT;
+typedef sERROR_CNT* SPERROR_CNT;
 
 
 

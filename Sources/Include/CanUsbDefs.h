@@ -56,7 +56,7 @@
 #define defUSB_MODE_PASSIVE                    2
 #define defUSB_MODE_SIMULATE                   3
 
-#define defSIM_NETWORK_HANDLE                  31 
+#define defSIM_NETWORK_HANDLE                  31
 
 #define defMODE_ACTIVE                         1
 #define defMODE_PASSIVE                        2
