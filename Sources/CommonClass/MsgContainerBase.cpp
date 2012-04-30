@@ -18,21 +18,16 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
+
 #include "CommonClass_stdafx.h"
 #include "MsgContainerBase.h"
 #include "Utility/Utility_Thread.h"
 
-
-/******************************************************************************
-    Function Name    :  DataCopyThreadProc
-    Input(s)         :
-    Output           :
-    Functionality    :  Read thread for the messages from DIL buffer
-    Member of        :  Global
-    Friend of        :      -
-    Author(s)        :  Anish kumar
-    Date Created     :  01.04.2010
-******************************************************************************/
+/**
+ * \brief Data Copy Thread Procedure
+ *
+ * Read thread for the messages from DIL buffer
+ */
 DWORD WINAPI DataCopyThreadProc(LPVOID pVoid)
 {
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
@@ -105,34 +100,22 @@ CMsgContainerBase::~CMsgContainerBase()
     m_sDataCopyThread.bTerminateThread();
 }
 
-/******************************************************************************
-    Function Name    :  vSetRxMsgCallBkPtr
-    Input(s)         :
-    Output           :
-    Functionality    :  Save the call back function pointer from the User
-                        for any new Rx/Tx message
-    Member of        :  CMsgContainerBase
-    Friend of        :      -
-    Author(s)        :  Anish kumar
-    Date Created     :  01.04.2010
-******************************************************************************/
+/**
+ * \brief Set Receive Message Callback Pointer
+ *
+ * Save the call back function pointer from the User
+ * for any new Rx/Tx message.
+ */
 void CMsgContainerBase::vSetRxMsgCallBkPtr(MSG_RX_CALL_BK pFuncPtr)
 {
     m_pRxMsgCallBack = pFuncPtr;
 }
 
-
-/**********************************************************************************
-    Function Name   :   bStartReadThread
-    Input(s)        :   -
-    Output      :   -
-    Functionality   :   -
-    Member of       :   CMsgContainerBase
-    Friend of       :   -
-    Authors     :
-    Date Created    :
-    Modifications   :
-************************************************************************************/
+/**
+ * \brief Start Read Thread
+ *
+ * Start the read thread
+ */
 BOOL CMsgContainerBase:: bStartReadThread(HANDLE hActionEvent)
 {
     BOOL bResult = TRUE;
@@ -148,33 +131,22 @@ BOOL CMsgContainerBase:: bStartReadThread(HANDLE hActionEvent)
     return bResult;
 }
 
-
-/******************************************************************************
-    Function Name    :  bStopReadThread
-    Input(s)         :
-    Output           :
-    Functionality    :  Stop the read thread
-    Member of        :  CMsgContainerBase
-    Friend of        :      -
-    Author(s)        :  Anish kumar
-    Date Created     :  01.04.2010
-******************************************************************************/
+/**
+ * \brief Stop Read Thread
+ *
+ * Stop the read thread
+ */
 BOOL CMsgContainerBase:: bStopReadThread()
 {
     BOOL bReturn = m_sDataCopyThread.bTerminateThread();
     return bReturn;
 }
 
-/******************************************************************************
-    Function Name    :  bCopyStringToTCHARArr
-    Input(s)         :  TCHAR acDesStr[], CString omSrc, int MaxDesLen
-    Output           :  BOOL
-    Functionality    :  String to TCHAR
-    Member of        :  CMsgContainerBase
-    Friend of        :      -
-    Author(s)        :  ArunKumar K
-    Date Created     :  20.01.2011
-******************************************************************************/
+/**
+ * \brief Copy String to TCHAR array
+ *
+ * String to TCHAR
+ */
 BOOL CMsgContainerBase::bCopyStringToTCHARArr( TCHAR acDesStr[], CString omSrc, int MaxDesLen )
 {
     BOOL bReturn = TRUE;
@@ -190,4 +162,3 @@ BOOL CMsgContainerBase::bCopyStringToTCHARArr( TCHAR acDesStr[], CString omSrc, 
     _tcscpy(acDesStr, omSrc.GetBuffer(MAX_PATH));
     return bReturn;
 }
-

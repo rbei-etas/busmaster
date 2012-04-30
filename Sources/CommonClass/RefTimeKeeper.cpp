@@ -25,48 +25,31 @@
 #include "CommonClass_stdafx.h"
 #include "reftimekeeper.h"
 
-
-/*******************************************************************************
-  Function Name  : CRefTimeKeeper
-  Input(s)       : -
-  Output         : -
-  Functionality  : Constructor
-  Member of      : CRefTimeKeeper
-  Author(s)      : Anish
-  Date Created   : 09.2.2010
-  Modifications  :
-*******************************************************************************/
+/**
+ * \brief Constructor
+ *
+ * Constructor
+ */
 CRefTimeKeeper::CRefTimeKeeper(void)
 {
     m_qwRefSysTime  = 0;
     m_qwAbsBaseTime = 0;
 }
 
-/*******************************************************************************
-  Function Name  : ~CRefTimeKeeper
-  Input(s)       : -
-  Output         : -
-  Functionality  : Destructor
-  Member of      : CRefTimeKeeper
-  Author(s)      : Anish
-  Date Created   : 09.2.2010
-  Modifications  :
-*******************************************************************************/
+/**
+ * \brief Destructor
+ *
+ * Destructor
+ */
 CRefTimeKeeper::~CRefTimeKeeper(void)
 {
 }
 
-
-/*******************************************************************************
-  Function Name  : vSetTimeParams
-  Input(s)       : -
-  Output         : -
-  Functionality  : Save current system time and connection time
-  Member of      : CRefTimeKeeper
-  Author(s)      : Anish
-  Date Created   : 09.2.2010
-  Modifications  :
-*******************************************************************************/
+/**
+ * \brief Set Time Parameters
+ *
+ * Save current system time and connection time
+ */
 void CRefTimeKeeper::vSetTimeParams(SYSTEMTIME& CurrSysTime, UINT64 qwConnectTime)
 {
     m_qwRefSysTime = (CurrSysTime.wHour * 3600 + CurrSysTime.wMinute * 60 +

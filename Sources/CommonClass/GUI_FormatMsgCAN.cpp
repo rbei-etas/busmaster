@@ -55,44 +55,29 @@ static SERRORMSGINFO sg_asErrorEntry[ERRORS_DEFINED] =
     {ERROR_DLLMSG_BUFF_OVERFLOW,        _T("DLL message buffer Overflow")}
 };
 
-/*******************************************************************************
-  Function Name  : CFormatMsgCAN
-  Input(s)       : -
-  Output         : -
-  Functionality  : Constructor
-  Member of      : CFormatMsgCAN
-  Author(s)      : Ratnadip
-  Date Created   : 8.7.2009
-  Modifications  :
-*******************************************************************************/
+/**
+ * \brief Constructor
+ *
+ * Constructor
+ */
 CFormatMsgCAN::CFormatMsgCAN(void)
 {
 }
 
-/*******************************************************************************
-  Function Name  : ~CFormatMsgCAN
-  Input(s)       : -
-  Output         : -
-  Functionality  : Destructor
-  Member of      : CFormatMsgCAN
-  Author(s)      : Ratnadip
-  Date Created   : 8.7.2009
-  Modifications  :
-*******************************************************************************/
+/**
+ * \brief Destructor
+ *
+ * Destructor
+ */
 CFormatMsgCAN::~CFormatMsgCAN(void)
 {
 }
 
-/*******************************************************************************
-  Function Name  : vFormatTime
-  Input(s)       : -
-  Output         : -
-  Functionality  : Format Time
-  Member of      : CFormatMsgCAN
-  Author(s)      : Ratnadip
-  Date Created   : 8.7.2009
-  Modifications  :
-*******************************************************************************/
+/**
+ * \brief Format Time
+ *
+ * Format Time
+ */
 void CFormatMsgCAN::vFormatTime(BYTE bExprnFlag,
                                 SFORMATTEDDATA_CAN* CurrDataCAN)
 {
@@ -123,17 +108,11 @@ void CFormatMsgCAN::vFormatTime(BYTE bExprnFlag,
     }
 }
 
-
-/*******************************************************************************
-  Function Name  : vFormatDataAndId
-  Input(s)       : -
-  Output         : -
-  Functionality  : Format data and id
-  Member of      : CFormatMsgCAN
-  Author(s)      : Ratnadip
-  Date Created   : 8.7.2009
-  Modifications  :
-*******************************************************************************/
+/**
+ * \brief Format Data And Id
+ *
+ * Format data and id
+ */
 void CFormatMsgCAN::vFormatDataAndId(BYTE bExprnFlag,
                                      SFORMATTEDDATA_CAN* CurrDataCAN)
 {
@@ -169,16 +148,12 @@ void CFormatMsgCAN::vFormatDataAndId(BYTE bExprnFlag,
     }
 }
 
-/*******************************************************************************
-  Function Name  : usProcessCurrErrorEntry
-  Input(s)       : SERROR_INFO& sErrorInfo
-  Output         : Returns Error ID as USHORT.
-  Functionality  : Processes the current Error entry and returns the Error code.
-  Member of      : CFormatMsgCAN
-  Author(s)      : Arunkumar K
-  Date Created   : 08-09-2010
-  Modifications  :
-*******************************************************************************/
+/**
+ * \brief Process Current Error Entry
+ * \return Error ID
+ *
+ * Processes the current Error entry and returns the Error code.
+ */
 USHORT CFormatMsgCAN::usProcessCurrErrorEntry(SERROR_INFO& sErrorInfo)
 {
     // Get the Error code
@@ -205,17 +180,13 @@ USHORT CFormatMsgCAN::usProcessCurrErrorEntry(SERROR_INFO& sErrorInfo)
     return usErrorID;
 }
 
-/*******************************************************************************
-  Function Name  : vFormatCurrErrorEntry
-  Input(s)       : usErrorID
-  Output         : TCHAR* (Error Name)
-  Functionality  : Gets the pointer to Message data Buffer from PSDI_CAN DLL
-                   and updates the same in List Control.
-  Member of      : CFormatMsgCAN
-  Author(s)      : Arunkumar K
-  Date Created   : 08-09-2010
-  Modifications  :
-*******************************************************************************/
+/**
+ * \brief Format Current Error Entry
+ * \return Error Name
+ *
+ * Gets the pointer to Message data Buffer from PSDI_CAN DLL
+ * and updates the same in List Control.
+ */
 TCHAR* CFormatMsgCAN::vFormatCurrErrorEntry(USHORT usErrorID)
 {
     BOOL bErrProcessed = FALSE;
@@ -235,18 +206,11 @@ TCHAR* CFormatMsgCAN::vFormatCurrErrorEntry(USHORT usErrorID)
     return NULL;
 }
 
-/*******************************************************************************
-  Function Name  : vFormatCANDataMsg
-  Input(s)       : -
-  Output         : -
-  Functionality  : Format CAN data bytes
-  Member of      : CFormatMsgCAN
-  Author(s)      : Ratnadip
-  Date Created   : 8.7.2009
-  Modifications  : ArunKumar K
-                   08.09.2010,
-                   Added handler for error messages. ERR_FLAG
-*******************************************************************************/
+/**
+ * \brief Format CAN Data Msg
+ *
+ * Format CAN data bytes
+ */
 void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
                                       SFORMATTEDDATA_CAN* CurrDataCAN,
                                       BYTE bExprnFlag_Log)

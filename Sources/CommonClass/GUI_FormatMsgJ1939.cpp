@@ -1,15 +1,26 @@
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-/**********************************************************************************
-  Project       :   Auto-SAT_Tools
-  FileName      :   GUI_FormatMsgJ1939.cpp
-  Description   :   Implementation of CRefTimeKeeper class
-  $Log:   X:/Archive/Sources/CommonClass/GUI_FormatMsgJ1939.cpv  $
-
-  Author(s)     :
-  Date Created  :   04/11/2009
-  Modified By   :
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-**********************************************************************************/
+/**
+ * \file      GUI_FormatMsgJ1939.cpp
+ * \brief     Implementation of CRefTimeKeeper class
+ * \author    Anish kumar
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Implementation of CRefTimeKeeper class
+ */
 
 #include "CommonClass_stdafx.h"
 #include "GUI_FormatMsgJ1939.h"
@@ -43,44 +54,29 @@ static SERRORMSGINFO sg_asErrorEntry[ERRORS_DEFINED] =
     {ERROR_DLLMSG_BUFF_OVERFLOW,        _T("DLL message buffer Overflow")}
 };
 
-/*******************************************************************************
-  Function Name  : CFormatMsgJ1939
-  Input(s)       : -
-  Output         : -
-  Functionality  : Constructor
-  Member of      : CFormatMsgJ1939
-  Author(s)      : Ratnadip
-  Date Created   : 8.7.2009
-  Modifications  :
-*******************************************************************************/
+/**
+ * \brief Constructor
+ *
+ * Constructor
+ */
 CFormatMsgJ1939::CFormatMsgJ1939(void)
 {
 }
 
-/*******************************************************************************
-  Function Name  : ~CFormatMsgJ1939
-  Input(s)       : -
-  Output         : -
-  Functionality  : Destructor
-  Member of      : CFormatMsgJ1939
-  Author(s)      : Arun kumar K
-  Date Created   : 24.01.2011
-  Modifications  :
-*******************************************************************************/
+/**
+ * \brief Destructor
+ *
+ * Destructor
+ */
 CFormatMsgJ1939::~CFormatMsgJ1939(void)
 {
 }
 
-/*******************************************************************************
-  Function Name  : vFormatTime
-  Input(s)       : -
-  Output         : -
-  Functionality  : Format Time
-  Member of      : CFormatMsgJ1939
-  Author(s)      : Arun kumar K
-  Date Created   : 24.01.2011
-  Modifications  :
-*******************************************************************************/
+/**
+ * \brief Format Time
+ *
+ * Format Time
+ */
 void CFormatMsgJ1939::vFormatTime(BYTE bExprnFlag,
                                   PSTJ1939_MSG psJ1939BData,
                                   PSFORMATTEDATA_J1939 psJ1939FData)
@@ -112,17 +108,11 @@ void CFormatMsgJ1939::vFormatTime(BYTE bExprnFlag,
     }
 }
 
-
-/*******************************************************************************
-  Function Name  : vFormatDataAndId
-  Input(s)       : bExprnFlag, psJ1939BData, psJ1939FData
-  Output         : -
-  Functionality  : Format data and id
-  Member of      : CFormatMsgJ1939
-  Author(s)      : Arun kumar K
-  Date Created   : 27.01.2011
-  Modifications  :
-*******************************************************************************/
+/**
+ * \brief Format Data And Id
+ *
+ * Format data and id
+ */
 void CFormatMsgJ1939::vFormatDataAndId(BYTE bExprnFlag,
                                        PSTJ1939_MSG psJ1939BData,
                                        PSFORMATTEDATA_J1939 psJ1939FData)
@@ -163,16 +153,12 @@ void CFormatMsgJ1939::vFormatDataAndId(BYTE bExprnFlag,
     }
 }
 
-/*******************************************************************************
-  Function Name  : usProcessCurrErrorEntry
-  Input(s)       : SERROR_INFO& sErrorInfo
-  Output         : Returns Error ID as USHORT.
-  Functionality  : Processes the current Error entry and returns the Error code.
-  Member of      : CFormatMsgJ1939
-  Author(s)      : Arun kumar K
-  Date Created   : 24.01.2011
-  Modifications  :
-*******************************************************************************/
+/**
+ * \brief  Process Current Error Entry
+ * \return Error ID
+ *
+ * Processes the current Error entry and returns the Error code.
+ */
 USHORT CFormatMsgJ1939::usProcessCurrErrorEntry(SERROR_INFO& sErrorInfo)
 {
     // Get the Error code
@@ -199,17 +185,13 @@ USHORT CFormatMsgJ1939::usProcessCurrErrorEntry(SERROR_INFO& sErrorInfo)
     return usErrorID;
 }
 
-/*******************************************************************************
-  Function Name  : vFormatCurrErrorEntry
-  Input(s)       : usErrorID
-  Output         : TCHAR* (Error Name)
-  Functionality  : Gets the pointer to Message data Buffer from PSDI_CAN DLL
-                   and updates the same in List Control.
-  Member of      : CFormatMsgJ1939
-  Author(s)      : Arun kumar K
-  Date Created   : 24.01.2011
-  Modifications  :
-*******************************************************************************/
+/**
+ * \brief  Format Current Error Entry
+ * \return Error Name
+ *
+ * Gets the pointer to Message data Buffer from PSDI_CAN DLL
+ * and updates the same in List Control.
+ */
 TCHAR* CFormatMsgJ1939::vFormatCurrErrorEntry(USHORT usErrorID)
 {
     BOOL bErrProcessed = FALSE;
@@ -229,16 +211,11 @@ TCHAR* CFormatMsgJ1939::vFormatCurrErrorEntry(USHORT usErrorID)
     return NULL;
 }
 
-/*******************************************************************************
-  Function Name  : vFormatJ1939DataMsg
-  Input(s)       : psJ1939BData, psJ1939FData, bExprnFlag_Log
-  Output         : -
-  Functionality  : Format J1939 data bytes
-  Member of      : CFormatMsgJ1939
-  Author(s)      : Arun kumar K
-  Date Created   : 27.01.2011
-  Modifications  :
-*******************************************************************************/
+/**
+ * \brief Format J1939 Data Message
+ *
+ * Format J1939 data bytes
+ */
 void CFormatMsgJ1939::vFormatJ1939DataMsg(PSTJ1939_MSG psJ1939BData,
         PSFORMATTEDATA_J1939 psJ1939FData,
         BYTE bExprnFlag_Log)
