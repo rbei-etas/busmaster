@@ -74,31 +74,36 @@ typedef enum eMSG_WND_PROPERTY
     DISPLAY_MODE = 0x4
 };
 
-typedef enum  eTimerMode{
+typedef enum  eTimerMode
+{
     TIME_MODE_RELATIVE = 0,
     TIME_MODE_SYSTEM,
     TIME_MODE_ABSOLUTE
 } ETIMERMODE;
 
-typedef enum eFormat {
+typedef enum eFormat
+{
     HEXADECIMAL = 0,
     DEC
 } EFORMAT;
 
-enum eMode {
+enum eMode
+{
     APPEND_MODE = 0,
     OVERWRITE_MODE,
     OVERWRITE_INTERPRET_MODE
 };
 
-enum eScroll {
+enum eScroll
+{
     SCROLL = 0,
     FREEZE
 };
 
-enum eTreeItemStates { TREESTATE_TOGGLE, 
-					   TREESTATE_EXPAND, 
-					   TREESTATE_COLLAPSE };
+enum eTreeItemStates { TREESTATE_TOGGLE,
+                       TREESTATE_EXPAND,
+                       TREESTATE_COLLAPSE
+                     };
 
 
 typedef UINT TYPE_CHANNEL;
@@ -145,22 +150,22 @@ typedef struct tagFormattedData_CAN
     BYTE            m_byIDType;                     // Type of the ID (STD or EXTENDED)
     BYTE            m_byMsgType;                    // Type of the message (RTR or NRTR)
 
-    TCHAR	m_acMsgDir[LENGTH_STR_DIRECTION_CAN];     // "Tx" or "Rx"
-    TCHAR	m_acChannel[LENGTH_STR_CHANNEL_CAN];      // "1" or "2"
-    TCHAR	m_acType[LENGTH_STR_TYPE_CAN];            // s / x / r
-    TCHAR	m_acDataLen[LENGTH_STR_DLC_CAN];          // DLC always in dec
-    TCHAR	m_acMsgDesc[LENGTH_STR_DESCRIPTION_CAN];  // Message description
+    TCHAR   m_acMsgDir[LENGTH_STR_DIRECTION_CAN];     // "Tx" or "Rx"
+    TCHAR   m_acChannel[LENGTH_STR_CHANNEL_CAN];      // "1" or "2"
+    TCHAR   m_acType[LENGTH_STR_TYPE_CAN];            // s / x / r
+    TCHAR   m_acDataLen[LENGTH_STR_DLC_CAN];          // DLC always in dec
+    TCHAR   m_acMsgDesc[LENGTH_STR_DESCRIPTION_CAN];  // Message description
 
-    TCHAR	m_acMsgIDHex[LENGTH_STR_ID_CAN];          // Identifier in hex
-    TCHAR	m_acMsgIDDec[LENGTH_STR_ID_CAN];          // Identifier in dec
+    TCHAR   m_acMsgIDHex[LENGTH_STR_ID_CAN];          // Identifier in hex
+    TCHAR   m_acMsgIDDec[LENGTH_STR_ID_CAN];          // Identifier in dec
 
-    TCHAR	m_acDataHex[LENGTH_STR_DATA_CAN];         // Data in hex
-    TCHAR	m_acDataDec[LENGTH_STR_DATA_CAN];         // Data in dec
+    TCHAR   m_acDataHex[LENGTH_STR_DATA_CAN];         // Data in hex
+    TCHAR   m_acDataDec[LENGTH_STR_DATA_CAN];         // Data in dec
 
-    TCHAR	m_acTimeAbsReset[LENGTH_STR_TIMESTAMP_CAN];    // Absolute time stamp Reset
-    TCHAR	m_acTimeAbs[LENGTH_STR_TIMESTAMP_CAN];    // Absolute time stamp 
-    TCHAR	m_acTimeRel[LENGTH_STR_TIMESTAMP_CAN];    // Relative time stamp
-    TCHAR	m_acTimeSys[LENGTH_STR_TIMESTAMP_CAN];    // System time stamp
+    TCHAR   m_acTimeAbsReset[LENGTH_STR_TIMESTAMP_CAN];    // Absolute time stamp Reset
+    TCHAR   m_acTimeAbs[LENGTH_STR_TIMESTAMP_CAN];    // Absolute time stamp
+    TCHAR   m_acTimeRel[LENGTH_STR_TIMESTAMP_CAN];    // Relative time stamp
+    TCHAR   m_acTimeSys[LENGTH_STR_TIMESTAMP_CAN];    // System time stamp
 
     __int64         m_n64MapId;                     // Map id of the message
     COLORREF        m_ColourCode;                   // Colour code associated
@@ -172,7 +177,7 @@ typedef struct sWMUpdatePtrPara
     int              m_nListIndex;
     EINTERPRET_MODE  m_eInPretMode;
     BOOL             m_bResult;
-}SWMUPDATEPTRPARA, *PSWMUPDATEPTRPARA;
+} SWMUPDATEPTRPARA, *PSWMUPDATEPTRPARA;
 
 #define MAX_MSG_WND_COL_CNT              12
 
@@ -186,10 +191,10 @@ typedef struct sMsgWndHdrCol
     BYTE m_byDLCPos;
     BYTE m_byDataPos;
     BYTE m_byChannel;
-	BYTE m_byPGNPos;
-	BYTE m_bySrcPos;
-	BYTE m_byDestPos;
-	BYTE m_byPriorityPos;
+    BYTE m_byPGNPos;
+    BYTE m_bySrcPos;
+    BYTE m_byDestPos;
+    BYTE m_byPriorityPos;
 
     sMsgWndHdrCol()
     {
@@ -201,9 +206,9 @@ typedef struct sMsgWndHdrCol
         m_byDLCPos      = (BYTE) -1;
         m_byDataPos     = (BYTE) -1;
         m_byChannel     = (BYTE) -1;
-		m_byPGNPos      = (BYTE) -1;
-		m_bySrcPos      = (BYTE) -1;
-		m_byDestPos     = (BYTE) -1;
-		m_byPriorityPos = (BYTE) -1;		
+        m_byPGNPos      = (BYTE) -1;
+        m_bySrcPos      = (BYTE) -1;
+        m_byDestPos     = (BYTE) -1;
+        m_byPriorityPos = (BYTE) -1;
     }
-}SMSGWNDHDRCOL;
+} SMSGWNDHDRCOL;
