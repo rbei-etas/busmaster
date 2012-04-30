@@ -34,7 +34,7 @@
   Member of      : CRefTimeKeeper
   Author(s)      : Anish
   Date Created   : 09.2.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 CRefTimeKeeper::CRefTimeKeeper(void)
 {
@@ -50,7 +50,7 @@ CRefTimeKeeper::CRefTimeKeeper(void)
   Member of      : CRefTimeKeeper
   Author(s)      : Anish
   Date Created   : 09.2.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 CRefTimeKeeper::~CRefTimeKeeper(void)
 {
@@ -65,12 +65,12 @@ CRefTimeKeeper::~CRefTimeKeeper(void)
   Member of      : CRefTimeKeeper
   Author(s)      : Anish
   Date Created   : 09.2.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CRefTimeKeeper::vSetTimeParams(SYSTEMTIME& CurrSysTime, UINT64 qwConnectTime)
 {
     m_qwRefSysTime = (CurrSysTime.wHour * 3600 + CurrSysTime.wMinute * 60 +
-               + CurrSysTime.wSecond) * 10000 + CurrSysTime.wMilliseconds * 10;
+                      + CurrSysTime.wSecond) * 10000 + CurrSysTime.wMilliseconds * 10;
     m_qwAbsBaseTime = qwConnectTime;
 }
 

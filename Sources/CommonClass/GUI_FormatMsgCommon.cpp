@@ -30,8 +30,8 @@
 
 /******************************************************************************
     Function Name    :  CFormatMsgCommon
-    Input(s)         :  
-    Output           :  
+    Input(s)         :
+    Output           :
     Functionality    :  Default Constructor
     Member of        :  CFormatMsgCommon
     Friend of        :      -
@@ -40,15 +40,14 @@
 ******************************************************************************/
 CFormatMsgCommon::CFormatMsgCommon(void)
 {
-    
     m_qwAbsBaseTime = 0;
     m_qwRefSysTime  = 0;
 }
 
 /******************************************************************************
     Function Name    :  ~CFormatMsgCommon
-    Input(s)         :  
-    Output           :  
+    Input(s)         :
+    Output           :
     Functionality    :  Destructor
     Member of        :  CFormatMsgCommon
     Friend of        :      -
@@ -62,21 +61,20 @@ CFormatMsgCommon::~CFormatMsgCommon(void)
 /******************************************************************************
     Function Name    :  vCalculateAndFormatTM
     Input(s)         :  bExprnFlag - Details of time mode
-                        TimeStamp - Msg time stamp, Rel time in case of Rel. mode 
+                        TimeStamp - Msg time stamp, Rel time in case of Rel. mode
                         acTime - Buffer to store formatted time
-    Output           :  
+    Output           :
     Functionality    :  Format time details
     Member of        :  CFormatMsgCommon
     Friend of        :      -
     Author(s)        :  Anish kumar
     Date Created     :  01.04.2010
 ******************************************************************************/
-void CFormatMsgCommon::vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp, 
-                                             TCHAR acTime[])
+void CFormatMsgCommon::vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,
+        TCHAR acTime[])
 {
     /* In order to make this function work properly ENSURE bExprnFlag has ONLY
     1 time mode bit up */
-
     DWORD dwTSTmp = 0; // temporary time stamp
 
     if (IS_TM_SYS_SET(bExprnFlag))
@@ -85,7 +83,6 @@ void CFormatMsgCommon::vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,
     }
     else if (IS_TM_REL_SET(bExprnFlag))
     {
-
         dwTSTmp = (DWORD) TimeStamp;
     }
     else if (IS_TM_ABS_SET(bExprnFlag))
@@ -96,6 +93,7 @@ void CFormatMsgCommon::vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,
     {
         ASSERT(FALSE);
     }
+
     vFormatTimeStamp(dwTSTmp, acTime);
 }
 
@@ -103,7 +101,7 @@ void CFormatMsgCommon::vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,
     Function Name    :  vFormatTimeStamp
     Input(s)         :  dwTimeStamp - time stamp to be formatted
                         acTime - Buffer to store formatted time
-    Output           :  
+    Output           :
     Functionality    :  Format time details
     Member of        :  CFormatMsgCommon
     Friend of        :      -
@@ -112,16 +110,14 @@ void CFormatMsgCommon::vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,
 ******************************************************************************/
 void CFormatMsgCommon::vFormatTimeStamp(DWORD dwTimeStamp, TCHAR acTime[])
 {
-     // Static variables to reduce the creation time
+    // Static variables to reduce the creation time
     static int nTemp, nMicSec, nSec, nMinute, nHour;
-
     nMicSec = dwTimeStamp % 10000;  // hundreds of microseconds left
     nTemp = dwTimeStamp / 10000;    // expressed in seconds
     nSec = nTemp % 60;          // seconds left
     nTemp = nTemp / 60;         // expressed in minutes
     nMinute = nTemp % 60;       // minutes left
     nHour = nTemp / 60;         // expressed in hours
-
     _stprintf(acTime, _T("%02d:%02d:%02d:%04d"), nHour, nMinute, nSec, nMicSec);
 }
 
@@ -129,7 +125,7 @@ void CFormatMsgCommon::vFormatTimeStamp(DWORD dwTimeStamp, TCHAR acTime[])
     Function Name    :  vFormatTimeStamp
     Input(s)         :  dwTimeStamp - time stamp to be formatted
                         acTime - Buffer to store formatted time
-    Output           :  
+    Output           :
     Functionality    :  Format time details
     Member of        :  CFormatMsgCommon
     Friend of        :      -
