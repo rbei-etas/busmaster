@@ -94,11 +94,12 @@ END_MESSAGE_MAP()
   Member of      : CMDIChildBase
   Author(s)      : Raja N
   Date Created   : 18.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CMDIChildBase::OnShowWindow(BOOL bShow, UINT nStatus) 
+void CMDIChildBase::OnShowWindow(BOOL bShow, UINT nStatus)
 {
     CMDIChildWnd::OnShowWindow(bShow, nStatus);
+
     // If it is show window set appropriate window postion
     if (bShow == TRUE )
     {
@@ -122,29 +123,31 @@ void CMDIChildBase::OnShowWindow(BOOL bShow, UINT nStatus)
   Member of      : CMDIChildBase
   Author(s)      : Raja N
   Date Created   : 18.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CMDIChildBase::vGetWinStatus()
 {
 #if 0
     // Create pointer to member so that configuraiton module will fill data
-    WINDOWPLACEMENT * pDetails = &m_sWindowPlacement;
+    WINDOWPLACEMENT* pDetails = &m_sWindowPlacement;
     // Get data from the configuration module
     theApp.bGetData(m_eWindowIdentity, (void**)&pDetails);
     // Add this flag as this is required to restore minimised window postion
     // also. Refer WINDOWPLACEMENT Structure help from MSDN
     m_sWindowPlacement.flags |= WPF_SETMINPOSITION;
+
     // Check for initial condition
     if( m_sWindowPlacement.rcNormalPosition.bottom == -1 ||
-        m_sWindowPlacement.rcNormalPosition.top == -1 ||
-        m_sWindowPlacement.rcNormalPosition.left == -1 ||
-        m_sWindowPlacement.rcNormalPosition.right == -1 )
+            m_sWindowPlacement.rcNormalPosition.top == -1 ||
+            m_sWindowPlacement.rcNormalPosition.left == -1 ||
+            m_sWindowPlacement.rcNormalPosition.right == -1 )
     {
         // Get Propotionate Initial value from Config Module
         theApp.bGetDefaultValue( m_eWindowIdentity, m_sWindowPlacement );
         // Update Config Module to update Window position value
         theApp.bSetData( m_eWindowIdentity, (void*)&m_sWindowPlacement);
     }
+
 #endif
 }
 
@@ -158,7 +161,7 @@ void CMDIChildBase::vGetWinStatus()
   Member of      : CMDIChildBase
   Author(s)      : Raja N
   Date Created   : 18.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CMDIChildBase::vSaveWinStatus()
 {
@@ -168,6 +171,7 @@ void CMDIChildBase::vSaveWinStatus()
     GetWindowPlacement(&sCurrentPlacement);
     // Set the flag
     sCurrentPlacement.flags |= WPF_SETMINPOSITION;
+
     // Check for difference
     if( memcmp( &sCurrentPlacement,
                 &m_sWindowPlacement,
@@ -186,15 +190,16 @@ void CMDIChildBase::vSaveWinStatus()
   Function Name  : OnCreate
   Input(s)       : -
   Output         : -
-  Functionality  : 
+  Functionality  :
   Member of      : CMDIChildBase
   Author(s)      : Raja N
   Date Created   : 18.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-int CMDIChildBase::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+int CMDIChildBase::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
     int nCreate = -1;
+
     // Call base member for window creation
     if (CMDIChildWnd::OnCreate(lpCreateStruct) != -1)
     {
@@ -203,6 +208,7 @@ int CMDIChildBase::OnCreate(LPCREATESTRUCT lpCreateStruct)
         // Set the resule to success
         nCreate = 0;
     }
+
     // Return the result
     return nCreate;
 }
@@ -217,7 +223,7 @@ int CMDIChildBase::OnCreate(LPCREATESTRUCT lpCreateStruct)
   Member of      : CMDIChildBase
   Author(s)      : Raja N
   Date Created   : 18.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CMDIChildBase::vUpdateWndCo_Ords()
 {
@@ -234,7 +240,7 @@ void CMDIChildBase::vUpdateWndCo_Ords()
   Member of      : CMDIChildBase
   Author(s)      : Raja N
   Date Created   : 18.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CMDIChildBase::vUpdateWinStatus()
 {

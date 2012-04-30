@@ -34,7 +34,7 @@
 //struct sTXCANMSGDETAILS;
 class CTxMsgListView : public CFormView
 {
-// Form Data
+    // Form Data
 public:
     //{{AFX_DATA(CTxMsgListView)
     enum { IDD = IDD_DLG_TX_MSG_BLOCK_DETAILS };
@@ -44,7 +44,7 @@ public:
     CButton m_omButtonSendMsg;
     //}}AFX_DATA
 
-// Attributes
+    // Attributes
 public:
     // To denote programmed modification of list item to avoid
     // item change handler execution
@@ -52,7 +52,7 @@ public:
     // Selected Message Index
     int m_nSelectedMsgIndex;
 
-// Operations
+    // Operations
 public:
     // To clear message block
     BOOL bDeleteAllMsgFromBlock(SMSGBLOCKLIST* psMsgCurrentBlock);
@@ -62,16 +62,16 @@ public:
     // To update list with given details
     VOID vUpdateMsgListDisplay(sTXCANMSGDETAILS sMsgDetail, INT nCurrentIndex);
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CTxMsgListView)
-    public:
+public:
     virtual void OnInitialUpdate();
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     virtual ~CTxMsgListView();
 #ifdef _DEBUG
@@ -101,13 +101,13 @@ private:
     // To set or reset Check box of selected message
     void vSetMessageCheckValue(BOOL bCheck);
     // To Get Parent Window Pointer
-    CWnd * pomGetParentWindow() const;
+    CWnd* pomGetParentWindow() const;
     // To get Block View Pointer
-    CWnd * pomGetBlocksViewPointer() const;
+    CWnd* pomGetBlocksViewPointer() const;
     // To get Functions view pointer
-    CWnd * pomGetFunctionsViewPointer() const;
+    CWnd* pomGetFunctionsViewPointer() const;
     // To get Details view pointer
-    CWnd * pomGetDetailsViewPointer() const;
+    CWnd* pomGetDetailsViewPointer() const;
     // To delete selected message from the block
     BOOL bDeleteMsgFromBlock(SMSGBLOCKLIST* psMsgCurrentBlock);
     // For Message List control

@@ -31,12 +31,12 @@
 #include "TxWindow_resource.h"
 #include "Utility/RadixEdit.h"          // For the RAdix Edit control definition
 #include "FlexListCtrl.h"
-#include "CMsgSignalTemp.h" 
+#include "CMsgSignalTemp.h"
 #include "Utility/SignalMatrix.h"
 #include "Utility/MsgInterpretation.h"  // For message interpretation
 class CTxMsgDetailsView : public CFormView
 {
-// Form Data
+    // Form Data
 public:
     //{{AFX_DATA(CTxMsgDetailsView)
     enum { IDD = IDD_DLG_TX_MSG_DETAILS };
@@ -60,10 +60,10 @@ public:
     int     m_nChannelID;
     //}}AFX_DATA
 
-// Operations
+    // Operations
 public:
-    CMsgSignal *m_pouDBPtr;
-	void vSetMsgDBPtr(void* pMsgDB);
+    CMsgSignal* m_pouDBPtr;
+    void vSetMsgDBPtr(void* pMsgDB);
     // To set given CAN values in to GUI
     void vSetValues(STXCANMSGDETAILS* psTxMsg);
     // To Disable signal values list control
@@ -73,12 +73,12 @@ public:
     // To Update Signal list control with signals of the give CAN message
     BOOL bUpdateSignalList(STCAN_MSG sMsg);
     // To Set Status bar text
-    BOOL bSetStatusText(const char *pStrText);
+    BOOL bSetStatusText(const char* pStrText);
     // To populate Message Name combobox with database messages
     void vPopulateMessageComboBox();
     // To set properties of controls used
-    void vSetControlProperties();	
-	void vUpdateChannelIDInfo();
+    void vSetControlProperties();
+    void vUpdateChannelIDInfo();
 
 
 protected:
@@ -86,17 +86,17 @@ protected:
     CTxMsgDetailsView();
     DECLARE_DYNCREATE(CTxMsgDetailsView)
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CTxMsgDetailsView)
-    public:
+public:
     virtual void OnInitialUpdate();
     virtual BOOL PreTranslateMessage(MSG* pMsg);
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     virtual ~CTxMsgDetailsView();
 #ifdef _DEBUG
@@ -122,11 +122,11 @@ private:
     // Image List for Signal List
     CImageList m_omSigImageList;
     // Pointer to store currently selected message detail
-    sMESSAGE * m_psSelectedMsgDetails;
+    sMESSAGE* m_psSelectedMsgDetails;
     // Temp data Array
     UNION_BYTE m_unData[ defMAX_BYTE ];
     // Bit Array
-    UINT m_bData [ defMAX_BYTE * defBITS_IN_BYTE ];
+    UINT m_bData [ defMAX_BYTE* defBITS_IN_BYTE ];
     // Local variable to denote text update by prog not by user
     BOOL m_bUpdating;
     // Dirty Flag
@@ -137,11 +137,11 @@ private:
     // To initialise signal list control
     void vInitSignalListCtrl();
     // To set up signal name double click handler procedure
-    static void vSignalNameHandler( CListCtrl *pList,
+    static void vSignalNameHandler( CListCtrl* pList,
                                     int nItem, int nSubItem,
-                                    void * uParam );
+                                    void* uParam );
     //To get signal details of selected signal in the signal list
-    sSIGNALS * psGetSelectedSignalStruct(int nIndex);
+    sSIGNALS* psGetSelectedSignalStruct(int nIndex);
     // To update message details from the user entered values
     BOOL bUpdateMessageDetail(STCAN_MSG* psMsgDetails);
     // To get Message ID from Message ID/ Name combobox
@@ -149,17 +149,17 @@ private:
     // TO update selected message details with user entered values
     BOOL vUpdateSelectedMessageDetails();
     // To show signal values got from interpretation module
-    void vShowSignalValues(const CSignalInfoArray &romSigInfo);
+    void vShowSignalValues(const CSignalInfoArray& romSigInfo);
     // To validate user entered message ID
     int nGetValidMessageID();
     // Get get parent window pointer
-    CWnd * pomGetParentWindow() const;
+    CWnd* pomGetParentWindow() const;
     // To get Tx Blocks View Pointer
-    CWnd * pomGetBlocksViewPointer() const;
+    CWnd* pomGetBlocksViewPointer() const;
     // To get List View Pointer
-    CWnd * pomGetListViewPointer() const;
+    CWnd* pomGetListViewPointer() const;
     // To get Functions View Poniter
-    CWnd * pomGetFunctionsViewPointer() const;
+    CWnd* pomGetFunctionsViewPointer() const;
     // To validate user entered CAN message data
     BOOL bValidateData();
     // To check data bytes boundary condition
@@ -176,8 +176,8 @@ private:
     void vUpdateFromRawValue(int nItem, int nSubItem);
     // To update CAN message data bytes
     void vUpdateDataBytes();
-    // To pack signal value in to the CAN message data bytes 
-    void vUpdateSignalData(sSIGNALS * psSignal,
+    // To pack signal value in to the CAN message data bytes
+    void vUpdateSignalData(sSIGNALS* psSignal,
                            __int64 nI64SignVal );
     // To set default values for Message ID, DLC, databytes and Channel ID
     void vSetDefaultValues();

@@ -42,14 +42,14 @@ public:
     BOOL    bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList);
     // releases the multiple message structure pointer that is passed..
     void    vReleaseMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList);
-     // gets the multiple message info ..
+    // gets the multiple message info ..
     BOOL    bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList);
     PSMSGBLOCKLIST psReturnMsgBlockPointer();
     BOOL bGetDefaultTXSplitterPostion(CRect omWndSize, LPVOID* psSplitterData);
     BYTE* pbySetConfigData(BYTE* pbyConfigData, INT nConfigSize);
     BYTE* pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize);
 private:
-    
+
     UINT               m_unNumberOfMsgBlockCount;
     BOOL               m_bIsConfigurationModified;
     // Tx Msg Splitter Position
