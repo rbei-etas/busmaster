@@ -214,6 +214,7 @@ void CTxMsgDetailsView::OnInitialUpdate()
     }
 
     UpdateData(TRUE);
+    vUpdateStateDataBytes();
     // Disable Add Button
     m_omButtonUpdateMsg.EnableWindow( FALSE );
 }
@@ -577,6 +578,7 @@ void CTxMsgDetailsView::OnEditchangeCombMsgIdName()
         vEnableAddButton( TRUE );
         // Update the list control
         vUpdateSelectedMessageDetails();
+        vUpdateStateDataBytes();
     }
     else
     {
@@ -654,6 +656,7 @@ BOOL CTxMsgDetailsView::bUpdateMessageDetail(STCAN_MSG* psMsgDetails)
 {
     BOOL bReturn = TRUE;
     UpdateData(TRUE);
+    vUpdateStateDataBytes();
     psMsgDetails->m_unMsgID    = nGetMessageID();
     psMsgDetails->m_ucDataLen  = static_cast<UCHAR>(m_odDLC.lGetValue());
     psMsgDetails->m_ucData[0]  = static_cast<UCHAR>(m_odDB1.lGetValue());
@@ -789,6 +792,7 @@ BOOL CTxMsgDetailsView::bUpdateSignalList(STCAN_MSG sMsg)
         // Database should not be an empty one
         ASSERT( FALSE );
     }
+    vUpdateStateDataBytes();
 
     return bSuccess;
 }
@@ -840,6 +844,7 @@ INT CTxMsgDetailsView::nGetMessageID()
             nMsgID = static_cast<INT> (unMsgID);
         }
     }
+    vUpdateStateDataBytes();
 
     return nMsgID;
 }
@@ -1654,6 +1659,7 @@ void CTxMsgDetailsView::vPopulateMessageComboBox()
         }
     }
     vAdjustWidthMessageComboBox();
+    vUpdateStateDataBytes();
 }
 
 /**
@@ -1815,6 +1821,7 @@ void CTxMsgDetailsView::OnSelchangeCombMsgIdName()
             m_omLctrSigList.EnableWindow( FALSE );
         }
     }
+    vUpdateStateDataBytes();
 }
 
 /**
@@ -1891,6 +1898,7 @@ void CTxMsgDetailsView::OnUpdateEditDLC()
             }
         }
     }
+    vUpdateStateDataBytes();
 }
 
 /**
@@ -2171,6 +2179,7 @@ void CTxMsgDetailsView::OnButtonAddMsg()
             pView->m_omButtonApply.EnableWindow( TRUE );
         }
     }
+    vUpdateStateDataBytes();
 }
 
 /**
@@ -2253,6 +2262,7 @@ BOOL CTxMsgDetailsView::bAddMsgInBlock()
             }
         }
     }
+    vUpdateStateDataBytes();
 
     return bReturn;
 }
@@ -2308,6 +2318,7 @@ void CTxMsgDetailsView::OnItemchangedLstcSigDetails( NMHDR* pNMHDR,
             }
         }
     }
+    vUpdateStateDataBytes();
 
     *pResult = 0;
 }
@@ -2763,6 +2774,7 @@ void CTxMsgDetailsView::vUpdateSignalData(sSIGNALS* psSignal,
             m_unData[unIndex].sByte.Bit7 = m_bData[++nArrIndex];
         }
     }
+    vUpdateStateDataBytes();
 }
 
 /**
@@ -2808,6 +2820,27 @@ void CTxMsgDetailsView::vUpdateDataBytes()
             pEdit->SetWindowText(omStr);
         }
     }
+    vUpdateStateDataBytes();
+}
+
+/**
+ * \brief Update state of data bytes according to DLC
+ *
+ * This function sets/resets the Read Only flag of the data bytes
+ * in accordance to the DLC setting.
+ */
+void CTxMsgDetailsView::vUpdateStateDataBytes()
+{
+    unsigned int dlc = (unsigned int) m_odDLC.lGetValue();
+
+    m_odDB1.SetReadOnly(dlc < 1);
+    m_odDB2.SetReadOnly(dlc < 2);
+    m_odDB3.SetReadOnly(dlc < 3);
+    m_odDB4.SetReadOnly(dlc < 4);
+    m_odDB5.SetReadOnly(dlc < 5);
+    m_odDB6.SetReadOnly(dlc < 6);
+    m_odDB7.SetReadOnly(dlc < 7);
+    m_odDB8.SetReadOnly(dlc < 8);
 }
 
 /**
@@ -2937,6 +2970,7 @@ void CTxMsgDetailsView::vSetValues(STXCANMSGDETAILS* psTxMsg)
     }
 
     UpdateData(TRUE);
+    vUpdateStateDataBytes();
 }
 
 /**
@@ -3056,6 +3090,7 @@ void CTxMsgDetailsView::vSetDefaultValues()
     m_odDLC.vSetValue(8);
     // Set the selection to Channel 1
     m_omComboChannelID.SetCurSel(0);
+    vUpdateStateDataBytes();
 }
 
 /**
