@@ -206,7 +206,7 @@ static INTERFACE_HW sg_HardwareIntr[defNO_OF_CHANNELS];
  */
 static CNetwork sg_odHardwareNetwork;
 
-static NeoDevice sg_ndNeoToOpen [MAX_HW];
+static NeoDevice sg_ndNeoToOpen[defNO_OF_CHANNELS];
 
 // Create time struct. Use 0 to transmit the message with out any delay
 typedef struct
@@ -1466,7 +1466,7 @@ static int nCreateSingleHardwareNetwork()
  * This function will popup hardware selection dialog and gets the user selection of channels.
  *
  */
-int ListHardwareInterfaces(HWND hParent, DWORD dwDriver, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount)
+int ListHardwareInterfaces(HWND /*hParent*/, DWORD /*dwDriver*/, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     CHardwareListing HwList(psInterfaces, nCount, pnSelList, NULL, vBlinkHw);
