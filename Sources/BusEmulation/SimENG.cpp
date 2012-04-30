@@ -57,7 +57,7 @@ static LARGE_INTEGER sg_lnCurrCounter;
 static LARGE_INTEGER sg_lnTimeStamp;
 static SYSTEMTIME sg_CurrSysTime;
 
-const int MAX_STRING    = 256;
+//const int MAX_STRING    = 256;
 //#define INITIALISE_DATA(Data)   memset(Data, 0, sizeof(Data))
 
 // Buffer for the driver operation related error messages

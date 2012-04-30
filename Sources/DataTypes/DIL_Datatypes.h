@@ -27,6 +27,9 @@
 /* C++ includes */
 #include <string>
 
+/* Project includes */
+#include "../Include/BaseDefs.h"
+
 using namespace std;
 
 #define NO_SELECTION_HI 0xCDCD
@@ -119,8 +122,7 @@ typedef struct tagHwInterface
    TCHAR    m_acDeviceName[MAX_CHAR_SHORT];
 } INTERFACE_HW;
 
-const int MAX_HW = 32;
-typedef INTERFACE_HW INTERFACE_HW_LIST[MAX_HW];
+typedef INTERFACE_HW INTERFACE_HW_LIST[defNO_OF_CHANNELS];
 
 class VERSIONINFO
 {
