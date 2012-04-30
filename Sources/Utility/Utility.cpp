@@ -278,12 +278,12 @@ bool bGetSystemErrorString(HRESULT hResult, TCHAR acErrStr[256])
                     (LPTSTR) &lpMsgBuf, 0, NULL );
     if (dwResult <= 0)
     {
-        strcpy_s(acErrStr, sizeof(acErrStr), _T("system error message retrieval operation failed"));
+        strcpy_s(acErrStr, 256, _T("system error message retrieval operation failed"));
         bResult = false;
     }
     else
     {
-        strcpy_s(acErrStr, sizeof(acErrStr), (LPTSTR) lpMsgBuf);
+        strcpy_s(acErrStr, 256, (LPTSTR) lpMsgBuf);
         LocalFree(lpMsgBuf); // Free the buffer.
     }
 
