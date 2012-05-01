@@ -29,13 +29,13 @@
 
 class CDILApp : public CWinApp
 {
-// Overrides
+    // Overrides
 public:
-	CDILApp();
+    CDILApp();
     ~CDILApp();
 
     // To be used by the read thread
-	virtual BOOL InitInstance();
+    virtual BOOL InitInstance();
 
     DECLARE_MESSAGE_MAP();
     virtual int ExitInstance();
