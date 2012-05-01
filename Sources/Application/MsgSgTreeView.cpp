@@ -48,7 +48,7 @@ IMPLEMENT_DYNCREATE(CMsgSgTreeView, CTreeView)
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 CMsgSgTreeView::CMsgSgTreeView()
 {
@@ -70,7 +70,7 @@ CMsgSgTreeView::CMsgSgTreeView()
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
 CMsgSgTreeView::~CMsgSgTreeView()
@@ -124,7 +124,7 @@ void CMsgSgTreeView::Dump(CDumpContext& dc) const
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  This function will populate the tree with database 
+/*  Functionality    :  This function will populate the tree with database
                         messages.
 /*  Member of        :  CMsgSgTreeView                                        */
 /*  Friend of        :      -                                                 */
@@ -142,56 +142,42 @@ void CMsgSgTreeView::Dump(CDumpContext& dc) const
 BOOL CMsgSgTreeView::bPopulateTree()
 {
     // Insert the database filename as the root item
-//    CMainFrame* pMainFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;
-
+    //    CMainFrame* pMainFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;
     BOOL bReturnValue = TRUE;
-
     CMsgSignal* pTempMsgSg = NULL;
-
     pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
-
     // Get reference to the tree control
     CTreeCtrl& om_tree = GetTreeCtrl();
-
-    // 
+    //
     om_tree.DeleteAllItems();
-
     om_tree.SetTextColor( BLUE_COLOR );
-
     CString omStrDatabaseFilename = m_omCurrDbName;
 
     if ( omStrDatabaseFilename.IsEmpty() )
     {
         bReturnValue = FALSE;
-
         AfxMessageBox(MSG_DB_NOT_FOUND, MB_OK);
     }
     else
     {
-//        om_tree.DeleteAllItems();
-
+        //        om_tree.DeleteAllItems();
         // Insert database filename
         HTREEITEM hRootItem = om_tree.InsertItem( omStrDatabaseFilename );
-
         om_tree.SetItemImage(hRootItem, 0, 0);
-
         CStringList omMessageNames;
-
         // Clean the list
         omMessageNames.RemoveAll();
-
         // Get all the database message names
         pTempMsgSg->omStrListGetMessageNamesInactive(omMessageNames);
-
         POSITION pos = omMessageNames.GetHeadPosition();
-
         BOOL bSelFirstChild = FALSE;
+
         // Insert all message names
         while ( pos != NULL )
         {
             CString omStrMsgName = omMessageNames.GetNext(pos);
-
             HTREEITEM hMsg = om_tree.InsertItem( omStrMsgName, hRootItem  );
+
             if(bSelFirstChild != TRUE )
             {
                 om_tree.SelectItem( hMsg );
@@ -201,11 +187,11 @@ BOOL CMsgSgTreeView::bPopulateTree()
             om_tree.SetItemImage(hMsg, 1, 1);
         }
 
-        // Expand the root 
+        // Expand the root
         om_tree.Expand( hRootItem, TVE_EXPAND );
+
         if(bSelFirstChild != TRUE )
         {
-    
             // Select the root item
             om_tree.SelectItem( hRootItem );
         }
@@ -224,10 +210,10 @@ BOOL CMsgSgTreeView::bPopulateTree()
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
-BOOL CMsgSgTreeView::PreCreateWindow(CREATESTRUCT& cs) 
+BOOL CMsgSgTreeView::PreCreateWindow(CREATESTRUCT& cs)
 {
     cs.style |= WS_VISIBLE          |
                 WS_TABSTOP          |
@@ -240,7 +226,6 @@ BOOL CMsgSgTreeView::PreCreateWindow(CREATESTRUCT& cs)
                 TVS_SHOWSELALWAYS   |
                 TVS_FULLROWSELECT   |
                 TVS_INFOTIP ;
-    
     return CTreeView::PreCreateWindow(cs);
 }
 /******************************************************************************/
@@ -248,37 +233,41 @@ BOOL CMsgSgTreeView::PreCreateWindow(CREATESTRUCT& cs)
 /*                                                                            */
 /*  Input(s)         :  LPCREATESTRUCT lpCreateStruct                         */
 /*  Output           :                                                        */
-/*  Functionality    :  Creates image list and attaches the same to the 
+/*  Functionality    :  Creates image list and attaches the same to the
                         tree view.
 /*  Member of        :  CMsgSgTreeView                                        */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
-int CMsgSgTreeView::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+int CMsgSgTreeView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
     if (CTreeView::OnCreate(lpCreateStruct) == -1)
+    {
         return -1;
-    
+    }
+
     m_omImageList.Create( IDR_BMP_MSGSGDB,
                           16,
                           1,
                           WHITE_COLOR);
-    
-    if ( m_omImageList != 0 )
-        GetTreeCtrl().SetImageList (&m_omImageList, TVSIL_NORMAL);
-    
-/*  m_pomToolTip = new CToolTipCtrl;
 
-    if ( m_pomToolTip != NULL && m_pomToolTip->Create( this ))
+    if ( m_omImageList != 0 )
     {
-        // Associate tooltip to the tree ctrl
-        GetTreeCtrl().SetToolTips( m_pomToolTip);
+        GetTreeCtrl().SetImageList (&m_omImageList, TVSIL_NORMAL);
     }
-*/      
+
+    /*  m_pomToolTip = new CToolTipCtrl;
+
+        if ( m_pomToolTip != NULL && m_pomToolTip->Create( this ))
+        {
+            // Associate tooltip to the tree ctrl
+            GetTreeCtrl().SetToolTips( m_pomToolTip);
+        }
+    */
     return 0;
 }
 /******************************************************************************/
@@ -286,7 +275,7 @@ int CMsgSgTreeView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Called by the frame work to update the view. 
+/*  Functionality    :  Called by the frame work to update the view.
                         This again calls vPopulateTree function
                         and sets tree view ptr defined in the mainframe
 /*  Member of        :  CMsgSgTreeView                                        */
@@ -294,43 +283,39 @@ int CMsgSgTreeView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
-void CMsgSgTreeView::OnInitialUpdate() 
+void CMsgSgTreeView::OnInitialUpdate()
 {
     CTreeView::OnInitialUpdate();
-
     // Update this pointer to the mainframe for future reference
     CMainFrame* pMainFrame = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
     pMainFrame->podSetMsgSgTreeView( this, m_sDbParams.m_eBus );
-
     // Populate tree with message names
-    bPopulateTree();    
+    bPopulateTree();
 }
 /******************************************************************************/
 /*  Function Name    :  OnItemexpanding                                       */
 /*                                                                            */
 /*  Input(s)         :  NMHDR* pNMHDR, LRESULT* pResult                       */
 /*  Output           :                                                        */
-/*  Functionality    :  Called by the frame work when an item is expandede. 
-                        Displays images appropriately for the 
+/*  Functionality    :  Called by the frame work when an item is expandede.
+                        Displays images appropriately for the
                         nodes and subnodes.
 /*  Member of        :  CMsgSgTreeView                                        */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
-void CMsgSgTreeView::OnItemexpanding(NMHDR* pNMHDR, LRESULT* pResult) 
+void CMsgSgTreeView::OnItemexpanding(NMHDR* pNMHDR, LRESULT* pResult)
 {
     NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
-
     // Get reference to tree control
     CTreeCtrl& om_tree = GetTreeCtrl();
-
     // Get selected item
     HTREEITEM hSelectedItem = pNMTreeView->itemNew.hItem;
 
@@ -345,12 +330,11 @@ void CMsgSgTreeView::OnItemexpanding(NMHDR* pNMHDR, LRESULT* pResult)
         else
         {
             HTREEITEM hChildItem = GetTreeCtrl().GetChildItem( hSelectedItem );
-
             // Items are messages
             om_tree.SetItemImage( hChildItem, 1, 1 );
         }
     }
-    
+
     *pResult = 0;
 }
 
@@ -367,13 +351,12 @@ void CMsgSgTreeView::OnItemexpanding(NMHDR* pNMHDR, LRESULT* pResult)
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
-void CMsgSgTreeView::OnLButtonDown(UINT nFlags, CPoint point) 
+void CMsgSgTreeView::OnLButtonDown(UINT nFlags, CPoint point)
 {
     m_omLeftCLickPoint = point;
-
     CTreeView::OnLButtonDown(nFlags, point);
 }
 /******************************************************************************/
@@ -382,20 +365,19 @@ void CMsgSgTreeView::OnLButtonDown(UINT nFlags, CPoint point)
 /*  Input(s)         :  CString omStrMsgName                              */
 /*  Output           :                                                        */
 /*  Functionality    :  Sets the name of the edited item on the tree view
-                        If new item is created, then it will be inserted 
+                        If new item is created, then it will be inserted
                         under root.
 /*  Member of        :  CMsgSgTreeView                                        */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
 void CMsgSgTreeView::vSetMessageName(CString omStrMsgName)
 {
     CTreeCtrl& om_tree = GetTreeCtrl();
-
     HTREEITEM hItem = om_tree.GetSelectedItem();
 
     if ( hItem != NULL )
@@ -404,10 +386,8 @@ void CMsgSgTreeView::vSetMessageName(CString omStrMsgName)
         if ( hItem == om_tree.GetRootItem() )
         {
             HTREEITEM hNewItem = om_tree.InsertItem( omStrMsgName, hItem );
-
-            // select new message 
+            // select new message
             om_tree.SelectItem(hNewItem);
-
             // set its image
             om_tree.SetItemImage( hNewItem, 1, 1);
         }
@@ -423,7 +403,7 @@ void CMsgSgTreeView::vSetMessageName(CString omStrMsgName)
 /*  Input(s)         :  NMHDR* pNMHDR, LRESULT* pResult                       */
 /*  Output           :                                                        */
 /*  Functionality    :  Displays pop up menu depending on the selected item
-                        
+
 /*  Member of        :  CMsgSgTreeView                                        */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
@@ -437,7 +417,7 @@ void CMsgSgTreeView::vSetMessageName(CString omStrMsgName)
 /*                      outside the tree items                                */
 /******************************************************************************/
 
-void CMsgSgTreeView::OnRightClickTreeItem(NMHDR* /*pNMHDR*/, LRESULT* pResult) 
+void CMsgSgTreeView::OnRightClickTreeItem(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
     UINT uFlags = 0;
     CTreeCtrl& om_Tree = GetTreeCtrl();
@@ -445,11 +425,11 @@ void CMsgSgTreeView::OnRightClickTreeItem(NMHDR* /*pNMHDR*/, LRESULT* pResult)
     HTREEITEM hSelectedItem = om_Tree.HitTest( m_omRightClickPoint, &uFlags );
     CMsgSgDetView* pMsgSgDetView = NULL;
     sMESSAGE* pMsg = NULL;
-
     CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
+
     if ( pMainFrm != NULL )
     {
-        pMsgSgDetView =  
+        pMsgSgDetView =
             pMainFrm->podGetMsgSgDetView(m_sDbParams.m_eBus);
     }
 
@@ -460,24 +440,21 @@ void CMsgSgTreeView::OnRightClickTreeItem(NMHDR* /*pNMHDR*/, LRESULT* pResult)
     else
     {
         om_Tree.SelectItem( hSelectedItem );
-
-        // Display the selected message details in the 
+        // Display the selected message details in the
         // right view
         CMsgSignal* pTempMsgSg = NULL;
-
         pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
 
         if ( !om_Tree.ItemHasChildren(hSelectedItem))// only for message names
         {
             CString omStrMsgName = om_Tree.GetItemText( hSelectedItem );
-
             m_omSelectedItemText = omStrMsgName;
 
             // Get message pointer from the data structure
             // corresponding to the message selected name
             if ( pMsgSgDetView != NULL )
             {
-                pMsg = 
+                pMsg =
                     pTempMsgSg->psGetMessagePointerInactive( omStrMsgName );
             }
 
@@ -504,12 +481,9 @@ void CMsgSgTreeView::OnRightClickTreeItem(NMHDR* /*pNMHDR*/, LRESULT* pResult)
         // Get the parent of selected item to identify
         // whether it is a Message name or the root
         HTREEITEM hParentItem = om_Tree.GetParentItem( hSelectedItem );
-
         // Load the Menu from the resource
         m_pomContextMenu->DestroyMenu();
-
         m_pomContextMenu->LoadMenu(IDM_MSG_OPN_MENU);
-
         CMenu* pomSubMenu = m_pomContextMenu->GetSubMenu(0);
 
         if ( hParentItem == NULL && m_pomContextMenu != NULL ) // Selected item corresponds to root
@@ -525,16 +499,18 @@ void CMsgSgTreeView::OnRightClickTreeItem(NMHDR* /*pNMHDR*/, LRESULT* pResult)
             pomSubMenu->EnableMenuItem(IDM_EDIT_MSG, MF_BYCOMMAND | MF_ENABLED);
         }
 
-        ClientToScreen(&m_omRightClickPoint);            
-
+        ClientToScreen(&m_omRightClickPoint);
         pomSubMenu->TrackPopupMenu( TPM_LEFTALIGN |TPM_RIGHTBUTTON,
-                                  m_omRightClickPoint.x,
-                                  m_omRightClickPoint.y,
-                                  this,
-                                  NULL);
+                                    m_omRightClickPoint.x,
+                                    m_omRightClickPoint.y,
+                                    this,
+                                    NULL);
     }
-	if (m_pomContextMenu != NULL )
-            delete m_pomContextMenu;
+
+    if (m_pomContextMenu != NULL )
+    {
+        delete m_pomContextMenu;
+    }
 
     *pResult = 0;
 }
@@ -550,13 +526,12 @@ void CMsgSgTreeView::OnRightClickTreeItem(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
-void CMsgSgTreeView::OnRButtonDown(UINT nFlags, CPoint point) 
+void CMsgSgTreeView::OnRButtonDown(UINT nFlags, CPoint point)
 {
     m_omRightClickPoint = point;
-
     CTreeView::OnRButtonDown(nFlags, point);
 }
 /******************************************************************************/
@@ -576,10 +551,9 @@ void CMsgSgTreeView::OnRButtonDown(UINT nFlags, CPoint point)
 /*                      editor operation                                      */
 /******************************************************************************/
 
-void CMsgSgTreeView::OnDeleteMessage() 
+void CMsgSgTreeView::OnDeleteMessage()
 {
     CTreeCtrl& om_tree = GetTreeCtrl();
-
     HTREEITEM hItem = om_tree.GetSelectedItem();
 
     if ( hItem != NULL )
@@ -590,15 +564,12 @@ void CMsgSgTreeView::OnDeleteMessage()
         {
             // Delete the message from the data structure
             CString omStrSelecetedText = om_tree.GetItemText(hItem);
-
             // Get appropriate msg pinter
             CMsgSignal* pTempMsgSg = NULL;
-
             //CMsgSgDetView* pMsgSgDetView = NULL;
-
             pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
 
-            // delete 
+            // delete
             if ( !pTempMsgSg->bDeleteMsg( omStrSelecetedText ))
             {
                 AfxMessageBox("Could not delete seleceted message!", MB_OK|MB_ICONINFORMATION);
@@ -606,15 +577,11 @@ void CMsgSgTreeView::OnDeleteMessage()
             else
             {
                 m_hTreeItem = NULL;
-
                 // Get previous sibbling item
                 HTREEITEM hPrevItem = om_tree.GetPrevSiblingItem( hItem );
-
                 // Remove the item from the tree
                 om_tree.DeleteItem( hItem );
-
                 CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
-
                 // Get form view pointer
                 CMsgSgDetView* pMsgSgDetView = pMainFrm->podGetMsgSgDetView(m_sDbParams.m_eBus);
 
@@ -622,18 +589,15 @@ void CMsgSgTreeView::OnDeleteMessage()
                 {
                     // Select prev item
                     om_tree.SelectItem( hPrevItem );
-
                     CString omStrPrev = om_tree.GetItemText( hPrevItem );
-
                     // Get message pointer
                     sMESSAGE* pMsg = pTempMsgSg->
-						psGetMessagePointerInactive(omStrPrev);
+                                     psGetMessagePointerInactive(omStrPrev);
 
                     if ( pMsg != NULL && pMsgSgDetView != NULL )
                     {
                         pMsgSgDetView->vDisplayMsgSgInformation( pMsg );
                     }
-                    
                 }// no message left
                 else
                 {
@@ -646,10 +610,7 @@ void CMsgSgTreeView::OnDeleteMessage()
                         // Controls are not hidden, hide
                         pMsgSgDetView->vHideControls(SW_HIDE);
                     }
-
                 }
-
-
             }
         }
     }
@@ -665,12 +626,12 @@ void CMsgSgTreeView::OnDeleteMessage()
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
-void CMsgSgTreeView::OnNewMessage() 
+void CMsgSgTreeView::OnNewMessage()
 {
-    vAddEditMessage(FALSE);    
+    vAddEditMessage(FALSE);
 }
 /******************************************************************************/
 /*  Function Name    :  OnNewMessage                                          */
@@ -683,7 +644,7 @@ void CMsgSgTreeView::OnNewMessage()
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
 void CMsgSgTreeView::vSetRootItemText(CString omStrRootitemText)
@@ -691,7 +652,9 @@ void CMsgSgTreeView::vSetRootItemText(CString omStrRootitemText)
     CTreeCtrl& om_tree = GetTreeCtrl();
 
     if ( !omStrRootitemText.IsEmpty())
+    {
         om_tree.SetItemText( om_tree.GetRootItem(), omStrRootitemText );
+    }
 }
 /******************************************************************************/
 /*  Function Name    :  vSetTextBold                                          */
@@ -704,14 +667,13 @@ void CMsgSgTreeView::vSetRootItemText(CString omStrRootitemText)
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
 void CMsgSgTreeView::vSetTextBold()
 {
-    // Show the selected text in BOLD 
+    // Show the selected text in BOLD
     CTreeCtrl& om_tree = GetTreeCtrl();
-    
     HTREEITEM hItem = om_tree.GetSelectedItem();
 
     if ( hItem != NULL )
@@ -724,19 +686,18 @@ void CMsgSgTreeView::vSetTextBold()
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Sets all the item to normal 
+/*  Functionality    :  Sets all the item to normal
 /*  Member of        :  CMsgSgTreeView                                        */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
 void CMsgSgTreeView::vSetAllItemsNormal()
 {
     CTreeCtrl& om_tree = GetTreeCtrl();
-
     // Show all of the visible items in NORMAL FONT.
     HTREEITEM hItem = om_tree.GetFirstVisibleItem();
 
@@ -751,34 +712,34 @@ void CMsgSgTreeView::vSetAllItemsNormal()
 /*                                                                            */
 /*  Input(s)         :  NMHDR* pNMHDR, LRESULT* pResult                       */
 /*  Output           :                                                        */
-/*  Functionality    :  Displays message ID's as tool-tips for every message 
+/*  Functionality    :  Displays message ID's as tool-tips for every message
 /*  Member of        :  CMsgSgTreeView                                        */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  18.03.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /*
 *****************************************************************************/
 void CMsgSgTreeView::OnInfoToolTip( NMHDR* /*pNMHDR*/, LRESULT* pResult )
 {
-/*  CTreeCtrl& omTree = GetTreeCtrl();
+    /*  CTreeCtrl& omTree = GetTreeCtrl();
 
-    CToolTipCtrl* omTips = omTree.GetToolTips();
+        CToolTipCtrl* omTips = omTree.GetToolTips();
 
-    CToolInfo omInfo;
-    CMainFrame* podFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;
-    CWnd* pomWnd = NULL;
-    
-    if (podFrm)
-    {
-        pomWnd = podFrm->podGetMsgSgTreeView()->GetDC()->GetWindow();
-    }
+        CToolInfo omInfo;
+        CMainFrame* podFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+        CWnd* pomWnd = NULL;
 
-    omTips->GetToolInfo( omInfo, pomWnd);
-    omInfo.lpszText ="MY TEST";
-    omTips->SetToolInfo( &omInfo);
-*/
+        if (podFrm)
+        {
+            pomWnd = podFrm->podGetMsgSgTreeView()->GetDC()->GetWindow();
+        }
+
+        omTips->GetToolInfo( omInfo, pomWnd);
+        omInfo.lpszText ="MY TEST";
+        omTips->SetToolInfo( &omInfo);
+    */
     pResult = 0;
 }
 /******************************************************************************/
@@ -792,10 +753,10 @@ void CMsgSgTreeView::OnInfoToolTip( NMHDR* /*pNMHDR*/, LRESULT* pResult )
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  18.03.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /*
 *****************************************************************************/
-void CMsgSgTreeView::OnEditMsg() 
+void CMsgSgTreeView::OnEditMsg()
 {
     vAddEditMessage(TRUE);
 }
@@ -819,48 +780,40 @@ void CMsgSgTreeView::OnEditMsg()
 void CMsgSgTreeView::vAddEditMessage(BOOL bMode)
 {
     CMsgSignal* pTempMsgSg = NULL;
-
     CMsgSgDetView* pMsgSgDetView = NULL;
-
     pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
-
     sMESSAGE* pMsg =    NULL;
 
     // For Edit mode
     if ( bMode == TRUE )
     {
         CTreeCtrl& omTree = GetTreeCtrl();
-        
-        HTREEITEM hItem = 
+        HTREEITEM hItem =
             omTree.GetSelectedItem();
 
         if (hItem != NULL)
         {
             CString omStr = omTree.GetItemText(hItem);
-            pMsg = 
+            pMsg =
                 pTempMsgSg->psGetMessagePointerInactive( omStr );
-
         }
     }
-    // End Edit mode
 
+    // End Edit mode
     CMessageDetailsDlg odMsgDlg(m_sDbParams, pMsg,NULL);
 
     if (odMsgDlg.DoModal() == IDOK )
     {
         vSetMessageName(odMsgDlg.m_omStrMessageName);
-
         vSetTextBold();
-		
         // Get message pointer
-        sMESSAGE* pMsg = 
+        sMESSAGE* pMsg =
             pTempMsgSg->psGetMessagePointerInactive(odMsgDlg.m_omStrMessageName);
-
         CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 
         if ( pMainFrm != NULL )
         {
-            pMsgSgDetView =  
+            pMsgSgDetView =
                 pMainFrm->podGetMsgSgDetView(m_sDbParams.m_eBus);
 
             if ( pMsg != NULL && pMsgSgDetView != NULL )
@@ -875,7 +828,6 @@ void CMsgSgTreeView::vAddEditMessage(BOOL bMode)
                 pMsgSgDetView->vDisplayMsgSgInformation( pMsg );
             }
         }
-
     }
 }
 
@@ -884,9 +836,9 @@ void CMsgSgTreeView::vAddEditMessage(BOOL bMode)
 /*                                                                            */
 /*  Input(s)         :  NMHDR* pNMHDR, LRESULT* pResult                       */
 /*  Output           :                                                        */
-/*  Functionality    :  Called by the frame work when an item selection is    */              
+/*  Functionality    :  Called by the frame work when an item selection is    */
 /*                      changed. Updates message information on the right pane
-                        depending on the selected item  
+                        depending on the selected item
 
 /*  Member of        :  CMsgSgTreeView                                        */
 /*  Friend of        :      -                                                 */
@@ -904,13 +856,12 @@ void CMsgSgTreeView::vAddEditMessage(BOOL bMode)
 /*  Modification     :  Raja N on 01.08.2004                                  */
 /*                      Removed the commented code as per code review feedback*/
 /******************************************************************************/
-void CMsgSgTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult) 
+void CMsgSgTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
 {
     NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
     // TODO: Add your control notification handler code here
-    
     *pResult = 0;
-    // check if any data in the form view 
+    // check if any data in the form view
     // is missing. If yes,
     // don't let the user to select any item
     // from the tree view
@@ -918,13 +869,12 @@ void CMsgSgTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
     CTreeCtrl& om_tree = GetTreeCtrl();
     sMESSAGE* pMsg = NULL;
     CMsgSignal* pTempMsgSg = NULL;
-
     pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
-
     CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
+
     if ( pMainFrm != NULL )
     {
-        pMsgSgDetView =  
+        pMsgSgDetView =
             pMainFrm->podGetMsgSgDetView(m_sDbParams.m_eBus);
 
         if ( pMsgSgDetView != NULL)
@@ -933,47 +883,43 @@ void CMsgSgTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
             {
                 if (pMsgSgDetView->
                         GetDlgItem(IDC_EDIT_MSG_NAME)->
-                            GetWindowTextLength() == 0 )
+                        GetWindowTextLength() == 0 )
                 {
                     pMsgSgDetView->m_omStrMessageName
-                         = m_omSelectedItemText;
-
+                        = m_omSelectedItemText;
                     om_tree.SetItemText( m_hTreeItem,m_omSelectedItemText );
-
                     pMsgSgDetView->UpdateData(TRUE);
                 }
+
                 if ( pMsgSgDetView->
                         GetDlgItem(IDC_EDIT_MSGCODE)->
-                            GetWindowTextLength() == 0 )
+                        GetWindowTextLength() == 0 )
                 {
-                    pMsg = pTempMsgSg->psGetMessagePointerInactive( 
-						             pMsgSgDetView->m_omStrMessageName );
+                    pMsg = pTempMsgSg->psGetMessagePointerInactive(
+                               pMsgSgDetView->m_omStrMessageName );
 
                     if (pMsg != NULL)
                         pMsgSgDetView->m_omStrMessageCode.
-                            Format( "%x", pMsg->m_unMessageCode);
+                        Format( "%x", pMsg->m_unMessageCode);
 
                     pMsgSgDetView->UpdateData(TRUE);
-
                 }
             }
         }
     }
- 
+
     // Get handle to selected item
     HTREEITEM hSelectedItem = pNMTreeView->itemNew.hItem;
-    
+
     if ( (hSelectedItem != NULL) && (pMsgSgDetView != NULL) )
     {
         if ( !om_tree.ItemHasChildren(hSelectedItem))// only for message names
         {
             CString omStrMsgName = om_tree.GetItemText( hSelectedItem );
-
             m_omSelectedItemText = omStrMsgName;
-
             // Get message pointer from the data structure
             // corresponding to the message selected name
-            sMESSAGE* pMsg = 
+            sMESSAGE* pMsg =
                 pTempMsgSg->psGetMessagePointerInactive( omStrMsgName );
 
             if ( pMsg != NULL )
@@ -995,5 +941,5 @@ void CMsgSgTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
             // Hide all controls
             pMsgSgDetView->vHideControls(SW_HIDE);
         }
-    }   
+    }
 }

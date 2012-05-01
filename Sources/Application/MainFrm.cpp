@@ -31,7 +31,7 @@
 //#include "FunctionEditorDoc.h"  // Document class defintion file
 //#include "ExploreMsgSg.h"       // CExploreMsgSg dialog class defintion file
 #include "Properties.h"         // Properties dialog class definition file
-                                // Special file dialog class to 
+// Special file dialog class to
 #include "SplFileDlg.h"         // customise CSplFileDlg brower
 #include "MessageAttrib.h"      // Message attribute dlg class defintion file
 #include "DataType.h"           // Structure definition file for msg attribute
@@ -96,9 +96,9 @@ HWND g_hMainGUI;                     // Main GUI
 DWORD g_dwUIThread = 0;
 
 extern BOOL g_bStopSendMultMsg;     // Flag - carried from Utility.h
-extern BOOL g_bStopTimerHandlers;   // Flag - carried from Utility.h 
-extern BOOL g_bStopKeyHandlers;     // Flag - carried from Utility.h 
-extern BOOL g_bStopErrorHandlers;   // Flag - carried from Utility.h 
+extern BOOL g_bStopTimerHandlers;   // Flag - carried from Utility.h
+extern BOOL g_bStopKeyHandlers;     // Flag - carried from Utility.h
+extern BOOL g_bStopErrorHandlers;   // Flag - carried from Utility.h
 extern BOOL g_bStopDLLHandlers;
 extern BOOL g_bStopMsgHandlers;
 
@@ -269,16 +269,16 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME,OnEnableTimeStampButton)
     ON_WM_SIZE()
     ON_UPDATE_COMMAND_UI(IDR_TOOL_BUTTON_SIGNAL_WATCH, OnUpdateSignalWatchWnd)
-    ON_UPDATE_COMMAND_UI(IDM_FUNCTIONS_RESET_HARDWARE, OnUpdateFunctionsResetHardware)    
+    ON_UPDATE_COMMAND_UI(IDM_FUNCTIONS_RESET_HARDWARE, OnUpdateFunctionsResetHardware)
     ON_COMMAND(IDM_GRAPH_WND, OnGraphWindow)
     ON_UPDATE_COMMAND_UI(IDM_GRAPH_WND, OnUpdateGraphWnd)
     ON_COMMAND(IDM_CFGN_REPLAY, OnCfgnReplay)
     ON_UPDATE_COMMAND_UI(IDM_CFGN_REPLAY, OnUpdateCfgnReplay)
-	ON_COMMAND(IDM_CONFIGURE_SIMULATEDSYSTEMS, OnConfigureSimulatedsystems)
-	ON_UPDATE_COMMAND_UI(IDM_DLL_LOADALLDLL, OnUpdateDllLoadAll)
+    ON_COMMAND(IDM_CONFIGURE_SIMULATEDSYSTEMS, OnConfigureSimulatedsystems)
+    ON_UPDATE_COMMAND_UI(IDM_DLL_LOADALLDLL, OnUpdateDllLoadAll)
     ON_COMMAND_RANGE(IDC_SELECT_DRIVER,IDC_SELECT_DRIVER + DIL_TOTAL, OnSelectDriver)
     ON_UPDATE_COMMAND_UI_RANGE(IDC_SELECT_DRIVER,IDC_SELECT_DRIVER + DIL_TOTAL, OnUpdateSelectDriver)
-	//}}AFX_MSG_MAP
+    //}}AFX_MSG_MAP
     // Global help commands
     ON_COMMAND(ID_HELP_FINDER, CMDIFrameWnd::OnHelpFinder)
     ON_COMMAND(ID_HELP, CMDIFrameWnd::OnHelp)
@@ -295,29 +295,29 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_MESSAGE(WM_NOTIFICATION_FROM_OTHER, vNotificationFromOtherWin)
     ON_MESSAGE(WM_CREATE_TRACEWIN, vCreateTraceWindow)
     ON_MESSAGE(WM_ENABLE_DISABLE_HANDLERS, vEnableDisableHandlers)
-	ON_WM_HELPINFO()
-	ON_COMMAND(IDM_DATABASE_DISSOCIATE_DB, OnDissociateDatabase)
+    ON_WM_HELPINFO()
+    ON_COMMAND(IDM_DATABASE_DISSOCIATE_DB, OnDissociateDatabase)
     ON_COMMAND(IDM_SAVE_IMPORT, OnSaveImportDatabase)
     ON_UPDATE_COMMAND_UI(IDM_SAVE_IMPORT, OnUpdateSaveImportDatabase)
-   	ON_MESSAGE(WM_GET_DB_PTR, OnProvideMsgDBPtr)
+    ON_MESSAGE(WM_GET_DB_PTR, OnProvideMsgDBPtr)
     ON_UPDATE_COMMAND_UI(IDM_CFGN_LOG, OnUpdateCfgnLog)
-	ON_COMMAND(ID_DISPLAY_MAIN, OnDisplayMain)
-	ON_UPDATE_COMMAND_UI(ID_DISPLAY_MAIN, OnUpdateDisplayMain)
-	ON_COMMAND(ID_DISPLAY_MSG_WND, OnDisplayMsgWnd)
-	ON_UPDATE_COMMAND_UI(ID_DISPLAY_MSG_WND, OnUpdateDisplayMsgWnd)
-	ON_COMMAND(ID_DISPLAY_NODE_SIMULATION, OnDisplayNodeSim)
-	ON_UPDATE_COMMAND_UI(ID_DISPLAY_NODE_SIMULATION, OnUpdateDisplayNodeSim)
-	ON_WM_ACTIVATE()
-	ON_COMMAND(ID_CONFIGURE_WAVEFORM_MESSAGES, OnConfigureWaveformMessages)
-	ON_COMMAND(IDR_START_SIGNAL_TRANSMISSION, OnStartSignalTransmission)	
-	ON_UPDATE_COMMAND_UI(IDR_START_SIGNAL_TRANSMISSION, OnUpdateStartSignalTransmission)
+    ON_COMMAND(ID_DISPLAY_MAIN, OnDisplayMain)
+    ON_UPDATE_COMMAND_UI(ID_DISPLAY_MAIN, OnUpdateDisplayMain)
+    ON_COMMAND(ID_DISPLAY_MSG_WND, OnDisplayMsgWnd)
+    ON_UPDATE_COMMAND_UI(ID_DISPLAY_MSG_WND, OnUpdateDisplayMsgWnd)
+    ON_COMMAND(ID_DISPLAY_NODE_SIMULATION, OnDisplayNodeSim)
+    ON_UPDATE_COMMAND_UI(ID_DISPLAY_NODE_SIMULATION, OnUpdateDisplayNodeSim)
+    ON_WM_ACTIVATE()
+    ON_COMMAND(ID_CONFIGURE_WAVEFORM_MESSAGES, OnConfigureWaveformMessages)
+    ON_COMMAND(IDR_START_SIGNAL_TRANSMISSION, OnStartSignalTransmission)
+    ON_UPDATE_COMMAND_UI(IDR_START_SIGNAL_TRANSMISSION, OnUpdateStartSignalTransmission)
     ON_MESSAGE(WM_FROM_USER_DLL, OnMessageFromUserDll)
-	ON_COMMAND(ID_CONFIGURE_SIGNALGRAPHWINDOW, OnConfigureSignalgraphwindow)
-	ON_UPDATE_COMMAND_UI(ID_CONFIGURE_SIGNALGRAPHWINDOW, OnUpdateConfigureSignalgraphwindow)
-	ON_COMMAND(ID_SIGNALGRAPHWINDOW_CAN, OnSignalgraphwindowCAN)
-	ON_UPDATE_COMMAND_UI(ID_SIGNALGRAPHWINDOW_CAN, OnUpdateSignalgraphwindowCAN)
-	ON_COMMAND(ID_SIGNALGRAPHWINDOW_MCNET, OnSignalgraphwindowMcnet)
-	ON_UPDATE_COMMAND_UI(ID_SIGNALGRAPHWINDOW_MCNET, OnUpdateSignalgraphwindowMcnet)
+    ON_COMMAND(ID_CONFIGURE_SIGNALGRAPHWINDOW, OnConfigureSignalgraphwindow)
+    ON_UPDATE_COMMAND_UI(ID_CONFIGURE_SIGNALGRAPHWINDOW, OnUpdateConfigureSignalgraphwindow)
+    ON_COMMAND(ID_SIGNALGRAPHWINDOW_CAN, OnSignalgraphwindowCAN)
+    ON_UPDATE_COMMAND_UI(ID_SIGNALGRAPHWINDOW_CAN, OnUpdateSignalgraphwindowCAN)
+    ON_COMMAND(ID_SIGNALGRAPHWINDOW_MCNET, OnSignalgraphwindowMcnet)
+    ON_UPDATE_COMMAND_UI(ID_SIGNALGRAPHWINDOW_MCNET, OnUpdateSignalgraphwindowMcnet)
     ON_COMMAND(33056, OnActivateJ1939)
     ON_UPDATE_COMMAND_UI(33056, OnUpdateActivateJ1939)
     ON_COMMAND(ID_J1939_CONFIG_LOG, OnJ1939ConfigLog)
@@ -333,7 +333,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(33077, OnJ1939ConfigureTimeouts)
     ON_UPDATE_COMMAND_UI(33077, OnUpdateJ1939Timeouts)
     ON_COMMAND(33079, OnJ1939DBNew)
-	ON_UPDATE_COMMAND_UI(33079, OnUpdateJ1939DBNew)
+    ON_UPDATE_COMMAND_UI(33079, OnUpdateJ1939DBNew)
     ON_COMMAND(33080, OnJ1939DBOpen)
     ON_COMMAND(33084, OnJ1939DBClose)
     ON_COMMAND(33082, OnJ1939DBAssociate)
@@ -355,27 +355,27 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(33094, OnUpdateJ1939AllTimerHandlers)
     ON_COMMAND(33096, OnJ1939AllHandlers)
     ON_UPDATE_COMMAND_UI(33096, OnUpdateJ1939AllHandlers)
-	ON_COMMAND(ID_DISPLAY_CONFIGURE, OnDisplayConfig)
+    ON_COMMAND(ID_DISPLAY_CONFIGURE, OnDisplayConfig)
     ON_UPDATE_COMMAND_UI(ID_DISPLAY_CONFIGURE, OnUpdateDisplayConfig)
     ON_UPDATE_COMMAND_UI(33085, OnUpdateJ1939CfgSimSys)
     ON_COMMAND(ID_SIGNALWATCH_ADD, OnJ1939SignalwatchAdd)
     ON_COMMAND(ID_SIGNALWATCH_SHOWWINDOW, OnJ1939SignalwatchShow)
     ON_UPDATE_COMMAND_UI(ID_SIGNALWATCH_SHOWWINDOW, OnUpdateJ1939SignalwatchShow)
-	ON_COMMAND(ID_CONFIGURE_MESSAGEDISPLAY_J1939, OnConfigureMessagedisplayJ1939)	
-    ON_COMMAND_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_J1939, OnShowHideMessageWindow)	
-	ON_UPDATE_COMMAND_UI_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_J1939, OnUpdateShowHideMessageWindow)	
-	//ON_UPDATE_COMMAND_UI_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_J1939, OnUpdateShowHideMessageWindow)	
-	ON_COMMAND(ID_TB_CANDATABASE, OnToolbarCandatabase)
-	ON_UPDATE_COMMAND_UI(ID_TB_CANDATABASE, OnUpdateToolbarCanDatabase)
+    ON_COMMAND(ID_CONFIGURE_MESSAGEDISPLAY_J1939, OnConfigureMessagedisplayJ1939)
+    ON_COMMAND_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_J1939, OnShowHideMessageWindow)
+    ON_UPDATE_COMMAND_UI_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_J1939, OnUpdateShowHideMessageWindow)
+    //ON_UPDATE_COMMAND_UI_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_J1939, OnUpdateShowHideMessageWindow)
+    ON_COMMAND(ID_TB_CANDATABASE, OnToolbarCandatabase)
+    ON_UPDATE_COMMAND_UI(ID_TB_CANDATABASE, OnUpdateToolbarCanDatabase)
 
     //venkat
     ON_COMMAND(ID_TESTAUTOMATION_EDITOR, OnAutomationTSEditor)
     ON_COMMAND(ID_TESTAUTOMATION_EXECUTOR, OnAutomationTSExecutor)
-	ON_COMMAND(ID_UTILITY_FILE_CONVERTER, OnFileConverter)
-	ON_COMMAND(ID_CONFIGURE_CHANNELSELECTION, OnConfigChannelSelection)
-	ON_UPDATE_COMMAND_UI(ID_CONFIGURE_CHANNELSELECTION, OnUpdateConfigChannelSelection)	
+    ON_COMMAND(ID_UTILITY_FILE_CONVERTER, OnFileConverter)
+    ON_COMMAND(ID_CONFIGURE_CHANNELSELECTION, OnConfigChannelSelection)
+    ON_UPDATE_COMMAND_UI(ID_CONFIGURE_CHANNELSELECTION, OnUpdateConfigChannelSelection)
 
-	END_MESSAGE_MAP()
+END_MESSAGE_MAP()
 
 static UINT indicators[] =
 {
@@ -393,8 +393,8 @@ CAppServices_Impl sg_ouAppServiceObj;
 // CMainFrame construction/destruction
 /*******************************************************************************
  Function Name    : CMainFrame
- Input(s)         : 
- Output           : 
+ Input(s)         :
+ Output           :
  Functionality    : Constructor
  Member of        : CMainFrame
  Friend of        :     -
@@ -406,10 +406,10 @@ CAppServices_Impl sg_ouAppServiceObj;
                     19.01.2004,Initialisation of m_unTimerSB and  added
                                m_omStrSavedConfigFile added.
  Modifications    : Raja N
-                    05.04.2004,Modified to refer the latest signal watch list 
+                    05.04.2004,Modified to refer the latest signal watch list
                     structure
  Modifications    : Raja N
-                    28.04.2004,Replaced hardcoded string "Empty" with 
+                    28.04.2004,Replaced hardcoded string "Empty" with
                     defSTR_DEFAULT_MRU_ITEM
  Modifications    : Raja N
                     12.12.2004,Added code to init graph related member variables
@@ -427,17 +427,16 @@ CMainFrame::CMainFrame()
 {
     GetCurrentDirectory(MAX_PATH, theApp.m_acApplicationDirectory);// Get application directory
     m_podMsgSgWnd                   = NULL;
+
     for (UINT i = 0; i < BUS_TOTAL; i++)
     {
         m_pomMsgSgDetViews[i]       = NULL;
         m_pomMsgSgTreeViews[i]      = NULL;
     }
-    
-	m_podMsgWndThread				= NULL;
 
+    m_podMsgWndThread               = NULL;
     m_bIsNewDatabase                = FALSE;
     m_hModuleHandle                 = NULL;
-
     INITIALISE_ARRAY(m_psSignalWatchList);
     m_unReplayTimeDelay             = 50;
     m_unCycleTimeDelay              = 0;
@@ -454,17 +453,16 @@ CMainFrame::CMainFrame()
     m_omStrMRU_ConfigurationFiles[2]    = STR_EMPTY;
     m_omStrMRU_ConfigurationFiles[3]    = STR_EMPTY;
     m_omStrMRU_ConfigurationFiles[4]    = STR_EMPTY;
-
     // Config menu option - default
     m_bCfgNewMenuOption     = TRUE;
     m_bCfgLoadMenuOption    = TRUE;
     m_bCfgSaveMenuOption    = TRUE;
     m_bCfgSaveAsMenuOption  = TRUE;
-
     // Send toolbar button is not enabled.
     //m_bEnableSendToolbarButton = FALSE;
     m_bIsStatWndCreated = FALSE;
     m_bNotificWndVisible         = FALSE;
+
     // Initially the controller will be in error active mode.
     for( UINT unIndex = 0; unIndex < defNO_OF_CHANNELS; unIndex++)
     {
@@ -477,22 +475,22 @@ CMainFrame::CMainFrame()
 
     // Graph related pointers
     // Graph window status
-	for(int nBUSID = CAN; nBUSID<AVAILABLE_PROTOCOLS;nBUSID++)
-	{
-		m_sGraphWndPlacement[nBUSID].length = 0;
-		m_sGraphWndPlacement[nBUSID].rcNormalPosition.top = -1;
-		m_sGraphSplitterPos[nBUSID].m_nRootSplitterData[0][0] = -1;
-	}
-	//SGW Code commented by Arun 21-10-2010
-    //m_bGraphWindowVisible = FALSE;	
-    // Graph Child
-    //m_pomGraphChild = NULL;    	
-	// Graph UI Thread
-    //m_pomGraphThread = NULL;
-	// Init Graph Control
-    //m_podGraphControl = NULL;
-	//SGW Code commented by Arun 21-10-2010
+    for(int nBUSID = CAN; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
+    {
+        m_sGraphWndPlacement[nBUSID].length = 0;
+        m_sGraphWndPlacement[nBUSID].rcNormalPosition.top = -1;
+        m_sGraphSplitterPos[nBUSID].m_nRootSplitterData[0][0] = -1;
+    }
 
+    //SGW Code commented by Arun 21-10-2010
+    //m_bGraphWindowVisible = FALSE;
+    // Graph Child
+    //m_pomGraphChild = NULL;
+    // Graph UI Thread
+    //m_pomGraphThread = NULL;
+    // Init Graph Control
+    //m_podGraphControl = NULL;
+    //SGW Code commented by Arun 21-10-2010
     // Init Bus Statistics pointer
     m_podBusStatistics = NULL;
     // Initialise Tx Msg Window Pointer
@@ -500,7 +498,6 @@ CMainFrame::CMainFrame()
     //Initialize notific window position
     m_sNotificWndPlacement.length = 0;
     m_sNotificWndPlacement.rcNormalPosition.top = -1;
-
     // Create message manager
     //Initialize HW Interface
     INITIALISE_ARRAY(m_asINTERFACE_HW);
@@ -508,18 +505,16 @@ CMainFrame::CMainFrame()
     INITIALISE_ARRAY(m_asControllerDetails);
     //Default Hw mode
     m_byControllerMode = defMODE_ACTIVE;
-
     TCHAR acTmp[MAX_PATH] = {'\0'};
     GetCurrentDirectory(MAX_PATH, acTmp);
     m_omAppDirectory = acTmp;
-	m_bInterPretMsg = FALSE;
-	m_pouMsgInterpretBuffer = NULL;
-	m_objTxHandler.vLoadTx_DLL();
-	m_objSigGrphHandler.vLoadSigGrph_DLL();		
-	m_pouMsgInterpretBuffer = m_objSigGrphHandler.vGetGraphBuffer();
-
+    m_bInterPretMsg = FALSE;
+    m_pouMsgInterpretBuffer = NULL;
+    m_objTxHandler.vLoadTx_DLL();
+    m_objSigGrphHandler.vLoadSigGrph_DLL();
+    m_pouMsgInterpretBuffer = m_objSigGrphHandler.vGetGraphBuffer();
     INITIALISE_ARRAY(m_anMsgBuffSize);
-    INITIALISE_DATA(m_sMsgFrmtWndDets); 
+    INITIALISE_DATA(m_sMsgFrmtWndDets);
     m_sMsgWndPlacement.length = 0;//MSG_WND_PLACEMENT
     m_sMsgInterpretPlacement.length = 0;
     //Driver selection popup menu updation
@@ -527,24 +522,26 @@ CMainFrame::CMainFrame()
     m_dwDriverId = DRIVER_CAN_STUB;
     m_pouTxMsgWndJ1939 = NULL;
     m_sJ1939ClientParam.m_byAddress = ADDRESS_NULL;
-	m_ouGraphReadThread.m_hActionEvent = NULL;
+    m_ouGraphReadThread.m_hActionEvent = NULL;
     m_ouGraphReadThread.m_unActionCode = IDLE;
-	m_nTimeStamp = 0;	
+    m_nTimeStamp = 0;
     m_podMsgSgWndJ1939 = NULL;
     m_pouMsgSigJ1939   = NULL;
     m_pouActiveDbJ1939 = NULL;
+
     for (UINT i = 0; i < BUS_TOTAL; i++)
     {
         m_abLogOnConnect[i] = FALSE;
     }
-	//venkat
+
+    //venkat
     m_objTSEditorHandler.vLoadTSEditor_DLL();
     m_objTSExecutorHandler.vLoadTSExecutor_DLL();
 }
 /*******************************************************************************
  Function Name    : ~CMainFrame
- Input(s)         : 
- Output           : 
+ Input(s)         :
+ Output           :
  Functionality    : Destructor
  Member of        : CMainFrame
  Friend of        :     -
@@ -558,30 +555,31 @@ CMainFrame::CMainFrame()
 *******************************************************************************/
 CMainFrame::~CMainFrame()
 {
-
-	m_objTxHandler.vDeleteTxBlockMemory();
-
+    m_objTxHandler.vDeleteTxBlockMemory();
     vReleaseSignalWatchListMemory(m_psSignalWatchList[CAN]);
     vReleaseSignalWatchListMemory(m_psSignalWatchList[J1939]);
-
-    DELETE_PTR(m_pDILSubMenu);    
+    DELETE_PTR(m_pDILSubMenu);
     DELETE_PTR(m_podMsgWndThread);
+
     if (m_pouMsgSigJ1939 != NULL)
     {
         m_pouMsgSigJ1939->bDeAllocateMemory(STR_EMPTY);
     }
+
     DELETE_PTR(m_pouMsgSigJ1939);
 
     if (m_pouActiveDbJ1939 != NULL)
     {
         m_pouActiveDbJ1939->bDeAllocateMemoryInactive();
     }
+
     DELETE_PTR(m_pouActiveDbJ1939);
 
     if (m_pouTxMsgWndJ1939 != NULL)
     {
         m_pouTxMsgWndJ1939->DestroyWindow();
     }
+
     DELETE_PTR(m_pouTxMsgWndJ1939);
     CTxMsgWndJ1939::vClearDataStore();
 }
@@ -590,9 +588,9 @@ CMainFrame::~CMainFrame()
     Function Name    :  nFindMenuItem
     Input(s)         :  CMenu* Menu, LPCTSTR MenuString
     Output           :  int
-    Functionality    :  FindMenuItem() will find a menu item string from the 
+    Functionality    :  FindMenuItem() will find a menu item string from the
                         specified popup menu and returns its position (0-based)
-                        in the specified popup menu. 
+                        in the specified popup menu.
                         It returns -1 if no such menu item string is found.
     Member of        :  CMainFrame
     Friend of        :      -
@@ -601,27 +599,32 @@ CMainFrame::~CMainFrame()
 ******************************************************************************/
 int CMainFrame::nFindMenuItem(CMenu* Menu, LPCTSTR MenuString)
 {
-   ASSERT(Menu);
-   ASSERT(::IsMenu(Menu->GetSafeHmenu()));
+    ASSERT(Menu);
+    ASSERT(::IsMenu(Menu->GetSafeHmenu()));
+    int count = Menu->GetMenuItemCount();
 
-   int count = Menu->GetMenuItemCount();
-   for (int i = 0; i < count; i++)
-   {
-      CString str;
-      if (Menu->GetMenuString(i, str, MF_BYPOSITION) &&
-         (strcmp(str, MenuString) == 0))
-         return i;
-   }
+    for (int i = 0; i < count; i++)
+    {
+        CString str;
 
-   return -1;
+        if (Menu->GetMenuString(i, str, MF_BYPOSITION) &&
+                (strcmp(str, MenuString) == 0))
+        {
+            return i;
+        }
+    }
+
+    return -1;
 }
 
 static BOOL bIsMsgExist(UINT MsgId, const SMSGENTRY* psFromList, sMESSAGE*& psMsg)
 {
     BOOL bResult = FALSE;
+
     if (psFromList != NULL)
     {
         const SMSGENTRY* pTempMsgEntry = psFromList;
+
         while ((pTempMsgEntry != NULL))
         {
             if (pTempMsgEntry->m_psMsg->m_unMessageCode == MsgId)
@@ -630,14 +633,17 @@ static BOOL bIsMsgExist(UINT MsgId, const SMSGENTRY* psFromList, sMESSAGE*& psMs
                 bResult = TRUE;
                 break;
             }
+
             pTempMsgEntry = pTempMsgEntry->m_psNext;
         }
     }
+
     return bResult;
 }
 static BOOL bIsSigExist(const CString& omSigName, sSIGNALS* pSigList, sSIGNALS*& pSig)
 {
     BOOL bResult = FALSE;
+
     while (pSigList != NULL)
     {
         if (omSigName == pSigList->m_omStrSignalName)
@@ -646,50 +652,59 @@ static BOOL bIsSigExist(const CString& omSigName, sSIGNALS* pSigList, sSIGNALS*&
             bResult = TRUE;
             break;
         }
+
         pSigList = pSigList->m_psNextSignalList;
     }
+
     return bResult;
 }
 
-static void vPopulateMainEntryList(CMainEntryList* podResultingList, const SMSGENTRY* psExistingList, 
-                                                                                    CMsgSignal* pouDatabase)
+static void vPopulateMainEntryList(CMainEntryList* podResultingList, const SMSGENTRY* psExistingList,
+                                   CMsgSignal* pouDatabase)
 {
     if ((podResultingList != NULL) && (pouDatabase != NULL))
     {
         UINT nNoMsgs = pouDatabase->unGetNumerOfMessages();
-        UINT *pMsgIds = new UINT[nNoMsgs];
+        UINT* pMsgIds = new UINT[nNoMsgs];
         pouDatabase->unListGetMessageIDs(pMsgIds);
+
         for (UINT i = 0; i < nNoMsgs; i++)
         {
             SMAINENTRY sMainEntry;
             sMESSAGE* pMsg = pouDatabase->psGetMessagePointer(pMsgIds[i]);
+
             if (pMsg != NULL)
             {
                 sMainEntry.m_unMainEntryID = pMsg->m_unMessageCode;
                 sMainEntry.m_omMainEntryName = pMsg->m_omStrMessageName;
-                sMESSAGE* pListMsg = NULL; 
+                sMESSAGE* pListMsg = NULL;
+
                 if (bIsMsgExist(pMsg->m_unMessageCode, psExistingList, pListMsg))
                 {
                     sSIGNALS* pSig = pMsg->m_psSignals;
+
                     while (pSig != NULL)
                     {
                         SSUBENTRY sSubEntry;
                         sSubEntry.m_omSubEntryName = pSig->m_omStrSignalName;
                         sSIGNALS* pJunk = NULL;
+
                         if (bIsSigExist(pSig->m_omStrSignalName, pListMsg->m_psSignals, pJunk))
-                        {                            
+                        {
                             sMainEntry.m_odSelEntryList.AddTail(sSubEntry);
                         }
                         else
                         {
                             sMainEntry.m_odUnSelEntryList.AddTail(sSubEntry);
                         }
+
                         pSig = pSig->m_psNextSignalList;
                     }
-                }                
+                }
                 else //If Msg does not exist copy the full list directly
                 {
                     sSIGNALS* pSig = pMsg->m_psSignals;
+
                     while (pSig != NULL)
                     {
                         SSUBENTRY sSubEntry;
@@ -698,10 +713,12 @@ static void vPopulateMainEntryList(CMainEntryList* podResultingList, const SMSGE
                         pSig = pSig->m_psNextSignalList;
                     }
                 }
+
                 podResultingList->AddTail(sMainEntry);
             }
         }//End of msg for loop
-        //delete the ID array 
+
+        //delete the ID array
         delete[] pMsgIds;
         pMsgIds = NULL;
     }
@@ -726,10 +743,10 @@ static void vPopulateMainEntryList(CMainEntryList* podResultingList, const SMSGE
                     26.11.2002, The double line toolbar is reverted back to
                                 single line
  Modifications    : Krishnaswamy B.N
-                    03.06.2003, The style of the time mode toolbar button 
+                    03.06.2003, The style of the time mode toolbar button
                     changed to dropdown type.
  Modifications    : Raja N
-                    28.04.2004,Replaced hardcoded string "Empty" with 
+                    28.04.2004,Replaced hardcoded string "Empty" with
                     defSTR_DEFAULT_MRU_ITEM
  Modifications    : Raja N
                     12.05.2004, Added tool tip for Bus Status
@@ -744,57 +761,53 @@ static void vPopulateMainEntryList(CMainEntryList* podResultingList, const SMSGE
                     Added a pane to show number of channels supported by the
                     application
 Modifications    : ArunKumar K
-                    20.05.2010, Added code to load toolbar positions 
-					previosly saved.
-					Added new toolbar groups.
+                    20.05.2010, Added code to load toolbar positions
+                    previosly saved.
+                    Added new toolbar groups.
 /******************************************************************************/
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
     if (CMDIFrameWnd::OnCreate(lpCreateStruct) == -1)
+    {
         return -1;
+    }
 
-	 // The node simulation toolbar	
-    CREATE_TOOLBAR(this, m_wndToolbarNodeSimul, IDR_NODE_SIMULATION, _T("Node Simulation"));		
-	CREATE_TOOLBAR(this, m_wndToolbarMsgWnd, IDR_MSG_WND, _T("Message Window"));	
-	CREATE_TOOLBAR(this, m_wndToolBar, IDR_MAINFRAME, _T("Main"));
-	CREATE_TOOLBAR(this, m_wndToolbarConfig, IDR_TLB_CONFIGURE, _T("Configure"));
+    // The node simulation toolbar
+    CREATE_TOOLBAR(this, m_wndToolbarNodeSimul, IDR_NODE_SIMULATION, _T("Node Simulation"));
+    CREATE_TOOLBAR(this, m_wndToolbarMsgWnd, IDR_MSG_WND, _T("Message Window"));
+    CREATE_TOOLBAR(this, m_wndToolBar, IDR_MAINFRAME, _T("Main"));
+    CREATE_TOOLBAR(this, m_wndToolbarConfig, IDR_TLB_CONFIGURE, _T("Configure"));
     CREATE_TOOLBAR(this, m_wndToolbarJ1939, IDR_FUNCTIONS_J1939, _T("J1939"));
-	CREATE_TOOLBAR(this, m_wndToolbarCANDB, IDR_CAN_DATABASE, _T("CAN Database"));	
-	
-	m_wndToolbarNodeSimul.bLoadCNVTCToolBar(20, IDB_NODE_SIMULATION,IDB_NODE_SIMULATION_HOT, IDB_NODE_SIMULATION_DISABLED);		
-	m_wndToolBar.bLoadCNVTCToolBar(20, IDB_MAINFRAME,IDB_MAINFRAME_HOT, IDB_MAINFRAME_DISABLED);	
-	m_wndToolbarMsgWnd.bLoadCNVTCToolBar(20, IDB_MSG_WND,IDB_MSG_WND_HOT, IDB_MSG_WND_DISABLED);	
-	m_wndToolbarConfig.bLoadCNVTCToolBar(20, IDB_CONFIGURE,IDB_CONFIGURE_HOT, IDB_CONFIGURE_DISABLED);	    
-	m_wndToolbarCANDB.bLoadCNVTCToolBar(20, IDB_CAN_DATABASE,IDB_CAN_DATABASE_HOT, IDB_CAN_DATABASE_DISABLED);	
-
-	EnableDocking(CBRS_ALIGN_ANY);
-    
-	DockControlBar(&m_wndToolbarNodeSimul, AFX_IDW_DOCKBAR_TOP);		
-	DockControlBarLeftOf(&m_wndToolbarMsgWnd, &m_wndToolbarNodeSimul);	
-    DockControlBarLeftOf(&m_wndToolbarJ1939, &m_wndToolbarMsgWnd); 
-	DockControlBarLeftOf(&m_wndToolbarConfig, &m_wndToolbarJ1939); 	
-	DockControlBarLeftOf(&m_wndToolbarCANDB, &m_wndToolbarJ1939); 	
-	DockControlBarLeftOf(&m_wndToolBar, &m_wndToolbarCANDB); 
+    CREATE_TOOLBAR(this, m_wndToolbarCANDB, IDR_CAN_DATABASE, _T("CAN Database"));
+    m_wndToolbarNodeSimul.bLoadCNVTCToolBar(20, IDB_NODE_SIMULATION,IDB_NODE_SIMULATION_HOT, IDB_NODE_SIMULATION_DISABLED);
+    m_wndToolBar.bLoadCNVTCToolBar(20, IDB_MAINFRAME,IDB_MAINFRAME_HOT, IDB_MAINFRAME_DISABLED);
+    m_wndToolbarMsgWnd.bLoadCNVTCToolBar(20, IDB_MSG_WND,IDB_MSG_WND_HOT, IDB_MSG_WND_DISABLED);
+    m_wndToolbarConfig.bLoadCNVTCToolBar(20, IDB_CONFIGURE,IDB_CONFIGURE_HOT, IDB_CONFIGURE_DISABLED);
+    m_wndToolbarCANDB.bLoadCNVTCToolBar(20, IDB_CAN_DATABASE,IDB_CAN_DATABASE_HOT, IDB_CAN_DATABASE_DISABLED);
+    EnableDocking(CBRS_ALIGN_ANY);
+    DockControlBar(&m_wndToolbarNodeSimul, AFX_IDW_DOCKBAR_TOP);
+    DockControlBarLeftOf(&m_wndToolbarMsgWnd, &m_wndToolbarNodeSimul);
+    DockControlBarLeftOf(&m_wndToolbarJ1939, &m_wndToolbarMsgWnd);
+    DockControlBarLeftOf(&m_wndToolbarConfig, &m_wndToolbarJ1939);
+    DockControlBarLeftOf(&m_wndToolbarCANDB, &m_wndToolbarJ1939);
+    DockControlBarLeftOf(&m_wndToolBar, &m_wndToolbarCANDB);
 
     if (!m_wndStatusBar.CreateEx(this,SBT_TOOLTIPS) ||
-        !m_wndStatusBar.SetIndicators(indicators,
-          sizeof(indicators)/sizeof(UINT)))
+            !m_wndStatusBar.SetIndicators(indicators,
+                                          sizeof(indicators)/sizeof(UINT)))
     {
         TRACE0("Failed to create status bar\n");
         return -1;      // fail to create
     }
 
-	//Load the control bar states as saved in last instance
+    //Load the control bar states as saved in last instance
     LoadBarState(PROFILE_CAN_MONITOR);
-
     // Set pane info for displaying active database name
     m_wndStatusBar.SetPaneInfo(0, ID_SEPARATOR, SBPS_NOBORDERS, 340);
-
-    m_wndStatusBar.SetPaneInfo( INDEX_CHANNELS, IDS_CHANNELS, 
+    m_wndStatusBar.SetPaneInfo( INDEX_CHANNELS, IDS_CHANNELS,
                                 SBPS_NOBORDERS, 320);
-    m_wndStatusBar.SetPaneInfo( INDEX_DB_NAME, ID_ACTIVE_DATABASE_NAME, 
+    m_wndStatusBar.SetPaneInfo( INDEX_DB_NAME, ID_ACTIVE_DATABASE_NAME,
                                 SBPS_STRETCH, 0);
-	
     // Set number of channels supported
     CString omStrChannels;
     omStrChannels.Format( defSTR_CHANNELS_SUPPORTED,
@@ -802,81 +815,67 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
                           defSTR_CHANNEL_NAME );
     // Set Channel string
     m_wndStatusBar.SetPaneText(INDEX_CHANNELS, omStrChannels );
-
     // Create the timer which will be fired to update the status bar.
     m_unTimerSB = SetTimer(TIMER_REFRESH_MAINGUI, STSBAR_REFRESH_TIME_PERIOD,
                            NULL);
-
     // Set Drop down style for Toolbars containing TBSTYLE_DROPDOWN styles.
     m_wndToolBar.GetToolBarCtrl().SetExtendedStyle( TBSTYLE_EX_DRAWDDARROWS );
-	m_wndToolbarMsgWnd.GetToolBarCtrl().SetExtendedStyle( TBSTYLE_EX_DRAWDDARROWS );
-	//m_wndToolbarMsgWnd.GetToolBarCtrl().SetButtonWidth(20,25);
-
+    m_wndToolbarMsgWnd.GetToolBarCtrl().SetExtendedStyle( TBSTYLE_EX_DRAWDDARROWS );
+    //m_wndToolbarMsgWnd.GetToolBarCtrl().SetButtonWidth(20,25);
     TBBUTTONINFO tbi;
-
     tbi.dwMask= TBIF_STYLE;
     tbi.cbSize= sizeof(TBBUTTONINFO);
-
-	m_wndToolbarMsgWnd.GetToolBarCtrl().GetButtonInfo(
-                    IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME, &tbi);	
-	
-    
-    tbi.fsStyle |= BTNS_WHOLEDROPDOWN | TBSTYLE_BUTTON | BTNS_SHOWTEXT; 	
-	
+    m_wndToolbarMsgWnd.GetToolBarCtrl().GetButtonInfo(
+        IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME, &tbi);
+    tbi.fsStyle |= BTNS_WHOLEDROPDOWN | TBSTYLE_BUTTON | BTNS_SHOWTEXT;
     m_wndToolbarMsgWnd.GetToolBarCtrl().SetButtonInfo(
-                    IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME, &tbi);
-	
-	tbi.cbSize = sizeof tbi;
-	tbi.dwMask = TBIF_SIZE;
-	tbi.cx = (WORD)30;
-	m_wndToolbarMsgWnd.GetToolBarCtrl().SetButtonInfo(IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME, &tbi);	
-
+        IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME, &tbi);
+    tbi.cbSize = sizeof tbi;
+    tbi.dwMask = TBIF_SIZE;
+    tbi.cx = (WORD)30;
+    m_wndToolbarMsgWnd.GetToolBarCtrl().SetButtonInfo(IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME, &tbi);
     vGetWinStatus(m_WinCurrStatus);
-
     // Set the text for the first sub menu item under
     // "File -> Recent Configurations -> Empty" menu option
     // The first sub menu is statically created and is disabled.
     // So enable it and change the text top the first MRU file name
     // Then create menu for the rest of the MRU files
-    m_omStrMRU_ConfigurationFiles[0] = 
-        theApp.GetProfileString( defSECTION_MRU, 
-        defSECTION_MRU_FILE1,
-        defSTR_DEFAULT_MRU_ITEM );
-    m_omStrMRU_ConfigurationFiles[1] = 
-        theApp.GetProfileString( defSECTION_MRU, 
-        defSECTION_MRU_FILE2, 
-        STR_EMPTY );
-    m_omStrMRU_ConfigurationFiles[2] = 
-        theApp.GetProfileString( defSECTION_MRU, 
-        defSECTION_MRU_FILE3, 
-        STR_EMPTY );
-    m_omStrMRU_ConfigurationFiles[3] = 
-        theApp.GetProfileString( defSECTION_MRU, 
-        defSECTION_MRU_FILE4, 
-        STR_EMPTY );
-    m_omStrMRU_ConfigurationFiles[4] = 
-        theApp.GetProfileString( defSECTION_MRU, 
-        defSECTION_MRU_FILE5, 
-        STR_EMPTY );
-    
+    m_omStrMRU_ConfigurationFiles[0] =
+        theApp.GetProfileString( defSECTION_MRU,
+                                 defSECTION_MRU_FILE1,
+                                 defSTR_DEFAULT_MRU_ITEM );
+    m_omStrMRU_ConfigurationFiles[1] =
+        theApp.GetProfileString( defSECTION_MRU,
+                                 defSECTION_MRU_FILE2,
+                                 STR_EMPTY );
+    m_omStrMRU_ConfigurationFiles[2] =
+        theApp.GetProfileString( defSECTION_MRU,
+                                 defSECTION_MRU_FILE3,
+                                 STR_EMPTY );
+    m_omStrMRU_ConfigurationFiles[3] =
+        theApp.GetProfileString( defSECTION_MRU,
+                                 defSECTION_MRU_FILE4,
+                                 STR_EMPTY );
+    m_omStrMRU_ConfigurationFiles[4] =
+        theApp.GetProfileString( defSECTION_MRU,
+                                 defSECTION_MRU_FILE5,
+                                 STR_EMPTY );
     // Create MRU under "Recent Configurations" menu item
     vCreateMRU_Menus();
-    
+
     //Update DIL List
     if (g_pouDIL_CAN_Interface == NULL)
     {
         DIL_GetInterface(CAN, (void**)&g_pouDIL_CAN_Interface);
     }
-    m_nDILCount = g_pouDIL_CAN_Interface->DILC_GetDILList(false, &m_ouList);
 
+    m_nDILCount = g_pouDIL_CAN_Interface->DILC_GetDILList(false, &m_ouList);
     // Do initialisation for the waveform transmission object
     m_ouWaveTransmitter.vDoInitialisation(&m_objWaveformDataHandler,
-							g_pouDIL_CAN_Interface, &(theApp.m_pouMsgSignal));
-		
+                                          g_pouDIL_CAN_Interface, &(theApp.m_pouMsgSignal));
     // CG: The following line was added by the Splash Screen component.
     CSplashScreen::DisplaySplashScreen(this, SW_SHOW);
-    Sleep(1500);	
-
+    Sleep(1500);
     return 0;
 }
 
@@ -893,23 +892,23 @@ void CMainFrame::Dump(CDumpContext& dc) const
 
 #endif //_DEBUG
 
-// HELPER FUNCTIONS -- START 
+// HELPER FUNCTIONS -- START
 int CMainFrame::nCreateToolbar(CWnd* pomParent, CToolBar& omToolbar, UINT unID,
                                CString omTitle)
 {
     int Result = 0;
 
-	if (!omToolbar.CreateEx(pomParent, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT, 
-        WS_BORDER | WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | 
-        CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC, CRect(0,0,0,0), unID) || 
-        !omToolbar.LoadToolBar(unID))
-	{
-		TRACE0("Failed to create toolbar\n");
-		Result = -1;      // fail to create
-	}
+    if (!omToolbar.CreateEx(pomParent, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT,
+                            WS_BORDER | WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER |
+                            CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC, CRect(0,0,0,0), unID) ||
+            !omToolbar.LoadToolBar(unID))
+    {
+        TRACE0("Failed to create toolbar\n");
+        Result = -1;      // fail to create
+    }
     else
     {
-	    omToolbar.EnableDocking(CBRS_ALIGN_ANY);
+        omToolbar.EnableDocking(CBRS_ALIGN_ANY);
         omToolbar.SetWindowText((LPCTSTR) omTitle);
     }
 
@@ -919,26 +918,22 @@ void CMainFrame::DockControlBarLeftOf(CToolBar* pomCurrBar,CToolBar* pomLeftOf)
 {
     ASSERT(pomCurrBar != NULL);
     ASSERT(pomLeftOf != NULL);
-
-	CRect omRect;
-
-	/* Get MFC to adjust the dimensions of all docked ToolBars so that 
+    CRect omRect;
+    /* Get MFC to adjust the dimensions of all docked ToolBars so that
     GetWindowRect will be accurate */
-	RecalcLayout();
-	pomLeftOf->GetWindowRect(&omRect);
-	omRect.OffsetRect(1, 0);
-	DWORD dwBarStyle = pomLeftOf->GetBarStyle();
-
+    RecalcLayout();
+    pomLeftOf->GetWindowRect(&omRect);
+    omRect.OffsetRect(1, 0);
+    DWORD dwBarStyle = pomLeftOf->GetBarStyle();
     UINT unBarID = 0;
-	unBarID = (dwBarStyle & CBRS_ALIGN_TOP) ? AFX_IDW_DOCKBAR_TOP : unBarID;
-	unBarID = (dwBarStyle & CBRS_ALIGN_BOTTOM && unBarID == 0) ? AFX_IDW_DOCKBAR_BOTTOM : unBarID;
-	unBarID = (dwBarStyle & CBRS_ALIGN_LEFT && unBarID == 0) ? AFX_IDW_DOCKBAR_LEFT : unBarID;
-	unBarID = (dwBarStyle & CBRS_ALIGN_RIGHT && unBarID == 0) ? AFX_IDW_DOCKBAR_RIGHT : unBarID;
-
-	// When we take the default parameters on rect, DockControlBar will dock
-	// each Toolbar on a seperate line.  By calculating a rectangle, we in effect
-	// are simulating a Toolbar being dragged to that location and docked.
-	DockControlBar(pomCurrBar, unBarID, &omRect);
+    unBarID = (dwBarStyle & CBRS_ALIGN_TOP) ? AFX_IDW_DOCKBAR_TOP : unBarID;
+    unBarID = (dwBarStyle& CBRS_ALIGN_BOTTOM && unBarID == 0) ? AFX_IDW_DOCKBAR_BOTTOM : unBarID;
+    unBarID = (dwBarStyle& CBRS_ALIGN_LEFT && unBarID == 0) ? AFX_IDW_DOCKBAR_LEFT : unBarID;
+    unBarID = (dwBarStyle& CBRS_ALIGN_RIGHT && unBarID == 0) ? AFX_IDW_DOCKBAR_RIGHT : unBarID;
+    // When we take the default parameters on rect, DockControlBar will dock
+    // each Toolbar on a seperate line.  By calculating a rectangle, we in effect
+    // are simulating a Toolbar being dragged to that location and docked.
+    DockControlBar(pomCurrBar, unBarID, &omRect);
 }
 // HELPER FUNCTIONS -- END
 
@@ -956,34 +951,36 @@ void CMainFrame::DockControlBarLeftOf(CToolBar* pomCurrBar,CToolBar* pomLeftOf)
     Date Created     :  05.03.2002
     Modified By      :  Krishnaswamy B.N
                         03.06.2003, Added code for dropdown functionality for
-                        Time Mode toolbar button 
+                        Time Mode toolbar button
 ******************************************************************************/
-BOOL CMainFrame::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
+BOOL CMainFrame::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 {
     // TODO: Add your specialized code here and/or call the base class
-    #define lpnm   ((LPNMHDR)lParam)
-    #define lpnmTB ((LPNMTOOLBAR)lParam)
-    
+#define lpnm   ((LPNMHDR)lParam)
+#define lpnmTB ((LPNMTOOLBAR)lParam)
+
     switch(lpnm->code)
     {
         case TBN_DROPDOWN:
-			if(lpnmTB ->iItem == IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME)
+            if(lpnmTB ->iItem == IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME)
             {
                 vToolBarDropDownMenu(IDM_MENU_TIMEMODE,
                                      IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME);
             }
+
             return FALSE; //indicates the TBN_DROPDOWN
-                      //notification was handled.
-     }
+            //notification was handled.
+    }
+
     return CMDIFrameWnd::OnNotify(wParam, lParam, pResult);
 }
 /******************************************************************************
 FUNCTION:           OnOpenDatabase
-DESCRIPTION:        Opens a database file for editing   
-PARAMETERS:     
+DESCRIPTION:        Opens a database file for editing
+PARAMETERS:
 RETURN VALUE:
 AUTHOR:             Amarnath Shastry
-HISTORY:        
+HISTORY:
 20-02-2002          Initial Version     Amarnath Shastry
 Modification Date:  01.04.2002
 Modified By:        Amarnath Shastry
@@ -994,9 +991,9 @@ Modification        Raja N
                     database editor will use inactive data structure always for
                     editing purpose
 Modifications:      Pradeep Kadoor on 12.06.2009.
-                    Code added to enable menu item 'Save and Save & Import' 
+                    Code added to enable menu item 'Save and Save & Import'
 *******************************************************************************/
-void CMainFrame::OnOpenDatabase() 
+void CMainFrame::OnOpenDatabase()
 {
     INT nReturn = IDYES;
 
@@ -1006,9 +1003,10 @@ void CMainFrame::OnOpenDatabase()
         // Some database is open
         // Flash a message as to whether the user
         // wants to open another database
-        nReturn = 
+        nReturn =
             AfxMessageBox( "Are yor sure you want to close the \n\
 database that is already open?", MB_YESNO, MB_ICONINFORMATION);
+
         if ( nReturn == IDYES)
         {
             // Close the database that was open
@@ -1023,36 +1021,29 @@ database that is already open?", MB_YESNO, MB_ICONINFORMATION);
     if ( nReturn == IDYES)
     {
         BOOL bDisplayEditor = FALSE;
-
         // Display a open file dialog
         CFileDialog fileDlg( TRUE,      // Open File dialog
                              "dbf",     // Default Extension,
-                             NULL,                              
+                             NULL,
                              OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
                              "BUSMASTER Database File(s)(*.dbf)|*.dbf||",
                              NULL );
-
         // Set Title
         fileDlg.m_ofn.lpstrTitle  = _T("Select BUSMASTER Database Filename...");
 
         if ( IDOK == fileDlg.DoModal() )
         {
             CString strExtName  = fileDlg.GetFileExt();
-
             CString strDbName   = fileDlg.GetPathName();
 
             if ( strDbName.ReverseFind('.') )
             {
                 strDbName = strDbName.Left( strDbName.ReverseFind('.') + 1);
-
                 strDbName.TrimRight();
-
                 strDbName += strExtName;
-
                 m_omStrDatabaseName = strDbName;
-
             }
-        
+
             // file-attribute information
             struct _finddata_t fileinfo;
 
@@ -1066,7 +1057,6 @@ database that is already open?", MB_YESNO, MB_ICONINFORMATION);
                     // No corruption in database, display the editor
                     bDisplayEditor = TRUE;
                 }
-
             }
             else
             {
@@ -1080,6 +1070,7 @@ Operation unsuccessful.", MB_OK|MB_ICONINFORMATION);
                 {
                     m_podMsgSgWnd = NULL;
                 }
+
                 sg_asDbParams[CAN].m_ppvActiveDB = (void**)&theApp.m_pouMsgSgInactive;
                 sg_asDbParams[CAN].m_ppvImportedDBs = (void**)&theApp.m_pouMsgSignal;
                 m_podMsgSgWnd = new CMsgSignalDBWnd(sg_asDbParams[CAN]);
@@ -1088,6 +1079,7 @@ Operation unsuccessful.", MB_OK|MB_ICONINFORMATION);
                 {
                     sg_asDbParams[CAN].m_omDBPath = m_omStrDatabaseName;
                     m_podMsgSgWnd->vSetDBName(m_omStrDatabaseName);
+
                     // Create child window
                     if ( !m_podMsgSgWnd->Create(NULL,
                                                 "Database Editor",
@@ -1097,21 +1089,22 @@ Operation unsuccessful.", MB_OK|MB_ICONINFORMATION);
                                                 this ) )
                     {
                         MessageBox( "Create BUSMASTER Database Window Failed!",
-                            NULL, MB_OK|MB_ICONERROR );
+                                    NULL, MB_OK|MB_ICONERROR );
                         return;
                     }
 
                     m_podMsgSgWnd->ShowWindow( SW_SHOWMAXIMIZED );
                     m_podMsgSgWnd->UpdateWindow();
-        
                     // Set the flag to indicate the opening of database window
                     CFlags* pFlags = theApp.pouGetFlagsPtr();
                     pFlags->vSetFlagStatus( DBOPEN, TRUE );
                     // Enable 'Save' & 'Save Import' menu item
-                    CMenu *pMenu = GetMenu();
+                    CMenu* pMenu = GetMenu();
+
                     if (pMenu != NULL)
                     {
                         HMENU hMenu = pMenu->GetSafeHmenu();
+
                         if (hMenu != NULL)
                         {
                             EnableMenuItem(hMenu, IDM_SAVE_IMPORT, MF_ENABLED);
@@ -1121,7 +1114,7 @@ Operation unsuccessful.", MB_OK|MB_ICONINFORMATION);
                 }
                 else
                 {
-                    AfxMessageBox(MSG_MEMORY_CONSTRAINT, 
+                    AfxMessageBox(MSG_MEMORY_CONSTRAINT,
                                   MB_OK | MB_ICONINFORMATION);
                 }
             }
@@ -1130,12 +1123,12 @@ Operation unsuccessful.", MB_OK|MB_ICONINFORMATION);
 }
 /******************************************************************************
 FUNCTION:       pomGetMsgSgWnd
-DESCRIPTION:    Opens a database file for editing   
-PARAMETERS:     
+DESCRIPTION:    Opens a database file for editing
+PARAMETERS:
 RETURN VALUE:   Pointer to "CMsgSignalDBWnd" class
 AUTHOR:         Amarnath Shastry
-HISTORY:        
-20-02-2002      Initial Version     Amarnath Shastry    
+HISTORY:
+20-02-2002      Initial Version     Amarnath Shastry
 *******************************************************************************/
 
 CMsgSignalDBWnd* CMainFrame::pomGetMsgSgWnd()
@@ -1146,12 +1139,12 @@ CMsgSignalDBWnd* CMainFrame::pomGetMsgSgWnd()
 
 /******************************************************************************
 FUNCTION:       pomGetSimSysWnd
-DESCRIPTION:    Opens the simulated system window for editing   
-PARAMETERS:     
+DESCRIPTION:    Opens the simulated system window for editing
+PARAMETERS:
 RETURN VALUE:   Pointer to "CSimSysWnd" class
 AUTHOR:         Harika M
-HISTORY:        
-   
+HISTORY:
+
 *******************************************************************************/
 
 //CSimSysWnd* CMainFrame::pomGetSimSysWnd()
@@ -1161,35 +1154,35 @@ HISTORY:
 
 /******************************************************************************
 FUNCTION:       m_pomSimSysConfig
-DESCRIPTION:    Returns pointer to CSimSysConfigDetails class   
-PARAMETERS:     
+DESCRIPTION:    Returns pointer to CSimSysConfigDetails class
+PARAMETERS:
 RETURN VALUE:   Pointer to "CSimSysWnd" class
 AUTHOR:         Harika M
-HISTORY:        
-   
+HISTORY:
+
 *******************************************************************************/
 //CSimSysConfigDetails* CMainFrame::pomGetSimSysConfig()
 //{
-//	return (m_pomSimSysConfig );
+//  return (m_pomSimSysConfig );
 //}
 
 
 /******************************************************************************
 FUNCTION:       OnCloseDatabase
-DESCRIPTION:    Closes a database file  
-PARAMETERS:     
+DESCRIPTION:    Closes a database file
+PARAMETERS:
 RETURN VALUE:
 AUTHOR:         Amarnath Shastry
-HISTORY:        
+HISTORY:
 20-02-2002      Initial Version     Amarnath Shastry
 25.03.2002      Added flag closing  Amarnath Shastry
-                status                   
+                status
 Modification    Raja N
                 10/03/2004 Modified Active/Passive database concept and the
                 database editor will use inactive data structure always for
                 editing purpose
 *******************************************************************************/
-void CMainFrame::OnCloseDatabase() 
+void CMainFrame::OnCloseDatabase()
 {
     if ( m_podMsgSgWnd != NULL )
     {
@@ -1201,44 +1194,45 @@ void CMainFrame::OnCloseDatabase()
         if ( pTempMsgSg != NULL && !pTempMsgSg->bGetModifiedFlag())
         {
             UINT bRetVal =
-              AfxMessageBox("Do you want to save changes to the database file?",
-                             MB_YESNO | MB_ICONQUESTION);
-             if ( bRetVal == IDYES )
-             {
+                AfxMessageBox("Do you want to save changes to the database file?",
+                              MB_YESNO | MB_ICONQUESTION);
+
+            if ( bRetVal == IDYES )
+            {
                 BeginWaitCursor();
                 pTempMsgSg->
-                     bWriteIntoDatabaseFileFromDataStructure(
-                                                        m_omStrDatabaseName);
+                bWriteIntoDatabaseFileFromDataStructure(
+                    m_omStrDatabaseName);
+
                 if (pTempMsgSg->bGetDBAcitveFlagStatus() == TRUE)
                 {
                     vPostMsgToSendMsgDlg(CAN);
                 }
-                EndWaitCursor();
-             }
-        }
-        // User doesn't want to save changes nothing to process
 
+                EndWaitCursor();
+            }
+        }
+
+        // User doesn't want to save changes nothing to process
         // inactive data structure is no more required
         // delete previously allocated memory if any
         pTempMsgSg->bDeAllocateMemoryInactive();
         m_podMsgSgWnd->MDIDestroy();
         m_podMsgSgWnd = NULL;
         m_bIsNewDatabase = FALSE;
-
         // Reset the flag to indicate the closing of database window
         CFlags* pFlags = theApp.pouGetFlagsPtr();
         pFlags->vSetFlagStatus( DBOPEN, FALSE );
-
     }
 }
 /******************************************************************************
 FUNCTION:       podGetMsgSgDetView
-DESCRIPTION:    Returns pointer to CMsgSgDetView class  
-PARAMETERS:     
+DESCRIPTION:    Returns pointer to CMsgSgDetView class
+PARAMETERS:
 RETURN VALUE:   Pointer to "CMsgSgDetView" class
 AUTHOR:         Amarnath Shastry
-HISTORY:        
-20-02-2002      Initial Version     Amarnath Shastry    
+HISTORY:
+20-02-2002      Initial Version     Amarnath Shastry
 *******************************************************************************/
 CMsgSgDetView* CMainFrame::podGetMsgSgDetView(ETYPE_BUS eBus)
 {
@@ -1246,12 +1240,12 @@ CMsgSgDetView* CMainFrame::podGetMsgSgDetView(ETYPE_BUS eBus)
 }
 /******************************************************************************
 FUNCTION:       podGetMsgSgTreeView
-DESCRIPTION:    Returns pointer to CMsgSgTreeView class  
-PARAMETERS:     
+DESCRIPTION:    Returns pointer to CMsgSgTreeView class
+PARAMETERS:
 RETURN VALUE:   Pointer to "CMsgSgTreeView" class
 AUTHOR:         Amarnath Shastry
-HISTORY:        
-20-02-2002      Initial Version     Amarnath Shastry    
+HISTORY:
+20-02-2002      Initial Version     Amarnath Shastry
 *******************************************************************************/
 CMsgSgTreeView* CMainFrame::podGetMsgSgTreeView(ETYPE_BUS eBus)
 {
@@ -1259,27 +1253,27 @@ CMsgSgTreeView* CMainFrame::podGetMsgSgTreeView(ETYPE_BUS eBus)
 }
 /******************************************************************************
 FUNCTION:       podSetMsgSgTreeView
-DESCRIPTION:    Sets pointer to CMsgSgTreeView class  
+DESCRIPTION:    Sets pointer to CMsgSgTreeView class
 PARAMETERS:     Pointer to "CMsgSgTreeView" class
-RETURN VALUE:   
+RETURN VALUE:
 AUTHOR:         Amarnath Shastry
-HISTORY:        
-20-02-2002      Initial Version     Amarnath Shastry    
+HISTORY:
+20-02-2002      Initial Version     Amarnath Shastry
 *******************************************************************************/
-void CMainFrame::podSetMsgSgTreeView(CMsgSgTreeView *pTreeView, ETYPE_BUS eBus)
+void CMainFrame::podSetMsgSgTreeView(CMsgSgTreeView* pTreeView, ETYPE_BUS eBus)
 {
     m_pomMsgSgTreeViews[eBus] = pTreeView;
 }
 /******************************************************************************
 FUNCTION:       podSetMsgSgDetView
-DESCRIPTION:    Sets pointer to CMsgSgDetView class  
+DESCRIPTION:    Sets pointer to CMsgSgDetView class
 PARAMETERS:     Pointer to "CMsgSgDetView" class
-RETURN VALUE:   
+RETURN VALUE:
 AUTHOR:         Amarnath Shastry
-HISTORY:        
-20-02-2002      Initial Version     Amarnath Shastry    
+HISTORY:
+20-02-2002      Initial Version     Amarnath Shastry
 *******************************************************************************/
-void CMainFrame::podSetMsgSgDetView(CMsgSgDetView *pDetView, ETYPE_BUS eBus)
+void CMainFrame::podSetMsgSgDetView(CMsgSgDetView* pDetView, ETYPE_BUS eBus)
 {
     m_pomMsgSgDetViews[eBus] = pDetView;
 }
@@ -1287,12 +1281,12 @@ void CMainFrame::podSetMsgSgDetView(CMsgSgDetView *pDetView, ETYPE_BUS eBus)
 
 /******************************************************************************
 FUNCTION:       podGetSimSysDetView
-DESCRIPTION:    Returns pointer to CMsgSgDetView class  
-PARAMETERS:     
+DESCRIPTION:    Returns pointer to CMsgSgDetView class
+PARAMETERS:
 RETURN VALUE:   Pointer to "CMsgSgDetView" class
 AUTHOR:         Harika M
-HISTORY:        
-   
+HISTORY:
+
 *******************************************************************************/
 //CSimSysDetView* CMainFrame::podGetSimSysDetView()
 //{
@@ -1300,12 +1294,12 @@ HISTORY:
 //}
 /******************************************************************************
 FUNCTION:       podGetSimSysTreeView
-DESCRIPTION:    Returns pointer to CMsgSgTreeView class  
-PARAMETERS:     
+DESCRIPTION:    Returns pointer to CMsgSgTreeView class
+PARAMETERS:
 RETURN VALUE:   Pointer to "CMsgSgTreeView" class
 AUTHOR:         Harika M
-HISTORY:        
-  
+HISTORY:
+
 *******************************************************************************/
 //CSimSysTreeView* CMainFrame::podGetSimSysTreeView()
 //{
@@ -1313,12 +1307,12 @@ HISTORY:
 //}
 /******************************************************************************
 FUNCTION:       podSetSimSysTreeView
-DESCRIPTION:    Sets pointer to CMsgSgTreeView class  
+DESCRIPTION:    Sets pointer to CMsgSgTreeView class
 PARAMETERS:     Pointer to "CSimSysTreeView" class
-RETURN VALUE:   
+RETURN VALUE:
 AUTHOR:         Amarnath Shastry
-HISTORY:        
-20-02-2002      Initial Version     Amarnath Shastry    
+HISTORY:
+20-02-2002      Initial Version     Amarnath Shastry
 *******************************************************************************/
 //void CMainFrame::podSetSimSysTreeView(CSimSysTreeView *pTreeView)
 //{
@@ -1326,12 +1320,12 @@ HISTORY:
 //}
 /******************************************************************************
 FUNCTION:       podSetSimSysDetView
-DESCRIPTION:    Sets pointer to CMsgSgDetView class  
+DESCRIPTION:    Sets pointer to CMsgSgDetView class
 PARAMETERS:     Pointer to "CSimSysDetView" class
-RETURN VALUE:   
+RETURN VALUE:
 AUTHOR:         Amarnath Shastry
-HISTORY:        
-20-02-2002      Initial Version     Amarnath Shastry    
+HISTORY:
+20-02-2002      Initial Version     Amarnath Shastry
 *******************************************************************************/
 //void CMainFrame::podSetSimSysDetView(CSimSysDetView *pDetView)
 //{
@@ -1340,18 +1334,18 @@ HISTORY:
 
 //void CMainFrame::pomSetSimSysConfig(CSimSysConfigDetails *pSimsysConfig)
 //{
-//	m_pomSimSysConfig = pSimsysConfig;
+//  m_pomSimSysConfig = pSimsysConfig;
 //}
 
 /******************************************************************************
 FUNCTION:       OnImportDatabase
-DESCRIPTION:    Loads a database file selected by the user  
-PARAMETERS:     
+DESCRIPTION:    Loads a database file selected by the user
+PARAMETERS:
 RETURN VALUE:
 AUTHOR:         Amarnath Shastry
-HISTORY:        
-20-02-2002      Initial Version     Amarnath Shastry    
-12-11-2002      Modifications       Gopi, Changed usage to configuration from 
+HISTORY:
+20-02-2002      Initial Version     Amarnath Shastry
+12-11-2002      Modifications       Gopi, Changed usage to configuration from
                                     registry
 Modifications:  Raja N
                 10/03/2004 Included checks for clearing signal watch list and
@@ -1368,7 +1362,7 @@ Modifications:  Raja N
                 cleared with out any option.
 Modifications:  Raja N
                 18.05.2004 Added check before popping the import warning for
-                Signal Watch                
+                Signal Watch
 Modifications:  Raja N
                 10.08.2004 Added code to delete Signal Watch list incase of
                 different database got imported
@@ -1383,9 +1377,9 @@ Modifications:  Anish
 Modifications:  Anish
                 07.12.2006 Modified code to for Multiple database
 *******************************************************************************/
-void CMainFrame::OnImportDatabase() 
+void CMainFrame::OnImportDatabase()
 {
-	CStringArray strFilePathArray;
+    CStringArray strFilePathArray;
     // Display a open file dialog
     CFileDialog fileDlg( TRUE,      // Open File dialog
                          "dbf",     // Default Extension,
@@ -1393,244 +1387,266 @@ void CMainFrame::OnImportDatabase()
                          OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_ALLOWMULTISELECT,
                          "BUSMASTER Datatbase File(*.dbf)|*.dbf||",
                          NULL );
-
     // Set Title
     fileDlg.m_ofn.lpstrTitle  = _T("Select Active Database Filename...");
 
     if ( IDOK == fileDlg.DoModal() )
     {
-		POSITION pos = NULL; 
-		pos = fileDlg.GetStartPosition();
-		while(NULL != pos)
-		{
-			CString strTempFile = fileDlg.GetNextPathName(pos);
-			strFilePathArray.Add(strTempFile);
-		}
-		CString omStrMsg = "Database File: \n ";
-		BOOL bAllFilesImported = TRUE;
-		int nFileCount = strFilePathArray.GetSize();
-		for(int nCount = 0;nCount < nFileCount;nCount++)
-		{
-			CString strTempFileName = strFilePathArray.GetAt(nCount);
-			//FALSE because it is not called using COM 
-			DWORD dError=dLoadDataBaseFile(strTempFileName,FALSE);
-			if(E_INVALIDARG==dError)
-			{
-				bAllFilesImported = FALSE;
-				//Add the file name for warning display
-				omStrMsg += strTempFileName;
-				omStrMsg += defNEW_LINE;
+        POSITION pos = NULL;
+        pos = fileDlg.GetStartPosition();
+
+        while(NULL != pos)
+        {
+            CString strTempFile = fileDlg.GetNextPathName(pos);
+            strFilePathArray.Add(strTempFile);
+        }
+
+        CString omStrMsg = "Database File: \n ";
+        BOOL bAllFilesImported = TRUE;
+        int nFileCount = strFilePathArray.GetSize();
+
+        for(int nCount = 0; nCount < nFileCount; nCount++)
+        {
+            CString strTempFileName = strFilePathArray.GetAt(nCount);
+            //FALSE because it is not called using COM
+            DWORD dError=dLoadDataBaseFile(strTempFileName,FALSE);
+
+            if(E_INVALIDARG==dError)
+            {
+                bAllFilesImported = FALSE;
+                //Add the file name for warning display
+                omStrMsg += strTempFileName;
+                omStrMsg += defNEW_LINE;
                 strFilePathArray.RemoveAt(nCount);
-			}
-		}
-		if(bAllFilesImported == FALSE)
-		{
-			omStrMsg += " not found!";
-			MessageBox(omStrMsg,"BUSMASTER",MB_OK|MB_ICONERROR);
-		}
+            }
+        }
 
-		// Check for Warnning condition
-		CFlags* pFlags = NULL;
-		pFlags = theApp.pouGetFlagsPtr();
-		if( pFlags != NULL)
-		{
-			if(pFlags->nGetFlagStatus(DLLLOADED) == TRUE)
-			{
-				AfxMessageBox(defIMPORT_DLLLOAD_WARNNING,
-                                  MB_OK|MB_ICONINFORMATION);//dll loaded unload it
-			}
-		}
+        if(bAllFilesImported == FALSE)
+        {
+            omStrMsg += " not found!";
+            MessageBox(omStrMsg,"BUSMASTER",MB_OK|MB_ICONERROR);
+        }
 
-		HWND hWnd;
-		hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);					
-		if(hWnd)
-			::SendMessage(hWnd, WM_DATABASE_CHANGE, (WPARAM)TRUE, NULL);
+        // Check for Warnning condition
+        CFlags* pFlags = NULL;
+        pFlags = theApp.pouGetFlagsPtr();
 
-		//Added by Arun to update Data Handler Main entry list.
-		vUpdateMainEntryListInWaveDataHandler();
+        if( pFlags != NULL)
+        {
+            if(pFlags->nGetFlagStatus(DLLLOADED) == TRUE)
+            {
+                AfxMessageBox(defIMPORT_DLLLOAD_WARNNING,
+                              MB_OK|MB_ICONINFORMATION);//dll loaded unload it
+            }
+        }
+
+        HWND hWnd;
+        hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+
+        if(hWnd)
+        {
+            ::SendMessage(hWnd, WM_DATABASE_CHANGE, (WPARAM)TRUE, NULL);
+        }
+
+        //Added by Arun to update Data Handler Main entry list.
+        vUpdateMainEntryListInWaveDataHandler();
     }
 }
 
 DWORD CMainFrame::dLoadJ1939DBFile(CString omStrActiveDataBase,BOOL bFrmCom)
 {
     DWORD dReturn= (DWORD)E_FAIL;
+
     if (m_pouMsgSigJ1939 == NULL)
     {
         sg_asDbParams[J1939].m_ppvActiveDB = (void**)&m_pouActiveDbJ1939;
         sg_asDbParams[J1939].m_ppvImportedDBs = (void**)&m_pouMsgSigJ1939;
         m_pouMsgSigJ1939 = new CMsgSignal(sg_asDbParams[J1939], bFrmCom);
     }
+
     if (m_pouMsgSigJ1939 != NULL)
     {
-	    
         //Check for same DB path......
-	    CStringArray aomOldDatabases;
+        CStringArray aomOldDatabases;
         m_pouMsgSigJ1939->vGetDataBaseNames(&aomOldDatabases);
-		int nFileCount = aomOldDatabases.GetSize();
-	    BOOL bFilePresent = FALSE;
-	    for(int nCount = 0;(nCount < nFileCount)&&(!bFilePresent);nCount++)
-	    {
-		    CString omstrFileName = aomOldDatabases.GetAt(nCount);
-		    if( !omstrFileName.Compare(omStrActiveDataBase) )
-		    {
-			    bFilePresent = TRUE;
-		    }
-	    }
-	    if(bFilePresent == TRUE)
-	    {
-		    //if file is already present remove it and then load the file again
-		    m_pouMsgSigJ1939->bDeAllocateMemory(omStrActiveDataBase);
-	    }
-	    // file-attribute information
-	    struct _finddata_t fileinfo;
-        
-	    // Auto Select DB File
-        BOOL bRetVal;
-	    if (_findfirst( omStrActiveDataBase, &fileinfo)!= -1L)
-	    {	
-			    // Fill data struct with new data base info
-			    bRetVal = m_pouMsgSigJ1939->bFillDataStructureFromDatabaseFile(
-				    omStrActiveDataBase);
-                if((bRetVal != FALSE)&&(bFilePresent != TRUE))
-                {
-                    m_pouMsgSigJ1939->bAddDbNameEntry(omStrActiveDataBase);
-                }
-                //Update in NodeSimEx
-                GetIJ1939NodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[J1939].m_omDefinedMsgHeaders), UPDATE_UNIONS_HEADER_FILES);
-                //Update Msg Name<-->Msg Code List
-                vUpdateMsgNameCodeList(m_pouMsgSigJ1939, m_sExFuncPtr[J1939].m_odMsgNameMsgCodeList);
-                //Update in NodeSimEx
-                GetIJ1939NodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[J1939].m_odMsgNameMsgCodeList), UPDATE_DATABASE_MSGS);
-		
-                dReturn = S_OK;
-			    // Create Unions.h in local directory
-			    // and fill the file with the latest data structure
-			    
-                m_pouMsgSigJ1939->bWriteDBHeader(omStrActiveDataBase);
+        int nFileCount = aomOldDatabases.GetSize();
+        BOOL bFilePresent = FALSE;
+
+        for(int nCount = 0; (nCount < nFileCount)&&(!bFilePresent); nCount++)
+        {
+            CString omstrFileName = aomOldDatabases.GetAt(nCount);
+
+            if( !omstrFileName.Compare(omStrActiveDataBase) )
+            {
+                bFilePresent = TRUE;
+            }
         }
-		vPopulateJ1939PGNList();
+
+        if(bFilePresent == TRUE)
+        {
+            //if file is already present remove it and then load the file again
+            m_pouMsgSigJ1939->bDeAllocateMemory(omStrActiveDataBase);
+        }
+
+        // file-attribute information
+        struct _finddata_t fileinfo;
+        // Auto Select DB File
+        BOOL bRetVal;
+
+        if (_findfirst( omStrActiveDataBase, &fileinfo)!= -1L)
+        {
+            // Fill data struct with new data base info
+            bRetVal = m_pouMsgSigJ1939->bFillDataStructureFromDatabaseFile(
+                          omStrActiveDataBase);
+
+            if((bRetVal != FALSE)&&(bFilePresent != TRUE))
+            {
+                m_pouMsgSigJ1939->bAddDbNameEntry(omStrActiveDataBase);
+            }
+
+            //Update in NodeSimEx
+            GetIJ1939NodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[J1939].m_omDefinedMsgHeaders), UPDATE_UNIONS_HEADER_FILES);
+            //Update Msg Name<-->Msg Code List
+            vUpdateMsgNameCodeList(m_pouMsgSigJ1939, m_sExFuncPtr[J1939].m_odMsgNameMsgCodeList);
+            //Update in NodeSimEx
+            GetIJ1939NodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[J1939].m_odMsgNameMsgCodeList), UPDATE_DATABASE_MSGS);
+            dReturn = S_OK;
+            // Create Unions.h in local directory
+            // and fill the file with the latest data structure
+            m_pouMsgSigJ1939->bWriteDBHeader(omStrActiveDataBase);
+        }
+
+        vPopulateJ1939PGNList();
     }
+
     return dReturn;
 }
 /******************************************************************************
 FUNCTION:       bLoadDataBaseFile
-DESCRIPTION:    Loads a database file selected by the user  
-PARAMETERS:     file name ,bFrmCom 
+DESCRIPTION:    Loads a database file selected by the user
+PARAMETERS:     file name ,bFrmCom
 RETURN VALUE:   bool
 AUTHOR:         Anish kumar
 Modifications:  Anish
                 07.12.2006 Modified code to for Multiple database
 *******************************************************************************/
 DWORD CMainFrame::dLoadDataBaseFile(CString omStrActiveDataBase,BOOL /*bFrmCom*/)
- {
-	DWORD dReturn= (DWORD)E_FAIL;
+{
+    DWORD dReturn= (DWORD)E_FAIL;
     //Check for same DB path......
-	CStringArray aomOldDatabases;
+    CStringArray aomOldDatabases;
     theApp.m_pouMsgSignal->vGetDataBaseNames(&aomOldDatabases);
-	int nFileCount = aomOldDatabases.GetSize();
-	BOOL bFilePresent = FALSE;
-	for(int nCount = 0;(nCount < nFileCount)&&(!bFilePresent);nCount++)
-	{
-		CString omstrFileName = aomOldDatabases.GetAt(nCount);
-		if( !omstrFileName.Compare(omStrActiveDataBase) )
-		{
-			bFilePresent = TRUE;
-		}
-	}
-	if(bFilePresent == TRUE)
-	{
-		//if file is already present remove it and then load the file again
-		theApp.m_pouMsgSignal->bDeAllocateMemory(omStrActiveDataBase);
-	}
-	// file-attribute information
-	struct _finddata_t fileinfo;
-	
-	// Auto Select DB File
-	if (_findfirst( omStrActiveDataBase, &fileinfo)!= -1L)
-	{	
-		BOOL bRetVal = FALSE;
-		if ( theApp.m_pouMsgSignal !=  NULL )
-		{
-			// Fill data struct with new data base info
-			bRetVal = theApp.m_pouMsgSignal->bFillDataStructureFromDatabaseFile(
-				omStrActiveDataBase);
-			// Create Unions.h in local directory
-			// and fill the file with the latest data structure
-			theApp.m_pouMsgSignal->bWriteDBHeader(omStrActiveDataBase);
-               //Update Defined Msg Headers
-        m_sExFuncPtr[CAN].m_omDefinedMsgHeaders.RemoveAll();
-        CStringArray omDatabaseNames;
-        theApp.m_pouMsgSignal->vGetDataBaseNames(&omDatabaseNames);
-		for (int i = 0; i < omDatabaseNames.GetSize(); i++)
+    int nFileCount = aomOldDatabases.GetSize();
+    BOOL bFilePresent = FALSE;
+
+    for(int nCount = 0; (nCount < nFileCount)&&(!bFilePresent); nCount++)
+    {
+        CString omstrFileName = aomOldDatabases.GetAt(nCount);
+
+        if( !omstrFileName.Compare(omStrActiveDataBase) )
         {
-            CString omHeaderPath = omStrGetUnionFilePath(omDatabaseNames.GetAt(i));
-            m_sExFuncPtr[CAN].m_omDefinedMsgHeaders.Add(omHeaderPath);
+            bFilePresent = TRUE;
         }
-        //Update in NodeSimEx
-        GetICANNodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[CAN].m_omDefinedMsgHeaders), UPDATE_UNIONS_HEADER_FILES);
-        //Update Msg Name<-->Msg Code List
-        vUpdateMsgNameCodeList(theApp.m_pouMsgSignal, m_sExFuncPtr[CAN].m_odMsgNameMsgCodeList);
-        //Update in NodeSimEx
-        GetICANNodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[CAN].m_odMsgNameMsgCodeList), UPDATE_DATABASE_MSGS);
-			
-			// User can open the active DB
-		theApp.pouGetFlagsPtr()->vSetFlagStatus(SELECTDATABASEFILE, TRUE );
-		//venkat update signal watch
-        vUpdateSWList();
+    }
 
-		}
-		theApp.vPopulateCANIDList();
-		// Send a message to Tx Window about database change
-		if(m_objTxHandler.hConfigWindowShown() == S_OK)
-		{
-			eUSERSELCTION eUserSel = eDATABASEIMPORTCMD;
-			m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel,0);
-		}
-		// Delete all the memory associated with the data structure.
-		CMessageAttrib::ouGetHandle(CAN).vSaveMessageAttribData();
-		////Clear the message Window Content
-  //      if ( !bFrmCom )
-  //      {
-		//    //Clear the message Window Content
-		//    OnClearMsgWindow();
-		//    // Clear Message Interpretation Window Content
-  //      }
-		//if the file is not present then add its name to file list
-		if((bRetVal != FALSE)&&(bFilePresent != TRUE))
-		{
-			//If the DATABASE is added add the file name to theApp class
+    if(bFilePresent == TRUE)
+    {
+        //if file is already present remove it and then load the file again
+        theApp.m_pouMsgSignal->bDeAllocateMemory(omStrActiveDataBase);
+    }
+
+    // file-attribute information
+    struct _finddata_t fileinfo;
+
+    // Auto Select DB File
+    if (_findfirst( omStrActiveDataBase, &fileinfo)!= -1L)
+    {
+        BOOL bRetVal = FALSE;
+
+        if ( theApp.m_pouMsgSignal !=  NULL )
+        {
+            // Fill data struct with new data base info
+            bRetVal = theApp.m_pouMsgSignal->bFillDataStructureFromDatabaseFile(
+                          omStrActiveDataBase);
+            // Create Unions.h in local directory
+            // and fill the file with the latest data structure
+            theApp.m_pouMsgSignal->bWriteDBHeader(omStrActiveDataBase);
+            //Update Defined Msg Headers
+            m_sExFuncPtr[CAN].m_omDefinedMsgHeaders.RemoveAll();
+            CStringArray omDatabaseNames;
+            theApp.m_pouMsgSignal->vGetDataBaseNames(&omDatabaseNames);
+
+            for (int i = 0; i < omDatabaseNames.GetSize(); i++)
+            {
+                CString omHeaderPath = omStrGetUnionFilePath(omDatabaseNames.GetAt(i));
+                m_sExFuncPtr[CAN].m_omDefinedMsgHeaders.Add(omHeaderPath);
+            }
+
+            //Update in NodeSimEx
+            GetICANNodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[CAN].m_omDefinedMsgHeaders), UPDATE_UNIONS_HEADER_FILES);
+            //Update Msg Name<-->Msg Code List
+            vUpdateMsgNameCodeList(theApp.m_pouMsgSignal, m_sExFuncPtr[CAN].m_odMsgNameMsgCodeList);
+            //Update in NodeSimEx
+            GetICANNodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[CAN].m_odMsgNameMsgCodeList), UPDATE_DATABASE_MSGS);
+            // User can open the active DB
+            theApp.pouGetFlagsPtr()->vSetFlagStatus(SELECTDATABASEFILE, TRUE );
+            //venkat update signal watch
+            vUpdateSWList();
+        }
+
+        theApp.vPopulateCANIDList();
+
+        // Send a message to Tx Window about database change
+        if(m_objTxHandler.hConfigWindowShown() == S_OK)
+        {
+            eUSERSELCTION eUserSel = eDATABASEIMPORTCMD;
+            m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel,0);
+        }
+
+        // Delete all the memory associated with the data structure.
+        CMessageAttrib::ouGetHandle(CAN).vSaveMessageAttribData();
+
+        ////Clear the message Window Content
+        //      if ( !bFrmCom )
+        //      {
+        //    //Clear the message Window Content
+        //    OnClearMsgWindow();
+        //    // Clear Message Interpretation Window Content
+        //      }
+        //if the file is not present then add its name to file list
+        if((bRetVal != FALSE)&&(bFilePresent != TRUE))
+        {
+            //If the DATABASE is added add the file name to theApp class
             theApp.m_pouMsgSignal->bAddDbNameEntry(omStrActiveDataBase);
-		}
-		
+        }
 
-		dReturn= S_OK;
-	}
-	else
-	{
-		dReturn = (DWORD)E_INVALIDARG; //file not found
-	}
-	return dReturn;
- }
+        dReturn= S_OK;
+    }
+    else
+    {
+        dReturn = (DWORD)E_INVALIDARG; //file not found
+    }
+
+    return dReturn;
+}
 /******************************************************************************
 FUNCTION:       nConvertStringToInt
-DESCRIPTION:    Closes a database file  
+DESCRIPTION:    Closes a database file
 PARAMETERS:     CString omStrHexNo -- Hex number
 RETURN VALUE:   Equivalent decimal number
 AUTHOR:         Amarnath Shastry
-HISTORY:        
-20-02-2002      Initial Version     Amarnath Shastry    
+HISTORY:
+20-02-2002      Initial Version     Amarnath Shastry
 02.06.2003      Changed the int to __int64 Amitesh Bharti
 12.06.2003      review comment for CRH0005 incorporated. Amitesh Bharti
 *******************************************************************************/
 __int64 CMainFrame::nConvertStringToInt(CString omStrHexNo)
 {
     __int64 n64RetVal = 0;
-
     BOOL b_IsNegative = FALSE;
-    
+
     for (int nCount = 0; nCount < omStrHexNo.GetLength(); nCount++)
     {
-        
         TCHAR cChar = omStrHexNo.GetAt( nCount);
 
         if ( cChar == '0' )
@@ -1702,10 +1718,12 @@ __int64 CMainFrame::nConvertStringToInt(CString omStrHexNo)
             b_IsNegative = TRUE;
         }
     }
+
     if ( b_IsNegative )
     {
         n64RetVal = -n64RetVal;
     }
+
     return n64RetVal;
 }
 /******************************************************************************/
@@ -1720,24 +1738,25 @@ __int64 CMainFrame::nConvertStringToInt(CString omStrHexNo)
 /*  Date Created     :  22.02.2002                                            */
 /*  Modifications    :                                                        */
 /******************************************************************************/
-void CMainFrame::OnConfigBaudrate() 
+void CMainFrame::OnConfigBaudrate()
 {
     PCHAR pInitData = (PCHAR)m_asControllerDetails;
     int nSize = sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS;
+
     if (g_pouDIL_CAN_Interface->DILC_DisplayConfigDlg(pInitData, nSize) == S_OK)
     {
         //Set Controller to ConfigDetails
         memcpy(m_asControllerDetails, pInitData, nSize);
     }
-	//Update hardware info in status bar
-	vUpdateHWStatusInfo();
 
-	//update baudrate details in global statistics buffer
-	for (int i = 0; i < defNO_OF_CHANNELS; i++)
-	{
-		GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate));
-	}
+    //Update hardware info in status bar
+    vUpdateHWStatusInfo();
 
+    //update baudrate details in global statistics buffer
+    for (int i = 0; i < defNO_OF_CHANNELS; i++)
+    {
+        GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate));
+    }
 }
 
 /******************************************************************************/
@@ -1755,48 +1774,51 @@ void CMainFrame::OnConfigBaudrate()
 
 /**
 * \brief         This function pops out the hardware selection dialog
-* \param		 void
+* \param         void
 * \return        void
 * \authors       Arunkumar Karri
 * \date          13.12.2011 Created
 */
-void CMainFrame::OnConfigChannelSelection() 
-{        
-	INT nCount = CHANNEL_ALLOWED;
-	HRESULT hResult = g_pouDIL_CAN_Interface->DILC_DeselectHwInterfaces();
+void CMainFrame::OnConfigChannelSelection()
+{
+    INT nCount = CHANNEL_ALLOWED;
+    HRESULT hResult = g_pouDIL_CAN_Interface->DILC_DeselectHwInterfaces();
 
-	// If the deselection of interfaces is not appropriate the dont proceed further
-	if (S_OK != hResult)
-		return;
+    // If the deselection of interfaces is not appropriate the dont proceed further
+    if (S_OK != hResult)
+    {
+        return;
+    }
 
     if (g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount) == S_OK)
-    {					
+    {
         hResult = g_pouDIL_CAN_Interface->DILC_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
-		if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
-		{
-			/* Updates the number of channels selected */
-			m_nNumChannels = nCount; 
 
-			//Update hardware info in status bar
-			vUpdateHWStatusInfo();
-
-			//Update NW statistics window channel information
-			vUpdateChannelInfo();
-		}
-	}	
+        if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
+        {
+            /* Updates the number of channels selected */
+            m_nNumChannels = nCount;
+            //Update hardware info in status bar
+            vUpdateHWStatusInfo();
+            //Update NW statistics window channel information
+            vUpdateChannelInfo();
+        }
+    }
 }
 
-void CMainFrame::OnUpdateConfigChannelSelection(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateConfigChannelSelection(CCmdUI* pCmdUI)
 {
     if(pCmdUI != NULL)
     {
         CFlags* podFlag = theApp.pouGetFlagsPtr();
+
         if( podFlag != NULL )
         {
             // Disable if it is connected
             BOOL bDisable = podFlag->nGetFlagStatus(CONNECTED);
             // In Simulation mode is selected then disable Controller option
             LONG lParam= 0;
+
             if( g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, HW_MODE) == S_OK)
             {
                 if (lParam == defMODE_SIMULATE)
@@ -1804,6 +1826,7 @@ void CMainFrame::OnUpdateConfigChannelSelection(CCmdUI* pCmdUI)
                     bDisable = TRUE;
                 }
             }
+
             // If bDisable = TRUE then set the Enable to FALSE
             pCmdUI->Enable(!bDisable);
         }
@@ -1817,54 +1840,49 @@ DESCRIPTION:    #Called by the framework when user selects new database
                 option from the menu
                 #Creates a new database file name and displays
                 database editior
-PARAMETERS:     
+PARAMETERS:
 RETURN VALUE:
 AUTHOR:         Amarnath Shastry
-HISTORY:        
-20-02-2002      Initial Version     Amarnath Shastry    
-29.05.2002      Get the current working directory and add it 
+HISTORY:
+20-02-2002      Initial Version     Amarnath Shastry
+29.05.2002      Get the current working directory and add it
                 with file name      Amitesh Bharti
 10.03.2004      Removed Active database flag set call - Raja N
 *******************************************************************************/
-void CMainFrame::OnNewDatabase() 
+void CMainFrame::OnNewDatabase()
 {
     UINT unCount = 1;
     BOOL bResult = FALSE;
+
     while (TRUE)
     {
         CString omStrDbName = NEW_DATABASE_NAME;
-
         CString omStr = STR_EMPTY;
-
         omStr.Format( "%d", unCount);
-
         omStr += ".";
-
         omStr += DATABASE_EXTN;
-
         omStrDbName += omStr;
-
         // file-attribute information
         struct _finddata_t fileinfo;
-    
+
         // Auto Select DB File
         if (_findfirst( omStrDbName, &fileinfo)== -1L)
         {
             CStdioFile om_File;
-
             TRY
             {
-                CFileDialog fileDlg(FALSE, DATABASE_EXTN, omStrDbName.GetBuffer(MAX_PATH), 
-                                    OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, DATABASE_FILTER);
+                CFileDialog fileDlg(FALSE, DATABASE_EXTN, omStrDbName.GetBuffer(MAX_PATH),
+                OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, DATABASE_FILTER);
+
                 if (fileDlg.DoModal() == IDOK)
                 {
                     m_omStrDatabaseName = fileDlg.GetPathName();
                     bResult = TRUE;
-                
+
                     // create the selected file
                     if (om_File.Open(m_omStrDatabaseName,
-                                    CFile::modeCreate | CFile::modeRead | 
-                                    CFile::typeText))
+                    CFile::modeCreate | CFile::modeRead |
+                    CFile::typeText))
                     {
                         om_File.Close();
                     }
@@ -1877,9 +1895,7 @@ void CMainFrame::OnNewDatabase()
                     LPTSTR lpszError = NULL;
                     // Get error
                     om_Fe->GetErrorMessage( lpszError, 255);
-
                     MessageBox( lpszError, NULL, MB_OK );
-                
                     om_Fe->Delete();
                 }
             }
@@ -1890,21 +1906,19 @@ void CMainFrame::OnNewDatabase()
             //m_omStrDatabaseName  = acBeffer;
             //m_omStrDatabaseName +="\\";
             //m_omStrDatabaseName += omStrDbName;
-
-            
-            
             break;
         }
 
         unCount++;
     }
+
     if (bResult == TRUE)
     {
-
         if ( m_podMsgSgWnd != NULL )
         {
             m_podMsgSgWnd = NULL;
         }
+
         sg_asDbParams[CAN].m_ppvActiveDB = (void**)&theApp.m_pouMsgSgInactive;
         sg_asDbParams[CAN].m_ppvImportedDBs = (void**)&theApp.m_pouMsgSignal;
         m_podMsgSgWnd = new CMsgSignalDBWnd(sg_asDbParams[CAN]);
@@ -1917,18 +1931,17 @@ void CMainFrame::OnNewDatabase()
 
             // Create child window
             if ( !m_podMsgSgWnd->Create( NULL,
-                                        "Database Editor",
-                                        WS_CHILD|WS_VISIBLE |WS_OVERLAPPED|
-                                        WS_CAPTION|WS_THICKFRAME,
-                                        rectDefault, this ) )
+                                         "Database Editor",
+                                         WS_CHILD|WS_VISIBLE |WS_OVERLAPPED|
+                                         WS_CAPTION|WS_THICKFRAME,
+                                         rectDefault, this ) )
             {
                 MessageBox( "Create BUSMASTER Database Window Failed!",
-                    NULL, MB_OK|MB_ICONERROR );
+                            NULL, MB_OK|MB_ICONERROR );
                 return;
             }
 
             m_podMsgSgWnd->ShowWindow( SW_SHOWMAXIMIZED );
-            
             m_podMsgSgWnd->UpdateWindow();
             // Set the flag to indicate the opening of database window
             CFlags* pFlags = theApp.pouGetFlagsPtr();
@@ -1946,18 +1959,18 @@ DESCRIPTION:    #Called by the framework when user selects SaveAs...
                 option from the menu for the database editor
                 #Dispalys Save file dialog
                 #Saves the datastructure contents into the selected file
-PARAMETERS:     
+PARAMETERS:
 RETURN VALUE:
 AUTHOR:         Amarnath Shastry
-HISTORY:        
-20-02-2002      Initial Version     Amarnath Shastry    
+HISTORY:
+20-02-2002      Initial Version     Amarnath Shastry
 29.05.2002      Added code to change the font after saving the file -- Amitesh
 Modification    Raja N
                 10/03/2004 Modified Active/Passive database concept and the
                 database editor will use inactive data structure always for
                 editing purpose
 *******************************************************************************/
-void CMainFrame::OnConfigDatabaseSaveAs() 
+void CMainFrame::OnConfigDatabaseSaveAs()
 {
     // Display a save file dialog
     CFileDialog fileDlg( FALSE,     // Save File dialog
@@ -1966,7 +1979,6 @@ void CMainFrame::OnConfigDatabaseSaveAs()
                          OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
                          "CAN Datatbase File(*.dbf)|*.dbf||",
                          NULL );
-
     // Set Title
     fileDlg.m_ofn.lpstrTitle  = _T("Save As...");
 
@@ -1981,41 +1993,49 @@ void CMainFrame::OnConfigDatabaseSaveAs()
             strDbName.TrimRight();
             strDbName += strExtName;
         }
-                
+
         CMsgSignal* pTempMsgSg = NULL;
         // Get the pointer to the editor database data structure
         pTempMsgSg = theApp.m_pouMsgSgInactive;
-        
-        if ( pTempMsgSg != NULL ) 
+
+        if ( pTempMsgSg != NULL )
         {
             BeginWaitCursor( );
             // save into the file
             pTempMsgSg->bWriteIntoDatabaseFileFromDataStructure( strDbName );
+
             if (pTempMsgSg->bGetDBAcitveFlagStatus() == TRUE)
             {
                 vPostMsgToSendMsgDlg(CAN);
             }
+
             EndWaitCursor( );
-            // If this is new database, remove the 
+
+            // If this is new database, remove the
             // default file name already saved
             if ( m_bIsNewDatabase == TRUE )
             {
                 CFile::Remove( m_omStrDatabaseName );
             }
+
             // Update the selected file name with full path
             m_omStrDatabaseName = strDbName;
             // Set the New Flag to False
             vSetNewDatabaseFlag(FALSE);
-            // Now set the root item in the tree view to 
+
+            // Now set the root item in the tree view to
             // selected name
             if ( m_pomMsgSgTreeViews[CAN] != NULL)
-                  m_pomMsgSgTreeViews[CAN]->vSetRootItemText(m_omStrDatabaseName);
+            {
+                m_pomMsgSgTreeViews[CAN]->vSetRootItemText(m_omStrDatabaseName);
+            }
 
             // Set all the items in the tree view to normal font
             if ( m_pomMsgSgTreeViews[CAN] != NULL)
-                 m_pomMsgSgTreeViews[CAN]->vSetAllItemsNormal();
+            {
+                m_pomMsgSgTreeViews[CAN]->vSetAllItemsNormal();
+            }
         }
-        
     }
 }
 /******************************************************************************
@@ -2023,65 +2043,69 @@ FUNCTION:       OnConfigDatabaseSave
 DESCRIPTION:    #Called by the framework when user selects Save...
                 option from the menu for the database editor
                 #Saves the datastructure contents into the selected file
-PARAMETERS:     
+PARAMETERS:
 RETURN VALUE:
 AUTHOR:         Amarnath Shastry
-HISTORY:        
+HISTORY:
 20-02-2002      Initial Version     Amarnath Shastry
 Modification    Raja N
                 10/03/2004 Modified Active/Passive database concept and the
                 database editor will use inactive data structure always for
-                editing purpose    
+                editing purpose
 *******************************************************************************/
-void CMainFrame::OnConfigDatabaseSave() 
+void CMainFrame::OnConfigDatabaseSave()
 {
-
     // Get appropriate message data structure
     CMsgSignal* pTempMsgSg = NULL;
     // Get the data structure pointer
     pTempMsgSg = theApp.m_pouMsgSgInactive;
 
     // Save into the database
-    if ( pTempMsgSg != NULL ) 
+    if ( pTempMsgSg != NULL )
     {
         CMsgSgDetView* podMsgSg = podGetMsgSgDetView(CAN);
 
         // Special case:
-        // If the user edits message details and 
+        // If the user edits message details and
         // directly clicks the "save" tool bar button
         // or menu options, save the edited values to
         // the data structure first
         if (podMsgSg != NULL)
         {
-           if (podMsgSg->bUpdateEditedMesageDetails())
-           {
+            if (podMsgSg->bUpdateEditedMesageDetails())
+            {
                 if ( !pTempMsgSg->bGetModifiedFlag())
                 {
                     BeginWaitCursor( );
                     // save into the file
                     pTempMsgSg->
-                        bWriteIntoDatabaseFileFromDataStructure(
-                                                        m_omStrDatabaseName);
+                    bWriteIntoDatabaseFileFromDataStructure(
+                        m_omStrDatabaseName);
+
                     if (pTempMsgSg->bGetDBAcitveFlagStatus() == TRUE)
                     {
                         vPostMsgToSendMsgDlg(CAN);
                     }
-                    // Check if the modified file is being loaded or not. 
-                    //If yes then prompt the user whether he wants to 
+
+                    // Check if the modified file is being loaded or not.
+                    //If yes then prompt the user whether he wants to
                     //import it or not.
                     CStringArray omImportedDBNames;
+
                     if (theApp.m_pouMsgSignal != NULL)
                     {
                         theApp.m_pouMsgSignal->vGetDataBaseNames(&omImportedDBNames);
-						for (INT nDBCount = 0; nDBCount < omImportedDBNames.GetSize();
-                            nDBCount++)
+
+                        for (INT nDBCount = 0; nDBCount < omImportedDBNames.GetSize();
+                                nDBCount++)
                         {
-                            if (m_omStrDatabaseName == 
-                                omImportedDBNames.GetAt(nDBCount))
+                            if (m_omStrDatabaseName ==
+                                    omImportedDBNames.GetAt(nDBCount))
                             {
                                 CString omText;
-                                omText.Format( _T("File  \"%s\"  has been modified which is currently being loaded.\nDo you want to re-import it to reflect the changes?"), 
-                                                m_omStrDatabaseName);
+                                omText.Format( _T("File  \"%s\"  has been modified which is currently being loaded.\nDo you want to re-import it to reflect the changes?"),
+                                               m_omStrDatabaseName);
+
                                 if (MessageBox(omText, _T(""), MB_ICONQUESTION | MB_YESNO) == IDYES)
                                 {
                                     dLoadDataBaseFile(m_omStrDatabaseName, FALSE);
@@ -2089,17 +2113,20 @@ void CMainFrame::OnConfigDatabaseSave()
                             }
                         }
                     }
+
                     //Checking ends
                     m_bIsNewDatabase = FALSE;
-
                     EndWaitCursor( );
+
                     // Set all the items in the tree view to normal font
                     if ( m_pomMsgSgTreeViews[CAN] != NULL)
+                    {
                         m_pomMsgSgTreeViews[CAN]->vSetAllItemsNormal();
+                    }
 
-					pTempMsgSg->vSetModifiedFlag(TRUE);
+                    pTempMsgSg->vSetModifiedFlag(TRUE);
                 }
-           }
+            }
         }
     }
 }
@@ -2108,31 +2135,31 @@ FUNCTION:       OnConfigMessageDisplay
 DESCRIPTION:    #Called by the framework when user selects Configure Message...
                 option from the menu.
                 #Displays message attribute dialog
-PARAMETERS:     
+PARAMETERS:
 RETURN VALUE:
 AUTHOR:         Ratnadip Choudhury
-HISTORY:        
+HISTORY:
 20-02-2002      Initial Version     Ratnadip Choudhury
-04-11-2003      Change to have property page for database and non database 
+04-11-2003      Change to have property page for database and non database
                 messages.
 22.07.2004      Raja N, Added a new page for message buffer configuration
 31.07.2004      Raja N, Modified the name as per code review comments
 20.06.2005      Raja N, Modified to include Filter Page
 *******************************************************************************/
-void CMainFrame::OnConfigMessageDisplay() 
+void CMainFrame::OnConfigMessageDisplay()
 {
-	CPPageMessage odDBMsg(TRUE, CAN, theApp.m_pouMsgSignal), odNDBMsg(FALSE, CAN,  theApp.m_pouMsgSignal);
+    CPPageMessage odDBMsg(TRUE, CAN, theApp.m_pouMsgSignal), odNDBMsg(FALSE, CAN,  theApp.m_pouMsgSignal);
     CPropertySheet omAllMessages("Configure Message Display- CAN");
     CMsgFilterConfigPage omFilter(&m_sFilterAppliedCAN, m_podMsgWndThread->hGetHandleMsgWnd(CAN));
-
     BOOL bConnected = FALSE;
     CFlags* pouFlag      = theApp.pouGetFlagsPtr();
+
     // Get the connection status
     if(pouFlag != NULL)
     {
         bConnected   = pouFlag->nGetFlagStatus(CONNECTED);
     }
-    
+
     omAllMessages.m_psh.dwFlags |= PSH_NOAPPLYNOW;
     omAllMessages.m_psh.dwFlags &= ~PSH_HASHELP;
     // Add Filter Page
@@ -2140,6 +2167,7 @@ void CMainFrame::OnConfigMessageDisplay()
     // Add DB & NDB pages
     omAllMessages.AddPage(&odDBMsg);
     omAllMessages.AddPage(&odNDBMsg);
+
     // Show display configuration only if it is not connected
     if( bConnected == FALSE )
     {
@@ -2148,11 +2176,11 @@ void CMainFrame::OnConfigMessageDisplay()
         omAllMessages.AddPage(&obMsgBuffConf);
         omAllMessages.DoModal();
 
-		if (m_podMsgWndThread != NULL)//Msg window
+        if (m_podMsgWndThread != NULL)//Msg window
         {
-			::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
-                            eWINID_MSG_WND_GET_BUFFER_DETAILS, (LPARAM)m_anMsgBuffSize);
-		}
+            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
+                          eWINID_MSG_WND_GET_BUFFER_DETAILS, (LPARAM)m_anMsgBuffSize);
+        }
     }
     else
     {
@@ -2172,7 +2200,7 @@ void CMainFrame::OnConfigMessageDisplay()
 /*  Modifications    :  Raja N on 19.07.2005, Changed the implimentation to   */
 /*                      call replay manager                                   */
 /******************************************************************************/
-void CMainFrame::OnReplaySingleSkip() 
+void CMainFrame::OnReplaySingleSkip()
 {
     // Dispatch it to Replay Manager
     vREP_CmdSkip();
@@ -2190,7 +2218,7 @@ void CMainFrame::OnReplaySingleSkip()
 /*  Modifications    :  Raja N on 19.07.2005, Changed the implimentation to   */
 /*                      call replay manager                                   */
 /******************************************************************************/
-void CMainFrame::OnReplaySingleStep() 
+void CMainFrame::OnReplaySingleStep()
 {
     // Dispatch it to Replay Manager
     vREP_CmdStep();
@@ -2210,7 +2238,7 @@ void CMainFrame::OnReplaySingleStep()
 /*  Modifications    :  Raja N on 19.07.2005, Changed the implimentation to   */
 /*                      call replay manager                                   */
 /******************************************************************************/
-void CMainFrame::OnReplayStop() 
+void CMainFrame::OnReplayStop()
 {
     // Dispatch it to Replay Manager
     vREP_CmdStop();
@@ -2231,7 +2259,7 @@ void CMainFrame::OnReplayStop()
 /*  Modifications    :  Raja N on 19.07.2005, Changed the implimentation to   */
 /*                      call replay manager                                   */
 /******************************************************************************/
-void CMainFrame::OnReplayGo() 
+void CMainFrame::OnReplayGo()
 {
     // Dispatch it to Replay Manager
     vREP_CmdGo();
@@ -2258,7 +2286,7 @@ void CMainFrame::OnReplayGo()
 /*                   :   Inserted CExecute manger for activating flags        */
 /******************************************************************************/
 extern BOOL gbStopActiveThreads(int);
-void CMainFrame::OnActivateMessageHandler() 
+void CMainFrame::OnActivateMessageHandler()
 {
     //Get present status
     BOOL bEnable = GetICANNodeSim()->NS_GetHandlerStatus(H_MSGHANDLERBUTTON);
@@ -2275,7 +2303,7 @@ void CMainFrame::OnActivateMessageHandler()
 /*  Member of        :  CMainFrame                                            */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  14.03.2002                                            */    
+/*  Date Created     :  14.03.2002                                            */
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modification on  :  07.10.2003, The flag is 'm_bTimerInvokedOnce'         */
 /*                      introduced due to change from model dialog to         */
@@ -2284,12 +2312,12 @@ void CMainFrame::OnActivateMessageHandler()
 /*  Modification on  :  27.12.2005,                                           */
 /*                   :   Inserted CExecute manger for activating flags        */
 /******************************************************************************/
-void CMainFrame::OnActivateTimerHandler() 
+void CMainFrame::OnActivateTimerHandler()
 {
     //Get present status
     BOOL bEnable = GetICANNodeSim()->NS_GetHandlerStatus(H_TIMERBUTTON);
     //Change the status of handler
-    GetICANNodeSim()->NS_EnableAllTimers( !bEnable );    
+    GetICANNodeSim()->NS_EnableAllTimers( !bEnable );
 }
 
 
@@ -2299,30 +2327,31 @@ void CMainFrame::OnActivateTimerHandler()
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  Called by frame work when user want to build and load */
-/*                       all the DLL under the configuration.				  */
+/*                       all the DLL under the configuration.                 */
 /*                                                                            */
 /*  Member of        :  CMainFrame                                            */
 /*  Friend of        :      -                                                 */
-/*  Author(s)        :  Harika M	                                          */
-/*  Date Created     :  20.01.2006                                            */    
-/*	Modification By  :														  */
+/*  Author(s)        :  Harika M                                              */
+/*  Date Created     :  20.01.2006                                            */
+/*  Modification By  :                                                        */
 /******************************************************************************/
-void CMainFrame::OnDLLBuildLoad() 
+void CMainFrame::OnDLLBuildLoad()
 {
-	CStringArray omStrBuildFiles;
+    CStringArray omStrBuildFiles;
+    BOOL bSucces = GetICANNodeSim()->NS_DLLBuildLoadAll(&omStrBuildFiles);
 
-	BOOL bSucces = GetICANNodeSim()->NS_DLLBuildLoadAll(&omStrBuildFiles);
     if(!bSucces)  // if the build is not successfull
     {
-		int nFailure = omStrBuildFiles.GetSize();
+        int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are either not properly build or loaded:");
         CString omStrErrorMsgDummy=_T("");
-        for(int i = 0 ;i < nFailure; i++)
+
+        for(int i = 0 ; i < nFailure; i++)
         {
-            
-           omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
-           omStrErrorMsg += omStrErrorMsgDummy;
-        }       
+            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsg += omStrErrorMsgDummy;
+        }
+
         AfxMessageBox(omStrErrorMsg);
     }
 }
@@ -2332,106 +2361,106 @@ void CMainFrame::OnDLLBuildLoad()
 /*  Input(s)         :  Stringarray                                           */
 /*  Output           :  array of files not built properly                     */
 /*  Functionality    :  It builds and load                                    */
-/*                       all the DLL under the configuration.				  */
+/*                       all the DLL under the configuration.                 */
 /*                                                                            */
 /*  Member of        :  CMainFrame                                            */
 /*  Friend of        :      -                                                 */
-/*  Author(s)        :  Anish	                                              */
-/*  Date Created     :  15.06.2006                                            */    
-/*	Modification By  :	Anish												  */
-/*				     :	18.10.06,Bug if any file is opened and BL is called	  */   
+/*  Author(s)        :  Anish                                                 */
+/*  Date Created     :  15.06.2006                                            */
+/*  Modification By  :  Anish                                                 */
+/*                   :  18.10.06,Bug if any file is opened and BL is called   */
 /******************************************************************************/
 
-BOOL CMainFrame::bDLLBuildLoad(CStringArray* /*omStrBuildFiles*/) 
+BOOL CMainFrame::bDLLBuildLoad(CStringArray* /*omStrBuildFiles*/)
 {
-	BOOL bReturn = FALSE;
-//	BOOL bSuccess = FALSE;
-//	int nFailure=0;
-//	/*CSimSysNodeInfo::PSSIMSYSINFO pTempSimsys = 
-//		theApp.psReturnSimsysInfoPtr();*/
-//	CExecuteManager::ouGetExecuteManager().vStopTimer();
-//	CExecuteManager::ouGetExecuteManager().vClearOutputWnd();
-//	int nNodeCount = 0;
-//
-//	omStrBuildFiles->RemoveAll();
-//    
-//	CWaitCursor omWait;
-//	//while(pTempSimsys != NULL)
-//	//{
-//	//	nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
-//	//	CSimSysNodeInfo::PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-//
-//	//	while(pTempNode != NULL)
-//	//	{
-//	//		if(pTempNode->m_sNodeInfo.m_omStrFileName != "")
-//	//		{
-//	//			//TO find which all files are opened through Framewnd
-//	//			CMDIFrameWnd *pMainWnd = (CMDIFrameWnd*)AfxGetApp()->m_pMainWnd;
-//	//			if(pMainWnd != NULL)
-//	//			{
-//	//				//Get the active child wnd
-//	//				CWnd *pWndTemp = pMainWnd->GetActiveFrame();
-//	//				if(pWndTemp != NULL)
-//	//				{
-//	//					CWnd *pWnd = pWndTemp;
-//	//					do
-//	//					{
-//	//						CString omStrWndName;
-//	//						CString omStrFileName =pTempNode->m_sNodeInfo.m_omStrFileName;
-//	//						int nIndex = omStrFileName.ReverseFind(defCHAR_PATH_SEPRATER);
-//	//						int nLength = omStrFileName.GetLength();
-//	//						omStrFileName = omStrFileName.Right(nLength - nIndex -1);
-//	//						pWnd->GetWindowText(omStrWndName);
-//	//						//if the file is opened save it
-//	//						if(!(omStrFileName.Compare(omStrWndName)))
-//	//						{
-//	//							CDocument*(pDoc) = theApp.OpenDocumentFile(pTempNode->
-//	//								m_sNodeInfo.m_omStrFileName);
-//	//							if(pDoc!=NULL)
-//	//							{
-//	//								// If file name is not empty generate new def file
-//	//								pDoc->OnSaveDocument(pTempNode->
-//	//									m_sNodeInfo.m_omStrFileName);
-//	//							}
-//	//							break;
-//	//						}
-//	//						pWnd = pWnd->GetNextWindow();
-//	//					}
-//	//					while((pWndTemp != pWnd) && pWnd != NULL);
-//
-//	//				}
-//	//				bSuccess = CExecuteManager::ouGetExecuteManager().
-//	//					bExecuteDllBuildLoad(&pTempNode->m_sNodeInfo);
-//	//				if(!bSuccess)
-//	//				{
-//	//					nFailure++;
-//	//					omStrBuildFiles->Add(pTempNode->m_sNodeInfo.m_omStrFileName);
-//	//				}
-//	//			}
-//	//		}
-//	//		pTempNode = pTempNode->m_psNextNode;
-//	//	}
-//	//	pTempSimsys = pTempSimsys->m_psSimsysNext;
-//	//}
-//
-//	
-//
-//    if((nFailure == 0) || (nFailure != nNodeCount))  
-//    {   // if the build n load is successfull atleast for one.
-//
-//        // to indicate to the tree view about the dlls loaded.
-//        /*CSimSysTreeView* psSimSysTree = podGetSimSysTreeView();
-//        if(psSimSysTree != NULL)
-//        psSimSysTree->bPopulateTree();*/
-//
-//    }
-//	if(nFailure == 0)
-//	{
-//		bReturn= TRUE;
-//	}
-//
-//  CExecuteManager::ouGetExecuteManager().vStartTimer();
-  return bReturn;
+    BOOL bReturn = FALSE;
+    //  BOOL bSuccess = FALSE;
+    //  int nFailure=0;
+    //  /*CSimSysNodeInfo::PSSIMSYSINFO pTempSimsys =
+    //      theApp.psReturnSimsysInfoPtr();*/
+    //  CExecuteManager::ouGetExecuteManager().vStopTimer();
+    //  CExecuteManager::ouGetExecuteManager().vClearOutputWnd();
+    //  int nNodeCount = 0;
+    //
+    //  omStrBuildFiles->RemoveAll();
+    //
+    //  CWaitCursor omWait;
+    //  //while(pTempSimsys != NULL)
+    //  //{
+    //  //  nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
+    //  //  CSimSysNodeInfo::PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
+    //
+    //  //  while(pTempNode != NULL)
+    //  //  {
+    //  //      if(pTempNode->m_sNodeInfo.m_omStrFileName != "")
+    //  //      {
+    //  //          //TO find which all files are opened through Framewnd
+    //  //          CMDIFrameWnd *pMainWnd = (CMDIFrameWnd*)AfxGetApp()->m_pMainWnd;
+    //  //          if(pMainWnd != NULL)
+    //  //          {
+    //  //              //Get the active child wnd
+    //  //              CWnd *pWndTemp = pMainWnd->GetActiveFrame();
+    //  //              if(pWndTemp != NULL)
+    //  //              {
+    //  //                  CWnd *pWnd = pWndTemp;
+    //  //                  do
+    //  //                  {
+    //  //                      CString omStrWndName;
+    //  //                      CString omStrFileName =pTempNode->m_sNodeInfo.m_omStrFileName;
+    //  //                      int nIndex = omStrFileName.ReverseFind(defCHAR_PATH_SEPRATER);
+    //  //                      int nLength = omStrFileName.GetLength();
+    //  //                      omStrFileName = omStrFileName.Right(nLength - nIndex -1);
+    //  //                      pWnd->GetWindowText(omStrWndName);
+    //  //                      //if the file is opened save it
+    //  //                      if(!(omStrFileName.Compare(omStrWndName)))
+    //  //                      {
+    //  //                          CDocument*(pDoc) = theApp.OpenDocumentFile(pTempNode->
+    //  //                              m_sNodeInfo.m_omStrFileName);
+    //  //                          if(pDoc!=NULL)
+    //  //                          {
+    //  //                              // If file name is not empty generate new def file
+    //  //                              pDoc->OnSaveDocument(pTempNode->
+    //  //                                  m_sNodeInfo.m_omStrFileName);
+    //  //                          }
+    //  //                          break;
+    //  //                      }
+    //  //                      pWnd = pWnd->GetNextWindow();
+    //  //                  }
+    //  //                  while((pWndTemp != pWnd) && pWnd != NULL);
+    //
+    //  //              }
+    //  //              bSuccess = CExecuteManager::ouGetExecuteManager().
+    //  //                  bExecuteDllBuildLoad(&pTempNode->m_sNodeInfo);
+    //  //              if(!bSuccess)
+    //  //              {
+    //  //                  nFailure++;
+    //  //                  omStrBuildFiles->Add(pTempNode->m_sNodeInfo.m_omStrFileName);
+    //  //              }
+    //  //          }
+    //  //      }
+    //  //      pTempNode = pTempNode->m_psNextNode;
+    //  //  }
+    //  //  pTempSimsys = pTempSimsys->m_psSimsysNext;
+    //  //}
+    //
+    //
+    //
+    //    if((nFailure == 0) || (nFailure != nNodeCount))
+    //    {   // if the build n load is successfull atleast for one.
+    //
+    //        // to indicate to the tree view about the dlls loaded.
+    //        /*CSimSysTreeView* psSimSysTree = podGetSimSysTreeView();
+    //        if(psSimSysTree != NULL)
+    //        psSimSysTree->bPopulateTree();*/
+    //
+    //    }
+    //  if(nFailure == 0)
+    //  {
+    //      bReturn= TRUE;
+    //  }
+    //
+    //  CExecuteManager::ouGetExecuteManager().vStartTimer();
+    return bReturn;
 }
 
 
@@ -2440,138 +2469,133 @@ BOOL CMainFrame::bDLLBuildLoad(CStringArray* /*omStrBuildFiles*/)
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  Called by frame-work when user wants to build         */
-/*                      all the C files associated with all the simulated 
+/*                      all the C files associated with all the simulated
 /*                      systems.                                              */
-/*                                             
+/*
 /*                                                                            */
 /*  Member of        :  CMainFrame                                            */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  20.01.2006                                            */
-/*  Modification By  :  
+/*  Modification By  :
 /******************************************************************************/
- void CMainFrame::OnDLLBuild() 
+void CMainFrame::OnDLLBuild()
 {
     CStringArray omStrBuildFiles;
-
     BOOL bSucces = GetICANNodeSim()->NS_DLLBuildAll(&omStrBuildFiles);
+
     if(!bSucces)  // if the build is not successfull
-    {       
+    {
         int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are not properly build:");
         CString omStrErrorMsgDummy=_T("");
-        for(int i = 0 ;i < nFailure; i++)
+
+        for(int i = 0 ; i < nFailure; i++)
         {
-           omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
-           omStrErrorMsg += omStrErrorMsgDummy;
+            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsg += omStrErrorMsgDummy;
         }
+
         AfxMessageBox(omStrErrorMsg);
     }
 }
 
- 
+
 /******************************************************************************/
 /*  Function Name    :  bDLLBuild                                             */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :   to build                                             */
-/*                      all the C files associated with all the simulated     */                                                                   
-/*                                                                            */                                                                            
+/*                      all the C files associated with all the simulated     */
+/*                                                                            */
 /*  Member of        :  CMainFrame                                            */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Anish Kr                                              */
 /*  Date Created     :  16.06.06                                              */
-/*	Modification By  :	Anish												  */
-/*				     :	18.10.06,Bug if any file is opened and BA is called	  */
-/*	Modification By  :  Anish,02.02.07
-						Bug fixed,removed infinite loop if file name is empty 
+/*  Modification By  :  Anish                                                 */
+/*                   :  18.10.06,Bug if any file is opened and BA is called   */
+/*  Modification By  :  Anish,02.02.07
+                        Bug fixed,removed infinite loop if file name is empty
 /******************************************************************************/
- BOOL CMainFrame::bDLLBuild(CStringArray* /*omStrBuildFiles*/) 
+BOOL CMainFrame::bDLLBuild(CStringArray* /*omStrBuildFiles*/)
 {
-	BOOL bReturn = FALSE;
+    BOOL bReturn = FALSE;
     //BOOL bSuccess = FALSE;
     //int nFailure = 0;
-   /* CSimSysNodeInfo::PSSIMSYSINFO pTempSimsys = 
-				theApp.psReturnSimsysInfoPtr();*/
+    /* CSimSysNodeInfo::PSSIMSYSINFO pTempSimsys =
+             theApp.psReturnSimsysInfoPtr();*/
     //CString omStrFileName = STR_EMPTY;
     //int nNodeCount = 0;
     //omStrBuildFiles->RemoveAll();
-
-	//CExecuteManager::ouGetExecuteManager().vClearOutputWnd();
-	//CWaitCursor omWait;
-	//while(pTempSimsys != NULL)
-	//{
-	//	nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
-	//	CSimSysNodeInfo::PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-	//	while(pTempNode != NULL)
-	//	{
-	//		if(pTempNode->m_sNodeInfo.m_omStrFileName != "")
-	//		{
-	//			//TO find which all files are opened through Framewnd
-	//			CMDIFrameWnd *pMainWnd = (CMDIFrameWnd*)AfxGetApp()->m_pMainWnd;
-	//			if(pMainWnd != NULL)
-	//			{
-	//				//Get the active child wnd
-	//				CWnd *pWndTemp = pMainWnd->GetActiveFrame();
-	//				if(pWndTemp != NULL)
-	//				{
-	//					CWnd *pWnd = pWndTemp;
-	//					do
-	//					{
-	//						CString omStrWndName;
-	//						CString omStrFileName =pTempNode->m_sNodeInfo.m_omStrFileName;
-	//						int nIndex = omStrFileName.ReverseFind(defCHAR_PATH_SEPRATER);
-	//						int nLength = omStrFileName.GetLength();
-	//						omStrFileName = omStrFileName.Right(nLength - nIndex -1);
-	//						pWnd->GetWindowText(omStrWndName);
-	//						//if the file is opened save it
-	//						if(!(omStrFileName.Compare(omStrWndName)))
-	//						{
-	//							CDocument*(pDoc) = theApp.OpenDocumentFile(pTempNode->
-	//														m_sNodeInfo.m_omStrFileName);
-	//							if(pDoc!=NULL)
-	//							{
-	//								// If file name is not empty generate new def file
-	//								pDoc->OnSaveDocument(pTempNode->
-	//									     m_sNodeInfo.m_omStrFileName);
-	//							}
-	//							break;
-	//						}
-	//						pWnd = pWnd->GetNextWindow();
-	//					}
-	//					while((pWndTemp != pWnd) && pWnd != NULL);
-
-
-	//					bSuccess = CExecuteManager::ouGetExecuteManager().
-	//						bExecuteDllBuild(&pTempNode->m_sNodeInfo);
-	//					if(!bSuccess)
-	//					{
-	//						nFailure++;
-	//						omStrBuildFiles->Add(pTempNode->m_sNodeInfo.m_omStrFileName);
-	//					}
-
-	//				}
-	//			}
-	//		}
-	//		pTempNode = pTempNode->m_psNextNode;
-	//	}
-	//	pTempSimsys = pTempSimsys->m_psSimsysNext;
-	//}
-	//if((nFailure == 0) || (nFailure != nNodeCount))  
-	//{ // if the build is successfull atleast for one.
-
-		// to indicate to the tree view about the new dlls built.
-		/*CSimSysTreeView* psSimSysTree = podGetSimSysTreeView();
-		if(psSimSysTree != NULL)
-			psSimSysTree->bPopulateTree();*/
-	//}
-	//if(nFailure == 0)
-	//{
-	//	bReturn= TRUE;
-	//}
-	return bReturn;
-
-
+    //CExecuteManager::ouGetExecuteManager().vClearOutputWnd();
+    //CWaitCursor omWait;
+    //while(pTempSimsys != NULL)
+    //{
+    //  nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
+    //  CSimSysNodeInfo::PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
+    //  while(pTempNode != NULL)
+    //  {
+    //      if(pTempNode->m_sNodeInfo.m_omStrFileName != "")
+    //      {
+    //          //TO find which all files are opened through Framewnd
+    //          CMDIFrameWnd *pMainWnd = (CMDIFrameWnd*)AfxGetApp()->m_pMainWnd;
+    //          if(pMainWnd != NULL)
+    //          {
+    //              //Get the active child wnd
+    //              CWnd *pWndTemp = pMainWnd->GetActiveFrame();
+    //              if(pWndTemp != NULL)
+    //              {
+    //                  CWnd *pWnd = pWndTemp;
+    //                  do
+    //                  {
+    //                      CString omStrWndName;
+    //                      CString omStrFileName =pTempNode->m_sNodeInfo.m_omStrFileName;
+    //                      int nIndex = omStrFileName.ReverseFind(defCHAR_PATH_SEPRATER);
+    //                      int nLength = omStrFileName.GetLength();
+    //                      omStrFileName = omStrFileName.Right(nLength - nIndex -1);
+    //                      pWnd->GetWindowText(omStrWndName);
+    //                      //if the file is opened save it
+    //                      if(!(omStrFileName.Compare(omStrWndName)))
+    //                      {
+    //                          CDocument*(pDoc) = theApp.OpenDocumentFile(pTempNode->
+    //                                                      m_sNodeInfo.m_omStrFileName);
+    //                          if(pDoc!=NULL)
+    //                          {
+    //                              // If file name is not empty generate new def file
+    //                              pDoc->OnSaveDocument(pTempNode->
+    //                                       m_sNodeInfo.m_omStrFileName);
+    //                          }
+    //                          break;
+    //                      }
+    //                      pWnd = pWnd->GetNextWindow();
+    //                  }
+    //                  while((pWndTemp != pWnd) && pWnd != NULL);
+    //                  bSuccess = CExecuteManager::ouGetExecuteManager().
+    //                      bExecuteDllBuild(&pTempNode->m_sNodeInfo);
+    //                  if(!bSuccess)
+    //                  {
+    //                      nFailure++;
+    //                      omStrBuildFiles->Add(pTempNode->m_sNodeInfo.m_omStrFileName);
+    //                  }
+    //              }
+    //          }
+    //      }
+    //      pTempNode = pTempNode->m_psNextNode;
+    //  }
+    //  pTempSimsys = pTempSimsys->m_psSimsysNext;
+    //}
+    //if((nFailure == 0) || (nFailure != nNodeCount))
+    //{ // if the build is successfull atleast for one.
+    // to indicate to the tree view about the new dlls built.
+    /*CSimSysTreeView* psSimSysTree = podGetSimSysTreeView();
+    if(psSimSysTree != NULL)
+        psSimSysTree->bPopulateTree();*/
+    //}
+    //if(nFailure == 0)
+    //{
+    //  bReturn= TRUE;
+    //}
+    return bReturn;
 }
 
 /******************************************************************************/
@@ -2579,33 +2603,33 @@ BOOL CMainFrame::bDLLBuildLoad(CStringArray* /*omStrBuildFiles*/)
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  Called by frame work when user want to  load          */
-/*                       all the DLLs under the configuration.				  */
+/*                       all the DLLs under the configuration.                */
 /*                                                                            */
 /*  Member of        :  CMainFrame                                            */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :                                            */
-/*  Date Created     :  20.01.2006                                            */    
-/*	Modification By  :														  */
+/*  Date Created     :  20.01.2006                                            */
+/*  Modification By  :                                                        */
 /******************************************************************************/
-void CMainFrame::OnDllLoad() 
+void CMainFrame::OnDllLoad()
 {
-	CStringArray omStrBuildFiles;
-	
-	BOOL bSucces = GetICANNodeSim()->NS_DllLoadAll(&omStrBuildFiles);
+    CStringArray omStrBuildFiles;
+    BOOL bSucces = GetICANNodeSim()->NS_DllLoadAll(&omStrBuildFiles);
+
     if(bSucces!=TRUE)  // if the load is not successfull
-    {       
-		int nFailure = omStrBuildFiles.GetSize();
+    {
+        int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are not properly loaded:");
         CString omStrErrorMsgDummy=_T("");
-        for(int i = 0 ;i < nFailure; i++)
-        {
-            
-           omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
-           omStrErrorMsg += omStrErrorMsgDummy;
-        }
-        AfxMessageBox(omStrErrorMsg);
-    } 
 
+        for(int i = 0 ; i < nFailure; i++)
+        {
+            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsg += omStrErrorMsgDummy;
+        }
+
+        AfxMessageBox(omStrErrorMsg);
+    }
 }
 
 
@@ -2614,81 +2638,77 @@ void CMainFrame::OnDllLoad()
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  Called by frame work when user want to  load          */
-/*                       all the DLLs under the configuration.				  */
+/*                       all the DLLs under the configuration.                */
 /*                                                                            */
 /*  Member of        :  CMainFrame                                            */
 /*  Friend of        :      -                                                 */
-/*  Author(s)        :  Harika M	                                          */
-/*  Date Created     :  20.01.2006                                            */    
-/*	Modification By  :														  */
+/*  Author(s)        :  Harika M                                              */
+/*  Date Created     :  20.01.2006                                            */
+/*  Modification By  :                                                        */
 /******************************************************************************/
-BOOL CMainFrame::bDllLoad(CStringArray* /*omStrBuildFiles*/) 
+BOOL CMainFrame::bDllLoad(CStringArray* /*omStrBuildFiles*/)
 {
-	BOOL bReturn = FALSE;
-	//BOOL bSuccess = FALSE;
+    BOOL bReturn = FALSE;
+    //BOOL bSuccess = FALSE;
     //int nFailure = 0;
-   /* CSimSysNodeInfo::PSSIMSYSINFO pTempSimsys = 
-				theApp.psReturnSimsysInfoPtr();*/
-	//int nNodeCount = 0;
-
+    /* CSimSysNodeInfo::PSSIMSYSINFO pTempSimsys =
+             theApp.psReturnSimsysInfoPtr();*/
+    //int nNodeCount = 0;
     //omStrBuildFiles->RemoveAll();
-    
-	//CWaitCursor omWait;
-	//CExecuteManager::ouGetExecuteManager().vStopTimer();
+    //CWaitCursor omWait;
+    //CExecuteManager::ouGetExecuteManager().vStopTimer();
     //CExecuteManager::ouGetExecuteManager().vClearOutputWnd();
     //while(pTempSimsys != NULL)
-	//{
- //       nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
- //       CSimSysNodeInfo::PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
- //       while(pTempNode != NULL)
- //       {
- //           if(pTempNode->m_sNodeInfo.m_omStrDllName != "")
- //           {
- //               bSuccess = CExecuteManager::ouGetExecuteManager().bExecuteDllLoad(&
- //                   pTempNode->m_sNodeInfo);
- //               if(!bSuccess)
- //               {
- //                   nFailure++;
- //                   omStrBuildFiles->Add(pTempNode->m_sNodeInfo.m_omStrDllName);
- //               }
- //               else
- //               {    // to make the status of the handlers disabled
- //                   pTempNode->m_sNodeInfo.m_bDllHandlersEnabled = FALSE;
- //                   pTempNode->m_sNodeInfo.m_bErrorHandlersEnabled = FALSE;
- //                   pTempNode->m_sNodeInfo.m_bIsAllHandlersEnabled = FALSE;
- //                   pTempNode->m_sNodeInfo.m_bKeyHandlersEnabled = FALSE;
- //                   pTempNode->m_sNodeInfo.m_bMsgHandlersEnabled = FALSE;
- //                   pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled = FALSE;
- //                   
- //                   
- //                   theApp.pouGetFlagsPtr()->vSetFlagStatus(ALL_HANDLER, FALSE);
- //                   
- //                   theApp.pouGetFlagsPtr()->vSetFlagStatus(ERROR_HANDLER, FALSE);
- //                   theApp.pouGetFlagsPtr()->vSetFlagStatus(KEY_HANDLER_ON, FALSE);
- //                   theApp.pouGetFlagsPtr()->vSetFlagStatus(MSGHANDLERBUTTON, FALSE);
- //               }
- //               
- //           }
- //           pTempNode = pTempNode->m_psNextNode;
- //       }
- //       pTempSimsys = pTempSimsys->m_psSimsysNext;
- //       
- //   }
-    //if((nFailure == 0) || (nFailure != nNodeCount))  
+    //{
+    //       nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
+    //       CSimSysNodeInfo::PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
+    //       while(pTempNode != NULL)
+    //       {
+    //           if(pTempNode->m_sNodeInfo.m_omStrDllName != "")
+    //           {
+    //               bSuccess = CExecuteManager::ouGetExecuteManager().bExecuteDllLoad(&
+    //                   pTempNode->m_sNodeInfo);
+    //               if(!bSuccess)
+    //               {
+    //                   nFailure++;
+    //                   omStrBuildFiles->Add(pTempNode->m_sNodeInfo.m_omStrDllName);
+    //               }
+    //               else
+    //               {    // to make the status of the handlers disabled
+    //                   pTempNode->m_sNodeInfo.m_bDllHandlersEnabled = FALSE;
+    //                   pTempNode->m_sNodeInfo.m_bErrorHandlersEnabled = FALSE;
+    //                   pTempNode->m_sNodeInfo.m_bIsAllHandlersEnabled = FALSE;
+    //                   pTempNode->m_sNodeInfo.m_bKeyHandlersEnabled = FALSE;
+    //                   pTempNode->m_sNodeInfo.m_bMsgHandlersEnabled = FALSE;
+    //                   pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled = FALSE;
+    //
+    //
+    //                   theApp.pouGetFlagsPtr()->vSetFlagStatus(ALL_HANDLER, FALSE);
+    //
+    //                   theApp.pouGetFlagsPtr()->vSetFlagStatus(ERROR_HANDLER, FALSE);
+    //                   theApp.pouGetFlagsPtr()->vSetFlagStatus(KEY_HANDLER_ON, FALSE);
+    //                   theApp.pouGetFlagsPtr()->vSetFlagStatus(MSGHANDLERBUTTON, FALSE);
+    //               }
+    //
+    //           }
+    //           pTempNode = pTempNode->m_psNextNode;
+    //       }
+    //       pTempSimsys = pTempSimsys->m_psSimsysNext;
+    //
+    //   }
+    //if((nFailure == 0) || (nFailure != nNodeCount))
     //{   // if the load is successfull atleast for one dll.
-		
-        // to indicate to the tree view about the dlls loaded.
-        /*CSimSysTreeView* psSimSysTree = podGetSimSysTreeView();
-        if(psSimSysTree != NULL)
-            psSimSysTree->bPopulateTree();*/
+    // to indicate to the tree view about the dlls loaded.
+    /*CSimSysTreeView* psSimSysTree = podGetSimSysTreeView();
+    if(psSimSysTree != NULL)
+        psSimSysTree->bPopulateTree();*/
     //}
-    
-	//CExecuteManager::ouGetExecuteManager().vStartTimer();
-	//if(nFailure == 0)
-	//{
-	//	bReturn= TRUE;
-	//}
-	return bReturn;
+    //CExecuteManager::ouGetExecuteManager().vStartTimer();
+    //if(nFailure == 0)
+    //{
+    //  bReturn= TRUE;
+    //}
+    return bReturn;
 }
 
 
@@ -2696,37 +2716,37 @@ BOOL CMainFrame::bDllLoad(CStringArray* /*omStrBuildFiles*/)
 /*  Function Name    :  bDllUnload                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :   to  unload											  */
-/*                       all the DLLs under the configuration.				  */
+/*  Functionality    :   to  unload                                           */
+/*                       all the DLLs under the configuration.                */
 /*                                                                            */
 /*  Member of        :  CMainFrame                                            */
 /*  Friend of        :      -                                                 */
-/*  Author(s)        :  Anish Kr	                                          */
-/*  Date Created     :  16.06.2006                                            */    
-/*	Modification By  :														  */
+/*  Author(s)        :  Anish Kr                                              */
+/*  Date Created     :  16.06.2006                                            */
+/*  Modification By  :                                                        */
 /******************************************************************************/
-BOOL CMainFrame::bDllUnload(CStringArray* /*omStrBuildFiles*/) 
+BOOL CMainFrame::bDllUnload(CStringArray* /*omStrBuildFiles*/)
 {
-	BOOL bReturn = FALSE;
+    BOOL bReturn = FALSE;
     //BOOL bSuccess = FALSE;
     //int nFailure = 0;
-    /*CSimSysNodeInfo::PSSIMSYSINFO pTempSimsys = 
-				theApp.psReturnSimsysInfoPtr();*/
-   /* int nNodeCount = 0;
+    /*CSimSysNodeInfo::PSSIMSYSINFO pTempSimsys =
+                theApp.psReturnSimsysInfoPtr();*/
+    /* int nNodeCount = 0;
 
-    CStringArray omStrUnLoadFiles;
-    omStrBuildFiles->RemoveAll();
+     CStringArray omStrUnLoadFiles;
+     omStrBuildFiles->RemoveAll();
 
-	CWaitCursor omWait;
-	CExecuteManager::ouGetExecuteManager().vStopTimer();
-	CExecuteManager::ouGetExecuteManager().vClearOutputWnd();*/
+    CWaitCursor omWait;
+    CExecuteManager::ouGetExecuteManager().vStopTimer();
+    CExecuteManager::ouGetExecuteManager().vClearOutputWnd();*/
     //while(pTempSimsys != NULL)
     //{
     //    nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
     //    CSimSysNodeInfo::PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
     //    while(pTempNode != NULL)
     //    {
-    //        if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)  // if any dll is loaded 
+    //        if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)  // if any dll is loaded
     //        {
     //            bSuccess = CExecuteManager::ouGetExecuteManager().bExecuteDllUnload(&
     //                pTempNode->m_sNodeInfo);
@@ -2743,38 +2763,35 @@ BOOL CMainFrame::bDllUnload(CStringArray* /*omStrBuildFiles*/)
     //                pTempNode->m_sNodeInfo.m_bKeyHandlersEnabled = FALSE;
     //                pTempNode->m_sNodeInfo.m_bMsgHandlersEnabled = FALSE;
     //                pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled = FALSE;
-    //                
-    //                
+    //
+    //
     //                theApp.pouGetFlagsPtr()->vSetFlagStatus(ALL_HANDLER, FALSE);
-    //                
+    //
     //                theApp.pouGetFlagsPtr()->vSetFlagStatus(ERROR_HANDLER, FALSE);
     //                theApp.pouGetFlagsPtr()->vSetFlagStatus(KEY_HANDLER_ON, FALSE);
     //                theApp.pouGetFlagsPtr()->vSetFlagStatus(MSGHANDLERBUTTON, FALSE);
     //            }
-    //                            
+    //
     //        }
     //        pTempNode = pTempNode->m_psNextNode;
     //    }
     //    pTempSimsys = pTempSimsys->m_psSimsysNext;
-    //    
+    //
     //}
- //   if((nFailure == 0) || (nFailure != nNodeCount))  
- //   {   // if the unload is successfull atleast for one dll.
- //       
- //       // to indicate to the tree view about the dlls unloaded.
- //       /*CSimSysTreeView* psSimSysTree = podGetSimSysTreeView();
- //       if(psSimSysTree != NULL)
- //           psSimSysTree->bPopulateTree();*/
- //   }
-
-	//CExecuteManager::ouGetExecuteManager().vStartTimer();
-
-	//if(nFailure == 0)
-	//{
-	//	bReturn= TRUE;
-	//}
-	return bReturn;
-
+    //   if((nFailure == 0) || (nFailure != nNodeCount))
+    //   {   // if the unload is successfull atleast for one dll.
+    //
+    //       // to indicate to the tree view about the dlls unloaded.
+    //       /*CSimSysTreeView* psSimSysTree = podGetSimSysTreeView();
+    //       if(psSimSysTree != NULL)
+    //           psSimSysTree->bPopulateTree();*/
+    //   }
+    //CExecuteManager::ouGetExecuteManager().vStartTimer();
+    //if(nFailure == 0)
+    //{
+    //  bReturn= TRUE;
+    //}
+    return bReturn;
 }
 
 /******************************************************************************/
@@ -2782,29 +2799,31 @@ BOOL CMainFrame::bDllUnload(CStringArray* /*omStrBuildFiles*/)
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  Called by frame work when user want to  unload        */
-/*                       all the DLLs under the configuration.				  */
+/*                       all the DLLs under the configuration.                */
 /*                                                                            */
 /*  Member of        :  CMainFrame                                            */
 /*  Friend of        :      -                                                 */
-/*  Author(s)        :  Harika M	                                          */
-/*  Date Created     :  20.01.2006                                            */    
-/*	Modification By  :														  */
+/*  Author(s)        :  Harika M                                              */
+/*  Date Created     :  20.01.2006                                            */
+/*  Modification By  :                                                        */
 /******************************************************************************/
-void CMainFrame::OnDllUnload() 
+void CMainFrame::OnDllUnload()
 {
     CStringArray omStrBuildFiles;
-	BOOL bSucces = GetICANNodeSim()->NS_DllUnloadAll(&omStrBuildFiles);
+    BOOL bSucces = GetICANNodeSim()->NS_DllUnloadAll(&omStrBuildFiles);
+
     if(bSucces!=TRUE)  // if the unload is not successfull
-    {       
-		int nFailure = omStrBuildFiles.GetSize();
+    {
+        int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are not properly unloaded:");
         CString omStrErrorMsgDummy=_T("");
-        for(int i = 0 ;i < nFailure; i++)
+
+        for(int i = 0 ; i < nFailure; i++)
         {
-            
-           omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
-           omStrErrorMsg += omStrErrorMsgDummy;
+            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsg += omStrErrorMsgDummy;
         }
+
         AfxMessageBox(omStrErrorMsg);
     }
 }
@@ -2813,29 +2832,31 @@ void CMainFrame::OnDllUnload()
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  Called by frame work when user want to  unload        */
-/*                       all the DLLs under the configuration.				  */
+/*                       all the DLLs under the configuration.                */
 /*                                                                            */
 /*  Member of        :  CMainFrame                                            */
 /*  Friend of        :      -                                                 */
-/*  Author(s)        :  Harika M	                                          */
-/*  Date Created     :  20.01.2006                                            */    
-/*	Modification By  :														  */
+/*  Author(s)        :  Harika M                                              */
+/*  Date Created     :  20.01.2006                                            */
+/*  Modification By  :                                                        */
 /******************************************************************************/
 void CMainFrame::OnDllUnloadJ1939()
 {
     CStringArray omStrBuildFiles;
-	BOOL bSucces = GetIJ1939NodeSim()->NS_DllUnloadAll(&omStrBuildFiles);
+    BOOL bSucces = GetIJ1939NodeSim()->NS_DllUnloadAll(&omStrBuildFiles);
+
     if(bSucces!=TRUE)  // if the unload is not successfull
-    {       
-		int nFailure = omStrBuildFiles.GetSize();
+    {
+        int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are not properly unloaded:");
         CString omStrErrorMsgDummy=_T("");
-        for(int i = 0 ;i < nFailure; i++)
-        { 
-            
-           omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
-           omStrErrorMsg += omStrErrorMsgDummy;
+
+        for(int i = 0 ; i < nFailure; i++)
+        {
+            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsg += omStrErrorMsgDummy;
         }
+
         AfxMessageBox(omStrErrorMsg);
     }
 }
@@ -2845,42 +2866,37 @@ void CMainFrame::OnDllUnloadJ1939()
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  Fills the J1939PGNList struct with dtabase message ID,
-                        name and color for future use.    
-/*  Member of        :  CMainFrame		                                      */
+                        name and color for future use.
+/*  Member of        :  CMainFrame                                            */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Arunkumar K                                           */
 /*  Date Created     :  08.03.2011                                            */
-/*  Modifications    :				                                          */
-/*  Modification By  :														  */
-/*  Modification on  :														  */
+/*  Modifications    :                                                        */
+/*  Modification By  :                                                        */
+/*  Modification on  :                                                        */
 /******************************************************************************/
 void CMainFrame::vPopulateJ1939PGNList()
-{     
+{
     if ( m_pouMsgSigJ1939 != NULL )
     {
-	    CMessageAttrib& ouMsgAttr = CMessageAttrib::ouGetHandle(J1939);
+        CMessageAttrib& ouMsgAttr = CMessageAttrib::ouGetHandle(J1939);
         CStringList omStrMsgNameList;
-        UINT unNoOfMsgs = 
+        UINT unNoOfMsgs =
             m_pouMsgSigJ1939->unGetNumerOfMessages();
-
         UINT* pIDArray = new UINT[unNoOfMsgs];
-
         m_pouMsgSigJ1939->omStrListGetMessageNames(omStrMsgNameList);
-        
+
         if (pIDArray != NULL )
         {
             m_pouMsgSigJ1939->unListGetMessageIDs( pIDArray );
-
-             SCanIDList sList;
-
+            SCanIDList sList;
             POSITION pos = omStrMsgNameList.GetHeadPosition();
-        
             UINT unCount = 0;
             POSITION pos1 = pos;
 
             for ( pos1 = pos, unCount = (unNoOfMsgs - 1);
-            ((pos1 != NULL) && (unCount >= 0)); 
-            unCount--)
+                    ((pos1 != NULL) && (unCount >= 0));
+                    unCount--)
             {
                 sList.nCANID        = pIDArray[unCount];
                 sList.omCANIDName   = omStrMsgNameList.GetNext( pos1 );
@@ -2896,7 +2912,7 @@ void CMainFrame::vPopulateJ1939PGNList()
                     ouMsgAttr.nAddNewAttrib( sList );
                 }
             }
-            
+
             ouMsgAttr.vDoCommit();
             delete [] pIDArray;
             pIDArray = NULL;
@@ -2919,42 +2935,45 @@ void CMainFrame::vPopulateJ1939PGNList()
     Modifications    :  Ratnadip Choudhury
     Date modified    :  26.03.2002
 ******************************************************************************/
-void CMainFrame::OnMessageInterpretation() 
+void CMainFrame::OnMessageInterpretation()
 {
-	if (m_podMsgWndThread != NULL)
-	{
-		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
-		BYTE byGetDispFlag = 0;
-		::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
-		if (IS_MODE_OVER(byGetDispFlag))
-		{
-			CLEAR_EXPR_DISP_BITS(byGetDispFlag);
-			SET_MODE_INTRP(byGetDispFlag);
+    if (m_podMsgWndThread != NULL)
+    {
+        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+        BYTE byGetDispFlag = 0;
+        ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
+
+        if (IS_MODE_OVER(byGetDispFlag))
+        {
+            CLEAR_EXPR_DISP_BITS(byGetDispFlag);
+            SET_MODE_INTRP(byGetDispFlag);
             m_bInterPretMsg = TRUE;
-			theApp.pouGetFlagsPtr()->vSetFlagStatus(TRANSLATIONMODE, TRUE);
-		}
-		else if (IS_MODE_INTRP(byGetDispFlag))
-		{
-			CLEAR_EXPR_DISP_BITS(byGetDispFlag);
-			SET_MODE_OVER(byGetDispFlag);
+            theApp.pouGetFlagsPtr()->vSetFlagStatus(TRANSLATIONMODE, TRUE);
+        }
+        else if (IS_MODE_INTRP(byGetDispFlag))
+        {
+            CLEAR_EXPR_DISP_BITS(byGetDispFlag);
+            SET_MODE_OVER(byGetDispFlag);
             m_bInterPretMsg = FALSE;
-			theApp.pouGetFlagsPtr()->vSetFlagStatus(TRANSLATIONMODE, FALSE);
-		}
+            theApp.pouGetFlagsPtr()->vSetFlagStatus(TRANSLATIONMODE, FALSE);
+        }
         else
         {
             ASSERT(FALSE); // Must not arise
         }
-		for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
-		{
-			hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
-			//Update Message Window
-			if(hWnd)
-			{
-				BYTE bModes = DISPLAY_MODE;
-				::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
-			}
-		}
-	}
+
+        for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
+        {
+            hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
+
+            //Update Message Window
+            if(hWnd)
+            {
+                BYTE bModes = DISPLAY_MODE;
+                ::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
+            }
+        }
+    }
 }
 
 void CMainFrame::vPopulateSigWatchList(CMainEntryList& odFromList, SMSGENTRY*& psToList, CMsgSignal* pouDatabase)
@@ -2962,25 +2981,28 @@ void CMainFrame::vPopulateSigWatchList(CMainEntryList& odFromList, SMSGENTRY*& p
     vReleaseSignalWatchListMemory(psToList);
     SMSGENTRY* pTemp;
     POSITION MsgPos = odFromList.GetHeadPosition();
-    
+
     while (MsgPos != NULL)
     {
-        SMAINENTRY& sMainEntry = odFromList.GetNext(MsgPos);        
+        SMAINENTRY& sMainEntry = odFromList.GetNext(MsgPos);
         POSITION SigPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
-        sMESSAGE *pDBMsg =  pouDatabase->psGetMessagePointer(sMainEntry.m_unMainEntryID);
+        sMESSAGE* pDBMsg =  pouDatabase->psGetMessagePointer(sMainEntry.m_unMainEntryID);
+
         if ((SigPos != NULL) && (pDBMsg != NULL))//Atleast one signal is there
         {
-            pTemp = new SMSGENTRY;            
+            pTemp = new SMSGENTRY;
             pTemp->m_psMsg = SMSGENTRY::psCopyMsgVal (pDBMsg);
-            sSIGNALS *psTempSig = NULL;
+            sSIGNALS* psTempSig = NULL;
+
             while (SigPos != NULL)
             {
                 SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SigPos);
-                sSIGNALS *pSig;
+                sSIGNALS* pSig;
+
                 if (bIsSigExist(sSubEntry.m_omSubEntryName, pDBMsg->m_psSignals, pSig))
                 {
                     psTempSig = SMSGENTRY::psCopySignalVal(pSig);
-                    
+
                     if (pTemp->m_psMsg->m_psSignals == NULL)
                     {
                         pTemp->m_psMsg->m_psSignals = psTempSig;
@@ -2993,7 +3015,7 @@ void CMainFrame::vPopulateSigWatchList(CMainEntryList& odFromList, SMSGENTRY*& p
                     }
                 }
             }
-            
+
             if (psToList == NULL)//For the very first time
             {
                 psToList = pTemp;
@@ -3004,7 +3026,6 @@ void CMainFrame::vPopulateSigWatchList(CMainEntryList& odFromList, SMSGENTRY*& p
                 pTemp->m_psNext = psToList;
                 psToList = pTemp;
             }
-
         }
     }
 }
@@ -3014,12 +3035,12 @@ void CMainFrame::vUpdateSWList()
     CMainEntryList odResultingList;
     vPopulateMainEntryList(&odResultingList, m_psSignalWatchList[CAN], theApp.m_pouMsgSignal);
     vPopulateSigWatchList(odResultingList, m_psSignalWatchList[CAN], theApp.m_pouMsgSignal);// This populates m_psSignalWatchList
+
     if (sg_pouSWInterface[CAN] != NULL)
     {
         m_ouMsgInterpretSW_C.vSetMessageList(m_psSignalWatchList[CAN]);
         sg_pouSWInterface[CAN]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_C);
     }
-
 }
 /*******************************************************************************
  Function Name    : OnAddSignalToSignalWindow
@@ -3043,12 +3064,13 @@ void CMainFrame::vUpdateSWList()
                     imported don't show the dialog and show error msg box.
  Modifications    : Anish on 13.12.2006
                     Changed code for checking whether a database is selected
-					from CFlag class.
+                    from CFlag class.
 *******************************************************************************/
-void CMainFrame::OnAddSignalToSignalWindow() 
+void CMainFrame::OnAddSignalToSignalWindow()
 {
-    CMsgSignal * pomDatabase = NULL;
+    CMsgSignal* pomDatabase = NULL;
     pomDatabase = theApp.m_pouMsgSignal;
+
     if( pomDatabase != NULL )
     {
         if( pomDatabase->unGetNumerOfMessages() > 0)
@@ -3056,6 +3078,7 @@ void CMainFrame::OnAddSignalToSignalWindow()
             /* Test code starts*/
             CMainEntryList odResultingList;
             vPopulateMainEntryList(&odResultingList, m_psSignalWatchList[CAN], theApp.m_pouMsgSignal);
+
             if (sg_pouSWInterface[CAN] == NULL)
             {
                 if (SW_GetInterface(CAN, (void**)&sg_pouSWInterface[CAN]) == S_OK)
@@ -3063,6 +3086,7 @@ void CMainFrame::OnAddSignalToSignalWindow()
                     sg_pouSWInterface[CAN]->SW_DoInitialization();
                 }
             }
+
             if (sg_pouSWInterface[CAN] != NULL)
             {
                 if (sg_pouSWInterface[CAN]->SW_ShowAddDelSignalsDlg(this, &odResultingList) == IDOK)
@@ -3079,7 +3103,6 @@ void CMainFrame::OnAddSignalToSignalWindow()
             AfxMessageBox( defSTR_EMPTY_ACTIVE_DATABASE );
         }
     }
-
 }
 /******************************************************************************
     Function Name    :  OnMessageFilter
@@ -3093,7 +3116,7 @@ void CMainFrame::OnAddSignalToSignalWindow()
     Date Created     :  05.03.2002
     Modifications    :  Amitesh Bharti, 26.12.2002, Function name is changed.
 ******************************************************************************/
-void CMainFrame::OnMessageFilter() 
+void CMainFrame::OnMessageFilter()
 {
     OnMessageFilterButton();
 }
@@ -3111,25 +3134,28 @@ void CMainFrame::OnMessageFilter()
     Modifications    :  Raja N on 19.07.2005, Changed the code to call Log file
                         manager to enable filter
 ******************************************************************************/
-void CMainFrame::OnLogFilter() 
+void CMainFrame::OnLogFilter()
 {
-    CFlags *pouFlags = NULL;
+    CFlags* pouFlags = NULL;
     BOOL bLogFilterStatus = FALSE;
-
     pouFlags = theApp.pouGetFlagsPtr();
+
     if(pouFlags != NULL )
     {
         bLogFilterStatus = pouFlags->nGetFlagStatus(LOGFILTER);
         bLogFilterStatus = bLogFilterStatus ? FALSE : TRUE;
         pouFlags->vSetFlagStatus(LOGFILTER, bLogFilterStatus);
+
         if (sg_pouFrameProcCAN != NULL)
         {
             INT Count = sg_pouFrameProcCAN->FPC_GetLoggingBlockCount();
+
             for (INT i = 0; i < Count; i++)
             {
                 sg_pouFrameProcCAN->FPC_EnableFilter((USHORT)i, bLogFilterStatus);
             }
         }
+
         // logKadoor CLogManager::ouGetLogManager().vUpdateLogFilterEnable(bLogFilterStatus);
     }
 }
@@ -3137,21 +3163,20 @@ void CMainFrame::OnLogFilter()
     Function Name    :  OnAboutApplication
     Input(s)         :  void
     Output           :  void
-    Functionality    :  Called by the framework when user selects About 
+    Functionality    :  Called by the framework when user selects About
                         Application... menu option
                         Displays a dialog with program information.
     Member of        :  CMainFrame
     Friend of        :      -
     Author(s)        :  Amarnath Shastry
     Date Created     :  05.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
-void CMainFrame::OnAboutApplication() 
+void CMainFrame::OnAboutApplication()
 {
     theApp.OnAppAbout();
-
 }
-static void vPopulateMsgEntryFromDB(SMSGENTRY*& psMsgEntry, 
+static void vPopulateMsgEntryFromDB(SMSGENTRY*& psMsgEntry,
                                     CMsgSignal* pouMsgSig)
 {
     if (pouMsgSig != NULL)
@@ -3159,15 +3184,18 @@ static void vPopulateMsgEntryFromDB(SMSGENTRY*& psMsgEntry,
         UINT nCount = pouMsgSig->unGetNumerOfMessages();
         UINT* punMsgIds = new UINT[nCount];
         pouMsgSig->unListGetMessageIDs(punMsgIds);
+
         for (UINT i = 0; i < nCount; i++)
         {
             sMESSAGE* pMsg = pouMsgSig->
-                            psGetMessagePointer(punMsgIds[i]);
+                             psGetMessagePointer(punMsgIds[i]);
+
             if (pMsg != NULL)
             {
                 SMSGENTRY::bUpdateMsgList(psMsgEntry, pMsg);
             }
         }
+
         delete[] punMsgIds;
     }
 }
@@ -3190,7 +3218,7 @@ static void vPopulateMsgEntryFromDB(SMSGENTRY*& psMsgEntry,
 /*  Modifications    :  Raja N on 19.07.2005, Changed the implementation to   */
 /*                      call Filter Manager to show config dlg                */
 /******************************************************************************/
-void CMainFrame::OnSelectMessage() 
+void CMainFrame::OnSelectMessage()
 {
     // Ask Filter Manager to show filter configuration dialog
     // This will update configuration module if user makes some
@@ -3198,10 +3226,12 @@ void CMainFrame::OnSelectMessage()
     SMSGENTRY* psMsgEntry = NULL;
     vPopulateMsgEntryFromDB(psMsgEntry, theApp.m_pouMsgSignal);
     LPARAM lParam = NULL;
+
     if (NULL != GetICANDIL())
     {
         GetICANDIL()->DILC_GetControllerParams(lParam, NULL, NUMBER_HW);
     }
+
     Filter_ShowConfigDlg((void*)&m_sFilterAppliedCAN, psMsgEntry, CAN, (UINT)lParam, this);
     SMSGENTRY::vClearMsgList(psMsgEntry);
     psMsgEntry = NULL;
@@ -3211,7 +3241,8 @@ void CMainFrame::OnSelectMessage()
     if (sg_pouFrameProcCAN != NULL)
     {
         UINT unLogCount = sg_pouFrameProcCAN->FPC_GetLoggingBlockCount();
-        for (USHORT i = 0; i < unLogCount; i++)       //for (UINT i = 0; i < unLogCount; i++)    
+
+        for (USHORT i = 0; i < unLogCount; i++)       //for (UINT i = 0; i < unLogCount; i++)
         {
             SFILTERAPPLIED_CAN sFilterCan;
             sg_pouFrameProcCAN->FPC_GetFilteringScheme(i, sFilterCan);
@@ -3221,8 +3252,10 @@ void CMainFrame::OnSelectMessage()
             sg_pouFrameProcCAN->FPC_StopEditingSession(TRUE);
         }
     }
+
     //2. Replay
     vREP_SetConfiguredFilter(&m_sFilterAppliedCAN);
+
     //3. Message window
     if (m_podMsgWndThread != NULL)
     {
@@ -3239,7 +3272,7 @@ void CMainFrame::OnSelectMessage()
 /*  Output           :  -                                                     */
 /*  Functionality    :  This function is called by framework when user wants  */
 /*                      a log file. This will set the status of corresponding
-                        toolbar button. 
+                        toolbar button.
                         Gets the log file from the registry.
                         Post a thread message to perform logging to the specifi
                         -ed log file name.
@@ -3258,32 +3291,33 @@ void CMainFrame::OnSelectMessage()
 /*  Modifications    :  Raja N on 19.07.2005, Modified the code to call Log   */
 /*                      manager to start/stop logging                         */
 /******************************************************************************/
-void CMainFrame::OnLogEnable() 
+void CMainFrame::OnLogEnable()
 {
     // TODO: Add your command handler code here
     BOOL bLogON = FALSE;
+
     if (NULL != sg_pouFrameProcCAN)
     {
         bLogON = sg_pouFrameProcCAN->FPC_IsLoggingON();
     }
-    bLogON = bLogON ? FALSE : TRUE;
 
-	// Set the status of logging
-	CFlags *pouFlags = NULL;
-	pouFlags = theApp.pouGetFlagsPtr();
-	if (NULL != pouFlags)
-	{
-		pouFlags->vSetFlagStatus(LOGTOFILE, bLogON);
-	}
+    bLogON = bLogON ? FALSE : TRUE;
+    // Set the status of logging
+    CFlags* pouFlags = NULL;
+    pouFlags = theApp.pouGetFlagsPtr();
+
+    if (NULL != pouFlags)
+    {
+        pouFlags->vSetFlagStatus(LOGTOFILE, bLogON);
+    }
 
     vStartStopLogging( bLogON );
 }
-void CMainFrame::OnButtonMsgDispButton() 
+void CMainFrame::OnButtonMsgDispButton()
 {
-
 }
 
-void CMainFrame::OnButtonSignalWatchButton() 
+void CMainFrame::OnButtonSignalWatchButton()
 {
     if (sg_pouSWInterface[CAN] == NULL)
     {
@@ -3292,6 +3326,7 @@ void CMainFrame::OnButtonSignalWatchButton()
             sg_pouSWInterface[CAN]->SW_DoInitialization();
         }
     }
+
     if (sg_pouSWInterface[CAN] != NULL)
     {
         INT nCmd = sg_pouSWInterface[CAN]->SW_IsWindowVisible() ? SW_HIDE : SW_SHOW;
@@ -3310,14 +3345,14 @@ void CMainFrame::OnButtonSignalWatchButton()
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  23.03.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */  
+/*  Modification By  :  Amitesh Bharti                                        */
 /*  Modifications on :  25.03.2002, Interface for send message                */
 /*  Modified By      :  Ratnadip Choudhury; 02-12-2002                        */
 /*  Modification     :  Data buffer from the configuration file was released  */
 /*                      even after passing its address to multiple message    */
 /*                      sending thread: code to release the same is moved     */
 /*                      away from here.                                       */
-/*  Modification By  :  Amitesh Bharti                                        */  
+/*  Modification By  :  Amitesh Bharti                                        */
 /*  Modifications on :  08.01.2004, Interface for send message is changed     */
 /*                                  The message block is transmitted by       */
 /*                                  calling member function of CSendMumtiMsg  */
@@ -3325,57 +3360,58 @@ void CMainFrame::OnButtonSignalWatchButton()
 /*                      Tx Msg configuration window for posting message about */
 /*                      Tx start and used Tx Manager object for msg transmission
 /******************************************************************************/
-void CMainFrame::OnSendMessage() 
+void CMainFrame::OnSendMessage()
 {
-     // Check for SENDMESG flag, If true, 
-     // make it false and stop sending messages
-     // If false, make it true and start sending messages
-     CToolBarCtrl& omRefToolBarCtrl = vGetReferenceToToolBarCtrl();
-     // Use of this flag can be avoided by using "g_bStopSendMultMsg"
-     if ( !theApp.pouGetFlagsPtr()->nGetFlagStatus( SENDMESG ) )
-     {
+    // Check for SENDMESG flag, If true,
+    // make it false and stop sending messages
+    // If false, make it true and start sending messages
+    CToolBarCtrl& omRefToolBarCtrl = vGetReferenceToToolBarCtrl();
 
-         // Now start sending messages, update flag
-         theApp.pouGetFlagsPtr()->vSetFlagStatus( SENDMESG, TRUE );
-
-         // Set the tool bar button to pressed state
-         omRefToolBarCtrl.PressButton(IDR_TOOL_SENDMSG, TRUE);
-    
-         m_objTxHandler.vSetTxStopFlag(FALSE);
-         //g_bStopMsgBlockTx       = FALSE;
-         // Call Message Manager function to start message transmission
-         //m_podTxMsgManager->vStartTransmission(0);
-		 m_objTxHandler.vStartTransmission(0);
-     }
-     else // Started, Stop the same
-     {
-         //m_objTxHandler.vSetTxStopFlag(TRUE);
-         m_objTxHandler.vStopTransmission(0);
-         //g_bStopMsgBlockTx       = TRUE;
-         theApp.vDestroyUtilThreads(500, BIT_MULTI_MSG_THREAD );
+    // Use of this flag can be avoided by using "g_bStopSendMultMsg"
+    if ( !theApp.pouGetFlagsPtr()->nGetFlagStatus( SENDMESG ) )
+    {
+        // Now start sending messages, update flag
+        theApp.pouGetFlagsPtr()->vSetFlagStatus( SENDMESG, TRUE );
+        // Set the tool bar button to pressed state
+        omRefToolBarCtrl.PressButton(IDR_TOOL_SENDMSG, TRUE);
+        m_objTxHandler.vSetTxStopFlag(FALSE);
+        //g_bStopMsgBlockTx       = FALSE;
+        // Call Message Manager function to start message transmission
+        //m_podTxMsgManager->vStartTransmission(0);
+        m_objTxHandler.vStartTransmission(0);
+    }
+    else // Started, Stop the same
+    {
+        //m_objTxHandler.vSetTxStopFlag(TRUE);
+        m_objTxHandler.vStopTransmission(0);
+        //g_bStopMsgBlockTx       = TRUE;
+        theApp.vDestroyUtilThreads(500, BIT_MULTI_MSG_THREAD );
         // Now start sending messages, update flag
         theApp.pouGetFlagsPtr()->vSetFlagStatus( SENDMESG, FALSE );
         // ReSet the tool bar button to pressed state
         omRefToolBarCtrl.PressButton(IDR_TOOL_SENDMSG, FALSE);
-     }
-     // Inform Tx Window about message transmission start if it exists
-	if(m_objTxHandler.hConfigWindowShown() == S_OK)
-	{
+    }
+
+    // Inform Tx Window about message transmission start if it exists
+    if(m_objTxHandler.hConfigWindowShown() == S_OK)
+    {
         CFlags* pouFlag = theApp.pouGetFlagsPtr();
         BOOL bTxON = FALSE;
+
         if(pouFlag != NULL )
         {
             bTxON = static_cast<BOOL> (pouFlag->nGetFlagStatus(SENDMESG));
         }
-		eUSERSELCTION eUserSel     = eTXMSGCMD;
-		m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bTxON);
-	}
+
+        eUSERSELCTION eUserSel     = eTXMSGCMD;
+        m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bTxON);
+    }
 }
 
 /******************************************************************************
     Function Name    :  podGetFunctionViewPtr
 
-    Input(s)         :  
+    Input(s)         :
     Output           :  CFunctionView*
     Functionality    :  Return pointer to CFunctionView class
                         menu item
@@ -3384,7 +3420,7 @@ void CMainFrame::OnSendMessage()
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  23.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 //CFunctionView* CMainFrame::podGetFunctionViewPtr()
 //{
@@ -3393,7 +3429,7 @@ void CMainFrame::OnSendMessage()
 /******************************************************************************
     Function Name    :  podGetFileViewPtr
 
-    Input(s)         :  
+    Input(s)         :
     Output           :  CFileView*
     Functionality    :  Return pointer to CFileView class
                         menu item
@@ -3402,7 +3438,7 @@ void CMainFrame::OnSendMessage()
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  23.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 //CFileView* CMainFrame::podGetFileViewPtr()
 //{
@@ -3411,7 +3447,7 @@ void CMainFrame::OnSendMessage()
 /******************************************************************************
     Function Name    :  podGetFuncsTreeViewPtr
 
-    Input(s)         :  
+    Input(s)         :
     Output           :  CFnsTreeView*
     Functionality    :  Return pointer to CFnsTreeView class
                         menu item
@@ -3420,7 +3456,7 @@ void CMainFrame::OnSendMessage()
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  23.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 //CFnsTreeView* CMainFrame::podGetFuncsTreeViewPtr()
 //{
@@ -3429,17 +3465,17 @@ void CMainFrame::OnSendMessage()
 /******************************************************************************
     Function Name    :  hGetModuleHandle
 
-    Input(s)         :  
+    Input(s)         :
     Output           :  HMODULE
-    Functionality    :  Returns HMODULE which will have the handle to the DLL 
-                        loaded        
+    Functionality    :  Returns HMODULE which will have the handle to the DLL
+                        loaded
                         menu item
     Member of        :  CMainFrame
     Friend of        :      -
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  23.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 HMODULE CMainFrame::hGetModuleHandle()
 {
@@ -3450,177 +3486,184 @@ HMODULE CMainFrame::hGetModuleHandle()
 
     Input(s)         :  HMODULE hModuleHandle, CString& omStrDLLName
     Output           :      -
-    Functionality    :  Sets HMODULE which will have the handle to the DLL 
+    Functionality    :  Sets HMODULE which will have the handle to the DLL
                         loaded to the member variable and the corresponding DLL
-                        name.       
+                        name.
     Member of        :  CMainFrame
     Friend of        :      -
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  23.03.2002
     Modifications    :  Amitesh Bharti
-                        07.08.2002, changed the prototype of function to set 
+                        07.08.2002, changed the prototype of function to set
                         the DLL name which will be use
 ******************************************************************************/
 VOID CMainFrame::vSetModuleHandleAndDLLName(HMODULE hModuleHandle, CString& omStrDLLName)
 {
     m_hModuleHandle      = hModuleHandle;
- //   m_omStrPrevLoadedDll = omStrDLLName;
-	m_omStrSourceFilePathName = omStrDLLName;
-
-//    theApp.bSetData(MRU_DLL_FILE_NAME, (void**)&m_omStrPrevLoadedDll);
+    //   m_omStrPrevLoadedDll = omStrDLLName;
+    m_omStrSourceFilePathName = omStrDLLName;
+    //    theApp.bSetData(MRU_DLL_FILE_NAME, (void**)&m_omStrPrevLoadedDll);
 }
 /******************************************************************************
     Function Name    :  omStrConvByteArrToStr
 
     Input(s)         :  CByteArray *byteArr
     Output           :  CString
-    Functionality    :  Function will convert a byte array to CString      
+    Functionality    :  Function will convert a byte array to CString
     Member of        :  CMainFrame
     Friend of        :      -
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  19.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
-CString CMainFrame::omStrConvByteArrToStr(CByteArray *byteArr)
+CString CMainFrame::omStrConvByteArrToStr(CByteArray* byteArr)
 {
-   CString strDisplay="";
-   BYTE oneByte;
-   unsigned char firstCh, secondCh;
-   for (int arrSize=0;arrSize< byteArr->GetSize();arrSize++)
-      {
-      //Get each byte from the array 
-      oneByte = byteArr->GetAt(arrSize);
-      //First char is arrived at by logical "AND"ing the byte with
-      //0xf0 and then right shifting it by 4 bits
-      firstCh = oneByte & 0xf0;
-      firstCh>>=4;
-      //Second char is arrived at by
-      //"AND"ing with 0x0f
-      secondCh = oneByte & 0x0f;
-      
-      //Following piece of code converts
-      //the chars to the respective toASCII
-      //values before adding to the string
-      if ((firstCh >= 0) && (firstCh <=9))
-         {
-         firstCh+='0';
-         }
-      else
-         {
-         firstCh+=87;
-         }
-      if ((secondCh >= 0) && (secondCh <=9))
-         {
-         secondCh+='0';
-         }
-      else
-         {
-         secondCh+=87;
-         }
-      //Add the chars to the CStirng object
-      strDisplay+=firstCh;
-      strDisplay+=secondCh;
-      }
-   //The extra white space is removed here
-   strDisplay= strDisplay.Left(strDisplay.GetLength() - 1);
-   return strDisplay;
+    CString strDisplay="";
+    BYTE oneByte;
+    unsigned char firstCh, secondCh;
+
+    for (int arrSize=0; arrSize< byteArr->GetSize(); arrSize++)
+    {
+        //Get each byte from the array
+        oneByte = byteArr->GetAt(arrSize);
+        //First char is arrived at by logical "AND"ing the byte with
+        //0xf0 and then right shifting it by 4 bits
+        firstCh = oneByte & 0xf0;
+        firstCh>>=4;
+        //Second char is arrived at by
+        //"AND"ing with 0x0f
+        secondCh = oneByte & 0x0f;
+
+        //Following piece of code converts
+        //the chars to the respective toASCII
+        //values before adding to the string
+        if ((firstCh >= 0) && (firstCh <=9))
+        {
+            firstCh+='0';
+        }
+        else
+        {
+            firstCh+=87;
+        }
+
+        if ((secondCh >= 0) && (secondCh <=9))
+        {
+            secondCh+='0';
+        }
+        else
+        {
+            secondCh+=87;
+        }
+
+        //Add the chars to the CStirng object
+        strDisplay+=firstCh;
+        strDisplay+=secondCh;
+    }
+
+    //The extra white space is removed here
+    strDisplay= strDisplay.Left(strDisplay.GetLength() - 1);
+    return strDisplay;
 }
 /******************************************************************************
     Function Name    :  vConvStrtoByteArray
 
     Input(s)         :   char* tempBuf
     Output           :  CByteArray *byteArr
-    Functionality    :  Function will convert a string to equivalent 
-                        byte array.     
+    Functionality    :  Function will convert a string to equivalent
+                        byte array.
     Member of        :  CMainFrame
     Friend of        :      -
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  19.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void CMainFrame::vConvStrtoByteArray(CByteArray* bufferTx, char* tempBuf)
 {
-   //Copy the modified string to a local Cstring
-   //variable and remove all white spaces
-   CString strTemp(tempBuf);
-   TCHAR ch = ' ';
-   strTemp.Remove(ch);
+    //Copy the modified string to a local Cstring
+    //variable and remove all white spaces
+    CString strTemp(tempBuf);
+    TCHAR ch = ' ';
+    strTemp.Remove(ch);
+    unsigned int ncount=0;
+    int nStrLength = strTemp.GetLength();
+    unsigned char firstCh;
+    unsigned char secondCh;
 
-   unsigned int ncount=0;
-   int nStrLength = strTemp.GetLength();
-   unsigned char firstCh;
-   unsigned char secondCh;
-   
-   //Take two characters at a time and then
-   //start converting them into a byte.
-   //   do
-   while (nStrLength)
-   {
-      //get the first char
-      firstCh = strTemp.GetAt(ncount++);
-      ASSERT(AfxCheckMemory());
-      //get the second char
-      //if the value is greater than or equal to zero or
-      //less than or equal to nine, get the value by
-      //subtracting the ASCII value of '0'
-      if (('0' <= firstCh) && (firstCh <= '9'))
-         {
-         firstCh -='0';
-         }
-      else
-         {
-         //The character is between 'a' to 'f'. First
-         //convert to lowercase and deduct 87 which
-         //will give the correct value for the char
-         //as the ASCII value of 'a' is 97.
-         firstCh = (UCHAR)tolower (firstCh);
-         firstCh-= (UCHAR)87;
-         }
-      //if the value is greater than or equal to zero or
-      //less than or equal to nine, get the value by
-      //subtracting the ASCII value of '0'
-      nStrLength --;
-      if(nStrLength)
-      {
-          secondCh = strTemp.GetAt(ncount++);
-          ASSERT(AfxCheckMemory());
-     
-          if (('0' <= secondCh) && (secondCh <= '9'))
-             {
-             secondCh -='0';
-             }
-          else
-             {
-             //The character is between 'a' to 'f'. First
-             //convert to lowercase and deduct 87 which
-             //will give the correct value for the char
-             //as the ASCII value of 'a' is 97.
-             secondCh = (UCHAR)tolower (secondCh);
-             secondCh-= 87;
-             }
-          //Left shift first char by 4 bits and do
-          //a logical "OR" with the second char
-          firstCh <<= 4;
-          firstCh |= secondCh;
-          //firstCh = McnetCharSet[secondCh][firstCh];
-          //end of insertion
-          //Now add the byte to the byte array
-          bufferTx->Add(firstCh);
-          //Deduct the value of string length by 2
-          nStrLength --;
-      }
-   }
-   //while (nStrLength);
-   return;
+    //Take two characters at a time and then
+    //start converting them into a byte.
+    //   do
+    while (nStrLength)
+    {
+        //get the first char
+        firstCh = strTemp.GetAt(ncount++);
+        ASSERT(AfxCheckMemory());
+
+        //get the second char
+        //if the value is greater than or equal to zero or
+        //less than or equal to nine, get the value by
+        //subtracting the ASCII value of '0'
+        if (('0' <= firstCh) && (firstCh <= '9'))
+        {
+            firstCh -='0';
+        }
+        else
+        {
+            //The character is between 'a' to 'f'. First
+            //convert to lowercase and deduct 87 which
+            //will give the correct value for the char
+            //as the ASCII value of 'a' is 97.
+            firstCh = (UCHAR)tolower (firstCh);
+            firstCh-= (UCHAR)87;
+        }
+
+        //if the value is greater than or equal to zero or
+        //less than or equal to nine, get the value by
+        //subtracting the ASCII value of '0'
+        nStrLength --;
+
+        if(nStrLength)
+        {
+            secondCh = strTemp.GetAt(ncount++);
+            ASSERT(AfxCheckMemory());
+
+            if (('0' <= secondCh) && (secondCh <= '9'))
+            {
+                secondCh -='0';
+            }
+            else
+            {
+                //The character is between 'a' to 'f'. First
+                //convert to lowercase and deduct 87 which
+                //will give the correct value for the char
+                //as the ASCII value of 'a' is 97.
+                secondCh = (UCHAR)tolower (secondCh);
+                secondCh-= 87;
+            }
+
+            //Left shift first char by 4 bits and do
+            //a logical "OR" with the second char
+            firstCh <<= 4;
+            firstCh |= secondCh;
+            //firstCh = McnetCharSet[secondCh][firstCh];
+            //end of insertion
+            //Now add the byte to the byte array
+            bufferTx->Add(firstCh);
+            //Deduct the value of string length by 2
+            nStrLength --;
+        }
+    }
+
+    //while (nStrLength);
+    return;
 }
 /******************************************************************************/
 /*  Function Name    :  vGetReferenceToToolBarCtrl                            */
 /*  Input(s)         :                                                        */
 /*  Output           :  CToolBarCtrl&                                         */
-/*  Functionality    :  Returns reference to CToolBarCtrl 
+/*  Functionality    :  Returns reference to CToolBarCtrl
 /*  Member of        :  CMainFrame                                            */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Amarnath Shastry                                      */
@@ -3634,76 +3677,76 @@ CToolBarCtrl& CMainFrame::vGetReferenceToToolBarCtrl()
     return ((pToolBar)->GetToolBarCtrl());
 }
 /******************************************************************************/
-/*  Function Name    :  vSetFuncsTreeViewPtr                                  
-/*  Input(s)         :  CFnsTreeView* pFnsTreeView                                                    
-/*  Output           :  void                                          
-/*  Functionality    :  Sets CFnsTreeView class pointer to member variable 
-/*  Member of        :  CMainFrame                                            
-/*  Friend of        :      -                                                 
-/*  Author(s)        :  Amarnath Shastry                                      
-/*  Date Created     :  14.03.2002                                            
-/*  Modifications    :                                                        
+/*  Function Name    :  vSetFuncsTreeViewPtr
+/*  Input(s)         :  CFnsTreeView* pFnsTreeView
+/*  Output           :  void
+/*  Functionality    :  Sets CFnsTreeView class pointer to member variable
+/*  Member of        :  CMainFrame
+/*  Friend of        :      -
+/*  Author(s)        :  Amarnath Shastry
+/*  Date Created     :  14.03.2002
+/*  Modifications    :
 /******************************************************************************/
 //void CMainFrame::vSetFuncsTreeViewPtr(CFnsTreeView* pFnsTreeView)
 //{
 //    m_pomFnsTreeView = pFnsTreeView;
 //}
 /******************************************************************************/
-/*  Function Name    :  vSetFileViewPtr                                  
-/*  Input(s)         :  CFileView* pFnsTreeView                                                   
-/*  Output           :  void                                          
-/*  Functionality    :  Sets CFileView class pointer to member variable 
-/*  Member of        :  CMainFrame                                            
-/*  Friend of        :      -                                                 
-/*  Author(s)        :  Amarnath Shastry                                      
-/*  Date Created     :  14.03.2002                                            
-/*  Modifications    :                                                        
+/*  Function Name    :  vSetFileViewPtr
+/*  Input(s)         :  CFileView* pFnsTreeView
+/*  Output           :  void
+/*  Functionality    :  Sets CFileView class pointer to member variable
+/*  Member of        :  CMainFrame
+/*  Friend of        :      -
+/*  Author(s)        :  Amarnath Shastry
+/*  Date Created     :  14.03.2002
+/*  Modifications    :
 /******************************************************************************/
 //void CMainFrame::vSetFileViewPtr(CFileView* pFileView)
 //{
 //    m_pomFileView = pFileView;
 //}
 /******************************************************************************/
-/*  Function Name    :  vSetFunctionViewPtr                                  
-/*  Input(s)         :  CFunctionView* pFnsTreeView                                                   
-/*  Output           :  void                                          
-/*  Functionality    :  Sets CFunctionView class pointer to member variable 
-/*  Member of        :  CMainFrame                                            
-/*  Friend of        :      -                                                 
-/*  Author(s)        :  Amarnath Shastry                                      
-/*  Date Created     :  14.03.2002                                            
-/*  Modifications    :                                                        
+/*  Function Name    :  vSetFunctionViewPtr
+/*  Input(s)         :  CFunctionView* pFnsTreeView
+/*  Output           :  void
+/*  Functionality    :  Sets CFunctionView class pointer to member variable
+/*  Member of        :  CMainFrame
+/*  Friend of        :      -
+/*  Author(s)        :  Amarnath Shastry
+/*  Date Created     :  14.03.2002
+/*  Modifications    :
 /******************************************************************************/
 //void CMainFrame::vSetFunctionViewPtr(CFunctionView* pFunctionView)
 //{
 //    m_pomFunctionView = pFunctionView;
 //}
 /******************************************************************************/
-/*  Function Name    :  vGetNewDatabaseFlag                                  
-/*  Input(s)         :  
+/*  Function Name    :  vGetNewDatabaseFlag
+/*  Input(s)         :
 /*  Output           :  BOOL
 /*  Functionality    :  Returns the value of m_bIsNewDatabase
-/*  Member of        :  CMainFrame                                            
-/*  Friend of        :      -                                                 
-/*  Author(s)        :  Amarnath Shastry                                      
-/*  Date Created     :  14.03.2002                                            
-/*  Modifications    :                                                        
+/*  Member of        :  CMainFrame
+/*  Friend of        :      -
+/*  Author(s)        :  Amarnath Shastry
+/*  Date Created     :  14.03.2002
+/*  Modifications    :
 /******************************************************************************/
 BOOL CMainFrame::vGetNewDatabaseFlag()
 {
     return (m_bIsNewDatabase);
 }
 /******************************************************************************/
-/*  Function Name    :  vSetNewDatabaseFlag                                  
+/*  Function Name    :  vSetNewDatabaseFlag
 /*  Input(s)         :  BOOL
-/*  Output           :  
-/*  Functionality    :  Sets the value of m_bIsNewDatabase to "bValue" 
+/*  Output           :
+/*  Functionality    :  Sets the value of m_bIsNewDatabase to "bValue"
                         passed as parameter
-/*  Member of        :  CMainFrame                                            
-/*  Friend of        :      -                                                 
-/*  Author(s)        :  Amarnath Shastry                                      
-/*  Date Created     :  14.03.2002                                            
-/*  Modifications    :                                                        
+/*  Member of        :  CMainFrame
+/*  Friend of        :      -
+/*  Author(s)        :  Amarnath Shastry
+/*  Date Created     :  14.03.2002
+/*  Modifications    :
 /******************************************************************************/
 void CMainFrame::vSetNewDatabaseFlag(BOOL bValue)
 {
@@ -3731,13 +3774,14 @@ void CMainFrame::vSetNewDatabaseFlag(BOOL bValue)
 LRESULT CMainFrame::OnErrorMessageProc(WPARAM wpParam, LPARAM lParam)
 {
     TRACE("POSTED ERROR MSG");
-	SCAN_ERR ErrorMsg ;
+    SCAN_ERR ErrorMsg ;
     BOOL bToCallHandler = FALSE;
     eERROR_STATE eCurrError;
     // Get Channel Index
     UCHAR ucChannel = HIBYTE(wpParam);
     // Get Error code
     UCHAR ucError = LOBYTE( wpParam );
+
     // Check for channel ID validity to prevenmt array boundary condition
     // violation
     if( ucChannel >= defNO_OF_CHANNELS )
@@ -3747,6 +3791,7 @@ LRESULT CMainFrame::OnErrorMessageProc(WPARAM wpParam, LPARAM lParam)
         // Set to default
         ucChannel = 0;
     }
+
     // If it is warning limit message then only invoke
     // warning limit handler
     if (ucError == ERROR_WARNING_LIMIT_REACHED)
@@ -3755,17 +3800,16 @@ LRESULT CMainFrame::OnErrorMessageProc(WPARAM wpParam, LPARAM lParam)
         eCurrError = ERROR_WARNING_LIMIT;
     }
     // For all other error messages
-    else 
+    else
     {
         // Extract error counter value from the parameter
         BYTE byRxError = LOBYTE(lParam);
         BYTE byTxError = HIBYTE(lParam);
-        
         // Find the state transition. This function will return true if
         // There is any state transition.
         bToCallHandler = bIsTransitionInState( ucChannel,
                                                byRxError, byTxError );
-        
+
         // If it is Rx Error message then execure only error handler.
         // This will override the Passive error handler with error frame gandler
         if (ucError == STUFF_ERROR_RX)
@@ -3787,19 +3831,21 @@ LRESULT CMainFrame::OnErrorMessageProc(WPARAM wpParam, LPARAM lParam)
     if( bToCallHandler == TRUE )
     {
         // Check the status of error handler
-        CFlags *pouFlag = theApp.pouGetFlagsPtr();
+        CFlags* pouFlag = theApp.pouGetFlagsPtr();
+
         if( pouFlag != NULL )
         {
             ErrorMsg.m_ucTxError = HIBYTE(lParam);
-			ErrorMsg.m_ucRxError = LOBYTE(lParam);
-			//channel number is one greater than the index number, index number starts from 0 and channel number starts from 1
-			ErrorMsg.m_ucChannel = ucChannel + 1;
-			//// Execute the error handler
-			//CExecuteManager::ouGetExecuteManager().
-			GetICANNodeSim()->NS_ManageOnErrorHandler(eCurrError,(void*)&ErrorMsg);
+            ErrorMsg.m_ucRxError = LOBYTE(lParam);
+            //channel number is one greater than the index number, index number starts from 0 and channel number starts from 1
+            ErrorMsg.m_ucChannel = ucChannel + 1;
+            //// Execute the error handler
+            //CExecuteManager::ouGetExecuteManager().
+            GetICANNodeSim()->NS_ManageOnErrorHandler(eCurrError,(void*)&ErrorMsg);
         }
     }
-	return 0;
+
+    return 0;
 }
 
 /******************************************************************************
@@ -3808,16 +3854,16 @@ LRESULT CMainFrame::OnErrorMessageProc(WPARAM wpParam, LPARAM lParam)
     Input(s)         :  unChannel - Channel ID
                         byRxError - Rx Error counter value
                         byTxError - Tx Error counter value
-    Output           :  TRUE if the function finds out analysing byRxError and 
-                        byTxError that 
-    Functionality    :  This analyses byRxError and byTxError to find out the 
-                        current error state. If it is different than what is 
-                        indicated currently with m_eCurrErrorState, this 
+    Output           :  TRUE if the function finds out analysing byRxError and
+                        byTxError that
+    Functionality    :  This analyses byRxError and byTxError to find out the
+                        current error state. If it is different than what is
+                        indicated currently with m_eCurrErrorState, this
                         returns TRUE, else FALSE.
     Member of        :  CMainFrame
 
     Author(s)        :  Ratnadip Choudhury
-    Date Created     :  
+    Date Created     :
     Modifications    :  Raja N on 14.03.2005, Modified logic to support multi
                         channel controller state.
 ******************************************************************************/
@@ -3839,8 +3885,8 @@ BOOL CMainFrame::bIsTransitionInState( UINT unChannel,
         }
     }
     else if (byTxError == 255)
-    // The sudden shift to the third state is to avoid 
-    // "else if ((byTxError > 127) || (byRxError > 127))"
+        // The sudden shift to the third state is to avoid
+        // "else if ((byTxError > 127) || (byRxError > 127))"
     {
         // Bus off
         if (m_eCurrErrorState[ unChannel ] != ERROR_BUS_OFF)
@@ -3879,7 +3925,6 @@ CString CMainFrame::omStrConvertIntegerToHex(CString omStrInt)
 {
     CString omStrHexNo = STR_EMPTY;
     int nCount = omStrInt.GetLength();
-
     int nIndex = omStrInt.Find('-');
 
     if ( nIndex != -1 )
@@ -3888,8 +3933,10 @@ CString CMainFrame::omStrConvertIntegerToHex(CString omStrInt)
         omStrInt.Delete( nIndex, 1 );
         nCount--;
     }
+
     __int64 n64Val = _atoi64( omStrInt );
     __int64 n64Temp = 0;
+
     while ( nCount )
     {
         n64Temp = n64Val;
@@ -3897,69 +3944,87 @@ CString CMainFrame::omStrConvertIntegerToHex(CString omStrInt)
         n64Val = n64Val/16;
         // Get remainder
         n64Temp = n64Temp % 16;
-    
+
         // Insert matching character
         switch(n64Temp)
         {
             case 0:
                 omStrHexNo.Insert( 0, '0');
                 break;
+
             case 1:
                 omStrHexNo.Insert( 0, '1');
                 break;
+
             case 2:
                 omStrHexNo.Insert( 0, '2');
                 break;
+
             case 3:
                 omStrHexNo.Insert( 0, '3');
                 break;
+
             case 4:
                 omStrHexNo.Insert( 0, '4');
                 break;
+
             case 5:
                 omStrHexNo.Insert( 0, '5');
                 break;
+
             case 6:
                 omStrHexNo.Insert( 0, '6');
                 break;
+
             case 7:
                 omStrHexNo.Insert( 0, '7');
                 break;
+
             case 8:
                 omStrHexNo.Insert( 0, '8');
                 break;
+
             case 9:
                 omStrHexNo.Insert( 0, '9');
                 break;
+
             case 10:
                 omStrHexNo.Insert( 0, 'A');
                 break;
+
             case 11:
                 omStrHexNo.Insert( 0, 'B');
                 break;
+
             case 12:
                 omStrHexNo.Insert( 0, 'C');
                 break;
+
             case 13:
                 omStrHexNo.Insert( 0, 'D');
                 break;
+
             case 14:
                 omStrHexNo.Insert( 0, 'E');
                 break;
+
             case 15:
                 omStrHexNo.Insert( 0, 'F');
                 break;
+
             default:
                 break;
         }
 
         nCount--;
     }
+
     // If number is "-ve", insert '-' sign
     if ( nIndex != -1 )
     {
-        omStrHexNo.Insert( 0, '-'); 
+        omStrHexNo.Insert( 0, '-');
     }
+
     // u r done!
     return omStrHexNo;
 }
@@ -3968,7 +4033,7 @@ CString CMainFrame::omStrConvertIntegerToHex(CString omStrInt)
 
     Input(s)         :  CString omStrHexNumber
     Output           :  BOOL
-    Functionality    :  Checks whether the value passed as parameter is valid 
+    Functionality    :  Checks whether the value passed as parameter is valid
                         Hexadecimal number. If yes, the function returns TRUE,
                         otherwise FALSE
     Member of        :  CMainFrame
@@ -3976,21 +4041,20 @@ CString CMainFrame::omStrConvertIntegerToHex(CString omStrInt)
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  10.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 BOOL CMainFrame::bIsHexNumber(CString omStrHexNumber)
 {
     BOOL b_RetVal = FALSE;
-
     omStrHexNumber.MakeUpper();
-    
+
     for ( int nCount = 0; nCount < omStrHexNumber.GetLength(); nCount++ )
     {
         TCHAR t_cChar = omStrHexNumber.GetAt(nCount);
 
         if ( ( t_cChar >= 'A' && t_cChar <= 'F' ) ||
-             ( t_cChar >= '0' && t_cChar <= '9' ) ||
-             ( t_cChar == '-') )
+                ( t_cChar >= '0' && t_cChar <= '9' ) ||
+                ( t_cChar == '-') )
         {
             b_RetVal = TRUE;
         }
@@ -4015,9 +4079,9 @@ BOOL CMainFrame::bIsHexNumber(CString omStrHexNumber)
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  10.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
-void CMainFrame::OnUpdateConfigureDatabaseClose(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateConfigureDatabaseClose(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable( theApp.pouGetFlagsPtr()->nGetFlagStatus( DBOPEN ));
 }
@@ -4033,9 +4097,9 @@ void CMainFrame::OnUpdateConfigureDatabaseClose(CCmdUI* pCmdUI)
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  10.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
-void CMainFrame::OnUpdateConfigureDatabaseNew(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateConfigureDatabaseNew(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable( !theApp.pouGetFlagsPtr()->nGetFlagStatus( DBOPEN ));
 }
@@ -4051,9 +4115,9 @@ void CMainFrame::OnUpdateConfigureDatabaseNew(CCmdUI* pCmdUI)
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  10.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
-void CMainFrame::OnUpdateConfigureDatabaseSave(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateConfigureDatabaseSave(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable( theApp.pouGetFlagsPtr()->nGetFlagStatus( DBOPEN ));
 }
@@ -4070,9 +4134,9 @@ void CMainFrame::OnUpdateConfigureDatabaseSave(CCmdUI* pCmdUI)
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  10.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
-void CMainFrame::OnUpdateConfigureDatabaseSaveas(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateConfigureDatabaseSaveas(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable( theApp.pouGetFlagsPtr()->nGetFlagStatus( DBOPEN ));
 }
@@ -4082,19 +4146,19 @@ void CMainFrame::OnUpdateConfigureDatabaseSaveas(CCmdUI* pCmdUI)
     Input(s)         :  void
     Output           :  void
     Functionality    :  Called by the framework when mainframe receives WM_CLOSE
-                        message. 
+                        message.
     Member of        :  CMainFrame
     Friend of        :      -
 
     Author(s)        :  Ratnadip Choudhury
     Date Created     :  05.03.2002
     Modifications    :  27.11.2002, Gopi, Fixed bug. The window coords of Msg
-                        window, Replay window and Output window were not 
-                        saved into the config file. Only the file name where 
+                        window, Replay window and Output window were not
+                        saved into the config file. Only the file name where
                         the current info can be saved is now stored in this
                         method. The file is actually saved in onDestroy(..)
                         of this class.
-                        Store the coords of the output window and the replay 
+                        Store the coords of the output window and the replay
                         window here
     Modifications    :  29.11.2002, Amarnath S
                         For the first time after selecting the config filename
@@ -4104,12 +4168,12 @@ void CMainFrame::OnUpdateConfigureDatabaseSaveas(CCmdUI* pCmdUI)
                         SaveMesageAttributes(...) function shifted to
                         OnImportDatabase().
     Modifications    :  08.05.2003, Amitesh Bharti
-                        The file explorer to select a configuration file for 
+                        The file explorer to select a configuration file for
                         the default configuration will be thrown only if the
                         configuration setting is modified from default setting.
     Modifications    :  08.05.2003, Amitesh Bharti
                         The timer is killed it is has a valid handle. Also
-                        the flag m_bIsStatWndCreated is reset to ensure if 
+                        the flag m_bIsStatWndCreated is reset to ensure if
                         application is closed it does not try to post a message.
                         to update the statistics since window may be closed.
     Modifications    :  10.03.2004, Raja N
@@ -4127,110 +4191,115 @@ void CMainFrame::OnUpdateConfigureDatabaseSaveas(CCmdUI* pCmdUI)
                         Added code to terminate CUIThread & CGraphUIThread properly
     Modifications    :  20.05.2010, ArunKumar K
                         Added code to Save Toolbar Positions
-    Modifications    :	Saravanan K S, 16-11-2011,
-			Added Cancel button option in the close warning message box
+    Modifications    :  Saravanan K S, 16-11-2011,
+            Added Cancel button option in the close warning message box
 ******************************************************************************/
-void CMainFrame::OnClose() 
+void CMainFrame::OnClose()
 {
     CString oCfgFilename;
     vGetLoadedCfgFileName(oCfgFilename);
+
     // get the name of the loaded config file only if no filename has
     // been specified until now..
     if(oCfgFilename.IsEmpty() == TRUE && bIsConfigurationModified())
     {
-		if(theApp.m_bFromAutomation == FALSE)
-		{
-			UINT unMsgRetVal = AfxMessageBox(_T("You have made changes to the configuration.\nDo you want to save it?"),
-						MB_YESNOCANCEL);
+        if(theApp.m_bFromAutomation == FALSE)
+        {
+            UINT unMsgRetVal = AfxMessageBox(_T("You have made changes to the configuration.\nDo you want to save it?"),
+                                             MB_YESNOCANCEL);
 
-			if ( unMsgRetVal == IDYES )
-			{
-				CFileDialog oCfgFileDlg(FALSE,   // Open dialog as Save as File dlg
-										defFILEEXT,  // default extension
-										NULL,       // default file name
-										defDLGFLAGS, // mode
-										defCONFIGFILTER, // filter 
-										NULL        // parent wnd
-										);
-				oCfgFileDlg.m_ofn.lpstrTitle = _T("Save Configuration File");
-				if(oCfgFileDlg.DoModal() == IDOK)
-				{
-					// get the name of the selected file
-					oCfgFilename = oCfgFileDlg.GetPathName();
-					// This call alone is sufficient to save the 
-					// configuration file.
-					vSetFileStorageInfo(oCfgFilename);
-					if (SaveConfiguration() == 
-						defCONFIG_FILE_SUCCESS )
-					{
-						theApp.WriteProfileString(SECTION, 
-							defCONFIGFILENAME, 
-							oCfgFilename);
-					}
-				}
-			}
-			else if ( unMsgRetVal == IDCANCEL )
-			{
-				return;
-			}
+            if ( unMsgRetVal == IDYES )
+            {
+                CFileDialog oCfgFileDlg(FALSE,   // Open dialog as Save as File dlg
+                                        defFILEEXT,  // default extension
+                                        NULL,       // default file name
+                                        defDLGFLAGS, // mode
+                                        defCONFIGFILTER, // filter
+                                        NULL        // parent wnd
+                                       );
+                oCfgFileDlg.m_ofn.lpstrTitle = _T("Save Configuration File");
+
+                if(oCfgFileDlg.DoModal() == IDOK)
+                {
+                    // get the name of the selected file
+                    oCfgFilename = oCfgFileDlg.GetPathName();
+                    // This call alone is sufficient to save the
+                    // configuration file.
+                    vSetFileStorageInfo(oCfgFilename);
+
+                    if (SaveConfiguration() ==
+                            defCONFIG_FILE_SUCCESS )
+                    {
+                        theApp.WriteProfileString(SECTION,
+                                                  defCONFIGFILENAME,
+                                                  oCfgFilename);
+                    }
+                }
+            }
+            else if ( unMsgRetVal == IDCANCEL )
+            {
+                return;
+            }
         }
     }
-    else 
+    else
     {
-		if(theApp.m_bFromAutomation == FALSE)
-		{
-			if ( bIsConfigurationModified())
-			{
-				UINT unMsgRetVal  = AfxMessageBox(_T("You have made changes to the configuration.\nDo you want to save it?"),
-								  MB_YESNOCANCEL);
-				if ( unMsgRetVal == IDYES )
-				{
-					// This call alone is sufficient to save the 
-					// configuration file.
-					vSetFileStorageInfo(oCfgFilename);
-					if ( SaveConfiguration() == defCONFIG_FILE_SUCCESS )
-					{
-						theApp.WriteProfileString(SECTION, defCONFIGFILENAME, 
-																	oCfgFilename);
-					}
-				}
-				else if ( unMsgRetVal == IDCANCEL )
-				{
-					return;
-				}
-			}
-		}
-    }
-    
-    vREP_HandleConnectionStatusChange( FALSE ); //Close reply
+        if(theApp.m_bFromAutomation == FALSE)
+        {
+            if ( bIsConfigurationModified())
+            {
+                UINT unMsgRetVal  = AfxMessageBox(_T("You have made changes to the configuration.\nDo you want to save it?"),
+                                                  MB_YESNOCANCEL);
 
+                if ( unMsgRetVal == IDYES )
+                {
+                    // This call alone is sufficient to save the
+                    // configuration file.
+                    vSetFileStorageInfo(oCfgFilename);
+
+                    if ( SaveConfiguration() == defCONFIG_FILE_SUCCESS )
+                    {
+                        theApp.WriteProfileString(SECTION, defCONFIGFILENAME,
+                                                  oCfgFilename);
+                    }
+                }
+                else if ( unMsgRetVal == IDCANCEL )
+                {
+                    return;
+                }
+            }
+        }
+    }
+
+    vREP_HandleConnectionStatusChange( FALSE ); //Close reply
     OnDllUnload(); //Unload all the loaded dlls
     GetICANNodeSim()->NS_SetSimSysConfigData(NULL, 0); // Reset SimSysConfig
-
     //Unload J1939 Node sim dll
     OnDllUnloadJ1939();
     GetIJ1939NodeSim()->NS_SetSimSysConfigData(NULL, 0);
 
-	if(m_unTimerSB != 0)
+    if(m_unTimerSB != 0)
     {
-		::KillTimer(NULL, m_unTimerSB);
+        ::KillTimer(NULL, m_unTimerSB);
     }
-	if(m_podUIThread != NULL)
-	{
-		m_podUIThread->PostThreadMessage(WM_QUIT,0,0);
-	}
-	//SGW Code commented by Arun 21-10-2010
-	/*if(m_pomGraphThread != NULL)
-	{
-		m_pomGraphThread->PostThreadMessage(WM_QUIT,0,0);
-	}*/
-	//SGW Code commented by Arun 21-10-2010
-    m_bIsStatWndCreated = FALSE;
 
+    if(m_podUIThread != NULL)
+    {
+        m_podUIThread->PostThreadMessage(WM_QUIT,0,0);
+    }
+
+    //SGW Code commented by Arun 21-10-2010
+    /*if(m_pomGraphThread != NULL)
+    {
+        m_pomGraphThread->PostThreadMessage(WM_QUIT,0,0);
+    }*/
+    //SGW Code commented by Arun 21-10-2010
+    m_bIsStatWndCreated = FALSE;
     // Get appropriate data structure
     // Call Close Database to take app. action
     CFlags* pFlags = NULL;
     pFlags = theApp.pouGetFlagsPtr();
+
     if( pFlags != NULL)
     {
         // Stop Logging if it is enabled
@@ -4238,20 +4307,21 @@ void CMainFrame::OnClose()
         {
             vStartStopLogging( FALSE );
         }
+
         // Close DB Editor if it is visible
         if( pFlags->nGetFlagStatus(DBOPEN) == TRUE )
         {
             OnCloseDatabase();
         }
     }
+
     if (g_pouDIL_CAN_Interface != NULL)
     {
         g_pouDIL_CAN_Interface->DILC_PerformClosureOperations();
     }
-    
-	SaveBarState(PROFILE_CAN_MONITOR);
 
-	CMDIFrameWnd::OnClose();
+    SaveBarState(PROFILE_CAN_MONITOR);
+    CMDIFrameWnd::OnClose();
 }
 
 /******************************************************************************
@@ -4259,50 +4329,50 @@ void CMainFrame::OnClose()
 
     Input(s)         :      -
     Output           :  BOOL
-    Functionality    :  Creates the message window (an object of 
+    Functionality    :  Creates the message window (an object of
                         CMsgMDIChildWnd class)
     Member of        :  CMainFrame
     Friend of        :      -
 
     Author(s)        :  Ratnadip Choudhury
     Date Created     :  05.03.2002
-    Modifications    :  
-                        Arunkumar K on 15.06.2010, New Message Window Thread 
+    Modifications    :
+                        Arunkumar K on 15.06.2010, New Message Window Thread
                         Raja N on 19.07.2005, Removed code related to log file
                         triggering
 ******************************************************************************/
 
 BOOL CMainFrame::bCreateMsgWindow()
 {
-	BOOL bReturn=TRUE;
-	if (m_podMsgWndThread == NULL)
-	{
-		m_podMsgWndThread = new CMsgWndThread;
+    BOOL bReturn=TRUE;
+
+    if (m_podMsgWndThread == NULL)
+    {
+        m_podMsgWndThread = new CMsgWndThread;
+
         if (m_podMsgWndThread != NULL)
         {
             // Set specific parameters on successful creation
-
-		    m_podMsgWndThread->CreateThread();
-			//CAN Message Window
-			m_podMsgWndThread->CreateMsgWnd(m_hWnd, CAN,
-				               0, NULL);
-		    m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)CAN);
-
-			//J1939 Message Window
-			m_podMsgWndThread->CreateMsgWnd(m_hWnd, J1939,
-				               0, NULL);
-		    m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
+            m_podMsgWndThread->CreateThread();
+            //CAN Message Window
+            m_podMsgWndThread->CreateMsgWnd(m_hWnd, CAN,
+                                            0, NULL);
+            m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)CAN);
+            //J1939 Message Window
+            m_podMsgWndThread->CreateMsgWnd(m_hWnd, J1939,
+                                            0, NULL);
+            m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
         }
         else
         {
             bReturn = FALSE;
         }
-	}
-	else
-	{
-		m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)CAN);
-		m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
-	}
+    }
+    else
+    {
+        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)CAN);
+        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
+    }
 
     return TRUE;
 }
@@ -4312,7 +4382,7 @@ BOOL CMainFrame::bCreateMsgWindow()
 
     Input(s)         :      -
     Output           :  void
-    Functionality    :  Toggles hexadecimal button and switches between decimal 
+    Functionality    :  Toggles hexadecimal button and switches between decimal
                         state to hexadecimal state
     Member of        :  CMainFrame
     Friend of        :      -
@@ -4323,47 +4393,53 @@ BOOL CMainFrame::bCreateMsgWindow()
                         configuration window for posting message about numeric
                         mode change
 ******************************************************************************/
-void CMainFrame::OnHex_DecButon() 
+void CMainFrame::OnHex_DecButon()
 {
-	if (m_podMsgWndThread != NULL)
-	{
-		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
-		BYTE byGetDispFlag = 0;
-		::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
-		if (IS_NUM_HEX_SET(byGetDispFlag))
-		{
-			CLEAR_EXPR_NUM_BITS(byGetDispFlag);
-			SET_NUM_DEC(byGetDispFlag);
-			theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX, FALSE);
-		}
-		else
-		{
-			CLEAR_EXPR_NUM_BITS(byGetDispFlag);
-			SET_NUM_HEX(byGetDispFlag);
-			theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX, TRUE);
-		}
-		for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
-		{
-			hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
-			//Update Message Window
-			if(hWnd)
-			{
-				BYTE bModes = NUMERIC;
-				::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
-			}
-		}
-	}
-    
+    if (m_podMsgWndThread != NULL)
+    {
+        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+        BYTE byGetDispFlag = 0;
+        ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
+
+        if (IS_NUM_HEX_SET(byGetDispFlag))
+        {
+            CLEAR_EXPR_NUM_BITS(byGetDispFlag);
+            SET_NUM_DEC(byGetDispFlag);
+            theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX, FALSE);
+        }
+        else
+        {
+            CLEAR_EXPR_NUM_BITS(byGetDispFlag);
+            SET_NUM_HEX(byGetDispFlag);
+            theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX, TRUE);
+        }
+
+        for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
+        {
+            hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
+
+            //Update Message Window
+            if(hWnd)
+            {
+                BYTE bModes = NUMERIC;
+                ::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
+            }
+        }
+    }
+
     BOOL bHexON = theApp.pouGetFlagsPtr()->nGetFlagStatus(HEX);
+
     if(m_objTxHandler.hConfigWindowShown() == S_OK)
-	{        
-		eUSERSELCTION eUserSel = eHEXDECCMD;
-		m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bHexON);
-	}
+    {
+        eUSERSELCTION eUserSel = eHEXDECCMD;
+        m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bHexON);
+    }
+
     if (sg_pouSWInterface[CAN] != NULL)
     {
         sg_pouSWInterface[CAN]->SW_SetDisplayMode(bHexON);
     }
+
     if (sg_pouSWInterface[J1939] != NULL)
     {
         sg_pouSWInterface[J1939]->SW_SetDisplayMode(bHexON);
@@ -4377,54 +4453,62 @@ void CMainFrame::OnHex_DecButon()
  * Toggles overwrite button and switches between
  * overwriting state to appending state.
  */
-void CMainFrame::OnDisplayMessagewindowOverwrite() 
+void CMainFrame::OnDisplayMessagewindowOverwrite()
 {
-	if (m_podMsgWndThread != NULL)
-	{
-		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
-		BYTE byGetDispFlag = 0;
-		::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
-		if (IS_MODE_APPEND(byGetDispFlag))
-		{
-			CLEAR_EXPR_DISP_BITS(byGetDispFlag);
+    if (m_podMsgWndThread != NULL)
+    {
+        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+        BYTE byGetDispFlag = 0;
+        ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
 
-			//Verifying the Interpretation Check condition.
-			CStringArray aomstrTempDBFiles;
-			theApp.m_pouMsgSignal->vGetDataBaseNames(&aomstrTempDBFiles);
-			if (!(aomstrTempDBFiles.GetSize() > 0))
-				m_bInterPretMsg = FALSE;
+        if (IS_MODE_APPEND(byGetDispFlag))
+        {
+            CLEAR_EXPR_DISP_BITS(byGetDispFlag);
+            //Verifying the Interpretation Check condition.
+            CStringArray aomstrTempDBFiles;
+            theApp.m_pouMsgSignal->vGetDataBaseNames(&aomstrTempDBFiles);
+
+            if (!(aomstrTempDBFiles.GetSize() > 0))
+            {
+                m_bInterPretMsg = FALSE;
+            }
+
             if (m_bInterPretMsg)
             {
                 SET_MODE_INTRP(byGetDispFlag);
             }
             else
             {
-			    SET_MODE_OVER(byGetDispFlag);
+                SET_MODE_OVER(byGetDispFlag);
             }
-			theApp.pouGetFlagsPtr()->vSetFlagStatus(OVERWRITE, TRUE);			
-		}
-		else
-		{
-			CLEAR_EXPR_DISP_BITS(byGetDispFlag);
-			SET_MODE_APPEND(byGetDispFlag);
-			theApp.pouGetFlagsPtr()->vSetFlagStatus(OVERWRITE, FALSE);
-		}
-		for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
-		{
-			hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
-			//Update Message Window
-			if(hWnd)
-			{
-				BYTE bModes = DISPLAY_MODE;
-				::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
-			}
-		}
-	}
-   /* BOOL bOverwriteON = theApp.pouGetFlagsPtr()->nGetFlagStatus(OVERWRITE);
-    bOverwriteON = bOverwriteON ? FALSE : TRUE;
-    theApp.pouGetFlagsPtr()->vSetFlagStatus(OVERWRITE, bOverwriteON);
-    PostThreadMessage(GUI_dwThread_MsgDisp, TM_OVERWRITE_MESSAGE, bOverwriteON,
-        0);*/
+
+            theApp.pouGetFlagsPtr()->vSetFlagStatus(OVERWRITE, TRUE);
+        }
+        else
+        {
+            CLEAR_EXPR_DISP_BITS(byGetDispFlag);
+            SET_MODE_APPEND(byGetDispFlag);
+            theApp.pouGetFlagsPtr()->vSetFlagStatus(OVERWRITE, FALSE);
+        }
+
+        for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
+        {
+            hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
+
+            //Update Message Window
+            if(hWnd)
+            {
+                BYTE bModes = DISPLAY_MODE;
+                ::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
+            }
+        }
+    }
+
+    /* BOOL bOverwriteON = theApp.pouGetFlagsPtr()->nGetFlagStatus(OVERWRITE);
+     bOverwriteON = bOverwriteON ? FALSE : TRUE;
+     theApp.pouGetFlagsPtr()->vSetFlagStatus(OVERWRITE, bOverwriteON);
+     PostThreadMessage(GUI_dwThread_MsgDisp, TM_OVERWRITE_MESSAGE, bOverwriteON,
+         0);*/
 }
 
 
@@ -4434,14 +4518,14 @@ void CMainFrame::OnDisplayMessagewindowOverwrite()
     Input(s)         :  int nButtonID, eCANMONITORFLAG eFlag
     Output           :  BOOL
     Functionality    :  Retrieves status of eFlag from global CFlags object, a
-                        placeholder for all main program state flags and 
+                        placeholder for all main program state flags and
                         modifies press status of nButtonID accordingly.
     Member of        :  CMainFrame
     Friend of        :      -
 
     Author(s)        :  Ratnadip Choudhury
     Date Created     :  15.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 BOOL CMainFrame::bSetPressStatus(int nButtonID, eCANMONITORFLAG eFlag)
 {
@@ -4470,50 +4554,54 @@ BOOL CMainFrame::bSetPressStatus(int nButtonID, eCANMONITORFLAG eFlag)
                         23.06.2004, Disabled the button in Append mode to
                         prevent interpretation in Append mode
 ******************************************************************************/
-void CMainFrame::OnUpdateMessageInterpret(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateMessageInterpret(CCmdUI* pCmdUI)
 {
-	BYTE byGetDispFlag = 0;
-	if (m_podMsgWndThread != NULL)
-	{
+    BYTE byGetDispFlag = 0;
+
+    if (m_podMsgWndThread != NULL)
+    {
         //First check if any DB file is present or not
         //Store database file names
-		CStringArray aomstrTempDBFilesCAN;
-		theApp.m_pouMsgSignal->vGetDataBaseNames(&aomstrTempDBFilesCAN);
+        CStringArray aomstrTempDBFilesCAN;
+        theApp.m_pouMsgSignal->vGetDataBaseNames(&aomstrTempDBFilesCAN);
+        CStringArray aomstrTempDBFilesJ1939;
 
-		CStringArray aomstrTempDBFilesJ1939;
-		if(m_pouMsgSigJ1939)
-			m_pouMsgSigJ1939->vGetDataBaseNames(&aomstrTempDBFilesJ1939);
-		
-		if (aomstrTempDBFilesCAN.GetSize() > 0 ||
-			aomstrTempDBFilesJ1939.GetSize() > 0)
+        if(m_pouMsgSigJ1939)
+        {
+            m_pouMsgSigJ1939->vGetDataBaseNames(&aomstrTempDBFilesJ1939);
+        }
+
+        if (aomstrTempDBFilesCAN.GetSize() > 0 ||
+                aomstrTempDBFilesJ1939.GetSize() > 0)
         {
             //If fil epresent then check for other status
-		    HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
-		    ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
-		    if (IS_MODE_INTRP(byGetDispFlag))
-		    {
-			    pCmdUI->Enable(TRUE);   // Enabled
-			pCmdUI->SetCheck(TRUE); // Pressed state
-		    }
+            HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+            ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
+
+            if (IS_MODE_INTRP(byGetDispFlag))
+            {
+                pCmdUI->Enable(TRUE);   // Enabled
+                pCmdUI->SetCheck(TRUE); // Pressed state
+            }
             else if (IS_MODE_APPEND(byGetDispFlag))
             {
-			// Disable the button
-			pCmdUI->Enable(FALSE);  // Disabled
-			    pCmdUI->SetCheck(m_bInterPretMsg); // Retain pressed state
+                // Disable the button
+                pCmdUI->Enable(FALSE);  // Disabled
+                pCmdUI->SetCheck(m_bInterPretMsg); // Retain pressed state
             }
-		    else if (IS_MODE_OVER(byGetDispFlag))
-		    {
-			    // Enable the button
-			    pCmdUI->Enable(TRUE);   // Enabled
-			    pCmdUI->SetCheck(FALSE);// Unpressed
-		    }
+            else if (IS_MODE_OVER(byGetDispFlag))
+            {
+                // Enable the button
+                pCmdUI->Enable(TRUE);   // Enabled
+                pCmdUI->SetCheck(FALSE);// Unpressed
+            }
         }
         else
-        { 
+        {
             pCmdUI->Enable(FALSE);   // disable
-			pCmdUI->SetCheck(FALSE); // UnPressed state
+            pCmdUI->SetCheck(FALSE); // UnPressed state
         }
-	}
+    }
 }
 /******************************************************************************
     Function Name    :  OnUpdateExecuteMessagehandlers
@@ -4527,15 +4615,15 @@ void CMainFrame::OnUpdateMessageInterpret(CCmdUI* pCmdUI)
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  23.03.2002
-    Modification By  :  Amitesh Bharti                                        
-    Modification on  :  23.10.2002,Enable menu/button if tool is connected    
-    Modification By  :  Amitesh Bharti                                        
-    Modification on  :  31.10.2002,Review comment incorporated.   
+    Modification By  :  Amitesh Bharti
+    Modification on  :  23.10.2002,Enable menu/button if tool is connected
+    Modification By  :  Amitesh Bharti
+    Modification on  :  31.10.2002,Review comment incorporated.
 /******************************************************************************/
-void CMainFrame::OnUpdateExecuteMessagehandlers(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateExecuteMessagehandlers(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(GetICANNodeSim()->NS_GetHandlerStatus(H_MSGHANDLERBUTTON));
-    BOOL bEnable = GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);    
+    BOOL bEnable = GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
     pCmdUI->Enable(bEnable);
 }
 /******************************************************************************
@@ -4552,11 +4640,11 @@ void CMainFrame::OnUpdateExecuteMessagehandlers(CCmdUI* pCmdUI)
     Date Created     :  23.03.2002
     Modifications    :  Amitesh Bharti, 26.12.2002, File name is changed
 ******************************************************************************/
-void CMainFrame::OnUpdateLogFilter(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateLogFilter(CCmdUI* pCmdUI)
 {
     // Check or uncheck log filter
     // menu item
-    pCmdUI->SetCheck( 
+    pCmdUI->SetCheck(
         theApp.pouGetFlagsPtr()->nGetFlagStatus( LOGFILTER ) );
 }
 /******************************************************************************
@@ -4573,11 +4661,11 @@ void CMainFrame::OnUpdateLogFilter(CCmdUI* pCmdUI)
     Date Created     :  23.03.2002
     Modifications    :  Amitesh Bharti, 26.12.2002, File name is changed
 ******************************************************************************/
-void CMainFrame::OnUpdateMessageFilter(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateMessageFilter(CCmdUI* pCmdUI)
 {
     // Check or uncheck message filter
     // menu item
-    pCmdUI->SetCheck( 
+    pCmdUI->SetCheck(
         theApp.pouGetFlagsPtr()->nGetFlagStatus( DISPLAYFILTERON ) );
 }
 /******************************************************************************
@@ -4591,15 +4679,15 @@ void CMainFrame::OnUpdateMessageFilter(CCmdUI* pCmdUI)
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  23.03.2002
-    Modification By  :  Amitesh Bharti                                        
-    Modification on  :  23.10.2002,Enable menu/button if tool is connected    
-    Modification By  :  Amitesh Bharti                                        
-    Modification on  :  31.10.2002, Review comment incorporated.    
+    Modification By  :  Amitesh Bharti
+    Modification on  :  23.10.2002,Enable menu/button if tool is connected
+    Modification By  :  Amitesh Bharti
+    Modification on  :  31.10.2002, Review comment incorporated.
 /******************************************************************************/
-void CMainFrame::OnUpdateExecuteMessagehandlersButton(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateExecuteMessagehandlersButton(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(GetICANNodeSim()->NS_GetHandlerStatus(H_MSGHANDLERBUTTON));
-    BOOL bEnable = GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);    
+    BOOL bEnable = GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
     pCmdUI->Enable(bEnable);
 }
 /******************************************************************************
@@ -4613,9 +4701,9 @@ void CMainFrame::OnUpdateExecuteMessagehandlersButton(CCmdUI* pCmdUI)
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  23.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
-void CMainFrame::OnExecuteMessagehandlersButton() 
+void CMainFrame::OnExecuteMessagehandlersButton()
 {
     //Get present status
     BOOL bEnable = GetICANNodeSim()->NS_GetHandlerStatus(H_MSGHANDLERBUTTON);
@@ -4635,7 +4723,7 @@ void CMainFrame::OnExecuteMessagehandlersButton()
     Date Created     :  23.03.2002
     Modifications    :  Amitesh Bharti, 26.12.2002, File name is changed
 ******************************************************************************/
-void CMainFrame::OnLogFilterButton() 
+void CMainFrame::OnLogFilterButton()
 {
     OnLogFilter();
 }
@@ -4650,9 +4738,9 @@ void CMainFrame::OnLogFilterButton()
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  23.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
-void CMainFrame::OnUpdateLogFilterButton(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateLogFilterButton(CCmdUI* pCmdUI)
 {
     // Toggle log filter button status
     pCmdUI->SetCheck(theApp.pouGetFlagsPtr()->nGetFlagStatus(LOGFILTER));
@@ -4675,18 +4763,17 @@ void CMainFrame::OnUpdateLogFilterButton(CCmdUI* pCmdUI)
     Modifications    :  Function name is changed and CFlag pointer is validated.
     Date Modified    :  26.12.2002
 ******************************************************************************/
-void CMainFrame::OnMessageFilterButton() 
+void CMainFrame::OnMessageFilterButton()
 {
-    CFlags *pouFlags = NULL;
+    CFlags* pouFlags = NULL;
     BOOL bMessageFilterStatus = FALSE;
-    
     pouFlags = theApp.pouGetFlagsPtr();
+
     if(pouFlags != NULL )
     {
         bMessageFilterStatus = pouFlags->nGetFlagStatus(DISPLAYFILTERON);
         bMessageFilterStatus = bMessageFilterStatus ? FALSE : TRUE;
         pouFlags->vSetFlagStatus(DISPLAYFILTERON, bMessageFilterStatus);
-
         ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, NULL);
     }
 }
@@ -4703,11 +4790,10 @@ void CMainFrame::OnMessageFilterButton()
     Date Created     :  23.03.2002
     Modifications    :  Amitesh Bharti, 26.12.2002, File name is changed
 ******************************************************************************/
-void CMainFrame::OnUpdateMessageFilterButton(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateMessageFilterButton(CCmdUI* pCmdUI)
 {
     // Toggle message filter button status
     pCmdUI->SetCheck(theApp.pouGetFlagsPtr()->nGetFlagStatus(DISPLAYFILTERON));
-
 }
 /******************************************************************************
     Function Name    :  OnUpdateExecuteTimerhandler
@@ -4721,16 +4807,16 @@ void CMainFrame::OnUpdateMessageFilterButton(CCmdUI* pCmdUI)
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  23.03.2002
-    Modification By  :  Amitesh Bharti                                        
-    Modification on  :  23.10.2002,Enable menu/button if tool is connected   
-    Modification By  :  Amitesh Bharti                                        
-    Modification on  :  31.10.2002,Review comment incorporated.   
+    Modification By  :  Amitesh Bharti
+    Modification on  :  23.10.2002,Enable menu/button if tool is connected
+    Modification By  :  Amitesh Bharti
+    Modification on  :  31.10.2002,Review comment incorporated.
 /******************************************************************************/
-void CMainFrame::OnUpdateExecuteTimerhandler(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateExecuteTimerhandler(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(GetICANNodeSim()->NS_GetHandlerStatus(H_TIMERBUTTON));
     BOOL bEnable = GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
-    pCmdUI->Enable(bEnable); 
+    pCmdUI->Enable(bEnable);
 }
 /******************************************************************************
     Function Name    :  OnClearMsgWindow
@@ -4743,19 +4829,22 @@ void CMainFrame::OnUpdateExecuteTimerhandler(CCmdUI* pCmdUI)
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  26.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
-void CMainFrame::OnClearMsgWindow() 
+void CMainFrame::OnClearMsgWindow()
 {
-    // Post a message to clear the contents of the 
+    // Post a message to clear the contents of the
     // message window
-	for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
-	{
-		HWND hWnd;
-		hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);					
-		if(hWnd)
-			::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, NULL, NULL);
-	}
+    for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
+    {
+        HWND hWnd;
+        hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
+
+        if(hWnd)
+        {
+            ::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, NULL, NULL);
+        }
+    }
 }
 
 /*******************************************************************************
@@ -4766,34 +4855,42 @@ void CMainFrame::OnClearMsgWindow()
   Member of      : CMainFrame
   Author(s)      : Arunkumar K
   Date Created   : 28-03-2011
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CMainFrame::OnShowHideMessageWindow(UINT nID)
 {
-	switch(nID)
-	{
-		case ID_SHOWMESSAGEWINDOW_CAN:
-		{
-			HWND hWnd;
-			hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);					
-			if(hWnd)
-				::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)TRUE, NULL);
-		}
-		break;
-		case ID_SHOWMESSAGEWINDOW_J1939:
-		{
-			HWND hWnd;
-			hWnd = m_podMsgWndThread->hGetHandleMsgWnd(J1939);					
-			if(hWnd)
-				::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)TRUE, NULL);
-		}
-		break;
-		default:
-		{
-			ASSERT(FALSE);
-		}
-		break;
-	}
+    switch(nID)
+    {
+        case ID_SHOWMESSAGEWINDOW_CAN:
+        {
+            HWND hWnd;
+            hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+
+            if(hWnd)
+            {
+                ::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)TRUE, NULL);
+            }
+        }
+        break;
+
+        case ID_SHOWMESSAGEWINDOW_J1939:
+        {
+            HWND hWnd;
+            hWnd = m_podMsgWndThread->hGetHandleMsgWnd(J1939);
+
+            if(hWnd)
+            {
+                ::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)TRUE, NULL);
+            }
+        }
+        break;
+
+        default:
+        {
+            ASSERT(FALSE);
+        }
+        break;
+    }
 }
 
 /*******************************************************************************
@@ -4804,34 +4901,42 @@ void CMainFrame::OnShowHideMessageWindow(UINT nID)
   Member of      : CMainFrame
   Author(s)      : Arunkumar K
   Date Created   : 28-03-2011
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CMainFrame::OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI)
 {
-	switch(pCmdUI->m_nID)
-	{
-		case ID_SHOWMESSAGEWINDOW_CAN:
-		{
-			HWND hWnd;
-			hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);					
-			if(hWnd)
-				::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)FALSE, (LPARAM)pCmdUI); //Set WPARAM FALSE for update UI
-		}
-		break;
-		case ID_SHOWMESSAGEWINDOW_J1939:
-		{
-			HWND hWnd;
-			hWnd = m_podMsgWndThread->hGetHandleMsgWnd(J1939);					
-			if(hWnd)
-				::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)FALSE, (LPARAM)pCmdUI); //Set WPARAM FALSE for update UI
-		}
-		break;
-		default: 
+    switch(pCmdUI->m_nID)
+    {
+        case ID_SHOWMESSAGEWINDOW_CAN:
+        {
+            HWND hWnd;
+            hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+
+            if(hWnd)
+            {
+                ::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)FALSE, (LPARAM)pCmdUI);    //Set WPARAM FALSE for update UI
+            }
+        }
+        break;
+
+        case ID_SHOWMESSAGEWINDOW_J1939:
+        {
+            HWND hWnd;
+            hWnd = m_podMsgWndThread->hGetHandleMsgWnd(J1939);
+
+            if(hWnd)
+            {
+                ::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)FALSE, (LPARAM)pCmdUI);    //Set WPARAM FALSE for update UI
+            }
+        }
+        break;
+
+        default:
         {
             ASSERT(FALSE);
         }
         break;
-	}
+    }
 }
 
 /******************************************************************************
@@ -4846,11 +4951,11 @@ void CMainFrame::OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI)
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  29.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
-void CMainFrame::OnUpdateDllBuildAll(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateDllBuildAll(CCmdUI* pCmdUI)
 {
-    pCmdUI->Enable(GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_BUILDLOAD)); 
+    pCmdUI->Enable(GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_BUILDLOAD));
 }
 /******************************************************************************
     Function Name    :  OnUpdateDllBuildloadAll
@@ -4864,11 +4969,11 @@ void CMainFrame::OnUpdateDllBuildAll(CCmdUI* pCmdUI)
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  29.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
-void CMainFrame::OnUpdateDllBuildloadAll(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateDllBuildloadAll(CCmdUI* pCmdUI)
 {
-    pCmdUI->Enable(GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_BUILDLOAD));    
+    pCmdUI->Enable(GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_BUILDLOAD));
 }
 /******************************************************************************
     Function Name    :  poGetSignalPointer
@@ -4876,39 +4981,39 @@ void CMainFrame::OnUpdateDllBuildloadAll(CCmdUI* pCmdUI)
     Input(s)         :  const CString &omStrSignalName
     Output           :  sSIGNALS*
     Functionality    :  Returns pointer to signal if the signal is found
-                        otherwise NULL                
+                        otherwise NULL
     Member of        :  CMainFrame
     Friend of        :      -
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  29.03.2002
     Modifications    :  psGetMessagePointer() call is changed to psGetMessagePointerInactive()
-						to remove the bug while editing a signal of new Message created
-						in database.
-	Modifications by :  Bhagyalakshmi & anish 
-	date             :  19.03.2008
+                        to remove the bug while editing a signal of new Message created
+                        in database.
+    Modifications by :  Bhagyalakshmi & anish
+    date             :  19.03.2008
 ******************************************************************************/
-sSIGNALS* CMainFrame::poGetSignalPointer( 
-                  BOOL bActive,  
-                  const UINT &unMsgID,
-                  const CString &omStrSignalName)
+sSIGNALS* CMainFrame::poGetSignalPointer(
+    BOOL bActive,
+    const UINT& unMsgID,
+    const CString& omStrSignalName)
 {
     BOOL bFound = FALSE;
     sSIGNALS* pSignal = NULL;
 
     if ( !omStrSignalName.IsEmpty() )
     {
-        sMESSAGE *pMsg = NULL;
+        sMESSAGE* pMsg = NULL;
 
         if ( bActive )
         {
             // Get message pointer from the data structure
-            pMsg = 
+            pMsg =
                 theApp.m_pouMsgSignal->psGetMessagePointer( unMsgID );
         }
         else
         {
-            pMsg = 
+            pMsg =
                 theApp.m_pouMsgSgInactive->psGetMessagePointerInactive( unMsgID );
         }
 
@@ -4920,12 +5025,17 @@ sSIGNALS* CMainFrame::poGetSignalPointer(
             while ( (pSignal != NULL) && (!bFound) )
             {
                 if ( pSignal->m_omStrSignalName == omStrSignalName )
+                {
                     bFound = TRUE;
+                }
                 else
+                {
                     pSignal = pSignal->m_psNextSignalList;
+                }
             }
         }
     }
+
     return pSignal;
 }
 /******************************************************************************
@@ -4940,11 +5050,11 @@ sSIGNALS* CMainFrame::poGetSignalPointer(
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  29.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
-void CMainFrame::OnUpdateDllUnloadAll(CCmdUI* pCmdUI) 
-{  
-    pCmdUI->Enable(GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD));   
+void CMainFrame::OnUpdateDllUnloadAll(CCmdUI* pCmdUI)
+{
+    pCmdUI->Enable(GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD));
 }
 /******************************************************************************
     Function Name    :  OnUpdateDisplayMessagewindowOverwrite
@@ -4957,9 +5067,9 @@ void CMainFrame::OnUpdateDllUnloadAll(CCmdUI* pCmdUI)
     Friend of        :      -
     Author(s)        :  Amarnath Shastry
     Date Created     :  29.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
-void CMainFrame::OnUpdateDisplayMessagewindowOverwrite(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateDisplayMessagewindowOverwrite(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(theApp.pouGetFlagsPtr()->nGetFlagStatus(OVERWRITE));
 }
@@ -4975,9 +5085,9 @@ void CMainFrame::OnUpdateDisplayMessagewindowOverwrite(CCmdUI* pCmdUI)
     Author(s)        :  Amarnath Shastry
     Date Created     :  29.03.2002
     Modifications    :  Arun Kumar K
-						04.06.2010 - commented old method and added new code.
+                        04.06.2010 - commented old method and added new code.
 ******************************************************************************/
-void CMainFrame::OnUpdateToolHexdec(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateToolHexdec(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(theApp.pouGetFlagsPtr()->nGetFlagStatus(HEX));
 }
@@ -4992,9 +5102,9 @@ void CMainFrame::OnUpdateToolHexdec(CCmdUI* pCmdUI)
     Friend of        :      -
     Author(s)        :  Amarnath Shastry
     Date Created     :  29.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
-void CMainFrame::OnUpdateLogOnOff(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateLogOnOff(CCmdUI* pCmdUI)
 {
     if (NULL != sg_pouFrameProcCAN)
     {
@@ -5004,6 +5114,7 @@ void CMainFrame::OnUpdateLogOnOff(CCmdUI* pCmdUI)
     {
         pCmdUI->SetCheck(FALSE);
     }
+
     //pCmdUI->SetCheck(theApp.pouGetFlagsPtr()->nGetFlagStatus(LOGTOFILE));
 }
 /******************************************************************************/
@@ -5017,11 +5128,11 @@ void CMainFrame::OnUpdateLogOnOff(CCmdUI* pCmdUI)
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  01.04.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */  
+/*  Modification By  :  Amitesh Bharti                                        */
 /*  Modifications on :  21.10.2002, added connect and disconnect on key down  */
-/*  Modification By  :  Amitesh Bharti                                        */  
+/*  Modification By  :  Amitesh Bharti                                        */
 /*  Modifications on :  24.10.2002, Key Hanlder on/off check added            */
-/*  Modification By  :  Amitesh Bharti                                        */  
+/*  Modification By  :  Amitesh Bharti                                        */
 /*  Modifications on :  31.10.2002, Review comment incorporated               */
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modification on  :  08.01.2004, Interface for transmission of message on  */
@@ -5031,31 +5142,31 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
 {
     CFlags* pouFlag = NULL;
     pouFlag     = theApp.pouGetFlagsPtr();
+
     if(pouFlag != NULL)
     {
- 
         if (pMsg->message == WM_CHAR)
         {
             // Check for key a-z or A-Z, if any of these are press
             // call member function of CExecuteFunc class for key handler
-            if(   ( pMsg->wParam >= 'A' && pMsg->wParam<='Z' )|| 
-                  ( pMsg->wParam >= 'a' && pMsg->wParam<='z' )||  
-                  ( pMsg->wParam >= '0' && pMsg->wParam<='9' ) )
+            if(   ( pMsg->wParam >= 'A' && pMsg->wParam<='Z' )||
+                    ( pMsg->wParam >= 'a' && pMsg->wParam<='z' )||
+                    ( pMsg->wParam >= '0' && pMsg->wParam<='9' ) )
             {
-               
-                        // Execute key hanlder only if execution is selected by user
-                        GetICANNodeSim()->NS_ManageOnKeyHandler((UCHAR)pMsg->wParam);
-                        GetIJ1939NodeSim()->NS_ManageOnKeyHandler((UCHAR)pMsg->wParam);
-                        PostMessage(WM_KEY_PRESSED_MSG_WND,
-                                        pMsg->wParam, 0);
-
+                // Execute key hanlder only if execution is selected by user
+                GetICANNodeSim()->NS_ManageOnKeyHandler((UCHAR)pMsg->wParam);
+                GetIJ1939NodeSim()->NS_ManageOnKeyHandler((UCHAR)pMsg->wParam);
+                PostMessage(WM_KEY_PRESSED_MSG_WND,
+                            pMsg->wParam, 0);
             }
         }//if (pMsg->message == WM_CHAR)
+
         if (pMsg->message == WM_KEYDOWN)
         {
             BOOL bConnected = FALSE;
             // Get the current status of Connected/Disconnected state
-            bConnected  = pouFlag->nGetFlagStatus(CONNECTED);  
+            bConnected  = pouFlag->nGetFlagStatus(CONNECTED);
+
             //Procees the key "F2" and "ESC"
             if (pMsg->wParam == VK_F2)
             {
@@ -5073,6 +5184,7 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
             }//else if (pMsg->wParam == VK_ESCAPE)
         }//if (pMsg->message == WM_KEYDOWN)
     }//   if(pouFlag != NULL)
+
     return CMDIFrameWnd::PreTranslateMessage(pMsg);
 }
 
@@ -5093,7 +5205,7 @@ BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
 /*  Modifications    :  Raja N on 19.07.2005, Changed the implimentation to   */
 /*                      call replay manager                                   */
 /******************************************************************************/
-void CMainFrame::OnUpdateReplayGo(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateReplayGo(CCmdUI* pCmdUI)
 {
     // Dispatch it to Replay Manager
     pCmdUI->Enable( bREP_GetUIStateCmdGo());
@@ -5115,11 +5227,10 @@ void CMainFrame::OnUpdateReplayGo(CCmdUI* pCmdUI)
 /*  Modifications    :  Raja N on 19.07.2005, Changed the implimentation to   */
 /*                      call replay manager                                   */
 /******************************************************************************/
-void CMainFrame::OnUpdateReplaySkip(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateReplaySkip(CCmdUI* pCmdUI)
 {
     // Dispatch it to Replay Manager
     pCmdUI->Enable( bREP_GetUIStateCmdSkip());
-
 }
 /******************************************************************************/
 /*  Function Name    :  OnUpdateReplayStep                                    */
@@ -5138,7 +5249,7 @@ void CMainFrame::OnUpdateReplaySkip(CCmdUI* pCmdUI)
 /*  Modifications    :  Raja N on 19.07.2005, Changed the implimentation to   */
 /*                      call replay manager                                   */
 /******************************************************************************/
-void CMainFrame::OnUpdateReplayStep(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateReplayStep(CCmdUI* pCmdUI)
 {
     // Dispatch it to Replay Manager
     pCmdUI->Enable( bREP_GetUIStateCmdStep());
@@ -5160,7 +5271,7 @@ void CMainFrame::OnUpdateReplayStep(CCmdUI* pCmdUI)
 /*  Modifications    :  Raja N on 19.07.2005, Changed the implimentation to   */
 /*                      call replay manager                                   */
 /******************************************************************************/
-void CMainFrame::OnUpdateReplayStop(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateReplayStop(CCmdUI* pCmdUI)
 {
     // Dispatch it to Replay Manager
     pCmdUI->Enable( bREP_GetUIStateCmdStop());
@@ -5183,29 +5294,29 @@ void CMainFrame::vSaveWinStatus(WINDOWPLACEMENT WinCurrStatus)
 {
     // Write the Window Flag
     theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_FLAG,
-        WinCurrStatus.flags);
+                           WinCurrStatus.flags);
     // Write the show wnd command
-    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_SHOWCMD, 
-        WinCurrStatus.showCmd);
+    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_SHOWCMD,
+                           WinCurrStatus.showCmd);
     // Write the X, Y position when window is in minimum position
-    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_MINPOS_X, 
-        WinCurrStatus.ptMinPosition.x);
-    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_MINPOS_Y, 
-        WinCurrStatus.ptMinPosition.y);
+    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_MINPOS_X,
+                           WinCurrStatus.ptMinPosition.x);
+    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_MINPOS_Y,
+                           WinCurrStatus.ptMinPosition.y);
     // Write the X, Y position when window is in maximum position
-    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_MAXPOS_X, 
-        WinCurrStatus.ptMaxPosition.x);
-    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_MAXPOS_Y, 
-        WinCurrStatus.ptMaxPosition.y);
+    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_MAXPOS_X,
+                           WinCurrStatus.ptMaxPosition.x);
+    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_MAXPOS_Y,
+                           WinCurrStatus.ptMaxPosition.y);
     // Write the Window co-ordinates
-    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_LEFT, 
-        WinCurrStatus.rcNormalPosition.left);
+    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_LEFT,
+                           WinCurrStatus.rcNormalPosition.left);
     theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_RIGHT,
-        WinCurrStatus.rcNormalPosition.right);
+                           WinCurrStatus.rcNormalPosition.right);
     theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_TOP,
-        WinCurrStatus.rcNormalPosition.top);
-    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_BOTTOM, 
-        WinCurrStatus.rcNormalPosition.bottom);
+                           WinCurrStatus.rcNormalPosition.top);
+    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_BOTTOM,
+                           WinCurrStatus.rcNormalPosition.bottom);
 }
 /******************************************************************************/
 /*  Function Name    :  vGetWinStatus                                         */
@@ -5226,33 +5337,33 @@ void CMainFrame::vGetWinStatus(WINDOWPLACEMENT& WinCurrStatus)
     WinCurrStatus.length = sizeof(WINDOWPLACEMENT);
     // Get the Window Flag
     WinCurrStatus.flags = theApp.GetProfileInt(defSECTION_MAIN_WND,
-        defITEM_MAIN_WND_FLAG, WPF_RESTORETOMAXIMIZED);
+                          defITEM_MAIN_WND_FLAG, WPF_RESTORETOMAXIMIZED);
     // Get the show wnd command
-    WinCurrStatus.showCmd = theApp.GetProfileInt(defSECTION_MAIN_WND, 
-        defITEM_MAIN_WND_SHOWCMD, SW_SHOWMAXIMIZED);
+    WinCurrStatus.showCmd = theApp.GetProfileInt(defSECTION_MAIN_WND,
+                            defITEM_MAIN_WND_SHOWCMD, SW_SHOWMAXIMIZED);
     // Get the X, Y position when window is in minimum position
     WinCurrStatus.ptMinPosition.x = theApp.GetProfileInt(defSECTION_MAIN_WND,
-        defITEM_MAIN_WND_MINPOS_X, 200);
-    WinCurrStatus.ptMinPosition.y = theApp.GetProfileInt(defSECTION_MAIN_WND, 
-        defITEM_MAIN_WND_MINPOS_Y, 200);
+                                    defITEM_MAIN_WND_MINPOS_X, 200);
+    WinCurrStatus.ptMinPosition.y = theApp.GetProfileInt(defSECTION_MAIN_WND,
+                                    defITEM_MAIN_WND_MINPOS_Y, 200);
     // Get the X, Y position when window is in maximum position
-    WinCurrStatus.ptMaxPosition.x = theApp.GetProfileInt(defSECTION_MAIN_WND, 
-        defITEM_MAIN_WND_MAXPOS_X, 0);
-    WinCurrStatus.ptMaxPosition.y = theApp.GetProfileInt(defSECTION_MAIN_WND, 
-        defITEM_MAIN_WND_MAXPOS_Y, 0);
+    WinCurrStatus.ptMaxPosition.x = theApp.GetProfileInt(defSECTION_MAIN_WND,
+                                    defITEM_MAIN_WND_MAXPOS_X, 0);
+    WinCurrStatus.ptMaxPosition.y = theApp.GetProfileInt(defSECTION_MAIN_WND,
+                                    defITEM_MAIN_WND_MAXPOS_Y, 0);
     // Get the Window co-ordinates
     WinCurrStatus.rcNormalPosition.left = theApp.GetProfileInt(
-        defSECTION_MAIN_WND,
-        defITEM_MAIN_WND_LEFT, 0);
+            defSECTION_MAIN_WND,
+            defITEM_MAIN_WND_LEFT, 0);
     WinCurrStatus.rcNormalPosition.right = theApp.GetProfileInt(
-        defSECTION_MAIN_WND,
-        defITEM_MAIN_WND_RIGHT, 400);
+            defSECTION_MAIN_WND,
+            defITEM_MAIN_WND_RIGHT, 400);
     WinCurrStatus.rcNormalPosition.top = theApp.GetProfileInt(
-        defSECTION_MAIN_WND, 
-        defITEM_MAIN_WND_TOP, 0);
+            defSECTION_MAIN_WND,
+            defITEM_MAIN_WND_TOP, 0);
     WinCurrStatus.rcNormalPosition.bottom = theApp.GetProfileInt(
-        defSECTION_MAIN_WND, 
-        defITEM_MAIN_WND_BOTTOM, 350);
+            defSECTION_MAIN_WND,
+            defITEM_MAIN_WND_BOTTOM, 350);
 }
 /******************************************************************************/
 /*  Function Name    :  OnShowWindow                                          */
@@ -5274,11 +5385,12 @@ void CMainFrame::vGetWinStatus(WINDOWPLACEMENT& WinCurrStatus)
 /*                      this dialog will be created during first show request */
 /*                      also removed the code to update status bar Icon       */
 /******************************************************************************/
-void CMainFrame::OnShowWindow(BOOL bShow, UINT nStatus) 
+void CMainFrame::OnShowWindow(BOOL bShow, UINT nStatus)
 {
     CMDIFrameWnd::OnShowWindow(bShow, nStatus);
+
     // If it is to show the window
-    if (bShow == TRUE) 
+    if (bShow == TRUE)
     {
         // Update the window placement
         SetWindowPlacement(&m_WinCurrStatus);
@@ -5332,41 +5444,38 @@ void CMainFrame::OnShowWindow(BOOL bShow, UINT nStatus)
 /*  Modification on  :  29.01.2007,                                           */
 /*                   :  added g_bReadDllMsg=FALSE to avoid mem leak           */
 //*****************************************************************************/
-void CMainFrame::OnDestroy() 
+void CMainFrame::OnDestroy()
 {
     vREP_SetThreadStopSignal();
     m_objTxHandler.vSetTxStopFlag(TRUE);
     //g_bStopMsgBlockTx    = TRUE;
     g_bStopSelectedMsgTx = TRUE;
-
     BYTE byStopThread = 0;
-  
     byStopThread |= BIT_TX_SEL_MSG_THREAD  ;
     byStopThread |= BIT_REPLAY_THREAD  ;
     byStopThread |= BIT_MULTI_MSG_THREAD  ;
- 
     // Destroy all running thread
     theApp.vDestroyUtilThreads(defMAX_WAIT_UTIL_THREAD,byStopThread);
-	//Stop the dll read thread
-	g_bReadDllMsg=FALSE;
+    //Stop the dll read thread
+    g_bReadDllMsg=FALSE;
     // Destroy Message Handler Thread
-    // If DLL is loaded, then delete threads if anything is running/waiting 
+    // If DLL is loaded, then delete threads if anything is running/waiting
     //CExecuteManager::ouGetExecuteManager().vDeleteAllNode();
     // Write the MRU file list into the registry
     theApp.WriteProfileString( defSECTION_MRU, defSECTION_MRU_FILE1,
-        m_omStrMRU_ConfigurationFiles[0] );
+                               m_omStrMRU_ConfigurationFiles[0] );
     theApp.WriteProfileString( defSECTION_MRU, defSECTION_MRU_FILE2,
-        m_omStrMRU_ConfigurationFiles[1] );
+                               m_omStrMRU_ConfigurationFiles[1] );
     theApp.WriteProfileString( defSECTION_MRU, defSECTION_MRU_FILE3,
-        m_omStrMRU_ConfigurationFiles[2] );
+                               m_omStrMRU_ConfigurationFiles[2] );
     theApp.WriteProfileString( defSECTION_MRU, defSECTION_MRU_FILE4,
-        m_omStrMRU_ConfigurationFiles[3] );
+                               m_omStrMRU_ConfigurationFiles[3] );
     theApp.WriteProfileString( defSECTION_MRU, defSECTION_MRU_FILE5,
-        m_omStrMRU_ConfigurationFiles[4] );
-     // Delete memory associated with signal watch window
+                               m_omStrMRU_ConfigurationFiles[4] );
+    // Delete memory associated with signal watch window
     vReleaseSignalWatchListMemory(m_psSignalWatchList[CAN]);
     vReleaseSignalWatchListMemory(m_psSignalWatchList[J1939]);
-	vEmptySimsysList();
+    vEmptySimsysList();
 
     // Clean Network statistics dialog
     if( m_podBusStatistics != NULL )
@@ -5379,11 +5488,11 @@ void CMainFrame::OnDestroy()
     CMDIFrameWnd::OnDestroy();
 
     // Check for the current status of the window
-    if (GetWindowPlacement(&m_WinCurrStatus)) 
+    if (GetWindowPlacement(&m_WinCurrStatus))
     {
         vSaveWinStatus(m_WinCurrStatus);    // save in the registry
     }
-	
+
     if (g_pouDIL_CAN_Interface != NULL)
     {
         g_pouDIL_CAN_Interface->DILC_PerformClosureOperations();
@@ -5391,20 +5500,20 @@ void CMainFrame::OnDestroy()
 
     //Destruction of Menu Pointer--by Arun
     /*if (pMyMenu)
-	{
-		pMyMenu->Detach();
-		delete pMyMenu;
-		pMyMenu = 0;
-	}*/
+    {
+        pMyMenu->Detach();
+        delete pMyMenu;
+        pMyMenu = 0;
+    }*/
 }
 
 /******************************************************************************/
-/*  Function Name    :  podSetFunctionViewPtr                                 
+/*  Function Name    :  podSetFunctionViewPtr
 /*  Input(s)         :  Pointer to CFunctionEditorDoc class
-/*  Output           :                                                        
+/*  Output           :
 /*  Functionality    :  Sets Pointer to CFunctionEditorDoc class
-/*  Member of        :  CMainFrame                                            
-/*  Friend of        :      -                                                 
+/*  Member of        :  CMainFrame
+/*  Friend of        :      -
 /*  Author(s)        :  Amarnath Shastry
 /*  Date Created     :  05.03.2002
 /******************************************************************************/
@@ -5413,12 +5522,12 @@ void CMainFrame::OnDestroy()
 //    m_pomFunctionEditorDoc = pDoc;
 //}
 /******************************************************************************/
-/*  Function Name    :  podGetFunctionEditorDoc                                 
-/*  Input(s)         :  
+/*  Function Name    :  podGetFunctionEditorDoc
+/*  Input(s)         :
 /*  Output           :  Pointer to CFunctionEditorDoc class
 /*  Functionality    :  Reutns Pointer to CFunctionEditorDoc class
-/*  Member of        :  CMainFrame                                            
-/*  Friend of        :      -                                                 
+/*  Member of        :  CMainFrame
+/*  Friend of        :      -
 /*  Author(s)        :  Amarnath Shastry
 /*  Date Created     :  05.03.2002
 /******************************************************************************/
@@ -5427,34 +5536,34 @@ void CMainFrame::OnDestroy()
 //    return m_pomFunctionEditorDoc;
 //}
 /******************************************************************************/
-/*  Function Name    :  OnUpdateFileNew                                 
+/*  Function Name    :  OnUpdateFileNew
 /*  Input(s)         :  CCmdUI* pCmdUI
-/*  Output           :                                                        
-/*  Functionality    :  Enables or disables menu if FUNCEDITOR flag is true 
-                        and viceversa    
-/*  Member of        :  CMainFrame                                            
-/*  Friend of        :      -                                                 
+/*  Output           :
+/*  Functionality    :  Enables or disables menu if FUNCEDITOR flag is true
+                        and viceversa
+/*  Member of        :  CMainFrame
+/*  Friend of        :      -
 /*  Author(s)        :  Amarnath Shastry
 /*  Date Created     :  05.03.2002
 /******************************************************************************/
-void CMainFrame::OnUpdateFileNew(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateFileNew(CCmdUI* pCmdUI)
 {
-    pCmdUI->Enable(TRUE); 
+    pCmdUI->Enable(TRUE);
 }
 /******************************************************************************/
-/*  Function Name    :  OnUpdateFileOpen                                 
+/*  Function Name    :  OnUpdateFileOpen
 /*  Input(s)         :  CCmdUI* pCmdUI
-/*  Output           :                                                        
-/*  Functionality    :  Enables or disables menu if FUNCEDITOR flag is true 
-                        and viceversa    
-/*  Member of        :  CMainFrame                                            
-/*  Friend of        :      -                                                 
+/*  Output           :
+/*  Functionality    :  Enables or disables menu if FUNCEDITOR flag is true
+                        and viceversa
+/*  Member of        :  CMainFrame
+/*  Friend of        :      -
 /*  Author(s)        :  Amarnath Shastry
 /*  Date Created     :  05.03.2002
 /******************************************************************************/
-void CMainFrame::OnUpdateFileOpen(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateFileOpen(CCmdUI* pCmdUI)
 {
-    pCmdUI->Enable(TRUE); 
+    pCmdUI->Enable(TRUE);
 }
 /******************************************************************************/
 /*  Function Name    :  OnCfgLogFile                                          */
@@ -5495,10 +5604,10 @@ void CMainFrame::OnUpdateFileOpen(CCmdUI* pCmdUI)
 void CMainFrame::OnCfgLogFile()
 {
     if (sg_pouFrameProcCAN != NULL)
-    {		
+    {
         //CConfigMsgLogDlg omDlg(this, sg_pouFrameProcCAN, &m_sFilterAppliedCAN);
-        CConfigMsgLogDlg omDlg(CAN, (void * ) sg_pouFrameProcCAN, m_abLogOnConnect[CAN], this, 
-                               (void *) &m_sFilterAppliedCAN);
+        CConfigMsgLogDlg omDlg(CAN, (void* ) sg_pouFrameProcCAN, m_abLogOnConnect[CAN], this,
+                               (void*) &m_sFilterAppliedCAN);
         sg_pouFrameProcCAN->FPC_StartEditingSession(); // Start the editing session
         omDlg.vSetLogFileONOFF(sg_pouFrameProcCAN->FPC_IsLoggingON());
         BOOL bToConfirm = (omDlg.DoModal() == IDOK);
@@ -5516,46 +5625,46 @@ Friend of        :  -
 Author(s)        :  Ratnadip Choudhury
 Date Created     :  1.07.2010
 ******************************************************************************/
-void CMainFrame::OnUpdateCfgnLog(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateCfgnLog(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable(sg_pouFrameProcCAN != NULL);
 }
 
 
 /******************************************************************************/
-/*  Function Name    :  OnUpdateToolButtonMsgDisp                                 
+/*  Function Name    :  OnUpdateToolButtonMsgDisp
 /*  Input(s)         :  CCmdUI* pCmdUI
-/*  Output           :  -                                                      
+/*  Output           :  -
 /*  Functionality    :  Disable the button as this functionality
                         is not used.
-/*  Member of        :  CMainFrame                                            
-/*  Friend of        :      -                                                 
+/*  Member of        :  CMainFrame
+/*  Friend of        :      -
 /*  Author(s)        :  Amarnath Shastry
 /*  Date Created     :  15.05.2002
 /******************************************************************************/
-void CMainFrame::OnUpdateToolButtonMsgDisp(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateToolButtonMsgDisp(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable( FALSE );
 }
 
 /*****************************************************************************/
 /*  Function Name    :  OnEndSession
-/*  Description      :  Called by the framework when the current windows 
+/*  Description      :  Called by the framework when the current windows
                         session (log off or shutdown) is going to exit.
 /*  Input(s)         :  bEnding - TRUE if the session is being ended
 /*  Output           :  -
 /*  Functionality    :  Perform all application closure related actions viz.
                         exiting of all different threads, freeing of memory
-                        allocated etc. 
+                        allocated etc.
 /*  Member of        :  CMainFrame
 /*  Author(s)        :  Ratnadip Choudhury
 /*  Date Created     :  18.06.2002
 /*****************************************************************************/
-void CMainFrame::OnEndSession(BOOL bEnding) 
+void CMainFrame::OnEndSession(BOOL bEnding)
 {
     CMDIFrameWnd::OnEndSession(bEnding);
 
-    if (bEnding == TRUE) 
+    if (bEnding == TRUE)
     {
         // Initiate window closing process.
         DestroyWindow();
@@ -5574,7 +5683,7 @@ void CMainFrame::OnEndSession(BOOL bEnding)
 /*  Date Created     :  25.06.2002
 /*  Modifications    :  Gopi
 /*                      12.11.2002, Changed usage from registry to config
-/*                      28.11.2002, Changed the function name and replace 
+/*                      28.11.2002, Changed the function name and replace
 /*                                  database file name with configuration file
 /*                                  name.
 /*  Modifications    :  Amitesh Bharti
@@ -5584,36 +5693,34 @@ void CMainFrame::OnEndSession(BOOL bEnding)
 /*                                  to null if a new configuration is created
 /*                                  or any other configuration file is created.
 /*****************************************************************************/
-void CMainFrame::OnUpdateConfigurationFileName(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateConfigurationFileName(CCmdUI* pCmdUI)
 {
-    pCmdUI->Enable(); 
+    pCmdUI->Enable();
     CString omStrPage;
-
     CString omStrConfigurationFilename = STR_EMPTY;
     CString omStrDBName = STR_EMPTY;
-
     vGetLoadedCfgFileName(omStrConfigurationFilename);
 
     if ( omStrConfigurationFilename.IsEmpty())
     {
         if(m_omStrSavedConfigFile.IsEmpty())
         {
-            omStrPage = 
+            omStrPage =
                 _T("Default Configuration loaded");
         }
         else
         {
             omStrPage.
-                Format( "Config File: %s", m_omStrSavedConfigFile);
+            Format( "Config File: %s", m_omStrSavedConfigFile);
         }
     }
     else
     {
         omStrPage.
-            Format( "Config File: %s", omStrConfigurationFilename);
+        Format( "Config File: %s", omStrConfigurationFilename);
     }
 
-    pCmdUI->SetText( omStrPage ); 
+    pCmdUI->SetText( omStrPage );
 }
 
 /*****************************************************************************/
@@ -5631,28 +5738,27 @@ void CMainFrame::OnUpdateConfigurationFileName(CCmdUI *pCmdUI)
 /*  Member of        :  CMainFrame
 /*  Author(s)        :  Amarnath Shastry
 /*  Date Created     :  23.09.2002
-/*  Modifications    :  11.12.2002, Amarnath S                                
-/*                      Integration with config class included                          
+/*  Modifications    :  11.12.2002, Amarnath S
+/*                      Integration with config class included
 /*****************************************************************************/
 void CMainFrame::vWriteNewLogFilenameInRegistry( CString omLogFilename )
 {
-    // Check if the file name has any number appended 
+    // Check if the file name has any number appended
     // "XXX10.log"
     int nDotIndex = omLogFilename.ReverseFind('.');
     // Get left of "." character
     CString omStrTemp = omLogFilename.Left( nDotIndex );// "XXX10"
     CString omStrDummy = omStrTemp;// "XXX10"
     BOOL bAlphaCharFound = FALSE;
-
     UINT unCount = 0;
     TCHAR tChar  = ' ';
-    
+
     while ( bAlphaCharFound != TRUE &&
-           (unCount < (UINT)omStrDummy.GetLength()))
+            (unCount < (UINT)omStrDummy.GetLength()))
     {
         // check if the selected character is a valid numeric character
         tChar = omStrDummy.GetAt( omStrDummy.GetLength() - unCount - 1);
-        
+
         if( tChar >= '0' && tChar <= '9' )
         {
             unCount++;
@@ -5662,6 +5768,7 @@ void CMainFrame::vWriteNewLogFilenameInRegistry( CString omLogFilename )
             bAlphaCharFound = TRUE;
         }
     }
+
     if (bAlphaCharFound)// There is atleast one alpha character
     {
         // "XXX10" - index is at last X char
@@ -5685,7 +5792,6 @@ void CMainFrame::vWriteNewLogFilenameInRegistry( CString omLogFilename )
     omStrTemp += ".log";
     // write the log file information into the configuration file
     //theApp.bSetData(LOG_FILE_NAME, &omStrTemp);
-
 }
 /******************************************************************************
     Function Name    :  OnCfgSendMsgs
@@ -5700,22 +5806,24 @@ void CMainFrame::vWriteNewLogFilenameInRegistry( CString omLogFilename )
     Date Created     :  10.10.2002
     Modifications    :  Amitesh Bharti
                         08.01.2004, Dialog is made modalless and it is restored
-                                    is dialog is minimised and user selects 
+                                    is dialog is minimised and user selects
                                     this menu.
     Modifications    :  Raja N
                         26.04.2005, Modified to create new Tx Child window
                         for Tx Message Configuration
 ******************************************************************************/
-void CMainFrame::OnCfgSendMsgs() 
+void CMainFrame::OnCfgSendMsgs()
 {
     BOOL bFirstTime = !(m_objTxHandler.hConfigWindowShown() == S_OK);
     m_objTxHandler.vShowConfigureMsgWindow((void*)this);
     m_objTxHandler.vSetMsgDBPtrInDetailsView((void*)theApp.m_pouMsgSignal);
+
     if(bFirstTime == TRUE)
-	{
+    {
         eUSERSELCTION eUserSel;
         //Inform the connect status
         CFlags* pouFlags   = theApp.pouGetFlagsPtr();
+
         if(pouFlags != NULL)
         {
             // Toggle connect/disconnect flag
@@ -5724,29 +5832,29 @@ void CMainFrame::OnCfgSendMsgs()
             m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bConnected );
             // Hex/Dec format
             BOOL bHexON = pouFlags->nGetFlagStatus(HEX);
-		    eUSERSELCTION eUserSel = eHEXDECCMD;
-		    m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bHexON);
+            eUSERSELCTION eUserSel = eHEXDECCMD;
+            m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bHexON);
             // Check for transmission on/off
             BOOL bTxOn = pouFlags->nGetFlagStatus(SENDMESG);
             eUserSel     = eTXMSGCMD;
-		    m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bTxOn);
-
+            m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bTxOn);
         }
+
         // Inform about the database change.
-		eUserSel = eDATABASEIMPORTCMD;
-		m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel,0);
-	}
+        eUserSel = eDATABASEIMPORTCMD;
+        m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel,0);
+    }
 }
 
 /******************************************************************************
     Function Name    :  OnUpdateToolSendmsg
     Input(s)         :  CCmdUI* pCmdUI
     Output           :  void
-    Functionality    :  - Called by the framework when the current GUI state of 
+    Functionality    :  - Called by the framework when the current GUI state of
                         toolbar button needs to be updated.
-                        - Enables the toolbar if the number of configured 
+                        - Enables the toolbar if the number of configured
                         mesages is more than zero, disables if zero
-                        - Press / Unpresses the button if Txing / Not-Txing 
+                        - Press / Unpresses the button if Txing / Not-Txing
                         resply
     Member of        :  CMainFrame
     Friend of        :      -
@@ -5756,16 +5864,16 @@ void CMainFrame::OnCfgSendMsgs()
                         Uses m_bEnableSendToolbarButton member varaible
                         instead of getting the data from Config details
 ******************************************************************************/
-void CMainFrame::OnUpdateToolSendmsg(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateToolSendmsg(CCmdUI* pCmdUI)
 {
-    // Enable the toolbar if the number of configured 
+    // Enable the toolbar if the number of configured
     // mesages is more than zero, disable if zero
     // in connect mode
     BOOL bIsConnected = theApp.pouGetFlagsPtr()->nGetFlagStatus(CONNECTED);
     BOOL bEnable = bIsConnected && (m_objTxHandler.unGetTxBlockCount() > 0);
     BOOL bStopFlag = m_objTxHandler.bGetTxStopFlag();
-
     pCmdUI->Enable(bEnable);// && (m_bEnableSendToolbarButton));
+
     if (bIsConnected)
     {
         pCmdUI->SetCheck(!bStopFlag);
@@ -5780,12 +5888,15 @@ void CMainFrame::OnUpdateToolSendmsg(CCmdUI* pCmdUI)
 /* Read thread function for graph display*/
 DWORD WINAPI InterpretThreadProc(LPVOID pVoid)
 {
-    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC *) pVoid;
+    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
+
     if (pThreadParam == NULL)
     {
         return (DWORD)-1;
     }
+
     CMainFrame* pouMainFrm = static_cast<CMainFrame*> (pThreadParam->m_pBuffer);
+
     if (pouMainFrm == NULL)
     {
         return (DWORD)-1;
@@ -5797,18 +5908,21 @@ DWORD WINAPI InterpretThreadProc(LPVOID pVoid)
     while (bLoopON)
     {
         WaitForSingleObject(pThreadParam->m_hActionEvent, INFINITE);
+
         switch (pThreadParam->m_unActionCode)
         {
             case INVOKE_FUNCTION:
             {
-                pouMainFrm->ReadGraphDataBuffer(FALSE); // Retrieve message from the driver				
+                pouMainFrm->ReadGraphDataBuffer(FALSE); // Retrieve message from the driver
             }
             break;
+
             case EXIT_THREAD:
             {
                 bLoopON = false;
             }
             break;
+
             case CREATE_TIME_MAP:
             {
                 pThreadParam->m_unActionCode = INVOKE_FUNCTION;
@@ -5816,6 +5930,7 @@ DWORD WINAPI InterpretThreadProc(LPVOID pVoid)
                 SetEvent(pThreadParam->m_hActionEvent);
             }
             break;
+
             default:
             case INACTION:
             {
@@ -5824,6 +5939,7 @@ DWORD WINAPI InterpretThreadProc(LPVOID pVoid)
             break;
         }
     }
+
     SetEvent(pThreadParam->hGetExitNotifyEvent());
     return 0;
 }
@@ -5833,11 +5949,10 @@ BOOL CMainFrame::bStartGraphReadThread()
 {
     BOOL bReturn = FALSE;
     //First stop the thread if running
-    bStopGraphReadThread();	
-	m_ouGraphReadThread.m_pBuffer = this;
+    bStopGraphReadThread();
+    m_ouGraphReadThread.m_pBuffer = this;
     m_ouGraphReadThread.m_hActionEvent = m_ouCanBuf.hGetNotifyingEvent();
     bReturn = m_ouGraphReadThread.bStartThread(InterpretThreadProc);
-
     return bReturn;
 }
 /* Function to stop msg read thread*/
@@ -5854,24 +5969,26 @@ BOOL CMainFrame::bStopGraphReadThread()
 INT CMainFrame::ReadGraphDataBuffer(BOOL bCalcTime)
 {
     static STCANDATA sCanData;
+
     if (bCalcTime == TRUE)
     {
         if (m_ouCanBuf.ReadFromBuffer(&sCanData) == CALL_SUCCESS)
-        {			
+        {
             m_nTimeStamp = sCanData.m_lTickCount.QuadPart;
             vUpdateGraphData(sCanData);
-        }        
+        }
     }
     else
     {
         while (m_ouCanBuf.GetMsgCount())
         {
             if (m_ouCanBuf.ReadFromBuffer(&sCanData) == CALL_SUCCESS)
-            {				
+            {
                 vUpdateGraphData(sCanData);
             }
         }
     }
+
     return 0;
 }
 
@@ -5879,28 +5996,24 @@ INT CMainFrame::ReadGraphDataBuffer(BOOL bCalcTime)
   Function Name  : vUpdateGraphData
   Input(s)       : sMessage - CAN Message Frame
   Output         : -
-  Functionality  : This function will update interpreted data for use by 
-				   signal graph window
+  Functionality  : This function will update interpreted data for use by
+                   signal graph window
   Member of      : CMainFrame
   Author(s)      : K ArunKumar
   Date Created   : 25/11/2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CMainFrame::vUpdateGraphData(const STCANDATA &sCanData)
+void CMainFrame::vUpdateGraphData(const STCANDATA& sCanData)
 {
-	SINTERPRETDATA_LIST sInterpretList;						
-
+    SINTERPRETDATA_LIST sInterpretList;
     STCAN_MSG sMessage = sCanData.m_uDataInfo.m_sCANMsg;
     // Iterate through list
-
-    // Get List pointer    
-    CGraphList * pList = &(m_odGraphList[CAN]);    
-
+    // Get List pointer
+    CGraphList* pList = &(m_odGraphList[CAN]);
     // Get Database object pointer
     CMsgSignal* pomDataBase = theApp.m_pouMsgSignal;
-    sMESSAGE * psMessage;
-    sSIGNALS * psSignal;
-
+    sMESSAGE* psMessage;
+    sSIGNALS* psSignal;
     // Byte Array for populating the message bytes
     CByteArray omMsgByte;
     BOOL bByteArrayPopulated = FALSE;
@@ -5911,6 +6024,7 @@ void CMainFrame::vUpdateGraphData(const STCANDATA &sCanData)
         // Get the list item count
         int nCount = pList->m_omElementList.GetSize();
         CGraphElement odElement;
+
         // Iterate through each items
         for( register int nIndex = 0; nIndex < nCount; nIndex++ )
         {
@@ -5919,26 +6033,30 @@ void CMainFrame::vUpdateGraphData(const STCANDATA &sCanData)
             psMessage = NULL;
             // get Current item
             odElement = pList->m_omElementList.GetAt( nIndex );
+
             // If the item is enabled and not of type Statistics
             // and the message id is same
             if( odElement.m_bEnabled == TRUE &&
-                odElement.m_nValueType != eSTAT_PARAM && 
-                (UINT)odElement.m_nMsgID == sMessage.m_unMsgID )
+                    odElement.m_nValueType != eSTAT_PARAM &&
+                    (UINT)odElement.m_nMsgID == sMessage.m_unMsgID )
             {
                 // Get the signal Pointer
-                psMessage = 
+                psMessage =
                     pomDataBase->psGetMessagePointer( odElement.m_nMsgID );
+
                 if( psMessage != NULL )
                 {
                     psSignal = psMessage->m_psSignals;
                 }
+
                 // Iterate throuch list of signals
                 while( psSignal != NULL &&
-                    psSignal->m_omStrSignalName != odElement.m_omStrElementName)
+                        psSignal->m_omStrSignalName != odElement.m_omStrElementName)
                 {
                     // Jump to next signal
                     psSignal = psSignal->m_psNextSignalList;
                 }
+
                 // Got Match
                 if( psSignal != NULL )
                 {
@@ -5949,8 +6067,8 @@ void CMainFrame::vUpdateGraphData(const STCANDATA &sCanData)
                         if ( psMessage->m_nMsgDataFormat == DATA_FORMAT_INTEL)
                         {
                             for ( register INT nCount = 0;
-                            nCount < (INT)psMessage->m_unMessageLength;
-                            nCount++ )
+                                    nCount < (INT)psMessage->m_unMessageLength;
+                                    nCount++ )
                             {
                                 omMsgByte.Add(sMessage.m_ucData[nCount]);
                             }
@@ -5958,38 +6076,41 @@ void CMainFrame::vUpdateGraphData(const STCANDATA &sCanData)
                         else
                         {
                             for ( register INT nCount =
-                                (INT)(psMessage->m_unMessageLength - 1);
-                                nCount >= 0;
-                                nCount-- )
-                                {
-                                    omMsgByte.Add(sMessage.m_ucData[nCount]);
-                                }
+                                        (INT)(psMessage->m_unMessageLength - 1);
+                                    nCount >= 0;
+                                    nCount-- )
+                            {
+                                omMsgByte.Add(sMessage.m_ucData[nCount]);
+                            }
                         }
+
                         bByteArrayPopulated = TRUE;
                     }
+
                     // Get Interpreted value
                     __int64 nRawValue = m_odIntMsg.n64GetSignalValue(
-                        &omMsgByte,             // Byte Array
-                        psSignal->m_unStartByte, // Start Byte
-                        psSignal->m_byStartBit,      // Start Bit
-                        psSignal->m_unSignalLength,        // Sig Len
-                        psSignal->m_bySignalType,         // Sig Type
-                        psSignal->m_eFormat);   // Signal byte order intel or motorola
+                                            &omMsgByte,             // Byte Array
+                                            psSignal->m_unStartByte, // Start Byte
+                                            psSignal->m_byStartBit,      // Start Bit
+                                            psSignal->m_unSignalLength,        // Sig Len
+                                            psSignal->m_bySignalType,         // Sig Type
+                                            psSignal->m_eFormat);   // Signal byte order intel or motorola
+                    sInterpretList.unMsgID = sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID;
+                    sInterpretList.m_nTimeStamp = sCanData.m_lTickCount.QuadPart;
+                    strcpy_s(sInterpretList.m_acSigName,odElement.m_omStrElementName);
 
-					sInterpretList.unMsgID = sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID;
-					sInterpretList.m_nTimeStamp = sCanData.m_lTickCount.QuadPart;
-					strcpy_s(sInterpretList.m_acSigName,odElement.m_omStrElementName);
                     switch( odElement.m_nValueType )
                     {
-						case eRAW_VALUE:
-						{
-							// Update signal data into interpret structure                        
-							sInterpretList.m_unValue.m_nRawValue = nRawValue;		
-							sInterpretList.m_shType = eRAW_VALUE;
-							break;
-						}
-						case ePHY_VALUE:
-						{
+                        case eRAW_VALUE:
+                        {
+                            // Update signal data into interpret structure
+                            sInterpretList.m_unValue.m_nRawValue = nRawValue;
+                            sInterpretList.m_shType = eRAW_VALUE;
+                            break;
+                        }
+
+                        case ePHY_VALUE:
+                        {
                             // Find Physical Value
                             // Calculate Phy Value
                             double dPhysical =
@@ -5997,12 +6118,13 @@ void CMainFrame::vUpdateGraphData(const STCANDATA &sCanData)
                             dPhysical *= psSignal->m_fSignalFactor;
                             dPhysical += psSignal->m_fSignalOffset;
                             // Update Graph Control
-							sInterpretList.m_unValue.m_dPhysical = dPhysical;		
-							sInterpretList.m_shType = ePHY_VALUE;							
+                            sInterpretList.m_unValue.m_dPhysical = dPhysical;
+                            sInterpretList.m_shType = ePHY_VALUE;
                             break;
                         }
                     }// Switch
-					m_pouMsgInterpretBuffer->WriteIntoBuffer(CAN,(BYTE*)&sInterpretList,SIZE_INTRP_DATA);					 
+
+                    m_pouMsgInterpretBuffer->WriteIntoBuffer(CAN,(BYTE*)&sInterpretList,SIZE_INTRP_DATA);
                 } // If Signal != NULL
             } // If Message ID matches
         } // For loop of List Elements
@@ -6026,7 +6148,7 @@ void CMainFrame::vUpdateGraphData(const STCANDATA &sCanData)
 /*  Date Created     :  21.10.2002                                            */
 /*  Modification By  :  Amarnath S                                            */
 /*  Modification on  :  28.10.2002                                            */
-/*                      Initialised all the global thread flags to TRUE       */  
+/*                      Initialised all the global thread flags to TRUE       */
 /*                      instead of "!bConnected"                              */
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modification on  :  31.10.2002, Review comment incorporated               */
@@ -6074,17 +6196,16 @@ void CMainFrame::vUpdateGraphData(const STCANDATA &sCanData)
 /*  Modifications    :  ArunKumar K on 09.11.2010, Added code for updating    */
 /*                      connect status to Signal Graph Window module.         */
 /******************************************************************************/
-void CMainFrame::OnFileConnect() 
+void CMainFrame::OnFileConnect()
 {
     //UINT unID        = 0;// Id of the connect/disconnect button
-    //UINT unStyle     = 0;// Style of the connect/disconnect button 
+    //UINT unStyle     = 0;// Style of the connect/disconnect button
     //int nImage       = 0;// Image Id of the connect/disconnect button
     CFlags* pouFlags = NULL;
-
     // Hour glass cursor
     CWaitCursor omWait;
-
     pouFlags   = theApp.pouGetFlagsPtr();
+
     if(pouFlags != NULL)
     {
         // Toggle connect/disconnect flag
@@ -6099,19 +6220,20 @@ void CMainFrame::OnFileConnect()
         //g_bStopMsgBlockTx       = TRUE;
         g_bStopSelectedMsgTx    = TRUE;
         // If Tx Msg window is active post a message about connection change
+        vUpdateMainEntryListInWaveDataHandler();
+        eUSERSELCTION eUserSel = eCONNECTCMD;
 
-		vUpdateMainEntryListInWaveDataHandler();
-		eUSERSELCTION eUserSel = eCONNECTCMD;
-		for(short eBusType =0; eBusType <MAX_PROTOCOL; eBusType++)
-		{
-			m_objSigGrphHandler.vPostMessageToSGWnd(eBusType,WM_USER_CMD, 
-											(WPARAM)eUserSel,bConnected);
-		}
-		
-		if(m_objTxHandler.hConfigWindowShown() == S_OK)
-		{
+        for(short eBusType =0; eBusType <MAX_PROTOCOL; eBusType++)
+        {
+            m_objSigGrphHandler.vPostMessageToSGWnd(eBusType,WM_USER_CMD,
+                                                    (WPARAM)eUserSel,bConnected);
+        }
+
+        if(m_objTxHandler.hConfigWindowShown() == S_OK)
+        {
             // Send Message to Indicate connection change
-			m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD,(WPARAM)eUserSel,bConnected);
+            m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD,(WPARAM)eUserSel,bConnected);
+
             // Send message to indicate message transmission stop event if
             // the tool is disconnected
             if( bConnected == FALSE )
@@ -6119,82 +6241,92 @@ void CMainFrame::OnFileConnect()
                 eUserSel = eTXMSGCMD;
                 m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, 0 );
             }
-		}
+        }
+
         // Update Replay Manager to Stop running replay threads
         if( bConnected == FALSE )
         {
             //Stop transmission of J1939 message if any
-            ::SendMessage(m_pouTxMsgWndJ1939->GetSafeHwnd(), 
-                WM_CONNECT_CHANGE, (WPARAM)FALSE, 0);
+            ::SendMessage(m_pouTxMsgWndJ1939->GetSafeHwnd(),
+                          WM_CONNECT_CHANGE, (WPARAM)FALSE, 0);
             //Handle Replay
             vREP_HandleConnectionStatusChange( FALSE );
         }
+
         // If message transmission thread is waiting for key event then reset it
         // so that thread is terminated. Delete the event.
         theApp.vDestroyUtilThreads(500, BIT_MULTI_MSG_THREAD);
         // Pre Connect Activities
 
-		if (m_podMsgWndThread != NULL)
-		{
-			HWND hWnd = NULL;
-			for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
-			{
-				hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
-				//Update Message Window
-				if(hWnd)
-					::SendMessage(hWnd, WM_UPDATE_CONNECT_STATUS, bConnected, NULL);	
-			}
-		}
+        if (m_podMsgWndThread != NULL)
+        {
+            HWND hWnd = NULL;
+
+            for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
+            {
+                hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
+
+                //Update Message Window
+                if(hWnd)
+                {
+                    ::SendMessage(hWnd, WM_UPDATE_CONNECT_STATUS, bConnected, NULL);
+                }
+            }
+        }
 
         if( bConnected == TRUE)
         {
             //Inform J1939TxWindow about connect change
-            ::SendMessage(m_pouTxMsgWndJ1939->GetSafeHwnd(), 
-                WM_CONNECT_CHANGE, (WPARAM)TRUE, 0);
-			//Start Graph Interpret Thread
-			bStartGraphReadThread();
-			
+            ::SendMessage(m_pouTxMsgWndJ1939->GetSafeHwnd(),
+                          WM_CONNECT_CHANGE, (WPARAM)TRUE, 0);
+            //Start Graph Interpret Thread
+            bStartGraphReadThread();
             ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
-                        eWINID_START_READ, 0);
-
+                          eWINID_START_READ, 0);
             // Update Absolute time value
             CTimeManager::vInitAbsoluteTime();
-			if (m_podMsgWndThread != NULL)
-			{
-				for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
-				{
-					HWND hWnd;
-					hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);					
-					if(hWnd)
-					{
-						::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, NULL, NULL);
-						//Clear Sort Arrow in Message Window		 
-						::SendMessage(hWnd, WM_CLEAR_SORT_COLUMN, NULL, NULL);	
-					}						
-				}
-			}
+
+            if (m_podMsgWndThread != NULL)
+            {
+                for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
+                {
+                    HWND hWnd;
+                    hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
+
+                    if(hWnd)
+                    {
+                        ::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, NULL, NULL);
+                        //Clear Sort Arrow in Message Window
+                        ::SendMessage(hWnd, WM_CLEAR_SORT_COLUMN, NULL, NULL);
+                    }
+                }
+            }
+
             GetICANBusStat()->BSC_bStartUpdation(FALSE);
             GetICANBusStat()->BSC_ResetBusStatistic();
+
             for (UINT i = 0; i < defNO_OF_CHANNELS; i++)
             {
                 GetICANBusStat()->BSC_SetBaudRate(i,
-                    _tstof(m_asControllerDetails[i].m_omStrBaudrate));
+                                                  _tstof(m_asControllerDetails[i].m_omStrBaudrate));
             }
+
             GetICANBusStat()->BSC_bStartUpdation(TRUE);
         }
-		else
-		{
-			//Stop Graph Interpret Thread
-			bStopGraphReadThread();
-			::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
-                        	eWINID_STOP_READ, 0);
-		}
+        else
+        {
+            //Stop Graph Interpret Thread
+            bStopGraphReadThread();
+            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
+                          eWINID_STOP_READ, 0);
+        }
+
         // Use HI layer function to Connect/Disconnect
         if (bConnected == TRUE)
         {
             CWaitIndicator ouWaitIndicator;
             ouWaitIndicator.DisplayWindow(
-                      _T("Trying to connect the hardware ... Please wait"), this);
+                _T("Trying to connect the hardware ... Please wait"), this);
             {
                 if (g_pouDIL_CAN_Interface->DILC_StartHardware() == S_OK)
                 {
@@ -6204,7 +6336,7 @@ void CMainFrame::OnFileConnect()
                 else
                 {
                     ouWaitIndicator.SetWindowText(_T("Failed to connect the hardware... "));
-                    theApp.bWriteIntoTraceWnd("Failed to start the hardware"); 
+                    theApp.bWriteIntoTraceWnd("Failed to start the hardware");
                 }
             }
             Sleep (200);
@@ -6217,64 +6349,62 @@ void CMainFrame::OnFileConnect()
                 bReturn = TRUE;
             }
         }
+
         if(bReturn == TRUE )
         {
-			//Handle start/stop logging
+            //Handle start/stop logging
             if (m_abLogOnConnect[CAN] == TRUE)
             {
                 vStartStopLogging(bConnected);
             }
+
             if (m_abLogOnConnect[J1939] == TRUE)
             {
                 //if (sg_pouIJ1939Logger != NULL)
                 //{
                 //    sg_pouIJ1939Logger->FPJ1_EnableLogging(bConnected);
                 //}
-				
-				// Enable Logging or stop logging
-				if (NULL != sg_pouIJ1939Logger)
-				{					
-					if (bConnected)
-					{
-						vSetAssociatedDatabaseFiles(J1939);	// Update the db file names associated
-						vSetBaudRateInfo(J1939);				// Update the baud rate details
-					}
-					sg_pouIJ1939Logger->FPJ1_EnableLogging(bConnected);
-				}
 
+                // Enable Logging or stop logging
+                if (NULL != sg_pouIJ1939Logger)
+                {
+                    if (bConnected)
+                    {
+                        vSetAssociatedDatabaseFiles(J1939); // Update the db file names associated
+                        vSetBaudRateInfo(J1939);                // Update the baud rate details
+                    }
+
+                    sg_pouIJ1939Logger->FPJ1_EnableLogging(bConnected);
+                }
             }
-			//SGW Code commented by Arun 21-10-2010
+
+            //SGW Code commented by Arun 21-10-2010
             pouFlags->vSetFlagStatus(CONNECTED, bConnected);
-            
+
             // Post Connect Activities
             if( bConnected == TRUE )
             {
-               vREP_HandleConnectionStatusChange( TRUE );
+                vREP_HandleConnectionStatusChange( TRUE );
             }
 
-			// Enable / disable signal transmission block
-            m_ouWaveTransmitter.bUpdateBlock(bConnected);            
-
-			//venkat
+            // Enable / disable signal transmission block
+            m_ouWaveTransmitter.bUpdateBlock(bConnected);
+            //venkat
             m_objTSExecutorHandler.vStartStopReadThread(CAN, bConnected);
             m_objTSExecutorHandler.vBusConnected(bConnected);
 
-			// Reset the flags for handlers
+            // Reset the flags for handlers
             if(bConnected == FALSE )
             {
-
                 pouFlags->vSetFlagStatus(MSGHANDLERBUTTON,bConnected);
                 // Post a message to message display window to reset the flag.
                 // Changed to assignment to global variable
                 g_bMsgHandlerON = bConnected;
-
                 pouFlags->vSetFlagStatus(KEY_HANDLER_ON,bConnected);
                 pouFlags->vSetFlagStatus(ERROR_HANDLER, bConnected);
                 pouFlags->vSetFlagStatus(ALL_HANDLER, bConnected);
-
                 // Let the user configure the mgs
                 pouFlags->vSetFlagStatus( SENDMESG, FALSE );
-
                 // Enable the user to load or create another cfg file
                 m_bCfgLoadMenuOption    = TRUE;
                 m_bCfgNewMenuOption     = TRUE;
@@ -6290,12 +6420,16 @@ void CMainFrame::OnFileConnect()
             // Get reference to toolbar control
             CToolBarCtrl& omRefToolBarCtrl = vGetReferenceToToolBarCtrl();
 
-            // Load the required bitmap to 
+            // Load the required bitmap to
             // show connect/disconnect state
-			if(!bConnected)
-				m_wndToolBar.bLoadCNVTCToolBar(20, IDB_MAINFRAME,IDB_MAINFRAME_HOT, IDB_MAINFRAME_DISABLED);	
-			else
-				m_wndToolBar.bLoadCNVTCToolBar(20, IDB_MAINFRAMEDSC,IDB_MAINFRAMEDSC_HOT, IDB_MAINFRAMEDSC_DISABLED);	
+            if(!bConnected)
+            {
+                m_wndToolBar.bLoadCNVTCToolBar(20, IDB_MAINFRAME,IDB_MAINFRAME_HOT, IDB_MAINFRAME_DISABLED);
+            }
+            else
+            {
+                m_wndToolBar.bLoadCNVTCToolBar(20, IDB_MAINFRAMEDSC,IDB_MAINFRAMEDSC_HOT, IDB_MAINFRAMEDSC_DISABLED);
+            }
 
             // Press / Unpress the button if Connected / Disconnected
             omRefToolBarCtrl.PressButton(IDM_FILE_CONNECT, bConnected);
@@ -6319,29 +6453,29 @@ void CMainFrame::OnFileConnect()
 /*  Modification on  :  26.11.2002, Order of connect and disconnect menu text */
 /*                                  have been revered                         */
 /******************************************************************************/
-void CMainFrame::OnUpdateFileConnect(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateFileConnect(CCmdUI* pCmdUI)
 {
-    // Select the current menu text based on which one between Connect 
+    // Select the current menu text based on which one between Connect
     // or Disconnect is currently selected. The menu text should show
     // the next available state i.e., if currently "Connect" is displayed,
     // next available state is Disconnect and vice versa. Texts are taken from
     // the string table
     CFlags* pouFlag  = theApp.pouGetFlagsPtr();
+
     if(pouFlag != NULL)
     {
         BOOL bConnected  = pouFlag->nGetFlagStatus(CONNECTED);
         UINT unConnected = bConnected ? IDS_DISCONNECT : IDS_CONNECT;
-
         // And initialise a CString with the string.
         CString omMenuItemText(_T(""));
         omMenuItemText.Format(unConnected);
+
         // And finally set the menu text.
         if(pCmdUI !=NULL)
         {
             pCmdUI->SetText(omMenuItemText);
         }
     }
-    
 }
 /******************************************************************************/
 /*  Function Name    :  OnExecuteKeyhandlers                                  */
@@ -6359,7 +6493,7 @@ void CMainFrame::OnUpdateFileConnect(CCmdUI* pCmdUI)
 /*  Modification on  :   05/01/06                                             */
 /*                   :  Inserted CExecute manger for executing handlers       */
 /******************************************************************************/
-void CMainFrame::OnExecuteKeyhandlers() 
+void CMainFrame::OnExecuteKeyhandlers()
 {
     //Get present status
     BOOL bEnable = GetICANNodeSim()->NS_GetHandlerStatus(H_KEY_HANDLER_ON);
@@ -6381,7 +6515,7 @@ void CMainFrame::OnExecuteKeyhandlers()
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modification on  :  31.10.2002, Review comment incorporated               */
 /******************************************************************************/
-void CMainFrame::OnUpdateExecuteKeyhandlers(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateExecuteKeyhandlers(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(GetICANNodeSim()->NS_GetHandlerStatus(H_KEY_HANDLER_ON));
     BOOL bEnable = GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
@@ -6422,43 +6556,43 @@ void CMainFrame::OnUpdateExecuteKeyhandlers(CCmdUI* pCmdUI)
 /*  Modifications    :  28.04.2004, Raja N                                    */
 /*                      Replaced hardcoded string with                        */
 /*                      defSTR_CONF_SAVE_CONFIRM                              */
-/*  Modifications    :  02.05.2005, Raja N                                  
+/*  Modifications    :  02.05.2005, Raja N
                         Moved window save functionality to the function
-                        vSaveWindowPostion and made a call to this function 
+                        vSaveWindowPostion and made a call to this function
     Modifications    :  Raja N on 19.07.2005, Added code to close logging before
                         changing the configuration file
 /******************************************************************************/
-void CMainFrame::OnLoadConfigFile() 
+void CMainFrame::OnLoadConfigFile()
 {
     if ( bIsConfigurationModified() == TRUE )
-	{
-		// Yes, there is a loaded config and changes have been made 
-		// to it.
-		// Hence display save confirmation message dialog
-		if (AfxMessageBox(defSTR_CONF_SAVE_CONFIRM, MB_YESNO | MB_ICONQUESTION )
-			== IDYES )
-		{
-			// Save 
-			OnSaveConfigFile();
-		}
-	}
+    {
+        // Yes, there is a loaded config and changes have been made
+        // to it.
+        // Hence display save confirmation message dialog
+        if (AfxMessageBox(defSTR_CONF_SAVE_CONFIRM, MB_YESNO | MB_ICONQUESTION )
+                == IDYES )
+        {
+            // Save
+            OnSaveConfigFile();
+        }
+    }
+
     CSplFileDlg oCfgFileDlg(TRUE,       // Open dialog as Open File dlg
-				defFILEEXT,  // default extension
-				NULL,       // default file name
-				OFN_HIDEREADONLY 
-				|OFN_EXTENSIONDIFFERENT
-				|OFN_FILEMUSTEXIST, // mode
-				defCONFIGFILTER, // filter
-				NULL,        // parent wnd
-				"Load");
-	oCfgFileDlg.m_ofn.lpstrTitle = _T("Load Configuration Filename...");
-	
-	if(oCfgFileDlg.DoModal() == IDOK)
-	{
-		// get the name of the selected file
+                            defFILEEXT,  // default extension
+                            NULL,       // default file name
+                            OFN_HIDEREADONLY
+                            |OFN_EXTENSIONDIFFERENT
+                            |OFN_FILEMUSTEXIST, // mode
+                            defCONFIGFILTER, // filter
+                            NULL,        // parent wnd
+                            "Load");
+    oCfgFileDlg.m_ofn.lpstrTitle = _T("Load Configuration Filename...");
+
+    if(oCfgFileDlg.DoModal() == IDOK)
+    {
+        // get the name of the selected file
         CString oCfgFilename = oCfgFileDlg.GetPathName();
         nLoadConfigFile(oCfgFilename);
-		
     }
 }
 
@@ -6498,31 +6632,31 @@ void CMainFrame::OnLoadConfigFile()
     Modifications    :  Raja N on 19.07.2005, Changed the code to remove log
                         trigger update
 /******************************************************************************/
-void CMainFrame::OnNewConfigFile() 
+void CMainFrame::OnNewConfigFile()
 {
     if ( bIsConfigurationModified() == TRUE )
     {
-        // Yes, there is a loaded config and changes have been made 
+        // Yes, there is a loaded config and changes have been made
         // to it.
         // Hence display save confirmation message dialog
         if (AfxMessageBox( defSTR_CONF_SAVE_CONFIRM, MB_YESNO | MB_ICONQUESTION)
-            == IDYES )
+                == IDYES )
         {
-            // Save 
+            // Save
             OnSaveConfigFile();
         }
     }
+
     CConfigData::ouGetConfigDetailsObject().vCloseConfigFile();
     CSplFileDlg oCfgFileDlg(FALSE,       // Save  as dialog
-                defFILEEXT,  // default extension
-                NULL,       // default file name
-                defDLGFLAGS, // mode
-                defCONFIGFILTER, // filter 
-                NULL,        // parent wnd
-                "Open");
-            
+                            defFILEEXT,  // default extension
+                            NULL,       // default file name
+                            defDLGFLAGS, // mode
+                            defCONFIGFILTER, // filter
+                            NULL,        // parent wnd
+                            "Open");
     oCfgFileDlg.m_ofn.lpstrTitle = _T("New Configuration Filename...");
-    
+
     if(oCfgFileDlg.DoModal() == IDOK)
     {
         // get the name of the selected file
@@ -6542,21 +6676,21 @@ void CMainFrame::OnNewConfigFile()
 //    {
 //        if(pFlags->nGetFlagStatus(DLLLOADED) == FALSE)
 //        {
-//                       
+//
 //            // Update Window Postion
 //            // Save window postion before unloding configuration file
 //            vSaveWindowPostion();
-//            // Check if any previous configuration file is loaded 
+//            // Check if any previous configuration file is loaded
 //            // and changes are being made to it
 //            if ( bIsConfigurationModified() == TRUE )
 //            {
-//                // Yes, there is a loaded config and changes have been made 
+//                // Yes, there is a loaded config and changes have been made
 //                // to it.
 //                // Hence display save confirmation message dialog
 //                if (AfxMessageBox( defSTR_CONF_SAVE_CONFIRM, MB_YESNO | MB_ICONQUESTION)
 //                    == IDYES )
 //                {
-//                    // Save 
+//                    // Save
 //                    OnSaveConfigFile();
 //                }
 //            }
@@ -6570,22 +6704,22 @@ void CMainFrame::OnNewConfigFile()
 //                defFILEEXT,  // default extension
 //                NULL,       // default file name
 //                defDLGFLAGS, // mode
-//                defCONFIGFILTER, // filter 
+//                defCONFIGFILTER, // filter
 //                NULL,        // parent wnd
 //                "Open");
-//            
+//
 //            oCfgFileDlg.m_ofn.lpstrTitle = _T("New Configuration Filename...");
-//            
+//
 //            if(oCfgFileDlg.DoModal() == IDOK)
 //            {
 //                // get the name of the selected file
 //                CString oCfgFilename = oCfgFileDlg.GetPathName();
 //                theApp.nNewConfiguration(oCfgFilename);
 //                m_omStrSavedConfigFile = _T("");
-//                
+//
 //                // Set new window postion
 //                vRestoreWindowPostion();
-//                
+//
 //                if( m_pomGraphThread != NULL )
 //                {
 //                    ::PostThreadMessage( m_pomGraphThread->m_nThreadID,
@@ -6599,7 +6733,7 @@ void CMainFrame::OnNewConfigFile()
 //                {
 //                    m_asControllerDetails[i].vIntialize();
 //                }
-//                if (g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)m_asControllerDetails, 
+//                if (g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)m_asControllerDetails,
 //                                sizeof(SCONTROLLER_DETAILS)) == S_OK)
 //                {
 //                    bReturn = TRUE;
@@ -6610,19 +6744,20 @@ void CMainFrame::OnNewConfigFile()
 //                    vSetControllerParameters();
 //                    // Clear UI Components
 //                    vClearOnConfLoad();
-//                }        
+//                }
 //            }
 //        }
 //        else
 //        AfxMessageBox(defIMPORT_DLLLOAD_WARNNING,
 //                MB_OK|MB_ICONINFORMATION);
 //    }
-//    
+//
 //}
 void CMainFrame::vGetLoadedCfgFileName(CString& omFileName)
 {
     DATASTORAGEINFO sDataStorageInfo;
     CConfigData::ouGetConfigDetailsObject().GetConfigDatastorage(&sDataStorageInfo);
+
     if (sDataStorageInfo.FSInfo != NULL)
     {
         omFileName.Format("%s", T2A(sDataStorageInfo.FSInfo->m_FilePath));
@@ -6644,9 +6779,9 @@ void CMainFrame::vGetLoadedCfgFileName(CString& omFileName)
 /*  Author(s)        :  Gopi                                                  */
 /*  Date Created     :  12.11.2002                                            */
 /*  Modifications    :  29.11.2002, Amarnath S                                */
-/*                      Commented AfxMessageBox(...) function call            */  
+/*                      Commented AfxMessageBox(...) function call            */
 /*  Modifications    :  20.01.2004, Amitesh Bharti                            */
-/*                      configuration file name in m_omStrSavedConfigFile is  */  
+/*                      configuration file name in m_omStrSavedConfigFile is  */
 /*                      set to selected file name before saving it . This is  */
 /*                      when user is trying to save default configuration and */
 /*                      there is no file selected. Set all coordinates before */
@@ -6660,36 +6795,39 @@ void CMainFrame::vGetLoadedCfgFileName(CString& omFileName)
 /*                      to restore window position using the function         */
 /*                      vRestoreWindowPostion                                 */
 /******************************************************************************/
-void CMainFrame::OnSaveConfigFile() 
+void CMainFrame::OnSaveConfigFile()
 {
     // get the name of the loaded config file only if no filename has
     // been specified until now..
     CString omStrCfgFilename;
     vGetLoadedCfgFileName(omStrCfgFilename);
+
     if(omStrCfgFilename.IsEmpty() == TRUE && bIsConfigurationModified())
     {
         CFileDialog oCfgFileDlg(FALSE,      // Open dialog as Save as File dlg
                                 defFILEEXT,  // default extension
                                 NULL,       // default file name
                                 defDLGFLAGS, // mode
-                                defCONFIGFILTER, // filter 
+                                defCONFIGFILTER, // filter
                                 NULL        // parent wnd
-                                );
+                               );
         oCfgFileDlg.m_ofn.lpstrTitle = _T("Save Configuration File");
+
         if(oCfgFileDlg.DoModal() == IDOK)
         {
             // get the name of the selected file
             omStrCfgFilename = oCfgFileDlg.GetPathName();
-            // This call alone is sufficient to save the 
+            // This call alone is sufficient to save the
             // configuration file.
             vSetFileStorageInfo(omStrCfgFilename);
-            if ( SaveConfiguration() == 
-                defCONFIG_FILE_SUCCESS )
+
+            if ( SaveConfiguration() ==
+                    defCONFIG_FILE_SUCCESS )
             {
                 vPushConfigFilenameDown(omStrCfgFilename);
-                theApp.WriteProfileString(SECTION, 
-                    defCONFIGFILENAME, 
-                    omStrCfgFilename);
+                theApp.WriteProfileString(SECTION,
+                                          defCONFIGFILENAME,
+                                          omStrCfgFilename);
                 m_omStrSavedConfigFile = omStrCfgFilename;
             }
         }
@@ -6717,19 +6855,19 @@ void CMainFrame::OnSaveConfigFile()
 /*  Author(s)        :  Gopi                                                  */
 /*  Date Created     :  12.11.2002                                            */
 /*  Modifications    :  29.11.2002, Amarnath S                                */
-/*                      Commented AfxMessageBox(...) function call            */  
+/*                      Commented AfxMessageBox(...) function call            */
 /******************************************************************************/
-void CMainFrame::OnSaveAsConfigFile() 
+void CMainFrame::OnSaveAsConfigFile()
 {
     CFileDialog oCfgFileDlg(FALSE,      // Open dialog as Save as File dlg
                             defFILEEXT,  // default extension
                             NULL,       // default file name
                             defDLGFLAGS , // mode
-                            defCONFIGFILTER, // filter 
+                            defCONFIGFILTER, // filter
                             NULL        // parent wnd
-                            );
+                           );
     oCfgFileDlg.m_ofn.lpstrTitle = _T("SaveAs Configuration Filename...");
-    
+
     if(oCfgFileDlg.DoModal() == IDOK)
     {
         // get the name of the selected file
@@ -6745,7 +6883,7 @@ void CMainFrame::OnSaveAsConfigFile()
  Function Name    : OnClickMruList
  Input(s)         : UINT unID - ID of the selected menu item
  Output           : void
- Functionality    : - Called by the framework when the user selects 
+ Functionality    : - Called by the framework when the user selects
                     one of the MRU filename
  Member of        : CMainFrame
  Friend of        :     -
@@ -6771,47 +6909,53 @@ void CMainFrame::OnClickMruList (UINT unID)
     // Get the main menu
     CFlags* pFlags = NULL;
     pFlags = theApp.pouGetFlagsPtr();
+
     if( pFlags != NULL)
     {
         if(pFlags->nGetFlagStatus(DLLLOADED) == FALSE)
         {
-            CMenu *pMenu = GetMenu();
+            CMenu* pMenu = GetMenu();
+
             if ( pMenu != NULL)
             {
                 // Get the string associated with the selected menu item
                 CString omStrName(STR_EMPTY);
                 pMenu->GetMenuString( unID, omStrName, MF_BYCOMMAND);
+
                 // Let the selected filename be the first file name in the MRU
                 if (!omStrName.IsEmpty() && omStrName != defSTR_DEFAULT_MRU_ITEM )
                 {
-                    // Check if any previous configuration file is loaded 
+                    // Check if any previous configuration file is loaded
                     // and changes are being made to it
                     if ( bIsConfigurationModified() == TRUE )
                     {
                         // Yes, there is a loaded config and changes have been made to
                         // it Hence display save confirmation message dialog
                         if (AfxMessageBox( defSTR_CONF_SAVE_CONFIRM,
-                            MB_YESNO | MB_ICONQUESTION ) == IDYES )
+                                           MB_YESNO | MB_ICONQUESTION ) == IDYES )
                         {
                             // Save
                             OnSaveConfigFile();
                         }
                     }
-					// Get the flag status and stop logging if it already started
-					BOOL bLogON = FALSE;
-					// Get the main menu
-					CFlags* pFlag = NULL;
-					pFlag = theApp.pouGetFlagsPtr();
-					if(pFlag != NULL)
-					{
-						bLogON = pFlag->nGetFlagStatus(LOGTOFILE);
-						if( bLogON == TRUE )
-						{
-							vStartStopLogging( FALSE );
-							//pFlag->vSetFlagStatus( LOGTOFILE, FALSE );
-						}
-					}
-                    
+
+                    // Get the flag status and stop logging if it already started
+                    BOOL bLogON = FALSE;
+                    // Get the main menu
+                    CFlags* pFlag = NULL;
+                    pFlag = theApp.pouGetFlagsPtr();
+
+                    if(pFlag != NULL)
+                    {
+                        bLogON = pFlag->nGetFlagStatus(LOGTOFILE);
+
+                        if( bLogON == TRUE )
+                        {
+                            vStartStopLogging( FALSE );
+                            //pFlag->vSetFlagStatus( LOGTOFILE, FALSE );
+                        }
+                    }
+
                     // Call Configuration Load
                     nLoadConfigFile(omStrName);
                 }
@@ -6819,7 +6963,7 @@ void CMainFrame::OnClickMruList (UINT unID)
         }
         else
             AfxMessageBox(defIMPORT_DLLLOAD_WARNNING,
-            MB_OK|MB_ICONINFORMATION);
+                          MB_OK|MB_ICONINFORMATION);
     }
 }
 
@@ -6852,20 +6996,26 @@ void CMainFrame::OnUpdateMruList (CCmdUI* pCmdUI)
     // Get MRU file name from configuration module
     pouFlag     = theApp.pouGetFlagsPtr();
     pCmdUI->SetText(m_omStrMRU_ConfigurationFiles[unIndex]);
+
     if(pouFlag != NULL)
     {
         // Check whether Tx msg window is present or not
         //BOOL bSendMsgDialog = ( m_pomTxMsgChildWindow != NULL );
-		BOOL bSendMsgDialog = FALSE;;
-		if(m_objTxHandler.hConfigWindowShown() == S_OK)
-			bSendMsgDialog = TRUE;
+        BOOL bSendMsgDialog = FALSE;;
+
+        if(m_objTxHandler.hConfigWindowShown() == S_OK)
+        {
+            bSendMsgDialog = TRUE;
+        }
+
         // Check connection status
         bConnect    = pouFlag->nGetFlagStatus(CONNECTED);
+
         // Disable menu if the tool is connected or Tx msg window is active or
         // MRU list is empty
         if( bConnect == TRUE ||
-            bSendMsgDialog == TRUE ||
-            m_omStrMRU_ConfigurationFiles[0] == defSTR_DEFAULT_MRU_ITEM )
+                bSendMsgDialog == TRUE ||
+                m_omStrMRU_ConfigurationFiles[0] == defSTR_DEFAULT_MRU_ITEM )
         {
             pCmdUI->Enable(FALSE);
         }
@@ -6891,11 +7041,11 @@ void CMainFrame::OnUpdateMruList (CCmdUI* pCmdUI)
 *******************************************************************************/
 void CMainFrame::vPushConfigFilenameDown(CString omStrConfigFilename )
 {
-    // The MRU list should have "omStrConfigFilename" file name 
+    // The MRU list should have "omStrConfigFilename" file name
     // as the first element.
-    // Hence u need to push down rest of the elements by one 
+    // Hence u need to push down rest of the elements by one
     // position
-    // If the filename is new then, the last element in the 
+    // If the filename is new then, the last element in the
     // list will be lost
     // Perform only for valid config file
     if ( omStrConfigFilename != STR_EMPTY )
@@ -6909,16 +7059,19 @@ void CMainFrame::vPushConfigFilenameDown(CString omStrConfigFilename )
             CString omStrNames[5];
             INT unIndex = -1;
             UINT unMaxCountIndex = 5;// Push all the elements down
-    
             // Make a temp copy of all the MRU's
             UINT unCount;
+
             for (unCount = 0;                   //for (UINT unCount = 0; unCount defined out of for loop
-            unCount < 5; unCount++)
+                    unCount < 5; unCount++)
             {
                 omStrNames[unCount] = m_omStrMRU_ConfigurationFiles[unCount];
+
                 // Store the count
                 if ( omStrNames[unCount] == omStrConfigFilename )
+                {
                     unIndex = unCount;
+                }
             }
 
             if ( unIndex != -1 )// If this is not newly loaded file
@@ -6929,32 +7082,33 @@ void CMainFrame::vPushConfigFilenameDown(CString omStrConfigFilename )
 
             // MRU files gets shuffled here
             for ( unCount = 0;
-            unCount < unMaxCountIndex; unCount++)
+                    unCount < unMaxCountIndex; unCount++)
             {
-                m_omStrMRU_ConfigurationFiles[unCount + 1] = 
-                                                omStrNames[unCount];
-            } 
+                m_omStrMRU_ConfigurationFiles[unCount + 1] =
+                    omStrNames[unCount];
+            }
 
             // index zero always has selected file
-            m_omStrMRU_ConfigurationFiles[0] = 
-                    omStrConfigFilename;
+            m_omStrMRU_ConfigurationFiles[0] =
+                omStrConfigFilename;
 
-            // if this is new file name, create the 
+            // if this is new file name, create the
             // menu for the same
             // Get application main menu
             if ( unIndex == -1 )
             {
-                // Get the menu pointer of "Recent Configuration" 
-                CMenu *pMenu = pomGetMRUMenuPointer();
+                // Get the menu pointer of "Recent Configuration"
+                CMenu* pMenu = pomGetMRUMenuPointer();
 
                 if ( pMenu != NULL )// Verify
                 {
                     INT nMenuCount = pMenu->GetMenuItemCount();
+
                     if ( nMenuCount < 5 )
                     {
                         // Create an item with empty string. UI Update will
                         // set the text appropriatly
-						UINT unMenuID = IDM_REC_CFG_FILE1;
+                        UINT unMenuID = IDM_REC_CFG_FILE1;
                         pMenu->AppendMenu( MF_STRING | MF_ENABLED,
                                            unMenuID + nMenuCount, STR_EMPTY);
                     }
@@ -6976,16 +7130,20 @@ void CMainFrame::vPushConfigFilenameDown(CString omStrConfigFilename )
     Modifications    :  Raja N on 26.04.2005, Modified code refer new Tx window
                         pointer to check Tx msg window presence
 ******************************************************************************/
-void CMainFrame::OnUpdateConfigLoad(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateConfigLoad(CCmdUI* pCmdUI)
 {
     if ( pCmdUI != NULL )
     {
         BOOL bEnable = FALSE;
         // Check whether Tx msg window is visible or not
         //BOOL bSendMsgDialog = (m_pomTxMsgChildWindow != NULL );
-		BOOL bSendMsgDialog = FALSE;;
-		if(m_objTxHandler.hConfigWindowShown() == S_OK)
-			bSendMsgDialog = TRUE;
+        BOOL bSendMsgDialog = FALSE;;
+
+        if(m_objTxHandler.hConfigWindowShown() == S_OK)
+        {
+            bSendMsgDialog = TRUE;
+        }
+
         // Enable only if Tx window is not present
         bEnable = m_bCfgLoadMenuOption && !bSendMsgDialog;
         pCmdUI->Enable( bEnable );
@@ -7003,15 +7161,19 @@ void CMainFrame::OnUpdateConfigLoad(CCmdUI* pCmdUI)
     Modifications    :  Raja N on 26.04.2005, Modified code refer new Tx window
                         pointer to check Tx msg window presence
 ******************************************************************************/
-void CMainFrame::OnUpdateConfigNew(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateConfigNew(CCmdUI* pCmdUI)
 {
     if ( pCmdUI != NULL )
     {
         BOOL bEnable = FALSE;
         //BOOL bSendMsgDialog = (m_pomTxMsgChildWindow != NULL );
-		BOOL bSendMsgDialog = FALSE;;
-		if(m_objTxHandler.hConfigWindowShown() == S_OK)
-			bSendMsgDialog = TRUE;
+        BOOL bSendMsgDialog = FALSE;;
+
+        if(m_objTxHandler.hConfigWindowShown() == S_OK)
+        {
+            bSendMsgDialog = TRUE;
+        }
+
         bEnable = m_bCfgNewMenuOption && !bSendMsgDialog;
         pCmdUI->Enable( bEnable );
     }
@@ -7025,12 +7187,14 @@ void CMainFrame::OnUpdateConfigNew(CCmdUI* pCmdUI)
     Friend of        :      -
     Author(s)        :  Amarnath S
     Date Created     :  22.11.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
-void CMainFrame::OnUpdateConfigSave(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateConfigSave(CCmdUI* pCmdUI)
 {
     if ( pCmdUI != NULL )
+    {
         pCmdUI->Enable( m_bCfgSaveMenuOption );
+    }
 }
 /******************************************************************************
     Function Name    :  OnUpdateConfigSaveAs
@@ -7041,21 +7205,23 @@ void CMainFrame::OnUpdateConfigSave(CCmdUI* pCmdUI)
     Friend of        :      -
     Author(s)        :  Amarnath S
     Date Created     :  22.11.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
-void CMainFrame::OnUpdateConfigSaveAs(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateConfigSaveAs(CCmdUI* pCmdUI)
 {
     if ( pCmdUI != NULL )
+    {
         pCmdUI->Enable( m_bCfgSaveAsMenuOption );
+    }
 }
 /******************************************************************************
     Function Name    :  OnFilePropeties
-    Input(s)         :  
-    Output           :  
-    Functionality    :  Called by the framework when the user selects 
-                        File->Propeties. It will display the name and location 
-                        of files( Active Database File ,DLL Loaded, 
-                        Configuration File, Baud Rate,Selected Log File,Selected 
+    Input(s)         :
+    Output           :
+    Functionality    :  Called by the framework when the user selects
+                        File->Propeties. It will display the name and location
+                        of files( Active Database File ,DLL Loaded,
+                        Configuration File, Baud Rate,Selected Log File,Selected
                         Replay File.
     Member of        :  CMainFrame
     Friend of        :      -
@@ -7071,16 +7237,16 @@ void CMainFrame::OnUpdateConfigSaveAs(CCmdUI* pCmdUI)
                         07.03.2004, Modified to support multiple log and replay
                         file list
 ******************************************************************************/
-void CMainFrame::OnFilePropeties() 
+void CMainFrame::OnFilePropeties()
 {
     CStringArray omStrArray;
     SPROPERTIESLIST sProperties;
     CString omStrFomat( STR_EMPTY );
     BOOL bDLLLoaded = FALSE;
     CFlags* pouFlag = NULL;
-
     // Get the CFlag Object pointer
     pouFlag     = theApp.pouGetFlagsPtr();
+
     if(pouFlag != NULL)
     {
         // Get the DLL load status
@@ -7088,15 +7254,17 @@ void CMainFrame::OnFilePropeties()
     }
 
     // Get Controller information
-
     PSCONTROLLER_DETAILS  pBaudDetails = NULL;
     UINT nHardware = 0;
     LONG lParam = 0;
+
     if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
     {
         nHardware = (UINT)lParam;
     }
+
     pBaudDetails = m_asControllerDetails;
+
     // If valid
     if(pBaudDetails != NULL)
     {
@@ -7106,11 +7274,13 @@ void CMainFrame::OnFilePropeties()
             omStrFomat.Format( defSTR_CHANNEL_ITEM_FORMAT,
                                unIndex + 1,
                                pBaudDetails[ unIndex ].m_omStrBaudrate );
+
             // Append "*" if the channel is not present
             if( static_cast<int>(unIndex) > ( nHardware - 1 ) )
             {
                 omStrFomat += defSTR_CHANNEL_NOT_PRESENT;
             }
+
             // Add the formatted entry
             sProperties.m_omBaudRate.Add(omStrFomat);
         }
@@ -7121,85 +7291,89 @@ void CMainFrame::OnFilePropeties()
         omStrFomat = defSTR_ERROR_GETTTING_BAUDRATE;
         sProperties.m_omBaudRate.Add(omStrFomat);
     }
-    
+
     // Get Log file information
     if (sg_pouFrameProcCAN != NULL)
     {
         UINT unCount = sg_pouFrameProcCAN->FPC_GetLoggingBlockCount();
+
         for (UINT i = 0; i < unCount; i++)
         {
             SLOGINFO sLogInfo;
+
             if (sg_pouFrameProcCAN->FPC_GetLoggingBlock((USHORT)i, sLogInfo) == S_OK)
             {
                 sProperties.m_omLogFile.Add(sLogInfo.m_sLogFileName);
             }
-
         }
     }
+
     // If no log file is selection then add not selected string to the list
     if( sProperties.m_omLogFile.GetSize() == 0)
     {
-            sProperties.m_omLogFile.Add( defSTR_NOT_SELECTED );
+        sProperties.m_omLogFile.Add( defSTR_NOT_SELECTED );
     }
 
     // Get Replay File List
     vREP_GetReplayFileNameList(sProperties.m_omReplayFile );
+
     if( sProperties.m_omReplayFile.GetSize() == 0)
     {
         sProperties.m_omReplayFile.Add( defSTR_NOT_SELECTED );
     }
 
-	sProperties.m_omDatabaseFile.RemoveAll();
-	CStringArray aomDataBaseFiles;
+    sProperties.m_omDatabaseFile.RemoveAll();
+    CStringArray aomDataBaseFiles;
     // Get Database File Name
     theApp.m_pouMsgSignal->vGetDataBaseNames(&aomDataBaseFiles);
+
     // If Success
     // If It is a valid file name
-	if( aomDataBaseFiles.GetSize() != 0 )
+    if( aomDataBaseFiles.GetSize() != 0 )
     {
         // Assign the file name
-            sProperties.m_omDatabaseFile.Append(aomDataBaseFiles);
+        sProperties.m_omDatabaseFile.Append(aomDataBaseFiles);
     }
     else
     {
         // Else use not imported
-		sProperties.m_omDatabaseFile.Add(defSTR_NOT_IMPORTED);
+        sProperties.m_omDatabaseFile.Add(defSTR_NOT_IMPORTED);
     }
 
     // Get the DLL information
     omStrFomat = defSTR_DLL_NOT_LOADED;
-    if( bDLLLoaded == TRUE )
-    {     
-        // Get the loaded DLL names
-       /* CSimSysNodeInfo* pSimSysNodeInfo = theApp.pomGetSimSysNodeInfo();
-        if( pSimSysNodeInfo != NULL)
-        {
-            pSimSysNodeInfo->vGetLoadedDlls( sProperties.m_omDLLFile );
-           
-        }*/
-        
-      /*  theApp.bGetData( MRU_DLL_FILE_NAME, (VOID**)&pomStrFileName );
-        // IF success
-        if( pomStrFileName != NULL )
-        {
-            // It is a valid name
-            if( (*pomStrFileName).IsEmpty() == FALSE )
-            {
-                // Assign the file name
-                omStrFomat = *pomStrFileName;
-            }
-            // Clear the memory allocated to get DLL file name
-            theApp.vRelease(MRU_DLL_FILE_NAME,(VOID**)&pomStrFileName);
-        }*/
-       /*else
-        {
-            omStrFomat = defSTR_ERROR_GETTTING_DLL_INFO;
-            sProperties.m_omDLLFile.Add(omStrFomat);
-        }*/
-    }
-    // Add the DLL information
-   // sProperties.m_omDLLFile.Add(omStrFomat);
 
+    if( bDLLLoaded == TRUE )
+    {
+        // Get the loaded DLL names
+        /* CSimSysNodeInfo* pSimSysNodeInfo = theApp.pomGetSimSysNodeInfo();
+         if( pSimSysNodeInfo != NULL)
+         {
+             pSimSysNodeInfo->vGetLoadedDlls( sProperties.m_omDLLFile );
+
+         }*/
+        /*  theApp.bGetData( MRU_DLL_FILE_NAME, (VOID**)&pomStrFileName );
+          // IF success
+          if( pomStrFileName != NULL )
+          {
+              // It is a valid name
+              if( (*pomStrFileName).IsEmpty() == FALSE )
+              {
+                  // Assign the file name
+                  omStrFomat = *pomStrFileName;
+              }
+              // Clear the memory allocated to get DLL file name
+              theApp.vRelease(MRU_DLL_FILE_NAME,(VOID**)&pomStrFileName);
+          }*/
+        /*else
+         {
+             omStrFomat = defSTR_ERROR_GETTTING_DLL_INFO;
+             sProperties.m_omDLLFile.Add(omStrFomat);
+         }*/
+    }
+
+    // Add the DLL information
+    // sProperties.m_omDLLFile.Add(omStrFomat);
     // Create properties dialog and
     CProperties odProperties( sProperties );
     // Show the dialog
@@ -7212,7 +7386,7 @@ void CMainFrame::OnFilePropeties()
  Output           : void
  Functionality    : Set the text for the first sub menu item under
                     "File -> Recent Configurations -> Empty" menu option
-                    The first sub menu removed.Then create menu for the rest 
+                    The first sub menu removed.Then create menu for the rest
                     of the MRU files.
  Member of        : CMainFrame
  Friend of        :     -
@@ -7225,24 +7399,27 @@ void CMainFrame::OnFilePropeties()
 void CMainFrame::vCreateMRU_Menus()
 {
     // Get application main menu
-    CMenu *pMenu = pomGetMRUMenuPointer();
+    CMenu* pMenu = pomGetMRUMenuPointer();
+
     if ( pMenu != NULL )// Verify
     {
         // if the first MRU file is empty then, "Empty" text shud be displayed
         if ( m_omStrMRU_ConfigurationFiles[0] != STR_EMPTY &&
-             m_omStrMRU_ConfigurationFiles[0] != defSTR_DEFAULT_MRU_ITEM )
-        {   // Remove the static item
-			UINT unMenuID = IDM_REC_CFG_FILE1;
+                m_omStrMRU_ConfigurationFiles[0] != defSTR_DEFAULT_MRU_ITEM )
+        {
+            // Remove the static item
+            UINT unMenuID = IDM_REC_CFG_FILE1;
             pMenu->RemoveMenu( unMenuID, MF_BYCOMMAND);
+
             // Create menu's to hold rest of MRU configuration files
             for (UINT unCount = 0; unCount < 5; unCount++ )
             {
                 // Create menu only if string is not empty
                 if ( m_omStrMRU_ConfigurationFiles[unCount] != STR_EMPTY )
                 {
-                    pMenu->AppendMenu(MF_STRING | MF_ENABLED, 
-                                    unMenuID + unCount,
-                                    m_omStrMRU_ConfigurationFiles[unCount] );
+                    pMenu->AppendMenu(MF_STRING | MF_ENABLED,
+                                      unMenuID + unCount,
+                                      m_omStrMRU_ConfigurationFiles[unCount] );
                 }
                 else
                 {
@@ -7262,12 +7439,12 @@ void CMainFrame::vCreateMRU_Menus()
     Output           :  -
     Functionality    :  This timer handler is used to update the status bar to
                         show the current error states and values of both Rx and
-                        Tx error values. This also updates the bus statistics 
+                        Tx error values. This also updates the bus statistics
                         window.
     Member of        :  CMainFrame
 
     Author(s)        :  Ratnadip Choudhury
-    Date Created     :  
+    Date Created     :
     Modifications    :  Raja N on 22.07.2004
                         Added check for connection status before updating the
                         Network statistics dialog
@@ -7283,30 +7460,34 @@ void CMainFrame::vCreateMRU_Menus()
                         Added code to support multi channel in the error counter
                         update procedure
 ******************************************************************************/
-void CMainFrame::OnTimer(UINT nIDEvent) 
+void CMainFrame::OnTimer(UINT nIDEvent)
 {
     if (nIDEvent == m_unTimerSB)
     {
         if ((theApp.pouGetFlagsPtr()->nGetFlagStatus(CONNECTED)) == TRUE)
         {
-			vUpdateGraphStatsData();
+            vUpdateGraphStatsData();
+
             // Update the bus statistics window if it exists.
             if ( m_podBusStatistics != NULL &&
-                 m_podBusStatistics->IsWindowVisible( ) == TRUE )
+                    m_podBusStatistics->IsWindowVisible( ) == TRUE )
             {
                 // Perform network statistics calculation and update of
                 // network statistics window
                 m_podBusStatistics->SendMessage(WM_DISPLAY_MESSAGE, 1, 0);
             }
+
             // Get Present error counter value and take
             // appropriate actions for error handler execution
             // Get the number of channels available
             UINT unTotalChannels = 0;
             LONG lParam = 0;
+
             if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
             {
                 unTotalChannels = (UINT)lParam;
             }
+
             for( UINT unChannel = 0; unChannel < unTotalChannels; unChannel++ )
             {
                 // Get the error counter status from the HI layer
@@ -7316,42 +7497,45 @@ void CMainFrame::OnTimer(UINT nIDEvent)
                     WORD nErrorWord = MAKEWORD( ERROR_BUS , unChannel );
                     // Call error handler function to process
                     OnErrorMessageProc( nErrorWord,
-                        MAKEWORD(m_sErrorCount.m_ucRxErrCount,
-                        m_sErrorCount.m_ucTxErrCount));
+                                        MAKEWORD(m_sErrorCount.m_ucRxErrCount,
+                                                 m_sErrorCount.m_ucTxErrCount));
                 }
             }
         }
     }
+
     // Call Parent class member for default action
     CMDIFrameWnd::OnTimer(nIDEvent);
 }
 /******************************************************************************
     Function Name    :  OnDropFiles
     Input(s)         :  hDropInfo : array of timer structure
-    Output           :  
-    Functionality    :  This function will be called by frame work when user 
-                        drops a file in frame window. Only file with .c 
+    Output           :
+    Functionality    :  This function will be called by frame work when user
+                        drops a file in frame window. Only file with .c
                         extension is allowed to processed. Also if already
                         function editor is open the command is not processed.
     Member of        :  CMainFrame
     Friend of        :      -
     Author(s)        :  Amitesh Bharti
     Date Created     :  27.02.2003
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
-void CMainFrame::OnDropFiles(HDROP hDropInfo) 
+void CMainFrame::OnDropFiles(HDROP hDropInfo)
 {
     CString omStrFileName = _T("");
     CString omStrFileExt  = _T("");
     BOOL bEditOn          = FALSE;
     CHAR acFileName[1024];
     CFlags* pouFlag = theApp.pouGetFlagsPtr();
+
     if(pouFlag != NULL )
     {
         INT nNumberOfFiles = 0;
         // Only open file should be dragged and dropped.
         // Check for the number of files dragged and dropped.
         nNumberOfFiles = DragQueryFile(hDropInfo, 0xFFFFFFFF,acFileName,1024);
+
         if(nNumberOfFiles == 1 )
         {
             // Get the file name.
@@ -7359,11 +7543,11 @@ void CMainFrame::OnDropFiles(HDROP hDropInfo)
             omStrFileName = acFileName;
             // get the file extention
             omStrFileExt  = omStrFileName.Right(omStrFileName.GetLength() -
-                                omStrFileName.ReverseFind('.') );
-    
-            bEditOn = pouFlag->nGetFlagStatus( FUNCEDITOR); 
+                                                omStrFileName.ReverseFind('.') );
+            bEditOn = pouFlag->nGetFlagStatus( FUNCEDITOR);
+
             // only file with extension ".c"  will be opened when it is dragged
-            // Also if function editor is already opened it will not allow the 
+            // Also if function editor is already opened it will not allow the
             // second function editor window to open.
             if(omStrFileExt.CompareNoCase(defDOT_C) == 0 && bEditOn == FALSE)
             {
@@ -7397,12 +7581,12 @@ void CMainFrame::OnDropFiles(HDROP hDropInfo)
 /*  Modification By  :  Raja N                                                */
 /*  Modification on  :  29.04.2004 Replaced PostMessage with direct assignment*/
 /*                      of global variable g_bMsgHandlerON Msg Handler Enable */
-/*                      flag   
+/*                      flag
 /*  Modification By  :  Anish kumar                                           */
 /*  Modification on  :   05/01/06                                             */
-/*                   :  Inserted CExecute manger for executing handlers       */                                           
+/*                   :  Inserted CExecute manger for executing handlers       */
 /******************************************************************************/
-void CMainFrame::OnExecuteAllHandlers() 
+void CMainFrame::OnExecuteAllHandlers()
 {
     //Get present status
     BOOL bEnable = GetICANNodeSim()->NS_GetHandlerStatus(H_ALL_HANDLER);
@@ -7424,7 +7608,7 @@ void CMainFrame::OnExecuteAllHandlers()
 /*  Modification By  :                                                        */
 /*  Modification on  :                                                        */
 /******************************************************************************/
-void CMainFrame::OnUpdateExecuteAllHandlers(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateExecuteAllHandlers(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(GetICANNodeSim()->NS_GetHandlerStatus(H_ALL_HANDLER));
     BOOL bEnable = GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
@@ -7448,7 +7632,7 @@ void CMainFrame::OnUpdateExecuteAllHandlers(CCmdUI* pCmdUI)
 /*  Modification on  :   05/01/06                                             */
 /*                   :  Inserted CExecute manger for executing handlers       */
 /******************************************************************************/
-void CMainFrame::OnExecuteErrorHandlers() 
+void CMainFrame::OnExecuteErrorHandlers()
 {
     //Get present status
     BOOL bEnable = GetICANNodeSim()->NS_GetHandlerStatus(H_ERROR_HANDLER);
@@ -7470,7 +7654,7 @@ void CMainFrame::OnExecuteErrorHandlers()
 /*  Modification By  :                                                        */
 /*  Modification on  :                                                        */
 /******************************************************************************/
-void CMainFrame::OnUpdateExecuteErrorHandlers(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateExecuteErrorHandlers(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(GetICANNodeSim()->NS_GetHandlerStatus(H_ERROR_HANDLER));
     BOOL bEnable = GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
@@ -7492,7 +7676,7 @@ void CMainFrame::OnUpdateExecuteErrorHandlers(CCmdUI* pCmdUI)
 /*  Modifications    :  Raja N on 09.03.2005, Modified the code to support    */
 /*                      multi channel architecture                            */
 /******************************************************************************/
-void CMainFrame::OnConfigureModeActive() 
+void CMainFrame::OnConfigureModeActive()
 {
     m_byControllerMode = defMODE_ACTIVE;
     //g_pouDIL_CAN_Interface->DILC_SetControllerParams(defMODE_ACTIVE, 0, HW_MODE);
@@ -7513,14 +7697,16 @@ void CMainFrame::OnConfigureModeActive()
 /*                      incase of no USB hardware present. Added code to work */
 /*                      with both USB and CAN builds                          */
 /******************************************************************************/
-void CMainFrame::OnUpdateConfigureModeActive(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateConfigureModeActive(CCmdUI* pCmdUI)
 {
     if( pCmdUI != NULL)
-    {        
+    {
         CFlags* podFlags = theApp.pouGetFlagsPtr();
+
         if( podFlags != NULL )
         {
             BOOL bConnect = podFlags->nGetFlagStatus(CONNECTED);
+
             if(bConnect == FALSE )
             {
                 pCmdUI->Enable(TRUE);
@@ -7530,7 +7716,9 @@ void CMainFrame::OnUpdateConfigureModeActive(CCmdUI* pCmdUI)
                 pCmdUI->Enable(FALSE);
             }
         }
+
         LONG lParam = 0;
+
         if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, HW_MODE) == S_OK)
         {
             if (lParam == defMODE_ACTIVE)
@@ -7543,7 +7731,9 @@ void CMainFrame::OnUpdateConfigureModeActive(CCmdUI* pCmdUI)
             }
         }
         else
+        {
             pCmdUI->SetCheck(FALSE);
+        }
     }
 }
 /******************************************************************************/
@@ -7560,15 +7750,15 @@ void CMainFrame::OnUpdateConfigureModeActive(CCmdUI* pCmdUI)
 /*  Modification on  :  14.03.2005, Modified code to create statistics dialog */
 /*                      only during first show                                */
 /******************************************************************************/
-void CMainFrame::OnNetworkStatisticsWnd() 
+void CMainFrame::OnNetworkStatisticsWnd()
 {
     // If statistics dialog is not created
     if(m_bIsStatWndCreated == FALSE )
     {
         // Create statistics dialog
+        LONG lParam = 0;
+        int unTotalChannels = defNO_OF_CHANNELS;
 
-		LONG lParam = 0;
-		int unTotalChannels = defNO_OF_CHANNELS;
         if (g_pouDIL_CAN_Interface && g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
         {
             unTotalChannels = (INT)lParam;
@@ -7576,13 +7766,14 @@ void CMainFrame::OnNetworkStatisticsWnd()
 
         // Create memory for the dialog
         m_podBusStatistics = new CBusStatisticsDlg(GetICANBusStat(), NULL, unTotalChannels);
+
         // If success
         if( m_podBusStatistics != NULL )
         {
             // Create the dialog
             int nReturn =
                 m_podBusStatistics->Create(IDD_DLG_NETWORK_STATISTICS, this);
-            
+
             if(nReturn != 0 )
             {
                 // Update the statistics dialog creation status
@@ -7591,11 +7782,14 @@ void CMainFrame::OnNetworkStatisticsWnd()
             else
             {
                 // Show the error information to the user
-				if(theApp.m_bFromAutomation == FALSE)
-                AfxMessageBox( defSTR_STAT_WINDOW_CREATION_FAILED );
+                if(theApp.m_bFromAutomation == FALSE)
+                {
+                    AfxMessageBox( defSTR_STAT_WINDOW_CREATION_FAILED );
+                }
             }
         }
     }
+
     // If statistics window is created
     if(m_bIsStatWndCreated == TRUE )
     {
@@ -7603,7 +7797,7 @@ void CMainFrame::OnNetworkStatisticsWnd()
         if(!m_podBusStatistics->IsWindowVisible() )
         {
             m_podBusStatistics->ShowWindow(SW_SHOW);
-			m_podBusStatistics->vLoadDataFromStore();
+            m_podBusStatistics->vLoadDataFromStore();
         }
         else
         {
@@ -7627,13 +7821,13 @@ void CMainFrame::OnNetworkStatisticsWnd()
 /*  Modification on  :  14.03.2005, Added check before accessing the member of*/
 /*                      statistics dialog                                     */
 /******************************************************************************/
-void CMainFrame::OnUpdateNetworkStatisticsWnd(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateNetworkStatisticsWnd(CCmdUI* pCmdUI)
 {
     if(pCmdUI != NULL)
     {
         // Check for window cration
         if( m_podBusStatistics != NULL &&
-            m_podBusStatistics->IsWindowVisible() == TRUE )
+                m_podBusStatistics->IsWindowVisible() == TRUE )
         {
             pCmdUI->SetCheck(TRUE);
         }
@@ -7646,14 +7840,14 @@ void CMainFrame::OnUpdateNetworkStatisticsWnd(CCmdUI* pCmdUI)
 /******************************************************************************
     Function Name    :  bEnableDisableLog
     Input(s)         :  bStart, indicating Start\Stop of Logging
-    Output           :  
-    Functionality    :  This function calls OnLogEnable() function to 
+    Output           :
+    Functionality    :  This function calls OnLogEnable() function to
                         Enable\Disable Logging
     Member of        :  CMainFrame
     Friend of        :      -
     Author(s)        :  Ravikumar Patil
     Date Created     :  24.02.2003
-    Modifications    :  21.03.2002, Ravikumar Patil, code review comment    
+    Modifications    :  21.03.2002, Ravikumar Patil, code review comment
 *****************************************************************************/
 BOOL CMainFrame::bEnableDisableLog(BOOL bStart)
 {
@@ -7661,31 +7855,33 @@ BOOL CMainFrame::bEnableDisableLog(BOOL bStart)
     BOOL bLogging = theApp.pouGetFlagsPtr()->nGetFlagStatus(LOGTOFILE);
 
     if ( (bStart == TRUE) && (bLogging == TRUE) ) //If logging enabled and trying
-    {                                           //to enable
+    {
+        //to enable
         bRetval = FALSE ;
     }
-    else 
-    if ( (bStart == FALSE) && (bLogging == FALSE) ) //If logging disabled and trying
-    {                                             //to disable
+    else if ( (bStart == FALSE) && (bLogging == FALSE) ) //If logging disabled and trying
+    {
+        //to disable
         bRetval = FALSE ;
     }
-    else 
+    else
     {
         OnLogEnable() ;
     }
+
     return bRetval ;
 }
 
 /******************************************************************************
     Function Name    :  bWriteToLog
     Input(s)         :  pcOutStrLog, string to be logged
-    Output           :  
+    Output           :
     Functionality    :  This function will Send a message to Log the string
     Member of        :  CMainFrame
     Friend of        :      -
     Author(s)        :  Ravikumar Patil
     Date Created     :  28.02.2003
-    Modifications    :  21.03.2002, Ravikumar Patil, code review comment    
+    Modifications    :  21.03.2002, Ravikumar Patil, code review comment
 ******************************************************************************/
 BOOL CMainFrame::bWriteToLog(char* pcOutStrLog)
 {
@@ -7708,43 +7904,45 @@ BOOL CMainFrame::bWriteToLog(char* pcOutStrLog)
 /******************************************************************************
     Function Name    :  vResetController
     Input(s)         :  wParam : Indicate if hardware reset or software reset.
-    Output           :  
+    Output           :
     Functionality    :  This function will Reset the Controller. It calls
                         OnRestartController() member function.
     Member of        :  CMainFrame
     Friend of        :      -
     Author(s)        :  Ravikumar Patil
     Date Created     :  28.02.2003
-    Modifications    :  Amitesh Bharti, 02.08.2004, The parameter wParam will 
-                        indicate if it is hardware reset or software reset. 
+    Modifications    :  Amitesh Bharti, 02.08.2004, The parameter wParam will
+                        indicate if it is hardware reset or software reset.
                         Appropriate function is called for both cases.
 ******************************************************************************/
 LRESULT CMainFrame::vResetController(WPARAM wParam, LPARAM )
 {
     BOOL bHardwareReset = static_cast<BOOL>(wParam);
+
     if(bHardwareReset == FALSE )
     {
-//        OnRestartController() ;
+        //        OnRestartController() ;
     }
     else
     {
         OnFunctionsResetHardware();
     }
-	return 0;
+
+    return 0;
 }
 
 /******************************************************************************
     Function Name    :  bSetControllerMode
-    Input(s)         :  bbMode, New controller Mode  
-    Output           :  
+    Input(s)         :  bbMode, New controller Mode
+    Output           :
     Functionality    :  This function will set the Controller mode. It calls
-                        OnConfigurePassive() or OnConfigurePassive() member 
+                        OnConfigurePassive() or OnConfigurePassive() member
                         function depending on the current mode
     Member of        :  CMainFrame
     Friend of        :      -
     Author(s)        :  Ravikumar Patil
     Date Created     :  28.02.2003
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 BOOL CMainFrame::bSetControllerMode(BOOL bMode)
 {
@@ -7754,7 +7952,7 @@ BOOL CMainFrame::bSetControllerMode(BOOL bMode)
 
     if(bConnect == TRUE ) //If connected
     {
-       bRetval = FALSE ;
+        bRetval = FALSE ;
     }
     else //If not connected
     {
@@ -7770,8 +7968,9 @@ BOOL CMainFrame::bSetControllerMode(BOOL bMode)
         {
             bRetval = FALSE ;
         }
-   }
-   return bRetval ;
+    }
+
+    return bRetval ;
 }
 
 
@@ -7779,32 +7978,33 @@ BOOL CMainFrame::bSetControllerMode(BOOL bMode)
 /******************************************************************************
     Function Name    :  vDisconnect
     Input(s)         :  bState
-    Output           :  
+    Output           :
     Functionality    :  This function will call OnFileConnect() member function
-                        to connect\disconnect 
+                        to connect\disconnect
     Member of        :  CMainFrame
     Friend of        :      -
     Author(s)        :  Ravikumar Patil
     Date Created     :  24.02.2003
-    Modifications    :  21.03.2002, Ravikumar Patil, code review comment    
+    Modifications    :  21.03.2002, Ravikumar Patil, code review comment
 ******************************************************************************/
 LRESULT CMainFrame::vDisconnect(WPARAM , LPARAM lParam)
 {
     //bState is TRUE if Disconnect
     BOOL bRetval = TRUE ;
     BOOL bState = (WPARAM) lParam ;
-
     BOOL bActiveState = theApp.pouGetFlagsPtr()->nGetFlagStatus(CONNECTED);
+
     if ( (bActiveState == TRUE) && (bState == FALSE) ) //If already connected and again
-    {                                                //trying to connect
+    {
+        //trying to connect
         bRetval = FALSE ;
     }
-    else 
-    if ( (bActiveState == FALSE) && (bState == TRUE) ) //If already disconnected and 
-    {                                                //again trying to disconnect
+    else if ( (bActiveState == FALSE) && (bState == TRUE) ) //If already disconnected and
+    {
+        //again trying to disconnect
         bRetval = FALSE ;
     }
-    else 
+    else
     {
         OnFileConnect() ;
     }
@@ -7817,9 +8017,9 @@ LRESULT CMainFrame::vDisconnect(WPARAM , LPARAM lParam)
 /******************************************************************************
     Function Name    :  gbSendStrToTrace
     Input(s)         :  pcOutStrTrace, string to be sent to trace
-    Output           :  BOOL value (True always) 
+    Output           :  BOOL value (True always)
                         function will be returned
-    Functionality    :  This function will Send a message and pass the string 
+    Functionality    :  This function will Send a message and pass the string
                         to be printed
     Member of        :  None (Global function)
     Friend of        :  None
@@ -7839,6 +8039,7 @@ BOOL gbSendStrToTrace(CHAR* pcOutStrTrace)
     if (g_dwUIThread == 0)
     {
         CMainFrame* pMainFrm = static_cast<CMainFrame*> (theApp.GetMainWnd());
+
         if (pMainFrm != NULL)
         {
             pMainFrm->SendMessage(WM_CREATE_TRACEWIN, 0, 0);
@@ -7850,11 +8051,11 @@ BOOL gbSendStrToTrace(CHAR* pcOutStrTrace)
     {
         if ( pcOutStrTrace != NULL)
         {
-             static CHAR s_acTraceStr[1024] = {""};
+            static CHAR s_acTraceStr[1024] = {""};
             WaitForSingleObject(g_hSemaphore, MAX_TIME_LIMIT);
-			//CHAR *p_acTraceStr = new CHAR[1024];
+            //CHAR *p_acTraceStr = new CHAR[1024];
             strncpy_s(s_acTraceStr,pcOutStrTrace,1024);
-            bResult = ::PostThreadMessage(g_dwUIThread, WM_WRITE_TO_TRACE, 0, 
+            bResult = ::PostThreadMessage(g_dwUIThread, WM_WRITE_TO_TRACE, 0,
                                           (LPARAM) s_acTraceStr);
             Sleep(0);
         }
@@ -7879,7 +8080,7 @@ BOOL gbSendStrToTrace(CHAR* pcOutStrTrace)
 /*  Modifications    :  Raja N on 09.03.2005, Modified the code to support    */
 /*                      multi channel architecture                            */
 /******************************************************************************/
-void CMainFrame::OnConfigurePassive() 
+void CMainFrame::OnConfigurePassive()
 {
     //g_pouDIL_CAN_Interface->DILC_SetControllerParams(defMODE_PASSIVE, 0, HW_MODE);
 }
@@ -7899,15 +8100,17 @@ void CMainFrame::OnConfigurePassive()
 /*                      Functions. This menu item will be disabled if there is*/
 /*                      no real USB hardware found during startup             */
 /******************************************************************************/
-void CMainFrame::OnUpdateConfigurePassive(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateConfigurePassive(CCmdUI* pCmdUI)
 {
     if( pCmdUI != NULL)
-    {        
+    {
         CFlags* podFlags = theApp.pouGetFlagsPtr();
+
         if( podFlags != NULL )
         {
             // Get the connection status
             BOOL bConnect = podFlags->nGetFlagStatus(CONNECTED);
+
             if(bConnect == FALSE )
             {
                 pCmdUI->Enable(TRUE);
@@ -7917,7 +8120,9 @@ void CMainFrame::OnUpdateConfigurePassive(CCmdUI* pCmdUI)
                 pCmdUI->Enable(FALSE);
             }
         }
+
         LONG lParam = 0;
+
         if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, HW_MODE) == S_OK)
         {
             if (lParam == defMODE_PASSIVE)
@@ -7930,7 +8135,9 @@ void CMainFrame::OnUpdateConfigurePassive(CCmdUI* pCmdUI)
             }
         }
         else
+        {
             pCmdUI->SetCheck(FALSE);
+        }
     }
 }
 /******************************************************************************/
@@ -7948,24 +8155,25 @@ void CMainFrame::OnUpdateConfigurePassive(CCmdUI* pCmdUI)
 /*  Modification on  :  21.03.2003, changes due to change in type of window   */
 /*  Modified On      :  18.04.2003, new member function  bCreateOutputWindow  */
 /*                                of CNotificWnd class is called to create it.*/
-/*  Modification By  :  Saravanan											  */
+/*  Modification By  :  Saravanan                                             */
 /*  Modified On      :  16.11.2011, Window is made visible for first time call*/
 /******************************************************************************/
-void CMainFrame::OnTraceWnd() 
-{   
+void CMainFrame::OnTraceWnd()
+{
     if (m_podUIThread == NULL)
     {
         bCreateTraceWindow();
-	//Window should be displayed if thread is created newly
-	m_bNotificWndVisible = FALSE; 
+        //Window should be displayed if thread is created newly
+        m_bNotificWndVisible = FALSE;
     }
+
     if (m_podUIThread != NULL)
-    {   
+    {
         m_bNotificWndVisible = !m_bNotificWndVisible;
         UINT nShow = m_bNotificWndVisible? SW_SHOW : SW_HIDE;
         m_podUIThread->PostThreadMessage(WM_THREADMSG_PROC, WM_MODIFY_VISIBILITY, nShow);
         //m_bNotificWndVisible = m_podUIThread->bIsNotificWndVisible();
-    }    
+    }
 }
 /******************************************************************************/
 /*  Function Name    :  OnUpdateTraceWnd                                      */
@@ -7982,7 +8190,7 @@ void CMainFrame::OnTraceWnd()
 /*  Modification By  :  Ravikumar Patil                                       */
 /*  Modification on  :  21.03.2003, changes due to change in type of window   */
 /******************************************************************************/
-void CMainFrame::OnUpdateTraceWnd(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateTraceWnd(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(m_bNotificWndVisible);
 }
@@ -8003,21 +8211,25 @@ void CMainFrame::OnUpdateTraceWnd(CCmdUI* pCmdUI)
 /*  Modifications    :  Raja N at 09.03.2005                                  */
 /*                      Added code to support multi channel                   */
 /******************************************************************************/
-void CMainFrame::OnCheckHwInterface() 
+void CMainFrame::OnCheckHwInterface()
 {
     CString omStrMsg = STR_EMPTY;
     LONG nIconType = MB_ICONINFORMATION;
     // Get the selected hardware status from Hardware interface layer
     HRESULT hReturn = S_OK;
-    LONG lParam = 0; INT unHwCount = 0;
+    LONG lParam = 0;
+    INT unHwCount = 0;
+
     if (g_pouDIL_CAN_Interface->DILC_GetControllerParams( lParam, NULL, NUMBER_HW ) == S_OK)
     {
         unHwCount = (INT)lParam;
     }
+
     // Parse the array to get individual result
     for( UINT ucIndex = 0; ucIndex < (UINT)unHwCount; ucIndex++ )
     {
         hReturn |= g_pouDIL_CAN_Interface->DILC_GetControllerParams( lParam, ucIndex, CON_TEST );
+
         // If passed
         if( (BOOL)lParam == TRUE )
         {
@@ -8053,9 +8265,12 @@ void CMainFrame::OnCheckHwInterface()
         omStrMsg += NEW_LINE;
         omStrMsg += defSTR_HW_TEST_SUCCESS;
     }
+
     // Display the information
-	if(theApp.m_bFromAutomation == FALSE)
-    AfxMessageBox(omStrMsg, nIconType, 0);
+    if(theApp.m_bFromAutomation == FALSE)
+    {
+        AfxMessageBox(omStrMsg, nIconType, 0);
+    }
 }
 /******************************************************************************/
 /*  Function Name    :  OnParallelPortNonepp                                  */
@@ -8092,7 +8307,7 @@ void CMainFrame::OnParallelPortEpp()
 /*  Modifications    :  Raja N on 08.09.2004, Modified the code to disable    */
 /*                      this menuitem in case of USB build                    */
 /******************************************************************************/
-void CMainFrame::OnUpdateParallelPortEpp(CCmdUI* /*pCmdUI*/) 
+void CMainFrame::OnUpdateParallelPortEpp(CCmdUI* /*pCmdUI*/)
 {
 }
 /******************************************************************************/
@@ -8153,11 +8368,11 @@ void CMainFrame::OnUpdateParallelPortNonepp(CCmdUI* /*pCmdUI*/)
 /*                      update                                                */
 /*  Modifications    :  Raja N on 21.03.2005, Implemented code review points  */
 /******************************************************************************/
-void CMainFrame::OnFunctionsResetHardware() 
+void CMainFrame::OnFunctionsResetHardware()
 {
     CFlags* podFlag  = NULL;
-
     podFlag  =  theApp.pouGetFlagsPtr();
+
     if (podFlag != NULL)
     {
         // Reset statistics calculation content
@@ -8165,20 +8380,24 @@ void CMainFrame::OnFunctionsResetHardware()
         // Reset the hardware using HIL function
         // If unsuccessful error messages will be displayed from HIL
         BOOL bConnected = podFlag->nGetFlagStatus(CONNECTED);
+
         if (bConnected == TRUE)
         {
             OnFileConnect(); //First disconnect
             g_pouDIL_CAN_Interface->DILC_ResetHardware();
         }
+
         // Update error hander execution. There could be possible change in
         // Controller status.
         // Get number of hardware connected with the system
         UINT unTotalChannels = 0;
         LONG lParam = 0;
+
         if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
         {
             unTotalChannels = (INT)lParam;
         }
+
         // Get the error counter of each hardware and call error handling
         // procedure
         for( UINT unChannel = 0; unChannel < unTotalChannels; unChannel++ )
@@ -8190,7 +8409,7 @@ void CMainFrame::OnFunctionsResetHardware()
                 // Call error handler function to process
                 OnErrorMessageProc( nErrorWord,
                                     MAKEWORD(m_sErrorCount.m_ucRxErrCount,
-                                    m_sErrorCount.m_ucTxErrCount));
+                                             m_sErrorCount.m_ucTxErrCount));
             }
         }
     }
@@ -8210,17 +8429,19 @@ void CMainFrame::OnFunctionsResetHardware()
 /*  Modifications    :  Raja N on 08.09.2004, Modified code to disable this   */
 /*                      menuitem if the tool is in simulate mode              */
 /******************************************************************************/
-void CMainFrame::OnUpdateConfigureBaudrate(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateConfigureBaudrate(CCmdUI* pCmdUI)
 {
     if(pCmdUI != NULL)
     {
         CFlags* podFlag = theApp.pouGetFlagsPtr();
+
         if( podFlag != NULL )
         {
             // Disable if it is connected
             BOOL bDisable = podFlag->nGetFlagStatus(CONNECTED);
             // In Simulation mode is selected then disable Controller option
             LONG lParam= 0;
+
             if( g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, HW_MODE) == S_OK)
             {
                 if (lParam == defMODE_SIMULATE)
@@ -8228,6 +8449,7 @@ void CMainFrame::OnUpdateConfigureBaudrate(CCmdUI* pCmdUI)
                     bDisable = TRUE;
                 }
             }
+
             // If bDisable = TRUE then set the Enable to FALSE
             pCmdUI->Enable(!bDisable);
         }
@@ -8235,7 +8457,7 @@ void CMainFrame::OnUpdateConfigureBaudrate(CCmdUI* pCmdUI)
 }
 /******************************************************************************/
 /*  Function Name    :  vSetWarningLimitVar                                   */
-/*  Input(s)         :  WPARAM wParam = 0                                     */ 
+/*  Input(s)         :  WPARAM wParam = 0                                     */
 /*                      LPARAM lParam = warning limit value                   */
 /*  Output           :                                                        */
 /*  Functionality    :  Called by the framework when a                        */
@@ -8251,22 +8473,23 @@ void CMainFrame::OnUpdateConfigureBaudrate(CCmdUI* pCmdUI)
 /******************************************************************************/
 LRESULT CMainFrame::vSetWarningLimitVar(WPARAM , LPARAM lParam)
 {
-   UINT unWarningLimtMin = 1;
-   UINT unWarningLimtMax = 127;
-   m_unWarningLimit = static_cast <UINT> (lParam);
-   // Validate the warning limit for maximum and minimum value.
-   if(   ( m_unWarningLimit < unWarningLimtMin ) 
-      || ( m_unWarningLimit > unWarningLimtMax ) )
-   {
-    
+    UINT unWarningLimtMin = 1;
+    UINT unWarningLimtMax = 127;
+    m_unWarningLimit = static_cast <UINT> (lParam);
+
+    // Validate the warning limit for maximum and minimum value.
+    if(   ( m_unWarningLimit < unWarningLimtMin )
+            || ( m_unWarningLimit > unWarningLimtMax ) )
+    {
         m_unWarningLimit = unWarningLimtMin;
-   }
-	return 0;
+    }
+
+    return 0;
 }
 
 /******************************************************************************/
 /*  Function Name    :  vKeyPressedInMsgWnd                                   */
-/*  Input(s)         :  WPARAM wParam = Key Value                             */ 
+/*  Input(s)         :  WPARAM wParam = Key Value                             */
 /*                      LPARAM lParam = 0                                     */
 /*  Output           :                                                        */
 /*  Functionality    :  Called by the framework when a                        */
@@ -8282,7 +8505,7 @@ LRESULT CMainFrame::vSetWarningLimitVar(WPARAM , LPARAM lParam)
 /*  Modification By  :                                                        */
 /*  Modification on  :  Raja N on 26.04.2005, Modified code to refer Tx msg   */
 /*                      manager to handle key press event                     */
-/*  Modification By  :  Anish kumar                                           */ 
+/*  Modification By  :  Anish kumar                                           */
 /*  Modification On  :  21/12/05 ,modified to refer cExecuteManager for       */
 /*                      multinode                                             */
 /******************************************************************************/
@@ -8290,19 +8513,20 @@ LRESULT CMainFrame::vKeyPressedInMsgWnd(WPARAM wParam, LPARAM )
 {
     // Check for key a-z or A-Z, if any of these are press
     // call member function of CExecuteManager class for key handler
-    if(   ( wParam >= 'A' && wParam<='Z' )|| 
-          ( wParam >= 'a' && wParam<='z' )||  
-          ( wParam >= '0' && wParam<='9' ) )
+    if(   ( wParam >= 'A' && wParam<='Z' )||
+            ( wParam >= 'a' && wParam<='z' )||
+            ( wParam >= '0' && wParam<='9' ) )
     {
-		//vManageOnKeyHandler(UCHAR(wParam));
+        //vManageOnKeyHandler(UCHAR(wParam));
         BOOL bStopMsgBlockTx = m_objTxHandler.bGetTxStopFlag();
+
         if(bStopMsgBlockTx == FALSE )
         {
-			m_objTxHandler.vStartTransmission((UCHAR)wParam); 
-		}
-        
+            m_objTxHandler.vStartTransmission((UCHAR)wParam);
+        }
     }
-	return 0;
+
+    return 0;
 }
 
 /******************************************************************************/
@@ -8325,19 +8549,23 @@ CMenu* CMainFrame::GetSubMenu(CString MenuName)
     int i = -1;
     CString Str;
     int nCnt = mmenu->GetMenuItemCount();
+
     for (i = 0; i < nCnt; i++)
     {
         mmenu->GetMenuString(i, Str, MF_BYPOSITION);
+
         if (Str == MenuName)
         {
             bFound = TRUE;
             break;
         }
     }
+
     if (bFound)
     {
         Submenu = mmenu->GetSubMenu(i);
     }
+
     return Submenu;
 }
 
@@ -8356,7 +8584,7 @@ CMenu* CMainFrame::GetSubMenu(CString MenuName)
 /*  Modifications    :  Raja N on 08.09.2004, This menu item will be disabled */
 /*                      if the available hardware is zero.                    */
 /******************************************************************************/
-void CMainFrame::OnUpdateCheckHwInterface(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateCheckHwInterface(CCmdUI* pCmdUI)
 {
     if(pCmdUI != NULL )
     {
@@ -8364,20 +8592,24 @@ void CMainFrame::OnUpdateCheckHwInterface(CCmdUI* pCmdUI)
         // Check the number of hardware found during startup
         LONG lParam = 0;
         INT nNoOfHw = 0;
+
         if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
         {
             nNoOfHw = (INT)lParam;
         }
+
         if( nNoOfHw > 0 )
         {
             // If some hardware present then enable this item if the tool is not
             // connected
             CFlags* pouFlags = theApp.pouGetFlagsPtr();
+
             if(pouFlags != NULL )
             {
-                bDisable = pouFlags->nGetFlagStatus( CONNECTED );            
+                bDisable = pouFlags->nGetFlagStatus( CONNECTED );
             }
         }
+
         // Set the enable value
         pCmdUI->Enable(bDisable);
     }
@@ -8391,46 +8623,48 @@ void CMainFrame::OnUpdateCheckHwInterface(CCmdUI* pCmdUI)
 /*  Friend of        :      -                                                 */
 /*  Author(s)        : Krishnaswamy B.N.                                      */
 /*  Date Created     : 03.06.2003                                             */
-/*  Modifications    : Arun Kumar K,										  */
-/*					   20.05.2010, m_wndToolBar.ClientToScreen(..) used		  */
-/*					               instead of this->ClientToScreen(..).		  */
-/*					   Amitesh Bharti,                                        */
+/*  Modifications    : Arun Kumar K,                                          */
+/*                     20.05.2010, m_wndToolBar.ClientToScreen(..) used       */
+/*                                 instead of this->ClientToScreen(..).       */
+/*                     Amitesh Bharti,                                        */
 /*                     21.01.2004, Instead of index toolbar button ID is      */
 /*                                 passed as parameter.                       */
 /******************************************************************************/
 void CMainFrame::vToolBarDropDownMenu(UINT unControlID, int nButtonID)
 {
     CMenu* m_pomContextMenu = new CMenu;
-    RECT rRect = {0,0,0,0}; 
+    RECT rRect = {0,0,0,0};
+
     // Load the Menu from the resource
     if ( m_pomContextMenu != NULL )
     {
         m_pomContextMenu->DestroyMenu();
         m_pomContextMenu->LoadMenu(unControlID);
-
         CMenu* pomSubMenu = m_pomContextMenu->GetSubMenu(0);
-		
+
         if(nButtonID == IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME)
-		{
-			m_wndToolbarMsgWnd.GetToolBarCtrl().GetRect( nButtonID, &rRect );		
-			m_wndToolbarMsgWnd.ClientToScreen(&rRect);			
-		}
-		else
-		{
-			m_wndToolBar.GetToolBarCtrl().GetRect( nButtonID, &rRect );		
-			m_wndToolBar.ClientToScreen(&rRect);			
-		}
+        {
+            m_wndToolbarMsgWnd.GetToolBarCtrl().GetRect( nButtonID, &rRect );
+            m_wndToolbarMsgWnd.ClientToScreen(&rRect);
+        }
+        else
+        {
+            m_wndToolBar.GetToolBarCtrl().GetRect( nButtonID, &rRect );
+            m_wndToolBar.ClientToScreen(&rRect);
+        }
 
         rRect.left    = rRect.left + SHIFT_X;
-    //    rRect.bottom  = rRect.bottom + SHIFT_Y;
+        //    rRect.bottom  = rRect.bottom + SHIFT_Y;
         pomSubMenu->TrackPopupMenu( TPM_LEFTALIGN  |TPM_RIGHTBUTTON,
                                     rRect.left ,
                                     rRect.bottom ,
                                     this,
                                     NULL);
-        if (m_pomContextMenu != NULL )
-            delete m_pomContextMenu;
 
+        if (m_pomContextMenu != NULL )
+        {
+            delete m_pomContextMenu;
+        }
     }
 }
 /******************************************************************************
@@ -8438,34 +8672,36 @@ void CMainFrame::vToolBarDropDownMenu(UINT unControlID, int nButtonID)
 
     Input(s)         :      -
     Output           :  void
-    Functionality    :  Changes the Display mode to Absolute mode 
+    Functionality    :  Changes the Display mode to Absolute mode
     Member of        :  CMainFrame
     Friend of        :      -
 
     Author(s)        :  Krishnaswamy B.N.
     Date Created     :  03.06.2003
-	Modification By  :  ArunKumar K
+    Modification By  :  ArunKumar K
     Modification on  :  08.06.2010, Setting Check Status in Message Window.
 ******************************************************************************/
-void CMainFrame::OnDisplayAbsoluteTime() 
+void CMainFrame::OnDisplayAbsoluteTime()
 {
-	if (m_podMsgWndThread != NULL)
-	{
-		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
-		BYTE byGetDispFlag = 0;
-		::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
-		CLEAR_EXPR_TM_BITS(byGetDispFlag);
-		SET_TM_ABS(byGetDispFlag);
-		for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
-		{
-			hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);					
-			if(hWnd)
-			{
-				BYTE bModes = TIME_MODE;
-				::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
-			}
-		}
-	}
+    if (m_podMsgWndThread != NULL)
+    {
+        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+        BYTE byGetDispFlag = 0;
+        ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
+        CLEAR_EXPR_TM_BITS(byGetDispFlag);
+        SET_TM_ABS(byGetDispFlag);
+
+        for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
+        {
+            hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
+
+            if(hWnd)
+            {
+                BYTE bModes = TIME_MODE;
+                ::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
+            }
+        }
+    }
 }
 /******************************************************************************
     Function Name    :  OnUpdateDisplayAbsolutetime
@@ -8478,27 +8714,28 @@ void CMainFrame::OnDisplayAbsoluteTime()
 
     Author(s)        :  Krishnaswamy B.N.
     Date Created     :  03.06.2003
-	Modification By  :  ArunKumar K
+    Modification By  :  ArunKumar K
     Modification on  :  08.06.2010, Retreiving Check Status from Message Window.
     Modification By  :  Amitesh Bharti
     Modification on  :  01.07.2003, This menu is enable even tool is connected.
 ******************************************************************************/
-void CMainFrame::OnUpdateDisplayAbsolutetime(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateDisplayAbsolutetime(CCmdUI* pCmdUI)
 {
-	if (m_podMsgWndThread != NULL)
-	{
-		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
-		BYTE byGetDispFlag = 0;
-		::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
-		if (IS_TM_ABS_SET(byGetDispFlag))
-		{
-			pCmdUI->SetCheck();
-		}
-		else
-		{
-			pCmdUI->SetCheck(FALSE);
-		}
-	}
+    if (m_podMsgWndThread != NULL)
+    {
+        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+        BYTE byGetDispFlag = 0;
+        ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
+
+        if (IS_TM_ABS_SET(byGetDispFlag))
+        {
+            pCmdUI->SetCheck();
+        }
+        else
+        {
+            pCmdUI->SetCheck(FALSE);
+        }
+    }
 }
 /******************************************************************************
     Function Name    :  OnDisplayRelativetime
@@ -8511,28 +8748,30 @@ void CMainFrame::OnUpdateDisplayAbsolutetime(CCmdUI* pCmdUI)
 
     Author(s)        :  Krishnaswamy B.N.
     Date Created     :  03.06.2003
-	Modification By  :  ArunKumar K
+    Modification By  :  ArunKumar K
     Modification on  :  08.06.2010, Setting Check Status in Message Window.
 ******************************************************************************/
-void CMainFrame::OnDisplayRelativetime() 
+void CMainFrame::OnDisplayRelativetime()
 {
-	if (m_podMsgWndThread != NULL)
-	{
-		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
-		BYTE byGetDispFlag = 0;
-		::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
-		CLEAR_EXPR_TM_BITS(byGetDispFlag);
-		SET_TM_REL(byGetDispFlag);		
-		for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
-		{
-			hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);					
-			if(hWnd)
-			{
-				BYTE bModes = TIME_MODE;
-				::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
-			}
-		}
-	}
+    if (m_podMsgWndThread != NULL)
+    {
+        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+        BYTE byGetDispFlag = 0;
+        ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
+        CLEAR_EXPR_TM_BITS(byGetDispFlag);
+        SET_TM_REL(byGetDispFlag);
+
+        for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
+        {
+            hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
+
+            if(hWnd)
+            {
+                BYTE bModes = TIME_MODE;
+                ::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
+            }
+        }
+    }
 }
 /******************************************************************************
     Function Name    :  OnUpdateDisplayRelativetime
@@ -8545,27 +8784,28 @@ void CMainFrame::OnDisplayRelativetime()
 
     Author(s)        :  Krishnaswamy B.N.
     Date Created     :  03.06.2003
-	Modification By  :  ArunKumar K
+    Modification By  :  ArunKumar K
     Modification on  :  08.06.2010, Retreiving Check Status from Message Window.
     Modification By  :  Amitesh Bharti
     Modification on  :  01.07.2003, This menu is enable even tool is connected.
 ******************************************************************************/
-void CMainFrame::OnUpdateDisplayRelativetime(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateDisplayRelativetime(CCmdUI* pCmdUI)
 {
-	if (m_podMsgWndThread != NULL)
-	{
-		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
-		BYTE byGetDispFlag = 0;
-		::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
-		if (IS_TM_REL_SET(byGetDispFlag))
-		{
-			pCmdUI->SetCheck();
-		}
-		else
-		{
-			pCmdUI->SetCheck(FALSE);
-		}
-	}
+    if (m_podMsgWndThread != NULL)
+    {
+        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+        BYTE byGetDispFlag = 0;
+        ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
+
+        if (IS_TM_REL_SET(byGetDispFlag))
+        {
+            pCmdUI->SetCheck();
+        }
+        else
+        {
+            pCmdUI->SetCheck(FALSE);
+        }
+    }
 }
 /******************************************************************************
     Function Name    :  OnDisplaySystemTime
@@ -8578,28 +8818,30 @@ void CMainFrame::OnUpdateDisplayRelativetime(CCmdUI* pCmdUI)
 
     Author(s)        :  Krishnaswamy B.N.
     Date Created     :  03.06.2003
-	Modification By  :  ArunKumar K
+    Modification By  :  ArunKumar K
     Modification on  :  08.06.2010, Setting Check Status in Message Window.
 ******************************************************************************/
-void CMainFrame::OnDisplaySystemTime() 
+void CMainFrame::OnDisplaySystemTime()
 {
-	if (m_podMsgWndThread != NULL)
-	{
-		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
-		BYTE byGetDispFlag = 0;
-		::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
-		CLEAR_EXPR_TM_BITS(byGetDispFlag);
-		SET_TM_SYS(byGetDispFlag);		
-		for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
-		{
-			hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);					
-			if(hWnd)
-			{
-				BYTE bModes = TIME_MODE;
-				::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
-			}
-		}
-	}
+    if (m_podMsgWndThread != NULL)
+    {
+        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+        BYTE byGetDispFlag = 0;
+        ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
+        CLEAR_EXPR_TM_BITS(byGetDispFlag);
+        SET_TM_SYS(byGetDispFlag);
+
+        for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
+        {
+            hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
+
+            if(hWnd)
+            {
+                BYTE bModes = TIME_MODE;
+                ::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
+            }
+        }
+    }
 }
 /******************************************************************************
     Function Name    :  OnUpdateDisplaySystemTime
@@ -8612,27 +8854,28 @@ void CMainFrame::OnDisplaySystemTime()
 
     Author(s)        :  Krishnaswamy B.N.
     Date Created     :  03.06.2003
-	Modification By  :  ArunKumar K
+    Modification By  :  ArunKumar K
     Modification on  :  08.06.2010, Retreiving Check Status from Message Window.
     Modification By  :  Amitesh Bharti
     Modification on  :  01.07.2003, This menu is enable even tool is connected.
 ******************************************************************************/
-void CMainFrame::OnUpdateDisplaySystemTime(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateDisplaySystemTime(CCmdUI* pCmdUI)
 {
-	if (m_podMsgWndThread != NULL)
-	{
-		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
-		BYTE byGetDispFlag = 0;
-		::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
-		if (IS_TM_SYS_SET(byGetDispFlag))
-		{
-			pCmdUI->SetCheck();
-		}
-		else
-		{
-			pCmdUI->SetCheck(FALSE);
-		}
-	}
+    if (m_podMsgWndThread != NULL)
+    {
+        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+        BYTE byGetDispFlag = 0;
+        ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
+
+        if (IS_TM_SYS_SET(byGetDispFlag))
+        {
+            pCmdUI->SetCheck();
+        }
+        else
+        {
+            pCmdUI->SetCheck(FALSE);
+        }
+    }
 }
 /******************************************************************************
     Function Name    :  OnEnableTimeStampButton
@@ -8646,7 +8889,7 @@ void CMainFrame::OnUpdateDisplaySystemTime(CCmdUI* pCmdUI)
     Author(s)        :  Krishnaswamy B.N.
     Date Created     :  03.06.2003
 ******************************************************************************/
-void CMainFrame::OnEnableTimeStampButton() 
+void CMainFrame::OnEnableTimeStampButton()
 {
     // Required to enable the toolbar button
 }
@@ -8654,10 +8897,10 @@ void CMainFrame::OnEnableTimeStampButton()
 /******************************************************************************
  Function Name  :   vPostMsgToSendMsgDlg
 
- Input(s)       :   
+ Input(s)       :
  Output         :   -
  Functionality  :   This function is called at start up or during loading the
-                    new configuration file to set log trigger status in MsgWnd 
+                    new configuration file to set log trigger status in MsgWnd
                     class
  Member of      :   CMainFrame
 
@@ -8668,32 +8911,33 @@ void CMainFrame::OnEnableTimeStampButton()
 ******************************************************************************/
 VOID CMainFrame::vPostMsgToSendMsgDlg(ETYPE_BUS eBus)
 {
-
     // Send a message to Tx Window to update the database messages.
     switch (eBus)
     {
         case CAN:
         {
-	        if(m_objTxHandler.hConfigWindowShown() == S_OK)
-	        {
+            if(m_objTxHandler.hConfigWindowShown() == S_OK)
+            {
                 eUSERSELCTION eUserSel = eDATABASEIMPORTCMD;
-		        m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD,(WPARAM)eUserSel,0) ;
-	        }
+                m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD,(WPARAM)eUserSel,0) ;
+            }
         }
         break;
+
         case J1939:
         {
             SMSGENTRY* psMsgEntry = NULL;
             vPopulateMsgEntryFromDB(psMsgEntry, m_pouMsgSigJ1939);
+
             if (m_pouTxMsgWndJ1939 != NULL)
             {
                 m_pouTxMsgWndJ1939->vSetDatabaseInfo(psMsgEntry);
             }
             else //J1939 Transmit window is not created just update datastore
             {
-                
                 CTxMsgWndJ1939::vUpdateDataStore(psMsgEntry);
             }
+
             SMSGENTRY::vClearMsgList(psMsgEntry);
             psMsgEntry = NULL;
         }
@@ -8704,10 +8948,10 @@ VOID CMainFrame::vPostMsgToSendMsgDlg(ETYPE_BUS eBus)
 /******************************************************************************
  Function Name  :   vDeleteGlobalTxMemory
 
- Input(s)       :   
+ Input(s)       :
  Output         :   -
- Functionality  :   This function is called at start up to delete the global 
-                    pointer for message  block. It will be done by calling  
+ Functionality  :   This function is called at start up to delete the global
+                    pointer for message  block. It will be done by calling
                     CSendMultiMsgDlg member function.
  Member of      :   CMainFrame
 
@@ -8721,16 +8965,16 @@ VOID CMainFrame::vDeleteGlobalTxMemory()
 {
     // Delete global memory alloted for Tx List
     //m_podTxMsgManager->vDeleteGlobalTxMemory();
-	m_objTxHandler.vDeleteTxBlockMemory();
+    m_objTxHandler.vDeleteTxBlockMemory();
 }
 
 /******************************************************************************
  Function Name  :   vAssignMsgBlockList
 
- Input(s)       :   
+ Input(s)       :
  Output         :   -
  Functionality  :   This function is called at start up or during loading the
-                    new configuration file to set global pointer for message 
+                    new configuration file to set global pointer for message
                     block .It will be done by calling CSendMultiMsgDlg member
                     function.
  Member of      :   CMainFrame
@@ -8744,7 +8988,7 @@ VOID CMainFrame::vDeleteGlobalTxMemory()
 VOID CMainFrame::vAssignMsgBlockList()
 {
     //m_podTxMsgManager->vAssignMsgBlockList();
-	m_objTxHandler.vAssignMsgBlockList();
+    m_objTxHandler.vAssignMsgBlockList();
 }
 /******************************************************************************/
 /*  Function Name    :  bAllocateMemoryForGlobalTxList                        */
@@ -8765,12 +9009,17 @@ VOID CMainFrame::vAssignMsgBlockList()
 BOOL CMainFrame::bAllocateMemoryForGlobalTxList()
 {
     //return m_podTxMsgManager->bAllocateMemoryForGlobalTxList();
-	HRESULT hResult = S_FALSE;
-	hResult = m_objTxHandler.hAllocateMemoryForGlobalTxList();
-	if(hResult == S_OK)
-		return TRUE;
-	else 
-		return FALSE;
+    HRESULT hResult = S_FALSE;
+    hResult = m_objTxHandler.hAllocateMemoryForGlobalTxList();
+
+    if(hResult == S_OK)
+    {
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
 }
 /******************************************************************************
     Function Name    :  vNotificationFromOtherWin
@@ -8794,7 +9043,8 @@ LRESULT CMainFrame::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
     {
         m_bNotificWndVisible = (BOOL) lParam;
     }
-	//SGW Code commented by Arun 21-10-2010
+
+    //SGW Code commented by Arun 21-10-2010
     // Update Graph window status
     //if( wParam == eWNDID_GRAPHWND)
     //{
@@ -8803,39 +9053,39 @@ LRESULT CMainFrame::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
     //    //::PostMessage( GUI_hDisplayWindow, WM_NOTIFICATION_FROM_OTHER,
     //    //          eWNDID_GRAPHWND, lParam );
     //}
-	//SGW Code commented by Arun 21-10-2010
-	return 0;
+    //SGW Code commented by Arun 21-10-2010
+    return 0;
 }
 /******************************************************************************
     Function Name    :  vCreateTraceWindow
     Input(s)         :  wParam - Unused
                         lParam - Unused
     Output           :  -
-    Functionality    :  Handler of WM_CREATE_TRACEWIN posted to create trace 
+    Functionality    :  Handler of WM_CREATE_TRACEWIN posted to create trace
                         window
     Member of        :  CMainFrame
     Author(s)        :  Ratnadip Choudhury
     Date Created     :  29-01-2004
-    Modified by      :  
-    Modification     :  
+    Modified by      :
+    Modification     :
 /*****************************************************************************/
 LRESULT CMainFrame::vCreateTraceWindow(WPARAM , LPARAM )
 {
     bCreateTraceWindow();
-	return 0;
+    return 0;
 }
 /******************************************************************************
     Function Name    :  bCreateTraceWindow
     Input(s)         :  -
     Output           :  TRUE - If trace window is created successfully.
-                        FALSE - If window creation is unsuccessful or it is 
+                        FALSE - If window creation is unsuccessful or it is
                         already existing
     Functionality    :  Called to create the trace window
     Member of        :  CMainFrame
     Author(s)        :  Ratnadip Choudhury
     Date Created     :  29-01-2004
-    Modified by      :  
-    Modification     :  
+    Modified by      :
+    Modification     :
 /*****************************************************************************/
 BOOL CMainFrame::bCreateTraceWindow(void)
 {
@@ -8843,8 +9093,9 @@ BOOL CMainFrame::bCreateTraceWindow(void)
 
     if (m_podUIThread == NULL)
     {
-        m_podUIThread = static_cast<CUIThread *> (AfxBeginThread(RUNTIME_CLASS(CUIThread),
-                                                 THREAD_PRIORITY_NORMAL, 0, 0));
+        m_podUIThread = static_cast<CUIThread*> (AfxBeginThread(RUNTIME_CLASS(CUIThread),
+                        THREAD_PRIORITY_NORMAL, 0, 0));
+
         if (m_podUIThread != NULL)
         {
             bResult = m_podUIThread->bCreateTraceWindow(this);
@@ -8860,18 +9111,17 @@ BOOL CMainFrame::bCreateTraceWindow(void)
 /******************************************************************************
     Function Name    :  OnSize
     Input(s)         :  -
-    Output           :  
+    Output           :
     Functionality    :  Called to by frame work when main window is resized.
     Member of        :  CMainFrame
     Author(s)        :  Raja N.
     Date Created     :  29-01-2004
-    Modified by      :  
-    Modification     :  
+    Modified by      :
+    Modification     :
 /*****************************************************************************/
-void CMainFrame::OnSize(UINT nType, int cx, int cy) 
+void CMainFrame::OnSize(UINT nType, int cx, int cy)
 {
     CMDIFrameWnd::OnSize(nType, cx, cy);
-
     // Workaruond for Toolbar size problem
     SendMessage(WM_COMMAND,ID_VIEW_TOOLBAR);
     SendMessage(WM_COMMAND,ID_VIEW_TOOLBAR);
@@ -8893,7 +9143,7 @@ Modification     : Modified to refer the latest data structure
 //void CMainFrame::vEmptySignalWatchList()
 //{
 //    // Enter Critical Section
-//    //EnterCriticalSection(&g_CritSectionForSW);	
+//    //EnterCriticalSection(&g_CritSectionForSW);
 //    theApp.vRelease(SIGNAL_WATCH_LIST,NULL);
 //    m_psSignalWatchList = NULL;
 //    // Leave Critical Section
@@ -8904,7 +9154,7 @@ Modification     : Modified to refer the latest data structure
 //}
 
 void CMainFrame::vReleaseSignalWatchListMemory(SMSGENTRY*& psSignalWatchList)
-{    
+{
     if (psSignalWatchList != NULL)
     {
         SMSGENTRY::vClearMsgList(psSignalWatchList);
@@ -8912,7 +9162,7 @@ void CMainFrame::vReleaseSignalWatchListMemory(SMSGENTRY*& psSignalWatchList)
 }
 void CMainFrame::vEmptySimsysList()
 {
-    GetICANNodeSim()->NS_SetSimSysConfigData(NULL, 0);    
+    GetICANNodeSim()->NS_SetSimSysConfigData(NULL, 0);
 }
 /******************************************************************************
 Function Name    : nLoadConfigurationFile
@@ -8934,13 +9184,13 @@ Modifications    : Raja N on 08.09.02004
                    Added call to vRestoreWindowPostion which will restore
                    all window postions with the configuration data
 Modifications    : Anish on 05.02.2007
-                   Added code to initialize simsyslist as null before loading 
-				   another configuration.
+                   Added code to initialize simsyslist as null before loading
+                   another configuration.
 /*****************************************************************************/
 //int CMainFrame::nLoadConfigurationFile(CString omConfigFile,BOOL bFromCom)
 //{
-//	//theApp.bSetData(SIMSYS_LIST,reinterpret_cast<void *>(-1));
-//	int nReturn = nLoadConfigFile(omConfigFile,bFromCom) ;
+//  //theApp.bSetData(SIMSYS_LIST,reinterpret_cast<void *>(-1));
+//  int nReturn = nLoadConfigFile(omConfigFile,bFromCom) ;
 //    // load the file
 //    if(nReturn == defCONFIG_FILE_SUCCESS)
 //    {
@@ -8963,7 +9213,7 @@ Modifications    : Anish on 05.02.2007
 //    //HRESULT hResult = S_FALSE;
 //    if (pControllerDetails != NULL)
 //    {
-//        if (g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)pControllerDetails, 
+//        if (g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)pControllerDetails,
 //                        sizeof(SCONTROLLER_DETAILS)) == S_OK)
 //        {
 ////            theApp.vRelease(CONTROLLER_DETAILS, (void**) &pControllerDetails);
@@ -8980,12 +9230,12 @@ Modifications    : Anish on 05.02.2007
 //        vInitCFileFunctPtrs();
 //        vUpdateFuncStructsNodeSimEx((PVOID)&m_sExFuncPtr, UPDATE_ALL);
 //    }
-//	if(bFromCom == TRUE )
-//	{
-//		if( nReturn==defFILE_LOADED ||nReturn==defCONFIG_FILE_OPEN_FAILED)
-//		//if called from COM interface return false if DLLs are loaded
-//		bReturn= FALSE;
-//	}
+//  if(bFromCom == TRUE )
+//  {
+//      if( nReturn==defFILE_LOADED ||nReturn==defCONFIG_FILE_OPEN_FAILED)
+//      //if called from COM interface return false if DLLs are loaded
+//      bReturn= FALSE;
+//  }
 //    return bReturn;
 //}
 
@@ -9000,15 +9250,17 @@ Modifications    : Anish on 05.02.2007
 
  Author(s)        : Raja N
  Date Created     : 13.04.2004
- Modifications    : 
+ Modifications    :
 ******************************************************************************/
-void CMainFrame::OnUpdateSignalWatchWnd(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateSignalWatchWnd(CCmdUI* pCmdUI)
 {
     BOOL bShowHideFlag = FALSE;
+
     if (sg_pouSWInterface[CAN] != NULL)
     {
         bShowHideFlag = sg_pouSWInterface[CAN]->SW_IsWindowVisible()? TRUE : FALSE;
     }
+
     // Set Check as per the show status
     pCmdUI->SetCheck(bShowHideFlag);
 }
@@ -9025,18 +9277,19 @@ void CMainFrame::OnUpdateSignalWatchWnd(CCmdUI* pCmdUI)
 
  Author(s)        : Raja N
  Date Created     : 28.04.2004
- Modifications    : 
+ Modifications    :
 ******************************************************************************/
 CMenu* CMainFrame::pomGetMRUMenuPointer()
 {
     // Get application main menu or NULL in case of failure
-    CMenu *pMenu = GetMenu();
+    CMenu* pMenu = GetMenu();
 
     if ( pMenu != NULL )// Verify
     {
         // Reach "File" menu option
         INT nPos = nFindMenuItem(pMenu, defSTR_FILE_MENU_TEXT);
         pMenu = pMenu->GetSubMenu( nPos );
+
         if ( pMenu != NULL )
         {
             // Reach "Recent Configurations" menu option
@@ -9044,6 +9297,7 @@ CMenu* CMainFrame::pomGetMRUMenuPointer()
             pMenu = pMenu->GetSubMenu( nPos );
         }
     }
+
     // Return the pointer or NULL
     return pMenu;
 }
@@ -9051,33 +9305,37 @@ CMenu* CMainFrame::pomGetMRUMenuPointer()
 /******************************************************************************
     Function Name    :  vEnableDisableHandlers
     Input(s)         :  WPARAM wParam, LPARAM lParam
-    Output           :  
-    Functionality    :  This function will call OnExecuteMessagehandlersButton() 
-                        OnExecuteKeyhandlers() or OnExecuteErrorHandlers member 
-                        function to enable or disable respective handlers. This 
+    Output           :
+    Functionality    :  This function will call OnExecuteMessagehandlersButton()
+                        OnExecuteKeyhandlers() or OnExecuteErrorHandlers member
+                        function to enable or disable respective handlers. This
                         is an user defined message mapped function.
     Member of        :  CMainFrame
     Friend of        :      -
     Author(s)        :  Amitesh Bharti
     Date Created     :  14.07.2004
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 LRESULT CMainFrame::vEnableDisableHandlers(WPARAM wParam, LPARAM )
 {
     eCANMONITORFLAG eWhichFlag = (eCANMONITORFLAG)wParam;
+
     switch(eWhichFlag)
     {
         case MSGHANDLERBUTTON:
-             OnExecuteMessagehandlersButton();
-             break;
+            OnExecuteMessagehandlersButton();
+            break;
+
         case KEY_HANDLER_ON:
-             OnExecuteKeyhandlers();
-             break;
+            OnExecuteKeyhandlers();
+            break;
+
         case ERROR_HANDLER:
-             OnExecuteErrorHandlers();
-             break;
+            OnExecuteErrorHandlers();
+            break;
     }
-	return 0;
+
+    return 0;
 }
 
 
@@ -9100,17 +9358,19 @@ LRESULT CMainFrame::vEnableDisableHandlers(WPARAM wParam, LPARAM )
 /*  Modification By  :                                                        */
 /*  Modification on  :                                                        */
 /******************************************************************************/
-void CMainFrame::OnUpdateFunctionsResetHardware(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateFunctionsResetHardware(CCmdUI* pCmdUI)
 {
     if(pCmdUI != NULL )
     {
         UCHAR ucControllerMode = 0;
         // Check the mode
         LONG lParam = 0;
+
         if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, HW_MODE) == S_OK)
         {
             ucControllerMode = (UCHAR)lParam;
         }
+
         // If it is simulation then disable this menuitem.
         if( ucControllerMode == defMODE_SIMULATE )
         {
@@ -9150,33 +9410,39 @@ void CMainFrame::vSetControllerParameters()
     UCHAR ucControllerMode = defMODE_SIMULATE;  //venkat
     // Get the Controller mode
     LONG lParam = 0;
+
     if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, HW_MODE) == S_OK)
     {
         ucControllerMode = (UCHAR)lParam;
     }
 
     INT nNoOfHardware = 0;
+
     if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
     {
         nNoOfHardware = (INT)lParam;
     }
+
     // If it is active or passive then check the No. of Hw Available
     // If no real Hw available then switch to Simulation
     if( ucControllerMode != defMODE_SIMULATE && // Check for Simulation
-         nNoOfHardware == 0 )
+            nNoOfHardware == 0 )
     {
         // Inform the user about this
-		if(theApp.m_bFromAutomation == FALSE)
-        AfxMessageBox( defSTR_MODE_MISMATCH );
-        
+        if(theApp.m_bFromAutomation == FALSE)
+        {
+            AfxMessageBox( defSTR_MODE_MISMATCH );
+        }
+
         // Set the mode to Simulation
         m_byControllerMode = defMODE_SIMULATE;
         IntializeDIL();
+
         // Update the Flag Status
         if( podFlag != NULL )
         {
             podFlag->vSetFlagStatus(CONTROLLER_MODE, defMODE_SIMULATE );
-        }        
+        }
     }
     // Not Simulation mode or enough hardware available
     else
@@ -9186,13 +9452,15 @@ void CMainFrame::vSetControllerParameters()
         {
             UCHAR ucControllerMode = defMODE_SIMULATE;
             LONG lParam = 0;
+
             if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, HW_MODE) == S_OK)
             {
                 ucControllerMode = (UCHAR)lParam;
             }
+
             // Set the flag to last used controller mode
             podFlag->vSetFlagStatus(CONTROLLER_MODE,
-                            static_cast <WORD>(ucControllerMode));
+                                    static_cast <WORD>(ucControllerMode));
         }
     }
 }
@@ -9213,16 +9481,19 @@ void CMainFrame::vSetControllerParameters()
 /******************************************************************************/
 void CMainFrame::vClearOnConfLoad()
 {
-	if (m_podMsgWndThread != NULL)
-	{
-		for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
-		{
-			HWND hWnd;
-			hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);					
-			if(hWnd)
-				::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, NULL, NULL);
-		}		
-	}
+    if (m_podMsgWndThread != NULL)
+    {
+        for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
+        {
+            HWND hWnd;
+            hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
+
+            if(hWnd)
+            {
+                ::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, NULL, NULL);
+            }
+        }
+    }
 
     // Clear Message Interpretation Window Content
     //vClearInterpretationWindow();
@@ -9240,13 +9511,12 @@ void CMainFrame::vClearOnConfLoad()
   Member of      : CMainFrame
   Author(s)      : Raja N
   Date Created   : 02/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CMainFrame::OnGraphWindow() 
+void CMainFrame::OnGraphWindow()
 {
-	m_objSigGrphHandler.CreateGraphWindow(this, CAN);	
-	
-	//SGW Code commented by Arun 21-10-2010
+    m_objSigGrphHandler.CreateGraphWindow(this, CAN);
+    //SGW Code commented by Arun 21-10-2010
     //// Get the show status
     //int nShowStatus = m_bGraphWindowVisible ? SW_HIDE : SW_SHOW;
     //// Create UI thread only if it is not created and show flag is true
@@ -9264,7 +9534,7 @@ void CMainFrame::OnGraphWindow()
     //    m_pomGraphThread->PostThreadMessage( WM_MODIFY_VISIBILITY,
     //                                         nShowStatus, 0);
     //}
-	//SGW Code commented by Arun 21-10-2010
+    //SGW Code commented by Arun 21-10-2010
 }
 
 /*******************************************************************************
@@ -9275,7 +9545,7 @@ void CMainFrame::OnGraphWindow()
   Member of      : CMainFrame
   Author(s)      : Raja N
   Date Created   : 02/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 //SGW Code commented by Arun 21-10-2010
 //BOOL CMainFrame::bCreateGraphWindow()
@@ -9292,11 +9562,11 @@ void CMainFrame::OnGraphWindow()
 //        if (m_pomGraphThread != NULL)
 //        {
 //            // Create Graph Window
-//            bResult = m_pomGraphThread->nCreateGraphWindow( this, 
+//            bResult = m_pomGraphThread->nCreateGraphWindow( this,
 //                                                            g_pouDIL_CAN_Interface,
 //                                                            m_sGraphWndPlacement,
 //                                                            m_sGraphSplitterPos);
-//            
+//
 //            if (bResult != 0)
 //            {
 //                // Terminate UI thread
@@ -9326,14 +9596,14 @@ void CMainFrame::OnGraphWindow()
   Member of      : CMainFrame
   Author(s)      : Raja N
   Date Created   : 02/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CMainFrame::OnUpdateGraphWnd(CCmdUI* /*pCmdUI*/) 
+void CMainFrame::OnUpdateGraphWnd(CCmdUI* /*pCmdUI*/)
 {
     // Set check if the window is visible
-	//SGW Code commented by Arun 21-10-2010
+    //SGW Code commented by Arun 21-10-2010
     //pCmdUI->SetCheck( m_bGraphWindowVisible );
-	//SGW Code commented by Arun 21-10-2010
+    //SGW Code commented by Arun 21-10-2010
 }
 
 /*******************************************************************************
@@ -9345,123 +9615,152 @@ void CMainFrame::OnUpdateGraphWnd(CCmdUI* /*pCmdUI*/)
   Author(s)      : Raja N
   Date Created   : 09/12/2004
   Modifications  : Arunkumar Karri on 09/02/2012
-			       Moved the Bus statistics code into the If condition.
-				   Raja N on 14.3.2005
+                   Moved the Bus statistics code into the If condition.
+                   Raja N on 14.3.2005
                    Added logic to check the channel ID of statistics parameter.
 *******************************************************************************/
 void CMainFrame::vUpdateGraphStatsData()
-{    
-	SINTERPRETDATA_LIST sInterpretList;	
+{
+    SINTERPRETDATA_LIST sInterpretList;
 
-	for(int nBusType = CAN; nBusType<AVAILABLE_PROTOCOLS; nBusType++)
-	{
-		if(m_objSigGrphHandler.bIsWindowVisible((SHORT)nBusType) == FALSE)
-			continue;
-		CGraphList * pList = &(m_odGraphList[nBusType]);  
+    for(int nBusType = CAN; nBusType<AVAILABLE_PROTOCOLS; nBusType++)
+    {
+        if(m_objSigGrphHandler.bIsWindowVisible((SHORT)nBusType) == FALSE)
+        {
+            continue;
+        }
+
+        CGraphList* pList = &(m_odGraphList[nBusType]);
         // Get the element count
         int nCount = pList->m_omElementList.GetSize();
+
         // Iterate through element list
         for( int nIndex = 0; nIndex < nCount; nIndex++ )
         {
             // Get Current element
-            CGraphElement odTemp = 
+            CGraphElement odTemp =
                 pList->m_omElementList.GetAt( nIndex );
-            // If the element is enabled and of type statistics			
-            if( odTemp.m_bEnabled == TRUE &&
-                odTemp.m_nValueType == eSTAT_PARAM )
-            {							
-				// Channel Index starts from 0. So sub 1 from the index value
-				odTemp.m_nFrameFormat -= 1;
-				SBUSSTATISTICS sBusStats;
-				GetICANBusStat()->BSC_GetBusStatistics(odTemp.m_nFrameFormat, sBusStats);
-				
-				strcpy_s(sInterpretList.m_acSigName , "");
-				sInterpretList.m_shType = eSTAT_PARAM;
 
-				sInterpretList.m_unValue.m_nRawValue = -1;
-				sInterpretList.m_unValue.m_dPhysical = -1.0;	
-				sInterpretList.unMsgID = nIndex;
-				sInterpretList.m_nTimeStamp = 0;
+            // If the element is enabled and of type statistics
+            if( odTemp.m_bEnabled == TRUE &&
+                    odTemp.m_nValueType == eSTAT_PARAM )
+            {
+                // Channel Index starts from 0. So sub 1 from the index value
+                odTemp.m_nFrameFormat -= 1;
+                SBUSSTATISTICS sBusStats;
+                GetICANBusStat()->BSC_GetBusStatistics(odTemp.m_nFrameFormat, sBusStats);
+                strcpy_s(sInterpretList.m_acSigName , "");
+                sInterpretList.m_shType = eSTAT_PARAM;
+                sInterpretList.m_unValue.m_nRawValue = -1;
+                sInterpretList.m_unValue.m_dPhysical = -1.0;
+                sInterpretList.unMsgID = nIndex;
+                sInterpretList.m_nTimeStamp = 0;
+
                 // switch the stat item
                 switch( odTemp.m_nMsgID )
                 {
-                case 0: // "Total Messages"
-					sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unTotalMsgCount;
-                    break;
-                case 1: // "Message Rate"
-					sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unMsgPerSecond;
-                    break;
-                case 2: // "Total Errors"
-					sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unErrorTotalCount;
-					break;
-                case 3: // "Error Rate"
-					sInterpretList.m_unValue.m_dPhysical = sBusStats.m_dErrorRate;
-                    break;
-                case 4: // "Network Load"
-					sInterpretList.m_unValue.m_dPhysical = sBusStats.m_dBusLoad;
-                    break;
-                case 5: // "Peak Network Load"
-					sInterpretList.m_unValue.m_dPhysical = sBusStats.m_dPeakBusLoad;
-                    break;
-                case 6: // "Tx Message Total"
-					sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unTotalTxMsgCount;
-                    break;
-                case 7: // "Standard Tx Message"
-					sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unTxSTDMsgCount;
-                    break;
-                case 8: // "Standard Tx Rate"
-					sInterpretList.m_unValue.m_dPhysical = sBusStats.m_dTxSTDMsgRate;
-                    break;
-                case 9: // "Extended Tx Message"
-					sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unTxEXTDMsgCount;
-                    break;
-                case 10: // "Extended Tx Rate"
-					sInterpretList.m_unValue.m_dPhysical = sBusStats.m_dTxEXTMsgRate;
-                    break;
-                case 11: // "Standard.Tx RTR"
-					sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unTxSTD_RTRMsgCount;
-                    break;
-                case 12: // "Extended Tx RTR"
-					sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unTxEXTD_RTRMsgCount;
-                    break;
-                case 13: // "Tx Errors"
-					sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unErrorTxCount;
-                    break;
-                case 14: // "Tx Error Rate"
-					sInterpretList.m_unValue.m_dPhysical = sBusStats.m_dErrorTxRate;
-                    break;
-                case 15: // "Rx Message Total"
-					sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unTotalRxMsgCount;
-                    break;
-                case 16: // "Standard Rx Message"
-					sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unRxSTDMsgCount;
-                    break;
-                case 17: // "Standard Rx Rate"
-					sInterpretList.m_unValue.m_dPhysical = sBusStats.m_dRxSTDMsgRate;
-                    break;
-                case 18: // "Extended Rx Message"
-					sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unRxEXTDMsgCount;
-                    break;
-                case 19: // "Extended Rx Rate"
-					sInterpretList.m_unValue.m_dPhysical = sBusStats.m_dRxEXTMsgRate;
-                    break;
-                case 20: // "Standard.Rx RTR"
-					sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unRxSTD_RTRMsgCount;
-                    break;
-                case 21: // "Extended Rx RTR"
-					sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unRxEXTD_RTRMsgCount;
-                    break;
-                case 22: // "Rx Errors"
-					sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unErrorRxCount;
-                    break;
-                case 23: // "Rx Error Rate"
-						sInterpretList.m_unValue.m_dPhysical = sBusStats.m_dErrorRxRate;
-                    break;
-                default:
-                    // Invalid stat parameter index.
-                    ASSERT( FALSE );
+                    case 0: // "Total Messages"
+                        sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unTotalMsgCount;
+                        break;
+
+                    case 1: // "Message Rate"
+                        sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unMsgPerSecond;
+                        break;
+
+                    case 2: // "Total Errors"
+                        sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unErrorTotalCount;
+                        break;
+
+                    case 3: // "Error Rate"
+                        sInterpretList.m_unValue.m_dPhysical = sBusStats.m_dErrorRate;
+                        break;
+
+                    case 4: // "Network Load"
+                        sInterpretList.m_unValue.m_dPhysical = sBusStats.m_dBusLoad;
+                        break;
+
+                    case 5: // "Peak Network Load"
+                        sInterpretList.m_unValue.m_dPhysical = sBusStats.m_dPeakBusLoad;
+                        break;
+
+                    case 6: // "Tx Message Total"
+                        sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unTotalTxMsgCount;
+                        break;
+
+                    case 7: // "Standard Tx Message"
+                        sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unTxSTDMsgCount;
+                        break;
+
+                    case 8: // "Standard Tx Rate"
+                        sInterpretList.m_unValue.m_dPhysical = sBusStats.m_dTxSTDMsgRate;
+                        break;
+
+                    case 9: // "Extended Tx Message"
+                        sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unTxEXTDMsgCount;
+                        break;
+
+                    case 10: // "Extended Tx Rate"
+                        sInterpretList.m_unValue.m_dPhysical = sBusStats.m_dTxEXTMsgRate;
+                        break;
+
+                    case 11: // "Standard.Tx RTR"
+                        sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unTxSTD_RTRMsgCount;
+                        break;
+
+                    case 12: // "Extended Tx RTR"
+                        sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unTxEXTD_RTRMsgCount;
+                        break;
+
+                    case 13: // "Tx Errors"
+                        sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unErrorTxCount;
+                        break;
+
+                    case 14: // "Tx Error Rate"
+                        sInterpretList.m_unValue.m_dPhysical = sBusStats.m_dErrorTxRate;
+                        break;
+
+                    case 15: // "Rx Message Total"
+                        sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unTotalRxMsgCount;
+                        break;
+
+                    case 16: // "Standard Rx Message"
+                        sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unRxSTDMsgCount;
+                        break;
+
+                    case 17: // "Standard Rx Rate"
+                        sInterpretList.m_unValue.m_dPhysical = sBusStats.m_dRxSTDMsgRate;
+                        break;
+
+                    case 18: // "Extended Rx Message"
+                        sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unRxEXTDMsgCount;
+                        break;
+
+                    case 19: // "Extended Rx Rate"
+                        sInterpretList.m_unValue.m_dPhysical = sBusStats.m_dRxEXTMsgRate;
+                        break;
+
+                    case 20: // "Standard.Rx RTR"
+                        sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unRxSTD_RTRMsgCount;
+                        break;
+
+                    case 21: // "Extended Rx RTR"
+                        sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unRxEXTD_RTRMsgCount;
+                        break;
+
+                    case 22: // "Rx Errors"
+                        sInterpretList.m_unValue.m_nRawValue = sBusStats.m_unErrorRxCount;
+                        break;
+
+                    case 23: // "Rx Error Rate"
+                        sInterpretList.m_unValue.m_dPhysical = sBusStats.m_dErrorRxRate;
+                        break;
+
+                    default:
+                        // Invalid stat parameter index.
+                        ASSERT( FALSE );
                 }//switch
-				m_pouMsgInterpretBuffer->WriteIntoBuffer(nBusType,(BYTE*)&sInterpretList,SIZE_INTRP_DATA);					 
+
+                m_pouMsgInterpretBuffer->WriteIntoBuffer(nBusType,(BYTE*)&sInterpretList,SIZE_INTRP_DATA);
             }
         }
     }
@@ -9478,27 +9777,27 @@ void CMainFrame::vUpdateGraphStatsData()
   Author(s)      : Raja N
   Date Created   : 18.4.2005
   Modifications  : Raja N on 19.07.2005, Removed support for Replay Window
-  Modifications  : Anish on 26.10.2006, Buildprogram pointer accessed 
-					from EXecutemanager
+  Modifications  : Anish on 26.10.2006, Buildprogram pointer accessed
+                    from EXecutemanager
 *******************************************************************************/
 void CMainFrame::vRestoreWindowPostion()
 {
-	//m_pouBuildProgram = CExecuteManager::ouGetExecuteManager().m_pouBuildProgram;
- //       // Output window coordinates
- //   if(m_pouBuildProgram != NULL)
- //   {
- //       if(m_pouBuildProgram->m_podOutWnd != NULL)
- //       {
- //           if(m_pouBuildProgram->m_podOutWnd->m_hWnd != NULL)
- //           {
- //               // so that only the data for the output window is set..
- //               m_pouBuildProgram->m_podOutWnd->vUpdateWinStatus();
- //           }
- //       }
- //   }
+    //m_pouBuildProgram = CExecuteManager::ouGetExecuteManager().m_pouBuildProgram;
+    //       // Output window coordinates
+    //   if(m_pouBuildProgram != NULL)
+    //   {
+    //       if(m_pouBuildProgram->m_podOutWnd != NULL)
+    //       {
+    //           if(m_pouBuildProgram->m_podOutWnd->m_hWnd != NULL)
+    //           {
+    //               // so that only the data for the output window is set..
+    //               m_pouBuildProgram->m_podOutWnd->vUpdateWinStatus();
+    //           }
+    //       }
+    //   }
     // Get Message window, signal watch and message interptetation window
     // postions
-    /*if (m_podMsgMDIChild != NULL) 
+    /*if (m_podMsgMDIChild != NULL)
     {
         if (::IsWindow(m_podMsgMDIChild->m_hWnd))
         {
@@ -9507,7 +9806,7 @@ void CMainFrame::vRestoreWindowPostion()
         // Save Signal Watch Window position
         m_podMsgMDIChild->vUpdateSignalWatchWindow(FALSE);
         // Save Message Interpretation window position
-        m_podMsgMDIChild->vUpdateInterpretationWindow(FALSE);             
+        m_podMsgMDIChild->vUpdateInterpretationWindow(FALSE);
     }*/
     // Get Trace Window Postion
     if ((m_podUIThread != NULL) && (m_bNotificWndVisible == TRUE))
@@ -9515,14 +9814,13 @@ void CMainFrame::vRestoreWindowPostion()
         m_podUIThread->PostThreadMessage(WM_LOAD_SAVE_WINSTATUS, TRUE, 0);
     }
 
-	//SGW Code commented by Arun 21-10-2010
+    //SGW Code commented by Arun 21-10-2010
     // Update Graph window
     /*if( m_pomGraphThread != NULL )
     {
         m_pomGraphThread->pomGetChildFramePointer()->vUpdateWinStatus();
     }*/
-	//SGW Code commented by Arun 21-10-2010
-
+    //SGW Code commented by Arun 21-10-2010
     // Update Tx Window
     /*if( m_pomTxMsgChildWindow != NULL )
     {
@@ -9538,22 +9836,23 @@ void CMainFrame::vRestoreWindowPostion()
   Member of      : CMainFrame
   Author(s)      : Raja N
   Date Created   : 19.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CMainFrame::vStartStopLogging(BOOL bStart)
 {
     // Enable Logging or stop logging
     if (NULL != sg_pouFrameProcCAN)
     {
-		// To reduce the unwanted functional call incase of stop logging
-		if (bStart)
-		{
-			vSetAssociatedDatabaseFiles(CAN);	// Update the db file names associated
-			vSetBaudRateInfo(CAN);				// Update the baud rate details
-		}
+        // To reduce the unwanted functional call incase of stop logging
+        if (bStart)
+        {
+            vSetAssociatedDatabaseFiles(CAN);   // Update the db file names associated
+            vSetBaudRateInfo(CAN);              // Update the baud rate details
+        }
 
-        sg_pouFrameProcCAN->FPC_EnableLogging(bStart);		
+        sg_pouFrameProcCAN->FPC_EnableLogging(bStart);
     }
+
     //LogKadoor CLogManager::ouGetLogManager().vStartStopLogging( bStart );
 }
 
@@ -9565,32 +9864,33 @@ void CMainFrame::vStartStopLogging(BOOL bStart)
   Member of      : CMainFrame
   Author(s)      : Saravanan K S
   Date Created   : 22.03.2012
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CMainFrame::vSetAssociatedDatabaseFiles(ETYPE_BUS eBus)
 {
-	// Get the list of files associated to the application
-	CStringArray aomDataBaseFiles;
-	if (CAN == eBus)
-	{
-		theApp.m_pouMsgSignal->vGetDataBaseNames(&aomDataBaseFiles);
-	}
-	else if (J1939 == eBus)
-	{
-		m_pouMsgSigJ1939->vGetDataBaseNames(&aomDataBaseFiles);
-	}
+    // Get the list of files associated to the application
+    CStringArray aomDataBaseFiles;
 
-	if (NULL != sg_pouFrameProcCAN)
-	{
-		if (CAN == eBus)
-		{
-			sg_pouFrameProcCAN->FPC_SetDatabaseFiles(aomDataBaseFiles);
-		}
-		else if (J1939 == eBus)
-		{
-			sg_pouIJ1939Logger->FPJ1_SetDatabaseFiles(aomDataBaseFiles);
-		}
-	}
+    if (CAN == eBus)
+    {
+        theApp.m_pouMsgSignal->vGetDataBaseNames(&aomDataBaseFiles);
+    }
+    else if (J1939 == eBus)
+    {
+        m_pouMsgSigJ1939->vGetDataBaseNames(&aomDataBaseFiles);
+    }
+
+    if (NULL != sg_pouFrameProcCAN)
+    {
+        if (CAN == eBus)
+        {
+            sg_pouFrameProcCAN->FPC_SetDatabaseFiles(aomDataBaseFiles);
+        }
+        else if (J1939 == eBus)
+        {
+            sg_pouIJ1939Logger->FPJ1_SetDatabaseFiles(aomDataBaseFiles);
+        }
+    }
 }
 
 /*******************************************************************************
@@ -9601,28 +9901,28 @@ void CMainFrame::vSetAssociatedDatabaseFiles(ETYPE_BUS eBus)
   Member of      : CMainFrame
   Author(s)      : Saravanan K S
   Date Created   : 22.03.2012
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CMainFrame::vSetBaudRateInfo(ETYPE_BUS eBus)
 {
-	if (CAN == eBus)
-	{
-		if (NULL != sg_pouFrameProcCAN)
-		{
-			// Update the baudrate info and the number of channels used
-			sg_pouFrameProcCAN->FPC_SetChannelBaudRateDetails
-								(m_asControllerDetails, m_nNumChannels);
-		}
-	}
-	else if (J1939 == eBus)
-	{
-		if (NULL != sg_pouIJ1939Logger)
-		{
-			// Update the baudrate info and the number of channels used
-			sg_pouIJ1939Logger->FPJ1_SetChannelBaudRateDetails
-								(m_asControllerDetails, m_nNumChannels);
-		}
-	}
+    if (CAN == eBus)
+    {
+        if (NULL != sg_pouFrameProcCAN)
+        {
+            // Update the baudrate info and the number of channels used
+            sg_pouFrameProcCAN->FPC_SetChannelBaudRateDetails
+            (m_asControllerDetails, m_nNumChannels);
+        }
+    }
+    else if (J1939 == eBus)
+    {
+        if (NULL != sg_pouIJ1939Logger)
+        {
+            // Update the baudrate info and the number of channels used
+            sg_pouIJ1939Logger->FPJ1_SetChannelBaudRateDetails
+            (m_asControllerDetails, m_nNumChannels);
+        }
+    }
 }
 
 /*******************************************************************************
@@ -9634,11 +9934,11 @@ void CMainFrame::vSetBaudRateInfo(ETYPE_BUS eBus)
   Member of      : CMainFrame
   Author(s)      : Raja N
   Date Created   : 19.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CMainFrame::vComStartStopLog(BOOL bStart)
 {
-	vStartStopLogging(bStart);
+    vStartStopLogging(bStart);
 }
 
 /*******************************************************************************
@@ -9649,9 +9949,9 @@ void CMainFrame::vComStartStopLog(BOOL bStart)
   Member of      : CMainFrame
   Author(s)      : Raja N
   Date Created   : 19.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CMainFrame::OnCfgnReplay() 
+void CMainFrame::OnCfgnReplay()
 {
     // Show configuration dialog
     vREP_DisplayReplayConfigDlg(CAN, &m_sFilterAppliedCAN);
@@ -9662,13 +9962,13 @@ void CMainFrame::OnCfgnReplay()
   Input(s)       : -
   Output         : -
   Functionality  : UI Update handler for Replay menu. This will be disabled if
-                   tool is connected 
+                   tool is connected
   Member of      : CMainFrame
   Author(s)      : Raja N
   Date Created   : 19.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CMainFrame::OnUpdateCfgnReplay(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateCfgnReplay(CCmdUI* pCmdUI)
 {
     if( pCmdUI != NULL )
     {
@@ -9682,15 +9982,15 @@ void CMainFrame::OnUpdateCfgnReplay(CCmdUI* pCmdUI)
   Input(s)       : -
   Output         : Dll path with .c ext
   Functionality  : It sends the path of compiled file which is assigned after
-					building from CBuildProgram
+                    building from CBuildProgram
   Member of      : CMainFrame
   Author(s)      : Anish kumar
   Date Created   : 27.12.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-CString CMainFrame::omGetDllName() 
+CString CMainFrame::omGetDllName()
 {
-	return m_omStrSourceFilePathName;
+    return m_omStrSourceFilePathName;
 }
 
 /******************************************************************************/
@@ -9703,12 +10003,12 @@ CString CMainFrame::omGetDllName()
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  22.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
-void CMainFrame::OnConfigureSimulatedsystems() 
+void CMainFrame::OnConfigureSimulatedsystems()
 {
     vInitCFileFunctPtrs();
-    GetICANNodeSim()->FE_CreateFuncEditorTemplate(this->GetSafeHwnd(), m_sExFuncPtr[CAN]);    
+    GetICANNodeSim()->FE_CreateFuncEditorTemplate(this->GetSafeHwnd(), m_sExFuncPtr[CAN]);
 }
 /******************************************************************************
     Function Name    :  OnUpdateDllLoadAll
@@ -9722,11 +10022,11 @@ void CMainFrame::OnConfigureSimulatedsystems()
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  29.03.2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
-void CMainFrame::OnUpdateDllLoadAll(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateDllLoadAll(CCmdUI* pCmdUI)
 {
-    pCmdUI->Enable(GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_LOAD));	
+    pCmdUI->Enable(GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_LOAD));
 }
 /******************************************************************************
     Function Name    :  OnHelpInfo
@@ -9739,7 +10039,7 @@ void CMainFrame::OnUpdateDllLoadAll(CCmdUI* pCmdUI)
 
     Author(s)        :  Anish kumar
     Date Created     :  27.04.06
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 BOOL CMainFrame::OnHelpInfo(HELPINFO* pHelpInfo)
 {
@@ -9751,18 +10051,18 @@ BOOL CMainFrame::OnHelpInfo(HELPINFO* pHelpInfo)
 
     Input(s)         :  -
     Output           :  -
-    Functionality    :  sets the helpId of controls for which user has        
-                        requested for help and style of help window 
+    Functionality    :  sets the helpId of controls for which user has
+                        requested for help and style of help window
     Member of        :  CMainFrame
     Friend of        :      -
 
     Author(s)        :  Anish kumar
     Date Created     :  27.04.06
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void CMainFrame::WinHelp(DWORD , UINT )
 {
-	// Get Application Help File Path
+    // Get Application Help File Path
     CString omStrPath = theApp.m_pszHelpFilePath;
     // Replace .hlp with .chm
     int nIndex = omStrPath.ReverseFind( PERIOD );
@@ -9771,7 +10071,7 @@ void CMainFrame::WinHelp(DWORD , UINT )
     // Add New Extension
     omStrPath = omStrPath + ".chm";
     // Make it as content display always
-	::HtmlHelp(NULL, omStrPath, HH_DISPLAY_TOPIC, 0);
+    ::HtmlHelp(NULL, omStrPath, HH_DISPLAY_TOPIC, 0);
 }
 
 /******************************************************************************
@@ -9785,23 +10085,25 @@ void CMainFrame::WinHelp(DWORD , UINT )
 
     Author(s)        :  Anish kumar
     Date Created     :  06.12.06
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void CMainFrame::OnDissociateDatabase()
 {
     sg_asDbParams[CAN].m_ppvActiveDB = (void**)&(theApp.m_pouMsgSgInactive);
     sg_asDbParams[CAN].m_ppvImportedDBs = (void**)&(theApp.m_pouMsgSignal);
-	CDatabaseDissociateDlg odDBDialog(sg_asDbParams[CAN]);
-	odDBDialog.DoModal();
+    CDatabaseDissociateDlg odDBDialog(sg_asDbParams[CAN]);
+    odDBDialog.DoModal();
     //Update Defined Msg Headers
     m_sExFuncPtr[CAN].m_omDefinedMsgHeaders.RemoveAll();
     CStringArray omDatabaseNames;
     theApp.m_pouMsgSignal->vGetDataBaseNames(&omDatabaseNames);
-	for (int i = 0; i < omDatabaseNames.GetSize(); i++)
+
+    for (int i = 0; i < omDatabaseNames.GetSize(); i++)
     {
         CString omHeaderPath = omStrGetUnionFilePath(omDatabaseNames.GetAt(i));
         m_sExFuncPtr[CAN].m_omDefinedMsgHeaders.Add(omHeaderPath);
     }
+
     //Update in NodeSimEx
     GetICANNodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[CAN].m_omDefinedMsgHeaders), UPDATE_UNIONS_HEADER_FILES);
     //Update Msg Name<-->Msg Code List
@@ -9820,18 +10122,22 @@ void CMainFrame::OnDissociateDatabase()
 
     Author(s)        :  Anish kumar
     Date Created     :  05.04.11
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void CMainFrame::vUpdateAllMsgWndInterpretStatus(BOOL /*bAssociate*/)
 {
-	HWND hWnd = NULL;
-	//Update MsgWnds
-	for(register int nBusID = CAN; nBusID < AVAILABLE_PROTOCOLS; nBusID++)
-	{
-		hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)nBusID);					
-		if(hWnd)
-			::SendMessage(hWnd, WM_DATABASE_CHANGE, (WPARAM)FALSE, NULL);
-	}
+    HWND hWnd = NULL;
+
+    //Update MsgWnds
+    for(register int nBusID = CAN; nBusID < AVAILABLE_PROTOCOLS; nBusID++)
+    {
+        hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)nBusID);
+
+        if(hWnd)
+        {
+            ::SendMessage(hWnd, WM_DATABASE_CHANGE, (WPARAM)FALSE, NULL);
+        }
+    }
 }
 
 /******************************************************************************
@@ -9847,51 +10153,51 @@ void CMainFrame::vUpdateAllMsgWndInterpretStatus(BOOL /*bAssociate*/)
 
     Author(s)        :  Venkatanarayana Makam
     Date Created     :  18.12.2011
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void CMainFrame::OnFileConverter()
-{	
-	// Get the working directory
-	CString strPath;
-	TCHAR* pstrExePath = strPath.GetBuffer (MAX_PATH);
-	::GetModuleFileName (0, pstrExePath, MAX_PATH);
-	strPath.ReleaseBuffer ();	
-	strPath = strPath.Left(strPath.ReverseFind(92));
-
-	// Launch the converter utility
+{
+    // Get the working directory
+    CString strPath;
+    TCHAR* pstrExePath = strPath.GetBuffer (MAX_PATH);
+    ::GetModuleFileName (0, pstrExePath, MAX_PATH);
+    strPath.ReleaseBuffer ();
+    strPath = strPath.Left(strPath.ReverseFind(92));
+    // Launch the converter utility
     CString omCurrExe;
-	omCurrExe.Format("%s\\FormatConverter.exe", strPath);
+    omCurrExe.Format("%s\\FormatConverter.exe", strPath);
     SHELLEXECUTEINFO sei;
     sei.cbSize = sizeof(SHELLEXECUTEINFO);
     sei.fMask = NULL;
-    sei.hwnd = NULL; 
+    sei.hwnd = NULL;
     sei.lpVerb = _T("open");
-    sei.lpParameters= NULL; 
+    sei.lpParameters= NULL;
     sei.lpFile = omCurrExe;
-    sei.nShow = SW_SHOWNORMAL; 
-    sei.hInstApp = NULL; 
-    sei.lpIDList = NULL; 
-    sei.lpClass = NULL; 
-    sei.hkeyClass = NULL; 
-    sei.dwHotKey = NULL; 
-    sei.hIcon = NULL; 
-    sei.hProcess = NULL; 
+    sei.nShow = SW_SHOWNORMAL;
+    sei.hInstApp = NULL;
+    sei.lpIDList = NULL;
+    sei.lpClass = NULL;
+    sei.hkeyClass = NULL;
+    sei.dwHotKey = NULL;
+    sei.hIcon = NULL;
+    sei.hProcess = NULL;
     sei.lpDirectory = NULL;
-    /*int ReturnCode =*/ ::ShellExecuteEx(&sei);
+    /*int ReturnCode =*/
+    ::ShellExecuteEx(&sei);
 }
 /******************************************************************************
     Function Name    :  OnSaveImportDatabase
 
     Input(s)         :  -
     Output           :  -
-    Functionality    :  This function will save and import currently edited(open) 
-                        database file.                        
+    Functionality    :  This function will save and import currently edited(open)
+                        database file.
     Member of        :  CMainFrame
     Friend of        :      -
 
     Author(s)        :  Pradeep Kadoor
     Date Created     :  012.06.2009
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void CMainFrame::OnSaveImportDatabase()
 {
@@ -9900,7 +10206,7 @@ void CMainFrame::OnSaveImportDatabase()
 }
 
 void CMainFrame::OnUpdateSaveImportDatabase(CCmdUI* pCmdUI)
-{   
+{
     pCmdUI->Enable( theApp.pouGetFlagsPtr()->nGetFlagStatus( DBOPEN ));
 }
 /******************************************************************************
@@ -9915,7 +10221,7 @@ void CMainFrame::OnUpdateSaveImportDatabase(CCmdUI* pCmdUI)
 
     Author(s)        :  Pradeep Kadoor
     Date Created     :  012.06.2009
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 LRESULT CMainFrame::OnMessageTraceWnd(WPARAM /*wPAram*/, LPARAM /*lParam*/)
 {
@@ -9929,12 +10235,13 @@ LRESULT CMainFrame::OnMessageTraceWnd(WPARAM /*wPAram*/, LPARAM /*lParam*/)
         m_podUIThread->PostThreadMessage(WM_THREADMSG_PROC, WM_MODIFY_VISIBILITY, SW_SHOW);
         m_bNotificWndVisible = TRUE;
     }
+
     return S_OK;
 }
 
 void CMainFrame::vReRegisterAllCANNodes(void)
 {
-	//Problem here
+    //Problem here
     BYTE* pbyConfigData = NULL;
     INT nSize = 0;
     GetICANNodeSim()->NS_GetSimSysConfigData(pbyConfigData, nSize);
@@ -9957,10 +10264,11 @@ void CMainFrame::vReRegisterAllJ1939Nodes(void)
 }
 
 HRESULT CMainFrame::IntializeDIL(void)
-{   		
+{
     HRESULT hResult = S_OK;
+
     if (g_pouDIL_CAN_Interface == NULL)
-    {		
+    {
         hResult = DIL_GetInterface(CAN, (void**)&g_pouDIL_CAN_Interface);
     }
     else
@@ -9968,27 +10276,31 @@ HRESULT CMainFrame::IntializeDIL(void)
         g_pouDIL_CAN_Interface->DILC_PerformClosureOperations();
         DeselectJ1939Interfaces();
     }
+
     if (hResult == S_OK)
-    {        				
+    {
         if ((hResult = g_pouDIL_CAN_Interface->DILC_SelectDriver(m_dwDriverId, m_hWnd, &m_ouWrapperLogger)) == S_OK)
-        {			
+        {
             g_pouDIL_CAN_Interface->DILC_PerformInitOperations();
             INT nCount = defNO_OF_CHANNELS;
+
             if (g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount) == S_OK)
             {
                 HRESULT hResult = g_pouDIL_CAN_Interface->DILC_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
+
                 if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
                 {
                     hResult = g_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, g_dwClientID, _T("CAN_MONITOR"));
-                    if ((hResult == S_OK)|| (hResult == ERR_CLIENT_EXISTS))
-                    {				
-		                g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)m_asControllerDetails, 
-															sizeof(SCONTROLLER_DETAILS) * nCount);
 
-                        bInitFrameProcCAN(); // Initialize logger module											
-                        vReRegisterAllCANNodes();//Reinitialize node simulation												
+                    if ((hResult == S_OK)|| (hResult == ERR_CLIENT_EXISTS))
+                    {
+                        g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)m_asControllerDetails,
+                                sizeof(SCONTROLLER_DETAILS) * nCount);
+                        bInitFrameProcCAN(); // Initialize logger module
+                        vReRegisterAllCANNodes();//Reinitialize node simulation
+
                         if (sg_pouSWInterface[CAN] == NULL)//Signal watch
-                        {							
+                        {
                             if (SW_GetInterface(CAN, (void**)&sg_pouSWInterface[CAN]) == S_OK)
                             {
                                 sg_pouSWInterface[CAN]->SW_DoInitialization();
@@ -9998,24 +10310,25 @@ HRESULT CMainFrame::IntializeDIL(void)
                         {
                             sg_pouSWInterface[CAN]->SW_DoInitialization();
                         }
-						m_podMsgWndThread->vUpdateClientID(CAN, g_dwClientID);
-						if (m_podMsgWndThread != NULL)//Msg window
-						{
-							::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
-										eWINID_MSG_WND_GET_BUFFER_DETAILS, (LPARAM)m_anMsgBuffSize);
-						}
-						//initialize graph window read buffer
-						vInitializeGraphWndReadBuffer();
+
+                        m_podMsgWndThread->vUpdateClientID(CAN, g_dwClientID);
+
+                        if (m_podMsgWndThread != NULL)//Msg window
+                        {
+                            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
+                                          eWINID_MSG_WND_GET_BUFFER_DETAILS, (LPARAM)m_anMsgBuffSize);
+                        }
+
+                        //initialize graph window read buffer
+                        vInitializeGraphWndReadBuffer();
                         //re initialize statistics module
-                        vInitializeBusStatCAN();    
-                        //venkat - Initialize Read Thread of TSExecutor. 
+                        vInitializeBusStatCAN();
+                        //venkat - Initialize Read Thread of TSExecutor.
                         m_objTSExecutorHandler.vDoInitailization(CAN);
-
-						/* Updates the number of channels selected */
-						m_nNumChannels = nCount; 
-
-						/*Update hardware info in status bar*/
-						vUpdateHWStatusInfo();					
+                        /* Updates the number of channels selected */
+                        m_nNumChannels = nCount;
+                        /*Update hardware info in status bar*/
+                        vUpdateHWStatusInfo();
                     }
                     else
                     {
@@ -10034,45 +10347,49 @@ HRESULT CMainFrame::IntializeDIL(void)
         }
         else
         {
-		if ( hResult!=DAL_ALREADY_SELECTED )
-		{
-			theApp.bWriteIntoTraceWnd("Driver selection failed");	
-		}            	
+            if ( hResult!=DAL_ALREADY_SELECTED )
+            {
+                theApp.bWriteIntoTraceWnd("Driver selection failed");
+            }
         }
-		m_objTxHandler.vSetDILInterfacePtr((void*)g_pouDIL_CAN_Interface);
-		m_objTxHandler.vSetClientID(g_dwClientID);		
-		vUpdateChannelInfo();
+
+        m_objTxHandler.vSetDILInterfacePtr((void*)g_pouDIL_CAN_Interface);
+        m_objTxHandler.vSetClientID(g_dwClientID);
+        vUpdateChannelInfo();
     }
-    return hResult;    
+
+    return hResult;
 }
 
 /*******************************************************************************
   Function Name  : vUpdateChannelInfo
   Input(s)       : -
   Output         : -
-  Functionality  : Updates the channel count info to other windows.                   
+  Functionality  : Updates the channel count info to other windows.
   Member of      : CMainFrame
   Author(s)      : Arunkumar K
   Date Created   : 07-04-2011
-  Modifications  :  
+  Modifications  :
 *******************************************************************************/
 void CMainFrame::vUpdateChannelInfo(void)
 {
-	LONG lParam = 0;
-	UINT nHardware = defNO_OF_CHANNELS;
-	if(g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
-	{
-		nHardware = (UINT)lParam;
-		//update Bus Stats Dlg.
-		if(m_bIsStatWndCreated)
-		{
-			m_podBusStatistics->vUpdateChannelCountInfo(nHardware);
-		}
-		//Update TxWindow
-		eUSERSELCTION eUserSel = eCHANNELCOUNTUPDATED;
-		m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel,0);	
+    LONG lParam = 0;
+    UINT nHardware = defNO_OF_CHANNELS;
 
-	}
+    if(g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
+    {
+        nHardware = (UINT)lParam;
+
+        //update Bus Stats Dlg.
+        if(m_bIsStatWndCreated)
+        {
+            m_podBusStatistics->vUpdateChannelCountInfo(nHardware);
+        }
+
+        //Update TxWindow
+        eUSERSELCTION eUserSel = eCHANNELCOUNTUPDATED;
+        m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel,0);
+    }
 }
 
 /*******************************************************************************
@@ -10084,34 +10401,35 @@ void CMainFrame::vUpdateChannelInfo(void)
   Member of      : CMainFrame
   Author(s)      : Arunkumar K
   Date Created   : 04-04-2012
-  Modifications  :  
+  Modifications  :
 *******************************************************************************/
 void CMainFrame::vUpdateHWStatusInfo(void)
 {
-	// Set number of channels, hardware selected and supported channels.
-	CString omStrChannels;
-	CString omStrChannelDriver;
-	omStrChannels.Format(	defSTR_CHANNELS_SUPPORTED,
-							m_nNumChannels,
-							defSTR_CHANNEL_NAME );	
+    // Set number of channels, hardware selected and supported channels.
+    CString omStrChannels;
+    CString omStrChannelDriver;
+    omStrChannels.Format(   defSTR_CHANNELS_SUPPORTED,
+                            m_nNumChannels,
+                            defSTR_CHANNEL_NAME );
 
-	for (int i = 0 ; i < m_nDILCount ; i++)
-	{
-		if ( m_dwDriverId == m_ouList[i].m_dwDriverID )
-		{
-			if ( _tcscmp(m_asControllerDetails->m_omStrBaudrate, _T("")) == 0)
-			{
-				strcpy_s(m_asControllerDetails->m_omStrBaudrate, _T("500"));
-			}
-			omStrChannelDriver.Format(  _T("%s - %s - %s Kbps (Allowed channels:%d)"), 
-							 omStrChannels, m_ouList[i].m_acName, 
-							 m_asControllerDetails->m_omStrBaudrate, CHANNEL_ALLOWED);
-			break;
-		}
-	}
+    for (int i = 0 ; i < m_nDILCount ; i++)
+    {
+        if ( m_dwDriverId == m_ouList[i].m_dwDriverID )
+        {
+            if ( _tcscmp(m_asControllerDetails->m_omStrBaudrate, _T("")) == 0)
+            {
+                strcpy_s(m_asControllerDetails->m_omStrBaudrate, _T("500"));
+            }
 
-	// Set Channel string
-	m_wndStatusBar.SetPaneText(INDEX_CHANNELS, omStrChannelDriver );
+            omStrChannelDriver.Format(  _T("%s - %s - %s Kbps (Allowed channels:%d)"),
+                                        omStrChannels, m_ouList[i].m_acName,
+                                        m_asControllerDetails->m_omStrBaudrate, CHANNEL_ALLOWED);
+            break;
+        }
+    }
+
+    // Set Channel string
+    m_wndStatusBar.SetPaneText(INDEX_CHANNELS, omStrChannelDriver );
 }
 
 LRESULT CMainFrame::OnProvideMsgDBPtr(WPARAM wParam, LPARAM /*lParam*/)
@@ -10124,21 +10442,23 @@ LRESULT CMainFrame::OnProvideMsgDBPtr(WPARAM wParam, LPARAM /*lParam*/)
 BOOL CMainFrame::bInitFrameProcCAN(void)
 {
     BOOL bReturn = FALSE;
+
     if (FP_GetInterface(FRAMEPROC_CAN, (void**)&sg_pouFrameProcCAN) == S_OK)
-    {      
-		CString omVerStr(_T(""));
+    {
+        CString omVerStr(_T(""));
         SCANPROC_PARAMS sCANProcParams;
-		    
-		omVerStr.Format(IDS_VERSION);
-		strncpy_s(sCANProcParams.m_acVersion, omVerStr, omVerStr.GetLength());		
+        omVerStr.Format(IDS_VERSION);
+        strncpy_s(sCANProcParams.m_acVersion, omVerStr, omVerStr.GetLength());
         sCANProcParams.dwClientID = g_dwClientID;
         sCANProcParams.m_pouCANBuffer = &g_ouCANBufFSE;
         sCANProcParams.m_pILog = &m_ouWrapperLogger;
+
         if (sg_pouFrameProcCAN->FPC_DoInitialisation(&sCANProcParams) == S_OK)
         {
             bReturn = TRUE;
         }
-    } 
+    }
+
     return bReturn;
 }
 
@@ -10148,13 +10468,13 @@ int CMainFrame::COM_ConnectTool()
     return 0;
 }
 
-BOOL CMainFrame::COM_SaveConfigFile() 
+BOOL CMainFrame::COM_SaveConfigFile()
 {
     OnSaveConfigFile();
     return TRUE;
 }
 
-BOOL CMainFrame::COM_SaveConfigFileAs(CString omCfgFilePath) 
+BOOL CMainFrame::COM_SaveConfigFileAs(CString omCfgFilePath)
 {
     // Save the file
     CConfigData::ouGetConfigDetailsObject().vCloseConfigFile();
@@ -10163,104 +10483,103 @@ BOOL CMainFrame::COM_SaveConfigFileAs(CString omCfgFilePath)
     return TRUE;
 }
 
-BOOL CMainFrame::COM_bDLLBuild(CStringArray *omStrBuildFiles) 
+BOOL CMainFrame::COM_bDLLBuild(CStringArray* omStrBuildFiles)
 {
-	BOOL bReturn            = FALSE;
+    BOOL bReturn            = FALSE;
     //BOOL bSuccess           = FALSE;
     int nFailure            = 0;
     CString omStrFileName   = STR_EMPTY;
     //int nNodeCount          = 0;
-
     //CSimSysNodeInfo::PSSIMSYSINFO pTempSimsys = theApp.psReturnSimsysInfoPtr();
     omStrBuildFiles->RemoveAll();
 
-	//while(pTempSimsys != NULL)
-	/*{
-		nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
-		CSimSysNodeInfo::PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-		while(pTempNode != NULL)
-		{
-			if(pTempNode->m_sNodeInfo.m_omStrFileName != "")
-			{
-				bSuccess = CExecuteManager::ouGetExecuteManager().
-					bExecuteDllBuild(&pTempNode->m_sNodeInfo);
-				if(!bSuccess)
-				{
-					nFailure++;
-					omStrBuildFiles->Add(pTempNode->m_sNodeInfo.m_omStrFileName);
-				}
-			}
-			pTempNode = pTempNode->m_psNextNode;
-		}
-		pTempSimsys = pTempSimsys->m_psSimsysNext;
-	}*/
-	if(nFailure == 0)
-	{
-		bReturn= TRUE;
-	}
-	return bReturn;
+    //while(pTempSimsys != NULL)
+    /*{
+        nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
+        CSimSysNodeInfo::PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
+        while(pTempNode != NULL)
+        {
+            if(pTempNode->m_sNodeInfo.m_omStrFileName != "")
+            {
+                bSuccess = CExecuteManager::ouGetExecuteManager().
+                    bExecuteDllBuild(&pTempNode->m_sNodeInfo);
+                if(!bSuccess)
+                {
+                    nFailure++;
+                    omStrBuildFiles->Add(pTempNode->m_sNodeInfo.m_omStrFileName);
+                }
+            }
+            pTempNode = pTempNode->m_psNextNode;
+        }
+        pTempSimsys = pTempSimsys->m_psSimsysNext;
+    }*/
+    if(nFailure == 0)
+    {
+        bReturn= TRUE;
+    }
+
+    return bReturn;
 }
 
 
-BOOL CMainFrame::COM_bDLLBuildLoad(CStringArray *omStrBuildFiles) 
+BOOL CMainFrame::COM_bDLLBuildLoad(CStringArray* omStrBuildFiles)
 {
-	BOOL bReturn    = FALSE;
-	//BOOL bSuccess   = FALSE;
-	int nFailure    = 0;
-	//int nNodeCount  = 0;
-	/*CSimSysNodeInfo::PSSIMSYSINFO pTempSimsys = theApp.psReturnSimsysInfoPtr();*/
-	//CExecuteManager::ouGetExecuteManager().vStopTimer();
+    BOOL bReturn    = FALSE;
+    //BOOL bSuccess   = FALSE;
+    int nFailure    = 0;
+    //int nNodeCount  = 0;
+    /*CSimSysNodeInfo::PSSIMSYSINFO pTempSimsys = theApp.psReturnSimsysInfoPtr();*/
+    //CExecuteManager::ouGetExecuteManager().vStopTimer();
+    omStrBuildFiles->RemoveAll();
 
-	omStrBuildFiles->RemoveAll();
+    //while(pTempSimsys != NULL)
+    /*{
+        nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
+        CSimSysNodeInfo::PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
 
-	//while(pTempSimsys != NULL)
-	/*{
-		nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
-		CSimSysNodeInfo::PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
+        while(pTempNode != NULL)
+        {
+            if(pTempNode->m_sNodeInfo.m_omStrFileName != "")
+            {
+                bSuccess = CExecuteManager::ouGetExecuteManager().
+                    bExecuteDllBuildLoad(&pTempNode->m_sNodeInfo);
+                if(!bSuccess)
+                {
+                    nFailure++;
+                    omStrBuildFiles->Add(pTempNode->m_sNodeInfo.m_omStrFileName);
+                }
+            }
+            pTempNode = pTempNode->m_psNextNode;
+        }
+        pTempSimsys = pTempSimsys->m_psSimsysNext;
+    }*/
+    if(nFailure == 0)
+    {
+        bReturn= TRUE;
+    }
 
-		while(pTempNode != NULL)
-		{
-			if(pTempNode->m_sNodeInfo.m_omStrFileName != "")
-			{
-				bSuccess = CExecuteManager::ouGetExecuteManager().
-					bExecuteDllBuildLoad(&pTempNode->m_sNodeInfo);
-				if(!bSuccess)
-				{
-					nFailure++;
-					omStrBuildFiles->Add(pTempNode->m_sNodeInfo.m_omStrFileName);
-				}
-			}
-			pTempNode = pTempNode->m_psNextNode;
-		}
-		pTempSimsys = pTempSimsys->m_psSimsysNext;
-	}*/
-	if(nFailure == 0)
-	{
-		bReturn= TRUE;
-	}
-
-  //CExecuteManager::ouGetExecuteManager().vStartTimer();
-  return bReturn;
+    //CExecuteManager::ouGetExecuteManager().vStartTimer();
+    return bReturn;
 }
 
-BOOL CMainFrame::COM_bDllLoad(CStringArray* /*omStrBuildFiles*/) 
+BOOL CMainFrame::COM_bDllLoad(CStringArray* /*omStrBuildFiles*/)
 {
     OnDllLoad();
     return TRUE;
 }
 
-BOOL CMainFrame::COM_bDllUnload(CStringArray* /*omStrBuildFiles*/) 
+BOOL CMainFrame::COM_bDllUnload(CStringArray* /*omStrBuildFiles*/)
 {
     OnDllUnload();
     return TRUE;
 }
 
-void CMainFrame::COM_SendMessage() 
+void CMainFrame::COM_SendMessage()
 {
     OnSendMessage();
 }
 
-void CMainFrame::COM_EnableAllHandlers(BOOL /*bEnable*/) 
+void CMainFrame::COM_EnableAllHandlers(BOOL /*bEnable*/)
 {
     OnExecuteAllHandlers();
 }
@@ -10268,7 +10587,7 @@ void CMainFrame::COM_EnableAllHandlers(BOOL /*bEnable*/)
 /*  function to get _Unions.h header filename from Database name*/
 CString CMainFrame::omStrGetUnionFilePath(CString omStrTemp)
 {
-	CString omStrHeaderFileName = omStrTemp.Left(omStrTemp.ReverseFind('.'));
+    CString omStrHeaderFileName = omStrTemp.Left(omStrTemp.ReverseFind('.'));
     omStrHeaderFileName += defHEADER_FILE_NAME;
     return omStrHeaderFileName;
 }
@@ -10281,31 +10600,34 @@ static int App_SendMsg(void* pMsg, HMODULE /*hModule*/)
 void CMainFrame::vInitCFileFunctPtrs()
 {
     //vSetAppService((CBaseAppServices *) &sg_ouAppServiceObj);
-
     m_sExFuncPtr[CAN].m_hWmdMDIParentFrame = this->GetSafeHwnd();
     //m_sExFuncPtr.m_pouTraceWnd = m_podUIThread;
     m_sExFuncPtr[CAN].m_omAPIList.RemoveAll();
+
     for (int i = 0; i < TOTAL_API_COUNT; i++)
     {
         m_sExFuncPtr[CAN].m_omAPIList.Add(sg_omAPIFuncList[i]);
     }
 
     m_sExFuncPtr[CAN].m_omAPINames.RemoveAll();
+
     for (int i = 0; i < TOTAL_API_COUNT; i++)
     {
         m_sExFuncPtr[CAN].m_omAPINames.Add(sg_omAPIFuncNames[i]);
     }
 
     m_sExFuncPtr[CAN].m_omErrorHandlerList.RemoveAll();
+
     for (int i = 0; i < TOTAL_ERROR_COUNT; i++)
     {
         m_sExFuncPtr[CAN].m_omErrorHandlerList.Add(sg_omMcNetErrorHandlerList[i]);
     }
-    
+
     m_sExFuncPtr[CAN].m_omDefinedMsgHeaders.RemoveAll();
     CStringArray omDatabaseNames;
     theApp.m_pouMsgSignal->vGetDataBaseNames(&omDatabaseNames);
-	for (int i = 0; i < omDatabaseNames.GetSize(); i++)
+
+    for (int i = 0; i < omDatabaseNames.GetSize(); i++)
     {
         CString omHeaderPath = omStrGetUnionFilePath(omDatabaseNames.GetAt(i));
         m_sExFuncPtr[CAN].m_omDefinedMsgHeaders.Add(omHeaderPath);
@@ -10326,30 +10648,31 @@ void CMainFrame::vInitCFileFunctPtrs()
     m_sExFuncPtr[CAN].RestController = NULL;
     m_sExFuncPtr[CAN].m_pouITraceWndPtr = &sg_ouAppServiceObj;
     //m_sExFuncPtr.m_pNetWorkMcNet = &m_odNetwork;
-
 }
 void CMainFrame::NS_InitJ1939SpecInfo()
 {
     m_sExFuncPtr[J1939].m_hWmdMDIParentFrame = this->GetSafeHwnd();
     //m_sExFuncPtr.m_pouTraceWnd = m_podUIThread;
     m_sExFuncPtr[J1939].m_omAPIList.RemoveAll();
+
     for (int i = 0; i < TOTAL_API_COUNT_J1939; i++)
     {
         m_sExFuncPtr[J1939].m_omAPIList.Add(sg_omAPIFuncListJ1939[i]);
     }
 
     m_sExFuncPtr[J1939].m_omAPINames.RemoveAll();
+
     for (int i = 0; i < TOTAL_API_COUNT_J1939; i++)
     {
         m_sExFuncPtr[J1939].m_omAPINames.Add(sg_omAPIFuncNamesJ1939[i]);
     }
 
     m_sExFuncPtr[J1939].m_omErrorHandlerList.RemoveAll();
-    
     m_sExFuncPtr[J1939].m_omDefinedMsgHeaders.RemoveAll();
     CStringArray omDatabaseNames;
     m_pouMsgSigJ1939->vGetDataBaseNames(&omDatabaseNames);
-	for (int i = 0; i < omDatabaseNames.GetSize(); i++)
+
+    for (int i = 0; i < omDatabaseNames.GetSize(); i++)
     {
         CString omHeaderPath = omStrGetUnionFilePath(omDatabaseNames.GetAt(i));
         m_sExFuncPtr[J1939].m_omDefinedMsgHeaders.Add(omHeaderPath);
@@ -10370,16 +10693,17 @@ void CMainFrame::NS_InitJ1939SpecInfo()
     m_sExFuncPtr[J1939].RestController = NULL;
     m_sExFuncPtr[J1939].m_pouITraceWndPtr = &sg_ouAppServiceObj;
     //m_sExFuncPtr.m_pNetWorkMcNet = &m_odNetwork;
-
 }
 void CMainFrame::vUpdateMsgNameCodeList(CMsgSignal* pMsgSig, CMsgNameMsgCodeList& odMsgNameMsgCodeList)
 {
     odMsgNameMsgCodeList.RemoveAll();
     int nDefMsgCount = 0;
+
     if (pMsgSig != NULL)
     {
         nDefMsgCount = pMsgSig->unGetNumerOfMessages();
     }
+
     if (nDefMsgCount > 0)
     {
         CStringList omDefMsgs;
@@ -10387,23 +10711,27 @@ void CMainFrame::vUpdateMsgNameCodeList(CMsgSignal* pMsgSig, CMsgNameMsgCodeList
         POSITION pos = omDefMsgs.GetHeadPosition();
         // Insert every message name into the message list box
         CString omStrMsgName = _T("");
+
         while ( pos != NULL )
         {
             SMSG_NAME_CODE sMsgNameCode;
             omStrMsgName = omDefMsgs.GetNext(pos);
             sMsgNameCode.m_omMsgName = omStrMsgName;
             sMESSAGE* psDBMsg =  pMsgSig->psGetMessagePointer(omStrMsgName);
+
             if (psDBMsg != NULL)
             {
                 sMsgNameCode.m_dwMsgCode = psDBMsg->m_unMessageCode;
                 sMsgNameCode.m_unMsgLen  = psDBMsg->m_unMessageLength;
                 sSIGNALS* psSignal = psDBMsg->m_psSignals;
+
                 while (psSignal != NULL)
                 {
                     sMsgNameCode.m_omSignalNames.AddTail(psSignal->m_omStrSignalName);
                     psSignal = psSignal->m_psNextSignalList;
                 }
             }
+
             odMsgNameMsgCodeList.AddTail(sMsgNameCode);
         }
     }
@@ -10412,7 +10740,6 @@ void CMainFrame::vUpdateMsgNameCodeList(CMsgSignal* pMsgSig, CMsgNameMsgCodeList
 void CMainFrame::ToggleView(CToolBar& omToolbar)
 {
     BOOL bToShow = !bIsToolbarVisible(omToolbar);
-
     ShowControlBar(&omToolbar, bToShow, FALSE);
     Invalidate();
 }
@@ -10424,85 +10751,92 @@ BOOL CMainFrame::bIsToolbarVisible(CToolBar& omToolbar)
 
 void CMainFrame::OnDisplayMain()
 {
-	ToggleView(m_wndToolBar);
+    ToggleView(m_wndToolBar);
 }
 
-void CMainFrame::OnUpdateDisplayMain(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateDisplayMain(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolBar));
+    pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolBar));
 }
 
 void CMainFrame::OnDisplayMsgWnd()
 {
-	ToggleView(m_wndToolbarMsgWnd);
+    ToggleView(m_wndToolbarMsgWnd);
 }
 
-void CMainFrame::OnUpdateDisplayMsgWnd(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateDisplayMsgWnd(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarMsgWnd));
+    pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarMsgWnd));
 }
 
 void CMainFrame::OnDisplayNodeSim()
 {
-	ToggleView(m_wndToolbarNodeSimul);
+    ToggleView(m_wndToolbarNodeSimul);
 }
 
-void CMainFrame::OnUpdateDisplayNodeSim(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateDisplayNodeSim(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarNodeSimul));
+    pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarNodeSimul));
 }
 
 void CMainFrame::OnDisplayConfig()
 {
-	ToggleView(m_wndToolbarConfig);
+    ToggleView(m_wndToolbarConfig);
 }
 
-void CMainFrame::OnUpdateDisplayConfig(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateDisplayConfig(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarConfig));
+    pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarConfig));
 }
 
 void CMainFrame::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
 {
-	CMDIFrameWnd::OnActivate(nState, pWndOther, bMinimized);	
-	if(nState == WA_ACTIVE || nState == WA_CLICKACTIVE)
-	{
-		CMDIChildWnd* pChild = this->MDIGetActive();	
-		if(pChild)
-		{
-			CRuntimeClass* pRunTimeClass = pChild->GetRuntimeClass();	
-			if(strcmp(pRunTimeClass->m_lpszClassName,_T("CMsgFrmtWnd"))==0)		
-			{
-				if(m_podMsgWndThread!=NULL)
-				{
-					HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
-					::SendMessage(hWnd, WM_SETFOCUS_MSGWND_LIST, (WPARAM)true, NULL);
-				}		
-			}
-		}
-	}
+    CMDIFrameWnd::OnActivate(nState, pWndOther, bMinimized);
+
+    if(nState == WA_ACTIVE || nState == WA_CLICKACTIVE)
+    {
+        CMDIChildWnd* pChild = this->MDIGetActive();
+
+        if(pChild)
+        {
+            CRuntimeClass* pRunTimeClass = pChild->GetRuntimeClass();
+
+            if(strcmp(pRunTimeClass->m_lpszClassName,_T("CMsgFrmtWnd"))==0)
+            {
+                if(m_podMsgWndThread!=NULL)
+                {
+                    HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+                    ::SendMessage(hWnd, WM_SETFOCUS_MSGWND_LIST, (WPARAM)true, NULL);
+                }
+            }
+        }
+    }
 }
 
 INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
-{	
+{
     if (!omConfigFileName.IsEmpty())
-    {		
+    {
         CConfigData::ouGetConfigDetailsObject().vCloseConfigFile();
-	    vSetFileStorageInfo(omConfigFileName);
+        vSetFileStorageInfo(omConfigFileName);
         CConfigAdapter ouConfigAdapter;
         INT nError = ouConfigAdapter.nLoadConfigFile(omConfigFileName);
+
         if (nError == defCONFIG_FILE_SUCCESS)
         {
             vSetCurrProjInfo(BUSMASTER_APPN_VERSION_6_0);
+
             for (eSECTION_ID eSecId = DATABASE_SECTION_ID; eSecId < SECTION_TOTAL;)
-            {            
+            {
                 BYTE* pbyConfigData = NULL;
                 INT nSize = 0;
+
                 if (ouConfigAdapter.bGetConfigData(pbyConfigData, nSize, eSecId))
                 {
                     CConfigData::ouGetConfigDetailsObject().bSetData(pbyConfigData, nSize, SectionName[eSecId]);
                     delete[] pbyConfigData;
                 }
+
                 eSecId = static_cast<eSECTION_ID>( eSecId + 1);
             }
         }
@@ -10510,8 +10844,9 @@ INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
         {
             CConfigData::ouGetConfigDetailsObject().vReadConfigFile();
         }
-    }	
-	return LoadConfiguration();
+    }
+
+    return LoadConfiguration();
 }
 
 
@@ -10519,24 +10854,25 @@ INT CMainFrame::LoadConfiguration(void)
 {
     INT nReturn = defCONFIG_FILE_SUCCESS;
     CConfigData::ouGetConfigDetailsObject().bGetCurrProjInfo(&m_sProjData);
-    for (eSECTION_ID eSecId = DATABASE_SECTION_ID; eSecId < SECTION_TOTAL;)
-    {		
-        BYTE* pbyConfigData = NULL;
-        INT nSize = 0;		
-        CConfigData::ouGetConfigDetailsObject().bGetData((void*&)pbyConfigData, nSize, SectionName[eSecId]);						
-                
-        /* call even if pbyConfigData is NULL to load the default configuration*/		
-        vSetCurrentSessionData(eSecId, pbyConfigData, nSize);		
-        //All done now release the memory
-		try{
-			delete[] pbyConfigData;
-		}
-		catch(...)
-		{
 
-		}
+    for (eSECTION_ID eSecId = DATABASE_SECTION_ID; eSecId < SECTION_TOTAL;)
+    {
+        BYTE* pbyConfigData = NULL;
+        INT nSize = 0;
+        CConfigData::ouGetConfigDetailsObject().bGetData((void*&)pbyConfigData, nSize, SectionName[eSecId]);
+        /* call even if pbyConfigData is NULL to load the default configuration*/
+        vSetCurrentSessionData(eSecId, pbyConfigData, nSize);
+
+        //All done now release the memory
+        try
+        {
+            delete[] pbyConfigData;
+        }
+        catch(...)
+        {
+        }
+
         pbyConfigData = NULL;
-        
         eSecId = static_cast<eSECTION_ID>(eSecId + 1);
     }
 
@@ -10545,38 +10881,37 @@ INT CMainFrame::LoadConfiguration(void)
 void CMainFrame::vSetFileStorageInfo(CString oCfgFilename)
 {
     USES_CONVERSION;
-
-	DATASTORAGEINFO stempDataInfo;
-	FILESTORAGEINFO FileStoreInfo;
-	strcpy_s(FileStoreInfo.m_FilePath, T2A(oCfgFilename.GetBuffer(MAX_PATH)));
-	stempDataInfo.FSInfo = &FileStoreInfo;
-	stempDataInfo.m_Datastore = FILEMODE;
-	CConfigData::ouGetConfigDetailsObject().SetConfigDatastorage(&stempDataInfo);
-	CConfigData::ouGetConfigDetailsObject().vSetCurrProjName(DEFAULT_PROJECT_NAME);
+    DATASTORAGEINFO stempDataInfo;
+    FILESTORAGEINFO FileStoreInfo;
+    strcpy_s(FileStoreInfo.m_FilePath, T2A(oCfgFilename.GetBuffer(MAX_PATH)));
+    stempDataInfo.FSInfo = &FileStoreInfo;
+    stempDataInfo.m_Datastore = FILEMODE;
+    CConfigData::ouGetConfigDetailsObject().SetConfigDatastorage(&stempDataInfo);
+    CConfigData::ouGetConfigDetailsObject().vSetCurrProjName(DEFAULT_PROJECT_NAME);
     vPushConfigFilenameDown(oCfgFilename);
 }
 void CMainFrame::vSetCurrProjInfo(float fAppVersion)
 {
     PROJECTDATA ProjData;
-	ProjData.m_dwAppUniqueId = BUSMASTER_UNIQUE_ID;
-	ProjData.m_fAppVersion = fAppVersion;
-	ProjData.m_Language = "English";
-	ProjData.m_ProjectName = DEFAULT_PROJECT_NAME;
-	GetLocalTime(&ProjData.m_ProjSysTime );
-	CConfigData::ouGetConfigDetailsObject().bSetCurrProjInfo(&ProjData);
+    ProjData.m_dwAppUniqueId = BUSMASTER_UNIQUE_ID;
+    ProjData.m_fAppVersion = fAppVersion;
+    ProjData.m_Language = "English";
+    ProjData.m_ProjectName = DEFAULT_PROJECT_NAME;
+    GetLocalTime(&ProjData.m_ProjSysTime );
+    CConfigData::ouGetConfigDetailsObject().bSetCurrProjInfo(&ProjData);
 }
 
 INT CMainFrame::SaveConfiguration(void)
 {
     INT nReturn = defCONFIG_FILE_SUCCESS;
-    vSetCurrProjInfo((FLOAT)BUSMASTER_APPN_VERSION_LATEST);	
+    vSetCurrProjInfo((FLOAT)BUSMASTER_APPN_VERSION_LATEST);
 
     for (eSECTION_ID eSecId = DATABASE_SECTION_ID; eSecId < SECTION_TOTAL;)
     {
         BYTE* pbyConfigData = NULL;
         UINT nSize = 0;
         vGetCurrentSessionData(eSecId, pbyConfigData, nSize);
-        
+
         if (pbyConfigData != NULL)
         {
             CConfigData::ouGetConfigDetailsObject().bSetData((void*)pbyConfigData, nSize, SectionName[eSecId]);
@@ -10589,7 +10924,6 @@ INT CMainFrame::SaveConfiguration(void)
     }
 
     CConfigData::ouGetConfigDetailsObject().vSaveConfigFile();
-
     return nReturn;
 }
 void CMainFrame::vClearDbInfo(ETYPE_BUS eBus)
@@ -10600,26 +10934,31 @@ void CMainFrame::vClearDbInfo(ETYPE_BUS eBus)
         {
             CFlags* pFlags = theApp.pouGetFlagsPtr();
             BOOL bDatabaseOpen = FALSE;
+
             if( pFlags != NULL)
             {
                 bDatabaseOpen = pFlags->nGetFlagStatus(DBOPEN) ;
             }
+
             if(bDatabaseOpen == TRUE)
             {
                 OnCloseDatabase();
             }
+
             theApp.m_pouMsgSignal->bDeAllocateMemory(STR_EMPTY);
             CStringArray omDatabase;
             omDatabase.RemoveAll();
             theApp.m_pouMsgSignal->vSetDataBaseNames(&omDatabase);
         }
         break;
+
         case J1939:
         {
             if (CMsgSignalDBWnd::sm_bValidJ1939Wnd == TRUE)
             {
                 OnJ1939DBClose();
             }
+
             if (m_pouMsgSigJ1939 != NULL)
             {
                 m_pouMsgSigJ1939->bDeAllocateMemory(STR_EMPTY);
@@ -10629,6 +10968,7 @@ void CMainFrame::vClearDbInfo(ETYPE_BUS eBus)
             }
         }
         break;
+
         case BUS_TOTAL:
         {
             vClearDbInfo(CAN);
@@ -10640,37 +10980,43 @@ void CMainFrame::vClearDbInfo(ETYPE_BUS eBus)
 BOOL CMainFrame::bIsConfigurationModified(void)
 {
     BOOL bResult = FALSE;
+
     for (eSECTION_ID eSecId = DATABASE_SECTION_ID; eSecId < SECTION_TOTAL;)
     {
         BYTE* pbyCurrData   = NULL;
         UINT  nCurrSize     = 0;
         BYTE* pbyConfigData = NULL;
         INT  nCfgSize      = 0;
-
         //Get current data
         vGetCurrentSessionData(eSecId, pbyCurrData, nCurrSize);
         // Get Config data
         CConfigData::ouGetConfigDetailsObject().bGetData((void*&)pbyConfigData, nCfgSize, SectionName[eSecId]);
         //comparison part
         bResult = !(nCurrSize == (UINT)nCfgSize);
+
         if (!bResult) // If config is still same compare the whole memory
         {
             bResult = !(memcmp(pbyCurrData, pbyConfigData, nCfgSize) == 0);
         }
+
         if (pbyCurrData != NULL)
         {
             delete[] pbyCurrData;
         }
+
         if (pbyConfigData != NULL)
         {
             delete[] pbyConfigData;
         }
+
         if (bResult == TRUE)
         {
             break;
         }
+
         eSecId = static_cast<eSECTION_ID>(eSecId + 1);
     }
+
     return bResult;
 }
 void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData, UINT nSize)
@@ -10682,54 +11028,58 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             if (pbyConfigData != NULL)
             {
                 BYTE* pbyTemp = pbyConfigData;
-
                 BYTE byVersion = 0;
                 COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
-
                 TCHAR acName[MAX_PATH] = {_T('\0')};
                 COPY_DATA_2(acName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
                 m_omMRU_C_Filename.Format("%s", acName);
-
                 COPY_DATA_2(&m_sToolBarInfo, pbyTemp, sizeof(STOOLBARINFO));
                 theApp.pouGetFlagsPtr()->vSetToolbarButtonStatus(&m_sToolBarInfo);
-
                 COPY_DATA_2(&m_sNotificWndPlacement, pbyTemp, sizeof(WINDOWPLACEMENT));
+
                 if (m_podUIThread != NULL)
                 {
                     m_podUIThread->vUpdateWndCo_Ords(m_sNotificWndPlacement, TRUE);
                 }
+
                 if (byVersion == 0x2)//LogOnConnet option is introduced
                 {
                     COPY_DATA_2(m_abLogOnConnect, pbyTemp, sizeof(BOOL) * BUS_TOTAL);
-                }   
+                }
             }
             else
             {
-				theApp.pouGetFlagsPtr()->vInitializeFlags();
+                theApp.pouGetFlagsPtr()->vInitializeFlags();
                 m_sNotificWndPlacement.length = 0;
                 m_sNotificWndPlacement.rcNormalPosition.top = -1;
+
                 if (m_podUIThread != NULL)
                 {
                     m_podUIThread->vUpdateWndCo_Ords(m_sNotificWndPlacement, TRUE);
                 }
+
                 //Set default settings
             }
         }
         break;
+
         case LOG_SECTION_ID:
         {
             if (pbyConfigData != NULL)
             {
                 BYTE* pbyTemp = pbyConfigData;
+
                 if (sg_pouFrameProcCAN != NULL)
                 {
                     sg_pouFrameProcCAN->FPC_StartEditingSession();
                     sg_pouFrameProcCAN->FPC_SetConfigData(pbyTemp);
                     sg_pouFrameProcCAN->FPC_StopEditingSession(TRUE);
                 }
+
                 //Start logging if toolbar status is enabled.
                 BOOL bLogON = FALSE;
-                CFlags *pFlag = theApp.pouGetFlagsPtr();
+                CFlags* pFlag = theApp.pouGetFlagsPtr();
+
                 if(pFlag != NULL)
                 {
                     bLogON = pFlag->nGetFlagStatus(LOGTOFILE);
@@ -10741,15 +11091,17 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 sg_pouFrameProcCAN = GetICANLogger();
                 sg_pouFrameProcCAN->FPC_StartEditingSession();
                 sg_pouFrameProcCAN->FPC_ClearLoggingBlockList();
-                sg_pouFrameProcCAN->FPC_StopEditingSession(TRUE);                
+                sg_pouFrameProcCAN->FPC_StopEditingSession(TRUE);
             }
         }
         break;
+
         case LOG_SECTION_J1939_ID:
         {
             if (pbyConfigData != NULL)
             {
                 BYTE* pbyTemp = pbyConfigData;
+
                 if (GetIJ1939Logger() != NULL)
                 {
                     GetIJ1939Logger()->FPJ1_StartEditingSession();
@@ -10768,6 +11120,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             }
         }
         break;
+
         case SIMSYS_SECTION_ID:
         {
             if (GetICANNodeSim() != NULL)
@@ -10776,6 +11129,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             }
         }
         break;
+
         case SIMSYS_SECTION_J1939_ID:
         {
             if (GetIJ1939NodeSim() != NULL)
@@ -10784,59 +11138,61 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             }
         }
         break;
+
         case REPLAY_SECTION_ID:
         {
             vREP_SetReplayConfigData(pbyConfigData, nSize);
         }
         break;
+
         case MSGWND_SECTION_ID:
         {
             if (pbyConfigData != NULL)
             {
                 BYTE* pbyTemp = pbyConfigData;
-
                 BYTE byVersion = 0;
                 COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
-
                 //Msg Attributes
-                SMESSAGE_ATTRIB sMsgAttrib; sMsgAttrib.m_psMsgAttribDetails = NULL; sMsgAttrib.m_usMsgCount = 0;
+                SMESSAGE_ATTRIB sMsgAttrib;
+                sMsgAttrib.m_psMsgAttribDetails = NULL;
+                sMsgAttrib.m_usMsgCount = 0;
                 COPY_DATA_2(&(sMsgAttrib.m_usMsgCount), pbyTemp, sizeof(UINT));
                 PSMESSAGEATTR pMessageAtt = new SMESSAGEATTR[sMsgAttrib.m_usMsgCount];
+
                 for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
                 {
                     TCHAR acName[MAX_PATH] = {_T('\0')};
                     COPY_DATA_2(acName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
                     pMessageAtt[i].omStrMsgname.Format("%s", acName);
-
                     COPY_DATA_2(&(pMessageAtt[i].unMsgID), pbyTemp, sizeof(UINT));
                     COPY_DATA_2(&(pMessageAtt[i].sColor), pbyTemp, sizeof(COLORREF));
                 }
+
                 sMsgAttrib.m_psMsgAttribDetails = pMessageAtt;
                 CMessageAttrib::ouGetHandle(CAN).vSetMessageAttribData(&sMsgAttrib);
                 theApp.vPopulateCANIDList();
                 //Msg buffer size
                 COPY_DATA_2(m_anMsgBuffSize, pbyTemp, sizeof(UINT) * defDISPLAY_CONFIG_PARAM);
-
                 //Msg Filter
                 bool bResult = false;
                 SFILTERAPPLIED_CAN sMsgWndFilter;
                 pbyTemp = sMsgWndFilter.pbSetConfigData(pbyTemp, bResult);
-
-                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), 
+                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
                               WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
                 //Msg FormatWnd Details
-				
-				if((pbyTemp - pbyConfigData) < (INT)nSize)              //VENKAT      
-				{
-					::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), 
-								WM_NOTIFICATION_FROM_OTHER, 
-								eWINID_MSG_WND_SET_CONFIG_DATA,
-								(LPARAM)pbyTemp);
-					::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), 
-								WM_NOTIFICATION_FROM_OTHER,
-								eLOAD_DATABASE,
-								(LPARAM)&(theApp.m_pouMsgSignal));
-				}
+
+                if((pbyTemp - pbyConfigData) < (INT)nSize)              //VENKAT
+                {
+                    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                                  WM_NOTIFICATION_FROM_OTHER,
+                                  eWINID_MSG_WND_SET_CONFIG_DATA,
+                                  (LPARAM)pbyTemp);
+                    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                                  WM_NOTIFICATION_FROM_OTHER,
+                                  eLOAD_DATABASE,
+                                  (LPARAM)&(theApp.m_pouMsgSignal));
+                }
+
                 //clear msg attributes
                 DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
                 sMsgAttrib.m_usMsgCount = 0;
@@ -10847,91 +11203,90 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 m_anMsgBuffSize[defAPPEND_DATA_INDEX] = defDEF_APPEND_BUFFER_SIZE;
                 m_anMsgBuffSize[defOVERWRITE_DATE_INDEX] = defDEF_OVERWRITE_BUFFER_SIZE;
                 m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] = defDEF_DISPLAY_UPDATE_TIME;
-
                 SFILTERAPPLIED_CAN sMsgWndFilter;
                 sMsgWndFilter.vClear();
-                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), 
+                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
                               WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
-
                 ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
                               WM_NOTIFICATION_FROM_OTHER,
                               eWINID_MSG_WND_SET_CONFIG_DATA,
                               NULL);
-                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), 
+                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
                               WM_NOTIFICATION_FROM_OTHER,
                               eLOAD_DATABASE,
                               (LPARAM)&(theApp.m_pouMsgSignal));
             }
         }
         break;
-		case MSGWND_SECTION_J1939_ID:
-		{
+
+        case MSGWND_SECTION_J1939_ID:
+        {
             if (pbyConfigData != NULL)
             {
                 BYTE* pbyTemp = pbyConfigData;
-
                 BYTE byVersion = 0;
                 COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
-
-				 //Msg Attributes
-                SMESSAGE_ATTRIB sMsgAttrib; sMsgAttrib.m_psMsgAttribDetails = NULL; sMsgAttrib.m_usMsgCount = 0;
+                //Msg Attributes
+                SMESSAGE_ATTRIB sMsgAttrib;
+                sMsgAttrib.m_psMsgAttribDetails = NULL;
+                sMsgAttrib.m_usMsgCount = 0;
                 COPY_DATA_2(&(sMsgAttrib.m_usMsgCount), pbyTemp, sizeof(UINT));
-
                 PSMESSAGEATTR pMessageAtt = new SMESSAGEATTR[sMsgAttrib.m_usMsgCount];
+
                 for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
                 {
                     TCHAR acName[MAX_PATH] = {_T('\0')};
                     COPY_DATA_2(acName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
                     pMessageAtt[i].omStrMsgname.Format("%s", acName);
-
                     COPY_DATA_2(&(pMessageAtt[i].unMsgID), pbyTemp, sizeof(UINT));
                     COPY_DATA_2(&(pMessageAtt[i].sColor), pbyTemp, sizeof(COLORREF));
                 }
-                sMsgAttrib.m_psMsgAttribDetails = pMessageAtt;
-                CMessageAttrib::ouGetHandle(J1939).vSetMessageAttribData(&sMsgAttrib);                
 
-				vPopulateJ1939PGNList();
+                sMsgAttrib.m_psMsgAttribDetails = pMessageAtt;
+                CMessageAttrib::ouGetHandle(J1939).vSetMessageAttribData(&sMsgAttrib);
+                vPopulateJ1939PGNList();
 
                 //Msg FormatWnd Details
-				if((pbyTemp - pbyConfigData) < (INT)nSize)          //VENKAT
-				{
-					::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939), 
-									WM_NOTIFICATION_FROM_OTHER, 
-									eWINID_MSG_WND_SET_CONFIG_DATA,
-									(LPARAM)pbyTemp);
-					::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939), 
-									WM_NOTIFICATION_FROM_OTHER,
-									eLOAD_DATABASE,
-									(LPARAM)&(m_pouMsgSigJ1939));				
-				}
+                if((pbyTemp - pbyConfigData) < (INT)nSize)          //VENKAT
+                {
+                    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939),
+                                  WM_NOTIFICATION_FROM_OTHER,
+                                  eWINID_MSG_WND_SET_CONFIG_DATA,
+                                  (LPARAM)pbyTemp);
+                    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939),
+                                  WM_NOTIFICATION_FROM_OTHER,
+                                  eLOAD_DATABASE,
+                                  (LPARAM)&(m_pouMsgSigJ1939));
+                }
+
                 DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
                 sMsgAttrib.m_usMsgCount = 0;
             }
             else
             {
-				::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939), 
-                              WM_NOTIFICATION_FROM_OTHER, 
+                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939),
+                              WM_NOTIFICATION_FROM_OTHER,
                               eWINID_MSG_WND_SET_CONFIG_DATA,
                               NULL);
-				::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939), 
-							  WM_NOTIFICATION_FROM_OTHER,
-							  eLOAD_DATABASE,
-							  (LPARAM)&(m_pouMsgSigJ1939));
+                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939),
+                              WM_NOTIFICATION_FROM_OTHER,
+                              eLOAD_DATABASE,
+                              (LPARAM)&(m_pouMsgSigJ1939));
             }
-		}
-		break;
+        }
+        break;
+
         case SIGWATCH_SECTION_ID:
         {
             if (pbyConfigData != NULL)
             {
                 BYTE* pbyTemp = pbyConfigData;
-
                 BYTE byVersion = 0;
                 COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
-
                 CMainEntryList odMainEntryList;
                 UINT nMainCount = 0;
                 COPY_DATA_2(&nMainCount,pbyTemp, sizeof (UINT));
+
                 for (UINT i = 0; i < nMainCount; i++)
                 {
                     SMAINENTRY sMainEntry;
@@ -10941,6 +11296,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                     sMainEntry.m_omMainEntryName.Format("%s", acName);
                     UINT nSelCount = 0;
                     COPY_DATA_2(&nSelCount,pbyTemp, sizeof (UINT));
+
                     for (UINT nSelIndex = 0; nSelIndex < nSelCount; nSelIndex++)
                     {
                         SSUBENTRY sSelEntry;
@@ -10949,9 +11305,12 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                         sSelEntry.m_omSubEntryName.Format("%s", acName);
                         sMainEntry.m_odSelEntryList.AddTail(sSelEntry);
                     }
+
                     odMainEntryList.AddTail(sMainEntry);
-                }  
+                }
+
                 vPopulateSigWatchList(odMainEntryList, m_psSignalWatchList[CAN], theApp.m_pouMsgSignal);
+
                 if (sg_pouSWInterface[CAN] == NULL)
                 {
                     if (SW_GetInterface(CAN, (void**)&sg_pouSWInterface[CAN]) == S_OK)
@@ -10959,6 +11318,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                         sg_pouSWInterface[CAN]->SW_DoInitialization();
                     }
                 }
+
                 m_ouMsgInterpretSW_C.vSetMessageList(m_psSignalWatchList[CAN]);
                 sg_pouSWInterface[CAN]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_C);
                 sg_pouSWInterface[CAN]->SW_SetConfigData(pbyTemp);
@@ -10967,31 +11327,33 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             {
                 //Set default settings
                 vReleaseSignalWatchListMemory(m_psSignalWatchList[CAN]);
+
                 if (sg_pouSWInterface[CAN] == NULL)
                 {
                     if (SW_GetInterface(CAN, (void**)&sg_pouSWInterface[CAN]) == S_OK)
                     {
-                        sg_pouSWInterface[CAN]->SW_DoInitialization();                        
+                        sg_pouSWInterface[CAN]->SW_DoInitialization();
                     }
                 }
+
                 m_ouMsgInterpretSW_C.vSetMessageList(m_psSignalWatchList[CAN]);
                 sg_pouSWInterface[CAN]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_C);
                 sg_pouSWInterface[CAN]->SW_SetConfigData(NULL);
             }
         }
-        break;        
+        break;
+
         case SIGWATCH_SECTION_J1939_ID:
         {
             if (pbyConfigData != NULL)
             {
                 BYTE* pbyTemp = pbyConfigData;
-
                 BYTE byVersion = 0;
                 COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
-
                 CMainEntryList odMainEntryList;
                 UINT nMainCount = 0;
                 COPY_DATA_2(&nMainCount,pbyTemp, sizeof (UINT));
+
                 for (UINT i = 0; i < nMainCount; i++)
                 {
                     SMAINENTRY sMainEntry;
@@ -11001,6 +11363,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                     sMainEntry.m_omMainEntryName.Format("%s", acName);
                     UINT nSelCount = 0;
                     COPY_DATA_2(&nSelCount,pbyTemp, sizeof (UINT));
+
                     for (UINT nSelIndex = 0; nSelIndex < nSelCount; nSelIndex++)
                     {
                         SSUBENTRY sSelEntry;
@@ -11009,9 +11372,12 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                         sSelEntry.m_omSubEntryName.Format("%s", acName);
                         sMainEntry.m_odSelEntryList.AddTail(sSelEntry);
                     }
+
                     odMainEntryList.AddTail(sMainEntry);
-                }  
+                }
+
                 vPopulateSigWatchList(odMainEntryList, m_psSignalWatchList[J1939], m_pouMsgSigJ1939);
+
                 if (sg_pouSWInterface[J1939] == NULL)
                 {
                     if (SW_GetInterface(J1939, (void**)&sg_pouSWInterface[J1939]) == S_OK)
@@ -11019,6 +11385,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                         sg_pouSWInterface[J1939]->SW_DoInitialization();
                     }
                 }
+
                 m_ouMsgInterpretSW_J.vSetJ1939Database(m_psSignalWatchList[J1939]);
                 sg_pouSWInterface[J1939]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_J);
                 sg_pouSWInterface[J1939]->SW_SetConfigData(pbyTemp);
@@ -11027,117 +11394,124 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             {
                 //Set default settings
                 vReleaseSignalWatchListMemory(m_psSignalWatchList[J1939]);
+
                 if (sg_pouSWInterface[J1939] == NULL)
                 {
                     if (SW_GetInterface(J1939, (void**)&sg_pouSWInterface[J1939]) == S_OK)
                     {
-                        sg_pouSWInterface[J1939]->SW_DoInitialization();                        
+                        sg_pouSWInterface[J1939]->SW_DoInitialization();
                     }
                 }
+
                 m_ouMsgInterpretSW_J.vSetJ1939Database(m_psSignalWatchList[J1939]);
                 sg_pouSWInterface[J1939]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_J);
                 sg_pouSWInterface[J1939]->SW_SetConfigData(NULL);
             }
         }
         break;
+
         case DIL_SECTION_ID:
-        {			
+        {
             if (pbyConfigData != NULL)
             {
                 BYTE* pbyTemp = pbyConfigData;
-
                 BYTE byVersion = 0;
-                UINT unChannelCount = CHANNEL_ALLOWED;				
-                COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));				
+                UINT unChannelCount = CHANNEL_ALLOWED;
+                COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
+
                 if (byVersion == 0x1) // Only two channels supported in version 0x1
                 {
                     unChannelCount = 2;
                 }
- 
+
                 COPY_DATA_2(&m_dwDriverId, pbyTemp, sizeof(DWORD));
                 COPY_DATA_2(&m_byControllerMode, pbyTemp, sizeof(BYTE));
                 COPY_DATA_2(m_asControllerDetails, pbyTemp, (sizeof(SCONTROLLER_DETAILS) * unChannelCount));
                 IntializeDIL();
                 ASSERT(g_pouDIL_CAN_Interface != NULL);
-                //HRESULT hResult = 
-                g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)m_asControllerDetails, 
-                                                    sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
-
+                //HRESULT hResult =
+                g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)m_asControllerDetails,
+                        sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
             }
             else
-            {				
+            {
                 m_dwDriverId = DRIVER_CAN_STUB;
-                m_byControllerMode = defMODE_SIMULATE;				
-                IntializeDIL();							
+                m_byControllerMode = defMODE_SIMULATE;
+                IntializeDIL();
+
                 for (UINT i = 0; i < defNO_OF_CHANNELS; i++)
                 {
                     m_asControllerDetails[i].vIntialize();
-                }				
-                //HRESULT hResult = 
-                g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)m_asControllerDetails, 
-                                                    sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
+                }
+
+                //HRESULT hResult =
+                g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)m_asControllerDetails,
+                        sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
                 //Set default settings
             }
         }
         break;
+
         case GRAPH_SECTION_ID:
         {
             if (pbyConfigData != NULL)
             {
                 BYTE* pbyTemp = pbyConfigData;
-
                 BYTE byVersion = 0;
                 COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
-				
-				if(byVersion == 2)
-				{
-					for(int nBUSID=0;nBUSID<AVAILABLE_PROTOCOLS;nBUSID++)
-					{
-						pbyTemp = m_odGraphList[nBUSID].pbySetConfigData(pbyTemp, byVersion);
 
-						COPY_DATA_2(&m_sGraphWndPlacement[nBUSID], pbyTemp, sizeof(WINDOWPLACEMENT));
-						COPY_DATA_2(&m_sGraphSplitterPos[nBUSID], pbyTemp, sizeof(SGRAPHSPLITTERDATA));
-						m_objSigGrphHandler.SetWindowSplitterPos((SHORT)nBUSID, m_sGraphWndPlacement[nBUSID],
-																 m_sGraphSplitterPos[nBUSID]);							
-						m_objSigGrphHandler.SetSignalListDetails((SHORT)nBUSID, &m_odGraphList[nBUSID]);
-					}
-				}
-				else if(byVersion == 1)
-				{
-					pbyTemp = m_odGraphList[CAN].pbySetConfigData(pbyTemp, byVersion);							
-					COPY_DATA_2(&m_sGraphWndPlacement, pbyTemp, sizeof(WINDOWPLACEMENT));
-					COPY_DATA_2(&m_sGraphSplitterPos, pbyTemp, sizeof(SGRAPHSPLITTERDATA));
-					m_objSigGrphHandler.SetSignalListDetails(CAN, &m_odGraphList[CAN]);
-				}
-			}
+                if(byVersion == 2)
+                {
+                    for(int nBUSID=0; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
+                    {
+                        pbyTemp = m_odGraphList[nBUSID].pbySetConfigData(pbyTemp, byVersion);
+                        COPY_DATA_2(&m_sGraphWndPlacement[nBUSID], pbyTemp, sizeof(WINDOWPLACEMENT));
+                        COPY_DATA_2(&m_sGraphSplitterPos[nBUSID], pbyTemp, sizeof(SGRAPHSPLITTERDATA));
+                        m_objSigGrphHandler.SetWindowSplitterPos((SHORT)nBUSID, m_sGraphWndPlacement[nBUSID],
+                                m_sGraphSplitterPos[nBUSID]);
+                        m_objSigGrphHandler.SetSignalListDetails((SHORT)nBUSID, &m_odGraphList[nBUSID]);
+                    }
+                }
+                else if(byVersion == 1)
+                {
+                    pbyTemp = m_odGraphList[CAN].pbySetConfigData(pbyTemp, byVersion);
+                    COPY_DATA_2(&m_sGraphWndPlacement, pbyTemp, sizeof(WINDOWPLACEMENT));
+                    COPY_DATA_2(&m_sGraphSplitterPos, pbyTemp, sizeof(SGRAPHSPLITTERDATA));
+                    m_objSigGrphHandler.SetSignalListDetails(CAN, &m_odGraphList[CAN]);
+                }
+            }
             else
             {
-				for(int nBUSID=0;nBUSID<AVAILABLE_PROTOCOLS;nBUSID++)
-				{
-					m_odGraphList[nBUSID].m_odGraphParameters.vInitialize();
-					if(m_odGraphList[nBUSID].m_omElementList.GetSize()>0)
-						m_odGraphList[nBUSID].m_omElementList.RemoveAll();
+                for(int nBUSID=0; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
+                {
+                    m_odGraphList[nBUSID].m_odGraphParameters.vInitialize();
 
-					m_sGraphWndPlacement[nBUSID].length = 0;
-					m_sGraphWndPlacement[nBUSID].rcNormalPosition.top = -1;
-					m_sGraphSplitterPos[nBUSID].m_nRootSplitterData[0][0] = -1;
-					m_objSigGrphHandler.SetWindowSplitterPos((SHORT)nBUSID, m_sGraphWndPlacement[nBUSID],
-											m_sGraphSplitterPos[nBUSID]);
-				}
+                    if(m_odGraphList[nBUSID].m_omElementList.GetSize()>0)
+                    {
+                        m_odGraphList[nBUSID].m_omElementList.RemoveAll();
+                    }
+
+                    m_sGraphWndPlacement[nBUSID].length = 0;
+                    m_sGraphWndPlacement[nBUSID].rcNormalPosition.top = -1;
+                    m_sGraphSplitterPos[nBUSID].m_nRootSplitterData[0][0] = -1;
+                    m_objSigGrphHandler.SetWindowSplitterPos((SHORT)nBUSID, m_sGraphWndPlacement[nBUSID],
+                            m_sGraphSplitterPos[nBUSID]);
+                }
             }
         }
         break;
+
         case TXWND_SECTION_ID:
         {
             m_objTxHandler.vSetTxWndConfigData(pbyConfigData, nSize);
         }
         break;
+
         case FILTER_SECTION_ID:
         {
             if (pbyConfigData != NULL)
             {
                 BYTE* pbyTemp = pbyConfigData;
-
                 bool bResult = false;
                 pbyTemp = m_sFilterAppliedCAN.pbSetConfigData(pbyTemp, bResult);
             }
@@ -11148,6 +11522,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             }
         }
         break;
+
         case DATABASE_SECTION_J1939_ID:
         {
             //Clear all databases
@@ -11155,19 +11530,18 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             {
                 m_pouMsgSigJ1939 = new CMsgSignal(sg_asDbParams[J1939], FALSE);
             }
-			vClearDbInfo(J1939);
-            
+
+            vClearDbInfo(J1939);
+
             if (pbyConfigData != NULL)
             {
                 BYTE* pbyTemp = pbyConfigData;
-
                 BYTE byVersion = 0;
                 COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
-
                 UINT unCount = 0;
                 CStringArray omDBNames;
-                
                 COPY_DATA_2(&unCount, pbyTemp, sizeof (UINT));
+
                 for (UINT i = 0; i < unCount; i++)
                 {
                     TCHAR acName[MAX_PATH] = {_T('\0')};
@@ -11175,18 +11549,22 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                     CString omDbName;
                     omDbName.Format("%s", acName);
                     omDBNames.Add(omDbName);
-                }                
+                }
+
                 if (m_pouMsgSigJ1939 != NULL)
                 {
                     m_pouMsgSigJ1939->vSetDataBaseNames(&omDBNames);
+
                     for (INT i = 0; i < omDBNames.GetSize(); i++)
                     {
                         //No need to check return value. Error message will be displayed
                         // in trace window
                         dLoadJ1939DBFile(omDBNames.GetAt(i), TRUE);
                     }
+
                     SMSGENTRY* psMsgEntry = NULL;
                     vPopulateMsgEntryFromDB(psMsgEntry, m_pouMsgSigJ1939);
+
                     if (m_pouTxMsgWndJ1939 != NULL)
                     {
                         m_pouTxMsgWndJ1939->vSetDatabaseInfo(psMsgEntry);
@@ -11199,21 +11577,21 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             }
         }
         break;
+
         case DATABASE_SECTION_ID:
         {
             //Clear all databases
-			vClearDbInfo(CAN);
+            vClearDbInfo(CAN);
 
             if (pbyConfigData != NULL)
             {
                 BYTE* pbyTemp = pbyConfigData;
-
                 BYTE byVersion = 0;
                 COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
-
                 UINT unCount = 0;
                 CStringArray omDBNames;
                 COPY_DATA_2(&unCount, pbyTemp, sizeof (UINT));
+
                 for (UINT i = 0; i < unCount; i++)
                 {
                     TCHAR acName[MAX_PATH] = {_T('\0')};
@@ -11222,7 +11600,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                     omDbName.Format("%s", acName);
                     omDBNames.Add(omDbName);
                 }
-                
+
                 if (theApp.m_pouMsgSignal != NULL)
                 {
                     for (INT i = 0; i < omDBNames.GetSize(); i++)
@@ -11230,62 +11608,69 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                         //No need to check return value. Error message will be displayed
                         // in trace window
                         //venkat:dLoadDataBaseFile will associate the database file if.
-                        //it is valid. 
+                        //it is valid.
                         dLoadDataBaseFile(omDBNames.GetAt(i), TRUE);
                     }
-                }                
+                }
             }
         }
         break;
-		case WAVEFORMDATA_SECTION_ID:
-		{
-			m_objWaveformDataHandler.SetConfigData(pbyConfigData);
-		}
-		break;
-		case BUS_STATISTICS_SECTION_ID:
-		{
-			if(m_bIsStatWndCreated)
-			{
-				if (pbyConfigData != NULL)
-				{
-					BYTE* pbyTemp = pbyConfigData;					
-					m_podBusStatistics->SetConfigData(pbyTemp);
-				}
-				else
-				{
-					CBusStatisticsDlg::vSetDefaultsToStore();
-					m_podBusStatistics->vLoadDataFromStore();
-				}
-			}
-			else
-			{
-				if (pbyConfigData != NULL)
-				{
-					BYTE* pbyTemp = pbyConfigData;					
-					CBusStatisticsDlg::vSaveDataToStore(pbyTemp);
-				}	
-				else
-					CBusStatisticsDlg::vSetDefaultsToStore();
-			}
-		}
-		break;
+
+        case WAVEFORMDATA_SECTION_ID:
+        {
+            m_objWaveformDataHandler.SetConfigData(pbyConfigData);
+        }
+        break;
+
+        case BUS_STATISTICS_SECTION_ID:
+        {
+            if(m_bIsStatWndCreated)
+            {
+                if (pbyConfigData != NULL)
+                {
+                    BYTE* pbyTemp = pbyConfigData;
+                    m_podBusStatistics->SetConfigData(pbyTemp);
+                }
+                else
+                {
+                    CBusStatisticsDlg::vSetDefaultsToStore();
+                    m_podBusStatistics->vLoadDataFromStore();
+                }
+            }
+            else
+            {
+                if (pbyConfigData != NULL)
+                {
+                    BYTE* pbyTemp = pbyConfigData;
+                    CBusStatisticsDlg::vSaveDataToStore(pbyTemp);
+                }
+                else
+                {
+                    CBusStatisticsDlg::vSetDefaultsToStore();
+                }
+            }
+        }
+        break;
+
         //venkat
         case TEST_SETUP_EDITOR_SECTION_ID:
         {
             m_objTSEditorHandler.vSetConfigurationData(pbyConfigData, nSize);
         }
-		break;
+        break;
+
         case TEST_SUITE_EXECUTOR_SECTION_ID:
         {
             m_objTSExecutorHandler.vSetConfigurationData(pbyConfigData, nSize);
         }
         break;
+
         default:
         {
             ASSERT(FALSE);
         }
         break;
-    } 
+    }
 }
 void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData, UINT& nSize)
 {
@@ -11297,33 +11682,28 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             nSize += (sizeof(TCHAR) * MAX_PATH) + sizeof(STOOLBARINFO) + sizeof(WINDOWPLACEMENT) + sizeof (BOOL) * BUS_TOTAL;
             pbyConfigData = new BYTE[nSize];
 
-            
             if (pbyConfigData != NULL)
             {
                 BYTE* pbyTemp = pbyConfigData;
-
                 BYTE byVersion = 0x2;
                 COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-
                 TCHAR acName[MAX_PATH] = {_T('\0')};
                 strcpy_s(acName, m_omMRU_C_Filename.GetBuffer(MAX_PATH));
                 COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
-
-                
                 theApp.pouGetFlagsPtr()->vGetToolbarButtonStatus(&m_sToolBarInfo);
                 COPY_DATA(pbyTemp, &m_sToolBarInfo, sizeof(STOOLBARINFO));
-                
+
                 if (m_podUIThread != NULL)
                 {
-                    m_podUIThread->vUpdateWndCo_Ords(m_sNotificWndPlacement, FALSE);            
+                    m_podUIThread->vUpdateWndCo_Ords(m_sNotificWndPlacement, FALSE);
                 }
-                
+
                 COPY_DATA(pbyTemp, &m_sNotificWndPlacement, sizeof(WINDOWPLACEMENT));
                 COPY_DATA(pbyTemp, m_abLogOnConnect, sizeof (BOOL) * BUS_TOTAL)
             }
-
         }
         break;
+
         case LOG_SECTION_J1939_ID:
         {
             if (GetIJ1939Logger() != NULL)
@@ -11332,6 +11712,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             }
         }
         break;
+
         case LOG_SECTION_ID:
         {
             if (sg_pouFrameProcCAN != NULL)
@@ -11340,6 +11721,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             }
         }
         break;
+
         case SIMSYS_SECTION_ID:
         {
             int nConfigSize = 0;
@@ -11347,6 +11729,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             nSize = nConfigSize;
         }
         break;
+
         case SIMSYS_SECTION_J1939_ID:
         {
             int nConfigSize = 0;
@@ -11354,6 +11737,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             nSize = nConfigSize;
         }
         break;
+
         case REPLAY_SECTION_ID:
         {
             int nCfgSize = 0;
@@ -11361,16 +11745,18 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             nSize = nCfgSize;
         }
         break;
+
         case MSGWND_SECTION_ID:
         {
             //FIRST CALC SIZE
             nSize += sizeof(BYTE); // Configuration version
-
             nSize += sizeof (UINT);// To store count of MsgAttribs
-            SMESSAGE_ATTRIB sMsgAttrib; sMsgAttrib.m_psMsgAttribDetails = NULL; sMsgAttrib.m_usMsgCount = 0;
+            SMESSAGE_ATTRIB sMsgAttrib;
+            sMsgAttrib.m_psMsgAttribDetails = NULL;
+            sMsgAttrib.m_usMsgCount = 0;
             CMessageAttrib::ouGetHandle(CAN).vGetMessageAttribData(sMsgAttrib);
             UINT nCount = sMsgAttrib.m_usMsgCount;
-                            //Count             To store Msg Name         MsgId        Msg Color
+            //Count             To store Msg Name         MsgId        Msg Color
             nSize += (nCount * ((sizeof (TCHAR) * MAX_PATH) + sizeof(UINT) + sizeof (COLORREF)));
             //Msg Buffer size
             nSize += (sizeof (INT) * defDISPLAY_CONFIG_PARAM);
@@ -11379,155 +11765,149 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_GET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
             nSize += sMsgWndFilter.unGetSize();
             //MsgFormat window config data
-
             UINT unMsgFrmtWndCfgSize = 0;
             ASSERT(m_podMsgWndThread != NULL);
 
-			if(m_podMsgWndThread->hGetHandleMsgWnd(CAN))
-			{
-				::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
-					WM_NOTIFICATION_FROM_OTHER, eWINID_MSG_WND_GET_CONFIG_SIZE, (LPARAM)&unMsgFrmtWndCfgSize);
-				nSize += unMsgFrmtWndCfgSize;
-			}
+            if(m_podMsgWndThread->hGetHandleMsgWnd(CAN))
+            {
+                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                              WM_NOTIFICATION_FROM_OTHER, eWINID_MSG_WND_GET_CONFIG_SIZE, (LPARAM)&unMsgFrmtWndCfgSize);
+                nSize += unMsgFrmtWndCfgSize;
+            }
+
             //CALC SIZE ENDS
-            
             pbyConfigData = new BYTE[nSize];
+
             if (pbyConfigData != NULL)
             {
                 BYTE* pbyTemp = pbyConfigData;
-                
                 BYTE byVersion = 0x1;
                 COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+                //Msg Attributes
+                UINT unTempMsgCount = sMsgAttrib.m_usMsgCount;
+                COPY_DATA(pbyTemp, &unTempMsgCount, sizeof(UINT));
 
-                //Msg Attributes                
-				UINT unTempMsgCount = sMsgAttrib.m_usMsgCount;
-				COPY_DATA(pbyTemp, &unTempMsgCount, sizeof(UINT));
                 for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
                 {
                     TCHAR acName[MAX_PATH] = {_T('\0')};
-                    
                     strcpy_s(acName, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_PATH));
                     COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
-
                     COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].unMsgID), sizeof(UINT));
                     COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].sColor), sizeof(COLORREF));
                 }
 
                 //Msg buffer size
                 COPY_DATA(pbyTemp, m_anMsgBuffSize, sizeof(UINT) * defDISPLAY_CONFIG_PARAM);
-
                 //Msg Filter
                 //bool bResult = false;
                 pbyTemp = sMsgWndFilter.pbGetConfigData(pbyTemp);
-                
-				if(m_podMsgWndThread->hGetHandleMsgWnd(CAN))
-				{
-					::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), 
-							WM_NOTIFICATION_FROM_OTHER,
-							eWINID_MSG_WND_GET_CONFIG_DATA,
-							(LPARAM)pbyTemp);
-				}			
-			}
+
+                if(m_podMsgWndThread->hGetHandleMsgWnd(CAN))
+                {
+                    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                                  WM_NOTIFICATION_FROM_OTHER,
+                                  eWINID_MSG_WND_GET_CONFIG_DATA,
+                                  (LPARAM)pbyTemp);
+                }
+            }
+
             DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
         }
         break;
-		case MSGWND_SECTION_J1939_ID:
-		{
+
+        case MSGWND_SECTION_J1939_ID:
+        {
             //FIRST CALC SIZE
             nSize += sizeof(BYTE); // Configuration version
-
-			nSize += sizeof (UINT);// To store count of MsgAttribs
-            SMESSAGE_ATTRIB sMsgAttrib; sMsgAttrib.m_psMsgAttribDetails = NULL; sMsgAttrib.m_usMsgCount = 0;
+            nSize += sizeof (UINT);// To store count of MsgAttribs
+            SMESSAGE_ATTRIB sMsgAttrib;
+            sMsgAttrib.m_psMsgAttribDetails = NULL;
+            sMsgAttrib.m_usMsgCount = 0;
             CMessageAttrib::ouGetHandle(J1939).vGetMessageAttribData(sMsgAttrib);
             UINT nCount = sMsgAttrib.m_usMsgCount;
-                            //Count             To store Msg Name         MsgId        Msg Color
+            //Count             To store Msg Name         MsgId        Msg Color
             nSize += (nCount * ((sizeof (TCHAR) * MAX_PATH) + sizeof(UINT) + sizeof (COLORREF)));
-
             //MsgFormat window config data
             UINT unMsgFrmtWndCfgSize = 0;
             ASSERT(m_podMsgWndThread != NULL);
 
-			if(m_podMsgWndThread->hGetHandleMsgWnd(J1939))
-			{
-				::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939),
-					WM_NOTIFICATION_FROM_OTHER, eWINID_MSG_WND_GET_CONFIG_SIZE, (LPARAM)&unMsgFrmtWndCfgSize);
-				nSize += unMsgFrmtWndCfgSize;
-			}
+            if(m_podMsgWndThread->hGetHandleMsgWnd(J1939))
+            {
+                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939),
+                              WM_NOTIFICATION_FROM_OTHER, eWINID_MSG_WND_GET_CONFIG_SIZE, (LPARAM)&unMsgFrmtWndCfgSize);
+                nSize += unMsgFrmtWndCfgSize;
+            }
+
             //CALC SIZE ENDS
-            
             pbyConfigData = new BYTE[nSize];
+
             if (pbyConfigData != NULL)
             {
                 BYTE* pbyTemp = pbyConfigData;
-                
-				//Version
+                //Version
                 BYTE byVersion = 0x1;
                 COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-
-				//Msg Attributes
+                //Msg Attributes
                 UINT unTempMsgCount = sMsgAttrib.m_usMsgCount;
                 COPY_DATA(pbyTemp, &unTempMsgCount, sizeof(UINT));
-                
+
                 for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
                 {
                     TCHAR acName[MAX_PATH] = {_T('\0')};
-                    
-					strcpy_s(acName, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_CHAR));
+                    strcpy_s(acName, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_CHAR));
                     COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
-
                     COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].unMsgID), sizeof(UINT));
                     COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].sColor), sizeof(COLORREF));
                 }
 
-				//Msg Format Data
-				if(m_podMsgWndThread->hGetHandleMsgWnd(J1939))
-				{
-					::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939), 
-							WM_NOTIFICATION_FROM_OTHER,
-							eWINID_MSG_WND_GET_CONFIG_DATA,
-							(LPARAM)pbyTemp);
-				}				
-			}
+                //Msg Format Data
+                if(m_podMsgWndThread->hGetHandleMsgWnd(J1939))
+                {
+                    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939),
+                                  WM_NOTIFICATION_FROM_OTHER,
+                                  eWINID_MSG_WND_GET_CONFIG_DATA,
+                                  (LPARAM)pbyTemp);
+                }
+            }
+
             DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
-		}
-		break;
+        }
+        break;
+
         case SIGWATCH_SECTION_J1939_ID:
-        {            
+        {
             CMainEntryList odMainEntryList;
             vPopulateMainEntryList(&odMainEntryList, m_psSignalWatchList[J1939], m_pouMsgSigJ1939);
-
             //CALCULATE SIZE REQUIRED
             nSize += sizeof(BYTE); //Configuration version
-
             POSITION pos = odMainEntryList.GetHeadPosition();
             nSize += sizeof (UINT); //To store the count of main entry
+
             while (pos)
             {
                 nSize += sizeof (UINT);
                 nSize += (sizeof (TCHAR) * MAX_PATH);
                 SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
-
                 nSize += (sizeof (TCHAR) * MAX_PATH);//To store number of selected entries
+
                 for (UINT nSelIndex = 0; nSelIndex < (UINT)sMainEntry.m_odSelEntryList.GetCount(); nSelIndex++)
                 {
                     nSize += sizeof (UINT);
                     nSize += (sizeof (TCHAR) * MAX_PATH);
                 }
             }
+
             //BYTE* pbySWWndPlacement = NULL;
             //UINT unSWSize = 0;
             nSize += sg_pouSWInterface[J1939]->SW_GetConfigSize();
             //ALLOCATE MEMORY
             pbyConfigData = new BYTE[nSize];
             BYTE* pbyTemp = pbyConfigData;
-
             //UPDATE THE DATA NOW
             BYTE byVersion = 0x1;
             COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-
             pos = odMainEntryList.GetHeadPosition();
             UINT nMainCount = odMainEntryList.GetCount();
-
             COPY_DATA(pbyTemp, &nMainCount, sizeof(UINT));
 
             while (pos)
@@ -11537,10 +11917,10 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 TCHAR acName[MAX_PATH] = {_T('\0')};
                 strcpy_s(acName, sMainEntry.m_omMainEntryName.GetBuffer(MAX_CHAR));
                 COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
-
                 UINT unSelCount = sMainEntry.m_odSelEntryList.GetCount();
                 COPY_DATA(pbyTemp, &unSelCount, sizeof(UINT));
                 POSITION SelPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
+
                 while (SelPos != NULL)
                 {
                     SSUBENTRY sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SelPos);
@@ -11558,43 +11938,41 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             }
         }
         break;
+
         case SIGWATCH_SECTION_ID:
-        {            
+        {
             CMainEntryList odMainEntryList;
             vPopulateMainEntryList(&odMainEntryList, m_psSignalWatchList[CAN], theApp.m_pouMsgSignal);
-
             //CALCULATE SIZE REQUIRED
             nSize += sizeof(BYTE); //Configuration version
-
             POSITION pos = odMainEntryList.GetHeadPosition();
             nSize += sizeof (UINT); //To store the count of main entry
+
             while (pos)
             {
                 nSize += sizeof (UINT);
                 nSize += (sizeof (TCHAR) * MAX_PATH);
                 SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
-
                 nSize += (sizeof (TCHAR) * MAX_PATH);//To store number of selected entries
+
                 for (UINT nSelIndex = 0; nSelIndex < (UINT)sMainEntry.m_odSelEntryList.GetCount(); nSelIndex++)
                 {
                     nSize += sizeof (UINT);
                     nSize += (sizeof (TCHAR) * MAX_PATH);
                 }
             }
+
             //BYTE* pbySWWndPlacement = NULL;
             //UINT unSWSize = 0;
             nSize += sg_pouSWInterface[CAN]->SW_GetConfigSize();
             //ALLOCATE MEMORY
             pbyConfigData = new BYTE[nSize];
             BYTE* pbyTemp = pbyConfigData;
-
             //UPDATE THE DATA NOW
             BYTE byVersion = 0x1;
             COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-
             pos = odMainEntryList.GetHeadPosition();
             UINT nMainCount = odMainEntryList.GetCount();
-
             COPY_DATA(pbyTemp, &nMainCount, sizeof(UINT));
 
             while (pos)
@@ -11604,10 +11982,10 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 TCHAR acName[MAX_PATH] = {_T('\0')};
                 strcpy_s(acName, sMainEntry.m_omMainEntryName.GetBuffer(MAX_PATH));
                 COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
-
                 UINT unSelCount = sMainEntry.m_odSelEntryList.GetCount();
                 COPY_DATA(pbyTemp, &unSelCount, sizeof(UINT));
                 POSITION SelPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
+
                 while (SelPos != NULL)
                 {
                     SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SelPos);
@@ -11625,6 +12003,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             }
         }
         break;
+
         case DIL_SECTION_ID:
         {
             nSize = sizeof(BYTE);//configuration version
@@ -11632,49 +12011,49 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             nSize += sizeof(BYTE); // Controller mode
             nSize += sizeof(SCONTROLLER_DETAILS) * CHANNEL_ALLOWED;
             pbyConfigData = new BYTE[nSize];
-            
+
             if (pbyConfigData != NULL)
             {
                 BYTE* pbyTemp = pbyConfigData;
-
                 BYTE byVersion = 0x2;
                 COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
                 COPY_DATA(pbyTemp, &m_dwDriverId, sizeof(DWORD));
                 COPY_DATA(pbyTemp, &m_byControllerMode, sizeof(BYTE));
                 COPY_DATA(pbyTemp, m_asControllerDetails, (sizeof(SCONTROLLER_DETAILS) * CHANNEL_ALLOWED));
-            }        
+            }
         }
         break;
+
         case GRAPH_SECTION_ID:
         {
-			BYTE byVersion = 0x2;
+            BYTE byVersion = 0x2;
             nSize = sizeof(BYTE);//configuration version
-            
-			for(int nBUSID=0;nBUSID<AVAILABLE_PROTOCOLS;nBUSID++)
-			{
-				nSize += m_odGraphList[nBUSID].unGetConfigSize(byVersion);
-				nSize += sizeof(WINDOWPLACEMENT)+ sizeof(SGRAPHSPLITTERDATA);
-			}
 
-            pbyConfigData = new BYTE[nSize];    
+            for(int nBUSID=0; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
+            {
+                nSize += m_odGraphList[nBUSID].unGetConfigSize(byVersion);
+                nSize += sizeof(WINDOWPLACEMENT)+ sizeof(SGRAPHSPLITTERDATA);
+            }
+
+            pbyConfigData = new BYTE[nSize];
 
             if (pbyConfigData != NULL)
             {
                 BYTE* pbyTemp = pbyConfigData;
-                                
                 COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-				
-				for(int nBUSID=0;nBUSID<AVAILABLE_PROTOCOLS;nBUSID++)
-				{
-					pbyTemp = m_odGraphList[nBUSID].pbyGetConfigData(pbyTemp, byVersion);
-					m_objSigGrphHandler.GetWindowSplitterPos((SHORT)nBUSID, m_sGraphWndPlacement[nBUSID],
-															 m_sGraphSplitterPos[nBUSID]);
-					COPY_DATA(pbyTemp, &m_sGraphWndPlacement[nBUSID], sizeof(WINDOWPLACEMENT));
-					COPY_DATA(pbyTemp, &m_sGraphSplitterPos[nBUSID], sizeof(SGRAPHSPLITTERDATA));
-				}
+
+                for(int nBUSID=0; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
+                {
+                    pbyTemp = m_odGraphList[nBUSID].pbyGetConfigData(pbyTemp, byVersion);
+                    m_objSigGrphHandler.GetWindowSplitterPos((SHORT)nBUSID, m_sGraphWndPlacement[nBUSID],
+                            m_sGraphSplitterPos[nBUSID]);
+                    COPY_DATA(pbyTemp, &m_sGraphWndPlacement[nBUSID], sizeof(WINDOWPLACEMENT));
+                    COPY_DATA(pbyTemp, &m_sGraphSplitterPos[nBUSID], sizeof(SGRAPHSPLITTERDATA));
+                }
             }
         }
         break;
+
         case TXWND_SECTION_ID:
         {
             int nCfgSize = 0;
@@ -11682,11 +12061,12 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             nSize = nCfgSize;
         }
         break;
+
         case FILTER_SECTION_ID:
         {
             nSize = m_sFilterAppliedCAN.unGetSize();
             pbyConfigData = new BYTE[nSize];
-    
+
             if (pbyConfigData != NULL)
             {
                 BYTE* pbyTemp = pbyConfigData;
@@ -11695,107 +12075,112 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             }
         }
         break;
-        case DATABASE_SECTION_J1939_ID:
-        {        
-            nSize += sizeof(BYTE);//configuration version
 
+        case DATABASE_SECTION_J1939_ID:
+        {
+            nSize += sizeof(BYTE);//configuration version
             CStringArray omDbNames;
+
             if (m_pouMsgSigJ1939 != NULL)
             {
                 m_pouMsgSigJ1939->vGetDataBaseNames(&omDbNames);
             }
+
             nSize += sizeof(UINT) + ((sizeof(TCHAR) * MAX_PATH) * omDbNames.GetSize());
-            
             pbyConfigData = new BYTE[nSize];
-            
+
             if (pbyConfigData != NULL)
             {
                 BYTE* pbyTemp = pbyConfigData;
-
                 BYTE byVersion = 0x1;
                 COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
                 //CAN DB NAMES
                 UINT unCount = omDbNames.GetSize();
                 COPY_DATA(pbyTemp, &unCount,  sizeof (UINT));
+
                 for (UINT i = 0; i < unCount; i++)
                 {
                     CString omDbName = omDbNames.GetAt(i);
                     TCHAR acName[MAX_PATH] = {_T('\0')};
                     strcpy_s(acName, omDbName.GetBuffer(MAX_CHAR));
-
                     COPY_DATA(pbyTemp, acName, (sizeof (TCHAR) * MAX_PATH));
                 }
             }
         }
         break;
-        case DATABASE_SECTION_ID:
-        {        
-            nSize += sizeof(BYTE);//configuration version
 
+        case DATABASE_SECTION_ID:
+        {
+            nSize += sizeof(BYTE);//configuration version
             CStringArray omDbNames;
+
             if (theApp.m_pouMsgSignal != NULL)
             {
                 theApp.m_pouMsgSignal->vGetDataBaseNames(&omDbNames);
             }
-			nSize += sizeof(UINT) + ((sizeof(TCHAR) * MAX_PATH) * omDbNames.GetSize());
-            
+
+            nSize += sizeof(UINT) + ((sizeof(TCHAR) * MAX_PATH) * omDbNames.GetSize());
             pbyConfigData = new BYTE[nSize];
-            
+
             if (pbyConfigData != NULL)
             {
                 BYTE* pbyTemp = pbyConfigData;
-
                 BYTE byVersion = 0x1;
                 COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
                 //CAN DB NAMES
-				UINT unCount = omDbNames.GetSize();
+                UINT unCount = omDbNames.GetSize();
                 COPY_DATA(pbyTemp, &unCount,  sizeof (UINT));
+
                 for (UINT i = 0; i < unCount; i++)
                 {
                     CString omDbName = omDbNames.GetAt(i);
                     TCHAR acName[MAX_PATH] = {_T('\0')};
                     strcpy_s(acName, omDbName.GetBuffer(MAX_PATH));
-
                     COPY_DATA(pbyTemp, acName, (sizeof (TCHAR) * MAX_PATH));
                 }
             }
-        }        
+        }
         break;
-		case WAVEFORMDATA_SECTION_ID:
-		{
-			m_objWaveformDataHandler.GetConfigData(&pbyConfigData, nSize);
-		}
-		break;
-		case BUS_STATISTICS_SECTION_ID:
-		{			
-			if(m_bIsStatWndCreated)
-			{
-				nSize += m_podBusStatistics->nGetBusStatsDlgConfigSize();				
-				pbyConfigData = new BYTE[nSize];    
 
-				if (pbyConfigData != NULL)
-				{
-					BYTE* pbyTemp = pbyConfigData;					
-					m_podBusStatistics->GetConfigData(pbyTemp);
-				}
-			}
-			else
-			{
-				CBusStatisticsDlg::vGetDataFromStore(&pbyConfigData, nSize);
-			}
-		}
-		break;
-		//venkat
+        case WAVEFORMDATA_SECTION_ID:
+        {
+            m_objWaveformDataHandler.GetConfigData(&pbyConfigData, nSize);
+        }
+        break;
+
+        case BUS_STATISTICS_SECTION_ID:
+        {
+            if(m_bIsStatWndCreated)
+            {
+                nSize += m_podBusStatistics->nGetBusStatsDlgConfigSize();
+                pbyConfigData = new BYTE[nSize];
+
+                if (pbyConfigData != NULL)
+                {
+                    BYTE* pbyTemp = pbyConfigData;
+                    m_podBusStatistics->GetConfigData(pbyTemp);
+                }
+            }
+            else
+            {
+                CBusStatisticsDlg::vGetDataFromStore(&pbyConfigData, nSize);
+            }
+        }
+        break;
+
+        //venkat
         case TEST_SETUP_EDITOR_SECTION_ID:
         {
             m_objTSEditorHandler.vGetConfigurationData(pbyConfigData, nSize);
         }
         break;
+
         case TEST_SUITE_EXECUTOR_SECTION_ID:
         {
-           m_objTSExecutorHandler.vGetConfigurationData(pbyConfigData, nSize);
+            m_objTSExecutorHandler.vGetConfigurationData(pbyConfigData, nSize);
         }
         break;
+
         default:
         {
             ASSERT(FALSE);
@@ -11808,26 +12193,27 @@ void CMainFrame::OnSelectDriver(UINT nID)
 {
     DILINFO* psCurrDIL = psGetDILEntry(nID);
     // Above lines have to be changed.
-        
+
     if (psCurrDIL != NULL)
-    {		
+    {
         m_dwDriverId =  psCurrDIL->m_dwDriverID;
 
-		//Retain default values for all channels
-		for (int i = 0; i < defNO_OF_CHANNELS; i++)
-		{
-			m_asControllerDetails[i].vIntialize();
-		}
+        //Retain default values for all channels
+        for (int i = 0; i < defNO_OF_CHANNELS; i++)
+        {
+            m_asControllerDetails[i].vIntialize();
+        }
 
         IntializeDIL();
-    }    
+    }
 }
 
-void CMainFrame::OnUpdateSelectDriver(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateSelectDriver(CCmdUI* pCmdUI)
 {
     BOOL bSelected = FALSE;
     // Search for the associated item in the DIL list
     DILINFO* psCurrDIL = psGetDILEntry(pCmdUI->m_nID);
+
     if (psCurrDIL != NULL)
     {
         if (g_pouDIL_CAN_Interface != NULL)
@@ -11835,10 +12221,13 @@ void CMainFrame::OnUpdateSelectDriver(CCmdUI *pCmdUI)
             bSelected = (psCurrDIL->m_dwDriverID == g_pouDIL_CAN_Interface->DILC_GetSelectedDriver());
         }
     }
+
     CFlags* pFlag = theApp.pouGetFlagsPtr();
+
     if (pFlag != NULL)
     {
         BOOL bConnected = pFlag->nGetFlagStatus(CONNECTED);
+
         if (bConnected == FALSE)
         {
             pCmdUI->Enable(!bSelected);
@@ -11848,15 +12237,14 @@ void CMainFrame::OnUpdateSelectDriver(CCmdUI *pCmdUI)
             pCmdUI->Enable(FALSE);
         }
     }
-     
-	pCmdUI->SetCheck(bSelected);
+
+    pCmdUI->SetCheck(bSelected);
 }
 
 
 BOOL CMainFrame::bUpdatePopupMenuDIL(void)
 {
     USES_CONVERSION;
-
     BOOL bResult = TRUE;
 
     if (m_pDILSubMenu == NULL)
@@ -11869,12 +12257,13 @@ BOOL CMainFrame::bUpdatePopupMenuDIL(void)
                 // Add the DIL list
                 for (int i = 0; (i < m_nDILCount) && bResult; i++)
                 {
-                    bResult = m_pDILSubMenu->AppendMenu(MF_STRING, 
-                        IDC_SELECT_DRIVER + i, m_ouList[i].m_acName);
+                    bResult = m_pDILSubMenu->AppendMenu(MF_STRING,
+                                                        IDC_SELECT_DRIVER + i, m_ouList[i].m_acName);
+
                     if (bResult == TRUE)
                     {
                         m_ouList[i].m_ResourceID = IDC_SELECT_DRIVER + i;
-                    }                    
+                    }
                 }
             }
             else
@@ -11891,24 +12280,28 @@ BOOL CMainFrame::bUpdatePopupMenuDIL(void)
 
     if (bResult == TRUE)
     {
-        CMenu *pConfigMenu = GetSubMenu(_T("&Configure")); // Get the Menu "&Configure"
+        CMenu* pConfigMenu = GetSubMenu(_T("&Configure")); // Get the Menu "&Configure"
         ASSERT(pConfigMenu != NULL);
+
         if (pConfigMenu == NULL)
         {
             theApp.bWriteIntoTraceWnd("GetSubMenu(\"&Configure\") failed");
         }
+
         pConfigMenu->InsertMenu(3, MF_BYPOSITION | MF_POPUP, (UINT_PTR) (m_pDILSubMenu->m_hMenu), _T("Hardware Interface"));
     }
+
     if (bResult == FALSE)
     {
         theApp.bWriteIntoTraceWnd("Could not create DIL menu items");
     }
-	
+
     return bResult;
 }
 DILINFO* CMainFrame::psGetDILEntry(UINT unKeyID, BOOL bKeyMenuItem)
 {
     DILINFO* psResult = NULL;
+
     for (int i = 0; i < m_nDILCount; i++)
     {
         if (bKeyMenuItem == TRUE)
@@ -11928,37 +12321,40 @@ DILINFO* CMainFrame::psGetDILEntry(UINT unKeyID, BOOL bKeyMenuItem)
             }
         }
     }
+
     return psResult;
 }
 
 void CMainFrame::OnConfigureWaveformMessages(void)
 {
-	CMsgSignal * pomDatabase = NULL;
-	pomDatabase = theApp.m_pouMsgSignal;
+    CMsgSignal* pomDatabase = NULL;
+    pomDatabase = theApp.m_pouMsgSignal;
+
     if( pomDatabase != NULL )
     {
         if( pomDatabase->unGetNumerOfMessages() > 0)
-        {			
-			vUpdateMainEntryListInWaveDataHandler();
+        {
+            vUpdateMainEntryListInWaveDataHandler();
+            LONG lParam = 0;
+            UINT nHardware = 0;
 
-			LONG lParam = 0;
-			UINT nHardware = 0;
-			if(g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
-			{
-				nHardware = (UINT)lParam;
-			}
-			
-			CWaveformSelectionDlg dlgWaveForm(this, &m_objWaveformDataHandler, nHardware);
-			dlgWaveForm.DoModal();	  
-			//Added by Arun to eliminate the RADAR Defect Seq. No 106. (28/06/2011)
-			//If in Connected state, update the enable state of signal transmission.
-			CFlags* pouFlags = theApp.pouGetFlagsPtr();	
-			BOOL bConnected = pouFlags->nGetFlagStatus(CONNECTED);    
-			if( bConnected == TRUE )
-			{		
-				m_ouWaveTransmitter.bUpdateBlock(bConnected);
-			}	  
-		}
+            if(g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
+            {
+                nHardware = (UINT)lParam;
+            }
+
+            CWaveformSelectionDlg dlgWaveForm(this, &m_objWaveformDataHandler, nHardware);
+            dlgWaveForm.DoModal();
+            //Added by Arun to eliminate the RADAR Defect Seq. No 106. (28/06/2011)
+            //If in Connected state, update the enable state of signal transmission.
+            CFlags* pouFlags = theApp.pouGetFlagsPtr();
+            BOOL bConnected = pouFlags->nGetFlagStatus(CONNECTED);
+
+            if( bConnected == TRUE )
+            {
+                m_ouWaveTransmitter.bUpdateBlock(bConnected);
+            }
+        }
         else
         {
             // Database is not imported!!
@@ -11969,17 +12365,17 @@ void CMainFrame::OnConfigureWaveformMessages(void)
 
 void CMainFrame::vUpdateMainEntryListInWaveDataHandler()
 {
-	m_odResultingList.RemoveAll();
-    vPopulateMainEntryList(&m_odResultingList, NULL, theApp.m_pouMsgSignal);			
-	m_objWaveformDataHandler.vSetCompleteMsgList(&m_odResultingList);
+    m_odResultingList.RemoveAll();
+    vPopulateMainEntryList(&m_odResultingList, NULL, theApp.m_pouMsgSignal);
+    m_objWaveformDataHandler.vSetCompleteMsgList(&m_odResultingList);
+    //If in Connected state, update the enable state of signal transmission.
+    CFlags* pouFlags = theApp.pouGetFlagsPtr();
+    BOOL bConnected = pouFlags->nGetFlagStatus(CONNECTED);
 
-	//If in Connected state, update the enable state of signal transmission.
-	CFlags* pouFlags = theApp.pouGetFlagsPtr();	
-	BOOL bConnected = pouFlags->nGetFlagStatus(CONNECTED);    
     if( bConnected == TRUE )
-    {		
+    {
         m_ouWaveTransmitter.bUpdateBlock(bConnected);
-    }	    
+    }
 }
 
 /*******************************************************************************
@@ -11990,11 +12386,11 @@ void CMainFrame::vUpdateMainEntryListInWaveDataHandler()
   Member of      : CMainFrame
   Author(s)      : Arunkumar K
   Date Created   : 01-02-2011
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CMainFrame::vClearSignalInfoList(void)
 {
-	m_objWaveformDataHandler.vClearSignalInfoList();
+    m_objWaveformDataHandler.vClearSignalInfoList();
 }
 
 /*******************************************************************************
@@ -12005,7 +12401,7 @@ void CMainFrame::vClearSignalInfoList(void)
   Member of      : CMainFrame
   Author(s)      : Arunkumar K
   Date Created   : 27-08-2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CMainFrame::OnStartSignalTransmission(void)
 {
@@ -12013,15 +12409,15 @@ void CMainFrame::OnStartSignalTransmission(void)
     {
         // Waveform transmission is ON. Hence stop the transmission
         m_ouWaveTransmitter.vStopSignalTransmission();
-		// update flag.
+        // update flag.
         theApp.pouGetFlagsPtr()->vSetFlagStatus( SEND_SIGNAL_MSG, FALSE );
     }
     else
     {
-		 // Now start sending waveform messages, update flag
-         theApp.pouGetFlagsPtr()->vSetFlagStatus( SEND_SIGNAL_MSG, TRUE );
+        // Now start sending waveform messages, update flag
+        theApp.pouGetFlagsPtr()->vSetFlagStatus( SEND_SIGNAL_MSG, TRUE );
         // Waveform transmission is OFF. Hence start the transmission
-		m_ouWaveTransmitter.vStartSignalTransmission(g_dwClientID);
+        m_ouWaveTransmitter.vStartSignalTransmission(g_dwClientID);
     }
 }
 
@@ -12035,7 +12431,7 @@ void CMainFrame::OnStartSignalTransmission(void)
   Date Created   : 27-08-2010
   Modifications  : Simplified updation code - Ratnadip Choudhury, 30/08/2010
 *******************************************************************************/
-void CMainFrame::OnUpdateStartSignalTransmission(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateStartSignalTransmission(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable(m_ouWaveTransmitter.bIsBlockEnabled());
     pCmdUI->SetCheck(m_ouWaveTransmitter.bIsWaveformTxON());
@@ -12044,8 +12440,8 @@ void CMainFrame::OnUpdateStartSignalTransmission(CCmdUI *pCmdUI)
 LRESULT CMainFrame::OnMessageFromUserDll(WPARAM wParam, LPARAM lParam)
 {
     USES_CONVERSION;
-
     CFlags* pouFlags = theApp.pouGetFlagsPtr();
+
     switch (wParam)
     {
         case LOG_ENABLE_DISABLE:
@@ -12054,6 +12450,7 @@ LRESULT CMainFrame::OnMessageFromUserDll(WPARAM wParam, LPARAM lParam)
             {
                 BOOL bEnable = pouFlags->nGetFlagStatus(LOGTOFILE);
                 BOOL bRequest = (BOOL)lParam;
+
                 if (bRequest != bEnable)
                 {
                     OnLogEnable();
@@ -12061,12 +12458,14 @@ LRESULT CMainFrame::OnMessageFromUserDll(WPARAM wParam, LPARAM lParam)
             }
         }
         break;
+
         case DIS_CONNECT:
         {
             if (pouFlags != NULL)
             {
                 BOOL bConnect = pouFlags->nGetFlagStatus(CONNECTED);
                 BOOL bRequest = (BOOL)lParam;
+
                 if (bRequest != bConnect)
                 {
                     OnFileConnect();
@@ -12074,33 +12473,39 @@ LRESULT CMainFrame::OnMessageFromUserDll(WPARAM wParam, LPARAM lParam)
             }
         }
         break;
+
         case WRITE_TO_LOGFILE:
         {
             char* pacText = (char*)lParam;
             CString omText;
             omText.Format("%s", A2T(pacText));
+
             if (sg_pouFrameProcCAN != NULL)
             {
                 sg_pouFrameProcCAN->FPC_LogString(omText);
             }
         }
         break;
+
         case RESET_HARDWARE_CONTROLLER:
         {
             OnFunctionsResetHardware();
         }
         break;
+
         default:
         {
         }
         break;
     }
+
     return 0;
 }
 //initializes Busstatistics for can where user selects different driver.
 void CMainFrame::vInitializeBusStatCAN(void)
 {
     GetICANBusStat()->BSC_DoInitialization();
+
     for (int i = 0; i < defNO_OF_CHANNELS; i++)
     {
         GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate));
@@ -12109,114 +12514,123 @@ void CMainFrame::vInitializeBusStatCAN(void)
 
 void CMainFrame::vInitializeGraphWndReadBuffer()
 {
-	if (g_pouDIL_CAN_Interface != NULL)
+    if (g_pouDIL_CAN_Interface != NULL)
     {
         DWORD dwClientId = 0;
         g_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, dwClientId, CAN_MONITOR_NODE);
+
         if (g_pouDIL_CAN_Interface->DILC_ManageMsgBuf(MSGBUF_ADD, dwClientId, &m_ouCanBuf) != S_OK)
         {
-			TRACE("The function vInitializeGraphWndReadBuffer() failed.");
+            TRACE("The function vInitializeGraphWndReadBuffer() failed.");
         }
     }
 }
 void CMainFrame::OnConfigureSignalgraphwindow()
 {
-	LONG lParam = 0;
-	UINT nHardware = 0;
-	if(g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
-	{
-		nHardware = (UINT)lParam;
-	}
+    LONG lParam = 0;
+    UINT nHardware = 0;
 
-	CSigGrphConfigDlg objSigGrphCnfg(nHardware);
-	objSigGrphCnfg.m_pMainFrame = this;
-	objSigGrphCnfg.DoModal();
-	for(short eBusType = CAN; eBusType< MAX_PROTOCOL; eBusType++)
-		m_objSigGrphHandler.SetSignalListDetails(eBusType, &m_odGraphList[eBusType]);
+    if(g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
+    {
+        nHardware = (UINT)lParam;
+    }
+
+    CSigGrphConfigDlg objSigGrphCnfg(nHardware);
+    objSigGrphCnfg.m_pMainFrame = this;
+    objSigGrphCnfg.DoModal();
+
+    for(short eBusType = CAN; eBusType< MAX_PROTOCOL; eBusType++)
+    {
+        m_objSigGrphHandler.SetSignalListDetails(eBusType, &m_odGraphList[eBusType]);
+    }
 }
 
 void CMainFrame::OnUpdateConfigureSignalgraphwindow(CCmdUI* /*pCmdUI*/)
-{	
+{
 }
 
 void CMainFrame::OnSignalgraphwindowCAN()
 {
-	if ( m_objSigGrphHandler.bIsWindowVisible(CAN) == FALSE )
-	{
-		m_objSigGrphHandler.CreateGraphWindow(this, CAN);
-		m_objSigGrphHandler.SetSignalListDetails(CAN, &m_odGraphList[CAN]);
+    if ( m_objSigGrphHandler.bIsWindowVisible(CAN) == FALSE )
+    {
+        m_objSigGrphHandler.CreateGraphWindow(this, CAN);
+        m_objSigGrphHandler.SetSignalListDetails(CAN, &m_odGraphList[CAN]);
+        CFlags* pouFlags = NULL;
+        pouFlags   = theApp.pouGetFlagsPtr();
 
-		CFlags* pouFlags = NULL;
-		pouFlags   = theApp.pouGetFlagsPtr();
-		if(pouFlags != NULL)
-		{        
-			BOOL bConnected = pouFlags->nGetFlagStatus(CONNECTED);
-			eUSERSELCTION eUserSel = eCONNECTCMD;
-			m_objSigGrphHandler.vPostMessageToSGWnd(CAN, WM_USER_CMD, 
-												(WPARAM)eUserSel,bConnected);			
-		}
-		m_objSigGrphHandler.ShowGraphWindow(CAN, SW_SHOW);
-	}
-	else
-	{
-		m_objSigGrphHandler.ShowGraphWindow(CAN, SW_HIDE);
-	}
+        if(pouFlags != NULL)
+        {
+            BOOL bConnected = pouFlags->nGetFlagStatus(CONNECTED);
+            eUSERSELCTION eUserSel = eCONNECTCMD;
+            m_objSigGrphHandler.vPostMessageToSGWnd(CAN, WM_USER_CMD,
+                                                    (WPARAM)eUserSel,bConnected);
+        }
+
+        m_objSigGrphHandler.ShowGraphWindow(CAN, SW_SHOW);
+    }
+    else
+    {
+        m_objSigGrphHandler.ShowGraphWindow(CAN, SW_HIDE);
+    }
 }
 
-void CMainFrame::OnUpdateSignalgraphwindowCAN(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateSignalgraphwindowCAN(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(m_objSigGrphHandler.bIsWindowVisible(CAN));	
+    pCmdUI->SetCheck(m_objSigGrphHandler.bIsWindowVisible(CAN));
 }
 
 void CMainFrame::OnSignalgraphwindowMcnet()
 {
-	m_objSigGrphHandler.CreateGraphWindow(this, MCNET);	
-	m_objSigGrphHandler.SetSignalListDetails(MCNET, &m_odGraphList[MCNET]);
-	CFlags* pouFlags = NULL;
+    m_objSigGrphHandler.CreateGraphWindow(this, MCNET);
+    m_objSigGrphHandler.SetSignalListDetails(MCNET, &m_odGraphList[MCNET]);
+    CFlags* pouFlags = NULL;
     pouFlags   = theApp.pouGetFlagsPtr();
+
     if(pouFlags != NULL)
-    {        
+    {
         BOOL bConnected = pouFlags->nGetFlagStatus(CONNECTED);
-		eUSERSELCTION eUserSel = eCONNECTCMD;
-		m_objSigGrphHandler.vPostMessageToSGWnd(MCNET, WM_USER_CMD, 
-											(WPARAM)eUserSel,bConnected);			
-	}
-	m_objSigGrphHandler.ShowGraphWindow(MCNET, SW_SHOW);
+        eUSERSELCTION eUserSel = eCONNECTCMD;
+        m_objSigGrphHandler.vPostMessageToSGWnd(MCNET, WM_USER_CMD,
+                                                (WPARAM)eUserSel,bConnected);
+    }
+
+    m_objSigGrphHandler.ShowGraphWindow(MCNET, SW_SHOW);
 }
 
-void CMainFrame::OnUpdateSignalgraphwindowMcnet(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateSignalgraphwindowMcnet(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(m_objSigGrphHandler.bIsWindowVisible(MCNET));
+    pCmdUI->SetCheck(m_objSigGrphHandler.bIsWindowVisible(MCNET));
 }
 
 void CMainFrame::vPostConfigChangeCmdToSigGrphWnds()
 {
-	for(register int nBusID = CAN; nBusID < AVAILABLE_PROTOCOLS; nBusID++)
-	{
-		m_objSigGrphHandler.vPostMessageToSGWnd((SHORT)nBusID, WM_USER_CMD,
-												(WPARAM)eCONFIGCHANGECMD, NULL);
-	}
+    for(register int nBusID = CAN; nBusID < AVAILABLE_PROTOCOLS; nBusID++)
+    {
+        m_objSigGrphHandler.vPostMessageToSGWnd((SHORT)nBusID, WM_USER_CMD,
+                                                (WPARAM)eCONFIGCHANGECMD, NULL);
+    }
 }
 
 // START J1939 RELATED HANDLERS
 void CMainFrame::OnActivateJ1939()
 {
     HRESULT Result = S_FALSE;
+
     if ((NULL == sg_pouIJ1939DIL) && (NULL == sg_pouIJ1939Logger))
     {
-        Result = ProcessJ1939Interfaces(); 
-		m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)J1939);
+        Result = ProcessJ1939Interfaces();
+        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)J1939);
     }
     else
     {
         Result = DeselectJ1939Interfaces();
-		m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
+        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
     }
-       
+
     ASSERT(Result == S_OK);
 }
 
-void CMainFrame::OnUpdateActivateJ1939(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateActivateJ1939(CCmdUI* pCmdUI)
 {
     /* Enable this menu item ONLY when CAN interface is available. The handler
     is NOT to be invoked after successful querying of J1939 interfaces. So
@@ -12245,7 +12659,7 @@ void CMainFrame::OnJ1939ConfigLog()
     vConfigureLogFile(J1939);
 }
 
-void CMainFrame::OnUpdateJ1939ConfigLog(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateJ1939ConfigLog(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable(NULL != sg_pouIJ1939Logger);
 }
@@ -12257,20 +12671,22 @@ void CMainFrame::OnActionJ1939Online()
         if (sg_pouIJ1939DIL->DILIJ_GoOnline() == S_OK)
         {
             theApp.bWriteIntoTraceWnd("DIL.J1939 network started...");
+            GetIJ1939DIL()->DILIJ_NM_GetByteAddres(m_sJ1939ClientParam.m_byAddress,
+                                                   m_sJ1939ClientParam.m_dwClientId);
 
-            GetIJ1939DIL()->DILIJ_NM_GetByteAddres(m_sJ1939ClientParam.m_byAddress, 
-                                                m_sJ1939ClientParam.m_dwClientId);
             if (m_pouTxMsgWndJ1939 != NULL)
             {
                 m_pouTxMsgWndJ1939->vSetJ1939ClientParam(m_sJ1939ClientParam);
                 CFlags* pouFlags = theApp.pouGetFlagsPtr();
+
                 if (pouFlags != NULL)
                 {
                     BOOL bConnected = pouFlags->nGetFlagStatus(CONNECTED);
+
                     if (bConnected == TRUE)
                     {
-                        ::SendMessage(m_pouTxMsgWndJ1939->GetSafeHwnd(), 
-                                        WM_CONNECT_CHANGE, (WPARAM)TRUE, (LPARAM)TRUE);
+                        ::SendMessage(m_pouTxMsgWndJ1939->GetSafeHwnd(),
+                                      WM_CONNECT_CHANGE, (WPARAM)TRUE, (LPARAM)TRUE);
                     }
                 }
             }
@@ -12284,9 +12700,10 @@ void CMainFrame::OnActionJ1939Online()
     {
         if (m_pouTxMsgWndJ1939 != NULL)
         {
-            ::SendMessage(m_pouTxMsgWndJ1939->GetSafeHwnd(), 
-                WM_CONNECT_CHANGE, (WPARAM)FALSE, 0);
+            ::SendMessage(m_pouTxMsgWndJ1939->GetSafeHwnd(),
+                          WM_CONNECT_CHANGE, (WPARAM)FALSE, 0);
         }
+
         if (sg_pouIJ1939DIL->DILIJ_GoOffline() == S_OK)
         {
             theApp.bWriteIntoTraceWnd("DIL.J1939 network stopped...");
@@ -12294,11 +12711,12 @@ void CMainFrame::OnActionJ1939Online()
     }
 }
 
-void CMainFrame::OnUpdateActionJ1939Online(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateActionJ1939Online(CCmdUI* pCmdUI)
 {
     if (NULL != sg_pouIJ1939DIL)
     {
         pCmdUI->Enable(TRUE);
+
         if (sg_pouIJ1939DIL->DILIJ_bIsOnline() == TRUE)
         {
             pCmdUI->SetText(_T("Go Offline"));
@@ -12317,36 +12735,39 @@ void CMainFrame::OnUpdateActionJ1939Online(CCmdUI *pCmdUI)
 void CMainFrame::OnActionJ1939TxMessage()
 {
     if (m_pouTxMsgWndJ1939 == NULL)
-    {        
+    {
         m_pouTxMsgWndJ1939 = new CTxMsgWndJ1939(this, m_sJ1939ClientParam);
         m_pouTxMsgWndJ1939->Create(IDD_DLG_TX);
     }
+
     m_pouTxMsgWndJ1939->ShowWindow(SW_SHOW);
 }
 
-void CMainFrame::OnUpdateActionJ1939TxMessage(CCmdUI *pCmdUI)
-{   
+void CMainFrame::OnUpdateActionJ1939TxMessage(CCmdUI* pCmdUI)
+{
     pCmdUI->Enable(sg_pouIJ1939DIL && sg_pouIJ1939DIL->DILIJ_bIsOnline());
 }
 
 void CMainFrame::OnActionJ1939Log()
 {
-	// Enable Logging or stop logging
+    // Enable Logging or stop logging
     if (NULL != sg_pouIJ1939Logger)
     {
-		BOOL bEnable = !sg_pouIJ1939Logger->FPJ1_IsLoggingON();		
-		if (bEnable)
-		{
-			vSetAssociatedDatabaseFiles(J1939);	// Update the db file names associated
-			vSetBaudRateInfo(J1939);				// Update the baud rate details
-		}
-		sg_pouIJ1939Logger->FPJ1_EnableLogging(bEnable);
+        BOOL bEnable = !sg_pouIJ1939Logger->FPJ1_IsLoggingON();
+
+        if (bEnable)
+        {
+            vSetAssociatedDatabaseFiles(J1939); // Update the db file names associated
+            vSetBaudRateInfo(J1939);                // Update the baud rate details
+        }
+
+        sg_pouIJ1939Logger->FPJ1_EnableLogging(bEnable);
     }
 
     /*sg_pouIJ1939Logger->FPJ1_EnableLogging(!sg_pouIJ1939Logger->FPJ1_IsLoggingON());*/
 }
 
-void CMainFrame::OnUpdateActionJ1939Log(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateActionJ1939Log(CCmdUI* pCmdUI)
 {
     if (NULL != sg_pouIJ1939Logger)
     {
@@ -12362,10 +12783,10 @@ void CMainFrame::OnUpdateActionJ1939Log(CCmdUI *pCmdUI)
 
 void CMainFrame::OnToolbarJ1939()
 {
-	ToggleView(m_wndToolbarJ1939);
+    ToggleView(m_wndToolbarJ1939);
 }
 
-void CMainFrame::OnUpdateToolbarJ1939(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateToolbarJ1939(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarJ1939));
 }
@@ -12377,28 +12798,30 @@ void CMainFrame::OnUpdateToolbarJ1939(CCmdUI *pCmdUI)
 HRESULT CMainFrame::ProcessJ1939Interfaces(void)
 {
     HRESULT Result = S_FALSE;
-
     theApp.bWriteIntoTraceWnd("Querying DIL.J1939 ...");
+
     if (NULL != (sg_pouIJ1939DIL = GetIJ1939DIL())) // Successfully get the DIL interface
     {
         theApp.bWriteIntoTraceWnd("DIL.J1939 query successful...");
         // Now update the global status
         GetIFlags()->vSetFlagStatus(ACTIVATED_J1939, (int) TRUE);
-
         // Initialise the interface and register
         Result = sg_pouIJ1939DIL->DILIJ_Initialise(&m_ouWrapperLogger, GetICANDIL());
+
         if (S_OK == Result)
         {
             theApp.bWriteIntoTraceWnd("DIL.J1939 initialisation successful...");
-            Result = sg_pouIJ1939DIL->DILIJ_RegisterClient(TRUE, 
-                    J1939_MONITOR_NODE, J1939_ECU_NAME, 0, m_sJ1939ClientParam.m_dwClientId);
+            Result = sg_pouIJ1939DIL->DILIJ_RegisterClient(TRUE,
+                     J1939_MONITOR_NODE, J1939_ECU_NAME, 0, m_sJ1939ClientParam.m_dwClientId);
+
             if (Result == S_OK || Result == ERR_CLIENT_EXISTS)
             {
                 strcpy_s(m_sJ1939ClientParam.m_acName, J1939_MONITOR_NODE);
                 m_sJ1939ClientParam.m_unEcuName = J1939_ECU_NAME;
-				m_podMsgWndThread->vUpdateClientID(J1939, m_sJ1939ClientParam.m_dwClientId);
-				m_podMsgWndThread->vSetDILInterfacePointer(J1939, (void**)&(sg_pouIJ1939DIL));
+                m_podMsgWndThread->vUpdateClientID(J1939, m_sJ1939ClientParam.m_dwClientId);
+                m_podMsgWndThread->vSetDILInterfacePointer(J1939, (void**)&(sg_pouIJ1939DIL));
                 vReRegisterAllJ1939Nodes();
+
                 if (sg_pouSWInterface[J1939] == NULL)//Signal watch J1939
                 {
                     if (SW_GetInterface(J1939, (void**)&sg_pouSWInterface[J1939]) == S_OK)
@@ -12416,22 +12839,21 @@ HRESULT CMainFrame::ProcessJ1939Interfaces(void)
         {
             theApp.bWriteIntoTraceWnd("DIL.J1939 initialisation failed...");
         }
+
         // If everything so far is successful, get hold of the logger interface
-        if (S_OK == Result) 
+        if (S_OK == Result)
         {
             theApp.bWriteIntoTraceWnd("DIL.J1939 client registration successful...");
             sg_pouIJ1939Logger = GetIJ1939Logger(); // First query logger interface
+
             if (NULL != sg_pouIJ1939Logger)
             {
                 theApp.bWriteIntoTraceWnd("J1939 logger query successful...");
-
                 // Next initialise the interface
                 CParamLoggerJ1939 ouParam;
-
                 CString omVerStr(_T(""));       // First get the version information
                 omVerStr.Format(IDS_VERSION);   // string from the rsource
-				strcpy_s(ouParam.m_acVersion, omVerStr.GetBuffer(MAX_CHAR));
-
+                strcpy_s(ouParam.m_acVersion, omVerStr.GetBuffer(MAX_CHAR));
                 ouParam.m_pILog = &m_ouWrapperLogger;
                 ouParam.dwClientID = m_sJ1939ClientParam.m_dwClientId;
                 Result = sg_pouIJ1939Logger->FPJ1_DoInitialisation(&ouParam);
@@ -12460,6 +12882,7 @@ HRESULT CMainFrame::ProcessJ1939Interfaces(void)
     {
         theApp.bWriteIntoTraceWnd("Query of DIL.J1939 failed...");
     }
+
     return Result;
 }
 
@@ -12473,12 +12896,14 @@ HRESULT CMainFrame::DeselectJ1939Interfaces(void)
         if (sg_pouIJ1939Logger->FPJ1_IsLoggingON() == TRUE)
         {
             theApp.bWriteIntoTraceWnd("Stopping J1939 logging...");
+
             if (sg_pouIJ1939Logger->FPJ1_EnableLogging(FALSE) != S_OK)
             {
                 theApp.bWriteIntoTraceWnd("Stopping J1939 logging failed...");
                 Result = S_FALSE;
             }
         }
+
         // Logger interface needs a reinitialisation next time. Set the pointer to
         // NULL to update the GUI accordingly.
         sg_pouIJ1939Logger = NULL;
@@ -12490,16 +12915,20 @@ HRESULT CMainFrame::DeselectJ1939Interfaces(void)
         {
             ::SendMessage(m_pouTxMsgWndJ1939->GetSafeHwnd(), WM_CONNECT_CHANGE, (WPARAM)FALSE, 0);
         }
+
         if (sg_pouIJ1939DIL->DILIJ_bIsOnline() == TRUE)
         {
             theApp.bWriteIntoTraceWnd("Going Offline...");
+
             if (sg_pouIJ1939DIL->DILIJ_GoOffline() != S_OK)
             {
                 theApp.bWriteIntoTraceWnd("Going Offline failed...");
                 Result = S_FALSE;
             }
         }
+
         theApp.bWriteIntoTraceWnd("Uninitialising DIL.J1939...");
+
         if (sg_pouIJ1939DIL->DILIJ_Uninitialise() != S_OK)
         {
             theApp.bWriteIntoTraceWnd("Uninitialising DIL.J1939 failed...");
@@ -12509,6 +12938,7 @@ HRESULT CMainFrame::DeselectJ1939Interfaces(void)
         {
             theApp.bWriteIntoTraceWnd("Done...");
         }
+
         // Update the global status and reset the inteface pointer to NULL.
         GetIFlags()->vSetFlagStatus(ACTIVATED_J1939, (int) FALSE);
         sg_pouIJ1939DIL = NULL;
@@ -12522,9 +12952,9 @@ void CMainFrame::vConfigureLogFile(ETYPE_BUS eCurrBus)
     if (J1939 == eCurrBus)
     {
         if (NULL != sg_pouIJ1939Logger)
-        {		
-            CConfigMsgLogDlg omDlg(J1939, (void *) sg_pouIJ1939Logger, m_abLogOnConnect[J1939], this, 
-                                (void *) &m_sFilterAppliedJ1939);
+        {
+            CConfigMsgLogDlg omDlg(J1939, (void*) sg_pouIJ1939Logger, m_abLogOnConnect[J1939], this,
+                                   (void*) &m_sFilterAppliedJ1939);
             sg_pouIJ1939Logger->FPJ1_StartEditingSession(); // Start the editing session
             omDlg.vSetLogFileONOFF(sg_pouIJ1939Logger->FPJ1_IsLoggingON());
             BOOL bToConfirm = (omDlg.DoModal() == IDOK);
@@ -12540,20 +12970,21 @@ void CMainFrame::OnJ1939ConfigureTimeouts()
     omDlg.DoModal();
 }
 
-void CMainFrame::OnUpdateJ1939Timeouts(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateJ1939Timeouts(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable(NULL != sg_pouIJ1939DIL);
 }
 
-void CMainFrame::OnUpdateJ1939DBNew(CCmdUI *pCmdUI)
-{    
-	pCmdUI->Enable( !CMsgSignalDBWnd::sm_bValidJ1939Wnd );
+void CMainFrame::OnUpdateJ1939DBNew(CCmdUI* pCmdUI)
+{
+    pCmdUI->Enable( !CMsgSignalDBWnd::sm_bValidJ1939Wnd );
 }
 
 static void vGetNewJ1939DBName(CString& omString)
 {
     UINT unCount = 1;
     BOOL bContinue = TRUE;
+
     while (bContinue == TRUE)
     {
         CString omStrDbName = NEW_DATABASE_NAME_J1939;
@@ -12563,7 +12994,8 @@ static void vGetNewJ1939DBName(CString& omString)
         omStr += DATABASE_EXTN;
         omStrDbName += omStr;
         // file-attribute information
-        struct _finddata_t fileinfo;    
+        struct _finddata_t fileinfo;
+
         // Auto Select DB File
         if (_findfirst( omStrDbName, &fileinfo)== -1L)
         {
@@ -12578,17 +13010,18 @@ static BOOL bCreateStudioFile(CString& omDefaultFileName)
     CStdioFile om_File;
     TRY
     {
-		CFileDialog fileDlg(FALSE, DATABASE_EXTN, omDefaultFileName.GetBuffer(MAX_CHAR), 
-                            OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, DATABASE_FILTER);
+        CFileDialog fileDlg(FALSE, DATABASE_EXTN, omDefaultFileName.GetBuffer(MAX_CHAR),
+        OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, DATABASE_FILTER);
+
         if (fileDlg.DoModal() == IDOK)
         {
             omDefaultFileName = fileDlg.GetPathName();
             bResult = TRUE;
-        
+
             // create the selected file
             if (om_File.Open(omDefaultFileName,
-                            CFile::modeCreate | CFile::modeRead | 
-                            CFile::typeText))
+            CFile::modeCreate | CFile::modeRead |
+            CFile::typeText))
             {
                 om_File.Close();
             }
@@ -12601,45 +13034,43 @@ static BOOL bCreateStudioFile(CString& omDefaultFileName)
             LPTSTR lpszError = NULL;
             // Get error
             om_Fe->GetErrorMessage( lpszError, 255);
-
             AfxMessageBox( lpszError, NULL, MB_OK );
-        
             om_Fe->Delete();
         }
     }
     END_CATCH_ALL
-
     return bResult;
 }
 
 void CMainFrame::OnJ1939DBNew()
 {
-    
     // Check if any database is already open
     if (CMsgSignalDBWnd::sm_bValidJ1939Wnd == TRUE)
     {
         // Some database is open
         // Flash a message as to whether the user
         // wants to open another database
-        INT nReturn = 
+        INT nReturn =
             AfxMessageBox( "Are you sure you want to close the \ndatabase that is already open?", MB_YESNO, MB_ICONINFORMATION);
+
         if ( nReturn == IDYES)
         {
             // Close the database that was open
             OnJ1939DBClose();
         }
     }
+
     if (m_pouActiveDbJ1939 == NULL)
     {
         m_pouActiveDbJ1939 = new CMsgSignal(sg_asDbParams[J1939], FALSE);
-    }	
+    }
 
-	if (NULL != m_podMsgSgWndJ1939 && !IsWindow(m_podMsgSgWndJ1939->m_hWnd))
-	{
-		m_podMsgSgWndJ1939 = NULL;
-	}
+    if (NULL != m_podMsgSgWndJ1939 && !IsWindow(m_podMsgSgWndJ1939->m_hWnd))
+    {
+        m_podMsgSgWndJ1939 = NULL;
+    }
 
-	if (m_podMsgSgWndJ1939 == NULL)
+    if (m_podMsgSgWndJ1939 == NULL)
     {
         sg_asDbParams[J1939].m_ppvActiveDB = (void**)&m_pouActiveDbJ1939;
         sg_asDbParams[J1939].m_ppvImportedDBs = (void**)&m_pouMsgSigJ1939;
@@ -12647,28 +13078,28 @@ void CMainFrame::OnJ1939DBNew()
     }
 
     if (m_podMsgSgWndJ1939 != NULL)
-    {        
+    {
         vGetNewJ1939DBName(m_omJ1939DBName);
-		if (bCreateStudioFile(m_omJ1939DBName) == TRUE)
-		{
-			sg_asDbParams[J1939].m_omDBPath = m_omJ1939DBName;
-			m_podMsgSgWndJ1939->vSetDBName(m_omJ1939DBName);
 
-			if ( !m_podMsgSgWndJ1939->Create(  NULL, "Database Editor", WS_CHILD | 
-				WS_VISIBLE | WS_OVERLAPPED | WS_CAPTION |
-				WS_THICKFRAME, rectDefault, this ))
-			{
-				MessageBox( "Create BUSMASTER Database Window Failed!",
-					NULL, MB_OK|MB_ICONERROR );
-				return;
-			}
+        if (bCreateStudioFile(m_omJ1939DBName) == TRUE)
+        {
+            sg_asDbParams[J1939].m_omDBPath = m_omJ1939DBName;
+            m_podMsgSgWndJ1939->vSetDBName(m_omJ1939DBName);
 
-			CMsgSignalDBWnd::sm_bValidJ1939Wnd = TRUE;
-			m_podMsgSgWndJ1939->ShowWindow( SW_SHOWMAXIMIZED );
-			m_podMsgSgWndJ1939->UpdateWindow();
-		}
+            if ( !m_podMsgSgWndJ1939->Create(  NULL, "Database Editor", WS_CHILD |
+                                               WS_VISIBLE | WS_OVERLAPPED | WS_CAPTION |
+                                               WS_THICKFRAME, rectDefault, this ))
+            {
+                MessageBox( "Create BUSMASTER Database Window Failed!",
+                            NULL, MB_OK|MB_ICONERROR );
+                return;
+            }
+
+            CMsgSignalDBWnd::sm_bValidJ1939Wnd = TRUE;
+            m_podMsgSgWndJ1939->ShowWindow( SW_SHOWMAXIMIZED );
+            m_podMsgSgWndJ1939->UpdateWindow();
+        }
     }
-    
 }
 
 void CMainFrame::OnJ1939DBOpen()
@@ -12679,25 +13110,27 @@ void CMainFrame::OnJ1939DBOpen()
         // Some database is open
         // Flash a message as to whether the user
         // wants to open another database
-        INT nReturn = 
+        INT nReturn =
             AfxMessageBox( "Are you sure you want to close the \ndatabase that is already open?", MB_YESNO, MB_ICONINFORMATION);
+
         if ( nReturn == IDYES)
         {
             // Close the database that was open
             OnJ1939DBClose();
         }
-		else
-		{
-			return;
-		}
+        else
+        {
+            return;
+        }
     }
+
     // Display a open file dialog
     CFileDialog fileDlg( TRUE,      // Open File dialog
-                            "dbf",     // Default Extension,
-                            NULL,                              
-                            OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-                            "J1939 Database File(s)(*.dbf)|*.dbf||",
-                            NULL );
+                         "dbf",     // Default Extension,
+                         NULL,
+                         OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+                         "J1939 Database File(s)(*.dbf)|*.dbf||",
+                         NULL );
     // Set Title
     fileDlg.m_ofn.lpstrTitle  = _T("Select J1939 Database Filename...");
 
@@ -12705,6 +13138,7 @@ void CMainFrame::OnJ1939DBOpen()
     {
         CString strExtName  = fileDlg.GetFileExt();
         CString strDbName   = fileDlg.GetPathName();
+
         if ( strDbName.ReverseFind('.') )
         {
             strDbName = strDbName.Left( strDbName.ReverseFind('.') + 1);
@@ -12712,9 +13146,11 @@ void CMainFrame::OnJ1939DBOpen()
             strDbName += strExtName;
             m_omJ1939DBName = strDbName;
         }
+
         BOOL bDisplayEditor = FALSE;
         // file-attribute information
         struct _finddata_t fileinfo;
+
         // Auto Select DB File
         if (_findfirst( strDbName, &fileinfo)!= -1L)
         {
@@ -12725,6 +13161,7 @@ void CMainFrame::OnJ1939DBOpen()
                 sg_asDbParams[J1939].m_ppvImportedDBs = (void**)&m_pouMsgSigJ1939;
                 m_pouActiveDbJ1939 = new CMsgSignal(sg_asDbParams[J1939], FALSE);
             }
+
             if (m_pouActiveDbJ1939->
                     bFillDataStructureFromDatabaseFile(strDbName))
             {
@@ -12750,26 +13187,28 @@ void CMainFrame::OnJ1939DBOpen()
             {
                 sg_asDbParams[J1939].m_omDBPath = m_omJ1939DBName;
                 m_podMsgSgWndJ1939->vSetDBName(m_omJ1939DBName);
+
                 // Create child window
                 if ( !m_podMsgSgWndJ1939->Create(NULL,
-                                            "Database Editor",
-                                            WS_CHILD | WS_VISIBLE |
-                                            WS_OVERLAPPED | WS_CAPTION |
-                                            WS_THICKFRAME, rectDefault,
-                                            this ) )
+                                                 "Database Editor",
+                                                 WS_CHILD | WS_VISIBLE |
+                                                 WS_OVERLAPPED | WS_CAPTION |
+                                                 WS_THICKFRAME, rectDefault,
+                                                 this ) )
                 {
                     MessageBox( "Create J1939 Database Window Failed!",
-                        NULL, MB_OK|MB_ICONERROR );
+                                NULL, MB_OK|MB_ICONERROR );
                     return;
                 }
+
                 CMsgSignalDBWnd::sm_bValidJ1939Wnd = TRUE;
                 m_podMsgSgWndJ1939->ShowWindow( SW_SHOWMAXIMIZED );
                 m_podMsgSgWndJ1939->UpdateWindow();
             }
             else
             {
-                AfxMessageBox(MSG_MEMORY_CONSTRAINT, 
-                                MB_OK | MB_ICONINFORMATION);
+                AfxMessageBox(MSG_MEMORY_CONSTRAINT,
+                              MB_OK | MB_ICONINFORMATION);
             }
         }
     }
@@ -12797,58 +13236,64 @@ void CMainFrame::OnJ1939DBAssociate()
     // Display a open file dialog
     TCHAR szFilters[] = _T("All Supported DataBaseFiles (*.dbf;*.dbc)|*.dbf; *.dbc|J1939 Database File(s)(*.dbf)|*.dbf|CANoe Database File(s) (*.dbc)|*.dbc||");
     CFileDialog fileDlg( TRUE,      // Open File dialog
-                            "dbf",     // Default Extension,
-                            NULL,                              
-                            OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-                            szFilters,
-                            NULL );
-
+                         "dbf",     // Default Extension,
+                         NULL,
+                         OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+                         szFilters,
+                         NULL );
     // Set Title
     fileDlg.m_ofn.lpstrTitle  = _T("Select Active Database Filename...");
 
     if ( IDOK == fileDlg.DoModal() )
     {
-		POSITION pos = NULL; 
-		pos = fileDlg.GetStartPosition();
-		while(NULL != pos)
-		{
-			CString strTempFile = fileDlg.GetNextPathName(pos);
-			strFilePathArray.Add(strTempFile);
-		}
-		CString omStrMsg = "Database File: \n ";
-		BOOL bAllFilesImported = TRUE;
-		int nFileCount = strFilePathArray.GetSize();
-		for(int nCount = 0;nCount < nFileCount;nCount++)
-		{
-			CString strTempFileName = strFilePathArray.GetAt(nCount);
-			//FALSE because it is not called using COM 
-			DWORD dError = dLoadJ1939DBFile(strTempFileName,FALSE);
-			if(E_INVALIDARG == dError)
-			{
-				bAllFilesImported = FALSE;
-				//Add the file name for warning display
-				omStrMsg += strTempFileName;
-				omStrMsg += defNEW_LINE;
-			}
-		}
-		if(bAllFilesImported == FALSE)
-		{
-			omStrMsg += " not found!";
-			MessageBox(omStrMsg,"BUSMASTER",MB_OK|MB_ICONERROR);
-		}
+        POSITION pos = NULL;
+        pos = fileDlg.GetStartPosition();
+
+        while(NULL != pos)
+        {
+            CString strTempFile = fileDlg.GetNextPathName(pos);
+            strFilePathArray.Add(strTempFile);
+        }
+
+        CString omStrMsg = "Database File: \n ";
+        BOOL bAllFilesImported = TRUE;
+        int nFileCount = strFilePathArray.GetSize();
+
+        for(int nCount = 0; nCount < nFileCount; nCount++)
+        {
+            CString strTempFileName = strFilePathArray.GetAt(nCount);
+            //FALSE because it is not called using COM
+            DWORD dError = dLoadJ1939DBFile(strTempFileName,FALSE);
+
+            if(E_INVALIDARG == dError)
+            {
+                bAllFilesImported = FALSE;
+                //Add the file name for warning display
+                omStrMsg += strTempFileName;
+                omStrMsg += defNEW_LINE;
+            }
+        }
+
+        if(bAllFilesImported == FALSE)
+        {
+            omStrMsg += " not found!";
+            MessageBox(omStrMsg,"BUSMASTER",MB_OK|MB_ICONERROR);
+        }
         else
         {
-			HWND hWnd;
-			hWnd = m_podMsgWndThread->hGetHandleMsgWnd(J1939);					
-			//Set the J1939 DB pointer in MsgFrmtWnd class
-			if(hWnd)
-			{
-				::SendMessage(hWnd, WM_NOTIFICATION_FROM_OTHER,
-								eLOAD_DATABASE,
-								(LPARAM)&(m_pouMsgSigJ1939));
-				::SendMessage(hWnd, WM_DATABASE_CHANGE, (WPARAM)TRUE, NULL);
-			}
-            vPostMsgToSendMsgDlg(J1939);			
+            HWND hWnd;
+            hWnd = m_podMsgWndThread->hGetHandleMsgWnd(J1939);
+
+            //Set the J1939 DB pointer in MsgFrmtWnd class
+            if(hWnd)
+            {
+                ::SendMessage(hWnd, WM_NOTIFICATION_FROM_OTHER,
+                              eLOAD_DATABASE,
+                              (LPARAM)&(m_pouMsgSigJ1939));
+                ::SendMessage(hWnd, WM_DATABASE_CHANGE, (WPARAM)TRUE, NULL);
+            }
+
+            vPostMsgToSendMsgDlg(J1939);
         }
     }
 }
@@ -12859,13 +13304,15 @@ void CMainFrame::OnJ1939DBDissociate()
     {
         m_pouMsgSigJ1939 = new CMsgSignal(sg_asDbParams[J1939], FALSE);
     }
+
     sg_asDbParams[J1939].m_ppvActiveDB = (void**)&(m_pouActiveDbJ1939);
     sg_asDbParams[J1939].m_ppvImportedDBs = (void**)&(m_pouMsgSigJ1939);
-	CDatabaseDissociateDlg odDBDialog(sg_asDbParams[J1939]);
-	odDBDialog.DoModal();
+    CDatabaseDissociateDlg odDBDialog(sg_asDbParams[J1939]);
+    odDBDialog.DoModal();
     //Update J1939 TxWnd
     SMSGENTRY* psMsgEntry = NULL;
     vPopulateMsgEntryFromDB(psMsgEntry, m_pouMsgSigJ1939);
+
     if (m_pouTxMsgWndJ1939 != NULL)
     {
         m_pouTxMsgWndJ1939->vSetDatabaseInfo(psMsgEntry);
@@ -12885,24 +13332,25 @@ void CMainFrame::OnJ1939CfgSimSys()
 void CMainFrame::OnJ1939LoadAll()
 {
     CStringArray omStrBuildFiles;
-	
     BOOL bSucces = GetIJ1939NodeSim()->NS_DllLoadAll(&omStrBuildFiles);
+
     if(bSucces!=TRUE)  // if the load is not successfull
-    {       
-		int nFailure = omStrBuildFiles.GetSize();
+    {
+        int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are not properly loaded:");
         CString omStrErrorMsgDummy=_T("");
-        for(int i = 0 ;i < nFailure; i++)
+
+        for(int i = 0 ; i < nFailure; i++)
         {
-            
-           omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
-           omStrErrorMsg += omStrErrorMsgDummy;
+            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsg += omStrErrorMsgDummy;
         }
+
         AfxMessageBox(omStrErrorMsg);
-    } 
+    }
 }
 
-void CMainFrame::OnUpdateJ1939LoadAll(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateJ1939LoadAll(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable(GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_LOAD));
 }
@@ -12910,23 +13358,25 @@ void CMainFrame::OnUpdateJ1939LoadAll(CCmdUI *pCmdUI)
 void CMainFrame::OnJ1939UnloadAll()
 {
     CStringArray omStrBuildFiles;
-	BOOL bSucces = GetIJ1939NodeSim()->NS_DllUnloadAll(&omStrBuildFiles);
+    BOOL bSucces = GetIJ1939NodeSim()->NS_DllUnloadAll(&omStrBuildFiles);
+
     if(bSucces!=TRUE)  // if the unload is not successfull
-    {       
-		int nFailure = omStrBuildFiles.GetSize();
+    {
+        int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are not properly unloaded:");
         CString omStrErrorMsgDummy=_T("");
-        for(int i = 0 ;i < nFailure; i++)
+
+        for(int i = 0 ; i < nFailure; i++)
         {
-            
-           omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
-           omStrErrorMsg += omStrErrorMsgDummy;
+            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsg += omStrErrorMsgDummy;
         }
+
         AfxMessageBox(omStrErrorMsg);
     }
 }
 
-void CMainFrame::OnUpdateJ1939UnloadAll(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateJ1939UnloadAll(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable(GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD));
 }
@@ -12934,24 +13384,25 @@ void CMainFrame::OnUpdateJ1939UnloadAll(CCmdUI *pCmdUI)
 void CMainFrame::OnJ1939BuildAndLoadAll()
 {
     CStringArray omStrBuildFiles;
+    BOOL bSucces = GetIJ1939NodeSim()->NS_DLLBuildLoadAll(&omStrBuildFiles);
 
-	BOOL bSucces = GetIJ1939NodeSim()->NS_DLLBuildLoadAll(&omStrBuildFiles);
     if(!bSucces)  // if the build is not successfull
     {
-		int nFailure = omStrBuildFiles.GetSize();
+        int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are either not properly build or loaded:");
         CString omStrErrorMsgDummy=_T("");
-        for(int i = 0 ;i < nFailure; i++)
+
+        for(int i = 0 ; i < nFailure; i++)
         {
-            
-           omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
-           omStrErrorMsg += omStrErrorMsgDummy;
-        }       
+            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsg += omStrErrorMsgDummy;
+        }
+
         AfxMessageBox(omStrErrorMsg);
     }
 }
 
-void CMainFrame::OnUpdateJ1939BuildAndLoadAll(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateJ1939BuildAndLoadAll(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable(GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_BUILDLOAD));
 }
@@ -12959,24 +13410,25 @@ void CMainFrame::OnUpdateJ1939BuildAndLoadAll(CCmdUI *pCmdUI)
 void CMainFrame::OnJ1939BuildAll()
 {
     CStringArray omStrBuildFiles;
+    BOOL bSucces = GetIJ1939NodeSim()->NS_DLLBuildAll(&omStrBuildFiles);
 
-	BOOL bSucces = GetIJ1939NodeSim()->NS_DLLBuildAll(&omStrBuildFiles);
     if(!bSucces)  // if the build is not successfull
     {
-		int nFailure = omStrBuildFiles.GetSize();
+        int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are either not properly build or loaded:");
         CString omStrErrorMsgDummy=_T("");
-        for(int i = 0 ;i < nFailure; i++)
+
+        for(int i = 0 ; i < nFailure; i++)
         {
-            
-           omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
-           omStrErrorMsg += omStrErrorMsgDummy;
-        }       
+            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsg += omStrErrorMsgDummy;
+        }
+
         AfxMessageBox(omStrErrorMsg);
     }
 }
 
-void CMainFrame::OnUpdateJ1939BuildAll(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateJ1939BuildAll(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable(GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_BUILD));
 }
@@ -12989,10 +13441,10 @@ void CMainFrame::OnJ1939AllMessageHandlers()
     GetIJ1939NodeSim()->NS_EnableAllMessageHandler( !bEnable );
 }
 
-void CMainFrame::OnUpdateJ1939AllMessageHandlers(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateJ1939AllMessageHandlers(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(GetIJ1939NodeSim()->NS_GetHandlerStatus(H_MSGHANDLERBUTTON));
-    BOOL bEnable = GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);    
+    BOOL bEnable = GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
     pCmdUI->Enable(bEnable);
 }
 
@@ -13004,10 +13456,10 @@ void CMainFrame::OnJ1939AllKeyHandlers()
     GetIJ1939NodeSim()->NS_EnableAllKeyHandler( !bEnable );
 }
 
-void CMainFrame::OnUpdateJ1939AllKeyHandlers(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateJ1939AllKeyHandlers(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(GetIJ1939NodeSim()->NS_GetHandlerStatus(H_KEY_HANDLER_ON));
-    BOOL bEnable = GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);    
+    BOOL bEnable = GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
     pCmdUI->Enable(bEnable);
 }
 
@@ -13019,10 +13471,10 @@ void CMainFrame::OnJ1939AllTimerHandlers()
     GetIJ1939NodeSim()->NS_EnableAllTimers( !bEnable );
 }
 
-void CMainFrame::OnUpdateJ1939AllTimerHandlers(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateJ1939AllTimerHandlers(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(GetIJ1939NodeSim()->NS_GetHandlerStatus(H_TIMERBUTTON));
-    BOOL bEnable = GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);    
+    BOOL bEnable = GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
     pCmdUI->Enable(bEnable);
 }
 
@@ -13034,22 +13486,23 @@ void CMainFrame::OnJ1939AllHandlers()
     GetIJ1939NodeSim()->NS_EnableAllHandlers( !bEnable );
 }
 
-void CMainFrame::OnUpdateJ1939AllHandlers(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateJ1939AllHandlers(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(GetIJ1939NodeSim()->NS_GetHandlerStatus(H_ALL_HANDLER));
-    BOOL bEnable = GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);    
+    BOOL bEnable = GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
     pCmdUI->Enable(bEnable);
 }
 
-void CMainFrame::OnUpdateJ1939CfgSimSys(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateJ1939CfgSimSys(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable(NULL != sg_pouIJ1939DIL);
 }
 
 void CMainFrame::OnJ1939SignalwatchAdd()
 {
-    CMsgSignal * pomDatabase = NULL;
+    CMsgSignal* pomDatabase = NULL;
     pomDatabase = m_pouMsgSigJ1939;
+
     if( pomDatabase != NULL )
     {
         if( pomDatabase->unGetNumerOfMessages() > 0)
@@ -13057,6 +13510,7 @@ void CMainFrame::OnJ1939SignalwatchAdd()
             /* Test code starts*/
             CMainEntryList odResultingList;
             vPopulateMainEntryList(&odResultingList, m_psSignalWatchList[J1939], m_pouMsgSigJ1939);
+
             if (sg_pouSWInterface[J1939] == NULL)
             {
                 if (SW_GetInterface(J1939, (void**)&sg_pouSWInterface[J1939]) == S_OK)
@@ -13064,6 +13518,7 @@ void CMainFrame::OnJ1939SignalwatchAdd()
                     sg_pouSWInterface[J1939]->SW_DoInitialization();
                 }
             }
+
             if (sg_pouSWInterface[J1939] != NULL)
             {
                 if (sg_pouSWInterface[J1939]->SW_ShowAddDelSignalsDlg(this, &odResultingList) == IDOK)
@@ -13091,6 +13546,7 @@ void CMainFrame::OnJ1939SignalwatchShow()
             sg_pouSWInterface[J1939]->SW_DoInitialization();
         }
     }
+
     if (sg_pouSWInterface[J1939] != NULL)
     {
         INT nCmd = sg_pouSWInterface[J1939]->SW_IsWindowVisible() ? SW_HIDE : SW_SHOW;
@@ -13099,7 +13555,7 @@ void CMainFrame::OnJ1939SignalwatchShow()
         sg_pouSWInterface[J1939]->SW_SetDisplayMode(bHexON);
     }
 }
-void CMainFrame::OnUpdateJ1939SignalwatchShow(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateJ1939SignalwatchShow(CCmdUI* pCmdUI)
 {
     if(pCmdUI != NULL )
     {
@@ -13115,10 +13571,9 @@ void CMainFrame::OnUpdateJ1939SignalwatchShow(CCmdUI* pCmdUI)
 }
 void CMainFrame::OnConfigureMessagedisplayJ1939()
 {
-	CPPageMessage odDBMsg(TRUE, J1939, m_pouMsgSigJ1939), odNDBMsg(FALSE, J1939, m_pouMsgSigJ1939);
+    CPPageMessage odDBMsg(TRUE, J1939, m_pouMsgSigJ1939), odNDBMsg(FALSE, J1939, m_pouMsgSigJ1939);
     CPropertySheet omAllMessages("Configure Message Display - J1939");
-	//CMsgFilterConfigPage omFilter(&m_sFilterAppliedJ1939, m_podMsgWndThread->hGetHandleMsgWnd(J1939));
-
+    //CMsgFilterConfigPage omFilter(&m_sFilterAppliedJ1939, m_podMsgWndThread->hGetHandleMsgWnd(J1939));
     /*BOOL bConnected = FALSE;
     CFlags* pouFlag      = theApp.pouGetFlagsPtr();
     // Get the connection status
@@ -13126,18 +13581,14 @@ void CMainFrame::OnConfigureMessagedisplayJ1939()
     {
         bConnected   = pouFlag->nGetFlagStatus(CONNECTED);
     }*/
-    
     omAllMessages.m_psh.dwFlags |= PSH_NOAPPLYNOW;
     omAllMessages.m_psh.dwFlags &= ~PSH_HASHELP;
     // Add Filter Page
     //omAllMessages.AddPage(&omFilter);
-
     // Add DB & NDB pages
     omAllMessages.AddPage(&odDBMsg);
     omAllMessages.AddPage(&odNDBMsg);
-
-	omAllMessages.DoModal();
-
+    omAllMessages.DoModal();
     // Show display configuration only if it is not connected
     /*if( bConnected == FALSE )
     {
@@ -13146,11 +13597,11 @@ void CMainFrame::OnConfigureMessagedisplayJ1939()
         omAllMessages.AddPage(&obMsgBuffConf);
         omAllMessages.DoModal();
 
-		if (m_podMsgWndThread != NULL)//Msg window
+        if (m_podMsgWndThread != NULL)//Msg window
         {
-			::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
+            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
                             eWINID_MSG_WND_GET_BUFFER_DETAILS, (LPARAM)m_anMsgBuffSize);
-		}
+        }
     }
     else
     {
@@ -13160,21 +13611,21 @@ void CMainFrame::OnConfigureMessagedisplayJ1939()
 
 void CMainFrame::OnToolbarCandatabase()
 {
-	ToggleView(m_wndToolbarCANDB);
+    ToggleView(m_wndToolbarCANDB);
 }
 
-void CMainFrame::OnUpdateToolbarCanDatabase(CCmdUI *pCmdUI)
+void CMainFrame::OnUpdateToolbarCanDatabase(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarCANDB));
+    pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarCANDB));
 }
 
 //venkat
 void CMainFrame::OnAutomationTSEditor(void)
 {
-    m_objTSEditorHandler.vShowTSEditorWindow((void*)this); 
+    m_objTSEditorHandler.vShowTSEditorWindow((void*)this);
 }
 void CMainFrame::OnAutomationTSExecutor(void)
 {
     m_objTSExecutorHandler.vShowTSExecutorWindow((void*)this);
-	m_objTSExecutorHandler.vSetTSEVersionInfo(VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
+    m_objTSExecutorHandler.vSetTSEVersionInfo(VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
 }

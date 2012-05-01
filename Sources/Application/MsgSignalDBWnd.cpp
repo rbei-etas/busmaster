@@ -15,11 +15,11 @@
 
 /**
  * \file      MsgSignalDBWnd.cpp
- * \brief     This file contain definition of all function of 
+ * \brief     This file contain definition of all function of
  * \author    Amarnath Shastry
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contain definition of all function of 
+ * This file contain definition of all function of
  */
 
 #include "stdafx.h"             // Contains standard include header files.
@@ -33,7 +33,7 @@
 extern CCANMonitorApp theApp;
 
 SDBPARAMS CMsgSgTreeView::sm_sDbParams = sg_asDbParams[CAN];
-SDBPARAMS CMsgSgDetView::sm_sDbParams  = sg_asDbParams[CAN];  
+SDBPARAMS CMsgSgDetView::sm_sDbParams  = sg_asDbParams[CAN];
 /////////////////////////////////////////////////////////////////////////////
 // CMsgSignalDBWnd
 
@@ -49,12 +49,12 @@ IMPLEMENT_DYNCREATE(CMsgSignalDBWnd, CMDIChildWnd)
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  15.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 CMsgSignalDBWnd::CMsgSignalDBWnd()
 {
     m_sDbParams = sg_asDbParams[CAN];
-    m_bSplitWndCreated = FALSE; // Splitter not created yet!    
+    m_bSplitWndCreated = FALSE; // Splitter not created yet!
 }
 CMsgSignalDBWnd::CMsgSignalDBWnd(const SDBPARAMS& sDbParams)
 {
@@ -72,7 +72,7 @@ CMsgSignalDBWnd::CMsgSignalDBWnd(const SDBPARAMS& sDbParams)
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  15.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
 CMsgSignalDBWnd::~CMsgSignalDBWnd()
@@ -99,13 +99,12 @@ END_MESSAGE_MAP()
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  15.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
-BOOL CMsgSignalDBWnd::PreCreateWindow(CREATESTRUCT& cs) 
+BOOL CMsgSignalDBWnd::PreCreateWindow(CREATESTRUCT& cs)
 {
-    cs.style |= WS_OVERLAPPEDWINDOW;   
-    
+    cs.style |= WS_OVERLAPPEDWINDOW;
     return CMDIChildWnd::PreCreateWindow(cs);
 }
 
@@ -121,7 +120,7 @@ BOOL CMsgSignalDBWnd::PreCreateWindow(CREATESTRUCT& cs)
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  15.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /*  Modification     :  Amitesh Bharti on 22.07.2004                          */
 /*                      Modified to set the focus to the first database       */
 /*                      message entry in the tree view                        */
@@ -129,33 +128,30 @@ BOOL CMsgSignalDBWnd::PreCreateWindow(CREATESTRUCT& cs)
 /******************************************************************************/
 
 BOOL CMsgSignalDBWnd::OnCreateClient(LPCREATESTRUCT /*lpcs*/,
-                                     CCreateContext* pContext) 
+                                     CCreateContext* pContext)
 {
     // Set Icon for DB Window
     SetIcon( theApp.LoadIcon( IDI_ICO_DB_EDITOR ), TRUE );
-
     // Create Static Splitter Window with 1 ROW and 2 COLUMNS
-    m_bSplitWndCreated  =   
-        m_omSplitterWnd.CreateStatic(   this,                   // Parent Frame Window 
+    m_bSplitWndCreated  =
+        m_omSplitterWnd.CreateStatic(   this,                   // Parent Frame Window
                                         SPLT_ONE_ROWS,          // #Rows
                                         SPLT_ONE_COLS,          // #Columns
-                                        WS_CHILD    | 
-                                        WS_VISIBLE | 
+                                        WS_CHILD    |
+                                        WS_VISIBLE |
                                         WS_BORDER,              // Window Style
-                                        AFX_IDW_PANE_FIRST);    // Splitter NOT Nested                  
-
-
+                                        AFX_IDW_PANE_FIRST);    // Splitter NOT Nested
     // Get size of Frame wnd
     CSize om_Size(0,0);
-
     vCalculateSplitterPosition(om_Size);
+
     if ( TRUE == m_bSplitWndCreated )
     {
         // Create the Right Pane for static splitter window
         CMsgSgDetView::sm_sDbParams = m_sDbParams;
-        m_bSplitWndCreated  =   
+        m_bSplitWndCreated  =
             m_omSplitterWnd.CreateView( FIRST_ROW,                      // #Row
-                                        SECOND_COL,                     // #Column      
+                                        SECOND_COL,                     // #Column
                                         RUNTIME_CLASS(CMsgSgDetView),   // View associated with
                                         om_Size,                        // Sizeof Pane
                                         pContext);
@@ -165,21 +161,24 @@ BOOL CMsgSignalDBWnd::OnCreateClient(LPCREATESTRUCT /*lpcs*/,
     {
         // Create the Left Pane for static splitter window
         CMsgSgTreeView::sm_sDbParams = m_sDbParams;
-        m_bSplitWndCreated  =   
+        m_bSplitWndCreated  =
             m_omSplitterWnd.CreateView( FIRST_ROW,                      // #Row
                                         FIRST_COL,                      // #Column
                                         RUNTIME_CLASS(CMsgSgTreeView),  // View associated with
                                         om_Size,                        //CSize( 350,100 ),                 // Sizeof Pane
                                         pContext);
     }
+
     CString omTitle = _T("DatabaseEditor - ");
     omTitle += m_sDbParams.m_omBusName;
     SetWindowText(omTitle.GetBuffer(MAX_PATH));
+
     if (m_sDbParams.m_eBus == J1939)
     {
         CMsgSignalDBWnd::sm_bValidJ1939Wnd = TRUE;
     }
-    return m_bSplitWndCreated;  
+
+    return m_bSplitWndCreated;
 }
 /******************************************************************************/
 /*  Function Name    :  vCalculateSplitterPosition                            */
@@ -193,20 +192,17 @@ BOOL CMsgSignalDBWnd::OnCreateClient(LPCREATESTRUCT /*lpcs*/,
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  15.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
-void CMsgSignalDBWnd::vCalculateSplitterPosition(CSize &cSize)
+void CMsgSignalDBWnd::vCalculateSplitterPosition(CSize& cSize)
 {
     RECT sRect;
-
     // Get its size
-    GetWindowRect( &sRect ); 
-
+    GetWindowRect( &sRect );
     // Calculate splitter position
     cSize.cx = sRect.right / 3;
     cSize.cy = sRect.bottom / 4;
-
 }
 /******************************************************************************/
 /*  Function Name    :  OnClose                                               */
@@ -214,11 +210,11 @@ void CMsgSignalDBWnd::vCalculateSplitterPosition(CSize &cSize)
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  This function will be called by the frame work whenever
-                        user click on "X" (close)button. This will delete 
-                        the memory allocated for in-active DB opend in the 
+                        user click on "X" (close)button. This will delete
+                        the memory allocated for in-active DB opend in the
                         editor.Also, prompts for saving for any change in the
                         DB editor.
-                        
+
 /*  Member of        :  CMsgSignalDBWnd                                       */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
@@ -232,52 +228,56 @@ void CMsgSignalDBWnd::vCalculateSplitterPosition(CSize &cSize)
 /*                      this new change                                       */
 /******************************************************************************/
 
-void CMsgSignalDBWnd::OnClose() 
+void CMsgSignalDBWnd::OnClose()
 {
     // Get active frame
-    CMainFrame *pFrame = 
-                static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
-    
+    CMainFrame* pFrame =
+        static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
+
     if (pFrame != NULL)
     {
         // Get appropriate data structure
         CMsgSignal** ppTempMsgSg = NULL;
-
         ppTempMsgSg = (CMsgSignal**)(m_sDbParams.m_ppvActiveDB);
-        
-        //CMsgSgDetView* podMsgSg = 
+        //CMsgSgDetView* podMsgSg =
         pFrame->podGetMsgSgDetView(m_sDbParams.m_eBus);
 
         if ((*ppTempMsgSg)->bGetModifiedFlag() == FALSE)
         {
             UINT bRetVal =  AfxMessageBox(ASK_SAVE_PROMPT,
-                                    MB_YESNO|MB_ICONQUESTION);
+                                          MB_YESNO|MB_ICONQUESTION);
+
             if ( bRetVal == IDYES )
             {
                 (*ppTempMsgSg)->
-                    bWriteIntoDatabaseFileFromDataStructure( 
-                        m_sDbParams.m_omDBPath );
+                bWriteIntoDatabaseFileFromDataStructure(
+                    m_sDbParams.m_omDBPath );
+
                 if ((*ppTempMsgSg)->bGetDBAcitveFlagStatus() == TRUE)
                 {
                     pFrame->vPostMsgToSendMsgDlg(m_sDbParams.m_eBus);
                 }
-                // Check if the modified file is being loaded or not. 
-                //If yes then prompt the user whether he wants to 
+
+                // Check if the modified file is being loaded or not.
+                //If yes then prompt the user whether he wants to
                 //import it or not.
                 CStringArray omImportedDBNames;
                 CMsgSignal** m_ppsMSTemp = (CMsgSignal**)(m_sDbParams.m_ppvImportedDBs);
+
                 if ((*m_ppsMSTemp) != NULL)
                 {
                     (*m_ppsMSTemp)->vGetDataBaseNames(&omImportedDBNames);
+
                     for (INT nDBCount = 0; nDBCount < omImportedDBNames.GetSize();
-                         nDBCount++)
+                            nDBCount++)
                     {
-                        if (m_sDbParams.m_omDBPath == 
-                            omImportedDBNames.GetAt(nDBCount))
+                        if (m_sDbParams.m_omDBPath ==
+                                omImportedDBNames.GetAt(nDBCount))
                         {
                             CString omText;
-                            omText.Format( _T("File  \"%s\"  has been modified which is currently being loaded.\nDo you want to re-import it to reflect the changes?"), 
-                                            m_sDbParams.m_omDBPath);
+                            omText.Format( _T("File  \"%s\"  has been modified which is currently being loaded.\nDo you want to re-import it to reflect the changes?"),
+                                           m_sDbParams.m_omDBPath);
+
                             if (MessageBox(omText, _T(""), MB_ICONQUESTION | MB_YESNO) == IDYES)
                             {
                                 switch (m_sDbParams.m_eBus)
@@ -287,24 +287,25 @@ void CMsgSignalDBWnd::OnClose()
                                         pFrame->dLoadDataBaseFile(m_sDbParams.m_omDBPath, FALSE);
                                     }
                                     break;
+
                                     case J1939:
                                     {
                                         pFrame->dLoadJ1939DBFile(m_sDbParams.m_omDBPath, FALSE);
                                     }
                                     break;
                                 };
-
                             }
                         }
                     }
                 }
+
                 //Checking ends
 
-				// Set the modified flag as saved
-				if (NULL != (*ppTempMsgSg))
-				{
-					(*ppTempMsgSg)->vSetModifiedFlag(TRUE);
-				}
+                // Set the modified flag as saved
+                if (NULL != (*ppTempMsgSg))
+                {
+                    (*ppTempMsgSg)->vSetModifiedFlag(TRUE);
+                }
             }
             else if( bRetVal == IDNO )
             {
@@ -317,7 +318,6 @@ void CMsgSignalDBWnd::OnClose()
                     pFrame->vSetNewDatabaseFlag(FALSE);
                 }
             }
-
         }
         else
         {
@@ -330,16 +330,16 @@ void CMsgSignalDBWnd::OnClose()
                 CFile::Remove( m_sDbParams.m_omDBPath );
                 pFrame->vSetNewDatabaseFlag(FALSE);
             }
-
         }
 
-         // delete previously allocated memory if any
-         (*ppTempMsgSg)->bDeAllocateMemoryInactive();
+        // delete previously allocated memory if any
+        (*ppTempMsgSg)->bDeAllocateMemoryInactive();
 
         // Reset the flag to indicate the closing of database window
         if (m_sDbParams.m_eBus == CAN)
         {
             CFlags* pFlags = theApp.pouGetFlagsPtr();
+
             if ( pFlags != NULL )
             {
                 pFlags->vSetFlagStatus( DBOPEN, FALSE );
@@ -349,6 +349,7 @@ void CMsgSignalDBWnd::OnClose()
         {
             CMsgSignalDBWnd::sm_bValidJ1939Wnd = FALSE;
         }
+
         CMDIChildWnd::OnClose();
     }
 }

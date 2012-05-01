@@ -40,5 +40,5 @@ public:
     void vStartStopReadThread(ETYPE_BUS eBus, BOOL bStart);
     void vDoInitailization(ETYPE_BUS eBus);
     void vBusConnected(BOOL bConnected);
-	void vSetTSEVersionInfo(BYTE bytMajor, BYTE bytMinor, BYTE bytBuild);
+    void vSetTSEVersionInfo(BYTE bytMajor, BYTE bytMinor, BYTE bytBuild);
 };

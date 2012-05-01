@@ -30,11 +30,11 @@
 
 class CWaveformSelectionDlg : public CDialog
 {
-// Construction
+    // Construction
 public:
     CWaveformSelectionDlg(CWnd* pParent, CWaveFormDataHandler* pWaveDataHandler, UINT nHardware);   // standard constructor
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CWaveformSelectionDlg)
     enum { IDD = IDD_DLG_WAVEFORM_CONFIG };
     CListCtrl   m_omListCtrlSignalWatch;
@@ -43,14 +43,14 @@ public:
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CWaveformSelectionDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
@@ -62,13 +62,13 @@ protected:
     afx_msg void OnBtnDelSubEntires();
     afx_msg void OnClickUnSelSubEntryList(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnDblclkUnSelSubEntryList(NMHDR* pNMHDR, LRESULT* pResult);
-    afx_msg void OnClickSelSubEntryList(NMHDR* pNMHDR, LRESULT* pResult);        
+    afx_msg void OnClickSelSubEntryList(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
-	//Pointer to CWaveFormDataHandler object
-	CWaveFormDataHandler* m_pWaveDataHandler;
+    //Pointer to CWaveFormDataHandler object
+    CWaveFormDataHandler* m_pWaveDataHandler;
     // Pointer to Temp List
     CMainEntryList* m_podTempCallerList;
     CMainEntryList* m_podMainCallerList;
@@ -77,7 +77,7 @@ private:
     // CString Array for Data link
     CStringArray m_omCSAData;
 
-	UINT m_nHardware;
+    UINT m_nHardware;
 
     //Functions
     // To update the signal list with signals of message ID unMsgID
@@ -91,9 +91,9 @@ private:
     // Delete temp list. Called from Close and Delete All
     BOOL bDeleteTempList();
     // Fun to get Msg and Signal name from Signal Watch List
-    BOOL bGetMainSubName(const CString &omMsgStr, 
-                           CString &omMsg, 
-                           CString &omSig); 
+    BOOL bGetMainSubName(const CString& omMsgStr,
+                         CString& omMsg,
+                         CString& omSig);
     // For deleting a signal from the Signal Watch List
     BOOL bDeleteSubEntry(UINT unMsgID, const CString& omSignal);
     // For enabling/ diabling buttons
@@ -106,17 +106,17 @@ private:
     void vPopulateSelSubEntryList();
     //Extract Id from Message name [MsgName0xID]
     UINT unGetMainEntryIDFromName(CString omMsgName);
-	void DefineUpdateWave(CListCtrl* pListCtrl,  UINT nMsgID, 
-						  CString strSignalName,sWaveformInfo& objWaveInfo);
-	void vInterPretSignalNameMsgID(CString strInterpretData, CString& strSigName, UINT& nMsgID);
+    void DefineUpdateWave(CListCtrl* pListCtrl,  UINT nMsgID,
+                          CString strSignalName,sWaveformInfo& objWaveInfo);
+    void vInterPretSignalNameMsgID(CString strInterpretData, CString& strSigName, UINT& nMsgID);
 public:
-	afx_msg void OnLvnItemchangedLstcSignal(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnNMDblclkLstcSignalWatch(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnLvnItemchangedLstcSignal(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnNMDblclkLstcSignalWatch(NMHDR* pNMHDR, LRESULT* pResult);
 protected:
-	float m_fDefAmplitude;
+    float m_fDefAmplitude;
 public:
-	afx_msg void OnBnClickedCancel();
-	afx_msg void OnBnClickedOk();
-	afx_msg void OnEnChangeEditDefaultSignalValue();
-	CComboBox m_omMsgChannel;
+    afx_msg void OnBnClickedCancel();
+    afx_msg void OnBnClickedOk();
+    afx_msg void OnEnChangeEditDefaultSignalValue();
+    CComboBox m_omMsgChannel;
 };

@@ -30,23 +30,23 @@ class CTreeItemParam
 private:
     CFlickerFreeTree       m_odTreeCtrl;
     RECT                   m_omRect;     //Rectangle will be stored to shift the position
-                                  //of window if new TreeCtrl is added
-	CFont				   m_omFont;	 // To set the font 
-    COLORREF               m_TextColour;        
+    //of window if new TreeCtrl is added
+    CFont                  m_omFont;     // To set the font
+    COLORREF               m_TextColour;
     CItemHandleArray       m_aomItemHandle;
     void vRemoveTreeCtrl(void);
 
 public:
-    static UINT     m_unID;    //This will provide the ID to the TreeCtrl 
-                                  //at the time of Create function
+    static UINT     m_unID;    //This will provide the ID to the TreeCtrl
+    //at the time of Create function
 
 public:
     CTreeItemParam(void);
-    CTreeItemParam(CWnd* pomParent, CStringArray& omStringArray, 
+    CTreeItemParam(CWnd* pomParent, CStringArray& omStringArray,
                    RECT& Rect, COLORREF TextColour);
     virtual ~CTreeItemParam();
     void vShift(LONG lExtent);    // -ve lExtent for down shifting of window
     void vUpdateTreeValues(CStringArray& omStringArray, COLORREF TextColour);
     void vShiftWindowTop(LONG lExtent);
-	void vUpdateTreeItemRect(RECT& rcNewPos);
+    void vUpdateTreeItemRect(RECT& rcNewPos);
 };

@@ -26,25 +26,25 @@
 
 class CDriverInfoDlg : public CDialog
 {
-// Construction
+    // Construction
 public:
     CDriverInfoDlg(CWnd* pParent = NULL);   // standard constructor
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CDriverInfoDlg)
     enum { IDD = IDD_DLG_DRIVERINFO };
     CString m_omStrDriverInfo;
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CDriverInfoDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions

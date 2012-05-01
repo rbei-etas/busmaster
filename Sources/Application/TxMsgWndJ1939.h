@@ -41,25 +41,25 @@ typedef struct tagMsgToBeSent
     BYTE m_byPriority;
     BYTE m_abyData[MAX_DATA_LEN_J1939];
     UINT m_unTimerVal;
-}SMSGTOBESENT;
+} SMSGTOBESENT;
 
 // CTxMsgWndJ1939 dialog
 
 class CTxMsgWndJ1939 : public CDialog
 {
-	DECLARE_DYNAMIC(CTxMsgWndJ1939)
+    DECLARE_DYNAMIC(CTxMsgWndJ1939)
 
 public:
     CTxMsgWndJ1939(CWnd* pParent, SJ1939CLIENTPARAM& sClientParam);   // standard constructor
-	virtual ~CTxMsgWndJ1939();
+    virtual ~CTxMsgWndJ1939();
 
-// Dialog Data
-	enum { IDD = IDD_DLG_TX };
+    // Dialog Data
+    enum { IDD = IDD_DLG_TX };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
 public:
     virtual BOOL OnInitDialog();
@@ -82,7 +82,7 @@ public:
     BOOL m_bThreadStarted;
     CCriticalSection m_CS_CyclicTrans;
     CCriticalSection m_CS_ConfigData;
-    
+
 public:
     afx_msg void OnBnClickedRadioNm();
     afx_msg void OnBnClickedRadioTpf();

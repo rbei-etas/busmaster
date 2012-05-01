@@ -31,7 +31,7 @@
 
 class CSignalDetailsDlg : public CDialog
 {
-// Construction
+    // Construction
 public:
     CSignalDetailsDlg( const SDBPARAMS& sParams,
                        eMODES eMode,
@@ -44,11 +44,11 @@ public:
                        CString omStrOffset = _T("0"),
                        CString omStrScale = _T("1"),
                        CWnd* pParent = NULL);   // standard constructor
-    CSignalDetailsDlg( eMODES eMode, sSIGNALS * psSigInfo,
-                                     CWnd* pParent /*=NULL*/);
-// Dialog Data
+    CSignalDetailsDlg( eMODES eMode, sSIGNALS* psSigInfo,
+                       CWnd* pParent /*=NULL*/);
+    // Dialog Data
     //{{AFX_DATA(CSignalDetailsDlg)
-	enum { IDD = IDD_DLG_SIGNAL };
+    enum { IDD = IDD_DLG_SIGNAL };
     CRadixEdit  m_odScale;
     CRadixEdit  m_odOffset;
     CRadixEdit  m_odMinValue;
@@ -62,19 +62,19 @@ public:
     CString m_omStrSignalName;
     BYTE    m_byStartBit;
     CString m_omStrUnit;
-	//}}AFX_DATA
+    //}}AFX_DATA
 
     CAlphanumiricEdit m_odNumericEdit;
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CSignalDetailsDlg)
-    public:
+public:
     virtual BOOL PreTranslateMessage(MSG* pMsg);
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
@@ -99,11 +99,11 @@ private:
     BOOL m_bLenChanged;
     CString m_omStrFirstSignalName;
     BOOL m_bDupliacateFound;
-// rajesh : 04.03.2003 : changed arguments 
-    void vCalculateMaxMinValues(SIG_VALUE &rMinVal, SIG_VALUE &rMaxVal);
+    // rajesh : 04.03.2003 : changed arguments
+    void vCalculateMaxMinValues(SIG_VALUE& rMinVal, SIG_VALUE& rMaxVal);
     // void vCalculateMaxMinValues(long &minVal, long &maxVal);
-//  krishnaswamy B.N 28.08.2003
-//  Validation of minimum and maximum values in OnOk function
+    //  krishnaswamy B.N 28.08.2003
+    //  Validation of minimum and maximum values in OnOk function
     BOOL bIsEditMinMaxValueValid();
     BOOL bIsMaximumValueValid();
     BOOL bIsMinimumValueValid();

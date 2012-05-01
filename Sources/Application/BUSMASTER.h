@@ -60,10 +60,10 @@ public:
     BOOL bGetDefaultSplitterPostion(eCONFIGDETAILS eParam, CRect omWindowSize,
                                     LPVOID* pData);
 
-	//PSSIMSYSARRAY psReturnSimsysArrayPtr();
+    //PSSIMSYSARRAY psReturnSimsysArrayPtr();
 
 public:
-	//CExecutefunc
+    //CExecutefunc
     STHREADINFO m_asUtilThread[defEVENT_TOTAL-defOFFSET_TXMSG];
     CEvent m_aomState[defEVENT_TOTAL];
     VOID vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode);
@@ -82,30 +82,30 @@ public:
     //CString m_omStrUnionPath;
     BOOL m_bFromAutomation;
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CCANMonitorApp)
-    public:
+public:
     virtual BOOL InitInstance();
     virtual void WinHelp(DWORD dwData, UINT nCmd = HELP_CONTEXT);
     virtual int ExitInstance();
     virtual CWnd* GetMainWnd();
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
     //{{AFX_MSG(CCANMonitorApp)
     afx_msg void OnAppAbout();
     afx_msg void OnFileOpen();
     afx_msg void OnFileNew();
-        // NOTE - the ClassWizard will add and remove member functions here.
-        //    DO NOT EDIT what you see in these blocks of generated code !
+    // NOTE - the ClassWizard will add and remove member functions here.
+    //    DO NOT EDIT what you see in these blocks of generated code !
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
-	BOOL bInitialiseConfiguration(BOOL bFromCom);
+    BOOL bInitialiseConfiguration(BOOL bFromCom);
     void vSetFileStorageInfo(CString oCfgFilename);
     void vDisplayConfigErrMsgbox(UINT unErrorCode, BOOL bOperation);
-    
+
     CString m_ostrConfigFilename;
     CString m_omConfigErr;
     BOOL m_bIsConfigFileLoaded;

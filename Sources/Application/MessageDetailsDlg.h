@@ -29,11 +29,11 @@
 #include "CFilesDefs_CAN.h"
 class CMessageDetailsDlg : public CDialog
 {
-// Construction
+    // Construction
 public:
-    CMessageDetailsDlg(const SDBPARAMS& sDbParams, sMESSAGE *pMsg = NULL,CWnd* pParent = NULL );   // standard constructor
-    
-// Dialog Data
+    CMessageDetailsDlg(const SDBPARAMS& sDbParams, sMESSAGE* pMsg = NULL,CWnd* pParent = NULL );   // standard constructor
+
+    // Dialog Data
     //{{AFX_DATA(CMessageDetailsDlg)
     enum { IDD = IDD_MESSAGE_DIALOG };
     CSpinButtonCtrl m_omSpinMsgLen;
@@ -44,16 +44,16 @@ public:
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMessageDetailsDlg)
-    public:
+public:
     virtual BOOL PreTranslateMessage(MSG* pMsg);
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
@@ -68,6 +68,6 @@ private:
     void vConvertToStandard();
     void vConvertToExtended();
     sMESSAGE* m_psMsgStuctPtr;
-	CAlphanumiricEdit m_odMsgNumericEdit;
+    CAlphanumiricEdit m_odMsgNumericEdit;
     SDBPARAMS m_sDbParams;
 };

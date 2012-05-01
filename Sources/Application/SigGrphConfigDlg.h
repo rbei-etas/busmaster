@@ -31,47 +31,47 @@
 
 class CSigGrphConfigDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CSigGrphConfigDlg)
+    DECLARE_DYNAMIC(CSigGrphConfigDlg)
 
 public:
-	CSigGrphConfigDlg(UINT nHardware = defNO_OF_CHANNELS,CWnd* pParent = NULL);   // standard constructor
-	virtual ~CSigGrphConfigDlg();
-	// Pointer to Main Frame
+    CSigGrphConfigDlg(UINT nHardware = defNO_OF_CHANNELS,CWnd* pParent = NULL);   // standard constructor
+    virtual ~CSigGrphConfigDlg();
+    // Pointer to Main Frame
     CMainFrame* m_pMainFrame;
- 
-// Dialog Data
-	enum { IDD = IDD_DIALOG_CONFIG_SIG_GRPH_WND };
+
+    // Dialog Data
+    enum { IDD = IDD_DIALOG_CONFIG_SIG_GRPH_WND };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 private:
-	void vEnableControls(BOOL bEnable);
-	void vPopulateElementList();
-	void vEnableDisableControls();
-	void vSetElementDetails( CGraphElement odElement );
-	void vUpdateLineDisplayOfElements(eDISPLAY_TYPE eCurrDisplay);	
-	UINT m_nHardware;
+    void vEnableControls(BOOL bEnable);
+    void vPopulateElementList();
+    void vEnableDisableControls();
+    void vSetElementDetails( CGraphElement odElement );
+    void vUpdateLineDisplayOfElements(eDISPLAY_TYPE eCurrDisplay);
+    UINT m_nHardware;
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 public:
-	virtual BOOL OnInitDialog();
-	afx_msg void OnBnClickedBtnVisible();
-	afx_msg void OnBnClickedBtnEnable();
-	afx_msg void OnBnClickedBtnConfigure();
-	CColourPicker m_omLineColor;
-	CColourPicker m_omPointColor;
-	CButton m_omBtnVisible;
-	CButton m_omBtnEnable;
-	CMessageList m_omSignalList;
-	CComboBox m_omCmbBusType;
-	afx_msg void OnCbnSelchangeComboBusType();
-	afx_msg void OnLvnItemchangedListSignals(NMHDR *pNMHDR, LRESULT *pResult);
-	int m_nSymbolType;
-	int m_nLineType;
-	afx_msg void OnBnClickedButtonGrpDispConfig();	
-	afx_msg void OnCbnSelchangeComboType();
-	afx_msg void OnCbnSelchangeComboSymbol();
-	afx_msg void OnCbnSelchangeComboDisplay();
-	afx_msg LRESULT OnColorChange( WPARAM wparam,LPARAM lparam);
+    virtual BOOL OnInitDialog();
+    afx_msg void OnBnClickedBtnVisible();
+    afx_msg void OnBnClickedBtnEnable();
+    afx_msg void OnBnClickedBtnConfigure();
+    CColourPicker m_omLineColor;
+    CColourPicker m_omPointColor;
+    CButton m_omBtnVisible;
+    CButton m_omBtnEnable;
+    CMessageList m_omSignalList;
+    CComboBox m_omCmbBusType;
+    afx_msg void OnCbnSelchangeComboBusType();
+    afx_msg void OnLvnItemchangedListSignals(NMHDR* pNMHDR, LRESULT* pResult);
+    int m_nSymbolType;
+    int m_nLineType;
+    afx_msg void OnBnClickedButtonGrpDispConfig();
+    afx_msg void OnCbnSelchangeComboType();
+    afx_msg void OnCbnSelchangeComboSymbol();
+    afx_msg void OnCbnSelchangeComboDisplay();
+    afx_msg LRESULT OnColorChange( WPARAM wparam,LPARAM lparam);
 };

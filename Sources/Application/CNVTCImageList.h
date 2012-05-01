@@ -26,18 +26,18 @@
 
 #include <afxcmn.h>
 
-class CNVTCImageList 
-	  : public CImageList  
+class CNVTCImageList
+    : public CImageList
 {
-public:				
-	BOOL bCreateCNVTC(UINT nTBID, int nCX, int nCY, COLORREF clrMask);
-	BOOL bCreateCNVTC(UINT nTBID, int nCX, int nCY);
-	BOOL bCreateCNVTC(UINT nTBID, int nCX, COLORREF clrMask);
-	BOOL bCreateCNVTC(UINT nTBID, int nCX);
-	BOOL bCreateCNVTC(UINT nTBID, COLORREF clrMask);
-	BOOL bCreateCNVTC(UINT nTBID);
+public:
+    BOOL bCreateCNVTC(UINT nTBID, int nCX, int nCY, COLORREF clrMask);
+    BOOL bCreateCNVTC(UINT nTBID, int nCX, int nCY);
+    BOOL bCreateCNVTC(UINT nTBID, int nCX, COLORREF clrMask);
+    BOOL bCreateCNVTC(UINT nTBID, int nCX);
+    BOOL bCreateCNVTC(UINT nTBID, COLORREF clrMask);
+    BOOL bCreateCNVTC(UINT nTBID);
 
 public:
-	CNVTCImageList();
-	virtual ~CNVTCImageList();
+    CNVTCImageList();
+    virtual ~CNVTCImageList();
 };

@@ -39,7 +39,7 @@ typedef void (*MSG_RX_CALL_BK)(void* pParam, ETYPE_BUS eBusType);
 extern "C" {  // only need to export C interface if used by C++ source code
 #endif
 
-USAGEMODE HRESULT PSDI_GetInterface(ETYPE_BUS eBus, void** ppvInterface);
+    USAGEMODE HRESULT PSDI_GetInterface(ETYPE_BUS eBus, void** ppvInterface);
 
 
 #ifdef __cplusplus

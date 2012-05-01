@@ -15,11 +15,11 @@
 
 /**
  * \file      MsgIDAttr.h
- * \brief     This file contains the definition of CMsgIDAttr class     
+ * \brief     This file contains the definition of CMsgIDAttr class
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contains the definition of CMsgIDAttr class     
+ * This file contains the definition of CMsgIDAttr class
  */
 
 #pragma once
@@ -28,7 +28,7 @@ class CRadixEdit;   // forward declaration
 
 class CMsgIDAttr : public CDialog
 {
-// Construction
+    // Construction
 public:
     bool m_bForEdit;
     BOOL m_bDBMessage;
@@ -36,7 +36,7 @@ public:
     COLORREF m_sColour;
     CMsgIDAttr(ETYPE_BUS eBusType, CWnd* pParent = NULL);   // standard constructor
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CMsgIDAttr)
     enum { IDD = IDD_DLG_MSGID_ATTRIB };
     CStatic m_omColourBox;
@@ -45,16 +45,16 @@ public:
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMsgIDAttr)
-	public:
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+public:
+    virtual BOOL PreTranslateMessage(MSG* pMsg);
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+    //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
@@ -63,12 +63,12 @@ protected:
     virtual BOOL OnInitDialog();
     afx_msg void OnPbtnColour();
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	//}}AFX_MSG
+    afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+    //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
     HBRUSH m_hClrBtn;
-	ETYPE_BUS m_eBusType;
+    ETYPE_BUS m_eBusType;
     // To draw a solid box with a specified colour
     //void vDrawColourBox();
 };

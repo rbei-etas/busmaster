@@ -28,31 +28,30 @@
 IMPLEMENT_DYNAMIC(CSplFileDlg, CFileDialog)
 
 /******************************************************************************/
-/*  Function Name    :  CSplFileDlg                                           */    
+/*  Function Name    :  CSplFileDlg                                           */
 /*  Input(s)         : parameter to be passed to CFileDialog constuctor and   */
 /*                     omStrButtonCaption paramter for caption of buttin text */
-/*  Output           :                                                        */    
+/*  Output           :                                                        */
 /*  Functionality    :  This is default constructor. This will initialise     */
 /*                      parent class constructor with parameter pass          */
 /*                                                                            */
-/*  Member of        :  CSplFileDlg                                           */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :  Amitesh Bharti                                        */    
-/*  Date Created     :  22.03.2002                                            */    
+/*  Member of        :  CSplFileDlg                                           */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  22.03.2002                                            */
 /*  Modification By  :                                                        */
 /*  Modification on  :                                                        */
 /******************************************************************************/
 CSplFileDlg::CSplFileDlg(BOOL bOpenFileDialog,
-                         LPCTSTR lpszDefExt, 
+                         LPCTSTR lpszDefExt,
                          LPCTSTR lpszFileName,
-                         DWORD dwFlags, 
-                         LPCTSTR lpszFilter, 
+                         DWORD dwFlags,
+                         LPCTSTR lpszFilter,
                          CWnd* pParentWnd,
                          CString omStrButtonCaption) :
-        CFileDialog(bOpenFileDialog,lpszDefExt,lpszFileName,dwFlags,lpszFilter,
-                    pParentWnd),m_omStrButtonCaption(omStrButtonCaption)
+    CFileDialog(bOpenFileDialog,lpszDefExt,lpszFileName,dwFlags,lpszFilter,
+                pParentWnd),m_omStrButtonCaption(omStrButtonCaption)
 {
-
 }
 
 
@@ -62,24 +61,24 @@ BEGIN_MESSAGE_MAP(CSplFileDlg, CFileDialog)
 END_MESSAGE_MAP()
 
 /******************************************************************************/
-/*  Function Name    :  OnInitDialog                                          */    
+/*  Function Name    :  OnInitDialog                                          */
 /*  Input(s)         :  TRUE or FALSE                                         */
-/*  Output           :                                                        */    
+/*  Output           :                                                        */
 /*  Functionality    :  This function is called by frame work before just     */
 /*                      after  DoModal is called. This will set the text      */
 /*                      caption of button to the text in m_omStrButtonCaption */
 /*                                                                            */
-/*  Member of        :  CSplFileDlg                                           */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :  Amitesh Bharti                                        */    
-/*  Date Created     :  22.03.2002                                            */    
+/*  Member of        :  CSplFileDlg                                           */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  22.03.2002                                            */
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modification on  :  12.04.2002, review comment added                      */
 /******************************************************************************/
-BOOL CSplFileDlg::OnInitDialog() 
+BOOL CSplFileDlg::OnInitDialog()
 {
     CFileDialog::OnInitDialog();
     GetParent()->GetDlgItem(IDOK)->SetWindowText(m_omStrButtonCaption);
     return TRUE;  // return TRUE unless you set the focus to a control
-                  // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }

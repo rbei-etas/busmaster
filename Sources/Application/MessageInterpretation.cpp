@@ -41,7 +41,7 @@ extern CCANMonitorApp theApp;
 /******************************************************************************
  Function Name  :   CMessageInterpretation
 
- Description    :   
+ Description    :
  Input(s)       :   CWnd* pParent =NULL, Pointer to parent window.
  Output         :   -
  Functionality  :   Default contructor
@@ -54,13 +54,12 @@ extern CCANMonitorApp theApp;
 ******************************************************************************/
 CMessageInterpretation::CMessageInterpretation(CWnd* pParent /*=NULL*/)
     : CDialog(CMessageInterpretation::IDD, pParent)
-	, m_strCaption(_T("  Message"))
+    , m_strCaption(_T("  Message"))
 {
     //{{AFX_DATA_INIT(CMessageInterpretation)
     m_omMsgName = STR_EMPTY;
     m_omMsgID = STR_EMPTY;
     //}}AFX_DATA_INIT
-
     m_hBrushStatic = CreateSolidBrush(RGB(30, 60, 150));
     m_hWndParent = NULL;
 }
@@ -68,15 +67,15 @@ CMessageInterpretation::CMessageInterpretation(CWnd* pParent /*=NULL*/)
 /******************************************************************************
  Function Name  :   DoDataExchange
 
- Description    :   
+ Description    :
  Input(s)       :   CDataExchange* pDX
  Output         :   -
- Functionality  :   
+ Functionality  :
  Member of      :   CMessageInterpretation
 
  Author(s)      :   Ratnadip Choudhury
  Date Created   :   16.02.2004
- Modifications  :   
+ Modifications  :
 ******************************************************************************/
 void CMessageInterpretation::DoDataExchange(CDataExchange* pDX)
 {
@@ -86,7 +85,7 @@ void CMessageInterpretation::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_EDIT_MSG_NAME, m_omMsgName);
     DDX_Text(pDX, IDC_EDIT_MSG_ID, m_omMsgID);
     //}}AFX_DATA_MAP
-	DDX_Text(pDX, IDC_CAPTION, m_strCaption);
+    DDX_Text(pDX, IDC_CAPTION, m_strCaption);
 }
 
 
@@ -98,15 +97,15 @@ BEGIN_MESSAGE_MAP(CMessageInterpretation, CDialog)
     ON_WM_CLOSE()
     ON_WM_CREATE()
     //}}AFX_MSG_MAP
-	ON_WM_MOVE()
+    ON_WM_MOVE()
 END_MESSAGE_MAP()
- 
+
 /////////////////////////////////////////////////////////////////////////////
 // CMessageInterpretation message handlers
 /******************************************************************************
  Function Name  :   OnSize
 
- Description    :    
+ Description    :
  Input(s)       :   UINT nType, int cx, int cy
  Output         :   -
  Functionality  :   The control is resized based on user resizing the dialog.
@@ -117,31 +116,32 @@ END_MESSAGE_MAP()
  Modifications  :   Raja N on 13.04.2004
                     Added check for minimized condition
 ******************************************************************************/
-void CMessageInterpretation::OnSize(UINT nType, int cx, int cy) 
+void CMessageInterpretation::OnSize(UINT nType, int cx, int cy)
 {
     CDialog::OnSize(nType, cx, cy);
-    
+
     // TODO: Add your message handler code here
     // Resize controls only if the window is visible
     if( nType != SIZE_MINIMIZED )
     {
         vResizeControls();
     }
-	::PostMessage(m_hWndParent, WM_UPDATE_MSG_INTRP_WND_PLC , NULL, NULL);
+
+    ::PostMessage(m_hWndParent, WM_UPDATE_MSG_INTRP_WND_PLC , NULL, NULL);
 }
 /******************************************************************************
  Function Name  :   OnCtlColor
 
- Description    :   The framework calls this member function when a child 
-                    control is about to be drawn. Most controls send this 
+ Description    :   The framework calls this member function when a child
+                    control is about to be drawn. Most controls send this
                     message to their parent (usually a dialog box) to prepare
                     the pDC for drawing the control using the correct colors.
 
- Input(s)       :   CDC* pDC       : Contains a pointer to the display context 
+ Input(s)       :   CDC* pDC       : Contains a pointer to the display context
                                      for the child window.
-                    CWnd* pWnd     : Contains a pointer to the control asking  
+                    CWnd* pWnd     : Contains a pointer to the control asking
                                      for the color. May be temporary.
-                    UINT nCtlColor : Contains one of the following values, 
+                    UINT nCtlColor : Contains one of the following values,
                                      specifying the type of control
  Output         :   HBRUSH:A handle to the brush that is to be used for painting
                     the control background.
@@ -151,36 +151,33 @@ void CMessageInterpretation::OnSize(UINT nType, int cx, int cy)
 
  Author(s)      :   Ratnadip Choudhury
  Date Created   :   16.02.2004
- Modifications  :   
+ Modifications  :
 ******************************************************************************/
-HBRUSH CMessageInterpretation::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
+HBRUSH CMessageInterpretation::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
     HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
-    
     int nCurrentCtrlID = pWnd->GetDlgCtrlID();
 
     // TODO: Change any attributes of the DC here
     if ((nCurrentCtrlID == IDC_CAPTION) ||
-        (nCurrentCtrlID == IDC_CAPTION2)
+            (nCurrentCtrlID == IDC_CAPTION2)
        )
-        
     {
         // Set the text color to white
         pDC->SetTextColor(RGB(255, 255, 255));
-
-        // Set the background mode for text to transparent 
+        // Set the background mode for text to transparent
         // so background will show thru.
         pDC->SetBkMode(TRANSPARENT);
-
         // Return handle to our CBrush object
         hbr = m_hBrushStatic;
     }
+
     return hbr;
 }
 /******************************************************************************
  Function Name  :   vResizeControls
 
- Description    :   
+ Description    :
  Input(s)       :   -
  Output         :   -
  Functionality  :   Resize the control when dialog is resized.
@@ -195,26 +192,25 @@ HBRUSH CMessageInterpretation::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 void CMessageInterpretation::vResizeControls(void)
 {
     RECT WndClientRect, CtrlRect;
-    CStatic *pomStatic = NULL;
-
+    CStatic* pomStatic = NULL;
     GetClientRect(&WndClientRect);
 
     /* Resize "Message" static control */
-    if ((pomStatic = (CStatic *) GetDlgItem(IDC_CAPTION)) != NULL)
+    if ((pomStatic = (CStatic*) GetDlgItem(IDC_CAPTION)) != NULL)
     {
         pomStatic->GetWindowRect(&CtrlRect);
         ScreenToClient(&CtrlRect);
-        pomStatic->MoveWindow(CtrlRect.left, CtrlRect.top, 
+        pomStatic->MoveWindow(CtrlRect.left, CtrlRect.top,
                               WndClientRect.right - WndClientRect.left,
                               CtrlRect.bottom - CtrlRect.top);
     }
 
     /* Resize "Signal" static control */
-    if ((pomStatic = (CStatic *) GetDlgItem(IDC_CAPTION2)) != NULL)
+    if ((pomStatic = (CStatic*) GetDlgItem(IDC_CAPTION2)) != NULL)
     {
         pomStatic->GetWindowRect(&CtrlRect);
         ScreenToClient(&CtrlRect);
-        pomStatic->MoveWindow(CtrlRect.left, CtrlRect.top, 
+        pomStatic->MoveWindow(CtrlRect.left, CtrlRect.top,
                               WndClientRect.right - WndClientRect.left,
                               CtrlRect.bottom - CtrlRect.top);
     }
@@ -227,7 +223,6 @@ void CMessageInterpretation::vResizeControls(void)
         m_ctrlSignal.MoveWindow(5, CtrlRect.top,
                                 WndClientRect.right - WndClientRect.left - 10,
                                 WndClientRect.bottom - CtrlRect.top - 5);
-
         m_ctrlSignal.GetWindowRect(&CtrlRect);
         // Get the column width
         int nWidth = (CtrlRect.right - CtrlRect.left - 20) / 3;
@@ -239,10 +234,10 @@ void CMessageInterpretation::vResizeControls(void)
 /******************************************************************************
  Function Name  :   OnShowWindow
 
- Description    :   
+ Description    :
  Input(s)       :   BOOL bShow, UINT nStatus
  Output         :   -
- Functionality  :   Notified the parent window about the display status of 
+ Functionality  :   Notified the parent window about the display status of
                     dialog by posting a message.
  Member of      :   CMessageInterpretation
 
@@ -251,22 +246,20 @@ void CMessageInterpretation::vResizeControls(void)
  Modifications  :   Raja N on 05/04/2004, Added code to save window position and
                     removed resize of controls
 ******************************************************************************/
-void CMessageInterpretation::OnShowWindow(BOOL bShow, UINT nStatus) 
+void CMessageInterpretation::OnShowWindow(BOOL bShow, UINT nStatus)
 {
     CDialog::OnShowWindow(bShow, nStatus);
-    
-    ::PostMessage(m_hWndParent, WM_NOTIFICATION_FROM_OTHER, 
+    ::PostMessage(m_hWndParent, WM_NOTIFICATION_FROM_OTHER,
                   eWINID_MSG_INTERPRETATION, (LPARAM) bShow);
-    
+
     if (bShow == TRUE)
     {
         // Set the window position
-        SetWindowPlacement(&m_sWinCurrStatus);    
+        SetWindowPlacement(&m_sWinCurrStatus);
         // Call NC paint to update title bar
         SendMessage(WM_NCPAINT, 1, 0);
         // Update Client Area
         Invalidate();
-        
     }
     else
     {
@@ -277,7 +270,7 @@ void CMessageInterpretation::OnShowWindow(BOOL bShow, UINT nStatus)
 /******************************************************************************
  Function Name  :   CMessageInterpretation
 
- Description    :   
+ Description    :
  Input(s)       :   -
  Output         :   TRUE or FALSE
  Functionality  :   Called by framework to initialise the dialog controls.
@@ -289,40 +282,39 @@ void CMessageInterpretation::OnShowWindow(BOOL bShow, UINT nStatus)
                     physical value and modified the existing column name as
                     "Raw Value". Added full row select property.
 ******************************************************************************/
-BOOL CMessageInterpretation::OnInitDialog() 
+BOOL CMessageInterpretation::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    
     // TODO: Add extra initialization here
     BOOL bRetVal = FALSE;
 
     if (m_ctrlSignal.InsertColumn(0, defSTR_SIGNAL_NAME, LVCFMT_LEFT, 110) != -1)
     {
-		if (m_ctrlSignal.InsertColumn(1, defSTR_PHYSICAL_COLUMN, LVCFMT_LEFT, 130) != -1
-            &&
-            m_ctrlSignal.InsertColumn(2, defSTR_RAW_COLUMN, LVCFMT_LEFT,      120) != -1
-			&&
-			m_ctrlSignal.InsertColumn(3, defSTR_UNITS, LVCFMT_LEFT,           120) != -1)
+        if (m_ctrlSignal.InsertColumn(1, defSTR_PHYSICAL_COLUMN, LVCFMT_LEFT, 130) != -1
+                &&
+                m_ctrlSignal.InsertColumn(2, defSTR_RAW_COLUMN, LVCFMT_LEFT,      120) != -1
+                &&
+                m_ctrlSignal.InsertColumn(3, defSTR_UNITS, LVCFMT_LEFT,           120) != -1)
         {
             bRetVal = TRUE;
             m_ctrlSignal.SetExtendedStyle(m_ctrlSignal.GetExtendedStyle()
                                           | LVS_EX_GRIDLINES
                                           | LVS_EX_FULLROWSELECT);
-        }		
+        }
     }
 
     return bRetVal; // return TRUE unless you set the focus to a control
-                    // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 /******************************************************************************
  Function Name  :   vCreateMsgIntrprtnDlg
 
- Description    :   
+ Description    :
  Input(s)       :   CWnd* pomParent: Pointer to parent window.
                     BOOL bShow : TRUE or FALSE
  Output         :   -
- Functionality  :   This function will be called from CMsgWnd to created the 
+ Functionality  :   This function will be called from CMsgWnd to created the
                     dialog. If the parameter bShow is FALSE, the dialog will
                     be created but not shown.
  Member of      :   CMessageInterpretation
@@ -342,6 +334,7 @@ void CMessageInterpretation::vCreateMsgIntrprtnDlg(CWnd* pomParent, BOOL bShow)
         this->Create(IDD_DLG_INTERPRET_MSG, pomParent);
         m_hWndParent = pomParent->m_hWnd;
         vGetWinStatus();
+
         if (bShow)
         {
             this->ShowWindow(SW_SHOW);
@@ -351,37 +344,37 @@ void CMessageInterpretation::vCreateMsgIntrprtnDlg(CWnd* pomParent, BOOL bShow)
 
 void CMessageInterpretation::vSetCaption(CString strCaption)
 {
-	this->m_strCaption = _T("  ")+strCaption;
-	this->UpdateData(FALSE);
+    this->m_strCaption = _T("  ")+strCaption;
+    this->UpdateData(FALSE);
 }
 
 /******************************************************************************
  Function Name  :   OnClose
 
- Description    :   
+ Description    :
  Input(s)       :   -
  Output         :   -
- Functionality  :   This function will be called by framework when dialog is 
-                    closed. The dialog is put in hidden state instead of 
+ Functionality  :   This function will be called by framework when dialog is
+                    closed. The dialog is put in hidden state instead of
                     closing it.
  Member of      :   CMessageInterpretation
 
  Author(s)      :   Ratnadip Choudhury
  Date Created   :   16.02.2004
- Modifications  :   
+ Modifications  :
 ******************************************************************************/
-void CMessageInterpretation::OnClose() 
+void CMessageInterpretation::OnClose()
 {
     // TODO: Add your message handler code here and/or call default
     this->ShowWindow(SW_HIDE);
-	::PostMessage(m_hWndParent, WM_UPDATE_MSG_INTRP_WND_PLC , NULL, NULL);
-    //CDialog::OnClose();	
+    ::PostMessage(m_hWndParent, WM_UPDATE_MSG_INTRP_WND_PLC , NULL, NULL);
+    //CDialog::OnClose();
 }
 /******************************************************************************
  Function Name  :   DestroyWindow
 
- Description    :   
- Input(s)       :   
+ Description    :
+ Input(s)       :
  Output         :   BOOL : TRUE or FALSE
  Functionality  :   This function is called by framework to destroy the window.
                     The brush object created is deleted in this function.
@@ -389,14 +382,15 @@ void CMessageInterpretation::OnClose()
 
  Author(s)      :   Ratnadip Choudhury
  Date Created   :   16.02.2004
- Modifications  :   
+ Modifications  :
 ******************************************************************************/
-BOOL CMessageInterpretation::DestroyWindow() 
+BOOL CMessageInterpretation::DestroyWindow()
 {
     if(m_hBrushStatic != NULL )
     {
         DeleteObject(m_hBrushStatic);
     }
+
     return CDialog::DestroyWindow();
 }
 
@@ -411,24 +405,25 @@ BOOL CMessageInterpretation::DestroyWindow()
  Output         :   -
  Functionality  :   This function is called to calculate Raw & Physical values
                     of the signals of a message id. The message ID will be sent
-                    to this fubction and Message Name, Signals, Raw Values & 
+                    to this fubction and Message Name, Signals, Raw Values &
                     Physical Values will be returned.
  Member of      :   CMessageInterpretation
  Author(s)      :   Raja N
  Date Created   :   31.03.2004
- Modifications  :   
+ Modifications  :
 *******************************************************************************/
 void CMessageInterpretation::vUpdateMessageData(UINT unMsgID,
-                                                const CString& omStrMsgName,
-                                                const CStringArray& omSASignals,
-                                                const CStringArray& omSARaw,
-                                                const CStringArray& omSAPhy,
-												const CStringArray& omSAUnits,
-                                                BOOL bHexON)
+        const CString& omStrMsgName,
+        const CStringArray& omSASignals,
+        const CStringArray& omSARaw,
+        const CStringArray& omSAPhy,
+        const CStringArray& omSAUnits,
+        BOOL bHexON)
 {
-	ASSERT(omSASignals.GetSize() == omSARaw.GetSize() ||
-            omSARaw.GetSize() == omSAPhy.GetSize());
+    ASSERT(omSASignals.GetSize() == omSARaw.GetSize() ||
+           omSARaw.GetSize() == omSAPhy.GetSize());
     BOOL bCLearFlag = FALSE;
+
     // Clear the list
     if( m_omMsgName != omStrMsgName)
     {
@@ -438,6 +433,7 @@ void CMessageInterpretation::vUpdateMessageData(UINT unMsgID,
 
     // Get the size to avoid function call in the loop
     UINT unSize = omSASignals.GetSize();
+
     // Add each items in to the list
     for( register UINT index = 0; index < unSize; index++)
     {
@@ -446,12 +442,13 @@ void CMessageInterpretation::vUpdateMessageData(UINT unMsgID,
         {
             m_ctrlSignal.InsertItem(index, omSASignals.GetAt(index));
         }
+
         // Physical Value in second col
         m_ctrlSignal.SetItemText(index, 1, omSAPhy.GetAt(index));
         //Raw Value in Third Col
         m_ctrlSignal.SetItemText(index, 2, omSARaw.GetAt(index));
-		//Units in fourth column
-		m_ctrlSignal.SetItemText(index, 3, omSAUnits.GetAt(index));
+        //Units in fourth column
+        m_ctrlSignal.SetItemText(index, 3, omSAUnits.GetAt(index));
     }
 
     // Set Message ID
@@ -460,10 +457,10 @@ void CMessageInterpretation::vUpdateMessageData(UINT unMsgID,
     // Set the Message Name
     m_omMsgName = omStrMsgName;
     // Update Values
-	GetDlgItem(IDC_EDIT_MSG_NAME)->SetWindowText(m_omMsgName);
-	GetDlgItem(IDC_EDIT_MSG_ID)->SetWindowText(m_omMsgID); 	
+    GetDlgItem(IDC_EDIT_MSG_NAME)->SetWindowText(m_omMsgName);
+    GetDlgItem(IDC_EDIT_MSG_ID)->SetWindowText(m_omMsgID);
     // Show window
-    ShowWindow(SW_SHOW);   
+    ShowWindow(SW_SHOW);
 }
 
 /******************************************************************************
@@ -480,14 +477,16 @@ void CMessageInterpretation::vUpdateMessageData(UINT unMsgID,
  Modifications    : Raja N on 18.04.2005, Modified to refer new window placement
                     identity - CRH0030
 *******************************************************************************/
-int CMessageInterpretation::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+int CMessageInterpretation::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
     int nCreateFlag = -1;
+
     if (CDialog::OnCreate(lpCreateStruct) != -1)
     {
         nCreateFlag = 0;
         vGetWinStatus();
     }
+
     return nCreateFlag;
 }
 
@@ -533,9 +532,10 @@ void CMessageInterpretation::vSaveWinStatus()
     WINDOWPLACEMENT sCurrentPosition;
     // Get current placement
     GetWindowPlacement( &sCurrentPosition );
+
     // Compare the two WINDOWPLACEMENT type structures to find out if there
     // is any modification done in the window coordinates or state. A blind
-    // bit pattern comparison between the two is justifiable because none 
+    // bit pattern comparison between the two is justifiable because none
     // of the members of the structure is a pointer.
     if (memcmp( &sCurrentPosition,
                 &m_sWinCurrStatus,
@@ -551,8 +551,8 @@ void CMessageInterpretation::vSaveWinStatus()
 
 /******************************************************************************
  Function Name  : vGetWinStatus
- Input(s)       : sWinCurrStatus - A reference to (system defined) 
-                  WINDOWPLACEMENT structure to contain previous display 
+ Input(s)       : sWinCurrStatus - A reference to (system defined)
+                  WINDOWPLACEMENT structure to contain previous display
                   status of this window to be retrieved from the registry
  Output         : -
  Functionality  : This function is called to get the display status of window
@@ -568,24 +568,25 @@ void CMessageInterpretation::vGetWinStatus()
 {
 #if 0
     // Get window postion details from the configuration file
-    WINDOWPLACEMENT * pDetails = &m_sWinCurrStatus;
+    WINDOWPLACEMENT* pDetails = &m_sWinCurrStatus;
     // Get data from the configuration module
     theApp.bGetData(MSGINTERP_WND_PLACEMENT, (void**)&pDetails);
     // Add this flag as this is required to restore minimised window postion
     // also. Refer WINDOWPLACEMENT Structure help from MSDN
     m_sWinCurrStatus.flags |= WPF_SETMINPOSITION;
-    
+
     // Check for initial condition
     if( m_sWinCurrStatus.rcNormalPosition.bottom == -1 ||
-        m_sWinCurrStatus.rcNormalPosition.top == -1 ||
-        m_sWinCurrStatus.rcNormalPosition.left == -1 ||
-        m_sWinCurrStatus.rcNormalPosition.right == -1 )
+            m_sWinCurrStatus.rcNormalPosition.top == -1 ||
+            m_sWinCurrStatus.rcNormalPosition.left == -1 ||
+            m_sWinCurrStatus.rcNormalPosition.right == -1 )
     {
         // Get Propotionate Initial value from Config Module
         theApp.bGetDefaultValue( MSGINTERP_WND_PLACEMENT, m_sWinCurrStatus );
         // Update Config Module to update Window position value
         theApp.bSetData( MSGINTERP_WND_PLACEMENT, (void*)&m_sWinCurrStatus);
     }
+
 #endif
 }
 
@@ -692,6 +693,6 @@ void CMessageInterpretation::vClearWindowContent()
 *******************************************************************************/
 void CMessageInterpretation::OnMove(int x, int y)
 {
-	CDialog::OnMove(x, y);
-	::PostMessage(m_hWndParent, WM_UPDATE_MSG_INTRP_WND_PLC , NULL, NULL);
+    CDialog::OnMove(x, y);
+    ::PostMessage(m_hWndParent, WM_UPDATE_MSG_INTRP_WND_PLC , NULL, NULL);
 }

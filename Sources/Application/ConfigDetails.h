@@ -60,7 +60,7 @@ struct SREPLAYFILE
     UINT m_unCycleTimeDelay;// Cyclic delay in case replay mode = 1
     BOOL    m_bEnabled;     // To indicate replay is enabled or not
     BOOL    m_bInteractive; // 0 - Non Interactive, 1 - interactive
-    CModuleFilterArray m_omFilter;    
+    CModuleFilterArray m_omFilter;
 };
 struct SREPLAYDETS
 {
@@ -83,6 +83,7 @@ struct SMSG_FRMT_WND
             m_shColHdrPos[i] = i;
             m_bColShowHideStatus[i] = TRUE;
         }
+
         m_bDisplayFormat = TRUE;
         m_bDisplayMode = TRUE;
         m_bInterpretStatus = FALSE;
@@ -92,59 +93,59 @@ struct SMSG_FRMT_WND
 };
 class CConfigDetails : public CComputeCheckSum
 {
-	// Public Members
+    // Public Members
 public:
-	//CSimSysNodeInfo* m_pSimSysNodeInfo;
+    //CSimSysNodeInfo* m_pSimSysNodeInfo;
     // Get message block pointer
     PSMSGBLOCKLIST psReturnMsgBlockPointer();
-	
-	PSSIMSYSARRAY psReturnSimsysArrayPtr();
-	
+
+    PSSIMSYSARRAY psReturnSimsysArrayPtr();
+
     // To indicate configuration module modification
     void vSetConfigurationModified( BOOL bModified = TRUE );
     // c-tor
     CConfigDetails();
     // d-tor
     ~CConfigDetails();
-	
+
     // Returns m_bIsDirty flag value
     BOOL    bIsConfigurationModified();
-    // allocates and fills the pointer to pointer member with the data 
+    // allocates and fills the pointer to pointer member with the data
     // corresponding to the eParam.
     BOOL    bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData);
-    // reinitializes the data member correponding to eParam with the data 
+    // reinitializes the data member correponding to eParam with the data
     // as read from lpVoid..
     BOOL    bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid);
-    
+
     // initializes all the members with their default values..
     void    vInitDefaultValues();
-	
+
     // loads a new configuration..
     INT     nNewConfiguration(CString& omStrFilename);
     // loads a configuration info from a file that is already present..
     INT     nLoadConfiguration(CString& omStrFilename);
     // writes the configuration info into the file omStrCfgFilename
     INT     nSaveConfiguration (CString& omStrCfgFilename);
-	
-    // releases the memory allocated when sending the information for ePara 
+
+    // releases the memory allocated when sending the information for ePara
     // in the bGetData(..) method
     void    vRelease(eCONFIGDETAILS eParam, LPVOID* lpDataPtr);
     // releases all the memory allocated for the data members..
     void    vResetAll();
     // To get default Window Coordinates
     BOOL bGetDefaultValue( eCONFIGDETAILS eParam,
-		WINDOWPLACEMENT& sPosition );
+                           WINDOWPLACEMENT& sPosition );
     // To get default splitter postion based on window size
     BOOL bGetDefaultSplitterPostion( eCONFIGDETAILS eParam,
-		CRect omWindowSize,
-		LPVOID* psSplitterData );
-	
-		// releases memory allocated for the simulated system Information
-	void vReleaseSimSysInfo();
-	// Protected memebers
+                                     CRect omWindowSize,
+                                     LPVOID* psSplitterData );
+
+    // releases memory allocated for the simulated system Information
+    void vReleaseSimSysInfo();
+    // Protected memebers
 protected:
-	
-	// Private Members
+
+    // Private Members
 private:
     SREPLAYDETS m_sReplayDetails;
     SFILTERAPPLIED_CAN m_sFilterConfigured;
@@ -184,7 +185,7 @@ private:
     // message attribute written/read from configuration
     SMESSAGE_ATTRIB         m_sMessageAttributes;
     // ouput, replay and message window coords
-    SWND_CO_ORDINATES       m_sWindowCoOrdinates; 
+    SWND_CO_ORDINATES       m_sWindowCoOrdinates;
     // baud rate details written/read from configuration
     SCONTROLLER_DETAILS      m_sControllerDetails[ defNO_OF_CHANNELS ];
     // send multiple msgs written/read from configuration
@@ -194,7 +195,7 @@ private:
     SMESSAGE_FILTER_DETAILS m_sMsgFilterDetails;
     // Filter for Message Display
     CModuleFilterArray      m_omMsgDisplayFilter;
-    // dword val, whose each bit represent the modified state of a 
+    // dword val, whose each bit represent the modified state of a
     // particular configuration info
     DWORD m_dwModifiedVals;
     // check sum of the bytes store in the file.
@@ -207,49 +208,49 @@ private:
     UINT m_unDisplayUpdateRate;
     // Object for Graph List
     CGraphList  m_odGraphList;
-	
-	// Pointer to Simulated system List data structure
-	PSSIMSYSARRAY m_psSimSysArray;
-	
-	
+
+    // Pointer to Simulated system List data structure
+    PSSIMSYSARRAY m_psSimSysArray;
+
+
     // Window placement structures
     WINDOWPLACEMENT m_sReplayWndCoOrd,
-		m_sOutputWndCoOrd,
-		m_sNotificWndCoOrd,
-		m_sMsgWndCoOrd,
-		m_sSigWatchWindow,
-		m_sMsgInterpWindow,
-		m_sGraphWndCoOrd,
-		m_sTxWndCoOrd,
-		m_sSimSysCoOrd;
-	
+                    m_sOutputWndCoOrd,
+                    m_sNotificWndCoOrd,
+                    m_sMsgWndCoOrd,
+                    m_sSigWatchWindow,
+                    m_sMsgInterpWindow,
+                    m_sGraphWndCoOrd,
+                    m_sTxWndCoOrd,
+                    m_sSimSysCoOrd;
+
     // Splitter information
     // Tx Msg Splitter Position
     STXMSGSPLITTERDATA m_sTxMsgWndSplitterPos;
     // Graph window splitter postion
     SGRAPHSPLITTERDATA m_sGraphWndSplitterPos;
-	
+
     // To Initialise graph parameters after configuration load/create
     void vInitGraphParamenters();
     VOID vInitialiseMsgDetails(PSTXCANMSGLIST& psMsgDetails);
     VOID vInitialiseMsgBlock(PSMSGBLOCKLIST& psMsgBlockList);
-	
-	
-	/*    // compute the check for a buffer pass as parameter
+
+
+    /*    // compute the check for a buffer pass as parameter
     BOOL bComputeCheckSum(UCHAR *pcBuff,DWORD dwSize, UCHAR* pucCheckSum);
     // Get the computed checksum of file whose name is passed as parameter
     // Also the computed checksum and stored checksum is returned.
-    BOOL bGetCheckSum(CString &omStrConfigFileName, 
-	UCHAR* pucCheckSum, UCHAR* pucCheckSumInFile);
+    BOOL bGetCheckSum(CString &omStrConfigFileName,
+    UCHAR* pucCheckSum, UCHAR* pucCheckSumInFile);
     // Sets the checksum at last byte location after computing it.
     BOOL bSetCheckSum(CString& omStrConfigFileName,UCHAR* pucCheckSum);
     // method to search and open/create the configuration file. */
-	
-	
+
+
     INT     nIsCfgFileFound (CString& omStrFilename, BOOL bOpenExisting);
     // formats the last modified time into the format as specified
     // gets the system time
-	
+
     // initialize the window coords to the default values
     void    vInitWndCoords();
     // To initialize splitter postions
@@ -276,16 +277,16 @@ private:
     BOOL    bLoadStoreMultiMsgInfo(CArchive& roCfgArchive);
     // called from bLoadStoreData(..) for message filter details..
     BOOL    bLoadStoreMsgFilterDetails(CArchive& roCfgArchive);
-    // called from bLoadStoreData(..) for message info 
-    BOOL    bLoadStoreMsgInfo(CArchive& roCfgArchive, 
-		PSMSGBLOCKLIST psMsgBlockList);
+    // called from bLoadStoreData(..) for message info
+    BOOL    bLoadStoreMsgInfo(CArchive& roCfgArchive,
+                              PSMSGBLOCKLIST psMsgBlockList);
     // gets the multiple message info ..
     BOOL    bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList);
     // gets the message attribute info
     BOOL    bGetMsgAttrib(PSMESSAGE_ATTRIB pMsgAttrib);
     // gets the message filter details..
     BOOL    bGetMsgFilterDetails(PSMESSAGE_FILTER_DETAILS pMsgFilterDetails);
-	
+
     // sets the multiple message structure data member with the info
     BOOL    bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList);
     // sets the message attribute structure with the info..
@@ -304,21 +305,21 @@ private:
     void vReleaseSignalWatchListMemory();
     // To load/Store a window postion
     void vLoadStoreWindowInfo( CArchive& roCfgArchive,
-		WINDOWPLACEMENT& sPlacement );
+                               WINDOWPLACEMENT& sPlacement );
     // To Load/Store Message Display Filter List
     BOOL bLoadStoreDisplayFilterInfo( CArchive& roCfgArchive );
     // To Load/Store Log File Infor
     BOOL bLoadStoreLogFileInfo(CArchive& omArchive);
     // To Load/Store Replay File Info
     BOOL bLoadStoreReplayFileInfo(CArchive& omArchive);
-	
-	
-	// To Load/Store simulated system list File Info
-	BOOL bLoadStoreSimSysList(CArchive& roCfgArchive);
-	// releases memory allocated for the simulated system list
+
+
+    // To Load/Store simulated system list File Info
+    BOOL bLoadStoreSimSysList(CArchive& roCfgArchive);
+    // releases memory allocated for the simulated system list
     void vReleaseSimSysListMemory();
 public:
     INT COM_nSaveConfiguration(CString& omStrCfgFilename);
 
-	
+
 };

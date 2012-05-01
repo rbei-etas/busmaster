@@ -55,17 +55,15 @@ extern void gvStopMessageHandlerThreads();
 static LONG GetEntitlementID(CString& omEntitlementId)
 {
     char SubKey[] = "SOFTWARE\\Classes\\BoschIndia\\BUSMASTER tool\\ES581";
-	HKEY hCurrKey = NULL;
-	LONG Result = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-			(LPCTSTR) SubKey, 0, KEY_READ, &hCurrKey);
-
-	char ValueName[32] = "Identifier";
-	char Data[128] = {'\0'};
-	DWORD Size = 128;
-
-	Result = RegQueryValueEx(hCurrKey, (LPCTSTR) ValueName,
-			NULL, (LPDWORD) NULL, (LPBYTE) Data, 
-			&Size);
+    HKEY hCurrKey = NULL;
+    LONG Result = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
+                               (LPCTSTR) SubKey, 0, KEY_READ, &hCurrKey);
+    char ValueName[32] = "Identifier";
+    char Data[128] = {'\0'};
+    DWORD Size = 128;
+    Result = RegQueryValueEx(hCurrKey, (LPCTSTR) ValueName,
+                             NULL, (LPDWORD) NULL, (LPBYTE) Data,
+                             &Size);
     omEntitlementId = Data;
     return Result;
 }
@@ -79,18 +77,18 @@ class CAboutDlg : public CDialog
 public:
     CAboutDlg();
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CAboutDlg)
     enum { IDD = IDD_ABOUTBOX };
     //}}AFX_DATA
 
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CAboutDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     //{{AFX_MSG(CAboutDlg)
     virtual BOOL OnInitDialog();
@@ -110,22 +108,20 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
     //{{AFX_DATA_MAP(CAboutDlg)
     //}}AFX_DATA_MAP
 }
-BOOL CAboutDlg::OnInitDialog() 
+BOOL CAboutDlg::OnInitDialog()
 {
-    CDialog::OnInitDialog();    
+    CDialog::OnInitDialog();
     CString omVerStr(_T(""));
     omVerStr.Format(IDS_VERSION);
     GetDlgItem(IDC_STATIC_VERSION)->SetWindowText(omVerStr);
-
 #ifdef FOR_ETIN
     // Set Entitlement ID
     CString omEntitlementId(_T(""));
     GetEntitlementID(omEntitlementId);
     GetDlgItem(IDC_EDIT1)->SetWindowText(omEntitlementId);
 #endif // FOR_ETIN
-
     return TRUE;  // return TRUE unless you set the focus to a control
-                  // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
@@ -139,12 +135,12 @@ END_MESSAGE_MAP()
 BEGIN_MESSAGE_MAP(CCANMonitorApp, CWinApp)
     //{{AFX_MSG_MAP(CCANMonitorApp)
     ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
-        // NOTE - the ClassWizard will add and remove mapping macros here.
-        //    DO NOT EDIT what you see in these blocks of generated code!
+    // NOTE - the ClassWizard will add and remove mapping macros here.
+    //    DO NOT EDIT what you see in these blocks of generated code!
     //}}AFX_MSG_MAP
     // Standard file based document commands
     //ON_COMMAND(ID_FILE_NEW,  OnFileNew)
-    //ON_COMMAND( ID_FILE_OPEN, OnFileOpen ) 
+    //ON_COMMAND( ID_FILE_OPEN, OnFileOpen )
     // Standard print setup command
     ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
 END_MESSAGE_MAP()
@@ -152,12 +148,11 @@ END_MESSAGE_MAP()
 
 CCANMonitorApp::CCANMonitorApp()
 {
-	
     // TODO: add construction code here,
     m_pouFlags = NULL;
     m_bIsMRU_CreatedInOpen = FALSE;
-	//m_pDocTemplate = NULL;
-	m_bFromAutomation = FALSE;
+    //m_pDocTemplate = NULL;
+    m_bFromAutomation = FALSE;
     GetCurrentDirectory(MAX_PATH, m_acApplicationDirectory);
 }
 
@@ -179,187 +174,182 @@ const WORD _wVerMinor = 0;
 
 BOOL CCANMonitorApp::InitInstance()
 {
-	InitCommonControls(); 
-	// START CHANGES MADE FOR AUTOMATION
-	CWinApp::InitInstance();
+    InitCommonControls();
+    // START CHANGES MADE FOR AUTOMATION
+    CWinApp::InitInstance();
 
-	// Initialize OLE libraries
-	if (!AfxOleInit())
-	{
-		AfxMessageBox("Fail to Intilaize OLE");
-		return FALSE;
-	}
+    // Initialize OLE libraries
+    if (!AfxOleInit())
+    {
+        AfxMessageBox("Fail to Intilaize OLE");
+        return FALSE;
+    }
 
-	// END CHANGES MADE FOR AUTOMATION
-
+    // END CHANGES MADE FOR AUTOMATION
     // Enable OLE/ActiveX objects support
     AfxEnableControlContainer();
-
     // Standard initialization
     // If you are not using these features and wish to reduce the size
     //  of your final executable, you should remove from the following
-    //  the specific initialization routines you do not need. DEBUG 
-
-
+    //  the specific initialization routines you do not need. DEBUG
 #ifdef _AFXDLL
     Enable3dControls();         // Call this when using MFC in a shared DLL
 #else
     Enable3dControlsStatic();   // Call this when linking to MFC statically
 #endif
-
     // Change the registry key under which our settings are stored.
     // TODO: You should modify this string to be something appropriate
     // such as the name of your company or organization.
     SetRegistryKey(_T("RBIN"));
-
-	// START CHANGES MADE FOR AUTOMATION
-	COleTemplateServer::RegisterAll();
-	// END CHANGES MADE FOR AUTOMATION
-
+    // START CHANGES MADE FOR AUTOMATION
+    COleTemplateServer::RegisterAll();
+    // END CHANGES MADE FOR AUTOMATION
     LoadStdProfileSettings(0); // Load standard INI file options (including MRU)
-  
-   // Enable drag/drop open
-    
-
+    // Enable drag/drop open
     // Enable DDE Execute open
     //EnableShellOpen();
     //RegisterShellFileTypes(TRUE);
-
-	// Display splash screen
+    // Display splash screen
     CCommandLineInfo cmdInfo;
     ParseCommandLine(cmdInfo);
+    short shRegServer = -1;
+    short shUnRegServer = -1;
 
-	short shRegServer = -1; 
-	short shUnRegServer = -1; 
-	if (__argc > 1)
-	{
-		shRegServer = (short) strcmpi(__targv[1],"/regserver");	
-		shUnRegServer = (short) strcmpi(__targv[1],"/unregserver");	
-	}
+    if (__argc > 1)
+    {
+        shRegServer = (short) strcmpi(__targv[1],"/regserver");
+        shUnRegServer = (short) strcmpi(__targv[1],"/unregserver");
+    }
 
+    // Don't display a new MDI child window during startup
+    if (cmdInfo.m_nShellCommand == CCommandLineInfo::FileNew
+            || cmdInfo.m_nShellCommand == CCommandLineInfo::FileOpen)
+    {
+        cmdInfo.m_nShellCommand = CCommandLineInfo::FileNothing;
+    }
 
-	// Don't display a new MDI child window during startup
-	if (cmdInfo.m_nShellCommand == CCommandLineInfo::FileNew
-		|| cmdInfo.m_nShellCommand == CCommandLineInfo::FileOpen)
-	{
-		  cmdInfo.m_nShellCommand = CCommandLineInfo::FileNothing;          
-	}
-	
+    // START CHANGES MADE FOR AUTOMATION
 
-	// START CHANGES MADE FOR AUTOMATION
+    if (cmdInfo.m_bRunEmbedded || cmdInfo.m_bRunAutomated)
+    {
+        m_bFromAutomation = TRUE;
+        //      return TRUE;
+    }
+    else if (cmdInfo.m_nShellCommand == CCommandLineInfo::AppUnregister)
+    {
+        AfxOleUnregisterTypeLib(LIBID_CAN_MonitorApp);
+    }
+    else
+    {
+        COleObjectFactory::UpdateRegistryAll();
+        AfxOleRegisterTypeLib(AfxGetInstanceHandle(), LIBID_CAN_MonitorApp);
+    }
 
-	if (cmdInfo.m_bRunEmbedded || cmdInfo.m_bRunAutomated)
-	{
-		m_bFromAutomation = TRUE;
-//		return TRUE;
-	} else if (cmdInfo.m_nShellCommand == CCommandLineInfo::AppUnregister){
-		AfxOleUnregisterTypeLib(LIBID_CAN_MonitorApp);
-	} else {
-		COleObjectFactory::UpdateRegistryAll();
-		AfxOleRegisterTypeLib(AfxGetInstanceHandle(), LIBID_CAN_MonitorApp);
-	}
-	
-	if (  shRegServer == 0  || shUnRegServer == 0 )	//If command line argument match
-	{		
-		 return FALSE;
-	}
-
+    if (  shRegServer == 0  || shUnRegServer == 0 ) //If command line argument match
+    {
+        return FALSE;
+    }
 
     if (!m_bFromAutomation)
     {
         CSplashScreen::ActivateSplashScreen(cmdInfo.m_bShowSplash);
     }
-	
-	// Allocate memory for CFlags
-    m_pouFlags = &(CFlags::ouGetFlagObj());
 
+    // Allocate memory for CFlags
+    m_pouFlags = &(CFlags::ouGetFlagObj());
     // create main MDI Frame window
     CMainFrame* pMainFrame = new CMainFrame;
+
     if ( pMainFrame == NULL )
     {
         ::PostQuitMessage(0);
     }
 
-   if (!pMainFrame->LoadFrame(IDR_MAINFRAME))
+    if (!pMainFrame->LoadFrame(IDR_MAINFRAME))
     {
         return FALSE;
     }
+
     m_pMainWnd = pMainFrame;
+
     // Dispatch commands specified on the command line
     if (!ProcessShellCommand(cmdInfo))
     {
         return FALSE;
     }
-	m_pMainWnd->DragAcceptFiles();
 
-    
-    // show main frame    
+    m_pMainWnd->DragAcceptFiles();
+    // show main frame
     m_pMainWnd->ShowWindow(m_nCmdShow);
     m_pMainWnd->UpdateWindow();
-    
     //// Create message window
     pMainFrame->bCreateMsgWindow();
-
     // In-Active Database
     m_pouMsgSgInactive  = new CMsgSignal(sg_asDbParams[CAN], m_bFromAutomation);
+
     if(m_pouMsgSgInactive == NULL )
     {
-		if(m_bFromAutomation==FALSE)
-        MessageBox(NULL,MSG_MEMORY_CONSTRAINT,
-                    "BUSMASTER", MB_OK|MB_ICONINFORMATION);
+        if(m_bFromAutomation==FALSE)
+            MessageBox(NULL,MSG_MEMORY_CONSTRAINT,
+                       "BUSMASTER", MB_OK|MB_ICONINFORMATION);
+
         ::PostQuitMessage(0);
     }
 
     BOOL bResult;
     bResult = m_aomState[UI_THREAD].SetEvent();
-
     // get the information of the last used configuration file..
     // initialize the flag that indicates if the configuratin file has been
     // loaded..
     m_bIsConfigFileLoaded = FALSE;
     CString ostrCfgFilename = _T("");
+
     // If user has double click the .cfg file then assign that file name else
     // read from registry.
     if(cmdInfo.m_strFileName.IsEmpty() == TRUE)
     {
-        ostrCfgFilename = 
+        ostrCfgFilename =
             GetProfileString(SECTION, defCONFIGFILENAME, STR_EMPTY);
     }
     else
     {
         ostrCfgFilename = cmdInfo.m_strFileName;
-    }	
+    }
+
     if(ostrCfgFilename.IsEmpty() == FALSE)
-    {		
-        bInitialiseConfiguration(m_bFromAutomation);		
+    {
+        bInitialiseConfiguration(m_bFromAutomation);
+
         // load the configuration information
         if(pMainFrame->nLoadConfigFile(ostrCfgFilename) != defCONFIG_FILE_SUCCESS)
         {
             //m_oConfigDetails.vInitDefaultValues();
             m_ostrConfigFilename = STR_EMPTY;
-            
         }
         else
         {
             m_ostrConfigFilename = ostrCfgFilename;
         }
-        m_bIsConfigFileLoaded = TRUE;		
+
+        m_bIsConfigFileLoaded = TRUE;
     }
     else
     {
-        BOOL bReturn = bInitialiseConfiguration(m_bFromAutomation);		
+        BOOL bReturn = bInitialiseConfiguration(m_bFromAutomation);
+
         if(bReturn == FALSE )
         {
             ::PostQuitMessage(0);
         }
+
         // Load a default database file
         //CStringArray omDatabaseArray;
         CString omSampleDatabasePath;
         omSampleDatabasePath.Format("%s\\Samples\\SampleDB.dbf",m_acApplicationDirectory);
         DWORD dRetVal = pMainFrame->dLoadDataBaseFile(omSampleDatabasePath, FALSE);
-        
+
         if (dRetVal == S_OK)
-        {     
+        {
             //omDatabaseArray.Add(omSampleDatabasePath);
             //Store in configdetails
             //bSetData(DATABASE_FILE_NAME, &omDatabaseArray);
@@ -373,15 +363,17 @@ BOOL CCANMonitorApp::InitInstance()
     // filter here
     // Update Message Display Filter List
     //::PostThreadMessage(GUI_dwThread_MsgDisp, TM_UPDATE_FILTERLIST, NULL, NULL );
-    // ********  Filter workaround  ********	
+    // ********  Filter workaround  ********
     pMainFrame->bUpdatePopupMenuDIL();
     // Start Logging if is enabled
     // Get the Flag Pointer
     CFlags* pomFlag =  pouGetFlagsPtr();
+
     if( pomFlag != NULL )
     {
         // Get the Logging Status
         BOOL bLogON = pomFlag->nGetFlagStatus(LOGTOFILE);
+
         // If it is on then post a message to display thread to start logging
         if(bLogON == TRUE )
         {
@@ -389,52 +381,54 @@ BOOL CCANMonitorApp::InitInstance()
             //CLogManager::ouGetLogManager().vStartStopLogging( TRUE );
         }
     }
-    //CExecuteManager::ouGetExecuteManager().vStartDllReadThread();	
+
+    //CExecuteManager::ouGetExecuteManager().vStartDllReadThread();
     return TRUE;
 }
 
 
 
-void CCANMonitorApp::WinHelp(DWORD dwData, UINT nCmd) 
+void CCANMonitorApp::WinHelp(DWORD dwData, UINT nCmd)
 {
-	CWinApp::WinHelp(dwData,  nCmd) ;
+    CWinApp::WinHelp(dwData,  nCmd) ;
 }
 
-int CCANMonitorApp::ExitInstance() 
+int CCANMonitorApp::ExitInstance()
 {
-
     if (m_pouMsgSignal != NULL )
     {
         m_pouMsgSignal->bDeAllocateMemory(STR_EMPTY);
-
         delete m_pouMsgSignal;
-
         m_pouMsgSignal = NULL;
     }
+
     // if the user directly closes the appln when the database
-    // is opened, 
+    // is opened,
     // Delete memory associated with the in-active data structure.
     if ( m_pouMsgSgInactive != NULL )
     {
-		m_pouMsgSgInactive->bDeAllocateMemoryInactive();
-
+        m_pouMsgSgInactive->bDeAllocateMemoryInactive();
         delete m_pouMsgSgInactive;
-
         m_pouMsgSgInactive = NULL;
     }
 
     DWORD dwResult = WaitForSingleObject(m_aomState[UI_THREAD], MAX_TIME_LIMIT);
-    switch (dwResult) 
+
+    switch (dwResult)
     {
-        case WAIT_ABANDONED: 
+        case WAIT_ABANDONED:
             break;
+
         case WAIT_OBJECT_0:
             break;
+
         case WAIT_TIMEOUT:
             break;
+
         default:
             break;
     }
+
     return CWinApp::ExitInstance();
 }
 
@@ -453,7 +447,7 @@ void CCANMonitorApp::OnAppAbout()
  */
 CFlags* CCANMonitorApp::pouGetFlagsPtr()
 {
-    return m_pouFlags; 
+    return m_pouFlags;
 }
 
 /**
@@ -466,10 +460,9 @@ void CCANMonitorApp::vSetHelpID(DWORD dwHelpID)
     m_dwHelpID = dwHelpID;
 }
 
-CWnd* CCANMonitorApp::GetMainWnd() 
+CWnd* CCANMonitorApp::GetMainWnd()
 {
     // TODO: Add your specialized code here and/or call the base class
-    
     return CWinApp::GetMainWnd();
 }
 
@@ -483,31 +476,25 @@ void CCANMonitorApp::vPopulateCANIDList()
 {
     CMessageAttrib& ouMsgAttr = CMessageAttrib::ouGetHandle(CAN);
 
-    
     if ( m_pouMsgSignal != NULL )
     {
         CStringList omStrMsgNameList;
-        UINT unNoOfMsgs = 
+        UINT unNoOfMsgs =
             m_pouMsgSignal->unGetNumerOfMessages();
-
         UINT* pIDArray = new UINT[unNoOfMsgs];
-
         m_pouMsgSignal->omStrListGetMessageNames(omStrMsgNameList);
-        
+
         if (pIDArray != NULL )
         {
             m_pouMsgSignal->unListGetMessageIDs( pIDArray );
-
-             SCanIDList sList;
-
+            SCanIDList sList;
             POSITION pos = omStrMsgNameList.GetHeadPosition();
-        
             UINT unCount = 0;
             POSITION pos1 = pos;
 
             for ( pos1 = pos, unCount = (unNoOfMsgs - 1);
-            ((pos1 != NULL) && (unCount >= 0)); 
-            unCount--)
+                    ((pos1 != NULL) && (unCount >= 0));
+                    unCount--)
             {
                 sList.nCANID        = pIDArray[unCount];
                 sList.omCANIDName   = omStrMsgNameList.GetNext( pos1 );
@@ -523,7 +510,7 @@ void CCANMonitorApp::vPopulateCANIDList()
                     ouMsgAttr.nAddNewAttrib( sList );
                 }
             }
-            
+
             ouMsgAttr.vDoCommit();
             delete [] pIDArray;
             pIDArray = NULL;
@@ -540,7 +527,7 @@ void CCANMonitorApp::vPopulateCANIDList()
  */
 CString CCANMonitorApp::omStrGetUnionFilePath(CString omStrTemp)
 {
-	CString omStrHeaderFileName = omStrTemp.Left(omStrTemp.ReverseFind('.'));
+    CString omStrHeaderFileName = omStrTemp.Left(omStrTemp.ReverseFind('.'));
     omStrHeaderFileName += defHEADER_FILE_NAME;
     return omStrHeaderFileName;
 }
@@ -602,22 +589,22 @@ void CCANMonitorApp::vRelease1(eCONFIGDETAILS /*eParam*/, LPVOID* /*lpDataPtr*/)
 void CCANMonitorApp::vSetFileStorageInfo(CString oCfgFilename)
 {
     USES_CONVERSION;
-
-	DATASTORAGEINFO stempDataInfo;
-	FILESTORAGEINFO FileStoreInfo;
-	strcpy_s(FileStoreInfo.m_FilePath, oCfgFilename.GetBuffer(MAX_PATH));
-	stempDataInfo.FSInfo = &FileStoreInfo;
-	stempDataInfo.m_Datastore = FILEMODE;
-	CConfigData::ouGetConfigDetailsObject().SetConfigDatastorage(&stempDataInfo);
-	CConfigData::ouGetConfigDetailsObject().vSetCurrProjName(DEFAULT_PROJECT_NAME);
+    DATASTORAGEINFO stempDataInfo;
+    FILESTORAGEINFO FileStoreInfo;
+    strcpy_s(FileStoreInfo.m_FilePath, oCfgFilename.GetBuffer(MAX_PATH));
+    stempDataInfo.FSInfo = &FileStoreInfo;
+    stempDataInfo.m_Datastore = FILEMODE;
+    CConfigData::ouGetConfigDetailsObject().SetConfigDatastorage(&stempDataInfo);
+    CConfigData::ouGetConfigDetailsObject().vSetCurrProjName(DEFAULT_PROJECT_NAME);
     CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
+
     if (pMainFrame != NULL)
     {
         pMainFrame->vPushConfigFilenameDown(oCfgFilename);
     }
 }
 
-void CCANMonitorApp::GetLoadedConfigFilename(CString &roStrCfgFile)
+void CCANMonitorApp::GetLoadedConfigFilename(CString& roStrCfgFile)
 {
     roStrCfgFile = m_ostrConfigFilename;
 }
@@ -638,12 +625,11 @@ void CCANMonitorApp::OnFileOpen()
     // Display open dialog box with *.c filter
     // and select the C file by default
     CFileDialog fileDlg( TRUE,      // Open File dialog
-                            "c",       // Default Extension,
-                            m_omMRU_C_FileName,                        
-                            OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-                            "C File(s)(*.c)|*.c||",
-                            NULL );
-
+                         "c",       // Default Extension,
+                         m_omMRU_C_FileName,
+                         OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+                         "C File(s)(*.c)|*.c||",
+                         NULL );
     // Set Title
     fileDlg.m_ofn.lpstrTitle  = _T("Select BUSMASTER Source Filename...");
 
@@ -655,27 +641,28 @@ void CCANMonitorApp::OnFileOpen()
         if ( omStrNewCFileName.ReverseFind('.') )
         {
             omStrNewCFileName = omStrNewCFileName.
-                Left( omStrNewCFileName.ReverseFind('.') + 1);
+                                Left( omStrNewCFileName.ReverseFind('.') + 1);
             omStrNewCFileName.TrimRight();
             omStrNewCFileName += strExtName;
         }
 
         // file-attribute information
         struct _finddata_t fileinfo;
+
         // Check if file exists
         if (_findfirst( omStrNewCFileName.GetBuffer(MAX_PATH), &fileinfo) != -1L)
         {
             // Now open the selected file
             CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
             GetICANNodeSim()->FE_OpenFunctioneditorFile(omStrNewCFileName, pMainFrame->GetSafeHwnd(),
-                pMainFrame->m_sExFuncPtr[CAN]);
+                    pMainFrame->m_sExFuncPtr[CAN]);
             // Save the selected filename into the configuration details
             // if it is is not the same C file
-            
-            // Since opening of the document 
+
+            // Since opening of the document
             // loads another menu,
             // the menu created for the MRU
-            // would have destroyed. So create 
+            // would have destroyed. So create
             // the same.
             // And this should be created only once.
             if ( pMainFrame != NULL && m_bIsMRU_CreatedInOpen == FALSE )
@@ -683,12 +670,11 @@ void CCANMonitorApp::OnFileOpen()
                 pMainFrame->vCreateMRU_Menus();
                 m_bIsMRU_CreatedInOpen = TRUE;
             }
-
         }
         else
         {
-            MessageBox(NULL,"Specified filename not found!", 
-                        "BUSMASTER",MB_OK|MB_ICONINFORMATION);
+            MessageBox(NULL,"Specified filename not found!",
+                       "BUSMASTER",MB_OK|MB_ICONINFORMATION);
         }
     }
 }
@@ -699,9 +685,9 @@ void CCANMonitorApp::OnFileOpen()
  * Displays an appropriate message for the error code
  * passed to this method. The message is user friendly.
  */
-void CCANMonitorApp::vDisplayConfigErrMsgbox(UINT unErrorCode, 
-                                             BOOL bOperation)
-{    
+void CCANMonitorApp::vDisplayConfigErrMsgbox(UINT unErrorCode,
+        BOOL bOperation)
+{
     CString omStrSuffixMessage(STR_EMPTY);
 
     if ( bOperation == defCONFIG_FILE_LOADING )
@@ -720,82 +706,97 @@ void CCANMonitorApp::vDisplayConfigErrMsgbox(UINT unErrorCode,
     // Get actual error message
     switch(unErrorCode)
     {
-    case defCONFIG_FILE_ERROR:
+        case defCONFIG_FILE_ERROR:
         {
             m_omConfigErr = _T("File error occured");
         }
         break;
-    case defCONFIG_FILE_NOT_FOUND:
+
+        case defCONFIG_FILE_NOT_FOUND:
         {
             m_omConfigErr = _T("Configuration file not found");
         }
         break;
-    case defCONFIG_FILE_OPEN_FAILED:
+
+        case defCONFIG_FILE_OPEN_FAILED:
         {
             m_omConfigErr = _T("Unable to open configuration file");
         }
         break;
-    case defCONFIG_FILE_READ_FAILED:
+
+        case defCONFIG_FILE_READ_FAILED:
         {
             m_omConfigErr = _T("Unable to read configuration file");
         }
         break;
-    case defCONFIG_FILE_WRITE_FAILED:
+
+        case defCONFIG_FILE_WRITE_FAILED:
         {
             m_omConfigErr = _T("Unable to write into configuration file");
         }
         break;
-    case defCONFIG_FILE_CLOSE_FAILED:
+
+        case defCONFIG_FILE_CLOSE_FAILED:
         {
             m_omConfigErr = _T("Unable to close configuration file successfully");
         }
         break;
-    case defCONFIG_FILE_INVALID_FILE_EXTN:
+
+        case defCONFIG_FILE_INVALID_FILE_EXTN:
         {
             m_omConfigErr = _T("Invalid configuration file extension found");
         }
         break;
-    case defCONFIG_PATH_NOT_FOUND:
+
+        case defCONFIG_PATH_NOT_FOUND:
         {
             m_omConfigErr = _T("Configuration file path not found");
         }
         break;
-    case defCONFIG_FILE_ACCESS_DENIED:
+
+        case defCONFIG_FILE_ACCESS_DENIED:
         {
             m_omConfigErr = _T("Configuration file access was denied");
         }
         break;
-    case defCONFIG_FILE_HANDLE_INVALID:
+
+        case defCONFIG_FILE_HANDLE_INVALID:
         {
             m_omConfigErr = _T("Invalid file handle obtained");
         }
         break;
-    case defCONFIG_DRIVE_NOT_FOUND:
+
+        case defCONFIG_DRIVE_NOT_FOUND:
         {
             m_omConfigErr = _T("Specified drive not found");
         }
         break;
-    case defCONFIG_FILE_CORRUPT:
+
+        case defCONFIG_FILE_CORRUPT:
         {
             m_omConfigErr = _T("An attempt\
  to edit the file has been made from outside the application.\n\
 Corrupt configuration file found");
         }
         break;
-    case defCONFIG_FILE_HDR_CORRUPT:
+
+        case defCONFIG_FILE_HDR_CORRUPT:
         {
             m_omConfigErr = _T("Corrupt configuration file header found");
         }
         break;
-    default:
+
+        default:
         {
             m_omConfigErr = _T("Unknown error encountered");
         }
         break;
     }
+
     m_omConfigErr += omStrSuffixMessage;
+
     //UINT unMsgboxType = MB_OK | MB_ICONEXCLAMATION;
-	if(m_bFromAutomation==FALSE)
+    if(m_bFromAutomation==FALSE)
     {
         bWriteIntoTraceWnd(m_omConfigErr.GetBuffer(MAX_PATH));
         //MessageBox(NULL, m_omConfigErr, _T("BUSMASTER"), unMsgboxType);
@@ -823,8 +824,8 @@ void CCANMonitorApp::vSetConfigurationModified(BOOL /*bModified = TRUE*/)
     //m_oConfigDetails.vSetConfigurationModified( bModified );
 }
 BOOL CCANMonitorApp::bGetDefaultSplitterPostion(eCONFIGDETAILS /*eParam*/,
-                                                CRect /*omWindowSize*/,
-                                                LPVOID* /*pData*/)
+        CRect /*omWindowSize*/,
+        LPVOID* /*pData*/)
 {
     return FALSE;
 }
@@ -841,45 +842,47 @@ void CCANMonitorApp::OnFileNew()
 {
     BOOL bOneChildWndOpen = FALSE;
     bOneChildWndOpen = m_pouFlags->nGetFlagStatus(FUNCEDITOR);
+
     if(bOneChildWndOpen != TRUE )
     {
         struct _tfinddata_t fileinfo;
         // Find if the current directory has some .c file already created.
-        // Check if it has name "NewEdn" if yes, the new file name will be 
+        // Check if it has name "NewEdn" if yes, the new file name will be
         // NewEdx where value of x = n+1;
         char cBuffer[_MAX_PATH];
         CString omStrCFileName;
         CString strFilePath;
         _getcwd( cBuffer, _MAX_PATH );
-
         BOOL bStop = FALSE;
         UINT unCount = 0;
+
         while (bStop == FALSE)
         {
             omStrCFileName.Format(_T("%s%d%s"),_T("NewEd"), ++unCount, _T(".c"));
+
             // Search for the file name and if it is not present, set
             // the flag to TRUE to break the loop.
-            if (_tfindfirst( omStrCFileName.GetBuffer(MAX_PATH), &fileinfo) == -1L) 
+            if (_tfindfirst( omStrCFileName.GetBuffer(MAX_PATH), &fileinfo) == -1L)
             {
                 strFilePath = cBuffer ;
                 strFilePath += _T("\\")+ omStrCFileName ;
                 bStop = TRUE;
             }
         }
-        CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
 
+        CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
         GetICANNodeSim()->FE_OpenFunctioneditorFile(strFilePath, pMainFrame->GetSafeHwnd(),
-                    pMainFrame->m_sExFuncPtr[CAN]);
+                pMainFrame->m_sExFuncPtr[CAN]);
         //CWinApp::OnFileNew();
-        // Since creating of the document 
+        // Since creating of the document
         // loads another menu,
         // the menu created for the MRU
-        // would have destroyed. So create 
+        // would have destroyed. So create
         // the same.
         // And this should be created only once.
-        
-       if ( pMainFrame != NULL &&
-             m_bIsMRU_CreatedInOpen == FALSE )
+
+        if ( pMainFrame != NULL &&
+                m_bIsMRU_CreatedInOpen == FALSE )
         {
             pMainFrame->vCreateMRU_Menus();
             m_bIsMRU_CreatedInOpen = TRUE;
@@ -904,28 +907,29 @@ void CCANMonitorApp::OnFileNew()
 VOID CCANMonitorApp::vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode)
 {
     DWORD dwResult = WAIT_ABANDONED;
-
     BYTE bySelectThread = 0;
-
     bySelectThread  = static_cast<UCHAR>( byThreadCode & BIT_REPLAY_THREAD );
+
     // if thread for message replay exists
     if ( bySelectThread != 0 )
     {
         vREP_StopReplayThread();
     }
 
-    bySelectThread  = 
+    bySelectThread  =
         static_cast<UCHAR>( byThreadCode & BIT_TX_SEL_MSG_THREAD );
+
     // if thread for tx selected message exists
     if ( bySelectThread != 0 &&
-         m_asUtilThread[defTX_SEL_MSG_THREAD].m_hThread != NULL)
+            m_asUtilThread[defTX_SEL_MSG_THREAD].m_hThread != NULL)
     {
         // Set the flag to exit from thread.
         g_bStopSelectedMsgTx = TRUE;
         // Wait for thread to exit.
-        dwResult = WaitForSingleObject(m_aomState[defTX_SEL_MSG_THREAD  
-                                                        + defOFFSET_TXMSG], 
-                                                   unMaxWaitTime);
+        dwResult = WaitForSingleObject(m_aomState[defTX_SEL_MSG_THREAD
+                                       + defOFFSET_TXMSG],
+                                       unMaxWaitTime);
+
         // If time out, terminate the thread and delete the memory
         // if it is allocated inside the thread function and not
         // deleted
@@ -937,8 +941,8 @@ VOID CCANMonitorApp::vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode)
 
             if( m_asUtilThread[defTX_SEL_MSG_THREAD].m_pvThread !=NULL )
             {
-                PSTXSELMSGDATA psTxCanMsg = static_cast <PSTXSELMSGDATA> 
-                             (m_asUtilThread[defTX_SEL_MSG_THREAD].m_pvThread);
+                PSTXSELMSGDATA psTxCanMsg = static_cast <PSTXSELMSGDATA>
+                                            (m_asUtilThread[defTX_SEL_MSG_THREAD].m_pvThread);
                 delete [](psTxCanMsg->m_psTxMsg);
                 delete psTxCanMsg;
                 psTxCanMsg->m_psTxMsg = NULL;
@@ -947,8 +951,9 @@ VOID CCANMonitorApp::vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode)
             }
         }
     }
-    
+
     bySelectThread  = static_cast<UCHAR>( byThreadCode & BIT_MULTI_MSG_THREAD);
+
     // If message block thread has to be terminated.
     if(bySelectThread != 0 )
     {
@@ -969,6 +974,7 @@ VOID CCANMonitorApp::vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode)
                 // Set the Key Event so that it will terminate by iteself
                 psTxMsg->m_omKeyEvent.SetEvent();
             }
+
             // If timer tharead is active then wait for a while
             if(psTxMsg->m_sTimerThreadInfo.m_hThread != NULL )
             {
@@ -977,6 +983,7 @@ VOID CCANMonitorApp::vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode)
                     WaitForSingleObject( psTxMsg->m_omTxBlockTimerEvent,
                                          unMaxWaitTime );
             }
+
             // If key thread is active then wait for key thread termination
             if(psTxMsg->m_sKeyThreadInfo.m_hThread != NULL )
             {
@@ -985,17 +992,18 @@ VOID CCANMonitorApp::vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode)
                     WaitForSingleObject( psTxMsg->m_omTxBlockKeyEvent,
                                          unMaxWaitTime );
             }
+
             // If time out, terminate the thread and delete the memory
             // if it is allocated inside the thread function and not
             // deleted
             if( dwTimerThreadStatus == WAIT_TIMEOUT &&
-                psTxMsg->m_sTimerThreadInfo.m_hThread != NULL)
+                    psTxMsg->m_sTimerThreadInfo.m_hThread != NULL)
             {
                 TerminateThread(psTxMsg->m_sTimerThreadInfo.m_hThread, 0);
                 // Invalidate the handle
                 psTxMsg->m_sTimerThreadInfo.m_hThread = NULL;
                 // Delete if any memory is allocated for this thread.
-                // Currently there are all global data so not required 
+                // Currently there are all global data so not required
                 // to be deleted here.
                 /***********************************************************/
                 // Right now Tx timer thread isn't using any dynamic memory
@@ -1006,16 +1014,17 @@ VOID CCANMonitorApp::vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode)
                 }*/
                 /***********************************************************/
             }
+
             // If the key handler is not terminated yet then kill the thread
             if( dwKeyThreadStatus == WAIT_TIMEOUT &&
-                psTxMsg->m_sKeyThreadInfo.m_hThread != NULL)
+                    psTxMsg->m_sKeyThreadInfo.m_hThread != NULL)
             {
                 TerminateThread(psTxMsg->m_sKeyThreadInfo.m_hThread, 0);
                 // Invalidate the handle
                 psTxMsg->m_sKeyThreadInfo.m_hThread = NULL;
                 /***********************************************************/
                 // Delete if any memory is allocated for this thread.
-                // Currently there are all global data so not required 
+                // Currently there are all global data so not required
                 // to be deleted here.
                 /*if( psTxMsg->m_sThreadInfo1.m_pvThread !=NULL )
                 {
@@ -1023,6 +1032,7 @@ VOID CCANMonitorApp::vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode)
                 }*/
                 /***********************************************************/
             }
+
             // Go to the next thread node
             psTxMsg = psTxMsg->m_psNextTxMsgInfo;
         }
@@ -1040,9 +1050,11 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
 {
     BOOL bReturn = TRUE;
     CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
+
     if(pMainFrame != NULL )
     {
-        BOOL bIsDatabaseFoundInConfigFile = FALSE;		
+        BOOL bIsDatabaseFoundInConfigFile = FALSE;
+
         if(m_pouMsgSignal != NULL)
         {
             m_pouMsgSignal->bDeAllocateMemory(STR_EMPTY);
@@ -1051,76 +1063,83 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
         {
             m_pouMsgSignal = new CMsgSignal(sg_asDbParams[CAN], m_bFromAutomation);
         }
+
         if ( m_pouMsgSignal != NULL )
-        {			
-			//Get the Database names
-			CStringArray aomOldDatabases;
-			//To keep all the files which are successfully imported
-			CStringArray aomNewDatabases;
-			aomNewDatabases.RemoveAll();
-			m_pouMsgSignal->vGetDataBaseNames(&aomOldDatabases);
-			int nFileCount = aomOldDatabases.GetSize();
-			if(nFileCount == 0)
-			{				
-				bIsDatabaseFoundInConfigFile = FALSE;
-				// Reset corresponding flag
-				m_pouFlags->vSetFlagStatus( SELECTDATABASEFILE, FALSE );
-			}
-			else
-			{
-				CString omStrDatabase;
-				int nDatabaseNotFound = 0;
-				for(int nCount = 0;nCount < nFileCount;nCount++)
-				{
-					omStrDatabase  = aomOldDatabases.GetAt(nCount);
+        {
+            //Get the Database names
+            CStringArray aomOldDatabases;
+            //To keep all the files which are successfully imported
+            CStringArray aomNewDatabases;
+            aomNewDatabases.RemoveAll();
+            m_pouMsgSignal->vGetDataBaseNames(&aomOldDatabases);
+            int nFileCount = aomOldDatabases.GetSize();
 
-					if (omStrDatabase.IsEmpty())
-					{
-						nDatabaseNotFound++;
-						aomOldDatabases.RemoveAt(nCount);
-						--nCount;
-						--nFileCount;
-					}
-					else
-					{
-						bIsDatabaseFoundInConfigFile = TRUE;
-						// Check if the file really exists
-						struct _finddata_t fileinfo;
+            if(nFileCount == 0)
+            {
+                bIsDatabaseFoundInConfigFile = FALSE;
+                // Reset corresponding flag
+                m_pouFlags->vSetFlagStatus( SELECTDATABASEFILE, FALSE );
+            }
+            else
+            {
+                CString omStrDatabase;
+                int nDatabaseNotFound = 0;
+
+                for(int nCount = 0; nCount < nFileCount; nCount++)
+                {
+                    omStrDatabase  = aomOldDatabases.GetAt(nCount);
+
+                    if (omStrDatabase.IsEmpty())
+                    {
+                        nDatabaseNotFound++;
+                        aomOldDatabases.RemoveAt(nCount);
+                        --nCount;
+                        --nFileCount;
+                    }
+                    else
+                    {
+                        bIsDatabaseFoundInConfigFile = TRUE;
+                        // Check if the file really exists
+                        struct _finddata_t fileinfo;
+
                         if (_findfirst(omStrDatabase.GetBuffer(MAX_PATH) ,&fileinfo) == -1L)
-						{
-							CString omStrMsg = "Database File: ";
-							omStrMsg += omStrDatabase;
-							omStrMsg += " not found!";
-							if(bFromCom==FALSE)
-								MessageBox(NULL,omStrMsg,"BUSMASTER",MB_OK|MB_ICONERROR);
-							// Remove the file name from configuration file.
-							nDatabaseNotFound++;
-							aomOldDatabases.RemoveAt(nCount);
-							--nCount;
-							--nFileCount;
-						}
-						else
-						{
-							// Reset corresponding flag
-							m_pouFlags->vSetFlagStatus( SELECTDATABASEFILE, TRUE );
-							m_pouMsgSignal->
-								bFillDataStructureFromDatabaseFile(omStrDatabase);
-							// Create Unions.h in local directory
-							// and fill the file with the structure
-							m_pouMsgSignal->bWriteDBHeader(omStrDatabase);
+                        {
+                            CString omStrMsg = "Database File: ";
+                            omStrMsg += omStrDatabase;
+                            omStrMsg += " not found!";
 
-							vPopulateCANIDList();
-							pMainFrame->vPopulateJ1939PGNList();
-							aomNewDatabases.Add(omStrDatabase);
-						}
-					}
-				}
-				if(nDatabaseNotFound > 0)
-				{
+                            if(bFromCom==FALSE)
+                            {
+                                MessageBox(NULL,omStrMsg,"BUSMASTER",MB_OK|MB_ICONERROR);
+                            }
+
+                            // Remove the file name from configuration file.
+                            nDatabaseNotFound++;
+                            aomOldDatabases.RemoveAt(nCount);
+                            --nCount;
+                            --nFileCount;
+                        }
+                        else
+                        {
+                            // Reset corresponding flag
+                            m_pouFlags->vSetFlagStatus( SELECTDATABASEFILE, TRUE );
+                            m_pouMsgSignal->
+                            bFillDataStructureFromDatabaseFile(omStrDatabase);
+                            // Create Unions.h in local directory
+                            // and fill the file with the structure
+                            m_pouMsgSignal->bWriteDBHeader(omStrDatabase);
+                            vPopulateCANIDList();
+                            pMainFrame->vPopulateJ1939PGNList();
+                            aomNewDatabases.Add(omStrDatabase);
+                        }
+                    }
+                }
+
+                if(nDatabaseNotFound > 0)
+                {
                     BYTE* pbyConfigData = NULL;
                     UINT unSize = 0;
-
-					unSize += (sizeof (UINT) + ((sizeof(TCHAR) *MAX_PATH) * aomNewDatabases.GetSize()));
+                    unSize += (sizeof (UINT) + ((sizeof(TCHAR) *MAX_PATH) * aomNewDatabases.GetSize()));
                     pbyConfigData = new BYTE[unSize];
                     BYTE* pbyTemp = pbyConfigData;
                     UINT nCount = 0;
@@ -1133,31 +1152,35 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
                         strcpy_s(acName, omDBName.GetBuffer(MAX_PATH));
                         COPY_DATA(pbyTemp, acName, sizeof(TCHAR) * MAX_PATH);
                     }
-                    CConfigData::ouGetConfigDetailsObject().bSetData(pbyTemp, unSize, SectionName[DATABASE_SECTION_ID]);
 
+                    CConfigData::ouGetConfigDetailsObject().bSetData(pbyTemp, unSize, SectionName[DATABASE_SECTION_ID]);
                     delete[] pbyConfigData;
                     pbyConfigData = NULL;
-				}
-				if(aomNewDatabases.GetSize()== 0)
-				{
-					// Reset the flag and prompt user of file not in disk.
-					m_pouFlags->vSetFlagStatus( SELECTDATABASEFILE, FALSE );
-				}
-			}			
-		}
-		else
-		{
-			if(bFromCom==FALSE)
-            // Display a message and quit the application
-            MessageBox(NULL,
-                       MSG_MEMORY_CONSTRAINT,
-                       "BUSMASTER", 
-                       MB_OK|MB_ICONINFORMATION);
+                }
+
+                if(aomNewDatabases.GetSize()== 0)
+                {
+                    // Reset the flag and prompt user of file not in disk.
+                    m_pouFlags->vSetFlagStatus( SELECTDATABASEFILE, FALSE );
+                }
+            }
+        }
+        else
+        {
+            if(bFromCom==FALSE)
+                // Display a message and quit the application
+                MessageBox(NULL,
+                           MSG_MEMORY_CONSTRAINT,
+                           "BUSMASTER",
+                           MB_OK|MB_ICONINFORMATION);
+
             bReturn = FALSE;
         }
-        //Finally load the default configuration		
-        pMainFrame->nLoadConfigFile(_T(""));		
+
+        //Finally load the default configuration
+        pMainFrame->nLoadConfigFile(_T(""));
     }
+
     return bReturn;
 }
 
@@ -1202,15 +1225,18 @@ BOOL CCANMonitorApp::bWriteIntoTraceWnd(char* omText)
 {
     BOOL bResult = FALSE;
     CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
+
     if (pMainFrame != NULL)
-    {   
-        pMainFrame->SendMessage(IDM_TRACE_WND);                
+    {
+        pMainFrame->SendMessage(IDM_TRACE_WND);
+
         if (pMainFrame->m_podUIThread != NULL)
-        {   
+        {
             pMainFrame->m_podUIThread->PostThreadMessage(WM_WRITE_TO_TRACE, NULL, (LPARAM)omText);
             bResult = TRUE;
         }
     }
+
     return bResult;
 }
 

@@ -33,23 +33,23 @@
 
 
 
-class CMsgSignal  
+class CMsgSignal
 {
 public:
     CMsgSignal(const SDBPARAMS& sDbParams, BOOL bInAutoSrvMode);
-    virtual ~CMsgSignal();	
+    virtual ~CMsgSignal();
 public:
 
-    
-	
-	 struct sDBFileStruct
+
+
+    struct sDBFileStruct
     {
-            CString m_omStrDatabasePath; // Database path 
-            UINT m_unMessageCount;       // Message count in the database         
-            sMESSAGE* m_psMessages;      // Pointer to the array of message structure
-			sDBFileStruct* m_psNextDBFileStruct;
-    };  
-    
+        CString m_omStrDatabasePath; // Database path
+        UINT m_unMessageCount;       // Message count in the database
+        sMESSAGE* m_psMessages;      // Pointer to the array of message structure
+        sDBFileStruct* m_psNextDBFileStruct;
+    };
+
 private:
     SDBPARAMS m_sDbParams;
     // Attributes
@@ -62,19 +62,19 @@ private:
     // This flag indicates if the database is ACTIVE/IN_ACTIVE
     BOOL m_bIsDatabaseActive;
     CString m_strActiveDBFileName;
-	//This is pointer to the list of database structures
-	sDBFileStruct* m_psDatbaseStructList;
-	//CMap to store the all the messages of all the DBs for faster searches
-	CMap <UINT, UINT, sMESSAGE*, sMESSAGE*> m_omMsgDetailsIDMap;
-	//For shared CMap access and deletion
-	CCriticalSection m_omDBMapCritSec;
+    //This is pointer to the list of database structures
+    sDBFileStruct* m_psDatbaseStructList;
+    //CMap to store the all the messages of all the DBs for faster searches
+    CMap <UINT, UINT, sMESSAGE*, sMESSAGE*> m_omMsgDetailsIDMap;
+    //For shared CMap access and deletion
+    CCriticalSection m_omDBMapCritSec;
     // Is application running in automation server mode
     BOOL m_bAutoServerMode;
     // Functions
 public:
     static void vSetTraceWndObj(CUIThread* pUIThread);
-	//Reset the content of CMap on DB import or dissociate
-	void vResetMsgMapContent();
+    //Reset the content of CMap on DB import or dissociate
+    void vResetMsgMapContent();
     // Checks if the signal value is out of range
     BOOL bIsSignalValueOutofRange( CString omStrMessageCode,
                                    CString omStrSgName,
@@ -97,11 +97,11 @@ public:
     // to be deleted which are defined after
     // the specified message length
     void vGetSigNamesAndIndexTobeDeleted( UINT unMessageLength,
-                                             CString omStrMsgName,
-                                             CStringArray& omStrList,
-                                             UINT unIndexes[]);
-    void unListGetMessageIDs(UINT *omListId);
-    // Returns whether a signal can have new 
+                                          CString omStrMsgName,
+                                          CStringArray& omStrList,
+                                          UINT unIndexes[]);
+    void unListGetMessageIDs(UINT* omListId);
+    // Returns whether a signal can have new
     // Signal description and value
     BOOL bItemCanHaveSignalDesc( CString omStrMsgName,
                                  CString omStrSgName,
@@ -111,31 +111,31 @@ public:
                              BYTE* pDestByte,
                              UINT unArrayLen,
                              BOOL bUpdateType);
-                             
-    
+
+
     // Returns the value of "m_bIsDatabaseSaved" flag
     BOOL bGetModifiedFlag();
 
-	// sets the value of "m_bIsDatabaseSaved" flag
-	void vSetModifiedFlag(BOOL bSaved);
+    // sets the value of "m_bIsDatabaseSaved" flag
+    void vSetModifiedFlag(BOOL bSaved);
 
     // Gives a list of message names
     void omStrListGetMessageNames(CStringList& );
-	 // Gives a list of message names for editing database
-	void omStrListGetMessageNamesInactive(CStringList& );
-    
+    // Gives a list of message names for editing database
+    void omStrListGetMessageNamesInactive(CStringList& );
+
     // Set and get active DB flag status
     void vSetDBActiveFlagStatus(BOOL bValue);
     BOOL bGetDBAcitveFlagStatus();
 
     // Get message pointer for given message
     sMESSAGE* psGetMessagePointer( CString strMsgName);
-	 // Get message pointer for given message if called to change inactive Db
+    // Get message pointer for given message if called to change inactive Db
     sMESSAGE* psGetMessagePointerInactive( CString strMsgName);
 
     // Get message pointer for given message ID
     sMESSAGE* psGetMessagePointer( UINT unMsgID);
-	// Get message pointer for given message ID for inactive DB
+    // Get message pointer for given message ID for inactive DB
     sMESSAGE* psGetMessagePointerInactive( UINT unMsgID);
     // Convert Extended To Standard Frame Format
     void vConvertExtendedToStandardFrameFormat(int&);
@@ -154,7 +154,7 @@ public:
                            CString strSgName,
                            CString omStrPrevDesc,
                            CSignalDescVal*);
-    
+
     // Add signal description and value
     BOOL bAddSgDescVal( CString strMsgCode, CString strSgName);
 
@@ -201,7 +201,7 @@ public:
     // Return message name from code
     CString omStrGetMessageNameFromMsgCode( UINT unMsgCode);
 
-	// Return message name from code when called from Inactive Database
+    // Return message name from code when called from Inactive Database
     CString omStrGetMessageNameFromMsgCodeInactive( UINT unMsgCode);
 
     // Get message name from code
@@ -212,24 +212,24 @@ public:
 
     // Free reserved memory
     BOOL bDeAllocateMemory(CString strDBName);
-	//Delete the memory allocated to a particular Database
-	BOOL bDeAllocateDBMemory(sDBFileStruct* psDatbaseStructList);
-	//Delete the memory allocated to a Inactive Database
-	BOOL bDeAllocateMemoryInactive();
-	// Return the array of DB file
-	void vGetDataBaseNames(CStringArray *pastrDBnames);
-    void vSetDataBaseNames(const CStringArray *pastrDBnames);
+    //Delete the memory allocated to a particular Database
+    BOOL bDeAllocateDBMemory(sDBFileStruct* psDatbaseStructList);
+    //Delete the memory allocated to a Inactive Database
+    BOOL bDeAllocateMemoryInactive();
+    // Return the array of DB file
+    void vGetDataBaseNames(CStringArray* pastrDBnames);
+    void vSetDataBaseNames(const CStringArray* pastrDBnames);
     void bAddDbNameEntry(const CString& omDbFileName);
     // Validate dupliacte start bit value
     BOOL bIsDuplicateSignalStartBitValue( CString omStrMsgName,
-                                          UINT unByteNum, 
-                                          UINT unSignalLength, 
+                                          UINT unByteNum,
+                                          UINT unSignalLength,
                                           UINT unStartBitValue,
                                           BOOL bDataFormat);
 
     // Validate duplicate message code
     BOOL bIsDuplicateMessageCode( CString omStrMsgName,
-        UINT unMsgCode);
+                                  UINT unMsgCode);
 
     // Validate dupliacte signal name
     BOOL bIsDuplicateSignalName( CString omStrMsgName, CString omStrSgName);
@@ -240,17 +240,17 @@ public:
     // Creates and Updates "Unions.h" file
     CString bWriteDBHeader(CString omStrActiveDataBase);
 
-    static BOOL bCalcBitMaskForSig(BYTE* pbyMaskByte, UINT unArrayLen, 
-               UINT nByteNum, UINT nBitNum, UINT nLength, EFORMAT_DATA bDataFormat);
-    static BOOL bValidateSignal(UINT nDLC, UINT nByteNum, UINT nBitNum, 
+    static BOOL bCalcBitMaskForSig(BYTE* pbyMaskByte, UINT unArrayLen,
+                                   UINT nByteNum, UINT nBitNum, UINT nLength, EFORMAT_DATA bDataFormat);
+    static BOOL bValidateSignal(UINT nDLC, UINT nByteNum, UINT nBitNum,
                                 UINT nLength, EFORMAT_DATA bDataFormat);
 
 
 
 private:
-    BOOL bFormSigNameAndLength( UINT *punLength,
-                                const UINT *punStartBit,
-                                CStringArray &omStrArraySigName,
+    BOOL bFormSigNameAndLength( UINT* punLength,
+                                const UINT* punStartBit,
+                                CStringArray& omStrArraySigName,
                                 const INT nIndex );
     BOOL bSortSignalStartBitAscend(UINT* punSigStartBit ,UINT unCount);
     BOOL m_bIsDatabaseSaved;
@@ -261,12 +261,12 @@ private:
     // Validate Db file
     BOOL bValidateDatabaseFile(CString strFileName);
 
-    BOOL bInsertBusSpecStructures(CStdioFile& omHeaderFile, 
+    BOOL bInsertBusSpecStructures(CStdioFile& omHeaderFile,
                                   CString& omStrcommandLine,
                                   CStringArray& omStrArraySigName,
                                   sMESSAGE* pMsg);
     static void vWriteTextToTrace();
-    BOOL bFormSigNameAndLengthJ1939(const UINT *punStartBit,
-                                    CStringArray &omStrArraySigName,
+    BOOL bFormSigNameAndLengthJ1939(const UINT* punStartBit,
+                                    CStringArray& omStrArraySigName,
                                     const INT nIndex );
 };

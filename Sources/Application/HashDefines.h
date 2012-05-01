@@ -15,18 +15,18 @@
 
 /**
  * \file      HashDefines.h
- * \brief     This header file contains the hash define               
+ * \brief     This header file contains the hash define
  * \authors   Amarnath Shastry, Amitesh Bharti, Krishnaswamy B.N
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This header file contains the hash define               
+ * This header file contains the hash define
  */
 
 #pragma once
 
 //#define defNO_OF_CHANNELS           2
-#define MAX_PROTOCOL			   20
-#define AVAILABLE_PROTOCOLS		    4
+#define MAX_PROTOCOL               20
+#define AVAILABLE_PROTOCOLS         4
 
 
 
@@ -40,7 +40,7 @@
 
 #define defTX       " Tx "
 #define defRX       " Rx "
-//Time mode 
+//Time mode
 #define SYSTEM_MODE     "***SYSTEM MODE***"
 #define ABSOLUTE_MODE   "***ABSOLUTE MODE***"
 #define RELATIVE_MODE   "***RELATIVE MODE***"
@@ -70,7 +70,7 @@ enum eREPLAYTYPE
 {
     eTX_MESSAGE = 0,
     eRX_MESSAGE,
-    eALL_MESSAGE 
+    eALL_MESSAGE
 };
 
 enum eMODES
@@ -93,7 +93,7 @@ enum eMSG_CHANGES_IN
 {
     MSG_NAME    =   0,
     MSG_CODE,
-    MSG_LENGTH, 
+    MSG_LENGTH,
     MSG_FRAME_FORMAT,
     MSG_DATA_FORMAT
 
@@ -129,7 +129,7 @@ typedef enum eREPLAYMODE
 };
 
 // For splitter row and column
-#define FIRST_ROW   0 
+#define FIRST_ROW   0
 #define FIRST_COL   0
 #define SECOND_ROW  1
 #define SECOND_COL  1
@@ -174,7 +174,7 @@ void newFuncName( )\n{\n\n}")
 #define defMAX_TEXT_ACCEPTANCE  2
 #define EXPORTS     _T("EXPORTS")
 
-typedef VOID (*MSGFNPTR)(unsigned short, unsigned char, unsigned char*); 
+typedef VOID (*MSGFNPTR)(unsigned short, unsigned char, unsigned char*);
 typedef VOID (*TIMERFNPTR)();
 //For an integer list
 typedef CList<int,int>      defomIntegerList;
@@ -204,7 +204,7 @@ typedef CList<int,int>      defomIntegerList;
 #define defDATATYPE_DLC         _T("\tunsigned char m_ucDLC         ;\n")
 #define defDATATYPE_EXTD        _T("\tunsigned char m_ucEXTENDED    ;\n")
 #define defDATATYPE_RTR         _T("\tunsigned char m_ucRTR         ;\n")
-#define defDATATYPE_CHANNEL_NUM _T("\tunsigned char m_ucChannel	;\n") 
+#define defDATATYPE_CHANNEL_NUM _T("\tunsigned char m_ucChannel	;\n")
 #define defDATATYPE_MSG_DATA    _T("\t%-12s  %s     ;\n")
 #define defSTART_OF_STRUCT_DEF  _T("\n\tstruct\n\t{\n")
 #define defEND_OF_STRUCT_DEF    _T("\n} %s;\n")
@@ -218,7 +218,7 @@ typedef CList<int,int>      defomIntegerList;
 #define defINTEGER64            _T("__int64")
 #define defUNION_FORMAT_STRING  _T("\t    %-12s %-16s : %2d ;\n")
 
-#define defDATA_BYTE_ARRAY_J1939   _T("\tunsigned char      m_aucData[%d];\n") 
+#define defDATA_BYTE_ARRAY_J1939   _T("\tunsigned char      m_aucData[%d];\n")
 #define defDATA_BYTE_ARRAY         _T("\tunsigned char      m_aucData[8];\n")
 #define defDATA_WORD_ARRAY         _T("\tunsigned short int m_auwData[4];\n")
 #define defDATA_LONG_ARRAY         _T("\tunsigned long  int m_aulData[2];\n")
@@ -258,13 +258,13 @@ typedef CList<int,int>      defomIntegerList;
 #define TAB_ORIGIN              0
 
 #define GET_CONTEXT_WND_CHAR_HEIGHT() \
-                    ((::GetDeviceCaps(hDeviceContext,LOGPIXELSY) * 10) / 72)
+    ((::GetDeviceCaps(hDeviceContext,LOGPIXELSY) * 10) / 72)
 #define GET_CONTEXT_WND_CHAR_WIDTH() \
-                    ((::GetDeviceCaps(hDeviceContext,LOGPIXELSX) * 6) / 72)
+    ((::GetDeviceCaps(hDeviceContext,LOGPIXELSX) * 6) / 72)
 #define GET_FILE_VIEW_CHAR_HEIGHT() \
-                    ((omDeviceContext.GetDeviceCaps (LOGPIXELSY) * 10) / 72)
+    ((omDeviceContext.GetDeviceCaps (LOGPIXELSY) * 10) / 72)
 #define GET_FILE_VIEW_CHAR_WIDTH() \
-                    ((omDeviceContext.GetDeviceCaps (LOGPIXELSX) * 6) / 72)
+    ((omDeviceContext.GetDeviceCaps (LOGPIXELSX) * 6) / 72)
 
 
 
@@ -321,7 +321,7 @@ typedef CList<int,int>      defomIntegerList;
 #define SG_DELETE_FAILED        _T("Could not delete signal!")
 #define MSG_DELETE_CONFMN       _T("You are about to Delete a Message.\n\nAre you sure you want to Delete?")
 
-#define CAN_BUS		             _T("CAN Bus")
+#define CAN_BUS                  _T("CAN Bus")
 #define SIMSYS_DELETE_CONFMN     _T("You are about to Delete a Simulated System.\n\nAre you sure you want to Delete?")
 #define ALL_SIMSYS_DELETE_CONFMN _T("You are about to Delete all the Simulated Systems.\n\nAre you sure you want to Delete?")
 #define ALL_NODE_EDIT_CONFMN     _T("You are about to change all the Node details!\n\nAre you sure you want to Continue?")
@@ -344,7 +344,7 @@ typedef CList<int,int>      defomIntegerList;
 #define MSG_SELECT_SIGNAL       _T("Please select the signal from the signal list!")
 #define MSG_SG_VAL_OUT_OF_RANGE _T("Signal value is out of range!")
 #define MSG_DELETE_DESC_CONMN   _T("You are about to delete a signal description and\
- its value.\nAre you sure you want to delete?")
+its value.\nAre you sure you want to delete?")
 
 #define MSG_DEL_FAIL            _T("Delete operation failed!")
 
@@ -358,7 +358,7 @@ This operation will convert the message code from 11 to 29 bits.\nDo you want to
 #define MAX_LMT_FOR_STD_MSG_ID  2048
 #define defMAX_LMT_EXTD_MSG_ID 0x20000000
 #define defMAX_BITS             64
-#define defMAX_SIGNALS			128
+#define defMAX_SIGNALS          128
 #define defBITS_IN_BYTE         8
 #define defMAX_BYTE             8
 #define defBITS_IN_FOUR_BYTE    32
@@ -471,7 +471,7 @@ PLACE_HODLER_FOR_FUNCTIONNAME */")
 
 #define UTILS_PREFIX            _T("Utils_")
 #define OPEN_PARENTHESIS        _T("(")
-#define NO_OF_CHAR_IN_UTILS		6
+#define NO_OF_CHAR_IN_UTILS     6
 
 #define GLOBAL_VAR_PREFIX         _T("g_")
 #define MIN_CHAR_IN_GLOBAL_VAR    2
@@ -560,7 +560,7 @@ PLACE_HODLER_FOR_FUNCTIONNAME */")
 #define WM_SET_WARNING_LIMIT_VAR    WM_USER + 38
 #define WM_KEY_PRESSED_MSG_WND      WM_USER + 39
 #define TM_SET_FLAG_STATUS          WM_USER + 40
-#define WM_NOTIFICATION_FROM_OTHER  WM_USER + 43 
+#define WM_NOTIFICATION_FROM_OTHER  WM_USER + 43
 #define WM_USER_CMD                 WM_USER + 44
 #define WM_LOAD_SAVE_WINSTATUS      WM_USER + 45
 #define WM_MODIFY_VISIBILITY        WM_USER + 46
@@ -579,14 +579,14 @@ PLACE_HODLER_FOR_FUNCTIONNAME */")
 #define WM_CONFIG_CHANGE            WM_USER + 58 // Configuration Change Event
 #define WM_DATABASE_CHANGE          WM_USER + 59 // Database associate/dissociate event
 
-// Errors 
+// Errors
 #define defMSG_NOACK                _T("Message transmission\
 acknowledgement could not be received for the message transmitted from\n\
 MODULE_NAME module.\nMessage transmission aborted!")
 #define defMSG_TIMEOUT              _T("Timeout occured waiting for acknowledgement\n\
 for the message transmitted from MODULE_NAME module.!\n\n\
 Select Yes to continue transmission. Further transmission may not be as\
- expected.\nSelect No to abort transmission." )
+expected.\nSelect No to abort transmission." )
 #define defMSG_MEMALLOC             _T("Memory allocation failure.\n\
 Message transmission aborted!")
 #define defWAIT_FAILED              _T("Wait for acknowledgement failed.")
@@ -703,7 +703,7 @@ const int SIZE_HASH_TABLE_DBMSGS = 199;
 #define IDC_LSTB_OUTPUT             300
 #define IDC_LSTB_REPLAY             400
 
-// typedef 
+// typedef
 typedef CArray<INT, INT&> CARRAY;
 typedef CARRAY* PCARRAY;
 
@@ -790,13 +790,13 @@ details since message length\nfor the selected message is zero!")
 #define defCONFIG_FILE_CORRUPT              defCONFIG_FILE_ERROR+7
 #define defCONFIG_FILE_HDR_CORRUPT          defCONFIG_FILE_ERROR+8
 #define defCONFIG_FILE_SUCCESS              10
-#define defFILE_LOADED						11
+#define defFILE_LOADED                      11
 
 #define defCONFIG_FILE_LOADING              0
 #define defCONFIG_FILE_SAVING               1
 #define defCONFIG_FILE_NEW                  2
 
-// More hash defines to make compatible with the 
+// More hash defines to make compatible with the
 // error code returned by GetLastError() function
 // NOTE : Do not change the values below
 
@@ -818,14 +818,14 @@ details since message length\nfor the selected message is zero!")
 #define defBUFLEN           64
 #define defAPPVERSION           2.7
 #define defBASE_CONF_VERSION    2.3
-// for sim sys 
+// for sim sys
 //#define defSIMSYSVERSION           1.0
 
 // Feature's starting version list
 #define defSIGNAL_GRAPH_VERSION           2.4
-#define defMULTI_CHANNEL_VERSION		  2.5
+#define defMULTI_CHANNEL_VERSION          2.5
 #define defTX_MSG_ENABLE_OPTION_VERISION  2.5
-#define defMULTI_FILTER_VERSION			  2.5
+#define defMULTI_FILTER_VERSION           2.5
 #define defMULTI_NODE_VERSION             2.6
 #define defMULTI_DATABASE_VERSION         2.7
 
@@ -872,9 +872,9 @@ details since message length\nfor the selected message is zero!")
 #define defWARNING_LIMIT    _T("96")
 #define defWARNING_LIMIT_INT    96
 //if external copy simulation mode is default mode
-#ifdef EVAL_COPY_EXT 
+#ifdef EVAL_COPY_EXT
 #define defCONTROLLER_MODE  3 // Simulation mode
-#else 
+#else
 #define defCONTROLLER_MODE  1 // Active mode
 # endif
 #define defMSGFILTERTYPE    0x01
@@ -904,13 +904,13 @@ details since message length\nfor the selected message is zero!")
 typedef enum eCONFIGDETAILS
 {
     MRU_C_FILE_NAME,    //  MRU C File
-    LOG_FILE_NAME,      // log file information 
+    LOG_FILE_NAME,      // log file information
     REPLAY_FILE_NAME,   // replay file information
     DATABASE_FILE_NAME, // database filename
     MRU_DLL_FILE_NAME,  // dll filename
     //MESSAGE_NAME,           // message name
     //MESSAGE_ID,             // message id
-    SEND_MULTI_MSGS,    // multiple message 
+    SEND_MULTI_MSGS,    // multiple message
     CONTROLLER_DETAILS, // Controller information
     MSG_ATTRIBUTES,     // attributes of all the messages
     OLD_FILTER_DETAILS, // filter details
@@ -931,7 +931,7 @@ typedef enum eCONFIGDETAILS
     TX_MSG_WND_SPLITTER_DATA,    // Tx Msg window Spliter Data
     GRAPH_WND_SPLITTER_DATA,
     CONFIG_FILE_VERSION,
-	SIMSYS_WND_PLACEMENT,
+    SIMSYS_WND_PLACEMENT,
     SIMSYS_LIST,  // pointer to the array of simulated system configuration paths
     LOG_CONFIG_DETS,
     FILTER_CONFIG_DETS,
@@ -947,7 +947,7 @@ typedef enum eCONFIGDETAILS
 #define defCONFIGFILENAME        _T("ConfigFile")
 
 #define defREGISTRY_LOCATION      _T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\BUSMASTER.exe")
-#define defERROR_IN_REGISTRY      _T("Unable to obtain path of GCC from registry key")  
+#define defERROR_IN_REGISTRY      _T("Unable to obtain path of GCC from registry key")
 #define defERROR_OPEN_REGISTRY    _T("The registry value is corrupted. Please re-install.")
 #define defERROR_OPEN_REGISTRY_FN _T("The registry value is corrupted. The interface function is not available.\nPlease re-install.")
 #define defHARDWARE_ERROR_MSG     _T("Unable to detect hardware interface.")
@@ -1232,10 +1232,10 @@ transmission is ON.\nDo you want to ignore the changes ?")
 
 #define defSTR_EMPTY_ACTIVE_DATABASE _T("There is no active database. Please import database")
 
-#define defBITS_ERR_FRAME                   20 
+#define defBITS_ERR_FRAME                   20
 #define defBITS_STD_FRAME                   48 //Without databytes.
 #define defBITS_EXTD_FRAME                  68 //Without databytes.
-#define defBITS_ERROR_FRAME                 15 
+#define defBITS_ERROR_FRAME                 15
 #define defBITS_INTER_FRAME                 12
 #define defTIME_INTERVAL                    1.0
 #define defDIV_FACT_FOR_SECOND              10000.0
@@ -1710,7 +1710,7 @@ transmission is ON.\nDo you want to ignore the changes ?")
 
 #define defSTR_DEFAULT_FILTER_NAME              _T("Filter")
 #define defSTR_DEFAULT_FILTER_FORMAT            _T("%s_%d")
- 
+
 // 0 - None, 1 - Start, 2 - Stop, 3 - Both
 #define defLOG_TRIGGER_NONE             0
 #define defLOG_TRIGGER_START            1

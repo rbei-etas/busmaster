@@ -32,9 +32,9 @@ private:
 public:
     CMsgWndHdrInfo(void);
     ~CMsgWndHdrInfo(void);
-    void vInitializeColDetails( SMSGWNDHDRCOL sHdrColPosStruct, 
-                                       CString omArrColTitle[MAX_MSG_WND_COL_CNT],
-                                       int nArrTitleCnt);
+    void vInitializeColDetails( SMSGWNDHDRCOL sHdrColPosStruct,
+                                CString omArrColTitle[MAX_MSG_WND_COL_CNT],
+                                int nArrTitleCnt);
     void vGetHdrColStruct(SMSGWNDHDRCOL& sHdrColStruct);
-    void vGetHdrColNames(CString omArrColTitle[MAX_MSG_WND_COL_CNT], int &NameCount);
+    void vGetHdrColNames(CString omArrColTitle[MAX_MSG_WND_COL_CNT], int& NameCount);
 };

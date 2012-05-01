@@ -63,5 +63,6 @@ BOOL CAppServices_Impl::bWriteToTrace(TCHAR* pcTraceStr)
         m_podUIThread->vAddString(omStr);
         Result = TRUE;
     }
+
     return Result;
 }

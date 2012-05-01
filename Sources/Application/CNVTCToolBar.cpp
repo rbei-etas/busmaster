@@ -28,48 +28,50 @@
 //Constructor
 CNVTCToolBar::CNVTCToolBar()
 {
-
 }
 
 //Destructor
 CNVTCToolBar::~CNVTCToolBar()
 {
-
 }
 
 BOOL CNVTCToolBar::bLoadCNVTCToolBar(int nWidth, UINT unNormal, UINT unHot, UINT unDisabled, COLORREF clrMask)
 {
-	if (bSetCNVTCToolBar(TB_SETIMAGELIST, unNormal, nWidth, clrMask))
-	{
-		if (bSetCNVTCToolBar(TB_SETHOTIMAGELIST, unHot, nWidth, clrMask))		
-		{			
-			if (unDisabled) 
-			{
-				if (bSetCNVTCToolBar(TB_SETDISABLEDIMAGELIST, unDisabled, nWidth, clrMask))
-					return TRUE;
-				else
-					return FALSE;
-			}
-		}
-			return FALSE;
-	}
-	else
-		return FALSE;
-			
+    if (bSetCNVTCToolBar(TB_SETIMAGELIST, unNormal, nWidth, clrMask))
+    {
+        if (bSetCNVTCToolBar(TB_SETHOTIMAGELIST, unHot, nWidth, clrMask))
+        {
+            if (unDisabled)
+            {
+                if (bSetCNVTCToolBar(TB_SETDISABLEDIMAGELIST, unDisabled, nWidth, clrMask))
+                {
+                    return TRUE;
+                }
+                else
+                {
+                    return FALSE;
+                }
+            }
+        }
+
+        return FALSE;
+    }
+    else
+    {
+        return FALSE;
+    }
 }
 
 BOOL CNVTCToolBar::bSetCNVTCToolBar(UINT unToolBarType, UINT unToolBar, int nWidth, COLORREF clrMask)
 {
-	CNVTCImageList objImageList;
-	objImageList.bCreateCNVTC(unToolBar,nWidth,clrMask);
-
-	SendMessage(unToolBarType, 0, (LPARAM)objImageList.m_hImageList);
-	objImageList.Detach(); 
-	
-	return TRUE;
+    CNVTCImageList objImageList;
+    objImageList.bCreateCNVTC(unToolBar,nWidth,clrMask);
+    SendMessage(unToolBarType, 0, (LPARAM)objImageList.m_hImageList);
+    objImageList.Detach();
+    return TRUE;
 }
 
 BOOL CNVTCToolBar::bLoadCNVTCToolBar(int nWidth, UINT unNormal, UINT unHot, UINT unDisabled)
 {
-	return bLoadCNVTCToolBar(nWidth, unNormal, unHot, unDisabled, RGB(255,255,255));
+    return bLoadCNVTCToolBar(nWidth, unNormal, unHot, unDisabled, RGB(255,255,255));
 }

@@ -26,42 +26,42 @@
 
 class CMsgFilterConfigPage : public CPropertyPage
 {
-	DECLARE_DYNCREATE(CMsgFilterConfigPage)
+    DECLARE_DYNCREATE(CMsgFilterConfigPage)
 
-// Construction
+    // Construction
 public:
     // Standard constructor
     CMsgFilterConfigPage();
     // Construction with filter details
-	CMsgFilterConfigPage(const SFILTERAPPLIED_CAN* psFilterConfigured,
-                            HWND hMsgWnd);
+    CMsgFilterConfigPage(const SFILTERAPPLIED_CAN* psFilterConfigured,
+                         HWND hMsgWnd);
     // Standard destructor
-	~CMsgFilterConfigPage();
+    ~CMsgFilterConfigPage();
 
-// Dialog Data
-	//{{AFX_DATA(CMsgFilterConfigPage)
-	enum { IDD = IDD_DLG_MSG_DISPLAY_FILTER };
-	CListCtrl	m_omLstcFilterList;
-	//}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CMsgFilterConfigPage)
+    enum { IDD = IDD_DLG_MSG_DISPLAY_FILTER };
+    CListCtrl   m_omLstcFilterList;
+    //}}AFX_DATA
 
 
-// Overrides
-	// ClassWizard generate virtual function overrides
-	//{{AFX_VIRTUAL(CMsgFilterConfigPage)
-	public:
-	virtual void OnOK();
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Overrides
+    // ClassWizard generate virtual function overrides
+    //{{AFX_VIRTUAL(CMsgFilterConfigPage)
+public:
+    virtual void OnOK();
 protected:
-	// Generated message map functions
-	//{{AFX_MSG(CMsgFilterConfigPage)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnBtnConfigure();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    //}}AFX_VIRTUAL
+
+    // Implementation
+protected:
+    // Generated message map functions
+    //{{AFX_MSG(CMsgFilterConfigPage)
+    virtual BOOL OnInitDialog();
+    afx_msg void OnBtnConfigure();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 private:
     // To create image list
     BOOL bCreateImageList();
