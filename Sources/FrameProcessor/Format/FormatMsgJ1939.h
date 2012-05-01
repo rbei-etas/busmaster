@@ -35,13 +35,13 @@ private:
     void vFormatTime(BYTE bExprnFlag, PSTJ1939_MSG psJ1939BData,
                      PSFORMATTEDATA_J1939 psJ1939FData);
     void vFormatDataAndId(BYTE bExprnFlag, PSTJ1939_MSG psJ1939BData,
-                     PSFORMATTEDATA_J1939 psJ1939FData);
+                          PSFORMATTEDATA_J1939 psJ1939FData);
 public:
     CFormatMsgJ1939(void);
     ~CFormatMsgJ1939(void);
-    
+
     void vInit(/*CJ1939MessageMap* podMsgMap*/);
-    void vFormatJ1939DataMsg(STJ1939_MSG* pMsgMcANet, 
+    void vFormatJ1939DataMsg(STJ1939_MSG* pMsgMcANet,
                              SFORMATTEDATA_J1939* CurrDataJ1939,
                              BYTE bExprnFlag_Log);
 };

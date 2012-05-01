@@ -35,6 +35,7 @@ public:
     {
         m_pILog = NULL;
         dwClientID = 0;
+
         for (int i = 0; i < MAX_PATH; i++)
         {
             m_acVersion[i] = L'\0';
@@ -50,7 +51,6 @@ public:
         m_pILog     = RefObj.m_pILog;
         dwClientID  = RefObj.dwClientID;
         strcpy_s(m_acVersion, RefObj.m_acVersion);
-
         return *this;
     }
 };

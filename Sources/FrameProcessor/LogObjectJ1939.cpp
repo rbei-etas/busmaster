@@ -3,10 +3,10 @@
   FileName      :  LogObjectJ1939.cpp
   Description   :  Source file for CLogObjectJ1939 class.
   $Log:   X:/Archive/Sources/FrameProcessor/LogObjectJ1939.cpv  $
-   
+
   Author(s)     :  Ratnadip Choudhury
   Date Created  :  30.11.2010
-  Modified By   :  
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 
@@ -22,34 +22,33 @@ CLogObjectJ1939::CLogObjectJ1939(CString omVersion):CBaseLogObject(omVersion)
 {
     // Initialise the filtering block
     m_sFilterApplied.vClear();
-	m_pasControllerDetails = NULL;
-	m_nNumChannels = 0;
+    m_pasControllerDetails = NULL;
+    m_nNumChannels = 0;
 }
 
 CLogObjectJ1939::~CLogObjectJ1939()
 {
-	if (NULL != m_pasControllerDetails)
-	{
-		delete[] m_pasControllerDetails;
-		m_pasControllerDetails = NULL;
-	}
+    if (NULL != m_pasControllerDetails)
+    {
+        delete[] m_pasControllerDetails;
+        m_pasControllerDetails = NULL;
+    }
 }
 
 void CLogObjectJ1939::Der_CopySpecificData(const CBaseLogObject* pouLogObjRef)
 {
-    const CLogObjectJ1939 *pouLobObjCANRef = static_cast <const CLogObjectJ1939 *> (pouLogObjRef);
+    const CLogObjectJ1939* pouLobObjCANRef = static_cast <const CLogObjectJ1939*> (pouLogObjRef);
     pouLobObjCANRef->GetFilterInfo(m_sFilterApplied);
 }
 
 BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
 {
     // Multiple return statements are used to keep the code precise.
-
-    SFRAMEINFO_BASIC_J1939 J1939Info_Basic = 
+    SFRAMEINFO_BASIC_J1939 J1939Info_Basic =
     {
         sDataJ1939.m_dwPGN
     };
-    
+
     // Assign appropriate values to FrameInfo_Basic
 
     if (bToBeLogged(J1939Info_Basic) == FALSE)
@@ -58,7 +57,6 @@ BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
     }
 
     CString omLogText = _T("");
-
     TCHAR* pTimeData = NULL;
     TCHAR acID[16] = {'\0'};
     TCHAR* pPGN = NULL;
@@ -68,53 +66,66 @@ BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
 
     switch (m_sLogInfo.m_eLogTimerMode) // Time Mode
     {
-        case TIME_MODE_ABSOLUTE: 
+        case TIME_MODE_ABSOLUTE:
         {
-			if(m_sLogInfo.m_bResetAbsTimeStamp)
-				pTimeData = (TCHAR *) (sDataJ1939.m_acTimeAbsReset);
-			else
-				pTimeData = (TCHAR *) (sDataJ1939.m_acTimeAbs);            
+            if(m_sLogInfo.m_bResetAbsTimeStamp)
+            {
+                pTimeData = (TCHAR*) (sDataJ1939.m_acTimeAbsReset);
+            }
+            else
+            {
+                pTimeData = (TCHAR*) (sDataJ1939.m_acTimeAbs);
+            }
         }
         break;
-        case TIME_MODE_RELATIVE: 
+
+        case TIME_MODE_RELATIVE:
         {
-            pTimeData = (TCHAR *) (sDataJ1939.m_acTimeRel);
+            pTimeData = (TCHAR*) (sDataJ1939.m_acTimeRel);
         }
         break;
+
         case TIME_MODE_SYSTEM:
         {
-            pTimeData = (TCHAR *) (sDataJ1939.m_acTimeSys);
+            pTimeData = (TCHAR*) (sDataJ1939.m_acTimeSys);
         }
         break;
-        default: ASSERT(FALSE); break;
+
+        default:
+            ASSERT(FALSE);
+            break;
     }
 
     switch (m_sLogInfo.m_eNumFormat)
     {
-        case HEXADECIMAL: 
+        case HEXADECIMAL:
         {
             sprintf_s(acID, "%x", sDataJ1939.m_dwMsgID);
-            pPGN = (TCHAR *) (sDataJ1939.m_acPGNHex);
-            pData = (TCHAR *) (sDataJ1939.m_pcDataHex);
-            psSrcNode = (TCHAR *) (sDataJ1939.m_acSrcHex);
-            psDestNode = (TCHAR *) (sDataJ1939.m_acDestHex);
+            pPGN = (TCHAR*) (sDataJ1939.m_acPGNHex);
+            pData = (TCHAR*) (sDataJ1939.m_pcDataHex);
+            psSrcNode = (TCHAR*) (sDataJ1939.m_acSrcHex);
+            psDestNode = (TCHAR*) (sDataJ1939.m_acDestHex);
         }
         break;
-        case DEC: 
+
+        case DEC:
         {
             sprintf_s(acID, "%d", sDataJ1939.m_dwMsgID);
-            pPGN = (TCHAR *) (sDataJ1939.m_acPGNDec);
-            pData = (TCHAR *) (sDataJ1939.m_pcDataDec);
-            psSrcNode = (TCHAR *) (sDataJ1939.m_acSrcDec);
-            psDestNode = (TCHAR *) (sDataJ1939.m_acDestDec);
+            pPGN = (TCHAR*) (sDataJ1939.m_acPGNDec);
+            pData = (TCHAR*) (sDataJ1939.m_pcDataDec);
+            psSrcNode = (TCHAR*) (sDataJ1939.m_acSrcDec);
+            psDestNode = (TCHAR*) (sDataJ1939.m_acDestDec);
         }
         break;
-        default: ASSERT(FALSE); break;
+
+        default:
+            ASSERT(FALSE);
+            break;
     }
 
     // First put everything in a string to get the length
     // <Time> <Channel> <ID> <PGN> <Type> <Src Node> <Dest Node> <Priority> <Direction> <DLC> <Data>
-    omLogText.Format(  _T("%s %s %s %s %s %s %s %s %s %s %s\n"), 
+    omLogText.Format(  _T("%s %s %s %s %s %s %s %s %s %s %s\n"),
                        pTimeData,
                        sDataJ1939.m_acChannel,
                        acID,
@@ -126,13 +137,11 @@ BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
                        sDataJ1939.m_acMsgDir,
                        sDataJ1939.m_acDataLen,
                        pData);
-
     vWriteTextToFile(omLogText);
-
     return TRUE;
 }
 
-// To format the header 
+// To format the header
 void CLogObjectJ1939::vFormatHeader(CString& omHeader)
 {
     CBaseLogObject::vFormatHeader(omHeader);
@@ -140,7 +149,7 @@ void CLogObjectJ1939::vFormatHeader(CString& omHeader)
     omHeader += L'\n';
 }
 
-// To format the footer 
+// To format the footer
 void CLogObjectJ1939::vFormatFooter(CString& omFooter)
 {
     CBaseLogObject::vFormatFooter(omFooter);
@@ -153,10 +162,10 @@ void CLogObjectJ1939::vFormatFooter(CString& omFooter)
 //  Description    : Logs data. This will open the file in
 //                   appropriate mode and will insert header if it is new.
 //  Member of      : CBaseLogObject
-//	Friend of	   : None
-//	Author		   : Arun Kumar
-//	Creation Date  : 10/11/06
-//	Modifications  : Anish, the message structure is changed
+//  Friend of      : None
+//  Author         : Arun Kumar
+//  Creation Date  : 10/11/06
+//  Modifications  : Anish, the message structure is changed
 //  Modifications  : Ratnadip Choudhury.
                      1. Changed the prototype
                      2. Shifted the formatting codes into vWriteTextToFile(...)
@@ -164,8 +173,7 @@ void CLogObjectJ1939::vFormatFooter(CString& omFooter)
 BOOL CLogObjectJ1939::bToBeLogged(SFRAMEINFO_BASIC_J1939& J1939Info_Basic)
 {
     // Multiple return statements are used to keep the code precise.
-
-    if (m_sLogInfo.m_bEnabled == FALSE) 
+    if (m_sLogInfo.m_bEnabled == FALSE)
     {
         return FALSE;
     }
@@ -187,25 +195,29 @@ BOOL CLogObjectJ1939::bToBeLogged(SFRAMEINFO_BASIC_J1939& J1939Info_Basic)
     // Check for the triggering conditions
     switch (m_CurrTriggerType)
     {
-        case NONE: break;
+        case NONE:
+            break;
+
         case STOPPED:
         {
             //If the log file is stopped then don't log
             return FALSE;
         }
         break;
+
         case START:
         {
             if (m_sLogInfo.m_sLogTrigger.m_unStartID == J1939Info_Basic.m_dwPGN)
             {
                 m_CurrTriggerType = NONE;
             }
-            else 
+            else
             {
                 return FALSE;
             }
         }
         break;
+
         case STOP:
         {
             if (m_sLogInfo.m_sLogTrigger.m_unStopID == J1939Info_Basic.m_dwPGN)
@@ -227,7 +239,10 @@ BOOL CLogObjectJ1939::bToBeLogged(SFRAMEINFO_BASIC_J1939& J1939Info_Basic)
             }
         }
         break;
-        default: ASSERT(FALSE); break;
+
+        default:
+            ASSERT(FALSE);
+            break;
     }
 
     return TRUE;
@@ -237,24 +252,20 @@ BYTE* CLogObjectJ1939::Der_SetConfigData(BYTE* pvDataStream)
 {
     bool bResult = false;
     BYTE* pbSStream = pvDataStream;
-
     pbSStream = m_sFilterApplied.pbSetConfigData(pbSStream, bResult);
-
     return pbSStream;
 }
 
 BYTE* CLogObjectJ1939::Der_GetConfigData(BYTE* pvDataStream) const
 {
     BYTE* pbTStream = pvDataStream;
-
     pbTStream = m_sFilterApplied.pbGetConfigData(pbTStream);
-
     return pbTStream;
 }
 
 UINT CLogObjectJ1939::Der_unGetBufSize(void) const
 {
-	return m_sFilterApplied.unGetSize();
+    return m_sFilterApplied.unGetSize();
 }
 
 void CLogObjectJ1939::EnableFilter(BOOL bEnable)
@@ -274,49 +285,52 @@ void CLogObjectJ1939::SetFilterInfo(const SFILTERAPPLIED_J1939& sFilterInfo)
 
 void CLogObjectJ1939::Der_SetDatabaseFiles(const CStringArray& omList)
 {
-	// Clear before updating
-	m_omListDBFiles.RemoveAll();
+    // Clear before updating
+    m_omListDBFiles.RemoveAll();
 
-	for (int nIdx = 0; nIdx < omList.GetSize(); nIdx++)
-	{
-		m_omListDBFiles.Add(omList.GetAt(nIdx));			
-	}
+    for (int nIdx = 0; nIdx < omList.GetSize(); nIdx++)
+    {
+        m_omListDBFiles.Add(omList.GetAt(nIdx));
+    }
 }
 
 // Get the list of database files associated
 void CLogObjectJ1939::Der_GetDatabaseFiles(CStringArray& omList)
-{	
-	omList.Append(m_omListDBFiles);
+{
+    omList.Append(m_omListDBFiles);
 }
 
 void CLogObjectJ1939::Der_SetChannelBaudRateDetails
-						(SCONTROLLER_DETAILS* controllerDetails,
-						int nNumChannels)
+(SCONTROLLER_DETAILS* controllerDetails,
+ int nNumChannels)
 {
-	if (NULL != m_pasControllerDetails)
-	{
-		delete[] m_pasControllerDetails;		
-	}
-	m_pasControllerDetails = NULL;
+    if (NULL != m_pasControllerDetails)
+    {
+        delete[] m_pasControllerDetails;
+    }
 
-	m_pasControllerDetails = new SCONTROLLER_DETAILS [nNumChannels];
-	for (int nIdx = 0; nIdx < nNumChannels; nIdx++)
-	{
-		memcpy(m_pasControllerDetails + nIdx, controllerDetails + nIdx, sizeof(SCONTROLLER_DETAILS));
-	}
-	m_nNumChannels = nNumChannels;
+    m_pasControllerDetails = NULL;
+    m_pasControllerDetails = new SCONTROLLER_DETAILS [nNumChannels];
+
+    for (int nIdx = 0; nIdx < nNumChannels; nIdx++)
+    {
+        memcpy(m_pasControllerDetails + nIdx, controllerDetails + nIdx, sizeof(SCONTROLLER_DETAILS));
+    }
+
+    m_nNumChannels = nNumChannels;
 }
 
 // To get the channel baud rate info for each channel
 void CLogObjectJ1939::Der_GetChannelBaudRateDetails
-					(SCONTROLLER_DETAILS* controllerDetails, int& nNumChannels)
+(SCONTROLLER_DETAILS* controllerDetails, int& nNumChannels)
 {
-	if (NULL != m_pasControllerDetails)
-	{
-		for (int nIdx = 0; nIdx < m_nNumChannels; nIdx++)
-		{
-			memcpy(controllerDetails + nIdx, m_pasControllerDetails + nIdx, sizeof(SCONTROLLER_DETAILS));
-		}		
-		nNumChannels = m_nNumChannels;
-	}
+    if (NULL != m_pasControllerDetails)
+    {
+        for (int nIdx = 0; nIdx < m_nNumChannels; nIdx++)
+        {
+            memcpy(controllerDetails + nIdx, m_pasControllerDetails + nIdx, sizeof(SCONTROLLER_DETAILS));
+        }
+
+        nNumChannels = m_nNumChannels;
+    }
 }
