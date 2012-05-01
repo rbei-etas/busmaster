@@ -33,9 +33,9 @@
 class CFrameProcessor_J1939 : public CBaseFrameProcessor_J1939, CFrameProcessor_Common
 {
 private:
-    CParamLoggerJ1939	m_sJ1939ProcParams;
+    CParamLoggerJ1939   m_sJ1939ProcParams;
     CBaseDILI_J1939*    m_pouDIL_J1939;
-	CMsgBufVSE			m_ouVSEBufJ1939;
+    CMsgBufVSE          m_ouVSEBufJ1939;
     STJ1939_MSG         m_sJ1939Data;
     BYTE*               m_pbyJ1939Data;
     SFORMATTEDATA_J1939 m_sCurrFormatDat;
@@ -43,12 +43,12 @@ private:
 
     USHORT ushCalculateStrLen(bool bForHex, USHORT ushLength);
     void vEmptyLogObjArray(CLogObjArray& omLogObjArray);
-	// To create a new logging object
-	CBaseLogObject* CreateNewLogObj(void);
+    // To create a new logging object
+    CBaseLogObject* CreateNewLogObj(void);
     // To delete a logging object
     void DeleteLogObj(CBaseLogObject*& pouLogObj);
     // To create the time mode mapping
-	void CreateTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& unAbsTime);
+    void CreateTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& unAbsTime);
 
 
 public:
@@ -56,9 +56,9 @@ public:
     CFrameProcessor_J1939();      // Constructor
     ~CFrameProcessor_J1939();     // Destructor
 
-	BOOL InitInstance(void);
+    BOOL InitInstance(void);
     int ExitInstance(void);
-	void vRetrieveDataFromBuffer(void);
+    void vRetrieveDataFromBuffer(void);
 
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     // To initialise this module
@@ -66,11 +66,11 @@ public:
 
     // To modify the filtering scheme of a logging block
     HRESULT FPJ1_ApplyFilteringScheme(USHORT ushLogBlkID,
-                                     const SFILTERAPPLIED_J1939& sFilterObj);
+                                      const SFILTERAPPLIED_J1939& sFilterObj);
 
     // Getter for the filtering scheme of a logging block
-    HRESULT FPJ1_GetFilteringScheme(USHORT ushLogBlk, 
-                                   SFILTERAPPLIED_J1939& sFilterObj);
+    HRESULT FPJ1_GetFilteringScheme(USHORT ushLogBlk,
+                                    SFILTERAPPLIED_J1939& sFilterObj);
 
 
     /* USE COMMON BASE CLASS ALIAS FUNCTIONS */
@@ -86,7 +86,7 @@ public:
     to FOR_ALL, signifies the operation to be performed for all the blocks */
     HRESULT FPJ1_EnableFilter(USHORT ushBlk, BOOL bEnable);
 
-    // Query function - current logging status (OFF/ON). 
+    // Query function - current logging status (OFF/ON).
     BOOL FPJ1_IsLoggingON(void);
 
     // Query function - current filtering status
@@ -131,12 +131,12 @@ public:
     // Setter for the logging configuration data
     HRESULT FPJ1_SetConfigData(BYTE* pvDataStream);
 
-	// To update the associated database list to logger
-	HRESULT FPJ1_SetDatabaseFiles(const CStringArray& omList);
+    // To update the associated database list to logger
+    HRESULT FPJ1_SetDatabaseFiles(const CStringArray& omList);
 
-	// To update the channel baud rate info to logger
-	HRESULT FPJ1_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
-															int nNumChannels);
+    // To update the channel baud rate info to logger
+    HRESULT FPJ1_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
+                                           int nNumChannels);
 
     /* ENDS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
 };

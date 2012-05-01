@@ -33,32 +33,32 @@
 class CLogObjectCAN : public CBaseLogObject
 {
 private:
-	// The filter object
-	SFILTERAPPLIED_CAN m_sFilterApplied;
+    // The filter object
+    SFILTERAPPLIED_CAN m_sFilterApplied;
 
-    // To format the header 
+    // To format the header
     void vFormatHeader(CString& omHeader);
 
-    // To format the footer 
+    // To format the footer
     void vFormatFooter(CString& omFooter);
 
-	BOOL bToBeLogged(SFRAMEINFO_BASIC_CAN& CANInfo_Basic);
+    BOOL bToBeLogged(SFRAMEINFO_BASIC_CAN& CANInfo_Basic);
 
 protected:
-    // To copy specific data pertaining to the conrete class. 
+    // To copy specific data pertaining to the conrete class.
     void Der_CopySpecificData(const CBaseLogObject* pouLogObjRef);
     // Set configuration data - concrete class specific logics
     BYTE* Der_SetConfigData(BYTE* pvDataStream);
     // Get configuration data - concrete class specific logics
     BYTE* Der_GetConfigData(BYTE* pvDataStream) const;
     // To get the total buffer size - concrete class specific logics
-	UINT Der_unGetBufSize(void) const;
+    UINT Der_unGetBufSize(void) const;
 
 public:
 
-	CStringArray		m_omListDBFiles;
-	SCONTROLLER_DETAILS*	m_pasControllerDetails;
-	int					m_nNumChannels;
+    CStringArray        m_omListDBFiles;
+    SCONTROLLER_DETAILS*    m_pasControllerDetails;
+    int                 m_nNumChannels;
 
     CLogObjectCAN(CString omVersion);    // Overloaded constructor
     ~CLogObjectCAN();   // Destructor
@@ -74,14 +74,14 @@ public:
     // Set the filter info structure
     void SetFilterInfo(const SFILTERAPPLIED_CAN& sFilterInfo);
 
-	// Get the list of database files associated
-	void Der_GetDatabaseFiles(CStringArray& omList);
-	// Set the list of database files associated
-	void Der_SetDatabaseFiles(const CStringArray& omList);
-	// Set the baud rate details for each channel
-	void Der_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails, 
-									int nNumChannels);
-	// To get the channel baud rate info for each channel
-	void Der_GetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
-											int& nNumChannels);
+    // Get the list of database files associated
+    void Der_GetDatabaseFiles(CStringArray& omList);
+    // Set the list of database files associated
+    void Der_SetDatabaseFiles(const CStringArray& omList);
+    // Set the baud rate details for each channel
+    void Der_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
+                                       int nNumChannels);
+    // To get the channel baud rate info for each channel
+    void Der_GetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
+                                       int& nNumChannels);
 };

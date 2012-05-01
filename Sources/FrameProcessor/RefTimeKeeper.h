@@ -27,12 +27,12 @@
 class CRefTimeKeeper
 {
 private:
-	static UINT64   m_qwRefSysTime; 
-	static UINT64   m_qwAbsBaseTime; 
+    static UINT64   m_qwRefSysTime;
+    static UINT64   m_qwAbsBaseTime;
 public:
     CRefTimeKeeper(void);
     ~CRefTimeKeeper(void);
     static void vSetTimeParams(SYSTEMTIME& CurrSysTime, UINT64 qwConnectTime);
-    
+
     static void vGetTimeParams(UINT64& qwRefSysTime, UINT64& qwAbsBaseTime);
 };

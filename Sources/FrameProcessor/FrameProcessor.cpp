@@ -22,7 +22,7 @@
  * Source file for the exported function used to retrieve the
  */
 
-// FrameProcessor.cpp : 
+// FrameProcessor.cpp :
 
 #include "FrameProcessor_stdafx.h"
 #include "Datatypes/MsgBufAll_DataTypes.h"
@@ -40,30 +40,30 @@ static CFrameProcessor_CAN* sg_pouFP_CAN = NULL;
 static CFrameProcessor_J1939* sg_pouFP_J1939 = NULL;
 
 //
-//	Note!
+//  Note!
 //
-//		If this DLL is dynamically linked against the MFC
-//		DLLs, any functions exported from this DLL which
-//		call into MFC must have the AFX_MANAGE_STATE macro
-//		added at the very beginning of the function.
+//      If this DLL is dynamically linked against the MFC
+//      DLLs, any functions exported from this DLL which
+//      call into MFC must have the AFX_MANAGE_STATE macro
+//      added at the very beginning of the function.
 //
-//		For example:
+//      For example:
 //
-//		extern "C" BOOL PASCAL EXPORT ExportedFunction()
-//		{
-//			AFX_MANAGE_STATE(AfxGetStaticModuleState());
-//			// normal function body here
-//		}
+//      extern "C" BOOL PASCAL EXPORT ExportedFunction()
+//      {
+//          AFX_MANAGE_STATE(AfxGetStaticModuleState());
+//          // normal function body here
+//      }
 //
-//		It is very important that this macro appear in each
-//		function, prior to any calls into MFC.  This means that
-//		it must appear as the first statement within the 
-//		function, even before any object variable declarations
-//		as their constructors may generate calls into the MFC
-//		DLL.
+//      It is very important that this macro appear in each
+//      function, prior to any calls into MFC.  This means that
+//      it must appear as the first statement within the
+//      function, even before any object variable declarations
+//      as their constructors may generate calls into the MFC
+//      DLL.
 //
-//		Please see MFC Technical Notes 33 and 58 for additional
-//		details.
+//      Please see MFC Technical Notes 33 and 58 for additional
+//      details.
 //
 
 // CFrameProcessorApp
@@ -76,12 +76,12 @@ END_MESSAGE_MAP()
 
 CFrameProcessorApp::CFrameProcessorApp()
 {
-	// TODO: add construction code here,
+    // TODO: add construction code here,
 }
 
 CFrameProcessorApp::~CFrameProcessorApp()
 {
-	// TODO: add construction code here,
+    // TODO: add construction code here,
 }
 
 // The one and only CFrameProcessorApp object
@@ -93,9 +93,8 @@ CFrameProcessorApp theApp;
 
 BOOL CFrameProcessorApp::InitInstance()
 {
-	CWinApp::InitInstance();
-
-	return TRUE;
+    CWinApp::InitInstance();
+    return TRUE;
 }
 
 int CFrameProcessorApp::ExitInstance()
@@ -114,6 +113,7 @@ int CFrameProcessorApp::ExitInstance()
         delete sg_pouFP_J1939;
         sg_pouFP_J1939 = NULL;
     }
+
     return CWinApp::ExitInstance();
 }
 
@@ -121,7 +121,6 @@ int CFrameProcessorApp::ExitInstance()
 USAGEMODE HRESULT FP_GetInterface(eID_COMPONENT eInterfaceID, void** ppvInterface)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
-
     HRESULT hResult = S_OK;
 
     switch (eInterfaceID)
@@ -133,18 +132,20 @@ USAGEMODE HRESULT FP_GetInterface(eID_COMPONENT eInterfaceID, void** ppvInterfac
                 if ((sg_pouFP_CAN = new CFrameProcessor_CAN) == NULL)
                 {
                     ASSERT(FALSE);
-					hResult = S_FALSE;
+                    hResult = S_FALSE;
                 }
                 else
                 {
-                    sg_pouFP_CAN->InitInstance();					
+                    sg_pouFP_CAN->InitInstance();
                 }
             }
+
             // Else the object has been existing already
-            *ppvInterface = (void *) sg_pouFP_CAN; /* Doesn't matter even 
-                                               if sg_pouFP_CAN is null */
+            *ppvInterface = (void*) sg_pouFP_CAN; /* Doesn't matter even
+                                       if sg_pouFP_CAN is null */
         }
         break;
+
         case FRAMEPROC_J1939:
         {
             if (NULL == sg_pouFP_J1939)
@@ -159,17 +160,19 @@ USAGEMODE HRESULT FP_GetInterface(eID_COMPONENT eInterfaceID, void** ppvInterfac
                     sg_pouFP_J1939->InitInstance();
                 }
             }
+
             // Else the object has been existing already
-            *ppvInterface = (void *) sg_pouFP_J1939; /* Doesn't matter even 
-                                               if sg_pouFP_J1939 is null */
+            *ppvInterface = (void*) sg_pouFP_J1939; /* Doesn't matter even
+                                       if sg_pouFP_J1939 is null */
         }
-		case FRAMEPROC_MCNET:
-        default: 
-		{
-				hResult = S_FALSE;
-		}
-		break;
-	}
+
+        case FRAMEPROC_MCNET:
+        default:
+        {
+            hResult = S_FALSE;
+        }
+        break;
+    }
 
     return hResult;
 }

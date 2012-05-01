@@ -15,11 +15,11 @@
 
 /**
  * \file      LogObjectJ1939.h
- * \brief     Declaration file for the exported function used to get the 
+ * \brief     Declaration file for the exported function used to get the
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Declaration file for the exported function used to get the 
+ * Declaration file for the exported function used to get the
  */
 
 #pragma once
@@ -34,32 +34,32 @@
 class CLogObjectJ1939 : public CBaseLogObject
 {
 private:
-	// The filter object
-	SFILTERAPPLIED_J1939 m_sFilterApplied;
+    // The filter object
+    SFILTERAPPLIED_J1939 m_sFilterApplied;
 
-    // To format the header 
+    // To format the header
     void vFormatHeader(CString& omHeader);
 
-    // To format the footer 
+    // To format the footer
     void vFormatFooter(CString& omFooter);
 
-	BOOL bToBeLogged(SFRAMEINFO_BASIC_J1939& J1939Info_Basic);
+    BOOL bToBeLogged(SFRAMEINFO_BASIC_J1939& J1939Info_Basic);
 
 protected:
-    // To copy specific data pertaining to the conrete class. 
+    // To copy specific data pertaining to the conrete class.
     void Der_CopySpecificData(const CBaseLogObject* pouLogObjRef);
     // Set configuration data - concrete class specific logics
     BYTE* Der_SetConfigData(BYTE* pvDataStream);
     // Get configuration data - concrete class specific logics
     BYTE* Der_GetConfigData(BYTE* pvDataStream) const;
     // To get the total buffer size - concrete class specific logics
-	UINT Der_unGetBufSize(void) const;
+    UINT Der_unGetBufSize(void) const;
 
 public:
 
-	CStringArray		m_omListDBFiles;
-	SCONTROLLER_DETAILS*	m_pasControllerDetails;
-	int					m_nNumChannels;
+    CStringArray        m_omListDBFiles;
+    SCONTROLLER_DETAILS*    m_pasControllerDetails;
+    int                 m_nNumChannels;
 
     CLogObjectJ1939(CString omVersion);    // Overloaded constructor
     ~CLogObjectJ1939();   // Destructor
@@ -74,16 +74,16 @@ public:
     void GetFilterInfo(SFILTERAPPLIED_J1939& sFilterInfo) const;
     // Set the filter info structure
     void SetFilterInfo(const SFILTERAPPLIED_J1939& sFilterInfo);
-	
-	// Get the list of database files associated
-	void Der_GetDatabaseFiles(CStringArray& omList);
-	// Set the list of database files associated
-	void Der_SetDatabaseFiles(const CStringArray& omList);
-	// Set the baud rate details for each channel
-	void Der_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails, 
-										int nNumChannels);
-	// To get the channel baud rate info for each channel
-	void Der_GetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
-											int& nNumChannels);
+
+    // Get the list of database files associated
+    void Der_GetDatabaseFiles(CStringArray& omList);
+    // Set the list of database files associated
+    void Der_SetDatabaseFiles(const CStringArray& omList);
+    // Set the baud rate details for each channel
+    void Der_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
+                                       int nNumChannels);
+    // To get the channel baud rate info for each channel
+    void Der_GetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
+                                       int& nNumChannels);
 
 };
