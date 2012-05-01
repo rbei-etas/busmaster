@@ -792,8 +792,8 @@ BOOL CTxMsgDetailsView::bUpdateSignalList(STCAN_MSG sMsg)
         // Database should not be an empty one
         ASSERT( FALSE );
     }
-    vUpdateStateDataBytes();
 
+    vUpdateStateDataBytes();
     return bSuccess;
 }
 
@@ -844,8 +844,8 @@ INT CTxMsgDetailsView::nGetMessageID()
             nMsgID = static_cast<INT> (unMsgID);
         }
     }
-    vUpdateStateDataBytes();
 
+    vUpdateStateDataBytes();
     return nMsgID;
 }
 
@@ -1658,6 +1658,7 @@ void CTxMsgDetailsView::vPopulateMessageComboBox()
             }
         }
     }
+
     vAdjustWidthMessageComboBox();
     vUpdateStateDataBytes();
 }
@@ -1676,7 +1677,6 @@ void CTxMsgDetailsView::vAdjustWidthMessageComboBox()
     TEXTMETRIC tm;
     CDC* pDC = m_omComboMsgIDorName.GetDC();
     CFont* pFont = m_omComboMsgIDorName.GetFont();
-
     // Select the listbox font, save the old font
     CFont* pOldFont = pDC->SelectObject(pFont);
     // Get the text metrics for avg char width
@@ -1687,20 +1687,20 @@ void CTxMsgDetailsView::vAdjustWidthMessageComboBox()
         m_omComboMsgIDorName.GetLBText(i, str);
         sz = pDC->GetTextExtent(str);
         sz = pDC->GetTextExtent(str);
-
         // Add the avg width to prevent clipping
         sz.cx += tm.tmAveCharWidth;
+
         if (sz.cx > dx)
+        {
             dx = sz.cx;
+        }
     }
 
     // Select the old font back into the DC
     pDC->SelectObject(pOldFont);
     m_omComboMsgIDorName.ReleaseDC(pDC);
-
     // Adjust the width for the vertical scroll bar and the left and right border.
     dx += ::GetSystemMetrics(SM_CXVSCROLL) + 2*::GetSystemMetrics(SM_CXEDGE);
-
     // Set the width of the list box so that every item is completely visible.
     m_omComboMsgIDorName.SetDroppedWidth(dx);
 }
@@ -1821,6 +1821,7 @@ void CTxMsgDetailsView::OnSelchangeCombMsgIdName()
             m_omLctrSigList.EnableWindow( FALSE );
         }
     }
+
     vUpdateStateDataBytes();
 }
 
@@ -1898,6 +1899,7 @@ void CTxMsgDetailsView::OnUpdateEditDLC()
             }
         }
     }
+
     vUpdateStateDataBytes();
 }
 
@@ -2179,6 +2181,7 @@ void CTxMsgDetailsView::OnButtonAddMsg()
             pView->m_omButtonApply.EnableWindow( TRUE );
         }
     }
+
     vUpdateStateDataBytes();
 }
 
@@ -2262,8 +2265,8 @@ BOOL CTxMsgDetailsView::bAddMsgInBlock()
             }
         }
     }
-    vUpdateStateDataBytes();
 
+    vUpdateStateDataBytes();
     return bReturn;
 }
 
@@ -2318,8 +2321,8 @@ void CTxMsgDetailsView::OnItemchangedLstcSigDetails( NMHDR* pNMHDR,
             }
         }
     }
-    vUpdateStateDataBytes();
 
+    vUpdateStateDataBytes();
     *pResult = 0;
 }
 
@@ -2774,6 +2777,7 @@ void CTxMsgDetailsView::vUpdateSignalData(sSIGNALS* psSignal,
             m_unData[unIndex].sByte.Bit7 = m_bData[++nArrIndex];
         }
     }
+
     vUpdateStateDataBytes();
 }
 
@@ -2820,6 +2824,7 @@ void CTxMsgDetailsView::vUpdateDataBytes()
             pEdit->SetWindowText(omStr);
         }
     }
+
     vUpdateStateDataBytes();
 }
 
@@ -2832,7 +2837,6 @@ void CTxMsgDetailsView::vUpdateDataBytes()
 void CTxMsgDetailsView::vUpdateStateDataBytes()
 {
     unsigned int dlc = (unsigned int) m_odDLC.lGetValue();
-
     m_odDB1.SetReadOnly(dlc < 1);
     m_odDB2.SetReadOnly(dlc < 2);
     m_odDB3.SetReadOnly(dlc < 3);

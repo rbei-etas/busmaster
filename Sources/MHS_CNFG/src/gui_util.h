@@ -15,7 +15,7 @@ extern "C" {
 #define HEX_0xWORD  6
 #define HEX_0xDWORD 7
 
-void ShowErrorMessage(const char* title, const char* text, ...);
+    void ShowErrorMessage(const char* title, const char* text, ...);
 
     char* GetWidgetTextDup(HWND ctrl_wnd);
     char* GetDlgItemTextDup(HWND hdlg, WORD id);
