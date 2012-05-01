@@ -15,11 +15,11 @@
 
 /**
  * \file      RadixEdit.h
- * \brief     This file contains the definition of CRadixEdit class     
+ * \brief     This file contains the definition of CRadixEdit class
  * \authors   Soj Thomas, Ratnadip Choudhury, Amarnath Shastry
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contains the definition of CRadixEdit class     
+ * This file contains the definition of CRadixEdit class
  */
 
 #pragma once
@@ -40,11 +40,11 @@ static const int DECIMAL_POINT     = 0x2E;
 
 class CRadixEdit : public CEdit
 {
-// Construction
+    // Construction
 public:
     CRadixEdit();
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CRadixEdit)
     //}}AFX_VIRTUAL
@@ -58,7 +58,7 @@ public:
     void vSetValue(__int64 n64NewVal);
     // Get long value
     __int64 lGetValue();
-    // Set number base 
+    // Set number base
     void vSetBase(int nBase);
     // Get base
     int  nGetBase();

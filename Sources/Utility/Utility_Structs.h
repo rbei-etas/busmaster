@@ -50,12 +50,12 @@
 #define defMAX_BITS                         64
 #define defSIGN_MASK                0x8000000000000000
 
-typedef void (*PFCTRLHANDLER)(CListCtrl *pList, int nItem, int nSubItem, void * UParam);
+typedef void (*PFCTRLHANDLER)(CListCtrl* pList, int nItem, int nSubItem, void* UParam);
 
 struct sUserProgInfo
 {
     PFCTRLHANDLER   m_pfHandler;
-    void *          m_pUserParam;
+    void*           m_pUserParam;
 };
 
 typedef sUserProgInfo   SUSERPROGINFO;
@@ -79,7 +79,7 @@ struct sListInfo
 {
     eListTypes  m_eType;
     CStringArray m_omEntries;
-    
+
     sListInfo();
     sListInfo(sListInfo& sCopy);
     void operator = (sListInfo& sCopy);
@@ -103,11 +103,11 @@ struct sNumericInfo
     BYTE    m_byFlag;                       //Type flag Float, Buddy & Signed
     short int m_nTextLimit;                 //Allowed Text width
     short int m_nSigLength;                 //Length of the num representation.
-                                            //This is required for 2s complement
+    //This is required for 2s complement
     sNumericInfo() : m_byBase(10),
-                     m_byFlag(0),
-                     m_nTextLimit(0),
-                     m_nSigLength(64)
+        m_byFlag(0),
+        m_nTextLimit(0),
+        m_nSigLength(64)
     {
         m_uMinVal.m_n64Value = 0;
         m_uMaxVal.m_n64Value = 0;

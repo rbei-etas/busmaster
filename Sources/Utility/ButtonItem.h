@@ -22,20 +22,20 @@
 #pragma once
 
 #include "afxwin.h"
-#include "EditItem.h" 
+#include "EditItem.h"
 class CButtonItem;
 
 class CBrowseEditItem: public CEditItem
 {
     DECLARE_MESSAGE_MAP()
 public:
-    CButtonItem *m_pomButton;
+    CButtonItem* m_pomButton;
     BOOL m_bIsButtonValid;
     BOOL m_bKillFocus;
 public:
-    CBrowseEditItem(int nItem, int nSubItem, CString &sContent, CButtonItem* pomButtonItem);
+    CBrowseEditItem(int nItem, int nSubItem, CString& sContent, CButtonItem* pomButtonItem);
     ~CBrowseEditItem();
-    
+
 protected:
     afx_msg void OnKillFocus(CWnd* pNewWnd);
 };
@@ -46,12 +46,12 @@ class CButtonItem : public CButton
     CString m_omStrFilter;
 public:
     BOOL m_bKillFocus;
-    CBrowseEditItem *m_pomEditItem;
+    CBrowseEditItem* m_pomEditItem;
     BOOL    m_bIsEditValid;
     BOOL m_bButtonclicked;
     CButtonItem(CString, CString);
     virtual ~CButtonItem(void);
-    void vSetEditItem(CBrowseEditItem *pomEditItem);
+    void vSetEditItem(CBrowseEditItem* pomEditItem);
     DECLARE_MESSAGE_MAP()
     afx_msg void OnKillFocus(CWnd* pNewWnd);
     afx_msg void OnBnClicked();

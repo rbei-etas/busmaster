@@ -21,9 +21,9 @@
  * This file contains CEditItem class definition.
  */
 
-/*	Code contained in this file is taken from codeguru article 
-	http://www.codeguru.com/Cpp/controls/listview/editingitemsandsubitem/article.php/c923 
-	Written by Zafir Anjum	*/
+/*  Code contained in this file is taken from codeguru article
+    http://www.codeguru.com/Cpp/controls/listview/editingitemsandsubitem/article.php/c923
+    Written by Zafir Anjum  */
 
 #include "Utils_stdafx.h"         // For standard include
 #include "EditItem.h"       // Definition of class
@@ -40,27 +40,27 @@
  Member of        : CEditItem
  Friend of        :  -
  Author(s)        : Raja N
- Date Created     : 21.07.2004                                          
+ Date Created     : 21.07.2004
  Modifications    :
 *******************************************************************************/
-CEditItem::CEditItem(int nItem, int nSubItem, const CString &sContent )
+CEditItem::CEditItem(int nItem, int nSubItem, const CString& sContent )
 {
     // Init member variables
     m_nItem = nItem;
     m_nSubItem = nSubItem;
     m_sContent = sContent;
-    m_bVK_ESCAPE = FALSE; 
+    m_bVK_ESCAPE = FALSE;
 }
 
 /*******************************************************************************
  Function Name    : ~CEditItem
- Input(s)         : 
+ Input(s)         :
  Output           :
  Functionality    : Destructor
  Member of        : CEditItem
  Friend of        :  -
  Author(s)        : Raja N
- Date Created     : 21.07.2004                                          
+ Date Created     : 21.07.2004
  Modifications    :
 *******************************************************************************/
 CEditItem::~CEditItem()
@@ -82,34 +82,37 @@ END_MESSAGE_MAP()
 
 /*******************************************************************************
  Function Name    : PreTranslateMessage
-                                                                           
+
  Input(s)         : MSG* pMsg
  Output           : BOOL
  Functionality    : To avoid processing special keys
  Member of        : CEditItem
  Friend of        :   -
-                                                                           
+
  Author(s)        : Raja N
  Date Created     : 21.07.2004
- Modifications    : 
+ Modifications    :
 *******************************************************************************/
-BOOL CEditItem::PreTranslateMessage(MSG* pMsg) 
+BOOL CEditItem::PreTranslateMessage(MSG* pMsg)
 {
     // TODO: Add your specialized code here and/or call the base class
-    if( pMsg->message == WM_KEYDOWN )   
-    {       
-        if( pMsg->wParam == VK_RETURN || 
-            pMsg->wParam == VK_DELETE ||
-            pMsg->wParam == VK_ESCAPE ||
-            pMsg->wParam == VK_UP ||
-            GetKeyState( VK_CONTROL))
-        {           
+    if( pMsg->message == WM_KEYDOWN )
+    {
+        if( pMsg->wParam == VK_RETURN ||
+                pMsg->wParam == VK_DELETE ||
+                pMsg->wParam == VK_ESCAPE ||
+                pMsg->wParam == VK_UP ||
+                GetKeyState( VK_CONTROL))
+        {
             ::TranslateMessage(pMsg);
             ::DispatchMessage(pMsg);
             return 1;
         }
+
         if(pMsg->wParam == VK_TAB)
+        {
             MessageBeep(0);
+        }
     }
 
     return CEdit::PreTranslateMessage(pMsg);
@@ -128,49 +131,57 @@ BOOL CEditItem::PreTranslateMessage(MSG* pMsg)
  Date Created   : 21.07.2004
  Modifications  :
 *******************************************************************************/
-void CEditItem::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CEditItem::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     // TODO: Add your message handler code here and/or call default
     if( nChar == VK_ESCAPE ||
-        nChar == VK_RETURN) 
-    {       
+            nChar == VK_RETURN)
+    {
         if( nChar == VK_ESCAPE)
-            m_bVK_ESCAPE = 1;       
+        {
+            m_bVK_ESCAPE = 1;
+        }
+
         GetParent()->SetFocus();
-        return; 
+        return;
     }
 
-    CEdit::OnChar(nChar, nRepCnt, nFlags);  
+    CEdit::OnChar(nChar, nRepCnt, nFlags);
     // Resize edit control if needed
-    // Get text extent  
-    CString str;    
-    GetWindowText( str );   
-
+    // Get text extent
+    CString str;
+    GetWindowText( str );
     CWindowDC dc(this);
-    CFont *pFont = GetParent()->GetFont();
-    CFont *pFontDC = dc.SelectObject(pFont);
-    CSize size = dc.GetTextExtent(str); 
+    CFont* pFont = GetParent()->GetFont();
+    CFont* pFontDC = dc.SelectObject(pFont);
+    CSize size = dc.GetTextExtent(str);
     dc.SelectObject(pFontDC);
-    size.cx += 5; // add some extra buffer  
+    size.cx += 5; // add some extra buffer
     // Get client rect
-	CRect rect, parentrect;
+    CRect rect, parentrect;
     GetClientRect(&rect);
-	GetParent()->GetClientRect( &parentrect );
-    // Transform rect to parent coordinates 
+    GetParent()->GetClientRect( &parentrect );
+    // Transform rect to parent coordinates
     ClientToScreen(&rect);
     GetParent()->ScreenToClient(&rect);
+
     // Check whether control needs to be resized
-    // and whether there is space to grow   
-    if(size.cx > rect.Width())  
+    // and whether there is space to grow
+    if(size.cx > rect.Width())
     {
-		if( size.cx + rect.left < parentrect.right )
-            rect.right = rect.left + size.cx;       
-        else            
-			rect.right = parentrect.right;
-        MoveWindow(&rect);  
+        if( size.cx + rect.left < parentrect.right )
+        {
+            rect.right = rect.left + size.cx;
+        }
+        else
+        {
+            rect.right = parentrect.right;
+        }
+
+        MoveWindow(&rect);
     }
-    
-//  CEdit::OnChar(nChar, nRepCnt, nFlags);
+
+    //  CEdit::OnChar(nChar, nRepCnt, nFlags);
 }
 
 /*******************************************************************************
@@ -185,10 +196,9 @@ void CEditItem::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
  Date Created   : 21.07.2004
  Modifications  :
 *******************************************************************************/
-void CEditItem::OnNcDestroy() 
+void CEditItem::OnNcDestroy()
 {
     CEdit::OnNcDestroy();
-    
     // TODO: Add your message handler code here
     delete this;
 }
@@ -208,35 +218,37 @@ void CEditItem::OnNcDestroy()
  Date Created   : 21.07.2004
  Modifications  :
 *******************************************************************************/
-void CEditItem::OnKillFocus(CWnd* pNewWnd) 
+void CEditItem::OnKillFocus(CWnd* pNewWnd)
 {
     CEdit::OnKillFocus(pNewWnd);
-    
+
     // TODO: Add your message handler code here
-    if( pNewWnd // NULL condition 
-        && pNewWnd != GetParent()->GetParent() //For Dialog Close using X Button
-        && pNewWnd->GetDlgCtrlID() != IDCANCEL ) // For Cancel condition
+    if( pNewWnd // NULL condition
+            && pNewWnd != GetParent()->GetParent() //For Dialog Close using X Button
+            && pNewWnd->GetDlgCtrlID() != IDCANCEL ) // For Cancel condition
     {
-        CString str;    GetWindowText(str);
-        // Send Notification to parent of ListView ctrl 
+        CString str;
+        GetWindowText(str);
+        // Send Notification to parent of ListView ctrl
         LV_DISPINFO lvDispInfo;
         lvDispInfo.hdr.hwndFrom = GetParent()->m_hWnd;
-        lvDispInfo.hdr.idFrom = GetDlgCtrlID(); 
+        lvDispInfo.hdr.idFrom = GetDlgCtrlID();
         lvDispInfo.hdr.code = LVN_ENDLABELEDIT;
-        lvDispInfo.item.mask = LVIF_TEXT;   
+        lvDispInfo.item.mask = LVIF_TEXT;
         lvDispInfo.item.iItem = m_nItem;
         lvDispInfo.item.iSubItem = m_nSubItem;
         // Restore the old text on press of ESCAPE key
-        lvDispInfo.item.pszText = 
+        lvDispInfo.item.pszText =
             m_bVK_ESCAPE ? LPTSTR((LPCTSTR)m_sContent) : LPTSTR((LPCTSTR)str);
         lvDispInfo.item.cchTextMax = str.GetLength();
         // Send the notification message to the parent
-        GetParent()->GetParent()->SendMessage( WM_NOTIFY, 
+        GetParent()->GetParent()->SendMessage( WM_NOTIFY,
                                                GetParent()->GetDlgCtrlID(),
                                                (LPARAM)&lvDispInfo);
     }
+
     // Destroy the window
-    DestroyWindow();    
+    DestroyWindow();
 }
 
 /*******************************************************************************
@@ -250,15 +262,17 @@ void CEditItem::OnKillFocus(CWnd* pNewWnd)
  Author(s)        : Raja N
  Date Created     : 21.07.2004
 *******************************************************************************/
-int CEditItem::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+int CEditItem::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
     if (CEdit::OnCreate(lpCreateStruct) == -1)
-        return -1;  
+    {
+        return -1;
+    }
 
     CFont* font = GetParent()->GetFont();
     SetFont(font);
     SetWindowText(m_sContent);
-    SetFocus(); 
+    SetFocus();
     SetSel(0, m_sContent.GetLength());
     return 0;
 }

@@ -40,7 +40,7 @@ CAlphanumiricEdit::~CAlphanumiricEdit()
 
 
 BEGIN_MESSAGE_MAP(CAlphanumiricEdit, CEdit)
-	ON_WM_CHAR()
+    ON_WM_CHAR()
 END_MESSAGE_MAP()
 
 
@@ -61,10 +61,9 @@ END_MESSAGE_MAP()
 
 void CAlphanumiricEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	// TODO: Add your message handler code here and/or call default
-
-	if(nChar=='_' || isalnum(nChar)!= 0 || nChar == BACK_SPACE)
-	{
-		CEdit::OnChar(nChar, nRepCnt, nFlags);
-	}
+    // TODO: Add your message handler code here and/or call default
+    if(nChar=='_' || isalnum(nChar)!= 0 || nChar == BACK_SPACE)
+    {
+        CEdit::OnChar(nChar, nRepCnt, nFlags);
+    }
 }

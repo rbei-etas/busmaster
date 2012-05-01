@@ -25,43 +25,43 @@
 #pragma once
 
 // Window class name
-#define INDICATOR_CLASSNAME    _T("IndicatorCtrl")  
+#define INDICATOR_CLASSNAME    _T("IndicatorCtrl")
 
 class CWaitIndicator : public CWnd
 {
-	DECLARE_DYNAMIC(CWaitIndicator)
-//Attributes
+    DECLARE_DYNAMIC(CWaitIndicator)
+    //Attributes
 private:
-	CString m_strTitle;
-	CFont	*m_TitleFont;
+    CString m_strTitle;
+    CFont*   m_TitleFont;
 
-//Operations
+    //Operations
 public:
-	//Construction
-	CWaitIndicator();
+    //Construction
+    CWaitIndicator();
 
-	//To Activater and to Show the Window
-	BOOL DisplayWindow(CString strTitle, CWnd* pParentWnd, UINT nID = 0);
+    //To Activater and to Show the Window
+    BOOL DisplayWindow(CString strTitle, CWnd* pParentWnd, UINT nID = 0);
     void SetWindowText(TCHAR* acText);
     void PaintWindow(CDC& dc);
 
 
-	//To Close the window
-	void CloseWindow();	
+    //To Close the window
+    void CloseWindow();
 public:
-	//Destruction
-	virtual ~CWaitIndicator();
+    //Destruction
+    virtual ~CWaitIndicator();
 
 public:
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnPaint(void);
+    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    afx_msg void OnPaint(void);
 
 private:
-	//To Move the Window to the center of Parent Window
-	void MoveToCenter(void);
-	//To Register the custom window name
-	BOOL RegisterWindowClass(void);
-	void Redraw();
+    //To Move the Window to the center of Parent Window
+    void MoveToCenter(void);
+    //To Register the custom window name
+    BOOL RegisterWindowClass(void);
+    void Redraw();
 protected:
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };

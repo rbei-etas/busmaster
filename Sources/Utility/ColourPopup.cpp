@@ -13,7 +13,7 @@
 // Copyright (c) 1998.
 //
 // Updated 30 May 1998 to allow any number of colours, and to
-//                     make the appearance closer to Office 97. 
+//                     make the appearance closer to Office 97.
 //                     Also added "Default" text area.         (CJM)
 //
 //         13 June 1998 Fixed change of focus bug (CJM)
@@ -21,23 +21,23 @@
 //                      Solution suggested by Paul Wilkerson.
 //
 // ColourPopup is a helper class for the colour picker control
-// CColourPicker. Check out the header file or the accompanying 
+// CColourPicker. Check out the header file or the accompanying
 // HTML doc file for details.
 //
 // This code may be used in compiled form in any way you desire. This
-// file may be redistributed unmodified by any means PROVIDING it is 
-// not sold for profit without the authors written consent, and 
-// providing that this notice and the authors name is included. 
+// file may be redistributed unmodified by any means PROVIDING it is
+// not sold for profit without the authors written consent, and
+// providing that this notice and the authors name is included.
 //
 // This file is provided "as is" with no expressed or implied warranty.
 // The author accepts no liability if it causes any damage to you or your
 // computer whatsoever. It's free, so don't hassle me about it.
 //
 // Expect bugs.
-// 
-// Please use and enjoy. Please let me know of any bugs/mods/improvements 
+//
+// Please use and enjoy. Please let me know of any bugs/mods/improvements
 // that you have found/implemented and I will fix/incorporate them into this
-// file. 
+// file.
 
 // Reference http://www.codeproject.com/KB/miscctrl/colour_picker.aspx*/
 
@@ -64,7 +64,7 @@
 #define defCOLOR_BOX_SIZE       18
 
 // Color Table Definition
-ColourTableEntry CColourPopup::m_crColours[] = 
+ColourTableEntry CColourPopup::m_crColours[] =
 {
     { RGB(0x00, 0x00, 0x00),    _T("Black")             },
     { RGB(0xA5, 0x2A, 0x00),    _T("Brown")             },
@@ -86,7 +86,7 @@ ColourTableEntry CColourPopup::m_crColours[] =
 
     { RGB(0xFF, 0x00, 0x00),    _T("Red")               },
     { RGB(0xFF, 0xAD, 0x5B),    _T("Light orange")      },
-    { RGB(0x32, 0xCD, 0x32),    _T("Lime")              }, 
+    { RGB(0x32, 0xCD, 0x32),    _T("Lime")              },
     { RGB(0x3C, 0xB3, 0x71),    _T("Sea green")         },
     { RGB(0x7F, 0xFF, 0xD4),    _T("Aqua")              },
     { RGB(0x7D, 0x9E, 0xC0),    _T("Light blue")        },
@@ -95,7 +95,7 @@ ColourTableEntry CColourPopup::m_crColours[] =
 
     { RGB(0xFF, 0xC0, 0xCB),    _T("Pink")              },
     { RGB(0xFF, 0xD7, 0x00),    _T("Gold")              },
-    { RGB(0xFF, 0xFF, 0x00),    _T("Yellow")            },    
+    { RGB(0xFF, 0xFF, 0x00),    _T("Yellow")            },
     { RGB(0x00, 0xFF, 0x00),    _T("Bright green")      },
     { RGB(0x40, 0xE0, 0xD0),    _T("Turquoise")         },
     { RGB(0xC0, 0xFF, 0xFF),    _T("Skyblue")           },
@@ -140,7 +140,7 @@ CColourPopup::CColourPopup()
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 CColourPopup::CColourPopup(CPoint p, COLORREF crColour, CWnd* pParentWnd,
                            LPCTSTR szDefaultText /* = NULL */,
@@ -153,7 +153,6 @@ CColourPopup::CColourPopup(CPoint p, COLORREF crColour, CWnd* pParentWnd,
     m_pParent        = pParentWnd;
     m_strDefaultText = (szDefaultText)? szDefaultText : STR_EMPTY;
     m_strCustomText  = (szCustomText)?  szCustomText  : STR_EMPTY;
-
     // Create Control
     CColourPopup::Create(p, crColour, pParentWnd, szDefaultText, szCustomText);
 }
@@ -166,7 +165,7 @@ CColourPopup::CColourPopup(CPoint p, COLORREF crColour, CWnd* pParentWnd,
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CColourPopup::Initialise()
 {
@@ -174,10 +173,12 @@ void CColourPopup::Initialise()
     m_nNumColours       = sizeof(m_crColours)/sizeof(ColourTableEntry);
     // Boundary condition assertion
     ASSERT(m_nNumColours <= MAX_COLOURS);
+
     if (m_nNumColours > MAX_COLOURS)
     {
         m_nNumColours = MAX_COLOURS;
     }
+
     // Init draw parameters
     m_nNumColumns       = 0;
     m_nNumRows          = 0;
@@ -187,15 +188,14 @@ void CColourPopup::Initialise()
     m_nChosenColourSel  = INVALID_COLOUR;
     m_pParent           = NULL;
     m_crColour          = m_crInitialColour = BLOCK_COLOR;
-
     m_bChildWindowVisible = FALSE;
 
     // Make sure the colour square is at least 5 x 5;
-    if( m_nBoxSize - (defMARGIN_FACTOR * m_nMargin) - 
-                    defMARGIN_FACTOR < defMIN_BOX_SIZE )
+    if( m_nBoxSize - (defMARGIN_FACTOR * m_nMargin) -
+            defMARGIN_FACTOR < defMIN_BOX_SIZE )
     {
-        m_nBoxSize = defMIN_BOX_SIZE + ( defMARGIN_FACTOR * m_nMargin) + 
-                        defMARGIN_FACTOR;
+        m_nBoxSize = defMIN_BOX_SIZE + ( defMARGIN_FACTOR * m_nMargin) +
+                     defMARGIN_FACTOR;
     }
 
     // Create the font
@@ -206,16 +206,15 @@ void CColourPopup::Initialise()
                               sizeof(NONCLIENTMETRICS),
                               &ncm, 0) );
     m_Font.CreateFontIndirect(&(ncm.lfMessageFont));
-
     // Create the palette
-    struct {
+    struct
+    {
         LOGPALETTE    LogPalette;
         PALETTEENTRY  PalEntry[MAX_COLOURS];
     } pal;
-
     LOGPALETTE* pLogPalette = (LOGPALETTE*) &pal;
     pLogPalette->palVersion    = defPAL_VERSION;
-    pLogPalette->palNumEntries = (WORD) m_nNumColours; 
+    pLogPalette->palNumEntries = (WORD) m_nNumColours;
 
     for (int i = 0; i < m_nNumColours; i++)
     {
@@ -224,6 +223,7 @@ void CColourPopup::Initialise()
         pLogPalette->palPalEntry[i].peBlue  = GetBValue(m_crColours[i].crColour);
         pLogPalette->palPalEntry[i].peFlags = 0;
     }
+
     m_Palette.CreatePalette(pLogPalette);
 }
 
@@ -255,7 +255,7 @@ CColourPopup::~CColourPopup()
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 BOOL CColourPopup::Create(CPoint p, COLORREF crColour, CWnd* pParentWnd,
                           LPCTSTR szDefaultText /* = NULL */,
@@ -268,35 +268,37 @@ BOOL CColourPopup::Create(CPoint p, COLORREF crColour, CWnd* pParentWnd,
     m_pParent  = pParentWnd;
     m_crColour = m_crInitialColour = crColour;
     // Get the class name and create the window
-    CString szClassName = 
+    CString szClassName =
         AfxRegisterWndClass( CS_CLASSDC | CS_SAVEBITS | CS_HREDRAW | CS_VREDRAW,
-                            0, (HBRUSH) (COLOR_BTNFACE+1), 0);
+                             0, (HBRUSH) (COLOR_BTNFACE+1), 0);
 
     if (!CWnd::CreateEx(0, szClassName, STR_EMPTY, WS_VISIBLE,
                         p.x, p.y, 100, 100, // Use default size
                         pParentWnd->GetSafeHwnd(), 0, NULL))
+    {
         return FALSE;
+    }
 
     // Store the Custom text
-    if (szCustomText != NULL) 
+    if (szCustomText != NULL)
+    {
         m_strCustomText = szCustomText;
+    }
 
     // Store the Default Area text
-    if (szDefaultText != NULL) 
+    if (szDefaultText != NULL)
+    {
         m_strDefaultText = szDefaultText;
-        
+    }
+
     // Set the window size
     SetWindowSize();
-
     // Create the tooltips
     CreateToolTips();
-
     // Find which cell (if any) corresponds to the initial colour
     FindCellFromColour(crColour);
-
     // Capture all mouse events for the life of this window
     SetCapture();
-
     return TRUE;
 }
 
@@ -323,15 +325,17 @@ END_MESSAGE_MAP()
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-BOOL CColourPopup::PreTranslateMessage(MSG* pMsg) 
+BOOL CColourPopup::PreTranslateMessage(MSG* pMsg)
 {
     m_ToolTip.RelayEvent(pMsg);
 
     // Set the focus with in this window
     if (GetCapture()->GetSafeHwnd() != m_hWnd)
-        SetCapture(); 
+    {
+        SetCapture();
+    }
 
     return CWnd::PreTranslateMessage(pMsg);
 }
@@ -345,14 +349,15 @@ BOOL CColourPopup::PreTranslateMessage(MSG* pMsg)
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CColourPopup::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CColourPopup::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     int row = GetRow(m_nCurrentSel),
         col = GetColumn(m_nCurrentSel);
+
     // Move Selection
-    if (nChar == VK_DOWN) 
+    if (nChar == VK_DOWN)
     {
         // Wrap to top
         if (row == DEFAULT_BOX_VALUE)
@@ -374,6 +379,7 @@ void CColourPopup::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
         {
             // Increment row count
             row++;
+
             if ( GetIndex(row,col) < 0)
             {
                 if (m_strCustomText.GetLength() > 0)
@@ -390,11 +396,13 @@ void CColourPopup::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
                 }
             }
         }
+
         // Update Selection
         ChangeSelection(GetIndex(row, col));
     }
+
     // Move One cell Up
-    if (nChar == VK_UP) 
+    if (nChar == VK_UP)
     {
         if (row == DEFAULT_BOX_VALUE)
         {
@@ -403,15 +411,15 @@ void CColourPopup::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
                 row = col = CUSTOM_BOX_VALUE;
             }
             else
-            { 
-                row = GetRow(m_nNumColours-1); 
-                col = GetColumn(m_nNumColours-1); 
+            {
+                row = GetRow(m_nNumColours-1);
+                col = GetColumn(m_nNumColours-1);
             }
         }
         else if (row == CUSTOM_BOX_VALUE)
-        { 
-            row = GetRow(m_nNumColours-1); 
-            col = GetColumn(m_nNumColours-1); 
+        {
+            row = GetRow(m_nNumColours-1);
+            col = GetColumn(m_nNumColours-1);
         }
         else if (row > 0)
         {
@@ -428,16 +436,18 @@ void CColourPopup::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
                 row = col = CUSTOM_BOX_VALUE;
             }
             else
-            { 
-                row = GetRow(m_nNumColours-1); 
-                col = GetColumn(m_nNumColours-1); 
+            {
+                row = GetRow(m_nNumColours-1);
+                col = GetColumn(m_nNumColours-1);
             }
         }
+
         // Update Selection
         ChangeSelection(GetIndex(row, col));
     }
+
     // Move One Cell Right
-    if (nChar == VK_RIGHT) 
+    if (nChar == VK_RIGHT)
     {
         if (row == DEFAULT_BOX_VALUE)
         {
@@ -458,7 +468,7 @@ void CColourPopup::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
         {
             col++;
         }
-        else 
+        else
         {
             // Move to Col 0 of next row
             col = 0;
@@ -480,11 +490,13 @@ void CColourPopup::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
                 row = col = 0;
             }
         }
+
         // Update Selection
         ChangeSelection(GetIndex(row, col));
     }
+
     // Move one cell left
-    if (nChar == VK_LEFT) 
+    if (nChar == VK_LEFT)
     {
         if (row == DEFAULT_BOX_VALUE)
         {
@@ -494,14 +506,14 @@ void CColourPopup::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
             }
             else
             {
-                row = GetRow(m_nNumColours-1); 
-                col = GetColumn(m_nNumColours-1); 
+                row = GetRow(m_nNumColours-1);
+                col = GetColumn(m_nNumColours-1);
             }
         }
         else if (row == CUSTOM_BOX_VALUE)
-        { 
-            row = GetRow(m_nNumColours-1); 
-            col = GetColumn(m_nNumColours-1); 
+        {
+            row = GetRow(m_nNumColours-1);
+            col = GetColumn(m_nNumColours-1);
         }
         else if (col > 0)
         {
@@ -510,11 +522,11 @@ void CColourPopup::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
         else  // col == 0
         {
             if (row > 0)
-            { 
+            {
                 row--;
                 col = m_nNumColumns - 1;
             }
-            else 
+            else
             {
                 if (m_strDefaultText.GetLength() > 0)
                 {
@@ -525,17 +537,19 @@ void CColourPopup::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
                     row = col = CUSTOM_BOX_VALUE;
                 }
                 else
-                { 
-                    row = GetRow(m_nNumColours-1); 
-                    col = GetColumn(m_nNumColours-1); 
+                {
+                    row = GetRow(m_nNumColours-1);
+                    col = GetColumn(m_nNumColours-1);
                 }
             }
         }
+
         // Update Selection
         ChangeSelection(GetIndex(row, col));
     }
+
     // Hide This dialog on press of escape key
-    if (nChar == VK_ESCAPE) 
+    if (nChar == VK_ESCAPE)
     {
         // Restore initial color
         m_crColour = m_crInitialColour;
@@ -543,6 +557,7 @@ void CColourPopup::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
         EndSelection(WM_CPN_SELENDCANCEL);
         return;
     }
+
     // On Press of enter or space select the selection and close this
     // dialog
     if (nChar == VK_RETURN || nChar == VK_SPACE)
@@ -550,6 +565,7 @@ void CColourPopup::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
         EndSelection(WM_CPN_SELENDOK);
         return;
     }
+
     // Else call default procedure
     CWnd::OnKeyDown(nChar, nRepCnt, nFlags);
 }
@@ -562,9 +578,9 @@ void CColourPopup::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CColourPopup::OnNcDestroy() 
+void CColourPopup::OnNcDestroy()
 {
     // Destroy the window first
     CWnd::OnNcDestroy();
@@ -580,9 +596,9 @@ void CColourPopup::OnNcDestroy()
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CColourPopup::OnPaint() 
+void CColourPopup::OnPaint()
 {
     CPaintDC dc(this); // device context for painting
 
@@ -591,7 +607,7 @@ void CColourPopup::OnPaint()
     {
         DrawCell(&dc, DEFAULT_BOX_VALUE);
     }
- 
+
     // Draw colour cells
     for (int i = 0; i < m_nNumColours; i++)
     {
@@ -603,6 +619,7 @@ void CColourPopup::OnPaint()
     {
         DrawCell(&dc, CUSTOM_BOX_VALUE);
     }
+
     // Draw raised window edge
     CRect rect;
     GetClientRect(rect);
@@ -618,19 +635,18 @@ void CColourPopup::OnPaint()
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CColourPopup::OnMouseMove(UINT nFlags, CPoint point) 
+void CColourPopup::OnMouseMove(UINT nFlags, CPoint point)
 {
     int nNewSelection = INVALID_COLOUR;
-
     // Translate points to be relative raised window edge
     point.x -= m_nMargin;
     point.y -= m_nMargin;
 
     // check whether the selection isn't in the text box
     if( m_strCustomText.GetLength() > 0 &&
-         m_CustomTextRect.PtInRect(point) )
+            m_CustomTextRect.PtInRect(point) )
     {
         nNewSelection = CUSTOM_BOX_VALUE;
     }
@@ -646,6 +662,7 @@ void CColourPopup::OnMouseMove(UINT nFlags, CPoint point)
         {
             point.y -= m_DefaultTextRect.Height();
         }
+
         // Get the row and column
         nNewSelection = GetIndex( point.y / m_nBoxSize,
                                   point.x / m_nBoxSize );
@@ -657,6 +674,7 @@ void CColourPopup::OnMouseMove(UINT nFlags, CPoint point)
             return;
         }
     }
+
     // Draw focus rect if it is different from current one
     if( nNewSelection != m_nCurrentSel )
     {
@@ -676,19 +694,22 @@ void CColourPopup::OnMouseMove(UINT nFlags, CPoint point)
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CColourPopup::OnLButtonUp(UINT nFlags, CPoint point) 
-{    
+void CColourPopup::OnLButtonUp(UINT nFlags, CPoint point)
+{
     CWnd::OnLButtonUp(nFlags, point);
-
     DWORD pos = GetMessagePos();
     point = CPoint(LOWORD(pos), HIWORD(pos));
 
     if (m_WindowRect.PtInRect(point))
+    {
         EndSelection(WM_CPN_SELENDOK);
+    }
     else
+    {
         EndSelection(WM_CPN_SELENDCANCEL);
+    }
 }
 
 /*******************************************************************************
@@ -699,12 +720,12 @@ void CColourPopup::OnLButtonUp(UINT nFlags, CPoint point)
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 int CColourPopup::GetIndex(int row, int col) const
-{ 
+{
     if ((row == CUSTOM_BOX_VALUE || col == CUSTOM_BOX_VALUE) &&
-        m_strCustomText.GetLength() > 0 )
+            m_strCustomText.GetLength() > 0 )
     {
         return CUSTOM_BOX_VALUE;
     }
@@ -720,7 +741,7 @@ int CColourPopup::GetIndex(int row, int col) const
     }
     else
     {
-        if( row * m_nNumColumns + col >= m_nNumColours )
+        if( row* m_nNumColumns + col >= m_nNumColours )
         {
             return INVALID_COLOUR;
         }
@@ -739,7 +760,7 @@ int CColourPopup::GetIndex(int row, int col) const
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 int CColourPopup::GetRow(int nIndex) const
 {
@@ -769,10 +790,10 @@ int CColourPopup::GetRow(int nIndex) const
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 int CColourPopup::GetColumn(int nIndex) const
-{ 
+{
     if( nIndex == CUSTOM_BOX_VALUE && m_strCustomText.GetLength() > 0)
     {
         return CUSTOM_BOX_VALUE;
@@ -799,7 +820,7 @@ int CColourPopup::GetColumn(int nIndex) const
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CColourPopup::FindCellFromColour(COLORREF crColour)
 {
@@ -808,6 +829,7 @@ void CColourPopup::FindCellFromColour(COLORREF crColour)
         m_nChosenColourSel = DEFAULT_BOX_VALUE;
         return;
     }
+
     // Iterate through list of entries in the color table
     for (int i = 0; i < m_nNumColours; i++)
     {
@@ -817,6 +839,7 @@ void CColourPopup::FindCellFromColour(COLORREF crColour)
             return;
         }
     }
+
     if( m_strCustomText.GetLength() > 0 )
     {
         m_nChosenColourSel = CUSTOM_BOX_VALUE;
@@ -836,20 +859,20 @@ void CColourPopup::FindCellFromColour(COLORREF crColour)
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 BOOL CColourPopup::GetCellRect(int nIndex, const LPRECT& rect)
 {
     if (nIndex == CUSTOM_BOX_VALUE)
     {
-        ::SetRect(rect, 
+        ::SetRect(rect,
                   m_CustomTextRect.left,  m_CustomTextRect.top,
                   m_CustomTextRect.right, m_CustomTextRect.bottom);
         return TRUE;
     }
     else if (nIndex == DEFAULT_BOX_VALUE)
     {
-        ::SetRect(rect, 
+        ::SetRect(rect,
                   m_DefaultTextRect.left,  m_DefaultTextRect.top,
                   m_DefaultTextRect.right, m_DefaultTextRect.bottom);
         return TRUE;
@@ -871,7 +894,6 @@ BOOL CColourPopup::GetCellRect(int nIndex, const LPRECT& rect)
 
     rect->right = rect->left + m_nBoxSize;
     rect->bottom = rect->top + m_nBoxSize;
-
     return TRUE;
 }
 
@@ -883,7 +905,7 @@ BOOL CColourPopup::GetCellRect(int nIndex, const LPRECT& rect)
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CColourPopup::SetWindowSize()
 {
@@ -892,35 +914,39 @@ void CColourPopup::SetWindowSize()
     // If we are showing a custom or default text area,
     // get the font and text size.
     if ( m_strCustomText.GetLength() > 0 ||
-         m_strDefaultText.GetLength() > 0 )
+            m_strDefaultText.GetLength() > 0 )
     {
         CClientDC dc(this);
         CFont* pOldFont = (CFont*) dc.SelectObject(&m_Font);
-
         // Get the size of the custom text (if there IS custom text)
         TextSize = CSize(0,0);
+
         if( m_strCustomText.GetLength() > 0)
         {
             TextSize = dc.GetTextExtent(m_strCustomText);
         }
+
         // Get the size of the default text (if there IS default text)
         if( m_strDefaultText.GetLength() > 0 )
         {
             CSize DefaultSize = dc.GetTextExtent(m_strDefaultText);
+
             if( DefaultSize.cx > TextSize.cx )
             {
                 TextSize.cx = DefaultSize.cx;
             }
+
             if( DefaultSize.cy > TextSize.cy )
             {
                 TextSize.cy = DefaultSize.cy;
             }
         }
+
         // Restore Old Object
         dc.SelectObject(pOldFont);
-       TextSize += CSize( 2 * m_nMargin, 2 * m_nMargin );
-       // Add even more space to draw the horizontal line
-       TextSize.cy += 2*m_nMargin + 2;
+        TextSize += CSize( 2 * m_nMargin, 2 * m_nMargin );
+        // Add even more space to draw the horizontal line
+        TextSize.cy += 2*m_nMargin + 2;
     }
 
     // Get the number of columns and rows
@@ -928,6 +954,7 @@ void CColourPopup::SetWindowSize()
     // for a square window
     m_nNumColumns = 8;
     m_nNumRows = m_nNumColours / m_nNumColumns;
+
     if (m_nNumColours % m_nNumColumns)
     {
         m_nNumRows++;
@@ -936,9 +963,9 @@ void CColourPopup::SetWindowSize()
     // Get the current window position, and set the new size
     CRect rect;
     GetWindowRect(rect);
-    m_WindowRect.SetRect( rect.left, rect.top, 
-                       rect.left + m_nNumColumns * m_nBoxSize + 2 * m_nMargin,
-                       rect.top  + m_nNumRows * m_nBoxSize + 2 * m_nMargin );
+    m_WindowRect.SetRect( rect.left, rect.top,
+                          rect.left + m_nNumColumns * m_nBoxSize + 2 * m_nMargin,
+                          rect.top  + m_nNumRows * m_nBoxSize + 2 * m_nMargin );
 
     // if custom text, then expand window if necessary, and set text width as
     // window width
@@ -948,11 +975,11 @@ void CColourPopup::SetWindowSize()
         {
             m_WindowRect.right = m_WindowRect.left + TextSize.cx;
         }
-        TextSize.cx = m_WindowRect.Width() - 2 * m_nMargin;
 
+        TextSize.cx = m_WindowRect.Width() - 2 * m_nMargin;
         // Work out the text area
         m_DefaultTextRect.SetRect( m_nMargin, m_nMargin,
-                      m_nMargin + TextSize.cx, 2 * m_nMargin + TextSize.cy );
+                                   m_nMargin + TextSize.cx, 2 * m_nMargin + TextSize.cy );
         m_WindowRect.bottom += m_DefaultTextRect.Height() + 2 * m_nMargin;
     }
 
@@ -964,15 +991,15 @@ void CColourPopup::SetWindowSize()
         {
             m_WindowRect.right = m_WindowRect.left + TextSize.cx;
         }
-        TextSize.cx = m_WindowRect.Width() - 2 * m_nMargin;
 
+        TextSize.cx = m_WindowRect.Width() - 2 * m_nMargin;
         // Work out the text area
         m_CustomTextRect.SetRect( m_nMargin, m_WindowRect.Height(),
-                             m_nMargin + TextSize.cx,
-                             m_WindowRect.Height() + m_nMargin + TextSize.cy );
+                                  m_nMargin + TextSize.cx,
+                                  m_WindowRect.Height() + m_nMargin + TextSize.cy );
         m_WindowRect.bottom += m_CustomTextRect.Height() + 2 * m_nMargin + 25;
         m_WindowRect.right += 5;
-   }
+    }
 
     // Check it'll fit on screen:
     CSize ScreenSize(
@@ -984,6 +1011,7 @@ void CColourPopup::SetWindowSize()
         // Shift the position
         m_WindowRect.OffsetRect( -( m_WindowRect.right - ScreenSize.cx ), 0);
     }
+
     // Check for Too far left
     if (m_WindowRect.left < 0)
     {
@@ -996,7 +1024,7 @@ void CColourPopup::SetWindowSize()
         CRect ParentRect;
         m_pParent->GetWindowRect( ParentRect );
         m_WindowRect.OffsetRect( 0,
-                      -(ParentRect.Height() + m_WindowRect.Height()));
+                                 -(ParentRect.Height() + m_WindowRect.Height()));
     }
 
     // Set the window size and position
@@ -1011,7 +1039,7 @@ void CColourPopup::SetWindowSize()
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CColourPopup::CreateToolTips()
 {
@@ -1020,10 +1048,12 @@ void CColourPopup::CreateToolTips()
     {
         return;
     }
+
     // Add a tool for each cell
     for (int i = 0; i < m_nNumColours; i++)
     {
         CRect rect;
+
         if(GetCellRect(i, rect))
         {
             m_ToolTip.AddTool( this, GetColourName(i), rect, 1);
@@ -1039,7 +1069,7 @@ void CColourPopup::CreateToolTips()
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CColourPopup::ChangeSelection(int nIndex)
 {
@@ -1051,7 +1081,7 @@ void CColourPopup::ChangeSelection(int nIndex)
     }
 
     if ((m_nCurrentSel >= 0 && m_nCurrentSel < m_nNumColours) ||
-        m_nCurrentSel == CUSTOM_BOX_VALUE || m_nCurrentSel == DEFAULT_BOX_VALUE)
+            m_nCurrentSel == CUSTOM_BOX_VALUE || m_nCurrentSel == DEFAULT_BOX_VALUE)
     {
         // Set Current selection as invalid and redraw old selection (this way
         // the old selection will be drawn unselected)
@@ -1089,7 +1119,7 @@ void CColourPopup::ChangeSelection(int nIndex)
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CColourPopup::EndSelection(int nMessage)
 {
@@ -1099,7 +1129,6 @@ void CColourPopup::EndSelection(int nMessage)
     if (nMessage != WM_CPN_SELENDCANCEL && m_nCurrentSel == CUSTOM_BOX_VALUE)
     {
         m_bChildWindowVisible = TRUE;
-
         CColorDialog dlg(m_crInitialColour, CC_FULLOPEN | CC_ANYCOLOR, this);
 
         if (dlg.DoModal() == IDOK)
@@ -1112,7 +1141,7 @@ void CColourPopup::EndSelection(int nMessage)
         }
 
         m_bChildWindowVisible = FALSE;
-    } 
+    }
 
     if (nMessage == WM_CPN_SELENDCANCEL)
     {
@@ -1120,7 +1149,6 @@ void CColourPopup::EndSelection(int nMessage)
     }
 
     m_pParent->SendMessage(nMessage, (WPARAM) m_crColour, 0);
-
     // Set the focus to the parent before kill present window
     m_pParent->SetFocus();
 
@@ -1139,7 +1167,7 @@ void CColourPopup::EndSelection(int nMessage)
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CColourPopup::DrawCell(CDC* pDC, int nIndex)
 {
@@ -1149,10 +1177,8 @@ void CColourPopup::DrawCell(CDC* pDC, int nIndex)
         // The extent of the actual text button
         CRect TextButtonRect = m_CustomTextRect;
         TextButtonRect.top += 2*m_nMargin;
-
         // Fill background
         pDC->FillSolidRect( TextButtonRect, ::GetSysColor(COLOR_3DFACE));
-
         // Draw horizontal line
         pDC->FillSolidRect( m_CustomTextRect.left + 2 * m_nMargin,
                             m_CustomTextRect.top,
@@ -1164,12 +1190,11 @@ void CColourPopup::DrawCell(CDC* pDC, int nIndex)
                             m_CustomTextRect.Width() - 4 * m_nMargin,
                             1,
                             ::GetSysColor(COLOR_3DHILIGHT) );
-        
         TextButtonRect.DeflateRect(1,1);
 
         // fill background
         if( m_nChosenColourSel == nIndex &&
-            m_nCurrentSel != nIndex )
+                m_nCurrentSel != nIndex )
         {
             pDC->FillSolidRect( TextButtonRect, ::GetSysColor(COLOR_3DLIGHT));
         }
@@ -1177,6 +1202,7 @@ void CColourPopup::DrawCell(CDC* pDC, int nIndex)
         {
             pDC->FillSolidRect( TextButtonRect, ::GetSysColor(COLOR_3DFACE));
         }
+
         // Draw button
         if ( m_nCurrentSel == nIndex )
         {
@@ -1186,8 +1212,9 @@ void CColourPopup::DrawCell(CDC* pDC, int nIndex)
         {
             pDC->DrawEdge(TextButtonRect, BDR_SUNKENOUTER, BF_RECT);
         }
+
         // Draw custom text
-        CFont *pOldFont = (CFont*) pDC->SelectObject(&m_Font);
+        CFont* pOldFont = (CFont*) pDC->SelectObject(&m_Font);
         pDC->SetBkMode(TRANSPARENT);
         pDC->DrawText( m_strCustomText,
                        TextButtonRect,
@@ -1198,11 +1225,10 @@ void CColourPopup::DrawCell(CDC* pDC, int nIndex)
 
     // For the Default Text area
     if ( m_strDefaultText.GetLength() > 0 &&
-         nIndex == DEFAULT_BOX_VALUE )
+            nIndex == DEFAULT_BOX_VALUE )
     {
         // Fill background
         pDC->FillSolidRect( m_DefaultTextRect, ::GetSysColor(COLOR_3DFACE) );
-
         // The extent of the actual text button
         CRect TextButtonRect = m_DefaultTextRect;
         TextButtonRect.DeflateRect(1,1);
@@ -1237,7 +1263,7 @@ void CColourPopup::DrawCell(CDC* pDC, int nIndex)
         }
 
         // Draw custom text
-        CFont *pOldFont = (CFont*) pDC->SelectObject(&m_Font);
+        CFont* pOldFont = (CFont*) pDC->SelectObject(&m_Font);
         pDC->SetBkMode(TRANSPARENT);
         pDC->DrawText( m_strDefaultText,
                        TextButtonRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
@@ -1246,6 +1272,7 @@ void CColourPopup::DrawCell(CDC* pDC, int nIndex)
     }
 
     CRect rect;
+
     if (!GetCellRect(nIndex, rect))
     {
         return;
@@ -1253,6 +1280,7 @@ void CColourPopup::DrawCell(CDC* pDC, int nIndex)
 
     // Select and realize the palette
     CPalette* pOldPalette = NULL;
+
     if (pDC->GetDeviceCaps(RASTERCAPS) & RC_PALETTE)
     {
         pOldPalette = pDC->SelectPalette(&m_Palette, FALSE);
@@ -1284,14 +1312,11 @@ void CColourPopup::DrawCell(CDC* pDC, int nIndex)
                               GetBValue(GetColour(nIndex)) ));
     CPen   pen;
     pen.CreatePen(PS_SOLID, 1, ::GetSysColor(COLOR_3DSHADOW));
-
     CBrush* pOldBrush = (CBrush*) pDC->SelectObject(&brush);
     CPen*   pOldPen   = (CPen*)   pDC->SelectObject(&pen);
-
     // Draw the cell colour
     rect.DeflateRect(m_nMargin+1, m_nMargin+1);
     pDC->Rectangle(rect);
-
     // restore DC and cleanup
     pDC->SelectObject(pOldBrush);
     pDC->SelectObject(pOldPen);
@@ -1308,13 +1333,13 @@ void CColourPopup::DrawCell(CDC* pDC, int nIndex)
   Function Name  : OnQueryNewPalette
   Input(s)       : -
   Output         : -
-  Functionality  : 
+  Functionality  :
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-BOOL CColourPopup::OnQueryNewPalette() 
+BOOL CColourPopup::OnQueryNewPalette()
 {
     Invalidate();
     return CWnd::OnQueryNewPalette();
@@ -1324,31 +1349,33 @@ BOOL CColourPopup::OnQueryNewPalette()
   Function Name  : OnPaletteChanged
   Input(s)       : -
   Output         : -
-  Functionality  : 
+  Functionality  :
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CColourPopup::OnPaletteChanged(CWnd* pFocusWnd) 
+void CColourPopup::OnPaletteChanged(CWnd* pFocusWnd)
 {
     CWnd::OnPaletteChanged(pFocusWnd);
 
     if (pFocusWnd->GetSafeHwnd() != GetSafeHwnd())
+    {
         Invalidate();
+    }
 }
 
 /*******************************************************************************
   Function Name  : OnKillFocus
   Input(s)       : -
   Output         : -
-  Functionality  : 
+  Functionality  :
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CColourPopup::OnKillFocus(CWnd* pNewWnd) 
+void CColourPopup::OnKillFocus(CWnd* pNewWnd)
 {
     CWnd::OnKillFocus(pNewWnd);
     ReleaseCapture();
@@ -1358,11 +1385,11 @@ void CColourPopup::OnKillFocus(CWnd* pNewWnd)
   Function Name  : OnActivateApp
   Input(s)       : -
   Output         : -
-  Functionality  : 
+  Functionality  :
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 #if _MFC_VER <= 0x0600
 void CColourPopup::OnActivateApp(BOOL bActive, HTASK hTask)
@@ -1376,7 +1403,9 @@ void CColourPopup::OnActivateApp(BOOL bActive, DWORD dwThreadID)
 
     // If Deactivating App, cancel this selection
     if (!bActive)
-         EndSelection(WM_CPN_SELENDCANCEL);
+    {
+        EndSelection(WM_CPN_SELENDCANCEL);
+    }
 }
 
 /*******************************************************************************
@@ -1387,7 +1416,7 @@ void CColourPopup::OnActivateApp(BOOL bActive, DWORD dwThreadID)
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 14/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 COLORREF CColourPopup::GetColour(int nIndex)
 {
@@ -1402,7 +1431,7 @@ COLORREF CColourPopup::GetColour(int nIndex)
   Member of      : CColourPopup
   Author(s)      : Raja N
   Date Created   : 14/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 LPCTSTR CColourPopup::GetColourName(int nIndex)
 {

@@ -44,11 +44,11 @@
 
  Author(s)      :   Raja N
  Date Created   :   22.07.2004
- Modifications  :   
+ Modifications  :
 ******************************************************************************/
 CNumEdit::CNumEdit( int nItem,
                     int nSubItem,
-                    CString &sContent,
+                    CString& sContent,
                     const SNUMERICINFO& sInfo)
 {
     // Init Member variables
@@ -100,22 +100,24 @@ END_MESSAGE_MAP()
  Date Created   : 22.07.2004
  Modifications  :
 *******************************************************************************/
-void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     // On Press of Enter or Escape hide the control
     if( nChar == VK_ESCAPE ||
-        nChar == VK_RETURN) 
-    {       
+            nChar == VK_RETURN)
+    {
         if( nChar == VK_ESCAPE)
         {
             // Set the Escape flag so that the initial text will be
             // restored
             m_bVK_ESCAPE = TRUE;
         }
+
         // Set the focus to the parent
         GetParent()->SetFocus();
         return;
     }
+
     // Call default function
     CRadixEdit::OnChar(nChar, nRepCnt, nFlags);
 }
@@ -132,15 +134,17 @@ void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
  Date Created   : 22.07.2004
  Modifications  :
 *******************************************************************************/
-void CNumEdit::OnNcDestroy() 
+void CNumEdit::OnNcDestroy()
 {
     CRadixEdit::OnNcDestroy();
+
     // Delete Spin button Memory
     if( IS_BUDDY_ENABLED( m_sInfo.m_byFlag) && m_pomSpin != NULL )
     {
         delete m_pomSpin;
         m_pomSpin = NULL;
     }
+
     // Delete the control here
     delete this;
 }
@@ -157,11 +161,12 @@ void CNumEdit::OnNcDestroy()
  Date Created     : 22.07.2004
  Modifications    : Raja N on 01.08.2004, Modificatinos as per code review.
 *******************************************************************************/
-int CNumEdit::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+int CNumEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
     int nRetVal = 0;
     // Create the control first
     nRetVal = CRadixEdit::OnCreate(lpCreateStruct);
+
     // OnCreate is not returning 0 to indicate success. It sometimes returns 1
     // or any positive non-zero values. So check for failure condition instead
     // of success condition
@@ -169,23 +174,26 @@ int CNumEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
     {
         // Set the base value
         vSetBase(m_sInfo.m_byBase);
+
         // Set All CAPs in case of Hex Number
         if( m_sInfo.m_byBase == defBASE_HEX )
         {
             // Add Upper case style to the control
             ModifyStyle( 0, ES_UPPERCASE );
         }
+
         // Set the number type - Signed or Unsigned
         vSetSigned( IS_SIGNED_NUMBER(m_sInfo.m_byFlag) &&
                     m_sInfo.m_byBase == defBASE_DEC );
         // Floating or Integer
         vAcceptFloatingNum(IS_FLOAT_ENABLED( m_sInfo.m_byFlag));
+
         // Text Limit
         if( m_sInfo.m_nTextLimit != 0 )
         {
             SetLimitText(m_sInfo.m_nTextLimit);
         }
-        
+
         // Create Spin Control only if it is required
         if( IS_BUDDY_ENABLED( m_sInfo.m_byFlag))
         {
@@ -197,6 +205,7 @@ int CNumEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
             dwStyle ^= UDS_WRAP;
             // Create the spin Control
             m_pomSpin = new CNumSpinCtrl;
+
             if( m_pomSpin != NULL )
             {
                 m_pomSpin->Create( dwStyle, omRect, GetParent(),
@@ -210,6 +219,7 @@ int CNumEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
                 m_pomSpin->vSetSigned( IS_SIGNED_NUMBER(m_sInfo.m_byFlag) );
                 // Set the float number property
                 m_pomSpin->vSetFloatNumber( IS_FLOAT_ENABLED(m_sInfo.m_byFlag));
+
                 // Set the formatting string
                 if( m_sInfo.m_byBase == defBASE_HEX)
                 {
@@ -227,19 +237,20 @@ int CNumEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
                         m_pomSpin->vSetFormatString( defFORMAT_INT64_DECIMAL );
                     }
                 }
+
                 // Set the Min, Max and Step Value
                 // If floating point is enabled then use doublew member
                 if( IS_FLOAT_ENABLED( m_sInfo.m_byFlag) )
                 {
                     m_pomSpin->vSetRangeAndDelta( m_sInfo.m_uMinVal.m_dValue,
-                        m_sInfo.m_uMaxVal.m_dValue, m_sInfo.m_uDelta.m_dValue);
+                                                  m_sInfo.m_uMaxVal.m_dValue, m_sInfo.m_uDelta.m_dValue);
                 }
                 // If floating point is not enabled then use __int64 member to
                 // get 64 bit resolution
                 else
                 {
                     m_pomSpin->vSetRangeAndDelta( m_sInfo.m_uMinVal.m_n64Value,
-                     m_sInfo.m_uMaxVal.m_n64Value, m_sInfo.m_uDelta.m_n64Value);
+                                                  m_sInfo.m_uMaxVal.m_n64Value, m_sInfo.m_uDelta.m_n64Value);
                 }
             }
             //Spin Control Creaate failed. Avoid proceeding further
@@ -249,10 +260,12 @@ int CNumEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
             }
         }
     }
+
     // Set the basic properties of the control
-    CWnd *pomWnd = NULL;
+    CWnd* pomWnd = NULL;
     // Get parent window. That is list control
     pomWnd = GetParent();
+
     if( pomWnd != NULL )
     {
         // Get parent's font
@@ -284,67 +297,72 @@ int CNumEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
  Modifications  : Raja N on 02.08.2004
                   Removed not required checks from the if condition
 *******************************************************************************/
-void CNumEdit::OnKillFocus(CWnd* pNewWnd) 
+void CNumEdit::OnKillFocus(CWnd* pNewWnd)
 {
     CRadixEdit::OnKillFocus(pNewWnd);
-	CWnd* m_pMainWnd = AfxGetMainWnd();
+    CWnd* m_pMainWnd = AfxGetMainWnd();
+
     if( pNewWnd != NULL                   // NULL condition - Minimize condition
-        && pNewWnd != m_pMainWnd ) // For Dialog Close
+            && pNewWnd != m_pMainWnd ) // For Dialog Close
     {
         CString omStr;
         // Get the textbox content
         GetWindowText(omStr);
-        // Notify ListView ctrl's parent 
+        // Notify ListView ctrl's parent
         LV_DISPINFO lvDisplayInfo;
-		lvDisplayInfo.hdr.idFrom = GetDlgCtrlID(); 
-        lvDisplayInfo.hdr.hwndFrom = GetParent()->m_hWnd;        
-		lvDisplayInfo.item.mask = LVIF_TEXT;   
-        lvDisplayInfo.hdr.code = LVN_ENDLABELEDIT;        
-		lvDisplayInfo.item.iSubItem = m_nSubItem;
-        lvDisplayInfo.item.iItem = m_nItem;                
+        lvDisplayInfo.hdr.idFrom = GetDlgCtrlID();
+        lvDisplayInfo.hdr.hwndFrom = GetParent()->m_hWnd;
+        lvDisplayInfo.item.mask = LVIF_TEXT;
+        lvDisplayInfo.hdr.code = LVN_ENDLABELEDIT;
+        lvDisplayInfo.item.iSubItem = m_nSubItem;
+        lvDisplayInfo.item.iItem = m_nItem;
         lvDisplayInfo.item.cchTextMax = omStr.GetLength();
-		lvDisplayInfo.item.pszText = m_bVK_ESCAPE ? NULL : LPTSTR((LPCTSTR)omStr);
+        lvDisplayInfo.item.pszText = m_bVK_ESCAPE ? NULL : LPTSTR((LPCTSTR)omStr);
         GetParent()->GetParent()->SendMessage( WM_NOTIFY,
                                                GetParent()->GetDlgCtrlID(),
                                                (LPARAM)&lvDisplayInfo);
+
         // Destroy Spin Control
         if( IS_BUDDY_ENABLED( m_sInfo.m_byFlag) && m_pomSpin != NULL )
         {
             m_pomSpin->DestroyWindow();
         }
-        
     }
+
     // Kill the control as its lifetime is over
     DestroyWindow();
 }
 
 /*******************************************************************************
  Function Name    : PreTranslateMessage
-                                                                           
+
  Input(s)         : MSG* pMsg
  Output           : BOOL
  Functionality    : To avoid processing special keys
  Member of        : CNumEdit
  Friend of        :   -
-                                                                           
+
  Author(s)        : Raja N
  Date Created     : 22.07.2004
- Modifications    : 
+ Modifications    :
 *******************************************************************************/
-BOOL CNumEdit::PreTranslateMessage(MSG* pMsg) 
+BOOL CNumEdit::PreTranslateMessage(MSG* pMsg)
 {
     // TODO: Add your specialized code here and/or call the base class
-    if( pMsg->message == WM_KEYDOWN )   
-    {       
-        if( pMsg->wParam == VK_RETURN || 
-            pMsg->wParam == VK_ESCAPE )
-        {           
+    if( pMsg->message == WM_KEYDOWN )
+    {
+        if( pMsg->wParam == VK_RETURN ||
+                pMsg->wParam == VK_ESCAPE )
+        {
             ::TranslateMessage(pMsg);
             ::DispatchMessage(pMsg);
             return 1;
         }
+
         if(pMsg->wParam == VK_TAB)
+        {
             MessageBeep(0);
+        }
     }
 
     return CRadixEdit::PreTranslateMessage(pMsg);

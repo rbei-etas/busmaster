@@ -28,14 +28,14 @@
 
 class CAlphanumiricEdit : public CEdit
 {
-	DECLARE_DYNAMIC(CAlphanumiricEdit)
+    DECLARE_DYNAMIC(CAlphanumiricEdit)
 
 public:
-	CAlphanumiricEdit();
-	virtual ~CAlphanumiricEdit();
+    CAlphanumiricEdit();
+    virtual ~CAlphanumiricEdit();
 
 protected:
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+    afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
