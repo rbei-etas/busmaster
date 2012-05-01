@@ -451,33 +451,36 @@ void CMsgSgTreeView::OnDeleteMessage()
                 // Remove the item from the tree
                 om_tree.DeleteItem( hItem );
                 CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
-                // Get form view pointer
-                CMsgSgDetView* pMsgSgDetView = pMainFrm->podGetMsgSgDetView(m_sDbParams.m_eBus);
-
-                if ( pMainFrm != NULL && hPrevItem != NULL )
+                if (pMainFrm != NULL)
                 {
-                    // Select prev item
-                    om_tree.SelectItem( hPrevItem );
-                    CString omStrPrev = om_tree.GetItemText( hPrevItem );
-                    // Get message pointer
-                    sMESSAGE* pMsg = pTempMsgSg->
-                                     psGetMessagePointerInactive(omStrPrev);
+                    // Get form view pointer
+                    CMsgSgDetView* pMsgSgDetView = pMainFrm->podGetMsgSgDetView(m_sDbParams.m_eBus);
 
-                    if ( pMsg != NULL && pMsgSgDetView != NULL )
+                    if (hPrevItem != NULL )
                     {
-                        pMsgSgDetView->vDisplayMsgSgInformation( pMsg );
-                    }
-                }// no message left
-                else
-                {
-                    // Select root item
-                    om_tree.SelectItem(om_tree.GetRootItem());
+                        // Select prev item
+                        om_tree.SelectItem( hPrevItem );
+                        CString omStrPrev = om_tree.GetItemText( hPrevItem );
+                        // Get message pointer
+                        sMESSAGE* pMsg = pTempMsgSg->
+                                         psGetMessagePointerInactive(omStrPrev);
 
-                    // check if the controls in the form view are hidden
-                    if ( pMsgSgDetView->bGetControlStatus() == FALSE )//  TRUE - Hidden
+                        if ( pMsg != NULL && pMsgSgDetView != NULL )
+                        {
+                            pMsgSgDetView->vDisplayMsgSgInformation( pMsg );
+                        }
+                    }// no message left
+                    else
                     {
-                        // Controls are not hidden, hide
-                        pMsgSgDetView->vHideControls(SW_HIDE);
+                        // Select root item
+                        om_tree.SelectItem(om_tree.GetRootItem());
+
+                        // check if the controls in the form view are hidden
+                        if ( pMsgSgDetView->bGetControlStatus() == FALSE )//  TRUE - Hidden
+                        {
+                            // Controls are not hidden, hide
+                            pMsgSgDetView->vHideControls(SW_HIDE);
+                        }
                     }
                 }
             }
