@@ -31,12 +31,12 @@ END_MESSAGE_MAP()
 #ifdef _DEBUG
 void CResultView::AssertValid() const
 {
-	CListView::AssertValid();
+    CListView::AssertValid();
 }
 
 void CResultView::Dump(CDumpContext& dc) const
 {
-	CListView::Dump(dc);
+    CListView::Dump(dc);
 }
 #endif //_DEBUG
 
@@ -44,12 +44,12 @@ void CResultView::Dump(CDumpContext& dc) const
 Function Name  :  CResultView
 Input(s)       :  -
 Output         :  -
-Functionality  :  Constructor 
+Functionality  :  Constructor
 Member of      :  CResultView
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  01/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CResultView::CResultView(void)
 {
@@ -59,12 +59,12 @@ CResultView::CResultView(void)
 Function Name  :  ~CResultView
 Input(s)       :  -
 Output         :  -
-Functionality  :  Destructor 
+Functionality  :  Destructor
 Member of      :  CResultView
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  01/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CResultView::~CResultView(void)
 {
@@ -75,12 +75,12 @@ CResultView::~CResultView(void)
 Function Name  :  PreCreateWindow
 Input(s)       :  CREATESTRUCT& cs
 Output         :  BOOL
-Functionality  :   
+Functionality  :
 Member of      :  CResultView
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  01/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 BOOL CResultView::PreCreateWindow(CREATESTRUCT& cs)
 {
@@ -92,17 +92,16 @@ BOOL CResultView::PreCreateWindow(CREATESTRUCT& cs)
 Function Name  :  OnInitialUpdate
 Input(s)       :  -
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CResultView
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  01/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CResultView::OnInitialUpdate(void)
 {
     CListView::OnInitialUpdate();
-    
     //Just To increase the List Item Height
     CRect omRect;
     GetListCtrl().GetWindowRect(&omRect);

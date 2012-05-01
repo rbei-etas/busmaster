@@ -32,12 +32,12 @@ extern CTSExecutorBase* g_podTSExecutor;
 Function Name  :  CTSExecutorLIB
 Input(s)       :  -
 Output         :  -
-Functionality  :  Constructor 
+Functionality  :  Constructor
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 CTSExecutorLIB::CTSExecutorLIB(void)
@@ -52,22 +52,24 @@ CTSExecutorLIB::CTSExecutorLIB(void)
 Function Name  :  SetResultDisplayWnd
 Input(s)       :  CListCtrl* pWnd
 Output         :  HRESULT
-Functionality  :  Sets The Display Result Display list Control 
+Functionality  :  Sets The Display Result Display list Control
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::SetResultDisplayWnd(CListCtrl* pWnd)
 {
     m_ompResultDisplayWnd = pWnd;
     m_ompResultDisplayWnd->DeleteAllItems();
+
     if(g_podTSExecutor != NULL)
     {
         g_podTSExecutor->TSX_SetDisplayWnd(m_ompResultDisplayWnd);
     }
+
     return S_OK;
 }
 
@@ -75,12 +77,12 @@ HRESULT CTSExecutorLIB::SetResultDisplayWnd(CListCtrl* pWnd)
 Function Name  :  ~CTSExecutorLIB
 Input(s)       :  -
 Output         :  -
-Functionality  :  Destructor 
+Functionality  :  Destructor
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 CTSExecutorLIB::~CTSExecutorLIB(void)
@@ -91,12 +93,12 @@ CTSExecutorLIB::~CTSExecutorLIB(void)
 Function Name  :  SelectBus
 Input(s)       :  eTYPE_BUS eCurrBus
 Output         :  HRESULT
-Functionality  :  Selects The Bus Type 
+Functionality  :  Selects The Bus Type
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::SelectBus(eTYPE_BUS eCurrBus)
@@ -108,12 +110,12 @@ HRESULT CTSExecutorLIB::SelectBus(eTYPE_BUS eCurrBus)
 Function Name  :  SetTestsuiteName
 Input(s)       :  CString& omName
 Output         :  HRESULT
-Functionality  :  Set The TestSuite Name 
+Functionality  :  Set The TestSuite Name
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::SetTestsuiteName(CString& omName)
@@ -125,12 +127,12 @@ HRESULT CTSExecutorLIB::SetTestsuiteName(CString& omName)
 Function Name  :  GetTestsuiteName
 Input(s)       :  CString& omName
 Output         :  HRESULT
-Functionality  :  Returns The Test Suite Name 
+Functionality  :  Returns The Test Suite Name
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::GetTestsuiteName(CString& omName)
@@ -142,51 +144,54 @@ HRESULT CTSExecutorLIB::GetTestsuiteName(CString& omName)
 Function Name  :  AddTestSetup
 Input(s)       :  CString omFilePath, DWORD& dwID
 Output         :  HRESULT
-Functionality  :  Adds The test Setup File 
+Functionality  :  Adds The test Setup File
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::AddTestSetup(CString omFilePath, DWORD& dwID)
 {
     //ERR_PATH_INCORRECT, ERR_FILE_INCORRECT - return from LoadFile
-    //ERR_ALREADY_ADDED May Be 
+    //ERR_ALREADY_ADDED May Be
     //ERR_BUSTYPE_MISMATCH
-
     CTestSetupEntity ouTestSetup;
     HRESULT hResult = ouTestSetup.LoadFile(omFilePath);
+
     if(hResult == S_OK)
     {
         POSITION pos = m_ouTestSetupEntityList.AddTail(ouTestSetup);
-        CTestSetupEntity &ouTempTestSetup = m_ouTestSetupEntityList.GetAt(pos);
+        CTestSetupEntity& ouTempTestSetup = m_ouTestSetupEntityList.GetAt(pos);
         dwID = ouTempTestSetup.GetID();
         hResult = S_OK;
     }
+
     return hResult;
 }
 /******************************************************************************
 Function Name  :  GetTestSetupName
 Input(s)       :  DWORD dwID, CString& omName
 Output         :  HRESULT
-Functionality  :  Returns the test setup Name of the given ID 
+Functionality  :  Returns the test setup Name of the given ID
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::GetTestSetupName(DWORD dwID, CString& omName)
 {
     BOOL bValidID = FALSE;
     INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
+
     for(INT i = 0; i < nCount; i++)
     {
         POSITION pos = m_ouTestSetupEntityList.FindIndex(i);
         CTestSetupEntity& ouTempTestSetup = m_ouTestSetupEntityList.GetAt(pos);
+
         if(ouTempTestSetup.GetID() == dwID)
         {
             omName = ouTempTestSetup.m_omstrTestSetupTitle;
@@ -194,32 +199,36 @@ HRESULT CTSExecutorLIB::GetTestSetupName(DWORD dwID, CString& omName)
             break;
         }
     }
+
     if(bValidID == FALSE)
     {
         return ERR_WRONG_ID;
     }
+
     return S_OK;
 }
 /******************************************************************************
 Function Name  :  UpdateTestSetup
 Input(s)       :  DWORD dwID, CString omFilePath
 Output         :  HRESULT
-Functionality  :  Update the TestSetup Name of the given ID 
+Functionality  :  Update the TestSetup Name of the given ID
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::UpdateTestSetup( DWORD dwID, CString omFilePath)
 {
     BOOL bValidID = FALSE;
     INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
+
     for(INT i = 0; i < nCount; i++)
     {
         POSITION pos = m_ouTestSetupEntityList.FindIndex(i);
         CTestSetupEntity& ouTempTestSetup = m_ouTestSetupEntityList.GetAt(pos);
+
         if(ouTempTestSetup.GetID() == dwID)
         {
             ouTempTestSetup.LoadFile(omFilePath);
@@ -227,10 +236,12 @@ HRESULT CTSExecutorLIB::UpdateTestSetup( DWORD dwID, CString omFilePath)
             break;
         }
     }
+
     if(bValidID == FALSE)
     {
         return ERR_WRONG_ID;
     }
+
     return S_OK;
 }
 /******************************************************************************
@@ -242,17 +253,19 @@ Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::DeleteTestSetup( DWORD dwID)
 {
     BOOL bValidID = FALSE;
     INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
+
     for(INT i = 0; i < nCount; i++)
     {
         POSITION pos = m_ouTestSetupEntityList.FindIndex(i);
         CTestSetupEntity& ouTempTestSetup = m_ouTestSetupEntityList.GetAt(pos);
+
         if(ouTempTestSetup.GetID() == dwID)
         {
             m_ouTestSetupEntityList.RemoveAt(pos);
@@ -260,33 +273,37 @@ HRESULT CTSExecutorLIB::DeleteTestSetup( DWORD dwID)
             break;
         }
     }
+
     if(bValidID == FALSE)
     {
         return ERR_WRONG_ID;
     }
+
     return S_OK;
 }
 
 /******************************************************************************
 Function Name  :  Update
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  28/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::Update( DWORD dwID)
 {
     BOOL bValidID = FALSE;
     INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
+
     for(INT i = 0; i < nCount; i++)
     {
         POSITION pos = m_ouTestSetupEntityList.FindIndex(i);
         CTestSetupEntity& ouTempTestSetup = m_ouTestSetupEntityList.GetAt(pos);
+
         if(ouTempTestSetup.GetID() == dwID)
         {
             ouTempTestSetup.UpdateTestSetup();
@@ -294,33 +311,36 @@ HRESULT CTSExecutorLIB::Update( DWORD dwID)
             break;
         }
     }
+
     if(bValidID == FALSE)
     {
         return ERR_WRONG_ID;
     }
+
     return S_OK;
 }
 /******************************************************************************
 Function Name  :  EnableTestSetup
 Input(s)       :  DWORD dwID, BOOL bEnable
 Output         :  HRESULT
-Functionality  :  Enables or disables the execution of given test setup 
+Functionality  :  Enables or disables the execution of given test setup
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::EnableTestSetup( DWORD dwID, BOOL bEnable)
 {
-    
     BOOL bValidID = FALSE;
     INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
+
     for(INT i = 0; i < nCount; i++)
     {
         POSITION pos = m_ouTestSetupEntityList.FindIndex(i);
         CTestSetupEntity& ouTempTestSetup = m_ouTestSetupEntityList.GetAt(pos);
+
         if(ouTempTestSetup.GetID() == dwID)
         {
             ouTempTestSetup.vEnableEntity(bEnable);
@@ -328,32 +348,36 @@ HRESULT CTSExecutorLIB::EnableTestSetup( DWORD dwID, BOOL bEnable)
             break;
         }
     }
+
     if(bValidID == FALSE)
     {
         return ERR_WRONG_ID;
     }
+
     return S_OK;
 }
 /******************************************************************************
 Function Name  :  GetTestSetupEnableStatus
 Input(s)       :  DWORD dwID, BOOL& bEnable
 Output         :  HRESULT
-Functionality  :  Returnd the Enable status of given test setup id 
+Functionality  :  Returnd the Enable status of given test setup id
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::GetTestSetupEnableStatus(DWORD dwID, BOOL& bEnable)
 {
     BOOL bValidID = FALSE;
     INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
+
     for(INT i = 0; i < nCount; i++)
     {
         POSITION pos = m_ouTestSetupEntityList.FindIndex(i);
         CTestSetupEntity& ouTempTestSetup = m_ouTestSetupEntityList.GetAt(pos);
+
         if(ouTempTestSetup.GetID() == dwID)
         {
             bEnable = ouTempTestSetup.bGetEnableStatus();
@@ -361,10 +385,12 @@ HRESULT CTSExecutorLIB::GetTestSetupEnableStatus(DWORD dwID, BOOL& bEnable)
             break;
         }
     }
+
     if(bValidID == FALSE)
     {
         return ERR_WRONG_ID;
     }
+
     return S_OK;
 }
 
@@ -372,12 +398,12 @@ HRESULT CTSExecutorLIB::GetTestSetupEnableStatus(DWORD dwID, BOOL& bEnable)
 Function Name  :  RepositionTestSetup
 Input(s)       :  DWORD dwID, DWORD dwIDPreceding
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :  CS044
 ******************************************************************************/
 HRESULT CTSExecutorLIB::RepositionTestSetup( DWORD dwID, DWORD dwIDPreceding)
@@ -386,25 +412,29 @@ HRESULT CTSExecutorLIB::RepositionTestSetup( DWORD dwID, DWORD dwIDPreceding)
     POSITION pos;
     BOOL bIdFound = FALSE;
     CTestSetupEntity ouCurrentTestSetup;
+
     for(INT i = 0; i < nCount; i++)
     {
         pos = m_ouTestSetupEntityList.FindIndex(i);
         CTestSetupEntity& ouTestSetupEntity = m_ouTestSetupEntityList.GetAt(pos);
+
         if(ouTestSetupEntity.GetID() == dwID)
         {
-             ouCurrentTestSetup = m_ouTestSetupEntityList.GetAt(pos);
-             m_ouTestSetupEntityList.RemoveAt(pos);
-             bIdFound = TRUE;
-             break;
+            ouCurrentTestSetup = m_ouTestSetupEntityList.GetAt(pos);
+            m_ouTestSetupEntityList.RemoveAt(pos);
+            bIdFound = TRUE;
+            break;
         }
     }
+
     if(bIdFound == FALSE)
     {
         return ERR_WRONG_ID;
     }
-    
+
     bIdFound = FALSE;
     nCount = (INT)m_ouTestSetupEntityList.GetCount();
+
     if(dwIDPreceding == def_ID_TESTSUITE)
     {
         m_ouTestSetupEntityList.AddHead(ouCurrentTestSetup);
@@ -416,6 +446,7 @@ HRESULT CTSExecutorLIB::RepositionTestSetup( DWORD dwID, DWORD dwIDPreceding)
         {
             pos = m_ouTestSetupEntityList.FindIndex(i);
             CTestSetupEntity& ouTestSetupEntity = m_ouTestSetupEntityList.GetAt(pos);
+
             if(ouTestSetupEntity.GetID() == dwIDPreceding)
             {
                 m_ouTestSetupEntityList.InsertAfter(pos, ouCurrentTestSetup);
@@ -424,10 +455,12 @@ HRESULT CTSExecutorLIB::RepositionTestSetup( DWORD dwID, DWORD dwIDPreceding)
             }
         }
     }
+
     if(bIdFound == FALSE)
     {
         return ERR_WRONG_ID_REF;
     }
+
     return S_OK;
 }
 
@@ -435,12 +468,12 @@ HRESULT CTSExecutorLIB::RepositionTestSetup( DWORD dwID, DWORD dwIDPreceding)
 Function Name  :  GetTestcaseCount
 Input(s)       :  DWORD dwID, UINT& unTotal
 Output         :  HRESULT
-Functionality  :  Returns the testcase count 
+Functionality  :  Returns the testcase count
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::GetTestcaseCount( DWORD dwID, UINT& unTotal)
@@ -448,10 +481,12 @@ HRESULT CTSExecutorLIB::GetTestcaseCount( DWORD dwID, UINT& unTotal)
     BOOL bValidID = FALSE;
     unTotal = (UINT)-1;
     INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
+
     for(INT i = 0; i < nCount; i++)
     {
         POSITION pos = m_ouTestSetupEntityList.FindIndex(i);
         CTestSetupEntity& ouTempTestSetup = m_ouTestSetupEntityList.GetAt(pos);
+
         if(ouTempTestSetup.GetID() == dwID)
         {
             unTotal = ouTempTestSetup.GetSubEntryCount();
@@ -459,23 +494,25 @@ HRESULT CTSExecutorLIB::GetTestcaseCount( DWORD dwID, UINT& unTotal)
             break;
         }
     }
+
     if(bValidID == FALSE)
     {
         return ERR_WRONG_ID;
     }
+
     return S_OK;
 }
 
 /******************************************************************************
 Function Name  :  GetTestcaseCount
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::GetTestcaseCount( INT nIndex, UINT& unTotal)
@@ -483,16 +520,19 @@ HRESULT CTSExecutorLIB::GetTestcaseCount( INT nIndex, UINT& unTotal)
     BOOL bValidID = FALSE;
     unTotal = (UINT)-1;
     POSITION pos = m_ouTestSetupEntityList.FindIndex(nIndex);
+
     if(pos != NULL)
     {
         CTestSetupEntity& ouTempTestSetup = m_ouTestSetupEntityList.GetAt(pos);
         unTotal = ouTempTestSetup.GetSubEntryCount();
         bValidID = TRUE;
     }
+
     if(bValidID == FALSE)
     {
         return ERR_WRONG_ID;
     }
+
     return S_OK;
 }
 
@@ -500,12 +540,12 @@ HRESULT CTSExecutorLIB::GetTestcaseCount( INT nIndex, UINT& unTotal)
 Function Name  :  GetTestCaseInfo
 Input(s)       :  DWORD dwID, UINT unIndex, CBaseEntityTA** pTCInfo
 Output         :  HRESULT
-Functionality  :  Returns the testcase Info 
+Functionality  :  Returns the testcase Info
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::GetTestCaseInfo( DWORD dwID, UINT unIndex, CBaseEntityTA** pTCInfo)
@@ -513,14 +553,16 @@ HRESULT CTSExecutorLIB::GetTestCaseInfo( DWORD dwID, UINT unIndex, CBaseEntityTA
     BOOL bValidID = FALSE;
     HRESULT hResult = ERR_WRONG_ID;
     INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
-   
+
     for(INT i = 0; i < nCount; i++)
     {
         POSITION pos = m_ouTestSetupEntityList.FindIndex(i);
         CTestSetupEntity& ouTempTestSetup = m_ouTestSetupEntityList.GetAt(pos);
+
         if(ouTempTestSetup.GetID() == dwID)
         {
             hResult = S_OK;
+
             if(ouTempTestSetup.GetSubEntityObj(unIndex, pTCInfo) != S_OK)
             {
                 hResult = ERR_WRONG_INDEX;
@@ -528,6 +570,7 @@ HRESULT CTSExecutorLIB::GetTestCaseInfo( DWORD dwID, UINT unIndex, CBaseEntityTA
             }
         }
     }
+
     return hResult;
 }
 
@@ -541,7 +584,7 @@ Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::EnableTestCase( DWORD dwID, UINT unIndex, BOOL bEnable)
@@ -550,18 +593,21 @@ HRESULT CTSExecutorLIB::EnableTestCase( DWORD dwID, UINT unIndex, BOOL bEnable)
     HRESULT hResult = ERR_WRONG_ID;
     INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
     CBaseEntityTA* pTCInfo;
+
     for(int i = 0; i < nCount; i++)
     {
         POSITION pos = m_ouTestSetupEntityList.FindIndex(i);
         CTestSetupEntity& ouTempTestSetup = m_ouTestSetupEntityList.GetAt(pos);
+
         if(ouTempTestSetup.GetID() == dwID)
         {
             hResult = S_OK;
+
             if(ouTempTestSetup.GetSubEntityObj(unIndex, &pTCInfo) == S_OK)
             {
                 pTCInfo->vEnableEntity(bEnable);
                 break;
-            }   
+            }
             else
             {
                 hResult = ERR_WRONG_INDEX;
@@ -569,6 +615,7 @@ HRESULT CTSExecutorLIB::EnableTestCase( DWORD dwID, UINT unIndex, BOOL bEnable)
             }
         }
     }
+
     return hResult;
 }
 
@@ -576,12 +623,12 @@ HRESULT CTSExecutorLIB::EnableTestCase( DWORD dwID, UINT unIndex, BOOL bEnable)
 Function Name  :  GetTestSetupCount
 Input(s)       :  INT& nCount
 Output         :  HRESULT
-Functionality  :  returns the testsetup count 
+Functionality  :  returns the testsetup count
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::GetTestSetupCount(INT& nCount)
@@ -594,17 +641,18 @@ HRESULT CTSExecutorLIB::GetTestSetupCount(INT& nCount)
 Function Name  :  GetTestSetupInfo
 Input(s)       :  INT nIndex, STestSetupInfo& sTSInfo
 Output         :  HRESULT
-Functionality  :  return the testsetup info 
+Functionality  :  return the testsetup info
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::GetTestSetupInfo(INT nIndex, STestSetupInfo& sTSInfo)
 {
     POSITION pos = m_ouTestSetupEntityList.FindIndex(nIndex);
+
     if(pos != NULL)
     {
         CTestSetupEntity& ouTestSetupEntity = m_ouTestSetupEntityList.GetAt(pos);
@@ -614,6 +662,7 @@ HRESULT CTSExecutorLIB::GetTestSetupInfo(INT nIndex, STestSetupInfo& sTSInfo)
         sTSInfo.m_nTCCount = ouTestSetupEntity.GetSubEntryCount();
         return S_OK;
     }
+
     return ERR_WRONG_INDEX;
 }
 
@@ -621,60 +670,53 @@ HRESULT CTSExecutorLIB::GetTestSetupInfo(INT nIndex, STestSetupInfo& sTSInfo)
 Function Name  :  GetConfigurationData
 Input(s)       :  BYTE*& pDesBuffer, UINT& unBuffSize
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::GetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize)
 {
-
     INT nFileCount = (INT)m_ouTestSetupEntityList.GetCount();
     unBuffSize = sizeof(UINT) + sizeof(BOOL)+sizeof(TCHAR)*MAX_PATH; //Number of TestSetupFiles + Status of TestSuite+TestSuite Name
+
     for(INT i = 0; i < nFileCount; i++)
     {
         UINT unCount;
         GetTestcaseCount(i, unCount);
-                        //TestSuite Name + File Path + Selection Status + Number of TestCases + Testcases Status
+        //TestSuite Name + File Path + Selection Status + Number of TestCases + Testcases Status
         unBuffSize += (sizeof(TCHAR)*MAX_PATH + sizeof(TCHAR)*MAX_PATH) + sizeof(BOOL) + sizeof(UINT) + (unCount*sizeof(BOOL));
     }
 
     pDesBuffer = new BYTE[unBuffSize];
-    
+
     if (pDesBuffer != NULL)
     {
         BYTE* pbyTemp = pDesBuffer;
-        
         //TestSuite name
         TCHAR acTestSuiteName[MAX_PATH] = {_T('\0')};
         strcpy_s(acTestSuiteName, m_omstrTestSuiteName);
         COPY_DATA(pbyTemp, acTestSuiteName, (sizeof (TCHAR) * MAX_PATH));
-    
         //TestSuite Status
         COPY_DATA(pbyTemp, &m_bTestSuiteStatus, sizeof(BOOL));
-
         //File Count
         COPY_DATA(pbyTemp, &nFileCount, sizeof(INT));
-
 
         for(INT i = 0; i < nFileCount; i++)
         {
             UINT unCount;
             POSITION pos = m_ouTestSetupEntityList.FindIndex(i);
             CTestSetupEntity& ouTestSetupEntity = m_ouTestSetupEntityList.GetAt(pos);
-            
             //File Path
             TCHAR acName[MAX_PATH] = {_T('\0')};
             strcpy_s(acName, ouTestSetupEntity.m_omstrCurrentTSFile.GetBuffer(MAX_PATH));
             COPY_DATA(pbyTemp, acName, (sizeof (TCHAR) * MAX_PATH));
-
             //Selection Status
             BOOL bStatus = ouTestSetupEntity.bGetEnableStatus();
             COPY_DATA(pbyTemp, &bStatus, sizeof(BOOL));
-            
             //TestCase Count
             ouTestSetupEntity.GetSubEntryCount(unCount);
             COPY_DATA(pbyTemp, &unCount, sizeof(UINT));
@@ -685,15 +727,19 @@ HRESULT CTSExecutorLIB::GetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize
                 CBaseEntityTA* pTCEntity;
                 ouTestSetupEntity.GetSubEntityObj(j, &pTCEntity);
                 bStatus = FALSE;
+
                 if(pTCEntity != NULL)
                 {
                     bStatus = pTCEntity->bGetEnableStatus();
                 }
+
                 COPY_DATA(pbyTemp, &bStatus, sizeof(BOOL));
             }
-             //File Path + Selection Status + Number of TestCases + Testcases Status
+
+            //File Path + Selection Status + Number of TestCases + Testcases Status
         }
     }
+
     return S_OK;
 }
 
@@ -701,19 +747,18 @@ HRESULT CTSExecutorLIB::GetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize
 Function Name  :  SetConfigurationData
 Input(s)       :  BYTE*& pDesBuffer, UINT& unBuffSize
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::SetConfigurationData(BYTE* pSrcBuffer, UINT /*unBuffSize*/)
 {
-
     INT nFileCount = (INT)m_ouTestSetupEntityList.GetCount();
-    
+
     if (pSrcBuffer != NULL)
     {
         BYTE* pbyTemp = pSrcBuffer;
@@ -721,37 +766,37 @@ HRESULT CTSExecutorLIB::SetConfigurationData(BYTE* pSrcBuffer, UINT /*unBuffSize
         TCHAR acTestSuiteName[MAX_PATH] = {_T('\0')};
         COPY_DATA_2(acTestSuiteName, pbyTemp, (sizeof (TCHAR) * MAX_PATH));
         m_omstrTestSuiteName = acTestSuiteName;
-
         //TestSuite Status
         COPY_DATA_2(&m_bTestSuiteStatus, pbyTemp, sizeof(BOOL));
-
         //File Count
         COPY_DATA_2(&nFileCount, pbyTemp, sizeof(INT));
         INT nFileIndex = 0;
+
         for(INT i = 0; i < nFileCount; i++)
         {
             UINT unCount, unConfigCount;
-            
             //File Path
             CString omstrFileName;
             DWORD dwID;
             TCHAR acName[MAX_PATH] = {_T('\0')};
             COPY_DATA_2(acName, pbyTemp, (sizeof (TCHAR) * MAX_PATH));
             omstrFileName = acName;
+
             if(AddTestSetup(omstrFileName, dwID) == S_OK)
             {
                 //Selection Status
                 BOOL bStatus;
                 COPY_DATA_2(&bStatus, pbyTemp, sizeof(BOOL));
                 POSITION pos = m_ouTestSetupEntityList.FindIndex(nFileIndex++);
+
                 if(pos != NULL)
                 {
                     CTestSetupEntity& ouTestSetupEntity = m_ouTestSetupEntityList.GetAt(pos);
                     ouTestSetupEntity.vEnableEntity(bStatus);
-
                     //TestCase Count
                     COPY_DATA_2(&unConfigCount, pbyTemp, sizeof(UINT));
                     ouTestSetupEntity.GetSubEntryCount(unCount);
+
                     if(unConfigCount != unCount)
                     {
                         //File Has Modified;
@@ -763,6 +808,7 @@ HRESULT CTSExecutorLIB::SetConfigurationData(BYTE* pSrcBuffer, UINT /*unBuffSize
                         CBaseEntityTA* pTCEntity;
                         COPY_DATA_2(&bStatus, pbyTemp, sizeof(BOOL));
                         ouTestSetupEntity.GetSubEntityObj(j, &pTCEntity);
+
                         if(pTCEntity != NULL)
                         {
                             pTCEntity->vEnableEntity(bStatus);
@@ -771,18 +817,20 @@ HRESULT CTSExecutorLIB::SetConfigurationData(BYTE* pSrcBuffer, UINT /*unBuffSize
                 }
             }
             else
-            {   
+            {
                 UINT unConfigCount;
                 BOOL bStatus;
                 COPY_DATA_2(&bStatus, pbyTemp, sizeof(BOOL));
                 COPY_DATA_2(&unConfigCount, pbyTemp, sizeof(UINT));
-                BOOL *bTempData = new BOOL[unConfigCount];
+                BOOL* bTempData = new BOOL[unConfigCount];
                 COPY_DATA_2(bTempData, pbyTemp, unConfigCount*sizeof(BOOL));
                 delete []bTempData;
             }
-             //File Path + Selection Status + Number of TestCases + Testcases Status
+
+            //File Path + Selection Status + Number of TestCases + Testcases Status
         }
     }
+
     return S_OK;
 }
 
@@ -790,17 +838,18 @@ HRESULT CTSExecutorLIB::SetConfigurationData(BYTE* pSrcBuffer, UINT /*unBuffSize
 Function Name  :  EnableItem
 Input(s)       :  DWORD dwID, BOOL& bEnable
 Output         :  HRESULT
-Functionality  :  Enable or disables the entity 
+Functionality  :  Enable or disables the entity
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::EnableItem(DWORD dwID, BOOL& bEnable)
 {
     HRESULT hResult = ERR_WRONG_ID;
+
     if(dwID == def_ID_TESTSUITE)
     {
         m_bTestSuiteStatus = bEnable;
@@ -809,31 +858,34 @@ HRESULT CTSExecutorLIB::EnableItem(DWORD dwID, BOOL& bEnable)
     else
     {
         INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
+
         for(INT i=0; i<nCount; i++)
         {
             POSITION pos = m_ouTestSetupEntityList.FindIndex(i);
             CTestSetupEntity& ouTempTestSetup = m_ouTestSetupEntityList.GetAt(pos);
             CBaseEntityTA* pEntity;
             ouTempTestSetup.SearchEntityObject(dwID, &pEntity);
+
             if(pEntity != NULL)
             {
                 pEntity->vEnableEntity(bEnable);
-                 hResult= S_OK;
+                hResult= S_OK;
             }
         }
     }
+
     return  hResult;
 }
 /******************************************************************************
 Function Name  :  RemoveAllItems
 Input(s)       :  -
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::RemoveAllItems(void)
@@ -841,12 +893,14 @@ HRESULT CTSExecutorLIB::RemoveAllItems(void)
     m_omstrTestSuiteName = def_STR_TESTSUITENAME;
     INT nCount;
     nCount = (INT)m_ouTestSetupEntityList.GetCount();
+
     for(INT i=0; i<nCount; i++)
     {
         POSITION pos = m_ouTestSetupEntityList.FindIndex(i);
         CTestSetupEntity& ouTempTestSetup = m_ouTestSetupEntityList.GetAt(pos);
         ouTempTestSetup.vInitialise();
     }
+
     m_ouTestSetupEntityList.RemoveAll();
     return S_OK;
 }
@@ -855,27 +909,30 @@ HRESULT CTSExecutorLIB::RemoveAllItems(void)
 Function Name  :  Execute
 Input(s)       :  -
 Output         :  HRESULT
-Functionality  :  Executes the TestSuite 
+Functionality  :  Executes the TestSuite
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::Execute( /*PFCALLBACKRESULTTC pfResultTC*/)
 {
     HRESULT hResult = S_OK;
     INT nTSCount = (INT)m_ouTestSetupEntityList.GetCount();
+
     for(INT nTSIndex=0; nTSIndex<nTSCount; nTSIndex++)
     {
         POSITION pos = m_ouTestSetupEntityList.FindIndex(nTSIndex);
         CTestSetupEntity& ouTestSetupEntity = m_ouTestSetupEntityList.GetAt(pos);
+
         if(ouTestSetupEntity.bGetEnableStatus() == TRUE)
         {
             bExecuteTestSetup(ouTestSetupEntity);
         }
     }
+
     return hResult;
 }
 
@@ -883,12 +940,12 @@ HRESULT CTSExecutorLIB::Execute( /*PFCALLBACKRESULTTC pfResultTC*/)
 Function Name  :  bExecuteTestSetup
 Input(s)       :  CTestSetupEntity& ouTestSetupEntity
 Output         :  BOOL
-Functionality  :  Executes the TestSetup 
+Functionality  :  Executes the TestSetup
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 BOOL CTSExecutorLIB::bExecuteTestSetup(CTestSetupEntity& ouTestSetupEntity)
@@ -901,16 +958,16 @@ BOOL CTSExecutorLIB::bExecuteTestSetup(CTestSetupEntity& ouTestSetupEntity)
     ouTestSetupEntity.m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(m_ouResult.m_ouHeaderInfo.m_omDatabasePath);
     m_ouResult.m_omStrTestSetupFile = ouTestSetupEntity.m_omstrTestSetupTitle;
     m_ouResult.m_odTcResultList.RemoveAll();
+
     for(UINT nTCIndex=0; nTCIndex<unTCCount; nTCIndex++)
     {
-        
         ouTestSetupEntity.GetSubEntityObj(nTCIndex, &pouTestCase);
+
         if(pouTestCase->bGetEnableStatus() == TRUE)
         {
             //Start Result Update
             CTestCaseData ouTestCaseData;
             pouTestCase->GetEntityData(TEST_CASE, &ouTestCaseData);
-
             CResultTc ouTestCaseResult;
             ouTestCaseResult.m_omTestCase = ouTestCaseData.m_omTitle;
             ouTestCaseResult.m_omTestDescripter = "";
@@ -918,15 +975,18 @@ BOOL CTSExecutorLIB::bExecuteTestSetup(CTestSetupEntity& ouTestSetupEntity)
             //Now Execute;
             ouTestCaseResult.m_eResult = SUCCESS;
             BOOL bResult = bExecuteTestCase(pouTestCase, ouTestCaseResult);
+
             if(bResult == FALSE)
             {
                 //TODO:: ProperHandling Required
-                ouTestCaseResult.m_eResult = ERRORS;      
+                ouTestCaseResult.m_eResult = ERRORS;
             }
+
             GetLocalTime(&ouTestCaseResult.m_sEndTime);
             m_ouResult.m_odTcResultList.AddTail(ouTestCaseResult);
         }
     }
+
     m_ouResult.GenerateReport();
     return TRUE;
 }
@@ -935,12 +995,12 @@ BOOL CTSExecutorLIB::bExecuteTestSetup(CTestSetupEntity& ouTestSetupEntity)
 Function Name  :  bExecuteTestCase
 Input(s)       :  CBaseEntityTA* pTCEntity, CResultTc& ouTestCaseResult
 Output         :  BOOL
-Functionality  :  Executes the TestCase 
+Functionality  :  Executes the TestCase
 Member of      :  CTSExecutorLIB
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :  CS041
 ******************************************************************************/
 BOOL CTSExecutorLIB::bExecuteTestCase(CBaseEntityTA* pTCEntity, CResultTc& ouTestCaseResult)
@@ -949,6 +1009,7 @@ BOOL CTSExecutorLIB::bExecuteTestCase(CBaseEntityTA* pTCEntity, CResultTc& ouTes
     {
         return NULL;
     }
+
     CBaseEntityTA* pEntity;
     CString omStrTilte;
     CString omStrID;
@@ -956,69 +1017,79 @@ BOOL CTSExecutorLIB::bExecuteTestCase(CBaseEntityTA* pTCEntity, CResultTc& ouTes
     CString omStrDisplayMsg;
     BOOL bResult = TRUE;
     ouTestCaseResult.m_ouVerifyList.RemoveAll();
-    
     ((CTestCaseEntity*)pTCEntity)->GetTestCaseDetails(omStrTilte, omStrID, eExp);
     int nCurrentRow = m_ompResultDisplayWnd->GetItemCount();
     m_ompResultDisplayWnd->InsertItem(nCurrentRow, omStrTilte);
-
     UINT unCount;
     pTCEntity->GetSubEntryCount(unCount);
+
     for(UINT unIndex = 0; unIndex < unCount; unIndex++)
     {
         nCurrentRow = m_ompResultDisplayWnd->GetItemCount();
         m_ompResultDisplayWnd->InsertItem(nCurrentRow, "");
         pTCEntity->GetSubEntityObj(unIndex, &pEntity);
+
         switch(pEntity->GetEntityType())
         {
             case SEND:
-                {
-                    m_ompResultDisplayWnd->SetItemText(nCurrentRow, 1, "Sending Messages Started");
-                    g_podTSExecutor->TSX_SendMessage(pEntity);
-                }
-                break;
+            {
+                m_ompResultDisplayWnd->SetItemText(nCurrentRow, 1, "Sending Messages Started");
+                g_podTSExecutor->TSX_SendMessage(pEntity);
+            }
+            break;
+
             case VERIFY:
+            {
+                m_ompResultDisplayWnd->SetItemText(nCurrentRow, 1, "Verifying Started");
+                CResultVerify ouVerifyResult;
+
+                if(g_podTSExecutor->TSX_VerifyMessage(pEntity, ouVerifyResult) == S_FALSE)
                 {
-                    m_ompResultDisplayWnd->SetItemText(nCurrentRow, 1, "Verifying Started");
-                    CResultVerify ouVerifyResult;
-                    if(g_podTSExecutor->TSX_VerifyMessage(pEntity, ouVerifyResult) == S_FALSE)
-                    {
-                        bResult = FALSE;
-                    }
-                    ouTestCaseResult.m_ouVerifyList.AddTail(ouVerifyResult);
+                    bResult = FALSE;
                 }
-                break;
+
+                ouTestCaseResult.m_ouVerifyList.AddTail(ouVerifyResult);
+            }
+            break;
+
             case WAIT:
-                {
-                    CString omStrTemp;
-                    CWaitEntityData ouWaitData;
-                    pEntity->GetEntityData(WAIT, &ouWaitData);
-                    omStrTemp.Format("Waiting %d sec for %s", ouWaitData.m_ushDuration, ouWaitData.m_omPurpose);
-                    m_ompResultDisplayWnd->SetItemText(nCurrentRow, 1, omStrTemp);
-                    Sleep(ouWaitData.m_ushDuration);
-                }
-                break;
+            {
+                CString omStrTemp;
+                CWaitEntityData ouWaitData;
+                pEntity->GetEntityData(WAIT, &ouWaitData);
+                omStrTemp.Format("Waiting %d sec for %s", ouWaitData.m_ushDuration, ouWaitData.m_omPurpose);
+                m_ompResultDisplayWnd->SetItemText(nCurrentRow, 1, omStrTemp);
+                Sleep(ouWaitData.m_ushDuration);
+            }
+            break;
+
             case VERIFYRESPONSE:
+            {
+                m_ompResultDisplayWnd->SetItemText(nCurrentRow, 1, "VerifyRequest Started");
+                CResultVerify ouVerifyResult;
+
+                if(g_podTSExecutor->TSX_VerifyResponse(pEntity, ouVerifyResult) == S_FALSE)
                 {
-                    m_ompResultDisplayWnd->SetItemText(nCurrentRow, 1, "VerifyRequest Started");
-                    CResultVerify ouVerifyResult;
-                    if(g_podTSExecutor->TSX_VerifyResponse(pEntity, ouVerifyResult) == S_FALSE)
-                    {
-                        bResult = FALSE;
-                    }
-                    ouTestCaseResult.m_ouVerifyList.AddTail(ouVerifyResult);
+                    bResult = FALSE;
                 }
-                break;
+
+                ouTestCaseResult.m_ouVerifyList.AddTail(ouVerifyResult);
+            }
+            break;
+
             default:
                 break;
         }
+
         if(bResult == FALSE && eExp == EXIT)
         {
             break;
         }
     }
+
     return bResult;
 }
 void CTSExecutorLIB::vSetVersionInfo(CString& omStrVersionInfo)
 {
-	m_ouResult.m_omStrVersion = omStrVersionInfo;
+    m_ouResult.m_omStrVersion = omStrVersionInfo;
 }

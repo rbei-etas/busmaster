@@ -35,15 +35,15 @@ typedef CMsgBufCANVFSE<STCANDATA> CCANBufferVFSE;
 typedef CList<UINT, UINT&> MsgVerifiedList;
 class CTSExecutionCAN: public CTSExecutorBase
 {
-//Attributes
+    //Attributes
 private:
-    
+
     //Bus Statictics Structure
     SBUSSTATISTICS m_sBusStatistics[ defNO_OF_CHANNELS ];
     //Temporary Referance of STCAN_MSG
     STCAN_MSG m_sCurrEntry;
     //Client ID
-    DWORD m_dwClientId;        
+    DWORD m_dwClientId;
     //CAN DIL pointer
     CBaseDIL_CAN* m_pouDIL_CAN;
 public:
@@ -60,20 +60,20 @@ public:
     CVerifyResponse* m_pCurrentVerify;
     UINT m_nVerifyCount;
     CEvent m_ouVerifyEvent;
-    CResultVerify *m_ouVerifyResult;
+    CResultVerify* m_ouVerifyResult;
     MsgVerifiedList m_MsgVerifiedList;
     CRITICAL_SECTION m_omCritSecTS;
     BOOL m_bTimeOver;
     LARGE_INTEGER m_QueryFrequency;
     UINT64 m_LastCanMsg;
 
-//Member Functions
+    //Member Functions
 public:
     //Constructor
     CTSExecutionCAN(void);
-    // This function should be called for the very first time.         
+    // This function should be called for the very first time.
     HRESULT TSX_DoInitialization(void);
-    // This function resets the Message statistics 
+    // This function resets the Message statistics
     HRESULT TSX_Reset(void);
     // Starts Reading Message Thread
     HRESULT TSX_bStartStopReadThread(BOOL bStart);
@@ -84,17 +84,17 @@ public:
     //VerifyResponse
     HRESULT TSX_VerifyResponse(CBaseEntityTA* pEntity, CResultVerify& ouVerifyResult);
     //Descrutor
-   // HRESULT VerifyCurrentMessage(STCANDATA& sCanData);
+    // HRESULT VerifyCurrentMessage(STCANDATA& sCanData);
     //Verifies the can Message
-    BOOL bVerifyCanMessage(CVerify_MessageData& ouVerifyData, CSignalInfoArray& ouSignalInfo, CMessageResult &ouMsgResult);
+    BOOL bVerifyCanMessage(CVerify_MessageData& ouVerifyData, CSignalInfoArray& ouSignalInfo, CMessageResult& ouMsgResult);
     virtual ~CTSExecutionCAN(void);
 
 private:
-    //Initialise or resets the bus statistics. 
+    //Initialise or resets the bus statistics.
     void vInitialiseTSXData(void);
     //Starts the BS Read Thread
-    BOOL bStartBSReadThread(void);  
+    BOOL bStartBSReadThread(void);
     //Constructs the Can Message From the CSend_MessageData
     BOOL bMakeCanMessage(sMESSAGE*& pMsg, CSend_MessageData& ouSendData, UCHAR aucData[8], STCAN_MSG& stCanMsg);
-    
+
 };

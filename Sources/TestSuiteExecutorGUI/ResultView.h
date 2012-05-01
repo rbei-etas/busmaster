@@ -25,19 +25,19 @@
 
 class CResultView : public CListView
 {
-//Member Variables
+    //Member Variables
 private:
     CImageList m_omImageList;
 
-//Member functions
+    //Member functions
 private:
-	DECLARE_DYNCREATE(CResultView)
+    DECLARE_DYNCREATE(CResultView)
 protected:
     DECLARE_MESSAGE_MAP()
     // protected constructor used by dynamic creation
-    CResultView(void);           
+    CResultView(void);
     //Pre Create window handles
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
     //Proeteced Constructor
     virtual ~CResultView(void);
 
@@ -46,7 +46,7 @@ public:
 
 public:
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+    virtual void AssertValid() const;
+    virtual void Dump(CDumpContext& dc) const;
 #endif
 };

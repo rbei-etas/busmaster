@@ -34,7 +34,7 @@ typedef struct _STestSetupInfo
     BOOL m_bEnable;
     INT m_nTCCount;
     //Result;
-}STestSetupInfo;
+} STestSetupInfo;
 typedef CList<CTestSetupEntity, CTestSetupEntity&> CTestSetupEntiyList;
 
 class CTSExecutorLIB
@@ -70,8 +70,8 @@ public:
     HRESULT GetTestSetupCount(INT& nCount);
     HRESULT Execute( /*PFCALLBACKRESULTTC pfResultTC*/);
     HRESULT SetResultDisplayWnd(CListCtrl* pWnd);
-	void vSetVersionInfo(CString& omStrVersionInfo);
-	virtual ~CTSExecutorLIB(void);
+    void vSetVersionInfo(CString& omStrVersionInfo);
+    virtual ~CTSExecutorLIB(void);
 private:
     BOOL bExecuteTestSetup(CTestSetupEntity& pEntiy );
     BOOL bExecuteTestCase(CBaseEntityTA* pTCEntity, CResultTc& ouTestCaseResult);
