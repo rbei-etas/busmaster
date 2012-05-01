@@ -15,7 +15,7 @@
 
 /**
  * \file      SignalDefiner_Extern.h
- * \brief     Exports API functions for Signal Definer interface  
+ * \brief     Exports API functions for Signal Definer interface
  * \author    Arunkumar Karri
  * \copyright Copyright (c) 2012, Robert Bosch Engineering and Business Solutions.  All rights reserved.
  *
@@ -36,27 +36,27 @@
 
 typedef enum SIGNAL_TYPE
 {
-	SIGNAL_NONE,
+    SIGNAL_NONE,
     SINE_WAVE,
-    TRIANGULAR_WAVE,  
-	COS_WAVE,
-}SIGNAL_TYPE;
+    TRIANGULAR_WAVE,
+    COS_WAVE,
+} SIGNAL_TYPE;
 
 #ifdef __cplusplus
 extern "C" {  // only need to export C interface if used by C++ source code
 #endif
 
-/*  Exported function list */
-USAGEMODE HRESULT SignalDefiner_ShowDlg();
-USAGEMODE HRESULT SignalDefiner_SetSignalDetails(BSTR strSignalName);
-USAGEMODE HRESULT SignalDefiner_GetType(SIGNAL_TYPE* peSignalType);
-USAGEMODE HRESULT SignalDefiner_SetType(SIGNAL_TYPE eSignalType);
-USAGEMODE HRESULT SignalDefiner_GetAmplitude(float* fAmplitude);
-USAGEMODE HRESULT SignalDefiner_SetAmplitude(float fAmplitude);
-USAGEMODE HRESULT SignalDefiner_GetSamplingTimePeriod(int* pnSamplingTime);
-USAGEMODE HRESULT SignalDefiner_SetSamplingTimePeriod(int nSamplingTime);
-USAGEMODE HRESULT SignalDefiner_GetFrequency(float* pfFrequency);
-USAGEMODE HRESULT SignalDefiner_SetFrequency(float fFrequency);
+    /*  Exported function list */
+    USAGEMODE HRESULT SignalDefiner_ShowDlg();
+    USAGEMODE HRESULT SignalDefiner_SetSignalDetails(BSTR strSignalName);
+    USAGEMODE HRESULT SignalDefiner_GetType(SIGNAL_TYPE* peSignalType);
+    USAGEMODE HRESULT SignalDefiner_SetType(SIGNAL_TYPE eSignalType);
+    USAGEMODE HRESULT SignalDefiner_GetAmplitude(float* fAmplitude);
+    USAGEMODE HRESULT SignalDefiner_SetAmplitude(float fAmplitude);
+    USAGEMODE HRESULT SignalDefiner_GetSamplingTimePeriod(int* pnSamplingTime);
+    USAGEMODE HRESULT SignalDefiner_SetSamplingTimePeriod(int nSamplingTime);
+    USAGEMODE HRESULT SignalDefiner_GetFrequency(float* pfFrequency);
+    USAGEMODE HRESULT SignalDefiner_SetFrequency(float fFrequency);
 
 
 

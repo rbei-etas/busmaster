@@ -7,23 +7,23 @@
 #include "SignalDefiner_Extern.h"
 
 #define M_PI       3.14159265358979323846
-const float SINE_COEFF = (8 / (M_PI * M_PI));
+const float SINE_COEFF = (8 / (M_PI* M_PI));
 
 // CSignalDefinerDlg dialog
 
 IMPLEMENT_DYNAMIC(CSignalDefinerDlg, CDialog)
 
 CSignalDefinerDlg::CSignalDefinerDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CSignalDefinerDlg::IDD, pParent)
-	, m_fAmplitude(10)
-	, m_fFrequency(1)
-	, m_dblSamplingTimePeriod(125)
-	, m_nSelCycle(3)
-	, m_nSignalType(1)
+    : CDialog(CSignalDefinerDlg::IDD, pParent)
+    , m_fAmplitude(10)
+    , m_fFrequency(1)
+    , m_dblSamplingTimePeriod(125)
+    , m_nSelCycle(3)
+    , m_nSignalType(1)
 {
-	AfxEnableControlContainer();
-	m_poDMGraphCtrl = NULL;
-	m_strSignalName = _T("");
+    AfxEnableControlContainer();
+    m_poDMGraphCtrl = NULL;
+    m_strSignalName = _T("");
 }
 
 CSignalDefinerDlg::~CSignalDefinerDlg()
@@ -32,119 +32,115 @@ CSignalDefinerDlg::~CSignalDefinerDlg()
 
 void CSignalDefinerDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_EDIT_SIGNAL_AMPLITUDE, m_fAmplitude);
-	DDX_Text(pDX, IDC_EDIT_SIGNAL_FREQUENCY, m_fFrequency);
-	DDX_Text(pDX, IDC_EDIT_SIGNAL_SAMPLING_TIME, m_dblSamplingTimePeriod);
-	DDX_CBIndex(pDX, IDC_COMBO_CYCLES, m_nSelCycle);
-	DDX_Control(pDX, IDC_COMBO_SIGNAL_TYPE, m_ctrSignalType);
-	DDX_Control(pDX, IDC_COMBO_CYCLES, m_ctrNoOfCycles);			
-	DDX_CBIndex(pDX, IDC_COMBO_SIGNAL_TYPE, m_nSignalType);
+    CDialog::DoDataExchange(pDX);
+    DDX_Text(pDX, IDC_EDIT_SIGNAL_AMPLITUDE, m_fAmplitude);
+    DDX_Text(pDX, IDC_EDIT_SIGNAL_FREQUENCY, m_fFrequency);
+    DDX_Text(pDX, IDC_EDIT_SIGNAL_SAMPLING_TIME, m_dblSamplingTimePeriod);
+    DDX_CBIndex(pDX, IDC_COMBO_CYCLES, m_nSelCycle);
+    DDX_Control(pDX, IDC_COMBO_SIGNAL_TYPE, m_ctrSignalType);
+    DDX_Control(pDX, IDC_COMBO_CYCLES, m_ctrNoOfCycles);
+    DDX_CBIndex(pDX, IDC_COMBO_SIGNAL_TYPE, m_nSignalType);
 }
 
 
 BEGIN_MESSAGE_MAP(CSignalDefinerDlg, CDialog)
-	ON_CBN_SELCHANGE(IDC_COMBO_SIGNAL_TYPE, OnCbnSelchangeComboSignalType)
-	ON_CBN_SELCHANGE(IDC_COMBO_CYCLES, OnCbnSelchangeComboCycles)
-	ON_EN_CHANGE(IDC_EDIT_SIGNAL_AMPLITUDE, OnEnChangeEditSignalAmplitude)
-	ON_EN_CHANGE(IDC_EDIT_SIGNAL_FREQUENCY, OnEnChangeEditSignalFrequency)
-	ON_EN_CHANGE(IDC_EDIT_SIGNAL_SAMPLING_TIME, OnEnChangeEditSignalSamplingTime)
-	ON_BN_CLICKED(IDOK, OnBnClickedOk)
+    ON_CBN_SELCHANGE(IDC_COMBO_SIGNAL_TYPE, OnCbnSelchangeComboSignalType)
+    ON_CBN_SELCHANGE(IDC_COMBO_CYCLES, OnCbnSelchangeComboCycles)
+    ON_EN_CHANGE(IDC_EDIT_SIGNAL_AMPLITUDE, OnEnChangeEditSignalAmplitude)
+    ON_EN_CHANGE(IDC_EDIT_SIGNAL_FREQUENCY, OnEnChangeEditSignalFrequency)
+    ON_EN_CHANGE(IDC_EDIT_SIGNAL_SAMPLING_TIME, OnEnChangeEditSignalSamplingTime)
+    ON_BN_CLICKED(IDOK, OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
 BOOL CSignalDefinerDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+    CDialog::OnInitDialog();
+    UpdateData(FALSE);
+    m_ctrNoOfCycles.SetCurSel(m_nSelCycle);
+    //Get the CWnd reference to the DMGraph ActiveX control
+    m_poDMGraphCtrl = GetDlgItem(IDC_DMGRAPHCTRL);
 
+    /*Set Graph properties*/
+    if( m_poDMGraphCtrl->m_hWnd != NULL )
+    {
+        LPUNKNOWN pUnk = m_poDMGraphCtrl->GetControlUnknown();
+        IDMGraphCtrl* pDMGraphCtrl = NULL;
+        pUnk->QueryInterface(IID_IDMGraphCtrl, (void**) &pDMGraphCtrl);
 
-	UpdateData(FALSE);	
-	m_ctrNoOfCycles.SetCurSel(m_nSelCycle);
+        if (  pDMGraphCtrl ==NULL )
+        {
+            return TRUE;
+        }
 
-	//Get the CWnd reference to the DMGraph ActiveX control
-	m_poDMGraphCtrl = GetDlgItem(IDC_DMGRAPHCTRL);
-	
-	/*Set Graph properties*/
-	if( m_poDMGraphCtrl->m_hWnd != NULL )
-    {		
-		LPUNKNOWN pUnk = m_poDMGraphCtrl->GetControlUnknown();
-		IDMGraphCtrl* pDMGraphCtrl = NULL;
+        // Set Axis Color
+        pDMGraphCtrl->put_AxisColor((OLE_COLOR)0xFF);
+        // Set Plot Area Color
+        pDMGraphCtrl->put_PlotAreaColor((OLE_COLOR)0x00);
+        // Set Grid Color
+        pDMGraphCtrl->put_GridColor((OLE_COLOR)0xC0C0C0);
+        // Set Frame Style
+        pDMGraphCtrl->put_FrameStyle((FrameStyle)1);
+        // Set Frame Color
+        pDMGraphCtrl->put_ControlFrameColor((OLE_COLOR)0x5500);
+        // Set Grid Lines Count
+        CComPtr<IDMGraphAxis> spAxisX;
+        pDMGraphCtrl->get_Axis( HorizontalX, &spAxisX);
+        spAxisX->put_GridNumber(10);
+        CComPtr<IDMGraphAxis> spAxisY;
+        pDMGraphCtrl->get_Axis( VerticalY, &spAxisY);
+        spAxisY->put_GridNumber(5);
 
-		pUnk->QueryInterface(IID_IDMGraphCtrl, (void **) &pDMGraphCtrl);
-		if (  pDMGraphCtrl ==NULL )
-		{
-			return TRUE;
-		}
-		// Set Axis Color
-		pDMGraphCtrl->put_AxisColor((OLE_COLOR)0xFF);					
-		// Set Plot Area Color
-		pDMGraphCtrl->put_PlotAreaColor((OLE_COLOR)0x00);					
-		// Set Grid Color
-		pDMGraphCtrl->put_GridColor((OLE_COLOR)0xC0C0C0);
-		// Set Frame Style
-		pDMGraphCtrl->put_FrameStyle((FrameStyle)1);					
-		// Set Frame Color
-		pDMGraphCtrl->put_ControlFrameColor((OLE_COLOR)0x5500);	
+        if (NULL != pDMGraphCtrl)
+        {
+            pDMGraphCtrl->Release();
+            pDMGraphCtrl = NULL;
+        }
+    }
 
-		// Set Grid Lines Count					
-		CComPtr<IDMGraphAxis> spAxisX; 
-		pDMGraphCtrl->get_Axis( HorizontalX, &spAxisX);
-		spAxisX->put_GridNumber(10);
-
-		CComPtr<IDMGraphAxis> spAxisY; 
-		pDMGraphCtrl->get_Axis( VerticalY, &spAxisY);
-		spAxisY->put_GridNumber(5);
-		
-		if (NULL != pDMGraphCtrl)
-		{
-			pDMGraphCtrl->Release();
-			pDMGraphCtrl = NULL;
-		}
-	}	
-
-	vGenerateWave();
-	
-
-	return TRUE;  // return TRUE unless you set the focus to a control
-	// EXCEPTION: OCX Property Pages should return FALSE
+    vGenerateWave();
+    return TRUE;  // return TRUE unless you set the focus to a control
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 // CSignalDefinerDlg message handlers
 
 void CSignalDefinerDlg::OnCbnSelchangeComboSignalType()
 {
-	vGenerateWave();
+    vGenerateWave();
 }
 
 void CSignalDefinerDlg::OnCbnSelchangeComboCycles()
 {
-	vGenerateWave();
+    vGenerateWave();
 }
 
 void CSignalDefinerDlg::OnEnChangeEditSignalAmplitude()
 {
-	vGenerateWave();
+    vGenerateWave();
 }
 
 void CSignalDefinerDlg::OnEnChangeEditSignalFrequency()
 {
-	vGenerateWave();
+    vGenerateWave();
 }
 
 void CSignalDefinerDlg::OnEnChangeEditSignalSamplingTime()
-{		
-	vGenerateWave();
+{
+    vGenerateWave();
 }
 void CSignalDefinerDlg::OnBnClickedOk()
-{	
-	long lCount = 0;
-	spElements->get_Count(&lCount);
-	for (long lIdx = 0; lIdx < lCount; lIdx++)
-	{		
-		spElements->Delete(lIdx);
-		spElements = NULL;
-	}	
-	OnOK();
+{
+    long lCount = 0;
+    spElements->get_Count(&lCount);
+
+    for (long lIdx = 0; lIdx < lCount; lIdx++)
+    {
+        spElements->Delete(lIdx);
+        spElements = NULL;
+    }
+
+    OnOK();
 }
 
 /**
@@ -158,38 +154,39 @@ void CSignalDefinerDlg::OnBnClickedOk()
 
 double DegreesToRadians(double dblDegrees)
 {
-	return 2 * M_PI * dblDegrees / 360.0;
+    return 2 * M_PI * dblDegrees / 360.0;
 }
 
 /**
 * \brief         Helper function to get the Triangle values calculated
 * \param[out]    -
-* \param[in]     dblXSamplingPoint, fAmplitude, dblTimePeriod 
+* \param[in]     dblXSamplingPoint, fAmplitude, dblTimePeriod
 * \return        double is the Y value calculated
 * \authors       Arunkumar Karri
 * \date          07.02.2012 Created
 */
 double CalculateYatXForTriangleWave(double dblXSamplingPoint,float fAmplitude,double dblTimePeriod)
 {
-        double dblYResult = 0;
+    double dblYResult = 0;
 
-        if ( dblXSamplingPoint <= dblTimePeriod / 4 )
-		{
-            dblYResult = ((4 * fAmplitude) / dblTimePeriod) * dblXSamplingPoint;
-		}
-		else if ( dblTimePeriod / 4 < dblXSamplingPoint && dblXSamplingPoint <= dblTimePeriod / 2 )
-		{
-            dblYResult = fAmplitude - ((((4 * fAmplitude) / dblTimePeriod) * dblXSamplingPoint) - fAmplitude);
-		}
-        else if ( dblTimePeriod / 2 < dblXSamplingPoint && dblXSamplingPoint <= 0.75 * dblTimePeriod )
-		{
-            dblYResult = -(((4 * fAmplitude) / dblTimePeriod) * (dblXSamplingPoint - (dblTimePeriod / 2)));
-		}
-        else if ( 0.75 * dblTimePeriod < dblXSamplingPoint && dblXSamplingPoint <= dblTimePeriod )
-		{
-            dblYResult = -(fAmplitude - ((((4 * fAmplitude) / dblTimePeriod) * (dblXSamplingPoint - (dblTimePeriod / 2))) - fAmplitude));
-		}        
-		return dblYResult;
+    if ( dblXSamplingPoint <= dblTimePeriod / 4 )
+    {
+        dblYResult = ((4 * fAmplitude) / dblTimePeriod) * dblXSamplingPoint;
+    }
+    else if ( dblTimePeriod / 4 < dblXSamplingPoint && dblXSamplingPoint <= dblTimePeriod / 2 )
+    {
+        dblYResult = fAmplitude - ((((4 * fAmplitude) / dblTimePeriod) * dblXSamplingPoint) - fAmplitude);
+    }
+    else if ( dblTimePeriod / 2 < dblXSamplingPoint && dblXSamplingPoint <= 0.75 * dblTimePeriod )
+    {
+        dblYResult = -(((4 * fAmplitude) / dblTimePeriod) * (dblXSamplingPoint - (dblTimePeriod / 2)));
+    }
+    else if ( 0.75 * dblTimePeriod < dblXSamplingPoint && dblXSamplingPoint <= dblTimePeriod )
+    {
+        dblYResult = -(fAmplitude - ((((4 * fAmplitude) / dblTimePeriod) * (dblXSamplingPoint - (dblTimePeriod / 2))) - fAmplitude));
+    }
+
+    return dblYResult;
 }
 
 /**
@@ -201,79 +198,81 @@ double CalculateYatXForTriangleWave(double dblXSamplingPoint,float fAmplitude,do
 * \date          03.02.2012 Created
 */
 void CSignalDefinerDlg::vGenerateWave()
-{	
-	UpdateData();
+{
+    UpdateData();
+    SIGNAL_TYPE enSignalType = (SIGNAL_TYPE)(m_ctrSignalType.GetCurSel());
+    int nPointCount;
+    double dblFrqStep, dblTimePeriod;
+    /*Setting the Frequency Resolution to nResolution*/
+    dblFrqStep = m_dblSamplingTimePeriod;
+    /* Calculate Time period per each cycle */
+    dblTimePeriod = 1 / m_fFrequency;
+    //Calculate number of points to be plotted
+    nPointCount = ((dblTimePeriod * 1000) + (dblFrqStep / 10)) * (m_nSelCycle+1);
+    /*For variant packing purpose*/
+    CComVariant varrX, varrY;
+    varrX.parray = SafeArrayCreateVector(VT_R8, 0, nPointCount);
 
-	SIGNAL_TYPE enSignalType = (SIGNAL_TYPE)(m_ctrSignalType.GetCurSel());
-	int nPointCount;
-	double dblFrqStep, dblTimePeriod;
+    if(varrX.parray == NULL)
+    {
+        return;
+    }
 
-	/*Setting the Frequency Resolution to nResolution*/
-	dblFrqStep = m_dblSamplingTimePeriod;
+    varrX.vt = VT_ARRAY|VT_R8;
+    varrY.parray = SafeArrayCreateVector(VT_R8, 0, nPointCount);
 
-	/* Calculate Time period per each cycle */
-	dblTimePeriod = 1 / m_fFrequency;
+    if(varrY.parray == NULL)
+    {
+        return;
+    }
 
-	//Calculate number of points to be plotted
-	nPointCount = ((dblTimePeriod * 1000) + (dblFrqStep / 10)) * (m_nSelCycle+1);
+    varrY.vt = VT_ARRAY|VT_R8;
+    LONG lngCount = 0;
 
-	/*For variant packing purpose*/
-	CComVariant varrX, varrY;
-	varrX.parray = SafeArrayCreateVector(VT_R8, 0, nPointCount);
-	if(varrX.parray == NULL)
-		return;
-	varrX.vt = VT_ARRAY|VT_R8;
+    /*Currently using the Peak to Peak Amplitude as 0 to 2*Amplitude
+    instead of -Amplitude to +Amplitude*/
+    for(double dblCounter=0; dblCounter<nPointCount; dblCounter+=dblFrqStep)
+    {
+        double dblX, dblY;
+        dblCounter /= 1000;
 
-	varrY.parray = SafeArrayCreateVector(VT_R8, 0, nPointCount);
-	if(varrY.parray == NULL)
-		return;
-	varrY.vt = VT_ARRAY|VT_R8;
+        switch(enSignalType)
+        {
+            case SINE_WAVE:
+                dblX = dblCounter*1000;
+                dblY = m_fAmplitude +
+                       m_fAmplitude * sin( DegreesToRadians(2 * 180 * m_fFrequency * dblCounter) );
+                break;
 
-	LONG lngCount = 0;
+            case COS_WAVE:
+                dblX = dblCounter*1000;
+                dblY = m_fAmplitude +
+                       m_fAmplitude * cos( DegreesToRadians(2 * 180 * m_fFrequency * dblCounter) );
+                break;
 
-	/*Currently using the Peak to Peak Amplitude as 0 to 2*Amplitude 
-	instead of -Amplitude to +Amplitude*/
-	for(double dblCounter=0; dblCounter<nPointCount; dblCounter+=dblFrqStep)	
-	{		
-		double dblX, dblY; 		
-		dblCounter /= 1000;
-		switch(enSignalType)
-		{
-		case SINE_WAVE:
-			dblX = dblCounter*1000;				
-			
-			dblY = m_fAmplitude + 
-				   m_fAmplitude * sin( DegreesToRadians(2 * 180 * m_fFrequency * dblCounter) );			
+            case TRIANGULAR_WAVE:
+                double dblSamplingPoint;
+                dblSamplingPoint = dblCounter;
 
-			break;
-		case COS_WAVE:
-			dblX = dblCounter*1000;				
-			
-			dblY = m_fAmplitude + 
-				   m_fAmplitude * cos( DegreesToRadians(2 * 180 * m_fFrequency * dblCounter) );
-			break;
-		case TRIANGULAR_WAVE:
-			double dblSamplingPoint;
-            dblSamplingPoint = dblCounter;
-            while ( dblSamplingPoint > dblTimePeriod )
-			{
-				dblSamplingPoint -= dblTimePeriod;
-			}
-			dblX = dblCounter*1000;				
-			dblY = m_fAmplitude +
-				   CalculateYatXForTriangleWave(dblSamplingPoint, m_fAmplitude, dblTimePeriod);
+                while ( dblSamplingPoint > dblTimePeriod )
+                {
+                    dblSamplingPoint -= dblTimePeriod;
+                }
 
-			break;
-		}
-		HRESULT hr;
-		hr = SafeArrayPutElement(varrX.parray, &lngCount, &dblX);
-		hr = SafeArrayPutElement(varrY.parray, &lngCount, &dblY);			
-		lngCount++;
+                dblX = dblCounter*1000;
+                dblY = m_fAmplitude +
+                       CalculateYatXForTriangleWave(dblSamplingPoint, m_fAmplitude, dblTimePeriod);
+                break;
+        }
 
-		dblCounter *= 1000;
-	}
+        HRESULT hr;
+        hr = SafeArrayPutElement(varrX.parray, &lngCount, &dblX);
+        hr = SafeArrayPutElement(varrY.parray, &lngCount, &dblY);
+        lngCount++;
+        dblCounter *= 1000;
+    }
 
-	SetGraphData(&varrX, &varrY);
+    SetGraphData(&varrX, &varrY);
 }
 
 /**
@@ -286,73 +285,68 @@ void CSignalDefinerDlg::vGenerateWave()
 */
 void CSignalDefinerDlg::SetGraphData(VARIANT* pvarrX, VARIANT* pvarrY)
 {
-	CComBSTR bsName("Signal");
+    CComBSTR bsName("Signal");
+    IDMGraphCtrl* pDMGraphCtrl = NULL;
+    /*CComPtr<IDMGraphCollection> spElements;*/
+    CComPtr<IDMGraphElement> spGraphElement;
 
-	IDMGraphCtrl* pDMGraphCtrl = NULL;
-	
-	/*CComPtr<IDMGraphCollection> spElements;*/
-	
-	CComPtr<IDMGraphElement> spGraphElement;
+    if( m_poDMGraphCtrl->m_hWnd != NULL )
+    {
+        LPUNKNOWN pUnk = m_poDMGraphCtrl->GetControlUnknown();
+        pUnk->QueryInterface(IID_IDMGraphCtrl, (void**) &pDMGraphCtrl);
 
-	if( m_poDMGraphCtrl->m_hWnd != NULL )
-    {		
-		LPUNKNOWN pUnk = m_poDMGraphCtrl->GetControlUnknown();
+        if (  pDMGraphCtrl ==NULL )
+        {
+            return;
+        }
+    }
 
-		pUnk->QueryInterface(IID_IDMGraphCtrl, (void **) &pDMGraphCtrl);
-		if (  pDMGraphCtrl ==NULL )
-		{
-			return;
-		}
-	}
+    HRESULT hr = pDMGraphCtrl->get_Elements(&spElements);
+    //Set the signal name as caption
+    pDMGraphCtrl->put_Caption(m_strSignalName);
+    long i, nElementCount = 0;
+    BOOL bReplace = FALSE;
+    hr = spElements->get_Count(&nElementCount);
 
-	HRESULT hr = pDMGraphCtrl->get_Elements(&spElements);
+    for(i=0; i<nElementCount; i++)
+    {
+        CComBSTR bsElemName;
+        CComPtr<IDispatch> spDispatch;
+        hr = spElements->get_Item(i, &spDispatch);
+        hr = spDispatch.QueryInterface(&spGraphElement);
+        spGraphElement->get_Name(&bsElemName);
 
-	//Set the signal name as caption	
-	pDMGraphCtrl->put_Caption(m_strSignalName);
+        if(_wcsicmp(bsElemName, bsName) == 0)
+        {
+            spGraphElement->Plot(*pvarrX, *pvarrY);
+            pDMGraphCtrl->AutoRange();
+            return;
+        }
+        else
+        {
+            spGraphElement = NULL;
+        }
+    }
 
-	long i, nElementCount = 0;
-	BOOL bReplace = FALSE;
-	hr = spElements->get_Count(&nElementCount);
-	for(i=0; i<nElementCount; i++)
-	{
-		CComBSTR bsElemName;
-		CComPtr<IDispatch> spDispatch;
+    if(bReplace == FALSE || spGraphElement == NULL)
+    {
+        CComPtr<IDispatch> spDispatch;
+        hr = spElements->Add(&spDispatch);
+        spGraphElement = NULL;
+        hr = spDispatch.QueryInterface(&spGraphElement);
+    }
 
-		hr = spElements->get_Item(i, &spDispatch);
-		hr = spDispatch.QueryInterface(&spGraphElement);
+    hr = spGraphElement->put_Name(bsName);
+    hr = spGraphElement->put_PointSymbol( Dots );
+    hr = spGraphElement->put_PointSize(2);
+    hr = spGraphElement->Plot(*pvarrX, *pvarrY);
+    hr = pDMGraphCtrl->AutoRange();
 
-		spGraphElement->get_Name(&bsElemName);
-		if(_wcsicmp(bsElemName, bsName) == 0)
-		{						
-			spGraphElement->Plot(*pvarrX, *pvarrY);
-			pDMGraphCtrl->AutoRange();
-			return;
-		}
-		else
-			spGraphElement = NULL;
-	}
-	if(bReplace == FALSE || spGraphElement == NULL)
-	{
-		CComPtr<IDispatch> spDispatch;
-		hr = spElements->Add(&spDispatch);
-		spGraphElement = NULL;
-		hr = spDispatch.QueryInterface(&spGraphElement);
-	}
+    if (NULL != pDMGraphCtrl)
+    {
+        pDMGraphCtrl->Release();
+        pDMGraphCtrl = NULL;
+    }
 
-	hr = spGraphElement->put_Name(bsName);
-
-	hr = spGraphElement->put_PointSymbol( Dots );
-	hr = spGraphElement->put_PointSize(2);
-	hr = spGraphElement->Plot(*pvarrX, *pvarrY);
-
-
-	hr = pDMGraphCtrl->AutoRange();
-	
-	if (NULL != pDMGraphCtrl)
-	{
-		pDMGraphCtrl->Release();
-		pDMGraphCtrl = NULL;
-	}		
-
-	SysFreeString(bsName);	
+    SysFreeString(bsName);
 }
