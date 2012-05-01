@@ -22,7 +22,7 @@
  * Source file that includes just the standard includes
  */
 
-// stdafx.cpp : 
+// stdafx.cpp :
 // TestSetupEditorLib.pch will be the pre-compiled header
 // stdafx.obj will contain the pre-compiled type information
 
@@ -37,22 +37,24 @@ Member of      :  -
 Friend of      :  -
 Author(s)      :  Arunkumar K
 Date Created   :  20/07/2011
-Modifications  :  
-Codetag        :  
+Modifications  :
+Codetag        :
 ******************************************************************************/
 CString strCopyBSTRToCString(CComVariant& varSrc)
-{		
-	CString strDest ;	
-	TCHAR tChar = NULL;	
-	_bstr_t bstrNodeValue(varSrc.bstrVal);	
-	ULONG ulLen = bstrNodeValue.length();	
-	for (unsigned int i = 0; i< ulLen*2; i+=2)
-	{
-		tChar = (TCHAR)*(varSrc.pcVal+i);
-		strDest.Insert(i/2, tChar);
-	}	
-	tChar = NULL;
-	strDest.Insert(ulLen, tChar);
-	return strDest;
+{
+    CString strDest ;
+    TCHAR tChar = NULL;
+    _bstr_t bstrNodeValue(varSrc.bstrVal);
+    ULONG ulLen = bstrNodeValue.length();
+
+    for (unsigned int i = 0; i< ulLen*2; i+=2)
+    {
+        tChar = (TCHAR)*(varSrc.pcVal+i);
+        strDest.Insert(i/2, tChar);
+    }
+
+    tChar = NULL;
+    strDest.Insert(ulLen, tChar);
+    return strDest;
 }
 
