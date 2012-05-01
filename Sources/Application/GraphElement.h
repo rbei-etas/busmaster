@@ -35,7 +35,7 @@ typedef enum eELEMENT_TYPE
 class CGraphElement
 {
 public:
-// Variables
+    // Variables
     // Message ID Variable
     int     m_nMsgID;
     // Message ID Name
@@ -62,10 +62,10 @@ public:
     BOOL    m_bVisible;
     // Enabled or not
     BOOL    m_bEnabled;
-	//display type for signal
-	eDISPLAY_TYPE m_eDisplayType;	
+    //display type for signal
+    eDISPLAY_TYPE m_eDisplayType;
 
-// Functions
+    // Functions
     // To serialize this class
     int nSerialize(CArchive& omArch);
     BYTE* pbySetConfigData(BYTE* pbyTrgtData, BYTE byVersion);
@@ -73,7 +73,7 @@ public:
     // Default Constructor & destructor
     CGraphElement();
     virtual ~CGraphElement();
-	
-	static UINT unGetConfigSize(BYTE byVersion);
+
+    static UINT unGetConfigSize(BYTE byVersion);
 
 };

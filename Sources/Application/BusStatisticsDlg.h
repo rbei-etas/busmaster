@@ -30,54 +30,54 @@
 
 // information of CBusStatisticsDlg serialization data
 struct sBUSSTATTISTICSDATA
-{    
-	UINT m_nColumnCount;
-	bool m_arrbColumnVisible[CHANNEL_CAN_MAX+1];
-	int  m_arrnOrder[CHANNEL_CAN_MAX+1];
-	int  m_arrnColWidth[CHANNEL_CAN_MAX+1];
-	WINDOWPLACEMENT    m_sBusStatsDlgCoOrd;      //  CBusStatisticsDlg coords	
-	WINDOWPLACEMENT    m_sDefaultBusStatsDlgCoOrd;     
-	/* constructor */
+{
+    UINT m_nColumnCount;
+    bool m_arrbColumnVisible[CHANNEL_CAN_MAX+1];
+    int  m_arrnOrder[CHANNEL_CAN_MAX+1];
+    int  m_arrnColWidth[CHANNEL_CAN_MAX+1];
+    WINDOWPLACEMENT    m_sBusStatsDlgCoOrd;      //  CBusStatisticsDlg coords
+    WINDOWPLACEMENT    m_sDefaultBusStatsDlgCoOrd;
+    /* constructor */
     sBUSSTATTISTICSDATA();
-	void vLoadDefaults();
+    void vLoadDefaults();
 
-	bool m_bIsDirty;
+    bool m_bIsDirty;
 };
 
 //BusStatistics Class
 class CBusStatisticsDlg : public CDialog
 {
-// Construction
+    // Construction
 public:
-   // standard constructor
-	CBusStatisticsDlg(CBaseBusStatisticCAN*, CWnd* pParent = NULL, int nChannelCount = defNO_OF_CHANNELS);
+    // standard constructor
+    CBusStatisticsDlg(CBaseBusStatisticCAN*, CWnd* pParent = NULL, int nChannelCount = defNO_OF_CHANNELS);
 
-	static sBUSSTATTISTICSDATA sm_sBusSerializationData;
-	HRESULT GetConfigData(BYTE* pvDataStream);
-	HRESULT SetConfigData(BYTE* pvDataStream);
-	UINT nGetBusStatsDlgConfigSize();
-	void vLoadDefaultValues();
-	void vLoadDataFromStore();
-	static void vSaveDataToStore(BYTE* pvDataStream);
-	static void vGetDataFromStore(BYTE** pvDataStream, UINT& nSize);
-	static void vSetDefaultsToStore();
-	void vUpdateChannelCountInfo(int nChannelCount);	
+    static sBUSSTATTISTICSDATA sm_sBusSerializationData;
+    HRESULT GetConfigData(BYTE* pvDataStream);
+    HRESULT SetConfigData(BYTE* pvDataStream);
+    UINT nGetBusStatsDlgConfigSize();
+    void vLoadDefaultValues();
+    void vLoadDataFromStore();
+    static void vSaveDataToStore(BYTE* pvDataStream);
+    static void vGetDataFromStore(BYTE** pvDataStream, UINT& nSize);
+    static void vSetDefaultsToStore();
+    void vUpdateChannelCountInfo(int nChannelCount);
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CBusStatisticsDlg)
     enum { IDD = IDD_DLG_NETWORK_STATISTICS };
     CMessageList m_omStatList;
     //}}AFX_DATA
- 
 
-// Overrides
+
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CBusStatisticsDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
@@ -88,12 +88,12 @@ protected:
     DECLARE_MESSAGE_MAP()
     afx_msg LRESULT vUpdateFields(WPARAM wParam, LPARAM lParam);
 private:
-    CBaseBusStatisticCAN *m_pouBSCAN;
+    CBaseBusStatisticCAN* m_pouBSCAN;
     // String objects to format bus load related parameters
     CString m_omStrBusLoad;
     CString m_omStrPeakBusLoad;
     CString m_omStrAvgBusLoad;
-	int m_nChannelCount;
+    int m_nChannelCount;
 public:
-	afx_msg void OnSize(UINT nType, int cx, int cy);
+    afx_msg void OnSize(UINT nType, int cx, int cy);
 };

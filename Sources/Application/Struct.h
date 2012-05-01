@@ -15,11 +15,11 @@
 
 /**
  * \file      Struct.h
- * \brief     This file contain the definition of all structures used in 
+ * \brief     This file contain the definition of all structures used in
  * \authors   Amitesh Bharti, Amarnath Shastry, Ravikumar Patil, Anish kumar
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contain the definition of all structures used in 
+ * This file contain the definition of all structures used in
  */
 
 #pragma once
@@ -31,23 +31,23 @@
 #include "DataTypes/Filter_DataTypes.h"
 
 // All function prototype is used in function editor.
-typedef VOID (*PFMSG_HANDLER)(STCAN_MSG Rx_Msg); 
-typedef VOID (*PFTIMER_HANDLER)(); 
+typedef VOID (*PFMSG_HANDLER)(STCAN_MSG Rx_Msg);
+typedef VOID (*PFTIMER_HANDLER)();
 typedef VOID (*PFKEY_HANDLER)(UCHAR ucKeyVal);
 typedef VOID (*PFERROR_HANDLER)(SCAN_ERR ErrorMsg);
 typedef VOID (*PFDLL_HANDLER)();
 typedef BOOL (*PFGET_PRG_VER)(int*,int*,HMODULE);
 // Used is application call back function
-typedef VOID (CALLBACK *APPTIMERPOINTER)(UINT,UINT,DWORD,DWORD,DWORD);
+typedef VOID (CALLBACK* APPTIMERPOINTER)(UINT,UINT,DWORD,DWORD,DWORD);
 
 // This structure definition is to store a list of simulated systems whose paths have
 // to be stored in the main configuration file.
 struct sSIMSYSARRAY
 {
-//  UINT m_unNoOfSimsys;                // No. of simulated systems.
+    //  UINT m_unNoOfSimsys;                // No. of simulated systems.
     CString m_omStrSimSysPath;          // simulated system path.
     CString m_omStrSimSysName;          // simulated system name.
-    sSIMSYSARRAY * psNextSimsys;        // Pointer to the next simulated system.
+    sSIMSYSARRAY* psNextSimsys;         // Pointer to the next simulated system.
     sSIMSYSARRAY();
     sSIMSYSARRAY& operator=(const sSIMSYSARRAY& RefObj);
 };
@@ -63,13 +63,13 @@ struct sTIMERHANDLER
     BOOL            bTimerSelected;        // Selected or not for execution
     UINT            unTimerVal;            // the time-out value, in milliseconds
     PFTIMER_HANDLER pFTimerHandler;        // Long pointer to the function to be
-                                           // notified when the time-out value 
-                                           // elapses.
-    UINT            unTimerID;             // Specifies a nonzero timer identifier  
-//    BOOL            bIsExecuting;          // Timer call back is under execution
+    // notified when the time-out value
+    // elapses.
+    UINT            unTimerID;             // Specifies a nonzero timer identifier
+    //    BOOL            bIsExecuting;          // Timer call back is under execution
     UINT            unCurrTime; //(ani1)
-    CEvent          omWaitEvent; 
-//  sTIMERHANDLER*  psNextTimer;
+    CEvent          omWaitEvent;
+    //  sTIMERHANDLER*  psNextTimer;
     HANDLE          hDllHandle;
     CWinThread*     pomThreadHandle;
 };
@@ -86,8 +86,8 @@ struct sTIMERHANDLERLIST
 typedef sTIMERHANDLERLIST  STIMERHANDLERLIST;
 typedef STIMERHANDLERLIST*  PSTIMERHANDLERLIST;
 
-//This structure stores node name and pointer to the list of timer of 
-//the node 
+//This structure stores node name and pointer to the list of timer of
+//the node
 struct sNODETIMERLIST
 {
     PSTIMERHANDLERLIST psTimerListPtr;
@@ -105,8 +105,8 @@ struct sKEYHANDLER
 {
     UCHAR          ucKey;                 // Key value
     PFKEY_HANDLER  pFKeyHandlers;         // Long pointer to the function to be
-                                          // executed on press of corresponding
-                                          // key
+    // executed on press of corresponding
+    // key
 };
 typedef sKEYHANDLER  SKEYHANDLER;
 typedef SKEYHANDLER* PSKEYHANDLER;
@@ -132,7 +132,7 @@ struct sSIGNALINFO
     float   m_fSignalOffset;    // Signal Offset value.
     char*   m_omStrSignalUnit;  // Signal Measurement Unit
     BYTE    m_bySignalType;     // Singal data type ( BOOL,UINT,INT) *****31.05.2002
-    
+
 };
 typedef sSIGNALINFO  SSIGNALINFO;
 typedef SSIGNALINFO* PSSIGNALINFO;
@@ -141,7 +141,7 @@ struct sMESSAGEINFO
 {
     UINT unMessageID;               // Message ID
     UINT m_unMessageLength;         // Message length
-    BOOL bFormat;                   // Message format           
+    BOOL bFormat;                   // Message format
     UINT unNumberOfSignalsAdded;    // Number of signals added
     PSSIGNALINFO psSignalsInfo;     // Array of signal info
 };
@@ -164,7 +164,7 @@ struct sSENDMSGINFO
     INT nMsgId;                     // Message ID
     char* omStrMsgName;             // Message Name
     char* omStrMsgDetails;          // Message details-code,DLC,databyes,
-                                    // triggering mode, time delay
+    // triggering mode, time delay
     UINT acBinaryData[64];          // Holds binary data for matrix
     __int64  an64SignalValues[64];  // Holds values of every signal
     INT nDLC;                       // Data length count
@@ -178,7 +178,7 @@ struct sSENDMULTIMSGINFO
     UINT unNoOfMsgsToBeSent;        // Number of messages to be sent on CAN-bus
     CStringArray omMsgFormatList;         // Array of message names in DB list box
     BOOL bChecked;                  // 1 - MonoShot, 0 - Cyclic
-    INT nTimeDelay;                 // Time delay 
+    INT nTimeDelay;                 // Time delay
     PSSENDMSGINFO pSendMsgInfo;     // Structure pointer to message details
 };
 typedef sSENDMULTIMSGINFO  SSENDMULTIMSGINFO;
@@ -199,8 +199,8 @@ typedef enum eUSERSELCTION
     eTXMSGCMD,
     eCONNECTCMD,
     eDATABASEIMPORTCMD,
-	eCONFIGCHANGECMD,
-	eCHANNELCOUNTUPDATED
+    eCONFIGCHANGECMD,
+    eCHANNELCOUNTUPDATED
 };
 typedef enum eTXMSGTRIGGERTYPE
 {
@@ -209,8 +209,8 @@ typedef enum eTXMSGTRIGGERTYPE
 };
 struct sTXCANMSGDETAILS
 {
-    BOOL m_bIsMsgDirty;          // for a database message;to Indicate user enter 
-                                // bytes value instead of signal value.
+    BOOL m_bIsMsgDirty;          // for a database message;to Indicate user enter
+    // bytes value instead of signal value.
     BOOL m_bEnabled;            // To indicate eligiblity of the message for Tx
     STCAN_MSG m_sTxMsg;
 };
@@ -250,7 +250,6 @@ struct sMSGBLOCKLIST
         m_psTxCANMsgList      = NULL;
         m_ucKeyValue          = 0;
         m_unTimeInterval      = defDEFAULT_TIME_VAL;
-
     }
 };
 typedef sMSGBLOCKLIST SMSGBLOCKLIST;
@@ -281,7 +280,7 @@ struct sMSGFILTERINFO
     UINT        m_unMsgIDFrom;          // Start of message ID range
     UINT        m_unMsgIDTo;            // End of message ID range
     UINT*       m_puMsgIDList;          // Message IDs in the filter list who don't
-                                        // appear under the range
+    // appear under the range
 };
 typedef sMSGFILTERINFO SMSGFILTERINFO;
 typedef sMSGFILTERINFO* PSMSGFILTERINFO;
@@ -291,13 +290,13 @@ struct sREPLAY_INFO
 {
     WORD m_wReplayMode;              // Mode of replay
     CStringArray m_omReplayStrArray; // Array of message string for replay
-    UINT m_unTimeDelay;              // Fixed Time Delay between messages   
+    UINT m_unTimeDelay;              // Fixed Time Delay between messages
     UINT m_unCycleTimeDelay;         // Time delay between two cycle of replay
-    BOOL m_bTimeDelayReplayFile;     // Flag to indicate user option for time 
-                                     // delay between messages ( Fixed or Recorded)
-    BOOL m_bReplayHexON;                 // flag to store the status of the reply mode 
+    BOOL m_bTimeDelayReplayFile;     // Flag to indicate user option for time
+    // delay between messages ( Fixed or Recorded)
+    BOOL m_bReplayHexON;                 // flag to store the status of the reply mode
     BOOL m_bStepCmdReq;              // Step command request
-    WORD m_wLogReplyTimeMode;        // time mode  
+    WORD m_wLogReplyTimeMode;        // time mode
 };
 
 typedef sREPLAY_INFO SREPLAYINFO;
@@ -316,7 +315,7 @@ struct sTXMSGDATA
 {
     UINT  m_unCount;              // Total array element in the point m_psTxMsg
     PSTCAN_MSG m_psTxMsg;         // pointer to array of structure for
-                                  // Transmitting the data.
+    // Transmitting the data.
 };
 
 typedef sTXMSGDATA STXSELMSGDATA;
@@ -338,8 +337,8 @@ typedef sWINDOWCOORDINATES* PSWND_CO_ORDINATES;
 // array of the message attirbute details
 struct sMESSAGEATTRIBUTES
 {
-    USHORT          m_usMsgCount;           // count of number of entries in 
-                                            // the messages attribute details
+    USHORT          m_usMsgCount;           // count of number of entries in
+    // the messages attribute details
     PSMESSAGEATTR   m_psMsgAttribDetails;   // array of MESSAGEATTR structures
 };
 typedef sMESSAGEATTRIBUTES  SMESSAGE_ATTRIB;
@@ -348,11 +347,11 @@ typedef sMESSAGEATTRIBUTES* PSMESSAGE_ATTRIB;
 // details of the message filters
 struct sMESSAGEFILTERDETAILS
 {
-    UINT    *m_punUndefinedMsgID;       // ID's of undefined messages. The 
-                                        // first element will have the count of
-                                        // message ID's.
-    CStringArray    m_omMsgNameArray;   // the database message names in the 
-                                        // filter list
+    UINT*    m_punUndefinedMsgID;       // ID's of undefined messages. The
+    // first element will have the count of
+    // message ID's.
+    CStringArray    m_omMsgNameArray;   // the database message names in the
+    // filter list
     INT     m_nRangeFrom;               // range start information
     INT     m_nRangeTo;                 // range end information
     UINT    m_unCount;                  // count information of message names
@@ -380,7 +379,7 @@ struct sTOOLBAR_BUTTON_STATUS
 
 };
 typedef sTOOLBAR_BUTTON_STATUS STOOLBARINFO;
-typedef sTOOLBAR_BUTTON_STATUS *PSTOOLBARINFO;
+typedef sTOOLBAR_BUTTON_STATUS* PSTOOLBARINFO;
 
 
 struct sMSGINFORMATION
@@ -391,7 +390,7 @@ struct sMSGINFORMATION
 };
 
 typedef sMSGINFORMATION SMSGINFORMATION;
-typedef SMSGINFORMATION * PSMSGINFORMATION;
+typedef SMSGINFORMATION* PSMSGINFORMATION;
 
 
 
@@ -399,7 +398,7 @@ typedef SMSGINFORMATION * PSMSGINFORMATION;
 
 static char s_cStatus[][2] = {"|","/","-","\\"};
 
-static char sg_acNumCh[] = 
+static char sg_acNumCh[] =
 {
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
     'F'
@@ -424,36 +423,37 @@ typedef union tagUBYTE
 {
     BYTE        byByte;
     STRUCT_BYTE sByte;
-}UNION_BYTE;
+} UNION_BYTE;
 
 // Types of Network Statistics parameters
 #define defSTAT_PARAMETERS_COUNT        24
-const char acStatParams[ defSTAT_PARAMETERS_COUNT ][25] = {
-                       "Total Messages",
-                      "Message Rate",
-                      "Total Errors",
-                      "Error Rate",
-                      "Network Load",
-                      "Peak Network Load",
-                      "Tx Message Total",
-                      "Standard Tx Message",
-                      "Standard Tx Rate",
-                      "Extended Tx Message",
-                      "Extended Tx Rate",
-                      "Standard.Tx RTR",
-                      "Extended Tx RTR",
-                      "Tx Errors",
-                      "Tx Error Rate",
-                      "Rx Message Total",
-                      "Standard Rx Message",
-                      "Standard Rx Rate",
-                      "Extended Rx Message",
-                      "Extended Rx Rate",
-                      "Standard.Rx RTR",
-                      "Extended Rx RTR",
-                      "Rx Errors",
-                      "Rx Error Rate",
-                     };
+const char acStatParams[ defSTAT_PARAMETERS_COUNT ][25] =
+{
+    "Total Messages",
+    "Message Rate",
+    "Total Errors",
+    "Error Rate",
+    "Network Load",
+    "Peak Network Load",
+    "Tx Message Total",
+    "Standard Tx Message",
+    "Standard Tx Rate",
+    "Extended Tx Message",
+    "Extended Tx Rate",
+    "Standard.Tx RTR",
+    "Extended Tx RTR",
+    "Tx Errors",
+    "Tx Error Rate",
+    "Rx Message Total",
+    "Standard Rx Message",
+    "Standard Rx Rate",
+    "Extended Rx Message",
+    "Extended Rx Rate",
+    "Standard.Rx RTR",
+    "Extended Rx RTR",
+    "Rx Errors",
+    "Rx Error Rate",
+};
 
 struct sPropertiesList
 {
@@ -479,7 +479,7 @@ struct tagTxMsgSplitterData
 
 typedef tagTxMsgSplitterData sTxMsgSplitterData;
 typedef sTxMsgSplitterData STXMSGSPLITTERDATA;
-typedef STXMSGSPLITTERDATA * PSTXMSGSPLITTERDATA;
+typedef STXMSGSPLITTERDATA* PSTXMSGSPLITTERDATA;
 
 // Graph window splitter details
 struct tagGraphSplitterData
@@ -490,7 +490,7 @@ struct tagGraphSplitterData
 
 typedef tagGraphSplitterData sGraphSplitterData;
 typedef sGraphSplitterData SGRAPHSPLITTERDATA;
-typedef SGRAPHSPLITTERDATA * PSGRAPHSPLITTERDATA;
+typedef SGRAPHSPLITTERDATA* PSGRAPHSPLITTERDATA;
 
 // For Tx message views enumeration
 enum tagTxViewTypes
@@ -523,8 +523,8 @@ struct tagFilterList
     CStringArray&       m_romFilterNames;
     // Constructors to init references
     tagFilterList( CMapStringToPtr& romFilterMap,
-        CStringArray& romFilterNames) :
-    m_romFilterMap( romFilterMap), m_romFilterNames( romFilterNames)
+                   CStringArray& romFilterNames) :
+        m_romFilterMap( romFilterMap), m_romFilterNames( romFilterNames)
     {
     }
 };
@@ -547,10 +547,12 @@ struct tagModuleFilter
     bool operator==(tagModuleFilter& TempObj)
     {
         bool bReturn = TRUE;
+
         if (_tcscmp(m_omFilterName, TempObj.m_omFilterName))
         {
             bReturn = FALSE;
         }
+
         if (bReturn)
         {
             if (m_bEnabled != TempObj.m_bEnabled)
@@ -558,6 +560,7 @@ struct tagModuleFilter
                 bReturn = FALSE;
             }
         }
+
         return bReturn;
     }
     bool operator!=(tagModuleFilter& TempObj)
@@ -568,7 +571,7 @@ struct tagModuleFilter
 
 typedef tagModuleFilter sModuleFilter;
 typedef sModuleFilter SMODULEFILTER;
-typedef SMODULEFILTER * PSMODULEFILTER;
+typedef SMODULEFILTER* PSMODULEFILTER;
 typedef CArray<SMODULEFILTER,SMODULEFILTER> CModuleFilterArray;
 
 struct tagFilterDisplayInfo
@@ -599,7 +602,7 @@ typedef SFILTERDISPLAYINFO* PSFILTERDISPLAYINFO;
 //typedef  sNODEOBJECT SNODEOBJECT;
 //typedef  SNODEOBJECT* PSNODEOBJECT;
 //
-////structure to store information of the thread 
+////structure to store information of the thread
 ////calculating the timer's execution time
 //struct sCALCEXECTIMETHREAD
 //{

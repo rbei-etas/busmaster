@@ -32,20 +32,20 @@ private:
     void vInitializeFuncPtrs();
     void vloadFuncPtrAddress();
 public:
-	CSigGrphHandler(void);
-	~CSigGrphHandler(void);
-	void vLoadSigGrph_DLL();
+    CSigGrphHandler(void);
+    ~CSigGrphHandler(void);
+    void vLoadSigGrph_DLL();
 
-	HRESULT CreateGraphWindow(CMDIFrameWnd* pParentWnd,short eBusType);
-	BOOL	bIsWindowVisible(short eBusType);
-	HRESULT ShowGraphWindow(short eBusType, BOOL bShow);
-	HRESULT SetSignalListDetails(short eBusType, CGraphList * pSignalList);
-	void	vPostMessageToSGWnd(short eBusType, UINT msg, WPARAM wParam, LPARAM lParam);
-	CMsgBufVSE* vGetGraphBuffer();
-	HRESULT GetWindowSplitterPos(short eBusType, 
-								 WINDOWPLACEMENT& sWndPlacement, 
-								 SGRAPHSPLITTERDATA& sGraphSplitter);
-	HRESULT SetWindowSplitterPos(short eBusType, 
-								 WINDOWPLACEMENT& sWndPlacement, 
-								 SGRAPHSPLITTERDATA& sGraphSplitter);
+    HRESULT CreateGraphWindow(CMDIFrameWnd* pParentWnd,short eBusType);
+    BOOL    bIsWindowVisible(short eBusType);
+    HRESULT ShowGraphWindow(short eBusType, BOOL bShow);
+    HRESULT SetSignalListDetails(short eBusType, CGraphList* pSignalList);
+    void    vPostMessageToSGWnd(short eBusType, UINT msg, WPARAM wParam, LPARAM lParam);
+    CMsgBufVSE* vGetGraphBuffer();
+    HRESULT GetWindowSplitterPos(short eBusType,
+                                 WINDOWPLACEMENT& sWndPlacement,
+                                 SGRAPHSPLITTERDATA& sGraphSplitter);
+    HRESULT SetWindowSplitterPos(short eBusType,
+                                 WINDOWPLACEMENT& sWndPlacement,
+                                 SGRAPHSPLITTERDATA& sGraphSplitter);
 };

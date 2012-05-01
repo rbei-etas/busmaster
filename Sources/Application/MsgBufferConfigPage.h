@@ -28,13 +28,13 @@ class CMsgBufferConfigPage : public CPropertyPage
 {
     DECLARE_DYNCREATE(CMsgBufferConfigPage)
 
-// Construction
+    // Construction
 public:
     CMsgBufferConfigPage();
     void vSetBufferSize(INT* pnBufferSize);
     virtual ~CMsgBufferConfigPage();
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CMsgBufferConfigPage)
     enum { IDD = IDD_DLG_MSG_BUFFER_CONGIF };
 private:
@@ -45,16 +45,16 @@ private:
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generate virtual function overrides
     //{{AFX_VIRTUAL(CMsgBufferConfigPage)
-    public:
+public:
     virtual void OnOK();
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     // Generated message map functions
     //{{AFX_MSG(CMsgBufferConfigPage)

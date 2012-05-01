@@ -43,7 +43,7 @@
 
  Description    :   Default constructor of the dialog box
  Input(s)       :   pParent : Pointer to the parent CWnd object
- Output         :   
+ Output         :
  Functionality  :   Initialise data members
  Member of      :   CMsgIDAttr
 
@@ -61,7 +61,7 @@ CMsgIDAttr::CMsgIDAttr(ETYPE_BUS eBusType, CWnd* pParent /*=NULL*/)
     m_bDBMessage = FALSE;
     m_hClrBtn = NULL;
     //}}AFX_DATA_INIT
-	m_eBusType = eBusType;
+    m_eBusType = eBusType;
 }
 
 /******************************************************************************
@@ -70,7 +70,7 @@ CMsgIDAttr::CMsgIDAttr(ETYPE_BUS eBusType, CWnd* pParent /*=NULL*/)
  Description    :   Called by the framework to exchange & validate dialog data
  Input(s)       :   pDX : Pointer to a CDataExchange object
  Output         :   -
- Functionality  :   
+ Functionality  :
  Member of      :   CMsgIDAttr
 
  Author(s)      :   Ratnadip Choudhury
@@ -92,7 +92,7 @@ BEGIN_MESSAGE_MAP(CMsgIDAttr, CDialog)
     ON_BN_CLICKED(IDC_PBTN_COLOUR, OnPbtnColour)
     ON_WM_HELPINFO()
     ON_WM_CTLCOLOR()
-	//}}AFX_MSG_MAP
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -107,43 +107,43 @@ END_MESSAGE_MAP()
                     (the button with an ID of IDOK)
  Input(s)       :   -
  Output         :   -
- Functionality  :   Invokes confirmation for a new message entry or 
+ Functionality  :   Invokes confirmation for a new message entry or
                     modification of a existing one.
  Member of      :   CMsgIDAttr
 
  Author(s)      :   Ratnadip Choudhury
  Date Created   :   19-03-2002
 ******************************************************************************/
-void CMsgIDAttr::OnOK() 
+void CMsgIDAttr::OnOK()
 {
     UpdateData(TRUE);
-
     m_nID = (UINT)m_odCanIDVal.lGetValue();
     m_omStrMsg.TrimLeft();
     m_omStrMsg.TrimRight();
-
     UpdateData(FALSE);
-
     int nResult = 0;
-    if (m_odCanIDVal.LineLength() == 0) 
+
+    if (m_odCanIDVal.LineLength() == 0)
     {
         AfxMessageBox(_T("Invalid Message ID"));
         GotoDlgCtrl(GetDlgItem(IDC_EDIT_CANID_VAL));
         nResult = -1;
-        
     }
-    if (m_bForEdit == false) 
+
+    if (m_bForEdit == false)
     {
-        if (nResult == 0) 
+        if (nResult == 0)
         {
             nResult = CMessageAttrib::ouGetHandle(m_eBusType).nValidateNewID(m_nID);
-            if (nResult < 0) 
+
+            if (nResult < 0)
             {
                 AfxMessageBox(_T("Duplicate Message ID"));
                 GotoDlgCtrl(GetDlgItem(IDC_EDIT_CANID_VAL));
             }
         }
     }
+
     if (nResult >= 0) // valid CanID
     {
         if (m_omStrMsg.IsEmpty()) //invalid string
@@ -164,34 +164,34 @@ void CMsgIDAttr::OnOK()
 /******************************************************************************
  Function Name  :   OnInitDialog
 
- Description    :   This member function is called in response to the 
+ Description    :   This member function is called in response to the
                     WM_INITDIALOG message
  Input(s)       :   -
- Output         :   Specifies whether the application has set the input focus 
-                    to one of the controls in the dialog box. If OnInitDialog 
-                    returns nonzero, Windows sets the input focus to the first 
-                    control in the dialog box. The application can return 0 
+ Output         :   Specifies whether the application has set the input focus
+                    to one of the controls in the dialog box. If OnInitDialog
+                    returns nonzero, Windows sets the input focus to the first
+                    control in the dialog box. The application can return 0
                     only if it has explicitly set the input focus to one of the
                     controls in the dialog box.
- Functionality  :   Performs the initial settings of the edit control which 
+ Functionality  :   Performs the initial settings of the edit control which
                     accepts message ID depending on the mode of operation
  Member of      :   CMsgIDAttr
 
  Author(s)      :   Ratnadip Choudhury
  Date Created   :   08-03-2002
 ******************************************************************************/
-BOOL CMsgIDAttr::OnInitDialog() 
+BOOL CMsgIDAttr::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    
     // TODO: Add extra initialization here
     // Limit the text field only to eight characters
     m_odCanIDVal.vSetSigned(false);
     m_odCanIDVal.LimitText(8);
-    
+
     if (m_bDBMessage == TRUE)
     {
-        CEdit* pomEdit = (CEdit *) GetDlgItem(IDC_EDIT_CANID_STRING);
+        CEdit* pomEdit = (CEdit*) GetDlgItem(IDC_EDIT_CANID_STRING);
+
         if (pomEdit != NULL)
         {
             pomEdit->SetReadOnly(TRUE);
@@ -206,13 +206,13 @@ BOOL CMsgIDAttr::OnInitDialog()
         m_odCanIDVal.SetReadOnly(TRUE);
     }
 
-    if (m_bForEdit == false) 
+    if (m_bForEdit == false)
     {
         SetWindowText("Add Message Display Attributes");
     }
 
     return TRUE;  // return TRUE unless you set the focus to a control
-                  // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 /******************************************************************************
@@ -220,22 +220,22 @@ BOOL CMsgIDAttr::OnInitDialog()
 
  Input(s)       :   -
  Output         :   -
- Functionality  :   Invokes the system colour dialog box so that a suitable 
+ Functionality  :   Invokes the system colour dialog box so that a suitable
                     colour for the message in question may be selected
  Member of      :   CMsgIDAttr
 
  Author(s)      :   Ratnadip Choudhury
  Date Created   :   18-03-2002
 ******************************************************************************/
-void CMsgIDAttr::OnPbtnColour() 
+void CMsgIDAttr::OnPbtnColour()
 {
     CColorDialog omColourDlg(m_sColour);
 
-    if (omColourDlg.DoModal() == IDOK) 
+    if (omColourDlg.DoModal() == IDOK)
     {
         m_sColour = omColourDlg.GetColor();
         m_omColourBox.InvalidateRect(NULL);
-    }   
+    }
 }
 
 /******************************************************************************
@@ -243,41 +243,40 @@ void CMsgIDAttr::OnPbtnColour()
 
  Description    :   If a menu is active when F1 is pressed, WM_HELP is sent to
                     the window associated with the menu; otherwise, WM_HELP is
-                    sent to the window that has the keyboard focus. If no 
-                    window has the keyboard focus, WM_HELP is sent to the 
+                    sent to the window that has the keyboard focus. If no
+                    window has the keyboard focus, WM_HELP is sent to the
                     currently active window
  Input(s)       :   pHelpInfo : Pointer to a HELPINFO structure that contains
-                    information about the menu item, control, dialog box, or 
+                    information about the menu item, control, dialog box, or
                     window for which help is requested.
- Output         :   
+ Output         :
  Functionality  :   Called by the framework when the user hits the F1 key
  Member of      :   CMsgIDAttr
 
  Author(s)      :   Ratnadip Choudhury
  Date Created   :   18-03-2002
 ******************************************************************************/
-BOOL CMsgIDAttr::OnHelpInfo(HELPINFO* pHelpInfo) 
+BOOL CMsgIDAttr::OnHelpInfo(HELPINFO* pHelpInfo)
 {
     // TODO: Add your message handler code here and/or call default
-    
     return CDialog::OnHelpInfo(pHelpInfo);
 }
 /******************************************************************************
  Function Name  :   OnCtlColor
 
- Description    :   
- Input(s)       :   
- Output         :   
- Functionality  :   
+ Description    :
+ Input(s)       :
+ Output         :
+ Functionality  :
  Member of      :   CMsgIDAttr
 
  Author(s)      :   Ratnadip Choudhury
  Date Created   :   20-08-2003
 ******************************************************************************/
-HBRUSH CMsgIDAttr::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
+HBRUSH CMsgIDAttr::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
     HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
-    
+
     // TODO: Change any attributes of the DC here
     if (pWnd->GetDlgCtrlID() == IDC_PBTN_COLOUR)
     {
@@ -285,20 +284,22 @@ HBRUSH CMsgIDAttr::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
         {
             ::DeleteObject((HBRUSH) m_hClrBtn);
         }
+
         if ((m_hClrBtn = ::CreateSolidBrush(m_sColour)) != NULL)
         {
             hbr = m_hClrBtn;
         }
     }
-    
+
     // TODO: Return a different brush if the default is not desired
     return hbr;
 }
 
-BOOL CMsgIDAttr::PreTranslateMessage(MSG* pMsg) 
+BOOL CMsgIDAttr::PreTranslateMessage(MSG* pMsg)
 {
     // Capture the space character and do not process the same
     BOOL bSkip = FALSE;
+
     if ( pMsg->message == WM_CHAR )
     {
         if ( pMsg->wParam == ' ')

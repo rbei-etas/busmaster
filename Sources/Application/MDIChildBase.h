@@ -39,12 +39,12 @@ public:
     void vUpdateWndCo_Ords();
     // To save window co-ordinates in to Configuration module
     void vUpdateWinStatus();
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMDIChildBase)
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     // helping function to Save and loading window postion from
     // configuration module
@@ -57,7 +57,7 @@ protected:
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 
-// Attributes
+    // Attributes
     // Make members as protected so that derivation of this class shall use
     // if it wants
     // Window placement Attribute

@@ -42,8 +42,8 @@ CGraphElement::CGraphElement()
 {
     // Message ID
     m_nMsgID = -1;
-	// Message Name
-	m_strMsgName = STR_EMPTY;
+    // Message Name
+    m_strMsgName = STR_EMPTY;
     // Format - Standard or Extended
     m_nFrameFormat = -1;
     // Element Name
@@ -62,8 +62,8 @@ CGraphElement::CGraphElement()
     m_bVisible = TRUE;
     // Enabled
     m_bEnabled = TRUE;
-	//Display Type Normal
-	m_eDisplayType = eDISPLAY_NORMAL;
+    //Display Type Normal
+    m_eDisplayType = eDISPLAY_NORMAL;
 }
 
 /*******************************************************************************
@@ -76,12 +76,12 @@ CGraphElement::CGraphElement()
 *******************************************************************************/
 CGraphElement::~CGraphElement()
 {
-
 }
 
 BYTE* CGraphElement::pbyGetConfigData(BYTE* pbyTrgData, BYTE byVersion)
 {
     BYTE* pbyTemp = pbyTrgData;
+
     if (pbyTemp != NULL)
     {
         // Save properties one after another
@@ -107,22 +107,25 @@ BYTE* CGraphElement::pbyGetConfigData(BYTE* pbyTrgData, BYTE byVersion)
         COPY_DATA(pbyTemp, &m_bVisible, sizeof(BOOL));
         // Enabled or not
         COPY_DATA(pbyTemp, &m_bEnabled, sizeof(BOOL));
-		if(byVersion == 2)
-		{
-			// Message Name	 
-			TCHAR MsgName[MAX_PATH] = {_T('\0')};
-			strcpy_s(MsgName, m_strMsgName.GetBuffer(MAX_PATH));
-			COPY_DATA(pbyTemp, MsgName, (sizeof(TCHAR) * MAX_PATH));
-			//Line Display type
-			COPY_DATA(pbyTemp, &m_eDisplayType, sizeof(eDISPLAY_TYPE));		
-		}
+
+        if(byVersion == 2)
+        {
+            // Message Name
+            TCHAR MsgName[MAX_PATH] = {_T('\0')};
+            strcpy_s(MsgName, m_strMsgName.GetBuffer(MAX_PATH));
+            COPY_DATA(pbyTemp, MsgName, (sizeof(TCHAR) * MAX_PATH));
+            //Line Display type
+            COPY_DATA(pbyTemp, &m_eDisplayType, sizeof(eDISPLAY_TYPE));
+        }
     }
+
     return pbyTemp;
 }
 
 BYTE* CGraphElement::pbySetConfigData(BYTE* pbyTrgData, BYTE byVersion)
 {
     BYTE* pbyTemp = pbyTrgData;
+
     if (pbyTemp != NULL)
     {
         // Save properties one after another
@@ -148,21 +151,23 @@ BYTE* CGraphElement::pbySetConfigData(BYTE* pbyTrgData, BYTE byVersion)
         COPY_DATA_2(&m_bVisible, pbyTemp, sizeof(BOOL));
         // Enabled or not
         COPY_DATA_2(&m_bEnabled, pbyTemp, sizeof(BOOL));
-		if(byVersion == 2)
-		{
-			//Message Name		
-			TCHAR MsgName[MAX_PATH] = {_T('\0')};
-			COPY_DATA_2(MsgName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
-			m_strMsgName.Format("%s", MsgName);
-			//Line Display type
-			COPY_DATA_2(&m_eDisplayType, pbyTemp, sizeof(eDISPLAY_TYPE));		
-		}
-		else if(byVersion == 1)
-		{
-			m_strMsgName = GetIMsgDB()->omStrGetMessageNameFromMsgCode(m_nMsgID);	
-			m_eDisplayType = eDISPLAY_NORMAL;
-		}
+
+        if(byVersion == 2)
+        {
+            //Message Name
+            TCHAR MsgName[MAX_PATH] = {_T('\0')};
+            COPY_DATA_2(MsgName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
+            m_strMsgName.Format("%s", MsgName);
+            //Line Display type
+            COPY_DATA_2(&m_eDisplayType, pbyTemp, sizeof(eDISPLAY_TYPE));
+        }
+        else if(byVersion == 1)
+        {
+            m_strMsgName = GetIMsgDB()->omStrGetMessageNameFromMsgCode(m_nMsgID);
+            m_eDisplayType = eDISPLAY_NORMAL;
+        }
     }
+
     return pbyTemp;
 }
 /*******************************************************************************
@@ -174,12 +179,13 @@ BYTE* CGraphElement::pbySetConfigData(BYTE* pbyTrgData, BYTE byVersion)
  Author(s)      : Raja N
  Date Created   : 01.12.2004
  Modifications  : ArunKumar K
-				  28.10.2010
-				  Addition of m_eDisplayType variable for serialization.
+                  28.10.2010
+                  Addition of m_eDisplayType variable for serialization.
 *******************************************************************************/
 int CGraphElement::nSerialize(CArchive& omArch)
 {
     int nReturn = 0;
+
     // If it is storing
     try
     {
@@ -238,6 +244,7 @@ int CGraphElement::nSerialize(CArchive& omArch)
         nReturn = poArchExcep->m_cause;
         poArchExcep->Delete();
     }
+
     // Return the result
     return nReturn;
 }
@@ -250,13 +257,12 @@ int CGraphElement::nSerialize(CArchive& omArch)
  Member of      : CGraphElement
  Author(s)      : ArunKumar K
  Date Created   : 16.12.2010
- Modifications  : 
+ Modifications  :
 *******************************************************************************/
 UINT CGraphElement::unGetConfigSize(BYTE byVersion)
 {
-	UINT unSize = 0;  
-
-	unSize += sizeof(int);//     m_nMsgID;
+    UINT unSize = 0;
+    unSize += sizeof(int);//     m_nMsgID;
     // Frame Format - Standard or Extended
     unSize += sizeof(short);//   m_nFrameFormat;
     // Element Name String
@@ -278,14 +284,15 @@ UINT CGraphElement::unGetConfigSize(BYTE byVersion)
     unSize += sizeof(BOOL);//    m_bVisible;
     // Enabled or not
     unSize += sizeof(BOOL);//    m_bEnabled;
-	if(byVersion == 2)
-	{
-		// Line Display
-		unSize += sizeof(int);//    m_eDisplayType;
-		//Message Name String
-		unSize += (sizeof(TCHAR) * MAX_PATH);//m_strMsgName
-	}
 
-	return unSize;
+    if(byVersion == 2)
+    {
+        // Line Display
+        unSize += sizeof(int);//    m_eDisplayType;
+        //Message Name String
+        unSize += (sizeof(TCHAR) * MAX_PATH);//m_strMsgName
+    }
+
+    return unSize;
 }
 

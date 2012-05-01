@@ -34,7 +34,7 @@
 
 class CBusStatisticCAN : public CBaseBusStatisticCAN
 {
-//Attributes
+    //Attributes
 private:
     //used to Creating threads
     CPARAM_THREADPROC m_ouReadThread;
@@ -47,7 +47,7 @@ private:
     //Temporary Referance of STCAN_MSG
     STCAN_MSG m_sCurrEntry;
     //variable to hold current channel
- 
+
     CBaseDIL_CAN* m_pouDIL_CAN;
     //To keep previous bus data
     SBUSSTATISTICS m_sPrevStatData[ defNO_OF_CHANNELS ];
@@ -65,7 +65,7 @@ private:
     UINT m_unPrevExtendedRTRCount[ defNO_OF_CHANNELS ] ;
     UINT m_unPrevErrorTotalCount[ defNO_OF_CHANNELS ] ;
     INT  m_unPreviousTime;
-    static void * sm_pouBSCan;
+    static void* sm_pouBSCan;
 
     UINT m_unBitsStdMsg[9];
     UINT m_unBitsExdMsg[9];
@@ -76,28 +76,28 @@ public:
 public:
     //Constructor
     CBusStatisticCAN(void);
-    // This function should be called for the very first time.         
+    // This function should be called for the very first time.
     HRESULT BSC_DoInitialization(void);
-    // This function resets the bus statistics 
+    // This function resets the bus statistics
     HRESULT BSC_ResetBusStatistic(void);
-    // Get the total number of valid messages transmitted to or 
-    // received from the bus 
-    HRESULT BSC_GetTotalMsgCount(UINT unChannelIndex, eDirection eDir, BYTE byIdType,  
-                                    BYTE byMsgType, UINT& nMsgCount);
+    // Get the total number of valid messages transmitted to or
+    // received from the bus
+    HRESULT BSC_GetTotalMsgCount(UINT unChannelIndex, eDirection eDir, BYTE byIdType,
+                                 BYTE byMsgType, UINT& nMsgCount);
     // Get the total number of error messages occurred while receiving or
-    // transmitting 
+    // transmitting
     HRESULT BSC_GetTotalErrCount(UINT unChannelIndex, eDirection eDir, UINT& nErrCount);
 
     // Get average number of msgs per second(Msg/s)
-    HRESULT BSC_GetAvgMsgCountPerSec(UINT unChannelIndex, eDirection eDir, 
-                                        BYTE byIdType, double& dMsgCount);
+    HRESULT BSC_GetAvgMsgCountPerSec(UINT unChannelIndex, eDirection eDir,
+                                     BYTE byIdType, double& dMsgCount);
     // Get average number of errors per second(Err/s)
     HRESULT BSC_GetAvgErrCountPerSec(UINT unChannelIndex, eDirection eDir, double& dErrCount);
-    // Get the bus load 
-    HRESULT BSC_GetBusLoad(UINT unChannelIndex, eLOAD eLoad, double &dBusLoad);
-    // Get controller status 
+    // Get the bus load
+    HRESULT BSC_GetBusLoad(UINT unChannelIndex, eLOAD eLoad, double& dBusLoad);
+    // Get controller status
     // Note: eLoad can have only CURRENT, PEAK.
-    HRESULT BSC_GetErrorCounter(UINT unChannelIndex, eDirection eDir, eLOAD eLoad, UCHAR &ucErrCounter);
+    HRESULT BSC_GetErrorCounter(UINT unChannelIndex, eDirection eDir, eLOAD eLoad, UCHAR& ucErrCounter);
     //To Set the Baud Rate
     HRESULT BSC_SetBaudRate(UINT unChannelIndex, double dBaudRate);
     //Updates the Bus Statistics on every received or transmitted Message
@@ -107,7 +107,7 @@ public:
     //Get the required channel's BusStistic structure.
     HRESULT BSC_GetBusStatistics(UINT unChannelIndex, SBUSSTATISTICS& sBusStatistics);
     //Updates the Bus Statics Structure on every Tx/Rx Message.
-    void vUpdateBusStatistics(STCANDATA &sCanData);
+    void vUpdateBusStatistics(STCANDATA& sCanData);
     //Calculate the Bus statistics on timer
     void vCalculateBusParametres(void);
     //Temporary function aclled by the SetTimer function.
@@ -115,10 +115,10 @@ public:
     //Destructor
     virtual ~CBusStatisticCAN(void);
 private:
-    //Initialise or resets the bus statistics. 
+    //Initialise or resets the bus statistics.
     void vInitialiseBSData(void);
     //Calculates the Time differance.
     void vCalculateDiffTime(void);
     //Starts the BS Read Thread
-    BOOL bStartBSReadThread(void);  
+    BOOL bStartBSReadThread(void);
 };

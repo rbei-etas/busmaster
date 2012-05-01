@@ -36,13 +36,13 @@ protected:
     CMsgSgTreeView();           // protected constructor used by dynamic creation
     DECLARE_DYNCREATE(CMsgSgTreeView)
 
-// Attributes
+    // Attributes
 private:
     SDBPARAMS m_sDbParams;
 public:
     static SDBPARAMS sm_sDbParams;
-    
-// Operations
+
+    // Operations
 public:
 
     CString m_omSelectedItemText;
@@ -52,17 +52,17 @@ public:
     BOOL m_bIsNewMessage;
     void vSetMessageName(CString omStrMsgName);
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMsgSgTreeView)
-    public:
+public:
     virtual void OnInitialUpdate();
-    protected:
+protected:
     virtual void OnDraw(CDC* pDC);      // overridden to draw this view
     virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     virtual ~CMsgSgTreeView();
 #ifdef _DEBUG
@@ -82,15 +82,15 @@ protected:
     afx_msg void OnNewMessage();
     afx_msg void OnInfoToolTip(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnEditMsg();
-	afx_msg void OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult);
-	//}}AFX_MSG
+    afx_msg void OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult);
+    //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
     void vAddEditMessage(BOOL bMode);
-//  CToolTipCtrl* m_pomToolTip;
+    //  CToolTipCtrl* m_pomToolTip;
     CPoint m_omRightClickPoint;
     CPoint m_omLeftCLickPoint;
     CImageList m_omImageList;
-    HTREEITEM m_hTreeItem; 
+    HTREEITEM m_hTreeItem;
     BOOL bPopulateTree();
 };

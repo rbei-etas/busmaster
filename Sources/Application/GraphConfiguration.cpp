@@ -48,7 +48,7 @@ extern CCANMonitorApp theApp;
 *******************************************************************************/
 CGraphConfiguration::CGraphConfiguration(CWnd* pParent /*=NULL*/)
     : CDialog(CGraphConfiguration::IDD, pParent)
-	, m_nLineDisplay(0)
+    , m_nLineDisplay(0)
 {
     //{{AFX_DATA_INIT(CGraphConfiguration)
     m_nYGridCount = 0;
@@ -57,14 +57,14 @@ CGraphConfiguration::CGraphConfiguration(CWnd* pParent /*=NULL*/)
     m_nBufferSize = 0;
     m_omFrameType = -1;
     //}}AFX_DATA_INIT
-	m_eBusType = CAN;	
+    m_eBusType = CAN;
 }
 
 /*******************************************************************************
-  Function Name  : 
+  Function Name  :
   Input(s)       : pDX - Data Exchange Object
   Output         : -
-  Functionality  : 
+  Functionality  :
   Member of      : CGraphConfiguration
   Author         :  Raja N
   Date Created   :  01/12/2004
@@ -72,23 +72,23 @@ CGraphConfiguration::CGraphConfiguration(CWnd* pParent /*=NULL*/)
 *******************************************************************************/
 void CGraphConfiguration::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CGraphConfiguration)
-	DDX_Control(pDX, IDC_AXIS_COLOR, m_omAxisColor);
-	DDX_Control(pDX, IDC_FRAME_COLOR, m_omFrameColor);
-	DDX_Control(pDX, IDC_GRID_COLOR, m_omGridColor);
-	DDX_Control(pDX, IDC_PLOT_COLOR, m_omPlotColor);
-	DDX_Text(pDX, IDC_EDIT_Y_GRIDS, m_nYGridCount);
-	DDV_MinMaxInt(pDX, m_nYGridCount, 2, 10);
-	DDX_Text(pDX, IDC_EDIT_X_GRIDS, m_nXGridCount);
-	DDV_MinMaxInt(pDX, m_nXGridCount, 2, 10);
-	DDX_Text(pDX, IDC_EDIT_DISPLAY_UPDATE, m_nUpdateRate);
-	DDV_MinMaxInt(pDX, m_nUpdateRate, 1000, 20000);
-	DDX_Text(pDX, IDC_EDIT_BUFFER_SIZE, m_nBufferSize);
-	DDV_MinMaxInt(pDX, m_nBufferSize, 1000, 50000);
-	DDX_CBIndex(pDX, IDC_COMBO_FRAME, m_omFrameType);
-	//}}AFX_DATA_MAP
-	DDX_CBIndex(pDX, IDC_COMBO_LINE_DISPLAY, m_nLineDisplay);
+    CDialog::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CGraphConfiguration)
+    DDX_Control(pDX, IDC_AXIS_COLOR, m_omAxisColor);
+    DDX_Control(pDX, IDC_FRAME_COLOR, m_omFrameColor);
+    DDX_Control(pDX, IDC_GRID_COLOR, m_omGridColor);
+    DDX_Control(pDX, IDC_PLOT_COLOR, m_omPlotColor);
+    DDX_Text(pDX, IDC_EDIT_Y_GRIDS, m_nYGridCount);
+    DDV_MinMaxInt(pDX, m_nYGridCount, 2, 10);
+    DDX_Text(pDX, IDC_EDIT_X_GRIDS, m_nXGridCount);
+    DDV_MinMaxInt(pDX, m_nXGridCount, 2, 10);
+    DDX_Text(pDX, IDC_EDIT_DISPLAY_UPDATE, m_nUpdateRate);
+    DDV_MinMaxInt(pDX, m_nUpdateRate, 1000, 20000);
+    DDX_Text(pDX, IDC_EDIT_BUFFER_SIZE, m_nBufferSize);
+    DDV_MinMaxInt(pDX, m_nBufferSize, 1000, 50000);
+    DDX_CBIndex(pDX, IDC_COMBO_FRAME, m_omFrameType);
+    //}}AFX_DATA_MAP
+    DDX_CBIndex(pDX, IDC_COMBO_LINE_DISPLAY, m_nLineDisplay);
 }
 
 
@@ -109,9 +109,9 @@ END_MESSAGE_MAP()
  Member of      : CGraphConfiguration
  Author(s)      : Raja N
  Date Created   : 11.29.2004
- Modifications  : 
+ Modifications  :
 *******************************************************************************/
-void CGraphConfiguration::OnSetDefault() 
+void CGraphConfiguration::OnSetDefault()
 {
     // Create Temp object to get default value
     CGraphParameters omTemp;
@@ -128,15 +128,17 @@ void CGraphConfiguration::OnSetDefault()
  Member of      : CGraphConfiguration
  Author(s)      : Raja N
  Date Created   : 11.29.2004
- Modifications  : 
+ Modifications  :
 *******************************************************************************/
-void CGraphConfiguration::OnOK() 
-{	
+void CGraphConfiguration::OnOK()
+{
     // Update Global Structure
-    CMainFrame *pMainFrame = static_cast<CMainFrame *> (theApp.m_pMainWnd);
+    CMainFrame* pMainFrame = static_cast<CMainFrame*> (theApp.m_pMainWnd);
+
     if( pMainFrame != NULL )
     {
-        CGraphList *pList = &(pMainFrame->m_odGraphList[m_eBusType]);
+        CGraphList* pList = &(pMainFrame->m_odGraphList[m_eBusType]);
+
         if( pList != NULL && UpdateData() == TRUE )
         {
             pList->m_odGraphParameters.m_nBufferSize = m_nBufferSize;
@@ -145,13 +147,12 @@ void CGraphConfiguration::OnOK()
             pList->m_odGraphParameters.m_nYGridLines = m_nYGridCount;
             pList->m_odGraphParameters.m_nAxisColor = m_omAxisColor.GetColour();
             pList->m_odGraphParameters.m_nFrameColor =
-                                                    m_omFrameColor.GetColour();
+                m_omFrameColor.GetColour();
             pList->m_odGraphParameters.m_nGridColor = m_omGridColor.GetColour();
             pList->m_odGraphParameters.m_nPlotAreaColor =
-                                                    m_omPlotColor.GetColour();
+                m_omPlotColor.GetColour();
             pList->m_odGraphParameters.m_nFrameStyle = m_omFrameType;
-			pList->m_odGraphParameters.m_eDisplayType = (eDISPLAY_TYPE)m_nLineDisplay;
-	
+            pList->m_odGraphParameters.m_eDisplayType = (eDISPLAY_TYPE)m_nLineDisplay;
             // Call parent's OnOK to close this Modal session
             CDialog::OnOK();
         }
@@ -169,25 +170,27 @@ void CGraphConfiguration::OnOK()
   Modifications  : Raja N on 7.3.2005
                    Removed the Automatic tab from the color popup windows
 *******************************************************************************/
-BOOL CGraphConfiguration::OnInitDialog() 
+BOOL CGraphConfiguration::OnInitDialog()
 {
-    CDialog::OnInitDialog();	
+    CDialog::OnInitDialog();
     // Update Data from Global Structure
-    CMainFrame *pMainFrame = static_cast<CMainFrame *> (theApp.m_pMainWnd);
+    CMainFrame* pMainFrame = static_cast<CMainFrame*> (theApp.m_pMainWnd);
+
     if( pMainFrame != NULL )
     {
-        CGraphList *pList = &(pMainFrame->m_odGraphList[m_eBusType]);
+        CGraphList* pList = &(pMainFrame->m_odGraphList[m_eBusType]);
+
         if( pList != NULL )
         {
             vSetValues( pList->m_odGraphParameters );
         }
-    }	
+    }
+
     // Remove default color option from the buttons
     m_omFrameColor.SetDefaultText( STR_EMPTY );
     m_omPlotColor.SetDefaultText( STR_EMPTY );
     m_omAxisColor.SetDefaultText( STR_EMPTY );
     m_omGridColor.SetDefaultText( STR_EMPTY );
-
     return TRUE;
 }
 
@@ -200,7 +203,7 @@ BOOL CGraphConfiguration::OnInitDialog()
   Member of      : CGraphConfiguration
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphConfiguration::vSetValues(CGraphParameters omParam)
 {
@@ -213,18 +216,18 @@ void CGraphConfiguration::vSetValues(CGraphParameters omParam)
     m_nXGridCount = omParam.m_nXGridLines;
     m_nYGridCount = omParam.m_nYGridLines;
     // Colors
-        // Axis
+    // Axis
     m_omAxisColor.SetColour( omParam.m_nAxisColor );
-        // Frame
+    // Frame
     m_omFrameColor.SetColour( omParam.m_nFrameColor );
-        // Grid
+    // Grid
     m_omGridColor.SetColour( omParam.m_nGridColor );
-        // Plot Area
+    // Plot Area
     m_omPlotColor.SetColour( omParam.m_nPlotAreaColor );
     // Frame Style
     m_omFrameType = omParam.m_nFrameStyle;
-	//Line Display Type
-	m_nLineDisplay = omParam.m_eDisplayType;
+    //Line Display Type
+    m_nLineDisplay = omParam.m_eDisplayType;
     // Update data to reflect changes in UI
     UpdateData( FALSE );
 }

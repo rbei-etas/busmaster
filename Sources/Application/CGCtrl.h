@@ -36,20 +36,24 @@ public:
         return clsid;
     }
     virtual BOOL Create(LPCTSTR /*lpszClassName*/,
-        LPCTSTR /*lpszWindowName*/, DWORD /*dwStyle*/,
-        const RECT& /*rect*/,
-        CWnd* /*pParentWnd*/, UINT /*nID*/,
-        CCreateContext* /*pContext = NULL*/)
-    { return NULL;/*CreateControl(GetClsid(), lpszWindowName, dwStyle, rect, pParentWnd, nID);*/ }
+                        LPCTSTR /*lpszWindowName*/, DWORD /*dwStyle*/,
+                        const RECT& /*rect*/,
+                        CWnd* /*pParentWnd*/, UINT /*nID*/,
+                        CCreateContext* /*pContext = NULL*/)
+    {
+        return NULL;/*CreateControl(GetClsid(), lpszWindowName, dwStyle, rect, pParentWnd, nID);*/
+    }
 
     BOOL Create(LPCTSTR lpszWindowName, DWORD dwStyle,
-        const RECT& rect, CWnd* pParentWnd, UINT nID,
-        CFile* pPersist = NULL, BOOL bStorage = FALSE,
-        BSTR bstrLicKey = NULL)
-    { return CreateControl(GetClsid(), lpszWindowName, dwStyle, rect, pParentWnd, nID,
-        pPersist, bStorage, bstrLicKey); }
+                const RECT& rect, CWnd* pParentWnd, UINT nID,
+                CFile* pPersist = NULL, BOOL bStorage = FALSE,
+                BSTR bstrLicKey = NULL)
+    {
+        return CreateControl(GetClsid(), lpszWindowName, dwStyle, rect, pParentWnd, nID,
+                             pPersist, bStorage, bstrLicKey);
+    }
 
-// Attributes
+    // Attributes
 public:
     short GetAppearance();
     void SetAppearance(short);
@@ -164,7 +168,7 @@ public:
     short GetLineDisplay();
     void  SetLineDisplay(short);
 
-// Operations
+    // Operations
 public:
     void SetRange(double xmin, double xmax, double ymin, double ymax);
     void AutoRange();
@@ -199,6 +203,6 @@ public:
     void SetGridLines(short xGrids, short yGrids);
     void SetElementUnit(LPCTSTR lpszUnit);
     void GetXAxisRange(double FAR* pXMin, double FAR* pXMax);
-	void GetElementValueAtCursor(short ElementID, double dblCursorVal, double * dblElemVal);	
+    void GetElementValueAtCursor(short ElementID, double dblCursorVal, double* dblElemVal);
     void AboutBox();
 };

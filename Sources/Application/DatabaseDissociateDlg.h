@@ -15,11 +15,11 @@
 
 /**
  * \file      DatabaseDissociateDlg.h
- * \brief     This header file contains the defintion of class       
+ * \brief     This header file contains the defintion of class
  * \author    Anish Kumar
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This header file contains the defintion of class       
+ * This header file contains the defintion of class
  */
 
 #pragma once
@@ -30,23 +30,23 @@
 
 class CDatabaseDissociateDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CDatabaseDissociateDlg)
+    DECLARE_DYNAMIC(CDatabaseDissociateDlg)
 
 public:
     CDatabaseDissociateDlg(const SDBPARAMS& sDbParams, CWnd* pParent = NULL);
-	virtual ~CDatabaseDissociateDlg();
+    virtual ~CDatabaseDissociateDlg();
 
-// Dialog Data
-	enum { IDD = IDD_DLG_DISSOCIATE_DB };
+    // Dialog Data
+    enum { IDD = IDD_DLG_DISSOCIATE_DB };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 private:
     SDBPARAMS m_sDbParams;
 public:
-	CListBox m_omDissociateDbLst;
-	virtual BOOL OnInitDialog();
-	afx_msg void OnBnClickedCbtnDissociate();
+    CListBox m_omDissociateDbLst;
+    virtual BOOL OnInitDialog();
+    afx_msg void OnBnClickedCbtnDissociate();
 };

@@ -47,17 +47,21 @@ HRESULT BS_GetInterface(ETYPE_BUS eBus, void** ppvInterface)
                     hResult = S_FALSE;
                 }
             }
+
             // Else the object has been existing already
-            *ppvInterface = (void *) sg_pouBS_CAN; 
+            *ppvInterface = (void*) sg_pouBS_CAN;
         }
         break;
-        case MCNET:            
+
+        case MCNET:
         case J1939:
         {
             ASSERT(FALSE);
         }
         break;
-        default: break;
+
+        default:
+            break;
     }
 
     return hResult;

@@ -15,11 +15,11 @@
 
 /**
  * \file      Application/NotificWnd.h
- * \brief     This file contain the definition CNotificWnd class. The user can 
+ * \brief     This file contain the definition CNotificWnd class. The user can
  * \author    Ravikumar Patil
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contain the definition CNotificWnd class. The user can 
+ * This file contain the definition CNotificWnd class. The user can
  */
 
 #pragma once
@@ -29,10 +29,10 @@
 
 typedef struct tagNOTIFICWNDPARAMS
 {
-    //LOGPARAMS           m_sLogParams;    
-	WINDOWPLACEMENT     m_sWndPlacement;
-	BYTE				m_bSetFlag_Disp;
-	BYTE				m_bSetFlag_Log;	
+    //LOGPARAMS           m_sLogParams;
+    WINDOWPLACEMENT     m_sWndPlacement;
+    BYTE                m_bSetFlag_Disp;
+    BYTE                m_bSetFlag_Log;
 } NOTIFICWNDPARAMS, *PNOTIFICWNDPARAMS;
 
 class CNotificWnd : public CMDIChildBase
@@ -41,27 +41,27 @@ class CNotificWnd : public CMDIChildBase
 public:
     CNotificWnd();           // public constructor used by dynamic creation
     virtual ~CNotificWnd(); //destructor
-// Attributes
+    // Attributes
 public:
     //CStringArray m_omDispStrArray;
 
-// Operations
+    // Operations
 public:
     // Set the font of window
     BOOL bCreateNotificWindow(CMDIFrameWnd* pomParentWnd);
     // To display a string into trace window
     void vDisplayString(const CString& omStr);
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CNotificWnd)
-    protected:
+protected:
     virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
-    
+
     // Generated message map functions
     //{{AFX_MSG(CNotificWnd)
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
@@ -79,19 +79,19 @@ private:
     void vAddString(CString omStr);
     // Set the content of list box.
     void vSaveWinStatus(WINDOWPLACEMENT sWinCurrStatus);
-    void vGetWinStatus(WINDOWPLACEMENT& sWinCurrStatus);	
+    void vGetWinStatus(WINDOWPLACEMENT& sWinCurrStatus);
     VOID vSetWindowFont();
     CFont m_omNewFont;
     CSize m_omSizeMaxTxtExtent;
     CNotificListbox m_omListBox;
-	NOTIFICWNDPARAMS m_sNotificWndParams;
-	LRESULT DoConfigOperation(WPARAM WParam, LPARAM LParam);
-	void vSaveNotificWndConfig();
-	UINT unGetStoreNFBufferSize();
-	void vLoadNotificWndConfig();	
-	void SaveNFDataIntoBuffer(BYTE* DesBuffer);
-	void CopyNFDataFromBuffer(BYTE* SrcBuffer);
-	BOOL bIsConfigChanged();
+    NOTIFICWNDPARAMS m_sNotificWndParams;
+    LRESULT DoConfigOperation(WPARAM WParam, LPARAM LParam);
+    void vSaveNotificWndConfig();
+    UINT unGetStoreNFBufferSize();
+    void vLoadNotificWndConfig();
+    void SaveNFDataIntoBuffer(BYTE* DesBuffer);
+    void CopyNFDataFromBuffer(BYTE* SrcBuffer);
+    BOOL bIsConfigChanged();
 
 public:
     afx_msg void OnDestroy();

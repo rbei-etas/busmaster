@@ -965,7 +965,7 @@
 #define IDM_CFGN_REPLAY                 32955
 #define IDM_CFGN_LOG                    32956
 #define ID_OPTION_EXPORT_LOGFILE        32958
-#define ID_UTILITY_FILE_CONVERTER		32959
+#define ID_UTILITY_FILE_CONVERTER       32959
 #define IDM_OPRTN_CLEAR                 32968
 #define IDM_OPRTN_DELETE                32971
 #define IDM_DATABASE_DISSOCIATE_DB      33001
@@ -1087,7 +1087,7 @@
 #define IDS_ERR_ERRLOGGER_REGISTER      62467
 
 // Next default values for new objects
-// 
+//
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1

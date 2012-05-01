@@ -32,16 +32,16 @@
 extern CCANMonitorApp theApp;
 
 /******************************************************************************/
-/*  Function Name    :  CProperties                                           */    
-/*  Input(s)         :                                                        */    
-/*  Output           :                                                        */    
+/*  Function Name    :  CProperties                                           */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
 /*  Functionality    :  Constructor is called when user create an object of   */
 /*                      this class. m_omStrArrayProperties data member will be*/
 /*                      assing the value passed as parameter omStrStringArray */
-/*  Member of        :  CProperties                                           */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :  Amitesh Bharti                                        */    
-/*  Date Created     :  27.11.2002                                            */    
+/*  Member of        :  CProperties                                           */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  27.11.2002                                            */
 /*  Modification By  :  Raja N                                                */
 /*  Modification on  :  14.03.2005, Chaneged data type from CStringArray to   */
 /*                      structure of CStringArray to support multiple values  */
@@ -99,23 +99,23 @@ BEGIN_MESSAGE_MAP(CProperties, CDialog)
 END_MESSAGE_MAP()
 
 /******************************************************************************/
-/*  Function Name    :  OnInitDialog                                          */    
-/*  Input(s)         :                                                        */    
-/*  Output           :                                                        */    
+/*  Function Name    :  OnInitDialog                                          */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
 /*  Functionality    :  This function will be called by frame work after      */
 /*                       DoModal() function call. The edit control attached to*/
 /*                      this dialog will be initialied with text in item of   */
 /*                      data member m_omStrArrayProperties after inserting the*/
 /*                      new line charactors.                                  */
-/*  Member of        :  CProperties                                           */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :  Amitesh Bharti                                        */    
-/*  Date Created     :  27.11.2002                                            */    
+/*  Member of        :  CProperties                                           */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  27.11.2002                                            */
 /*  Modification By  :  Raja N                                                */
 /*  Modification on  :  14.03.2005, Added code to create and populate tree    */
 /*                      control to show application configuration             */
 /******************************************************************************/
-BOOL CProperties::OnInitDialog() 
+BOOL CProperties::OnInitDialog()
 {
     // Store image list creation result
     BOOL bImageListCreated = FALSE;
@@ -123,119 +123,122 @@ BOOL CProperties::OnInitDialog()
     CDialog::OnInitDialog();
     // Create Image List
     bImageListCreated = m_omTreeImageList.Create( IDB_BMP_PROPERTIES,
-                                                  defICON_SIZE,
-                                                  defICON_GROW,
-                                                  WHITE_COLOR );
+                        defICON_SIZE,
+                        defICON_GROW,
+                        WHITE_COLOR );
+
     // Check for Success
     if( bImageListCreated == TRUE )
     {
         // Set image list to the Tree Control
         m_omPropertyTree.SetImageList(&m_omTreeImageList, TVSIL_NORMAL);
-
         // Create Root Nodes
         CString omStrVersion;
         omStrVersion.LoadString(IDS_VERSION);
         omStrVersion = omStrVersion;
         HTREEITEM hRootItem =
             m_omPropertyTree.InsertItem( omStrVersion,
-                                defVERSION_ICON_INDEX,
-                                defVERSION_ICON_INDEX );
-
+                                         defVERSION_ICON_INDEX,
+                                         defVERSION_ICON_INDEX );
         m_omPropertyTree.SetItemState( hRootItem,
-            TVIS_EXPANDED | TVIS_BOLD | TVIS_SELECTED,
-            TVIS_EXPANDED | TVIS_BOLD | TVIS_SELECTED );
-
+                                       TVIS_EXPANDED | TVIS_BOLD | TVIS_SELECTED,
+                                       TVIS_EXPANDED | TVIS_BOLD | TVIS_SELECTED );
         // Create Channel Information
         HTREEITEM hChannels =
             m_omPropertyTree.InsertItem( defSTR_CHANNEL_HEADING,
-                                defCHANNEL_ICON_INDEX,
-                                defCHANNEL_ICON_INDEX,
-                                hRootItem );
+                                         defCHANNEL_ICON_INDEX,
+                                         defCHANNEL_ICON_INDEX,
+                                         hRootItem );
         // Insert each channel infomration
         int nChannels = m_sProperties.m_omBaudRate.GetSize();
         int nIndex; //nIndex declared outside loop
+
         for( nIndex = 0; nIndex < nChannels; nIndex++ )
         {
-            m_omPropertyTree.InsertItem( 
-                                m_sProperties.m_omBaudRate[ nIndex ],
-                                defCHANNEL_ICON_INDEX,
-                                defCHANNEL_ICON_INDEX,
-                                hChannels );
+            m_omPropertyTree.InsertItem(
+                m_sProperties.m_omBaudRate[ nIndex ],
+                defCHANNEL_ICON_INDEX,
+                defCHANNEL_ICON_INDEX,
+                hChannels );
         }
 
         // Create Log File Entries
         HTREEITEM hLogs =
             m_omPropertyTree.InsertItem( defSTR_LOGS_HEADING,
-                                defLOGFILE_ICON_INDEX,
-                                defLOGFILE_ICON_INDEX,
-                                hRootItem );
+                                         defLOGFILE_ICON_INDEX,
+                                         defLOGFILE_ICON_INDEX,
+                                         hRootItem );
         // Get Log file name count
         int nLogs = m_sProperties.m_omLogFile.GetSize();
+
         // Insert Log file names
         for( nIndex = 0; nIndex < nLogs; nIndex++ )
         {
             m_omPropertyTree.InsertItem(
-                            m_sProperties.m_omLogFile[ nIndex ],
-                            defLOGFILE_ICON_INDEX,
-                            defLOGFILE_ICON_INDEX,
-                            hLogs );
+                m_sProperties.m_omLogFile[ nIndex ],
+                defLOGFILE_ICON_INDEX,
+                defLOGFILE_ICON_INDEX,
+                hLogs );
         }
 
         // Create Replay File Entries
         HTREEITEM hReplays =
             m_omPropertyTree.InsertItem( defSTR_REPLAY_HEADING,
-                            defREPLAYFILE_ICON_INDEX,
-                            defREPLAYFILE_ICON_INDEX,
-                            hRootItem );
+                                         defREPLAYFILE_ICON_INDEX,
+                                         defREPLAYFILE_ICON_INDEX,
+                                         hRootItem );
         // Get Replay file count
         int nReplay = m_sProperties.m_omReplayFile.GetSize();
+
         // Insert each items
         for( nIndex = 0; nIndex < nReplay; nIndex++ )
         {
-            m_omPropertyTree.InsertItem( 
-                            m_sProperties.m_omReplayFile[ nIndex ],
-                            defREPLAYFILE_ICON_INDEX,
-                            defREPLAYFILE_ICON_INDEX,
-                            hReplays );
+            m_omPropertyTree.InsertItem(
+                m_sProperties.m_omReplayFile[ nIndex ],
+                defREPLAYFILE_ICON_INDEX,
+                defREPLAYFILE_ICON_INDEX,
+                hReplays );
         }
 
         // Create Database File Entries
         HTREEITEM hDatabases =
             m_omPropertyTree.InsertItem( defSTR_DATABASE_HEADING,
-                            defDATABASE_ICON_INDEX,
-                            defDATABASE_ICON_INDEX,
-                            hRootItem );
+                                         defDATABASE_ICON_INDEX,
+                                         defDATABASE_ICON_INDEX,
+                                         hRootItem );
         // Insert each database infomration
         int nDatabases = m_sProperties.m_omDatabaseFile.GetSize();
+
         // Insert each items
         for( nIndex = 0; nIndex < nDatabases; nIndex++ )
         {
-            m_omPropertyTree.InsertItem( 
-                            m_sProperties.m_omDatabaseFile[ nIndex ],
-                            defDATABASE_ICON_INDEX,
-                            defDATABASE_ICON_INDEX,
-                            hDatabases );
+            m_omPropertyTree.InsertItem(
+                m_sProperties.m_omDatabaseFile[ nIndex ],
+                defDATABASE_ICON_INDEX,
+                defDATABASE_ICON_INDEX,
+                hDatabases );
         }
 
         // Create DLL File Entries
         HTREEITEM hDLLs =
             m_omPropertyTree.InsertItem( defSTR_USER_PROG_HEADING,
-                            defUSERDLL_ICON_INDEX,
-                            defUSERDLL_ICON_INDEX,
-                            hRootItem );
+                                         defUSERDLL_ICON_INDEX,
+                                         defUSERDLL_ICON_INDEX,
+                                         hRootItem );
         // Get the size
         int nDllFiles = m_sProperties.m_omDLLFile.GetSize();
+
         // Insert each items
         for( nIndex = 0; nIndex < nDllFiles; nIndex++ )
         {
-            m_omPropertyTree.InsertItem( 
-                            m_sProperties.m_omDLLFile[ nIndex ],
-                            defUSERDLL_ICON_INDEX,
-                            defUSERDLL_ICON_INDEX,
-                            hDLLs);
+            m_omPropertyTree.InsertItem(
+                m_sProperties.m_omDLLFile[ nIndex ],
+                defUSERDLL_ICON_INDEX,
+                defUSERDLL_ICON_INDEX,
+                hDLLs);
         }
     }
 
     return TRUE;  // return TRUE unless you set the focus to a control
-                  // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }

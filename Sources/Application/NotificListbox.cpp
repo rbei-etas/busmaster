@@ -80,10 +80,10 @@ END_MESSAGE_MAP()
 /******************************************************************************
  Function Name  :   OnRButtonDown
 
- Description    :   The framework calls this member function when the user 
+ Description    :   The framework calls this member function when the user
                     right clicks on the list box
- Input(s)       :    nFlags - 
-                    point - 
+ Input(s)       :    nFlags -
+                    point -
  Output         :   -
  Functionality  :   Shows a popup menu to clear the contents of the listbox
  Member of      :   CNotificListbox
@@ -91,11 +91,12 @@ END_MESSAGE_MAP()
  Author(s)      :   Ravikumar Patil
  Date Created   :   27-03-2003
 ******************************************************************************/
-void CNotificListbox::OnRButtonDown(UINT nFlags, CPoint point) 
+void CNotificListbox::OnRButtonDown(UINT nFlags, CPoint point)
 {
     if (GetCount() > 0)
     {
         CMenu* pomContextMenu = new CMenu;
+
         if (pomContextMenu != NULL)
         {
             // Load the Menu from the resource
@@ -107,24 +108,25 @@ void CNotificListbox::OnRButtonDown(UINT nFlags, CPoint point)
             {
                 CPoint omSrcPt = point;
                 ClientToScreen(&omSrcPt);
-                UINT unEnable; 
-                /* If no item is selected, make "Clear" and "Delete" menu 
+                UINT unEnable;
+
+                /* If no item is selected, make "Clear" and "Delete" menu
                 items disabled */
-                if (GetCurSel() == -1) 
+                if (GetCurSel() == -1)
                 {
                     unEnable = MF_BYCOMMAND | MF_DISABLED | MF_GRAYED;
                 }
-                else 
+                else
                 {
                     unEnable = MF_BYCOMMAND | MF_ENABLED;
                 }
-                
+
                 pomSubMenu->EnableMenuItem(IDM_OPRTN_CLEAR, unEnable);
                 pomSubMenu->EnableMenuItem(IDM_OPRTN_DELETE, unEnable);
-                
-                pomSubMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, 
-                                      omSrcPt.x, omSrcPt.y, this, NULL);
+                pomSubMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON,
+                                           omSrcPt.x, omSrcPt.y, this, NULL);
             }
+
             delete pomContextMenu;
             pomContextMenu = NULL;
         }
@@ -137,8 +139,8 @@ void CNotificListbox::OnRButtonDown(UINT nFlags, CPoint point)
  Function Name  :   OnTraceWndClear
 
  Description    :   Handler to remove all the trace entries in the list box
- Input(s)       :   nFlags - 
-                    point - 
+ Input(s)       :   nFlags -
+                    point -
  Output         :   -
  Functionality  :   Deletes all the items in the listbox
  Member of      :   CNotificListbox
@@ -146,7 +148,7 @@ void CNotificListbox::OnRButtonDown(UINT nFlags, CPoint point)
  Author(s)      :   Ravikumar Patil
  Date Created   :   27-03-2003
 ******************************************************************************/
-void CNotificListbox::OnTraceWndClear() 
+void CNotificListbox::OnTraceWndClear()
 {
     // TODO: Add your command handler code here
     // Delete all strings in the list box
@@ -156,31 +158,33 @@ void CNotificListbox::OnTraceWndClear()
 /* OnClick menu Select All*/
 void CNotificListbox::OnNotificwndSelectall()
 {
-	for (int i = 0; i < GetCount(); i++)
-	{
-		SetSel(i, TRUE);
-	}
+    for (int i = 0; i < GetCount(); i++)
+    {
+        SetSel(i, TRUE);
+    }
 }
 
 /* OnClick menu Copy Text */
 void CNotificListbox::OnNotificwndCopytoclipboard()
-{    
-	
-	CString omFullText = _T("");
-	for (int i = 0; i < GetCount(); i++)
-	{
-		if (GetSel(i))
-		{		
-			CString omText = _T("");
-			GetText(i, omText);
-			if (!omText.IsEmpty())
-			{
-				//omText = omText + L"\r\n";				
-				omText.Format(_T("%s\r\n"), omText);
-				omFullText = omFullText + omText;				
-			}
-		}
-	}
+{
+    CString omFullText = _T("");
+
+    for (int i = 0; i < GetCount(); i++)
+    {
+        if (GetSel(i))
+        {
+            CString omText = _T("");
+            GetText(i, omText);
+
+            if (!omText.IsEmpty())
+            {
+                //omText = omText + L"\r\n";
+                omText.Format(_T("%s\r\n"), omText);
+                omFullText = omFullText + omText;
+            }
+        }
+    }
+
     CopyTextToClipboard(omFullText.GetBuffer(MAX_PATH), NULL);
 }
 
@@ -188,24 +192,24 @@ void CNotificListbox::OnNotificwndCopytoclipboard()
  Function Name  :   OnTraceWndDelete
 
  Description    :   Handler to remove the selected trace entry in the list box
- Input(s)       :   - 
-                    - 
+ Input(s)       :   -
+                    -
  Output         :   -
  Functionality  :   Deletes the selected item in the Listbox
  Member of      :   CNotificListbox
 
  Author(s)      :   Ravikumar Patil
  Date Created   :   27-03-2003
- Modification	:   By Pradeep Kadoor on 3/12/2008
+ Modification   :   By Pradeep Kadoor on 3/12/2008
 ******************************************************************************/
-void CNotificListbox::OnTraceWndDelete() 
+void CNotificListbox::OnTraceWndDelete()
 {
-	for (int i = 0; i < GetCount(); i++)
-	{
-		if (GetSel(i))
-		{
-			DeleteString(i);
-			--i;
-		}
-	}     
+    for (int i = 0; i < GetCount(); i++)
+    {
+        if (GetSel(i))
+        {
+            DeleteString(i);
+            --i;
+        }
+    }
 }

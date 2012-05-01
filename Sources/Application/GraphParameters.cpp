@@ -44,7 +44,7 @@
  Member of      : CGraphParameters
  Author(s)      : Raja N
  Date Created   : 01.12.2004
- Modifications  : 
+ Modifications  :
 *******************************************************************************/
 CGraphParameters::CGraphParameters()
 {
@@ -77,8 +77,8 @@ void CGraphParameters::vInitialize(void)
     m_nAction = defTRACK_MODE_NONE; // None
     // Grid Setting
     m_bShowGrid = TRUE;
-	//Graph Line Display
-	m_eDisplayType = eDISPLAY_NORMAL;	
+    //Graph Line Display
+    m_eDisplayType = eDISPLAY_NORMAL;
 }
 /*******************************************************************************
  Function Name  : ~CGraphParameters
@@ -89,22 +89,22 @@ void CGraphParameters::vInitialize(void)
  Member of      : CGraphParameters
  Author(s)      : Raja N
  Date Created   : 01.12.2004
- Modifications  : 
+ Modifications  :
 *******************************************************************************/
 CGraphParameters::~CGraphParameters()
 {
-
 }
 BYTE* CGraphParameters::pbyGetConfigData(BYTE* pbyTrgtData, BYTE byVersion)
 {
     BYTE* pbyTemp = pbyTrgtData;
+
     if (pbyTemp != NULL)
     {
         // Set the def
         COPY_DATA(pbyTemp, &m_nBufferSize, sizeof(int));
         // Display ref
         COPY_DATA(pbyTemp, &m_nRefreshRate, sizeof(int));
-        // View Style 
+        // View Style
         // Frame Color
         COPY_DATA(pbyTemp, &m_nFrameColor, sizeof(int));
         // Frame Style
@@ -125,24 +125,27 @@ BYTE* CGraphParameters::pbyGetConfigData(BYTE* pbyTrgtData, BYTE byVersion)
         COPY_DATA(pbyTemp, &m_nAction, sizeof(int));
         // Grid Settin
         COPY_DATA(pbyTemp, &m_bShowGrid, sizeof(BOOL));
-		if(byVersion == 2)
-		{
-			//Line Display type
-			COPY_DATA(pbyTemp, &m_eDisplayType, sizeof(eDISPLAY_TYPE));		
-		}
+
+        if(byVersion == 2)
+        {
+            //Line Display type
+            COPY_DATA(pbyTemp, &m_eDisplayType, sizeof(eDISPLAY_TYPE));
+        }
     }
+
     return pbyTemp;
 }
 BYTE* CGraphParameters::pbySetConfigData(BYTE* pbyTrgtData, BYTE byVersion)
 {
     BYTE* pbyTemp = pbyTrgtData;
+
     if (pbyTemp != NULL)
     {
         // Set the def
         COPY_DATA_2(&m_nBufferSize, pbyTemp, sizeof(int));
         // Display ref
         COPY_DATA_2(&m_nRefreshRate, pbyTemp, sizeof(int));
-        // View Style 
+        // View Style
         // Frame Color
         COPY_DATA_2(&m_nFrameColor, pbyTemp, sizeof(int));
         // Frame Style
@@ -163,16 +166,18 @@ BYTE* CGraphParameters::pbySetConfigData(BYTE* pbyTrgtData, BYTE byVersion)
         COPY_DATA_2(&m_nAction, pbyTemp, sizeof(int));
         // Grid Settin
         COPY_DATA_2(&m_bShowGrid, pbyTemp, sizeof(BOOL));
-		if(byVersion == 2)
-		{
-			//Line Display type
-			COPY_DATA_2(&m_eDisplayType, pbyTemp, sizeof(eDISPLAY_TYPE));		
-		}
-		else if(byVersion == 1)
-		{
-			m_eDisplayType = eDISPLAY_NORMAL;
-		}
+
+        if(byVersion == 2)
+        {
+            //Line Display type
+            COPY_DATA_2(&m_eDisplayType, pbyTemp, sizeof(eDISPLAY_TYPE));
+        }
+        else if(byVersion == 1)
+        {
+            m_eDisplayType = eDISPLAY_NORMAL;
+        }
     }
+
     return pbyTemp;
 }
 /*******************************************************************************
@@ -183,11 +188,12 @@ BYTE* CGraphParameters::pbySetConfigData(BYTE* pbyTrgtData, BYTE byVersion)
  Member of      : CGraphParameters
  Author(s)      : Raja N
  Date Created   : 01.12.2004
- Modifications  : 
+ Modifications  :
 *******************************************************************************/
 int CGraphParameters::nSerialize(CArchive& omArchive)
 {
     int nReturn = 0;
+
     try
     {
         // If it is storing
@@ -197,7 +203,7 @@ int CGraphParameters::nSerialize(CArchive& omArchive)
             omArchive << m_nBufferSize;
             // Display ref
             omArchive << m_nRefreshRate;
-            // View Style 
+            // View Style
             // Frame Color
             omArchive << m_nFrameColor;
             // Frame Style
@@ -226,7 +232,7 @@ int CGraphParameters::nSerialize(CArchive& omArchive)
             omArchive >> m_nBufferSize;
             // Display ref
             omArchive >> m_nRefreshRate;
-            // View Style 
+            // View Style
             // Frame Color
             omArchive >> m_nFrameColor;
             // Frame Style
@@ -255,6 +261,7 @@ int CGraphParameters::nSerialize(CArchive& omArchive)
         nReturn = poArchExcep->m_cause;
         poArchExcep->Delete();
     }
+
     // Return the result
     return nReturn;
 }
@@ -267,11 +274,11 @@ int CGraphParameters::nSerialize(CArchive& omArchive)
  Member of      : CGraphParameters
  Author(s)      : ArunKumar K
  Date Created   : 16.12.2010
- Modifications  : 
+ Modifications  :
 *******************************************************************************/
 UINT CGraphParameters::unGetConfigSize(BYTE byVersion)
 {
-	UINT unSize = 0;    
+    UINT unSize = 0;
     // Display perf conf.
     // Buffer size
     unSize += sizeof(int);
@@ -298,11 +305,12 @@ UINT CGraphParameters::unGetConfigSize(BYTE byVersion)
     unSize += sizeof(int);
     // Grid Setting
     unSize += sizeof(BOOL);
-	if(byVersion == 2)
-	{
-		// Line Display
-		unSize += sizeof(int);   
-	}
 
-	return unSize;
+    if(byVersion == 2)
+    {
+        // Line Display
+        unSize += sizeof(int);
+    }
+
+    return unSize;
 }

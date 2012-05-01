@@ -27,29 +27,29 @@
 // Definition of PSTOOLBARINFO structure is here
 #include "struct.h"
 
-// enumeration for all flags 
+// enumeration for all flags
 typedef enum eCANMONITORFLAG
 {
-    LOGTODISPLAY = 0, 
-    LOGTOFILE, 
+    LOGTODISPLAY = 0,
+    LOGTOFILE,
     REPLAYMODE,
     REPLAYFILESELECTED,
-    LOGFILTER, 
-    DISPLAYFILTERON, 
-    TRANSLATIONMODE, 
-    FILTERUNDEFINEDMSGS, 
+    LOGFILTER,
+    DISPLAYFILTERON,
+    TRANSLATIONMODE,
+    FILTERUNDEFINEDMSGS,
     FILTERTXMSGS,
     RXMSG,
-    SELECTDATABASEFILE, 
-    DLLLOADED, 
-    TIMERBUTTON, 
-    MSGHANDLERBUTTON, 
-    //SIGNALWATCH, 
-    FUNCEDITOR, 
-    DBOPEN, 
-    HEX, 
-    DISPLAYMSGWINDOW, 
-    DISPLAYTIMEMODE, 
+    SELECTDATABASEFILE,
+    DLLLOADED,
+    TIMERBUTTON,
+    MSGHANDLERBUTTON,
+    //SIGNALWATCH,
+    FUNCEDITOR,
+    DBOPEN,
+    HEX,
+    DISPLAYMSGWINDOW,
+    DISPLAYTIMEMODE,
     SCROLLING,
     SENDMESG,
     OVERWRITE,
@@ -66,18 +66,18 @@ typedef enum eCANMONITORFLAG
     LOGTIMEMODE,
     eLOGOVERWRITEMODEON,
     eLOGREPLAYMSGTYPE,
-	SEND_SIGNAL_MSG,
+    SEND_SIGNAL_MSG,
     ACTIVATED_J1939,
 };
 
-class CFlags  
+class CFlags
 {
 public:
     void vSetToolbarButtonStatus(  PSTOOLBARINFO psToolBarInfo );
     void vGetToolbarButtonStatus( PSTOOLBARINFO psToolBarInfo );
     int nGetFlagStatus(eCANMONITORFLAG WhichFlag);
     VOID vSetFlagStatus(eCANMONITORFLAG WhichFlag, int nValue);
-	void vInitializeFlags();
+    void vInitializeFlags();
     //CFlags(PSTOOLBARINFO psToolBarInfo);
     //CFlags();
     virtual ~CFlags();
@@ -116,11 +116,11 @@ private:
     BOOL m_bDLLHandlerOn;
     BOOL m_bALLHandler;
     BOOL m_bParallelPortEPP;
-    BOOL m_bLogHexON; 
+    BOOL m_bLogHexON;
     WORD m_wLogTimeMode;
     int m_nReplayMsgType;
     BOOL m_bLogOverWriteON;
-	BOOL m_bSendSignalMSg;
+    BOOL m_bSendSignalMSg;
     BOOL m_bActivatedJ1939;     // Current active bus for configuration.
 
     // Private constructors to make singleton class

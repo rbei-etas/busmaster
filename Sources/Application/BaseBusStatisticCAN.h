@@ -24,10 +24,10 @@
 
 #pragma once
 
-enum eLOAD 
+enum eLOAD
 {
-    CURRENT = 0, 
-    AVERAGE, 
+    CURRENT = 0,
+    AVERAGE,
     PEAK
 };
 class CBaseBusStatisticCAN
@@ -39,36 +39,36 @@ class CBaseBusStatisticCAN
         4. byMsgType can be TYPE_MSG_CAN_RTR, TYPE_MSG_CAN_NON_RTR, TYPE_MSG_CAN_ALL
         5. eLoad can be CURRENT, AVERAGE, PEAK
     */
-    public:
+public:
 
-        /* This function should be called for the very first time. */        
-        virtual HRESULT BSC_DoInitialization(void) = 0;
-        /* This function resets the bus statistics */
-        virtual HRESULT BSC_ResetBusStatistic(void) = 0;
-        /* Get the total number of valid messages transmitted to or 
-           received from the bus */
-        virtual HRESULT BSC_GetTotalMsgCount(UINT unChannelIndex, eDirection eDir, BYTE byIdType,  
-                                     BYTE byMsgType, UINT& nMsgCount) = 0;
-        /* Get the total number of error messages occurred while receiving or
-           transmitting */
-        virtual HRESULT BSC_GetTotalErrCount(UINT unChannelIndex, eDirection eDir, UINT& nErrCount) = 0;
+    /* This function should be called for the very first time. */
+    virtual HRESULT BSC_DoInitialization(void) = 0;
+    /* This function resets the bus statistics */
+    virtual HRESULT BSC_ResetBusStatistic(void) = 0;
+    /* Get the total number of valid messages transmitted to or
+       received from the bus */
+    virtual HRESULT BSC_GetTotalMsgCount(UINT unChannelIndex, eDirection eDir, BYTE byIdType,
+                                         BYTE byMsgType, UINT& nMsgCount) = 0;
+    /* Get the total number of error messages occurred while receiving or
+       transmitting */
+    virtual HRESULT BSC_GetTotalErrCount(UINT unChannelIndex, eDirection eDir, UINT& nErrCount) = 0;
 
-        /* Get average number of msgs per second(Msg/s)*/
-        virtual HRESULT BSC_GetAvgMsgCountPerSec(UINT unChannelIndex, eDirection eDir, 
-                                         BYTE byIdType, double& dMsgCount) = 0;
-        /* Get average number of errors per second(Err/s)*/
-        virtual HRESULT BSC_GetAvgErrCountPerSec(UINT unChannelIndex, eDirection eDir, double& dErrCount) = 0;
-        /* Get the bus load */
-        virtual HRESULT BSC_GetBusLoad(UINT unChannelIndex, eLOAD eLoad, double &dBusLoad) = 0;
-        /* Get controller status */
-        /* Note: eLoad can have only CURRENT, PEAK.*/
-        virtual HRESULT BSC_GetErrorCounter(UINT unChannelIndex, eDirection eDir, eLOAD eLoad, UCHAR &ucErrCounter) = 0;
-        //Setting BaudRate
-        virtual HRESULT BSC_SetBaudRate(UINT unChannelIndex, double dBaudRate) = 0;
-        //Start updating BusStatistics data
-        virtual BOOL BSC_bStartUpdation(BOOL bStart)= 0;
-        //Get the controller status
-        virtual UCHAR BSC_ucGetControllerStatus(UINT unChannelIndex) = 0;
-        //Get the required channel's BusStistic structure.
-        virtual HRESULT BSC_GetBusStatistics(UINT unChannelIndex, SBUSSTATISTICS& sBusStatistics) = 0;
+    /* Get average number of msgs per second(Msg/s)*/
+    virtual HRESULT BSC_GetAvgMsgCountPerSec(UINT unChannelIndex, eDirection eDir,
+            BYTE byIdType, double& dMsgCount) = 0;
+    /* Get average number of errors per second(Err/s)*/
+    virtual HRESULT BSC_GetAvgErrCountPerSec(UINT unChannelIndex, eDirection eDir, double& dErrCount) = 0;
+    /* Get the bus load */
+    virtual HRESULT BSC_GetBusLoad(UINT unChannelIndex, eLOAD eLoad, double& dBusLoad) = 0;
+    /* Get controller status */
+    /* Note: eLoad can have only CURRENT, PEAK.*/
+    virtual HRESULT BSC_GetErrorCounter(UINT unChannelIndex, eDirection eDir, eLOAD eLoad, UCHAR& ucErrCounter) = 0;
+    //Setting BaudRate
+    virtual HRESULT BSC_SetBaudRate(UINT unChannelIndex, double dBaudRate) = 0;
+    //Start updating BusStatistics data
+    virtual BOOL BSC_bStartUpdation(BOOL bStart)= 0;
+    //Get the controller status
+    virtual UCHAR BSC_ucGetControllerStatus(UINT unChannelIndex) = 0;
+    //Get the required channel's BusStistic structure.
+    virtual HRESULT BSC_GetBusStatistics(UINT unChannelIndex, SBUSSTATISTICS& sBusStatistics) = 0;
 };

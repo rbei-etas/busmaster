@@ -35,16 +35,16 @@ CStringArray g_arrstrBusNames;
 IMPLEMENT_DYNCREATE(CMsgWndThread, CWinThread)
 
 CMsgWndThread::CMsgWndThread()
-{	
-	g_arrstrBusNames.Add(CString(" - CAN"));
-	g_arrstrBusNames.Add(CString(" - MCNET"));
-	g_arrstrBusNames.Add(CString(" - J1939"));
-	g_arrstrBusNames.Add(CString(" - FLEXRAY"));
+{
+    g_arrstrBusNames.Add(CString(" - CAN"));
+    g_arrstrBusNames.Add(CString(" - MCNET"));
+    g_arrstrBusNames.Add(CString(" - J1939"));
+    g_arrstrBusNames.Add(CString(" - FLEXRAY"));
 
-	for(short shBusID = CAN; shBusID < BUS_TOTAL; shBusID++)
-	{
-		m_pMsgWnd[shBusID] = NULL;
-	}
+    for(short shBusID = CAN; shBusID < BUS_TOTAL; shBusID++)
+    {
+        m_pMsgWnd[shBusID] = NULL;
+    }
 }
 
 CMsgWndThread::~CMsgWndThread()
@@ -53,18 +53,18 @@ CMsgWndThread::~CMsgWndThread()
 
 BOOL CMsgWndThread::InitInstance()
 {
-	// TODO:  perform and per-thread initialization here
-	return TRUE;
+    // TODO:  perform and per-thread initialization here
+    return TRUE;
 }
 
 int CMsgWndThread::ExitInstance()
 {
-	// TODO:  perform any per-thread cleanup here
-	return CWinThread::ExitInstance();
+    // TODO:  perform any per-thread cleanup here
+    return CWinThread::ExitInstance();
 }
 
 BEGIN_MESSAGE_MAP(CMsgWndThread, CWinThread)
-	ON_THREAD_MESSAGE(WM_MODIFY_VISIBILITY, vModifyVisibilityStatus)
+    ON_THREAD_MESSAGE(WM_MODIFY_VISIBILITY, vModifyVisibilityStatus)
     //ON_THREAD_MESSAGE(WM_SHUTDOWN_MSGWNDTHREAD, vShutdownThread)
 END_MESSAGE_MAP()
 
@@ -72,72 +72,75 @@ END_MESSAGE_MAP()
 
 BOOL CMsgWndThread::CreateMsgWnd(HWND hFrameWnd, eTYPE_BUS eBusType, DWORD dwClientID, void* pParam)
 {
-	CString strWndText;
-	strWndText.LoadString(IDR_MESSAGE_WINDOW_TEXT);
-	strWndText+= g_arrstrBusNames.GetAt((int)eBusType);
-
+    CString strWndText;
+    strWndText.LoadString(IDR_MESSAGE_WINDOW_TEXT);
+    strWndText+= g_arrstrBusNames.GetAt((int)eBusType);
     m_bAutoDelete = TRUE;
-	m_pMsgWnd[eBusType] = new CMsgFrmtWnd(eBusType);
-	m_pMainWnd = m_pMsgWnd[eBusType];
-	
+    m_pMsgWnd[eBusType] = new CMsgFrmtWnd(eBusType);
+    m_pMainWnd = m_pMsgWnd[eBusType];
     CString omArrColTitle[MAX_MSG_WND_COL_CNT] = {_T("")};
     int nCount = 0;
-	CMsgWndHdrInfo objMsgHdrInfo;
-    objMsgHdrInfo.vGetHdrColNames(omArrColTitle, nCount); 
+    CMsgWndHdrInfo objMsgHdrInfo;
+    objMsgHdrInfo.vGetHdrColNames(omArrColTitle, nCount);
     m_pMsgWnd[eBusType]->vSetColTitles(omArrColTitle, nCount);
-	
     m_pMsgWnd[eBusType]->Create(strWndText, WS_CHILD | WS_VISIBLE | WS_OVERLAPPEDWINDOW,
-            CRect(0,0, CFrameWnd::rectDefault.right, CFrameWnd::rectDefault.bottom),
-            (CMDIFrameWnd*) (CWnd::FromHandle(hFrameWnd)));
-     // Set specific parameters on successful creation    	
-    m_pMsgWnd[eBusType]->vInit(pParam);	
-	m_pMsgWnd[eBusType]->vSetClientID(dwClientID);		
-
-	return TRUE;
+                                CRect(0,0, CFrameWnd::rectDefault.right, CFrameWnd::rectDefault.bottom),
+                                (CMDIFrameWnd*) (CWnd::FromHandle(hFrameWnd)));
+    // Set specific parameters on successful creation
+    m_pMsgWnd[eBusType]->vInit(pParam);
+    m_pMsgWnd[eBusType]->vSetClientID(dwClientID);
+    return TRUE;
 }
 
 void CMsgWndThread::vUpdateClientID(eTYPE_BUS eBusType, DWORD dwClientID)
 {
-	if(m_pMsgWnd[eBusType])
-	{		
-		m_pMsgWnd[eBusType]->vSetClientID(dwClientID);
-		//Client ID updation needs the thread restart
-		m_pMsgWnd[eBusType]->bStartReadThread();
-	}
+    if(m_pMsgWnd[eBusType])
+    {
+        m_pMsgWnd[eBusType]->vSetClientID(dwClientID);
+        //Client ID updation needs the thread restart
+        m_pMsgWnd[eBusType]->bStartReadThread();
+    }
 }
 
 void CMsgWndThread::vModifyVisibilityStatus(UINT unParam, LONG lParam)
 {
-	eTYPE_BUS eBusType = (eTYPE_BUS) lParam;	
-	if(unParam == SW_SHOW)
-	{
-		if (m_pMsgWnd[eBusType] != NULL)
-		{
-			m_pMsgWnd[eBusType]->ShowWindow(SW_SHOW);
-			m_pMsgWnd[eBusType]->MDIActivate();
-		}
-	}
-	else if(unParam == SW_HIDE)
-	{
-		if (m_pMsgWnd[eBusType] != NULL)
-		{
-			m_pMsgWnd[eBusType]->ShowWindow(SW_HIDE);
-		}
-	}
+    eTYPE_BUS eBusType = (eTYPE_BUS) lParam;
+
+    if(unParam == SW_SHOW)
+    {
+        if (m_pMsgWnd[eBusType] != NULL)
+        {
+            m_pMsgWnd[eBusType]->ShowWindow(SW_SHOW);
+            m_pMsgWnd[eBusType]->MDIActivate();
+        }
+    }
+    else if(unParam == SW_HIDE)
+    {
+        if (m_pMsgWnd[eBusType] != NULL)
+        {
+            m_pMsgWnd[eBusType]->ShowWindow(SW_HIDE);
+        }
+    }
 }
 
 HWND CMsgWndThread::hGetHandleMsgWnd(eTYPE_BUS eBusType)
 {
-	if(m_pMsgWnd[eBusType])
-		return m_pMsgWnd[eBusType]->GetSafeHwnd();
-	else
-		return NULL;
+    if(m_pMsgWnd[eBusType])
+    {
+        return m_pMsgWnd[eBusType]->GetSafeHwnd();
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 void CMsgWndThread::vSetDILInterfacePointer(eTYPE_BUS eBusType, void** ppvJ1939DIL)
-{	
-	if(m_pMsgWnd[eBusType])
-		m_pMsgWnd[eBusType]->vSetDILInterfacePointer(ppvJ1939DIL);
+{
+    if(m_pMsgWnd[eBusType])
+    {
+        m_pMsgWnd[eBusType]->vSetDILInterfacePointer(ppvJ1939DIL);
+    }
 }
 
 /*void CMsgWndThread::vShutdownThread(UINT unParam, LONG lParam)

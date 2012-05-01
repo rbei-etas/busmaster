@@ -21,7 +21,7 @@
 
 #pragma once
 
-//#define WM_MODIFY_VISIBILITY		(WM_USER + 14)
+//#define WM_MODIFY_VISIBILITY      (WM_USER + 14)
 #define WM_SHUTDOWN_MSGWNDTHREAD    (WM_USER + 15)
 
 // CMsgWndThread
@@ -29,24 +29,24 @@ class CMsgFrmtWnd;
 
 class CMsgWndThread : public CWinThread
 {
-	DECLARE_DYNCREATE(CMsgWndThread)
-	CMsgWndThread();           // protected constructor used by dynamic creation
-protected:	
-	
-	CMsgFrmtWnd *m_pMsgWnd[MAX_PROTOCOL];
-	
+    DECLARE_DYNCREATE(CMsgWndThread)
+    CMsgWndThread();           // protected constructor used by dynamic creation
+protected:
+
+    CMsgFrmtWnd* m_pMsgWnd[MAX_PROTOCOL];
+
 public:
     virtual ~CMsgWndThread();
-	virtual BOOL InitInstance();
-	virtual int ExitInstance();		
+    virtual BOOL InitInstance();
+    virtual int ExitInstance();
 
-	BOOL CreateMsgWnd(HWND hFrameWnd, eTYPE_BUS eBusType, DWORD dwClientID, void* pParam);
-	void vUpdateClientID(eTYPE_BUS eBusType, DWORD dwClientID);
-	afx_msg void vModifyVisibilityStatus(UINT, LONG);
+    BOOL CreateMsgWnd(HWND hFrameWnd, eTYPE_BUS eBusType, DWORD dwClientID, void* pParam);
+    void vUpdateClientID(eTYPE_BUS eBusType, DWORD dwClientID);
+    afx_msg void vModifyVisibilityStatus(UINT, LONG);
     afx_msg void vShutdownThread(UINT, LONG);
     HWND hGetHandleMsgWnd(eTYPE_BUS eBusType);
-	void vSetDILInterfacePointer(eTYPE_BUS eBusType, void** ppvJ1939DIL);
+    void vSetDILInterfacePointer(eTYPE_BUS eBusType, void** ppvJ1939DIL);
 
 protected:
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };

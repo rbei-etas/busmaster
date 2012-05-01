@@ -29,18 +29,18 @@
 #include "DisplayIntMsg.h"
 
 /******************************************************************************/
-/*  Function Name    :  CDisplayIntMsg                                        */    
-/*  Input(s)         :                                                        */    
-/*  Output           :                                                        */    
+/*  Function Name    :  CDisplayIntMsg                                        */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
 /*  Functionality    :  Constructor is called when user create an object of   */
 /*                      this class. m_omInterpretedMsg data member will be    */
 /*                      assing the value passed as parameter omStrStringArray */
-/*  Member of        :  CDisplayIntMsg                                        */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :  Amitesh Bharti                                        */    
-/*  Date Created     :  15.03.2002                                            */    
-/*  Modifications    :                                                        */    
-/*                                                                            */    
+/*  Member of        :  CDisplayIntMsg                                        */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  15.03.2002                                            */
+/*  Modifications    :                                                        */
+/*                                                                            */
 /******************************************************************************/
 CDisplayIntMsg::CDisplayIntMsg(CONST CStringArray& omStrStringArray)
     : CDialog(CDisplayIntMsg::IDD, NULL)
@@ -49,18 +49,18 @@ CDisplayIntMsg::CDisplayIntMsg(CONST CStringArray& omStrStringArray)
     m_omInterpretedMsg.Copy(omStrStringArray);
 }
 /******************************************************************************/
-/*  Function Name    :  CDisplayIntMsg                                        */    
-/*  Input(s)         :                                                        */    
-/*  Output           :                                                        */    
+/*  Function Name    :  CDisplayIntMsg                                        */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
 /*  Functionality    :  Constructor is called when user create an object of   */
 /*                      this class. m_omInterpretedMsg data member will be    */
 /*                      assing the value passed as parameter omStrStringArray */
-/*  Member of        :  CDisplayIntMsg                                        */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :  Amitesh Bharti                                        */    
-/*  Date Created     :  15.03.2002                                            */    
-/*  Modifications    :                                                        */    
-/*                                                                            */    
+/*  Member of        :  CDisplayIntMsg                                        */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  15.03.2002                                            */
+/*  Modifications    :                                                        */
+/*                                                                            */
 /******************************************************************************/
 void CDisplayIntMsg::DoDataExchange(CDataExchange* pDX)
 {
@@ -76,22 +76,22 @@ BEGIN_MESSAGE_MAP(CDisplayIntMsg, CDialog)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 /******************************************************************************/
-/*  Function Name    :  OnInitDialog                                          */    
-/*  Input(s)         :                                                        */    
-/*  Output           :                                                        */    
+/*  Function Name    :  OnInitDialog                                          */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
 /*  Functionality    :  This function will be called by frame work after      */
 /*                       DoModal() function call. The edit control attached to*/
 /*                      this dialog will be initialied with text in item of   */
 /*                      data member m_omInterpretedMsg after inserting the new*/
 /*                      charactors.                                           */
-/*  Member of        :  OnInitDialog                                          */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :  Amitesh Bharti                                        */    
-/*  Date Created     :  15.03.2002                                            */    
-/*  Modifications    :  28.03.2002, Amitesh Bharti                            */    
-/*                       Review comment                                       */    
+/*  Member of        :  OnInitDialog                                          */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  15.03.2002                                            */
+/*  Modifications    :  28.03.2002, Amitesh Bharti                            */
+/*                       Review comment                                       */
 /******************************************************************************/
-BOOL CDisplayIntMsg::OnInitDialog() 
+BOOL CDisplayIntMsg::OnInitDialog()
 {
     CDialog::OnInitDialog();
     // Get the content of CStringArray object and add it to CString object
@@ -99,15 +99,15 @@ BOOL CDisplayIntMsg::OnInitDialog()
     CString omStr           = _T("");
     CString omStrDisplay    = _T("");
     INT nTotalItem = m_omInterpretedMsg.GetSize();
-    for(INT nCount=0;nCount<nTotalItem;nCount++)
+
+    for(INT nCount=0; nCount<nTotalItem; nCount++)
     {
         omStr.Format("%s\r\n",m_omInterpretedMsg.GetAt(nCount));
         omStrDisplay  += omStr;
     }
+
     // Set the edit box text.
     m_omEditControl.SetWindowText(omStrDisplay);
-
-
     return TRUE;  // return TRUE unless you set the focus to a control
-                  // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
