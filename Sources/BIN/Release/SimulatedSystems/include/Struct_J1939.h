@@ -23,66 +23,74 @@ typedef enum ETYPE_TIMEOUT
     TYPE_TO_T4
 };
 
-/* TYPES OF ACKNOWLEDGEMENT */
+/**
+ * TYPES OF ACKNOWLEDGEMENT
+ */
 typedef enum ETYPE_ACK
 {
     ACK_POS = 0,
     ACK_NEG
 };
 
-/* ECU NAME STRUCTURE */
+/**
+ * ECU NAME STRUCTURE
+ */
 typedef struct tagSECU_NAME
 {
-    UINT32  m_unID           : 21;
-    UINT32  m_unSAE_MF_CODE  : 11;
-    BYTE    m_byECU_INST     : 3;
-    BYTE    m_byFUNC_INST    : 5;
-    BYTE    m_bySAE_FUNCTION : 8;
-    BYTE    m_bySAE_RESERVED : 1;
-    BYTE    m_bySAE_VHL_SYS  : 7;
-    BYTE    m_byVHL_SYS_INST : 4;
-    BYTE    m_bySAE_IND_GRP  : 3;
-    BYTE    m_byARB_ADRS_CPL : 1;
+    unsigned int  m_unID           : 21;
+    unsigned int  m_unSAE_MF_CODE  : 11;
+    unsigned char m_byECU_INST     : 3;
+    unsigned char m_byFUNC_INST    : 5;
+    unsigned char m_bySAE_FUNCTION : 8;
+    unsigned char m_bySAE_RESERVED : 1;
+    unsigned char m_bySAE_VHL_SYS  : 7;
+    unsigned char m_byVHL_SYS_INST : 4;
+    unsigned char m_bySAE_IND_GRP  : 3;
+    unsigned char m_byARB_ADRS_CPL : 1;
 
 } STRUCT_ECU_NAME;
 
 /* J1939 PGN structure */
 typedef struct tagSTRUCT_PGN
 {
-    BYTE m_byPDU_Specific   : 8; /* PDU Specific (PS), Destination address if 0 <= PF <= 239.
-                                                       Group Extension (GE)if 240 <= PF <= 255. */
-    BYTE m_byPDU_Format     : 8; /* PDU Format (PF), Indicates Peer_2_peer or Broadcast. */
-    BYTE m_byDataPage       : 1; /* DataPage (DP), Set to 0 currently. */
-    BYTE m_byReserved       : 1; /* Reserved, Set to 0. */
-    BYTE m_byPriority       : 3;
+    unsigned char m_byPDU_Specific   : 8; /* PDU Specific (PS), Destination address if 0 <= PF <= 239.
+                                             Group Extension (GE)if 240 <= PF <= 255. */
+    unsigned char m_byPDU_Format     : 8; /* PDU Format (PF), Indicates Peer_2_peer or Broadcast. */
+    unsigned char m_byDataPage       : 1; /* DataPage (DP), Set to 0 currently. */
+    unsigned char m_byReserved       : 1; /* Reserved, Set to 0. */
+    unsigned char m_byPriority       : 3;
 
 } STRUCT_PGN;
 
 typedef union tagUPGN
 {
-    UINT32      m_unPGN : 21;
-    STRUCT_PGN  m_sPGN;
+    unsigned int m_unPGN : 21;
+    STRUCT_PGN   m_sPGN;
 
 } UNION_PGN;
 
-/* J1939 Extended 29 bit ID */
+/**
+ * J1939 Extended 29 bit ID
+ */
 typedef struct tagSTRUCT_29_BIT_ID
 {
-    BYTE        m_bySrcAddress     : 8; /* Sender node address. */
-    UNION_PGN   m_uPGN;                 /* Parameter group number(PGN). SAE lists various PGNS and its SPNS. */
+    unsigned char        m_bySrcAddress     : 8; /* Sender node address. */
+    UNION_PGN   m_uPGN;                          /* Parameter group number(PGN). SAE lists various PGNS and its SPNS. */
 } STRUCT_29_BIT_ID;
 
 typedef union tag29BitID
 {
-    UINT32              m_unExtID : 29;
+    unsigned int        m_unExtID : 29;
     STRUCT_29_BIT_ID    m_s29BitId;
 
 } UNION_29_BIT_ID;
 
-/* J1939 message type */
+/**
+ * J1939 message type
+ */
 typedef enum EJ1939_MSG_TYPE
 {
-    MSG_TYPE_NONE = 0x0,
+    MSG_TYPE_NONE = 0,
     MSG_TYPE_COMMAND,
     MSG_TYPE_REQUEST,
     MSG_TYPE_DATA,
@@ -108,11 +116,13 @@ typedef enum EDIRECTION
     DIR_ALL
 };
 
-/* J1939 message properties */
+/**
+ * J1939 message properties
+ */
 typedef struct tagSTJ1939_MSG_PROPERTIES
 {
-    UINT64                  m_un64TimeStamp; /* Timestamp. */
-    BYTE                    m_byChannel;     /* Channel number. */
+    unsigned long int       m_un64TimeStamp; /* Timestamp. */
+    unsigned char           m_byChannel;     /* Channel number. */
     enum EJ1939_MSG_TYPE    m_eType;
     enum EDIRECTION         m_eDirection;    /* DIR_TX, DIR_RX */
     UNION_29_BIT_ID         m_uExtendedID;   /* 29 bit extended ID */
@@ -123,8 +133,8 @@ typedef struct tagSTJ1939_MSG
 {
     STJ1939_MSG_PROPERTIES  m_sMsgProperties;   /* J1939 message properties. (29 bit Extended ID, Timestamp,
                                                    Channel, Type, Direction) */
-    UINT                    m_unDLC;            /* Data length. 0 <= m_unDLC <= 1785 bytes. */
-    BYTE*                   m_pbyData;          /* J1939 message data. */
+    unsigned int            m_unDLC;            /* Data length. 0 <= m_unDLC <= 1785 bytes. */
+    unsigned char*          m_pbyData;          /* J1939 message data. */
 } STJ1939_MSG;
 
 #pragma pack(pop, 8)

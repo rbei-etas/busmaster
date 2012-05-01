@@ -46,11 +46,11 @@ public:
     /* Destructor */
     ~CDIL_CAN();
 
-    BOOL InitInstance(void);
+    bool InitInstance(void);
     int ExitInstance(void);
 
     /* Variable to maintain currently selected Driver ID */
-    DWORD m_dwDriverID;
+    unsigned long m_dwDriverID;
 
     /* member variable to hold the pointer of currently selected controller interface */
     CBaseDIL_CAN_Controller* m_pBaseDILCAN_Controller;

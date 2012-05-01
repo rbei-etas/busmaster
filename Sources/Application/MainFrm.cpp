@@ -11441,7 +11441,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
 
                 for (UINT i = 0; i < defNO_OF_CHANNELS; i++)
                 {
-                    m_asControllerDetails[i].vIntialize();
+                    m_asControllerDetails[i].vInitialize();
                 }
 
                 //HRESULT hResult =
@@ -12201,7 +12201,7 @@ void CMainFrame::OnSelectDriver(UINT nID)
         //Retain default values for all channels
         for (int i = 0; i < defNO_OF_CHANNELS; i++)
         {
-            m_asControllerDetails[i].vIntialize();
+            m_asControllerDetails[i].vInitialize();
         }
 
         IntializeDIL();

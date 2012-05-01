@@ -1466,18 +1466,16 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLog
  */
 HRESULT CDIL_CAN_ETAS_BOA::CAN_UnloadDriverLibrary(void)
 {
-    bool bUnload = false;
-
     /* Unload OCI library */
     if (sg_hLibOCI != NULL)
     {
-        bUnload = FreeLibrary(sg_hLibOCI);
+        FreeLibrary(sg_hLibOCI);
     }
 
     /* Unload CSI library */
     if (sg_hLibCSI != NULL)
     {
-        bUnload = FreeLibrary(sg_hLibCSI);
+        FreeLibrary(sg_hLibCSI);
     }
 
     /* Invalidate all API pointers */

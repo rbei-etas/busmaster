@@ -16,7 +16,7 @@
 /**
  * \file      Struct_CAN.h
  * \brief     This contains definitions of various CAN related structures.
- * \authors   Ratnadip Choudhury, Anish Kumar, Pradeep Kadoor
+ * \authors   Ratnadip Choudhury, Anish Kumar, Pradeep Kadoor, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This contains definitions of various CAN related structures.
@@ -24,32 +24,37 @@
 
 #pragma once
 
-#include <TCHAR.H>
 const int MAX_STRING = 256;
-/*****************************************************************************/
-// This structure is used for sending/reciving messages to/from the CAN network
+
+/**
+ * This structure is used for sending/reciving messages to/from the CAN network
+ */
 struct sTCAN_MSG
 {
-    UINT m_unMsgID;     // 11/29 Bit-
-    UCHAR m_ucEXTENDED; // true, for (29 Bit) Frame
-    UCHAR m_ucRTR;      // true, for remote request
-    UCHAR m_ucDataLen;  // Data len (0..8)
-    UCHAR m_ucChannel;  // Message Length
-    UCHAR m_ucData[8];  // Databytes 0..7
+    unsigned int  m_unMsgID;    // 11/29 Bit-
+    unsigned char m_ucEXTENDED; // true, for (29 Bit) Frame
+    unsigned char m_ucRTR;      // true, for remote request
+    unsigned char m_ucDataLen;  // Data len (0..8)
+    unsigned char m_ucChannel;  // Message Length
+    unsigned char m_ucData[8];  // Databytes 0..7
 };
 typedef sTCAN_MSG STCAN_MSG;
 typedef sTCAN_MSG* PSTCAN_MSG;
 
-// This structure holds the error and the channel number
+/**
+ * This structure holds the error and the channel number
+ */
 typedef struct sCAN_ERR
 {
-    UCHAR m_ucTxError ;
-    UCHAR m_ucRxError ;
-    UCHAR m_ucChannel ;
+    unsigned char m_ucTxError;
+    unsigned char m_ucRxError;
+    unsigned char m_ucChannel;
 
 } SCAN_ERR, *SPCAN_ERR;
 
-// This enumeration defines current error state
+/**
+ * This enumeration defines current error state
+ */
 enum eERROR_STATE
 {
     ERROR_ACTIVE  =   0,
@@ -61,7 +66,9 @@ enum eERROR_STATE
 
 const short CAN_MSG_IDS = 2;
 
-//This enum defines different filter types
+/**
+ * This enum defines different filter types
+ */
 enum eHW_FILTER_TYPES
 {
     HW_FILTER_ACCEPT_ALL = 0,
@@ -70,47 +77,49 @@ enum eHW_FILTER_TYPES
 };
 
 
-// Controller details
-// information on the baud rate
+/**
+ * \brief Controller details
+ *
+ * information on the baud rate
+ */
 struct sCONTROLLERDETAILS
 {
-    INT     m_nItemUnderFocus;      // item number under focus
-    INT     m_nBTR0BTR1;            // packed value of bit timing register 0
+    int     m_nItemUnderFocus;               // item number under focus
+    int     m_nBTR0BTR1;                     // packed value of bit timing register 0
     // and bit timing register 1
-    TCHAR m_omStrCNF1[MAX_STRING];            // bit timing register 1 information
-    TCHAR m_omStrCNF2[MAX_STRING];            // bit timing register 2 information
-    TCHAR m_omStrCNF3[MAX_STRING];            // bit timing register 3 information
-    TCHAR m_omStrBTR0[MAX_STRING];            // bit timing register 0 information
-    TCHAR m_omStrBTR1[MAX_STRING];            // bit timing register 1 information
-    TCHAR m_omStrBaudrate[MAX_STRING];        // baudrate information
-    TCHAR m_omStrClock[MAX_STRING];           // clock information
-    TCHAR m_omStrSamplePercentage[MAX_STRING];        // sampling information
-    TCHAR m_omStrSampling[MAX_STRING];        // sampling information
-    TCHAR m_omStrWarningLimit[MAX_STRING];    // Warning limit of CAN Controller
-    TCHAR m_omStrPropagationDelay[MAX_STRING];// Propagation Delay
-    TCHAR m_omStrSjw[MAX_STRING];
-    TCHAR m_omStrAccCodeByte1[CAN_MSG_IDS][MAX_STRING];    // acceptance code byte1 information
-    TCHAR m_omStrAccCodeByte2[CAN_MSG_IDS][MAX_STRING];    // acceptance code byte2 information
-    TCHAR m_omStrAccCodeByte3[CAN_MSG_IDS][MAX_STRING];    // acceptance code byte3 information
-    TCHAR m_omStrAccCodeByte4[CAN_MSG_IDS][MAX_STRING];    // acceptance code byte4 information
-    TCHAR m_omStrAccMaskByte1[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte1 information
-    TCHAR m_omStrAccMaskByte2[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte2 information
-    TCHAR m_omStrAccMaskByte3[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte3 information
-    TCHAR m_omStrAccMaskByte4[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte4 information
-    TCHAR m_omHardwareDesc[MAX_STRING];       // Hw description which user can
-    // differentiate betw the channels
-    BOOL  m_bAccFilterMode;       // acceptance filter mode(0: single, 1: Dual)
-    UCHAR m_ucControllerMode;                 // Controller mode : 1 : Active,
-    // 2: Passive
-    BOOL m_bSelfReception;
+    char m_omStrCNF1[MAX_STRING];            // bit timing register 1 information
+    char m_omStrCNF2[MAX_STRING];            // bit timing register 2 information
+    char m_omStrCNF3[MAX_STRING];            // bit timing register 3 information
+    char m_omStrBTR0[MAX_STRING];            // bit timing register 0 information
+    char m_omStrBTR1[MAX_STRING];            // bit timing register 1 information
+    char m_omStrBaudrate[MAX_STRING];        // baudrate information
+    char m_omStrClock[MAX_STRING];           // clock information
+    char m_omStrSamplePercentage[MAX_STRING];// sampling information
+    char m_omStrSampling[MAX_STRING];        // sampling information
+    char m_omStrWarningLimit[MAX_STRING];    // Warning limit of CAN Controller
+    char m_omStrPropagationDelay[MAX_STRING];// Propagation Delay
+    char m_omStrSjw[MAX_STRING];
+    char m_omStrAccCodeByte1[CAN_MSG_IDS][MAX_STRING];    // acceptance code byte1 information
+    char m_omStrAccCodeByte2[CAN_MSG_IDS][MAX_STRING];    // acceptance code byte2 information
+    char m_omStrAccCodeByte3[CAN_MSG_IDS][MAX_STRING];    // acceptance code byte3 information
+    char m_omStrAccCodeByte4[CAN_MSG_IDS][MAX_STRING];    // acceptance code byte4 information
+    char m_omStrAccMaskByte1[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte1 information
+    char m_omStrAccMaskByte2[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte2 information
+    char m_omStrAccMaskByte3[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte3 information
+    char m_omStrAccMaskByte4[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte4 information
+    char m_omHardwareDesc[MAX_STRING];                    // Hw description which user can
+    // differentiate between the channels
+    int   m_bAccFilterMode;                               // acceptance filter mode(0: single, 1: Dual)
+    int   m_ucControllerMode;                             // Controller mode (1: Active, 2: Passive)
+    int   m_bSelfReception;
 
     //Filter type: 1. Accept All 2. Reject All 3. Manual setting
     eHW_FILTER_TYPES m_enmHWFilterType[CAN_MSG_IDS];
     sCONTROLLERDETAILS()
     {
-        vIntialize();
+        vInitialize();
     }
-    void vIntialize()
+    void vInitialize()
     {
         // The default baudrate is taken as 500 kbps
         m_nItemUnderFocus = 64;
@@ -157,79 +166,78 @@ typedef sCONTROLLERDETAILS*  PSCONTROLLER_DETAILS;
 
 struct sSUBBUSSTATISTICS
 {
-    UINT    m_unErrorTxCount;
-    UINT    m_unTotalTxMsgCount;
-    UINT    m_unTxSTDMsgCount;
-    UINT    m_unTotalBitsperSec;
-    UINT    m_unTxEXTDMsgCount;
-    UINT    m_unTxSTD_RTRMsgCount;
-    UINT    m_unTxEXTD_RTRMsgCount;
-    UINT    m_unTotalRxMsgCount;
-    UINT    m_unRxSTDMsgCount;
-    UINT    m_unRxEXTDMsgCount;
-    UINT    m_unRxSTD_RTRMsgCount;
-    UINT    m_unRxEXTD_RTRMsgCount;
-    UINT    m_unErrorTotalCount;
-    UINT    m_unErrorRxCount;
-    UINT    m_unDLCCount;
+    unsigned int    m_unErrorTxCount;
+    unsigned int    m_unTotalTxMsgCount;
+    unsigned int    m_unTxSTDMsgCount;
+    unsigned int    m_unTotalBitsperSec;
+    unsigned int    m_unTxEXTDMsgCount;
+    unsigned int    m_unTxSTD_RTRMsgCount;
+    unsigned int    m_unTxEXTD_RTRMsgCount;
+    unsigned int    m_unTotalRxMsgCount;
+    unsigned int    m_unRxSTDMsgCount;
+    unsigned int    m_unRxEXTDMsgCount;
+    unsigned int    m_unRxSTD_RTRMsgCount;
+    unsigned int    m_unRxEXTD_RTRMsgCount;
+    unsigned int    m_unErrorTotalCount;
+    unsigned int    m_unErrorRxCount;
+    unsigned int    m_unDLCCount;
 };
 typedef sSUBBUSSTATISTICS SSUBBUSSTATISTICS;
 typedef sSUBBUSSTATISTICS* PSSUBBUSSTATISTICS;
 
-// Bus statistics structure
+/**
+ * Bus statistics structure
+ */
 struct sBUSSTATISTICS
 {
-    UINT    m_unTotalBitsperSec;
-    //UINT    m_unRxSTDMsgBits;
+    unsigned int    m_unTotalBitsperSec;
+    //unsigned int    m_unRxSTDMsgBits;
 
-    double  m_dBusLoad;
-    double  m_dPeakBusLoad;
-    UINT    m_unTotalMsgCount;
-    UINT    m_unMsgPerSecond;
+    double          m_dBusLoad;
+    double          m_dPeakBusLoad;
+    unsigned int    m_unTotalMsgCount;
+    unsigned int    m_unMsgPerSecond;
 
+    unsigned int    m_unTotalTxMsgCount;
+    double          m_dTotalTxMsgRate;
 
-    UINT    m_unTotalTxMsgCount;
-    double  m_dTotalTxMsgRate;
+    unsigned int    m_unTxSTDMsgCount;
+    double          m_dTxSTDMsgRate;
+    unsigned int    m_unTxEXTDMsgCount;
+    double          m_dTxEXTMsgRate;
+    unsigned int    m_unTxSTD_RTRMsgCount;
+    unsigned int    m_unTxEXTD_RTRMsgCount;
 
-    UINT    m_unTxSTDMsgCount;
-    double  m_dTxSTDMsgRate;
-    UINT    m_unTxEXTDMsgCount;
-    double  m_dTxEXTMsgRate;
-    UINT    m_unTxSTD_RTRMsgCount;
-    UINT    m_unTxEXTD_RTRMsgCount;
+    unsigned int    m_unTotalRxMsgCount;
+    double          m_dTotalRxMsgRate;
 
+    unsigned int    m_unRxSTDMsgCount;
+    double          m_dRxSTDMsgRate;
+    unsigned int    m_unRxEXTDMsgCount;
+    double          m_dRxEXTMsgRate;
+    unsigned int    m_unRxSTD_RTRMsgCount;
+    unsigned int    m_unRxEXTD_RTRMsgCount;
 
-    UINT    m_unTotalRxMsgCount;
-    double  m_dTotalRxMsgRate;
+    unsigned int    m_unErrorTxCount;
+    double          m_dErrorTxRate;
+    unsigned int    m_unErrorRxCount;
+    double          m_dErrorRxRate;
+    unsigned int    m_unErrorTotalCount;
+    double          m_dErrorRate;
 
-    UINT    m_unRxSTDMsgCount;
-    double  m_dRxSTDMsgRate;
-    UINT    m_unRxEXTDMsgCount;
-    double  m_dRxEXTMsgRate;
-    UINT    m_unRxSTD_RTRMsgCount;
-    UINT    m_unRxEXTD_RTRMsgCount;
+    unsigned int    m_unDLCCount;
 
+    double          m_dBaudRate;
 
-    UINT    m_unErrorTxCount;
-    double  m_dErrorTxRate;
-    UINT    m_unErrorRxCount;
-    double  m_dErrorRxRate;
-    UINT    m_unErrorTotalCount;
-    double  m_dErrorRate;
+    double          m_dTotalBusLoad;
+    int             m_nSamples;
+    double          m_dAvarageBusLoad;
 
-    UINT    m_unDLCCount;
-
-    double  m_dBaudRate;
-
-    double  m_dTotalBusLoad;
-    int     m_nSamples;
-    double  m_dAvarageBusLoad;
-
-    UCHAR   m_ucTxErrorCounter;
-    UCHAR   m_ucRxErrorCounter;
-    UCHAR   m_ucTxPeakErrorCount;
-    UCHAR   m_ucRxPeakErrorCount;
-    UCHAR   m_ucStatus;
+    unsigned char   m_ucTxErrorCounter;
+    unsigned char   m_ucRxErrorCounter;
+    unsigned char   m_ucTxPeakErrorCount;
+    unsigned char   m_ucRxPeakErrorCount;
+    unsigned char   m_ucStatus;
     sBUSSTATISTICS& operator = (sSUBBUSSTATISTICS& objRef)
     {
         m_unErrorTxCount = objRef.m_unErrorTxCount;
@@ -253,24 +261,26 @@ struct sBUSSTATISTICS
 typedef sBUSSTATISTICS SBUSSTATISTICS;
 typedef sBUSSTATISTICS* PBUSSTATISTICS;
 
-// This structure holds Error info
+/**
+ * This structure holds Error info
+ */
 struct sERROR_INFO
 {
-    UCHAR m_ucErrType;    // ERROR_BUS, ERROR_DEVICE_BUFF_OVERFLOW
+    unsigned char m_ucErrType;    // ERROR_BUS, ERROR_DEVICE_BUFF_OVERFLOW
     // ERROR_DRIVER_BUFF_OVERFLOW, ERROR_UNKNOWN
-    UCHAR m_ucReg_ErrCap; // Stores the value of err capture register in
+    unsigned char m_ucReg_ErrCap; // Stores the value of err capture register in
     // case of bus error
-    UCHAR m_ucTxErrCount;
-    UCHAR m_ucRxErrCount;
-    UCHAR m_ucChannel;
-    int m_nSubError;   //added for providing Error bit details
+    unsigned char m_ucTxErrCount;
+    unsigned char m_ucRxErrCount;
+    unsigned char m_ucChannel;
+    int           m_nSubError;   //added for providing Error bit details
 };
 typedef sERROR_INFO SERROR_INFO;
 typedef sERROR_INFO* PSERROR_INFO;
 
-
-/*****************************************************************************/
-/*This structure is used for communicating between Driver & CAN Application*/
+/**
+ * This structure is used for communicating between Driver & CAN Application
+ */
 union sTDATAINFO
 {
     STCAN_MSG     m_sCANMsg;      //The received / transmitted message
@@ -279,11 +289,9 @@ union sTDATAINFO
 typedef sTDATAINFO STDATAINFO;
 typedef sTDATAINFO* PSTDATAINFO;
 
-/*****************************************************************************/
-
-/*****************************************************************************/
-/*This structure is used for communicating between Driver & CAN Application*/
-
+/**
+ * This structure is used for communicating between Driver & CAN Application
+ */
 typedef struct sTCANDATA
 {
 private:
@@ -291,7 +299,7 @@ private:
     static int  m_nMFactor;     // Multiplication factor
 
 public:
-    UCHAR            m_ucDataType;  //Type of the message
+    unsigned char    m_ucDataType;  //Type of the message
     LARGE_INTEGER    m_lTickCount;  //Time stamp, Contains the val returned from
     //QueryPerf..Counter()
     STDATAINFO       m_uDataInfo;
@@ -303,56 +311,35 @@ public:
 
 } STCANDATA, *PSTCANDATA;
 
-/*****************************************************************************/
-
-
-// This structure holds acceptance filter details
+/**
+ * This structure holds acceptance filter details
+ */
 struct sACC_FILTER_INFO
 {
-    UCHAR m_ucACC_Filter_Type;
-    UCHAR m_ucACC_Code0;
-    UCHAR m_ucACC_Code1;
-    UCHAR m_ucACC_Code2;
-    UCHAR m_ucACC_Code3;
-    UCHAR m_ucACC_Mask0;
-    UCHAR m_ucACC_Mask1;
-    UCHAR m_ucACC_Mask2;
-    UCHAR m_ucACC_Mask3;
+    unsigned char m_ucACC_Filter_Type;
+    unsigned char m_ucACC_Code0;
+    unsigned char m_ucACC_Code1;
+    unsigned char m_ucACC_Code2;
+    unsigned char m_ucACC_Code3;
+    unsigned char m_ucACC_Mask0;
+    unsigned char m_ucACC_Mask1;
+    unsigned char m_ucACC_Mask2;
+    unsigned char m_ucACC_Mask3;
 };
 typedef sACC_FILTER_INFO SACC_FILTER_INFO;
 typedef sACC_FILTER_INFO* PSACC_FILTER_INFO;
 
 
-// This structure holds Error count of Rx & Tx Process
+/**
+ * This structure holds Error count of Rx & Tx Process
+ */
 struct sERROR_CNT
 {
-    UCHAR m_ucTxErrCount;
-    UCHAR m_ucRxErrCount;
+    unsigned char m_ucTxErrCount;
+    unsigned char m_ucRxErrCount;
 };
 typedef sERROR_CNT SERROR_CNT;
 typedef sERROR_CNT* SPERROR_CNT;
-
-
-
-
-/*****************************************************************************/
-/*These values shall be returned by the call to IOCTL_CAN_TX_STATUS func*/
-/*If the IOCTL_CAN_TX_STATUS has a input value of GET_TX_MSG_STATUS then
-the foll 2 values shall be returned - STS_TX_COMPLETE or STS_TX_INCOMPLETE*/
-/*If the IOCTL_CAN_TX_STATUS has a input value of GET_TX_BUFF_STATUS then
-the foll 2 values shall be returned - STS_TX_BUFF_LOCKED or STS_TX_BUFF_RELEASED*/
-
-//input
-/*#define GET_TX_MSG_STATUS       0x01
-#define GET_TX_BUFF_STATUS      0x02
-
-//output
-#define STS_TX_COMPLETE         0x01
-#define STS_TX_INCOMPLETE       0x02
-#define STS_TX_BUFF_RELEASED    0x04
-#define STS_TX_BUFF_LOCKED      0x08*/
-/*****************************************************************************/
-
 
 #define TX_FLAG                 0x01
 #define RX_FLAG                 0x02
