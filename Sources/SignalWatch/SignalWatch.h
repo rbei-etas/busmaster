@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include "SignalWatch_resource.h"		// main symbols
+#include "SignalWatch_resource.h"       // main symbols
 
 
 // CSignalWatchApp
@@ -33,13 +33,13 @@
 class CSignalWatchApp : public CWinApp
 {
 public:
-	CSignalWatchApp();
+    CSignalWatchApp();
 
-// Overrides
+    // Overrides
 public:
-	virtual BOOL InitInstance();
+    virtual BOOL InitInstance();
     virtual INT ExitInstance();
 
-	DECLARE_MESSAGE_MAP()
-   
+    DECLARE_MESSAGE_MAP()
+
 };

@@ -38,8 +38,8 @@
 extern "C" {  // only need to export C interface if used by C++ source code
 #endif
 
-USAGEMODE HRESULT SW_GetInterface(ETYPE_BUS eBus, void** ppvInterface);
- 
+    USAGEMODE HRESULT SW_GetInterface(ETYPE_BUS eBus, void** ppvInterface);
+
 #ifdef __cplusplus
 }
 #endif
