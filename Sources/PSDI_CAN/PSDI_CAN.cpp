@@ -30,30 +30,30 @@
 #define USAGE_EXPORT
 #include "Application/PSDI_Extern.h"
 //
-//	Note!
+//  Note!
 //
-//		If this DLL is dynamically linked against the MFC
-//		DLLs, any functions exported from this DLL which
-//		call into MFC must have the AFX_MANAGE_STATE macro
-//		added at the very beginning of the function.
+//      If this DLL is dynamically linked against the MFC
+//      DLLs, any functions exported from this DLL which
+//      call into MFC must have the AFX_MANAGE_STATE macro
+//      added at the very beginning of the function.
 //
-//		For example:
+//      For example:
 //
-//		extern "C" BOOL PASCAL EXPORT ExportedFunction()
-//		{
-//			AFX_MANAGE_STATE(AfxGetStaticModuleState());
-//			// normal function body here
-//		}
+//      extern "C" BOOL PASCAL EXPORT ExportedFunction()
+//      {
+//          AFX_MANAGE_STATE(AfxGetStaticModuleState());
+//          // normal function body here
+//      }
 //
-//		It is very important that this macro appear in each
-//		function, prior to any calls into MFC.  This means that
-//		it must appear as the first statement within the 
-//		function, even before any object variable declarations
-//		as their constructors may generate calls into the MFC
-//		DLL.
+//      It is very important that this macro appear in each
+//      function, prior to any calls into MFC.  This means that
+//      it must appear as the first statement within the
+//      function, even before any object variable declarations
+//      as their constructors may generate calls into the MFC
+//      DLL.
 //
-//		Please see MFC Technical Notes 33 and 58 for additional
-//		details.
+//      Please see MFC Technical Notes 33 and 58 for additional
+//      details.
 //
 
 // CPSDI_CANApp
@@ -66,8 +66,8 @@ END_MESSAGE_MAP()
 
 CPSDI_CANApp::CPSDI_CANApp()
 {
-	// TODO: add construction code here,
-	// Place all significant initialization in InitInstance
+    // TODO: add construction code here,
+    // Place all significant initialization in InitInstance
 }
 
 
@@ -80,9 +80,8 @@ CPSDI_CANApp theApp;
 
 BOOL CPSDI_CANApp::InitInstance()
 {
-	CWinApp::InitInstance();
-
-	return TRUE;
+    CWinApp::InitInstance();
+    return TRUE;
 }
 static CMsgContainerCAN* sg_pouMsgContainer_CAN = NULL;
 static CMsgContainerJ1939* sg_pouMsgContainer_J1939 = NULL;
@@ -103,14 +102,16 @@ USAGEMODE HRESULT PSDI_GetInterface(ETYPE_BUS eBus, void** ppvInterface)
                     hResult = S_FALSE;
                 }
             }
+
             // Else the object has been existing already
-            *ppvInterface = (void *) sg_pouMsgContainer_CAN; /* Doesn't matter even 
-                                                if sg_pouMsgContainer_CAN is null */
+            *ppvInterface = (void*) sg_pouMsgContainer_CAN; /* Doesn't matter even
+                                            if sg_pouMsgContainer_CAN is null */
         }
         break;
-		case J1939:
-		{
-			if (NULL == sg_pouMsgContainer_J1939)
+
+        case J1939:
+        {
+            if (NULL == sg_pouMsgContainer_J1939)
             {
                 if ((sg_pouMsgContainer_J1939 = new CMsgContainerJ1939) == NULL)
                 {
@@ -118,15 +119,17 @@ USAGEMODE HRESULT PSDI_GetInterface(ETYPE_BUS eBus, void** ppvInterface)
                     hResult = S_FALSE;
                 }
             }
+
             // Else the object has been existing already
-            *ppvInterface = (void *) sg_pouMsgContainer_J1939; /* Doesn't matter even 
-                                                if sg_pouMsgContainer_J1939 is null */
-		}
-		break;
-        default: 
-			*ppvInterface = NULL;
-			hResult = S_FALSE; 
-			break;
+            *ppvInterface = (void*) sg_pouMsgContainer_J1939; /* Doesn't matter even
+                                            if sg_pouMsgContainer_J1939 is null */
+        }
+        break;
+
+        default:
+            *ppvInterface = NULL;
+            hResult = S_FALSE;
+            break;
     }
 
     return hResult;
@@ -140,10 +143,12 @@ USAGEMODE HRESULT PSDI_Init(void* pParam)
 {
     HRESULT hResult = S_FALSE;
     sg_pouMsgContainer_CAN->vInit(pParam);
+
     if (sg_pouMsgContainer_CAN->bGetDilInterFace())
     {
         hResult = S_OK;
     }
+
     return hResult;
 }
 
@@ -155,14 +160,14 @@ USAGEMODE HRESULT PSDI_EditClearAll()
 }
 
 //No. of messages in Append buffer
-USAGEMODE HRESULT PSDI_GetAppendBufferCount(int &nCount)
+USAGEMODE HRESULT PSDI_GetAppendBufferCount(int& nCount)
 {
     nCount = sg_pouMsgContainer_CAN->nGetAppendBufferCount();
     return S_OK;
 }
 
 //No. of messages in Over Write buffer
-USAGEMODE HRESULT PSDI_GetOWBufferCount(int &nCount)
+USAGEMODE HRESULT PSDI_GetOWBufferCount(int& nCount)
 {
     nCount = sg_pouMsgContainer_CAN->nGetOWBufferCount();
     return S_OK;
@@ -184,38 +189,38 @@ USAGEMODE HRESULT PSDI_StopReadThread()
 
 
 // Get the data pointers for displaying the message formatted data
-USAGEMODE HRESULT PSDI_GetUpdatedCurrDataPtrArray( SMSGWNDHDRCOL &sHdrColStruct,
-                                                   TCHAR *pomDataPtrArr[MAX_MSG_WND_COL_CNT], 
-                                                   BYTE bExprnFlag_Disp)
+USAGEMODE HRESULT PSDI_GetUpdatedCurrDataPtrArray( SMSGWNDHDRCOL& sHdrColStruct,
+        TCHAR* pomDataPtrArr[MAX_MSG_WND_COL_CNT],
+        BYTE bExprnFlag_Disp)
 {
     sg_pouMsgContainer_CAN->vGetUpdatedCurrDataPtrArray( sHdrColStruct,
-                                               pomDataPtrArr, 
-                                               bExprnFlag_Disp);
+            pomDataPtrArr,
+            bExprnFlag_Disp);
     return S_OK;
 }
 
 //Over write message
-USAGEMODE HRESULT PSDI_ReadFromOWBuffer( void *psMsg, __int64 nMapIndex)
+USAGEMODE HRESULT PSDI_ReadFromOWBuffer( void* psMsg, __int64 nMapIndex)
 {
     return sg_pouMsgContainer_CAN->hReadFromOWBuffer(psMsg, nMapIndex);
 }
 
 //Append message
-USAGEMODE HRESULT PSDI_ReadFromAppendBuffer( void *psMsg, int nMsgIndex)
+USAGEMODE HRESULT PSDI_ReadFromAppendBuffer( void* psMsg, int nMsgIndex)
 {
-	return sg_pouMsgContainer_CAN->hReadFromAppendBuffer(psMsg, nMsgIndex);
+    return sg_pouMsgContainer_CAN->hReadFromAppendBuffer(psMsg, nMsgIndex);
 }
 
 //Updat the Message formatted data pointers due to change in display format
-USAGEMODE HRESULT PSDI_UpdateFormattedMsgStruct( int nListIndex, int &nMsgCode,
-                                                 BYTE bExprnFlag_Disp, 
-                                                 __int64 nTimeOffset)
+USAGEMODE HRESULT PSDI_UpdateFormattedMsgStruct( int nListIndex, int& nMsgCode,
+        BYTE bExprnFlag_Disp,
+        __int64 nTimeOffset)
 {
     return sg_pouMsgContainer_CAN->hUpdateFormattedMsgStruct( nListIndex, nMsgCode,
-                                                    bExprnFlag_Disp, nTimeOffset);
+            bExprnFlag_Disp, nTimeOffset);
 }
 
-//Set the name (from database) of current message being processed 
+//Set the name (from database) of current message being processed
 USAGEMODE HRESULT PSDI_SetCurrMsgName(CString strMsgNameOrCode)
 {
     sg_pouMsgContainer_CAN->vSetCurrMsgName(strMsgNameOrCode);
@@ -231,17 +236,17 @@ USAGEMODE HRESULT PSDI_ClearFormattedMsgStruct()
 }
 
 //Save the current message to OW buffers and get the reqd. details for MsgDispEntry struct
-USAGEMODE HRESULT PSDI_SaveOWandGetDetails( void *pMsg, 
-                                            __int64 &dwMapIndex, 
-                                            __int64 &dwTimeStamp, 
-                                            UINT &nMsgCode, 
-                                            int &nBufferIndex )
+USAGEMODE HRESULT PSDI_SaveOWandGetDetails( void* pMsg,
+        __int64& dwMapIndex,
+        __int64& dwTimeStamp,
+        UINT& nMsgCode,
+        int& nBufferIndex )
 {
-    sg_pouMsgContainer_CAN->vSaveOWandGetDetails( pMsg, 
-                                        dwMapIndex, 
-                                        dwTimeStamp, 
-                                        nMsgCode, 
-                                        nBufferIndex );
+    sg_pouMsgContainer_CAN->vSaveOWandGetDetails( pMsg,
+            dwMapIndex,
+            dwTimeStamp,
+            nMsgCode,
+            nBufferIndex );
     return S_OK;
 }
 
@@ -255,22 +260,22 @@ USAGEMODE HRESULT PSDI_SetRxMsgCallBkPtr(MSG_RX_CALL_BK pFuncPtr)
 //Set the Client ID currently assigned to the application.
 USAGEMODE HRESULT PSDI_SetClientID(DWORD dwClientID)
 {
-	sg_pouMsgContainer_CAN->SetClientID(dwClientID);
-	return S_OK;
+    sg_pouMsgContainer_CAN->SetClientID(dwClientID);
+    return S_OK;
 }
 
 //Sort the Message Buffers based on the Column ID
 USAGEMODE HRESULT PSDI_DoSortBuffer(int nField,bool bAscending)
 {
-	sg_pouMsgContainer_CAN->DoSortBuffer(nField,bAscending);
-	return S_OK;
+    sg_pouMsgContainer_CAN->DoSortBuffer(nField,bAscending);
+    return S_OK;
 }
 
 //Sort the Message Buffers based on the Column ID
 USAGEMODE HRESULT PSDI_nGetMapIndexAtID(int nIndex,__int64& nMapIndex)
 {
-	sg_pouMsgContainer_CAN->GetMapIndexAtID(nIndex,nMapIndex);
-	return S_OK;
+    sg_pouMsgContainer_CAN->GetMapIndexAtID(nIndex,nMapIndex);
+    return S_OK;
 }
 
 //Apply filter scheme.
