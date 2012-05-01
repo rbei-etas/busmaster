@@ -28,8 +28,8 @@
 class CBusEmulationModule : public CAtlExeModuleT< CBusEmulationModule >
 {
 public :
-	DECLARE_LIBID(LIBID_BusEmulationLib)
-	DECLARE_REGISTRY_APPID_RESOURCEID(IDR_BUSEMULATION, "{0937AB35-4C58-4077-9022-B50CB6C42736}")
+    DECLARE_LIBID(LIBID_BusEmulationLib)
+    DECLARE_REGISTRY_APPID_RESOURCEID(IDR_BUSEMULATION, "{0937AB35-4C58-4077-9022-B50CB6C42736}")
 };
 
 CBusEmulationModule _AtlModule;
@@ -37,7 +37,7 @@ CBusEmulationModule _AtlModule;
 
 //
 extern "C" int WINAPI _tWinMain(HINSTANCE /*hInstance*/, HINSTANCE /*hPrevInstance*/,
-								LPTSTR /*lpCmdLine*/, int nShowCmd)
+                                LPTSTR /*lpCmdLine*/, int nShowCmd)
 {
-	return _AtlModule.WinMain(nShowCmd);
+    return _AtlModule.WinMain(nShowCmd);
 }
