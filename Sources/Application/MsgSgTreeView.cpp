@@ -33,23 +33,14 @@
 #include "MessageDetailsDlg.h"
 
 extern CCANMonitorApp theApp;
-/////////////////////////////////////////////////////////////////////////////
-// CMsgSgTreeView
 
 IMPLEMENT_DYNCREATE(CMsgSgTreeView, CTreeView)
-/******************************************************************************/
-/*  Function Name    :  CMsgSgTreeView                                        */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Constructor
-/*  Member of        :  CMsgSgTreeView                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :
-/******************************************************************************/
+
+/**
+ * \brief Constructor
+ *
+ * Constructor
+ */
 CMsgSgTreeView::CMsgSgTreeView()
 {
     m_sDbParams             = sm_sDbParams;
@@ -59,24 +50,14 @@ CMsgSgTreeView::CMsgSgTreeView()
     m_hTreeItem             = NULL;
 }
 
-/******************************************************************************/
-/*  Function Name    :  ~CMsgSgTreeView                                       */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Destructor
-/*  Member of        :  CMsgSgTreeView                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :
-/******************************************************************************/
-
+/**
+ * \brief Destructor
+ *
+ * Destructor
+ */
 CMsgSgTreeView::~CMsgSgTreeView()
 {
 }
-
 
 BEGIN_MESSAGE_MAP(CMsgSgTreeView, CTreeView)
     //{{AFX_MSG_MAP(CMsgSgTreeView)
@@ -93,52 +74,23 @@ BEGIN_MESSAGE_MAP(CMsgSgTreeView, CTreeView)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-/////////////////////////////////////////////////////////////////////////////
-// CMsgSgTreeView drawing
-
+/**
+ * \brief Drawing
+ *
+ * Drawing
+ */
 void CMsgSgTreeView::OnDraw(CDC* /*pDC*/)
 {
     //CDocument* pDoc = GetDocument();
     // TODO: add draw code here
 }
 
-/////////////////////////////////////////////////////////////////////////////
-// CMsgSgTreeView diagnostics
-
-#ifdef _DEBUG
-void CMsgSgTreeView::AssertValid() const
-{
-    CTreeView::AssertValid();
-}
-
-void CMsgSgTreeView::Dump(CDumpContext& dc) const
-{
-    CTreeView::Dump(dc);
-}
-#endif //_DEBUG
-
-/////////////////////////////////////////////////////////////////////////////
-// CMsgSgTreeView message handlers
-/******************************************************************************/
-/*  Function Name    :  bPopulateTree                                         */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will populate the tree with database
-                        messages.
-/*  Member of        :  CMsgSgTreeView                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  19.02.2002                                            */
-/*  Modification     :  Raja N on 10.03.2004                                  */
-/*                      Modified to get refer inactive database structure for */
-/*                      editor operation                                      */
-/*  Modification     :  Amitesh Bharti on 22.07.2004                          */
-/*                      Modified to set the focus to the first database       */
-/*                      message entry in the tree view                        */
-/******************************************************************************/
-
+/**
+ * \brief Populate Tree
+ *
+ * This function will populate the tree with database
+ * messages.
+ */
 BOOL CMsgSgTreeView::bPopulateTree()
 {
     // Insert the database filename as the root item
@@ -199,20 +151,12 @@ BOOL CMsgSgTreeView::bPopulateTree()
 
     return (bReturnValue);
 }
-/******************************************************************************/
-/*  Function Name    :  PreCreateWindow                                       */
-/*                                                                            */
-/*  Input(s)         :  CREATESTRUCT& cs                                      */
-/*  Output           :                                                        */
-/*  Functionality    :  Window style specified here
-/*  Member of        :  CMsgSgTreeView                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :
-/******************************************************************************/
 
+/**
+ * \brief Pre Create Window
+ *
+ * Window style specified here
+ */
 BOOL CMsgSgTreeView::PreCreateWindow(CREATESTRUCT& cs)
 {
     cs.style |= WS_VISIBLE          |
@@ -225,24 +169,16 @@ BOOL CMsgSgTreeView::PreCreateWindow(CREATESTRUCT& cs)
                 TVS_DISABLEDRAGDROP |
                 TVS_SHOWSELALWAYS   |
                 TVS_FULLROWSELECT   |
-                TVS_INFOTIP ;
+                TVS_INFOTIP;
     return CTreeView::PreCreateWindow(cs);
 }
-/******************************************************************************/
-/*  Function Name    :  OnCreate                                              */
-/*                                                                            */
-/*  Input(s)         :  LPCREATESTRUCT lpCreateStruct                         */
-/*  Output           :                                                        */
-/*  Functionality    :  Creates image list and attaches the same to the
-                        tree view.
-/*  Member of        :  CMsgSgTreeView                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :
-/******************************************************************************/
 
+/**
+ * \brief On Create
+ *
+ * Creates image list and attaches the same to the
+ * tree view.
+ */
 int CMsgSgTreeView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
     if (CTreeView::OnCreate(lpCreateStruct) == -1)
@@ -270,22 +206,14 @@ int CMsgSgTreeView::OnCreate(LPCREATESTRUCT lpCreateStruct)
     */
     return 0;
 }
-/******************************************************************************/
-/*  Function Name    :  OnInitialUpdate                                       */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the frame work to update the view.
-                        This again calls vPopulateTree function
-                        and sets tree view ptr defined in the mainframe
-/*  Member of        :  CMsgSgTreeView                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :
-/******************************************************************************/
 
+/**
+ * \brief On Initial Update
+ *
+ * Called by the frame work to update the view.
+ * This again calls vPopulateTree function
+ * and sets tree view ptr defined in the mainframe
+ */
 void CMsgSgTreeView::OnInitialUpdate()
 {
     CTreeView::OnInitialUpdate();
@@ -295,22 +223,13 @@ void CMsgSgTreeView::OnInitialUpdate()
     // Populate tree with message names
     bPopulateTree();
 }
-/******************************************************************************/
-/*  Function Name    :  OnItemexpanding                                       */
-/*                                                                            */
-/*  Input(s)         :  NMHDR* pNMHDR, LRESULT* pResult                       */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the frame work when an item is expandede.
-                        Displays images appropriately for the
-                        nodes and subnodes.
-/*  Member of        :  CMsgSgTreeView                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :
-/******************************************************************************/
 
+/**
+ * \brief On Item Expanding
+ *
+ * Called by the frame work when an item is expandede.
+ * Displays images appropriately for the nodes and subnodes.
+ */
 void CMsgSgTreeView::OnItemexpanding(NMHDR* pNMHDR, LRESULT* pResult)
 {
     NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
@@ -338,43 +257,25 @@ void CMsgSgTreeView::OnItemexpanding(NMHDR* pNMHDR, LRESULT* pResult)
     *pResult = 0;
 }
 
-
-/******************************************************************************/
-/*  Function Name    :  OnLButtonDown                                         */
-/*                                                                            */
-/*  Input(s)         :  UINT nFlags, CPoint point                             */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the frame work when left mouse button
-                        is clicked. Updates the click point
-/*  Member of        :  CMsgSgTreeView                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :
-/******************************************************************************/
-
+/**
+ * \brief On Left Button Down
+ *
+ * Called by the frame work when left mouse button
+ * is clicked. Updates the click point
+ */
 void CMsgSgTreeView::OnLButtonDown(UINT nFlags, CPoint point)
 {
     m_omLeftCLickPoint = point;
     CTreeView::OnLButtonDown(nFlags, point);
 }
-/******************************************************************************/
-/*  Function Name    :  vSetMessageName                                       */
-/*                                                                            */
-/*  Input(s)         :  CString omStrMsgName                              */
-/*  Output           :                                                        */
-/*  Functionality    :  Sets the name of the edited item on the tree view
-                        If new item is created, then it will be inserted
-                        under root.
-/*  Member of        :  CMsgSgTreeView                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :
-/******************************************************************************/
 
+/**
+ * \brief Set Message Name
+ *
+ * Sets the name of the edited item on the tree view
+ * If new item is created, then it will be inserted
+ * under root.
+ */
 void CMsgSgTreeView::vSetMessageName(CString omStrMsgName)
 {
     CTreeCtrl& om_tree = GetTreeCtrl();
@@ -397,26 +298,12 @@ void CMsgSgTreeView::vSetMessageName(CString omStrMsgName)
         }
     }
 }
-/******************************************************************************/
-/*  Function Name    :  OnRightClickTreeItem                                  */
-/*                                                                            */
-/*  Input(s)         :  NMHDR* pNMHDR, LRESULT* pResult                       */
-/*  Output           :                                                        */
-/*  Functionality    :  Displays pop up menu depending on the selected item
 
-/*  Member of        :  CMsgSgTreeView                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  19.02.2002                                            */
-/*  Modification     :  Raja N on 10.03.2004                                  */
-/*                      Modified to get refer inactive database structure for */
-/*                      editor operation                                      */
-/*  Modification     :  Anish  on 01.02.2007                                  */
-/*                      Modified to remove memory leak when right click       */
-/*                      outside the tree items                                */
-/******************************************************************************/
-
+/**
+ * \brief On Right Click Tree Item
+ *
+ * Displays pop up menu depending on the selected item
+ */
 void CMsgSgTreeView::OnRightClickTreeItem(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
     UINT uFlags = 0;
@@ -514,43 +401,25 @@ void CMsgSgTreeView::OnRightClickTreeItem(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 
     *pResult = 0;
 }
-/******************************************************************************/
-/*  Function Name    :  OnRButtonDown                                         */
-/*                                                                            */
-/*  Input(s)         :  UINT nFlags, CPoint point                             */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the frame work when right mouse button
-                        is clicked. Updates the click point
-/*  Member of        :  CMsgSgTreeView                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :
-/******************************************************************************/
 
+/**
+ * \brief On Right Button Down
+ *
+ * Called by the frame work when right mouse button
+ * is clicked. Updates the click point
+ */
 void CMsgSgTreeView::OnRButtonDown(UINT nFlags, CPoint point)
 {
     m_omRightClickPoint = point;
     CTreeView::OnRButtonDown(nFlags, point);
 }
-/******************************************************************************/
-/*  Function Name    :  OnDeleteMessage                                       */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Deletes the selected message from the tree view and
-                        from the data structure.
-/*  Member of        :  CMsgSgTreeView                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  19.02.2002                                            */
-/*  Modification     :  Raja N on 10.03.2004                                  */
-/*                      Modified to get refer inactive database structure for */
-/*                      editor operation                                      */
-/******************************************************************************/
 
+/**
+ * \brief On Delete Message
+ *
+ * Deletes the selected message from the tree view and
+ * from the data structure.
+ */
 void CMsgSgTreeView::OnDeleteMessage()
 {
     CTreeCtrl& om_tree = GetTreeCtrl();
@@ -615,38 +484,22 @@ void CMsgSgTreeView::OnDeleteMessage()
         }
     }
 }
-/******************************************************************************/
-/*  Function Name    :  OnNewMessage                                          */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  New message is created and added tio the data structure
-/*  Member of        :  CMsgSgTreeView                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :
-/******************************************************************************/
 
+/**
+ * \brief On New Message
+ *
+ * New message is created and added tio the data structure
+ */
 void CMsgSgTreeView::OnNewMessage()
 {
     vAddEditMessage(FALSE);
 }
-/******************************************************************************/
-/*  Function Name    :  OnNewMessage                                          */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  New message is created and added tio the data structure
-/*  Member of        :  CMsgSgTreeView                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :
-/******************************************************************************/
 
+/**
+ * \brief Set Root Item Text
+ *
+ * Set Root Item Text
+ */
 void CMsgSgTreeView::vSetRootItemText(CString omStrRootitemText)
 {
     CTreeCtrl& om_tree = GetTreeCtrl();
@@ -656,20 +509,12 @@ void CMsgSgTreeView::vSetRootItemText(CString omStrRootitemText)
         om_tree.SetItemText( om_tree.GetRootItem(), omStrRootitemText );
     }
 }
-/******************************************************************************/
-/*  Function Name    :  vSetTextBold                                          */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Sets the item to bold
-/*  Member of        :  CMsgSgTreeView                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :
-/******************************************************************************/
 
+/**
+ * \brief Set Text Bold
+ *
+ * Sets the item to bold
+ */
 void CMsgSgTreeView::vSetTextBold()
 {
     // Show the selected text in BOLD
@@ -681,20 +526,12 @@ void CMsgSgTreeView::vSetTextBold()
         om_tree.SetItemState( hItem, TVIS_BOLD, TVIS_BOLD );
     }
 }
-/******************************************************************************/
-/*  Function Name    :  vSetAllItemsNormal                                    */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Sets all the item to normal
-/*  Member of        :  CMsgSgTreeView                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :
-/******************************************************************************/
 
+/**
+ * \brief Set All Items Normal
+ *
+ * Set All Items Normal
+ */
 void CMsgSgTreeView::vSetAllItemsNormal()
 {
     CTreeCtrl& om_tree = GetTreeCtrl();
@@ -707,20 +544,12 @@ void CMsgSgTreeView::vSetAllItemsNormal()
         hItem = om_tree.GetNextVisibleItem(hItem);
     }
 }
-/******************************************************************************/
-/*  Function Name    :  OnToolTipInfo                                         */
-/*                                                                            */
-/*  Input(s)         :  NMHDR* pNMHDR, LRESULT* pResult                       */
-/*  Output           :                                                        */
-/*  Functionality    :  Displays message ID's as tool-tips for every message
-/*  Member of        :  CMsgSgTreeView                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  18.03.2002                                            */
-/*  Modifications    :
-/*
-*****************************************************************************/
+
+/**
+ * \brief On Tool Tip Info
+ *
+ * Displays message ID's as tool-tips for every message
+ */
 void CMsgSgTreeView::OnInfoToolTip( NMHDR* /*pNMHDR*/, LRESULT* pResult )
 {
     /*  CTreeCtrl& omTree = GetTreeCtrl();
@@ -742,41 +571,23 @@ void CMsgSgTreeView::OnInfoToolTip( NMHDR* /*pNMHDR*/, LRESULT* pResult )
     */
     pResult = 0;
 }
-/******************************************************************************/
-/*  Function Name    :  OnEditMsg                                             */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  For Editing selected message
-/*  Member of        :  CMsgSgTreeView                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  18.03.2002                                            */
-/*  Modifications    :
-/*
-*****************************************************************************/
+
+/**
+ * \brief On Edit Message
+ *
+ * For Editing selected message
+ */
 void CMsgSgTreeView::OnEditMsg()
 {
     vAddEditMessage(TRUE);
 }
-/******************************************************************************/
-/*  Function Name    :  vAddEditMessage                                       */
-/*                                                                            */
-/*  Input(s)         :  BOOL bMode                                            */
-/*  Output           :                                                        */
-/*  Functionality    :  Displays message detials dialog to add new message
-                        or edit selecetd message base on the parameter passed.
-/*  Member of        :  CMsgSgTreeView                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  08.05.2002                                            */
-/*  Modification     :  Raja N on 10.03.2004                                  */
-/*                      Modified to get refer inactive database structure for */
-/*                      editor operation                                      */
-/******************************************************************************/
 
+/**
+ * \brief Add Edit Message
+ *
+ * Displays message detials dialog to add new message
+ * or edit selecetd message base on the parameter passed.
+ */
 void CMsgSgTreeView::vAddEditMessage(BOOL bMode)
 {
     CMsgSignal* pTempMsgSg = NULL;
@@ -831,31 +642,13 @@ void CMsgSgTreeView::vAddEditMessage(BOOL bMode)
     }
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnSelchanged                                          */
-/*                                                                            */
-/*  Input(s)         :  NMHDR* pNMHDR, LRESULT* pResult                       */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the frame work when an item selection is    */
-/*                      changed. Updates message information on the right pane
-                        depending on the selected item
-
-/*  Member of        :  CMsgSgTreeView                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Rajesh Kumar                                          */
-/*  Date Created     :  19.02.2003                                            */
-/*  Modifications    :  Initial version                                       */
-/*                      - code reused from deleted fn OnTreeItemClick()
-/*  Modification     :  Raja N on 10.03.2004                                  */
-/*                      Modified to get refer inactive database structure for */
-/*                      editor operation                                      */
-/*  Modification     :  Amitesh Bharti on 22.07.2004                          */
-/*                      Modified to set the focus to the first database       */
-/*                      message entry in the tree view                        */
-/*  Modification     :  Raja N on 01.08.2004                                  */
-/*                      Removed the commented code as per code review feedback*/
-/******************************************************************************/
+/**
+ * \brief On Selection Change
+ *
+ * Called by the frame work when an item selection is
+ * changed. Updates message information on the right pane
+ * depending on the selected item
+ */
 void CMsgSgTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
 {
     NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
