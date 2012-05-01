@@ -32,21 +32,21 @@
 // CFlexListCtrl window
 class CFlexListCtrl : public CFFListCtrl
 {
-// Construction
+    // Construction
 public:
     CFlexListCtrl();
-// Attributes
+    // Attributes
 public:
 
-// Operations
+    // Operations
 public:
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CFlexListCtrl)
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 public:
     // This is used to map the Row X Column 2d data into
     // one dimentional map key. This value should be greater then the maximum
@@ -69,15 +69,15 @@ public:
     // This will return the column type and edit control type
     SLISTINFO sGetColumnInfo(int nRow, int nColunm);
     // This function will create a editable combobox.
-    CComboItem * pomComboList( int nItem, int nSubItem,
-                               const CStringArray& omList);
+    CComboItem* pomComboList( int nItem, int nSubItem,
+                              const CStringArray& omList);
     // This function will create a non-editable combobox.
-    CComboItem * pomComboItem( int nItem, int nSubItem,
-                               const CStringArray& omList);
+    CComboItem* pomComboItem( int nItem, int nSubItem,
+                              const CStringArray& omList);
     // This function will create a editbox.
-    CEdit * pomEditItem(int nItem, int nSubItem);
+    CEdit* pomEditItem(int nItem, int nSubItem);
     // This function will create a numeric editbox.
-    CNumEdit * pomNumItem(int nItem, int nSubItem, const SNUMERICINFO& sInfo);
+    CNumEdit* pomNumItem(int nItem, int nSubItem, const SNUMERICINFO& sInfo);
     // This will set the user program informatrion of a column
     void vSetUserProgInfo( int nRow, int nColunm,
                            const SUSERPROGINFO& sUSerProgInfo);

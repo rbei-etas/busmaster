@@ -33,11 +33,11 @@
 
 class CMainSubListDlg : public CDialog
 {
-// Construction
+    // Construction
 public:
     CMainSubListDlg(CWnd* pParent, CMainEntryList* psMainFrameSignalWatchList, SGUIPARAMS& sGuiParams);   // standard constructor
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CMainSubListDlg)
     enum { IDD = IDD_DLG_ADD_DEL_SIGNALS };
     CListCtrl   m_omListCtrlSignalWatch;
@@ -46,14 +46,14 @@ public:
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMainSubListDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
@@ -95,9 +95,9 @@ private:
     // Delete temp list. Called from Close and Delete All
     BOOL bDeleteTempList();
     // Fun to get Msg and Signal name from Signal Watch List
-    BOOL bGetMainSubName(const CString &omMsgStr, 
-                           CString &omMsg, 
-                           CString &omSig);
+    BOOL bGetMainSubName(const CString& omMsgStr,
+                         CString& omMsg,
+                         CString& omSig);
     // For deleting a signal from the Signal Watch List
     BOOL bDeleteSubEntry(UINT unMsgID, const CString& omMainEntry, const CString& omSignal);
     // For enabling/ diabling buttons

@@ -108,11 +108,11 @@ typedef SFILTERDISPLAYINFO* PSFILTERDISPLAYINFO;
 // details of the message filters
 struct sMESSAGEFILTERDETAILS
 {
-    UINT    *m_punUndefinedMsgID;       // ID's of undefined messages. The 
-                                        // first element will have the count of
-                                        // message ID's.
-    CStringArray    m_omMsgNameArray;   // the database message names in the 
-                                        // filter list
+    UINT*    m_punUndefinedMsgID;       // ID's of undefined messages. The
+    // first element will have the count of
+    // message ID's.
+    CStringArray    m_omMsgNameArray;   // the database message names in the
+    // filter list
     INT     m_nRangeFrom;               // range start information
     INT     m_nRangeTo;                 // range end information
     UINT    m_unCount;                  // count information of message names

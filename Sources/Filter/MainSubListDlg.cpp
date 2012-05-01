@@ -40,14 +40,16 @@ CMainSubListDlg::CMainSubListDlg(CWnd* pParent, CMainEntryList* psMainFrameSigna
     : CDialog(CMainSubListDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CMainSubListDlg)
-        // NOTE: the ClassWizard will add member initialization here
+    // NOTE: the ClassWizard will add member initialization here
     //}}AFX_DATA_INIT
     m_podMainCallerList = psMainFrameSignalWatchList;
+
     if (m_podMainCallerList != NULL)
     {
         m_podTempCallerList = new CMainEntryList;
         m_podTempCallerList->AddTail(psMainFrameSignalWatchList);
     }
+
     m_sGuiParams = sGuiParams;
 }
 
@@ -90,8 +92,8 @@ END_MESSAGE_MAP()
 
 /*******************************************************************************
 Function Name    : OnInitDialog
-Input(s)         : 
-Output           : 
+Input(s)         :
+Output           :
 Functionality    : This function will be called during initialization of dialog
                    box. This function will fill respective list controls
 Member of        : CMainSubListDlg
@@ -99,94 +101,99 @@ Friend of        :  -
 Author(s)        : Raja N
 Date Created     : 25.03.2004
 *******************************************************************************/
-BOOL CMainSubListDlg::OnInitDialog() 
+BOOL CMainSubListDlg::OnInitDialog()
 {
     // Call parent's init function
-    CDialog::OnInitDialog();    
-
+    CDialog::OnInitDialog();
     //Display title name
     SetWindowText((LPCTSTR)m_sGuiParams.m_acTitleName);
     //Dislay Main List name
     CWnd* pWnd = GetDlgItem(IDC_EDIT_MAINLIST_NAME);
+
     if (pWnd != NULL)
     {
         pWnd->SetWindowText((LPCTSTR)m_sGuiParams.m_acMainListName);
     }
+
     //Dislay Unselected List name
     pWnd = GetDlgItem(IDC_EDIT_UNSELLIST_NAME);
+
     if (pWnd != NULL)
     {
         pWnd->SetWindowText((LPCTSTR)m_sGuiParams.m_acUnSelListName);
     }
+
     //Dislay Selected List name
     pWnd = GetDlgItem(IDC_EDIT_SELLIST_NAME);
+
     if (pWnd != NULL)
     {
         pWnd->SetWindowText((LPCTSTR)m_sGuiParams.m_acSelListName);
     }
+
     // Populate the message name combo
     // Clear the content if any
     m_omCombMessage.ResetContent();
+
     if (m_podTempCallerList != NULL)
     {
         UINT unNoOfMainEntries = (UINT)m_podTempCallerList->GetCount();
-    
+
         if ( unNoOfMainEntries > 0 )
-        {		
-		    // Add every message name into the message list
+        {
+            // Add every message name into the message list
             POSITION pos = m_podTempCallerList->GetHeadPosition();
+
             while (pos != NULL)
             {
                 SMAINENTRY& sMainEntry = m_podTempCallerList->GetNext(pos);
                 CString omMainEntryName = sMainEntry.m_omMainEntryName;
-				CString omMainEntryId = _T("");
+                CString omMainEntryId = _T("");
+
                 if (m_sGuiParams.m_bCombine == TRUE)
                 {
                     omMainEntryId.Format(defSTR_MSG_ID_IN_HEX,sMainEntry.m_unMainEntryID);
                     omMainEntryName = omMainEntryId + omMainEntryName;
                 }
-				
-				m_omCombMessage.AddString(omMainEntryName);
+
+                m_omCombMessage.AddString(omMainEntryName);
             }
+
             m_omCombMessage.SetCurSel(0);
-            
             m_omListCtrlSignal.SetImageList(m_sGuiParams.m_pomImageList, LVSIL_SMALL);
-            
             // Create the first column. But this will not be shown
-            m_omListCtrlSignal.InsertColumn( 0, 
-                                                STR_EMPTY, 
-                                                LVCFMT_LEFT,
-                                                0); //Width is zero as this will 
-                                            //be updated in vUpdateUnSelSubEntryList
-            
+            m_omListCtrlSignal.InsertColumn( 0,
+                                             STR_EMPTY,
+                                             LVCFMT_LEFT,
+                                             0); //Width is zero as this will
+            //be updated in vUpdateUnSelSubEntryList
             // Populate the list with signal names
             vPopulateUnSelSubEntryList(unGetSelectedMainEntryID());
             m_omCombMessage.SetFocus();
         }
     }
-    
+
     // Update Signal Watch List
     // Set the same image list to this control
     m_omListCtrlSignalWatch.SetImageList(m_sGuiParams.m_pomImageList,LVSIL_SMALL);
     // Create Column for Signal Watch Lsit
     m_omListCtrlSignalWatch.InsertColumn( 0,
-                                     STR_EMPTY,
-                                     LVCFMT_LEFT,
-                                     0);//Width is zero as this will 
-                                        //be updated in vPopulateSelSubEntryList
+                                          STR_EMPTY,
+                                          LVCFMT_LEFT,
+                                          0);//Width is zero as this will
+    //be updated in vPopulateSelSubEntryList
     vPopulateSelSubEntryList();
     vEnableDisableButtons();
-
     return FALSE;  // return TRUE unless you set the focus to a control
-                  // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 /*******************************************************************************
 Function Name    : vUpdateUnSelSubEntryList
 Input(s)         : unMsgID - Message ID
-Output           : 
+Output           :
 Functionality    : This function will be called to update signal names list when
-                   the message name selected got changed or during init to 
+                   the message name selected got changed or during init to
                    populate the Signal Names listbox
 Friend of        :  -
 Author(s)        : Raja N
@@ -198,33 +205,41 @@ void CMainSubListDlg::vPopulateUnSelSubEntryList(UINT unMainEntryID)
 {
     //CMainEntryList* psTemp = m_podTempCallerList;
     m_omListCtrlSignal.DeleteAllItems();
+
     if (m_podTempCallerList != NULL)
     {
         SMAINENTRY sMainEntry;
+
         // Check for visible window
         if( m_omCombMessage.GetSafeHwnd() != NULL )
         {
             m_omCombMessage.GetWindowText(sMainEntry.m_omMainEntryName);
         }
+
         sMainEntry.m_unMainEntryID = unMainEntryID;
         POSITION pos = m_podTempCallerList->Find(sMainEntry);
+
         if ( pos != NULL)
         {
             sMainEntry = m_podTempCallerList->GetAt(pos);
             POSITION SubPos = sMainEntry.m_odUnSelEntryList.GetHeadPosition();
             UINT unCountItem = 0;
             UINT unMaxLen = 0;
+
             while (SubPos != NULL)
             {
                 SSUBENTRY& sSubEntry = sMainEntry.m_odUnSelEntryList.GetNext(SubPos);
                 UINT unLen = m_omListCtrlSignal.GetStringWidth(sSubEntry.m_omSubEntryName);
+
                 // Save the length if it is the max.
                 if(unMaxLen < unLen )
                 {
                     unMaxLen = unLen;
                 }
+
                 m_omListCtrlSignal.InsertItem(unCountItem++, sSubEntry.m_omSubEntryName, m_sGuiParams.m_unUnSelIconIndex);
             }
+
             // Set the column width if it is valid
             if( unMaxLen > 0 )
             {
@@ -236,18 +251,18 @@ void CMainSubListDlg::vPopulateUnSelSubEntryList(UINT unMainEntryID)
 
 /*******************************************************************************
 Function Name    : OnDestroy
-Input(s)         : 
-Output           : 
-Functionality    : This function will be called by framework when dialog 
+Input(s)         :
+Output           :
+Functionality    : This function will be called by framework when dialog
                    is destroyed. It will release the memory allocated
 Member of        : CMainSubListDlg
 Friend of        :  -
 Author(s)        : Raja N
 Date Created     : 25.03.2004
-Modification By  : 
-Modification on  : 
+Modification By  :
+Modification on  :
 *******************************************************************************/
-void CMainSubListDlg::OnDestroy() 
+void CMainSubListDlg::OnDestroy()
 {
     if (m_podTempCallerList != NULL)
     {
@@ -255,26 +270,26 @@ void CMainSubListDlg::OnDestroy()
         delete m_podTempCallerList;
         m_podTempCallerList = NULL;
     }
-    CDialog::OnDestroy();    
+
+    CDialog::OnDestroy();
 }
 
 /*******************************************************************************
 Function Name    : OnSelChangeMessageName
-Input(s)         : 
-Output           : 
-Functionality    : This function will be called by framework when the message 
-                   name combo box selection got changed. This will update the 
+Input(s)         :
+Output           :
+Functionality    : This function will be called by framework when the message
+                   name combo box selection got changed. This will update the
                    Signal Names List control
 Member of        : CMainSubListDlg
 Friend of        :  -
 Author(s)        : Raja N
 Date Created     : 25.03.2004
-Modification By  : 
-Modification on  : 
+Modification By  :
+Modification on  :
 *******************************************************************************/
-void CMainSubListDlg::OnSelChangeMessageName() 
+void CMainSubListDlg::OnSelChangeMessageName()
 {
-
     vPopulateUnSelSubEntryList(unGetSelectedMainEntryID());
     vEnableDisableButtons();
 }
@@ -282,7 +297,7 @@ void CMainSubListDlg::OnSelChangeMessageName()
 /*******************************************************************************
 Function Name    : vAddSelSubEntries
 Input(s)         : bAllSignals - Add All Signals
-Output           : 
+Output           :
 Functionality    : This function will be called to add the selected signals to
                    the temporary signal list. It will add all messages if the
                    bool bAllSignals is true.
@@ -297,25 +312,27 @@ void CMainSubListDlg::vAddSelSubEntries(BOOL bAllSignals)
 {
     //BOOL bMemoryError = FALSE;
     //UINT unSelMainEntryID = unGetSelectedMainEntryID();
-
     // Get the selected message list
     vUpdateUnSelSubEntryList(bAllSignals);
+
     if( (m_omCSAData.GetSize() > 0) && (m_podTempCallerList != NULL))
     {
-        
         SMAINENTRY sMainEntry;
         UINT unMainEntryId = unGetSelectedMainEntryID(&(sMainEntry.m_omMainEntryName));
         sMainEntry.m_unMainEntryID = unMainEntryId;
         POSITION pos = m_podTempCallerList->Find(sMainEntry);
+
         if (pos != NULL)
         {
             SMAINENTRY& sPointEntry = m_podTempCallerList->GetAt(pos);
+
             for (int i = 0; i < m_omCSAData.GetSize(); i++)
             {
                 CString omSubEntryName = m_omCSAData.GetAt(i);
                 SSUBENTRY sSubEntry;
                 sSubEntry.m_omSubEntryName = omSubEntryName;
                 POSITION SubPos = sPointEntry.m_odUnSelEntryList.Find(sSubEntry);
+
                 if (SubPos != NULL)
                 {
                     sSubEntry = sPointEntry.m_odUnSelEntryList.GetAt(SubPos);
@@ -330,7 +347,7 @@ void CMainSubListDlg::vAddSelSubEntries(BOOL bAllSignals)
 /*******************************************************************************
 Function Name    : vDelSelSubEntries
 Input(s)         : bAllSignals - Delete All Signals Flag
-Output           : 
+Output           :
 Functionality    : This function will be called to delete the selected signals
                    from the temporary signal list. It will delete all messages
                    if the bool bAllSignals is true.
@@ -338,8 +355,8 @@ Member of        : CMainSubListDlg
 Friend of        :  -
 Author(s)        : Raja N
 Date Created     : 25.03.2004
-Modification By  : 
-Modification on  : 
+Modification By  :
+Modification on  :
 *******************************************************************************/
 void CMainSubListDlg::vDelSelSubEntries(BOOL bAllEntries)
 {
@@ -353,12 +370,12 @@ void CMainSubListDlg::vDelSelSubEntries(BOOL bAllEntries)
         for(UINT index = 0; index < unSelCount; index++)
         {
             CString omSelMainSubEntry, omMainEntry, omSubEntry;
-            
             omSelMainSubEntry = m_omCSAData.GetAt(index);
 
             if( bGetMainSubName( omSelMainSubEntry, omMainEntry, omSubEntry) == TRUE )
             {
                 UINT unMainEntryID = unGetMainEntryIDFromName(omMainEntry);
+
                 if ( bDeleteSubEntry(unMainEntryID, omMainEntry, omSubEntry) != TRUE)
                 {
                     CString omError;
@@ -367,35 +384,36 @@ void CMainSubListDlg::vDelSelSubEntries(BOOL bAllEntries)
                 }
             }
         }
-
     }
     else
     {
         if (m_podTempCallerList != NULL)
         {
             POSITION pos = m_podTempCallerList->GetHeadPosition();
+
             while (pos)
             {
                 SMAINENTRY& sMainEntry = m_podTempCallerList->GetNext(pos);
                 POSITION SubPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
+
                 while (SubPos != NULL)
                 {
                     POSITION TempPos = SubPos;
                     SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SubPos);
                     sMainEntry.m_odUnSelEntryList.AddTail(sSubEntry);
-                    sMainEntry.m_odSelEntryList.RemoveAt(TempPos);                    
+                    sMainEntry.m_odSelEntryList.RemoveAt(TempPos);
                 }
             }
         }
-
     }
+
     vPopulateUnSelSubEntryList(unGetSelectedMainEntryID());
 }
 
 /*******************************************************************************
 Function Name    : unGetSelectedMainEntryID
 Input(s)         : -
-Output           : 
+Output           :
 Functionality    : This function will return the message id of the message name
                    selected in the combo box. This will be called to get the id
                    and it will get the id from active database
@@ -403,35 +421,37 @@ Member of        : CMainSubListDlg
 Friend of        :  -
 Author(s)        : Raja N
 Date Created     : 25.03.2004
-Modification By  : 
-Modification on  : 
+Modification By  :
+Modification on  :
 *******************************************************************************/
 UINT CMainSubListDlg::unGetSelectedMainEntryID(CString* pomMainEntryName)
 {
     // Assign init value to an invalid one
     UINT unMainEntryId = (UINT)-1;
     CString omMainEntryName;
-    
+
     // Check for visible window
     if( m_omCombMessage.GetSafeHwnd() != NULL )
     {
         m_omCombMessage.GetWindowText(omMainEntryName);
     }
+
     // Get the selected message name
     unMainEntryId = unGetMainEntryIDFromName(omMainEntryName);
+
     if (pomMainEntryName != NULL)
     {
         *pomMainEntryName = omMainEntryName;
     }
-    return unMainEntryId;
 
+    return unMainEntryId;
 }
 
 /*******************************************************************************
 Function Name    : OnBtnAddSubEntries
 Input(s)         :  -
 Output           :  -
-Functionality    : This function will be called by framework when the user 
+Functionality    : This function will be called by framework when the user
                    selects "Add" button. This will call "vAddSelSubEntries" to
                    add the selected sub entries
 Member of        : CMainSubListDlg
@@ -441,7 +461,7 @@ Date Created     : 25.03.2004
 Modifications    : Raja N
                  : 14.04.2004. Modifications as per Code Review.
 *******************************************************************************/
-void CMainSubListDlg::OnBtnAddSubEntries() 
+void CMainSubListDlg::OnBtnAddSubEntries()
 {
     // Add only the selected signals
     vAddSelSubEntries(FALSE);
@@ -460,10 +480,10 @@ Member of        : CMainSubListDlg
 Friend of        :  -
 Author(s)        : Raja N
 Date Created     : 25.03.2004
-Modification By  : 
-Modification on  : 
+Modification By  :
+Modification on  :
 *******************************************************************************/
-void CMainSubListDlg::OnBtnAddAllSubEntries() 
+void CMainSubListDlg::OnBtnAddAllSubEntries()
 {
     // Add only the selected signals
     vAddSelSubEntries(TRUE);
@@ -483,13 +503,14 @@ Member of        : CMainSubListDlg
 Friend of        :  -
 Author(s)        : Raja N
 Date Created     : 25.03.2004
-Modification By  : 
-Modification on  : 
+Modification By  :
+Modification on  :
 *******************************************************************************/
-void CMainSubListDlg::OnBtnDelSubEntires() 
+void CMainSubListDlg::OnBtnDelSubEntires()
 {
     BOOL bDeleteAll = FALSE;
-    // Check the selection count and if that is equal to total number just 
+
+    // Check the selection count and if that is equal to total number just
     // all. No need to process the data
     if(static_cast<int>(m_omListCtrlSignalWatch.GetSelectedCount()) ==
             m_omListCtrlSignalWatch.GetItemCount())
@@ -513,10 +534,10 @@ Member of        : CMainSubListDlg
 Friend of        :  -
 Author(s)        : Raja N
 Date Created     : 25.03.2004
-Modification By  : 
-Modification on  : 
+Modification By  :
+Modification on  :
 *******************************************************************************/
-void CMainSubListDlg::OnBtnDelAllSubEntires() 
+void CMainSubListDlg::OnBtnDelAllSubEntires()
 {
     vDelSelSubEntries(TRUE);
     vEnableDisableButtons();
@@ -536,15 +557,14 @@ Member of        : CMainSubListDlg
 Friend of        :  -
 Author(s)        : Raja N
 Date Created     : 25.03.2004
-Modification By  : 
-Modification on  : 
+Modification By  :
+Modification on  :
 *******************************************************************************/
-BOOL CMainSubListDlg::bGetMainSubName( const CString &omMainSubName,
-                                                    CString &omMain,
-                                                    CString &omSub )
+BOOL CMainSubListDlg::bGetMainSubName( const CString& omMainSubName,
+                                       CString& omMain,
+                                       CString& omSub )
 {
     omSub = omMainSubName;
-
     int nIndex;
     BOOL bSuccess = FALSE;
     nIndex = omMainSubName.Find(defSTR_MSG_SIG_SEPERATER);
@@ -556,6 +576,7 @@ BOOL CMainSubListDlg::bGetMainSubName( const CString &omMainSubName,
         omSub = omMainSubName.Right( omMainSubName.GetLength() - nIndex - 4);
         bSuccess = TRUE;
     }
+
     return bSuccess;
 }
 
@@ -576,21 +597,24 @@ Modifications    : Raja N
                  : 14.04.2004. Modifications as per Code Review.
 *******************************************************************************/
 BOOL CMainSubListDlg::bDeleteSubEntry(UINT unMainEntryID,const CString& omMainEntryName,
-                                                        const CString& omSubEntry)
+                                      const CString& omSubEntry)
 {
     BOOL bSuccess = FALSE;
+
     if (m_podTempCallerList != NULL)
     {
         SMAINENTRY sMainEntry;
         sMainEntry.m_unMainEntryID = unMainEntryID;
         sMainEntry.m_omMainEntryName = omMainEntryName;
         POSITION pos = m_podTempCallerList->Find(sMainEntry);
+
         if (pos != NULL)
         {
             SMAINENTRY& sPointEntry = m_podTempCallerList->GetAt(pos);
             SSUBENTRY sSubEntry;
             sSubEntry.m_omSubEntryName = omSubEntry;
             POSITION SubPos = sPointEntry.m_odSelEntryList.Find(sSubEntry);
+
             if (SubPos != NULL)
             {
                 bSuccess = TRUE;
@@ -598,9 +622,9 @@ BOOL CMainSubListDlg::bDeleteSubEntry(UINT unMainEntryID,const CString& omMainEn
                 sPointEntry.m_odSelEntryList.RemoveAt(SubPos);
                 sPointEntry.m_odUnSelEntryList.AddTail(sSubEntry);
             }
-
         }
     }
+
     return bSuccess;
 }
 
@@ -608,17 +632,17 @@ BOOL CMainSubListDlg::bDeleteSubEntry(UINT unMainEntryID,const CString& omMainEn
 Function Name    : OnClickUnSelSubEntryList
 Input(s)         : NMHDR* pNMHDR, LRESULT* pResult - Handler parameter
 Output           :  -
-Functionality    : This function will be called by framework when the user 
+Functionality    : This function will be called by framework when the user
                    clicks on Signal Watch box. This will update the status of
                    the Add button as per the current selection
 Member of        : CMainSubListDlg
 Friend of        :  -
 Author(s)        : Raja N
 Date Created     : 25.03.2004
-Modification By  : 
-Modification on  : 
+Modification By  :
+Modification on  :
 *******************************************************************************/
-void CMainSubListDlg::OnClickUnSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pResult) 
+void CMainSubListDlg::OnClickUnSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
     if(m_omListCtrlSignal.GetSelectedCount() == 0)
     {
@@ -628,6 +652,7 @@ void CMainSubListDlg::OnClickUnSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pResu
     {
         GetDlgItem(IDM_SIGNALDLG_ADD)->EnableWindow(TRUE);
     }
+
     *pResult = 0;
 }
 
@@ -635,8 +660,8 @@ void CMainSubListDlg::OnClickUnSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pResu
 Function Name    : OnDblclkUnSelSubEntryList
 Input(s)         : NMHDR* pNMHDR, LRESULT* pResult - Handler parameter
 Output           :  -
-Functionality    : This function will be called by framework when the user 
-                   double clicks on Signal List box. This will call 
+Functionality    : This function will be called by framework when the user
+                   double clicks on Signal List box. This will call
                    "vAddSelectedSignals" to add the selected entry and will
                    update the button status by calling "vEnableDisableButtons"
 Member of        : CMainSubListDlg
@@ -646,7 +671,7 @@ Date Created     : 25.03.2004
 Modifications    : Raja N
                  : 14.04.2004. Modifications as per Code Review.
 *******************************************************************************/
-void CMainSubListDlg::OnDblclkUnSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pResult) 
+void CMainSubListDlg::OnDblclkUnSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
     if(m_omListCtrlSignal.GetSelectedCount() != 0)
     {
@@ -655,6 +680,7 @@ void CMainSubListDlg::OnDblclkUnSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pRes
         // Update button status
         vEnableDisableButtons();
     }
+
     *pResult = 0;
 }
 
@@ -662,15 +688,15 @@ void CMainSubListDlg::OnDblclkUnSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pRes
 Function Name    : OnClickSelSubEntryList
 Input(s)         : NMHDR* pNMHDR, LRESULT* pResult - Handler parameter
 Output           :  -
-Functionality    : This function will be called by framework when the user 
+Functionality    : This function will be called by framework when the user
                    clicks on Signal Watch List box. This will update the status
                    of the Delete button as per the current selection
 Member of        : CMainSubListDlg
 Friend of        :  -
 Author(s)        : Raja N
 Date Created     : 25.03.2004
-Modification By  : 
-Modification on  : 
+Modification By  :
+Modification on  :
 *******************************************************************************/
 void CMainSubListDlg::OnClickSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
@@ -683,14 +709,13 @@ void CMainSubListDlg::OnClickSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pResult
         GetDlgItem(IDM_SIGNALDLG_DELETE)->EnableWindow(TRUE);
     }
 
-    
     *pResult = 0;
 }
 
 /*******************************************************************************
 Function Name    : vEnableDisableButtons
-Input(s)         :  - 
-Output           : 
+Input(s)         :  -
+Output           :
 Functionality    : This UI function will be called to update the status of the
                    buttons in this dialog. This will check the entries in the
                    Signal & Signal Watch List boxes. According to that it will
@@ -700,8 +725,8 @@ Member of        : CMainSubListDlg
 Friend of        :  -
 Author(s)        : Raja N
 Date Created     : 25.03.2004
-Modification By  : 
-Modification on  : 
+Modification By  :
+Modification on  :
 *******************************************************************************/
 void CMainSubListDlg::vEnableDisableButtons()
 {
@@ -709,6 +734,7 @@ void CMainSubListDlg::vEnableDisableButtons()
     if( m_omListCtrlSignal.GetItemCount() > 0)
     {
         GetDlgItem(IDM_SIGNALDLG_ADDALL)->EnableWindow(TRUE);
+
         if( m_omListCtrlSignal.GetSelectedCount() > 0)
         {
             GetDlgItem(IDM_SIGNALDLG_ADD)->EnableWindow(TRUE);
@@ -728,6 +754,7 @@ void CMainSubListDlg::vEnableDisableButtons()
     if( m_omListCtrlSignalWatch.GetItemCount() > 0)
     {
         GetDlgItem(IDM_SIGNALDLG_DELETEALL)->EnableWindow(TRUE);
+
         if( m_omListCtrlSignalWatch.GetSelectedCount() > 0)
         {
             GetDlgItem(IDM_SIGNALDLG_DELETE)->EnableWindow(TRUE);
@@ -742,14 +769,12 @@ void CMainSubListDlg::vEnableDisableButtons()
         GetDlgItem(IDM_SIGNALDLG_DELETEALL)->EnableWindow(FALSE);
         GetDlgItem(IDM_SIGNALDLG_DELETE)->EnableWindow(FALSE);
     }
-
-
 }
 
 /*******************************************************************************
 Function Name    : vUpdateSelSubEntryList
 Input(s)         : bAllSignals - Add All Signals
-Output           :  - 
+Output           :  -
 Functionality    : This UI function will be called to get the selected signals
                    list. This will populate the private member of this class
                    m_omCSAData. This array will be used by data manipulation
@@ -768,89 +793,90 @@ void CMainSubListDlg::vUpdateUnSelSubEntryList(BOOL bAllEntries)
     CString omMainEntryName;
     m_omCombMessage.GetWindowText(omMainEntryName);
     m_omCSAData.RemoveAll();
+
     if( bAllEntries == FALSE )
     {
         // Only Add Selected Signals
-
         // Get the initial position
         POSITION pos = m_omListCtrlSignal.GetFirstSelectedItemPosition();
         // Store current column width. Subtract image width
-        INT unCurrentSize = 
+        INT unCurrentSize =
             m_omListCtrlSignalWatch.GetColumnWidth( 0 ) - defSIZE_OF_IMAGE;
         // Assume this is the greatest value
         INT unMaxSize = unCurrentSize;
-        
+
         while(pos != NULL)
         {
-            int nSelIndex;  
+            int nSelIndex;
             CString omSelSubEntry;
-
             // Get the first selection
             nSelIndex = m_omListCtrlSignal.GetNextSelectedItem(pos);
             CString omStrEntry = omSelSubEntry = m_omListCtrlSignal.GetItemText(nSelIndex, 0);
             // Add the data into CStringArray and into the Watch List
             m_omCSAData.Add(omSelSubEntry);
             omStrEntry.Format(defSTR_FORMAT_SW_LIST,
-                                    omMainEntryName,
-                                    defSTR_MSG_SIG_SEPERATER,
-                                    omSelSubEntry);
+                              omMainEntryName,
+                              defSTR_MSG_SIG_SEPERATER,
+                              omSelSubEntry);
             m_omListCtrlSignalWatch.InsertItem(0,
                                                omStrEntry,
                                                m_sGuiParams.m_unSelIconIndex);
             // Resize the the column width
-            
             INT unSize = m_omListCtrlSignalWatch.GetStringWidth(omStrEntry);
+
             if( unMaxSize < unSize )
             {
                 unMaxSize = unSize;
             }
+
             // Delete the item from the Signal List
             m_omListCtrlSignal.DeleteItem(nSelIndex);
             // As an item got deleted get the latest position
             pos = m_omListCtrlSignal.GetFirstSelectedItemPosition();
         }
+
         if( unMaxSize > unCurrentSize )
         {
-            m_omListCtrlSignalWatch.SetColumnWidth( 0 , unMaxSize + 
-                                                        defSIZE_OF_IMAGE );
+            m_omListCtrlSignalWatch.SetColumnWidth( 0 , unMaxSize +
+                                                    defSIZE_OF_IMAGE );
         }
-                        
     }
     else
     {
         // Get All items
         UINT unItemCount = m_omListCtrlSignal.GetItemCount();
-        
-        INT unCurrentSize = 
+        INT unCurrentSize =
             m_omListCtrlSignalWatch.GetColumnWidth( 0 ) - defSIZE_OF_IMAGE;
         INT unMaxSize = unCurrentSize;
-        
         CString omSelSubEntry;
+
         for(UINT index = 0; index < unItemCount; index++ )
         {
             CString omStrEntry = omSelSubEntry = m_omListCtrlSignal.GetItemText(index, 0);
             // Add the data into CStringArray and into the Watch List
             m_omCSAData.Add(omSelSubEntry);
-            
             omStrEntry.Format(defSTR_FORMAT_SW_LIST,
-                                    omMainEntryName,
-                                    defSTR_MSG_SIG_SEPERATER,
-                                    omSelSubEntry);
+                              omMainEntryName,
+                              defSTR_MSG_SIG_SEPERATER,
+                              omSelSubEntry);
             INT unSize = m_omListCtrlSignalWatch.GetStringWidth(omStrEntry);
-            
+
             if( unMaxSize < unSize )
             {
                 unMaxSize = unSize;
             }
+
             m_omListCtrlSignalWatch.InsertItem(0,
                                                omStrEntry,
                                                m_sGuiParams.m_unSelIconIndex);
         }
+
         if( unMaxSize > unCurrentSize )
         {
-            m_omListCtrlSignalWatch.SetColumnWidth( 0 , unMaxSize + 
-                                                        defSIZE_OF_IMAGE );
+            m_omListCtrlSignalWatch.SetColumnWidth( 0 , unMaxSize +
+                                                    defSIZE_OF_IMAGE );
         }
+
         // Clear the list as all items ware added
         m_omListCtrlSignal.DeleteAllItems();
     }
@@ -859,7 +885,7 @@ void CMainSubListDlg::vUpdateUnSelSubEntryList(BOOL bAllEntries)
 /*******************************************************************************
 Function Name    : vUpdateSelSubEntryList
 Input(s)         : bAllSignals - Add All Signals
-Output           : 
+Output           :
 Functionality    : This UI function will be called to get the selected signal
                    watch list entries. This will populate the private member of
                    this class m_omCSAData. This array will be used by data
@@ -870,13 +896,13 @@ Member of        : CMainSubListDlg
 Friend of        :  -
 Author(s)        : Raja N
 Date Created     : 25.03.2004
-Modification By  : 
-Modification on  : 
+Modification By  :
+Modification on  :
 *******************************************************************************/
 void CMainSubListDlg::vUpdateSelSubEntryList(BOOL bAllEntries)
 {
-
     m_omCSAData.RemoveAll();
+
     if( bAllEntries == FALSE )
     {
         // Only Add Selected Signals
@@ -885,35 +911,28 @@ void CMainSubListDlg::vUpdateSelSubEntryList(BOOL bAllEntries)
 
         while(pos != NULL)
         {
-            int nSelIndex;  
+            int nSelIndex;
             CString omSelMainSub;
-
             // Get the first selection
             nSelIndex = m_omListCtrlSignalWatch.GetNextSelectedItem(pos);
-            omSelMainSub = 
+            omSelMainSub =
                 m_omListCtrlSignalWatch.GetItemText(nSelIndex, 0);
-
             // Add the data into CStringArray and into the Watch List
             m_omCSAData.Add(omSelMainSub);
-
             // Delete the item from the Signal List
             m_omListCtrlSignalWatch.DeleteItem(nSelIndex);
-
             // As an item got deleted get the latest position
             pos = m_omListCtrlSignalWatch.GetFirstSelectedItemPosition();
         }
-
-                        
     }
     else
     {
-         // Clear the list as all items ware added
+        // Clear the list as all items ware added
         m_omListCtrlSignalWatch.DeleteAllItems();
         // Nothing is required to store in the data array as the whole
         // list will be deleted. The data interface will delete the linked
         // list of signal watch
     }
-
 }
 
 /**
@@ -925,14 +944,14 @@ void CMainSubListDlg::vUpdateSelSubEntryList(BOOL bAllEntries)
  * selected signal details using CSignalDetailsDlg.
  */
 void CMainSubListDlg::OnSignaldetails()
-{ 
+{
 }
 
 /*******************************************************************************
 Function Name    : OnRClickSignal
 Input(s)         : NMHDR* pNMHDR, LRESULT* pResult - Handler parameter
 Output           :  -
-Functionality    : This function will be called by framework when the user 
+Functionality    : This function will be called by framework when the user
                    clicks the right mouse button in Signal List box. This will
                    popup the menu item. The irrevelent menu items will be
                    disabled. If there is not item in the list box the popup menu
@@ -941,18 +960,17 @@ Member of        : CMainSubListDlg
 Friend of        :  -
 Author(s)        : Raja N
 Date Created     : 25.03.2004
-Modification By  : 
-Modification on  : 
+Modification By  :
+Modification on  :
 *******************************************************************************/
-void CMainSubListDlg::OnRClickUnSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pResult) 
+void CMainSubListDlg::OnRClickUnSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
     CMenu omCtxMenu;
     CPoint point(0,0);
-
     // Enable buttons in sysn with menu
     vEnableDisableButtons();
-
     GetCursorPos(&point);
+
     // Popup only if there is something in the list
     if( m_omListCtrlSignal.GetItemCount() > 0)
     {
@@ -966,16 +984,17 @@ void CMainSubListDlg::OnRClickUnSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pRes
                 unSelCount = m_omListCtrlSignal.GetSelectedCount();
                 // Disable Delete Operations
                 pomCtxMenu->EnableMenuItem(IDM_SIGNALDLG_DELETE,
-                                            MF_DISABLED | MF_GRAYED);
-
+                                           MF_DISABLED | MF_GRAYED);
                 pomCtxMenu->EnableMenuItem(IDM_SIGNALDLG_DELETEALL,
-                                            MF_DISABLED | MF_GRAYED);
+                                           MF_DISABLED | MF_GRAYED);
+
                 if(unSelCount == 0)
                 {
                     // Disable selection operations
                     pomCtxMenu->EnableMenuItem(IDM_SIGNALDLG_ADD,
-                                                MF_DISABLED | MF_GRAYED);
+                                               MF_DISABLED | MF_GRAYED);
                 }
+
                 // Enable Signal Details only if one item got selected
                 if(unSelCount == 1)
                 {
@@ -986,10 +1005,9 @@ void CMainSubListDlg::OnRClickUnSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pRes
                     m_omCombMessage.GetWindowText(omMainEntry);
                     m_omCSAData.Add(omMainEntry);
                     // Signal Name Next
-                    POSITION pos = 
+                    POSITION pos =
                         m_omListCtrlSignal.GetFirstSelectedItemPosition();
                     UINT unIndex = m_omListCtrlSignal.GetNextSelectedItem(pos);
-            
                     m_omCSAData.Add(m_omListCtrlSignal.GetItemText(unIndex,0));
                 }
                 // Multiple Selection
@@ -997,16 +1015,16 @@ void CMainSubListDlg::OnRClickUnSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pRes
                 {
                     // Disable Details Menu Item
                     pomCtxMenu->EnableMenuItem(IDM_SIGNALDLG_SIGNALDETAILS,
-                                                MF_DISABLED | MF_GRAYED);
+                                               MF_DISABLED | MF_GRAYED);
                 }
-                
+
                 pomCtxMenu->TrackPopupMenu(TPM_RIGHTBUTTON | TPM_LEFTALIGN,
-                                       point.x, point.y,
-                                       this);
+                                           point.x, point.y,
+                                           this);
             }
         }
-    }   
-    
+    }
+
     *pResult = 0;
 }
 
@@ -1014,7 +1032,7 @@ void CMainSubListDlg::OnRClickUnSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pRes
 Function Name    : OnRClickSelSubEntryList
 Input(s)         : NMHDR* pNMHDR, LRESULT* pResult - Handler parameter
 Output           :  -
-Functionality    : This function will be called by framework when the user 
+Functionality    : This function will be called by framework when the user
                    clicks the right mouse button in Signal Watch List box. This
                    will popup the menu item. The irrevelent menu items will be
                    disabled. If there is not item in the list box the popup menu
@@ -1023,18 +1041,17 @@ Member of        : CMainSubListDlg
 Friend of        :  -
 Author(s)        : Raja N
 Date Created     : 25.03.2004
-Modification By  : 
-Modification on  : 
+Modification By  :
+Modification on  :
 *******************************************************************************/
 void CMainSubListDlg::OnRClickSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
     CMenu omCtxMenu;
     CPoint point(0,0);
-
     // Enable buttons in sync with the menu status
     vEnableDisableButtons();
-
     GetCursorPos(&point);
+
     // Popup only if there is atleast one entry in the list
     if( m_omListCtrlSignalWatch.GetItemCount() > 0)
     {
@@ -1048,32 +1065,30 @@ void CMainSubListDlg::OnRClickSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pResul
                 unSelCount = m_omListCtrlSignalWatch.GetSelectedCount();
                 // Disable Delete Operations
                 pomCtxMenu->EnableMenuItem(IDM_SIGNALDLG_ADD,
-                                            MF_DISABLED | MF_GRAYED);
-
+                                           MF_DISABLED | MF_GRAYED);
                 pomCtxMenu->EnableMenuItem(IDM_SIGNALDLG_ADDALL,
-                                            MF_DISABLED | MF_GRAYED);
+                                           MF_DISABLED | MF_GRAYED);
+
                 if(unSelCount == 0)
                 {
                     // Disable selection operations
                     pomCtxMenu->EnableMenuItem(IDM_SIGNALDLG_DELETE,
-                                                MF_DISABLED | MF_GRAYED);
+                                               MF_DISABLED | MF_GRAYED);
                 }
+
                 // Enable Signal Details only if one item got selected
                 if(unSelCount == 1)
                 {
                     // Copy the Message Name and Signal Name for Signal Details
                     m_omCSAData.RemoveAll();
-                    
                     CString omMainEntry, omSubEntry, omMainSub;
-                    POSITION pos = 
+                    POSITION pos =
                         m_omListCtrlSignalWatch.GetFirstSelectedItemPosition();
-                    
-                    UINT unIndex = 
+                    UINT unIndex =
                         m_omListCtrlSignalWatch.GetNextSelectedItem(pos);
-                    
-                    omMainSub =  
+                    omMainSub =
                         m_omListCtrlSignalWatch.GetItemText(unIndex,0);
-                    
+
                     if (bGetMainSubName(omMainSub, omMainEntry, omSubEntry) == TRUE)
                     {
                         // Message Name First
@@ -1087,15 +1102,16 @@ void CMainSubListDlg::OnRClickSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pResul
                 {
                     // Disable Details Menu Item
                     pomCtxMenu->EnableMenuItem(IDM_SIGNALDLG_SIGNALDETAILS,
-                                                MF_DISABLED | MF_GRAYED);
+                                               MF_DISABLED | MF_GRAYED);
                 }
-                
+
                 pomCtxMenu->TrackPopupMenu(TPM_RIGHTBUTTON | TPM_LEFTALIGN,
-                                       point.x, point.y,
-                                       this);
+                                           point.x, point.y,
+                                           this);
             }
         }
     }
+
     *pResult = 0;
 }
 
@@ -1110,16 +1126,17 @@ Member of        : CMainSubListDlg
 Friend of        :  -
 Author(s)        : Raja N
 Date Created     : 25.03.2004
-Modification By  : 
-Modification on  : 
+Modification By  :
+Modification on  :
 *******************************************************************************/
-void CMainSubListDlg::OnOK() 
+void CMainSubListDlg::OnOK()
 {
     if (m_podMainCallerList != NULL)
     {
         m_podMainCallerList->RemoveAll();
         m_podMainCallerList->AddTail(m_podTempCallerList);
     }
+
     CDialog::OnOK();
 }
 
@@ -1140,46 +1157,53 @@ void CMainSubListDlg::vPopulateSelSubEntryList()
 {
     // To store the Col Width
     UINT unMaxSize = 0;
+
     // Get the items and add
     if ( m_podTempCallerList != NULL)
     {
         POSITION pos = m_podTempCallerList->GetHeadPosition();
+
         while (pos)
         {
             SMAINENTRY& sMainEntry = m_podTempCallerList->GetNext(pos);
+
             if( sMainEntry.m_omMainEntryName != STR_EMPTY)
             {
                 CString omNameWithId = _T("");
+
                 if (m_sGuiParams.m_bCombine == TRUE)
                 {
                     omNameWithId.Format(defSTR_MSG_ID_IN_HEX,sMainEntry.m_unMainEntryID);
                 }
+
                 omNameWithId = omNameWithId + sMainEntry.m_omMainEntryName;// + omNameWithId;
                 CString omStrEntry;
                 POSITION SubPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
+
                 while (SubPos != NULL)
-                {                    
+                {
                     SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SubPos);
                     // Use format instead of multiple operator '+' call
-                    
                     omStrEntry.Format(defSTR_FORMAT_SW_LIST,omNameWithId,
-                                                defSTR_MSG_SIG_SEPERATER,
-                                                sSubEntry.m_omSubEntryName);
-                    
+                                      defSTR_MSG_SIG_SEPERATER,
+                                      sSubEntry.m_omSubEntryName);
                     // Get current entry size
-                    UINT unSize = 
+                    UINT unSize =
                         m_omListCtrlSignalWatch.GetStringWidth( omStrEntry );
+
                     // Compare with the maximun
                     if( unSize > unMaxSize)
                     {
                         // This is gonna be the maximum
                         unMaxSize = unSize;
                     }
+
                     m_omListCtrlSignalWatch.InsertItem(0, omStrEntry, m_sGuiParams.m_unSelIconIndex);
                 }
             }
         }
     }
+
     // Set the column width if it is valid
     if( unMaxSize > 0 )
     {
@@ -1200,7 +1224,7 @@ Author(s)        : Raja N
 Date Created     : 02/04/2004
 Modifications    :
 *******************************************************************************/
-BOOL CMainSubListDlg::OnHelpInfo(HELPINFO* /*pHelpInfo*/) 
+BOOL CMainSubListDlg::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
 {
     //vSetHelpID(pHelpInfo->dwContextId);
     //return CDialog::OnHelpInfo(pHelpInfo);
@@ -1209,15 +1233,17 @@ BOOL CMainSubListDlg::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
 
 UINT CMainSubListDlg::unGetMainEntryIDFromName(CString omMainEntryName)
 {
-	CString omMainEntryId;
-	UINT unMainEntryID = (UINT)-1;
-	TCHAR* pcStopStr = NULL;
+    CString omMainEntryId;
+    UINT unMainEntryID = (UINT)-1;
+    TCHAR* pcStopStr = NULL;
     int nIndex = omMainEntryName.Find(defMSGID_EXTENDED);
     int nCloseBraceIndex = omMainEntryName.Find(defMSG_NAME_END_CHAR);
-	if((nIndex != -1) && (nCloseBraceIndex != -1))
-	{
-		omMainEntryId = omMainEntryName.Mid(nIndex + 1, nCloseBraceIndex - (nIndex + 1));
-		unMainEntryID = _tcstol((LPCTSTR )omMainEntryId,&pcStopStr,16);
-	}
-	return unMainEntryID;
+
+    if((nIndex != -1) && (nCloseBraceIndex != -1))
+    {
+        omMainEntryId = omMainEntryName.Mid(nIndex + 1, nCloseBraceIndex - (nIndex + 1));
+        unMainEntryID = _tcstol((LPCTSTR )omMainEntryId,&pcStopStr,16);
+    }
+
+    return unMainEntryID;
 }
