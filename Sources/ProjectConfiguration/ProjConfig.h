@@ -27,28 +27,28 @@
 typedef std::map <string, SECTIONDATA*> SECTIONMAP;
 
 
-class CProjConfig  
+class CProjConfig
 {
 private:
 
     PROJECTDATA m_sProjectDetails;
-	SECTIONMAP m_MapOfSection;
+    SECTIONMAP m_MapOfSection;
 
-	void vClearMap(void);
+    void vClearMap(void);
 
 public:
 
     // Constructor and destructor
-	CProjConfig();
-	virtual ~CProjConfig();
+    CProjConfig();
+    virtual ~CProjConfig();
 
     // All the getters
-	int GetSectionCount();
-	void GetProjectDetail(PROJECTDATA &ProjData);
-	int GetSectionList(list<string>& SectionList);
-	bool GetSectionData(string SectionName, SECTIONDATA &SectionData);
+    int GetSectionCount();
+    void GetProjectDetail(PROJECTDATA& ProjData);
+    int GetSectionList(list<string>& SectionList);
+    bool GetSectionData(string SectionName, SECTIONDATA& SectionData);
 
     // All the setters
-	bool AddModifySectionDetail(const SECTIONDATA& SectionData);
-	void ModifyProjValues(const PROJECTDATA& ProjDATA);
+    bool AddModifySectionDetail(const SECTIONDATA& SectionData);
+    void ModifyProjValues(const PROJECTDATA& ProjDATA);
 };

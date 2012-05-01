@@ -15,16 +15,16 @@
 
 /**
  * \file      ProjectConfiguration.h
- * \brief     This contains the dll entry point function and 
+ * \brief     This contains the dll entry point function and
  * \authors   Anish Kumar, Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This contains the dll entry point function and 
+ * This contains the dll entry point function and
  */
 
 #pragma once
 
-#include "resource.h"		// main symbols
+#include "resource.h"       // main symbols
 
 
 // CProjectConfigurationApp
@@ -34,11 +34,11 @@
 class CProjectConfigurationApp : public CWinApp
 {
 public:
-	CProjectConfigurationApp();
+    CProjectConfigurationApp();
 
-// Overrides
+    // Overrides
 public:
-	virtual BOOL InitInstance();
+    virtual BOOL InitInstance();
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };

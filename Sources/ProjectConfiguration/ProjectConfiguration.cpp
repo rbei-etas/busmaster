@@ -33,39 +33,39 @@
 
 
 // {410BD867-1AD9-4492-9DA4-8175CCB7147B}
-static const GUID guidProjectConfig = 
-{ 
-    0x410bd867, 0x1ad9, 0x4492, { 0x9d, 0xa4, 0x81, 0x75, 0xcc, 0xb7, 0x14, 0x7b } 
+static const GUID guidProjectConfig =
+{
+    0x410bd867, 0x1ad9, 0x4492, { 0x9d, 0xa4, 0x81, 0x75, 0xcc, 0xb7, 0x14, 0x7b }
 };
 
 
 static DATASTORAGEINFO sdataStorageInfo;
 
 //
-//	Note!
+//  Note!
 //
-//		If this DLL is dynamically linked against the MFC
-//		DLLs, any functions exported from this DLL which
-//		call into MFC must have the AFX_MANAGE_STATE macro
-//		added at the very beginning of the function.
+//      If this DLL is dynamically linked against the MFC
+//      DLLs, any functions exported from this DLL which
+//      call into MFC must have the AFX_MANAGE_STATE macro
+//      added at the very beginning of the function.
 //
-//		For example:
+//      For example:
 //
-//		extern "C" BOOL PASCAL EXPORT ExportedFunction()
-//		{
-//			AFX_MANAGE_STATE(AfxGetStaticModuleState());
-//			// normal function body here
-//		}
+//      extern "C" BOOL PASCAL EXPORT ExportedFunction()
+//      {
+//          AFX_MANAGE_STATE(AfxGetStaticModuleState());
+//          // normal function body here
+//      }
 //
-//		It is very important that this macro appear in each
-//		function, prior to any calls into MFC.  This means that
-//		it must appear as the first statement within the 
-//		function, even before any object variable declarations
-//		as their constructors may generate calls into the MFC
-//		DLL.
+//      It is very important that this macro appear in each
+//      function, prior to any calls into MFC.  This means that
+//      it must appear as the first statement within the
+//      function, even before any object variable declarations
+//      as their constructors may generate calls into the MFC
+//      DLL.
 //
-//		Please see MFC Technical Notes 33 and 58 for additional
-//		details.
+//      Please see MFC Technical Notes 33 and 58 for additional
+//      details.
 //
 
 // CProjectConfigurationApp
@@ -78,8 +78,8 @@ END_MESSAGE_MAP()
  */
 CProjectConfigurationApp::CProjectConfigurationApp()
 {
-	// TODO: add construction code here,
-	// Place all significant initialization in InitInstance
+    // TODO: add construction code here,
+    // Place all significant initialization in InitInstance
 }
 
 /**
@@ -92,9 +92,8 @@ CProjectConfigurationApp theApp;
  */
 BOOL CProjectConfigurationApp::InitInstance()
 {
-	CWinApp::InitInstance();
-
-	return TRUE;
+    CWinApp::InitInstance();
+    return TRUE;
 }
 
 /**
@@ -106,15 +105,17 @@ BOOL CProjectConfigurationApp::InitInstance()
  */
 USAGEMODE int AddModifyProjectTable(string& ProjectName, PROJECTDATA* ProjData)
 {
-	int nReturn = 0;
-	if(sdataStorageInfo.m_Datastore == FILEMODE)
-	{
-		FileAddModifyProjectTable(ProjectName, *ProjData);
-	}
-	else
-	{
-	}
-	return nReturn;
+    int nReturn = 0;
+
+    if(sdataStorageInfo.m_Datastore == FILEMODE)
+    {
+        FileAddModifyProjectTable(ProjectName, *ProjData);
+    }
+    else
+    {
+    }
+
+    return nReturn;
 }
 
 /**
@@ -126,15 +127,17 @@ USAGEMODE int AddModifyProjectTable(string& ProjectName, PROJECTDATA* ProjData)
  */
 USAGEMODE int DeleteProjectTable(string& ProjectName)
 {
-	int nReturn = 0;
-	if(sdataStorageInfo.m_Datastore == FILEMODE)
-	{
-		nReturn = FileDeleteProjectTable( ProjectName);
-	}
-	else
-	{
-	}
-	return nReturn;
+    int nReturn = 0;
+
+    if(sdataStorageInfo.m_Datastore == FILEMODE)
+    {
+        nReturn = FileDeleteProjectTable( ProjectName);
+    }
+    else
+    {
+    }
+
+    return nReturn;
 }
 
 /**
@@ -146,15 +149,17 @@ USAGEMODE int DeleteProjectTable(string& ProjectName)
  */
 USAGEMODE int GetProjectCount(void)
 {
-	int nReturn = 0;
-	if(sdataStorageInfo.m_Datastore == FILEMODE)
-	{
-		nReturn = FileGetProjectCount();
-	}
-	else
-	{
-	}
-	return nReturn;
+    int nReturn = 0;
+
+    if(sdataStorageInfo.m_Datastore == FILEMODE)
+    {
+        nReturn = FileGetProjectCount();
+    }
+    else
+    {
+    }
+
+    return nReturn;
 }
 
 /**
@@ -166,15 +171,17 @@ USAGEMODE int GetProjectCount(void)
  */
 USAGEMODE int GetProjectList(LISTSTR* ProjList)
 {
-	int nReturn = 0;
-	if(sdataStorageInfo.m_Datastore == FILEMODE)
-	{
-		nReturn = FileGetProjectList(*ProjList);
-	}
-	else
-	{
-	}
-	return nReturn;
+    int nReturn = 0;
+
+    if(sdataStorageInfo.m_Datastore == FILEMODE)
+    {
+        nReturn = FileGetProjectList(*ProjList);
+    }
+    else
+    {
+    }
+
+    return nReturn;
 }
 
 /**
@@ -186,15 +193,17 @@ USAGEMODE int GetProjectList(LISTSTR* ProjList)
  */
 USAGEMODE int GetProjectData(string& ProjName, PROJECTDATA& ProjData)
 {
-	int nReturn = 0;
-	if(sdataStorageInfo.m_Datastore == FILEMODE)
-	{
-		nReturn = FileGetProjectData(ProjName, ProjData);
-	}
-	else
-	{
-	}
-	return nReturn;
+    int nReturn = 0;
+
+    if(sdataStorageInfo.m_Datastore == FILEMODE)
+    {
+        nReturn = FileGetProjectData(ProjName, ProjData);
+    }
+    else
+    {
+    }
+
+    return nReturn;
 }
 
 /**
@@ -206,18 +215,20 @@ USAGEMODE int GetProjectData(string& ProjName, PROJECTDATA& ProjData)
  */
 USAGEMODE int AddModifySectionData(string& ProjectName, string& SectionName, SECTIONDATA* SectionData)
 {
-	int nReturn = 0;
-	if(sdataStorageInfo.m_Datastore == FILEMODE)
-	{
-		if (SectionData != NULL)
-		{
-			nReturn = FileAddModifySectionData(ProjectName,SectionName, *SectionData);
-		}
-	}
-	else
-	{
-	}
-	return nReturn;
+    int nReturn = 0;
+
+    if(sdataStorageInfo.m_Datastore == FILEMODE)
+    {
+        if (SectionData != NULL)
+        {
+            nReturn = FileAddModifySectionData(ProjectName,SectionName, *SectionData);
+        }
+    }
+    else
+    {
+    }
+
+    return nReturn;
 }
 
 /**
@@ -227,17 +238,19 @@ USAGEMODE int AddModifySectionData(string& ProjectName, string& SectionName, SEC
  * Gets information of that particular section from the section table of the project.
  * This is a section data related function.
  */
-USAGEMODE BOOL GetSectionData(string& ProjectName, string& SectionName, SECTIONDATA &SectionData)
+USAGEMODE BOOL GetSectionData(string& ProjectName, string& SectionName, SECTIONDATA& SectionData)
 {
-	BOOL bReturn = 0;
-	if(sdataStorageInfo.m_Datastore == FILEMODE)
-	{
-		bReturn = FileGetSectionData(ProjectName, SectionName, SectionData);
-	}
-	else
-	{
-	}
-	return bReturn;
+    BOOL bReturn = 0;
+
+    if(sdataStorageInfo.m_Datastore == FILEMODE)
+    {
+        bReturn = FileGetSectionData(ProjectName, SectionName, SectionData);
+    }
+    else
+    {
+    }
+
+    return bReturn;
 }
 
 /**
@@ -249,15 +262,17 @@ USAGEMODE BOOL GetSectionData(string& ProjectName, string& SectionName, SECTIOND
  */
 USAGEMODE int GetSectionCount(string& ProjectName)
 {
-	int nReturn = 0;
-	if(sdataStorageInfo.m_Datastore == FILEMODE)
-	{
-		nReturn = FileGetSectionCount(ProjectName);
-	}
-	else
-	{
-	}
-	return nReturn;
+    int nReturn = 0;
+
+    if(sdataStorageInfo.m_Datastore == FILEMODE)
+    {
+        nReturn = FileGetSectionCount(ProjectName);
+    }
+    else
+    {
+    }
+
+    return nReturn;
 }
 
 /**
@@ -269,15 +284,17 @@ USAGEMODE int GetSectionCount(string& ProjectName)
  */
 USAGEMODE int GetSectionList(string& ProjectName, LISTSTR* SectionList)
 {
-	int nReturn = 0;
-	if(sdataStorageInfo.m_Datastore == FILEMODE)
-	{
-		nReturn = FileGetSectionList(ProjectName, *SectionList);
-	}
-	else
-	{
-	}
-	return nReturn;
+    int nReturn = 0;
+
+    if(sdataStorageInfo.m_Datastore == FILEMODE)
+    {
+        nReturn = FileGetSectionList(ProjectName, *SectionList);
+    }
+    else
+    {
+    }
+
+    return nReturn;
 }
 
 /**
@@ -289,20 +306,22 @@ USAGEMODE int GetSectionList(string& ProjectName, LISTSTR* SectionList)
  */
 USAGEMODE int SetDatastorageConfig(DATASTORAGEINFO* StorageInfo)
 {
-	sdataStorageInfo.m_Datastore = StorageInfo->m_Datastore ;
-	if (sdataStorageInfo.m_Datastore == FILEMODE)
-	{
-		if (sdataStorageInfo.FSInfo == NULL)
-		{
-			sdataStorageInfo.FSInfo = new FILESTORAGEINFO; //Change
-		}
-		strcpy_s(sdataStorageInfo.FSInfo->m_FilePath,StorageInfo->FSInfo->m_FilePath);
-	}
-	else
-	{
-	
-	}
-	return 0;
+    sdataStorageInfo.m_Datastore = StorageInfo->m_Datastore ;
+
+    if (sdataStorageInfo.m_Datastore == FILEMODE)
+    {
+        if (sdataStorageInfo.FSInfo == NULL)
+        {
+            sdataStorageInfo.FSInfo = new FILESTORAGEINFO; //Change
+        }
+
+        strcpy_s(sdataStorageInfo.FSInfo->m_FilePath,StorageInfo->FSInfo->m_FilePath);
+    }
+    else
+    {
+    }
+
+    return 0;
 }
 
 /**
@@ -314,29 +333,30 @@ USAGEMODE int SetDatastorageConfig(DATASTORAGEINFO* StorageInfo)
  */
 USAGEMODE int GetDatastorageConfig(DATASTORAGEINFO* StorageInfo)
 {
-	StorageInfo->m_Datastore = sdataStorageInfo.m_Datastore;
-	if (sdataStorageInfo.m_Datastore == FILEMODE)
-	{
-		if (sdataStorageInfo.FSInfo != NULL)
-		{
-			StorageInfo->FSInfo = new FILESTORAGEINFO;
-			strcpy_s(StorageInfo->FSInfo->m_FilePath,sdataStorageInfo.FSInfo->m_FilePath);
-		}
-		else
-		{
-			StorageInfo->FSInfo = NULL;
-		}
-	}
-	else
-	{
+    StorageInfo->m_Datastore = sdataStorageInfo.m_Datastore;
 
-	}
-	return 0;
+    if (sdataStorageInfo.m_Datastore == FILEMODE)
+    {
+        if (sdataStorageInfo.FSInfo != NULL)
+        {
+            StorageInfo->FSInfo = new FILESTORAGEINFO;
+            strcpy_s(StorageInfo->FSInfo->m_FilePath,sdataStorageInfo.FSInfo->m_FilePath);
+        }
+        else
+        {
+            StorageInfo->FSInfo = NULL;
+        }
+    }
+    else
+    {
+    }
+
+    return 0;
 }
 
 /**
  * \brief Perform data storage operation after selection
- * \param[in] operation is OPEN, SAVE or CLOSE 
+ * \param[in] operation is OPEN, SAVE or CLOSE
  * \req RS_06_03 - Perform data storage operation after selection
  *
  * Perform data storage operation after selection.
@@ -344,26 +364,29 @@ USAGEMODE int GetDatastorageConfig(DATASTORAGEINFO* StorageInfo)
  */
 USAGEMODE int DoDatastorageOperation(short operation)
 {
-	int nReturn = 0;
+    int nReturn = 0;
+
     if (sdataStorageInfo.m_Datastore == FILEMODE)
     {
-	    if (operation & SAVE)
-	    {
-		    nReturn = SaveDataFile(sdataStorageInfo.FSInfo->m_FilePath);
-	    }
-	    else if (operation & OPEN)
-	    {
-		    nReturn = LoadDataFile(sdataStorageInfo.FSInfo->m_FilePath);
-	    }
-		else if (operation & CLOSE)
-		{
-			CloseDataFile();
-			if (sdataStorageInfo.FSInfo != NULL)
-			{
-				delete sdataStorageInfo.FSInfo;
-				sdataStorageInfo.FSInfo = NULL;
-			}
-		}
+        if (operation & SAVE)
+        {
+            nReturn = SaveDataFile(sdataStorageInfo.FSInfo->m_FilePath);
+        }
+        else if (operation & OPEN)
+        {
+            nReturn = LoadDataFile(sdataStorageInfo.FSInfo->m_FilePath);
+        }
+        else if (operation & CLOSE)
+        {
+            CloseDataFile();
+
+            if (sdataStorageInfo.FSInfo != NULL)
+            {
+                delete sdataStorageInfo.FSInfo;
+                sdataStorageInfo.FSInfo = NULL;
+            }
+        }
     }
-	return nReturn;
+
+    return nReturn;
 }

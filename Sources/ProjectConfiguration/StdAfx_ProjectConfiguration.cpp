@@ -23,8 +23,8 @@
  */
 
 // stdafx.cpp : source file that includes just the standard includes
-//	ProjectConfiguration.pch will be the pre-compiled header
-//	stdafx.obj will contain the pre-compiled type information
+//  ProjectConfiguration.pch will be the pre-compiled header
+//  stdafx.obj will contain the pre-compiled type information
 
 #include "StdAfx_ProjectConfiguration.h"
 
