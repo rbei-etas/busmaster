@@ -54,22 +54,22 @@ typedef struct tagDATASTORAGEINFO
 
 } DATASTORAGEINFO;
 
-/* The following class is defined to represent a project entry completely 
-without the data (or section). This is used as a structure and hence all the 
+/* The following class is defined to represent a project entry completely
+without the data (or section). This is used as a structure and hence all the
 members are declared public. */
 class PROJECTDATA
 {
 public:
     // DATA MEMBERS
-    string m_ProjectName;   // The necessary and sufficient information for a 
-    string m_Language;      // project entry is name (signature and hence it 
-	SYSTEMTIME m_ProjSysTime;// has to be unique), the language (expressed in
-	float m_fAppVersion;    // ISO 639-3 code), time and date of last saving,
-	DWORD m_dwAppUniqueId;  // application version and unique identifier.
+    string m_ProjectName;   // The necessary and sufficient information for a
+    string m_Language;      // project entry is name (signature and hence it
+    SYSTEMTIME m_ProjSysTime;// has to be unique), the language (expressed in
+    float m_fAppVersion;    // ISO 639-3 code), time and date of last saving,
+    DWORD m_dwAppUniqueId;  // application version and unique identifier.
 
     // MEMBER FUNCTIONS
     PROJECTDATA();          // Standard constructor
-	~PROJECTDATA();         // Destructor
+    ~PROJECTDATA();         // Destructor
 
     // This clears the project entry wiping out all the data.
     void Initialise(void);
@@ -90,7 +90,7 @@ class SECTIONDATA
 {
 public:
     string m_omSectionName; // The necessary and sufficient information for a
-    int m_nBLOBLen;         // section are the section name and the data in 
+    int m_nBLOBLen;         // section are the section name and the data in
     BYTE* m_bBLOB;          // byte stream that it should contain.
 
     SECTIONDATA();          // Standard constructor
@@ -105,7 +105,7 @@ public:
     // To write section data into a file. Advances the file pointer afterwards.
     bool Write(FILE* pFile);
 
-    // To read section data from a file. This assumes the file pointer is 
+    // To read section data from a file. This assumes the file pointer is
     // currently pointing to a section. Advances the file pointer afterwards.
     bool Read(FILE* pFile);
 };

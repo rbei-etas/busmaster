@@ -39,4 +39,4 @@ struct tagSignalWatchList
 };
 
 typedef tagSignalWatchList sSignalWatchList;
-typedef sSignalWatchList * PSSIGNALWATCHLIST;
+typedef sSignalWatchList* PSSIGNALWATCHLIST;

@@ -24,22 +24,22 @@
 
 #pragma once
 
-/* This is the interface class of a circular queue where each entry is of fixed 
-size. Implemented as a template class so as to cater to any data type. Here 
-SMSGBUFFER is the data type in operation. This is expected to be a structure 
+/* This is the interface class of a circular queue where each entry is of fixed
+size. Implemented as a template class so as to cater to any data type. Here
+SMSGBUFFER is the data type in operation. This is expected to be a structure
 having contiguous memory layout. FSE stands for 'fixed sized entry'. */
 template <typename SMSGBUFFER>
 class CBaseMsgBufFSE
 {
 public:
     CBaseMsgBufFSE();   // Standard constructor
-	~CBaseMsgBufFSE();  // Destructor
+    ~CBaseMsgBufFSE();  // Destructor
 
     // To read an entry from the circular queue
-	virtual HRESULT ReadFromBuffer(SMSGBUFFER* psMsgBuffer) = 0;
+    virtual HRESULT ReadFromBuffer(SMSGBUFFER* psMsgBuffer) = 0;
 
     // To write an entry into the circular queue
-	virtual HRESULT WriteIntoBuffer(SMSGBUFFER* psMsgBuffer) = 0;
+    virtual HRESULT WriteIntoBuffer(SMSGBUFFER* psMsgBuffer) = 0;
 
     // To get the present queue length (number of entries)
     virtual int GetMsgCount(void) const = 0;
@@ -51,16 +51,16 @@ public:
     // is at least one entry in the queue.
     virtual HANDLE hGetNotifyingEvent(void) const = 0;
 
-    // To read an entry from the circular queue	
-	virtual HRESULT ReadFromBuffer(SMSGBUFFER* psMsgBuffer, __int64 nSlotId)=  0;
+    // To read an entry from the circular queue
+    virtual HRESULT ReadFromBuffer(SMSGBUFFER* psMsgBuffer, __int64 nSlotId)=  0;
     virtual HRESULT ReadFromBuffer(SMSGBUFFER* psMsgBuffer, int nIndex)=  0;
 
-    // To write an entry into the circular queue	
-	virtual HRESULT WriteIntoBuffer(const SMSGBUFFER* psMsgBuffer, 
-								__int64 nSlotId, int& nIndex)= 0;
+    // To write an entry into the circular queue
+    virtual HRESULT WriteIntoBuffer(const SMSGBUFFER* psMsgBuffer,
+                                    __int64 nSlotId, int& nIndex)= 0;
 
-    // To set the current queue length    
-	virtual int nSetBufferMsgSize(int nMsgDataSize)= 0;
+    // To set the current queue length
+    virtual int nSetBufferMsgSize(int nMsgDataSize)= 0;
 };
 
 template <typename SMSGBUFFER> CBaseMsgBufFSE<SMSGBUFFER>::CBaseMsgBufFSE()
@@ -74,27 +74,27 @@ template <typename SMSGBUFFER> CBaseMsgBufFSE<SMSGBUFFER>::~CBaseMsgBufFSE()
 }
 
 
-/* This is the interface class of a circular queue where each entry is of 
-variable size. VSE stands for 'variable sized entry'. Therefore, function 
-prototypes are a bit different. VSE makes it possible for the queue to 
-accommodate data types of various types. Expectedly, the class treats each 
+/* This is the interface class of a circular queue where each entry is of
+variable size. VSE stands for 'variable sized entry'. Therefore, function
+prototypes are a bit different. VSE makes it possible for the queue to
+accommodate data types of various types. Expectedly, the class treats each
 entry as a continuous byte stream. */
 class CBaseMsgBufVSE
 {
 public:
-	CBaseMsgBufVSE() // Standard constructor
-	{
-	};
+    CBaseMsgBufVSE() // Standard constructor
+    {
+    };
 
-	~CBaseMsgBufVSE() // Destructor
-	{
-	};
+    ~CBaseMsgBufVSE() // Destructor
+    {
+    };
 
     // To read an entry from the circular queue
-	virtual HRESULT ReadFromBuffer(INT& nType, BYTE* psMsg, INT& nSize) = 0;
+    virtual HRESULT ReadFromBuffer(INT& nType, BYTE* psMsg, INT& nSize) = 0;
 
     // To write an entry into the circular queue
-	virtual int WriteIntoBuffer(INT nType, BYTE* ps_Msg, INT nSize)= 0;
+    virtual int WriteIntoBuffer(INT nType, BYTE* ps_Msg, INT nSize)= 0;
 
     // To get the present queue length (number of entries)
     virtual int GetBufferLength(void) const = 0;
@@ -109,22 +109,22 @@ public:
     // To set the current queue length
     virtual int nSetBufferSize(int& nSize) = 0;
 };
-/* This is the interface class of a circular queue where each entry is of 
+/* This is the interface class of a circular queue where each entry is of
 variable size. VVSE stands for 'variant variable sized entry'. It is a special type of VSE
 where user can read n'th element from the buffer. */
 class CBaseMsgBufVVSE
 {
 public:
-	CBaseMsgBufVVSE() // Standard constructor
-	{
-	};
+    CBaseMsgBufVVSE() // Standard constructor
+    {
+    };
 
-	~CBaseMsgBufVVSE() // Destructor
-	{
-	};
+    ~CBaseMsgBufVVSE() // Destructor
+    {
+    };
 
     // To write an entry into the circular queue
-	virtual int WriteIntoBuffer(INT nType, BYTE* ps_Msg, INT nSize)= 0;
+    virtual int WriteIntoBuffer(INT nType, BYTE* ps_Msg, INT nSize)= 0;
 
     // To get the present queue length (number of entries)
     virtual int GetMsgCount(void) const = 0;
@@ -138,30 +138,30 @@ public:
 
     // To set the current queue length
     virtual int nSetBufferSize(int& nSize) = 0;
-	//To read the nEntry'th element.
-	virtual HRESULT ReadEntry(int& nType, BYTE* pbyMsg, int& nSize, int nEntry, BOOL bSetNextIndexStartPos) = 0;
+    //To read the nEntry'th element.
+    virtual HRESULT ReadEntry(int& nType, BYTE* pbyMsg, int& nSize, int nEntry, BOOL bSetNextIndexStartPos) = 0;
 };
 
 //template <typename SMSGBUFFER>
 //class CBaseMsgBufVFSE
 //{
 //public:
-//	CBaseMsgBufVFSE() // Standard constructor
-//	{
-//	};
+//  CBaseMsgBufVFSE() // Standard constructor
+//  {
+//  };
 //
-//	~CBaseMsgBufVFSE() // Destructor
-//	{
-//	};
+//  ~CBaseMsgBufVFSE() // Destructor
+//  {
+//  };
 //
-//    // To read an entry from the circular queue	
-//	virtual HRESULT ReadFromBuffer(SMSGBUFFER* psMsgBuffer, __int64 nSlotId)=  0;
+//    // To read an entry from the circular queue
+//  virtual HRESULT ReadFromBuffer(SMSGBUFFER* psMsgBuffer, __int64 nSlotId)=  0;
 //    virtual HRESULT ReadFromBuffer(SMSGBUFFER* psMsgBuffer, int nIndex)=  0;
 //
-//    // To write an entry into the circular queue	
-//	virtual HRESULT WriteIntoBuffer(const SMSGBUFFER* psMsgBuffer, 
-//								__int64 nSlotId, int& nIndex)= 0;
-//	                
+//    // To write an entry into the circular queue
+//  virtual HRESULT WriteIntoBuffer(const SMSGBUFFER* psMsgBuffer,
+//                              __int64 nSlotId, int& nIndex)= 0;
+//
 //    // To get the present queue length (number of entries)
 //    virtual int GetMsgCount(void) const = 0;
 //
@@ -172,6 +172,6 @@ public:
 //    // is at least one entry in the queue.
 //    virtual HANDLE hGetNotifyingEvent(void) const = 0;
 //
-//    // To set the current queue length    
-//	virtual int nSetBufferMsgSize(int nMsgDataSize)= 0;
+//    // To set the current queue length
+//  virtual int nSetBufferMsgSize(int nMsgDataSize)= 0;
 //};

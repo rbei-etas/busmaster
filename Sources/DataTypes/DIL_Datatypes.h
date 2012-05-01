@@ -72,17 +72,17 @@ enum ECONTR_PARAM
 
 typedef struct struct_STATUSMSG
 {
-  WORD  wControllerStatus;                  // Current controller state 
-                                            // 0 := reset
-                                            // 1 := stopped / initialized
-                                            // 2 := started / waiting for startup completion
-                                            // 3 := started / normal active (running)
-                                            // 4 := started / normal passiv
-                                            // 5 := started / halt mode
-  DWORD dwStatusInfoFlags;                  // Flagfield of status information (UCI_FLXSTSINFO_???)
+    WORD  wControllerStatus;                  // Current controller state
+    // 0 := reset
+    // 1 := stopped / initialized
+    // 2 := started / waiting for startup completion
+    // 3 := started / normal active (running)
+    // 4 := started / normal passiv
+    // 5 := started / halt mode
+    DWORD dwStatusInfoFlags;                  // Flagfield of status information (UCI_FLXSTSINFO_???)
 } s_STATUSMSG, *ps_STATUSMSG;
 
-enum 
+enum
 {
     DRIVER_CAN_STUB = 0,
     DRIVER_CAN_PEAK_USB,
@@ -100,13 +100,13 @@ typedef enum FILTER_TYPE
 {
     PASS_FILTER,
     STOP_FILTER,
-}FILTER_TYPE;
+} FILTER_TYPE;
 
 typedef enum TXMODE
 {
     SINGLE_SHOT,
     CONTINOUS,
-}TXMODE;
+} TXMODE;
 
 #define  MAX_CHAR_SHORT       128
 #define  MAX_CHAR_LONG        512
@@ -114,12 +114,12 @@ typedef enum TXMODE
 
 typedef struct tagHwInterface
 {
-   DWORD    m_dwIdInterface;
-   DWORD    m_dwVendor;
-   BYTE     m_bytNetworkID;   
-   TCHAR    m_acNameInterface[MAX_CHAR_SHORT];
-   TCHAR    m_acDescription[MAX_CHAR_LONG];
-   TCHAR    m_acDeviceName[MAX_CHAR_SHORT];
+    DWORD    m_dwIdInterface;
+    DWORD    m_dwVendor;
+    BYTE     m_bytNetworkID;
+    TCHAR    m_acNameInterface[MAX_CHAR_SHORT];
+    TCHAR    m_acDescription[MAX_CHAR_LONG];
+    TCHAR    m_acDeviceName[MAX_CHAR_SHORT];
 } INTERFACE_HW;
 
 typedef INTERFACE_HW INTERFACE_HW_LIST[defNO_OF_CHANNELS];
@@ -127,14 +127,14 @@ typedef INTERFACE_HW INTERFACE_HW_LIST[defNO_OF_CHANNELS];
 class VERSIONINFO
 {
 public:
-   string     m_acDIL;
-   string     m_acController;
-   string     m_acDriver;
+    string     m_acDIL;
+    string     m_acController;
+    string     m_acDriver;
 };
 
 #define     MAX_DILNAME             32
 
-typedef struct 
+typedef struct
 {
     TCHAR   m_acName[MAX_DILNAME];
     DWORD   m_dwDriverID;

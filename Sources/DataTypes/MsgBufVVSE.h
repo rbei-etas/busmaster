@@ -48,13 +48,13 @@ private:
     HANDLE m_hNotifyingEvent;
 
     /* Helper function to advance the nIndex to next msg*/
-    int nAdvanceReadIndex(int& nIndex);    
+    int nAdvanceReadIndex(int& nIndex);
     /* Helper function to read msg from the circular buffer from the index nIndex*/
     HRESULT ReadBuffer(INT& nType, BYTE* pbyMsg, INT& nSize, INT& nIndex);
     /* Helper function to write msg into the circular buffer*/
     int nWriteBuffer(INT nType, BYTE* pbyMsg, INT nSize);
     /* Helper function construct header with TYPE and DATA LENGTH*/
-    int nConstructHeader(INT nType, INT nSize, BYTE* pbyHeader);    
+    int nConstructHeader(INT nType, INT nSize, BYTE* pbyHeader);
     /* Helper function to get header of 'nIndex'th message*/
     int nGetCurrMsgHeader(int nIndex, BYTE* pbyHeader);
     /* Move the temporary read index if required whenever overrun happens*/
@@ -64,7 +64,7 @@ private:
 public:
     CMsgBufVVSE();
     ~CMsgBufVVSE();
-    
+
     /* Writes message into the buffer. Caller needs to allocate memory for the
     out parameter */
     int WriteIntoBuffer(INT nType, BYTE* ps_Msg, INT nSize);

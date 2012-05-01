@@ -31,12 +31,10 @@ SGUIPARAMS::SGUIPARAMS()
     m_acMainListName[MAX_PATH - 1]  = _T('\0');
     m_acUnSelListName[MAX_PATH - 1] = _T('\0');
     m_acSelListName[MAX_PATH - 1]   = _T('\0');
-
     _tcsset_s(m_acTitleName, _T('\0'));
     _tcsset_s(m_acMainListName, _T('\0'));
     _tcsset_s(m_acUnSelListName, _T('\0'));
     _tcsset_s(m_acSelListName, _T('\0'));
-
     m_pomImageList      = NULL;
     m_unUnSelIconIndex  = 0;
     m_unSelIconIndex    = 0;
@@ -44,7 +42,7 @@ SGUIPARAMS::SGUIPARAMS()
 }
 // Ends SGUIPARAMS
 
-// Starts tagSubEntry 
+// Starts tagSubEntry
 tagSubEntry::tagSubEntry()
 {
 }
@@ -56,11 +54,13 @@ tagSubEntry::~tagSubEntry()
 BOOL tagSubEntry::operator ==(const tagSubEntry& RefObj) const
 {
     BOOL bResult = FALSE;
+
     if (/*(m_unSubEntryID == RefObj.m_unSubEntryID) || */
         (m_omSubEntryName == RefObj.m_omSubEntryName))
     {
         bResult = TRUE;
     }
+
     return bResult;
 }
 // Ends tagSubEntry
@@ -88,23 +88,23 @@ void tagMainEntry::vResetAll(void)
 tagMainEntry& tagMainEntry::operator=(tagMainEntry& RefObj)
 {
     vResetAll();
-
     m_unMainEntryID     = RefObj.m_unMainEntryID;
     m_omMainEntryName   = RefObj.m_omMainEntryName;
     m_odUnSelEntryList.AddTail(&(RefObj.m_odUnSelEntryList));
     m_odSelEntryList.AddTail(&(RefObj.m_odSelEntryList));
-
     return *this;
 }
 
 BOOL tagMainEntry::operator==(const tagMainEntry& RefObj) const
 {
     BOOL bResult = FALSE;
+
     if ((m_unMainEntryID == RefObj.m_unMainEntryID) ||
-        (m_omMainEntryName == RefObj.m_omMainEntryName))
+            (m_omMainEntryName == RefObj.m_omMainEntryName))
     {
         bResult = TRUE;
     }
+
     return bResult;
 }
 // Ends tagMainEntry structure
