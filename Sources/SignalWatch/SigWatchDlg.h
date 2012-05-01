@@ -54,16 +54,16 @@ public:
     void vInitSignalWatchList();
     LRESULT vRemoveSignalFromMap(WPARAM wParam, LPARAM lParam);
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CSigWatchDlg)
     enum { IDD = IDD_DLG_SIGNAL_WATCH };
     CSignalWatchListBox m_omSignalList;
     //}}AFX_DATA
 
-// Construction
+    // Construction
     CSigWatchDlg(CWnd* pParent = NULL);   // standard constructor
 
-// Operation
+    // Operation
     void vAddMsgSigIntoList(const CString& omStrMsgName,
                             const CStringArray& omSASignals,
                             const CStringArray& omSARaw,
@@ -73,14 +73,14 @@ public:
     void vSaveDefaultWinStatus( );
     void vSetDefaultWinStatus( );
     //void vUpdateWinStatus();
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CSigWatchDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions

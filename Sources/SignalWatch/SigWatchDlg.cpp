@@ -35,8 +35,8 @@ static const int LSB_MOTOROLA = 0x7; // 7th bit is the LSB for motorola
 
 extern HWND GUI_hDisplayWindow;
 extern VOID vConvStrtoByteArray(
-               CByteArray* pomByteArrayBufTx,
-               CHAR* pctempBuf,BOOL bHexON);
+    CByteArray* pomByteArrayBufTx,
+    CHAR* pctempBuf,BOOL bHexON);
 /////////////////////////////////////////////////////////////////////////////
 // CSigWatchDlg dialog
 
@@ -55,9 +55,8 @@ CSigWatchDlg::CSigWatchDlg(CWnd* pParent /*=NULL*/)
     : CDialog(CSigWatchDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CSigWatchDlg)
-        // NOTE: the ClassWizard will add member initialization here
+    // NOTE: the ClassWizard will add member initialization here
     //}}AFX_DATA_INIT
-
     m_bEscape = false;
 }
 
@@ -112,12 +111,12 @@ END_MESSAGE_MAP()
  Author(s)      :   Ratnadip Choudhury
  Date Created   :   03-04-2002
 ******************************************************************************/
-void CSigWatchDlg::OnSize(UINT nType, int ncx, int ncy) 
+void CSigWatchDlg::OnSize(UINT nType, int ncx, int ncy)
 {
     CDialog::OnSize(nType, ncx, ncy);
-    
+
     // TODO: Add your message handler code here
-    if (IsWindowVisible()) 
+    if (IsWindowVisible())
     {
         RECT sClientRect;
         GetClientRect(&sClientRect);
@@ -138,7 +137,7 @@ void CSigWatchDlg::OnSize(UINT nType, int ncx, int ncy)
  Input(s)       :   -
  Output         :   -
  Functionality  :   To close the dialog box only when the closure process is
-                    not initiated by hitting the 'Escape' key. 
+                    not initiated by hitting the 'Escape' key.
  Member of      :   CSigWatchDlg
 
  Author(s)      :   Ratnadip Choudhury
@@ -149,7 +148,6 @@ void CSigWatchDlg::OnSize(UINT nType, int ncx, int ncy)
 ******************************************************************************/
 void CSigWatchDlg::OnCancel()
 {
-
 }
 
 /******************************************************************************
@@ -161,7 +159,7 @@ void CSigWatchDlg::OnCancel()
  Input(s)       :   -
  Output         :   -
  Functionality  :   To close the dialog box only when the closure process is
-                    not initiated by hitting the 'Escape' key. 
+                    not initiated by hitting the 'Escape' key.
  Member of      :   CSigWatchDlg
 
  Author(s)      :   Raja N
@@ -173,19 +171,19 @@ void CSigWatchDlg::OnOK()
 }
 
 void CSigWatchDlg::vAddMsgSigIntoList(   const CString& omStrMsgName,
-                                         const CStringArray& omSASignals,
-                                         const CStringArray& omSARaw,
-                                         const CStringArray& omSAPhysical,
-                                         BOOL bIntptrDone)
+        const CStringArray& omSASignals,
+        const CStringArray& omSARaw,
+        const CStringArray& omSAPhysical,
+        BOOL bIntptrDone)
 {
     m_omCSDispEntry.Lock();
-
     ASSERT( omSASignals.GetSize() == omSARaw.GetSize() &&
-        omSARaw.GetSize() == omSAPhysical.GetSize() );
+            omSARaw.GetSize() == omSAPhysical.GetSize() );
 
     if( bIntptrDone == FALSE)
     {
         int nSize = (int)omSASignals.GetSize();
+
         for( register int index = 0; index < nSize; index++)
         {
             CString omStrSignalInfo;
@@ -196,6 +194,7 @@ void CSigWatchDlg::vAddMsgSigIntoList(   const CString& omStrMsgName,
             sEntry.m_omSigName = omListStr;
             sEntry.m_omPhyValue = omSAPhysical.GetAt(index);
             sEntry.m_omRawValue = omSARaw.GetAt(index);
+
             if (NULL != (pos = m_odSigEntryList.Find(sEntry)))
             {
                 sSIGENTRY& sTemp = m_odSigEntryList.GetAt(pos);
@@ -208,17 +207,19 @@ void CSigWatchDlg::vAddMsgSigIntoList(   const CString& omStrMsgName,
             }
         }
     }
+
     m_omCSDispEntry.Unlock();
 }
 void CSigWatchDlg::vDisplayMsgSigList(void)
 {
     m_omCSDispEntry.Lock();
-
     POSITION pos = m_odSigEntryList.GetHeadPosition();
+
     //UINT unCount = 0;
     while (pos)
     {
         sSIGENTRY& sEntry = m_odSigEntryList.GetNext(pos);
+
         // Insert Message Name
         if (sEntry.m_nEntryIndex != -1)
         {
@@ -241,8 +242,8 @@ void CSigWatchDlg::vDisplayMsgSigList(void)
         else
         {
             sEntry.m_nEntryIndex = m_omSignalList.InsertItem(
-                                    m_omSignalList.GetItemCount(),
-                                    sEntry.m_omMsgName);
+                                       m_omSignalList.GetItemCount(),
+                                       sEntry.m_omMsgName);
             m_omSignalList.SetItemText( sEntry.m_nEntryIndex,
                                         defSTR_SW_SIG_COL,
                                         sEntry.m_omSigName);
@@ -250,18 +251,17 @@ void CSigWatchDlg::vDisplayMsgSigList(void)
                                         defSTR_SW_RAW_VAL_COL,
                                         sEntry.m_omRawValue);
             m_omSignalList.SetItemText( sEntry.m_nEntryIndex,
-                                            defSTR_SW_PHY_VAL_COL,
-                                            sEntry.m_omPhyValue);
-
+                                        defSTR_SW_PHY_VAL_COL,
+                                        sEntry.m_omPhyValue);
         }
-
     }
+
     m_omCSDispEntry.Unlock();
 }
 
 /******************************************************************************
  Function Name  :   OnClose
- Input(s)       :   
+ Input(s)       :
  Output         :   -
  Functionality  :   Called when the user clicks on Close[X] button
                     Sends a message to the message window to close
@@ -270,7 +270,7 @@ void CSigWatchDlg::vDisplayMsgSigList(void)
  Author(s)      :   Amarnath Shastry
  Date Created   :   15.05.2002
 ******************************************************************************/
-void CSigWatchDlg::OnClose() 
+void CSigWatchDlg::OnClose()
 {
     // Call Show Window to save co ordinates
     ShowWindow(SW_HIDE);
@@ -278,11 +278,11 @@ void CSigWatchDlg::OnClose()
 
 /*******************************************************************************
  Function Name  :   vRemoveSignalFromMap
- Input(s)       :   
+ Input(s)       :
  Output         :   -
- Functionality  :   Called when the signal is deleted from the watch window. 
+ Functionality  :   Called when the signal is deleted from the watch window.
                     This function will remove the entry in m_omSignalMap data
-                    member and read the content of list box. After reading the 
+                    member and read the content of list box. After reading the
                     content it will intialise the m_omSignalMap with new index.
                     The map should have same memory address as key to ensure
                     that it insert the signal value at correct place. So the
@@ -308,20 +308,20 @@ LRESULT CSigWatchDlg::vRemoveSignalFromMap(WPARAM /*wParam*/, LPARAM /*lParam*/)
  Function Name  :   OnShowWindow
 
  Description    :   Indicates that a window is about to be shown or hidden. The
-                    framework calls this member function when the CWnd object 
+                    framework calls this member function when the CWnd object
                     is about to be hidden or shown
- Input(s)       :   bShow - TRUE if the window is being shown; it is FALSE if 
+ Input(s)       :   bShow - TRUE if the window is being shown; it is FALSE if
                     the window is being hidden
                     nStatus - Specifies the status of the window being shown
-                    It is 0 if the message is sent because of a ShowWindow 
-                    member function call; otherwise nStatus is one of the 
-                    following: 
+                    It is 0 if the message is sent because of a ShowWindow
+                    member function call; otherwise nStatus is one of the
+                    following:
                         SW_PARENTCLOSING - Parent window is closing (being made
                                      iconic) or a pop-up window is being hidden
-                        SW_PARENTOPENING - Parent window is opening (being 
+                        SW_PARENTOPENING - Parent window is opening (being
                                    displayed) or a pop-up window is being shown
  Output         :   -
- Functionality  :   Prior to the window being shown, set the show state and 
+ Functionality  :   Prior to the window being shown, set the show state and
                     different positions of the window exactly as the same when
                     previous instance of it was destroyed
  Member of      :   CSigWatchDlg
@@ -329,10 +329,10 @@ LRESULT CSigWatchDlg::vRemoveSignalFromMap(WPARAM /*wParam*/, LPARAM /*lParam*/)
  Author(s)      :   Raja N
  Date Created   :   05.04.2004
 ******************************************************************************/
-void CSigWatchDlg::OnShowWindow(BOOL bShow, UINT nStatus) 
+void CSigWatchDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 {
     CDialog::OnShowWindow(bShow, nStatus);
-    
+
     if (bShow == TRUE )
     {
         SendMessage(WM_NCPAINT, 1, 0);
@@ -342,7 +342,7 @@ void CSigWatchDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 /******************************************************************************
  Function Name  : vSaveWinStatus
 
- Input(s)       : sWinCurrStatus - This contains information about the 
+ Input(s)       : sWinCurrStatus - This contains information about the
                   placement of a window on the screen
  Output         : -
  Functionality  : This function is called to save the current display status
@@ -359,17 +359,18 @@ void CSigWatchDlg::vSaveDefaultWinStatus( )
     // Get current window postion
     GetWindowPlacement(&m_sWinCurrStatus);
     m_sWinCurrStatus.flags |= WPF_SETMINPOSITION;
+
     for (UINT i = 0; i < defSW_LIST_COLUMN_COUNT; i++)
     {
-       m_anColWidth[i] =  m_omSignalList.GetColumnWidth(i);
+        m_anColWidth[i] =  m_omSignalList.GetColumnWidth(i);
     }
 }
 
 /******************************************************************************
  Function Name  : vGetWinStatus
 
- Input(s)       : sWinCurrStatus - A reference to (system defined) 
-                  WINDOWPLACEMENT structure to contain previous display 
+ Input(s)       : sWinCurrStatus - A reference to (system defined)
+                  WINDOWPLACEMENT structure to contain previous display
                   status of this window to be retrieved from the registry
  Output         :  -
  Functionality  : This function is called to get the display status of window
@@ -384,6 +385,7 @@ void CSigWatchDlg::vSaveDefaultWinStatus( )
 void CSigWatchDlg::vSetDefaultWinStatus()
 {
     SetWindowPlacement(&m_sWinCurrStatus);
+
     for (UINT i = 0; i < defSW_LIST_COLUMN_COUNT; i++)
     {
         m_omSignalList.SetColumnWidth(i, m_anColWidth[i]);
@@ -404,14 +406,16 @@ void CSigWatchDlg::vSetDefaultWinStatus()
  Modification     : Raja N on 26.04.2005, Modified the prototype of function
                     vGetWinStatus.
 *******************************************************************************/
-int CSigWatchDlg::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+int CSigWatchDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
     int nCreateFlag = -1;
+
     if (CDialog::OnCreate(lpCreateStruct) != -1)
     {
         nCreateFlag = 0;
     }
-     return nCreateFlag;
+
+    return nCreateFlag;
 }
 
 
@@ -429,13 +433,13 @@ int CSigWatchDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
  Modified by      :
  Modification     :
 *******************************************************************************/
-BOOL CSigWatchDlg::OnInitDialog() 
+BOOL CSigWatchDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
     vInitSignalWatchList();
     m_unTimerId = (UINT)SetTimer(0x123, 50, NULL);
     return TRUE;  // return TRUE unless you set the focus to a control
-                  // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 /*******************************************************************************
@@ -454,51 +458,50 @@ BOOL CSigWatchDlg::OnInitDialog()
 void CSigWatchDlg::vInitSignalWatchList()
 {
     TCHAR caColumnName[][50] = { defSTR_SW_MSG_NAME,
-                                defSTR_SW_SIG_NAME,
-                                defSTR_SW_PHY_VALUE,
-                                defSTR_SW_RAW_VALUE };
+                                 defSTR_SW_SIG_NAME,
+                                 defSTR_SW_PHY_VALUE,
+                                 defSTR_SW_RAW_VALUE
+                               };
     INT nColumnFormat[]     = { LVCFMT_LEFT,
                                 LVCFMT_LEFT,
                                 LVCFMT_LEFT,
-                                LVCFMT_CENTER };
-
-
+                                LVCFMT_CENTER
+                              };
     RECT rListCtrlRect;
     INT nTotalColunmSize = 0;
     INT nTotalStrLengthPixel = 0;
     //INT nColumnSize = 0;
-    
+
     // Create Image List First time
     // Only One time creation
     if( m_omSigImageList.m_hImageList == NULL )
     {
         m_omSigImageList.Create(IDR_BMP_MSG_SIG_WATCH,
-                                 16,
-                                 1,
-                                 defCOLOR_WHITE);
+                                16,
+                                1,
+                                defCOLOR_WHITE);
     }
+
     m_omSignalList.SetImageList(&m_omSigImageList, LVSIL_SMALL);
-    
-    //Calculate the total size of all column header   
+    //Calculate the total size of all column header
     m_omSignalList.GetWindowRect( &rListCtrlRect);
     nTotalColunmSize     = rListCtrlRect.right - rListCtrlRect.left;
     nTotalStrLengthPixel = 0;
 
-    for(UINT i = 0; i<defSW_LIST_COLUMN_COUNT;i++)
+    for(UINT i = 0; i<defSW_LIST_COLUMN_COUNT; i++)
     {
-         nTotalStrLengthPixel += 
-             m_omSignalList.GetStringWidth(caColumnName[i]) ;
+        nTotalStrLengthPixel +=
+            m_omSignalList.GetStringWidth(caColumnName[i]) ;
     }
-    
+
     m_omSignalList.InsertColumn(0, caColumnName[0],nColumnFormat[0], (int)(0.2 * nTotalColunmSize));
     m_omSignalList.InsertColumn(1, caColumnName[1],nColumnFormat[1], (int)(0.2 * nTotalColunmSize));
     m_omSignalList.InsertColumn(2, caColumnName[2],nColumnFormat[2], (int)(0.4 * nTotalColunmSize));
     m_omSignalList.InsertColumn(3, caColumnName[3],nColumnFormat[3], (int)(0.2 * nTotalColunmSize));
     // Set the extended style
     m_omSignalList.SetExtendedStyle( /*GetExStyle() |*/
-                                      LVS_EX_GRIDLINES |
-                                      LVS_EX_FULLROWSELECT);
-
+        LVS_EX_GRIDLINES |
+        LVS_EX_FULLROWSELECT);
 }
 
 /*******************************************************************************
@@ -515,7 +518,7 @@ void CSigWatchDlg::vInitSignalWatchList()
  Modified by      :
  Modification     :
 *******************************************************************************/
-BOOL CSigWatchDlg::OnEraseBkgnd(CDC* /*pDC*/) 
+BOOL CSigWatchDlg::OnEraseBkgnd(CDC* /*pDC*/)
 {
     return TRUE;
 }
@@ -525,10 +528,10 @@ case SIGWATCH_WND_PLACEMENT:   // Non - MDI Child
     CRect omRect = omMainFrameSize;
     // Make the height 35% pf main frame height
     omRect.bottom = static_cast<LONG> ( omRect.top +
-		omRect.Height() * defSIGNAL_WATCH_WND_HEIGHT_RATIO );
+        omRect.Height() * defSIGNAL_WATCH_WND_HEIGHT_RATIO );
     // Make the width 65% of main frame
     omRect.left += (LONG)( omRect.Width() *
-		defSIGNAL_WATCH_WND_WIDTH_RATIO );
+        defSIGNAL_WATCH_WND_WIDTH_RATIO );
     // Shift the window down by tool bar size
     omRect.top += omToolBarRect.Height();
     omRect.bottom += omToolBarRect.Height();
@@ -544,9 +547,9 @@ void CSigWatchDlg::OnTimer(UINT nIDEvent)
 {
     // TODO: Add your message handler code here and/or call default
     CDialog::OnTimer(nIDEvent);
+
     if (m_unTimerId == nIDEvent)
     {
         vDisplayMsgSigList();
     }
-    
 }
