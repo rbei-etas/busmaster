@@ -215,13 +215,15 @@ void CConverter::ValidateMessageList()
 
         for(rSig=rMsg->m_listSignals.begin(); rSig!=rMsg->m_listSignals.end(); ++rSig)
         {
-            if(rSig->m_ucDataFormat == CSignal::SIG_DF_INTEL)
+            switch (rSig->m_ucDataFormat)
             {
-                iCntIntelSignals++;
-            }
-            else if(rSig->m_ucDataFormat == CSignal::SIG_DF_MOTOROLA)
-            {
-                iCntMotorolaSignals++;
+                case CSignal::SIG_DF_INTEL:
+                    iCntIntelSignals++;
+                    break;
+
+                case CSIGNAL::SIG_DF_MOTOROLA:
+                    iCntMotorolaSignals++;
+                    break;
             }
         }
 

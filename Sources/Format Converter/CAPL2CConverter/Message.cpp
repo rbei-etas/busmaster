@@ -97,7 +97,7 @@ CMessage::CMessage(CMessage& message)
 int CMessage::Format(char* pcLine)
 {
     char* pcToken;
-    char *pcNextToken;
+    char* pcNextToken;
     // get the MSG ID
     pcToken = strtok_s(pcLine, " :", &pcNextToken);
     m_uiMsgID = (unsigned int)atoi(pcToken);
