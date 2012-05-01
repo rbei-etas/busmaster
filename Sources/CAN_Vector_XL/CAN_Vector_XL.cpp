@@ -864,8 +864,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_DisplayConfigDlg(PCHAR& InitData, INT& /*Length*/
     xlPopupHwConfig(NULL, INFINITE);
     //Get back the baud rate from controller
     SCONTROLLER_DETAILS* pCntrlDetails = (SCONTROLLER_DETAILS*)InitData;
-    XLstatus xlStatus;
-    xlStatus = xlGetDriverConfig(&g_xlDrvConfig);
+    xlGetDriverConfig(&g_xlDrvConfig);
 
     for ( UINT i = 0 ; i < sg_nNoOfChannels ; i++ )
     {
@@ -1099,7 +1098,6 @@ static BYTE bClassifyMsgType(XLevent& xlEvent, STCANDATA& sCanData)
 */
 static void ProcessCANMsg(XLevent& xlEvent, UINT unClientIndex)
 {
-    int nSize = sg_nFRAMES;
     bClassifyMsgType(xlEvent, sg_asCANMsg);
     vWriteIntoClientsBuffer(sg_asCANMsg, unClientIndex);
 }
@@ -1266,14 +1264,13 @@ HRESULT CDIL_CAN_VectorXL::CAN_StartHardware(void)
 static int nDisconnectFromDriver()
 {
     int nReturn = 0;
-    XLstatus xlStatus;
 
     for ( UINT i = 0; i< sg_unClientCnt; i++ )
     {
         if (g_xlPortHandle[i] != XL_INVALID_PORTHANDLE)
         {
-            xlStatus = xlDeactivateChannel( g_xlPortHandle[i], g_xlChannelMask );
-            xlStatus = xlClosePort(g_xlPortHandle[i]);
+            xlDeactivateChannel( g_xlPortHandle[i], g_xlChannelMask );
+            xlClosePort(g_xlPortHandle[i]);
             g_xlPortHandle[i] = XL_INVALID_PORTHANDLE;
         }
         else
@@ -1313,10 +1310,11 @@ static void vMapDeviceChannelIndex()
 static int nConnect(BOOL bConnect)
 {
     int nReturn = -1;
-    XLstatus xlStatus;
 
     if (!sg_bIsConnected && bConnect) // Disconnected and to be connected
     {
+        XLstatus xlStatus;
+
         for (UINT i = 0; i < sg_unClientCnt; i++)
         {
             // ------------------------------------
@@ -1460,17 +1458,17 @@ HRESULT CDIL_CAN_VectorXL::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
 static int nWriteMessage(STCAN_MSG sMessage, DWORD dwClientID)
 {
     int nReturn = -1;
-    XLaccess xlChanMaskTx = 0;
     UINT unClientIndex = (UINT)-1;
 
     if ((sMessage.m_ucChannel > 0) &&
             (sMessage.m_ucChannel <= sg_nNoOfChannels))
     {
         static XLevent       xlEvent;
-        XLstatus             xlStatus;
+        XLstatus             xlStatus = 0;
         unsigned int         messageCount = 1;
         memset(&xlEvent, 0, sizeof(xlEvent));
         xlEvent.tag                 = XL_TRANSMIT_MSG;
+        XLaccess xlChanMaskTx = 0;
 
         /* if it is an extended frame */
         if (sMessage.m_ucEXTENDED == 1)
@@ -1571,10 +1569,10 @@ HRESULT CDIL_CAN_VectorXL::CAN_GetLastErrorString(string& acErrorStr)
 static int nTestHardwareConnection(UCHAR& ucaTestResult, UINT nChannel) //const
 {
     int nReturn = 0;
-    XLstatus xlStatus;
 
     if (nChannel < sg_nNoOfChannels)
     {
+        XLstatus xlStatus;
         // ------------------------------------
         // go with all selected channels on bus
         // ------------------------------------
@@ -1821,7 +1819,7 @@ static int nCreateMultipleHardwareNetwork()
     int nChannels = 0;
 
     // Get Hardware Network Map
-    for (int nCount = 0; nCount < g_xlDrvConfig.channelCount; nCount++)
+    for (unsigned int nCount = 0; nCount < g_xlDrvConfig.channelCount; nCount++)
     {
         // we take all hardware we found and
         // check that we have only CAN cabs/piggy's
