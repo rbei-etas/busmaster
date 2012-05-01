@@ -1,14 +1,28 @@
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  DataTypes_J1939.cpp
-  Description   :
-  $Log:   X:/Archive/Sources/DataTypes/J1939_DataTypes.cpv  $
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-  Author(s)     :  Pradeep Kadoor
-  Date Created  :  23/11/2010
-  Modified By   :
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
+/**
+ * \file      DataTypes_J1939.cpp
+ * \brief     Source file for filter data types.
+ * \author    Pradeep Kadoor
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Source file for J1939 data types.
+ */
+
+/* Project includes */
 #include "Datatypes_stdafx.h"
 #include "Include/BaseDefs.h"
 #include "Include/Utils_Macro.h"
@@ -18,7 +32,7 @@
 int STJ1939_MSG::m_nSortField = 0;
 int STJ1939_MSG::m_nMFactor = 1;
 
-/* strcut STRUCT_29_BIT_ID*/
+/* strcut STRUCT_29_BIT_ID */
 UINT32 tagSTRUCT_29_BIT_ID::unGetPGN(void)
 {
     UINT32 unPGN = m_uPGN.m_unPGN & 0x3FFFF;
@@ -56,7 +70,11 @@ tagSTJ1939_MSG::tagSTJ1939_MSG()
     m_pbyData = NULL;
 }
 
-/* Destructor */
+/**
+ * \brief Destructor
+ *
+ * Destructor
+ */
 tagSTJ1939_MSG::~tagSTJ1939_MSG()
 {
     memset(&m_sMsgProperties, 0, sizeof(STJ1939_MSG_PROPERTIES));
@@ -64,12 +82,21 @@ tagSTJ1939_MSG::~tagSTJ1939_MSG()
     DELETE_ARRAY(m_pbyData);
 }
 
-/* returns the total size of the message.*/
+/**
+ * \brief Returns the total size of the message.
+ *
+ * Returns the total size of the message.
+ */
 UINT tagSTJ1939_MSG::unGetSize(void) const
 {
     return (sizeof(STJ1939_MSG_PROPERTIES) + sizeof (UINT) + (sizeof (BYTE) * m_unDLC) );
 }
-/* Renders the BYTE stream of the total message. */
+
+/**
+ * \brief Renders the BYTE stream of the total message.
+ *
+ * Renders the BYTE stream of the total message.
+ */
 void tagSTJ1939_MSG::vGetDataStream(BYTE* pbyData) const
 {
     COPY_DATA(pbyData, &m_sMsgProperties, sizeof(STJ1939_MSG_PROPERTIES));
@@ -92,6 +119,7 @@ void tagSTJ1939_MSG::vSetDataStream(BYTE* pbyData)
     m_unDLC = unTempDLC;
     COPY_DATA_2(m_pbyData, pbyData, (sizeof (BYTE) * m_unDLC));
 }
+
 void tagSTJ1939_MSG::vInitialize(int nSize)
 {
     if (m_unDLC < (UINT)nSize)
@@ -241,7 +269,11 @@ void tagSTJ1939_MSG::vClear(void)
     DELETE_ARRAY(m_pbyData);
 }
 
-/* Starts tagFormattedData_J1939 related codes */
+/**
+ * \brief Starts tagFormattedData_J1939 related codes
+ *
+ * Starts tagFormattedData_J1939 related codes
+ */
 tagFormattedData_J1939::tagFormattedData_J1939()
 {
     memset(m_acTimeSys,    0, sizeof(m_acTimeSys));
@@ -270,10 +302,7 @@ tagFormattedData_J1939::~tagFormattedData_J1939()
     DELETE_ARRAY(m_pcDataHex);
     DELETE_ARRAY(m_pcDataDec);
 }
-/* Ends tagFormattedData_J1939 related codes */
 
-
-// Helper functions start
 void GetMessageTypeStr(EJ1939_MSG_TYPE eType, TCHAR acResult[LEN_STR_TYPE_J1939])
 {
     switch (eType)
@@ -346,5 +375,3 @@ void GetMessageTypeStr(EJ1939_MSG_TYPE eType, TCHAR acResult[LEN_STR_TYPE_J1939]
             ASSERT(FALSE);
     }
 }
-
-// Helper functions end
