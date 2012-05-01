@@ -44,7 +44,7 @@ public:
     // Getters
     int GetProjectCount();
     int GetProjectList(list<string>& ProjectList);
-    bool GetProjectData(string ProjectName, PROJECTDATA &ProjData);
+    bool GetProjectData(string ProjectName, PROJECTDATA& ProjData);
     int GetSectionCount(string ProjectName);
     int GetSectionList(string ProjectName, list<string>& SectionList);
     bool GetSectionData(string ProjectName, string SectionName, SECTIONDATA& Sectiondata);
