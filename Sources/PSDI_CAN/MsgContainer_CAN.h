@@ -51,15 +51,15 @@ typedef struct stCanDataSpl : public STCANDATA
     {
         m_nDeltime = 0;
     }
-}STCANDATASPL;
+} STCANDATASPL;
 
 typedef CMsgBufCANVFSE<STCANDATASPL> CMsgBufCANVFSEspl;
 
 class CMsgContainerCAN: public CMsgContainerBase
 {
 private:
-    CCANBufFSE              m_ouMCCanBufFSE; 
-    CCANBufVFSE             m_ouOWCanBuf; 
+    CCANBufFSE              m_ouMCCanBufFSE;
+    CCANBufVFSE             m_ouOWCanBuf;
     CMsgBufCANVFSEspl       m_ouAppendCanBuf;
     SFORMATTEDDATA_CAN      m_sOutFormattedData;
     //STCANDATA               m_sCANReadData;
@@ -68,15 +68,15 @@ private:
     DWORD                   m_dwClientId;
     CBaseDIL_CAN*           m_pouDIL_CAN_Interface;
 
-private:    
+private:
     //ReadMcNetData virtual function
     void vProcessNewData(STCANDATA& sCanData);
     void vProcessCurrErrorEntry(const SERROR_INFO& sErrInfo);
     BOOL bIsTransitionInState( UINT unChannel,
-                                       BYTE byRxError,
-                                       BYTE byTxError );
+                               BYTE byRxError,
+                               BYTE byTxError );
     BOOL bTobeBlocked(STCANDATA& sCanData);
-	USHORT usProcessCurrErrorEntry(SERROR_INFO& sErrInfo);
+    USHORT usProcessCurrErrorEntry(SERROR_INFO& sErrInfo);
 
     CRITICAL_SECTION m_sCritSecDataSync;
     CRITICAL_SECTION m_omCritSecFilter;
@@ -91,7 +91,7 @@ public:
 
 public:
     //Exported functions
-	BOOL bGetDilInterFace();
+    BOOL bGetDilInterFace();
     void vInit(void* pParam);
     void vEditClearAll();
     int nGetAppendBufferCount();
@@ -100,26 +100,26 @@ public:
     BOOL bStopReadThread();
     //void vSetRelBaseTime(__int64 nTimeStamp);
 
-    void vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL &sHdrColStruct,
-                                     TCHAR *pomDataPtrArr[MAX_MSG_WND_COL_CNT], 
+    void vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL& sHdrColStruct,
+                                     TCHAR* pomDataPtrArr[MAX_MSG_WND_COL_CNT],
                                      BYTE bExprnFlag_Disp);
-    HRESULT hReadFromOWBuffer(void *psMsg, __int64 nMapIndex);
-	HRESULT hReadFromAppendBuffer(void *psMsg, int nMsgIndex);
-    HRESULT hUpdateFormattedMsgStruct(int nListIndex, int &nMsgCode,
+    HRESULT hReadFromOWBuffer(void* psMsg, __int64 nMapIndex);
+    HRESULT hReadFromAppendBuffer(void* psMsg, int nMsgIndex);
+    HRESULT hUpdateFormattedMsgStruct(int nListIndex, int& nMsgCode,
                                       BYTE bExprnFlag_Disp, __int64 nTimeOffset = 0);
     void vSetCurrMsgName(CString strMsgNameOrCode);
     void vClearFormattedMsgStruct();
-    void vSaveOWandGetDetails(void *pMsg, __int64 &dwMapIndex, 
-                              __int64 &dwTimeStamp, UINT &nMsgCode, int &nBufferIndex );
+    void vSaveOWandGetDetails(void* pMsg, __int64& dwMapIndex,
+                              __int64& dwTimeStamp, UINT& nMsgCode, int& nBufferIndex );
 
 
     //void vSetRxMsgCallBkPtr(MSG_RX_CALL_BK pFuncPtr);
-	void SetClientID(DWORD dwClientID);
-	void DoSortBuffer(int nField,bool bAscending);	
-	void GetMapIndexAtID(int nIndex,__int64& nMapIndex);
-	HRESULT hToggleDILBufferRead(BOOL bRead);
+    void SetClientID(DWORD dwClientID);
+    void DoSortBuffer(int nField,bool bAscending);
+    void GetMapIndexAtID(int nIndex,__int64& nMapIndex);
+    HRESULT hToggleDILBufferRead(BOOL bRead);
     HRESULT ApplyFilterScheme(void* pvFilterApplied);
     HRESULT GetFilterScheme(void* pvFilterApplied);
     HRESULT EnableFilterApplied(BOOL bEnable);
-	__int64 nCreateMapIndexKey( LPVOID pMsgData );
+    __int64 nCreateMapIndexKey( LPVOID pMsgData );
 };

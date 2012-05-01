@@ -49,8 +49,8 @@ const int RX_MESSAGE = 0xdfffffff;  // bitwise AND to make it a Rx message
 
 /******************************************************************************
     Function Name    :  CMsgContainerCAN
-    Input(s)         :  
-    Output           :  
+    Input(s)         :
+    Output           :
     Functionality    :  Constructor
     Member of        :  CMsgContainerCAN
     Friend of        :      -
@@ -65,8 +65,8 @@ CMsgContainerCAN::CMsgContainerCAN(void)
 
 /******************************************************************************
     Function Name    :  ~CMsgContainerCAN
-    Input(s)         :  
-    Output           :  
+    Input(s)         :
+    Output           :
     Functionality    :  Destructor
     Member of        :  CMsgContainerCAN
     Friend of        :      -
@@ -82,8 +82,8 @@ CMsgContainerCAN::~CMsgContainerCAN(void)
 
 /******************************************************************************
     Function Name    :  InitTimeParams
-    Input(s)         :  
-    Output           :  
+    Input(s)         :
+    Output           :
     Functionality    :  Initialize the refrence time
     Member of        :  CMsgContainerCAN
     Friend of        :      -
@@ -94,6 +94,7 @@ void CMsgContainerCAN::InitTimeParams(void)
 {
     SYSTEMTIME CurrSysTime;
     UINT64 unAbsTime;
+
     //Kadoor HANDLE hReadHandle = m_ouCanBufFSE.hGetNotifyingEvent();
     //Kadoor WaitForSingleObject(hReadHandle, INFINITE);
     if (NULL != m_pouDIL_CAN_Interface)
@@ -105,8 +106,8 @@ void CMsgContainerCAN::InitTimeParams(void)
 
 /******************************************************************************
     Function Name    :  nCreateKeyWithCodeAndType
-    Input(s)         :  
-    Output           :  
+    Input(s)         :
+    Output           :
     Functionality    :  Creates a key for SmsgDispEntry map
     Member of        :  CMsgContainerCAN
     Friend of        :      -
@@ -115,38 +116,40 @@ void CMsgContainerCAN::InitTimeParams(void)
 ******************************************************************************/
 __int64 CMsgContainerCAN::nCreateMapIndexKey( LPVOID pMsgData )
 {
-	STCANDATA* pouCANData = (STCANDATA*)pMsgData;
-    STCAN_MSG &sMsg = pouCANData->m_uDataInfo.m_sCANMsg;
-
-	// Form message to get message index in the CMap
+    STCANDATA* pouCANData = (STCANDATA*)pMsgData;
+    STCAN_MSG& sMsg = pouCANData->m_uDataInfo.m_sCANMsg;
+    // Form message to get message index in the CMap
     int nMsgID = 0;
-	if (IS_ERR_MESSAGE(pouCANData->m_ucDataType))
-	{
-		nMsgID = MAKE_RX_TX_MESSAGE( usProcessCurrErrorEntry(pouCANData->m_uDataInfo.m_sErrInfo), 
-                                     IS_RX_MESSAGE(pouCANData->m_ucDataType));
-	}
-	else
-	{
-		nMsgID = MAKE_RX_TX_MESSAGE( sMsg.m_unMsgID, 
-                                     IS_RX_MESSAGE(pouCANData->m_ucDataType));
-	}
 
-	nMsgID = MAKE_DEFAULT_MESSAGE_TYPE(nMsgID);
+    if (IS_ERR_MESSAGE(pouCANData->m_ucDataType))
+    {
+        nMsgID = MAKE_RX_TX_MESSAGE( usProcessCurrErrorEntry(pouCANData->m_uDataInfo.m_sErrInfo),
+                                     IS_RX_MESSAGE(pouCANData->m_ucDataType));
+    }
+    else
+    {
+        nMsgID = MAKE_RX_TX_MESSAGE( sMsg.m_unMsgID,
+                                     IS_RX_MESSAGE(pouCANData->m_ucDataType));
+    }
+
+    nMsgID = MAKE_DEFAULT_MESSAGE_TYPE(nMsgID);
+
     // For extended message
     if (sMsg.m_ucEXTENDED)
     {
         nMsgID = MAKE_EXTENDED_MESSAGE_TYPE(nMsgID);
     }
+
     // Apply Channel Information
     __int64 n64MapIndex = MAKE_CHANNEL_SPECIFIC_MESSAGE( nMsgID,
-                                                         sMsg.m_ucChannel );
+                          sMsg.m_ucChannel );
     return n64MapIndex;
 }
 
 //converts STCANDATA into SFRAMEINFO_BASIC_CAN
-static void vFormatCANDataMsg(STCANDATA* pMsgCAN, 
-                                       tagSFRAMEINFO_BASIC_CAN* CurrDataCAN)
-                                    
+static void vFormatCANDataMsg(STCANDATA* pMsgCAN,
+                              tagSFRAMEINFO_BASIC_CAN* CurrDataCAN)
+
 {
     if (RX_FLAG == pMsgCAN->m_ucDataType)
     {
@@ -177,15 +180,13 @@ static void vFormatCANDataMsg(STCANDATA* pMsgCAN,
         CurrDataCAN->m_byMsgType = TYPE_MSG_CAN_NON_RTR;
     }
 
-
     CurrDataCAN->m_dwFrameID = pMsgCAN->m_uDataInfo.m_sCANMsg.m_unMsgID;
 }
 
 BOOL CMsgContainerCAN::bTobeBlocked(STCANDATA& sCanData)
-{    
+{
     static SFRAMEINFO_BASIC_CAN sBasicCanInfo;
     vFormatCANDataMsg(&sCanData, &sBasicCanInfo);
-
     EnterCriticalSection(&m_omCritSecFilter);
     BOOL bBlock = m_sFilterCAN.bToBeBlocked(sBasicCanInfo);
     LeaveCriticalSection(&m_omCritSecFilter);
@@ -193,8 +194,8 @@ BOOL CMsgContainerCAN::bTobeBlocked(STCANDATA& sCanData)
 }
 
 BOOL CMsgContainerCAN::bIsTransitionInState( UINT unChannel,
-                                       BYTE byRxError,
-                                       BYTE byTxError )
+        BYTE byRxError,
+        BYTE byTxError )
 {
     BOOL bIsTransition = FALSE;
     // Based on the value of transmit and receive error counter decide
@@ -210,8 +211,8 @@ BOOL CMsgContainerCAN::bIsTransitionInState( UINT unChannel,
         }
     }
     else if (byTxError == 255)
-    // The sudden shift to the third state is to avoid 
-    // "else if ((byTxError > 127) || (byRxError > 127))"
+        // The sudden shift to the third state is to avoid
+        // "else if ((byTxError > 127) || (byRxError > 127))"
     {
         // Bus off
         if (m_eCurrErrorState[ unChannel ] != ERROR_BUS_OFF)
@@ -238,9 +239,9 @@ void CMsgContainerCAN::vProcessCurrErrorEntry(const SERROR_INFO& /*sErrInfo*/)
 
 /******************************************************************************
     Function Name    :  vProcessNewData
-    Input(s)         :  
-    Output           :  
-    Functionality    :  Process a new Rx/Tx msg 
+    Input(s)         :
+    Output           :
+    Functionality    :  Process a new Rx/Tx msg
     Member of        :  CMsgContainerCAN
     Friend of        :      -
     Author(s)        :  Anish kumar
@@ -248,7 +249,6 @@ void CMsgContainerCAN::vProcessCurrErrorEntry(const SERROR_INFO& /*sErrInfo*/)
 ******************************************************************************/
 void CMsgContainerCAN::vProcessNewData(STCANDATA& sCanData)
 {
-
     // append : 1. Add item, get count, SetItemCount.
     // OW     : 1. Get ID, Create map index, Search if it is present in map
     //             if present change the offset and time stamp
@@ -257,20 +257,20 @@ void CMsgContainerCAN::vProcessNewData(STCANDATA& sCanData)
     //             and add to the map and array
     //          3. if not present and (get count = max count), do nothing
     //          4. SetItemcount
-    
-    if ( IS_A_MESSAGE(sCanData.m_ucDataType) ) 
+    if ( IS_A_MESSAGE(sCanData.m_ucDataType) )
     {
-        
-        // Add to append buffer 
+        // Add to append buffer
         // If its the very first entry, the time stamp must
         if (m_sCANReadDataSpl.m_lTickCount.QuadPart != 0) // be 0 and will
-        {                                                     // retain such value.
-            m_sCANReadDataSpl.m_nDeltime = _abs64(sCanData.m_lTickCount.QuadPart - 
-                                           m_sCANReadDataSpl.m_lTickCount.QuadPart);
+        {
+            // retain such value.
+            m_sCANReadDataSpl.m_nDeltime = _abs64(sCanData.m_lTickCount.QuadPart -
+                                                  m_sCANReadDataSpl.m_lTickCount.QuadPart);
         }
-        
-        STCANDATA *pStcan = &m_sCANReadDataSpl;
+
+        STCANDATA* pStcan = &m_sCANReadDataSpl;
         *pStcan = sCanData;
+
         if (!bTobeBlocked(sCanData))
         {
             m_ouAppendCanBuf.WriteIntoBuffer(&m_sCANReadDataSpl);
@@ -284,14 +284,17 @@ void CMsgContainerCAN::vProcessNewData(STCANDATA& sCanData)
     else //Add the error messages
     {
         vProcessCurrErrorEntry(sCanData.m_uDataInfo.m_sErrInfo);
-        // Add to append buffer 
+
+        // Add to append buffer
         // If its the very first entry, the time stamp must
         if (m_sCANReadDataSpl.m_lTickCount.QuadPart != 0) // be 0 and will
-        {                                                     // retain such value.
-            m_sCANReadDataSpl.m_nDeltime = _abs64(sCanData.m_lTickCount.QuadPart - 
-                                           m_sCANReadDataSpl.m_lTickCount.QuadPart);
+        {
+            // retain such value.
+            m_sCANReadDataSpl.m_nDeltime = _abs64(sCanData.m_lTickCount.QuadPart -
+                                                  m_sCANReadDataSpl.m_lTickCount.QuadPart);
         }
-        STCANDATA *pStcan = &m_sCANReadDataSpl;
+
+        STCANDATA* pStcan = &m_sCANReadDataSpl;
         *pStcan = sCanData;
         m_ouAppendCanBuf.WriteIntoBuffer(&m_sCANReadDataSpl);
 
@@ -300,12 +303,11 @@ void CMsgContainerCAN::vProcessNewData(STCANDATA& sCanData)
             m_pRxMsgCallBack((void*)&sCanData, CAN);
         }
     }
-      
 }
 /******************************************************************************
     Function Name    :  vRetrieveDataFromBuffer
-    Input(s)         :  
-    Output           :  
+    Input(s)         :
+    Output           :
     Functionality    :  Read data from DIL buffer
     Member of        :  CMsgContainerCAN
     Friend of        :      -
@@ -313,17 +315,20 @@ void CMsgContainerCAN::vProcessNewData(STCANDATA& sCanData)
     Date Created     :  01.04.2010
 ******************************************************************************/
 void CMsgContainerCAN::vRetrieveDataFromBuffer()
-{    
+{
     EnterCriticalSection(&m_sCritSecDataSync);
+
     while (m_ouMCCanBufFSE.GetMsgCount() > 0)
-    {        
+    {
         STCANDATA sCanData;
+
         if (m_ouMCCanBufFSE.ReadFromBuffer(&sCanData) == CALL_SUCCESS)
-        {                        
-            vProcessNewData(sCanData);            
-        }        
+        {
+            vProcessNewData(sCanData);
+        }
     }
-    LeaveCriticalSection(&m_sCritSecDataSync); 
+
+    LeaveCriticalSection(&m_sCritSecDataSync);
 }
 
 //****************Exported functions*******************************
@@ -331,8 +336,8 @@ void CMsgContainerCAN::vRetrieveDataFromBuffer()
 /******************************************************************************
     Function Name    :  vInit
     Input(s)         :  CMcNetMessageMap pointer as void*
-    Output           :  
-    Functionality    :  
+    Output           :
+    Functionality    :
     Member of        :  CMsgContainerCAN
     Friend of        :      -
     Author(s)        :  Anish kumar
@@ -340,26 +345,27 @@ void CMsgContainerCAN::vRetrieveDataFromBuffer()
 ******************************************************************************/
 void CMsgContainerCAN::vInit(void* /*pParam*/)
 {
-	//int nSize =sizeof(m_sCANReadDataSpl)*5000;
-	//m_ouAppendCanBuf.nSetBufferSize(nSize);
+    //int nSize =sizeof(m_sCANReadDataSpl)*5000;
+    //m_ouAppendCanBuf.nSetBufferSize(nSize);
 }
 
 
 /**********************************************************************************
-//Function Name	:	bStartReadThread
-//Input(s)		:	-
-//Output		: 	-
-//Functionality	:	-
-//Member of		:	CMsgContainerCAN
-//Friend of		: 	-
-//Authors		:	
-//Date Created	:	
-//Modifications	:	
+//Function Name :   bStartReadThread
+//Input(s)      :   -
+//Output        :   -
+//Functionality :   -
+//Member of     :   CMsgContainerCAN
+//Friend of     :   -
+//Authors       :
+//Date Created  :
+//Modifications :
 ************************************************************************************/
 BOOL CMsgContainerCAN:: bStartReadThread()
 {
     int bResult = TRUE;
-	HRESULT hResult;
+    HRESULT hResult;
+
     if (NULL != m_pouDIL_CAN_Interface)
     {
         //if (m_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, m_dwClientId, L"PSDI_CAN") == S_OK)
@@ -367,9 +373,9 @@ BOOL CMsgContainerCAN:: bStartReadThread()
             hResult = m_pouDIL_CAN_Interface->DILC_ManageMsgBuf(MSGBUF_ADD, m_dwClientId, &m_ouMCCanBufFSE);
         }
     }
+
     //m_sDataCopyThread.m_pBuffer = this;
     //m_sDataCopyThread.m_hActionEvent = m_ouCanBufFSE.hGetNotifyingEvent();
-
     //if ( !m_sDataCopyThread.bStartThread(DataCopyThreadProc) )
     //{
     //    // Log error message
@@ -380,33 +386,39 @@ BOOL CMsgContainerCAN:: bStartReadThread()
 }
 
 /**********************************************************************************
-  Function Name	:	hToggleDILBufferRead
-  Input(s)		:	bRead
-  Output		: 	-
-  Functionality	:	-
-  Member of		:	CMsgContainerCAN
-  Friend of		: 	-
+  Function Name :   hToggleDILBufferRead
+  Input(s)      :   bRead
+  Output        :   -
+  Functionality :   -
+  Member of     :   CMsgContainerCAN
+  Friend of     :   -
   Author(s)     :  Arun kumar K
   Date Created  :  28.03.2011
-  Modifications	:	
+  Modifications :
 ************************************************************************************/
 HRESULT CMsgContainerCAN:: hToggleDILBufferRead(BOOL bRead)
 {
-	HRESULT hResult = S_FALSE;
+    HRESULT hResult = S_FALSE;
+
     if (NULL != m_pouDIL_CAN_Interface)
-    {		
-		if(bRead)
-			hResult = m_pouDIL_CAN_Interface->DILC_ManageMsgBuf(MSGBUF_ADD, m_dwClientId, &m_ouMCCanBufFSE);
-		else
-			hResult = m_pouDIL_CAN_Interface->DILC_ManageMsgBuf(MSGBUF_CLEAR, m_dwClientId, &m_ouMCCanBufFSE);
+    {
+        if(bRead)
+        {
+            hResult = m_pouDIL_CAN_Interface->DILC_ManageMsgBuf(MSGBUF_ADD, m_dwClientId, &m_ouMCCanBufFSE);
+        }
+        else
+        {
+            hResult = m_pouDIL_CAN_Interface->DILC_ManageMsgBuf(MSGBUF_CLEAR, m_dwClientId, &m_ouMCCanBufFSE);
+        }
     }
+
     return hResult;
 }
 
 /******************************************************************************
     Function Name    :  bStopReadThread
-    Input(s)         :  
-    Output           :  
+    Input(s)         :
+    Output           :
     Functionality    :  Stop the read thread
     Member of        :  CMsgContainerCAN
     Friend of        :      -
@@ -415,18 +427,20 @@ HRESULT CMsgContainerCAN:: hToggleDILBufferRead(BOOL bRead)
 ******************************************************************************/
 BOOL CMsgContainerCAN:: bStopReadThread()
 {
-    BOOL bReturn = CMsgContainerBase::bStopReadThread();    
+    BOOL bReturn = CMsgContainerBase::bStopReadThread();
+
     if (NULL != m_pouDIL_CAN_Interface)
     {
         m_pouDIL_CAN_Interface->DILC_ManageMsgBuf(MSGBUF_CLEAR, m_dwClientId, &m_ouMCCanBufFSE);
     }
+
     return bReturn;
 }
 
 /******************************************************************************
     Function Name    :  vEditClearAll
-    Input(s)         :  
-    Output           :  
+    Input(s)         :
+    Output           :
     Functionality    :  Clear all the storage for UI
     Member of        :  CMsgContainerCAN
     Friend of        :      -
@@ -442,9 +456,9 @@ void CMsgContainerCAN::vEditClearAll()
 
 /******************************************************************************
     Function Name    :  nGetAppendBufferCount
-    Input(s)         :  
-    Output           :  
-    Functionality    :  
+    Input(s)         :
+    Output           :
+    Functionality    :
     Member of        :  CMsgContainerCAN
     Friend of        :      -
     Author(s)        :  Anish kumar
@@ -452,14 +466,14 @@ void CMsgContainerCAN::vEditClearAll()
 ******************************************************************************/
 int CMsgContainerCAN::nGetAppendBufferCount()
 {
-	return m_ouAppendCanBuf.GetBufferLength();
+    return m_ouAppendCanBuf.GetBufferLength();
 }
 
 /******************************************************************************
     Function Name    :  nGetOWBufferCount
-    Input(s)         :  
-    Output           :  
-    Functionality    :  
+    Input(s)         :
+    Output           :
+    Functionality    :
     Member of        :  CMsgContainerCAN
     Friend of        :      -
     Author(s)        :  Anish kumar
@@ -472,15 +486,15 @@ int CMsgContainerCAN::nGetOWBufferCount()
 
 /******************************************************************************
     Function Name    :  hReadFromOWBuffer
-    Input(s)         :  
-    Output           :  
-    Functionality    :  
+    Input(s)         :
+    Output           :
+    Functionality    :
     Member of        :  CMsgContainerCAN
     Friend of        :      -
     Author(s)        :  Anish kumar
     Date Created     :  01.04.2010
 ******************************************************************************/
-HRESULT CMsgContainerCAN::hReadFromOWBuffer(void *psMsg, __int64 nMapIndex)
+HRESULT CMsgContainerCAN::hReadFromOWBuffer(void* psMsg, __int64 nMapIndex)
 {
     //sTMCNET_MSG *psMcNetMsg = (sTMCNET_MSG*)psMsg;
     return m_ouOWCanBuf.ReadFromBuffer((STCANDATA*)psMsg, nMapIndex);
@@ -488,41 +502,41 @@ HRESULT CMsgContainerCAN::hReadFromOWBuffer(void *psMsg, __int64 nMapIndex)
 
 /******************************************************************************
     Function Name    :  hReadFromAppendBuffer
-    Input(s)         :  
-    Output           :  
-    Functionality    :  
+    Input(s)         :
+    Output           :
+    Functionality    :
     Member of        :  CMsgContainerCAN
     Friend of        :      -
     Author(s)        :  Anish kumar
     Date Created     :  01.04.2010
 ******************************************************************************/
-HRESULT CMsgContainerCAN::hReadFromAppendBuffer(void *pvMsg, int nMsgIndex)
-{    
-	STCANDATA* psMsg = (STCANDATA*)pvMsg;
-	static STCANDATASPL sCanMsgSpl;
-	HRESULT hResult =  m_ouAppendCanBuf.ReadFromBuffer(&sCanMsgSpl, nMsgIndex);
-	STCANDATA* psTemp = (STCANDATA*)&sCanMsgSpl;
-	*psMsg = *psTemp;
-	return hResult;
+HRESULT CMsgContainerCAN::hReadFromAppendBuffer(void* pvMsg, int nMsgIndex)
+{
+    STCANDATA* psMsg = (STCANDATA*)pvMsg;
+    static STCANDATASPL sCanMsgSpl;
+    HRESULT hResult =  m_ouAppendCanBuf.ReadFromBuffer(&sCanMsgSpl, nMsgIndex);
+    STCANDATA* psTemp = (STCANDATA*)&sCanMsgSpl;
+    *psMsg = *psTemp;
+    return hResult;
 }
 
 
 /******************************************************************************
     Function Name    :  vSaveOWandGetDetails
-    Input(s)         :  
-    Output           :  
+    Input(s)         :
+    Output           :
     Functionality    :  Save to OW buffer and provide the details requested
-                        by receive child/ dll user class 
+                        by receive child/ dll user class
     Member of        :  CMsgContainerCAN
     Friend of        :      -
     Author(s)        :  Anish kumar
     Date Created     :  01.04.2010
 ******************************************************************************/
-void CMsgContainerCAN::vSaveOWandGetDetails( void *pMsg, 
-                                          __int64 &dwMapIndex, 
-                                          __int64 &dwTimeStamp, 
-                                          UINT &nMsgCode, 
-                                          int &nBufferIndex )
+void CMsgContainerCAN::vSaveOWandGetDetails( void* pMsg,
+        __int64& dwMapIndex,
+        __int64& dwTimeStamp,
+        UINT& nMsgCode,
+        int& nBufferIndex )
 {
     STCANDATA* pouCANData = (STCANDATA*)pMsg;
     dwTimeStamp = pouCANData->m_lTickCount.QuadPart;
@@ -536,21 +550,26 @@ HRESULT CMsgContainerCAN::ApplyFilterScheme(void* pvFilterApplied)
 {
     HRESULT hResult = S_FALSE;
     SFILTERAPPLIED_CAN* psFilterCAN = (SFILTERAPPLIED_CAN*)pvFilterApplied;
+
     if (psFilterCAN != NULL)
     {
         EnterCriticalSection(&m_omCritSecFilter);
+
         if (m_sFilterCAN.bClone(*psFilterCAN) == TRUE)
         {
             hResult = TRUE;
         }
+
         LeaveCriticalSection(&m_omCritSecFilter);
     }
+
     return hResult;
 }
 HRESULT CMsgContainerCAN::GetFilterScheme(void* pvFilterApplied)
 {
     HRESULT hResult = S_FALSE;
     SFILTERAPPLIED_CAN* psFilterCAN = (SFILTERAPPLIED_CAN*)pvFilterApplied;
+
     if (psFilterCAN != NULL)
     {
         if (psFilterCAN->bClone(m_sFilterCAN) == TRUE)
@@ -558,20 +577,21 @@ HRESULT CMsgContainerCAN::GetFilterScheme(void* pvFilterApplied)
             hResult = TRUE;
         }
     }
+
     return hResult;
 }
 HRESULT CMsgContainerCAN::EnableFilterApplied(BOOL bEnable)
 {
     EnterCriticalSection(&m_omCritSecFilter);
     m_sFilterCAN.m_bEnabled = bEnable;
-    LeaveCriticalSection(&m_omCritSecFilter);    
+    LeaveCriticalSection(&m_omCritSecFilter);
     return S_OK;
 }
 /******************************************************************************
     Function Name    :  hUpdateFormattedMsgStruct
-    Input(s)         :  
-    Output           :  
-    Functionality    :  Format the requested Msg and save it in Format data 
+    Input(s)         :
+    Output           :
+    Functionality    :  Format the requested Msg and save it in Format data
                         structure which is accessible from the User module
     Member of        :  CMsgContainerCAN
     Friend of        :      -
@@ -579,23 +599,25 @@ HRESULT CMsgContainerCAN::EnableFilterApplied(BOOL bEnable)
     Date Created     :  01.04.2010
 ******************************************************************************/
 HRESULT CMsgContainerCAN::hUpdateFormattedMsgStruct(int nListIndex,
-                                                 int &nMsgCode, 
-                                                 BYTE bExprnFlag_Disp,
-                                                 __int64 nTimeOffset)
+        int& nMsgCode,
+        BYTE bExprnFlag_Disp,
+        __int64 nTimeOffset)
 {
     HRESULT hResult = S_FALSE;
-    nMsgCode  = 0;	
+    nMsgCode  = 0;
     static STCANDATA sCANCurrData;
     static STCANDATASPL sCANCurrDataSpl;
     memset( &m_sOutFormattedData, 0, sizeof(m_sOutFormattedData) );
+
     if( IS_MODE_APPEND(bExprnFlag_Disp) )
     {
         //INT nType = 0;
-		//INT nSize =sizeof(sCANCurrDataSpl);
+        //INT nSize =sizeof(sCANCurrDataSpl);
         //In append mode providing interpret state is not required
-		//hResult = m_ouAppendCanBuf.ReadEntry(nType, (BYTE*)&sCANCurrDataSpl, nSize, nListIndex, 0); 
-        hResult = m_ouAppendCanBuf.ReadFromBuffer(&sCANCurrDataSpl, nListIndex);		
+        //hResult = m_ouAppendCanBuf.ReadEntry(nType, (BYTE*)&sCANCurrDataSpl, nSize, nListIndex, 0);
+        hResult = m_ouAppendCanBuf.ReadFromBuffer(&sCANCurrDataSpl, nListIndex);
         sCANCurrData = *((STCANDATA*)&sCANCurrDataSpl);
+
         if (IS_TM_REL_SET(bExprnFlag_Disp))
         {
             //If relative time then the time will be delta time, for formatting
@@ -605,6 +627,7 @@ HRESULT CMsgContainerCAN::hUpdateFormattedMsgStruct(int nListIndex,
     else
     {
         hResult = m_ouOWCanBuf.ReadFromBuffer(&sCANCurrData, nListIndex);
+
         if (hResult == S_OK)
         {
             if (IS_TM_REL_SET(bExprnFlag_Disp))
@@ -614,36 +637,36 @@ HRESULT CMsgContainerCAN::hUpdateFormattedMsgStruct(int nListIndex,
             }
         }
     }
-    
+
     if (hResult == S_OK)
     {
-        m_ouFormatCAN.vFormatCANDataMsg(&sCANCurrData, 
-                                        &m_sOutFormattedData, 
+        m_ouFormatCAN.vFormatCANDataMsg(&sCANCurrData,
+                                        &m_sOutFormattedData,
                                         bExprnFlag_Disp);
 
-		//If Message is erroneous, return S_FALSE
-		if(IS_ERR_MESSAGE(sCANCurrData.m_ucDataType))
-		{
-			nMsgCode = usProcessCurrErrorEntry(sCANCurrData.m_uDataInfo.m_sErrInfo);				
-			return S_FALSE;
-		}
+        //If Message is erroneous, return S_FALSE
+        if(IS_ERR_MESSAGE(sCANCurrData.m_ucDataType))
+        {
+            nMsgCode = usProcessCurrErrorEntry(sCANCurrData.m_uDataInfo.m_sErrInfo);
+            return S_FALSE;
+        }
 
         //Now add the name of message if present in database else show the code
-        nMsgCode = sCANCurrData.m_uDataInfo.m_sCANMsg.m_unMsgID;	
+        nMsgCode = sCANCurrData.m_uDataInfo.m_sCANMsg.m_unMsgID;
     }
     else
     {
         memset (&m_sOutFormattedData, 0, sizeof(m_sOutFormattedData));
-		nMsgCode = -1;
-    }	
+        nMsgCode = -1;
+    }
 
     return hResult;
 }
 
 /******************************************************************************
     Function Name    :  vSetCurrMsgName
-    Input(s)         :  
-    Output           :  
+    Input(s)         :
+    Output           :
     Functionality    :  Current msg name from DB
     Member of        :  CMsgContainerCAN
     Friend of        :      -
@@ -652,8 +675,8 @@ HRESULT CMsgContainerCAN::hUpdateFormattedMsgStruct(int nListIndex,
 ******************************************************************************/
 void CMsgContainerCAN::vSetCurrMsgName(CString strMsgNameOrCode)
 {
-	CMsgContainerBase::bCopyStringToTCHARArr (m_sOutFormattedData.m_acMsgDesc, strMsgNameOrCode, 
-                           sizeof(m_sOutFormattedData.m_acMsgDesc));	
+    CMsgContainerBase::bCopyStringToTCHARArr (m_sOutFormattedData.m_acMsgDesc, strMsgNameOrCode,
+            sizeof(m_sOutFormattedData.m_acMsgDesc));
 }
 
 /*******************************************************************************
@@ -664,7 +687,7 @@ void CMsgContainerCAN::vSetCurrMsgName(CString strMsgNameOrCode)
   Member of      : CMsgContainerCAN
   Author(s)      : Arunkumar K
   Date Created   : 14-04-2011
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 USHORT CMsgContainerCAN::usProcessCurrErrorEntry(SERROR_INFO& sErrInfo)
 {
@@ -672,6 +695,7 @@ USHORT CMsgContainerCAN::usProcessCurrErrorEntry(SERROR_INFO& sErrInfo)
     USHORT usErrorID;
     // Get the channel number
     CHAR nChannel = sErrInfo.m_ucChannel - 1;
+
     if( nChannel < 0 || nChannel >= defNO_OF_CHANNELS )
     {
         ASSERT( FALSE );
@@ -688,7 +712,7 @@ USHORT CMsgContainerCAN::usProcessCurrErrorEntry(SERROR_INFO& sErrInfo)
     else if (sErrInfo.m_ucErrType == ERROR_WARNING_LIMIT_REACHED)
     {
         // Reaching warning limit isn't considered as an error.
-        // In case of this interrupt there is no need for display to 
+        // In case of this interrupt there is no need for display to
         // be updated.
         // Use Channel ID as High Byte of WPARAM
         usErrorID = ERROR_UNKNOWN;
@@ -711,8 +735,8 @@ USHORT CMsgContainerCAN::usProcessCurrErrorEntry(SERROR_INFO& sErrInfo)
 
 /******************************************************************************
     Function Name    :  vClearFormattedMsgStruct
-    Input(s)         :  
-    Output           :  
+    Input(s)         :
+    Output           :
     Functionality    :  Clear format data structure pointers
     Member of        :  CMsgContainerCAN
     Friend of        :      -
@@ -725,29 +749,27 @@ void CMsgContainerCAN::vClearFormattedMsgStruct()
 }
 /******************************************************************************
     Function Name    :  vGetUpdatedCurrDataPtrArray
-    Input(s)         :  
-    Output           :  
+    Input(s)         :
+    Output           :
     Functionality    :  Provide format data structure pointers to the user
     Member of        :  CMsgContainerCAN
     Friend of        :      -
     Author(s)        :  Anish kumar
     Date Created     :  01.04.2010
 ******************************************************************************/
-void CMsgContainerCAN::vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL &sHdrColStruct,
-                                                TCHAR *pomDataPtrArr[MAX_MSG_WND_COL_CNT],
-                                                BYTE bExprnFlag_Disp)
+void CMsgContainerCAN::vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL& sHdrColStruct,
+        TCHAR* pomDataPtrArr[MAX_MSG_WND_COL_CNT],
+        BYTE bExprnFlag_Disp)
 {
     //Time mode
     if (IS_TM_ABS_SET(bExprnFlag_Disp)) //for Absolute non-reset timestamp
     {
         pomDataPtrArr[sHdrColStruct.m_byTimePos] = m_sOutFormattedData.m_acTimeAbs;
     }
-
     else if (IS_TM_REL_SET(bExprnFlag_Disp))
     {
         pomDataPtrArr[sHdrColStruct.m_byTimePos] = m_sOutFormattedData.m_acTimeRel;
     }
-
     else if (IS_TM_SYS_SET(bExprnFlag_Disp))
     {
         pomDataPtrArr[sHdrColStruct.m_byTimePos] = m_sOutFormattedData.m_acTimeSys;
@@ -775,8 +797,8 @@ void CMsgContainerCAN::vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL &sHdrColStruct,
 
 /******************************************************************************
     Function Name    :  bGetDilInterFace
-    Input(s)         :  
-    Output           :  
+    Input(s)         :
+    Output           :
     Functionality    :  Get Dil interface pointer
     Member of        :  CMsgContainerCAN
     Friend of        :      -
@@ -787,26 +809,28 @@ BOOL CMsgContainerCAN::bGetDilInterFace()
 {
     BOOL bFound = FALSE;;
     DIL_GetInterface(CAN, (void**)&m_pouDIL_CAN_Interface);
+
     if (NULL != m_pouDIL_CAN_Interface)
     {
         bFound = TRUE;
     }
+
     return bFound;
 }
 
 void CMsgContainerCAN::SetClientID(DWORD dwClientID)
 {
-	m_dwClientId = dwClientID;
+    m_dwClientId = dwClientID;
 }
 
 void CMsgContainerCAN::DoSortBuffer(int nField,bool bAscending)
 {
-	m_ouAppendCanBuf.vDoSortBuffer(nField,bAscending);
-	m_ouOWCanBuf.vDoSortBuffer(nField,bAscending);	
+    m_ouAppendCanBuf.vDoSortBuffer(nField,bAscending);
+    m_ouOWCanBuf.vDoSortBuffer(nField,bAscending);
 }
 
 void CMsgContainerCAN::GetMapIndexAtID(int nIndex,__int64& nMapIndex)
 {
-	m_ouOWCanBuf.nGetMapIndexAtID(nIndex,nMapIndex);
+    m_ouOWCanBuf.nGetMapIndexAtID(nIndex,nMapIndex);
 }
 
