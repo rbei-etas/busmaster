@@ -4,15 +4,15 @@
 //  Marius Samoila 2011
 //
 // FILE NAME
-//		GraphCollection.cpp: implementation for the CGraphCollection class
+//      GraphCollection.cpp: implementation for the CGraphCollection class
 //
 // CLASS NAME
-//		CGraphCollection
+//      CGraphCollection
 //
 // DESCRIPTION
-// 
+//
 // MODIFICATIONS
-//		01-Dec-2011 MSamoila created
+//      01-Dec-2011 MSamoila created
 
 #include "stdafx.h"
 #include "DmGraph.h"

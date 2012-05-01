@@ -1,12 +1,12 @@
 /*******************************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  CCGCtrlStateMachine.h
-  Description   :  
+  Description   :
   $Log:   X:/Archive/Sources/CGCtrl/CGCtrlStateMachine.h_v  $
 
   Author(s)     :  Raja N
   Date Created  :  12/12/2004
-  Modified By   :  
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 *******************************************************************************/
 
@@ -17,12 +17,12 @@
 class CDMGraphCursorState
 {
 public:
-	CDMGraphCursorState(void);
-	~CDMGraphCursorState(void);
-public: 
-	EDMGRAPHCURSORSTATE eGetCurrState(void);
-	EDMGRAPHCURSORSTATE eApplyEvents(EDMGRAPHEVENT eEvent);
-	void vReset(void);
+    CDMGraphCursorState(void);
+    ~CDMGraphCursorState(void);
+public:
+    EDMGRAPHCURSORSTATE eGetCurrState(void);
+    EDMGRAPHCURSORSTATE eApplyEvents(EDMGRAPHEVENT eEvent);
+    void vReset(void);
 private:
-	EDMGRAPHCURSORSTATE	m_eCursorState;
+    EDMGRAPHCURSORSTATE m_eCursorState;
 };

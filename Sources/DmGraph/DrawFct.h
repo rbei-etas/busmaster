@@ -5,12 +5,12 @@
 //  Marius Samoila, Nikolai Teofilov, 2011
 //
 // FILE NAME
-//		DrawFct.h: Declaration of some GDI utility functions
+//      DrawFct.h: Declaration of some GDI utility functions
 //
 // DESCRIPTION
-// 
+//
 // MODIFICATIONS
-//		01-Dec-2011 MSamoila major re-design of old CNTGraphCtrl
+//      01-Dec-2011 MSamoila major re-design of old CNTGraphCtrl
 //
 #ifndef __DRAW_FCT__H__
 #define __DRAW_FCT__H__

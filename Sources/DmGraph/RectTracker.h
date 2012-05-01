@@ -5,15 +5,15 @@
 //  Marius Samoila, Ivan Krivyakov, 2011
 //
 // FILE NAME
-//		RectTracker.h: Declaration of the CRectTracker class
+//      RectTracker.h: Declaration of the CRectTracker class
 //
 // CLASS NAME
-//		CRectTracker
+//      CRectTracker
 //
 // DESCRIPTION
-// 
+//
 // MODIFICATIONS
-//		01-Dec-2011 MSamoila created
+//      01-Dec-2011 MSamoila created
 //
 
 #ifndef __RECT_TRACKER_H__
@@ -23,120 +23,159 @@
 
 class CRectTracker
 {
-    public:
+public:
 
-        CRectTracker();
-        CRectTracker( POINT const& Begin, POINT const& End );
+    CRectTracker();
+    CRectTracker( POINT const& Begin, POINT const& End );
 
-        
-        void Draw( HDC hDC ) ;
 
-        //****************************************************************
-        // attributes
+    void Draw( HDC hDC ) ;
 
-        // tracker position
-        void GetPos( POINT* Begin, POINT* End ) const;
-        void SetPos( POINT const& Begin, POINT const& End );
+    //****************************************************************
+    // attributes
 
-        // checks whether given position is valid for rectangle set by
-        // SetValidRect(); if valid rectangle is empty, always returns TRUE
-        BOOL IsValidPos() { return IsValidPos(CurPos); }
+    // tracker position
+    void GetPos( POINT* Begin, POINT* End ) const;
+    void SetPos( POINT const& Begin, POINT const& End );
 
-        // width of the line on display
-        // default width is 1
-        void SetLineWidth( int Width )          { LineWidth = Width; }
+    // checks whether given position is valid for rectangle set by
+    // SetValidRect(); if valid rectangle is empty, always returns TRUE
+    BOOL IsValidPos()
+    {
+        return IsValidPos(CurPos);
+    }
 
-        // color of the line on display; does not influence on color of tracked line
-        // default color is white, i.e. RGB(255,255,255)
-        void SetLineColor( COLORREF Color )     { LineColor = Color; }
+    // width of the line on display
+    // default width is 1
+    void SetLineWidth( int Width )
+    {
+        LineWidth = Width;
+    }
 
-        // size of handle; handle is always centered around endpoint of the line;
-        // this version creates square handle nSize x nSize pixels
-        // default handle size is 8
-        void SetHandleSize( int nSize )         { HandleSize.cx = HandleSize.cy = nSize; }
+    // color of the line on display; does not influence on color of tracked line
+    // default color is white, i.e. RGB(255,255,255)
+    void SetLineColor( COLORREF Color )
+    {
+        LineColor = Color;
+    }
 
-        // size of handle: this version allows not square handles
-        // default handle size is 8x8
-        void SetHandleSize( SIZE const& Size )  { HandleSize = Size; }
+    // size of handle; handle is always centered around endpoint of the line;
+    // this version creates square handle nSize x nSize pixels
+    // default handle size is 8
+    void SetHandleSize( int nSize )
+    {
+        HandleSize.cx = HandleSize.cy = nSize;
+    }
 
-        // handle color
-        // default handle color is white
-        void SetHandleColor( COLORREF Color )   { HandleColor = Color; }
+    // size of handle: this version allows not square handles
+    // default handle size is 8x8
+    void SetHandleSize( SIZE const& Size )
+    {
+        HandleSize = Size;
+    }
 
-        // vicinity size for hit tests; if a point is not within handle rectangle and
-        // it is closer to the line than vicinity size, its hittest will be hitMiddle
-        // default vicinity size is 10
-        void SetVicinitySize( int Size )        { VicinitySize = Size; }
+    // handle color
+    // default handle color is white
+    void SetHandleColor( COLORREF Color )
+    {
+        HandleColor = Color;
+    }
 
-        // SetValidRect() sets rectangle where endpoints of line may be situated.
-        // Valid rectangle is specified in client coordinates.
-        // If this rectangle is empty, any tracker position is valid
-        //
-        // It is responsibility of caller to make sure that initial 
-        // position of the tracker is valid
-        void SetValidRect( RECT const& Rect );
+    // vicinity size for hit tests; if a point is not within handle rectangle and
+    // it is closer to the line than vicinity size, its hittest will be hitMiddle
+    // default vicinity size is 10
+    void SetVicinitySize( int Size )
+    {
+        VicinitySize = Size;
+    }
 
-        int      GetLineWidth() const           { return LineWidth; }
-        COLORREF GetLineColor() const           { return LineColor; }
-        SIZE    GetHandleSize() const          { return HandleSize; }
-        COLORREF GetHandleColor() const         { return HandleColor; }
-        int      GetVicinitySize() const        { return VicinitySize; }
-        RECT    GetValidRect() const           { return ValidRect; }
+    // SetValidRect() sets rectangle where endpoints of line may be situated.
+    // Valid rectangle is specified in client coordinates.
+    // If this rectangle is empty, any tracker position is valid
+    //
+    // It is responsibility of caller to make sure that initial
+    // position of the tracker is valid
+    void SetValidRect( RECT const& Rect );
 
-        //****************************************************************
-        // operations
+    int      GetLineWidth() const
+    {
+        return LineWidth;
+    }
+    COLORREF GetLineColor() const
+    {
+        return LineColor;
+    }
+    SIZE    GetHandleSize() const
+    {
+        return HandleSize;
+    }
+    COLORREF GetHandleColor() const
+    {
+        return HandleColor;
+    }
+    int      GetVicinitySize() const
+    {
+        return VicinitySize;
+    }
+    RECT    GetValidRect() const
+    {
+        return ValidRect;
+    }
 
-        enum
-        {
-            // values are compatible with corresponding RECTTracker values
-            hitNothing = -1,
-            hitBegin   = 0,
-            hitEnd     = 2,
-            hitMiddle  = 8
-        };
+    //****************************************************************
+    // operations
 
-        // Test position of given point relative to the line
-        int HitTest( const LPPOINT point ) const;
+    enum
+    {
+        // values are compatible with corresponding RECTTracker values
+        hitNothing = -1,
+        hitBegin   = 0,
+        hitEnd     = 2,
+        hitMiddle  = 8
+    };
 
-        // Set the cursor shape according to current point position;
-        // This function should be called from OnSetCursor() message handler
-        BOOL SetCursor( HWND hWnd, UINT nHitTest ) const;
-        
-        // move or resize the tracker
-        BOOL Track( HWND hWnd, const LPPOINT point ); 
+    // Test position of given point relative to the line
+    int HitTest( const LPPOINT point ) const;
 
-        // create new tracker from scratch
-        BOOL TrackRubberBand( HWND hWnd, const LPPOINT point );
+    // Set the cursor shape according to current point position;
+    // This function should be called from OnSetCursor() message handler
+    BOOL SetCursor( HWND hWnd, UINT nHitTest ) const;
 
-    private:
-        
-        struct KLinePos
-        {
-            POINT Begin;
-            POINT End;
-        };
+    // move or resize the tracker
+    BOOL Track( HWND hWnd, const LPPOINT point );
 
-        KLinePos CurPos;
+    // create new tracker from scratch
+    BOOL TrackRubberBand( HWND hWnd, const LPPOINT point );
 
-        int      LineWidth;
-        COLORREF LineColor;
-        SIZE    HandleSize;
-        COLORREF HandleColor;
-        int      VicinitySize;
-        RECT    ValidRect;
+private:
 
-        void SetDefaults();
+    struct KLinePos
+    {
+        POINT Begin;
+        POINT End;
+    };
 
-        enum KHandleType
-        {
-            handleBegin,
-            handleEnd
-        };
+    KLinePos CurPos;
 
-        RECT GetHandleRect( KHandleType HandleType ) const;
-        BOOL TrackHandle( HWND hWnd, const LPPOINT point, int HitTest );
+    int      LineWidth;
+    COLORREF LineColor;
+    SIZE    HandleSize;
+    COLORREF HandleColor;
+    int      VicinitySize;
+    RECT    ValidRect;
 
-        BOOL IsValidPos( KLinePos const& Pos );		
+    void SetDefaults();
+
+    enum KHandleType
+    {
+        handleBegin,
+        handleEnd
+    };
+
+    RECT GetHandleRect( KHandleType HandleType ) const;
+    BOOL TrackHandle( HWND hWnd, const LPPOINT point, int HitTest );
+
+    BOOL IsValidPos( KLinePos const& Pos );
 };
 
 #endif
