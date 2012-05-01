@@ -39,7 +39,7 @@ private:
     BYTE m_byNodeAddress;
     UNION_ECU_NAME m_u64ECUName;
     BOOL m_bIsMonNode;
-    
+
     STJ1939_MSG m_sTxMsg;
     STJ1939_MSG m_sRxMsg;
     //BYTE m_byChannel;
@@ -59,22 +59,22 @@ protected:
     BYTE   m_byConCount;
     BOOL   m_bIsActive;
     HANDLE m_hTimer;
-    
+
 private:
-    void vTransmitLongData(short sDataLength, BYTE *pbData, CConnectionDet *pConDet);   
-    INT nIsMsgSentSuccess(UINT32 unExtId, BYTE* pbyData, UINT unNoOfPackets, 
-                                    UINT unLastFrameLen, CConnectionDet *pConDet, UINT unChannel);
-    VOID vSendMsgWithoutAckReq(UCHAR ucFrameLen, BYTE* pFrameData, 
-                                        UINT unID, UINT unChannel);
+    void vTransmitLongData(short sDataLength, BYTE* pbData, CConnectionDet* pConDet);
+    INT nIsMsgSentSuccess(UINT32 unExtId, BYTE* pbyData, UINT unNoOfPackets,
+                          UINT unLastFrameLen, CConnectionDet* pConDet, UINT unChannel);
+    VOID vSendMsgWithoutAckReq(UCHAR ucFrameLen, BYTE* pFrameData,
+                               UINT unID, UINT unChannel);
     HRESULT SendPackets(UINT32 unExtId, BYTE* pbyData, UINT unActualPackets, UINT nLastFrameLen,
                         CConnectionDet* pConDet, UINT unChannel);
     void vSendRequestForPGN(UINT32 unPGN, BYTE byDestAdres, UINT unChannel);
     HRESULT DelaySendProcess(CConnectionDet* pConDet);
     CConnectionDet* pCreateAndGetConDet(BYTE byDestAdres);
-    
+
     BOOL bProcessConLevelMsg(const STCANDATA& sCanMsg);
-    void vProcBAMMsg(const STCAN_MSG& sCanMsg);    
-    
+    void vProcBAMMsg(const STCAN_MSG& sCanMsg);
+
     void vReInitConDet();
     void vProcessBroadCastData(const STCANDATA& sCanMsg);
     void vProcessLongData(const STCANDATA& sCanMsg);
@@ -82,14 +82,14 @@ private:
     HRESULT PerformOperation(BYTE byOperation);
     void vSendACLMsg(BYTE byDestAddress, UINT unChannel, BOOL bNewEvent);
     BOOL bIsMsgForThisNode(UINT32 unExtId);
-    void vFormJ1939MsgForSending(UINT unChannel, STJ1939_MSG& sMsg, 
-                                 EJ1939_MSG_TYPE eMsgType, UINT32 unPGN, 
-                                 BYTE* pbyData, UINT unDLC, BYTE byPriority, 
+    void vFormJ1939MsgForSending(UINT unChannel, STJ1939_MSG& sMsg,
+                                 EJ1939_MSG_TYPE eMsgType, UINT32 unPGN,
+                                 BYTE* pbyData, UINT unDLC, BYTE byPriority,
                                  BYTE byDestAddress);
     void vProcessACLMsg(const STCAN_MSG& sCanMsg);
     void vProcessCmdAdresMsg(const STCAN_MSG& sCANMsg, UINT64 un64ECU_NAME);
 protected:
-    void vSendFrame(UCHAR ucFrameLen, BYTE* pFrameData, UINT unID, UINT unChannel); 
+    void vSendFrame(UCHAR ucFrameLen, BYTE* pFrameData, UINT unID, UINT unChannel);
     virtual void vProcConRequestMsg(const STCAN_MSG& sCanMsg);
 public:
     virtual CBaseCANBufFSE* pouGetBuf(void);
@@ -98,12 +98,12 @@ public:
     virtual void vReadCANdataBuffer();
     virtual void vRemoveAllConnections();
     virtual void vTransmitMessage(STJ1939_MSG* psMsg);
-    HRESULT TransmitRequestToSend(BYTE byDestAddress, BYTE byPriority, 
+    HRESULT TransmitRequestToSend(BYTE byDestAddress, BYTE byPriority,
                                   UINT unDLC, UINT32 unPGN, UINT unChannel);
     HRESULT StartAdresClaimProc(BYTE byAddress);
-    void vSendBAM(UINT unMsgSize, UINT32 unPGN, BYTE byDestAddress, 
+    void vSendBAM(UINT unMsgSize, UINT32 unPGN, BYTE byDestAddress,
                   BYTE byPriority, UINT unChannel);
-    void vSendBroadCastData(BYTE* pbyData, UINT unMsgSize, BYTE byDestAddress, 
+    void vSendBroadCastData(BYTE* pbyData, UINT unMsgSize, BYTE byDestAddress,
                             BYTE byPriority, UINT unChannel);
     HRESULT SendLongMsg(STJ1939_MSG* psMsg, CConnectionDet* pConDet, HRESULT hPreviousResult);
     HRESULT WaitForMorePackets(void);
@@ -119,7 +119,7 @@ public:
     TCHAR m_acNodeName[MAX_PATH];
     BYTE m_byPrefAddress;
 public:
-    CNodeConManager(int nNodeNo, TCHAR* pacNodeName, UINT64 un64NAME, 
+    CNodeConManager(int nNodeNo, TCHAR* pacNodeName, UINT64 un64NAME,
                     BYTE byPrefAddress = ADDRESS_NULL, BOOL bIsMonNode = FALSE);
     virtual ~CNodeConManager(void);
     BYTE byGetConCount();
@@ -138,6 +138,6 @@ public:
     BOOL bIsMonitorNode(void);
     void vSetNodeAddress(BYTE byAddress);
     HRESULT SetCallBackFuncPtr(ETYPE_CLBCK_FN eClBckFnType, void* pvClBckFn);
-    void vExecuteClbckFuncPtrs(ETYPE_CLBCK_FN eClbckType, UINT32 unPGN, BYTE bySrc, 
-                                BYTE byDest, BOOL bSuccess);
+    void vExecuteClbckFuncPtrs(ETYPE_CLBCK_FN eClbckType, UINT32 unPGN, BYTE bySrc,
+                               BYTE byDest, BOOL bSuccess);
 };

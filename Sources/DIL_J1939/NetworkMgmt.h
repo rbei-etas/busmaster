@@ -32,13 +32,13 @@
 
 
 
-typedef enum 
+typedef enum
 {
     CB_CON_CON,
     CB_CON_IND,
     CB_CONTEST_CON,
     CB_CONTEST_IND
-}E_NW_CALLBK_TYPE;
+} E_NW_CALLBK_TYPE;
 
 typedef CMap<UINT, UINT, short, short> CCombineLCsToConNoMap;
 typedef CMap<UINT64, UINT64, BYTE, BYTE> CNameAddressMap;
@@ -55,7 +55,7 @@ private:
     int m_nConMgrCnt;
     CNameAddressMap m_odClaimedAdresMap;
     BOOL m_bOnline;
-    
+
 public:
     static UINT sg_unTO_BROADCAST;
     static UINT sg_unTO_RESPONSE;
@@ -85,14 +85,14 @@ public:
     CNodeConManager* pouGetConMagrObj(TCHAR* pacClientName);
     CNodeConManager* pouGetConMagrObj(BYTE byIndex);
     BYTE byGetConMagrNumber(short shConNumber);
-    //Singleton Class 
+    //Singleton Class
     static CNetworkMgmt& ouGetNWManagementObj();
     //
     void vSetLogAndICANPtr(Base_WrapperErrorLogger* pILog, CBaseDIL_CAN* pouIDIL_CAN);
-    LONG lCreateNodeConManager(TCHAR* pacNodeName, 
-                                UINT64 un64ECUName, 
-                                BYTE byPrefAdres,
-                                DWORD& dwClientId);
+    LONG lCreateNodeConManager(TCHAR* pacNodeName,
+                               UINT64 un64ECUName,
+                               BYTE byPrefAdres,
+                               DWORD& dwClientId);
     void vRemoveAllNodes(void);
     LONG lRemoveNodeConManager(DWORD dwClientId);
     BOOL bRemoveConnectionFromConMap(short shConnectionNo);

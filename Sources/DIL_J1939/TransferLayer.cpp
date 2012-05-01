@@ -1,12 +1,12 @@
 /******************************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  TransferLayer.cpp
-  Description   :  
+  Description   :
   $Log:   X:/Archive/Sources/DIL_J1939/TransferLayer.cpv  $
-   
+
   Author(s)     :  Pradeep Kadoor
   Date Created  :  23/11/2010
-  Modified By   :  
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 
@@ -55,10 +55,10 @@ LONG CTransferLayer::lTConnectReq(short /*sConNumber*/, char /*cBlockSize*/, eCO
 //    //Get ID for con no., cReate and send CS message, start timer for ack
 //    //Give indication, Save data for retransmission???
 //    LONG lError = S_FALSE;
-//    CConnectionDet* pConDetObj = 
+//    CConnectionDet* pConDetObj =
 //        CNetworkMgmt::ouGetNWManagementObj().pouGetConDetObj(sConNumber);
-//    CNodeConManager* pManager = 
-//        CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrFromConnection(sConNumber); 
+//    CNodeConManager* pManager =
+//        CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrFromConnection(sConNumber);
 //    if (pConDetObj != NULL)
 //    {
 //         lError = pManager->unSendConnectionReq(cBlockSize, eSMmode, pConDetObj);
@@ -82,7 +82,7 @@ void CTransferLayer::vTConnectCon(short /*sConNumber*/, eCON_STATUS /*ConStatus*
 //        CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrFromConnection(sConNumber);
 //    if ((pConDet != NULL) && (pConManager != NULL))
 //    {
-//        const CNetwork_McNet* pouNetwork 
+//        const CNetwork_McNet* pouNetwork
 //                        = CNetworkMgmt::ouGetNWManagementObj().pouGetNetwork();
 //        ASSERT(pouNetwork != NULL);
 //        DWORD dwLocalLCN, dwRemoteLCN;
@@ -105,12 +105,12 @@ void CTransferLayer::vTConnectInd(short /*sConNumber*/,char /*cBlockSize*/, BOOL
 //        CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrFromConnection(sConNumber);
 //    if ((pConDet != NULL) && (pConManager != NULL))
 //    {
-//        const CNetwork_McNet* pouNetwork 
+//        const CNetwork_McNet* pouNetwork
 //                        = CNetworkMgmt::ouGetNWManagementObj().pouGetNetwork();
 //        ASSERT(pouNetwork != NULL);
 //        DWORD dwLocalLCN, dwRemoteLCN;
 //        pouNetwork->bGetLCNValues(pConDet->m_unRemoteCANid, dwLocalLCN, dwRemoteLCN);
-//        CNetworkMgmt::ouGetNWManagementObj().vMConnectionInd((short) dwLocalLCN, 
+//        CNetworkMgmt::ouGetNWManagementObj().vMConnectionInd((short) dwLocalLCN,
 //            (short) dwRemoteLCN, pConManager->m_eWDStatus, pConDet->m_eConStatus);
 //    }
 //}
@@ -126,18 +126,18 @@ void CTransferLayer::vTDisconnectInd(short /*sConNumber*/,eREASON /*eReason*/)
 //    //Connection indication to network layer
 //    CConnectionDet* pConDet =
 //        CNetworkMgmt::ouGetNWManagementObj().pouGetConDetObj(sConNumber);
-//   
+//
 //    if ((pConDet != NULL))
 //    {
 //        pConDet->m_eConStatus = T_DISCONNECTED;
-//        const CNetwork_McNet* pouNetwork 
+//        const CNetwork_McNet* pouNetwork
 //                        = CNetworkMgmt::ouGetNWManagementObj().pouGetNetwork();
 //        ASSERT(pouNetwork != NULL);
 //        DWORD dwLocalLCN, dwRemoteLCN;
 //        pouNetwork->bGetLCNValues(pConDet->m_unRemoteCANid, dwLocalLCN, dwRemoteLCN);
-//        //CNetworkMgmt::ouGetNWManagementObj().vMConnectionInd((short) dwLocalLCN, 
+//        //CNetworkMgmt::ouGetNWManagementObj().vMConnectionInd((short) dwLocalLCN,
 //            //(short) dwRemoteLCN, pConManager->m_eWDStatus, pConDet->m_eConStatus);
-//        CNetworkMgmt::ouGetNWManagementObj().vMDisconnectInd((short) dwLocalLCN, 
+//        CNetworkMgmt::ouGetNWManagementObj().vMDisconnectInd((short) dwLocalLCN,
 //            (short) dwRemoteLCN, eReason);
 //    }
 //kadoor}
@@ -152,7 +152,7 @@ void CTransferLayer::vTLongDataCon(short /*sConNumber*/, char /*cTransferResult*
 //    //Send the confirmation to adaptation layer
 //    //Provide msg to adaptation layer
 //    //Now it is ready to send new data
-//    const CNetwork_McNet* pouNetwork 
+//    const CNetwork_McNet* pouNetwork
 //                        = CNetworkMgmt::ouGetNWManagementObj().pouGetNetwork();
 //    DWORD dwLC = 0, dwRC = 0;
 //    pouNetwork->bGetLCNValues(sConNumber, dwLC, dwRC);
@@ -175,21 +175,20 @@ void CTransferLayer::vTLongDataCon(short /*sConNumber*/, char /*cTransferResult*
 void CTransferLayer::vTBroadDataInd(short /*sBroadcastCANId*/,short /*sDataLength*/, BYTE* /*pbData*/)
 {
     //Indicate a RX broad cast data
-    //CAdaptationLayer::ouGetAdaptLayerObj().vABroadDataInd(sBroadcastCANId, *pbData, 
+    //CAdaptationLayer::ouGetAdaptLayerObj().vABroadDataInd(sBroadcastCANId, *pbData,
     //    pbData, sDataLength);
 }
 /**************************************************************
  ************************************************************** */
 void CTransferLayer::vTConTestCon(short /*sConNumber*/, char /*cConnectionStatus*/, char /*cBlockSize*/, char /*cServiceMode*/)
 {
-    //Confirm the connection request 
+    //Confirm the connection request
 }
 
-void CTransferLayer::vTransmitCANMsg(DWORD dwClientID, UINT unID, 
+void CTransferLayer::vTransmitCANMsg(DWORD dwClientID, UINT unID,
                                      UCHAR ucDataLen, BYTE* pData, UINT unChannel)
 {
     STCAN_MSG sMsgCAN = {'\0'};
-
     sMsgCAN.m_unMsgID = unID;
     sMsgCAN.m_ucDataLen = ucDataLen;
     memcpy(sMsgCAN.m_ucData, pData, ucDataLen);

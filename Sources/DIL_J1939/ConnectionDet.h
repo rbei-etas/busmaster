@@ -31,14 +31,14 @@ class CConnectionDet
 {
 private:
     eCON_STATUS m_eConStatus;
-public: 
+public:
     //STJ1939_MSG m_sJ1939Msg;
     //Only for long message
     BYTE  m_byCurrPacket;
     BYTE  m_byMaxPacketWOC2S;
     BYTE m_byTxAckSeqNo;
     BYTE m_byRxSeqNo;
-    
+
     BYTE   m_RxLongData[MAX_DATA_LEN_J1939];             //RX long data storage
     BYTE   m_BCRXLongData[MAX_DATA_LEN_J1939];
     BYTE   m_TxLongData[MAX_DATA_LEN_J1939];             //TX long data storage
@@ -51,12 +51,12 @@ public:
     HANDLE m_hDataRxWait;
     HANDLE m_hClear2SendWait;
     HANDLE m_hBCDataRXWait;
-    HANDLE m_hDataDelayWait; // Dummy handle just to wait till the delay expires 
-                             // instead of implementing timer function
+    HANDLE m_hDataDelayWait; // Dummy handle just to wait till the delay expires
+    // instead of implementing timer function
     UINT32 m_unPGN;
     //STCAN_MSG m_sCanMsg;
 
-    //All broadcast 
+    //All broadcast
     UINT64 m_BCTimeStamp;
     BYTE m_BCRxSeqVar;
     BYTE m_BCTotalPackets;
@@ -68,12 +68,12 @@ public:
 public:
     BYTE       m_bySrcAddress;             // Tx msg id for this connection
     BYTE       m_byDestAddress;            // Rx msg id for this connection
-    
+
     BYTE       m_byResult;
     UINT       m_unNextPacket;
 
 public:
-    CConnectionDet(BYTE bySrcAddress, 
+    CConnectionDet(BYTE bySrcAddress,
                    BYTE byDestAddress);
     ~CConnectionDet();
     BOOL bIsMsgRxForThisConnection(UINT32 unExtId);

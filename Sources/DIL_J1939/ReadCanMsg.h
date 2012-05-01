@@ -47,10 +47,10 @@ public:
     // while closing the thread.
     void vRetrieveDataFromBuffer(BYTE byIndex);
 
-    // To add event handle for a client 
+    // To add event handle for a client
     HRESULT AddEventHandle(HANDLE hHandle, BYTE byNodeMgrIndex);
 
-    // To remove event handle of a client 
+    // To remove event handle of a client
     BOOL bDeleteEventHandle(HANDLE handle);
 
     // Do initialisation operations
