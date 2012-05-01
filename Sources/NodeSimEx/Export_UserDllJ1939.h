@@ -15,14 +15,14 @@
 
 /**
  * \file      Export_UserDllJ1939.h
- * \brief     This header file contains name and prototype of the 
+ * \brief     This header file contains name and prototype of the
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This header file contains name and prototype of the 
- * exported function from user-defined DLL which should be 
+ * This header file contains name and prototype of the
+ * exported function from user-defined DLL which should be
  * called by the application to initialise a function pointer
- * in that DLL to enable it to call a function from the 
+ * in that DLL to enable it to call a function from the
  * application.
 */
 

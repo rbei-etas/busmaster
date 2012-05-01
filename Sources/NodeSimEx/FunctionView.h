@@ -15,35 +15,35 @@
 
 /**
  * \file      FunctionView.h
- * \brief     Interface for CFunctionView class. Has functions to Set the 
+ * \brief     Interface for CFunctionView class. Has functions to Set the
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Interface for CFunctionView class. Has functions to Set the 
+ * Interface for CFunctionView class. Has functions to Set the
  */
 
 #pragma once
 
 class CFunctionView : public CRichEditView
 {
-// Construction
+    // Construction
 public:
     CFunctionView();
 
 public:
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CFunctionView)
-    public:
+public:
     virtual void OnInitialUpdate();
     //}}AFX_VIRTUAL
 
 public:
     static ETYPE_BUS sm_eBus;
-// Implementation
+    // Implementation
     //Sets the function in edit mode in the window
     //Function to be edited is passes in as omStrFunction
-    void vSetFunctionToEdit(const CString &omStrFunction);
+    void vSetFunctionToEdit(const CString& omStrFunction);
     // Initialise the member variable m_sStartPos to NULL;
     void vInitPositionStruct();
     //Destructor
@@ -85,7 +85,7 @@ private:
     BOOL     m_bIsValidFunction;    //Flag indicating validity of function
 
     POSITION m_sStartPos;           //Start position (in the document's source
-                                    //code list) of the function to edit.
+    //code list) of the function to edit.
     // Variables to remember starting line of procedure and current line in the
     // rich edit view. These will be used to select correct line in the FileView
     int m_nStartingLine, m_nCurrentLine;

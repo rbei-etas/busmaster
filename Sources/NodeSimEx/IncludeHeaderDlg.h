@@ -15,11 +15,11 @@
 
 /**
  * \file      IncludeHeaderDlg.h
- * \brief     This header file contains the defintion of class 
+ * \brief     This header file contains the defintion of class
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This header file contains the defintion of class 
+ * This header file contains the defintion of class
  */
 
 #pragma once
@@ -30,25 +30,25 @@ class CIncludeHeaderDlg : public CDialog
 {
 private:
     CFunctionEditorDoc* m_pDoc;
-// Construction
+    // Construction
 public:
     CIncludeHeaderDlg(CFunctionEditorDoc* pDoc, CWnd* pParent = NULL);   // standard constructor
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CIncludeHeaderDlg)
     enum { IDD = IDD_DLG_INCLUDE_HEADERS };
     CString m_omStrIncludeFilename;
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CIncludeHeaderDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions

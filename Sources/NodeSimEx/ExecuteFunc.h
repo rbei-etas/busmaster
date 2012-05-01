@@ -15,11 +15,11 @@
 
 /**
  * \file      ExecuteFunc.h
- * \brief     This header file contain definition ofCExecuteFunc class. 
+ * \brief     This header file contain definition ofCExecuteFunc class.
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This header file contain definition ofCExecuteFunc class. 
+ * This header file contain definition ofCExecuteFunc class.
  */
 
 #pragma once
@@ -31,22 +31,22 @@
 
 typedef enum eNODEFLAG
 {
-	EXKEY_HANDLER=0,
+    EXKEY_HANDLER=0,
     EXERROR_HANDLER,
     EXDLL_HANDLER,
     EXMSG_HANDLER,
-	EXTIMER_HANDLER,
-	ACTIVENODE
+    EXTIMER_HANDLER,
+    ACTIVENODE
 };
 
 
-class CExecuteFunc  
+class CExecuteFunc
 {
 public:
     void vEnableDisableAllTimers(BOOL);
-    BOOL bInitErrorStruct(CStringArray &omErrorArray);
-    BOOL bInitEventStructJ1939(CStringArray &omErrorArray);
- 
+    BOOL bInitErrorStruct(CStringArray& omErrorArray);
+    BOOL bInitEventStructJ1939(CStringArray& omErrorArray);
+
     // Execute key handlers
     VOID vExecuteOnKeyHandler(UCHAR ucKey);
     // Execute message handlers
@@ -58,56 +58,56 @@ public:
     VOID vExecuteOnDLLHandler(eDLLHANDLER eDLLHandler);
 
     // Initialise all structure
-    BOOL bInitStruct(CStringArray &omErrorArray);
+    BOOL bInitStruct(CStringArray& omErrorArray);
     // constructor
     CExecuteFunc(ETYPE_BUS eBus, CONST CString& omStrDllFileName);
     virtual ~CExecuteFunc();
-	//ani1
-	void vSetNodeInfo(PSNODEINFO ps_TempNodeInfo);
+    //ani1
+    void vSetNodeInfo(PSNODEINFO ps_TempNodeInfo);
     void vGetNodeInfo(sNODEINFO& psNodeInfo) const;
-    void vInitialiseInterfaceFnPtrs(HMODULE);//from mainframe 
-     
-	void vSetActivePassiveNode(BOOL ActiveNode); //used for Dll
-	BOOL bEnableDisableMsgHandlers(BOOL bEnable );//frm main frm
-	BOOL bEnableDisableErrorHandlers(BOOL bEnable);
-	BOOL bActivateDeactivateHandlers(BOOL bActivate); 
-	BOOL bEnableDisableKeyHandlers(BOOL bEnable);
-	HMODULE hGetDllHandle();
-	BOOL bGetFlagStatus(eNODEFLAG eWhichFlag);
-	BOOL bUnloadDll();//it is called from BL & UL  to stop handler execution
-	CString omGetPrevFileName();
-	void vSetDllHandle(HMODULE hModuleHandle);
-	VOID vDestroyUtilityThreads(UINT unMaxWaitTime, BYTE byThreadCode);
-	STHREADINFO m_asUtilThread[defEVENT_EXFUNC_TOTAL];		
-	CEvent	m_aomState[defEVENT_EXFUNC_TOTAL];				
-									//associated to handler thread 
-	void vWriteInQMsg(STCAN_MSG sRxMsgInfo);  
-	STCAN_MSG sReadFromQMsg();
-	CEvent m_omReadFromQEvent;       //event set after writing into buffer,for reading 
-	CRITICAL_SECTION m_CritSectForFuncBuf; //critical section for buffer
-	UINT unGetBufferMsgCnt(); //called from read buffer thread
-	BOOL bIsDllLoaded()	;
-	//made public to make it easily accessed by read msg handler thread
-	BOOL m_bStopMsgHandlers;  
-	BOOL bIsTimerThreadStarted();
-	//start execution of timer handlers
-	void vStartTimerThreads();
-	//the timer information are copied from linked list manage for
-	//UI part
-	void vResetTimerStructure(PSTIMERHANDLERLIST psFirstTimerPointer);
-	//destroy timer threads at unloading of DLL
-	void vDestroyTimerThreads();
-	//called when timer is set reset from DLL
-	BOOL bResetTimer(char* pcTimerFunctionName, int type, BOOL bStart);
-	//called when timervalue is reset from DLL
-	BOOL bResetTimerVal(char* pcTimerFunctionName,UINT unTimeVal);
-	//checking message transmission flag
-	BOOL bGetMsgTxFlag();
-	void vSetMsgTxFlag(BOOL);
-	//get the pointer to the Timer structure list 
-	const PSTIMERHANDLERLIST psGetTimerListPtr();
-	//provide handler details to UI part
-	void vCopyHandlersArrayToUI(PSNODEINFO psNodeInfo);
+    void vInitialiseInterfaceFnPtrs(HMODULE);//from mainframe
+
+    void vSetActivePassiveNode(BOOL ActiveNode); //used for Dll
+    BOOL bEnableDisableMsgHandlers(BOOL bEnable );//frm main frm
+    BOOL bEnableDisableErrorHandlers(BOOL bEnable);
+    BOOL bActivateDeactivateHandlers(BOOL bActivate);
+    BOOL bEnableDisableKeyHandlers(BOOL bEnable);
+    HMODULE hGetDllHandle();
+    BOOL bGetFlagStatus(eNODEFLAG eWhichFlag);
+    BOOL bUnloadDll();//it is called from BL & UL  to stop handler execution
+    CString omGetPrevFileName();
+    void vSetDllHandle(HMODULE hModuleHandle);
+    VOID vDestroyUtilityThreads(UINT unMaxWaitTime, BYTE byThreadCode);
+    STHREADINFO m_asUtilThread[defEVENT_EXFUNC_TOTAL];
+    CEvent  m_aomState[defEVENT_EXFUNC_TOTAL];
+    //associated to handler thread
+    void vWriteInQMsg(STCAN_MSG sRxMsgInfo);
+    STCAN_MSG sReadFromQMsg();
+    CEvent m_omReadFromQEvent;       //event set after writing into buffer,for reading
+    CRITICAL_SECTION m_CritSectForFuncBuf; //critical section for buffer
+    UINT unGetBufferMsgCnt(); //called from read buffer thread
+    BOOL bIsDllLoaded() ;
+    //made public to make it easily accessed by read msg handler thread
+    BOOL m_bStopMsgHandlers;
+    BOOL bIsTimerThreadStarted();
+    //start execution of timer handlers
+    void vStartTimerThreads();
+    //the timer information are copied from linked list manage for
+    //UI part
+    void vResetTimerStructure(PSTIMERHANDLERLIST psFirstTimerPointer);
+    //destroy timer threads at unloading of DLL
+    void vDestroyTimerThreads();
+    //called when timer is set reset from DLL
+    BOOL bResetTimer(char* pcTimerFunctionName, int type, BOOL bStart);
+    //called when timervalue is reset from DLL
+    BOOL bResetTimerVal(char* pcTimerFunctionName,UINT unTimeVal);
+    //checking message transmission flag
+    BOOL bGetMsgTxFlag();
+    void vSetMsgTxFlag(BOOL);
+    //get the pointer to the Timer structure list
+    const PSTIMERHANDLERLIST psGetTimerListPtr();
+    //provide handler details to UI part
+    void vCopyHandlersArrayToUI(PSNODEINFO psNodeInfo);
 
 
 
@@ -116,26 +116,26 @@ private:
     PFKEY_HANDLER m_pFGenericKeyHandler;
     PFMSG_HANDLER_CAN pFSearchMsgIdRangeHandlerCAN(UINT unMsgID);
     PFMSG_HANDLER pFSearchMsgIdRangeHandler(UINT unMsgId);
-    BOOL bInitMsgIDRangeHandlStruct(UINT unMsgIDRangeCount, 
-                                    CStringArray &omErrorArray);
-    BOOL bInitMsgIDandNameHandlStruct(UINT unMsgIDandNameCount, 
-                                      CStringArray &omErrorArray);
+    BOOL bInitMsgIDRangeHandlStruct(UINT unMsgIDRangeCount,
+                                    CStringArray& omErrorArray);
+    BOOL bInitMsgIDandNameHandlStruct(UINT unMsgIDandNameCount,
+                                      CStringArray& omErrorArray);
     // Allocate memory for handler info structure
     BOOL bAllocateMemory(UINT unMsgRangeCount );
     void vCatagoriseMsgHandlers(const CString& omStrFuncName);
     // Initialise timer structure
-    BOOL bInitTimerStruct(CStringArray &omErrorArray);
+    BOOL bInitTimerStruct(CStringArray& omErrorArray);
     // Initialise timer structure
-    BOOL bInitOnKeyStruct(CStringArray &omErrorArray);
+    BOOL bInitOnKeyStruct(CStringArray& omErrorArray);
     // Initialise timer structure
-    BOOL bInitMSGStruct(CStringArray &omErrorArray);
+    BOOL bInitMSGStruct(CStringArray& omErrorArray);
     // Initialise DLL structure
-    BOOL bInitDLLStruct(CStringArray &omErrorArray);
+    BOOL bInitDLLStruct(CStringArray& omErrorArray);
     // Read .Def File and add function name.
-    BOOL bReadDefFile(CStringArray &omErrorArray);
-    
+    BOOL bReadDefFile(CStringArray& omErrorArray);
+
     void vInitialiseInterfaceFnPtrsJ1939(HMODULE);
-	void vInitialiseInterfaceFnPtrsCAN(HMODULE);
+    void vInitialiseInterfaceFnPtrsCAN(HMODULE);
     void vExecuteOnEventHandlerJ1939(UINT32 unPGN, BYTE bySrc, BYTE byDest, BOOL bSuccess, BYTE byType);
     CStringArray m_omStrArrayTimerHandlers;
     CStringArray m_omStrArrayKeyHandlers;
@@ -154,8 +154,8 @@ private:
     PSMSGID_RANGE_HANDLER m_psOnMsgIDRangeHandlers;
     PFMSG_HANDLER_CAN m_pFGenericMsgHandlerCAN;
     PFMSG_HANDLER m_pFGenericMsgHandler;
-    PSDLLHANDLER   m_psOnDLLHandlers ;  
-    PSEVENTHANDLER m_psOnEventHandlers; 
+    PSDLLHANDLER   m_psOnDLLHandlers ;
+    PSEVENTHANDLER m_psOnEventHandlers;
     PSERRORHANDLER m_psOnErrorHandlers;
     CString m_omStrDllFileName;
 
@@ -168,22 +168,22 @@ private:
     BOOL m_bIsStatWndCreated;
 
 
-	sNODEINFO m_sNodeInfo;
-	UINT m_unQMsgCount;
-	STCAN_MSG m_asQMsg[ defMAX_FUNC_MSG ];		//for message handler msg array	
-	UINT m_unReadQMsgIndex;			// index from which the message to be read
-	UINT m_unWriteQMsgIndex;		//index at which message is to be written 
-		
+    sNODEINFO m_sNodeInfo;
+    UINT m_unQMsgCount;
+    STCAN_MSG m_asQMsg[ defMAX_FUNC_MSG ];      //for message handler msg array
+    UINT m_unReadQMsgIndex;         // index from which the message to be read
+    UINT m_unWriteQMsgIndex;        //index at which message is to be written
 
 
-	BOOL m_bDllLoaded;
-	BOOL m_bStopKeyHandlers;
+
+    BOOL m_bDllLoaded;
+    BOOL m_bStopKeyHandlers;
     BOOL m_bStopErrorHandlers;
-	BOOL m_bStopDLLHandlers;
-	CWinThread* m_pomMsgHandlerThrd;
-	PSTIMERHANDLERLIST m_psFirstTimerStrList;
-	PSTIMERHANDLERLIST m_psLastTimerStrList;
-	BOOL m_bTimerThreadStarted;
-	//to start stop message transmission from DLL
-	BOOL m_bMsgTxOnFlag;
+    BOOL m_bStopDLLHandlers;
+    CWinThread* m_pomMsgHandlerThrd;
+    PSTIMERHANDLERLIST m_psFirstTimerStrList;
+    PSTIMERHANDLERLIST m_psLastTimerStrList;
+    BOOL m_bTimerThreadStarted;
+    //to start stop message transmission from DLL
+    BOOL m_bMsgTxOnFlag;
 };

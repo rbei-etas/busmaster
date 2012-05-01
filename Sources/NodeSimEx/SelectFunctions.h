@@ -15,11 +15,11 @@
 
 /**
  * \file      SelectFunctions.h
- * \brief     This header file contains the defintion of class       
+ * \brief     This header file contains the defintion of class
  * \author    Amarnath Shastry
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This header file contains the defintion of class       
+ * This header file contains the defintion of class
  */
 
 #pragma once
@@ -31,7 +31,7 @@
 
 class CSelectFunctions : public CDialog
 {
-// Construction
+    // Construction
 private:
     ETYPE_BUS m_eBus;
 public:
@@ -39,21 +39,21 @@ public:
     CString m_omStrSelectedText;
     CSelectFunctions(ETYPE_BUS eBus, CWnd* pParent = NULL);   // standard constructor
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CSelectFunctions)
     enum { IDD = IDD_DLG_SELECT_FNS };
     CListBox    m_omFnListBox;
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CSelectFunctions)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
@@ -65,5 +65,5 @@ protected:
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
-	BOOL bFormatFunctionPrototype(CString& omStrFunctionPrototype);
+    BOOL bFormatFunctionPrototype(CString& omStrFunctionPrototype);
 };

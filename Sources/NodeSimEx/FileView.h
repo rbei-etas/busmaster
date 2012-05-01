@@ -15,11 +15,11 @@
 
 /**
  * \file      FileView.h
- * \brief     This header file contains the defintion of class ileView. All 
+ * \brief     This header file contains the defintion of class ileView. All
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This header file contains the defintion of class ileView. All 
+ * This header file contains the defintion of class ileView. All
  */
 
 #pragma once
@@ -35,24 +35,24 @@ protected: // create from serialization only
     CFileView();
     DECLARE_DYNCREATE(CFileView)
 
-// Attributes
+    // Attributes
 public:
     static ETYPE_BUS sm_eBus;
-// Operations
+    // Operations
 public:
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CFileView)
-    public:
+public:
     virtual void OnDraw(CDC* pDC);  // overridden to draw this view
     virtual void OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint);
-    protected:
+protected:
     virtual void OnInitialUpdate(); // called first time after construct
-    
+
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 public:
     // Takes the cursor to the  specified line number
     void vGoToLine( UINT unLineNo );
@@ -71,14 +71,14 @@ public:
 
 protected:
 
-// Generated message map functions
+    // Generated message map functions
 protected:
     //{{AFX_MSG(CFileView)
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	afx_msg void OnPaint();
-	//}}AFX_MSG
+    afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+    afx_msg void OnPaint();
+    //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
- 
+
 private:
     // character height information
     int     m_nCharHeight;

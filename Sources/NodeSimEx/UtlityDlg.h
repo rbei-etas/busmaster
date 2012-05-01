@@ -31,32 +31,32 @@
 
 class CUtlityDlg : public CDialog
 {
-// Construction
+    // Construction
 private:
     CFunctionEditorDoc* m_pDoc;
 public:
     CString m_omStrFunPrototype;
     CUtlityDlg(CFunctionEditorDoc* pDoc, CWnd* pParent = NULL);   // standard constructor
-	void vSetUtilFuncChange(CString omStrReturnType);
+    void vSetUtilFuncChange(CString omStrReturnType);
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CUtlityDlg)
-	enum { IDD = IDD_DLG_DEFINE_UTILITY_FN };
-	CEdit	m_omEditUtilsFunText;
+    enum { IDD = IDD_DLG_DEFINE_UTILITY_FN };
+    CEdit   m_omEditUtilsFunText;
     CComboBox   m_omComboRetType;
     CString m_omStrFunctionName;
-	CString	m_omStrUtilsFunText;
-	//}}AFX_DATA
+    CString m_omStrUtilsFunText;
+    //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CUtlityDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
@@ -65,11 +65,11 @@ protected:
     virtual BOOL OnInitDialog();
     afx_msg void OnChangeEditFnPrototype();
     afx_msg void OnCancel();
-	//}}AFX_MSG
+    //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
-	BOOL m_bChangeUtilFunc;
-	CString m_omStrTempReturnType;
+    BOOL m_bChangeUtilFunc;
+    CString m_omStrTempReturnType;
 public:
-	afx_msg void OnCbnSelchangeCombFnReturnType();
+    afx_msg void OnCbnSelchangeCombFnReturnType();
 };

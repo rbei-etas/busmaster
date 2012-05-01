@@ -28,28 +28,28 @@
 
 class CBaseNodeSim
 {
-public: 
+public:
 
     //INTERFACE FUNCTIONS STARTS
     virtual HRESULT FE_CreateFuncEditorTemplate(HWND handle, S_EXFUNC_PTR& sExInitStruct) = 0;
-    virtual HRESULT FE_OpenFunctioneditorFile(CString omStrNewCFileName, HWND hMainFrame, 
-                                                        S_EXFUNC_PTR& sExInitStruct) = 0;
+    virtual HRESULT FE_OpenFunctioneditorFile(CString omStrNewCFileName, HWND hMainFrame,
+            S_EXFUNC_PTR& sExInitStruct) = 0;
     virtual void NS_EnableAllHandlers(BOOL bEnable) = 0;
     virtual void NS_EnableAllTimers(BOOL bEnable) = 0;
     virtual void NS_EnableAllKeyHandler(BOOL bEnable)= 0;
     virtual void NS_EnableAllMessageHandler(BOOL bEnable)= 0;
     virtual void NS_EnableAllErrorHandler(BOOL bEnable)= 0;
     virtual void NS_ManageOnKeyHandler(UCHAR ucKey) = 0;
-    virtual void NS_ManageOnMessageHandler(void *psRxMsgInfo) = 0;
+    virtual void NS_ManageOnMessageHandler(void* psRxMsgInfo) = 0;
     virtual void NS_ManageOnErrorHandler(eERROR_STATE eErrorCode,void* pvErrorVal) = 0;
-    virtual HRESULT NS_DLLBuildAll(CStringArray *pomStrErrorFiles) = 0;
-    virtual HRESULT NS_DllLoadAll(CStringArray *pomStrErrorFiles) = 0; 
-    virtual HRESULT NS_DllUnloadAll(CStringArray *pomStrErrorFiles) = 0;
-    virtual HRESULT NS_DLLBuildLoadAll(CStringArray *pomStrErrorFiles) = 0;
+    virtual HRESULT NS_DLLBuildAll(CStringArray* pomStrErrorFiles) = 0;
+    virtual HRESULT NS_DllLoadAll(CStringArray* pomStrErrorFiles) = 0;
+    virtual HRESULT NS_DllUnloadAll(CStringArray* pomStrErrorFiles) = 0;
+    virtual HRESULT NS_DLLBuildLoadAll(CStringArray* pomStrErrorFiles) = 0;
     //Set the MSG structure name and File name containing the structure def
     virtual void NS_UpdateFuncStructsNodeSimEx(PVOID pvFuncStructs, E_UPDATE_TYPE eUpdateType) = 0;
     //Provide the helptext for all the handlers in the order mentoned above
-    virtual void NS_SetHandlersHelpText(CStringArray *pomTextArray) = 0;
+    virtual void NS_SetHandlersHelpText(CStringArray* pomTextArray) = 0;
     //Find the value of flags which will tell the status of toolbar item
     virtual BOOL NS_ShouldToolBarBeEnabled(E_TB_FN_EDITOR eToolBarFlag) = 0;
     //Find the value of flags which will tell the status of handler s
