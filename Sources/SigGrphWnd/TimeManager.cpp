@@ -3,10 +3,10 @@
   FileName      :  TimeManager.cpp
   Description   :  Implementation file for CTimeManager class
   $Log:   X:/Archive/Sources/SigGrphWnd/TimeManager.cpv  $
-   
+
   Author(s)     :  Raja N
   Date Created  :  23.06.2004
-  Modified By   :  
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
  *********************************************************************/
 
@@ -37,12 +37,12 @@ BOOL bDummy = QueryPerformanceCounter(&s_Temp);
 const LARGE_INTEGER CTimeManager::m_sSysRefTickCount = s_Temp;
 // Init the frequency
 const int CTimeManager::m_nSysRefTime = CTimeManager::nCalculateCurrTimeStamp(FALSE);
-BOOL bDummy0001 = QueryPerformanceFrequency((LARGE_INTEGER *) &s_Temp);
+BOOL bDummy0001 = QueryPerformanceFrequency((LARGE_INTEGER*) &s_Temp);
 const __int64 CTimeManager::m_n64Frequency = s_Temp.QuadPart;
 
 // **** Start of USB related Code **** //
 int CTimeManager::m_nOffsetTimeValue =
-                                CTimeManager::nCalculateOffsetTime();
+    CTimeManager::nCalculateOffsetTime();
 
 // **** End of USB Related Code **** //
 
@@ -56,7 +56,6 @@ int CTimeManager::m_nOffsetTimeValue =
 *******************************************************************************/
 CTimeManager::CTimeManager()
 {
-
 }
 
 /*******************************************************************************
@@ -69,7 +68,6 @@ CTimeManager::CTimeManager()
 *******************************************************************************/
 CTimeManager::~CTimeManager()
 {
-
 }
 
 /*******************************************************************************
@@ -98,12 +96,10 @@ void CTimeManager::vFormatTimeStamp(int nTimeStamp, BOOL bOverWrite,
                                     WORD wDisplayTimeMode,
                                     int nIndex,
                                     __int64 /*n64OverWriteMapKey*/,
-                                    CString &omStrTime)
+                                    CString& omStrTime)
 {
     // Static variables to reduce the creation time
     static int nTemp, nMicSec, nSec, nMinute, nHour;
-
-
     int nRefTime = 0;
 
     // Find reference time stamp for relative mode
@@ -128,6 +124,7 @@ void CTimeManager::vFormatTimeStamp(int nTimeStamp, BOOL bOverWrite,
             // ???
         }
     }
+
     // Format the time stamp
     vFormatTimeStamp(nTimeStamp, nRefTime, wDisplayTimeMode, omStrTime);
 }
@@ -145,16 +142,16 @@ void CTimeManager::vFormatTimeStamp(int nTimeStamp, BOOL bOverWrite,
  Member of      : CTimeManager
  Author(s)      : Raja N
  Date Created   : 22.07.2004
- Modifications  : 
+ Modifications  :
 *******************************************************************************/
 void CTimeManager::vFormatTimeStamp( int nTimeStamp,
                                      int nRefTimeStamp,
                                      WORD wDisplayTimeMode,
-                                     CString &omStrTime)
+                                     CString& omStrTime)
 {
     // Static variables to reduce the creation time
     static int nTemp, nMicSec, nSec, nMinute, nHour;
-    
+
     if(wDisplayTimeMode == eABSOLUTE_MODE )
     {
         // Subract the value of absolute time reference.
@@ -170,7 +167,7 @@ void CTimeManager::vFormatTimeStamp( int nTimeStamp,
     {
         nTimeStamp = 0;
     }
-    
+
     nMicSec = nTimeStamp % 10000;// hundreds of microseconds left
     nTemp = nTimeStamp / 10000;  // expressed in seconds
     nSec = nTemp % 60;           // seconds left
@@ -183,6 +180,7 @@ void CTimeManager::vFormatTimeStamp( int nTimeStamp,
     {
         nHour %= 24;
     }
+
     // Format the time value in the output string
     omStrTime.Format(defTIME_STAMP_FORMAT, nHour, nMinute,nSec, nMicSec);
 }
@@ -230,18 +228,19 @@ int CTimeManager::nCalculateCurrTimeStamp(BOOL bFromDIL)
 {
     SYSTEMTIME CurrSysTime;
     //UINT64 TimeStamp;
-    
-	int nResult = 0;
+    int nResult = 0;
+
     if (bFromDIL == FALSE)
     {
         GetLocalTime(&CurrSysTime);
-	    nResult = (CurrSysTime.wHour * 3600 + CurrSysTime.wMinute * 60
-                    + CurrSysTime.wSecond) * 10000 + CurrSysTime.wMilliseconds * 10;
-    }    
+        nResult = (CurrSysTime.wHour * 3600 + CurrSysTime.wMinute * 60
+                   + CurrSysTime.wSecond) * 10000 + CurrSysTime.wMilliseconds * 10;
+    }
     else
     {
         //g_pouDIL_CAN_Interface->DILC_GetTimeModeMapping(CurrSysTime, TimeStamp);
     }
+
     return nResult;
 }
 
@@ -258,7 +257,6 @@ int CTimeManager::nCalculateCurrTimeStamp(BOOL bFromDIL)
 void CTimeManager::vInitAbsoluteTime()
 {
     m_nAbsoluteTime = nCalculateCurrTimeStamp();
-
 }
 
 /******************************************************************************

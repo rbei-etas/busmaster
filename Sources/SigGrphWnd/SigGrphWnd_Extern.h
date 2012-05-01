@@ -51,33 +51,33 @@ typedef sGraphWndSplitterData SGRAPHWNDSPLITTERDATA;
 extern "C" {  // only need to export C interface if used by C++ source code
 #endif
 
-/*USAGEMODE HRESULT SG_CreateGraphWindow([in] CMDIFrameWnd* pParentWnd, [in] short eBusType);
-USAGEMODE HRESULT SG_ShowGraphWindow([in] short eBusType, [in] BOOL bShow = TRUE);
-USAGEMODE BOOL    SG_IsWindowVisible([in] short eBusType);
-USAGEMODE HRESULT SG_SetRefreshRate( [in] UINT unRefreshRate);
-USAGEMODE HRESULT SG_SetSignalListDetails( [in] short eBusType, [in] CGraphList * pSignalList);
-USAGEMODE HRESULT SG_vPostMessageToSGWnd([in] short eBusType, UINT msg, WPARAM wParam, LPARAM lParam);
-USAGEMODE CMsgBufVSE* SG_GetGraphBuffer();
-USAGEMODE HRESULT SG_GetWindowSplitterPos([in] short eBusType,
-										WINDOWPLACEMENT& sWndPlacement, 
-										SGRAPHWNDSPLITTERDATA& sGraphSplitter);
-USAGEMODE HRESULT SG_SetWindowSplitterPos([in] short eBusType,
-										WINDOWPLACEMENT& sWndPlacement, 
-										SGRAPHWNDSPLITTERDATA& sGraphSplitter);*/
-USAGEMODE HRESULT SG_CreateGraphWindow( CMDIFrameWnd* pParentWnd, short eBusType);
-USAGEMODE HRESULT SG_ShowGraphWindow( short eBusType, BOOL bShow = TRUE);
-USAGEMODE BOOL    SG_IsWindowVisible( short eBusType);
-USAGEMODE HRESULT SG_SetRefreshRate( UINT unRefreshRate);
-USAGEMODE HRESULT SG_SetSignalListDetails( short eBusType, CGraphList * pSignalList);
-USAGEMODE HRESULT SG_vPostMessageToSGWnd( short eBusType, UINT msg, WPARAM wParam, LPARAM lParam);
-USAGEMODE CMsgBufVSE* SG_GetGraphBuffer();
-USAGEMODE HRESULT SG_GetWindowSplitterPos( short eBusType,
-										WINDOWPLACEMENT& sWndPlacement, 
-										SGRAPHWNDSPLITTERDATA& sGraphSplitter);
-USAGEMODE HRESULT SG_SetWindowSplitterPos( short eBusType,
-										WINDOWPLACEMENT& sWndPlacement, 
-										SGRAPHWNDSPLITTERDATA& sGraphSplitter);
- 
+    /*USAGEMODE HRESULT SG_CreateGraphWindow([in] CMDIFrameWnd* pParentWnd, [in] short eBusType);
+    USAGEMODE HRESULT SG_ShowGraphWindow([in] short eBusType, [in] BOOL bShow = TRUE);
+    USAGEMODE BOOL    SG_IsWindowVisible([in] short eBusType);
+    USAGEMODE HRESULT SG_SetRefreshRate( [in] UINT unRefreshRate);
+    USAGEMODE HRESULT SG_SetSignalListDetails( [in] short eBusType, [in] CGraphList * pSignalList);
+    USAGEMODE HRESULT SG_vPostMessageToSGWnd([in] short eBusType, UINT msg, WPARAM wParam, LPARAM lParam);
+    USAGEMODE CMsgBufVSE* SG_GetGraphBuffer();
+    USAGEMODE HRESULT SG_GetWindowSplitterPos([in] short eBusType,
+                                            WINDOWPLACEMENT& sWndPlacement,
+                                            SGRAPHWNDSPLITTERDATA& sGraphSplitter);
+    USAGEMODE HRESULT SG_SetWindowSplitterPos([in] short eBusType,
+                                            WINDOWPLACEMENT& sWndPlacement,
+                                            SGRAPHWNDSPLITTERDATA& sGraphSplitter);*/
+    USAGEMODE HRESULT SG_CreateGraphWindow( CMDIFrameWnd* pParentWnd, short eBusType);
+    USAGEMODE HRESULT SG_ShowGraphWindow( short eBusType, BOOL bShow = TRUE);
+    USAGEMODE BOOL    SG_IsWindowVisible( short eBusType);
+    USAGEMODE HRESULT SG_SetRefreshRate( UINT unRefreshRate);
+    USAGEMODE HRESULT SG_SetSignalListDetails( short eBusType, CGraphList* pSignalList);
+    USAGEMODE HRESULT SG_vPostMessageToSGWnd( short eBusType, UINT msg, WPARAM wParam, LPARAM lParam);
+    USAGEMODE CMsgBufVSE* SG_GetGraphBuffer();
+    USAGEMODE HRESULT SG_GetWindowSplitterPos( short eBusType,
+            WINDOWPLACEMENT& sWndPlacement,
+            SGRAPHWNDSPLITTERDATA& sGraphSplitter);
+    USAGEMODE HRESULT SG_SetWindowSplitterPos( short eBusType,
+            WINDOWPLACEMENT& sWndPlacement,
+            SGRAPHWNDSPLITTERDATA& sGraphSplitter);
+
 #ifdef __cplusplus
 }
 #endif

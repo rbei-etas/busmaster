@@ -34,13 +34,13 @@ class CTimeManager
     static const int m_nSysRefTime;
     // Clock tick Frequency
     static const __int64 m_n64Frequency;
-    
+
     // **** USB Related Time Variable **** //
     // To hold time difference between System time and windows startup time
     static int m_nOffsetTimeValue;
     static int nCalculateOffsetTime();
     // **** End of USB Code **** //
-    
+
     // Private Constructor and Destructor to avoide instances of this class
     CTimeManager();
     virtual ~CTimeManager();
@@ -53,21 +53,21 @@ public:
     // To set the absolute time value manually
     static void vSetAbsoluteTime(int nAbsoluteTime);
     //To get latest offset set by the DIL
-    static int nCalculateCurrTimeStamp(BOOL bFromDIL = FALSE);    
+    static int nCalculateCurrTimeStamp(BOOL bFromDIL = FALSE);
     // To calculate and Format the time
     static void vFormatTimeStamp(int nTimeStamp, BOOL bOverWrite,
-                                    WORD wDisplayTimeMode,
-                                    int nIndex,
-                                    __int64 n64OverWriteMapKey,
-                                    CString &omStrTime);
+                                 WORD wDisplayTimeMode,
+                                 int nIndex,
+                                 __int64 n64OverWriteMapKey,
+                                 CString& omStrTime);
     // To perform calculation and formatting only
     static void vFormatTimeStamp( int nTimeStamp,
                                   int nRefTimeStamp,
                                   WORD wDisplayTimeMode,
-                                  CString &omStrTime);
+                                  CString& omStrTime);
     // To find system time value of clock tick
     static int nCalculateElapsedTimeFromTick(const __int64& n64CurrTick);
     // To reinitialise the offset time value
     static void bReinitOffsetTimeValForES581(void);
-    
+
 };

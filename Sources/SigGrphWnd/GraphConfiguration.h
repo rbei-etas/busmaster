@@ -30,18 +30,18 @@
 
 class CGraphConfiguration : public CDialog
 {
-// Construction
+    // Construction
 public:
     // Local instance of View Style parameter
     CGraphParameters m_omGraphParams;
-   // standard constructor
+    // standard constructor
     CGraphConfiguration(CWnd* pParent = NULL);
 
-	CGraphList *m_pGraphList;
-	// To have reference of Graph Control interface
+    CGraphList* m_pGraphList;
+    // To have reference of Graph Control interface
     IDMGraphCtrl* m_pDMGraphCtrl;
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CGraphConfiguration)
     enum { IDD = IDD_DLG_GRAPH_WINDOW_CONF };
     CColourPicker   m_omAxisColor;
@@ -53,18 +53,18 @@ public:
     int     m_nUpdateRate;
     int     m_nBufferSize;
     int     m_omFrameType;
-    //}}AFX_DATA	
-	// To set the values of the object in to UI control
+    //}}AFX_DATA
+    // To set the values of the object in to UI control
     void vSetValues(CGraphParameters omParam);
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CGraphConfiguration)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
@@ -75,5 +75,5 @@ protected:
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 public:
-	int m_nLineDisplay;
+    int m_nLineDisplay;
 };

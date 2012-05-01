@@ -26,27 +26,27 @@
 
 class CGraphExportDlg : public CDialog
 {
-// Construction
+    // Construction
 public:
     CGraphExportDlg(CWnd* pParent = NULL);   // standard constructor
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CGraphExportDlg)
     enum { IDD = IDD_DLG_GRAPH_EXPORT };
     CString m_omStrCSVFileName;
     CString m_omStrHTMLFileName;
-    CString m_omStrBMPFileName;    
-	IDMGraphCtrl* m_pDMGraphCtrl;
+    CString m_omStrBMPFileName;
+    IDMGraphCtrl* m_pDMGraphCtrl;
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CGraphExportDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions

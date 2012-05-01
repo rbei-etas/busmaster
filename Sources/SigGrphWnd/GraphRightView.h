@@ -41,28 +41,28 @@ protected:
     CGraphRightView();
     DECLARE_DYNCREATE(CGraphRightView)
 
-// Form Data
+    // Form Data
 public:
     //{{AFX_DATA(CGraphRightView)
-    enum { IDD = IDD_DLG_GRAPH_RIGHT_TOP };    
+    enum { IDD = IDD_DLG_GRAPH_RIGHT_TOP };
     //}}AFX_DATA
 
-// Attributes
+    // Attributes
 public:
 
-// Operations
+    // Operations
 public:
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CRightView)
-    public:
+public:
     virtual void OnInitialUpdate();
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     virtual ~CGraphRightView();
 #ifdef _DEBUG
@@ -77,20 +77,20 @@ protected:
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
-	// To get parent window pointer
-    CWnd * pomGetParentWindow() const;
-	CGraphChildFrame* m_pParentWnd;
+    // To get parent window pointer
+    CWnd* pomGetParentWindow() const;
+    CGraphChildFrame* m_pParentWnd;
 
-	//Pointer to hold CGraphSink class pointer
-	CGraphSink* m_pGraphSink;
-	//Get hold of the Sink cookie ID
-	DWORD m_dwCookie;
-	CWnd* m_pWndGraphCtrl;
+    //Pointer to hold CGraphSink class pointer
+    CGraphSink* m_pGraphSink;
+    //Get hold of the Sink cookie ID
+    DWORD m_dwCookie;
+    CWnd* m_pWndGraphCtrl;
 public:
-	DECLARE_EVENTSINK_MAP()
-	void CursorPositionGraphCtrl(double X, double Y, short shCursorID);	
-	IDMGraphCtrl* m_pDMGraphCtrl;	
+    DECLARE_EVENTSINK_MAP()
+    void CursorPositionGraphCtrl(double X, double Y, short shCursorID);
+    IDMGraphCtrl* m_pDMGraphCtrl;
 public:
-	afx_msg void OnDestroy();
-	void vHandleConnectionStatusChange(BOOL bConnectStatus);
+    afx_msg void OnDestroy();
+    void vHandleConnectionStatusChange(BOOL bConnectStatus);
 };

@@ -1,12 +1,12 @@
 /*********************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  SigGrphWnd_StdAfx.h
-  Description   :  
+  Description   :
   $Log:   X:/Archive/Sources/SigGrphWnd/SigGrphWnd_stdafx.cpv  $
-   
-  Author(s)     :  
-  Date Created  :  
-  Modified By   :  
+
+  Author(s)     :
+  Date Created  :
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved
 *********************************************************************/
 

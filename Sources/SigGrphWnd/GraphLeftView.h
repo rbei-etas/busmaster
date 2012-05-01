@@ -28,7 +28,7 @@
 #include <afxext.h>
 #endif
 
-// For Graph Element class 
+// For Graph Element class
 #include "GraphElement.h"
 // For Color ListCtrl class definition
 #include "MessageList.h"
@@ -42,7 +42,7 @@ protected:
     CGraphLeftView();
     DECLARE_DYNCREATE(CGraphLeftView)
 
-// Form Data
+    // Form Data
 public:
     //{{AFX_DATA(CGraphLeftView)
     enum { IDD = IDD_DLG_GRAPH_LEFT_TOP };
@@ -53,30 +53,30 @@ public:
     CColourPicker   m_omLineColor;
     int     m_nLineType;
     int     m_nSymbolType;
-	IDMGraphCtrl* m_pDMGraphCtrl;
+    IDMGraphCtrl* m_pDMGraphCtrl;
     //}}AFX_DATA
 
-// Attributes
+    // Attributes
 public:
 
-// Operations
+    // Operations
 public:
     // To handle tool connection change event
     void vHandleConnectionStatusChange(BOOL bConnect);
-	// To populate list with graph element details
+    // To populate list with graph element details
     void vPopulateElementList();
-	// To Populate graph control with list of elements
+    // To Populate graph control with list of elements
     void vPopulateGraphControl();
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CGraphLeftView)
-    public:
+public:
     virtual void OnInitialUpdate();
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     virtual ~CGraphLeftView();
 #ifdef _DEBUG
@@ -105,10 +105,10 @@ private:
     // To Enable/ Disable controls.using the value bEnable
     void vEnableControls(BOOL bEnable);
     // To Enable/ Disable controls based on selection in UI element List
-    void vEnableDisableControls();    
-	// To get parent window pointer
-    CWnd * pomGetParentWindow() const;
-public:	
-	int m_nLineDisplay;
-	HRESULT GetCurrentElement(IDMGraphCtrl* pGraphCtrl, IDMGraphElement** ppGraphElement);	
+    void vEnableDisableControls();
+    // To get parent window pointer
+    CWnd* pomGetParentWindow() const;
+public:
+    int m_nLineDisplay;
+    HRESULT GetCurrentElement(IDMGraphCtrl* pGraphCtrl, IDMGraphElement** ppGraphElement);
 };
