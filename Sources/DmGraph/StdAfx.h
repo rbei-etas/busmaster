@@ -11,7 +11,7 @@
 
 #define STRICT
 #ifndef _WIN32_WINNT
-#define _WIN32_WINNT 0x0500	// Windows 2000 and later
+#define _WIN32_WINNT 0x0500 // Windows 2000 and later
 #endif
 #define _ATL_APARTMENT_THREADED
 
@@ -25,10 +25,10 @@ extern CComModule _Module;
 #include <atlctl.h>
 
 #ifndef PROP_ENTRY_TYPE
-	#define PROP_ENTRY_TYPE( szDesc, dispid, clsid, vt ) PROP_ENTRY( szDesc, dispid, clsid )
+#define PROP_ENTRY_TYPE( szDesc, dispid, clsid, vt ) PROP_ENTRY( szDesc, dispid, clsid )
 #endif // PROP_ENTRY_TYPE
 
-#include <ocidl.h>	// Added by ClassView
+#include <ocidl.h>  // Added by ClassView
 
 #include <math.h>
 #include <limits.h>

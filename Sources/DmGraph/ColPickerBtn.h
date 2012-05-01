@@ -5,15 +5,15 @@
 //  Marius Samoila, Nikolai Teofilov, 2011
 //
 // FILE NAME
-//		ColPickerBtn.h: Declaration of the CColPickerBtn class
+//      ColPickerBtn.h: Declaration of the CColPickerBtn class
 //
 // CLASS NAME
-//		CColPickerBtn
+//      CColPickerBtn
 //
 // DESCRIPTION
-// 
+//
 // MODIFICATIONS
-//		01-Dec-2011 MSamoila major re-design of old ColourPicker
+//      01-Dec-2011 MSamoila major re-design of old ColourPicker
 //
 
 #ifndef __COL_PICKER_BTN__H__
@@ -34,32 +34,34 @@
 
 class CColPickerBtn : public CWindowImpl<CColPickerBtn>
 {
-// Construction
+    // Construction
 public:
     CColPickerBtn();
 
 protected:
-BEGIN_MSG_MAP(CAboutDlg)
-	MESSAGE_HANDLER(OCM_COMMAND, OnCommand)
-	MESSAGE_HANDLER(OCM_DRAWITEM, OnDrawItem)
-	DEFAULT_REFLECTION_HANDLER()
-END_MSG_MAP()
+    BEGIN_MSG_MAP(CAboutDlg)
+    MESSAGE_HANDLER(OCM_COMMAND, OnCommand)
+    MESSAGE_HANDLER(OCM_DRAWITEM, OnDrawItem)
+    DEFAULT_REFLECTION_HANDLER()
+    END_MSG_MAP()
 
-// Attributes
+    // Attributes
 public:
-    COLORREF GetColor() const 
-	{ return m_col; }
-    
-	void     SetColor(COLORREF crColour)
-	{
-		m_col = crColour;
-		Invalidate(FALSE);
-	}
+    COLORREF GetColor() const
+    {
+        return m_col;
+    }
 
-	LRESULT OnCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-	LRESULT OnDrawItem(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+    void     SetColor(COLORREF crColour)
+    {
+        m_col = crColour;
+        Invalidate(FALSE);
+    }
+
+    LRESULT OnCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+    LRESULT OnDrawItem(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 private:
-	COLORREF m_col;
+    COLORREF m_col;
 };
 
 
