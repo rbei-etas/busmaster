@@ -17,9 +17,9 @@
  * \file      Filter.cpp
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Defines the initialization routines for the DLL.
  */
-// Filter.cpp : Defines the initialization routines for the DLL.
-//
 
 #include "Filter_stdafx.h"
 #include <afxdllx.h>
