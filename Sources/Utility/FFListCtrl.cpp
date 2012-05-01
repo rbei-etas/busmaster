@@ -42,11 +42,11 @@ CFFListCtrl::~CFFListCtrl()
 
 
 BEGIN_MESSAGE_MAP(CFFListCtrl, CListCtrl)
-	//{{AFX_MSG_MAP(CFFListCtrl)
-	ON_WM_SIZE()
-	ON_WM_ERASEBKGND()
-	ON_WM_PAINT()
-	//}}AFX_MSG_MAP
+    //{{AFX_MSG_MAP(CFFListCtrl)
+    ON_WM_SIZE()
+    ON_WM_ERASEBKGND()
+    ON_WM_PAINT()
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -66,10 +66,10 @@ END_MESSAGE_MAP()
  Date Created   :   23.06.2004
  Modification   :
 ******************************************************************************/
-void CFFListCtrl::OnSize(UINT nType, int cx, int cy) 
+void CFFListCtrl::OnSize(UINT nType, int cx, int cy)
 {
-	CListCtrl::OnSize(nType, cx, cy);
-	vInitMemDCRect();
+    CListCtrl::OnSize(nType, cx, cy);
+    vInitMemDCRect();
 }
 
 /******************************************************************************
@@ -83,7 +83,7 @@ void CFFListCtrl::OnSize(UINT nType, int cx, int cy)
  Date Created   :   23.06.2004
  Modification   :
 ******************************************************************************/
-BOOL CFFListCtrl::OnEraseBkgnd(CDC* pDC) 
+BOOL CFFListCtrl::OnEraseBkgnd(CDC* pDC)
 {
     // To avoid compilation warning
     UNUSED_ALWAYS(pDC);
@@ -104,12 +104,12 @@ BOOL CFFListCtrl::OnEraseBkgnd(CDC* pDC)
  Date Created   :   23.06.2004
  Modification   :
 ******************************************************************************/
-void CFFListCtrl::OnPaint() 
+void CFFListCtrl::OnPaint()
 {
     CPaintDC dc(this); // device context for painting
     // Create Offscreen Buffer
     COffScreenDC memDC(&dc, &m_rectClient);
-	// Do not call CListCtrl::OnPaint() for painting messages
+    // Do not call CListCtrl::OnPaint() for painting messages
     CWnd::DefWindowProc( WM_PAINT, (WPARAM)memDC.m_hDC, 0 );
 }
 
@@ -129,15 +129,17 @@ void CFFListCtrl::OnPaint()
 VOID CFFListCtrl::vInitMemDCRect()
 {
     // Get the screen rectangle
-	GetClientRect(&m_rectClient);
+    GetClientRect(&m_rectClient);
     CHeaderCtrl* pHC;
     // Get the Header Control
     pHC = GetHeaderCtrl();
+
     if (pHC != NULL)
     {
         CRect rectHeader;
         // Get the size of Header
         BOOL bSuccess = pHC->GetItemRect( 0, &rectHeader );
+
         if(bSuccess == TRUE )
         {
             // Shift the screen rectangle down

@@ -13,7 +13,7 @@
 // Copyright (c) 1998.
 //
 // Updated 30 May 1998 to allow any number of colours, and to
-//                     make the appearance closer to Office 97. 
+//                     make the appearance closer to Office 97.
 //                     Also added "Default" text area.         (CJM)
 //
 //         13 June 1998 Fixed change of focus bug (CJM)
@@ -21,23 +21,23 @@
 //                      Solution suggested by Paul Wilkerson.
 //
 // ColourPopup is a helper class for the colour picker control
-// CColourPicker. Check out the header file or the accompanying 
+// CColourPicker. Check out the header file or the accompanying
 // HTML doc file for details.
 //
 // This code may be used in compiled form in any way you desire. This
-// file may be redistributed unmodified by any means PROVIDING it is 
-// not sold for profit without the authors written consent, and 
-// providing that this notice and the authors name is included. 
+// file may be redistributed unmodified by any means PROVIDING it is
+// not sold for profit without the authors written consent, and
+// providing that this notice and the authors name is included.
 //
 // This file is provided "as is" with no expressed or implied warranty.
 // The author accepts no liability if it causes any damage to you or your
 // computer whatsoever. It's free, so don't hassle me about it.
 //
 // Expect bugs.
-// 
-// Please use and enjoy. Please let me know of any bugs/mods/improvements 
+//
+// Please use and enjoy. Please let me know of any bugs/mods/improvements
 // that you have found/implemented and I will fix/incorporate them into this
-// file. 
+// file.
 
 // Reference http://www.codeproject.com/KB/miscctrl/colour_picker.aspx*/
 
@@ -47,9 +47,10 @@
 class CColourPicker;
 
 // To hold the colours and their names
-typedef struct {
+typedef struct
+{
     COLORREF crColour;
-    TCHAR    *szName;
+    TCHAR*    szName;
 } ColourTableEntry;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -57,7 +58,7 @@ typedef struct {
 
 class CColourPopup : public CWnd
 {
-// Construction
+    // Construction
 public:
     // Default Constructor
     CColourPopup();
@@ -66,23 +67,23 @@ public:
                  LPCTSTR szDefaultText = NULL, LPCTSTR szCustomText = NULL);
     void Initialise();
 
-// Attributes
+    // Attributes
 public:
 
-// Operations
+    // Operations
 public:
     // To Create Window
-    BOOL Create(CPoint p, COLORREF crColour, CWnd* pParentWnd, 
+    BOOL Create(CPoint p, COLORREF crColour, CWnd* pParentWnd,
                 LPCTSTR szDefaultText = NULL, LPCTSTR szCustomText = NULL);
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CColourPopup)
-    public:
+public:
     virtual BOOL PreTranslateMessage(MSG* pMsg);
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 public:
     virtual ~CColourPopup();
 
@@ -112,7 +113,7 @@ protected:
     // To get only the coloum from the color table index
     int  GetColumn(int nIndex) const;
 
-// protected attributes
+    // protected attributes
 protected:
     // Color Table
     static ColourTableEntry m_crColours[];

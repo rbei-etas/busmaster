@@ -8,7 +8,7 @@
 
 // ColourPicker.cpp : implementation file
 //
-// ColourPicker is a drop-in colour picker control. Check out the 
+// ColourPicker is a drop-in colour picker control. Check out the
 // header file or the accompanying HTML doc file for details.
 //
 // Written by Chris Maunder (chrismaunder@codeguru.com)
@@ -16,10 +16,10 @@
 // Copyright (c) 1998.
 //
 // This code may be used in compiled form in any way you desire. This
-// file may be redistributed unmodified by any means PROVIDING it is 
-// not sold for profit without the authors written consent, and 
-// providing that this notice and the authors name is included. If 
-// the source code in  this file is used in any commercial application 
+// file may be redistributed unmodified by any means PROVIDING it is
+// not sold for profit without the authors written consent, and
+// providing that this notice and the authors name is included. If
+// the source code in  this file is used in any commercial application
 // then a simple email would be nice.
 //
 // This file is provided "as is" with no expressed or implied warranty.
@@ -28,10 +28,10 @@
 // makes you car start emitting strange noises when you start it up.
 //
 // Expect bugs.
-// 
-// Please use and enjoy. Please let me know of any bugs/mods/improvements 
+//
+// Please use and enjoy. Please let me know of any bugs/mods/improvements
 // that you have found/implemented and I will fix/incorporate them into this
-// file. 
+// file.
 //
 // Updated 16 May 1998
 //         31 May 1998 - added Default text (CJM)
@@ -61,14 +61,14 @@
   Member of      : CColourPicker
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void AFXAPI DDX_ColourPicker(CDataExchange *pDX, int nIDC, COLORREF& crColour)
+void AFXAPI DDX_ColourPicker(CDataExchange* pDX, int nIDC, COLORREF& crColour)
 {
     HWND hWndCtrl = pDX->PrepareCtrl(nIDC);
-    ASSERT (hWndCtrl != NULL);                
-    
+    ASSERT (hWndCtrl != NULL);
     CColourPicker* pColourPicker = (CColourPicker*) CWnd::FromHandle(hWndCtrl);
+
     // To get Color
     if (pDX->m_bSaveAndValidate)
     {
@@ -94,11 +94,9 @@ CColourPicker::CColourPicker()
 {
     SetBkColour(GetSysColor(COLOR_3DFACE));
     SetTextColour(GetSysColor(COLOR_BTNTEXT));
-
     m_bTrackSelection = FALSE;
     m_nSelectionMode = CP_MODE_BK;
     m_bActive = FALSE;
-
     m_strDefaultText = STR_DEFAULT_TEXT;
     m_strCustomText  = STR_CUSTOM_TEXT;
 }
@@ -136,7 +134,7 @@ END_MESSAGE_MAP()
   Member of      : CColourPicker
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 LONG CColourPicker::OnSelEndOK(UINT lParam, LONG /*wParam*/)
 {
@@ -145,12 +143,14 @@ LONG CColourPicker::OnSelEndOK(UINT lParam, LONG /*wParam*/)
     // Update Color
     SetColour(crNewColour);
     // Update Parent
-    CWnd *pParent = GetParent();
+    CWnd* pParent = GetParent();
+
     if (pParent != NULL )
     {
         pParent->SendMessage(WM_CPN_CLOSEUP, lParam, (WPARAM) GetDlgCtrlID());
         pParent->SendMessage(WM_CPN_SELENDOK, lParam, (WPARAM) GetDlgCtrlID());
     }
+
     // Send Change Notification
     if (crNewColour != GetColour())
     {
@@ -160,6 +160,7 @@ LONG CColourPicker::OnSelEndOK(UINT lParam, LONG /*wParam*/)
                                   (WPARAM) GetDlgCtrlID() );
         }
     }
+
     return TRUE;
 }
 
@@ -172,7 +173,7 @@ LONG CColourPicker::OnSelEndOK(UINT lParam, LONG /*wParam*/)
   Member of      : CColourPicker
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 LONG CColourPicker::OnSelEndCancel(UINT lParam, LONG /*wParam*/)
 {
@@ -180,13 +181,15 @@ LONG CColourPicker::OnSelEndCancel(UINT lParam, LONG /*wParam*/)
     // Update Color
     SetColour((COLORREF) lParam);
     // Notify parent
-    CWnd *pParent = GetParent();
+    CWnd* pParent = GetParent();
+
     if (pParent != NULL)
     {
         pParent->SendMessage( WM_CPN_CLOSEUP, lParam, (WPARAM) GetDlgCtrlID());
         pParent->SendMessage( WM_CPN_SELENDCANCEL, lParam,
                               (WPARAM) GetDlgCtrlID());
     }
+
     return TRUE;
 }
 
@@ -198,7 +201,7 @@ LONG CColourPicker::OnSelEndCancel(UINT lParam, LONG /*wParam*/)
   Member of      : CColourPicker
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 LONG CColourPicker::OnSelChange(UINT lParam, LONG /*wParam*/)
 {
@@ -207,12 +210,15 @@ LONG CColourPicker::OnSelChange(UINT lParam, LONG /*wParam*/)
     {
         SetColour((COLORREF) lParam);
     }
+
     // Update Parent
-    CWnd *pParent = GetParent();
+    CWnd* pParent = GetParent();
+
     if (pParent != NULL)
     {
         pParent->SendMessage(WM_CPN_SELCHANGE, lParam, (WPARAM) GetDlgCtrlID());
     }
+
     return TRUE;
 }
 
@@ -224,12 +230,15 @@ LONG CColourPicker::OnSelChange(UINT lParam, LONG /*wParam*/)
   Member of      : CColourPicker
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-int CColourPicker::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+int CColourPicker::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
     if (CButton::OnCreate(lpCreateStruct) == -1)
+    {
         return -1;
+    }
+
     // resize appropriately
     SetWindowSize();
     return 0;
@@ -244,24 +253,28 @@ int CColourPicker::OnCreate(LPCREATESTRUCT lpCreateStruct)
   Member of      : CColourPicker
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 BOOL CColourPicker::OnClicked()
 {
     m_bActive = TRUE;
-    CWnd *pParent = GetParent();
+    CWnd* pParent = GetParent();
+
     if (pParent)
+    {
         pParent->SendMessage(WM_CPN_DROPDOWN, (LPARAM)GetColour(), (WPARAM) GetDlgCtrlID());
+    }
+
     // Get current point
     CRect rect;
     GetWindowRect(rect);
     // Create new instance. This will be deleted automatically on destroy of
     // window
     new CColourPopup ( CPoint(rect.left, rect.bottom), // Point to display popup
-                        GetColour(),                   // Selected colour
-                        this,                          // parent
-                        m_strDefaultText,              // Default text removed
-                        m_strCustomText);              // Custom Text
+                       GetColour(),                   // Selected colour
+                       this,                          // parent
+                       m_strDefaultText,              // Default text removed
+                       m_strCustomText);              // Custom Text
     return TRUE;
 }
 
@@ -273,12 +286,11 @@ BOOL CColourPicker::OnClicked()
   Member of      : CColourPicker
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CColourPicker::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct) 
+void CColourPicker::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
     ASSERT(lpDrawItemStruct);
-
     CDC* pDC = CDC::FromHandle(lpDrawItemStruct->hDC);
     CRect rect    = lpDrawItemStruct->rcItem;
     UINT state   = lpDrawItemStruct->itemState;
@@ -294,24 +306,21 @@ void CColourPicker::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     }
 
     // Draw scroll down button
-    pDC->DrawFrameControl(&m_ArrowRect, DFC_SCROLL, DFCS_SCROLLDOWN  | 
+    pDC->DrawFrameControl(&m_ArrowRect, DFC_SCROLL, DFCS_SCROLLDOWN  |
                           ((state & ODS_SELECTED) ? DFCS_PUSHED : 0) |
                           ((state & ODS_DISABLED) ? DFCS_INACTIVE : 0));
-
     // Draw 3d Rectangle
     pDC->DrawEdge(rect, EDGE_RAISED, BF_RECT);
-
     // Must reduce the size of the "client" area of the button
     // due to edge thickness.
     rect.DeflateRect( Margins.cx + 3, Margins.cy + 2 );
-
     // Fill remaining area with colour
     rect.right -= m_ArrowRect.Width();
-
     // Create Backrgound Brush
     ULONG ulBkColor = 0;
+
     // If diabled or selected default color use 3D Face system color
-    if( state & ODS_DISABLED || m_crColourBk == CLR_DEFAULT)
+    if( state& ODS_DISABLED || m_crColourBk == CLR_DEFAULT)
     {
         ulBkColor = ::GetSysColor(COLOR_3DFACE);
     }
@@ -320,6 +329,7 @@ void CColourPicker::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     {
         ulBkColor = m_crColourBk;
     }
+
     // Create backgroung brush
     CBrush brush( ulBkColor );
     // Save old brush for restore
@@ -330,12 +340,13 @@ void CColourPicker::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     pDC->Rectangle(rect);
     // Select Old Brush
     pDC->SelectObject(pOldBrush);
-
     // Draw the window text (if any)
     GetWindowText(m_strText);
+
     if (m_strText.GetLength())
     {
         pDC->SetBkMode(TRANSPARENT);
+
         // If the button is disabled
         if (state & ODS_DISABLED)
         {
@@ -356,7 +367,7 @@ void CColourPicker::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     }
 
     // Draw focus rect
-    if (state & ODS_FOCUS) 
+    if (state & ODS_FOCUS)
     {
         rect.DeflateRect(1,1);
         pDC->DrawFocusRect(rect);
@@ -372,9 +383,9 @@ void CColourPicker::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
   Member of      : CColourPicker
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CColourPicker::PreSubclassWindow() 
+void CColourPicker::PreSubclassWindow()
 {
     ModifyStyle(0, BS_OWNERDRAW);        // Make it owner drawn
     CButton::PreSubclassWindow();
@@ -389,12 +400,12 @@ void CColourPicker::PreSubclassWindow()
   Member of      : CColourPicker
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 COLORREF CColourPicker::GetColour()
-{ 
-    return (m_nSelectionMode == CP_MODE_TEXT)? 
-        GetTextColour(): GetBkColour(); 
+{
+    return (m_nSelectionMode == CP_MODE_TEXT)?
+           GetTextColour(): GetBkColour();
 }
 
 /*******************************************************************************
@@ -405,12 +416,12 @@ COLORREF CColourPicker::GetColour()
   Member of      : CColourPicker
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CColourPicker::SetColour(COLORREF crColour)
-{ 
-    (m_nSelectionMode == CP_MODE_TEXT)? 
-        SetTextColour(crColour): SetBkColour(crColour); 
+{
+    (m_nSelectionMode == CP_MODE_TEXT)?
+    SetTextColour(crColour): SetBkColour(crColour);
 }
 
 /*******************************************************************************
@@ -421,13 +432,16 @@ void CColourPicker::SetColour(COLORREF crColour)
   Member of      : CColourPicker
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CColourPicker::SetBkColour(COLORREF crColourBk)
 {
     m_crColourBk = crColourBk;
+
     if (IsWindow(m_hWnd))
+    {
         RedrawWindow();
+    }
 }
 
 /*******************************************************************************
@@ -438,13 +452,16 @@ void CColourPicker::SetBkColour(COLORREF crColourBk)
   Member of      : CColourPicker
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CColourPicker::SetTextColour(COLORREF crColourText)
 {
     m_crColourText = crColourText;
-    if (IsWindow(m_hWnd)) 
+
+    if (IsWindow(m_hWnd))
+    {
         RedrawWindow();
+    }
 }
 
 /*******************************************************************************
@@ -455,7 +472,7 @@ void CColourPicker::SetTextColour(COLORREF crColourText)
   Member of      : CColourPicker
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CColourPicker::SetDefaultText(LPCTSTR szDefaultText)
 {
@@ -470,7 +487,7 @@ void CColourPicker::SetDefaultText(LPCTSTR szDefaultText)
   Member of      : CColourPicker
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CColourPicker::SetCustomText(LPCTSTR szCustomText)
 {
@@ -485,36 +502,34 @@ void CColourPicker::SetCustomText(LPCTSTR szCustomText)
   Member of      : CColourPicker
   Author(s)      : Raja N
   Date Created   : 09/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CColourPicker::SetWindowSize()
 {
     // Get size dimensions of edges
     CSize MarginSize(::GetSystemMetrics(SM_CXEDGE), ::GetSystemMetrics(SM_CYEDGE));
-
     // Get size of dropdown arrow
     int nArrowWidth = max(::GetSystemMetrics(SM_CXHTHUMB), 5*MarginSize.cx);
     int nArrowHeight = max(::GetSystemMetrics(SM_CYVTHUMB), 5*MarginSize.cy);
     CSize ArrowSize(max(nArrowWidth, nArrowHeight), max(nArrowWidth, nArrowHeight));
-
     // Get window size
     CRect rect;
     GetWindowRect(rect);
-
     CWnd* pParent = GetParent();
+
     if (pParent)
+    {
         pParent->ScreenToClient(rect);
+    }
 
     // Set window size at least as wide as 2 arrows, and as high as arrow + margins
     int nWidth = max(rect.Width(), 2*ArrowSize.cx + 2*MarginSize.cx);
     MoveWindow(rect.left, rect.top, nWidth, ArrowSize.cy+2*MarginSize.cy, TRUE);
-
     // Get the new coords of this window
     GetWindowRect(rect);
     ScreenToClient(rect);
-
     // Get the rect where the arrow goes, and convert to client coords.
-    m_ArrowRect.SetRect(rect.right - ArrowSize.cx - MarginSize.cx, 
+    m_ArrowRect.SetRect(rect.right - ArrowSize.cx - MarginSize.cx,
                         rect.top + MarginSize.cy, rect.right - MarginSize.cx,
                         rect.bottom - MarginSize.cy);
 }

@@ -28,25 +28,25 @@
 
 class CFlickerFreeListCtrl : public CListCtrl
 {
-	DECLARE_DYNAMIC(CFlickerFreeListCtrl)
+    DECLARE_DYNAMIC(CFlickerFreeListCtrl)
 
 protected:
-	//Added new function declaration
+    //Added new function declaration
 #if 0
-     afx_msg void OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult);
-	 afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+    afx_msg void OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 #endif //These functions have to be added in derived class
 
-	 afx_msg UINT OnGetDlgCode( );
+    afx_msg UINT OnGetDlgCode( );
 public:
-	CFlickerFreeListCtrl();
-	virtual ~CFlickerFreeListCtrl();
+    CFlickerFreeListCtrl();
+    virtual ~CFlickerFreeListCtrl();
 
 protected:
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 public:
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	afx_msg void OnPaint();
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	CRect m_rectClient;
+    afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+    afx_msg void OnPaint();
+    afx_msg void OnSize(UINT nType, int cx, int cy);
+    CRect m_rectClient;
 };

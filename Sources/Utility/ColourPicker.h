@@ -1,13 +1,13 @@
 /**
  * \file      ColourPicker.h
  * \brief     Interface file for CColourPicker class
- * \author    Chris Maunder 
+ * \author    Chris Maunder
  *
  * Interface file for CColourPicker class
  */
 // ColourPicker.h : header file
 //
-// ColourPicker is a drop-in colour picker control. Check out the 
+// ColourPicker is a drop-in colour picker control. Check out the
 // header file or the accompanying HTML doc file for details.
 //
 // Written by Chris Maunder (chrismaunder@codeguru.com)
@@ -15,10 +15,10 @@
 // Copyright (c) 1998.
 //
 // This code may be used in compiled form in any way you desire. This
-// file may be redistributed unmodified by any means PROVIDING it is 
-// not sold for profit without the authors written consent, and 
-// providing that this notice and the authors name is included. If 
-// the source code in  this file is used in any commercial application 
+// file may be redistributed unmodified by any means PROVIDING it is
+// not sold for profit without the authors written consent, and
+// providing that this notice and the authors name is included. If
+// the source code in  this file is used in any commercial application
 // then a simple email would be nice.
 //
 // This file is provided "as is" with no expressed or implied warranty.
@@ -27,10 +27,10 @@
 // makes you car start emitting strange noises when you start it up.
 //
 // Expect bugs.
-// 
-// Please use and enjoy. Please let me know of any bugs/mods/improvements 
+//
+// Please use and enjoy. Please let me know of any bugs/mods/improvements
 // that you have found/implemented and I will fix/incorporate them into this
-// file. 
+// file.
 //
 // Updated 16 May 1998
 //         31 May 1998 - added Default text (CJM)
@@ -51,7 +51,7 @@
 #include "ColourPopup.h"
 
 
-void AFXAPI DDX_ColourPicker(CDataExchange *pDX, int nIDC, COLORREF& crColour);
+void AFXAPI DDX_ColourPicker(CDataExchange* pDX, int nIDC, COLORREF& crColour);
 
 
 #define CP_MODE_TEXT 1  // edit text colour
@@ -63,19 +63,19 @@ public:
     CColourPicker();
     DECLARE_DYNCREATE(CColourPicker);
 
-// Attributes
+    // Attributes
 public:
     // To Get Selected Color
     COLORREF GetColour();
     // To Set Color
-    void SetColour(COLORREF crColour); 
+    void SetColour(COLORREF crColour);
     // To Get Default Text
     void SetDefaultText(LPCTSTR szDefaultText);
     // To Set Custom Text
     void SetCustomText(LPCTSTR szCustomText);
     // To Activate/ Deactivate Online Tracking of Color
     void SetTrackSelection(BOOL bTracking = TRUE)
-    { 
+    {
         m_bTrackSelection = bTracking;
     }
     // Get get current track action
@@ -110,23 +110,23 @@ public:
 
     // Operations
 public:
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CColourPicker)
-    public:
+public:
     virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
-    protected:
+protected:
     virtual void PreSubclassWindow();
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 public:
     virtual ~CColourPicker();
 
 protected:
     void SetWindowSize();
 
-// protected attributes
+    // protected attributes
 protected:
     // For DropDown Active
     BOOL        m_bActive;

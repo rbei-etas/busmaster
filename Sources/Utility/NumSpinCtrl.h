@@ -28,12 +28,12 @@
 #include "afxcmn.h"
 class CNumSpinCtrl : public CSpinButtonCtrl
 {
-// Construction
+    // Construction
 public:
     CNumSpinCtrl();
     virtual ~CNumSpinCtrl();
 
-// Operations
+    // Operations
 public:
     // To set the size of the data in terms of bits
     // This is required to get 2s complement value
@@ -64,19 +64,19 @@ public:
     void vSetSigned(BOOL bIsSigned);
     // To set the type Int or Float
     void vSetFloatNumber(BOOL bIsFloat);
-	 // To conver string to __int64. The string value could be in Hex or dec
-	BOOL bConvertStringToInt64( CString omStrHexNo,    // String
-                              __int64& n64Value,     // Value
-                              int nBase);         // Base value
-    
-// Overrides
+    // To conver string to __int64. The string value could be in Hex or dec
+    BOOL bConvertStringToInt64( CString omStrHexNo,    // String
+                                __int64& n64Value,     // Value
+                                int nBase);         // Base value
+
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CNumSpinCtrl)
-    protected:
+protected:
     virtual void PreSubclassWindow();
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     // To initialise default values
     void vInitSpinCtrl();
@@ -98,7 +98,7 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 
-/// Attributes
+    /// Attributes
 protected:
     double m_dMinVal;                 // Minimum Value
     double m_dMaxVal;                 // Maximun Value

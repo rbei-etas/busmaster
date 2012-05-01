@@ -34,12 +34,13 @@
 //Code Project Reference: http://www.codeproject.com/KB/GDI/flickerfree.aspx?msg=1737391
 
 
-class CMemDC : public CDC {
+class CMemDC : public CDC
+{
 private:
-    CBitmap*	m_bitmap;
-    CBitmap*	m_oldBitmap;
-    CDC*		m_pDC;
-    CRect		m_rcBounds;
+    CBitmap*    m_bitmap;
+    CBitmap*    m_oldBitmap;
+    CDC*        m_pDC;
+    CRect       m_rcBounds;
 public:
     CMemDC(CDC* pDC, const CRect& rcBounds) : CDC()
     {
@@ -51,10 +52,10 @@ public:
         m_pDC = pDC;
         m_rcBounds = rcBounds;
         */
-
         CreateCompatibleDC(pDC);
         m_bitmap = new CBitmap;
         BOOL bSuccess = m_bitmap->CreateCompatibleBitmap(pDC, rcBounds.Width(), rcBounds.Height());
+
         if (bSuccess == TRUE)
         {
             m_oldBitmap = SelectObject(m_bitmap);
@@ -62,27 +63,31 @@ public:
         else
         {
             // Delete the created DC
-      DeleteDC();
-
-      // Use the Screen DC directly
-      m_hDC = pDC->m_hDC;
-
-      // Copy m_hAttribDC
-      // This data member contains the attribute device context for this
-      // CDC object
-      m_hAttribDC = pDC->m_hAttribDC;
+            DeleteDC();
+            // Use the Screen DC directly
+            m_hDC = pDC->m_hDC;
+            // Copy m_hAttribDC
+            // This data member contains the attribute device context for this
+            // CDC object
+            m_hAttribDC = pDC->m_hAttribDC;
         }
+
         m_pDC = pDC;
         m_rcBounds = rcBounds;
     }
-    ~CMemDC() 
+    ~CMemDC()
     {
-        m_pDC->BitBlt(m_rcBounds.left, m_rcBounds.top, m_rcBounds.Width(), m_rcBounds.Height(), 
-                    this, m_rcBounds.left, m_rcBounds.top, SRCCOPY);
+        m_pDC->BitBlt(m_rcBounds.left, m_rcBounds.top, m_rcBounds.Width(), m_rcBounds.Height(),
+                      this, m_rcBounds.left, m_rcBounds.top, SRCCOPY);
         SelectObject(m_oldBitmap);
-        if (m_bitmap != NULL) delete m_bitmap;
+
+        if (m_bitmap != NULL)
+        {
+            delete m_bitmap;
+        }
     }
-    CMemDC* operator->() {
+    CMemDC* operator->()
+    {
         return this;
     }
 };

@@ -29,13 +29,13 @@
 sListInfo::sListInfo()
 {
 }
-    
+
 sListInfo::sListInfo(sListInfo& sCopy)
 {
     m_eType = sCopy.m_eType;
     m_omEntries.Copy(sCopy.m_omEntries);
 }
-    
+
 void sListInfo::operator = (sListInfo& sCopy)
 {
     m_eType = sCopy.m_eType;

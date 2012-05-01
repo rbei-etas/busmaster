@@ -53,15 +53,15 @@ public:
     void vResetValues();
 
 
-// Attributes
+    // Attributes
 public:
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CSignalMatrix)
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 public:
     virtual ~CSignalMatrix();
 
@@ -77,11 +77,11 @@ private:
     // To initialise highlight bits
     void vResetHighlight();
     //Highlight brush (dark blue).
-    CBrush *m_pHighlightBrush;
+    CBrush* m_pHighlightBrush;
     //No-Hilite brush (white).
-    CBrush *m_pNoHighlightBrush;
+    CBrush* m_pNoHighlightBrush;
     // Disabled color Gray
-    CBrush *m_pDisabledBrush;
+    CBrush* m_pDisabledBrush;
     //Array to hold the highlight status for each cell.
     USER_BGTYPE m_aunHighlight[MAX_SIGNALS];
     //Length of the current message.

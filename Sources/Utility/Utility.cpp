@@ -37,52 +37,57 @@
 bool BSTR_2_PCHAR(BSTR bstrSrcStr, char acTargetStr[], int nTargetStrLen)
 {
     bool bResult = false;
-
     int Length = SysStringLen(bstrSrcStr);
+
     if ((Length + 1) <= nTargetStrLen)
     {
         bResult = true;
+
         for (int i = 0; i < Length; i++)
         {
             acTargetStr[i] = (CHAR) bstrSrcStr[i];
         }
+
         acTargetStr[Length] = '\0';
     }
 
     return bResult;
 }
 
-BOOL WORD_2_CHAR(char acCharDat[], int nCharDatLen, 
+BOOL WORD_2_CHAR(char acCharDat[], int nCharDatLen,
                  WORD awWordDat[], int nWordDatLen)
 {
     BOOL bResult = FALSE;
+
     if (nCharDatLen >= 2*nWordDatLen)
-	{
-		WORD dTempWord = 0;
-		for (int i = 0; i < nWordDatLen; i++)
-		{
-			dTempWord = awWordDat[i];
-			acCharDat[2*i] = LOBYTE(dTempWord);
-			acCharDat[2*i+1] =  HIBYTE(dTempWord);
-		}
-		acCharDat[2*nWordDatLen] = '\0';
-		bResult = TRUE;
-	}	 
+    {
+        WORD dTempWord = 0;
+
+        for (int i = 0; i < nWordDatLen; i++)
+        {
+            dTempWord = awWordDat[i];
+            acCharDat[2*i] = LOBYTE(dTempWord);
+            acCharDat[2*i+1] =  HIBYTE(dTempWord);
+        }
+
+        acCharDat[2*nWordDatLen] = '\0';
+        bResult = TRUE;
+    }
+
     return bResult;
 }
 
 const int MAX_CHAR = 1024;
 
 /* This function 'distills' the source string of any unpermitted character. The
-current implementation is inefficient in terms of memory usage; this makes use 
-of a temporary memory. An ideal solution would be to use the same memory even 
+current implementation is inefficient in terms of memory usage; this makes use
+of a temporary memory. An ideal solution would be to use the same memory even
 as workspace. This should be done at the earliest. */
 
 void FilterOut_NonHexChar(char acSource[])
 {
     int Length = (int) strlen(acSource);
     ASSERT(Length < MAX_CHAR);
-
     char acTmp[MAX_CHAR] = {'\0'};
     char CurrChar = '\0';
 
@@ -90,8 +95,9 @@ void FilterOut_NonHexChar(char acSource[])
     for (int i = 0, j = 0; i < Length; i++)
     {
         CurrChar = (char)(toupper(acSource[i]));
-        if ( ((CurrChar >= '0') && (CurrChar <= '9')) || 
-             ((CurrChar >= 'A') && (CurrChar <= 'F')) )
+
+        if ( ((CurrChar >= '0') && (CurrChar <= '9')) ||
+                ((CurrChar >= 'A') && (CurrChar <= 'F')) )
         {
             acTmp[j++] = CurrChar;
         }
@@ -101,13 +107,13 @@ void FilterOut_NonHexChar(char acSource[])
     strcpy(acSource, acTmp);        // Copy back the filtered string
 }
 
-/* Given the string representation of a hexadecimal number, this function 
+/* Given the string representation of a hexadecimal number, this function
 returns the numerical equivalent */
 BYTE HexStr_2_BYTE(char acHexStr[])
 {
     BYTE bResult = 0;
-
     char CurrChar = (char)(toupper(acHexStr[1]));
+
     if ((CurrChar >= '0') && (CurrChar <= '9'))
     {
         bResult = CurrChar - '0';
@@ -118,6 +124,7 @@ BYTE HexStr_2_BYTE(char acHexStr[])
     }
 
     CurrChar = (char)(toupper(acHexStr[0]));
+
     if ((CurrChar >= '0') && (CurrChar <= '9'))
     {
         bResult += (CurrChar - '0') * 16;
@@ -131,16 +138,15 @@ BYTE HexStr_2_BYTE(char acHexStr[])
 }
 
 
-/* This function expect that there is no non numeric character in 
+/* This function expect that there is no non numeric character in
    the passed array of char*/
-BOOL CHAR_2_WORD(WORD awWordDat[], int nWordDatLen, 
+BOOL CHAR_2_WORD(WORD awWordDat[], int nWordDatLen,
                  char acCharDat[], int nCharDatLen)
 {
     UNREFERENCED_PARAMETER(nWordDatLen);            //For release mode
     /* Four (= sizeof(WORD) * 2) characters represent a WORD value. Therefore,
     the granularity of characters for conversion into WORD should be 4 */
     int Gran = sizeof(WORD) * 2;
-
     // We assume that the input stream is ideally convertible to WORD stream.
     ASSERT((nCharDatLen % Gran) == 0);
     // The WORD array must be able to accommodate the result
@@ -151,7 +157,6 @@ BOOL CHAR_2_WORD(WORD awWordDat[], int nWordDatLen,
         WORD CurrWVal = HexStr_2_BYTE(&acCharDat[i]);
         CurrWVal <<= 8;
         CurrWVal = CurrWVal + (WORD)(HexStr_2_BYTE(&acCharDat[i + 2]));
-
         awWordDat[j++] = CurrWVal;
     }
 
@@ -160,36 +165,40 @@ BOOL CHAR_2_WORD(WORD awWordDat[], int nWordDatLen,
 
 /* Calculation of HCF starts here */
 
-int GCD(int a, int b) 
-{ 
-	if ( a < 0 || b < 0)
-	{
-		return -1;
-	}
-	//This is Euclid's method of finding GCD
-    return ( b == 0 ? a : GCD(b, a % b) ); 
+int GCD(int a, int b)
+{
+    if ( a < 0 || b < 0)
+    {
+        return -1;
+    }
+
+    //This is Euclid's method of finding GCD
+    return ( b == 0 ? a : GCD(b, a % b) );
 }
 
 int CalculateGCF(int anNumbers[], int Length)
 {
-	int nGCF = -1;
-	if (Length > 0)
-	{
-		if (Length > 1)
-		{
-			//Find GCD of first 2 nos. then GCD of the obtained GCD and next no. 
-			nGCF = GCD(anNumbers[0], anNumbers[1]);
-			for (int i = 2; i < Length; i++)
-			{
-				nGCF = GCD(nGCF, anNumbers[i]);
-			}
-		}
-		else
-		{
-			nGCF = anNumbers[0];
-		}
-	}
-	return nGCF;
+    int nGCF = -1;
+
+    if (Length > 0)
+    {
+        if (Length > 1)
+        {
+            //Find GCD of first 2 nos. then GCD of the obtained GCD and next no.
+            nGCF = GCD(anNumbers[0], anNumbers[1]);
+
+            for (int i = 2; i < Length; i++)
+            {
+                nGCF = GCD(nGCF, anNumbers[i]);
+            }
+        }
+        else
+        {
+            nGCF = anNumbers[0];
+        }
+    }
+
+    return nGCF;
 }
 /* Calculation of HCF ends here */
 
@@ -220,6 +229,7 @@ void vExtendSignBit( __int64& n64Val, int nSize)
         n64Mask <<= nSize - 1;
         // Get the sign bit value
         bSignBit = n64Val & n64Mask ? TRUE : FALSE;
+
         // Set the value only for negative numbers
         if( bSignBit )
         {
@@ -237,16 +247,15 @@ void vExtendSignBit( __int64& n64Val, int nSize)
 bool bGetSystemErrorString(HRESULT hResult, CHAR acErrStr[256])
 {
     bool bResult = true;
-
     memset(acErrStr, 0, sizeof(acErrStr));
     LPVOID lpMsgBuf;
     DWORD dwResult = 0;
-
     dwResult = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                    FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-                    NULL, hResult,
-                    MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),// Default language
-                    (LPTSTR) &lpMsgBuf, 0, NULL );
+                             FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                             NULL, hResult,
+                             MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),// Default language
+                             (LPTSTR) &lpMsgBuf, 0, NULL );
+
     if (dwResult <= 0)
     {
         strcpy(acErrStr, "system error message retrieval operation failed");
@@ -266,16 +275,15 @@ bool bGetSystemErrorString(HRESULT hResult, CHAR acErrStr[256])
 bool bGetSystemErrorString(HRESULT hResult, TCHAR acErrStr[256])
 {
     bool bResult = true;
-
     memset(acErrStr, _T('\0'), _tcslen(acErrStr));
     LPVOID lpMsgBuf;
     DWORD dwResult = 0;
-
     dwResult = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                    FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-                    NULL, hResult,
-                    MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),// Default language
-                    (LPTSTR) &lpMsgBuf, 0, NULL );
+                             FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                             NULL, hResult,
+                             MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),// Default language
+                             (LPTSTR) &lpMsgBuf, 0, NULL );
+
     if (dwResult <= 0)
     {
         strcpy_s(acErrStr, 256, _T("system error message retrieval operation failed"));
@@ -300,65 +308,69 @@ bool bGetSystemErrorString(char acErrStr[256])
 // To copy the text into the clipboard
 BOOL CopyTextToClipboard(LPSTR lpstrText, HWND hWnd = NULL)
 {
-	HGLOBAL hGlobal;    // Global memory handle
-	//TCHAR* lpszData;    // Pointer to clipboard data
+    HGLOBAL hGlobal;    // Global memory handle
+    //TCHAR* lpszData;    // Pointer to clipboard data
     LPSTR lpszData;
-	SIZE_T nSize;       // Size of clipboard data
+    SIZE_T nSize;       // Size of clipboard data
+    OpenClipboard(hWnd);// Open clipboard
+    EmptyClipboard();   // Delete Other clipboard values
+    nSize = strlen(lpstrText);
+    // Allocate Global Memory which is required to store the text
+    hGlobal = GlobalAlloc(GMEM_ZEROINIT, (nSize + 1));
 
-	OpenClipboard(hWnd);// Open clipboard
-	EmptyClipboard();   // Delete Other clipboard values
+    if (hGlobal == NULL)
+    {
+        return FALSE;
+    }
 
-	nSize = strlen(lpstrText);
-	// Allocate Global Memory which is required to store the text
-	hGlobal = GlobalAlloc(GMEM_ZEROINIT, (nSize + 1));
-
-	if (hGlobal == NULL) return FALSE;
-	// Lock the memory and store the text into it
-	lpszData = (LPSTR) GlobalLock(hGlobal);
+    // Lock the memory and store the text into it
+    lpszData = (LPSTR) GlobalLock(hGlobal);
     strcpy(lpszData, lpstrText);
     //_tcsncpy(lpszData, lpctstrText, nSize + 1);
-
-	GlobalUnlock(hGlobal);  // Unlock the memory
-	/* Copy the contents from the globally allocated memory to Clipboard
-	GlobalFree function will be called by SetClipBoard Function */
+    GlobalUnlock(hGlobal);  // Unlock the memory
+    /* Copy the contents from the globally allocated memory to Clipboard
+    GlobalFree function will be called by SetClipBoard Function */
     SetClipboardData(CF_TEXT, hGlobal);
-	/* Close the clipboard so that other application can access it */
-	CloseClipboard();
-
-	return TRUE;
+    /* Close the clipboard so that other application can access it */
+    CloseClipboard();
+    return TRUE;
 }
 
 #if 0
 BOOL CopyTextToClipboard(LPCTSTR lpctstrText, HWND hWnd = NULL)
 {
-	HGLOBAL hGlobal;		// Global memory handle
-	LPSTR lpszData;			// Pointer to clipboard data
-	unsigned long nSize;	// Size of clipboard data
-	// Open clipboard
-	OpenClipboard(hWnd);
-	// Delete Other clipboard values
-	EmptyClipboard();
+    HGLOBAL hGlobal;        // Global memory handle
+    LPSTR lpszData;         // Pointer to clipboard data
+    unsigned long nSize;    // Size of clipboard data
+    // Open clipboard
+    OpenClipboard(hWnd);
+    // Delete Other clipboard values
+    EmptyClipboard();
+    nSize = lstrlen(lpctstrText);
+    // Allocate Global Memory which is required to store the text
+    hGlobal = GlobalAlloc(GMEM_ZEROINIT, nSize+1);
 
-	nSize = lstrlen(lpctstrText);
-	// Allocate Global Memory which is required to store the text
-	hGlobal = GlobalAlloc(GMEM_ZEROINIT, nSize+1);
+    if (hGlobal == NULL)
+    {
+        return FALSE;
+    }
 
-	if (hGlobal == NULL) return FALSE;
-	// Lock the memory and store the text into it
-	lpszData = (LPSTR)GlobalLock(hGlobal);
-	for (UINT i = 0; i < nSize + 1; ++i)
-	{
+    // Lock the memory and store the text into it
+    lpszData = (LPSTR)GlobalLock(hGlobal);
+
+    for (UINT i = 0; i < nSize + 1; ++i)
+    {
         *(lpszData + i) = *(lpctstrText + i);
-	}
-	// Unlock the memory
-	GlobalUnlock(hGlobal);
-	/* Copy the contents from the globally allocated memory to Clipboard
-	GlobalFree function will be called by SetClipBoard Function */
-	SetClipboardData(CF_TEXT, hGlobal);
-	/* Close the clipboard so that other application can access it */
-	CloseClipboard();
+    }
 
-	return TRUE;
+    // Unlock the memory
+    GlobalUnlock(hGlobal);
+    /* Copy the contents from the globally allocated memory to Clipboard
+    GlobalFree function will be called by SetClipBoard Function */
+    SetClipboardData(CF_TEXT, hGlobal);
+    /* Close the clipboard so that other application can access it */
+    CloseClipboard();
+    return TRUE;
 }
 #endif
 /******************************************************************************
@@ -366,17 +378,17 @@ FUNCTION:       nConvertStringToInt
 PARAMETERS:     CString omStrHexNo -- Hex number
 RETURN VALUE:   Equivalent decimal number
 AUTHOR:         Amarnath Shastry
-HISTORY:        
-20-02-2002      Initial Version     Amarnath Shastry    
+HISTORY:
+20-02-2002      Initial Version     Amarnath Shastry
 02.06.2003      Changed the int to __int64 Amitesh Bharti
 12.06.2003      review comment for CRH0005 incorporated. Amitesh Bharti
 *******************************************************************************/
 __int64 nConvertStringToInt(LPCTSTR omStrHexNo)
 {
     __int64 n64RetVal = 0;
-
     BOOL b_IsNegative = FALSE;
     int nLength = (int) _tcslen(omStrHexNo);
+
     for (int nCount = 0; nCount < nLength; nCount++)
     {
         TCHAR cChar = omStrHexNo[nCount];
@@ -450,10 +462,12 @@ __int64 nConvertStringToInt(LPCTSTR omStrHexNo)
             b_IsNegative = TRUE;
         }
     }
+
     if ( b_IsNegative )
     {
         n64RetVal = -n64RetVal;
     }
+
     return n64RetVal;
 }
 
@@ -482,6 +496,7 @@ void s_vExtendSignBit( __int64& n64Val, int nSize)
         n64Mask <<= nSize - 1;
         // Get the sign bit value
         bSignBit = n64Val & n64Mask ? TRUE : FALSE;
+
         // Set the value only for negative numbers
         if( bSignBit )
         {
@@ -538,8 +553,8 @@ void s_vRemoveUnwantedBits(__int64& n64rData, int nLength)
  Modification on  :
 *******************************************************************************/
 BOOL bConvertStringToInt64( CString omStrHexNo,
-                              __int64& n64RetVal,
-                              int nBase )
+                            __int64& n64RetVal,
+                            int nBase )
 {
     // Initialise local variables
     // Success Flag
@@ -559,18 +574,20 @@ BOOL bConvertStringToInt64( CString omStrHexNo,
     omStrHexNo.TrimRight();
     // Get the String length now after removing spaces.
     nStrLength = omStrHexNo.GetLength();
+
     // Iterate through elements to calculate values
     for (int nCount = 0; nCount < nStrLength; nCount++)
     {
         // Get the charector
         TCHAR cChar = omStrHexNo.GetAt( nCount);
-        
+
         // Check for 0 - 9 range
         if( cChar >= '0' && cChar <= '9')
         {
             // Subtract char '0' to get the int value
             // say char '5' - char '0' - int 5
             nCharVal = cChar - '0';
+
             // If the value is greater then base then
             // the string is invalid. say with base 8, 9 is invalid
             if( nCharVal - nBase >= 0 )
@@ -601,7 +618,6 @@ BOOL bConvertStringToInt64( CString omStrHexNo,
                 nCount = nStrLength;
                 // Indicate Failure
                 bSuccess = FALSE;
-
             }
             // else Valid value
             else
@@ -624,7 +640,6 @@ BOOL bConvertStringToInt64( CString omStrHexNo,
                 nCount = nStrLength;
                 // Indicate Failure
                 bSuccess = FALSE;
-
             }
             else
             {
@@ -639,13 +654,14 @@ BOOL bConvertStringToInt64( CString omStrHexNo,
             nCount = nStrLength;
             // Indicate Failure
             bSuccess = FALSE;
-
         }
     }
+
     // If negative flag is set then take the negative value
     if ( b_IsNegative == TRUE)
     {
         n64RetVal = -n64RetVal;
     }
+
     return bSuccess;
 }

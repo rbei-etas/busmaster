@@ -105,20 +105,22 @@ END_MESSAGE_MAP()
  Date Created   : 22.07.2004
  Modifications  :
 ******************************************************************************/
-void CFlexListCtrl::OnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult) 
+void CFlexListCtrl::OnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
 {
     LV_DISPINFO* pDispInfo = (LV_DISPINFO*)pNMHDR;
     // Get the item index
-    LV_ITEM *plvItem = &pDispInfo->item;
+    LV_ITEM* plvItem = &pDispInfo->item;
+
     // Proceed only for valid item change
     if( plvItem->iItem != -1 &&  // valid item
-        plvItem->pszText != NULL)       // valid text
+            plvItem->pszText != NULL)       // valid text
     {
         // Copy the change information. This is required to validate the
         // data from OnItemChanged.
         memcpy(&m_sModifiedInfo, pDispInfo, sizeof(LV_DISPINFO));
         // Update the list text
         SetItemText( plvItem->iItem, plvItem->iSubItem, plvItem->pszText);
+
         // Copy Col 0 item to invoke ItemChanged Event
         if( plvItem->iSubItem != 0)
         {
@@ -127,6 +129,7 @@ void CFlexListCtrl::OnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
             SetItemText( plvItem->iItem, 0, cs);
         }
     }
+
     *pResult = 0;
 }
 
@@ -140,12 +143,15 @@ void CFlexListCtrl::OnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
  Date Created   : 22.07.2004
  Modifications  :
 *******************************************************************************/
-void CFlexListCtrl::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CFlexListCtrl::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
     // Set the focus to list control. This will hide any controls that
     // are all visible at this time
     if( GetFocus() != this)
+    {
         SetFocus();
+    }
+
     CListCtrl::OnHScroll(nSBCode, nPos, pScrollBar);
 }
 
@@ -159,7 +165,7 @@ void CFlexListCtrl::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
  Date Created   : 22.07.2004
  Modifications  :
 *******************************************************************************/
-void CFlexListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CFlexListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
     // Set the focus to list control. This will hide any controls that
     // are all visible at this time
@@ -170,6 +176,7 @@ void CFlexListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
             SetFocus();
         }
     }
+
     CListCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
 }
 
@@ -186,7 +193,7 @@ void CFlexListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
  Modifications  : Raja N on 08.07.2005, Modified the function send
                   LVN_BEGINLABELEDIT before showing the UI control.
 *******************************************************************************/
-void CFlexListCtrl::OnDoubleClick(NMHDR* pNMHDR, LRESULT* pResult) 
+void CFlexListCtrl::OnDoubleClick(NMHDR* pNMHDR, LRESULT* pResult)
 {
     // TODO: Add your control notification handler code here
     if( m_bSingleClickActivate == FALSE )
@@ -196,11 +203,11 @@ void CFlexListCtrl::OnDoubleClick(NMHDR* pNMHDR, LRESULT* pResult)
         {
             SetFocus();
         }
+
         // Send Notification to Parent so that Begin Label Edit
         // Handler will be getting called
         NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
-        
-        // Send Notification to parent of ListView ctrl 
+        // Send Notification to parent of ListView ctrl
         LV_DISPINFO lvDispInfo;
         lvDispInfo.hdr.hwndFrom = m_hWnd;
         lvDispInfo.hdr.idFrom = GetDlgCtrlID();
@@ -210,15 +217,18 @@ void CFlexListCtrl::OnDoubleClick(NMHDR* pNMHDR, LRESULT* pResult)
         lvDispInfo.item.iSubItem = pNMListView->iSubItem;
         lvDispInfo.item.pszText = NULL;
         lvDispInfo.item.cchTextMax = 0;
-        CWnd * pWnd = GetParent();
+        CWnd* pWnd = GetParent();
+
         if( pWnd != NULL )
         {
             pWnd->SendMessage( WM_NOTIFY, GetDlgCtrlID(),
-                                  (LPARAM)&lvDispInfo );
+                               (LPARAM)&lvDispInfo );
         }
+
         // Call Handler Function with required parameters
         vShowControl(pNMListView->iItem, pNMListView->iSubItem);
     }
+
     *pResult = 0;
 }
 
@@ -234,7 +244,7 @@ void CFlexListCtrl::OnDoubleClick(NMHDR* pNMHDR, LRESULT* pResult)
  Modifications  : Raja N on 01.08.2004, Modified the function name ShowControl
                   as vShowControl.
 *******************************************************************************/
-void CFlexListCtrl::OnClick(NMHDR* pNMHDR, LRESULT* pResult) 
+void CFlexListCtrl::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 {
     if( m_bSingleClickActivate == TRUE )
     {
@@ -243,12 +253,12 @@ void CFlexListCtrl::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
         {
             SetFocus();
         }
-        
+
         NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
         // Call Handler Function with required parameters
         vShowControl(pNMListView->iItem, pNMListView->iSubItem);
     }
-    
+
     *pResult = 0;
 }
 
@@ -334,20 +344,23 @@ void CFlexListCtrl::vShowControl(int nItem, int nSubItem)
         SNUMERICINFO    sNumInfo;
         SUSERPROGINFO   sProgInfo;
         CString omStr = STR_EMPTY;
+
         // Got the entry type from the CMap
         if( m_omListItemType.Lookup(
-                lGetMapID(nItem, nSubItem) , sInfo) == TRUE )
+                    lGetMapID(nItem, nSubItem) , sInfo) == TRUE )
         {
             // Begining of Controls creation
             m_bCreating = TRUE;
+
             switch( sInfo.m_eType)
             {
-                // Numeric Edit box with or with out Spin Control
+                    // Numeric Edit box with or with out Spin Control
                 case eNumber:
                 case eBuddy:
+
                     // Get the numeric control parameters
                     if( m_omNumDetails.Lookup( lGetMapID(nItem, nSubItem),
-                                                sNumInfo ) == TRUE )
+                                               sNumInfo ) == TRUE )
                     {
                         pomNumItem(nItem, nSubItem, sNumInfo);
                     }
@@ -358,24 +371,30 @@ void CFlexListCtrl::vShowControl(int nItem, int nSubItem)
                         // Call with default value
                         pomNumItem(nItem, nSubItem, sNumInfo);
                     }
+
                     break;
-                // General Edit control
+
+                    // General Edit control
                 case eText:
                     pomEditItem(nItem, nSubItem);
                     break;
-                // Editalble Combo Box
+
+                    // Editalble Combo Box
                 case eComboList:
                     pomComboList(nItem, nSubItem, sInfo.m_omEntries);
                     break;
-                // Non - Editable combo box
+
+                    // Non - Editable combo box
                 case eComboItem:
                     pomComboItem(nItem, nSubItem, sInfo.m_omEntries);
                     break;
-                // User function will be executed
+
+                    // User function will be executed
                 case eUser:
+
                     // Get the user program pointer and parameter details
                     if( m_omUserProg.Lookup( lGetMapID(nItem, nSubItem),
-                                                sProgInfo ) == TRUE )
+                                             sProgInfo ) == TRUE )
                     {
                         sProgInfo.m_pfHandler( this,
                                                nItem,
@@ -387,11 +406,14 @@ void CFlexListCtrl::vShowControl(int nItem, int nSubItem)
                         // User program information is not set
                         ASSERT( FALSE );
                     }
+
                     break;
-                // Toggling type control
+
+                    // Toggling type control
                 case eBool:
                     // Get the current text
                     omStr = GetItemText(nItem, nSubItem);
+
                     // Compare with the first item
                     if( sInfo.m_omEntries.GetAt(0).Compare(omStr) == 0 )
                     {
@@ -404,28 +426,29 @@ void CFlexListCtrl::vShowControl(int nItem, int nSubItem)
                         // Replace with the first item
                         omStr = sInfo.m_omEntries.GetAt(0);
                     }
+
                     // If it is not matching with these two items nothing will
                     // happen. This could be used to disable the control
-
                     // For boolean type this is the end of Controls creation
                     m_bCreating = FALSE;
-                    
                     // For boolean send the EndLAbleEdit message here itself
                     LV_DISPINFO lvDispInfo;
                     lvDispInfo.hdr.hwndFrom = m_hWnd;
-                    lvDispInfo.hdr.idFrom = GetDlgCtrlID(); 
+                    lvDispInfo.hdr.idFrom = GetDlgCtrlID();
                     lvDispInfo.hdr.code = LVN_ENDLABELEDIT;
-                    lvDispInfo.item.mask = LVIF_TEXT;   
+                    lvDispInfo.item.mask = LVIF_TEXT;
                     lvDispInfo.item.iItem = nItem;
                     lvDispInfo.item.iSubItem = nSubItem;
                     lvDispInfo.item.pszText = LPTSTR((LPCTSTR)omStr);
                     lvDispInfo.item.cchTextMax = omStr.GetLength();
                     SendMessage( WM_NOTIFY, GetDlgCtrlID(),(LPARAM)&lvDispInfo);
                     break;
+
                 default:
                     // Unknown control type
                     ASSERT( FALSE );
             }
+
             // End of Controls
             m_bCreating = FALSE;
         }
@@ -446,24 +469,28 @@ void CFlexListCtrl::vShowControl(int nItem, int nSubItem)
  Date Created   : 22.07.2004
  Modifications  :
 *******************************************************************************/
-CComboItem * CFlexListCtrl::pomComboItem(int nItem,
-                                      int nSubItem,
-                                      const CStringArray& omList)
+CComboItem* CFlexListCtrl::pomComboItem(int nItem,
+                                        int nSubItem,
+                                        const CStringArray& omList)
 {
     // Get the item text from the list control
     CString strFind = GetItemText(nItem, nSubItem);
-
     //basic code start
     CRect omRect;
+
     // Make sure that the item is visible
-    if( !EnsureVisible(nItem, TRUE)) 
+    if( !EnsureVisible(nItem, TRUE))
+    {
         return NULL;
+    }
+
     // Get the size of the list item
     GetSubItemRect(nItem, nSubItem, LVIR_BOUNDS, omRect);
     // Now scroll if we need to expose the column
     CRect omClientRect;
     // Get the list rect
     GetClientRect(omClientRect);
+
     // Check for scrolling
     if( omRect.left < 0 || omRect.left > omClientRect.right )
     {
@@ -475,28 +502,29 @@ CComboItem * CFlexListCtrl::pomComboItem(int nItem,
     }
 
     omRect.right = omRect.left + GetColumnWidth(nSubItem);
+
     // Reduce the size of the control if the list item is not completely
     // Visible
     if(omRect.right > omClientRect.right)
     {
         omRect.right = omClientRect.right;
     }
+
     //basic code end
-    
     //dropdown area
     omRect.bottom += 100;
-    
     // Set the standard style and combobox type
     DWORD dwStyle =  WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL |
                      CBS_DROPDOWNLIST;
     // Create the non editable combobox
-    CComboItem *pomCBox = NULL;
+    CComboItem* pomCBox = NULL;
     // Create the control
     pomCBox = new CComboItem( nItem,        // Item Index
                               nSubItem,     // Sub Item Index
                               omList,       // Lsit of strings
                               strFind,      // Selected Text
                               FALSE);       // Editing is FALSE
+
     if( pomCBox != NULL )
     {
         // Create the UI
@@ -513,7 +541,8 @@ CComboItem * CFlexListCtrl::pomComboItem(int nItem,
         CString omStrErr;
         omStrErr.Format(defFLC_CREATE_FAILED,defCOMBO_ITEM);
         AfxMessageBox( omStrErr );
-    }    
+    }
+
     // The return the pointer just for reference
     // Destroy will delete this memory. So this should not be deleted outside
     return pomCBox;
@@ -534,24 +563,28 @@ CComboItem * CFlexListCtrl::pomComboItem(int nItem,
  Date Created   : 22.07.2004
  Modifications  :
 *******************************************************************************/
-CComboItem * CFlexListCtrl::pomComboList( int nItem,
-                                          int nSubItem,
-                                          const CStringArray& omList)
+CComboItem* CFlexListCtrl::pomComboList( int nItem,
+        int nSubItem,
+        const CStringArray& omList)
 {
     // Get the item text from the list control
     CString strFind = GetItemText(nItem, nSubItem);
-
     //basic code start
     CRect omRect;
+
     // Make sure that the item is visible
-    if( !EnsureVisible(nItem, TRUE)) 
+    if( !EnsureVisible(nItem, TRUE))
+    {
         return NULL;
+    }
+
     // Get the size of the list item
     GetSubItemRect(nItem, nSubItem, LVIR_BOUNDS, omRect);
     // Now scroll if we need to expose the column
     CRect omClientRect;
     // Get the list rect
     GetClientRect(omClientRect);
+
     // Check for scrolling
     if( omRect.left < 0 || omRect.left > omClientRect.right )
     {
@@ -563,24 +596,23 @@ CComboItem * CFlexListCtrl::pomComboList( int nItem,
     }
 
     omRect.right = omRect.left + GetColumnWidth(nSubItem);
+
     // Reduce the size of the control if the list item is not completely
     // Visible
     if(omRect.right > omClientRect.right)
     {
         omRect.right = omClientRect.right;
     }
-    //basic code end
 
+    //basic code end
     //dropdown area
     omRect.bottom += 100;
-
     // Set the standard style and combobox type
     DWORD dwStyle = WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL |
                     CBS_DROPDOWN;
-
-    CComboItem *pomCBox = NULL;
+    CComboItem* pomCBox = NULL;
     pomCBox = new CComboItem(nItem, nSubItem, omList, strFind, TRUE);
-    
+
     if( pomCBox != NULL )
     {
         // Create the UI control
@@ -589,6 +621,7 @@ CComboItem * CFlexListCtrl::pomComboList( int nItem,
         pomCBox->ShowDropDown();
         // Set the seleted item text
         pomCBox->SetWindowText(strFind);
+
         // Select the item from the list. If it is not available the
         // Set the text with out any selection
         if (pomCBox->SelectString(-1, strFind.GetBuffer(1)) == CB_ERR )
@@ -603,7 +636,7 @@ CComboItem * CFlexListCtrl::pomComboList( int nItem,
         omStrErr.Format(defFLC_CREATE_FAILED,defCOMBO_LIST);
         AfxMessageBox( omStrErr );
     }
-    
+
     // The returned pointer should not be saved
     return pomCBox;
 }
@@ -619,39 +652,43 @@ CComboItem * CFlexListCtrl::pomComboList( int nItem,
  Date Created   : 22.07.2004
  Modifications  :
 *******************************************************************************/
-CEdit *CFlexListCtrl::pomEditItem(int nItem, int nSubItem)
+CEdit* CFlexListCtrl::pomEditItem(int nItem, int nSubItem)
 {
     // Item rect and Client rect
     CRect omRect, omClientRect;
+
     // Set the item to be visible
     if(!EnsureVisible(nItem, TRUE))
-    { 
-        return NULL;    
+    {
+        return NULL;
     }
+
     // Get the item rect
     GetSubItemRect(nItem, nSubItem, LVIR_BOUNDS, omRect);
     // Now scroll if we need to expose the column
     GetClientRect(omClientRect);
+
     if( omRect.left < 0 || omRect.left > omClientRect.right )
     {
-        CSize size(omRect.left,0);      
+        CSize size(omRect.left,0);
         Scroll(size);
         omRect.left -= size.cx;
     }
 
     omRect.right = omRect.left + GetColumnWidth(nSubItem);
+
     // If the size is bigger then the client size then resizes
     if(omRect.right > omClientRect.right)
     {
-       omRect.right = omClientRect.right;
+        omRect.right = omClientRect.right;
     }
 
-    // Get Column alignment 
+    // Get Column alignment
     LV_COLUMN lvcol;
     lvcol.mask = LVCF_FMT;
     GetColumn(nSubItem, &lvcol);
-
     DWORD dwStyle;
+
     // Get the justification style of the list item
     if((lvcol.fmt & LVCFMT_JUSTIFYMASK) == LVCFMT_LEFT)
     {
@@ -665,13 +702,15 @@ CEdit *CFlexListCtrl::pomEditItem(int nItem, int nSubItem)
     {
         dwStyle = ES_CENTER;
     }
+
     // Include standard styles
     dwStyle |=WS_BORDER|WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL;
     // Get the item text
     CString omStrText = GetItemText(nItem, nSubItem);
     // Create the control now
-    CEdit *pomEdit = NULL;
+    CEdit* pomEdit = NULL;
     pomEdit = new CEditItem(nItem, nSubItem, omStrText);
+
     if( pomEdit != NULL )
     {
         pomEdit->Create(dwStyle, omRect, this, IDC_CONTROL);
@@ -682,6 +721,7 @@ CEdit *CFlexListCtrl::pomEditItem(int nItem, int nSubItem)
         omStrErr.Format( defFLC_CREATE_FAILED, defEDIT_ITEM );
         AfxMessageBox( omStrErr );
     }
+
     // Retrun the window pointer
     return pomEdit;
 }
@@ -700,38 +740,43 @@ CEdit *CFlexListCtrl::pomEditItem(int nItem, int nSubItem)
  Date Created   : 22.07.2004
  Modifications  :
 *******************************************************************************/
-CNumEdit *CFlexListCtrl::pomNumItem( int nItem, int nSubItem,
+CNumEdit* CFlexListCtrl::pomNumItem( int nItem, int nSubItem,
                                      const SNUMERICINFO& sInfo)
 {
     CRect omRect;
+
     // Set the item to be visible
     if(!EnsureVisible(nItem, TRUE))
-    { 
-        return NULL;    
+    {
+        return NULL;
     }
+
     // Get the item rect
     GetSubItemRect(nItem, nSubItem, LVIR_BOUNDS, omRect);
     // Now scroll if we need to expose the column
     CRect omClientRect;
     GetClientRect(omClientRect);
+
     if( omRect.left < 0 || omRect.left > omClientRect.right )
     {
-        CSize size( omRect.left, 0 );     
+        CSize size( omRect.left, 0 );
         Scroll( size );
         omRect.left -= size.cx;
     }
+
     omRect.right = omRect.left + GetColumnWidth(nSubItem);
+
     if(omRect.right > omClientRect.right)
     {
         omRect.right = omClientRect.right;
     }
 
-    // Get Column alignment 
+    // Get Column alignment
     LV_COLUMN lvcol;
     lvcol.mask = LVCF_FMT;
     GetColumn(nSubItem, &lvcol);
-
     DWORD dwStyle;
+
     if((lvcol.fmt & LVCFMT_JUSTIFYMASK) == LVCFMT_LEFT)
     {
         dwStyle = ES_LEFT;
@@ -740,17 +785,19 @@ CNumEdit *CFlexListCtrl::pomNumItem( int nItem, int nSubItem,
     {
         dwStyle = ES_RIGHT;
     }
-    else 
+    else
     {
         dwStyle = ES_CENTER;
     }
-    // Set the standard windows style 
+
+    // Set the standard windows style
     dwStyle |=WS_BORDER|WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL;
     // Get the selected item text
     CString omStrText = GetItemText(nItem, nSubItem);
     // Create the control
-    CNumEdit *pomEdit = NULL;
+    CNumEdit* pomEdit = NULL;
     pomEdit = new CNumEdit(nItem, nSubItem, omStrText, sInfo);
+
     if( pomEdit != NULL )
     {
         pomEdit->Create(dwStyle, omRect, this, IDC_CONTROL);
@@ -761,6 +808,7 @@ CNumEdit *CFlexListCtrl::pomNumItem( int nItem, int nSubItem,
         omStrErr.Format( defFLC_CREATE_FAILED, defNUM_ITEM );
         AfxMessageBox( omStrErr );
     }
+
     // Return the window pointer
     return pomEdit;
 }
@@ -778,7 +826,7 @@ CNumEdit *CFlexListCtrl::pomNumItem( int nItem, int nSubItem,
  Date Created   : 22.07.2004
  Modifications  :
 *******************************************************************************/
-void CFlexListCtrl::vSetNumericInfo( int nRow, int nColunm, 
+void CFlexListCtrl::vSetNumericInfo( int nRow, int nColunm,
                                      const SNUMERICINFO& sInfo)
 {
     // Get the Unique Index
@@ -800,8 +848,8 @@ void CFlexListCtrl::vSetNumericInfo( int nRow, int nColunm,
  Date Created   : 22.07.2004
  Modifications  :
 *******************************************************************************/
-void CFlexListCtrl::vSetUserProgInfo( int nRow, int nColunm, 
-                                     const SUSERPROGINFO& sUSerProgInfo)
+void CFlexListCtrl::vSetUserProgInfo( int nRow, int nColunm,
+                                      const SUSERPROGINFO& sUSerProgInfo)
 {
     // Get the Unique Index
     int nIndex = lGetMapID(nRow, nColunm);
@@ -826,6 +874,7 @@ void CFlexListCtrl::vSetUserProgInfo( int nRow, int nColunm,
 BOOL CFlexListCtrl::sGetModificationStructure(LV_DISPINFO& rs_DispInfo)
 {
     BOOL bSuccess = TRUE;
+
     // If insertion is in progress don't copy the invalid data
     if( m_bCreating == FALSE )
     {
@@ -836,6 +885,7 @@ BOOL CFlexListCtrl::sGetModificationStructure(LV_DISPINFO& rs_DispInfo)
     {
         bSuccess = FALSE;
     }
+
     // Return the result
     return bSuccess;
 }

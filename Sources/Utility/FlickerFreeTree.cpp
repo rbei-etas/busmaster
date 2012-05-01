@@ -24,38 +24,33 @@
 #include "memdc.h"
 
 BEGIN_MESSAGE_MAP(CFlickerFreeTree, CTreeCtrl)
-	ON_WM_ERASEBKGND()
-	ON_WM_SIZE() 
-	ON_WM_PAINT()
+    ON_WM_ERASEBKGND()
+    ON_WM_SIZE()
+    ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 BOOL CFlickerFreeTree::OnEraseBkgnd(CDC* pDC)
 {
     // TODO: Add your message handler code here and/or call default
     UNUSED_ALWAYS(pDC);
-
     //return CTreeCtrl::OnEraseBkgnd(pDC);
     return TRUE;
 }
 
 void CFlickerFreeTree::OnSize(UINT nType, int cx, int cy)
 {
-	CTreeCtrl::OnSize(nType, cx, cy);
-
-	GetClientRect(&m_rectClient);
+    CTreeCtrl::OnSize(nType, cx, cy);
+    GetClientRect(&m_rectClient);
 }
 void CFlickerFreeTree::OnPaint()
-{ 
-  CPaintDC dc(this); // device context for painting
-	// TODO: Add your message handler code here
-	// Do not call CListCtrl::OnPaint() for painting messages
-
-  // Paint to a memory device context to reduce screen flicker.
-  CMemDC memDC(&dc, &m_rectClient);
-
-  // To change the background replace it with approp. background color
-	memDC.FillSolidRect( &m_rectClient, GetSysColor(COLOR_WINDOW));
-
-  // Let the window do its default painting...
-  CWnd::DefWindowProc( WM_PAINT, (WPARAM)memDC.m_hDC, 0 );
+{
+    CPaintDC dc(this); // device context for painting
+    // TODO: Add your message handler code here
+    // Do not call CListCtrl::OnPaint() for painting messages
+    // Paint to a memory device context to reduce screen flicker.
+    CMemDC memDC(&dc, &m_rectClient);
+    // To change the background replace it with approp. background color
+    memDC.FillSolidRect( &m_rectClient, GetSysColor(COLOR_WINDOW));
+    // Let the window do its default painting...
+    CWnd::DefWindowProc( WM_PAINT, (WPARAM)memDC.m_hDC, 0 );
 }
