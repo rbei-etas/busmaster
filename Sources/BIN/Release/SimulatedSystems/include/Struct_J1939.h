@@ -1,20 +1,16 @@
-/********************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  Struct_J1939.h
-  Description   :  This file contain the definition of structure used in message
-                   handler
-  $Log: $
+/**
+ * \file      Struct_J1939.h
+ * \author    Amitesh Bharti
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * This file contain the definition of structure used in message
+ * handler.
+ */
 
-  Author(s)     :  Amitesh Bharti
-  Date Created  :  25.03.2003
-  Modified By   :
-********************************************************************************/
-#ifndef _STRUCT_J1939_H_
-#define _STRUCT_J1939_H_
+#pragma once
+
 #pragma pack(push, 8)
 //#pragma pack(show)
-
-
 
 typedef enum ETYPE_TIMEOUT
 {
@@ -55,9 +51,9 @@ typedef struct tagSTRUCT_PGN
 {
     BYTE m_byPDU_Specific   : 8; /* PDU Specific (PS), Destination address if 0 <= PF <= 239.
                                                        Group Extension (GE)if 240 <= PF <= 255. */
-    BYTE m_byPDU_Format     : 8; // PDU Format (PF), Indicates Peer_2_peer or Broadcast.
-    BYTE m_byDataPage       : 1; // DataPage (DP), Set to 0 currently.
-    BYTE m_byReserved       : 1; // Reserved, Set to 0.
+    BYTE m_byPDU_Format     : 8; /* PDU Format (PF), Indicates Peer_2_peer or Broadcast. */
+    BYTE m_byDataPage       : 1; /* DataPage (DP), Set to 0 currently. */
+    BYTE m_byReserved       : 1; /* Reserved, Set to 0. */
     BYTE m_byPriority       : 3;
 
 } STRUCT_PGN;
@@ -72,8 +68,8 @@ typedef union tagUPGN
 /* J1939 Extended 29 bit ID */
 typedef struct tagSTRUCT_29_BIT_ID
 {
-    BYTE        m_bySrcAddress     : 8; // Sender node address.
-    UNION_PGN   m_uPGN;                 // Parameter group number(PGN). SAE lists various PGNS and its SPNS.
+    BYTE        m_bySrcAddress     : 8; /* Sender node address. */
+    UNION_PGN   m_uPGN;                 /* Parameter group number(PGN). SAE lists various PGNS and its SPNS. */
 } STRUCT_29_BIT_ID;
 
 typedef union tag29BitID
@@ -115,11 +111,11 @@ typedef enum EDIRECTION
 /* J1939 message properties */
 typedef struct tagSTJ1939_MSG_PROPERTIES
 {
-    UINT64                  m_un64TimeStamp; // Timestamp.
-    BYTE                    m_byChannel;     // Channel number.
+    UINT64                  m_un64TimeStamp; /* Timestamp. */
+    BYTE                    m_byChannel;     /* Channel number. */
     enum EJ1939_MSG_TYPE    m_eType;
-    enum EDIRECTION         m_eDirection;    // DIR_TX, DIR_RX
-    UNION_29_BIT_ID         m_uExtendedID;   // 29 bit extended ID
+    enum EDIRECTION         m_eDirection;    /* DIR_TX, DIR_RX */
+    UNION_29_BIT_ID         m_uExtendedID;   /* 29 bit extended ID */
 
 } STJ1939_MSG_PROPERTIES;
 
@@ -127,10 +123,8 @@ typedef struct tagSTJ1939_MSG
 {
     STJ1939_MSG_PROPERTIES  m_sMsgProperties;   /* J1939 message properties. (29 bit Extended ID, Timestamp,
                                                    Channel, Type, Direction) */
-    UINT                    m_unDLC;            // Data length. 0 <= m_unDLC <= 1785 bytes.
-    BYTE*                   m_pbyData;          // J1939 message data.
+    UINT                    m_unDLC;            /* Data length. 0 <= m_unDLC <= 1785 bytes. */
+    BYTE*                   m_pbyData;          /* J1939 message data. */
 } STJ1939_MSG;
 
-
 #pragma pack(pop, 8)
-#endif //_STRUCT_J1939_H_
