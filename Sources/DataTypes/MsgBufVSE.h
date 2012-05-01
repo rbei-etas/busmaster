@@ -54,7 +54,7 @@ private:
 public:
     CMsgBufVSE();
     ~CMsgBufVSE();
-    /* Reads current message from the buffer. 
+    /* Reads current message from the buffer.
     Caller has to allocate memory for the out parameter */
     HRESULT ReadFromBuffer(INT& nType, BYTE* psMsg, INT& nSize);
     /* Writes message into the buffer. Caller needs to allocate memory for the

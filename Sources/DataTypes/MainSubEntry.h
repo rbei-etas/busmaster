@@ -31,8 +31,8 @@ struct SGUIPARAMS
     CImageList* m_pomImageList;     //Pointer to loaded imagelist
     INT         m_unUnSelIconIndex; // Icon will appear in left list cntrl
     INT         m_unSelIconIndex;   // Icon will appear in rightlist cntrl
-    BOOL        m_bCombine;  // Whether Main Entry should be combined with subentry name 
-                       // while displaying in the list
+    BOOL        m_bCombine;  // Whether Main Entry should be combined with subentry name
+    // while displaying in the list
     SGUIPARAMS();
 };
 

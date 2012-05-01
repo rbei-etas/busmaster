@@ -36,11 +36,11 @@
   Output           :  -
   Functionality    :  Standard constructor
   Member of        :  tagLogInfo
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 tagLogInfo::tagLogInfo()
 {
@@ -53,11 +53,11 @@ tagLogInfo::tagLogInfo()
   Output           :  void
   Functionality    :  Clears information inthe current logging block
   Member of        :  tagLogInfo
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 void tagLogInfo::vClear(void)
 {
@@ -70,10 +70,9 @@ void tagLogInfo::vClear(void)
     m_bResetAbsTimeStamp = FALSE;
     m_ChannelSelected    = CHANNEL_All_UNSPECIFIED;
     strcpy_s(m_sLogFileName, _T(""));
-
     // Init Trigger Condition
     m_sLogTrigger.m_unTriggerType = NONE;   // No trigger
-    m_sLogTrigger.m_unStartID = 0;	        // No Start-ID
+    m_sLogTrigger.m_unStartID = 0;          // No Start-ID
     m_sLogTrigger.m_unStopID = 0;           // No Stop-ID
 }
 
@@ -83,19 +82,18 @@ void tagLogInfo::vClear(void)
   Output           :  UINT - size of the current logging block
   Functionality    :  Returns in bytes size of the current logging block.
   Member of        :  tagLogInfo
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 UINT tagLogInfo::unGetSize(void) const
 {
-    UINT Result = 
-        sizeof(m_bIsUpdated) + sizeof(m_bEnabled) + sizeof(m_eLogTimerMode) + 
+    UINT Result =
+        sizeof(m_bIsUpdated) + sizeof(m_bEnabled) + sizeof(m_eLogTimerMode) +
         sizeof(m_eNumFormat) + sizeof(m_eFileMode) + sizeof(m_bResetAbsTimeStamp) + sizeof(m_ChannelSelected)
         + sizeof(m_sLogFileName) + sizeof(m_sLogTrigger);
-
     return Result;
 }
 
@@ -109,16 +107,15 @@ UINT tagLogInfo::unGetSize(void) const
                       the target buffer. Advances the writing pointer to the
                       next byte occurring after the written block.
   Member of        :  tagLogInfo
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 BYTE* tagLogInfo::pbGetConfigData(BYTE* pbTarget) const
 {
     BYTE* pbTStream = pbTarget;
-
     COPY_DATA(pbTStream, &m_bIsUpdated,       sizeof(m_bIsUpdated        ));
     COPY_DATA(pbTStream, &m_bEnabled,         sizeof(m_bEnabled          ));
     COPY_DATA(pbTStream, &m_eLogTimerMode,    sizeof(m_eLogTimerMode     ));
@@ -128,7 +125,6 @@ BYTE* tagLogInfo::pbGetConfigData(BYTE* pbTarget) const
     COPY_DATA(pbTStream, &m_ChannelSelected,  sizeof(m_ChannelSelected   ));
     COPY_DATA(pbTStream, m_sLogFileName,      sizeof(m_sLogFileName      ));
     COPY_DATA(pbTStream, &m_sLogTrigger,      sizeof(m_sLogTrigger       ));
-
     return pbTStream;
 }
 
@@ -142,30 +138,30 @@ BYTE* tagLogInfo::pbGetConfigData(BYTE* pbTarget) const
                       the current object. Advances the reading pointer to the
                       next byte occurring after the block.
   Member of        :  tagLogInfo
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 BYTE* tagLogInfo::pbSetConfigData(BYTE* pbSource, BYTE bytLogVersion)
 {
     BYTE* pbSStream = pbSource;
-
     COPY_DATA_2(&m_bIsUpdated,       pbSStream, sizeof(m_bIsUpdated      ));
     COPY_DATA_2(&m_bEnabled,         pbSStream, sizeof(m_bEnabled        ));
     COPY_DATA_2(&m_eLogTimerMode,    pbSStream, sizeof(m_eLogTimerMode   ));
     COPY_DATA_2(&m_eNumFormat,       pbSStream, sizeof(m_eNumFormat      ));
     COPY_DATA_2(&m_eFileMode,        pbSStream, sizeof(m_eFileMode       ));
 
-	/* If version is 1.6.2 and above */
-	if ( bytLogVersion > 0x1 )
-		COPY_DATA_2(&m_bResetAbsTimeStamp, pbSStream, sizeof(m_bResetAbsTimeStamp));
-    
-	COPY_DATA_2(&m_ChannelSelected,  pbSStream, sizeof(m_ChannelSelected ));
+    /* If version is 1.6.2 and above */
+    if ( bytLogVersion > 0x1 )
+    {
+        COPY_DATA_2(&m_bResetAbsTimeStamp, pbSStream, sizeof(m_bResetAbsTimeStamp));
+    }
+
+    COPY_DATA_2(&m_ChannelSelected,  pbSStream, sizeof(m_ChannelSelected ));
     COPY_DATA_2(m_sLogFileName,      pbSStream, sizeof(m_sLogFileName    ));
     COPY_DATA_2(&m_sLogTrigger,      pbSStream, sizeof(m_sLogTrigger     ));
-
     return pbSStream;
 }
 /* tagLogInfo --- ENDS */

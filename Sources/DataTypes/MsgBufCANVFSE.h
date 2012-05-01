@@ -32,24 +32,24 @@
 const int SIZE_APP_CAN_BUFFER       = 5000;
 
 
-/* This is the concrete template class of a circular queue where each entry is 
-of fixed size. Implemented as a template class so as to cater to any data type. 
+/* This is the concrete template class of a circular queue where each entry is
+of fixed size. Implemented as a template class so as to cater to any data type.
 Here SMSGBUFFER is the data type in operation. */
 template <typename SMSGBUFFER>
 class CMsgBufCANVFSE
 {
 protected:
-    
+
     SMSGBUFFER m_asMsgBuffer[SIZE_APP_CAN_BUFFER]; // The data buffer
     CRITICAL_SECTION m_CritSectionForGB;       // To make it thread safe
-    
+
     int m_nIndexRead;                          // Current read index
-    int m_nIndexWrite;                         // Current write index 
+    int m_nIndexWrite;                         // Current write index
     int m_nMsgCount;                           // Number of message entries
-    int m_nMsgSize;                            /* At the beginning we need to 
+    int m_nMsgSize;                            /* At the beginning we need to
     store size of a message entry. This information will be used frequently */
-    HANDLE m_hNotifyingEvent;                  // Event to be signalled when 
-                                               // there is at least one message
+    HANDLE m_hNotifyingEvent;                  // Event to be signalled when
+    // there is at least one message
 
 public:
     // Short explanation on each member function is present in the base class.
@@ -65,7 +65,7 @@ public:
     int GetBufferLength(void) const;
     void vClearMessageBuffer(void);
     HANDLE hGetNotifyingEvent(void) const;
-    void vDoSortBuffer(int nField,bool bAscending);	
+    void vDoSortBuffer(int nField,bool bAscending);
     void vDoSortIndexMapArray();
     void nGetMapIndexAtID(int nIndex,__int64& nMapIndex);
 
@@ -79,11 +79,11 @@ private:
   Output           :  -
   Functionality    :  Standard constructor
   Member of        :  CMsgBufCANVFSE
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 template <typename SMSGBUFFER>
 CMsgBufCANVFSE<SMSGBUFFER>::CMsgBufCANVFSE()
@@ -91,7 +91,7 @@ CMsgBufCANVFSE<SMSGBUFFER>::CMsgBufCANVFSE()
     m_nMsgSize = sizeof(SMSGBUFFER);
     vClearMessageBuffer();
     InitializeCriticalSection(&m_CritSectionForGB);
-    m_hNotifyingEvent = CreateEvent(NULL, TRUE, FALSE, NULL);    
+    m_hNotifyingEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
 }
 
 /******************************************************************************
@@ -100,11 +100,11 @@ CMsgBufCANVFSE<SMSGBUFFER>::CMsgBufCANVFSE()
   Output           :  -
   Functionality    :  Destructor
   Member of        :  CMsgBufCANVFSE
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 template <typename SMSGBUFFER>
 CMsgBufCANVFSE<SMSGBUFFER>::~CMsgBufCANVFSE()
@@ -120,50 +120,48 @@ CMsgBufCANVFSE<SMSGBUFFER>::~CMsgBufCANVFSE()
   Output           :  void
   Functionality    :  Clears the message buffer and resets the indices.
   Member of        :  CMsgBufCANVFSE
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 template <typename SMSGBUFFER> void CMsgBufCANVFSE<SMSGBUFFER>::
-                                                      vClearMessageBuffer(void)
+vClearMessageBuffer(void)
 {
-    memset((BYTE *) m_asMsgBuffer, 0, SIZE_APP_CAN_BUFFER * m_nMsgSize);
+    memset((BYTE*) m_asMsgBuffer, 0, SIZE_APP_CAN_BUFFER * m_nMsgSize);
     m_omIdIndexMap.RemoveAll();
     m_nIndexRead = 0;
     m_nIndexWrite = 0;
-    m_nMsgCount = 0;    
+    m_nMsgCount = 0;
 }
 
 /******************************************************************************
   Function Name    :  ReadFromBuffer
   Input(s)         :  psMsg - The target message entry. An [out] parameter.
   Output           :  EMPTY_APP_BUFFER if buffer is empty; else CALL_SUCCESS.
-  Functionality    :  Reads a message entry and advances the read index. On 
-                      successful reading operation the present entry is 
+  Functionality    :  Reads a message entry and advances the read index. On
+                      successful reading operation the present entry is
                       invalidated to make room for a new entry.
   Member of        :  CMsgBufCANVFSE
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
-template <typename SMSGBUFFER> 
+template <typename SMSGBUFFER>
 int CMsgBufCANVFSE<SMSGBUFFER>::ReadFromBuffer(SMSGBUFFER* psMsg, int nIndex)
 {
     HRESULT nResult = S_OK;
-
 #ifdef _DEBUG
     ASSERT(psMsg != NULL);
     ASSERT(!(m_nIndexRead > SIZE_APP_CAN_BUFFER));
 #endif
-
     // Lock the buffer
     EnterCriticalSection(&m_CritSectionForGB);
 
-    // Check entry indexed by m_nIndexRead. If this particular entry 
+    // Check entry indexed by m_nIndexRead. If this particular entry
     if (m_nMsgCount == 0)
     {
         nResult = EMPTY_APP_BUFFER;
@@ -173,35 +171,35 @@ int CMsgBufCANVFSE<SMSGBUFFER>::ReadFromBuffer(SMSGBUFFER* psMsg, int nIndex)
         nResult = ERR_INVALID_INDEX;
     }
     else
-    { 
+    {
         INT TempIndex = m_nIndexRead + nIndex;
+
         if (m_nIndexRead + nIndex >= SIZE_APP_CAN_BUFFER)
         {
             TempIndex -= SIZE_APP_CAN_BUFFER;
         }
-       *psMsg = m_asMsgBuffer[TempIndex];
+
+        *psMsg = m_asMsgBuffer[TempIndex];
     }
+
     // Unlock the buffer
     LeaveCriticalSection(&m_CritSectionForGB);
-
     return nResult;
 }
 
-template <typename SMSGBUFFER> 
+template <typename SMSGBUFFER>
 int CMsgBufCANVFSE<SMSGBUFFER>::ReadFromBuffer(SMSGBUFFER* psMsg, __int64 nSlotId)
 {
     HRESULT nResult = CALL_SUCCESS;
     int nIndex;
-
 #ifdef _DEBUG
     ASSERT(psMsg != NULL);
     ASSERT(!(m_nIndexRead > SIZE_APP_CAN_BUFFER));
 #endif
-
     // Lock the buffer
     EnterCriticalSection(&m_CritSectionForGB);
 
-    // Check entry indexed by m_nIndexRead. If this particular entry 
+    // Check entry indexed by m_nIndexRead. If this particular entry
     if (m_nMsgCount == 0)
     {
         nResult = EMPTY_APP_BUFFER;
@@ -210,16 +208,16 @@ int CMsgBufCANVFSE<SMSGBUFFER>::ReadFromBuffer(SMSGBUFFER* psMsg, __int64 nSlotI
     {
         if (m_omIdIndexMap.Lookup(nSlotId, nIndex))
         {
-            *psMsg = m_asMsgBuffer[nIndex];				
+            *psMsg = m_asMsgBuffer[nIndex];
         }
         else
         {
             nResult = ERR_INVALID_SLOT;
         }
     }
+
     // Unlock the buffer
     LeaveCriticalSection(&m_CritSectionForGB);
-
     return nResult;
 }
 
@@ -230,24 +228,22 @@ int CMsgBufCANVFSE<SMSGBUFFER>::ReadFromBuffer(SMSGBUFFER* psMsg, __int64 nSlotI
   Output           :  ERR_FULL_APP_BUFFER if buffer is full; else CALL_SUCCESS.
   Functionality    :  Writes a message entry and advances the write index.
   Member of        :  CMsgBufCANVFSE
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
-template <typename SMSGBUFFER> 
-int CMsgBufCANVFSE<SMSGBUFFER>::WriteIntoBuffer(const SMSGBUFFER* psMsg, 
-                                                __int64 nSlotId, int& nIndex)
-                                                             
+template <typename SMSGBUFFER>
+int CMsgBufCANVFSE<SMSGBUFFER>::WriteIntoBuffer(const SMSGBUFFER* psMsg,
+        __int64 nSlotId, int& nIndex)
+
 {
     int nResult = CALL_SUCCESS;
-
 #ifdef _DEBUG
     ASSERT(psMsg != NULL);
     ASSERT(!(m_nIndexWrite > SIZE_APP_CAN_BUFFER));
 #endif
-
     EnterCriticalSection(&m_CritSectionForGB); // Lock the buffer
 
     if (m_nMsgCount == SIZE_APP_CAN_BUFFER) // Check for buffer overflow
@@ -267,45 +263,44 @@ int CMsgBufCANVFSE<SMSGBUFFER>::WriteIntoBuffer(const SMSGBUFFER* psMsg,
             m_omIdIndexMap[nSlotId] = m_nMsgCount;
             ++m_nMsgCount;
         }
+
         SetEvent(m_hNotifyingEvent);
     }
 
     LeaveCriticalSection(&m_CritSectionForGB); // Unlock the buffer
-
     return nResult;
 }
-template <typename SMSGBUFFER> 
+template <typename SMSGBUFFER>
 int CMsgBufCANVFSE<SMSGBUFFER>::WriteIntoBuffer(const SMSGBUFFER* psMsg)
-                                                             
+
 {
     int nResult = CALL_SUCCESS;
-
 #ifdef _DEBUG
     ASSERT(psMsg != NULL);
     ASSERT(!(m_nIndexWrite > SIZE_APP_CAN_BUFFER));
 #endif
-
     EnterCriticalSection(&m_CritSectionForGB); // Lock the buffer
 
     if (m_nMsgCount == SIZE_APP_CAN_BUFFER) // Check for buffer overflow
     {
         m_asMsgBuffer[m_nIndexRead] = *psMsg;
         m_nIndexRead++;
+
         if (m_nIndexRead == SIZE_APP_CAN_BUFFER)
         {
             m_nIndexRead = 0;
         }
+
         nResult = ERR_FULL_APP_BUFFER;
     }
     else
-    {   
+    {
         m_asMsgBuffer[m_nMsgCount] = *psMsg;
-        ++m_nMsgCount;        
+        ++m_nMsgCount;
         SetEvent(m_hNotifyingEvent);
     }
 
     LeaveCriticalSection(&m_CritSectionForGB); // Unlock the buffer
-
     return nResult;
 }
 /******************************************************************************
@@ -314,14 +309,14 @@ int CMsgBufCANVFSE<SMSGBUFFER>::WriteIntoBuffer(const SMSGBUFFER* psMsg)
   Output           :  Number of message entries (int)
   Functionality    :  Returns the number of unread entries in the queue.
   Member of        :  CMsgBufCANVFSE
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 template <typename SMSGBUFFER> int CMsgBufCANVFSE<SMSGBUFFER>::
-                                                    GetBufferLength(void) const
+GetBufferLength(void) const
 {
     return m_nMsgCount;
 }
@@ -330,17 +325,17 @@ template <typename SMSGBUFFER> int CMsgBufCANVFSE<SMSGBUFFER>::
   Function Name    :  hGetNotifyingEvent
   Input(s)         :  void
   Output           :  The notifying event handle (HANDLE)
-  Functionality    :  Returns handle of the event that gets signalled when 
+  Functionality    :  Returns handle of the event that gets signalled when
                       a message entry is added.
   Member of        :  CMsgBufCANVFSE
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 template <typename SMSGBUFFER> HANDLE CMsgBufCANVFSE<SMSGBUFFER>::
-                                                 hGetNotifyingEvent(void) const
+hGetNotifyingEvent(void) const
 {
     return m_hNotifyingEvent;
 }
@@ -351,44 +346,46 @@ template <typename SMSGBUFFER> HANDLE CMsgBufCANVFSE<SMSGBUFFER>::
   Output           :  -
   Functionality    :  Reorders the list according to the sorting key specified.
   Member of        :  CMsgBufCANVFSE
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  21-06-2010
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 template <typename SMSGBUFFER> void CMsgBufCANVFSE<SMSGBUFFER>::
-                                            vDoSortBuffer(int nField,bool bAscending)
+vDoSortBuffer(int nField,bool bAscending)
 {
     SMSGBUFFER::vSetSortField(nField);
     SMSGBUFFER::vSetSortAscending(bAscending);
-    qsort((void *) m_asMsgBuffer, (size_t) GetBufferLength(), 
-        sizeof(SMSGBUFFER), SMSGBUFFER::DoCompareIndiv);
+    qsort((void*) m_asMsgBuffer, (size_t) GetBufferLength(),
+          sizeof(SMSGBUFFER), SMSGBUFFER::DoCompareIndiv);
     //After sorting Start index has to be reset
     m_nIndexRead = 0;
-    
+
     //in case of Append Mode the count will be 0
     if(m_omIdIndexMap.GetCount() ==0)
+    {
         return;
+    }
 
     vDoSortIndexMapArray();
 }
 
 /******************************************************************************
   Function Name    :  vDoSortIndexMapArray
-  Input(s)         :  
+  Input(s)         :
   Output           :  -
   Functionality    :  Reorders the Index Map Array according to the order specified.
   Member of        :  CMsgBufCANVFSE
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Arunkumar K
   Date Created     :  28-06-2010
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 template <typename SMSGBUFFER> void CMsgBufCANVFSE<SMSGBUFFER>::
-                                            vDoSortIndexMapArray()
-{	
+vDoSortIndexMapArray()
+{
     for(int nCnt = 0; nCnt< m_omIdIndexMap.GetCount(); nCnt++)
     {
         __int64 nSlotID = SMSGBUFFER::GetSlotID(m_asMsgBuffer[nCnt]);
@@ -402,21 +399,23 @@ template <typename SMSGBUFFER> void CMsgBufCANVFSE<SMSGBUFFER>::
   Output           :  -
   Functionality    :  Returns the Slot ID of the index specified in m_omIdIndexMap.
   Member of        :  CMsgBufCANVFSE
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Arunkumar K
   Date Created     :  28-06-2010
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 template <typename SMSGBUFFER> void CMsgBufCANVFSE<SMSGBUFFER>::
-                                            nGetMapIndexAtID(int nIndex,__int64& nMapIndex)
-{	
+nGetMapIndexAtID(int nIndex,__int64& nMapIndex)
+{
     POSITION pos = m_omIdIndexMap.GetStartPosition();
     int nLocalIndex=0;
     __int64 nSlotID;
+
     while( pos != NULL )
     {
-        m_omIdIndexMap.GetNextAssoc(pos, nSlotID, nLocalIndex);		
+        m_omIdIndexMap.GetNextAssoc(pos, nSlotID, nLocalIndex);
+
         if(nIndex == nLocalIndex)
         {
             nMapIndex = nSlotID;
