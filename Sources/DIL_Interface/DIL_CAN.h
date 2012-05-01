@@ -40,34 +40,34 @@ using namespace std;
 class CDIL_CAN : public CBaseDIL_CAN
 {
 public:
-	/** Constructor */
+    /** Constructor */
     CDIL_CAN();
 
-	/* Destructor */
+    /* Destructor */
     ~CDIL_CAN();
 
     BOOL InitInstance(void);
     int ExitInstance(void);
-    
-	/* Variable to maintain currently selected Driver ID */
-	DWORD m_dwDriverID;
 
-	/* member variable to hold the pointer of currently selected controller interface */
-	CBaseDIL_CAN_Controller* m_pBaseDILCAN_Controller;
+    /* Variable to maintain currently selected Driver ID */
+    DWORD m_dwDriverID;
 
-	/* Variable to hold handle to currently selected controller DIL */
-	HMODULE m_hDll;
-    
-	/**
-	 * Based on the parameter this function renders number of the driver interface
+    /* member variable to hold the pointer of currently selected controller interface */
+    CBaseDIL_CAN_Controller* m_pBaseDILCAN_Controller;
+
+    /* Variable to hold handle to currently selected controller DIL */
+    HMODULE m_hDll;
+
+    /**
+     * Based on the parameter this function renders number of the driver interface
      * layers supported or available. If 'bAvailable' is true, this returns number of
-     * the DILs implemented; else the list of the DILs supported by the existing 
+     * the DILs implemented; else the list of the DILs supported by the existing
      * license will be returned. If List is NULL, only number is returned.
-	 */
+     */
     DWORD DILC_GetDILList(bool bAvailable, DILLIST* List);
 
     /**
-	 * This function selects a driver abstraction layer (DAL). If support for the
+     * This function selects a driver abstraction layer (DAL). If support for the
      * intended one isn't allowed with the present license, this returns NO_LICENSE.
      * A list for DALs (or bDriverID) is shown below:
      * DRIVER_STUB                 : DAL for Stub
@@ -77,11 +77,11 @@ public:
      * DRIVER_CAN_PARALLEL_PORT    : DAL for CAN parallel port
      * DAL_NONE                    : Dummy DAL */
     HRESULT DILC_SelectDriver(DWORD dwDriverID, HWND hWndParent,
-                                        Base_WrapperErrorLogger* pILog);
+                              Base_WrapperErrorLogger* pILog);
 
     /**
-	 * This function registers the client. Only registered client's buffer will be
-     * updated on receive of a msg in the bus. 
+     * This function registers the client. Only registered client's buffer will be
+     * updated on receive of a msg in the bus.
      * Following are the return values
      * -1 registeration failed
      *  1 registeration successful
@@ -89,111 +89,111 @@ public:
      * -2 No more clients are allowed to register*/
     HRESULT DILC_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
 
-	/**
-	 * This function manages the target message buffer list. The two combinations
+    /**
+     * This function manages the target message buffer list. The two combinations
      * are the following:
      * bAction = MSGBUF_ADD, add pBufObj to the target message buffer list.
      * bAction = MSGBUF_CLEAR, clear the list. pBufObj is ignored.
      * At present maximum number of entries in the list is kept as 8.
-	 */
+     */
     HRESULT DILC_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
 
     /**
-	 * This returns ID of the driver interface layer presently selected.
-	 */
+     * This returns ID of the driver interface layer presently selected.
+     */
     DWORD DILC_GetSelectedDriver(void);
 
     /**
-	 * Call for all initialisation operations.
-	 */
+     * Call for all initialisation operations.
+     */
     HRESULT DILC_PerformInitOperations(void);
 
     /**
-	 * Call for all uninitialisation operations
-	 */
+     * Call for all uninitialisation operations
+     */
     HRESULT DILC_PerformClosureOperations(void);
 
     /**
-	 * Call this function to get a system time and the time stamp associated with it
-	 */
+     * Call this function to get a system time and the time stamp associated with it
+     */
     HRESULT DILC_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
 
     /**
-	 * Call this function to list the hardware interfaces available and receive
+     * Call this function to list the hardware interfaces available and receive
      * user's choice.
-	 */
+     */
     HRESULT DILC_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
 
     /**
-	 * Call this function to select hardware interfaces.
-	 */
+     * Call this function to select hardware interfaces.
+     */
     HRESULT DILC_SelectHwInterfaces(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
 
     /**
-	 * Call this function to deselect the selected hardware interface.
-	 */
+     * Call this function to deselect the selected hardware interface.
+     */
     HRESULT DILC_DeselectHwInterfaces(void);
 
     /**
-	 * Function to display the configuration dialog box for the selected DIL. If
+     * Function to display the configuration dialog box for the selected DIL. If
      * the dialog box needs to be displayed been initialised, pass the relevant data
      * as InitData. If it is null, the dialog box is uninitialised. This also contains
      * the user's choice as OUT parameter
-	 */
+     */
     HRESULT DILC_DisplayConfigDlg(PCHAR& InitData, int& Length);
 
     /**
-	 * To set the configuration data for the currently selected DIL. Caller must
+     * To set the configuration data for the currently selected DIL. Caller must
      * release the memory.
-	 */
+     */
     HRESULT DILC_SetConfigData(PCHAR pInitData, int Length);
 
     /**
-	 * Start the controller
-	 */
+     * Start the controller
+     */
     HRESULT DILC_StartHardware(void);
 
     /**
-	 * Stop the controller
-	 */
+     * Stop the controller
+     */
     HRESULT DILC_StopHardware(void);
 
     /**
-	 * Reset Hardware
-	 */
+     * Reset Hardware
+     */
     HRESULT DILC_ResetHardware(void);
 
     /**
-	 * Send messages
-	 */
+     * Send messages
+     */
     HRESULT DILC_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
 
     /**
-	 * Call to get descriptive string of the last error occurred
-	 */
-    HRESULT DILC_GetLastErrorString(string &acErrorStr);
+     * Call to get descriptive string of the last error occurred
+     */
+    HRESULT DILC_GetLastErrorString(string& acErrorStr);
 
-	/**
-	 * Call to get controller status. Caller has to give the handle of a 
+    /**
+     * Call to get controller status. Caller has to give the handle of a
      * event which will set whenever the controller changes the state.
      * #define defCONTROLLER_ACTIVE                   1
      * #define defCONTROLLER_PASSIVE                  2
      * #define defCONTROLLER_BUSOFF                   3
-	 */
+     */
     HRESULT DILC_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
 
     /**
-	 * Call to get Controller parameters. Value will be returned stored in lParam
+     * Call to get Controller parameters. Value will be returned stored in lParam
      * Possible values for ECONTR_PARAM are ...
      */
     HRESULT DILC_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 
-	/**
-	 * Call to Get Error Counts
-	 */
+    /**
+     * Call to Get Error Counts
+     */
     HRESULT  DILC_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
-	/* HELPER FUNCTIONS START */
+    /* HELPER FUNCTIONS START */
     void vSelectInterface_Dummy(void);
 
 private:
@@ -209,7 +209,7 @@ private:
     HRESULT (*m_pfStopHardware)(void);
     HRESULT (*m_pfResetHardware)(void);
     HRESULT (*m_pfSendMsg)(DWORD dwClientID, const STCAN_MSG& pouFlxTxMsg);
-    HRESULT (*m_pfGetLastErrorString)(CHAR *acErrorStr, int nLength);
+    HRESULT (*m_pfGetLastErrorString)(CHAR* acErrorStr, int nLength);
     HRESULT (*m_pfManageMsgBuf)(BYTE, DWORD ClientID, CBaseCANBufFSE*);
     HRESULT (*m_pfRegisterClient)(BOOL bRegister, DWORD&, TCHAR*);
     HRESULT (*m_pfGetCntrlStatus)(const HANDLE& hEvent, UINT& unCntrlStatus);

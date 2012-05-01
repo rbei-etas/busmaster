@@ -32,28 +32,28 @@ using namespace std;
 class CBaseDIL_CAN_Controller
 {
 public:
-	virtual HRESULT CAN_PerformInitOperations(void) = 0;
-	virtual HRESULT CAN_PerformClosureOperations(void) = 0;
-	virtual HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL) = 0;
-	virtual HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount) = 0;
-	virtual HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount) = 0;
-	virtual HRESULT CAN_DeselectHwInterface(void) = 0;
-	virtual HRESULT CAN_DisplayConfigDlg(PCHAR& InitData, int& Length) = 0;
-	virtual HRESULT CAN_SetConfigData(PCHAR pInitData, int Length) = 0;
-	virtual HRESULT CAN_StartHardware(void) = 0;
-	virtual HRESULT CAN_StopHardware(void) = 0;
-	virtual HRESULT CAN_ResetHardware(void) = 0;
-	virtual HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData) = 0;
-	virtual HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg) = 0;
-	virtual HRESULT CAN_GetLastErrorString(string& acErrorStr) = 0;
-	virtual HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam) = 0;
-	virtual HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam) = 0;
+    virtual HRESULT CAN_PerformInitOperations(void) = 0;
+    virtual HRESULT CAN_PerformClosureOperations(void) = 0;
+    virtual HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL) = 0;
+    virtual HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount) = 0;
+    virtual HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount) = 0;
+    virtual HRESULT CAN_DeselectHwInterface(void) = 0;
+    virtual HRESULT CAN_DisplayConfigDlg(PCHAR& InitData, int& Length) = 0;
+    virtual HRESULT CAN_SetConfigData(PCHAR pInitData, int Length) = 0;
+    virtual HRESULT CAN_StartHardware(void) = 0;
+    virtual HRESULT CAN_StopHardware(void) = 0;
+    virtual HRESULT CAN_ResetHardware(void) = 0;
+    virtual HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData) = 0;
+    virtual HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg) = 0;
+    virtual HRESULT CAN_GetLastErrorString(string& acErrorStr) = 0;
+    virtual HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam) = 0;
+    virtual HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam) = 0;
 
-	// Specific function set	
-	virtual HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog) = 0;
-	virtual HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj) = 0;
-	virtual HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName) = 0;
-	virtual HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus) = 0;
-	virtual HRESULT CAN_LoadDriverLibrary(void) = 0;
-	virtual HRESULT CAN_UnloadDriverLibrary(void) = 0;
+    // Specific function set
+    virtual HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog) = 0;
+    virtual HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj) = 0;
+    virtual HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName) = 0;
+    virtual HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus) = 0;
+    virtual HRESULT CAN_LoadDriverLibrary(void) = 0;
+    virtual HRESULT CAN_UnloadDriverLibrary(void) = 0;
 };
