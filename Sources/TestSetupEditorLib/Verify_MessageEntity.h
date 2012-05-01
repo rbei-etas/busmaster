@@ -28,10 +28,10 @@
 class CSignalCondition
 {
 public:
-	CSignalCondition();
-	virtual ~CSignalCondition();
-	CString m_omCondition;
-	CString m_omSigName;
+    CSignalCondition();
+    virtual ~CSignalCondition();
+    CString m_omCondition;
+    CString m_omSigName;
 };
 typedef CList<CSignalCondition, CSignalCondition&> CSignalConditionList;
 
@@ -39,18 +39,18 @@ class CVerify_MessageData
 {
 
 public:
-	CVerify_MessageData(void);
-	virtual ~CVerify_MessageData(void);
+    CVerify_MessageData(void);
+    virtual ~CVerify_MessageData(void);
     HRESULT GetSignalCondition(CString& omStrSignal, CString& omSignalCondition);
 
     BOOL m_bResult;
     DWORD m_dwMessageID;
     CString m_omMessageName;
-	eTYPE_UNIT_SIGNAL m_eSignalUnitType;
-	CSignalConditionList m_odSignalConditionList;
-   	CVerify_MessageData& operator=(const CVerify_MessageData& RefObj);
-    
-    
+    eTYPE_UNIT_SIGNAL m_eSignalUnitType;
+    CSignalConditionList m_odSignalConditionList;
+    CVerify_MessageData& operator=(const CVerify_MessageData& RefObj);
+
+
 };
 typedef CList<CVerify_MessageData, CVerify_MessageData&> CVerify_MessageDataList;
 
@@ -58,15 +58,14 @@ class CVerify_MessageEntity : public CBaseEntityTA
 {
 
 private:
-	CVerify_MessageData m_ouData;
+    CVerify_MessageData m_ouData;
 public:
-	CVerify_MessageEntity();
-	virtual ~CVerify_MessageEntity();
+    CVerify_MessageEntity();
+    virtual ~CVerify_MessageEntity();
     CVerify_MessageEntity& operator=(const CVerify_MessageEntity& RefObj)
     {
-        
         this->m_eType = RefObj.m_eType;
-        this->m_ouData = RefObj.m_ouData; 
+        this->m_ouData = RefObj.m_ouData;
         return *this;
     }
     CVerify_MessageEntity(const CVerify_MessageEntity& RefObj)
@@ -74,11 +73,11 @@ public:
         this->m_eType = RefObj.m_eType;
         this->m_ouData = RefObj.m_ouData;
     }
-	HRESULT GetData(MSXML2::IXMLDOMNodePtr& pIDomNode);
-	HRESULT GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
-	eTYPE_ENTITY GetEntityType();
-	HRESULT SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode);
-	HRESULT SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
+    HRESULT GetData(MSXML2::IXMLDOMNodePtr& pIDomNode);
+    HRESULT GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
+    eTYPE_ENTITY GetEntityType();
+    HRESULT SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode);
+    HRESULT SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
     HRESULT ValidateEntity(CString& /*omStrResult*/);
     DWORD GetMsgID()
     {
@@ -94,10 +93,10 @@ class CVerifyData
 {
 
 public:
-	CVerifyData();
-	virtual ~CVerifyData();
-	eERROR_ATTRIBUTE m_eAttributeError;
-	CVerify_MessageEntityList m_odVerify_MessageEntityList;
+    CVerifyData();
+    virtual ~CVerifyData();
+    eERROR_ATTRIBUTE m_eAttributeError;
+    CVerify_MessageEntityList m_odVerify_MessageEntityList;
     CVerifyData& operator=(const CVerifyData& RefObj);
 
 };

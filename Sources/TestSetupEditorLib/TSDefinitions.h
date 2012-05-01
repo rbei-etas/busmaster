@@ -86,63 +86,63 @@
 
 enum eTYPE_REPORT
 {
-	TXT = 0,
-	HTM
+    TXT = 0,
+    HTM
 };
 enum eTIME_MODE
 {
-    ABS, 
+    ABS,
     REL
 };
 enum eTYPE_ENTITY
 {
     BASE_ENTITY = -1,
-	TEST_SETUP,
-	TEST_CASE,
-	WAIT,
-	REPLAY,
-	SEND,
-	SEND_MESSAGE,
-	VERIFY,
-	VERIFY_MESSAGE,
+    TEST_SETUP,
+    TEST_CASE,
+    WAIT,
+    REPLAY,
+    SEND,
+    SEND_MESSAGE,
+    VERIFY,
+    VERIFY_MESSAGE,
     VERIFYRESPONSE
 };
 
 enum eTYPE_UNIT_SIGNAL
 {
-	RAW = 0,
-	ENG
+    RAW = 0,
+    ENG
 };
 enum eERROR_ATTRIBUTE
 {
-	SUCCESS = 0,
-	WARNING,
-	ERRORS,
-	FATAL
+    SUCCESS = 0,
+    WARNING,
+    ERRORS,
+    FATAL
 };
 enum eACTION_EXCP
 {
-	CONTINUE = 0,
-	EXIT
+    CONTINUE = 0,
+    EXIT
 };
 union tagUSIGNALVALUE
 {
 
 public:
-	tagUSIGNALVALUE();
-	float m_fValue;
-	UINT64 m_u64Value;
+    tagUSIGNALVALUE();
+    float m_fValue;
+    UINT64 m_u64Value;
 
 };
 class SInfo
 {
 
 public:
-	CString m_omCategory;
-	CString m_omValue;
+    CString m_omCategory;
+    CString m_omValue;
 
-	SInfo();
-	virtual ~SInfo();
+    SInfo();
+    virtual ~SInfo();
     VOID vInitialise(CString omCategory = CString(""), CString omValue=CString(""));
 };
 
@@ -150,10 +150,10 @@ public:
 class SReportFile
 {
 public:
-	eTYPE_REPORT m_eType;
-	CString m_omPath;
+    eTYPE_REPORT m_eType;
+    CString m_omPath;
     eTIME_MODE m_eTimeMode;
-	SReportFile();
-	virtual ~SReportFile();
+    SReportFile();
+    virtual ~SReportFile();
     VOID vInitialise(eTYPE_REPORT eType = TXT, CString omPath = CString(""), eTIME_MODE eTimeMode = ABS);
 };
