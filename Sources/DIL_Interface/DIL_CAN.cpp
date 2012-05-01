@@ -43,24 +43,25 @@ typedef HRESULT (*GETIDIL_CAN_CONTROLLER)(void** ppvInterface);
 static GETIDIL_CAN_CONTROLLER pfGetIDILCAN_Controller;
 static CDIL_CAN_DUMMY* sg_pouDIL_CAN_DUMMY = new CDIL_CAN_DUMMY;
 
-typedef struct
+class ENTRY_DIL
 {
+public:
     DWORD           m_dwDIL;
-    TCHAR           m_acDIL[MAX_DILNAME];
-} ENTRY_DIL;
+    string          m_acDIL;
+};
 
 static ENTRY_DIL sg_ListDIL[] =
 {
     /* simulation should be the first entry... */
-    {DRIVER_CAN_STUB,       _T("Simulation")       },
+    {DRIVER_CAN_STUB,       "Simulation"       },
     /* ...all other drivers should be in alphabetical order */
-    {DRIVER_CAN_ETAS_BOA,   _T("ETAS BOA")         },
-    {DRIVER_CAN_ETAS_ES581, _T("ETAS ES581")       },
-    {DRIVER_CAN_ICS_NEOVI,  _T("IntrepidCS neoVI") },
-    {DRIVER_CAN_KVASER_CAN, _T("Kvaser CAN")       },
-    {DRIVER_CAN_MHS,        _T("MHS Tiny-CAN")     },
-    {DRIVER_CAN_PEAK_USB,   _T("PEAK USB")         },
-    {DRIVER_CAN_VECTOR_XL,  _T("Vector XL")        },
+    {DRIVER_CAN_ETAS_BOA,   "ETAS BOA"         },
+    {DRIVER_CAN_ETAS_ES581, "ETAS ES581"       },
+    {DRIVER_CAN_ICS_NEOVI,  "IntrepidCS neoVI" },
+    {DRIVER_CAN_KVASER_CAN, "Kvaser CAN"       },
+    {DRIVER_CAN_MHS,        "MHS Tiny-CAN"     },
+    {DRIVER_CAN_PEAK_USB,   "PEAK USB"         },
+    {DRIVER_CAN_VECTOR_XL,  "Vector XL"        },
 };
 
 /**
@@ -144,7 +145,7 @@ DWORD CDIL_CAN::DILC_GetDILList(bool /*bAvailable*/, DILLIST* List)
     {
         for (int i = 0; i < sizeof(sg_ListDIL)/sizeof(ENTRY_DIL); i++)
         {
-            strcpy_s((*List)[i].m_acName, sg_ListDIL[i].m_acDIL);
+            (*List)[i].m_acName = sg_ListDIL[i].m_acDIL;
             (*List)[i].m_dwDriverID = sg_ListDIL[i].m_dwDIL;
             Result++;
         }

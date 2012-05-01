@@ -12258,7 +12258,7 @@ BOOL CMainFrame::bUpdatePopupMenuDIL(void)
                 for (int i = 0; (i < m_nDILCount) && bResult; i++)
                 {
                     bResult = m_pDILSubMenu->AppendMenu(MF_STRING,
-                                                        IDC_SELECT_DRIVER + i, m_ouList[i].m_acName);
+                                                        IDC_SELECT_DRIVER + i, m_ouList[i].m_acName.c_str());
 
                     if (bResult == TRUE)
                     {

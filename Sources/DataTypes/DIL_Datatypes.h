@@ -132,14 +132,13 @@ public:
     string     m_acDriver;
 };
 
-#define     MAX_DILNAME             32
-
-typedef struct
+class DILINFO
 {
-    TCHAR   m_acName[MAX_DILNAME];
+public:
+    string  m_acName;
     DWORD   m_dwDriverID;
     UINT    m_ResourceID;
-} DILINFO;
+};
 
 const int MAX_DILS = 16;
 typedef DILINFO DILLIST[MAX_DILS];
