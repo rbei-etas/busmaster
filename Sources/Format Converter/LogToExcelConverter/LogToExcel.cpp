@@ -203,7 +203,6 @@ void CLogToExcel::vPrintFields()
                 unFieldBufferIndex++;
                 unBufferIndex++;
             }
-
         } // else
 
         m_strFieldBuffer.append(1,'\0');
