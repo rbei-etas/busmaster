@@ -31,12 +31,12 @@ IMPLEMENT_DYNCREATE(CTreeViewEx, CTreeView)
 Function Name  :  CTreeViewEx
 Input(s)       :  -
 Output         :  -
-Functionality  :  Constructor of CTreeViewEx 
+Functionality  :  Constructor of CTreeViewEx
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CTreeViewEx::CTreeViewEx(void)
 {
@@ -46,7 +46,7 @@ CTreeViewEx::CTreeViewEx(void)
     m_hCurMoveUp = AfxGetApp()->LoadCursor(MAKEINTRESOURCE(IDC_CURMUP));
     m_hCurNoDrop = ::LoadCursor(NULL, MAKEINTRESOURCE(IDC_NO));
     m_hOrigCursor = ::GetCursor();
-    m_omBkColor = def_COLOR_TREE_BKG;    
+    m_omBkColor = def_COLOR_TREE_BKG;
     m_omTextColor = def_COLOR_TREE_TEXT;
 }
 
@@ -54,12 +54,12 @@ CTreeViewEx::CTreeViewEx(void)
 Function Name  :  ~CTreeViewEx
 Input(s)       :  -
 Output         :  -
-Functionality  :  Destructor of CTreeViewEx 
+Functionality  :  Destructor of CTreeViewEx
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CTreeViewEx::~CTreeViewEx()
 {
@@ -69,15 +69,15 @@ BEGIN_MESSAGE_MAP(CTreeViewEx, CTreeView)
     ON_WM_LBUTTONUP()
     ON_WM_MOUSEMOVE()
     ON_WM_LBUTTONDOWN()
-    
+
     ON_WM_CTLCOLOR_REFLECT()
-    
+
     ON_COMMAND(IDM_DELETE, vOnDeleteItem)
     ON_COMMAND(IDM_EXPAND_ALL, vExpandFull)
     ON_COMMAND(IDM_SETTINGS_CLR, OnBKGColor)
     ON_COMMAND(IDM_COLLAPSE_ALL, vCollapseFull)
     ON_COMMAND_RANGE(IDM_ADD_TESTCASE, IDM_ADD_REPLAY, OnAddEntityItem)
-    
+
     ON_NOTIFY_REFLECT(NM_RCLICK, OnNMRclick)
     ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnTvnBegindrag)
     ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnTvnSelchanged)
@@ -92,12 +92,12 @@ END_MESSAGE_MAP()
 #ifdef _DEBUG
 void CTreeViewEx::AssertValid() const
 {
-   CTreeView::AssertValid();
+    CTreeView::AssertValid();
 }
 
 void CTreeViewEx::Dump(CDumpContext& dc) const
 {
-	CTreeView::Dump(dc);
+    CTreeView::Dump(dc);
 }
 #endif //_DEBUG
 
@@ -107,12 +107,12 @@ void CTreeViewEx::Dump(CDumpContext& dc) const
 Function Name  :  OnInitialUpdate
 Input(s)       :  -
 Output         :  void
-Functionality  :  This function does the initial updation 
+Functionality  :  This function does the initial updation
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTreeViewEx::OnInitialUpdate(void)
 {
@@ -130,31 +130,28 @@ Input(s)       :  HTREEITEM hParent - parent treeitem handle
                   int nNonSelectedImage - image of the tree node when it is not selected
                   long lParam - 32 bit specific value of tree node
 Output         :  HTREEITEM - handle of the newly inserted item
-Functionality  :  Insrets a new tree item in the tree view 
+Functionality  :  Insrets a new tree item in the tree view
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-HTREEITEM CTreeViewEx::InsertTreeItem(HTREEITEM hParent, CString omstrItemName, HTREEITEM hTreeInsAfter, 
-	                           int nSelectedImage ,int nNonSelectedImage, long lParam)
+HTREEITEM CTreeViewEx::InsertTreeItem(HTREEITEM hParent, CString omstrItemName, HTREEITEM hTreeInsAfter,
+                                      int nSelectedImage ,int nNonSelectedImage, long lParam)
 {
-	TV_ITEM tvItem;
-	TV_INSERTSTRUCT tvInsertItem;
-
-	tvItem.mask = TVIF_TEXT | TVIF_IMAGE | TVIF_PARAM | TVIF_SELECTEDIMAGE;
-	tvItem.cchTextMax = omstrItemName.GetLength();
+    TV_ITEM tvItem;
+    TV_INSERTSTRUCT tvInsertItem;
+    tvItem.mask = TVIF_TEXT | TVIF_IMAGE | TVIF_PARAM | TVIF_SELECTEDIMAGE;
+    tvItem.cchTextMax = omstrItemName.GetLength();
     tvItem.pszText = omstrItemName.GetBuffer(tvItem.cchTextMax);
-	tvItem.lParam = lParam;
+    tvItem.lParam = lParam;
     tvItem.iImage = nNonSelectedImage;
-	tvItem.iSelectedImage = nSelectedImage;
-	
-	tvInsertItem.item = tvItem;
-	tvInsertItem.hInsertAfter = hTreeInsAfter;
-	tvInsertItem.hParent = hParent;
-
-   	return GetTreeCtrl().InsertItem(&tvInsertItem);
+    tvItem.iSelectedImage = nSelectedImage;
+    tvInsertItem.item = tvItem;
+    tvInsertItem.hInsertAfter = hTreeInsAfter;
+    tvInsertItem.hParent = hParent;
+    return GetTreeCtrl().InsertItem(&tvInsertItem);
 }
 
 
@@ -168,12 +165,12 @@ Input(s)       :  LPCTSTR lpszClassName - Class Name
                   UINT nID - ID of the window
                   CCreateContext* pContext - indow context
 Output         :  BOOL
-Functionality  :  Create the treeview control with the required styles. 
+Functionality  :  Create the treeview control with the required styles.
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 BOOL CTreeViewEx::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext)
 {
@@ -186,12 +183,12 @@ Function Name  :  OnLButtonDown
 Input(s)       :  UINT unFlag - Flags
                   CPoint point - Mouse Pointer point
 Output         :  void
-Functionality  :  ON_WM_LBUTTON Handler used to toggle the check point 
+Functionality  :  ON_WM_LBUTTON Handler used to toggle the check point
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTreeViewEx::OnLButtonDown(UINT unFlag, CPoint point)
 {
@@ -206,6 +203,7 @@ void CTreeViewEx::OnLButtonDown(UINT unFlag, CPoint point)
         vSetCheckParent(hItem);
         return;
     }
+
     CTreeView::OnLButtonDown(unFlag, point);
 }
 
@@ -213,12 +211,12 @@ void CTreeViewEx::OnLButtonDown(UINT unFlag, CPoint point)
 Function Name  :  bIsItemChecked
 Input(s)       :  HTREEITEM hItem - hanle of tree item
 Output         :  BOOL - True if item is checked else false
-Functionality  :  Returns weather the item is checked or not 
+Functionality  :  Returns weather the item is checked or not
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 BOOL CTreeViewEx::bIsItemChecked(HTREEITEM hItem)
 {
@@ -226,8 +224,9 @@ BOOL CTreeViewEx::bIsItemChecked(HTREEITEM hItem)
     {
         return FALSE;
     }
-    CTreeCtrl &omTreeCtrl = GetTreeCtrl();
-	return omTreeCtrl.GetItemState( hItem, TVIS_STATEIMAGEMASK )>>12 == 2;
+
+    CTreeCtrl& omTreeCtrl = GetTreeCtrl();
+    return omTreeCtrl.GetItemState( hItem, TVIS_STATEIMAGEMASK )>>12 == 2;
 }
 
 /******************************************************************************
@@ -235,21 +234,22 @@ Function Name  :  vSetCheck
 Input(s)       :  HTREEITEM hItem - hanle of tree item whose state has to change
                   BOOL bCheck - state of the item
 Output         :  void
-Functionality  :  Item state will be changed according to the bCheck Value 
+Functionality  :  Item state will be changed according to the bCheck Value
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTreeViewEx::vSetCheck(HTREEITEM hItem, BOOL bCheck)
 {
     if (hItem != NULL)
-	{
+    {
         int nState = (bCheck == TRUE) ? 2 : 1;
         GetTreeCtrl().SetItemState( hItem, INDEXTOSTATEIMAGEMASK(nState), TVIS_STATEIMAGEMASK );
-	}
-	return;
+    }
+
+    return;
 }
 
 /******************************************************************************
@@ -257,12 +257,12 @@ Function Name  :  vSetCheckChildren
 Input(s)       :  HTREEITEM hItem - hanle of tree item whose Childrens state has to change
                   BOOL bCheck - state of the Children item
 Output         :  void
-Functionality  :  Item's Children state will be changed according to the bCheck Value  
+Functionality  :  Item's Children state will be changed according to the bCheck Value
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTreeViewEx::vSetCheckChildren(HTREEITEM hItem, BOOL bCheck)
 {
@@ -270,17 +270,17 @@ void CTreeViewEx::vSetCheckChildren(HTREEITEM hItem, BOOL bCheck)
     {
         return;
     }
-    CTreeCtrl &omTreeCtrl = GetTreeCtrl();
-	
+
+    CTreeCtrl& omTreeCtrl = GetTreeCtrl();
     //W4 Removal
     //HTREEITEM hNext = omTreeCtrl.GetChildItem(hItem);
-    
     vSetCheck(hItem, bCheck);
-	
+
     // loop to set item state for children
-	if ( omTreeCtrl.ItemHasChildren(hItem))
+    if ( omTreeCtrl.ItemHasChildren(hItem))
     {
         HTREEITEM htiChild = omTreeCtrl.GetChildItem (hItem);
+
         if (htiChild == NULL)
         {
             return;
@@ -289,7 +289,9 @@ void CTreeViewEx::vSetCheckChildren(HTREEITEM hItem, BOOL bCheck)
         {
             vSetCheckChildren(htiChild, bCheck);
         }
+
         HTREEITEM htiSibling = omTreeCtrl.GetNextSiblingItem (htiChild);
+
         while (htiSibling )
         {
             vSetCheckChildren(htiSibling, bCheck);
@@ -297,18 +299,18 @@ void CTreeViewEx::vSetCheckChildren(HTREEITEM hItem, BOOL bCheck)
         }
     }
 
-	return;
+    return;
 }
 /******************************************************************************
 Function Name  :  vSetCheckParent
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTreeViewEx::vSetCheckParent(HTREEITEM hItem)
 {
@@ -316,88 +318,95 @@ void CTreeViewEx::vSetCheckParent(HTREEITEM hItem)
     {
         return;
     }
-	CTreeCtrl &omTreeCtrl = GetTreeCtrl();
-	HTREEITEM hParentItem = omTreeCtrl.GetParentItem(hItem);
+
+    CTreeCtrl& omTreeCtrl = GetTreeCtrl();
+    HTREEITEM hParentItem = omTreeCtrl.GetParentItem(hItem);
     HTREEITEM hChildItem;
     BOOL bAllChecked = TRUE;
+
     if( omTreeCtrl.ItemHasChildren(hParentItem))
     {
         hChildItem = omTreeCtrl.GetChildItem(hParentItem);
+
         while(hChildItem)
-        {   
+        {
             if(!bIsItemChecked(hChildItem))
             {
                 bAllChecked = FALSE;
                 break;
             }
+
             hChildItem = omTreeCtrl.GetNextSiblingItem(hChildItem);
         }
     }
+
     vSetCheck(hParentItem, bAllChecked);
     vSetCheckParent(hParentItem);
-	return;
+    return;
 }
 
 /******************************************************************************
 Function Name  :  OnTvnBegindrag
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTreeViewEx::OnTvnBegindrag(NMHDR *pNMHDR, LRESULT *pResult)
+void CTreeViewEx::OnTvnBegindrag(NMHDR* pNMHDR, LRESULT* pResult)
 {
     LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
+
     if (!m_bDragging)
-	{
-		if (bItemCanDragged(pNMTreeView->itemNew.hItem))
-		{
+    {
+        if (bItemCanDragged(pNMTreeView->itemNew.hItem))
+        {
             CTreeCtrl& omTreeCtrl = GetTreeCtrl();
-			m_bDragging = TRUE;
-			m_hDraggingItemgedItem = pNMTreeView->itemNew.hItem;
-			omTreeCtrl.Select(m_hDraggingItemgedItem, TVGN_CARET);
+            m_bDragging = TRUE;
+            m_hDraggingItemgedItem = pNMTreeView->itemNew.hItem;
+            omTreeCtrl.Select(m_hDraggingItemgedItem, TVGN_CARET);
             SetCapture();
-    	}
-	}
+        }
+    }
+
     *pResult = 0;
 }
 
 
 /******************************************************************************
 Function Name  :  bItemCanDragged
-Input(s)       :  
+Input(s)       :
 Output         :  BOOL
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 BOOL CTreeViewEx::bItemCanDragged(HTREEITEM /*hItem*/)
 {
-	return TRUE;
+    return TRUE;
 }
 
 /******************************************************************************
 Function Name  :  IsItemCanDropOn
-Input(s)       :  
+Input(s)       :
 Output         :  BOOL
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 BOOL CTreeViewEx::IsItemCanDropOn(HTREEITEM hSource, HTREEITEM hTarget)
 {
-    CTreeCtrl &omTreeCtrl = GetTreeCtrl();
-   
+    CTreeCtrl& omTreeCtrl = GetTreeCtrl();
+
     if(hSource != NULL || hTarget != NULL)
     {
         if(omTreeCtrl.GetParentItem(hSource) == omTreeCtrl.GetParentItem(hTarget))
@@ -418,20 +427,20 @@ BOOL CTreeViewEx::IsItemCanDropOn(HTREEITEM hSource, HTREEITEM hTarget)
 
 /******************************************************************************
 Function Name  :  OnLButtonUp
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTreeViewEx::OnLButtonUp(UINT unFlag, CPoint point)
 {
     if(m_bDragging == TRUE)
     {
-        CTreeCtrl &omTreeCtrl = GetTreeCtrl();
+        CTreeCtrl& omTreeCtrl = GetTreeCtrl();
         m_bDragging = FALSE;
         DragEnd();
         omTreeCtrl.SelectDropTarget(0);
@@ -439,39 +448,44 @@ void CTreeViewEx::OnLButtonUp(UINT unFlag, CPoint point)
         GetTreeCtrl().SetInsertMark(0, 0);
         ::ReleaseCapture();
     }
-	CTreeView::OnLButtonUp(unFlag, point);
- }
+
+    CTreeView::OnLButtonUp(unFlag, point);
+}
 
 /******************************************************************************
 Function Name  :  DragEnd
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTreeViewEx::DragEnd(VOID) 
+void CTreeViewEx::DragEnd(VOID)
 {
- 	eTYPE_DROPPING eDropping;
-	HTREEITEM hDroppingItem = GetDropItem(eDropping);
-    
+    eTYPE_DROPPING eDropping;
+    HTREEITEM hDroppingItem = GetDropItem(eDropping);
+
     if (hDroppingItem == NULL)
     {
         return;
     }
+
     CTreeCtrl& omTempTreeCtrl = GetTreeCtrl();
     //UINT unFirstIndex = unGetIndex(m_hDraggingItemgedItem);
     HTREEITEM hInsertAfter = DragMoveItem(m_hDraggingItemgedItem, hDroppingItem, eDropping);
+
     if(hInsertAfter == NULL)
     {
         return;
     }
+
     //W4 Removal
     DWORD dwRepositionItemID = (DWORD)omTempTreeCtrl.GetItemData(m_hDraggingItemgedItem);
     DWORD dwInsertAfterItemID;
+
     if(hInsertAfter == TVI_FIRST)
     {
         //W4 Removal
@@ -482,6 +496,7 @@ void CTreeViewEx::DragEnd(VOID)
         //W4 Removal
         dwInsertAfterItemID = (DWORD)omTempTreeCtrl.GetItemData(hInsertAfter);
     }
+
     HTREEITEM hParent = omTempTreeCtrl.GetParentItem(m_hDraggingItemgedItem);
     //W4 Removal
     UINT unNewID = GetEditorWindow()->unRepisitonEntry((DWORD)dwRepositionItemID, (DWORD)dwInsertAfterItemID, (DWORD)omTempTreeCtrl.GetItemData(hParent));
@@ -491,168 +506,186 @@ void CTreeViewEx::DragEnd(VOID)
 
 /******************************************************************************
 Function Name  :  unGetIndex
-Input(s)       :  
+Input(s)       :
 Output         :  UINT
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 int CTreeViewEx::unGetIndex(HTREEITEM hTreeItem)
 {
-    CTreeCtrl &omTempTreeCtrl = GetTreeCtrl();
+    CTreeCtrl& omTempTreeCtrl = GetTreeCtrl();
     HTREEITEM hParent = omTempTreeCtrl.GetParentItem(hTreeItem);
-    
+
     if (omTempTreeCtrl.ItemHasChildren(hParent))
     {
         HTREEITEM hChildItemItem = omTempTreeCtrl.GetChildItem(hParent);
         int i = -1;
+
         while (hChildItemItem != NULL)
         {
             i++;
+
             if(hChildItemItem == hTreeItem)
             {
                 return i;
             }
+
             hChildItemItem = omTempTreeCtrl.GetNextItem(hChildItemItem, TVGN_NEXT);
         }
     }
+
     return -1;
 }
 
 /******************************************************************************
 Function Name  :  DragMoveItem
-Input(s)       :  
+Input(s)       :
 Output         :  HTREEITEM
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-HTREEITEM CTreeViewEx::DragMoveItem(HTREEITEM hDraggingItem, HTREEITEM hDroppingItem, eTYPE_DROPPING eDropping) 
+HTREEITEM CTreeViewEx::DragMoveItem(HTREEITEM hDraggingItem, HTREEITEM hDroppingItem, eTYPE_DROPPING eDropping)
 {
-    CTreeCtrl &omTreeCtrl = GetTreeCtrl();
-    
+    CTreeCtrl& omTreeCtrl = GetTreeCtrl();
+
     if(eDropping == NO_DROPPING)
-		return NULL;
-	if(bAnscestor(hDraggingItem, hDroppingItem) || !IsItemCanDropOn(hDraggingItem, hDroppingItem))
-		return NULL;
-    if(bSuccessor(hDraggingItem, hDroppingItem) && (eDropping == DROPPING_ABOVE))
-        return NULL;
-    if(hDraggingItem == hDroppingItem)
-        return NULL;
-
-	if(!hDroppingItem && eDropping == DROPPING_BELOW)
-		for(hDroppingItem = omTreeCtrl.GetRootItem(); omTreeCtrl.GetNextSiblingItem(hDroppingItem) != 0; hDroppingItem = omTreeCtrl.GetNextSiblingItem(hDroppingItem));
-
-	// Setup insertion parameters
-	HTREEITEM hInsertAfter = 0;
-	HTREEITEM hParent = 0;
-	switch(eDropping) 
     {
-		case DROPPING_BELOW:
-			hInsertAfter = hDroppingItem;
-			hParent = omTreeCtrl.GetParentItem(hDroppingItem);
-			break;
+        return NULL;
+    }
 
-		case DROPPING_ABOVE:
-			hInsertAfter = omTreeCtrl.GetPrevSiblingItem(hDroppingItem);
-			if(!hInsertAfter)
-				hInsertAfter = TVI_FIRST;
-			hParent = omTreeCtrl.GetParentItem(hDroppingItem);
-			break;
+    if(bAnscestor(hDraggingItem, hDroppingItem) || !IsItemCanDropOn(hDraggingItem, hDroppingItem))
+    {
+        return NULL;
+    }
 
-		default:
-			ASSERT(false);
-			break;
-	}
+    if(bSuccessor(hDraggingItem, hDroppingItem) && (eDropping == DROPPING_ABOVE))
+    {
+        return NULL;
+    }
 
-	m_hDraggingItemgedItem = CopyTotalBranch(hDraggingItem, hParent, hInsertAfter);
+    if(hDraggingItem == hDroppingItem)
+    {
+        return NULL;
+    }
+
+    if(!hDroppingItem && eDropping == DROPPING_BELOW)
+        for(hDroppingItem = omTreeCtrl.GetRootItem(); omTreeCtrl.GetNextSiblingItem(hDroppingItem) != 0; hDroppingItem = omTreeCtrl.GetNextSiblingItem(hDroppingItem));
+
+    // Setup insertion parameters
+    HTREEITEM hInsertAfter = 0;
+    HTREEITEM hParent = 0;
+
+    switch(eDropping)
+    {
+        case DROPPING_BELOW:
+            hInsertAfter = hDroppingItem;
+            hParent = omTreeCtrl.GetParentItem(hDroppingItem);
+            break;
+
+        case DROPPING_ABOVE:
+            hInsertAfter = omTreeCtrl.GetPrevSiblingItem(hDroppingItem);
+
+            if(!hInsertAfter)
+            {
+                hInsertAfter = TVI_FIRST;
+            }
+
+            hParent = omTreeCtrl.GetParentItem(hDroppingItem);
+            break;
+
+        default:
+            ASSERT(false);
+            break;
+    }
+
+    m_hDraggingItemgedItem = CopyTotalBranch(hDraggingItem, hParent, hInsertAfter);
     omTreeCtrl.DeleteItem(hDraggingItem);
     return hInsertAfter;
 }
 
 /******************************************************************************
 Function Name  :  CopyTotalBranch
-Input(s)       :  
+Input(s)       :
 Output         :  HTREEITEM
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HTREEITEM CTreeViewEx::CopyTotalBranch( HTREEITEM hBranchItem, HTREEITEM hNewParentItem, HTREEITEM hAfterItem /*= TVI_LAST*/ )
 {
-        HTREEITEM hChildItem;
-        CTreeCtrl& omTreeCtrl = GetTreeCtrl();
-        HTREEITEM hNewItem = CopyTreeItem( hBranchItem, hNewParentItem, hAfterItem );
-        hChildItem = omTreeCtrl.GetChildItem(hBranchItem);
-        while( hChildItem != NULL)
-        {
-            CopyTotalBranch(hChildItem, hNewItem, TVI_LAST);  
-            hChildItem = omTreeCtrl.GetNextSiblingItem( hChildItem );
-        }
-        return hNewItem;
+    HTREEITEM hChildItem;
+    CTreeCtrl& omTreeCtrl = GetTreeCtrl();
+    HTREEITEM hNewItem = CopyTreeItem( hBranchItem, hNewParentItem, hAfterItem );
+    hChildItem = omTreeCtrl.GetChildItem(hBranchItem);
+
+    while( hChildItem != NULL)
+    {
+        CopyTotalBranch(hChildItem, hNewItem, TVI_LAST);
+        hChildItem = omTreeCtrl.GetNextSiblingItem( hChildItem );
+    }
+
+    return hNewItem;
 }
 
 /******************************************************************************
 Function Name  :  CopyTreeItem
-Input(s)       :  
+Input(s)       :
 Output         :  HTREEITEM
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HTREEITEM CTreeViewEx::CopyTreeItem( HTREEITEM hItem, HTREEITEM hNewParentItem,HTREEITEM hAfterItem )
 {
-        TV_INSERTSTRUCT tvstruct;
-        HTREEITEM   hNewItem;
-        CString sText;
-        CTreeCtrl& omTreeCtrl = GetTreeCtrl();
-        // get information of the source item
-        tvstruct.item.hItem = hItem;
-        tvstruct.item.mask = TVIF_CHILDREN | TVIF_HANDLE | TVIF_IMAGE | TVIF_SELECTEDIMAGE ;
-        omTreeCtrl.GetItem(&tvstruct.item);  
-        sText = omTreeCtrl.GetItemText( hItem );
-        
-        tvstruct.item.cchTextMax = sText.GetLength();
-        tvstruct.item.pszText = sText.LockBuffer();
-
-        // Insert the item at proper location
-        tvstruct.hParent = hNewParentItem;
-        tvstruct.hInsertAfter = hAfterItem;
-        tvstruct.item.mask = TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_TEXT;
-        hNewItem = omTreeCtrl.InsertItem(&tvstruct);
-        sText.ReleaseBuffer();
-
-        // Now copy item data and item state.
-        omTreeCtrl.SetItemData( hNewItem, omTreeCtrl.GetItemData( hItem ));
-        omTreeCtrl.SetItemState( hNewItem, omTreeCtrl.GetItemState( hItem, TVIS_STATEIMAGEMASK ), 
-                                                        TVIS_STATEIMAGEMASK );
-
-        return hNewItem;
+    TV_INSERTSTRUCT tvstruct;
+    HTREEITEM   hNewItem;
+    CString sText;
+    CTreeCtrl& omTreeCtrl = GetTreeCtrl();
+    // get information of the source item
+    tvstruct.item.hItem = hItem;
+    tvstruct.item.mask = TVIF_CHILDREN | TVIF_HANDLE | TVIF_IMAGE | TVIF_SELECTEDIMAGE ;
+    omTreeCtrl.GetItem(&tvstruct.item);
+    sText = omTreeCtrl.GetItemText( hItem );
+    tvstruct.item.cchTextMax = sText.GetLength();
+    tvstruct.item.pszText = sText.LockBuffer();
+    // Insert the item at proper location
+    tvstruct.hParent = hNewParentItem;
+    tvstruct.hInsertAfter = hAfterItem;
+    tvstruct.item.mask = TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_TEXT;
+    hNewItem = omTreeCtrl.InsertItem(&tvstruct);
+    sText.ReleaseBuffer();
+    // Now copy item data and item state.
+    omTreeCtrl.SetItemData( hNewItem, omTreeCtrl.GetItemData( hItem ));
+    omTreeCtrl.SetItemState( hNewItem, omTreeCtrl.GetItemState( hItem, TVIS_STATEIMAGEMASK ),
+                             TVIS_STATEIMAGEMASK );
+    return hNewItem;
 }
 
 
 /******************************************************************************
 Function Name  :  OnMouseMove
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTreeViewEx::OnMouseMove(UINT unFlag, CPoint point)
 {
@@ -660,263 +693,294 @@ void CTreeViewEx::OnMouseMove(UINT unFlag, CPoint point)
     {
         DragMove(point);
     }
+
     CTreeView::OnMouseMove(unFlag, point);
 }
 
 /******************************************************************************
 Function Name  :  DragMove
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTreeViewEx::DragMove(CPoint /*point*/)        //point is not required currently
 {
-	eTYPE_DROPPING eDropping;
-	HTREEITEM hDroppingItem = GetDropItem(eDropping);
+    eTYPE_DROPPING eDropping;
+    HTREEITEM hDroppingItem = GetDropItem(eDropping);
     GetTreeCtrl().SetInsertMark(0, 0);
+
     if(eDropping == DROPPING_ABOVE)
     {
         GetTreeCtrl().SetInsertMark(hDroppingItem, FALSE);
     }
+
     if(eDropping == DROPPING_BELOW)
     {
         GetTreeCtrl().SetInsertMark(hDroppingItem);
     }
-	SetDraggingCursor(eDropping);
+
+    SetDraggingCursor(eDropping);
 }
 
 /******************************************************************************
 Function Name  :  SetDraggingCursor
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTreeViewEx::SetDraggingCursor(eTYPE_DROPPING eDropping) 
+void CTreeViewEx::SetDraggingCursor(eTYPE_DROPPING eDropping)
 {
     if(eDropping == NO_DROPPING)
+    {
         SetCursor(m_hCurNoDrop);
+    }
     else
+    {
         SetCursor(m_hOrigCursor);
+    }
 }
 
 /******************************************************************************
 Function Name  :  GetDropItem
-Input(s)       :  
+Input(s)       :
 Output         :  HTREEITEM
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-HTREEITEM CTreeViewEx::GetDropItem(eTYPE_DROPPING & eDroppingPos) 
+HTREEITEM CTreeViewEx::GetDropItem(eTYPE_DROPPING& eDroppingPos)
 {
-	CTreeCtrl &omTreeCtrl = GetTreeCtrl();
-	CPoint omCurrentPoint;
-	GetCursorPos(&omCurrentPoint);
-	ScreenToClient(&omCurrentPoint);
+    CTreeCtrl& omTreeCtrl = GetTreeCtrl();
+    CPoint omCurrentPoint;
+    GetCursorPos(&omCurrentPoint);
+    ScreenToClient(&omCurrentPoint);
+    UINT unFlag;
+    HTREEITEM hDroppingItem = omTreeCtrl.HitTest(omCurrentPoint, &unFlag);
+    eDroppingPos = GetDroppingPosition(unFlag);
 
-	UINT unFlag;
-	HTREEITEM hDroppingItem = omTreeCtrl.HitTest(omCurrentPoint, &unFlag);
-
-	eDroppingPos = GetDroppingPosition(unFlag);
-    
     if(IsItemCanDropOn(m_hDraggingItemgedItem, hDroppingItem) == FALSE)
     {
-         eDroppingPos = NO_DROPPING;
+        eDroppingPos = NO_DROPPING;
     }
-	if(hDroppingItem) 
+
+    if(hDroppingItem)
     {
-       	omTreeCtrl.SelectDropTarget(hDroppingItem);
+        omTreeCtrl.SelectDropTarget(hDroppingItem);
+        // Make sure the surrounding items are visible, too
+        // This will scroll the tree if necessary.
+        HTREEITEM hPrev = omTreeCtrl.GetPrevVisibleItem(hDroppingItem);
 
-		// Make sure the surrounding items are visible, too
-		// This will scroll the tree if necessary.
-		HTREEITEM hPrev = omTreeCtrl.GetPrevVisibleItem(hDroppingItem);
-		if(hPrev)
+        if(hPrev)
         {
-		    omTreeCtrl.EnsureVisible(hPrev);
+            omTreeCtrl.EnsureVisible(hPrev);
         }
 
-		HTREEITEM hNext = omTreeCtrl.GetNextVisibleItem(hDroppingItem);
-		if(hNext)
+        HTREEITEM hNext = omTreeCtrl.GetNextVisibleItem(hDroppingItem);
+
+        if(hNext)
         {
-		    omTreeCtrl.EnsureVisible(hNext);
+            omTreeCtrl.EnsureVisible(hNext);
         }
-		
+
         CPoint omCurPoint;
-	    GetCursorPos(&omCurPoint);
-	    ScreenToClient(&omCurPoint);
-	} 
+        GetCursorPos(&omCurPoint);
+        ScreenToClient(&omCurPoint);
+    }
     else if(eDroppingPos != NO_DROPPING && !IsItemCanDropOn(m_hDraggingItemgedItem, hDroppingItem))
     {
-	    eDroppingPos = NO_DROPPING;
+        eDroppingPos = NO_DROPPING;
     }
 
-	return hDroppingItem;
+    return hDroppingItem;
 }
 
 /******************************************************************************
 Function Name  :  bAnscestor
-Input(s)       :  
+Input(s)       :
 Output         :  BOOL
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 BOOL CTreeViewEx::bAnscestor(HTREEITEM hItem, HTREEITEM hCheck)
 {
-    CTreeCtrl &omTreeCtrl = GetTreeCtrl();
-	for(HTREEITEM hParent = hCheck; hParent != 0; hParent = omTreeCtrl.GetParentItem(hParent))
-    {		
+    CTreeCtrl& omTreeCtrl = GetTreeCtrl();
+
+    for(HTREEITEM hParent = hCheck; hParent != 0; hParent = omTreeCtrl.GetParentItem(hParent))
+    {
         if(hParent == hItem)
-			return TRUE;
+        {
+            return TRUE;
+        }
     }
-	return FALSE;
+
+    return FALSE;
 }
 
 /******************************************************************************
 Function Name  :  bSuccessor
-Input(s)       :  
+Input(s)       :
 Output         :  BOOL
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 BOOL CTreeViewEx::bSuccessor(HTREEITEM hItem, HTREEITEM hCheck)
 {
-    CTreeCtrl &omTreeCtrl = GetTreeCtrl();
+    CTreeCtrl& omTreeCtrl = GetTreeCtrl();
     return (hCheck == omTreeCtrl.GetNextItem(hItem, TVGN_NEXT));
 }
 
 /******************************************************************************
 Function Name  :  GetDroppingPosition
-Input(s)       :  
+Input(s)       :
 Output         :  eTYPE_DROPPING
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-CTreeViewEx::eTYPE_DROPPING CTreeViewEx::GetDroppingPosition(UINT flags) 
+CTreeViewEx::eTYPE_DROPPING CTreeViewEx::GetDroppingPosition(UINT flags)
 {
-    
-    CTreeCtrl &omTreeCtrl = GetTreeCtrl();
-	eTYPE_DROPPING eDroppingPos = NO_DROPPING;
+    CTreeCtrl& omTreeCtrl = GetTreeCtrl();
+    eTYPE_DROPPING eDroppingPos = NO_DROPPING;
 
-	if((flags & TVHT_ONITEMRIGHT))
+    if((flags & TVHT_ONITEMRIGHT))
     {
-		eDroppingPos = NO_DROPPING;  
+        eDroppingPos = NO_DROPPING;
     }
-	else if(flags & TVHT_ONITEM) 
+    else if(flags & TVHT_ONITEM)
     {
-		// check whether we should drop below or above
-		// the item
-		CRect omItemRect;
-		if(omTreeCtrl.GetItemRect(omTreeCtrl.GetDropHilightItem(), omItemRect, false)) 
+        // check whether we should drop below or above
+        // the item
+        CRect omItemRect;
+
+        if(omTreeCtrl.GetItemRect(omTreeCtrl.GetDropHilightItem(), omItemRect, false))
         {
             CPoint omCurrentPoint;
             ::GetCursorPos(&omCurrentPoint);
             ScreenToClient(&omCurrentPoint);
-            if((omCurrentPoint.y - omItemRect.top) > (omItemRect.bottom - omCurrentPoint.y))
-                eDroppingPos = DROPPING_BELOW;
-            else
-                eDroppingPos = DROPPING_ABOVE;
-		} 
-        else
-			eDroppingPos = DROPPING_ABOVE;
 
-	} 
+            if((omCurrentPoint.y - omItemRect.top) > (omItemRect.bottom - omCurrentPoint.y))
+            {
+                eDroppingPos = DROPPING_BELOW;
+            }
+            else
+            {
+                eDroppingPos = DROPPING_ABOVE;
+            }
+        }
+        else
+        {
+            eDroppingPos = DROPPING_ABOVE;
+        }
+    }
     else if((flags & TVHT_NOWHERE))
     {
-		// below the last item
-		eDroppingPos = DROPPING_BELOW;
+        // below the last item
+        eDroppingPos = DROPPING_BELOW;
     }
+
     return eDroppingPos;
 }
 
 //If Image List Is NULL the Image List will be removed.
 /******************************************************************************
 Function Name  :  SetImageList
-Input(s)       :  
+Input(s)       :
 Output         :  INT
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-INT CTreeViewEx::SetImageList(CImageList *pomImageListNormal, CImageList *pomImageListState)
+INT CTreeViewEx::SetImageList(CImageList* pomImageListNormal, CImageList* pomImageListState)
 {
-    CImageList *pomOldImageList;
-    
+    CImageList* pomOldImageList;
     pomOldImageList = GetTreeCtrl().SetImageList(pomImageListNormal, TVSIL_NORMAL);
+
     if( pomOldImageList != NULL )
+    {
         delete pomOldImageList;
-    
+    }
+
     if(pomImageListNormal != NULL)
-    pomOldImageList = GetTreeCtrl().SetImageList(pomImageListState, TVSIL_STATE);
-        if( pomOldImageList != NULL )
-            delete pomOldImageList;
+    {
+        pomOldImageList = GetTreeCtrl().SetImageList(pomImageListState, TVSIL_STATE);
+    }
+
+    if( pomOldImageList != NULL )
+    {
+        delete pomOldImageList;
+    }
+
     return 0;
 }
 
 /******************************************************************************
 Function Name  :  PreTranslateMessage
-Input(s)       :  
+Input(s)       :
 Output         :  BOOL
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 BOOL CTreeViewEx::PreTranslateMessage(MSG* pMsg)
 {
-// TODO: Add your specialized code here and/or call the base class
+    // TODO: Add your specialized code here and/or call the base class
     BOOL bDrag = (pMsg->message == WM_PAINT) && m_bDragging;
+
     if(bDrag)
     {
         //m_pomDragImageList->DragShowNolock(FALSE);
         return 0;
     }
+
     if( pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE && m_bDragging)
-	{
-		m_bDragging = FALSE;
-		CImageList::DragLeave(NULL);
-		CImageList::EndDrag();
-		ReleaseCapture();
+    {
+        m_bDragging = FALSE;
+        CImageList::DragLeave(NULL);
+        CImageList::EndDrag();
+        ReleaseCapture();
         GetTreeCtrl().SetInsertMark(0, 0);
         GetTreeCtrl().SelectDropTarget(NULL);
-		return TRUE;		// DO NOT process further
-	}
+        return TRUE;        // DO NOT process further
+    }
+
     if(pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F2 )
     {
- 	    CTreeCtrl &omTreeCtrl = GetTreeCtrl();
+        CTreeCtrl& omTreeCtrl = GetTreeCtrl();
         HTREEITEM hSelectedItem = omTreeCtrl.GetSelectedItem();
         PostMessage ( TVM_EDITLABEL, 0, (LPARAM)hSelectedItem );    //if hSelectedItem is also no problem
         return TRUE;
     }
+
     if(pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_DELETE )
     {
         if(m_bEditing == FALSE)
@@ -926,9 +990,8 @@ BOOL CTreeViewEx::PreTranslateMessage(MSG* pMsg)
             vOnDeleteItem();
             return TRUE;
         }
-        
     }
-    
+
     return CTreeView::PreTranslateMessage(pMsg);
 }
 
@@ -936,32 +999,33 @@ BOOL CTreeViewEx::PreTranslateMessage(MSG* pMsg)
 
 /******************************************************************************
 Function Name  :  OnNMRclick
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTreeViewEx::OnNMRclick(NMHDR* /*pNMHDR*/, LRESULT *pResult)
+void CTreeViewEx::OnNMRclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
     // TODO: Add your control notification handler code here
     CPoint point;
-	GetCursorPos(&point);
-	CPoint omCurrentPoint(point);
-	ScreenToClient(&omCurrentPoint);
-	UINT flags;
-	HTREEITEM hItem = GetTreeCtrl().HitTest(omCurrentPoint, &flags);
-    CTreeCtrl &omTempTreeCtrl = GetTreeCtrl();
+    GetCursorPos(&point);
+    CPoint omCurrentPoint(point);
+    ScreenToClient(&omCurrentPoint);
+    UINT flags;
+    HTREEITEM hItem = GetTreeCtrl().HitTest(omCurrentPoint, &flags);
+    CTreeCtrl& omTempTreeCtrl = GetTreeCtrl();
+
     if(hItem && (flags & TVHT_ONITEM) && !(flags & TVHT_ONITEMRIGHT))
     {
-        omTempTreeCtrl.SelectItem(hItem);   
+        omTempTreeCtrl.SelectItem(hItem);
         eTYPE_ENTITY eEnityType = GetEditorWindow()->eGetCurrentEntityType();
         CMenu omContextMenu;
-
         VERIFY(omContextMenu.CreatePopupMenu());
+
         if(eEnityType == TEST_SETUP)
         {
             VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_ADD_TESTCASE, _T("New Test Case")));
@@ -982,45 +1046,47 @@ void CTreeViewEx::OnNMRclick(NMHDR* /*pNMHDR*/, LRESULT *pResult)
         {
             omContextMenu.AppendMenu(MF_STRING, IDM_DELETE, _T("Delete"));
         }
-        
+
         if(omContextMenu.GetMenuItemCount() > 0)
         {
             omContextMenu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);
         }
+
         *pResult = 0;
     }
-    
     else        //On Tree View Create Collapse All and Expand All
     {
         CMenu omContextMenu;
-	    VERIFY(omContextMenu.CreatePopupMenu());
+        VERIFY(omContextMenu.CreatePopupMenu());
         VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_COLLAPSE_ALL, _T("Collapse All")));
-		VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_EXPAND_ALL, _T("Expand All")));
+        VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_EXPAND_ALL, _T("Expand All")));
         VERIFY(omContextMenu.AppendMenu(MF_SEPARATOR));
         VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_SETTINGS_CLR, _T("Background Color")));
-	    omContextMenu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);
+        omContextMenu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);
         *pResult = 0;
     }
 }
 
 /******************************************************************************
 Function Name  :  vCollapseTreeBranch
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTreeViewEx::vCollapseTreeBranch( HTREEITEM hTreeItem)
 {
-    CTreeCtrl &omTreeCtrl = GetTreeCtrl();
+    CTreeCtrl& omTreeCtrl = GetTreeCtrl();
+
     if( omTreeCtrl.ItemHasChildren( hTreeItem ) )
     {
         omTreeCtrl.Expand( hTreeItem, TVE_COLLAPSE );
         hTreeItem = omTreeCtrl.GetChildItem( hTreeItem );
+
         while(hTreeItem != NULL)
         {
             vCollapseTreeBranch( hTreeItem );
@@ -1031,19 +1097,20 @@ void CTreeViewEx::vCollapseTreeBranch( HTREEITEM hTreeItem)
 
 /******************************************************************************
 Function Name  :  vCollapseFull
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTreeViewEx::vCollapseFull()
 {
-    CTreeCtrl &omTreeCtrl = GetTreeCtrl();
+    CTreeCtrl& omTreeCtrl = GetTreeCtrl();
     HTREEITEM hTreeItem = omTreeCtrl.GetRootItem();
+
     while(hTreeItem != NULL)
     {
         vCollapseTreeBranch( hTreeItem );
@@ -1053,22 +1120,24 @@ void CTreeViewEx::vCollapseFull()
 
 /******************************************************************************
 Function Name  :  vExpandTreeBranch
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTreeViewEx::vExpandTreeBranch( HTREEITEM hTreeItem)
 {
-    CTreeCtrl &omTreeCtrl = GetTreeCtrl();
+    CTreeCtrl& omTreeCtrl = GetTreeCtrl();
+
     if( omTreeCtrl.ItemHasChildren( hTreeItem ) )
     {
         omTreeCtrl.Expand( hTreeItem, TVE_EXPAND );
         hTreeItem = omTreeCtrl.GetChildItem( hTreeItem );
+
         while(hTreeItem != NULL)
         {
             vExpandTreeBranch( hTreeItem );
@@ -1079,19 +1148,20 @@ void CTreeViewEx::vExpandTreeBranch( HTREEITEM hTreeItem)
 
 /******************************************************************************
 Function Name  :  vExpandFull
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTreeViewEx::vExpandFull()
 {
-    CTreeCtrl &omTreeCtrl = GetTreeCtrl();
+    CTreeCtrl& omTreeCtrl = GetTreeCtrl();
     HTREEITEM hTreeItem = omTreeCtrl.GetRootItem();
+
     while(hTreeItem != NULL)
     {
         vExpandTreeBranch( hTreeItem );
@@ -1101,18 +1171,19 @@ void CTreeViewEx::vExpandFull()
 
 /******************************************************************************
 Function Name  :  OnBKGColor
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTreeViewEx::OnBKGColor()
 {
     CColorDialog omClrDlg(m_omBkColor);
+
     if(omClrDlg.DoModal() == IDOK)
     {
         m_omBkColor = omClrDlg.GetColor();
@@ -1124,14 +1195,14 @@ void CTreeViewEx::OnBKGColor()
 
 /******************************************************************************
 Function Name  :  DeleteItem
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTreeViewEx::DeleteItem( HTREEITEM hItem)
 {
@@ -1140,18 +1211,19 @@ void CTreeViewEx::DeleteItem( HTREEITEM hItem)
 
 /******************************************************************************
 Function Name  :  vDeleteChildItems
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTreeViewEx::vDeleteChildItems(HTREEITEM hItem)
 {
-    CTreeCtrl &omTempTreeCtrl = GetTreeCtrl();
+    CTreeCtrl& omTempTreeCtrl = GetTreeCtrl();
+
     if (omTempTreeCtrl.ItemHasChildren(hItem))
     {
         HTREEITEM hNextItem;
@@ -1169,14 +1241,14 @@ void CTreeViewEx::vDeleteChildItems(HTREEITEM hItem)
 
 /******************************************************************************
 Function Name  :  ShowCheckBoxes
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTreeViewEx::ShowCheckBoxes(BOOL bShow)
 {
@@ -1191,41 +1263,44 @@ void CTreeViewEx::ShowCheckBoxes(BOOL bShow)
     {
         lStyle = lStyle | ~TVS_CHECKBOXES;
     }
+
     SetWindowLong(GetSafeHwnd(), GWL_STYLE, lStyle);
 }
 
 /******************************************************************************
 Function Name  :  OnTvnSelchanged
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTreeViewEx::OnTvnSelchanged(NMHDR *pNMHDR, LRESULT *pResult)
+void CTreeViewEx::OnTvnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
 {
     LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
-    CWnd *omParentWnd= GetEditorWindow();
+    CWnd* omParentWnd= GetEditorWindow();
+
     if(omParentWnd != NULL)
     {
         omParentWnd->SendMessage(WM_TS_SELCHANGED, (WPARAM)pNMTreeView , 0);
     }
+
     *pResult = 0;
 }
 
 /******************************************************************************
 Function Name  :  CreateEx
-Input(s)       :  
+Input(s)       :
 Output         :  BOOL
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 BOOL CTreeViewEx::CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, LPVOID lpParam)
 {
@@ -1236,14 +1311,14 @@ BOOL CTreeViewEx::CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszW
 
 /******************************************************************************
 Function Name  :  CtlColor
-Input(s)       :  
+Input(s)       :
 Output         :  HBRUSH
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HBRUSH CTreeViewEx::CtlColor(CDC* /*pDC*/, UINT /*nCtlColor*/)
 {
@@ -1254,19 +1329,20 @@ HBRUSH CTreeViewEx::CtlColor(CDC* /*pDC*/, UINT /*nCtlColor*/)
 
 /******************************************************************************
 Function Name  :  OnTvnSelchanging
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTreeViewEx::OnTvnSelchanging(NMHDR *pNMHDR, LRESULT *pResult)
+void CTreeViewEx::OnTvnSelchanging(NMHDR* pNMHDR, LRESULT* pResult)
 {
     LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
-    CWnd *omParentWnd= GetEditorWindow();
+    CWnd* omParentWnd= GetEditorWindow();
+
     if(omParentWnd != NULL)
     {
         *pResult = omParentWnd->SendMessage(WM_TS_SELCHANGING, (WPARAM)pNMTreeView , 0);
@@ -1275,47 +1351,50 @@ void CTreeViewEx::OnTvnSelchanging(NMHDR *pNMHDR, LRESULT *pResult)
 
 /******************************************************************************
 Function Name  :  GetEditorWindow
-Input(s)       :  
+Input(s)       :
 Output         :  CTSEditorChildFrame*
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CTSEditorChildFrame* CTreeViewEx::GetEditorWindow()
 {
     CWnd* wndParent;
+
     if((wndParent = GetParent())!= NULL)
     {
         wndParent = wndParent->GetParent();
+
         if(wndParent != NULL)
         {
             return ((CTSEditorChildFrame*)wndParent);
         }
     }
+
     return NULL;
 }
 
 /******************************************************************************
 Function Name  :  OnTvnBeginlabeledit
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTreeViewEx::OnTvnBeginlabeledit(NMHDR* /*pNMHDR*/, LRESULT *pResult)
+void CTreeViewEx::OnTvnBeginlabeledit(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
-//    LPNMTVDISPINFO pTVDispInfo = reinterpret_cast<LPNMTVDISPINFO>(pNMHDR);
+    //    LPNMTVDISPINFO pTVDispInfo = reinterpret_cast<LPNMTVDISPINFO>(pNMHDR);
     m_bEditing = TRUE;
-    
     eTYPE_ENTITY eCurrentEntity = GetEditorWindow()->eGetCurrentEntityType();
     *pResult = 1;
+
     if(eCurrentEntity == TEST_CASE || eCurrentEntity == TEST_SETUP)
     {
         *pResult = 0;
@@ -1324,23 +1403,23 @@ void CTreeViewEx::OnTvnBeginlabeledit(NMHDR* /*pNMHDR*/, LRESULT *pResult)
 
 /******************************************************************************
 Function Name  :  OnTvnEndlabeledit
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTreeViewEx::OnTvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult)
+void CTreeViewEx::OnTvnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
 {
     //CTreeCtrl &omTreeCtrl = GetTreeCtrl();
     LPNMTVDISPINFO pTVDispInfo = reinterpret_cast<LPNMTVDISPINFO>(pNMHDR);
     LPTSTR pszText = pTVDispInfo->item.pszText;
     *pResult = ( pszText && (*pszText != _T('\0')));
     CString omstrItemNewName(pszText);
-    GetEditorWindow()->nChangeEntityTitle(NULL, omstrItemNewName);   
+    GetEditorWindow()->nChangeEntityTitle(NULL, omstrItemNewName);
     m_bEditing = FALSE;
 }
 
@@ -1355,6 +1434,7 @@ void CTreeViewEx::OnTvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult)
 void CTreeViewEx::OnAddEntityItem(UINT nId)
 {
     eTYPE_ENTITY eEntityType;
+
     switch(nId)
     {
         case IDM_ADD_TESTCASE:
@@ -1376,13 +1456,16 @@ void CTreeViewEx::OnAddEntityItem(UINT nId)
         case IDM_ADD_WAIT:
             eEntityType = WAIT;
             break;
+
         case IDM_ADD_VERIFYRESPONSE:
             eEntityType = VERIFYRESPONSE;
             break;
+
         default:
             return;
     }
-    CTreeCtrl &omTempTreeCtrl = GetTreeCtrl();
+
+    CTreeCtrl& omTempTreeCtrl = GetTreeCtrl();
     HTREEITEM hSelectedItem = omTempTreeCtrl.GetSelectedItem();
     //W4 Removal
     GetEditorWindow()->nAddNewEntity((DWORD)omTempTreeCtrl.GetItemData(hSelectedItem), eEntityType);
@@ -1398,11 +1481,12 @@ void CTreeViewEx::OnAddEntityItem(UINT nId)
  */
 void CTreeViewEx::vOnDeleteItem()
 {
-    CTreeCtrl &omTempTreeCtrl = GetTreeCtrl();
+    CTreeCtrl& omTempTreeCtrl = GetTreeCtrl();
     HTREEITEM  hDeleteItem = omTempTreeCtrl.GetSelectedItem();
     HTREEITEM hParentItem = omTempTreeCtrl.GetParentItem(hDeleteItem);
     //W4 Removal
     INT nRetVal = GetEditorWindow()->nDeleteItem((DWORD)omTempTreeCtrl.GetItemData(hDeleteItem), (DWORD)omTempTreeCtrl.GetItemData(hParentItem));
+
     if(nRetVal == 0)
     {
         omTempTreeCtrl.DeleteItem(hDeleteItem);
@@ -1412,14 +1496,14 @@ void CTreeViewEx::vOnDeleteItem()
 
 /******************************************************************************
 Function Name  :  vSetTreeCtrlColor
-Input(s)       :  
+Input(s)       :
 Output         :  VOID
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 VOID CTreeViewEx::vSetTreeCtrlColor(COLORREF omBkColor, COLORREF omTextColor)
 {
@@ -1433,14 +1517,14 @@ VOID CTreeViewEx::vSetTreeCtrlColor(COLORREF omBkColor, COLORREF omTextColor)
 
 /******************************************************************************
 Function Name  :  vGetTreeCtrlColor
-Input(s)       :  
+Input(s)       :
 Output         :  VOID
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 VOID CTreeViewEx::vGetTreeCtrlColor(COLORREF& omBkColor, COLORREF& omTextColor)
 {
@@ -1450,17 +1534,17 @@ VOID CTreeViewEx::vGetTreeCtrlColor(COLORREF& omBkColor, COLORREF& omTextColor)
 
 /******************************************************************************
 Function Name  :  vSetDefaultColors
-Input(s)       :  
+Input(s)       :
 Output         :  VOID
-Functionality  :   
+Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 VOID CTreeViewEx::vSetDefaultColors()
 {
-    m_omBkColor = def_COLOR_TREE_BKG;    
+    m_omBkColor = def_COLOR_TREE_BKG;
     m_omTextColor = def_COLOR_TREE_TEXT;
 }

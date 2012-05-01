@@ -65,7 +65,7 @@
 
 #define defLIST_SEND_ST_ROW             1
 #define defLIST_SENDMSG_ST_ROW          2
- 
+
 //List Ctrl Row Numbers
 //Header
 
@@ -105,6 +105,6 @@
 #define def_VMSG_ROWNUM_SUINT          0
 #define def_VMSG_ROWNUM_SVALUE         1
 
-#define def_NAME_SEND           "Send"      
+#define def_NAME_SEND           "Send"
 #define def_NAME_VERIFY         "verify"
 #define def_NAME_VERIFYRESPONSE "verifyResponse"
