@@ -586,7 +586,6 @@ struct tagFilterDisplayInfo
 };
 
 typedef tagFilterDisplayInfo sFilterDisplayInfo;
-typedef sFilterDisplayInfo sFilterDisplayInfo;
 typedef sFilterDisplayInfo SFILTERDISPLAYINFO;
 typedef SFILTERDISPLAYINFO* PSFILTERDISPLAYINFO;
 
