@@ -3,10 +3,10 @@
   FileName      :  GraphChildFrm.cpp
   Description   :  Implementation file for CGraphChildFrame class
   $Log:   X:/Archive/Sources/SigGrphWnd/GraphChildFrame.cpv  $
-   
+
   Author(s)     :  Raja N
   Date Created  :  10/12/2004
-  Modified By   : 
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved
 *******************************************************************************/
 
@@ -36,7 +36,7 @@ BEGIN_MESSAGE_MAP(CGraphChildFrame, CMDIChildBase)
     ON_WM_ERASEBKGND()
     ON_WM_SHOWWINDOW()
     ON_WM_CLOSE()
-	ON_MESSAGE(WM_USER_CMD,vUserCommand)
+    ON_MESSAGE(WM_USER_CMD,vUserCommand)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -57,9 +57,9 @@ CGraphChildFrame::CGraphChildFrame() : CMDIChildBase( GRAPH_WND_PLACEMENT )
     m_pomLeftView = NULL;
     m_pomRightView = NULL;
     m_sSplitterPostion.m_nRootSplitterData[0][0] = -1;
-	m_pGraphList = NULL;
-	m_pDMGraphCtrl = NULL;
-	m_bIsPrevConnected = FALSE;
+    m_pGraphList = NULL;
+    m_pDMGraphCtrl = NULL;
+    m_bIsPrevConnected = FALSE;
 }
 
 /*******************************************************************************
@@ -73,7 +73,7 @@ CGraphChildFrame::CGraphChildFrame() : CMDIChildBase( GRAPH_WND_PLACEMENT )
 *******************************************************************************/
 CGraphChildFrame::~CGraphChildFrame()
 {
-	m_pDMGraphCtrl = NULL;
+    m_pDMGraphCtrl = NULL;
 }
 
 /*******************************************************************************
@@ -130,9 +130,10 @@ BOOL CGraphChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* p
     /*// Update Child Window Pointer
     CMainFrame * pMainFrame = (CMainFrame *)theApp.m_pMainWnd;*/
     // Create Splitter Window
-    bReturn = 
+    bReturn =
         m_wndSplitter.CreateStatic( this,
-                            defGRAPH_WINDOW_ROWS, defGRAPH_WINDOW_COLS );
+                                    defGRAPH_WINDOW_ROWS, defGRAPH_WINDOW_COLS );
+
     if( bReturn == TRUE )
     {
         // Get Window Rectangle
@@ -140,22 +141,20 @@ BOOL CGraphChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* p
         // Make propotionation width
         omSize.cx = (LONG)(omRect.Width() * defLEFT_VIEW_PROPOTION);
         omSize.cy = omRect.Height();
-
         /*if( pMainFrame != NULL )
         {
             pMainFrame->m_pomGraphChild = this;
         }*/
-
         // Get Right Column to create sub division
         int nChildID = m_wndSplitter.IdFromRowCol(0, 1);
         // Create sub splitter
         bReturn =  m_wndSecondSplitter.CreateStatic( &m_wndSplitter,
-                        defGRAPH_WINDOW_RIGHT_ROWS,
-                        defGRAPH_WINDOW_RIGHT_COLS,
-                        WS_CHILD | WS_VISIBLE | WS_BORDER,     // Window Style
-                        nChildID );
+                   defGRAPH_WINDOW_RIGHT_ROWS,
+                   defGRAPH_WINDOW_RIGHT_COLS,
+                   WS_CHILD | WS_VISIBLE | WS_BORDER,     // Window Style
+                   nChildID );
     }
- 
+
     // If second splitter create is success
     if( bReturn == TRUE )
     {
@@ -163,26 +162,28 @@ BOOL CGraphChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* p
         // Pointer
         bReturn =
             m_wndSecondSplitter.CreateView( 0, 0,
-                                        RUNTIME_CLASS(CGraphRightView),
-                                        CSize(
-                                         (int)(omSize.cx * defRIGHT_VIEW_PROPOTION) ,
-                                         (int)(omSize.cy * defGRAPH_VIEW_PROPOSION)) ,
-                                        pContext);
+                                            RUNTIME_CLASS(CGraphRightView),
+                                            CSize(
+                                                (int)(omSize.cx * defRIGHT_VIEW_PROPOTION) ,
+                                                (int)(omSize.cy * defGRAPH_VIEW_PROPOSION)) ,
+                                            pContext);
     }
+
     // If Create Graph control view is successful
     if( bReturn == TRUE )
     {
         // Now Create Left View
         bReturn = m_wndSplitter.CreateView( 0, 0, RUNTIME_CLASS(CGraphLeftView),
-                                 omSize,pContext);
+                                            omSize,pContext);
+
         if( bReturn == TRUE )
         {
             bReturn = m_wndSecondSplitter.CreateView( 1, 0,
-                                        RUNTIME_CLASS(CGraphBottomView),
-                                        CSize( 
-                                         (int)(omSize.cx * defRIGHT_VIEW_PROPOTION),
-                                         (int)(omSize.cy * defBOTTOM_VIEW_PROPOSION) ),
-                                        pContext );
+                      RUNTIME_CLASS(CGraphBottomView),
+                      CSize(
+                          (int)(omSize.cx * defRIGHT_VIEW_PROPOTION),
+                          (int)(omSize.cy * defBOTTOM_VIEW_PROPOSION) ),
+                      pContext );
         }
     }
 
@@ -201,64 +202,65 @@ BOOL CGraphChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* p
         // Set Splitter postion
         vSetSplitterPostion();
     }
-
     // Return the result
     return bReturn;
 }
 
 /*******************************************************************************
-  Function Name  :  vUserCommand                                          
-  Input(s)       :  WPARAM wParam : enumerator eUSERSELCTION              
-                    LPARAM lParam:  NOT USED                              
-  Output         :                                                        
-  Functionality  :  This function is message mapped and will be called    
-					from BUSMASTER application module during connect/disconnect.					  
-  Member of      :	CGraphChildFrame
-  Author(s)      :	ArunKumar K
-  Date Created   :	09.11.2010
+  Function Name  :  vUserCommand
+  Input(s)       :  WPARAM wParam : enumerator eUSERSELCTION
+                    LPARAM lParam:  NOT USED
+  Output         :
+  Functionality  :  This function is message mapped and will be called
+                    from BUSMASTER application module during connect/disconnect.
+  Member of      :  CGraphChildFrame
+  Author(s)      :  ArunKumar K
+  Date Created   :  09.11.2010
   Modifications  :  ArunKumar K, 22.07.2011
-					Storing the previous connect state.
+                    Storing the previous connect state.
 *******************************************************************************/
 LRESULT CGraphChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
 {
-	if(m_pomBottomView && m_pomLeftView)
-	{
-		eUSERSELCTION eUserSel = eDATABASEIMPORTCMD;
-		eUserSel               = static_cast <eUSERSELCTION>(wParam);
-		BOOL bConnect = FALSE;
+    if(m_pomBottomView && m_pomLeftView)
+    {
+        eUSERSELCTION eUserSel = eDATABASEIMPORTCMD;
+        eUserSel               = static_cast <eUSERSELCTION>(wParam);
+        BOOL bConnect = FALSE;
 
-		switch(eUserSel)
+        switch(eUserSel)
         {
-			case eCONNECTCMD:
-			{
-				bConnect = (BOOL)lParam;
-				vHandleConnectChange(bConnect);
-				((CGraphBottomView*)m_pomBottomView)->vHandleConnectionStatusChange(bConnect);
-				((CGraphLeftView*)m_pomLeftView)->vHandleConnectionStatusChange(bConnect);								
+            case eCONNECTCMD:
+            {
+                bConnect = (BOOL)lParam;
+                vHandleConnectChange(bConnect);
+                ((CGraphBottomView*)m_pomBottomView)->vHandleConnectionStatusChange(bConnect);
+                ((CGraphLeftView*)m_pomLeftView)->vHandleConnectionStatusChange(bConnect);
 
-				if ( bConnect )
-				{
-					if ( !m_bIsPrevConnected )
-					{
-						// Update Absolute time value
-						CTimeManager::vInitAbsoluteTime();
-						m_bIsPrevConnected = TRUE;
-					}
-				}					
-				else
-				{
-					m_bIsPrevConnected = FALSE;
-				}
-			}
-			break;
-			case eCONFIGCHANGECMD:
-			{
-				vHandleConFigChange();
-			}
-			break;
-		}
-	}
-	return 0;
+                if ( bConnect )
+                {
+                    if ( !m_bIsPrevConnected )
+                    {
+                        // Update Absolute time value
+                        CTimeManager::vInitAbsoluteTime();
+                        m_bIsPrevConnected = TRUE;
+                    }
+                }
+                else
+                {
+                    m_bIsPrevConnected = FALSE;
+                }
+            }
+            break;
+
+            case eCONFIGCHANGECMD:
+            {
+                vHandleConFigChange();
+            }
+            break;
+        }
+    }
+
+    return 0;
 }
 /*******************************************************************************
   Function Name  : OnEraseBkgnd
@@ -269,9 +271,9 @@ LRESULT CGraphChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
   Member of      : CGraphChildFrame
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-BOOL CGraphChildFrame::OnEraseBkgnd(CDC* /*pDC*/) 
+BOOL CGraphChildFrame::OnEraseBkgnd(CDC* /*pDC*/)
 {
     return TRUE;
 }
@@ -288,7 +290,7 @@ BOOL CGraphChildFrame::OnEraseBkgnd(CDC* /*pDC*/)
   Date Created   : 10/12/2004
   Modifications  : Raja N on 02.05.2005, changed base class to CMDIChildBase
 *******************************************************************************/
-void CGraphChildFrame::OnShowWindow(BOOL bShow, UINT nStatus) 
+void CGraphChildFrame::OnShowWindow(BOOL bShow, UINT nStatus)
 {
     CMDIChildBase::OnShowWindow(bShow, nStatus);
     // Send Notification to the Parent
@@ -305,9 +307,9 @@ void CGraphChildFrame::OnShowWindow(BOOL bShow, UINT nStatus)
   Member of      : CGraphChildFrame
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphChildFrame::OnClose() 
+void CGraphChildFrame::OnClose()
 {
     // Don't destroy. But Hide
     ShowWindow( SW_HIDE );
@@ -323,7 +325,7 @@ void CGraphChildFrame::OnClose()
   Member of      : CGraphChildFrame
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 CView* CGraphChildFrame::pomGetLeftViewPointer()
 {
@@ -341,7 +343,7 @@ CView* CGraphChildFrame::pomGetLeftViewPointer()
   Member of      : CGraphChildFrame
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 CView* CGraphChildFrame::pomGetRightTopViewPointer()
 {
@@ -359,7 +361,7 @@ CView* CGraphChildFrame::pomGetRightTopViewPointer()
   Member of      : CGraphChildFrame
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 CView* CGraphChildFrame::pomGetRightBottomViewPointer()
 {
@@ -376,20 +378,21 @@ CView* CGraphChildFrame::pomGetRightBottomViewPointer()
   Member of      : CGraphChildFrame
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphChildFrame::vHandleConnectChange(BOOL bConnect)
 {
     // Get Left View Pointer
-    CGraphLeftView * pLeftView = ( CGraphLeftView *)
-        pomGetLeftViewPointer();
+    CGraphLeftView* pLeftView = ( CGraphLeftView*)
+                                pomGetLeftViewPointer();
     // Update Left View
     pLeftView->vHandleConnectionStatusChange( bConnect );
     // Get Bottom View Pointer
-    CGraphBottomView * pBottomView = (CGraphBottomView *)
-        pomGetRightBottomViewPointer();
+    CGraphBottomView* pBottomView = (CGraphBottomView*)
+                                    pomGetRightBottomViewPointer();
     // Update Bottom View
-    pBottomView->vHandleConnectionStatusChange( bConnect );    }
+    pBottomView->vHandleConnectionStatusChange( bConnect );
+}
 
 /*******************************************************************************
   Function Name  : vHandleConFigChange
@@ -400,23 +403,23 @@ void CGraphChildFrame::vHandleConnectChange(BOOL bConnect)
   Member of      : CGraphChildFrame
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphChildFrame::vHandleConFigChange()
 {
     // Get Left View Pointer
-    CGraphLeftView * pLeftView = ( CGraphLeftView *)
-        pomGetLeftViewPointer();
+    CGraphLeftView* pLeftView = ( CGraphLeftView*)
+                                pomGetLeftViewPointer();
     // Update Left View
     // Use Send Message to avoid assertion because of DDX Update Data
     pLeftView->SendMessage( WM_CONFIG_CHANGE );
     // Get Bottom View Pointer
-    CGraphBottomView * pBottomView = (CGraphBottomView *)
-        pomGetRightBottomViewPointer();
+    CGraphBottomView* pBottomView = (CGraphBottomView*)
+                                    pomGetRightBottomViewPointer();
     // Update Bottom View
     // Use Send Message to avoid assertion because of DDX Update Data
     pBottomView->SendMessage( WM_CONFIG_CHANGE );
-	pBottomView->vInsertSignalData();
+    pBottomView->vInsertSignalData();
     // Nothing to do with top view
 }
 
@@ -429,31 +432,29 @@ void CGraphChildFrame::vHandleConFigChange()
   Member of      : CGraphChildFrame
   Author(s)      : Raja N
   Date Created   : 19.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphChildFrame::vSetSplitterPostion()
 {
     // Set Parent Splitter Postion
     // Column 0
     m_wndSplitter.SetColumnInfo( 0,
-                    m_sSplitterPostion.m_nRootSplitterData[0][0],
-                    m_sSplitterPostion.m_nRootSplitterData[0][1]);
+                                 m_sSplitterPostion.m_nRootSplitterData[0][0],
+                                 m_sSplitterPostion.m_nRootSplitterData[0][1]);
     // Column 1
     m_wndSplitter.SetColumnInfo( 1,
-                    m_sSplitterPostion.m_nRootSplitterData[1][0],
-                    m_sSplitterPostion.m_nRootSplitterData[1][1]);
-
+                                 m_sSplitterPostion.m_nRootSplitterData[1][0],
+                                 m_sSplitterPostion.m_nRootSplitterData[1][1]);
     m_wndSplitter.RecalcLayout();
     // Set Right sub division position
     // Row 0
     m_wndSecondSplitter.SetRowInfo( 0,
-                    m_sSplitterPostion.m_nRightViewSplitterData[0][0],
-                    m_sSplitterPostion.m_nRightViewSplitterData[0][1]);
+                                    m_sSplitterPostion.m_nRightViewSplitterData[0][0],
+                                    m_sSplitterPostion.m_nRightViewSplitterData[0][1]);
     // Row 1
     m_wndSecondSplitter.SetRowInfo( 1,
-                    m_sSplitterPostion.m_nRightViewSplitterData[1][0],
-                    m_sSplitterPostion.m_nRightViewSplitterData[1][1]);
-
+                                    m_sSplitterPostion.m_nRightViewSplitterData[1][0],
+                                    m_sSplitterPostion.m_nRightViewSplitterData[1][1]);
     m_wndSecondSplitter.RecalcLayout();
 }
 
@@ -468,7 +469,7 @@ void CGraphChildFrame::vSetSplitterPostion()
   Member of      : CGraphChildFrame
   Author(s)      : Raja N
   Date Created   : 19.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphChildFrame::vSaveSplitterPostion()
 {
@@ -484,14 +485,15 @@ void CGraphChildFrame::vSaveSplitterPostion()
     // Set Right sub division position
     // Row 0
     m_wndSecondSplitter.GetRowInfo( 0,
-                                 sPostion.m_nRightViewSplitterData[0][0],
-                                 sPostion.m_nRightViewSplitterData[0][1]);
+                                    sPostion.m_nRightViewSplitterData[0][0],
+                                    sPostion.m_nRightViewSplitterData[0][1]);
     // Row 1
     m_wndSecondSplitter.GetRowInfo( 1,
-                                 sPostion.m_nRightViewSplitterData[1][0],
-                                 sPostion.m_nRightViewSplitterData[1][1]);
+                                    sPostion.m_nRightViewSplitterData[1][0],
+                                    sPostion.m_nRightViewSplitterData[1][1]);
+
     // Do memory compare before storing the postion
-    if( memcmp( &m_sSplitterPostion, 
+    if( memcmp( &m_sSplitterPostion,
                 &sPostion,
                 sizeof(SGRAPHSPLITTERDATA)) != 0)
     {
@@ -512,7 +514,7 @@ void CGraphChildFrame::vSaveSplitterPostion()
   Member of      : CGraphChildFrame
   Author(s)      : Raja N
   Date Created   : 19.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphChildFrame::vUpdateWndCo_Ords()
 {
@@ -532,7 +534,7 @@ void CGraphChildFrame::vUpdateWndCo_Ords()
   Member of      : CGraphChildFrame
   Author(s)      : Raja N
   Date Created   : 19.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphChildFrame::vUpdateWinStatus()
 {
@@ -543,21 +545,18 @@ void CGraphChildFrame::vUpdateWinStatus()
     // Set Splitter Postion
     vSetSplitterPostion();
 }
-BOOL CGraphChildFrame::bGetDefaultSplitterPostion(CRect& omWndSize, 
-                                                  SGRAPHSPLITTERDATA& sGraphSplitterData)
+BOOL CGraphChildFrame::bGetDefaultSplitterPostion(CRect& omWndSize,
+        SGRAPHSPLITTERDATA& sGraphSplitterData)
 {
     sGraphSplitterData.m_nRootSplitterData[0][0] =
         (int)(omWndSize.Width() * defLEFT_VIEW_PROPOTION);
     sGraphSplitterData.m_nRootSplitterData[0][1] = 0;
-    
     sGraphSplitterData.m_nRootSplitterData[1][0] =
         (int)(omWndSize.Width() * defRIGHT_VIEW_PROPOTION);
     sGraphSplitterData.m_nRootSplitterData[1][1] = 0;
-    
     sGraphSplitterData.m_nRightViewSplitterData[0][0] =
         (int)(omWndSize.Height() * defGRAPH_VIEW_PROPOSION);
     sGraphSplitterData.m_nRightViewSplitterData[0][1] = 0;
-    
     sGraphSplitterData.m_nRightViewSplitterData[1][0] =
         (int)(omWndSize.Height() * defGRAPH_VIEW_PROPOSION);
     sGraphSplitterData.m_nRightViewSplitterData[1][1] = 0;
@@ -572,7 +571,7 @@ BOOL CGraphChildFrame::bGetDefaultSplitterPostion(CRect& omWndSize,
   Member of      : CGraphChildFrame
   Author(s)      : Raja N
   Date Created   : 19.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphChildFrame::vGetSplitterStatus()
 {
@@ -589,17 +588,19 @@ void CGraphChildFrame::vSetSplitterConfig(SGRAPHSPLITTERDATA& sSplitterPostion)
 {
     // Check for initial condition
     m_sSplitterPostion = sSplitterPostion;
+
     if( m_sSplitterPostion.m_nRootSplitterData[0][0] == -1 )
     {
         CRect omWndSize;
         GetWindowRect( omWndSize );
         bGetDefaultSplitterPostion(omWndSize, m_sSplitterPostion );
     }
-	vSetSplitterPostion();
+
+    vSetSplitterPostion();
 }
 void CGraphChildFrame::vGetSplitterConfig(SGRAPHSPLITTERDATA& sSplitterPostion)
 {
-	vUpdateWndCo_Ords();
+    vUpdateWndCo_Ords();
     vGetSplitterStatus();
     sSplitterPostion = m_sSplitterPostion;
 }
@@ -612,13 +613,14 @@ void CGraphChildFrame::vGetSplitterConfig(SGRAPHSPLITTERDATA& sSplitterPostion)
   Member of      : CGraphChildFrame
   Author(s)      : ArunKumar K
   Date Created   : 02.11.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphChildFrame::vSetSignalListDetails(CGraphList* pGraphList)
 {
-	if(pGraphList!=NULL)
-		m_pGraphList = pGraphList;
-
+    if(pGraphList!=NULL)
+    {
+        m_pGraphList = pGraphList;
+    }
 }
 
 /*******************************************************************************
@@ -629,11 +631,14 @@ void CGraphChildFrame::vSetSignalListDetails(CGraphList* pGraphList)
   Member of      : CGraphChildFrame
   Author(s)      : ArunKumar K
   Date Created   : 02.11.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 CGraphList* CGraphChildFrame::pGetSignalListDetails()
 {
-	if(m_pGraphList!=NULL)
-		return m_pGraphList;
-	return NULL;
+    if(m_pGraphList!=NULL)
+    {
+        return m_pGraphList;
+    }
+
+    return NULL;
 }

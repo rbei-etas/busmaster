@@ -64,6 +64,6 @@ public:
     int m_nAction;
     // Grid Setting
     BOOL m_bShowGrid;
-	//Graph Line Display
-	eDISPLAY_TYPE m_eDisplayType;	
+    //Graph Line Display
+    eDISPLAY_TYPE m_eDisplayType;
 };

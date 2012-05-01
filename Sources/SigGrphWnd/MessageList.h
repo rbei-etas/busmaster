@@ -35,22 +35,22 @@ private:
     // GDI Objects for background and selection brush
     HBRUSH m_hWhiteBrush, m_hBlueBrush;
 
-// Construction
+    // Construction
 public:
     CMessageList();
 
-// Attributes
+    // Attributes
 public:
 
-// Operations
+    // Operations
 public:
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMessageList)
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 public:
     virtual ~CMessageList();
 

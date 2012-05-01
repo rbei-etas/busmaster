@@ -30,21 +30,21 @@
 
 class CGraphSink : public CCmdTarget
 {
-	DECLARE_DYNAMIC(CGraphSink)
+    DECLARE_DYNAMIC(CGraphSink)
 
 public:
-	CGraphSink();
-	virtual ~CGraphSink();
+    CGraphSink();
+    virtual ~CGraphSink();
 
-	virtual void OnFinalRelease();
-	void OnCursorPosition(double x, double y, short shCursorID);	
+    virtual void OnFinalRelease();
+    void OnCursorPosition(double x, double y, short shCursorID);
 
-	CGraphChildFrame* m_pParentWnd;
+    CGraphChildFrame* m_pParentWnd;
 
 protected:
-	DECLARE_MESSAGE_MAP()
-	DECLARE_DISPATCH_MAP()
-	DECLARE_INTERFACE_MAP()	
+    DECLARE_MESSAGE_MAP()
+    DECLARE_DISPATCH_MAP()
+    DECLARE_INTERFACE_MAP()
 };
 
 

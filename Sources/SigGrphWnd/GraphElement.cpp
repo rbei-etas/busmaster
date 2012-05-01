@@ -3,10 +3,10 @@
   FileName      :  GraphElement.cpp
   Description   :  Implementation file for CGraphElement class
   $Log:   X:/Archive/Sources/SigGrphWnd/GraphElement.cpv  $
-   
+
   Author(s)     :  Raja N
   Date Created  :  01.12.2004
-  Modified By   : 
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved
  *********************************************************************/
 // For standard Headers
@@ -27,8 +27,8 @@ CGraphElement::CGraphElement()
 {
     // Message ID
     m_nMsgID = -1;
-	// Message Name
-	m_strMsgName = STR_EMPTY;
+    // Message Name
+    m_strMsgName = STR_EMPTY;
     // Format - Standard or Extended
     m_nFrameFormat = -1;
     // Element Name
@@ -59,19 +59,19 @@ CGraphElement::CGraphElement()
 *******************************************************************************/
 CGraphElement::~CGraphElement()
 {
-
 }
 
 BYTE* CGraphElement::pbyGetConfigData(BYTE* pbyTrgData)
 {
     BYTE* pbyTemp = pbyTrgData;
+
     if (pbyTemp != NULL)
     {
         // Save properties one after another
         // Message ID
         COPY_DATA(pbyTemp, &m_nMsgID, sizeof(int));
-		// Message Name	 
-		TCHAR MsgName[MAX_PATH] = {_T('\0')};
+        // Message Name
+        TCHAR MsgName[MAX_PATH] = {_T('\0')};
         strcpy_s(MsgName, m_strMsgName.GetBuffer(MAX_PATH));
         COPY_DATA(pbyTemp, MsgName, (sizeof(TCHAR) * MAX_PATH));
         // Frame Format - Standard
@@ -95,19 +95,21 @@ BYTE* CGraphElement::pbyGetConfigData(BYTE* pbyTrgData)
         // Enabled or not
         COPY_DATA(pbyTemp, &m_bEnabled, sizeof(BOOL));
     }
+
     return pbyTemp;
 }
 
 BYTE* CGraphElement::pbySetConfigData(BYTE* pbyTrgData)
 {
     BYTE* pbyTemp = pbyTrgData;
+
     if (pbyTemp != NULL)
     {
         // Save properties one after another
         // Message ID
         COPY_DATA_2(&m_nMsgID, pbyTemp, sizeof(int));
-		//Message Name		
-		TCHAR MsgName[MAX_PATH] = {_T('\0')};
+        //Message Name
+        TCHAR MsgName[MAX_PATH] = {_T('\0')};
         COPY_DATA_2(MsgName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
         m_strMsgName.Format("%s", MsgName);
         // Frame Format - Standard
@@ -131,6 +133,7 @@ BYTE* CGraphElement::pbySetConfigData(BYTE* pbyTrgData)
         // Enabled or not
         COPY_DATA_2(&m_bEnabled, pbyTemp, sizeof(BOOL));
     }
+
     return pbyTemp;
 }
 /*******************************************************************************
@@ -141,11 +144,12 @@ BYTE* CGraphElement::pbySetConfigData(BYTE* pbyTrgData)
  Member of      : CGraphElement
  Author(s)      : Raja N
  Date Created   : 01.12.2004
- Modifications  : 
+ Modifications  :
 *******************************************************************************/
 int CGraphElement::nSerialize(CArchive& omArch)
 {
     int nReturn = 0;
+
     // If it is storing
     try
     {
@@ -204,6 +208,7 @@ int CGraphElement::nSerialize(CArchive& omArch)
         nReturn = poArchExcep->m_cause;
         poArchExcep->Delete();
     }
+
     // Return the result
     return nReturn;
 }

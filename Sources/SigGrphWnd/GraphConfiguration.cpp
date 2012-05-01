@@ -3,10 +3,10 @@
   FileName      :  GraphConfiguration.cpp
   Description   :  Implementation file for CGraphConfiguration class
   $Log:   X:/Archive/Sources/SigGrphWnd/GraphConfiguration.cpv  $
-   
+
   Author(s)     :  Raja N
   Date Created  :  01/12/2004
-  Modified By   : 
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved
 *******************************************************************************/
 
@@ -35,7 +35,7 @@
 *******************************************************************************/
 CGraphConfiguration::CGraphConfiguration(CWnd* pParent /*=NULL*/)
     : CDialog(CGraphConfiguration::IDD, pParent)
-	, m_nLineDisplay(0)
+    , m_nLineDisplay(0)
 {
     //{{AFX_DATA_INIT(CGraphConfiguration)
     m_nYGridCount = 0;
@@ -44,15 +44,15 @@ CGraphConfiguration::CGraphConfiguration(CWnd* pParent /*=NULL*/)
     m_nBufferSize = 0;
     m_omFrameType = -1;
     //}}AFX_DATA_INIT
-	m_pGraphList = NULL;
-	m_pDMGraphCtrl = NULL;
+    m_pGraphList = NULL;
+    m_pDMGraphCtrl = NULL;
 }
 
 /*******************************************************************************
-  Function Name  : 
+  Function Name  :
   Input(s)       : pDX - Data Exchange Object
   Output         : -
-  Functionality  : 
+  Functionality  :
   Member of      : CGraphConfiguration
   Author         :  Raja N
   Date Created   :  01/12/2004
@@ -76,7 +76,7 @@ void CGraphConfiguration::DoDataExchange(CDataExchange* pDX)
     DDV_MinMaxInt(pDX, m_nBufferSize, 1000, 10000);
     DDX_CBIndex(pDX, IDC_COMBO_FRAME, m_omFrameType);
     //}}AFX_DATA_MAP
-	DDX_CBIndex(pDX, IDC_COMBO_LINE_DISPLAY, m_nLineDisplay);
+    DDX_CBIndex(pDX, IDC_COMBO_LINE_DISPLAY, m_nLineDisplay);
 }
 
 
@@ -97,9 +97,9 @@ END_MESSAGE_MAP()
  Member of      : CGraphConfiguration
  Author(s)      : Raja N
  Date Created   : 11.29.2004
- Modifications  : 
+ Modifications  :
 *******************************************************************************/
-void CGraphConfiguration::OnSetDefault() 
+void CGraphConfiguration::OnSetDefault()
 {
     // Create Temp object to get default value
     CGraphParameters omTemp;
@@ -116,53 +116,52 @@ void CGraphConfiguration::OnSetDefault()
  Member of      : CGraphConfiguration
  Author(s)      : Raja N
  Date Created   : 11.29.2004
- Modifications  : 
+ Modifications  :
 *******************************************************************************/
-void CGraphConfiguration::OnOK() 
+void CGraphConfiguration::OnOK()
 {
-	// Update Global Structure    
+    // Update Global Structure
     if( m_pGraphList != NULL && UpdateData() == TRUE)
-    {                        
+    {
         m_pGraphList->m_odGraphParameters.m_nBufferSize = m_nBufferSize;
         m_pGraphList->m_odGraphParameters.m_nRefreshRate = m_nUpdateRate;
         m_pGraphList->m_odGraphParameters.m_nXGridLines = m_nXGridCount;
         m_pGraphList->m_odGraphParameters.m_nYGridLines = m_nYGridCount;
         m_pGraphList->m_odGraphParameters.m_nAxisColor = m_omAxisColor.GetColour();
         m_pGraphList->m_odGraphParameters.m_nFrameColor =
-                                                m_omFrameColor.GetColour();
+            m_omFrameColor.GetColour();
         m_pGraphList->m_odGraphParameters.m_nGridColor = m_omGridColor.GetColour();
         m_pGraphList->m_odGraphParameters.m_nPlotAreaColor =
-                                                m_omPlotColor.GetColour();
+            m_omPlotColor.GetColour();
         m_pGraphList->m_odGraphParameters.m_nFrameStyle = m_omFrameType;
-		m_pGraphList->m_odGraphParameters.m_eDisplayType = (eDISPLAY_TYPE)m_nLineDisplay;
+        m_pGraphList->m_odGraphParameters.m_eDisplayType = (eDISPLAY_TYPE)m_nLineDisplay;
 
-		// Update Graph Control        
+        // Update Graph Control
         if( m_pDMGraphCtrl != NULL )
         {
-			// Buffer size and Refresh rate will be taken care
-			// during connect
-			// Set X Y Gridlines
-			CComPtr<IDMGraphAxis> spAxisX; 
-			m_pDMGraphCtrl->get_Axis( HorizontalX, &spAxisX);
-			spAxisX->put_GridNumber((short)m_nXGridCount);
-
-			CComPtr<IDMGraphAxis> spAxisY; 
-			m_pDMGraphCtrl->get_Axis( VerticalY, &spAxisY);
-			spAxisY->put_GridNumber((short)m_nYGridCount);				
-			// Set Axis Color
-			m_pDMGraphCtrl->put_AxisColor((OLE_COLOR)m_omAxisColor.GetColour());					
-			// Set Frame Color
-			m_pDMGraphCtrl->put_ControlFrameColor((OLE_COLOR)m_omFrameColor.GetColour());					
-			// Set Frame Style
-			m_pDMGraphCtrl->put_FrameStyle((FrameStyle)m_omFrameType);				
-			// Set Grid Color
-			m_pDMGraphCtrl->put_GridColor((OLE_COLOR)m_omGridColor.GetColour());				
-			// Set Plot Area Color
-			m_pDMGraphCtrl->put_PlotAreaColor((OLE_COLOR)m_omPlotColor.GetColour());								
+            // Buffer size and Refresh rate will be taken care
+            // during connect
+            // Set X Y Gridlines
+            CComPtr<IDMGraphAxis> spAxisX;
+            m_pDMGraphCtrl->get_Axis( HorizontalX, &spAxisX);
+            spAxisX->put_GridNumber((short)m_nXGridCount);
+            CComPtr<IDMGraphAxis> spAxisY;
+            m_pDMGraphCtrl->get_Axis( VerticalY, &spAxisY);
+            spAxisY->put_GridNumber((short)m_nYGridCount);
+            // Set Axis Color
+            m_pDMGraphCtrl->put_AxisColor((OLE_COLOR)m_omAxisColor.GetColour());
+            // Set Frame Color
+            m_pDMGraphCtrl->put_ControlFrameColor((OLE_COLOR)m_omFrameColor.GetColour());
+            // Set Frame Style
+            m_pDMGraphCtrl->put_FrameStyle((FrameStyle)m_omFrameType);
+            // Set Grid Color
+            m_pDMGraphCtrl->put_GridColor((OLE_COLOR)m_omGridColor.GetColour());
+            // Set Plot Area Color
+            m_pDMGraphCtrl->put_PlotAreaColor((OLE_COLOR)m_omPlotColor.GetColour());
         }
 
         // Call parent's OnOK to close this Modal session
-        CDialog::OnOK();        
+        CDialog::OnOK();
     }
 }
 
@@ -177,20 +176,21 @@ void CGraphConfiguration::OnOK()
   Modifications  : Raja N on 7.3.2005
                    Removed the Automatic tab from the color popup windows
 *******************************************************************************/
-BOOL CGraphConfiguration::OnInitDialog() 
+BOOL CGraphConfiguration::OnInitDialog()
 {
-    CDialog::OnInitDialog();	
-    // Update Data from Global Structure    
+    CDialog::OnInitDialog();
+
+    // Update Data from Global Structure
     if( m_pGraphList != NULL )
     {
-		vSetValues( m_pGraphList->m_odGraphParameters );
-	}	
+        vSetValues( m_pGraphList->m_odGraphParameters );
+    }
+
     // Remove default color option from the buttons
     m_omFrameColor.SetDefaultText( STR_EMPTY );
     m_omPlotColor.SetDefaultText( STR_EMPTY );
     m_omAxisColor.SetDefaultText( STR_EMPTY );
     m_omGridColor.SetDefaultText( STR_EMPTY );
-
     return TRUE;
 }
 
@@ -203,7 +203,7 @@ BOOL CGraphConfiguration::OnInitDialog()
   Member of      : CGraphConfiguration
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphConfiguration::vSetValues(CGraphParameters omParam)
 {
@@ -216,18 +216,18 @@ void CGraphConfiguration::vSetValues(CGraphParameters omParam)
     m_nXGridCount = omParam.m_nXGridLines;
     m_nYGridCount = omParam.m_nYGridLines;
     // Colors
-        // Axis
+    // Axis
     m_omAxisColor.SetColour( omParam.m_nAxisColor );
-        // Frame
+    // Frame
     m_omFrameColor.SetColour( omParam.m_nFrameColor );
-        // Grid
+    // Grid
     m_omGridColor.SetColour( omParam.m_nGridColor );
-        // Plot Area
+    // Plot Area
     m_omPlotColor.SetColour( omParam.m_nPlotAreaColor );
     // Frame Style
     m_omFrameType = omParam.m_nFrameStyle;
-	//Line Display Type
-	m_nLineDisplay = omParam.m_eDisplayType;
+    //Line Display Type
+    m_nLineDisplay = omParam.m_eDisplayType;
     // Update data to reflect changes in UI
     UpdateData( FALSE );
 }

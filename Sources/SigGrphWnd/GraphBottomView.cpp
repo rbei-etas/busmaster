@@ -3,14 +3,14 @@
   FileName      :  GraphBottomView.cpp
   Description   :  Implementation file for CGraphBottomView class
   $Log:   X:/Archive/Sources/SigGrphWnd/GraphBottomView.cpv  $
-   
+
   Author(s)     :  Raja N
   Date Created  :  10/12/2004
-  Modified By   : 
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved
 *******************************************************************************/
 
-// For Standard Includes 
+// For Standard Includes
 #include "SigGrphWnd_stdafx.h"
 // For definition of resource symbols
 #include "SigGrphWnd_resource.h"
@@ -43,7 +43,7 @@ IMPLEMENT_DYNCREATE(CGraphBottomView, CFormView)
 *******************************************************************************/
 CGraphBottomView::CGraphBottomView()
     : CFormView(CGraphBottomView::IDD)
-	, m_dblDeltaTime(0)
+    , m_dblDeltaTime(0)
 {
     //{{AFX_DATA_INIT(CGraphBottomView)
     m_nAxis = -1;
@@ -55,8 +55,8 @@ CGraphBottomView::CGraphBottomView()
     m_pDMGraphCtrl = NULL;
     // Set update timer Id to invalid
     nTimerID = 0;
-	m_dblarrTime[0] = 0;
-	m_dblarrTime[1] = 0;
+    m_dblarrTime[0] = 0;
+    m_dblarrTime[1] = 0;
 }
 
 /*******************************************************************************
@@ -81,25 +81,25 @@ CGraphBottomView::~CGraphBottomView()
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphBottomView::DoDataExchange(CDataExchange* pDX)
 {
-	CFormView::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CGraphBottomView)
-	DDX_Control(pDX, IDC_BTN_RIGHT, m_omBtnRight);
-	DDX_Control(pDX, IDC_BTN_LEFT, m_omBtnLeft);
-	DDX_Control(pDX, IDC_BTN_DOWN, m_omBtnDown);
-	DDX_Control(pDX, IDC_BTN_UP, m_omBtnUp);
-	DDX_Radio(pDX, IDC_RADIO_AXIS_X, m_nAxis);
-	DDX_Radio(pDX, IDC_RADIO_ACTION_MOVE, m_nAction);
-	DDX_Text(pDX, IDC_EDIT_RANGE_FROM, m_dRangeFrom);
-	DDX_Text(pDX, IDC_EDIT_RANGE_TO, m_dRangeTo);
-	//}}AFX_DATA_MAP
-	DDX_Text(pDX, IDC_EDIT_T1, m_dblarrTime[0]);
-	DDX_Text(pDX, IDC_EDIT_T2, m_dblarrTime[1]);
-	DDX_Text(pDX, IDC_EDIT_DELTA_T, m_dblDeltaTime);
-	DDX_Control(pDX, IDC_LIST_SIG_VALUES, m_lstSignalDetails);
+    CFormView::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CGraphBottomView)
+    DDX_Control(pDX, IDC_BTN_RIGHT, m_omBtnRight);
+    DDX_Control(pDX, IDC_BTN_LEFT, m_omBtnLeft);
+    DDX_Control(pDX, IDC_BTN_DOWN, m_omBtnDown);
+    DDX_Control(pDX, IDC_BTN_UP, m_omBtnUp);
+    DDX_Radio(pDX, IDC_RADIO_AXIS_X, m_nAxis);
+    DDX_Radio(pDX, IDC_RADIO_ACTION_MOVE, m_nAction);
+    DDX_Text(pDX, IDC_EDIT_RANGE_FROM, m_dRangeFrom);
+    DDX_Text(pDX, IDC_EDIT_RANGE_TO, m_dRangeTo);
+    //}}AFX_DATA_MAP
+    DDX_Text(pDX, IDC_EDIT_T1, m_dblarrTime[0]);
+    DDX_Text(pDX, IDC_EDIT_T2, m_dblarrTime[1]);
+    DDX_Text(pDX, IDC_EDIT_DELTA_T, m_dblDeltaTime);
+    DDX_Control(pDX, IDC_LIST_SIG_VALUES, m_lstSignalDetails);
 }
 
 
@@ -153,47 +153,38 @@ void CGraphBottomView::Dump(CDumpContext& dc) const
   Modifications  : Raja N on 15.12.2004, Added code to check graph control
                    proper load by checking the window handle
 *******************************************************************************/
-void CGraphBottomView::OnInitialUpdate() 
+void CGraphBottomView::OnInitialUpdate()
 {
     // Call Parent windows Update
     CFormView::OnInitialUpdate();
-	
-    // Load Icons from direction buttons			
+    // Load Icons from direction buttons
     m_omBtnUp.SetIcon(AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDI_ICON_UP)));
     m_omBtnDown.SetIcon(AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDI_ICON_DOWN)));
     m_omBtnLeft.SetIcon(AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDI_ICON_LEFT)));
     m_omBtnRight.SetIcon(AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDI_ICON_RIGHT)));
-
-	//CGraphList * podList = NULL;
-	CGraphChildFrame* pParentWnd = NULL;
-	pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
-
-	pParentWnd->m_pomBottomView = this;	
-
-	// Get Graph Control Pointer
-	m_pDMGraphCtrl = pParentWnd->m_pDMGraphCtrl;
-
-	// If window handle is invalid then init pointer with NULL
+    //CGraphList * podList = NULL;
+    CGraphChildFrame* pParentWnd = NULL;
+    pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+    pParentWnd->m_pomBottomView = this;
+    // Get Graph Control Pointer
+    m_pDMGraphCtrl = pParentWnd->m_pDMGraphCtrl;
+    // If window handle is invalid then init pointer with NULL
     /*if( m_opDMGraphCtrl != NULL &&
         IsWindow(m_opDMGraphCtrl->m_hWnd) == FALSE )
     {
         m_opDMGraphCtrl = NULL;
     }*/
-
-	//Update initial values
-	m_dblarrTime[0] = dRound(m_dblarrTime[0], 3);
-	m_dblarrTime[1] = dRound(m_dblarrTime[1], 3);
-	m_dblDeltaTime  = dRound(m_dblDeltaTime , 3);
-
-	// Create List Control
+    //Update initial values
+    m_dblarrTime[0] = dRound(m_dblarrTime[0], 3);
+    m_dblarrTime[1] = dRound(m_dblarrTime[1], 3);
+    m_dblDeltaTime  = dRound(m_dblDeltaTime , 3);
+    // Create List Control
     m_lstSignalDetails.DeleteAllItems();
-
-	//Set List Control styles
-	m_lstSignalDetails.SetExtendedStyle
-		(LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT  );
-
-	//Create Columns
-	vCreateColumns();
+    //Set List Control styles
+    m_lstSignalDetails.SetExtendedStyle
+    (LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT  );
+    //Create Columns
+    vCreateColumns();
 }
 
 /*******************************************************************************
@@ -204,56 +195,50 @@ void CGraphBottomView::OnInitialUpdate()
   Member of      : CGraphBottomView
   Author(s)      : Arunkumar K
   Date Created   : 22-12-2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphBottomView::vCreateColumns()
 {
-	//Now create all the coloumns
+    //Now create all the coloumns
     LVCOLUMN lvcolumn;
     memset(&lvcolumn, 0, sizeof(lvcolumn));
     lvcolumn.mask =  LVCF_FMT | LVCF_SUBITEM | LVCF_TEXT | LVCF_WIDTH;
     lvcolumn.fmt = LVCFMT_LEFT;
     CString omTmpColTitle;
     // add columns
-
     omTmpColTitle = _T("Category");
     lvcolumn.iSubItem = 0;
-    lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);  
+    lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);
     lvcolumn.cchTextMax = (int)_tcslen(omTmpColTitle.GetBuffer(MAX_PATH))*2;
     lvcolumn.cx = nGetListCtrlTextExtent(omTmpColTitle)*2;
     m_lstSignalDetails.InsertColumn(0, &lvcolumn);
-
     omTmpColTitle = _T("Element");
     lvcolumn.iSubItem = 1;
-    lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);  
+    lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);
     lvcolumn.cchTextMax = (int)_tcslen(omTmpColTitle.GetBuffer(MAX_PATH))*2;
     lvcolumn.cx = nGetListCtrlTextExtent(omTmpColTitle)*2;
     m_lstSignalDetails.InsertColumn(1, &lvcolumn);
-
     omTmpColTitle = _T("Type");
     lvcolumn.iSubItem = 2;
-    lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);  
+    lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);
     lvcolumn.cchTextMax = (int)_tcslen(omTmpColTitle.GetBuffer(MAX_PATH))*2;
     lvcolumn.cx = nGetListCtrlTextExtent(omTmpColTitle)*2;
     m_lstSignalDetails.InsertColumn(2, &lvcolumn);
-
     omTmpColTitle = _T("Cursor1");
     lvcolumn.iSubItem = 3;
-    lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);  
+    lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);
     lvcolumn.cchTextMax = (int)_tcslen(omTmpColTitle.GetBuffer(MAX_PATH));
     lvcolumn.cx = nGetListCtrlTextExtent(omTmpColTitle);
     m_lstSignalDetails.InsertColumn(3, &lvcolumn);
-
     omTmpColTitle = _T("Cursor2");
     lvcolumn.iSubItem = 4;
-    lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);  
+    lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);
     lvcolumn.cchTextMax = (int)_tcslen(omTmpColTitle.GetBuffer(MAX_PATH));
     lvcolumn.cx = nGetListCtrlTextExtent(omTmpColTitle);
     m_lstSignalDetails.InsertColumn(4, &lvcolumn);
-
     omTmpColTitle = _T("Difference");
     lvcolumn.iSubItem = 5;
-    lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);  
+    lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);
     lvcolumn.cchTextMax = (int)_tcslen(omTmpColTitle.GetBuffer(MAX_PATH));
     lvcolumn.cx = nGetListCtrlTextExtent(omTmpColTitle);
     m_lstSignalDetails.InsertColumn(5, &lvcolumn);
@@ -268,49 +253,54 @@ void CGraphBottomView::vCreateColumns()
   Member of      : CGraphBottomView
   Author(s)      : ArunKumar K
   Date Created   : 22/12/2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphBottomView::vInsertSignalData()
-{		
-	//Clear all previous entries
-	m_lstSignalDetails.DeleteAllItems();
+{
+    //Clear all previous entries
+    m_lstSignalDetails.DeleteAllItems();
+    // Get Element List
+    CGraphList* podList = NULL;
+    CGraphChildFrame* pParentWnd = NULL;
+    pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
 
-    // Get Element List 
-    CGraphList * podList = NULL;
-	
-	CGraphChildFrame* pParentWnd = NULL;
-	pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+    if(pParentWnd != NULL)
+    {
+        podList = pParentWnd->pGetSignalListDetails();
+    }
+    else
+    {
+        return;
+    }
 
-	if(pParentWnd != NULL)
-		podList = pParentWnd->pGetSignalListDetails();
-	else
-		return;
-	
     CGraphElement odTemp;
+
     if( podList != NULL )
     {
         UINT unMsgID = 0;
         CString omStrName;
         int nItemCount  = (int)podList->m_omElementList.GetSize();
+
         // Add items to the list
         for( int nIndex = 0; nIndex < nItemCount; nIndex++ )
         {
-			odTemp = podList->m_omElementList[ nIndex ];
+            odTemp = podList->m_omElementList[ nIndex ];
+
             // Statistics Parameter
             if( odTemp.m_nValueType != eSTAT_PARAM )
             {
                 unMsgID = odTemp.m_nMsgID;
                 // Get Message Name
-				omStrName = odTemp.m_strMsgName;
+                omStrName = odTemp.m_strMsgName;
                 // Add Element Catogory
                 m_lstSignalDetails.InsertItem( nIndex, omStrName );
                 // Add Element Name
                 m_lstSignalDetails.SetItemText( nIndex, 1,
-                                            odTemp.m_omStrElementName );
+                                                odTemp.m_omStrElementName );
                 // Set Color of the entry
                 m_lstSignalDetails.SetItemData( nIndex, odTemp.m_nLineColor );
 
-				// Add Value Type
+                // Add Value Type
                 if( odTemp.m_nValueType == eRAW_VALUE )
                 {
                     m_lstSignalDetails.SetItemText( nIndex, 2, defSTR_RAW_VALUE );
@@ -320,13 +310,13 @@ void CGraphBottomView::vInsertSignalData()
                     m_lstSignalDetails.SetItemText( nIndex, 2, defSTR_PHY_VALUE );
                 }
             }
-			else
-			{
-				// Insert Category
+            else
+            {
+                // Insert Category
                 m_lstSignalDetails.InsertItem( nIndex, defSTR_STATISTICS_NAME);
                 // Insert element name
                 m_lstSignalDetails.SetItemText( nIndex, 1,
-                                            odTemp.m_omStrElementName );
+                                                odTemp.m_omStrElementName );
                 // Insert Channel String
                 CString omStrChannel;
                 omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
@@ -335,9 +325,9 @@ void CGraphBottomView::vInsertSignalData()
                 m_lstSignalDetails.SetItemText( nIndex, 2, omStrChannel );
                 // Set Color of the entry
                 m_lstSignalDetails.SetItemData( nIndex, odTemp.m_nLineColor );
-			}
+            }
         }
-    }	
+    }
 }
 
 /*******************************************************************************
@@ -352,52 +342,52 @@ void CGraphBottomView::vInsertSignalData()
                    Made the dblDiff to contain only modulus of difference.
 *******************************************************************************/
 void CGraphBottomView::vUpdateSignalData()
-{	
-	if ( m_pDMGraphCtrl == NULL )
-	{
-		return;
-	}
+{
+    if ( m_pDMGraphCtrl == NULL )
+    {
+        return;
+    }
 
-	CGraphChildFrame* pParentWnd = NULL;
-	pParentWnd = (CGraphChildFrame*)pomGetParentWindow();	
-	double dblValue1 = 0, dblValue2 = 0, dblDiff;
-	CString strValue1, strValue2, strDiffVal;
+    CGraphChildFrame* pParentWnd = NULL;
+    pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+    double dblValue1 = 0, dblValue2 = 0, dblDiff;
+    CString strValue1, strValue2, strDiffVal;
 
-	if( m_dblarrTime[0] == 0 && m_dblarrTime[1] == 0 )
-	{
-		for( int nIndex = 0; nIndex < m_lstSignalDetails.GetItemCount(); nIndex++)
-		{
-			m_lstSignalDetails.SetItemText( nIndex, 3, STR_EMPTY);	//Cursor 1 value
-			m_lstSignalDetails.SetItemText( nIndex, 4, STR_EMPTY);  //Cursor 2 value
-			m_lstSignalDetails.SetItemText( nIndex, 5, STR_EMPTY); //Difference value
-		}
-		return;
-	}
+    if( m_dblarrTime[0] == 0 && m_dblarrTime[1] == 0 )
+    {
+        for( int nIndex = 0; nIndex < m_lstSignalDetails.GetItemCount(); nIndex++)
+        {
+            m_lstSignalDetails.SetItemText( nIndex, 3, STR_EMPTY);  //Cursor 1 value
+            m_lstSignalDetails.SetItemText( nIndex, 4, STR_EMPTY);  //Cursor 2 value
+            m_lstSignalDetails.SetItemText( nIndex, 5, STR_EMPTY); //Difference value
+        }
 
-	for( int nIndex = 0; nIndex < m_lstSignalDetails.GetItemCount(); nIndex++)
-	{		
-		dblValue1 = 0;
-		dblValue2 = 0;
-		m_pDMGraphCtrl->GetElementValueAtCursor( (short)nIndex, m_dblarrTime[0], &dblValue1);
-		m_pDMGraphCtrl->GetElementValueAtCursor( (short)nIndex, m_dblarrTime[1], &dblValue2);
+        return;
+    }
 
-		dblDiff = dblValue2 - dblValue1;
-		
-		if( dblDiff < 0)
-			dblDiff = -dblDiff;
+    for( int nIndex = 0; nIndex < m_lstSignalDetails.GetItemCount(); nIndex++)
+    {
+        dblValue1 = 0;
+        dblValue2 = 0;
+        m_pDMGraphCtrl->GetElementValueAtCursor( (short)nIndex, m_dblarrTime[0], &dblValue1);
+        m_pDMGraphCtrl->GetElementValueAtCursor( (short)nIndex, m_dblarrTime[1], &dblValue2);
+        dblDiff = dblValue2 - dblValue1;
 
-		dRound(dblValue1, 3);
-		dRound(dblValue2, 3);		
-		dRound(dblDiff, 3);
+        if( dblDiff < 0)
+        {
+            dblDiff = -dblDiff;
+        }
 
-		strValue1.Format( _T("%.3lf") ,dblValue1);
-		strValue2.Format( _T("%.3lf") ,dblValue2);
-		strDiffVal.Format(_T("%.3lf") ,dblDiff);
-
-		m_lstSignalDetails.SetItemText( nIndex, 3, strValue1);	//Cursor 1 value
-		m_lstSignalDetails.SetItemText( nIndex, 4, strValue2);  //Cursor 2 value
-		m_lstSignalDetails.SetItemText( nIndex, 5, strDiffVal); //Difference value
-	}
+        dRound(dblValue1, 3);
+        dRound(dblValue2, 3);
+        dRound(dblDiff, 3);
+        strValue1.Format( _T("%.3lf") ,dblValue1);
+        strValue2.Format( _T("%.3lf") ,dblValue2);
+        strDiffVal.Format(_T("%.3lf") ,dblDiff);
+        m_lstSignalDetails.SetItemText( nIndex, 3, strValue1);  //Cursor 1 value
+        m_lstSignalDetails.SetItemText( nIndex, 4, strValue2);  //Cursor 2 value
+        m_lstSignalDetails.SetItemText( nIndex, 5, strDiffVal); //Difference value
+    }
 }
 
 /*******************************************************************************
@@ -408,15 +398,15 @@ void CGraphBottomView::vUpdateSignalData()
   Member of      : CGraphBottomView
   Author(s)      : Arunkumar K
   Date Created   : 22-12-2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 int CGraphBottomView::nGetListCtrlTextExtent(CString omColTitle)
 {
     CSize sz;
-	TEXTMETRIC tm;
+    TEXTMETRIC tm;
     int nDx = 0;
     CDC*  pDC = m_lstSignalDetails.GetDC();
-	pDC->GetTextMetrics(&tm);
+    pDC->GetTextMetrics(&tm);
     sz = pDC->GetTextExtent(omColTitle);
     //Add a char avg. width to remove wrapping
     nDx = tm.tmAveCharWidth;
@@ -432,12 +422,12 @@ int CGraphBottomView::nGetListCtrlTextExtent(CString omColTitle)
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphBottomView::OnBtnExport() 
+void CGraphBottomView::OnBtnExport()
 {
     CGraphExportDlg odDlg;
-	odDlg.m_pDMGraphCtrl = m_pDMGraphCtrl;
+    odDlg.m_pDMGraphCtrl = m_pDMGraphCtrl;
     odDlg.DoModal();
 }
 
@@ -450,11 +440,11 @@ void CGraphBottomView::OnBtnExport()
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphBottomView::OnBtnAutoFit()
 {
-	m_pDMGraphCtrl->AutoRange();
+    m_pDMGraphCtrl->AutoRange();
 }
 
 /*******************************************************************************
@@ -466,26 +456,29 @@ void CGraphBottomView::OnBtnAutoFit()
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphBottomView::OnBtnConfigure() 
+void CGraphBottomView::OnBtnConfigure()
 {
     // Create configuration dialog and show it
     CGraphConfiguration omGraphConf;
+    CGraphList* podList = NULL;
+    CGraphChildFrame* pParentWnd = NULL;
+    pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
 
-	CGraphList * podList = NULL;
-	CGraphChildFrame* pParentWnd = NULL;
-	pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+    if(pParentWnd != NULL)
+    {
+        podList = pParentWnd->pGetSignalListDetails();
+    }
+    else
+    {
+        return;
+    }
 
-	if(pParentWnd != NULL)
-		podList = pParentWnd->pGetSignalListDetails();
-	else
-		return; 
-
-	CGraphParameters par;
-	//omGraphConf.vSetValues(podList->m_odGraphParameters);
-	omGraphConf.m_pGraphList = podList;
-	omGraphConf.m_pDMGraphCtrl = m_pDMGraphCtrl;
+    CGraphParameters par;
+    //omGraphConf.vSetValues(podList->m_odGraphParameters);
+    omGraphConf.m_pGraphList = podList;
+    omGraphConf.m_pDMGraphCtrl = m_pDMGraphCtrl;
     omGraphConf.DoModal();
 }
 
@@ -499,19 +492,21 @@ void CGraphBottomView::OnBtnConfigure()
   Member of      : CGraphBottomView
   Author(s)      : ArunKumar K
   Date Created   : 04.11.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-CWnd * CGraphBottomView::pomGetParentWindow() const
+CWnd* CGraphBottomView::pomGetParentWindow() const
 {
-    CWnd * pWnd = NULL;
+    CWnd* pWnd = NULL;
     // Get Splitter window pointer
     pWnd = GetParent();
+
     // Get CGraphChildFrame pointer from Splitter window pointer
     if( pWnd != NULL )
     {
         pWnd = pWnd->GetParent();
     }
-	if( pWnd != NULL )
+
+    if( pWnd != NULL )
     {
         pWnd = pWnd->GetParent();
     }
@@ -529,13 +524,13 @@ CWnd * CGraphBottomView::pomGetParentWindow() const
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphBottomView::OnBtnCopy() 
+void CGraphBottomView::OnBtnCopy()
 {
     if( m_pDMGraphCtrl != NULL )
     {
-		m_pDMGraphCtrl->CopyToClipboard();
+        m_pDMGraphCtrl->CopyToClipboard();
     }
 }
 
@@ -550,37 +545,42 @@ void CGraphBottomView::OnBtnCopy()
   Date Created   : 10/12/2004
   Modifications  : Raja N on 14.12.2004, Review comments implemented
 *******************************************************************************/
-void CGraphBottomView::OnBtnGrid() 
-{	
-	CGraphList * podList = NULL;
-	CGraphChildFrame* pParentWnd = NULL;
-	pParentWnd = (CGraphChildFrame*)pomGetParentWindow();	
+void CGraphBottomView::OnBtnGrid()
+{
+    CGraphList* podList = NULL;
+    CGraphChildFrame* pParentWnd = NULL;
+    pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
 
-	if(pParentWnd != NULL)
-		podList = pParentWnd->pGetSignalListDetails();
-	else
-		return; 
+    if(pParentWnd != NULL)
+    {
+        podList = pParentWnd->pGetSignalListDetails();
+    }
+    else
+    {
+        return;
+    }
 
     if( podList != NULL)
     {
-        CGraphParameters * pEnv = 
-			&(podList->m_odGraphParameters);
+        CGraphParameters* pEnv =
+            &(podList->m_odGraphParameters);
+
         if( pEnv != NULL )
         {
             // Toggle grid property
             pEnv->m_bShowGrid = !pEnv->m_bShowGrid;
-            // Update Graph Control            
+            // Update Graph Control
 
-			if (  m_pDMGraphCtrl !=NULL )
-			{				
-				CComPtr<IDMGraphAxis> spAxisX; 
-				m_pDMGraphCtrl->get_Axis( HorizontalX, &spAxisX);
-				spAxisX->put_ShowGrid(pEnv->m_bShowGrid ? VARIANT_TRUE : VARIANT_FALSE);
+            if (  m_pDMGraphCtrl !=NULL )
+            {
+                CComPtr<IDMGraphAxis> spAxisX;
+                m_pDMGraphCtrl->get_Axis( HorizontalX, &spAxisX);
+                spAxisX->put_ShowGrid(pEnv->m_bShowGrid ? VARIANT_TRUE : VARIANT_FALSE);
+                CComPtr<IDMGraphAxis> spAxisY;
+                m_pDMGraphCtrl->get_Axis( VerticalY, &spAxisY);
+                spAxisY->put_ShowGrid(pEnv->m_bShowGrid ? VARIANT_TRUE : VARIANT_FALSE);
+            }
 
-				CComPtr<IDMGraphAxis> spAxisY; 
-				m_pDMGraphCtrl->get_Axis( VerticalY, &spAxisY);
-				spAxisY->put_ShowGrid(pEnv->m_bShowGrid ? VARIANT_TRUE : VARIANT_FALSE);
-			}
             // Update Button Text
             vSetShowButtonState( pEnv->m_bShowGrid );
             // Pass Some Pointer to avoid assertion
@@ -598,12 +598,13 @@ void CGraphBottomView::OnBtnGrid()
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphBottomView::OnBtnSet() 
+void CGraphBottomView::OnBtnSet()
 {
     BOOL bDataValid = TRUE;
     UpdateData();
+
     if( m_pDMGraphCtrl != NULL )
     {
         // Check for validity
@@ -615,12 +616,13 @@ void CGraphBottomView::OnBtnSet()
         {
             bDataValid = FALSE;
         }
+
         // If data valid then update graph control
         if( bDataValid == TRUE )
         {
-			double dXMin,dXMax, dYMin, dYMax;
-			m_pDMGraphCtrl->GetRange(&dXMin, &dXMax, &dYMin, &dYMax);
-			m_pDMGraphCtrl->SetRange(m_dRangeFrom, m_dRangeTo, dYMin, dYMax);
+            double dXMin,dXMax, dYMin, dYMax;
+            m_pDMGraphCtrl->GetRange(&dXMin, &dXMax, &dYMin, &dYMax);
+            m_pDMGraphCtrl->SetRange(m_dRangeFrom, m_dRangeTo, dYMin, dYMax);
         }
         else
         {
@@ -639,9 +641,9 @@ void CGraphBottomView::OnBtnSet()
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphBottomView::OnRadioActionMove() 
+void CGraphBottomView::OnRadioActionMove()
 {
     vSetAction();
     // Save Changes
@@ -657,9 +659,9 @@ void CGraphBottomView::OnRadioActionMove()
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphBottomView::OnRadioActionNone() 
+void CGraphBottomView::OnRadioActionNone()
 {
     vSetAction();
     // Save Changes
@@ -675,9 +677,9 @@ void CGraphBottomView::OnRadioActionNone()
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphBottomView::OnRadioActionTrack() 
+void CGraphBottomView::OnRadioActionTrack()
 {
     vSetAction();
     // Save Changes
@@ -693,9 +695,9 @@ void CGraphBottomView::OnRadioActionTrack()
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphBottomView::OnRadioActionZoom() 
+void CGraphBottomView::OnRadioActionZoom()
 {
     vSetAction();
     // Save Changes
@@ -711,9 +713,9 @@ void CGraphBottomView::OnRadioActionZoom()
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphBottomView::OnRadioAxisX() 
+void CGraphBottomView::OnRadioAxisX()
 {
     vSetAction();
     // Save Changes
@@ -729,9 +731,9 @@ void CGraphBottomView::OnRadioAxisX()
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphBottomView::OnRadioAxisXy() 
+void CGraphBottomView::OnRadioAxisXy()
 {
     vSetAction();
     // Save Changes
@@ -747,9 +749,9 @@ void CGraphBottomView::OnRadioAxisXy()
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphBottomView::OnRadioAxisY() 
+void CGraphBottomView::OnRadioAxisY()
 {
     vSetAction();
     // Save Changes
@@ -760,27 +762,32 @@ void CGraphBottomView::OnRadioAxisY()
   Function Name  : vInitGraphControl
   Input(s)       : -
   Output         : -
-  Functionality  : This function will initialise graph control. This will set 
+  Functionality  : This function will initialise graph control. This will set
                    viewstyle parameters of the graph control
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphBottomView::vInitGraphControl()
-{	
-	CGraphList * podList = NULL;
-	CGraphChildFrame* pParentWnd = NULL;
-	pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+{
+    CGraphList* podList = NULL;
+    CGraphChildFrame* pParentWnd = NULL;
+    pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
 
-	if(pParentWnd != NULL)
-		podList = pParentWnd->pGetSignalListDetails();
-	else
-		return; 
+    if(pParentWnd != NULL)
+    {
+        podList = pParentWnd->pGetSignalListDetails();
+    }
+    else
+    {
+        return;
+    }
 
     if( podList != NULL )
     {
-		CGraphParameters * pEnv = &podList->m_odGraphParameters;
+        CGraphParameters* pEnv = &podList->m_odGraphParameters;
+
         if( pEnv != NULL )
         {
             // Init Active Axis
@@ -789,49 +796,49 @@ void CGraphBottomView::vInitGraphControl()
             m_nAction = pEnv->m_nAction;
             // Set Show Grid Action
             vSetShowButtonState( pEnv->m_bShowGrid );
+
             // Set Graph Params
             if( m_pDMGraphCtrl != NULL )
             {
-				// Set Axis Color
-				m_pDMGraphCtrl->put_AxisColor((OLE_COLOR)pEnv->m_nAxisColor);					
-				// Set Plot Area Color
-				m_pDMGraphCtrl->put_PlotAreaColor((OLE_COLOR)pEnv->m_nPlotAreaColor);					
-				// Set Grid Color
-				m_pDMGraphCtrl->put_GridColor((OLE_COLOR)pEnv->m_nGridColor);
-				// Set Frame Style
-				m_pDMGraphCtrl->put_FrameStyle((FrameStyle)pEnv->m_nFrameStyle);					
-				// Set Frame Color
-				m_pDMGraphCtrl->put_ControlFrameColor((OLE_COLOR)pEnv->m_nFrameColor);					
-				// Set Grid Lines Count					
-				CComPtr<IDMGraphAxis> spAxisX; 
-				m_pDMGraphCtrl->get_Axis( HorizontalX, &spAxisX);
-				spAxisX->put_GridNumber((short)pEnv->m_nXGridLines);
-
-				CComPtr<IDMGraphAxis> spAxisY; 
-				m_pDMGraphCtrl->get_Axis( VerticalY, &spAxisY);
-				spAxisY->put_GridNumber((short)pEnv->m_nYGridLines);
-				// Set Show Grid
-				spAxisX->put_ShowGrid(pEnv->m_bShowGrid ? VARIANT_TRUE : VARIANT_FALSE);
-				spAxisY->put_ShowGrid(pEnv->m_bShowGrid ? VARIANT_TRUE : VARIANT_FALSE);					
-				// Set Format String					
-				spAxisX->put_Format( CComBSTR(defSTR_X_AXIS_FORMAT) );
-				spAxisY->put_Format( CComBSTR(defSTR_Y_AXIS_FORMAT) );					
-				// Set X,Y Range
-				double dXMin,dXMax, dYMin, dYMax;
-				m_pDMGraphCtrl->GetRange(&dXMin, &dXMax, &dYMin, &dYMax);
-				dYMax = 100.0;
-				m_pDMGraphCtrl->SetRange(defDEFAULT_XRANGE_MIN, defDEFAULT_XRANGE_MAX, dYMin, dYMax);			
-
-				//Set the caption
-				BSTR bstrCaption(L"Graph Display - CAN");
-				m_pDMGraphCtrl->put_Caption(bstrCaption);
+                // Set Axis Color
+                m_pDMGraphCtrl->put_AxisColor((OLE_COLOR)pEnv->m_nAxisColor);
+                // Set Plot Area Color
+                m_pDMGraphCtrl->put_PlotAreaColor((OLE_COLOR)pEnv->m_nPlotAreaColor);
+                // Set Grid Color
+                m_pDMGraphCtrl->put_GridColor((OLE_COLOR)pEnv->m_nGridColor);
+                // Set Frame Style
+                m_pDMGraphCtrl->put_FrameStyle((FrameStyle)pEnv->m_nFrameStyle);
+                // Set Frame Color
+                m_pDMGraphCtrl->put_ControlFrameColor((OLE_COLOR)pEnv->m_nFrameColor);
+                // Set Grid Lines Count
+                CComPtr<IDMGraphAxis> spAxisX;
+                m_pDMGraphCtrl->get_Axis( HorizontalX, &spAxisX);
+                spAxisX->put_GridNumber((short)pEnv->m_nXGridLines);
+                CComPtr<IDMGraphAxis> spAxisY;
+                m_pDMGraphCtrl->get_Axis( VerticalY, &spAxisY);
+                spAxisY->put_GridNumber((short)pEnv->m_nYGridLines);
+                // Set Show Grid
+                spAxisX->put_ShowGrid(pEnv->m_bShowGrid ? VARIANT_TRUE : VARIANT_FALSE);
+                spAxisY->put_ShowGrid(pEnv->m_bShowGrid ? VARIANT_TRUE : VARIANT_FALSE);
+                // Set Format String
+                spAxisX->put_Format( CComBSTR(defSTR_X_AXIS_FORMAT) );
+                spAxisY->put_Format( CComBSTR(defSTR_Y_AXIS_FORMAT) );
+                // Set X,Y Range
+                double dXMin,dXMax, dYMin, dYMax;
+                m_pDMGraphCtrl->GetRange(&dXMin, &dXMax, &dYMin, &dYMax);
+                dYMax = 100.0;
+                m_pDMGraphCtrl->SetRange(defDEFAULT_XRANGE_MIN, defDEFAULT_XRANGE_MAX, dYMin, dYMax);
+                //Set the caption
+                BSTR bstrCaption(L"Graph Display - CAN");
+                m_pDMGraphCtrl->put_Caption(bstrCaption);
             }
+
             // Update Local DDX Variables
             UpdateData( FALSE );
             // Update Axis and action
             vSetAction();
         }
-    }	
+    }
 }
 
 /*******************************************************************************
@@ -840,16 +847,17 @@ void CGraphBottomView::vInitGraphControl()
                    "Hide" as button text
   Output         : -
   Functionality  : This function will set the button text of "Show" button based
-                   on the bShow parameter value 
+                   on the bShow parameter value
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphBottomView::vSetShowButtonState(BOOL bShow)
 {
-    CWnd *pWnd = NULL;
+    CWnd* pWnd = NULL;
     pWnd = GetDlgItem( IDC_BTN_GRID );
+
     if( pWnd != NULL )
     {
         if( bShow == TRUE )
@@ -873,70 +881,86 @@ void CGraphBottomView::vSetShowButtonState(BOOL bShow)
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphBottomView::vSetAction()
 {
     // Update Axis Value
-	if (  m_pDMGraphCtrl == NULL )
-	{
-		return;
-	}
+    if (  m_pDMGraphCtrl == NULL )
+    {
+        return;
+    }
+
     UpdateData( );
+
     switch( m_nAction )
     {
-    case 0: //move
+        case 0: //move
         {
             vEnableAxisControls( TRUE );
+
             // switch Axis
             switch( m_nAxis )
             {
-            case 0: // X Axis
-					m_pDMGraphCtrl->put_TrackMode(PanX);
+                case 0: // X Axis
+                    m_pDMGraphCtrl->put_TrackMode(PanX);
                     break;
-            case 1: // Y Axis Only
-					m_pDMGraphCtrl->put_TrackMode(PanY);                    
+
+                case 1: // Y Axis Only
+                    m_pDMGraphCtrl->put_TrackMode(PanY);
                     break;
-            case 2: // XY Axis
-					m_pDMGraphCtrl->put_TrackMode(PanXY);                  
+
+                case 2: // XY Axis
+                    m_pDMGraphCtrl->put_TrackMode(PanXY);
                     break;
-            default:
+
+                default:
                     ASSERT( FALSE );
             }
+
             break;
         }
-    case 1: //Zoom
+
+        case 1: //Zoom
         {
-            vEnableAxisControls( TRUE );			            
+            vEnableAxisControls( TRUE );
+
             // switch Axis
             switch( m_nAxis )
             {
-            case 0: // X Axis
-					m_pDMGraphCtrl->put_TrackMode(ZoomX);                    
+                case 0: // X Axis
+                    m_pDMGraphCtrl->put_TrackMode(ZoomX);
                     break;
-            case 1: // Y Axis Only
-					m_pDMGraphCtrl->put_TrackMode(ZoomY);
+
+                case 1: // Y Axis Only
+                    m_pDMGraphCtrl->put_TrackMode(ZoomY);
                     break;
-            case 2:
-					m_pDMGraphCtrl->put_TrackMode(Zoom);
+
+                case 2:
+                    m_pDMGraphCtrl->put_TrackMode(Zoom);
                     break;
-            default:
+
+                default:
                     ASSERT( FALSE );
             }
+
             break;
         }
-    case 2: // Track
-        // Disable axis controls
-        vEnableAxisControls( FALSE );
-		m_pDMGraphCtrl->put_TrackMode(None);        
-        break;
-    case 3: // None        		
-        // Disable axis controls
-        vEnableAxisControls( FALSE );
-		m_pDMGraphCtrl->put_TrackMode(None);
-        break;
-    default:
-        ASSERT( FALSE );
+
+        case 2: // Track
+            // Disable axis controls
+            vEnableAxisControls( FALSE );
+            m_pDMGraphCtrl->put_TrackMode(None);
+            break;
+
+        case 3: // None
+            // Disable axis controls
+            vEnableAxisControls( FALSE );
+            m_pDMGraphCtrl->put_TrackMode(None);
+            break;
+
+        default:
+            ASSERT( FALSE );
     }
 }
 
@@ -949,11 +973,11 @@ void CGraphBottomView::vSetAction()
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphBottomView::OnBtnFitAll() 
+void CGraphBottomView::OnBtnFitAll()
 {
-	//m_pDMGraphCtrl->FitAll();
+    //m_pDMGraphCtrl->FitAll();
 }
 
 /*******************************************************************************
@@ -965,13 +989,13 @@ void CGraphBottomView::OnBtnFitAll()
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphBottomView::OnBtnUp() 
+void CGraphBottomView::OnBtnUp()
 {
     if( m_pDMGraphCtrl != NULL )
-    {        
-		m_pDMGraphCtrl->ShiftDisplay(0,1);
+    {
+        m_pDMGraphCtrl->ShiftDisplay(0,1);
     }
 }
 
@@ -984,13 +1008,13 @@ void CGraphBottomView::OnBtnUp()
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphBottomView::OnBtnLeft() 
+void CGraphBottomView::OnBtnLeft()
 {
     if( m_pDMGraphCtrl != NULL )
-    {        
-		m_pDMGraphCtrl->ShiftDisplay(-1, 0);
+    {
+        m_pDMGraphCtrl->ShiftDisplay(-1, 0);
     }
 }
 
@@ -1003,13 +1027,13 @@ void CGraphBottomView::OnBtnLeft()
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphBottomView::OnBtnDown() 
+void CGraphBottomView::OnBtnDown()
 {
     if( m_pDMGraphCtrl != NULL )
-    {        		
-		m_pDMGraphCtrl->ShiftDisplay(0, -1);		
+    {
+        m_pDMGraphCtrl->ShiftDisplay(0, -1);
     }
 }
 
@@ -1022,13 +1046,13 @@ void CGraphBottomView::OnBtnDown()
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphBottomView::OnBtnRight() 
+void CGraphBottomView::OnBtnRight()
 {
     if( m_pDMGraphCtrl != NULL )
-    {    
-		m_pDMGraphCtrl->ShiftDisplay(1, 0);		
+    {
+        m_pDMGraphCtrl->ShiftDisplay(1, 0);
     }
 }
 
@@ -1042,25 +1066,30 @@ void CGraphBottomView::OnBtnRight()
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphBottomView::vEnableAxisControls(BOOL bEnable)
 {
-    CWnd * pWnd = NULL;
+    CWnd* pWnd = NULL;
     // Get X Axis button
     pWnd = GetDlgItem( IDC_RADIO_AXIS_X );
+
     if( pWnd != NULL )
     {
         pWnd->EnableWindow( bEnable );
     }
+
     // Get Y Axis button
     pWnd = GetDlgItem( IDC_RADIO_AXIS_Y );
+
     if( pWnd != NULL )
     {
         pWnd->EnableWindow( bEnable );
     }
+
     // Get XY Button
     pWnd = GetDlgItem( IDC_RADIO_AXIS_XY );
+
     if( pWnd != NULL )
     {
         pWnd->EnableWindow( bEnable );
@@ -1076,31 +1105,38 @@ void CGraphBottomView::vEnableAxisControls(BOOL bEnable)
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphBottomView::vEnableActionControls(BOOL bEnable)
 {
-    CWnd * pWnd = NULL;
+    CWnd* pWnd = NULL;
     // Get Move button
     pWnd = GetDlgItem( IDC_RADIO_ACTION_MOVE );
+
     if( pWnd != NULL )
     {
         pWnd->EnableWindow( bEnable );
     }
+
     // Get Zoom button
     pWnd = GetDlgItem( IDC_RADIO_ACTION_ZOOM );
+
     if( pWnd != NULL )
     {
         pWnd->EnableWindow( bEnable );
     }
+
     // Get Track Button
     pWnd = GetDlgItem( IDC_RADIO_ACTION_TRACK );
+
     if( pWnd != NULL )
     {
         pWnd->EnableWindow( bEnable );
     }
+
     // Get None Button
     pWnd = GetDlgItem( IDC_RADIO_ACTION_NONE );
+
     if( pWnd != NULL )
     {
         pWnd->EnableWindow( bEnable );
@@ -1127,30 +1163,35 @@ void CGraphBottomView::vHandleConnectionStatusChange(BOOL bConnectStatus)
 {
     // Tool is going to connect state
     vEnableDisableButtons( bConnectStatus );
-
-	CGraphChildFrame* pParentWnd = NULL;
-	pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
-	//Update Graph right view
-	CGraphRightView* pRightView = (CGraphRightView*)pParentWnd->pomGetRightTopViewPointer();
-	pRightView->vHandleConnectionStatusChange(bConnectStatus);
+    CGraphChildFrame* pParentWnd = NULL;
+    pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+    //Update Graph right view
+    CGraphRightView* pRightView = (CGraphRightView*)pParentWnd->pomGetRightTopViewPointer();
+    pRightView->vHandleConnectionStatusChange(bConnectStatus);
 
     // Create/ Delete Update Timer
     if( bConnectStatus == TRUE )
     {
         // Go To Run Mode
         //m_podGraphControl->GoToRunMode();
+        CGraphList* podList = NULL;
 
-		CGraphList * podList = NULL;
+        if(pParentWnd != NULL)
+        {
+            pParentWnd->m_pomBottomView = this;
+        }
 
-		if(pParentWnd != NULL)
-			pParentWnd->m_pomBottomView = this;	
+        if(pParentWnd != NULL)
+        {
+            podList = pParentWnd->pGetSignalListDetails();
+        }
+        else
+        {
+            return;
+        }
 
-		if(pParentWnd != NULL)
-			podList = pParentWnd->pGetSignalListDetails();
-		else
-			return; 
-		//int nTimeDelay = podList->m_odGraphParameters.m_nRefreshRate;
-		//nTimerID = SetTimer( defUPDATE_TIMER_ID , nTimeDelay, NULL );
+        //int nTimeDelay = podList->m_odGraphParameters.m_nRefreshRate;
+        //nTimerID = SetTimer( defUPDATE_TIMER_ID , nTimeDelay, NULL );
     }
     else
     {
@@ -1174,7 +1215,7 @@ void CGraphBottomView::vHandleConnectionStatusChange(BOOL bConnectStatus)
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphBottomView::vEnableDisableButtons(BOOL bConnect)
 {
@@ -1185,14 +1226,17 @@ void CGraphBottomView::vEnableDisableButtons(BOOL bConnect)
     vEnableActionControls( bEnable );
     // Enable / Disable Export Section
     // Export Button
-    CWnd *pWnd = NULL;
+    CWnd* pWnd = NULL;
     pWnd = GetDlgItem( IDC_BTN_EXPORT );
+
     if( pWnd != NULL )
     {
         pWnd->EnableWindow( bEnable );
     }
+
     // Configure Button
     pWnd = GetDlgItem( IDC_BTN_CONFIGURE );
+
     if( pWnd != NULL )
     {
         pWnd->EnableWindow( bEnable );
@@ -1210,11 +1254,11 @@ void CGraphBottomView::vEnableDisableButtons(BOOL bConnect)
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphBottomView::OnTimer(UINT nIDEvent) 
+void CGraphBottomView::OnTimer(UINT nIDEvent)
 {
-    CFormView::OnTimer(nIDEvent);	
+    CFormView::OnTimer(nIDEvent);
 }
 
 
@@ -1227,25 +1271,30 @@ void CGraphBottomView::OnTimer(UINT nIDEvent)
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphBottomView::vSaveChangedInToConfig()
-{	
-	CGraphList * podList = NULL;
-	CGraphChildFrame* pParentWnd = NULL;
-	pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+{
+    CGraphList* podList = NULL;
+    CGraphChildFrame* pParentWnd = NULL;
+    pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
 
-	if(pParentWnd != NULL)
-		podList = pParentWnd->pGetSignalListDetails();
-	else
-		return; 
+    if(pParentWnd != NULL)
+    {
+        podList = pParentWnd->pGetSignalListDetails();
+    }
+    else
+    {
+        return;
+    }
 
-    CGraphParameters * pEnv = &(podList->m_odGraphParameters);
+    CGraphParameters* pEnv = &(podList->m_odGraphParameters);
+
     if( pEnv != NULL )
     {
         pEnv->m_nAction = m_nAction;
         pEnv->m_nActiveAxis = m_nAxis;
-    }	
+    }
 }
 
 /*******************************************************************************
@@ -1256,13 +1305,13 @@ void CGraphBottomView::vSaveChangedInToConfig()
   Member of      : CGraphBottomView
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 LRESULT CGraphBottomView::vHandleConfigFileChange( WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
     // Initialise graph control
     vInitGraphControl();
-	return 0;
+    return 0;
 }
 
 /*******************************************************************************
@@ -1273,28 +1322,32 @@ LRESULT CGraphBottomView::vHandleConfigFileChange( WPARAM /*wParam*/, LPARAM /*l
   Member of      : CGraphBottomView
   Author(s)      : ArunKumar K
   Date Created   : 22/12/2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CGraphBottomView::vUpdateCursordetails(double X, double /*Y*/, short shCursorID)
 {
-	m_dblarrTime[shCursorID - 1] = X;
+    m_dblarrTime[shCursorID - 1] = X;
 
-	if( m_dblarrTime[1] != 0)
-	{
-		m_dblDeltaTime = m_dblarrTime[1] - m_dblarrTime[0];
-		vUpdateSignalData();
-	}
-	if( m_dblarrTime[0] == 0 && m_dblarrTime[1] == 0 )
-		vUpdateSignalData();
+    if( m_dblarrTime[1] != 0)
+    {
+        m_dblDeltaTime = m_dblarrTime[1] - m_dblarrTime[0];
+        vUpdateSignalData();
+    }
 
-	if( m_dblarrTime[0] == 0)
-		m_dblDeltaTime = 0;
+    if( m_dblarrTime[0] == 0 && m_dblarrTime[1] == 0 )
+    {
+        vUpdateSignalData();
+    }
 
-	m_dblarrTime[0] = dRound(m_dblarrTime[0], 3);
-	m_dblarrTime[1] = dRound(m_dblarrTime[1], 3);
-	m_dblDeltaTime  = dRound(m_dblDeltaTime , 3);	
+    if( m_dblarrTime[0] == 0)
+    {
+        m_dblDeltaTime = 0;
+    }
 
-	UpdateData(FALSE);
+    m_dblarrTime[0] = dRound(m_dblarrTime[0], 3);
+    m_dblarrTime[1] = dRound(m_dblarrTime[1], 3);
+    m_dblDeltaTime  = dRound(m_dblDeltaTime , 3);
+    UpdateData(FALSE);
 }
 
 /*******************************************************************************
@@ -1305,24 +1358,30 @@ void CGraphBottomView::vUpdateCursordetails(double X, double /*Y*/, short shCurs
   Member of      : CGraphBottomView
   Author(s)      : ArunKumar K
   Date Created   : 22/12/2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 double CGraphBottomView::dRound(double val, unsigned int decimals)
 {
-	if(val!=0)
-	{
-		double sign = fabs(val)/val;//we obtain the sign to calculate positive always
-		double tempval = fabs(val*pow((double)10, (double)decimals));//shift decimal places
-		unsigned int tempint = (unsigned int)tempval;
-		double decimalpart = tempval-tempint;//obtain just the decimal part
+    if(val!=0)
+    {
+        double sign = fabs(val)/val;//we obtain the sign to calculate positive always
+        double tempval = fabs(val*pow((double)10, (double)decimals));//shift decimal places
+        unsigned int tempint = (unsigned int)tempval;
+        double decimalpart = tempval-tempint;//obtain just the decimal part
 
-		if(decimalpart>=0.5)//next integer number if greater or equal to 0.5
-			tempval = ceil(tempval);
-		else
-			tempval = floor(tempval);//otherwise stay in the current interger part
+        if(decimalpart>=0.5)//next integer number if greater or equal to 0.5
+        {
+            tempval = ceil(tempval);
+        }
+        else
+        {
+            tempval = floor(tempval);    //otherwise stay in the current interger part
+        }
 
-		return (tempval*pow((double)10,-(double)decimals))*sign;//shift again to the normal decimal places
-	}
-	else
-		return 0;
+        return (tempval*pow((double)10,-(double)decimals))*sign;//shift again to the normal decimal places
+    }
+    else
+    {
+        return 0;
+    }
 }
