@@ -38,7 +38,7 @@ public:
     // Request for connection establishment
     LONG lTConnectReq(short sConNumber, char bBlockSize, eCON_MODE eSMmode);
     // Confirmation of connection establishment
-    void vTConnectCon(short sConNumber, eCON_STATUS ConStatus, 
+    void vTConnectCon(short sConNumber, eCON_STATUS ConStatus,
                       char bBlockSize, eCON_MODE bServiceMode);
     // Indication of connection establishment
     void vTConnectInd(short sConNumber, char bBlockSize, BOOL bIsSMEnhance);
@@ -51,12 +51,12 @@ public:
     LONG lTConTestReq(short sConNumber);
     // Confirmation of connection test
     void vTConTestCon(short sConNumber, char cConnectionStatus, char cBlockSize, char cServiceMode);
-    void vTLongDataCon(short sConNumber, char cTransferResult);  
-    void vTBroadDataInd(short sBroadcastChannel,short sDataLength, BYTE *pbData);
+    void vTLongDataCon(short sConNumber, char cTransferResult);
+    void vTBroadDataInd(short sBroadcastChannel,short sDataLength, BYTE* pbData);
 
-    //Singleton class 
+    //Singleton class
     static CTransferLayer& ouGetTransLayerObj();
-    void vTransmitCANMsg(DWORD dwClientID, UINT unID, 
+    void vTransmitCANMsg(DWORD dwClientID, UINT unID,
                          UCHAR ucDataLen, BYTE* pData, UINT unChannel);
     void vSetIDIL_CAN(CBaseDIL_CAN* pIDIL_CAN);
 

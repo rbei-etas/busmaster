@@ -56,18 +56,18 @@ Author(s)     :  Anish Kumar
 #define IS_ACK_REQUESTED(byTPCI)(!((byTPCI) & Def_TPCI_ACK_REQ_MASK))
 #define IS_RX_NODE_READY(byTPCI)((byTPCI) & Def_TPCI_RX_STATUS_MASK)
 #define IS_FRAME_DATA_MSG(byTPCI)(((!((byTPCI) & Def_TPCI_DATA_MSG_MASK)) && \
-        (byTPCI != Def_TPCI_BROADCAST_VAL)))
+                                   (byTPCI != Def_TPCI_BROADCAST_VAL)))
 #define IS_FRAME_EXP_MSG(byTPCI)((byTPCI) & Def_TPCI_DATA_TYPE_MASK)
 #define IS_BROADCAST_MSG(byTPCI)(((byTPCI) == Def_TPCI_BROADCAST_VAL ? true : false))
 #define IS_DATA_ACK_MSG(byTPCI)((((byTPCI) & Def_TPCI_DAT_ACK_MASK) == \
-        Def_TPCI_DAT_ACK_MASK) ? true : false)
+                                 Def_TPCI_DAT_ACK_MASK) ? true : false)
 #define IS_WATCH_DOG_MSG(byTPCI)((((byTPCI) & Def_TPCI_WATCH_DOG_MASK) == \
-        Def_TPCI_WATCH_DOG_VAL ? true : false))
+                                  Def_TPCI_WATCH_DOG_VAL ? true : false))
 
 #define CLEAR_SEQ_BITS_TPCI(byTPCI)((byTPCI) &= (~Def_TPCI_SEQ_NO_MASK))
 
 #define MAKE_EXP_TPCI(byTPCI)(byTPCI = ((Def_TPCI_DATA_TYPE_MASK | Def_TPCI_MSG_EOM_MASK)\
-                                       & (~Def_TPCI_ACK_REQ_MASK )))//Seq no. will be 0
+                                        & (~Def_TPCI_ACK_REQ_MASK )))//Seq no. will be 0
 #define MAKE_BROADCAST_TPCI(byTPCI)((byTPCI) = Def_TPCI_BROADCAST_VAL)
 #define MAKE_WD_TPCI(byTPCI)((byTPCI) = (Def_TPCI_WD_DEFAULT_TIME | Def_TPCI_WATCH_DOG_VAL))
 #define MAKE_LONG_MSG_TPCI(byTPCI)((byTPCI) &= (~Def_TPCI_DATA_TYPE_MASK) )

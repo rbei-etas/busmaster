@@ -27,11 +27,11 @@
 class CJ1939TranslatorApp : public CWinApp
 {
 public:
-	CJ1939TranslatorApp();
+    CJ1939TranslatorApp();
 
-// Overrides
+    // Overrides
 public:
-	virtual BOOL InitInstance();
+    virtual BOOL InitInstance();
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };
