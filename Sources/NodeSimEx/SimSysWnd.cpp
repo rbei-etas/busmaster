@@ -15,16 +15,16 @@
 
 /**
  * \file      SimSysWnd.cpp
- * \brief     This file contain definition of all function of 
+ * \brief     This file contain definition of all function of
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contain definition of all function of 
+ * This file contain definition of all function of
  */
 
-#include "NodeSimEx_stdafx.h"	// Contains standard include header files.
+#include "NodeSimEx_stdafx.h"   // Contains standard include header files.
 #include "HashDefines.h"
-#include "SimSysWnd.h"			// Class defintion included here
+#include "SimSysWnd.h"          // Class defintion included here
 #include "SimSysManager.h"
 
 ETYPE_BUS CSimSysDetView::sm_eBus = CAN;
@@ -39,17 +39,17 @@ IMPLEMENT_DYNCREATE(CSimSysWnd, CMDIChildBase)
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  Constructor
-/*  Member of        :  CSimSysWnd											  */
+/*  Member of        :  CSimSysWnd                                            */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Harika.M                                              */
 /*  Date Created     :  15.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 CSimSysWnd::CSimSysWnd(ETYPE_BUS eBus) : CMDIChildBase( SIMSYS_WND_PLACEMENT )
 {
-	m_bSplitWndCreated = FALSE; // Splitter not created yet!
-	m_eBus  = eBus;
+    m_bSplitWndCreated = FALSE; // Splitter not created yet!
+    m_eBus  = eBus;
 }
 /******************************************************************************/
 /*  Function Name    :  ~CSimSysWnd                                           */
@@ -62,42 +62,41 @@ CSimSysWnd::CSimSysWnd(ETYPE_BUS eBus) : CMDIChildBase( SIMSYS_WND_PLACEMENT )
 /*                                                                            */
 /*  Author(s)        :  Harika.M                                              */
 /*  Date Created     :  15.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 CSimSysWnd::~CSimSysWnd()
 {
-	
 }
 
 
 BEGIN_MESSAGE_MAP(CSimSysWnd, CMDIChildWnd)
-//{{AFX_MSG_MAP(CSimSysWnd)
-ON_WM_CLOSE()
-ON_WM_DESTROY()
-//}}AFX_MSG_MAP
-ON_WM_SHOWWINDOW()
+    //{{AFX_MSG_MAP(CSimSysWnd)
+    ON_WM_CLOSE()
+    ON_WM_DESTROY()
+    //}}AFX_MSG_MAP
+    ON_WM_SHOWWINDOW()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CSimSysWnd message handlers
 /***********************************************************************************/
-/*  Function Name    :  PreCreateWindow                                       
-/*                                                                            
+/*  Function Name    :  PreCreateWindow
+/*
 /*  Input(s)         :  cs - Reference to the create parameter structure                                      */
-/*  Output           :                                                        
+/*  Output           :
 /*  Functionality    :  This function will be called before creating the window. This
 function will change the create parameters if required.
-/*  Member of        :  CSimSysWnd	                                          
-/*  Friend of        :      -                                                 
-/*                                                                            
-/*  Author(s)        :  Harika.M		                                      
-/*  Date Created     :  15.02.2005                                            
-/*  Modifications    :  
+/*  Member of        :  CSimSysWnd
+/*  Friend of        :      -
+/*
+/*  Author(s)        :  Harika.M
+/*  Date Created     :  15.02.2005
+/*  Modifications    :
 /************************************************************************************/
 
-BOOL CSimSysWnd::PreCreateWindow(CREATESTRUCT& cs) 
+BOOL CSimSysWnd::PreCreateWindow(CREATESTRUCT& cs)
 {
-	BOOL bCreate = FALSE;
+    BOOL bCreate = FALSE;
     bCreate = CMDIChildBase::PreCreateWindow(cs);
     // Return the result
     return bCreate;
@@ -109,55 +108,53 @@ BOOL CSimSysWnd::PreCreateWindow(CREATESTRUCT& cs)
 /*  Output           :  BOOL, True or False                                   */
 /*  Functionality    :  This function will create a vertical splitter
                         and associates 2 views for each pane.
-/*  Member of        :  CSimSysWnd	                                          */
+/*  Member of        :  CSimSysWnd                                            */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Harika.M                                              */
 /*  Date Created     :  15.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
-BOOL CSimSysWnd::OnCreateClient(LPCREATESTRUCT , CCreateContext* pContext) 
+BOOL CSimSysWnd::OnCreateClient(LPCREATESTRUCT , CCreateContext* pContext)
 {
-	// Create Static Splitter Window with 1 ROW and 2 COLUMNS
-    m_bSplitWndCreated  =   
-        m_omSplitterWnd.CreateStatic(   this,                   // Parent Frame Window 
-		SPLT_ONE_ROWS,          // #Rows
-		SPLT_ONE_COLS,          // #Columns
-		WS_CHILD    | 
-		WS_VISIBLE | 
-		WS_BORDER,              // Window Style
-		AFX_IDW_PANE_FIRST);    // Splitter NOT Nested                  
-	
-	
+    // Create Static Splitter Window with 1 ROW and 2 COLUMNS
+    m_bSplitWndCreated  =
+        m_omSplitterWnd.CreateStatic(   this,                   // Parent Frame Window
+                                        SPLT_ONE_ROWS,          // #Rows
+                                        SPLT_ONE_COLS,          // #Columns
+                                        WS_CHILD    |
+                                        WS_VISIBLE |
+                                        WS_BORDER,              // Window Style
+                                        AFX_IDW_PANE_FIRST);    // Splitter NOT Nested
     // Get size of Frame wnd
     CSize om_Size(0,0);
-	
     vCalculateSplitterPosition(om_Size);
+
     if ( TRUE == m_bSplitWndCreated )
     {
         CSimSysDetView::sm_eBus = m_eBus;
         // Create the Right Pane for static splitter window
-        m_bSplitWndCreated  =   
+        m_bSplitWndCreated  =
             m_omSplitterWnd.CreateView( 0,                      // #Row
-			1,                     // #Column      
-			RUNTIME_CLASS(CSimSysDetView),  // View associated
-			om_Size,                        // Sizeof Pane
-			pContext);
+                                        1,                     // #Column
+                                        RUNTIME_CLASS(CSimSysDetView),  // View associated
+                                        om_Size,                        // Sizeof Pane
+                                        pContext);
     }
-	
+
     if ( TRUE == m_bSplitWndCreated )
     {
         // Create the Left Pane for static splitter window
         CSimSysTreeView::sm_eBus = m_eBus;
-        m_bSplitWndCreated  =   
+        m_bSplitWndCreated  =
             m_omSplitterWnd.CreateView( 0,                      // #Row
-			0,                      // #Column
-			RUNTIME_CLASS(CSimSysTreeView), // View associated
-			om_Size,             //CSize( 350,100 )Sizeof Pane
-			pContext);
+                                        0,                      // #Column
+                                        RUNTIME_CLASS(CSimSysTreeView), // View associated
+                                        om_Size,             //CSize( 350,100 )Sizeof Pane
+                                        pContext);
     }
-    
-    return m_bSplitWndCreated;  
+
+    return m_bSplitWndCreated;
 }
 /******************************************************************************/
 /*  Function Name    :  OnClose                                               */
@@ -165,18 +162,18 @@ BOOL CSimSysWnd::OnCreateClient(LPCREATESTRUCT , CCreateContext* pContext)
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  This will just hide the window so that it will be shown
-                        later on request. It will be destroyed on close of 
+                        later on request. It will be destroyed on close of
                         application
-  
-/*  Member of        :  CSimSysWnd									          */
+
+/*  Member of        :  CSimSysWnd                                            */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Anish
-/*  Date Created     : 
-/*  Modification     :					                                      */
+/*  Date Created     :
+/*  Modification     :                                                        */
 /******************************************************************************/
 
-void CSimSysWnd::OnClose() 
+void CSimSysWnd::OnClose()
 {
     CMDIChildBase::ShowWindow(SW_HIDE);
 }
@@ -192,7 +189,7 @@ window postion.
 Member of      : CSimSysWnd
 Author(s)      : Harika M
 Date Created   : 19.12.2005
-Modifications  : 
+Modifications  :
 *******************************************************************************/
 void CSimSysWnd::vUpdateWndCo_Ords()
 {
@@ -210,7 +207,7 @@ function and then will set splitter position.
 Member of      : CSimSysWnd
 Author(s)      : Harika M
 Date Created   : 19.12.2005
-Modifications  : 
+Modifications  :
 *******************************************************************************/
 void CSimSysWnd::vUpdateWinStatus()
 {
@@ -230,30 +227,29 @@ given the size of the window
 /*                                                                            */
 /*  Author(s)        :  Harika.M                                              */
 /*  Date Created     :  15.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
-void CSimSysWnd::vCalculateSplitterPosition(CSize &cSize)
+void CSimSysWnd::vCalculateSplitterPosition(CSize& cSize)
 {
     RECT sRect;
-	
     // Get its size
-    GetWindowRect( &sRect ); 
-	
+    GetWindowRect( &sRect );
     // Calculate splitter position
     cSize.cx = sRect.right / 4;
     cSize.cy = sRect.bottom / 4;
-	
 }
 
 
 void CSimSysWnd::OnShowWindow(BOOL bShow, UINT nStatus)
 {
     CMDIChildBase::OnShowWindow(bShow, nStatus);
+
     if (bShow)
-    {   
-        CSimSysTreeView* pTempSimSysTreeView = 
+    {
+        CSimSysTreeView* pTempSimSysTreeView =
             (CSimSysTreeView*)m_omSplitterWnd.GetPane(0,0);
+
         if (pTempSimSysTreeView->IsKindOf(RUNTIME_CLASS(CSimSysTreeView)))
         {
             pTempSimSysTreeView->bPopulateTree();

@@ -35,28 +35,28 @@ private:
 public:
     CEditFrameWnd();
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CEditFrameWnd)
-    public:
+public:
     virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
     virtual void ActivateFrame(int nCmdShow);
-    protected:
+protected:
     virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
     //}}AFX_VIRTUAL
     void vCalculateSplitterPos(CSize&);
     virtual ~CEditFrameWnd();
 
-#ifdef _DEBUG 
+#ifdef _DEBUG
     virtual void AssertValid() const;
     virtual void Dump(CDumpContext& dc) const;
 #endif
 
-// Generated message map functions
+    // Generated message map functions
 protected:
     //{{AFX_MSG(CEditFrameWnd)
-        // NOTE - the ClassWizard will add and remove member functions here.
-        //    DO NOT EDIT what you see in these blocks of generated code!
+    // NOTE - the ClassWizard will add and remove member functions here.
+    //    DO NOT EDIT what you see in these blocks of generated code!
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 

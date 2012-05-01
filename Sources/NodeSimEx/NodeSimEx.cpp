@@ -36,67 +36,69 @@ static AFX_EXTENSION_MODULE NodeSimExDLL = { NULL, NULL };
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
-	// Remove this if you use lpReserved
-	UNREFERENCED_PARAMETER(lpReserved);
+    // Remove this if you use lpReserved
+    UNREFERENCED_PARAMETER(lpReserved);
 
-	if (dwReason == DLL_PROCESS_ATTACH)
-	{
-		TRACE0("NodeSimEx.DLL Initializing!\n");
-		
-		// Extension DLL one-time initialization
-		if (!AfxInitExtensionModule(NodeSimExDLL, hInstance))
-			return 0;
+    if (dwReason == DLL_PROCESS_ATTACH)
+    {
+        TRACE0("NodeSimEx.DLL Initializing!\n");
 
-		// Insert this DLL into the resource chain
-		// NOTE: If this Extension DLL is being implicitly linked to by
-		//  an MFC Regular DLL (such as an ActiveX Control)
-		//  instead of an MFC application, then you will want to
-		//  remove this line from DllMain and put it in a separate
-		//  function exported from this Extension DLL.  The Regular DLL
-		//  that uses this Extension DLL should then explicitly call that
-		//  function to initialize this Extension DLL.  Otherwise,
-		//  the CDynLinkLibrary object will not be attached to the
-		//  Regular DLL's resource chain, and serious problems will
-		//  result.
+        // Extension DLL one-time initialization
+        if (!AfxInitExtensionModule(NodeSimExDLL, hInstance))
+        {
+            return 0;
+        }
 
-		sg_pomDynLinkLib = new CDynLinkLibrary(NodeSimExDLL);
-
-	}
-	else if (dwReason == DLL_PROCESS_DETACH)
-	{
+        // Insert this DLL into the resource chain
+        // NOTE: If this Extension DLL is being implicitly linked to by
+        //  an MFC Regular DLL (such as an ActiveX Control)
+        //  instead of an MFC application, then you will want to
+        //  remove this line from DllMain and put it in a separate
+        //  function exported from this Extension DLL.  The Regular DLL
+        //  that uses this Extension DLL should then explicitly call that
+        //  function to initialize this Extension DLL.  Otherwise,
+        //  the CDynLinkLibrary object will not be attached to the
+        //  Regular DLL's resource chain, and serious problems will
+        //  result.
+        sg_pomDynLinkLib = new CDynLinkLibrary(NodeSimExDLL);
+    }
+    else if (dwReason == DLL_PROCESS_DETACH)
+    {
         if (sg_pouNS_CAN != NULL)
         {
             sg_pouNS_CAN->ExitInstance();
             delete sg_pouNS_CAN;
             sg_pouNS_CAN = NULL;
         }
+
         if (sg_pouNS_J1939 != NULL)
         {
             sg_pouNS_J1939->ExitInstance();
             delete sg_pouNS_J1939;
             sg_pouNS_J1939 = NULL;
         }
+
         if (NULL != sg_pomDynLinkLib)
         {
             delete sg_pomDynLinkLib;
             sg_pomDynLinkLib = NULL;
         }
 
-		// Terminate the library before destructors are called
-		AfxTermExtensionModule(NodeSimExDLL);
-	}
+        // Terminate the library before destructors are called
+        AfxTermExtensionModule(NodeSimExDLL);
+    }
+
     //CGlobalObj::m_pEditorDocTemplate = NULL;
-	return 1;   // ok
+    return 1;   // ok
 }
 USAGEMODE HRESULT NS_GetInterface(ETYPE_BUS eBus,
                                   void** ppvInterface)
 {
     HRESULT hResult = S_OK;
-
-	//Place this code at the beginning of the export function.
-	//Save previous resource handle and switch to current one.
-	HINSTANCE hInst = AfxGetResourceHandle();
-	AfxSetResourceHandle(NodeSimExDLL.hResource);
+    //Place this code at the beginning of the export function.
+    //Save previous resource handle and switch to current one.
+    HINSTANCE hInst = AfxGetResourceHandle();
+    AfxSetResourceHandle(NodeSimExDLL.hResource);
 
     switch (eBus)
     {
@@ -114,11 +116,13 @@ USAGEMODE HRESULT NS_GetInterface(ETYPE_BUS eBus,
                     sg_pouNS_CAN->InitInstance();
                 }
             }
+
             // Else the object has been existing already
-            *ppvInterface = (void *) sg_pouNS_CAN; /* Doesn't matter even 
-                                                if sg_pouFP_CAN is null */
+            *ppvInterface = (void*) sg_pouNS_CAN; /* Doesn't matter even
+                                        if sg_pouFP_CAN is null */
         }
         break;
+
         case J1939:
         {
             if (NULL == sg_pouNS_J1939)
@@ -133,20 +137,23 @@ USAGEMODE HRESULT NS_GetInterface(ETYPE_BUS eBus,
                     sg_pouNS_J1939->InitInstance();
                 }
             }
+
             // Else the object has been existing already
-            *ppvInterface = (void *) sg_pouNS_J1939; /* Doesn't matter even 
-                                                if sg_pouFP_J1939 is null */
+            *ppvInterface = (void*) sg_pouNS_J1939; /* Doesn't matter even
+                                        if sg_pouFP_J1939 is null */
         }
         break;
-        default: 
+
+        default:
         {
             hResult = S_FALSE;
-			*ppvInterface = NULL;
+            *ppvInterface = NULL;
         }
         break;
     }
-	//Place this at the end of the export function.
-	//switch back to previous resource handle.
-	AfxSetResourceHandle(hInst); 
+
+    //Place this at the end of the export function.
+    //switch back to previous resource handle.
+    AfxSetResourceHandle(hInst);
     return hResult;
 }

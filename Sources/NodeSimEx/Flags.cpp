@@ -28,15 +28,15 @@
 #include "Flags.h"
 
 /******************************************************************************/
-/*  Function Name    :  CFlags                                                */    
-/*  Input(s)         :  PSTOOLBARINFO psToolBarInfo                           */    
-/*  Output           :                                                        */    
+/*  Function Name    :  CFlags                                                */
+/*  Input(s)         :  PSTOOLBARINFO psToolBarInfo                           */
+/*  Output           :                                                        */
 /*  Functionality    :  Constructor is called when user create an object of   */
 /*                      this class. Initialisation of all data members        */
-/*  Member of        :  CFlags                                                */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :   
-/*  Date Created     : 
+/*  Member of        :  CFlags                                                */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :
+/*  Date Created     :
 /******************************************************************************/
 CFlags::CFlags()
 {
@@ -50,33 +50,32 @@ CFlags::CFlags()
     m_bALLHandler       = FALSE;
 }
 /******************************************************************************/
-/*  Function Name    :  ~CFlags                                               */    
-/*  Input(s)         :                                                        */    
-/*  Output           :                                                        */    
+/*  Function Name    :  ~CFlags                                               */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
 /*  Functionality    :  This destractor is called when object is getting      */
 /*                      destroyed                                             */
-/*  Member of        :  CFlags                                                */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :    
-/*  Date Created     :     
-/*  Modifications    :                                                           
-/*                                                                              
+/*  Member of        :  CFlags                                                */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :
+/*  Date Created     :
+/*  Modifications    :
+/*
 /******************************************************************************/
 CFlags::~CFlags()
 {
-
 }
 /******************************************************************************/
-/*  Function Name    :  vSetFlagStatus                                        */    
-/*  Input(s)         :  Flag identifer and value to set that flag             */    
-/*  Output           :                                                        */    
+/*  Function Name    :  vSetFlagStatus                                        */
+/*  Input(s)         :  Flag identifer and value to set that flag             */
+/*  Output           :                                                        */
 /*  Functionality    :  This function set the correspoding flag whose         */
 /*                      with value passed as nValue parameter.The eWhichFlag  */
 /*                      identified the flag to be set.                        */
-/*  Member of        :  CFlags                                                */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :  
-/*  Date Created     :                          
+/*  Member of        :  CFlags                                                */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :
+/*  Date Created     :
 /******************************************************************************/
 VOID CFlags::vSetFlagStatus(eSIMSYSFLAG eWhichFlag, INT nValue)
 {
@@ -87,47 +86,55 @@ VOID CFlags::vSetFlagStatus(eSIMSYSFLAG eWhichFlag, INT nValue)
         case H_DLLLOADED :
             m_bDllLoaded = nValue;
             break;
+
         case H_TIMERBUTTON :
             m_bTimerButtonOn = nValue;
             break;
+
         case H_MSGHANDLERBUTTON :
             m_bMsgHandlerOn = nValue;
             break;
+
         case H_KEY_HANDLER_ON:
             m_bKeyHandlerOn = nValue;
             break;
+
         case H_ERROR_HANDLER:
             m_bErrorHandlerOn = nValue;
             break;
+
         case H_DLL_HANDLER:
             m_bDLLHandlerOn = nValue;
             break;
+
         case H_ALL_HANDLER:
             m_bALLHandler = nValue;
             break;
+
         case H_CONNECTED:
             break;
+
         default:
-             //Invalid flag enum value
-            ASSERT ( FALSE );    
+            //Invalid flag enum value
+            ASSERT ( FALSE );
     }
+
     m_omCriticalSec.Unlock();
 }
 /******************************************************************************/
-/*  Function Name    :  nGetFlagStatus                                        */    
-/*  Input(s)         :  Flag identifer                                        */    
-/*  Output           :  State of flag                                         */    
+/*  Function Name    :  nGetFlagStatus                                        */
+/*  Input(s)         :  Flag identifer                                        */
+/*  Output           :  State of flag                                         */
 /*  Functionality    :  This function returns the state of flag The eWhichFlag*/
 /*                      identified the flag.                                  */
-/*  Member of        :  CFlags                                                */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :   
-/*  Date Created     :  
+/*  Member of        :  CFlags                                                */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :
+/*  Date Created     :
 /******************************************************************************/
 int CFlags::nGetFlagStatus(eSIMSYSFLAG eWhichFlag)
 {
     INT nRetValue = -1;
-
     m_omCriticalSec.Lock();
 
     switch( eWhichFlag )
@@ -135,32 +142,40 @@ int CFlags::nGetFlagStatus(eSIMSYSFLAG eWhichFlag)
         case H_DLLLOADED :
             nRetValue = m_bDllLoaded;
             break;
+
         case H_TIMERBUTTON :
             nRetValue = m_bTimerButtonOn;
             break;
+
         case H_MSGHANDLERBUTTON :
             nRetValue = m_bMsgHandlerOn;
             break;
+
         case H_KEY_HANDLER_ON:
             nRetValue  = m_bKeyHandlerOn;
             break;
+
         case H_ERROR_HANDLER:
             nRetValue  = m_bErrorHandlerOn;
             break;
+
         case H_DLL_HANDLER:
             nRetValue  = m_bDLLHandlerOn;
             break;
+
         case H_ALL_HANDLER:
             nRetValue  = m_bALLHandler;
             break;
+
         case H_CONNECTED:
             nRetValue = TRUE;
             break;
+
         default:
             // Invalid flag enum value
             ASSERT ( FALSE );
     }
-    m_omCriticalSec.Unlock();
 
+    m_omCriticalSec.Unlock();
     return nRetValue;
 }

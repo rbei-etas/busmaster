@@ -30,47 +30,47 @@
 
 class CSimSysWnd : public CMDIChildBase
 {
-	DECLARE_DYNCREATE(CSimSysWnd)
+    DECLARE_DYNCREATE(CSimSysWnd)
 protected:
-	
-	
-	// Attributes
+
+
+    // Attributes
 public:
-	
-	// Operations
+
+    // Operations
 public:
-	// Default constructor
-	CSimSysWnd(ETYPE_BUS eBus = CAN);
-	// Standard destructor
-	virtual ~CSimSysWnd();
-	// To update window size and splitter after loading a conf file
-	void vUpdateWinStatus();
-	// To save window size and splitter postion before unloading a conf file
-	void vUpdateWndCo_Ords();
-	
-	// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CSimSysWnd)
+    // Default constructor
+    CSimSysWnd(ETYPE_BUS eBus = CAN);
+    // Standard destructor
+    virtual ~CSimSysWnd();
+    // To update window size and splitter after loading a conf file
+    void vUpdateWinStatus();
+    // To save window size and splitter postion before unloading a conf file
+    void vUpdateWndCo_Ords();
+
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CSimSysWnd)
 protected:
-	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	//}}AFX_VIRTUAL
-	
-	// Implementation
+    virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
+    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+    //}}AFX_VIRTUAL
+
+    // Implementation
 protected:
-	// Generated message map functions
-	//{{AFX_MSG(CSimSysWnd)
-	afx_msg void OnClose();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+    //{{AFX_MSG(CSimSysWnd)
+    afx_msg void OnClose();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 private:
-	ETYPE_BUS m_eBus;
+    ETYPE_BUS m_eBus;
     BOOL m_bSplitWndCreated;
     CSplitterWnd m_omSplitterWnd;
     // To calculate the splitter position when the window is resized.
-	void vCalculateSplitterPosition(CSize& cSize);
+    void vCalculateSplitterPosition(CSize& cSize);
     void vSaveSimSysFIles();
-    
+
 public:
     WINDOWPLACEMENT m_wWndPlacement;
     afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);

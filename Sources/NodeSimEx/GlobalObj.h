@@ -40,13 +40,13 @@ private:
     static CGlobalObj* sm_pThis[BUS_TOTAL];
     static CBaseDIL_CAN* sm_pouDilCanInterface;
 public:
-    
+
     ~CGlobalObj(void);
 
-    CMultiDocTemplate *m_pEditorDocTemplate;
-	CSimSysWnd *m_pomSimSysWnd;           // Simulated system window pointer
+    CMultiDocTemplate* m_pEditorDocTemplate;
+    CSimSysWnd* m_pomSimSysWnd;           // Simulated system window pointer
     CString m_omStrSourceFilePathName;
-    CString m_omAppDirectory;    
+    CString m_omAppDirectory;
     CStringArray m_ArrAPIsList;
     CStringArray m_ArrAPIFuncNames;
     CString m_omMsgStructName;
@@ -55,12 +55,12 @@ public:
     CString m_omObjWrapperName;
     CStringArray m_omDefinedMsgHeaders;
     CMsgNameMsgCodeList m_odMsgNameMsgCodeList;
-    CMapStringToPtr* m_podNodeToDllMap;    
+    CMapStringToPtr* m_podNodeToDllMap;
     //static CKeyPanelEntryList* g_podKeyPanelEntryList;
     WINDOWPLACEMENT m_wWindowPlacement;
     CFunctionEditorDoc* pGetDocPtrOfFile(CString);
     static CBaseDIL_CAN* GetICANDIL(void);
-	static CBaseDILI_J1939* GetIJ1939DIL(void);
+    static CBaseDILI_J1939* GetIJ1939DIL(void);
     CFunctionEditorDoc* podGetFunctionEditorDoc();
     CFunctionView* podGetFunctionViewPtr();
     CFnsTreeView* podGetFuncsTreeViewPtr();
@@ -68,7 +68,7 @@ public:
     CFileView* podGetFileViewPtr();
     HRESULT RegisterNodeToDIL(BOOL bRegister, PSNODEINFO pNodeInfo);
     void vCreateTraceWnd();
-    BOOL bGetDefaultValue(int eParam, WINDOWPLACEMENT &sPosition);
+    BOOL bGetDefaultValue(int eParam, WINDOWPLACEMENT& sPosition);
     TRANSMIT_MSG m_pfTransmitMsg;
     EN_DIS_ABLE_LOG m_pfEnableDisableLog;
     DISCONNECT_TOOL m_pfDisconnectTool;
@@ -82,8 +82,8 @@ public:
     //static variables
     static CBaseAppServices* sm_pouITraceWndPtr;
     static HWND sm_hWndMDIParentFrame;
-    
-    //Static functions 
+
+    //Static functions
     static BOOL bIsExist(ETYPE_BUS eBus);
     static CGlobalObj& ouGetObj(ETYPE_BUS eBus);
     static void vClearAll(void);

@@ -31,27 +31,27 @@ class COutWnd : public CMDIChildBase
     DECLARE_DYNCREATE(COutWnd)
 public:
     COutWnd(ETYPE_BUS eBus = CAN);           // public constructor used by dynamic creation
-// Attributes
+    // Attributes
 public:
 
-// Operations
+    // Operations
 public:
     BOOL bCreateOutputWindow();
     // Add string items to the list box of output window
     BOOL bAddString(CStringArray& omStrArray);
-	// Set the content of list box.
+    // Set the content of list box.
     VOID vResetContent();
     // Set the content of list box.
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(COutWnd)
-    public:
-    protected:
+public:
+protected:
     virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     virtual ~COutWnd();
 

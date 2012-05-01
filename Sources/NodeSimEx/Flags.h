@@ -26,7 +26,7 @@
 
 #include "NodeSimEx_Struct.h"
 
-class CFlags  
+class CFlags
 {
 public:
     int nGetFlagStatus(eSIMSYSFLAG WhichFlag);

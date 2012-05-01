@@ -31,7 +31,7 @@ public:
 
     static BOOL bInitBusInfo(SBUS_SPECIFIC_INFO& sMcNetSpecInfo, eTYPE_BUS eBus);
     /* This function create new document of type CFunctionEditorDoc,
-       initializes bus specific information, return pointer of the object type 
-       CFunctionEditorDoc */ 
+       initializes bus specific information, return pointer of the object type
+       CFunctionEditorDoc */
     static CFunctionEditorDoc* pCreateNewDocument(eTYPE_BUS eBus);
 };

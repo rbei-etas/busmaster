@@ -33,22 +33,22 @@ protected:
     CFnsTreeView();           // protected constructor used by dynamic creation
     DECLARE_DYNCREATE(CFnsTreeView)
 
-// Operations
+    // Operations
 public:
     static ETYPE_BUS sm_eBus;
     void vSetItemName( CString );
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CFnsTreeView)
-    public:
+public:
     virtual void OnInitialUpdate();
-    protected:
+protected:
     virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
     virtual void OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint);
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     virtual ~CFnsTreeView();
 #ifdef _DEBUG
@@ -68,8 +68,8 @@ protected:
     afx_msg void OnDeleteHandle();
     afx_msg void OnAddHandle();
     afx_msg void OnKeydown(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnEditFunctionHeader();
-	//}}AFX_MSG
+    afx_msg void OnEditFunctionHeader();
+    //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
     ETYPE_BUS m_eBus;
@@ -77,10 +77,10 @@ private:
     void vOnNewIncludeHeader();
     // Edit selceted header
     void vEditIncludeHeader(HTREEITEM hItem);
-	// Edit selceted utility function
-	void vEditUtilityFunc(HTREEITEM hItem);
-	// Edit selceted utility function
-	void vEditTimerHandler(HTREEITEM hItem);
+    // Edit selceted utility function
+    void vEditUtilityFunc(HTREEITEM hItem);
+    // Edit selceted utility function
+    void vEditTimerHandler(HTREEITEM hItem);
     // Add new global variable
     void vOnNewGlobalVariable();
     // New utility function
@@ -112,7 +112,7 @@ private:
     BOOL m_bFlag;
     // Image List object
     CImageList m_omImageList;
-    // Populate tree with function prototypes 
+    // Populate tree with function prototypes
     // and global variables
     BOOL bPopulateTree();
 public:

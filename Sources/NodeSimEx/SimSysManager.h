@@ -39,11 +39,11 @@ private:
     //Current selected node's properties
     CSimSysNodeInfo m_ouSimSysNodeInfo;
     // Pointer to Simulated system List data structure
-	PSSIMSYSARRAY m_psSimSysArray;
+    PSSIMSYSARRAY m_psSimSysArray;
     //Keeps the only detView object ptr
     CSimSysDetView* m_pomSimSysDetView;
     // Simulated system config objectpointer
-	CSimSysConfigDetails m_omSimSysConfig;
+    CSimSysConfigDetails m_omSimSysConfig;
     // Pointer to CSimSysTreeView object
     CSimSysTreeView* m_pomSimSysTreeView;
     //POinter to Flags object
@@ -57,31 +57,31 @@ public:
     //This function is returning pointer to the only created CSimSysNodeInfo
     //object which is private variable so it can be changed later
     CSimSysNodeInfo* pomGetSimSysNodeInfo();
-    //Return 
+    //Return
     PSSIMSYSINFO psReturnSimsysInfoPtr();
     //Set the det view object
-    void podSetSimSysDetView(CSimSysDetView *pDetView);
+    void podSetSimSysDetView(CSimSysDetView* pDetView);
     // Get pointer to CSimSysDetView class
     CSimSysDetView* podGetSimSysDetView();
 
-     // Get pointer to CSimSysConfigDetails class
-	CSimSysConfigDetails* pomGetSimSysConfig();
-    
+    // Get pointer to CSimSysConfigDetails class
+    CSimSysConfigDetails* pomGetSimSysConfig();
+
     //Set the SimSysTreeView object
     void podSetSimSysTreeView(CSimSysTreeView* );
     // Get pointer to CSimSysTreeView class
     CSimSysTreeView* podGetSimSysTreeView();
     BOOL m_bFromAutomation;
-    
+
     //Get the flags object pointer
     CFlags& ouGetFlags();
     //Load and store related functions
-	UINT unGetStoreSIMFBufferSize();
-	void SaveSIMDataIntoBuffer(BYTE* DesBuffer);
-	void vSaveSimSysWndConfig();
-	void vLoadSimSysWndConfig();
-	void CopySIMDataFromBuffer(BYTE *SrcBuffer);
-	BOOL bIsConfigChanged();
+    UINT unGetStoreSIMFBufferSize();
+    void SaveSIMDataIntoBuffer(BYTE* DesBuffer);
+    void vSaveSimSysWndConfig();
+    void vLoadSimSysWndConfig();
+    void CopySIMDataFromBuffer(BYTE* SrcBuffer);
+    BOOL bIsConfigChanged();
 
     void vApplicationClosing();
     void vSaveAllSimSys();

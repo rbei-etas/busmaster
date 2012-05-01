@@ -15,11 +15,11 @@
 
 /**
  * \file      Export_UserDll.h
- * \brief     This header file contains name and prototype of the 
+ * \brief     This header file contains name and prototype of the
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This header file contains name and prototype of the 
+ * This header file contains name and prototype of the
  */
 
 #pragma once
@@ -71,7 +71,7 @@ typedef void (*DLLGETNODEHANDLER)(GETNODEHANDLER);
 // Name of the exported function from user-defined DLL
 #define NAME_FUNC_LOG_DISABLE           "vSetDisableLoggingProcAddress"
 #define NAME_FUNC_LOG_ENABLE            "vSetEnableLoggingProcAddress"
-#define NAME_FUNC_LOG_FILE	            "vSetWriteToLogFileProcAddress"
+#define NAME_FUNC_LOG_FILE              "vSetWriteToLogFileProcAddress"
 #define NAME_FUNC_TRACE                 "vSetTraceProcAddress"
 #define NAME_FUNC_START_TIMER           "vSetStartTimerProcAddress"
 #define NAME_FUNC_STOP_TIMER            "vSetStopTimerProcAddress"

@@ -112,7 +112,7 @@ END_MESSAGE_MAP()
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modifications on :  07.04.2003, review comment incorporated               */
 /******************************************************************************/
-void CMsgHandlerDlg::OnCbtnMsgCancel() 
+void CMsgHandlerDlg::OnCbtnMsgCancel()
 {
     CDialog::OnCancel();
 }
@@ -133,7 +133,7 @@ void CMsgHandlerDlg::OnCbtnMsgCancel()
 /*                                 OK button and if validation fails. Found   */
 /*                                 during unit testing.                       */
 /******************************************************************************/
-void CMsgHandlerDlg::OnCbtnMsgOk() 
+void CMsgHandlerDlg::OnCbtnMsgOk()
 {
     OnCbtnMsgHandlerApply();
     CDialog::OnOK();
@@ -150,55 +150,53 @@ void CMsgHandlerDlg::OnCbtnMsgOk()
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  21.02.2003                                            */
 /******************************************************************************/
-void CMsgHandlerDlg::OnCbtnMsgHandlerApply() 
+void CMsgHandlerDlg::OnCbtnMsgHandlerApply()
 {
-
     BOOL bValidateSelection = FALSE;
     UpdateData(TRUE);
     m_omButtonApply.EnableWindow(FALSE);
     m_omButtonOK.EnableWindow(FALSE);
     // Get document pointer
     CFunctionEditorDoc* pDoc = CGlobalObj::ouGetObj(m_eBus).podGetFunctionEditorDoc();
+
     if (NULL != pDoc)
     {
         SBUS_SPECIFIC_INFO sBusSpecInfo;
         pDoc->bGetBusSpecificInfo(sBusSpecInfo);
         // Validate user selections
-        bValidateSelection = bValidateUserSelection(pDoc); 
+        bValidateSelection = bValidateUserSelection(pDoc);
+
         if (bValidateSelection == TRUE)
         {
             CString omFunc = CGlobalObj::omGetBusSpecMsgHndlrName(m_eBus);;
             // Add to function editor
             CString omSelectedText = _T("");
-
             omSelectedText = BUS_FN_HDR; // Start comment section: init
-            omSelectedText.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), 
-                             sBusSpecInfo.m_omBusName); // Replace the bus name
-
+            omSelectedText.Replace(_T("PLACE_HODLER_FOR_BUSNAME"),
+                                   sBusSpecInfo.m_omBusName); // Replace the bus name
             omFunc += m_omStrSelectedItemText;
             omSelectedText.Replace( _T("PLACE_HODLER_FOR_FUNCTIONNAME"),
-                omFunc );
+                                    omFunc );
             pDoc->m_omSourceCodeTextList.AddTail( omSelectedText );
             // Form the function prototype
             omSelectedText  = m_omStrSelectedItemText;
             int nIndex = -1;
-            
-
             // Get the type and set the parameter type
             BOOL bIsMsgSpecificHandler = FALSE;
             //Find out whether the Msg handler is DatabaseMsgName type or ID type
             CString omMsgHandlerType = CGlobalObj::ouGetObj(m_eBus).m_omMsgStructName;
             nIndex = omSelectedText.Find(defSTR_MSG_SPECIFIC_HANDLER);
-            
+
             if( nIndex != -1 )
             {
                 bIsMsgSpecificHandler = TRUE;
                 // For database message type is equal same as msg name
                 omMsgHandlerType = omSelectedText.Mid( nIndex +
-                                                     defMESSAGE_NAME_INDEX );
+                                                       defMESSAGE_NAME_INDEX );
             }
+
             CString omStrParamtype;
-            
+
             if (bIsMsgSpecificHandler == TRUE && (m_eBus == CAN))
             {
                 omStrParamtype = omMsgHandlerType;
@@ -207,61 +205,64 @@ void CMsgHandlerDlg::OnCbtnMsgHandlerApply()
             {
                 omStrParamtype = CGlobalObj::ouGetObj(m_eBus).m_omMsgStructName;
             }
+
             CString omFormatString = m_eBus == CAN ? defDEFAULT_MSG_HANDLER_CODE_CAN : defDEFAULT_MSG_HANDLER_CODE;
             omSelectedText.Format(  omFormatString,
                                     CGlobalObj::omGetBusSpecMsgHndlrName(sBusSpecInfo.m_eBus),
                                     omSelectedText,   // Fun name
                                     omStrParamtype ); // Parameter type
-
             pDoc->m_omSourceCodeTextList.AddTail( omSelectedText );
-
             CString omStrPrototype = omSelectedText;
             // Add to tree view
             CFnsTreeView* pomTreeView = CGlobalObj::ouGetObj(m_eBus).podGetFuncsTreeViewPtr();
+
             if(pomTreeView != NULL )
             {
                 // Add the prototype to the tree view
                 CTreeCtrl& omTree = pomTreeView->GetTreeCtrl();
                 HTREEITEM hItem = omTree.GetSelectedItem();
-                HTREEITEM hNew = 
+                HTREEITEM hNew =
                     omTree.InsertItem( omSelectedText, hItem);
                 omTree.SetItemImage( hNew, 5, 5 );
                 omTree.SelectItem( hNew );
                 // Form the body of the function
                 omSelectedText = "{";
                 pDoc->m_omSourceCodeTextList.AddTail( omSelectedText );
+
                 if (CGlobalObj::ouGetObj(m_eBus).m_omMsgStructName.IsEmpty())
                 {
                     ASSERT(FALSE);
                 }
+
                 omSelectedText = defTODO;
                 pDoc->m_omSourceCodeTextList.AddTail( omSelectedText );
-
                 // Form the function footer
                 omSelectedText = BUS_FN_FOOTER;
                 omSelectedText.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
                 omSelectedText.Replace( _T("PLACE_HODLER_FOR_FUNCTIONNAME"),
-                    omFunc );
-
+                                        omFunc );
                 pDoc->m_omSourceCodeTextList.AddTail( omSelectedText );
-
-                CStringArray* pMsgArray = 
+                CStringArray* pMsgArray =
                     pDoc->omStrGetMessageHandlerPrototypes();
+
                 if ( pMsgArray != NULL )
                 {
                     pMsgArray->Add( omStrPrototype );
                 }
+
                 pDoc->UpdateAllViews( NULL );
                 pDoc->SetModifiedFlag( TRUE );
             }
         }
     }
+
     m_omStrSelectedItemText = _T("");
     BOOL bButtonChecked  = FALSE;
     bButtonChecked =  IsDlgButtonChecked(IDC_RBTN_MSG_NAME);
+
     if(bButtonChecked != FALSE )
     {
-         m_omListMsgName.SetCurSel(-1);
+        m_omListMsgName.SetCurSel(-1);
     }
 }
 /******************************************************************************/
@@ -276,7 +277,7 @@ void CMsgHandlerDlg::OnCbtnMsgHandlerApply()
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  21.02.2003                                            */
 /******************************************************************************/
-void CMsgHandlerDlg::OnRbtnMsgAll() 
+void CMsgHandlerDlg::OnRbtnMsgAll()
 {
     m_odEditMsgIDTo.EnableWindow(FALSE);
     m_omListMsgName.EnableWindow(FALSE);
@@ -297,7 +298,7 @@ void CMsgHandlerDlg::OnRbtnMsgAll()
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  21.02.2003                                            */
 /******************************************************************************/
-void CMsgHandlerDlg::OnRbtnMsgId() 
+void CMsgHandlerDlg::OnRbtnMsgId()
 {
     m_odEditMsgIDTo.EnableWindow(FALSE);
     m_omListMsgName.EnableWindow(FALSE);
@@ -320,7 +321,7 @@ void CMsgHandlerDlg::OnRbtnMsgId()
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modifications on :  07.04.2003, review comment incorporated               */
 /******************************************************************************/
-void CMsgHandlerDlg::OnRbtnMsgName() 
+void CMsgHandlerDlg::OnRbtnMsgName()
 {
     m_odEditMsgIDTo.EnableWindow(FALSE);
     m_omListMsgName.EnableWindow(TRUE);
@@ -342,7 +343,7 @@ void CMsgHandlerDlg::OnRbtnMsgName()
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  21.02.2003                                            */
 /******************************************************************************/
-void CMsgHandlerDlg::OnRbtnMsgRange() 
+void CMsgHandlerDlg::OnRbtnMsgRange()
 {
     m_odEditMsgIDTo.EnableWindow(TRUE);
     m_omListMsgName.EnableWindow(FALSE);
@@ -354,35 +355,27 @@ void CMsgHandlerDlg::OnRbtnMsgRange()
 void CMsgHandlerDlg::vInitDlgWithBusSpecNames(void)
 {
     CString omMsgFieldName = CGlobalObj::omGetBusSpecMsgFieldName(m_eBus);
-
     //Set Message Id radio button name
     CString omTemp = omMsgFieldName + _T(" ID");
     GetDlgItem(IDC_RBTN_MSG_ID)->SetWindowText(omTemp.GetBuffer(MAX_PATH));
-
     //Set Message Id range radio button name
     omTemp = omMsgFieldName + _T(" ID Range");
     GetDlgItem(IDC_RBTN_MSG_RANGE)->SetWindowText(omTemp.GetBuffer(MAX_PATH));
-
     //Set ALL Rx message radio button name
     omTemp = _T("ALL Rx ") + omMsgFieldName + _T("(s)");
     GetDlgItem(IDC_RBTN_MSG_ALL)->SetWindowText(omTemp.GetBuffer(MAX_PATH));
-
     //Set Message name radio button name
     omTemp = omMsgFieldName + _T(" Name");
     GetDlgItem(IDC_RBTN_MSG_NAME)->SetWindowText(omTemp.GetBuffer(MAX_PATH));
-
     //Set static text Message Id: name
     omTemp = omMsgFieldName + _T(" ID: ");
     GetDlgItem(IDC_STATIC_MSG_ID)->SetWindowText(omTemp.GetBuffer(MAX_PATH));
-
     //Set static text Message Id range: name
     omTemp = omMsgFieldName + _T(" ID Range");
     GetDlgItem(IDC_STATIC_MSG_ID_RANGE)->SetWindowText(omTemp.GetBuffer(MAX_PATH));
-
     //Set static text Message DB list name
     omTemp = _T("Database ") + omMsgFieldName + _T(" List");
     GetDlgItem(IDC_STATIC_DB_MSG_LIST)->SetWindowText(omTemp.GetBuffer(MAX_PATH));
-
 }
 /******************************************************************************/
 /*  Function Name    :  OnInitDialog                                          */
@@ -397,10 +390,9 @@ void CMsgHandlerDlg::vInitDlgWithBusSpecNames(void)
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modifications on :  07.04.2003, review comment incorporated               */
 /******************************************************************************/
-BOOL CMsgHandlerDlg::OnInitDialog() 
+BOOL CMsgHandlerDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    
     vInitDlgWithBusSpecNames();
     m_odEditMsgIDTo.EnableWindow(FALSE);
     m_omListMsgName.EnableWindow(FALSE);
@@ -409,45 +401,42 @@ BOOL CMsgHandlerDlg::OnInitDialog()
     m_omButtonApply.EnableWindow(FALSE);
     m_omButtonOK.EnableWindow(FALSE);
     m_odEditMsgID.vSetSigned(FALSE);
-
     m_odEditMsgIDTo.vSetSigned(FALSE);
     m_odEditMsgIDFrom.vSetSigned(FALSE);
     CheckDlgButton(IDC_RBTN_MSG_ID,BST_CHECKED);
     // Get all the message names of active DB
-    
     CFunctionEditorDoc* pDoc = CGlobalObj::ouGetObj(m_eBus).podGetFunctionEditorDoc();
     CStringArray* pomStrArray = NULL;
+
     if (pDoc != NULL)
     {
         pomStrArray = pDoc->omStrGetMessageHandlerPrototypes();
     }
+
     if(pomStrArray != NULL )
     {
         POSITION pos = CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList.GetHeadPosition();
+
         //UINT unNoOfMessages = ouGetMsgSignal().unGetNumerOfMessages();
         while (pos != NULL)
         {
             SMSG_NAME_CODE& sMsgNameCode = CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList.
-                                                            GetNext(pos);
+                                           GetNext(pos);
             bAddMessageNameInListBox(pomStrArray, sMsgNameCode.m_omMsgName);
         }
     }
 
     //if ( unNoOfMessages > 0 )
     {
-        
         //COMMENTED BY AK******************
         //ouGetMsgSignal().omStrListGetMessageNames(omMessageNames);
-
         //CMainFrame* pMainFrame = NULL;
         //pMainFrame             = (CMainFrame*)AfxGetMainWnd();
         //if(pMainFrame != NULL )
         //{
-
         //    CFunctionEditorDoc* pDoc = pMainFrame->CGlobalObj::podGetFunctionEditorDoc();
         //    if(pDoc != NULL )
         //    {
-
         //        CStringArray* pomStrArray = NULL;
         //        pomStrArray = pDoc->omStrGetMessageHandlerPrototypes();
         //        if(pomStrArray != NULL )
@@ -455,20 +444,19 @@ BOOL CMsgHandlerDlg::OnInitDialog()
         //            POSITION pos = omMessageNames.GetHeadPosition();
         //            // Insert every message name into the message list box
         //            CString omStrMsgName = _T("");
-
         //            while ( pos != NULL )
         //            {
         //
         //                omStrMsgName = omMessageNames.GetNext(pos);
         //                bAddMessageNameInListBox(pomStrArray,omStrMsgName);
-        //  
+        //
         //            }
         //        }
         //    }
         //}
     }
     return TRUE;  // return TRUE unless you set the focus to a control
-                  // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
 /******************************************************************************/
 /*  Function Name    :  OnSelchangeLstbMsgHandlerList                         */
@@ -482,7 +470,7 @@ BOOL CMsgHandlerDlg::OnInitDialog()
 /*  Modification By  :                                                        */
 /*  Modifications on :                                                        */
 /******************************************************************************/
-void CMsgHandlerDlg::OnSelchangeLstbMsgHandlerList() 
+void CMsgHandlerDlg::OnSelchangeLstbMsgHandlerList()
 {
     m_omButtonApply.EnableWindow(TRUE);
     m_omButtonOK.EnableWindow(TRUE);
@@ -500,8 +488,8 @@ void CMsgHandlerDlg::OnSelchangeLstbMsgHandlerList()
 /*                      handler is already added and vice versa.              */
 /*  Member of        :  CMsgHandlerDlg                                        */
 /*  Friend of        :      -                                                 */
-/*  Author(s)        :  
-/*  Date Created     :  
+/*  Author(s)        :
+/*  Date Created     :
 /******************************************************************************/
 BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
 
@@ -516,7 +504,6 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
         CString omStrText = _T("");
         CString omStrHandlerType = _T("");
         bButtonChecked =  IsDlgButtonChecked(IDC_RBTN_MSG_NAME);
-
         CStringArray* pMsgArray = pDoc->omStrGetMessageHandlerPrototypes();
 
         if(bButtonChecked)
@@ -528,14 +515,14 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
             nSelection = m_omListMsgName.GetCurSel();
             m_omListMsgName.GetText(nSelection,omStrMsgName);
             // get the corresponding message ID from the database
-           /* unMsgIDForName=CMsgSignal::ouGetMsgSignal().nGetSlotIDFromName(omStrMsgName);
-            if(unMsgIDForName != -1)
-            {
-                omStrMsgIDForName.Format("%x",unMsgIDForName);
-                bReturn = bValidateMessageNameAndID( pMsgArray,
-                                                     defMSG_NAME_HANDLER,
-                                                     omStrMsgIDForName);
-            }*/
+            /* unMsgIDForName=CMsgSignal::ouGetMsgSignal().nGetSlotIDFromName(omStrMsgName);
+             if(unMsgIDForName != -1)
+             {
+                 omStrMsgIDForName.Format("%x",unMsgIDForName);
+                 bReturn = bValidateMessageNameAndID( pMsgArray,
+                                                      defMSG_NAME_HANDLER,
+                                                      omStrMsgIDForName);
+             }*/
             m_omStrSelectedItemText = defMSG_NAME_HANDLER;
             m_omStrSelectedItemText += omStrMsgName;
             omStrText = "\""+ omStrMsgName + "\"";
@@ -544,6 +531,7 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
         else
         {
             bButtonChecked =  IsDlgButtonChecked(IDC_RBTN_MSG_ID);
+
             if(bButtonChecked != 0)
             {
                 UINT unMsgID = 0;
@@ -562,6 +550,7 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
             else
             {
                 bButtonChecked =  IsDlgButtonChecked(IDC_RBTN_MSG_RANGE);
+
                 if(bButtonChecked != 0)
                 {
                     UINT unMsgIDFrom = 0;
@@ -572,6 +561,7 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
                     m_omStrSelectedItemText += m_omStrMsgIDTo;
                     unMsgIDTo    = (UINT)m_odEditMsgIDTo.lGetValue();
                     unMsgIDFrom  =(UINT) m_odEditMsgIDFrom.lGetValue();
+
                     if(unMsgIDFrom < unMsgIDTo)
                     {
                         omStrText = _T("\"")+ m_omStrMsgIDFrom;
@@ -590,6 +580,7 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
                 else
                 {
                     bButtonChecked =  IsDlgButtonChecked(IDC_RBTN_MSG_ALL);
+
                     if(bButtonChecked != 0)
                     {
                         m_omStrSelectedItemText = defMSG_ALL;
@@ -598,7 +589,6 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
                     }
                 }
             }
-
         }
 
         if(bReturn == TRUE)
@@ -607,43 +597,45 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
             {
                 CString omStrMsgPro = STR_EMPTY;
                 CString omStrMsgCommon = CGlobalObj::omGetBusSpecMsgHndlrName(m_eBus);
-                for (int nCount = 0;nCount<pMsgArray->GetSize(); nCount++ )
+
+                for (int nCount = 0; nCount<pMsgArray->GetSize(); nCount++ )
                 {
                     omStrMsgPro = pMsgArray->GetAt( nCount );
                     omStrMsgPro = omStrMsgPro.Right(omStrMsgPro.GetLength()
-                                                  - omStrMsgPro.Find(_T(" ")) - 1);
+                                                    - omStrMsgPro.Find(_T(" ")) - 1);
                     omStrMsgPro = omStrMsgPro.Right(omStrMsgPro.GetLength()
-                                                  - omStrMsgCommon.GetLength());
+                                                    - omStrMsgCommon.GetLength());
                     omStrMsgPro = omStrMsgPro.Left( omStrMsgPro.Find(_T("(")) );
                     omStrMsgPro.TrimLeft();
                     omStrMsgPro.TrimRight();
-                    if (omStrMsgPro.Compare(m_omStrSelectedItemText) == 0) 
+
+                    if (omStrMsgPro.Compare(m_omStrSelectedItemText) == 0)
                     {
                         // Form the message to be dispalyed
                         omStrMsgPro = defMSG_DUPL_MSG_HANDLER;
-                        omStrMsgPro.Replace( _T("TYPE"), 
-                            omStrHandlerType );
-                        omStrMsgPro.Replace( _T("MESSAGENAME"), 
-                            omStrText );
+                        omStrMsgPro.Replace( _T("TYPE"),
+                                             omStrHandlerType );
+                        omStrMsgPro.Replace( _T("MESSAGENAME"),
+                                             omStrText );
                         // Duplicate message hanlder, shout
-                        AfxMessageBox( omStrMsgPro, 
-                            MB_OK|MB_ICONINFORMATION );
+                        AfxMessageBox( omStrMsgPro,
+                                       MB_OK|MB_ICONINFORMATION );
                         nCount = (COMMANINT)pMsgArray->GetSize();
                         bReturn = FALSE;
-                       if(omStrHandlerType.Compare(defMSG_NAME_TEXT) ==0 )
-                       {
-                            m_omListMsgName.SetFocus();  
-                       }
-                       else if(omStrHandlerType.Compare(defMSG_ID_TEXT) == 0 )
-                       {
-                            m_odEditMsgID.SetFocus();
-                       }
-                       else if(
-                           omStrHandlerType.Compare(defMSG_IDRANGE_TEXT) == 0 )
-                       {
-                           m_odEditMsgIDFrom.SetFocus();
-                       }
 
+                        if(omStrHandlerType.Compare(defMSG_NAME_TEXT) ==0 )
+                        {
+                            m_omListMsgName.SetFocus();
+                        }
+                        else if(omStrHandlerType.Compare(defMSG_ID_TEXT) == 0 )
+                        {
+                            m_odEditMsgID.SetFocus();
+                        }
+                        else if(
+                            omStrHandlerType.Compare(defMSG_IDRANGE_TEXT) == 0 )
+                        {
+                            m_odEditMsgIDFrom.SetFocus();
+                        }
                     }
                 }
             }
@@ -657,12 +649,16 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
     {
         bReturn = FALSE;
     }
+
     // Remove the selected item from the list
     if( bReturn == TRUE && bButtonChecked == TRUE)
     {
         int nIndex = m_omListMsgName.GetCurSel();
+
         if( nIndex != -1 )
+        {
             m_omListMsgName.DeleteString( nIndex );
+        }
     }
 
     return bReturn;
@@ -682,7 +678,7 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
 /*  Modification By  :                                                        */
 /*  Modifications on :                                                        */
 /******************************************************************************/
-void CMsgHandlerDlg::OnUpdateEditMsgHandlerId() 
+void CMsgHandlerDlg::OnUpdateEditMsgHandlerId()
 {
     m_omButtonApply.EnableWindow(TRUE);
     m_omButtonOK.EnableWindow(TRUE);
@@ -701,7 +697,7 @@ void CMsgHandlerDlg::OnUpdateEditMsgHandlerId()
 /*  Modification By  :                                                        */
 /*  Modifications on :                                                        */
 /******************************************************************************/
-void CMsgHandlerDlg::OnUpdateEditMsgHandlerIdFrom() 
+void CMsgHandlerDlg::OnUpdateEditMsgHandlerIdFrom()
 {
     m_omButtonApply.EnableWindow(TRUE);
     m_omButtonOK.EnableWindow(TRUE);
@@ -720,7 +716,7 @@ void CMsgHandlerDlg::OnUpdateEditMsgHandlerIdFrom()
 /*  Modification By  :                                                        */
 /*  Modifications on :                                                        */
 /******************************************************************************/
-void CMsgHandlerDlg::OnUpdateEditMsgHandlerIdTo() 
+void CMsgHandlerDlg::OnUpdateEditMsgHandlerIdTo()
 {
     m_omButtonApply.EnableWindow(TRUE);
     m_omButtonOK.EnableWindow(TRUE);
@@ -741,11 +737,12 @@ void CMsgHandlerDlg::OnUpdateEditMsgHandlerIdTo()
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modifications on :  07.04.2003, review comment incorporated               */
 /******************************************************************************/
-BOOL CMsgHandlerDlg::bAddMessageNameInListBox(const CStringArray *pomStrArray, 
-                                              const CString &omStrMessageName)
+BOOL CMsgHandlerDlg::bAddMessageNameInListBox(const CStringArray* pomStrArray,
+        const CString& omStrMessageName)
 {
     //return true;
     BOOL bReturn = TRUE;
+
     if(pomStrArray != NULL )
     {
         UINT nCount = 0;
@@ -753,6 +750,7 @@ BOOL CMsgHandlerDlg::bAddMessageNameInListBox(const CStringArray *pomStrArray,
         CString omStrFunction = _T("");
         CString omStrMsgNameHandler = _T("");
         int nIndex = 0;
+
         for ( UINT i = 0; i<nCount; i++)
         {
             omStrFunction = pomStrArray->GetAt(i);
@@ -760,6 +758,7 @@ BOOL CMsgHandlerDlg::bAddMessageNameInListBox(const CStringArray *pomStrArray,
             omStrMsgNameHandler += defMSG_NAME_HANDLER;
             omStrMsgNameHandler +=  omStrMessageName;
             nIndex = omStrFunction.Find(omStrMsgNameHandler);
+
             if(nIndex != -1)
             {
                 bReturn = FALSE;
@@ -770,6 +769,7 @@ BOOL CMsgHandlerDlg::bAddMessageNameInListBox(const CStringArray *pomStrArray,
                 CString omStrTemp = CGlobalObj::omGetBusSpecMsgHndlrName(m_eBus);
                 omStrTemp += defMSG_ID_HANDLER;
                 nIndex = omStrFunction.Find(omStrTemp);
+
                 if(nIndex != -1 )
                 {
                     CHAR* pcStopStr = NULL;
@@ -780,9 +780,9 @@ BOOL CMsgHandlerDlg::bAddMessageNameInListBox(const CStringArray *pomStrArray,
                     omStrTemp = omStrTemp.Right(omStrTemp.GetLength() -
                                                 omStrTemp.ReverseFind('_') -1);
                     unMsgID = strtol((LPCTSTR )omStrTemp,&pcStopStr,16);
+
                     if(unMsgID>0)
                     {
-
                         /*omStrTemp = CMsgSignal::ouGetMsgSignal().
                             omStrGetMessageNameFromSlotID(unMsgID);*/
                         if(omStrMessageName == omStrTemp)
@@ -794,6 +794,7 @@ BOOL CMsgHandlerDlg::bAddMessageNameInListBox(const CStringArray *pomStrArray,
                 }
             }
         }
+
         if(bReturn == TRUE )
         {
             m_omListMsgName.AddString(omStrMessageName);
@@ -827,14 +828,16 @@ BOOL CMsgHandlerDlg::bAddMessageNameInListBox(const CStringArray *pomStrArray,
 /*  Modifications on :                                                        */
 /******************************************************************************/
 BOOL CMsgHandlerDlg::bValidateMessageNameAndID(const CStringArray* pomStrArray,
-                                               const CString& omStrHandlerType,
-                                               CString omStrMessageNameOrID)
+        const CString& omStrHandlerType,
+        CString omStrMessageNameOrID)
 {
     BOOL bReturn = TRUE;
     CString omStrMakeHandler = _T("");
+
     if(pomStrArray != NULL )
     {
         omStrMakeHandler = CGlobalObj::omGetBusSpecMsgHndlrName(m_eBus);
+
         // compare if the handler written is message name or message ID.
         if(omStrHandlerType.Compare(defMSG_ID_HANDLER) == 0)
         {
@@ -844,11 +847,13 @@ BOOL CMsgHandlerDlg::bValidateMessageNameAndID(const CStringArray* pomStrArray,
         {
             omStrMakeHandler += defMSG_ID_HANDLER;
         }
-        // Make the current handler by getting its ID from name and vice 
+
+        // Make the current handler by getting its ID from name and vice
         // versa.
         omStrMakeHandler += omStrMessageNameOrID;
         UINT unCount = (COMMANUINT)pomStrArray->GetSize();
         CString omStrMsgPro = _T("");
+
         for(UINT i = 0; i<unCount; i++)
         {
             omStrMsgPro = pomStrArray->GetAt( i );
@@ -857,10 +862,12 @@ BOOL CMsgHandlerDlg::bValidateMessageNameAndID(const CStringArray* pomStrArray,
             omStrMsgPro = omStrMsgPro.Left( omStrMsgPro.Find(_T("(") ));
             omStrMsgPro.TrimLeft();
             omStrMsgPro.TrimRight();
-            if (omStrMsgPro.Compare(omStrMakeHandler) == 0) 
+
+            if (omStrMsgPro.Compare(omStrMakeHandler) == 0)
             {
                 // Form the message to be dispalyed
                 omStrMsgPro = defDUPL_CORR_MSG_HANDLER;
+
                 if(omStrHandlerType.Compare(defMSG_ID_HANDLER) == 0)
                 {
                     omStrMsgPro.Replace( _T("TYPE"), defMSG_NAME_TEXT);
@@ -872,6 +879,7 @@ BOOL CMsgHandlerDlg::bValidateMessageNameAndID(const CStringArray* pomStrArray,
                     omStrMessageNameOrID.Insert(0,_T("0x"));
                     m_omListMsgName.SetFocus();
                 }
+
                 omStrMsgPro.Replace( _T("MESSAGENAME"),omStrMessageNameOrID );
                 // Duplicate message hanlder, shout
                 AfxMessageBox( omStrMsgPro,MB_OK|MB_ICONINFORMATION );
@@ -884,5 +892,6 @@ BOOL CMsgHandlerDlg::bValidateMessageNameAndID(const CStringArray* pomStrArray,
     {
         bReturn = FALSE;
     }
+
     return bReturn ;
 }

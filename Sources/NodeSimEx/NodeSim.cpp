@@ -32,7 +32,7 @@
 
 #define defSTR_SIMSYS_WINDOW_TITLE              _T("Configure Simulated Systems")
 
-ETYPE_BUS CEditFrameWnd::sm_eBus = CAN; 
+ETYPE_BUS CEditFrameWnd::sm_eBus = CAN;
 ETYPE_BUS CFileView::sm_eBus = CAN;
 
 CNodeSim::CNodeSim(ETYPE_BUS eBus)
@@ -41,7 +41,6 @@ CNodeSim::CNodeSim(ETYPE_BUS eBus)
 }
 CNodeSim::~CNodeSim()
 {
-
 }
 int CNodeSim::ExitInstance(void)
 {
@@ -51,15 +50,17 @@ int CNodeSim::ExitInstance(void)
         delete CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate;
         CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate = NULL;
     }
+
     CGlobalObj::ouGetObj(m_eBus).m_ArrAPIsList.RemoveAll();
     CGlobalObj::sm_hWndMDIParentFrame = NULL;
     CGlobalObj::ouGetObj(m_eBus).m_omStrSourceFilePathName.Empty();
-    
+
     if ( CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr != NULL)
     {
         delete[] CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr;
         CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr = NULL;
     }
+
     //remove the singleton class objects
     CSimSysManager::vClearObj(m_eBus);
     CExecuteManager::vClearObj(m_eBus);
@@ -67,67 +68,71 @@ int CNodeSim::ExitInstance(void)
 }
 
 HRESULT CNodeSim::FE_CreateFuncEditorTemplate(HWND handle, S_EXFUNC_PTR& sExInitStruct)
-{   
+{
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
     if (CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate == NULL)
     {
-        CEditFrameWnd::sm_eBus = m_eBus; 
+        CEditFrameWnd::sm_eBus = m_eBus;
         CFileView::sm_eBus = m_eBus;
         CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate = new CMultiDocTemplate(IDI_ICON_FN_EDITOR,
-
                 RUNTIME_CLASS(CFunctionEditorDoc),
                 RUNTIME_CLASS(CEditFrameWnd), // custom MDI child frame
                 RUNTIME_CLASS(CFileView));
         //AddDocTemplate(CGlobalObj::m_pEditorDocTemplate);
     }
+
     CGlobalObj::sm_hWndMDIParentFrame = handle;
     NS_UpdateFuncStructsNodeSimEx((PVOID)&sExInitStruct, UPDATE_ALL);
+    CFrameWnd* pParent = (CFrameWnd*)CWnd::FromHandle(CGlobalObj::sm_hWndMDIParentFrame);
 
-    CFrameWnd* pParent = (CFrameWnd*)CWnd::FromHandle(CGlobalObj::sm_hWndMDIParentFrame);    
-	// Get Window rectangle from configuration module
-    if ((CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.length == 0) || 
-        (CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.rcNormalPosition.top == -1))
+    // Get Window rectangle from configuration module
+    if ((CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.length == 0) ||
+            (CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.rcNormalPosition.top == -1))
     {
-        CGlobalObj::ouGetObj(m_eBus).bGetDefaultValue(SIMSYS_WND_PLACEMENT, CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement);  
+        CGlobalObj::ouGetObj(m_eBus).bGetDefaultValue(SIMSYS_WND_PLACEMENT, CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement);
     }
-   // Check for window pointer
+
+    // Check for window pointer
     if( CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd == NULL )
     {
         // Create New Instance
         CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd = new CSimSysWnd(m_eBus);
+
         if( CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd != NULL )
         {
             // Register Window Class
             LPCTSTR strMDIClass = AfxRegisterWndClass(
-                                CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS,
-                                LoadCursor(NULL, IDC_CROSS), 0,
-                                AfxGetApp()->LoadIcon(IDI_ICON_FN_EDITOR) );
+                                      CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS,
+                                      LoadCursor(NULL, IDC_CROSS), 0,
+                                      AfxGetApp()->LoadIcon(IDI_ICON_FN_EDITOR) );
             // Set the size got from configuration module
             CRect omRect(CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.rcNormalPosition);
             // Create Simulated system Configuration window
             CString omTitle;
             omTitle.Format(_T("%s - %s"), defSTR_SIMSYS_WINDOW_TITLE, CGlobalObj::omGetBusName(m_eBus));
+
             if( CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd->Create( strMDIClass,
-                                        omTitle.GetBuffer(MAX_PATH),
-                                        WS_CHILD | WS_OVERLAPPEDWINDOW,
-                                        omRect, (CMDIFrameWnd*)pParent ) == TRUE )
+                    omTitle.GetBuffer(MAX_PATH),
+                    WS_CHILD | WS_OVERLAPPEDWINDOW,
+                    omRect, (CMDIFrameWnd*)pParent ) == TRUE )
             {
                 // Show window and set focus
                 CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd->ShowWindow( SW_SHOW );
                 CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd->SetFocus();
+
                 if ((CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.rcNormalPosition.bottom == 0) &&
-                    (CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.rcNormalPosition.left   == 0) &&
-                    (CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.rcNormalPosition.right  == 0) &&
-                    (CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.rcNormalPosition.top    == 0))
+                        (CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.rcNormalPosition.left   == 0) &&
+                        (CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.rcNormalPosition.right  == 0) &&
+                        (CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.rcNormalPosition.top    == 0))
                 {
                     //Propably new configuration
                     CGlobalObj::ouGetObj(m_eBus).bGetDefaultValue(SIMSYS_WND_PLACEMENT, CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement);
                 }
+
                 CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd->m_wWndPlacement = CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement;
                 CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd->SetWindowPlacement
-                                            (&(CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd->m_wWndPlacement));
+                (&(CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd->m_wWndPlacement));
                 CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd->ShowWindow( SW_RESTORE );
-
             }
         }
     }
@@ -138,6 +143,7 @@ HRESULT CNodeSim::FE_CreateFuncEditorTemplate(HWND handle, S_EXFUNC_PTR& sExInit
         CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd->MDIActivate();
         CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd->SetActiveWindow();
     }
+
     return S_OK;
 }
 
@@ -172,9 +178,9 @@ void CNodeSim::NS_ManageOnKeyHandler(UCHAR ucKey)
     CExecuteManager::ouGetExecuteManager(m_eBus).vManageOnKeyHandler(ucKey);
 }
 
-void CNodeSim::NS_ManageOnMessageHandler(void *psRxMsgInfo)
+void CNodeSim::NS_ManageOnMessageHandler(void* psRxMsgInfo)
 {
-    STCAN_MSG *psRxMsg = (STCAN_MSG*)psRxMsgInfo;
+    STCAN_MSG* psRxMsg = (STCAN_MSG*)psRxMsgInfo;
     CExecuteManager::ouGetExecuteManager(m_eBus).vManageOnMessageHandlerCAN(*psRxMsg, CAN_MONITOR_CLIENT_ID);
 }
 
@@ -183,30 +189,30 @@ void CNodeSim::NS_ManageOnErrorHandler(eERROR_STATE eErrorCode,void* pvErrorVal)
     SCAN_ERR* psCanErr = (SCAN_ERR*)pvErrorVal;
     CExecuteManager::ouGetExecuteManager(m_eBus).vManageOnErrorHandlerCAN(eErrorCode, *psCanErr, 0);
 }
-HRESULT CNodeSim::NS_DLLBuildAll(CStringArray *pomStrErrorFiles)
+HRESULT CNodeSim::NS_DLLBuildAll(CStringArray* pomStrErrorFiles)
 {
     return CExecuteManager::ouGetExecuteManager(m_eBus).
-                            bDLLBuildAll(pomStrErrorFiles);
+           bDLLBuildAll(pomStrErrorFiles);
 }
 
-HRESULT CNodeSim::NS_DllLoadAll(CStringArray *pomStrErrorFiles)
+HRESULT CNodeSim::NS_DllLoadAll(CStringArray* pomStrErrorFiles)
 {
     return CExecuteManager::ouGetExecuteManager(m_eBus).
-                            bDllLoadAll(pomStrErrorFiles);
+           bDllLoadAll(pomStrErrorFiles);
 }
 
-HRESULT CNodeSim::NS_DllUnloadAll(CStringArray *pomStrErrorFiles)
+HRESULT CNodeSim::NS_DllUnloadAll(CStringArray* pomStrErrorFiles)
 {
     return CExecuteManager::ouGetExecuteManager(m_eBus).
-                            bDllUnloadAll(pomStrErrorFiles);
+           bDllUnloadAll(pomStrErrorFiles);
 }
 
-HRESULT CNodeSim::NS_DLLBuildLoadAll(CStringArray *pomStrErrorFiles)
+HRESULT CNodeSim::NS_DLLBuildLoadAll(CStringArray* pomStrErrorFiles)
 {
     return CExecuteManager::ouGetExecuteManager(m_eBus).
-                            bDLLBuildLoadAll(pomStrErrorFiles);
+           bDLLBuildLoadAll(pomStrErrorFiles);
 }
-void CNodeSim::NS_SetHandlersHelpText(CStringArray *pomTextArray)
+void CNodeSim::NS_SetHandlersHelpText(CStringArray* pomTextArray)
 {
     CGlobalObj::ouGetObj(m_eBus).m_omFnEditHelpText.RemoveAll();
     CGlobalObj::ouGetObj(m_eBus).m_omFnEditHelpText.Append(*pomTextArray);
@@ -247,6 +253,7 @@ void CNodeSim::NS_UpdateFuncStructsNodeSimEx(PVOID pvFuncStructs, E_UPDATE_TYPE 
                 CGlobalObj::sm_pouITraceWndPtr  = psExInitStruct->m_pouITraceWndPtr;
             }
             break;
+
             case UPDATE_DATABASE_MSGS:
             {
                 CMsgNameMsgCodeList* podMsgNameCodeList = (CMsgNameMsgCodeList*)pvFuncStructs;
@@ -254,6 +261,7 @@ void CNodeSim::NS_UpdateFuncStructsNodeSimEx(PVOID pvFuncStructs, E_UPDATE_TYPE 
                 CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList.AddTail(podMsgNameCodeList);
             }
             break;
+
             case UPDATE_UNIONS_HEADER_FILES:
             {
                 CStringArray* omDefMsgHeadrs = (CStringArray*)pvFuncStructs;
@@ -268,8 +276,9 @@ void CNodeSim::NS_UpdateFuncStructsNodeSimEx(PVOID pvFuncStructs, E_UPDATE_TYPE 
 BOOL CNodeSim::NS_ShouldToolBarBeEnabled(E_TB_FN_EDITOR eToolBarFlag)
 {
     BOOL bReturn = FALSE;
-    CSimSysNodeInfo *pSimSysNodeInfo = 
-                    CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
+    CSimSysNodeInfo* pSimSysNodeInfo =
+        CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
+
     if (pSimSysNodeInfo)
     {
         switch (eToolBarFlag)
@@ -279,30 +288,36 @@ BOOL CNodeSim::NS_ShouldToolBarBeEnabled(E_TB_FN_EDITOR eToolBarFlag)
                 bReturn = pSimSysNodeInfo->bIsLoadAllValid(_T(""));
             }
             break;
+
             case TB_UNLOAD:
             {
                 bReturn = pSimSysNodeInfo->bIsUnLoadAllValid(_T(""));
             }
             break;
+
             case TB_BUILD:
             {
                 bReturn = pSimSysNodeInfo->bIsBuildAllValid(_T(""));
             }
             break;
+
             case TB_BUILDLOAD:
             {
                 bReturn = pSimSysNodeInfo->bIsBuildAllValid(_T(""));
             }
             break;
+
             case TB_SAVE_FILE:
             {
             }
             break;
+
             default:
             {
             }
         }
     }
+
     return bReturn;
 }
 BOOL CNodeSim::NS_GetHandlerStatus(eSIMSYSFLAG eHandlerFlag)
@@ -311,18 +326,21 @@ BOOL CNodeSim::NS_GetHandlerStatus(eSIMSYSFLAG eHandlerFlag)
 }
 
 void CNodeSim::NS_GetSimSysConfigData(BYTE*& pDesBuffer, int& nBuffSize)
-{   
+{
     //First update pSimSysDataPtr
     CSimSysManager::ouGetSimSysManager(m_eBus).vSaveSimSysWndConfig();
+
     if (nBuffSize < CGlobalObj::ouGetObj(m_eBus).m_nSimSysDataSize)
     {
         if (pDesBuffer != NULL)
         {
             delete[] pDesBuffer;
         }
+
         nBuffSize = CGlobalObj::ouGetObj(m_eBus).m_nSimSysDataSize;
-        pDesBuffer = new BYTE[nBuffSize];        
+        pDesBuffer = new BYTE[nBuffSize];
     }
+
     memcpy (pDesBuffer, CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr, nBuffSize);
 }
 
@@ -333,12 +351,14 @@ void CNodeSim::NS_SetSimSysConfigData(BYTE* pSrcBuffer, int nBuffSize)
         delete[] CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr;
         CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr = NULL;
     }
+
     if (nBuffSize > 0)
     {
         CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr = new BYTE[nBuffSize];
         memcpy(CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr, pSrcBuffer, nBuffSize);
         CGlobalObj::ouGetObj(m_eBus).m_nSimSysDataSize = nBuffSize;
     }
+
     //Update Internal Data
     CSimSysManager::ouGetSimSysManager(m_eBus).vLoadSimSysWndConfig();
 }
@@ -352,15 +372,14 @@ HRESULT CNodeSim::FE_OpenFunctioneditorFile(CString omStrNewCFileName, HWND hMai
     if (CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate == NULL)
     {
         CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate = new CMultiDocTemplate(IDI_ICON_FN_EDITOR,
-
                 RUNTIME_CLASS(CFunctionEditorDoc),
                 RUNTIME_CLASS(CEditFrameWnd), // custom MDI child frame
                 RUNTIME_CLASS(CFileView));
         //AddDocTemplate(CGlobalObj::m_pEditorDocTemplate);
     }
+
     CGlobalObj::sm_hWndMDIParentFrame = hMainFrame;
     NS_UpdateFuncStructsNodeSimEx((PVOID)&sExInitStruct, UPDATE_ALL);
-
     return CGlobalObj::ouGetObj(m_eBus).bOpenFunctioneditorfile(omStrNewCFileName) ? S_OK : S_FALSE;
 }
 

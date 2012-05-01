@@ -33,12 +33,12 @@
 
 class CDefineTimerHandler : public CDialog
 {
-// Construction
+    // Construction
 public:
     CString m_omStrTimerFunctionName;
     CDefineTimerHandler(CFunctionEditorDoc* pDoc, CWnd* pParent = NULL);   // standard constructor
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CDefineTimerHandler)
     enum { IDD = IDD_DLG_DEFINE_TIMER_HANDLER };
     CRadixEdit  m_omEditTimerValue;
@@ -48,14 +48,14 @@ public:
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CDefineTimerHandler)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
