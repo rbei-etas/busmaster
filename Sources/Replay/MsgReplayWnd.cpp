@@ -31,8 +31,8 @@
 #include "ReplayManager.h"
 
 extern BOOL bGetMsgInfoFromMsgStr(CONST CString& omSendMsgLine,
-                           PSTCANDATA psCANData,
-                           BOOL bHexON);
+                                  PSTCANDATA psCANData,
+                                  BOOL bHexON);
 
 /******************************************************************************/
 /*  Function Name    :  CMsgReplayWnd                                         */
@@ -50,8 +50,8 @@ extern BOOL bGetMsgInfoFromMsgStr(CONST CString& omSendMsgLine,
 /*                      Removed code for storing window position              */
 /******************************************************************************/
 CMsgReplayWnd::CMsgReplayWnd(CReplayFile ouReplayFile, WINDOWPLACEMENT& sWndPlacement) :
-                m_ouReplayDetails( ouReplayFile ),
-                m_eReplayState( REPLAY_INVALID )
+    m_ouReplayDetails( ouReplayFile ),
+    m_eReplayState( REPLAY_INVALID )
 {
     m_sWndPlacement = sWndPlacement;
 }
@@ -72,7 +72,6 @@ CMsgReplayWnd::CMsgReplayWnd(CReplayFile ouReplayFile, WINDOWPLACEMENT& sWndPlac
 /******************************************************************************/
 CMsgReplayWnd::~CMsgReplayWnd()
 {
-
 }
 
 
@@ -110,23 +109,24 @@ END_MESSAGE_MAP()
 /*                      and message list control                              */
 /******************************************************************************/
 BOOL CMsgReplayWnd::OnCreateClient(LPCREATESTRUCT lpcs,
-                                   CCreateContext* pContext) 
+                                   CCreateContext* pContext)
 {
-    //Creation of the listbox window 
+    //Creation of the listbox window
     CRect sRect(0,0,0,0);
     this->GetClientRect(sRect);
     int nReplayMode = m_ouReplayDetails.m_ouReplayFile.m_nReplayMode;
     DWORD wListStyle = WS_CHILD | WS_VISIBLE | WS_BORDER |
-                      LVS_REPORT | LVS_NOCOLUMNHEADER | LVS_SHOWSELALWAYS |
-                      LVS_OWNERDATA;    // Virtual List control
-    
+                       LVS_REPORT | LVS_NOCOLUMNHEADER | LVS_SHOWSELALWAYS |
+                       LVS_OWNERDATA;    // Virtual List control
+
     if( nReplayMode == defREPLAY_MODE_MONOSHOT)
     {
         wListStyle |= LVS_SINGLESEL;
     }
-    
+
     m_omMessageList.Create( wListStyle, sRect, this, IDC_LSTB_REPLAY );
     m_omMessageList.SetExtendedStyle( LVS_EX_FULLROWSELECT );
+
     // Create Image
     if( m_omImageList.Create( IDB_BMP_BREAKPOINT,
                               defICON_SIZE,
@@ -135,12 +135,12 @@ BOOL CMsgReplayWnd::OnCreateClient(LPCREATESTRUCT lpcs,
     {
         m_omMessageList.SetImageList( &m_omImageList, LVSIL_SMALL );
     }
+
     // Insert invisible column
     m_omMessageList.InsertColumn( 0, STR_EMPTY );
     // Set the window icon
     SetIcon( AfxGetApp()->LoadIcon(IDI_ICO_REPLAY), TRUE);
- 
-   return CMDIChildWnd::OnCreateClient(lpcs, pContext);
+    return CMDIChildWnd::OnCreateClient(lpcs, pContext);
 }
 /******************************************************************************/
 /*  Function Name    :  OnHelpInfo                                            */
@@ -158,7 +158,7 @@ BOOL CMsgReplayWnd::OnCreateClient(LPCREATESTRUCT lpcs,
 /*  Modifications    :  Raja N on 20.07.2005, Changed the base class to       */
 /*                      back to CMDIChildWnd to avoid window position save    */
 /******************************************************************************/
-BOOL CMsgReplayWnd::OnHelpInfo(HELPINFO* pHelpInfo) 
+BOOL CMsgReplayWnd::OnHelpInfo(HELPINFO* pHelpInfo)
 {
     //theApp.vSetHelpID(pHelpInfo->dwContextId);
     return CMDIChildWnd::OnHelpInfo(pHelpInfo);
@@ -170,7 +170,7 @@ BOOL CMsgReplayWnd::OnHelpInfo(HELPINFO* pHelpInfo)
 /*  Functionality    :  This function is called to destroy the window. The    */
 /*                      coordinate are stored in registry or ini file         */
 /*                                                                            */
-/*  Member of        :  CMsgReplayWnd                                         */  
+/*  Member of        :  CMsgReplayWnd                                         */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  19.03.2002                                            */
@@ -181,7 +181,7 @@ BOOL CMsgReplayWnd::OnHelpInfo(HELPINFO* pHelpInfo)
 /*  Modifications    :  Raja N on 16.07.2005, Added code to remove this window*/
 /*                      pointer from the replay manager window pointers list  */
 /******************************************************************************/
-void CMsgReplayWnd::OnDestroy() 
+void CMsgReplayWnd::OnDestroy()
 {
     bStopReplayThread();
     CReplayManager::ouGetReplayManager().bRemovePointerFromList( this );
@@ -205,9 +205,9 @@ void CMsgReplayWnd::OnDestroy()
 /*                      back to CMDIChildWnd to avoid window position save    */
 /*                      and to resize the list control col width              */
 /******************************************************************************/
-void CMsgReplayWnd::OnSize(UINT nType, int cx, int cy) 
+void CMsgReplayWnd::OnSize(UINT nType, int cx, int cy)
 {
-    //Resizing the Listbox wnd when the output window 
+    //Resizing the Listbox wnd when the output window
     //is resized
     CRect omRect;
     CMDIChildWnd::OnSize(nType, cx, cy);
@@ -253,9 +253,9 @@ BOOL CMsgReplayWnd::bOpenReplayFile()
         if( m_ouReplayDetails.m_omEntries.GetSize() > 0 )
         {
             m_omMessageList.SetItemCountEx(
-                    (int)m_ouReplayDetails.m_omEntries.GetSize());
+                (int)m_ouReplayDetails.m_omEntries.GetSize());
             m_omMessageList.SetItemState( 0, LVIS_SELECTED | LVIS_FOCUSED,
-                                             LVIS_SELECTED | LVIS_FOCUSED );
+                                          LVIS_SELECTED | LVIS_FOCUSED );
             m_eReplayState = REPLAY_TO_START;
             m_ouReplayDetails.m_nUserSelectionIndex = 0;
             // Send message to resize list control
@@ -266,8 +266,8 @@ BOOL CMsgReplayWnd::bOpenReplayFile()
             // Throw error message
             CString omStrErr;
             omStrErr.Format( defSTR_REPLAY_ERROR,
-                m_ouReplayDetails.m_ouReplayFile.m_omStrFileName, // File
-                defSTR_REPLAY_FILE_EMPTY );
+                             m_ouReplayDetails.m_ouReplayFile.m_omStrFileName, // File
+                             defSTR_REPLAY_FILE_EMPTY );
             CReplayManager::ouGetReplayManager().vSendToTrace(omStrErr.GetBuffer(MAX_PATH));
             // Close the window
             DestroyWindow();
@@ -278,13 +278,14 @@ BOOL CMsgReplayWnd::bOpenReplayFile()
         // Show Error message
         CString omStrErr;
         omStrErr.Format( defSTR_REPLAY_ERROR,
-            m_ouReplayDetails.m_ouReplayFile.m_omStrFileName, // File Name
-            m_ouReplayDetails.m_omStrError );                 // Error Message
+                         m_ouReplayDetails.m_ouReplayFile.m_omStrFileName, // File Name
+                         m_ouReplayDetails.m_omStrError );                 // Error Message
         CReplayManager::ouGetReplayManager().vSendToTrace(omStrErr.GetBuffer(MAX_PATH));
         //gbSendStrToTrace( (char *)omStrErr.operator LPCTSTR() );
         // Close the window
         DestroyWindow();
     }
+
     return bReturn;
 }
 
@@ -304,7 +305,7 @@ BOOL CMsgReplayWnd::bOpenReplayFile()
 /*                      12.04.2002, Initialise the local variable, check the  */
 /*                                  return values                             */
 /*  Modifications By :  Amitesh Bhart                                         */
-/*  Modification on  :  15.10.2002, New data member "m_bStepCmdReq" of        */ 
+/*  Modification on  :  15.10.2002, New data member "m_bStepCmdReq" of        */
 /*                                  structure psReplayData  is assigned the   */
 /*                                  value FALSE to indicate a GO command req. */
 /*  Modified On      :  28.08.2002, Changes improve accuracy of time delay    */
@@ -330,47 +331,50 @@ VOID CMsgReplayWnd::vCmdGo()
     {
         // For monoshot block
         if( m_ouReplayDetails.m_ouReplayFile.m_nReplayMode ==
-                    defREPLAY_MODE_MONOSHOT )
+                defREPLAY_MODE_MONOSHOT )
         {
             // Update Current Selection
             m_ouReplayDetails.m_nUserSelectionIndex =
                 m_omMessageList.GetNextItem( -1, LVNI_SELECTED );
+
             if( m_ouReplayDetails.m_nUserSelectionIndex < 0 )
             {
                 m_ouReplayDetails.m_nUserSelectionIndex = 0;
             }
+
             // Find the next index of break point
             int nCount = (int)m_ouReplayDetails.m_omEntries.GetSize();
-            
             BOOL bBreakPointFound = FALSE;
             int nIndex; //index declared outside
+
             for( nIndex = m_ouReplayDetails.m_nUserSelectionIndex + 1;
-                 nIndex < nCount&& bBreakPointFound == FALSE; nIndex++ )
+                    nIndex < nCount&& bBreakPointFound == FALSE; nIndex++ )
             {
                 if( m_ouReplayDetails.m_omBreakPoints[ nIndex ] == TRUE )
                 {
                     bBreakPointFound = TRUE;
                 }
             }
-            
+
             // Get the count
             if( bBreakPointFound == TRUE )
             {
                 m_ouReplayDetails.m_nNoOfMessagesToPlay = nIndex -
-                                m_ouReplayDetails.m_nUserSelectionIndex - 1;
+                        m_ouReplayDetails.m_nUserSelectionIndex - 1;
             }
             else // Till the end
             {
                 m_ouReplayDetails.m_nNoOfMessagesToPlay = nCount -
-                                m_ouReplayDetails.m_nUserSelectionIndex;
+                        m_ouReplayDetails.m_nUserSelectionIndex;
             }
-            
+
             if( m_ouReplayDetails.m_nNoOfMessagesToPlay > 0 )
             {
                 // Create the thread
-                CWinThread * pThread =
+                CWinThread* pThread =
                     AfxBeginThread( CReplayProcess::sunReplayMonoshotThreadFunc,
                                     &m_ouReplayDetails );
+
                 if( pThread != NULL )
                 {
                     m_ouReplayDetails.m_hThread = pThread->m_hThread;
@@ -384,12 +388,14 @@ VOID CMsgReplayWnd::vCmdGo()
             vGetSelectedIndeces( m_ouReplayDetails.m_omSelectedIndex );
             m_ouReplayDetails.m_nNoOfMessagesToPlay  =
                 (int)m_ouReplayDetails.m_omSelectedIndex.GetSize();
+
             if( m_ouReplayDetails.m_nNoOfMessagesToPlay > 0 )
             {
                 // Create Replay Thread
-                CWinThread * pThread =
+                CWinThread* pThread =
                     AfxBeginThread( CReplayProcess::sunReplayCyclicThreadFunc,
                                     &m_ouReplayDetails );
+
                 if( pThread != NULL )
                 {
                     m_ouReplayDetails.m_hThread = pThread->m_hThread;
@@ -415,7 +421,7 @@ VOID CMsgReplayWnd::vCmdGo()
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modified On      :  12.04.2002, used global function bGetMsgInfoFromMsgStr*/
 /*  Modifications By :  Amitesh Bhart                                         */
-/*  Modified On      :  15.10.2002, New thread is used to send message. Data  */ 
+/*  Modified On      :  15.10.2002, New thread is used to send message. Data  */
 /*                                  members of structure psReplayData is      */
 /*                                  assigned the values to be used in thread  */
 /*                                  Removed bGetMsgInfoFromMsgStr(..)         */
@@ -434,8 +440,8 @@ VOID CMsgReplayWnd::vCmdGo()
 /*                      03.06.2003, Time Mode is added to psReplayInfo        */
 /*  Modifications    :  Raja N on 20.07.2005, Changes due to new replay       */
 /*                      architecture                                          */
-/*  Modifications    :  ArunKumar K on 06.05.2011,							  */ 
-/*						introduced m_eReplayState variable status check       */
+/*  Modifications    :  ArunKumar K on 06.05.2011,                            */
+/*                      introduced m_eReplayState variable status check       */
 /*                      before setting it to REPLAY_RUNNING                   */
 /******************************************************************************/
 VOID CMsgReplayWnd::vCmdStep()
@@ -444,11 +450,12 @@ VOID CMsgReplayWnd::vCmdStep()
     {
         // For monoshot block
         if( m_ouReplayDetails.m_ouReplayFile.m_nReplayMode ==
-                    defREPLAY_MODE_MONOSHOT )
+                defREPLAY_MODE_MONOSHOT )
         {
             // Update Current Selection
             m_ouReplayDetails.m_nUserSelectionIndex =
                 m_omMessageList.GetNextItem( -1, LVNI_SELECTED );
+
             if( m_ouReplayDetails.m_nUserSelectionIndex < 0 )
             {
                 m_ouReplayDetails.m_nNoOfMessagesToPlay = 0;
@@ -462,14 +469,19 @@ VOID CMsgReplayWnd::vCmdStep()
             {
                 m_eReplayState = REPLAY_RUNNING;
                 // Create the thread
-                CWinThread * pThread =
+                CWinThread* pThread =
                     AfxBeginThread( CReplayProcess::sunReplayMonoshotThreadFunc,
-                                    &m_ouReplayDetails );				
+                                    &m_ouReplayDetails );
+
                 if( pThread != NULL )
                 {
                     m_ouReplayDetails.m_hThread = pThread->m_hThread;
-					if(m_eReplayState != REPLAY_TO_START)
-						m_eReplayState = REPLAY_RUNNING;
+
+                    if(m_eReplayState != REPLAY_TO_START)
+                    {
+                        m_eReplayState = REPLAY_RUNNING;
+                    }
+
                     m_ouReplayDetails.m_bStopReplayThread = FALSE;
                 }
             }
@@ -512,6 +524,7 @@ VOID CMsgReplayWnd::vCmdSkip()
 {
     // Get the current selection
     INT nItem = m_omMessageList.GetNextItem(-1, LVNI_SELECTED);
+
     if( nItem != -1 )
     {
         nItem++;
@@ -534,33 +547,31 @@ VOID CMsgReplayWnd::vCmdSkip()
 /*  Modification By  :                                                        */
 /*  Modified On      :                                                        */
 /******************************************************************************/
-void CMsgReplayWnd::SetWindowFont() 
+void CMsgReplayWnd::SetWindowFont()
 {
-   // Set the font of replay window list box
-   LOGFONT LF;
-   memset(&LF, 0, sizeof(LF));  //zero out structure
+    // Set the font of replay window list box
+    LOGFONT LF;
+    memset(&LF, 0, sizeof(LF));  //zero out structure
+    LF.lfHeight = 10;
+    LF.lfWidth  = 0;
+    LF.lfItalic = FALSE;
+    LF.lfUnderline = FALSE;
+    LF.lfStrikeOut = FALSE;
+    LF.lfOutPrecision = OUT_CHARACTER_PRECIS;
+    LF.lfClipPrecision = CLIP_CHARACTER_PRECIS;
+    LF.lfPitchAndFamily  = FIXED_PITCH | FF_SWISS;
+    lstrcpy(LF.lfFaceName, "Courier");
+    LF.lfWeight = FW_NORMAL;
 
-   LF.lfHeight = 10;
-   LF.lfWidth  = 0;
-   LF.lfItalic = FALSE;
-   LF.lfUnderline = FALSE;
-   LF.lfStrikeOut = FALSE;
-   LF.lfOutPrecision = OUT_CHARACTER_PRECIS;
-   LF.lfClipPrecision = CLIP_CHARACTER_PRECIS;
-   LF.lfPitchAndFamily  = FIXED_PITCH | FF_SWISS;
-   lstrcpy(LF.lfFaceName, "Courier");
-
-   LF.lfWeight = FW_NORMAL; 
-   if (m_omNewFont.CreateFontIndirect(&LF) == TRUE) 
-   {
+    if (m_omNewFont.CreateFontIndirect(&LF) == TRUE)
+    {
         // font setting.
         m_omMessageList.SetFont(&m_omNewFont,TRUE);
-   }
-   else 
-   {
-       AfxMessageBox("Font creation unsuccessful");
-   }
-
+    }
+    else
+    {
+        AfxMessageBox("Font creation unsuccessful");
+    }
 }
 
 /******************************************************************************/
@@ -579,7 +590,7 @@ void CMsgReplayWnd::SetWindowFont()
 /*  Modifications    :  Raja N on 20.07.2005, Changes due to new replay       */
 /*                      architecture                                          */
 /******************************************************************************/
-void CMsgReplayWnd::OnClose() 
+void CMsgReplayWnd::OnClose()
 {
     bSetThreadStopSignal();
     CMDIChildWnd::OnClose();
@@ -601,20 +612,22 @@ void CMsgReplayWnd::OnClose()
 BOOL CMsgReplayWnd::bCreateReplayWindow()
 {
     INT nReturn = 0;
-    // If the co-ordiantes are not correct, calculate the default value 
+    // If the co-ordiantes are not correct, calculate the default value
     CRect omRect;
+
     if (m_sWndPlacement.length == 0)
     {
         AfxGetApp()->GetMainWnd()->GetWindowPlacement(&m_sWndPlacement);
     }
+
     CString omStrTitle = defSTR_REPLAY_WINDOW_TITLE +
-                    m_ouReplayDetails.m_ouReplayFile.m_omStrFileName;
+                         m_ouReplayDetails.m_ouReplayFile.m_omStrFileName;
     nReturn     = Create( NULL,
-                          omStrTitle, 
-                          WS_CHILD   |  
-                          WS_VISIBLE | WS_OVERLAPPEDWINDOW, 
+                          omStrTitle,
+                          WS_CHILD   |
+                          WS_VISIBLE | WS_OVERLAPPEDWINDOW,
                           m_sWndPlacement.rcNormalPosition,
-                          NULL, 
+                          NULL,
                           NULL );
     SetWindowFont();
     SendMessage(WM_NCPAINT, 1, 0);
@@ -622,7 +635,6 @@ BOOL CMsgReplayWnd::bCreateReplayWindow()
     m_ouReplayDetails.m_pReplayWndPtr = this;
     // Update window with paint
     UpdateWindow();
-
     return nReturn;
 }
 
@@ -638,7 +650,7 @@ BOOL CMsgReplayWnd::bCreateReplayWindow()
   Member of      : CMsgReplayWnd
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CMsgReplayWnd::OnMDIActivate( BOOL bActivate,
                                    CWnd* pActivateWnd,
@@ -646,8 +658,8 @@ void CMsgReplayWnd::OnMDIActivate( BOOL bActivate,
 {
     CMDIChildWnd::OnMDIActivate(bActivate, pActivateWnd, pDeactivateWnd);
     // Set the pointer in the replay mamager class
-    CReplayManager::ouGetReplayManager().vSetActiveReplayWindow( bActivate ? 
-                                                                 this : NULL );
+    CReplayManager::ouGetReplayManager().vSetActiveReplayWindow( bActivate ?
+            this : NULL );
 }
 
 /*******************************************************************************
@@ -659,9 +671,9 @@ void CMsgReplayWnd::OnMDIActivate( BOOL bActivate,
   Member of      : CMsgReplayWnd
   Author(s)      : Raja N
   Date Created   : 16.07.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-BOOL CMsgReplayWnd::OnEraseBkgnd(CDC* pDC) 
+BOOL CMsgReplayWnd::OnEraseBkgnd(CDC* pDC)
 {
     UNUSED_ALWAYS( pDC );
     return TRUE;
@@ -676,7 +688,7 @@ BOOL CMsgReplayWnd::OnEraseBkgnd(CDC* pDC)
   Member of      : CMsgReplayWnd
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 LRESULT CMsgReplayWnd::vHandleListControlDataReq( WPARAM wParam, LPARAM /*lParam*/)
 {
@@ -684,12 +696,12 @@ LRESULT CMsgReplayWnd::vHandleListControlDataReq( WPARAM wParam, LPARAM /*lParam
     LV_ITEM* pItem= &(pDispInfo)->item;
 
     // Text Request
-    if (pItem->mask & LVIF_TEXT) 
+    if (pItem->mask & LVIF_TEXT)
     {
         if( pItem->iSubItem == 0 &&
-            pItem->iItem < m_ouReplayDetails.m_omEntries.GetSize() )
+                pItem->iItem < m_ouReplayDetails.m_omEntries.GetSize() )
         {
-            strcpy(pItem->pszText, m_ouReplayDetails.m_omEntries[ pItem->iItem]);   
+            strcpy(pItem->pszText, m_ouReplayDetails.m_omEntries[ pItem->iItem]);
         }
     }
 
@@ -698,7 +710,8 @@ LRESULT CMsgReplayWnd::vHandleListControlDataReq( WPARAM wParam, LPARAM /*lParam
     {
         pItem->iImage = m_ouReplayDetails.m_omBreakPoints[ pItem->iItem];
     }
-  return 0;
+
+    return 0;
 }
 
 /*******************************************************************************
@@ -711,12 +724,12 @@ LRESULT CMsgReplayWnd::vHandleListControlDataReq( WPARAM wParam, LPARAM /*lParam
   Member of      : CMsgReplayWnd
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 LRESULT CMsgReplayWnd::vListDoubleClick(WPARAM wParam, LPARAM /*lParam*/)
 {
     if( m_ouReplayDetails.m_ouReplayFile.m_nReplayMode ==
-                                        defREPLAY_MODE_MONOSHOT )
+            defREPLAY_MODE_MONOSHOT )
     {
         int nItem = (int)wParam;
         // Toggle the break point status
@@ -725,6 +738,7 @@ LRESULT CMsgReplayWnd::vListDoubleClick(WPARAM wParam, LPARAM /*lParam*/)
         // Update the list
         m_omMessageList.Invalidate();
     }
+
     return 0;
 }
 
@@ -736,17 +750,19 @@ LRESULT CMsgReplayWnd::vListDoubleClick(WPARAM wParam, LPARAM /*lParam*/)
   Member of      : CMsgReplayWnd
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 BOOL CMsgReplayWnd::bGetUIStateCmdStep()
 {
     BOOL bEnable = FALSE;
+
     if( m_eReplayState == REPLAY_TO_START &&
-        m_ouReplayDetails.m_ouReplayFile.m_nReplayMode == 
-                                    defREPLAY_MODE_MONOSHOT )
+            m_ouReplayDetails.m_ouReplayFile.m_nReplayMode ==
+            defREPLAY_MODE_MONOSHOT )
     {
         bEnable = TRUE;
     }
+
     return bEnable;
 }
 
@@ -758,17 +774,19 @@ BOOL CMsgReplayWnd::bGetUIStateCmdStep()
   Member of      : CMsgReplayWnd
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 BOOL CMsgReplayWnd::bGetUIStateCmdSkip()
 {
     BOOL bEnable = FALSE;
+
     if( m_eReplayState == REPLAY_TO_START &&
-        m_ouReplayDetails.m_ouReplayFile.m_nReplayMode == 
-                                    defREPLAY_MODE_MONOSHOT )
+            m_ouReplayDetails.m_ouReplayFile.m_nReplayMode ==
+            defREPLAY_MODE_MONOSHOT )
     {
         bEnable = TRUE;
     }
+
     return bEnable;
 }
 
@@ -780,15 +798,17 @@ BOOL CMsgReplayWnd::bGetUIStateCmdSkip()
   Member of      : CMsgReplayWnd
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 BOOL CMsgReplayWnd::bGetUIStateCmdGo()
 {
     BOOL bEnable = FALSE;
+
     if( m_eReplayState == REPLAY_TO_START )
     {
         bEnable = TRUE;
     }
+
     return bEnable;
 }
 
@@ -800,15 +820,17 @@ BOOL CMsgReplayWnd::bGetUIStateCmdGo()
   Member of      : CMsgReplayWnd
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 BOOL CMsgReplayWnd::bGetUIStateCmdStop()
 {
     BOOL bEnable = FALSE;
+
     if( m_eReplayState == REPLAY_RUNNING )
     {
         bEnable = TRUE;
     }
+
     return bEnable;
 }
 
@@ -820,17 +842,19 @@ BOOL CMsgReplayWnd::bGetUIStateCmdStop()
   Member of      : CMsgReplayWnd
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 BOOL CMsgReplayWnd::bSetThreadStopSignal()
 {
     BOOL bIsValid = FALSE;
+
     if( m_eReplayState == REPLAY_RUNNING )
     {
         // Indicate to stop the thread
         m_ouReplayDetails.m_bStopReplayThread = TRUE;
         bIsValid = TRUE;
     }
+
     return bIsValid;
 }
 
@@ -843,16 +867,17 @@ BOOL CMsgReplayWnd::bSetThreadStopSignal()
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 BOOL CMsgReplayWnd::bStopReplayThread()
 {
     BOOL bIsThreadKilled = FALSE;
+
     // Kill the replay thread if it is not responding
     if( m_eReplayState == REPLAY_RUNNING )
     {
         if( WaitForSingleObject( m_ouReplayDetails.m_omThreadEvent,
-                defINTERACTIVE_THREAD_WAIT_TIME ) != WAIT_OBJECT_0 )
+                                 defINTERACTIVE_THREAD_WAIT_TIME ) != WAIT_OBJECT_0 )
         {
             TerminateThread(m_ouReplayDetails.m_hThread, 0 );
             m_ouReplayDetails.m_hThread = NULL;
@@ -860,6 +885,7 @@ BOOL CMsgReplayWnd::bStopReplayThread()
             m_eReplayState = REPLAY_INVALID;
         }
     }
+
     return bIsThreadKilled;
 }
 
@@ -871,7 +897,7 @@ BOOL CMsgReplayWnd::bStopReplayThread()
   Member of      : CMsgReplayWnd
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 VOID CMsgReplayWnd::vGetSelectedIndeces( CArray<int,int>& omIndexList )
 {
@@ -879,6 +905,7 @@ VOID CMsgReplayWnd::vGetSelectedIndeces( CArray<int,int>& omIndexList )
     omIndexList.RemoveAll();
     // Get the position first
     POSITION pos = m_omMessageList.GetFirstSelectedItemPosition();
+
     // Get the list
     while( pos != NULL )
     {

@@ -34,14 +34,14 @@
   Date Created   : 16.7.2005
   Modifications  :
 *******************************************************************************/
-CReplayFile::CReplayFile() 
-                           : m_omStrFileName( STR_EMPTY ),
-                             m_nTimeMode( 0 ),
-                             m_unMsgTimeDelay( 1 ),
-                             m_nReplayMode( 0 ),
-                             m_unCycleTimeDelay( 1 ),
-                             m_bEnabled( TRUE ),
-                             m_bInteractive( FALSE )
+CReplayFile::CReplayFile()
+    : m_omStrFileName( STR_EMPTY ),
+      m_nTimeMode( 0 ),
+      m_unMsgTimeDelay( 1 ),
+      m_nReplayMode( 0 ),
+      m_unCycleTimeDelay( 1 ),
+      m_bEnabled( TRUE ),
+      m_bInteractive( FALSE )
 {
     m_sFilterApplied.vClear();
 }
@@ -69,7 +69,7 @@ CReplayFile::CReplayFile(const CReplayFile& ouRef)
   Member of      : CReplayFile
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 CReplayFile& CReplayFile::operator = ( const CReplayFile& ouRef)
 {
@@ -82,6 +82,7 @@ CReplayFile& CReplayFile::operator = ( const CReplayFile& ouRef)
         // Self Assignment
         ASSERT( FALSE );
     }
+
     // Return current object pointer
     return *this;
 }
@@ -94,7 +95,7 @@ CReplayFile& CReplayFile::operator = ( const CReplayFile& ouRef)
   Member of      : CReplayFile
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CReplayFile::vCopyContent(const CReplayFile& ouRef)
 {
@@ -113,7 +114,7 @@ void CReplayFile::vCopyContent(const CReplayFile& ouRef)
     // Interactive Option
     m_bInteractive = ouRef.m_bInteractive;
     // Copy Filter
-    m_sFilterApplied.bClone(ouRef.m_sFilterApplied);    
+    m_sFilterApplied.bClone(ouRef.m_sFilterApplied);
 }
 
 /*******************************************************************************
@@ -127,7 +128,6 @@ void CReplayFile::vCopyContent(const CReplayFile& ouRef)
 *******************************************************************************/
 CReplayFile::~CReplayFile()
 {
-
 }
 
 /*******************************************************************************
@@ -138,7 +138,7 @@ CReplayFile::~CReplayFile()
   Member of      : CReplayFile
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 BOOL CReplayFile::bSerialize(CArchive& omArchive)
 {
@@ -152,7 +152,7 @@ BOOL CReplayFile::bSerialize(CArchive& omArchive)
         // Store time mode
         omArchive << m_nTimeMode;
         // Store Message Time delay
-        omArchive << m_unMsgTimeDelay;  
+        omArchive << m_unMsgTimeDelay;
         // Store replay mode
         omArchive << m_nReplayMode;
         // Store cycle delay
@@ -181,7 +181,7 @@ BOOL CReplayFile::bSerialize(CArchive& omArchive)
         // Load time mode
         omArchive >> m_nTimeMode;
         // Load Message Time delay
-        omArchive >> m_unMsgTimeDelay;  
+        omArchive >> m_unMsgTimeDelay;
         // Load replay mode
         omArchive >> m_nReplayMode;
         // Load cycle delay
@@ -213,13 +213,13 @@ BOOL CReplayFile::bSerialize(CArchive& omArchive)
 
 /*******************************************************************************
   Function Name  : unGetConfigSizeOfCommonMembers
-  Input(s)       : 
+  Input(s)       :
   Output         : size of members common to all object
   Functionality  : To get size of members common to all object
   Member of      : CReplayFile
   Author(s)      : Anish kumar
   Date Created   : 08.07.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 UINT CReplayFile::unGetConfigSizeOfCommonMembers()
 {
@@ -236,7 +236,7 @@ UINT CReplayFile::unGetConfigSizeOfCommonMembers()
 
 UINT CReplayFile::unGetConfigSize()
 {
-    UINT unSize = 0;    
+    UINT unSize = 0;
     unSize += unGetConfigSizeOfCommonMembers();
     unSize += m_sFilterApplied.unGetSize();
     return unSize;
@@ -245,32 +245,32 @@ UINT CReplayFile::unGetConfigSize()
   Function Name  : pbySaveConfig
   Input(s)       : pointer to buffer where the config will be saved
   Output         : End pointer
-  Functionality  : To save config data 
+  Functionality  : To save config data
   Member of      : CReplayFile
   Author(s)      : Anish kumar
   Date Created   : 08.07.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 BYTE* CReplayFile::pbySaveConfig(BYTE* pDesBuffer)
 {
-    memcpy(pDesBuffer, &m_nTimeMode, sizeof(m_nTimeMode)); 
+    memcpy(pDesBuffer, &m_nTimeMode, sizeof(m_nTimeMode));
     pDesBuffer += sizeof(m_nTimeMode);
-    memcpy(pDesBuffer, &m_unMsgTimeDelay, sizeof(m_unMsgTimeDelay)); 
+    memcpy(pDesBuffer, &m_unMsgTimeDelay, sizeof(m_unMsgTimeDelay));
     pDesBuffer += sizeof(m_unMsgTimeDelay);
-    memcpy(pDesBuffer, &m_nReplayMode, sizeof(m_nReplayMode)); 
+    memcpy(pDesBuffer, &m_nReplayMode, sizeof(m_nReplayMode));
     pDesBuffer += sizeof(m_nReplayMode);
-    memcpy(pDesBuffer, &m_unCycleTimeDelay, sizeof(m_unCycleTimeDelay)); 
+    memcpy(pDesBuffer, &m_unCycleTimeDelay, sizeof(m_unCycleTimeDelay));
     pDesBuffer += sizeof(m_unCycleTimeDelay);
-    memcpy(pDesBuffer, &m_bEnabled, sizeof(m_bEnabled)); 
+    memcpy(pDesBuffer, &m_bEnabled, sizeof(m_bEnabled));
     pDesBuffer += sizeof(m_bEnabled);
-    memcpy(pDesBuffer, &m_bInteractive, sizeof(m_bInteractive)); 
+    memcpy(pDesBuffer, &m_bInteractive, sizeof(m_bInteractive));
     pDesBuffer += sizeof(m_bInteractive);
     //Save file name size
     TCHAR acName[MAX_PATH] = {_T('\0')};
     strcpy_s(acName, m_omStrFileName.GetBuffer(MAX_PATH));
     memcpy(pDesBuffer, acName, sizeof(TCHAR) * MAX_PATH);
     pDesBuffer += sizeof(TCHAR) * MAX_PATH;
-    //To store filters   
+    //To store filters
     //This function will copy into the destination bufffer and increment the pointer
     pDesBuffer = m_sFilterApplied.pbGetConfigData(pDesBuffer);
     return pDesBuffer;
@@ -280,11 +280,11 @@ BYTE* CReplayFile::pbySaveConfig(BYTE* pDesBuffer)
   Function Name  : pbyLoadConfig
   Input(s)       : pointer to buffer from where the config will be loaded
   Output         : End pointer
-  Functionality  : To load config data 
+  Functionality  : To load config data
   Member of      : CReplayFile
   Author(s)      : Anish kumar
   Date Created   : 08.07.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 BYTE* CReplayFile::pbyLoadConfig(BYTE* pSrcBuffer)
 {
@@ -292,24 +292,24 @@ BYTE* CReplayFile::pbyLoadConfig(BYTE* pSrcBuffer)
     {
         return NULL;
     }
-    memcpy(&m_nTimeMode, pSrcBuffer, sizeof(m_nTimeMode)); 
+
+    memcpy(&m_nTimeMode, pSrcBuffer, sizeof(m_nTimeMode));
     pSrcBuffer += sizeof(m_nTimeMode);
-    memcpy(&m_unMsgTimeDelay, pSrcBuffer, sizeof(m_unMsgTimeDelay)); 
+    memcpy(&m_unMsgTimeDelay, pSrcBuffer, sizeof(m_unMsgTimeDelay));
     pSrcBuffer += sizeof(m_unMsgTimeDelay);
-    memcpy(&m_nReplayMode, pSrcBuffer, sizeof(m_nReplayMode)); 
+    memcpy(&m_nReplayMode, pSrcBuffer, sizeof(m_nReplayMode));
     pSrcBuffer += sizeof(m_nReplayMode);
-    memcpy(&m_unCycleTimeDelay, pSrcBuffer, sizeof(m_unCycleTimeDelay)); 
+    memcpy(&m_unCycleTimeDelay, pSrcBuffer, sizeof(m_unCycleTimeDelay));
     pSrcBuffer += sizeof(m_unCycleTimeDelay);
-    memcpy(&m_bEnabled, pSrcBuffer, sizeof(m_bEnabled)); 
+    memcpy(&m_bEnabled, pSrcBuffer, sizeof(m_bEnabled));
     pSrcBuffer += sizeof(m_bEnabled);
-    memcpy(&m_bInteractive, pSrcBuffer, sizeof(m_bInteractive)); 
+    memcpy(&m_bInteractive, pSrcBuffer, sizeof(m_bInteractive));
     pSrcBuffer += sizeof(m_bInteractive);
     //Save file name size
     TCHAR acName[MAX_PATH] = {_T('\0')};
-
     memcpy(acName, pSrcBuffer, sizeof(TCHAR) * MAX_PATH);
     pSrcBuffer += (sizeof(TCHAR) * MAX_PATH);
-    //Save file name 
+    //Save file name
     m_omStrFileName.Format("%s", acName);
     ////To store filters
     bool bRet = false;
@@ -325,104 +325,127 @@ BYTE* CReplayFile::pbyLoadConfig(BYTE* pSrcBuffer)
   Member of      : CReplayFile
   Author(s)      : Anish kumar
   Date Created   : 08.07.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 BOOL CReplayFile::bisConfigChanged(BYTE* &pSrcBuffer)
 {
     BOOL bReturn = TRUE;
+
     if (NULL != pSrcBuffer)
     {
-        memcpy(&m_nTimeModeTmp, pSrcBuffer, sizeof(m_nTimeModeTmp)); 
+        memcpy(&m_nTimeModeTmp, pSrcBuffer, sizeof(m_nTimeModeTmp));
         pSrcBuffer += sizeof(m_nTimeModeTmp);
+
         if (m_nTimeMode != m_nTimeModeTmp)
         {
             bReturn = FALSE;
         }
+
         if (bReturn)
         {
-            memcpy(&m_unTimeDelTmp, pSrcBuffer, sizeof(m_unTimeDelTmp)); 
+            memcpy(&m_unTimeDelTmp, pSrcBuffer, sizeof(m_unTimeDelTmp));
             pSrcBuffer += sizeof(m_unTimeDelTmp);
+
             if (m_unMsgTimeDelay != m_unTimeDelTmp)
             {
                 bReturn = FALSE;
             }
         }
+
         if (bReturn)
         {
-            memcpy(&m_nRepModeTmp, pSrcBuffer, sizeof(m_nRepModeTmp)); 
+            memcpy(&m_nRepModeTmp, pSrcBuffer, sizeof(m_nRepModeTmp));
             pSrcBuffer += sizeof(m_nRepModeTmp);
+
             if (m_nReplayMode != m_nRepModeTmp)
             {
                 bReturn = FALSE;
             }
         }
+
         if (bReturn)
         {
-            memcpy(&m_unCycleTimeTmp, pSrcBuffer, sizeof(m_unCycleTimeTmp)); 
+            memcpy(&m_unCycleTimeTmp, pSrcBuffer, sizeof(m_unCycleTimeTmp));
             pSrcBuffer += sizeof(m_unCycleTimeTmp);
+
             if (m_unCycleTimeDelay != m_unCycleTimeTmp)
             {
                 bReturn = FALSE;
             }
         }
+
         if (bReturn)
         {
-            memcpy(&m_bEnabledTmp, pSrcBuffer, sizeof(m_bEnabledTmp)); 
+            memcpy(&m_bEnabledTmp, pSrcBuffer, sizeof(m_bEnabledTmp));
             pSrcBuffer += sizeof(m_bEnabledTmp);
+
             if (m_bEnabled != m_bEnabledTmp)
             {
                 bReturn = FALSE;
             }
         }
+
         if (bReturn)
         {
-            memcpy(&m_bInteractiveTmp, pSrcBuffer, sizeof(m_bInteractiveTmp)); 
+            memcpy(&m_bInteractiveTmp, pSrcBuffer, sizeof(m_bInteractiveTmp));
             pSrcBuffer += sizeof(m_bInteractiveTmp);
+
             if (m_bInteractive != m_bInteractiveTmp)
             {
                 bReturn = FALSE;
             }
         }
+
         int nNameSize = 0;
+
         if (bReturn)
         {
             memcpy(&nNameSize, pSrcBuffer, sizeof(nNameSize));
             pSrcBuffer += sizeof(nNameSize);
+
             if (nNameSize != m_omStrFileName.GetLength())
             {
                 bReturn = FALSE;
             }
         }
+
         if (bReturn)
         {
             m_omNameTmp = pSrcBuffer;
             pSrcBuffer += (nNameSize + 1);
+
             if (m_omStrFileName != m_omNameTmp)
             {
                 bReturn = FALSE;
             }
         }
+
         UINT nFilterSize = 0;
+
         if (bReturn)
         {
             memcpy(&nFilterSize, pSrcBuffer, sizeof(UINT));
-            //To Store no. of filters 
+            //To Store no. of filters
             pSrcBuffer += sizeof (UINT);
+
             if (nFilterSize != m_sFilterApplied.unGetSize())
             {
                 bReturn = FALSE;
             }
         }
+
         if (bReturn)
         {
             BYTE* pbData = new BYTE[nFilterSize];
             m_sFilterApplied.pbGetConfigData(pbData);
+
             if (memcmp((void*)pSrcBuffer, (void*)pbData, nFilterSize) != 0)
             {
                 bReturn = FALSE;
-            }            
+            }
         }
     }
+
     return bReturn;
 }
 

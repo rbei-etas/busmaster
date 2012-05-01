@@ -25,7 +25,7 @@
 #pragma once
 
 class CBaseDIL_CAN;
-class CReplayProcess  
+class CReplayProcess
 {
 public:
     // Standard constructor and destructor
@@ -58,7 +58,7 @@ private:
     // Reference to CReplayFile
     CReplayFile m_ouReplayFile;
     // Window Pointer
-    CWnd * m_pReplayWndPtr;
+    CWnd* m_pReplayWndPtr;
     // String Array for replay file entries
     CStringArray m_omEntries;
     // Parsed details
@@ -73,7 +73,7 @@ private:
 
     // Local Variables
     BOOL m_bReplayHexON;
-    //Replay flag mode 
+    //Replay flag mode
     WORD m_wLogReplayTimeMode;
     // Index
     int m_nCurrentIndex;

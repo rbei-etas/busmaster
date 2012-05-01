@@ -26,7 +26,7 @@
 
 #include "Application/struct.h"
 
-class CReplayFile  
+class CReplayFile
 {
 public:
     // Methods
