@@ -33,14 +33,14 @@ const int SIZE_CHAR = sizeof(CHAR);
 
 class CExpressionExecutor
 {
-//Member Variables
+    //Member Variables
 private:
     CString m_omFormula;
 
-//Member Functions
+    //Member Functions
 private:
-    int nGetTypeOfOperator(int index, CString omString, CString &NumValue);
-    int nGetTypeOfSymbol(int index, CString omString, CString &NumValue );
+    int nGetTypeOfOperator(int index, CString omString, CString& NumValue);
+    int nGetTypeOfSymbol(int index, CString omString, CString& NumValue );
     int nGetType(char ch);
     int nPrecedence(CString omStr);
     BOOL isOperator(char ch);

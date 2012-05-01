@@ -27,16 +27,16 @@ class CSignalResult
 {
 public:
     //CString m_omMessage;
-	CString m_omSignal;
-	CString m_omSignalCondition;
-	CString m_omSignalValue;
-	CString m_omResult;
+    CString m_omSignal;
+    CString m_omSignalCondition;
+    CString m_omSignalValue;
+    CString m_omResult;
     /*CSignalResult& operator=(const CSignalResult& RefObj)
     {
         m_omSignal = RefObj.m_omSignal;
-	    m_omSignalCondition = RefObj.m_omSignalCondition;
-	    m_omSignalValue = RefObj.m_omSignalValue;
-	    m_omResult = RefObj.m_omResult;
+        m_omSignalCondition = RefObj.m_omSignalCondition;
+        m_omSignalValue = RefObj.m_omSignalValue;
+        m_omResult = RefObj.m_omResult;
         return *this;
     }*/
 };
@@ -51,13 +51,15 @@ public:
         m_omMessage = RefObj.m_omMessage;
         m_SignalResultList.RemoveAll();
         INT nCount = (INT)RefObj.m_SignalResultList.GetCount();
+
         for(INT i = 0; i < nCount; i++)
         {
             POSITION pos = RefObj.m_SignalResultList.FindIndex(i);
             //m_SignalResultList.AddTail(RefObj.m_SignalResultList.GetAt(pos));
-			CSignalResult msg = RefObj.m_SignalResultList.GetAt(pos);
-			m_SignalResultList.AddTail(msg);
+            CSignalResult msg = RefObj.m_SignalResultList.GetAt(pos);
+            m_SignalResultList.AddTail(msg);
         }
+
         return *this;
     }
 };
@@ -65,8 +67,8 @@ typedef CList<CMessageResult, CMessageResult&> CMessageResultList;
 class CResultVerify
 {
 public:
-	CString m_omStrMsg;
-	CMessageResultList m_MessageResultList;
+    CString m_omStrMsg;
+    CMessageResultList m_MessageResultList;
     eERROR_ATTRIBUTE m_eResult;
     CResultVerify& operator=(CResultVerify& RefObj)
     {
@@ -74,6 +76,7 @@ public:
         m_eResult = RefObj.m_eResult;
         m_MessageResultList.RemoveAll();
         INT nCount = (INT)RefObj.m_MessageResultList.GetCount();
+
         for(INT i = 0; i < nCount; i++)
         {
             POSITION pos = RefObj.m_MessageResultList.FindIndex(i);
@@ -89,11 +92,11 @@ class CResultTc
 {
 public:
     CString m_omTestCase;
-	CString m_omTestDescripter;
-	SYSTEMTIME m_sStartTime;
-	SYSTEMTIME m_sEndTime;
-	eERROR_ATTRIBUTE m_eResult;
-	CResultVerifyList m_ouVerifyList;
+    CString m_omTestDescripter;
+    SYSTEMTIME m_sStartTime;
+    SYSTEMTIME m_sEndTime;
+    eERROR_ATTRIBUTE m_eResult;
+    CResultVerifyList m_ouVerifyList;
 
     CResultTc();
     ~CResultTc();
@@ -104,10 +107,10 @@ typedef CList<CResultTc, CResultTc&> CTCResultTcList;
 
 class CSummary
 {
-	UINT m_unTcExecuted;
-	UINT m_unTcSucceded;
-	UINT m_unTcFailed;
-	UINT m_unTcLeft;
+    UINT m_unTcExecuted;
+    UINT m_unTcSucceded;
+    UINT m_unTcFailed;
+    UINT m_unTcLeft;
 public:
     CSummary();
     ~CSummary();
@@ -124,10 +127,10 @@ public:
     SYSTEMTIME m_sSystemTime;
     CTestSetupHeader m_ouHeaderInfo;
     CString m_omStrTestSetupFile;
-	CTCResultTcList m_odTcResultList;
-	CSummary m_ouSummary;
-	SYSTEMTIME m_SendTime;
-	CString m_omStrVersion;
+    CTCResultTcList m_odTcResultList;
+    CSummary m_ouSummary;
+    SYSTEMTIME m_SendTime;
+    CString m_omStrVersion;
 private:
     CString SysTimeToString(SYSTEMTIME& systime);
     INT nGenerateTextReport(CStdioFile& omReportFile);
