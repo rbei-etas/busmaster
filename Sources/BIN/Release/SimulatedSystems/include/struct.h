@@ -26,7 +26,9 @@ typedef struct sTCAN_MSG
     } m_sWhichBit;
 } STCAN_MSG;
 
-/* This structure holds the error and the channel number */
+/**
+ * This structure holds the error and the channel number
+ */
 typedef struct sCAN_ERR
 {
     unsigned char m_ucTxError;

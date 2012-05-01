@@ -451,6 +451,7 @@ void CMsgSgTreeView::OnDeleteMessage()
                 // Remove the item from the tree
                 om_tree.DeleteItem( hItem );
                 CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
+
                 if (pMainFrm != NULL)
                 {
                     // Get form view pointer
