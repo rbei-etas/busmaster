@@ -35,31 +35,31 @@ IMPLEMENT_DYNCREATE(CPropertyView, CFormView)
 
 /******************************************************************************
 Function Name  :  CPropertyView
-Input(s)       :  
+Input(s)       :
 Output         :  -
-Functionality  :   
+Functionality  :
 Member of      :  CPropertyView
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CPropertyView::CPropertyView() : CFormView(CPropertyView::IDD)
-, m_omstrHelpString(_T(""))
-    {
+    , m_omstrHelpString(_T(""))
+{
     m_bSizeAvailable = FALSE;
 }
 
 /******************************************************************************
 Function Name  :  ~CPropertyView
-Input(s)       :  
+Input(s)       :
 Output         :  -
-Functionality  :   
+Functionality  :
 Member of      :  CPropertyView
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CPropertyView::~CPropertyView()
 {
@@ -67,14 +67,14 @@ CPropertyView::~CPropertyView()
 
 /******************************************************************************
 Function Name  :  DoDataExchange
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CPropertyView
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CPropertyView::DoDataExchange(CDataExchange* pDX)
 {
@@ -96,12 +96,12 @@ END_MESSAGE_MAP()
 #ifdef _DEBUG
 void CPropertyView::AssertValid() const
 {
-	CFormView::AssertValid();
+    CFormView::AssertValid();
 }
 
 void CPropertyView::Dump(CDumpContext& dc) const
 {
-	CFormView::Dump(dc);
+    CFormView::Dump(dc);
 }
 #endif //_DEBUG
 
@@ -110,20 +110,19 @@ void CPropertyView::Dump(CDumpContext& dc) const
 
 /******************************************************************************
 Function Name  :  OnInitialUpdate
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CPropertyView
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CPropertyView::OnInitialUpdate()
 {
     CFormView::OnInitialUpdate();
     InitCommonControls();
-    
     //Window is Constructed Now and Size its size is available
     m_bSizeAvailable=TRUE;
     m_omPropertyList.SetExtendedStyle(m_omPropertyList.GetExtendedStyle() | LVS_EX_GRIDLINES|LVS_EX_FULLROWSELECT);
@@ -136,59 +135,54 @@ void CPropertyView::OnInitialUpdate()
 
 /******************************************************************************
 Function Name  :  OnSize
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CPropertyView
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CPropertyView::OnSize(UINT nType, int cx, int cy)
 {
     CFormView::OnSize(nType, cx, cy);
+
     if(m_bSizeAvailable == TRUE)
     {
         CRect PropertyRect;
-        CRect ConfirmButtonRect, CancelButtonRect;   
+        CRect ConfirmButtonRect, CancelButtonRect;
         CRect StaticHelpRect, EditHelpRect;
         GetDlgItem(IDC_PROPERTYLIST)->GetClientRect(&PropertyRect);
         GetDlgItem(IDC_CONFIRM)->GetClientRect(&ConfirmButtonRect);
         GetDlgItem(IDC_CANCEL)->GetClientRect(&CancelButtonRect);
         GetDlgItem(IDC_EDITHELP)->GetClientRect(&EditHelpRect);
         GetDlgItem(IDC_STATICHELP)->GetClientRect(&StaticHelpRect);
-
-        int PropertyListWidth = (int)(def_HEIGHT_PROPERTYVIEW * cy); 
+        int PropertyListWidth = (int)(def_HEIGHT_PROPERTYVIEW * cy);
         PropertyRect.top = def_WINDOW_GAP;
         PropertyRect.left = def_WINDOW_GAP;
         PropertyRect.bottom = PropertyListWidth - def_WINDOW_GAP;
         PropertyRect.right = cx -def_WINDOW_GAP;
         GetDlgItem(IDC_PROPERTYLIST)->MoveWindow(PropertyRect);
-              
         m_omPropertyList.SetColumnWidth(def_COLUMN_CATEGORY, (INT)(def_WIDTH_COL_CATEGORY*PropertyRect.Width()));
         m_omPropertyList.SetColumnWidth(def_COLUMN_VALUE,  (INT)(def_WIDTH_COL_VALUE*PropertyRect.Width()));
-        
         int nHeight = ConfirmButtonRect.Height();
         int nWidth = ConfirmButtonRect.Width();
         ConfirmButtonRect.top = PropertyRect.bottom + def_WINDOW_SEMIGAP;
         ConfirmButtonRect.bottom = ConfirmButtonRect.top + nHeight;
-        ConfirmButtonRect.left = (int)(def_WIDTH_COL_VALUE*cx);     
+        ConfirmButtonRect.left = (int)(def_WIDTH_COL_VALUE*cx);
         ConfirmButtonRect.right = ConfirmButtonRect.left + nWidth;
         GetDlgItem(IDC_CONFIRM)->MoveWindow(ConfirmButtonRect);
-
         CancelButtonRect.top = ConfirmButtonRect.top;
         CancelButtonRect.bottom = ConfirmButtonRect.bottom;
         CancelButtonRect.left = ConfirmButtonRect.left + nWidth + def_WINDOW_SEMIGAP;
         CancelButtonRect.right = CancelButtonRect.left + nWidth;
         GetDlgItem(IDC_CANCEL)->MoveWindow(CancelButtonRect);
-        
         PropertyRect.top = def_WINDOW_SEMIGAP/2;
         PropertyRect.left = def_WINDOW_SEMIGAP;
         PropertyRect.bottom = PropertyListWidth  + ConfirmButtonRect.Height() ;
         PropertyRect.right = cx - def_WINDOW_SEMIGAP ;
         GetDlgItem(IDC_STATICDETAILS)->MoveWindow(PropertyRect);
-
         nHeight = cy - PropertyRect.bottom - def_WINDOW_GAP; //StaticHelpRect.Height();
         nWidth = StaticHelpRect.Width();
         StaticHelpRect.top = PropertyRect.bottom + def_WINDOW_SEMIGAP;
@@ -196,7 +190,6 @@ void CPropertyView::OnSize(UINT nType, int cx, int cy)
         StaticHelpRect.left = PropertyRect.left;
         StaticHelpRect.right = PropertyRect.right;
         GetDlgItem(IDC_STATICHELP)->MoveWindow(StaticHelpRect);
-        
         EditHelpRect.top = StaticHelpRect.top + def_WINDOW_GAP;
         EditHelpRect.bottom = StaticHelpRect.bottom - def_WINDOW_SEMIGAP;
         EditHelpRect.left = StaticHelpRect.left + def_WINDOW_SEMIGAP;
@@ -207,14 +200,14 @@ void CPropertyView::OnSize(UINT nType, int cx, int cy)
 
 /******************************************************************************
 Function Name  :  OnBnClickedCancel
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CPropertyView
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CPropertyView::OnBnClickedCancel()
 {
@@ -224,14 +217,14 @@ void CPropertyView::OnBnClickedCancel()
 
 /******************************************************************************
 Function Name  :  OnBnClickedConfirm
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CPropertyView
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CPropertyView::OnBnClickedConfirm()
 {
@@ -240,64 +233,68 @@ void CPropertyView::OnBnClickedConfirm()
 
 /******************************************************************************
 Function Name  :  GetEditorWindow
-Input(s)       :  
+Input(s)       :
 Output         :  CTSEditorChildFrame*
-Functionality  :   
+Functionality  :
 Member of      :  CPropertyView
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CTSEditorChildFrame* CPropertyView::GetEditorWindow()
 {
     CWnd* wndParent;
+
     if((wndParent = GetParent())!= NULL)
     {
         wndParent = wndParent->GetParent();
+
         if(wndParent != NULL)
         {
             return ((CTSEditorChildFrame*)wndParent);
         }
     }
+
     return NULL;
 }
 
 /******************************************************************************
 Function Name  :  OnLvnItemchanged
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CPropertyView
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CPropertyView::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
+void CPropertyView::OnLvnItemchanged(NMHDR* pNMHDR, LRESULT* pResult)
 {
     LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-    
+
     //If Text is Changed...
     if(pNMLV->uChanged&LVIF_TEXT)
     {
         GetEditorWindow()->vListCtrlItemChanged(pNMLV);
     }
+
     *pResult = 0;
 }
 
 /******************************************************************************
 Function Name  :  vShowHelpInfo
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CPropertyView
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CPropertyView::vShowHelpInfo(CString &omHelpString)
+void CPropertyView::vShowHelpInfo(CString& omHelpString)
 {
     m_omstrHelpString = omHelpString;
     UpdateData(FALSE);

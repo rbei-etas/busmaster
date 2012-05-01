@@ -30,104 +30,110 @@ BYTE* m_pbyTEConfigData = NULL;
 UINT m_unTEConfigSize = 0;
 
 static AFX_EXTENSION_MODULE TestSetupEditor = { NULL, NULL };
-CTSEditorChildFrame *g_pomTSEditorChildWindow = NULL;
+CTSEditorChildFrame* g_pomTSEditorChildWindow = NULL;
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
-	// Remove this if you use lpReserved
-	UNREFERENCED_PARAMETER(lpReserved);
+    // Remove this if you use lpReserved
+    UNREFERENCED_PARAMETER(lpReserved);
 
-	if (dwReason == DLL_PROCESS_ATTACH)
-	{
-		TRACE0("TestSetupEditor.DLL Initializing!\n");
-		m_hDllInstance = hInstance;
-		// Extension DLL one-time initialization
-		if (!AfxInitExtensionModule(TestSetupEditor, hInstance))
-			return 0;
+    if (dwReason == DLL_PROCESS_ATTACH)
+    {
+        TRACE0("TestSetupEditor.DLL Initializing!\n");
+        m_hDllInstance = hInstance;
 
-		// Insert this DLL into the resource chain
-		// NOTE: If this Extension DLL is being implicitly linked to by
-		//  an MFC Regular DLL (such as an ActiveX Control)
-		//  instead of an MFC application, then you will want to
-		//  remove this line from DllMain and put it in a separate
-		//  function exported from this Extension DLL.  The Regular DLL
-		//  that uses this Extension DLL should then explicitly call that
-		//  function to initialize this Extension DLL.  Otherwise,
-		//  the CDynLinkLibrary object will not be attached to the
-		//  Regular DLL's resource chain, and serious problems will
-		//  result.
+        // Extension DLL one-time initialization
+        if (!AfxInitExtensionModule(TestSetupEditor, hInstance))
+        {
+            return 0;
+        }
 
-		new CDynLinkLibrary(TestSetupEditor);
+        // Insert this DLL into the resource chain
+        // NOTE: If this Extension DLL is being implicitly linked to by
+        //  an MFC Regular DLL (such as an ActiveX Control)
+        //  instead of an MFC application, then you will want to
+        //  remove this line from DllMain and put it in a separate
+        //  function exported from this Extension DLL.  The Regular DLL
+        //  that uses this Extension DLL should then explicitly call that
+        //  function to initialize this Extension DLL.  Otherwise,
+        //  the CDynLinkLibrary object will not be attached to the
+        //  Regular DLL's resource chain, and serious problems will
+        //  result.
+        new CDynLinkLibrary(TestSetupEditor);
+    }
+    else if (dwReason == DLL_PROCESS_DETACH)
+    {
+        TRACE0("TestSetupEditor.DLL Terminating!\n");
 
-	}
-	else if (dwReason == DLL_PROCESS_DETACH)
-	{
-		TRACE0("TestSetupEditor.DLL Terminating!\n");
         if(m_pbyTEConfigData != NULL)
         {
             delete[] m_pbyTEConfigData;
         }
+
         // Terminate the library before destructors are called
-		AfxTermExtensionModule(TestSetupEditor);
-	}
-	return 1;   // ok
+        AfxTermExtensionModule(TestSetupEditor);
+    }
+
+    return 1;   // ok
 }
 
 
 USAGEMODE HRESULT TS_vShowTSEditorWindow(void* pParentWnd)
-{	
-	//Place this code at the beginning of the export function.
-	//Save previous resource handle and switch to current one.
-	HINSTANCE hInst = AfxGetResourceHandle();
-	AfxSetResourceHandle(TestSetupEditor.hResource);
+{
+    //Place this code at the beginning of the export function.
+    //Save previous resource handle and switch to current one.
+    HINSTANCE hInst = AfxGetResourceHandle();
+    AfxSetResourceHandle(TestSetupEditor.hResource);
 
-	if( g_pomTSEditorChildWindow == NULL )
+    if( g_pomTSEditorChildWindow == NULL )
     {
         // Create New Instance
         g_pomTSEditorChildWindow = new CTSEditorChildFrame;
+
         if( g_pomTSEditorChildWindow != NULL )
         {
             //// Register Window Class
             //TODO::ICON
             LPCTSTR strMDIClass = AfxRegisterWndClass(
-                                CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS,
-                                LoadCursor(NULL, IDC_CROSS), 0,
-                                NULL );			           
+                                      CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS,
+                                      LoadCursor(NULL, IDC_CROSS), 0,
+                                      NULL );
             //TODO::Update position.
             //CRect omRect(&(sTxWndPlacement.rcNormalPosition));
             CRect omRect(63, 913, 4, 596);
+
             // Create Tx Message Configuration window
             //TODO::defSTR_TX_WINDOW_TITLE
             if( g_pomTSEditorChildWindow->Create( strMDIClass,
-                                          _T("Test Setup Editor"),
-                                          WS_CHILD | WS_OVERLAPPEDWINDOW|WS_THICKFRAME,
-                                          omRect, ((CMDIFrameWnd*)pParentWnd)) == TRUE )
+                                                  _T("Test Setup Editor"),
+                                                  WS_CHILD | WS_OVERLAPPEDWINDOW|WS_THICKFRAME,
+                                                  omRect, ((CMDIFrameWnd*)pParentWnd)) == TRUE )
             {
                 g_pomTSEditorChildWindow->SetConfigurationData(m_pbyTEConfigData, m_unTEConfigSize);
                 g_pomTSEditorChildWindow->ShowWindow(SW_SHOW);
                 g_pomTSEditorChildWindow->SetFocus();
-                
-             }
+            }
         }
-		else 
-		{
-			//Place this at the end of the export function.
-			//switch back to previous resource handle.
-			AfxSetResourceHandle(hInst); 
-			return S_FALSE;
-		}
+        else
+        {
+            //Place this at the end of the export function.
+            //switch back to previous resource handle.
+            AfxSetResourceHandle(hInst);
+            return S_FALSE;
+        }
     }
-	// If already exist then activate and set the focus
+    // If already exist then activate and set the focus
     else
     {
         g_pomTSEditorChildWindow->ShowWindow( SW_RESTORE );
         g_pomTSEditorChildWindow->MDIActivate();
         g_pomTSEditorChildWindow->SetActiveWindow();
     }
-	//Place this at the end of the export function.
-	//switch back to previous resource handle.
-	AfxSetResourceHandle(hInst); 
-	return S_OK;
+
+    //Place this at the end of the export function.
+    //switch back to previous resource handle.
+    AfxSetResourceHandle(hInst);
+    return S_OK;
 }
 
 USAGEMODE HWND hGetHwnd()
@@ -145,22 +151,29 @@ USAGEMODE HRESULT TS_vSetDILInterfacePtr(void* /*ptrDILIntrf*/)
 {
     //TODO::
     //CTxMsgManager::s_podGetTxMsgManager()->vSetDILInterfacePtr(ptrDILIntrf);
-	return S_OK;
+    return S_OK;
 }
 
 USAGEMODE HRESULT TS_vPostMessageToTSWnd(UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	if(g_pomTSEditorChildWindow)
-		g_pomTSEditorChildWindow->PostMessage(msg, wParam, lParam);
-	return S_OK;
+    if(g_pomTSEditorChildWindow)
+    {
+        g_pomTSEditorChildWindow->PostMessage(msg, wParam, lParam);
+    }
+
+    return S_OK;
 }
 
 USAGEMODE HRESULT TS_hTSEditorWindowShown()
 {
-	if(g_pomTSEditorChildWindow)
-		return S_OK;
-	else
-		return S_FALSE;
+    if(g_pomTSEditorChildWindow)
+    {
+        return S_OK;
+    }
+    else
+    {
+        return S_FALSE;
+    }
 }
 USAGEMODE HRESULT TS_hLoadTestSetupFile(CString omFilePath)
 {
@@ -175,9 +188,9 @@ USAGEMODE HRESULT TSE_hGetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize)
     }
     else
     {
-		nBuffSize = m_unTEConfigSize;
-		pDesBuffer = new BYTE[m_unTEConfigSize];		
-		memcpy(pDesBuffer, m_pbyTEConfigData, m_unTEConfigSize);		
+        nBuffSize = m_unTEConfigSize;
+        pDesBuffer = new BYTE[m_unTEConfigSize];
+        memcpy(pDesBuffer, m_pbyTEConfigData, m_unTEConfigSize);
         return S_FALSE;
     }
 }
@@ -188,12 +201,15 @@ USAGEMODE HRESULT TSE_hSetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize)
         delete []m_pbyTEConfigData;
         m_pbyTEConfigData = NULL;
     }
+
     m_unTEConfigSize = unBuffSize;
     m_pbyTEConfigData = new BYTE[m_unTEConfigSize];
     memcpy(m_pbyTEConfigData, pSrcBuffer, m_unTEConfigSize);
+
     if(g_pomTSEditorChildWindow != NULL)
     {
         g_pomTSEditorChildWindow->SetConfigurationData(m_pbyTEConfigData, m_unTEConfigSize);
     }
+
     return S_OK;
 }
