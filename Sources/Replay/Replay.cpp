@@ -35,66 +35,68 @@ static AFX_EXTENSION_MODULE ReplayDLL = { NULL, NULL };
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
-	// Remove this if you use lpReserved
-	UNREFERENCED_PARAMETER(lpReserved);
+    // Remove this if you use lpReserved
+    UNREFERENCED_PARAMETER(lpReserved);
 
-	if (dwReason == DLL_PROCESS_ATTACH)
-	{
-		TRACE0("Replay.DLL Initializing!\n");
-		
-		// Extension DLL one-time initialization
-		if (!AfxInitExtensionModule(ReplayDLL, hInstance))
-			return 0;
+    if (dwReason == DLL_PROCESS_ATTACH)
+    {
+        TRACE0("Replay.DLL Initializing!\n");
 
-		// Insert this DLL into the resource chain
-		// NOTE: If this Extension DLL is being implicitly linked to by
-		//  an MFC Regular DLL (such as an ActiveX Control)
-		//  instead of an MFC application, then you will want to
-		//  remove this line from DllMain and put it in a separate
-		//  function exported from this Extension DLL.  The Regular DLL
-		//  that uses this Extension DLL should then explicitly call that
-		//  function to initialize this Extension DLL.  Otherwise,
-		//  the CDynLinkLibrary object will not be attached to the
-		//  Regular DLL's resource chain, and serious problems will
-		//  result.
+        // Extension DLL one-time initialization
+        if (!AfxInitExtensionModule(ReplayDLL, hInstance))
+        {
+            return 0;
+        }
 
-		new CDynLinkLibrary(ReplayDLL);
+        // Insert this DLL into the resource chain
+        // NOTE: If this Extension DLL is being implicitly linked to by
+        //  an MFC Regular DLL (such as an ActiveX Control)
+        //  instead of an MFC application, then you will want to
+        //  remove this line from DllMain and put it in a separate
+        //  function exported from this Extension DLL.  The Regular DLL
+        //  that uses this Extension DLL should then explicitly call that
+        //  function to initialize this Extension DLL.  Otherwise,
+        //  the CDynLinkLibrary object will not be attached to the
+        //  Regular DLL's resource chain, and serious problems will
+        //  result.
+        new CDynLinkLibrary(ReplayDLL);
+    }
+    else if (dwReason == DLL_PROCESS_DETACH)
+    {
+        TRACE0("Replay.DLL Terminating!\n");
+        // Terminate the library before destructors are called
+        AfxTermExtensionModule(ReplayDLL);
+    }
 
-	}
-	else if (dwReason == DLL_PROCESS_DETACH)
-	{
-		TRACE0("Replay.DLL Terminating!\n");
-
-		// Terminate the library before destructors are called
-		AfxTermExtensionModule(ReplayDLL);
-	}
-	return 1;   // ok
+    return 1;   // ok
 }
 
 USAGEMODE void vREP_DisplayReplayConfigDlg(ETYPE_BUS eType, const void* pvFilterConfigured)
 {
-	//Place this code at the beginning of the export function.
-	//Save previous resource handle and switch to current one.
-	HINSTANCE hInst = AfxGetResourceHandle();
-	AfxSetResourceHandle(ReplayDLL.hResource);
+    //Place this code at the beginning of the export function.
+    //Save previous resource handle and switch to current one.
+    HINSTANCE hInst = AfxGetResourceHandle();
+    AfxSetResourceHandle(ReplayDLL.hResource);
 
     switch(eType)
     {
         case CAN:
         {
             CReplayManager::ouGetReplayManager().
-                                dShowReplayConfigurationDlg((SFILTERAPPLIED_CAN*)pvFilterConfigured);
+            dShowReplayConfigurationDlg((SFILTERAPPLIED_CAN*)pvFilterConfigured);
         }
         break;
+
         default:
         {
             ASSERT(FALSE);
         }
-        break;        
+        break;
     }
-	//Place this at the end of the export function.
-	//switch back to previous resource handle.
-	AfxSetResourceHandle(hInst); 
+
+    //Place this at the end of the export function.
+    //switch back to previous resource handle.
+    AfxSetResourceHandle(hInst);
 }
 
 USAGEMODE void vREP_CmdGo()
@@ -138,6 +140,7 @@ USAGEMODE void vREP_InitReplay(PVOID pvObjects, eREPLAY_INIT eUpdateType)
                 CReplayManager::ouGetReplayManager().vSetTraceObjPtr(pvObjects);
             }
             break;
+
             case eINIT_ALL:
             {
             }
@@ -165,7 +168,7 @@ USAGEMODE BOOL bREP_GetUIStateCmdStop()
 {
     return CReplayManager::ouGetReplayManager().bGetUIStateCmdStop();
 }
-USAGEMODE void vREP_GetReplayFileNameList(CStringArray &omRepalyFiles)
+USAGEMODE void vREP_GetReplayFileNameList(CStringArray& omRepalyFiles)
 {
     CReplayManager::ouGetReplayManager().vGetReplayFileNameList(omRepalyFiles);
 }

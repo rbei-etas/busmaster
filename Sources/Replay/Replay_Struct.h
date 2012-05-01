@@ -26,9 +26,9 @@ typedef enum
 {
     eINIT_ALL,
     eINIT_TRACE
-}eREPLAY_INIT;
+} eREPLAY_INIT;
 
 typedef struct
 {
     CBaseAppServices*   m_pouITraceWndPtr;
-}SREPLAYINIT;
+} SREPLAYINIT;

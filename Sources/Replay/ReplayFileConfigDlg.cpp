@@ -43,18 +43,18 @@
  * Standard default constructor.
  * This will initialise local variables
  */
-CReplayFileConfigDlg::CReplayFileConfigDlg( CReplayManager& rouManager, 
-                                            const SFILTERAPPLIED_CAN* psFilterConfigured,
-                                            CWnd* pParent /*=NULL*/)
+CReplayFileConfigDlg::CReplayFileConfigDlg( CReplayManager& rouManager,
+        const SFILTERAPPLIED_CAN* psFilterConfigured,
+        CWnd* pParent /*=NULL*/)
     : CDialog(CReplayFileConfigDlg::IDD, pParent),
-    m_rouManager( rouManager ),
-    m_psFilterConfigured(psFilterConfigured)
+      m_rouManager( rouManager ),
+      m_psFilterConfigured(psFilterConfigured)
 {
     //{{AFX_DATA_INIT(CReplayFileConfigDlg)
     m_nReplayMode = 0;
     //}}AFX_DATA_INIT
     m_bUpdating = FALSE;
-	m_nSelecetedNamedLogIndex = -1;
+    m_nSelecetedNamedLogIndex = -1;
 }
 
 /**
@@ -100,7 +100,7 @@ END_MESSAGE_MAP()
  *
  * Initialises dialog's UI components
  */
-BOOL CReplayFileConfigDlg::OnInitDialog() 
+BOOL CReplayFileConfigDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
     // Create Image List used in UI List
@@ -115,9 +115,8 @@ BOOL CReplayFileConfigDlg::OnInitDialog()
     vInitReplayFileList();
     // Update Button Status
     vEnableDisableButtons();
-    
     return TRUE;  // return TRUE unless you set the focus to a control
-                  // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 /**
@@ -129,15 +128,17 @@ BOOL CReplayFileConfigDlg::bCreateImageList()
 {
     // Flag to indicate result
     BOOL bReturn = FALSE;
+
     // Create Image List
     if( m_omImageList.Create( IDB_BMP_PROPERTIES, defICON_SIZE,
-                                 defICON_GROW, defCOLOR_WHITE ) == TRUE )
+                              defICON_GROW, defCOLOR_WHITE ) == TRUE )
     {
         // If successful set the result
         bReturn = TRUE;
     }
+
     // Return the result
-    return bReturn; 
+    return bReturn;
 }
 
 /**
@@ -154,14 +155,15 @@ VOID CReplayFileConfigDlg::vCreateReplayFileList()
         static_cast<int>( omRect.Width() * defREPLAY_FILE_COL_WIDTH_PROPOTION );
     // Set Col Width
     m_omLstcReplayFiles.SetColumnWidth( 0, nWidth );
+
     // Set Image List
     if( m_omImageList.m_hImageList != NULL )
     {
         m_omLstcReplayFiles.SetImageList( &m_omImageList, LVSIL_SMALL );
     }
+
     // Set Extended Property
     m_omLstcReplayFiles.SetExtendedStyle( LVS_EX_CHECKBOXES );
-
 }
 
 /**
@@ -181,7 +183,6 @@ VOID CReplayFileConfigDlg::vInitReplayCopms()
     // Update Message Delay Edit box
     m_omEditMsgDelay.vSetSigned( FALSE );
     m_omEditMsgDelay.vSetBase( BASE_DECIMAL );
-
     // Update Cycle Delay Edit Box
     m_omEditCycleDelay.vSetSigned( FALSE );
     m_omEditCycleDelay.vSetBase( BASE_DECIMAL );
@@ -199,6 +200,7 @@ VOID CReplayFileConfigDlg::vInitReplayFileList()
     m_omLstcReplayFiles.DeleteAllItems();
     // Get the size and iterate through the list
     int nSize = (int)m_rouManager.m_omReplayFiles.GetSize();
+
     for( int nIndex = 0; nIndex < nSize; nIndex++ )
     {
         const CReplayFile& ouFile =
@@ -209,11 +211,12 @@ VOID CReplayFileConfigDlg::vInitReplayFileList()
         //Update Check button status
         m_omLstcReplayFiles.SetCheck( nIndex, ouFile.m_bEnabled );
     }
+
     // Enable update
     m_bUpdating = FALSE;
     // Set the focus to the first item
     m_omLstcReplayFiles.SetItemState( 0, LVIS_SELECTED | LVIS_FOCUSED,
-                                         LVIS_SELECTED | LVIS_FOCUSED );
+                                      LVIS_SELECTED | LVIS_FOCUSED );
 }
 
 /**
@@ -228,7 +231,8 @@ VOID CReplayFileConfigDlg::vEnableDisableButtons()
     BOOL bEnable = nSize > 0;
     vEnableReplayComps( bEnable );
     // Disable Enable/Delete button
-    CWnd * pWnd = GetDlgItem(IDC_BTN_DELETE_FILE);
+    CWnd* pWnd = GetDlgItem(IDC_BTN_DELETE_FILE);
+
     if( pWnd != NULL )
     {
         pWnd->EnableWindow( bEnable );
@@ -240,19 +244,21 @@ VOID CReplayFileConfigDlg::vEnableDisableButtons()
  * control. This will update the selection will set the
  * selection to the last item if nothing is selected by the user
  */
-void CReplayFileConfigDlg::OnClickListRepalyFiles(NMHDR* /*pNMHDR*/, LRESULT* pResult) 
+void CReplayFileConfigDlg::OnClickListRepalyFiles(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
     // Create selection mask
     UINT unItemStateMask = LVNI_SELECTED | LVNI_FOCUSED;
     // Get current selection
     int nSel = m_omLstcReplayFiles.GetNextItem( -1, LVNI_SELECTED );
+
     // If nothing got selected restore last selection
     if(nSel == -1)
     {
         m_omLstcReplayFiles.SetItemState( m_nSelecetedNamedLogIndex,
-                                      unItemStateMask,
-                                      unItemStateMask );
+                                          unItemStateMask,
+                                          unItemStateMask );
     }
+
     if( pResult != NULL )
     {
         *pResult = 0;
@@ -264,19 +270,21 @@ void CReplayFileConfigDlg::OnClickListRepalyFiles(NMHDR* /*pNMHDR*/, LRESULT* pR
  * control. This will update the selection will set the
  * selection to the last item if nothing is selected by the user
  */
-void CReplayFileConfigDlg::OnDblclkListRepalyFiles(NMHDR* /*pNMHDR*/, LRESULT* pResult) 
+void CReplayFileConfigDlg::OnDblclkListRepalyFiles(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
     // Create selection mask
     UINT unItemStateMask = LVNI_SELECTED | LVNI_FOCUSED;
     // Get current selection
     int nSel = m_omLstcReplayFiles.GetNextItem( -1, LVNI_SELECTED );
+
     // If nothing got selected restore last selection
     if(nSel == -1)
     {
         m_omLstcReplayFiles.SetItemState( m_nSelecetedNamedLogIndex,
-                                      unItemStateMask,
-                                      unItemStateMask );
+                                          unItemStateMask,
+                                          unItemStateMask );
     }
+
     if( pResult != NULL )
     {
         *pResult = 0;
@@ -290,9 +298,10 @@ void CReplayFileConfigDlg::OnDblclkListRepalyFiles(NMHDR* /*pNMHDR*/, LRESULT* p
  * box press and will update the replay file enable flag.
  */
 void CReplayFileConfigDlg::OnItemchangedListRepalyFiles( NMHDR* pNMHDR,
-                                                         LRESULT* pResult )
+        LRESULT* pResult )
 {
     NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+
     // Update Log File Components
     if(pNMListView->uChanged != LVIF_TEXT && m_bUpdating == FALSE )
     {
@@ -304,7 +313,7 @@ void CReplayFileConfigDlg::OnItemchangedListRepalyFiles( NMHDR* pNMHDR,
             // Update selected Log file details
             vUpdateReplayFileDetails( pNMListView->iItem);
         }
-        
+
         if( pNMListView->uNewState & defMASK_CHECK_UNCHECK )
         {
             int nCurrentState =
@@ -315,6 +324,7 @@ void CReplayFileConfigDlg::OnItemchangedListRepalyFiles( NMHDR* pNMHDR,
             ouFile.m_bEnabled = nCurrentState;
         }
     }
+
     if( pResult != NULL )
     {
         *pResult = 0;
@@ -331,11 +341,11 @@ VOID CReplayFileConfigDlg::vUpdateReplayFileDetails( int nSelectedIndex )
 {
     // Check for valid index
     if( nSelectedIndex != -1 &&
-        nSelectedIndex < m_rouManager.m_omReplayFiles.GetSize() )
+            nSelectedIndex < m_rouManager.m_omReplayFiles.GetSize() )
     {
         // Get the details from the data array
         const CReplayFile& odLog =
-                m_rouManager.m_omReplayFiles.ElementAt( nSelectedIndex );
+            m_rouManager.m_omReplayFiles.ElementAt( nSelectedIndex );
         // Update Log File Components with this details
         vUpdateReplayFileComps( odLog );
     }
@@ -350,10 +360,11 @@ VOID CReplayFileConfigDlg::vUpdateReplayFileComps( const CReplayFile& rouFile )
 {
     // File Path
     m_omEditReplayFileName.SetWindowText( rouFile.m_omStrFileName );
+
     // Message Time Mode
     switch( rouFile.m_nTimeMode )
     {
-    case defREPLAY_RETAIN_DELAY:
+        case defREPLAY_RETAIN_DELAY:
         {
             // Enable Retain Delay Checkbox and check the item
             m_omChkRetainDelay.SetCheck( TRUE );
@@ -361,7 +372,8 @@ VOID CReplayFileConfigDlg::vUpdateReplayFileComps( const CReplayFile& rouFile )
             m_omEditMsgDelay.EnableWindow( FALSE );
         }
         break;
-    case defREPLAY_SPECIFIC_DELAY:
+
+        case defREPLAY_SPECIFIC_DELAY:
         {
             // Disable Retain Delay Checkbox and check the item
             m_omChkRetainDelay.SetCheck( FALSE );
@@ -371,13 +383,16 @@ VOID CReplayFileConfigDlg::vUpdateReplayFileComps( const CReplayFile& rouFile )
             m_omEditMsgDelay.vSetValue( rouFile.m_unMsgTimeDelay );
         }
         break;
-    default:
-        // Invalid value
-        ASSERT( FALSE );
+
+        default:
+            // Invalid value
+            ASSERT( FALSE );
     }
+
     // Replay Mode
     // Assign the mode value
     m_nReplayMode = rouFile.m_nReplayMode;
+
     // Update Cyclic time delay edit box
     if( rouFile.m_nReplayMode == defREPLAY_MODE_CYCLIC )
     {
@@ -390,6 +405,7 @@ VOID CReplayFileConfigDlg::vUpdateReplayFileComps( const CReplayFile& rouFile )
         // Disable Cyclic Delay Editbox
         m_omEditCycleDelay.EnableWindow( FALSE );
     }
+
     // Update Interactive Replay Option
     m_omChkInteractive.SetCheck( rouFile.m_bInteractive );
     // Update DDX data with UI
@@ -401,11 +417,11 @@ VOID CReplayFileConfigDlg::vUpdateReplayFileComps( const CReplayFile& rouFile )
  * This function will show file selection dialog and will update
  * replay file data if user selects any file.
  */
-void CReplayFileConfigDlg::OnBtnBrowse() 
+void CReplayFileConfigDlg::OnBtnBrowse()
 {
     if( m_nSelecetedNamedLogIndex != -1 &&
-        m_nSelecetedNamedLogIndex < m_rouManager.m_omReplayFiles.GetSize() )
-    {     
+            m_nSelecetedNamedLogIndex < m_rouManager.m_omReplayFiles.GetSize() )
+    {
         // Get Selected Item Details
         CReplayFile& ouFile =
             m_rouManager.m_omReplayFiles.ElementAt( m_nSelecetedNamedLogIndex );
@@ -413,13 +429,14 @@ void CReplayFileConfigDlg::OnBtnBrowse()
         dwFlags = OFN_HIDEREADONLY | OFN_PATHMUSTEXIST | OFN_EXTENSIONDIFFERENT;
         // Show File Selection Dialog to select Log File
         CFileDialog omFileDlg( TRUE,
-                                 defSTR_LOG_FILE_EXTENSION,
-                                 ouFile.m_omStrFileName, 
-                                 dwFlags,
-                                 defLOG_FILTER,
-                                 NULL );
+                               defSTR_LOG_FILE_EXTENSION,
+                               ouFile.m_omStrFileName,
+                               dwFlags,
+                               defLOG_FILTER,
+                               NULL );
         //Set the caption
         omFileDlg.m_ofn.lpstrTitle = defSTR_REPLAY_FILE_SELECTION_TITLE;
+
         // Show File open dialog
         if( omFileDlg.DoModal() == IDOK )
         {
@@ -439,17 +456,17 @@ void CReplayFileConfigDlg::OnBtnBrowse()
  * retain reconded delay option. This will update replay file
  * details
  */
-void CReplayFileConfigDlg::OnChkRetainRecordedDelay() 
+void CReplayFileConfigDlg::OnChkRetainRecordedDelay()
 {
     if( m_nSelecetedNamedLogIndex != -1 &&
-        m_nSelecetedNamedLogIndex < m_rouManager.m_omReplayFiles.GetSize() )
+            m_nSelecetedNamedLogIndex < m_rouManager.m_omReplayFiles.GetSize() )
     {
         // Get Selected Item Details
         CReplayFile& ouFile =
             m_rouManager.m_omReplayFiles.ElementAt( m_nSelecetedNamedLogIndex );
         // Get the check value
         BOOL bValue = m_omChkRetainDelay.GetCheck();
-        
+
         if( bValue == TRUE )
         {
             // Disable the Msg Delay edit control
@@ -462,6 +479,7 @@ void CReplayFileConfigDlg::OnChkRetainRecordedDelay()
             m_omEditMsgDelay.EnableWindow( TRUE );
             m_omEditMsgDelay.vSetValue( ouFile.m_unMsgTimeDelay );
         }
+
         // Update type in the data
         ouFile.m_nTimeMode = !bValue;
     }
@@ -471,10 +489,10 @@ void CReplayFileConfigDlg::OnChkRetainRecordedDelay()
  * This function will be called during message delay editbox
  * change. This will update message delay value of replay file
  */
-void CReplayFileConfigDlg::OnUpdateEditMsgDelay() 
+void CReplayFileConfigDlg::OnUpdateEditMsgDelay()
 {
     if( m_nSelecetedNamedLogIndex != -1 &&
-        m_nSelecetedNamedLogIndex < m_rouManager.m_omReplayFiles.GetSize() )
+            m_nSelecetedNamedLogIndex < m_rouManager.m_omReplayFiles.GetSize() )
     {
         // Get Selected Item Details
         CReplayFile& ouFile =
@@ -491,16 +509,17 @@ void CReplayFileConfigDlg::OnUpdateEditMsgDelay()
  * mode radio button. This will update replay file and will
  * enable cyclic delay editbox appropriatly
  */
-void CReplayFileConfigDlg::OnRadioReplayModeMono() 
+void CReplayFileConfigDlg::OnRadioReplayModeMono()
 {
     if( m_nSelecetedNamedLogIndex != -1 &&
-        m_nSelecetedNamedLogIndex < m_rouManager.m_omReplayFiles.GetSize() )
+            m_nSelecetedNamedLogIndex < m_rouManager.m_omReplayFiles.GetSize() )
     {
         // Get Selected Item Details
         CReplayFile& ouFile =
             m_rouManager.m_omReplayFiles.ElementAt( m_nSelecetedNamedLogIndex );
         // Get replay Type
         UpdateData();
+
         if( m_nReplayMode == 0 ) // Monoshot
         {
             // Disable Cyclic Time Edit control
@@ -511,6 +530,7 @@ void CReplayFileConfigDlg::OnRadioReplayModeMono()
             m_omEditCycleDelay.EnableWindow( TRUE );
             m_omEditCycleDelay.vSetValue( ouFile.m_unCycleTimeDelay );
         }
+
         // Update type in the data
         ouFile.m_nReplayMode = m_nReplayMode;
     }
@@ -520,10 +540,10 @@ void CReplayFileConfigDlg::OnRadioReplayModeMono()
  * This function will be called during cycle delay editbox
  * change. This will update cycle delay value of replay file
  */
-void CReplayFileConfigDlg::OnUpdateEditCycleDelay() 
+void CReplayFileConfigDlg::OnUpdateEditCycleDelay()
 {
     if( m_nSelecetedNamedLogIndex != -1 &&
-        m_nSelecetedNamedLogIndex < m_rouManager.m_omReplayFiles.GetSize() )
+            m_nSelecetedNamedLogIndex < m_rouManager.m_omReplayFiles.GetSize() )
     {
         // Get Selected Item Details
         CReplayFile& ouFile =
@@ -539,10 +559,10 @@ void CReplayFileConfigDlg::OnUpdateEditCycleDelay()
  * This function will update interactive option of replay file
  * with the user selection
  */
-void CReplayFileConfigDlg::OnChkInteractive() 
+void CReplayFileConfigDlg::OnChkInteractive()
 {
     if( m_nSelecetedNamedLogIndex != -1 &&
-        m_nSelecetedNamedLogIndex < m_rouManager.m_omReplayFiles.GetSize() )
+            m_nSelecetedNamedLogIndex < m_rouManager.m_omReplayFiles.GetSize() )
     {
         // Get Selected Item Details
         CReplayFile& ouFile =
@@ -551,7 +571,7 @@ void CReplayFileConfigDlg::OnChkInteractive()
         BOOL bInteractive = m_omChkInteractive.GetCheck();
         // Update type in the data
         ouFile.m_bInteractive = bInteractive;
-    }   
+    }
 }
 
 /**
@@ -562,19 +582,20 @@ void CReplayFileConfigDlg::OnChkInteractive()
  * and if the selection is valid this will add the selected file
  * in to the replay file list.
  */
-void CReplayFileConfigDlg::OnBtnAddFile() 
+void CReplayFileConfigDlg::OnBtnAddFile()
 {
     // Throw File selection dialog to choose replay log file
     DWORD dwFlags =
         OFN_HIDEREADONLY | OFN_PATHMUSTEXIST | OFN_EXTENSIONDIFFERENT;
     CFileDialog omFileDlg( TRUE,
                            defSTR_LOG_FILE_EXTENSION,
-                           NULL, 
+                           NULL,
                            dwFlags,
                            defLOG_FILTER,
                            NULL );
     //Set the caption
     omFileDlg.m_ofn.lpstrTitle = defSTR_REPLAY_FILE_SELECTION_TITLE;
+
     // Show File open dialog
     if( omFileDlg.DoModal() == IDOK )
     {
@@ -593,11 +614,13 @@ void CReplayFileConfigDlg::OnBtnAddFile()
                                         defREPLAY_FILE_IMAGE_INDEX );
         // Update the checkbox status
         m_omLstcReplayFiles.SetCheck( nIndex, ouNewReplayFile.m_bEnabled );
+
         // This is the first item then enable Replay File components
         if( nIndex == 0 )
         {
             vEnableDisableButtons();
         }
+
         // Set the selection to this new item
         // Enable UI Update
         m_bUpdating = FALSE;
@@ -614,14 +637,15 @@ void CReplayFileConfigDlg::OnBtnAddFile()
  * delete conformation from the user and will remove the
  * selected replay file from the list if user conforms.
  */
-void CReplayFileConfigDlg::OnBtnDeleteFile() 
+void CReplayFileConfigDlg::OnBtnDeleteFile()
 {
     if( m_nSelecetedNamedLogIndex != -1 &&
-        m_nSelecetedNamedLogIndex < m_rouManager.m_omReplayFiles.GetSize() )
+            m_nSelecetedNamedLogIndex < m_rouManager.m_omReplayFiles.GetSize() )
     {
         // Ask user about file delete
         int nResult = AfxMessageBox( defSTR_DELETE_CONFORMATION,
                                      MB_YESNO|MB_ICONQUESTION ) ;
+
         if ( nResult == IDYES )
         {
             // Avoid UI update
@@ -632,18 +656,21 @@ void CReplayFileConfigDlg::OnBtnDeleteFile()
             m_rouManager.m_omReplayFiles.RemoveAt( m_nSelecetedNamedLogIndex );
             // Set the focus to the next available item
             int nSize = m_omLstcReplayFiles.GetItemCount();
+
             if( m_nSelecetedNamedLogIndex > ( nSize - 1 ) )
             {
                 m_nSelecetedNamedLogIndex = nSize - 1;
             }
+
             // Enable UI Update
             m_bUpdating = TRUE;
+
             if( m_nSelecetedNamedLogIndex != -1 )
             {
                 // Set the selection
                 m_omLstcReplayFiles.SetItemState( m_nSelecetedNamedLogIndex,
-                                          LVIS_SELECTED | LVIS_FOCUSED,
-                                          LVIS_SELECTED | LVIS_FOCUSED );
+                                                  LVIS_SELECTED | LVIS_FOCUSED,
+                                                  LVIS_SELECTED | LVIS_FOCUSED );
             }
             else
             {
@@ -665,6 +692,7 @@ VOID CReplayFileConfigDlg::vEnableReplayComps( BOOL bEnable )
     m_omEditReplayFileName.EnableWindow( bEnable );
     // Time Mode
     m_omChkRetainDelay.EnableWindow( bEnable );
+
     // User Specific Msg Delay
     // Retain Delay is enabled. So Disable this edit control
     if( m_omChkRetainDelay.GetCheck() == TRUE )
@@ -685,24 +713,30 @@ VOID CReplayFileConfigDlg::vEnableReplayComps( BOOL bEnable )
     {
         m_omEditCycleDelay.EnableWindow( bEnable );
     }
+
     // Interactive Replay Option
     m_omChkInteractive.EnableWindow( bEnable );
     // Repolay Mode Option buttons
-    CWnd * pWnd = NULL;
+    CWnd* pWnd = NULL;
     // Monoshot
     pWnd = GetDlgItem( IDC_RADIO_REPLAY_MODE_MONO );
+
     if( pWnd != NULL )
     {
         pWnd->EnableWindow( bEnable );
     }
+
     // Cyclic
     pWnd = GetDlgItem( IDC_RADIO_REPLAY_MODE_CYCLIC );
+
     if( pWnd != NULL )
     {
         pWnd->EnableWindow( bEnable );
     }
+
     // Filter Button
     pWnd = GetDlgItem( IDC_BTN_FILTER );
+
     if( pWnd != NULL )
     {
         pWnd->EnableWindow( bEnable );
@@ -714,41 +748,43 @@ static void vPopulateMainSubList(CMainEntryList& DestList, const SFILTERAPPLIED_
 {
     ASSERT(psFilterConfigured != NULL);
     DestList.RemoveAll();
-
     SMAINENTRY sMainEntry;
     sMainEntry.m_omMainEntryName = _T("CAN");
+
     if (psFilterApplied == NULL)
     {
         SMAINENTRY sMainEntry;
         sMainEntry.m_omMainEntryName = _T("FILTER_SELECTION_CAN");
+
         for (INT i = 0; i < psFilterConfigured->m_ushTotal; i++)
         {
             SSUBENTRY sSubEntry;
             sSubEntry.m_omSubEntryName.Format("%s",
-                 psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName);
-            sMainEntry.m_odUnSelEntryList.AddTail(sSubEntry);            
+                                              psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName);
+            sMainEntry.m_odUnSelEntryList.AddTail(sSubEntry);
         }
     }
     else
     {
-        
         for (INT i = 0; i < psFilterConfigured->m_ushTotal; i++)
         {
             SSUBENTRY sSubEntry;
             sSubEntry.m_omSubEntryName.Format("%s",
-                                    psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName);
-            if (SFILTERSET::psGetFilterSetPointer(psFilterApplied->m_psFilters, 
+                                              psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName);
+
+            if (SFILTERSET::psGetFilterSetPointer(psFilterApplied->m_psFilters,
                                                   psFilterApplied->m_ushTotal,
                                                   sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH)) != NULL)
             {
-                 sMainEntry.m_odSelEntryList.AddTail(sSubEntry);  
+                sMainEntry.m_odSelEntryList.AddTail(sSubEntry);
             }
             else
             {
-                sMainEntry.m_odUnSelEntryList.AddTail(sSubEntry);  
+                sMainEntry.m_odUnSelEntryList.AddTail(sSubEntry);
             }
         }
     }
+
     DestList.AddTail(sMainEntry);
 }
 
@@ -758,13 +794,13 @@ static void vPopulateFilterApplied(const SFILTERAPPLIED_CAN* psFilterConfigured,
     int nCount  = (int)sMainEntry.m_odSelEntryList.GetCount();
     sFilterApplied.vClear();
     sFilterApplied.m_psFilters = new SFILTERSET[nCount];
-    
     POSITION pos = sMainEntry.m_odSelEntryList.GetHeadPosition();
+
     while (pos)
-    {        
+    {
         SSUBENTRY sSubEntry = sMainEntry.m_odSelEntryList.GetNext(pos);
-        const PSFILTERSET psTemp = SFILTERSET::psGetFilterSetPointer(psFilterConfigured->m_psFilters, 
-            psFilterConfigured->m_ushTotal, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
+        const PSFILTERSET psTemp = SFILTERSET::psGetFilterSetPointer(psFilterConfigured->m_psFilters,
+                                   psFilterConfigured->m_ushTotal, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
         ASSERT (psTemp != NULL);
         sFilterApplied.m_psFilters[sFilterApplied.m_ushTotal].bClone(*psTemp);
         sFilterApplied.m_ushTotal++;
@@ -776,7 +812,7 @@ static void vPopulateFilterApplied(const SFILTERAPPLIED_CAN* psFilterConfigured,
  * configuation dialog and will update filter list if user
  * modifies the filter list of the replay file.
  */
-void CReplayFileConfigDlg::OnBtnFilter() 
+void CReplayFileConfigDlg::OnBtnFilter()
 {
     CStringArray omStrFilers;
     // Get List of Filters from Filter Manager
@@ -784,7 +820,6 @@ void CReplayFileConfigDlg::OnBtnFilter()
 
     if( m_nSelecetedNamedLogIndex != -1 )
     {
-
         CReplayFile ouReplayFile =
             m_rouManager.m_omReplayFiles[ m_nSelecetedNamedLogIndex ];
         CString omStrTitle;
@@ -792,6 +827,7 @@ void CReplayFileConfigDlg::OnBtnFilter()
                            ouReplayFile.m_omStrFileName );
         CMainEntryList DestList;
         vPopulateMainSubList(DestList, m_psFilterConfigured, &(ouReplayFile.m_sFilterApplied) );
+
         //Show dialog
         if (Filter_ShowSelDlg(this, &DestList) == IDOK)
         {

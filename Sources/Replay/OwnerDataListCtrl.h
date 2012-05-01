@@ -31,33 +31,33 @@
 
 class COwnerDataListCtrl : public CFFListCtrl
 {
-// Construction
+    // Construction
 public:
-	COwnerDataListCtrl();
-// Attributes
-public:
-
-// Operations
+    COwnerDataListCtrl();
+    // Attributes
 public:
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(COwnerDataListCtrl)
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Operations
 public:
-	virtual ~COwnerDataListCtrl();
 
-	// Generated message map functions
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(COwnerDataListCtrl)
+    //}}AFX_VIRTUAL
+
+    // Implementation
+public:
+    virtual ~COwnerDataListCtrl();
+
+    // Generated message map functions
 protected:
-	//{{AFX_MSG(COwnerDataListCtrl)
-	afx_msg void OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
-	//}}AFX_MSG
- 
-	DECLARE_MESSAGE_MAP()
+    //{{AFX_MSG(COwnerDataListCtrl)
+    afx_msg void OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+    afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+    //}}AFX_MSG
+
+    DECLARE_MESSAGE_MAP()
 private:
     // Methods
     // Data

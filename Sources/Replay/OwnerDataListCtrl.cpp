@@ -53,11 +53,11 @@ COwnerDataListCtrl::~COwnerDataListCtrl()
 
 
 BEGIN_MESSAGE_MAP(COwnerDataListCtrl, CFFListCtrl)
-	//{{AFX_MSG_MAP(COwnerDataListCtrl)
-	ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnGetdispinfo)
-	ON_WM_CREATE()
-	ON_WM_LBUTTONDBLCLK()
-	//}}AFX_MSG_MAP
+    //{{AFX_MSG_MAP(COwnerDataListCtrl)
+    ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnGetdispinfo)
+    ON_WM_CREATE()
+    ON_WM_LBUTTONDBLCLK()
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /*******************************************************************************
@@ -71,11 +71,12 @@ END_MESSAGE_MAP()
   Member of      : COwnerDataListCtrl
   Author(s)      : Raja N
   Date Created   : 20.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void COwnerDataListCtrl::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult) 
+void COwnerDataListCtrl::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
 {
-    CWnd * pParent = GetParent();
+    CWnd* pParent = GetParent();
+
     if( pParent != NULL && pParent->m_hWnd != 0 )
     {
         ::SendMessage( pParent->m_hWnd,
@@ -94,13 +95,17 @@ void COwnerDataListCtrl::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
   Member of      : COwnerDataListCtrl
   Author(s)      : Raja N
   Date Created   : 20.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-int COwnerDataListCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+int COwnerDataListCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
     lpCreateStruct->style |= LVS_OWNERDATA;
-	if (CFFListCtrl::OnCreate(lpCreateStruct) == -1)
-		return -1;
+
+    if (CFFListCtrl::OnCreate(lpCreateStruct) == -1)
+    {
+        return -1;
+    }
+
     return 0;
 }
 
@@ -113,16 +118,17 @@ int COwnerDataListCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
   Member of      : COwnerDataListCtrl
   Author(s)      : Raja N
   Date Created   : 20.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void COwnerDataListCtrl::OnLButtonDblClk(UINT nFlags, CPoint point) 
+void COwnerDataListCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
     // Send corresponding message to parent window with current selection
     INT nItem = GetNextItem(-1, LVNI_SELECTED);
+
     if (nItem != -1)
     {
         GetParent()->SendMessage(WM_OW_LIST_DBLCLK, nItem);
     }
 
-	CFFListCtrl::OnLButtonDblClk(nFlags, point);
+    CFFListCtrl::OnLButtonDblClk(nFlags, point);
 }

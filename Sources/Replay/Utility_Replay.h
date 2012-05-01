@@ -25,17 +25,17 @@
 
 // Takes message string and get msg id, dlc and data
 BOOL bGetMsgInfoFromMsgStr(CONST CString& omSendMsgLine,
-                            PSTCANDATA  psReplayData,
-                            BOOL bHexON);
+                           PSTCANDATA  psReplayData,
+                           BOOL bHexON);
 // convert a string into bytearray data after replacing spaces between the bytes
-VOID vConvStrtoByteArray(CByteArray* pomByteArrayBufTx, 
-                            CHAR* pctempBuf,
-                            BOOL bHexON);
+VOID vConvStrtoByteArray(CByteArray* pomByteArrayBufTx,
+                         CHAR* pctempBuf,
+                         BOOL bHexON);
 
 // To get the time differenct between two message entries
 UINT unTimeDiffBetweenMsg( CString& omStrNextMsg,
-                            CString &omStrCurMsg,
-                            WORD wLogReplyTimeMode);
+                           CString& omStrCurMsg,
+                           WORD wLogReplyTimeMode);
 BOOL bIsModeMismatch( ifstream& omInReplayFile,
                       BOOL bReplayHexON,
                       WORD wLogReplayTimeMode);
