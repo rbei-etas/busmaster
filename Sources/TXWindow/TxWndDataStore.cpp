@@ -605,7 +605,7 @@ BOOL CTxWndDataStore::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
             psDesMsgBlockList->m_ucKeyValue  = psSrcMsgBlockList->m_ucKeyValue;
             psDesMsgBlockList->m_unMsgCount  = psSrcMsgBlockList->m_unMsgCount;
 
-            _tcscpy( psDesMsgBlockList->m_acStrBlockName,
+            strcpy( psDesMsgBlockList->m_acStrBlockName,
                 psSrcMsgBlockList->m_acStrBlockName);
 
             psDesMsgBlockList->m_unTimeInterval =

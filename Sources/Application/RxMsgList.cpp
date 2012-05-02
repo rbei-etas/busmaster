@@ -149,7 +149,7 @@ void CRxMsgList::OnLvnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
 
             if (nMAX_PSZTEXT_SIZE >= str.GetLength())
             {
-                _tcscpy(pItem->pszText, m_pomDataPtrArr[pItem->iSubItem-1]);
+                strcpy(pItem->pszText, m_pomDataPtrArr[pItem->iSubItem-1]);
             }
             else
             {

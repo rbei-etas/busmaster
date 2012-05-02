@@ -264,7 +264,7 @@ bool bGetSystemErrorString(HRESULT hResult, CHAR acErrStr[256])
     else
     {
         LPSTR pBuf = T2A((LPTSTR) lpMsgBuf);
-        _tcscpy(acErrStr, pBuf);
+        strcpy(acErrStr, pBuf);
         LocalFree(lpMsgBuf); // Free the buffer.
     }
 

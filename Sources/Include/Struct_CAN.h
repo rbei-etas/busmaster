@@ -124,7 +124,7 @@ struct sCONTROLLERDETAILS
         // The default baudrate is taken as 500 kbps
         m_nItemUnderFocus = 64;
         m_nBTR0BTR1 = 49210;
-        //_tcscpy(m_omStrCNF1, _T("7"));
+        //strcpy(m_omStrCNF1, _T("7"));
         strcpy_s(m_omStrCNF1, _T("7"));
         strcpy_s(m_omStrCNF2, _T("B8"));
         strcpy_s(m_omStrCNF3, _T("5"));
