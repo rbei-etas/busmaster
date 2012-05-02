@@ -1747,7 +1747,7 @@ void CMsgFrmtWnd::vUpdateStatistics( char cTxMode )
 *******************************************************************************/
 CString CMsgFrmtWnd::strGetMsgNameOrCode(UINT nMsgCode)
 {
-    CString omName = _T("");
+    CString omName = "";
 
     if (NULL != m_ppMsgDB)
     {
@@ -1871,7 +1871,7 @@ void CMsgFrmtWnd::vSetDefaultHeaders()
 *******************************************************************************/
 void CMsgFrmtWnd::vRearrangeCols()
 {
-    CString omArrColTitle[MAX_MSG_WND_COL_CNT] = {_T("")};
+    CString omArrColTitle[MAX_MSG_WND_COL_CNT] = {""};
     int nCount = 0;
     m_MsgHdrInfo.vGetHdrColNames(omArrColTitle, nCount);
     vSetColTitles(omArrColTitle, nCount);
@@ -1935,7 +1935,7 @@ void CMsgFrmtWnd::vCreateCols()
     // add columns
     omTmpColTitle = _T("bl");
     lvcolumn.iSubItem = 0;
-    lvcolumn.pszText = _T("");
+    lvcolumn.pszText = "";
     lvcolumn.cchTextMax = _tcslen(omTmpColTitle.GetBuffer(MAX_PATH));
     lvcolumn.cx = nGetListCtrlTextExtent(omTmpColTitle);
     m_lstMsg.InsertColumn(0, &lvcolumn);

@@ -441,7 +441,7 @@ CMainFrame::CMainFrame()
     m_unReplayTimeDelay             = 50;
     m_unCycleTimeDelay              = 0;
     m_unTimerSB                     = 0;
-    m_omStrPrevLoadedDll            = _T("");
+    m_omStrPrevLoadedDll            = "";
     m_bIsSendingMsg                 = FALSE;
     m_bMessageName                  = TRUE;
     //m_bDateActive                   = FALSE;
@@ -2106,7 +2106,7 @@ void CMainFrame::OnConfigDatabaseSave()
                                 omText.Format( _T("File  \"%s\"  has been modified which is currently being loaded.\nDo you want to re-import it to reflect the changes?"),
                                                m_omStrDatabaseName);
 
-                                if (MessageBox(omText, _T(""), MB_ICONQUESTION | MB_YESNO) == IDYES)
+                                if (MessageBox(omText, "", MB_ICONQUESTION | MB_YESNO) == IDYES)
                                 {
                                     dLoadDataBaseFile(m_omStrDatabaseName, FALSE);
                                 }
@@ -2344,7 +2344,7 @@ void CMainFrame::OnDLLBuildLoad()
     {
         int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are either not properly build or loaded:");
-        CString omStrErrorMsgDummy=_T("");
+        CString omStrErrorMsgDummy="";
 
         for(int i = 0 ; i < nFailure; i++)
         {
@@ -2488,7 +2488,7 @@ void CMainFrame::OnDLLBuild()
     {
         int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are not properly build:");
-        CString omStrErrorMsgDummy=_T("");
+        CString omStrErrorMsgDummy="";
 
         for(int i = 0 ; i < nFailure; i++)
         {
@@ -2620,7 +2620,7 @@ void CMainFrame::OnDllLoad()
     {
         int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are not properly loaded:");
-        CString omStrErrorMsgDummy=_T("");
+        CString omStrErrorMsgDummy="";
 
         for(int i = 0 ; i < nFailure; i++)
         {
@@ -2816,7 +2816,7 @@ void CMainFrame::OnDllUnload()
     {
         int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are not properly unloaded:");
-        CString omStrErrorMsgDummy=_T("");
+        CString omStrErrorMsgDummy="";
 
         for(int i = 0 ; i < nFailure; i++)
         {
@@ -2849,7 +2849,7 @@ void CMainFrame::OnDllUnloadJ1939()
     {
         int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are not properly unloaded:");
-        CString omStrErrorMsgDummy=_T("");
+        CString omStrErrorMsgDummy="";
 
         for(int i = 0 ; i < nFailure; i++)
         {
@@ -6467,7 +6467,7 @@ void CMainFrame::OnUpdateFileConnect(CCmdUI* pCmdUI)
         BOOL bConnected  = pouFlag->nGetFlagStatus(CONNECTED);
         UINT unConnected = bConnected ? IDS_DISCONNECT : IDS_CONNECT;
         // And initialise a CString with the string.
-        CString omMenuItemText(_T(""));
+        CString omMenuItemText("");
         omMenuItemText.Format(unConnected);
 
         // And finally set the menu text.
@@ -6715,7 +6715,7 @@ void CMainFrame::OnNewConfigFile()
 //                // get the name of the selected file
 //                CString oCfgFilename = oCfgFileDlg.GetPathName();
 //                theApp.nNewConfiguration(oCfgFilename);
-//                m_omStrSavedConfigFile = _T("");
+//                m_omStrSavedConfigFile = "";
 //
 //                // Set new window postion
 //                vRestoreWindowPostion();
@@ -7523,8 +7523,8 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 ******************************************************************************/
 void CMainFrame::OnDropFiles(HDROP hDropInfo)
 {
-    CString omStrFileName = _T("");
-    CString omStrFileExt  = _T("");
+    CString omStrFileName = "";
+    CString omStrFileExt  = "";
     BOOL bEditOn          = FALSE;
     CHAR acFileName[1024];
     CFlags* pouFlag = theApp.pouGetFlagsPtr();
@@ -10416,9 +10416,9 @@ void CMainFrame::vUpdateHWStatusInfo(void)
     {
         if ( m_dwDriverId == m_ouList[i].m_dwDriverID )
         {
-            if ( _tcscmp(m_asControllerDetails->m_omStrBaudrate, _T("")) == 0)
+            if (m_asControllerDetails->m_omStrBaudrate == "")
             {
-                strcpy_s(m_asControllerDetails->m_omStrBaudrate, _T("500"));
+                m_asControllerDetails->m_omStrBaudrate = "500";
             }
 
             omStrChannelDriver.Format(  _T("%s - %s - %s Kbps (Allowed channels:%d)"),
@@ -10445,7 +10445,7 @@ BOOL CMainFrame::bInitFrameProcCAN(void)
 
     if (FP_GetInterface(FRAMEPROC_CAN, (void**)&sg_pouFrameProcCAN) == S_OK)
     {
-        CString omVerStr(_T(""));
+        CString omVerStr("");
         SCANPROC_PARAMS sCANProcParams;
         omVerStr.Format(IDS_VERSION);
         strncpy_s(sCANProcParams.m_acVersion, omVerStr, omVerStr.GetLength());
@@ -10710,7 +10710,7 @@ void CMainFrame::vUpdateMsgNameCodeList(CMsgSignal* pMsgSig, CMsgNameMsgCodeList
         pMsgSig->omStrListGetMessageNames(omDefMsgs);
         POSITION pos = omDefMsgs.GetHeadPosition();
         // Insert every message name into the message list box
-        CString omStrMsgName = _T("");
+        CString omStrMsgName = "";
 
         while ( pos != NULL )
         {
@@ -12851,7 +12851,7 @@ HRESULT CMainFrame::ProcessJ1939Interfaces(void)
                 theApp.bWriteIntoTraceWnd("J1939 logger query successful...");
                 // Next initialise the interface
                 CParamLoggerJ1939 ouParam;
-                CString omVerStr(_T(""));       // First get the version information
+                CString omVerStr("");       // First get the version information
                 omVerStr.Format(IDS_VERSION);   // string from the rsource
                 strcpy_s(ouParam.m_acVersion, omVerStr.GetBuffer(MAX_CHAR));
                 ouParam.m_pILog = &m_ouWrapperLogger;
@@ -13338,7 +13338,7 @@ void CMainFrame::OnJ1939LoadAll()
     {
         int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are not properly loaded:");
-        CString omStrErrorMsgDummy=_T("");
+        CString omStrErrorMsgDummy="";
 
         for(int i = 0 ; i < nFailure; i++)
         {
@@ -13364,7 +13364,7 @@ void CMainFrame::OnJ1939UnloadAll()
     {
         int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are not properly unloaded:");
-        CString omStrErrorMsgDummy=_T("");
+        CString omStrErrorMsgDummy="";
 
         for(int i = 0 ; i < nFailure; i++)
         {
@@ -13390,7 +13390,7 @@ void CMainFrame::OnJ1939BuildAndLoadAll()
     {
         int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are either not properly build or loaded:");
-        CString omStrErrorMsgDummy=_T("");
+        CString omStrErrorMsgDummy="";
 
         for(int i = 0 ; i < nFailure; i++)
         {
@@ -13416,7 +13416,7 @@ void CMainFrame::OnJ1939BuildAll()
     {
         int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are either not properly build or loaded:");
-        CString omStrErrorMsgDummy=_T("");
+        CString omStrErrorMsgDummy="";
 
         for(int i = 0 ; i < nFailure; i++)
         {

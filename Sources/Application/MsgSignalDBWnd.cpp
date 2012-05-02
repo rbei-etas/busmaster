@@ -278,7 +278,7 @@ void CMsgSignalDBWnd::OnClose()
                             omText.Format( _T("File  \"%s\"  has been modified which is currently being loaded.\nDo you want to re-import it to reflect the changes?"),
                                            m_sDbParams.m_omDBPath);
 
-                            if (MessageBox(omText, _T(""), MB_ICONQUESTION | MB_YESNO) == IDYES)
+                            if (MessageBox(omText, "", MB_ICONQUESTION | MB_YESNO) == IDYES)
                             {
                                 switch (m_sDbParams.m_eBus)
                                 {

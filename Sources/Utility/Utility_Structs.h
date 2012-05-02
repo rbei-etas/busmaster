@@ -46,7 +46,7 @@
 #define defLIST_ITEM_TYPE_TABLE_SIZE        131
 #define defLIST_NUM_DETAILS_TABLE_SIZE      67
 #define defVIRTUAL_COL_COUNT                50
-#define STR_EMPTY                           _T("")
+#define STR_EMPTY                           ""
 #define defMAX_BITS                         64
 #define defSIGN_MASK                0x8000000000000000
 

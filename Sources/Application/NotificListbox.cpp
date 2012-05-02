@@ -167,13 +167,13 @@ void CNotificListbox::OnNotificwndSelectall()
 /* OnClick menu Copy Text */
 void CNotificListbox::OnNotificwndCopytoclipboard()
 {
-    CString omFullText = _T("");
+    CString omFullText = "";
 
     for (int i = 0; i < GetCount(); i++)
     {
         if (GetSel(i))
         {
-            CString omText = _T("");
+            CString omText = "";
             GetText(i, omText);
 
             if (!omText.IsEmpty())

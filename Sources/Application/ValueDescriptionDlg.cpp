@@ -54,8 +54,8 @@ CValueDescriptionDlg::CValueDescriptionDlg(const SDBPARAMS& sDbParams,
     : CDialog(CValueDescriptionDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CValueDescriptionDlg)
-    m_omStrValueDescriptor = _T("");
-    m_omStrValue = _T("");
+    m_omStrValueDescriptor = "";
+    m_omStrValue = "";
     m_bIsCanceled = FALSE;
     m_omStrMessageCode = omStrMessageCode;
     m_omStrSgName = omStrSgName;

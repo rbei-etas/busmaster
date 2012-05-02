@@ -660,7 +660,7 @@ LONG CNetworkMgmt::lRemoveNodeConManager(DWORD dwClientId)
                     TRACE("Called bDeleteEventHandle\n");
                 }
 
-                CString omClientName = _T("");
+                CString omClientName = "";
 
                 if (m_ConMgrArr[i]->m_dwClientID != CAN_MONITOR_CLIENT_ID) //Do not remove client from CAN if monitor
                 {
@@ -705,7 +705,7 @@ void CNetworkMgmt::vRemoveAllNodes(void)
                 TRACE("Called bDeleteEventHandle\n");
             }
 
-            CString omClientName = _T("");
+            CString omClientName = "";
 
             if (m_ConMgrArr[i]->m_dwClientID != CAN_MONITOR_CLIENT_ID)
             {

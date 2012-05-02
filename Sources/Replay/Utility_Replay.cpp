@@ -47,11 +47,11 @@ BOOL bGetMsgInfoFromMsgStr( CONST CString& omSendMsgLine,
                             PSTCANDATA psCANData,
                             BOOL bHexON)
 {
-    CString omStrTemp       =_T("");
-    CString omStrMsgID      =_T("");
-    CString omStrDLC        =_T("");
-    CString omStrData       =_T("");
-    CString omStrMsgIDType  =_T("");
+    CString omStrTemp       ="";
+    CString omStrMsgID      ="";
+    CString omStrDLC        ="";
+    CString omStrData       ="";
+    CString omStrMsgIDType  ="";
     CHAR* pcStopString      = NULL;
     BOOL nReturn            = FALSE;
     CByteArray omByteArrayDataTx;
@@ -409,9 +409,9 @@ UINT unTimeDiffBetweenMsg( CString& omStrNextMsg,
                            WORD wLogReplyTimeMode)
 {
     UINT unTimeDifference    = 0;
-    CString omStrMsgCurTime  =_T("");
-    CString omStrMsgNextTime  =_T("");
-    CString omStrTemp        =_T("");
+    CString omStrMsgCurTime  ="";
+    CString omStrMsgNextTime  ="";
+    CString omStrTemp        ="";
     DOUBLE dCurTime          = 0;
     DOUBLE dNextTime         = 0;
     // Multiplication factors for HR, MIN, SECOND, and MILLI SECOND

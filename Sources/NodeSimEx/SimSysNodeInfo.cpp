@@ -2115,7 +2115,7 @@ BOOL CSimSysNodeInfo::bIsAnyInfoInSimsysPreExist(sSIMSYSINFO* pSimsys)
 
     if (pSimsys != NULL)
     {
-        CString omError = _T("");
+        CString omError = "";
         PSNODELIST psTempNode =  pSimsys->m_psNodesList;
 
         while ((psTempNode != NULL) && (!bDuplicate) )

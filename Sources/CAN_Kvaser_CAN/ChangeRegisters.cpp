@@ -72,12 +72,12 @@ CChangeRegisters::CChangeRegisters(CWnd* pParent /*=NULL*/, PSCONTROLLER_DETAILS
 {
     //{{AFX_DATA_INIT(CChangeRegisters)
     m_byEditBRP = 1;
-    m_omStrEditBTR0 = _T("");
-    m_omStrEditBTR1 = _T("");
-    m_omStrComboSampling = _T("");
-    m_omStrEditBaudRate = _T("");
+    m_omStrEditBTR0 = "";
+    m_omStrEditBTR1 = "";
+    m_omStrComboSampling = "";
+    m_omStrEditBaudRate = "";
     m_omStrComboClock = defCLOCK;
-    m_omStrEditWarningLimit = _T("");
+    m_omStrEditWarningLimit = "";
     //}}AFX_DATA_INIT
     m_unCombClock      = 0;
     m_bDialogCancel    = FALSE;
@@ -185,13 +185,13 @@ BOOL CChangeRegisters::OnInitDialog()
                                   defSTR_NBT_COL_HEADING,
                                   defSTR_SJW_COL_HEADING
                                 };
-    CString omStrClock          = _T("");
-    CString omStrBaudRate       = _T("");
-    CString omStrAcceptanceMask = _T("");
-    CString omStrAcceptanceCode = _T("");
-    CString omStrBrp            = _T("");
-    CString omStrBtr0           = _T("");
-    CString omStrBtr1           = _T("");
+    CString omStrClock          = "";
+    CString omStrBaudRate       = "";
+    CString omStrAcceptanceMask = "";
+    CString omStrAcceptanceCode = "";
+    CString omStrBrp            = "";
+    CString omStrBtr0           = "";
+    CString omStrBtr1           = "";
     INT nColumnSize             = 0;
     INT nTotalColunmSize        = 0;
     INT nTotalStrLengthPixel    = 0;
@@ -209,7 +209,7 @@ BOOL CChangeRegisters::OnInitDialog()
     // Assign the image list to the control
     m_omChannelList.SetImageList(&m_omChannelImageList, LVSIL_NORMAL );
     // Insert empty column
-    m_omChannelList.InsertColumn( 0, _T("") );
+    m_omChannelList.InsertColumn( 0, "" );
     // Insert all channel information
     // Insert only for available channel information
     int nAvailableHardware = m_unHardwareCount;//g_podHardwareInterface->nGetNoOfHardware();
@@ -218,7 +218,7 @@ BOOL CChangeRegisters::OnInitDialog()
             nChannel < nAvailableHardware;
             nChannel++ )
     {
-        CString omStrChannel(_T(""));
+        CString omStrChannel("");
         // Create Channel String
         omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
                              defSTR_CHANNEL_NAME,
@@ -335,10 +335,10 @@ void CChangeRegisters:: vDisplayListBox(INT nIndex,INT nItemFocus )
     //    BOOL bResult = ::IsWindowVisible(m_hWnd);
     //    bResult = ::IsWindowVisible(m_omListCtrlBitTime.m_hWnd);
     //    if (bResult == FALSE) return;
-    CString cStrText    = _T("");
+    CString cStrText    = "";
     INT nItem           = -1;
-    CString omStrBTR0   = _T("");
-    CString omStrBTR1   = _T("");
+    CString omStrBTR0   = "";
+    CString omStrBTR1   = "";
     // Clear list box first
     m_omListCtrlBitTime.DeleteAllItems();
     // Get the total number of Columns in the List View Header
@@ -446,8 +446,8 @@ void CChangeRegisters:: vDisplayListBox(INT nIndex,INT nItemFocus )
 /******************************************************************************/
 void CChangeRegisters::OnKillfocusEditBaudRate()
 {
-    CString omStrBaudRate   =_T("");
-    CString omStrValid      =_T("");
+    CString omStrBaudRate   ="";
+    CString omStrValid      ="";
     INT     nLength         = 0;
     m_omEditBaudRate.GetWindowText(omStrBaudRate);
     nLength             = omStrBaudRate.GetLength();
@@ -520,8 +520,8 @@ void CChangeRegisters::OnKillfocusEditBaudRate()
 /******************************************************************************/
 void CChangeRegisters::OnKillfocusEditBTR0()
 {
-    CString omStrBtr0Get    =_T("");
-    CString omStrValidBtr0  =_T("");
+    CString omStrBtr0Get    ="";
+    CString omStrValidBtr0  ="";
     INT     nLength         = 0;
     m_omEditBTR0.GetWindowText(omStrBtr0Get);
     nLength             = omStrBtr0Get.GetLength();
@@ -578,8 +578,8 @@ void CChangeRegisters::OnKillfocusEditBTR0()
 /******************************************************************************/
 void CChangeRegisters::OnKillfocusEditBTR1()
 {
-    CString omStrBtr1Get    =_T("");
-    CString omStrValidBtr1  =_T("");
+    CString omStrBtr1Get    ="";
+    CString omStrValidBtr1  ="";
     INT     nLength         = 0;
     m_omEditBTR1.GetWindowText(omStrBtr1Get);
     nLength = omStrBtr1Get.GetLength();
@@ -637,7 +637,7 @@ void CChangeRegisters::OnKillfocusEditBTR1()
 void CChangeRegisters::OnSelchangeCombSampling()
 {
     INT nGetValue               = 0;
-    CString omStrComboEditItem  =_T("");
+    CString omStrComboEditItem  ="";
     nGetValue =  m_omCombSampling.GetCurSel();
 
     if (nGetValue !=CB_ERR)
@@ -668,7 +668,7 @@ void CChangeRegisters::OnSelchangeCombSampling()
 void CChangeRegisters::vChangeListBoxValues(INT nflag)
 {
     UINT unIndex                = 0;
-    CString omStrComboEditItem  =_T("");
+    CString omStrComboEditItem  ="";
     INT nGetValue               = 0;
     INT nSample                 = 0;
     INT nReturn                 = 0;
@@ -755,9 +755,9 @@ void CChangeRegisters::OnSetfocusEditBaudRate()
 void CChangeRegisters:: vUpdateBTRsBRPEditWindow(INT /*nColumnCount*/, INT nItem)
 {
     CString omStrItems[defNUMBER_OF_COLUMNS];
-    CString omStrBaudRate   =_T("");
-    CString omStrClockFreq  =_T("");
-    CString omStrBrp        =_T("");
+    CString omStrBaudRate   ="";
+    CString omStrClockFreq  ="";
+    CString omStrBrp        ="";
     DOUBLE  dBaudRate       = 0;
     UINT    unBrp           = 0;
     UINT    unClockFreq     = 0;
@@ -810,13 +810,13 @@ void CChangeRegisters:: vUpdateBTRsBRPEditWindow(INT /*nColumnCount*/, INT nItem
 /******************************************************************************/
 void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
 {
-    CString omStrBaudRate   =_T("");
-    CString omStrClockFreq  =_T("");
-    CString omStrBtr1       =_T("");
-    CString omStrLocalBtr0  =_T("");
-    CString omStrLocalBtr1  =_T("");
-    CString omStrBrp        =_T("");
-    CString omStrNbt        =_T("");
+    CString omStrBaudRate   ="";
+    CString omStrClockFreq  ="";
+    CString omStrBtr1       ="";
+    CString omStrLocalBtr0  ="";
+    CString omStrLocalBtr1  ="";
+    CString omStrBrp        ="";
+    CString omStrNbt        ="";
     DOUBLE  dBaudRate       = 0;
     UINT    unClockFreq     = 0;
     UINT    unNbt           = 0;
@@ -948,14 +948,14 @@ void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
 /******************************************************************************/
 void CChangeRegisters:: vCalculateBaudRateNBTR0(CString omStrBtr1)
 {
-    CString omStrBaudRate       = _T("");
-    CString omStrClockFreq      = _T("");
-    CString omStrBtr0           = _T("");
-    CString omStrLocalBtr1      = _T("");
-    CString omStrLocalBtr0      = _T("");
-    CString omStrBrp            = _T("");
-    CString omStrNbt            = _T("");
-    CString omStrComboEditItem  = _T("");
+    CString omStrBaudRate       = "";
+    CString omStrClockFreq      = "";
+    CString omStrBtr0           = "";
+    CString omStrLocalBtr1      = "";
+    CString omStrLocalBtr0      = "";
+    CString omStrBrp            = "";
+    CString omStrNbt            = "";
+    CString omStrComboEditItem  = "";
     DOUBLE  dBaudRate           = 0;
     UINT    unClockFreq         = 0;
     UINT    unNbt               = 0;
@@ -1134,8 +1134,8 @@ void CChangeRegisters::vSelSetFocusItemList(INT nItemCount,INT nItem)
         nItem = nItemCount/2;
         /* Make the current BTR0, BTR1 values as default selection */
         CString omStrItems[defNUMBER_OF_COLUMNS];
-        CString omStrBTR0   = _T("");
-        CString omStrBTR1   = _T("");
+        CString omStrBTR0   = "";
+        CString omStrBTR1   = "";
         m_omEditBTR0.GetWindowText(omStrBTR0);
         m_omEditBTR1.GetWindowText(omStrBTR1);
 
@@ -1225,14 +1225,14 @@ void CChangeRegisters::OnSetfocusEditBTR1()
 /******************************************************************************/
 void CChangeRegisters::vValidateBaudRate()
 {
-    CString omStrBaudRate       = _T("");
-    CString omStrPrvBaudRate    = _T("");
-    CString omStrClockFreq      = _T("");
+    CString omStrBaudRate       = "";
+    CString omStrPrvBaudRate    = "";
+    CString omStrClockFreq      = "";
     DOUBLE  dBaudRate           = 0;
     UINT    unClockFreq         = 0;
     UINT    unProductNbtNBrp    = 0;
     DOUBLE  dProductNbtNBrp     = 0;
-    CString omStrMessage        = _T("");
+    CString omStrMessage        = "";
     //INT     nUserOption         = 0;
     m_omEditBaudRate.GetWindowText(omStrBaudRate);
     dBaudRate           = (FLOAT)_tstof(omStrBaudRate);
@@ -1368,7 +1368,7 @@ void CChangeRegisters::OnSelchangeCombClock()
 {
     UINT unSelClock             = 0;
     INT nGetValue               = 0;
-    CString omStrComboEditItem  = _T("");
+    CString omStrComboEditItem  = "";
     nGetValue =  m_omCombClock.GetCurSel();
 
     if (nGetValue !=CB_ERR)
@@ -1786,11 +1786,11 @@ void CChangeRegisters::vFillControllerConfigDetails()
 void CChangeRegisters::vUpdateControllerDetails()
 {
     TCHAR* pcStopStr                = NULL;
-    CString omStrComboSampling      = _T("");
-    CString omStrEditBtr0           = _T("");
-    CString omStrEditBtr1           = _T("");
-    CString omStrEditAcceptanceCode = _T("");
-    CString omStrEditAcceptanceMask = _T("");
+    CString omStrComboSampling      = "";
+    CString omStrEditBtr0           = "";
+    CString omStrEditBtr1           = "";
+    CString omStrEditAcceptanceCode = "";
+    CString omStrEditAcceptanceMask = "";
     // Update the data members before writing into ini file or registry.
     UpdateData(TRUE);
     // Get the warning limit.
@@ -1838,7 +1838,7 @@ void CChangeRegisters::vUpdateControllerDetails()
     else
     {
         // Invalid Warning Limit Error Message
-        CString omStrMsg = _T("");
+        CString omStrMsg = "";
         omStrMsg.Format( defWARNINGLIMIT_MSG, m_omStrEditWarningLimit,
                          defWARNING_LIMIT_MIN,
                          defWARNING_LIMIT_MAX );

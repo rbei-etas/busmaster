@@ -53,7 +53,7 @@ IMPLEMENT_DYNCREATE(CFunctionView, CRichEditView)
 /*****************************************************************************/
 CFunctionView::CFunctionView()
 {
-    m_omStrFnName      = _T("");
+    m_omStrFnName      = "";
     m_bIsValidFunction = FALSE;
     m_sStartPos        = NULL;
     m_nStartingLine    = -1;
@@ -178,7 +178,7 @@ void CFunctionView::OnInitialUpdate()
 void CFunctionView::vSetFunctionToEdit(const CString& omStrFunction)
 {
     m_omStrFnName = omStrFunction;
-    CString omStrFnBody(_T(""));
+    CString omStrFnBody("");
     BOOL bGlobalVar = FALSE;
     m_bIsValidFunction = FALSE;
     m_sStartPos = NULL;
@@ -602,7 +602,7 @@ BOOL CFunctionView::UpdateFunctionInDocument()
                                        m_omStrFnName );
             }
 
-            CString omStrLine(_T(""));
+            CString omStrLine("");
             // Get the Edit control ref.
             CRichEditCtrl& romEditCtrl = GetRichEditCtrl();
             // get the total lines of code in the rich edit control
@@ -637,7 +637,7 @@ BOOL CFunctionView::UpdateFunctionInDocument()
 
             for (int nLineIndex = 0; nLineIndex < nLineCount; nLineIndex++)
             {
-                CString omStrNewItem(_T(""));
+                CString omStrNewItem("");
                 int nCharIndex  = GetRichEditCtrl().LineIndex(nLineIndex);
                 int nLineLength = GetRichEditCtrl().LineLength(nCharIndex);
                 nLineLength = ( nLineLength < 4 ) ? 4 : nLineLength;

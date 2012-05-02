@@ -433,7 +433,7 @@ void CFunctionEditorDoc::Serialize(CArchive& ar)
 
                         m_omSourceCodeTextList.AddTail(omTextLine);
                         m_dwSourceCodeLineNo++;
-                        CString omTextLineTemp =_T("");
+                        CString omTextLineTemp ="";
                         omTextLineTemp = omTextLine.Left(omTextLine.Find('_')+1);
 
                         if ( omTextLineTemp.Find(CGlobalObj::omGetBusSpecMsgHndlrName(m_sBusSpecInfo.m_eBus)) != -1 )

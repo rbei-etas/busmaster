@@ -26,7 +26,7 @@
 
 using namespace std;
 #define defBITS_IN_BYTE         8
-#define EMPTY_STRING            _T("")
+#define EMPTY_STRING            ""
 #define MAX_VAL_OF_BYTE         256
 #define defMAX_BYTE 8
 #define LP 10
@@ -331,7 +331,7 @@ Modifications  :
 CString CExpressionExecutor::omGetEnggValue(CString omFormula)
 {
     m_omFormula = omFormula;
-    CString omEnggValue = _T("");
+    CString omEnggValue = "";
     int nLenght = m_omFormula.GetLength();
     int i = 0;
     stack <CString> PostfixStack;

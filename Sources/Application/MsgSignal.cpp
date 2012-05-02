@@ -462,7 +462,7 @@ BOOL CMsgSignal::bValidateDatabaseFile(CString strFileName)
                     {
                         if(pomE != NULL )
                         {
-                            LPTSTR lpszError = _T("");
+                            LPTSTR lpszError = "";
                             // Get error
                             pomE->GetErrorMessage( lpszError, defSIZE_OF_ERROR_BUFFER);
                             strcpy_s(s_acTraceStr, T2A("lpszError"));
@@ -1097,7 +1097,7 @@ BOOL CMsgSignal::bCreateDataBase(CString omStrFilename)
     {
         if(pomE != NULL )
         {
-            LPTSTR lpszError = _T("");;
+            LPTSTR lpszError = "";;
             // Get error
             pomE->GetErrorMessage( lpszError, 255);
 
@@ -1945,7 +1945,7 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
             }
             else
             {
-                CString omStrErrorMsg = _T("");
+                CString omStrErrorMsg = "";
                 omStrErrorMsg.Format("Error in opening %s database file",strFileName);
 
                 if (!m_bAutoServerMode)
@@ -1959,7 +1959,7 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
         {
             if(pomE != NULL )
             {
-                LPTSTR lpszError = _T("");
+                LPTSTR lpszError = "";
                 // Get error
                 pomE->GetErrorMessage( lpszError, defSIZE_OF_ERROR_BUFFER);
 
@@ -2206,7 +2206,7 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName)
         }
         else
         {
-            CString omStrErrorMsg = _T("");
+            CString omStrErrorMsg = "";
             omStrErrorMsg.Format("Error in opening %s database file",strFileName);
 
             if (!m_bAutoServerMode)
@@ -2228,7 +2228,7 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName)
         // Get error
         if(pomE != NULL )
         {
-            LPTSTR lpszError = _T("");
+            LPTSTR lpszError = "";
             pomE->GetErrorMessage( lpszError, defSIZE_OF_ERROR_BUFFER);
 
             if (!m_bAutoServerMode)

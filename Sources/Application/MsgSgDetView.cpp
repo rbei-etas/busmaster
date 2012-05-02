@@ -53,9 +53,9 @@ CMsgSgDetView::CMsgSgDetView()
     : CFormView(CMsgSgDetView::IDD)
 {
     //{{AFX_DATA_INIT(CMsgSgDetView)
-    m_omStrMessageName = _T("");
+    m_omStrMessageName = "";
     m_unMessageLength = 0;
-    m_omStrMessageCode = _T("");
+    m_omStrMessageCode = "";
     m_unNoOfSgs = 0;
     m_nFrameFormat = -1;
     m_nDataFormat = DATA_FORMAT_INTEL;

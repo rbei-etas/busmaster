@@ -65,14 +65,14 @@ CSignalDetailsDlg::CSignalDetailsDlg(const SDBPARAMS& sDbParams,
     //{{AFX_DATA_INIT(CSignalDetailsDlg)
     m_byByteIndex = 1;
     m_unSgLen = 1;
-    m_omStrSignalName = _T("");
+    m_omStrSignalName = "";
     m_byStartBit = 0;
-    m_omStrUnit = _T("");
+    m_omStrUnit = "";
     m_nMsgLength = nMsgLen;
     m_omStrMsgName = omStrMsgName;
     m_bIsCanceled = FALSE;
     m_bIsDataSaved = TRUE;
-    m_omStrPrevSignalName = _T("");
+    m_omStrPrevSignalName = "";
     m_unMode = eMode;
     m_nDataFormat = nDataFormat;
     m_omStrSgType = omStrSignalType;

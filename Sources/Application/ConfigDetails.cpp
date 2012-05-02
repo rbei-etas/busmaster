@@ -4483,7 +4483,7 @@ DWORD dwSize                 = 0;
 DWORD dwRead                 = 0;
 BOOL bReturn                 = FALSE;
 BOOL bFileOpen               = FALSE;
-CString omStrErrorMessage    = _T("");
+CString omStrErrorMessage    = "";
 TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
 
   // Open the configration file.
@@ -4567,7 +4567,7 @@ DWORD dwSize                 = 0;
 DWORD dwRead                 = 0;
 BOOL bReturn                 = FALSE;
 BOOL bFileOpen               = FALSE;
-CString omStrStrErrorMessage = _T("");
+CString omStrStrErrorMessage = "";
 TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
 
   // Open the configration file template.
@@ -5535,7 +5535,7 @@ BOOL static bLogFileSerialize(CArchive& omArchive, SLOGFILEDETS& sLogFileDets)
         // Get the filters
         for( int nIndex = 0; nIndex < nSize; nIndex++ )
         {
-            SMODULEFILTER sFilter = {_T(""), FALSE};
+            SMODULEFILTER sFilter = {"", FALSE};
 
             if( omArchive.IsLoading() )
             {

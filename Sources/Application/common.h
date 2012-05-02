@@ -124,7 +124,7 @@ enum
 #define defSTR_DEFAULT_MRU_ITEM  _T("Empty")
 #define defSTR_FILE_MENU_TEXT    _T("&File")
 //#define defSTR_RECENT_MENU_TEXT  _T("Recent File")
-#define STR_EMPTY                _T("")
+#define STR_EMPTY                ""
 
 #define RULE_FILE_EXTENSION      _T("xml")
 #define RULE_FILTER              _T("*.xml|*.xml||")

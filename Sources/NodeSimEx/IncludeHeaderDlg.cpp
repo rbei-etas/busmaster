@@ -46,7 +46,7 @@ CIncludeHeaderDlg::CIncludeHeaderDlg(CFunctionEditorDoc* pDoc, CWnd* pParent /*=
     : CDialog(CIncludeHeaderDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CIncludeHeaderDlg)
-    m_omStrIncludeFilename = _T("");
+    m_omStrIncludeFilename = "";
     //}}AFX_DATA_INIT
     m_pDoc = pDoc;
 }

@@ -61,25 +61,25 @@ CAcceptanceFilterDlg::CAcceptanceFilterDlg(CWnd* pParent /*=NULL*/,
     //: CPropertyPage(CAcceptanceFilterDlg::IDD, IDS_PPAGE_ACCEPTANCE_FILTER)
 {
     //{{AFX_DATA_INIT(CAcceptanceFilterDlg)
-    m_omStrAccCodeByte1 = _T("");
-    m_omStrAccCodeByte2 = _T("");
-    m_omStrAccCodeByte3 = _T("");
-    m_omStrAccCodeByte4 = _T("");
-    m_omStrAccMaskByte1 = _T("");
-    m_omStrAccMaskByte2 = _T("");
-    m_omStrAccMaskByte3 = _T("");
-    m_omStrAccMaskByte4 = _T("");
+    m_omStrAccCodeByte1 = "";
+    m_omStrAccCodeByte2 = "";
+    m_omStrAccCodeByte3 = "";
+    m_omStrAccCodeByte4 = "";
+    m_omStrAccMaskByte1 = "";
+    m_omStrAccMaskByte2 = "";
+    m_omStrAccMaskByte3 = "";
+    m_omStrAccMaskByte4 = "";
 
     for (int i = 0; i < CAN_MSG_IDS ; i++)
     {
-        m_omStrLocalAccCodeByte1[i] = _T("");
-        m_omStrLocalAccCodeByte2[i] = _T("");
-        m_omStrLocalAccCodeByte3[i] = _T("");
-        m_omStrLocalAccCodeByte4[i] = _T("");
-        m_omStrLocalAccMaskByte1[i] = _T("");
-        m_omStrLocalAccMaskByte2[i] = _T("");
-        m_omStrLocalAccMaskByte3[i] = _T("");
-        m_omStrLocalAccMaskByte4[i] = _T("");
+        m_omStrLocalAccCodeByte1[i] = "";
+        m_omStrLocalAccCodeByte2[i] = "";
+        m_omStrLocalAccCodeByte3[i] = "";
+        m_omStrLocalAccCodeByte4[i] = "";
+        m_omStrLocalAccMaskByte1[i] = "";
+        m_omStrLocalAccMaskByte2[i] = "";
+        m_omStrLocalAccMaskByte3[i] = "";
+        m_omStrLocalAccMaskByte4[i] = "";
     }
 
     //}}AFX_DATA_INIT

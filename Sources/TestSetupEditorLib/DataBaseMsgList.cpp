@@ -706,7 +706,7 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
             }
             else
             {
-                CString omStrErrorMsg = _T("");
+                CString omStrErrorMsg = "";
                 omStrErrorMsg.Format("Error in opening %s database file",strFileName);
                 strcpy_s(s_acTraceStr, MSG_MEMORY_CONSTRAINT);
                 //TODO::    vWriteTextToTrace();
@@ -716,7 +716,7 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
         {
             if(pomE != NULL )
             {
-                LPTSTR lpszError = _T("");
+                LPTSTR lpszError = "";
                 // Get error
                 pomE->GetErrorMessage( lpszError, defSIZE_OF_ERROR_BUFFER);
                 strcpy_s(s_acTraceStr, lpszError);
@@ -811,7 +811,7 @@ BOOL CDataBaseMsgList::bValidateDatabaseFile(CString strFileName)
                     {
                         if(pomE != NULL )
                         {
-                            LPTSTR lpszError = _T("");
+                            LPTSTR lpszError = "";
                             // Get error
                             pomE->GetErrorMessage( lpszError, defSIZE_OF_ERROR_BUFFER);
                             strcpy_s(s_acTraceStr, "lpszError");

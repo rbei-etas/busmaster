@@ -45,7 +45,7 @@ Date Created   :  30/03/2011
 Modifications  :
 ******************************************************************************/
 CPropertyView::CPropertyView() : CFormView(CPropertyView::IDD)
-    , m_omstrHelpString(_T(""))
+    , m_omstrHelpString("")
 {
     m_bSizeAvailable = FALSE;
 }

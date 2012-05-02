@@ -96,8 +96,8 @@ BOOL CDisplayIntMsg::OnInitDialog()
     CDialog::OnInitDialog();
     // Get the content of CStringArray object and add it to CString object
     // after inserting new line.
-    CString omStr           = _T("");
-    CString omStrDisplay    = _T("");
+    CString omStr           = "";
+    CString omStrDisplay    = "";
     INT nTotalItem = m_omInterpretedMsg.GetSize();
 
     for(INT nCount=0; nCount<nTotalItem; nCount++)

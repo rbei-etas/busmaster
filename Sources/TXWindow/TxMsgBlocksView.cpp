@@ -390,7 +390,7 @@ void CTxMsgBlocksView::OnAddMsgBlock()
             psCurrentMsgBlock->m_bActive = TRUE;
         }
 
-        CString omStr = _T("");
+        CString omStr = "";
 
         if( pomListView != NULL )
         {
@@ -1184,7 +1184,7 @@ VOID CTxMsgBlocksView::vUpdateMsgBlockDetials(SMSGBLOCKLIST* psCurrentMsgBlock)
 /******************************************************************************/
 void CTxMsgBlocksView::OnChangeEditMsgBlockName()
 {
-    CString omStrMsgBlockName = _T("");
+    CString omStrMsgBlockName = "";
     UpdateData(TRUE);
     // Update the item in message block list control having selections.
     m_omLctrMsgBlockName.SetItemText(m_nSelectedMsgBlockIndex,

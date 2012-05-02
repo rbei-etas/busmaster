@@ -488,7 +488,7 @@ BOOL CTxMsgManager::bAllocateMemoryForGlobalTxList()
             psTxMsgMem->m_hSemaphore = CreateSemaphore( NULL,
                                        defTX_BLOCK_SEM_MAX_COUNT,
                                        defTX_BLOCK_SEM_MAX_COUNT,
-                                       _T(""));
+                                       "");
             psTxMsgMem->m_psTxCANMsgList         = NULL;
             psTxMsgMem->m_unTimeInterval         = 0;
             psTxMsgMem->m_sTimerThreadInfo.m_hThread  = NULL;

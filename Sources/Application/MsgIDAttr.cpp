@@ -54,7 +54,7 @@ CMsgIDAttr::CMsgIDAttr(ETYPE_BUS eBusType, CWnd* pParent /*=NULL*/)
     : CDialog(CMsgIDAttr::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CMsgIDAttr)
-    m_omStrMsg = _T("");
+    m_omStrMsg = "";
     m_sColour = DEFAULT_MSG_COLOUR;
     m_nID = 0x0;
     m_bForEdit = false;

@@ -82,7 +82,7 @@ BOOL CLogObjectCAN::bLogData(const SFORMATTEDDATA_CAN& sDataCAN)
         return FALSE;
     }
 
-    CString omLogText = _T("");
+    CString omLogText = "";
     TCHAR* pTimeData = NULL;
     TCHAR* pId = NULL;
     TCHAR* pData = NULL;

@@ -78,7 +78,7 @@ BOOL CMsgWndThread::CreateMsgWnd(HWND hFrameWnd, eTYPE_BUS eBusType, DWORD dwCli
     m_bAutoDelete = TRUE;
     m_pMsgWnd[eBusType] = new CMsgFrmtWnd(eBusType);
     m_pMainWnd = m_pMsgWnd[eBusType];
-    CString omArrColTitle[MAX_MSG_WND_COL_CNT] = {_T("")};
+    CString omArrColTitle[MAX_MSG_WND_COL_CNT] = {""};
     int nCount = 0;
     CMsgWndHdrInfo objMsgHdrInfo;
     objMsgHdrInfo.vGetHdrColNames(omArrColTitle, nCount);

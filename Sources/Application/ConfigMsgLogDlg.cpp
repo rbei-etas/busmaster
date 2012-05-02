@@ -67,9 +67,9 @@ IMPLEMENT_DYNAMIC(CConfigMsgLogDlg, CDialog)
 CConfigMsgLogDlg::CConfigMsgLogDlg(ETYPE_BUS eCurrBus,void* pouBaseLogger, BOOL& bLogOnConnect,
                                    CWnd* pParent, const void* psFilter)
     : CDialog(CConfigMsgLogDlg::IDD, pParent), m_eCurrBus(eCurrBus)
-    , m_omControlParam(_T(""))
+    , m_omControlParam("")
     , m_bLogOnConnect(bLogOnConnect)
-    , m_omControlParam2(_T(""))
+    , m_omControlParam2("")
     , m_unChannelCount(0)
 {
     switch (m_eCurrBus)
@@ -341,14 +341,14 @@ BOOL CConfigMsgLogDlg::FoundInLogList(CString omFullPath, CString omFileName)
 
 CString CConfigMsgLogDlg::GetUniqueLogFilePath(void)
 {
-    CString omStrFullPath = _T("");
+    CString omStrFullPath = "";
     TCHAR acPathBuffer[MAX_PATH] = {L'\0'};      // Get current working
     GetCurrentDirectory(MAX_PATH, acPathBuffer); // directory
     BOOL bFound = TRUE; // Means - "found unique name"
 
     for (USHORT Count = 0; bFound == TRUE; Count++)
     {
-        CString omNewLogFileName = _T("");  // New Log file name
+        CString omNewLogFileName = "";  // New Log file name
 
         // Contrive a log file name on interation index
         if (CAN == m_eCurrBus)
@@ -675,7 +675,7 @@ void CConfigMsgLogDlg::OnBnClickedCbtnRemovelog(void)
 void CConfigMsgLogDlg::OnBnClickedCbtnLogFilePath(void)
 {
     USES_CONVERSION;
-    CString omStrLogFile = _T("");
+    CString omStrLogFile = "";
     (GetDlgItem(IDC_EDIT_LOGFILEPATH))->GetWindowText(omStrLogFile);
     // Show File Selection Dialog to select Log File
     CFileDialog omFileDlg(FALSE, BUSMASTER_LOG_FILE_EXTENSION, omStrLogFile,
@@ -824,7 +824,7 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
         GetWindowText(m_strCurrWndText);
         m_strCurrWndText+=_T(" - Read Only as Logging is ON");
         //SetWindowText(m_strCurrWndText);
-        SetWindowText(_T(""));
+        SetWindowText("");
         m_unDispUpdateTimerId = SetTimer(600, 600, NULL);
     }
 
@@ -854,14 +854,14 @@ void CConfigMsgLogDlg::OnTimer(UINT nIDEvent)
 
         if(bSwitchDisplay)
         {
-            SetWindowText(_T(""));
+            SetWindowText("");
             pdc->DrawText(m_strCurrWndText,CRect(4,4,400,50),DT_END_ELLIPSIS);
             bSwitchDisplay = false;
         }
         else
         {
             pdc->DrawText(m_strCurrWndText,CRect(4,4,400,50),DT_END_ELLIPSIS);
-            SetWindowText(_T(""));
+            SetWindowText("");
             //SetWindowText(m_strCurrWndText);
             bSwitchDisplay = true;
         }

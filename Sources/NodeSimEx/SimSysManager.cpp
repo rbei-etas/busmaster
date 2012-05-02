@@ -342,7 +342,7 @@ void CSimSysManager :: CopySIMDataFromBuffer(BYTE* SrcBuffer)
     COPY_DATA_2(&CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement, tempBuffAddress, sizeof(WINDOWPLACEMENT));
     UINT UnCount = 0;
     COPY_DATA_2(&UnCount, tempBuffAddress, sizeof(UINT));
-    CString omTmp = _T("");
+    CString omTmp = "";
 
     for (UINT i = 0; i < UnCount; i++)
     {
@@ -413,7 +413,7 @@ BOOL CSimSysManager :: bIsConfigChanged()
                 UINT nSize = 0;
                 memcpy(&nSize, tempBuffAddress, sizeof(UINT));
                 tempBuffAddress += sizeof(UINT);
-                CString omTmp = _T("");
+                CString omTmp = "";
                 TCHAR* pFileLen = new TCHAR[nSize];
                 memcpy(pFileLen, tempBuffAddress, sizeof(TCHAR) * nSize);
                 tempBuffAddress += sizeof(TCHAR) * nSize;

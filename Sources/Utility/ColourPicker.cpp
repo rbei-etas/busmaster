@@ -476,7 +476,7 @@ void CColourPicker::SetTextColour(COLORREF crColourText)
 *******************************************************************************/
 void CColourPicker::SetDefaultText(LPCTSTR szDefaultText)
 {
-    m_strDefaultText = (szDefaultText)? szDefaultText : _T("");
+    m_strDefaultText = (szDefaultText)? szDefaultText : "";
 }
 
 /*******************************************************************************

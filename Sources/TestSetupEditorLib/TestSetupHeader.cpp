@@ -68,7 +68,7 @@ HRESULT CTestSetupHeader::InitHeaderToDefault(void)
     m_omDatabasePath = "";
     m_sEngineerInfo1.vInitialise(_T("Engineer Name"));
     m_sEngineerInfo2.vInitialise(_T("Engineer Role"));
-    m_sModuleName.vInitialise(_T("Module Name"), _T(""));
+    m_sModuleName.vInitialise(_T("Module Name"), "");
     m_sReportFile.vInitialise();
     m_sVersion.vInitialise(_T("version"), _T("1.0"));
     return S_OK;
@@ -90,7 +90,7 @@ HRESULT CTestSetupHeader::ValidateEntity(CString& omStrResult)
 {
     HRESULT hResult = ERR_VALID_SUCCESS;
 
-    if(m_omDatabasePath == _T(""))
+    if(m_omDatabasePath == "")
     {
         hResult = ERR_VALID_ERROR;
         omStrResult.Format(_T("No Database File is Included\r\n"));

@@ -111,12 +111,12 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 BOOL CAboutDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    CString omVerStr(_T(""));
+    CString omVerStr("");
     omVerStr.Format(IDS_VERSION);
     GetDlgItem(IDC_STATIC_VERSION)->SetWindowText(omVerStr);
 #ifdef FOR_ETIN
     // Set Entitlement ID
-    CString omEntitlementId(_T(""));
+    CString omEntitlementId("");
     GetEntitlementID(omEntitlementId);
     GetDlgItem(IDC_EDIT1)->SetWindowText(omEntitlementId);
 #endif // FOR_ETIN
@@ -302,7 +302,7 @@ BOOL CCANMonitorApp::InitInstance()
     // initialize the flag that indicates if the configuratin file has been
     // loaded..
     m_bIsConfigFileLoaded = FALSE;
-    CString ostrCfgFilename = _T("");
+    CString ostrCfgFilename = "";
 
     // If user has double click the .cfg file then assign that file name else
     // read from registry.
@@ -1178,7 +1178,7 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
         }
 
         //Finally load the default configuration
-        pMainFrame->nLoadConfigFile(_T(""));
+        pMainFrame->nLoadConfigFile("");
     }
 
     return bReturn;
