@@ -1001,8 +1001,8 @@ HRESULT CDIL_CAN_STUB::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, 
     for (UINT i = 0; i < CHANNEL_ALLOWED; i++)
     {
         sSelHwInterface[i].m_dwIdInterface = 0x100;
-        strcpy_s(sSelHwInterface[i].m_acNameInterface, "Simulation");
-        strcpy_s(sSelHwInterface[i].m_acDescription, "A simulation engine to create a virtual bus system");
+        sSelHwInterface[i].m_acNameInterface = "Simulation";
+        sSelHwInterface[i].m_acDescription = "A simulation engine to create a virtual bus system";
     }
 
     nCount = CHANNEL_ALLOWED;
