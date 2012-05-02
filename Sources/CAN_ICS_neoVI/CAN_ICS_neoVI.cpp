@@ -1499,6 +1499,7 @@ static int nCreateMultipleHardwareNetwork()
             case NEODEVICE_VCAN3:
             {
                 int narrVCAN3NtwID[] = {NETID_HSCAN, NETID_MSCAN};
+                int nCntNtwIDs = 2;
                 int hObject = NULL;
                 int nResult = 0;
                 nResult = (*icsneoOpenNeoDevice)(pNeoDevice, &hObject, NULL, 1, 0);
@@ -1518,7 +1519,6 @@ static int nCreateMultipleHardwareNetwork()
                     (*icsneoClosePort)(hObject, &nErrors);
 
                     // Check if it a Limited version with only one channel support.
-                    int nCntNtwIDs = 2;
                     if ( nHardwareLic == 8 )    // Single channel
                     {
                         nCntNtwIDs = 1;
@@ -1886,12 +1886,12 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
     BYTE aucConfigBytes[CONFIGBYTES_TOTAL];
     int nConfigBytes = 0;
     int ndDevicesOpened[MAX_DEVICES][2] = {0};  //Array of opened device [Port No, Handle]
+    int nOpenedDeviceCnt = 0;
 
     if (!sg_bIsConnected && bConnect) // Disconnected and to be connected
     {
         for (UINT i = 0; i < sg_podActiveNetwork->m_nNoOfChannels; i++)
         {
-            int nOpenedDeviceCnt = 0;
             //Check if already connected..
             bool bFound = false;
 

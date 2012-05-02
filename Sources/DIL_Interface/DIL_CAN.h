@@ -46,7 +46,7 @@ public:
     /* Destructor */
     ~CDIL_CAN();
 
-    bool InitInstance(void);
+    int InitInstance(void);
     int ExitInstance(void);
 
     /* Variable to maintain currently selected Driver ID */

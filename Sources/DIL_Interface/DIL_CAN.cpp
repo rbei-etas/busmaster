@@ -99,7 +99,7 @@ CDIL_CAN::~CDIL_CAN()
  * The router is realised as a set of function pointers
  * Initialisation with dummy functions
  */
-bool CDIL_CAN::InitInstance()
+int CDIL_CAN::InitInstance()
 {
     vSelectInterface_Dummy();
     return TRUE;
