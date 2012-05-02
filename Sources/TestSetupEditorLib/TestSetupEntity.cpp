@@ -972,7 +972,7 @@ INT CTestSetupEntity::nSaveHeader(MSXML2::IXMLDOMElementPtr& pIDomHeaderNode, CS
                 break;
         };
 
-        if(m_ouTestSetupHeader.m_sReportFile.m_omPath == _T(""))
+        if(m_ouTestSetupHeader.m_sReportFile.m_omPath == "")
         {
             CString omReportPath(omStrFilePath);
             int nIndex = omReportPath.Find(".xml");

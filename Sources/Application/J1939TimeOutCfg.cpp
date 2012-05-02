@@ -129,7 +129,7 @@ BOOL CJ1939TimeOutCfg::OnInitDialog()
     m_omT4.vSetValue(unTimeOutVal);
     OnBnClickedCheckT4();
     pButton = (CButton*)GetDlgItem(IDC_STATIC_DESCRIPTION);
-    pButton->SetWindowText(_T(""));
+    pButton->SetWindowText("");
     return TRUE;
 }
 // CJ1939TimeOutCfg message handlers

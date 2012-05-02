@@ -48,9 +48,9 @@ public:
                        int nDataFormat,
                        CString omStrMsgName,
                        UINT nMsgLen ,
-                       CString omStrSignalType = _T(""),
-                       CString omStrMaxVal = _T(""),
-                       CString omStrMinVal = _T(""),
+                       CString omStrSignalType = "",
+                       CString omStrMaxVal = "",
+                       CString omStrMinVal = "",
                        CString omStrOffset = _T("0"),
                        CString omStrScale = _T("1"),
                        CWnd* pParent = NULL);   // standard constructor

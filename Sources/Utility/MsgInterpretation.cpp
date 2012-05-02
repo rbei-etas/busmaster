@@ -52,7 +52,7 @@
 #define defFORMAT_DATA_FLOAT    _T("%f")
 #define defNUMBER_OF_BIT_TO_SHIFT           3
 #define defSTR_FORMAT_PHY_VALUE  _T("%.3f")
-#define STR_EMPTY _T("")
+#define STR_EMPTY ""
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

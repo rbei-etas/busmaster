@@ -1199,7 +1199,7 @@ VOID CTxMsgListView::vUpdateMsgListDisplay(sTXCANMSGDETAILS sMsgDetail,
     omStrChannel.Format("%d", sMsgDetail.m_sTxMsg.m_ucChannel );
     // Format Message Type
     omStrFormat.Insert(omStrFormat.GetLength(),defEMPTY_CHAR);
-    CString omStrTemp = _T("");
+    CString omStrTemp = "";
 
     for(INT i=0; i<sMsgDetail.m_sTxMsg.m_ucDataLen; i++)
     {

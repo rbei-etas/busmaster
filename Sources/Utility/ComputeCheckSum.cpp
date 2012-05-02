@@ -124,7 +124,7 @@ BOOL CComputeCheckSum::bGetCheckSum(CString& omStrConfigFileName,
     DWORD dwRead                 = 0;
     BOOL bReturn                 = FALSE;
     BOOL bFileOpen               = FALSE;
-    CString omStrErrorMessage    = _T("");
+    CString omStrErrorMessage    = "";
     TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
     // Open the configration file.
     TRY
@@ -211,7 +211,7 @@ BOOL CComputeCheckSum::bSetCheckSum(CString& omStrConfigFileName,
     DWORD dwRead                 = 0;
     BOOL bReturn                 = FALSE;
     BOOL bFileOpen               = FALSE;
-    CString omStrStrErrorMessage = _T("");
+    CString omStrStrErrorMessage = "";
     TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
     // Open the configration file template.
     TRY
@@ -313,7 +313,7 @@ BOOL CComputeCheckSum::COM_bSetCheckSum(CString& omStrConfigFileName,
     DWORD dwRead                 = 0;
     BOOL bReturn                 = FALSE;
     BOOL bFileOpen               = FALSE;
-    CString omStrStrErrorMessage = _T("");
+    CString omStrStrErrorMessage = "";
     TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
     // Open the configration file template.
     TRY

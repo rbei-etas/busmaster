@@ -148,7 +148,7 @@ BOOL CMainSubListDlg::OnInitDialog()
             {
                 SMAINENTRY& sMainEntry = m_podTempCallerList->GetNext(pos);
                 CString omMainEntryName = sMainEntry.m_omMainEntryName;
-                CString omMainEntryId = _T("");
+                CString omMainEntryId = "";
 
                 if (m_sGuiParams.m_bCombine == TRUE)
                 {
@@ -1169,7 +1169,7 @@ void CMainSubListDlg::vPopulateSelSubEntryList()
 
             if( sMainEntry.m_omMainEntryName != STR_EMPTY)
             {
-                CString omNameWithId = _T("");
+                CString omNameWithId = "";
 
                 if (m_sGuiParams.m_bCombine == TRUE)
                 {

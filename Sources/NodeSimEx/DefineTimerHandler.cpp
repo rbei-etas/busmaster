@@ -48,7 +48,7 @@ CDefineTimerHandler::CDefineTimerHandler(CFunctionEditorDoc* pDoc, CWnd* pParent
 
 {
     //{{AFX_DATA_INIT(CDefineTimerHandler)
-    m_omEditStrTimerFuncName = _T("");
+    m_omEditStrTimerFuncName = "";
     m_unEditTimerValue = 1;
     //}}AFX_DATA_INIT
     m_pDoc = pDoc;

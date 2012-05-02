@@ -69,7 +69,7 @@ void tagLogInfo::vClear(void)
     m_eFileMode          = APPEND_MODE;
     m_bResetAbsTimeStamp = FALSE;
     m_ChannelSelected    = CHANNEL_All_UNSPECIFIED;
-    strcpy_s(m_sLogFileName, _T(""));
+    strcpy_s(m_sLogFileName, "");
     // Init Trigger Condition
     m_sLogTrigger.m_unTriggerType = NONE;   // No trigger
     m_sLogTrigger.m_unStartID = 0;          // No Start-ID

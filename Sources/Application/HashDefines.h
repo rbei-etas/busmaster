@@ -268,7 +268,7 @@ typedef CList<int,int>      defomIntegerList;
 
 
 
-#define STR_EMPTY               _T("")
+#define STR_EMPTY               ""
 //Initializer constants
 #define INT_INIT                (INT)0
 #define LONG_INIT               (LONG)0
@@ -835,7 +835,7 @@ details since message length\nfor the selected message is zero!")
 #define defCOPYRIGHT        _T("(c)Robert Bosch India Limited, Bangalore")
 #define defTMPFILEEXTN      _T("tmp")
 #define defTMPFILEATTRIB    FILE_ATTRIBUTE_HIDDEN
-#define defEMPTYSTR         _T("")
+#define defEMPTYSTR         ""
 #define defSAVECONFIGERRSTR _T("Error while saving file. Restoring old data")
 
 #define defCHILD_FRAME_PROP_H 0.75

@@ -227,7 +227,7 @@ DWORD WINAPI Cyclic_Transmission_Thread(LPVOID pVoid)
 IMPLEMENT_DYNAMIC(CTxMsgWndJ1939, CDialog)
 CTxMsgWndJ1939::CTxMsgWndJ1939(CWnd* pParent /*=NULL*/, SJ1939CLIENTPARAM& sClientParam)
     : CDialog(CTxMsgWndJ1939::IDD, pParent)
-    , m_omMsgDataEditVal(_T(""))
+    , m_omMsgDataEditVal("")
     , m_unDataLength(0)
     , m_nMsgTypeIndex(0)
     , m_sClientParams(sClientParam)
@@ -465,7 +465,7 @@ void CTxMsgWndJ1939::OnBnClickedSend()
             }
             else
             {
-                vSetStatusBarText(_T("")); //Clear status bar.
+                vSetStatusBarText(""); //Clear status bar.
                 SendSavedMessage();
             }
         }
@@ -712,7 +712,7 @@ void CTxMsgWndJ1939::OnCbnSelchangeComboMsgtype()
         {
             m_omDLCEdit.vSetValue(0x3);
             m_omMsgDataEdit.vSetValue(0);
-            m_omMsgDataEdit.SetWindowText(_T(""));
+            m_omMsgDataEdit.SetWindowText("");
             m_omDLCEdit.SetReadOnly(TRUE);
             m_omMsgDataEdit.SetReadOnly(TRUE);
         }

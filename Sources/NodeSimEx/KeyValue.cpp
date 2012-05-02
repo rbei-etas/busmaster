@@ -128,7 +128,7 @@ void CKeyValue::OnCancel()
 /******************************************************************************/
 BOOL CKeyValue::PreTranslateMessage(MSG* pMsg)
 {
-    CString omStrKey = _T("");
+    CString omStrKey = "";
 
     // check for WM_CHAR message and then check for key pressed.
     // Stored only alphabatic keys pressed and "*". display the key values
@@ -213,7 +213,7 @@ void CKeyValue::OnOK()
             {
                 omStrMsgPro = pKeyArray->GetAt( nCount );
                 CString omStrFuncName   = defKEY_HANDLER;
-                CString omStrKeyPressed = _T("");
+                CString omStrKeyPressed = "";
 
                 if((*m_pcKeyVal) == defGENERIC_KEY)
                 {
@@ -308,7 +308,7 @@ void CKeyValue::OnCbtnKeyApply()
 
         if(bValidateSelection == TRUE)
         {
-            CString omSelectedText = _T("");
+            CString omSelectedText = "";
             omSelectedText = BUS_FN_HDR;
             CString omFunc = defKEY_HANDLER;
 
@@ -408,7 +408,7 @@ BOOL CKeyValue:: bValidateDuplicateKeyHandler(CFunctionEditorDoc* pDoc)
             UINT unKeyCount = 0;
             unKeyCount = (COMMANUINT)pKeyArray->GetSize();
             CString omStrKeyHandlerSelected = defDEFAULT_KEY_HANDLER_CODE;
-            CString omStrKeyhandler = _T("");
+            CString omStrKeyhandler = "";
 
             if(*m_pcKeyVal != defGENERIC_KEY)
             {

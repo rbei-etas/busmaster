@@ -57,7 +57,7 @@ CDriverInfoDlg::CDriverInfoDlg(CWnd* pParent /*=NULL*/)
     m_omStrDriverInfo = STR_EMPTY;
     //}}AFX_DATA_INIT
     CString omStrFormatDriverInfo;
-    m_omStrDriverInfo = _T("");
+    m_omStrDriverInfo = "";
 }
 
 

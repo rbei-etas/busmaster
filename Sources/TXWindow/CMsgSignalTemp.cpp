@@ -188,7 +188,7 @@ void CMsgSignal::unListGetMessageIDs(UINT* omListId)
 ******************************************************************************/
 CString CMsgSignal::omStrGetMessageNameFromMsgCodeInactive( UINT unMsgCode)
 {
-    CString strMsgName = _T("");
+    CString strMsgName = "";
 
     // validate message code
     if (unMsgCode >= 0)
@@ -224,7 +224,7 @@ CString CMsgSignal::omStrGetMessageNameFromMsgCodeInactive( UINT unMsgCode)
 ******************************************************************************/
 CString CMsgSignal::omStrGetMessageNameFromMsgCode( UINT unMsgCode)
 {
-    CString strMsgName = _T("");
+    CString strMsgName = "";
 
     if (unMsgCode >= 0)
     {

@@ -102,7 +102,7 @@ Modifications   :
 void CBaseLogObject::vResetValues(void)
 {
     m_sLogInfo.vClear();    // Initialise the logging block
-    m_omCurrLogFile = _T("");
+    m_omCurrLogFile = "";
     m_pLogFile = NULL;
     m_CurrTriggerType = NONE;
     m_nCurrFileCnt = 0;
@@ -369,7 +369,7 @@ BOOL CBaseLogObject::bStartLogging(void)
 
         if (m_pLogFile != NULL)
         {
-            CString omHeader = _T("");
+            CString omHeader = "";
             vFormatHeader(omHeader);
             _ftprintf(m_pLogFile,  _T("%s"), omHeader.GetBuffer(MAX_PATH));
             bResult = TRUE;
@@ -394,7 +394,7 @@ BOOL CBaseLogObject::bStopLogging()
     if ((m_pLogFile != NULL) && (m_sLogInfo.m_bEnabled))
     {
         m_CurrTriggerType = NONE;
-        CString omFooter = _T("");
+        CString omFooter = "";
         vFormatFooter(omFooter);
         _ftprintf(m_pLogFile,  _T("%s\n"), omFooter.GetBuffer(MAX_PATH));
         fclose(m_pLogFile);

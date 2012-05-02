@@ -1267,8 +1267,8 @@ void CTSEditorChildFrame::vSaveHeaderInfo(INT /*nTestSetupIndex*/)
      if (_findfirst( ouHeaderInfo.m_sReportFile.m_omPath, &fileinfo)== -1)
      {
          MessageBox(_T("Invalid Database path"), _T("Error"), MB_OK|MB_ICONERROR);
-         m_odPropertyView->m_omPropertyList.SetItemText(def_TS_ROWNUM_REPORT, 1, _T(""));
-         ouHeaderInfo.m_sReportFile.m_omPath = _T("");
+         m_odPropertyView->m_omPropertyList.SetItemText(def_TS_ROWNUM_REPORT, 1, "");
+         ouHeaderInfo.m_sReportFile.m_omPath = "";
      }*/
     ouHeaderInfo.m_omDatabasePath = omTempListCtrl.GetItemText(def_TS_ROWNUM_DATABASE, 1);
     //Bus Type
@@ -1663,7 +1663,7 @@ void CTSEditorChildFrame::vHandleTestSetup(LPNMLISTVIEW pNMLV)
         CTestSetupHeader ouHeaderInfo;
         m_ouTSEntity.GetHeaderData(ouHeaderInfo);
 
-        if(ouHeaderInfo.m_omDatabasePath == _T(""))
+        if(ouHeaderInfo.m_omDatabasePath == "")
         {
             ouHeaderInfo.m_omDatabasePath = omstrDatabaseName;
             m_ouTSEntity.m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(omstrDatabaseName);
@@ -2330,7 +2330,7 @@ Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::OnUpdateFileSaveas(CCmdUI* pCmdUI)
 {
-    if(m_omCurrentTSFile == def_EMPTYFILENAME || m_omCurrentTSFile == _T(""))
+    if(m_omCurrentTSFile == def_EMPTYFILENAME || m_omCurrentTSFile == "")
     {
         pCmdUI->Enable(FALSE);
     }

@@ -234,7 +234,7 @@ void CErrHandlerDlg::OnCbtnErrorOk()
             nCheck      = pomButton->GetCheck();
             bIsEnable   = pomButton->IsWindowEnabled();
             pomButton->GetWindowText(omStrControl);
-            omStrControl.Replace(_T("Error"),_T(""));
+            omStrControl.Replace(_T("Error"),"");
             omStrControl.TrimLeft();
             omStrControl.TrimRight();
             omStrControl.Replace(' ','_');

@@ -34,7 +34,7 @@ typedef struct tagSMESSAGE_ENTRY_INFO
     tagSMESSAGE_ENTRY_INFO()
     {
         m_unMessageID     = 0;
-        m_omMessageName   = _T("");
+        m_omMessageName   = "";
         m_ucDataLen = 0;
         memset(m_ucData,0,8);
     }

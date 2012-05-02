@@ -27,7 +27,7 @@
 #include "BaseDefs.h"
 
 
-#define STR_EMPTY               _T("")
+#define STR_EMPTY               ""
 
 #define defBITS_IN_BYTE         8
 

@@ -56,7 +56,7 @@ BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
         return FALSE;
     }
 
-    CString omLogText = _T("");
+    CString omLogText = "";
     TCHAR* pTimeData = NULL;
     TCHAR acID[16] = {'\0'};
     TCHAR* pPGN = NULL;

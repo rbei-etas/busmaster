@@ -44,8 +44,8 @@ CMessageDetailsDlg::CMessageDetailsDlg(const SDBPARAMS& sDbParams,sMESSAGE* pMsg
     : CDialog(CMessageDetailsDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CMessageDetailsDlg)
-    m_omStrMessageName = _T("");
-    m_omStrMessageCode = _T("");
+    m_omStrMessageName = "";
+    m_omStrMessageCode = "";
     m_unMessageLength = 0;
     m_nFrameFormat = -1;
     //m_nDataFormat = -1;

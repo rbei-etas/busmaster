@@ -40,7 +40,7 @@
 #define  defDEFAUT_BAUDRATE           0x4716
 
 #define  defHEX_STRING                _T("0x")
-#define  defEMPTY_STRING              _T("")
+#define  defEMPTY_STRING              ""
 #define  defBAUD_RATE_MESSAGE         _T("Nearest Valid Baud Rate is %s kBit/s. Do You want to change it ?")
 #define  defVALIDATION_MSG_BAUD_RATE  _T("Not a valid Decimal Numerals or out of range. !!! \n\nEnter only positive Decimal Numerals upto 1000kbps.")
 #define  defVALIDATION_MESSAGE        _T("Not a valid value. !!! \n\nEnter only Hexadecimal Value.")

@@ -1517,7 +1517,7 @@ BOOL CTxMsgDetailsView::bValidateData()
     // Selected Message Code
     int nMsgCode = -1;
     // User has to input atleast msg code and dlc
-    CString omStr = _T("");
+    CString omStr = "";
     UpdateData(TRUE);
     // Get the message ID.
     nMsgCode = nGetMessageID();
@@ -2857,9 +2857,9 @@ void CTxMsgDetailsView::vUpdateStateDataBytes()
  */
 void CTxMsgDetailsView::vSetValues(STXCANMSGDETAILS* psTxMsg)
 {
-    CString omStr            = _T("");
-    CString omFormat         = _T("");
-    CString omStrFormatData  = _T("");
+    CString omStr            = "";
+    CString omFormat         = "";
+    CString omStrFormatData  = "";
 
     // If the pointer is null
     // then clear the contents of all the undefined msg controls
@@ -2923,7 +2923,7 @@ void CTxMsgDetailsView::vSetValues(STXCANMSGDETAILS* psTxMsg)
             {
                 if(i>= psTxMsg->m_sTxMsg.m_ucDataLen)
                 {
-                    omStr = _T("");
+                    omStr = "";
                 }
                 else
                 {

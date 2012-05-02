@@ -91,8 +91,8 @@ void CFrameProcessor_CAN::CreateTimeModeMapping(SYSTEMTIME& CurrSysTime,
 void CFrameProcessor_CAN::vRetrieveDataFromBuffer(void)
 {
     static SFORMATTEDDATA_CAN CurrDataCAN = {0, 0, DIR_RX, CAN_CHANNEL_ALL, 0,
-        {'\0'}, TYPE_ID_CAN_NONE, TYPE_MSG_CAN_NONE, _T(" x"), {'\0'}, {'\0'}, _T(""), _T(""),_T(""), _T(""),
-        _T(""), _T(""),  _T(""),  _T(""), 0, RGB(0, 0, 0)
+        {'\0'}, TYPE_ID_CAN_NONE, TYPE_MSG_CAN_NONE, _T(" x"), {'\0'}, {'\0'}, "", "","", "",
+        "", "",  "",  "", 0, RGB(0, 0, 0)
     };
     static sTCANDATA CurrMsgCAN;
 

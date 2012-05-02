@@ -67,7 +67,7 @@ CSetResetTimer::CSetResetTimer(ETYPE_BUS eBus, CWnd* pParent /*=NULL*/)
 {
     m_eBus = eBus;
     //{{AFX_DATA_INIT(CSetResetTimer)
-    m_omStrNodeName = _T("");
+    m_omStrNodeName = "";
     //}}AFX_DATA_INIT
     //   m_omApptEvent = CreateEvent(NULL,TRUE,FALSE,NULL);
 }

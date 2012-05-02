@@ -66,8 +66,8 @@ CSimSysDetView::CSimSysDetView(): CFormView(CSimSysDetView::IDD)
     m_bIsMsgHanEnabled = FALSE;
     m_bIsErrorHanEnabled = FALSE;
     //{{AFX_DATA_INIT(CSimSysDetView)
-    m_omStrNodeName = _T("");
-    m_omStrCFile = _T("");
+    m_omStrNodeName = "";
+    m_omStrCFile = "";
     //}}AFX_DATA_INIT
 }
 /******************************************************************************/
@@ -1510,7 +1510,7 @@ void CSimSysDetView::vSetHandlerDetailRowText(int nRow, int nNoOfHandler, BOOL b
 {
     if (nRow >= 0)
     {
-        CString strHandlerCount = _T("");
+        CString strHandlerCount = "";
         CString strEnabled = defStrDisabled;
 
         if (bEnabled)

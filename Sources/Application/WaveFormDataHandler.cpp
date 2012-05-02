@@ -461,7 +461,7 @@ HRESULT CWaveFormDataHandler::SetConfigData(BYTE* pvDataStream)
                 for(UINT j=0; j<nSigCount; j++)
                 {
                     sSigWaveMap objSigWaveMap;
-                    objSigWaveMap.m_omSigName = _T("");
+                    objSigWaveMap.m_omSigName = "";
                     //Reading Signal Name Size.
                     BYTE bytSignalSize = 0;
                     COPY_DATA_2(&bytSignalSize, pByteTrgt, sizeof(BYTE));

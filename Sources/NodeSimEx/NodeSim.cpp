@@ -285,25 +285,25 @@ BOOL CNodeSim::NS_ShouldToolBarBeEnabled(E_TB_FN_EDITOR eToolBarFlag)
         {
             case TB_LOAD:
             {
-                bReturn = pSimSysNodeInfo->bIsLoadAllValid(_T(""));
+                bReturn = pSimSysNodeInfo->bIsLoadAllValid("");
             }
             break;
 
             case TB_UNLOAD:
             {
-                bReturn = pSimSysNodeInfo->bIsUnLoadAllValid(_T(""));
+                bReturn = pSimSysNodeInfo->bIsUnLoadAllValid("");
             }
             break;
 
             case TB_BUILD:
             {
-                bReturn = pSimSysNodeInfo->bIsBuildAllValid(_T(""));
+                bReturn = pSimSysNodeInfo->bIsBuildAllValid("");
             }
             break;
 
             case TB_BUILDLOAD:
             {
-                bReturn = pSimSysNodeInfo->bIsBuildAllValid(_T(""));
+                bReturn = pSimSysNodeInfo->bIsBuildAllValid("");
             }
             break;
 

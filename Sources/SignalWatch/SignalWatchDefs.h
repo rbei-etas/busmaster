@@ -39,7 +39,7 @@
 
 
 
-#define STR_EMPTY _T("")
+#define STR_EMPTY ""
 #define defSTR_MSG_SIG_SEPERATER _T(" -> ")
 #define defSTR_FORMAT_SW_LIST    _T("%s%s%s")
 #define defSIZE_OF_IMAGE         25

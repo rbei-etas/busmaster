@@ -709,25 +709,25 @@ void CMsgContainerJ1939::vSetCurrMsgName(CString strMsgNameOrCode)
 ******************************************************************************/
 void CMsgContainerJ1939::vClearFormattedMsgStruct()
 {
-    strcpy_s(m_sOutFormattedData.m_acTimeAbs,  sizeof(m_sOutFormattedData.m_acTimeAbs),  _T(""));
-    strcpy_s(m_sOutFormattedData.m_acTimeRel,  sizeof(m_sOutFormattedData.m_acTimeRel),  _T(""));
-    strcpy_s(m_sOutFormattedData.m_acTimeSys,  sizeof(m_sOutFormattedData.m_acTimeSys),  _T(""));
-    strcpy_s(m_sOutFormattedData.m_pcDataHex,  sizeof(m_sOutFormattedData.m_pcDataHex),  _T(""));
-    strcpy_s(m_sOutFormattedData.m_acMsgIDHex, sizeof(m_sOutFormattedData.m_acMsgIDHex), _T(""));
-    strcpy_s(m_sOutFormattedData.m_acPGNHex,   sizeof(m_sOutFormattedData.m_acPGNHex),   _T(""));
-    strcpy_s(m_sOutFormattedData.m_acSrcHex,   sizeof(m_sOutFormattedData.m_acSrcHex),   _T(""));
-    strcpy_s(m_sOutFormattedData.m_acDestHex,  sizeof(m_sOutFormattedData.m_acDestHex),  _T(""));
-    strcpy_s(m_sOutFormattedData.m_pcDataDec,  sizeof(m_sOutFormattedData.m_pcDataDec),  _T(""));
-    strcpy_s(m_sOutFormattedData.m_acMsgIDDec, sizeof(m_sOutFormattedData.m_acMsgIDDec), _T(""));
-    strcpy_s(m_sOutFormattedData.m_acPGNDec,   sizeof(m_sOutFormattedData.m_acPGNDec),   _T(""));
-    strcpy_s(m_sOutFormattedData.m_acSrcDec,   sizeof(m_sOutFormattedData.m_acSrcDec),   _T(""));
-    strcpy_s(m_sOutFormattedData.m_acDestDec,  sizeof(m_sOutFormattedData.m_acDestDec),  _T(""));
-    strcpy_s(m_sOutFormattedData.m_acDataLen,  sizeof(m_sOutFormattedData.m_acDataLen),  _T(""));
-    strcpy_s(m_sOutFormattedData.m_acMsgType,  sizeof(m_sOutFormattedData.m_acMsgType),  _T(""));
-    strcpy_s(m_sOutFormattedData.m_acMsgDir,   sizeof(m_sOutFormattedData.m_acMsgDir),   _T(""));
-    strcpy_s(m_sOutFormattedData.m_acChannel,  sizeof(m_sOutFormattedData.m_acChannel),  _T(""));
-    strcpy_s(m_sOutFormattedData.m_acPriority, sizeof(m_sOutFormattedData.m_acPriority), _T(""));
-    strcpy_s(m_sOutFormattedData.m_acMsgName,  sizeof(m_sOutFormattedData.m_acMsgName),  _T(""));
+    strcpy_s(m_sOutFormattedData.m_acTimeAbs,  sizeof(m_sOutFormattedData.m_acTimeAbs),  "");
+    strcpy_s(m_sOutFormattedData.m_acTimeRel,  sizeof(m_sOutFormattedData.m_acTimeRel),  "");
+    strcpy_s(m_sOutFormattedData.m_acTimeSys,  sizeof(m_sOutFormattedData.m_acTimeSys),  "");
+    strcpy_s(m_sOutFormattedData.m_pcDataHex,  sizeof(m_sOutFormattedData.m_pcDataHex),  "");
+    strcpy_s(m_sOutFormattedData.m_acMsgIDHex, sizeof(m_sOutFormattedData.m_acMsgIDHex), "");
+    strcpy_s(m_sOutFormattedData.m_acPGNHex,   sizeof(m_sOutFormattedData.m_acPGNHex),   "");
+    strcpy_s(m_sOutFormattedData.m_acSrcHex,   sizeof(m_sOutFormattedData.m_acSrcHex),   "");
+    strcpy_s(m_sOutFormattedData.m_acDestHex,  sizeof(m_sOutFormattedData.m_acDestHex),  "");
+    strcpy_s(m_sOutFormattedData.m_pcDataDec,  sizeof(m_sOutFormattedData.m_pcDataDec),  "");
+    strcpy_s(m_sOutFormattedData.m_acMsgIDDec, sizeof(m_sOutFormattedData.m_acMsgIDDec), "");
+    strcpy_s(m_sOutFormattedData.m_acPGNDec,   sizeof(m_sOutFormattedData.m_acPGNDec),   "");
+    strcpy_s(m_sOutFormattedData.m_acSrcDec,   sizeof(m_sOutFormattedData.m_acSrcDec),   "");
+    strcpy_s(m_sOutFormattedData.m_acDestDec,  sizeof(m_sOutFormattedData.m_acDestDec),  "");
+    strcpy_s(m_sOutFormattedData.m_acDataLen,  sizeof(m_sOutFormattedData.m_acDataLen),  "");
+    strcpy_s(m_sOutFormattedData.m_acMsgType,  sizeof(m_sOutFormattedData.m_acMsgType),  "");
+    strcpy_s(m_sOutFormattedData.m_acMsgDir,   sizeof(m_sOutFormattedData.m_acMsgDir),   "");
+    strcpy_s(m_sOutFormattedData.m_acChannel,  sizeof(m_sOutFormattedData.m_acChannel),  "");
+    strcpy_s(m_sOutFormattedData.m_acPriority, sizeof(m_sOutFormattedData.m_acPriority), "");
+    strcpy_s(m_sOutFormattedData.m_acMsgName,  sizeof(m_sOutFormattedData.m_acMsgName),  "");
 }
 /******************************************************************************
     Function Name    :  vGetUpdatedCurrDataPtrArray

@@ -81,8 +81,8 @@ CBuildProgram::~CBuildProgram()
 BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
 {
     BOOL bReturn            = FALSE;
-    CString omStrFilePath   = _T("");
-    CString omStrErrorMsg   = _T("");
+    CString omStrFilePath   = "";
+    CString omStrErrorMsg   = "";
     int iMajorVer = 0;
     int iMinorVer = 0;
     BOOL bVersion = FALSE ;
@@ -276,9 +276,9 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
             // check if make file is created successfully.
             if(bReturn == TRUE)
             {
-                CString omStrGccMakeFile = _T("");
-                CString omStrGccParamter = _T("");
-                CString omStrGCCPath     = _T("");
+                CString omStrGccMakeFile = "";
+                CString omStrGccParamter = "";
+                CString omStrGCCPath     = "";
                 // Create process after giving the command line input
                 omStrGccMakeFile  = acGCCPath;
                 /*kadoor*/
@@ -373,13 +373,13 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
 
                 omStrFilePath.Replace(_T("error.txt"),_T("output.txt"));
                 bAddStrToArrayFromFile(omStrFilePath,m_omStrArray);
-                CString omStrDLLFile = _T("");
+                CString omStrDLLFile = "";
 
                 if(bSuccess == TRUE)
                 {
                     CString omStrFileNameInSDLLFile=STR_EMPTY;
                     CString omStrFileNameInLongFileName=STR_EMPTY;
-                    CString omStrDLLFile   = _T("");
+                    CString omStrDLLFile   = "";
                     TCHAR acStrShortPath[1000];
                     dwConvertShortPathName(omFileName,acStrShortPath);
                     omFileName    = acStrShortPath;
@@ -560,12 +560,12 @@ BOOL CBuildProgram::bCreateMakeFile(CString& omStrMakeFileTemplateName,
 {
     CStdioFile omStdiofile;
     CFileException omException ;
-    CString omStrFile            = _T("");
+    CString omStrFile            = "";
     BOOL bReturn                 = FALSE;
     DWORD dwSize                 = 0;
     DWORD dwRead                 = 0;
     BOOL bFileOpen               = FALSE;
-    CString omStrErrorMessage     = _T("");
+    CString omStrErrorMessage     = "";
     TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
     // Open the make file template.
     TRY
@@ -576,7 +576,7 @@ BOOL CBuildProgram::bCreateMakeFile(CString& omStrMakeFileTemplateName,
         if(bFileOpen!=FALSE)
         {
             CHAR* pcBuff   = NULL;
-            CString omTemp = _T("");
+            CString omTemp = "";
             // Get the size of file
             dwSize = (DWORD)omStdiofile.GetLength();
             pcBuff = (CHAR*) new char[dwSize];
@@ -705,8 +705,8 @@ BOOL CBuildProgram::bAddStrToArrayFromFile(CString& omStrTextFileName,
 {
     //   Local Var.
     ifstream    InTextFile;
-    CString     omStrMainMessage = _T("");
-    CString     omStrLine        = _T("") ;
+    CString     omStrMainMessage = "";
+    CString     omStrLine        = "" ;
     CHAR        cLine[500];
     BOOL        bReturn          = FALSE;
     TRY

@@ -31,7 +31,7 @@ using namespace MSXML2;
 
 const DWORD LCN_INVALID_VALUE = (DWORD)-1;
 const DWORD CANID_INVALID_VALUE = (DWORD)-1;
-#define LCN_INVALID_NAME        _T("")
+#define LCN_INVALID_NAME        ""
 
 
 typedef enum eTYPE_MCNET_CONN

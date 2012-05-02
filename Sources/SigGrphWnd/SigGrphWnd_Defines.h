@@ -24,7 +24,7 @@
 
 #pragma once
 
-#define STR_EMPTY _T("")
+#define STR_EMPTY ""
 #define MAX_PROTOCOLS 20
 #define AVAILABLE_PROTOCOLS         4
 

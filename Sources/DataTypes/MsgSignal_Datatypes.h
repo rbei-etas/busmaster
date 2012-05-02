@@ -39,12 +39,12 @@ typedef struct _tagDBPARAMS
 
 static SDBPARAMS sg_asDbParams[BUS_TOTAL] =
 {
-    {CAN,     _T("CAN"),    _T(""), _T("Message ID :"),  8,0,0},
-    {MCNET,   _T("MCNET"),  _T(""), _T("Message Code :"),  MAX_DATA_LEN_MCNET,0,0},
-    {J1939,   _T("J1939"),  _T(""), _T("PGN :"),  MAX_DATA_LEN_J1939,0,0},
-    {FLEXRAY, _T("FLEXRAY"),_T(""), _T("FRAME ID :"),  128,0,0},
-    {LIN,     _T("LIN"),    _T(""), _T("Msg ID :"),  0,0,0},
-    {MOST,    _T("MOST"),   _T(""), _T("Msg ID :"),  0,0,0}
+    {CAN,     _T("CAN"),    "", _T("Message ID :"),  8,0,0},
+    {MCNET,   _T("MCNET"),  "", _T("Message Code :"),  MAX_DATA_LEN_MCNET,0,0},
+    {J1939,   _T("J1939"),  "", _T("PGN :"),  MAX_DATA_LEN_J1939,0,0},
+    {FLEXRAY, _T("FLEXRAY"),"", _T("FRAME ID :"),  128,0,0},
+    {LIN,     _T("LIN"),    "", _T("Msg ID :"),  0,0,0},
+    {MOST,    _T("MOST"),   "", _T("Msg ID :"),  0,0,0}
 };
 
 enum eWAVEFORMTYPE
@@ -64,11 +64,11 @@ struct sINTERPRETSIGNALINFO
     CString m_omStrUnit;
     unsigned char   m_ucSigLength;
 
-    sINTERPRETSIGNALINFO(): m_omStrSignalName(_T("")),
+    sINTERPRETSIGNALINFO(): m_omStrSignalName(""),
         m_un64RawValue(0),
         m_dPhyValue(0),
-        m_omStrSignalDescValue(_T("")),
-        m_omStrUnit(_T("")),
+        m_omStrSignalDescValue(""),
+        m_omStrUnit(""),
         m_ucSigLength(0)
     {
         // Do Additional Init here

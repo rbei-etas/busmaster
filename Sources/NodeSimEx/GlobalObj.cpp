@@ -58,7 +58,7 @@ CGlobalObj::CGlobalObj(ETYPE_BUS eBus)
     m_eBus = eBus;
     m_pEditorDocTemplate = NULL;
     m_pomSimSysWnd = NULL;
-    m_omStrSourceFilePathName = _T("");
+    m_omStrSourceFilePathName = "";
     m_ArrAPIsList.RemoveAll();
     m_ArrAPIFuncNames.RemoveAll();
     m_omDefinedMsgHeaders.RemoveAll();
@@ -76,7 +76,7 @@ CGlobalObj::CGlobalObj(ETYPE_BUS eBus)
     m_omFnEditHelpText.RemoveAll();
     m_pSimSysDataPtr = NULL;
     m_nSimSysDataSize = 0;
-    m_omAppDirectory = _T("");
+    m_omAppDirectory = "";
     memset(&m_wWindowPlacement, 0, sizeof(WINDOWPLACEMENT));
 }
 
@@ -100,7 +100,7 @@ CBaseDILI_J1939* CGlobalObj::GetIJ1939DIL(void)
 }
 CFunctionEditorDoc* CGlobalObj::pGetDocPtrOfFile(CString strTempName)
 {
-    CString strPath = _T("");
+    CString strPath = "";
     CFunctionEditorDoc* pDocRet = NULL;
     CFunctionEditorDoc* pDoc = NULL;
 

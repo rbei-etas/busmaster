@@ -205,8 +205,8 @@ BOOL CSelectFunctions::bFormatFunctionPrototype(CString& omStrFunctionPrototype)
 {
     BOOL bReturn = TRUE;
     CStringArray omStrArrayParaType;
-    CString omStrReturnType = _T("");
-    CString omStrFuncName   = _T("");
+    CString omStrReturnType = "";
+    CString omStrFuncName   = "";
 
     if(m_omStrSelectedText.IsEmpty() == 0 )
     {
@@ -216,7 +216,7 @@ BOOL CSelectFunctions::bFormatFunctionPrototype(CString& omStrFunctionPrototype)
         omStrTemp.TrimLeft();
         omStrTemp.TrimRight();
         omStrReturnType = m_omStrSelectedText;
-        omStrReturnType.Replace(omStrTemp, _T(""));
+        omStrReturnType.Replace(omStrTemp, "");
         INT nIndex = 0;
         nIndex = omStrTemp.Find(_T("("));
         omStrFuncName = omStrTemp.Left(nIndex);
@@ -234,7 +234,7 @@ BOOL CSelectFunctions::bFormatFunctionPrototype(CString& omStrFunctionPrototype)
             else
             {
                 omStrArrayParaType.Add(omStrTemp);
-                omStrTemp = _T("");
+                omStrTemp = "";
             }
 
             omStrTemp = omStrTemp.Right(omStrTemp.GetLength() - nIndex - 1 );
@@ -267,7 +267,7 @@ BOOL CSelectFunctions::bFormatFunctionPrototype(CString& omStrFunctionPrototype)
             omStrFunctionPrototype += defNEW_LINE;
             omStrFunctionPrototype += _T("/* ");
             omStrFunctionPrototype += omStrTemp;
-            omStrTemp               = _T("");
+            omStrTemp               = "";
             omStrTemp.Format(defPARAMETER_NAME,i+1);
             omStrFunctionPrototype += _T(" ");
             omStrFunctionPrototype +=omStrTemp;
