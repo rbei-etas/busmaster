@@ -102,19 +102,20 @@ typedef enum TXMODE
     CONTINOUS,
 } TXMODE;
 
-#define  MAX_CHAR_SHORT       128
-#define  MAX_CHAR_LONG        512
+//#define  MAX_CHAR_SHORT       128
+//#define  MAX_CHAR_LONG        512
 #define  MAX_CHAR             1024
 
-typedef struct tagHwInterface
+class INTERFACE_HW
 {
+public:
     unsigned long  m_dwIdInterface;
     unsigned long  m_dwVendor;
     unsigned char  m_bytNetworkID;
-    TCHAR    m_acNameInterface[MAX_CHAR_SHORT];
-    TCHAR    m_acDescription[MAX_CHAR_LONG];
-    TCHAR    m_acDeviceName[MAX_CHAR_SHORT];
-} INTERFACE_HW;
+    string         m_acNameInterface;
+    string         m_acDescription;
+    string         m_acDeviceName;
+} ;
 
 typedef INTERFACE_HW INTERFACE_HW_LIST[defNO_OF_CHANNELS];
 

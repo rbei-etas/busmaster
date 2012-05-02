@@ -285,9 +285,9 @@ void CHardwareListing::vUpdateHwDetails(int nIndex)
         omStr.Format(_T("%d"), m_psHwInterface[nIndex].m_dwIdInterface);
         m_omDriverID.SetWindowText(omStr);
         //Firmware
-        m_omFirmware.SetWindowText(m_psHwInterface[nIndex].m_acDeviceName);
+        m_omFirmware.SetWindowText(m_psHwInterface[nIndex].m_acDeviceName.c_str());
         //Description
-        m_omNetName.SetWindowText( m_psHwInterface[nIndex].m_acDescription );
+        m_omNetName.SetWindowText(m_psHwInterface[nIndex].m_acDescription.c_str());
     }
 }
 

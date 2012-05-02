@@ -144,11 +144,12 @@ static LARGE_INTEGER sg_lnFrequency;
 /**
  * Channel information
  */
-struct CChannel
+class CChannel
 {
+public:
     /* Kvaser channel details */
     int        m_nChannel;
-    TCHAR      m_strName[MAX_CHAR_LONG];
+    string     m_strName;
     DWORD      m_dwHwType;
     canHandle  m_hnd;
     int        m_nHwIndex;
@@ -1087,7 +1088,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
     for (UINT nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
     {
         strcpy_s(((PSCONTROLLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc,
-                 sg_aodChannels[nCount].m_strName);
+                 sg_aodChannels[nCount].m_strName.c_str());
     }
 
     memcpy((void*)sg_ControllerDetails, (void*)ConfigFile, Length);
@@ -2025,7 +2026,7 @@ int ListHardwareInterfaces(HWND /*hParent*/, DWORD /*dwDriver*/, INTERFACE_HW* p
 static int nCreateMultipleHardwareNetwork()
 {
     int nHwCount = sg_ucNoOfHardware;
-    TCHAR acVendor[MAX_CHAR_LONG];
+    TCHAR buf[512];
     DWORD dwFirmWare[2];
 
     // Get Hardware Network Map
@@ -2033,14 +2034,15 @@ static int nCreateMultipleHardwareNetwork()
     {
         sg_HardwareIntr[nCount].m_dwIdInterface = nCount;
         canGetChannelData(nCount, canCHANNELDATA_CARD_SERIAL_NO,
-                          acVendor, sizeof(acVendor));
-        sscanf_s( acVendor, "%ld", &sg_HardwareIntr[nCount].m_dwVendor );
+                          buf, sizeof(buf));
+        sscanf_s(buf, "%ld", &sg_HardwareIntr[nCount].m_dwVendor);
         canGetChannelData(nCount, canCHANNELDATA_CHANNEL_NAME,
-                          sg_HardwareIntr[nCount].m_acDescription,
-                          sizeof(sg_HardwareIntr[nCount].m_acDescription));
+                          buf, sizeof(buf));
+        sg_HardwareIntr[nCount].m_acDescription = buf;
         //Get Firmware info
         canGetChannelData(nCount, canCHANNELDATA_CARD_FIRMWARE_REV, dwFirmWare, sizeof(dwFirmWare));
-        sprintf_s(sg_HardwareIntr[nCount].m_acDeviceName,"0x%08lx 0x%08lx", dwFirmWare[0], dwFirmWare[1]);
+        sprintf_s(buf, "0x%08lx 0x%08lx", dwFirmWare[0], dwFirmWare[1]);
+        sg_HardwareIntr[nCount].m_acDeviceName = buf;
     }
 
     ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_KVASER_CAN, sg_HardwareIntr, sg_anSelectedItems, nHwCount);
@@ -2051,10 +2053,11 @@ static int nCreateMultipleHardwareNetwork()
     for (int nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
     {
         sg_aodChannels[nCount].m_nChannel = sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwIdInterface;
-        sprintf_s(sg_aodChannels[nCount].m_strName , _T("Kvaser - %s, Serial Number- %ld, Firmware- %s"),
+        sprintf_s(buf, _T("Kvaser - %s, Serial Number- %ld, Firmware- %s"),
                   sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDescription,
                   sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwVendor,
                   sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDeviceName);
+        sg_aodChannels[nCount].m_strName = buf;
     }
 
     return defERR_OK;
@@ -2074,21 +2077,23 @@ static int nCreateSingleHardwareNetwork()
     sg_nNoOfChannels = 1;
     sg_aodChannels[0].m_nChannel = 0;
     /* Update channel info */
-    TCHAR acVendor[MAX_CHAR_LONG];
+    TCHAR buf[512];
     DWORD dwFirmWare[2];
     canGetChannelData(0, canCHANNELDATA_CARD_SERIAL_NO,
-                      acVendor, sizeof(acVendor));
-    sscanf_s( acVendor, "%ld", &sg_HardwareIntr[0].m_dwVendor );
+                      buf, sizeof(buf));
+    sscanf_s(buf, "%ld", &sg_HardwareIntr[0].m_dwVendor );
     canGetChannelData(0, canCHANNELDATA_CHANNEL_NAME,
-                      sg_HardwareIntr[0].m_acDescription,
-                      sizeof(sg_HardwareIntr[0].m_acDescription));
+                      buf, sizeof(buf));
+    sg_HardwareIntr[0].m_acDescription = buf;
     /* Get Firmware info */
     canGetChannelData(0, canCHANNELDATA_CARD_FIRMWARE_REV, dwFirmWare, sizeof(dwFirmWare));
-    sprintf_s(sg_HardwareIntr[0].m_acDeviceName,"0x%08lx 0x%08lx", dwFirmWare[0], dwFirmWare[1]);
-    sprintf_s(sg_aodChannels[0].m_strName, _T("%s, Serial Number: %ld, Firmware: %s"),
+    sprintf_s(buf, "0x%08lx 0x%08lx", dwFirmWare[0], dwFirmWare[1]);
+    sg_HardwareIntr[0].m_acDeviceName = buf;
+    sprintf_s(buf, _T("%s, Serial Number: %ld, Firmware: %s"),
               sg_HardwareIntr[0].m_acDescription,
               sg_HardwareIntr[0].m_dwVendor,
               sg_HardwareIntr[0].m_acDeviceName);
+    sg_aodChannels[0].m_strName = buf;
     return defERR_OK;
 }
 

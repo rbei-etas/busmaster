@@ -424,7 +424,7 @@ void vBlinkHw(INTERFACE_HW s_HardwareIntr)
     NeoDevice pNeoDevice;
     pNeoDevice.Handle       = (int)s_HardwareIntr.m_dwIdInterface;
     pNeoDevice.SerialNumber = (int)s_HardwareIntr.m_dwVendor;
-    sscanf_s(s_HardwareIntr.m_acNameInterface, "%d", &pNeoDevice.DeviceType);
+    sscanf_s(s_HardwareIntr.m_acNameInterface.c_str(), "%d", &pNeoDevice.DeviceType);
     int hObject = NULL;
     int nErrors;
     int nResult = (*icsneoOpenNeoDevice)(&pNeoDevice, &hObject, NULL, 1, 0);
@@ -1394,11 +1394,12 @@ static int nAddChanneltoHWInterfaceList(int narrNetwordID[], int nCntNtwIDs, int
         sg_HardwareIntr[nChannels].m_dwIdInterface = sg_ndNeoToOpen[nDevID].Handle;
         sg_HardwareIntr[nChannels].m_dwVendor = sg_ndNeoToOpen[nDevID].SerialNumber;
         sg_HardwareIntr[nChannels].m_bytNetworkID = narrNetwordID[i];
-        strcpy_s(sg_HardwareIntr[nChannels].m_acDeviceName, acFirmware);
-        sprintf_s(sg_HardwareIntr[nChannels].m_acNameInterface, _T("%d"), sg_ndNeoToOpen[nDevID].DeviceType);
+        sg_HardwareIntr[nChannels].m_acDeviceName = acFirmware;
+        sprintf_s(acTempStr, _T("%d"), sg_ndNeoToOpen[nDevID].DeviceType);
+        sg_HardwareIntr[nChannels].m_acNameInterface = acTempStr;
         sprintf_s(acTempStr, _T("SN: %d, Port ID: %d-CAN%d"), sg_HardwareIntr[nChannels].m_dwVendor,
                   sg_HardwareIntr[nChannels].m_dwIdInterface, narrNetwordID[i]);
-        strcpy_s(sg_HardwareIntr[nChannels].m_acDescription, acTempStr);
+        sg_HardwareIntr[nChannels].m_acDescription = acTempStr;
         nChannels++;
     }
 
@@ -1560,7 +1561,7 @@ static int nCreateMultipleHardwareNetwork()
     {
         sg_ndNeoToOpen[nCount].Handle       = (int)sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwIdInterface;
         sg_ndNeoToOpen[nCount].SerialNumber = (int)sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwVendor;
-        sscanf_s(sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acNameInterface, "%d", &sg_ndNeoToOpen[nCount].DeviceType);
+        sscanf_s(sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acNameInterface.c_str(), "%d", &sg_ndNeoToOpen[nCount].DeviceType);
         m_bytNetworkIDs[nCount]             =  sg_HardwareIntr[sg_anSelectedItems[nCount]].m_bytNetworkID;
     }
 
@@ -2278,8 +2279,10 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 
             for (UINT i = 0; i < sg_ucNoOfHardware; i++)
             {
+                TCHAR buf[512];
                 asSelHwInterface[i].m_dwIdInterface = (DWORD)sg_ndNeoToOpen[i].Handle;
-                sprintf_s(asSelHwInterface[i].m_acDescription, _T("%d"), sg_ndNeoToOpen[i].SerialNumber);
+                sprintf_s(buf, _T("%d"), sg_ndNeoToOpen[i].SerialNumber);
+                asSelHwInterface[i].m_acDescription = buf;
                 asSelHwInterface[i].m_bytNetworkID = m_bytNetworkIDs[i];
                 hResult = S_OK;
                 sg_bCurrState = STATE_HW_INTERFACE_LISTED;
@@ -2344,7 +2347,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SelectHwInterface(const INTERFACE_HW_LIST& asSelH
         for (UINT i = 0; i < sg_ucNoOfHardware; i++)
         {
             sg_ndNeoToOpen[i].Handle       = (INT)asSelHwInterface[i].m_dwIdInterface;
-            sg_ndNeoToOpen[i].SerialNumber = _ttoi(asSelHwInterface[i].m_acDescription);
+            sg_ndNeoToOpen[i].SerialNumber = _ttoi(asSelHwInterface[i].m_acDescription.c_str());
             m_bytNetworkIDs[i]             = asSelHwInterface[i].m_bytNetworkID;
         }
 

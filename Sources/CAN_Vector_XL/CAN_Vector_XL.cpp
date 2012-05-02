@@ -794,9 +794,11 @@ HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 
         for (UINT i = 0; i < sg_nNoOfChannels; i++)
         {
+            TCHAR buf[512];
             asSelHwInterface[i].m_dwIdInterface = i;
             unsigned int serialNumber = sg_aodChannels[i].m_pXLChannelInfo->serialNumber;
-            sprintf_s(asSelHwInterface[i].m_acDescription, _T("%d"), serialNumber);
+            sprintf_s(buf, _T("%d"), serialNumber);
+            asSelHwInterface[i].m_acDescription = buf;
             sprintf_s(sg_ControllerDetails[i].m_omHardwareDesc, _T("Vector - %s SN - %d Channel Index - %d"),
                       sg_aodChannels[i].m_pXLChannelInfo->name,
                       serialNumber,
@@ -1835,7 +1837,7 @@ static int nCreateMultipleHardwareNetwork()
             sg_HardwareIntr[nChannels].m_dwVendor = g_xlDrvConfig.channel[nCount].serialNumber;
             /*_stprintf(acTempStr, _T("SN: %d, Port ID: %d"), sg_HardwareIntr[nChannels].m_dwVendor,
                                                                     sg_HardwareIntr[nChannels].m_dwIdInterface);*/
-            strcpy_s(sg_HardwareIntr[nChannels].m_acDescription, g_xlDrvConfig.channel[nCount].name);
+            sg_HardwareIntr[nChannels].m_acDescription = g_xlDrvConfig.channel[nCount].name;
             nChannels++;
         }
     }

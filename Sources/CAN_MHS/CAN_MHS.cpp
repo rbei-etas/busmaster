@@ -577,7 +577,7 @@ HRESULT CDIL_CAN_MHS::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, 
     //set the current number of channels
     sg_nNoOfChannels = 1;
     asSelHwInterface[0].m_dwIdInterface = 0;
-    sprintf_s(asSelHwInterface[0].m_acDescription, _T("0"));
+    asSelHwInterface[0].m_acDescription = "0";
     sg_bCurrState = STATE_HW_INTERFACE_LISTED;
     return(S_OK);
 }

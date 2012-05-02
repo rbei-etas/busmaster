@@ -288,13 +288,13 @@ public:
 void vBlinkHw(INTERFACE_HW s_HardwareIntr)
 {
     OCI_ControllerHandle ouOCI_HwHandle;
-    BOA_ResultCode err =  (*(sBOA_PTRS.m_sOCI.createCANController))(s_HardwareIntr.m_acNameInterface,
+    BOA_ResultCode err =  (*(sBOA_PTRS.m_sOCI.createCANController))(s_HardwareIntr.m_acNameInterface.c_str(),
                           &(ouOCI_HwHandle));
 
     if (err == OCI_SUCCESS)
     {
         SCHANNEL s_asChannel;
-        strcpy_s(s_asChannel.m_acURI, s_HardwareIntr.m_acNameInterface);
+        strcpy_s(s_asChannel.m_acURI, s_HardwareIntr.m_acNameInterface.c_str());
         s_asChannel.m_OCI_RxQueueCfg.onFrame.userData = (void*)ouOCI_HwHandle;
         s_asChannel.m_OCI_RxQueueCfg.onEvent.userData = (void*)ouOCI_HwHandle;
         //configure the controller first
@@ -1909,9 +1909,9 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
             {
                 psHWInterface[i].m_dwIdInterface = 0;
                 psHWInterface[i].m_dwVendor = 0;
-                strcpy_s(psHWInterface[i].m_acDeviceName, _T(""));
-                strcpy_s(psHWInterface[i].m_acNameInterface, A2T(acURI[i]));
-                strcpy_s(psHWInterface[i].m_acDescription, A2T(acURI[i]));
+                psHWInterface[i].m_acDeviceName = "";
+                psHWInterface[i].m_acNameInterface = A2T(acURI[i]);
+                psHWInterface[i].m_acDescription = A2T(acURI[i]);
             }
 
             if (nCount > 1)// List hw interface if there are more than one hw
@@ -1926,8 +1926,8 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 
             for (UINT nList = 0; nList < sg_nNoOfChannels; nList++)
             {
-                strcpy_s(asSelHwInterface[nList].m_acNameInterface, psHWInterface[sg_anSelectedItems[nList]].m_acNameInterface);
-                strcpy_s(asSelHwInterface[nList].m_acDescription, psHWInterface[sg_anSelectedItems[nList]].m_acDescription);
+                asSelHwInterface[nList].m_acNameInterface = psHWInterface[sg_anSelectedItems[nList]].m_acNameInterface;
+                asSelHwInterface[nList].m_acDescription = psHWInterface[sg_anSelectedItems[nList]].m_acDescription;
                 asSelHwInterface[nList].m_dwIdInterface = 100 + nList; // Give a dummy number
             }
 
@@ -1959,9 +1959,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SelectHwInterface(const INTERFACE_HW_LIST& asSelH
     //First select only supported number of HW interfaces
     for (UINT i = 0; i < sg_nNoOfChannels; i++)
     {
-        TCHAR acTmpURL[MAX_CHAR_SHORT] = {_T('\0')};
-        strcpy_s(acTmpURL, asSelHwInterface[i].m_acNameInterface);
-        strcpy_s(sg_asChannel[i].m_acURI, T2A(acTmpURL));
+        strcpy_s(sg_asChannel[i].m_acURI, T2A((LPTSTR) (asSelHwInterface[i].m_acNameInterface.c_str())));
     }
 
     // Create the controller instance.
