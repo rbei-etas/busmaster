@@ -268,7 +268,7 @@ void CNetworkMgmt::vGetNodeName(BYTE byAddress, TCHAR* acNodeName)
             if (pNodConMgr->byGetNodeAddress() == byAddress)
             {
                 i = m_nConMgrCnt; //break the loop
-                _tcscpy(acNodeName, pNodConMgr->m_acNodeName);
+                strcpy(acNodeName, pNodConMgr->m_acNodeName);
             }
         }
     }

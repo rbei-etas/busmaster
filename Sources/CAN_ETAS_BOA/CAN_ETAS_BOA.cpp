@@ -420,7 +420,7 @@ BOOL bGetBOAInstallationPath(TCHAR* pcPath, INT& nSize)
     {
         lError = RegQueryValueEx(sKey,"path",0, &ulType, acGCCPath,&dwSize);
         nSize = (INT)dwSize;
-        _tcscpy(pcPath, A2T((char*)acGCCPath));
+        strcpy(pcPath, A2T((char*)acGCCPath));
         RegCloseKey(sKey);
         bResult = TRUE;
     }

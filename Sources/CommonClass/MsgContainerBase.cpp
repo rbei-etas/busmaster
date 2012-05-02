@@ -159,6 +159,6 @@ BOOL CMsgContainerBase::bCopyStringToTCHARArr( TCHAR acDesStr[], CString omSrc, 
         bReturn = FALSE;
     }
 
-    _tcscpy(acDesStr, omSrc.GetBuffer(MAX_PATH));
+    strcpy(acDesStr, omSrc.GetBuffer(MAX_PATH));
     return bReturn;
 }
