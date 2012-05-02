@@ -61,7 +61,7 @@ static SYSTEMTIME sg_CurrSysTime;
 //#define INITIALISE_DATA(Data)   memset(Data, 0, sizeof(Data))
 
 // Buffer for the driver operation related error messages
-static CHAR sg_acErrStr[MAX_STRING] = {'\0'};
+static string sg_acErrStr;
 
 static CRITICAL_SECTION sg_CriticalSection;
 
@@ -90,13 +90,12 @@ static void GetSystemErrorString()
 
     if (dwResult <= 0)
     {
-        strcpy_s(sg_acErrStr, "system error message retrieval operation failed");
+        sg_acErrStr = "system error message retrieval operation failed";
     }
     else
     {
         LPSTR pBuf = T2A((LPTSTR) lpMsgBuf);
-        INITIALISE_DATA(sg_acErrStr);
-        lstrcpy(sg_acErrStr, pBuf);
+        sg_acErrStr = pBuf;
         // Free the buffer.
         LocalFree(lpMsgBuf);
     }
@@ -405,7 +404,7 @@ STDMETHODIMP CSimENG::RegisterClient(USHORT Bus, USHORT MaxLenFrame,
         {
             bProceed = false;
             GetSystemErrorString();
-            MessageBox(NULL, sg_acErrStr, "Error", MB_OK);
+            MessageBox(NULL, sg_acErrStr.c_str(), "Error", MB_OK);
         }
 
         if (bProceed)

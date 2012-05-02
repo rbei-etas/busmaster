@@ -32,7 +32,7 @@ static bool bIs_NULL_Pointer(char* /*PtrName*/, void* Ptr)
     return (Ptr == NULL);
 }
 
-#define LOG_ERR_MSG() sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, A2T(sg_acErrStr))
+#define LOG_ERR_MSG() sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, A2T((LPSTR) (sg_acErrStr.c_str())))
 
 #define VALIDATE_POINTER_RETURN_VAL(Ptr, RetVal) if (bIs_NULL_Pointer(#Ptr, Ptr)) {return RetVal;}
 #define VALIDATE_VALUE_RETURN_VAL(Val1, Val2, RetVal)   if (Val1 != Val2) {return RetVal;}

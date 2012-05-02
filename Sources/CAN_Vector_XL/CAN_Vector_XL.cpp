@@ -193,8 +193,7 @@ static INTERFACE_HW sg_HardwareIntr[defNO_OF_CHANNELS];
 
 
 // Global variables
-#define CAN_MAX_ERRSTR 256
-static char sg_acErrStr[CAN_MAX_ERRSTR] = {'\0'};
+static string sg_acErrStr;
 static UINT sg_unClientCnt = 0;
 #define MAX_CLIENT_ALLOWED 16
 static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED];
@@ -387,8 +386,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLog
     sg_TimeStamp = 0x0;
     /* Query Tick Count */
     sg_QueryTickCount.QuadPart = 0;
-    /* INITIALISE_ARRAY(sg_acErrStr); */
-    memset(sg_acErrStr, 0, sizeof(sg_acErrStr));
+    sg_acErrStr = "";
     CAN_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
     return S_OK;
 }
@@ -2120,14 +2118,7 @@ static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
     char acErrText[MAX_PATH] = {'\0'};
     /* Get the error text for the corresponding error code */
     sg_pIlog->vLogAMessage(A2T(File), Line, A2T(acErrText));
-    size_t nStrLen = strlen(acErrText);
-
-    if (nStrLen > CAN_MAX_ERRSTR)
-    {
-        nStrLen = CAN_MAX_ERRSTR;
-    }
-
-    strncpy_s(sg_acErrStr, acErrText, nStrLen);
+    sg_acErrStr = acErrText;
 }
 
 /**
