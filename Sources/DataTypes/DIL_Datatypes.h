@@ -44,14 +44,14 @@ const UINT64 J1939_ECU_NAME     = 0x8000000000000001;
 const BYTE MSGBUF_ADD = 0x1;
 const BYTE MSGBUF_CLEAR = 0x0;
 
-enum
+enum ECONTR_STATUS
 {
-    RESET_STATE = 0,
-    INITIALISED,
-    WAITING,
-    NORMAL_ACTIVE,
-    NORMAL_PASSIVE,
-    NOT_DEFINED,
+    RESET_STATE = 0,    // reset
+    INITIALISED,        // stopped / initialized
+    WAITING,            // started / waiting for startup completion
+    NORMAL_ACTIVE,      // started / normal active (running)
+    NORMAL_PASSIVE,     // started / normal passiv
+    NOT_DEFINED,        // started / halt mode
 };
 
 enum ECONTR_PARAM
@@ -72,14 +72,8 @@ enum ECONTR_PARAM
 
 typedef struct struct_STATUSMSG
 {
-    unsigned short wControllerStatus;    // Current controller state
-    // 0 := reset
-    // 1 := stopped / initialized
-    // 2 := started / waiting for startup completion
-    // 3 := started / normal active (running)
-    // 4 := started / normal passiv
-    // 5 := started / halt mode
-    unsigned long dwStatusInfoFlags;     // Flagfield of status information (UCI_FLXSTSINFO_???)
+    ECONTR_STATUS wControllerStatus;    // Current controller state
+    unsigned long dwStatusInfoFlags;    // Flagfield of status information (UCI_FLXSTSINFO_???)
 } s_STATUSMSG, *ps_STATUSMSG;
 
 enum
