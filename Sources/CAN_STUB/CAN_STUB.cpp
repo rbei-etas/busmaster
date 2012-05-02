@@ -175,7 +175,7 @@ static HANDLE sg_hTmpPipeHandle = NULL;
 /**
  * Buffer for the driver operation related error messages
  */
-static CHAR sg_acErrStr[MAX_STRING] = {'\0'};
+static string sg_acErrStr;
 
 /**
  * Starts code for the state machine
@@ -276,7 +276,7 @@ void SetCurrState(BYTE bNextState)
 static void vInitialiseAllData(void)
 {
     // Initialise both the time parameters
-    INITIALISE_DATA(sg_acErrStr);
+    sg_acErrStr = "";
 }
 
 static void GetSystemErrorString()
@@ -296,13 +296,12 @@ static void GetSystemErrorString()
 
     if (dwResult <= 0)
     {
-        strcpy_s(sg_acErrStr, "system error message retrieval operation failed");
+        sg_acErrStr = "system error message retrieval operation failed";
     }
     else
     {
         LPSTR pBuf = T2A((LPTSTR) lpMsgBuf);
-        INITIALISE_DATA(sg_acErrStr);
-        lstrcpy(sg_acErrStr, pBuf);
+        sg_acErrStr = pBuf;
         // Free the buffer.
         LocalFree(lpMsgBuf);
     }
@@ -501,12 +500,12 @@ HRESULT CDIL_CAN_STUB::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger*
         }
         else
         {
-            strcpy_s(sg_acErrStr, "Null argument value(s) in SetAppParams");
+            sg_acErrStr = "Null argument value(s) in SetAppParams";
         }
     }
     else
     {
-        strcpy_s(sg_acErrStr, "Improper current state to call SetAppParams");
+        sg_acErrStr = "Improper current state to call SetAppParams";
     }
 
     return hResult;
@@ -814,7 +813,7 @@ HRESULT CDIL_CAN_STUB::CAN_SetConfigData(PCHAR ConfigFile, int /*Length*/)
         case STATE_RESET:
         default:
         {
-            strcpy_s(sg_acErrStr, "CAN_STUB_SetConfigData called at improper state");
+            sg_acErrStr = "CAN_STUB_SetConfigData called at improper state";
             return S_FALSE;
         }
         break;
@@ -1195,7 +1194,7 @@ HRESULT Worker_Connect(ISimENG* pISimENGLoc, Base_WrapperErrorLogger* pIlogLoc)
 {
     if (GetCurrState() == STATE_PRIMORDIAL)
     {
-        strcpy_s(sg_acErrStr, "CAN_STUB_Connect called at STATE_PRIMORDIAL");
+        sg_acErrStr = "CAN_STUB_Connect called at STATE_PRIMORDIAL";
         return S_FALSE;
     }
     else if (GetCurrState() != STATE_INITIALISED)
@@ -1237,7 +1236,7 @@ HRESULT Worker_Disconnect(ISimENG* /*pISimENGLoc*/, Base_WrapperErrorLogger* pIl
 {
     if (GetCurrState() == STATE_PRIMORDIAL)
     {
-        strcpy_s(sg_acErrStr, "CAN_STUB_DeselectHwInterface called at STATE_PRIMORDIAL");
+        sg_acErrStr = "CAN_STUB_DeselectHwInterface called at STATE_PRIMORDIAL";
         return S_FALSE;
     }
     else if (GetCurrState() == STATE_RESET)
