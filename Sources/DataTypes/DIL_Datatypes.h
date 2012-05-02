@@ -72,8 +72,8 @@ enum ECONTR_PARAM
 
 typedef struct struct_STATUSMSG
 {
-    ECONTR_STATUS wControllerStatus;    // Current controller state
-    unsigned long dwStatusInfoFlags;    // Flagfield of status information (UCI_FLXSTSINFO_???)
+    unsigned short wControllerStatus;    // Current controller state
+    unsigned long  dwStatusInfoFlags;    // Flagfield of status information (UCI_FLXSTSINFO_???)
 } s_STATUSMSG, *ps_STATUSMSG;
 
 enum

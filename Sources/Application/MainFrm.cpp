@@ -10416,9 +10416,9 @@ void CMainFrame::vUpdateHWStatusInfo(void)
     {
         if ( m_dwDriverId == m_ouList[i].m_dwDriverID )
         {
-            if (m_asControllerDetails->m_omStrBaudrate == "")
+            if (_tcscmp(m_asControllerDetails->m_omStrBaudrate, "") == 0)
             {
-                m_asControllerDetails->m_omStrBaudrate = "500";
+                strcpy_s(m_asControllerDetails->m_omStrBaudrate, "500");
             }
 
             omStrChannelDriver.Format(  _T("%s - %s - %s Kbps (Allowed channels:%d)"),
