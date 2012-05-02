@@ -192,7 +192,7 @@ static SCONTROLLER_DETAILS sg_ControllerDetails[defNO_OF_CHANNELS];
 static INTERFACE_HW sg_HardwareIntr[defNO_OF_CHANNELS];
 
 
-// TZM specific Global variables
+// Global variables
 #define CAN_MAX_ERRSTR 256
 static char sg_acErrStr[CAN_MAX_ERRSTR] = {'\0'};
 static UINT sg_unClientCnt = 0;
