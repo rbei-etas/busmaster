@@ -198,8 +198,7 @@ static CPARAM_THREADPROC sg_sParmRThread;
 static s_STATUSMSG sg_sCurrStatus;
 static CNetwork* sg_podActiveNetwork;
 static CNetwork sg_odSimulationNetwork;
-#define MAX_CANHW 16
-//static BYTE sg_hHardware[ MAX_CANHW ];
+
 // The message buffer
 const int ENTRIES_IN_GBUF       = 2000;
 static int sg_nFRAMES = 128;
@@ -223,9 +222,6 @@ typedef struct
 } TCANTimestamp;
 
 static TCANTimestamp sg_sTime;
-
-const int SIZE_WORD     = sizeof(WORD);
-const int SIZE_CHAR     = sizeof(TCHAR);
 
 // Global variables
 #define MAX_CLIENT_ALLOWED 16
@@ -252,19 +248,16 @@ struct stAPIFirmwareInfo
     int iMainFirmChkSum;
 
     // Version data (3rd generation neoVI only. See 3rd Generation neoVI Devices)
-    unsigned char iAppMajor;
-    unsigned char iAppMinor;
-    unsigned char iManufactureDay;
-    unsigned char iManufactureMonth;
+    unsigned char  iAppMajor;
+    unsigned char  iAppMinor;
+    unsigned char  iManufactureDay;
+    unsigned char  iManufactureMonth;
     unsigned short iManufactureYear;
-    unsigned char iBoardRevMajor;
-    unsigned char iBoardRevMinor;
-    unsigned char iBootLoaderVersionMajor;
-    unsigned char iBootLoaderVersionMinor;
+    unsigned char  iBoardRevMajor;
+    unsigned char  iBoardRevMinor;
+    unsigned char  iBootLoaderVersionMajor;
+    unsigned char  iBootLoaderVersionMinor;
 };
-
-// Current buffer size
-//static UINT sg_unMsgBufCount = 0;
 
 // state variables
 static BOOL sg_bIsConnected = FALSE;
@@ -278,7 +271,7 @@ static int nGetChannelsInNeoVI(int nDevIndex);
 static void vMapDeviceChannelIndex();
 HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails);
 
-#define NEW_LINE                _T("\n")
+#define NEW_LINE                "\n"
 #define TOTAL_ERROR             600
 #define MAX_BUFFER_VALUECAN     20000
 #define WAITTIME_NEOVI          100
@@ -384,10 +377,6 @@ typedef int (__stdcall* STARTSOCKSERVER)(int hObject, int iPort);
 static STARTSOCKSERVER icsneoStartSockServer;
 typedef int (__stdcall* STOPSOCKSERVER)(int hObject);
 static STOPSOCKSERVER icsneoStopSockServer;
-
-#define MAX_CHAR_SHORT 128
-#define MAX_CHAR_LONG  512
-#define CAN_USBMSGTYPE_DATA 2
 
 typedef struct tagDATINDSTR
 {
@@ -1393,7 +1382,7 @@ static int nAddChanneltoHWInterfaceList(int narrNetwordID[], int nCntNtwIDs, int
 
             if ( nResult == 1 )
             {
-                sprintf_s(acFirmware, _T("%d.%d"), objstFWInfo.iAppMajor, objstFWInfo.iAppMinor);
+                sprintf_s(acFirmware, "%d.%d", objstFWInfo.iAppMajor, objstFWInfo.iAppMinor);
             }
         }
 
@@ -1658,8 +1647,8 @@ static int nInitHwNetwork()
     sg_ucNoOfHardware = (UCHAR)nDevices;
     // Capture only Driver Not Running event
     // Take action based on number of Hardware Available
-    TCHAR acNo_Of_Hw[MAX_STRING] = {0};
-    sprintf_s(acNo_Of_Hw, _T("Number of neoVIs Available: %d"), nDevices);
+    //char acNo_Of_Hw[1024];
+    //sprintf_s(acNo_Of_Hw, _T("Number of neoVIs Available: %d"), nDevices);
     // No Hardware found
 
     if( nDevices == 0 )
@@ -1890,8 +1879,6 @@ static int nDisconnectFromDriver()
  *
  * This function will connect the tool with hardware. This will
  * establish the data link between the application and hardware.
- * Parallel Port Mode: Controller will be disconnected.
- * USB: Client will be disconnected from the network
  */
 static int nConnect(BOOL bConnect, BYTE /*hClient*/)
 {
