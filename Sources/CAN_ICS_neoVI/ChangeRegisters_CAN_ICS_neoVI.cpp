@@ -457,7 +457,7 @@ void CChangeRegisters_CAN_ICS_neoVI::OnKillfocusEditBaudRate()
 void CChangeRegisters_CAN_ICS_neoVI::OnSelchangeCombSampling()
 {
     INT nGetValue               = 0;
-    CString omStrComboEditItem  =_T("");
+    CString omStrComboEditItem  = "";
     nGetValue =  m_omCombSampling.GetCurSel();
 
     if (nGetValue != CB_ERR)
@@ -613,8 +613,8 @@ void CChangeRegisters_CAN_ICS_neoVI::vValidateBaudRate()
         FLOAT  fTempBaudRate;
         fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
         fTempBaudRate = fTempBaudRate/100000;
-        omStrBaudRate.Format(_T("%.4f"),fTempBaudRate);
-        omStrMessage.Format(defBAUD_RATE_MESSAGE,omStrBaudRate);
+        omStrBaudRate.Format("%.4f", fTempBaudRate);
+        omStrMessage.Format(defBAUD_RATE_MESSAGE, omStrBaudRate);
         omStrPrvBaudRate = m_omStrEditBaudRate;
         //unClockPrevValue = m_unCombClock;
         // set the baudrate
