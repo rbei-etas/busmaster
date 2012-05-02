@@ -16,7 +16,7 @@
 /**
  * \file      CANRegAnalysis_CAN_ICS_neoVI.cpp
  * \brief     This file contains the function which implements the
- * \author    Pradeep Kadoor
+ * \author    Pradeep Kadoor, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This file contains the function which implements the
@@ -29,21 +29,15 @@
 // CChangeRegisters class defination file.
 #include "ChangeRegisters_CAN_ICS_neoVI.h"
 
-/******************************************************************************/
-/*  Function Name    :  nListBoxValues                                        */
-/*                                                                            */
-/*  Input(s)         :  Baudrate Number of Sample/bit and Clock Frequency     */
-/*  Output           :  NBT and BRP values                                    */
-/*  Functionality    :  Calculate set of the NBT and BRP value for given      */
-/*                      baudrate and clock frequency                          */
-/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  15.02.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  28.05.2002, Type casting changed from BYTE to WORD    */
-/******************************************************************************/
+/**
+ * \brief     List Box Values
+ * \param[in] dBuadRate Baudrate Number of Sample/bit
+ * \param[in] wClockFreq Clock Frequency
+ * \param[in] nSample Number of Sampling/bit
+ *
+ * Calculate set of the NBT and BRP value for given
+ * baudrate and clock frequency
+ */
 BOOL CChangeRegisters_CAN_ICS_neoVI::nListBoxValues(sCOLUMNS* /*psColListCtrl*/,
         DOUBLE dBuadRate, WORD wClockFreq,
         UINT* puwIndex, INT nSample)
@@ -105,22 +99,18 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::nListBoxValues(sCOLUMNS* /*psColListCtrl*/,
     return nReturn;
 }
 
-/******************************************************************************/
-/*  Function Name    :  bCalculateICSneoVIRegValues
-
-    Input(s)         :  NBT, BRP and Number of Sampling/bit
-    Output           :  true if process of calculation is complete. In case
-                        there are more values remaining, false is returned.
-    Functionality    :  Given a value of NBT, BRP and sampling rate, this
-                        calculates set of values of CNF1, CNF2, CNF3, PD and
-                        SJW saving them in the array
-                        and BRP values and stores into a structure.
-    Member of        :  CChangeRegisters_CAN_ICS_neoVI
-    Friend of        :  -
-
-    Author(s)        :  Pradeep Kadoor
-    Date Created     :  03.04.2008
-/******************************************************************************/
+/**
+ * \brief     Calculate ICSneoVI Register Values
+ * \param[in] wNBT NBT
+ * \param[in] wBrp BRP
+ * \param[in] nSample Number of Sampling/bit
+ * \return    true if process of calculation is complete. In case there are more values remaining, false is returned.
+ *
+ * Given a value of NBT, BRP and sampling rate, this
+ * calculates set of values of CNF1, CNF2, CNF3, PD and
+ * SJW saving them in the array
+ * and BRP values and stores into a structure.
+ */
 bool CChangeRegisters_CAN_ICS_neoVI::bCalculateICSneoVIRegValues(WORD wNbt, WORD wBrp,
         UINT* puwIndex, INT nSample)
 {
@@ -142,20 +132,13 @@ bool CChangeRegisters_CAN_ICS_neoVI::bCalculateICSneoVIRegValues(WORD wNbt, WORD
     return bContinue;
 }
 
-/******************************************************************************/
-/*  Function Name    : nCalculateRegParams                                    */
-/*                                                                            */
-/*  Input(s)         :  NBT, BRP and Number of Sampling/bit                   */
-/*  Output           :  Possible values of TSEG1 and TSEG2 values             */
-/*  Functionality    :  Calculates the TSEG1 and TSEG2 values for a set of NBT*/
-/*                      and BRP values and stores into a structure.           */
-/*  Member of        :  CChangeRegisters                                      */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Pradeep Kadoor                                        */
-/*  Date Created     :  11.04.2008                                            */
-/*  Modifications    :                                                        */
-/******************************************************************************/
+/**
+ * \brief      Calculate Register Parameters
+ * \param[out] CurEntry Possible values of TSEG1 and TSEG2 values
+ *
+ * Calculates the TSEG1 and TSEG2 values for a set of NBT
+ * and BRP values and stores into a structure.
+ */
 bool CChangeRegisters_CAN_ICS_neoVI::bCalculateICSneoVIParams(sBRP_NBT_SAMP_n_SJW& CurEntry,
         UINT& unCurrIndex, BYTE bOption)
 {
@@ -253,5 +236,3 @@ bool CChangeRegisters_CAN_ICS_neoVI::bCalculateICSneoVIParams(sBRP_NBT_SAMP_n_SJ
 
     return bContinue;
 }
-
-/* function ends*/

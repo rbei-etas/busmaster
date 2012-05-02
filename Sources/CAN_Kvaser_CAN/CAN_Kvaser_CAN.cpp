@@ -253,7 +253,7 @@ public:
     }
 };
 
-/* TZM specific Global variables */
+/* Global variables */
 #define CAN_MAX_ERRSTR 256
 static char sg_acErrStr[CAN_MAX_ERRSTR] = {'\0'};
 static UINT sg_unClientCnt = 0;
@@ -812,7 +812,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_DeselectHwInterface(void)
 * \authors       Arunkumar Karri
 * \date          12.10.2011 Created
 */
-BOOL Callback_DILTZM(BYTE /*Argument*/, PBYTE pDatStream, int /*Length*/)
+BOOL Callback_DIL(BYTE /*Argument*/, PBYTE pDatStream, int /*Length*/)
 {
     return (sg_pouDIL_CAN_Kvaser->CAN_SetConfigData((CHAR*) pDatStream, 0) == S_OK);
 }
@@ -859,7 +859,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
 
     if (sg_ucNoOfHardware > 0)
     {
-        int nResult = DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DILTZM,
+        int nResult = DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DIL,
                                               pControllerDetails, sg_ucNoOfHardware);
 
         switch (nResult)

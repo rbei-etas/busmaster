@@ -16,7 +16,7 @@
 /**
  * \file      CAN_ICS_neoVI.cpp
  * \brief     Exports API functions for IntrepidCS neoVI CAN Hardware interface
- * \author    Pradeep Kadoor, Arunkumar Karri
+ * \author    Pradeep Kadoor, Arunkumar Karri, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Exports API functions for IntrepidCS neoVI CAN Hardware interface
@@ -85,6 +85,8 @@ END_MESSAGE_MAP()
 
 
 /**
+ * \brief Constructor
+ *
  * CCAN_ICS_neoVIApp construction
  */
 CCAN_ICS_neoVIApp::CCAN_ICS_neoVIApp()
@@ -94,11 +96,15 @@ CCAN_ICS_neoVIApp::CCAN_ICS_neoVIApp()
 }
 
 
-// The one and only CCAN_ICS_neoVIApp object
+/**
+ * The one and only CCAN_ICS_neoVIApp object
+ */
 CCAN_ICS_neoVIApp theApp;
 
 
 /**
+ * \brief Init Instance
+ *
  * CCAN_ICS_neoVIApp initialization
  */
 BOOL CCAN_ICS_neoVIApp::InitInstance()
@@ -217,12 +223,11 @@ typedef struct
 } TCANTimestamp;
 
 static TCANTimestamp sg_sTime;
-// static global variables ends
 
 const int SIZE_WORD     = sizeof(WORD);
 const int SIZE_CHAR     = sizeof(TCHAR);
 
-// TZM specific Global variables
+// Global variables
 #define CAN_MAX_ERRSTR 256
 #define MAX_CLIENT_ALLOWED 16
 static char sg_acErrStr[CAN_MAX_ERRSTR] = {'\0'};
@@ -274,9 +279,6 @@ static int nGetChannelsInNeoVI(int nDevIndex);
 static void vMapDeviceChannelIndex();
 HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails);
 
-/*Please recheck and retain only necessary variables*/
-
-
 #define NEW_LINE                _T("\n")
 #define TOTAL_ERROR             600
 #define MAX_BUFFER_VALUECAN     20000
@@ -312,7 +314,6 @@ static int s_anErrorCodes[TOTAL_ERROR] = {0};
 
 static INT sg_anSelectedItems[CHANNEL_ALLOWED];
 
-/* Recheck ends */
 /* Error Definitions */
 #define CAN_USB_OK 0
 #define CAN_QRCV_EMPTY 0x20
@@ -389,7 +390,6 @@ static STOPSOCKSERVER icsneoStopSockServer;
 #define MAX_CHAR_LONG  512
 #define CAN_USBMSGTYPE_DATA 2
 
-/* Function pointers ends*/
 typedef struct tagDATINDSTR
 {
     BOOL    m_bIsConnected;
@@ -400,11 +400,12 @@ typedef struct tagDATINDSTR
 
 static sDatIndStr s_DatIndThread;
 
-/* CDIL_CAN_ICSNeoVI class definition */
+/**
+ * CDIL_CAN_ICSNeoVI class definition
+ */
 class CDIL_CAN_ICSNeoVI : public CBaseDIL_CAN_Controller
 {
 public:
-    /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
     HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
@@ -458,6 +459,7 @@ void vBlinkHw(INTERFACE_HW s_HardwareIntr)
 static CDIL_CAN_ICSNeoVI* sg_pouDIL_CAN_ICSNeoVI = NULL;
 
 /**
+ * \brief Get IDIL CAN Controller
  * \return S_OK for success, S_FALSE for failure
  *
  * Returns the interface to controller
@@ -478,9 +480,9 @@ USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
     return hResult;
 }
 
-/* HELPER FUNCTIONS START */
-
 /**
+ * \brief Create And Set Read Indication Event
+ *
  * Function create and set read indication event
  */
 static int nCreateAndSetReadIndicationEvent(HANDLE& hReadEvent)
@@ -503,6 +505,8 @@ static int nCreateAndSetReadIndicationEvent(HANDLE& hReadEvent)
 }
 
 /**
+ * \brief Retrieve And Log
+ *
  * Function to retreive error occurred and log it
  */
 static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
@@ -533,9 +537,10 @@ static int nSetHardwareMode(UCHAR ucDeviceMode)
 }
 
 /**
+ * \brief     Handle Error Counter
  * \param[in] ucRxErr Rx Error Counter Value
  * \param[in] ucTxErr Tx Error Counter Value
- * \return Type of the error message: Error Bus, Error Warning Limit and Error Interrupt
+ * \return    Type of the error message: Error Bus, Error Warning Limit and Error Interrupt
  *
  * Posts message as per the error counter. This function will
  * update local state variable as per error codes.
@@ -619,9 +624,10 @@ static UCHAR USB_ucHandleErrorCounter( UCHAR ucChannel,
 }
 
 /**
+ * \brief     Get Error Code
  * \param[in] lError Error code in Peak USB driver format
  * \param[in] byDir  Error direction Tx/Rx
- * \return Error code in BUSMASTER application format
+ * \return    Error code in BUSMASTER application format
  *
  * This will convert the error code from Perk USB driver format
  * to the format that is used by BUSMASTER.
@@ -670,6 +676,8 @@ static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir)
 }
 
 /**
+ * \brief Create Time Mode Mapping
+ *
  * Function to create time mode mapping
  */
 static void vCreateTimeModeMapping()
@@ -691,7 +699,6 @@ static void vCreateTimeModeMapping()
         sg_TimeStamp = (sg_QueryTickCount.QuadPart / sg_lnFrequency.QuadPart) * 10000;
     }
 }
-
 
 static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
 {
@@ -761,6 +768,7 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
 }
 
 /**
+ * \bref       Process Error
  * \param[in]  odChannel The current channel
  * \param[out] sCanData Application specific data format
  * \param[in]  ushRxErr Number of Rx error
@@ -787,10 +795,11 @@ static void vProcessError(STCANDATA& sCanData, CChannel& odChannel,
 }
 
 /**
+ * \brief      Classify Message Type
  * \param[in]  CurrSpyMsg Message polled from the bus in neoVI format
  * \param[out] sCanData Application specific data format
  * \param[in]  unChannel channel
- * \return TRUE (always)
+ * \return     TRUE (always)
  *
  * This will classify the messages, which can be one of Rx, Tx or
  * Error messages. In case of Err messages this identifies under
@@ -933,10 +942,11 @@ static BYTE bClassifyMsgType(icsSpyMessage& CurrSpyMsg,
 }
 
 /**
- * \param[in] psCanDataArray Pointer to CAN Message Array of Structures
- * \param[in] nMessage Maximun number of message to read or size of the CAN Message Array
+ * \brief      Read Multi Message
+ * \param[in]  psCanDataArray Pointer to CAN Message Array of Structures
+ * \param[in]  nMessage Maximun number of message to read or size of the CAN Message Array
  * \param[out] Message Actual Messages Read
- * \return Returns defERR_OK if successful otherwise corresponding Error code.
+ * \return     Returns defERR_OK if successful otherwise corresponding Error code.
  *
  * This function will read multiple CAN messages from the driver.
  * The other fuctionality is same as single message read. This
@@ -1250,6 +1260,8 @@ BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
 }
 
 /**
+ * \brief Write Into Clients Buffer
+ *
  * This function writes the message to the corresponding clients buffer
  */
 static void vWriteIntoClientsBuffer(STCANDATA& sCanData)
@@ -1304,6 +1316,8 @@ static void vWriteIntoClientsBuffer(STCANDATA& sCanData)
 }
 
 /**
+ * \brief Process CAN Message
+ *
  * Processing of the received packets from bus
  */
 static void ProcessCANMsg(int nChannelIndex)
@@ -1320,6 +1334,8 @@ static void ProcessCANMsg(int nChannelIndex)
 }
 
 /**
+ * \brief CAN Message Read Thread Procedure
+ *
  * Read thread procedure
  */
 DWORD WINAPI CanMsgReadThreadProc_CAN_ICS_neoVI(LPVOID pVoid)
@@ -1389,6 +1405,8 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_ICS_neoVI(LPVOID pVoid)
 }
 
 /**
+ * \brief Add Channel To Hardware Interface List
+ *
  * This function will add channels to hardware inteface structure.
  */
 static int nAddChanneltoHWInterfaceList(int narrNetwordID[], int nCntNtwIDs, int& nChannels, const int nDevID)
@@ -1434,6 +1452,8 @@ static int nAddChanneltoHWInterfaceList(int narrNetwordID[], int nCntNtwIDs, int
 }
 
 /**
+ * \brief Create Single Hardware Network
+ *
  * This is USB Specific Function. This will create a single
  * network with available single hardware.
  */
@@ -1464,6 +1484,7 @@ static int nCreateSingleHardwareNetwork()
 }
 
 /**
+ * \brief  List Hardware Interfaces
  * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
  *
  * This function will popup hardware selection dialog and gets the user selection of channels.
@@ -1479,6 +1500,8 @@ int ListHardwareInterfaces(HWND /*hParent*/, DWORD /*dwDriver*/, INTERFACE_HW* p
 }
 
 /**
+ * \brief Create Multiple Hardware Network
+ *
  * This function will get the hardware selection from the user
  * and will create essential networks.
  */
@@ -1607,8 +1630,9 @@ static int nCreateMultipleHardwareNetwork()
 }
 
 /**
+ * \brief     Get Number Of Connected Hardware
  * \param[in] nHardwareCount Hardware Count
- * \return Returns defERR_OK if successful otherwise corresponding Error code.
+ * \return    Returns defERR_OK if successful otherwise corresponding Error code.
  *
  * Finds the number of hardware connected. This is applicable
  * only for USB device. For parallel port this is not required.
@@ -1649,6 +1673,7 @@ static int nGetNoOfConnectedHardware(int& nHardwareCount)
 }
 
 /**
+ * \brief  Init Hardware Network
  * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
  *
  * This is USB Specific function.This function will create
@@ -1699,6 +1724,7 @@ static int nInitHwNetwork()
 }
 
 /**
+ * \brief  Connect To Driver
  * \return Returns defERR_OK if successful otherwise corresponding Error code.
  *
  * This function will initialise hardware handlers of USB. This
@@ -1721,6 +1747,7 @@ static int nConnectToDriver()
 }
 
 /**
+ * \brief  Get Driver Status
  * \return TRUE if the driver is running. FALSE - IF it is not running
  */
 static BOOL bGetDriverStatus()
@@ -1730,6 +1757,7 @@ static BOOL bGetDriverStatus()
 }
 
 /**
+ * \brief  Set Baud Rate
  * \return defERR_OK if successful otherwise corresponding Error code.
  *
  * This function will set the baud rate of the controller
@@ -1764,7 +1792,9 @@ static int nSetBaudRate()
 }
 
 /**
+ * \brief  Set Warning Limit
  * \return Returns defERR_OK if successful otherwise corresponding Error code.
+ *
  * This function will set the warning limit of the controller. In
  * USB mode this is not supported as the warning limit is
  * internally set to 96
@@ -1783,6 +1813,7 @@ static int nSetWarningLimit()
 }
 
 /**
+ * \bref   Set Filter
  * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
  *
  * This function will set the filter information.
@@ -1793,6 +1824,7 @@ static int nSetFilter( )
 }
 
 /**
+ * \brief  Set Apply Configuration
  * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
  *
  * This function will set all controller parameters. This will
@@ -1821,8 +1853,9 @@ static int nSetApplyConfiguration()
 }
 
 /**
+ * \brief      Test Hardware Connection
  * \param[out] ucaTestResult Array that will hold test result. TRUE if hardware present and false if not connected
- * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
+ * \return     Operation Result. 0 incase of no errors. Failure Error codes otherwise.
  *
  * This function will check all hardware connectivity by getting
  * hardware parameter. In parallel port mode this will set the
@@ -1851,6 +1884,7 @@ static int nTestHardwareConnection(UCHAR& ucaTestResult, UINT nChannel) //const
 }
 
 /**
+ * \brief  Disconnect From Driver
  * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
  *
  * This will close the connection with the driver. This will be
@@ -1885,8 +1919,9 @@ static int nDisconnectFromDriver()
 }
 
 /**
+ * \brief     Connect
  * \param[in] bConnect TRUE to Connect, FALSE to Disconnect
- * \return Returns defERR_OK if successful otherwise corresponding Error code.
+ * \return    Returns defERR_OK if successful otherwise corresponding Error code.
  *
  * This function will connect the tool with hardware. This will
  * establish the data link between the application and hardware.
@@ -2011,6 +2046,8 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
 }
 
 /**
+ * \brief Map Device Channel Index
+ *
  * Function to map device channels with BUSMASTER channel order
  */
 static void vMapDeviceChannelIndex()
@@ -2036,7 +2073,10 @@ static void vMapDeviceChannelIndex()
         }
     }
 }
+
 /**
+ * \brief Get ICS neoVI API Function Pointers
+ *
  * Function to set API function pointers
  */
 HRESULT GetICS_neoVI_APIFuncPtrs(void)
@@ -2204,7 +2244,9 @@ HRESULT GetICS_neoVI_APIFuncPtrs(void)
 }
 
 /**
- * Perform initialization operations specific to TZM
+ * \brief Perform Initialization Operations
+ *
+ * Perform initialization operations
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_PerformInitOperations(void)
 {
@@ -2222,7 +2264,9 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_PerformInitOperations(void)
 }
 
 /**
- * Perform closure operations specific to TZM
+ * \brief Perform Closure Operations
+ *
+ * Perform closure operations specific
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_PerformClosureOperations(void)
 {
@@ -2246,6 +2290,8 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_PerformClosureOperations(void)
 }
 
 /**
+ * \brief Get Time Mode Mapping
+ *
  * Retrieve time mode mapping
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
@@ -2262,6 +2308,8 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT6
 }
 
 /**
+ * \brief List Hardware Interfaces
+ *
  * Function to List Hardware interfaces connect to the system and requests to the
  * user to select
  */
@@ -2300,8 +2348,9 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 }
 
 /**
+ * \brief     Reset Hardware
  * \param[in] bHardwareReset Reset Mode: TRUE - Hardware Reset, FALSE - Software Reset
- * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
+ * \return    Operation Result. 0 incase of no errors. Failure Error codes otherwise.
  *
  * This function will do controller reset. In case of USB mode
  * Software Reset will be simulated by Client Reset.
@@ -2312,6 +2361,8 @@ static int nResetHardware(BOOL /*bHardwareReset*/)
 }
 
 /**
+ * \brief Deselect Hardware Interface
+ *
  * Function to deselect the chosen hardware interface
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_DeselectHwInterface(void)
@@ -2324,6 +2375,8 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_DeselectHwInterface(void)
 }
 
 /**
+ * \brief Select Hardware Interface
+ *
  * Function to select hardware interface chosen by the user
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_SelectHwInterface(const INTERFACE_HW_LIST& asSelHwInterface, INT /*nCount*/)
@@ -2357,6 +2410,8 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SelectHwInterface(const INTERFACE_HW_LIST& asSelH
 }
 
 /**
+ * \brief Set Configuration Data
+ *
  * Function to set controller configuration
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_SetConfigData(PCHAR ConfigFile, int Length)
@@ -2382,12 +2437,13 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SetConfigData(PCHAR ConfigFile, int Length)
     return hResult;
 }
 
-BOOL Callback_DILTZM(BYTE /*Argument*/, PBYTE pDatStream, int /*Length*/)
+BOOL Callback_DIL(BYTE /*Argument*/, PBYTE pDatStream, int /*Length*/)
 {
     return ( sg_pouDIL_CAN_ICSNeoVI->CAN_SetConfigData((CHAR*) pDatStream, 0) == S_OK);
 }
 
 /**
+ * \brief  Display Configuration Dialog
  * \return S_OK for success, S_FALSE for failure
  *
  * Displays the configuration dialog for controller
@@ -2405,8 +2461,10 @@ int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/,
 
 
 /**
-*  Function to fill the hardware description details
-*/
+ * \brief Fill Hardware Description
+ *
+ * Function to fill the hardware description details
+ */
 HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
 {
     /* First initialize with existing hw description */
@@ -2625,6 +2683,8 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
 }
 
 /**
+ * \brief Display Configuration Dialog
+ *
  * Function to display config dialog
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_DisplayConfigDlg(PCHAR& InitData, int& Length)
@@ -2638,7 +2698,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_DisplayConfigDlg(PCHAR& InitData, int& Length)
 
     if (sg_ucNoOfHardware > 0)
     {
-        int nResult = DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DILTZM,
+        int nResult = DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DIL,
                                               pControllerDetails, sg_ucNoOfHardware);
 
         switch (nResult)
@@ -2684,6 +2744,8 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_DisplayConfigDlg(PCHAR& InitData, int& Length)
 }
 
 /**
+ * \brief Start Hardware
+ *
  * Function to start monitoring the bus
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_StartHardware(void)
@@ -2730,6 +2792,8 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_StartHardware(void)
 }
 
 /**
+ * \brief Stop Hardware
+ *
  * Function to stop monitoring the bus
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_StopHardware(void)
@@ -2792,12 +2856,13 @@ static BOOL bClientIdExist(const DWORD& dwClientId)
 }
 
 /**
- * \param sErrorCount Error Counter Structure
+ * \brief  Get Error Counter
+ * \param  sErrorCount Error Counter Structure
  * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
  *
  * This function will return the error counter values. In case of USB this is not supported.
  */
-static int nGetErrorCounter( UINT unChannel, SERROR_CNT& sErrorCount)
+static int nGetErrorCounter(UINT unChannel, SERROR_CNT& sErrorCount)
 {
     int nReturn = -1;
 
@@ -2820,6 +2885,8 @@ static int nGetErrorCounter( UINT unChannel, SERROR_CNT& sErrorCount)
 }
 
 /**
+ * \brief Reset Hardware
+ *
  * Function to reset the hardware, fcClose resets all the buffer
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_ResetHardware(void)
@@ -2840,6 +2907,8 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ResetHardware(void)
 }
 
 /**
+ * \brief Get Current Status
+ *
  * Function to get Controller status
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
@@ -2861,8 +2930,9 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
 }
 
 /**
+ * \brief     Write Message
  * \param[in] sMessage Message to Transmit
- * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
+ * \return    Operation Result. 0 incase of no errors. Failure Error codes otherwise.
  *
  * This will send a CAN message to the driver. In case of USB
  * this will write the message in to the driver buffer and will
@@ -2917,6 +2987,8 @@ static int nWriteMessage(STCAN_MSG sMessage)
 }
 
 /**
+ * \brief Send Message
+ *
  * Function to Send CAN Message to Transmit buffer. This is called only after checking the controller in active mode
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessage)
@@ -2955,6 +3027,8 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessa
 }
 
 /**
+ * \brief Get Last Error String
+ *
  * Function to retreive error string of last occurred error
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_GetLastErrorString(string& acErrorStr)
@@ -2964,7 +3038,9 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_GetLastErrorString(string& acErrorStr)
 }
 
 /**
- * Set application parameters specific to CAN_USB
+ * \brief Set Application Parameters
+ *
+ * Set application parameters
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
 {
@@ -3019,6 +3095,8 @@ static DWORD dwGetAvailableClientSlot()
 }
 
 /**
+ * \brief Register Client
+ *
  * Register Client
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, TCHAR* pacClientName)
@@ -3167,6 +3245,8 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
 }
 
 /**
+ * \brief Load Driver Library
+ *
  * Function to load driver icsneo40.dll
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_LoadDriverLibrary(void)
@@ -3218,6 +3298,8 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_LoadDriverLibrary(void)
 }
 
 /**
+ * \brief Unload Driver Library
+ *
  * Function to Unload Driver library
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_UnloadDriverLibrary(void)
