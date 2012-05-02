@@ -228,9 +228,8 @@ const int SIZE_WORD     = sizeof(WORD);
 const int SIZE_CHAR     = sizeof(TCHAR);
 
 // Global variables
-#define CAN_MAX_ERRSTR 256
 #define MAX_CLIENT_ALLOWED 16
-static char sg_acErrStr[CAN_MAX_ERRSTR] = {'\0'};
+static string sg_acErrStr;
 static UINT sg_unClientCnt = 0;
 static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED];
 static UINT sg_unCntrlrInitialised = 0;
@@ -307,7 +306,7 @@ static BYTE m_bytNetworkIDs[MAX_DEVICES] = {0};
 static unsigned char m_ucNetworkID[NETWORKS_COUNT] = {0};
 static int m_anhObject[MAX_DEVICES][NETWORKS_COUNT+1] = {0};
 static int m_anhWriteObject[MAX_DEVICES] = {0};
-static TCHAR m_omErrStr[MAX_STRING] = {0};
+static string m_omErrStr;
 static BOOL m_bInSimMode = FALSE;
 //static CWinThread* m_pomDatInd = NULL;
 static int s_anErrorCodes[TOTAL_ERROR] = {0};
@@ -517,14 +516,7 @@ static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
     //if ((*pfCAN_GetErrText)(dwErrorCode, acErrText) == CAN_USB_OK)
     {
         sg_pIlog->vLogAMessage(A2T(File), Line, A2T(acErrText));
-        size_t nStrLen = strlen(acErrText);
-
-        if (nStrLen > CAN_MAX_ERRSTR)
-        {
-            nStrLen = CAN_MAX_ERRSTR;
-        }
-
-        strncpy_s(sg_acErrStr, acErrText, nStrLen);
+        sg_acErrStr = acErrText;
     }
 }
 
@@ -1629,7 +1621,7 @@ static int nGetNoOfConnectedHardware(int& nHardwareCount)
     {
         if (nHardwareCount == 0)
         {
-            strcpy_s(m_omErrStr,_T("Query successful, but no device found"));
+            m_omErrStr = "Query successful, but no device found";
         }
 
         nReturn = nHardwareCount;
@@ -1638,7 +1630,7 @@ static int nGetNoOfConnectedHardware(int& nHardwareCount)
     {
         nReturn = -1;
         nHardwareCount = 0;
-        strcpy_s(m_omErrStr,_T("Query for devices unsuccessful"));
+        m_omErrStr = "Query for devices unsuccessful";
     }
 
     // Return the operation result
@@ -1672,7 +1664,7 @@ static int nInitHwNetwork()
 
     if( nDevices == 0 )
     {
-        MessageBox(NULL,m_omErrStr, NULL, MB_OK | MB_ICONERROR);
+        MessageBox(NULL, m_omErrStr.c_str(), NULL, MB_OK | MB_ICONERROR);
         nReturn = -1;
     }
     // Available hardware is lesser then the supported channels
@@ -3026,8 +3018,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLog
     memset(&sg_sCurrStatus, 0, sizeof(sg_sCurrStatus));
     //Query Tick Count
     sg_QueryTickCount.QuadPart = 0;
-    //INITIALISE_ARRAY(sg_acErrStr);
-    memset(sg_acErrStr, 0, sizeof(sg_acErrStr));
+    sg_acErrStr = "";
     CAN_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
     return S_OK;
 }
