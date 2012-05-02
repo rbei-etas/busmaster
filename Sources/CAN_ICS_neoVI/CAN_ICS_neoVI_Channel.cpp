@@ -36,19 +36,6 @@ CChannel::CChannel()
     m_usBaudRate = defBAUD_RATE;
     // Controller state
     m_ucControllerState = defMODE_ACTIVE;
-    // Acceptance Filter information
-    // This will accept all messages
-    m_sFilter.m_ucACC_Mask0 = defINIT_MASK_VALUE;
-    m_sFilter.m_ucACC_Mask1 = defINIT_MASK_VALUE;
-    m_sFilter.m_ucACC_Mask2 = defINIT_MASK_VALUE;
-    m_sFilter.m_ucACC_Mask3 = defINIT_MASK_VALUE;
-    // Code value to 00
-    m_sFilter.m_ucACC_Code0 = defINIT_CODE_VALUE;
-    m_sFilter.m_ucACC_Code1 = defINIT_CODE_VALUE;
-    m_sFilter.m_ucACC_Code2 = defINIT_CODE_VALUE;
-    m_sFilter.m_ucACC_Code3 = defINIT_CODE_VALUE;
-    // Set the filter type
-    m_sFilter.m_ucACC_Filter_Type = 0;
     // Hardware Handle Associated with this channel
     m_hHardwareHandle = 0;
     // Network Handle Associated with this channel

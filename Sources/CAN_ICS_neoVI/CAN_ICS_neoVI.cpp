@@ -715,33 +715,6 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
             odChannel.m_ucWarningLimit = static_cast <UCHAR>(
                                              _tcstol( pControllerDetails[ nIndex ].m_omStrWarningLimit,
                                                      &pcStopStr, defBASE_DEC ));
-            // Get Acceptance Filter
-            odChannel.m_sFilter.m_ucACC_Code0 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte1[0],
-                                                            &pcStopStr, defBASE_HEX ));
-            odChannel.m_sFilter.m_ucACC_Code1 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte2[0],
-                                                            &pcStopStr, defBASE_HEX ));
-            odChannel.m_sFilter.m_ucACC_Code2 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte3[0],
-                                                            &pcStopStr, defBASE_HEX ));
-            odChannel.m_sFilter.m_ucACC_Code3 = static_cast <UCHAR>(
-                                                    _tcstol(pControllerDetails[ nIndex ].m_omStrAccCodeByte4[0],
-                                                            &pcStopStr, defBASE_HEX));
-            odChannel.m_sFilter.m_ucACC_Mask0 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte1[0],
-                                                            &pcStopStr, defBASE_HEX));
-            odChannel.m_sFilter.m_ucACC_Mask1 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte2[0],
-                                                            &pcStopStr, defBASE_HEX));
-            odChannel.m_sFilter.m_ucACC_Mask2 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte3[0],
-                                                            &pcStopStr, defBASE_HEX));
-            odChannel.m_sFilter.m_ucACC_Mask3 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte4[0],
-                                                            &pcStopStr, defBASE_HEX));
-            odChannel.m_sFilter.m_ucACC_Filter_Type = static_cast <UCHAR>(
-                        pControllerDetails[ nIndex ].m_bAccFilterMode );
             odChannel.m_bCNF1 = static_cast <UCHAR>(
                                     _tcstol( pControllerDetails[ nIndex ].m_omStrCNF1,
                                              &pcStopStr, defBASE_HEX));
