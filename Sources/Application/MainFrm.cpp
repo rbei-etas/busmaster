@@ -10422,7 +10422,7 @@ void CMainFrame::vUpdateHWStatusInfo(void)
             }
 
             omStrChannelDriver.Format(  _T("%s - %s - %s Kbps (Allowed channels:%d)"),
-                                        omStrChannels, m_ouList[i].m_acName,
+                                        omStrChannels, m_ouList[i].m_acName.c_str(),
                                         m_asControllerDetails->m_omStrBaudrate, CHANNEL_ALLOWED);
             break;
         }
