@@ -194,32 +194,32 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
         switch(dwDriverID)
         {
             case DRIVER_CAN_PEAK_USB:
-                m_hDll = LoadLibrary(_T("CAN_PEAK_USB.dll"));
+                m_hDll = LoadLibrary("CAN_PEAK_USB.dll");
                 break;
 
             case DRIVER_CAN_ICS_NEOVI:
             case DRIVER_CAN_ETAS_ES581:
-                m_hDll = LoadLibrary(_T("CAN_ICS_neoVI.dll"));
+                m_hDll = LoadLibrary("CAN_ICS_neoVI.dll");
                 break;
 
             case DRIVER_CAN_ETAS_BOA:
-                m_hDll = LoadLibrary(_T("CAN_ETAS_BOA.dll"));
+                m_hDll = LoadLibrary("CAN_ETAS_BOA.dll");
                 break;
 
             case DRIVER_CAN_VECTOR_XL:
-                m_hDll = LoadLibrary(_T("CAN_Vector_XL.dll"));
+                m_hDll = LoadLibrary("CAN_Vector_XL.dll");
                 break;
 
             case DRIVER_CAN_KVASER_CAN:
-                m_hDll = LoadLibrary(_T("CAN_Kvaser_CAN.dll"));
+                m_hDll = LoadLibrary("CAN_Kvaser_CAN.dll");
                 break;
 
             case DRIVER_CAN_STUB:
-                m_hDll = LoadLibrary(_T("CAN_STUB.dll"));
+                m_hDll = LoadLibrary("CAN_STUB.dll");
                 break;
 
             case DRIVER_CAN_MHS:
-                m_hDll = LoadLibrary(_T("CAN_MHS.dll"));
+                m_hDll = LoadLibrary("CAN_MHS.dll");
                 break;
 
             case DAL_NONE:
