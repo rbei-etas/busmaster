@@ -72,14 +72,14 @@ enum ECONTR_PARAM
 
 typedef struct struct_STATUSMSG
 {
-    WORD  wControllerStatus;                  // Current controller state
+    unsigned short wControllerStatus;    // Current controller state
     // 0 := reset
     // 1 := stopped / initialized
     // 2 := started / waiting for startup completion
     // 3 := started / normal active (running)
     // 4 := started / normal passiv
     // 5 := started / halt mode
-    DWORD dwStatusInfoFlags;                  // Flagfield of status information (UCI_FLXSTSINFO_???)
+    unsigned long dwStatusInfoFlags;     // Flagfield of status information (UCI_FLXSTSINFO_???)
 } s_STATUSMSG, *ps_STATUSMSG;
 
 enum
@@ -98,13 +98,13 @@ enum
 
 typedef enum FILTER_TYPE
 {
-    PASS_FILTER,
+    PASS_FILTER = 0,
     STOP_FILTER,
 } FILTER_TYPE;
 
 typedef enum TXMODE
 {
-    SINGLE_SHOT,
+    SINGLE_SHOT = 0,
     CONTINOUS,
 } TXMODE;
 
@@ -114,9 +114,9 @@ typedef enum TXMODE
 
 typedef struct tagHwInterface
 {
-    DWORD    m_dwIdInterface;
-    DWORD    m_dwVendor;
-    BYTE     m_bytNetworkID;
+    unsigned long  m_dwIdInterface;
+    unsigned long  m_dwVendor;
+    unsigned char  m_bytNetworkID;
     TCHAR    m_acNameInterface[MAX_CHAR_SHORT];
     TCHAR    m_acDescription[MAX_CHAR_LONG];
     TCHAR    m_acDeviceName[MAX_CHAR_SHORT];
@@ -135,9 +135,9 @@ public:
 class DILINFO
 {
 public:
-    string  m_acName;
-    DWORD   m_dwDriverID;
-    UINT    m_ResourceID;
+    string         m_acName;
+    unsigned long  m_dwDriverID;
+    unsigned int   m_ResourceID;
 };
 
 const int MAX_DILS = 16;
