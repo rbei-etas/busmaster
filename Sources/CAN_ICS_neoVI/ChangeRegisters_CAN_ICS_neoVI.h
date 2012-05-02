@@ -105,9 +105,6 @@ public:
     virtual ~CChangeRegisters_CAN_ICS_neoVI();
     BOOL bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1);
     BOOL bGetBaudRateFromCom(int nChannel,BYTE& bBTR0,BYTE& bBTR1);
-    BOOL bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId,
-                           DWORD dEndMsgId);
-    BOOL bGetFilterFromCom(BOOL& bExtended, double& dBeginMsgId, double& dEndMsgId);
     INT nGetInitStatus();
 
 protected:
