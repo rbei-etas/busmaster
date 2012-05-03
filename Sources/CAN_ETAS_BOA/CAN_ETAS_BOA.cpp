@@ -309,7 +309,9 @@ void vBlinkHw(INTERFACE_HW s_HardwareIntr)
 
             if ((*(sBOA_PTRS.m_sOCI.closeCANController))(ouOCI_HwHandle) == OCI_SUCCESS)
             {
-                (*(sBOA_PTRS.m_sOCI.destroyCANController))(ouOCI_HwHandle) == OCI_SUCCESS;
+                if ((*(sBOA_PTRS.m_sOCI.destroyCANController))(ouOCI_HwHandle) == OCI_SUCCESS)
+                {
+                }
             }
         }
     }
