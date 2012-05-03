@@ -77,7 +77,6 @@ LRESULT CElementPropPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 
     HRESULT hr;
     CComPtr<IDMGraphCollection> spGraphCollection;
-    long count = 0, nSelected = 0;
     hr = spGraph->get_Elements(&spGraphCollection);
 
     if(FAILED(hr))
