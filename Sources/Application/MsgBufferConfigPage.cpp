@@ -21,13 +21,13 @@
  *
  * This file contain definition of all function of
  */
-#include "stdafx.h"                 // For standard include
-#include "BUSMASTER.h"            // For App definition
-#include "MsgBufferConfigPage.h"    // For class definition
+
+/* Project includes */
+#include "stdafx.h"                 /* For standard include */
+#include "BUSMASTER.h"              /* For App definition   */
+#include "MsgBufferConfigPage.h"    /* For class definition */
 
 extern CCANMonitorApp theApp;
-/////////////////////////////////////////////////////////////////////////////
-// CMsgBufferConfigPage property page
 
 IMPLEMENT_DYNCREATE(CMsgBufferConfigPage, CPropertyPage)
 
@@ -40,11 +40,10 @@ CMsgBufferConfigPage::CMsgBufferConfigPage() :
     CPropertyPage(CMsgBufferConfigPage::IDD,
                   IDS_PPAGE_TITLE_BUFFER)
 {
-    //{{AFX_DATA_INIT(CMsgBufferConfigPage)
     m_unAppendSize = 0;
     m_unOverWriteSize = 0;
     m_unDisplayUpdateRate = 0;
-    //}}AFX_DATA_INIT
+    m_pnBufferSize = NULL;
 }
 
 void CMsgBufferConfigPage::vSetBufferSize(INT* pnBufferSize)
@@ -64,20 +63,17 @@ CMsgBufferConfigPage::~CMsgBufferConfigPage()
 void CMsgBufferConfigPage::DoDataExchange(CDataExchange* pDX)
 {
     CPropertyPage::DoDataExchange(pDX);
-    //{{AFX_DATA_MAP(CMsgBufferConfigPage)
+
     DDX_Text(pDX, IDC_EDIT_APPEND_SIZE, m_unAppendSize);
     DDV_MinMaxUInt(pDX, m_unAppendSize, defMIN_BUFFER_SIZE, defMAX_BUFFER_SIZE);
     DDX_Text(pDX, IDC_EDIT_OVERWRITE_SIZE, m_unOverWriteSize);
     DDV_MinMaxUInt(pDX, m_unOverWriteSize, defMIN_BUFFER_SIZE, defMAX_BUFFER_SIZE);
     DDX_Text(pDX, IDC_EDIT_DISPLAY_UPDATE, m_unDisplayUpdateRate);
     DDV_MinMaxUInt(pDX, m_unDisplayUpdateRate, defMIN_DISPLAY_UPDATE_TIME, defMAX_DISPLAY_UPDATE_TIME);
-    //}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CMsgBufferConfigPage, CPropertyPage)
-    //{{AFX_MSG_MAP(CMsgBufferConfigPage)
     ON_BN_CLICKED(IDC_CBTN_SET_DEFAULT, OnCbtnSetDefault)
-    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /**
