@@ -336,14 +336,13 @@ DWORD WINAPI SignalDataPlotterThread(LPVOID pVoid)
     }
 
     pThreadParam->m_unActionCode = CREATE_TIME_MAP;
-    int nRefreshTime = 0;
     int nBufferSize = 0;
 
     for(int nBUSId = 0; nBUSId<AVAILABLE_PROTOCOLS; nBUSId++)
     {
         if(m_pomGraphWindows[nBUSId] != NULL)
         {
-            nRefreshTime =
+            int nRefreshTime =
                 m_pomGraphWindows[nBUSId]->m_pGraphList->m_odGraphParameters.m_nRefreshRate;
             nBufferSize = m_pomGraphWindows[nBUSId]->m_pGraphList->m_odGraphParameters.m_nBufferSize;
         }
