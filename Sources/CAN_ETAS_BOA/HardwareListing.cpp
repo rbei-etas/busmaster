@@ -717,12 +717,10 @@ INT CHardwareListing::nGetSelectedList(int* pnList)
 */
 void CHardwareListing::vSetSelectedList()
 {
-    int nSelected = m_nSelectedItem;
     // Insert the selected item in to the selected list
     int nItem;
     CString omStrChannel;//(STR_EMPTY);
     CString omStrHardware;
-    int nArrayIndex = -1;
 
     for ( int i = 0 ; i < m_nSize && m_pnSelList[i]!=-1 ; i++)
     {
