@@ -40,7 +40,6 @@
 #include "DIL_Interface/DIL_Interface_extern.h"
 
 typedef CMsgBufCANVFSE<STCANDATA> CCANBufVFSE;
-typedef void (*MSG_RX_CALL_BK)(void* pParam, ETYPE_BUS eBusType);
 
 // To save delta time in case of append mode
 typedef struct stCanDataSpl : public STCANDATA
