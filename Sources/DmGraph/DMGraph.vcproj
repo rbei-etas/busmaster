@@ -767,6 +767,14 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Generated Files"
+			>
+			<File
+				RelativePath=".\DMGraph.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="About.txt"
 			>
