@@ -156,6 +156,10 @@ private:
 public:
     sTXMSGINFO()
     {
+        m_sTimerThreadInfo.m_hThread = NULL;
+        m_sTimerThreadInfo.m_pvThread = NULL;
+        m_sKeyThreadInfo.m_hThread = NULL;
+        m_sKeyThreadInfo.m_pvThread = NULL;
         m_hSemaphore = NULL;
         m_psTxCANMsgList = NULL;
         m_psNextTxMsgInfo = NULL;
