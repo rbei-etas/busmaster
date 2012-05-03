@@ -54,6 +54,8 @@ private:
     CRITICAL_SECTION m_omCritSecSW;
 
 public:
+    CSignalWatch_J1939(void) {};
+    ~CSignalWatch_J1939(void) {};
     BOOL InitInstance(void);
     int ExitInstance(void);
 
