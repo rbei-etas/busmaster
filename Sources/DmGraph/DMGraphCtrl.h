@@ -327,7 +327,7 @@ private:
 
     CWindow     m_ttip;
     TOOLINFO    m_ti;
-    TCHAR       m_ToolTipText[ TOOLTIP_TXT_LEN ];
+    char       m_ToolTipText[ TOOLTIP_TXT_LEN ];
 
     short m_nCursorCount;
     CDMGraphCursorState m_objCursorStMachine;

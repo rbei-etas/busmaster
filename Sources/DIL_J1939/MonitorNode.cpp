@@ -17,7 +17,7 @@
 #include "NetworkMgmt.h"
 
 
-CMonitorNode::CMonitorNode(int nNodeNo, TCHAR* pacNodeName,
+CMonitorNode::CMonitorNode(int nNodeNo, char* pacNodeName,
                            UINT64 un64ECUName, BYTE byPrefAdres):CNodeConManager(nNodeNo, pacNodeName, un64ECUName, byPrefAdres, TRUE)
 {
     for (int i = 0; i < MAX_NODE_TO_MONITOR; i++)

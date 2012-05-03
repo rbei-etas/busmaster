@@ -205,7 +205,7 @@ void CMessageDetailsDlg::OnOK()
 
         for ( int nCount = 0; nCount < m_omStrMessageCode.GetLength(); nCount++ )
         {
-            TCHAR tChar = m_omStrMessageCode.GetAt( nCount );
+            char tChar = m_omStrMessageCode.GetAt( nCount );
 
             if ( !((tChar >= 'A') && ( tChar <= 'F' ) ||
                     (tChar >= '0' && tChar <= '9') ) )

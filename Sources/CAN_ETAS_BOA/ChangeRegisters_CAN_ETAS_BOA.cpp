@@ -898,7 +898,7 @@ void CChangeRegisters_CAN_ETAS_BOA::vFillControllerConfigDetails()
 *******************************************************************************/
 void CChangeRegisters_CAN_ETAS_BOA::vUpdateControllerDetails()
 {
-    TCHAR*    pcStopStr              = NULL;
+    char*    pcStopStr              = NULL;
     CString omStrComboSampling      = "";
     CString omStrEditBtr0           = "";
     CString omStrEditBtr1           = "";
@@ -1068,7 +1068,7 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::bGetFilterFromCom(BOOL&  bExtended, double& 
 
     if (m_pControllerDetails != NULL)
     {
-        TCHAR* pcStopStr ;
+        char* pcStopStr ;
         //Change to separate integer value for each byte
         int nAccCodeByte1 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte1,
                                     &pcStopStr,defHEXADECIMAL);

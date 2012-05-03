@@ -270,7 +270,7 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
             omStrMakeFileName         += "\\DLLMake";
             bReturn = bCreateMakeFile(omStrMakeFileTemplateName,
                                       omStrMakeFileName);
-            TCHAR acStrShortPath[1024];
+            char acStrShortPath[1024];
             dwConvertShortPathName(omStrMakeFileName,acStrShortPath);
 
             // check if make file is created successfully.
@@ -288,11 +288,11 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                 omStrGccMakeFile += "\\make.exe";
                 omStrGccParamter  =  "--silent --file=";
                 omStrGccParamter += acStrShortPath;
-                TCHAR* pucGccMakeFile  = (TCHAR*)omStrGccMakeFile.GetBuffer(
+                char* pucGccMakeFile  = (char*)omStrGccMakeFile.GetBuffer(
                                              omStrGccMakeFile.GetLength());
-                TCHAR* pucGccParameter = (TCHAR*)omStrGccParamter.GetBuffer(
+                char* pucGccParameter = (char*)omStrGccParamter.GetBuffer(
                                              omStrGccParamter.GetLength());
-                TCHAR* pucGCCPath      = (TCHAR*)omStrGCCPath.GetBuffer(
+                char* pucGCCPath      = (char*)omStrGCCPath.GetBuffer(
                                              omStrGCCPath.GetLength());
                 INT nSuccess = CreateProcess( pucGccMakeFile, pucGccParameter,
                                               NULL, NULL,
@@ -380,7 +380,7 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                     CString omStrFileNameInSDLLFile=STR_EMPTY;
                     CString omStrFileNameInLongFileName=STR_EMPTY;
                     CString omStrDLLFile   = "";
-                    TCHAR acStrShortPath[1000];
+                    char acStrShortPath[1000];
                     dwConvertShortPathName(omFileName,acStrShortPath);
                     omFileName    = acStrShortPath;
                     omStrDLLFile  = omFileName.Left(omFileName.ReverseFind('.'));
@@ -566,7 +566,7 @@ BOOL CBuildProgram::bCreateMakeFile(CString& omStrMakeFileTemplateName,
     DWORD dwRead                 = 0;
     BOOL bFileOpen               = FALSE;
     CString omStrErrorMessage     = "";
-    TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+    char  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
     // Open the make file template.
     TRY
     {
@@ -592,7 +592,7 @@ BOOL CBuildProgram::bCreateMakeFile(CString& omStrMakeFileTemplateName,
                 // Delete the buffer and initialise it to NULL
                 delete [] pcBuff;
                 pcBuff = NULL;
-                TCHAR acStrShortPath[1000] ;
+                char acStrShortPath[1000] ;
                 // Convert long name to short name for GCC compiler
                 dwConvertShortPathName(omStrMakeFileTemplateName,acStrShortPath);
                 omTemp = acStrShortPath;
@@ -746,7 +746,7 @@ BOOL CBuildProgram::bAddStrToArrayFromFile(CString& omStrTextFileName,
     {
         if(pomException != NULL )
         {
-            TCHAR scErrorMsg[255];
+            char scErrorMsg[255];
             CString cStrErrorMessage;
             // Get the exception error message
             pomException->GetErrorMessage(scErrorMsg,sizeof(scErrorMsg));
@@ -835,7 +835,7 @@ VOID CBuildProgram::vCreateOutputWindow()
 /*  Modified On      :                                                        */
 /******************************************************************************/
 DWORD CBuildProgram::dwConvertShortPathName(CONST CString& omStrToConvert,
-        TCHAR* pcStrShortPath)
+        char* pcStrShortPath)
 {
     DWORD dwBuffer   = 0;
     DWORD dwReturn   = 0;

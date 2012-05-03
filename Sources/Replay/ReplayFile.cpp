@@ -230,7 +230,7 @@ UINT CReplayFile::unGetConfigSizeOfCommonMembers()
     unSize += sizeof(m_unCycleTimeDelay);
     unSize += sizeof(m_bEnabled);
     unSize += sizeof(m_bInteractive);
-    unSize += (sizeof(TCHAR) * MAX_PATH); // To store the path
+    unSize += (sizeof(char) * MAX_PATH); // To store the path
     return unSize;
 }
 
@@ -266,10 +266,10 @@ BYTE* CReplayFile::pbySaveConfig(BYTE* pDesBuffer)
     memcpy(pDesBuffer, &m_bInteractive, sizeof(m_bInteractive));
     pDesBuffer += sizeof(m_bInteractive);
     //Save file name size
-    TCHAR acName[MAX_PATH] = {_T('\0')};
+    char acName[MAX_PATH] = {_T('\0')};
     strcpy_s(acName, m_omStrFileName.GetBuffer(MAX_PATH));
-    memcpy(pDesBuffer, acName, sizeof(TCHAR) * MAX_PATH);
-    pDesBuffer += sizeof(TCHAR) * MAX_PATH;
+    memcpy(pDesBuffer, acName, sizeof(char) * MAX_PATH);
+    pDesBuffer += sizeof(char) * MAX_PATH;
     //To store filters
     //This function will copy into the destination bufffer and increment the pointer
     pDesBuffer = m_sFilterApplied.pbGetConfigData(pDesBuffer);
@@ -306,9 +306,9 @@ BYTE* CReplayFile::pbyLoadConfig(BYTE* pSrcBuffer)
     memcpy(&m_bInteractive, pSrcBuffer, sizeof(m_bInteractive));
     pSrcBuffer += sizeof(m_bInteractive);
     //Save file name size
-    TCHAR acName[MAX_PATH] = {_T('\0')};
-    memcpy(acName, pSrcBuffer, sizeof(TCHAR) * MAX_PATH);
-    pSrcBuffer += (sizeof(TCHAR) * MAX_PATH);
+    char acName[MAX_PATH] = {_T('\0')};
+    memcpy(acName, pSrcBuffer, sizeof(char) * MAX_PATH);
+    pSrcBuffer += (sizeof(char) * MAX_PATH);
     //Save file name
     m_omStrFileName.Format("%s", acName);
     ////To store filters

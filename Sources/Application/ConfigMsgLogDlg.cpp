@@ -342,7 +342,7 @@ BOOL CConfigMsgLogDlg::FoundInLogList(CString omFullPath, CString omFileName)
 CString CConfigMsgLogDlg::GetUniqueLogFilePath(void)
 {
     CString omStrFullPath = "";
-    TCHAR acPathBuffer[MAX_PATH] = {L'\0'};      // Get current working
+    char acPathBuffer[MAX_PATH] = {L'\0'};      // Get current working
     GetCurrentDirectory(MAX_PATH, acPathBuffer); // directory
     BOOL bFound = TRUE; // Means - "found unique name"
 
@@ -573,7 +573,7 @@ void CConfigMsgLogDlg::vUpdate_Datastore_From_GUI(USHORT ushIndex, int CtrlID)
 
         case IDC_EDIT_LOGFILEPATH:
         {
-            int MaxCount = sizeof(sLogStruct.m_sLogFileName) / sizeof(TCHAR);
+            int MaxCount = sizeof(sLogStruct.m_sLogFileName) / sizeof(char);
             (GetDlgItem(IDC_EDIT_LOGFILEPATH))->GetWindowText(
                 sLogStruct.m_sLogFileName, MaxCount);
         }

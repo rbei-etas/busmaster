@@ -34,7 +34,7 @@ private:
     void vFormatTime(BYTE bExprnFlag, SFORMATTEDDATA_CAN* CurrDataCAN);
     void vFormatDataAndId(BYTE bExprnFlag, SFORMATTEDDATA_CAN* CurrDataCAN);
     USHORT usProcessCurrErrorEntry(SERROR_INFO& sErrorInfo);
-    TCHAR* vFormatCurrErrorEntry(USHORT usErrorID);
+    char* vFormatCurrErrorEntry(USHORT usErrorID);
 public:
     CFormatMsgCAN(void);
     ~CFormatMsgCAN(void);

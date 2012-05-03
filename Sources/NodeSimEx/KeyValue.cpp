@@ -45,7 +45,7 @@
 /*  Modification on  :  28.03.2002, Review commenrs                           */
 /******************************************************************************/
 CKeyValue::CKeyValue(CFnsTreeView* pFnsTreeView, CFunctionEditorDoc* pDoc,
-                     CWnd* pParent/*=NULL*/,TCHAR* pcKeyVal )
+                     CWnd* pParent/*=NULL*/,char* pcKeyVal )
     : CDialog(CKeyValue::IDD, pParent),m_pcKeyVal(pcKeyVal)
 {
     //{{AFX_DATA_INIT(CKeyValue)

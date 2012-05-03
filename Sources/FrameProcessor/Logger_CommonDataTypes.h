@@ -27,7 +27,7 @@
 class CParamLoggerBUS
 {
 public:
-    TCHAR m_acVersion[MAX_PATH];        // Version info of the application suite
+    char m_acVersion[MAX_PATH];        // Version info of the application suite
     Base_WrapperErrorLogger* m_pILog;   // Error logger module
     DWORD dwClientID;                   // Client identifier
 

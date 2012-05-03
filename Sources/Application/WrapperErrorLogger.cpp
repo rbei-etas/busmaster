@@ -34,6 +34,6 @@ WrapperErrorLogger::~WrapperErrorLogger(void)
 {
 }
 /* This function is thread safe */
-void WrapperErrorLogger::vLogAMessage(TCHAR* /*File*/, int /*Line*/, TCHAR* /*Msg*/)
+void WrapperErrorLogger::vLogAMessage(char* /*File*/, int /*Line*/, char* /*Msg*/)
 {
 }

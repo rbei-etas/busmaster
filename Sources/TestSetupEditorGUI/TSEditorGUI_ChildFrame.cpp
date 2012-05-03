@@ -1297,7 +1297,7 @@ void CTSEditorChildFrame::vSaveHeaderInfo(INT /*nTestSetupIndex*/)
     }
 
     //File Format
-    TCHAR* pchExten = PathFindExtension(ouHeaderInfo.m_sReportFile.m_omPath);
+    char* pchExten = PathFindExtension(ouHeaderInfo.m_sReportFile.m_omPath);
 
     //omStrTemp = omTempListCtrl.GetItemText(def_TS_ROWNUM_FILEFORMAT, 1);
     if((strcmp(pchExten, _T(".HTML")) == 0)||(strcmp(pchExten, _T(".html")) == 0))

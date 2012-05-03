@@ -95,7 +95,7 @@ USAGEMODE HRESULT DILJ_Uninitialise(void)
  * and to receive messages. Only registered client's buffer will be updated
  * on receive of a msg in the bus.
  */
-USAGEMODE HRESULT DILJ_RegisterClient(BOOL bRegister, TCHAR* pacNodeName,
+USAGEMODE HRESULT DILJ_RegisterClient(BOOL bRegister, char* pacNodeName,
                                       UINT64 un64ECUName, BYTE byPrefAdres,
                                       DWORD& dwClientId)
 {
@@ -201,7 +201,7 @@ USAGEMODE HRESULT DILJ_SendJ1939Msg (DWORD dwClientId, UINT unChannel, EJ1939_MS
  *
  * Gets the node name from 8 bit address from J1939 network.
  */
-USAGEMODE HRESULT DILJ_NM_GetNodeName(BYTE byAddress, TCHAR* acNodeName)
+USAGEMODE HRESULT DILJ_NM_GetNodeName(BYTE byAddress, char* acNodeName)
 {
     CNetworkMgmt::ouGetNWManagementObj().vGetNodeName(byAddress, acNodeName);
     return S_OK;

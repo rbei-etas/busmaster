@@ -60,13 +60,13 @@ CMsgContainerJ1939::CMsgContainerJ1939(void)
     m_pbyJ1939Data = new BYTE[MAX_MSG_LEN_J1939 +  sizeof(__int64)];
     ASSERT(NULL != m_pbyJ1939Data);
     USHORT Length = ushCalculateStrLen(true, MAX_DATA_LEN_J1939);
-    m_sOutFormattedData.m_pcDataHex = new TCHAR[Length];
+    m_sOutFormattedData.m_pcDataHex = new char[Length];
     ASSERT(NULL != m_sOutFormattedData.m_pcDataHex);
-    memset(m_sOutFormattedData.m_pcDataHex, '\0', Length * sizeof(TCHAR));
+    memset(m_sOutFormattedData.m_pcDataHex, '\0', Length * sizeof(char));
     Length = ushCalculateStrLen(false, MAX_DATA_LEN_J1939);
-    m_sOutFormattedData.m_pcDataDec = new TCHAR[Length];
+    m_sOutFormattedData.m_pcDataDec = new char[Length];
     ASSERT(NULL != m_sOutFormattedData.m_pcDataDec);
-    memset(m_sOutFormattedData.m_pcDataDec, '\0', Length * sizeof(TCHAR));
+    memset(m_sOutFormattedData.m_pcDataDec, '\0', Length * sizeof(char));
 }
 
 /******************************************************************************
@@ -694,7 +694,7 @@ HRESULT CMsgContainerJ1939::hUpdateFormattedMsgStruct(int nListIndex,
 ******************************************************************************/
 void CMsgContainerJ1939::vSetCurrMsgName(CString strMsgNameOrCode)
 {
-    CMsgContainerBase::bCopyStringToTCHARArr (m_sOutFormattedData.m_acMsgName, strMsgNameOrCode,
+    CMsgContainerBase::bCopyStringTocharArr (m_sOutFormattedData.m_acMsgName, strMsgNameOrCode,
             sizeof(m_sOutFormattedData.m_acMsgName));
 }
 /******************************************************************************
@@ -740,7 +740,7 @@ void CMsgContainerJ1939::vClearFormattedMsgStruct()
     Date Created     :  20.01.2011
 ******************************************************************************/
 void CMsgContainerJ1939::vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL& sHdrColStruct,
-        TCHAR* pomDataPtrArr[MAX_MSG_WND_COL_CNT],
+        char* pomDataPtrArr[MAX_MSG_WND_COL_CNT],
         BYTE bExprnFlag_Disp)
 {
     //Time mode

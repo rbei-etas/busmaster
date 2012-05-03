@@ -82,7 +82,7 @@ public:
     void vSetReplayConfigData(BYTE* pSrcBuffer, int nBuffSize);
     BOOL bIsReplayConfigChanged();
     void vSetTraceObjPtr( PVOID pvObj);
-    void vSendToTrace(TCHAR* pcString);
+    void vSendToTrace(char* pcString);
 private:
     // Keep the constructor as private to avoid multiple instances
     CReplayManager();

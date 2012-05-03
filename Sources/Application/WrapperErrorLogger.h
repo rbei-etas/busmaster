@@ -31,5 +31,5 @@ public:
     WrapperErrorLogger(void);
     ~WrapperErrorLogger(void);
 
-    void vLogAMessage(TCHAR* File, int Line, TCHAR* Msg);
+    void vLogAMessage(char* File, int Line, char* Msg);
 };

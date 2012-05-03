@@ -457,7 +457,7 @@ void CRxMsgList::OnLButtonDblClk(UINT nFlags, CPoint point)
 
 /*******************************************************************************
   Function Name  : vSetDsipItemDataPtrArr
-  Input(s)       : TCHAR* pomDataPtrArr[]
+  Input(s)       : char* pomDataPtrArr[]
   Output         : -
   Functionality  : Sets the member variable m_pomDataPtrArr to PSDI_CAN DLL
                    message data buffer pointer location.
@@ -466,7 +466,7 @@ void CRxMsgList::OnLButtonDblClk(UINT nFlags, CPoint point)
   Date Created   : 20-05-2010
   Modifications  :
 *******************************************************************************/
-void CRxMsgList::vSetDsipItemDataPtrArr(TCHAR* pomDataPtrArr[MAX_MSG_WND_COL_CNT])
+void CRxMsgList::vSetDsipItemDataPtrArr(char* pomDataPtrArr[MAX_MSG_WND_COL_CNT])
 {
     memcpy(m_pomDataPtrArr, pomDataPtrArr, sizeof (m_pomDataPtrArr));
 }
@@ -779,7 +779,7 @@ void CRxMsgList::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
                     // Retrieve column-title
                     LVCOLUMN lvc = {0};
                     lvc.mask = LVCF_TEXT;
-                    TCHAR sColText[256];
+                    char sColText[256];
                     lvc.pszText = sColText;
                     lvc.cchTextMax = 15;    //Set the Width of Menu Items here
                     //lvc.cchTextMax = sizeof(sColText)-1;
@@ -1378,7 +1378,7 @@ void CRxMsgList::CListHdrCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     CBrush brush(GetSysColor(COLOR_3DFACE));
     dc.FillRect(rc, &brush);
     // get the column text and format.
-    TCHAR szText[ 256 ];
+    char szText[ 256 ];
     HD_ITEM hditem;
     hditem.mask = HDI_TEXT | HDI_FORMAT;
     hditem.pszText = szText;

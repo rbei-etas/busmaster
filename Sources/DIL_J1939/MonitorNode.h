@@ -42,7 +42,7 @@ private:
     BOOL bProcessNodeLevelMsgByMonNode(const STCANDATA& sCanData);
     void vTransmitMessage(STJ1939_MSG* psMsg);
 public:
-    CMonitorNode(int nNodeNo, TCHAR* pacNodeName, UINT64 un64NAME, BYTE byPrefAdres);
+    CMonitorNode(int nNodeNo, char* pacNodeName, UINT64 un64NAME, BYTE byPrefAdres);
     ~CMonitorNode(void);
     void vRemoveAllConnections();
     BOOL bAddConDetObj(CConnectionDet* pConDet);

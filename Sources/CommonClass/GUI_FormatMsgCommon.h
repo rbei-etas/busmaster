@@ -30,10 +30,10 @@ class CFormatMsgCommon: public CRefTimeKeeper
 {
 protected:
     CFormatMsgCommon(void);
-    void vFormatTimeStamp(DWORD dwTimeStamp, TCHAR acTime[]);
+    void vFormatTimeStamp(DWORD dwTimeStamp, char acTime[]);
 public:
     ~CFormatMsgCommon(void);
-    void vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,TCHAR acTime[]);
-    void vCalAndFormatTM_Offline(BYTE bExprnFlag,  UINT64 TimeStamp, TCHAR acTime[]);
+    void vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,char acTime[]);
+    void vCalAndFormatTM_Offline(BYTE bExprnFlag,  UINT64 TimeStamp, char acTime[]);
     //void vSetRelBaseTime(INT64 qwRelBaseTime); //Called to sart afresh for append mode
 };

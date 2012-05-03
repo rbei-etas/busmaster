@@ -27,7 +27,7 @@
 #include "BaseLogObject.h"            // For CBaseLogObject class declaration
 #include "../DataTypes/DIL_Datatypes.h"
 
-const int SIZE_CHAR = sizeof(TCHAR);
+const int SIZE_CHAR = sizeof(char);
 #define ENOENT          2
 
 #define DEFAULT_FILE_SIZE_IN_MBYTES       50 //MB 
@@ -306,7 +306,7 @@ void CBaseLogObject::vSetNextFileName(void)
     }
 }
 
-CString CBaseLogObject::omAddGroupCountToFileName(int nCount, TCHAR sFileName[])
+CString CBaseLogObject::omAddGroupCountToFileName(int nCount, char sFileName[])
 {
     CString omFileName = sFileName;
     //Add the file count with "_"
@@ -347,7 +347,7 @@ BOOL CBaseLogObject::bStartLogging(void)
     {
         // This function should be called every time logging is started
         m_CurrTriggerType = m_sLogInfo.m_sLogTrigger.m_unTriggerType;
-        TCHAR Mode[2] =  _T(" ");
+        char Mode[2] =  _T(" ");
         Mode[0] = (m_sLogInfo.m_eFileMode == APPEND_MODE) ? L'a' : L'w';
         EnterCriticalSection(&m_CritSection);
         //In case user has deleted the content of the file

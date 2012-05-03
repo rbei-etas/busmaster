@@ -44,7 +44,7 @@ int CalculateGCF(int anNumbers[], int Length);
 void vRemoveUnwantedBits(__int64& n64rData, int nLength);
 void vExtendSignBit( __int64& n64Val, int nSize);
 //bool bGetSystemErrorString(HRESULT hResult, CHAR acErrStr[256]);
-bool bGetSystemErrorString(HRESULT hResult, TCHAR acErrStr[256]);
+bool bGetSystemErrorString(HRESULT hResult, char acErrStr[256]);
 //bool bGetSystemErrorString(CHAR acErrStr[256]);
 
 //// To copy the text into the clipboard

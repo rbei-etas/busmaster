@@ -37,9 +37,9 @@ protected:
 
     LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
     {
-        TCHAR szVersion[128];
-        wsprintf(szVersion, _T("%d.%d.%d%d"), DM_GRAPH_VER);
-        SetDlgItemText(IDC_VERSION, szVersion);
+        char szVersion[128];
+        sprintf(szVersion, "%d.%d.%d%d", DM_GRAPH_VER);
+        SetDlgItemText(IDC_VERSION, (LPCTSTR) szVersion);
         HRSRC hrscr;
         HGLOBAL hMem;
         LPSTR szTxt;

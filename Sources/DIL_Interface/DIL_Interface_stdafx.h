@@ -34,7 +34,6 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <memory.h>
-#include <tchar.h>
 #include <atlconv.h>
 #include <wtypes.h>
 #include <afxtempl.h>

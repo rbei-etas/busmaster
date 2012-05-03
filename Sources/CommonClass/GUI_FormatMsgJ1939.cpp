@@ -30,7 +30,7 @@
 struct sERRORMSGINFO
 {
     unsigned short m_usErrorCode; // Error code
-    TCHAR* m_ptcErorMsg;          // Error message
+    char* m_ptcErorMsg;          // Error message
 };
 typedef sERRORMSGINFO SERRORMSGINFO;
 typedef sERRORMSGINFO* PERRORMSGINFO;
@@ -192,7 +192,7 @@ USHORT CFormatMsgJ1939::usProcessCurrErrorEntry(SERROR_INFO& sErrorInfo)
  * Gets the pointer to Message data Buffer from PSDI_CAN DLL
  * and updates the same in List Control.
  */
-TCHAR* CFormatMsgJ1939::vFormatCurrErrorEntry(USHORT usErrorID)
+char* CFormatMsgJ1939::vFormatCurrErrorEntry(USHORT usErrorID)
 {
     BOOL bErrProcessed = FALSE;
     int nCount = 0;

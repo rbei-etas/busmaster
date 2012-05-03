@@ -90,9 +90,9 @@ BYTE* CGraphElement::pbyGetConfigData(BYTE* pbyTrgData, BYTE byVersion)
         // Frame Format - Standard
         COPY_DATA(pbyTemp, &m_nFrameFormat, sizeof(short));
         // Element Name String
-        TCHAR acName[MAX_PATH] = {_T('\0')};
+        char acName[MAX_PATH] = {_T('\0')};
         strcpy_s(acName, m_omStrElementName.GetBuffer(MAX_PATH));
-        COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+        COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
         // Type of the element val
         COPY_DATA(pbyTemp, &m_nValueType, sizeof(int));
         // Line type of the elemen
@@ -111,9 +111,9 @@ BYTE* CGraphElement::pbyGetConfigData(BYTE* pbyTrgData, BYTE byVersion)
         if(byVersion == 2)
         {
             // Message Name
-            TCHAR MsgName[MAX_PATH] = {_T('\0')};
+            char MsgName[MAX_PATH] = {_T('\0')};
             strcpy_s(MsgName, m_strMsgName.GetBuffer(MAX_PATH));
-            COPY_DATA(pbyTemp, MsgName, (sizeof(TCHAR) * MAX_PATH));
+            COPY_DATA(pbyTemp, MsgName, (sizeof(char) * MAX_PATH));
             //Line Display type
             COPY_DATA(pbyTemp, &m_eDisplayType, sizeof(eDISPLAY_TYPE));
         }
@@ -134,8 +134,8 @@ BYTE* CGraphElement::pbySetConfigData(BYTE* pbyTrgData, BYTE byVersion)
         // Frame Format - Standard
         COPY_DATA_2(&m_nFrameFormat, pbyTemp, sizeof(short));
         // Element Name String
-        TCHAR acName[MAX_PATH] = {_T('\0')};
-        COPY_DATA_2(acName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
+        char acName[MAX_PATH] = {_T('\0')};
+        COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
         m_omStrElementName.Format("%s", acName);
         // Type of the element val
         COPY_DATA_2(&m_nValueType, pbyTemp, sizeof(int));
@@ -155,8 +155,8 @@ BYTE* CGraphElement::pbySetConfigData(BYTE* pbyTrgData, BYTE byVersion)
         if(byVersion == 2)
         {
             //Message Name
-            TCHAR MsgName[MAX_PATH] = {_T('\0')};
-            COPY_DATA_2(MsgName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
+            char MsgName[MAX_PATH] = {_T('\0')};
+            COPY_DATA_2(MsgName, pbyTemp, (sizeof(char) * MAX_PATH));
             m_strMsgName.Format("%s", MsgName);
             //Line Display type
             COPY_DATA_2(&m_eDisplayType, pbyTemp, sizeof(eDISPLAY_TYPE));
@@ -266,7 +266,7 @@ UINT CGraphElement::unGetConfigSize(BYTE byVersion)
     // Frame Format - Standard or Extended
     unSize += sizeof(short);//   m_nFrameFormat;
     // Element Name String
-    unSize += (sizeof(TCHAR) * MAX_PATH);//m_omStrElementName
+    unSize += (sizeof(char) * MAX_PATH);//m_omStrElementName
     // Type of the element value
     // 0 - network statistics parameter
     // 1 - Raw Value of the Signal
@@ -290,7 +290,7 @@ UINT CGraphElement::unGetConfigSize(BYTE byVersion)
         // Line Display
         unSize += sizeof(int);//    m_eDisplayType;
         //Message Name String
-        unSize += (sizeof(TCHAR) * MAX_PATH);//m_strMsgName
+        unSize += (sizeof(char) * MAX_PATH);//m_strMsgName
     }
 
     return unSize;

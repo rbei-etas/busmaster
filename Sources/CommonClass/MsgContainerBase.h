@@ -49,7 +49,7 @@ public:
     virtual BOOL bStartReadThread() = 0;
 
     virtual void vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL& sHdrColStruct,
-            TCHAR* pomDataPtrArr[MAX_MSG_WND_COL_CNT],
+            char* pomDataPtrArr[MAX_MSG_WND_COL_CNT],
             BYTE bExprnFlag_Disp) = 0;
     virtual HRESULT hReadFromOWBuffer(void* psMsg, __int64 nMapIndex) = 0;
     virtual HRESULT hReadFromAppendBuffer(void* psMsg, int nMsgIndex) = 0;
@@ -75,5 +75,5 @@ public:
     void vSetRxMsgCallBkPtr(MSG_RX_CALL_BK pFuncPtr);
     BOOL bStartReadThread(HANDLE hActionEvent);
     BOOL bStopReadThread();
-    BOOL bCopyStringToTCHARArr(TCHAR acDesStr[], CString omSrc, int MaxDesLen);
+    BOOL bCopyStringTocharArr(char acDesStr[], CString omSrc, int MaxDesLen);
 };

@@ -107,7 +107,7 @@ private:
     void vEnableTpfFields(BOOL bEnable);
     void vInitializeNmFields(void);
     void vInitializeTpfFields(void);
-    void vSetStatusBarText(const TCHAR* pacText);
+    void vSetStatusBarText(const char* pacText);
     void vPopulatePGNComboBox(void);
 public:
     // Control variable for ECU NAME

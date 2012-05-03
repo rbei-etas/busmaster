@@ -259,7 +259,7 @@ void CWaitIndicator::Redraw(void)
     PaintWindow(dc);
     PaintWindow(dc);
 }
-void CWaitIndicator::SetWindowText(TCHAR* acText)
+void CWaitIndicator::SetWindowText(char* acText)
 {
     m_strTitle = acText;
     Redraw();

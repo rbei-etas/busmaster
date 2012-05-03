@@ -50,7 +50,7 @@ class CColourPicker;
 typedef struct
 {
     COLORREF crColour;
-    TCHAR*    szName;
+    char*    szName;
 } ColourTableEntry;
 
 /////////////////////////////////////////////////////////////////////////////

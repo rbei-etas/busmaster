@@ -71,7 +71,7 @@ enum ETYPE_ACK
 /* Node parmaeters in j1939 network*/
 typedef struct tagSJ1939CLIENTPARAM
 {
-    TCHAR   m_acName[MAX_PATH];
+    char   m_acName[MAX_PATH];
     DWORD   m_dwClientId;
     UINT64  m_unEcuName;
     BYTE    m_byAddress;
@@ -223,32 +223,32 @@ typedef struct tagFormattedData_J1939
     DWORD  m_dwPGN;                                 // PGN of the present message
     DWORD  m_dwMsgID;                               // The message ID
 
-    TCHAR  m_acTimeSys[LEN_STR_TIMESTAMP_J1939];    // System time stamp
-    TCHAR  m_acTimeRel[LEN_STR_TIMESTAMP_J1939];    // Relative time stamp
-    TCHAR  m_acTimeAbs[LEN_STR_TIMESTAMP_J1939];    // Absolute time stamp
-    TCHAR  m_acTimeAbsReset[LEN_STR_TIMESTAMP_J1939];    // Absolute time stamp Reset
+    char  m_acTimeSys[LEN_STR_TIMESTAMP_J1939];    // System time stamp
+    char  m_acTimeRel[LEN_STR_TIMESTAMP_J1939];    // Relative time stamp
+    char  m_acTimeAbs[LEN_STR_TIMESTAMP_J1939];    // Absolute time stamp
+    char  m_acTimeAbsReset[LEN_STR_TIMESTAMP_J1939];    // Absolute time stamp Reset
 
-    TCHAR  m_acMsgType[LEN_STR_TYPE_J1939];         // Type indicator
-    TCHAR  m_acChannel[LEN_STR_CHANNEL_J1939];      // Channel/controller indicator
+    char  m_acMsgType[LEN_STR_TYPE_J1939];         // Type indicator
+    char  m_acChannel[LEN_STR_CHANNEL_J1939];      // Channel/controller indicator
 
-    TCHAR  m_acPGNHex[LEN_STR_PGN_J1939];           // PGN in hex
-    TCHAR  m_acPGNDec[LEN_STR_PGN_J1939];           // PGN in dec
-    TCHAR  m_acMsgName[LEN_STR_NAME_J1939];         // Message name
-    TCHAR  m_acSenderName[LEN_STR_SENDNODE_J1939];  // Send node name
+    char  m_acPGNHex[LEN_STR_PGN_J1939];           // PGN in hex
+    char  m_acPGNDec[LEN_STR_PGN_J1939];           // PGN in dec
+    char  m_acMsgName[LEN_STR_NAME_J1939];         // Message name
+    char  m_acSenderName[LEN_STR_SENDNODE_J1939];  // Send node name
 
-    TCHAR   m_acMsgIDHex[LENGTH_STR_ID_CAN];          // Identifier in hex
-    TCHAR   m_acMsgIDDec[LENGTH_STR_ID_CAN];          // Identifier in dec
-    TCHAR  m_acSrcHex[LEN_STR_SRC_J1939];           // Source node address in hex.
-    TCHAR  m_acSrcDec[LEN_STR_SRC_J1939];           // Source node address in dec.
-    TCHAR  m_acDestHex[LEN_STR_DEST_J1939];         // Destination node address in hex
-    TCHAR  m_acDestDec[LEN_STR_DEST_J1939];         // Destination node address in dec
+    char   m_acMsgIDHex[LENGTH_STR_ID_CAN];          // Identifier in hex
+    char   m_acMsgIDDec[LENGTH_STR_ID_CAN];          // Identifier in dec
+    char  m_acSrcHex[LEN_STR_SRC_J1939];           // Source node address in hex.
+    char  m_acSrcDec[LEN_STR_SRC_J1939];           // Source node address in dec.
+    char  m_acDestHex[LEN_STR_DEST_J1939];         // Destination node address in hex
+    char  m_acDestDec[LEN_STR_DEST_J1939];         // Destination node address in dec
     // Other values are - "all", "--"
 
-    TCHAR  m_acPriority[LEN_STR_PRIO_J1939];        // Priority (always in decimal)
-    TCHAR  m_acMsgDir[LEN_STR_DIR_J1939];           // "Tx" or "Rx"
-    TCHAR  m_acDataLen[LEN_STR_DLC_J1939];          // DLC always in dec
-    TCHAR* m_pcDataHex;                             // Data in hexadecimal
-    TCHAR* m_pcDataDec;                             // Data in decimal
+    char  m_acPriority[LEN_STR_PRIO_J1939];        // Priority (always in decimal)
+    char  m_acMsgDir[LEN_STR_DIR_J1939];           // "Tx" or "Rx"
+    char  m_acDataLen[LEN_STR_DLC_J1939];          // DLC always in dec
+    char* m_pcDataHex;                             // Data in hexadecimal
+    char* m_pcDataDec;                             // Data in decimal
 
     tagFormattedData_J1939();                       // Constructor
     ~tagFormattedData_J1939();                      // Destructor;
@@ -258,6 +258,6 @@ typedef struct tagFormattedData_J1939
 // Helper functions.
 
 // Given the type code, this function will render the associated string.
-void GetMessageTypeStr(EJ1939_MSG_TYPE eType, TCHAR acResult[LEN_STR_TYPE_J1939]);
+void GetMessageTypeStr(EJ1939_MSG_TYPE eType, char acResult[LEN_STR_TYPE_J1939]);
 
 const int MAX_MSG_LEN_J1939 = sizeof (STJ1939_MSG_PROPERTIES) + sizeof (UINT) + MAX_DATA_LEN_J1939;

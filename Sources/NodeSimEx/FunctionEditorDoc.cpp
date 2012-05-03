@@ -484,7 +484,7 @@ void CFunctionEditorDoc::Serialize(CArchive& ar)
         {
             if(pomE != NULL)
             {
-                TCHAR acError[1024];
+                char acError[1024];
                 // Get error
                 pomE->GetErrorMessage( acError, sizeof(acError));
                 MessageBox( NULL, acError, NULL, MB_OK );
@@ -542,7 +542,7 @@ DWORD CFunctionEditorDoc::dwGetLineCount()
 /*  Date Created     :  05.03.2002                                            */
 /*  Modifications    :
 /******************************************************************************/
-const TCHAR* CFunctionEditorDoc::pcGetLine(POSITION& rPosition)
+const char* CFunctionEditorDoc::pcGetLine(POSITION& rPosition)
 {
     return(m_omSourceCodeTextList.GetNext(rPosition));
 }
@@ -921,7 +921,7 @@ void CFunctionEditorDoc::vUpdateDEFFile(CString omStrFileName)
         {
             if(pomE != NULL)
             {
-                TCHAR acError[1024];
+                char acError[1024];
                 // Get error
                 pomE->GetErrorMessage( acError, sizeof(acError));
                 MessageBox( NULL, acError, NULL, MB_OK );

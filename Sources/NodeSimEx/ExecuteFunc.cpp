@@ -914,7 +914,7 @@ BOOL CExecuteFunc::bReadDefFile(CStringArray& omErrorArray)
         {
             if(pomException != NULL )
             {
-                TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
                 // Get the exception error message
                 pomException->GetErrorMessage(acErrorMsg,sizeof(acErrorMsg));
                 omStrErrorMessage = acErrorMsg;
@@ -1019,7 +1019,7 @@ BOOL CExecuteFunc::bInitMSGStruct(CStringArray& omErrorArray)
                 {
                     if(pomException != NULL )
                     {
-                        TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                        char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
                         CString omStrErrorMessage ="";
                         // Get the exception error message
                         pomException->GetErrorMessage(acErrorMsg,
@@ -1152,7 +1152,7 @@ BOOL CExecuteFunc::bInitOnKeyStruct(CStringArray& omErrorArray)
                 {
                     if(pomException != NULL )
                     {
-                        TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                        char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
                         CString omStrErrorMessage ="";
                         // Get the exception error message
                         pomException->GetErrorMessage(acErrorMsg,
@@ -1276,7 +1276,7 @@ BOOL CExecuteFunc::bInitTimerStruct(CStringArray& omErrorArray)
                 {
                     if(pomException != NULL)
                     {
-                        TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                        char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
                         // Get the exception error message
                         pomException->GetErrorMessage(
                             acErrorMsg,sizeof(acErrorMsg));
@@ -1381,7 +1381,7 @@ BOOL CExecuteFunc::bInitErrorStruct(CStringArray& omErrorArray)
                 {
                     if(pomException != NULL )
                     {
-                        TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                        char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
                         CString omStrErrorMessage ="";
                         // Get the exception error message
                         pomException->GetErrorMessage(acErrorMsg,
@@ -1473,7 +1473,7 @@ BOOL CExecuteFunc::bInitEventStructJ1939(CStringArray& omErrorArray)
                 {
                     if(pomException != NULL )
                     {
-                        TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                        char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
                         CString omStrErrorMessage ="";
                         // Get the exception error message
                         pomException->GetErrorMessage(acErrorMsg,
@@ -1570,7 +1570,7 @@ BOOL CExecuteFunc::bInitDLLStruct(CStringArray& omErrorArray)
                 {
                     if(pomException != NULL )
                     {
-                        TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                        char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
                         CString omStrErrorMessage ="";
                         // Get the exception error message
                         pomException->GetErrorMessage(acErrorMsg,
@@ -1833,7 +1833,7 @@ BOOL CExecuteFunc::bInitMsgIDandNameHandlStruct(UINT unMsgIDandNameCount,
             }
             else if(omStrTemp.Compare(omStrMsgIDType) == 0 )
             {
-                TCHAR* pcStopStr = NULL;
+                char* pcStopStr = NULL;
                 nMsgID = static_cast <INT>
                          (_tcstol(omStrMsgNameOrID,&pcStopStr,16) );
             }
@@ -1880,7 +1880,7 @@ BOOL CExecuteFunc::bInitMsgIDandNameHandlStruct(UINT unMsgIDandNameCount,
             {
                 if(pomException != NULL )
                 {
-                    TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                    char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
                     CString omStrErrorMessage ="";
                     // Get the exception error message
                     pomException->GetErrorMessage(acErrorMsg,
@@ -1941,7 +1941,7 @@ BOOL CExecuteFunc::bInitMsgIDRangeHandlStruct(UINT unMsgIDRangeCount,
             omStrMsgIDTo   = omStrTemp;
             omStrMsgIDTo.Replace(omStrMsgIDFrom,"");
             omStrMsgIDTo.Replace(_T("_"),"");
-            TCHAR* pcStopStr = NULL;
+            char* pcStopStr = NULL;
             UINT unMsgIDFrom  = _tcstol((LPCTSTR )omStrMsgIDFrom,&pcStopStr,16);
             UINT unMsgIDTo = _tcstol((LPCTSTR )omStrMsgIDTo,&pcStopStr,16);
             TRY
@@ -1989,7 +1989,7 @@ BOOL CExecuteFunc::bInitMsgIDRangeHandlStruct(UINT unMsgIDRangeCount,
             {
                 if(pomException != NULL )
                 {
-                    TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                    char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
                     CString omStrErrorMessage ="";
                     // Get the exception error message
                     pomException->GetErrorMessage(acErrorMsg,

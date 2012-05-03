@@ -126,9 +126,9 @@ static BYTE* pbGetReplayFileConfig(SREPLAYFILE& sReplayFile, BYTE* pbTarget)
     COPY_DATA(pbTemp, &(sReplayFile.m_nTimeMode), sizeof(sReplayFile.m_nTimeMode));
     COPY_DATA(pbTemp, &(sReplayFile.m_unCycleTimeDelay), sizeof(sReplayFile.m_unCycleTimeDelay));
     COPY_DATA(pbTemp, &(sReplayFile.m_unMsgTimeDelay), sizeof(sReplayFile.m_unMsgTimeDelay));
-    TCHAR acName[MAX_PATH] = {_T('\0')};
+    char acName[MAX_PATH] = {_T('\0')};
     strcpy_s(acName, sReplayFile.m_omStrFileName.GetBuffer(MAX_PATH));
-    COPY_DATA(pbTemp, acName, sizeof(TCHAR) * MAX_PATH);
+    COPY_DATA(pbTemp, acName, sizeof(char) * MAX_PATH);
     return pbTemp;
 }
 
@@ -141,7 +141,7 @@ static UINT unGetReplayFileSize(SREPLAYFILE& sReplayFile)
     nSize += sizeof (sReplayFile.m_nTimeMode);
     nSize += sizeof (sReplayFile.m_unCycleTimeDelay);
     nSize += sizeof (sReplayFile.m_unMsgTimeDelay);
-    nSize += (sizeof(TCHAR) * MAX_PATH);
+    nSize += (sizeof(char) * MAX_PATH);
     return nSize;
 }
 static UINT unGetFilterSize(CModuleFilterArray* pouModuleFilterArray, SFILTERAPPLIED_CAN* psFilterConfigured)
@@ -218,7 +218,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             BYTE* pbyConfigData = NULL;
             //FIRST CALC SIZE REQUIRED
             unSize += sizeof(BYTE); //Configuration version
-            unSize += (sizeof(TCHAR) * MAX_PATH);
+            unSize += (sizeof(char) * MAX_PATH);
             unSize += sizeof(STOOLBARINFO);
             //ALLOCATE THE MEMORY
             pbyConfigData = new BYTE[unSize];
@@ -228,11 +228,11 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
             CString* pomMRU_C_FILE_NAME = NULL;
             m_ouConfigDetails.bGetData(MRU_C_FILE_NAME, (void**)(&pomMRU_C_FILE_NAME));
-            TCHAR acName[MAX_PATH] = {_T('0')};
+            char acName[MAX_PATH] = {_T('0')};
             ASSERT(pomMRU_C_FILE_NAME != NULL);
             strcpy_s(acName, pomMRU_C_FILE_NAME->GetBuffer(MAX_PATH));
             delete pomMRU_C_FILE_NAME;
-            COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+            COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
             PSTOOLBARINFO psToolBarInfo = NULL;
             m_ouConfigDetails.bGetData(TOOLBAR_DETAILS, (void**)(&psToolBarInfo));
             ASSERT(psToolBarInfo != NULL);
@@ -314,7 +314,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             while (psTemp != NULL)
             {
                 nCount++;
-                unSize += (sizeof (TCHAR) * MAX_PATH);//File Path
+                unSize += (sizeof (char) * MAX_PATH);//File Path
                 psTemp = psTemp->psNextSimsys;
             }
 
@@ -334,9 +334,9 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
 
             while (psTemp != NULL)
             {
-                TCHAR acFilePath[MAX_PATH] = {_T('\0')};
+                char acFilePath[MAX_PATH] = {_T('\0')};
                 strcpy_s(acFilePath, psTemp->m_omStrSimSysPath.GetBuffer(MAX_PATH));
-                COPY_DATA(pbyTemp, acFilePath, (sizeof(TCHAR) * MAX_PATH));
+                COPY_DATA(pbyTemp, acFilePath, (sizeof(char) * MAX_PATH));
                 psTemp = psTemp->psNextSimsys;
             }
 
@@ -418,7 +418,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             {
                 UINT nCount = psMsgAttrib->m_usMsgCount;
                 //Count             To store Msg Name         MsgId        Msg Color
-                unSize += (nCount * ((sizeof (TCHAR) * MAX_PATH) + sizeof(UINT) + sizeof (COLORREF)));
+                unSize += (nCount * ((sizeof (char) * MAX_PATH) + sizeof(UINT) + sizeof (COLORREF)));
             }
 
             INT anMsgBuffSize[defDISPLAY_CONFIG_PARAM] = {0};
@@ -449,9 +449,9 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
 
                 for (INT i = 0; i < psMsgAttrib->m_usMsgCount; i++)
                 {
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
+                    char acName[MAX_PATH] = {_T('\0')};
                     strcpy_s(acName, psMsgAttrib->m_psMsgAttribDetails[i].omStrMsgname);
-                    COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+                    COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
                     COPY_DATA(pbyTemp, &(psMsgAttrib->m_psMsgAttribDetails[i].unMsgID), sizeof(UINT));
                     COPY_DATA(pbyTemp, &(psMsgAttrib->m_psMsgAttribDetails[i].sColor), sizeof(COLORREF));
                 }
@@ -489,14 +489,14 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             {
                 unMsgcount++;
                 unSize += sizeof (UINT); // To store Msg ID
-                unSize += (sizeof (TCHAR) * MAX_PATH);// To store Msg Name
+                unSize += (sizeof (char) * MAX_PATH);// To store Msg Name
                 unSize += sizeof (UINT); //To store selected signal count
                 INT nSelCount = psTemp->omCSASignals.GetSize();
 
                 for (INT i = 0; i < nSelCount; i++)
                 {
                     unSize += sizeof (UINT); // To store Signal ID
-                    unSize += (sizeof (TCHAR) * MAX_PATH);// To store Signal Name
+                    unSize += (sizeof (char) * MAX_PATH);// To store Signal Name
                 }
 
                 psTemp = psTemp->psNextMessageNode;
@@ -516,8 +516,8 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             while (psTemp != NULL)
             {
                 COPY_DATA(pbyTemp, &(psTemp->unMsgID), sizeof (UINT));
-                TCHAR acName[MAX_PATH] = {_T('\0')};
-                COPY_DATA(pbyTemp, acName, (sizeof (TCHAR) * MAX_PATH));
+                char acName[MAX_PATH] = {_T('\0')};
+                COPY_DATA(pbyTemp, acName, (sizeof (char) * MAX_PATH));
                 UINT unSelCount = psTemp->omCSASignals.GetSize();
                 COPY_DATA(pbyTemp, &unSelCount, sizeof (UINT));
 
@@ -527,7 +527,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
                     UINT unSigId = 0;
                     COPY_DATA(pbyTemp, &(unSigId), sizeof (UINT));
                     strcpy_s(acName, omSigName.GetBuffer(MAX_PATH));
-                    COPY_DATA(pbyTemp, acName, (sizeof (TCHAR) * MAX_PATH));
+                    COPY_DATA(pbyTemp, acName, (sizeof (char) * MAX_PATH));
                 }
 
                 psTemp = psTemp->psNextMessageNode;
@@ -634,7 +634,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
 
                 while (psTemp != NULL)
                 {
-                    unSize += (sizeof(TCHAR) * MAX_PATH); // To store the block name
+                    unSize += (sizeof(char) * MAX_PATH); // To store the block name
                     unSize += sizeof(UCHAR); // To store the trigger
                     unSize += sizeof(BOOL); // To store active or not
                     unSize += sizeof(UCHAR); // To store the key value
@@ -660,9 +660,9 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             while (psTempBlock != NULL)
             {
                 CString m_omStrBlockName;
-                TCHAR acName[MAX_PATH] = {_T('\0')};
+                char acName[MAX_PATH] = {_T('\0')};
                 strcpy_s(acName, psTempBlock->m_omStrBlockName.GetBuffer(MAX_PATH));
-                COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+                COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
                 COPY_DATA(pbyTemp, &(psTempBlock->m_ucTrigger), sizeof(UCHAR));
                 COPY_DATA(pbyTemp, &(psTempBlock->m_bActive), sizeof(BOOL));
                 COPY_DATA(pbyTemp, &(psTempBlock->m_ucKeyValue), sizeof(UCHAR));
@@ -711,7 +711,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             if (pomStrDBArray != NULL)
             {
                 //To store the stringd
-                unSize += (pomStrDBArray->GetSize()) * (sizeof(TCHAR) * MAX_PATH);
+                unSize += (pomStrDBArray->GetSize()) * (sizeof(char) * MAX_PATH);
             }
 
             //ALLOCATE THE MEMORY
@@ -732,9 +732,9 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             for (UINT i =0; i < unCount; i++)
             {
                 CString omName = pomStrDBArray->GetAt(i);
-                TCHAR acName[MAX_PATH] = {_T('\0')};
+                char acName[MAX_PATH] = {_T('\0')};
                 strcpy_s(acName, omName.GetBuffer(MAX_PATH));
-                COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+                COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
             }
 
             m_ouConfigDetails.vRelease(DATABASE_FILE_NAME,(LPVOID*)&pomStrDBArray);

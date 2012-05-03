@@ -59,7 +59,7 @@ typedef struct tagLogInfo
     eMode        m_eFileMode;        // Mode - overwrite / append
     BOOL         m_bResetAbsTimeStamp; // To indicate if Absolute Time Stamp is Reseted
     TYPE_CHANNEL m_ChannelSelected;  // The current channel
-    TCHAR        m_sLogFileName[_MAX_PATH]; // Log file name with absolute path
+    char        m_sLogFileName[_MAX_PATH]; // Log file name with absolute path
     SLOGTRIGGER  m_sLogTrigger;      // The triggering condition
 
     tagLogInfo();                    // Standard constructor

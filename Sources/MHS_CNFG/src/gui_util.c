@@ -25,7 +25,6 @@
 #include <windowsx.h>
 #include <stdio.h>
 #include <stddef.h>
-#include <tchar.h>
 #include "global.h"
 #include "util.h"
 #include "gui_util.h"
@@ -127,7 +126,7 @@ char puf[10];
 
 if (format_id > HexFormatTabSize)
   format_id = HexFormatTabSize-1;
-wsprintf(puf, HexFormatTab[format_id], value);
+sprintf(puf, HexFormatTab[format_id], value);
 SetDlgItemText(hdlg, id, puf);
 }
 

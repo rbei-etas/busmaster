@@ -84,7 +84,7 @@ BOOL CCAN_Kvaser_CAN::InitInstance()
  */
 static UINT sg_nNoOfChannels = 0;
 
-static TCHAR sg_omErrStr[MAX_STRING] = {0};
+static char sg_omErrStr[MAX_STRING] = {0};
 
 // Count variables
 static UCHAR sg_ucNoOfHardware = 0;
@@ -269,7 +269,7 @@ static Base_WrapperErrorLogger* sg_pIlog   = NULL;
 static int nInitHwNetwork();
 static BOOL bRemoveClient(DWORD dwClientId);
 static DWORD dwGetAvailableClientSlot();
-static BOOL bClientExist(TCHAR* pcClientName, INT& Index);
+static BOOL bClientExist(char* pcClientName, INT& Index);
 static BOOL bClientIdExist(const DWORD& dwClientId);
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex);
 static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line);
@@ -317,7 +317,7 @@ public:
     // Specific function set
     HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
     HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
-    HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
+    HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
     HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
     HRESULT CAN_LoadDriverLibrary(void);
     HRESULT CAN_UnloadDriverLibrary(void);
@@ -484,7 +484,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCAN
 * \authors       Arunkumar Karri
 * \date          12.10.2011 Created
 */
-HRESULT CDIL_CAN_Kvaser::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
+HRESULT CDIL_CAN_Kvaser::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName)
 {
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;
@@ -610,7 +610,7 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
     {
         for( UINT nIndex = 0; nIndex < sg_nNoOfChannels ; nIndex++ )
         {
-            TCHAR* pcStopStr = NULL;
+            char* pcStopStr = NULL;
             CChannel& odChannel = sg_aodChannels[ nIndex ];
             // Baudrate in BTR0BTR1 format
             odChannel.m_usBaudRate = static_cast <USHORT>(pControllerDetails[ nIndex ].m_nBTR0BTR1);
@@ -2026,7 +2026,7 @@ int ListHardwareInterfaces(HWND /*hParent*/, DWORD /*dwDriver*/, INTERFACE_HW* p
 static int nCreateMultipleHardwareNetwork()
 {
     int nHwCount = sg_ucNoOfHardware;
-    TCHAR buf[512];
+    char buf[512];
     DWORD dwFirmWare[2];
 
     // Get Hardware Network Map
@@ -2077,7 +2077,7 @@ static int nCreateSingleHardwareNetwork()
     sg_nNoOfChannels = 1;
     sg_aodChannels[0].m_nChannel = 0;
     /* Update channel info */
-    TCHAR buf[512];
+    char buf[512];
     DWORD dwFirmWare[2];
     canGetChannelData(0, canCHANNELDATA_CARD_SERIAL_NO,
                       buf, sizeof(buf));
@@ -2146,7 +2146,7 @@ static int nInitHwNetwork()
     /* Capture only Driver Not Running event
      * Take action based on number of Hardware Available
      */
-    TCHAR acNo_Of_Hw[MAX_STRING] = {0};
+    char acNo_Of_Hw[MAX_STRING] = {0};
     sprintf_s(acNo_Of_Hw, _T("Number of Kvaser hardwares Available: %d"), nChannelCount);
 
     /* No Hardware found */
@@ -2365,13 +2365,13 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
 
 /**
 * \brief         This function will check if the client exists and gives back the client index.
-* \param[in]     pcClientName, client name as TCHAR*
+* \param[in]     pcClientName, client name as char*
 * \param[out]    Index, client index if found
 * \return        TRUE if client name is found, else FALSE
 * \authors       Arunkumar Karri
 * \date          12.10.2011 Created
 */
-static BOOL bClientExist(TCHAR* pcClientName, INT& Index)
+static BOOL bClientExist(char* pcClientName, INT& Index)
 {
     for (UINT i = 0; i < sg_unClientCnt; i++)
     {

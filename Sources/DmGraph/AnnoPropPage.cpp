@@ -62,7 +62,7 @@ void CAnnoPropPage::UpdateControls(IDMGraphCtrl* pGraphCtrl)
     for(i=0; idCtrls[i]; ::EnableWindow(GetDlgItem(idCtrls[i++]), bEnabled));
 
     const int TXT_LEN = 128;
-    TCHAR szText[ TXT_LEN ];
+    char szText[ TXT_LEN ];
     CComBSTR caption;
 
     if(spAnnotation)
@@ -80,9 +80,9 @@ void CAnnoPropPage::UpdateControls(IDMGraphCtrl* pGraphCtrl)
     }
 
     sprintf_s((char*) szText, sizeof(szText), "%g", x);
-    SetDlgItemText (IDC_EDIT_X, szText);
+    SetDlgItemText (IDC_EDIT_X, (LPCTSTR) szText);
     sprintf_s((char*) szText, sizeof(szText), "%g", y);
-    SetDlgItemText (IDC_EDIT_Y, szText);
+    SetDlgItemText (IDC_EDIT_Y, (LPCTSTR) szText);
 
     if(spAnnotation)
     {

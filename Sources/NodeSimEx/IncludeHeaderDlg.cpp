@@ -91,9 +91,9 @@ void CIncludeHeaderDlg::OnOk()
     if (!m_omStrIncludeFilename.IsEmpty())
     {
         // check if first char starts with '<' or '"'
-        TCHAR cFirstChar = m_omStrIncludeFilename.GetAt( 0 );
+        char cFirstChar = m_omStrIncludeFilename.GetAt( 0 );
         // check if last char '>' or '"'
-        TCHAR cLastChar =
+        char cLastChar =
             m_omStrIncludeFilename.GetAt( m_omStrIncludeFilename.GetLength() - 1 );
 
         if ( cFirstChar != '<')

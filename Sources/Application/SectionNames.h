@@ -47,7 +47,7 @@ enum eSECTION_ID // These IDs should be maintained with load sequence
 };
 
 //This Names shold be maintained with eSECTION_ID sequence
-static TCHAR SectionName[SECTION_TOTAL][MAX_PATH] =
+static char SectionName[SECTION_TOTAL][MAX_PATH] =
 {
     _T("DatabaseConfigSectionName"),
     _T("DatabaseConfigSectionNameJ1939"),

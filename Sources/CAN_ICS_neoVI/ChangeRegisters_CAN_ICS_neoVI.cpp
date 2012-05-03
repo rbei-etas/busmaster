@@ -124,7 +124,7 @@ END_MESSAGE_MAP()
 BOOL CChangeRegisters_CAN_ICS_neoVI::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    TCHAR acColumnName[defNUMBER_OF_COLUMNS_CAN_ICS_neoVI][50] =
+    char acColumnName[defNUMBER_OF_COLUMNS_CAN_ICS_neoVI][50] =
     {
         defSTR_CNF1_COL_HEADING,
         defSTR_CNF2_COL_HEADING,
@@ -680,7 +680,7 @@ DOUBLE CChangeRegisters_CAN_ICS_neoVI::dCalculateBaudRateFromBTRs(CString omStrC
     uCNF3 uCNF3val;
     DOUBLE dBaudRate = 0;
     BYTE   bTSEG2 = 0;
-    TCHAR* pcStopStr = NULL;
+    char* pcStopStr = NULL;
     uCNF1val.ucCNF1 =
         static_cast <UCHAR >(_tcstol((LPCTSTR)omStrCNF1.GetBuffer(MAX_PATH),&pcStopStr,defHEXADECIMAL));
     uCNF2val.ucCNF2 =
@@ -916,7 +916,7 @@ void CChangeRegisters_CAN_ICS_neoVI::vFillControllerConfigDetails()
  */
 void CChangeRegisters_CAN_ICS_neoVI::vUpdateControllerDetails()
 {
-    TCHAR*    pcStopStr              = NULL;
+    char*    pcStopStr              = NULL;
     CString omStrComboSampling      = "";
     CString omStrEditBtr0           = "";
     CString omStrEditBtr1           = "";

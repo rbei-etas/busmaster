@@ -37,7 +37,7 @@ private:
     int m_nIconBlank;
     BOOL m_bDispModeChanged;
     CImageList m_ImageList;
-    TCHAR* m_pomDataPtrArr[MAX_MSG_WND_COL_CNT];
+    char* m_pomDataPtrArr[MAX_MSG_WND_COL_CNT];
     COLORREF m_clrMsg;
     bool* m_pbSortableColumn;
     bool* m_pbAscendingOrder;
@@ -108,7 +108,7 @@ public:
     CListHdrCtrl m_wndHeader;
     CRxMsgList();
     virtual ~CRxMsgList(void);
-    void vSetDsipItemDataPtrArr(TCHAR* pomDataPtrArr[MAX_MSG_WND_COL_CNT]);
+    void vSetDsipItemDataPtrArr(char* pomDataPtrArr[MAX_MSG_WND_COL_CNT]);
     void vDoInitialization();
     void vSetMsgColor(COLORREF color);
     void vShowHideBlankcolumn(BOOL bInterpretON);

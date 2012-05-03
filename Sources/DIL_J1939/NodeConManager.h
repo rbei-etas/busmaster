@@ -116,10 +116,10 @@ public:
     DWORD  m_dwClientID;
     CMsgBufVSE m_ouMsgBufVSE;
     BYTE m_abyData[MAX_MSG_LEN_J1939];
-    TCHAR m_acNodeName[MAX_PATH];
+    char m_acNodeName[MAX_PATH];
     BYTE m_byPrefAddress;
 public:
-    CNodeConManager(int nNodeNo, TCHAR* pacNodeName, UINT64 un64NAME,
+    CNodeConManager(int nNodeNo, char* pacNodeName, UINT64 un64NAME,
                     BYTE byPrefAddress = ADDRESS_NULL, BOOL bIsMonNode = FALSE);
     virtual ~CNodeConManager(void);
     BYTE byGetConCount();

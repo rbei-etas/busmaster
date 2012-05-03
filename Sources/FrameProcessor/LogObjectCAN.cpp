@@ -83,9 +83,9 @@ BOOL CLogObjectCAN::bLogData(const SFORMATTEDDATA_CAN& sDataCAN)
     }
 
     CString omLogText = "";
-    TCHAR* pTimeData = NULL;
-    TCHAR* pId = NULL;
-    TCHAR* pData = NULL;
+    char* pTimeData = NULL;
+    char* pId = NULL;
+    char* pData = NULL;
 
     switch (m_sLogInfo.m_eLogTimerMode) // Time Mode
     {
@@ -93,24 +93,24 @@ BOOL CLogObjectCAN::bLogData(const SFORMATTEDDATA_CAN& sDataCAN)
         {
             if(m_sLogInfo.m_bResetAbsTimeStamp)
             {
-                pTimeData = (TCHAR*) (sDataCAN.m_acTimeAbsReset);
+                pTimeData = (char*) (sDataCAN.m_acTimeAbsReset);
             }
             else
             {
-                pTimeData = (TCHAR*) (sDataCAN.m_acTimeAbs);
+                pTimeData = (char*) (sDataCAN.m_acTimeAbs);
             }
         }
         break;
 
         case TIME_MODE_RELATIVE:
         {
-            pTimeData = (TCHAR*) (sDataCAN.m_acTimeRel);
+            pTimeData = (char*) (sDataCAN.m_acTimeRel);
         }
         break;
 
         case TIME_MODE_SYSTEM:
         {
-            pTimeData = (TCHAR*) (sDataCAN.m_acTimeSys);
+            pTimeData = (char*) (sDataCAN.m_acTimeSys);
         }
         break;
 
@@ -123,15 +123,15 @@ BOOL CLogObjectCAN::bLogData(const SFORMATTEDDATA_CAN& sDataCAN)
     {
         case HEXADECIMAL:
         {
-            pId = (TCHAR*) (sDataCAN.m_acMsgIDHex);
-            pData = (TCHAR*) (sDataCAN.m_acDataHex);
+            pId = (char*) (sDataCAN.m_acMsgIDHex);
+            pData = (char*) (sDataCAN.m_acDataHex);
         }
         break;
 
         case DEC:
         {
-            pId = (TCHAR*) (sDataCAN.m_acMsgIDDec);
-            pData = (TCHAR*) (sDataCAN.m_acDataDec);
+            pId = (char*) (sDataCAN.m_acMsgIDDec);
+            pData = (char*) (sDataCAN.m_acDataDec);
         }
         break;
 

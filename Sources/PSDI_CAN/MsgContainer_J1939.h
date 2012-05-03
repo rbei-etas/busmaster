@@ -101,7 +101,7 @@ public:
     BOOL bStopReadThread();
 
     void vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL& sHdrColStruct,
-                                     TCHAR* pomDataPtrArr[MAX_MSG_WND_COL_CNT],
+                                     char* pomDataPtrArr[MAX_MSG_WND_COL_CNT],
                                      BYTE bExprnFlag_Disp);
     HRESULT hReadFromOWBuffer(void* psMsg, __int64 nMapIndex);
     HRESULT hReadFromAppendBuffer(void* psMsg, int nMsgIndex);

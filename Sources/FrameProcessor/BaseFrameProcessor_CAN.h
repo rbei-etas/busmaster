@@ -32,7 +32,7 @@
 
 typedef struct tagCANPROC_PARAMS
 {
-    TCHAR m_acVersion[MAX_PATH];        // Version info of the application suite
+    char m_acVersion[MAX_PATH];        // Version info of the application suite
     CBaseCANBufFSE* m_pouCANBuffer;     // Client frame buffer to update
     Base_WrapperErrorLogger* m_pILog;   // Error logger module
     //CNetworkStats* m_pouNetworkStat;    // Network statistics object

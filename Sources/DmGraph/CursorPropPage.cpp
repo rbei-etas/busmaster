@@ -87,14 +87,14 @@ void CCursorPropPage::UpdateControls(IDMGraphCtrl* pGraphCtrl)
 
     HRESULT hr;
     const int TXT_LEN = 128;
-    TCHAR szText[ TXT_LEN ];
+    char szText[ TXT_LEN ];
     double x,y;
     hr = spCursor->get_X(&x);
     hr = spCursor->get_Y(&y);
     sprintf_s((char*) szText, sizeof(szText), "%g", x);
-    SetDlgItemText (IDC_EDIT_X, szText);
+    SetDlgItemText (IDC_EDIT_X, (LPCTSTR) szText);
     sprintf_s((char*) szText, sizeof(szText), "%g", y);
-    SetDlgItemText (IDC_EDIT_Y, szText);
+    SetDlgItemText (IDC_EDIT_Y, (LPCTSTR) szText);
     OLE_COLOR color;
     COLORREF col;
     hr = spCursor->get_Color(&color);

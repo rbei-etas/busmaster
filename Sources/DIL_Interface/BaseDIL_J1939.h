@@ -69,7 +69,7 @@ public:
     3. ERR_NO_ MORE_CLIENT_ALLOWED  or
     4. S_OK.
     */
-    virtual HRESULT DILIJ_RegisterClient(BOOL bRegister, TCHAR* pacNodeName,
+    virtual HRESULT DILIJ_RegisterClient(BOOL bRegister, char* pacNodeName,
                                          UINT64 un64ECUName, BYTE byPrefAdres,
                                          DWORD& dwClientId) = 0;
 
@@ -168,7 +168,7 @@ public:
     1.S_OK for success or
     2.S_FALSE for failure.
     */
-    virtual HRESULT DILIJ_NM_GetNodeName(BYTE byAddress, TCHAR* acNodeName) = 0;
+    virtual HRESULT DILIJ_NM_GetNodeName(BYTE byAddress, char* acNodeName) = 0;
 
     /*Gets the 8 bit address from node name from J1939 network.
     Parameters:

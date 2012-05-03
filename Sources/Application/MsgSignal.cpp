@@ -199,7 +199,7 @@ CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
     //Add header for ifndef condition
     CString omStrHeaderString   = STR_EMPTY;
     CString omStrHeaderFileName = defHEADER_FILE_NAME;
-    TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+    char  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
     CFileException   omException  ;
     CStdioFile omHeaderFile;
     omStrHeaderFileName = omStrActiveDataBase.Left(
@@ -3331,7 +3331,7 @@ void CMsgSignal::vConvertExtendedToStandardFrameFormat(int& nMsgCode)
         omStrMsgCode.Format( "%d", nMsgCode);
         // if the first char is less than '2'
         // then extract 4 digits else extract 3
-        TCHAR cChar = omStrMsgCode.GetAt(0);
+        char cChar = omStrMsgCode.GetAt(0);
 
         if ( cChar > '1' )
         {

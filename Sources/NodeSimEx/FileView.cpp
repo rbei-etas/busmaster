@@ -129,7 +129,7 @@ void CFileView::OnDraw(CDC* pDC)
 
     if(pomDoc != NULL)
     {
-        TCHAR acSourceLineNo[10]  = STR_EMPTY;
+        char acSourceLineNo[10]  = STR_EMPTY;
         long lLineCount          = LONG_INIT;
         long lCurrentWarnLineNum = LONG_INIT;
         int  nTabStopPositions   = INT_INIT;
@@ -181,7 +181,7 @@ void CFileView::OnDraw(CDC* pDC)
                         // tranparent
                         pomDC -> SetBkMode(TRANSPARENT);
                         // Display line number
-                        wsprintf(acSourceLineNo,_T("%lu:"),lInt+NEXT_POSITION);
+                        sprintf(acSourceLineNo,_T("%lu:"),lInt+NEXT_POSITION);
                         CString omStr = (CString)
                                         pomDoc -> pcGetLine(Position);
                         int nIndex = omStr.Find( _T("/*") );

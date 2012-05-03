@@ -312,7 +312,7 @@ int CRadixEdit::nGetBase()
 void CRadixEdit::OnChange()
 {
     int nBufLength = LineLength() + 1;
-    TCHAR* acBuffer = new TCHAR[nBufLength];
+    char* acBuffer = new char[nBufLength];
 
     if (acBuffer != NULL)
     {
@@ -345,7 +345,7 @@ void CRadixEdit::OnChange()
                     }
                     else if(acBuffer[nCurrentPost] != '-')
                     {
-                        acBuffer[nCurrentPost] = (TCHAR)(tolower(acBuffer[nCurrentPost]));
+                        acBuffer[nCurrentPost] = (char)(tolower(acBuffer[nCurrentPost]));
                         acBuffer[nCurrentPost] -= 87;
                     }
                     else
@@ -419,7 +419,7 @@ void CRadixEdit::vSetValue(__int64 n64NewVal)
     // rajesh: 05.03.2003: BEGIN: formating changed slightly to accomodate
     // full 32 bits for signed and unsigned numbers
     // if the number is having negative value
-    TCHAR acFormat[8] = {NULL};
+    char acFormat[8] = {NULL};
 
     if (m_nBase == BASE_DECIMAL)
     {

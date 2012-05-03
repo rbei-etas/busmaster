@@ -1139,7 +1139,7 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
                 {
                     BYTE* pbyConfigData = NULL;
                     UINT unSize = 0;
-                    unSize += (sizeof (UINT) + ((sizeof(TCHAR) *MAX_PATH) * aomNewDatabases.GetSize()));
+                    unSize += (sizeof (UINT) + ((sizeof(char) *MAX_PATH) * aomNewDatabases.GetSize()));
                     pbyConfigData = new BYTE[unSize];
                     BYTE* pbyTemp = pbyConfigData;
                     UINT nCount = 0;
@@ -1147,10 +1147,10 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
 
                     for (UINT i = 0; i < nCount; i++)
                     {
-                        TCHAR acName[MAX_PATH] = {_T('\0')};
+                        char acName[MAX_PATH] = {_T('\0')};
                         CString omDBName = aomNewDatabases.GetAt(i);
                         strcpy_s(acName, omDBName.GetBuffer(MAX_PATH));
-                        COPY_DATA(pbyTemp, acName, sizeof(TCHAR) * MAX_PATH);
+                        COPY_DATA(pbyTemp, acName, sizeof(char) * MAX_PATH);
                     }
 
                     CConfigData::ouGetConfigDetailsObject().bSetData(pbyTemp, unSize, SectionName[DATABASE_SECTION_ID]);

@@ -457,7 +457,7 @@ BOOL CSigWatchDlg::OnInitDialog()
 *******************************************************************************/
 void CSigWatchDlg::vInitSignalWatchList()
 {
-    TCHAR caColumnName[][50] = { defSTR_SW_MSG_NAME,
+    char caColumnName[][50] = { defSTR_SW_MSG_NAME,
                                  defSTR_SW_SIG_NAME,
                                  defSTR_SW_PHY_VALUE,
                                  defSTR_SW_RAW_VALUE

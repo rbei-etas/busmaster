@@ -304,7 +304,7 @@ void CMessageList::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
                     // Retrieve column-title
                     LVCOLUMN lvc = {0};
                     lvc.mask = LVCF_TEXT;
-                    TCHAR sColText[256];
+                    char sColText[256];
                     lvc.pszText = sColText;
                     lvc.cchTextMax = 15;    //Set the Width of Menu Items here
 

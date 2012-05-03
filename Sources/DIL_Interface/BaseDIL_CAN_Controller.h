@@ -52,7 +52,7 @@ public:
     // Specific function set
     virtual HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog) = 0;
     virtual HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj) = 0;
-    virtual HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName) = 0;
+    virtual HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName) = 0;
     virtual HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus) = 0;
     virtual HRESULT CAN_LoadDriverLibrary(void) = 0;
     virtual HRESULT CAN_UnloadDriverLibrary(void) = 0;

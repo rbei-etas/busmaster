@@ -66,7 +66,7 @@ const int LENGTH_FILTERNAME = 128;
 // The descriobes a filter name with type.
 typedef struct tagFilterName
 {
-    TCHAR m_acFilterName[LENGTH_FILTERNAME];                     // Filter name
+    char m_acFilterName[LENGTH_FILTERNAME];                     // Filter name
     BOOL  m_bFilterType;                    // Filter Type 0 - Stop, 1 for Pass
 
     tagFilterName();    // Standard constructor
@@ -264,7 +264,7 @@ typedef struct tagFilterSet
     // initialise the current filter object with the retrieved data.
     BYTE* pbSetConfigData(BYTE* pbTarget, bool& Result);
 
-    static tagFilterSet* psGetFilterSetPointer(tagFilterSet* psSet, UINT Count, TCHAR* acFilterName);
+    static tagFilterSet* psGetFilterSetPointer(tagFilterSet* psSet, UINT Count, char* acFilterName);
 
 } SFILTERSET, *PSFILTERSET;
 
