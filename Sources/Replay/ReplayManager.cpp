@@ -847,7 +847,7 @@ void CReplayManager::vSetTraceObjPtr( PVOID pvObj)
     g_pouITracePtr = (CBaseAppServices*) pvObj;
 }
 
-void CReplayManager::vSendToTrace(TCHAR* pcString)
+void CReplayManager::vSendToTrace(char* pcString)
 {
     if (NULL != g_pouITracePtr)
     {

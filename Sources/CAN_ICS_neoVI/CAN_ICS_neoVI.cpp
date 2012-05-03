@@ -361,8 +361,8 @@ typedef int (__stdcall* GETLASTAPIERROR)(int hObject, unsigned long* pErrorNumbe
 static GETLASTAPIERROR icsneoGetLastAPIError;
 typedef int (__stdcall* GETERRMSGS)(int hObject, int* pErrorMsgs, int* pNumberOfErrors);
 static GETERRMSGS icsneoGetErrorMessages;
-typedef int (__stdcall* GETERRORINFO)(int lErrorNumber, TCHAR* szErrorDescriptionShort,
-                                      TCHAR* szErrorDescriptionLong, int* lMaxLengthShort,
+typedef int (__stdcall* GETERRORINFO)(int lErrorNumber, char* szErrorDescriptionShort,
+                                      char* szErrorDescriptionLong, int* lMaxLengthShort,
                                       int* lMaxLengthLong,int* lErrorSeverity,int* lRestartNeeded);
 static GETERRORINFO icsneoGetErrorInfo;
 
@@ -414,7 +414,7 @@ public:
     // Specific function set
     HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
     HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
-    HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
+    HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
     HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
     HRESULT CAN_LoadDriverLibrary(void);
     HRESULT CAN_UnloadDriverLibrary(void);
@@ -690,7 +690,7 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
     {
         for( int nIndex = 0; nIndex < defNO_OF_CHANNELS; nIndex++ )
         {
-            TCHAR* pcStopStr = NULL;
+            char* pcStopStr = NULL;
             CChannel& odChannel = sg_odHardwareNetwork.m_aodChannels[ nIndex ];
             // Get Warning Limit
             odChannel.m_ucWarningLimit = static_cast <UCHAR>(
@@ -1367,8 +1367,8 @@ static int nAddChanneltoHWInterfaceList(int narrNetwordID[], int nCntNtwIDs, int
 {
     int nResult = 0;
     int hObject = NULL;
-    TCHAR acTempStr[512] = {_T('\0')};
-    TCHAR acFirmware[128] = {_T("X.X")};
+    char acTempStr[512] = {_T('\0')};
+    char acFirmware[128] = {_T("X.X")};
     nResult = (*icsneoOpenNeoDevice)(&sg_ndNeoToOpen[nDevID], &hObject, NULL, 1, 0);
 
     if (nResult == NEOVI_OK && hObject!=NULL)
@@ -2279,7 +2279,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 
             for (UINT i = 0; i < sg_ucNoOfHardware; i++)
             {
-                TCHAR buf[512];
+                char buf[512];
                 asSelHwInterface[i].m_dwIdInterface = (DWORD)sg_ndNeoToOpen[i].Handle;
                 sprintf_s(buf, _T("%d"), sg_ndNeoToOpen[i].SerialNumber);
                 asSelHwInterface[i].m_acDescription = buf;
@@ -2780,7 +2780,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_StopHardware(void)
     return hResult;
 }
 
-static BOOL bClientExist(TCHAR* pcClientName, INT& Index)
+static BOOL bClientExist(char* pcClientName, INT& Index)
 {
     for (UINT i = 0; i < sg_unClientCnt; i++)
     {
@@ -3053,7 +3053,7 @@ static DWORD dwGetAvailableClientSlot()
  *
  * Register Client
  */
-HRESULT CDIL_CAN_ICSNeoVI::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, TCHAR* pacClientName)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, char* pacClientName)
 {
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;

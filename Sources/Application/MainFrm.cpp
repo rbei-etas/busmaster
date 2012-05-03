@@ -505,7 +505,7 @@ CMainFrame::CMainFrame()
     INITIALISE_ARRAY(m_asControllerDetails);
     //Default Hw mode
     m_byControllerMode = defMODE_ACTIVE;
-    TCHAR acTmp[MAX_PATH] = {'\0'};
+    char acTmp[MAX_PATH] = {'\0'};
     GetCurrentDirectory(MAX_PATH, acTmp);
     m_omAppDirectory = acTmp;
     m_bInterPretMsg = FALSE;
@@ -1647,7 +1647,7 @@ __int64 CMainFrame::nConvertStringToInt(CString omStrHexNo)
 
     for (int nCount = 0; nCount < omStrHexNo.GetLength(); nCount++)
     {
-        TCHAR cChar = omStrHexNo.GetAt( nCount);
+        char cChar = omStrHexNo.GetAt( nCount);
 
         if ( cChar == '0' )
         {
@@ -3585,7 +3585,7 @@ void CMainFrame::vConvStrtoByteArray(CByteArray* bufferTx, char* tempBuf)
     //Copy the modified string to a local Cstring
     //variable and remove all white spaces
     CString strTemp(tempBuf);
-    TCHAR ch = ' ';
+    char ch = ' ';
     strTemp.Remove(ch);
     unsigned int ncount=0;
     int nStrLength = strTemp.GetLength();
@@ -4050,7 +4050,7 @@ BOOL CMainFrame::bIsHexNumber(CString omStrHexNumber)
 
     for ( int nCount = 0; nCount < omStrHexNumber.GetLength(); nCount++ )
     {
-        TCHAR t_cChar = omStrHexNumber.GetAt(nCount);
+        char t_cChar = omStrHexNumber.GetAt(nCount);
 
         if ( ( t_cChar >= 'A' && t_cChar <= 'F' ) ||
                 ( t_cChar >= '0' && t_cChar <= '9' ) ||
@@ -5751,7 +5751,7 @@ void CMainFrame::vWriteNewLogFilenameInRegistry( CString omLogFilename )
     CString omStrDummy = omStrTemp;// "XXX10"
     BOOL bAlphaCharFound = FALSE;
     UINT unCount = 0;
-    TCHAR tChar  = ' ';
+    char tChar  = ' ';
 
     while ( bAlphaCharFound != TRUE &&
             (unCount < (UINT)omStrDummy.GetLength()))
@@ -10159,7 +10159,7 @@ void CMainFrame::OnFileConverter()
 {
     // Get the working directory
     CString strPath;
-    TCHAR* pstrExePath = strPath.GetBuffer (MAX_PATH);
+    char* pstrExePath = strPath.GetBuffer (MAX_PATH);
     ::GetModuleFileName (0, pstrExePath, MAX_PATH);
     strPath.ReleaseBuffer ();
     strPath = strPath.Left(strPath.ReverseFind(92));
@@ -11030,8 +11030,8 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 BYTE* pbyTemp = pbyConfigData;
                 BYTE byVersion = 0;
                 COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
-                TCHAR acName[MAX_PATH] = {_T('\0')};
-                COPY_DATA_2(acName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
+                char acName[MAX_PATH] = {_T('\0')};
+                COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
                 m_omMRU_C_Filename.Format("%s", acName);
                 COPY_DATA_2(&m_sToolBarInfo, pbyTemp, sizeof(STOOLBARINFO));
                 theApp.pouGetFlagsPtr()->vSetToolbarButtonStatus(&m_sToolBarInfo);
@@ -11161,8 +11161,8 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
 
                 for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
                 {
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
-                    COPY_DATA_2(acName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
+                    char acName[MAX_PATH] = {_T('\0')};
+                    COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
                     pMessageAtt[i].omStrMsgname.Format("%s", acName);
                     COPY_DATA_2(&(pMessageAtt[i].unMsgID), pbyTemp, sizeof(UINT));
                     COPY_DATA_2(&(pMessageAtt[i].sColor), pbyTemp, sizeof(COLORREF));
@@ -11235,8 +11235,8 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
 
                 for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
                 {
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
-                    COPY_DATA_2(acName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
+                    char acName[MAX_PATH] = {_T('\0')};
+                    COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
                     pMessageAtt[i].omStrMsgname.Format("%s", acName);
                     COPY_DATA_2(&(pMessageAtt[i].unMsgID), pbyTemp, sizeof(UINT));
                     COPY_DATA_2(&(pMessageAtt[i].sColor), pbyTemp, sizeof(COLORREF));
@@ -11291,8 +11291,8 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 {
                     SMAINENTRY sMainEntry;
                     COPY_DATA_2(&(sMainEntry.m_unMainEntryID),pbyTemp, (sizeof (UINT)));
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
-                    COPY_DATA_2(acName, pbyTemp, (sizeof (TCHAR) * MAX_PATH));
+                    char acName[MAX_PATH] = {_T('\0')};
+                    COPY_DATA_2(acName, pbyTemp, (sizeof (char) * MAX_PATH));
                     sMainEntry.m_omMainEntryName.Format("%s", acName);
                     UINT nSelCount = 0;
                     COPY_DATA_2(&nSelCount,pbyTemp, sizeof (UINT));
@@ -11301,7 +11301,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                     {
                         SSUBENTRY sSelEntry;
                         COPY_DATA_2(&(sSelEntry.m_unSubEntryID),pbyTemp, (sizeof (UINT)));
-                        COPY_DATA_2(acName, pbyTemp, (sizeof (TCHAR) * MAX_PATH));
+                        COPY_DATA_2(acName, pbyTemp, (sizeof (char) * MAX_PATH));
                         sSelEntry.m_omSubEntryName.Format("%s", acName);
                         sMainEntry.m_odSelEntryList.AddTail(sSelEntry);
                     }
@@ -11358,8 +11358,8 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 {
                     SMAINENTRY sMainEntry;
                     COPY_DATA_2(&(sMainEntry.m_unMainEntryID),pbyTemp, (sizeof (UINT)));
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
-                    COPY_DATA_2(acName, pbyTemp, (sizeof (TCHAR) * MAX_PATH));
+                    char acName[MAX_PATH] = {_T('\0')};
+                    COPY_DATA_2(acName, pbyTemp, (sizeof (char) * MAX_PATH));
                     sMainEntry.m_omMainEntryName.Format("%s", acName);
                     UINT nSelCount = 0;
                     COPY_DATA_2(&nSelCount,pbyTemp, sizeof (UINT));
@@ -11368,7 +11368,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                     {
                         SSUBENTRY sSelEntry;
                         COPY_DATA_2(&(sSelEntry.m_unSubEntryID),pbyTemp, (sizeof (UINT)));
-                        COPY_DATA_2(acName, pbyTemp, (sizeof (TCHAR) * MAX_PATH));
+                        COPY_DATA_2(acName, pbyTemp, (sizeof (char) * MAX_PATH));
                         sSelEntry.m_omSubEntryName.Format("%s", acName);
                         sMainEntry.m_odSelEntryList.AddTail(sSelEntry);
                     }
@@ -11544,8 +11544,8 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
 
                 for (UINT i = 0; i < unCount; i++)
                 {
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
-                    COPY_DATA_2(acName, pbyTemp, (sizeof (TCHAR) * MAX_PATH));
+                    char acName[MAX_PATH] = {_T('\0')};
+                    COPY_DATA_2(acName, pbyTemp, (sizeof (char) * MAX_PATH));
                     CString omDbName;
                     omDbName.Format("%s", acName);
                     omDBNames.Add(omDbName);
@@ -11594,8 +11594,8 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
 
                 for (UINT i = 0; i < unCount; i++)
                 {
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
-                    COPY_DATA_2(acName, pbyTemp, (sizeof (TCHAR) * MAX_PATH));
+                    char acName[MAX_PATH] = {_T('\0')};
+                    COPY_DATA_2(acName, pbyTemp, (sizeof (char) * MAX_PATH));
                     CString omDbName;
                     omDbName.Format("%s", acName);
                     omDBNames.Add(omDbName);
@@ -11679,7 +11679,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
         case MAINFRAME_SECTION_ID:
         {
             nSize += sizeof(BYTE); //Configuration version
-            nSize += (sizeof(TCHAR) * MAX_PATH) + sizeof(STOOLBARINFO) + sizeof(WINDOWPLACEMENT) + sizeof (BOOL) * BUS_TOTAL;
+            nSize += (sizeof(char) * MAX_PATH) + sizeof(STOOLBARINFO) + sizeof(WINDOWPLACEMENT) + sizeof (BOOL) * BUS_TOTAL;
             pbyConfigData = new BYTE[nSize];
 
             if (pbyConfigData != NULL)
@@ -11687,9 +11687,9 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 BYTE* pbyTemp = pbyConfigData;
                 BYTE byVersion = 0x2;
                 COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-                TCHAR acName[MAX_PATH] = {_T('\0')};
+                char acName[MAX_PATH] = {_T('\0')};
                 strcpy_s(acName, m_omMRU_C_Filename.GetBuffer(MAX_PATH));
-                COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+                COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
                 theApp.pouGetFlagsPtr()->vGetToolbarButtonStatus(&m_sToolBarInfo);
                 COPY_DATA(pbyTemp, &m_sToolBarInfo, sizeof(STOOLBARINFO));
 
@@ -11757,7 +11757,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             CMessageAttrib::ouGetHandle(CAN).vGetMessageAttribData(sMsgAttrib);
             UINT nCount = sMsgAttrib.m_usMsgCount;
             //Count             To store Msg Name         MsgId        Msg Color
-            nSize += (nCount * ((sizeof (TCHAR) * MAX_PATH) + sizeof(UINT) + sizeof (COLORREF)));
+            nSize += (nCount * ((sizeof (char) * MAX_PATH) + sizeof(UINT) + sizeof (COLORREF)));
             //Msg Buffer size
             nSize += (sizeof (INT) * defDISPLAY_CONFIG_PARAM);
             //Msg Filter size
@@ -11789,9 +11789,9 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
 
                 for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
                 {
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
+                    char acName[MAX_PATH] = {_T('\0')};
                     strcpy_s(acName, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_PATH));
-                    COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+                    COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
                     COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].unMsgID), sizeof(UINT));
                     COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].sColor), sizeof(COLORREF));
                 }
@@ -11826,7 +11826,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             CMessageAttrib::ouGetHandle(J1939).vGetMessageAttribData(sMsgAttrib);
             UINT nCount = sMsgAttrib.m_usMsgCount;
             //Count             To store Msg Name         MsgId        Msg Color
-            nSize += (nCount * ((sizeof (TCHAR) * MAX_PATH) + sizeof(UINT) + sizeof (COLORREF)));
+            nSize += (nCount * ((sizeof (char) * MAX_PATH) + sizeof(UINT) + sizeof (COLORREF)));
             //MsgFormat window config data
             UINT unMsgFrmtWndCfgSize = 0;
             ASSERT(m_podMsgWndThread != NULL);
@@ -11853,9 +11853,9 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
 
                 for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
                 {
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
+                    char acName[MAX_PATH] = {_T('\0')};
                     strcpy_s(acName, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_CHAR));
-                    COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+                    COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
                     COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].unMsgID), sizeof(UINT));
                     COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].sColor), sizeof(COLORREF));
                 }
@@ -11886,14 +11886,14 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             while (pos)
             {
                 nSize += sizeof (UINT);
-                nSize += (sizeof (TCHAR) * MAX_PATH);
+                nSize += (sizeof (char) * MAX_PATH);
                 SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
-                nSize += (sizeof (TCHAR) * MAX_PATH);//To store number of selected entries
+                nSize += (sizeof (char) * MAX_PATH);//To store number of selected entries
 
                 for (UINT nSelIndex = 0; nSelIndex < (UINT)sMainEntry.m_odSelEntryList.GetCount(); nSelIndex++)
                 {
                     nSize += sizeof (UINT);
-                    nSize += (sizeof (TCHAR) * MAX_PATH);
+                    nSize += (sizeof (char) * MAX_PATH);
                 }
             }
 
@@ -11914,9 +11914,9 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             {
                 SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
                 COPY_DATA(pbyTemp, &(sMainEntry.m_unMainEntryID), sizeof(UINT));
-                TCHAR acName[MAX_PATH] = {_T('\0')};
+                char acName[MAX_PATH] = {_T('\0')};
                 strcpy_s(acName, sMainEntry.m_omMainEntryName.GetBuffer(MAX_CHAR));
-                COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+                COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
                 UINT unSelCount = sMainEntry.m_odSelEntryList.GetCount();
                 COPY_DATA(pbyTemp, &unSelCount, sizeof(UINT));
                 POSITION SelPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
@@ -11926,7 +11926,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                     SSUBENTRY sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SelPos);
                     COPY_DATA(pbyTemp, &(sSubEntry.m_unSubEntryID), sizeof(UINT));
                     strcpy_s(acName, sSubEntry.m_omSubEntryName.GetBuffer(MAX_CHAR));
-                    COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+                    COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
                 }
             }
 
@@ -11951,14 +11951,14 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             while (pos)
             {
                 nSize += sizeof (UINT);
-                nSize += (sizeof (TCHAR) * MAX_PATH);
+                nSize += (sizeof (char) * MAX_PATH);
                 SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
-                nSize += (sizeof (TCHAR) * MAX_PATH);//To store number of selected entries
+                nSize += (sizeof (char) * MAX_PATH);//To store number of selected entries
 
                 for (UINT nSelIndex = 0; nSelIndex < (UINT)sMainEntry.m_odSelEntryList.GetCount(); nSelIndex++)
                 {
                     nSize += sizeof (UINT);
-                    nSize += (sizeof (TCHAR) * MAX_PATH);
+                    nSize += (sizeof (char) * MAX_PATH);
                 }
             }
 
@@ -11979,9 +11979,9 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             {
                 SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
                 COPY_DATA(pbyTemp, &(sMainEntry.m_unMainEntryID), sizeof(UINT));
-                TCHAR acName[MAX_PATH] = {_T('\0')};
+                char acName[MAX_PATH] = {_T('\0')};
                 strcpy_s(acName, sMainEntry.m_omMainEntryName.GetBuffer(MAX_PATH));
-                COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+                COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
                 UINT unSelCount = sMainEntry.m_odSelEntryList.GetCount();
                 COPY_DATA(pbyTemp, &unSelCount, sizeof(UINT));
                 POSITION SelPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
@@ -11991,7 +11991,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                     SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SelPos);
                     COPY_DATA(pbyTemp, &(sSubEntry.m_unSubEntryID), sizeof(UINT));
                     strcpy_s(acName, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
-                    COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+                    COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
                 }
             }
 
@@ -12086,7 +12086,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 m_pouMsgSigJ1939->vGetDataBaseNames(&omDbNames);
             }
 
-            nSize += sizeof(UINT) + ((sizeof(TCHAR) * MAX_PATH) * omDbNames.GetSize());
+            nSize += sizeof(UINT) + ((sizeof(char) * MAX_PATH) * omDbNames.GetSize());
             pbyConfigData = new BYTE[nSize];
 
             if (pbyConfigData != NULL)
@@ -12101,9 +12101,9 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 for (UINT i = 0; i < unCount; i++)
                 {
                     CString omDbName = omDbNames.GetAt(i);
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
+                    char acName[MAX_PATH] = {_T('\0')};
                     strcpy_s(acName, omDbName.GetBuffer(MAX_CHAR));
-                    COPY_DATA(pbyTemp, acName, (sizeof (TCHAR) * MAX_PATH));
+                    COPY_DATA(pbyTemp, acName, (sizeof (char) * MAX_PATH));
                 }
             }
         }
@@ -12119,7 +12119,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 theApp.m_pouMsgSignal->vGetDataBaseNames(&omDbNames);
             }
 
-            nSize += sizeof(UINT) + ((sizeof(TCHAR) * MAX_PATH) * omDbNames.GetSize());
+            nSize += sizeof(UINT) + ((sizeof(char) * MAX_PATH) * omDbNames.GetSize());
             pbyConfigData = new BYTE[nSize];
 
             if (pbyConfigData != NULL)
@@ -12134,9 +12134,9 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 for (UINT i = 0; i < unCount; i++)
                 {
                     CString omDbName = omDbNames.GetAt(i);
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
+                    char acName[MAX_PATH] = {_T('\0')};
                     strcpy_s(acName, omDbName.GetBuffer(MAX_PATH));
-                    COPY_DATA(pbyTemp, acName, (sizeof (TCHAR) * MAX_PATH));
+                    COPY_DATA(pbyTemp, acName, (sizeof (char) * MAX_PATH));
                 }
             }
         }
@@ -13234,7 +13234,7 @@ void CMainFrame::OnJ1939DBAssociate()
 {
     CStringArray strFilePathArray;
     // Display a open file dialog
-    TCHAR szFilters[] = _T("All Supported DataBaseFiles (*.dbf;*.dbc)|*.dbf; *.dbc|J1939 Database File(s)(*.dbf)|*.dbf|CANoe Database File(s) (*.dbc)|*.dbc||");
+    char szFilters[] = _T("All Supported DataBaseFiles (*.dbf;*.dbc)|*.dbf; *.dbc|J1939 Database File(s)(*.dbf)|*.dbf|CANoe Database File(s) (*.dbc)|*.dbc||");
     CFileDialog fileDlg( TRUE,      // Open File dialog
                          "dbf",     // Default Extension,
                          NULL,

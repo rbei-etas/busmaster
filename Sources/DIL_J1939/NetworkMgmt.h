@@ -82,14 +82,14 @@ public:
     void vMConnectionInd(short sLocalLc, short sRemoteLc, eCON_STATUS eConStatus);
     ////////////////////////////////////////////////////////////////////
     CNodeConManager* pouGetConMagrObj(DWORD dwClientId);
-    CNodeConManager* pouGetConMagrObj(TCHAR* pacClientName);
+    CNodeConManager* pouGetConMagrObj(char* pacClientName);
     CNodeConManager* pouGetConMagrObj(BYTE byIndex);
     BYTE byGetConMagrNumber(short shConNumber);
     //Singleton Class
     static CNetworkMgmt& ouGetNWManagementObj();
     //
     void vSetLogAndICANPtr(Base_WrapperErrorLogger* pILog, CBaseDIL_CAN* pouIDIL_CAN);
-    LONG lCreateNodeConManager(TCHAR* pacNodeName,
+    LONG lCreateNodeConManager(char* pacNodeName,
                                UINT64 un64ECUName,
                                BYTE byPrefAdres,
                                DWORD& dwClientId);
@@ -101,7 +101,7 @@ public:
     void vReinitAdresClaimProc(DWORD dwClient);
     void vUpdateAddressMap(UINT64 un64EcuName, BYTE byNodeAddress);
     BOOL bIsAddressClaimed(BYTE byAddress);
-    void vGetNodeName(BYTE byAddress, TCHAR* acNodeName);
+    void vGetNodeName(BYTE byAddress, char* acNodeName);
     BYTE byGetNodeAddress(DWORD dwClient);
     void vInitializeAllNodes(void);
     void vUnInitializeAllNodes(void);

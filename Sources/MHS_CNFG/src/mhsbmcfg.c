@@ -24,7 +24,6 @@
 #include <stdio.h>
 #include <locale.h>
 #include <stddef.h>
-#include <tchar.h>
 #include "mhs_types.h"
 #include "util.h"
 #include "can_setup.h"

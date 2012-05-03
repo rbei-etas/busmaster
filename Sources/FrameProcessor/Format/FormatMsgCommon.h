@@ -33,11 +33,11 @@ protected:
     //should be present
     UINT64 m_qwResTime;//for reset log time
     UINT64   m_qwRelBaseTime;
-    void vFormatTimeStamp(DWORD dwTimeStamp, TCHAR acTime[]);
+    void vFormatTimeStamp(DWORD dwTimeStamp, char acTime[]);
 public:
     ~CFormatMsgCommon(void);
-    void vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,TCHAR acTime[]);
-    void vCalAndFormatTM_Offline(BYTE bExprnFlag,  UINT64 TimeStamp, TCHAR acTime[]);
+    void vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,char acTime[]);
+    void vCalAndFormatTM_Offline(BYTE bExprnFlag,  UINT64 TimeStamp, char acTime[]);
     void vSetRelBaseTime(INT64 qwRelBaseTime); //Called to sart afresh for append mode
     BOOL m_bResetMsgAbsTime;
     SYSTEMTIME m_LogSysTime;

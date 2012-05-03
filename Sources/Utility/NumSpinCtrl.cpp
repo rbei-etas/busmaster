@@ -239,7 +239,7 @@ double CNumSpinCtrl::dGetPos()
 {
     // Get the text control first to get the value
     CWnd* pomEdit = GetBuddy();
-    TCHAR* pDummy = NULL;
+    char* pDummy = NULL;
     double dVal = 0.0;
 
     // If the buddy is set then proceed
@@ -346,7 +346,7 @@ BOOL CNumSpinCtrl::bConvertStringToInt64( CString omStrHexNo,
     for (int nCount = 0; nCount < nStrLength; nCount++)
     {
         // Get the charector
-        TCHAR cChar = omStrHexNo.GetAt( nCount);
+        char cChar = omStrHexNo.GetAt( nCount);
 
         // Check for 0 - 9 range
         if( cChar >= '0' && cChar <= '9')

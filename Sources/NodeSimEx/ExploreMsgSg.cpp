@@ -250,7 +250,7 @@ void CExploreMsgSg::OnSelect()
 
             if ( m_bWantStructure )
             {
-                omStrSgName.Insert( 0, (TCHAR)PERIOD );
+                omStrSgName.Insert( 0, (char)PERIOD );
                 ////To pass the actual name of message
                 int nIndex = omStrMsg.ReverseFind(defMSGID_NAME_START_CHAR);
 

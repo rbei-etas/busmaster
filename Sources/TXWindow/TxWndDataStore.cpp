@@ -220,8 +220,8 @@ BYTE* CTxWndDataStore::pbySetConfigData(BYTE* pbyConfigData, INT /*nConfigSize*/
         for (UINT i = 0; i < m_unNumberOfMsgBlockCount; i++)
         {
             PSMSGBLOCKLIST psTempBlock = new SMSGBLOCKLIST;
-            TCHAR acName[MAX_PATH] = {_T('\0')};
-            COPY_DATA_2(acName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
+            char acName[MAX_PATH] = {_T('\0')};
+            COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
             strcpy_s(psTempBlock->m_acStrBlockName, acName);
             COPY_DATA_2(&(psTempBlock->m_ucTrigger),pbyTemp,  sizeof(UCHAR));
             COPY_DATA_2(&(psTempBlock->m_bActive), pbyTemp, sizeof(BOOL));
@@ -284,7 +284,7 @@ BYTE* CTxWndDataStore::pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize)
 
     while (psTemp != NULL && unBlockCount > 0)
     {
-        unSize += (sizeof(TCHAR) * MAX_PATH); // To store the block name
+        unSize += (sizeof(char) * MAX_PATH); // To store the block name
         unSize += sizeof(UCHAR); // To store the trigger
         unSize += sizeof(BOOL); // To store active or not
         unSize += sizeof(UCHAR); // To store the key value
@@ -309,9 +309,9 @@ BYTE* CTxWndDataStore::pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize)
     while (psTempBlock != NULL && unBlockCount > 0)
     {
         CString m_omStrBlockName;
-        TCHAR acName[MAX_PATH] = {_T('\0')};
+        char acName[MAX_PATH] = {_T('\0')};
         strcpy_s(acName, psTempBlock->m_acStrBlockName);
-        COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+        COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
         COPY_DATA(pbyTemp, &(psTempBlock->m_ucTrigger), sizeof(UCHAR));
         COPY_DATA(pbyTemp, &(psTempBlock->m_bActive), sizeof(BOOL));
         COPY_DATA(pbyTemp, &(psTempBlock->m_ucKeyValue), sizeof(UCHAR));

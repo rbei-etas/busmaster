@@ -50,13 +50,13 @@ CFrameProcessor_J1939::CFrameProcessor_J1939()
     m_pbyJ1939Data = new BYTE[m_sJ1939Data.unGetSize()];
     ASSERT(NULL != m_pbyJ1939Data);
     USHORT Length = ushCalculateStrLen(true, MAX_DATA_LEN_J1939);
-    m_sCurrFormatDat.m_pcDataHex = new TCHAR[Length];
+    m_sCurrFormatDat.m_pcDataHex = new char[Length];
     ASSERT(NULL != m_sCurrFormatDat.m_pcDataHex);
-    memset(m_sCurrFormatDat.m_pcDataHex, '\0', Length * sizeof(TCHAR));
+    memset(m_sCurrFormatDat.m_pcDataHex, '\0', Length * sizeof(char));
     Length = ushCalculateStrLen(false, MAX_DATA_LEN_J1939);
-    m_sCurrFormatDat.m_pcDataDec = new TCHAR[Length];
+    m_sCurrFormatDat.m_pcDataDec = new char[Length];
     ASSERT(NULL != m_sCurrFormatDat.m_pcDataDec);
-    memset(m_sCurrFormatDat.m_pcDataDec, '\0', Length * sizeof(TCHAR));
+    memset(m_sCurrFormatDat.m_pcDataDec, '\0', Length * sizeof(char));
     m_sDataCopyThread.m_hActionEvent = m_ouVSEBufJ1939.hGetNotifyingEvent();
 }
 

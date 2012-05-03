@@ -104,7 +104,7 @@ HRESULT CDILI_J1939::DILIJ_Uninitialise(void)
  * and to receive messages. Only registered client's buffer will be updated
  * on receive of a msg in the bus.
  */
-HRESULT CDILI_J1939::DILIJ_RegisterClient(BOOL bRegister, TCHAR* pacNodeName,
+HRESULT CDILI_J1939::DILIJ_RegisterClient(BOOL bRegister, char* pacNodeName,
         UINT64 un64ECUName, BYTE byPrefAdres,
         DWORD& dwClientId)
 {
@@ -141,7 +141,7 @@ HRESULT CDILI_J1939::DILIJ_SendJ1939Msg (DWORD dwClientId, UINT unChannel, EJ193
  *
  * Gets the node name from 8 bit address from J1939 network.
  */
-HRESULT CDILI_J1939::DILIJ_NM_GetNodeName(BYTE byAddress, TCHAR* acNodeName)
+HRESULT CDILI_J1939::DILIJ_NM_GetNodeName(BYTE byAddress, char* acNodeName)
 {
     return DILJ_NM_GetNodeName(byAddress, acNodeName);
 }

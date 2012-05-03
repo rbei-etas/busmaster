@@ -303,7 +303,7 @@ tagFormattedData_J1939::~tagFormattedData_J1939()
     DELETE_ARRAY(m_pcDataDec);
 }
 
-void GetMessageTypeStr(EJ1939_MSG_TYPE eType, TCHAR acResult[LEN_STR_TYPE_J1939])
+void GetMessageTypeStr(EJ1939_MSG_TYPE eType, char acResult[LEN_STR_TYPE_J1939])
 {
     switch (eType)
     {

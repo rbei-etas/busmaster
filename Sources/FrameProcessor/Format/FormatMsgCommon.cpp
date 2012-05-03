@@ -40,7 +40,7 @@ CFormatMsgCommon::~CFormatMsgCommon(void)
 }
 
 void CFormatMsgCommon::vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,
-        TCHAR acTime[])
+        char acTime[])
 {
     /* In order to make this function work properly ENSURE bExprnFlag has ONLY
     ONE time mode bit up */
@@ -119,7 +119,7 @@ void CFormatMsgCommon::vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,
     vFormatTimeStamp(dwTSTmp, acTime);
 }
 
-void CFormatMsgCommon::vFormatTimeStamp(DWORD dwTimeStamp, TCHAR acTime[])
+void CFormatMsgCommon::vFormatTimeStamp(DWORD dwTimeStamp, char acTime[])
 {
     // Static variables to reduce the creation time
     static int nTemp, nMicSec, nSec, nMinute, nHour;

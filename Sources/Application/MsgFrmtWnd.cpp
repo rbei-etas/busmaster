@@ -45,7 +45,7 @@ const BYTE MSG_FRMT_WND_VERSION = 0x1;
 struct sERRORMSGINFO
 {
     unsigned short m_usErrorCode; // Error code
-    TCHAR* m_ptcErorMsg;          // Error message
+    char* m_ptcErorMsg;          // Error message
 };
 typedef sERRORMSGINFO SERRORMSGINFO;
 typedef sERRORMSGINFO* PERRORMSGINFO;
@@ -71,7 +71,7 @@ static SERRORMSGINFO sg_asErrorEntry[ERRORS_DEFINED] =
 //Structure for SubErrors
 struct sSUBERRORMSGINFO
 {
-    TCHAR* m_ptcSubErorMsg;          // SubError message
+    char* m_ptcSubErorMsg;          // SubError message
 };
 typedef sSUBERRORMSGINFO SSUBERRORMSGINFO;
 typedef sSUBERRORMSGINFO* PSUBERRORMSGINFO;

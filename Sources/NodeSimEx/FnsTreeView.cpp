@@ -1574,7 +1574,7 @@ void CFnsTreeView::vEditTimerHandler(HTREEITEM hItem)
 void CFnsTreeView::vOnNewKeyHandler()
 {
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
-    TCHAR* pcCharacter = new TCHAR[2];
+    char* pcCharacter = new char[2];
     pcCharacter[1] = '\0';
 
     if ( pcCharacter != NULL )

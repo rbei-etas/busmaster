@@ -97,7 +97,7 @@ CDMGraphCtrl::CDMGraphCtrl()
     m_colPlotAreaColor      = RGB(   0,   0,   0);
     ZeroMemory(&m_ti, sizeof(TOOLINFO));
     m_ti.cbSize = sizeof(TOOLINFO);
-    m_ti.lpszText = m_ToolTipText;
+    m_ti.lpszText = (LPWSTR) m_ToolTipText;
     m_ToolTipText[0] = '\0';
     m_nCursorCount = 0;
 }
@@ -3717,7 +3717,7 @@ void CDMGraphCtrl::DrawCursor(HDC hDC, BOOL bOptimized)
             MoveToEx(hDC, pt[0].x, pt[0].y, NULL);
             LineTo(hDC, pt[1].x, pt[1].y);
             //To show Cursor ID
-            TCHAR strCursorID[1];
+            char strCursorID[1];
             strCursorID[0] = cursor->m_shCursorID+48;
             RECT rcBox;
             rcBox.left = pt[1].x-10;
@@ -3733,7 +3733,7 @@ void CDMGraphCtrl::DrawCursor(HDC hDC, BOOL bOptimized)
                 DeleteObject(brBox);
             }
 
-            ::TextOut(hDC, pt[1].x, pt[1].y, strCursorID, ARRAYSIZE(strCursorID));
+            ::TextOut(hDC, pt[1].x, pt[1].y, (LPCWSTR) strCursorID, ARRAYSIZE(strCursorID));
         }
 
         if (! bOptimized)

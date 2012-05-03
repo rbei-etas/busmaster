@@ -143,11 +143,11 @@ BOOL CMsgContainerBase:: bStopReadThread()
 }
 
 /**
- * \brief Copy String to TCHAR array
+ * \brief Copy String to char array
  *
- * String to TCHAR
+ * String to char
  */
-BOOL CMsgContainerBase::bCopyStringToTCHARArr( TCHAR acDesStr[], CString omSrc, int MaxDesLen )
+BOOL CMsgContainerBase::bCopyStringTocharArr( char acDesStr[], CString omSrc, int MaxDesLen )
 {
     BOOL bReturn = TRUE;
     memset (acDesStr, _T('\0'), MaxDesLen);

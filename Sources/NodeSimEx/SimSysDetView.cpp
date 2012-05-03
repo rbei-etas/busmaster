@@ -28,7 +28,7 @@
 #include "FunctionEditorDoc.h"
 #include "GlobalObj.h"
 
-TCHAR* pcHandlerNames[] =                   {_T("Message Handlers"),
+char* pcHandlerNames[] =                   {_T("Message Handlers"),
         _T("Timer Handlers"),
         _T("Key Handlers"),
         _T("Error Handlers")
@@ -635,7 +635,7 @@ void CSimSysDetView::OnButtonOpenfile()
 //    {
 //        bSuccess = TRUE;
 //
-//         TCHAR buffer[2500] = BUS_INCLUDE_HDR;
+//         char buffer[2500] = BUS_INCLUDE_HDR;
 //         wcscat(buffer ,_T("\n#include <Windows.h>"));
 //         if (CGlobalObj::m_omMsgStructFile.IsEmpty())
 //         {
@@ -674,7 +674,7 @@ void CSimSysDetView::OnButtonOpenfile()
 //         wcscat(buffer ,_T("\n\n"));
 //         int tcsLength = _tcslen(buffer);
 //
-//       int numwritten = fwrite( buffer, sizeof( TCHAR ), tcsLength, pCFile );
+//       int numwritten = fwrite( buffer, sizeof( char ), tcsLength, pCFile );
 //
 //       fclose(pCFile);
 //        pCFile = NULL;

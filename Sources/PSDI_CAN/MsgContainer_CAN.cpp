@@ -675,7 +675,7 @@ HRESULT CMsgContainerCAN::hUpdateFormattedMsgStruct(int nListIndex,
 ******************************************************************************/
 void CMsgContainerCAN::vSetCurrMsgName(CString strMsgNameOrCode)
 {
-    CMsgContainerBase::bCopyStringToTCHARArr (m_sOutFormattedData.m_acMsgDesc, strMsgNameOrCode,
+    CMsgContainerBase::bCopyStringTocharArr (m_sOutFormattedData.m_acMsgDesc, strMsgNameOrCode,
             sizeof(m_sOutFormattedData.m_acMsgDesc));
 }
 
@@ -758,7 +758,7 @@ void CMsgContainerCAN::vClearFormattedMsgStruct()
     Date Created     :  01.04.2010
 ******************************************************************************/
 void CMsgContainerCAN::vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL& sHdrColStruct,
-        TCHAR* pomDataPtrArr[MAX_MSG_WND_COL_CNT],
+        char* pomDataPtrArr[MAX_MSG_WND_COL_CNT],
         BYTE bExprnFlag_Disp)
 {
     //Time mode

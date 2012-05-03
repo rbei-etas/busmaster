@@ -33,5 +33,5 @@ public:
     ~Base_WrapperErrorLogger(void) {};
 
     // Maximum characters in File and Msg are FILENAME_MAX and BUFSIZ respectively
-    virtual void vLogAMessage(TCHAR File[], int Line, TCHAR Msg[]) = 0;
+    virtual void vLogAMessage(char File[], int Line, char Msg[]) = 0;
 };

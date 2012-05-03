@@ -230,7 +230,7 @@ Author(s)      :  Pradeep Kadoor
 Date Created   :  23/11/2010
 Modifications  :
 ******************************************************************************/
-CNodeConManager::CNodeConManager(int nNodeNo, TCHAR* pacNodeName, UINT64 un64ECUName, BYTE byPrefAddress, BOOL bIsMonNode)
+CNodeConManager::CNodeConManager(int nNodeNo, char* pacNodeName, UINT64 un64ECUName, BYTE byPrefAddress, BOOL bIsMonNode)
 {
     m_bIsMonNode = bIsMonNode;
     m_byPrefAddress = byPrefAddress;

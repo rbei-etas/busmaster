@@ -43,13 +43,13 @@ Codetag        :
 CString strCopyBSTRToCString(CComVariant& varSrc)
 {
     CString strDest ;
-    TCHAR tChar = NULL;
+    char tChar = NULL;
     _bstr_t bstrNodeValue(varSrc.bstrVal);
     ULONG ulLen = bstrNodeValue.length();
 
     for (unsigned int i = 0; i< ulLen*2; i+=2)
     {
-        tChar = (TCHAR)*(varSrc.pcVal+i);
+        tChar = (char)*(varSrc.pcVal+i);
         strDest.Insert(i/2, tChar);
     }
 

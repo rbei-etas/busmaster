@@ -36,7 +36,7 @@ private:
     void vFormatDataAndId(BYTE bExprnFlag, PSTJ1939_MSG psJ1939BData,
                           PSFORMATTEDATA_J1939 psJ1939FData);
     USHORT usProcessCurrErrorEntry(SERROR_INFO& sErrorInfo);
-    TCHAR* vFormatCurrErrorEntry(USHORT usErrorID);
+    char* vFormatCurrErrorEntry(USHORT usErrorID);
 public:
     CFormatMsgJ1939(void);
     ~CFormatMsgJ1939(void);

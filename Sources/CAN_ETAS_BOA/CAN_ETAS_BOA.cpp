@@ -280,7 +280,7 @@ public:
     // Specific function set
     HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
     HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
-    HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
+    HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
     HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
     HRESULT CAN_LoadDriverLibrary(void);
     HRESULT CAN_UnloadDriverLibrary(void);
@@ -402,7 +402,7 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
 /**
  * Gets the CSI API function pointer from the cslproxy.dll
  */
-BOOL bGetBOAInstallationPath(TCHAR* pcPath, INT& nSize)
+BOOL bGetBOAInstallationPath(char* pcPath, INT& nSize)
 {
     USES_CONVERSION;
     BOOL bResult = FALSE;
@@ -682,7 +682,7 @@ static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
  *
  * Checks for the existance of the client with the name pcClientName.
  */
-static BOOL bClientExist(TCHAR* pcClientName, INT& Index)
+static BOOL bClientExist(char* pcClientName, INT& Index)
 {
     for (UINT i = 0; i < sg_unClientCnt; i++)
     {
@@ -1572,7 +1572,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
  * Registers a client to the DIL. ClientID will have client id
  * which will be used for further client related calls
  */
-HRESULT CDIL_CAN_ETAS_BOA::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName)
 {
     HRESULT hResult = S_FALSE;
 
@@ -1661,11 +1661,11 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_LoadDriverLibrary(void)
 {
     HRESULT hResult = S_FALSE;
     /* Get BOA installation path from the registery */
-    TCHAR acPath[MAX_PATH] = {'\0'};
+    char acPath[MAX_PATH] = {'\0'};
     INT nSize = 0;
     bGetBOAInstallationPath(acPath, nSize);
     /* Load cslproxy.dll library */
-    TCHAR acLIB_CSL[MAX_PATH] = {'\0'};
+    char acLIB_CSL[MAX_PATH] = {'\0'};
     sprintf_s(acLIB_CSL, sizeof(acLIB_CSL), "%s\\%s", acPath, LIB_CSL_NAME);
     /* LoadLibraryEx instead of LoadLibrary seems to be necessary under Windows 7 when the library is not in DLL search path (system32) */
     sg_hLibCSI = LoadLibraryEx(acLIB_CSL, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
@@ -1677,7 +1677,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_LoadDriverLibrary(void)
         /* Load the OCI library to use CAN controller */
         if (hResult == S_OK)
         {
-            TCHAR acLIB_OCI[MAX_PATH] = {'\0'};
+            char acLIB_OCI[MAX_PATH] = {'\0'};
             sprintf_s(acLIB_OCI, sizeof(acLIB_OCI), "%s\\%s", acPath, LIB_OCI_NAME);
             sg_hLibOCI = LoadLibraryEx(acLIB_OCI, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
 
@@ -1771,7 +1771,7 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
     // If successful
     if (pControllerDetails != NULL)
     {
-        TCHAR* pcStopStr = NULL;
+        char* pcStopStr = NULL;
 
         for( INT i = 0; i < defNO_OF_CHANNELS; i++ )
         {

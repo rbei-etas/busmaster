@@ -202,7 +202,7 @@ void vConvStrtoByteArray(CByteArray* pomByteArrayBufTx,
                          CHAR* pctempBuf,
                          BOOL bHexON)
 {
-    TCHAR tCh = ' ';
+    char tCh = ' ';
     UINT unCount=0;
     UCHAR ucFirstCh = '\0';
     UCHAR ucSecondCh = '\0';

@@ -84,7 +84,7 @@ UINT CGraphList::unGetConfigSize(void)
         // Frame Format - Standard or Extended
         unSize += sizeof(short);//   m_nFrameFormat;
         // Element Name String
-        unSize += (sizeof(TCHAR) * MAX_PATH);//m_omStrElementName
+        unSize += (sizeof(char) * MAX_PATH);//m_omStrElementName
         // Type of the element value
         // 0 - network statistics parameter
         // 1 - Raw Value of the Signal

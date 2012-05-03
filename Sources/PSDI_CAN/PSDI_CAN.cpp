@@ -220,7 +220,7 @@ USAGEMODE HRESULT PSDI_StopReadThread()
  * Get the data pointers for displaying the message formatted data
  */
 USAGEMODE HRESULT PSDI_GetUpdatedCurrDataPtrArray( SMSGWNDHDRCOL& sHdrColStruct,
-        TCHAR* pomDataPtrArr[MAX_MSG_WND_COL_CNT],
+        char* pomDataPtrArr[MAX_MSG_WND_COL_CNT],
         BYTE bExprnFlag_Disp)
 {
     sg_pouMsgContainer_CAN->vGetUpdatedCurrDataPtrArray( sHdrColStruct,

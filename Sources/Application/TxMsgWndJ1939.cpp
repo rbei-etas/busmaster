@@ -328,7 +328,7 @@ static BYTE byExtractAddress(CString& omText)
 {
     BYTE byAddress = ADDRESS_NULL;
     CString omTemp;
-    TCHAR* pcStopStr = NULL;
+    char* pcStopStr = NULL;
     int nIndex = omText.Find(defMSGID_EXTENDED);
     int nCloseBraceIndex = omText.Find(defMSG_NAME_END_CHAR);
 
@@ -754,7 +754,7 @@ ESTATE_TRANS CTxMsgWndJ1939::eGetTransState(void)
 {
     return m_eTransState;
 }
-void CTxMsgWndJ1939::vSetStatusBarText(const TCHAR* pacText)
+void CTxMsgWndJ1939::vSetStatusBarText(const char* pacText)
 {
     CWnd* pWnd = GetDlgItem(IDC_STATUSBAR);
     pWnd->SetWindowText(pacText);

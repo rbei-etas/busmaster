@@ -170,7 +170,7 @@ static XLOPENDRIVER            xlDllOpenDriver = NULL;
 static int nInitHwNetwork();
 static BOOL bRemoveClient(DWORD dwClientId);
 static DWORD dwGetAvailableClientSlot();
-static BOOL bClientExist(TCHAR* pcClientName, INT& Index);
+static BOOL bClientExist(char* pcClientName, INT& Index);
 static BOOL bClientIdExist(const DWORD& dwClientId);
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex);
 static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line);
@@ -244,7 +244,7 @@ public:
     // Specific function set
     HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
     HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
-    HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
+    HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
     HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
     HRESULT CAN_LoadDriverLibrary(void);
     HRESULT CAN_UnloadDriverLibrary(void);
@@ -280,7 +280,7 @@ USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
  */
 static UINT sg_nNoOfChannels = 0;
 
-static TCHAR sg_omErrStr[MAX_STRING] = {0};
+static char sg_omErrStr[MAX_STRING] = {0};
 
 // Count variables
 static UCHAR sg_ucNoOfHardware = 0;
@@ -503,7 +503,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-HRESULT CDIL_CAN_VectorXL::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
+HRESULT CDIL_CAN_VectorXL::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName)
 {
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;
@@ -794,7 +794,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 
         for (UINT i = 0; i < sg_nNoOfChannels; i++)
         {
-            TCHAR buf[512];
+            char buf[512];
             asSelHwInterface[i].m_dwIdInterface = i;
             unsigned int serialNumber = sg_aodChannels[i].m_pXLChannelInfo->serialNumber;
             sprintf_s(buf, _T("%d"), serialNumber);
@@ -1911,7 +1911,7 @@ static int nInitHwNetwork()
     /* Capture only Driver Not Running event
      * Take action based on number of Hardware Available
      */
-    TCHAR acNo_Of_Hw[MAX_STRING] = {0};
+    char acNo_Of_Hw[MAX_STRING] = {0};
     sprintf_s(acNo_Of_Hw, _T("Number of Vector hardwares Available: %d"), nChannelCount);
 
     /* No Hardware found */
@@ -1942,13 +1942,13 @@ static int nInitHwNetwork()
 
 /**
 * \brief         This function will check if the client exists and gives back the client index.
-* \param[in]     pcClientName, client name as TCHAR*
+* \param[in]     pcClientName, client name as char*
 * \param[out]    Index, client index if found
 * \return        TRUE if client name is found, else FALSE
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-static BOOL bClientExist(TCHAR* pcClientName, INT& Index)
+static BOOL bClientExist(char* pcClientName, INT& Index)
 {
     for (UINT i = 0; i < sg_unClientCnt; i++)
     {

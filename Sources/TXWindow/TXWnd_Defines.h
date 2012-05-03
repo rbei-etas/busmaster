@@ -84,7 +84,7 @@ typedef sTXCANMSGLIST* PSTXCANMSGLIST;
 
 struct sMSGBLOCKLIST
 {
-    TCHAR m_acStrBlockName[defBLOCKNAME_SIZE];
+    char m_acStrBlockName[defBLOCKNAME_SIZE];
     unsigned char m_ucTrigger;
     BOOL m_bType;
     BOOL m_bActive;

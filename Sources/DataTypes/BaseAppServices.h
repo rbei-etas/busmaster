@@ -27,5 +27,5 @@
 class CBaseAppServices
 {
 public:
-    virtual BOOL bWriteToTrace(TCHAR* pcTraceStr) = 0;
+    virtual BOOL bWriteToTrace(char* pcTraceStr) = 0;
 };

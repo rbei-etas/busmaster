@@ -293,7 +293,7 @@ HRESULT CDIL_CAN::DILC_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE
  * This function registers the client. Only registered client buffers will be
  * updated on receive of a msg in the bus.
  */
-HRESULT CDIL_CAN::DILC_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
+HRESULT CDIL_CAN::DILC_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName)
 {
     return m_pBaseDILCAN_Controller->CAN_RegisterClient(bRegister, ClientID, pacClientName);
 }

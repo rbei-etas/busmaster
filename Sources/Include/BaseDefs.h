@@ -150,22 +150,22 @@ typedef struct tagFormattedData_CAN
     BYTE            m_byIDType;                     // Type of the ID (STD or EXTENDED)
     BYTE            m_byMsgType;                    // Type of the message (RTR or NRTR)
 
-    TCHAR   m_acMsgDir[LENGTH_STR_DIRECTION_CAN];     // "Tx" or "Rx"
-    TCHAR   m_acChannel[LENGTH_STR_CHANNEL_CAN];      // "1" or "2"
-    TCHAR   m_acType[LENGTH_STR_TYPE_CAN];            // s / x / r
-    TCHAR   m_acDataLen[LENGTH_STR_DLC_CAN];          // DLC always in dec
-    TCHAR   m_acMsgDesc[LENGTH_STR_DESCRIPTION_CAN];  // Message description
+    char   m_acMsgDir[LENGTH_STR_DIRECTION_CAN];     // "Tx" or "Rx"
+    char   m_acChannel[LENGTH_STR_CHANNEL_CAN];      // "1" or "2"
+    char   m_acType[LENGTH_STR_TYPE_CAN];            // s / x / r
+    char   m_acDataLen[LENGTH_STR_DLC_CAN];          // DLC always in dec
+    char   m_acMsgDesc[LENGTH_STR_DESCRIPTION_CAN];  // Message description
 
-    TCHAR   m_acMsgIDHex[LENGTH_STR_ID_CAN];          // Identifier in hex
-    TCHAR   m_acMsgIDDec[LENGTH_STR_ID_CAN];          // Identifier in dec
+    char   m_acMsgIDHex[LENGTH_STR_ID_CAN];          // Identifier in hex
+    char   m_acMsgIDDec[LENGTH_STR_ID_CAN];          // Identifier in dec
 
-    TCHAR   m_acDataHex[LENGTH_STR_DATA_CAN];         // Data in hex
-    TCHAR   m_acDataDec[LENGTH_STR_DATA_CAN];         // Data in dec
+    char   m_acDataHex[LENGTH_STR_DATA_CAN];         // Data in hex
+    char   m_acDataDec[LENGTH_STR_DATA_CAN];         // Data in dec
 
-    TCHAR   m_acTimeAbsReset[LENGTH_STR_TIMESTAMP_CAN];    // Absolute time stamp Reset
-    TCHAR   m_acTimeAbs[LENGTH_STR_TIMESTAMP_CAN];    // Absolute time stamp
-    TCHAR   m_acTimeRel[LENGTH_STR_TIMESTAMP_CAN];    // Relative time stamp
-    TCHAR   m_acTimeSys[LENGTH_STR_TIMESTAMP_CAN];    // System time stamp
+    char   m_acTimeAbsReset[LENGTH_STR_TIMESTAMP_CAN];    // Absolute time stamp Reset
+    char   m_acTimeAbs[LENGTH_STR_TIMESTAMP_CAN];    // Absolute time stamp
+    char   m_acTimeRel[LENGTH_STR_TIMESTAMP_CAN];    // Relative time stamp
+    char   m_acTimeSys[LENGTH_STR_TIMESTAMP_CAN];    // System time stamp
 
     __int64         m_n64MapId;                     // Map id of the message
     COLORREF        m_ColourCode;                   // Colour code associated

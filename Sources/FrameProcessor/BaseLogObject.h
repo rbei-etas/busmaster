@@ -41,7 +41,7 @@ private:
     // i.e., file name which contains max file count
     void vGetNameAndSizeOfCurrentLogFile();
     DWORD dwGetFileSize(CString omFileName); // Get size of the file
-    CString omAddGroupCountToFileName(int nCount, TCHAR FileName[]);
+    CString omAddGroupCountToFileName(int nCount, char FileName[]);
     CString omRemoveGroupCountFromFileName(CString FileName);
     void vSetNextFileName(void);
     // Reset certain data member values

@@ -36,12 +36,12 @@
 #include "AcceptanceFilterDlg.h"
 // For HI Layer definition
 
-long lFromStrTCHAR_2_Long(TCHAR acStr[], TCHAR** pccEndPtr, int nBase)
+long lFromStrchar_2_Long(char acStr[], char** pccEndPtr, int nBase)
 {
     return _tcstol(acStr, pccEndPtr, nBase);
 }
 
-long lFromCString_2_Long(CString omStr, TCHAR** pccEndPtr, int nBase)
+long lFromCString_2_Long(CString omStr, char** pccEndPtr, int nBase)
 {
     return _tcstol(omStr.GetBuffer(MAX_PATH), pccEndPtr, nBase);
 }
@@ -179,7 +179,7 @@ END_MESSAGE_MAP()
 BOOL CChangeRegisters::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    TCHAR caColumnName[5][50] = { defSTR_BTR0_COL_HEADING,
+    char caColumnName[5][50] = { defSTR_BTR0_COL_HEADING,
                                   defSTR_BTR1_COL_HEADING,
                                   defSTR_SAMPLE_POINT_COL_HEADING,
                                   defSTR_NBT_COL_HEADING,
@@ -782,14 +782,14 @@ void CChangeRegisters:: vUpdateBTRsBRPEditWindow(INT /*nColumnCount*/, INT nItem
 
     if(unNbt>0)
     {
-        TCHAR* pcStopStr = NULL;
+        char* pcStopStr = NULL;
         uBtr0.ucBTR0 = (UCHAR) lFromCString_2_Long(
                            omStrItems[defBRT0_COLUNM_POS-1], &pcStopStr, defHEXADECIMAL);
         unBrp = uBtr0.sBTR0Bit.ucBRPbit + 1;
     }
 
     //Convert UINT to string.
-    TCHAR acBrpStr[32] = {L'\0'};
+    char acBrpStr[32] = {L'\0'};
     _itoa_s(unBrp, acBrpStr, 10);
     omStrBrp = acBrpStr;
     m_omEditBRP.SetWindowText(omStrBrp);
@@ -824,7 +824,7 @@ void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
     UINT    unBrp           = 0;
     UINT    unProductNbtNBrp= 0;
     uBTR0   sBtr0Reg    ;
-    TCHAR* pcStopStr         = NULL;
+    char* pcStopStr         = NULL;
     // Get the baudrate for BTR0 and BTR1 values.
     dBaudRate = dCalculateBaudRateFromBTRs(omStrBtr0,m_omStrEditBTR1);
     m_omCombClock.GetWindowText(omStrClockFreq);
@@ -909,7 +909,7 @@ void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
                     unBrp     = unProductNbtNBrp/unNbt;
                 }
 
-                TCHAR acStrBrp[32] = {L'\0'};
+                char acStrBrp[32] = {L'\0'};
                 _itoa_s(unBrp, acStrBrp, 10);
                 omStrBrp = acStrBrp;
                 m_omEditBRP.SetWindowText(omStrBrp);
@@ -965,7 +965,7 @@ void CChangeRegisters:: vCalculateBaudRateNBTR0(CString omStrBtr1)
     INT     nSample             = 0;
     INT     nSampleChange       = 0;
     INT     nGetValue           = 0;
-    TCHAR*  pcStopStr           = NULL;
+    char*  pcStopStr           = NULL;
     uBTR1   sBtr1Reg;
     uBTR0   sBtr0Reg;
     m_omEditBaudRate.GetWindowText(omStrBaudRate);
@@ -1090,7 +1090,7 @@ void CChangeRegisters:: vCalculateBaudRateNBTR0(CString omStrBtr1)
                     unBrp     = usProductNbtNBrp/unNbt;
                 }
 
-                TCHAR acStrBrp[32] = {L'\0'};
+                char acStrBrp[32] = {L'\0'};
                 _itoa_s(unBrp, acStrBrp, 10);
                 omStrBrp = acStrBrp;
                 m_omEditBRP.SetWindowText(omStrBrp);
@@ -1465,7 +1465,7 @@ DOUBLE CChangeRegisters::dCalculateBaudRateFromBTRs(CString omStrBTR0,
     BYTE   byNBT        = 0;
     BYTE   byTSEG1      = 0;
     BYTE   byTSEG2      = 0;
-    TCHAR* pcStopStr     = NULL;
+    char* pcStopStr     = NULL;
     uBTR0val.ucBTR0 = (UCHAR) lFromCString_2_Long(omStrBTR0, &pcStopStr,defHEXADECIMAL);
     uBTR1val.ucBTR1 = (UCHAR) lFromCString_2_Long(omStrBTR1, &pcStopStr,defHEXADECIMAL);
     // BRP = BRPbit+1
@@ -1719,7 +1719,7 @@ void CChangeRegisters::vFillControllerConfigDetails()
         pWnd->SetWindowText(m_pControllerDetails[nIndex].m_omHardwareDesc);
     }
 
-    TCHAR* pcStopStr     = NULL;
+    char* pcStopStr     = NULL;
     m_omStrEditBaudRate     = m_pControllerDetails[ nIndex ].m_omStrBaudrate;
     m_omStrEditBTR0         = m_pControllerDetails[ nIndex ].m_omStrBTR0;
     m_omStrEditBTR1         = m_pControllerDetails[ nIndex ].m_omStrBTR1;
@@ -1785,7 +1785,7 @@ void CChangeRegisters::vFillControllerConfigDetails()
 *******************************************************************************/
 void CChangeRegisters::vUpdateControllerDetails()
 {
-    TCHAR* pcStopStr                = NULL;
+    char* pcStopStr                = NULL;
     CString omStrComboSampling      = "";
     CString omStrEditBtr0           = "";
     CString omStrEditBtr1           = "";
@@ -2025,16 +2025,16 @@ BOOL CChangeRegisters::bGetFilterFromCom(BOOL&  bExtended, double&  dBeginMsgId,
 
     if(m_pControllerDetails != NULL)
     {
-        TCHAR* pcStopStr = NULL;
+        char* pcStopStr = NULL;
         //Change to separate integer value for each byte
-        int nAccCodeByte1 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte1[0], &pcStopStr, defHEXADECIMAL);
-        int nAccCodeByte2 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte2[0], &pcStopStr, defHEXADECIMAL);
-        int nAccCodeByte3 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte3[0], &pcStopStr, defHEXADECIMAL);
-        int nAccCodeByte4 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte4[0], &pcStopStr, defHEXADECIMAL);
-        int nMaskCodeByte1 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccMaskByte1[0], &pcStopStr, defHEXADECIMAL);
-        int nMaskCodeByte2 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccMaskByte2[0], &pcStopStr, defHEXADECIMAL);
-        int nMaskCodeByte3 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccMaskByte3[0], &pcStopStr, defHEXADECIMAL);
-        int nMaskCodeByte4 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccMaskByte4[0], &pcStopStr, defHEXADECIMAL);
+        int nAccCodeByte1 = lFromStrchar_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte1[0], &pcStopStr, defHEXADECIMAL);
+        int nAccCodeByte2 = lFromStrchar_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte2[0], &pcStopStr, defHEXADECIMAL);
+        int nAccCodeByte3 = lFromStrchar_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte3[0], &pcStopStr, defHEXADECIMAL);
+        int nAccCodeByte4 = lFromStrchar_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte4[0], &pcStopStr, defHEXADECIMAL);
+        int nMaskCodeByte1 = lFromStrchar_2_Long(m_pControllerDetails[0].m_omStrAccMaskByte1[0], &pcStopStr, defHEXADECIMAL);
+        int nMaskCodeByte2 = lFromStrchar_2_Long(m_pControllerDetails[0].m_omStrAccMaskByte2[0], &pcStopStr, defHEXADECIMAL);
+        int nMaskCodeByte3 = lFromStrchar_2_Long(m_pControllerDetails[0].m_omStrAccMaskByte3[0], &pcStopStr, defHEXADECIMAL);
+        int nMaskCodeByte4 = lFromStrchar_2_Long(m_pControllerDetails[0].m_omStrAccMaskByte4[0], &pcStopStr, defHEXADECIMAL);
         //now make them as dword in decimal
         dBeginMsgId = (ULONG)(nAccCodeByte1*0X1000000+nAccCodeByte2*0X10000+
                               nAccCodeByte3*0X100+nAccCodeByte4);

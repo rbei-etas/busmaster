@@ -57,7 +57,7 @@ CFormatMsgCommon::~CFormatMsgCommon(void)
  * Format time details
  */
 void CFormatMsgCommon::vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,
-        TCHAR acTime[])
+        char acTime[])
 {
     /* In order to make this function work properly ENSURE bExprnFlag has ONLY
     1 time mode bit up */
@@ -90,7 +90,7 @@ void CFormatMsgCommon::vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,
  *
  * Format Time Stamp
  */
-void CFormatMsgCommon::vFormatTimeStamp(DWORD dwTimeStamp, TCHAR acTime[])
+void CFormatMsgCommon::vFormatTimeStamp(DWORD dwTimeStamp, char acTime[])
 {
     // Static variables to reduce the creation time
     static int nTemp, nMicSec, nSec, nMinute, nHour;

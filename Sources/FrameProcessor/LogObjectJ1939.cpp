@@ -57,12 +57,12 @@ BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
     }
 
     CString omLogText = "";
-    TCHAR* pTimeData = NULL;
-    TCHAR acID[16] = {'\0'};
-    TCHAR* pPGN = NULL;
-    TCHAR* pData = NULL;
-    TCHAR* psSrcNode = NULL;
-    TCHAR* psDestNode = NULL;
+    char* pTimeData = NULL;
+    char acID[16] = {'\0'};
+    char* pPGN = NULL;
+    char* pData = NULL;
+    char* psSrcNode = NULL;
+    char* psDestNode = NULL;
 
     switch (m_sLogInfo.m_eLogTimerMode) // Time Mode
     {
@@ -70,24 +70,24 @@ BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
         {
             if(m_sLogInfo.m_bResetAbsTimeStamp)
             {
-                pTimeData = (TCHAR*) (sDataJ1939.m_acTimeAbsReset);
+                pTimeData = (char*) (sDataJ1939.m_acTimeAbsReset);
             }
             else
             {
-                pTimeData = (TCHAR*) (sDataJ1939.m_acTimeAbs);
+                pTimeData = (char*) (sDataJ1939.m_acTimeAbs);
             }
         }
         break;
 
         case TIME_MODE_RELATIVE:
         {
-            pTimeData = (TCHAR*) (sDataJ1939.m_acTimeRel);
+            pTimeData = (char*) (sDataJ1939.m_acTimeRel);
         }
         break;
 
         case TIME_MODE_SYSTEM:
         {
-            pTimeData = (TCHAR*) (sDataJ1939.m_acTimeSys);
+            pTimeData = (char*) (sDataJ1939.m_acTimeSys);
         }
         break;
 
@@ -101,20 +101,20 @@ BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
         case HEXADECIMAL:
         {
             sprintf_s(acID, "%x", sDataJ1939.m_dwMsgID);
-            pPGN = (TCHAR*) (sDataJ1939.m_acPGNHex);
-            pData = (TCHAR*) (sDataJ1939.m_pcDataHex);
-            psSrcNode = (TCHAR*) (sDataJ1939.m_acSrcHex);
-            psDestNode = (TCHAR*) (sDataJ1939.m_acDestHex);
+            pPGN = (char*) (sDataJ1939.m_acPGNHex);
+            pData = (char*) (sDataJ1939.m_pcDataHex);
+            psSrcNode = (char*) (sDataJ1939.m_acSrcHex);
+            psDestNode = (char*) (sDataJ1939.m_acDestHex);
         }
         break;
 
         case DEC:
         {
             sprintf_s(acID, "%d", sDataJ1939.m_dwMsgID);
-            pPGN = (TCHAR*) (sDataJ1939.m_acPGNDec);
-            pData = (TCHAR*) (sDataJ1939.m_pcDataDec);
-            psSrcNode = (TCHAR*) (sDataJ1939.m_acSrcDec);
-            psDestNode = (TCHAR*) (sDataJ1939.m_acDestDec);
+            pPGN = (char*) (sDataJ1939.m_acPGNDec);
+            pData = (char*) (sDataJ1939.m_pcDataDec);
+            psSrcNode = (char*) (sDataJ1939.m_acSrcDec);
+            psDestNode = (char*) (sDataJ1939.m_acDestDec);
         }
         break;
 

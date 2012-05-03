@@ -345,7 +345,7 @@ void COutWnd::OnDbClick()
         CString omStrLineNumber = "";
         INT     nIndex          = 0;
         UINT    unLineNumber    = 0;
-        TCHAR*   pcStopStr       = NULL;
+        char*   pcStopStr       = NULL;
         m_omListBox.GetText(nSelectIndex,omStrSelectedItem);
         CString omStrFilePath;
         CString omStrFileName;

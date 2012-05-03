@@ -257,7 +257,7 @@ BYTE CNetworkMgmt::byGetNodeAddress(DWORD dwClient)
 
     return byAddress;
 }
-void CNetworkMgmt::vGetNodeName(BYTE byAddress, TCHAR* acNodeName)
+void CNetworkMgmt::vGetNodeName(BYTE byAddress, char* acNodeName)
 {
     for (int i = 0; i < m_nConMgrCnt; i++)
     {
@@ -459,7 +459,7 @@ BOOL CNetworkMgmt::bRemoveConnectionFromConMap(short shConnectionNo)
     return bReturn;
 }
 
-CNodeConManager* CNetworkMgmt::pouGetConMagrObj(TCHAR* pacClientName)
+CNodeConManager* CNetworkMgmt::pouGetConMagrObj(char* pacClientName)
 {
     CNodeConManager* pNodeConMgr = NULL;
 
@@ -530,7 +530,7 @@ void CNetworkMgmt::vSetLogAndICANPtr(Base_WrapperErrorLogger* pILog, CBaseDIL_CA
 
 /**************************************************************
 ************************************************************** */
-LONG CNetworkMgmt::lCreateNodeConManager(TCHAR* pacNodeName,
+LONG CNetworkMgmt::lCreateNodeConManager(char* pacNodeName,
         UINT64 un64ECUName,
         BYTE   byPrefAdres,
         DWORD& dwClientId)

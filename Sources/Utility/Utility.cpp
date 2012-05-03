@@ -272,7 +272,7 @@ bool bGetSystemErrorString(HRESULT hResult, CHAR acErrStr[256])
 }
 #endif
 
-bool bGetSystemErrorString(HRESULT hResult, TCHAR acErrStr[256])
+bool bGetSystemErrorString(HRESULT hResult, char acErrStr[256])
 {
     bool bResult = true;
     memset(acErrStr, _T('\0'), _tcslen(acErrStr));
@@ -309,7 +309,7 @@ bool bGetSystemErrorString(char acErrStr[256])
 BOOL CopyTextToClipboard(LPSTR lpstrText, HWND hWnd = NULL)
 {
     HGLOBAL hGlobal;    // Global memory handle
-    //TCHAR* lpszData;    // Pointer to clipboard data
+    //char* lpszData;    // Pointer to clipboard data
     LPSTR lpszData;
     SIZE_T nSize;       // Size of clipboard data
     OpenClipboard(hWnd);// Open clipboard
@@ -391,7 +391,7 @@ __int64 nConvertStringToInt(LPCTSTR omStrHexNo)
 
     for (int nCount = 0; nCount < nLength; nCount++)
     {
-        TCHAR cChar = omStrHexNo[nCount];
+        char cChar = omStrHexNo[nCount];
 
         if ( cChar == '0' )
         {
@@ -579,7 +579,7 @@ BOOL bConvertStringToInt64( CString omStrHexNo,
     for (int nCount = 0; nCount < nStrLength; nCount++)
     {
         // Get the charector
-        TCHAR cChar = omStrHexNo.GetAt( nCount);
+        char cChar = omStrHexNo.GetAt( nCount);
 
         // Check for 0 - 9 range
         if( cChar >= '0' && cChar <= '9')

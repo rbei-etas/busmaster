@@ -25,7 +25,7 @@
 #include "DataTypes_StdAfx.h"
 #include "Filter_Datatypes.h"
 
-const int SIZE_TCHAR = sizeof(TCHAR);
+const int SIZE_char = sizeof(char);
 
 /* Starts SFILTERNAME / tagFilterName */
 
@@ -103,7 +103,7 @@ tagFilterName& tagFilterName::operator=(const tagFilterName& RefObj)
 BYTE* tagFilterName::pbGetConfigData(BYTE* pbTarget) const
 {
     BYTE* pbTStream = pbTarget;
-    COPY_DATA(pbTStream, m_acFilterName, LENGTH_FILTERNAME * SIZE_TCHAR);
+    COPY_DATA(pbTStream, m_acFilterName, LENGTH_FILTERNAME * SIZE_char);
     COPY_DATA(pbTStream, &m_bFilterType, sizeof(m_bFilterType));
     return pbTStream;
 }
@@ -127,7 +127,7 @@ BYTE* tagFilterName::pbGetConfigData(BYTE* pbTarget) const
 BYTE* tagFilterName::pbSetConfigData(BYTE* pbTarget)
 {
     BYTE* pbTStream = pbTarget;
-    COPY_DATA_2(m_acFilterName, pbTStream, LENGTH_FILTERNAME * SIZE_TCHAR);
+    COPY_DATA_2(m_acFilterName, pbTStream, LENGTH_FILTERNAME * SIZE_char);
     COPY_DATA_2(&m_bFilterType, pbTStream, sizeof(m_bFilterType));
     return pbTStream;
 }
@@ -1563,7 +1563,7 @@ BYTE* tagFilterSet::pbSetConfigData(BYTE* pbTarget, bool& Result)
     return pbTStream;
 }
 
-tagFilterSet* tagFilterSet::psGetFilterSetPointer(tagFilterSet* psSet, UINT Count, TCHAR* acFilterName)
+tagFilterSet* tagFilterSet::psGetFilterSetPointer(tagFilterSet* psSet, UINT Count, char* acFilterName)
 {
     for (UINT i = 0; i < Count; i++)
     {

@@ -1201,7 +1201,7 @@ UINT CSigWatchAddDelDlg::unGetMainEntryIDFromName(CString omMainEntryName)
 {
     CString omMainEntryId;
     UINT unMainEntryID = (UINT)-1;
-    TCHAR* pcStopStr = NULL;
+    char* pcStopStr = NULL;
     int nIndex = omMainEntryName.Find(defMSGID_EXTENDED);
     int nCloseBraceIndex = omMainEntryName.Find(defMSG_NAME_END_CHAR);
 

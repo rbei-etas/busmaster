@@ -31,7 +31,6 @@
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
 #include <atlconv.h>
-#include <tchar.h>
 #include <windows.h>
 #include <wtypes.h>
 
@@ -202,7 +201,7 @@ public:
     // Specific function set
     HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
     HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
-    HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
+    HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
     HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
     HRESULT CAN_LoadDriverLibrary(void);
     HRESULT CAN_UnloadDriverLibrary(void);
@@ -221,7 +220,7 @@ static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFS
 static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED], UINT& unCount, CBaseCANBufFSE* BufferToRemove);
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex);
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex);
-static BOOL bClientExist(TCHAR* pcClientName, INT& Index);
+static BOOL bClientExist(char* pcClientName, INT& Index);
 static BOOL bRemoveClient(DWORD dwClientId);
 static BOOL bClientIdExist(const DWORD& dwClientId);
 static DWORD dwGetAvailableClientSlot(void);
@@ -380,7 +379,7 @@ HRESULT CDIL_CAN_MHS::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBuf
  * Registers a client to the DIL. ClientID will have client id
  * which will be used for further client related calls
  */
-HRESULT CDIL_CAN_MHS::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
+HRESULT CDIL_CAN_MHS::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName)
 {
     HRESULT hResult = S_FALSE;
     INT Index;
@@ -626,7 +625,7 @@ HRESULT CDIL_CAN_MHS::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
     HRESULT result;
     struct TMhsCanCfg cfg;
     SCONTROLLER_DETAILS* cntrl;
-    TCHAR* str;
+    char* str;
     result = WARN_INITDAT_NCONFIRM;
     cntrl = (SCONTROLLER_DETAILS*)InitData;
 
@@ -678,7 +677,7 @@ HRESULT CDIL_CAN_MHS::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
 {
     (void)Length;
     SCONTROLLER_DETAILS* cntrl;
-    TCHAR* str;
+    char* str;
     //VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
     cntrl = (SCONTROLLER_DETAILS*)ConfigFile;
 
@@ -1141,7 +1140,7 @@ static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
  *
  * Checks for the existance of the client with the name pcClientName.
  */
-static BOOL bClientExist(TCHAR* pcClientName, INT& Index)
+static BOOL bClientExist(char* pcClientName, INT& Index)
 {
     UINT i;
 

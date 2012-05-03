@@ -158,7 +158,7 @@ void CUtlityDlg::OnOk()
                     {
                         // Insert a space in the end
                         omStrSelDataType.Insert(
-                            omStrSelDataType.GetLength(),(TCHAR)SPACE);
+                            omStrSelDataType.GetLength(),(char)SPACE);
                         // Form prototype
                         omStrSelDataType += m_omStrUtilsFunText;
                         omStrSelDataType +=m_omStrFunctionName;
