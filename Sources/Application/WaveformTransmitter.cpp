@@ -285,6 +285,7 @@ CWaveformTransmitter::CWaveformTransmitter()
 {
     m_bEnabled = FALSE;
     m_bTxON = FALSE;
+    m_nIterLimit = 0;
     m_pWaveDataHandler      = NULL;
     m_pouDIL_CAN_Interface  = NULL;
     m_ppouDBPtr             = NULL;
