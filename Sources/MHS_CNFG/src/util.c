@@ -580,12 +580,11 @@ return(d - 1);
 
 char *mhs_strdup(const char *str)
 {
-int len;
 char *new_str;
 
 if (str)
   {
-  len = strlen(str) + 1;
+  int len = strlen(str) + 1;
   new_str = (char *)mhs_malloc(len);
   if (!new_str)
     return(NULL);
@@ -666,7 +665,6 @@ else
 
 char *path_get_dirname(const char *file_name)
 {
-int len;
 char *base;
 
 if (!file_name)
@@ -676,7 +674,7 @@ if (base)
   {
   while ((base > file_name) && (*base == DIR_SEPARATOR))
     base--;
-  len = base - file_name + 1;
+  int len = base - file_name + 1;
 
   base = (char *)mhs_malloc(len + 1);
   if (!base)
