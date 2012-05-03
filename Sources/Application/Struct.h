@@ -482,11 +482,11 @@ typedef sTxMsgSplitterData STXMSGSPLITTERDATA;
 typedef STXMSGSPLITTERDATA* PSTXMSGSPLITTERDATA;
 
 // Graph window splitter details
-struct tagGraphSplitterData
+typedef struct tagGraphSplitterData
 {
     int m_nRootSplitterData[2][2];
     int m_nRightViewSplitterData[2][2];
-};
+} tagGraphSplitterData;
 
 typedef tagGraphSplitterData sGraphSplitterData;
 typedef sGraphSplitterData SGRAPHSPLITTERDATA;
@@ -533,7 +533,7 @@ typedef tagFilterList sFilterList;
 typedef sFilterList SFILTERLIST;
 typedef SFILTERLIST* PSFILTERLIST;
 
-struct tagModuleFilter
+typedef struct tagModuleFilter
 {
     char    m_omFilterName[LENGTH_FILTERNAME];
     BOOL    m_bEnabled;
@@ -567,7 +567,7 @@ struct tagModuleFilter
     {
         return !(*this == TempObj);
     }
-};
+} tagModuleFilter;
 
 typedef tagModuleFilter sModuleFilter;
 typedef sModuleFilter SMODULEFILTER;
