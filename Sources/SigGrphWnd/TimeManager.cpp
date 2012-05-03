@@ -1,14 +1,26 @@
-/*********************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  TimeManager.cpp
-  Description   :  Implementation file for CTimeManager class
-  $Log:   X:/Archive/Sources/SigGrphWnd/TimeManager.cpv  $
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-  Author(s)     :  Raja N
-  Date Created  :  23.06.2004
-  Modified By   :
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
- *********************************************************************/
+/**
+ * \file      TimeManager.cpp
+ * \brief     Implementation file for CTimeManager class
+ * \author    Raja N
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Implementation file for CTimeManager class
+ */
 
 // Standard include header
 #include "SigGrphWnd_stdafx.h"
@@ -23,10 +35,6 @@
 #include "DataTypes/DIL_Datatypes.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
 // Initialise the static members
 
 // Initialise absolute Time
@@ -40,58 +48,39 @@ const int CTimeManager::m_nSysRefTime = CTimeManager::nCalculateCurrTimeStamp(FA
 BOOL bDummy0001 = QueryPerformanceFrequency((LARGE_INTEGER*) &s_Temp);
 const __int64 CTimeManager::m_n64Frequency = s_Temp.QuadPart;
 
-// **** Start of USB related Code **** //
 int CTimeManager::m_nOffsetTimeValue =
     CTimeManager::nCalculateOffsetTime();
 
-// **** End of USB Related Code **** //
-
-/*******************************************************************************
- Function Name  : CTimeManager
- Description    : Standard default constructor for dialog box
- Member of      : CTimeManager
- Functionality  : -
- Author(s)      : Raja N
- Date Created   : 23.06.2004
-*******************************************************************************/
+/**
+ * \brief Constructor
+ *
+ * Standard default constructor for dialog box
+ */
 CTimeManager::CTimeManager()
 {
 }
 
-/*******************************************************************************
- Function Name  : CTimeManager
- Description    : Standard Destructor
- Member of      : CTimeManager
- Functionality  : -
- Author(s)      : Raja N
- Date Created   : 23.06.2004
-*******************************************************************************/
+/**
+ * \brief Destructor
+ *
+ * Standard Destructor
+ */
 CTimeManager::~CTimeManager()
 {
 }
 
-/*******************************************************************************
- Function Name  : vFormatTimeStamp
- Input(s)       : nTimeStamp        - Current time stamp
-                  bOverWrite        - Mode of Time Calculation
-                  wDisplayTimeMode  - Type of Time Calculation
-                  nIndex            - Index of the element
-                  nOverWriteMapKey  - Unique key to CMap to get previous time
-                                      stamp
-                  omStrTime         - Object Reference to store the formatted
-                                      time value
- Output         : -
- Functionality  : This function will compute the time and will format it and
-                  will store it in the omStrTime string.
- Member of      : CTimeManager
- Author(s)      : Raja N
- Date Created   : 23.06.2004
- Modifications  : Raja N on 22.07.2004
-                  Modified the code to refer vFormatTimeStamp overloaded
-                  function. This will split the functionality logically
- Modifications  : Raja N on 22.07.2004
-                  Changed map index variable type from int to __int64
-*******************************************************************************/
+/**
+ * \brief      Format Time Stamp
+ * \param[in]  nTimeStamp Current time stamp
+ * \param[in]  bOverWrite Mode of Time Calculation
+ * \param[in]  wDisplayTimeMode Type of Time Calculation
+ * \param[in]  nIndex Index of the element
+ * \param[in]  n64OverWriteMapKey Unique key to CMap to get previous time stamp
+ * \param[out] omStrTime Object Reference to store the formatted time value
+ *
+ * This function will compute the time and will format it and
+ * will store it in the omStrTime string.
+ */
 void CTimeManager::vFormatTimeStamp(int nTimeStamp, BOOL bOverWrite,
                                     WORD wDisplayTimeMode,
                                     int nIndex,
@@ -129,21 +118,16 @@ void CTimeManager::vFormatTimeStamp(int nTimeStamp, BOOL bOverWrite,
     vFormatTimeStamp(nTimeStamp, nRefTime, wDisplayTimeMode, omStrTime);
 }
 
-/*******************************************************************************
- Function Name  : vFormatTimeStamp
- Input(s)       : nTimeStamp        - Current time stamp
-                  nRefTimeStamp     - Reference time stamp for relative mode
-                  wDisplayTimeMode  - Type of Time Calculation
-                  omStrTime         - Object Reference to store the formatted
-                                      time value
- Output         : -
- Functionality  : This function will compute the time and will format it and
-                  will store it in the omStrTime string.
- Member of      : CTimeManager
- Author(s)      : Raja N
- Date Created   : 22.07.2004
- Modifications  :
-*******************************************************************************/
+/**
+ * \brief      Format Time Stamp
+ * \param[in]  nTimeStamp Current time stamp
+ * \param[in]  nRefTimeStamp Reference time stamp for relative mode
+ * \param[in]  wDisplayTimeMode Type of Time Calculation
+ * \param[out] omStrTime Object Reference to store the formatted time value
+ *
+ * This function will compute the time and will format it and
+ * will store it in the omStrTime string.
+ */
 void CTimeManager::vFormatTimeStamp( int nTimeStamp,
                                      int nRefTimeStamp,
                                      WORD wDisplayTimeMode,
@@ -185,45 +169,36 @@ void CTimeManager::vFormatTimeStamp( int nTimeStamp,
     omStrTime.Format(defTIME_STAMP_FORMAT, nHour, nMinute,nSec, nMicSec);
 }
 
-/*******************************************************************************
- Function Name  : vSetAbsoluteTime
- Input(s)       : nAbsoluteTime     - Absolute Time Reference
- Output         : -
- Functionality  : This function will init the absolute reference variable with
-                  given time value
- Member of      : CTimeManager
- Author(s)      : Raja N
- Date Created   : 23.06.2004
-*******************************************************************************/
+/**
+ * \brief     Set Absolute Time
+ * \param[in] nAbsoluteTime Absolute Time Reference
+ *
+ * This function will init the absolute reference variable with
+ * given time value
+ */
 void CTimeManager::vSetAbsoluteTime(int nAbsoluteTime)
 {
     m_nAbsoluteTime = nAbsoluteTime;
 }
 
-/*******************************************************************************
- Function Name  : nGetAbsoluteTime
- Input(s)       : -
- Output         : int     - Absolute Time Reference
- Functionality  : This function will return the absolute reference value
- Member of      : CTimeManager
- Author(s)      : Raja N
- Date Created   : 23.06.2004
-*******************************************************************************/
+/**
+ * \brief  Get Absolute Time
+ * \return Absolute Time Reference
+ *
+ * This function will return the absolute reference value
+ */
 int CTimeManager::nGetAbsoluteTime()
 {
     return m_nAbsoluteTime;
 }
 
-/*******************************************************************************
- Function Name  : nCalculateCurrTimeStamp
- Input(s)       : -
- Output         : int     - Current system time in 10's of Milli Seconds
- Functionality  : This function will return the current system time in 10's of
-                  milliseconds. This will be called to init reference variables
- Member of      : CTimeManager
- Author(s)      : Raja N
- Date Created   : 23.06.2004
-*******************************************************************************/
+/**
+ * \brief  Calculate Current Time Stamp
+ * \return Current system time in 10's of Milli Seconds
+ *
+ * This function will return the current system time in 10's of
+ * milliseconds. This will be called to init reference variables
+ */
 int CTimeManager::nCalculateCurrTimeStamp(BOOL bFromDIL)
 {
     SYSTEMTIME CurrSysTime;
@@ -244,60 +219,49 @@ int CTimeManager::nCalculateCurrTimeStamp(BOOL bFromDIL)
     return nResult;
 }
 
-
-/******************************************************************************
- Function Name  : nGetAbsoluteTime
- Input(s)       : -
- Output         : int     - Absolute Time Reference
- Functionality  : This function will return the absolute reference value
- Member of      : CTimeManager
- Author(s)      : Raja N
- Date Created   : 23.06.2004
-******************************************************************************/
+/**
+ * \brief Init Absolute Time
+ *
+ * This function will initialize the absolute reference value
+ */
 void CTimeManager::vInitAbsoluteTime()
 {
     m_nAbsoluteTime = nCalculateCurrTimeStamp();
 }
 
-/******************************************************************************
- Function Name  : nGetAbsoluteTime
- Input(s)       : n64CurrTick   - Time Tick Value
- Output         : int           - System Time in 10s of millisecond
- Functionality  : This function will calculate the saystem time value of the
-                  clock tick. This will refer the reference time time and clock
-                  tick frequency to compute the system time
- Member of      : CTimeManager
- Author(s)      : Raja N
- Date Created   : 23.06.2004
- Modifications  : Raja N on 31.08.2004
-                  Added code for USB Implementation
-******************************************************************************/
+/**
+ * \brief     Calculate Elapsed Time From Tick
+ * \param[in] n64CurrTick Time Tick Value
+ * \return    System Time in 10s of millisecond
+ *
+ * This function will calculate the saystem time value of the
+ * clock tick. This will refer the reference time time and clock
+ * tick frequency to compute the system time
+ */
 int CTimeManager::nCalculateElapsedTimeFromTick(const __int64& /*n64CurrTick*/)
 {
     return 0;
 }
+
+/**
+ * \brief Reinit Offset Time Value for ES581
+ *
+ * Reinit Offset Time Value for ES581
+ */
 void CTimeManager::bReinitOffsetTimeValForES581(void)
 {
     CTimeManager::m_nOffsetTimeValue = nCalculateCurrTimeStamp(TRUE);
 }
 
-/******************************************************************************
- Function Name  : nCalculateOffsetTime
- Input(s)       : -
- Output         : int           - Offset Time in 10s of millisecond
- Functionality  : This function will calculate the time offset between windows
-                  start-up time and system time. This will be added to time
-                  stamping in the CAN message from driver.
- Member of      : CTimeManager
- Author(s)      : Raja N
- Date Created   : 31.08.2004
- Modifiecations : Raja N on 13.09.2004
-                  Included overflow member value while calculating the offset
-                  value
-******************************************************************************/
+/**
+ * \brief  Calculate Offset Time
+ * \return Offset Time in 10s of millisecond
+ *
+ * This function will calculate the time offset between windows
+ * start-up time and system time. This will be added to time
+ * stamping in the CAN message from driver.
+ */
 int CTimeManager::nCalculateOffsetTime()
 {
     return 0;
 }
-
-// **** End of USB Related Code **** //
