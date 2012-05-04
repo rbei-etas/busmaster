@@ -22,7 +22,7 @@
  * Source of CFormatMsgCommon class.
  */
 
-#include "FrameProcessor_stdafx.h"
+#include "../FrameProcessor_stdafx.h"
 #include "FormatMsgCommon.h"
 #include "FrameProcessor/RefTimeKeeper.h"
 #include "include/Utils_Macro.h"

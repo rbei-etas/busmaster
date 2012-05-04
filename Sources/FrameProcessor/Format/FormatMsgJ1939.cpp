@@ -11,7 +11,7 @@
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 
-#include "FrameProcessor_stdafx.h"
+#include "../FrameProcessor_stdafx.h"
 #include "DataTypes/J1939_dataTypes.h"
 #include "FormatMsgJ1939.h"
 #include "include/Utils_macro.h"
