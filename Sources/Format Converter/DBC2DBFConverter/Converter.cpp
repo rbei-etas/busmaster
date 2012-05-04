@@ -221,7 +221,7 @@ void CConverter::ValidateMessageList()
                     iCntIntelSignals++;
                     break;
 
-                case CSIGNAL::SIG_DF_MOTOROLA:
+                case CSignal::SIG_DF_MOTOROLA:
                     iCntMotorolaSignals++;
                     break;
             }
