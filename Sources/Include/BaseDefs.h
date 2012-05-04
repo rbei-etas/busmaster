@@ -26,7 +26,6 @@
 
 #include "Struct_CAN.h"
 
-
 /*Maximum possible length of a CAN*/
 #define MAX_DATA_LEN_CAN 8
 /*Maximum possible length of a J1939*/
@@ -74,7 +73,7 @@ typedef enum eMSG_WND_PROPERTY
     DISPLAY_MODE = 0x4
 };
 
-typedef enum  eTimerMode
+typedef enum eTimerMode
 {
     TIME_MODE_RELATIVE = 0,
     TIME_MODE_SYSTEM,
@@ -128,7 +127,6 @@ const BYTE TYPE_MSG_CAN_RTR         = 0x1;
 const BYTE TYPE_MSG_CAN_NON_RTR     = 0x2;
 const BYTE TYPE_MSG_CAN_ALL         = 0x3;
 
-
 #define LENGTH_STR_TIMESTAMP_CAN        16
 #define LENGTH_STR_DATA_CAN             32
 #define LENGTH_STR_ID_CAN               16
@@ -137,7 +135,6 @@ const BYTE TYPE_MSG_CAN_ALL         = 0x3;
 #define LENGTH_STR_CHANNEL_CAN          4
 #define LENGTH_STR_DIRECTION_CAN        4
 #define LENGTH_STR_TYPE_CAN             4
-
 
 class tagFormattedData_CAN
 {
@@ -171,6 +168,37 @@ public:
     __int64         m_n64MapId;                     // Map id of the message
     COLORREF        m_ColourCode;                   // Colour code associated
 
+    tagFormattedData_CAN()
+    {
+        m_u64TimeStamp = 0;
+        m_dwMsgID = 0;
+        m_eDirection = DIR_RX;
+        m_eChannel = CAN_CHANNEL_ALL;
+        m_byDataLength = 0;
+        memset(m_abData, 0, sizeof(m_abData));
+        m_byIDType = TYPE_ID_CAN_NONE;
+        m_byMsgType = TYPE_MSG_CAN_NONE;
+
+        strcpy_s(m_acMsgDir, " x");
+        strcpy_s(m_acChannel, "");
+        strcpy_s(m_acType, "");
+        strcpy_s(m_acDataLen, "");
+        strcpy_s(m_acMsgDesc, "");
+
+        strcpy_s(m_acMsgIDHex, "");
+        strcpy_s(m_acMsgIDDec, "");
+
+        strcpy_s(m_acDataHex, "");
+        strcpy_s(m_acDataDec, "");
+
+        strcpy_s(m_acTimeAbsReset, "");
+        strcpy_s(m_acTimeAbs, "");
+        strcpy_s(m_acTimeRel, "");
+        strcpy_s(m_acTimeSys, "");
+
+        m_n64MapId = 0;
+        m_ColourCode = RGB(0, 0, 0);
+    }
 };
 
 typedef tagFormattedData_CAN SFORMATTEDDATA_CAN;
