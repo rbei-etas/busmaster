@@ -51,8 +51,6 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="CAN_Vector_XL_StdAfx.h"
 				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
@@ -137,8 +135,6 @@
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="CAN_Vector_XL_StdAfx.h"
 				WarningLevel="4"
 				DebugInformationFormat="0"
 			/>
@@ -205,10 +201,6 @@
 			>
 			<File
 				RelativePath=".\CAN_Vector_XL.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CAN_Vector_XL_stdafx.cpp"
 				>
 			</File>
 			<File

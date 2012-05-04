@@ -50,8 +50,6 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="StdAfx_ProjectConfiguration.h"
 				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
@@ -136,9 +134,7 @@
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="StdAfx_ProjectConfiguration.h"
-				PrecompiledHeaderFile=".\Release/ProjectConfiguration.pch"
+				PrecompiledHeaderFile=""
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
@@ -221,10 +217,6 @@
 			</File>
 			<File
 				RelativePath=".\ProjectConfiguration.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\StdAfx_ProjectConfiguration.cpp"
 				>
 			</File>
 		</Filter>

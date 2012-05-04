@@ -53,9 +53,7 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\DebugU/DMGraph.pch"
+				PrecompiledHeaderFile=""
 				AssemblerListingLocation=".\DebugU/"
 				ObjectFile=".\DebugU/"
 				ProgramDataBaseFileName=".\DebugU/"
@@ -155,9 +153,7 @@
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\ReleaseUMinSize/DMGraph.pch"
+				PrecompiledHeaderFile=""
 				AssemblerListingLocation=".\ReleaseUMinSize/"
 				ObjectFile=".\ReleaseUMinSize/"
 				ProgramDataBaseFileName=".\ReleaseUMinSize/"
@@ -577,28 +573,6 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="StdAfx.cpp"
-				>
-				<FileConfiguration
-					Name="Unicode Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Unicode Release MinSize|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
 			</File>

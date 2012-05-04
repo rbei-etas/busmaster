@@ -58,8 +58,6 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="stdafx_BusSim.h"
 				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
@@ -153,8 +151,6 @@
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderThrough=""
 				WarningLevel="4"
 				DebugInformationFormat="3"
 			/>

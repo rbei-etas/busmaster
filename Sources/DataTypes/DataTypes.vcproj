@@ -48,8 +48,6 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="DataTypes_StdAfx.h"
 				WarningLevel="4"
 				WarnAsError="false"
 				DebugInformationFormat="4"
@@ -114,8 +112,6 @@
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="DataTypes_StdAfx.h"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 			/>
@@ -158,10 +154,6 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-			<File
-				RelativePath=".\DataTypes_stdafx.cpp"
-				>
-			</File>
 			<File
 				RelativePath=".\Filter_Datatypes.cpp"
 				>

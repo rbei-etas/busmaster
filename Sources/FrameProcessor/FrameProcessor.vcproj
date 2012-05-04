@@ -50,8 +50,6 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="FrameProcessor_StdAfx.h"
 				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
@@ -137,8 +135,6 @@
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="FrameProcessor_StdAfx.h"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 			/>
@@ -233,10 +229,6 @@
 			</File>
 			<File
 				RelativePath=".\FrameProcessor_J1939.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\FrameProcessor_stdafx.cpp"
 				>
 			</File>
 			<File

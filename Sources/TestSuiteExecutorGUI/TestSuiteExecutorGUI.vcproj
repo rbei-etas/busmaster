@@ -50,8 +50,6 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="TSExecutorGUI_stdafx.h"
 				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
@@ -135,8 +133,6 @@
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_AFXEXT;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="TSExecutorGUI_stdafx.h"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 			/>
@@ -226,10 +222,6 @@
 			</File>
 			<File
 				RelativePath=".\TSExecutorGUI_ChildFrame.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\TSExecutorGUI_stdafx.cpp"
 				>
 			</File>
 			<File

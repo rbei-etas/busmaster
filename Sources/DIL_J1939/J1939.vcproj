@@ -51,8 +51,6 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderThrough="DIL_J1939_stdafx.h"
 				WarningLevel="3"
 				DebugInformationFormat="4"
 			/>
@@ -140,8 +138,6 @@
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0502"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderThrough="DIL_J1939_stdafx.h"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -211,10 +207,6 @@
 			</File>
 			<File
 				RelativePath=".\DIL_J1939.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DIL_J1939_stdafx.cpp"
 				>
 			</File>
 			<File

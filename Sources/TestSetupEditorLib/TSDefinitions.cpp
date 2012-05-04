@@ -154,5 +154,32 @@ VOID SReportFile::vInitialise(eTYPE_REPORT eType, CString omPath, eTIME_MODE eTi
     m_omPath = omPath;
 }
 
+/******************************************************************************
+Function Name  :  strCopyBSTRToCString
+Input(s)       :  CComVariant& varSrc
+Output         :  CString
+Functionality  :  Copies BSTR to CString
+Member of      :  -
+Friend of      :  -
+Author(s)      :  Arunkumar K
+Date Created   :  20/07/2011
+Modifications  :
+Codetag        :
+******************************************************************************/
+CString strCopyBSTRToCString(CComVariant& varSrc)
+{
+    CString strDest ;
+    char tChar = NULL;
+    _bstr_t bstrNodeValue(varSrc.bstrVal);
+    ULONG ulLen = bstrNodeValue.length();
 
+    for (unsigned int i = 0; i< ulLen*2; i+=2)
+    {
+        tChar = (char)*(varSrc.pcVal+i);
+        strDest.Insert(i/2, tChar);
+    }
 
+    tChar = NULL;
+    strDest.Insert(ulLen, tChar);
+    return strDest;
+}
