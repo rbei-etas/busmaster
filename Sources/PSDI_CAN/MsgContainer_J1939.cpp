@@ -282,10 +282,10 @@ void CMsgContainerJ1939::vProcessNewData(STJ1939_MSG& sJ1939Msg)
     //    vProcessCurrErrorEntry(sCanData.m_uDataInfo.m_sErrInfo);
     //    // Add to append buffer
     //    // If its the very first entry, the time stamp must
-    //    if (m_sCANReadDataSpl.m_lTickCount.QuadPart != 0) // be 0 and will
+    //    if (m_sCANReadDataSpl.m_lTickCount != 0) // be 0 and will
     //    {                                                     // retain such value.
-    //        m_sCANReadDataSpl.m_nDeltime = sCanData.m_lTickCount.QuadPart -
-    //                                       m_sCANReadDataSpl.m_lTickCount.QuadPart;
+    //        m_sCANReadDataSpl.m_nDeltime = sCanData.m_lTickCount -
+    //                                       m_sCANReadDataSpl.m_lTickCount;
     //    }
     //    STCANDATA *pStcan = &m_sCANReadDataSpl;
     //    *pStcan = sCanData;

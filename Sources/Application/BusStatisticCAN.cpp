@@ -43,7 +43,7 @@ int ReadBSDataBuffer(CBusStatisticCAN* pBSCan)
     while (pBSCan->m_ouCanBufFSE.GetMsgCount() > 0)
     {
         static STCANDATA sCanData;
-        sCanData.m_lTickCount.QuadPart;
+        sCanData.m_lTickCount;
         int Result = pBSCan->m_ouCanBufFSE.ReadFromBuffer(&sCanData);
 
         if (Result == ERR_READ_MEMORY_SHORT)

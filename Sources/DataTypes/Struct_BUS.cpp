@@ -67,7 +67,7 @@ int sTCANDATA::DoCompareIndiv(const void* pEntry1, const void* pEntry2)
 
         case 1: // Sort by time stamp
         {
-            Result = (int) (pDatCAN1->m_lTickCount.QuadPart - pDatCAN2->m_lTickCount.QuadPart);
+            Result = (int) (pDatCAN1->m_lTickCount - pDatCAN2->m_lTickCount);
             Result *= m_nMFactor;
         }
         break;

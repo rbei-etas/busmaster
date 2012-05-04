@@ -188,8 +188,8 @@ static UINT64 sg_TimeStamp = 0;
 /**
  * Query Tick Count
  */
-static LARGE_INTEGER sg_QueryTickCount;
-static LARGE_INTEGER sg_lnFrequency;
+static long long int sg_QueryTickCount;
+static long long int sg_lnFrequency;
 static HWND sg_hOwnerWnd = NULL;
 
 //static CBaseCANBufFSE* sg_pCanBufObj[MAX_BUFF_ALLOWED];
@@ -397,7 +397,7 @@ class CDIL_CAN_ICSNeoVI : public CBaseDIL_CAN_Controller
 public:
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
-    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, long long int* QueryTickCount = NULL);
     HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
@@ -667,18 +667,18 @@ static void vCreateTimeModeMapping()
     //MessageBox(0, L"TIME", L"", 0);
     GetLocalTime(&sg_CurrSysTime);
     //Query Tick Count
-    QueryPerformanceCounter(&sg_QueryTickCount);
+    QueryPerformanceCounter((LARGE_INTEGER *) &sg_QueryTickCount);
     // Get frequency of the performance counter
-    QueryPerformanceFrequency(&sg_lnFrequency);
+    QueryPerformanceFrequency((LARGE_INTEGER *) &sg_lnFrequency);
 
     // Convert it to time stamp with the granularity of hundreds of microsecond
-    if ((sg_QueryTickCount.QuadPart * 10000) > sg_lnFrequency.QuadPart)
+    if ((sg_QueryTickCount * 10000) > sg_lnFrequency)
     {
-        sg_TimeStamp = (sg_QueryTickCount.QuadPart * 10000) / sg_lnFrequency.QuadPart;
+        sg_TimeStamp = (sg_QueryTickCount * 10000) / sg_lnFrequency;
     }
     else
     {
-        sg_TimeStamp = (sg_QueryTickCount.QuadPart / sg_lnFrequency.QuadPart) * 10000;
+        sg_TimeStamp = (sg_QueryTickCount / sg_lnFrequency) * 10000;
     }
 }
 
@@ -1001,10 +1001,10 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
         {
             sg_byCurrState = CALC_TIMESTAMP_READY;
             nReturn = 0;
-            LARGE_INTEGER g_QueryTickCount;
-            QueryPerformanceCounter(&g_QueryTickCount);
+            long long int g_QueryTickCount;
+            QueryPerformanceCounter((LARGE_INTEGER *) &g_QueryTickCount);
             UINT64 unConnectionTime;
-            unConnectionTime = ((g_QueryTickCount.QuadPart * 10000) / sg_lnFrequency.QuadPart) - sg_TimeStamp;
+            unConnectionTime = ((g_QueryTickCount * 10000) / sg_lnFrequency) - sg_TimeStamp;
 
             //Time difference should be +ve value
             if((dTimestamp * 10000) >= unConnectionTime)
@@ -1036,10 +1036,10 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
         {
             bChannelCnfgrd = true; // Set channel configured flag to true.
             sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel = (UCHAR)(m_anhObject[nChannelIndex][CurrSpyMsg.NetworkID+1]  );
-            //sCanData.m_lTickCount.QuadPart = (LONGLONG)(CurrSpyMsg.TimeSystem * 10);
+            //sCanData.m_lTickCount = (LONGLONG)(CurrSpyMsg.TimeSystem * 10);
             DOUBLE dTimestamp = 0;
             nReturn = (*icsneoGetTimeStampForMsg)(m_anhObject[nChannelIndex][0], &CurrSpyMsg, &dTimestamp);
-            sCanData.m_lTickCount.QuadPart = (dTimestamp*10000); //+ sg_TimeStamp// + (CurrSpyMsg.TimeHardware2* 0.1048576 + CurrSpyMsg.TimeHardware2 * 0.0000016);
+            sCanData.m_lTickCount = (dTimestamp*10000); //+ sg_TimeStamp// + (CurrSpyMsg.TimeHardware2* 0.1048576 + CurrSpyMsg.TimeHardware2 * 0.0000016);
             bClassifyMsgType(CurrSpyMsg, sCanData, sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel);
 
             if (sCanData.m_ucDataType == ERR_FLAG)
@@ -2248,7 +2248,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_PerformClosureOperations(void)
  *
  * Retrieve time mode mapping
  */
-HRESULT CDIL_CAN_ICSNeoVI::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, long long int* QueryTickCount)
 {
     memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
     TimeStamp = sg_TimeStamp;
@@ -3010,7 +3010,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLog
     //INITIALISE_DATA(sg_sCurrStatus);
     memset(&sg_sCurrStatus, 0, sizeof(sg_sCurrStatus));
     //Query Tick Count
-    sg_QueryTickCount.QuadPart = 0;
+    sg_QueryTickCount = 0;
     sg_acErrStr = "";
     CAN_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
     return S_OK;

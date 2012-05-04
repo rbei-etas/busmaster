@@ -272,7 +272,7 @@ static void vCreateTempJ1939Msg(STJ1939_MSG& sMsg, const STCANDATA& sCanData,
                                          DIR_RX : DIR_TX;
     sMsg.m_sMsgProperties.m_eType = eType;
     sMsg.m_sMsgProperties.m_byChannel = sCanMsg.m_ucChannel;
-    sMsg.m_sMsgProperties.m_un64TimeStamp = sCanData.m_lTickCount.QuadPart;
+    sMsg.m_sMsgProperties.m_un64TimeStamp = sCanData.m_lTickCount;
     sMsg.m_unDLC = unDLC;
     sMsg.m_pbyData = new BYTE[sMsg.m_unDLC];
     memcpy(sMsg.m_pbyData, pbyData, unDLC);

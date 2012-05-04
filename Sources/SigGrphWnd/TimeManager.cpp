@@ -40,13 +40,13 @@
 // Initialise absolute Time
 int CTimeManager::m_nAbsoluteTime = 0;
 // Init System time and reference tick
-static LARGE_INTEGER s_Temp;
-BOOL bDummy = QueryPerformanceCounter(&s_Temp);
-const LARGE_INTEGER CTimeManager::m_sSysRefTickCount = s_Temp;
+static long long int s_Temp;
+BOOL bDummy = QueryPerformanceCounter((LARGE_INTEGER *) &s_Temp);
+const long long int CTimeManager::m_sSysRefTickCount = s_Temp;
 // Init the frequency
 const int CTimeManager::m_nSysRefTime = CTimeManager::nCalculateCurrTimeStamp(FALSE);
-BOOL bDummy0001 = QueryPerformanceFrequency((LARGE_INTEGER*) &s_Temp);
-const __int64 CTimeManager::m_n64Frequency = s_Temp.QuadPart;
+BOOL bDummy0001 = QueryPerformanceFrequency((LARGE_INTEGER *) &s_Temp);
+const __int64 CTimeManager::m_n64Frequency = s_Temp;
 
 int CTimeManager::m_nOffsetTimeValue =
     CTimeManager::nCalculateOffsetTime();

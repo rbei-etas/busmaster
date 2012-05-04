@@ -195,8 +195,8 @@ static INT sg_anSelectedItems[CHANNEL_ALLOWED];
  */
 static SYSTEMTIME sg_CurrSysTime;
 static UINT64 sg_TimeStamp = 0;
-static LARGE_INTEGER sg_QueryTickCount;
-static LARGE_INTEGER sg_lnFrequency;
+static long long int sg_QueryTickCount;
+static long long int sg_lnFrequency;
 
 /**
  * Required libraries
@@ -261,7 +261,7 @@ public:
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
-    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, long long int* QueryTickCount = NULL);
     HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
@@ -1087,7 +1087,7 @@ void vCopyOCI_CAN_RX_2_DATA(const OCI_CANRxMessage* SrcMsg, STCANDATA* DestMsg)
         Channel = defNO_OF_CHANNELS; // Take appropriate action
     }
 
-    DestMsg->m_lTickCount.QuadPart = (LONGLONG)(SrcMsg->timeStamp * sg_asChannel[Channel - 1].m_fResolution);
+    DestMsg->m_lTickCount = (LONGLONG)(SrcMsg->timeStamp * sg_asChannel[Channel - 1].m_fResolution);
     memcpy(DestMsg->m_uDataInfo.m_sCANMsg.m_ucData, SrcMsg->data, sizeof(DestMsg->m_uDataInfo.m_sCANMsg.m_ucData));
 }
 
@@ -1119,7 +1119,7 @@ void vCreateTimeModeMapping(HANDLE hEvent)
     WaitForSingleObject(hEvent, INFINITE);
     GetLocalTime(&sg_CurrSysTime);
     //Query Tick Count
-    QueryPerformanceCounter(&sg_QueryTickCount);
+    QueryPerformanceCounter((LARGE_INTEGER *) &sg_QueryTickCount);
 }
 
 /**
@@ -1191,23 +1191,23 @@ void vProcessRxMsg(void* userData, struct OCI_CANMessage* msg)
 
     if (sg_byCurrState == CREATE_MAP_TIMESTAMP)
     {
-        //sg_TimeStamp = sCanData.m_lTickCount.QuadPart;
+        //sg_TimeStamp = sCanData.m_lTickCount;
         SetEvent(sg_hEvent);
         vCreateTimeModeMapping(sg_hEvent);
         sg_byCurrState = CALC_TIMESTAMP_READY;
-        LARGE_INTEGER g_QueryTickCount;
-        QueryPerformanceCounter(&g_QueryTickCount);
+        long long int g_QueryTickCount;
+        QueryPerformanceCounter((LARGE_INTEGER *) &g_QueryTickCount);
         UINT64 unConnectionTime;
-        unConnectionTime = ((g_QueryTickCount.QuadPart * 10000) / sg_lnFrequency.QuadPart) - sg_TimeStamp;
+        unConnectionTime = ((g_QueryTickCount * 10000) / sg_lnFrequency) - sg_TimeStamp;
 
         //Time difference should be +ve value
-        if(sCanData.m_lTickCount.QuadPart >= unConnectionTime)
+        if(sCanData.m_lTickCount >= unConnectionTime)
         {
-            sg_TimeStamp  = (LONGLONG)(sCanData.m_lTickCount.QuadPart - unConnectionTime);
+            sg_TimeStamp  = (LONGLONG)(sCanData.m_lTickCount - unConnectionTime);
         }
         else
         {
-            sg_TimeStamp  = (LONGLONG)(unConnectionTime - sCanData.m_lTickCount.QuadPart);
+            sg_TimeStamp  = (LONGLONG)(unConnectionTime - sCanData.m_lTickCount);
         }
     }
 
@@ -1230,7 +1230,7 @@ void vCopyOCI_CAN_ERR_2_DATA(const OCI_CANErrorFrameMessage* SrcMsg, STCANDATA* 
 {
     DestMsg->m_uDataInfo.m_sCANMsg.m_unMsgID = SrcMsg->frameID;
     DestMsg->m_uDataInfo.m_sCANMsg.m_ucDataLen = SrcMsg->dlc;
-    DestMsg->m_lTickCount.QuadPart = SrcMsg->timeStamp;
+    DestMsg->m_lTickCount = SrcMsg->timeStamp;
     DestMsg->m_uDataInfo.m_sCANMsg.m_ucEXTENDED   = ((SrcMsg->flags & OCI_CAN_MSG_FLAG_EXTENDED) == OCI_CAN_MSG_FLAG_EXTENDED)? 1 : 0;
     DestMsg->m_uDataInfo.m_sCANMsg.m_ucRTR   = ((SrcMsg->flags & OCI_CAN_MSG_FLAG_REMOTE_FRAME) == OCI_CAN_MSG_FLAG_REMOTE_FRAME)? 1 : 0;
     DestMsg->m_ucDataType = ERR_FLAG;
@@ -1865,7 +1865,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_PerformClosureOperations(void)
  * will be updated with the system time ref.
  * TimeStamp will be updated with the corresponding timestamp.
  */
-HRESULT CDIL_CAN_ETAS_BOA::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, long long int* QueryTickCount)
 {
     CurrSysTime = sg_CurrSysTime;
     TimeStamp   = sg_TimeStamp;
@@ -2285,18 +2285,18 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_StartHardware(void)
     {
         sg_bCurrState = STATE_CONNECTED;
         InitializeCriticalSection(&sg_CritSectForAckBuf);
-        QueryPerformanceCounter(&sg_QueryTickCount);
+        QueryPerformanceCounter((LARGE_INTEGER *) &sg_QueryTickCount);
         // Get frequency of the performance counter
-        QueryPerformanceFrequency(&sg_lnFrequency);
+        QueryPerformanceFrequency((LARGE_INTEGER *) &sg_lnFrequency);
 
         // Convert it to time stamp with the granularity of hundreds of microsecond
-        if ((sg_QueryTickCount.QuadPart * 10000) > sg_lnFrequency.QuadPart)
+        if ((sg_QueryTickCount * 10000) > sg_lnFrequency)
         {
-            sg_TimeStamp = (sg_QueryTickCount.QuadPart * 10000) / sg_lnFrequency.QuadPart;
+            sg_TimeStamp = (sg_QueryTickCount * 10000) / sg_lnFrequency;
         }
         else
         {
-            sg_TimeStamp = (sg_QueryTickCount.QuadPart / sg_lnFrequency.QuadPart) * 10000;
+            sg_TimeStamp = (sg_QueryTickCount / sg_lnFrequency) * 10000;
         }
     }
 

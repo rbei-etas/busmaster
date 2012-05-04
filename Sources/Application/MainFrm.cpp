@@ -5974,7 +5974,7 @@ INT CMainFrame::ReadGraphDataBuffer(BOOL bCalcTime)
     {
         if (m_ouCanBuf.ReadFromBuffer(&sCanData) == CALL_SUCCESS)
         {
-            m_nTimeStamp = sCanData.m_lTickCount.QuadPart;
+            m_nTimeStamp = sCanData.m_lTickCount;
             vUpdateGraphData(sCanData);
         }
     }
@@ -6096,7 +6096,7 @@ void CMainFrame::vUpdateGraphData(const STCANDATA& sCanData)
                                             psSignal->m_bySignalType,         // Sig Type
                                             psSignal->m_eFormat);   // Signal byte order intel or motorola
                     sInterpretList.unMsgID = sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID;
-                    sInterpretList.m_nTimeStamp = sCanData.m_lTickCount.QuadPart;
+                    sInterpretList.m_nTimeStamp = sCanData.m_lTickCount;
                     strcpy_s(sInterpretList.m_acSigName,odElement.m_omStrElementName);
 
                     switch( odElement.m_nValueType )
