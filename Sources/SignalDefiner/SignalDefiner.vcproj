@@ -49,8 +49,6 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="SignalDefiner_StdAfx.h"
 				WarningLevel="3"
 				DebugInformationFormat="4"
 			/>
@@ -132,8 +130,6 @@
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
 				RuntimeLibrary="2"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="SignalDefiner_StdAfx.h"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -198,28 +194,6 @@
 			<File
 				RelativePath=".\SignalDefiner.cpp"
 				>
-			</File>
-			<File
-				RelativePath=".\SignalDefiner_stdafx.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-						PrecompiledHeaderThrough="SignalDefiner_StdAfx.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-						PrecompiledHeaderThrough="SignalDefiner_StdAfx.h"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\SignalDefinerDlg.cpp"

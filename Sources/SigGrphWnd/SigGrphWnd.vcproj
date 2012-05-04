@@ -51,8 +51,6 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderThrough="SigGrphWnd_stdafx.h"
 				WarningLevel="3"
 				DebugInformationFormat="4"
 			/>
@@ -136,8 +134,6 @@
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_AFXEXT;WINVER=0x0502"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderThrough="SigGrphWnd_stdafx.h"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -340,28 +336,6 @@
 			</File>
 			<File
 				RelativePath=".\SigGrphWnd.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-						PrecompiledHeaderThrough="SigGrphWnd_stdafx.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-						PrecompiledHeaderThrough="SigGrphWnd_stdafx.h"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\SigGrphWnd_stdafx.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"

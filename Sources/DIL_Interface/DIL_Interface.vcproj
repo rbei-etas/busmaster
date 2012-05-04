@@ -48,8 +48,6 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="DIL_Interface_stdafx.h"
 				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
@@ -129,8 +127,6 @@
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS; _USRDLL;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderThrough="DIL_Interface_stdafx.h"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 			/>
@@ -197,10 +193,6 @@
 			</File>
 			<File
 				RelativePath=".\DIL_Interface.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DIL_Interface_stdafx.cpp"
 				>
 			</File>
 			<File

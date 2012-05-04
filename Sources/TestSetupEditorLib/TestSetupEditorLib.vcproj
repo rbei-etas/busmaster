@@ -51,8 +51,6 @@
 				RuntimeLibrary="3"
 				StructMemberAlignment="0"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="TestSetupEditorLib_stdafx.h"
 				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
@@ -121,8 +119,6 @@
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="TestSetupEditorLib_stdafx.h"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 			/>
@@ -186,10 +182,6 @@
 			</File>
 			<File
 				RelativePath=".\TestCaseEntity.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\TestSetupEditorLib_stdafx.cpp"
 				>
 			</File>
 			<File

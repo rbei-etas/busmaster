@@ -49,8 +49,6 @@
 				RuntimeLibrary="3"
 				StructMemberAlignment="0"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="Utils_stdafx.h"
 				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
@@ -114,8 +112,6 @@
 				RuntimeLibrary="2"
 				StructMemberAlignment="0"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="Utils_stdafx.h"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 			/>
@@ -247,10 +243,6 @@
 			</File>
 			<File
 				RelativePath=".\Utility_Thread.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Utils_stdafx.cpp"
 				>
 			</File>
 			<File

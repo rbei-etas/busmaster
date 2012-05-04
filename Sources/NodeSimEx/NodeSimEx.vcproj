@@ -51,8 +51,6 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="NodeSimEx_stdafx.h"
 				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
@@ -142,8 +140,7 @@
 				BasicRuntimeChecks="0"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="NodeSimEx_StdAfx.h"
+				PrecompiledHeaderFile=""
 				WarningLevel="4"
 			/>
 			<Tool
@@ -329,10 +326,6 @@
 			</File>
 			<File
 				RelativePath=".\NodeSimEx.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NodeSimEx_stdafx.cpp"
 				>
 			</File>
 			<File
