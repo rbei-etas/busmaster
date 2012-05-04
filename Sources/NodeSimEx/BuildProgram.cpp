@@ -289,11 +289,11 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                 omStrGccParamter  =  "--silent --file=";
                 omStrGccParamter += acStrShortPath;
                 char* pucGccMakeFile  = (char*)omStrGccMakeFile.GetBuffer(
-                                             omStrGccMakeFile.GetLength());
+                                            omStrGccMakeFile.GetLength());
                 char* pucGccParameter = (char*)omStrGccParamter.GetBuffer(
-                                             omStrGccParamter.GetLength());
+                                            omStrGccParamter.GetLength());
                 char* pucGCCPath      = (char*)omStrGCCPath.GetBuffer(
-                                             omStrGCCPath.GetLength());
+                                            omStrGCCPath.GetLength());
                 INT nSuccess = CreateProcess( pucGccMakeFile, pucGccParameter,
                                               NULL, NULL,
                                               true, CREATE_NO_WINDOW,

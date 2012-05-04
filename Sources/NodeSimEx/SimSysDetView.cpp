@@ -32,7 +32,7 @@ char* pcHandlerNames[] =                   {_T("Message Handlers"),
         _T("Timer Handlers"),
         _T("Key Handlers"),
         _T("Error Handlers")
-                                            };
+                                           };
 
 #define defStrEnabled                    _T("Enabled")
 #define defStrDisabled                   _T("Disabled")

@@ -133,7 +133,7 @@ USAGEMODE HRESULT SW_GetInterface(ETYPE_BUS eBus,
 
             // Else the object has been existing already
             *ppvInterface = (void*) sg_pouSW_CAN; /* Doesn't matter even
-                                        if sg_pouFP_CAN is null */
+                                if sg_pouFP_CAN is null */
         }
         break;
 
@@ -154,7 +154,7 @@ USAGEMODE HRESULT SW_GetInterface(ETYPE_BUS eBus,
 
             // Else the object has been existing already
             *ppvInterface = (void*) sg_pouSW_J1939; /* Doesn't matter even
-                                        if sg_pouFP_CAN is null */
+                                if sg_pouFP_CAN is null */
         }
         break;
 

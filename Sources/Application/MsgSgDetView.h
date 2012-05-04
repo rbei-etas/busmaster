@@ -113,8 +113,8 @@ protected:
     afx_msg void OnButtonEditDesc();
     afx_msg void OnClickSignalDescVal(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnItemchangedLstcSignalDetails(NMHDR* pNMHDR, LRESULT* pResult);
-    afx_msg void OnLvnKeydownLstcSignalDetails(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnLvnKeydownLstcSgidval(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnLvnKeydownLstcSignalDetails(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnLvnKeydownLstcSgidval(NMHDR* pNMHDR, LRESULT* pResult);
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:

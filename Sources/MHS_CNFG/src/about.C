@@ -28,23 +28,28 @@
 
 static BOOL CALLBACK AboutDlgProc(HWND hdlg, UINT uMessage, WPARAM wparam, LPARAM lparam)
 {
-switch(uMessage)
-  {
-  case WM_INITDIALOG : break;
-  case WM_COMMAND    : {
-                       if ((LOWORD(wparam) == IDOK) || (LOWORD(wparam) == IDCANCEL))
-                         {
-                         EndDialog(hdlg, TRUE);
-                         return(TRUE);
-                         }
-                       break;
-                       }
-  }
-return(FALSE);
+    switch(uMessage)
+    {
+        case WM_INITDIALOG :
+            break;
+
+        case WM_COMMAND    :
+        {
+            if ((LOWORD(wparam) == IDOK) || (LOWORD(wparam) == IDCANCEL))
+            {
+                EndDialog(hdlg, TRUE);
+                return(TRUE);
+            }
+
+            break;
+        }
+    }
+
+    return(FALSE);
 }
 
 
 void CreateAboutDlg(HINSTANCE hInstance, HWND hwnd)
 {
-(void)DialogBox(hInstance, MAKEINTRESOURCE(IDD_ABOUT), hwnd, AboutDlgProc);
+    (void)DialogBox(hInstance, MAKEINTRESOURCE(IDD_ABOUT), hwnd, AboutDlgProc);
 }

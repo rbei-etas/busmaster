@@ -63,7 +63,6 @@ CMsgBufferConfigPage::~CMsgBufferConfigPage()
 void CMsgBufferConfigPage::DoDataExchange(CDataExchange* pDX)
 {
     CPropertyPage::DoDataExchange(pDX);
-
     DDX_Text(pDX, IDC_EDIT_APPEND_SIZE, m_unAppendSize);
     DDV_MinMaxUInt(pDX, m_unAppendSize, defMIN_BUFFER_SIZE, defMAX_BUFFER_SIZE);
     DDX_Text(pDX, IDC_EDIT_OVERWRITE_SIZE, m_unOverWriteSize);

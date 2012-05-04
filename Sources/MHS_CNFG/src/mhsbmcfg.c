@@ -37,24 +37,28 @@ HINSTANCE AppHInstance = NULL;
 /***************************************************************/
 int WINAPI DllMain(HINSTANCE hInstance, DWORD fdwReason, PVOID pvReserved)
 {
-switch (fdwReason)
-  {
-  case DLL_PROCESS_ATTACH : {
-                            AppHInstance = hInstance;
-                            //setlocale(LC_NUMERIC, "german");
-                            break;
-                            }
-  case DLL_THREAD_ATTACH  : break;
-  case DLL_THREAD_DETACH  : break;
-  case DLL_PROCESS_DETACH : {
-                            break;
-                            }
-  }
-return(TRUE);
+    switch (fdwReason)
+    {
+        case DLL_PROCESS_ATTACH:
+            AppHInstance = hInstance;
+            //setlocale(LC_NUMERIC, "german");
+            break;
+
+        case DLL_THREAD_ATTACH:
+            break;
+
+        case DLL_THREAD_DETACH:
+            break;
+
+        case DLL_PROCESS_DETACH:
+            break;
+    }
+
+    return(TRUE);
 }
 
 
-int WINAPI ShowCanSetup(HWND hwnd, struct TMhsCanCfg *setup)
+int WINAPI ShowCanSetup(HWND hwnd, struct TMhsCanCfg* setup)
 {
-return(ShowCanSetupDlg(AppHInstance, hwnd, setup));
+    return(ShowCanSetupDlg(AppHInstance, hwnd, setup));
 }
