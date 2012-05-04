@@ -30,7 +30,7 @@ extern "C" {
     void strskp(char** str);
     void strcrop(char* str);
     void strstrip(char** str);
-    int str_has_char(char* s);
+    int str_has_char(const char* s);
 
     void* mhs_malloc(int size);
     void* mhs_calloc(int num, int size);

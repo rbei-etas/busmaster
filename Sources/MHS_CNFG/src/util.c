@@ -1,23 +1,28 @@
-/***************************************************************************
-                           util.c  -  description
-                             -------------------
-    begin             : 01.11.2010
-    copyright         : (C) 2010 by MHS-Elektronik GmbH & Co. KG, Germany
-    autho             : Klaus Demlehner, klaus@mhs-elektronik.de
- ***************************************************************************/
-
-/***************************************************************************
- *                                                                         *
- *   This program is free software, you can redistribute it and/or modify  *
- *   it under the terms of the GNU Lesser General Public License           *
- *   version 2.1 as published by the Free Software Foundation.             *
- *                                                                         *
- ***************************************************************************/
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /**
-    Library to talk to Tiny-CAN devices. You find the latest versions at
-       http://www.tiny-can.com/
-**/
+ * \file      util.c
+ * \brief     Library to talk to Tiny-CAN devices
+ * \author    Klaus Demlehner
+ * \copyright Copyright (c) 2011, MHS-Elektronik GmbH & Co. KG
+ *
+ * Library to talk to Tiny-CAN devices.
+ * You find the latest versions at http://www.tiny-can.com/
+ */
+
 //#include "global.h"
 #include <stdarg.h>
 #include <stdio.h>
@@ -756,12 +761,14 @@ char* path_get_dirname(const char* file_name)
 
     if (base)
     {
+        int len;
+
         while ((base > file_name) && (*base == DIR_SEPARATOR))
         {
             base--;
         }
 
-        int len = base - file_name + 1;
+        len = base - file_name + 1;
         base = (char*)mhs_malloc(len + 1);
 
         if (!base)
