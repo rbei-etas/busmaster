@@ -22,11 +22,13 @@
  * Source file for Vector XL DIL functions
  */
 
+#include "CAN_Vector_XL_stdafx.h"
+
 /* C++ includes */
+#include <sstream>
 #include <string>
 
 /* Project includes */
-#include "CAN_Vector_XL_stdafx.h"
 #include "CAN_Vector_XL.h"
 #include "include/Error.h"
 #include "include/basedefs.h"
@@ -794,15 +796,16 @@ HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 
         for (UINT i = 0; i < sg_nNoOfChannels; i++)
         {
-            char buf[512];
             asSelHwInterface[i].m_dwIdInterface = i;
             unsigned int serialNumber = sg_aodChannels[i].m_pXLChannelInfo->serialNumber;
-            sprintf_s(buf, _T("%d"), serialNumber);
-            asSelHwInterface[i].m_acDescription = buf;
-            sprintf_s(sg_ControllerDetails[i].m_omHardwareDesc, _T("Vector - %s SN - %d Channel Index - %d"),
-                      sg_aodChannels[i].m_pXLChannelInfo->name,
-                      serialNumber,
-                      sg_aodChannels[i].m_pXLChannelInfo->channelIndex);
+            ostringstream oss1;
+            oss1 << dec << serialNumber;
+            asSelHwInterface[i].m_acDescription = oss1.str();
+            ostringstream oss2;
+            oss2 << "Vector - " << sg_aodChannels[i].m_pXLChannelInfo->name;
+            oss2 << " SN - " << dec << serialNumber;
+            oss2 << " Channel Index - " << dec << sg_aodChannels[i].m_pXLChannelInfo->channelIndex;
+            strcpy_s(sg_ControllerDetails[i].m_omHardwareDesc, oss2.str().c_str());
             sg_bCurrState = STATE_HW_INTERFACE_LISTED;
         }
 
@@ -1911,8 +1914,6 @@ static int nInitHwNetwork()
     /* Capture only Driver Not Running event
      * Take action based on number of Hardware Available
      */
-    char acNo_Of_Hw[MAX_STRING] = {0};
-    sprintf_s(acNo_Of_Hw, _T("Number of Vector hardwares Available: %d"), nChannelCount);
 
     /* No Hardware found */
     if( nChannelCount == 0 )
