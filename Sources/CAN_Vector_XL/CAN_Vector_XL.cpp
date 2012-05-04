@@ -27,6 +27,7 @@
 /* C++ includes */
 #include <sstream>
 #include <string>
+#include <vector>
 
 /* Project includes */
 #include "CAN_Vector_XL.h"
@@ -197,7 +198,7 @@ static INTERFACE_HW sg_HardwareIntr[defNO_OF_CHANNELS];
 static string sg_acErrStr;
 static UINT sg_unClientCnt = 0;
 #define MAX_CLIENT_ALLOWED 16
-static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED];
+static vector<SCLIENTBUFMAP> sg_asClientToBufMap(MAX_CLIENT_ALLOWED);
 static UINT sg_unDevChannelMap[defNO_OF_CHANNELS] = {(UINT)-1};
 
 static HINSTANCE               hxlDll;

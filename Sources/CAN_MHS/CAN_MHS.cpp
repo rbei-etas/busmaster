@@ -47,6 +47,7 @@
 #include <list>
 #include <sstream>
 #include <string>
+#include <vector>
 
 /* Project includes */
 #include "CAN_MHS.h"
@@ -152,7 +153,7 @@ public:
 /**
  * Array of clients
  */
-static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED];
+static vector<SCLIENTBUFMAP> sg_asClientToBufMap(MAX_CLIENT_ALLOWED);
 
 const INT MAX_MAP_SIZE = 3000;
 

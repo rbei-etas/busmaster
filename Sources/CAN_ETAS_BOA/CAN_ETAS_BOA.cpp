@@ -28,6 +28,7 @@
 
 /* C++ includes */
 #include <string>
+#include <vector>
 
 /* Project includes */
 #include "CAN_ETAS_BOA_stdafx.h"
@@ -138,7 +139,7 @@ public:
 /**
  * Array of clients
  */
-static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED];
+static vector<SCLIENTBUFMAP> sg_asClientToBufMap(MAX_CLIENT_ALLOWED);
 
 const INT MAX_MAP_SIZE = 3000;
 
@@ -156,12 +157,12 @@ typedef struct tagAckMap
 
 typedef list<SACK_MAP> CACK_MAP_LIST;
 static CACK_MAP_LIST sg_asAckMapBuf;
-static  CRITICAL_SECTION sg_CritSectForAckBuf;       // To make it thread safe
+static CRITICAL_SECTION sg_CritSectForAckBuf;       // To make it thread safe
 
 /**
  * Channel instances
  */
-static SCHANNEL sg_asChannel[defNO_OF_CHANNELS];
+static vector<SCHANNEL> sg_asChannel(defNO_OF_CHANNELS);
 
 /**
  * Number of current channel selected
@@ -281,6 +282,7 @@ public:
     HRESULT CAN_LoadDriverLibrary(void);
     HRESULT CAN_UnloadDriverLibrary(void);
 };
+
 void vBlinkHw(INTERFACE_HW s_HardwareIntr)
 {
     OCI_ControllerHandle ouOCI_HwHandle;
@@ -312,6 +314,7 @@ void vBlinkHw(INTERFACE_HW s_HardwareIntr)
         }
     }
 }
+
 static CDIL_CAN_ETAS_BOA* sg_pouDIL_CAN_ETAS_BOA = NULL;
 
 /**
@@ -661,7 +664,7 @@ static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
 {
     BOOL bResult = FALSE;
 
-    for (UINT i = 0; i < sg_unClientCnt; i++)
+    for (UINT i = 0; i < sg_asClientToBufMap.size(); i++)
     {
         if (sg_asClientToBufMap[i].m_dwClientID == dwClientID)
         {
@@ -681,7 +684,7 @@ static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
  */
 static BOOL bClientExist(string pcClientName, INT& Index)
 {
-    for (UINT i = 0; i < sg_unClientCnt; i++)
+    for (UINT i = 0; i < sg_asClientToBufMap.size(); i++)
     {
         if (pcClientName == sg_asClientToBufMap[i].m_acClientName)
         {
@@ -740,7 +743,7 @@ static BOOL bClientIdExist(const DWORD& dwClientId)
 {
     BOOL bReturn = FALSE;
 
-    for (UINT i = 0; i < sg_unClientCnt; i++)
+    for (UINT i = 0; i < sg_asClientToBufMap.size(); i++)
     {
         if (sg_asClientToBufMap[i].m_dwClientID == dwClientId)
         {
@@ -2133,7 +2136,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
     //First initialize with existing hw description
     for (INT i = 0; i < min(Length, (INT)sg_nNoOfChannels); i++)
     {
-        psContrlDets[i].m_omHardwareDesc = T2A(sg_asChannel[i].m_acURI);
+        psContrlDets[i].m_omHardwareDesc = sg_asChannel[i].m_acURI;
     }
 
     if (sg_nNoOfChannels > 0)

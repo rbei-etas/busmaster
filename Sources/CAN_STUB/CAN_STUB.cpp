@@ -23,6 +23,7 @@
 
 /* C++ includes */
 #include <string>
+#include <vector>
 
 /* Project includes */
 #include "CAN_STUB_stdafx.h"
@@ -155,7 +156,7 @@ typedef SCLIENTBUFMAP* PSCLIENTBUFMAP;
  * global client count
  */
 UINT sg_unClientCnt = 0;
-static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED];
+static vector<SCLIENTBUFMAP> sg_asClientToBufMap(MAX_CLIENT_ALLOWED);
 // Forward declarations
 
 /**
