@@ -24,7 +24,7 @@
 
 #pragma once
 
-typedef std::map <string, SECTIONDATA*> SECTIONMAP;
+typedef map <string, SECTIONDATA*> SECTIONMAP;
 
 
 class CProjConfig

@@ -165,7 +165,7 @@ typedef struct tagAckMap
 } SACK_MAP;
 
 static  CRITICAL_SECTION sg_CritSectForAckBuf;       // To make it thread safe
-typedef std::list<SACK_MAP> CACK_MAP_LIST;
+typedef list<SACK_MAP> CACK_MAP_LIST;
 static CACK_MAP_LIST sg_asAckMapBuf;
 
 /**
@@ -1200,7 +1200,7 @@ BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
     EnterCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
     BOOL bResult = FALSE;
     CACK_MAP_LIST::iterator  iResult =
-        std::find( sg_asAckMapBuf.begin(), sg_asAckMapBuf.end(), RefObj );
+        find( sg_asAckMapBuf.begin(), sg_asAckMapBuf.end(), RefObj );
 
     //if ((*iResult).m_ClientID > 0)
     if (iResult != sg_asAckMapBuf.end())

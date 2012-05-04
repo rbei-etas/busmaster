@@ -30,7 +30,7 @@
 #include "include/Error.h"
 #include <map>
 
-typedef std::map<__int64, int> CSlotIndexMapType;
+typedef map<__int64, int> CSlotIndexMapType;
 const int TOTAL_SIZE_APP_BUFFER       = 200;
 const int MAX_MCNET_DATA_SIZE   = 0x7FFF;
 
@@ -300,7 +300,7 @@ HRESULT CMsgBufVFSE<SMSGBUFFER>::WriteIntoBuffer(const SMSGBUFFER* psMsg, __int6
         else
         {
             nIndex = m_nMsgCount;
-            m_stlIdIndexMap.insert(std::pair<__int64, int>(nSlotId, nIndex));
+            m_stlIdIndexMap.insert(pair<__int64, int>(nSlotId, nIndex));
             ++m_nMsgCount;
         }
 
@@ -415,7 +415,7 @@ vDoSortIndexMapArray()
     for(int nCnt = 0; (UINT)nCnt< unSize; nCnt++)
     {
         __int64 nSlotID = SMSGBUFFER::GetSlotID(m_pasMsgBuffer[nCnt]);
-        m_stlIdIndexMap.insert(std::pair<__int64, int>(nSlotID, nCnt));
+        m_stlIdIndexMap.insert(pair<__int64, int>(nSlotID, nCnt));
     }
 }
 
@@ -435,7 +435,7 @@ template <typename SMSGBUFFER> void CMsgBufVFSE<SMSGBUFFER>::
 nGetMapIndexAtID(int nIndex,__int64& nMapIndex)
 {
     /*CSlotIndexMapType::iterator iter;
-    iter = std::find(m_stlIdIndexMap.begin(), m_stlIdIndexMap.end(), */
+    iter = find(m_stlIdIndexMap.begin(), m_stlIdIndexMap.end(), */
     for (CSlotIndexMapType::const_iterator it = m_stlIdIndexMap.begin();
             it != m_stlIdIndexMap.end(); ++it)
     {
