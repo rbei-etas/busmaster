@@ -96,8 +96,8 @@ bool CProjConfigManager::GetProjectData(string ProjName, PROJECTDATA& ProjData)
 {
     bool bResult = false;
     PROJECTMAP::iterator i = m_MapOfProject.find(ProjName);
-
     bResult = (i != m_MapOfProject.end());
+
     if (bResult)
     {
         i->second.GetProjectDetail(ProjData);

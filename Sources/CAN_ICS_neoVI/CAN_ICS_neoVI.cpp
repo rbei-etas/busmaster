@@ -667,9 +667,9 @@ static void vCreateTimeModeMapping()
     //MessageBox(0, L"TIME", L"", 0);
     GetLocalTime(&sg_CurrSysTime);
     //Query Tick Count
-    QueryPerformanceCounter((LARGE_INTEGER *) &sg_QueryTickCount);
+    QueryPerformanceCounter((LARGE_INTEGER*) &sg_QueryTickCount);
     // Get frequency of the performance counter
-    QueryPerformanceFrequency((LARGE_INTEGER *) &sg_lnFrequency);
+    QueryPerformanceFrequency((LARGE_INTEGER*) &sg_lnFrequency);
 
     // Convert it to time stamp with the granularity of hundreds of microsecond
     if ((sg_QueryTickCount * 10000) > sg_lnFrequency)
@@ -1002,7 +1002,7 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
             sg_byCurrState = CALC_TIMESTAMP_READY;
             nReturn = 0;
             long long int g_QueryTickCount;
-            QueryPerformanceCounter((LARGE_INTEGER *) &g_QueryTickCount);
+            QueryPerformanceCounter((LARGE_INTEGER*) &g_QueryTickCount);
             UINT64 unConnectionTime;
             unConnectionTime = ((g_QueryTickCount * 10000) / sg_lnFrequency) - sg_TimeStamp;
 
@@ -2580,6 +2580,7 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
         }
 
         ostringstream oss;
+
         switch (sg_ndNeoToOpen[i].DeviceType)
         {
                 /* neoVI Blue */
@@ -2634,6 +2635,7 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
                 oss << ", Serial Number " << dec << serialNumber;
                 break;
         };
+
         pControllerDetails[i].m_omHardwareDesc = oss.str();
     }
 

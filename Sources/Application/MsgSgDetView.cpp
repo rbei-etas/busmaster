@@ -1119,7 +1119,7 @@ void CMsgSgDetView::OnSignalNew()
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /*. Modifications    :  Amitesh Bharti, 11.06.2003,                           */
 /*                                  Rework due to unit testing for CRH0005    */
 /*  Modification     :  Raja N on 10.03.2004                                  */
@@ -1131,182 +1131,172 @@ void CMsgSgDetView::OnSignalNew()
 /*                      Modified logic to get signal info                     */
 /******************************************************************************/
 
-void CMsgSgDetView::OnSignalEdit() 
+void CMsgSgDetView::OnSignalEdit()
 {
     int nSelItem  = m_omListCtrlSignal.GetNextItem(-1, LVNI_SELECTED);
     int nItemCount = m_omListCtrlSignal.GetItemCount();
+
     if ( nSelItem != -1 )
     {
         CString omStrSelItemText = STR_EMPTY;
         // Get the byte order
         BYTE byByteOrder = DATA_FORMAT_MOTOROLA;
-        omStrSelItemText = 
+        omStrSelItemText =
             m_omListCtrlSignal.GetItemText( nSelItem, 10 );
+
         if (omStrSelItemText == _T("Intel"))
         {
             byByteOrder = DATA_FORMAT_INTEL;
         }
+
         // Get signal type
-        omStrSelItemText = 
+        omStrSelItemText =
             m_omListCtrlSignal.GetItemText( nSelItem, 4 );
-
-
         CSignalDetailsDlg odSignalDetDlg( m_sDbParams,
-                                          MD_EDIT, 
-                                          byByteOrder, 
+                                          MD_EDIT,
+                                          byByteOrder,
                                           m_omStrMessageName,
                                           m_unMessageLength,
                                           omStrSelItemText,
                                           m_omListCtrlSignal.
-                                            GetItemText( nSelItem, 5 ),
+                                          GetItemText( nSelItem, 5 ),
                                           m_omListCtrlSignal.
-                                            GetItemText( nSelItem, 6 ),
+                                          GetItemText( nSelItem, 6 ),
                                           m_omListCtrlSignal.
-                                            GetItemText( nSelItem, 7 ),
+                                          GetItemText( nSelItem, 7 ),
                                           m_omListCtrlSignal.
-                                            GetItemText( nSelItem, 8 ));
-
+                                          GetItemText( nSelItem, 8 ));
         // Get signal name
-        odSignalDetDlg.m_omStrSignalName = 
+        odSignalDetDlg.m_omStrSignalName =
             m_omListCtrlSignal.GetItemText( nSelItem, 0 );
-
         // Get byte Number
         omStrSelItemText = m_omListCtrlSignal.GetItemText( nSelItem, 1 );
-
         odSignalDetDlg.m_byByteIndex = (BYTE)atoi((const char*)omStrSelItemText);
-        
         // Get bit Number
-        omStrSelItemText = 
+        omStrSelItemText =
             m_omListCtrlSignal.GetItemText( nSelItem, 2 );
-
         odSignalDetDlg.m_byStartBit = (BYTE)atoi(omStrSelItemText);
-
-        omStrSelItemText = 
+        omStrSelItemText =
             m_omListCtrlSignal.GetItemText( nSelItem, 3 );
-
         odSignalDetDlg.m_unSgLen = atoi(omStrSelItemText);
-
         // Get signal unit value
         odSignalDetDlg.m_omStrUnit =
             m_omListCtrlSignal.GetItemText( nSelItem, 9 );
-
-        // Mode is edit 
+        // Mode is edit
         // try deleteing the matrix allocated for the edited signal
         // Get message pointer for the message
         // Get appropriate msg structure ptr
         CMsgSignal* pTempMsgSg = NULL;
         BOOL bActive = FALSE;
-
         pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
-
         sSIGNALS* pSgTemp = NULL;
-        sMESSAGE* pMsg = 
+        sMESSAGE* pMsg =
             pTempMsgSg->psGetMessagePointerInactive( m_omStrMessageName );
+
         if ( pMsg != NULL)
         {
             // Get signal pointer
-			pSgTemp = pMsg->m_psSignals;
+            pSgTemp = pMsg->m_psSignals;
 
-			// Get the signal pointer to be deleted
-			while ( pSgTemp != NULL )
-			{
-				// found
-				if ( pSgTemp->m_omStrSignalName == odSignalDetDlg.m_omStrSignalName )
-				{
-					BYTE abySigMask[DATA_LENGTH_MAX] = {0};
+            // Get the signal pointer to be deleted
+            while ( pSgTemp != NULL )
+            {
+                // found
+                if ( pSgTemp->m_omStrSignalName == odSignalDetDlg.m_omStrSignalName )
+                {
+                    BYTE abySigMask[DATA_LENGTH_MAX] = {0};
                     CMsgSignal::bCalcBitMaskForSig( abySigMask,
-                                        DATA_LENGTH_MAX, 
-                                        pSgTemp->m_unStartByte,
-                                        pSgTemp->m_byStartBit,
-                                        pSgTemp->m_unSignalLength,
-                                        pSgTemp->m_eFormat);
+                                                    DATA_LENGTH_MAX,
+                                                    pSgTemp->m_unStartByte,
+                                                    pSgTemp->m_byStartBit,
+                                                    pSgTemp->m_unSignalLength,
+                                                    pSgTemp->m_eFormat);
                     // Delete matrix info for this signal
                     pTempMsgSg->vUpdateSignalMatrix(abySigMask,
-                            pMsg->m_bySignalMatrix,
-                            DATA_LENGTH_MAX,
-                            RESET);
-					//quit the loop if found
-					break;
-				}
-				else
-				{
-					pSgTemp = pSgTemp->m_psNextSignalList;
-				}
-			}
+                                                    pMsg->m_bySignalMatrix,
+                                                    DATA_LENGTH_MAX,
+                                                    RESET);
+                    //quit the loop if found
+                    break;
+                }
+                else
+                {
+                    pSgTemp = pSgTemp->m_psNextSignalList;
+                }
+            }
         }
 
         if ( odSignalDetDlg.DoModal() == IDOK )
         {
             CMsgSignal* pTempMsgSg = NULL;
-
             pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
-
-            // Get "no of signals" info from the message and 
+            // Get "no of signals" info from the message and
             // update the form view
-            sMESSAGE* pMsg = 
+            sMESSAGE* pMsg =
                 pTempMsgSg->psGetMessagePointerInactive(m_omStrMessageName);
-			if(pMsg != NULL)
-			{
-				sSIGNALS* pSg = pMsg->m_psSignals;
 
-				BOOL bShudILoop = TRUE;
+            if(pMsg != NULL)
+            {
+                sSIGNALS* pSg = pMsg->m_psSignals;
+                BOOL bShudILoop = TRUE;
 
-				while ( pSg != NULL && bShudILoop )
-				{
-					if (pSg->m_omStrSignalName == odSignalDetDlg.m_omStrSignalName)
-					{
-						// Delete the current selected item from the list
-						m_omListCtrlSignal.DeleteItem( nSelItem );
+                while ( pSg != NULL && bShudILoop )
+                {
+                    if (pSg->m_omStrSignalName == odSignalDetDlg.m_omStrSignalName)
+                    {
+                        // Delete the current selected item from the list
+                        m_omListCtrlSignal.DeleteItem( nSelItem );
+                        // Add the new item to the signal list
+                        vAddItemToSignalList( nSelItem, pMsg, pSg );
+                        // set the message in the tree view to bold
+                        // indicating it has changed
+                        CMainFrame* pMainFrm =
+                            static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 
-						// Add the new item to the signal list
-						vAddItemToSignalList( nSelItem, pMsg, pSg );
+                        if(pMainFrm != NULL )
+                        {
+                            CMsgSgTreeView* pTreeViewPtr =
+                                pMainFrm->podGetMsgSgTreeView(m_sDbParams.m_eBus);
 
-						// set the message in the tree view to bold
-						// indicating it has changed
-						CMainFrame* pMainFrm = 
-							static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
-						if(pMainFrm != NULL )
-						{
-							CMsgSgTreeView* pTreeViewPtr = 
-								pMainFrm->podGetMsgSgTreeView(m_sDbParams.m_eBus);
-							if(pTreeViewPtr != NULL)
-							{
-								pTreeViewPtr->vSetTextBold();
-							}
-						}
-						bShudILoop = FALSE;
-					}
-					else
-					{
-						pSg = pSg->m_psNextSignalList;
-					}
-				}
-			}
+                            if(pTreeViewPtr != NULL)
+                            {
+                                pTreeViewPtr->vSetTextBold();
+                            }
+                        }
 
-			// Selction doesn't make sense
-			m_omListCtrlSignal.SetSelectionMark( -1 );
-			// Disable buttons
-			vEnableButtons( FALSE );
-		}
-		else // Cancelled
-		{
-			if ( pTempMsgSg != NULL &&
-				pMsg       != NULL &&
-				pSgTemp    != NULL)
-			{
-				// Mode is edit 
-				// Restore matrix info for this signal
+                        bShudILoop = FALSE;
+                    }
+                    else
+                    {
+                        pSg = pSg->m_psNextSignalList;
+                    }
+                }
+            }
+
+            // Selction doesn't make sense
+            m_omListCtrlSignal.SetSelectionMark( -1 );
+            // Disable buttons
+            vEnableButtons( FALSE );
+        }
+        else // Cancelled
+        {
+            if ( pTempMsgSg != NULL &&
+                    pMsg       != NULL &&
+                    pSgTemp    != NULL)
+            {
+                // Mode is edit
+                // Restore matrix info for this signal
                 BYTE abySigMask[DATA_LENGTH_MAX] = {0};
                 CMsgSignal::bCalcBitMaskForSig( abySigMask,
-                                    DATA_LENGTH_MAX, 
-                                    pSgTemp->m_unStartByte,
-                                    pSgTemp->m_byStartBit,
-                                    pSgTemp->m_unSignalLength,
-                                    pSgTemp->m_eFormat);
-				pTempMsgSg->vUpdateSignalMatrix(abySigMask,
-					    pMsg->m_bySignalMatrix,
-                        DATA_LENGTH_MAX,
-                        SET);
+                                                DATA_LENGTH_MAX,
+                                                pSgTemp->m_unStartByte,
+                                                pSgTemp->m_byStartBit,
+                                                pSgTemp->m_unSignalLength,
+                                                pSgTemp->m_eFormat);
+                pTempMsgSg->vUpdateSignalMatrix(abySigMask,
+                                                pMsg->m_bySignalMatrix,
+                                                DATA_LENGTH_MAX,
+                                                SET);
             }
         }
     }
@@ -1317,10 +1307,8 @@ void CMsgSgDetView::OnSignalEdit()
                                         LVIS_SELECTED ) ;
         AfxMessageBox( "Double click on the list item to select the signal \
 details dialog",
-            MB_OK|MB_ICONINFORMATION);
-        
+                       MB_OK|MB_ICONINFORMATION);
     }
-
 }
 /******************************************************************************/
 /*  Function Name    :  vAddItemToSignalList                                  */

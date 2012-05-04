@@ -354,8 +354,8 @@ static int ReadWriteASection(bool bToRead, short SectionID,
                 for (LISTSTR::iterator i = ProjectList.begin(); (i != ProjectList.end()) && bAllWell; ++i)
                 {
                     PROJECTDATA ProjData;
-
                     bAllWell = g_ProjCfgManager.GetProjectData(*i, ProjData);
+
                     if (bAllWell)
                     {
                         bAllWell = ProjData.Write(pFile);
@@ -403,8 +403,8 @@ static int ReadWriteASection(bool bToRead, short SectionID,
                         for (UCHAR j = 0; (j < SectionEntries) && bAllWell; j++)
                         {
                             SECTIONDATA CurrSection;
-
                             bAllWell = CurrSection.Read(pFile);
+
                             if (bAllWell)
                             {
                                 g_ProjCfgManager.AddModifySection(
