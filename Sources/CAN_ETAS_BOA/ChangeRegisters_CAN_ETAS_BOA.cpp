@@ -71,8 +71,10 @@ CChangeRegisters_CAN_ETAS_BOA::CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent /*=NU
     }
 
     psMainContrDets = psControllerDetails;
+    m_nLastSelection = 0;
     m_nPropDelay = 0;
     m_nSJWCurr = 0;
+    m_bOption = 0;
     m_nNoHardware = nHardwareCount;
     m_nDataConfirmStatus = WARNING_NOTCONFIRMED;
 }
