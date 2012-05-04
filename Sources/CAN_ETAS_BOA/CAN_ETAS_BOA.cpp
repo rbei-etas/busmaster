@@ -1084,11 +1084,11 @@ void vCopyOCI_CAN_RX_2_DATA(const OCI_CANRxMessage* SrcMsg, STCANDATA* DestMsg)
 
     if (Channel > defNO_OF_CHANNELS)
     {
-        Channel = 1;//Take appropriate action
+        Channel = defNO_OF_CHANNELS; // Take appropriate action
     }
 
     DestMsg->m_lTickCount.QuadPart = (LONGLONG)(SrcMsg->timeStamp * sg_asChannel[Channel - 1].m_fResolution);
-    memcpy(DestMsg->m_uDataInfo.m_sCANMsg.m_ucData, SrcMsg->data, sizeof(UCHAR) * 8);
+    memcpy(DestMsg->m_uDataInfo.m_sCANMsg.m_ucData, SrcMsg->data, sizeof(DestMsg->m_uDataInfo.m_sCANMsg.m_ucData));
 }
 
 /**
@@ -1904,13 +1904,13 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
     //VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_DRIVER_SELECTED, ERR_IMPROPER_STATE);
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;
-    char acURI[defNO_OF_CHANNELS][256]= {0};
+    OCI_URIName acURI[defNO_OF_CHANNELS];
     INT nFound = 0;
 
     if (OCI_FindCANController(acURI, defNO_OF_CHANNELS, &nFound) == OCI_SUCCESS)
     {
         nCount = nFound;
-        qsort((void*)acURI, nCount, sizeof(acURI[0]), nCallBackStrCompareFn);
+        qsort((void*)acURI, nCount, sizeof(OCI_URIName), nCallBackStrCompareFn);
 
         if (nCount > 0)//Success only if there exists alteast one hw
         {
