@@ -30,37 +30,24 @@
 #include "GlobalObj.h"
 
 
-/******************************************************************************/
-/*  Function Name    :  CBuildProgram                                         */
-/*  Input(s)         :  Module handle                                         */
-/*  Output           :                                                        */
-/*  Functionality    :  Assign the value in passed in parameter to data member*/
-/*                      variable and initialise all other data members        */
-/*  Member of        :  CBuildProgram                                         */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  07.03.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modified On      :  20.03.2002                                            */
-/******************************************************************************/
+/**
+ * \brief Constructor
+ *
+ * Assign the value in passed in parameter to data member
+ * variable and initialise all other data members
+ */
 CBuildProgram::CBuildProgram(ETYPE_BUS eBus, HMODULE hModuleHandle /* NULL*/):
     m_hModuleHandle(hModuleHandle),m_podOutWnd(NULL)
 {
     m_eBus = eBus;
 }
-/******************************************************************************/
-/*  Function Name    :  CBuildProgram                                         */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Default destructor which will destroy the output      */
-/*                      if it is already created.                             */
-/*  Member of        :  CBuildProgram                                         */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  07.03.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modified On      :  28.03.2002, Destroy the output window                 */
-/******************************************************************************/
+
+/**
+ * \brief Destructor
+ *
+ * Default destructor which will destroy the output
+ * if it is already created.
+ */
 CBuildProgram::~CBuildProgram()
 {
     if(m_podOutWnd != NULL)
@@ -68,16 +55,15 @@ CBuildProgram::~CBuildProgram()
         m_podOutWnd->DestroyWindow();
     }
 }
-/******************************************************************************/
-/*  Function Name    :  bBuildProgram                                         */
-/*  Input(s)         :  PSNODEINFO and flag to load DLL                 */
-/*  Output           :  TRUE or FALSE                                         */
-/*  Functionality    :  Build the DLL for source file and display output      */
-/*  Member of        :  CBuildProgram                                         */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  07.03.2002                                            */
-/******************************************************************************/
+
+/**
+ * \brief     Build Program
+ * \param[in] psNodeInfo Node Info
+ * \param[in] bLoadDLL flag to load DLL
+ * \return    TRUE or FALSE
+ *
+ * Build the DLL for source file and display output
+ */
 BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
 {
     BOOL bReturn            = FALSE;
@@ -538,25 +524,18 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
 
     return bReturn;
 }
-/******************************************************************************/
-/*  Function Name    :  bCreateMakeFile                                       */
-/*  Input(s)         :  Make file template and make file name with path       */
-/*  Output           :  TRUE or FALSE                                         */
-/*  Functionality    :  Creates a specific make file from a generic make file */
-/*                      template.                                             */
-/*  Member of        :  CBuildProgram                                         */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  07.03.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modified On      :  20.03.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modified On      :  16.12.2002, solved exception due to passing null      */
-/*                      pointer to CFileException object to open function by  */
-/*                      replacing it with passing a pointer to existing object*/
-/******************************************************************************/
+
+/**
+ * \brief Create Makefile
+ * \param[in] omStrMakeFileTemplateName Make file template
+ * \param[in] omStrMakeFileName make file name with path
+ * \return    TRUE or FALSE
+ *
+ * Creates a specific make file from a generic make file
+ * template.
+ */
 BOOL CBuildProgram::bCreateMakeFile(CString& omStrMakeFileTemplateName,
-                                    CString& omStrMakeFileName          )
+                                    CString& omStrMakeFileName)
 {
     CStdioFile omStdiofile;
     CFileException omException ;
@@ -688,18 +667,15 @@ BOOL CBuildProgram::bCreateMakeFile(CString& omStrMakeFileTemplateName,
     END_CATCH_ALL
     return bReturn;
 }
-/******************************************************************************/
-/*  Function Name    :  bAddStrToArrayFromFile                                */
-/*  Input(s)         :  File name and reference to CStringArray object        */
-/*  Output           :  TRUE or FALSE                                         */
-/*  Functionality    :  Set the text extent to maximum text length of items   */
-/*  Member of        :  CBuildProgram                                         */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  07.03.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modified On      :  20.03.2002                                            */
-/******************************************************************************/
+
+/**
+ * \brief      Add String To Array From File
+ * \param[in]  omStrTextFileName File name
+ * \param[out] omStrArray reference to CStringArray object
+ * \return     TRUE or FALSE
+ *
+ * Set the text extent to maximum text length of items 
+ */
 BOOL CBuildProgram::bAddStrToArrayFromFile(CString& omStrTextFileName,
         CStringArray& omStrArray)
 {
@@ -764,19 +740,16 @@ BOOL CBuildProgram::bAddStrToArrayFromFile(CString& omStrTextFileName,
     END_CATCH_ALL
     return TRUE;
 }
-/******************************************************************************/
-/*  Function Name    :  bAddString                                            */
-/*  Input(s)         :  Reference to Object of CStringArray                   */
-/*  Output           :  TRUE or FALSE                                         */
-/*  Functionality    :  Creates output window, if it is not created and calls */
-/*                      public member function of COutWnd class to add string */
-/*                      to output window.                                     */
-/*  Member of        :  CBuildProgram                                         */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  07.03.2002                                            */
-/*  Modifications    :                                                        */
-/******************************************************************************/
+
+/**
+ * \brief        Add String
+ * \param[inout] omStrArrayReference to Object of CStringArray
+ * \return       TRUE or FALSE
+ *
+ * Creates output window, if it is not created and calls
+ * public member function of COutWnd class to add string
+ * to output window.
+ */
 BOOL CBuildProgram::bAddString(CStringArray& omStrArray)
 {
     // Create output window if it is not arealdy created.
@@ -793,22 +766,13 @@ BOOL CBuildProgram::bAddString(CStringArray& omStrArray)
 
     return TRUE;
 }
-/******************************************************************************/
-/*  Function Name    :  vCreateOutputWindow                                   */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Create output window, if it is not created. It uses   */
-/*                      default or last stored coordinates                    */
-/*  Member of        :  CBuildProgram                                         */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  07.03.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modified On      :  20.03.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modified On      :  18.04.2003, new member function  bCreateOutputWindow  */
-/*                                  of COutWnd class is called to create it.  */
-/******************************************************************************/
+
+/**
+ * \brief Create Output Window
+ *
+ * Create output window, if it is not created. It uses
+ * default or last stored coordinates
+ */
 VOID CBuildProgram::vCreateOutputWindow()
 {
     m_podOutWnd = new COutWnd(m_eBus);
@@ -819,21 +783,17 @@ VOID CBuildProgram::vCreateOutputWindow()
         m_podOutWnd->bCreateOutputWindow();
     }
 }
-/******************************************************************************/
-/*  Function Name    :  dwConvertShortPathName                                */
-/*  Input(s)         :  String to be converted,String buffer to store         */
-/*                      converted string.                                     */
-/*  Output           :  buffer length of converted string                     */
-/*  Functionality    :  It convertes the string passed as parameter of        */
-/*                      CString object and store the short path name in buffer*/
-/*                      passed as other parameter. It return the buffer size  */
-/*  Member of        :  CBuildProgram                                         */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  28.03.2002                                            */
-/*  Modification By  :                                                        */
-/*  Modified On      :                                                        */
-/******************************************************************************/
+
+/**
+ * \brief      Convert Short Path Name
+ * \param[in]  omStrToConvert String to be converted
+ * \param[out] pcStrShortPath String buffer to store converted string
+ * \return     buffer length of converted string
+ *
+ * It convertes the string passed as parameter of
+ * CString object and store the short path name in buffer
+ * passed as other parameter. It return the buffer size
+ */
 DWORD CBuildProgram::dwConvertShortPathName(CONST CString& omStrToConvert,
         char* pcStrShortPath)
 {
@@ -850,17 +810,13 @@ DWORD CBuildProgram::dwConvertShortPathName(CONST CString& omStrToConvert,
     return dwReturn;
 }
 
-/******************************************************************************/
-/*  Function Name    :  vClearArray                                           */
-/*  Input(s)         :  void                                                  */
-/*  Output           :  buffer length of converted string                     */
-/*  Functionality    :  It clear the string which contains all the messages   */
-/*                      of output window                                      */
-/*  Member of        :  CBuildProgram                                         */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Anish Kumar                                           */
-/*  Date Created     :  14.01.2006                                            */
-/******************************************************************************/
+/**
+ * \brief  Clear Array
+ * \return buffer length of converted string
+ *
+ * It clear the string which contains all the messages
+ * of output window
+ */
 void CBuildProgram::vClearArray()
 {
     m_omStrArray.RemoveAll();
