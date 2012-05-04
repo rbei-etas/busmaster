@@ -139,8 +139,9 @@ const BYTE TYPE_MSG_CAN_ALL         = 0x3;
 #define LENGTH_STR_TYPE_CAN             4
 
 
-typedef struct tagFormattedData_CAN
+class tagFormattedData_CAN
 {
+public:
     UINT64          m_u64TimeStamp;                 // Time stamp
     DWORD           m_dwMsgID;                      // Message identifier
     EDIRECTION      m_eDirection;                   // Direction (Rx / Tx)
@@ -170,7 +171,9 @@ typedef struct tagFormattedData_CAN
     __int64         m_n64MapId;                     // Map id of the message
     COLORREF        m_ColourCode;                   // Colour code associated
 
-} SFORMATTEDDATA_CAN;
+};
+
+typedef tagFormattedData_CAN SFORMATTEDDATA_CAN;
 
 typedef struct sWMUpdatePtrPara
 {
