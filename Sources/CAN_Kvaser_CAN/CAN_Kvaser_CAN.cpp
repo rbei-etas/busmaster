@@ -21,9 +21,12 @@
  *
  * Source file for Kvaser CAN DIL functions
  */
-// CAN_Kvaser_CAN.cpp : Defines the initialization routines for the DLL.
-//
 
+/* C++ includes */
+#include <sstream>
+#include <string>
+
+/* Project includes */
 #include "CAN_Kvaser_CAN_stdafx.h"
 #include "CAN_Kvaser_CAN.h"
 #include "DataTypes/Base_WrapperErrorLogger.h"
@@ -42,6 +45,8 @@
 
 #define USAGE_EXPORT
 #include "CAN_Kvaser_CAN_Extern.h"
+
+using namespace std;
 
 // CCAN_Kvaser_CAN
 
@@ -2052,11 +2057,11 @@ static int nCreateMultipleHardwareNetwork()
     for (int nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
     {
         sg_aodChannels[nCount].m_nChannel = sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwIdInterface;
-        sprintf_s(buf, _T("Kvaser - %s, Serial Number- %ld, Firmware- %s"),
-                  sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDescription,
-                  sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwVendor,
-                  sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDeviceName);
-        sg_aodChannels[nCount].m_strName = buf;
+        ostringstream buf;
+        buf << "Kvaser - " << sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDescription;
+        buf << ", Serial Number - " << dec << sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwVendor;
+        buf << ", Firmware - " << sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDeviceName;
+        sg_aodChannels[nCount].m_strName = buf.str();
     }
 
     return 0;
