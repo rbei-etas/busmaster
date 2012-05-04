@@ -140,7 +140,6 @@
 				BasicRuntimeChecks="0"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile=""
 				WarningLevel="4"
 			/>
 			<Tool

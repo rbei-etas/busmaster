@@ -1197,7 +1197,7 @@ void vProcessRxMsg(void* userData, struct OCI_CANMessage* msg)
         sg_byCurrState = CALC_TIMESTAMP_READY;
         long long int g_QueryTickCount;
         QueryPerformanceCounter((LARGE_INTEGER *) &g_QueryTickCount);
-        UINT64 unConnectionTime;
+        long long int unConnectionTime;
         unConnectionTime = ((g_QueryTickCount * 10000) / sg_lnFrequency) - sg_TimeStamp;
 
         //Time difference should be +ve value
@@ -1919,7 +1919,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
             //set the current number of channels
             sg_nNoOfChannels = min(nCount, defNO_OF_CHANNELS);
 
-            for (INT i = 0; i < sg_nNoOfChannels; i++)
+            for (UINT i = 0; i < sg_nNoOfChannels; i++)
             {
                 psHWInterface[i].m_dwIdInterface = 0;
                 psHWInterface[i].m_dwVendor = 0;

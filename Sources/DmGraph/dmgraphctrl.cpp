@@ -3230,7 +3230,7 @@ STDMETHODIMP CDMGraphCtrl::GetElementValueAtCursor( SHORT shElementID,
             {
                 CElementPoint odPoint;
 
-                for( UINT nIndex = 0; nIndex < nCount; nIndex++ )
+                for(int nIndex = 0; nIndex < nCount; nIndex++ )
                 {
                     odPoint = pElement->m_PointList[nIndex];
 
@@ -3313,7 +3313,7 @@ STDMETHODIMP CDMGraphCtrl::GenerateCSVReport(LPCTSTR pFilename)
             {
                 int nMaxCount = 0; // To store the number of iterations
 
-                for ( UINT nIndex = 0; nIndex < lElementCount; nIndex++)
+                for (int nIndex = 0; nIndex < lElementCount; nIndex++)
                 {
                     pElement[ nIndex ] = (*m_pElementList)[ nIndex ];
 
@@ -3338,7 +3338,7 @@ STDMETHODIMP CDMGraphCtrl::GenerateCSVReport(LPCTSTR pFilename)
                 fprintf(pFile,"BUSMASTER Generated Report\n\n");
 
                 // Write Signal Names
-                for( UINT nIndex = 0; nIndex < lElementCount; nIndex++ )
+                for(int nIndex = 0; nIndex < lElementCount; nIndex++ )
                 {
                     // Save the signal name
                     BSTR bstrElementName;
@@ -3354,7 +3354,7 @@ STDMETHODIMP CDMGraphCtrl::GenerateCSVReport(LPCTSTR pFilename)
                 fprintf(pFile, "\n");
 
                 // Write Time and Value Column
-                for( UINT nIndex = 0; nIndex < lElementCount; nIndex++ )
+                for(int nIndex = 0; nIndex < lElementCount; nIndex++ )
                 {
                     fprintf( pFile,"Time( in mSec),Value,");
                 }
@@ -3363,7 +3363,7 @@ STDMETHODIMP CDMGraphCtrl::GenerateCSVReport(LPCTSTR pFilename)
                 // Dump Signal Data
                 CElementPoint odPoint;
 
-                for( UINT nIndex = 0; nIndex < nMaxCount; nIndex++ )
+                for(int nIndex = 0; nIndex < nMaxCount; nIndex++ )
                 {
                     for( int nElementIndex = 0;
                             nElementIndex < lElementCount;
@@ -3869,7 +3869,7 @@ void CDMGraphCtrl::vSendCursorDetails()
     long lngCount = 0;
     spGraphCollection->get_Count(&lngCount);
 
-    for ( UINT nIndex = 0 ; nIndex < lngCount; nIndex++ )
+    for (int nIndex = 0 ; nIndex < lngCount; nIndex++ )
     {
         CComPtr<IDispatch> spItem;
         CComPtr<IDMGraphCursor> spCursor;
@@ -3948,7 +3948,7 @@ void CDMGraphCtrl::vUpdateCursorSelection(POINT point)
     long lngCount = 0;
     spGraphCollection->get_Count(&lngCount);
 
-    for ( UINT nIndex = 0 ; nIndex < lngCount; nIndex++ )
+    for (int nIndex = 0 ; nIndex < lngCount; nIndex++ )
     {
         CComPtr<IDispatch> spItem;
         CComPtr<IDMGraphCursor> spCursor;
