@@ -266,6 +266,10 @@
 			SourceControlFiles="false"
 			>
 			<File
+				RelativePath=".\BusEmulation.h"
+				>
+			</File>
+			<File
 				RelativePath=".\BusEmulation_i.c"
 				>
 				<FileConfiguration
@@ -284,6 +288,10 @@
 						UsePrecompiledHeader="0"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\BusEmulation_p.c"
+				>
 			</File>
 			<File
 				RelativePath=".\dlldata.c"
