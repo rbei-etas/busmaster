@@ -242,6 +242,10 @@
 				RelativePath=".\AscLogConverter.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\bison.simple"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
