@@ -355,7 +355,8 @@ static int ReadWriteASection(bool bToRead, short SectionID,
                 {
                     PROJECTDATA ProjData;
 
-                    if (bAllWell = g_ProjCfgManager.GetProjectData(*i, ProjData))
+                    bAllWell = g_ProjCfgManager.GetProjectData(*i, ProjData);
+                    if (bAllWell)
                     {
                         bAllWell = ProjData.Write(pFile);
                     }
@@ -403,7 +404,8 @@ static int ReadWriteASection(bool bToRead, short SectionID,
                         {
                             SECTIONDATA CurrSection;
 
-                            if (bAllWell = CurrSection.Read(pFile))
+                            bAllWell = CurrSection.Read(pFile);
+                            if (bAllWell)
                             {
                                 g_ProjCfgManager.AddModifySection(
                                     ProjectName, CurrSection);

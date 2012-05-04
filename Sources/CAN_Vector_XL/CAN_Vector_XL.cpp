@@ -1006,7 +1006,7 @@ static BYTE bClassifyMsgType(XLevent& xlEvent, STCANDATA& sCanData)
     {
         long long int g_QueryTickCount;
         QueryPerformanceCounter((LARGE_INTEGER *) &g_QueryTickCount);
-        UINT64 unConnectionTime;
+        long long int unConnectionTime;
         unConnectionTime = ((g_QueryTickCount * 10000) / sg_lnFrequency) - sg_TimeStamp;
 
         //Time difference should be +ve value

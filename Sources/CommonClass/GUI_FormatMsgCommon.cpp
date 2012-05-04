@@ -100,5 +100,5 @@ void CFormatMsgCommon::vFormatTimeStamp(DWORD dwTimeStamp, char acTime[])
     nTemp = nTemp / 60;         // expressed in minutes
     nMinute = nTemp % 60;       // minutes left
     nHour = nTemp / 60;         // expressed in hours
-    _stprintf(acTime, _T("%02d:%02d:%02d:%04d"), nHour, nMinute, nSec, nMicSec);
+    sprintf(acTime, _T("%02d:%02d:%02d:%04d"), nHour, nMinute, nSec, nMicSec);
 }
