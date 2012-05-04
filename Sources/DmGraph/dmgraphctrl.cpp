@@ -3147,7 +3147,7 @@ char* LPCTSTRToCharArray(LPCTSTR val)
 
     if (NULL != ansistr)
     {
-        strcpy(c, ansistr);
+        strcpy_s(c, lenA + 1, ansistr);
         //...use the strings, then free their memory:
         delete[] ansistr;
     }
