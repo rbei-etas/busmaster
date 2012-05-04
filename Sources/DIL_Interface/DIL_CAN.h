@@ -87,7 +87,7 @@ public:
      *  1 registeration successful
      *  2 Client already registered
      * -2 No more clients are allowed to register*/
-    HRESULT DILC_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
+    HRESULT DILC_RegisterClient(BOOL bRegister, DWORD& ClientID, string pacClientName);
 
     /**
      * This function manages the target message buffer list. The two combinations
@@ -211,7 +211,7 @@ private:
     HRESULT (*m_pfSendMsg)(DWORD dwClientID, const STCAN_MSG& pouFlxTxMsg);
     HRESULT (*m_pfGetLastErrorString)(CHAR* acErrorStr, int nLength);
     HRESULT (*m_pfManageMsgBuf)(BYTE, DWORD ClientID, CBaseCANBufFSE*);
-    HRESULT (*m_pfRegisterClient)(BOOL bRegister, DWORD&, char*);
+    HRESULT (*m_pfRegisterClient)(BOOL bRegister, DWORD&, string);
     HRESULT (*m_pfGetCntrlStatus)(const HANDLE& hEvent, UINT& unCntrlStatus);
     HRESULT (*m_pfGetControllerParams)(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     HRESULT (*m_pfGetErrorCount)(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);

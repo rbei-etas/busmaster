@@ -80,7 +80,7 @@ public:
      * ERR_NO_CLIENT_EXIST --> No client exists. Usually this happens if we try to remove non existing client.
      * ERR_NO_MORE_CLIENT_ALLOWED -->No more clients are allowed to register.
      */
-    virtual HRESULT DILC_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName) = 0;
+    virtual HRESULT DILC_RegisterClient(BOOL bRegister, DWORD& ClientID, string pacClientName) = 0;
 
     /**
      * This function manages the target message buffer list. The two combinations
