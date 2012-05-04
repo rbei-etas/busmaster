@@ -71,6 +71,7 @@ BEGIN_MESSAGE_MAP(CMsgSgTreeView, CTreeView)
     ON_NOTIFY_REFLECT(TVN_GETINFOTIP, OnInfoToolTip)
     ON_COMMAND(IDM_EDIT_MSG, OnEditMsg)
     ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnSelchanged)
+    ON_NOTIFY_REFLECT(TVN_KEYDOWN, OnTvnKeydown)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -739,4 +740,16 @@ void CMsgSgTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
             pMsgSgDetView->vHideControls(SW_HIDE);
         }
     }
+}
+
+
+void CMsgSgTreeView::OnTvnKeydown(NMHDR* pNMHDR, LRESULT* pResult)
+{
+     LPNMTVKEYDOWN ptvkd = (LPNMTVKEYDOWN) pNMHDR;
+     *pResult = 0;
+     if( ptvkd->wVKey == VK_DELETE )
+     {
+         OnDeleteMessage();
+     }
+
 }
