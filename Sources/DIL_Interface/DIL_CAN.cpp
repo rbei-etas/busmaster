@@ -351,7 +351,7 @@ HRESULT CDIL_CAN::DILC_PerformClosureOperations(void)
  *
  * Call this function to get a system time and the time stamp associated with it
  */
-HRESULT CDIL_CAN::DILC_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
+HRESULT CDIL_CAN::DILC_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, long long int* QueryTickCount)
 {
     return m_pBaseDILCAN_Controller->CAN_GetTimeModeMapping(CurrSysTime, TimeStamp, QueryTickCount);
 }

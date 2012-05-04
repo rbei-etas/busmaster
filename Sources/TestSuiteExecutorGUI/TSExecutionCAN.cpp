@@ -42,7 +42,7 @@ int ReadTSXDataBuffer(CTSExecutionCAN* pTSXCan)
     while (pTSXCan->m_ouCanBufFSE.GetMsgCount() > 0)
     {
         static STCANDATA sCanData;
-        sCanData.m_lTickCount.QuadPart;
+        sCanData.m_lTickCount;
         int Result = pTSXCan->m_ouCanBufFSE.ReadFromBuffer(&sCanData);
 
         if (Result == ERR_READ_MEMORY_SHORT)
@@ -132,7 +132,7 @@ int ReadVerifyTSXDataBuffer(CTSExecutionCAN* pTSXCan)
     while (pTSXCan->m_ouCanBufFSE.GetMsgCount() > 0)
     {
         static STCANDATA sCanData;
-        sCanData.m_lTickCount.QuadPart;
+        sCanData.m_lTickCount;
         int Result = pTSXCan->m_ouCanBufFSE.ReadFromBuffer(&sCanData);
 
         if (Result == ERR_READ_MEMORY_SHORT)
@@ -151,7 +151,7 @@ int ReadVerifyTSXDataBuffer(CTSExecutionCAN* pTSXCan)
 
         if(IS_RX_MESSAGE(sCanData.m_ucDataType))
         {
-            pTSXCan->m_LastCanMsg = sCanData.m_lTickCount.QuadPart;
+            pTSXCan->m_LastCanMsg = sCanData.m_lTickCount;
             VerifyCurrentMessage(sCanData, pTSXCan);
         }
     }
@@ -249,7 +249,7 @@ CTSExecutionCAN::CTSExecutionCAN(void)
     m_ouVerifyEvent.ResetEvent();
     m_nVerifyCount = 0;
     m_ouVerifyResult = NULL;
-    QueryPerformanceFrequency(&m_QueryFrequency);
+    QueryPerformanceFrequency((LARGE_INTEGER *) &m_QueryFrequency);
 }
 
 /******************************************************************************
@@ -360,8 +360,8 @@ HRESULT CTSExecutionCAN::TSX_VerifyResponse(CBaseEntityTA* pEntity, CResultVerif
     m_ouReadThread.m_unActionCode = INACTION;
     m_bTimeOver = FALSE;
     m_LastCanMsg = (UINT)-1;
-    LARGE_INTEGER Tick1;
-    QueryPerformanceCounter(&Tick1);
+    long long int Tick1;
+    QueryPerformanceCounter((LARGE_INTEGER *) &Tick1);
     //Wait For Specified duration
     HRESULT hResult = WaitForSingleObject(m_ouVerifyEvent, m_pCurrentVerify->m_ushDuration);
     m_ouReadThread.m_unActionCode = INVOKE_FUNCTION;
@@ -379,7 +379,7 @@ HRESULT CTSExecutionCAN::TSX_VerifyResponse(CBaseEntityTA* pEntity, CResultVerif
     else
     {
         //time calculation
-        LARGE_INTEGER Tickr;
+        long long int Tickr;
         UINT64 tr;
         SYSTEMTIME sysTime;
         m_pouDIL_CAN->DILC_GetTimeModeMapping(sysTime, tr, &Tickr);

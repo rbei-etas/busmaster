@@ -109,7 +109,7 @@ public:
     /**
      * Call this function to get a system time and the time stamp associated with it
      */
-    virtual HRESULT DILC_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL) = 0;
+    virtual HRESULT DILC_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, long long int* QueryTickCount = NULL) = 0;
 
     /**
      * Call this function to list the hardware interfaces available and receive

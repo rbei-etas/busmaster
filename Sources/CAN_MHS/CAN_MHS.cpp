@@ -183,7 +183,7 @@ public:
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
-    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, long long int* QueryTickCount = NULL);
     HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
@@ -547,10 +547,10 @@ HRESULT CDIL_CAN_MHS::CAN_PerformClosureOperations(void)
 *                TimeStamp will be updated with the corresponding timestamp.
 * \param[out]    CurrSysTime, is SYSTEMTIME structure
 * \param[out]    TimeStamp, is UINT64
-* \param[out]    QueryTickCount, is LARGE_INTEGER
+* \param[out]    QueryTickCount, is long long int
 * \return        S_OK for success
 */
-HRESULT CDIL_CAN_MHS::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
+HRESULT CDIL_CAN_MHS::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, long long int* QueryTickCount)
 {
     (void)CurrSysTime;
     (void)TimeStamp;
@@ -817,7 +817,7 @@ static void CALLBACK_TYPE CanRxEvent(uint32_t index, struct TCanMsg* msg, int32_
             can_data.m_ucDataType = RX_FLAG;
         }
 
-        //can_data.m_lTickCount.QuadPart = (LONGLONG)(msg->TimeStamp);
+        //can_data.m_lTickCount = (LONGLONG)(msg->TimeStamp);
         memcpy(can_data.m_uDataInfo.m_sCANMsg.m_ucData, msg->MsgData, 8);
         //Write the msg into registered client's buffer
         vWriteIntoClientsBuffer(can_data);

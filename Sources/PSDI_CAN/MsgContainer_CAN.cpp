@@ -261,11 +261,11 @@ void CMsgContainerCAN::vProcessNewData(STCANDATA& sCanData)
     {
         // Add to append buffer
         // If its the very first entry, the time stamp must
-        if (m_sCANReadDataSpl.m_lTickCount.QuadPart != 0) // be 0 and will
+        if (m_sCANReadDataSpl.m_lTickCount != 0) // be 0 and will
         {
             // retain such value.
-            m_sCANReadDataSpl.m_nDeltime = _abs64(sCanData.m_lTickCount.QuadPart -
-                                                  m_sCANReadDataSpl.m_lTickCount.QuadPart);
+            m_sCANReadDataSpl.m_nDeltime = _abs64(sCanData.m_lTickCount -
+                                                  m_sCANReadDataSpl.m_lTickCount);
         }
 
         STCANDATA* pStcan = &m_sCANReadDataSpl;
@@ -287,11 +287,11 @@ void CMsgContainerCAN::vProcessNewData(STCANDATA& sCanData)
 
         // Add to append buffer
         // If its the very first entry, the time stamp must
-        if (m_sCANReadDataSpl.m_lTickCount.QuadPart != 0) // be 0 and will
+        if (m_sCANReadDataSpl.m_lTickCount != 0) // be 0 and will
         {
             // retain such value.
-            m_sCANReadDataSpl.m_nDeltime = _abs64(sCanData.m_lTickCount.QuadPart -
-                                                  m_sCANReadDataSpl.m_lTickCount.QuadPart);
+            m_sCANReadDataSpl.m_nDeltime = _abs64(sCanData.m_lTickCount -
+                                                  m_sCANReadDataSpl.m_lTickCount);
         }
 
         STCANDATA* pStcan = &m_sCANReadDataSpl;
@@ -539,7 +539,7 @@ void CMsgContainerCAN::vSaveOWandGetDetails( void* pMsg,
         int& nBufferIndex )
 {
     STCANDATA* pouCANData = (STCANDATA*)pMsg;
-    dwTimeStamp = pouCANData->m_lTickCount.QuadPart;
+    dwTimeStamp = pouCANData->m_lTickCount;
     nMsgCode   = pouCANData->m_uDataInfo.m_sCANMsg.m_unMsgID;
     dwMapIndex =  nCreateMapIndexKey((LPVOID)pouCANData);
     //Now write into the array
@@ -621,7 +621,7 @@ HRESULT CMsgContainerCAN::hUpdateFormattedMsgStruct(int nListIndex,
         if (IS_TM_REL_SET(bExprnFlag_Disp))
         {
             //If relative time then the time will be delta time, for formatting
-            sCANCurrData.m_lTickCount.QuadPart = sCANCurrDataSpl.m_nDeltime;
+            sCANCurrData.m_lTickCount = sCANCurrDataSpl.m_nDeltime;
         }
     }
     else
@@ -633,7 +633,7 @@ HRESULT CMsgContainerCAN::hUpdateFormattedMsgStruct(int nListIndex,
             if (IS_TM_REL_SET(bExprnFlag_Disp))
             {
                 //If relative time then the time will be delta time, for formatting
-                sCANCurrData.m_lTickCount.QuadPart -= nTimeOffset;
+                sCANCurrData.m_lTickCount -= nTimeOffset;
             }
         }
     }

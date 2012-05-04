@@ -71,9 +71,9 @@ static CLIENT_MAP  sg_ClientMap;
 static CMsgBufVSE sg_MessageBuf;
 static CPARAM_THREADPROC sg_sThreadCtrlObj;
 
-static LARGE_INTEGER sg_lnFrequency;
-static LARGE_INTEGER sg_lnCurrCounter;
-static LARGE_INTEGER sg_lnTimeStamp;
+static long long int sg_lnFrequency;
+static long long int sg_lnCurrCounter;
+static long long int sg_lnTimeStamp;
 static SYSTEMTIME sg_CurrSysTime;
 
 //const int MAX_STRING    = 256;
@@ -153,19 +153,19 @@ DWORD WINAPI MsgDelegatingThread(LPVOID pParam)
                     wSenderID = (WORD) TimeStamp;
                     // Calculate the current time stamp assigning the same to
                     // the message
-                    LARGE_INTEGER CurrCounter;
-                    QueryPerformanceCounter(&CurrCounter);
+                    long long int CurrCounter;
+                    QueryPerformanceCounter((LARGE_INTEGER *) &CurrCounter);
 
                     // Convert it to time stamp with the granularity of hundreds of us
-                    if (CurrCounter.QuadPart * 10000 > CurrCounter.QuadPart)
+                    if (CurrCounter * 10000 > CurrCounter)
                     {
                         TimeStamp =
-                            (CurrCounter.QuadPart * 10000) / sg_lnFrequency.QuadPart;
+                            (CurrCounter * 10000) / sg_lnFrequency;
                     }
                     else
                     {
                         TimeStamp =
-                            (CurrCounter.QuadPart / sg_lnFrequency.QuadPart) * 10000;
+                            (CurrCounter / sg_lnFrequency) * 10000;
                     }
 
                     // Now save the time stamp calculated
@@ -250,20 +250,20 @@ static void vCreateTimeModeMapping()
 {
     // Save the current value of the high-resolution performance counter,
     // associated to the saved system time to the closest proximity.
-    QueryPerformanceCounter(&sg_lnCurrCounter);
+    QueryPerformanceCounter((LARGE_INTEGER *) &sg_lnCurrCounter);
     // Get frequency of the performance counter
-    QueryPerformanceFrequency(&sg_lnFrequency);
+    QueryPerformanceFrequency((LARGE_INTEGER *) &sg_lnFrequency);
 
     // Convert it to time stamp with the granularity of hundreds of microsecond
-    if (sg_lnCurrCounter.QuadPart * 10000 > sg_lnCurrCounter.QuadPart)
+    if (sg_lnCurrCounter * 10000 > sg_lnCurrCounter)
     {
-        sg_lnTimeStamp.QuadPart = (sg_lnCurrCounter.QuadPart * 10000)
-                                  / sg_lnFrequency.QuadPart;
+        sg_lnTimeStamp = (sg_lnCurrCounter * 10000)
+                                  / sg_lnFrequency;
     }
     else
     {
-        sg_lnTimeStamp.QuadPart = (sg_lnCurrCounter.QuadPart
-                                   / sg_lnFrequency.QuadPart) * 10000;
+        sg_lnTimeStamp = (sg_lnCurrCounter
+                                   / sg_lnFrequency) * 10000;
     }
 }
 
@@ -551,11 +551,11 @@ STDMETHODIMP CSimENG::DisconnectNode(USHORT ClientID)
  *
  * Call this function to get a system time and the time stamp associated to it.
  */
-STDMETHODIMP CSimENG::GetTimeModeMapping(SYSTEMTIME* CurrSysTime, ULONGLONG* TimeStamp, LARGE_INTEGER* lQueryTickCount)
+STDMETHODIMP CSimENG::GetTimeModeMapping(SYSTEMTIME* CurrSysTime, ULONGLONG* TimeStamp, long long int* lQueryTickCount)
 {
     // TODO: Add your implementation code here
     memcpy(CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
-    *TimeStamp = (ULONGLONG) (sg_lnTimeStamp.QuadPart);
+    *TimeStamp = (ULONGLONG) (sg_lnTimeStamp);
     *lQueryTickCount = sg_lnCurrCounter;
     return S_OK;
 }

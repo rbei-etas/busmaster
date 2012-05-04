@@ -71,7 +71,7 @@ public:
     STDMETHOD(UnregisterClient)(USHORT ClientID);
     STDMETHOD(ConnectNode)(USHORT ClientID);
     STDMETHOD(DisconnectNode)(USHORT ClientID);
-    STDMETHOD(GetTimeModeMapping)(SYSTEMTIME* CurrSysTime, ULONGLONG* TimeStamp, LARGE_INTEGER* lQueryTickCount);
+    STDMETHOD(GetTimeModeMapping)(SYSTEMTIME* CurrSysTime, ULONGLONG* TimeStamp, long long int* lQueryTickCount);
     STDMETHOD(GetCurrentStatus)(USHORT ClientID, VARIANT* pNodeStatus);
 };
 

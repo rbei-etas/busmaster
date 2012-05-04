@@ -32,7 +32,7 @@ class CTimeManager
     // Absolute Time Reference
     static int m_nAbsoluteTime;
     // System Reference Tick Count
-    static const LARGE_INTEGER m_sSysRefTickCount;
+    static const long long int m_sSysRefTickCount;
     // System Reference Time Value
     static const int m_nSysRefTime;
     // Clock tick Frequency

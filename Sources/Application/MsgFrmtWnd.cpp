@@ -2120,7 +2120,7 @@ void CMsgFrmtWnd::vOnRxMsg(void* pMsg)
             m_sErrorInfo = sCANMsg.m_uDataInfo.m_sErrInfo;
             // Update current absolute time stamp
             int nTimeStamp  = CTimeManager::nCalculateElapsedTimeFromTick(
-                                  sCANMsg.m_lTickCount.QuadPart);
+                                  sCANMsg.m_lTickCount);
             // Take appropriate actions
             USHORT usErrCode = usProcessCurrErrorEntry();
 

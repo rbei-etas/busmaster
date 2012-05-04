@@ -158,7 +158,7 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
 
     _itoa_s(pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen, CurrDataCAN->m_acDataLen, 10);
     strcpy_s(CurrDataCAN->m_acMsgDesc,  _T("Description"));
-    CurrDataCAN->m_u64TimeStamp = pMsgCAN->m_lTickCount.QuadPart;
+    CurrDataCAN->m_u64TimeStamp = pMsgCAN->m_lTickCount;
     CurrDataCAN->m_dwMsgID = pMsgCAN->m_uDataInfo.m_sCANMsg.m_unMsgID;
     CurrDataCAN->m_byDataLength = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen;
     memcpy(CurrDataCAN->m_abData, pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucData,

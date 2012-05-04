@@ -116,7 +116,7 @@ public:
     /**
      * Call this function to get a system time and the time stamp associated with it
      */
-    HRESULT DILC_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT DILC_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, long long int* QueryTickCount = NULL);
 
     /**
      * Call this function to list the hardware interfaces available and receive
@@ -199,7 +199,7 @@ public:
 private:
     HRESULT (*m_pfPerformInitOperations)(void);
     HRESULT (*m_pfPerformClosureOperations)(void);
-    HRESULT (*m_pfGetTimeModeMapping)(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount);
+    HRESULT (*m_pfGetTimeModeMapping)(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, long long int* QueryTickCount);
     HRESULT (*m_pfListHwInterfaces)(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount);
     HRESULT (*m_pfSelectHwInterface)(const INTERFACE_HW_LIST& asSelHwInterface, INT nCount);
     HRESULT (*m_pfDeselectHwInterfaces)(void);

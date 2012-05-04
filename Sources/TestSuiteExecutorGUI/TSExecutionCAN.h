@@ -63,7 +63,7 @@ public:
     MsgVerifiedList m_MsgVerifiedList;
     CRITICAL_SECTION m_omCritSecTS;
     BOOL m_bTimeOver;
-    LARGE_INTEGER m_QueryFrequency;
+    long long int m_QueryFrequency;
     UINT64 m_LastCanMsg;
 
     //Member Functions

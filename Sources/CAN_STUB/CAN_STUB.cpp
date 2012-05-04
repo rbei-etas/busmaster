@@ -80,7 +80,7 @@ static HRESULT          sg_hResult          = S_FALSE;
 static HANDLE           sg_hNotifyFinish    = NULL;
 static STCAN_MSG*       sg_pouCanTxMsg      = NULL;
 static SYSTEMTIME       sg_CurrSysTime      = {'\0'};
-static LARGE_INTEGER    sg_QueryTickCount;
+static long long int    sg_QueryTickCount;
 static UINT64           sg_TimeStampRef     = 0x0;
 static HWND             sg_hOwnerWnd        = NULL;
 
@@ -197,7 +197,7 @@ public:
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
-    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, long long int* QueryTickCount = NULL);
     HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
@@ -366,7 +366,7 @@ static void ProcessCanMsg(HANDLE hClientHandle, UINT unIndex)
 
         if (dwBytes == SIZE_PIPE_CANMSG)
         {
-            sCanData.m_lTickCount.QuadPart = sPipeCanMsg.m_unTimeStamp;
+            sCanData.m_lTickCount = sPipeCanMsg.m_unTimeStamp;
             sCanData.m_uDataInfo.m_sCANMsg = sPipeCanMsg.m_sCanMsg;
 
             if (sPipeCanMsg.m_byTxRxFlag == FLAG_TX)
@@ -910,7 +910,7 @@ HRESULT CDIL_CAN_STUB::CAN_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& unCntr
     return hResult;
 }
 
-HRESULT CDIL_CAN_STUB::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
+HRESULT CDIL_CAN_STUB::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, long long int* QueryTickCount)
 {
     memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
     TimeStamp = sg_TimeStampRef;

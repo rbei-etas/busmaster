@@ -34,7 +34,7 @@ class CBaseDIL_CAN_Controller
 public:
     virtual HRESULT CAN_PerformInitOperations(void) = 0;
     virtual HRESULT CAN_PerformClosureOperations(void) = 0;
-    virtual HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL) = 0;
+    virtual HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, long long int* QueryTickCount = NULL) = 0;
     virtual HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount) = 0;
     virtual HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount) = 0;
     virtual HRESULT CAN_DeselectHwInterface(void) = 0;

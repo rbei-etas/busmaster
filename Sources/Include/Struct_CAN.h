@@ -320,7 +320,7 @@ private:
 
 public:
     unsigned char    m_ucDataType;  //Type of the message
-    LARGE_INTEGER    m_lTickCount;  //Time stamp, Contains the val returned from
+    long long int    m_lTickCount;  //Time stamp, Contains the val returned from
     //QueryPerf..Counter()
     STDATAINFO       m_uDataInfo;
 

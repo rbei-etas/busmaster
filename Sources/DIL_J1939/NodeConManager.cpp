@@ -430,11 +430,11 @@ void CNodeConManager::vReadCANdataBuffer()
                     {
                         if (m_pConDet->m_eTxConMode == CM_BROADCAST)
                         {
-                            m_pConDet->m_BCTimeStamp = CurrMsgCAN.m_lTickCount.QuadPart;
+                            m_pConDet->m_BCTimeStamp = CurrMsgCAN.m_lTickCount;
                         }
                         else if (m_pConDet->m_eTxConMode == CM_STANDARD)
                         {
-                            m_pConDet->m_unTimeStamp = CurrMsgCAN.m_lTickCount.QuadPart;
+                            m_pConDet->m_unTimeStamp = CurrMsgCAN.m_lTickCount;
                         }
                     }
                 }
@@ -1076,7 +1076,7 @@ BOOL CNodeConManager::bProcessConLevelMsg(const sTCANDATA& CurrMsgCAN)
 {
     BOOL bIsProcessed = TRUE;
     STCAN_MSG sCanMsg = CurrMsgCAN.m_uDataInfo.m_sCANMsg;
-    //UINT64 unTimeStamp = CurrMsgCAN.m_lTickCount.QuadPart;
+    //UINT64 unTimeStamp = CurrMsgCAN.m_lTickCount;
     UNION_29_BIT_ID uExtId = {0};
     uExtId.m_unExtID = sCanMsg.m_unMsgID;
 
