@@ -806,7 +806,7 @@ void CMsgSgDetView::OnKillfocusEditMsgcode()
                             nCount < m_omStrMessageCode.GetLength();
                             nCount++ )
                     {
-                        char tChar = m_omStrMessageCode.GetAt( nCount );
+                        TCHAR tChar = m_omStrMessageCode.GetAt( nCount );
 
                         if ( !((tChar >= 'A') && ( tChar <= 'F' ) ||
                                 (tChar >= '0' && tChar <= '9') ) )
@@ -1337,7 +1337,7 @@ void CMsgSgDetView::vAddItemToSignalList(int nRow,  sMESSAGE* pMsg,
         m_omListCtrlSignal.InsertItem( nRow,pSg->m_omStrSignalName);
         // Signal byte index
         CString omStrTemp = STR_EMPTY;
-        omStrTemp.Format( "%d", pSg->m_unStartByte );
+        omStrTemp.Format( "%d", pSg->m_unStartByte - 1 );
         //
         m_omListCtrlSignal.SetItemText( nRow,
                                         1,
