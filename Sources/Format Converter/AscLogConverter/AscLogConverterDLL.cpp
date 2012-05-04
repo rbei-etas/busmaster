@@ -14,14 +14,15 @@
  */
 
 /**
- * \file      LogAscConverter.cpp
- * \brief     Defines the initialization routines for the DLL.
+ * \file      AscLogConverterDLL.cpp
+ * \brief     Implementation of the AscLogConverter class and DLLMain Function.
  * \authors   Venkatanarayana Makam, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Defines the initialization routines for the DLL.
  */
 
+/* MFC includes */
 #define VC_EXTRALEAN        /* Exclude rarely-used stuff from Windows headers */
 
 #include <afxwin.h>         /* MFC core and standard components */
@@ -33,10 +34,10 @@
 #include <afxdllx.h>
 
 /* Project includes */
-#include "LogAscConverter.h"
+#include "AscLogConverter.h"
 
 #ifdef _MANAGED
-#error Please read instructions in LogAscConverter.cpp to compile with /clr
+#error Please read instructions in AscLogConverter.cpp to compile with /clr
 // If you want to add /clr to your project you must do the following:
 //  1. Remove the above include for afxdllx.h
 //  2. Add a .cpp file to your project that does not have /clr thrown and has
@@ -45,7 +46,7 @@
 //          #include <afxdllx.h>
 #endif
 
-static AFX_EXTENSION_MODULE LogAscConverterDLL = { NULL, NULL };
+static AFX_EXTENSION_MODULE AscLogConverterDLL = { NULL, NULL };
 
 #ifdef _MANAGED
 #pragma managed(push, off)
@@ -59,10 +60,10 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 
     if (dwReason == DLL_PROCESS_ATTACH)
     {
-        TRACE0("LogAscConverter.DLL Initializing!\n");
+        TRACE0("AscLogConverter.DLL Initializing!\n");
 
         // Extension DLL one-time initialization
-        if (!AfxInitExtensionModule(LogAscConverterDLL, hInstance))
+        if (!AfxInitExtensionModule(AscLogConverterDLL, hInstance))
         {
             return 0;
         }
@@ -78,13 +79,13 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         //  the CDynLinkLibrary object will not be attached to the
         //  Regular DLL's resource chain, and serious problems will
         //  result.
-        new CDynLinkLibrary(LogAscConverterDLL);
+        new CDynLinkLibrary(AscLogConverterDLL);
     }
     else if (dwReason == DLL_PROCESS_DETACH)
     {
-        TRACE0("LogAscConverter.DLL Terminating!\n");
+        TRACE0("AscLogConverter.DLL Terminating!\n");
         // Terminate the library before destructors are called
-        AfxTermExtensionModule(LogAscConverterDLL);
+        AfxTermExtensionModule(AscLogConverterDLL);
     }
 
     return 1;   // ok
@@ -94,8 +95,9 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 #pragma managed(pop)
 #endif
 
+extern "C" int nConvertFile(FILE* fpInputFile, FILE* fpOutputFile);
 extern "C" __declspec(dllexport) HRESULT GetBaseConverter(CBaseConverter*& pouConverter)
 {
-    pouConverter = new CLogAscConverter();
+    pouConverter = new CAscLogConverter();
     return S_OK;
 }
