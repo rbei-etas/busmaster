@@ -24,7 +24,7 @@
 
 #pragma once
 
-typedef std::map <string, CProjConfig> PROJECTMAP;
+typedef map <string, CProjConfig> PROJECTMAP;
 
 class CProjConfigManager
 {

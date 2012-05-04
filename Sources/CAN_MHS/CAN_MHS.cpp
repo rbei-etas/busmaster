@@ -166,7 +166,7 @@ typedef struct tagAckMap
     }
 } SACK_MAP;
 
-typedef std::list<SACK_MAP> CACK_MAP_LIST;
+typedef list<SACK_MAP> CACK_MAP_LIST;
 static CACK_MAP_LIST sg_asAckMapBuf;
 
 static BYTE sg_bCurrState = STATE_DRIVER_SELECTED;
@@ -1265,7 +1265,7 @@ static BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
 {
     BOOL bResult = FALSE;
     CACK_MAP_LIST::iterator  iResult =
-        std::find( sg_asAckMapBuf.begin(), sg_asAckMapBuf.end(), RefObj );
+        find( sg_asAckMapBuf.begin(), sg_asAckMapBuf.end(), RefObj );
 
     if (iResult != sg_asAckMapBuf.end())
     {

@@ -65,7 +65,7 @@ typedef struct
 
 } SPARAM_CLIENT;
 
-typedef std::map<USHORT, SPARAM_CLIENT> CLIENT_MAP;
+typedef map<USHORT, SPARAM_CLIENT> CLIENT_MAP;
 
 static CLIENT_MAP  sg_ClientMap;
 static CMsgBufVSE sg_MessageBuf;
