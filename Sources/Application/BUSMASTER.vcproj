@@ -1389,6 +1389,10 @@
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
+				RelativePath=".\Application.h"
+				>
+			</File>
+			<File
 				RelativePath=".\AppServices_Impl.h"
 				>
 			</File>
