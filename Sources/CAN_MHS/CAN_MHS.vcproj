@@ -208,10 +208,6 @@
 				RelativePath=".\CAN_MHS.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\CAN_MHS.rc"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -232,6 +228,14 @@
 			</File>
 			<File
 				RelativePath=".\mhstcan.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			>
+			<File
+				RelativePath=".\CAN_MHS.rc"
 				>
 			</File>
 		</Filter>

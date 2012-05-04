@@ -215,10 +215,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CAN_Kvaser_CAN.rc"
-				>
-			</File>
-			<File
 				RelativePath=".\CAN_Kvaser_CAN_stdafx.cpp"
 				>
 			</File>
@@ -274,6 +270,14 @@
 			</File>
 			<File
 				RelativePath=".\HardwareListing.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			>
+			<File
+				RelativePath=".\CAN_Kvaser_CAN.rc"
 				>
 			</File>
 		</Filter>
