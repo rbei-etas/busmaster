@@ -181,7 +181,7 @@ void CFileView::OnDraw(CDC* pDC)
                         // tranparent
                         pomDC -> SetBkMode(TRANSPARENT);
                         // Display line number
-                        sprintf(acSourceLineNo,_T("%lu:"),lInt+NEXT_POSITION);
+                        sprintf(acSourceLineNo, _T("%lu:"), lInt+NEXT_POSITION);
                         CString omStr = (CString)
                                         pomDoc -> pcGetLine(Position);
                         int nIndex = omStr.Find( _T("/*") );
