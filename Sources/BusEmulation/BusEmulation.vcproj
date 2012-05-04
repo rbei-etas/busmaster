@@ -285,6 +285,10 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\dlldata.c"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
