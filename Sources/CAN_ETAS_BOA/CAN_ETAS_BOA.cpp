@@ -409,7 +409,6 @@ BOOL bGetBOAInstallationPath(string& pcPath)
     BOOL bResult = FALSE;
     LONG lError = 0;
     HKEY sKey;
-
     // Get the installation path for BOA 1.4
     lError = RegOpenKeyEx(HKEY_LOCAL_MACHINE, BOA_REGISTRY_LOCATION, 0, KEY_READ, &sKey);
 
@@ -1119,7 +1118,7 @@ void vCreateTimeModeMapping(HANDLE hEvent)
     WaitForSingleObject(hEvent, INFINITE);
     GetLocalTime(&sg_CurrSysTime);
     //Query Tick Count
-    QueryPerformanceCounter((LARGE_INTEGER *) &sg_QueryTickCount);
+    QueryPerformanceCounter((LARGE_INTEGER*) &sg_QueryTickCount);
 }
 
 /**
@@ -1196,7 +1195,7 @@ void vProcessRxMsg(void* userData, struct OCI_CANMessage* msg)
         vCreateTimeModeMapping(sg_hEvent);
         sg_byCurrState = CALC_TIMESTAMP_READY;
         long long int g_QueryTickCount;
-        QueryPerformanceCounter((LARGE_INTEGER *) &g_QueryTickCount);
+        QueryPerformanceCounter((LARGE_INTEGER*) &g_QueryTickCount);
         long long int unConnectionTime;
         unConnectionTime = ((g_QueryTickCount * 10000) / sg_lnFrequency) - sg_TimeStamp;
 
@@ -1662,16 +1661,13 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_LoadDriverLibrary(void)
 {
     HRESULT hResult = S_FALSE;
     string acPath;
-
     /* Get BOA installation path from the registery */
     bGetBOAInstallationPath(acPath);
-
     /* Load cslproxy.dll library */
     string acLIB_CSL;
     acLIB_CSL.append(acPath);
     acLIB_CSL.append("\\");
     acLIB_CSL.append(LIB_CSL_NAME);
-
     /* LoadLibraryEx instead of LoadLibrary seems to be necessary under Windows 7 when the library is not in DLL search path (system32) */
     sg_hLibCSI = LoadLibraryEx(acLIB_CSL.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
 
@@ -1915,7 +1911,6 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
         if (nCount > 0)//Success only if there exists alteast one hw
         {
             INTERFACE_HW psHWInterface[defNO_OF_CHANNELS];
-
             //set the current number of channels
             sg_nNoOfChannels = min(nCount, defNO_OF_CHANNELS);
 
@@ -2216,7 +2211,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SetConfigData(PCHAR pInitData, INT /*Length*/)
                   &(sg_asChannel[i].m_OCI_CntrlProp));
         /* Fill the hardware description details */
         ((PSCONTROLLER_DETAILS)pInitData)[i].m_omHardwareDesc =
-                 sg_asChannel[i].m_acURI;
+            sg_asChannel[i].m_acURI;
 
         if (ErrCode == OCI_SUCCESS)
         {
@@ -2285,9 +2280,9 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_StartHardware(void)
     {
         sg_bCurrState = STATE_CONNECTED;
         InitializeCriticalSection(&sg_CritSectForAckBuf);
-        QueryPerformanceCounter((LARGE_INTEGER *) &sg_QueryTickCount);
+        QueryPerformanceCounter((LARGE_INTEGER*) &sg_QueryTickCount);
         // Get frequency of the performance counter
-        QueryPerformanceFrequency((LARGE_INTEGER *) &sg_lnFrequency);
+        QueryPerformanceFrequency((LARGE_INTEGER*) &sg_lnFrequency);
 
         // Convert it to time stamp with the granularity of hundreds of microsecond
         if ((sg_QueryTickCount * 10000) > sg_lnFrequency)

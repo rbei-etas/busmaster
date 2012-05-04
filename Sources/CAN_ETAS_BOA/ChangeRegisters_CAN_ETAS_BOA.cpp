@@ -807,29 +807,29 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::bSetFilterFromCom(BOOL  bExtended, DWORD  dB
         // Create Code
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId)));
         m_pControllerDetails[ unIndex ].m_omStrAccCodeByte4[bExtended] =
-                 omStrTempByte.GetBuffer(MAX_PATH);
+            omStrTempByte.GetBuffer(MAX_PATH);
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId >> nShift)));
         m_pControllerDetails[ unIndex ].m_omStrAccCodeByte3[bExtended] =
-                 omStrTempByte.GetBuffer(MAX_PATH);
+            omStrTempByte.GetBuffer(MAX_PATH);
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId >> nShift * 2)));
         m_pControllerDetails[ unIndex ].m_omStrAccCodeByte2[bExtended] =
-                 omStrTempByte.GetBuffer(MAX_PATH);
+            omStrTempByte.GetBuffer(MAX_PATH);
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId >> nShift * 3)));
         m_pControllerDetails[ unIndex ].m_omStrAccCodeByte1[bExtended] =
-                 omStrTempByte.GetBuffer(MAX_PATH);
+            omStrTempByte.GetBuffer(MAX_PATH);
         // Create Mask
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId)));
         m_pControllerDetails[ unIndex ].m_omStrAccMaskByte4[bExtended] =
-                 omStrTempByte.GetBuffer(MAX_PATH);
+            omStrTempByte.GetBuffer(MAX_PATH);
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId >> nShift)));
         m_pControllerDetails[ unIndex ].m_omStrAccMaskByte3[bExtended] =
-                 omStrTempByte.GetBuffer(MAX_PATH);
+            omStrTempByte.GetBuffer(MAX_PATH);
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId >> nShift * 2)));
         m_pControllerDetails[ unIndex ].m_omStrAccMaskByte2[bExtended] =
-                 omStrTempByte.GetBuffer(MAX_PATH);
+            omStrTempByte.GetBuffer(MAX_PATH);
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId >> nShift * 3)));
         m_pControllerDetails[ unIndex ].m_omStrAccMaskByte1[bExtended] =
-                 omStrTempByte.GetBuffer(MAX_PATH);
+            omStrTempByte.GetBuffer(MAX_PATH);
         m_pControllerDetails[ unIndex ].m_bAccFilterMode = bExtended;
     }
 

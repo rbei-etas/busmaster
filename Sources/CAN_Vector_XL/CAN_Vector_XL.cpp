@@ -897,7 +897,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
     for (UINT nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
     {
         ((PSCONTROLLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc =
-                 sg_ControllerDetails[nCount].m_omHardwareDesc;
+            sg_ControllerDetails[nCount].m_omHardwareDesc;
     }
 
     memcpy((void*)sg_ControllerDetails, (void*)ConfigFile, Length);
@@ -933,7 +933,7 @@ static void vCreateTimeModeMapping(HANDLE hDataEvent)
     WaitForSingleObject(hDataEvent, INFINITE);
     GetLocalTime(&sg_CurrSysTime);
     /*Query Tick Count*/
-    QueryPerformanceCounter((LARGE_INTEGER *) &sg_QueryTickCount);
+    QueryPerformanceCounter((LARGE_INTEGER*) &sg_QueryTickCount);
 }
 
 /**
@@ -1005,7 +1005,7 @@ static BYTE bClassifyMsgType(XLevent& xlEvent, STCANDATA& sCanData)
     if (CREATE_MAP_TIMESTAMP == sg_byCurrState)
     {
         long long int g_QueryTickCount;
-        QueryPerformanceCounter((LARGE_INTEGER *) &g_QueryTickCount);
+        QueryPerformanceCounter((LARGE_INTEGER*) &g_QueryTickCount);
         long long int unConnectionTime;
         unConnectionTime = ((g_QueryTickCount * 10000) / sg_lnFrequency) - sg_TimeStamp;
 
@@ -1331,9 +1331,9 @@ static int nConnect(BOOL bConnect)
         if (XL_SUCCESS == xlStatus)
         {
             //Calculate connected Timestamp
-            QueryPerformanceCounter((LARGE_INTEGER *) &sg_QueryTickCount);
+            QueryPerformanceCounter((LARGE_INTEGER*) &sg_QueryTickCount);
             // Get frequency of the performance counter
-            QueryPerformanceFrequency((LARGE_INTEGER *) &sg_lnFrequency);
+            QueryPerformanceFrequency((LARGE_INTEGER*) &sg_lnFrequency);
 
             // Convert it to time stamp with the granularity of hundreds of microsecond
             //if (sg_QueryTickCount * 10000 > sg_QueryTickCount)

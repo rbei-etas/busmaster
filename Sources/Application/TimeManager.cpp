@@ -48,11 +48,11 @@ extern CBaseDIL_CAN* g_pouDIL_CAN_Interface;
 int CTimeManager::m_nAbsoluteTime = 0;
 // Init System time and reference tick
 static long long int s_Temp;
-BOOL bDummy = QueryPerformanceCounter((LARGE_INTEGER *) &s_Temp);
+BOOL bDummy = QueryPerformanceCounter((LARGE_INTEGER*) &s_Temp);
 const long long int CTimeManager::m_sSysRefTickCount = s_Temp;
 // Init the frequency
 const int CTimeManager::m_nSysRefTime = CTimeManager::nCalculateCurrTimeStamp(FALSE);
-BOOL bDummy0001 = QueryPerformanceFrequency((LARGE_INTEGER *) &s_Temp);
+BOOL bDummy0001 = QueryPerformanceFrequency((LARGE_INTEGER*) &s_Temp);
 const __int64 CTimeManager::m_n64Frequency = s_Temp;
 
 // **** Start of USB related Code **** //

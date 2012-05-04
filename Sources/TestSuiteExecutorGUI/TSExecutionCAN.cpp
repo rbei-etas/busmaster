@@ -249,7 +249,7 @@ CTSExecutionCAN::CTSExecutionCAN(void)
     m_ouVerifyEvent.ResetEvent();
     m_nVerifyCount = 0;
     m_ouVerifyResult = NULL;
-    QueryPerformanceFrequency((LARGE_INTEGER *) &m_QueryFrequency);
+    QueryPerformanceFrequency((LARGE_INTEGER*) &m_QueryFrequency);
 }
 
 /******************************************************************************
@@ -361,7 +361,7 @@ HRESULT CTSExecutionCAN::TSX_VerifyResponse(CBaseEntityTA* pEntity, CResultVerif
     m_bTimeOver = FALSE;
     m_LastCanMsg = (UINT)-1;
     long long int Tick1;
-    QueryPerformanceCounter((LARGE_INTEGER *) &Tick1);
+    QueryPerformanceCounter((LARGE_INTEGER*) &Tick1);
     //Wait For Specified duration
     HRESULT hResult = WaitForSingleObject(m_ouVerifyEvent, m_pCurrentVerify->m_ushDuration);
     m_ouReadThread.m_unActionCode = INVOKE_FUNCTION;

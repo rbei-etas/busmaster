@@ -154,7 +154,7 @@ DWORD WINAPI MsgDelegatingThread(LPVOID pParam)
                     // Calculate the current time stamp assigning the same to
                     // the message
                     long long int CurrCounter;
-                    QueryPerformanceCounter((LARGE_INTEGER *) &CurrCounter);
+                    QueryPerformanceCounter((LARGE_INTEGER*) &CurrCounter);
 
                     // Convert it to time stamp with the granularity of hundreds of us
                     if (CurrCounter * 10000 > CurrCounter)
@@ -250,20 +250,20 @@ static void vCreateTimeModeMapping()
 {
     // Save the current value of the high-resolution performance counter,
     // associated to the saved system time to the closest proximity.
-    QueryPerformanceCounter((LARGE_INTEGER *) &sg_lnCurrCounter);
+    QueryPerformanceCounter((LARGE_INTEGER*) &sg_lnCurrCounter);
     // Get frequency of the performance counter
-    QueryPerformanceFrequency((LARGE_INTEGER *) &sg_lnFrequency);
+    QueryPerformanceFrequency((LARGE_INTEGER*) &sg_lnFrequency);
 
     // Convert it to time stamp with the granularity of hundreds of microsecond
     if (sg_lnCurrCounter * 10000 > sg_lnCurrCounter)
     {
         sg_lnTimeStamp = (sg_lnCurrCounter * 10000)
-                                  / sg_lnFrequency;
+                         / sg_lnFrequency;
     }
     else
     {
         sg_lnTimeStamp = (sg_lnCurrCounter
-                                   / sg_lnFrequency) * 10000;
+                          / sg_lnFrequency) * 10000;
     }
 }
 

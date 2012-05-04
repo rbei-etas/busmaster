@@ -1092,7 +1092,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
     for (UINT nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
     {
         ((PSCONTROLLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc =
-                 sg_aodChannels[nCount].m_strName;
+            sg_aodChannels[nCount].m_strName;
     }
 
     memcpy((void*)sg_ControllerDetails, (void*)ConfigFile, Length);
@@ -1263,7 +1263,7 @@ static void vCreateTimeModeMapping(HANDLE hDataEvent)
     WaitForSingleObject(hDataEvent, INFINITE);
     GetLocalTime(&sg_CurrSysTime);
     /*Query Tick Count*/
-    QueryPerformanceCounter((LARGE_INTEGER *) &sg_QueryTickCount);
+    QueryPerformanceCounter((LARGE_INTEGER*) &sg_QueryTickCount);
 }
 
 /**
@@ -1284,7 +1284,7 @@ static void ProcessCANMsg(int nChannelIndex, UINT& nFlags, DWORD& dwTime)
         QuadPartRef = (LONGLONG)dwTime *10;
         sg_byCurrState = CALC_TIMESTAMP_READY;
         long long int g_QueryTickCount;
-        QueryPerformanceCounter((LARGE_INTEGER *) &g_QueryTickCount);
+        QueryPerformanceCounter((LARGE_INTEGER*) &g_QueryTickCount);
         UINT64 unConnectionTime;
         unConnectionTime = ((g_QueryTickCount * 10000) / sg_lnFrequency) - sg_TimeStamp;
 
@@ -1979,9 +1979,9 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
     if ( sg_bIsConnected )
     {
         InitializeCriticalSection(&sg_CritSectForAckBuf);
-        QueryPerformanceCounter((LARGE_INTEGER *) &sg_QueryTickCount);
+        QueryPerformanceCounter((LARGE_INTEGER*) &sg_QueryTickCount);
         // Get frequency of the performance counter
-        QueryPerformanceFrequency((LARGE_INTEGER *) &sg_lnFrequency);
+        QueryPerformanceFrequency((LARGE_INTEGER*) &sg_lnFrequency);
 
         // Convert it to time stamp with the granularity of hundreds of microsecond
         if ((sg_QueryTickCount * 10000) > sg_lnFrequency)

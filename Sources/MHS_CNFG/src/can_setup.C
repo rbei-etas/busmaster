@@ -97,6 +97,5 @@ static BOOL CALLBACK CanSetupDlgProc(HWND hdlg, UINT uMessage, WPARAM wparam, LP
 int ShowCanSetupDlg(HINSTANCE hInstance, HWND hwnd, struct TMhsCanCfg* cfg)
 {
     CanCfg = cfg;
-
     return ((DWORD)DialogBox(hInstance, MAKEINTRESOURCE(IDD_CAN_SETUP), hwnd, CanSetupDlgProc)) ? 1 : 0;
 }

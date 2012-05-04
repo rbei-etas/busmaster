@@ -822,7 +822,7 @@ HRESULT CDIL_CAN_STUB::CAN_SetConfigData(PCHAR ConfigFile, int /*Length*/)
     for (UINT nCount = 0; nCount < defNO_OF_CHANNELS; nCount++)
     {
         ((PSCONTROLLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc =
-                 "Simulation";
+            "Simulation";
     }
 
     // First disconnect the node

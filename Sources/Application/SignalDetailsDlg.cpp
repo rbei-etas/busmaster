@@ -577,7 +577,6 @@ void CSignalDetailsDlg::OnKillfocusEditByindex()
         if ( pCancelButton1 != pCancelButton2 )
         {
             BYTE byPrevByteIndex = m_byByteIndex+1;
-
             UpdateData(TRUE);
 
             if (byPrevByteIndex != m_byByteIndex+1)
@@ -1114,10 +1113,11 @@ void CSignalDetailsDlg::OnOK()
                     bReturnFlag = FALSE;
                 }
             }
-            if(!(CMsgSignal::bValidateSignal(m_nMsgLength, m_byByteIndex+1, 
-                                                m_byStartBit, m_unSgLen, 
-                                                (EFORMAT_DATA) m_nDataFormat)) && 
-                                                (bReturnFlag == TRUE))
+
+            if(!(CMsgSignal::bValidateSignal(m_nMsgLength, m_byByteIndex+1,
+                                             m_byStartBit, m_unSgLen,
+                                             (EFORMAT_DATA) m_nDataFormat)) &&
+                    (bReturnFlag == TRUE))
             {
                 AfxMessageBox( defSTR_SIGNAL_END_BIT_INVALID,
                                MB_OK | MB_ICONINFORMATION );
@@ -1127,8 +1127,8 @@ void CSignalDetailsDlg::OnOK()
 
             // check for duplicate start bit value
             if ( pTempMsgSg->bIsDuplicateSignalStartBitValue( m_omStrMsgName,
-                        m_byByteIndex+1, m_unSgLen, m_byStartBit, m_nDataFormat )
-                        && bReturnFlag == TRUE)
+                    m_byByteIndex+1, m_unSgLen, m_byStartBit, m_nDataFormat )
+                    && bReturnFlag == TRUE)
             {
                 AfxMessageBox( defSTR_SIGNAL_DUP_START_BIT,
                                MB_OK | MB_ICONINFORMATION );
