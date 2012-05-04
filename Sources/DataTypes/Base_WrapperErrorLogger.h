@@ -24,6 +24,11 @@
 
 #pragma once
 
+/* C++ includes */
+#include <string>
+
+using namespace std;
+
 #define LOG_MESSAGE(WrapperErr, Msg)  {WrapperErr->vLogAMessage(A2T(__FILE__), __LINE__, Msg);}
 
 class Base_WrapperErrorLogger
@@ -33,5 +38,5 @@ public:
     ~Base_WrapperErrorLogger(void) {};
 
     // Maximum characters in File and Msg are FILENAME_MAX and BUFSIZ respectively
-    virtual void vLogAMessage(char File[], int Line, char Msg[]) = 0;
+    virtual void vLogAMessage(char File[], int Line, string Msg) = 0;
 };
