@@ -126,14 +126,18 @@ CAPTION "About"
 FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,186,6,50,14
+    ICON            IDR_MAINFRAME,IDC_STATIC,7,11,20,20
     LTEXT           "",IDC_STATIC_VERSION,38,14,138,8
     LTEXT           "Copyright© 2003 Robert Bosch Engineering and Business Solutions Ltd",IDC_STATIC,38,27,138,18
-    ICON            IDR_MAINFRAME,IDC_STATIC,7,11,20,20
-    LTEXT           "_________________________________________________________________",IDC_STAT_LINE3,7,69,229,9,WS_DISABLED
-    CONTROL         184,IDC_STATIC,"Static",SS_BITMAP,38,84,167,36
+    LTEXT           "_________________________________________________________________",IDC_STAT_LINE4,7,43,229,9,WS_DISABLED
+#ifdef FOR_ETIN
     LTEXT           "Entitlement ID",IDC_STATIC,38,60,45,8
     EDITTEXT        IDC_EDIT1,85,57,119,14,ES_AUTOHSCROLL | ES_READONLY
-    LTEXT           "_________________________________________________________________",IDC_STAT_LINE4,7,43,229,9,WS_DISABLED
+    LTEXT           "_________________________________________________________________",IDC_STAT_LINE3,7,69,229,9,WS_DISABLED
+    CONTROL         184,IDC_STATIC,"Static",SS_BITMAP,38,84,167,36
+#else
+    LTEXT           "This program is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.",IDC_STATIC,38,60,167,50
+#endif
 END
 
 IDD_DLG_VALUE_DESCRIPTOR DIALOGEX 0, 0, 215, 103
