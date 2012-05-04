@@ -21,11 +21,20 @@
  *
  * This file contain definition of all function of
  */
+
 // For all standard header file include
 #include "CAN_ICS_neoVI_stdafx.h"
+
+/* C++ includes */
+#include <sstream>
+#include <string>
+
+/* Project includes */
 #include "ContrConfigPeakUsbDefs.h"
 #include "CAN_ICS_neoVI_Resource.h"
 #include "ChangeRegisters_CAN_ICS_neoVI.h"
+
+using namespace std;
 
 /**
  * \brief Constructor
@@ -211,9 +220,9 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::OnInitDialog()
     m_omCtrlClock.InsertString(0,defCLOCK);
     // Add an entry in each of the two combo boxes FindStringExact
     int nIndex = m_omCtrlPropDelay.FindStringExact(-1,
-                 m_pControllerDetails->m_omStrPropagationDelay);
-    m_omStrPropDelay = m_pControllerDetails->m_omStrPropagationDelay;
-    m_omStrSJW = m_pControllerDetails->m_omStrSjw;
+                 m_pControllerDetails->m_omStrPropagationDelay.c_str());
+    m_omStrPropDelay = m_pControllerDetails->m_omStrPropagationDelay.c_str();
+    m_omStrSJW = m_pControllerDetails->m_omStrSjw.c_str();
 
     //UpdateData();
     if (CB_ERR != nIndex)
@@ -225,7 +234,7 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::OnInitDialog()
         m_omCtrlPropDelay.SetCurSel (0);
     }
 
-    nIndex = m_omCtrlSJW.FindStringExact (-1, m_pControllerDetails->m_omStrSjw);
+    nIndex = m_omCtrlSJW.FindStringExact (-1, m_pControllerDetails->m_omStrSjw.c_str());
 
     if (CB_ERR != nIndex)
     {
@@ -867,18 +876,18 @@ void CChangeRegisters_CAN_ICS_neoVI::vFillControllerConfigDetails()
 
     if (pWnd != NULL)
     {
-        pWnd->SetWindowText(m_pControllerDetails[nIndex].m_omHardwareDesc);
+        pWnd->SetWindowText(m_pControllerDetails[nIndex].m_omHardwareDesc.c_str());
     }
 
-    m_omStrEditBaudRate     = m_pControllerDetails[ nIndex ].m_omStrBaudrate;
-    m_omStrEditCNF1         = m_pControllerDetails[ nIndex ].m_omStrCNF1;
-    m_omStrEditCNF2         = m_pControllerDetails[ nIndex ].m_omStrCNF2;
-    m_omStrEditCNF3         = m_pControllerDetails[ nIndex ].m_omStrCNF3;
-    //m_omStrComboClock       = m_pControllerDetails[ nIndex ].m_omStrClock;
-    m_omStrComboSampling    = m_pControllerDetails[ nIndex ].m_omStrSampling;
-    m_omStrEditWarningLimit = m_pControllerDetails[ nIndex ].m_omStrWarningLimit;
-    m_omStrPropDelay = m_pControllerDetails[ nIndex ].m_omStrPropagationDelay;
-    m_omStrSJW = m_pControllerDetails[ nIndex ].m_omStrSjw;
+    m_omStrEditBaudRate     = m_pControllerDetails[ nIndex ].m_omStrBaudrate.c_str();
+    m_omStrEditCNF1         = m_pControllerDetails[ nIndex ].m_omStrCNF1.c_str();
+    m_omStrEditCNF2         = m_pControllerDetails[ nIndex ].m_omStrCNF2.c_str();
+    m_omStrEditCNF3         = m_pControllerDetails[ nIndex ].m_omStrCNF3.c_str();
+    //m_omStrComboClock       = m_pControllerDetails[ nIndex ].m_omStrClock.c_str();
+    m_omStrComboSampling    = m_pControllerDetails[ nIndex ].m_omStrSampling.c_str();
+    m_omStrEditWarningLimit = m_pControllerDetails[ nIndex ].m_omStrWarningLimit.c_str();
+    m_omStrPropDelay = m_pControllerDetails[ nIndex ].m_omStrPropagationDelay.c_str();
+    m_omStrSJW = m_pControllerDetails[ nIndex ].m_omStrSjw.c_str();
     int nSample             = _tstoi(m_omStrComboSampling);
     //omStrInitComboBox(ITEM_SAMPLING,1,m_omCombSampling));
     //Assign edit box string value to CString member variable of Edit control
@@ -887,7 +896,7 @@ void CChangeRegisters_CAN_ICS_neoVI::vFillControllerConfigDetails()
     //m_unCombClock       = (UINT)_tstoi(m_omStrComboClock);
     // TO BE FIXED LATER
     m_dEditBaudRate =
-        dCalculateBaudRateFromBTRs( m_omStrEditCNF1, m_omStrEditCNF2, m_omStrEditCNF3);
+        dCalculateBaudRateFromBTRs(m_omStrEditCNF1, m_omStrEditCNF2, m_omStrEditCNF3);
     UpdateData(FALSE);
     unsigned int unIndex = 0;
     int nReturn = nListBoxValues(m_asColListCtrl, m_dEditBaudRate,
@@ -944,17 +953,19 @@ void CChangeRegisters_CAN_ICS_neoVI::vUpdateControllerDetails()
         m_usBTR0BTR1 = static_cast <USHORT>(((ucBtr0 << 8)| ucBtr1) & 0xffff);
         m_pControllerDetails[ m_nLastSelection ].m_nItemUnderFocus   =
             nItemUnderFocus;
-        strcpy_s(m_pControllerDetails[ m_nLastSelection ].m_omStrBaudrate, m_omStrEditBaudRate.GetBuffer(MAX_PATH));
+        m_pControllerDetails[ m_nLastSelection ].m_omStrBaudrate = m_omStrEditBaudRate.GetBuffer(MAX_PATH);
         //m_pControllerDetails[ m_nLastSelection ].m_omStrClock        =
         //                                                    m_omStrComboClock;
-        strcpy_s(m_pControllerDetails[m_nLastSelection].m_omStrCNF1, m_omStrEditCNF1.GetBuffer(MAX_PATH));
-        strcpy_s(m_pControllerDetails[m_nLastSelection].m_omStrCNF2, m_omStrEditCNF2.GetBuffer(MAX_PATH));
-        strcpy_s(m_pControllerDetails[m_nLastSelection].m_omStrCNF3, m_omStrEditCNF3.GetBuffer(MAX_PATH));
-        sprintf_s(m_pControllerDetails[m_nLastSelection].m_omStrClock, _T("%d"), m_unCombClock);
-        strcpy_s(m_pControllerDetails[ m_nLastSelection ].m_omStrSampling, m_omStrComboSampling.GetBuffer(MAX_PATH));
-        strcpy_s(m_pControllerDetails[ m_nLastSelection ].m_omStrWarningLimit, m_omStrEditWarningLimit.GetBuffer(MAX_PATH));
-        strcpy_s(m_pControllerDetails[ m_nLastSelection ].m_omStrPropagationDelay, m_omStrPropDelay.GetBuffer(MAX_PATH));
-        strcpy_s(m_pControllerDetails[ m_nLastSelection ].m_omStrSjw, m_omStrSJW.GetBuffer(MAX_PATH));
+        m_pControllerDetails[m_nLastSelection].m_omStrCNF1 = m_omStrEditCNF1.GetBuffer(MAX_PATH);
+        m_pControllerDetails[m_nLastSelection].m_omStrCNF2 = m_omStrEditCNF2.GetBuffer(MAX_PATH);
+        m_pControllerDetails[m_nLastSelection].m_omStrCNF3 = m_omStrEditCNF3.GetBuffer(MAX_PATH);
+        ostringstream oss;
+        oss << dec << m_unCombClock;
+        m_pControllerDetails[m_nLastSelection].m_omStrClock = oss.str();
+        m_pControllerDetails[m_nLastSelection].m_omStrSampling = m_omStrComboSampling.GetBuffer(MAX_PATH);
+        m_pControllerDetails[m_nLastSelection].m_omStrWarningLimit = m_omStrEditWarningLimit.GetBuffer(MAX_PATH);
+        m_pControllerDetails[m_nLastSelection].m_omStrPropagationDelay = m_omStrPropDelay.GetBuffer(MAX_PATH);
+        m_pControllerDetails[m_nLastSelection].m_omStrSjw = m_omStrSJW.GetBuffer(MAX_PATH);
     }
     else
     {
@@ -988,7 +999,7 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::bSetBaudRateFromCom(int nChannel, BYTE bBTR
     omStrBaudRate.Format("%f",dBaudRate);
     m_usBTR0BTR1 = static_cast <USHORT>(((bBTR0 << 8)| bBTR1) & 0xffff);
     //Save the changes for the channels
-    unClock       = (UINT)_tstoi(m_pControllerDetails[ nChannel-1 ].m_omStrClock);
+    unClock       = (UINT)_tstoi(m_pControllerDetails[ nChannel-1 ].m_omStrClock.c_str());
 
     if ((bBTR1 & 0x80) != 0)
     {
@@ -1011,11 +1022,13 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::bSetBaudRateFromCom(int nChannel, BYTE bBTR
     }
 
     m_pControllerDetails[ nChannel-1 ].m_nBTR0BTR1 = m_usBTR0BTR1;
-    strcpy_s(m_pControllerDetails[ nChannel-1 ].m_omStrBaudrate, omStrBaudRate.GetBuffer(MAX_PATH));
-    strcpy_s(m_pControllerDetails[nChannel - 1].m_omStrCNF1, m_omStrEditCNF1.GetBuffer(MAX_PATH));
-    strcpy_s(m_pControllerDetails[nChannel - 1].m_omStrCNF2, m_omStrEditCNF2.GetBuffer(MAX_PATH));
-    strcpy_s(m_pControllerDetails[nChannel - 1].m_omStrCNF3, m_omStrEditCNF3.GetBuffer(MAX_PATH));
-    sprintf_s(m_pControllerDetails[ nChannel-1  ].m_omStrSampling, _T("%d"), unSample);
+    m_pControllerDetails[ nChannel-1 ].m_omStrBaudrate = omStrBaudRate.GetBuffer(MAX_PATH);
+    m_pControllerDetails[nChannel - 1].m_omStrCNF1 = m_omStrEditCNF1.GetBuffer(MAX_PATH);
+    m_pControllerDetails[nChannel - 1].m_omStrCNF2 = m_omStrEditCNF2.GetBuffer(MAX_PATH);
+    m_pControllerDetails[nChannel - 1].m_omStrCNF3 = m_omStrEditCNF3.GetBuffer(MAX_PATH);
+    ostringstream oss;
+    oss << dec << unSample;
+    m_pControllerDetails[ nChannel-1  ].m_omStrSampling = oss.str();
     m_nLastSelection = nChannel-1;
     // Update Configuration file
     //kadoor theApp.bSetData( CONTROLLER_DETAILS, m_pControllerDetails);

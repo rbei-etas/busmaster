@@ -696,21 +696,21 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
             CChannel& odChannel = sg_odHardwareNetwork.m_aodChannels[ nIndex ];
             // Get Warning Limit
             odChannel.m_ucWarningLimit = static_cast <UCHAR>(
-                                             _tcstol( pControllerDetails[ nIndex ].m_omStrWarningLimit,
+                                             _tcstol( pControllerDetails[ nIndex ].m_omStrWarningLimit.c_str(),
                                                      &pcStopStr, defBASE_DEC ));
             odChannel.m_bCNF1 = static_cast <UCHAR>(
-                                    _tcstol( pControllerDetails[ nIndex ].m_omStrCNF1,
+                                    _tcstol( pControllerDetails[ nIndex ].m_omStrCNF1.c_str(),
                                              &pcStopStr, defBASE_HEX));
             odChannel.m_bCNF2 = static_cast <UCHAR>(
-                                    _tcstol( pControllerDetails[ nIndex ].m_omStrCNF2,
+                                    _tcstol( pControllerDetails[ nIndex ].m_omStrCNF2.c_str(),
                                              &pcStopStr, defBASE_HEX));
             odChannel.m_bCNF3 = static_cast <UCHAR>(
-                                    _tcstol( pControllerDetails[ nIndex ].m_omStrCNF3,
+                                    _tcstol( pControllerDetails[ nIndex ].m_omStrCNF3.c_str(),
                                              &pcStopStr, defBASE_HEX));
             // Get Baud Rate
             odChannel.m_usBaudRate = static_cast <USHORT>(
                                          pControllerDetails[ nIndex ].m_nBTR0BTR1 );
-            odChannel.m_unBaudrate = _tstoi( pControllerDetails[ nIndex ].m_omStrBaudrate );
+            odChannel.m_unBaudrate = _tstoi( pControllerDetails[ nIndex ].m_omStrBaudrate.c_str() );
             odChannel.m_ucControllerState = pControllerDetails[ nIndex ].m_ucControllerMode;
         }
 
@@ -1730,7 +1730,7 @@ static int nSetBaudRate()
             unIndex < sg_odHardwareNetwork.m_nNoOfChannels;
             unIndex++)
     {
-        FLOAT fBaudRate = (FLOAT)_tstof(sg_ControllerDetails[unIndex].m_omStrBaudrate);
+        FLOAT fBaudRate = (FLOAT)_tstof(sg_ControllerDetails[unIndex].m_omStrBaudrate.c_str());
         int nBitRate = (INT)(fBaudRate * 1000);
         // Set the baudrate
         nReturn = (*icsneoSetBitRate)(m_anhWriteObject[unIndex], nBitRate, m_bytNetworkIDs[unIndex]);
@@ -2282,7 +2282,8 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
             for (UINT i = 0; i < sg_ucNoOfHardware; i++)
             {
                 asSelHwInterface[i].m_dwIdInterface = (DWORD)sg_ndNeoToOpen[i].Handle;
-                ostringstream oss << dec << sg_ndNeoToOpen[i].SerialNumber;
+                ostringstream oss;
+                oss << dec << sg_ndNeoToOpen[i].SerialNumber;
                 asSelHwInterface[i].m_acDescription = oss.str();
                 asSelHwInterface[i].m_bytNetworkID = m_bytNetworkIDs[i];
                 hResult = S_OK;
@@ -2579,60 +2580,62 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
             }
         }
 
+        ostringstream oss;
         switch (sg_ndNeoToOpen[i].DeviceType)
         {
                 /* neoVI Blue */
             case NEODEVICE_BLUE:
-                sprintf_s(pControllerDetails[i].m_omHardwareDesc,
-                          _T("neoVI Blue, Serial Number %d, Network: %s"),
-                          serialNumber, &netid_str[0]);
+                oss << "neoVI Blue";
+                oss << ", Serial Number " << dec << serialNumber;
+                oss << ", Network: " << &netid_str[0];
                 break;
 
                 /* ValueCAN */
             case NEODEVICE_DW_VCAN:
-                sprintf_s(pControllerDetails[i].m_omHardwareDesc,
-                          _T("ValueCAN, Serial Number %d, Network: %s"),
-                          serialNumber, &netid_str[0]);
+                oss << "ValueCAN";
+                oss << ", Serial Number " << dec << serialNumber;
+                oss << ", Network: " << &netid_str[0];
                 break;
 
                 /* neoVI Fire/Red */
             case NEODEVICE_FIRE:
-                sprintf_s(pControllerDetails[i].m_omHardwareDesc,
-                          _T("neoVi Fire/Red, Serial Number %d, Network: %s"),
-                          serialNumber, &netid_str[0]);
+                oss << "neoVi Fire/Red";
+                oss << ", Serial Number " << dec << serialNumber;
+                oss << ", Network: " << &netid_str[0];
                 break;
 
                 /* ValueCAN3 and ETAS ES581 */
             case NEODEVICE_VCAN3:
                 if (serialNumber < 50000)
                 {
-                    sprintf_s(pControllerDetails[i].m_omHardwareDesc,
-                              _T("ValueCAN3, Serial Number %d, Network: %s"),
-                              serialNumber, &netid_str[0]);
+                    oss << "ValueCAN3";
+                    oss << ", Serial Number " << dec << serialNumber;
+                    oss << ", Network: " << &netid_str[0];
                 }
                 else
                 {
                     if (nHardwareLic == 8)   // Limited Version with only one channel
                     {
-                        sprintf_s(pControllerDetails[i].m_omHardwareDesc,
-                                  _T("ES581.2, Serial Number %d, Network: %s"),
-                                  serialNumber-50000, &netid_str[0]);
+                        oss << "ES581.2";
+                        oss << ", Serial Number " << dec << serialNumber - 50000;
+                        oss << ", Network: " << &netid_str[0];
                     }
                     else     // Two channels
                     {
-                        sprintf_s(pControllerDetails[i].m_omHardwareDesc,
-                                  _T("ES581.3, Serial Number %d, Network: %s"),
-                                  serialNumber-50000, &netid_str[0]);
+                        oss << "ES581.3";
+                        oss << ", Serial Number " << dec << serialNumber - 50000;
+                        oss << ", Network: " << &netid_str[0];
                     }
                 }
 
                 break;
 
             default:
-                sprintf_s(pControllerDetails[i].m_omHardwareDesc,
-                          _T("Unknown, Serial Number %d"), serialNumber);
+                oss << "Unknown";
+                oss << ", Serial Number " << dec << serialNumber;
                 break;
         };
+        pControllerDetails[i].m_omHardwareDesc = oss.str();
     }
 
     return S_OK;

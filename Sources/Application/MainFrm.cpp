@@ -1755,7 +1755,7 @@ void CMainFrame::OnConfigBaudrate()
     //update baudrate details in global statistics buffer
     for (int i = 0; i < defNO_OF_CHANNELS; i++)
     {
-        GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate));
+        GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));
     }
 }
 
@@ -6308,7 +6308,7 @@ void CMainFrame::OnFileConnect()
             for (UINT i = 0; i < defNO_OF_CHANNELS; i++)
             {
                 GetICANBusStat()->BSC_SetBaudRate(i,
-                                                  _tstof(m_asControllerDetails[i].m_omStrBaudrate));
+                                                  _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));
             }
 
             GetICANBusStat()->BSC_bStartUpdation(TRUE);
@@ -10416,14 +10416,14 @@ void CMainFrame::vUpdateHWStatusInfo(void)
     {
         if ( m_dwDriverId == m_ouList[i].m_dwDriverID )
         {
-            if (_tcscmp(m_asControllerDetails->m_omStrBaudrate, "") == 0)
+            if (m_asControllerDetails->m_omStrBaudrate == "")
             {
-                strcpy_s(m_asControllerDetails->m_omStrBaudrate, "500");
+                m_asControllerDetails->m_omStrBaudrate = "500";
             }
 
             omStrChannelDriver.Format(  _T("%s - %s - %s Kbps (Allowed channels:%d)"),
                                         omStrChannels, m_ouList[i].m_acName.c_str(),
-                                        m_asControllerDetails->m_omStrBaudrate, CHANNEL_ALLOWED);
+                                        m_asControllerDetails->m_omStrBaudrate.c_str(), CHANNEL_ALLOWED);
             break;
         }
     }
@@ -12508,7 +12508,7 @@ void CMainFrame::vInitializeBusStatCAN(void)
 
     for (int i = 0; i < defNO_OF_CHANNELS; i++)
     {
-        GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate));
+        GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));
     }
 }
 

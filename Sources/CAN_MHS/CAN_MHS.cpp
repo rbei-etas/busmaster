@@ -45,6 +45,7 @@
 #include <iostream>
 #include <iterator>
 #include <list>
+#include <sstream>
 #include <string>
 
 /* Project includes */
@@ -226,7 +227,7 @@ static BOOL bClientIdExist(const DWORD& dwClientId);
 static DWORD dwGetAvailableClientSlot(void);
 static void vMarkEntryIntoMap(const SACK_MAP& RefObj);
 static BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID);
-static int str_has_char(char* s);
+static int str_has_char(const char* s);
 
 
 /**
@@ -629,31 +630,35 @@ HRESULT CDIL_CAN_MHS::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
     result = WARN_INITDAT_NCONFIRM;
     cntrl = (SCONTROLLER_DETAILS*)InitData;
 
-    if (!str_has_char(cntrl[0].m_omStrBaudrate))
+    if (!str_has_char(cntrl[0].m_omStrBaudrate.c_str()))
     {
-        cfg.CanSpeed = _tcstol(cntrl[0].m_omStrBaudrate, &str, 0);
+        cfg.CanSpeed = _tcstol(cntrl[0].m_omStrBaudrate.c_str(), &str, 0);
         cfg.CanBtrValue = 0;
     }
     else
     {
         cfg.CanSpeed = 0;
-        cfg.CanBtrValue = _tcstol(cntrl[0].m_omStrBTR0, &str, 0);
+        cfg.CanBtrValue = _tcstol(cntrl[0].m_omStrBTR0.c_str(), &str, 0);
     }
 
-    strcpy_s(cfg.CanSnrStr, cntrl[0].m_omHardwareDesc);
+    strcpy_s(cfg.CanSnrStr, cntrl[0].m_omHardwareDesc.c_str());
 
     if (ShowCanSetup(sg_hOwnerWnd, &cfg))
     {
-        strcpy_s(cntrl[0].m_omHardwareDesc, cfg.CanSnrStr);
+        cntrl[0].m_omHardwareDesc = cfg.CanSnrStr;
 
         if (cfg.CanBtrValue)
         {
             cntrl[0].m_omStrBaudrate[0] = '\0';
-            sprintf_s(cntrl[0].m_omStrBTR0, _T("%d"), cfg.CanBtrValue);
+            ostringstream oss;
+            oss << dec << cfg.CanBtrValue;
+            cntrl[0].m_omStrBTR0 = oss.str();
         }
         else
         {
-            sprintf_s(cntrl[0].m_omStrBaudrate, _T("%d"), cfg.CanSpeed);
+            ostringstream oss;
+            oss << dec << cfg.CanSpeed;
+            cntrl[0].m_omStrBaudrate = oss.str();
             cntrl[0].m_omStrBTR0[0] = '\0';
         }
 
@@ -681,18 +686,18 @@ HRESULT CDIL_CAN_MHS::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
     //VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
     cntrl = (SCONTROLLER_DETAILS*)ConfigFile;
 
-    if (!str_has_char(cntrl[0].m_omStrBaudrate))
+    if (!str_has_char(cntrl[0].m_omStrBaudrate.c_str()))
     {
-        sg_MhsCanCfg.CanSpeed = _tcstol(cntrl[0].m_omStrBaudrate, &str, 0);
+        sg_MhsCanCfg.CanSpeed = _tcstol(cntrl[0].m_omStrBaudrate.c_str(), &str, 0);
         sg_MhsCanCfg.CanBtrValue = 0;
     }
     else
     {
         sg_MhsCanCfg.CanSpeed = 0;
-        sg_MhsCanCfg.CanBtrValue = _tcstol(cntrl[0].m_omStrBTR0, &str, 0);
+        sg_MhsCanCfg.CanBtrValue = _tcstol(cntrl[0].m_omStrBTR0.c_str(), &str, 0);
     }
 
-    strcpy_s(sg_MhsCanCfg.CanSnrStr, cntrl[0].m_omHardwareDesc);
+    strcpy_s(sg_MhsCanCfg.CanSnrStr, cntrl[0].m_omHardwareDesc.c_str());
 
     // **** Übertragungsgeschwindigkeit einstellen
     if (sg_MhsCanCfg.CanSpeed)
@@ -1274,7 +1279,7 @@ static BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
 }
 
 
-static int str_has_char(char* s)
+static int str_has_char(const char* s)
 {
     char c;
 
