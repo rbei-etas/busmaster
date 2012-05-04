@@ -27,7 +27,6 @@
 #include <time.h>
 #include "util.h"
 
-
 #ifdef __WIN32__
 #define DIR_SEPARATOR '\\'
 #define DIR_SEPARATOR_STR "\\"
@@ -36,21 +35,12 @@
 #define DIR_SEPARATOR_STR "/"
 #endif
 
-
-/**************************************************************************/
-/*                        F U N K T I O N E N                             */
-/**************************************************************************/
-
-/*
-******************** strlwc ********************
-Funktion  : Einen String in Kleinbuchstaben umwandeln
-
-Eingaben  : str => Zu wandelnder String
-
-Ausgaben  : keine
-
-Call's    : tolower
-*/
+/**
+ * \brief        string lowercase
+ * \param[inout] str string to convert
+ *
+ * Convert a string into lower case
+ */
 void strlwc(char* str)
 {
     while (*str)
@@ -60,17 +50,12 @@ void strlwc(char* str)
     }
 }
 
-
-/*
-******************** strupc ********************
-Funktion  : Einen String in Grossbuchstaben umwandeln
-
-Eingaben  : str => Zu wandelnder String
-
-Ausgaben  : keine
-
-Call's    : toupper
-*/
+/**
+ * \brief        string lowercase
+ * \param[inout] str string to convert
+ *
+ * Convert a string into upper case
+ */
 void strupc(char* str)
 {
     while (*str)
@@ -80,17 +65,12 @@ void strupc(char* str)
     }
 }
 
-
-/*
-******************** strskp ********************
-Funktion  : Fuehrende Leerzeichen des Strings ueberspringen
-
-Eingaben  : str => Input String
-
-Ausgaben  : keine
-
-Call's    : isspace
-*/
+/**
+ * \brief        string skip
+ * \param[inout] str string to convert
+ *
+ * Skip leading whitespaces
+ */
 void strskp(char** str)
 {
     char* s;
@@ -110,17 +90,12 @@ void strskp(char** str)
     *str = s;
 }
 
-
-/*
-******************** strcrop ********************
-Funktion  : Abschliesende Leerzeichen des Strings loeschen
-
-Eingaben  : str => Zu bearbeitender String
-
-Ausgaben  : keine
-
-Call's    : strlen, isspace
-*/
+/**
+ * \brief        string crop
+ * \param[inout] str string to convert
+ *
+ * Crop trailing whitespaces
+ */
 void strcrop(char* str)
 {
     char* last;
@@ -149,25 +124,19 @@ void strcrop(char* str)
     *last=0;
 }
 
-
-/*
-******************** strstrip ********************
-Funktion  : Fuehrende Leerzeichen des Strings ueberspringen
-            und abschliesende Leerzeichen loeschen
-
-Eingaben  : str => Input String
-
-Ausgaben  : keine
-
-Call's    : isspace
-*/
+/**
+ * \brief        string strip
+ * \param[inout] str string to convert
+ *
+ * Skip leading whitespaces and crop trailing whitespaces
+ */
 void strstrip(char** str)
 {
     char* last;
     int len;
     last = *str;
 
-    // Leerzeichen werden ignoriert
+    // ignore whitespaces
     while (isspace((int)*last))
     {
         last++;
@@ -189,7 +158,6 @@ void strstrip(char** str)
         *last = 0;
     }
 }
-
 
 int str_has_char(char* s)
 {
@@ -223,18 +191,15 @@ void* mhs_malloc(int size)
     return(malloc(size));
 }
 
-
 void* mhs_calloc(int num, int size)
 {
     return(calloc(num, size));
 }
 
-
 void mhs_free(void* mem)
 {
     free(mem);
 }
-
 
 void* mhs_memdup(void const* mem, int size)
 {
@@ -253,7 +218,6 @@ void* mhs_memdup(void const* mem, int size)
     return(new_mem);
 }
 
-
 int save_strcmp(const char* s1, const char* s2)
 {
     if ((!s1) && (!s2))
@@ -268,7 +232,6 @@ int save_strcmp(const char* s1, const char* s2)
 
     return(strcmp(s1, s2));
 }
-
 
 int save_strcasecmp(const char* s1, const char* s2)
 {
@@ -304,7 +267,6 @@ int save_strcasecmp(const char* s1, const char* s2)
     return(0);
     //return(strcasecmp(s1, s2));
 }
-
 
 int find_item(char* s, char* list, char trenner)
 {
@@ -359,17 +321,6 @@ int find_item(char* s, char* list, char trenner)
     return(-1);
 }
 
-
-/*
-******************** find_upc ********************
-Funktion  :
-
-Eingaben  :
-
-Ausgaben  : keine
-
-Call's    :
-*/
 char* find_upc(char* str, char* search)
 {
     char* s;
@@ -396,17 +347,6 @@ char* find_upc(char* str, char* search)
     return(NULL);
 }
 
-
-/*
-******************** get_tick ********************
-Funktion  :
-
-Eingaben  :
-
-Ausgaben  : keine
-
-Call's    :
-*/
 #ifndef __WIN32__
 unsigned long get_tick(void)
 {
@@ -419,17 +359,6 @@ unsigned long get_tick(void)
 }
 #endif
 
-
-/*
-******************** get_unix_time ********************
-Funktion  : Unix Zeit unter Windows ermitteln
-
-Eingaben  : p => Buffer fuer Ergebnis
-
-Ausgaben  : *p => Unix Zeit
-
-Call's    : GetSystemTimeAsFileTime
-*/
 #ifdef __WIN32__
 
 const ULONGLONG VALUE_10      = {10};
@@ -442,6 +371,12 @@ const uint64_t VALUE_1000000 =  {1000000};
 const uint64_t VALUE_10000000 = {10000000};
 const uint64_t VALUE_116444736000000000 = {116444736000000000};*/
 
+/**
+ * \brief        get unix time
+ * \param[inout] Unix time and buffer for result
+ *
+ * Get unix time under windows
+ */
 void get_unix_time(struct timeval* p)
 {
     union
@@ -468,7 +403,6 @@ void get_unix_time(struct timeval* p)
 }
 #endif
 
-
 /*void get_timestamp(struct TTime* time_stamp)
 {
 struct timeval t;
@@ -478,20 +412,15 @@ time_stamp->USec = (uint32_t)t.tv_usec;
 time_stamp->Sec = (uint32_t)t.tv_sec;
 }*/
 
-
-/*
-******************** mhs_diff_time ********************
-Funktion  : Differenzeit zwischen now und stamp
-            berechnen unter beruecksichtigung eines
-            Ueberlaufs
-
-Eingaben  : now => Aktuelle Zeit
-            stamp => Zeitstempel in der Vergangenheit
-
-Ausgaben  : result => Differenz-Zeit x = now - stamp
-
-Call's    : keine
-*/
+/**
+ * \brief     mhs differential time
+ * \param[in] now current time
+ * \param[in] stamp timestamp of the past
+ * \return    differential time x = now - stamp
+ *
+ * Calculate differential time between now and stamp
+ * with handling of overflows.
+ */
 unsigned long mhs_diff_time(unsigned long now, unsigned long stamp)
 {
     if (stamp > now)
@@ -526,7 +455,7 @@ char* get_item_as_string(char** str, char* trenner, int* result)
         return(NULL);
     }
 
-    // Fuehrende Leerzeichen ueberspringen
+    // skip leading whitespaces
     while (*s == ' ')
     {
         s++;
@@ -543,7 +472,7 @@ char* get_item_as_string(char** str, char* trenner, int* result)
     item = s;
     start = s;
 
-    // Eintrag in "xx" Zeichen
+    // entry into "xx" characters
     if ((s = strchr(s, '"')))
     {
         item = s + 1;
@@ -581,7 +510,7 @@ char* get_item_as_string(char** str, char* trenner, int* result)
         }
     }
 
-    // Abschliesende Leerzeichen loeschen
+    // crop trailing whitespaces
     if ((l = strlen(item)))
     {
         s = item + (l-1);
@@ -612,7 +541,6 @@ char* get_item_as_string(char** str, char* trenner, int* result)
     return(item);
 }
 
-
 unsigned long get_item_as_ulong(char** str, char* trenner, int* result)
 {
     unsigned long v;
@@ -640,7 +568,6 @@ unsigned long get_item_as_ulong(char** str, char* trenner, int* result)
     SET_RESULT(result, e);
     return(v);
 }
-
 
 long get_item_as_long(char** str, char* trenner, int* result)
 {
@@ -670,7 +597,6 @@ long get_item_as_long(char** str, char* trenner, int* result)
     return(v);
 }
 
-
 double get_item_as_double(char** str, char* trenner, int* result)
 {
     double v;
@@ -693,7 +619,6 @@ double get_item_as_double(char** str, char* trenner, int* result)
     return(v);
 }
 
-
 char* mhs_stpcpy(char* dest, const char* src)
 {
     register char* d = dest;
@@ -707,7 +632,6 @@ char* mhs_stpcpy(char* dest, const char* src)
 
     return(d - 1);
 }
-
 
 char* mhs_strdup(const char* str)
 {
@@ -731,7 +655,6 @@ char* mhs_strdup(const char* str)
         return(NULL);
     }
 }
-
 
 char* mhs_strconcat(const char* string1, ...)
 {
@@ -777,7 +700,6 @@ char* mhs_strconcat(const char* string1, ...)
     return(concat);
 }
 
-
 char* get_file_name(const char* file_name)
 {
     char* p;
@@ -796,7 +718,6 @@ char* get_file_name(const char* file_name)
         return(NULL);
     }
 }
-
 
 char* create_file_name(const char* dir, const char* file_name)
 {
@@ -821,7 +742,6 @@ char* create_file_name(const char* dir, const char* file_name)
         }
     }
 }
-
 
 char* path_get_dirname(const char* file_name)
 {
@@ -858,7 +778,6 @@ char* path_get_dirname(const char* file_name)
         return(mhs_strdup("."));
     }
 }
-
 
 char* change_file_ext(const char* file_name, const char* ext)
 {

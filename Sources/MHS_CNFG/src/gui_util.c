@@ -29,8 +29,6 @@
 #include "util.h"
 #include "gui_util.h"
 
-
-
 #define HexFormatTabSize 8
 static const char* HexFormatTab[] = {"%02X", "%03X", "%04X", "%08X",
                                      "0x%02X", "0x%03X", "0x%04X", "0x%08X"
@@ -45,7 +43,6 @@ void ShowErrorMessage(const char* title, const char* text, ...)
     va_end(argptr);
     MessageBox(NULL, out, title, MB_ICONEXCLAMATION | MB_OK);
 }
-
 
 char* GetWidgetTextDup(HWND ctrl_wnd)
 {
@@ -74,7 +71,6 @@ char* GetWidgetTextDup(HWND ctrl_wnd)
 
     return(str);
 }
-
 
 void GetDlgItemTextCpy(char* str, HWND hdlg, WORD id, int max)
 {
@@ -107,13 +103,10 @@ void GetDlgItemTextCpy(char* str, HWND hdlg, WORD id, int max)
     }
 }
 
-
-
 char* GetDlgItemTextDup(HWND hdlg, WORD id)
 {
     return(GetWidgetTextDup(GetDlgItem(hdlg, id)));
 }
-
 
 uint32_t GetTextWidgetAsLong(HWND ctrl_wnd, int base)
 {
@@ -130,7 +123,6 @@ uint32_t GetTextWidgetAsLong(HWND ctrl_wnd, int base)
     return(res);
 }
 
-
 double GetTextWidgetAsDouble(HWND ctrl_wnd)
 {
     double res;
@@ -146,7 +138,6 @@ double GetTextWidgetAsDouble(HWND ctrl_wnd)
     return(res);
 }
 
-
 void SetDlgItemHex(HWND hdlg, WORD id, uint32_t format_id, uint32_t value)
 {
     char puf[10];
@@ -159,7 +150,6 @@ void SetDlgItemHex(HWND hdlg, WORD id, uint32_t format_id, uint32_t value)
     sprintf(puf, HexFormatTab[format_id], value);
     SetDlgItemText(hdlg, id, puf);
 }
-
 
 uint32_t GetDlgItemHex(HWND hdlg, WORD id)
 {
@@ -175,27 +165,17 @@ uint32_t GetDlgItemHex(HWND hdlg, WORD id)
     return(value);
 }
 
-
-/*-----------------------------------------------------------------------------
-
-FUNCTION: FillComboBox(HWND, char **, DWORD *, WORD, DWORD)
-
-PURPOSE: Populates dialog controls with proper strings
-
-PARAMETERS:
-    hCtrlWnd         - window handle of control being filled
-    szString         - string table contains strings to fill control with
-    npTable          - table of values corresponding to strings
-    wTableLen        - length of the string table
-    dwCurrentSetting - initialz combo box selection
-
-COMMENTS: This function originally found in the Win32 COMM sample
-      Written by BryanW.  Modified for Win32 MTTTY Sample.
-
-HISTORY:   Date:      Author:     Comment:
-       10/27/95   AllenD      Modified for MTTTY
-
------------------------------------------------------------------------------*/
+/**
+ * \brief     Fill Combo Box
+ * \param[in] hdlg     window handle
+ * \param[in] id       id of control being filled
+ * \param[in] str_tab  string table contains strings to fill control with
+ * \param[in] data_tab table of values corresponding to strings
+ * \param[in] tab_len  length of the string table
+ * \param[in] value    initialz combo box selection
+ *
+ * Populates dialog controls with proper strings
+ */
 void FillComboBox(HWND hdlg, WORD id, const char** str_tab,
                   const DWORD* data_tab, WORD tab_len, DWORD value)
 {
@@ -218,21 +198,13 @@ void FillComboBox(HWND hdlg, WORD id, const char** str_tab,
     }
 }
 
-
-/*-----------------------------------------------------------------------------
-
-FUNCTION: SetComboBox(HWND, WORD, DWORD)
-
-PURPOSE: Selects an entry from a dialog combobox
-
-PARAMETERS:
-    hCtrlWnd     - windows handle of control
-    dwNewSetting - new item to base selection on
-
-HISTORY:   Date:      Author:     Comment:
-       11/20/95   AllenD      Wrote it
-
------------------------------------------------------------------------------*/
+/**
+ * \brief Set Combo Box
+ * \param[in] ctrl_wnd windows handle of control
+ * \param[in] value    new item to base selection on
+ *
+ * Selects an entry from a dialog combobox
+ */
 void SetComboBoxWnd(HWND ctrl_wnd, DWORD value)
 {
     DWORD cnt, size, item_data;
@@ -250,7 +222,6 @@ void SetComboBoxWnd(HWND ctrl_wnd, DWORD value)
     }
 }
 
-
 void SetComboBox(HWND hdlg, WORD id, DWORD value)
 {
     HWND ctrl_wnd;
@@ -258,14 +229,12 @@ void SetComboBox(HWND hdlg, WORD id, DWORD value)
     SetComboBoxWnd(ctrl_wnd, value);
 }
 
-
 DWORD GetComboBoxWnd(HWND ctrl_wnd)
 {
     DWORD idx;
     idx = SendMessage(ctrl_wnd, CB_GETCURSEL, 0, 0);
     return(SendMessage(ctrl_wnd, CB_GETITEMDATA, (WPARAM)idx, 0L));
 }
-
 
 DWORD GetComboBox(HWND hdlg, WORD id)
 {
@@ -276,12 +245,10 @@ DWORD GetComboBox(HWND hdlg, WORD id)
     return(SendMessage(ctrl_wnd, CB_GETITEMDATA, (WPARAM)idx, 0L));
 }
 
-
 void SetCheckButton(HWND ctrl_wnd, WORD check)
 {
     (void)SendMessage(ctrl_wnd, BM_SETCHECK, check, 0L);
 }
-
 
 WORD GetCheckButton(HWND ctrl_wnd)
 {

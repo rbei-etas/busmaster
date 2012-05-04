@@ -33,7 +33,7 @@
 HINSTANCE AppHInstance = NULL;
 
 /***************************************************************/
-/*  DLL Main Funktion                                          */
+/*  DLL Main Function                                          */
 /***************************************************************/
 int WINAPI DllMain(HINSTANCE hInstance, DWORD fdwReason, PVOID pvReserved)
 {
