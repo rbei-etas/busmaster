@@ -77,21 +77,23 @@ BEGIN_MESSAGE_MAP(CCAN_MHS, CWinApp)
 END_MESSAGE_MAP()
 
 /**
- * CCAN_MHS construction
+ * \brief Constructor
+ *
+ * construction
  */
 CCAN_MHS::CCAN_MHS()
 {
-    // TODO: add construction code here,
-    // Place all significant initialization in InitInstance
 }
 
-
-// The one and only CCAN_MHS object
+/**
+ * The one and only CCAN_MHS object
+ */
 CCAN_MHS theApp;
 
-
 /**
- * CCAN_MHS initialization
+ * \brief Init Instance
+ *
+ * Initialization
  */
 BOOL CCAN_MHS::InitInstance()
 {
@@ -209,7 +211,6 @@ public:
 
 CDIL_CAN_MHS* g_pouDIL_CAN_MHS = NULL;
 
-
 #define CALLBACK_TYPE __stdcall
 
 static void CALLBACK_TYPE CanPnPEvent(uint32_t index, int32_t status);
@@ -228,8 +229,8 @@ static void vMarkEntryIntoMap(const SACK_MAP& RefObj);
 static BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID);
 static int str_has_char(const char* s);
 
-
 /**
+ * \brief  Get IDIL CAN Controller
  * \return S_OK for success, S_FALSE for failure
  *
  * Returns the interface to controller
@@ -253,20 +254,8 @@ USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
     return(hResult);
 }
 
-
-/* void __cdecl ShowErrorMessage(const char *title, const char *text, ...)
-{
-va_list argptr;
-char out[512];
-
-va_start(argptr, text);
-_vstprintf(out, text, argptr);
-va_end(argptr);
-MessageBox(NULL, out, title, MB_ICONEXCLAMATION | MB_OK);
-} */
-
-
 /**
+ * \brief  Set Application Parameters
  * \return S_OK for success, S_FALSE for failure
  *
  * Sets the application params.
@@ -279,8 +268,8 @@ HRESULT CDIL_CAN_MHS::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* 
     return(S_OK);
 }
 
-
 /**
+ * \brief  Unload Driver Library
  * \return S_OK for success, S_FALSE for failure
  *
  * Unloads the driver library.
@@ -290,8 +279,8 @@ HRESULT CDIL_CAN_MHS::CAN_UnloadDriverLibrary(void)
     return(S_OK);
 }
 
-
 /**
+ * \brief  Manage Message Buffers
  * \return S_OK for success, S_FALSE for failure
  *
  * Registers the buffer pBufObj to the client ClientID
@@ -372,8 +361,8 @@ HRESULT CDIL_CAN_MHS::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBuf
     return(hResult);
 }
 
-
 /**
+ * \brief  Register Client
  * \return S_OK for success, S_FALSE for failure
  *
  * Registers a client to the DIL. ClientID will have client id
@@ -449,6 +438,7 @@ HRESULT CDIL_CAN_MHS::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, string
 
 
 /**
+ * \brief  Get Controller Status
  * \return S_OK for success, S_FALSE for failure
  *
  * Returns the controller status. hEvent will be registered
@@ -464,6 +454,7 @@ HRESULT CDIL_CAN_MHS::CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStat
 }
 
 /**
+ * \brief  Load Driver Library
  * \return S_OK for success, S_FALSE for failure
  *
  * Loads BOA related libraries. Updates BOA API pointers
@@ -474,11 +465,11 @@ HRESULT CDIL_CAN_MHS::CAN_LoadDriverLibrary(void)
 }
 
 /**
-* \brief         Performs intial operations.
-*                Initializes filter, queue, controller config with default values.
-* \param         void
-* \return        S_OK if the open driver call successfull otherwise S_FALSE
-*/
+ * \brief  Perform Initialization Operations
+ * \return S_OK if the open driver call successfull otherwise S_FALSE
+ *
+ * Initializes filter, queue, controller config with default values.
+ */
 HRESULT CDIL_CAN_MHS::CAN_PerformInitOperations(void)
 {
     HRESULT hResult;
@@ -513,12 +504,12 @@ HRESULT CDIL_CAN_MHS::CAN_PerformInitOperations(void)
     return(hResult);
 }
 
-
 /**
-* \brief         Performs closure operations.
-* \param         void
-* \return        S_OK if the CAN_StopHardware call successfull otherwise S_FALSE
-*/
+ * \brief  Perform Closure Operations
+ * \return S_OK if the CAN_StopHardware call successfull otherwise S_FALSE
+ *
+ * Performs closure operations.
+ */
 HRESULT CDIL_CAN_MHS::CAN_PerformClosureOperations(void)
 {
     HRESULT hResult = S_OK;
@@ -542,14 +533,16 @@ HRESULT CDIL_CAN_MHS::CAN_PerformClosureOperations(void)
 
 
 /**
-* \brief         Gets the time mode mapping of the hardware. CurrSysTime
-*                will be updated with the system time ref.
-*                TimeStamp will be updated with the corresponding timestamp.
-* \param[out]    CurrSysTime, is SYSTEMTIME structure
-* \param[out]    TimeStamp, is UINT64
-* \param[out]    QueryTickCount, is long long int
-* \return        S_OK for success
-*/
+ * \brief      Get Time Mode Mapping
+ * \param[out] CurrSysTime Current System Time
+ * \param[out] TimeStamp Time Stamp
+ * \param[out] QueryTickCount Query Tick Count
+ * \return     S_OK for success
+ *
+ * Gets the time mode mapping of the hardware. CurrSysTime
+ * will be updated with the system time ref.
+ * TimeStamp will be updated with the corresponding timestamp.
+ */
 HRESULT CDIL_CAN_MHS::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, long long int* QueryTickCount)
 {
     (void)CurrSysTime;
@@ -562,13 +555,14 @@ HRESULT CDIL_CAN_MHS::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& Ti
     return(S_OK);
 }
 
-
 /**
-* \brief         Lists the hardware interface available.
-* \param[out]    asSelHwInterface, is INTERFACE_HW_LIST structure
-* \param[out]    nCount , is INT contains the selected channel count.
-* \return        S_OK for success, S_FALSE for failure
-*/
+ * \brief      List Hardware Interfaces
+ * \param[out] asSelHwInterface Selected Hardware Interfaces
+ * \param[out] nCount Number of selected hardware interfaces
+ * \return     S_OK for success, S_FALSE for failure
+ *
+ * Lists the hardware interface available.
+ */
 HRESULT CDIL_CAN_MHS::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)
 {
     USES_CONVERSION;
@@ -581,13 +575,14 @@ HRESULT CDIL_CAN_MHS::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, 
     return(S_OK);
 }
 
-
 /**
-* \brief         Selects the hardware interface selected by the user.
-* \param[out]    asSelHwInterface, is INTERFACE_HW_LIST structure
-* \param[out]    nCount , is INT contains the selected channel count.
-* \return        S_OK for success, S_FALSE for failure
-*/
+ * \brief     Select Hardware Interface
+ * \param[in] asSelHwInterface Selected Hardware Interfaces
+ * \param[in] nCount Number of selected hardware interfaces
+ * \return    S_OK for success, S_FALSE for failure
+ *
+ * Selects the hardware interface selected by the user.
+ */
 HRESULT CDIL_CAN_MHS::CAN_SelectHwInterface(const INTERFACE_HW_LIST& /*asSelHwInterface*/, INT /*nCount*/)
 {
     USES_CONVERSION;
@@ -597,12 +592,12 @@ HRESULT CDIL_CAN_MHS::CAN_SelectHwInterface(const INTERFACE_HW_LIST& /*asSelHwIn
     return(S_OK);
 }
 
-
 /**
-* \brief         Deselects the selected hardware interface.
-* \param         void
-* \return        S_OK if CAN_ResetHardware call is success, S_FALSE for failure
-*/
+ * \brief  Deselect Hardware Interface
+ * \return S_OK if CAN_ResetHardware call is success, S_FALSE for failure
+ *
+ * Deselects the selected hardware interface.
+ */
 HRESULT CDIL_CAN_MHS::CAN_DeselectHwInterface(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
@@ -612,13 +607,14 @@ HRESULT CDIL_CAN_MHS::CAN_DeselectHwInterface(void)
     return hResult;
 }
 
-
 /**
-* \brief         Displays the controller configuration dialog.
-* \param[out]    InitData, is SCONTROLLER_DETAILS structure
-* \param[out]    Length , is INT
-* \return        S_OK for success
-*/
+ * \brief      Display Configuration Dialog
+ * \param[out] InitData Initialization Data
+ * \param[out] Length   Length of initialization data
+ * \return     S_OK for success
+ *
+ * Displays the controller configuration dialog.
+ */
 HRESULT CDIL_CAN_MHS::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
 {
     (void)Length;
@@ -670,13 +666,14 @@ HRESULT CDIL_CAN_MHS::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
     return(result);
 }
 
-
 /**
-* \brief         Sets the controller configuration data supplied by ConfigFile.
-* \param[in]     ConfigFile, is SCONTROLLER_DETAILS structure
-* \param[in]     Length , is INT
-* \return        S_OK for success
-*/
+ * \brief     Set Configuration Data
+ * \param[in] ConfigFile Configuration File
+ * \param[in] Length Length of configuration file
+ * \return    S_OK for success
+ *
+ * Sets the controller configuration data supplied by ConfigFile.
+ */
 HRESULT CDIL_CAN_MHS::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
 {
     (void)Length;
@@ -698,7 +695,7 @@ HRESULT CDIL_CAN_MHS::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
 
     strcpy_s(sg_MhsCanCfg.CanSnrStr, cntrl[0].m_omHardwareDesc.c_str());
 
-    // **** Übertragungsgeschwindigkeit einstellen
+    // Set baudrate
     if (sg_MhsCanCfg.CanSpeed)
     {
         if (CanSetSpeed(0, (uint16_t)sg_MhsCanCfg.CanSpeed) < 0)
@@ -717,9 +714,10 @@ HRESULT CDIL_CAN_MHS::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
     return(S_OK);
 }
 
-
 /**
- * This function writes the message to the corresponding clients buffer
+ * \brief Write Into Clients Buffer
+ *
+ * This function writes the message to the corresponding clients buffer.
  */
 static void vWriteIntoClientsBuffer(STCANDATA& can_data)
 {
@@ -775,7 +773,11 @@ static void vWriteIntoClientsBuffer(STCANDATA& can_data)
     }
 }
 
-// Plug & Play Event-Funktion
+/**
+ * \brief Plug and Play Event function
+ *
+ * Plug and play event function
+ */
 static void CALLBACK_TYPE CanPnPEvent(uint32_t /*index*/, int32_t status)
 {
     if (status)
@@ -786,14 +788,20 @@ static void CALLBACK_TYPE CanPnPEvent(uint32_t /*index*/, int32_t status)
     }
 }
 
-
-// Status Event-Funktion
+/**
+ * \brief Status Event function
+ *
+ * Status Event function
+ */
 static void CALLBACK_TYPE CanStatusEvent(uint32_t /*index*/, struct TDeviceStatus* /*status*/)
 {
 }
 
-
-// RxD Event-Funktion
+/**
+ * \brief Rx Event function
+ *
+ * Rx Event function
+ */
 static void CALLBACK_TYPE CanRxEvent(uint32_t index, struct TCanMsg* msg, int32_t count)
 {
     (void)index;
@@ -826,18 +834,12 @@ static void CALLBACK_TYPE CanRxEvent(uint32_t index, struct TCanMsg* msg, int32_
     }
 }
 
-
-/*static void CopyMhsToCanData(const struct TCanMsg *src, STCANDATA* dest)
-{
-
-}*/
-
-
 /**
-* \brief         connects to the channels and initiates read thread.
-* \param         void
-* \return        S_OK for success, S_FALSE for failure
-*/
+ * \brief  Start Hardware
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Connects to the channels and initiates read thread.
+ */
 HRESULT CDIL_CAN_MHS::CAN_StartHardware(void)
 {
     USES_CONVERSION;
@@ -881,12 +883,12 @@ HRESULT CDIL_CAN_MHS::CAN_StartHardware(void)
     return(hResult);
 }
 
-
 /**
-* \brief         Stops the controller.
-* \param         void
-* \return        S_OK for success, S_FALSE for failure
-*/
+ * \brief  Stop Hardware
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Stops the controller.
+ */
 HRESULT CDIL_CAN_MHS::CAN_StopHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
@@ -894,24 +896,25 @@ HRESULT CDIL_CAN_MHS::CAN_StopHardware(void)
     return(S_OK);
 }
 
-
 /**
-* \brief         Resets the controller.
-* \param         void
-* \return        S_OK for success, S_FALSE for failure
-*/
+ * \brief  Reset Hardware
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Resets the controller.
+ */
 HRESULT CDIL_CAN_MHS::CAN_ResetHardware(void)
 {
     (void)CAN_StopHardware();
     return(S_OK);
 }
 
-
 /**
-* \brief         Function to get Controller status
-* \param[out]    StatusData, is s_STATUSMSG structure
-* \return        S_OK for success, S_FALSE for failure
-*/
+ * \brief      Get Current Status
+ * \param[out] StatusData Status Data
+ * \return     S_OK for success, S_FALSE for failure
+ *
+ * Function to get Controller status.
+ */
 HRESULT CDIL_CAN_MHS::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
 {
     StatusData.wControllerStatus = NORMAL_ACTIVE;
@@ -919,11 +922,13 @@ HRESULT CDIL_CAN_MHS::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
 }
 
 /**
-* \brief         Sends STCAN_MSG structure from the client dwClientID.
-* \param[in]     dwClientID is the client ID
-* \param[in]     sMessage is the application specific CAN message structure
-* \return        S_OK for success, S_FALSE for failure
-*/
+ * \brief     Send Message
+ * \param[in] dwClientID client ID
+ * \param[in] sMessage application specific CAN message structure
+ * \return    S_OK for success, S_FALSE for failure
+ *
+ * Sends STCAN_MSG structure from the client dwClientID.
+ */
 HRESULT CDIL_CAN_MHS::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessage)
 {
     struct TCanMsg msg;
@@ -982,23 +987,26 @@ HRESULT CDIL_CAN_MHS::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessage)
 }
 
 /**
-* \brief         Gets last occured error and puts inside acErrorStr.
-* \param[out]    acErrorStr contains error string
-* \return        S_OK for success, S_FALSE for failure
-*/
+ * \brief      Get Last Error String
+ * \param[out] acErrorStr error string
+ * \return     S_OK for success, S_FALSE for failure
+ *
+ * Gets last occured error and puts inside acErrorStr.
+ */
 HRESULT CDIL_CAN_MHS::CAN_GetLastErrorString(string& /*acErrorStr*/)
 {
     return WARN_DUMMY_API;
 }
 
-
 /**
-* \brief         Gets the controller parametes of the channel based on the request.
-* \param[out]    lParam, the value of the controller parameter requested.
-* \param[in]     nChannel, indicates channel ID
-* \param[in]     eContrParam, indicates controller parameter
-* \return        S_OK for success, S_FALSE for failure
-*/
+ * \brief      Get Controller Params
+ * \param[out] lParam value of the controller parameter requested.
+ * \param[in]  nChannel channel ID
+ * \param[in]  eContrParam controller parameter
+ * \return     S_OK for success, S_FALSE for failure
+ *
+ * Gets the controller parametes of the channel based on the request.
+ */
 HRESULT CDIL_CAN_MHS::CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
 {
     HRESULT hResult;
@@ -1055,12 +1063,14 @@ HRESULT CDIL_CAN_MHS::CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONT
 
 
 /**
-* \brief         Gets the error counter for corresponding channel.
-* \param[out]    sErrorCnt, is SERROR_CNT structure
-* \param[in]     nChannel, indicates channel ID
-* \param[in]     eContrParam, indicates controller parameter
-* \return        S_OK for success, S_FALSE for failure
-*/
+ * \brief      Get Error Count
+ * \param[out] sErrorCnt Error counter
+ * \param[in]  nChannel channel ID
+ * \param[in]  eContrParam controller parameter
+ * \return     S_OK for success, S_FALSE for failure
+ *
+ * Gets the error counter for corresponding channel.
+ */
 HRESULT CDIL_CAN_MHS::CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam)
 {
     (void)eContrParam;
@@ -1071,8 +1081,11 @@ HRESULT CDIL_CAN_MHS::CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, EC
     return(S_OK);
 }
 
-
-
+/**
+ * \brief Is Buffer Exists
+ *
+ * Checks if buffer exists
+ */
 static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFSE* pBuf)
 {
     UINT i;
@@ -1091,7 +1104,11 @@ static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFS
     return(bExist);
 }
 
-
+/**
+ * \brief Remove Client Buffer
+ *
+ * Removes a client buffer
+ */
 static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED], UINT& unCount, CBaseCANBufFSE* BufferToRemove)
 {
     UINT i;
@@ -1114,8 +1131,8 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
     return(bReturn);
 }
 
-
 /**
+ * \brief  Get Client Object
  * \return Returns true if found else false.
  *
  * unClientIndex will have index to client array which has clientId dwClientID.
@@ -1140,6 +1157,7 @@ static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
 
 
 /**
+ * \brief  Client Exist
  * \return TRUE if client exists else FALSE
  *
  * Checks for the existance of the client with the name pcClientName.
@@ -1162,6 +1180,7 @@ static BOOL bClientExist(string pcClientName, INT& Index)
 
 
 /**
+ * \brief  Remove Client
  * \return TRUE if client removed else FALSE
  *
  * Removes the client with client id dwClientId.
@@ -1203,6 +1222,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
 
 
 /**
+ * \brief  Client Id Exist
  * \return TRUE if client exists else FALSE
  *
  * Searches for the client with the id dwClientId.
@@ -1225,9 +1245,10 @@ static BOOL bClientIdExist(const DWORD& dwClientId)
     return(bReturn);
 }
 
-
 /**
- * Returns the available slot
+ * \brief Get Available Client Slot
+ *
+ * Returns the available slot.
  */
 static DWORD dwGetAvailableClientSlot(void)
 {
@@ -1250,8 +1271,9 @@ static DWORD dwGetAvailableClientSlot(void)
     return(nClientId);
 }
 
-
 /**
+ * \brief Mark Entry Into Map
+ *
  * Pushes an entry into the list at the last position
  */
 static void vMarkEntryIntoMap(const SACK_MAP& RefObj)
@@ -1261,6 +1283,11 @@ static void vMarkEntryIntoMap(const SACK_MAP& RefObj)
     LeaveCriticalSection(&sg_DIL_CriticalSection); // Unlock the buffer
 }
 
+/**
+ * \brief Remove Map Entry
+ *
+ * Removes a map entry
+ */
 static BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
 {
     BOOL bResult = FALSE;
@@ -1277,7 +1304,11 @@ static BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
     return bResult;
 }
 
-
+/**
+ * \brief Str Has Char
+ *
+ * Checks if string contains a character.
+ */
 static int str_has_char(const char* s)
 {
     char c;
@@ -1297,12 +1328,5 @@ static int str_has_char(const char* s)
         }
     }
 
-    if (c)
-    {
-        return(0);
-    }
-    else
-    {
-        return(-1);
-    }
+    return c ? 0 : -1;
 }

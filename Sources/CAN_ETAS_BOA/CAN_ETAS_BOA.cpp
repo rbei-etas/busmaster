@@ -52,23 +52,24 @@ using namespace std;
 BEGIN_MESSAGE_MAP(CCAN_ETAS_BOA, CWinApp)
 END_MESSAGE_MAP()
 
-
 /**
- * CCAN_ETAS_BOA construction
+ * \brief Construction
+ *
+ * Constructor
  */
 CCAN_ETAS_BOA::CCAN_ETAS_BOA()
 {
-    // TODO: add construction code here,
-    // Place all significant initialization in InitInstance
 }
 
-
-// The one and only CCAN_ETAS_BOA object
+/**
+ * The one and only CCAN_ETAS_BOA object
+ */
 CCAN_ETAS_BOA theApp;
 
-
 /**
- * CCAN_ETAS_BOA initialization
+ * \brief Init Instance
+ *
+ * Initialization
  */
 BOOL CCAN_ETAS_BOA::InitInstance()
 {
@@ -113,6 +114,7 @@ typedef struct tagCHANNEL
 #define MAX_BUFF_ALLOWED 16
 #define MAX_CLIENT_ALLOWED 16
 static UINT sg_unClientCnt = 0;
+
 class SCLIENTBUFMAP
 {
 public:
@@ -167,11 +169,6 @@ static SCHANNEL sg_asChannel[defNO_OF_CHANNELS];
 static UINT sg_nNoOfChannels = 0;
 
 static BOOL sg_bIsDriverRunning = FALSE;
-
-/**
- * Controller configuration details
- */
-static SCONTROLLER_DETAILS sg_asControllerDets[defNO_OF_CHANNELS];
 
 static HWND sg_hOwnerWnd = NULL;
 
