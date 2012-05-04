@@ -224,7 +224,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="..\..\..\Tools\bison\bison.exe -d --output=Asc_Log_Parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
+						CommandLine="set BISON_SIMPLE=..\..\..\Tools\bison\bison.simple&#x0D;&#x0A;..\..\..\Tools\bison\bison.exe -d --output=Asc_Log_Parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
 						Outputs="Asc_Log_Parser.c,Asc_Log_Parser.h"
 					/>
 				</FileConfiguration>
@@ -233,7 +233,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="..\..\..\Tools\bison\bison.exe -d -l --output=Asc_Log_Parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
+						CommandLine="set BISON_SIMPLE=..\..\..\Tools\bison\bison.simple&#x0D;&#x0A;..\..\..\Tools\bison\bison.exe -d -l --output=Asc_Log_Parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
 						Outputs="Asc_Log_Parser.c,Asc_Log_Parser.h"
 					/>
 				</FileConfiguration>
@@ -244,10 +244,6 @@
 			</File>
 			<File
 				RelativePath=".\AscLogConverterDLL.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\bison.simple"
 				>
 			</File>
 		</Filter>
