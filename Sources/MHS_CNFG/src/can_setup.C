@@ -30,10 +30,7 @@
 #include "mhsbmcfg.h"
 #include "can_setup.h"
 
-
-
 static struct TMhsCanCfg* CanCfg = NULL;
-
 
 #define CanSpeedTabSize 9
 static const char* CanSpeedTabStr[] = {"10 kBit/s", "20 kBit/s", "50 kBit/s", "100 kBit/s",
@@ -50,7 +47,6 @@ static void InitCanSetupDlg(HWND hdlg, struct TMhsCanCfg* cfg)
                  CanSpeedTabSize, cfg->CanSpeed);
 }
 
-
 static void SaveCanSetup(HWND hdlg, struct TMhsCanCfg* cfg)
 {
     GetDlgItemTextCpy(cfg->CanSnrStr, hdlg, IDC_SNR_EDIT, MHS_STR_SIZE);
@@ -58,29 +54,28 @@ static void SaveCanSetup(HWND hdlg, struct TMhsCanCfg* cfg)
     cfg->CanSpeed = GetComboBox(hdlg, IDC_CAN_SPEED);
 }
 
-
 static BOOL CALLBACK CanSetupDlgProc(HWND hdlg, UINT uMessage, WPARAM wparam, LPARAM lparam)
 {
     switch(uMessage)
     {
-        case WM_INITDIALOG :
+        case WM_INITDIALOG:
         {
             InitCanSetupDlg(hdlg, CanCfg);
             break;
         }
 
-        case WM_COMMAND    :
+        case WM_COMMAND:
         {
             switch (LOWORD(wparam))
             {
-                case IDOK     :
+                case IDOK:
                 {
                     SaveCanSetup(hdlg, CanCfg);
                     EndDialog(hdlg, TRUE);
                     return(TRUE);
                 }
 
-                case IDCANCEL :
+                case IDCANCEL:
                 {
                     EndDialog(hdlg, TRUE);
                     return(TRUE);
@@ -94,17 +89,9 @@ static BOOL CALLBACK CanSetupDlgProc(HWND hdlg, UINT uMessage, WPARAM wparam, LP
     return(FALSE);
 }
 
-
 int ShowCanSetupDlg(HINSTANCE hInstance, HWND hwnd, struct TMhsCanCfg* cfg)
 {
     CanCfg = cfg;
 
-    if (((DWORD)DialogBox(hInstance, MAKEINTRESOURCE(IDD_CAN_SETUP), hwnd, CanSetupDlgProc)) == TRUE)
-    {
-        return(1);
-    }
-    else
-    {
-        return(0);
-    }
+    return ((DWORD)DialogBox(hInstance, MAKEINTRESOURCE(IDD_CAN_SETUP), hwnd, CanSetupDlgProc)) ? 1 : 0;
 }

@@ -25,16 +25,14 @@
 #include "resource.h"
 #include "about.h"
 
-
 static BOOL CALLBACK AboutDlgProc(HWND hdlg, UINT uMessage, WPARAM wparam, LPARAM lparam)
 {
     switch(uMessage)
     {
-        case WM_INITDIALOG :
+        case WM_INITDIALOG:
             break;
 
-        case WM_COMMAND    :
-        {
+        case WM_COMMAND:
             if ((LOWORD(wparam) == IDOK) || (LOWORD(wparam) == IDCANCEL))
             {
                 EndDialog(hdlg, TRUE);
@@ -47,7 +45,6 @@ static BOOL CALLBACK AboutDlgProc(HWND hdlg, UINT uMessage, WPARAM wparam, LPARA
 
     return(FALSE);
 }
-
 
 void CreateAboutDlg(HINSTANCE hInstance, HWND hwnd)
 {
