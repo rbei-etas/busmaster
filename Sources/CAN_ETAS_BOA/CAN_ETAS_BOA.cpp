@@ -403,25 +403,25 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
 /**
  * Gets the CSI API function pointer from the cslproxy.dll
  */
-BOOL bGetBOAInstallationPath(char* pcPath, INT& nSize)
+BOOL bGetBOAInstallationPath(string& pcPath)
 {
     USES_CONVERSION;
     BOOL bResult = FALSE;
     LONG lError = 0;
     HKEY sKey;
-    BYTE acGCCPath[1024];
-    DWORD dwSize = sizeof(BYTE[1024]) ;
-    ULONG ulType = REG_SZ;
+
     // Get the installation path for BOA 1.4
-    lError = RegOpenKeyEx( HKEY_LOCAL_MACHINE, BOA_REGISTRY_LOCATION, 0, KEY_READ, &sKey);
+    lError = RegOpenKeyEx(HKEY_LOCAL_MACHINE, BOA_REGISTRY_LOCATION, 0, KEY_READ, &sKey);
 
     // If the registry key open successfully, get the value in "path"
     // sub key
     if(lError==ERROR_SUCCESS)
     {
-        lError = RegQueryValueEx(sKey,"path",0, &ulType, acGCCPath,&dwSize);
-        nSize = (INT)dwSize;
-        strcpy(pcPath, A2T((char*)acGCCPath));
+        ULONG ulType = REG_SZ;
+        BYTE acGCCPath[1024];
+        DWORD dwSize = sizeof(acGCCPath);
+        lError = RegQueryValueEx(sKey, "path", 0, &ulType, acGCCPath, &dwSize);
+        pcPath = A2T((char*)acGCCPath);
         RegCloseKey(sKey);
         bResult = TRUE;
     }
@@ -1661,15 +1661,19 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& un
 HRESULT CDIL_CAN_ETAS_BOA::CAN_LoadDriverLibrary(void)
 {
     HRESULT hResult = S_FALSE;
+    string acPath;
+
     /* Get BOA installation path from the registery */
-    char acPath[MAX_PATH] = {'\0'};
-    INT nSize = 0;
-    bGetBOAInstallationPath(acPath, nSize);
+    bGetBOAInstallationPath(acPath);
+
     /* Load cslproxy.dll library */
-    char acLIB_CSL[MAX_PATH] = {'\0'};
-    sprintf_s(acLIB_CSL, sizeof(acLIB_CSL), "%s\\%s", acPath, LIB_CSL_NAME);
+    string acLIB_CSL;
+    acLIB_CSL.append(acPath);
+    acLIB_CSL.append("\\");
+    acLIB_CSL.append(LIB_CSL_NAME);
+
     /* LoadLibraryEx instead of LoadLibrary seems to be necessary under Windows 7 when the library is not in DLL search path (system32) */
-    sg_hLibCSI = LoadLibraryEx(acLIB_CSL, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
+    sg_hLibCSI = LoadLibraryEx(acLIB_CSL.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
 
     if (sg_hLibCSI != NULL)
     {
@@ -1678,9 +1682,11 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_LoadDriverLibrary(void)
         /* Load the OCI library to use CAN controller */
         if (hResult == S_OK)
         {
-            char acLIB_OCI[MAX_PATH] = {'\0'};
-            sprintf_s(acLIB_OCI, sizeof(acLIB_OCI), "%s\\%s", acPath, LIB_OCI_NAME);
-            sg_hLibOCI = LoadLibraryEx(acLIB_OCI, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
+            string acLIB_OCI;
+            acLIB_OCI.append(acPath);
+            acLIB_OCI.append("\\");
+            acLIB_OCI.append(LIB_OCI_NAME);
+            sg_hLibOCI = LoadLibraryEx(acLIB_OCI.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
 
             if (sg_hLibOCI != NULL)
             {
@@ -1698,8 +1704,10 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_LoadDriverLibrary(void)
             else
             {
                 hResult = S_FALSE;
-                sprintf_s(acPath, sizeof(acPath), _T("%s failed to load"), acLIB_OCI);
-                sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, acPath);
+                string acErr;
+                acErr.append(acLIB_OCI);
+                acErr.append(_T(" failed to load"));
+                sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, acErr);
                 sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, "Please have a look at: https://github.com/rbei-etas/busmaster/wiki/Hardware-support");
             }
         }
@@ -1710,8 +1718,10 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_LoadDriverLibrary(void)
     }
     else
     {
-        sprintf_s(acPath, sizeof(acPath), _T("%s failed to load"), acLIB_CSL);
-        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, acPath);
+        string acErr;
+        acErr.append(acLIB_CSL);
+        acErr.append(_T(" failed to load"));
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, acErr);
         sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, "Please have a look at: https://github.com/rbei-etas/busmaster/wiki/Hardware-support");
     }
 
