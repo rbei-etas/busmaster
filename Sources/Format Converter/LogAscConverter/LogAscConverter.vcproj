@@ -195,10 +195,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\bison.simple"
-				>
-			</File>
-			<File
 				RelativePath=".\Log_Asc_Lexer.l"
 				>
 				<FileConfiguration
@@ -228,7 +224,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="..\..\..\Tools\bison\bison.exe -d --output=Log_Asc_Parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
+						CommandLine="set BISON_SIMPLE=..\..\..\Tools\bison\bison.simple&#x0D;&#x0A;..\..\..\Tools\bison\bison.exe -d --output=Log_Asc_Parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
 						Outputs="Log_Asc_Parser.c,Log_Asc_Parser.h"
 					/>
 				</FileConfiguration>
@@ -237,7 +233,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="..\..\..\Tools\bison\bison.exe -d -l --output=Log_Asc_Parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
+						CommandLine="set BISON_SIMPLE=..\..\..\Tools\bison\bison.simple&#x0D;&#x0A;..\..\..\Tools\bison\bison.exe -d -l --output=Log_Asc_Parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
 						Outputs="Log_Asc_Parser.c,Log_Asc_Parser.h"
 					/>
 				</FileConfiguration>
