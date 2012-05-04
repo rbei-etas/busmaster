@@ -124,7 +124,8 @@ void CFormatMsgCAN::vFormatDataAndId(BYTE bExprnFlag,
         for (int i = 0; i < CurrDataCAN->m_byDataLength; i++)
         {
             BYTE CurrDat = CurrDataCAN->m_abData[i];
-            sprintf_s(&(CurrDataCAN->m_acDataHex[j]), sizeof(CurrDataCAN->m_acDataHex[j]), FORMAT_STR_DATA_HEX, CurrDat);
+    		int nSize = sizeof(CurrDataCAN->m_acDataDec);
+            sprintf_s(&(CurrDataCAN->m_acDataHex[j]), nSize-j, FORMAT_STR_DATA_HEX, CurrDat);
             j += 3;
         }
 
@@ -139,7 +140,8 @@ void CFormatMsgCAN::vFormatDataAndId(BYTE bExprnFlag,
         for (int i = 0; i < CurrDataCAN->m_byDataLength; i++)
         {
             BYTE CurrDat = CurrDataCAN->m_abData[i];
-            sprintf_s(&(CurrDataCAN->m_acDataDec[j]), sizeof(CurrDataCAN->m_acDataDec[j]), FORMAT_STR_DATA_DEC, CurrDat);
+			int nSize = sizeof(CurrDataCAN->m_acDataDec);
+            sprintf_s(&(CurrDataCAN->m_acDataDec[j]), nSize-j, FORMAT_STR_DATA_DEC, CurrDat);
             j += 4;
             CurrDataCAN->m_acDataDec[j-1] = L' ';
         }
