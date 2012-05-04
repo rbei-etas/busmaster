@@ -15,6 +15,7 @@ Sources/Application/BUSMASTER_Interface.h
 Sources/BusEmulation/BusEmulation.h
 Sources/BusEmulation/BusEmulation_i.c
 Sources/BusEmulation/BusEmulation_p.c
+Sources/BusEmulation/dlldata.c
 Sources/DmGraph/DMGraph.h
 Sources/DmGraph/DMGraph.tlb
 Sources/DmGraph/DMGraph_i.c
