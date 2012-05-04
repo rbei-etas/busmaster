@@ -170,14 +170,14 @@ void CAcceptanceFilterDlg::OnCbtnAccetanceOk()
     for ( int i = 0; i < CAN_MSG_IDS; i++ )
     {
         m_psControllerInfo->m_enmHWFilterType[i] = m_enmHWFilterType[i];
-        strcpy_s(m_psControllerInfo->m_omStrAccCodeByte1[i], m_omStrLocalAccCodeByte1[i].GetBuffer(MAX_PATH));
-        strcpy_s(m_psControllerInfo->m_omStrAccCodeByte2[i], m_omStrLocalAccCodeByte2[i].GetBuffer(MAX_PATH));
-        strcpy_s(m_psControllerInfo->m_omStrAccCodeByte3[i], m_omStrLocalAccCodeByte3[i].GetBuffer(MAX_PATH));
-        strcpy_s(m_psControllerInfo->m_omStrAccCodeByte4[i], m_omStrLocalAccCodeByte4[i].GetBuffer(MAX_PATH));
-        strcpy_s(m_psControllerInfo->m_omStrAccMaskByte1[i], m_omStrLocalAccMaskByte1[i].GetBuffer(MAX_PATH));
-        strcpy_s(m_psControllerInfo->m_omStrAccMaskByte2[i], m_omStrLocalAccMaskByte2[i].GetBuffer(MAX_PATH));
-        strcpy_s(m_psControllerInfo->m_omStrAccMaskByte3[i], m_omStrLocalAccMaskByte3[i].GetBuffer(MAX_PATH));
-        strcpy_s(m_psControllerInfo->m_omStrAccMaskByte4[i], m_omStrLocalAccMaskByte4[i].GetBuffer(MAX_PATH));
+        m_psControllerInfo->m_omStrAccCodeByte1[i] = m_omStrLocalAccCodeByte1[i].GetBuffer(MAX_PATH);
+        m_psControllerInfo->m_omStrAccCodeByte2[i] = m_omStrLocalAccCodeByte2[i].GetBuffer(MAX_PATH);
+        m_psControllerInfo->m_omStrAccCodeByte3[i] = m_omStrLocalAccCodeByte3[i].GetBuffer(MAX_PATH);
+        m_psControllerInfo->m_omStrAccCodeByte4[i] = m_omStrLocalAccCodeByte4[i].GetBuffer(MAX_PATH);
+        m_psControllerInfo->m_omStrAccMaskByte1[i] = m_omStrLocalAccMaskByte1[i].GetBuffer(MAX_PATH);
+        m_psControllerInfo->m_omStrAccMaskByte2[i] = m_omStrLocalAccMaskByte2[i].GetBuffer(MAX_PATH);
+        m_psControllerInfo->m_omStrAccMaskByte3[i] = m_omStrLocalAccMaskByte3[i].GetBuffer(MAX_PATH);
+        m_psControllerInfo->m_omStrAccMaskByte4[i] = m_omStrLocalAccMaskByte4[i].GetBuffer(MAX_PATH);
     }
 
     m_psControllerInfo->m_bAccFilterMode    = m_bAccFilterMode;
@@ -225,14 +225,14 @@ BOOL CAcceptanceFilterDlg::OnInitDialog()
         // Get the acceptance mask and code value with type of filter
         for (int i = 0 ; i < CAN_MSG_IDS ; i++)
         {
-            m_omStrLocalAccCodeByte1[i] = psControllerDetails->m_omStrAccCodeByte1[i];
-            m_omStrLocalAccCodeByte2[i] = psControllerDetails->m_omStrAccCodeByte2[i];
-            m_omStrLocalAccCodeByte3[i] = psControllerDetails->m_omStrAccCodeByte3[i];
-            m_omStrLocalAccCodeByte4[i] = psControllerDetails->m_omStrAccCodeByte4[i];
-            m_omStrLocalAccMaskByte1[i] = psControllerDetails->m_omStrAccMaskByte1[i];
-            m_omStrLocalAccMaskByte2[i] = psControllerDetails->m_omStrAccMaskByte2[i];
-            m_omStrLocalAccMaskByte3[i] = psControllerDetails->m_omStrAccMaskByte3[i];
-            m_omStrLocalAccMaskByte4[i] = psControllerDetails->m_omStrAccMaskByte4[i];
+            m_omStrLocalAccCodeByte1[i] = psControllerDetails->m_omStrAccCodeByte1[i].c_str();
+            m_omStrLocalAccCodeByte2[i] = psControllerDetails->m_omStrAccCodeByte2[i].c_str();
+            m_omStrLocalAccCodeByte3[i] = psControllerDetails->m_omStrAccCodeByte3[i].c_str();
+            m_omStrLocalAccCodeByte4[i] = psControllerDetails->m_omStrAccCodeByte4[i].c_str();
+            m_omStrLocalAccMaskByte1[i] = psControllerDetails->m_omStrAccMaskByte1[i].c_str();
+            m_omStrLocalAccMaskByte2[i] = psControllerDetails->m_omStrAccMaskByte2[i].c_str();
+            m_omStrLocalAccMaskByte3[i] = psControllerDetails->m_omStrAccMaskByte3[i].c_str();
+            m_omStrLocalAccMaskByte4[i] = psControllerDetails->m_omStrAccMaskByte4[i].c_str();
             m_enmHWFilterType[i]        = psControllerDetails->m_enmHWFilterType[i];
         }
 

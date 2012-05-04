@@ -530,29 +530,29 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                         psControllerDetails[ nIndex ].m_nItemUnderFocus =
                             m_sControllerDetails[ nIndex ].m_nItemUnderFocus;
                         // acceptance code information
-                        strcpy_s(psControllerDetails[ nIndex ].m_omStrAccCodeByte1[0],
-                                 m_sControllerDetails[ nIndex ].m_omStrAccCodeByte1[0]);
+                        psControllerDetails[ nIndex ].m_omStrAccCodeByte1[0] =
+                                 m_sControllerDetails[ nIndex ].m_omStrAccCodeByte1[0];
                         // acceptance code information
-                        strcpy_s(psControllerDetails[ nIndex ].m_omStrAccCodeByte2[0],
-                                 m_sControllerDetails[ nIndex ].m_omStrAccCodeByte2[0]);
+                        psControllerDetails[ nIndex ].m_omStrAccCodeByte2[0] =
+                                 m_sControllerDetails[ nIndex ].m_omStrAccCodeByte2[0];
                         // acceptance code information
-                        strcpy_s(psControllerDetails[ nIndex ].m_omStrAccCodeByte3[0],
-                                 m_sControllerDetails[ nIndex ].m_omStrAccCodeByte3[0]);
+                        psControllerDetails[ nIndex ].m_omStrAccCodeByte3[0] =
+                                 m_sControllerDetails[ nIndex ].m_omStrAccCodeByte3[0];
                         // acceptance code information
-                        strcpy_s(psControllerDetails[ nIndex ].m_omStrAccCodeByte4[0],
-                                 m_sControllerDetails[ nIndex ].m_omStrAccCodeByte4[0]);
+                        psControllerDetails[ nIndex ].m_omStrAccCodeByte4[0] =
+                                 m_sControllerDetails[ nIndex ].m_omStrAccCodeByte4[0];
                         // acceptance mask information
-                        strcpy_s(psControllerDetails[ nIndex ].m_omStrAccMaskByte1[0],
-                                 m_sControllerDetails[ nIndex ].m_omStrAccMaskByte1[0]);
+                        psControllerDetails[ nIndex ].m_omStrAccMaskByte1[0] =
+                                 m_sControllerDetails[ nIndex ].m_omStrAccMaskByte1[0];
                         // acceptance mask information
-                        strcpy_s(psControllerDetails[ nIndex ].m_omStrAccMaskByte2[0],
-                                 m_sControllerDetails[ nIndex ].m_omStrAccMaskByte2[0]);
+                        psControllerDetails[ nIndex ].m_omStrAccMaskByte2[0] =
+                                 m_sControllerDetails[ nIndex ].m_omStrAccMaskByte2[0];
                         // acceptance mask information
-                        strcpy_s(psControllerDetails[ nIndex ].m_omStrAccMaskByte3[0],
-                                 m_sControllerDetails[ nIndex ].m_omStrAccMaskByte3[0]);
+                        psControllerDetails[ nIndex ].m_omStrAccMaskByte3[0] =
+                                 m_sControllerDetails[ nIndex ].m_omStrAccMaskByte3[0];
                         // acceptance mask information
-                        strcpy_s(psControllerDetails[ nIndex ].m_omStrAccMaskByte4[0],
-                                 m_sControllerDetails[ nIndex ].m_omStrAccMaskByte4[0]);
+                        psControllerDetails[ nIndex ].m_omStrAccMaskByte4[0] =
+                                 m_sControllerDetails[ nIndex ].m_omStrAccMaskByte4[0];
                         // acceptance filter mode
                         psControllerDetails[ nIndex ].m_bAccFilterMode =
                             m_sControllerDetails[ nIndex ].m_bAccFilterMode;
@@ -560,27 +560,27 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                         psControllerDetails[ nIndex ].m_ucControllerMode =
                             m_sControllerDetails[ nIndex ].m_ucControllerMode;
                         // warning limit
-                        strcpy_s(psControllerDetails[ nIndex ].m_omStrWarningLimit,
-                                 m_sControllerDetails[ nIndex ].m_omStrWarningLimit);
+                        psControllerDetails[ nIndex ].m_omStrWarningLimit =
+                                 m_sControllerDetails[ nIndex ].m_omStrWarningLimit;
                         // baudrate information
-                        strcpy_s(psControllerDetails[ nIndex ].m_omStrBaudrate,
-                                 m_sControllerDetails[ nIndex ].m_omStrBaudrate);
-                        strcpy_s(psControllerDetails[ nIndex ].m_omStrCNF1,
-                                 m_sControllerDetails[ nIndex ].m_omStrCNF1);
-                        strcpy_s(psControllerDetails[ nIndex ].m_omStrCNF2,
-                                 m_sControllerDetails[ nIndex ].m_omStrCNF2);
-                        strcpy_s(psControllerDetails[ nIndex ].m_omStrCNF3,
-                                 m_sControllerDetails[ nIndex ].m_omStrCNF3);
+                        psControllerDetails[ nIndex ].m_omStrBaudrate =
+                                 m_sControllerDetails[ nIndex ].m_omStrBaudrate;
+                        psControllerDetails[ nIndex ].m_omStrCNF1 =
+                                 m_sControllerDetails[ nIndex ].m_omStrCNF1;
+                        psControllerDetails[ nIndex ].m_omStrCNF2 =
+                                 m_sControllerDetails[ nIndex ].m_omStrCNF2;
+                        psControllerDetails[ nIndex ].m_omStrCNF3 =
+                                 m_sControllerDetails[ nIndex ].m_omStrCNF3;
                         // clock information
-                        strcpy_s(psControllerDetails[ nIndex ].m_omStrPropagationDelay,
-                                 m_sControllerDetails[ nIndex ].m_omStrPropagationDelay);
-                        strcpy_s(psControllerDetails[ nIndex ].m_omStrSjw,
-                                 m_sControllerDetails[ nIndex ].m_omStrSjw);
-                        strcpy_s(psControllerDetails[ nIndex ].m_omStrClock,
-                                 m_sControllerDetails[ nIndex ].m_omStrClock);
+                        psControllerDetails[ nIndex ].m_omStrPropagationDelay =
+                                 m_sControllerDetails[ nIndex ].m_omStrPropagationDelay;
+                        psControllerDetails[ nIndex ].m_omStrSjw =
+                                 m_sControllerDetails[ nIndex ].m_omStrSjw;
+                        psControllerDetails[ nIndex ].m_omStrClock =
+                                 m_sControllerDetails[ nIndex ].m_omStrClock;
                         // sampling information
-                        strcpy_s(psControllerDetails[ nIndex ].m_omStrSampling,
-                                 m_sControllerDetails[ nIndex ].m_omStrSampling);
+                        psControllerDetails[ nIndex ].m_omStrSampling =
+                                 m_sControllerDetails[ nIndex ].m_omStrSampling;
                     }
 
                     // Now assign it to the result
@@ -1115,63 +1115,63 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                         m_sControllerDetails[ nIndex ].m_nItemUnderFocus =
                             pSrc[ nIndex ].m_nItemUnderFocus;
                         // acceptance code information
-                        strcpy_s(m_sControllerDetails[ nIndex ].m_omStrAccCodeByte1[0],
-                                 pSrc[ nIndex ].m_omStrAccCodeByte1[0]);
+                        m_sControllerDetails[ nIndex ].m_omStrAccCodeByte1[0] =
+                                 pSrc[ nIndex ].m_omStrAccCodeByte1[0];
                         // acceptance code information
-                        strcpy_s(m_sControllerDetails[ nIndex ].m_omStrAccCodeByte2[0],
-                                 pSrc[ nIndex ].m_omStrAccCodeByte2[0]);
+                        m_sControllerDetails[ nIndex ].m_omStrAccCodeByte2[0] =
+                                 pSrc[ nIndex ].m_omStrAccCodeByte2[0];
                         // acceptance code information
-                        strcpy_s(m_sControllerDetails[ nIndex ].m_omStrAccCodeByte3[0],
-                                 pSrc[ nIndex ].m_omStrAccCodeByte3[0]);
+                        m_sControllerDetails[ nIndex ].m_omStrAccCodeByte3[0] =
+                                 pSrc[ nIndex ].m_omStrAccCodeByte3[0];
                         // acceptance code information
-                        strcpy_s(m_sControllerDetails[ nIndex ].m_omStrAccCodeByte4[0],
-                                 pSrc[ nIndex ].m_omStrAccCodeByte4[0]);
+                        m_sControllerDetails[ nIndex ].m_omStrAccCodeByte4[0] =
+                                 pSrc[ nIndex ].m_omStrAccCodeByte4[0];
                         // acceptance mask information
-                        strcpy_s(m_sControllerDetails[ nIndex ].m_omStrAccMaskByte1[0],
-                                 pSrc[ nIndex ].m_omStrAccMaskByte1[0]);
+                        m_sControllerDetails[ nIndex ].m_omStrAccMaskByte1[0] =
+                                 pSrc[ nIndex ].m_omStrAccMaskByte1[0];
                         // acceptance mask information
-                        strcpy_s(m_sControllerDetails[ nIndex ].m_omStrAccMaskByte2[0],
-                                 pSrc[ nIndex ].m_omStrAccMaskByte2[0]);
+                        m_sControllerDetails[ nIndex ].m_omStrAccMaskByte2[0] =
+                                 pSrc[ nIndex ].m_omStrAccMaskByte2[0];
                         // acceptance mask information
-                        strcpy_s(m_sControllerDetails[ nIndex ].m_omStrAccMaskByte3[0],
-                                 pSrc[ nIndex ].m_omStrAccMaskByte3[0]);
+                        m_sControllerDetails[ nIndex ].m_omStrAccMaskByte3[0] =
+                                 pSrc[ nIndex ].m_omStrAccMaskByte3[0];
                         // acceptance mask information
-                        strcpy_s(m_sControllerDetails[ nIndex ].m_omStrAccMaskByte4[0],
-                                 pSrc[ nIndex ].m_omStrAccMaskByte4[0]);
+                        m_sControllerDetails[ nIndex ].m_omStrAccMaskByte4[0] =
+                                 pSrc[ nIndex ].m_omStrAccMaskByte4[0];
                         m_sControllerDetails[ nIndex ].m_bAccFilterMode =
                             pSrc[ nIndex ].m_bAccFilterMode;
-                        strcpy_s(m_sControllerDetails[ nIndex ].m_omStrWarningLimit,
-                                 pSrc[ nIndex ].m_omStrWarningLimit);
+                        m_sControllerDetails[ nIndex ].m_omStrWarningLimit =
+                                 pSrc[ nIndex ].m_omStrWarningLimit;
                         m_sControllerDetails[ nIndex ].m_ucControllerMode =
                             pSrc[ nIndex ].m_ucControllerMode;
                         // baudrate information
-                        strcpy_s(m_sControllerDetails[ nIndex ].m_omStrBaudrate,
-                                 pSrc[ nIndex ].m_omStrBaudrate);
+                        m_sControllerDetails[ nIndex ].m_omStrBaudrate =
+                                 pSrc[ nIndex ].m_omStrBaudrate;
                         // bit timing register 0 information
                         //m_sControllerDetails[ nIndex ].m_omStrBTR0 =
                         //  pSrc[ nIndex ].m_omStrBTR0 ;
                         // bit timing register 1 information
                         //m_sControllerDetails[ nIndex ].m_omStrBTR1 =
                         //  pSrc[ nIndex ].m_omStrBTR1;
-                        strcpy_s(m_sControllerDetails[ nIndex ].m_omStrCNF1,
-                                 pSrc[ nIndex ].m_omStrCNF1);
-                        strcpy_s(m_sControllerDetails[ nIndex ].m_omStrCNF2,
-                                 pSrc[ nIndex ].m_omStrCNF2);
-                        strcpy_s(m_sControllerDetails[ nIndex ].m_omStrCNF3,
-                                 pSrc[ nIndex ].m_omStrCNF3);
-                        strcpy_s(m_sControllerDetails[ nIndex ].m_omStrCNF3,
-                                 pSrc[ nIndex ].m_omStrCNF3);
+                        m_sControllerDetails[ nIndex ].m_omStrCNF1 =
+                                 pSrc[ nIndex ].m_omStrCNF1;
+                        m_sControllerDetails[ nIndex ].m_omStrCNF2 =
+                                 pSrc[ nIndex ].m_omStrCNF2;
+                        m_sControllerDetails[ nIndex ].m_omStrCNF3 =
+                                 pSrc[ nIndex ].m_omStrCNF3;
+                        m_sControllerDetails[ nIndex ].m_omStrCNF3 =
+                                 pSrc[ nIndex ].m_omStrCNF3;
                         //PropDelay  and SJW
-                        strcpy_s(m_sControllerDetails[ nIndex ].m_omStrPropagationDelay,
-                                 pSrc[ nIndex ].m_omStrPropagationDelay);
-                        strcpy_s(m_sControllerDetails[ nIndex ].m_omStrSjw,
-                                 pSrc[ nIndex ].m_omStrSjw);
+                        m_sControllerDetails[ nIndex ].m_omStrPropagationDelay =
+                                 pSrc[ nIndex ].m_omStrPropagationDelay;
+                        m_sControllerDetails[ nIndex ].m_omStrSjw =
+                                 pSrc[ nIndex ].m_omStrSjw;
                         // clock information
-                        strcpy_s(m_sControllerDetails[ nIndex ].m_omStrClock,
-                                 pSrc[ nIndex ].m_omStrClock);
+                        m_sControllerDetails[ nIndex ].m_omStrClock =
+                                 pSrc[ nIndex ].m_omStrClock;
                         // sampling information
-                        strcpy_s(m_sControllerDetails[ nIndex ].m_omStrSampling,
-                                 pSrc[ nIndex ].m_omStrSampling );
+                        m_sControllerDetails[ nIndex ].m_omStrSampling =
+                                 pSrc[ nIndex ].m_omStrSampling;
                     }
 
                     m_dwModifiedVals |= defCHANGEDCONTROLLERDETAILS;
@@ -2542,40 +2542,40 @@ static void vReadControllerDetails(CArchive& roCfgArchive, int& nIndex,
     roCfgArchive >> psControllerDetails[ nIndex ].m_nBTR0BTR1;
     CString omTemp;
     roCfgArchive >> omTemp;
-    strcpy_s(psControllerDetails[nIndex].m_omStrCNF1, omTemp.GetBuffer(MAX_PATH));
+    psControllerDetails[nIndex].m_omStrCNF1 = omTemp.GetBuffer(MAX_PATH);
     roCfgArchive >> omTemp;
-    strcpy_s(psControllerDetails[nIndex].m_omStrCNF2, omTemp.GetBuffer(MAX_PATH));
+    psControllerDetails[nIndex].m_omStrCNF2 = omTemp.GetBuffer(MAX_PATH);
     // baudrate information
     roCfgArchive >> omTemp;
-    strcpy_s(psControllerDetails[nIndex].m_omStrBaudrate, omTemp.GetBuffer(MAX_PATH));
+    psControllerDetails[nIndex].m_omStrBaudrate = omTemp.GetBuffer(MAX_PATH);
     // clock information
     roCfgArchive >> omTemp;
-    strcpy_s(psControllerDetails[nIndex].m_omStrClock, omTemp.GetBuffer(MAX_PATH));
+    psControllerDetails[nIndex].m_omStrClock = omTemp.GetBuffer(MAX_PATH);
     // sampling information
     roCfgArchive >> omTemp;
-    strcpy_s(psControllerDetails[nIndex].m_omStrSampling, omTemp.GetBuffer(MAX_PATH));
+    psControllerDetails[nIndex].m_omStrSampling = omTemp.GetBuffer(MAX_PATH);
     // acceptance code information
     roCfgArchive >> omTemp;
-    strcpy_s(psControllerDetails[nIndex].m_omStrAccCodeByte1[0], omTemp.GetBuffer(MAX_PATH));
+    psControllerDetails[nIndex].m_omStrAccCodeByte1[0] = omTemp.GetBuffer(MAX_PATH);
     roCfgArchive >> omTemp;
-    strcpy_s(psControllerDetails[nIndex].m_omStrAccCodeByte2[0], omTemp.GetBuffer(MAX_PATH));
+    psControllerDetails[nIndex].m_omStrAccCodeByte2[0] = omTemp.GetBuffer(MAX_PATH);
     roCfgArchive >> omTemp;
-    strcpy_s(psControllerDetails[nIndex].m_omStrAccCodeByte3[0], omTemp.GetBuffer(MAX_PATH));
+    psControllerDetails[nIndex].m_omStrAccCodeByte3[0] = omTemp.GetBuffer(MAX_PATH);
     roCfgArchive >> omTemp;
-    strcpy_s(psControllerDetails[nIndex].m_omStrAccCodeByte4[0], omTemp.GetBuffer(MAX_PATH));
+    psControllerDetails[nIndex].m_omStrAccCodeByte4[0] = omTemp.GetBuffer(MAX_PATH);
     roCfgArchive >> omTemp;
-    strcpy_s(psControllerDetails[nIndex].m_omStrAccMaskByte1[0], omTemp.GetBuffer(MAX_PATH));
+    psControllerDetails[nIndex].m_omStrAccMaskByte1[0] = omTemp.GetBuffer(MAX_PATH);
     roCfgArchive >> omTemp;
-    strcpy_s(psControllerDetails[nIndex].m_omStrAccMaskByte2[0], omTemp.GetBuffer(MAX_PATH));
+    psControllerDetails[nIndex].m_omStrAccMaskByte2[0] = omTemp.GetBuffer(MAX_PATH);
     roCfgArchive >> omTemp;
-    strcpy_s(psControllerDetails[nIndex].m_omStrAccMaskByte3[0], omTemp.GetBuffer(MAX_PATH));
+    psControllerDetails[nIndex].m_omStrAccMaskByte3[0] = omTemp.GetBuffer(MAX_PATH);
     roCfgArchive >> omTemp;
-    strcpy_s(psControllerDetails[nIndex].m_omStrAccMaskByte4[0], omTemp.GetBuffer(MAX_PATH));
+    psControllerDetails[nIndex].m_omStrAccMaskByte4[0] = omTemp.GetBuffer(MAX_PATH);
     // Acceptance Filter mode
     roCfgArchive >> psControllerDetails[ nIndex ].m_bAccFilterMode;
     // warning limit information
     roCfgArchive >> omTemp;
-    strcpy_s(psControllerDetails[nIndex].m_omStrWarningLimit, omTemp.GetBuffer(MAX_PATH));
+    psControllerDetails[nIndex].m_omStrWarningLimit = omTemp.GetBuffer(MAX_PATH);
     // controller mode information
     roCfgArchive >> psControllerDetails[ nIndex ].m_ucControllerMode;
 }

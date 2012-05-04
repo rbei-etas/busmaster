@@ -84,7 +84,7 @@ BOOL CCAN_Kvaser_CAN::InitInstance()
  */
 static UINT sg_nNoOfChannels = 0;
 
-static char sg_omErrStr[MAX_STRING] = {0};
+static string sg_omErrStr;
 
 // Count variables
 static UCHAR sg_ucNoOfHardware = 0;
@@ -616,11 +616,11 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
             odChannel.m_usBaudRate = static_cast <USHORT>(pControllerDetails[ nIndex ].m_nBTR0BTR1);
             // Baudrate value in decimal
             odChannel.m_unBaudrate = static_cast <UINT>(
-                                         _tcstol( pControllerDetails[ nIndex ].m_omStrBaudrate,
+                                         _tcstol( pControllerDetails[ nIndex ].m_omStrBaudrate.c_str(),
                                                   &pcStopStr, defBASE_DEC ));
             // Get Warning Limit
             odChannel.m_ucWarningLimit = static_cast <UCHAR>(
-                                             _tcstol( pControllerDetails[ nIndex ].m_omStrWarningLimit,
+                                             _tcstol( pControllerDetails[ nIndex ].m_omStrWarningLimit.c_str(),
                                                      &pcStopStr, defBASE_DEC ));
 
             for ( int i = 0; i < CAN_MSG_IDS ; i++ )
@@ -651,28 +651,28 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
                 else
                 {
                     odChannel.m_sFilter[i].m_ucACC_Code0 = static_cast <UCHAR>(
-                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte1[i],
+                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte1[i].c_str(),
                                      &pcStopStr, defBASE_HEX ));
                     odChannel.m_sFilter[i].m_ucACC_Code1 = static_cast <UCHAR>(
-                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte2[i],
+                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte2[i].c_str(),
                                      &pcStopStr, defBASE_HEX ));
                     odChannel.m_sFilter[i].m_ucACC_Code2 = static_cast <UCHAR>(
-                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte3[i],
+                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte3[i].c_str(),
                                      &pcStopStr, defBASE_HEX ));
                     odChannel.m_sFilter[i].m_ucACC_Code3 = static_cast <UCHAR>(
-                            _tcstol(pControllerDetails[ nIndex ].m_omStrAccCodeByte4[i],
+                            _tcstol(pControllerDetails[ nIndex ].m_omStrAccCodeByte4[i].c_str(),
                                     &pcStopStr, defBASE_HEX));
                     odChannel.m_sFilter[i].m_ucACC_Mask0 = static_cast <UCHAR>(
-                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte1[i],
+                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte1[i].c_str(),
                                      &pcStopStr, defBASE_HEX));
                     odChannel.m_sFilter[i].m_ucACC_Mask1 = static_cast <UCHAR>(
-                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte2[i],
+                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte2[i].c_str(),
                                      &pcStopStr, defBASE_HEX));
                     odChannel.m_sFilter[i].m_ucACC_Mask2 = static_cast <UCHAR>(
-                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte3[i],
+                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte3[i].c_str(),
                                      &pcStopStr, defBASE_HEX));
                     odChannel.m_sFilter[i].m_ucACC_Mask3 = static_cast <UCHAR>(
-                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte4[i],
+                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte4[i].c_str(),
                                      &pcStopStr, defBASE_HEX));
                 }
 
@@ -854,7 +854,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
     //First initialize with existing hw description
     for (INT i = 0; i < min(Length, (INT)sg_nNoOfChannels); i++)
     {
-        sprintf_s(pControllerDetails[i].m_omHardwareDesc, _T("%s"), sg_aodChannels[i].m_strName);
+        pControllerDetails[i].m_omHardwareDesc = sg_aodChannels[i].m_strName;
     }
 
     if (sg_ucNoOfHardware > 0)
@@ -1087,8 +1087,8 @@ HRESULT CDIL_CAN_Kvaser::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
     /* Fill the hardware description details */
     for (UINT nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
     {
-        strcpy_s(((PSCONTROLLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc,
-                 sg_aodChannels[nCount].m_strName.c_str());
+        ((PSCONTROLLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc =
+                 sg_aodChannels[nCount].m_strName;
     }
 
     memcpy((void*)sg_ControllerDetails, (void*)ConfigFile, Length);
@@ -2118,7 +2118,7 @@ static int nGetNoOfConnectedHardware(void)
 
     if (nStatus != canOK )
     {
-        strcpy_s(sg_omErrStr, _T("Problem Finding Device!"));
+        sg_omErrStr = _T("Problem Finding Device!");
         nChannelCount = -1;
     }
 
@@ -2146,13 +2146,11 @@ static int nInitHwNetwork()
     /* Capture only Driver Not Running event
      * Take action based on number of Hardware Available
      */
-    char acNo_Of_Hw[MAX_STRING] = {0};
-    sprintf_s(acNo_Of_Hw, _T("Number of Kvaser hardwares Available: %d"), nChannelCount);
 
     /* No Hardware found */
     if( nChannelCount == 0 )
     {
-        sprintf_s(sg_omErrStr, _T("No Kvaser hardwares Available.\nPlease check if Kvaser drivers are installed."));
+        sg_omErrStr = _T("No Kvaser hardwares Available.\nPlease check if Kvaser drivers are installed.");
         nChannelCount = -1;
     }
     /* Available hardware is lesser then the supported channels */

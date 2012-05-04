@@ -24,7 +24,10 @@
 
 #pragma once
 
-const int MAX_STRING = 256;
+/* C++ includes */
+#include <string>
+
+using namespace std;
 
 /**
  * This structure is used for sending/reciving messages to/from the CAN network
@@ -82,36 +85,37 @@ enum eHW_FILTER_TYPES
  *
  * information on the baud rate
  */
-struct sCONTROLLERDETAILS
+class sCONTROLLERDETAILS
 {
-    int     m_nItemUnderFocus;               // item number under focus
-    int     m_nBTR0BTR1;                     // packed value of bit timing register 0
+public:
+    int     m_nItemUnderFocus;                   // item number under focus
+    int     m_nBTR0BTR1;                         // packed value of bit timing register 0
     // and bit timing register 1
-    char m_omStrCNF1[MAX_STRING];            // bit timing register 1 information
-    char m_omStrCNF2[MAX_STRING];            // bit timing register 2 information
-    char m_omStrCNF3[MAX_STRING];            // bit timing register 3 information
-    char m_omStrBTR0[MAX_STRING];            // bit timing register 0 information
-    char m_omStrBTR1[MAX_STRING];            // bit timing register 1 information
-    char m_omStrBaudrate[MAX_STRING];        // baudrate information
-    char m_omStrClock[MAX_STRING];           // clock information
-    char m_omStrSamplePercentage[MAX_STRING];// sampling information
-    char m_omStrSampling[MAX_STRING];        // sampling information
-    char m_omStrWarningLimit[MAX_STRING];    // Warning limit of CAN Controller
-    char m_omStrPropagationDelay[MAX_STRING];// Propagation Delay
-    char m_omStrSjw[MAX_STRING];
-    char m_omStrAccCodeByte1[CAN_MSG_IDS][MAX_STRING];    // acceptance code byte1 information
-    char m_omStrAccCodeByte2[CAN_MSG_IDS][MAX_STRING];    // acceptance code byte2 information
-    char m_omStrAccCodeByte3[CAN_MSG_IDS][MAX_STRING];    // acceptance code byte3 information
-    char m_omStrAccCodeByte4[CAN_MSG_IDS][MAX_STRING];    // acceptance code byte4 information
-    char m_omStrAccMaskByte1[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte1 information
-    char m_omStrAccMaskByte2[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte2 information
-    char m_omStrAccMaskByte3[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte3 information
-    char m_omStrAccMaskByte4[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte4 information
-    char m_omHardwareDesc[MAX_STRING];                    // Hw description which user can
+    string  m_omStrCNF1;                         // bit timing register 1 information
+    string  m_omStrCNF2;                         // bit timing register 2 information
+    string  m_omStrCNF3;                         // bit timing register 3 information
+    string  m_omStrBTR0;                         // bit timing register 0 information
+    string  m_omStrBTR1;                         // bit timing register 1 information
+    string  m_omStrBaudrate;                     // baudrate information
+    string  m_omStrClock;                        // clock information
+    string  m_omStrSamplePercentage;             // sampling information
+    string  m_omStrSampling;                     // sampling information
+    string  m_omStrWarningLimit;                 // Warning limit of CAN Controller
+    string  m_omStrPropagationDelay;             // Propagation Delay
+    string  m_omStrSjw;
+    string  m_omStrAccCodeByte1[CAN_MSG_IDS];    // acceptance code byte1 information
+    string  m_omStrAccCodeByte2[CAN_MSG_IDS];    // acceptance code byte2 information
+    string  m_omStrAccCodeByte3[CAN_MSG_IDS];    // acceptance code byte3 information
+    string  m_omStrAccCodeByte4[CAN_MSG_IDS];    // acceptance code byte4 information
+    string  m_omStrAccMaskByte1[CAN_MSG_IDS];    // acceptance mask byte1 information
+    string  m_omStrAccMaskByte2[CAN_MSG_IDS];    // acceptance mask byte2 information
+    string  m_omStrAccMaskByte3[CAN_MSG_IDS];    // acceptance mask byte3 information
+    string  m_omStrAccMaskByte4[CAN_MSG_IDS];    // acceptance mask byte4 information
+    string  m_omHardwareDesc;                    // Hw description which user can
     // differentiate between the channels
-    int   m_bAccFilterMode;                               // acceptance filter mode(0: single, 1: Dual)
-    int   m_ucControllerMode;                             // Controller mode (1: Active, 2: Passive)
-    int   m_bSelfReception;
+    int     m_bAccFilterMode;                    // acceptance filter mode(0: single, 1: Dual)
+    int     m_ucControllerMode;                  // Controller mode (1: Active, 2: Passive)
+    int     m_bSelfReception;
 
     //Filter type: 1. Accept All 2. Reject All 3. Manual setting
     eHW_FILTER_TYPES m_enmHWFilterType[CAN_MSG_IDS];
@@ -124,36 +128,35 @@ struct sCONTROLLERDETAILS
         // The default baudrate is taken as 500 kbps
         m_nItemUnderFocus = 64;
         m_nBTR0BTR1 = 49210;
-        //strcpy(m_omStrCNF1, _T("7"));
-        strcpy_s(m_omStrCNF1, _T("7"));
-        strcpy_s(m_omStrCNF2, _T("B8"));
-        strcpy_s(m_omStrCNF3, _T("5"));
-        strcpy_s(m_omStrBTR0, _T("C0"));
-        strcpy_s(m_omStrBTR1, _T("3A"));
-        strcpy_s(m_omStrBaudrate, _T("500"));
-        strcpy_s(m_omStrClock, _T("16"));
-        strcpy_s(m_omStrSamplePercentage, _T("75"));
-        strcpy_s(m_omStrSampling, _T("1"));
-        strcpy_s(m_omStrWarningLimit, _T("96"));
-        strcpy_s(m_omStrPropagationDelay, _T("ALL"));
-        strcpy_s(m_omStrSjw, _T("4"));
-        strcpy_s(m_omStrAccCodeByte1[0], _T("0"));
-        strcpy_s(m_omStrAccCodeByte2[0], _T("0"));
-        strcpy_s(m_omStrAccCodeByte3[0], _T("0"));
-        strcpy_s(m_omStrAccCodeByte4[0], _T("0"));
-        strcpy_s(m_omStrAccCodeByte1[1], _T("0"));
-        strcpy_s(m_omStrAccCodeByte2[1], _T("0"));
-        strcpy_s(m_omStrAccCodeByte3[1], _T("0"));
-        strcpy_s(m_omStrAccCodeByte4[1], _T("0"));
-        strcpy_s(m_omStrAccMaskByte1[0], _T("FF"));
-        strcpy_s(m_omStrAccMaskByte2[0], _T("FF"));
-        strcpy_s(m_omStrAccMaskByte3[0], _T("FF"));
-        strcpy_s(m_omStrAccMaskByte4[0], _T("FF"));
-        strcpy_s(m_omStrAccMaskByte1[1], _T("FF"));
-        strcpy_s(m_omStrAccMaskByte2[1], _T("FF"));
-        strcpy_s(m_omStrAccMaskByte3[1], _T("FF"));
-        strcpy_s(m_omStrAccMaskByte4[1], _T("FF"));
-        strcpy_s(m_omHardwareDesc, _T(""));
+        m_omStrCNF1 = "7";
+        m_omStrCNF2 = "B8";
+        m_omStrCNF3 = "5";
+        m_omStrBTR0 = "C0";
+        m_omStrBTR1 = "3A";
+        m_omStrBaudrate = "500";
+        m_omStrClock = "16";
+        m_omStrSamplePercentage = "75";
+        m_omStrSampling = "1";
+        m_omStrWarningLimit = "96";
+        m_omStrPropagationDelay = "ALL";
+        m_omStrSjw = "4";
+        m_omStrAccCodeByte1[0] = "0";
+        m_omStrAccCodeByte2[0] = "0";
+        m_omStrAccCodeByte3[0] = "0";
+        m_omStrAccCodeByte4[0] = "0";
+        m_omStrAccCodeByte1[1] = "0";
+        m_omStrAccCodeByte2[1] = "0";
+        m_omStrAccCodeByte3[1] = "0";
+        m_omStrAccCodeByte4[1] = "0";
+        m_omStrAccMaskByte1[0] = "FF";
+        m_omStrAccMaskByte2[0] = "FF";
+        m_omStrAccMaskByte3[0] = "FF";
+        m_omStrAccMaskByte4[0] = "FF";
+        m_omStrAccMaskByte1[1] = "FF";
+        m_omStrAccMaskByte2[1] = "FF";
+        m_omStrAccMaskByte3[1] = "FF";
+        m_omStrAccMaskByte4[1] = "FF";
+        m_omHardwareDesc = "";
         m_bAccFilterMode = FALSE;
         m_ucControllerMode = 0x1;
         m_enmHWFilterType[0] = HW_FILTER_ACCEPT_ALL;

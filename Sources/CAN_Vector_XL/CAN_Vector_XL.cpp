@@ -282,7 +282,7 @@ USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
  */
 static UINT sg_nNoOfChannels = 0;
 
-static char sg_omErrStr[MAX_STRING] = {0};
+static string sg_omErrStr;
 
 // Count variables
 static UCHAR sg_ucNoOfHardware = 0;
@@ -805,7 +805,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
             oss2 << "Vector - " << sg_aodChannels[i].m_pXLChannelInfo->name;
             oss2 << " SN - " << dec << serialNumber;
             oss2 << " Channel Index - " << dec << sg_aodChannels[i].m_pXLChannelInfo->channelIndex;
-            strcpy_s(sg_ControllerDetails[i].m_omHardwareDesc, oss2.str().c_str());
+            sg_ControllerDetails[i].m_omHardwareDesc = oss2.str();
             sg_bCurrState = STATE_HW_INTERFACE_LISTED;
         }
 
@@ -871,9 +871,11 @@ HRESULT CDIL_CAN_VectorXL::CAN_DisplayConfigDlg(PCHAR& InitData, INT& /*Length*/
 
     for ( UINT i = 0 ; i < sg_nNoOfChannels ; i++ )
     {
-        sprintf_s(pCntrlDetails[i].m_omStrBaudrate, ("%0.3f"), float(
-                      g_xlDrvConfig.channel[sg_aodChannels[i].m_pXLChannelInfo->channelIndex].
-                      busParams.data.can.bitRate / 1000.000 ));
+        ostringstream oss;
+        oss.precision(3);
+        oss << float(g_xlDrvConfig.channel[sg_aodChannels[i].m_pXLChannelInfo->channelIndex].
+                     busParams.data.can.bitRate / 1000.000);
+        pCntrlDetails[i].m_omStrBaudrate = oss.str();
     }
 
     return S_OK;
@@ -895,8 +897,8 @@ HRESULT CDIL_CAN_VectorXL::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
     /* Fill the hardware description details */
     for (UINT nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
     {
-        strcpy_s(((PSCONTROLLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc,
-                 sg_ControllerDetails[nCount].m_omHardwareDesc);
+        ((PSCONTROLLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc =
+                 sg_ControllerDetails[nCount].m_omHardwareDesc;
     }
 
     memcpy((void*)sg_ControllerDetails, (void*)ConfigFile, Length);
@@ -1776,13 +1778,13 @@ static int nGetNoOfConnectedHardware(void)
 
         if (!nResult)
         {
-            strcpy_s(sg_omErrStr, _T("No available channels found! (e.g. no CANcabs...)\r\n"));
+            sg_omErrStr = "No available channels found! (e.g. no CANcabs...)";
             xlStatus = XL_ERROR;
         }
     }
     else
     {
-        strcpy_s(sg_omErrStr, _T("Problem Finding Device!"));
+        sg_omErrStr = "Problem Finding Device!";
         nResult = -1;
     }
 
@@ -1918,7 +1920,7 @@ static int nInitHwNetwork()
     /* No Hardware found */
     if( nChannelCount == 0 )
     {
-        MessageBox(NULL,sg_omErrStr, NULL, MB_OK | MB_ICONERROR);
+        MessageBox(NULL, sg_omErrStr.c_str(), NULL, MB_OK | MB_ICONERROR);
         nChannelCount = -1;
     }
     /* Available hardware is lesser then the supported channels */

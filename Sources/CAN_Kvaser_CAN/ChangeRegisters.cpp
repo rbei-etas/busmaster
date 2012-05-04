@@ -21,10 +21,15 @@
  *
  * This file contain definition of all function of
  */
+
 // For all standard header file include
 #include "CAN_Kvaser_CAN_stdafx.h"
-// Definition of App class
-// Hash defines
+
+/* C++ includes */
+#include <sstream>
+#include <string>
+
+/* Project includes */
 #include "math.h"
 #include "include/struct_can.h"
 #include "ContrConfigPeakUsbDefs.h"
@@ -1716,16 +1721,16 @@ void CChangeRegisters::vFillControllerConfigDetails()
 
     if (pWnd != NULL)
     {
-        pWnd->SetWindowText(m_pControllerDetails[nIndex].m_omHardwareDesc);
+        pWnd->SetWindowText(m_pControllerDetails[nIndex].m_omHardwareDesc.c_str());
     }
 
     char* pcStopStr     = NULL;
-    m_omStrEditBaudRate     = m_pControllerDetails[ nIndex ].m_omStrBaudrate;
-    m_omStrEditBTR0         = m_pControllerDetails[ nIndex ].m_omStrBTR0;
-    m_omStrEditBTR1         = m_pControllerDetails[ nIndex ].m_omStrBTR1;
-    m_omStrComboClock       = m_pControllerDetails[ nIndex ].m_omStrClock;
-    m_omStrComboSampling    = m_pControllerDetails[ nIndex ].m_omStrSampling;
-    m_omStrEditWarningLimit = m_pControllerDetails[ nIndex ].m_omStrWarningLimit;
+    m_omStrEditBaudRate     = m_pControllerDetails[ nIndex ].m_omStrBaudrate.c_str();
+    m_omStrEditBTR0         = m_pControllerDetails[ nIndex ].m_omStrBTR0.c_str();
+    m_omStrEditBTR1         = m_pControllerDetails[ nIndex ].m_omStrBTR1.c_str();
+    m_omStrComboClock       = m_pControllerDetails[ nIndex ].m_omStrClock.c_str();
+    m_omStrComboSampling    = m_pControllerDetails[ nIndex ].m_omStrSampling.c_str();
+    m_omStrEditWarningLimit = m_pControllerDetails[ nIndex ].m_omStrWarningLimit.c_str();
     m_usBTR0BTR1 = static_cast<USHORT>(m_pControllerDetails[ nIndex ].m_nBTR0BTR1);
     int nSample             = _tstoi(m_omStrComboSampling.GetBuffer(MAX_PATH));
     //omStrInitComboBox(ITEM_SAMPLING,1,m_omCombSampling));
@@ -1734,12 +1739,12 @@ void CChangeRegisters::vFillControllerConfigDetails()
     // of all possible  of BTRi, SJW, Sampling Percentage, and NBT values
     m_unCombClock       = (UINT)_tstoi(m_omStrComboClock.GetBuffer(MAX_PATH));
     m_dEditBaudRate =
-        dCalculateBaudRateFromBTRs( m_omStrEditBTR0, m_omStrEditBTR1 );
+        dCalculateBaudRateFromBTRs(m_omStrEditBTR0, m_omStrEditBTR1);
     UpdateData(FALSE);
     unsigned int unIndex = 0;
     int nReturn =
-        nListBoxValues( m_asColListCtrl, m_dEditBaudRate, (WORD)m_unCombClock,
-                        &unIndex,nSample );
+        nListBoxValues(m_asColListCtrl, m_dEditBaudRate, (WORD)m_unCombClock,
+                       &unIndex,nSample );
 
     // if Function returns Success display the item and set the focus to last
     // saved item or at item which is at the mid of the list. Update edit boxes
@@ -1811,15 +1816,14 @@ void CChangeRegisters::vUpdateControllerDetails()
         m_usBTR0BTR1 = static_cast <USHORT>(((ucBtr0 << 8 )| ucBtr1) & 0xffff);
         // Update controller information
         //int nIndex = m_nLastSelection;
-        m_pControllerDetails[ m_nLastSelection ].m_nBTR0BTR1 = m_usBTR0BTR1;
-        m_pControllerDetails[ m_nLastSelection ].m_nItemUnderFocus   =
-            nItemUnderFocus;
-        strcpy_s(m_pControllerDetails[m_nLastSelection].m_omStrBaudrate, m_omStrEditBaudRate.GetBuffer(MAX_PATH));
-        strcpy_s(m_pControllerDetails[m_nLastSelection].m_omStrBTR0, m_omStrEditBTR0.GetBuffer(MAX_PATH));
-        strcpy_s(m_pControllerDetails[m_nLastSelection].m_omStrBTR1, m_omStrEditBTR1.GetBuffer(MAX_PATH));
-        strcpy_s(m_pControllerDetails[m_nLastSelection].m_omStrClock, m_omStrComboClock.GetBuffer(MAX_PATH));
-        strcpy_s(m_pControllerDetails[m_nLastSelection].m_omStrSampling, m_omStrComboSampling.GetBuffer(MAX_PATH));
-        strcpy_s(m_pControllerDetails[m_nLastSelection].m_omStrWarningLimit, m_omStrEditWarningLimit.GetBuffer(MAX_PATH));
+        m_pControllerDetails[m_nLastSelection].m_nBTR0BTR1 = m_usBTR0BTR1;
+        m_pControllerDetails[m_nLastSelection].m_nItemUnderFocus = nItemUnderFocus;
+        m_pControllerDetails[m_nLastSelection].m_omStrBaudrate = m_omStrEditBaudRate.GetBuffer(MAX_PATH);
+        m_pControllerDetails[m_nLastSelection].m_omStrBTR0 = m_omStrEditBTR0.GetBuffer(MAX_PATH);
+        m_pControllerDetails[m_nLastSelection].m_omStrBTR1 = m_omStrEditBTR1.GetBuffer(MAX_PATH);
+        m_pControllerDetails[m_nLastSelection].m_omStrClock = m_omStrComboClock.GetBuffer(MAX_PATH);
+        m_pControllerDetails[m_nLastSelection].m_omStrSampling = m_omStrComboSampling.GetBuffer(MAX_PATH);
+        m_pControllerDetails[m_nLastSelection].m_omStrWarningLimit = m_omStrEditWarningLimit.GetBuffer(MAX_PATH);
         //Get the self reception option
         CButton* pCheckSelfRec = (CButton*)GetDlgItem(IDC_CHKB_SELF_RECEPTION);
 
@@ -1895,7 +1899,7 @@ BOOL CChangeRegisters::bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1)
     omStrBaudRate.Format(_T("%f"), dBaudRate);
     m_usBTR0BTR1 = static_cast <USHORT>(((bBTR0 << 8 )| bBTR1) & 0xffff);
     //Save the changes for the channels
-    unClock       = (UINT) _tstoi(m_pControllerDetails[ nChannel-1 ].m_omStrClock);
+    unClock       = (UINT) _tstoi(m_pControllerDetails[ nChannel-1 ].m_omStrClock.c_str());
 
     if( (bBTR1 & 0x80 ) != 0)
     {
@@ -1918,10 +1922,12 @@ BOOL CChangeRegisters::bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1)
     }
 
     m_pControllerDetails[ nChannel-1 ].m_nBTR0BTR1 = m_usBTR0BTR1;
-    strcpy_s(m_pControllerDetails[ nChannel-1 ].m_omStrBaudrate, omStrBaudRate.GetBuffer(MAX_PATH));
-    strcpy_s(m_pControllerDetails[ nChannel-1 ].m_omStrBTR0, omStrBtr0.GetBuffer(MAX_PATH));
-    strcpy_s(m_pControllerDetails[ nChannel-1 ].m_omStrBTR1, omStrBtr1.GetBuffer(MAX_PATH));
-    sprintf_s(m_pControllerDetails[ nChannel-1  ].m_omStrSampling, _T("%d"), unSample);
+    m_pControllerDetails[ nChannel-1 ].m_omStrBaudrate = omStrBaudRate.GetBuffer(MAX_PATH);
+    m_pControllerDetails[ nChannel-1 ].m_omStrBTR0 = omStrBtr0.GetBuffer(MAX_PATH);
+    m_pControllerDetails[ nChannel-1 ].m_omStrBTR1 = omStrBtr1.GetBuffer(MAX_PATH);
+    ostringstream oss;
+    oss << dec << unSample;
+    m_pControllerDetails[ nChannel-1  ].m_omStrSampling = oss.str();
     m_nLastSelection = nChannel-1;
     return bReturn;
 }
@@ -1982,22 +1988,22 @@ BOOL CChangeRegisters::bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId,
         CString omStrTempByte;
         // Create Code
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId)));
-        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte4[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
+        m_pControllerDetails[ unIndex ].m_omStrAccCodeByte4[bExtended] = omStrTempByte.GetBuffer(MAX_PATH);
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId >> nShift)));
-        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte3[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
+        m_pControllerDetails[ unIndex ].m_omStrAccCodeByte3[bExtended] = omStrTempByte.GetBuffer(MAX_PATH);
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId >> nShift * 2)));
-        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte2[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
+        m_pControllerDetails[ unIndex ].m_omStrAccCodeByte2[bExtended] = omStrTempByte.GetBuffer(MAX_PATH);
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId >> nShift * 3)));
-        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte1[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
+        m_pControllerDetails[ unIndex ].m_omStrAccCodeByte1[bExtended] = omStrTempByte.GetBuffer(MAX_PATH);
         // Create Mask
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId )));
-        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte4[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
+        m_pControllerDetails[ unIndex ].m_omStrAccMaskByte4[bExtended] = omStrTempByte.GetBuffer(MAX_PATH);
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId >> nShift)));
-        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte3[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
+        m_pControllerDetails[ unIndex ].m_omStrAccMaskByte3[bExtended] = omStrTempByte.GetBuffer(MAX_PATH);
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId >> nShift * 2)));
-        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte2[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
+        m_pControllerDetails[ unIndex ].m_omStrAccMaskByte2[bExtended] = omStrTempByte.GetBuffer(MAX_PATH);
         omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId >> nShift * 3)));
-        strcpy_s(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte1[bExtended], omStrTempByte.GetBuffer(MAX_PATH));
+        m_pControllerDetails[ unIndex ].m_omStrAccMaskByte1[bExtended] = omStrTempByte.GetBuffer(MAX_PATH);
         m_pControllerDetails[ unIndex ].m_bAccFilterMode = bExtended;
     }
 
@@ -2027,14 +2033,14 @@ BOOL CChangeRegisters::bGetFilterFromCom(BOOL&  bExtended, double&  dBeginMsgId,
     {
         char* pcStopStr = NULL;
         //Change to separate integer value for each byte
-        int nAccCodeByte1 = lFromStrchar_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte1[0], &pcStopStr, defHEXADECIMAL);
-        int nAccCodeByte2 = lFromStrchar_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte2[0], &pcStopStr, defHEXADECIMAL);
-        int nAccCodeByte3 = lFromStrchar_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte3[0], &pcStopStr, defHEXADECIMAL);
-        int nAccCodeByte4 = lFromStrchar_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte4[0], &pcStopStr, defHEXADECIMAL);
-        int nMaskCodeByte1 = lFromStrchar_2_Long(m_pControllerDetails[0].m_omStrAccMaskByte1[0], &pcStopStr, defHEXADECIMAL);
-        int nMaskCodeByte2 = lFromStrchar_2_Long(m_pControllerDetails[0].m_omStrAccMaskByte2[0], &pcStopStr, defHEXADECIMAL);
-        int nMaskCodeByte3 = lFromStrchar_2_Long(m_pControllerDetails[0].m_omStrAccMaskByte3[0], &pcStopStr, defHEXADECIMAL);
-        int nMaskCodeByte4 = lFromStrchar_2_Long(m_pControllerDetails[0].m_omStrAccMaskByte4[0], &pcStopStr, defHEXADECIMAL);
+        int nAccCodeByte1 = _tcstol(m_pControllerDetails[0].m_omStrAccCodeByte1[0].c_str(), &pcStopStr, defHEXADECIMAL);
+        int nAccCodeByte2 = _tcstol(m_pControllerDetails[0].m_omStrAccCodeByte2[0].c_str(), &pcStopStr, defHEXADECIMAL);
+        int nAccCodeByte3 = _tcstol(m_pControllerDetails[0].m_omStrAccCodeByte3[0].c_str(), &pcStopStr, defHEXADECIMAL);
+        int nAccCodeByte4 = _tcstol(m_pControllerDetails[0].m_omStrAccCodeByte4[0].c_str(), &pcStopStr, defHEXADECIMAL);
+        int nMaskCodeByte1 = _tcstol(m_pControllerDetails[0].m_omStrAccMaskByte1[0].c_str(), &pcStopStr, defHEXADECIMAL);
+        int nMaskCodeByte2 = _tcstol(m_pControllerDetails[0].m_omStrAccMaskByte2[0].c_str(), &pcStopStr, defHEXADECIMAL);
+        int nMaskCodeByte3 = _tcstol(m_pControllerDetails[0].m_omStrAccMaskByte3[0].c_str(), &pcStopStr, defHEXADECIMAL);
+        int nMaskCodeByte4 = _tcstol(m_pControllerDetails[0].m_omStrAccMaskByte4[0].c_str(), &pcStopStr, defHEXADECIMAL);
         //now make them as dword in decimal
         dBeginMsgId = (ULONG)(nAccCodeByte1*0X1000000+nAccCodeByte2*0X10000+
                               nAccCodeByte3*0X100+nAccCodeByte4);

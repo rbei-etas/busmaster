@@ -1778,18 +1778,18 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
         for( INT i = 0; i < defNO_OF_CHANNELS; i++ )
         {
             sg_asChannel[i].m_OCI_CANConfig.baudrate =
-                static_cast <UINT>(_tcstol( pControllerDetails[ i ].m_omStrBaudrate,
+                static_cast <UINT>(_tcstol( pControllerDetails[ i ].m_omStrBaudrate.c_str(),
                                             &pcStopStr, defBASE_DEC ));
             sg_asChannel[i].m_OCI_CANConfig.baudrate
                 = (sg_asChannel[i].m_OCI_CANConfig.baudrate * 1000);
             sg_asChannel[i].m_OCI_CANConfig.samplesPerBit =
-                static_cast <UINT>(_tcstol( pControllerDetails[ i ].m_omStrSampling,
+                static_cast <UINT>(_tcstol( pControllerDetails[ i ].m_omStrSampling.c_str(),
                                             &pcStopStr, defBASE_DEC ));
             sg_asChannel[i].m_OCI_CANConfig.samplePoint =
-                static_cast <UINT>(_tcstol( pControllerDetails[ i ].m_omStrSamplePercentage,
+                static_cast <UINT>(_tcstol( pControllerDetails[ i ].m_omStrSamplePercentage.c_str(),
                                             &pcStopStr, defBASE_DEC ));
             sg_asChannel[i].m_OCI_CANConfig.SJW =
-                static_cast <UINT>(_tcstol( pControllerDetails[ i ].m_omStrSjw,
+                static_cast <UINT>(_tcstol( pControllerDetails[ i ].m_omStrSjw.c_str(),
                                             &pcStopStr, defBASE_DEC ));
             sg_asChannel[i].m_OCI_CANConfig.syncEdge = OCI_CAN_SINGLE_SYNC_EDGE;
             sg_asChannel[i].m_OCI_CANConfig.selfReceptionMode = OCI_SELF_RECEPTION_ON;
@@ -1895,7 +1895,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
     //VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_DRIVER_SELECTED, ERR_IMPROPER_STATE);
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;
-    char acURI[defNO_OF_CHANNELS][MAX_STRING]= {0};
+    char acURI[defNO_OF_CHANNELS][256]= {0};
     INT nFound = 0;
 
     if (OCI_FindCANController(acURI, defNO_OF_CHANNELS, &nFound) == OCI_SUCCESS)
@@ -2134,7 +2134,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
     //First initialize with existing hw description
     for (INT i = 0; i < min(Length, (INT)sg_nNoOfChannels); i++)
     {
-        strcpy_s(psContrlDets[i].m_omHardwareDesc, T2A(sg_asChannel[i].m_acURI));
+        psContrlDets[i].m_omHardwareDesc = T2A(sg_asChannel[i].m_acURI);
     }
 
     if (sg_nNoOfChannels > 0)
@@ -2208,8 +2208,8 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SetConfigData(PCHAR pInitData, INT /*Length*/)
                   &(sg_asChannel[i].m_OCI_CANConfig),
                   &(sg_asChannel[i].m_OCI_CntrlProp));
         /* Fill the hardware description details */
-        strcpy_s(((PSCONTROLLER_DETAILS)pInitData)[i].m_omHardwareDesc,
-                 sg_asChannel[i].m_acURI);
+        ((PSCONTROLLER_DETAILS)pInitData)[i].m_omHardwareDesc =
+                 sg_asChannel[i].m_acURI;
 
         if (ErrCode == OCI_SUCCESS)
         {
