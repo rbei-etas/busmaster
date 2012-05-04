@@ -322,10 +322,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\BUSMASTER.rc"
-				>
-			</File>
-			<File
 				RelativePath=".\BusStatisticCAN.cpp"
 				>
 				<FileConfiguration
@@ -1783,6 +1779,10 @@
 			</File>
 			<File
 				RelativePath="Res\BUSMASTER.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\BUSMASTER.rc"
 				>
 			</File>
 			<File

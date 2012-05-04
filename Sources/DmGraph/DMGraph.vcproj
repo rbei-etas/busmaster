@@ -337,28 +337,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="DMGraph.rc"
-				>
-				<FileConfiguration
-					Name="Unicode Debug|Win32"
-					>
-					<Tool
-						Name="VCResourceCompilerTool"
-						PreprocessorDefinitions=""
-						AdditionalIncludeDirectories="$(OUTDIR)"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Unicode Release MinSize|Win32"
-					>
-					<Tool
-						Name="VCResourceCompilerTool"
-						PreprocessorDefinitions=""
-						AdditionalIncludeDirectories="$(OUTDIR)"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="DMGraphCtrl.cpp"
 				>
 				<FileConfiguration
@@ -737,6 +715,28 @@
 			<File
 				RelativePath="CursorPropPage.rgs"
 				>
+			</File>
+			<File
+				RelativePath="DMGraph.rc"
+				>
+				<FileConfiguration
+					Name="Unicode Debug|Win32"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						PreprocessorDefinitions=""
+						AdditionalIncludeDirectories="$(OUTDIR)"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Release MinSize|Win32"
+					>
+					<Tool
+						Name="VCResourceCompilerTool"
+						PreprocessorDefinitions=""
+						AdditionalIncludeDirectories="$(OUTDIR)"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="DMGraph.rc2"

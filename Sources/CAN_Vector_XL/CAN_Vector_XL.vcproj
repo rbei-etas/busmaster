@@ -208,10 +208,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CAN_Vector_XL.rc"
-				>
-			</File>
-			<File
 				RelativePath=".\CAN_Vector_XL_stdafx.cpp"
 				>
 			</File>
@@ -247,6 +243,14 @@
 			</File>
 			<File
 				RelativePath=".\EXTERNAL_INCLUDE\vxlapi.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			>
+			<File
+				RelativePath=".\CAN_Vector_XL.rc"
 				>
 			</File>
 		</Filter>

@@ -283,10 +283,14 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\CAN_ICS_neoVI.rc"
+		<Filter
+			Name="Resource Files"
 			>
-		</File>
+			<File
+				RelativePath=".\CAN_ICS_neoVI.rc"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
