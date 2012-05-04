@@ -28,7 +28,7 @@
 #include "Utility/RadixEdit.h"
 #include "Math.h"
 #include "Include/Struct_Can.h"
-#include "Include/CanUsbDefs.h"
+#include "../Include/BaseDefs.h"
 #include "ChangeRegDefines.h"
 
 #define defMAXPropDelay 8

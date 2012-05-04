@@ -26,7 +26,6 @@
 
 #include "Filter_stdafx.h"
 #include "Filter_resource.h"
-#include "Include/CanUsbDefs.h"
 #include "FilterConfigDlg.h"        // For Filter Configuration Dialog
 
 

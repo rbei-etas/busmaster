@@ -39,7 +39,6 @@
 #include "Include/DIL_CommonDefs.h"
 #include "EXTERNAL_INCLUDE/OCI/ocican.h"
 #include "EXTERNAL_INCLUDE/CSI/csisfs.h"
-#include "Include/CanUsbDefs.h"
 #include "Include/Can_Error_Defs.h"
 #include "DIL_Interface/BaseDIL_CAN_Controller.h"
 #include "HardwareListing.h"
@@ -1779,18 +1778,18 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
         {
             sg_asChannel[i].m_OCI_CANConfig.baudrate =
                 static_cast <UINT>(_tcstol( pControllerDetails[ i ].m_omStrBaudrate.c_str(),
-                                            &pcStopStr, defBASE_DEC ));
+                                            &pcStopStr, 10));
             sg_asChannel[i].m_OCI_CANConfig.baudrate
                 = (sg_asChannel[i].m_OCI_CANConfig.baudrate * 1000);
             sg_asChannel[i].m_OCI_CANConfig.samplesPerBit =
                 static_cast <UINT>(_tcstol( pControllerDetails[ i ].m_omStrSampling.c_str(),
-                                            &pcStopStr, defBASE_DEC ));
+                                            &pcStopStr, 10));
             sg_asChannel[i].m_OCI_CANConfig.samplePoint =
                 static_cast <UINT>(_tcstol( pControllerDetails[ i ].m_omStrSamplePercentage.c_str(),
-                                            &pcStopStr, defBASE_DEC ));
+                                            &pcStopStr, 10));
             sg_asChannel[i].m_OCI_CANConfig.SJW =
                 static_cast <UINT>(_tcstol( pControllerDetails[ i ].m_omStrSjw.c_str(),
-                                            &pcStopStr, defBASE_DEC ));
+                                            &pcStopStr, 10));
             sg_asChannel[i].m_OCI_CANConfig.syncEdge = OCI_CAN_SINGLE_SYNC_EDGE;
             sg_asChannel[i].m_OCI_CANConfig.selfReceptionMode = OCI_SELF_RECEPTION_ON;
             sg_asChannel[i].m_OCI_CANConfig.BTL_Cycles = 10;

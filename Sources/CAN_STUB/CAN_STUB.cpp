@@ -30,7 +30,6 @@
 #include "include/Error.h"
 #include "Include/Struct_CAN.h"
 #include "Include/BaseDefs.h"
-#include "Include/CanUSBDefs.h"
 #include "Include/DIL_CommonDefs.h"
 #include "DataTypes/Base_WrapperErrorLogger.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"

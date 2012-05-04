@@ -28,7 +28,6 @@
 #include "CAN_ETAS_BOA_Resource.h"
 // For DIL datatypes
 #include "DataTypes/DIL_Datatypes.h"
-#include "Include/CanUsbDefs.h"
 #include <map>
 /////////////////////////////////////////////////////////////////////////////
 // CHardwareListing dialog

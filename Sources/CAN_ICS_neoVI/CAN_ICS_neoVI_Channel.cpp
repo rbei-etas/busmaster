@@ -24,7 +24,7 @@
 
 #include "CAN_ICS_neoVI_stdafx.h"
 #include "CAN_ICS_neoVI_Channel.h" // For CChannel class declaration
-#include "Include/CanUsbDefs.h"
+#include "Include/BaseDefs.h"
 
 /**
  * Standard default constructor

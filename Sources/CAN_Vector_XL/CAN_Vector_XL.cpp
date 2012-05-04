@@ -36,7 +36,6 @@
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/DIL_Datatypes.h"
 #include "Include/CAN_Error_Defs.h"
-#include "Include/CanUsbDefs.h"
 #include "Include/Struct_CAN.h"
 #include "Utility/Utility_Thread.h"
 #include "Include/DIL_CommonDefs.h"
@@ -1232,7 +1231,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_StartHardware(void)
     //Connect to the network
     hResult = nConnect(TRUE);
 
-    if (hResult == defERR_OK)
+    if (hResult == 0)
     {
         hResult = S_OK;
         sg_bCurrState = STATE_CONNECTED;
@@ -1308,7 +1307,7 @@ static void vMapDeviceChannelIndex()
 * \brief         This function will connect the tool with hardware. This will
 *                establish the data link between the application and hardware.
 * \param[in]     bConnect TRUE to Connect, FALSE to Disconnect
-* \return        Returns defERR_OK if successful otherwise corresponding Error code.
+* \return        Returns 0 if successful otherwise corresponding Error code.
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
@@ -1362,7 +1361,7 @@ static int nConnect(BOOL bConnect)
 
             if(xlStatus == XL_SUCCESS)
             {
-                nReturn = defERR_OK;
+                nReturn = 0;
             }
         }
     }
@@ -1374,7 +1373,7 @@ static int nConnect(BOOL bConnect)
     }
     else
     {
-        nReturn = defERR_OK;
+        nReturn = 0;
     }
 
     if ( sg_bIsConnected )
@@ -1404,7 +1403,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_StopHardware(void)
     sg_sParmRThread.bTerminateThread();
     hResult = nConnect(FALSE);
 
-    if (hResult == defERR_OK)
+    if (hResult == 0)
     {
         hResult = S_OK;
         sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
@@ -1529,7 +1528,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessa
         {
             EnterCriticalSection(&sg_CritSectForWrite); // Lock the buffer
 
-            if (nWriteMessage(sMessage, dwClientID) == defERR_OK)
+            if (nWriteMessage(sMessage, dwClientID) == 0)
             {
                 hResult = S_OK;
             }
@@ -1663,7 +1662,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_GetControllerParams(LONG& lParam, UINT nChannel, 
             {
                 UCHAR ucResult;
 
-                if (nTestHardwareConnection(ucResult, nChannel) == defERR_OK)
+                if (nTestHardwareConnection(ucResult, nChannel) == 0)
                 {
                     lParam = (LONG)ucResult;
                 }
@@ -1731,7 +1730,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChanne
 /**
 * \brief         Finds the number of hardware connected.
 * \param         void
-* \return        defERR_OK if successful otherwise corresponding Error code.
+* \return        0 if successful otherwise corresponding Error code.
 *                0, Query successful, but no device found
 *                > 0, Number of devices found
 *                < 0, query for devices unsuccessful
@@ -1814,7 +1813,7 @@ int ListHardwareInterfaces(HWND /*hParent*/, DWORD /*dwDriver*/, INTERFACE_HW* p
 * \brief         This function will get the hardware selection from the user
 *                and will create essential networks.
 * \param         void
-* \return        returns defERR_OK (always)
+* \return        returns 0 (always)
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
@@ -1861,13 +1860,13 @@ static int nCreateMultipleHardwareNetwork()
     }
 
     g_xlPermissionMask = g_xlChannelMask;
-    return defERR_OK;
+    return 0;
 }
 
 /**
 * \brief         This function will create a single network with available single hardware.
 * \param         void
-* \return        returns defERR_OK (always)
+* \return        returns 0 (always)
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
@@ -1893,7 +1892,7 @@ static int nCreateSingleHardwareNetwork()
     }
 
     g_xlPermissionMask = g_xlChannelMask;
-    return defERR_OK;
+    return 0;
 }
 
 /**

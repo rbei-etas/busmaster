@@ -24,7 +24,6 @@
 #include "Utility/Utility_Thread.h"
 #include "Utility/MsgInterpretation.h"
 #include "Include/struct_can.h"
-#include "Include/CanUsbDefs.h"
 #include "Datatypes/MsgBufAll_Datatypes.h"
 #include "Datatypes/MsgBufCANVFSE.h"
 #include "Include/Basedefs.h"

@@ -55,6 +55,23 @@ typedef struct sCAN_ERR
 
 } SCAN_ERR, *SPCAN_ERR;
 
+#define defMODE_ACTIVE                         1
+#define defMODE_PASSIVE                        2
+#define defMODE_SIMULATE                       3
+
+#define defCONTROLLER_ACTIVE                   1
+#define defCONTROLLER_PASSIVE                  2
+#define defCONTROLLER_BUSOFF                   3
+
+#define defUSB_MODE_ACTIVE                     1
+#define defUSB_MODE_PASSIVE                    2
+#define defUSB_MODE_SIMULATE                   3
+
+#define defWARNING_LIMIT_INT    96
+
+#define defBAUD_RATE_VAL                    500
+#define defBAUD_RATE                        0xC03A // 500 KBPS
+
 /**
  * This enumeration defines current error state
  */

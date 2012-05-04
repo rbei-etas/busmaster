@@ -161,7 +161,7 @@ void CHardwareListing::vSetHardwareList(INTERFACE_HW* /*psHwIntr*/, int nSize)
     m_omSelectedHwList.SetImageList(&m_omImageList, LVSIL_SMALL );
     // Insert First Columns
     // The style is Icon. So insert Empty column
-    m_omHardwareList.InsertColumn(0, STR_EMPTY);
+    m_omHardwareList.InsertColumn(0, "");
     // Create selelected list columns
     m_omSelectedHwList.InsertColumn( defCHANNEL_COL ,
                                      defSTR_CHANNEL_NAME );
@@ -172,7 +172,7 @@ void CHardwareListing::vSetHardwareList(INTERFACE_HW* /*psHwIntr*/, int nSize)
     m_omSelectedHwList.SetColumnWidth( defHARDWARE_COL,
                                        defSTR_HARDWARE_COL_WIDTH );
     int nImageIndex = 0;
-    CString omStrFormat(STR_EMPTY);
+    CString omStrFormat("");
     // Add List of unselected Hw in to the CListCtrl
     int index = 0;
     bool bSelItem;
@@ -610,7 +610,7 @@ void CHardwareListing::vEnableDisableButtons()
         // If disabled then clear the text
         if( bHardwareDetailsEnable == FALSE )
         {
-            pWnd->SetWindowText( STR_EMPTY );
+            pWnd->SetWindowText("");
         }
     }
 
@@ -624,7 +624,7 @@ void CHardwareListing::vEnableDisableButtons()
         // If disabled then clear the text
         if( bHardwareDetailsEnable == FALSE )
         {
-            pWnd->SetWindowText( STR_EMPTY );
+            pWnd->SetWindowText("");
         }
     }
 
@@ -638,7 +638,7 @@ void CHardwareListing::vEnableDisableButtons()
         // If disabled then clear the text
         if( bHardwareDetailsEnable == FALSE )
         {
-            pWnd->SetWindowText( STR_EMPTY );
+            pWnd->SetWindowText("");
         }
     }
 

@@ -839,7 +839,7 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::bSetFilterFromCom(BOOL  bExtended, DWORD  dB
     //if (g_podHardwareInterface->bLoadDataFromConfig() == TRUE)
     //{
     //    int nApply = g_podHardwareInterface->nSetApplyConfiguration();
-    //    if (nApply ==defERR_OK)
+    //    if (nApply ==0)
     //    {
     //        bReturn =TRUE;
     //    }
