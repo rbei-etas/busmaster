@@ -1914,26 +1914,26 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 
         if (nCount > 0)//Success only if there exists alteast one hw
         {
-            INTERFACE_HW* psHWInterface = new INTERFACE_HW[nCount];
+            INTERFACE_HW psHWInterface[defNO_OF_CHANNELS];
 
-            for (INT i = 0; i < nCount; i++)
+            //set the current number of channels
+            sg_nNoOfChannels = min(nCount, defNO_OF_CHANNELS);
+
+            for (INT i = 0; i < sg_nNoOfChannels; i++)
             {
                 psHWInterface[i].m_dwIdInterface = 0;
                 psHWInterface[i].m_dwVendor = 0;
                 psHWInterface[i].m_acDeviceName = "";
-                psHWInterface[i].m_acNameInterface = A2T(acURI[i]);
-                psHWInterface[i].m_acDescription = A2T(acURI[i]);
+                psHWInterface[i].m_acNameInterface = acURI[i];
+                psHWInterface[i].m_acDescription = acURI[i];
             }
 
-            if (nCount > 1)// List hw interface if there are more than one hw
+            if (sg_nNoOfChannels > 1)// List hw interface if there are more than one hw
             {
                 ListHardwareInterfaces(NULL, DRIVER_CAN_ETAS_BOA, psHWInterface, sg_anSelectedItems, nCount);
                 /* return value is not necessary as the OUT parameter sg_anSelectedItems is unaltered
                    if user has not selected anything */
             }
-
-            //set the current number of channels
-            sg_nNoOfChannels = min(nCount, defNO_OF_CHANNELS);
 
             for (UINT nList = 0; nList < sg_nNoOfChannels; nList++)
             {
@@ -1942,8 +1942,6 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
                 asSelHwInterface[nList].m_dwIdInterface = 100 + nList; // Give a dummy number
             }
 
-            //Delete the array
-            delete[] psHWInterface;
             sg_bCurrState = STATE_HW_INTERFACE_LISTED;
             hResult = S_OK;
         }
@@ -1970,7 +1968,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SelectHwInterface(const INTERFACE_HW_LIST& asSelH
     //First select only supported number of HW interfaces
     for (UINT i = 0; i < sg_nNoOfChannels; i++)
     {
-        strcpy_s(sg_asChannel[i].m_acURI, T2A((LPTSTR) (asSelHwInterface[i].m_acNameInterface.c_str())));
+        strcpy_s(sg_asChannel[i].m_acURI, asSelHwInterface[i].m_acNameInterface.c_str());
     }
 
     // Create the controller instance.
