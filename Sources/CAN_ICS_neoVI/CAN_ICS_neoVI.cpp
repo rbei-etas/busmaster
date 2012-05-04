@@ -22,11 +22,13 @@
  * Exports API functions for IntrepidCS neoVI CAN Hardware interface
  */
 
+#include "CAN_ICS_neoVI_stdafx.h"
+
 /* C++ includes */
+#include <sstream>
 #include <string>
 
 /* Project includes */
-#include "CAN_ICS_neoVI_stdafx.h"
 #include "CAN_ICS_neoVI.h"
 #include "include/Error.h"
 #include "include/basedefs.h"
@@ -2279,10 +2281,9 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 
             for (UINT i = 0; i < sg_ucNoOfHardware; i++)
             {
-                char buf[512];
                 asSelHwInterface[i].m_dwIdInterface = (DWORD)sg_ndNeoToOpen[i].Handle;
-                sprintf_s(buf, _T("%d"), sg_ndNeoToOpen[i].SerialNumber);
-                asSelHwInterface[i].m_acDescription = buf;
+                ostringstream oss << dec << sg_ndNeoToOpen[i].SerialNumber;
+                asSelHwInterface[i].m_acDescription = oss.str();
                 asSelHwInterface[i].m_bytNetworkID = m_bytNetworkIDs[i];
                 hResult = S_OK;
                 sg_bCurrState = STATE_HW_INTERFACE_LISTED;
