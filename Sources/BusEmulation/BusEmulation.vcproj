@@ -153,8 +153,8 @@
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="stdafx_BusSim.h"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderThrough=""
 				WarningLevel="4"
 				DebugInformationFormat="3"
 			/>
@@ -232,10 +232,6 @@
 				RelativePath=".\SimENG.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\stdafx_BusSim.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -248,10 +244,6 @@
 			</File>
 			<File
 				RelativePath=".\SimENG.h"
-				>
-			</File>
-			<File
-				RelativePath=".\stdafx_BusSim.h"
 				>
 			</File>
 		</Filter>
