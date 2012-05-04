@@ -201,7 +201,7 @@ public:
     // Specific function set
     HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
     HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
-    HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
+    HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, string pacClientName);
     HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
     HRESULT CAN_LoadDriverLibrary(void);
     HRESULT CAN_UnloadDriverLibrary(void);
@@ -220,7 +220,7 @@ static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFS
 static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED], UINT& unCount, CBaseCANBufFSE* BufferToRemove);
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex);
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex);
-static BOOL bClientExist(char* pcClientName, INT& Index);
+static BOOL bClientExist(string pcClientName, INT& Index);
 static BOOL bRemoveClient(DWORD dwClientId);
 static BOOL bClientIdExist(const DWORD& dwClientId);
 static DWORD dwGetAvailableClientSlot(void);
@@ -379,7 +379,7 @@ HRESULT CDIL_CAN_MHS::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBuf
  * Registers a client to the DIL. ClientID will have client id
  * which will be used for further client related calls
  */
-HRESULT CDIL_CAN_MHS::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName)
+HRESULT CDIL_CAN_MHS::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, string pacClientName)
 {
     HRESULT hResult = S_FALSE;
     INT Index;
@@ -393,7 +393,7 @@ HRESULT CDIL_CAN_MHS::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* 
             if (!bClientExist(pacClientName, Index))
             {
                 //Currently store the client information
-                if (_tcscmp(pacClientName, CAN_MONITOR_NODE) == 0)
+                if (pacClientName == CAN_MONITOR_NODE)
                 {
                     //First slot is reserved to monitor node
                     ClientID = 1;
@@ -1144,13 +1144,13 @@ static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
  *
  * Checks for the existance of the client with the name pcClientName.
  */
-static BOOL bClientExist(char* pcClientName, INT& Index)
+static BOOL bClientExist(string pcClientName, INT& Index)
 {
     UINT i;
 
     for (i = 0; i < sg_unClientCnt; i++)
     {
-        if (!_tcscmp(pcClientName, sg_asClientToBufMap[i].m_acClientName.c_str()))
+        if (pcClientName == sg_asClientToBufMap[i].m_acClientName)
         {
             Index = i;
             return(TRUE);

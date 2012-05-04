@@ -268,7 +268,7 @@ static Base_WrapperErrorLogger* sg_pIlog   = NULL;
 static int nInitHwNetwork();
 static BOOL bRemoveClient(DWORD dwClientId);
 static DWORD dwGetAvailableClientSlot();
-static BOOL bClientExist(char* pcClientName, INT& Index);
+static BOOL bClientExist(string pcClientName, INT& Index);
 static BOOL bClientIdExist(const DWORD& dwClientId);
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex);
 static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line);
@@ -316,7 +316,7 @@ public:
     // Specific function set
     HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
     HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
-    HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
+    HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, string pacClientName);
     HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
     HRESULT CAN_LoadDriverLibrary(void);
     HRESULT CAN_UnloadDriverLibrary(void);
@@ -483,7 +483,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCAN
 * \authors       Arunkumar Karri
 * \date          12.10.2011 Created
 */
-HRESULT CDIL_CAN_Kvaser::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName)
+HRESULT CDIL_CAN_Kvaser::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, string pacClientName)
 {
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;
@@ -497,7 +497,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, cha
             if (!bClientExist(pacClientName, Index))
             {
                 /* Currently store the client information */
-                if (_tcscmp(pacClientName, CAN_MONITOR_NODE) == 0)
+                if (pacClientName == CAN_MONITOR_NODE)
                 {
                     /* First slot is reserved to monitor node */
                     ClientID = 1;
@@ -2368,11 +2368,11 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
 * \authors       Arunkumar Karri
 * \date          12.10.2011 Created
 */
-static BOOL bClientExist(char* pcClientName, INT& Index)
+static BOOL bClientExist(string pcClientName, INT& Index)
 {
     for (UINT i = 0; i < sg_unClientCnt; i++)
     {
-        if (!_tcscmp(pcClientName, sg_asClientToBufMap[i].pacClientName.c_str()))
+        if (pcClientName == sg_asClientToBufMap[i].pacClientName)
         {
             Index = i;
             return TRUE;
