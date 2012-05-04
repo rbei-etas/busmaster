@@ -22,7 +22,7 @@
  * Source of CFormatMsgCAN class.
  */
 
-#include "FrameProcessor_stdafx.h"
+#include "../FrameProcessor_stdafx.h"
 #include "FormatMsgCAN.h"
 #include "include/Utils_macro.h"
 
