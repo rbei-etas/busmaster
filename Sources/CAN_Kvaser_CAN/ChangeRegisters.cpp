@@ -1338,7 +1338,7 @@ void CChangeRegisters::OnClickedOK()
     // if( g_podHardwareInterface->bLoadDataFromConfig() == TRUE )
     // {
     //     int nApply = g_podHardwareInterface->nSetApplyConfiguration();
-    //     if( nApply != defERR_OK )
+    //     if( nApply != 0 )
     //     {
     //         // Check for device type to select error message
     //

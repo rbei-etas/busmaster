@@ -28,7 +28,6 @@
 #include "Utility/RadixEdit.h"
 #include "Math.h"
 #include "Include/Struct_Can.h"
-#include "Include/CanUsbDefs.h"
 #include "ChangeRegDefines.h"
 
 #define defICSneoVIFrequency (32 * 1000000)

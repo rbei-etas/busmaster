@@ -29,7 +29,6 @@
 #include "Application/MsgWndHdrInfo.h"
 #include "CommonClass/GUI_FormatMsgCAN.h"
 #include "include/BaseDefs.h"
-#include "Include/CanUsbDefs.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/MsgBufCANVFSE.h"
 #include "DataTypes/MsgBufVVSE.h"

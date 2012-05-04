@@ -1309,7 +1309,6 @@ transmission is ON.\nDo you want to ignore the changes ?")
 #define defINIT_CODE_VALUE                  0x00
 #define defINIT_MASK_VALUE                  0xFF
 
-#define defERR_OK                           0
 //#define defBAUD_RATE                        0x4914 // 100 KBPS
 
 // Bus Statistics Dialog

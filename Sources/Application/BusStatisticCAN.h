@@ -26,7 +26,6 @@
 
 #include "Utility/Utility_Thread.h"
 #include "Include/struct_can.h"
-#include "Include/CanUsbDefs.h"
 #include "Datatypes/MsgBufAll_Datatypes.h"
 #include "Include/Basedefs.h"
 #include "DIL_Interface/BaseDIL_CAN.h"

@@ -58,7 +58,6 @@
 #include "Include/BaseDefs.h"
 #include "Include/CAN_Error_Defs.h"
 #include "Include/Struct_CAN.h"
-#include "Include/CanUsbDefs.h"
 #include "Include/DIL_CommonDefs.h"
 #include "DIL_Interface/BaseDIL_CAN_Controller.h"
 
@@ -1007,26 +1006,26 @@ HRESULT CDIL_CAN_MHS::CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONT
 
     switch (eContrParam)
     {
-        case NUMBER_HW     :
+        case NUMBER_HW:
         {
             lParam = 1;
             break;
         }
 
-        case NUMBER_CONNECTED_HW :
+        case NUMBER_CONNECTED_HW:
         {
             lParam = 1;
             //hResult = S_FALSE;
             break;
         }
 
-        case DRIVER_STATUS :
+        case DRIVER_STATUS:
         {
             lParam = true;
             break;
         }
 
-        case HW_MODE       :
+        case HW_MODE:
         {
             if (nChannel < sg_nNoOfChannels)
             {
@@ -1041,13 +1040,13 @@ HRESULT CDIL_CAN_MHS::CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONT
             break;
         }
 
-        case CON_TEST      :
+        case CON_TEST:
         {
             lParam = TRUE;
             break;
         }
 
-        default            :
+        default:
             hResult = S_FALSE;
     }
 

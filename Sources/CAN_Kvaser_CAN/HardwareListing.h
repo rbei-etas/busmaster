@@ -28,7 +28,6 @@
 #include "CAN_Kvaser_CAN_resource.h"
 // For DIL datatypes
 #include "DataTypes/DIL_Datatypes.h"
-#include "Include/CanUsbDefs.h"
 #include <map>
 /////////////////////////////////////////////////////////////////////////////
 // CHardwareListing dialog

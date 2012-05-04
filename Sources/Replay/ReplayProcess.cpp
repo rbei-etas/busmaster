@@ -192,7 +192,7 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
                                 pReplayDetails->m_omMsgList[ nCurrentIndex ].
                                 m_uDataInfo.m_sCANMsg );
 
-                if (hRet != defERR_OK)
+                if (hRet != 0)
                 {
                     //::PostMessage(GUI_hDisplayWindow, WM_ERROR,
                     //            ERROR_DRIVER_API_FAIL, nZERO);
@@ -348,7 +348,7 @@ UINT CReplayProcess::sunReplayCyclicThreadFunc( LPVOID pParam )
                 HRESULT hRet = s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID,
                                pReplayDetails->m_omMsgList[ nCurrentIndex ].m_uDataInfo.m_sCANMsg );
 
-                if (hRet != defERR_OK)
+                if (hRet != 0)
                 {
                     //::PostMessage(GUI_hDisplayWindow, WM_ERROR,
                     //            ERROR_DRIVER_API_FAIL, nZERO);
@@ -723,7 +723,7 @@ UINT CReplayProcess::sunNIReplayThreadFunc( LPVOID pParam )
                 // Use HIL Function to send CAN message
                 HRESULT hRet = s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID, pReplayDetails->m_omMsgList[ nIndex ].m_uDataInfo.m_sCANMsg);
 
-                if (hRet != defERR_OK)
+                if (hRet != 0)
                 {
                     //::PostMessage(GUI_hDisplayWindow, WM_ERROR,
                     //            ERROR_DRIVER_API_FAIL, nZERO);

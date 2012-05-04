@@ -28,7 +28,7 @@
 #include "CAN_Kvaser_CAN_resource.h"
 #include "Utility/RadixEdit.h"
 #include "ChangeRegDefines.h"
-#include "Include/CanUsbDefs.h"
+#include "include/basedefs.h"
 
 
 class CChangeRegisters : public CDialog//CPropertyPage

@@ -29,7 +29,6 @@
 #include "Application/MsgWndHdrInfo.h"
 #include "CommonClass/GUI_FormatMsgJ1939.h"
 #include "include/BaseDefs.h"
-#include "Include/CanUsbDefs.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/Filter_Datatypes.h"
 #include "CommonClass/RefTimeKeeper.h"

@@ -32,7 +32,6 @@
 #include "Utility/Utility_Thread.h"
 #include "Include/BaseDefs.h"
 #include "Include/DIL_CommonDefs.h"
-#include "Include/CanUsbDefs.h"
 #include "Include/Can_Error_Defs.h"
 #include "DIL_Interface/BaseDIL_CAN_Controller.h"
 #include "HardwareListing.h"
@@ -617,11 +616,11 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
             // Baudrate value in decimal
             odChannel.m_unBaudrate = static_cast <UINT>(
                                          _tcstol( pControllerDetails[ nIndex ].m_omStrBaudrate.c_str(),
-                                                  &pcStopStr, defBASE_DEC ));
+                                                  &pcStopStr, 10));
             // Get Warning Limit
             odChannel.m_ucWarningLimit = static_cast <UCHAR>(
                                              _tcstol( pControllerDetails[ nIndex ].m_omStrWarningLimit.c_str(),
-                                                     &pcStopStr, defBASE_DEC ));
+                                                     &pcStopStr, 10));
 
             for ( int i = 0; i < CAN_MSG_IDS ; i++ )
             {
@@ -652,28 +651,28 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
                 {
                     odChannel.m_sFilter[i].m_ucACC_Code0 = static_cast <UCHAR>(
                             _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte1[i].c_str(),
-                                     &pcStopStr, defBASE_HEX ));
+                                     &pcStopStr, 16));
                     odChannel.m_sFilter[i].m_ucACC_Code1 = static_cast <UCHAR>(
                             _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte2[i].c_str(),
-                                     &pcStopStr, defBASE_HEX ));
+                                     &pcStopStr, 16));
                     odChannel.m_sFilter[i].m_ucACC_Code2 = static_cast <UCHAR>(
                             _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte3[i].c_str(),
-                                     &pcStopStr, defBASE_HEX ));
+                                     &pcStopStr, 16));
                     odChannel.m_sFilter[i].m_ucACC_Code3 = static_cast <UCHAR>(
                             _tcstol(pControllerDetails[ nIndex ].m_omStrAccCodeByte4[i].c_str(),
-                                    &pcStopStr, defBASE_HEX));
+                                    &pcStopStr, 16));
                     odChannel.m_sFilter[i].m_ucACC_Mask0 = static_cast <UCHAR>(
                             _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte1[i].c_str(),
-                                     &pcStopStr, defBASE_HEX));
+                                     &pcStopStr, 16));
                     odChannel.m_sFilter[i].m_ucACC_Mask1 = static_cast <UCHAR>(
                             _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte2[i].c_str(),
-                                     &pcStopStr, defBASE_HEX));
+                                     &pcStopStr, 16));
                     odChannel.m_sFilter[i].m_ucACC_Mask2 = static_cast <UCHAR>(
                             _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte3[i].c_str(),
-                                     &pcStopStr, defBASE_HEX));
+                                     &pcStopStr, 16));
                     odChannel.m_sFilter[i].m_ucACC_Mask3 = static_cast <UCHAR>(
                             _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte4[i].c_str(),
-                                     &pcStopStr, defBASE_HEX));
+                                     &pcStopStr, 16));
                 }
 
                 odChannel.m_sFilter[i].m_ucACC_Filter_Type = (UCHAR)i ;
@@ -967,7 +966,7 @@ static int nSetFilter(BOOL bWrite)
         // Create DWORD Filter
         DWORD dwCode = 0, dwMask = 0;
         // To set no. shifts
-        int nShift = sizeof( UCHAR ) * defBITS_IN_BYTE;
+        int nShift = sizeof( UCHAR ) * 8;
         // Get the Filter
 
         if ( sg_aodChannels[unIndex].m_hnd < 0)
@@ -1020,36 +1019,36 @@ static int nSetFilter(BOOL bWrite)
 /**
 * \brief         Function to apply filters and baud rate to channels
 * \param         void
-* \return        defERR_OK if succeeded, else respective error code
+* \return        0 if succeeded, else respective error code
 * \authors       Arunkumar Karri
 * \date          12.10.2011 Created
 */
 static int nSetApplyConfiguration()
 {
-    int nReturn = defERR_OK;
+    int nReturn = 0;
 
-    if( nReturn == defERR_OK )
+    if( nReturn == 0 )
     {
         // Set Hardware Mode
         //nReturn = nSetHardwareMode ( sg_ucControllerMode );
     }
 
     // Set baud rate only for hardware network
-    if( nReturn == defERR_OK &&
+    if( nReturn == 0 &&
             sg_ucControllerMode != defUSB_MODE_SIMULATE )
     {
         // Set Baud Rate
         nReturn = nSetBaudRate ();
     }
 
-    if( nReturn == defERR_OK )
+    if( nReturn == 0 )
     {
         // Set Filter
         nReturn = nSetFilter (TRUE);
     }
 
     // Set Self Reception option
-    if ( nReturn == defERR_OK )
+    if ( nReturn == 0 )
     {
         for ( UINT i = 0; i < sg_nNoOfChannels; i++ )
         {
@@ -1517,7 +1516,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_StartHardware(void)
     //Connect to the channels
     hResult = nConnect(TRUE, NULL);
 
-    if (hResult == defERR_OK)
+    if (hResult == 0)
     {
         hResult = S_OK;
         sg_bCurrState = STATE_CONNECTED;
@@ -1560,7 +1559,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_StopHardware(void)
     sg_sParmRThread.bTerminateThread();
     hResult = nConnect(FALSE, NULL);
 
-    if (hResult == defERR_OK)
+    if (hResult == 0)
     {
         hResult = S_OK;
         sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
@@ -1658,7 +1657,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMs
                which client has been sent this message in later stage */
             vMarkEntryIntoMap(sAckMap);
 
-            if (nWriteMessage(sCanTxMsg, dwClientID) == defERR_OK)
+            if (nWriteMessage(sCanTxMsg, dwClientID) == 0)
             {
                 hResult = S_OK;
             }
@@ -1784,7 +1783,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_GetControllerParams(LONG& lParam, UINT nChannel, EC
             {
                 UCHAR ucResult;
 
-                if (nTestHardwareConnection(ucResult, nChannel) == defERR_OK)
+                if (nTestHardwareConnection(ucResult, nChannel) == 0)
                 {
                     lParam = (LONG)ucResult;
                 }
@@ -1911,7 +1910,7 @@ static int nDisconnectFromDriver()
 * \brief         This function will connect the tool with hardware. This will
 *                establish the data link between the application and hardware.
 * \param[in]     bConnect TRUE to Connect, FALSE to Disconnect
-* \return        Returns defERR_OK if successful otherwise corresponding Error code.
+* \return        Returns 0 if successful otherwise corresponding Error code.
 * \authors       Arunkumar Karri
 * \date          12.10.2011 Created
 */
@@ -1955,7 +1954,7 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
             /* Transit into 'CREATE TIME MAP' state */
             sg_byCurrState = CREATE_MAP_TIMESTAMP;
             sg_bIsConnected = bConnect;
-            nReturn = defERR_OK;
+            nReturn = 0;
             // Update configuration to restore the settings
             bLoadDataFromContr(sg_ControllerDetails);
             nSetApplyConfiguration();
@@ -1969,7 +1968,7 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
     }
     else
     {
-        nReturn = defERR_OK;
+        nReturn = 0;
     }
 
     if ( sg_bIsConnected )
@@ -2019,7 +2018,7 @@ int ListHardwareInterfaces(HWND /*hParent*/, DWORD /*dwDriver*/, INTERFACE_HW* p
 * \brief         This function will get the hardware selection from the user
 *                and will create essential networks.
 * \param         void
-* \return        returns defERR_OK (always)
+* \return        returns 0 (always)
 * \authors       Arunkumar Karri
 * \date          12.10.2011 Created
 */
@@ -2060,13 +2059,13 @@ static int nCreateMultipleHardwareNetwork()
         sg_aodChannels[nCount].m_strName = buf;
     }
 
-    return defERR_OK;
+    return 0;
 }
 
 /**
 * \brief         This function will create a single network with available single hardware.
 * \param         void
-* \return        returns defERR_OK (always)
+* \return        returns 0 (always)
 * \authors       Arunkumar Karri
 * \date          12.10.2011 Created
 */
@@ -2094,13 +2093,13 @@ static int nCreateSingleHardwareNetwork()
               sg_HardwareIntr[0].m_dwVendor,
               sg_HardwareIntr[0].m_acDeviceName);
     sg_aodChannels[0].m_strName = buf;
-    return defERR_OK;
+    return 0;
 }
 
 /**
 * \brief         Finds the number of hardware connected.
 * \param         void
-* \return        defERR_OK if successful otherwise corresponding Error code.
+* \return        0 if successful otherwise corresponding Error code.
 *                0, Query successful, but no device found
 *                > 0, Number of devices found
 *                < 0, query for devices unsuccessful

@@ -24,7 +24,9 @@
 
 #pragma once
 
-#include "Include/CanUsbDefs.h"
+/* Project includes */
+#include "include/basedefs.h"
+
 class CNetwork
 {
 public:

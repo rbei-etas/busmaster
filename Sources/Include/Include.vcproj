@@ -62,7 +62,7 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -157,10 +157,6 @@
 			</File>
 			<File
 				RelativePath=".\CAN_Error_Defs.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CanUsbDefs.h"
 				>
 			</File>
 			<File

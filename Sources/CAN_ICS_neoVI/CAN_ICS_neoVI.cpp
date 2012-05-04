@@ -36,7 +36,6 @@
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/DIL_Datatypes.h"
 #include "Include/CAN_Error_Defs.h"
-#include "Include/CanUsbDefs.h"
 #include "Include/Struct_CAN.h"
 #include "CAN_ICS_neoVI_Channel.h"
 #include "CAN_ICS_neoVI_Network.h"
@@ -482,13 +481,13 @@ static int nCreateAndSetReadIndicationEvent(HANDLE& hReadEvent)
     m_hDataEvent = CreateEvent( NULL,           // lpEventAttributes
                                 FALSE,          // bManualReset
                                 FALSE,          // bInitialState
-                                STR_EMPTY);     // Name
+                                "");     // Name
 
     if (m_hDataEvent != NULL)
     {
         s_DatIndThread.m_hHandle = m_hDataEvent;
         hReadEvent = m_hDataEvent;
-        nReturn = defERR_OK;
+        nReturn = 0;
     }
 
     return nReturn;
@@ -697,16 +696,16 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
             // Get Warning Limit
             odChannel.m_ucWarningLimit = static_cast <UCHAR>(
                                              _tcstol( pControllerDetails[ nIndex ].m_omStrWarningLimit.c_str(),
-                                                     &pcStopStr, defBASE_DEC ));
+                                                     &pcStopStr, 10));
             odChannel.m_bCNF1 = static_cast <UCHAR>(
                                     _tcstol( pControllerDetails[ nIndex ].m_omStrCNF1.c_str(),
-                                             &pcStopStr, defBASE_HEX));
+                                             &pcStopStr, 16));
             odChannel.m_bCNF2 = static_cast <UCHAR>(
                                     _tcstol( pControllerDetails[ nIndex ].m_omStrCNF2.c_str(),
-                                             &pcStopStr, defBASE_HEX));
+                                             &pcStopStr, 16));
             odChannel.m_bCNF3 = static_cast <UCHAR>(
                                     _tcstol( pControllerDetails[ nIndex ].m_omStrCNF3.c_str(),
-                                             &pcStopStr, defBASE_HEX));
+                                             &pcStopStr, 16));
             // Get Baud Rate
             odChannel.m_usBaudRate = static_cast <USHORT>(
                                          pControllerDetails[ nIndex ].m_nBTR0BTR1 );
@@ -902,7 +901,7 @@ static BYTE bClassifyMsgType(icsSpyMessage& CurrSpyMsg,
  * \param[in]  psCanDataArray Pointer to CAN Message Array of Structures
  * \param[in]  nMessage Maximun number of message to read or size of the CAN Message Array
  * \param[out] Message Actual Messages Read
- * \return     Returns defERR_OK if successful otherwise corresponding Error code.
+ * \return     Returns 0 if successful otherwise corresponding Error code.
  *
  * This function will read multiple CAN messages from the driver.
  * The other fuctionality is same as single message read. This
@@ -985,7 +984,7 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
             QuadPartRef = (LONGLONG)(dTimestamp * 10000);//CurrSpyMsg.TimeHardware2 * 655.36 + CurrSpyMsg.TimeHardware * 0.01;
 
             sg_byCurrState = CALC_TIMESTAMP_READY;
-            nReturn = defERR_OK;
+            nReturn = 0;
             sg_TimeStamp =  ((LONGLONG)((CurrSpyMsg.TimeHardware2* 104.8576)/1000 + CurrSpyMsg.TimeHardware * 1.6))/10000;
             //sg_TimeStamp /= 10;
             //sg_TimeStamp = (LONGLONG)(CurrSpyMsg.TimeSystem * 10);
@@ -1001,7 +1000,7 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
         if (nReturn == NEOVI_OK)
         {
             sg_byCurrState = CALC_TIMESTAMP_READY;
-            nReturn = defERR_OK;
+            nReturn = 0;
             LARGE_INTEGER g_QueryTickCount;
             QueryPerformanceCounter(&g_QueryTickCount);
             UINT64 unConnectionTime;
@@ -1084,7 +1083,7 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
     }
 
     nMessage = i;
-    return defERR_OK; // Multiple return statements had to be added because
+    return 0; // Multiple return statements had to be added because
     // neoVI specific codes and simulation related codes need to coexist.
     // Code for the later still employs Peak API interface.
 }
@@ -1280,7 +1279,7 @@ static void ProcessCANMsg(int nChannelIndex)
 {
     int nSize = sg_nFRAMES;
 
-    if (nReadMultiMessage(sg_asMsgBuffer, nSize, nChannelIndex) == defERR_OK)
+    if (nReadMultiMessage(sg_asMsgBuffer, nSize, nChannelIndex) == 0)
     {
         for (INT unCount = 0; unCount < nSize; unCount++)
         {
@@ -1437,7 +1436,7 @@ static int nCreateSingleHardwareNetwork()
     sg_odHardwareNetwork.m_aodChannels[ 0 ].m_hHardwareHandle = (BYTE)sg_ndNeoToOpen[0].Handle;
     // Assign Net Handle
     sg_odHardwareNetwork.m_aodChannels[ 0 ].m_hNetworkHandle = m_bytNetworkIDs[0] = NETID_HSCAN;
-    return defERR_OK;
+    return 0;
 }
 
 /**
@@ -1529,7 +1528,7 @@ static int nCreateMultipleHardwareNetwork()
                         if ( nHwCount == 1 )    //If only one device connected
                         {
                             nCreateSingleHardwareNetwork();
-                            return defERR_OK;
+                            return 0;
                         }
                     }
 
@@ -1583,13 +1582,13 @@ static int nCreateMultipleHardwareNetwork()
         sg_odHardwareNetwork.m_aodChannels[ nIndex ].m_hNetworkHandle = sg_HardwareIntr[nIndex].m_bytNetworkID;
     }
 
-    return defERR_OK;
+    return 0;
 }
 
 /**
  * \brief     Get Number Of Connected Hardware
  * \param[in] nHardwareCount Hardware Count
- * \return    Returns defERR_OK if successful otherwise corresponding Error code.
+ * \return    Returns 0 if successful otherwise corresponding Error code.
  *
  * Finds the number of hardware connected. This is applicable
  * only for USB device. For parallel port this is not required.
@@ -1682,7 +1681,7 @@ static int nInitHwNetwork()
 
 /**
  * \brief  Connect To Driver
- * \return Returns defERR_OK if successful otherwise corresponding Error code.
+ * \return Returns 0 if successful otherwise corresponding Error code.
  *
  * This function will initialise hardware handlers of USB. This
  * will establish the connection with driver. This will create or
@@ -1715,7 +1714,7 @@ static BOOL bGetDriverStatus()
 
 /**
  * \brief  Set Baud Rate
- * \return defERR_OK if successful otherwise corresponding Error code.
+ * \return 0 if successful otherwise corresponding Error code.
  *
  * This function will set the baud rate of the controller
  * Parallel Port Mode: Controller will be initialised with all
@@ -1750,7 +1749,7 @@ static int nSetBaudRate()
 
 /**
  * \brief  Set Warning Limit
- * \return Returns defERR_OK if successful otherwise corresponding Error code.
+ * \return Returns 0 if successful otherwise corresponding Error code.
  *
  * This function will set the warning limit of the controller. In
  * USB mode this is not supported as the warning limit is
@@ -1764,7 +1763,7 @@ static int nSetWarningLimit()
         m_unWarningLimit[i] = odChannel.m_ucWarningLimit;
     }
 
-    return defERR_OK; // Multiple return statements had to be added because
+    return 0; // Multiple return statements had to be added because
     // neoVI specific codes and simulation related codes need to coexist.
     // Code for the later still employs Peak API interface.
 }
@@ -1790,17 +1789,17 @@ static int nSetFilter( )
  */
 static int nSetApplyConfiguration()
 {
-    int nReturn = defERR_OK;
+    int nReturn = 0;
 
     // Set Hardware Mode
-    if ((nReturn = nSetHardwareMode(sg_ucControllerMode)) == defERR_OK)
+    if ((nReturn = nSetHardwareMode(sg_ucControllerMode)) == 0)
     {
         // Set Filter
         nReturn = nSetFilter();
     }
 
     // Set warning limit only for hardware network
-    if ((nReturn == defERR_OK) && (sg_ucControllerMode != defUSB_MODE_SIMULATE))
+    if ((nReturn == 0) && (sg_ucControllerMode != defUSB_MODE_SIMULATE))
     {
         // Set Warning Limit
         nReturn = nSetWarningLimit();
@@ -1878,7 +1877,7 @@ static int nDisconnectFromDriver()
 /**
  * \brief     Connect
  * \param[in] bConnect TRUE to Connect, FALSE to Disconnect
- * \return    Returns defERR_OK if successful otherwise corresponding Error code.
+ * \return    Returns 0 if successful otherwise corresponding Error code.
  *
  * This function will connect the tool with hardware. This will
  * establish the data link between the application and hardware.
@@ -1967,7 +1966,7 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
                     s_DatIndThread.m_bIsConnected = sg_bIsConnected;
                 }
 
-                nReturn = defERR_OK;
+                nReturn = 0;
             }
             else // Hardware is not present
             {
@@ -1985,7 +1984,7 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
     }
     else
     {
-        nReturn = defERR_OK;
+        nReturn = 0;
     }
 
     if ( sg_bIsConnected )
@@ -2381,7 +2380,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SetConfigData(PCHAR ConfigFile, int Length)
     memcpy((void*)sg_ControllerDetails, (void*)ConfigFile, Length);
     int nReturn = nSetApplyConfiguration();
 
-    if (nReturn == defERR_OK)
+    if (nReturn == 0)
     {
         hResult = S_OK;
     }
@@ -2833,7 +2832,7 @@ static int nGetErrorCounter(UINT unChannel, SERROR_CNT& sErrorCount)
         // Assign the error counter value
         sErrorCount.m_ucRxErrCount = odChannel.m_ucRxErrorCounter;
         sErrorCount.m_ucTxErrCount = odChannel.m_ucTxErrorCounter;
-        nReturn = defERR_OK;
+        nReturn = 0;
     }
     else
     {
@@ -2967,7 +2966,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessa
               which client has been sent this message in later stage*/
             vMarkEntryIntoMap(sAckMap);
 
-            if (nWriteMessage(sMessage) == defERR_OK)
+            if (nWriteMessage(sMessage) == 0)
             {
                 hResult = S_OK;
             }
@@ -3347,7 +3346,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_GetControllerParams(LONG& lParam, UINT nChannel, 
             {
                 UCHAR ucResult;
 
-                if (nTestHardwareConnection(ucResult, nChannel) == defERR_OK)
+                if (nTestHardwareConnection(ucResult, nChannel) == 0)
                 {
                     lParam = (LONG)ucResult;
                 }
@@ -3377,7 +3376,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChanne
     {
         if (nChannel <= sg_ucNoOfHardware)
         {
-            if (nGetErrorCounter(nChannel, sErrorCnt) == defERR_OK)
+            if (nGetErrorCounter(nChannel, sErrorCnt) == 0)
             {
                 hResult = S_OK;
             }
