@@ -27,6 +27,7 @@
 /* C++ includes */
 #include <sstream>
 #include <string>
+#include <vector>
 
 /* Project includes */
 #include "CAN_ICS_neoVI.h"
