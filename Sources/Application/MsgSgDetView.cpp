@@ -2284,3 +2284,45 @@ void CMsgSgDetView::PostNcDestroy()
 
     CFormView::PostNcDestroy();
 }
+/*******************************************************************************
+ Function Name    :  OnLvnKeydownLstcSignalDetails
+ Input(s)         :  NMHDR, LRESULT
+ Output           :  void
+ Functionality    :  This Function will handle DEL button message and deletes
+    				 The selected signal
+ Member of        :  CMsgSgDetView                                         
+ Friend of        :      -                                                 
+                                                                           
+ Author(s)        :  Venkatanarayana Makam
+ Date Created     :  03.05.2012
+/******************************************************************************/
+void CMsgSgDetView::OnLvnKeydownLstcSignalDetails(NMHDR *pNMHDR, LRESULT *pResult)
+{
+    LPNMLVKEYDOWN pLVKeyDow = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
+    if( pLVKeyDow->wVKey == VK_DELETE)
+    {
+        OnDeleteSignal();
+    }
+    *pResult = 0;
+}
+/*******************************************************************************
+ Function Name    :  OnLvnKeydownLstcSignalDetails
+ Input(s)         :  NMHDR, LRESULT
+ Output           :  void
+ Functionality    :  This Function will handle DEL button message and deletes
+					 The selected signal Descriptor
+ Member of        :  CMsgSgDetView                                         
+ Friend of        :      -                                                 
+                                                                           
+ Author(s)        :  Venkatanarayana Makam
+ Date Created     :  03.05.2012
+/******************************************************************************/
+void CMsgSgDetView::OnLvnKeydownLstcSgidval(NMHDR *pNMHDR, LRESULT *pResult)
+{
+    LPNMLVKEYDOWN pLVKeyDow = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
+    if( pLVKeyDow->wVKey == VK_DELETE)
+    {
+        OnSignal_Desc_Delete();
+    }
+    *pResult = 0;
+}
