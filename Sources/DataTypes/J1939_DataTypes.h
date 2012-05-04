@@ -218,8 +218,9 @@ typedef struct tagSTJ1939_MSG
 #define LEN_STR_DLC_J1939       2
 
 
-typedef struct tagFormattedData_J1939
+class tagFormattedData_J1939
 {
+public:
     DWORD  m_dwPGN;                                 // PGN of the present message
     DWORD  m_dwMsgID;                               // The message ID
 
@@ -252,8 +253,10 @@ typedef struct tagFormattedData_J1939
 
     tagFormattedData_J1939();                       // Constructor
     ~tagFormattedData_J1939();                      // Destructor;
+};
 
-} SFORMATTEDATA_J1939, *PSFORMATTEDATA_J1939;
+typedef tagFormattedData_J1939 SFORMATTEDATA_J1939;
+typedef SFORMATTEDATA_J1939 *PSFORMATTEDATA_J1939;
 
 // Helper functions.
 
