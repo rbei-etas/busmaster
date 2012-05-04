@@ -502,7 +502,7 @@ void CChangeRegisters_CAN_ICS_neoVI::vChangeListBoxValues(INT nflag)
 /**
  * \brief On Set Focus Edit Baud Rate
  *
- * Called when focus is set on baudrate edit box control 
+ * Called when focus is set on baudrate edit box control
  * Update all data members associated with Dialog control.
  */
 void CChangeRegisters_CAN_ICS_neoVI::OnSetfocusEditBaudRate()

@@ -458,10 +458,10 @@ BOOL CSigWatchDlg::OnInitDialog()
 void CSigWatchDlg::vInitSignalWatchList()
 {
     char caColumnName[][50] = { defSTR_SW_MSG_NAME,
-                                 defSTR_SW_SIG_NAME,
-                                 defSTR_SW_PHY_VALUE,
-                                 defSTR_SW_RAW_VALUE
-                               };
+                                defSTR_SW_SIG_NAME,
+                                defSTR_SW_PHY_VALUE,
+                                defSTR_SW_RAW_VALUE
+                              };
     INT nColumnFormat[]     = { LVCFMT_LEFT,
                                 LVCFMT_LEFT,
                                 LVCFMT_LEFT,

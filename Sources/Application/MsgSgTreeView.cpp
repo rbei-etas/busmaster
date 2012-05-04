@@ -745,11 +745,11 @@ void CMsgSgTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
 
 void CMsgSgTreeView::OnTvnKeydown(NMHDR* pNMHDR, LRESULT* pResult)
 {
-     LPNMTVKEYDOWN ptvkd = (LPNMTVKEYDOWN) pNMHDR;
-     *pResult = 0;
-     if( ptvkd->wVKey == VK_DELETE )
-     {
-         OnDeleteMessage();
-     }
+    LPNMTVKEYDOWN ptvkd = (LPNMTVKEYDOWN) pNMHDR;
+    *pResult = 0;
 
+    if( ptvkd->wVKey == VK_DELETE )
+    {
+        OnDeleteMessage();
+    }
 }

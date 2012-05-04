@@ -180,11 +180,11 @@ BOOL CChangeRegisters::OnInitDialog()
 {
     CDialog::OnInitDialog();
     char caColumnName[5][50] = { defSTR_BTR0_COL_HEADING,
-                                  defSTR_BTR1_COL_HEADING,
-                                  defSTR_SAMPLE_POINT_COL_HEADING,
-                                  defSTR_NBT_COL_HEADING,
-                                  defSTR_SJW_COL_HEADING
-                                };
+                                 defSTR_BTR1_COL_HEADING,
+                                 defSTR_SAMPLE_POINT_COL_HEADING,
+                                 defSTR_NBT_COL_HEADING,
+                                 defSTR_SJW_COL_HEADING
+                               };
     CString omStrClock          = "";
     CString omStrBaudRate       = "";
     CString omStrAcceptanceMask = "";
