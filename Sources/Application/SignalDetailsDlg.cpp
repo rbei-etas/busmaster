@@ -63,7 +63,7 @@ CSignalDetailsDlg::CSignalDetailsDlg(const SDBPARAMS& sDbParams,
     : CDialog(CSignalDetailsDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CSignalDetailsDlg)
-    m_byByteIndex = 1;
+    m_byByteIndex = 0;
     m_unSgLen = 1;
     m_omStrSignalName = "";
     m_byStartBit = 0;
@@ -110,7 +110,7 @@ CSignalDetailsDlg::CSignalDetailsDlg( eMODES eMode,
     {
         if( eMode == MD_READ_ONLY )
         {
-            m_byByteIndex = (BYTE)psSigInfo->m_unStartByte;
+            m_byByteIndex = (BYTE)psSigInfo->m_unStartByte-1;
             m_unSgLen = psSigInfo->m_unSignalLength;
             m_omStrSignalName = psSigInfo->m_omStrSignalName;
             m_byStartBit = psSigInfo->m_byStartBit;
@@ -165,7 +165,7 @@ void CSignalDetailsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_SPIN_BIT, m_omSpinStartBit);
     DDX_Control(pDX, IDC_COMB_SGTYPE, m_omComboSgType);
     DDX_Text(pDX, IDC_EDIT_BYINDEX, m_byByteIndex);
-    DDV_MinMaxByte(pDX, m_byByteIndex, 1, (BYTE)m_nMsgLength);          //VENKAT
+    DDV_MinMaxByte(pDX, m_byByteIndex, 0, (BYTE)m_nMsgLength-1);          //VENKAT
     DDX_Text(pDX, IDC_EDIT_SGLEN, m_unSgLen);
     DDV_MinMaxUInt(pDX, m_unSgLen, 1, min (64, m_nMsgLength*8));
     DDX_Text(pDX, IDC_EDIT_SGNAME, m_omStrSignalName);
@@ -237,7 +237,7 @@ BOOL CSignalDetailsDlg::OnInitDialog()
     // Set range for byte index, signal length and bit index
     UINT unMaxSignalLength = static_cast <UINT> (m_nMsgLength * 8) ;
     m_omSpinLen.SetRange( 1, (short)min (64, unMaxSignalLength) );
-    m_omSpinByIndex.SetRange( 1,  (short)m_nMsgLength );
+    m_omSpinByIndex.SetRange( 0,  (short)m_nMsgLength-1 );
     m_omSpinStartBit.SetRange( 0, 7 );
     // Set Byte order (m_nDataFormat)
     CButton* pRadioIntel = (CButton*)GetDlgItem(IDC_RADIO_INTEL);
@@ -576,10 +576,11 @@ void CSignalDetailsDlg::OnKillfocusEditByindex()
 
         if ( pCancelButton1 != pCancelButton2 )
         {
-            BYTE byPrevByteIndex = m_byByteIndex;
+            BYTE byPrevByteIndex = m_byByteIndex+1;
+
             UpdateData(TRUE);
 
-            if (byPrevByteIndex != m_byByteIndex)
+            if (byPrevByteIndex != m_byByteIndex+1)
             {
                 m_bIsDataSaved = FALSE;
             }
@@ -1113,11 +1114,10 @@ void CSignalDetailsDlg::OnOK()
                     bReturnFlag = FALSE;
                 }
             }
-
-            if(!(CMsgSignal::bValidateSignal(m_nMsgLength, m_byByteIndex,
-                                             m_byStartBit, m_unSgLen,
-                                             (EFORMAT_DATA) m_nDataFormat)) &&
-                    (bReturnFlag == TRUE))
+            if(!(CMsgSignal::bValidateSignal(m_nMsgLength, m_byByteIndex+1, 
+                                                m_byStartBit, m_unSgLen, 
+                                                (EFORMAT_DATA) m_nDataFormat)) && 
+                                                (bReturnFlag == TRUE))
             {
                 AfxMessageBox( defSTR_SIGNAL_END_BIT_INVALID,
                                MB_OK | MB_ICONINFORMATION );
@@ -1127,8 +1127,8 @@ void CSignalDetailsDlg::OnOK()
 
             // check for duplicate start bit value
             if ( pTempMsgSg->bIsDuplicateSignalStartBitValue( m_omStrMsgName,
-                    m_byByteIndex, m_unSgLen, m_byStartBit, m_nDataFormat )
-                    && bReturnFlag == TRUE)
+                        m_byByteIndex+1, m_unSgLen, m_byStartBit, m_nDataFormat )
+                        && bReturnFlag == TRUE)
             {
                 AfxMessageBox( defSTR_SIGNAL_DUP_START_BIT,
                                MB_OK | MB_ICONINFORMATION );
@@ -1199,7 +1199,7 @@ void CSignalDetailsDlg::OnOK()
                     pSg->m_omStrSignalName          = m_omStrSignalName;
                     pSg->m_omStrSignalUnit          = m_omStrUnit;
                     pSg->m_unSignalLength           = m_unSgLen;
-                    pSg->m_unStartByte              = m_byByteIndex;
+                    pSg->m_unStartByte              = m_byByteIndex+1;
                     pSg->m_byStartBit               = m_byStartBit;
 
                     if ( m_unMode == MD_ADD )
