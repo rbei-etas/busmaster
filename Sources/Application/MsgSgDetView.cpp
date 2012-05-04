@@ -124,6 +124,8 @@ BEGIN_MESSAGE_MAP(CMsgSgDetView, CFormView)
     ON_BN_CLICKED(IDC_CBTN_EDIT_DESC, OnButtonEditDesc)
     ON_NOTIFY(NM_CLICK, IDC_LSTC_SGIDVAL, OnClickSignalDescVal)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LSTC_SIGNAL_DETAILS, OnItemchangedLstcSignalDetails)
+    ON_NOTIFY(LVN_KEYDOWN, IDC_LSTC_SIGNAL_DETAILS, OnLvnKeydownLstcSignalDetails)
+    ON_NOTIFY(LVN_KEYDOWN, IDC_LSTC_SGIDVAL, OnLvnKeydownLstcSgidval)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -2283,4 +2285,46 @@ void CMsgSgDetView::PostNcDestroy()
     }
 
     CFormView::PostNcDestroy();
+}
+/*******************************************************************************
+ Function Name    :  OnLvnKeydownLstcSignalDetails
+ Input(s)         :  NMHDR, LRESULT
+ Output           :  void
+ Functionality    :  This Function will handle DEL button message and deletes
+    				 The selected signal
+ Member of        :  CMsgSgDetView                                         
+ Friend of        :      -                                                 
+                                                                           
+ Author(s)        :  Venkatanarayana Makam
+ Date Created     :  03.05.2012
+/******************************************************************************/
+void CMsgSgDetView::OnLvnKeydownLstcSignalDetails(NMHDR *pNMHDR, LRESULT *pResult)
+{
+    LPNMLVKEYDOWN pLVKeyDow = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
+    if( pLVKeyDow->wVKey == VK_DELETE)
+    {
+        OnDeleteSignal();
+    }
+    *pResult = 0;
+}
+/*******************************************************************************
+ Function Name    :  OnLvnKeydownLstcSignalDetails
+ Input(s)         :  NMHDR, LRESULT
+ Output           :  void
+ Functionality    :  This Function will handle DEL button message and deletes
+					 The selected signal Descriptor
+ Member of        :  CMsgSgDetView                                         
+ Friend of        :      -                                                 
+                                                                           
+ Author(s)        :  Venkatanarayana Makam
+ Date Created     :  03.05.2012
+/******************************************************************************/
+void CMsgSgDetView::OnLvnKeydownLstcSgidval(NMHDR *pNMHDR, LRESULT *pResult)
+{
+    LPNMLVKEYDOWN pLVKeyDow = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
+    if( pLVKeyDow->wVKey == VK_DELETE)
+    {
+        OnSignal_Desc_Delete();
+    }
+    *pResult = 0;
 }

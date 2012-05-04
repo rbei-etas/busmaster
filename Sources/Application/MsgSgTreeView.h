@@ -83,6 +83,7 @@ protected:
     afx_msg void OnInfoToolTip(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnEditMsg();
     afx_msg void OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnTvnKeydown(NMHDR* pNMHDR, LRESULT* pResult);
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
