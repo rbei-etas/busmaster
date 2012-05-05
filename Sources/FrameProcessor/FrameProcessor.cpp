@@ -141,8 +141,8 @@ USAGEMODE HRESULT FP_GetInterface(eID_COMPONENT eInterfaceID, void** ppvInterfac
             }
 
             // Else the object has been existing already
-            *ppvInterface = (void*) sg_pouFP_CAN; /* Doesn't matter even
-                           if sg_pouFP_CAN is null */
+            *ppvInterface = (void*) sg_pouFP_CAN;
+            /* Doesn't matter even if sg_pouFP_CAN is null */
         }
         break;
 
@@ -162,8 +162,8 @@ USAGEMODE HRESULT FP_GetInterface(eID_COMPONENT eInterfaceID, void** ppvInterfac
             }
 
             // Else the object has been existing already
-            *ppvInterface = (void*) sg_pouFP_J1939; /* Doesn't matter even
-                           if sg_pouFP_J1939 is null */
+            *ppvInterface = (void*) sg_pouFP_J1939;
+            /* Doesn't matter even if sg_pouFP_J1939 is null */
         }
 
         case FRAMEPROC_MCNET:

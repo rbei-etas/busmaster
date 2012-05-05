@@ -51,6 +51,8 @@ UINT unGetMsgIDFromName(CString omMsgName)
 }
 
 /**
+ * \brief Constructor
+ *
  * Standard default constructor
  */
 CFilterConfigDlg::CFilterConfigDlg( SFILTERAPPLIED_CAN* psSrcList,
@@ -73,6 +75,7 @@ CFilterConfigDlg::CFilterConfigDlg( SFILTERAPPLIED_CAN* psSrcList,
 }
 
 /**
+ * \brief     Do Data Exchange
  * \param[in] pDX Pointer to data exchange object
  *
  * This will map UI controls will mapped data members. This will
@@ -123,6 +126,7 @@ BEGIN_MESSAGE_MAP(CFilterConfigDlg, CDialog)
 END_MESSAGE_MAP()
 
 /**
+ * \brief  On Init Dialog
  * \return FALSE - If focus is set to Any UI control explicitly
  *
  * Initialises dialog's UI components
@@ -161,6 +165,7 @@ BOOL CFilterConfigDlg::OnInitDialog()
 }
 
 /**
+ * \brief  Create Image List
  * \return Result of the image list creation
  *
  * Creates image list used in list controls
@@ -183,6 +188,8 @@ BOOL CFilterConfigDlg::bCreateImageList()
 }
 
 /**
+ * \brief Create Named Filter List
+ *
  * Creates Named filter list control
  */
 BOOL CFilterConfigDlg::bCreateNamedFilterList()
@@ -228,6 +235,8 @@ BOOL CFilterConfigDlg::bCreateNamedFilterList()
 }
 
 /**
+ * \brief Create Filter Details List
+ *
  * Updates filter details list
  */
 BOOL CFilterConfigDlg::bCreateFilterDetailsList()
@@ -285,6 +294,8 @@ BOOL CFilterConfigDlg::bCreateFilterDetailsList()
 }
 
 /**
+ * \brief Create Filter Components
+ *
  * Creates Filter components
  */
 BOOL CFilterConfigDlg::bCreateFilterComps()
@@ -321,6 +332,8 @@ BOOL CFilterConfigDlg::bCreateFilterComps()
 }
 
 /**
+ * \brief Populate Database Messages
+ *
  * Populates database message combobox with DB messaged from
  * database module
  */
@@ -358,6 +371,8 @@ void CFilterConfigDlg::vPopulateDBMessages()
 }
 
 /**
+ * \brief Populate Named Filter List
+ *
  * Populates named filter list with the list of filters from
  * the input filter list
  */
@@ -414,6 +429,8 @@ BOOL CFilterConfigDlg::bPopulateNamedFilterList()
 }
 
 /**
+ * \brief On OK
+ *
  * Sets the focus to the next control in the dialog
  */
 void CFilterConfigDlg::OnOK()
@@ -422,7 +439,9 @@ void CFilterConfigDlg::OnOK()
 }
 
 /**
- * Updateds the filter details with the newly selected filter.
+ * \brief On Item Changed List Filter Names
+ *
+ * Updates the filter details with the newly selected filter.
  * Updates filter name or type in case it is called because of
  * editing by the user.
  */
@@ -478,6 +497,8 @@ void CFilterConfigDlg::OnItemchangedLstcFilterNames( NMHDR* pNMHDR,
 }
 
 /**
+ * \brief On Item Changed List Filter Details
+ *
  * Updates filter components with the selected filter details
  */
 void CFilterConfigDlg::OnItemchangedLstcFilterDetails( NMHDR* pNMHDR,
@@ -508,6 +529,7 @@ void CFilterConfigDlg::OnItemchangedLstcFilterDetails( NMHDR* pNMHDR,
 }
 
 /**
+ * \brief     Update Filter Details
  * \param[in] nSelectedItemIndex List control index
  *
  * Updated filter components with the filter details poined by
@@ -528,6 +550,7 @@ void CFilterConfigDlg::vUpdateFilterDetails( int nSelectedItemIndex )
 }
 
 /**
+ * \brief     Format Display String
  * \param[in] sFilter Filter details
  * \param[in] sFilterDisplyInfo formatted Filter details structure
  *
@@ -655,6 +678,7 @@ void CFilterConfigDlg::vFormatDisplayString(
 }
 
 /**
+ * \brief     Update Filter List Details
  * \param[in] nIndex List control index
  * \param[in] sDisplayInfo Display information struct
  *
@@ -701,6 +725,7 @@ void CFilterConfigDlg::vUpdateFilterListDetails( int nIndex,
 }
 
 /**
+ * \brief     Update Filter Details
  * \param[in] psFilterData Filter info structure
  *
  * Updates UI with the filter information passed.
@@ -738,7 +763,9 @@ void CFilterConfigDlg::vUpdateFilterDetails( const PSFILTERSET psFilterSet )
 }
 
 /**
- * \param[in] nItem Selected Row, nSubItem - Sub item of the selected row
+ * \brief     Update From Filter Name
+ * \param[in] nItem Selected Row
+ * \param[in] nSubItem Sub item of the selected row
  *
  * This will be called whenever user edits an item in the named
  * filter list. This will validate the info and save if it is
@@ -788,7 +815,9 @@ void CFilterConfigDlg::vUpdateFromFilterName(int nItem, int nSubItem)
 }
 
 /**
- * \param[in] nItem Row, nSubItem - Sub item in the row
+ * \brief     Update From Filter Type
+ * \param[in] nItem Row
+ * \param[in] nSubItem Sub item in the row
  *
  * This function handles filter type change event
  */
@@ -820,6 +849,7 @@ void CFilterConfigDlg::vUpdateFromFilterType(int nItem, int nSubItem)
 }
 
 /**
+ * \brief     Update Filter Components
  * \param[in] nSelectedItem Selected filter item
  *
  * This function updates the selected filter details
@@ -841,6 +871,7 @@ void CFilterConfigDlg::vUpdateFilterComponents(int nSelectedItem)
 }
 
 /**
+ * \brief     Update Filter Components
  * \param[in] sFilter Filter details struct
  *
  * This function updates filter components with given filter
@@ -989,19 +1020,7 @@ void CFilterConfigDlg::vUpdateFilterComponents(const SFILTER_CAN& sFilter)
 }
 
 /**
- * This function returns the pointer to the selected named
- * filter.
- */
-//PSNAMEDFILTER CFilterConfigDlg::psGetSelectedNamedFilter()
-//{
-//    CString omStrFilterName =
-//        m_omLstcFilterList.GetItemText( m_nSelecetedNamedFilterIndex, 0 );
-//    PSNAMEDFILTER psSelectedData =
-//                (PSNAMEDFILTER)m_rsFilterList.m_romFilterMap[ omStrFilterName ];
-//    return psSelectedData;
-//}
-
-/**
+ * \brief     Get Message ID From Combo
  * \param[in] omCombo Constant reference to CCombobox
  *
  * This function parses the combobox text to get message ID from it.
@@ -1040,6 +1059,8 @@ int CFilterConfigDlg::nGetMsgIDFromCombo( const CComboBox& omCombo )
 }
 
 /**
+ * \brief On Selection Change Combo Message ID From
+ *
  * This function will be called during the selection change of
  * message ID/Name combobox
  */
@@ -1062,6 +1083,8 @@ void CFilterConfigDlg::OnSelchangeCombMsgIdFrom()
 }
 
 /**
+ * \brief On Radio Message ID
+ *
  * This function will be called during the ID/Range radio button
  * change. This will update the filter details after validation
  */
@@ -1138,6 +1161,8 @@ void CFilterConfigDlg::OnRadioMessageId()
 }
 
 /**
+ * \brief On Radio Range
+ *
  * This function will be called during the ID/Range radio button
  * change. This will update the filter details after validation
  */
@@ -1186,6 +1211,8 @@ void CFilterConfigDlg::OnRadioRange()
 }
 
 /**
+ * \brief On Update Edit Range
+ *
  * This function will ve called during range editbox change.
  * This validates the range and updates if it is valid
  */
@@ -1211,6 +1238,8 @@ void CFilterConfigDlg::OnUpdateEditRange()
 }
 
 /**
+ * \brief On Edit Change Message ID Combo
+ *
  * This function will be called during text change in the
  * message ID/Name combobox. This will validate the text and
  * will update filter details if it is valid
@@ -1251,6 +1280,8 @@ void CFilterConfigDlg::OnEditChangeMsgIDCombo()
 }
 
 /**
+ * \brief On Selection Change Filter Component Combo
+ *
  * This function will be called during the change in message ID
  * type, frame type, direction and channel combo boxes. This
  * will validate filter components values and will update the
@@ -1277,6 +1308,7 @@ void CFilterConfigDlg::OnSelchangeFilterComponentCombo()
 }
 
 /**
+ * \brief     Set Status Text
  * \param[in] omStrText new status bar text
  *
  * Sets the status bar text
@@ -1288,8 +1320,9 @@ void CFilterConfigDlg::vSetStatusText(CString omStrText)
 }
 
 /**
+ * \brief     Get Filter Data
  * \param[in] sFilter Reference to filter structure
- * \return Filter detais valid or not
+ * \return    Filter detais valid or not
  *
  * Updates the filter structure with filter details from UI.
  */
@@ -1622,7 +1655,9 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_CAN& sFilter)
 }
 
 /**
+ * \brief     Update Selected Item
  * \param[in] sFilter Filter Details
+ *
  * Updates the selected item in the list with the given filter
  * details.
  */
@@ -1661,6 +1696,8 @@ BOOL CFilterConfigDlg::bUpdateSelectedItem(SFILTER_CAN& sFilter)
 }
 
 /**
+ * \brief Add New Item
+ *
  * Adds the user configured filter in to the selected
  * named filter. If validation fails then return FALSE and
  * nothing will be added in to the list
@@ -1715,6 +1752,8 @@ BOOL CFilterConfigDlg::bAddNewItem(SFILTER_CAN& sFilter)
 }
 
 /**
+ * \brief On Button Add Filter To List
+ *
  * This function will be called when user selects Add button.
  */
 void CFilterConfigDlg::OnBtnAddFilterToList()
@@ -1737,6 +1776,8 @@ void CFilterConfigDlg::OnBtnAddFilterToList()
 }
 
 /**
+ * \brief On Button Delete Filter
+ *
  * This function will be called when user selects delete button.
  * This will remove selected filter list.
  */
@@ -1785,6 +1826,8 @@ void CFilterConfigDlg::OnBtnDeleteFilter()
 }
 
 /**
+ * \brief Init Filter Components
+ *
  * This will initialise all filter details related UI components
  */
 void CFilterConfigDlg::vInitFilterComps()
@@ -1831,6 +1874,8 @@ void CFilterConfigDlg::vInitFilterComps()
 }
 
 /**
+ * \brief On Button Delete All Filter
+ *
  * This function will be called while user selects delete all
  * button. This will ask for conformation and will clear the
  * list if user conforms.
@@ -1865,6 +1910,8 @@ void CFilterConfigDlg::OnBtnDeleteAllFilter()
 }
 
 /**
+ * \brief On Begin Label Edit List Filter Names
+ *
  * This function will be called during the label edit start.
  * This will save the filter name before edit to cancel the edit
  * if new name alteady exist or invalid.
@@ -1886,6 +1933,8 @@ void CFilterConfigDlg::OnBeginlabeleditLstcFilterNames( NMHDR* pNMHDR,
 }
 
 /**
+ * \brief On Button Delete
+ *
  * This function will be called while user selects delete of
  * Named Filer from the list. This will delete the selected
  * named filter and will clear the list. The item change handler
@@ -1952,6 +2001,8 @@ void CFilterConfigDlg::OnBtnDelete()
 }
 
 /**
+ * \brief On Button Add
+ *
  * This will add a new Named filter in to the list. This will
  * iterate through the list of filters to find unique filter
  * name and will add the found entry into the named filter list
@@ -2054,6 +2105,8 @@ void CFilterConfigDlg::OnBtnAdd()
 }
 
 /**
+ * \brief Enable Disable Buttons
+ *
  * This will update UI controls based on selections
  */
 void CFilterConfigDlg::vEnableDisableButtons()
@@ -2131,6 +2184,8 @@ void CFilterConfigDlg::vEnableDisableButtons()
 }
 
 /**
+ * \brief Enable Disable Filter Components
+ *
  * This will update Filter components enable/disable option
  * based on selection.
  */
@@ -2182,6 +2237,8 @@ void CFilterConfigDlg::vEnableDisableFilterComps( BOOL bEnable )
 }
 
 /**
+ * \brief On OK Press
+ *
  * This function will be called while user selects OK button.
  * This will call parent class function to end dialog session.
  */
