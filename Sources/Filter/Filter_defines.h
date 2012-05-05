@@ -21,6 +21,9 @@
 
 #pragma once
 
+/* C++ includes */
+#include <string>
+
 // Filter
 #define defFILTER_TYPE_SINGLE_ID                0
 #define defFILTER_TYPE_ID_RANGE                 1
@@ -87,15 +90,15 @@
 #define MAX_LMT_FOR_STD_MSG_ID  2048
 #define defMAX_LMT_EXTD_MSG_ID 0x20000000
 
-
-struct tagFilterDisplayInfo
+class tagFilterDisplayInfo
 {
-    CString m_omStrMsgIDFrom;
-    CString m_omStrMsgIDTo;
-    CString m_omStrMsgIDType;
-    CString m_omStrMsgType;
-    CString m_omStrMsgDirection;
-    CString m_omStrMsgChannel;
+public:
+    string  m_omStrMsgIDFrom;
+    string  m_omStrMsgIDTo;
+    string  m_omStrMsgIDType;
+    string  m_omStrMsgType;
+    string  m_omStrMsgDirection;
+    string  m_omStrMsgChannel;
     int     m_nImageIndex;
 };
 

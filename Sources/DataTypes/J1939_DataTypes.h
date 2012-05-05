@@ -256,7 +256,7 @@ public:
 };
 
 typedef tagFormattedData_J1939 SFORMATTEDATA_J1939;
-typedef SFORMATTEDATA_J1939 *PSFORMATTEDATA_J1939;
+typedef SFORMATTEDATA_J1939* PSFORMATTEDATA_J1939;
 
 // Helper functions.
 
