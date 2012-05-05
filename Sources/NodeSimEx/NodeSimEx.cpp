@@ -118,8 +118,8 @@ USAGEMODE HRESULT NS_GetInterface(ETYPE_BUS eBus,
             }
 
             // Else the object has been existing already
-            *ppvInterface = (void*) sg_pouNS_CAN; /* Doesn't matter even
-                            if sg_pouFP_CAN is null */
+            *ppvInterface = (void*) sg_pouNS_CAN;
+            /* Doesn't matter even if sg_pouFP_CAN is null */
         }
         break;
 
@@ -139,8 +139,8 @@ USAGEMODE HRESULT NS_GetInterface(ETYPE_BUS eBus,
             }
 
             // Else the object has been existing already
-            *ppvInterface = (void*) sg_pouNS_J1939; /* Doesn't matter even
-                            if sg_pouFP_J1939 is null */
+            *ppvInterface = (void*) sg_pouNS_J1939;
+            /* Doesn't matter even if sg_pouFP_J1939 is null */
         }
         break;
 

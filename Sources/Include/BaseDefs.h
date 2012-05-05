@@ -178,24 +178,19 @@ public:
         memset(m_abData, 0, sizeof(m_abData));
         m_byIDType = TYPE_ID_CAN_NONE;
         m_byMsgType = TYPE_MSG_CAN_NONE;
-
         strcpy_s(m_acMsgDir, " x");
         strcpy_s(m_acChannel, "");
         strcpy_s(m_acType, "");
         strcpy_s(m_acDataLen, "");
         strcpy_s(m_acMsgDesc, "");
-
         strcpy_s(m_acMsgIDHex, "");
         strcpy_s(m_acMsgIDDec, "");
-
         strcpy_s(m_acDataHex, "");
         strcpy_s(m_acDataDec, "");
-
         strcpy_s(m_acTimeAbsReset, "");
         strcpy_s(m_acTimeAbs, "");
         strcpy_s(m_acTimeRel, "");
         strcpy_s(m_acTimeSys, "");
-
         m_n64MapId = 0;
         m_ColourCode = RGB(0, 0, 0);
     }

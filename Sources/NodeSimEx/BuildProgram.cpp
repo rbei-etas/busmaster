@@ -674,7 +674,7 @@ BOOL CBuildProgram::bCreateMakeFile(CString& omStrMakeFileTemplateName,
  * \param[out] omStrArray reference to CStringArray object
  * \return     TRUE or FALSE
  *
- * Set the text extent to maximum text length of items 
+ * Set the text extent to maximum text length of items
  */
 BOOL CBuildProgram::bAddStrToArrayFromFile(CString& omStrTextFileName,
         CStringArray& omStrArray)
