@@ -1517,6 +1517,20 @@ DWORD CMainFrame::dLoadJ1939DBFile(CString omStrActiveDataBase,BOOL bFrmCom)
         }
 
         vPopulateJ1939PGNList();
+        
+    	/* Update the Message window with latest J1939 DB details */
+		HWND hWnd;
+		hWnd = m_podMsgWndThread->hGetHandleMsgWnd(J1939);					
+		/* Set the J1939 DB pointer in MsgFrmtWnd class */
+		if(hWnd)
+		{
+			::SendMessage(hWnd, WM_NOTIFICATION_FROM_OTHER,
+							eLOAD_DATABASE,
+							(LPARAM)&(m_pouMsgSigJ1939));
+			//::SendMessage(hWnd, WM_DATABASE_CHANGE, (WPARAM)TRUE, NULL);
+		}
+		/* Update J1939 Tx window */
+        vPostMsgToSendMsgDlg(J1939);        
     }
 
     return dReturn;
