@@ -22,7 +22,6 @@
  * This file contains the codes when configuration procedure
  */
 
-
 #include "StdAfx_ProjectConfiguration.h"
 #include "ProjectConfiguration_extern.h"
 #include "ProjConfig.h"
@@ -90,7 +89,6 @@ static bool ReadAString(FILE* pFile, string& ResultStr)
 
     return bResult;
 }
-
 
 int GetTheErrorType(FILE* pFile)
 {
@@ -542,4 +540,3 @@ int SaveDataFile(char FileName[])
 
     return nResult;
 }
-

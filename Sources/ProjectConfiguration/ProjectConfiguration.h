@@ -26,11 +26,6 @@
 
 #include "resource.h"       // main symbols
 
-
-// CProjectConfigurationApp
-// See ProjectConfiguration.cpp for the implementation of this class
-//
-
 class CProjectConfigurationApp : public CWinApp
 {
 public:
