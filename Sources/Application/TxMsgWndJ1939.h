@@ -109,6 +109,7 @@ private:
     void vInitializeTpfFields(void);
     void vSetStatusBarText(const char* pacText);
     void vPopulatePGNComboBox(void);
+    void vAdjustWidthMessageComboBox();
 public:
     // Control variable for ECU NAME
     CRadixEdit m_omEcuName;
