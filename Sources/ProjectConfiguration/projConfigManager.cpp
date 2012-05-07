@@ -20,33 +20,40 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Contains project configuration manager class implementation.
+ * Implementation of the CProjConfigManager class.
  */
-
-// projConfigManager.cpp: implementation of the CProjConfigManager class.
-//
-//////////////////////////////////////////////////////////////////////
 
 #include "StdAfx_ProjectConfiguration.h"
 #include "ProjectConfiguration_extern.h"
 #include "ProjConfig.h"
 #include "projConfigManager.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
+/**
+ * \brief Constructor
+ *
+ * Construction
+ */
 CProjConfigManager::CProjConfigManager()
 {
     m_MapOfProject.clear();
 }
 
+/**
+ * \brief Destructor
+ *
+ * Destruction
+ */
 CProjConfigManager::~CProjConfigManager()
 {
     // ENSURE DESTRUCTOR OF CProjConfig IS CALLED
     m_MapOfProject.clear();
 }
 
-
+/**
+ * \brief Get Project Configuration
+ *
+ * Gets the project configuration.
+ */
 bool CProjConfigManager::GetProjectConfig(string ProjectName, CProjConfig *& ProjConfig)
 {
     bool bResult = false;
@@ -73,13 +80,21 @@ bool CProjConfigManager::GetProjectConfig(string ProjectName, CProjConfig *& Pro
     return bResult;
 }
 
-// Getters
-
+/**
+ * \brief Get Project Count
+ *
+ * Gets the project count.
+ */
 int CProjConfigManager::GetProjectCount()
 {
     return m_MapOfProject.size();
 }
 
+/**
+ * \brief Get Project List
+ *
+ * Gets the project list.
+ */
 int CProjConfigManager::GetProjectList(list<string>& ProjectList)
 {
     ProjectList.clear();
@@ -92,6 +107,11 @@ int CProjConfigManager::GetProjectList(list<string>& ProjectList)
     return GetProjectCount();
 }
 
+/**
+ * \brief Get Project Data
+ *
+ * Gets the project data.
+ */
 bool CProjConfigManager::GetProjectData(string ProjName, PROJECTDATA& ProjData)
 {
     bool bResult = false;
@@ -106,6 +126,11 @@ bool CProjConfigManager::GetProjectData(string ProjName, PROJECTDATA& ProjData)
     return bResult;
 }
 
+/**
+ * \brief Get Section Count
+ *
+ * Gets the section count.
+ */
 int CProjConfigManager::GetSectionCount(string ProjectName)
 {
     int nResult = 0;
@@ -119,6 +144,11 @@ int CProjConfigManager::GetSectionCount(string ProjectName)
     return nResult;
 }
 
+/**
+ * \brief Get Section List
+ *
+ * Gets the section list.
+ */
 int CProjConfigManager::GetSectionList(string ProjectName, list<string>& SectionList)
 {
     int nResult = 0;
@@ -132,6 +162,11 @@ int CProjConfigManager::GetSectionList(string ProjectName, list<string>& Section
     return nResult;
 }
 
+/**
+ * \brief Get Section Data
+ *
+ * Gets the section data.
+ */
 bool CProjConfigManager::GetSectionData(string ProjectName, string SectionName,
                                         SECTIONDATA& Sectiondata)
 {
@@ -146,9 +181,11 @@ bool CProjConfigManager::GetSectionData(string ProjectName, string SectionName,
     return bResult;
 }
 
-
-// Setters
-
+/**
+ * \brief Add/Modify Project Data
+ *
+ * Adds or modifies the project data.
+ */
 void CProjConfigManager::AddModifyProjDetail(const PROJECTDATA& NewProjData)
 {
     CProjConfig* pProjConfig = NULL;
@@ -166,6 +203,11 @@ void CProjConfigManager::AddModifyProjDetail(const PROJECTDATA& NewProjData)
     }
 }
 
+/**
+ * \brief Add/Modify Section
+ *
+ * Adds or modifies the section.
+ */
 bool CProjConfigManager::AddModifySection(string ProjectName,
         const SECTIONDATA& SectionData)
 {
@@ -180,13 +222,22 @@ bool CProjConfigManager::AddModifySection(string ProjectName,
     return bResult;
 }
 
+/**
+ * \brief Delete Project Table
+ *
+ * Deletes the project table.
+ */
 void CProjConfigManager::DeleteProjectTable(string ProjectName)
 {
     m_MapOfProject.erase(ProjectName);
 }
 
+/**
+ * \brief Delete All Project Table
+ *
+ * Deletes all project tables.
+ */
 void CProjConfigManager::DeleteAllProjectTable(void)
 {
     m_MapOfProject.clear();
 }
-

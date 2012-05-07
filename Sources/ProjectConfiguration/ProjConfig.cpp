@@ -28,7 +28,9 @@
 #include "ProjConfig.h"
 
 /**
- * \brief Construction
+ * \brief Constructor
+ *
+ * Constructor
  */
 CProjConfig::CProjConfig()
 {
@@ -36,13 +38,20 @@ CProjConfig::CProjConfig()
 }
 
 /**
- * \brief Destruction
+ * \brief Destructor
+ *
+ * Destructor
  */
 CProjConfig::~CProjConfig()
 {
     vClearMap();
 }
 
+/**
+ * \brief Clear Map
+ *
+ * Clear the map of each section.
+ */
 void CProjConfig::vClearMap(void)
 {
     for (SECTIONMAP::iterator i = m_MapOfSection.begin(); i != m_MapOfSection.end(); ++i)
@@ -54,18 +63,31 @@ void CProjConfig::vClearMap(void)
     m_MapOfSection.clear();
 }
 
-// Getters
-
+/**
+ * \brief Get Section Count
+ *
+ * Gets the section count.
+ */
 int CProjConfig::GetSectionCount()
 {
     return m_MapOfSection.size();
 }
 
+/**
+ * \brief Get Project Details
+ *
+ * Gets the project details.
+ */
 void CProjConfig::GetProjectDetail(PROJECTDATA& ProjDATA)
 {
     ProjDATA = m_sProjectDetails;
 }
 
+/**
+ * \brief Get Section List
+ *
+ * Gets the section list.
+ */
 int CProjConfig::GetSectionList(list<string>& SectionList)
 {
     SectionList.empty();
@@ -78,6 +100,11 @@ int CProjConfig::GetSectionList(list<string>& SectionList)
     return GetSectionCount();
 }
 
+/**
+ * \brief Get Section Data
+ *
+ * Gets the section data.
+ */
 bool CProjConfig::GetSectionData(string SectionName, SECTIONDATA& SectionData)
 {
     bool bResult = false;
@@ -97,9 +124,11 @@ bool CProjConfig::GetSectionData(string SectionName, SECTIONDATA& SectionData)
     return bResult;
 }
 
-
-// Setters
-
+/**
+ * \brief Add/Modify Section Detail
+ *
+ * Adds or modifies the section details.
+ */
 bool CProjConfig::AddModifySectionDetail(const SECTIONDATA& SectionData)
 {
     bool bAdded = false;
@@ -122,6 +151,11 @@ bool CProjConfig::AddModifySectionDetail(const SECTIONDATA& SectionData)
     return bAdded;
 }
 
+/**
+ * \brief Modify Project Values
+ *
+ * Modifies the project values.
+ */
 void CProjConfig::ModifyProjValues(const PROJECTDATA& ProjDATA)
 {
     m_sProjectDetails = ProjDATA;
