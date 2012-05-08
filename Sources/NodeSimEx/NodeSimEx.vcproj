@@ -552,10 +552,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\NodeSimEx_resource.hm"
-				>
-			</File>
-			<File
 				RelativePath=".\NodeSimEx_stdafx.h"
 				>
 			</File>

@@ -247,10 +247,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CAN_ICS_neoVI_Resource.hm"
-				>
-			</File>
-			<File
 				RelativePath=".\CAN_ICS_neoVI_stdafx.h"
 				>
 			</File>

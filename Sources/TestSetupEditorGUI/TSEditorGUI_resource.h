@@ -64,14 +64,3 @@
 #define ID_DISPLAY_SETTINGS             32790
 #define IDM_HELP_ABOUTTESTSETUPEDITOR   32791
 #define IDM_FILE_VALIDATE               32792
-
-// Next default values for new objects
-//
-#ifdef APSTUDIO_INVOKED
-#ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3007
-#define _APS_NEXT_COMMAND_VALUE         32794
-#define _APS_NEXT_CONTROL_VALUE         3015
-#define _APS_NEXT_SYMED_VALUE           3000
-#endif
-#endif

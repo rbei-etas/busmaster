@@ -25,14 +25,3 @@
 #define IDC_BTN_ADD_FILTER              1257
 #define IDC_LSTC_FILTER_LIST            1258
 #define IDC_BTN_ADD_FILE                1262
-
-// Next default values for new objects
-//
-#ifdef APSTUDIO_INVOKED
-#ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        15000
-#define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         15000
-#define _APS_NEXT_SYMED_VALUE           15000
-#endif
-#endif
