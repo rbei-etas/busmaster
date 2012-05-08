@@ -62,7 +62,7 @@ END_MESSAGE_MAP()
 void CAlphanumiricEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     // TODO: Add your message handler code here and/or call default
-    if(nChar=='_' || isalnum(nChar)!= 0 || nChar == BACK_SPACE)
+    if(nChar=='_' || isalnum(nChar)!= 0 || nChar == BACK_SPACE || (nChar>=0 && nChar <=32) )
     {
         CEdit::OnChar(nChar, nRepCnt, nFlags);
     }

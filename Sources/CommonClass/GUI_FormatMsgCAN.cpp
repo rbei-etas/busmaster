@@ -119,34 +119,38 @@ void CFormatMsgCAN::vFormatDataAndId(BYTE bExprnFlag,
     if (IS_NUM_HEX_SET(bExprnFlag))
     {
         sprintf_s(CurrDataCAN->m_acMsgIDHex, FORMAT_STR_ID_HEX, CurrDataCAN->m_dwMsgID);
-        int j = 0;  // j declared outside
-
-        for (int i = 0; i < CurrDataCAN->m_byDataLength; i++)
-        {
-            BYTE CurrDat = CurrDataCAN->m_abData[i];
-            int nSize = sizeof(CurrDataCAN->m_acDataDec);
-            sprintf_s(&(CurrDataCAN->m_acDataHex[j]), nSize-j, FORMAT_STR_DATA_HEX, CurrDat);
-            j += 3;
-        }
-
-        CurrDataCAN->m_acDataHex[j] = L'\0';
+        
+    	//If an RTR message, Databyte(s) not required to be displayed
+		if ( ! ( CurrDataCAN->m_byMsgType & TYPE_MSG_CAN_RTR ) )
+		{
+			int j = 0;  // j declared outside
+			for (int i = 0; i < CurrDataCAN->m_byDataLength; i++)
+			{
+				BYTE CurrDat = CurrDataCAN->m_abData[i];
+				_stprintf(&(CurrDataCAN->m_acDataHex[j]), FORMAT_STR_DATA_HEX, CurrDat);
+				j += 3;
+			}
+			CurrDataCAN->m_acDataHex[j] = L'\0';
+		}
     }
 
     if (IS_NUM_DEC_SET(bExprnFlag))
     {
         sprintf_s(CurrDataCAN->m_acMsgIDDec, FORMAT_STR_ID_DEC, CurrDataCAN->m_dwMsgID);
-        int j = 0;
-
-        for (int i = 0; i < CurrDataCAN->m_byDataLength; i++)
-        {
-            BYTE CurrDat = CurrDataCAN->m_abData[i];
-            int nSize = sizeof(CurrDataCAN->m_acDataDec);
-            sprintf_s(&(CurrDataCAN->m_acDataDec[j]), nSize-j, FORMAT_STR_DATA_DEC, CurrDat);
-            j += 4;
-            CurrDataCAN->m_acDataDec[j-1] = L' ';
-        }
-
-        CurrDataCAN->m_acDataDec[j-1] = L'\0';
+        
+    	//If an RTR message, Databyte(s) not required to be displayed
+		if ( ! ( CurrDataCAN->m_byMsgType & TYPE_MSG_CAN_RTR ) )
+		{
+			int j = 0;
+			for (int i = 0; i < CurrDataCAN->m_byDataLength; i++)
+			{
+				BYTE CurrDat = CurrDataCAN->m_abData[i];
+				_stprintf(&(CurrDataCAN->m_acDataDec[j]), FORMAT_STR_DATA_DEC, CurrDat);
+				j += 4;
+				CurrDataCAN->m_acDataDec[j-1] = L' ';            
+			}
+			CurrDataCAN->m_acDataDec[j-1] = L'\0';
+		}        
     }
 }
 
