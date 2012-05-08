@@ -26,7 +26,7 @@
 #include "ComputeCheckSum.h"    // For CComputeCheckSum class definition
 
 #define defSIZE_OF_ERROR_BUFFER 1024
-#define defPROJECT_NAME         _T("MCNet")
+#define defPROJECT_NAME         "BUSMASTER"
 
 /**
  * \brief Constructor
