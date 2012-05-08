@@ -1085,15 +1085,3 @@
 #define IDS_ERR_BSTR2CHAR               62465
 #define IDS_ERR_ERRLOGGER_EVENT         62466
 #define IDS_ERR_ERRLOGGER_REGISTER      62467
-
-// Next default values for new objects
-//
-#ifdef APSTUDIO_INVOKED
-#ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        301
-#define _APS_NEXT_COMMAND_VALUE         33123
-#define _APS_NEXT_CONTROL_VALUE         1353
-#define _APS_NEXT_SYMED_VALUE           111
-#endif
-#endif

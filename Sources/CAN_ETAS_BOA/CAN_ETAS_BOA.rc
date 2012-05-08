@@ -2,11 +2,6 @@
 //
 #include "CAN_ETAS_BOA_Resource.h"
 
-// Generated Help ID header file
-#define APSTUDIO_HIDDEN_SYMBOLS
-#include "CAN_ETAS_BOA_Resource.hm"
-#undef APSTUDIO_HIDDEN_SYMBOLS
-
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -26,31 +21,6 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
 #endif //_WIN32
 
-#ifdef APSTUDIO_INVOKED
-/////////////////////////////////////////////////////////////////////////////
-//
-// TEXTINCLUDE
-//
-
-1 TEXTINCLUDE 
-BEGIN
-    "resource.h\0"
-END
-
-2 TEXTINCLUDE 
-BEGIN
-    "#include ""afxres.h""\r\n"
-    "\0"
-END
-
-3 TEXTINCLUDE 
-BEGIN
-    "\r\n"
-    "\0"
-END
-
-#endif    // APSTUDIO_INVOKED
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -63,31 +33,6 @@ IDR_BMP_NET             BITMAP                  "res\\bmp_net.bmp"
 //
 // Dialog
 //
-
-IDD_PPAGE_CONTROLLER DIALOGEX 0, 0, 235, 156
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
-CAPTION "Property Page"
-FONT 8, "MS Shell Dlg", 0, 0, 0x0
-BEGIN
-    LTEXT           "TODO: layout property page",IDC_STATIC,73,74,90,8
-END
-
-IDD_LIST_HW_INTRS DIALOGEX 0, 0, 291, 199
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Select Hardware Interface from this List"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,173,178,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,234,178,50,14
-    LISTBOX         IDC_LIST1,7,97,123,77,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_NAME,37,12,93,14,ES_AUTOHSCROLL | ES_READONLY
-    EDITTEXT        IDC_VENDOR,37,43,93,14,ES_AUTOHSCROLL | ES_READONLY
-    EDITTEXT        IDC_DESC,143,29,141,145,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY
-    LTEXT           "Select FlexCard",IDC_STATIC,9,78,51,8
-    LTEXT           "Name:",IDC_STATIC,9,15,22,8
-    LTEXT           "Vendor:",IDC_STATIC,9,46,26,8
-    LTEXT           "Description:",IDC_STATIC,143,15,39,8
-END
 
 IDD_DLG_HW_LISTING DIALOGEX 0, 0, 376, 151
 STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
@@ -146,56 +91,6 @@ BEGIN
     EDITTEXT        IDC_EDIT_CHANNEL_DESC,46,111,160,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
 END
 
-IDD_DLG_ACCEPTANCE DIALOGEX 0, 0, 208, 161
-STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
-EXSTYLE WS_EX_CONTEXTHELP
-CAPTION "Acceptance Filter"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
-BEGIN
-    CONTROL         "Single",IDC_RBTN_SINGLE_FILTER_MODE,"Button",BS_AUTORADIOBUTTON,47,20,52,8,0
-    CONTROL         "Dual",IDC_RBTN_DUAL_FILTER_MODE,"Button",BS_AUTORADIOBUTTON,102,20,52,8,0
-    EDITTEXT        IDC_EDIT_ACCEPTANCE_CODE1,35,61,26,12,ES_AUTOHSCROLL,0
-    EDITTEXT        IDC_EDIT_ACCEPTANCE_CODE2,74,61,26,12,ES_AUTOHSCROLL,0
-    EDITTEXT        IDC_EDIT_ACCEPTANCE_CODE3,116,61,26,12,ES_AUTOHSCROLL,0
-    EDITTEXT        IDC_EDIT_ACCEPTANCE_CODE4,157,61,26,12,ES_AUTOHSCROLL,0
-    EDITTEXT        IDC_EDIT_ACCEPTANCE_MASK1,35,110,26,12,ES_AUTOHSCROLL,0
-    EDITTEXT        IDC_EDIT_ACCEPTANCE_MASK2,74,110,26,12,ES_AUTOHSCROLL,0
-    EDITTEXT        IDC_EDIT_ACCEPTANCE_MASK3,116,110,26,12,ES_AUTOHSCROLL,0
-    EDITTEXT        IDC_EDIT_ACCEPTANCE_MASK4,157,110,26,12,ES_AUTOHSCROLL,0
-    PUSHBUTTON      "&Cancel",IDCANCEL,118,140,50,14
-    DEFPUSHBUTTON   "O&K",IDC_CBTN_ACCETANCE_OK,39,140,50,14
-    GROUPBOX        "Mode",IDC_STAT_FILTER_MODE,38,7,131,28
-    GROUPBOX        "Code",IDC_STAT_ACCEPTANCE_FILTER_CODE,18,40,171,42
-    GROUPBOX        "Mask",IDC_STAT_ACCEPTANCE_FILTER_MASK,18,86,171,44
-    LTEXT           "0x",IDC_STATIC,26,63,8,8
-    LTEXT           "0x",IDC_STATIC,66,63,8,8
-    LTEXT           "0x",IDC_STATIC,108,63,8,8
-    LTEXT           "0x",IDC_STATIC,149,63,8,8
-    LTEXT           "0x",IDC_STATIC,26,112,8,8
-    LTEXT           "0x",IDC_STATIC,66,112,8,8
-    LTEXT           "0x",IDC_STATIC,108,112,8,8
-    LTEXT           "0x",IDC_STATIC,149,112,8,8
-    LTEXT           "Byte0",IDC_STATIC,39,50,19,8
-    LTEXT           "Byte1",IDC_STATIC,80,50,19,8
-    LTEXT           "Byte2",IDC_STATIC,122,50,19,8
-    LTEXT           "Byte3",IDC_STATIC,162,50,19,8
-    LTEXT           "Byte0",IDC_STATIC,39,99,19,8
-    LTEXT           "Byte1",IDC_STATIC,80,99,19,8
-    LTEXT           "Byte2",IDC_STATIC,122,99,19,8
-    LTEXT           "Byte3",IDC_STATIC,162,99,19,8
-END
-
-IDD_CONFIG_STUB DIALOGEX 0, 0, 203, 65
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Hardware configuration"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    DEFPUSHBUTTON   "Close",IDOK,113,44,50,14
-    EDITTEXT        IDC_EDIT_INITFILE,12,16,143,14,ES_AUTOHSCROLL | ES_READONLY | WS_GROUP
-    PUSHBUTTON      "...",IDC_BUTTON1,161,16,30,14
-    PUSHBUTTON      "Apply",IDC_BUTTON_APPLY,40,44,50,14,WS_DISABLED
-END
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -249,75 +144,5 @@ END
 // remains consistent on all systems.
 IDR_PGM_EDTYPE          ICON                    "res\\BUSMASTERDoc.ico"
 
-/////////////////////////////////////////////////////////////////////////////
-//
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
-BEGIN
-    IDD_PPAGE_CONTROLLER, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 228
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 149
-    END
-
-    IDD_LIST_HW_INTRS, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 284
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 192
-    END
-
-    IDD_DLG_HW_LISTING, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 369
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 148
-    END
-
-    IDD_DLG_CHANGE_REGISTERS_CAN_ETAS_BOA, DIALOG
-    BEGIN
-        LEFTMARGIN, 6
-        RIGHTMARGIN, 316
-        TOPMARGIN, 8
-        BOTTOMMARGIN, 124
-    END
-
-    IDD_DLG_ACCEPTANCE, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 204
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 158
-    END
-
-    IDD_CONFIG_STUB, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 58
-    END
-END
-#endif    // APSTUDIO_INVOKED
-
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
-
-
-
-#ifndef APSTUDIO_INVOKED
-/////////////////////////////////////////////////////////////////////////////
-//
-// Generated from the TEXTINCLUDE 3 resource.
-//
-
-
-/////////////////////////////////////////////////////////////////////////////
-#endif    // not APSTUDIO_INVOKED
-

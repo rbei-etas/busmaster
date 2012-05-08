@@ -231,10 +231,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Filter_resource.hm"
-				>
-			</File>
-			<File
 				RelativePath=".\Filter_stdafx.h"
 				>
 			</File>

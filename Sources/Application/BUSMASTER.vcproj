@@ -1575,10 +1575,6 @@
 				>
 			</File>
 			<File
-				RelativePath="resource.hm"
-				>
-			</File>
-			<File
 				RelativePath=".\RxMsgList.h"
 				>
 			</File>

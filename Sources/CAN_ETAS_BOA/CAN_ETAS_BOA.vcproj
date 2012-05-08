@@ -230,10 +230,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CAN_ETAS_BOA_Resource.hm"
-				>
-			</File>
-			<File
 				RelativePath=".\CAN_ETAS_BOA_stdafx.h"
 				>
 			</File>
