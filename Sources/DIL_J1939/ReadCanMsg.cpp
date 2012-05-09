@@ -1,14 +1,28 @@
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  ReadCanMsg.cpp
-  Description   :
-  $Log:   X:/Archive/Sources/DIL_J1939/ReadCanMsg.cpv  $
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-  Author(s)     :  Pradeep Kadoor
-  Date Created  :  23/11/2010
-  Modified By   :
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
+/**
+ * \file      ReadCanMsg.cpp
+ * \brief     Read CAN Messages
+ * \author    Pradeep Kadoor, Tobias Lorenz
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Reads CAN messages.
+ */
+
+/* Project includes */
 #include "DIL_J1939_stdafx.h"
 #include "J1939_UtilityFuncs.h"
 #include "ReadCanMsg.h"
@@ -16,6 +30,11 @@
 
 UINT g_unCount = 0;
 
+/**
+ * \brief Constructor
+ *
+ * Constructor
+ */
 CReadCanMsg::CReadCanMsg(void)
 {
     m_omHandleToNodeMgrMap.RemoveAll();
@@ -34,6 +53,11 @@ CReadCanMsg::CReadCanMsg(void)
     vReset(); // Reset rest of the events
 }
 
+/**
+ * \brief Destructor
+ *
+ * Destructor
+ */
 CReadCanMsg::~CReadCanMsg(void)
 {
     if (NULL != m_ahActionEvent[0])
@@ -44,6 +68,11 @@ CReadCanMsg::~CReadCanMsg(void)
     }
 }
 
+/**
+ * \brief Reset
+ *
+ * Reset
+ */
 void CReadCanMsg::vReset(void)
 {
     // Initialise to null all the events but the first one.
@@ -55,6 +84,11 @@ void CReadCanMsg::vReset(void)
     m_nEvents = 1;
 }
 
+/**
+ * \brief Add Event Handle
+ *
+ * Adds the event handle.
+ */
 HRESULT CReadCanMsg::AddEventHandle(HANDLE hHandle, BYTE byNodeMgrIndex)
 {
     HRESULT Result = S_FALSE;
@@ -76,6 +110,12 @@ HRESULT CReadCanMsg::AddEventHandle(HANDLE hHandle, BYTE byNodeMgrIndex)
     return Result;
 }
 
+/**
+ * \brief     Delete Event Handle
+ * \param[in] handle Event Handle
+ *
+ * Deletes the event handle.
+ */
 BOOL CReadCanMsg::bDeleteEventHandle(HANDLE handle)
 {
     BOOL bResult = FALSE;
@@ -124,6 +164,12 @@ BOOL CReadCanMsg::bDeleteEventHandle(HANDLE handle)
     bResult = m_ouThreadUtil.bTransitToActiveState(); // End of inaction
     return bResult;
 }
+
+/**
+ * \brief Read DIL CAN message
+ *
+ * Reads the DIL CAN message.
+ */
 DWORD WINAPI ReadDILCANMsg(LPVOID pVoid)
 {
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
@@ -221,6 +267,12 @@ DWORD WINAPI ReadDILCANMsg(LPVOID pVoid)
     return 0;
 }
 
+/**
+ * \brief     Retrieve Data From Buffer
+ * \param[in] byIndex Buffer Index
+ *
+ * Retrieves the data from the buffer.
+ */
 void CReadCanMsg::vRetrieveDataFromBuffer(BYTE byIndex)
 {
     //Get the node manager and indicate to read data
@@ -233,6 +285,11 @@ void CReadCanMsg::vRetrieveDataFromBuffer(BYTE byIndex)
     }
 }
 
+/**
+ * \brief Do Initialization
+ *
+ * Does the initialization.
+ */
 void CReadCanMsg::vDoInit(void)
 {
     m_ouThreadUtil.m_pBuffer = (LPVOID) this;
@@ -240,6 +297,11 @@ void CReadCanMsg::vDoInit(void)
     ASSERT(Result);
 }
 
+/**
+ * \brief Do Exit
+ *
+ * Does the exit.
+ */
 void CReadCanMsg::vDoExit(void)
 {
     //BOOL Result = m_ouThreadUtil.bTerminateThread();

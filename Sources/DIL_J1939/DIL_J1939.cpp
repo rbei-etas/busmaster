@@ -14,13 +14,15 @@
  */
 
 /**
- * \file      DIL_J1939/DIL_J1939.cpp
+ * \file      DIL_J1939.cpp
  * \brief     Defines the initialization routines for the DLL.
- * \author    Pradeep Kadoor
+ * \author    Pradeep Kadoor, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Interface file for CAN BUS
+ * Interface file for J1939
  */
+
+/* Project includes */
 #include "DIL_J1939_stdafx.h"
 #include "J1939_UtilityFuncs.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
@@ -35,6 +37,11 @@
 BEGIN_MESSAGE_MAP(CJ1939TranslatorApp, CWinApp)
 END_MESSAGE_MAP()
 
+/**
+ * \brief Constructor
+ *
+ * Constructor
+ */
 CJ1939TranslatorApp::CJ1939TranslatorApp()
 {
     // TODO: add construction code here,
@@ -43,6 +50,11 @@ CJ1939TranslatorApp::CJ1939TranslatorApp()
 
 CJ1939TranslatorApp theApp;
 
+/**
+ * \brief Init Instance
+ *
+ * Init Instance
+ */
 BOOL CJ1939TranslatorApp::InitInstance()
 {
     CWinApp::InitInstance();
@@ -514,6 +526,8 @@ USAGEMODE BOOL DILJ_bIsOnline(void)
 }
 
 /**
+ * \brief Sets the call back function pointer.
+ *
  * Set call back function pointer
  */
 USAGEMODE HRESULT DILJ_SetCallBckFuncPtr(DWORD dwClient, ETYPE_CLBCK_FN eClBckFnType,

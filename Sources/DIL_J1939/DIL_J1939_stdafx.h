@@ -16,7 +16,7 @@
 /**
  * \file      DIL_J1939_stdafx.h
  * \brief     include file for standard system include files
- * \author    Anish Kumar
+ * \author    Anish Kumar, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * include file for standard system include files,

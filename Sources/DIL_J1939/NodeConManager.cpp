@@ -1,14 +1,28 @@
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  NodeConManager.cpp
-  Description   :
-  $Log:   X:/Archive/Sources/DIL_J1939/NodeConManager.cpv  $
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-  Author(s)     :  Pradeep Kadoor
-  Date Created  :  23/11/2010
-  Modified By   :
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
+/**
+ * \file      NodeConManager.cpp
+ * \brief     Node Connection Manager
+ * \author    Pradeep Kadoor, Tobias Lorenz
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Defines the Node Connection Manager.
+ */
+
+/* Project includes */
 #include "DIL_J1939_stdafx.h"
 #include "Include/BaseDefs.h"
 #include "DIL_J1939_Extern.h"
@@ -19,19 +33,11 @@
 #include "NetworkMgmt.h"
 #include "TransferLayer.h"
 
-
-
-/******************************************************************************
-Function Name  :  TP_RxMsgThreadProc
-Input(s)       :
-Output         :
-Functionality  :  Receive msg thread for transport protocol function
-Member of      :
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+/**
+ * \brief Receive Message Thread Procedure
+ *
+ * Sets the receive message thread procedure.
+ */
 DWORD WINAPI TP_RxMsgThreadProc(LPVOID pVoid)
 {
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
@@ -93,17 +99,11 @@ DWORD WINAPI TP_RxMsgThreadProc(LPVOID pVoid)
     return 0;
 }
 
-/******************************************************************************
-Function Name  :  TransmitMsgThreadProc
-Input(s)       :
-Output         :
-Functionality  :  Transmit msg thread
-Member of      :
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+/**
+ * \brief Transmit Message Thread Procedure
+ *
+ * Sets the transmit message thread procedure.
+ */
 DWORD WINAPI TransmitMsgThreadProc(LPVOID pVoid)
 {
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
@@ -160,17 +160,12 @@ DWORD WINAPI TransmitMsgThreadProc(LPVOID pVoid)
     SetEvent(pThreadParam->hGetExitNotifyEvent());
     return 0;
 }
-/******************************************************************************
-Function Name  :  vActivate
-Input(s)       :
-Output         :
-Functionality  :  Activates a node to transmit or receive msgs
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Activate
+ *
+ * Activates a node to transmit or receive messages.
+ */
 void CNodeConManager::vActivate(void)
 {
     m_bIsActive = TRUE;
@@ -183,17 +178,12 @@ void CNodeConManager::vActivate(void)
     m_ouTransmitThread.bStartThread(TransmitMsgThreadProc);
     m_ouReceiveThread.bStartThread(TP_RxMsgThreadProc);
 }
-/******************************************************************************
-Function Name  :  vDeactivate
-Input(s)       :
-Output         :
-Functionality  :  Deactivates a node. Stop transmission and reception.
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Deactivate
+ *
+ * Deactivates a node. Stop transmission and reception.
+ */
 void CNodeConManager::vDeactivate(void)
 {
     vRemoveAllConnections();
@@ -204,32 +194,23 @@ void CNodeConManager::vDeactivate(void)
     m_ouReceiveThread.bTerminateThread();
     m_ouTransmitThread.bTerminateThread();
 }
-/******************************************************************************
-Function Name  :  bIsActive
-Input(s)       :
-Output         :  TRUE if node is active, FALSE if node is not active.
-Functionality  :  returns if node is active or not
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief  Is Active
+ * \return TRUE if node is active, FALSE if node is not active.
+ *
+ * Returns if node is active or not.
+ */
 BOOL CNodeConManager::bIsActive(void)
 {
     return (m_bIsActive == TRUE);
 }
-/******************************************************************************
-Function Name  :  CNodeConManager
-Input(s)       :
-Output         :
-Functionality  :  Constructor
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Constructor
+ *
+ * Constructor
+ */
 CNodeConManager::CNodeConManager(int nNodeNo, char* pacNodeName, UINT64 un64ECUName, BYTE byPrefAddress, BOOL bIsMonNode)
 {
     m_bIsMonNode = bIsMonNode;
@@ -265,17 +246,12 @@ CNodeConManager::CNodeConManager(int nNodeNo, char* pacNodeName, UINT64 un64ECUN
     m_pClBckBcLDataInd  = NULL;
     m_pClBckNM_ACL      = NULL;
 }
-/******************************************************************************
-Function Name  :  ~CNodeConManager
-Input(s)       :
-Output         :
-Functionality  :  Destructor
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Destructor
+ *
+ * Destructor
+ */
 CNodeConManager::~CNodeConManager(void)
 {
     vRemoveAllConnections();
@@ -293,47 +269,34 @@ CNodeConManager::~CNodeConManager(void)
     CloseHandle(m_ouTransmitThread.m_hActionEvent);
     CloseHandle(m_ouReceiveThread.m_hActionEvent);
 }
-/******************************************************************************
-Function Name  :  byGetNodeAddress
-Input(s)       :
-Output         :  BYTE, Node address
-Functionality  :  Returns Node's 8 bit address aquired.
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief  Get Node Adress
+ * \return Node address
+ *
+ * Returns Node's 8 bit address aquired.
+ */
 BYTE CNodeConManager::byGetNodeAddress()
 {
     return m_byNodeAddress;
 }
-/******************************************************************************
-Function Name  :  byGetConCount
-Input(s)       :
-Output         :  BYTE
-Functionality  :  Returns the number connection of count.
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief  Get Connection Count
+ * \return Connection Count
+ *
+ * Returns the number connection of count.
+ */
 BYTE CNodeConManager::byGetConCount()
 {
     return m_byConCount;
 }
-/******************************************************************************
-Function Name  :  pouGetConDetObj
-Input(s)       :
-Output         :
-Functionality  :
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Get Connection Details Object
+ *
+ * Gets the connection details object.
+ */
 CConnectionDet* CNodeConManager::pouGetConDetObj(BYTE byConDetNum)
 {
     CConnectionDet* pcondet = NULL;
@@ -345,17 +308,12 @@ CConnectionDet* CNodeConManager::pouGetConDetObj(BYTE byConDetNum)
 
     return pcondet;
 }
-/******************************************************************************
-Function Name  :  bAddConDetObj
-Input(s)       :
-Output         :
-Functionality  :
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Add Connection Details Object
+ *
+ * Adds a connection details object.
+ */
 BOOL CNodeConManager::bAddConDetObj(CConnectionDet* pConDet)
 {
     BOOL bReturn = FALSE;
@@ -368,17 +326,13 @@ BOOL CNodeConManager::bAddConDetObj(CConnectionDet* pConDet)
 
     return bReturn;
 }
-/******************************************************************************
-Function Name  :  bIsMsgForThisNode
-Input(s)       :  UINT32 unExtId, Extended CAN Identifier
-Output         :
-Functionality  :  Checks if the msg should be processed or not.
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief     Is Message For This Node
+ * \param[in] unExtId Extended CAN Identifier
+ *
+ * Checks if the message should be processed or not.
+ */
 BOOL CNodeConManager::bIsMsgForThisNode(UINT32 unExtId)
 {
     UNION_29_BIT_ID uExtId;
@@ -386,17 +340,12 @@ BOOL CNodeConManager::bIsMsgForThisNode(UINT32 unExtId)
     return ((uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Specific == m_byNodeAddress)
             ||(uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Specific == ADDRESS_ALL));
 }
-/******************************************************************************
-Function Name  :  vReadCANdataBuffer
-Input(s)       :
-Output         :
-Functionality  :  Reads the CAN buffer
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Read CAN Data Buffer
+ *
+ * Reads the CAN buffer.
+ */
 void CNodeConManager::vReadCANdataBuffer()
 {
     static sTCANDATA CurrMsgCAN;
@@ -443,17 +392,11 @@ void CNodeConManager::vReadCANdataBuffer()
     }
 }
 
-/******************************************************************************
-Function Name  :  vProcessACLMsg
-Input(s)       :
-Output         :
-Functionality  :  Processes address claimed msg
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+/**
+ * \brief Process ACL message
+ *
+ * Processes address claimed message.
+ */
 void CNodeConManager::vProcessACLMsg(const STCAN_MSG& sCanMsg)
 {
     UNION_29_BIT_ID uExtId = {0};
@@ -487,17 +430,12 @@ void CNodeConManager::vProcessACLMsg(const STCAN_MSG& sCanMsg)
         CNetworkMgmt::ouGetNWManagementObj().vUpdateAddressMap(unECUName, uExtId.m_s29BitId.m_bySrcAddress);
     }
 }
-/******************************************************************************
-Function Name  :  bProcessNodeLevelMsg
-Input(s)       :
-Output         :
-Functionality  :  Processes node level msg
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Process Node Level Message
+ *
+ * Processes node level message.
+ */
 BOOL CNodeConManager::bProcessNodeLevelMsg(const STCANDATA& sCanData)
 {
     //Send it to each connection
@@ -523,17 +461,12 @@ BOOL CNodeConManager::bProcessNodeLevelMsg(const STCANDATA& sCanData)
     WriteIntoClientsBuffer(sJ1939Msg);
     return bResult;
 }
-/******************************************************************************
-Function Name  :  vRemoveAllConnections
-Input(s)       :
-Output         :
-Functionality  :  Removes all existing connection
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Remove All Connections
+ *
+ * Removes all existing connection.
+ */
 void CNodeConManager::vRemoveAllConnections()
 {
     //Stop the read thread and then stop any proccessing of data
@@ -551,17 +484,11 @@ void CNodeConManager::vRemoveAllConnections()
     m_pConDet = NULL;
 }
 
-/******************************************************************************
-Function Name  :  lAddMsgBuffer
-Input(s)       :  CBaseMsgBufVSE* pouMsgBuf
-Output         :
-Functionality  :  Adds msg buffers for a node
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+/**
+ * \brief Add Message Buffer
+ *
+ * Adds message buffers for a node.
+ */
 LONG CNodeConManager::lAddMsgBuffer(CBaseMsgBufVSE* pouMsgBuf)
 {
     LONG lResult = S_OK;
@@ -589,17 +516,12 @@ LONG CNodeConManager::lAddMsgBuffer(CBaseMsgBufVSE* pouMsgBuf)
 
     return lResult;
 }
-/******************************************************************************
-Function Name  :  vClearMsgBuffer
-Input(s)       :
-Output         :
-Functionality  :  Clears all msg buffer of a node
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Clear Message Buffer
+ *
+ * Clears all message buffer of a node.
+ */
 void CNodeConManager::vClearMsgBuffer(CBaseMsgBufVSE* pBufObj)
 {
     CBaseMsgBufVSE* pouMsgBuf = NULL;
@@ -617,17 +539,12 @@ void CNodeConManager::vClearMsgBuffer(CBaseMsgBufVSE* pBufObj)
         }
     }
 }
-/******************************************************************************
-Function Name  :  WaitOrTimerCallback
-Input(s)       :
-Output         :
-Functionality  :  Call back timer function.
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Wait Or Timer Callback
+ *
+ * Call back timer function.
+ */
 void CALLBACK WaitOrTimerCallback(PVOID lpParameter, BOOLEAN /*TimerOrWaitFired*/)
 {
     if (NULL != lpParameter)
@@ -636,17 +553,12 @@ void CALLBACK WaitOrTimerCallback(PVOID lpParameter, BOOLEAN /*TimerOrWaitFired*
         pNodeConMgr->vSendWatchDogFrame();*/
     }
 }
-/******************************************************************************
-Function Name  :  vStartTimerFunction
-Input(s)       :
-Output         :
-Functionality  :  Starts the timer
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Start Timer Function
+ *
+ * Starts the timer function.
+ */
 void CNodeConManager::vStartTimerFunction(UINT /*unTimePeriod*/)
 {
     if (m_hTimer != NULL)
@@ -668,17 +580,12 @@ void CNodeConManager::vStartTimerFunction(UINT /*unTimePeriod*/)
                           nTWD,
                           WT_EXECUTEINTIMERTHREAD);
 }
-/******************************************************************************
-Function Name  :  bStopTimerFunction
-Input(s)       :
-Output         :
-Functionality  :  stops the timer
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Stop Timer Function
+ *
+ * Stops the timer function.
+ */
 BOOL CNodeConManager::bStopTimerFunction()
 {
     BOOL bReturn = FALSE;
@@ -691,31 +598,22 @@ BOOL CNodeConManager::bStopTimerFunction()
 
     return bReturn;
 }
-/******************************************************************************
-Function Name  :  pouGetBuf
-Input(s)       :
-Output         :
-Functionality  :  returns the pointer to CAN buffer
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Get Buffer
+ *
+ * Returns the pointer to CAN buffer.
+ */
 CBaseCANBufFSE* CNodeConManager::pouGetBuf(void)
 {
     return &m_ouCANBuff;
-}/******************************************************************************
- Function Name  :  WriteIntoClientsBuffer
- Input(s)       :
- Output         :
- Functionality  :  Writes the J1939 msg into its buffers
- Member of      :  CNodeConManager
- Friend of      :  -
- Author(s)      :  Pradeep Kadoor
- Date Created   :  23/11/2010
- Modifications  :
- ******************************************************************************/
+}
+
+/**
+ * \brief Write Into Clients Buffer
+ *
+ * Writes the J1939 messages into its buffers.
+ */
 void CNodeConManager::WriteIntoClientsBuffer(STJ1939_MSG& sJ1939Msg)
 {
     TRACE("%x, %x, %x, %x, %x\n",
@@ -733,51 +631,36 @@ void CNodeConManager::WriteIntoClientsBuffer(STJ1939_MSG& sJ1939Msg)
         podCurrBuf->WriteIntoBuffer(J1939, abyData, sJ1939Msg.unGetSize());
     }
 }
-/******************************************************************************
-Function Name  :  byGetSrcAddress
-Input(s)       :
-Output         :
-Functionality  :  Extracts the source address from the CAN extended ID
-Member of      :
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Get Source Address
+ *
+ * Extracts the source address from the CAN extended ID.
+ */
 static BYTE byGetSrcAddress(UINT32 unExtId)
 {
     UNION_29_BIT_ID uExtId;
     uExtId.m_unExtID = unExtId;
     return uExtId.m_s29BitId.m_bySrcAddress;
 }
-/******************************************************************************
-Function Name  :  PerformOperation
-Input(s)       :
-Output         :
-Functionality  :  Performs the operation specified in the input param
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Perform Operation
+ *
+ * Performs the operation specified in the input param.
+ */
 HRESULT CNodeConManager::PerformOperation(BYTE byOperation)
 {
     m_ouReceiveThread.m_unActionCode = byOperation;
     SetEvent(m_ouReceiveThread.m_hActionEvent);
     return S_FALSE;
 }
-/******************************************************************************
-Function Name  :  vProcBAMMsg
-Input(s)       :
-Output         :
-Functionality  :  Processes broadcast announce msg.
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Procedure Broadcast-Announce-Message
+ *
+ * Processes broadcast announce message.
+ */
 void CNodeConManager::vProcBAMMsg(const STCAN_MSG& sCanMsg)
 {
     m_pConDet->m_BCRxSeqVar = 0;
@@ -795,17 +678,12 @@ void CNodeConManager::vProcBAMMsg(const STCAN_MSG& sCanMsg)
     m_pConDet->m_eRxConMode = CM_BROADCAST;
     PerformOperation(WF_BROADCAST);
 }
-/******************************************************************************
-Function Name  :  vProcConRequestMsg
-Input(s)       :
-Output         :
-Functionality  :  Processes request to send message
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Procedure Connection Request Message
+ *
+ * Processes request to send message.
+ */
 void CNodeConManager::vProcConRequestMsg(const STCAN_MSG& sCanMsg)
 {
     //If it is not in monitor mode then send ack message
@@ -849,32 +727,22 @@ void CNodeConManager::vProcConRequestMsg(const STCAN_MSG& sCanMsg)
         break;
     }
 }
-/******************************************************************************
-Function Name  :  vReInitConDet
-Input(s)       :
-Output         :
-Functionality  :  Re-initializes the connection details
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Reinitialize Connection Details
+ *
+ * Re-initializes the connection details.
+ */
 void CNodeConManager::vReInitConDet()
 {
     m_pConDet->vInitializeMemberVar();
 }
-/******************************************************************************
-Function Name  :  vProcessCmdAdresMsg
-Input(s)       :
-Output         :
-Functionality  :  Processes command address.
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Process Command Address Message
+ *
+ * Processes command address.
+ */
 void CNodeConManager::vProcessCmdAdresMsg(const STCAN_MSG& sCANMsg, UINT64 un64ECU_NAME)
 {
     if (un64ECU_NAME == m_u64ECUName.m_un64ECU_NAME)
@@ -889,17 +757,12 @@ void CNodeConManager::vProcessCmdAdresMsg(const STCAN_MSG& sCANMsg, UINT64 un64E
         }
     }
 }
-/******************************************************************************
-Function Name  :  vProcessBroadCastData
-Input(s)       :
-Output         :
-Functionality  :  Processes broadcast data
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Process Broadcast Data
+ *
+ * Processes broadcast data.
+ */
 void CNodeConManager::vProcessBroadCastData(const STCANDATA& sCanData)
 {
     const STCAN_MSG& sCanMsg = sCanData.m_uDataInfo.m_sCANMsg;
@@ -947,17 +810,12 @@ void CNodeConManager::vProcessBroadCastData(const STCANDATA& sCanData)
         }
     }
 }
-/******************************************************************************
-Function Name  :  vProcessLongData
-Input(s)       :
-Output         :
-Functionality  :  Processes long data
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Process Long Data
+ *
+ * Processes long data.
+ */
 void CNodeConManager::vProcessLongData(const STCANDATA& sCanData)
 {
     const STCAN_MSG& sCanMsg = sCanData.m_uDataInfo.m_sCANMsg;
@@ -1032,17 +890,12 @@ void CNodeConManager::vProcessLongData(const STCANDATA& sCanData)
         }
     }
 }
-/******************************************************************************
-Function Name  :  vSendConAbortMsg
-Input(s)       :
-Output         :
-Functionality  :  Sends connection abort message.
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Send Connection Abort Message
+ *
+ * Sends connection abort message.
+ */
 void CNodeConManager::vSendConAbortMsg(UINT32 unExtId, BYTE byReason, UINT unChannel)
 {
     UNION_29_BIT_ID uExtId = {0};
@@ -1061,17 +914,12 @@ void CNodeConManager::vSendConAbortMsg(UINT32 unExtId, BYTE byReason, UINT unCha
     abyFrame[7] = (BYTE)(unPGN >> 16);
     vSendFrame(MAX_FRAME_DATA_SIZE, abyFrame, unId, unChannel);
 }
-/******************************************************************************
-Function Name  :  bProcessConLevelMsg
-Input(s)       :
-Output         :
-Functionality  :  Process connection level msg like TPCM, TPDT, BAM, CON ABORT ETC.,
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Process Connection Level Message
+ *
+ * Process connection level msg like TPCM, TPDT, BAM, CON ABORT, etc.
+ */
 BOOL CNodeConManager::bProcessConLevelMsg(const sTCANDATA& CurrMsgCAN)
 {
     BOOL bIsProcessed = TRUE;
@@ -1212,17 +1060,12 @@ BOOL CNodeConManager::bProcessConLevelMsg(const sTCANDATA& CurrMsgCAN)
 
     return bIsProcessed;
 }
-/******************************************************************************
-Function Name  :  vSendACLMsg
-Input(s)       :
-Output         :
-Functionality  :  Sends address cliamed msg
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Send ACL Message
+ *
+ * Sends address claimed msg.
+ */
 void CNodeConManager::vSendACLMsg(BYTE byDestAddress, UINT unChannel, BOOL bNewEvent)
 {
     UINT32 unExtId = Prepare_P2P_Id(PDU_FORMAT_ACL, m_byNodeAddress, byDestAddress,
@@ -1236,17 +1079,12 @@ void CNodeConManager::vSendACLMsg(BYTE byDestAddress, UINT unChannel, BOOL bNewE
         EXECUTE_CLBCK_FN(CLBCK_FN_NM_ACL, 0, m_byNodeAddress, 0xFF, TRUE);
     }
 }
-/******************************************************************************
-Function Name  :  vTransmitMessage
-Input(s)       :
-Output         :
-Functionality  :  Transmit J1939 message
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Transmit Message
+ *
+ * Transmit J1939 message.
+ */
 void CNodeConManager::vTransmitMessage(STJ1939_MSG* psMsg)
 {
     switch (psMsg->m_sMsgProperties.m_eType)
@@ -1353,17 +1191,12 @@ void CNodeConManager::vTransmitMessage(STJ1939_MSG* psMsg)
         break;
     }
 }
-/******************************************************************************
-Function Name  :  vCloseConnection
-Input(s)       :
-Output         :
-Functionality  :  Closes all the current connetions
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Close Connection
+ *
+ * Closes all the current connetions.
+ */
 void CNodeConManager::vCloseConnection(CConnectionDet* pConDet)
 {
     ASSERT(pConDet != NULL);
@@ -1374,17 +1207,12 @@ void CNodeConManager::vCloseConnection(CConnectionDet* pConDet)
     //Sleep(0);
     pConDet->vSetConStatus(T_DISCONNECTED);
 }
-/******************************************************************************
-Function Name  :  SendLongMsg
-Input(s)       :
-Output         :
-Functionality  :  Sends multi packet data using transport protocol function
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Send Long Message
+ *
+ * Sends multi packet data using transport protocol function.
+ */
 HRESULT CNodeConManager::SendLongMsg(STJ1939_MSG* psMsg, CConnectionDet* pConDet, HRESULT hPreviousResult)
 {
     HRESULT hResult = S_FALSE;
@@ -1411,17 +1239,12 @@ HRESULT CNodeConManager::SendLongMsg(STJ1939_MSG* psMsg, CConnectionDet* pConDet
 
     return hResult;
 }
-/******************************************************************************
-Function Name  :  SendPackets
-Input(s)       :
-Output         :
-Functionality  :  Sends the required number of packets and waits for acknowledgement
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Send Packets
+ *
+ * Sends the required number of packets and waits for acknowledgement.
+ */
 HRESULT CNodeConManager::SendPackets(UINT32 unExtId, BYTE* pbyData, UINT unActualPackets,
                                      UINT unLastFrameLen, CConnectionDet* pConDet, UINT unChannel)
 {
@@ -1452,17 +1275,12 @@ HRESULT CNodeConManager::SendPackets(UINT32 unExtId, BYTE* pbyData, UINT unActua
     hResult = nIsMsgSentSuccess(unExtId, pbyData, unActualPackets, unLastFrameLen, pConDet, unChannel);
     return hResult;
 }
-/******************************************************************************
-Function Name  :  DelaySendProcess
-Input(s)       :
-Output         :
-Functionality  :  Delays sending of packets as per recepient request
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Delay Send Process
+ *
+ * Delays sending of packets as per recepient request.
+ */
 HRESULT CNodeConManager::DelaySendProcess(CConnectionDet* pConDet)
 {
     INT nDataAck = DATA_CON_ABORT;
@@ -1484,17 +1302,12 @@ HRESULT CNodeConManager::DelaySendProcess(CConnectionDet* pConDet)
 
     return nDataAck;
 }
-/******************************************************************************
-Function Name  :  nIsMsgSentSuccess
-Input(s)       :
-Output         :
-Functionality  :
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Is Message Sent Success
+ *
+ * Check if it's a message sent success.
+ */
 INT CNodeConManager::nIsMsgSentSuccess(UINT32 unExtId, BYTE* pbyData, UINT unActualPackets,
                                        UINT unLastFrameLen, CConnectionDet* pConDet, UINT unChannel)
 {
@@ -1551,17 +1364,12 @@ INT CNodeConManager::nIsMsgSentSuccess(UINT32 unExtId, BYTE* pbyData, UINT unAct
 
     return nDataAck;
 }
-/******************************************************************************
-Function Name  :  vSendMsgWithoutAckReq
-Input(s)       :
-Output         :
-Functionality  :  Sends packets without waiting for acknowledgement
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Send Message Without Acknowledge Request
+ *
+ * Sends packets without waiting for acknowledgement.
+ */
 VOID CNodeConManager::vSendMsgWithoutAckReq(UCHAR ucFrameLen, BYTE* pFrameData,
         UINT unID, UINT unChannel)
 {
@@ -1571,17 +1379,12 @@ VOID CNodeConManager::vSendMsgWithoutAckReq(UCHAR ucFrameLen, BYTE* pFrameData,
     //wait for delay time
     Sleep(CNetworkMgmt::sg_unTO_BROADCAST);
 }
-/******************************************************************************
-Function Name  :  vSendConAckMsg
-Input(s)       :
-Output         :
-Functionality  :  Sends connection acknowlegment msg
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Send Connection Acknowledge Message
+ *
+ * Sends connection acknowlegment msg.
+ */
 void CNodeConManager::vSendConAckMsg(BYTE byDestAdres, BYTE byTotalPackets, UINT32 unPGN, UINT unChannel)
 {
     //Create CA message
@@ -1591,17 +1394,12 @@ void CNodeConManager::vSendConAckMsg(BYTE byDestAdres, BYTE byTotalPackets, UINT
     //Send clear to send
     vSendFrame(MAX_FRAME_DATA_SIZE, byCANMsg, unID, unChannel);
 }
-/******************************************************************************
-Function Name  :  WaitAfterClear2Send
-Input(s)       :
-Output         :
-Functionality  :  Waits for more data packets after sending CLEAR_2_SEND msg.
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Wait After Clear-to-send
+ *
+ * Waits for more data packets after sending CLEAR_2_SEND msg.
+ */
 HRESULT CNodeConManager::WaitAfterClear2Send(void)
 {
     HRESULT hResult = S_FALSE;
@@ -1630,17 +1428,12 @@ HRESULT CNodeConManager::WaitAfterClear2Send(void)
 
     return hResult;
 }
-/******************************************************************************
-Function Name  :  WaitForMorePackets
-Input(s)       :
-Output         :
-Functionality  :  Waits for more packets after receivng a series of packets
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Wait For More Packets
+ *
+ * Waits for more packets after receivng a series of packets.
+ */
 HRESULT CNodeConManager::WaitForMorePackets(void)
 {
     HRESULT hResult = S_FALSE;
@@ -1676,17 +1469,12 @@ HRESULT CNodeConManager::WaitForMorePackets(void)
 
     return hResult;
 }
-/******************************************************************************
-Function Name  :  WaitandProcessBroadcastData
-Input(s)       :
-Output         :
-Functionality  :  Waits for more broadcast data and if received processes it.
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Wait and Process Broadcast Data
+ *
+ * Waits for more broadcast data and if received processes it.
+ */
 HRESULT CNodeConManager::WaitandProcessBroadcastData(void)
 {
     HRESULT hResult = S_FALSE;
@@ -1717,17 +1505,12 @@ HRESULT CNodeConManager::WaitandProcessBroadcastData(void)
 
     return hResult;
 }
-/******************************************************************************
-Function Name  :  vSendFrame
-Input(s)       :
-Output         :
-Functionality  :  Send a CAN frame
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Send Frame
+ *
+ * Send a CAN frame.
+ */
 void CNodeConManager::vSendFrame(UCHAR ucFrameLen, BYTE* pFrameData, UINT unID, UINT unChannel)
 {
     CTransferLayer::ouGetTransLayerObj().vTransmitCANMsg( m_dwClientID,
@@ -1736,17 +1519,12 @@ void CNodeConManager::vSendFrame(UCHAR ucFrameLen, BYTE* pFrameData, UINT unID, 
             pFrameData,
             unChannel);
 }
-/******************************************************************************
-Function Name  :  vFormJ1939MsgForSending
-Input(s)       :
-Output         :
-Functionality  :  Constructs a J1939 msg for sending from various msg types.
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Form J1939 Message For Sending
+ *
+ * Constructs a J1939 message for sending from various message types.
+ */
 void CNodeConManager::vFormJ1939MsgForSending(UINT unChannel,
         STJ1939_MSG& sMsg,
         EJ1939_MSG_TYPE eMsgType,
@@ -1853,17 +1631,12 @@ void CNodeConManager::vFormJ1939MsgForSending(UINT unChannel,
         break;
     }
 }
-/******************************************************************************
-Function Name  :  vSendMessage
-Input(s)       :
-Output         :
-Functionality  :  Transmits a J1939 message.
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Send Message
+ *
+ * Transmits a J1939 message.
+ */
 void CNodeConManager::vSendMessage(UINT unChannel, EJ1939_MSG_TYPE eMsgType,
                                    UINT32 unPGN, BYTE* pbyData, UINT unDLC,
                                    BYTE byPriority, BYTE byDestAdres)
@@ -1878,17 +1651,11 @@ void CNodeConManager::vSendMessage(UINT unChannel, EJ1939_MSG_TYPE eMsgType,
     SetEvent(m_ouTransmitThread.m_hActionEvent);
 }
 
-/******************************************************************************
-Function Name  :  vSetCallBackFuncPtr
-Input(s)       :
-Output         :
-Functionality  :  Set Call back for events
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+/**
+ * \brief Set Callback Function Pointer
+ *
+ * Set Call back for events.
+ */
 HRESULT CNodeConManager::SetCallBackFuncPtr(ETYPE_CLBCK_FN eClBckFnType,
         void* pvClBckFn)
 {
@@ -1935,17 +1702,12 @@ HRESULT CNodeConManager::SetCallBackFuncPtr(ETYPE_CLBCK_FN eClBckFnType,
 
     return hResult;
 }
-/******************************************************************************
-Function Name  :  vExecuteClbckFuncPtrs
-Input(s)       :
-Output         :
-Functionality  :  execute Call back when events occur
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Execute Callback Function Pointers
+ *
+ * Executes Callback when events occur.
+ */
 void CNodeConManager::vExecuteClbckFuncPtrs(ETYPE_CLBCK_FN eClbckType,
         UINT32 unPGN, BYTE bySrc,
         BYTE byDest, BOOL bSuccess)
@@ -1998,17 +1760,12 @@ void CNodeConManager::vExecuteClbckFuncPtrs(ETYPE_CLBCK_FN eClbckType,
         break;
     }
 }
-/******************************************************************************
-Function Name  :  vSendBAM
-Input(s)       :
-Output         :
-Functionality  :  Sends broadcast announce message
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Send Broadcast-Announce-Message
+ *
+ * Sends broadcast announce message.
+ */
 void CNodeConManager::vSendBAM(UINT unMsgSize, UINT32 unPGN,
                                BYTE byDestAddress, BYTE byPriority, UINT unChannel)
 {
@@ -2036,17 +1793,12 @@ void CNodeConManager::vSendBAM(UINT unMsgSize, UINT32 unPGN,
     //Sleep for some time
     Sleep(CNetworkMgmt::sg_unTO_BROADCAST);
 }
-/******************************************************************************
-Function Name  :  vSendBroadCastData
-Input(s)       :
-Output         :
-Functionality  :  Transmit broadcast data
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Send Broadcast Data
+ *
+ * Transmits broadcast data.
+ */
 void CNodeConManager::vSendBroadCastData(BYTE* pbyData, UINT unMsgSize, BYTE byDestAddress,
         BYTE byPriority, UINT unChannel)
 {
@@ -2083,18 +1835,13 @@ void CNodeConManager::vSendBroadCastData(BYTE* pbyData, UINT unMsgSize, BYTE byD
         }
     }
 }
-/******************************************************************************
-Function Name  :  pCreateAndGetConDet
-Input(s)       :
-Output         :
-Functionality  :  Creates a new connection, returns the pointer of the
-                  CConnectionDet object.
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Create And Get Connection Details
+ *
+ * Creates a new connection, returns the pointer of the
+ * CConnectionDet object.
+ */
 CConnectionDet* CNodeConManager::pCreateAndGetConDet(BYTE byDestAdres)
 {
     if (m_pConDet == NULL)
@@ -2112,17 +1859,12 @@ CConnectionDet* CNodeConManager::pCreateAndGetConDet(BYTE byDestAdres)
 
     return m_pConDet;
 }
-/******************************************************************************
-Function Name  :  TransmitRequestToSend
-Input(s)       :
-Output         :
-Functionality  :  Transmits Request To Send msg
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Transmit Request To Send
+ *
+ * Transmits Request To Send message.
+ */
 HRESULT CNodeConManager::TransmitRequestToSend(BYTE byDestAddress,
         BYTE byPriority,
         UINT unDLC,
@@ -2160,17 +1902,12 @@ HRESULT CNodeConManager::TransmitRequestToSend(BYTE byDestAddress,
 
     return hResult;
 }
-/******************************************************************************
-Function Name  :  vSendRequestForPGN
-Input(s)       :
-Output         :
-Functionality  :  Requests a node for the PGN
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Send Request For PGN
+ *
+ * Requests a node for the PGN.
+ */
 void CNodeConManager::vSendRequestForPGN(UINT32 unPGN, BYTE byDestAdres,
         UINT unChannel)
 {
@@ -2182,17 +1919,12 @@ void CNodeConManager::vSendRequestForPGN(UINT32 unPGN, BYTE byDestAdres,
     byFrameData[2] = (BYTE)(unPGN >> 16);
     vSendFrame(REQUEST_PDU_SIZE, byFrameData, unExtId, unChannel);
 }
-/******************************************************************************
-Function Name  :  vStartAdresClaimProc
-Input(s)       :
-Output         :
-Functionality  :  Starts address claiming procedure for a node.
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Start Address Claim Procedure
+ *
+ * Starts address claiming procedure for a node.
+ */
 HRESULT CNodeConManager::StartAdresClaimProc(BYTE byAddress)
 {
     HRESULT hResult = S_FALSE;
@@ -2214,32 +1946,22 @@ HRESULT CNodeConManager::StartAdresClaimProc(BYTE byAddress)
 
     return hResult;
 }
-/******************************************************************************
-Function Name  :  bIsMonitorNode
-Input(s)       :
-Output         :  BOOL
-Functionality  :  Returns whether the client is a monitor or not
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  17/12/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Is Monitor Node
+ *
+ * Returns whether the client is a monitor or not.
+ */
 BOOL CNodeConManager::bIsMonitorNode(void)
 {
     return m_bIsMonNode;
 }
-/******************************************************************************
-Function Name  :  vSetNodeAddress
-Input(s)       :  byAddress
-Output         :  -
-Functionality  :  Sets clients node address.
-Member of      :  CNodeConManager
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  17/12/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief Set Node Address
+ *
+ * Sets clients node address.
+ */
 void CNodeConManager::vSetNodeAddress(BYTE byAddress)
 {
     m_byNodeAddress = byAddress;
