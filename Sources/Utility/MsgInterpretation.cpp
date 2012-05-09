@@ -162,10 +162,10 @@ __int64 static n64GetSignalValueInBits(register CByteArray* pMsgArray,
         /* Find out how many data bytes the signal consumes */
         nBytesToRead = nGetNoOfBytesToRead(unBitNum, unLength);
         /* Whether the format is Intel or Motorola reading bits inside
-a byte is always same */
+        a byte is always same */
         UINT CurrBitNum = unBitNum;
         /* If Byte order is motorola then Bytes have to be read in
-reverse order */
+        reverse order */
         INT nByteOrder = (bByteOrder == DATA_FORMAT_INTEL)? 1: -1;
         BOOL bValid = bValidateSignal((UINT)pMsgArray->GetSize(), byteNumber, unBitNum, unLength, nByteOrder);
         ASSERT(bValid == TRUE);
@@ -187,7 +187,7 @@ reverse order */
                 /* Find out how bits to read from the current byte */
                 UINT nCurrBitsToRead = min (defBITS_IN_BYTE - CurrBitNum, unLength - nBitsRead);
                 /*After the reading first byte reading will be always from
-byte's start index. So reset the CurrBitNum */
+                byte's start index. So reset the CurrBitNum */
                 CurrBitNum = 0;
                 BYTE byMask = 0;
                 byMask = (BYTE)(pow((float) 2.0, (int) nCurrBitsToRead) - 1);
@@ -295,7 +295,7 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
         register UINT unSigLength = 0;
 
         /*Whether it is |Intel or motorola format, Data is fed from\
-1st byte to DLC */
+        1st byte to DLC */
         for ( register UINT nCount = 0;
                 nCount < pMsgs->m_unMessageLength;
                 nCount++)
@@ -495,7 +495,7 @@ BOOL CMsgInterpretation::bInterpretMsgSigList(UINT unMsgCode,
         CByteArray omMsgByte;
 
         /*Whether it is Intel or Motorola format, Data is fed from\
-1st byte to DLC */
+        1st byte to DLC */
         for ( register UINT nCount = 0;
                 nCount < pMsgs->m_unMessageLength;
                 nCount++)
@@ -659,7 +659,7 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
         SINTERPRETSIGNALINFO sSigInfo;
 
         /*Whether it is |Intel or motorola format, Data is fed from\
-1st byte to DLC */
+        1st byte to DLC */
         for ( register UINT nCount = 0;
                 nCount < pMsgs->m_unMessageLength;
                 nCount++)
@@ -840,7 +840,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
     CByteArray omMsgByte;
 
     /*Whether it is |Intel or motorola format, Data is fed from\
-1st byte to DLC */
+    1st byte to DLC */
     for ( register UINT nCount = 0;
             nCount < pMsgs->m_unMessageLength;
             nCount++)
@@ -955,7 +955,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT /*eNumFormat*/,
         CByteArray omMsgByte;
 
         /*Whether it is |Intel or motorola format, Data is fed from\
-1st byte to DLC */
+        1st byte to DLC */
         for ( register UINT nCount = 0;
                 nCount < pMsg->m_unMessageLength;
                 nCount++)
@@ -979,7 +979,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT /*eNumFormat*/,
             UINT unSigLen = psCurrSignal->m_unSignalLength;
             //Calculate the character width required to represent the raw value.
             //1 character means 1 nibble
-    		//venkat
+            //venkat
             /*UINT unWidth = (unSigLen % 4 == 0) ? (unSigLen/4) : (unSigLen/4 + 1);
             //calculate extra FFs incase of a negative number.
             double dblVal = 16;
@@ -1037,7 +1037,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
         CByteArray omMsgByte;
 
         /*Whether it is |Intel or motorola format, Data is fed from\
-1st byte to DLC */
+        1st byte to DLC */
         for ( register UINT nCount = 0;
                 nCount < pMsg->m_unMessageLength;
                 nCount++)
@@ -1174,7 +1174,7 @@ BOOL CMsgInterpretationJ1939::bInterPretJ1939_MSGS(
         CByteArray omMsgByte;
 
         /*Whether it is |Intel or motorola format, Data is fed from\
-1st byte to DLC */
+        1st byte to DLC */
         for ( register UINT nCount = 0;
                 nCount < pMsg->m_unMessageLength;
                 nCount++)
@@ -1375,7 +1375,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
         SINTERPRETSIGNALINFO sSigInfo;
 
         /*Whether it is |Intel or motorola format, Data is fed from\
-1st byte to DLC */
+        1st byte to DLC */
         for ( register UINT nCount = 0;
                 nCount < pMsgs->m_unMessageLength;
                 nCount++)

@@ -52,11 +52,11 @@ CSignalDescVal& CSignalDescVal::operator=(const CSignalDescVal& RefObj)
     m_omStrSignalDescriptor = RefObj.m_omStrSignalDescriptor;
     m_n64SignalVal = RefObj.m_n64SignalVal;
     /* This is the case of copying a linked list. Recursion would have been the
-simplest approach. Howsoever, an iterative approach has been adopted with a
-view to realising something new and avoiding defining some more functions*/
+    simplest approach. Howsoever, an iterative approach has been adopted with a
+    view to realising something new and avoiding defining some more functions*/
     /* The technique of double pointer in order to avoid usage of multiple poi-
-nters. The double pointer contains value of the current 'next' pointer. We
-start by storing address of the 'next' variable of current node. */
+    nters. The double pointer contains value of the current 'next' pointer. We
+    start by storing address of the 'next' variable of current node. */
     CSignalDescVal** ppouCurrTgt = &m_pouNextSignalSignalDescVal;
 
     // Clearly, we must go on until the end of the reference linked list.
@@ -215,21 +215,21 @@ void sSIGNALS::vSetSignalValue(sSIGNALS* pouCurrSignal, UCHAR aucData[8],
 {
     ASSERT(pouCurrSignal != NULL);
     /* Signal value data type happens to be of the same size of the entire CAN
-data byte array. Hence there is an opportunity to take advantage of this
-idiosyncratic characteristics. We will shifts the bit array in u64SignVal
-by the required number of bit positions to exactly map it as a data byte
-array and then interchange positions of bytes as per the endianness and
-finally use it as the etching mask on the target. */
+    data byte array. Hence there is an opportunity to take advantage of this
+    idiosyncratic characteristics. We will shifts the bit array in u64SignVal
+    by the required number of bit positions to exactly map it as a data byte
+    array and then interchange positions of bytes as per the endianness and
+    finally use it as the etching mask on the target. */
     UINT64* pu64Target = (UINT64*) aucData; // We should be able to work on
     BYTE* pbData = (BYTE*) &u64SignVal; // these variables as an array of
     // bytes and vice versa.
-
     // First find out offset between the last significant bits of the signal
     // and the frame. Finding out the lsb will directly answer to this query.
     //venkat
     UINT unMaxVal = pow((double)2, (double)pouCurrSignal->m_unSignalLength);
     unMaxVal -= 1;
     u64SignVal = u64SignVal & unMaxVal;
+
     if (pouCurrSignal->m_eFormat == DATA_FORMAT_INTEL)// If Intel format
     {
         int Offset = (pouCurrSignal->m_unStartByte - 1) * 8 +
