@@ -16,7 +16,7 @@
 /**
  * \file      Filter_Datatypes.h
  * \brief     Definition file for filter data types.
- * \author    Ratnadip Choudhury
+ * \author    Ratnadip Choudhury, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition file for filter data types.
@@ -24,14 +24,18 @@
 
 #pragma once
 
+/* Project includes */
 #include "include/BaseDefs.h"
 #include "include/Utils_macro.h"
-
 
 #define defFILTER_TYPE_SINGLE_ID            0
 #define defFILTER_TYPE_ID_RANGE             1
 
-// Basic information needed for filtering when the bus is FlexRay.
+/**
+ * \brief Frame Information Basic FlexRay
+ *
+ * Basic information needed for filtering when the bus is FlexRay.
+ */
 typedef struct tagSFRAMEINFO_BASIC_FLEXRAY
 {
     DWORD        m_dwFrameID;
@@ -39,7 +43,11 @@ typedef struct tagSFRAMEINFO_BASIC_FLEXRAY
     EDIRECTION   m_eDrctn;
 } SFRAMEINFO_BASIC_FLEXRAY;
 
-// Basic information needed for filtering when the bus is CAN.
+/**
+ * \brief Frame Information Basic CAN
+ *
+ * Basic information needed for filtering when the bus is CAN.
+ */
 typedef struct tagSFRAMEINFO_BASIC_CAN
 {
     DWORD        m_dwFrameID;
@@ -49,13 +57,21 @@ typedef struct tagSFRAMEINFO_BASIC_CAN
     BYTE         m_byMsgType;
 } SFRAMEINFO_BASIC_CAN;
 
-// Basic information needed for filtering when the bus is MCNet.
+/**
+ * \brief Frame Information Basic MCNet
+ *
+ * Basic information needed for filtering when the bus is MCNet.
+ */
 typedef struct tagSFRAMEINFO_BASIC_MCNET
 {
     DWORD m_dwFrameID;
 } SFRAMEINFO_BASIC_MCNET;
 
-// Basic information needed for filtering when the bus is J1939.
+/**
+ * \brief Frame Information Basic J1939
+ *
+ * Basic information needed for filtering when the bus is J1939.
+ */
 typedef struct tagSFRAMEINFO_BASIC_J1939
 {
     DWORD m_dwPGN;
@@ -63,7 +79,11 @@ typedef struct tagSFRAMEINFO_BASIC_J1939
 
 const int LENGTH_FILTERNAME = 128;
 
-// The descriobes a filter name with type.
+/**
+ * \brief Filter Name
+ *
+ * The descriobes a filter name with type.
+ */
 typedef struct tagFilterName
 {
     char m_acFilterName[LENGTH_FILTERNAME];                     // Filter name
@@ -83,10 +103,13 @@ typedef struct tagFilterName
     // Called to retrieve a filter object's data from a byte stream and
     // initialise the current filter object with the retrieved data.
     BYTE* pbSetConfigData(BYTE* pbTarget);
-
 } SFILTERNAME, *PSFILTERNAME;
 
-// Base class for an individual filter data structure.
+/**
+ * \brief Filter Structure
+ *
+ * Base class for an individual filter data structure.
+ */
 typedef struct tagSFILTER
 {
     UCHAR m_ucFilterType;   // 0 - Message ID and 1 - ID Range
@@ -119,6 +142,11 @@ typedef struct tagSFILTER
 
 } SFILTER, *PSFILTER;
 
+/**
+ * \brief Filter Structure for CAN
+ *
+ * Base class for a CAN filter data structure.
+ */
 struct SFILTER_CAN : public SFILTER
 {
     BYTE         m_byIDType; //Extended or Standard
@@ -150,7 +178,11 @@ struct SFILTER_CAN : public SFILTER
 };
 typedef SFILTER_CAN* PSFILTER_CAN;
 
-// The below structure describes a filter block for FlexRay frames.
+/**
+ * \brief Filter Structure for FlexRay
+ *
+ * The structure describes a filter block for FlexRay frames.
+ */
 struct SFILTER_FLEXRAY : public SFILTER
 {
     TYPE_CHANNEL m_eChannel;// Current channel
@@ -180,7 +212,11 @@ struct SFILTER_FLEXRAY : public SFILTER
 };
 typedef SFILTER_FLEXRAY* PSFILTER_FLEXRAY;
 
-// The below structure describes a filter block for MCNet frames.
+/**
+ * \brief Filter Structure for MCNet
+ *
+ * The structure describes a filter block for MCNet frames.
+ */
 struct SFILTER_MCNET : public SFILTER
 {
     SFILTER_MCNET();    // Standard constructor
@@ -208,7 +244,11 @@ struct SFILTER_MCNET : public SFILTER
 };
 typedef SFILTER_MCNET* PSFILTER_MCNET;
 
-// The below structure describes a filter block for J1939 frames.
+/**
+ * \brief Filter Structure for J1939
+ *
+ * The structure describes a filter block for J1939 frames.
+ */
 struct SFILTER_J1939 : public SFILTER
 {
     SFILTER_J1939();    // Standard constructor
@@ -236,7 +276,11 @@ struct SFILTER_J1939 : public SFILTER
 };
 typedef SFILTER_J1939* PSFILTER_J1939;
 
-// This below structure defines a filtering block.
+/**
+ * \brief Filter Set
+ *
+ * This structure defines a filtering block.
+ */
 typedef struct tagFilterSet
 {
     SFILTERNAME m_sFilterName;  // Filter name and type
@@ -268,8 +312,12 @@ typedef struct tagFilterSet
 
 } SFILTERSET, *PSFILTERSET;
 
-// This structure defines a set of filters along with the sufficient entities
-// to apply this for filtering process. So the necessary member functions.
+/**
+ * \brief Filter Applied
+ *
+ * This structure defines a set of filters along with the sufficient entities
+ * to apply this for filtering process. So the necessary member functions.
+ */
 template <typename SFRAMEINFO_BASIC_BUS>
 struct SFILTERAPPLIED
 {
@@ -301,18 +349,11 @@ struct SFILTERAPPLIED
 
 };
 
-/******************************************************************************
-  Function Name    :  SFILTERAPPLIED
-  Input(s)         :  -
-  Output           :  -
-  Functionality    :  Standard constructor
-  Member of        :  SFILTERAPPLIED
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief Constructor
+ *
+ * Standard constructor
+ */
 template <typename SFRAMEINFO_BASIC_BUS>
 SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::SFILTERAPPLIED()
 {
@@ -321,37 +362,25 @@ SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::SFILTERAPPLIED()
     m_psFilters = NULL;
 }
 
-/******************************************************************************
-  Function Name    :  ~SFILTERAPPLIED
-  Input(s)         :  -
-  Output           :  -
-  Functionality    :  Destructor
-  Member of        :  SFILTERAPPLIED
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief Destructor
+ *
+ * Destructor
+ */
 template <typename SFRAMEINFO_BASIC_BUS>
 SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::~SFILTERAPPLIED()
 {
     vClear();
 }
 
-/******************************************************************************
-  Function Name    :  bClone
-  Input(s)         :  Source - The source object.
-  Output           :  true if cloning is successful, else false.
-  Functionality    :  Called to clone a filter object to copy its contents
-                      into the current object.
-  Member of        :  SFILTERAPPLIED
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief     Clone
+ * \param[in] Source The source object.
+ * \return    true if cloning is successful, else false.
+ *
+ * Called to clone a filter object to copy its contents
+ * into the current object.
+ */
 template <typename SFRAMEINFO_BASIC_BUS>
 bool SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::bClone(
     const SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>& Source)
@@ -395,18 +424,11 @@ bool SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::bClone(
     return bResult;
 }
 
-/******************************************************************************
-  Function Name    :  vClear
-  Input(s)         :  void
-  Output           :  void
-  Functionality    :  Called to clear the current object.
-  Member of        :  SFILTERAPPLIED
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief Clear
+ *
+ * Called to clear the current object.
+ */
 template <typename SFRAMEINFO_BASIC_BUS>
 void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::vClear(void)
 {
@@ -420,19 +442,14 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::vClear(void)
     }
 }
 
-/******************************************************************************
-  Function Name    :  bToBeBlocked
-  Input(s)         :  sCurrFrame - The current frame entry
-  Output           :  TRUE if this is to be blocked.
-  Functionality    :  This function tells if the filter object will block the
-                      frame entry passed as argument.
-  Member of        :  SFILTERAPPLIED
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief     To Be Blocked
+ * \param[in] sCurrFrame The current frame entry
+ * \return    TRUE if this is to be blocked.
+ *
+ * This function tells if the filter object will block the
+ * frame entry passed as argument.
+ */
 template <typename SFRAMEINFO_BASIC_BUS>
 BOOL SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::bToBeBlocked(const SFRAMEINFO_BASIC_BUS& sCurrFrame) const
 {
@@ -486,18 +503,12 @@ BOOL SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::bToBeBlocked(const SFRAMEINFO_BASIC_B
     return bToBlock;
 }
 
-/******************************************************************************
-  Function Name    :  unGetSize
-  Input(s)         :  void
-  Output           :  UINT
-  Functionality    :  Returns size of the object in bytes
-  Member of        :  SFILTERAPPLIED
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief  Get Size
+ * \return Size
+ *
+ * Returns size of the object in bytes.
+ */
 template <typename SFRAMEINFO_BASIC_BUS>
 UINT SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::unGetSize(void) const
 {
@@ -512,18 +523,13 @@ UINT SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::unGetSize(void) const
     return Result;
 }
 
-/******************************************************************************
-  Function Name    :  pbGetConfigData
-  Input(s)         :  pbSource - Target stream to copy data into.
-  Output           :  Address of the next available byte to write data.
-  Functionality    :  This copies current object data into the target byte stream
-  Member of        :  SFILTERAPPLIED
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief      Get Config Data
+ * \param[out] pbSource Target stream to copy data into.
+ * \return     Address of the next available byte to write data.
+ *
+ * This copies current object data into the target byte stream
+ */
 template <typename SFRAMEINFO_BASIC_BUS>
 BYTE* SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbGetConfigData(BYTE* pbTarget) const
 {
@@ -541,20 +547,15 @@ BYTE* SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbGetConfigData(BYTE* pbTarget) cons
     return pbTStream;
 }
 
-/******************************************************************************
-  Function Name    :  pbSetConfigData
-  Input(s)         :  pbSource - Source stream to copy data from.
-                      Result - [out] parameter. true if operation is successful.
-  Output           :  Address of the byte next to the already read block.
-  Functionality    :  This copies an applied filter block from a byte stream
-                      and initialises the current object.
-  Member of        :  SFILTERAPPLIED
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief      Set Config Data
+ * \param[in]  pbSource Source stream to copy data from.
+ * \param[out] Result parameter. true if operation is successful.
+ * \return     Address of the byte next to the already read block.
+ *
+ * This copies an applied filter block from a byte stream
+ * and initialises the current object.
+ */
 template <typename SFRAMEINFO_BASIC_BUS>
 BYTE* SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbSetConfigData(BYTE* pbSource, bool& Result)
 {

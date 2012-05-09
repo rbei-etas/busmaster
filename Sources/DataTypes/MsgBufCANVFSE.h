@@ -16,7 +16,7 @@
 /**
  * \file      MsgBufCANVFSE.h
  * \brief     Defines and implements the template class for circular queue
- * \author    Ratnadip Choudhury
+ * \author    Ratnadip Choudhury, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Defines and implements the template class for circular queue
@@ -24,17 +24,19 @@
 
 #pragma once
 
+/* Project includes */
 #include "include/Error.h"
 #include "BaseMsgBufAll.h"
-//#include "afxtempl.h"
-
 
 const int SIZE_APP_CAN_BUFFER       = 5000;
 
-
-/* This is the concrete template class of a circular queue where each entry is
-of fixed size. Implemented as a template class so as to cater to any data type.
-Here SMSGBUFFER is the data type in operation. */
+/**
+ * \brief Message Buffer CAN Template Class
+ *
+ * This is the concrete template class of a circular queue where each entry is
+ * of fixed size. Implemented as a template class so as to cater to any data type.
+ * Here SMSGBUFFER is the data type in operation.
+ */
 template <typename SMSGBUFFER>
 class CMsgBufCANVFSE
 {
@@ -73,18 +75,11 @@ private:
     CMap<__int64, __int64, int, int> m_omIdIndexMap;
 };
 
-/******************************************************************************
-  Function Name    :  CMsgBufCANVFSE
-  Input(s)         :  -
-  Output           :  -
-  Functionality    :  Standard constructor
-  Member of        :  CMsgBufCANVFSE
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief Constructor
+ *
+ * Standard constructor
+ */
 template <typename SMSGBUFFER>
 CMsgBufCANVFSE<SMSGBUFFER>::CMsgBufCANVFSE()
 {
@@ -94,18 +89,11 @@ CMsgBufCANVFSE<SMSGBUFFER>::CMsgBufCANVFSE()
     m_hNotifyingEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
 }
 
-/******************************************************************************
-  Function Name    :  ~CMsgBufCANVFSE
-  Input(s)         :  -
-  Output           :  -
-  Functionality    :  Destructor
-  Member of        :  CMsgBufCANVFSE
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief Destructor
+ *
+ * Destructor
+ */
 template <typename SMSGBUFFER>
 CMsgBufCANVFSE<SMSGBUFFER>::~CMsgBufCANVFSE()
 {
@@ -114,18 +102,11 @@ CMsgBufCANVFSE<SMSGBUFFER>::~CMsgBufCANVFSE()
     DeleteCriticalSection(&m_CritSectionForGB);
 }
 
-/******************************************************************************
-  Function Name    :  vClearMessageBuffer
-  Input(s)         :  void
-  Output           :  void
-  Functionality    :  Clears the message buffer and resets the indices.
-  Member of        :  CMsgBufCANVFSE
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief Clear Message Buffer
+ *
+ * Clears the message buffer and resets the indices.
+ */
 template <typename SMSGBUFFER> void CMsgBufCANVFSE<SMSGBUFFER>::
 vClearMessageBuffer(void)
 {
@@ -136,20 +117,15 @@ vClearMessageBuffer(void)
     m_nMsgCount = 0;
 }
 
-/******************************************************************************
-  Function Name    :  ReadFromBuffer
-  Input(s)         :  psMsg - The target message entry. An [out] parameter.
-  Output           :  EMPTY_APP_BUFFER if buffer is empty; else CALL_SUCCESS.
-  Functionality    :  Reads a message entry and advances the read index. On
-                      successful reading operation the present entry is
-                      invalidated to make room for a new entry.
-  Member of        :  CMsgBufCANVFSE
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief      Read From Buffer
+ * \param[out] psMsg The target message entry.
+ * \return     EMPTY_APP_BUFFER if buffer is empty; else CALL_SUCCESS.
+ *
+ * Reads a message entry and advances the read index. On
+ * successful reading operation the present entry is
+ * invalidated to make room for a new entry.
+ */
 template <typename SMSGBUFFER>
 int CMsgBufCANVFSE<SMSGBUFFER>::ReadFromBuffer(SMSGBUFFER* psMsg, int nIndex)
 {
@@ -187,6 +163,11 @@ int CMsgBufCANVFSE<SMSGBUFFER>::ReadFromBuffer(SMSGBUFFER* psMsg, int nIndex)
     return nResult;
 }
 
+/**
+ * \brief Read From Buffer
+ *
+ * Reads from buffer.
+ */
 template <typename SMSGBUFFER>
 int CMsgBufCANVFSE<SMSGBUFFER>::ReadFromBuffer(SMSGBUFFER* psMsg, __int64 nSlotId)
 {
@@ -221,19 +202,13 @@ int CMsgBufCANVFSE<SMSGBUFFER>::ReadFromBuffer(SMSGBUFFER* psMsg, __int64 nSlotI
     return nResult;
 }
 
-
-/******************************************************************************
-  Function Name    :  WriteIntoBuffer
-  Input(s)         :  psMsg - The source message entry. An [in] parameter.
-  Output           :  ERR_FULL_APP_BUFFER if buffer is full; else CALL_SUCCESS.
-  Functionality    :  Writes a message entry and advances the write index.
-  Member of        :  CMsgBufCANVFSE
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief     Write Into Buffer
+ * \param[in] psMsg The source message entry.
+ * \return    ERR_FULL_APP_BUFFER if buffer is full; else CALL_SUCCESS.
+ *
+ * Writes a message entry and advances the write index.
+ */
 template <typename SMSGBUFFER>
 int CMsgBufCANVFSE<SMSGBUFFER>::WriteIntoBuffer(const SMSGBUFFER* psMsg,
         __int64 nSlotId, int& nIndex)
@@ -270,9 +245,16 @@ int CMsgBufCANVFSE<SMSGBUFFER>::WriteIntoBuffer(const SMSGBUFFER* psMsg,
     LeaveCriticalSection(&m_CritSectionForGB); // Unlock the buffer
     return nResult;
 }
+
+/**
+ * \brief     Write Into Buffer
+ * \param[in] psMsg The source message entry.
+ * \return    ERR_FULL_APP_BUFFER if buffer is full; else CALL_SUCCESS.
+ *
+ * Writes a message entry and advances the write index.
+ */
 template <typename SMSGBUFFER>
 int CMsgBufCANVFSE<SMSGBUFFER>::WriteIntoBuffer(const SMSGBUFFER* psMsg)
-
 {
     int nResult = CALL_SUCCESS;
 #ifdef _DEBUG
@@ -303,55 +285,38 @@ int CMsgBufCANVFSE<SMSGBUFFER>::WriteIntoBuffer(const SMSGBUFFER* psMsg)
     LeaveCriticalSection(&m_CritSectionForGB); // Unlock the buffer
     return nResult;
 }
-/******************************************************************************
-  Function Name    :  GetBufferLength
-  Input(s)         :  void
-  Output           :  Number of message entries (int)
-  Functionality    :  Returns the number of unread entries in the queue.
-  Member of        :  CMsgBufCANVFSE
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+
+/**
+ * \brief  Get Buffer Length
+ * \return Number of message entries (int)
+ *
+ * Returns the number of unread entries in the queue.
+ */
 template <typename SMSGBUFFER> int CMsgBufCANVFSE<SMSGBUFFER>::
 GetBufferLength(void) const
 {
     return m_nMsgCount;
 }
 
-/******************************************************************************
-  Function Name    :  hGetNotifyingEvent
-  Input(s)         :  void
-  Output           :  The notifying event handle (HANDLE)
-  Functionality    :  Returns handle of the event that gets signalled when
-                      a message entry is added.
-  Member of        :  CMsgBufCANVFSE
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief  Get Notifying Event
+ * \return The notifying event handle (HANDLE)
+ *
+ * Returns handle of the event that gets signalled when
+ * a message entry is added.
+ */
 template <typename SMSGBUFFER> HANDLE CMsgBufCANVFSE<SMSGBUFFER>::
 hGetNotifyingEvent(void) const
 {
     return m_hNotifyingEvent;
 }
 
-/******************************************************************************
-  Function Name    :  vDoSortBuffer
-  Input(s)         :  nField - The field to be used as the sorting key.
-  Output           :  -
-  Functionality    :  Reorders the list according to the sorting key specified.
-  Member of        :  CMsgBufCANVFSE
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  21-06-2010
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief     Do Sort Buffer
+ * \param[in] nField The field to be used as the sorting key.
+ *
+ * Reorders the list according to the sorting key specified.
+ */
 template <typename SMSGBUFFER> void CMsgBufCANVFSE<SMSGBUFFER>::
 vDoSortBuffer(int nField,bool bAscending)
 {
@@ -371,18 +336,11 @@ vDoSortBuffer(int nField,bool bAscending)
     vDoSortIndexMapArray();
 }
 
-/******************************************************************************
-  Function Name    :  vDoSortIndexMapArray
-  Input(s)         :
-  Output           :  -
-  Functionality    :  Reorders the Index Map Array according to the order specified.
-  Member of        :  CMsgBufCANVFSE
-  Friend of        :  -
-  Author(s)        :  Arunkumar K
-  Date Created     :  28-06-2010
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief Do Sort Index Map Array
+ *
+ * Reorders the Index Map Array according to the order specified.
+ */
 template <typename SMSGBUFFER> void CMsgBufCANVFSE<SMSGBUFFER>::
 vDoSortIndexMapArray()
 {
@@ -393,18 +351,13 @@ vDoSortIndexMapArray()
     }
 }
 
-/******************************************************************************
-  Function Name    :  nGetMapIndexAtID
-  Input(s)         :  nIndex - The Index at which the SlotID needs to be pickef from.
-  Output           :  -
-  Functionality    :  Returns the Slot ID of the index specified in m_omIdIndexMap.
-  Member of        :  CMsgBufCANVFSE
-  Friend of        :  -
-  Author(s)        :  Arunkumar K
-  Date Created     :  28-06-2010
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief      Get Map Index At ID
+ * \param[in]  nIndex The Index at which the SlotID needs to be picked from.
+ * \param[out] nMapIndex Map Index
+ *
+ * Returns the Slot ID of the index specified in m_omIdIndexMap.
+ */
 template <typename SMSGBUFFER> void CMsgBufCANVFSE<SMSGBUFFER>::
 nGetMapIndexAtID(int nIndex,__int64& nMapIndex)
 {

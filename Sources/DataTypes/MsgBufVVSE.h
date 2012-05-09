@@ -16,7 +16,7 @@
 /**
  * \file      MsgBufVVSE.h
  * \brief     Defines a variant of circular queue class in VSE.
- * \author    Pradeep Kadoor
+ * \author    Pradeep Kadoor, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Defines a variant of circular queue class in VSE.
@@ -24,14 +24,9 @@
 
 #pragma once
 
+/* Project includes */
 #include "BaseMsgBufAll.h"
 
-/////////////////////////////////////////////////////////////////////////////////////
-/**********************************************************************************
-Class Name      :   CMsgBufVVSE
-Authors         :   Pradeep Kadoor
-Date Created    :   22/06/2009
-************************************************************************************/
 class CMsgBufVVSE : public CBaseMsgBufVVSE
 {
 private:
