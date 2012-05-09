@@ -16,7 +16,7 @@
 /**
  * \file      CAN_MHS.cpp
  * \brief     Source file for MHS-Elektronik Tiny-CAN DIL functions
- * \author    Klaus Demlehner
+ * \author    Klaus Demlehner, Tobias Lorenz
  * \copyright Copyright (c) 2011, MHS-Elektronik GmbH & Co. KG
  *
  * Defines the initialization routines for the DLL.
