@@ -16,7 +16,7 @@
 /**
  * \file      DIL_J1939.h
  * \brief     Definition file for DIL J1939
- * \author    Pradeep Kadoor
+ * \author    Pradeep Kadoor, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition file for DIL J1939

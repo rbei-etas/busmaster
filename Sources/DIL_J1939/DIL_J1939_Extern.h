@@ -16,7 +16,7 @@
 /**
  * \file      DIL_J1939_Extern.h
  * \brief     Definition file for DIL J1939
- * \author    Pradeep Kadoor
+ * \author    Pradeep Kadoor, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition file for DIL J1939
@@ -34,6 +34,7 @@
 #define USAGEMODE   __declspec(dllimport)
 #endif
 
+/* Project includes */
 #include "Datatypes/J1939_DataTypes.h"
 #include "J1939_UtilityFuncs.h"
 #include "DataTypes/BaseMsgBufAll.h"
@@ -41,13 +42,9 @@
 #include "DataTypes/Base_WrapperErrorLogger.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
 
-
-
 #ifdef __cplusplus
 extern "C" {  // only need to export C interface if used by C++ source code
 #endif
-
-
 
     /*Initializes J1939 network
     Parameters:

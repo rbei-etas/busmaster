@@ -24,13 +24,12 @@
 
 #pragma once
 
+/* Project includes */
 #include "NodeConManager.h"
 #include "DIL_J1939_Extern.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
 #include "ConnectionDet.h"
 #include "ReadCanMsg.h"
-
-
 
 typedef enum
 {

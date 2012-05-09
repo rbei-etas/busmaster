@@ -1,22 +1,39 @@
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  MonitorNode.cpp
-  Description   :
-  $Log:   X:/Archive/Sources/DIL_J1939/MonitorNode.cpv  $
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-  Author(s)     :  Pradeep Kadoor
-  Date Created  :  23/11/2010
-  Modified By   :
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
+/**
+ * \file      MonitorNode.cpp
+ * \brief     Network Manager
+ * \author    Pradeep Kadoor, Tobias Lorenz
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Defines the Monitor Node.
+ */
+
+/* Project includes */
 #include "DIL_J1939_stdafx.h"
-
 #include "J1939_UtilityFuncs.h"
 #include "MonitorNode.h"
 #include "TransferLayer.h"
 #include "NetworkMgmt.h"
 
-
+/**
+ * \brief Constructor
+ *
+ * Constructor
+ */
 CMonitorNode::CMonitorNode(int nNodeNo, char* pacNodeName,
                            UINT64 un64ECUName, BYTE byPrefAdres):CNodeConManager(nNodeNo, pacNodeName, un64ECUName, byPrefAdres, TRUE)
 {
@@ -26,11 +43,21 @@ CMonitorNode::CMonitorNode(int nNodeNo, char* pacNodeName,
     }
 }
 
+/**
+ * \brief Destructor
+ *
+ * Destructor
+ */
 CMonitorNode::~CMonitorNode(void)
 {
     vRemoveAllConnections();
 }
 
+/**
+ * \brief Remove All Connections
+ *
+ * Removes all connections.
+ */
 void CMonitorNode::vRemoveAllConnections()
 {
     //Stop the read thread and then stop any proccessing of data
@@ -45,6 +72,7 @@ void CMonitorNode::vRemoveAllConnections()
         }
     }
 }
+
 BOOL CMonitorNode::bAddConDetObj(CConnectionDet* pConDet)
 {
     BOOL bReturn = FALSE;
@@ -82,6 +110,7 @@ void CMonitorNode::vReadCANdataBuffer()
         }
     }
 }
+
 void static vGetSrcDestFromId(BYTE& bySrc, BYTE& byDest, UINT32 unExtId)
 {
     UNION_29_BIT_ID uExtId = {0};
@@ -89,6 +118,7 @@ void static vGetSrcDestFromId(BYTE& bySrc, BYTE& byDest, UINT32 unExtId)
     bySrc = uExtId.m_s29BitId.m_bySrcAddress;
     byDest = uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Specific;
 }
+
 void CMonitorNode::vProcessBroadCastDataByMonNode(const sTCANDATA& CurrMsgCAN,
         CConnectionDet* pConDet)
 {
@@ -122,6 +152,7 @@ void CMonitorNode::vProcessBroadCastDataByMonNode(const sTCANDATA& CurrMsgCAN,
         }
     }
 }
+
 void CMonitorNode::vTransmitMessage(STJ1939_MSG* psMsg)
 {
     switch (psMsg->m_sMsgProperties.m_eType)
@@ -221,6 +252,7 @@ void CMonitorNode::vTransmitMessage(STJ1939_MSG* psMsg)
         break;
     }
 }
+
 void CMonitorNode::vProcessLongDataByMonNode(const sTCANDATA& CurrMsgCAN,
         CConnectionDet* pConDet)
 {
@@ -256,6 +288,7 @@ void CMonitorNode::vProcessLongDataByMonNode(const sTCANDATA& CurrMsgCAN,
         }
     }
 }
+
 BOOL CMonitorNode::bProcessConLevelMsgByMon(const sTCANDATA& CurrMsgCAN)
 {
     BOOL bIsProcessed = TRUE;
@@ -404,6 +437,7 @@ BOOL CMonitorNode::bProcessConLevelMsgByMon(const sTCANDATA& CurrMsgCAN)
 
     return bIsProcessed;
 }
+
 void CMonitorNode::vProcessCANMsgByMonNode(const sTCANDATA CurrMsgCAN)
 {
     bProcessNodeLevelMsgByMonNode(CurrMsgCAN);
@@ -413,6 +447,7 @@ void CMonitorNode::vProcessCANMsgByMonNode(const sTCANDATA CurrMsgCAN)
         bProcessConLevelMsgByMon(CurrMsgCAN);
     }
 }
+
 BOOL CMonitorNode::bProcessNodeLevelMsgByMonNode(const STCANDATA& sCanData)
 {
     //Send it to each connection
@@ -425,6 +460,7 @@ BOOL CMonitorNode::bProcessNodeLevelMsgByMonNode(const STCANDATA& sCanData)
     WriteIntoClientsBuffer(sJ1939Msg);
     return bResult;
 }
+
 CConnectionDet* CMonitorNode::pouCreateAndAddConnnection(UINT unId)
 {
     BYTE bySrc = 254, byDest = 254;

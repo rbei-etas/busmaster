@@ -16,7 +16,7 @@
 /**
  * \file      J1939_UtilityFuncs.h
  * \brief     Definition file for J1939 Utility Functions
- * \author    Pradeep Kadoor
+ * \author    Pradeep Kadoor, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition file for J1939 Utility Functions
@@ -24,6 +24,7 @@
 
 #pragma once
 
+/* Project includes */
 #include "Include/BaseDefs.h"
 #include "Datatypes/J1939_DataTypes.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
@@ -54,6 +55,7 @@ const UCHAR ucCONACK_MSG_LEN              = 2;
 const WORD WF_BROADCAST     = 0xA1;
 const WORD WF_LONGDATA      = 0xA2;
 const WORD WF_CLEAR2SEND    = 0xA3;
+
 /* Message types */
 const UINT32 REQUEST_MSG            = 0x18EAFEFE;
 const UINT32 ADDRESS_CLAIMED_MSG    = 0x18EEFEFE;
@@ -100,7 +102,11 @@ const INT DATA_LEN_CMD_ADDRESS  = 9;        //DATA TYPE is added
 const INT REASON_NODE_ENGAGED   = 0x1;      //DATA TYPE is added
 const int nTWD                  = 1024;//ms
 
-/* TYPES OF CONNECTION STATUS */
+/**
+ * \brief Connection Status
+ *
+ * Type of connection status.
+ */
 typedef enum
 {
     T_DISCONNECTED = 0,
@@ -108,33 +114,35 @@ typedef enum
     T_STARTUP
 } eCON_STATUS;
 
-/* TYPES OF CONNECTION MODE */
+/**
+ * \brief Connection Mode
+ *
+ * Type of connection mode.
+ */
 typedef enum
 {
     CM_STANDARD = 0,
     CM_BROADCAST
 } eCON_MODE;
 
-/* TYPES OF REASON FOR DISCONNECTION */
+/**
+ * \bref Disconnection Reason
+ *
+ * Type of reason for disconnection.
+ */
 typedef enum
 {
     T_FAULT = 0,
     T_SHUTDOWN
 } eREASON;
 
-/* static functions */
-
-/******************************************************************************
-Function Name  :  byGetLastFrameLen
-Input(s)       :  UINT unDLC
-Output         :  BYTE - length of last frame
-Functionality  :  returns length of last frame
-Member of      :
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+/**
+ * \brief     Get Last Frame Len
+ * \param[in] unDLC Data Length Code
+ * \return    Length of last frame
+ *
+ * Returns length of last frame.
+ */
 static BYTE byGetLastFrameLen(UINT unDLC)
 {
     BYTE byLastFrameLen = (BYTE)(unDLC % MAX_TPDU_DATA_SIZE);
@@ -147,11 +155,22 @@ static BYTE byGetLastFrameLen(UINT unDLC)
     return byLastFrameLen;
 }
 
+/**
+ * \brief Is Command Address
+ *
+ * Checks if it's an command address.
+ */
 static BOOL bIsCommandAddress(BYTE byPduFormat, UINT unMsgLen)
 {
     return ((byPduFormat == PDU_FORMAT_ACL)
             && (unMsgLen == DATA_LEN_CMD_ADDRESS));
 }
+
+/**
+ * \brief Prepare End-Of-Message Acknowdlege message
+ *
+ * Prepare end-of-message acknowledge message.
+ */
 static void PrepareEOM_ACK(BYTE* byCANData, UINT unDLC, BYTE byNoOfPackets, UINT32 unPGN)
 {
     byCANData[0] = CB_EOM_ACK;
@@ -163,6 +182,12 @@ static void PrepareEOM_ACK(BYTE* byCANData, UINT unDLC, BYTE byNoOfPackets, UINT
     byCANData[6] = (BYTE)(unPGN >> 8);
     byCANData[7] = (BYTE)(unPGN >> 16);
 }
+
+/**
+ * \brief Prepare Clear-2-Send message
+ *
+ * Prepares a clear-to-send message.
+ */
 static void PrepareClear_2_Send(BYTE* byCANData, BYTE byNoOfPackets, BYTE byNextPacket, UINT32 unPGN)
 {
     byCANData[0] = CB_CLEAR_TO_SEND;
@@ -174,6 +199,14 @@ static void PrepareClear_2_Send(BYTE* byCANData, BYTE byNoOfPackets, BYTE byNext
     byCANData[6] = (BYTE)(unPGN >> 8);
     byCANData[7] = (BYTE)(unPGN >> 16);
 }
+
+/**
+ * \brief     Get Number of Packets Required
+ * \param[in] unSizeInBytes Size in Bytes
+ * \return    Number of packets
+ *
+ * Returns the number of packets required.
+ */
 static UINT unGetNoOfPacketsRequired(UINT unSizeInBytes)
 {
     int nLastFrameNo = (int)(unSizeInBytes / MAX_TPDU_DATA_SIZE);
@@ -188,6 +221,11 @@ static UINT unGetNoOfPacketsRequired(UINT unSizeInBytes)
     return nLastFrameNo;
 }
 
+/**
+ * \brief Prepare Data
+ *
+ * Prepares data.
+ */
 static void vPrepareData(BYTE* byFrameData, BYTE byControlByte, UINT unDLC, UINT32 unPGN)
 {
     byFrameData[0] = byControlByte;
@@ -200,6 +238,12 @@ static void vPrepareData(BYTE* byFrameData, BYTE byControlByte, UINT unDLC, UINT
     byFrameData[6] = (BYTE)(unPGN >> 8);
     byFrameData[7] = (BYTE)(unPGN >> 16);
 }
+
+/**
+ * \brief Prepare P2P Id
+ *
+ * Prepares a P2P Id
+ */
 static UINT32 Prepare_P2P_Id(BYTE byPDUFormat, BYTE bySrcAdres,
                              BYTE byDestAdres, BYTE byPriority)
 {
@@ -213,6 +257,11 @@ static UINT32 Prepare_P2P_Id(BYTE byPDUFormat, BYTE bySrcAdres,
     return uExtId.m_unExtID;
 }
 
+/**
+ * \brief Is Connection Req Message
+ *
+ * Checks if it's a connection req message.
+ */
 static BOOL bIsConReqMsg(UINT32 unExtId, BYTE byControlByte)
 {
     UNION_29_BIT_ID uExtId;
@@ -220,6 +269,12 @@ static BOOL bIsConReqMsg(UINT32 unExtId, BYTE byControlByte)
     return ((uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPCM)
             && (byControlByte == CB_REQ_TO_SEND));
 }
+
+/**
+ * \brief Is Broadcast-Announce-Message
+ *
+ * Check if it's a Broadcast Announce Message.
+ */
 static BOOL bIsBAM(UINT32 unExtId, BYTE byControlByte)
 {
     UNION_29_BIT_ID uExtId;
@@ -227,6 +282,12 @@ static BOOL bIsBAM(UINT32 unExtId, BYTE byControlByte)
     return ((uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPCM)
             && (byControlByte == CB_BAM));
 }
+
+/**
+ * \brief Is End-Of-Message Acknowledge message?
+ *
+ * Check if it's an end-of-message acknowledge message.
+ */
 static BOOL bIsEOM_ACK(UINT32 unExtId, BYTE byControlByte)
 {
     UNION_29_BIT_ID uExtId;
@@ -234,6 +295,12 @@ static BOOL bIsEOM_ACK(UINT32 unExtId, BYTE byControlByte)
     return ((uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPCM)
             && (byControlByte == CB_EOM_ACK));
 }
+
+/**
+ * \brief Is Connection Abort Message
+ *
+ * Check if it's a connection abort message.
+ */
 static BOOL bIsConAbortMsg(UINT32 unExtId, BYTE byControlByte)
 {
     UNION_29_BIT_ID uExtId;
@@ -241,6 +308,12 @@ static BOOL bIsConAbortMsg(UINT32 unExtId, BYTE byControlByte)
     return ((uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPCM)
             && (byControlByte == CB_CON_ABORT));
 }
+
+/**
+ * \brief Is Connection Acknowledge Message
+ *
+ * Checks if it's a connection acknowledge message.
+ */
 static BOOL bIsConAckMsg(STCAN_MSG& sCanMsg)
 {
     UNION_29_BIT_ID uExtId;
@@ -248,6 +321,12 @@ static BOOL bIsConAckMsg(STCAN_MSG& sCanMsg)
     return ((uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPCM)
             && (sCanMsg.m_ucData[0] == CB_CLEAR_TO_SEND) && (0 == sCanMsg.m_ucData[2]));
 }
+
+/**
+ * \brief Is Data Acknowledge Message
+ *
+ * Check if it's a data acknowledge message.
+ */
 static BOOL bIsDataAckMsg(STCAN_MSG& sCanMsg)
 {
     UNION_29_BIT_ID uExtId;
@@ -255,6 +334,12 @@ static BOOL bIsDataAckMsg(STCAN_MSG& sCanMsg)
     return ((uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPCM)
             && (sCanMsg.m_ucData[0] == CB_CLEAR_TO_SEND) && (sCanMsg.m_ucData[2] > 0));
 }
+
+/**
+ * \brief Is TPDT
+ *
+ * Check if it's a TPDT message.
+ */
 static BOOL bIsTPDT(UINT32 unExtId)
 {
     UNION_29_BIT_ID uExtId;
@@ -262,6 +347,11 @@ static BOOL bIsTPDT(UINT32 unExtId)
     return (uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPDT);
 }
 
+/**
+ * \brief Create Temporary J1939 Message
+ *
+ * Creates a temporary J1939 message.
+ */
 static void vCreateTempJ1939Msg(STJ1939_MSG& sMsg, const STCANDATA& sCanData,
                                 UINT unDLC, BYTE* pbyData, EJ1939_MSG_TYPE eType)
 {
@@ -277,6 +367,12 @@ static void vCreateTempJ1939Msg(STJ1939_MSG& sMsg, const STCANDATA& sCanData,
     sMsg.m_pbyData = new BYTE[sMsg.m_unDLC];
     memcpy(sMsg.m_pbyData, pbyData, unDLC);
 }
+
+/**
+ * \brief Is Connection Level Message
+ *
+ * Check if it's a connection level message.
+ */
 static BOOL bIsConLevelMsg(UINT32 unExtId)
 {
     BOOL bReturn = FALSE;
@@ -291,17 +387,15 @@ static BOOL bIsConLevelMsg(UINT32 unExtId)
 
     return bReturn;
 }
-/******************************************************************************
-Function Name  :  eGetMsgType
-Input(s)       :  UINT32 unExtId - 29 bit CAN identifier,BYTE* pbyData - CAN data
-Output         :  EJ1939_MSG_TYPE
-Functionality  :  returns the type of the message.
-Member of      :
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * \brief     Get Message Type
+ * \param[in] unExtId 29 bit CAN identifier
+ * \param[in] pbyData CAN data
+ * \return    J1939 Message Type
+ *
+ * Returns the type of the message.
+ */
 static EJ1939_MSG_TYPE eGetMsgType(UINT32 unExtId,BYTE* pbyData)
 {
     EJ1939_MSG_TYPE eType = MSG_TYPE_DATA;

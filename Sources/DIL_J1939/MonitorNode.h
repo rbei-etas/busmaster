@@ -16,7 +16,7 @@
 /**
  * \file      MonitorNode.h
  * \brief     Definition file for Monitor Node
- * \author    Anish Kumar
+ * \author    Anish Kumar, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition file for Monitor Node
@@ -24,6 +24,7 @@
 
 #pragma once
 
+/* Project includes */
 #include "NodeConManager.h"
 #include "ConnectionDet.h"
 

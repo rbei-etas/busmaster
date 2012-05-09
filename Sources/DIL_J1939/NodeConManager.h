@@ -24,10 +24,11 @@
 
 #pragma once
 
+/* Project includes */
 #include "ConnectionDet.h"
 #include "DataTypes/MsgBufVSE.h"
-#define DEF_MAX_CON_OF_A_NODE           15
 
+#define DEF_MAX_CON_OF_A_NODE           15
 
 class CNodeConManager
 {

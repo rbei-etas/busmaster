@@ -1,22 +1,34 @@
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  NetworkMgmt.cpp
-  Description   :
-  $Log:   X:/Archive/Sources/DIL_J1939/NetworkMgmt.cpv  $
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-  Author(s)     :  Pradeep Kadoor
-  Date Created  :  23/11/2010
-  Modified By   :
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
+/**
+ * \file      NetworkMgmt.cpp
+ * \brief     Network Manager
+ * \author    Pradeep Kadoor, Tobias Lorenz
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Defines the Network Manager.
+ */
 
+/* Project includes */
 #include "DIL_J1939_stdafx.h"
 #include "Include/DIL_CommonDefs.h"
 #include "J1939_UtilityFuncs.h"
 #include "NetworkMgmt.h"
 #include "TransferLayer.h"
 #include "MonitorNode.h"
-
 
 #define BITS_IN_BYTE 8
 
@@ -27,8 +39,12 @@ UINT CNetworkMgmt::sg_unTO_T1           = TO_T1;
 UINT CNetworkMgmt::sg_unTO_T2           = TO_T2;
 UINT CNetworkMgmt::sg_unTO_T3           = TO_T3;
 UINT CNetworkMgmt::sg_unTO_T4           = TO_T4;
-/**************************************************************
- ************************************************************** */
+
+/**
+ * \brief Constructor
+ *
+ * Constructor
+ */
 CNetworkMgmt::CNetworkMgmt()
 {
     m_nConMgrCnt        = 0;
@@ -41,9 +57,11 @@ CNetworkMgmt::CNetworkMgmt()
     }
 }
 
-/**************************************************************
- ************************************************************** */
-
+/**
+ * \brief Destructor
+ *
+ * Destructor
+ */
 CNetworkMgmt::~CNetworkMgmt()
 {
     for (int i = 0; i < DEF_MAX_SIMULATED_NODE; i++)
@@ -66,53 +84,33 @@ void CNetworkMgmt::vDoExit(void)
     m_ouReadCANMsg.vDoExit();
 }
 
-/**************************************************************
- ************************************************************** */
 CNetworkMgmt& CNetworkMgmt::ouGetNWManagementObj()
 {
     static CNetworkMgmt souNWMangementObj;
     return souNWMangementObj;
 }
 
-/**************************************************************
- ************************************************************** */
-
-
 void CNetworkMgmt::vMInitReq(unsigned short /*BaudIndex*/)
 {
 }
 
-
-/**************************************************************
- ************************************************************** */
-
 void CNetworkMgmt::vMInitCon(char /*cInitResult*/)
 {
 }
-
-
-/**************************************************************
- ************************************************************** */
 
 void CNetworkMgmt::vMInitInd(char /*cInitResult*/,char /*cInitReason*/)
 {
     // not implemented right now.
 }
 
-
-/**************************************************************
- ************************************************************** */
 void CNetworkMgmt::vMExitReq(void)
 {
 }
 
-
-/**************************************************************
- ************************************************************** */
-
 void CNetworkMgmt::vMExitCon(char /*cExitResult*/)
 {
 }
+
 void CNetworkMgmt::vInitializeAllNodes(void)
 {
     for (int i = 0; i < m_nConMgrCnt; i++)
@@ -125,10 +123,12 @@ void CNetworkMgmt::vInitializeAllNodes(void)
         }
     }
 }
+
 HRESULT CNetworkMgmt::GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& unAbsTime)
 {
     return m_pIDIL_CAN->DILC_GetTimeModeMapping(CurrSysTime, unAbsTime);
 }
+
 void CNetworkMgmt::vGetTimeOut(ETYPE_TIMEOUT eTimeOutType, UINT& unMiliSeconds)
 {
     switch (eTimeOutType)
@@ -176,6 +176,7 @@ void CNetworkMgmt::vGetTimeOut(ETYPE_TIMEOUT eTimeOutType, UINT& unMiliSeconds)
         break;
     }
 }
+
 void CNetworkMgmt::vConfigureTimeOut(ETYPE_TIMEOUT eTimeOutType, UINT unMiliSeconds)
 {
     switch (eTimeOutType)
@@ -223,6 +224,7 @@ void CNetworkMgmt::vConfigureTimeOut(ETYPE_TIMEOUT eTimeOutType, UINT unMiliSeco
         break;
     }
 }
+
 void CNetworkMgmt::vUnInitializeAllNodes(void)
 {
     for (int i = 0; i < m_nConMgrCnt; i++)
@@ -237,6 +239,7 @@ void CNetworkMgmt::vUnInitializeAllNodes(void)
 
     m_odClaimedAdresMap.RemoveAll();
 }
+
 BYTE CNetworkMgmt::byGetNodeAddress(DWORD dwClient)
 {
     BYTE byAddress = ADDRESS_NULL;
@@ -257,6 +260,7 @@ BYTE CNetworkMgmt::byGetNodeAddress(DWORD dwClient)
 
     return byAddress;
 }
+
 void CNetworkMgmt::vGetNodeName(BYTE byAddress, char* acNodeName)
 {
     for (int i = 0; i < m_nConMgrCnt; i++)
@@ -273,10 +277,12 @@ void CNetworkMgmt::vGetNodeName(BYTE byAddress, char* acNodeName)
         }
     }
 }
+
 BOOL CNetworkMgmt::bIsOnline(void)
 {
     return m_bOnline;
 }
+
 BOOL CNetworkMgmt::bIsAddressClaimed(BYTE byAddress)
 {
     BOOL bResult = FALSE;
@@ -297,6 +303,7 @@ BOOL CNetworkMgmt::bIsAddressClaimed(BYTE byAddress)
 
     return bResult;
 }
+
 BYTE CNetworkMgmt::byGetUnclaimedAddress(int nStartFrom)
 {
     BYTE byAdres = ADDRESS_NULL;
@@ -356,6 +363,7 @@ void CNetworkMgmt::vReinitAdresClaimProc(DWORD dwClient)
         pNodConMgr->StartAdresClaimProc(byPreferedAdres);
     }
 }
+
 HRESULT CNetworkMgmt::GoOnline(BOOL bStart)
 {
     HRESULT hResult = S_OK;
@@ -377,8 +385,7 @@ HRESULT CNetworkMgmt::GoOnline(BOOL bStart)
 
     return hResult;
 }
-/**************************************************************
- ************************************************************** */
+
 void CNetworkMgmt::vMDisconnectInd(short /*sLocalLc*/, short /*sRemoteLc*/, eREASON /*eReason*/)
 {
     /*if (m_pfDisconInd != NULL)
@@ -386,8 +393,6 @@ void CNetworkMgmt::vMDisconnectInd(short /*sLocalLc*/, short /*sRemoteLc*/, eREA
         (*m_pfDisconInd)(sLocalLc, sRemoteLc, eReason);
     }kadoor*/
 }
-/**************************************************************
- ************************************************************** */
 
 void CNetworkMgmt::vMConnectionCon(short /*sLocalLc*/, short /*sRemoteLc*/,
                                    eCON_STATUS eConStatus)
@@ -405,8 +410,6 @@ void CNetworkMgmt::vMConnectionCon(short /*sLocalLc*/, short /*sRemoteLc*/,
     }kadoor*/
 }
 
-/**************************************************************
- **************************************************************/
 void CNetworkMgmt::vMConnectionInd(short /*sLocalLc*/, short /*sRemoteLc*/,
                                    eCON_STATUS /*eConStatus*/)
 {
@@ -415,8 +418,6 @@ void CNetworkMgmt::vMConnectionInd(short /*sLocalLc*/, short /*sRemoteLc*/,
         (*m_pfConInd)(sLocalLc, sRemoteLc, eWdStatus, eConStatus);
     }kadoor*/
 }
-/**************************************************************
- ************************************************************** */
 
 void CNetworkMgmt::vMErrorInd(short /*sLocalLc*/,short /*sRemoteLc*/,char /*cError*/)
 {
@@ -424,19 +425,11 @@ void CNetworkMgmt::vMErrorInd(short /*sLocalLc*/,short /*sRemoteLc*/,char /*cErr
     //as on now not used.
 }
 
-
-/**************************************************************
- ************************************************************** */
-
 void CNetworkMgmt::vMBaudRateChange(unsigned short /*BaudTemp*/)
 {
     //May not be required
 }
 
-
-
-/**************************************************************
- ************************************************************** */
 BOOL CNetworkMgmt::bRemoveConnectionFromConMap(short shConnectionNo)
 {
     BOOL bReturn = FALSE;
@@ -477,8 +470,7 @@ CNodeConManager* CNetworkMgmt::pouGetConMagrObj(char* pacClientName)
 
     return pNodeConMgr;
 }
-/**************************************************************
- ************************************************************** */
+
 CNodeConManager* CNetworkMgmt::pouGetConMagrObj(DWORD dwClientId)
 {
     CNodeConManager* pNodeConMgr = NULL;
@@ -497,8 +489,7 @@ CNodeConManager* CNetworkMgmt::pouGetConMagrObj(DWORD dwClientId)
 
     return pNodeConMgr;
 }
-/**************************************************************
- ************************************************************** */
+
 CNodeConManager* CNetworkMgmt::pouGetConMagrObj(BYTE byIndex)
 {
     CNodeConManager* pNodeConMgr = NULL;
@@ -510,8 +501,7 @@ CNodeConManager* CNetworkMgmt::pouGetConMagrObj(BYTE byIndex)
 
     return pNodeConMgr;
 }
-/**************************************************************
- ************************************************************** */
+
 BYTE CNetworkMgmt::byGetConMagrNumber(short shConNumber)
 {
     //Second byte is connectionmgr's no.
@@ -519,8 +509,7 @@ BYTE CNetworkMgmt::byGetConMagrNumber(short shConNumber)
     shConMgrNo = shConMgrNo >> BITS_IN_BYTE;
     return (BYTE)shConMgrNo;
 }
-/**************************************************************
- ************************************************************** */
+
 void CNetworkMgmt::vSetLogAndICANPtr(Base_WrapperErrorLogger* pILog, CBaseDIL_CAN* pIDIL_CAN)
 {
     m_pILog = pILog;
@@ -528,8 +517,6 @@ void CNetworkMgmt::vSetLogAndICANPtr(Base_WrapperErrorLogger* pILog, CBaseDIL_CA
     CTransferLayer::ouGetTransLayerObj().vSetIDIL_CAN(pIDIL_CAN);
 }
 
-/**************************************************************
-************************************************************** */
 LONG CNetworkMgmt::lCreateNodeConManager(char* pacNodeName,
         UINT64 un64ECUName,
         BYTE   byPrefAdres,
@@ -638,8 +625,6 @@ LONG CNetworkMgmt::lCreateNodeConManager(char* pacNodeName,
     return lResult;
 }
 
-/**************************************************************
-************************************************************** */
 LONG CNetworkMgmt::lRemoveNodeConManager(DWORD dwClientId)
 {
     LONG lResult = ERROR_NOCLIENT;
@@ -725,4 +710,3 @@ void CNetworkMgmt::vRemoveAllNodes(void)
         }
     }
 }
-

@@ -16,7 +16,7 @@
 /**
  * \file      ConnectionDet.h
  * \brief     Definition file for ConnectionDet
- * \author    Anish Kumar
+ * \author    Anish Kumar, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition file for ConnectionDet
@@ -24,6 +24,7 @@
 
 #pragma once
 
+/* Project includes */
 #include "Datatypes/J1939_DataTypes.h"
 #include "J1939_UtilityFuncs.h"
 
