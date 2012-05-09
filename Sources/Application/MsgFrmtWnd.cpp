@@ -1139,14 +1139,14 @@ LRESULT CMsgFrmtWnd::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
         {
             m_ppMsgDB = (CMsgSignal**)lParam;
 
-    		if(m_eBusType == J1939)
-			{
-				SMSGENTRY* psMsgEntry = NULL;
-				vPopulateMsgEntryFromDB(psMsgEntry, *m_ppMsgDB);
-				m_ouMsgInterpretJ1939.vClear();
-				m_ouMsgInterpretJ1939.vSetJ1939Database(psMsgEntry);
-				vExpandContractAllEntries(FALSE, TRUE);
-			}
+            if(m_eBusType == J1939)
+            {
+                SMSGENTRY* psMsgEntry = NULL;
+                vPopulateMsgEntryFromDB(psMsgEntry, *m_ppMsgDB);
+                m_ouMsgInterpretJ1939.vClear();
+                m_ouMsgInterpretJ1939.vSetJ1939Database(psMsgEntry);
+                vExpandContractAllEntries(FALSE, TRUE);
+            }
         }
         break;
 
