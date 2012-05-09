@@ -154,11 +154,10 @@ static UINT unGetFilterSize(CModuleFilterArray* pouModuleFilterArray, SFILTERAPP
     {
         for (INT_PTR i = 0; i < pouModuleFilterArray->GetSize(); i++)
         {
-            SMODULEFILTER& sModuleFilter = pouModuleFilterArray->GetAt(i);
             SFILTERSET* psFilterSet =
                 SFILTERSET::psGetFilterSetPointer(psFilterConfigured->m_psFilters,
                                                   psFilterConfigured->m_ushTotal,
-                                                  sModuleFilter.m_omFilterName);
+                                                  pouModuleFilterArray->GetAt(i).m_omFilterName);
 
             if (psFilterSet != NULL)
             {
