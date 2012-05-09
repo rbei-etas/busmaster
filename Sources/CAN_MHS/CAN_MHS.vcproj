@@ -223,6 +223,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\can_types.h"
+				>
+			</File>
+			<File
 				RelativePath=".\mhstcan.h"
 				>
 			</File>
