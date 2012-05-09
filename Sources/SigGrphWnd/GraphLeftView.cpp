@@ -156,9 +156,9 @@ void CGraphLeftView::OnInitialUpdate()
     if( pWnd != NULL )
     {
         // Register view pointer
-        ((CGraphChildFrame*)pWnd)->m_pomLeftView = this;
+        (static_cast<CGraphChildFrame*>(pWnd))->m_pomLeftView = this;
         // Get Graph Control Pointer
-        m_pDMGraphCtrl = ((CGraphChildFrame*)pWnd)->m_pDMGraphCtrl;
+        m_pDMGraphCtrl = (static_cast<CGraphChildFrame*>(pWnd))->m_pDMGraphCtrl;
     }
 }
 
@@ -211,7 +211,7 @@ void CGraphLeftView::vPopulateElementList()
     m_omSignalList.DeleteAllItems();
     // Get List pointer
     CGraphChildFrame* pParentWnd = NULL;
-    pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+    pParentWnd = static_cast<CGraphChildFrame*>(pomGetParentWindow());
 
     if(pParentWnd != NULL)
     {
@@ -307,7 +307,7 @@ void CGraphLeftView::OnItemchangedListSignals(NMHDR* pNMHDR, LRESULT* /*pResult*
             // Update selected element deteils
             CGraphList* podList = NULL;
             CGraphChildFrame* pParentWnd = NULL;
-            pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+            pParentWnd = static_cast<CGraphChildFrame*>(pomGetParentWindow());
 
             if(pParentWnd != NULL)
             {
@@ -412,7 +412,7 @@ void CGraphLeftView::OnSelchangeComboType()
     {
         CGraphList* podList = NULL;
         CGraphChildFrame* pParentWnd = NULL;
-        pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+        pParentWnd = static_cast<CGraphChildFrame*>(pomGetParentWindow());
 
         if(pParentWnd != NULL)
         {
@@ -463,7 +463,7 @@ void CGraphLeftView::OnSelchangeComboSymbol()
     {
         CGraphList* podList = NULL;
         CGraphChildFrame* pParentWnd = NULL;
-        pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+        pParentWnd = static_cast<CGraphChildFrame*>(pomGetParentWindow());
 
         if(pParentWnd != NULL)
         {
@@ -511,7 +511,7 @@ void CGraphLeftView::OnBtnEnable()
         // Get graph list from main frame
         CGraphList* podList = NULL;
         CGraphChildFrame* pParentWnd = NULL;
-        pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+        pParentWnd = static_cast<CGraphChildFrame*>(pomGetParentWindow());
 
         if(pParentWnd != NULL)
         {
@@ -580,7 +580,7 @@ void CGraphLeftView::OnBtnVisible()
         // Get Graph List from main frame
         CGraphList* podList = NULL;
         CGraphChildFrame* pParentWnd = NULL;
-        pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+        pParentWnd = static_cast<CGraphChildFrame*>(pomGetParentWindow());
 
         if(pParentWnd != NULL)
         {
@@ -642,7 +642,7 @@ void CGraphLeftView::vEnableDisableControls()
 {
     CGraphList* podList = NULL;
     CGraphChildFrame* pParentWnd = NULL;
-    pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+    pParentWnd = static_cast<CGraphChildFrame*>(pomGetParentWindow());
 
     if(pParentWnd != NULL)
     {
@@ -748,7 +748,7 @@ LRESULT CGraphLeftView::OnColorChange(WPARAM /*wparam*/, LPARAM lparam)
     {
         CGraphList* podList = NULL;
         CGraphChildFrame* pParentWnd = NULL;
-        pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+        pParentWnd = static_cast<CGraphChildFrame*>(pomGetParentWindow());
 
         if(pParentWnd != NULL)
         {
@@ -782,9 +782,9 @@ LRESULT CGraphLeftView::OnColorChange(WPARAM /*wparam*/, LPARAM lparam)
                         // Update Control
                         vUpdateGraphControl( defFROM_LINE_COLOR,
                                              odSelectedElement.m_nLineColor );
-                        ((CGraphBottomView*)pParentWnd->m_pomBottomView)
+                        (static_cast<CGraphBottomView*>(pParentWnd->m_pomBottomView))
                         ->vInsertSignalData();
-                        ((CGraphBottomView*)pParentWnd->m_pomBottomView)
+                        (static_cast<CGraphBottomView*>(pParentWnd->m_pomBottomView))
                         ->vUpdateSignalData();
                         break;
 
@@ -976,7 +976,7 @@ void CGraphLeftView::vPopulateGraphControl()
         // Get Element List from Main Frame
         CGraphList* podList = NULL;
         CGraphChildFrame* pParentWnd = NULL;
-        pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+        pParentWnd = static_cast<CGraphChildFrame*>(pomGetParentWindow());
 
         if (pParentWnd != NULL)
         {
@@ -1092,7 +1092,7 @@ void CGraphLeftView::vHandleConnectionStatusChange(BOOL bConnect)
     {
         CGraphList* podList = NULL;
         CGraphChildFrame* pParentWnd = NULL;
-        pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+        pParentWnd = static_cast<CGraphChildFrame*>(pomGetParentWindow());
 
         if(pParentWnd != NULL)
         {
