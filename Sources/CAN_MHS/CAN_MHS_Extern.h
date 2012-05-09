@@ -16,10 +16,10 @@
 /**
  * \file      CAN_MHS_Extern.h
  * \brief     Exports API functions for MHS-Elektronik Tiny-CAN Hardware interface
- * \author    Arunkumar Karri
+ * \author    Arunkumar Karri, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Exports API functions for Vector XL CAN Hardware interface
+ * Exports API functions for CAN MHS Tiny-CAN Hardware interface
  */
 
 #pragma once
