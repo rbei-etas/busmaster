@@ -16,7 +16,7 @@
 /**
  * \file      MsgBufVFSE.h
  * \brief     Defines a variant of circular queue class in FSE.
- * \author    Pradeep Kadoor
+ * \author    Pradeep Kadoor, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Defines a variant of circular queue class in FSE.
@@ -24,11 +24,13 @@
 
 #pragma once
 
+/* C++ includes */
+#include <map>
+
+/* Project includes */
 #include "BaseMsgBufAll.h"
 #include "include/Utils_macro.h"
-//#include "DataTypes_stdafx.h"
 #include "include/Error.h"
-#include <map>
 
 typedef map<__int64, int> CSlotIndexMapType;
 const int TOTAL_SIZE_APP_BUFFER       = 200;
@@ -66,17 +68,11 @@ private:
     void vDoSortIndexMapArray();
 };
 
-/**********************************************************************************
-Function Name   :   CMsgBufVFSE()
-Input           :
-Output          :
-Functionality   :   Initializes buffer with minimum memory.
-Member of       :   CMsgBufVFSE
-Friend of       :   -
-Authors         :   Pradeep Kadoor
-Date Created    :   22/06/2009
-Modifications   :   -
-************************************************************************************/
+/**
+ * \brief Constructor
+ *
+ * Initializes buffer with minimum memory.
+ */
 template <typename SMSGBUFFER>
 CMsgBufVFSE<SMSGBUFFER>::CMsgBufVFSE()
 {
@@ -96,17 +92,11 @@ CMsgBufVFSE<SMSGBUFFER>::CMsgBufVFSE()
     m_pbyTempData = new BYTE[MAX_MSG_LEN_J1939];
 }
 
-/**********************************************************************************
-Function Name   :   ~CMsgBufVFSE()
-Input           :
-Output          :
-Functionality   :   Clears buffer
-Member of       :   CMsgBufVFSE
-Friend of       :   -
-Authors         :   Pradeep Kadoor
-Date Created    :   22/06/2009
-Modifications   :   -
-************************************************************************************/
+/**
+ * \brief Destructor
+ *
+ * Clears buffer.
+ */
 template <typename SMSGBUFFER>
 CMsgBufVFSE<SMSGBUFFER>::~CMsgBufVFSE()
 {
@@ -123,17 +113,11 @@ CMsgBufVFSE<SMSGBUFFER>::~CMsgBufVFSE()
     DeleteCriticalSection(&m_CritSectionForGB);
 }
 
-/**********************************************************************************
-Function Name   :   nSetBufferMsgSize()
-Input           :
-Output          :
-Functionality   :   User can set the buffer size
-Member of       :   CMsgBufVFSE
-Friend of       :   -
-Authors         :   Pradeep Kadoor
-Date Created    :   22/06/2009
-Modifications   :   -
-************************************************************************************/
+/**
+ * \brief Set Buffer Message Size
+ *
+ * User can set the buffer size.
+ */
 template <typename SMSGBUFFER>
 int CMsgBufVFSE<SMSGBUFFER>::nSetBufferMsgSize(int nMsgDataSize)
 {
@@ -151,17 +135,11 @@ int CMsgBufVFSE<SMSGBUFFER>::nSetBufferMsgSize(int nMsgDataSize)
     return nReturn;
 }
 
-/**********************************************************************************
-Function Name   :   vClearMessageBuffer()
-Input           :
-Output          :
-Functionality   :   Clears the data in the buffer
-Member of       :   CMsgBufVFSE
-Friend of       :   -
-Authors         :   Pradeep Kadoor
-Date Created    :   22/06/2009
-Modifications   :   -
-************************************************************************************/
+/**
+ * \brief Clear Message Buffer
+ *
+ * Clears the data in the buffer.
+ */
 template <typename SMSGBUFFER>
 void CMsgBufVFSE<SMSGBUFFER>::vClearMessageBuffer(void)
 {
@@ -177,17 +155,11 @@ void CMsgBufVFSE<SMSGBUFFER>::vClearMessageBuffer(void)
     m_nMsgCount = 0;
 }
 
-/**********************************************************************************
-Function Name   :   ReadBuffer
-Input           :
-Output          :
-Functionality   :   reads msg into SMSGBUFFER structure from the index nIndex
-Member of       :   CMsgBufVFSE
-Friend of       :   -
-Authors         :   Pradeep Kadoor
-Date Created    :   22/06/2009
-Modifications   :   -
-************************************************************************************/
+/**
+ * \brief Read Buffer
+ *
+ * Reads msg into SMSGBUFFER structure from the index nIndex.
+ */
 template <typename SMSGBUFFER>
 HRESULT CMsgBufVFSE<SMSGBUFFER>::ReadFromBuffer(SMSGBUFFER* psMsg, int nIndex)
 {
@@ -218,17 +190,11 @@ HRESULT CMsgBufVFSE<SMSGBUFFER>::ReadFromBuffer(SMSGBUFFER* psMsg, int nIndex)
     return nResult;
 }
 
-/**********************************************************************************
-Function Name   :   ReadFromBuffer()
-Input           :
-Output          :
-Functionality   :   Reads msg with ID nSlotId into SMSGBUFFER structure
-Member of       :   CMsgBufVFSE
-Friend of       :   -
-Authors         :   Pradeep Kadoor
-Date Created    :   22/06/2009
-Modifications   :   -
-************************************************************************************/
+/**
+ * \brief Read From Buffer
+ *
+ * Reads msg with ID nSlotId into SMSGBUFFER structure.
+ */
 template <typename SMSGBUFFER>
 HRESULT CMsgBufVFSE<SMSGBUFFER>::ReadFromBuffer(SMSGBUFFER* psMsg, __int64 nSlotId)
 {
@@ -262,17 +228,11 @@ HRESULT CMsgBufVFSE<SMSGBUFFER>::ReadFromBuffer(SMSGBUFFER* psMsg, __int64 nSlot
     return nResult;
 }
 
-/**********************************************************************************
-Function Name   :   WriteIntoBuffer()
-Input           :
-Output          :
-Functionality   :   Wrties msg with ID nSlotId from SMSGBUFFER structure into buffer return back the index
-Member of       :   CMsgBufVFSE
-Friend of       :   -
-Authors         :   Pradeep Kadoor
-Date Created    :   22/06/2009
-Modifications   :   -
-************************************************************************************/
+/**
+ * \brief Write Into Buffer
+ *
+ * Writes msg with ID nSlotId from SMSGBUFFER structure into buffer return back the index
+ */
 template <typename SMSGBUFFER>
 HRESULT CMsgBufVFSE<SMSGBUFFER>::WriteIntoBuffer(const SMSGBUFFER* psMsg, __int64 nSlotId, int& nIndex)
 {
@@ -311,51 +271,34 @@ HRESULT CMsgBufVFSE<SMSGBUFFER>::WriteIntoBuffer(const SMSGBUFFER* psMsg, __int6
     LeaveCriticalSection(&m_CritSectionForGB);
     return nResult;
 }
-/**********************************************************************************
-Function Name   :   GetMsgCount()
-Input           :
-Output          :
-Functionality   :   Get the msg count
-Member of       :   CMsgBufVFSE
-Friend of       :   -
-Authors         :   Pradeep Kadoor
-Date Created    :   22/06/2009
-Modifications   :   -
-************************************************************************************/
+
+/**
+ * \brief Get Message Count
+ *
+ * Gets the message count.
+ */
 template <typename SMSGBUFFER>
 int CMsgBufVFSE<SMSGBUFFER>::GetMsgCount(void)const
 {
     return m_nMsgCount;
 }
 
-/**********************************************************************************
-Function Name   :   hGetNotifyingEvent()
-Input           :
-Output          :
-Functionality   :   Gets the notifying event
-Member of       :   CMsgBufVFSE
-Friend of       :   -
-Authors         :   Pradeep Kadoor
-Date Created    :   22/06/2009
-Modifications   :   -
-************************************************************************************/
+/**
+ * \brief Get Notifying Event
+ *
+ * Gets the notifying event.
+ */
 template <typename SMSGBUFFER>
 HANDLE CMsgBufVFSE<SMSGBUFFER>::hGetNotifyingEvent(void) const
 {
     return m_hNotifyingEvent;
 }
 
-/**********************************************************************************
-Function Name   :   vCopyMsg()
-Input           :
-Output          :
-Functionality   :   Helper function copies full data from one SMSGBUFFER structure into another structure
-Member of       :   CMsgBufVFSE
-Friend of       :   -
-Authors         :   Pradeep Kadoor
-Date Created    :   22/06/2009
-Modifications   :   -
-************************************************************************************/
+/**
+ * \brief Copy Message
+ *
+ * Helper function copies full data from one SMSGBUFFER structure into another structure.
+ */
 template <typename SMSGBUFFER>
 void CMsgBufVFSE<SMSGBUFFER>::vCopyMsg(SMSGBUFFER* psDestMsg, const SMSGBUFFER* psSrcMsg)
 {
@@ -364,18 +307,12 @@ void CMsgBufVFSE<SMSGBUFFER>::vCopyMsg(SMSGBUFFER* psDestMsg, const SMSGBUFFER* 
     psDestMsg->vSetDataStream(m_pbyTempData);
 }
 
-/******************************************************************************
-  Function Name    :  vDoSortBuffer
-  Input(s)         :  nField - The field to be used as the sorting key.
-  Output           :  -
-  Functionality    :  Reorders the list according to the sorting key specified.
-  Member of        :  CMsgBufVFSE
-  Friend of        :  -
-  Author(s)        :  ArunKumar K
-  Date Created     :  02-02-2011
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief     Do Sort Buffer
+ * \param[in] nField The field to be used as the sorting key.
+ *
+ * Reorders the list according to the sorting key specified.
+ */
 template <typename SMSGBUFFER> void CMsgBufVFSE<SMSGBUFFER>::
 vDoSortBuffer(int nField,bool bAscending)
 {
@@ -394,18 +331,11 @@ vDoSortBuffer(int nField,bool bAscending)
     vDoSortIndexMapArray();
 }
 
-/******************************************************************************
-  Function Name    :  vDoSortIndexMapArray
-  Input(s)         :
-  Output           :  -
-  Functionality    :  Reorders the Index Map Array according to the order specified.
-  Member of        :  CMsgBufCANVFSE
-  Friend of        :  -
-  Author(s)        :  Arunkumar K
-  Date Created     :  28-06-2010
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief Do Sort Index Map Array
+ *
+ * Reorders the Index Map Array according to the order specified.
+ */
 template <typename SMSGBUFFER> void CMsgBufVFSE<SMSGBUFFER>::
 vDoSortIndexMapArray()
 {
@@ -419,18 +349,12 @@ vDoSortIndexMapArray()
     }
 }
 
-/******************************************************************************
-  Function Name    :  nGetMapIndexAtID
-  Input(s)         :  nIndex - The Index at which the SlotID needs to be pickef from.
-  Output           :  -
-  Functionality    :  Returns the Slot ID of the index specified in m_omIdIndexMap.
-  Member of        :  CMsgBufVFSE
-  Friend of        :  -
-  Author(s)        :  Arunkumar K
-  Date Created     :  04-03-2011
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief     Get Map Index At ID
+ * \param[in] nIndex The Index at which the SlotID needs to be pickef from.
+ *
+ * Returns the Slot ID of the index specified in m_omIdIndexMap.
+ */
 template <typename SMSGBUFFER> void CMsgBufVFSE<SMSGBUFFER>::
 nGetMapIndexAtID(int nIndex,__int64& nMapIndex)
 {
@@ -446,14 +370,23 @@ nGetMapIndexAtID(int nIndex,__int64& nMapIndex)
         }
     }
 }
-//Read the oldest message from circular queue
+
+/**
+ * \brief Read From Buffer
+ *
+ * Read the oldest message from circular queue.
+ */
 template <typename SMSGBUFFER>
 HRESULT CMsgBufVFSE<SMSGBUFFER>::ReadFromBuffer(SMSGBUFFER* /*psMsgBuffer*/)
 {
     return ERR_NOT_SUPPORTED;
 }
 
-//Write the message at the end of circular queue
+/**
+ * \brief Write Into Buffer
+ *
+ * Write the message at the end of circular queue.
+ */
 template <typename SMSGBUFFER>
 HRESULT CMsgBufVFSE<SMSGBUFFER>::WriteIntoBuffer(SMSGBUFFER* /*psMsgBuffer*/)
 {

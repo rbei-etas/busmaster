@@ -16,7 +16,7 @@
 /**
  * \file      MsgBufVSE.h
  * \brief     Defines concrete class for circular queue in VSE.
- * \author    Pradeep Kadoor
+ * \author    Pradeep Kadoor, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Defines concrete class for circular queue in VSE.
@@ -24,14 +24,9 @@
 
 #pragma once
 
+/* Project includes */
 #include "BaseMsgBufAll.h"
 
-/////////////////////////////////////////////////////////////////////////////////////
-/**********************************************************************************
-Class Name      :   CMsgBufVSE
-Authors         :   Pradeep Kadoor
-Date Created    :   22/06/2009
-************************************************************************************/
 class CMsgBufVSE : public CBaseMsgBufVSE
 {
 private:

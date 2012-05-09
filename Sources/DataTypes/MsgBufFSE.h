@@ -16,7 +16,7 @@
 /**
  * \file      MsgBufFSE.h
  * \brief     Defines and implements the template class for circular queue
- * \author    Ratnadip Choudhury
+ * \author    Ratnadip Choudhury, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Defines and implements the template class for circular queue
@@ -25,16 +25,19 @@
 #pragma once
 #pragma warning( disable : 4505 )
 
+/* Project includes */
 #include "include/Error.h"
 #include "BaseMsgBufAll.h"
 
-
 const int SIZE_APP_BUFFER       = 20000;
 
-
-/* This is the concrete template class of a circular queue where each entry is
-of fixed size. Implemented as a template class so as to cater to any data type.
-Here SMSGBUFFER is the data type in operation. */
+/**
+ * \brief Message Buffer template class
+ *
+ * This is the concrete template class of a circular queue where each entry is
+ * of fixed size. Implemented as a template class so as to cater to any data type.
+ * Here SMSGBUFFER is the data type in operation.
+ */
 template <typename SMSGBUFFER>
 class CMsgBufFSE : public CBaseMsgBufFSE<SMSGBUFFER>
 {
@@ -69,18 +72,11 @@ public:
     HANDLE hGetNotifyingEvent(void) const;
 };
 
-/******************************************************************************
-  Function Name    :  CMsgBufFSE
-  Input(s)         :  -
-  Output           :  -
-  Functionality    :  Standard constructor
-  Member of        :  CMsgBufFSE
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief Constructor
+ *
+ * Standard constructor
+ */
 template <typename SMSGBUFFER>
 CMsgBufFSE<SMSGBUFFER>::CMsgBufFSE()
 {
@@ -90,18 +86,9 @@ CMsgBufFSE<SMSGBUFFER>::CMsgBufFSE()
     m_hNotifyingEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
 }
 
-/******************************************************************************
-  Function Name    :  ~CMsgBufFSE
-  Input(s)         :  -
-  Output           :  -
-  Functionality    :  Destructor
-  Member of        :  CMsgBufFSE
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief Destructor
+ */
 template <typename SMSGBUFFER>
 CMsgBufFSE<SMSGBUFFER>::~CMsgBufFSE()
 {
@@ -110,18 +97,11 @@ CMsgBufFSE<SMSGBUFFER>::~CMsgBufFSE()
     DeleteCriticalSection(&m_CritSectionForGB);
 }
 
-/******************************************************************************
-  Function Name    :  vClearMessageBuffer
-  Input(s)         :  void
-  Output           :  void
-  Functionality    :  Clears the message buffer and resets the indices.
-  Member of        :  CMsgBufFSE
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief Clear Message Buffer
+ *
+ * Clears the message buffer and resets the indices.
+ */
 template <typename SMSGBUFFER> void CMsgBufFSE<SMSGBUFFER>::
 vClearMessageBuffer(void)
 {
@@ -131,20 +111,15 @@ vClearMessageBuffer(void)
     m_nMsgCount = 0;
 }
 
-/******************************************************************************
-  Function Name    :  ReadFromBuffer
-  Input(s)         :  psMsg - The target message entry. An [out] parameter.
-  Output           :  EMPTY_APP_BUFFER if buffer is empty; else CALL_SUCCESS.
-  Functionality    :  Reads a message entry and advances the read index. On
-                      successful reading operation the present entry is
-                      invalidated to make room for a new entry.
-  Member of        :  CMsgBufFSE
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief      ReadFromBuffer
+ * \param[out] psMsg The target message entry.
+ * \return     EMPTY_APP_BUFFER if buffer is empty; else CALL_SUCCESS.
+ *
+ * Reads a message entry and advances the read index. On
+ * successful reading operation the present entry is
+ * invalidated to make room for a new entry.
+ */
 template <typename SMSGBUFFER> HRESULT CMsgBufFSE<SMSGBUFFER>::ReadFromBuffer(
     SMSGBUFFER* psMsg)
 {
@@ -177,18 +152,13 @@ template <typename SMSGBUFFER> HRESULT CMsgBufFSE<SMSGBUFFER>::ReadFromBuffer(
     return nResult;
 }
 
-/******************************************************************************
-  Function Name    :  WriteIntoBuffer
-  Input(s)         :  psMsg - The source message entry. An [in] parameter.
-  Output           :  ERR_FULL_APP_BUFFER if buffer is full; else CALL_SUCCESS.
-  Functionality    :  Writes a message entry and advances the write index.
-  Member of        :  CMsgBufFSE
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief     Write Into Buffer
+ * \param[in] psMsg The source message entry.
+ * \return    ERR_FULL_APP_BUFFER if buffer is full; else CALL_SUCCESS.
+ *
+ * Writes a message entry and advances the write index.
+ */
 template <typename SMSGBUFFER> HRESULT CMsgBufFSE<SMSGBUFFER>::WriteIntoBuffer(
     SMSGBUFFER* psMsg)
 {
@@ -221,58 +191,58 @@ template <typename SMSGBUFFER> HRESULT CMsgBufFSE<SMSGBUFFER>::WriteIntoBuffer(
     return nResult;
 }
 
-/******************************************************************************
-  Function Name    :  GetBufferLength
-  Input(s)         :  void
-  Output           :  Number of message entries (int)
-  Functionality    :  Returns the number of unread entries in the queue.
-  Member of        :  CMsgBufFSE
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief  Get Buffer Length
+ * \return Number of message entries
+ *
+ * Returns the number of unread entries in the queue.
+ */
 template <typename SMSGBUFFER> int CMsgBufFSE<SMSGBUFFER>::
 GetMsgCount(void) const
 {
     return m_nMsgCount;
 }
 
-/******************************************************************************
-  Function Name    :  hGetNotifyingEvent
-  Input(s)         :  void
-  Output           :  The notifying event handle (HANDLE)
-  Functionality    :  Returns handle of the event that gets signalled when
-                      a message entry is added.
-  Member of        :  CMsgBufFSE
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
+/**
+ * \brief Get Notifying Event
+ * \return The notifying event handle
+ *
+ * Returns handle of the event that gets signalled when
+ * a message entry is added.
+ */
 template <typename SMSGBUFFER> HANDLE CMsgBufFSE<SMSGBUFFER>::
 hGetNotifyingEvent(void) const
 {
     return m_hNotifyingEvent;
 }
 
-// To read an entry from the circular queue
+/**
+ * \brief Read From Buffer
+ *
+ * To read an entry from the circular queue.
+ */
 template <typename SMSGBUFFER>
 HRESULT CMsgBufFSE<SMSGBUFFER>::ReadFromBuffer(SMSGBUFFER* /*psMsgBuffer*/, __int64 /*nSlotId*/)
 {
     return ERR_NOT_SUPPORTED;
 }
 
-// To read an entry from the circular queue
+/**
+ * \brief Read From Buffer
+ *
+ * To read an entry from the circular queue.
+ */
 template <typename SMSGBUFFER>
 HRESULT CMsgBufFSE<SMSGBUFFER>::ReadFromBuffer(SMSGBUFFER* /*psMsgBuffer*/, int /*nIndex*/)
 {
     return ERR_NOT_SUPPORTED;
 }
 
-// To write an entry into the circular queue
+/**
+ * \brief Write Into Buffer
+ *
+ * To write an entry into the circular queue
+ */
 template <typename SMSGBUFFER>
 HRESULT CMsgBufFSE<SMSGBUFFER>::WriteIntoBuffer(const SMSGBUFFER* /*psMsgBuffer*/,
         __int64 /*nSlotId*/, int& /*nIndex*/)
@@ -280,7 +250,11 @@ HRESULT CMsgBufFSE<SMSGBUFFER>::WriteIntoBuffer(const SMSGBUFFER* /*psMsgBuffer*
     return ERR_NOT_SUPPORTED;
 }
 
-// To set the current queue length
+/**
+ * \brief Set Buffer Message Size
+ *
+ * To set the current queue length
+ */
 template <typename SMSGBUFFER>
 int CMsgBufFSE<SMSGBUFFER>::nSetBufferMsgSize(int /*nMsgDataSize*/)
 {
