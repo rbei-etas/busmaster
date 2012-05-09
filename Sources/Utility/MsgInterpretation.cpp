@@ -1,92 +1,92 @@
 /*
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Lesser General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU Lesser General Public License for more details.
+*
+* You should have received a copy of the GNU Lesser General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 /**
- * \file      MsgInterpretation.cpp
- * \brief     This file contain the definition member function of
- * \author    Amitesh Bharti
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
- *
- * This file contain the definition member function of
- */
-#include "Utils_stdafx.h"             // Standard header definition file
-#include "MsgInterpretation.h"  // Class definition file
-#include "UtilFunctions.h"      // For all utility functions implementation
+* \file MsgInterpretation.cpp
+* \brief This file contain the definition member function of
+* \author Amitesh Bharti
+* \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+*
+* This file contain the definition member function of
+*/
+#include "Utils_stdafx.h" // Standard header definition file
+#include "MsgInterpretation.h" // Class definition file
+#include "UtilFunctions.h" // For all utility functions implementation
 #include "include/utils_macro.h"
 
 //Later put in a different file
-#define defSTR_FORMAT_PHY_VALUE_WITH_UNIT_FOR_IPT  _T("%-16s %s")
-#define defMAX_BITS             64
-#define defBITS_IN_BYTE         8
-#define defMAX_BYTE             8
-#define defBITS_IN_FOUR_BYTE    32
+#define defSTR_FORMAT_PHY_VALUE_WITH_UNIT_FOR_IPT _T("%-16s %s")
+#define defMAX_BITS 64
+#define defBITS_IN_BYTE 8
+#define defMAX_BYTE 8
+#define defBITS_IN_FOUR_BYTE 32
 #define defSIZE_OF_ERROR_BUFFER 1024
 
 
-#define CHAR_BOOL               'B'
-#define CHAR_UINT               'U'
-#define CHAR_INT                'I'
-#define defMSGID_RTR            'r'
-#define defMSGID_STD            's'
-#define defMSGID_EXTENDED       'x'
-#define defEMPTY_CHAR           ' '
-#define defFORMAT_DATA_DECIMAL  _T("%03d")
-#define defFORMAT_DATA_HEX      _T("%02X")
+#define CHAR_BOOL 'B'
+#define CHAR_UINT 'U'
+#define CHAR_INT 'I'
+#define defMSGID_RTR 'r'
+#define defMSGID_STD 's'
+#define defMSGID_EXTENDED 'x'
+#define defEMPTY_CHAR ' '
+#define defFORMAT_DATA_DECIMAL _T("%03d")
+#define defFORMAT_DATA_HEX _T("%02X")
 #define defFORMAT_MSGID_DECIMAL _T("%d")
 #define defFORMAT_INT64_DECIMAL _T("%I64d")
-#define defFORMAT_INT64_HEX     _T("%I64X")
-#define defFORMAT_MSGID_HEX     _T("0x%X")
+#define defFORMAT_INT64_HEX _T("%I64X")
+#define defFORMAT_MSGID_HEX _T("0x%X")
 #define defFORMAT_MSGID_HEX_STR _T("%X")
-#define defFORMAT_DATA_FLOAT    _T("%f")
-#define defNUMBER_OF_BIT_TO_SHIFT           3
-#define defSTR_FORMAT_PHY_VALUE  _T("%.3f")
+#define defFORMAT_DATA_FLOAT _T("%f")
+#define defNUMBER_OF_BIT_TO_SHIFT 3
+#define defSTR_FORMAT_PHY_VALUE _T("%.3f")
 #define STR_EMPTY ""
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 /******************************************************************************/
-/*  Function Name    :  CMsgInterpretation                                    */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Constructor
-/*  Member of        :  CMsgInterpretation                                    */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  20.03.2002                                            */
-/*  Modifications    :
+/* Function Name : CMsgInterpretation */
+/* */
+/* Input(s) : */
+/* Output : */
+/* Functionality : Constructor
+/* Member of : CMsgInterpretation */
+/* Friend of : - */
+/* */
+/* Author(s) : Amarnath Shastry */
+/* Date Created : 20.03.2002 */
+/* Modifications :
 /******************************************************************************/
 CMsgInterpretation::CMsgInterpretation()
 {
-    m_eNumFormat    = HEXADECIMAL;
-    m_psMsgRoot     = NULL;
+    m_eNumFormat = HEXADECIMAL;
+    m_psMsgRoot = NULL;
 }
 /******************************************************************************/
-/*  Function Name    :  ~CMsgInterpretation                                   */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Destructor
-/*  Member of        :  CMsgInterpretation                                    */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  20.03.2002                                            */
-/*  Modifications    :
+/* Function Name : ~CMsgInterpretation */
+/* */
+/* Input(s) : */
+/* Output : */
+/* Functionality : Destructor
+/* Member of : CMsgInterpretation */
+/* Friend of : - */
+/* */
+/* Author(s) : Amarnath Shastry */
+/* Date Created : 20.03.2002 */
+/* Modifications :
 /******************************************************************************/
 CMsgInterpretation::~CMsgInterpretation()
 {
@@ -136,17 +136,17 @@ static BOOL bValidateSignal(UINT nDLC, UINT nByteNum, UINT nBitNum, UINT nLength
     return bValid;
 }
 /*******************************************************************************
- Function Name    :  n64GetSignalValue
- Input(s)         :  BYTE byMsgByteVal,
-                     UINT unBitNum,
-                     UINT unLength,
- Return           :  64 bit signal value
- Functionality    :  Helper Function calculates the signal value represented
-                     in bits. It takes care of motorola and intel byte order.
- Member of        :  CMsgInterpretation
- Friend of        :      -
- Author(s)        :  Pradeep Kadoor.
- Date Created     :  09/07/2010.
+Function Name : n64GetSignalValue
+Input(s) : BYTE byMsgByteVal,
+UINT unBitNum,
+UINT unLength,
+Return : 64 bit signal value
+Functionality : Helper Function calculates the signal value represented
+in bits. It takes care of motorola and intel byte order.
+Member of : CMsgInterpretation
+Friend of : -
+Author(s) : Pradeep Kadoor.
+Date Created : 09/07/2010.
 *******************************************************************************/
 __int64 static n64GetSignalValueInBits(register CByteArray* pMsgArray,
                                        UINT byteNumber,
@@ -162,10 +162,10 @@ __int64 static n64GetSignalValueInBits(register CByteArray* pMsgArray,
         /* Find out how many data bytes the signal consumes */
         nBytesToRead = nGetNoOfBytesToRead(unBitNum, unLength);
         /* Whether the format is Intel or Motorola reading bits inside
-           a byte is always same */
+a byte is always same */
         UINT CurrBitNum = unBitNum;
         /* If Byte order is motorola then Bytes have to be read in
-        reverse order */
+reverse order */
         INT nByteOrder = (bByteOrder == DATA_FORMAT_INTEL)? 1: -1;
         BOOL bValid = bValidateSignal((UINT)pMsgArray->GetSize(), byteNumber, unBitNum, unLength, nByteOrder);
         ASSERT(bValid == TRUE);
@@ -185,9 +185,9 @@ __int64 static n64GetSignalValueInBits(register CByteArray* pMsgArray,
                 }
 
                 /* Find out how bits to read from the current byte */
-                UINT nCurrBitsToRead  = min (defBITS_IN_BYTE - CurrBitNum, unLength - nBitsRead);
+                UINT nCurrBitsToRead = min (defBITS_IN_BYTE - CurrBitNum, unLength - nBitsRead);
                 /*After the reading first byte reading will be always from
-                byte's start index. So reset the CurrBitNum */
+byte's start index. So reset the CurrBitNum */
                 CurrBitNum = 0;
                 BYTE byMask = 0;
                 byMask = (BYTE)(pow((float) 2.0, (int) nCurrBitsToRead) - 1);
@@ -201,22 +201,22 @@ __int64 static n64GetSignalValueInBits(register CByteArray* pMsgArray,
     return nSigValueInBits;
 }
 /*******************************************************************************
- Function Name    :  n64GetSignalValue
- Input(s)         :  BYTE byMsgByteVal,
-                     UINT unBitNum,
-                     UINT unLength,
-                     BYTE &bySigVal
- Output           :  BYTE &bySigVal
- Functionality    :  Function gets the signal value corresponding to
-                     the byte value and bit passed in the parameter
-                     for given message.
- Member of        :  CMsgInterpretation
- Friend of        :      -
- Author(s)        :
- Date Created     :
- Modifications    :  Raja N on 01.08.2004, Removed taking 2's complement and
-                     then inverting bits and adding one. Both with bring the
-                     original value back.
+Function Name : n64GetSignalValue
+Input(s) : BYTE byMsgByteVal,
+UINT unBitNum,
+UINT unLength,
+BYTE &bySigVal
+Output : BYTE &bySigVal
+Functionality : Function gets the signal value corresponding to
+the byte value and bit passed in the parameter
+for given message.
+Member of : CMsgInterpretation
+Friend of : -
+Author(s) :
+Date Created :
+Modifications : Raja N on 01.08.2004, Removed taking 2's complement and
+then inverting bits and adding one. Both with bring the
+original value back.
 *******************************************************************************/
 __int64 CMsgInterpretation::n64GetSignalValue(register CByteArray* pMsgArray,
         UINT byteNumber,
@@ -241,34 +241,34 @@ __int64 CMsgInterpretation::n64GetSignalValue(register CByteArray* pMsgArray,
     return n64SigVal;
 }
 /*******************************************************************************
- Function Name    :  vInterpretMsgs
- Input(s)         :  unMsgCode - Message ID
-                     ucData - Message Data
-                     omStrMsgName - Message Name (o/p)
-                     omStrSigNames - Signal Names
-                     omStrRawValues - CAlculated Raw Values
-                     omStrPhyValues - Physical Value with Unit
-                     bHexON - HEX/DEC format
- Output           :  CStringArray &omStrArrayMsgInterpretArray
- Functionality    :  Function translates the message bytes to meaningful signals
-                     It returns Message Name, Signal Names, Raw Values, Physical
-                     Values. The formatting done based on the hex flag.
- Member of        :  CMsgInterpretation
- Friend of        :      -
+Function Name : vInterpretMsgs
+Input(s) : unMsgCode - Message ID
+ucData - Message Data
+omStrMsgName - Message Name (o/p)
+omStrSigNames - Signal Names
+omStrRawValues - CAlculated Raw Values
+omStrPhyValues - Physical Value with Unit
+bHexON - HEX/DEC format
+Output : CStringArray &omStrArrayMsgInterpretArray
+Functionality : Function translates the message bytes to meaningful signals
+It returns Message Name, Signal Names, Raw Values, Physical
+Values. The formatting done based on the hex flag.
+Member of : CMsgInterpretation
+Friend of : -
 
- Author(s)        :  Raja N
- Date Created     :  31.03.2004
- Modifications    :  Raja N on 14.04.2004
-                  :  Changed thel logic of iteration to minimize unnecessery
-                     loops and to optimize the function
- Modifications    :  Raja N on 22.07.2004
-                  :  Changes due to Signal Descriptor assignment to physical
-                     value
- Modifications    :  Raja N on 01.08.2004
-                  :  Changes due to code review: removed hard coded values and
-                     break statements.
- Modifications  :   Raja N
-                    10.08.2004, Removed adding Unit if Signal Descriptor present
+Author(s) : Raja N
+Date Created : 31.03.2004
+Modifications : Raja N on 14.04.2004
+: Changed thel logic of iteration to minimize unnecessery
+loops and to optimize the function
+Modifications : Raja N on 22.07.2004
+: Changes due to Signal Descriptor assignment to physical
+value
+Modifications : Raja N on 01.08.2004
+: Changes due to code review: removed hard coded values and
+break statements.
+Modifications : Raja N
+10.08.2004, Removed adding Unit if Signal Descriptor present
 *******************************************************************************/
 BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
                                         const UCHAR* ucData,
@@ -289,13 +289,13 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
     {
         omStrMsgName = pMsgs->m_omStrMessageName;
         CByteArray omMsgByte;
-        register UINT unByteNo       = 1; // One based Indexing
-        register UINT unBitNumber    = 0;
-        UINT un_NoOfSignals          = 0;
-        register UINT unSigLength    = 0;
+        register UINT unByteNo = 1; // One based Indexing
+        register UINT unBitNumber = 0;
+        UINT un_NoOfSignals = 0;
+        register UINT unSigLength = 0;
 
         /*Whether it is |Intel or motorola format, Data is fed from\
-        1st byte to DLC */
+1st byte to DLC */
         for ( register UINT nCount = 0;
                 nCount < pMsgs->m_unMessageLength;
                 nCount++)
@@ -444,34 +444,34 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
 
 
 /*******************************************************************************
- Function Name    : vInterpretMsgs
- Input(s)         : unMsgCode - Message ID
-                    psWatchList - Pointer to Signal Watch Node
-                    ucData - Message Data
-                    omStrMsgName - Message Name (o/p)
-                    omStrSigNames - Signal Names
-                    omStrRawValues - CAlculated Raw Values
-                    omStrPhyValues - Physical Value with Unit
-                    bHexON - HEX/DEC format
- Output           : CStringArray &omStrArrayMsgInterpretArray
- Functionality    : Function translates the message bytes to meaningful signals
-                    It returns Message Name, Signal Names, Raw Values, Physical
-                    Values. The formatting done based on the hex flag. This is
-                    used to calculate only the signals that are in the signal
-                    watch list.
- Member of        : CMsgInterpretation
- Friend of        :     -
+Function Name : vInterpretMsgs
+Input(s) : unMsgCode - Message ID
+psWatchList - Pointer to Signal Watch Node
+ucData - Message Data
+omStrMsgName - Message Name (o/p)
+omStrSigNames - Signal Names
+omStrRawValues - CAlculated Raw Values
+omStrPhyValues - Physical Value with Unit
+bHexON - HEX/DEC format
+Output : CStringArray &omStrArrayMsgInterpretArray
+Functionality : Function translates the message bytes to meaningful signals
+It returns Message Name, Signal Names, Raw Values, Physical
+Values. The formatting done based on the hex flag. This is
+used to calculate only the signals that are in the signal
+watch list.
+Member of : CMsgInterpretation
+Friend of : -
 
- Author(s)        : Raja N
- Date Created     : 31.03.2004
- Modifications    : Raja N on 22.07.2004
-                  : Changes due to Signal Descriptor assignment to physical
-                    value
- Modifications    : Raja N on 01.08.2004
-                  : Changes due to code review: removed hard coded values and
-                    break statements.
- Modifications    : Raja N
-                    10.08.2004, Removed adding Unit if Signal Descriptor present
+Author(s) : Raja N
+Date Created : 31.03.2004
+Modifications : Raja N on 22.07.2004
+: Changes due to Signal Descriptor assignment to physical
+value
+Modifications : Raja N on 01.08.2004
+: Changes due to code review: removed hard coded values and
+break statements.
+Modifications : Raja N
+10.08.2004, Removed adding Unit if Signal Descriptor present
 *******************************************************************************/
 BOOL CMsgInterpretation::bInterpretMsgSigList(UINT unMsgCode,
         const UCHAR* ucData,
@@ -495,7 +495,7 @@ BOOL CMsgInterpretation::bInterpretMsgSigList(UINT unMsgCode,
         CByteArray omMsgByte;
 
         /*Whether it is Intel or Motorola format, Data is fed from\
-            1st byte to DLC */
+1st byte to DLC */
         for ( register UINT nCount = 0;
                 nCount < pMsgs->m_unMessageLength;
                 nCount++)
@@ -609,34 +609,34 @@ BOOL CMsgInterpretation::bInterpretMsgSigList(UINT unMsgCode,
 
 
 /*******************************************************************************
- Function Name    : vInterpretMsgs
- Input(s)         : unMsgCode - Message ID
-                    ucData - Message Data
-                    omStrMsgName - Message Name (o/p)
-                    omStrSigNames - Signal Names
-                    omStrRawValues - CAlculated Raw Values
-                    omStrPhyValues - Physical Value with Unit
-                    bHexON - HEX/DEC format
- Output           : CStringArray &omStrArrayMsgInterpretArray
- Functionality    : Function translates the message bytes to meaningful signals
-                    It returns Message Name, Signal Names, Raw Values, Physical
-                    Values. The formatting done based on the hex flag.
- Member of        : CMsgInterpretation
- Friend of        :     -
+Function Name : vInterpretMsgs
+Input(s) : unMsgCode - Message ID
+ucData - Message Data
+omStrMsgName - Message Name (o/p)
+omStrSigNames - Signal Names
+omStrRawValues - CAlculated Raw Values
+omStrPhyValues - Physical Value with Unit
+bHexON - HEX/DEC format
+Output : CStringArray &omStrArrayMsgInterpretArray
+Functionality : Function translates the message bytes to meaningful signals
+It returns Message Name, Signal Names, Raw Values, Physical
+Values. The formatting done based on the hex flag.
+Member of : CMsgInterpretation
+Friend of : -
 
- Author(s)        : Raja N
- Date Created     : 31.03.2004
- Modifications    : Raja N on 14.04.2004
-                  : Changed thel logic of iteration to minimize unnecessery
-                    loops and to optimize the function
- Modifications    : Raja N on 22.07.2004
-                  : Changes due to Signal Descriptor assignment to physical
-                    value
- Modifications    : Raja N on 01.08.2004
-                  : Changes due to code review: removed hard coded values and
-                    break statements.
- Modifications    : Raja N
-                    10.08.2004, Removed adding Unit if Signal Descriptor present
+Author(s) : Raja N
+Date Created : 31.03.2004
+Modifications : Raja N on 14.04.2004
+: Changed thel logic of iteration to minimize unnecessery
+loops and to optimize the function
+Modifications : Raja N on 22.07.2004
+: Changes due to Signal Descriptor assignment to physical
+value
+Modifications : Raja N on 01.08.2004
+: Changes due to code review: removed hard coded values and
+break statements.
+Modifications : Raja N
+10.08.2004, Removed adding Unit if Signal Descriptor present
 *******************************************************************************/
 BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
                                         const UCHAR* ucData,
@@ -652,14 +652,14 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
         // Get message pointer from message name for future use
         // Use Msg Code instead of Message Name
         CByteArray omMsgByte;
-        register UINT unByteNo       = 1; // One based Indexing
-        register UINT unBitNumber    = 0;
-        UINT un_NoOfSignals          = 0;
-        register UINT unSigLength    = 0;
-        SINTERPRETSIGNALINFO    sSigInfo;
+        register UINT unByteNo = 1; // One based Indexing
+        register UINT unBitNumber = 0;
+        UINT un_NoOfSignals = 0;
+        register UINT unSigLength = 0;
+        SINTERPRETSIGNALINFO sSigInfo;
 
         /*Whether it is |Intel or motorola format, Data is fed from\
-            1st byte to DLC */
+1st byte to DLC */
         for ( register UINT nCount = 0;
                 nCount < pMsgs->m_unMessageLength;
                 nCount++)
@@ -781,33 +781,33 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
 }
 
 /*******************************************************************************
- Function Name    :  bInterpretMsgs
- Input(s)         :  unMsgCode - Message ID
-                     ucData - Message Data
-                     omStrMsgName - Message Name (o/p)
-                     omStrSigNames - Signal Names
-                     omStrRawValues - CAlculated Raw Values
-                     omStrPhyValues - Physical Value with Unit
- Output           :  CStringArray &omStrArrayMsgInterpretArray
- Functionality    :  Function translates the message bytes to meaningful signals
-                     It returns Message Name, Signal Names, Raw Values, Physical
-                     Values. The formatting done based on the hex flag.
- Member of        :  CMsgInterpretation
- Friend of        :      -
+Function Name : bInterpretMsgs
+Input(s) : unMsgCode - Message ID
+ucData - Message Data
+omStrMsgName - Message Name (o/p)
+omStrSigNames - Signal Names
+omStrRawValues - CAlculated Raw Values
+omStrPhyValues - Physical Value with Unit
+Output : CStringArray &omStrArrayMsgInterpretArray
+Functionality : Function translates the message bytes to meaningful signals
+It returns Message Name, Signal Names, Raw Values, Physical
+Values. The formatting done based on the hex flag.
+Member of : CMsgInterpretation
+Friend of : -
 
- Author(s)        :  Raja N
- Date Created     :  31.03.2004
- Modifications    :  Raja N on 14.04.2004
-                  :  Changed thel logic of iteration to minimize unnecessery
-                     loops and to optimize the function
- Modifications    :  Raja N on 22.07.2004
-                  :  Changes due to Signal Descriptor assignment to physical
-                     value
- Modifications    :  Raja N on 01.08.2004
-                  :  Changes due to code review: removed hard coded values and
-                     break statements.
- Modifications  :   Raja N
-                    10.08.2004, Removed adding Unit if Signal Descriptor present
+Author(s) : Raja N
+Date Created : 31.03.2004
+Modifications : Raja N on 14.04.2004
+: Changed thel logic of iteration to minimize unnecessery
+loops and to optimize the function
+Modifications : Raja N on 22.07.2004
+: Changes due to Signal Descriptor assignment to physical
+value
+Modifications : Raja N on 01.08.2004
+: Changes due to code review: removed hard coded values and
+break statements.
+Modifications : Raja N
+10.08.2004, Removed adding Unit if Signal Descriptor present
 *******************************************************************************/
 BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
                                         const UCHAR* ucData,
@@ -833,14 +833,14 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
 
     if (NULL == pMsgs)
     {
-        return FALSE;    // Return if the message entry isn't found
+        return FALSE; // Return if the message entry isn't found
     }
 
     omStrMsgName = pMsgs->m_omStrMessageName;
     CByteArray omMsgByte;
 
     /*Whether it is |Intel or motorola format, Data is fed from\
-                  1st byte to DLC */
+1st byte to DLC */
     for ( register UINT nCount = 0;
             nCount < pMsgs->m_unMessageLength;
             nCount++)
@@ -867,7 +867,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
         //Ignore extra FFs incase of a negative number.
         double dblVal = 16;
         __int64 nWidthMask = 0 | (__int64)(pow(dblVal, (int)unWidth) - 1);
-        n64SigVal = n64SigVal &  nWidthMask;
+        n64SigVal = n64SigVal & nWidthMask;
         omSignalValue.Format(_T("0x%X"), n64SigVal);
         // Add the value to Raw Array
         omStrRawValues.Add(omSignalValue);
@@ -935,7 +935,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
 
     if (NULL == pMsgs)
     {
-        return FALSE;    // Return if the message entry isn't found
+        return FALSE; // Return if the message entry isn't found
     }
 
     omStrMsgName = pMsgs->m_omStrMessageName;
@@ -955,7 +955,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT /*eNumFormat*/,
         CByteArray omMsgByte;
 
         /*Whether it is |Intel or motorola format, Data is fed from\
-                  1st byte to DLC */
+1st byte to DLC */
         for ( register UINT nCount = 0;
                 nCount < pMsg->m_unMessageLength;
                 nCount++)
@@ -979,12 +979,13 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT /*eNumFormat*/,
             UINT unSigLen = psCurrSignal->m_unSignalLength;
             //Calculate the character width required to represent the raw value.
             //1 character means 1 nibble
-            UINT unWidth = (unSigLen % 4 == 0) ? (unSigLen/4) : (unSigLen/4 + 1);
+    		//venkat
+            /*UINT unWidth = (unSigLen % 4 == 0) ? (unSigLen/4) : (unSigLen/4 + 1);
             //calculate extra FFs incase of a negative number.
             double dblVal = 16;
             __int64 nWidthMask = 0 | (__int64)(pow(dblVal, (int)unWidth) - 1);
             //Mask extra FFs with signal value
-            n64SigVal = n64SigVal &  nWidthMask;
+            n64SigVal = n64SigVal &  nWidthMask;*/
             sInterSigInfo.m_un64RawValue = n64SigVal;
             sInterSigInfo.m_omStrUnit = psCurrSignal->m_omStrSignalUnit;
             sInterSigInfo.m_ucSigLength = (UCHAR)(psCurrSignal->m_unSignalLength);
@@ -1009,7 +1010,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT /*eNumFormat*/,
             double dPhysical = static_cast<double>(n64SigVal);
             dPhysical *= psCurrSignal->m_fSignalFactor;
             dPhysical += psCurrSignal->m_fSignalOffset;
-            sInterSigInfo.m_dPhyValue =  dPhysical;
+            sInterSigInfo.m_dPhyValue = dPhysical;
             omSigInfoArray.Add(sInterSigInfo); // Finally add it to the target array
             psCurrSignal = psCurrSignal->m_psNextSignalList;
         }
@@ -1036,7 +1037,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
         CByteArray omMsgByte;
 
         /*Whether it is |Intel or motorola format, Data is fed from\
-                  1st byte to DLC */
+1st byte to DLC */
         for ( register UINT nCount = 0;
                 nCount < pMsg->m_unMessageLength;
                 nCount++)
@@ -1060,12 +1061,12 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
             UINT unSigLen = psCurrSignal->m_unSignalLength;
             //Calculate the character width required to represent the raw value.
             //1 character means 1 nibble
-            UINT unWidth = (unSigLen % 4 == 0) ? (unSigLen/4) : (unSigLen/4 + 1);
+            /*UINT unWidth = (unSigLen % 4 == 0) ? (unSigLen/4) : (unSigLen/4 + 1);
             //calculate extra FFs incase of a negative number.
             double dblVal = 16;
             __int64 nWidthMask = 0 | (__int64)(pow(dblVal, (int)unWidth) - 1);
             //Mask extra FFs with signal value
-            n64SigVal = n64SigVal &  nWidthMask;
+            n64SigVal = n64SigVal &  nWidthMask;*/
 
             if(eNumFormat == HEXADECIMAL)
             {
@@ -1167,13 +1168,13 @@ BOOL CMsgInterpretationJ1939::bInterPretJ1939_MSGS(
     odSigInfoArray.RemoveAll();
     SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgRoot, unPGN, pMsg);
 
-    if ((pMsg != NULL) && (pbyData != NULL) && (unDLC >=  pMsg->m_unMessageLength))
+    if ((pMsg != NULL) && (pbyData != NULL) && (unDLC >= pMsg->m_unMessageLength))
     {
         omMsgName = pMsg->m_omStrMessageName;
         CByteArray omMsgByte;
 
         /*Whether it is |Intel or motorola format, Data is fed from\
-                  1st byte to DLC */
+1st byte to DLC */
         for ( register UINT nCount = 0;
                 nCount < pMsg->m_unMessageLength;
                 nCount++)
@@ -1201,7 +1202,7 @@ BOOL CMsgInterpretationJ1939::bInterPretJ1939_MSGS(
             //calculate extra FFs incase of a negative number.
             __int64 nWidthMask = 0 | (__int64)(pow((float) 16.0, (int) unWidth) - 1);
             //Mask extra FFs with signal value
-            n64SigVal = n64SigVal &  nWidthMask;
+            n64SigVal = n64SigVal & nWidthMask;
 
             if(eNumFormat == HEXADECIMAL)
             {
@@ -1267,20 +1268,20 @@ void CMsgInterpretationJ1939::vSetJ1939Database(const SMSGENTRY* psCurrMsgEntry)
     }
 }
 /*******************************************************************************
- Function Name    :  n64GetSignalValue
- Input(s)         :  BYTE byMsgByteVal,
-                     UINT unBitNum,
-                     UINT unLength,
-                     BYTE &bySigVal
- Output           :  BYTE &bySigVal
- Functionality    :  Function gets the signal value corresponding to
-                     the byte value and bit passed in the parameter
-                     for given message.
- Member of        :  CMsgInterpretationJ1939
- Friend of        :      -
- Author(s)        : Pradeep Kadoor
- Date Created     :
- Modifications    :
+Function Name : n64GetSignalValue
+Input(s) : BYTE byMsgByteVal,
+UINT unBitNum,
+UINT unLength,
+BYTE &bySigVal
+Output : BYTE &bySigVal
+Functionality : Function gets the signal value corresponding to
+the byte value and bit passed in the parameter
+for given message.
+Member of : CMsgInterpretationJ1939
+Friend of : -
+Author(s) : Pradeep Kadoor
+Date Created :
+Modifications :
 *******************************************************************************/
 __int64 CMsgInterpretationJ1939::n64GetSignalValue(register CByteArray* pMsgArray,
         UINT byteNumber,
@@ -1305,30 +1306,30 @@ __int64 CMsgInterpretationJ1939::n64GetSignalValue(register CByteArray* pMsgArra
     return n64SigVal;
 }
 /******************************************************************************
-Function Name  :  vClear
-Input(s)       :
-Output         :
-Functionality  :
-Member of      :  CMsgInterpretationJ1939
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  16/02/2011
-Modifications  :
+Function Name : vClear
+Input(s) :
+Output :
+Functionality :
+Member of : CMsgInterpretationJ1939
+Friend of : -
+Author(s) : Pradeep Kadoor
+Date Created : 16/02/2011
+Modifications :
 ******************************************************************************/
 void CMsgInterpretationJ1939::vClear()
 {
     SMSGENTRY::vClearMsgList(m_psMsgRoot);
 }
 /******************************************************************************
-Function Name  :  vCopy
-Input(s)       :
-Output         :
-Functionality  :
-Member of      :  CMsgInterpretationJ1939
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  16/02/2011
-Modifications  :
+Function Name : vCopy
+Input(s) :
+Output :
+Functionality :
+Member of : CMsgInterpretationJ1939
+Friend of : -
+Author(s) : Pradeep Kadoor
+Date Created : 16/02/2011
+Modifications :
 ******************************************************************************/
 void CMsgInterpretationJ1939::vCopy(CMsgInterpretationJ1939* pDest) const
 {
@@ -1367,14 +1368,14 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
         // Get message pointer from message name for future use
         // Use Msg Code instead of Message Name
         CByteArray omMsgByte;
-        //register UINT unByteNo       = 1; // One based Indexing
-        //register UINT unBitNumber    = 0;
-        UINT un_NoOfSignals          = 0;
-        register UINT unSigLength    = 0;
-        SINTERPRETSIGNALINFO    sSigInfo;
+        //register UINT unByteNo = 1; // One based Indexing
+        //register UINT unBitNumber = 0;
+        UINT un_NoOfSignals = 0;
+        register UINT unSigLength = 0;
+        SINTERPRETSIGNALINFO sSigInfo;
 
         /*Whether it is |Intel or motorola format, Data is fed from\
-            1st byte to DLC */
+1st byte to DLC */
         for ( register UINT nCount = 0;
                 nCount < pMsgs->m_unMessageLength;
                 nCount++)
