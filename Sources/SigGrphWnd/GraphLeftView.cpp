@@ -226,7 +226,6 @@ void CGraphLeftView::vPopulateElementList()
 
     if( podList != NULL )
     {
-        UINT unMsgID = 0;
         CString omStrName;
         int nItemCount  = (int)podList->m_omElementList.GetSize();
 
@@ -254,7 +253,6 @@ void CGraphLeftView::vPopulateElementList()
             }
             else
             {
-                unMsgID = odTemp.m_nMsgID;
                 // Get Message Name
                 omStrName = odTemp.m_strMsgName;
                 // Add Element Catogory
@@ -880,7 +878,7 @@ void CGraphLeftView::vUpdateGraphControl(int nFromControl, long lValue)
     if( m_pDMGraphCtrl != NULL )
     {
         CComPtr<IDMGraphElement> spElement;
-        HRESULT hr = GetCurrentElement(m_pDMGraphCtrl, &spElement);
+        GetCurrentElement(m_pDMGraphCtrl, &spElement);
 
         switch( nFromControl )
         {
@@ -991,11 +989,9 @@ void CGraphLeftView::vPopulateGraphControl()
 
         if ( podList != NULL )
         {
-            UINT unMsgID = 0;
             CString omStrName;
             int nItemCount  = (int)podList->m_omElementList.GetSize();
             // Get Buffer Size
-            int nBufferSize = podList->m_odGraphParameters.m_nBufferSize;
             CComPtr<IDMGraphCollection> spGraphCollection;
             HRESULT hr = m_pDMGraphCtrl->get_Elements(&spGraphCollection);
 
