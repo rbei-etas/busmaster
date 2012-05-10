@@ -44,7 +44,7 @@ private:
     USHORT ushCalculateStrLen(bool bForHex, USHORT ushLength);
     void vEmptyLogObjArray(CLogObjArray& omLogObjArray);
     // To create a new logging object
-    CBaseLogObject* CreateNewLogObj(void);
+    CBaseLogObject* CreateNewLogObj(const CString& omStrVersion);
     // To delete a logging object
     void DeleteLogObj(CBaseLogObject*& pouLogObj);
     // To create the time mode mapping
@@ -129,7 +129,7 @@ public:
     HRESULT FPJ1_GetConfigData(BYTE** ppvConfigData, UINT& unLength);
 
     // Setter for the logging configuration data
-    HRESULT FPJ1_SetConfigData(BYTE* pvDataStream);
+    HRESULT FPJ1_SetConfigData(BYTE* pvDataStream, const CString& omStrVersion);
 
     // To update the associated database list to logger
     HRESULT FPJ1_SetDatabaseFiles(const CStringArray& omList);
