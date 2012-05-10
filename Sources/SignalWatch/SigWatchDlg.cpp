@@ -29,6 +29,7 @@
 #include "DataTypes/SigWatch_DataTypes.h"
 #include "SignalWatchDefs.h"
 #include "SigWatchDlg.h"
+#include "..\Application\HashDefines.h"
 // Interface file for CMsgInterpretation class
 
 static const int LSB_MOTOROLA = 0x7; // 7th bit is the LSB for motorola
@@ -57,6 +58,7 @@ CSigWatchDlg::CSigWatchDlg(CWnd* pParent /*=NULL*/)
     //{{AFX_DATA_INIT(CSigWatchDlg)
     // NOTE: the ClassWizard will add member initialization here
     //}}AFX_DATA_INIT
+    m_pParent = pParent;
     m_bEscape = false;
 }
 
@@ -90,6 +92,8 @@ BEGIN_MESSAGE_MAP(CSigWatchDlg, CDialog)
     ON_MESSAGE(WM_REMOVE_SIGNAL,vRemoveSignalFromMap)
     //}}AFX_MSG_MAP
     ON_WM_TIMER()
+	ON_MESSAGE(WM_KEYBOARD_CHAR, OnReceiveKeyBoardData)
+	ON_MESSAGE(WM_KEYBOARD_KEYDOWN, OnReceiveKeyDown)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -98,7 +102,7 @@ END_MESSAGE_MAP()
 /******************************************************************************
  Function Name  :   OnSize
 
- Description    :   The framework calls this member function after the window’s
+ Description    :   The framework calls this member function after the windowâ€™s
                     size has changed.
  Input(s)       :   nType - Specifies the type of resizing requested
                     ncx - Specifies the new width of the client area
@@ -552,4 +556,16 @@ void CSigWatchDlg::OnTimer(UINT nIDEvent)
     {
         vDisplayMsgSigList();
     }
+}
+LRESULT CSigWatchDlg::OnReceiveKeyBoardData(WPARAM wParam, LPARAM lParam)
+{
+	if (NULL != m_pParent)
+		m_pParent->SendMessage(WM_KEYBOARD_CHAR, wParam, lParam);
+	return S_OK;
+}
+LRESULT CSigWatchDlg::OnReceiveKeyDown(WPARAM wParam, LPARAM lParam)
+{
+	if (NULL != m_pParent)
+		m_pParent->SendMessage(WM_KEYBOARD_KEYDOWN, wParam, lParam);
+	return S_OK;
 }
