@@ -188,7 +188,7 @@ HRESULT CSignalWatch_J1939::SW_DoInitialization()
     //Create the signal watch window for J1939
     if (m_pouSigWnd == NULL)
     {
-        m_pouSigWnd = new CSigWatchDlg;
+        m_pouSigWnd = new CSigWatchDlg(AfxGetMainWnd());
         m_pouSigWnd->Create(IDD_DLG_SIGNAL_WATCH, NULL);
         m_pouSigWnd->SetWindowText("Signal Watch - J1939");
     }
