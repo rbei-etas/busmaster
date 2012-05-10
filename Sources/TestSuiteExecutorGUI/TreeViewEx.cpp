@@ -718,7 +718,7 @@ void CTreeViewEx::OnNMRclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
             if(omTempTreeCtrl.GetItemData(hParentItem) == def_ID_TESTSUITE)
             {
                 VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_TESTSETUP_DELETE, _T("Delete")));
-                VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_TESTSETUP_MODIFY, _T("Modify...")));
+                VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_TESTSETUP_MODIFY, _T("Reload File")));
             }
         }
 
