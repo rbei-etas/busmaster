@@ -371,6 +371,7 @@ void CFilterConfigDlg::vPopulateDBMessages()
             psTemp = psTemp->m_psNext;
         }
     }
+    vAdjustWidthMessageComboBox();
 }
 
 /**
@@ -2212,4 +2213,27 @@ void CFilterConfigDlg::OnOkPress()
 {
     // Close the dialog with OK return
     CDialog::OnOK();
+}
+void CFilterConfigDlg::vAdjustWidthMessageComboBox()
+{
+	CString str;
+	CSize sz;
+	int dx = 0;
+	TEXTMETRIC tm;
+	CDC* pDC = m_omMsgIDFrom.GetDC();
+	CFont* pFont = m_omMsgIDFrom.GetFont();
+	CFont* pOldFont = pDC->SelectObject(pFont);
+	pDC->GetTextMetrics(&tm);
+	for (int i = 0; i < m_omMsgIDFrom.GetCount(); i++)
+	{
+		m_omMsgIDFrom.GetLBText(i, str);
+		sz = pDC->GetTextExtent(str);
+		sz.cx += tm.tmAveCharWidth;
+		if (sz.cx > dx)
+			dx = sz.cx;
+	}
+	pDC->SelectObject(pOldFont);
+	m_omMsgIDFrom.ReleaseDC(pDC);
+	dx += ::GetSystemMetrics(SM_CXVSCROLL) + 2*::GetSystemMetrics(SM_CXEDGE);
+	m_omMsgIDFrom.SetDroppedWidth(dx);
 }
