@@ -153,5 +153,6 @@ private:
     void vEnableDisableButtons();
     // To update filter components with given Enable/Disable Value
     void vEnableDisableFilterComps( BOOL bEnable );
+    void vAdjustWidthMessageComboBox();
 
 };
