@@ -41,6 +41,7 @@ private:
     USHORT  m_ushLastBlkID;
     BOOL    m_bEditingON;
     BYTE    m_bLogFlagTmp;
+    CString m_omStrVersion;
 
     void vCopyLogObjArray(CLogObjArray& omLogObjArrayTarget,
                           const CLogObjArray& omLogObjArraySrc);
@@ -65,7 +66,7 @@ protected:
     CBaseLogObject* FindLoggingBlock(USHORT ushID);
     BOOL bIsEditingON(void);
     // To create a new logging object
-    virtual CBaseLogObject* CreateNewLogObj(void) = 0;
+	virtual CBaseLogObject* CreateNewLogObj(const CString& omStrVersion) = 0;
     // To delete a logging object
     virtual void DeleteLogObj(CBaseLogObject*& pouLogObj) = 0;
     virtual void CreateTimeModeMapping(SYSTEMTIME& CurrSysTime,
@@ -87,7 +88,7 @@ public:
     HRESULT GetLoggingBlock(USHORT ushBlk, SLOGINFO& sLogObject);
     HRESULT SetLoggingBlock(USHORT ushBlk, const SLOGINFO& sLogObject);
     HRESULT GetConfigData(BYTE** ppvConfigData, UINT& unLength);
-    HRESULT SetConfigData(BYTE* pvDataStream);
+    HRESULT SetConfigData(BYTE* pvDataStream, const CString& omStrVersion);
     HRESULT Reset(void);
     HRESULT Confirm(void);
     HRESULT StartEditingSession(void);
