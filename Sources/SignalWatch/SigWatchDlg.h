@@ -93,6 +93,8 @@ protected:
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
     virtual BOOL OnInitDialog();
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+    afx_msg LRESULT OnReceiveKeyBoardData(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnReceiveKeyDown(WPARAM wParam, LPARAM lParam);
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
@@ -102,6 +104,7 @@ private:
     WINDOWPLACEMENT m_sWinCurrStatus;
     INT m_anColWidth[defSW_LIST_COLUMN_COUNT];
     CImageList m_omSigImageList;
+	CWnd* m_pParent;
 private:
     void vDisplayMsgSigList(void);
     CCriticalSection m_omCSDispEntry;
