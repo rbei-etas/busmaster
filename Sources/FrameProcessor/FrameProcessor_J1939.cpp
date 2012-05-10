@@ -1,4 +1,3 @@
-
 /******************************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  FrameProcessor_J1939.cpp
@@ -127,7 +126,7 @@ void CFrameProcessor_J1939::vRetrieveDataFromBuffer(void)
         {
             CString omBuf;
             omBuf.Format(_T("ERR_READ_MEMORY_SHORT  nSize: %d"), nSize);
-            AfxMessageBox(omBuf);
+            //AfxMessageBox(omBuf);
         }
         else if (Result == EMPTY_APP_BUFFER)
         {
