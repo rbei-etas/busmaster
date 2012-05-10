@@ -108,7 +108,7 @@ public:
     virtual HRESULT FPJ1_GetConfigData(BYTE** ppvConfigData, UINT& unLength) = 0;
 
     // Setter for the logging configuration data
-    virtual HRESULT FPJ1_SetConfigData(BYTE* pvDataStream) = 0;
+    virtual HRESULT FPJ1_SetConfigData(BYTE* pvDataStream, const CString& omStrVersion) = 0;
 
     // To reset or revoke the modifications made
     virtual HRESULT FPJ1_Reset(void) = 0;
