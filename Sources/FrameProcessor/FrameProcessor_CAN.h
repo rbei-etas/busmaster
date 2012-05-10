@@ -41,7 +41,7 @@ private:
     CBaseDIL_CAN*       m_pouDilCanInterface;
     void vEmptyLogObjArray(CLogObjArray& omLogObjArray);
     // To create a new logging object
-    CBaseLogObject* CreateNewLogObj(void);
+    CBaseLogObject* CreateNewLogObj(const CString& omStrVersion);
     // To delete a logging object
     void DeleteLogObj(CBaseLogObject*& pouLogObj);
 
@@ -136,7 +136,7 @@ public:
     HRESULT FPC_GetConfigData(BYTE** ppvConfigData, UINT& unLength);
 
     // Setter for the logging configuration data
-    HRESULT FPC_SetConfigData(BYTE* pvDataStream);
+    HRESULT FPC_SetConfigData(BYTE* pvDataStream, const CString& omStrVersion);
 
     // To update the associated database list to logger
     HRESULT FPC_SetDatabaseFiles(const CStringArray& omList);
