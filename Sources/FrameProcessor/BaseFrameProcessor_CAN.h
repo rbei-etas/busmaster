@@ -125,7 +125,7 @@ public:
     virtual HRESULT FPC_GetConfigData(BYTE** ppvConfigData, UINT& unLength) = 0;
 
     // Setter for the logging configuration data
-    virtual HRESULT FPC_SetConfigData(BYTE* pvDataStream) = 0;
+    virtual HRESULT FPC_SetConfigData(BYTE* pvDataStream, const CString& omStrVersion) = 0;
 
     // To reset or revoke the modifications made
     virtual HRESULT FPC_Reset(void) = 0;
