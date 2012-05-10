@@ -80,9 +80,15 @@ int CFrameProcessor_J1939::ExitInstance(void)
     return Result;
 }
 
-CBaseLogObject* CFrameProcessor_J1939::CreateNewLogObj(void)
+CBaseLogObject* CFrameProcessor_J1939::CreateNewLogObj(const CString& omStrVersion)
 {
-    CLogObjectJ1939* pLogObj = new CLogObjectJ1939(CString(m_sJ1939ProcParams.m_acVersion));
+  CLogObjectJ1939* pLogObj = NULL;
+	CString strVersion = CString(m_sJ1939ProcParams.m_acVersion);
+	if (strVersion.IsEmpty())
+	{
+		strVersion = omStrVersion;
+	}
+	pLogObj = new CLogObjectJ1939(strVersion);
     return (static_cast<CBaseLogObject*> (pLogObj));
 }
 
@@ -360,9 +366,9 @@ HRESULT CFrameProcessor_J1939::FPJ1_GetConfigData(BYTE** ppvConfigData, UINT& un
 }
 
 // Setter for the logging configuration data
-HRESULT CFrameProcessor_J1939::FPJ1_SetConfigData(BYTE* pvDataStream)
+HRESULT CFrameProcessor_J1939::FPJ1_SetConfigData(BYTE* pvDataStream, const CString& omStrVersion)
 {
-    return SetConfigData(pvDataStream);
+    return SetConfigData(pvDataStream, omStrVersion);
 }
 
 // Empty log object
