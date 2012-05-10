@@ -109,4 +109,5 @@ private:
     void vPopulateSelSubEntryList();
     //Extract Id from Message name [MsgName0xID]
     UINT unGetMainEntryIDFromName(CString omMsgName);
+    void vAdjustWidthMessageComboBox();
 };
