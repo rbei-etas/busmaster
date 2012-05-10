@@ -691,7 +691,20 @@ void CNodeConManager::vProcConRequestMsg(const STCAN_MSG& sCanMsg)
     m_pConDet->vSetConStatus(T_STARTUP);
     m_pConDet->m_byRxSeqNo = 0;
     WORD* pwLen = (WORD*)&(sCanMsg.m_ucData[1]);
-    m_pConDet->m_unRXLongDataLen = *pwLen;
+    
+    /* Validate the maximum allowed size for a J1939 message data */
+	if (*pwLen > MAX_DATA_LEN_J1939 )
+	{					
+		/* If maximum size exceeds, RTS frame bytes 1 and 2 might have 
+		   been sent in reverse order, so try to change the byte order */					
+		m_pConDet->m_unRXLongDataLen  = (UINT32)sCanMsg.m_ucData[2];
+		m_pConDet->m_unRXLongDataLen |= ((UINT32)sCanMsg.m_ucData[1]) << 8;
+	}
+	else
+	{
+		m_pConDet->m_unRXLongDataLen = *pwLen;
+	}
+    
     m_pConDet->m_unRxTotalPackets = sCanMsg.m_ucData[3];
     m_pConDet->m_unRxLastFrameLen = (UINT)byGetLastFrameLen(m_pConDet->m_unRXLongDataLen);
     m_pConDet->m_byMaxPacketWOC2S = sCanMsg.m_ucData[4];
