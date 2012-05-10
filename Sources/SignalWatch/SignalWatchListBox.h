@@ -38,6 +38,8 @@ private:
 public:
     CSignalWatchListBox();
     void vUpdateParentWnd(HWND hParentWnd);
+    void OnChar(UINT nChar, UINT nRepeatCount, UINT nflags);
+	void OnKeyDown(UINT nChar, UINT nRepeatCount, UINT nflags);
     // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CSignalWatchListBox)
