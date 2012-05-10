@@ -173,7 +173,7 @@ HRESULT CSignalWatch_CAN::SW_DoInitialization()
     //Create the signal watch window for CAN
     if (m_pouSigWnd == NULL)
     {
-        m_pouSigWnd = new CSigWatchDlg;
+        m_pouSigWnd = new CSigWatchDlg(AfxGetMainWnd());
         m_pouSigWnd->Create(IDD_DLG_SIGNAL_WATCH, NULL);
         m_pouSigWnd->SetWindowText("Signal Watch - CAN");
     }
