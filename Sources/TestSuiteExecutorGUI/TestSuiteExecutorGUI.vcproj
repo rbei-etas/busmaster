@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="TestSuiteExecutorGUI"
 	ProjectGUID="{F09AE645-8A52-4744-9A37-BAAEB85D2848}"
+	RootNamespace="TestSuiteExecutorGUI"
 	Keyword="MFCDLLProj"
 	TargetFrameworkVersion="131072"
 	>
@@ -50,7 +51,10 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
+				UsePrecompiledHeader="1"
+				PrecompiledHeaderThrough="TSExecutorGUI_stdafx.h"
 				WarningLevel="4"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -129,11 +133,15 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_AFXEXT;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
+				UsePrecompiledHeader="1"
+				PrecompiledHeaderThrough="TSExecutorGUI_stdafx.h"
 				WarningLevel="4"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -201,6 +209,30 @@
 				>
 			</File>
 			<File
+				RelativePath=".\lexer.c"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\parser.c"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\ResultView.cpp"
 				>
 			</File>
@@ -240,6 +272,10 @@
 			>
 			<File
 				RelativePath=".\ExpressionExecutor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\parser.h"
 				>
 			</File>
 			<File
@@ -304,6 +340,36 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\lexer.l"
+			>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="..\..\Tools\flex\flex.exe -olexer.c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="lexer.c"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath=".\parser.y"
+			>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="..\..\Tools\bison\bison.exe -d --output=parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="parser.c,parser.h"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath=".\ReadMe.txt"
+			>
+		</File>
 	</Files>
 	<Globals>
 		<Global
