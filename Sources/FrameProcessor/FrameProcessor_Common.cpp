@@ -136,7 +136,7 @@ void CFrameProcessor_Common::vCopyLogObjArray(
         for (USHORT i = 0; i < ushBlocks; i++)
         {
             const CBaseLogObject* pouCurrLogObj = omLogObjArraySrc.GetAt(i);
-            CBaseLogObject* pouNewLogObj = CreateNewLogObj();
+            CBaseLogObject* pouNewLogObj = CreateNewLogObj(m_omStrVersion);
             *pouNewLogObj = *pouCurrLogObj;
             omLogObjArrayTarget.Add(pouNewLogObj);
         }
@@ -458,7 +458,7 @@ HRESULT CFrameProcessor_Common::GetConfigData(BYTE** ppvConfigData, UINT& unLeng
 }
 
 // Setter for the logging configuration data
-HRESULT CFrameProcessor_Common::SetConfigData(BYTE* pvDataStream)
+HRESULT CFrameProcessor_Common::SetConfigData(BYTE* pvDataStream, const CString& omStrVersion)
 {
     if (FALSE == bIsEditingON())
     {
@@ -472,9 +472,10 @@ HRESULT CFrameProcessor_Common::SetConfigData(BYTE* pvDataStream)
     COPY_DATA_2(&bVersion, pbBuff, sizeof(bVersion));
     COPY_DATA_2(&ushLogBlks, pbBuff, sizeof(ushLogBlks));
 
+    m_omStrVersion = omStrVersion;
     for (USHORT i = 0; i < ushLogBlks; i++)
     {
-        CBaseLogObject* pouBaseLogObj = CreateNewLogObj();
+        CBaseLogObject* pouBaseLogObj = CreateNewLogObj(m_omStrVersion);
         pbBuff = pouBaseLogObj->SetConfigData(pbBuff, bVersion);
         m_omLogListTmp.Add(pouBaseLogObj);
     }
@@ -538,7 +539,7 @@ HRESULT CFrameProcessor_Common::AddLoggingBlock(const SLOGINFO& sLogObject)
 
     if (bIsEditingON())
     {
-        CBaseLogObject* pouCurrLogBlk = CreateNewLogObj();
+		CBaseLogObject* pouCurrLogBlk = CreateNewLogObj(m_omStrVersion);
 
         if (NULL != pouCurrLogBlk)
         {
