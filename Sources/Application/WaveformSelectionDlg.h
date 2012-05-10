@@ -109,6 +109,7 @@ private:
     void DefineUpdateWave(CListCtrl* pListCtrl,  UINT nMsgID,
                           CString strSignalName,sWaveformInfo& objWaveInfo);
     void vInterPretSignalNameMsgID(CString strInterpretData, CString& strSigName, UINT& nMsgID);
+    void vAdjustWidthMessageComboBox();
 public:
     afx_msg void OnLvnItemchangedLstcSignal(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnNMDblclkLstcSignalWatch(NMHDR* pNMHDR, LRESULT* pResult);
