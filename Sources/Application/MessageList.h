@@ -39,6 +39,8 @@ private:
 public:
     CMessageList();
 
+    void OnChar(UINT nChar, UINT nRepeatCount, UINT nflags);
+	void OnKeyDown(UINT nChar, UINT nRepeatCount, UINT nflags);
     // Attributes
 public:
 
