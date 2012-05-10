@@ -29,6 +29,7 @@
 #include "SignalWatch_resource.h"
 #include "SignalWatchDefs.h"
 #include "SignalWatchListBox.h"
+#include "..\Application\HashDefines.h"
 
 extern HWND GUI_hDisplayWindow;
 /////////////////////////////////////////////////////////////////////////////
@@ -71,6 +72,8 @@ BEGIN_MESSAGE_MAP(CSignalWatchListBox, CFFListCtrl)
     //{{AFX_MSG_MAP(CSignalWatchListBox)
     ON_WM_RBUTTONDOWN()
     ON_COMMAND(IDM_SG_WATCH_CLEAR, OnSgWatchClear)
+ ON_WM_CHAR()
+	ON_WM_KEYDOWN()
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -158,4 +161,12 @@ void CSignalWatchListBox::OnRButtonDown(UINT nFlags, CPoint omPoint)
 void CSignalWatchListBox::OnSgWatchClear()
 {
     ::PostMessage(m_hParentWnd,WM_REMOVE_SIGNAL,0,0);
+}
+void CSignalWatchListBox::OnChar(UINT nChar, UINT nRepeatCount, UINT nflags)
+{	
+	GetParent()->SendMessage(WM_KEYBOARD_CHAR, nChar, 0);
+}
+void CSignalWatchListBox::OnKeyDown(UINT nChar, UINT nRepeatCount, UINT nflags)
+{	
+	GetParent()->SendMessage(WM_KEYBOARD_KEYDOWN, nChar, 0);
 }
