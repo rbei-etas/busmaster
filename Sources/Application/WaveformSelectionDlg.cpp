@@ -200,6 +200,7 @@ void CWaveformSelectionDlg::vPopulateUnSelSubEntryList(UINT unMainEntryID)
     {
         m_omListCtrlSignal.SetColumnWidth(0, unMaxLen + defSIZE_OF_IMAGE);
     }
+    vAdjustWidthMessageComboBox();
 }
 
 /*******************************************************************************
@@ -706,4 +707,27 @@ void CWaveformSelectionDlg::OnEnChangeEditDefaultSignalValue()
     UpdateData();
     UINT nMsgID=unGetSelectedMainEntryID();
     m_pWaveDataHandler->vSetMsgIDDefaultValue(nMsgID,m_fDefAmplitude);
+}
+void CWaveformSelectionDlg::vAdjustWidthMessageComboBox()
+{
+	CString str;
+	CSize sz;
+	int dx = 0;
+	TEXTMETRIC tm;
+	CDC* pDC = m_omCombMessage.GetDC();
+	CFont* pFont = m_omCombMessage.GetFont();
+	CFont* pOldFont = pDC->SelectObject(pFont);
+	pDC->GetTextMetrics(&tm);
+	for (int i = 0; i < m_omCombMessage.GetCount(); i++)
+	{
+		m_omCombMessage.GetLBText(i, str);
+		sz = pDC->GetTextExtent(str);
+		sz.cx += tm.tmAveCharWidth;
+		if (sz.cx > dx)
+			dx = sz.cx;
+	}
+	pDC->SelectObject(pOldFont);
+	m_omCombMessage.ReleaseDC(pDC);
+	dx += ::GetSystemMetrics(SM_CXVSCROLL) + 2*::GetSystemMetrics(SM_CXEDGE);
+	m_omCombMessage.SetDroppedWidth(dx);
 }
