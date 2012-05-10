@@ -649,10 +649,13 @@ STDMETHODIMP CDMGraphCtrl::put_TrackMode(TrackModeState newVal)
     m_eTrackMode = newVal;
     Corrdinate(0,0, &m_panPoint);
     m_bUnzoom = TRUE;
-    dOldRangeX[MIN]=dRangeX[MIN];
-    dOldRangeY[MIN]=dRangeY[MIN];
-    dOldRangeX[MAX]=dRangeX[MAX];
-    dOldRangeY[MAX]=dRangeY[MAX];
+    //if (m_eTrackMode == Zoom)
+	//{
+	//	dOldRangeX[MIN]=dRangeX[MIN];
+	//	dOldRangeY[MIN]=dRangeY[MIN];
+	//	dOldRangeX[MAX]=dRangeX[MAX];
+	//	dOldRangeY[MAX]=dRangeY[MAX];
+	//}
     Fire_TrackModeChanged(newVal);
     m_bRequiresSave = TRUE;
     return S_OK;
