@@ -407,7 +407,24 @@ BOOL CMonitorNode::bProcessConLevelMsgByMon(const sTCANDATA& CurrMsgCAN)
                 pConDet->vSetConStatus(T_CONNECTED);
                 pConDet->m_BCRxSeqVar = 0;
                 WORD* pwLen = (WORD*)&(sCanMsg.m_ucData[1]);
-                pConDet->m_BCRXLongDataLen = *pwLen;
+                
+                /* Validate the maximum allowed size for a J1939 message data */
+                if (*pwLen > MAX_DATA_LEN_J1939 )
+                {
+                    /* If maximum size exceeds, RTS frame bytes 1 and 2 might have 
+                    been sent in reverse order, so try to change the byte order */
+                    pConDet->m_unRXLongDataLen  = (UINT32)sCanMsg.m_ucData[2];
+                    pConDet->m_unRXLongDataLen |= ((UINT32)sCanMsg.m_ucData[1]) << 8;
+                    if (pConDet->m_unRXLongDataLen > MAX_DATA_LEN_J1939)                    
+                    {
+                        bIsProcessed = FALSE;                                               
+                    }
+                }
+                else
+                {
+                    pConDet->m_unRXLongDataLen = *pwLen;                       
+                }
+                
                 pConDet->m_BCLastFrameLen = (UINT)byGetLastFrameLen(pConDet->m_BCRXLongDataLen);
                 pConDet->m_BCTotalPackets = sCanMsg.m_ucData[3];
                 pConDet->m_BCPGN = (UINT32)sCanMsg.m_ucData[5];
