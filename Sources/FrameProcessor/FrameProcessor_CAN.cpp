@@ -58,9 +58,15 @@ int CFrameProcessor_CAN::ExitInstance(void)
     return Result;
 }
 
-CBaseLogObject* CFrameProcessor_CAN::CreateNewLogObj(void)
+CBaseLogObject* CFrameProcessor_CAN::CreateNewLogObj(const CString& omStrVersion)
 {
-    CLogObjectCAN* pLogObj = new CLogObjectCAN(CString(m_sCANProcParams.m_acVersion));
+    CLogObjectCAN* pLogObj = NULL;
+	CString strVersion = CString(m_sCANProcParams.m_acVersion);
+	if (strVersion.IsEmpty())
+	{
+		strVersion = omStrVersion;
+	}
+	pLogObj = new CLogObjectCAN(strVersion);	
     return (static_cast<CBaseLogObject*> (pLogObj));
 }
 
@@ -364,9 +370,9 @@ HRESULT CFrameProcessor_CAN::FPC_GetConfigData(BYTE** ppvConfigData, UINT& unLen
 }
 
 // Setter for the logging configuration data
-HRESULT CFrameProcessor_CAN::FPC_SetConfigData(BYTE* pvDataStream)
+HRESULT CFrameProcessor_CAN::FPC_SetConfigData(BYTE* pvDataStream, const CString& omStrVersion)
 {
-    return SetConfigData(pvDataStream);
+    return SetConfigData(pvDataStream, omStrVersion);
 }
 
 // Empty log object
