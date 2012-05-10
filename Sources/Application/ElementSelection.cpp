@@ -1255,6 +1255,10 @@ void CElementSelection::OnDblclkLstcGraphElements(NMHDR* /*pNMHDR*/, LRESULT* pR
                 {
                     //To find out the ID from the displayed name
                     UINT unMsgID = unGetMsgIDFromName(omStrMsg);
+    				if (unMsgID == -1)
+					{
+						unMsgID = m_odElementList.GetAt(nSelItem).m_nMsgID;
+					}
                     sMESSAGE* psMsg =
                         pomDatabase->psGetMessagePointer( unMsgID );
 
