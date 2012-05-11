@@ -24,11 +24,11 @@
 
 #pragma once
 
-#define FORMAT_STR_ID_HEX       _T("%03X")
+#define FORMAT_STR_ID_HEX       _T("0x%03X")
 #define FORMAT_STR_ID_DEC       _T("%04d")
 #define FORMAT_STR_DATA_HEX     _T("%02X ")
 #define FORMAT_STR_DATA_DEC     _T("%03d")
-#define FORMAT_PGN_ID_HEX       _T("%06X")
+#define FORMAT_PGN_ID_HEX       _T("0x%06X")
 #define FORMAT_PGN_ID_DEC       _T("%06d")
 
 #define BIT_TM_ABS              0x01
