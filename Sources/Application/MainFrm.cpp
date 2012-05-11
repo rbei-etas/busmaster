@@ -374,6 +374,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(ID_UTILITY_FILE_CONVERTER, OnFileConverter)
     ON_COMMAND(ID_CONFIGURE_CHANNELSELECTION, OnConfigChannelSelection)
     ON_UPDATE_COMMAND_UI(ID_CONFIGURE_CHANNELSELECTION, OnUpdateConfigChannelSelection)
+	ON_MESSAGE(WM_KEYBOARD_CHAR, OnReceiveKeyBoardData)
+	ON_MESSAGE(WM_KEYBOARD_KEYDOWN, OnReceiveKeyDown)
 
 END_MESSAGE_MAP()
 
@@ -4318,10 +4320,6 @@ void CMainFrame::OnClose()
     if( pFlags != NULL)
     {
         // Stop Logging if it is enabled
-        if( pFlags->nGetFlagStatus( LOGTOFILE ) == TRUE )
-        {
-            vStartStopLogging( FALSE );
-        }
 
         // Close DB Editor if it is visible
         if( pFlags->nGetFlagStatus(DBOPEN) == TRUE )
@@ -4329,12 +4327,24 @@ void CMainFrame::OnClose()
             OnCloseDatabase();
         }
     }
+	BOOL bLogON = FALSE;
+	if (NULL != sg_pouFrameProcCAN)
+	{
+		bLogON = sg_pouFrameProcCAN->FPC_IsLoggingON();
+	}
+	if ( bLogON )
+	{
+		bLogON = bLogON ? FALSE : TRUE;
+		vStartStopLogging( bLogON );
+	}
 
+	vJ1939StartStopLogging();
     if (g_pouDIL_CAN_Interface != NULL)
     {
         g_pouDIL_CAN_Interface->DILC_PerformClosureOperations();
     }
 
+	vCloseFormatconverters();
     SaveBarState(PROFILE_CAN_MONITOR);
     CMDIFrameWnd::OnClose();
 }
@@ -5155,50 +5165,48 @@ void CMainFrame::OnUpdateLogOnOff(CCmdUI* pCmdUI)
 /******************************************************************************/
 BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
 {
-    CFlags* pouFlag = NULL;
-    pouFlag     = theApp.pouGetFlagsPtr();
+	vProcessKeyPress(pMsg);
+    //CFlags* pouFlag = NULL;
+    //pouFlag     = theApp.pouGetFlagsPtr();
 
-    if(pouFlag != NULL)
-    {
-        if (pMsg->message == WM_CHAR)
-        {
+    //if(pouFlag != NULL)
+    //{ 		
+        //if (pMsg->message == WM_CHAR)
+        //{
             // Check for key a-z or A-Z, if any of these are press
             // call member function of CExecuteFunc class for key handler
-            if(   ( pMsg->wParam >= 'A' && pMsg->wParam<='Z' )||
-                    ( pMsg->wParam >= 'a' && pMsg->wParam<='z' )||
-                    ( pMsg->wParam >= '0' && pMsg->wParam<='9' ) )
-            {
+        //    if(   ( pMsg->wParam >= 'A' && pMsg->wParam<='Z' )|| 
+        //          ( pMsg->wParam >= 'a' && pMsg->wParam<='z' )||  
+        //          ( pMsg->wParam >= '0' && pMsg->wParam<='9' ) )
+        //    {
                 // Execute key hanlder only if execution is selected by user
-                GetICANNodeSim()->NS_ManageOnKeyHandler((UCHAR)pMsg->wParam);
-                GetIJ1939NodeSim()->NS_ManageOnKeyHandler((UCHAR)pMsg->wParam);
-                PostMessage(WM_KEY_PRESSED_MSG_WND,
-                            pMsg->wParam, 0);
-            }
-        }//if (pMsg->message == WM_CHAR)
+        //                GetICANNodeSim()->NS_ManageOnKeyHandler((UCHAR)pMsg->wParam);
+        //                GetIJ1939NodeSim()->NS_ManageOnKeyHandler((UCHAR)pMsg->wParam);
+        //                PostMessage(WM_KEY_PRESSED_MSG_WND, pMsg->wParam, 0);
 
-        if (pMsg->message == WM_KEYDOWN)
-        {
-            BOOL bConnected = FALSE;
+        //if (pMsg->message == WM_KEYDOWN)
+        //{
+        //    BOOL bConnected = FALSE;
             // Get the current status of Connected/Disconnected state
-            bConnected  = pouFlag->nGetFlagStatus(CONNECTED);
+        //    bConnected  = pouFlag->nGetFlagStatus(CONNECTED);  
 
             //Procees the key "F2" and "ESC"
-            if (pMsg->wParam == VK_F2)
-            {
-                if(bConnected == FALSE)
-                {
-                    OnFileConnect();
-                }
-            }//if (pMsg->wParam == VK_F2)
-            else if (pMsg->wParam == VK_ESCAPE)
-            {
-                if(bConnected == TRUE)
-                {
-                    OnFileConnect();
-                }
-            }//else if (pMsg->wParam == VK_ESCAPE)
-        }//if (pMsg->message == WM_KEYDOWN)
-    }//   if(pouFlag != NULL)
+        //    if (pMsg->wParam == VK_F2)
+        //    {
+        //        if(bConnected == FALSE)
+        //        {
+        //            OnFileConnect();
+        //        }
+        //    }//if (pMsg->wParam == VK_F2)
+        //    else if (pMsg->wParam == VK_ESCAPE)
+        //    {
+        //        if(bConnected == TRUE)
+        //        {
+        //            OnFileConnect();
+        //        }
+        //    }//else if (pMsg->wParam == VK_ESCAPE)
+        //}//if (pMsg->message == WM_KEYDOWN)
+    //}//   if(pouFlag != NULL)
 
     return CMDIFrameWnd::PreTranslateMessage(pMsg);
 }
@@ -10172,6 +10180,12 @@ void CMainFrame::vUpdateAllMsgWndInterpretStatus(BOOL /*bAssociate*/)
 ******************************************************************************/
 void CMainFrame::OnFileConverter()
 {
+	CWnd* pWndCreated = IsWindowCreated();
+	if (NULL != pWndCreated && pWndCreated->GetSafeHwnd())
+	{
+		pWndCreated->SetForegroundWindow();
+		return;
+	}
     // Get the working directory
     CString strPath;
     char* pstrExePath = strPath.GetBuffer (MAX_PATH);
@@ -10183,7 +10197,7 @@ void CMainFrame::OnFileConverter()
     omCurrExe.Format("%s\\FormatConverter.exe", strPath);
     SHELLEXECUTEINFO sei;
     sei.cbSize = sizeof(SHELLEXECUTEINFO);
-    sei.fMask = NULL;
+    sei.fMask = SEE_MASK_NOCLOSEPROCESS;
     sei.hwnd = NULL;
     sei.lpVerb = _T("open");
     sei.lpParameters= NULL;
@@ -10199,6 +10213,57 @@ void CMainFrame::OnFileConverter()
     sei.lpDirectory = NULL;
     /*int ReturnCode =*/
     ::ShellExecuteEx(&sei);
+	m_hProcess = sei.hProcess;	
+}
+CWnd* CMainFrame::IsWindowCreated()
+{
+	CWnd* pWndCreated = NULL;
+	CWnd* pWnd = FindWindow(NULL, "BUSMASTER Format Conversions");
+	if (NULL != pWnd)
+	{
+		DWORD dwId = GetProcessId(m_hProcess);
+		HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, dwId);
+		if (NULL != hProcess)
+		{
+			HWND hWnd = ::GetTopWindow(0);
+			DWORD dwWndProcId = 0;
+			DWORD dwTheardProcId = 0;
+			HANDLE hThreadProc = NULL;
+			while ( NULL != hWnd )
+			{				
+				dwTheardProcId = GetWindowThreadProcessId(hWnd, &dwWndProcId);
+				hThreadProc = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, dwWndProcId);				
+				if (NULL != hThreadProc && dwWndProcId == dwId)
+				{
+					pWndCreated = CWnd::FromHandle(hWnd);
+					break;
+				}
+				hWnd = ::GetNextWindow(hWnd, GW_HWNDNEXT);
+			}
+		}
+		else
+		{
+			DWORD dwErr = GetLastError();
+		}
+	}
+	return pWndCreated;
+}
+void CMainFrame::vCloseFormatconverters()
+{	
+	CWnd* pWnd = NULL;	
+	DWORD dwExitCode = 0;	
+	pWnd = FindWindow(NULL, "BUSMASTER Format Conversions");
+	if (NULL != pWnd)
+	{
+		if (GetExitCodeProcess (m_hProcess, &dwExitCode))
+		{
+			TerminateProcess(m_hProcess, dwExitCode);
+		}
+		else
+		{
+			TerminateProcess(m_hProcess, 0);
+		}
+	}
 }
 /******************************************************************************
     Function Name    :  OnSaveImportDatabase
@@ -11036,6 +11101,8 @@ BOOL CMainFrame::bIsConfigurationModified(void)
 }
 void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData, UINT nSize)
 {
+	CString omVerStr(_T(""));
+	omVerStr.Format(IDS_VERSION);
     switch (eSecId)
     {
         case MAINFRAME_SECTION_ID:
@@ -11087,7 +11154,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 if (sg_pouFrameProcCAN != NULL)
                 {
                     sg_pouFrameProcCAN->FPC_StartEditingSession();
-                    sg_pouFrameProcCAN->FPC_SetConfigData(pbyTemp);
+                    sg_pouFrameProcCAN->FPC_SetConfigData(pbyTemp, omVerStr);
                     sg_pouFrameProcCAN->FPC_StopEditingSession(TRUE);
                 }
 
@@ -11120,7 +11187,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 if (GetIJ1939Logger() != NULL)
                 {
                     GetIJ1939Logger()->FPJ1_StartEditingSession();
-                    GetIJ1939Logger()->FPJ1_SetConfigData(pbyTemp);
+                    GetIJ1939Logger()->FPJ1_SetConfigData(pbyTemp, omVerStr);
                     GetIJ1939Logger()->FPJ1_StopEditingSession(TRUE);
                 }
             }
@@ -12763,7 +12830,7 @@ void CMainFrame::OnUpdateActionJ1939TxMessage(CCmdUI* pCmdUI)
     pCmdUI->Enable(sg_pouIJ1939DIL && sg_pouIJ1939DIL->DILIJ_bIsOnline());
 }
 
-void CMainFrame::OnActionJ1939Log()
+void CMainFrame::vJ1939StartStopLogging()
 {
     // Enable Logging or stop logging
     if (NULL != sg_pouIJ1939Logger)
@@ -12779,6 +12846,10 @@ void CMainFrame::OnActionJ1939Log()
         sg_pouIJ1939Logger->FPJ1_EnableLogging(bEnable);
     }
 
+}
+void CMainFrame::OnActionJ1939Log()
+{
+	vJ1939StartStopLogging();
     /*sg_pouIJ1939Logger->FPJ1_EnableLogging(!sg_pouIJ1939Logger->FPJ1_IsLoggingON());*/
 }
 
@@ -13643,4 +13714,60 @@ void CMainFrame::OnAutomationTSExecutor(void)
 {
     m_objTSExecutorHandler.vShowTSExecutorWindow((void*)this);
     m_objTSExecutorHandler.vSetTSEVersionInfo(VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
+}
+LRESULT CMainFrame::OnReceiveKeyBoardData(WPARAM wParam, LPARAM lParam)
+{
+	MSG msg;
+	msg.message = WM_CHAR;
+	msg.wParam = wParam;
+	msg.lParam = lParam;
+	vProcessKeyPress(&msg);
+	return S_OK;
+}
+LRESULT CMainFrame::OnReceiveKeyDown(WPARAM wParam, LPARAM lParam)
+{
+	MSG msg;
+	msg.message = WM_KEYDOWN;
+	msg.wParam = wParam;
+	msg.lParam = lParam;
+	vProcessKeyPress(&msg);
+	return S_OK;
+}
+void CMainFrame::vProcessKeyPress(MSG* pMsg)
+{
+	if (pMsg->message == WM_CHAR)
+	{
+		if( ( pMsg->wParam >= 'A' && pMsg->wParam<='Z' )|| 
+			( pMsg->wParam >= 'a' && pMsg->wParam<='z' )||  
+			( pMsg->wParam >= '0' && pMsg->wParam<='9' ) )
+		{
+			GetICANNodeSim()->NS_ManageOnKeyHandler((UCHAR)pMsg->wParam);
+			GetIJ1939NodeSim()->NS_ManageOnKeyHandler((UCHAR)pMsg->wParam);
+			PostMessage(WM_KEY_PRESSED_MSG_WND, pMsg->wParam, 0);
+		}
+	}
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		CFlags* pouFlag = NULL;
+		pouFlag     = theApp.pouGetFlagsPtr();
+		if(pouFlag != NULL)
+		{
+			BOOL bConnected = FALSE;
+			bConnected  = pouFlag->nGetFlagStatus(CONNECTED);  
+			if (pMsg->wParam == VK_F2)
+			{
+				if(bConnected == FALSE)
+				{
+					OnFileConnect();
+				}
+			}//if (pMsg->wParam == VK_F2)
+			else if (pMsg->wParam == VK_ESCAPE)
+			{
+				if(bConnected == TRUE)
+				{
+					OnFileConnect();
+				}
+			}//else if (pMsg->wParam == VK_ESCAPE)
+		}
+	}
 }

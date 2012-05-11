@@ -1763,7 +1763,8 @@ CString CMsgFrmtWnd::strGetMsgNameOrCode(UINT nMsgCode)
             }
             else
             {
-                omName.Format(_T("%x"), nMsgCode);
+                omName.Format(_T("%X"), nMsgCode);
+				omName = "0x" + omName;
             }
         }
     }
@@ -3663,6 +3664,7 @@ HRESULT CMsgFrmtWnd::SetConfigData(BYTE* pvDataStream)
             bool bHexDec = false;
             COPY_DATA_2(&bHexDec, pByteSrc, sizeof(bool));
 
+			CLEAR_EXPR_NUM_BITS(m_bExprnFlag_Disp);
             if(bHexDec)
             {
                 SET_NUM_HEX(m_bExprnFlag_Disp);
