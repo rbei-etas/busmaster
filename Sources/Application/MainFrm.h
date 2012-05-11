@@ -88,6 +88,7 @@ public:
     CMainFrame();
 
     // Attributes
+	HANDLE m_hProcess;
     // Flag specifies whether to enable
     INTERFACE_HW_LIST m_asINTERFACE_HW;
     //controller mode
@@ -267,6 +268,7 @@ public:
     BOOL bDllUnload(CStringArray* omStrBuildFiles) ;
     // To stop or start logging during configuration change
     inline void vStartStopLogging(BOOL bStart);
+	inline void vJ1939StartStopLogging();
     // To set the associated database file names for logging
     void vSetAssociatedDatabaseFiles(ETYPE_BUS eBus);
     // To set the baudrate for the selected channels
@@ -279,6 +281,9 @@ public:
 
     BOOL bInitFrameProcCAN(void);
 
+	CWnd* IsWindowCreated();
+	void vCloseFormatconverters();
+	void vProcessKeyPress(MSG* pMsg);
 
 #ifdef _DEBUG
     virtual void AssertValid() const;
@@ -423,6 +428,8 @@ protected:
     afx_msg void OnConfigChannelSelection();
     afx_msg void OnUpdateConfigChannelSelection(CCmdUI* pCmdUI);
 
+	afx_msg LRESULT OnReceiveKeyBoardData(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnReceiveKeyDown(WPARAM wParam, LPARAM lParam);
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 

@@ -392,7 +392,7 @@ BOOL CMsgSignal::bValidateDatabaseFile(CString strFileName)
 
         if (m_bAutoServerMode == FALSE)
         {
-            vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM) s_acTraceStr);
+            //vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM) s_acTraceStr);
         }
     }
     else
@@ -406,7 +406,7 @@ BOOL CMsgSignal::bValidateDatabaseFile(CString strFileName)
 
             if(m_bAutoServerMode == FALSE)
             {
-                vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0,
+                //vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, 
                 //(LPARAM) s_acTraceStr);
             }
         }
@@ -421,7 +421,7 @@ BOOL CMsgSignal::bValidateDatabaseFile(CString strFileName)
 
                 if(m_bAutoServerMode == FALSE)
                 {
-                    vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0,
+                    //vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, 
                     //(LPARAM) s_acTraceStr);
                 }
             }
