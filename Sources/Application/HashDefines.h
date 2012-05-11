@@ -579,6 +579,10 @@ PLACE_HODLER_FOR_FUNCTIONNAME */")
 #define WM_CONFIG_CHANGE            WM_USER + 58 // Configuration Change Event
 #define WM_DATABASE_CHANGE          WM_USER + 59 // Database associate/dissociate event
 
+#define WM_KEYBOARD_CHAR	    WM_USER + 60 // Capture char key press event from Signal Watch and NW Statistics
+#define WM_KEYBOARD_KEYDOWN	    WM_USER + 61 // Capture key down event to handle connect / disconnect from Signal Watch and NW Statistics
+
+
 // Errors
 #define defMSG_NOACK                _T("Message transmission\
 acknowledgement could not be received for the message transmitted from\n\
