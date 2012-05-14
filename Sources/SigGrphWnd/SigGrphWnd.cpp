@@ -495,12 +495,25 @@ DWORD WINAPI SignalDataPlotterThread(LPVOID pVoid)
                 continue;
             }
 
+	//check if windows is already distroyed.
+	if(!IsWindow(m_pomGraphWindows[nBusID]->m_hWnd))
+	{
+		m_pomGraphWindows[nBusID]->m_pDMGraphCtrl = NULL;
+		m_pomGraphWindows[nBusID] = NULL;
+		continue;
+	}
             if ( m_pomGraphWindows[nBusID]->m_pDMGraphCtrl == NULL )
             {
                 break;
             }
 
             IDMGraphCtrl* pDMGraphCtrl = m_pomGraphWindows[nBusID]->m_pDMGraphCtrl;
+
+	if ( pDMGraphCtrl == NULL )
+	{
+		break;
+	}
+
             //Update X-axis Range
             double dXMin = 0.0, dXMax = 0.0,dYMin = 0.0, dYMax = 0.0;
             // Get Present X,Y Axis Values
