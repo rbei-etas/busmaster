@@ -336,6 +336,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(33079, OnUpdateJ1939DBNew)
     ON_COMMAND(33080, OnJ1939DBOpen)
     ON_COMMAND(33084, OnJ1939DBClose)
+    ON_COMMAND(ID_DATABASE_SAVE, OnJ1939DBSave)
+    ON_UPDATE_COMMAND_UI(ID_DATABASE_SAVE, OnUpdateJ1939DBSave)
     ON_COMMAND(33082, OnJ1939DBAssociate)
     ON_COMMAND(33083, OnJ1939DBDissociate)
     ON_COMMAND(ID_CONFIGURE_SIMULATEDSYSTEMS, OnJ1939CfgSimSys)
@@ -5133,14 +5135,25 @@ void CMainFrame::OnUpdateLogOnOff(CCmdUI* pCmdUI)
 {
     if (NULL != sg_pouFrameProcCAN)
     {
-        pCmdUI->SetCheck(sg_pouFrameProcCAN->FPC_IsLoggingON());
+	USHORT ushCount =	sg_pouFrameProcCAN->FPC_GetLoggingBlockCount();
+	if(ushCount>0)//log files found
+	{
+	     pCmdUI->Enable(TRUE);
+        	     pCmdUI->SetCheck(sg_pouFrameProcCAN->FPC_IsLoggingON());
+	}
+    	else //log files don't found
+    	{
+	     pCmdUI->Enable(FALSE); 
+    	     pCmdUI->SetCheck(FALSE);
+    	}
+
     }
     else
-    {
+    { 
+	//desable the menu item
+        pCmdUI->Enable(FALSE);
         pCmdUI->SetCheck(FALSE);
     }
-
-    //pCmdUI->SetCheck(theApp.pouGetFlagsPtr()->nGetFlagStatus(LOGTOFILE));
 }
 /******************************************************************************/
 /*  Function Name    :  PreTranslateMessage                                   */
@@ -12857,8 +12870,18 @@ void CMainFrame::OnUpdateActionJ1939Log(CCmdUI* pCmdUI)
 {
     if (NULL != sg_pouIJ1939Logger)
     {
-        pCmdUI->Enable(TRUE);
-        pCmdUI->SetCheck(sg_pouIJ1939Logger->FPJ1_IsLoggingON());
+		USHORT ushCount = sg_pouIJ1939Logger->FPJ1_GetLoggingBlockCount();
+		if(ushCount>0)//log file found
+		{
+			pCmdUI->Enable(TRUE); //enable the menu item
+			pCmdUI->SetCheck(sg_pouIJ1939Logger->FPJ1_IsLoggingON());
+		}
+		else//log file don't found
+		{
+			 //desable the menu item
+	        pCmdUI->Enable(FALSE);
+			pCmdUI->SetCheck(FALSE);
+		}
     }
     else
     {
@@ -13314,6 +13337,24 @@ void CMainFrame::OnJ1939DBClose()
             m_podMsgSgWndJ1939 = NULL;
         }
     }
+}
+
+void CMainFrame::OnJ1939DBSave()
+{
+    if (m_podMsgSgWndJ1939 != NULL)
+    {
+        if (CMsgSignalDBWnd::sm_bValidJ1939Wnd == TRUE)
+        {
+			//send save message
+            m_podMsgSgWndJ1939->SendMessage(WM_SAVE_DBJ1939, NULL, NULL);
+        }
+	}
+}
+
+void CMainFrame::OnUpdateJ1939DBSave(CCmdUI* pCmdUI) 
+{
+//    pCmdUI->Enable( theApp.pouGetFlagsPtr()->nGetFlagStatus( DBOPEN ));
+	int i = 0;
 }
 
 void CMainFrame::OnJ1939DBAssociate()
