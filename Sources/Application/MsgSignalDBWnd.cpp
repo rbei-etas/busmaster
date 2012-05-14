@@ -83,6 +83,7 @@ CMsgSignalDBWnd::~CMsgSignalDBWnd()
 BEGIN_MESSAGE_MAP(CMsgSignalDBWnd, CMDIChildWnd)
     //{{AFX_MSG_MAP(CMsgSignalDBWnd)
     ON_WM_CLOSE()
+    ON_MESSAGE(WM_SAVE_DBJ1939, OnSaveDBJ1939)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -249,63 +250,8 @@ void CMsgSignalDBWnd::OnClose()
 
             if ( bRetVal == IDYES )
             {
-                (*ppTempMsgSg)->
-                bWriteIntoDatabaseFileFromDataStructure(
-                    m_sDbParams.m_omDBPath );
-
-                if ((*ppTempMsgSg)->bGetDBAcitveFlagStatus() == TRUE)
-                {
-                    pFrame->vPostMsgToSendMsgDlg(m_sDbParams.m_eBus);
-                }
-
-                // Check if the modified file is being loaded or not.
-                //If yes then prompt the user whether he wants to
-                //import it or not.
-                CStringArray omImportedDBNames;
-                CMsgSignal** m_ppsMSTemp = (CMsgSignal**)(m_sDbParams.m_ppvImportedDBs);
-
-                if ((*m_ppsMSTemp) != NULL)
-                {
-                    (*m_ppsMSTemp)->vGetDataBaseNames(&omImportedDBNames);
-
-                    for (INT nDBCount = 0; nDBCount < omImportedDBNames.GetSize();
-                            nDBCount++)
-                    {
-                        if (m_sDbParams.m_omDBPath ==
-                                omImportedDBNames.GetAt(nDBCount))
-                        {
-                            CString omText;
-                            omText.Format( _T("File  \"%s\"  has been modified which is currently being loaded.\nDo you want to re-import it to reflect the changes?"),
-                                           m_sDbParams.m_omDBPath);
-
-                            if (MessageBox(omText, "", MB_ICONQUESTION | MB_YESNO) == IDYES)
-                            {
-                                switch (m_sDbParams.m_eBus)
-                                {
-                                    case CAN:
-                                    {
-                                        pFrame->dLoadDataBaseFile(m_sDbParams.m_omDBPath, FALSE);
-                                    }
-                                    break;
-
-                                    case J1939:
-                                    {
-                                        pFrame->dLoadJ1939DBFile(m_sDbParams.m_omDBPath, FALSE);
-                                    }
-                                    break;
-                                };
-                            }
-                        }
-                    }
-                }
-
-                //Checking ends
-
-                // Set the modified flag as saved
-                if (NULL != (*ppTempMsgSg))
-                {
-                    (*ppTempMsgSg)->vSetModifiedFlag(TRUE);
-                }
+		//save the database modificatins.
+		vSaveModifiedDBs(ppTempMsgSg);
             }
             else if( bRetVal == IDNO )
             {
@@ -352,6 +298,87 @@ void CMsgSignalDBWnd::OnClose()
 
         CMDIChildWnd::OnClose();
     }
+}
+
+LRESULT CMsgSignalDBWnd::OnSaveDBJ1939(WPARAM wParam, LPARAM /*lParam*/)
+{
+    // Get active frame
+    CMainFrame *pFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+    
+    if (pFrame != NULL)
+    {
+        // Get appropriate data structure
+        CMsgSignal** ppTempMsgSg = NULL;
+
+        ppTempMsgSg = (CMsgSignal**)(m_sDbParams.m_ppvActiveDB);
+        
+        pFrame->podGetMsgSgDetView(m_sDbParams.m_eBus);
+
+        if ((*ppTempMsgSg)->bGetModifiedFlag() == FALSE)
+        {
+			vSaveModifiedDBs(ppTempMsgSg);
+		}
+
+        // delete previously allocated memory if any
+        (*ppTempMsgSg)->bDeAllocateMemoryInactive();
+	}
+	return 0;
+}
+
+void CMsgSignalDBWnd::vSaveModifiedDBs(CMsgSignal** & ppTempMsgSg)
+{
+    // Get active frame
+    CMainFrame *pFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+
+	(*ppTempMsgSg)->bWriteIntoDatabaseFileFromDataStructure(m_sDbParams.m_omDBPath );
+    if ((*ppTempMsgSg)->bGetDBAcitveFlagStatus() == TRUE)
+    {
+        pFrame->vPostMsgToSendMsgDlg(m_sDbParams.m_eBus);
+    }
+    // Check if the modified file is being loaded or not. 
+    //If yes then prompt the user whether he wants to 
+    //import it or not.
+    CStringArray omImportedDBNames;
+    CMsgSignal** m_ppsMSTemp = (CMsgSignal**)(m_sDbParams.m_ppvImportedDBs);
+    if ((*m_ppsMSTemp) != NULL)
+    {
+        (*m_ppsMSTemp)->vGetDataBaseNames(&omImportedDBNames);
+        for (INT nDBCount = 0; nDBCount < omImportedDBNames.GetSize();
+             nDBCount++)
+        {
+            if (m_sDbParams.m_omDBPath == 
+                omImportedDBNames.GetAt(nDBCount))
+            {
+                CString omText;
+                omText.Format( _T("File  \"%s\"  has been modified which is currently being loaded.\nDo you want to re-import it to reflect the changes?"), 
+                                m_sDbParams.m_omDBPath);
+                if (MessageBox(omText, _T(""), MB_ICONQUESTION | MB_YESNO) == IDYES)
+                {
+                    switch (m_sDbParams.m_eBus)
+                    {
+                        case CAN:
+                        {
+                            pFrame->dLoadDataBaseFile(m_sDbParams.m_omDBPath, FALSE);
+                        }
+                        break;
+                        case J1939:
+                        {
+                            pFrame->dLoadJ1939DBFile(m_sDbParams.m_omDBPath, FALSE);
+                        }
+                        break;
+                    };
+
+                }
+            }
+        }
+    }
+    //Checking ends
+
+	// Set the modified flag as saved
+	if (NULL != (*ppTempMsgSg))
+	{
+		(*ppTempMsgSg)->vSetModifiedFlag(TRUE);
+	}
 }
 
 void CMsgSignalDBWnd::vSetDBName(CString& omDBName)

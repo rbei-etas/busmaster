@@ -43,6 +43,8 @@ public:
     CMsgSignalDBWnd(const SDBPARAMS& sDbParams);
     virtual ~CMsgSignalDBWnd();
     void vSetDBName(CString& omDBName);
+    afx_msg LRESULT OnSaveDBJ1939(WPARAM wParam, LPARAM lParam);
+    void vSaveModifiedDBs(CMsgSignal** & ppTempMsgSg);
     // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMsgSignalDBWnd)
