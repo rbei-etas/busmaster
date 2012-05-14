@@ -27,6 +27,7 @@
 #include "WaveFormTransmitter.h"
 
 const float SINE_COEFF = (8 / (PI* PI));
+CPARAM_THREADPROC* pThreadParam = NULL; //declare global for termination in destructor
 
 
 // Start of helper functions
