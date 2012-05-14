@@ -98,6 +98,35 @@ void CMsgInterpretation::vSetMessageList(SMSGENTRY* psCurrMsgEntry)
     m_psMsgRoot = psCurrMsgEntry;
 }
 
+int CMsgInterpretation::nGetSignalCount(CString strMsgName)
+{
+	int iSignalCount = 0;
+	SMSGENTRY*  m_psMsgTemp = m_psMsgRoot;
+	while(m_psMsgTemp != NULL)
+	{
+		if(m_psMsgTemp->m_psMsg != NULL)
+		{
+			//check for same message name
+			if(strMsgName.CompareNoCase(m_psMsgTemp->m_psMsg->m_omStrMessageName)==0 )
+			{
+				sSIGNALS* m_psSignalTemp = m_psMsgTemp->m_psMsg->m_psSignals;
+				while(m_psSignalTemp != NULL)
+				{
+					iSignalCount++; //increment the signal count
+					m_psSignalTemp = m_psSignalTemp->m_psNextSignalList;
+				}
+				break;
+			}
+			else //go for next message name
+			{
+				m_psMsgTemp = m_psMsgTemp->m_psNext; 
+			}
+		}
+	}
+	//return the number of signals in the given message.
+	return iSignalCount;
+}
+
 void CMsgInterpretation::vSetCurrNumMode(EFORMAT eNumFormat)
 {
     m_eNumFormat = eNumFormat;
@@ -1120,7 +1149,8 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
 
 void CMsgInterpretation::vClear()
 {
-    SMSGENTRY::vClearMsgList(m_psMsgRoot);
+    if(NULL != m_psMsgRoot)
+         SMSGENTRY::vClearMsgList(m_psMsgRoot);
 }
 
 void CMsgInterpretation::vCopy(CMsgInterpretation* pDest) const
@@ -1152,7 +1182,8 @@ CMsgInterpretationJ1939::CMsgInterpretationJ1939()
 
 CMsgInterpretationJ1939::~CMsgInterpretationJ1939()
 {
-    SMSGENTRY::vClearMsgList(m_psMsgRoot);
+    if(NULL != m_psMsgRoot)
+         SMSGENTRY::vClearMsgList(m_psMsgRoot);
 }
 
 BOOL CMsgInterpretationJ1939::bInterPretJ1939_MSGS(
@@ -1256,6 +1287,11 @@ BOOL CMsgInterpretationJ1939::bInterPretJ1939_MSGS(
 
 void CMsgInterpretationJ1939::vSetJ1939Database(const SMSGENTRY* psCurrMsgEntry)
 {
+    //go for updated message configuration.
+    while (m_psMsgRoot != NULL)
+    {
+        m_psMsgRoot = m_psMsgRoot->m_psNext;
+    }
     if (psCurrMsgEntry != NULL)
     {
         const SMSGENTRY* psMsgEntry = psCurrMsgEntry;
@@ -1267,6 +1303,37 @@ void CMsgInterpretationJ1939::vSetJ1939Database(const SMSGENTRY* psCurrMsgEntry)
         }
     }
 }
+
+int CMsgInterpretationJ1939::nGetJ1939SignalCount(CString strMsgName)
+{
+	int iSignalCount = 0;
+	SMSGENTRY*  m_psMsgTemp = m_psMsgRoot;
+	while(m_psMsgTemp != NULL)
+	{
+		if(m_psMsgTemp->m_psMsg != NULL)
+		{
+			//check for same message name
+			if(strMsgName.CompareNoCase(m_psMsgTemp->m_psMsg->m_omStrMessageName)==0 )
+			{
+				sSIGNALS* m_psSignalTemp = m_psMsgTemp->m_psMsg->m_psSignals;
+				while(m_psSignalTemp != NULL)
+				{
+					iSignalCount++; //increment the signal count
+					m_psSignalTemp = m_psSignalTemp->m_psNextSignalList;
+				}
+				break;
+			}
+			else
+			{
+				//go for next message name
+				m_psMsgTemp = m_psMsgTemp->m_psNext; 
+			}
+		}
+	}
+	//return the number of signals for the given message.
+	return iSignalCount;
+}
+
 /*******************************************************************************
 Function Name : n64GetSignalValue
 Input(s) : BYTE byMsgByteVal,
@@ -1318,7 +1385,8 @@ Modifications :
 ******************************************************************************/
 void CMsgInterpretationJ1939::vClear()
 {
-    SMSGENTRY::vClearMsgList(m_psMsgRoot);
+    if(NULL != m_psMsgRoot)
+         SMSGENTRY::vClearMsgList(m_psMsgRoot);
 }
 /******************************************************************************
 Function Name : vCopy
