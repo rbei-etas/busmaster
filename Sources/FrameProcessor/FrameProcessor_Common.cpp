@@ -342,7 +342,10 @@ HRESULT CFrameProcessor_Common::EnableLogging(BOOL bEnable)
 
         hResult = S_OK;
     }
-
+    else
+   {
+	m_bLogEnabled = FALSE; //desable the control
+   }
     return hResult;
 }
 
