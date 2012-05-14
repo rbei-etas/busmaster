@@ -151,11 +151,20 @@ void CWaveformTransmitter::vProcessWaveForm(int CurrItr)
     {
         // Retrieve the present entry and query for the next one
         SSigGeneration& ouCurrEntry = m_omSigGenList.GetNext(CurrMsgPos);
+
+        if(NULL == *m_ppouDBPtr)
+	{
+		break;
+	}
+
         // Get message and signal details from database.
         sMESSAGE* psCurrMsg = (*m_ppouDBPtr)->psGetMessagePointer(ouCurrEntry.m_nMsgID);
-        ASSERT(NULL != psCurrMsg);
-        sSIGNALS* psSignalList = psCurrMsg->m_psSignals;  // Master list of the
-        ASSERT(NULL != psSignalList);     // signals which is expected to exist
+
+        if(NULL == psCurrMsg)
+	{
+		break;
+        }
+
         // Assign values to the CAN frame to transmit
         STCAN_MSG sCurrFrame = {'\0'}; // m_ucEXTENDED & m_ucRTR are zero.
         sCurrFrame.m_unMsgID = ouCurrEntry.m_nMsgID;
@@ -163,7 +172,16 @@ void CWaveformTransmitter::vProcessWaveForm(int CurrItr)
         sCurrFrame.m_ucChannel = 0x1;
         // Iterate through the master signal list and query for each signal in
         // the waveform list.
-        sSIGNALS* psCurrSignal = psSignalList;
+
+        sSIGNALS* psCurrSignal = NULL;
+        if(NULL == psCurrMsg->m_psSignals)
+	{
+		break;
+	}
+	else
+         {
+	    psCurrSignal = psCurrMsg->m_psSignals;  // Master list of the signals which is expected to exist
+	}
 
         while (NULL != psCurrSignal)
         {
@@ -205,7 +223,7 @@ Modification    :
 ******************************************************************************/
 DWORD WINAPI TransmissionThreadProc(LPVOID pVoid)
 {
-    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
+    pThreadParam = (CPARAM_THREADPROC*) pVoid;
     ASSERT(NULL != pThreadParam);
     CWaveformTransmitter* pCurrObj = static_cast<CWaveformTransmitter*> (pThreadParam->m_pBuffer);
     ASSERT(NULL != pCurrObj);
@@ -278,6 +296,8 @@ DWORD WINAPI TransmissionThreadProc(LPVOID pVoid)
         Result = timeKillEvent(Result);
     }
 
+    pThreadParam = NULL; //thread terminated
+    
     return 0;
 }
 // End of helper functions
@@ -294,6 +314,21 @@ CWaveformTransmitter::CWaveformTransmitter()
 
 CWaveformTransmitter::~CWaveformTransmitter()
 {
+	//terminate the thread if it is still running
+	while(pThreadParam != NULL)
+	{
+		::Sleep(10);
+		if(pThreadParam != NULL) //check for thread is terminated or not
+		{
+			pThreadParam->m_unActionCode = EXIT_THREAD;
+			SetEvent(pThreadParam->hGetExitNotifyEvent());
+			continue;
+		}
+		else
+		{
+			break;
+		}
+	}
 }
 
 void CWaveformTransmitter::vDoInitialisation(CWaveFormDataHandler* pWaveDataHandler,
