@@ -188,6 +188,53 @@ void CSigWatchDlg::vAddMsgSigIntoList(   const CString& omStrMsgName,
     {
         int nSize = (int)omSASignals.GetSize();
 
+		//check the valid entries in the signal watch window.
+        POSITION ListPos = m_odSigEntryList.GetHeadPosition();
+		while(ListPos)
+		{
+			POSITION TempPos = ListPos;
+            sSIGENTRY& sTempList = m_odSigEntryList.GetNext(ListPos);
+            CString strMsgName = sTempList.m_omMsgName;
+            CString strSigName = sTempList.m_omSigName;
+			
+			//check for valid message name
+			if(strMsgName.CompareNoCase(omStrMsgName) == 0 )
+			{
+				bool bDeleteMsgSignal = true;
+				int iCount = 0;
+				for(; iCount < nSize; iCount++)
+				{
+					CString strSignal = omSASignals.GetAt(iCount);
+					if(strSignal.CompareNoCase(strSigName) == 0 )
+					{
+						//signal is valid, just check for next
+						bDeleteMsgSignal = false;
+						break;
+					}
+				}
+				if(bDeleteMsgSignal) //some invalid signal found
+				{
+					m_odSigEntryList.RemoveAt(TempPos); //remove the signal from list
+			        POSITION ResetPos = m_odSigEntryList.GetHeadPosition();
+					iCount = 0; 
+					while(ResetPos) //reset the m_nEntryIndex in the list
+					{
+			            sSIGENTRY& sResetList = m_odSigEntryList.GetNext(ResetPos);
+						sResetList.m_nEntryIndex = iCount;
+						iCount++;
+					}
+
+					//check for signal in the signal watch window
+					iCount = m_omSignalList.GetItemCount(); 
+					if(iCount > 0)
+					{
+						//delete the last entry form the signal watch window
+						m_omSignalList.DeleteItem(iCount -1); 
+					}
+				}
+			}
+		}
+
         for( register int index = 0; index < nSize; index++)
         {
             CString omStrSignalInfo;
@@ -302,8 +349,29 @@ LRESULT CSigWatchDlg::vRemoveSignalFromMap(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
     // remove all entry from the map
     m_omCSDispEntry.Lock();
-    m_omSignalList.DeleteAllItems();
-    m_odSigEntryList.RemoveAll();
+	if(lParam != NULL) // remove only specified msg entry from the signal watch list
+	{
+		CString *pMsgString = (CString *)lParam;
+		CString strMsgName = *pMsgString;
+		int iCount = m_omSignalList.GetItemCount(); 
+		for(int iIndex = 0; iIndex < iCount; iIndex++)
+		{
+			//check the same message name
+			if(strMsgName.CompareNoCase(m_omSignalList.GetItemText(iIndex, 0)) == 0)
+			{
+				//delete the signal from the signal watch window
+				m_omSignalList.DeleteItem(iIndex);
+				//reset the index
+				iIndex--; 
+				iCount = m_omSignalList.GetItemCount(); 
+			}
+		}
+	}
+	else //remove all signal entries from the signal watch window
+	{
+		m_omSignalList.DeleteAllItems();
+		m_odSigEntryList.RemoveAll();
+	}
     m_omCSDispEntry.Unlock();
     return 0;
 }
