@@ -40,10 +40,10 @@ public:
     // Dialog Data
     //{{AFX_DATA(CGraphConfiguration)
     enum { IDD = IDD_DLG_GRAPH_WINDOW_CONF };
-    CColourPicker   m_omAxisColor;
-    CColourPicker   m_omFrameColor;
-    CColourPicker   m_omGridColor;
-    CColourPicker   m_omPlotColor;
+    CColorSelector   m_omAxisColor;
+    CColorSelector   m_omFrameColor;
+    CColorSelector   m_omGridColor;
+    CColorSelector   m_omPlotColor;
     int     m_nYGridCount;
     int     m_nXGridCount;
     int     m_nUpdateRate;

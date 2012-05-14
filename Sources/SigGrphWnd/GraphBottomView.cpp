@@ -20,7 +20,7 @@
 // For Export Dialog interface
 #include "GraphExportDlg.h"
 // For Color picker Dialog interface
-#include "Utility/ColourPicker.h"
+#include "Utility/ColorSelector.h"
 // For Graph configuration Dialog interface
 #include "GraphConfiguration.h"
 #include "SigGrphWnd_Defines.h"

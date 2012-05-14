@@ -33,7 +33,7 @@
 // For Color ListCtrl class definition
 #include "MessageList.h"
 // For Color Pocker class definition
-#include "Utility/ColourPicker.h"
+#include "Utility/ColorSelector.h"
 
 class CGraphLeftView : public CFormView
 {
@@ -49,8 +49,8 @@ public:
     CButton m_omBtnVisible;
     CButton m_omBtnEnable;
     CMessageList    m_omSignalList;
-    CColourPicker   m_omPointColor;
-    CColourPicker   m_omLineColor;
+    CColorSelector   m_omPointColor;
+    CColorSelector   m_omLineColor;
     int     m_nLineType;
     int     m_nSymbolType;
     IDMGraphCtrl* m_pDMGraphCtrl;
