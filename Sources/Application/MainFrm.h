@@ -75,6 +75,8 @@
 #include "TSExecutorHandler.h"
 #include "TSEditorHandler.h"
 
+#define WM_SAVE_DBJ1939				(WM_USER + 108)
+
 //// To write in to the trace window
 //BOOL gbSendStrToTrace(char*) ;
 
@@ -674,6 +676,8 @@ public:
     afx_msg void OnJ1939DBNew();
     afx_msg void OnJ1939DBOpen();
     afx_msg void OnJ1939DBClose();
+    afx_msg void OnJ1939DBSave();
+    afx_msg void OnUpdateJ1939DBSave(CCmdUI* pCmdUI);
     afx_msg void OnJ1939DBAssociate();
     afx_msg void OnJ1939DBDissociate();
     afx_msg void OnJ1939CfgSimSys();
