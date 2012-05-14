@@ -83,7 +83,7 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,186,6,50,14
     ICON            IDR_MAINFRAME,IDC_STATIC,7,11,20,20
     LTEXT           "",IDC_STATIC_VERSION,38,14,138,8
-    LTEXT           "Copyright© 2003 Robert Bosch Engineering and Business Solutions Ltd",IDC_STATIC,38,27,138,18
+    LTEXT           "Copyrightï¿½ 2003 Robert Bosch Engineering and Business Solutions Ltd",IDC_STATIC,38,27,138,18
     LTEXT           "_________________________________________________________________",IDC_STAT_LINE4,7,43,229,9,WS_DISABLED
 #ifdef FOR_ETIN
     LTEXT           "Entitlement ID",IDC_STATIC,38,60,45,8
@@ -856,6 +856,8 @@ BEGIN
             MENUITEM "&New",                        ID_DATABASE_NEW,MFT_STRING,MFS_ENABLED
             MENUITEM "&Open",                       ID_DATABASE_OPEN,MFT_STRING,MFS_ENABLED
             MENUITEM "&Close",                      ID_DATABASE_CLOSE,MFT_STRING,MFS_ENABLED
+            MENUITEM MFT_SEPARATOR
+            MENUITEM "&Save",                       ID_DATABASE_SAVE,MFT_STRING,MFS_ENABLED
             MENUITEM MFT_SEPARATOR
             MENUITEM "&Associate",                  ID_DATABASE_ASSOCIATE,MFT_STRING,MFS_ENABLED
             MENUITEM "&Dissociate",                 ID_DATABASE_DISSOCIATE,MFT_STRING,MFS_ENABLED
@@ -1665,6 +1667,11 @@ END
 STRINGTABLE
 BEGIN
     33001                   "Disassociate database\nDisassociate database"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_DATABASE_SAVE        "Save J1939 Database"
 END
 
 #endif    // English (U.S.) resources
