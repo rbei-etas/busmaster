@@ -179,6 +179,56 @@ void CSignalWatch_J1939::vDisplayInSigWatchWnd(STJ1939_MSG& sMsg)
     }
 
     LeaveCriticalSection(&m_omCritSecSW);
+
+    //delete the invalid entries
+    vDeleteRemovedListEntries();
+}
+
+void CSignalWatch_J1939::vDeleteRemovedListEntries()
+{
+    if ((m_pMsgInterPretObj_J != NULL) && (m_pouSigWnd != NULL))
+    {
+		CStringArray strMsgList; 
+		int inSize = 0;
+		//get the number of signals
+		int iCount = (int)m_pouSigWnd->m_omSignalList.GetItemCount(); 
+		for(int iIndex = 0; iIndex < iCount ; iIndex++ )
+		{
+			CString strMsgName = m_pouSigWnd->m_omSignalList.GetItemText(iIndex, 0);
+			inSize = (int)strMsgList.GetSize(); 
+			bool bFound = false;
+
+			//check for the unique message name 
+			for(int inPos = 0; inPos < inSize ; inPos++ )
+			{
+				if(strMsgName.CompareNoCase(strMsgList.GetAt(inPos)) == 0 )
+				{
+					bFound = true;
+					break;
+				}
+			}
+
+			//add the message in list
+			if(bFound == false)
+				strMsgList.Add(strMsgName); 
+		}
+
+		//get the message count
+		inSize = (int)strMsgList.GetSize(); 
+		for(int inPos = 0; inPos < inSize ; inPos++ )
+		{
+			CString strMsgName = strMsgList.GetAt(inPos); 
+			int iSignalCount = m_pMsgInterPretObj_J->nGetJ1939SignalCount(strMsgName);
+			if(iSignalCount == 0 ) //no signal is configured
+			{
+				if((int)m_pouSigWnd->m_omSignalList.GetItemCount() > 0  )
+				{
+					//remove the signal from signal watch window.
+					m_pouSigWnd->SendMessage( WM_REMOVE_SIGNAL, 0, (LPARAM) &strMsgName);
+				}
+			}
+		}
+	}
 }
 
 HRESULT CSignalWatch_J1939::SW_DoInitialization()
