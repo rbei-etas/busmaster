@@ -70,6 +70,7 @@ public:
     HRESULT SW_UpdateMsgInterpretObj(void* RefObj);
     BOOL    SW_IsWindowVisible(void);
     void vDisplayInSigWatchWnd(STJ1939_MSG& sMsg);
+    void vDeleteRemovedListEntries();
 
 private:
     BOOL bStartSigWatchReadThread(void);
