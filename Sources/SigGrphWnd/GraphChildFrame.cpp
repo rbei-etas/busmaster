@@ -18,8 +18,8 @@
 #include "GraphRightView.h"
 // For CGraphBottomView class definition
 #include "GraphBottomView.h"
-// For CColourPicker class definition
-#include "Utility/ColourPicker.h"
+// For CColorSelector class definition
+#include "Utility/ColorSelector.h"
 // For CMessageList class definition
 #include "MessageList.h"
 // For CGraphLeftView class definition

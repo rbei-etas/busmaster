@@ -30,7 +30,7 @@
 // For Main Frame definition
 #include "MainFrm.h"
 // For Color Picker class interface
-#include "Utility/ColourPicker.h"
+#include "Utility/ColorSelector.h"
 // For Graph Configuration class interface
 #include "GraphConfiguration.h"
 
@@ -187,11 +187,7 @@ BOOL CGraphConfiguration::OnInitDialog()
     }
 
     // Remove default color option from the buttons
-    m_omFrameColor.SetDefaultText( STR_EMPTY );
-    m_omPlotColor.SetDefaultText( STR_EMPTY );
-    m_omAxisColor.SetDefaultText( STR_EMPTY );
-    m_omGridColor.SetDefaultText( STR_EMPTY );
-    return TRUE;
+   return TRUE;
 }
 
 /*******************************************************************************

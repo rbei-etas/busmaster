@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="Utils"
 	ProjectGUID="{4A20171C-51DB-4E82-BCE0-5E3EEB070566}"
+	RootNamespace="Utils"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -162,11 +163,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ColourPicker.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ColourPopup.cpp"
+				RelativePath=".\ColorSelector.cpp"
 				>
 			</File>
 			<File
@@ -264,11 +261,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ColourPicker.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ColourPopup.h"
+				RelativePath=".\ColorSelector.h"
 				>
 			</File>
 			<File
@@ -297,10 +290,6 @@
 			</File>
 			<File
 				RelativePath=".\FlickerFreeTree.h"
-				>
-			</File>
-			<File
-				RelativePath=".\memdc.h"
 				>
 			</File>
 			<File

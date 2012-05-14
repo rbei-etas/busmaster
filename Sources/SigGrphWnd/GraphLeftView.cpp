@@ -98,7 +98,7 @@ BEGIN_MESSAGE_MAP(CGraphLeftView, CFormView)
     ON_CBN_SELCHANGE(IDC_COMBO_TYPE, OnSelchangeComboType)
     ON_CBN_SELCHANGE(IDC_COMBO_SYMBOL, OnSelchangeComboSymbol)
     ON_BN_CLICKED(IDC_BTN_ENABLE, OnBtnEnable)
-    ON_MESSAGE( WM_CPN_SELENDOK, OnColorChange)
+    ON_MESSAGE( WM_CPN_COLORSELECTED, OnColorChange)
     ON_MESSAGE(WM_CONFIG_CHANGE, vHandleConfigFileChange)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -147,8 +147,6 @@ void CGraphLeftView::OnInitialUpdate()
     m_omSignalList.SetColumnWidth( defCOL_TYPE_INDEX,
                                    defCOL_TYPE_WIDTH );
     // Remove Automatic Text from the color popup
-    m_omLineColor.SetDefaultText( STR_EMPTY );
-    m_omPointColor.SetDefaultText( STR_EMPTY );
     // Register this to child window
     CWnd* pWnd = NULL;
     pWnd = pomGetParentWindow();

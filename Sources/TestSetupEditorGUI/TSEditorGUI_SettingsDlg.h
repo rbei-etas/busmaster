@@ -22,18 +22,18 @@
 #pragma once
 
 #include "TSEditorGUI_resource.h"
-#include "Utility/ColourPicker.h"
+#include "Utility/ColorSelector.h"
 #include "afxwin.h"
 
 class CTSEditorSettingsDlg : public CDialog
 {
     DECLARE_DYNCREATE(CTSEditorSettingsDlg)
 public:
-    CColourPicker m_ouBkColorBtn;
-    CColourPicker m_ouTxtColorBtn;
+	CColorSelector m_ouBkColorBtn;
+    CColorSelector m_ouTxtColorBtn;
     BOOL m_bQueryConfirm;
-    CColourPicker m_Row1Color;
-    CColourPicker m_Row2Color;
+    CColorSelector m_Row1Color;
+    CColorSelector m_Row2Color;
     CButton m_omDefaultVal;
 
     // Dialog Data

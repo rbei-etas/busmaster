@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "Utility/ColourPicker.h"
+#include "Utility/ColorSelector.h"
 #include "messagelist.h"
 // For Main Frame Definition
 #include "MainFrm.h"
@@ -59,8 +59,8 @@ public:
     afx_msg void OnBnClickedBtnVisible();
     afx_msg void OnBnClickedBtnEnable();
     afx_msg void OnBnClickedBtnConfigure();
-    CColourPicker m_omLineColor;
-    CColourPicker m_omPointColor;
+    CColorSelector m_omLineColor;
+    CColorSelector m_omPointColor;
     CButton m_omBtnVisible;
     CButton m_omBtnEnable;
     CMessageList m_omSignalList;

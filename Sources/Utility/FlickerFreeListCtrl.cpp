@@ -21,7 +21,6 @@
 
 #include "Utils_stdafx.h"
 #include "FlickerFreeListCtrl.h"
-#include "memdc.h"
 
 // CFlickerFreeListCtrl
 
@@ -108,19 +107,26 @@ Member of       :   CFlickerFreeListCtrl
 Friend of       :   -
 Authors         :   Ravi D
 Date Created    :   19/09/2006
-Modifications   :   -
+Modifications   :   Venkatanarayana Makam memdc.h code was removed
 ************************************************************************************/
 void CFlickerFreeListCtrl::OnPaint()
 {
-    CPaintDC dc(this); // device context for painting
-    // TODO: Add your message handler code here
-    // Do not call CListCtrl::OnPaint() for painting messages
-    // Paint to a memory device context to reduce screen flicker.
-    CMemDC memDC(&dc, &m_rectClient);
-    // To change the background replace it with approp. background color
-    memDC.FillSolidRect( &m_rectClient, GetSysColor(COLOR_WINDOW));
-    // Let the window do its default painting...
-    CWnd::DefWindowProc( WM_PAINT, (WPARAM)memDC.m_hDC, 0 );
+	CPaintDC dc(this); // device context for painting
+	CDC pDC;
+    pDC.CreateCompatibleDC(&dc);
+	CBitmap* m_oldBitmap;
+	CBitmap m_NewBitmap;
+
+	BOOL bSuccess = m_NewBitmap.CreateCompatibleBitmap(&dc, m_rectClient.Width(), m_rectClient.Height());
+	m_oldBitmap = pDC.SelectObject(&m_NewBitmap);
+	pDC.FillSolidRect( &m_rectClient, GetSysColor(COLOR_WINDOW));
+	
+	CWnd::DefWindowProc( WM_PAINT, (WPARAM)pDC.m_hDC, 0 );
+	
+	dc.BitBlt(m_rectClient.left, m_rectClient.top, m_rectClient.Width(), m_rectClient.Height(), 
+					&pDC, m_rectClient.left, m_rectClient.top, SRCCOPY);
+
+	pDC.SelectObject(m_oldBitmap);
 }
 
 /**********************************************************************************

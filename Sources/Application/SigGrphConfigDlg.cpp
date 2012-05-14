@@ -81,7 +81,7 @@ BEGIN_MESSAGE_MAP(CSigGrphConfigDlg, CDialog)
     ON_BN_CLICKED(IDC_BUTTON_GRP_DISP_CONFIG, OnBnClickedButtonGrpDispConfig)
     ON_CBN_SELCHANGE(IDC_COMBO_TYPE, OnCbnSelchangeComboType)
     ON_CBN_SELCHANGE(IDC_COMBO_SYMBOL, OnCbnSelchangeComboSymbol)
-    ON_MESSAGE( WM_CPN_SELENDOK, OnColorChange)
+    ON_MESSAGE( WM_CPN_COLORSELECTED, OnColorChange)
 END_MESSAGE_MAP()
 
 
@@ -107,8 +107,6 @@ BOOL CSigGrphConfigDlg::OnInitDialog()
     m_omSignalList.SetColumnWidth( defCOL_TYPE_INDEX,
                                    defCOL_TYPE_WIDTH );
     // Remove Automatic Text from the color popup
-    m_omLineColor.SetDefaultText( STR_EMPTY );
-    m_omPointColor.SetDefaultText( STR_EMPTY );
     //Add the list of available buses.
     m_omCmbBusType.AddString(_T("CAN"));
     //m_omCmbBusType.AddString(_T("MCNET"));
