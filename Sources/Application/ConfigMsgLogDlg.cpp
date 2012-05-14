@@ -796,12 +796,30 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
         {
             SLOGINFO sLogObject;
             GetLoggingBlock(i, sLogObject);
-            AddNewItem_GUI(sLogObject, i);
-        }
 
+            // check for valid log path
+            CString strTempLog = sLogObject.m_sLogFileName;
+            CStdioFile omStdiofile;
+	   BOOL bFileOpen = omStdiofile.Open(strTempLog,
+                  CFile::modeCreate | CFile::modeWrite | CFile::typeBinary);
+		
+            if(bFileOpen == TRUE)// check for valid log path
+			{
+				omStdiofile.Close(); 
+				AddNewItem_GUI(sLogObject, i);
+			}
+			else
+			{
+				RemoveLoggingBlock(i--); //remove the old log data
+				LogBlocks = GetLoggingBlockCount(); //refresh the log count
+			}
+		}
         m_nLogIndexSel = 0;
-        m_omListLogFiles.SetItemState(m_nLogIndexSel,
-                                      LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+		if(m_omListLogFiles.GetItemCount() > 0 )//check for log files exists
+	        m_omListLogFiles.SetItemState(m_nLogIndexSel, 
+                   LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+		else
+	        vEnableDisableControls(FALSE);//disable controls if no log files exists
     }
     else
     {
