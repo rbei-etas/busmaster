@@ -28,6 +28,9 @@ Sources/Format Converter/CAPL2CConverter/lexer.h
 Sources/Format Converter/LogAscConverter/Log_Asc_Lexer.c
 Sources/Format Converter/LogAscConverter/log_asc_parser.c
 Sources/Format Converter/LogAscConverter/log_asc_parser.h
+Sources/TestSuiteExecutorGUI/lexer.c
+Sources/TestSuiteExecutorGUI/parser.c
+Sources/TestSuiteExecutorGUI/parser.h
 
 # Release dirs (except BIN)
 Sources/Application/Release
