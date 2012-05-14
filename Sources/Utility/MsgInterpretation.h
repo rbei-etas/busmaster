@@ -43,6 +43,7 @@ public:
     /* To set the message list root. J1939 database needs to be set before calling the above
     function */
     void vSetJ1939Database(const SMSGENTRY* psCurrMsgEntry);
+    int nGetJ1939SignalCount(CString strMsgName);
 
     /* Interpretation function for J1939 msgs.
     Given the PGN it parses the data and calculates signal values */
@@ -66,6 +67,8 @@ public:
 
     // To set the message list root
     void vSetMessageList(SMSGENTRY* psCurrMsgEntry);
+    int nGetSignalCount(CString strMsgName);
+
     // To set the current numeric mode for formatting
     void vSetCurrNumMode(EFORMAT eNumFormat);
 
