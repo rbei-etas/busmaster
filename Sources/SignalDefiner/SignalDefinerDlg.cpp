@@ -36,6 +36,7 @@ void CSignalDefinerDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_EDIT_SIGNAL_AMPLITUDE, m_fAmplitude);
     DDX_Text(pDX, IDC_EDIT_SIGNAL_FREQUENCY, m_fFrequency);
     DDX_Text(pDX, IDC_EDIT_SIGNAL_SAMPLING_TIME, m_dblSamplingTimePeriod);
+	//DDV_MinMaxDouble(pDX, m_dblSamplingTimePeriod, 1, 255);
     DDX_CBIndex(pDX, IDC_COMBO_CYCLES, m_nSelCycle);
     DDX_Control(pDX, IDC_COMBO_SIGNAL_TYPE, m_ctrSignalType);
     DDX_Control(pDX, IDC_COMBO_CYCLES, m_ctrNoOfCycles);
@@ -49,6 +50,7 @@ BEGIN_MESSAGE_MAP(CSignalDefinerDlg, CDialog)
     ON_EN_CHANGE(IDC_EDIT_SIGNAL_AMPLITUDE, OnEnChangeEditSignalAmplitude)
     ON_EN_CHANGE(IDC_EDIT_SIGNAL_FREQUENCY, OnEnChangeEditSignalFrequency)
     ON_EN_CHANGE(IDC_EDIT_SIGNAL_SAMPLING_TIME, OnEnChangeEditSignalSamplingTime)
+	ON_EN_UPDATE(IDC_EDIT_SIGNAL_SAMPLING_TIME, OnEnUpdateEditSignalSamplingTime)
     ON_BN_CLICKED(IDOK, OnBnClickedOk)
 END_MESSAGE_MAP()
 
@@ -57,10 +59,13 @@ BOOL CSignalDefinerDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
     UpdateData(FALSE);
+
+	
     m_ctrNoOfCycles.SetCurSel(m_nSelCycle);
     //Get the CWnd reference to the DMGraph ActiveX control
     m_poDMGraphCtrl = GetDlgItem(IDC_DMGRAPHCTRL);
 
+	
     /*Set Graph properties*/
     if( m_poDMGraphCtrl->m_hWnd != NULL )
     {
@@ -129,16 +134,42 @@ void CSignalDefinerDlg::OnEnChangeEditSignalSamplingTime()
 {
     vGenerateWave();
 }
+
+void CSignalDefinerDlg::OnEnUpdateEditSignalSamplingTime()
+{
+	CWnd *pEdit = GetDlgItem(IDC_EDIT_SIGNAL_SAMPLING_TIME);
+
+	if(pEdit != NULL)
+	{
+		CString strTime = L"";
+
+		pEdit->GetWindowText(strTime);
+
+		double dTime = _wtof(strTime);
+
+		if(dTime > 0)
+		{
+			m_dblSamplingTimePeriod = dTime;
+		}
+	}
+
+	UpdateData(FALSE);
+}
+
 void CSignalDefinerDlg::OnBnClickedOk()
 {
     long lCount = 0;
-    spElements->get_Count(&lCount);
 
-    for (long lIdx = 0; lIdx < lCount; lIdx++)
-    {
-        spElements->Delete(lIdx);
-        spElements = NULL;
-    }
+	if(spElements != NULL)
+	{
+		spElements->get_Count(&lCount);
+
+		for (long lIdx = 0; lIdx < lCount; lIdx++)
+		{
+			spElements->Delete(lIdx);
+			spElements = NULL;
+		}
+	}
 
     OnOK();
 }
@@ -229,48 +260,51 @@ void CSignalDefinerDlg::vGenerateWave()
     varrY.vt = VT_ARRAY|VT_R8;
     LONG lngCount = 0;
 
-    /*Currently using the Peak to Peak Amplitude as 0 to 2*Amplitude
-    instead of -Amplitude to +Amplitude*/
-    for(double dblCounter=0; dblCounter<nPointCount; dblCounter+=dblFrqStep)
-    {
-        double dblX, dblY;
-        dblCounter /= 1000;
+	if(dblFrqStep > 0)
+	{
+		/*Currently using the Peak to Peak Amplitude as 0 to 2*Amplitude
+		instead of -Amplitude to +Amplitude*/
+		for(double dblCounter=0; dblCounter<nPointCount; dblCounter+=dblFrqStep)
+		{
+			double dblX, dblY;
+			dblCounter /= 1000;
 
-        switch(enSignalType)
-        {
-            case SINE_WAVE:
-                dblX = dblCounter*1000;
-                dblY = m_fAmplitude +
-                       m_fAmplitude * sin( DegreesToRadians(2 * 180 * m_fFrequency * dblCounter) );
-                break;
+			switch(enSignalType)
+			{
+			case SINE_WAVE:
+				dblX = dblCounter*1000;
+				dblY = m_fAmplitude +
+					m_fAmplitude * sin( DegreesToRadians(2 * 180 * m_fFrequency * dblCounter) );
+				break;
 
-            case COS_WAVE:
-                dblX = dblCounter*1000;
-                dblY = m_fAmplitude +
-                       m_fAmplitude * cos( DegreesToRadians(2 * 180 * m_fFrequency * dblCounter) );
-                break;
+			case COS_WAVE:
+				dblX = dblCounter*1000;
+				dblY = m_fAmplitude +
+					m_fAmplitude * cos( DegreesToRadians(2 * 180 * m_fFrequency * dblCounter) );
+				break;
 
-            case TRIANGULAR_WAVE:
-                double dblSamplingPoint;
-                dblSamplingPoint = dblCounter;
+			case TRIANGULAR_WAVE:
+				double dblSamplingPoint;
+				dblSamplingPoint = dblCounter;
 
-                while ( dblSamplingPoint > dblTimePeriod )
-                {
-                    dblSamplingPoint -= dblTimePeriod;
-                }
+				while ( dblSamplingPoint > dblTimePeriod )
+				{
+					dblSamplingPoint -= dblTimePeriod;
+				}
 
-                dblX = dblCounter*1000;
-                dblY = m_fAmplitude +
-                       CalculateYatXForTriangleWave(dblSamplingPoint, m_fAmplitude, dblTimePeriod);
-                break;
-        }
+				dblX = dblCounter*1000;
+				dblY = m_fAmplitude +
+					CalculateYatXForTriangleWave(dblSamplingPoint, m_fAmplitude, dblTimePeriod);
+				break;
+			}
 
-        HRESULT hr;
-        hr = SafeArrayPutElement(varrX.parray, &lngCount, &dblX);
-        hr = SafeArrayPutElement(varrY.parray, &lngCount, &dblY);
-        lngCount++;
-        dblCounter *= 1000;
-    }
+			HRESULT hr;
+			hr = SafeArrayPutElement(varrX.parray, &lngCount, &dblX);
+			hr = SafeArrayPutElement(varrY.parray, &lngCount, &dblY);
+			lngCount++;
+			dblCounter *= 1000;
+		}
+	}
 
     SetGraphData(&varrX, &varrY);
 }
