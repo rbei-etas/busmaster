@@ -48,6 +48,7 @@ public:
     float m_fFrequency;
     int m_nSelCycle;
     double m_dblSamplingTimePeriod;
+
     BSTR m_strSignalName;
     CComPtr<IDMGraphCollection> spElements;
 
@@ -57,6 +58,7 @@ public:
     afx_msg void OnEnChangeEditSignalFrequency();
     afx_msg void OnEnChangeEditSignalSamplingTime();
     afx_msg void OnBnClickedOk();
+    afx_msg void OnEnUpdateEditSignalSamplingTime();
 
     virtual BOOL OnInitDialog();
 
