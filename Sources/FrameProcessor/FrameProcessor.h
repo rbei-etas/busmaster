@@ -22,29 +22,18 @@
  * Definition file for CFrameProcessorApp class.
  */
 
-// FrameProcessor.h : main header file for the FrameProcessor DLL
-//
-
 #pragma once
-
-#ifndef __AFXWIN_H__
-	#error include 'FrameProcessor_stdafx.h' before including this file for PCH
-#endif
-
-// CFrameProcessorApp
-// See FrameProcessor.cpp for the implementation of this class
-//
 
 class CFrameProcessorApp : public CWinApp
 {
-// Overrides
+    // Overrides
 public:
-	CFrameProcessorApp();
+    CFrameProcessorApp();
     ~CFrameProcessorApp();
 
     // To be used by the read thread
-	virtual BOOL InitInstance();
+    virtual BOOL InitInstance();
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
     virtual int ExitInstance();
 };

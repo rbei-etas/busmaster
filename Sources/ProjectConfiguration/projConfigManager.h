@@ -22,19 +22,9 @@
  * Contains project configuration manager class definition.
  */
 
-// projConfigManager.h: interface for the CProjConfigManager class.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_PROJCONFIGMANAGER_H__61491327_2D1B_4866_B291_97A22E5A2813__INCLUDED_)
-#define AFX_PROJCONFIGMANAGER_H__61491327_2D1B_4866_B291_97A22E5A2813__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
-
-typedef std::map <string, CProjConfig> PROJECTMAP;
+typedef map <string, CProjConfig> PROJECTMAP;
 
 class CProjConfigManager
 {
@@ -54,7 +44,7 @@ public:
     // Getters
     int GetProjectCount();
     int GetProjectList(list<string>& ProjectList);
-    bool GetProjectData(string ProjectName, PROJECTDATA &ProjData);
+    bool GetProjectData(string ProjectName, PROJECTDATA& ProjData);
     int GetSectionCount(string ProjectName);
     int GetSectionList(string ProjectName, list<string>& SectionList);
     bool GetSectionData(string ProjectName, string SectionName, SECTIONDATA& Sectiondata);
@@ -65,5 +55,3 @@ public:
     void DeleteProjectTable(string ProjectName);
     void DeleteAllProjectTable(void);
 };
-
-#endif // !defined(AFX_PROJCONFIGMANAGER_H__61491327_2D1B_4866_B291_97A22E5A2813__INCLUDED_)

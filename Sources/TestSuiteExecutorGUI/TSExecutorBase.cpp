@@ -25,12 +25,12 @@
 Function Name  :  CTSExecutorBase
 Input(s)       :  -
 Output         :  -
-Functionality  :  Constructor 
+Functionality  :  Constructor
 Member of      :  CTSExecutorBase
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 CTSExecutorBase::CTSExecutorBase(void)
@@ -42,12 +42,12 @@ CTSExecutorBase::CTSExecutorBase(void)
 Function Name  :  ~CTSExecutorBase
 Input(s)       :  -
 Output         :  -
-Functionality  :  Destructor 
+Functionality  :  Destructor
 Member of      :  CTSExecutorBase
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 CTSExecutorBase::~CTSExecutorBase(void)
@@ -58,12 +58,12 @@ CTSExecutorBase::~CTSExecutorBase(void)
 Function Name  :  TSX_SetDisplayWnd
 Input(s)       :  CListCtrl* pomResultDispaly - List Control display
 Output         :  HRESULT
-Functionality  :  Sets the display list control 
+Functionality  :  Sets the display list control
 Member of      :  CTSExecutorBase
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorBase::TSX_SetDisplayWnd(CListCtrl* pomResultDispaly)
@@ -73,6 +73,7 @@ HRESULT CTSExecutorBase::TSX_SetDisplayWnd(CListCtrl* pomResultDispaly)
         m_pomResultDispaly = pomResultDispaly;
         return S_OK;
     }
+
     return S_FALSE;
 }
 
@@ -80,12 +81,12 @@ HRESULT CTSExecutorBase::TSX_SetDisplayWnd(CListCtrl* pomResultDispaly)
 Function Name  :  TSX_DisplayMessage
 Input(s)       :  CString& omStrMsg - Display Message
 Output         :  HRESULT
-Functionality  :  Sisplays the Message in new line of list control 
+Functionality  :  Sisplays the Message in new line of list control
 Member of      :  CTSExecutorBase
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorBase::TSX_DisplayMessage(CString& omStrMsg)
@@ -98,6 +99,7 @@ HRESULT CTSExecutorBase::TSX_DisplayMessage(CString& omStrMsg)
         m_pomResultDispaly->EnsureVisible(nCount, FALSE);
         return S_OK;
     }
+
     return S_FALSE;
 }
 
@@ -110,7 +112,7 @@ Member of      :  CTSExecutorBase
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorBase::TSX_DisplayResult(CString& omStrResult)
@@ -121,5 +123,6 @@ HRESULT CTSExecutorBase::TSX_DisplayResult(CString& omStrResult)
         m_pomResultDispaly->SetItemText(nCount-1, 2, omStrResult);
         return S_OK;
     }
+
     return S_FALSE;
 }

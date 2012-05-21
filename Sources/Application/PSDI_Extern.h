@@ -18,8 +18,8 @@
  * \author    Anish Kumar
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined PSDI_EXTERN_H__INCLUDED_
-#define PSDI_EXTERN_H__INCLUDED_
+
+#pragma once
 
 #if defined USAGEMODE
 #undef USAGEMODE
@@ -39,11 +39,9 @@ typedef void (*MSG_RX_CALL_BK)(void* pParam, ETYPE_BUS eBusType);
 extern "C" {  // only need to export C interface if used by C++ source code
 #endif
 
-USAGEMODE HRESULT PSDI_GetInterface(ETYPE_BUS eBus, void** ppvInterface);
+    USAGEMODE HRESULT PSDI_GetInterface(ETYPE_BUS eBus, void** ppvInterface);
 
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif //PSDI_EXTERN_H__INCLUDED_

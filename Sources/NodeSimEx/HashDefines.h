@@ -27,8 +27,8 @@
 
 typedef enum eDLLHANDLER
 {
-      DLL_LOAD = 0,
-      DLL_UNLOAD
+    DLL_LOAD = 0,
+    DLL_UNLOAD
 };
 
 //// This enumeration defines current error state
@@ -47,7 +47,7 @@ typedef enum eDLLHANDLER
 struct sDLL_MSG
 {
     void* sRxMsg;
-	HMODULE h_DllHandle;
+    HMODULE h_DllHandle;
 };
 typedef sDLL_MSG SDLL_MSG;
 typedef SDLL_MSG* PSDLL_MSG;
@@ -87,12 +87,12 @@ PLACE_HODLER_FOR_FUNCTIONNAME */")
 
 #define UTILS_PREFIX            _T("Utils_")
 #define OPEN_PARENTHESIS        _T("(")
-#define NO_OF_CHAR_IN_UTILS		6
+#define NO_OF_CHAR_IN_UTILS     6
 
 #define GLOBAL_VAR_PREFIX         _T("g_")
 #define MIN_CHAR_IN_GLOBAL_VAR    2
 #define FILENAME_NOT_FOUND        _T("File not found!")
- 
+
 #define defDOT_C                    _T(".C")
 #define defDOT_DEF                  _T(".def")
 #define defDOT_EXP                  _T(".exp")
@@ -114,7 +114,7 @@ PLACE_HODLER_FOR_FUNCTIONNAME */")
 
 
 /*#define defDEFAULT_TIMER_HANDLER_CODE   _T("void __stdcall OnTimer_TIMERNAME_TIMERVALUE(unsigned int uTimerID,\
-unsigned int uMsg, unsigned long dwUser, unsigned long dw1, unsigned long dw2)")*/ 
+unsigned int uMsg, unsigned long dwUser, unsigned long dw1, unsigned long dw2)")*/
 #define defDEFAULT_TIMER_HANDLER_CODE _T("void OnTimer_TIMERNAME_TIMERVALUE( )")
 
 #define defTODO_FUNCTION_INSERT     _T("/* TODO: Define and Initialise the following variables*/")
@@ -133,13 +133,13 @@ unsigned int uMsg, unsigned long dwUser, unsigned long dw1, unsigned long dw2)")
 #define defOBJECT_BUILDPROGRAM_MSG  _T("Unable to allocate memory for BuildProgram module")
 #define defSTRMSG_RANGE_INVALID     _T("Message ID range:\"FROM\" field has value greater then or equal to \"TO\" field")
 #define defMESSAGE_HANDLER         _T("OnMsg")
-#define defPGN_HANDLER             _T("OnPGN")  
+#define defPGN_HANDLER             _T("OnPGN")
 #define defKEY_HANDLER             _T("OnKey_")
 #define defCON_IND_HANDLER         _T("OnConnectionInd_")
 #define defTIMER_HANDLER           _T("OnTimer_")
 #define defERROR_HANDLER_FN        _T("OnError_")
 #define defDLL_HANDLER_FN          _T("OnDLL_")
-#define defEVENT_IND_HANDLER       _T("OnEvent_") 
+#define defEVENT_IND_HANDLER       _T("OnEvent_")
 #define defUTILS_FUNCTION_FN       _T("Utils_")
 #define defMSG_NAME_HANDLER        _T("Name_")
 #define defMSG_ID_HANDLER          _T("ID_")
@@ -232,7 +232,7 @@ enum eSELTYPE
 #define defMSG_DUP_TIMER_HANDLER            _T("Duplicate timer handler name!")
 #define defTIMER_FN_NAME                    _T("OnTimer_TIMERNAME_TIMERVALUE")
 /*#define defDEFAULT_TIMER_HANDLER_CODE   _T("void __stdcall OnTimer_TIMERNAME_TIMERVALUE(unsigned int uTimerID,\
-unsigned int uMsg, unsigned long dwUser, unsigned long dw1, unsigned long dw2)")*/ 
+unsigned int uMsg, unsigned long dwUser, unsigned long dw1, unsigned long dw2)")*/
 #define defDEFAULT_TIMER_HANDLER_CODE       _T("void OnTimer_TIMERNAME_TIMERVALUE( )")
 #define STR_EMPTY                           _T("")
 #define STR_INCLUDE_FILE                    _T("\n#include <%s>")
@@ -262,23 +262,23 @@ unsigned int uMsg, unsigned long dwUser, unsigned long dw1, unsigned long dw2)")
 #define defEVENT_HANDLER_THREAD      5
 
 
-#define NAME_BUS		             _T("CAN Bus")
-#define defERROR_IN_REGISTRY         _T("Unable to obtain path of GCC from registry key")  
+#define NAME_BUS                     _T("CAN Bus")
+#define defERROR_IN_REGISTRY         _T("Unable to obtain path of GCC from registry key")
 #define defERROR_OPEN_REGISTRY       _T("The registry value is corrupted. Please re-install.")
 #define defERROR_OPEN_REGISTRY_FN    _T("The registry value is corrupted. The interface function is not available.\nPlease re-install.")
 #define defIMPORT_DLLLOAD_WARNNING   _T("Please Unload all the Dlls and try again")
 
 // All function prototype is used in function editor.
-typedef VOID (__cdecl *PFMSG_HANDLER_CAN)(STCAN_MSG Rx_Msg); 
-typedef VOID (__cdecl *PFMSG_HANDLER)(void* pRxMsg);
-typedef VOID (__cdecl *PFTIMER_HANDLER)(); 
-typedef VOID (__cdecl *PFKEY_HANDLER)(UCHAR ucKeyVal);
-typedef VOID (__cdecl *PFEVENT_HANDLER)(...);
-typedef VOID (__cdecl *PFERROR_HANDLER)(SCAN_ERR ErrorMsg);
-typedef VOID (__cdecl *PFDLL_HANDLER)();
-typedef BOOL (__cdecl *PFGET_PRG_VER)(int*,int*,HMODULE);
+typedef VOID (__cdecl* PFMSG_HANDLER_CAN)(STCAN_MSG Rx_Msg);
+typedef VOID (__cdecl* PFMSG_HANDLER)(void* pRxMsg);
+typedef VOID (__cdecl* PFTIMER_HANDLER)();
+typedef VOID (__cdecl* PFKEY_HANDLER)(UCHAR ucKeyVal);
+typedef VOID (__cdecl* PFEVENT_HANDLER)(...);
+typedef VOID (__cdecl* PFERROR_HANDLER)(SCAN_ERR ErrorMsg);
+typedef VOID (__cdecl* PFDLL_HANDLER)();
+typedef BOOL (__cdecl* PFGET_PRG_VER)(int*,int*,HMODULE);
 // Used is application call back function
-typedef VOID (CALLBACK *APPTIMERPOINTER)(UINT,UINT,DWORD,DWORD,DWORD);
+typedef VOID (CALLBACK* APPTIMERPOINTER)(UINT,UINT,DWORD,DWORD,DWORD);
 
 
 // This structure definition is for storing all information about a timer handler
@@ -290,15 +290,15 @@ struct sTIMERHANDLER
     BOOL            bTimerSelected;        // Selected or not for execution
     UINT            unTimerVal;            // the time-out value, in milliseconds
     PFTIMER_HANDLER pFTimerHandler;        // Long pointer to the function to be
-                                           // notified when the time-out value 
-                                           // elapses.
-    UINT            unTimerID;             // Specifies a nonzero timer identifier  
-//    BOOL            bIsExecuting;          // Timer call back is under execution
-	UINT            unCurrTime; //(ani1)
-	CEvent          omWaitEvent; 
-//	sTIMERHANDLER*  psNextTimer;
-	HANDLE          hDllHandle;
-	CWinThread*     pomThreadHandle;
+    // notified when the time-out value
+    // elapses.
+    UINT            unTimerID;             // Specifies a nonzero timer identifier
+    //    BOOL            bIsExecuting;          // Timer call back is under execution
+    UINT            unCurrTime; //(ani1)
+    CEvent          omWaitEvent;
+    //  sTIMERHANDLER*  psNextTimer;
+    HANDLE          hDllHandle;
+    CWinThread*     pomThreadHandle;
 };
 typedef sTIMERHANDLER  STIMERHANDLER;
 typedef STIMERHANDLER* PSTIMERHANDLER;
@@ -307,19 +307,19 @@ typedef STIMERHANDLER* PSTIMERHANDLER;
 //this structure store STIMERHANDLER and pointer to make a list
 struct sTIMERHANDLERLIST
 {
-	STIMERHANDLER sTimerHandler;
-	sTIMERHANDLERLIST* psNextTimer;
+    STIMERHANDLER sTimerHandler;
+    sTIMERHANDLERLIST* psNextTimer;
 };
 typedef sTIMERHANDLERLIST  STIMERHANDLERLIST;
 typedef STIMERHANDLERLIST*  PSTIMERHANDLERLIST;
 
-//This structure stores node name and pointer to the list of timer of 
-//the node 
+//This structure stores node name and pointer to the list of timer of
+//the node
 struct sNODETIMERLIST
 {
-	PSTIMERHANDLERLIST psTimerListPtr;
-	CString omNodeName;
-	sNODETIMERLIST* psNextTimerListPtr;
+    PSTIMERHANDLERLIST psTimerListPtr;
+    CString omNodeName;
+    sNODETIMERLIST* psNextTimerListPtr;
 };
 typedef sNODETIMERLIST  SNODETIMERLIST;
 typedef SNODETIMERLIST*  PSNODETIMERLIST;
@@ -328,9 +328,9 @@ class CExecuteFunc;
 //New data structure to store  node name and the "CExecuteFunc" pointer associated to that node:
 struct sNODEOBJECT
 {
- CString om_NodeName;
- CExecuteFunc* m_psExecuteFunc;
- sNODEOBJECT* m_psNextNode;
+    CString om_NodeName;
+    CExecuteFunc* m_psExecuteFunc;
+    sNODEOBJECT* m_psNextNode;
 };
 typedef  sNODEOBJECT SNODEOBJECT;
 typedef  SNODEOBJECT* PSNODEOBJECT;
@@ -341,7 +341,7 @@ struct sDLLHANDLER
 {
     eDLLHANDLER  m_eDLLHandler;           // DLL Handler
     PFDLL_HANDLER  m_pFDLLHandlers;       // Long pointer to the function to be
-                                          // executed on DLL Load\Unload
+    // executed on DLL Load\Unload
 };
 typedef sDLLHANDLER  SDLLHANDLER;
 typedef sDLLHANDLER* PSDLLHANDLER;
@@ -353,7 +353,7 @@ struct sERRORHANDLER
     eERROR_STATE    m_eErrorCode;         // Error value
     PFERROR_HANDLER m_pFErrorHandlers;    // Long pointer to the function to be  executed on error condition
     SCAN_ERR sErrorVal;                   // parameter to be passed to the error handler
-	CExecuteFunc* m_pCExecuteFunc;        //to pass this pointer to access its variable
+    CExecuteFunc* m_pCExecuteFunc;        //to pass this pointer to access its variable
 };
 typedef sERRORHANDLER  SERRORHANDLER;
 typedef sERRORHANDLER* PSERRORHANDLER;
@@ -363,13 +363,13 @@ typedef sERRORHANDLER* PSERRORHANDLER;
 struct sEVENTHANDLER
 {
     BYTE   m_byEventType;         // Error value
-        // Long pointer to the function to be  executed on error condition
+    // Long pointer to the function to be  executed on error condition
     UINT32 m_unPGN;
     BYTE   m_bySrc;
     BYTE   m_byDest;
     BOOL   m_bSuccess;
     PFEVENT_HANDLER m_pFEventHandlers;
-	CExecuteFunc* m_pCExecuteFunc;        //to pass this pointer to access its variable
+    CExecuteFunc* m_pCExecuteFunc;        //to pass this pointer to access its variable
 };
 typedef sEVENTHANDLER  SEVENTHANDLER;
 typedef sEVENTHANDLER* PSEVENTHANDLER;
@@ -380,8 +380,8 @@ struct sKEYHANDLER
 {
     UCHAR          ucKey;                 // Key value
     PFKEY_HANDLER  pFKeyHandlers;         // Long pointer to the function to be
-                                          // executed on press of corresponding
-                                          // key
+    // executed on press of corresponding
+    // key
 };
 typedef sKEYHANDLER  SKEYHANDLER;
 typedef SKEYHANDLER* PSKEYHANDLER;
@@ -395,7 +395,7 @@ struct sMSG_RANGE
 };
 
 typedef sMSG_RANGE SMSG_RANGE;
-typedef sMSG_RANGE *PSMSG_RANGE;
+typedef sMSG_RANGE* PSMSG_RANGE;
 
 
 struct sMSGINFO_FOR_HANDLER
@@ -408,12 +408,12 @@ struct sMSGINFO_FOR_HANDLER
     BOOL    m_bGenericHandlerON;
 };
 typedef sMSGINFO_FOR_HANDLER SMSGINFO_FOR_HANDLER;
-typedef sMSGINFO_FOR_HANDLER *PSMSGINFO_FOR_HANDLER;
+typedef sMSGINFO_FOR_HANDLER* PSMSGINFO_FOR_HANDLER;
 
 struct sMSGID_HANDLER_CAN
 {
     UINT    m_unMsgID;
-    PFMSG_HANDLER_CAN m_pFMsgHandler;   
+    PFMSG_HANDLER_CAN m_pFMsgHandler;
 };
 
 typedef sMSGID_HANDLER_CAN SMSGID_HANDLER_CAN;
@@ -423,7 +423,7 @@ typedef sMSGID_HANDLER_CAN* PSMSGID_HANDLER_CAN;
 struct sMSGID_HANDLER
 {
     UINT    m_unMsgID;
-    PFMSG_HANDLER m_pFMsgHandler;   
+    PFMSG_HANDLER m_pFMsgHandler;
 };
 
 typedef sMSGID_HANDLER SMSGID_HANDLER;
@@ -452,7 +452,7 @@ struct sEXECUTE_MSG_HANDLER_CAN
 {
     STCAN_MSG m_sRxMsg;
     PFMSG_HANDLER_CAN m_pFMsgHandler;
-	CExecuteFunc* m_pCExecuteFunc;
+    CExecuteFunc* m_pCExecuteFunc;
 };
 typedef sEXECUTE_MSG_HANDLER_CAN SEXECUTE_MSG_HANDLER_CAN;
 typedef sEXECUTE_MSG_HANDLER_CAN* PSEXECUTE_MSG_HANDLER_CAN;
@@ -462,7 +462,7 @@ struct sEXECUTE_MSG_HANDLER
 {
     void* m_pRxMsg;
     PFMSG_HANDLER m_pFMsgHandler;
-	CExecuteFunc* m_pCExecuteFunc;
+    CExecuteFunc* m_pCExecuteFunc;
 };
 typedef sEXECUTE_MSG_HANDLER SEXECUTE_MSG_HANDLER;
 typedef sEXECUTE_MSG_HANDLER* PSEXECUTE_MSG_HANDLER;
@@ -471,7 +471,7 @@ struct sEXECUTE_KEY_HANDLER
 {
     UCHAR m_ucKeyValue;
     PFKEY_HANDLER m_pFKeyHandler;
-	CExecuteFunc* m_pCExecuteFunc;
+    CExecuteFunc* m_pCExecuteFunc;
 };
 typedef sEXECUTE_KEY_HANDLER SEXECUTE_KEY_HANDLER;
 typedef sEXECUTE_KEY_HANDLER* PSEXECUTE_KEY_HANDLER;
@@ -492,17 +492,19 @@ struct sMsgHandlerDataCan
     BOOL operator==(const sMsgHandlerDataCan& RefObj) const
     {
         BOOL bReturn = FALSE;
+
         if (RefObj.wMsgCode == wMsgCode)
         {
             bReturn = TRUE;
         }
+
         return bReturn;
     }
 
 };
 // typedef for sMsgHandlerData and pointer to sMsgHandlerData
 typedef sMsgHandlerDataCan SMSGHANDLERDATA_CAN;
-typedef SMSGHANDLERDATA_CAN * PSMSGHANDLERDATA_CAN;
+typedef SMSGHANDLERDATA_CAN* PSMSGHANDLERDATA_CAN;
 
 struct sMsgHandlerData
 {
@@ -520,17 +522,19 @@ struct sMsgHandlerData
     BOOL operator==(const sMsgHandlerData& RefObj) const
     {
         BOOL bReturn = FALSE;
+
         if (RefObj.unMsgId == unMsgId)
         {
             bReturn = TRUE;
         }
+
         return bReturn;
     }
 
 };
 // typedef for sMsgHandlerData and pointer to sMsgHandlerData
 typedef sMsgHandlerData SMSGHANDLERDATA;
-typedef SMSGHANDLERDATA * PSMSGHANDLERDATA;
+typedef SMSGHANDLERDATA* PSMSGHANDLERDATA;
 
 // error defines for CConfigDetails class..
 #define defCONFIG_FILE_ERROR                1000
@@ -542,7 +546,7 @@ typedef SMSGHANDLERDATA * PSMSGHANDLERDATA;
 #define defCONFIG_FILE_NOT_FOUND            defCONFIG_FILE_ERROR+9
 #define defCONFIG_FILE_VERSION_ERR          defCONFIG_FILE_ERROR+10
 #define defCONFIG_FILE_SUCCESS              10
-#define defFILE_LOADED						11
+#define defFILE_LOADED                      11
 
 #define defCONFIG_FILE_LOADING              0
 #define defCONFIG_FILE_SAVING               1
@@ -585,13 +589,13 @@ const BYTE BIT_ERROR_HANDLER_THREAD      = 0x40; // Seventh bit
 // to be stored in the main configuration file.
 struct sSIMSYSARRAY
 {
-	CString m_omStrSimSysPath;			// simulated system path.
-	CString m_omStrSimSysName;			// simulated system name.
-	sSIMSYSARRAY * psNextSimsys;		// Pointer to the next simulated system.
-	sSIMSYSARRAY()
+    CString m_omStrSimSysPath;          // simulated system path.
+    CString m_omStrSimSysName;          // simulated system name.
+    sSIMSYSARRAY* psNextSimsys;         // Pointer to the next simulated system.
+    sSIMSYSARRAY()
     {
-//      m_omStrSimSysPath = NULL;
-//		m_omStrSimSysName = NULL;
+        //      m_omStrSimSysPath = NULL;
+        //      m_omStrSimSysName = NULL;
         psNextSimsys = NULL;
     }
 
@@ -644,13 +648,13 @@ enum eMESSAGEFROM
 enum eACONFIGDETAILS
 {
     OUT_WND_PLACEMENT = 0,
-	SIMSYS_WND_PLACEMENT
+    SIMSYS_WND_PLACEMENT
 };
 //The structure pass to thread function for load Fn execution
 struct sEXECUTE_LOAD_HANDLER
 {
     PFDLL_HANDLER pFDllHandler;
-	CExecuteFunc* m_pCExecuteFunc;
+    CExecuteFunc* m_pCExecuteFunc;
 };
 typedef sEXECUTE_LOAD_HANDLER SEXECUTE_LOAD_HANDLER;
 typedef sEXECUTE_LOAD_HANDLER* PSEXECUTE_LOAD_HANDLER;
@@ -704,13 +708,13 @@ typedef sEXECUTE_LOAD_HANDLER* PSEXECUTE_LOAD_HANDLER;
 
 
 #define GET_CONTEXT_WND_CHAR_HEIGHT() \
-                    ((::GetDeviceCaps(hDeviceContext,LOGPIXELSY) * 10) / 72)
+    ((::GetDeviceCaps(hDeviceContext,LOGPIXELSY) * 10) / 72)
 #define GET_CONTEXT_WND_CHAR_WIDTH() \
-                    ((::GetDeviceCaps(hDeviceContext,LOGPIXELSX) * 6) / 72)
+    ((::GetDeviceCaps(hDeviceContext,LOGPIXELSX) * 6) / 72)
 #define GET_FILE_VIEW_CHAR_HEIGHT() \
-                    ((omDeviceContext.GetDeviceCaps (LOGPIXELSY) * 10) / 72)
+    ((omDeviceContext.GetDeviceCaps (LOGPIXELSY) * 10) / 72)
 #define GET_FILE_VIEW_CHAR_WIDTH() \
-                    ((omDeviceContext.GetDeviceCaps (LOGPIXELSX) * 6) / 72)
+    ((omDeviceContext.GetDeviceCaps (LOGPIXELSX) * 6) / 72)
 
 
 #endif                  //_HASH_DEFINES_H

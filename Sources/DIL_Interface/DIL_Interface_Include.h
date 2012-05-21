@@ -23,11 +23,11 @@
  */
 
 #include "DataTypes/McNet_Datatypes.h"
-//Typedefs for all the callback functions the application should register to lib 
+//Typedefs for all the callback functions the application should register to lib
 typedef void (*PDILM_CB_N_CONNTESTCONF) (DWORD LCN1, DWORD LCN2, DWORD Result);
-typedef void (*PDILM_CB_N_CONNCONF) ( DWORD LOCAL_LC, DWORD REMOTE_LC, 
+typedef void (*PDILM_CB_N_CONNCONF) ( DWORD LOCAL_LC, DWORD REMOTE_LC,
                                       EWD_STATUS eWdStatus, eCON_STATUS eConStatus);
-typedef void (*PDILM_CB_N_CONNIND) ( DWORD LOCAL_LC, DWORD REMOTE_LC, 
+typedef void (*PDILM_CB_N_CONNIND) ( DWORD LOCAL_LC, DWORD REMOTE_LC,
                                      EWD_STATUS eWdStatus, eCON_STATUS eConStatus);
 typedef void (*PDILM_CB_A_DATAIND) ( PSTMCNET_MSG pouMsg);
 typedef void (*PDILM_CB_A_DATACONF)(DWORD dwLC, DWORD dwRC, char cTransferResult);

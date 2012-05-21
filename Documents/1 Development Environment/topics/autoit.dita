@@ -15,7 +15,7 @@
       <p>AutoIt v3 is a freeware BASIC-like scripting language designed for automating the Windows GUI and general scripting.</p>
       <p>It uses a combination of simulated keystrokes, mouse movement and window/control manipulation in order to automate tasks.</p>
       <p>AutoIt is also very small, self-contained and will run on all versions of Windows out-of-the-box with no annoying &quot;runtimes&quot; required!</p>
-      <p>Features</p>
+      <p>Features (as described on their homepage):</p>
       <ul>
         <li>Easy to learn BASIC-like syntax</li>
         <li>Simulate keystrokes and mouse movements</li>
@@ -43,7 +43,7 @@
     </section>
     <section>
       <title>Installation</title>
-      <p>Just execute the installer <filepath>autoit-v3-setup.exe</filepath>. The standard installation folder is C:\Program Files\AutoIt3.</p>
+      <p>Just execute the installer <filepath>autoit-v3-setup.exe</filepath>. The standard installation folder is <filepath>%ProgramFiles%\AutoIt3</filepath>.</p>
     </section>
     <section>
       <title>Configuration</title>
@@ -51,40 +51,27 @@
     </section>
     <section>
       <title>Usage</title>
-      <p>BUSMASTER provides Test Script in the AutoIt format in the folder and subfolders at <filepath>Test Artifacts\Test Scripts</filepath>. The file type is <filepath>.au3</filepath>. If a <filepath>DataPrep.txt</filepath> file is provided in the same folder, it describes the requirements prior to executing the corresponding test script.</p>
+      <p>BUSMASTER provides test script in the AutoIt format in the folder <filepath>Tests\AutoIt</filepath>. Their is a sub folder for each test group, e.g. <filepath>Tests\AutoIt\Installer</filepath>. The central <filepath>build.bat</filepath> script executes all tests and summarizes failures in an HTML report.</p>
       <p>If you intend to develop further AutoIt test scripts, please follow the following general guidelines to   make the usage of the AutoIt tool for our application testing more maintainable:</p>
       <ul>
+        <li>Test cases have the file extension <filepath>.au3</filepath>. The base name of the script and all necessary files should be identical and reflect the name of the test.</li>
+        <li>Test cases should run independently from each other. Thus a tester is able to execute specific individual test cases.</li>
+        <li>Test cases should run on different system, e.g. different working directory, language environments. Thus don&apos;t use absolute paths in AutoIt scripts. Instead use the AutoIt global variables, e.g. <cmdname>@ScriptDir</cmdname>, <cmdname>@ScriptName</cmdname>, <cmdname>@ProgramFilesDir</cmdname>.</li>
+        <li>Files that get generated during the test execution should be placed in <filepath>out</filepath> folders, e.g. <filepath>Tests\AutoIt\Format Converter\out</filepath>. This makes it easier for the central <filepath>.gitignore</filepath> file to keep such results out of the source code management system.</li>
+        <li>Informations during the test run should be reported to the <filepath>stdout</filepath>. Use the <cmdname>ConsoleWrite</cmdname> command for it.</li>
+        <li>Errors during the test run should be reported to <filepath>stderr</filepath>. Use the <cmdname>ConsoleWriteError</cmdname> command for it. If anything goes to <filepath>stderr</filepath> the test case is assumed as failed.</li>
         <li>
-          <p>Avoid Absolute paths usage</p>
-          <p>Try to avoid using absolute paths in Auto It scripts as much as possible. Instead use some GUI through the scripts will accept the paths required wherever necessary.</p>
+          <p>Try to avoid using absolute paths in AutoIt scripts as much as possible. Instead use the AutoIt global variables to determine path information.</p>
         </li>
+        <li>Try to avoid runtime specific behavior. Thus try to avoid using the <cmdname>Sleep</cmdname> command, but try to use the <cmdname>WinWaitActive</cmdname> command instead.</li>
         <li>
-          <p>Module wise Scripting</p>
-          <p>Develop a script for each module based on its UTS document. In this way, each module will have its own script file (<filepath>.au3</filepath> file). This allows the user to perform automation testing module-wise. For system testing, there should be a master script which hosts all the module wise scripts.</p>
-        </li>
-        <li>
-          <p>Test Case Result File</p>
-          <p>Store the test case results generated through script running into a <filepath>.csv</filepath> file which will allow for easy readability. Also, try to store only the failed test case results thereby ensuring the necessary and sufficient principle. Alternatively, the results can be stored in a MS excel file with different tabs containing test results of each modules. They can be preceded by a test summary tab. This automation can be achieved through COM.</p>
-        </li>
-        <li>
-          <p>Use Manual Testing wisely</p>
-          <p>There may be a situation while testing using the automation scripts where a user action is required to manually verify the test case results. For an instance, a case may arise where a user needs to verify the graph data to check for its correct plotting. In such cases, use GUI scripting concept, by introducing dialog box which looks like <image href="../images/autoit_interaction.png" placement="break"/></p>
-          <p>This way, the user can choose <uicontrol>Yes</uicontrol> or <uicontrol>No</uicontrol> thus accounting for some manual intervention which makes the life easy for script developer.</p>
-        </li>
-        <li>
-          <p>Division of Testing</p>
-          <p>The testing with AutoIt automation can be divided into two varieties:<ul>
-              <li>Fully Automatic: The testing is fully automated in this case. No manual testing is allowed in this.</li>
-              <li>Semi Automatic: Involves some manual testing mentioned in preceding guideline.</li>
-            </ul></p>
-        </li>
-        <li>
-          <p>Identify Test Case dependencies</p>
-          <p>While automating test cases for a particular module using AutoIt scripts, it is quite possible that test cases depend upon their predecessors and the execution of test cases can be skipped if the dependent test case fails.</p>
-          <p>Consider a sample test case where a dialog visibility should be checked upon certain action. If the dialog is visible, then the other test cases like carrying some operations in that dialog can be executed. If the dialog is not visible, then there is no point in executing the remaining test cases.</p>
-          <p>So, as explained in the example, while developing scripts for test cases, script developer should identify the dependencies and ensure skipping the execution of test cases accordingly.</p>
+          <p>Add your test case to the central <filepath>Tests\AutoIt\build.bat</filepath> script, if you feel confident that all aforementioned points are fulfilled.</p>
         </li>
       </ul>
+      <p>The testing with AutoIt automation can be divided into two varieties:<ul>
+          <li>Fully Automatic testing requires no manual interaction and is based on the Simulation interface.</li>
+          <li>Semi Automatic System Testing: Involves some manual procedures (e.g. attaching hardware devices) mentioned in related guideline.</li>
+        </ul></p>
     </section>
   </body>
 </topic>

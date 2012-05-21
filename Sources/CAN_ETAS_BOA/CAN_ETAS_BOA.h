@@ -21,13 +21,8 @@
  *
  * Exports API functions for ETAS-BOA CAN Hardware interface
  */
+
 #pragma once
-
-#ifndef __AFXWIN_H__
-#error include 'stdafx.h' before including this file for PCH
-#endif
-
-
 
 /**
  * See CAN_ETAS_BOA.cpp for the implementation of this class
@@ -37,7 +32,7 @@ class CCAN_ETAS_BOA : public CWinApp
 public:
     CCAN_ETAS_BOA();
 
-// Overrides
+    // Overrides
 public:
     virtual BOOL InitInstance();
 

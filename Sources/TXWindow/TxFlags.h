@@ -21,16 +21,12 @@
  *
  * Contains CFlags class definition
  */
-#if !defined TXWND_FLAGS_H_INCLUDED_
-#define TXWND_FLAGS_H_INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 // Definition of PSTOOLBARINFO structure is here
 
-// enumeration for all flags 
+// enumeration for all flags
 typedef enum eTXWNDFLAG
 {
     TX_HEX,
@@ -38,7 +34,7 @@ typedef enum eTXWNDFLAG
     TX_CONNECTED
 };
 
-class CFlags  
+class CFlags
 {
 public:
     int nGetFlagStatus(eTXWNDFLAG WhichFlag);
@@ -53,4 +49,3 @@ private:
 private:
     CCriticalSection m_omFlagCritSec;
 };
-#endif //#define TXWND_FLAGS_H_INCLUDED_

@@ -15,12 +15,15 @@
 
 /**
  * \file      Export_UserDllCAN.h
- * \brief     This header file contains name and prototype of the 
+ * \brief     This header file contains name and prototype of the
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This header file contains name and prototype of the 
+ * This header file contains name and prototype of the
  */
+
+#pragma once
+
 #include "Export_UserDll.h"
 
 typedef int (*APPFUNCPROC) (STCAN_MSG,HMODULE);

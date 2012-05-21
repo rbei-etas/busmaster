@@ -1,35 +1,31 @@
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  ConnectionDet.cpp
-  Description   :  
-  $Log:   X:/Archive/Sources/DIL_J1939/ConnectionDet.cpv  $
-   
-      Rev 1.4   15 Apr 2011 18:48:34   CANMNTTM
-   Added RBEI Copyright information.
-   
-      Rev 1.3   23 Mar 2011 14:58:04   CANMNTTM
-   Support for PDU format 2 message
-   
-      Rev 1.2   29 Dec 2010 19:32:38   CANMNTTM
-   Connection mode for both transmission and reception added.
-   
-      Rev 1.1   23 Dec 2010 16:52:20   CANMNTTM
-   Macro MAX_MSG_LEN_J1939
-    instead of MAX_DATA_LEN_J1939 wherever applicable.
-   
-      Rev 1.0   06 Dec 2010 18:47:20   rac2kor
-    
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-  Author(s)     :  Pradeep Kadoor
-  Date Created  :  23/11/2010
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
+/**
+ * \file      ConnectionDet.cpp
+ * \brief     Connection Details
+ * \author    Pradeep Kadoor, Tobias Lorenz
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Defines the connction details.
+ */
 
+/* Project includes */
 #include "DIL_J1939_stdafx.h"
 #include "J1939_UtilityFuncs.h"
 #include "ConnectionDet.h"
-
 
 const int nMNT             =10;
 const int nMNTC            =10;
@@ -43,15 +39,17 @@ const int nTCT             =1000;//ms
 const int nTD              =50; //ms
 const int nTDE             =100; //ms
 
-
-CConnectionDet::CConnectionDet(BYTE bySrcAddress, 
+/**
+ * \brief Constructor
+ *
+ * Constructor
+ */
+CConnectionDet::CConnectionDet(BYTE bySrcAddress,
                                BYTE byDestAddress)
 {
     vInitializeMemberVar();
-
-    m_bySrcAddress = bySrcAddress; 
+    m_bySrcAddress = bySrcAddress;
     m_byDestAddress = byDestAddress;
-    
     //Create Event
     m_hDataAckWait = CreateEvent(NULL, FALSE, FALSE, NULL);
     m_hBCDataRXWait = CreateEvent(NULL, FALSE, FALSE, NULL);
@@ -60,6 +58,11 @@ CConnectionDet::CConnectionDet(BYTE bySrcAddress,
     m_hDataDelayWait = CreateEvent(NULL, FALSE, FALSE, NULL);
 }
 
+/**
+ * \brief Destructor
+ *
+ * Destructor
+ */
 CConnectionDet::~CConnectionDet(void)
 {
     CloseHandle(m_hDataAckWait);
@@ -69,12 +72,17 @@ CConnectionDet::~CConnectionDet(void)
     CloseHandle(m_hDataDelayWait);
 }
 
+/**
+ * \brief Initialize Member Variables
+ *
+ * Initializes the member variables.
+ */
 void CConnectionDet::vInitializeMemberVar()
-{   
-    m_byTxAckSeqNo      = 0; 
+{
+    m_byTxAckSeqNo      = 0;
     m_byRxSeqNo         = 0;
-    m_byDestAddress     = 0;  
-    m_bySrcAddress      = 0;   
+    m_byDestAddress     = 0;
+    m_bySrcAddress      = 0;
     m_eConStatus        = T_DISCONNECTED;
     m_eRxConMode        = CM_STANDARD;
     m_eTxConMode        = CM_STANDARD;
@@ -83,24 +91,25 @@ void CConnectionDet::vInitializeMemberVar()
     m_unRxTotalPackets  = 0;
     m_unRxLastFrameLen  = 0;
     m_unTimeStamp       = 0;
-    
     m_BCTimeStamp       = 0;
     m_BCRxSeqVar        = 0;
     m_BCTotalPackets    = 0;
     m_BCPGN             = 0;
     m_BCRXLongDataLen   = 0;
     m_BCLastFrameLen    = 0;
-
-    m_bySrcAddress      = ADDRESS_NULL;    
-    m_byDestAddress     = ADDRESS_NULL;   
-
+    m_bySrcAddress      = ADDRESS_NULL;
+    m_byDestAddress     = ADDRESS_NULL;
     m_byResult          = DATA_FAILURE;
     m_unNextPacket      = 0;
-
     m_byCurrPacket      = 0;
     m_byMaxPacketWOC2S  = 0;
 }
 
+/**
+ * \brief Is Message Received For This Connection
+ *
+ * Checks if this message received for this connection.
+ */
 BOOL CConnectionDet::bIsMsgRxForThisConnection(UINT32 unExtId)
 {
     UNION_29_BIT_ID uExtId = {0};
@@ -108,13 +117,25 @@ BOOL CConnectionDet::bIsMsgRxForThisConnection(UINT32 unExtId)
     BYTE bySrcAdres = uExtId.m_s29BitId.m_bySrcAddress;
     BYTE byDestAdres = uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Specific;
     BYTE byPF = uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format;
-    return (((byDestAdres == m_bySrcAddress) ||(byDestAdres == ADDRESS_ALL) || (byPF > 239)) && 
+    return (((byDestAdres == m_bySrcAddress) ||(byDestAdres == ADDRESS_ALL) || (byPF > 239)) &&
             (m_byDestAddress == bySrcAdres));
 }
+
+/**
+ * \brief Set Connection Status
+ *
+ * Sets the connection status.
+ */
 void CConnectionDet::vSetConStatus(eCON_STATUS eConStatus)
 {
     m_eConStatus = eConStatus;
 }
+
+/**
+ * \brief Get Connection Status
+ *
+ * Gets the connection status.
+ */
 eCON_STATUS CConnectionDet::eGetConStatus(void)
 {
     return m_eConStatus;

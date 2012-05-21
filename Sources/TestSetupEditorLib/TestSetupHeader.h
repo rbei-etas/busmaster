@@ -18,34 +18,33 @@
  * \author    Venkatanarayana makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined(_TSEDITORLIB_TESTSETUPHEADER_H_INCLUDED_)
-#define _TSEDITORLIB_TESTSETUPHEADER_H_INCLUDED_
+
+#pragma once
 
 #include "TSDefinitions.h"
 #include "Include/BaseDefs.h"
 class CTestSetupHeader
 {
 public:
-    //Bus Type    
+    //Bus Type
     eTYPE_BUS m_eBus;
-	//Database file path
-	CString m_omDatabasePath;
-	//Name of the engineer
-	SInfo m_sEngineerInfo1;
-	//Engineer's role / designation
-	SInfo m_sEngineerInfo2;
-	//Name of the test setup
-	SInfo m_sModuleName;
+    //Database file path
+    CString m_omDatabasePath;
+    //Name of the engineer
+    SInfo m_sEngineerInfo1;
+    //Engineer's role / designation
+    SInfo m_sEngineerInfo2;
+    //Name of the test setup
+    SInfo m_sModuleName;
     //Report File Path
-	SReportFile m_sReportFile;
-	//Version information
-	SInfo m_sVersion;
+    SReportFile m_sReportFile;
+    //Version information
+    SInfo m_sVersion;
 
-//Member Functions
+    //Member Functions
 public:
-	CTestSetupHeader(void);
-	HRESULT InitHeaderToDefault(void);
+    CTestSetupHeader(void);
+    HRESULT InitHeaderToDefault(void);
     HRESULT ValidateEntity(CString& omStrResult);
     virtual ~CTestSetupHeader(void);
 };
-#endif // !defined(_TSEDITORLIB_TESTSETUPHEADER_H_INCLUDED_)

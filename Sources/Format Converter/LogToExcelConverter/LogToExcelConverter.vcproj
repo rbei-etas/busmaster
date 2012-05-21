@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="LogToExcelConverter"
 	ProjectGUID="{77E7E3DA-F9A1-4983-B094-ED128B81E5FF}"
 	RootNamespace="LogToExcelConverter"
@@ -43,7 +43,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="0"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_AFXEXT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -51,7 +51,7 @@
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="0"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -70,7 +70,7 @@
 				OutputFile="$(SolutionDir)/bin/$(IntDir)/ConverterPlugins/$(ProjectName).dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile=""
-				GenerateDebugInformation="false"
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -131,7 +131,7 @@
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				DebugInformationFormat="0"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -151,7 +151,7 @@
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 				ModuleDefinitionFile=""
-				GenerateDebugInformation="false"
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"

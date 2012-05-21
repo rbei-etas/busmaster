@@ -33,47 +33,48 @@ CTreeItemParam::~CTreeItemParam()
     vRemoveTreeCtrl();
 }
 
-CTreeItemParam::CTreeItemParam(CWnd* pomParent, 
-                               CStringArray& omStringArray, 
+CTreeItemParam::CTreeItemParam(CWnd* pomParent,
+                               CStringArray& omStringArray,
                                RECT& Rect,
                                COLORREF TextColour)
 {
     HTREEITEM ItemHandle;
-	int nCount = omStringArray.GetSize();
+    int nCount = omStringArray.GetSize();
     m_omRect = Rect;
-    //BOOL bCreate = 
-    m_odTreeCtrl.Create(WS_CHILD | WS_VISIBLE | WS_TABSTOP | TVS_HASLINES | 
+    //BOOL bCreate =
+    m_odTreeCtrl.Create(WS_CHILD | WS_VISIBLE | WS_TABSTOP | TVS_HASLINES |
                         TVS_LINESATROOT | TVS_SHOWSELALWAYS | WS_CLIPSIBLINGS,
-                      m_omRect, pomParent, ++m_unID);
+                        m_omRect, pomParent, ++m_unID);
     m_TextColour = TextColour;
-	m_odTreeCtrl.SetTextColor(m_TextColour);
-	
+    m_odTreeCtrl.SetTextColor(m_TextColour);
+
     for (int i = 0; i < nCount; i++)
     {
         CString omCurrStr = omStringArray.ElementAt(i);
         ItemHandle =  m_odTreeCtrl.InsertItem(omCurrStr);
+
         if (ItemHandle != NULL)
         {
             m_aomItemHandle.Add(ItemHandle);
         }
     }
-	VERIFY(m_omFont.CreateFont(
-	14,                        // nHeight
-	0,                         // nWidth
-	0,                         // nEscapement
-	0,                         // nOrientation
-	FW_LIGHT,                 // nWeight
-	FALSE,                     // bItalic
-	FALSE,                     // bUnderline
-	0,                         // cStrikeOut
-	ANSI_CHARSET,              // nCharSet
-	OUT_DEFAULT_PRECIS,        // nOutPrecision
-	CLIP_DEFAULT_PRECIS,       // nClipPrecision
-	DEFAULT_QUALITY,           // nQuality
-	DEFAULT_PITCH | FF_ROMAN,  // nPitchAndFamily
-	_T("Courier New")));  
-	
-	m_odTreeCtrl.SetFont(&m_omFont, TRUE);
+
+    VERIFY(m_omFont.CreateFont(
+               14,                        // nHeight
+               0,                         // nWidth
+               0,                         // nEscapement
+               0,                         // nOrientation
+               FW_LIGHT,                 // nWeight
+               FALSE,                     // bItalic
+               FALSE,                     // bUnderline
+               0,                         // cStrikeOut
+               ANSI_CHARSET,              // nCharSet
+               OUT_DEFAULT_PRECIS,        // nOutPrecision
+               CLIP_DEFAULT_PRECIS,       // nClipPrecision
+               DEFAULT_QUALITY,           // nQuality
+               DEFAULT_PITCH | FF_ROMAN,  // nPitchAndFamily
+               _T("Courier New")));
+    m_odTreeCtrl.SetFont(&m_omFont, TRUE);
 }
 
 void CTreeItemParam::vUpdateTreeValues(CStringArray& omStringArray, COLORREF TextColour)
@@ -83,19 +84,23 @@ void CTreeItemParam::vUpdateTreeValues(CStringArray& omStringArray, COLORREF Tex
         m_TextColour = TextColour;
         m_odTreeCtrl.SetTextColor(m_TextColour);
     }
+
     HTREEITEM ItemHandle = NULL;
-	int nCount = omStringArray.GetSize();
-	if (nCount > m_aomItemHandle.GetSize())
+    int nCount = omStringArray.GetSize();
+
+    if (nCount > m_aomItemHandle.GetSize())
     {
         ASSERT(FALSE);
     }
+
     for (int i = 0; i < nCount; i++)
     {
         CString omCurrStr = omStringArray.ElementAt(i);
         ItemHandle = m_aomItemHandle.GetAt(i);
+
         if (ItemHandle != NULL)
         {
-            m_odTreeCtrl.SetItemText(ItemHandle, omCurrStr.GetBuffer(MAX_PATH));			
+            m_odTreeCtrl.SetItemText(ItemHandle, omCurrStr.GetBuffer(MAX_PATH));
         }
     }
 }
@@ -104,7 +109,6 @@ void CTreeItemParam::vShift(LONG lExtent)
 {
     m_omRect.top += lExtent;
     m_omRect.bottom += lExtent;
-
     m_odTreeCtrl.MoveWindow(&m_omRect);
 }
 
@@ -112,6 +116,7 @@ void CTreeItemParam::vRemoveTreeCtrl(void)
 {
     m_aomItemHandle.RemoveAll();
     m_odTreeCtrl.DeleteAllItems();
+
     if (m_odTreeCtrl.m_hWnd != NULL)
     {
         m_odTreeCtrl.DestroyWindow();
@@ -126,6 +131,6 @@ void CTreeItemParam::vShiftWindowTop(LONG lExtent)
 
 void CTreeItemParam::vUpdateTreeItemRect(RECT& rcNewPos)
 {
-	m_omRect = rcNewPos;
-	m_odTreeCtrl.MoveWindow(&m_omRect);
+    m_omRect = rcNewPos;
+    m_odTreeCtrl.MoveWindow(&m_omRect);
 }

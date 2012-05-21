@@ -19,9 +19,7 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
-
-#if !defined MSGWNDHDRINFO__H__INCLUDED_
-#define MSGWNDHDRINFO__H__INCLUDED_
+#pragma once
 
 #include "include/BaseDefs.h"
 
@@ -34,11 +32,9 @@ private:
 public:
     CMsgWndHdrInfo(void);
     ~CMsgWndHdrInfo(void);
-    void vInitializeColDetails( SMSGWNDHDRCOL sHdrColPosStruct, 
-                                       CString omArrColTitle[MAX_MSG_WND_COL_CNT],
-                                       int nArrTitleCnt);
+    void vInitializeColDetails( SMSGWNDHDRCOL sHdrColPosStruct,
+                                CString omArrColTitle[MAX_MSG_WND_COL_CNT],
+                                int nArrTitleCnt);
     void vGetHdrColStruct(SMSGWNDHDRCOL& sHdrColStruct);
-    void vGetHdrColNames(CString omArrColTitle[MAX_MSG_WND_COL_CNT], int &NameCount);
+    void vGetHdrColNames(CString omArrColTitle[MAX_MSG_WND_COL_CNT], int& NameCount);
 };
-
-#endif //MSGWNDHDRINFO__H__INCLUDED_

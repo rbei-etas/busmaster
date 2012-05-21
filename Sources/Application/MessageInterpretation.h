@@ -21,17 +21,8 @@
  *
  * Interface file for CMessageInterpretation class
  */
-#if !defined(AFX_MESSAGEINTERPRETATION_H__23786D9A_35B8_41B8_8B9A_14DE30FE8FE6__INCLUDED_)
-#define AFX_MESSAGEINTERPRETATION_H__23786D9A_35B8_41B8_8B9A_14DE30FE8FE6__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// MessageInterpretation.h : header file
-//
-
-/////////////////////////////////////////////////////////////////////////////
-// CMessageInterpretation dialog
 
 typedef struct tagSMESSAGE_ENTRY_INFO
 {
@@ -40,10 +31,10 @@ typedef struct tagSMESSAGE_ENTRY_INFO
     UCHAR m_ucDataLen;
     UCHAR m_ucData[8];
     // Constructor to initialise the data members
-    tagSMESSAGE_ENTRY_INFO() 
-    { 
+    tagSMESSAGE_ENTRY_INFO()
+    {
         m_unMessageID     = 0;
-        m_omMessageName   = _T("");
+        m_omMessageName   = "";
         m_ucDataLen = 0;
         memset(m_ucData,0,8);
     }
@@ -62,13 +53,13 @@ public:
                             const CStringArray& omSASignals,
                             const CStringArray& omSARaw,
                             const CStringArray& omSAPhy,
-							const CStringArray& omSAUnits, BOOL bHexON);
+                            const CStringArray& omSAUnits, BOOL bHexON);
     // Window Placement routines
     // Save window status
     void vUpdateWndCo_Ords();
     // Load window status
     void vUpdateWinStatus();
-	void vSetCaption(CString strCaption);
+    void vSetCaption(CString strCaption);
 private:
     // To keep window co ordinates
     WINDOWPLACEMENT m_sWinCurrStatus;
@@ -76,12 +67,12 @@ private:
     void vSaveWinStatus();
     // Get the status from the config
     void vGetWinStatus();
-// Construction
+    // Construction
 public:
-	void vClearWindowContent();
+    void vClearWindowContent();
     CMessageInterpretation(CWnd* pParent = NULL);   // standard constructor
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CMessageInterpretation)
     enum { IDD = IDD_DLG_INTERPRET_MSG };
     CFFListCtrl   m_ctrlSignal;
@@ -90,16 +81,16 @@ public:
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMessageInterpretation)
-    public:
+public:
     virtual BOOL DestroyWindow();
-    protected: 
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
@@ -115,11 +106,6 @@ protected:
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnMove(int x, int y);
-	CString m_strCaption;
+    afx_msg void OnMove(int x, int y);
+    CString m_strCaption;
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_MESSAGEINTERPRETATION_H__23786D9A_35B8_41B8_8B9A_14DE30FE8FE6__INCLUDED_)

@@ -48,18 +48,21 @@ TSEditorHandler::TSEditorHandler(void)
 
 TSEditorHandler::~TSEditorHandler(void)
 {
-    if ( m_hTSEditorHandle != NULL )            
+    if ( m_hTSEditorHandle != NULL )
+    {
         FreeLibrary(m_hTSEditorHandle);
+    }
 }
 void TSEditorHandler::vLoadTSEditor_DLL()
 {
     if ( m_hTSEditorHandle != NULL )
     {
         FreeLibrary(m_hTSEditorHandle);
-		m_hTSEditorHandle = NULL;
+        m_hTSEditorHandle = NULL;
     }
-	m_hTSEditorHandle = LoadLibrary(def_STR_TESTSETUPEDITORDLL);
-	vloadFuncPtrAddress();
+
+    m_hTSEditorHandle = LoadLibrary(def_STR_TESTSETUPEDITORDLL);
+    vloadFuncPtrAddress();
 }
 void TSEditorHandler::vInitializeFuncPtrs()
 {
@@ -100,6 +103,7 @@ void TSEditorHandler::vLoadTestSetupFile(CString omFilePath)
 HWND TSEditorHandler::vGetSafeHWnd()
 {
     HWND hWnd;
+
     if(pfTSEditorHwnd != NULL)
     {
         hWnd = pfTSEditorHwnd();
@@ -120,8 +124,8 @@ void TSEditorHandler::vGetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize)
 
 void TSEditorHandler::vSetConfigurationData(BYTE*& pSrcBuffer, UINT& unBuffSize)
 {
-	if(pfTSEditorSetConfigdata!= NULL)
-	{
-		pfTSEditorSetConfigdata(pSrcBuffer, unBuffSize);
-	}
+    if(pfTSEditorSetConfigdata!= NULL)
+    {
+        pfTSEditorSetConfigdata(pSrcBuffer, unBuffSize);
+    }
 }

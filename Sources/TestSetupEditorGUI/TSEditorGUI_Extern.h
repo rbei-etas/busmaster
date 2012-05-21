@@ -18,8 +18,8 @@
  * \author    Venkatanarayana Makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined TSEDITOR_EXTERN_H__INCLUDED_
-#define TSEDITOR_EXTERN_H__INCLUDED_
+
+#pragma once
 
 #if defined USAGEMODE
 #undef USAGEMODE
@@ -34,17 +34,15 @@
 #ifdef __cplusplus
 extern "C" {  // only need to export C interface if used by C++ source code
 #endif
-static HINSTANCE m_hDllInstance;
-USAGEMODE HRESULT TS_vShowTSEditorWindow(void* pParentWnd);
-USAGEMODE HRESULT TS_vSetDILInterfacePtr(void* ptrDILIntrf);
-USAGEMODE HRESULT TS_vPostMessageToTSWnd(UINT msg, WPARAM wParam, LPARAM lParam);
-USAGEMODE HRESULT TS_hTSEditorWindowShown();
-USAGEMODE HRESULT TS_hLoadTestSetupFile(CString omFilePath);
-USAGEMODE HWND hGetHwnd();
-USAGEMODE HRESULT TSE_hGetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize);
-USAGEMODE HRESULT TSE_hSetConfigurationData(BYTE* pSrcBuffer, UINT nBuffSize);
+    static HINSTANCE m_hDllInstance;
+    USAGEMODE HRESULT TS_vShowTSEditorWindow(void* pParentWnd);
+    USAGEMODE HRESULT TS_vSetDILInterfacePtr(void* ptrDILIntrf);
+    USAGEMODE HRESULT TS_vPostMessageToTSWnd(UINT msg, WPARAM wParam, LPARAM lParam);
+    USAGEMODE HRESULT TS_hTSEditorWindowShown();
+    USAGEMODE HRESULT TS_hLoadTestSetupFile(CString omFilePath);
+    USAGEMODE HWND hGetHwnd();
+    USAGEMODE HRESULT TSE_hGetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize);
+    USAGEMODE HRESULT TSE_hSetConfigurationData(BYTE* pSrcBuffer, UINT nBuffSize);
 #ifdef __cplusplus
 }
 #endif
-
-#endif //TSEDITOR_EXTERN_H__INCLUDED_

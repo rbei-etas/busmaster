@@ -25,34 +25,37 @@ const int nInitialColCount = 7;
 
 CMsgWndHdrInfo::CMsgWndHdrInfo(void)
 {
-	m_nColCount = nInitialColCount;	
+    m_nColCount = nInitialColCount;
     m_somArrColTitle[0] = _T("Time              ");
     m_somArrColTitle[1] =_T("Name / Code       ");
     m_somArrColTitle[2] =_T("ID      ");
     m_somArrColTitle[3] =_T("Dir          ");
     m_somArrColTitle[4] =_T("Msg Type");
     m_somArrColTitle[5] =_T("DLC ");
-    m_somArrColTitle[6] =_T("Data Bytes                                     ");	
+    m_somArrColTitle[6] =_T("Data Bytes                                     ");
 }
 
 CMsgWndHdrInfo::~CMsgWndHdrInfo(void)
 {
 }
 
-void CMsgWndHdrInfo:: vInitializeColDetails(SMSGWNDHDRCOL sHdrColPosStruct, 
-                                            CString omArrColTitle[MAX_MSG_WND_COL_CNT],
-                                            int nArrTitleCnt)
+void CMsgWndHdrInfo:: vInitializeColDetails(SMSGWNDHDRCOL sHdrColPosStruct,
+        CString omArrColTitle[MAX_MSG_WND_COL_CNT],
+        int nArrTitleCnt)
 {
     memcpy(&m_ssHdrColPos, &sHdrColPosStruct, sizeof(SMSGWNDHDRCOL));
     int nTitleCnt = nArrTitleCnt;
+
     if (nTitleCnt > MAX_MSG_WND_COL_CNT)
     {
         nTitleCnt = MAX_MSG_WND_COL_CNT;
     }
+
     for (int i = 0; i < nTitleCnt; i++)
     {
         m_somArrColTitle[i] = omArrColTitle[i];
     }
+
     m_nColCount = nTitleCnt;
 }
 
@@ -62,11 +65,12 @@ void CMsgWndHdrInfo::vGetHdrColStruct(SMSGWNDHDRCOL& sHdrColStruct)
     memcpy(&sHdrColStruct,&m_ssHdrColPos, sizeof(SMSGWNDHDRCOL));
 }
 
-void CMsgWndHdrInfo::vGetHdrColNames(CString omArrColTitle[MAX_MSG_WND_COL_CNT], int &NameCount)
+void CMsgWndHdrInfo::vGetHdrColNames(CString omArrColTitle[MAX_MSG_WND_COL_CNT], int& NameCount)
 {
-     for (int i = 0; i < m_nColCount; i++)
+    for (int i = 0; i < m_nColCount; i++)
     {
-         omArrColTitle[i] = m_somArrColTitle[i];
+        omArrColTitle[i] = m_somArrColTitle[i];
     }
+
     NameCount = m_nColCount;
 }

@@ -31,12 +31,12 @@ CDataBaseMsgList CBaseEntityTA::m_ouDataBaseManager;
 Function Name  :  CBaseEntityTA
 Input(s)       :  -
 Output         :  -
-Functionality  :  Constructor 
+Functionality  :  Constructor
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CBaseEntityTA::CBaseEntityTA(void)
 {
@@ -48,12 +48,12 @@ CBaseEntityTA::CBaseEntityTA(void)
 Function Name  :  ~CBaseEntityTA
 Input(s)       :  -
 Output         :  -
-Functionality  :  Destructor 
+Functionality  :  Destructor
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CBaseEntityTA::~CBaseEntityTA(void)
 {
@@ -63,12 +63,12 @@ CBaseEntityTA::~CBaseEntityTA(void)
 Function Name  :  operator=
 Input(s)       :  CBaseEntityTA& RefObj
 Output         :  CBaseEntityTA&
-Functionality  :  = operator overloading 
+Functionality  :  = operator overloading
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CBaseEntityTA& CBaseEntityTA::operator=(const CBaseEntityTA& RefObj)
 {
@@ -83,12 +83,12 @@ CBaseEntityTA& CBaseEntityTA::operator=(const CBaseEntityTA& RefObj)
 Function Name  :  CBaseEntityTA
 Input(s)       :  CBaseEntityTA& RefObj
 Output         :  -
-Functionality  :  Copy Constructor 
+Functionality  :  Copy Constructor
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CBaseEntityTA::CBaseEntityTA(const CBaseEntityTA& RefObj)
 {
@@ -102,12 +102,12 @@ Function Name  :  vEnableEntity
 Input(s)       :  BOOL bEnable - TRUE to Enable
                                - FALSE to Disable
 Output         :  void
-Functionality  :  Enable or Disable the execution of the entity 
+Functionality  :  Enable or Disable the execution of the entity
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CBaseEntityTA::vEnableEntity(BOOL bEnable)
 {
@@ -118,12 +118,12 @@ void CBaseEntityTA::vEnableEntity(BOOL bEnable)
 Function Name  :  bGetEnableStatus
 Input(s)       :  -
 Output         :  BOOL - Returns the Enable status of the Entity
-Functionality  :   
+Functionality  :
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 BOOL CBaseEntityTA::bGetEnableStatus(void)
 {
@@ -135,12 +135,12 @@ BOOL CBaseEntityTA::bGetEnableStatus(void)
 Function Name  :  AddSubEntry
 Input(s)       :  CBaseEntityTA* pouSubEntryObj
 Output         :  HRESULT - ERR_NOT_IMPLEMENTED
-Functionality  :  Not Implemented 
+Functionality  :  Not Implemented
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CBaseEntityTA::AddSubEntry(CBaseEntityTA* /*pouSubEntryObj*/)
 {
@@ -151,12 +151,12 @@ HRESULT CBaseEntityTA::AddSubEntry(CBaseEntityTA* /*pouSubEntryObj*/)
 Function Name  :  DeleteSubEntry
 Input(s)       :  CBaseEntityTA* pouSubEntryObj
 Output         :  HRESULT - ERR_NOT_IMPLEMENTED
-Functionality  :  Not Implemented 
+Functionality  :  Not Implemented
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CBaseEntityTA::DeleteSubEntry(CBaseEntityTA* /*pouSubEntryObj*/)
 {
@@ -167,12 +167,12 @@ HRESULT CBaseEntityTA::DeleteSubEntry(CBaseEntityTA* /*pouSubEntryObj*/)
 Function Name  :  DeleteSubEntry
 Input(s)       :  INT index - Index to delete
 Output         :  HRESULT - ERR_NOT_IMPLEMENTED
-Functionality  :  Not Implemented 
+Functionality  :  Not Implemented
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CBaseEntityTA::DeleteSubEntry(INT /*index*/)
 {
@@ -183,12 +183,12 @@ HRESULT CBaseEntityTA::DeleteSubEntry(INT /*index*/)
 Function Name  :  GetID
 Input(s)       :  -
 Output         :  DWORD - Unique ID
-Functionality  :  Return Unique ID of the Entity 
+Functionality  :  Return Unique ID of the Entity
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 DWORD CBaseEntityTA::GetID(void)
 {
@@ -198,14 +198,14 @@ DWORD CBaseEntityTA::GetID(void)
 /******************************************************************************
 Function Name  :  GetSubEntityObj
 Input(s)       :  INT index - Index to delete
-                  CBaseEntityTA**  pouSubEntity  
+                  CBaseEntityTA**  pouSubEntity
 Output         :  HRESULT - ERR_NOT_IMPLEMENTED
-Functionality  :  Not Implemented 
+Functionality  :  Not Implemented
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 const HRESULT CBaseEntityTA::GetSubEntityObj(UINT /*unIndex*/, CBaseEntityTA**  /*pouSubEntity*/)
 {
@@ -216,14 +216,14 @@ const HRESULT CBaseEntityTA::GetSubEntityObj(UINT /*unIndex*/, CBaseEntityTA**  
 Function Name  :  GetEntityType
 Input(s)       :  void
 Output         :  eTYPE_ENTITY
-Functionality  :  Return the Entity Type 
+Functionality  :  Return the Entity Type
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-eTYPE_ENTITY CBaseEntityTA::GetEntityType(void) 
+eTYPE_ENTITY CBaseEntityTA::GetEntityType(void)
 {
     return BASE_ENTITY;
 }
@@ -232,12 +232,12 @@ eTYPE_ENTITY CBaseEntityTA::GetEntityType(void)
 Function Name  :  GetSubEntryCount
 Input(s)       :  UINT& unTotal - Return the Subentry Count
 Output         :  HRESULT
-Functionality  :  Not Implemented 
+Functionality  :  Not Implemented
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CBaseEntityTA::GetSubEntryCount(UINT& /*unTotal*/)
 {
@@ -248,12 +248,12 @@ HRESULT CBaseEntityTA::GetSubEntryCount(UINT& /*unTotal*/)
 Function Name  :  GetUniqueID
 Input(s)       :  -
 Output         :  DWORD
-Functionality  :  Return the Unique ID 
+Functionality  :  Return the Unique ID
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 DWORD CBaseEntityTA::GetUniqueID(void)
 {
@@ -262,15 +262,15 @@ DWORD CBaseEntityTA::GetUniqueID(void)
 
 /******************************************************************************
 Function Name  :  RepositionSubEntity
-Input(s)       :  CBaseEntityTA* pouRefSubEntity 
+Input(s)       :  CBaseEntityTA* pouRefSubEntity
                   CBaseEntityTA* pouCurrSubEntity
 Output         :  HRESULT
-Functionality  :  Not iumplemented 
+Functionality  :  Not iumplemented
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CBaseEntityTA::RepositionSubEntity(CBaseEntityTA* /*pouRefSubEntity*/, CBaseEntityTA* /*pouCurrSubEntity*/)
 {
@@ -279,37 +279,37 @@ HRESULT CBaseEntityTA::RepositionSubEntity(CBaseEntityTA* /*pouRefSubEntity*/, C
 
 /******************************************************************************
 Function Name  :  RepositionSubEntity
-Input(s)       :  CBaseEntityTA* pouRefSubEntity 
+Input(s)       :  CBaseEntityTA* pouRefSubEntity
                   CBaseEntityTA* pouCurrSubEntity
 Output         :  HRESULT
-Functionality  :  Not iumplemented 
+Functionality  :  Not iumplemented
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CBaseEntityTA::RepositionSubEntity(CBaseEntityTA* /*pouRefSubEntity*/, UINT /*unNewPosIndex*/)
 {
-	return  ERR_NOT_IMPLEMENTED;
+    return  ERR_NOT_IMPLEMENTED;
 }
 
 /******************************************************************************
 Function Name  :  SearchEntityObject
-Input(s)       :  DWORD dwId - ID of the Entity 
+Input(s)       :  DWORD dwId - ID of the Entity
                   CBaseEntityTA** pEnityObject - entity object
 Output         :  HRESULT - S_OK if the ID is Found
-Functionality  :  Retrives the entity of the Given ID.  
+Functionality  :  Retrives the entity of the Given ID.
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CBaseEntityTA::SearchEntityObject(DWORD dwId, CBaseEntityTA** pEnityObject)
 {
     *pEnityObject = NULL;
-    
+
     if( GetID() == dwId)
     {
         *pEnityObject = this;
@@ -318,13 +318,15 @@ HRESULT CBaseEntityTA::SearchEntityObject(DWORD dwId, CBaseEntityTA** pEnityObje
     {
         UINT unSubEntities = 0;
         GetSubEntryCount(unSubEntities);
-        for( UINT i = 0;(i < unSubEntities)&&(*pEnityObject == NULL); i++)
+
+        for( UINT i = 0; (i < unSubEntities)&&(*pEnityObject == NULL); i++)
         {
-            CBaseEntityTA *pouSubEntityObj = NULL;
+            CBaseEntityTA* pouSubEntityObj = NULL;
             GetSubEntityObj(i, &pouSubEntityObj);
             pouSubEntityObj->SearchEntityObject(dwId, pEnityObject);
-         }
+        }
     }
+
     return S_OK;
 }
 
@@ -333,12 +335,12 @@ Function Name  :  SetDatabaseFile
 Input(s)       :  CString& omstrDataBasePath - Data Base Path
 Output         :  HRESULT - S_OK if Success
                   ERR_INVALID_DATABASE - If Failed
-Functionality  :  Set the current database 
+Functionality  :  Set the current database
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CBaseEntityTA::SetDatabaseFile(CString& omstrDataBasePath)
 {
@@ -356,12 +358,12 @@ HRESULT CBaseEntityTA::SetDatabaseFile(CString& omstrDataBasePath)
 Function Name  :  GetDataBaseManager
 Input(s)       :  CDataBaseMsgList& ouDataBaseManager
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CBaseEntityTA::GetDataBaseManager(CDataBaseMsgList& ouDataBaseManager)
 {
@@ -370,34 +372,34 @@ HRESULT CBaseEntityTA::GetDataBaseManager(CDataBaseMsgList& ouDataBaseManager)
 }
 /******************************************************************************
 Function Name  :  ValidateEntity
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  13/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CBaseEntityTA::ValidateEntity(CString& /*omStrResult*/)
 {
     return ERR_NOT_IMPLEMENTED;
-}   
+}
 
 /******************************************************************************
 Function Name  :  GetData
 Input(s)       :  MSXML2::IXMLDOMNodePtr&
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  02/06/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
-HRESULT CBaseEntityTA::GetData(MSXML2::IXMLDOMNodePtr& /*pIDomNode*/) 
+HRESULT CBaseEntityTA::GetData(MSXML2::IXMLDOMNodePtr& /*pIDomNode*/)
 {
     return ERR_NOT_IMPLEMENTED;
 }
@@ -405,15 +407,15 @@ HRESULT CBaseEntityTA::GetData(MSXML2::IXMLDOMNodePtr& /*pIDomNode*/)
 Function Name  :  SetData
 Input(s)       :  MSXML2::IXMLDOMElementPtr&
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  02/06/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
-HRESULT CBaseEntityTA::SetData(MSXML2::IXMLDOMElementPtr& /*pIDomTestCaseNode*/) 
+HRESULT CBaseEntityTA::SetData(MSXML2::IXMLDOMElementPtr& /*pIDomTestCaseNode*/)
 {
     return ERR_NOT_IMPLEMENTED;
 }
@@ -423,15 +425,15 @@ Function Name  :  GetEntityData
 Input(s)       :  eTYPE_ENTITY
                   void*
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  02/06/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
-HRESULT CBaseEntityTA::GetEntityData(eTYPE_ENTITY /*eCurrEntityType*/, void* /*pvEntityData*/) 
+HRESULT CBaseEntityTA::GetEntityData(eTYPE_ENTITY /*eCurrEntityType*/, void* /*pvEntityData*/)
 {
     return ERR_NOT_IMPLEMENTED;
 }
@@ -439,17 +441,17 @@ HRESULT CBaseEntityTA::GetEntityData(eTYPE_ENTITY /*eCurrEntityType*/, void* /*p
 /******************************************************************************
 Function Name  :  SetEntityData
 Input(s)       :  eTYPE_ENTITY
-                  void* 
+                  void*
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CBaseEntityTA
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  02/06/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
-HRESULT CBaseEntityTA::SetEntityData(eTYPE_ENTITY /*eCurrEntityType*/, void* /*pvEntityData*/) 
+HRESULT CBaseEntityTA::SetEntityData(eTYPE_ENTITY /*eCurrEntityType*/, void* /*pvEntityData*/)
 {
     return ERR_NOT_IMPLEMENTED;
 }

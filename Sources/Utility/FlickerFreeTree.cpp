@@ -22,27 +22,24 @@
 #include "Utils_stdafx.h"
 #include "FlickerFreeTree.h"
 
-
 BEGIN_MESSAGE_MAP(CFlickerFreeTree, CTreeCtrl)
-	ON_WM_ERASEBKGND()
-	ON_WM_SIZE() 
-	ON_WM_PAINT()
+    ON_WM_ERASEBKGND()
+    ON_WM_SIZE()
+    ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 BOOL CFlickerFreeTree::OnEraseBkgnd(CDC* pDC)
 {
     // TODO: Add your message handler code here and/or call default
     UNUSED_ALWAYS(pDC);
-
     //return CTreeCtrl::OnEraseBkgnd(pDC);
     return TRUE;
 }
 
 void CFlickerFreeTree::OnSize(UINT nType, int cx, int cy)
 {
-	CTreeCtrl::OnSize(nType, cx, cy);
-
-	GetClientRect(&m_rectClient);
+    CTreeCtrl::OnSize(nType, cx, cy);
+    GetClientRect(&m_rectClient);
 }
 void CFlickerFreeTree::OnPaint()
 { 

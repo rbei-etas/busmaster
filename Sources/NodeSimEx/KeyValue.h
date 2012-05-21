@@ -21,14 +21,8 @@
  *
  * This file contain the definition all of CKeyValue class
  */
-#if !defined(AFX_KEYVALUE_H__051FC127_3176_11D6_BFEB_0010B599CE39__INCLUDED_)
-#define AFX_KEYVALUE_H__051FC127_3176_11D6_BFEB_0010B599CE39__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-/////////////////////////////////////////////////////////////////////////////
-// CKeyValue dialog
 
 #include "NodeSimEx_resource.h"
 
@@ -37,47 +31,41 @@ class CKeyValue : public CDialog
 private:
     CFnsTreeView* m_pFnsTreeView;
     CFunctionEditorDoc* m_pDoc;
-// Construction
+    // Construction
 public:
     // standard constructor
     CKeyValue(CFnsTreeView* pFnsTreeView, CFunctionEditorDoc* pDoc,
-              CWnd* pParent = NULL,TCHAR* pcKeyVal = (TCHAR*)NULL);
+              CWnd* pParent = NULL,char* pcKeyVal = (char*)NULL);
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CKeyValue)
     enum { IDD = IDD_DLG_KEY_VALUE };
-        // NOTE: the ClassWizard will add data members here
+    // NOTE: the ClassWizard will add data members here
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CKeyValue)
-    public:
+public:
     virtual BOOL PreTranslateMessage(MSG* pMsg);
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
-// Implementation
+    // Implementation
 protected:
-   
+
     // Generated message map functions
     //{{AFX_MSG(CKeyValue)
     virtual void OnCancel();
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
     virtual void OnOK();
     virtual BOOL OnInitDialog();
-	afx_msg void OnCbtnKeyApply();
-	//}}AFX_MSG
+    afx_msg void OnCbtnKeyApply();
+    //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
-    TCHAR* m_pcKeyVal;
+    char* m_pcKeyVal;
     BOOL bValidateDuplicateKeyHandler(CFunctionEditorDoc* pDoc);
 
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before 
-// the previous line.
-
-#endif // !defined(AFX_KEYVALUE_H__051FC127_3176_11D6_BFEB_0010B599CE39__INCLUDED_)

@@ -18,9 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#ifndef APPSERVICES_H__INCLUDED_
-#define APPSERVICES_H__INCLUDED_
 
+#pragma once
 
 BOOL gbGetProgramVersion(int* pnMajorVersion, int* pnMinorVersion);
 
@@ -48,5 +47,3 @@ BOOL gbEnableDisableErrorHandlers(BOOL,HMODULE );
 BOOL gbSetResetTimer(char*,int,BOOL,HMODULE) ;
 // To set timer value
 BOOL gbSetTimerVal(CHAR* , UINT,HMODULE );
-
-#endif // APPSERVICES_H__INCLUDED_

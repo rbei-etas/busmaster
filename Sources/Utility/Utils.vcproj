@@ -50,10 +50,7 @@
 				RuntimeLibrary="3"
 				StructMemberAlignment="0"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="Utils_stdafx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -116,11 +113,8 @@
 				RuntimeLibrary="2"
 				StructMemberAlignment="0"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="Utils_stdafx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="0"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -229,6 +223,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\SignalMatrix.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\UtilFunctions.cpp"
 				>
 			</File>
@@ -242,10 +240,6 @@
 			</File>
 			<File
 				RelativePath=".\Utility_Thread.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Utils_stdafx.cpp"
 				>
 			</File>
 			<File
@@ -299,10 +293,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\memdc.h"
-				>
-			</File>
-			<File
 				RelativePath=".\MsgInterpretation.h"
 				>
 			</File>
@@ -324,6 +314,10 @@
 			</File>
 			<File
 				RelativePath=".\RadixEdit.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SignalMatrix.h"
 				>
 			</File>
 			<File

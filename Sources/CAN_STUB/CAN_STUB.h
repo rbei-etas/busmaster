@@ -18,11 +18,8 @@
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#pragma once
 
-#ifndef __AFXWIN_H__
-	#error include 'stdafx.h' before including this file for PCH
-#endif
+#pragma once
 
 /*Definitions*/
 const int ERR_INVALID_PROCDIL       = -1;
@@ -41,11 +38,11 @@ const int INFO_CONFIRMED_CONFIGURED = 3;
 class CCAN_STUBApp : public CWinApp
 {
 public:
-	CCAN_STUBApp();
+    CCAN_STUBApp();
 
-// Overrides
+    // Overrides
 public:
-	virtual BOOL InitInstance();
+    virtual BOOL InitInstance();
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };

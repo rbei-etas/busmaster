@@ -22,9 +22,7 @@
  * Include file containing all the macro definitions
  */
 
-
-#if !defined(_TSEDITORGUI_DEFINITIONS_H_INCLUDED_)
-#define _TSEDITORGUI_DEFINITIONS_H_INCLUDED_
+#pragma once
 
 //List Control
 #define def_COLOR_FIRSTROW      RGB(237, 239, 254)
@@ -67,7 +65,7 @@
 
 #define defLIST_SEND_ST_ROW             1
 #define defLIST_SENDMSG_ST_ROW          2
- 
+
 //List Ctrl Row Numbers
 //Header
 
@@ -107,10 +105,6 @@
 #define def_VMSG_ROWNUM_SUINT          0
 #define def_VMSG_ROWNUM_SVALUE         1
 
-#define def_NAME_SEND           "Send"      
+#define def_NAME_SEND           "Send"
 #define def_NAME_VERIFY         "verify"
 #define def_NAME_VERIFYRESPONSE "verifyResponse"
-
-
-
-#endif

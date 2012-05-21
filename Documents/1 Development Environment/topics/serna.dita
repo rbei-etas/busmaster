@@ -22,7 +22,7 @@
     </section>
     <section>
       <title>Installation</title>
-      <p>Execute the Serna installer  <filepath>serna-free-4.3.0-20110207.exe</filepath>. The standard installation folder is  <filepath>C:\Program Files\Syntext\Serna Free 4.3\</filepath>.</p>
+      <p>Execute the Serna installer  <filepath>serna-free-4.3.0-20110207.exe</filepath>. The standard installation folder is  <filepath>%ProgramFiles%\Syntext\Serna Free 4.3\</filepath>.</p>
     </section>
     <section>
       <title>Configuration</title>

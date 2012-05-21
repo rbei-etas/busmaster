@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="CAN_Vector_XL"
 	ProjectGUID="{9DF9963F-7938-4A16-B2E2-0BFA167BD3BB}"
 	RootNamespace="CAN_Vector_XL"
@@ -51,10 +51,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="CAN_Vector_XL_StdAfx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -133,15 +130,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="CAN_Vector_XL_StdAfx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
 			/>
 			<Tool
@@ -165,7 +159,7 @@
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 				GenerateManifest="true"
 				ModuleDefinitionFile=""
-				GenerateDebugInformation="false"
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -210,14 +204,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CAN_Vector_XL.rc"
-				>
-			</File>
-			<File
-				RelativePath=".\CAN_Vector_XL_stdafx.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\HardwareListing.cpp"
 				>
 			</File>
@@ -249,6 +235,14 @@
 			</File>
 			<File
 				RelativePath=".\EXTERNAL_INCLUDE\vxlapi.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			>
+			<File
+				RelativePath=".\CAN_Vector_XL.rc"
 				>
 			</File>
 		</Filter>
