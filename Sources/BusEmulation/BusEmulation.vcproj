@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="BusEmulation"
 	ProjectGUID="{08185BF7-1497-49FB-8451-02C4F97B4BDE}"
-	RootNamespace="BusEmulation"
 	Keyword="AtlProj"
 	TargetFrameworkVersion="131072"
 	>
@@ -59,10 +58,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="stdafx_BusSim.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -155,11 +151,8 @@
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="stdafx_BusSim.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="0"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -177,11 +170,12 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
 				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;"
+				AdditionalDependencies="RpcRT4.lib"
 				OutputFile="$(SolutionDir)/BIN/$(OutDir)/BusEmulation.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 				GenerateManifest="true"
-				GenerateDebugInformation="false"
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -235,10 +229,6 @@
 				RelativePath=".\SimENG.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\stdafx_BusSim.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -251,10 +241,6 @@
 			</File>
 			<File
 				RelativePath=".\SimENG.h"
-				>
-			</File>
-			<File
-				RelativePath=".\stdafx_BusSim.h"
 				>
 			</File>
 		</Filter>
@@ -281,6 +267,10 @@
 			SourceControlFiles="false"
 			>
 			<File
+				RelativePath=".\BusEmulation.h"
+				>
+			</File>
+			<File
 				RelativePath=".\BusEmulation_i.c"
 				>
 				<FileConfiguration
@@ -300,11 +290,15 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\BusEmulation_p.c"
+				>
+			</File>
+			<File
+				RelativePath=".\dlldata.c"
+				>
+			</File>
 		</Filter>
-		<File
-			RelativePath=".\ReadMe.txt"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

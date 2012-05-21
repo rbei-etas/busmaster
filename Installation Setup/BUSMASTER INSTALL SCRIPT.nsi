@@ -32,7 +32,7 @@ Name "BUSMASTER"
 CRCCheck On
 
 ; Output filename
-Outfile "BUSMASTER_Installer_Ver_1.6.3.exe"
+Outfile "BUSMASTER_Installer_Ver_1.6.2.exe"
 
 Function .onInit
     # the plugins dir is automatically deleted when the installer exits
@@ -58,30 +58,31 @@ DirText "Please select an installation folder."
 
 ; Pages
 Page license
-;Page components
+Page components
 Page directory
 Page instfiles
 UninstPage uninstConfirm
 UninstPage instfiles
 
 ; Installation Types
-;InstType "Typical"
-;InstType "Full"
-;InstType "Minimal"
+InstType "Typical"
+InstType "Full"
+InstType "Minimal"
 
 ; License Text
 LicenseData ../COPYING.LESSER.txt
 
-; Section Default: This emptily named section will always run
-Section ""
+SectionGroup "Main"
+Section "BUSMASTER"
+    SectionIn RO 1 2 3
     SetOutPath $INSTDIR
 
     ; BUSMASTER
     File ..\Sources\BIN\Release\BusEmulation.exe
     File ..\Sources\BIN\Release\BUSMASTER.exe
     File ..\Sources\BIN\Release\BUSMASTER.tlb
-    File ..\Sources\BIN\Release\BUSMASTER_Interface.c
-    File ..\Sources\BIN\Release\BUSMASTER_Interface.h
+    File ..\Sources\Application\BUSMASTER_Interface.c
+    File ..\Sources\Application\BUSMASTER_Interface.h
     File ..\Sources\BIN\Release\CAN_ETAS_BOA.dll
     File ..\Sources\BIN\Release\CAN_ICS_neoVI.dll
     File ..\Sources\BIN\Release\CAN_Kvaser_CAN.dll
@@ -108,7 +109,6 @@ Section ""
     File ..\Sources\BIN\Release\FormatConverter.exe
     File ..\Sources\BIN\Release\SigGrphWnd.dll
     File ..\Sources\BIN\Release\SignalDefiner.dll
-    File ..\Sources\BIN\ReleaseUMinSize\DMGraph.dll
 
     ; Converters
     File /r ..\Sources\BIN\Release\ConverterPlugins
@@ -116,18 +116,8 @@ Section ""
     ; Help
     File /oname=BUSMASTER.chm "..\Documents\4 Help\out\help.chm"
 
-	; Simulated Systems
-	File /r ..\Sources\BIN\Release\SimulatedSystems
-    ; MinGW
-    File /r ..\EXTERNAL_SOURCE\MinGW
-
-    ; Drivers
-    File ..\Sources\BIN\Release\ETASneo40.dll ; ETAS ES581
-    File ..\Sources\BIN\Release\icsneo40.dll  ; Intrepid neoVI
-    File ..\Sources\BIN\Release\canlib32.dll  ; Kvaser CAN
-    File ..\Sources\BIN\Release\mhstcan.dll   ; MHS-Elektronik Tiny-CAN
-    File ..\Sources\BIN\Release\CanApi2.dll   ; PEAK USB
-    File ..\Sources\BIN\Release\vxlapi.dll    ; Vector XL
+    ; Simulated Systems
+    File /r ..\Sources\BIN\Release\SimulatedSystems
 
     ; License
     File ..\COPYING.LESSER.txt
@@ -146,25 +136,71 @@ Section ""
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER" "DisplayName" "BUSMASTER (remove only)"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER" "UninstallString" '"$INSTDIR\uninst.exe"'
 
-    ; Compatibility settings
-    ;DeleteRegValue HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSMASTER.exe"
-    ;DeleteRegValue HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSEmulation.exe"
-
     ; Compatibility settings for Windows 7
     ReadRegStr $1 HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion" CurrentVersion
     StrCmp $1 "6.1" 0 lbl ;StrCmp str1 str2 jump_if_equal [jump_if_not_equal]
     WriteRegStr HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSMASTER.exe" "WIN98"
     WriteRegStr HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSEmulation.exe" "WIN98"
+    WriteRegStr HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\FormatConverter.exe" "WIN98"
     lbl:
 
     ; Server registration
     ExecWait 'BusEmulation.exe /regserver'
     ExecWait 'BUSMASTER.exe /regserver'
-    ExecWait 'regsvr32 DMGraph.dll /s'
 
     ; Uninstaller
     WriteUninstaller "uninst.exe"
 SectionEnd
+Section "DMGraph"
+    SectionIn RO 1 2 3
+    SetOutPath $INSTDIR
+    File ..\Sources\BIN\ReleaseUMinSize\DMGraph.dll
+    ExecWait 'regsvr32 DMGraph.dll /s'
+SectionEnd    
+SectionGroupEnd
+
+SectionGroup "Hardware Libraries"
+Section "ETAS ES581"
+    SectionIn 1 2
+    SetOutPath $INSTDIR
+    File ..\Sources\BIN\Release\ETASneo40.dll
+SectionEnd
+Section "Intrepid neoVI"
+    SectionIn 1 2
+    SetOutPath $INSTDIR
+    File ..\Sources\BIN\Release\icsneo40.dll
+SectionEnd
+Section "Kvaser CAN"
+    SectionIn 1 2
+    SetOutPath $INSTDIR
+    File ..\Sources\BIN\Release\canlib32.dll
+SectionEnd
+Section "MHS-Elektronik Tiny-CAN"
+    SectionIn 1 2
+    SetOutPath $INSTDIR
+    File ..\Sources\BIN\Release\mhstcan.dll
+SectionEnd
+Section "Peak USB"
+    SectionIn 1 2
+    SetOutPath $INSTDIR
+    File ..\Sources\BIN\Release\CanApi2.dll
+SectionEnd
+Section "Vector XL"
+    SectionIn 1 2
+    SetOutPath $INSTDIR
+    File ..\Sources\BIN\Release\vxlapi.dll
+SectionEnd
+SectionGroupEnd
+
+SectionGroup "Node Simulation"
+Section "MinGW"
+    SectionIn 2
+    SetOutPath $INSTDIR
+
+    ; MinGW
+    File /r ..\EXTERNAL_SOURCE\MinGW
+SectionEnd
+SectionGroupEnd
 
 ; Uninstall section here...
 Section "Uninstall"
@@ -176,6 +212,11 @@ Section "Uninstall"
 
     ; Delete registration entries
     DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER"
+
+    ; Compatibility settings
+    DeleteRegValue HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSMASTER.exe"
+    DeleteRegValue HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSEmulation.exe"
+    DeleteRegValue HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\FormatConverter.exe"
 
     ; Delete installation folder
     RMDir /r "$INSTDIR"

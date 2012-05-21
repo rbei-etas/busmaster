@@ -22,43 +22,36 @@
  * This header file contains the definition of the class
  */
 
-#if !defined(AFX_SIMSYSCONFIGDETAILS_H__862C5C1A_F336_4D65_91FC_AC542D934323__INCLUDED_)
-#define AFX_SIMSYSCONFIGDETAILS_H__862C5C1A_F336_4D65_91FC_AC542D934323__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "Utility/ComputeCheckSum.h"
 #include "SimSysNodeInfo.h"
 
-class CSimSysConfigDetails : public CComputeCheckSum  
+class CSimSysConfigDetails : public CComputeCheckSum
 {
 public:
-	CSimSysConfigDetails(ETYPE_BUS eBus);
-	virtual ~CSimSysConfigDetails();
+    CSimSysConfigDetails(ETYPE_BUS eBus);
+    virtual ~CSimSysConfigDetails();
     // loads a configuration info from a file that is already present..
-    INT     nLoadConfiguration(CString& omStrFilename,PSSIMSYSINFO &psSimSys);
+    INT     nLoadConfiguration(CString& omStrFilename,PSSIMSYSINFO& psSimSys);
     // writes the configuration info into the file omStrCfgFilename
-    INT     nSaveConfiguration (CString omStrCfgFilename, PSSIMSYSINFO &psSimSys);
-		
-	
+    INT     nSaveConfiguration (CString omStrCfgFilename, PSSIMSYSINFO& psSimSys);
+
+
 private:
     ETYPE_BUS m_eBus;
-	// version information
-    float m_fSimSysVersion;		
-	// To Initialise simulated system details after configuration load/create
-	// method to search and open/create the configuration file.
+    // version information
+    float m_fSimSysVersion;
+    // To Initialise simulated system details after configuration load/create
+    // method to search and open/create the configuration file.
     INT nIsCfgFileFound (CString omStrFilename);
-			
-	// method to desrialize/serialize data into the file/data members
+
+    // method to desrialize/serialize data into the file/data members
     int nLoadStoreData(UINT unArchiveMode , CString omStrSimSysPath,
-                       PSSIMSYSINFO &psCurrSimSys);
-	
-	// called from bLoadStoreData(..) for simulated system info 
-    BOOL bLoadStoreSimSysInfo(CArchive& roCfgArchive, PSSIMSYSINFO &psSimsysInfo);
+                       PSSIMSYSINFO& psCurrSimSys);
 
-		
+    // called from bLoadStoreData(..) for simulated system info
+    BOOL bLoadStoreSimSysInfo(CArchive& roCfgArchive, PSSIMSYSINFO& psSimsysInfo);
+
+
 };
-
-#endif // !defined(AFX_SIMSYSCONFIGDETAILS_H__862C5C1A_F336_4D65_91FC_AC542D934323__INCLUDED_)

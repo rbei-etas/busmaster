@@ -16,14 +16,13 @@
 /**
  * \file      CAN_MHS_Extern.h
  * \brief     Exports API functions for MHS-Elektronik Tiny-CAN Hardware interface
- * \author    Arunkumar Karri
+ * \author    Arunkumar Karri, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Exports API functions for Vector XL CAN Hardware interface
+ * Exports API functions for CAN MHS Tiny-CAN Hardware interface
  */
-#ifndef __CAN_MHS_EXTERN_H__
-#define __CAN_MHS_EXTERN_H__
 
+#pragma once
 
 #if defined USAGEMODE
 #undef USAGEMODE
@@ -35,16 +34,13 @@
 #define USAGEMODE   __declspec(dllimport)
 #endif
 
-
 #ifdef __cplusplus
-  extern "C" {  // only need to export C interface if used by C++ source code
+extern "C" {  // only need to export C interface if used by C++ source code
 #endif
 
-/*  Exported function list */
-USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface);
+    /*  Exported function list */
+    USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface);
 
 #ifdef __cplusplus
-  }
-#endif
-
+}
 #endif

@@ -21,19 +21,12 @@
  *
  * Contains CFlags class definition
  */
-#if !defined (_FLAGS_H_INCLUDED_)
-#define _FLAGS_H_INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-
-// Definition of PSTOOLBARINFO structure is here
-
 
 #include "NodeSimEx_Struct.h"
 
-class CFlags  
+class CFlags
 {
 public:
     int nGetFlagStatus(eSIMSYSFLAG WhichFlag);
@@ -53,4 +46,3 @@ private:
 private:
     CCriticalSection m_omCriticalSec;
 };
-#endif //#define _FLAGS_H_INCLUDED_

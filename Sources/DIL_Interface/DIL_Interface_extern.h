@@ -14,17 +14,15 @@
  */
 
 /**
- * \file      DIL_Interface/DIL_Interface_extern.h
- * \brief     Declaration file for the exported function used to get the 
+ * \file      DIL_Interface_extern.h
+ * \brief     Declaration file for the exported function used to get the
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Declaration file for the exported function used to get the 
+ * Declaration file for the exported function used to get the
  */
 
-#if !defined DIL_INTERFACE_EXTERN_H__INCLUDED_
-#define DIL_INTERFACE_EXTERN_H__INCLUDED_
-
+#pragma once
 
 #if defined USAGEMODE
 #undef USAGEMODE
@@ -41,11 +39,9 @@
 extern "C" {  // only need to export C interface if used by C++ source code
 #endif
 
-/*  Exported function list */
-USAGEMODE HRESULT DIL_GetInterface(ETYPE_BUS eBusType, void** ppvInterface);
+    /*  Exported function list */
+    USAGEMODE HRESULT DIL_GetInterface(ETYPE_BUS eBusType, void** ppvInterface);
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif // DIL_INTERFACE_EXTERN_H__INCLUDED_

@@ -32,30 +32,30 @@ public:
     virtual BOOL    SW_IsWindowVisible(void) = 0;
     virtual HRESULT SW_SetDisplayMode(BOOL bHex) = 0;
 
-	virtual HRESULT vInit(void* pParam);
+    virtual HRESULT vInit(void* pParam);
     virtual HRESULT vEditClearAll();
     virtual int nGetAppendBufferCount();
     virtual int nGetOWBufferCount();
     virtual BOOL bStartReadThread();
-    virtual BOOL bStopReadThread();    
+    virtual BOOL bStopReadThread();
 
-    virtual HRESULT vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL &sHdrColStruct,
-                                     TCHAR *pomDataPtrArr[MAX_MSG_WND_COL_CNT], 
-                                     BYTE bExprnFlag_Disp);
-    virtual HRESULT hReadFromOWBuffer(void *psMsg, __int64 nMapIndex);
-	virtual HRESULT hReadFromAppendBuffer(void *psMsg, int nMsgIndex);
-    virtual HRESULT hUpdateFormattedMsgStruct(int nListIndex, int &nMsgCode,
-                                      BYTE bExprnFlag_Disp, __int64 nTimeOffset = 0);
+    virtual HRESULT vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL& sHdrColStruct,
+            TCHAR* pomDataPtrArr[MAX_MSG_WND_COL_CNT],
+            BYTE bExprnFlag_Disp);
+    virtual HRESULT hReadFromOWBuffer(void* psMsg, __int64 nMapIndex);
+    virtual HRESULT hReadFromAppendBuffer(void* psMsg, int nMsgIndex);
+    virtual HRESULT hUpdateFormattedMsgStruct(int nListIndex, int& nMsgCode,
+            BYTE bExprnFlag_Disp, __int64 nTimeOffset = 0);
     void vSetCurrMsgName(CString strMsgNameOrCode);
     void vClearFormattedMsgStruct();
-    void vSaveOWandGetDetails(void *pMsg, __int64 &dwMapIndex, 
-                              __int64 &dwTimeStamp, UINT &nMsgCode, int &nBufferIndex );
+    void vSaveOWandGetDetails(void* pMsg, __int64& dwMapIndex,
+                              __int64& dwTimeStamp, UINT& nMsgCode, int& nBufferIndex );
 
 
     //void vSetRxMsgCallBkPtr(MSG_RX_CALL_BK pFuncPtr);
-	void SetClientID(DWORD dwClientID);
-	void DoSortBuffer(int nField,bool bAscending);	
-	void GetMapIndexAtID(int nIndex,__int64& nMapIndex);
+    void SetClientID(DWORD dwClientID);
+    void DoSortBuffer(int nField,bool bAscending);
+    void GetMapIndexAtID(int nIndex,__int64& nMapIndex);
     HRESULT ApplyFilterScheme(void* pvFilterApplied);
     HRESULT GetFilterScheme(void* pvFilterApplied);
     HRESULT EnableFilterApplied(BOOL bEnable);

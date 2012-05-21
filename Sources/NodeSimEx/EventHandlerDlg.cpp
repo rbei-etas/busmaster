@@ -33,8 +33,8 @@
 
 IMPLEMENT_DYNAMIC(CEventHandlerDlg, CDialog)
 CEventHandlerDlg::CEventHandlerDlg(CTreeCtrl& omTreeCtrl, CFunctionEditorDoc* pDoc, CWnd* pParent /*=NULL*/)
-	: CDialog(CEventHandlerDlg::IDD, pParent),
-      m_omTreeCtrl(omTreeCtrl)  
+    : CDialog(CEventHandlerDlg::IDD, pParent),
+      m_omTreeCtrl(omTreeCtrl)
 {
     m_pDoc = pDoc;
 }
@@ -45,7 +45,7 @@ CEventHandlerDlg::~CEventHandlerDlg()
 
 void CEventHandlerDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+    CDialog::DoDataExchange(pDX);
 }
 
 
@@ -66,7 +66,6 @@ BOOL CEventHandlerDlg::OnInitDialog()
     pButton = (CButton*)GetDlgItem(IDC_CHECK_ADDRESS_CLAIM);
     pButton->SetCheck(BST_CHECKED);
     pButton->EnableWindow(FALSE);
-    
     pButton = (CButton*)GetDlgItem(IDOK);
     pButton->EnableWindow(FALSE);
 
@@ -79,6 +78,7 @@ BOOL CEventHandlerDlg::OnInitDialog()
         pButton = (CButton*)GetDlgItem(IDOK);
         pButton->EnableWindow(TRUE);
     }
+
     if (!bIsEventHandlerExist(_T("AddressClaim")))
     {
         CButton* pButton = (CButton*)GetDlgItem(IDC_CHECK_ADDRESS_CLAIM);
@@ -88,6 +88,7 @@ BOOL CEventHandlerDlg::OnInitDialog()
         pButton = (CButton*)GetDlgItem(IDOK);
         pButton->EnableWindow(TRUE);
     }
+
     return TRUE;
 }
 void CEventHandlerDlg::vAddEventHandlerFunction(const CString& omStrFuncName, const CString& omStrFuncPrototype)
@@ -95,23 +96,19 @@ void CEventHandlerDlg::vAddEventHandlerFunction(const CString& omStrFuncName, co
     VALIDATE_POINTER_RETURN_VOID(m_pDoc);
     SBUS_SPECIFIC_INFO sBusSpecInfo;
     m_pDoc->bGetBusSpecificInfo(sBusSpecInfo);
-
     // Form the function header
     CString omStrHdr = BUS_FN_HDR;
     omStrHdr.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
     omStrHdr.Replace(_T("PLACE_HODLER_FOR_FUNCTIONNAME"), omStrFuncName);
-    
     // Form the function footer
     CString omStrFooter = BUS_FN_FOOTER;
     omStrFooter.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
     omStrFooter.Replace(_T("PLACE_HODLER_FOR_FUNCTIONNAME"), omStrFuncName);
-
     m_pDoc->m_omSourceCodeTextList.AddTail( omStrHdr ); //Function header
     m_pDoc->m_omSourceCodeTextList.AddTail(omStrFuncPrototype );// Function definition
     // Function body
     m_pDoc->m_omSourceCodeTextList.AddTail( "{" );
     m_pDoc->m_omSourceCodeTextList.AddTail( defTODO );
-
     m_pDoc->m_omSourceCodeTextList.AddTail( omStrFooter ); // Function footer
 }
 
@@ -119,84 +116,83 @@ BOOL CEventHandlerDlg::bIsEventHandlerExist(const CString& omStrFuncType)
 {
     VALIDATE_POINTER_RETURN_VAL(m_pDoc, FALSE);
     BOOL bExist = FALSE;
-    CString omFuncToCheck; 
+    CString omFuncToCheck;
     omFuncToCheck = defEVENT_IND_HANDLER + omStrFuncType;
-
     CStringArray* pEventHandlerArray = m_pDoc->omStrGetEventIndPrototypes();
-	UINT unCount = (COMMANUINT)pEventHandlerArray->GetSize();
+    UINT unCount = (COMMANUINT)pEventHandlerArray->GetSize();
+
     for (UINT i = 0; i < unCount; i++)
     {
         CString omFns = pEventHandlerArray->GetAt(i);
+
         if (omFns.Find(omFuncToCheck, 0) > -1)
         {
             bExist = TRUE;
             i = unCount;
         }
     }
+
     return bExist;
 }
 
 void CEventHandlerDlg::vAddDataConfHandler(HTREEITEM hParent)
 {
     if (bIsEventHandlerExist(_T("DataConf")) == FALSE)
-    {    
+    {
         CString omStrFuncName = defEVENT_IND_HANDLER;
         omStrFuncName += _T("DataConf");
         CString omStrFuncPrototype =  _T("void ")+ omStrFuncName + ("(UINT32 unPGN, BYTE bySrc, BYTE byDest, BOOL bSuccess)");
-    
         //Add the function to current document
         vAddEventHandlerFunction(omStrFuncName, omStrFuncPrototype);
-        
         //Add the function name to tree
         HTREEITEM hNew = m_omTreeCtrl.InsertItem( omStrFuncPrototype, 5, 5, hParent);
         m_omTreeCtrl.SelectItem( hNew );
-        
         //Add the function name to array
         CStringArray* pEventHandlerArray = m_pDoc->omStrGetEventIndPrototypes();
         pEventHandlerArray->Add(omStrFuncPrototype);
-
     }
 }
 
 void CEventHandlerDlg::vAddAdresClaimHandler(HTREEITEM hParent)
 {
     if (bIsEventHandlerExist(_T("AddressClaim")) == FALSE)
-    {       
+    {
         CString omStrFuncName = defEVENT_IND_HANDLER;
         omStrFuncName  += _T("AddressClaim");
         CString omStrFuncPrototype;
         omStrFuncPrototype = _T("void ") + omStrFuncName + ("(BYTE byAddress)");
-
         //Add the function to current document
         vAddEventHandlerFunction(omStrFuncName, omStrFuncPrototype);
-
         //Add the function name to tree
         HTREEITEM hNew = m_omTreeCtrl.InsertItem( omStrFuncPrototype, 5, 5, hParent);
         //m_omTreeCtrl.SelectItem( hNew );
-
         //Add the function name to array
         CStringArray* pEventHandlerArray = m_pDoc->omStrGetEventIndPrototypes();
         pEventHandlerArray->Add(omStrFuncPrototype);
     }
-
 }
 void CEventHandlerDlg::OnBnClickedOk()
 {
     CButton* pButton = (CButton*)GetDlgItem(IDC_CHECK_DATA_CONF);
     HTREEITEM hParent = m_omTreeCtrl.GetSelectedItem();
+
     if (pButton->GetCheck() == BST_CHECKED)
     {
         vAddDataConfHandler(hParent);
     }
+
     pButton = (CButton*)GetDlgItem(IDC_CHECK_ADDRESS_CLAIM);
+
     if (pButton->GetCheck() == BST_CHECKED)
     {
         vAddAdresClaimHandler(hParent);
     }
+
     if (m_pDoc != NULL)
     {
         m_pDoc->UpdateAllViews( NULL );
         m_pDoc->SetModifiedFlag( TRUE );
     }
+
     OnOK();
 }

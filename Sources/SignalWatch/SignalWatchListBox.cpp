@@ -16,7 +16,7 @@
 /**
  * \file      SignalWatchListBox.cpp
  * \brief     Implementation file for CSignalWatchListBox class
- * \authors   RBIN/EMC2 - Ratnadip Choudhury, Amarnath Shastri
+ * \authors   Ratnadip Choudhury, Amarnath Shastri
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for CSignalWatchListBox class
@@ -30,12 +30,6 @@
 #include "SignalWatchDefs.h"
 #include "SignalWatchListBox.h"
 #include "..\Application\HashDefines.h"
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 extern HWND GUI_hDisplayWindow;
 /////////////////////////////////////////////////////////////////////////////
@@ -78,7 +72,7 @@ BEGIN_MESSAGE_MAP(CSignalWatchListBox, CFFListCtrl)
     //{{AFX_MSG_MAP(CSignalWatchListBox)
     ON_WM_RBUTTONDOWN()
     ON_COMMAND(IDM_SG_WATCH_CLEAR, OnSgWatchClear)
-	ON_WM_CHAR()
+ ON_WM_CHAR()
 	ON_WM_KEYDOWN()
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -89,10 +83,10 @@ END_MESSAGE_MAP()
 /******************************************************************************
  Function Name  :   OnRButtonDown
 
- Description    :   The framework calls this member function when the user 
+ Description    :   The framework calls this member function when the user
                     right clicks on the list box
- Input(s)       :   nFlags - 
-                    point - 
+ Input(s)       :   nFlags -
+                    point -
  Output         :   -
  Functionality  :   Shows a popup menu to remove an entry or to clear entries
  Member of      :   CSignalWatchListBox
@@ -104,11 +98,12 @@ END_MESSAGE_MAP()
  Modified by    :   Raja N
  Modified on    :   22.07.2004, Modified the function call to refer ListCtrl
 ******************************************************************************/
-void CSignalWatchListBox::OnRButtonDown(UINT nFlags, CPoint omPoint) 
+void CSignalWatchListBox::OnRButtonDown(UINT nFlags, CPoint omPoint)
 {
     if (GetItemCount() > 0)
     {
         CMenu* pomContextMenu = new CMenu;
+
         if (pomContextMenu != NULL)
         {
             // Load the Menu from the resource
@@ -120,20 +115,23 @@ void CSignalWatchListBox::OnRButtonDown(UINT nFlags, CPoint omPoint)
             {
                 CPoint omSrcPt = omPoint;
                 ClientToScreen(&omSrcPt);
-                UINT unEnable; 
+                UINT unEnable;
+
                 // If no item is selected, make "Delete" menu item disabled
-                if (GetSelectedCount() == -1) 
+                if (GetSelectedCount() == -1)
                 {
                     unEnable = MF_BYCOMMAND | MF_DISABLED | MF_GRAYED;
                 }
-                else 
+                else
                 {
                     unEnable = MF_BYCOMMAND | MF_ENABLED;
                 }
+
                 pomSubMenu->EnableMenuItem(IDM_SG_WATCH_CLEAR, unEnable);
-                pomSubMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, 
-                                      omSrcPt.x, omSrcPt.y, this, NULL);
+                pomSubMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON,
+                                           omSrcPt.x, omSrcPt.y, this, NULL);
             }
+
             delete pomContextMenu;
             pomContextMenu = NULL;
         }
@@ -160,16 +158,14 @@ void CSignalWatchListBox::OnRButtonDown(UINT nFlags, CPoint omPoint)
  Modified by    :   Raja N
  Modified on    :   22.07.2004, Modified the function call to refer ListCtrl
 ******************************************************************************/
-void CSignalWatchListBox::OnSgWatchClear() 
+void CSignalWatchListBox::OnSgWatchClear()
 {
     ::PostMessage(m_hParentWnd,WM_REMOVE_SIGNAL,0,0);
 }
-
 void CSignalWatchListBox::OnChar(UINT nChar, UINT nRepeatCount, UINT nflags)
 {	
 	GetParent()->SendMessage(WM_KEYBOARD_CHAR, nChar, 0);
 }
-
 void CSignalWatchListBox::OnKeyDown(UINT nChar, UINT nRepeatCount, UINT nflags)
 {	
 	GetParent()->SendMessage(WM_KEYBOARD_KEYDOWN, nChar, 0);

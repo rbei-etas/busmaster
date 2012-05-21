@@ -29,21 +29,24 @@ UINT gunSendMsg_CAN(STCAN_MSG* psTxMsg, HMODULE hModule)
     UINT Return = 1;
     VALIDATE_POINTER_RETURN_VAL(psTxMsg, Return);
     CExecuteFunc* pmCEexecuteFunc =
-		CExecuteManager::ouGetExecuteManager(CAN).pmGetNodeObject(hModule);
-    
+        CExecuteManager::ouGetExecuteManager(CAN).pmGetNodeObject(hModule);
+
     if (pmCEexecuteFunc != NULL)
-    {                
+    {
         BOOL bMsgTxFlag = pmCEexecuteFunc->bGetMsgTxFlag();
+
         if (bMsgTxFlag)
         {
             sNODEINFO sNode(CAN);
             pmCEexecuteFunc->vGetNodeInfo(sNode);
+
             if (CGlobalObj::GetICANDIL()->DILC_SendMsg(sNode.m_dwClientId, *psTxMsg) == S_OK)
             {
                 Return = 0;
             }
         }
     }
+
     return Return;
 }
 
@@ -55,17 +58,17 @@ void gvResetController_CAN(BOOL bEnable)
 /******************************************************************************
     Function Name    :  gvControllerMode
     Input(s)         :  bNewMode, new mode
-    Output           :  Returned value from bSetControllerMode 
+    Output           :  Returned value from bSetControllerMode
                         function will be returned
     Functionality    :  This function will call bSetControllerMode which
-                        is a member function of MainFrame and pass bNewMode 
+                        is a member function of MainFrame and pass bNewMode
                         parameter to it
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Ravikumar Patil
     Date Created     :  03-Mar-2003
-    Modifications By :  Anish Kumar                                           
-    Modifications on :  13.09.2006, Added code for external evaluation copy                                                     
+    Modifications By :  Anish Kumar
+    Modifications on :  13.09.2006, Added code for external evaluation copy
 ******************************************************************************/
 BOOL gvSetControllerMode_CAN(BOOL /*bNewMode*/)
 {
@@ -76,14 +79,14 @@ BOOL gvSetControllerMode_CAN(BOOL /*bNewMode*/)
 /******************************************************************************
     Function Name    :  gbDisconnect
     Input(s)         :  bState -> TRUE if Disconnect
-    Output           :  
-    Functionality    :  This function will send a message to MainFrame that will 
+    Output           :
+    Functionality    :  This function will send a message to MainFrame that will
                         be handled by vDisconnect member of MainFrame
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Ravikumar Patil
     Date Created     :  05-Mar-2003
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 
 BOOL gbStartStopHardware_CAN(BOOL bState)

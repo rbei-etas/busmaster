@@ -1,26 +1,32 @@
-/*********************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  SigGrphWnd_Defines.h
-  Description   :  Contains all the associated macro definitions
-  $Log:   X:/Archive/Sources/SigGrphWnd/SigGrphWnd_Defines.h_v  $
- * 
- *    Rev 1.3   15 Apr 2011 19:43:38   rac2kor
- * Inserted RBEI Copyright information text into the file header.
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-  Author(s)     :  Arunkumar Karri
-  Date Created  :  
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
- *********************************************************************/
+/**
+ * \file      SigGrphWnd_Defines.h
+ * \brief     Contains all the associated macro definitions
+ * \author    Arunkumar Karri
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Contains all the associated macro definitions
+ */
 
-#if !defined SIGGRPHWND_DEFS_H_
-#define SIGGRPHWND_DEFS_H_
+#pragma once
 
-
-
-#define STR_EMPTY _T("")
+#define STR_EMPTY ""
 #define MAX_PROTOCOLS 20
-#define AVAILABLE_PROTOCOLS		    4
+#define AVAILABLE_PROTOCOLS         4
 
 // Export Dialog
 
@@ -142,7 +148,7 @@
 #define defSTR_X_AXIS_FORMAT        _T("%0.3fS")
 
 #define WM_CONFIG_CHANGE            WM_USER + 58 // Configuration Change Event
-#define WM_NOTIFICATION_FROM_OTHER  WM_USER + 43 
+#define WM_NOTIFICATION_FROM_OTHER  WM_USER + 43
 
 #define defDEFAULT_LINE_WIDTH           1
 #define defSELECTED_LINE_WIDTH          2
@@ -160,7 +166,7 @@ struct tagGraphSplitterData
 
 typedef tagGraphSplitterData sGraphSplitterData;
 typedef sGraphSplitterData SGRAPHSPLITTERDATA;
-typedef SGRAPHSPLITTERDATA * PSGRAPHSPLITTERDATA;
+typedef SGRAPHSPLITTERDATA* PSGRAPHSPLITTERDATA;
 
 enum
 {
@@ -169,14 +175,14 @@ enum
     eWINID_MSG_INTERPRETATION,
     eWINID_TRACEWND,
     eWNDID_GRAPHWND,
-	eWINID_MSG_WND_SET_CONFIG_DATA,
-	eWINID_MSG_WND_GET_CONFIG_DATA,
+    eWINID_MSG_WND_SET_CONFIG_DATA,
+    eWINID_MSG_WND_GET_CONFIG_DATA,
     eLOAD_DATABASE,
     eDISSCOCIATE_DATABASE,
     eWINID_START_READ,
     eWINID_STOP_READ,
     eWINID_MSG_WND_GET_CONFIG_SIZE,
-	eWINID_MSG_WND_GET_BUFFER_DETAILS, 
+    eWINID_MSG_WND_GET_BUFFER_DETAILS,
 };
 
 enum eTIMEMODE
@@ -195,22 +201,22 @@ typedef enum eELEMENT_TYPE
 
 typedef enum eDISPLAY_TYPE
 {
-	eDISPLAY_NORMAL,
-	eDISPLAY_STEPMODE_XY,
-	eDISPLAY_STEPMODE_YX
+    eDISPLAY_NORMAL,
+    eDISPLAY_STEPMODE_XY,
+    eDISPLAY_STEPMODE_YX
 };
 
 // enumerators for obtaining information from the configuration file
 typedef enum eCONFIGDETAILS
 {
     MRU_C_FILE_NAME,    //  MRU C File
-    LOG_FILE_NAME,      // log file information 
+    LOG_FILE_NAME,      // log file information
     REPLAY_FILE_NAME,   // replay file information
     DATABASE_FILE_NAME, // database filename
     MRU_DLL_FILE_NAME,  // dll filename
     //MESSAGE_NAME,           // message name
     //MESSAGE_ID,             // message id
-    SEND_MULTI_MSGS,    // multiple message 
+    SEND_MULTI_MSGS,    // multiple message
     CONTROLLER_DETAILS, // Controller information
     MSG_ATTRIBUTES,     // attributes of all the messages
     OLD_FILTER_DETAILS, // filter details
@@ -231,7 +237,7 @@ typedef enum eCONFIGDETAILS
     TX_MSG_WND_SPLITTER_DATA,    // Tx Msg window Spliter Data
     GRAPH_WND_SPLITTER_DATA,
     CONFIG_FILE_VERSION,
-	SIMSYS_WND_PLACEMENT,
+    SIMSYS_WND_PLACEMENT,
     SIMSYS_LIST,  // pointer to the array of simulated system configuration paths
     LOG_CONFIG_DETS,
     FILTER_CONFIG_DETS,
@@ -269,8 +275,6 @@ typedef enum eUSERSELCTION
     eTXMSGCMD,
     eCONNECTCMD,
     eDATABASEIMPORTCMD,
-	eCONFIGCHANGECMD,
-	eCHANNELCOUNTUPDATED
+    eCONFIGCHANGECMD,
+    eCHANNELCOUNTUPDATED
 };
-
-#endif //SIGGRPHWND_DEFS_H_

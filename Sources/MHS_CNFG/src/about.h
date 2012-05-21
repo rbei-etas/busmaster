@@ -2,13 +2,13 @@
 #define __ABOUT_H__
 
 #ifdef __cplusplus
-  extern "C" {
-#endif 
+extern "C" {
+#endif
 
-void CreateAboutDlg(HINSTANCE hInstance, HWND hwnd);
+    void CreateAboutDlg(HINSTANCE hInstance, HWND hwnd);
 
 #ifdef __cplusplus
-  }
+}
 #endif
 
 #endif

@@ -16,17 +16,13 @@
 /**
  * \file      CAN_MHS.h
  * \brief     Exports API functions for MHS-Elektronik Tiny-CAN Hardware interface
- * \author    Klaus Demlehner
+ * \author    Klaus Demlehner, Tobias Lorenz
  * \copyright Copyright (c) 2011, MHS-Elektronik GmbH & Co. KG
  *
  * Exports API functions for Vector CAN Hardware interface
  */
+
 #pragma once
-
-#ifndef __AFXWIN_H__
-#error include 'stdafx.h' before including this file for PCH
-#endif
-
 
 /**
  * See CAN_MHS.cpp for the implementation of this class
@@ -36,7 +32,7 @@ class CCAN_MHS : public CWinApp
 public:
     CCAN_MHS();
 
-// Overrides
+    // Overrides
 public:
     virtual BOOL InitInstance();
 

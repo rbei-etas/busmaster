@@ -23,12 +23,13 @@
       <p>Depending on the version <filepath>MSBuild.exe</filepath> is installed in the following standard installation folders:</p>
       <ul>
         <li>
-          <filepath>C:\Windows\Microsoft.NET\Framework\v3.5</filepath>
+          <filepath>%SystemRoot%\Microsoft.NET\Framework\v3.5</filepath>
         </li>
         <li>
-          <filepath>C:\Windows\Microsoft.NET\Framework\v4.0.30319</filepath>
+          <filepath>%SystemRoot%\Microsoft.NET\Framework\v4.0.30319</filepath>
         </li>
       </ul>
+      <p>The environment variable <filepath>%SystemRoot%</filepath> contains the path to your windows folder, e.g. <filepath>C:\Windows</filepath>.</p>
     </section>
     <section>
       <title>Configuration</title>

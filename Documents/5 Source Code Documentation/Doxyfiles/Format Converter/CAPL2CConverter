@@ -1,0 +1,6 @@
+@INCLUDE               = Doxyfile
+PROJECT_NAME           = CAPL2CConverter
+PROJECT_BRIEF          = "CAPL to C converter"
+OUTPUT_DIRECTORY       = "out/Format Converter/CAPL2CConverter"
+STRIP_FROM_PATH        = "../../Sources/Format Converter/CAPL2CConverter"
+INPUT                  = "../../Sources/Format Converter/CAPL2CConverter"

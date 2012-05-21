@@ -26,29 +26,32 @@ sSIMSYSARRAY::sSIMSYSARRAY()
     psNextSimsys = NULL;
 }
 /*******************************************************************************
- Function Name  : operator=                  
- Functionality  : Copies the contents of the destination(Param) linked list into 
-                  the source(Member) linked list. Source linked list will be 
-                  reduced or increased if necessary.                   
+ Function Name  : operator=
+ Functionality  : Copies the contents of the destination(Param) linked list into
+                  the source(Member) linked list. Source linked list will be
+                  reduced or increased if necessary.
  Member of      : sSIMSYSARRAY
  Author(s)      : Pradeep Kadoor.
- Date Created   : 28.05.2009 
+ Date Created   : 28.05.2009
 *******************************************************************************/
 sSIMSYSARRAY& sSIMSYSARRAY::operator=(const sSIMSYSARRAY& RefObj)
 {
     m_omStrSimSysPath = RefObj.m_omStrSimSysPath;
     m_omStrSimSysName = RefObj.m_omStrSimSysName;
+
     if (RefObj.psNextSimsys != NULL)
     {
         if (psNextSimsys == NULL)
         {
             psNextSimsys = new sSIMSYSARRAY;
         }
+
         *(psNextSimsys) = *(RefObj.psNextSimsys);
     }
     else if ((RefObj.psNextSimsys == NULL) && (psNextSimsys != NULL))
     {
         sSIMSYSARRAY* psTemp = NULL;
+
         while (psNextSimsys != NULL)
         {
             psTemp = psNextSimsys;
@@ -57,5 +60,6 @@ sSIMSYSARRAY& sSIMSYSARRAY::operator=(const sSIMSYSARRAY& RefObj)
             psTemp = NULL;
         }
     }
+
     return *this;
 }

@@ -1,0 +1,21 @@
+# Bracket Style Options
+--style=ansi
+
+# Tab Options
+
+# Indentation Options
+--indent-switches
+#--indent-namespaces	# deleted from ETAS profile
+--indent-preprocessor
+--indent-col1-comments	# added to BUSMASTER profile
+
+# Padding Options
+--break-blocks
+--delete-empty-lines
+
+# Formatting Options
+--add-brackets
+--convert-tabs
+--align-pointer=type
+
+# Other Options

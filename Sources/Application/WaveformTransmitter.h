@@ -36,59 +36,59 @@
 class CWaveformTransmitter
 {
 private:
-	CPARAM_THREADPROC m_ouTransmitThread;
-	// Holds the Base DIL pointer.
-	CBaseDIL_CAN* m_pouDIL_CAN_Interface;
-	// Holds the wave data handler pointer.
-	CWaveFormDataHandler* m_pWaveDataHandler;
-	// Holds the Database Message Signal pointer.
-	CMsgSignal** m_ppouDBPtr;
+    CPARAM_THREADPROC m_ouTransmitThread;
+    // Holds the Base DIL pointer.
+    CBaseDIL_CAN* m_pouDIL_CAN_Interface;
+    // Holds the wave data handler pointer.
+    CWaveFormDataHandler* m_pWaveDataHandler;
+    // Holds the Database Message Signal pointer.
+    CMsgSignal** m_ppouDBPtr;
     // Waveform signal list
     CSigGenerationInfoList m_omSigGenList;
-    // 
+    //
     BOOL m_bEnabled;    // Enable / disable state
     BOOL m_bTxON;       // Current Tx state
     int m_nIterLimit;   // Iteration limit
-	DWORD m_dwClientID; // Client ID to use while transmitting wave patterns
+    DWORD m_dwClientID; // Client ID to use while transmitting wave patterns
 
     // Given signal name and CSigWaveMapList, this retrieves the sSigWaveMap entry
-    BOOL bGetSignalEntry(CString omSignalName, 
-              CSigWaveMapList* pomSigWaveList, sSigWaveMap& Result);
+    BOOL bGetSignalEntry(CString omSignalName,
+                         CSigWaveMapList* pomSigWaveList, sSigWaveMap& Result);
 
     // Given the present iteration, this returns the current signal amplitude
     UINT64 u64GetCurrAmplitude(int CurrIteration, sWaveformInfo& ouCurrSig);
     // To know if at least one waveform signal has been defined
     BOOL bIsWaveformSignalPresent(void);
 
-	//To0 calculate Rounding values for floats.
-	float fRound(float val, unsigned int decimals);
+    //To0 calculate Rounding values for floats.
+    float fRound(float val, unsigned int decimals);
 
-//Services:
+    //Services:
 public:
 
     CWaveformTransmitter();     // Standard / default constructor
-	~CWaveformTransmitter();    // Destructor
+    ~CWaveformTransmitter();    // Destructor
 
     // Helper functions; to be invoked from thread
     // To calculate signal values at the curent iteration and transmit
     void vProcessWaveForm(int CurrIteration);
-	// Get sampling Time period.
-	short shGetSamplingTimePeriod(void);
+    // Get sampling Time period.
+    short shGetSamplingTimePeriod(void);
     // To get the iteration limit
     int nGetIterationLimit(void);
 
     // Service methods for the owner entity
     // 1. Do the initialisation
     void vDoInitialisation(CWaveFormDataHandler* pWaveDataHandler,
-                   CBaseDIL_CAN* pouDIL_CAN_Interface, CMsgSignal** ppouDBPtr);
+                           CBaseDIL_CAN* pouDIL_CAN_Interface, CMsgSignal** ppouDBPtr);
     // 2. Is the transmission block enable
     BOOL bIsBlockEnabled(void);
     // 3. Is waveform transmission ON
     BOOL bIsWaveformTxON(void);
     // 4. Enable / disable block
     BOOL bUpdateBlock(BOOL bNodeConnected);
-	// 5. Starts wave pattern transmisstion using a client ID
-	void vStartSignalTransmission(DWORD dwClientID);
-	// 6. Stops the Signal Waves Message Sending.
-	void vStopSignalTransmission(void);
+    // 5. Starts wave pattern transmisstion using a client ID
+    void vStartSignalTransmission(DWORD dwClientID);
+    // 6. Stops the Signal Waves Message Sending.
+    void vStopSignalTransmission(void);
 };

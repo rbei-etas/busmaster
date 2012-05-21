@@ -22,12 +22,7 @@
  * This file contain the definition of CMsgInterpretation class
  */
 
-#if !defined(AFX_MSGINTERPRETATION_H__94E95C57_363E_11D6_BFEF_0010B599CE39__INCLUDED_)
-#define AFX_MSGINTERPRETATION_H__94E95C57_363E_11D6_BFEF_0010B599CE39__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "Include/Basedefs.h"
 #include "Datatypes/SigWatch_datatypes.h" // Signal list selected
@@ -45,22 +40,22 @@ public:
     // Get signal value
     __int64 n64GetSignalValue(CByteArray*, UINT, UINT, UINT, BYTE, EFORMAT_DATA);
 
-    /* To set the message list root. J1939 database needs to be set before calling the above 
+    /* To set the message list root. J1939 database needs to be set before calling the above
     function */
     void vSetJ1939Database(const SMSGENTRY* psCurrMsgEntry);
-	int nGetJ1939SignalCount(CString strMsgName);
+    int nGetJ1939SignalCount(CString strMsgName);
 
-    /* Interpretation function for J1939 msgs. 
+    /* Interpretation function for J1939 msgs.
     Given the PGN it parses the data and calculates signal values */
-    BOOL bInterPretJ1939_MSGS(EFORMAT eNumformat, UINT32 unPGN, UINT unDLC, BYTE* pbyData, 
-                          CString& omMsgName, 
-                          SSignalInfoArray& odSigInfoArray);
-    
+    BOOL bInterPretJ1939_MSGS(EFORMAT eNumformat, UINT32 unPGN, UINT unDLC, BYTE* pbyData,
+                              CString& omMsgName,
+                              SSignalInfoArray& odSigInfoArray);
+
     void vCopy(CMsgInterpretationJ1939* pDest) const;
     void vClear();
 };
 
-class CMsgInterpretation  
+class CMsgInterpretation
 {
 private:
     EFORMAT     m_eNumFormat;
@@ -70,61 +65,59 @@ public:
     // Get signal value
     __int64 n64GetSignalValue(CByteArray*, UINT, UINT, UINT, BYTE, EFORMAT_DATA);
 
-    // To set the message list root	
+    // To set the message list root
     void vSetMessageList(SMSGENTRY* psCurrMsgEntry);
-	int nGetSignalCount(CString strMsgName);
+    int nGetSignalCount(CString strMsgName);
 
     // To set the current numeric mode for formatting
     void vSetCurrNumMode(EFORMAT eNumFormat);
 
 
     // This will interpret all the signals
-    BOOL vInterpretMsgs(UINT unMsgCode,const UCHAR *ucData,CString& omStrMsgName,
-                        CStringArray& omStrSigNames, 
+    BOOL vInterpretMsgs(UINT unMsgCode,const UCHAR* ucData,CString& omStrMsgName,
+                        CStringArray& omStrSigNames,
                         CStringArray& omStrRawValues,
                         CStringArray& omStrPhyValues, BOOL bHexON);
     // This is for Signal Watch List
-    BOOL bInterpretMsgSigList(UINT unMsgCode, 
-                        const UCHAR *ucData,CString& omStrMsgName,
-                        CStringArray& omStrSigNames,
-                        CStringArray& omStrRawValues,
-                        CStringArray& omStrPhyValues,//with Unit
-                        BOOL bHexON);
+    BOOL bInterpretMsgSigList(UINT unMsgCode,
+                              const UCHAR* ucData,CString& omStrMsgName,
+                              CStringArray& omStrSigNames,
+                              CStringArray& omStrRawValues,
+                              CStringArray& omStrPhyValues,//with Unit
+                              BOOL bHexON);
     // This will interpret message and fill data value. This will not format
     // any value
     BOOL vInterpretMsgs(UINT unMsgCode,
-                        const UCHAR *ucData, CSignalInfoArray& omSignalInfo );
+                        const UCHAR* ucData, CSignalInfoArray& omSignalInfo );
 
     //VENKAT
     BOOL bInterpretMsgs(UINT unMsgCode,
-                                        const UCHAR *ucData,
-                                        CSignalInfoArray& omSignalInfo );
+                        const UCHAR* ucData,
+                        CSignalInfoArray& omSignalInfo );
 
-	// This will interpret all the signals
-    BOOL bInterpretMsgs(UINT unMsgCode, const UCHAR *ucData,
-        CString& omStrMsgName, CStringArray& omStrSigNames, 
-        CStringArray& omStrRawValues, CStringArray& omStrPhyValues);
+    // This will interpret all the signals
+    BOOL bInterpretMsgs(UINT unMsgCode, const UCHAR* ucData,
+                        CString& omStrMsgName, CStringArray& omStrSigNames,
+                        CStringArray& omStrRawValues, CStringArray& omStrPhyValues);
 
     // The same function with a different prototype
     BOOL bInterpretMsgs(EFORMAT eNumFormat, SMSGENTRY* psMsgRoot,
-                        UINT unMsgCode, const UCHAR *ucData,
+                        UINT unMsgCode, const UCHAR* ucData,
                         CString& omStrMsgName, SSignalInfoArray& SigInfoArray);
-    // The same function with a different prototype for interpreting 
-    //individual message, provided the msgdetail pointer 
+    // The same function with a different prototype for interpreting
+    //individual message, provided the msgdetail pointer
     BOOL bInterpretMsgs(EFORMAT eNumFormat, const sMESSAGE* pMsg,
-                        const UCHAR *ucData, SSignalInfoArray& SigInfoArray);
-    //The same function with a different prototype for interpreting 
-    //individual message, provided the msgdetail pointer 
-    BOOL bInterpretMsgs(EFORMAT /*eNumFormat*/, 
-                                        const sMESSAGE* pMsg,
-                                        const UCHAR *ucData, 
-                                        CSignalInfoArray& omSigInfoArray);
-    
+                        const UCHAR* ucData, SSignalInfoArray& SigInfoArray);
+    //The same function with a different prototype for interpreting
+    //individual message, provided the msgdetail pointer
+    BOOL bInterpretMsgs(EFORMAT /*eNumFormat*/,
+                        const sMESSAGE* pMsg,
+                        const UCHAR* ucData,
+                        CSignalInfoArray& omSigInfoArray);
+
     CMsgInterpretation();
     virtual ~CMsgInterpretation();
 public:
     void vCopy(CMsgInterpretation* pDest) const;
     void vClear();
 };
-
-#endif // !defined(AFX_MSGINTERPRETATION_H__94E95C57_363E_11D6_BFEF_0010B599CE39__INCLUDED_)

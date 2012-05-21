@@ -22,7 +22,7 @@ interface ISimENG : IDispatch{
     [id(3), helpstring("method UnregisterClient")] HRESULT UnregisterClient([in] USHORT ClientID);
     [id(4), helpstring("method ConnectNode")] HRESULT ConnectNode([in] USHORT ClientID);
     [id(5), helpstring("method DisconnectNode")] HRESULT DisconnectNode([in] USHORT ClientID);
-    [id(6), helpstring("method GetTimeModeMapping")] HRESULT GetTimeModeMapping([out] SYSTEMTIME* CurrSysTime, [out] ULONGLONG* TimeStamp, [out]LARGE_INTEGER* lQueryTickCount);
+    [id(6), helpstring("method GetTimeModeMapping")] HRESULT GetTimeModeMapping([out] SYSTEMTIME* CurrSysTime, [out] ULONGLONG* TimeStamp, [out]long long int* lQueryTickCount);
     [id(7), helpstring("method GetCurrentStatus")] HRESULT GetCurrentStatus([in] USHORT ClientID, [in,out] VARIANT *pNodeStatus);
 };
 [

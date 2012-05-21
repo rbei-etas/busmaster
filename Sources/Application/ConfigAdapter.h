@@ -20,13 +20,15 @@
  */
 /* CConfigAdapter class is used for converting old configuration file into new format.*/
 
+#pragma once
+
 class CConfigAdapter
 {
 public:
     CConfigAdapter();
     ~CConfigAdapter();
 
-    BOOL bGetConfigData(BYTE*& lpData, int &nStreamLength, eSECTION_ID eSectionId);
+    BOOL bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_ID eSectionId);
 
     INT nLoadConfigFile(CString omFileName);
 private:

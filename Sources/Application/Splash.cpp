@@ -56,8 +56,9 @@ void CSplashScreen::DisplaySplashScreen(CWnd* pParentWnd /*= NULL*/, INT nShow/*
     if (nShow == SW_SHOW) //if show
     {
         if ((sm_bShowScreen == TRUE) && (sm_pouSplashScreen == NULL))
-        {            
+        {
             sm_pouSplashScreen = new CSplashScreen();
+
             if (sm_pouSplashScreen->Create(pParentWnd) == TRUE)
             {
                 sm_pouSplashScreen->UpdateWindow();
@@ -65,7 +66,7 @@ void CSplashScreen::DisplaySplashScreen(CWnd* pParentWnd /*= NULL*/, INT nShow/*
             else
             {
                 delete sm_pouSplashScreen;
-            }            
+            }
         }
     }
     else // If Hide
@@ -81,37 +82,40 @@ void CSplashScreen::DisplaySplashScreen(CWnd* pParentWnd /*= NULL*/, INT nShow/*
 BOOL CSplashScreen::PreTranslateAppMessage(MSG* pMsg)
 {
     BOOL bResult = FALSE;
+
     if (sm_pouSplashScreen != NULL)
     {
         //Hide the screen if mouse clicked or key down
-        if ((pMsg->message == WM_LBUTTONDOWN)    ||      
-            (pMsg->message == WM_RBUTTONDOWN)    || 
-            (pMsg->message == WM_NCRBUTTONDOWN)  ||
-            (pMsg->message == WM_KEYDOWN)        ||  
-            (pMsg->message == WM_MBUTTONDOWN)    ||
-            (pMsg->message == WM_SYSKEYDOWN)     ||
-            (pMsg->message == WM_NCLBUTTONDOWN)  ||            
-            (pMsg->message == WM_NCMBUTTONDOWN))
+        if ((pMsg->message == WM_LBUTTONDOWN)    ||
+                (pMsg->message == WM_RBUTTONDOWN)    ||
+                (pMsg->message == WM_NCRBUTTONDOWN)  ||
+                (pMsg->message == WM_KEYDOWN)        ||
+                (pMsg->message == WM_MBUTTONDOWN)    ||
+                (pMsg->message == WM_SYSKEYDOWN)     ||
+                (pMsg->message == WM_NCLBUTTONDOWN)  ||
+                (pMsg->message == WM_NCMBUTTONDOWN))
         {
             sm_pouSplashScreen->DisplaySplashScreen(NULL, SW_HIDE);
             bResult = TRUE;
         }
     }
+
     return bResult;
 }
 
 BOOL CSplashScreen::Create(CWnd* pParentWnd /*= NULL*/)
 {
     BOOL bResult = FALSE;
+
     if (m_ouBitMapImage.LoadBitmap(IDR_BMP_SPLASH_SCREEN) == TRUE)
     {
         BITMAP BitMap;
         m_ouBitMapImage.GetBitmap(&BitMap);
-
         bResult = CreateEx(0,
                            AfxRegisterWndClass(0, AfxGetApp()->LoadStandardCursor(IDC_ARROW)),
                            NULL, WS_POPUP | WS_VISIBLE, 0, 0, BitMap.bmWidth, BitMap.bmHeight, pParentWnd->GetSafeHwnd(), NULL);
     }
+
     return bResult;
 }
 void CSplashScreen::PostNcDestroy()
@@ -122,25 +126,26 @@ void CSplashScreen::PostNcDestroy()
 int CSplashScreen::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
     int nResult = -1;
+
     if (CWnd::OnCreate(lpCreateStruct) != -1)
     {
         CenterWindow(); //Display splash screen in the center
         SetTimer(1, 750, NULL); // Timer interval after splash will dissappear
         nResult = 0;
     }
+
     return nResult;
 }
 
 void CSplashScreen::OnPaint()
 {
     CPaintDC omPaintDc(this);
-
     CDC omDc;
+
     if (omDc.CreateCompatibleDC(&omPaintDc) == TRUE)
     {
         BITMAP BitMap;
         m_ouBitMapImage.GetBitmap(&BitMap);
-
         // Paint the image.
         CBitmap* pomBitmapExisting = omDc.SelectObject(&m_ouBitMapImage);
         omPaintDc.BitBlt(0, 0, BitMap.bmWidth, BitMap.bmHeight, &omDc, 0, 0, SRCCOPY);
@@ -149,6 +154,6 @@ void CSplashScreen::OnPaint()
 }
 
 void CSplashScreen::OnTimer(UINT /*nIDEvent*/)
-{    
+{
     DisplaySplashScreen(NULL, SW_HIDE);// Hide the splash.
 }

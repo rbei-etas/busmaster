@@ -66,7 +66,7 @@ HANDLE CPARAM_THREADPROC::hGetExitNotifyEvent(void)
     return m_hNotifyExit;
 }
 
-BOOL CPARAM_THREADPROC::bStartThreadEx(LPTHREAD_START_ROUTINE NewThreadProc, 
+BOOL CPARAM_THREADPROC::bStartThreadEx(LPTHREAD_START_ROUTINE NewThreadProc,
                                        HANDLE hActionEvent, LPVOID pvBuffer)
 {
     // First check if the thread exists
@@ -99,33 +99,35 @@ BOOL CPARAM_THREADPROC::bStartThread(LPTHREAD_START_ROUTINE NewThreadProc)
     {
         bResult = TRUE;
     }
+
     return bResult;
 }
 
 BOOL CPARAM_THREADPROC::bTerminateThread(void)
 {
-	BOOL bResult = FALSE;
+    BOOL bResult = FALSE;
 
     if ((m_hActionEvent != NULL) && (m_hThread != NULL))
     {
         m_unActionCode = EXIT_THREAD;
         SetEvent(m_hActionEvent);
-	    Sleep(0);
+        Sleep(0);
 
-	    switch (WaitForSingleObject(m_hNotifyExit, THREAD_WAIT_PERIOD))
-	    {
+        switch (WaitForSingleObject(m_hNotifyExit, THREAD_WAIT_PERIOD))
+        {
             case WAIT_OBJECT_0:
             {
                 bResult = TRUE;
             }
             break;
-		    case WAIT_TIMEOUT:
-		    case WAIT_FAILED:
-		    {
-	            bResult = TerminateThread(m_hThread, EXIT_CODE_ABNORMAL);
-		    }
-		    break;
-	    }
+
+            case WAIT_TIMEOUT:
+            case WAIT_FAILED:
+            {
+                bResult = TerminateThread(m_hThread, EXIT_CODE_ABNORMAL);
+            }
+            break;
+        }
     }
 
     if (bResult)
@@ -133,7 +135,7 @@ BOOL CPARAM_THREADPROC::bTerminateThread(void)
         vInitialise();
     }
 
-	return bResult;
+    return bResult;
 }
 
 BOOL CPARAM_THREADPROC::bTransitToInaction(void)
@@ -143,8 +145,8 @@ BOOL CPARAM_THREADPROC::bTransitToInaction(void)
     /* The intention is to bring the thread into a state of inaction. One way
     of achieving this is to signal the thread to wait for an indefinite period
     of time until the owner decides the retransition of the same. */
-    if ((NULL != m_hThread2Owner) && (NULL != m_hOwner2Thread) 
-                                  && (NULL != m_hThread))
+    if ((NULL != m_hThread2Owner) && (NULL != m_hOwner2Thread)
+            && (NULL != m_hThread))
     {
         m_unPrevActionCode = m_unActionCode;
         m_unActionCode = INACTION; // New instruction
@@ -163,10 +165,10 @@ BOOL CPARAM_THREADPROC::bTransitToActiveState(void)
     BOOL bResult = FALSE;
 
     /* The intention is to bring the thread back into the state of action. At
-    present the thread is waiting for the event m_hOwner2Thread to get 
+    present the thread is waiting for the event m_hOwner2Thread to get
     signalled. */
-    if ((NULL != m_hThread2Owner) && (NULL != m_hOwner2Thread) 
-                                  && (NULL != m_hThread))
+    if ((NULL != m_hThread2Owner) && (NULL != m_hOwner2Thread)
+            && (NULL != m_hThread))
     {
         m_unActionCode = m_unPrevActionCode; /* Resume whatever the thread
         was doing prior to transiting into inaction. */
@@ -183,10 +185,12 @@ BOOL CPARAM_THREADPROC::bTransitToActiveState(void)
 #if 0
 DWORD WINAPI The_Worker_Thread(LPVOID pVoid)
 {
-    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC *) pVoid;
+    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
+
     if (pThreadParam != NULL)
     {
         bool bLoopON = true;
+
         while (bLoopON) // Continue so long as the loop is ON.
         {
             WaitForSingleObject(pThreadParam->m_hActionEvent, INFINITE);
@@ -197,32 +201,42 @@ DWORD WINAPI The_Worker_Thread(LPVOID pVoid)
                 {
                 }
                 break;
+
                 case CREATE_TIME_MAP:
                 {
                 }
                 break;
+
                 default:
                 case INACTION:
                 {
                     // Signal the owner
-                    SetEvent(pThreadParam->m_hThread2Owner); Sleep(0);
+                    SetEvent(pThreadParam->m_hThread2Owner);
+                    Sleep(0);
                     // Wait until owner signals back.
                     WaitForSingleObject(pThreadParam->m_hOwner2Thread, INFINITE);
                     // Signal the owner
-                    SetEvent(pThreadParam->m_hThread2Owner); Sleep(0);
+                    SetEvent(pThreadParam->m_hThread2Owner);
+                    Sleep(0);
                 }
                 break;
+
                 case EXIT_THREAD:
                 {
                     bLoopON = false;
                 }
                 break;
-                case IDLE: break;
-                default: break;
+
+                case IDLE:
+                    break;
+
+                default:
+                    break;
             }
         }
+
         SetEvent(pThreadParam->hGetExitNotifyEvent()); // Signal the owner that the thread
-        Sleep(0);                         // is going to terminate the infinite loop. 
+        Sleep(0);                         // is going to terminate the infinite loop.
     }
 
     return 0;

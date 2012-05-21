@@ -16,17 +16,13 @@
 /**
  * \file      MessageAttrib.h
  * \brief     Interface for the CMessageAttrib class
- * \authors   RBIN/EMC2 - Ratnadip Choudhury, Krishnaswamy B.N.
+ * \authors   Ratnadip Choudhury, Krishnaswamy B.N.
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Interface for the CMessageAttrib class
  */
-#if !defined(_MESSAGEATTRIB_H_INCLUDED_)
-#define _MESSAGEATTRIB_H_INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 // Developer defined message parameters
 #include "datatype.h"
@@ -44,23 +40,23 @@ typedef struct tagMsgIDAttr
 } SMsgIDAttr;
 
 
-class CMessageAttrib  
+class CMessageAttrib
 {
 public:
 
-    // To get its ID, given the message name 
+    // To get its ID, given the message name
     BOOL bMsgIDFromMsgName(const CString& omMsgName, UINT& unMsgID);
-	//To get the Msg Name, from its ID
-	BOOL bMessageNameFromMsgCode(UINT unMsgCode, CString& omMsgName);
+    //To get the Msg Name, from its ID
+    BOOL bMessageNameFromMsgCode(UINT unMsgCode, CString& omMsgName);
     // To get total number of message entries
     int nGetTotalIDs(void);
     // To remove all message entries
     void vClearAllEntries();
-    // To validate new message ID 
+    // To validate new message ID
     int nValidateNewID(unsigned int unMsgID);
     // To get all message IDs and their attributes
     int nGetMsgAttribs(SCanIDList* psCanIDItem);
-    // To get attribute of a particular message 
+    // To get attribute of a particular message
     int nGetAttrib(unsigned int unMsgID, SCanIDList& sCanIDItem);
     // To get all messages along with their attributes from registry
     void vSetMessageAttribData(PSMESSAGE_ATTRIB psMsgAttr);
@@ -94,20 +90,18 @@ private:
     SMsgIDAttr m_sIDAttrTmp;
     CMap <UINT, UINT, SMsgIDAttr, SMsgIDAttr> m_omMsgIDMap;
     CMap <UINT, UINT, SMsgIDAttr, SMsgIDAttr> m_omMsgIDMapTmp;
-	CList<UINT, UINT&> m_omIDList;
-	CList<UINT, UINT&> m_omIDListTmp;
+    CList<UINT, UINT&> m_omIDList;
+    CList<UINT, UINT&> m_omIDListTmp;
     CCriticalSection m_omCritSec;
 
     // Default constructor
     CMessageAttrib();
     // To copy message entries from one CMap object to the other
-    void vMapCopy(CMap <UINT, UINT, SMsgIDAttr, SMsgIDAttr>& omDestMap, 
+    void vMapCopy(CMap <UINT, UINT, SMsgIDAttr, SMsgIDAttr>& omDestMap,
                   CMap <UINT, UINT, SMsgIDAttr, SMsgIDAttr>& omSrcMap);
     // To copy message entries from one CMap object to the other
-    void vIDCopy(CList <UINT, UINT&>& omDestMap, 
+    void vIDCopy(CList <UINT, UINT&>& omDestMap,
                  CList <UINT, UINT&>& omSrcMap);
     // to store the format of display depending on the user mode
     char m_acMsgIDFormat[3];
 };
-
-#endif // !defined(_MESSAGEATTRIB_H_INCLUDED_)

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="NodeSimEx"
 	ProjectGUID="{88AFFFB3-CDF1-4FE9-9D75-43F5CAAE4E9A}"
 	RootNamespace="NodeSimEx"
@@ -51,10 +51,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="NodeSimEx_stdafx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -143,10 +140,7 @@
 				BasicRuntimeChecks="0"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="NodeSimEx_StdAfx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -331,10 +325,6 @@
 			</File>
 			<File
 				RelativePath=".\NodeSimEx.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NodeSimEx_stdafx.cpp"
 				>
 			</File>
 			<File
@@ -562,10 +552,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\NodeSimEx_resource.hm"
-				>
-			</File>
-			<File
 				RelativePath=".\NodeSimEx_stdafx.h"
 				>
 			</File>
@@ -648,10 +634,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\ReadMe.txt"
-			>
-		</File>
 	</Files>
 	<Globals>
 		<Global

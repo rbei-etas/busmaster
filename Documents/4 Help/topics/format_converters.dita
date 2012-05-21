@@ -23,7 +23,6 @@
         <li>DBF To DBC Converter: Converts BUSMASTER database (*.dbf) file into DBC (*.dbc) file.</li>
         <li>ASC TO LOG Converter: Converts CANoe log file (*.asc) to BUSMASTER log file(*.log)</li>
         <li>LOG To ASC Converter: Converts BUSMASTER log file (*.log) to CANoe Log file (*.log)</li>
-        <li>Log To Excel Converter: Exports BUSMASTER log file (*.log) to CSV (Comma Seperated Values) Format.</li>
       </ul></p>
     <p><b>Usage:</b></p>
     <p><ul>

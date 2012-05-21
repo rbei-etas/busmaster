@@ -28,15 +28,15 @@
 
 
 /******************************************************************************/
-/*  Function Name    :  CFlags                                                */    
-/*  Input(s)         :  PSTOOLBARINFO psToolBarInfo                           */    
-/*  Output           :                                                        */    
+/*  Function Name    :  CFlags                                                */
+/*  Input(s)         :  PSTOOLBARINFO psToolBarInfo                           */
+/*  Output           :                                                        */
 /*  Functionality    :  Constructor is called when user create an object of   */
 /*                      this class. Initialisation of all data members        */
-/*  Member of        :  CFlags                                                */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :   
-/*  Date Created     : 
+/*  Member of        :  CFlags                                                */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :
+/*  Date Created     :
 /******************************************************************************/
 CFlags::CFlags()
 {
@@ -45,33 +45,32 @@ CFlags::CFlags()
     m_bConnected    = FALSE;
 }
 /******************************************************************************/
-/*  Function Name    :  ~CFlags                                               */    
-/*  Input(s)         :                                                        */    
-/*  Output           :                                                        */    
+/*  Function Name    :  ~CFlags                                               */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
 /*  Functionality    :  This destractor is called when object is getting      */
 /*                      destroyed                                             */
-/*  Member of        :  CFlags                                                */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :    
-/*  Date Created     :     
-/*  Modifications    :                                                           
-/*                                                                              
+/*  Member of        :  CFlags                                                */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :
+/*  Date Created     :
+/*  Modifications    :
+/*
 /******************************************************************************/
 CFlags::~CFlags()
 {
-
 }
 /******************************************************************************/
-/*  Function Name    :  vSetFlagStatus                                        */    
-/*  Input(s)         :  Flag identifer and value to set that flag             */    
-/*  Output           :                                                        */    
+/*  Function Name    :  vSetFlagStatus                                        */
+/*  Input(s)         :  Flag identifer and value to set that flag             */
+/*  Output           :                                                        */
 /*  Functionality    :  This function set the correspoding flag whose         */
 /*                      with value passed as nValue parameter.The eWhichFlag  */
 /*                      identified the flag to be set.                        */
-/*  Member of        :  CFlags                                                */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :  
-/*  Date Created     :                          
+/*  Member of        :  CFlags                                                */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :
+/*  Date Created     :
 /******************************************************************************/
 VOID CFlags::vSetFlagStatus(eTXWNDFLAG eWhichFlag, INT nValue)
 {
@@ -82,33 +81,36 @@ VOID CFlags::vSetFlagStatus(eTXWNDFLAG eWhichFlag, INT nValue)
         case TX_HEX :
             m_bHex = nValue;
             break;
+
         case TX_SENDMESG :
             m_bSendMsgOn = nValue;
             break;
+
         case TX_CONNECTED :
             m_bConnected = nValue;
             break;
+
         default:
-             //Invalid flag enum value
-            ASSERT ( FALSE );    
+            //Invalid flag enum value
+            ASSERT ( FALSE );
     }
+
     m_omFlagCritSec.Unlock();
 }
 /******************************************************************************/
-/*  Function Name    :  nGetFlagStatus                                        */    
-/*  Input(s)         :  Flag identifer                                        */    
-/*  Output           :  State of flag                                         */    
+/*  Function Name    :  nGetFlagStatus                                        */
+/*  Input(s)         :  Flag identifer                                        */
+/*  Output           :  State of flag                                         */
 /*  Functionality    :  This function returns the state of flag The eWhichFlag*/
 /*                      identified the flag.                                  */
-/*  Member of        :  CFlags                                                */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :   
-/*  Date Created     :  
+/*  Member of        :  CFlags                                                */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :
+/*  Date Created     :
 /******************************************************************************/
 int CFlags::nGetFlagStatus(eTXWNDFLAG eWhichFlag)
 {
     INT nRetValue = -1;
-
     m_omFlagCritSec.Lock();
 
     switch( eWhichFlag )
@@ -116,17 +118,20 @@ int CFlags::nGetFlagStatus(eTXWNDFLAG eWhichFlag)
         case TX_HEX :
             nRetValue  = m_bHex;
             break;
+
         case TX_SENDMESG :
             nRetValue  = m_bSendMsgOn;
             break;
+
         case TX_CONNECTED :
             nRetValue  = m_bConnected;
             break;
+
         default:
             // Invalid flag enum value
             ASSERT ( FALSE );
     }
-    m_omFlagCritSec.Unlock();
 
+    m_omFlagCritSec.Unlock();
     return nRetValue;
 }

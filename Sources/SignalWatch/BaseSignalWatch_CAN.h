@@ -18,9 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined BASESIGNALWATCH_CAN_H__INCLUDED_
-#define BASESIGNALWATCH_CAN_H__INCLUDED_
 
+#pragma once
 
 class CBaseSignalWatch_CAN
 {
@@ -36,5 +35,3 @@ public:
     virtual BOOL    SW_IsWindowVisible(void) = 0;
     virtual HRESULT SW_SetDisplayMode(BOOL bHex) = 0;
 };
-
-#endif //BASESIGNALWATCH_CAN_H__INCLUDED_

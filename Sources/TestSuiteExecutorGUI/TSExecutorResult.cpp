@@ -25,23 +25,23 @@
 
 /******************************************************************************
 Function Name  :  CResultTc
-Input(s)       :  
+Input(s)       :
 Output         :  -
-Functionality  :   
+Functionality  :
 Member of      :  CResultTc
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 CResultTc::CResultTc()
 {
     m_omTestCase = "";
-	m_omTestDescripter = "";
+    m_omTestDescripter = "";
     GetSystemTime(&m_sStartTime);
-	GetSystemTime(&m_sEndTime);
-	m_eResult = ERRORS;
+    GetSystemTime(&m_sEndTime);
+    m_eResult = ERRORS;
     m_ouVerifyList.RemoveAll();
 };
 
@@ -49,12 +49,12 @@ CResultTc::CResultTc()
 Function Name  :  operator=
 Input(s)       :  CResultTc& RefObj
 Output         :  CResultTc&
-Functionality  :  = operator overloading 
+Functionality  :  = operator overloading
 Member of      :  CResultTc
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 CResultTc& CResultTc::operator=(CResultTc& RefObj)
@@ -66,23 +66,25 @@ CResultTc& CResultTc::operator=(CResultTc& RefObj)
     m_eResult = RefObj.m_eResult;
     m_ouVerifyList.RemoveAll();
     INT nCount = (INT)RefObj.m_ouVerifyList.GetCount();
+
     for(INT nIndex=0; nIndex<nCount; nIndex++)
     {
         POSITION pos = RefObj.m_ouVerifyList.FindIndex(nIndex);
         m_ouVerifyList.AddTail(RefObj.m_ouVerifyList.GetAt(pos));
     }
+
     return *this;
 }
 /******************************************************************************
 Function Name  :  ~CResultTc
 Input(s)       :  -
 Output         :  -
-Functionality  :  Destructor 
+Functionality  :  Destructor
 Member of      :  CResultTc
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 CResultTc::~CResultTc(void)
@@ -93,32 +95,32 @@ CResultTc::~CResultTc(void)
 Function Name  :  CSummary
 Input(s)       :  -
 Output         :  -
-Functionality  :  Constructor 
+Functionality  :  Constructor
 Member of      :  CSummary
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 CSummary::CSummary(void)
 {
     m_unTcExecuted = 0;
-	m_unTcSucceded = 0;
-	m_unTcFailed = 0;
-	m_unTcLeft =0;
+    m_unTcSucceded = 0;
+    m_unTcFailed = 0;
+    m_unTcLeft =0;
 }
 
 /******************************************************************************
 Function Name  :  ~CSummary
 Input(s)       :  -
 Output         :  -
-Functionality  :  Destructor 
+Functionality  :  Destructor
 Member of      :  CSummary
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 CSummary::~CSummary(void)
@@ -129,12 +131,12 @@ CSummary::~CSummary(void)
 Function Name  :  CResultGenerator
 Input(s)       :  -
 Output         :  -
-Functionality  :  Constructor 
+Functionality  :  Constructor
 Member of      :  CResultGenerator
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 CResultGenerator::CResultGenerator(void)
@@ -145,12 +147,12 @@ CResultGenerator::CResultGenerator(void)
 Function Name  :  ~CResultGenerator
 Input(s)       :  -
 Output         :  -
-Functionality  :  Destructor 
+Functionality  :  Destructor
 Member of      :  CResultGenerator
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 CResultGenerator::~CResultGenerator(void)
@@ -161,31 +163,32 @@ CResultGenerator::~CResultGenerator(void)
 Function Name  :  GenerateReport
 Input(s)       :  -
 Output         :  HRESULT
-Functionality  :  Genrates the report 
+Functionality  :  Genrates the report
 Member of      :  CResultGenerator
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :  CS042
 ******************************************************************************/
 HRESULT CResultGenerator::GenerateReport(void)
 {
     CStdioFile omReportFile;
+
     if(omReportFile.Open(m_ouHeaderInfo.m_sReportFile.m_omPath, CFile::modeCreate|CFile::modeReadWrite)!=NULL)
     {
         if(m_ouHeaderInfo.m_sReportFile.m_eType == TXT)
         {
-            
             nGenerateTextReport(omReportFile);
         }
         else
         {
             nGenerateHtmlReport(omReportFile);
         }
+
         omReportFile.Close();
     }
-    
+
     return S_OK;
 }
 
@@ -193,12 +196,12 @@ HRESULT CResultGenerator::GenerateReport(void)
 Function Name  :  nGenerateHtmlReport
 Input(s)       :  CStdioFile& omReportFile
 Output         :  INT
-Functionality  :  Generates the HTML report 
+Functionality  :  Generates the HTML report
 Member of      :  CResultGenerator
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 INT CResultGenerator::nGenerateHtmlReport(CStdioFile& omReportFile)
@@ -216,22 +219,20 @@ INT CResultGenerator::nGenerateHtmlReport(CStdioFile& omReportFile)
 Function Name  :  nGenerateTextReport
 Input(s)       :  CStdioFile& omReportFile
 Output         :  INT
-Functionality  :  Generates Text Report 
+Functionality  :  Generates Text Report
 Member of      :  CResultGenerator
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
-INT CResultGenerator::nGenerateTextReport(CStdioFile& omReportFile) 
+INT CResultGenerator::nGenerateTextReport(CStdioFile& omReportFile)
 {
-    
-	//BUSMASTER Version
+    //BUSMASTER Version
     omReportFile.WriteString("\n\t\t\t\tBUSMASTER Version:: BUSMASTER " + m_omStrVersion);
     omReportFile.WriteString("\n\t\t\t\tReport File For:: ");
     omReportFile.WriteString(m_omStrTestSetupFile);
-    
     omReportFile.WriteString("\n\nTestSetup File Information:");
     omReportFile.WriteString("\n---------------------------\n\t");
     omReportFile.WriteString("\n\tTitle: "+ m_omStrTestSetupFile);
@@ -239,7 +240,6 @@ INT CResultGenerator::nGenerateTextReport(CStdioFile& omReportFile)
     omReportFile.WriteString("\n\tVersion: "+m_ouHeaderInfo.m_sVersion.m_omValue);
     omReportFile.WriteString("\n\tDatabase Information:"+m_ouHeaderInfo.m_omDatabasePath);
     omReportFile.WriteString("\n\n");
-    
     omReportFile.WriteString("Engineer Info:");
     omReportFile.WriteString("\n--------------");
     omReportFile.WriteString("\n\tName: "+m_ouHeaderInfo.m_sEngineerInfo1.m_omValue);
@@ -247,14 +247,14 @@ INT CResultGenerator::nGenerateTextReport(CStdioFile& omReportFile)
     omReportFile.WriteString("\nResults:");
     omReportFile.WriteString("\n-------");
     omReportFile.WriteString("\n");
-    
     INT nTcCount = (INT)m_odTcResultList.GetCount();
+
     for(INT nTcIndex = 0; nTcIndex< nTcCount; nTcIndex++)
     {
         POSITION pos = m_odTcResultList.FindIndex(nTcIndex);
         CResultTc& ouResultTc = m_odTcResultList.GetAt(pos);
         omReportFile.WriteString("\nTestCase:  "+ouResultTc.m_omTestCase);
-        
+
         if(ouResultTc.m_eResult == ERRORS)
         {
             omReportFile.WriteString("\nResult:\tFAILED");
@@ -263,10 +263,12 @@ INT CResultGenerator::nGenerateTextReport(CStdioFile& omReportFile)
         {
             omReportFile.WriteString("\nResult:\tSUCCESS");
         }
+
         omReportFile.WriteString("\nStratTime:"+SysTimeToString(ouResultTc.m_sStartTime));
         omReportFile.WriteString("\nEndTime:"+SysTimeToString(ouResultTc.m_sEndTime));
         //omReportFile.WriteString("\n");
         INT nVerifyCount = (INT)ouResultTc.m_ouVerifyList.GetCount();
+
         for(INT nVerifyIndex = 0; nVerifyIndex <nVerifyCount; nVerifyIndex++)
         {
             CString omStrVerify;
@@ -275,6 +277,7 @@ INT CResultGenerator::nGenerateTextReport(CStdioFile& omReportFile)
             POSITION pos = ouResultTc.m_ouVerifyList.FindIndex(nVerifyIndex);
             CResultVerify& ouVerify = ouResultTc.m_ouVerifyList.GetAt(pos);
             INT nMsgCount = (INT)ouVerify.m_MessageResultList.GetCount();
+
             if(nMsgCount == 0)
             {
                 CString omStrTemp("No Message is Verified");
@@ -295,15 +298,16 @@ INT CResultGenerator::nGenerateTextReport(CStdioFile& omReportFile)
                         POSITION posSignal = ouMsgResult.m_SignalResultList.FindIndex(nSignalIndex);
                         CSignalResult ouSignalResult = ouMsgResult.m_SignalResultList.GetAt(posSignal);
                         omStrTemp.Format("\n\t\t\t%-32s %16s (x = %s) %16s", ouSignalResult.m_omSignal, ouSignalResult.m_omSignalCondition,
-                                                                ouSignalResult.m_omSignalValue, ouSignalResult.m_omResult);
+                                         ouSignalResult.m_omSignalValue, ouSignalResult.m_omResult);
                         omReportFile.WriteString(omStrTemp);
                     }
                 }
             }
-            
         }
+
         omReportFile.WriteString("\n");
     }
+
     return 0;
 }
 
@@ -311,17 +315,17 @@ INT CResultGenerator::nGenerateTextReport(CStdioFile& omReportFile)
 Function Name  :  SysTimeToString
 Input(s)       :  SYSTEMTIME& systime
 Output         :  CString
-Functionality  :  Gets The time in String Format 
+Functionality  :  Gets The time in String Format
 Member of      :  CResultGenerator
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 CString CResultGenerator::SysTimeToString(SYSTEMTIME& systime)
 {
-//Taken From Msdn
+    //Taken From Msdn
     // Determine day of the week.
     CString day;
 
@@ -329,39 +333,38 @@ CString CResultGenerator::SysTimeToString(SYSTEMTIME& systime)
     {
         case 0:
             day = "Sunday";
-        break;
+            break;
 
         case 1:
             day = "Monday";
-        break;
+            break;
 
         case 2:
             day = "Tuesday";
-        break;
+            break;
 
         case 3:
             day = "Wednesday";
-        break;
+            break;
 
         case 4:
             day = "Thursday";
-        break;
+            break;
 
         case 5:
             day = "Friday";
-        break;
+            break;
 
         case 6:
             day = "Saturday";
-        break;
+            break;
     }
 
     CString omStrTime;
-    omStrTime.Format("%s %u/%u/%u  %u:%u:%u:%u", 
-              day,
-              systime.wYear, systime.wMonth, systime.wDay,
-              systime.wHour, systime.wMinute, systime.wSecond,
-              systime.wMilliseconds);
+    omStrTime.Format("%s %u/%u/%u  %u:%u:%u:%u",
+                     day,
+                     systime.wYear, systime.wMonth, systime.wDay,
+                     systime.wHour, systime.wMinute, systime.wSecond,
+                     systime.wMilliseconds);
     return omStrTime;
-   
 }

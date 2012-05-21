@@ -15,20 +15,18 @@
 
 /**
  * \file      operations_file.cpp
- * \brief     This file contains the codes when configuration procedure 
+ * \brief     This file contains the codes when configuration procedure
  * \authors   Anish Kumar, Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contains the codes when configuration procedure 
+ * This file contains the codes when configuration procedure
  */
-
 
 #include "StdAfx_ProjectConfiguration.h"
 #include "ProjectConfiguration_extern.h"
 #include "ProjConfig.h"
 #include "projConfigManager.h"
 
-#define _CRT_SECURE_NO_WARNINGS
 #define DATABASE_SIGNATURE    "/************* FrameFileDB **************/"
 #define VERSIONLINE           "/************* Version 1.0 **************/"
 #define PROJECT_TABLE_SIG     "  PROJECT_TABLE :: PROJECT_TABLE "
@@ -44,7 +42,7 @@
 #define UNKNOWN_ERROR                           4
 #define FILE_INVALID_SECTIONID                  5
 
-enum 
+enum
 {
     SECTION_SIGNATURE                   = 0x0,
     SECTION_VERSION,
@@ -53,44 +51,49 @@ enum
     SECTION_PROJECT_TABLE_ENTRY,
     SECTION_SECTION_TABLE_ENTRY,
     SECTION_SIGNATURE_FILE_END,
-	SECTION_FILE_INVALID
+    SECTION_FILE_INVALID
 };
 
 static bool ReadAString(FILE* pFile, string& ResultStr)
 {
     bool bResult = false;
-	int nLength;
-	//fseek(pFile, sizeof("\n")-1, SEEK_CUR);
-	if (fread(&nLength, sizeof(int), 1, pFile) == 1)
-	{
-		CHAR* Buffer = NULL;
-		try
-		{
-			Buffer = new CHAR[nLength];
-			if (Buffer != NULL)
-			{
-				if (fread(Buffer, sizeof(char) * nLength, 1, pFile) != NULL)
-				{
-					ResultStr = Buffer;
-					bResult = true;
-				}
-				delete[] Buffer;
+    int nLength;
+
+    //fseek(pFile, sizeof("\n")-1, SEEK_CUR);
+    if (fread(&nLength, sizeof(int), 1, pFile) == 1)
+    {
+        CHAR* Buffer = NULL;
+
+        try
+        {
+            Buffer = new CHAR[nLength];
+
+            if (Buffer != NULL)
+            {
+                if (fread(Buffer, sizeof(char) * nLength, 1, pFile) != NULL)
+                {
+                    ResultStr = Buffer;
+                    bResult = true;
+                }
+
+                delete[] Buffer;
                 Buffer = NULL;
-			}
-		}
-		catch (...)
-		{
-			//throw 0;
-			//MessageBox(str, MB_ICONERROR| MB_SYSTEMMODAL|MB_OK, 0 );
-		}
-	}
-	return bResult;
+            }
+        }
+        catch (...)
+        {
+            //throw 0;
+            //MessageBox(str, MB_ICONERROR| MB_SYSTEMMODAL|MB_OK, 0 );
+        }
+    }
+
+    return bResult;
 }
 
-
-int GetTheErrorType(FILE *pFile)
+int GetTheErrorType(FILE* pFile)
 {
     int nReturn = UNKNOWN_ERROR;
+
     if (feof(pFile))
     {
         nReturn = INVALID_FORMAT_FILE;
@@ -106,16 +109,18 @@ int GetTheErrorType(FILE *pFile)
 static int ReadAndValidateString(FILE* pFile, char Buffer[], char* ValidationStr)
 {
     int nResult = 0;
-	int nLength;
-	//fseek(pFile, sizeof("\n")-1, SEEK_CUR);
-	if (fread(&nLength, sizeof(int), 1, pFile) == 1)
-	{
-		memset(Buffer, '\0', nLength);
-		if (fread(Buffer, sizeof(char) * nLength, 1, pFile) == NULL)
-		{
-			nResult = GetTheErrorType(pFile);
-		}
-	}
+    int nLength;
+
+    //fseek(pFile, sizeof("\n")-1, SEEK_CUR);
+    if (fread(&nLength, sizeof(int), 1, pFile) == 1)
+    {
+        memset(Buffer, '\0', nLength);
+
+        if (fread(Buffer, sizeof(char) * nLength, 1, pFile) == NULL)
+        {
+            nResult = GetTheErrorType(pFile);
+        }
+    }
 
     if (strcmp(Buffer, ValidationStr) != 0)
     {
@@ -128,16 +133,16 @@ static int ReadAndValidateString(FILE* pFile, char Buffer[], char* ValidationStr
 static int WriteAString(FILE* pFile, char SrcString[])
 {
     int nResult = PROBLEM_IN_WRITING_READING;
-
     size_t Length = strlen(SrcString);
-	//fputs("\n", pFile);
-	if (fwrite(&Length, sizeof(int), 1, pFile) == 1)
-	{
-		if (fwrite(SrcString, sizeof(char), Length, pFile) == Length)
-		{
-			nResult = 0;
-		}
-	}
+
+    //fputs("\n", pFile);
+    if (fwrite(&Length, sizeof(int), 1, pFile) == 1)
+    {
+        if (fwrite(SrcString, sizeof(char), Length, pFile) == Length)
+        {
+            nResult = 0;
+        }
+    }
 
     return nResult;
 }
@@ -196,7 +201,7 @@ bool FileDeleteProjectTable(string ProjectName)
 // Project setters: end
 
 // Section setter: start
-bool FileAddModifySectionData(string ProjectName, string SectionName, 
+bool FileAddModifySectionData(string ProjectName, string SectionName,
                               SECTIONDATA& SectionData)
 {
     return g_ProjCfgManager.AddModifySection(ProjectName, SectionData);
@@ -204,7 +209,7 @@ bool FileAddModifySectionData(string ProjectName, string SectionName,
 // Section setter: end
 
 
-static int ReadWriteASection(bool bToRead, short SectionID, 
+static int ReadWriteASection(bool bToRead, short SectionID,
                              FILE* pFile, void* pData = NULL)
 {
     int nResult = 0;
@@ -216,70 +221,80 @@ static int ReadWriteASection(bool bToRead, short SectionID,
             if (bToRead)
             {
                 char acBuffer[LEN_SIG_FILE_START] = {'\0'};
-				nResult = ReadAndValidateString(pFile, acBuffer, DATABASE_SIGNATURE);
-				if (nResult != 0)
-				{
-					ReadWriteASection(bToRead, SECTION_FILE_INVALID, NULL);
-				}
-			}
+                nResult = ReadAndValidateString(pFile, acBuffer, DATABASE_SIGNATURE);
+
+                if (nResult != 0)
+                {
+                    ReadWriteASection(bToRead, SECTION_FILE_INVALID, NULL);
+                }
+            }
             else
             {
                 nResult = WriteAString(pFile, DATABASE_SIGNATURE);
             }
+
             if (nResult == 0)
             {
                 nResult = ReadWriteASection(bToRead, SECTION_VERSION, pFile);
             }
         }
         break;
+
         case SECTION_VERSION:
         {
             if (bToRead)
             {
                 char acBuffer[LEN_VERSION] = {'\0'};
                 nResult = ReadAndValidateString(pFile, acBuffer, VERSIONLINE);
-				if (nResult != 0)
-				{
-					ReadWriteASection(bToRead, SECTION_FILE_INVALID, NULL);
-				}
+
+                if (nResult != 0)
+                {
+                    ReadWriteASection(bToRead, SECTION_FILE_INVALID, NULL);
+                }
             }
             else
             {
                 nResult = WriteAString(pFile, VERSIONLINE);
             }
+
             if (nResult == 0)
             {
                 nResult = ReadWriteASection(bToRead, SECTION_PROJECT_TABLE_SIGNATURE, pFile);
             }
         }
         break;
+
         case SECTION_PROJECT_TABLE_SIGNATURE:
         {
             if (bToRead)
             {
                 char acBuffer[LEN_SIG_PROJ_TABLE] = {'\0'};
                 nResult = ReadAndValidateString(pFile, acBuffer, PROJECT_TABLE_SIG);
-				if (nResult != 0)
-				{
-					ReadWriteASection(bToRead, SECTION_FILE_INVALID, NULL);
-				}
+
+                if (nResult != 0)
+                {
+                    ReadWriteASection(bToRead, SECTION_FILE_INVALID, NULL);
+                }
             }
             else
             {
                 nResult = WriteAString(pFile, PROJECT_TABLE_SIG);
             }
+
             if (nResult == 0)
             {
                 nResult = ReadWriteASection(bToRead, SECTION_PROJECT_TABLE_COUNT, pFile);
             }
         }
         break;
+
         case SECTION_PROJECT_TABLE_COUNT:
         {
             UCHAR Entries = 0;
+
             if (bToRead)
             {
-				//fseek(pFile, sizeof("\n")-1, SEEK_CUR);
+                //fseek(pFile, sizeof("\n")-1, SEEK_CUR);
                 if (fread(&Entries, sizeof(Entries), 1, pFile) == 1)
                 {
                     nResult = ReadWriteASection(bToRead, SECTION_PROJECT_TABLE_ENTRY,
@@ -293,7 +308,8 @@ static int ReadWriteASection(bool bToRead, short SectionID,
             else
             {
                 Entries = (UCHAR) g_ProjCfgManager.GetProjectCount();
-				//fputs("\n", pFile);
+
+                //fputs("\n", pFile);
                 if (fwrite(&Entries, sizeof(UCHAR), 1, pFile) == 1)
                 {
                     nResult = ReadWriteASection(bToRead, SECTION_PROJECT_TABLE_ENTRY,
@@ -306,14 +322,17 @@ static int ReadWriteASection(bool bToRead, short SectionID,
             }
         }
         break;
+
         case SECTION_PROJECT_TABLE_ENTRY:
         {
             UCHAR Entries = *((UCHAR*) pData);
+
             if (bToRead)
             {
                 for (UCHAR i = 0; (i < Entries) && (nResult == 0); i++)
                 {
                     PROJECTDATA sProjectDataTmp;
+
                     if (sProjectDataTmp.Read(pFile))
                     {
                         g_ProjCfgManager.AddModifyProjDetail(sProjectDataTmp);
@@ -329,21 +348,24 @@ static int ReadWriteASection(bool bToRead, short SectionID,
                 bool bAllWell = true;
                 LISTSTR ProjectList;
                 g_ProjCfgManager.GetProjectList(ProjectList);
-                
-                for (LISTSTR::iterator i = ProjectList.begin();
-                     (i != ProjectList.end()) && bAllWell; i++)
+
+                for (LISTSTR::iterator i = ProjectList.begin(); (i != ProjectList.end()) && bAllWell; ++i)
                 {
                     PROJECTDATA ProjData;
-                    if (bAllWell = g_ProjCfgManager.GetProjectData(*i, ProjData))
+                    bAllWell = g_ProjCfgManager.GetProjectData(*i, ProjData);
+
+                    if (bAllWell)
                     {
                         bAllWell = ProjData.Write(pFile);
                     }
                 }
+
                 if (!bAllWell)
                 {
                     nResult = PROBLEM_IN_WRITING_READING;
                 }
             }
+
             if (nResult == 0)
             {
                 nResult = ReadWriteASection(bToRead, SECTION_SECTION_TABLE_ENTRY,
@@ -351,42 +373,50 @@ static int ReadWriteASection(bool bToRead, short SectionID,
             }
         }
         break;
+
         case SECTION_SECTION_TABLE_ENTRY:
         {
             bool bAllWell = true;
+
             if (bToRead)
             {
-                UCHAR ProjectEntries = *((UCHAR *) pData);
+                UCHAR ProjectEntries = *((UCHAR*) pData);
+
                 for (UCHAR i = 0; (i < ProjectEntries) && bAllWell; i++)
                 {
                     string ProjectName;
                     bAllWell = ReadAString(pFile, ProjectName);
-					//ProjectName[ProjectName.length()-1] = '\0';
+                    //ProjectName[ProjectName.length()-1] = '\0';
                     UCHAR SectionEntries = 0;
+
                     if (bAllWell)
                     {
-						//fseek(pFile, sizeof("\n")-1, SEEK_CUR);
+                        //fseek(pFile, sizeof("\n")-1, SEEK_CUR);
                         bAllWell = (fread(&SectionEntries, sizeof(SectionEntries),
                                           1, pFile) == 1);
                     }
-					if (bAllWell)
-					{
-						for (UCHAR j = 0; (j < SectionEntries) && bAllWell; j++)
-						{
-							SECTIONDATA CurrSection;
-							if (bAllWell = CurrSection.Read(pFile))
-							{
-								g_ProjCfgManager.AddModifySection(
-									ProjectName, CurrSection);
-							}
-							else
-							{
-								nResult = GetTheErrorType(pFile);
-							}
-						}
-					}
+
+                    if (bAllWell)
+                    {
+                        for (UCHAR j = 0; (j < SectionEntries) && bAllWell; j++)
+                        {
+                            SECTIONDATA CurrSection;
+                            bAllWell = CurrSection.Read(pFile);
+
+                            if (bAllWell)
+                            {
+                                g_ProjCfgManager.AddModifySection(
+                                    ProjectName, CurrSection);
+                            }
+                            else
+                            {
+                                nResult = GetTheErrorType(pFile);
+                            }
+                        }
+                    }
                 }
-				 if (!bAllWell)
+
+                if (!bAllWell)
                 {
                     nResult = PROBLEM_IN_WRITING_READING;
                 }
@@ -395,24 +425,27 @@ static int ReadWriteASection(bool bToRead, short SectionID,
             {
                 LISTSTR ProjectList;
                 g_ProjCfgManager.GetProjectList(ProjectList);
-                for (LISTSTR::iterator i = ProjectList.begin();
-                     (i != ProjectList.end()) && bAllWell; i++)
+
+                for (LISTSTR::iterator i = ProjectList.begin(); (i != ProjectList.end()) && bAllWell; ++i)
                 {
                     const char* str = i->c_str();
-                    if ((nResult = WriteAString(pFile, (char *) str)) == 0)
+
+                    if ((nResult = WriteAString(pFile, (char*) str)) == 0)
                     {
                         LISTSTR SectionList;
                         UCHAR Sections = (UCHAR) g_ProjCfgManager.GetSectionList(*i, SectionList);
-						//fputs("\n", pFile);
+
+                        //fputs("\n", pFile);
                         if (fwrite(&Sections, sizeof(UCHAR), 1, pFile) != 1)
                         {
                             bAllWell = false;
                         }
-                        for (LISTSTR::iterator j = SectionList.begin();
-                             (j != SectionList.end()) && bAllWell; j++)
+
+                        for (LISTSTR::iterator j = SectionList.begin(); (j != SectionList.end()) && bAllWell; ++j)
                         {
                             SECTIONDATA CurrSecData;
                             bAllWell = g_ProjCfgManager.GetSectionData(*i, *j, CurrSecData);
+
                             if (bAllWell)
                             {
                                 bAllWell = CurrSecData.Write(pFile);
@@ -420,27 +453,31 @@ static int ReadWriteASection(bool bToRead, short SectionID,
                         }
                     }
                 }
+
                 if (!bAllWell)
                 {
                     nResult = PROBLEM_IN_WRITING_READING;
                 }
             }
+
             if (bAllWell)
             {
                 nResult = ReadWriteASection(bToRead, SECTION_SIGNATURE_FILE_END, pFile);
             }
         }
         break;
+
         case SECTION_SIGNATURE_FILE_END:
         {
             if (bToRead)
             {
                 char acBuffer[LEN_SIG_FILE_END] = {'\0'};
                 nResult = ReadAndValidateString(pFile, acBuffer, DB_END_SIGNATURE);
-				if (nResult != 0)
-				{
-					ReadWriteASection(bToRead, SECTION_FILE_INVALID, NULL);
-				}
+
+                if (nResult != 0)
+                {
+                    ReadWriteASection(bToRead, SECTION_FILE_INVALID, NULL);
+                }
             }
             else
             {
@@ -448,7 +485,6 @@ static int ReadWriteASection(bool bToRead, short SectionID,
             }
         }
         break;
-
 
         default:
         {
@@ -462,15 +498,14 @@ static int ReadWriteASection(bool bToRead, short SectionID,
 
 void CloseDataFile()
 {
-	g_ProjCfgManager.DeleteAllProjectTable();
+    g_ProjCfgManager.DeleteAllProjectTable();
 }
 
 int LoadDataFile(char FileName[])
 {
     g_ProjCfgManager.DeleteAllProjectTable();
-
     int nResult = 0;
-    FILE *pFile = NULL;	
+    FILE* pFile = NULL;
 
     //Check if file exists
     if (fopen_s(&pFile, FileName, "rb") == 0)
@@ -490,7 +525,7 @@ int LoadDataFile(char FileName[])
 int SaveDataFile(char FileName[])
 {
     int nResult = 0;
-    FILE *pFile = NULL;
+    FILE* pFile = NULL;
 
     //open again with write permission
     if (fopen_s(&pFile, FileName, "wb") == 0)
@@ -505,4 +540,3 @@ int SaveDataFile(char FileName[])
 
     return nResult;
 }
-

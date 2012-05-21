@@ -22,15 +22,13 @@
  * This contains various necessary macro definitions.
  */
 
+#pragma once
 
-#if !defined UTILS_MACRO_H__INCLUDED_
-#define UTILS_MACRO_H__INCLUDED_
-
-#define FORMAT_STR_ID_HEX		_T("0x%03X")
+#define FORMAT_STR_ID_HEX       _T("0x%03X")
 #define FORMAT_STR_ID_DEC       _T("%04d")
 #define FORMAT_STR_DATA_HEX     _T("%02X ")
 #define FORMAT_STR_DATA_DEC     _T("%03d")
-#define FORMAT_PGN_ID_HEX		_T("0x%06X")
+#define FORMAT_PGN_ID_HEX       _T("0x%06X")
 #define FORMAT_PGN_ID_DEC       _T("%06d")
 
 #define BIT_TM_ABS              0x01
@@ -59,7 +57,7 @@
 #define DISP_MODE_OVER          0x20
 #define DISP_MODE_APPEND        0x40
 #define DISP_MODE_INTRP         0x80
-const BYTE BITS_DISP            = (DISP_MODE_OVER | DISP_MODE_APPEND | 
+const BYTE BITS_DISP            = (DISP_MODE_OVER | DISP_MODE_APPEND |
                                    DISP_MODE_INTRP);
 const BYTE BITS_TM              = (BIT_TM_ABS | BIT_TM_REL | BIT_TM_SYS);
 const BYTE BITS_NUM             = (BIT_NUM_HEX | BIT_NUM_DEC);
@@ -69,7 +67,7 @@ const BYTE BITS_EXPRN           = (BITS_TM | BITS_NUM);
 #define CLEAR_EXPR_DISP_BITS(Flag)   (Flag &= (~BITS_DISP))
 #define CLEAR_EXPR_TM_BITS(Flag)     (Flag &= (~BITS_TM))
 
-// In any scenario these two bits are mutually exclusive, as far as the 
+// In any scenario these two bits are mutually exclusive, as far as the
 // current implementation is concerned.
 #define SET_MODE_OVER(Flag)     (Flag = CLEAR_EXPR_DISP_BITS(Flag) | DISP_MODE_OVER)
 #define SET_MODE_APPEND(Flag)   (Flag = CLEAR_EXPR_DISP_BITS(Flag) | DISP_MODE_APPEND)
@@ -88,17 +86,15 @@ const BYTE BITS_EXPRN           = (BITS_TM | BITS_NUM);
 #define UNUSED_INTENTIONALLY(X)    (X)
 
 #define DELETE_PTR(PtrVal)      {                                       \
-                                    if (NULL != PtrVal)                 \
-                                    {                                   \
-                                        delete PtrVal; PtrVal = NULL;   \
-                                    }                                   \
-                                }
+        if (NULL != PtrVal)                 \
+        {                                   \
+            delete PtrVal; PtrVal = NULL;   \
+        }                                   \
+    }
 
 #define DELETE_ARRAY(PtrVal)    {                                       \
-                                    if (NULL != PtrVal)                 \
-                                    {                                   \
-                                        delete[] PtrVal; PtrVal = NULL; \
-                                    }                                   \
-                                }
-
-#endif // UTILS_MACRO_H__INCLUDED_
+        if (NULL != PtrVal)                 \
+        {                                   \
+            delete[] PtrVal; PtrVal = NULL; \
+        }                                   \
+    }

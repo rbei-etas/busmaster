@@ -34,7 +34,7 @@ typedef enum { Active, Passive, Simulation } eControllerMode;
 typedef enum { all, timers, key, message, error} eHandlerType;
 typedef enum { Log, Display} EFILTERMODULE;
 
-typedef struct 
+typedef struct
 {
     unsigned int m_unMsgID;    // 11/29 Bit-
     unsigned char m_bEXTENDED; // true, for (29 Bit) Frame
@@ -94,14 +94,14 @@ typedef struct
 
 } sBUSSTATISTICS_USR;
 
-typedef struct 
+typedef struct
 {
-    unsigned long m_dMessageCode;       // Message ID         
-    unsigned int m_dNumberOfSignals;   // Number Of Signals a Message has  
-    unsigned int m_dMessageLength;     // Message Length           
-    bool m_bMessageFrameFormat;  // Message Frame Format     
-    int m_nMsgDataFormat;        // 1-Intel, 0-Motorola  
-} sMESSAGESTRUCT ;  
+    unsigned long m_dMessageCode;       // Message ID
+    unsigned int m_dNumberOfSignals;   // Number Of Signals a Message has
+    unsigned int m_dMessageLength;     // Message Length
+    bool m_bMessageFrameFormat;  // Message Frame Format
+    int m_nMsgDataFormat;        // 1-Intel, 0-Motorola
+} sMESSAGESTRUCT ;
 
 // Transmission block related //
 typedef struct tagTxBlock_Usr
@@ -109,7 +109,7 @@ typedef struct tagTxBlock_Usr
     BSTR    m_strBlockName; // Tx block name
     bool    m_bPeriodical;// TRUE for periodic transmission; FALSE for monoshot
     USHORT  m_ushInterval;// If not monoshot, then the transmission period.
-                          // Must be ignored if m_bPeriodical is FALSE.
+    // Must be ignored if m_bPeriodical is FALSE.
     unsigned char m_ucTrigger; //For time triggered - 1, Key triggered - 2, BOTH - 3
     BOOL    m_bTxAllFrame;   // TRUE - all messages at a time, FALSE- one by one
     UCHAR   m_ucKeyValue;   // Key value for key trigger
@@ -118,25 +118,25 @@ typedef struct tagTxBlock_Usr
 
 // Filter Data structure
 // Individual Filter
-typedef struct 
+typedef struct
 {
     UCHAR m_ucFilterType;   // 0 - Message ID and 1 - ID Range
     UINT  m_unMsgIDFrom;    // From Message ID incase of range.
-                            // Msg ID in case of Single ID
+    // Msg ID in case of Single ID
     UINT  m_unMsgIDTo  ;    // To Message ID incase of range.
     UCHAR m_ucDirection;    // 2 - Rx Msg, 1 - Tx Msg, 0 - For All
     UCHAR m_ucEXTENDED;     // 0 - Standard, 1 - Extended, 2 - For All
     UCHAR m_ucRTR;          // 0 - Non RTR, 1 - RTR Message, 2 - For All
     UCHAR m_ucChannel;      // Channel Number, 0 - for all
-}SFILTER_USR, *PSFILTER_USR;
+} SFILTER_USR, *PSFILTER_USR;
 
 
 // Logging related //
-typedef struct 
+typedef struct
 {
     eLoggingTriggerState m_unTriggerType; // 0 - None, 1 - Start, 2 - Stop, 3 - Both
-	UINT             m_unStartID;     // Start Trigger Id
-	UINT             m_unStopID;      // Stop Trigger Id
+    UINT             m_unStartID;     // Start Trigger Id
+    UINT             m_unStopID;      // Stop Trigger Id
 } SLOGTRIGGER_USR,*PSLOGTRIGGER_USR;
 // A logging block is perceived by the user based on the following parameters:
 // 1. Format. This is defined by ~
@@ -148,11 +148,11 @@ typedef struct
 // 4. Trigger condition of logging.
 typedef struct tagLoggingBlockUsr
 {
-    eTimeMode	    m_eLogTimerMode;
-	eNumericMode    m_eNumFormat;
-	eFileMode       m_eFileMode;
+    eTimeMode       m_eLogTimerMode;
+    eNumericMode    m_eNumFormat;
+    eFileMode       m_eFileMode;
     SLOGTRIGGER_USR m_sLogTrigger;
-	char		    m_sLogFileName[MAX_FILE_PATH]; // MAX_PATH defined in windef.h
+    char            m_sLogFileName[MAX_FILE_PATH]; // MAX_PATH defined in windef.h
 
     //tagLoggingBlockUsr();
 

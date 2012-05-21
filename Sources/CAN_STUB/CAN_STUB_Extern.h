@@ -21,9 +21,8 @@
  *
  * Exports API functions for Simulation CAN Hardware interface
  */
-#if !defined CAN_STUB_EXTERN_H__INCLUDED_
-#define CAN_STUB_EXTERN_H__INCLUDED_
 
+#pragma once
 
 #if defined USAGEMODE
 #undef USAGEMODE
@@ -40,13 +39,11 @@
 extern "C" {  // only need to export C interface if used by C++ source code
 #endif
 
-/*  Exported function list */
-USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface);
+    /*  Exported function list */
+    USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface);
 
 
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif // CAN_STUB_EXTERN_H__INCLUDED_

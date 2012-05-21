@@ -17,17 +17,13 @@
  * \file      SignalWatch.h
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * main header file for the SignalWatch DLL
  */
-// SignalWatch.h : main header file for the SignalWatch DLL
-//
 
 #pragma once
 
-#ifndef __AFXWIN_H__
-	#error include 'stdafx.h' before including this file for PCH
-#endif
-
-#include "SignalWatch_resource.h"		// main symbols
+#include "SignalWatch_resource.h"       // main symbols
 
 
 // CSignalWatchApp
@@ -37,13 +33,13 @@
 class CSignalWatchApp : public CWinApp
 {
 public:
-	CSignalWatchApp();
+    CSignalWatchApp();
 
-// Overrides
+    // Overrides
 public:
-	virtual BOOL InitInstance();
+    virtual BOOL InitInstance();
     virtual INT ExitInstance();
 
-	DECLARE_MESSAGE_MAP()
-   
+    DECLARE_MESSAGE_MAP()
+
 };

@@ -3,31 +3,16 @@
   FileName      :  GraphElement.cpp
   Description   :  Implementation file for CGraphElement class
   $Log:   X:/Archive/Sources/SigGrphWnd/GraphElement.cpv  $
-   
-      Rev 1.1   15 Apr 2011 19:43:30   rac2kor
-   Inserted RBEI Copyright information text into the file header.
-   
-      Rev 1.0   13 Dec 2010 22:00:34   CANMNTTM
-    
-   
-      Rev 1.0   16 Aug 2010 21:20:32   rac2kor
-    
 
   Author(s)     :  Raja N
   Date Created  :  01.12.2004
-  Modified By   : 
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved
  *********************************************************************/
 // For standard Headers
 #include "SigGrphWnd_stdafx.h"
 // For CGraphElement class declaration
 #include "GraphElement.h"
-
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
 
 /*******************************************************************************
  Function Name  : CGraphElement
@@ -42,8 +27,8 @@ CGraphElement::CGraphElement()
 {
     // Message ID
     m_nMsgID = -1;
-	// Message Name
-	m_strMsgName = STR_EMPTY;
+    // Message Name
+    m_strMsgName = STR_EMPTY;
     // Format - Standard or Extended
     m_nFrameFormat = -1;
     // Element Name
@@ -74,27 +59,27 @@ CGraphElement::CGraphElement()
 *******************************************************************************/
 CGraphElement::~CGraphElement()
 {
-
 }
 
 BYTE* CGraphElement::pbyGetConfigData(BYTE* pbyTrgData)
 {
     BYTE* pbyTemp = pbyTrgData;
+
     if (pbyTemp != NULL)
     {
         // Save properties one after another
         // Message ID
         COPY_DATA(pbyTemp, &m_nMsgID, sizeof(int));
-		// Message Name	 
-		TCHAR MsgName[MAX_PATH] = {_T('\0')};
-        _tcscpy(MsgName, m_strMsgName.GetBuffer(MAX_PATH));
-        COPY_DATA(pbyTemp, MsgName, (sizeof(TCHAR) * MAX_PATH));
+        // Message Name
+        char MsgName[MAX_PATH] = {_T('\0')};
+        strcpy_s(MsgName, m_strMsgName.GetBuffer(MAX_PATH));
+        COPY_DATA(pbyTemp, MsgName, (sizeof(char) * MAX_PATH));
         // Frame Format - Standard
         COPY_DATA(pbyTemp, &m_nFrameFormat, sizeof(short));
         // Element Name String
-        TCHAR acName[MAX_PATH] = {_T('\0')};
-        _tcscpy(acName, m_omStrElementName.GetBuffer(MAX_PATH));
-        COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+        char acName[MAX_PATH] = {_T('\0')};
+        strcpy_s(acName, m_omStrElementName.GetBuffer(MAX_PATH));
+        COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
         // Type of the element val
         COPY_DATA(pbyTemp, &m_nValueType, sizeof(int));
         // Line type of the elemen
@@ -110,26 +95,28 @@ BYTE* CGraphElement::pbyGetConfigData(BYTE* pbyTrgData)
         // Enabled or not
         COPY_DATA(pbyTemp, &m_bEnabled, sizeof(BOOL));
     }
+
     return pbyTemp;
 }
 
 BYTE* CGraphElement::pbySetConfigData(BYTE* pbyTrgData)
 {
     BYTE* pbyTemp = pbyTrgData;
+
     if (pbyTemp != NULL)
     {
         // Save properties one after another
         // Message ID
         COPY_DATA_2(&m_nMsgID, pbyTemp, sizeof(int));
-		//Message Name		
-		TCHAR MsgName[MAX_PATH] = {_T('\0')};
-        COPY_DATA_2(MsgName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
+        //Message Name
+        char MsgName[MAX_PATH] = {_T('\0')};
+        COPY_DATA_2(MsgName, pbyTemp, (sizeof(char) * MAX_PATH));
         m_strMsgName.Format("%s", MsgName);
         // Frame Format - Standard
         COPY_DATA_2(&m_nFrameFormat, pbyTemp, sizeof(short));
         // Element Name String
-        TCHAR acName[MAX_PATH] = {_T('\0')};
-        COPY_DATA_2(acName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
+        char acName[MAX_PATH] = {_T('\0')};
+        COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
         m_omStrElementName.Format("%s", acName);
         // Type of the element val
         COPY_DATA_2(&m_nValueType, pbyTemp, sizeof(int));
@@ -146,6 +133,7 @@ BYTE* CGraphElement::pbySetConfigData(BYTE* pbyTrgData)
         // Enabled or not
         COPY_DATA_2(&m_bEnabled, pbyTemp, sizeof(BOOL));
     }
+
     return pbyTemp;
 }
 /*******************************************************************************
@@ -156,11 +144,12 @@ BYTE* CGraphElement::pbySetConfigData(BYTE* pbyTrgData)
  Member of      : CGraphElement
  Author(s)      : Raja N
  Date Created   : 01.12.2004
- Modifications  : 
+ Modifications  :
 *******************************************************************************/
 int CGraphElement::nSerialize(CArchive& omArch)
 {
     int nReturn = 0;
+
     // If it is storing
     try
     {
@@ -219,6 +208,7 @@ int CGraphElement::nSerialize(CArchive& omArch)
         nReturn = poArchExcep->m_cause;
         poArchExcep->Delete();
     }
+
     // Return the result
     return nReturn;
 }

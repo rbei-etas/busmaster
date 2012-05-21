@@ -1,29 +1,34 @@
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  MsgContainer_J1939.h
-  Description   :  
-  $Log:   X:/Archive/Sources/PSDI_CAN/MsgContainer_J1939.h_v  $
- * 
- *    Rev 1.4   06 Jun 2011 11:57:32   CANMNTTM
- *  
- * 
- *    Rev 1.3   15 Apr 2011 19:28:10   CANMNTTM
- * Added RBEI Copyright information.
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-  Author(s)     :  Pradeep Kadoor
-  Date Created  :  15/04/2011
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
-#if !defined  MSGCONTAINERJ1939_H_INCLUDED_
-#define MSGCONTAINERJ1939_H_INCLUDED_
+/**
+ * \file      MsgContainer_J1939.h
+ * \brief     Definition of CMsgContainerJ1939 class
+ * \authors   Anish Kumar, Arunkumar Karri
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Definition of CMsgContainerJ1939 class
+ */
+
+#pragma once
 
 #include "afxtempl.h"
 #include "Utility/Utility_Thread.h"
 #include "Application/MsgWndHdrInfo.h"
 #include "CommonClass/GUI_FormatMsgJ1939.h"
 #include "include/BaseDefs.h"
-#include "Include/CanUsbDefs.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/Filter_Datatypes.h"
 #include "CommonClass/RefTimeKeeper.h"
@@ -44,39 +49,39 @@ typedef struct stJ1939MsgSpl : public STJ1939_MSG
     {
         m_nDeltime = 0;
     }
-	void vGetDataStream(BYTE* pbyData) const;
-	int nGetSize() const;
-	void vCopyFromJ1939Msg(const STJ1939_MSG& ouSource, UINT64 u64DelTS);
-}STJ1939MSGSPL;
+    void vGetDataStream(BYTE* pbyData) const;
+    int nGetSize() const;
+    void vCopyFromJ1939Msg(const STJ1939_MSG& ouSource, UINT64 u64DelTS);
+} STJ1939MSGSPL;
 
 class CMsgContainerJ1939: public CMsgContainerBase
 {
 private:
-	CMsgBufVSE			    m_ouVSEBufJ1939;
-    CJ1939BufVFSE           m_ouOWJ1939Buf; 
+    CMsgBufVSE              m_ouVSEBufJ1939;
+    CJ1939BufVFSE           m_ouOWJ1939Buf;
     CMsgBufVVSE             m_ouAppendJ1939Buf;
-	STJ1939MSGSPL			m_sJ1939ReadMsgSpl;
-	SFORMATTEDATA_J1939     m_sOutFormattedData;
+    STJ1939MSGSPL           m_sJ1939ReadMsgSpl;
+    SFORMATTEDATA_J1939     m_sOutFormattedData;
     CFormatMsgJ1939         m_ouFormatJ1939;
-	STJ1939_MSG				m_sJ1939Data;
-	BYTE*					m_pbyJ1939Data;
+    STJ1939_MSG             m_sJ1939Data;
+    BYTE*                   m_pbyJ1939Data;
     DWORD                   m_dwClientId;
-	CBaseDILI_J1939*		m_pouDIL_J1939;
-//
-//private:
-//	
-//    //ReadMcNetData virtual function
-	void vProcessNewData(STJ1939_MSG& sJ1939Msg);
-	USHORT ushCalculateStrLen(bool bForHex, USHORT ushLength);
-//    void vProcessCurrErrorEntry(const SERROR_INFO& sErrInfo);
-//    BOOL bIsTransitionInState( UINT unChannel,
-//                                       BYTE byRxError,
-//                                       BYTE byTxError );
+    CBaseDILI_J1939*        m_pouDIL_J1939;
+    //
+    //private:
+    //
+    //    //ReadMcNetData virtual function
+    void vProcessNewData(STJ1939_MSG& sJ1939Msg);
+    USHORT ushCalculateStrLen(bool bForHex, USHORT ushLength);
+    //    void vProcessCurrErrorEntry(const SERROR_INFO& sErrInfo);
+    //    BOOL bIsTransitionInState( UINT unChannel,
+    //                                       BYTE byRxError,
+    //                                       BYTE byTxError );
     BOOL bTobeBlocked(STJ1939_MSG& sJ1939Data);
     CRITICAL_SECTION m_sCritSecDataSync;
     CRITICAL_SECTION m_omCritSecFilter;
     SFILTERAPPLIED_J1939 m_sFilterJ1939;
-//    eERROR_STATE m_eCurrErrorState[ defNO_OF_CHANNELS ];
+    //    eERROR_STATE m_eCurrErrorState[ defNO_OF_CHANNELS ];
 
 public:
     CMsgContainerJ1939(void);
@@ -94,28 +99,25 @@ public:
     BOOL bStartReadThread();
     BOOL bStopReadThread();
 
-    void vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL &sHdrColStruct,
-                                     TCHAR *pomDataPtrArr[MAX_MSG_WND_COL_CNT], 
+    void vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL& sHdrColStruct,
+                                     char* pomDataPtrArr[MAX_MSG_WND_COL_CNT],
                                      BYTE bExprnFlag_Disp);
-    HRESULT hReadFromOWBuffer(void *psMsg, __int64 nMapIndex);
-	HRESULT hReadFromAppendBuffer(void *psMsg, int nMsgIndex);
-    HRESULT hUpdateFormattedMsgStruct(int nListIndex, int &nMsgCode,
+    HRESULT hReadFromOWBuffer(void* psMsg, __int64 nMapIndex);
+    HRESULT hReadFromAppendBuffer(void* psMsg, int nMsgIndex);
+    HRESULT hUpdateFormattedMsgStruct(int nListIndex, int& nMsgCode,
                                       BYTE bExprnFlag_Disp, __int64 nTimeOffset = 0);
     void vSetCurrMsgName(CString strMsgNameOrCode);
     void vClearFormattedMsgStruct();
-    void vSaveOWandGetDetails(void *pMsg, __int64 &dwMapIndex, 
-                              __int64 &dwTimeStamp, UINT &nMsgCode, int &nBufferIndex );
-	void vResetFormattedData();
-    
-	void SetClientID(DWORD dwClientID);
-	void DoSortBuffer(int nField,bool bAscending);	
-	void GetMapIndexAtID(int nIndex,__int64& nMapIndex);
-	HRESULT hToggleDILBufferRead(BOOL bRead);
+    void vSaveOWandGetDetails(void* pMsg, __int64& dwMapIndex,
+                              __int64& dwTimeStamp, UINT& nMsgCode, int& nBufferIndex );
+    void vResetFormattedData();
+
+    void SetClientID(DWORD dwClientID);
+    void DoSortBuffer(int nField,bool bAscending);
+    void GetMapIndexAtID(int nIndex,__int64& nMapIndex);
+    HRESULT hToggleDILBufferRead(BOOL bRead);
     HRESULT ApplyFilterScheme(void* pvFilterApplied);
     HRESULT GetFilterScheme(void* pvFilterApplied);
     HRESULT EnableFilterApplied(BOOL bEnable);
-	__int64 nCreateMapIndexKey(LPVOID pMsgData);
+    __int64 nCreateMapIndexKey(LPVOID pMsgData);
 };
-
-
-#endif //MSGCONTAINERJ1939_H_INCLUDED_

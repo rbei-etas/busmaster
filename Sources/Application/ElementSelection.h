@@ -22,28 +22,22 @@
  * Interface file for CElementSelection class
  */
 
-#if !defined(AFX_ELEMENTSELECTION_H__597336ED_797E_42CB_BAFB_D2E6032ADEA2__INCLUDED_)
-#define AFX_ELEMENTSELECTION_H__597336ED_797E_42CB_BAFB_D2E6032ADEA2__INCLUDED_
+#pragma once
 
 // For Main Frame Definition
 #include "MainFrm.h"
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
- 
 class CElementSelection : public CDialog
 {
-// Construction
-public:	
+    // Construction
+public:
     // Pointer to Main Frame
     CMainFrame* m_pMainFrame;
-	eTYPE_BUS m_eBusType;
+    eTYPE_BUS m_eBusType;
 
     // standard constructor
     CElementSelection(UINT nHardware = defNO_OF_CHANNELS, CWnd* pParent = NULL);
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CElementSelection)
     enum { IDD = IDD_DLG_MSG_LIST };
     CListCtrl   m_omElementList;
@@ -51,14 +45,14 @@ public:
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CElementSelection)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
@@ -73,8 +67,8 @@ protected:
     afx_msg void OnClickTreeSignal(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnClickLstcGraphElements(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnItemchangedLstcGraphElements(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnSelchangedTreeSignal(NMHDR* pNMHDR, LRESULT* pResult);
-	//}}AFX_MSG
+    afx_msg void OnSelchangedTreeSignal(NMHDR* pNMHDR, LRESULT* pResult);
+    //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
     // Get the statistics channel handle
@@ -121,13 +115,8 @@ private:
     CImageList m_omImageList;
     // Graph element array
     CArray<CGraphElement, CGraphElement&> m_odElementList;
-	UINT m_nHardware;
+    UINT m_nHardware;
 
 public:
-	afx_msg void OnBnClickedOk();
+    afx_msg void OnBnClickedOk();
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_ELEMENTSELECTION_H__597336ED_797E_42CB_BAFB_D2E6032ADEA2__INCLUDED_)
