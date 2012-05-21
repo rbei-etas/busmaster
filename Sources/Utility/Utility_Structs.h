@@ -22,9 +22,7 @@
  * This file contains definitions of utility structures
  */
 
-
-#ifndef _UTILITY_STRUCTS_H
-#define _UTILITY_STRUCTS_H
+#pragma once
 
 #define SIGNED_VAL  1
 #define FLOAT_VAL   2
@@ -48,16 +46,16 @@
 #define defLIST_ITEM_TYPE_TABLE_SIZE        131
 #define defLIST_NUM_DETAILS_TABLE_SIZE      67
 #define defVIRTUAL_COL_COUNT                50
-#define STR_EMPTY                           _T("")
+#define STR_EMPTY                           ""
 #define defMAX_BITS                         64
 #define defSIGN_MASK                0x8000000000000000
 
-typedef void (*PFCTRLHANDLER)(CListCtrl *pList, int nItem, int nSubItem, void * UParam);
+typedef void (*PFCTRLHANDLER)(CListCtrl* pList, int nItem, int nSubItem, void* UParam);
 
 struct sUserProgInfo
 {
     PFCTRLHANDLER   m_pfHandler;
-    void *          m_pUserParam;
+    void*           m_pUserParam;
 };
 
 typedef sUserProgInfo   SUSERPROGINFO;
@@ -81,7 +79,7 @@ struct sListInfo
 {
     eListTypes  m_eType;
     CStringArray m_omEntries;
-    
+
     sListInfo();
     sListInfo(sListInfo& sCopy);
     void operator = (sListInfo& sCopy);
@@ -105,11 +103,11 @@ struct sNumericInfo
     BYTE    m_byFlag;                       //Type flag Float, Buddy & Signed
     short int m_nTextLimit;                 //Allowed Text width
     short int m_nSigLength;                 //Length of the num representation.
-                                            //This is required for 2s complement
+    //This is required for 2s complement
     sNumericInfo() : m_byBase(10),
-                     m_byFlag(0),
-                     m_nTextLimit(0),
-                     m_nSigLength(64)
+        m_byFlag(0),
+        m_nTextLimit(0),
+        m_nSigLength(64)
     {
         m_uMinVal.m_n64Value = 0;
         m_uMaxVal.m_n64Value = 0;
@@ -119,5 +117,3 @@ struct sNumericInfo
 
 typedef sNumericInfo  SNUMERICINFO;
 typedef CMap<int,int, SNUMERICINFO, SNUMERICINFO>   CNumericInfo;
-
-#endif //_UTILITY_STRUCTS_H

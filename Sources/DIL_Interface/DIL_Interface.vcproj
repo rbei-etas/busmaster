@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="DIL_Interface"
 	ProjectGUID="{77290670-1DBD-4127-8BAD-7C09990FA5AE}"
-	RootNamespace="DIL_Interface"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -49,10 +48,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="DIL_Interface_stdafx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -131,11 +127,8 @@
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS; _USRDLL;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderThrough="DIL_Interface_stdafx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="0"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -153,7 +146,7 @@
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 				GenerateManifest="true"
-				GenerateDebugInformation="false"
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -200,10 +193,6 @@
 			</File>
 			<File
 				RelativePath=".\DIL_Interface.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DIL_Interface_stdafx.cpp"
 				>
 			</File>
 			<File

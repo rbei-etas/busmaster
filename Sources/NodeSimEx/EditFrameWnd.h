@@ -21,14 +21,8 @@
  *
  * This header file contains the defintion of class
  */
-/////////////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_EDITFRAMEWND_H__E02A6C62_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)
-#define AFX_EDITFRAMEWND_H__E02A6C62_1005_11D6_A606_00D0B76BEBF5__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "HashDefines.h"    // #define file
 #include "NodeSimEx_resource.h"
@@ -41,28 +35,28 @@ private:
 public:
     CEditFrameWnd();
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CEditFrameWnd)
-    public:
+public:
     virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
     virtual void ActivateFrame(int nCmdShow);
-    protected:
+protected:
     virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
     //}}AFX_VIRTUAL
     void vCalculateSplitterPos(CSize&);
     virtual ~CEditFrameWnd();
 
-#ifdef _DEBUG 
+#ifdef _DEBUG
     virtual void AssertValid() const;
     virtual void Dump(CDumpContext& dc) const;
 #endif
 
-// Generated message map functions
+    // Generated message map functions
 protected:
     //{{AFX_MSG(CEditFrameWnd)
-        // NOTE - the ClassWizard will add and remove member functions here.
-        //    DO NOT EDIT what you see in these blocks of generated code!
+    // NOTE - the ClassWizard will add and remove member functions here.
+    //    DO NOT EDIT what you see in these blocks of generated code!
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 
@@ -77,10 +71,3 @@ public:
     static ETYPE_BUS sm_eBus;
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_EDITFRAMEWND_H__E02A6C62_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)

@@ -22,17 +22,11 @@
  * Interface file for CReplayFile class
  */
 
-
-#if !defined(AFX_REPLAYFILE_H__767654A8_715B_40A2_9649_BDE157740A09__INCLUDED_)
-#define AFX_REPLAYFILE_H__767654A8_715B_40A2_9649_BDE157740A09__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "Application/struct.h"
 
-class CReplayFile  
+class CReplayFile
 {
 public:
     // Methods
@@ -76,5 +70,3 @@ private:
     BOOL    m_bEnabled, m_bEnabledTmp;         // To indicate replay is enabled or not
     BOOL    m_bInteractive, m_bInteractiveTmp;     // 0 - Non Interactive, 1 - interactive
 };
-
-#endif // !defined(AFX_REPLAYFILE_H__767654A8_715B_40A2_9649_BDE157740A09__INCLUDED_)

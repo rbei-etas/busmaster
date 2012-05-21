@@ -25,12 +25,6 @@
 #include "Utils_stdafx.h"       // For standard include
 #include "ComboItem.h"          // Definition of class
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 /////////////////////////////////////////////////////////////////////////////
 // CComboItem
 
@@ -45,14 +39,14 @@ static char THIS_FILE[] = __FILE__;
  Member of        : CComboItem
  Friend of        :  -
  Author(s)        : Raja N
- Date Created     : 22.07.2004                                          
+ Date Created     : 22.07.2004
  Modifications    :
 *******************************************************************************/
 CComboItem::CComboItem( int nItem,
                         int nSubItem,
                         const CStringArray& romList,
                         const CString& romStrText,
-                        BOOL bIsEditable) 
+                        BOOL bIsEditable)
 {
     m_nItem     = nItem;
     m_nSubItem  = nSubItem;
@@ -60,18 +54,17 @@ CComboItem::CComboItem( int nItem,
     m_bVK_ESCAPE = FALSE;
     m_bIsEditable = bIsEditable;
     omStrText = romStrText;
-
 }
 
 /*******************************************************************************
  Function Name    : ~CComboItem
- Input(s)         : 
+ Input(s)         :
  Output           :
  Functionality    : Destructor
  Member of        : CComboItem
  Friend of        :  -
  Author(s)        : Raja N
- Date Created     : 22.07.2004                                          
+ Date Created     : 22.07.2004
  Modifications    :
 *******************************************************************************/
 CComboItem::~CComboItem()
@@ -103,25 +96,26 @@ END_MESSAGE_MAP()
 
  Author(s)        : Raja N
  Date Created     : 21.07.2004
- Modifications    : 
+ Modifications    :
 *******************************************************************************/
-BOOL CComboItem::PreTranslateMessage(MSG* pMsg) 
+BOOL CComboItem::PreTranslateMessage(MSG* pMsg)
 {
     // TODO: Add your specialized code here and/or call the base class
-    if( pMsg->message == WM_KEYDOWN )   
-    {       
+    if( pMsg->message == WM_KEYDOWN )
+    {
         if(pMsg->wParam == VK_RETURN || pMsg->wParam == VK_ESCAPE)
         {
             if( pMsg->wParam == VK_ESCAPE)
             {
                 m_bVK_ESCAPE = TRUE;
             }
+
             ::TranslateMessage(pMsg);
             ::DispatchMessage(pMsg);
             return 1;
-        }   
-    }   
-    
+        }
+    }
+
     return CComboBox::PreTranslateMessage(pMsg);
 }
 
@@ -137,7 +131,7 @@ BOOL CComboItem::PreTranslateMessage(MSG* pMsg)
  Date Created   : 21.07.2004
  Modifications  :
 *******************************************************************************/
-void CComboItem::OnNcDestroy() 
+void CComboItem::OnNcDestroy()
 {
     CComboBox::OnNcDestroy();
     // Life time is over. Just delete the object created dynamically.
@@ -157,15 +151,18 @@ void CComboItem::OnNcDestroy()
  Date Created   : 21.07.2004
  Modifications  :
 *******************************************************************************/
-void CComboItem::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CComboItem::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     // TODO: Add your message handler code here and/or call default
     if(nChar == VK_ESCAPE || nChar == VK_RETURN)
     {
         if( nChar == VK_ESCAPE)
+        {
             m_bVK_ESCAPE = 1;
+        }
+
         GetParent()->SetFocus();
-        return; 
+        return;
     }
 
     CComboBox::OnChar(nChar, nRepCnt, nFlags);
@@ -186,25 +183,24 @@ void CComboItem::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
  Date Created   : 21.07.2004
  Modifications  : Raja N on 30.07.2004, Implemented code review comments
 *******************************************************************************/
-void CComboItem::OnKillFocus(CWnd* pNewWnd) 
-{   
+void CComboItem::OnKillFocus(CWnd* pNewWnd)
+{
     CComboBox::OnKillFocus(pNewWnd);
-
     int nIndex = GetCurSel();
-    if( m_bIsEditable == FALSE && pNewWnd // NULL condition 
-        && pNewWnd != GetParent()->GetParent() )//For Dialog Close using X Button
-    {
 
+    if( m_bIsEditable == FALSE && pNewWnd // NULL condition
+            && pNewWnd != GetParent()->GetParent() )//For Dialog Close using X Button
+    {
         CString omStr;
         // As it is non editable Get the window text to get the selected
         // item text
         GetWindowText(omStr);
-        // Send Notification to parent of ListView ctrl 
+        // Send Notification to parent of ListView ctrl
         LV_DISPINFO lvDispinfo;
         lvDispinfo.hdr.hwndFrom = GetParent()->m_hWnd;
         lvDispinfo.hdr.idFrom = GetDlgCtrlID();//that's us
         lvDispinfo.hdr.code = LVN_ENDLABELEDIT;
-        lvDispinfo.item.mask = LVIF_TEXT | LVIF_PARAM;  
+        lvDispinfo.item.mask = LVIF_TEXT | LVIF_PARAM;
         lvDispinfo.item.iItem = m_nItem;
         lvDispinfo.item.iSubItem = m_nSubItem;
         lvDispinfo.item.pszText =
@@ -213,15 +209,15 @@ void CComboItem::OnKillFocus(CWnd* pNewWnd)
         lvDispinfo.item.lParam = GetItemData(GetCurSel());
         // For non editable the selection should not be -1
         PostMessage(WM_CLOSE);
+
         if( nIndex != CB_ERR )
         {
             // Send the End Label Edit Message
-            GetParent()->GetParent()->SendMessage( WM_NOTIFY, 
+            GetParent()->GetParent()->SendMessage( WM_NOTIFY,
                                                    GetParent()->GetDlgCtrlID(),
                                                    (LPARAM)&lvDispinfo);
         }
     }
-    
 }
 
 /*******************************************************************************
@@ -239,7 +235,7 @@ void CComboItem::OnKillFocus(CWnd* pNewWnd)
  Date Created   : 21.07.2004
  Modifications  : Raja N on 30.07.2004, Implemented code review comments
 *******************************************************************************/
-void CComboItem::OnCloseup() 
+void CComboItem::OnCloseup()
 {
     // If it is non-editable then call kill focus
     // For editable list box kill focus is not getting called at the end
@@ -250,6 +246,7 @@ void CComboItem::OnCloseup()
         // Get the current selection
         int nIndex = GetCurSel();
         CString omStr;
+
         // If the selection is invalid, the the user has typed some text in the
         // text box so use GetWindowText.
         if( nIndex != -1 )
@@ -261,12 +258,12 @@ void CComboItem::OnCloseup()
             GetWindowText(omStr);
         }
 
-        // Send Notification to parent of ListView ctrl 
+        // Send Notification to parent of ListView ctrl
         LV_DISPINFO lvDispinfo;
         lvDispinfo.hdr.hwndFrom = GetParent()->m_hWnd;
         lvDispinfo.hdr.idFrom = GetDlgCtrlID();//that's us
         lvDispinfo.hdr.code = LVN_ENDLABELEDIT;
-        lvDispinfo.item.mask = LVIF_TEXT | LVIF_PARAM;  
+        lvDispinfo.item.mask = LVIF_TEXT | LVIF_PARAM;
         lvDispinfo.item.iItem = m_nItem;
         lvDispinfo.item.iSubItem = m_nSubItem;
         lvDispinfo.item.pszText =
@@ -278,7 +275,7 @@ void CComboItem::OnCloseup()
         // Set the focus to the list item
         GetParent()->SetFocus();
         // Send the End Label Edit Message
-        GetParent()->GetParent()->SendMessage( WM_NOTIFY, 
+        GetParent()->GetParent()->SendMessage( WM_NOTIFY,
                                                GetParent()->GetDlgCtrlID(),
                                                (LPARAM)&lvDispinfo);
     }
@@ -303,20 +300,23 @@ void CComboItem::OnCloseup()
  Author(s)        : Raja N
  Date Created     : 21.07.2004
 *******************************************************************************/
-int CComboItem::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+int CComboItem::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
     if (CComboBox::OnCreate(lpCreateStruct) == -1)
+    {
         return -1;
-    
-    CFont* font = GetParent()->GetFont();   
+    }
+
+    CFont* font = GetParent()->GetFont();
     SetFont(font);
     //add the items from CStringlist
     INT nItems = (INT)m_sList.GetSize();
-    
+
     for( int index = 0; index < nItems; index++)
     {
         AddString(m_sList.GetAt( index ));
     }
-    SetFocus();    
+
+    SetFocus();
     return 0;
 }

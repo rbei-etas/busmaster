@@ -22,11 +22,9 @@
  * This contains various basic definitions.
  */
 
-#if !defined BASEDEFS_H__INCLUDED_
-#define BASEDEFS_H__INCLUDED_
+#pragma once
 
 #include "Struct_CAN.h"
-
 
 /*Maximum possible length of a CAN*/
 #define MAX_DATA_LEN_CAN 8
@@ -75,31 +73,36 @@ typedef enum eMSG_WND_PROPERTY
     DISPLAY_MODE = 0x4
 };
 
-typedef enum  eTimerMode{
+typedef enum eTimerMode
+{
     TIME_MODE_RELATIVE = 0,
     TIME_MODE_SYSTEM,
     TIME_MODE_ABSOLUTE
 } ETIMERMODE;
 
-typedef enum eFormat {
+typedef enum eFormat
+{
     HEXADECIMAL = 0,
     DEC
 } EFORMAT;
 
-enum eMode {
+enum eMode
+{
     APPEND_MODE = 0,
     OVERWRITE_MODE,
     OVERWRITE_INTERPRET_MODE
 };
 
-enum eScroll {
+enum eScroll
+{
     SCROLL = 0,
     FREEZE
 };
 
-enum eTreeItemStates { TREESTATE_TOGGLE, 
-					   TREESTATE_EXPAND, 
-					   TREESTATE_COLLAPSE };
+enum eTreeItemStates { TREESTATE_TOGGLE,
+                       TREESTATE_EXPAND,
+                       TREESTATE_COLLAPSE
+                     };
 
 
 typedef UINT TYPE_CHANNEL;
@@ -124,7 +127,6 @@ const BYTE TYPE_MSG_CAN_RTR         = 0x1;
 const BYTE TYPE_MSG_CAN_NON_RTR     = 0x2;
 const BYTE TYPE_MSG_CAN_ALL         = 0x3;
 
-
 #define LENGTH_STR_TIMESTAMP_CAN        16
 #define LENGTH_STR_DATA_CAN             32
 #define LENGTH_STR_ID_CAN               16
@@ -134,9 +136,9 @@ const BYTE TYPE_MSG_CAN_ALL         = 0x3;
 #define LENGTH_STR_DIRECTION_CAN        4
 #define LENGTH_STR_TYPE_CAN             4
 
-
-typedef struct tagFormattedData_CAN
+class tagFormattedData_CAN
 {
+public:
     UINT64          m_u64TimeStamp;                 // Time stamp
     DWORD           m_dwMsgID;                      // Message identifier
     EDIRECTION      m_eDirection;                   // Direction (Rx / Tx)
@@ -146,34 +148,62 @@ typedef struct tagFormattedData_CAN
     BYTE            m_byIDType;                     // Type of the ID (STD or EXTENDED)
     BYTE            m_byMsgType;                    // Type of the message (RTR or NRTR)
 
-    TCHAR	m_acMsgDir[LENGTH_STR_DIRECTION_CAN];     // "Tx" or "Rx"
-    TCHAR	m_acChannel[LENGTH_STR_CHANNEL_CAN];      // "1" or "2"
-    TCHAR	m_acType[LENGTH_STR_TYPE_CAN];            // s / x / r
-    TCHAR	m_acDataLen[LENGTH_STR_DLC_CAN];          // DLC always in dec
-    TCHAR	m_acMsgDesc[LENGTH_STR_DESCRIPTION_CAN];  // Message description
+    char   m_acMsgDir[LENGTH_STR_DIRECTION_CAN];     // "Tx" or "Rx"
+    char   m_acChannel[LENGTH_STR_CHANNEL_CAN];      // "1" or "2"
+    char   m_acType[LENGTH_STR_TYPE_CAN];            // s / x / r
+    char   m_acDataLen[LENGTH_STR_DLC_CAN];          // DLC always in dec
+    char   m_acMsgDesc[LENGTH_STR_DESCRIPTION_CAN];  // Message description
 
-    TCHAR	m_acMsgIDHex[LENGTH_STR_ID_CAN];          // Identifier in hex
-    TCHAR	m_acMsgIDDec[LENGTH_STR_ID_CAN];          // Identifier in dec
+    char   m_acMsgIDHex[LENGTH_STR_ID_CAN];          // Identifier in hex
+    char   m_acMsgIDDec[LENGTH_STR_ID_CAN];          // Identifier in dec
 
-    TCHAR	m_acDataHex[LENGTH_STR_DATA_CAN];         // Data in hex
-    TCHAR	m_acDataDec[LENGTH_STR_DATA_CAN];         // Data in dec
+    char   m_acDataHex[LENGTH_STR_DATA_CAN];         // Data in hex
+    char   m_acDataDec[LENGTH_STR_DATA_CAN];         // Data in dec
 
-    TCHAR	m_acTimeAbsReset[LENGTH_STR_TIMESTAMP_CAN];    // Absolute time stamp Reset
-    TCHAR	m_acTimeAbs[LENGTH_STR_TIMESTAMP_CAN];    // Absolute time stamp 
-    TCHAR	m_acTimeRel[LENGTH_STR_TIMESTAMP_CAN];    // Relative time stamp
-    TCHAR	m_acTimeSys[LENGTH_STR_TIMESTAMP_CAN];    // System time stamp
+    char   m_acTimeAbsReset[LENGTH_STR_TIMESTAMP_CAN];    // Absolute time stamp Reset
+    char   m_acTimeAbs[LENGTH_STR_TIMESTAMP_CAN];    // Absolute time stamp
+    char   m_acTimeRel[LENGTH_STR_TIMESTAMP_CAN];    // Relative time stamp
+    char   m_acTimeSys[LENGTH_STR_TIMESTAMP_CAN];    // System time stamp
 
     __int64         m_n64MapId;                     // Map id of the message
     COLORREF        m_ColourCode;                   // Colour code associated
 
-} SFORMATTEDDATA_CAN;
+    tagFormattedData_CAN()
+    {
+        m_u64TimeStamp = 0;
+        m_dwMsgID = 0;
+        m_eDirection = DIR_RX;
+        m_eChannel = CAN_CHANNEL_ALL;
+        m_byDataLength = 0;
+        memset(m_abData, 0, sizeof(m_abData));
+        m_byIDType = TYPE_ID_CAN_NONE;
+        m_byMsgType = TYPE_MSG_CAN_NONE;
+        strcpy_s(m_acMsgDir, " x");
+        strcpy_s(m_acChannel, "");
+        strcpy_s(m_acType, "");
+        strcpy_s(m_acDataLen, "");
+        strcpy_s(m_acMsgDesc, "");
+        strcpy_s(m_acMsgIDHex, "");
+        strcpy_s(m_acMsgIDDec, "");
+        strcpy_s(m_acDataHex, "");
+        strcpy_s(m_acDataDec, "");
+        strcpy_s(m_acTimeAbsReset, "");
+        strcpy_s(m_acTimeAbs, "");
+        strcpy_s(m_acTimeRel, "");
+        strcpy_s(m_acTimeSys, "");
+        m_n64MapId = 0;
+        m_ColourCode = RGB(0, 0, 0);
+    }
+};
+
+typedef tagFormattedData_CAN SFORMATTEDDATA_CAN;
 
 typedef struct sWMUpdatePtrPara
 {
     int              m_nListIndex;
     EINTERPRET_MODE  m_eInPretMode;
     BOOL             m_bResult;
-}SWMUPDATEPTRPARA, *PSWMUPDATEPTRPARA;
+} SWMUPDATEPTRPARA, *PSWMUPDATEPTRPARA;
 
 #define MAX_MSG_WND_COL_CNT              12
 
@@ -187,10 +217,10 @@ typedef struct sMsgWndHdrCol
     BYTE m_byDLCPos;
     BYTE m_byDataPos;
     BYTE m_byChannel;
-	BYTE m_byPGNPos;
-	BYTE m_bySrcPos;
-	BYTE m_byDestPos;
-	BYTE m_byPriorityPos;
+    BYTE m_byPGNPos;
+    BYTE m_bySrcPos;
+    BYTE m_byDestPos;
+    BYTE m_byPriorityPos;
 
     sMsgWndHdrCol()
     {
@@ -202,11 +232,9 @@ typedef struct sMsgWndHdrCol
         m_byDLCPos      = (BYTE) -1;
         m_byDataPos     = (BYTE) -1;
         m_byChannel     = (BYTE) -1;
-		m_byPGNPos      = (BYTE) -1;
-		m_bySrcPos      = (BYTE) -1;
-		m_byDestPos     = (BYTE) -1;
-		m_byPriorityPos = (BYTE) -1;		
+        m_byPGNPos      = (BYTE) -1;
+        m_bySrcPos      = (BYTE) -1;
+        m_byDestPos     = (BYTE) -1;
+        m_byPriorityPos = (BYTE) -1;
     }
-}SMSGWNDHDRCOL;
-
-#endif // BASEDEFS_H__INCLUDED_
+} SMSGWNDHDRCOL;

@@ -22,13 +22,7 @@
  * Interface file for CFilterConfigDlg class
  */
 
-
-#if !defined(AFX_FILTERCONFIGDLG_H__67AACFB6_E3C8_41BB_97E3_0CAECF408BA2__INCLUDED_)
-#define AFX_FILTERCONFIGDLG_H__67AACFB6_E3C8_41BB_97E3_0CAECF408BA2__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "Utility/ComboItem.h"              // For Custom Combobox Implementation
 #include "Utility/EditItem.h"               // For Custom Editbox Implementation
@@ -42,14 +36,14 @@
 
 class CFilterConfigDlg : public CDialog
 {
-// Construction
+    // Construction
 public:
     // Constructor with Filter List
     CFilterConfigDlg( SFILTERAPPLIED_CAN* psSrcList,
                       const SMSGENTRY* pMsgDBDetails, UINT nHardware,
                       CWnd* pParent = NULL);   // standard constructor
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CFilterConfigDlg)
     enum { IDD = IDD_DLG_CREATE_FILTER };
     CButton m_omAddFilter;
@@ -67,14 +61,14 @@ public:
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CFilterConfigDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
@@ -99,7 +93,7 @@ protected:
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
-    /*BYTE m_byJunk[100];               // Facing a bug in FlexListCntrl.cpp. 
+    /*BYTE m_byJunk[100];               // Facing a bug in FlexListCntrl.cpp.
                                       // This memory will be corrupted  */
     BOOL m_bUpdating;                 // To indicate Programmed Update of lists
     BOOL m_bDisableFilterCompUpdate;  // To avoid validation of filter data
@@ -108,7 +102,7 @@ private:
     CString m_omStrSelectedFilterNameBeforeEdit; // Backup text to restore back
     int m_nSelecetedFilterIndex;      // Selected index of filter
     const SMSGENTRY* m_psMsgSignal;         // Database information
-	UINT m_nHardware;
+    UINT m_nHardware;
 public:
     SFILTERAPPLIED_CAN* m_psFilterApplied; // Reference to Filter List
 
@@ -144,7 +138,7 @@ private:
                                SFILTERDISPLAYINFO& sFilterDisplyInfo );
     // To Update Filter Details entry with supplied display information
     void vUpdateFilterListDetails( int nIndex,
-                               const SFILTERDISPLAYINFO& sFilterDisplyInfo );
+                                   const SFILTERDISPLAYINFO& sFilterDisplyInfo );
     // To get Message ID From Message ID Combobox
     int nGetMsgIDFromCombo(const CComboBox& omCombo);
     // To Set text to the statusbar
@@ -159,12 +153,6 @@ private:
     void vEnableDisableButtons();
     // To update filter components with given Enable/Disable Value
     void vEnableDisableFilterComps( BOOL bEnable );
-	// To adjust the width of the combo box based on its data
-	void vAdjustWidthMessageComboBox();
+    void vAdjustWidthMessageComboBox();
 
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_FILTERCONFIGDLG_H__67AACFB6_E3C8_41BB_97E3_0CAECF408BA2__INCLUDED_)

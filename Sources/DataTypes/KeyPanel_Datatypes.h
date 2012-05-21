@@ -22,9 +22,8 @@
  * Defines data type class for key panel
  */
 
+#pragma once
 
-#if !defined KEYPANEL_DATATYPES__H_INCLUDED_
-#define KEYPANEL_DATATYPES__H_INCLUDED_
 #include "afxtempl.h"
 struct tagKeyPanelEntry
 {
@@ -41,5 +40,3 @@ struct tagKeyPanelEntry
 typedef tagKeyPanelEntry SKEYPANELENTRY;
 /* Key panel entries */
 typedef CList <SKEYPANELENTRY, SKEYPANELENTRY&> CKeyPanelEntryList;
-
-#endif //KEYPANEL_DATATYPES__H_INCLUDED_

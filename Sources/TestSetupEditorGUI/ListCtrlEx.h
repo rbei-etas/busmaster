@@ -22,12 +22,8 @@
  * This file contain the definition of CListCtrlEx class
  */
 
-#if !defined(AFX_FLEXLISTCTRL_H__4F3F3BEF_36FF_4155_AD97_09A7A7E21D71__INCLUDED_)
-#define AFX_FLEXLISTCTRL_H__4F3F3BEF_36FF_4155_AD97_09A7A7E21D71__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
 // FlexListCtrl.h : header file
 #include "Utility/Utility_Structs.h"                 // For data struct definition
 #include "Utility/ComboItem.h"
@@ -38,22 +34,22 @@
 class CListCtrlEx : public CFFListCtrl
 {
     COLORREF m_colRow1;
-	COLORREF m_colRow2;
-// Construction
+    COLORREF m_colRow2;
+    // Construction
 public:
     CListCtrlEx();
-// Attributes
+    // Attributes
 public:
 
-// Operations
+    // Operations
 public:
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CListCtrlEx)
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 public:
     // This is used to map the Row X Column 2d data into
     // one dimentional map key. This value should be greater then the maximum
@@ -76,15 +72,15 @@ public:
     // This will return the column type and edit control type
     SLISTINFO sGetColumnInfo(int nRow, int nColunm);
     // This function will create a editable combobox.
-    CComboItem * pomComboList( int nItem, int nSubItem,
-                               const CStringArray& omList);
+    CComboItem* pomComboList( int nItem, int nSubItem,
+                              const CStringArray& omList);
     // This function will create a non-editable combobox.
-    CComboItem * pomComboItem( int nItem, int nSubItem,
-                               const CStringArray& omList);
+    CComboItem* pomComboItem( int nItem, int nSubItem,
+                              const CStringArray& omList);
     // This function will create a editbox.
-    CEdit * pomEditItem(int nItem, int nSubItem);
+    CEdit* pomEditItem(int nItem, int nSubItem);
     // This function will create a numeric editbox.
-    CNumEdit * pomNumItem(int nItem, int nSubItem, const SNUMERICINFO& sInfo);
+    CNumEdit* pomNumItem(int nItem, int nSubItem, const SNUMERICINFO& sInfo);
     CWnd* pomBrowserIem(int nItem, int nSubItem, CStringArray& omList);
     // This will set the user program informatrion of a column
     void vSetUserProgInfo( int nRow, int nColunm,
@@ -125,19 +121,12 @@ private:
 
     // Private Functions
     long lGetMapID(int nRow, int nCol);
-    
-    
+
+
     DECLARE_MESSAGE_MAP()
 public:
-    afx_msg void OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnNMCustomdraw(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
     afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
     virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_FLEXLISTCTRL_H__4F3F3BEF_36FF_4155_AD97_09A7A7E21D71__INCLUDED_)

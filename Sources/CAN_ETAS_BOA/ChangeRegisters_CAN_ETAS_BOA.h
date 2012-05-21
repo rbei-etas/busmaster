@@ -15,24 +15,20 @@
 
 /**
  * \file      ChangeRegisters_CAN_ETAS_BOA.h
- * \brief     This header file contains the defination of class       
+ * \brief     This header file contains the defination of class
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This header file contains the defination of class       
+ * This header file contains the defination of class
  */
-#if !defined(CHANGEREGISTERS_CAN_ETAS_BOA_H____INCLUDED_)
-#define CHANGEREGISTERS_CAN_ETAS_BOA_H____INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 // CChangeRegisters_CAN_ETAS_BOA dialog
 #include "Utility/RadixEdit.h"
 #include "Math.h"
 #include "Include/Struct_Can.h"
-#include "Include/CanUsbDefs.h"
+#include "../Include/BaseDefs.h"
 #include "ChangeRegDefines.h"
 
 #define defMAXPropDelay 8
@@ -41,22 +37,22 @@
 
 class CChangeRegisters_CAN_ETAS_BOA : public CDialog
 {
-// Construction
+    // Construction
 public:
     // To Fill controller information taken from configuration module
     BOOL   bFillControllerConfig();
     // standard constructor
-    CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent = NULL, PSCONTROLER_DETAILS psControllerDetails = NULL, UINT nHardwareCount = 0);
+    CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent = NULL, PSCONTROLLER_DETAILS psControllerDetails = NULL, UINT nHardwareCount = 0);
     virtual ~CChangeRegisters_CAN_ETAS_BOA();
     BOOL bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1);
-    BOOL bGetBaudRateFromCom(int nChannel,BYTE &bBTR0,BYTE &bBTR1);
-    BOOL bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId, 
-                                   DWORD dEndMsgId);
+    BOOL bGetBaudRateFromCom(int nChannel,BYTE& bBTR0,BYTE& bBTR1);
+    BOOL bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId,
+                           DWORD dEndMsgId);
     BOOL bGetFilterFromCom(BOOL& bExtended, double& dBeginMsgId, double& dEndMsgId);
     INT nGetInitStatus();
 
 protected:
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CChangeRegisters_CAN_ETAS_BOA)
     enum { IDD = IDD_DLG_CHANGE_REGISTERS_CAN_ETAS_BOA };
     CListCtrl   m_omChannelList;
@@ -77,14 +73,14 @@ protected:
     //}}AFX_DATA
     DOUBLE  m_dEditBaudRate;
     UINT    m_unCombClock;
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CChangeRegisters_CAN_ETAS_BOA)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 private:
     // Generated message map functions
     //{{AFX_MSG(CChangeRegisters_CAN_ETAS_BOA)
@@ -103,8 +99,8 @@ private:
     DECLARE_MESSAGE_MAP()
 private:
     // Pointer to hold controller information
-    SCONTROLER_DETAILS  m_pControllerDetails[defNO_OF_CHANNELS];
-    PSCONTROLER_DETAILS psMainContrDets;
+    SCONTROLLER_DETAILS  m_pControllerDetails[defNO_OF_CHANNELS];
+    PSCONTROLLER_DETAILS psMainContrDets;
     int m_nLastSelection;
     CImageList m_omChannelImageList;
     SACC_FILTER_INFO m_sAccFilterInfo;
@@ -138,5 +134,3 @@ public:
     CComboBox m_omCtrlSamplePoint;
     CComboBox m_omCtrlSJW;
 };
-
-#endif // !defined(CHANGEREGISTERS_CAN_ETAS_BOA_H____INCLUDED_)

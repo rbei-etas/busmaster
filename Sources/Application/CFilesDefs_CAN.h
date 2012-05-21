@@ -18,8 +18,8 @@
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined CFILESDEFS_CAN_H__INCLUDED_
-#define CFILESDEFS_CAN_H__INCLUDED_
+
+#pragma once
 
 #define STRUCT_FILE                    _T("struct.h")
 #define MSG_STRUCT_NAME                _T("STCAN_MSG");
@@ -28,13 +28,13 @@
 #define MSG_STRUCT_NAME_J1939          _T("STJ1939_MSG");
 #define WRAPPER_NAME_J1939             _T("Wrapper_J1939.o");
 #define TOTAL_API_COUNT                18
-#define TOTAL_ERROR_COUNT              5 
+#define TOTAL_ERROR_COUNT              5
 
-static const CString sg_omAPIFuncList[TOTAL_API_COUNT] = 
+static const CString sg_omAPIFuncList[TOTAL_API_COUNT] =
 {
-    _T("UINT EnableLogging()"), 
-    _T("UINT DisableLogging()"), 
-    _T("UINT WriteToLogFile(char*)"), 
+    _T("UINT EnableLogging()"),
+    _T("UINT DisableLogging()"),
+    _T("UINT WriteToLogFile(char*)"),
     _T("UINT Connect(DWORD)"),
     _T("UINT Disconnect(DWORD)"),
     _T("UINT GoOnline()"),
@@ -52,11 +52,11 @@ static const CString sg_omAPIFuncList[TOTAL_API_COUNT] =
     _T("void ResetController(BOOL)")
 };
 
-static const CString sg_omAPIFuncNames[TOTAL_API_COUNT] = 
+static const CString sg_omAPIFuncNames[TOTAL_API_COUNT] =
 {
-    _T("EnableLogging"), 
-    _T("DisableLogging"), 
-    _T("WriteToLogFile"), 
+    _T("EnableLogging"),
+    _T("DisableLogging"),
+    _T("WriteToLogFile"),
     _T("Connect"),
     _T("Disconnect"),
     _T("GoOnline"),
@@ -75,11 +75,11 @@ static const CString sg_omAPIFuncNames[TOTAL_API_COUNT] =
 };
 
 #define TOTAL_API_COUNT_J1939 21
-static const CString sg_omAPIFuncListJ1939[TOTAL_API_COUNT_J1939] = 
+static const CString sg_omAPIFuncListJ1939[TOTAL_API_COUNT_J1939] =
 {
-    _T("UINT EnableLogging()"), 
-    _T("UINT DisableLogging()"), 
-    _T("UINT WriteToLogFile(char*)"), 
+    _T("UINT EnableLogging()"),
+    _T("UINT DisableLogging()"),
+    _T("UINT WriteToLogFile(char*)"),
     _T("UINT GoOnline()"),
     _T("UINT GoOffline()"),
     _T("UINT StartTimer(char*, UINT)"),
@@ -100,11 +100,11 @@ static const CString sg_omAPIFuncListJ1939[TOTAL_API_COUNT_J1939] =
     _T("UINT Trace(char*, ...)")
 };
 
-static const CString sg_omAPIFuncNamesJ1939[TOTAL_API_COUNT_J1939] = 
+static const CString sg_omAPIFuncNamesJ1939[TOTAL_API_COUNT_J1939] =
 {
-    _T("EnableLogging"), 
-    _T("DisableLogging"), 
-    _T("WriteToLogFile"), 
+    _T("EnableLogging"),
+    _T("DisableLogging"),
+    _T("WriteToLogFile"),
     _T("GoOnline"),
     _T("GoOffline"),
     _T("StartTimer"),
@@ -127,4 +127,3 @@ static const CString sg_omAPIFuncNamesJ1939[TOTAL_API_COUNT_J1939] =
 
 
 static const CString sg_omMcNetErrorHandlerList[TOTAL_ERROR_COUNT] = {_T("Error Active"), _T("Error Passive"), _T("Warning Limit"), _T("Bus Off"), _T("Error Frame")};
-#endif //CFILESDEFS_CAN_H__INCLUDED_

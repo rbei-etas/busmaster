@@ -17,11 +17,11 @@
     </section>
     <section>
       <title>Download</title>
-      <p>TestCocoon is available for download at <xref href="http://www.testcocoon.org/" scope="external">http://www.testcocoon.org/</xref>. Download the latest version of the installer, e.g.  <filepath>TestCocoonSetup_1_6_14_x86.exe</filepath> (as of 2011-10-25).</p>
+      <p>TestCocoon is available for download at <xref href="http://www.testcocoon.org/" scope="external">http://sourceforge.net/projects/testcocoon/</xref>. Download the latest version of the installer, e.g.  <filepath>TestCocoonSetup_1_6_14_x86.exe</filepath> (as of 2011-10-25).</p>
     </section>
     <section>
       <title>Installation</title>
-      <p>Execute the installer <filepath>TestCocoonSetup_1_6_14_x86.exe</filepath>. The standard installation folder is <filepath>C:\Program Files\TestCocoon</filepath>.</p>
+      <p>Execute the installer <filepath>TestCocoonSetup_1_6_14_x86.exe</filepath>. The standard installation folder is <filepath>%ProgramFiles%\TestCocoon</filepath>.</p>
     </section>
     <section>
       <title>Configuration</title>

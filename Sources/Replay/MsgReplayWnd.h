@@ -21,12 +21,8 @@
  *
  * This file contain the definition of CMsgReplayWnd class
  */
-#if !defined(AFX_MSGREPLAYWND_H__94E95C58_363E_11D6_BFEF_0010B599CE39__INCLUDED_)
-#define AFX_MSGREPLAYWND_H__94E95C58_363E_11D6_BFEF_0010B599CE39__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 // For Replay File Definition
 #include "ReplayFile.h"
@@ -46,10 +42,10 @@ public:
     CMsgReplayWnd(CReplayFile ouReplayFile, WINDOWPLACEMENT& sWndPlacement);
     virtual ~CMsgReplayWnd();
 
-// Attributes
+    // Attributes
 public:
 
-// Operations
+    // Operations
 public:
     // Replay Operations
     VOID vCmdSkip();
@@ -73,15 +69,15 @@ public:
     friend class CReplayProcess;
     friend class CLogFileCSVExport;
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMsgReplayWnd)
-    public:
-    protected:
+public:
+protected:
     virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
@@ -114,10 +110,3 @@ private:
     //Window placement
     WINDOWPLACEMENT m_sWndPlacement;
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_MSGREPLAYWND_H__94E95C58_363E_11D6_BFEF_0010B599CE39__INCLUDED_)

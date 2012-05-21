@@ -18,8 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined TXWND_DEFS_H_
-#define TXWND_DEFS_H_
+
+#pragma once
 
 #include "include/struct_can.h"
 #define defTX_MSG_WND_BOTTOM_MARGIN        0.14
@@ -34,13 +34,13 @@ struct tagTxMsgSplitterData
 
 typedef tagTxMsgSplitterData sTxMsgSplitterData;
 typedef sTxMsgSplitterData STXMSGSPLITTERDATA;
-typedef STXMSGSPLITTERDATA * PSTXMSGSPLITTERDATA;
+typedef STXMSGSPLITTERDATA* PSTXMSGSPLITTERDATA;
 
 
 struct sTXCANMSGDETAILS
 {
-    BOOL m_bIsMsgDirty;          // for a database message;to Indicate user enter 
-                                // bytes value instead of signal value.
+    BOOL m_bIsMsgDirty;          // for a database message;to Indicate user enter
+    // bytes value instead of signal value.
     BOOL m_bEnabled;            // To indicate eligiblity of the message for Tx
     STCAN_MSG m_sTxMsg;
 };
@@ -84,7 +84,7 @@ typedef sTXCANMSGLIST* PSTXCANMSGLIST;
 
 struct sMSGBLOCKLIST
 {
-    TCHAR m_acStrBlockName[defBLOCKNAME_SIZE];
+    char m_acStrBlockName[defBLOCKNAME_SIZE];
     unsigned char m_ucTrigger;
     BOOL m_bType;
     BOOL m_bActive;
@@ -106,8 +106,7 @@ struct sMSGBLOCKLIST
         m_psTxCANMsgList      = NULL;
         m_ucKeyValue          = 0;
         m_unTimeInterval      = defDEFAULT_TIME_VAL;
-        _tcscpy( m_acStrBlockName, defDEFAULT_MSG_BLOCK_NAME);
-
+        strcpy_s(m_acStrBlockName, defDEFAULT_MSG_BLOCK_NAME);
     }
 };
 typedef sMSGBLOCKLIST SMSGBLOCKLIST;
@@ -144,17 +143,23 @@ private:
     {
         int nCount = 0;
         PSTXCANMSGLIST psCanTemp = m_psTxCANMsgList;
+
         while (NULL != psCanTemp)
         {
             ++nCount;
             psCanTemp = psCanTemp->m_psNextMsgDetails;
         }
+
         return nCount;
     }
 
 public:
     sTXMSGINFO()
     {
+        m_sTimerThreadInfo.m_hThread = NULL;
+        m_sTimerThreadInfo.m_pvThread = NULL;
+        m_sKeyThreadInfo.m_hThread = NULL;
+        m_sKeyThreadInfo.m_pvThread = NULL;
         m_hSemaphore = NULL;
         m_psTxCANMsgList = NULL;
         m_psNextTxMsgInfo = NULL;
@@ -185,12 +190,14 @@ public:
         memcpy(pDesBuffer, &nMsgCnt, sizeof(nMsgCnt));
         pDesBuffer += sizeof(nMsgCnt);
         PSTXCANMSGLIST psCanTemp = m_psTxCANMsgList;
+
         while (NULL != psCanTemp)
         {
             memcpy(pDesBuffer, &psCanTemp->m_sTxMsgDetails, sizeof(psCanTemp->m_sTxMsgDetails));
             pDesBuffer += sizeof(psCanTemp->m_sTxMsgDetails);
             psCanTemp = psCanTemp->m_psNextMsgDetails;
         }
+
         return pDesBuffer;
     }
     BYTE* pbSetBlockConfigData(BYTE* pSrcBuffer)
@@ -207,11 +214,13 @@ public:
         pSrcBuffer += sizeof(nMsgCnt);
         PSTXCANMSGLIST psCanTemp = NULL, psCanPrev = NULL;
         m_psTxCANMsgList = NULL;
+
         for (int i = 0; i < nMsgCnt; i++)
         {
             psCanTemp = new STXCANMSGLIST;
             memcpy(&psCanTemp->m_sTxMsgDetails, pSrcBuffer, sizeof(psCanTemp->m_sTxMsgDetails));
             pSrcBuffer += sizeof(psCanTemp->m_sTxMsgDetails);
+
             if (NULL == m_psTxCANMsgList)
             {
                 m_psTxCANMsgList = psCanTemp;
@@ -223,6 +232,7 @@ public:
                 psCanPrev = psCanTemp;
             }
         }
+
         return pSrcBuffer;
     }
 };
@@ -234,7 +244,7 @@ struct sTXMSGDATA
 {
     UINT  m_unCount;              // Total array element in the point m_psTxMsg
     PSTCAN_MSG m_psTxMsg;         // pointer to array of structure for
-                                  // Transmitting the data.
+    // Transmitting the data.
 };
 
 typedef sTXMSGDATA STXSELMSGDATA;
@@ -264,12 +274,12 @@ typedef ETXMSGVIEWTYPE* PETXMSGVIEWTYPE;
 
 typedef enum eUSERSELCTION
 {
-	eHEXDECCMD = 0,
+    eHEXDECCMD = 0,
     eTXMSGCMD,
     eCONNECTCMD,
     eDATABASEIMPORTCMD,
-	eCONFIGCHANGECMD,
-	eCHANNELCOUNTUPDATED
+    eCONFIGCHANGECMD,
+    eCHANNELCOUNTUPDATED
 };
 
 typedef struct tagSBYTE
@@ -288,10 +298,7 @@ typedef union tagUBYTE
 {
     BYTE        byByte;
     STRUCT_BYTE sByte;
-}UNION_BYTE;
+} UNION_BYTE;
 
 
 #define CHAR_INT                'I'
-
-
-#endif //TXWND_DEFS_H_

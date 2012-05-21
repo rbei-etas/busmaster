@@ -1,54 +1,47 @@
-/*******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  GraphConfiguration.h
-  Description   :  Interface file for CGraphConfiguration class
-  $Log:   X:/Archive/Sources/SigGrphWnd/GraphConfiguration.h_v  $
- * 
- *    Rev 1.1   15 Apr 2011 19:43:30   rac2kor
- * Inserted RBEI Copyright information text into the file header.
- * 
- *    Rev 1.0   13 Dec 2010 22:00:34   CANMNTTM
- *  
- * 
- *    Rev 1.0   16 Aug 2010 21:20:32   rac2kor
- *  
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-  Author(s)     :  Raja N
-  Date Created  :  01/12/2004
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-*******************************************************************************/
+/**
+ * \file      GraphConfiguration.h
+ * \brief     Interface file for CGraphConfiguration class
+ * \author    Raja N
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Interface file for CGraphConfiguration class
+ */
 
-#if !defined(AFX_GRAPHCONFIGURATION_H__E87E37B8_80BB_4902_858D_254B5872D20E__INCLUDED_)
-#define AFX_GRAPHCONFIGURATION_H__E87E37B8_80BB_4902_858D_254B5872D20E__INCLUDED_
+#pragma once
 
 // For Graph Parameter Class definition
 #include "GraphParameters.h"
 #include "GraphList.h"
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// GraphConfiguration.h : header file
-//
-
-/////////////////////////////////////////////////////////////////////////////
-// CGraphConfiguration dialog
-
 class CGraphConfiguration : public CDialog
 {
-// Construction
+    // Construction
 public:
     // Local instance of View Style parameter
     CGraphParameters m_omGraphParams;
-   // standard constructor
+    // standard constructor
     CGraphConfiguration(CWnd* pParent = NULL);
 
-	CGraphList *m_pGraphList;
-	// To have reference of Graph Control interface
+    CGraphList* m_pGraphList;
+    // To have reference of Graph Control interface
     IDMGraphCtrl* m_pDMGraphCtrl;
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CGraphConfiguration)
     enum { IDD = IDD_DLG_GRAPH_WINDOW_CONF };
     CColorSelector   m_omAxisColor;
@@ -60,18 +53,18 @@ public:
     int     m_nUpdateRate;
     int     m_nBufferSize;
     int     m_omFrameType;
-    //}}AFX_DATA	
-	// To set the values of the object in to UI control
+    //}}AFX_DATA
+    // To set the values of the object in to UI control
     void vSetValues(CGraphParameters omParam);
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CGraphConfiguration)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
@@ -82,10 +75,5 @@ protected:
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 public:
-	int m_nLineDisplay;
+    int m_nLineDisplay;
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_GRAPHCONFIGURATION_H__E87E37B8_80BB_4902_858D_254B5872D20E__INCLUDED_)

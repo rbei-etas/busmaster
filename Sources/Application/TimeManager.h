@@ -15,41 +15,35 @@
 
 /**
  * \file      TimeManager.h
- * \brief     Interface file for CTimeManager class 
+ * \brief     Interface file for CTimeManager class
  * \author    Raja N
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Interface file for CTimeManager class 
+ * Interface file for CTimeManager class
  */
 
-#if !defined(AFX_TIMEMANAGER_H__03C4B0FC_5A6E_4330_821C_F4109863D8C0__INCLUDED_)
-#define AFX_TIMEMANAGER_H__03C4B0FC_5A6E_4330_821C_F4109863D8C0__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// For Message Buffer definition
-//#include "MsgBuffer.h"
+
 // For standard datatypes definition
 #include "Struct.h"
 
-class CTimeManager  
+class CTimeManager
 {
     // Absolute Time Reference
     static int m_nAbsoluteTime;
     // System Reference Tick Count
-    static const LARGE_INTEGER m_sSysRefTickCount;
+    static const long long int m_sSysRefTickCount;
     // System Reference Time Value
     static const int m_nSysRefTime;
     // Clock tick Frequency
     static const __int64 m_n64Frequency;
-    
+
     // **** USB Related Time Variable **** //
     // To hold time difference between System time and windows startup time
     static int m_nOffsetTimeValue;
     static int nCalculateOffsetTime();
     // **** End of USB Code **** //
-    
+
     // Private Constructor and Destructor to avoide instances of this class
     CTimeManager();
     virtual ~CTimeManager();
@@ -62,22 +56,21 @@ public:
     // To set the absolute time value manually
     static void vSetAbsoluteTime(int nAbsoluteTime);
     //To get latest offset set by the DIL
-    static int nCalculateCurrTimeStamp(BOOL bFromDIL = FALSE);    
+    static int nCalculateCurrTimeStamp(BOOL bFromDIL = FALSE);
     // To calculate and Format the time
     static void vFormatTimeStamp(int nTimeStamp, BOOL bOverWrite,
-                                    WORD wDisplayTimeMode,
-                                    int nIndex,
-                                    __int64 n64OverWriteMapKey,
-                                    CString &omStrTime);
+                                 WORD wDisplayTimeMode,
+                                 int nIndex,
+                                 __int64 n64OverWriteMapKey,
+                                 CString& omStrTime);
     // To perform calculation and formatting only
     static void vFormatTimeStamp( int nTimeStamp,
                                   int nRefTimeStamp,
                                   WORD wDisplayTimeMode,
-                                  CString &omStrTime);
+                                  CString& omStrTime);
     // To find system time value of clock tick
     static int nCalculateElapsedTimeFromTick(const __int64& n64CurrTick);
     // To reinitialise the offset time value
     static void bReinitOffsetTimeValForICSneoVI(void);
-    
+
 };
-#endif // !defined(AFX_TIMEMANAGER_H__03C4B0FC_5A6E_4330_821C_F4109863D8C0__INCLUDED_)

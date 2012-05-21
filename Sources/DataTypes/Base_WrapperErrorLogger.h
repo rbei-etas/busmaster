@@ -22,19 +22,21 @@
  * Base class definition for error logger module
  */
 
-#if !defined BASE_WRAPPERERRORLOGGER_H__INCLUDED_
-#define BASE_WRAPPERERRORLOGGER_H__INCLUDED_
+#pragma once
+
+/* C++ includes */
+#include <string>
+
+using namespace std;
 
 #define LOG_MESSAGE(WrapperErr, Msg)  {WrapperErr->vLogAMessage(A2T(__FILE__), __LINE__, Msg);}
 
 class Base_WrapperErrorLogger
 {
 public:
-    Base_WrapperErrorLogger(void){};
-    ~Base_WrapperErrorLogger(void){};
+    Base_WrapperErrorLogger(void) {};
+    ~Base_WrapperErrorLogger(void) {};
 
     // Maximum characters in File and Msg are FILENAME_MAX and BUFSIZ respectively
-    virtual void vLogAMessage(TCHAR File[], int Line, TCHAR Msg[]) = 0;
+    virtual void vLogAMessage(char File[], int Line, string Msg) = 0;
 };
-
-#endif // BASE_WRAPPERERRORLOGGER_H__INCLUDED_

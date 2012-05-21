@@ -27,13 +27,6 @@
 #include "CAN_ICS_neoVI_Channel.h" // For CChannel class declaration
 #include "CAN_ICS_neoVI_Network.h" // For CNetwork class declaration
 
-
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 /**
  * Standard default constructor
  */
@@ -42,7 +35,7 @@ CNetwork::CNetwork()
     // Initialise members
     // Number of chennals present or initialised
     m_nNoOfChannels = 0;
-    m_nNoOfDevices  = 0;    
+    m_nNoOfDevices  = 0;
 }
 
 /**
@@ -50,5 +43,4 @@ CNetwork::CNetwork()
  */
 CNetwork::~CNetwork()
 {
-
 }

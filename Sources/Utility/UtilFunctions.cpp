@@ -33,7 +33,7 @@
 //////////////////////////////////////////////////////////////////////
 /*******************************************************************************
  Function Name  : CUtilFunctions
- Description    : Standard default constructor. This is not required as it is 
+ Description    : Standard default constructor. This is not required as it is
                   private.
  Member of      : CUtilFunctions
  Functionality  : -
@@ -42,7 +42,6 @@
 *******************************************************************************/
 CUtilFunctions::CUtilFunctions()
 {
-
 }
 
 /*******************************************************************************
@@ -55,7 +54,6 @@ CUtilFunctions::CUtilFunctions()
 *******************************************************************************/
 CUtilFunctions::~CUtilFunctions()
 {
-
 }
 
 /*******************************************************************************
@@ -111,6 +109,7 @@ void CUtilFunctions::s_vExtendSignBit( __int64& n64Val, int nSize)
         n64Mask <<= nSize - 1;
         // Get the sign bit value
         bSignBit = n64Val & n64Mask ? TRUE : FALSE;
+
         // Set the value only for negative numbers
         if( bSignBit )
         {

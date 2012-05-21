@@ -22,13 +22,32 @@
  * Implementation of CSimENG
  */
 
-#include "stdafx_BusSim.h"
+#define STRICT
+#define _ATL_APARTMENT_THREADED
+#define _ATL_NO_AUTOMATIC_NAMESPACE
+#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS  // some CString constructors will be explicit
+// turns off ATL's hiding of some common and often safely ignored warning messages
+#define _ATL_ALL_WARNINGS
+
+/* MFC includes */
+#include <atlbase.h>
+#include <atlcom.h>
+#include <time.h>
+
+using namespace ATL;
+
+/* C++ includes */
+#include <map>
+
+/* Project includes */
+#include "resource_BusSim.h"
 #include "DataTypes/MsgBufVSE.h"
 #include "DataTypes/DIL_Datatypes.h"
 #include "SimENG.h"
 #include "Utility/Utility.h"
 #include "Utility/Utility_Thread.h"
 
+using namespace std;
 
 #define BASE_PIPENAME   "\\\\.\\Pipe\\"
 #define PIPE_TIMEOUT    500
@@ -46,57 +65,56 @@ typedef struct
 
 } SPARAM_CLIENT;
 
-typedef std::map<USHORT, SPARAM_CLIENT> CLIENT_MAP;
+typedef map<USHORT, SPARAM_CLIENT> CLIENT_MAP;
 
 static CLIENT_MAP  sg_ClientMap;
 static CMsgBufVSE sg_MessageBuf;
 static CPARAM_THREADPROC sg_sThreadCtrlObj;
 
-static LARGE_INTEGER sg_lnFrequency;
-static LARGE_INTEGER sg_lnCurrCounter;
-static LARGE_INTEGER sg_lnTimeStamp;
+static long long int sg_lnFrequency;
+static long long int sg_lnCurrCounter;
+static long long int sg_lnTimeStamp;
 static SYSTEMTIME sg_CurrSysTime;
 
-const int MAX_STRING    = 256;
+//const int MAX_STRING    = 256;
 //#define INITIALISE_DATA(Data)   memset(Data, 0, sizeof(Data))
 
 // Buffer for the driver operation related error messages
-static CHAR sg_acErrStr[MAX_STRING] = {'\0'};
+static string sg_acErrStr;
 
 static CRITICAL_SECTION sg_CriticalSection;
 
 static BYTE* sg_pbEntry = NULL; // This is used as a temporary placeholder for
-static INT sg_nEntryLen = 0;    // a frame for the transmitting threads. 
+static INT sg_nEntryLen = 0;    // a frame for the transmitting threads.
 static CRITICAL_SECTION sg_CSMsgEntry; // This critical section is to guard the
-                                // aforementioned resource.
+// aforementioned resource.
 
 static BYTE* sg_pbEntry2 = NULL; // This is used as a temporary placeholder for
-static INT sg_nEntryLen2 = 0;    // a frame for the delegating threads. 
+static INT sg_nEntryLen2 = 0;    // a frame for the delegating threads.
 
 static void GetSystemErrorString()
 {
     LPVOID lpMsgBuf;
     DWORD dwResult = 0;
+    dwResult = FormatMessage(
+                   FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                   FORMAT_MESSAGE_FROM_SYSTEM |
+                   FORMAT_MESSAGE_IGNORE_INSERTS,
+                   NULL,
+                   GetLastError(),
+                   MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
+                   (LPTSTR) &lpMsgBuf,
+                   0,
+                   NULL );
 
-    dwResult = FormatMessage( 
-        FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-        FORMAT_MESSAGE_FROM_SYSTEM | 
-        FORMAT_MESSAGE_IGNORE_INSERTS,
-        NULL,
-        GetLastError(),
-        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-        (LPTSTR) &lpMsgBuf,
-        0,
-        NULL );
     if (dwResult <= 0)
     {
-        strcpy(sg_acErrStr, "system error message retrieval operation failed");
+        sg_acErrStr = "system error message retrieval operation failed";
     }
     else
     {
         LPSTR pBuf = T2A((LPTSTR) lpMsgBuf);
-        INITIALISE_DATA(sg_acErrStr);
-        lstrcpy(sg_acErrStr, pBuf);
+        sg_acErrStr = pBuf;
         // Free the buffer.
         LocalFree(lpMsgBuf);
     }
@@ -109,64 +127,62 @@ static void GetSystemErrorString()
 
 DWORD WINAPI MsgDelegatingThread(LPVOID pParam)
 {
-    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC *) pParam;
-
+    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pParam;
     WORD wSenderID = 0;
-    INT Type = -1; 
+    INT Type = -1;
     UINT64 TimeStamp = 0x0;
-
     bool bLoopON = true;
 
-	while (bLoopON)
-	{
+    while (bLoopON)
+    {
         WaitForSingleObject(pThreadParam->m_hActionEvent, INFINITE);
 
         switch (pThreadParam->m_unActionCode)
-		{
-			case INVOKE_FUNCTION:
-			{
-				// Retrieve message from the circular buffer
+        {
+            case INVOKE_FUNCTION:
+            {
+                // Retrieve message from the circular buffer
                 while (sg_MessageBuf.GetMsgCount() > 0)
                 {
                     EnterCriticalSection(&sg_CriticalSection);
-
                     BYTE* pbCurrEntry = sg_pbEntry2;
                     INT CurrLength = sg_nEntryLen2;
                     sg_MessageBuf.ReadFromBuffer(Type, pbCurrEntry, CurrLength);
-
                     // Save the sender id for reference
                     memcpy(&TimeStamp, pbCurrEntry + 1, SIZE_TIMESTAMP);
                     wSenderID = (WORD) TimeStamp;
-
                     // Calculate the current time stamp assigning the same to
                     // the message
-                    LARGE_INTEGER CurrCounter;
-                    QueryPerformanceCounter(&CurrCounter);
+                    long long int CurrCounter;
+                    QueryPerformanceCounter((LARGE_INTEGER*) &CurrCounter);
+
                     // Convert it to time stamp with the granularity of hundreds of us
-                    if (CurrCounter.QuadPart * 10000 > CurrCounter.QuadPart)
+                    if (CurrCounter * 10000 > CurrCounter)
                     {
-                        TimeStamp = 
-                            (CurrCounter.QuadPart * 10000) / sg_lnFrequency.QuadPart;
+                        TimeStamp =
+                            (CurrCounter * 10000) / sg_lnFrequency;
                     }
                     else
                     {
-                        TimeStamp = 
-                            (CurrCounter.QuadPart / sg_lnFrequency.QuadPart) * 10000;
+                        TimeStamp =
+                            (CurrCounter / sg_lnFrequency) * 10000;
                     }
 
                     // Now save the time stamp calculated
                     memcpy(pbCurrEntry + 1, &TimeStamp, SIZE_TIMESTAMP);
+                    CLIENT_MAP::iterator itr;
 
-                    CLIENT_MAP::iterator itr = sg_ClientMap.begin();
-                    while (itr != sg_ClientMap.end())
+                    for (itr= sg_ClientMap.begin(); itr != sg_ClientMap.end(); ++itr)
                     {
                         BOOL Result = TRUE;
-                        // If the current client is meant for the same bus, 
+
+                        // If the current client is meant for the same bus,
                         // then continue with the same.
                         if (itr->second.m_nBus == Type)
                         {
                             Result = itr->second.m_bActive;
                         }
+
                         if (Result)
                         {
                             if (itr->first == wSenderID)
@@ -175,12 +191,14 @@ DWORD WINAPI MsgDelegatingThread(LPVOID pParam)
                                 //CurrMsgDat.stcDataMsg.dwHeaderInfoFlags |= 0x800;
                                 *pbCurrEntry = 0x1;
                             }
+
                             DWORD Count = 0;
-                            Result = WriteFile(itr->second.m_hWrite, pbCurrEntry, 
-                                        itr->second.m_dwDataSize, &Count, NULL);
-                                       //&CurrMsgDat, SIZE_ENTRY, &Count, NULL);
+                            Result = WriteFile(itr->second.m_hWrite, pbCurrEntry,
+                                               itr->second.m_dwDataSize, &Count, NULL);
+                            //&CurrMsgDat, SIZE_ENTRY, &Count, NULL);
                             SetEvent(itr->second.m_hEvent);
                             FlushFileBuffers(itr->second.m_hWrite);
+
                             if (itr->first == wSenderID)
                             {
                                 // Make the self reception bit down
@@ -188,29 +206,32 @@ DWORD WINAPI MsgDelegatingThread(LPVOID pParam)
                                 *pbCurrEntry = 0x0;
                             }
                         }
-                        itr++;
                     }
+
                     LeaveCriticalSection(&sg_CriticalSection);
                 }
-                ResetEvent(pThreadParam->m_hActionEvent);
-			}
-			break;
-			case EXIT_THREAD:
-			{
-				bLoopON = false;
-			}
-			break;
-			default:
-			case INACTION:
-			{
-				// nothing right at this moment
-			}
-			break;
-		}
-	}
-    SetEvent(pThreadParam->hGetExitNotifyEvent());
 
-   return 0;
+                ResetEvent(pThreadParam->m_hActionEvent);
+            }
+            break;
+
+            case EXIT_THREAD:
+            {
+                bLoopON = false;
+            }
+            break;
+
+            default:
+            case INACTION:
+            {
+                // nothing right at this moment
+            }
+            break;
+        }
+    }
+
+    SetEvent(pThreadParam->hGetExitNotifyEvent());
+    return 0;
 }
 
 /*void CSimENG::UpdateState(void)
@@ -229,21 +250,20 @@ static void vCreateTimeModeMapping()
 {
     // Save the current value of the high-resolution performance counter,
     // associated to the saved system time to the closest proximity.
-    QueryPerformanceCounter(&sg_lnCurrCounter);
-
+    QueryPerformanceCounter((LARGE_INTEGER*) &sg_lnCurrCounter);
     // Get frequency of the performance counter
-    QueryPerformanceFrequency(&sg_lnFrequency);
+    QueryPerformanceFrequency((LARGE_INTEGER*) &sg_lnFrequency);
 
     // Convert it to time stamp with the granularity of hundreds of microsecond
-    if (sg_lnCurrCounter.QuadPart * 10000 > sg_lnCurrCounter.QuadPart)
+    if (sg_lnCurrCounter * 10000 > sg_lnCurrCounter)
     {
-        sg_lnTimeStamp.QuadPart = (sg_lnCurrCounter.QuadPart * 10000) 
-                                                     / sg_lnFrequency.QuadPart;
+        sg_lnTimeStamp = (sg_lnCurrCounter * 10000)
+                         / sg_lnFrequency;
     }
     else
     {
-        sg_lnTimeStamp.QuadPart = (sg_lnCurrCounter.QuadPart 
-                                            / sg_lnFrequency.QuadPart) * 10000;
+        sg_lnTimeStamp = (sg_lnCurrCounter
+                          / sg_lnFrequency) * 10000;
     }
 }
 
@@ -254,35 +274,29 @@ CSimENG::CSimENG()
     //MessageBox(NULL, "in CSimENG()", "Member function", MB_OK);
     // First save the current system time
     GetLocalTime(&sg_CurrSysTime);
-
-	vCreateTimeModeMapping();
-
+    vCreateTimeModeMapping();
 }
 
 
 HRESULT CSimENG::FinalConstruct()
 {
-    // Initialise the random number generator 
+    // Initialise the random number generator
     srand((unsigned) time(NULL));
-
     // To create the worker thread that relays messages to other nodes
     // First initialise the parameters
     sg_sThreadCtrlObj.m_hActionEvent = sg_MessageBuf.hGetNotifyingEvent();
     sg_sThreadCtrlObj.m_pBuffer = &sg_MessageBuf;
     sg_sThreadCtrlObj.m_unActionCode = INVOKE_FUNCTION;
-
     // Now start the thread
     sg_sThreadCtrlObj.bStartThread(MsgDelegatingThread);
-
     //MessageBox(NULL, "in FinalConstruct()", "Member function", MB_OK);
-	return S_OK;
+    return S_OK;
 }
 
-void CSimENG::FinalRelease() 
+void CSimENG::FinalRelease()
 {
     // Close the message relay worker thread
     sg_sThreadCtrlObj.bTerminateThread();
-
     DeleteCriticalSection(&sg_CriticalSection);
     DeleteCriticalSection(&sg_CSMsgEntry);
 
@@ -312,37 +326,32 @@ void CSimENG::FinalRelease()
  *
  * Call this function to send a message to the virtual bus or other nodes.
  */
-STDMETHODIMP CSimENG::SendMessage(USHORT ClientID, USHORT CurrDataLength, 
+STDMETHODIMP CSimENG::SendMessage(USHORT ClientID, USHORT CurrDataLength,
                                   BYTE pbCurrDataByte[128])
 {
     HRESULT Result = S_FALSE;
     // First ensure this node is active
     CLIENT_MAP::iterator itr = sg_ClientMap.find(ClientID);
+
     if (itr != sg_ClientMap.end())
     {
         if (itr->second.m_bActive)
         {
             EnterCriticalSection(&sg_CSMsgEntry);
-
             // First reinitialise
             memset(sg_pbEntry, '\0', sg_nEntryLen);
-
             BYTE* pbFrame = sg_pbEntry;
             // Calculate total number of bytes of the present entry
             INT TotalLength = 1 + SIZE_TIMESTAMP + CurrDataLength;
-
             /* Start assigning values to the temporary message entry.
             Rx/Tx flag field is kept as Rx as a default value because except
             for one case this will be FLAG_RX */
             UINT64 un64TS = (UINT64) ClientID;
             memcpy(pbFrame + 1, &un64TS, SIZE_TIMESTAMP);
             memcpy(pbFrame + 1 + SIZE_TIMESTAMP, pbCurrDataByte, CurrDataLength);
-
             // Add to the internal buffer
             sg_MessageBuf.WriteIntoBuffer(itr->second.m_nBus, pbFrame, TotalLength);
-
             LeaveCriticalSection(&sg_CSMsgEntry);
-
             Result = S_OK;
         }
     }
@@ -359,35 +368,33 @@ STDMETHODIMP CSimENG::SendMessage(USHORT ClientID, USHORT CurrDataLength,
  * betweenthe engine and the client in the form of a pipe and an event for
  * notification.
  */
-STDMETHODIMP CSimENG::RegisterClient(USHORT Bus, USHORT MaxLenFrame, 
+STDMETHODIMP CSimENG::RegisterClient(USHORT Bus, USHORT MaxLenFrame,
                                      USHORT* ClientID, BSTR* pPipeName,
                                      BSTR* pEventName)
 {
     HRESULT Result = S_FALSE;
-
     EnterCriticalSection(&sg_CriticalSection);
-
     // Generate a unique random number as client identifier
     USHORT ushTempID;
+
     // Zero has a special meaning; hence can't be taken as a client ID
-    do 
+    do
     {
         ushTempID = (USHORT) rand();
-    } while ((sg_ClientMap.find(ushTempID) != sg_ClientMap.end()) && (ushTempID != 0x0));
+    }
+    while ((sg_ClientMap.find(ushTempID) != sg_ClientMap.end()) && (ushTempID != 0x0));
 
     // From the client identifier we will now generate a pipe & mutex name
     // First generate mutex name
     char EventName[32] = {'\0'};
-    sprintf(EventName, "%X", ushTempID);
+    sprintf_s(EventName, "%X", ushTempID);
     // followed by the pipe name
     char PipeName[64] = BASE_PIPENAME;
-    strcat(PipeName, EventName);
-
+    strcat_s(PipeName, EventName);
     // Pipe name; convert from ASCII string to BSTR
     BSTR bstrPipe = A2BSTR(PipeName);
     // Mutex name; convert from ASCII string to BSTR
     BSTR bstrEvent = A2BSTR(EventName);
-
     bool bProceed = ((bstrPipe != NULL) && (bstrEvent != NULL));
 
     if (bProceed)
@@ -395,37 +402,36 @@ STDMETHODIMP CSimENG::RegisterClient(USHORT Bus, USHORT MaxLenFrame,
         *ClientID = ushTempID;          // Assign client id
         *pPipeName = bstrPipe;          // Assign pipe name
         *pEventName = bstrEvent;        // Assign mutex name
-
         SPARAM_CLIENT sParams;
-
-        // Both input / output buffer include both Rx/Tx and time stamp fields 
+        // Both input / output buffer include both Rx/Tx and time stamp fields
         // too. Hence calculate accordingly.
         sParams.m_dwDataSize = 1 + SIZE_TIMESTAMP + MaxLenFrame;
         // Create the conduit for communication
         sParams.m_hWrite = CreateNamedPipe(
-            PipeName,                 // pipe name 
-            PIPE_ACCESS_OUTBOUND,     // read/write access 
-            PIPE_TYPE_BYTE |          // message type pipe 
-            PIPE_READMODE_BYTE |      // message-read mode 
-            PIPE_NOWAIT,              // blocking mode 
-            PIPE_UNLIMITED_INSTANCES, // max. instances
-            sParams.m_dwDataSize,     // output buffer size 
-            sParams.m_dwDataSize,     // input buffer size 
-            PIPE_TIMEOUT,             // client time-out 
-            NULL);                    // no security attribute 
+                               PipeName,                 // pipe name
+                               PIPE_ACCESS_OUTBOUND,     // read/write access
+                               PIPE_TYPE_BYTE |          // message type pipe
+                               PIPE_READMODE_BYTE |      // message-read mode
+                               PIPE_NOWAIT,              // blocking mode
+                               PIPE_UNLIMITED_INSTANCES, // max. instances
+                               sParams.m_dwDataSize,     // output buffer size
+                               sParams.m_dwDataSize,     // input buffer size
+                               PIPE_TIMEOUT,             // client time-out
+                               NULL);                    // no security attribute
+
         if (sParams.m_hWrite == INVALID_HANDLE_VALUE)
         {
             bProceed = false;
             GetSystemErrorString();
-            MessageBox(NULL, sg_acErrStr, "Error", MB_OK);
+            MessageBox(NULL, sg_acErrStr.c_str(), "Error", MB_OK);
         }
 
         if (bProceed)
         {
             ConnectNamedPipe(sParams.m_hWrite, NULL);
             // Generate the communication event
-            bProceed = bProceed && ((sParams.m_hEvent 
-                         = CreateEvent(NULL, FALSE, FALSE, EventName)) != NULL);
+            bProceed = bProceed && ((sParams.m_hEvent
+                                     = CreateEvent(NULL, FALSE, FALSE, EventName)) != NULL);
         }
 
         if (bProceed)
@@ -442,7 +448,6 @@ STDMETHODIMP CSimENG::RegisterClient(USHORT Bus, USHORT MaxLenFrame,
             sParams.m_nBus = Bus;
             // Now add to the map object
             sg_ClientMap.insert(CLIENT_MAP::value_type(ushTempID, sParams));
-
             Result = S_OK;
         }
     }
@@ -465,7 +470,7 @@ STDMETHODIMP CSimENG::RegisterClient(USHORT Bus, USHORT MaxLenFrame,
         }
     }
 
-	return Result;
+    return Result;
 }
 
 /**
@@ -477,9 +482,7 @@ STDMETHODIMP CSimENG::RegisterClient(USHORT Bus, USHORT MaxLenFrame,
 STDMETHODIMP CSimENG::UnregisterClient(USHORT ClientID)
 {
     HRESULT Result = S_FALSE;
-
     EnterCriticalSection(&sg_CriticalSection);
-
     CLIENT_MAP::iterator itr = sg_ClientMap.find(ClientID);
 
     if (itr != sg_ClientMap.end())
@@ -491,12 +494,10 @@ STDMETHODIMP CSimENG::UnregisterClient(USHORT ClientID)
         CloseHandle(itr->second.m_hWrite);
         itr->second.m_hWrite = NULL;
         sg_ClientMap.erase(itr);
-
         Result = S_OK;
     }
 
     LeaveCriticalSection(&sg_CriticalSection);
-
     return Result;
 }
 
@@ -510,7 +511,6 @@ STDMETHODIMP CSimENG::UnregisterClient(USHORT ClientID)
 STDMETHODIMP CSimENG::ConnectNode(USHORT ClientID)
 {
     HRESULT Result = S_FALSE;
-
     CLIENT_MAP::iterator itr = sg_ClientMap.find(ClientID);
 
     if (itr != sg_ClientMap.end())
@@ -520,8 +520,7 @@ STDMETHODIMP CSimENG::ConnectNode(USHORT ClientID)
         Result = S_OK;
     }
 
-	vCreateTimeModeMapping();
-
+    vCreateTimeModeMapping();
     return Result;
 }
 
@@ -534,7 +533,6 @@ STDMETHODIMP CSimENG::ConnectNode(USHORT ClientID)
 STDMETHODIMP CSimENG::DisconnectNode(USHORT ClientID)
 {
     HRESULT Result = S_FALSE;
-
     CLIENT_MAP::iterator itr = sg_ClientMap.find(ClientID);
 
     if (itr != sg_ClientMap.end())
@@ -553,11 +551,11 @@ STDMETHODIMP CSimENG::DisconnectNode(USHORT ClientID)
  *
  * Call this function to get a system time and the time stamp associated to it.
  */
-STDMETHODIMP CSimENG::GetTimeModeMapping(SYSTEMTIME* CurrSysTime, ULONGLONG* TimeStamp, LARGE_INTEGER* lQueryTickCount)
+STDMETHODIMP CSimENG::GetTimeModeMapping(SYSTEMTIME* CurrSysTime, ULONGLONG* TimeStamp, long long int* lQueryTickCount)
 {
     // TODO: Add your implementation code here
     memcpy(CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
-    *TimeStamp = (ULONGLONG) (sg_lnTimeStamp.QuadPart);
+    *TimeStamp = (ULONGLONG) (sg_lnTimeStamp);
     *lQueryTickCount = sg_lnCurrCounter;
     return S_OK;
 }
@@ -571,6 +569,7 @@ STDMETHODIMP CSimENG::GetTimeModeMapping(SYSTEMTIME* CurrSysTime, ULONGLONG* Tim
 STDMETHODIMP CSimENG::GetCurrentStatus(USHORT ClientID, VARIANT* /*pNodeStatus*/)
 {
     CLIENT_MAP::iterator itr = sg_ClientMap.find(ClientID);
+
     if (itr != sg_ClientMap.end())
     {
         //s_FLXSTATUSMSG* pStatusData = (s_FLXSTATUSMSG *) pNodeStatus;

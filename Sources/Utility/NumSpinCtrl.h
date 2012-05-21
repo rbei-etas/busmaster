@@ -22,23 +22,18 @@
  * This file contain the definition of CNumSpinCtrl class
  */
 
-#if !defined(AFX_NUMSPINCTRL_H__C2BD95A2_A482_11D2_A6A7_00600844997A__INCLUDED_)
-#define AFX_NUMSPINCTRL_H__C2BD95A2_A482_11D2_A6A7_00600844997A__INCLUDED_
-
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 // CNumSpinCtrl window
 #include "afxcmn.h"
 class CNumSpinCtrl : public CSpinButtonCtrl
 {
-// Construction
+    // Construction
 public:
     CNumSpinCtrl();
     virtual ~CNumSpinCtrl();
 
-// Operations
+    // Operations
 public:
     // To set the size of the data in terms of bits
     // This is required to get 2s complement value
@@ -69,19 +64,19 @@ public:
     void vSetSigned(BOOL bIsSigned);
     // To set the type Int or Float
     void vSetFloatNumber(BOOL bIsFloat);
-	 // To conver string to __int64. The string value could be in Hex or dec
-	BOOL bConvertStringToInt64( CString omStrHexNo,    // String
-                              __int64& n64Value,     // Value
-                              int nBase);         // Base value
-    
-// Overrides
+    // To conver string to __int64. The string value could be in Hex or dec
+    BOOL bConvertStringToInt64( CString omStrHexNo,    // String
+                                __int64& n64Value,     // Value
+                                int nBase);         // Base value
+
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CNumSpinCtrl)
-    protected:
+protected:
     virtual void PreSubclassWindow();
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     // To initialise default values
     void vInitSpinCtrl();
@@ -103,7 +98,7 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 
-/// Attributes
+    /// Attributes
 protected:
     double m_dMinVal;                 // Minimum Value
     double m_dMaxVal;                 // Maximun Value
@@ -120,10 +115,3 @@ protected:
     BOOL   m_bSigned;                 // Signed or Unsigned
     BOOL   m_bFloatingNumber;         // Is floating number or int 64 number
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Developer Studio will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_NUMSPINCTRL_H__C2BD95A2_A482_11D2_A6A7_00600844997A__INCLUDED_)

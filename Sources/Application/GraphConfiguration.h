@@ -22,32 +22,22 @@
  * Interface file for CGraphConfiguration class
  */
 
-#if !defined(AFX_GRAPHCONFIGURATION_H__E87E37B8_80BB_4902_858D_254B5872D20E__INCLUDED_)
-#define AFX_GRAPHCONFIGURATION_H__E87E37B8_80BB_4902_858D_254B5872D20E__INCLUDED_
+#pragma once
 
 // For Graph Parameter Class definition
 #include "GraphParameters.h"
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// GraphConfiguration.h : header file
-//
-
-/////////////////////////////////////////////////////////////////////////////
-// CGraphConfiguration dialog
-
 class CGraphConfiguration : public CDialog
 {
-// Construction
+    // Construction
 public:
     // Local instance of View Style parameter
     CGraphParameters m_omGraphParams;
-	eTYPE_BUS m_eBusType;
-   // standard constructor
+    eTYPE_BUS m_eBusType;
+    // standard constructor
     CGraphConfiguration(CWnd* pParent = NULL);
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CGraphConfiguration)
     enum { IDD = IDD_DLG_GRAPH_WINDOW_CONF };
     CColorSelector   m_omAxisColor;
@@ -62,14 +52,14 @@ public:
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CGraphConfiguration)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
@@ -83,10 +73,5 @@ private:
     // To set the values of the object in to UI control
     void vSetValues(CGraphParameters omParam);
 public:
-	int m_nLineDisplay;
+    int m_nLineDisplay;
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_GRAPHCONFIGURATION_H__E87E37B8_80BB_4902_858D_254B5872D20E__INCLUDED_)

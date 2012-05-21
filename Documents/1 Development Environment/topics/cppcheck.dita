@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
-<topic id="splint" xml:lang="en-us">
+<topic id="cppcheck" xml:lang="en-us">
   <title>Cppcheck - Static Source Code Checker</title>
   <prolog>
     <author>Ratnadip Choudhury</author>
@@ -13,7 +13,6 @@
     <section>
       <title>Description</title>
       <p>There are many static source code checkers available and used by Open Source projects.</p>
-      <p>Splint is probably the most often used checker. It seamlessly  integrates into the Visual C++ IDE. See the following documentation: <xref href="http://www.splint.org/win32.html" scope="external"/>. Unfortunately it is limited to C and is not able to parse C++ code.</p>
       <p>Cppcheck is another Open Source software, which is able to parse C++ code and is therefore used for BUSMASTER.</p>
     </section>
     <section>
@@ -22,15 +21,15 @@
     </section>
     <section>
       <title>Installation</title>
-      <p>Execute the installer. The standard installation folder is <filepath>C:\Program Files\Cppcheck\</filepath>. Cppcheck should automatically be added to your %PATH% environment variable.</p>
+      <p>Execute the installer. The standard installation folder is <filepath>%ProgramFiles%\Cppcheck</filepath>. Cppcheck should automatically be added to your %PATH% environment variable.</p>
     </section>
     <section>
       <title>Configuration</title>
-      <p>There is no specific configuration of Cppcheck necessary.</p>
+      <p>The test script in <filepath>Tests\Cppcheck</filepath> contains all necessary configuration. Beside that no specific configuration necessary.</p>
     </section>
     <section>
       <title>Usage</title>
-      <p>Execute <cmdname>cppcheck -I. --enable=all %SOURCE_FILES%</cmdname> on the respective files. If you have <cmdname>git-bash</cmdname> or <cmdname>cygwin bash</cmdname> installed, you can do it over all <filepath>.cpp</filepath> and <filepath>.h</filepath> files using <cmdname>find -name &quot;*.[cpp|h]&quot; | xargs cppcheck -I. --enable=all *.cpp *.h</cmdname>.</p>
+      <p>Execute the test script in <filepath>Tests\Cppcheck\build.bat</filepath>. It automatically generates an HTML report with the results.</p>
     </section>
   </body>
 </topic>

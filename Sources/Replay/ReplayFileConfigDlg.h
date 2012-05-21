@@ -22,25 +22,20 @@
  * Interface file for CReplayFileConfigDlg class
  */
 
-#if !defined(AFX_REPLAYFILECONFIGDLG_H__382CEBB8_54D0_44C9_84CC_8248632E020A__INCLUDED_)
-#define AFX_REPLAYFILECONFIGDLG_H__382CEBB8_54D0_44C9_84CC_8248632E020A__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "Replay_resource.h"
 
 class CReplayFileConfigDlg : public CDialog
 {
-// Construction
+    // Construction
 public:
     // Constructor
     CReplayFileConfigDlg( CReplayManager& rouManager,
                           const SFILTERAPPLIED_CAN* psFilterConfigured,
                           CWnd* pParent = NULL);
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CReplayFileConfigDlg)
     enum { IDD = IDD_DLG_REPLAY };
     CButton m_omChkInteractive;
@@ -53,14 +48,14 @@ public:
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CReplayFileConfigDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
@@ -115,8 +110,3 @@ private:
     int             m_nSelecetedNamedLogIndex;
 
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_REPLAYFILECONFIGDLG_H__382CEBB8_54D0_44C9_84CC_8248632E020A__INCLUDED_)

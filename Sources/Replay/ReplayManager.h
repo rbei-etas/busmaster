@@ -22,20 +22,14 @@
  * Interface file for CReplayManager class
  */
 
-
-#if !defined(AFX_REPLAYMANAGER_H__69B3771B_310A_43DC_8AEA_FE22AA1D7FD5__INCLUDED_)
-#define AFX_REPLAYMANAGER_H__69B3771B_310A_43DC_8AEA_FE22AA1D7FD5__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "ReplayFile.h"
 
 class CMsgReplayWnd;
 class CReplayProcess;
 
-class CReplayManager  
+class CReplayManager
 {
 public:
     // Avoid Virtual to optimize performance
@@ -53,9 +47,9 @@ public:
     // To start hidden replay threads
     VOID vStartNonInteractiveReplays();
     // To set the active replay window
-    VOID vSetActiveReplayWindow(CMsgReplayWnd * pomWindow);
+    VOID vSetActiveReplayWindow(CMsgReplayWnd* pomWindow);
     // To delete window pointer from the list
-    BOOL bRemovePointerFromList(CWnd * pWnd);
+    BOOL bRemovePointerFromList(CWnd* pWnd);
     // To indicate stop signal to running threads
     void vSetThreadStopSignal();
     // To terminate the thread
@@ -88,7 +82,7 @@ public:
     void vSetReplayConfigData(BYTE* pSrcBuffer, int nBuffSize);
     BOOL bIsReplayConfigChanged();
     void vSetTraceObjPtr( PVOID pvObj);
-    void vSendToTrace(TCHAR* pcString);
+    void vSendToTrace(char* pcString);
 private:
     // Keep the constructor as private to avoid multiple instances
     CReplayManager();
@@ -105,13 +99,11 @@ private:
     // To indicate object creation
     static BOOL m_bCreated;
     // To keep track of active replay window pointer
-    CMsgReplayWnd * m_pomActiveWindow;
+    CMsgReplayWnd* m_pomActiveWindow;
     // To keep all instances
-    CArray<CMsgReplayWnd *,CMsgReplayWnd *> m_omReplayWindowArray;
+    CArray<CMsgReplayWnd*,CMsgReplayWnd*> m_omReplayWindowArray;
     // To keep all background tasks
-    CArray<CReplayProcess *, CReplayProcess*> m_omReplayProcess;
+    CArray<CReplayProcess*, CReplayProcess*> m_omReplayProcess;
     // Connection Status
     BOOL m_bConnection;
 };
-
-#endif // !defined(AFX_REPLAYMANAGER_H__69B3771B_310A_43DC_8AEA_FE22AA1D7FD5__INCLUDED_)

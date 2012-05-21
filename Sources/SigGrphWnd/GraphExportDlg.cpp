@@ -3,25 +3,10 @@
   FileName      :  GraphExportDlg.cpp
   Description   :  Implementation file for CGraphExportDlg class
   $Log:   X:/Archive/Sources/SigGrphWnd/GraphExportDlg.cpv  $
-   
-      Rev 1.3   05 Aug 2011 11:06:56   CANMNTTM
-   Updated with Graph control pointer sharing.
-   
-      Rev 1.2   06 Jun 2011 11:51:38   CANMNTTM
-    
-   
-      Rev 1.1   15 Apr 2011 19:43:32   rac2kor
-   Inserted RBEI Copyright information text into the file header.
-   
-      Rev 1.0   13 Dec 2010 22:00:34   CANMNTTM
-    
-   
-      Rev 1.0   16 Aug 2010 21:20:32   rac2kor
-    
 
   Author(s)     :  Raja N
   Date Created  :  10/12/2004
-  Modified By   : 
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved
 *******************************************************************************/
 
@@ -33,12 +18,6 @@
 // For Export dialog declaration
 #include "GraphExportDlg.h"
 #include "SigGrphWnd_Defines.h"
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 /*******************************************************************************
   Function Name  : CGraphExportDlg
@@ -56,7 +35,7 @@ CGraphExportDlg::CGraphExportDlg(CWnd* pParent /*=NULL*/)
     m_omStrCSVFileName = STR_EMPTY;
     m_omStrHTMLFileName = STR_EMPTY;
     m_omStrBMPFileName = STR_EMPTY;
-	m_pDMGraphCtrl = NULL;
+    m_pDMGraphCtrl = NULL;
     //}}AFX_DATA_INIT
 }
 
@@ -75,7 +54,7 @@ void CGraphExportDlg::DoDataExchange(CDataExchange* pDX)
     //{{AFX_DATA_MAP(CGraphExportDlg)
     DDX_Text(pDX, IDC_EDIT_CSV_FILE_NAME, m_omStrCSVFileName);
     DDX_Text(pDX, IDC_EDIT_HTML_FILE_NAME, m_omStrHTMLFileName);
-    DDX_Text(pDX, IDC_EDIT_IMAGE_FILE_NAME, m_omStrBMPFileName);    
+    DDX_Text(pDX, IDC_EDIT_IMAGE_FILE_NAME, m_omStrBMPFileName);
     //}}AFX_DATA_MAP
 }
 
@@ -99,9 +78,9 @@ END_MESSAGE_MAP()
   Member of      : CGraphExportDlg
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphExportDlg::OnBtnBrowseCsv() 
+void CGraphExportDlg::OnBtnBrowseCsv()
 {
     // Create Save File Dialog with overwrite warning
     CFileDialog omSaveAsDlg( FALSE,                 // Save File dialog
@@ -112,6 +91,7 @@ void CGraphExportDlg::OnBtnBrowseCsv()
                              NULL );
     // Set Title to Export
     omSaveAsDlg.m_ofn.lpstrTitle  = defSTR_EXPORT_DIALOG_CAPTION;
+
     // Show file save dialog
     if ( omSaveAsDlg.DoModal() == IDOK )
     {
@@ -132,18 +112,19 @@ void CGraphExportDlg::OnBtnBrowseCsv()
   Modifications  : Raja N on 15.12.2004, Added update data before processing the
                    file name
 *******************************************************************************/
-void CGraphExportDlg::OnBtnSaveCsv() 
+void CGraphExportDlg::OnBtnSaveCsv()
 {
-	USES_CONVERSION;
+    USES_CONVERSION;
     // Update Data to get file name
     UpdateData();
+
     // Check for valid entry
     if( m_omStrCSVFileName.IsEmpty() == FALSE )
     {
         if( m_pDMGraphCtrl != NULL )
-        {                        		
-			// Generate the Report
-			m_pDMGraphCtrl->GenerateCSVReport(T2W(m_omStrCSVFileName));
+        {
+            // Generate the Report
+            m_pDMGraphCtrl->GenerateCSVReport(T2W(m_omStrCSVFileName));
         }
     }
     else
@@ -160,9 +141,9 @@ void CGraphExportDlg::OnBtnSaveCsv()
   Member of      : CGraphExportDlg
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphExportDlg::OnBtnBrowseHtml() 
+void CGraphExportDlg::OnBtnBrowseHtml()
 {
     // Create Save File Dialog with overwrite warning
     CFileDialog omSaveAsDlg( FALSE,      // Save File dialog
@@ -173,6 +154,7 @@ void CGraphExportDlg::OnBtnBrowseHtml()
                              NULL );
     // Set Title to Export
     omSaveAsDlg.m_ofn.lpstrTitle  = defSTR_REPORT_DIALOG_CAPTION;
+
     // Show the dialog and save the path on OK
     if ( omSaveAsDlg.DoModal() == IDOK )
     {
@@ -199,7 +181,7 @@ void CGraphExportDlg::OnBtnBrowseHtml()
                    Added code to include multi channel information in the HTML
                    report
 *******************************************************************************/
-void CGraphExportDlg::OnBtnSaveHtml() 
+void CGraphExportDlg::OnBtnSaveHtml()
 {
     // Update Data to get file name
     /*UpdateData();
@@ -214,10 +196,10 @@ void CGraphExportDlg::OnBtnSaveHtml()
             // Get the Name from the app module
             //theApp.GetLoadedConfigFilename( omStr );
             // Add Config File
-			//omParams.Add( omStr );
-#if 0
+            //omParams.Add( omStr );
+    #if 0
             // Get the Baud Rate
-            PSCONTROLER_DETAILS  pBaudDetails = NULL;
+            PSCONTROLLER_DETAILS  pBaudDetails = NULL;
             // Get the Baud Rate
             theApp.bGetData( CONTROLLER_DETAILS, (void**)&pBaudDetails);
             if( pBaudDetails != NULL )
@@ -251,7 +233,7 @@ void CGraphExportDlg::OnBtnSaveHtml()
                 // Now release the memory
                 theApp.vRelease( CONTROLLER_DETAILS, (void **) &pBaudDetails );
             }
-#endif
+    #endif
             // On Success show the message box and print if selected
             if( m_podGraphControl->GenerateHTMLReport( m_omStrHTMLFileName,
                                            (LPUNKNOWN*)&omParams) == 0 )
@@ -287,7 +269,7 @@ void CGraphExportDlg::OnBtnSaveHtml()
     else
     {
         AfxMessageBox( defSTR_HTML_FILE_PATH_EMPTY );
-    }	*/
+    }   */
 }
 
 /*******************************************************************************
@@ -298,9 +280,9 @@ void CGraphExportDlg::OnBtnSaveHtml()
   Member of      : CGraphExportDlg
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CGraphExportDlg::OnBtnBrowseBmp() 
+void CGraphExportDlg::OnBtnBrowseBmp()
 {
     CFileDialog omSaveAsDlg( FALSE,      // Save File dialog
                              defSTR_BMP_FORMAT,     // Default Extension,
@@ -310,6 +292,7 @@ void CGraphExportDlg::OnBtnBrowseBmp()
                              NULL );
     // Set Title
     omSaveAsDlg.m_ofn.lpstrTitle  = defSTR_BITMAP_DIALOG_CAPTION;
+
     // Show the dialog and save on OK
     if ( omSaveAsDlg.DoModal() == IDOK )
     {
@@ -330,18 +313,19 @@ void CGraphExportDlg::OnBtnBrowseBmp()
   Modifications  : Raja N on 15.12.2004, Added update data before processing the
                    file name
 *******************************************************************************/
-void CGraphExportDlg::OnBtnSaveImage() 
+void CGraphExportDlg::OnBtnSaveImage()
 {
     // Update Data to get file name
     UpdateData();
+
     // Check for valid file name
     if( m_omStrBMPFileName.IsEmpty() == FALSE )
     {
         // Save the image to the given path
         if( m_pDMGraphCtrl != NULL )
         {
-			_bstr_t bstrBMPFileName = m_omStrBMPFileName;
-			m_pDMGraphCtrl->SaveAs( bstrBMPFileName.GetBSTR() );
+            _bstr_t bstrBMPFileName = m_omStrBMPFileName;
+            m_pDMGraphCtrl->SaveAs( bstrBMPFileName.GetBSTR() );
         }
     }
     else
@@ -358,16 +342,15 @@ void CGraphExportDlg::OnBtnSaveImage()
   Member of      : CGraphExportDlg
   Author(s)      : Raja N
   Date Created   : 10/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-BOOL CGraphExportDlg::OnInitDialog() 
+BOOL CGraphExportDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
-
-	CRect rect;
-	GetClientRect(&rect);
-	ClientToScreen(&rect);
-	rect.bottom -= 90;
-	SetWindowPos(NULL, rect.left, rect.top, rect.Width(), rect.Height(), SWP_SHOWWINDOW);
+    CRect rect;
+    GetClientRect(&rect);
+    ClientToScreen(&rect);
+    rect.bottom -= 90;
+    SetWindowPos(NULL, rect.left, rect.top, rect.Width(), rect.Height(), SWP_SHOWWINDOW);
     return TRUE;
 }

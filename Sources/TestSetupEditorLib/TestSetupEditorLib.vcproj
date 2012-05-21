@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="TestSetupEditorLib"
 	ProjectGUID="{9305EC2D-F775-402D-915B-9E0F397D2675}"
-	RootNamespace="TestSetupEditorLib"
 	Keyword="MFCDLLProj"
 	TargetFrameworkVersion="131072"
 	>
@@ -52,10 +51,7 @@
 				RuntimeLibrary="3"
 				StructMemberAlignment="0"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="TestSetupEditorLib_stdafx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -123,11 +119,8 @@
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="TestSetupEditorLib_stdafx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="0"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -189,10 +182,6 @@
 			</File>
 			<File
 				RelativePath=".\TestCaseEntity.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\TestSetupEditorLib_stdafx.cpp"
 				>
 			</File>
 			<File

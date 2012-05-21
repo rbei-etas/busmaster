@@ -29,12 +29,12 @@
 Function Name  :  CTestCaseEntity
 Input(s)       :  -
 Output         :  -
-Functionality  :  Constructor 
+Functionality  :  Constructor
 Member of      :  CTestCaseEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CTestCaseEntity::CTestCaseEntity(void)
 {
@@ -45,32 +45,30 @@ CTestCaseEntity::CTestCaseEntity(void)
 Function Name  :  ~CTestCaseEntity
 Input(s)       :  -
 Output         :  -
-Functionality  :  Destructor 
+Functionality  :  Destructor
 Member of      :  CTestCaseEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CTestCaseEntity::~CTestCaseEntity()
 {
-
 }
 
 /******************************************************************************
 Function Name  :  operator=
 Input(s)       :  CTestCaseEntity& RefObj
 Output         :  CTestCaseEntity&
-Functionality  :  = operator overloading 
+Functionality  :  = operator overloading
 Member of      :  CTestCaseEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CTestCaseEntity& CTestCaseEntity::operator=(const CTestCaseEntity& RefObj)
 {
-    
     m_ouData = RefObj.m_ouData;
     return *this;
 }
@@ -79,12 +77,12 @@ CTestCaseEntity& CTestCaseEntity::operator=(const CTestCaseEntity& RefObj)
 Function Name  :  CTestCaseEntity
 Input(s)       :  -
 Output         :  -
-Functionality  :  Copy Constructor 
+Functionality  :  Copy Constructor
 Member of      :  CTestCaseEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CTestCaseEntity::CTestCaseEntity(const CTestCaseEntity& RefObj)
 {
@@ -96,29 +94,29 @@ CTestCaseEntity::CTestCaseEntity(const CTestCaseEntity& RefObj)
 Function Name  :  AddSubEntry
 Input(s)       :  CBaseEntityTA* pouSubEntryObj
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestCaseEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CTestCaseEntity::AddSubEntry(CBaseEntityTA* pouSubEntryObj)
 {
-   m_ouData.m_odTAEntityList.AddTail(pouSubEntryObj);
-   return pouSubEntryObj->GetID();
+    m_ouData.m_odTAEntityList.AddTail(pouSubEntryObj);
+    return pouSubEntryObj->GetID();
 }
 
 /******************************************************************************
 Function Name  :  vDeleteAllEntities
 Input(s)       :  -
 Output         :  void
-Functionality  :  Delets all the list items 
+Functionality  :  Delets all the list items
 Member of      :  CTestCaseEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTestCaseEntity::vDeleteAllEntities(void)
 {
@@ -135,22 +133,24 @@ void CTestCaseEntity::vDeleteAllEntities(void)
 Function Name  :  DeleteSubEntry
 Input(s)       :  CBaseEntityTA* pouSubEntryObj
 Output         :  HRESULT
-Functionality  :  Deletes a Subentry 
+Functionality  :  Deletes a Subentry
 Member of      :  CTestCaseEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 Codetag        :  CS018
 ******************************************************************************/
 HRESULT CTestCaseEntity::DeleteSubEntry(CBaseEntityTA* pouSubEntryObj)
 {
     HRESULT hResult  = S_FALSE;
     INT nCount = (INT)m_ouData.m_odTAEntityList.GetCount();
+
     for(int i = 0; i < nCount; i++)
     {
         POSITION pos = m_ouData.m_odTAEntityList.FindIndex(i);
-        CBaseEntityTA *pEntity = m_ouData.m_odTAEntityList.GetAt(pos);
+        CBaseEntityTA* pEntity = m_ouData.m_odTAEntityList.GetAt(pos);
+
         if(pEntity->GetID() == pouSubEntryObj->GetID())
         {
             m_ouData.m_odTAEntityList.RemoveAt(pos);
@@ -158,6 +158,7 @@ HRESULT CTestCaseEntity::DeleteSubEntry(CBaseEntityTA* pouSubEntryObj)
             break;
         }
     }
+
     return hResult;
 }
 
@@ -165,12 +166,12 @@ HRESULT CTestCaseEntity::DeleteSubEntry(CBaseEntityTA* pouSubEntryObj)
 Function Name  :  DeleteSubEntry
 Input(s)       :  INT index
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestCaseEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CTestCaseEntity::DeleteSubEntry(INT /*index*/)
 {
@@ -183,21 +184,23 @@ Function Name  :  GetSubEntityObj
 Input(s)       :  UINT unIndex
                   CBaseEntityTA**  pouSubEntity
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestCaseEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 const HRESULT CTestCaseEntity::GetSubEntityObj(UINT unIndex, CBaseEntityTA**  pouSubEntity)
 {
     POSITION pos = m_ouData.m_odTAEntityList.FindIndex(unIndex);
+
     if(pos != NULL)
     {
         *pouSubEntity =  m_ouData.m_odTAEntityList.GetAt(pos);
-   	    return  S_OK;
+        return  S_OK;
     }
+
     return S_FALSE;
 }
 
@@ -206,61 +209,58 @@ const HRESULT CTestCaseEntity::GetSubEntityObj(UINT unIndex, CBaseEntityTA**  po
 Function Name  :  GetSubEntryCount
 Input(s)       :  UINT& unTotal
 Output         :  HRESULT
-Functionality  :  return the subenty count 
+Functionality  :  return the subenty count
 Member of      :  CTestCaseEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CTestCaseEntity::GetSubEntryCount(UINT& unTotal)
 {
     unTotal = (UINT)m_ouData.m_odTAEntityList.GetCount();
-	return  NULL;
+    return  NULL;
 }
 
 /******************************************************************************
 Function Name  :  GetData
 Input(s)       :  MSXML2::IXMLDOMNodePtr& pIDomNode
 Output         :  HRESULT
-Functionality  :  Fills the datastructure from the XML node 
+Functionality  :  Fills the datastructure from the XML node
 Member of      :  CTestCaseEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CTestCaseEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
 {
-//Getting Attributes
+    //Getting Attributes
     _bstr_t bstrNodeName;
-    CComVariant NodeValue;	
+    CComVariant NodeValue;
     MSXML2::IXMLDOMNamedNodeMapPtr pDOMTCAtrributes;
     pDOMTCAtrributes = pIDomNode->Getattributes();
     MSXML2::IXMLDOMNodePtr pIDOMChildNode;
-
     //bstrNodeName = L"identifier";
-	bstrNodeName.Assign(SysAllocString(CT2W("identifier")));
-    pIDOMChildNode = pDOMTCAtrributes->getNamedItem(bstrNodeName);
-    pIDOMChildNode->get_nodeTypedValue(&NodeValue);		
-	m_ouData.m_omID = strCopyBSTRToCString(NodeValue);
-    pIDOMChildNode.Release();
-    
-    //bstrNodeName = L"title";
-	bstrNodeName.Assign(SysAllocString(CT2W("title")));
-    pIDOMChildNode = pDOMTCAtrributes->getNamedItem(bstrNodeName);
-    pIDOMChildNode->get_nodeTypedValue(&NodeValue);		
-	m_ouData.m_omTitle = strCopyBSTRToCString(NodeValue);
-    pIDOMChildNode.Release();
-
-    //bstrNodeName = L"exp_handler";
-	bstrNodeName.Assign(SysAllocString(CT2W("exp_handler")));
+    bstrNodeName.Assign(SysAllocString(CT2W("identifier")));
     pIDOMChildNode = pDOMTCAtrributes->getNamedItem(bstrNodeName);
     pIDOMChildNode->get_nodeTypedValue(&NodeValue);
-	CString strTemp;	
-	strTemp = strCopyBSTRToCString(NodeValue);
+    m_ouData.m_omID = strCopyBSTRToCString(NodeValue);
     pIDOMChildNode.Release();
-    
+    //bstrNodeName = L"title";
+    bstrNodeName.Assign(SysAllocString(CT2W("title")));
+    pIDOMChildNode = pDOMTCAtrributes->getNamedItem(bstrNodeName);
+    pIDOMChildNode->get_nodeTypedValue(&NodeValue);
+    m_ouData.m_omTitle = strCopyBSTRToCString(NodeValue);
+    pIDOMChildNode.Release();
+    //bstrNodeName = L"exp_handler";
+    bstrNodeName.Assign(SysAllocString(CT2W("exp_handler")));
+    pIDOMChildNode = pDOMTCAtrributes->getNamedItem(bstrNodeName);
+    pIDOMChildNode->get_nodeTypedValue(&NodeValue);
+    CString strTemp;
+    strTemp = strCopyBSTRToCString(NodeValue);
+    pIDOMChildNode.Release();
+
     if(strTemp == "CONTINUE")
     {
         m_ouData.m_eExcpAction = CONTINUE;
@@ -270,18 +270,19 @@ HRESULT CTestCaseEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
         m_ouData.m_eExcpAction = EXIT;
     }
 
-//Getting Testcases
+    //Getting Testcases
     MSXML2::IXMLDOMNodeListPtr pDOMChildList = pIDomNode->GetchildNodes();
     LONG lCount;
     pDOMChildList->get_length(&lCount);
     CComBSTR NodeName;
-    for(int i = 0;i < lCount; i++)
+
+    for(int i = 0; i < lCount; i++)
     {
         pIDOMChildNode = pDOMChildList->Getitem(i);
-        pIDOMChildNode->get_nodeName(&NodeName);        
-		
-        CBaseEntityTA *odpBaseEntity = NULL;
-		if(NodeName == def_STR_SEND_NODE)
+        pIDOMChildNode->get_nodeName(&NodeName);
+        CBaseEntityTA* odpBaseEntity = NULL;
+
+        if(NodeName == def_STR_SEND_NODE)
         {
             odpBaseEntity = new CSendEntity();
         }
@@ -301,15 +302,18 @@ HRESULT CTestCaseEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
         {
             odpBaseEntity = new CVerifyResponse();
         }
+
         if(odpBaseEntity == NULL)
         {
             //TODO::return a correct value
             return -1;
         }
+
         odpBaseEntity->GetData(pIDOMChildNode);
         m_ouData.m_odTAEntityList.AddTail(odpBaseEntity);
         //pIDOMChildNode->Release();
     }
+
     return S_OK;
 }
 
@@ -317,59 +321,63 @@ HRESULT CTestCaseEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
 Function Name  :  SetData
 Input(s)       :  MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestCaseEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CTestCaseEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode)
 {
     CString omstrTemp;
     MSXML2::IXMLDOMDocumentPtr pIDOMDoc;
     pIDOMDoc.CreateInstance(L"Msxml2.DOMDocument");
-    
     MSXML2::IXMLDOMAttributePtr pIDomTSAtrrib = pIDOMDoc->createAttribute(def_STR_TCATTRIB_ID);
+
     if(pIDomTSAtrrib!= NULL)
-	{
+    {
         pIDomTSAtrrib->value = _bstr_t(m_ouData.m_omID);
-		pIDomTestCaseNode->setAttributeNode(pIDomTSAtrrib);
-	}
+        pIDomTestCaseNode->setAttributeNode(pIDomTSAtrrib);
+    }
 
     pIDomTSAtrrib = pIDOMDoc->createAttribute(def_STR_TCATTRIB_TITLE);
+
     if(pIDomTSAtrrib!= NULL)
-	{
+    {
         pIDomTSAtrrib->value = _bstr_t(m_ouData.m_omTitle);
-		pIDomTestCaseNode->setAttributeNode(pIDomTSAtrrib);
-	}
+        pIDomTestCaseNode->setAttributeNode(pIDomTSAtrrib);
+    }
 
     pIDomTSAtrrib = pIDOMDoc->createAttribute(def_STR_TCATTRIB_H_EXP);
+
     if(pIDomTSAtrrib!= NULL)
-	{
+    {
         switch(m_ouData.m_eExcpAction)
         {
             case EXIT:
                 omstrTemp = "EXIT";
                 break;
+
             case CONTINUE:
             default:
                 omstrTemp = "CONTINUE";
                 break;
         }
+
         pIDomTSAtrrib->value = _bstr_t(omstrTemp);
-		pIDomTestCaseNode->setAttributeNode(pIDomTSAtrrib);
-	}
+        pIDomTestCaseNode->setAttributeNode(pIDomTSAtrrib);
+    }
 
     INT lCount = (INT)m_ouData.m_odTAEntityList.GetCount();
-    for(int i=0; i<lCount;i++)
+
+    for(int i=0; i<lCount; i++)
     {
         POSITION pos = m_ouData.m_odTAEntityList.FindIndex(i);
         CBaseEntityTA* pEntity = m_ouData.m_odTAEntityList.GetAt(pos);
         pEntity->SetData(pIDomTestCaseNode);
     }
-    
-    
+
     return 0;
 }
 
@@ -378,12 +386,12 @@ Function Name  :  GetEntityData
 Input(s)       :  eTYPE_ENTITY eCurrEntityType
                   void* pvEntityData
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestCaseEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CTestCaseEntity::GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData)
 {
@@ -392,6 +400,7 @@ HRESULT CTestCaseEntity::GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEnt
         *((CTestCaseData*)pvEntityData) = m_ouData;
         return S_OK;
     }
+
     return S_FALSE;
 }
 
@@ -401,18 +410,18 @@ Input(s)       :  CString& omTitle - TestCase Title
                   CString& omID - TestCase ID
                   eACTION_EXCP& eExcpAction - Exception Handler
 Output         :  HRESULT
-Functionality  :  Sets the TestCase Details 
+Functionality  :  Sets the TestCase Details
 Member of      :  CTestCaseEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CTestCaseEntity::SetTestCaseDetails(CString& omTitle, CString& omID, eACTION_EXCP& eExcpAction)
 {
     m_ouData.m_omTitle = omTitle;
-    m_ouData.m_omID = omID; 
-    m_ouData.m_eExcpAction = eExcpAction; 
+    m_ouData.m_omID = omID;
+    m_ouData.m_eExcpAction = eExcpAction;
     return S_OK;
 }
 
@@ -422,31 +431,31 @@ Input(s)       :  CString& omTitle - TestCase Title
                   CString& omID - TestCase ID
                   eACTION_EXCP& eExcpAction - Exception Handler
 Output         :  HRESULT
-Functionality  :  Returns the TestCase Details  
+Functionality  :  Returns the TestCase Details
 Member of      :  CTestCaseEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CTestCaseEntity::GetTestCaseDetails(CString& omTitle, CString& omID, eACTION_EXCP& eExcpAction)
 {
     omTitle = m_ouData.m_omTitle;
-    omID = m_ouData.m_omID; 
-    eExcpAction = m_ouData.m_eExcpAction; 
+    omID = m_ouData.m_omID;
+    eExcpAction = m_ouData.m_eExcpAction;
     return S_OK;
 }
 
 /******************************************************************************
 Function Name  :  ValidateEntity
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestCaseEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  13/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :  CS028
 ******************************************************************************/
 HRESULT CTestCaseEntity::ValidateEntity(CString& omStrResult)
@@ -454,8 +463,8 @@ HRESULT CTestCaseEntity::ValidateEntity(CString& omStrResult)
     UINT unTestCaseCount;
     CString omStrTemp;
     GetSubEntryCount(unTestCaseCount);
-    
     HRESULT hResult = ERR_VALID_SUCCESS;
+
     if(unTestCaseCount == 0)
     {
         omStrTemp.Format("\tError: Atleast One Verify Node Should be Defined\r\n");
@@ -464,41 +473,48 @@ HRESULT CTestCaseEntity::ValidateEntity(CString& omStrResult)
     else
     {
         BOOL bVerifyEntityFound = FALSE;
+
         //omStrTemp = "\t";
         for(UINT i = 0; i < unTestCaseCount; i++)
         {
             CString omStrTCResult;
             CBaseEntityTA* pTCSubEntity;
+
             if(GetSubEntityObj(i, &pTCSubEntity) == S_OK)
             {
                 omStrTCResult.Format(_T("Node %d:"), i+1);
                 HRESULT hTempResult = pTCSubEntity->ValidateEntity(omStrTCResult);
+
                 if(hTempResult != ERR_VALID_SUCCESS)
-                {   
+                {
                     omStrTemp += "\t" + omStrTCResult;
+
                     if(hResult != ERR_VALID_ERROR)
                     {
                         hResult = hTempResult;
                     }
                 }
+
                 if(pTCSubEntity->GetEntityType() == VERIFY)
                 {
                     bVerifyEntityFound = TRUE;
                 }
-                
             }
         }
+
         if(bVerifyEntityFound == FALSE)
         {
             omStrTemp += "\tError: No Verify Entity Found\r\n";
             hResult = ERR_VALID_ERROR;
         }
     }
+
     if(hResult != ERR_VALID_SUCCESS)
     {
         omStrResult.Format(_T("TestCase %s Result \r\n"), m_ouData.m_omTitle);
         omStrResult += omStrTemp + "\n";
     }
+
     return hResult;
 }
 /******************************************************************************
@@ -506,12 +522,12 @@ Function Name  :  SetEntityData
 Input(s)       :  eTYPE_ENTITY eCurrEntityType
                   void* pvEntityData
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestCaseEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CTestCaseEntity::SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData)
 {
@@ -520,6 +536,7 @@ HRESULT CTestCaseEntity::SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEnt
         m_ouData = *((CTestCaseData*)pvEntityData);
         return S_OK;
     }
+
     return S_FALSE;
 }
 eTYPE_ENTITY CTestCaseEntity::GetEntityType()
@@ -537,34 +554,37 @@ Member of      :  CTestCaseEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 Codetag        :  CS021
 ******************************************************************************/
 HRESULT CTestCaseEntity::RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, CBaseEntityTA* pouCurrSubEntity)
 {
-    //DESIGN:: First Take copy of Data and delete it from current position and add at required place 
+    //DESIGN:: First Take copy of Data and delete it from current position and add at required place
     UINT unCount = (UINT)m_ouData.m_odTAEntityList.GetCount();
+
     for(UINT i=0; i<unCount; i++)
     {
         POSITION pos = m_ouData.m_odTAEntityList.FindIndex(i);
         CBaseEntityTA* pEntity = m_ouData.m_odTAEntityList.GetAt(pos);
+
         if(pEntity->GetID() == pouRefSubEntity->GetID())
         {
             m_ouData.m_odTAEntityList.RemoveAt(pos);
             break;
         }
     }
+
     if(pouCurrSubEntity == NULL)        //Insert At First Index;
     {
         m_ouData.m_odTAEntityList.AddHead(pouRefSubEntity);
     }
-    
     else
     {
         for(UINT i=0; i<unCount; i++)
         {
             POSITION pos = m_ouData.m_odTAEntityList.FindIndex(i);
             CBaseEntityTA* pEntity = m_ouData.m_odTAEntityList.GetAt(pos);
+
             if(pEntity->GetID() == pouCurrSubEntity->GetID())
             {
                 m_ouData.m_odTAEntityList.InsertAfter(pos, pouRefSubEntity);
@@ -572,6 +592,7 @@ HRESULT CTestCaseEntity::RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, CBa
             }
         }
     }
+
     return pouRefSubEntity->GetID();
 }
 
@@ -580,12 +601,12 @@ HRESULT CTestCaseEntity::RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, CBa
 Function Name  :  CWaitEntity
 Input(s)       :  -
 Output         :  -
-Functionality  :  Constructor 
+Functionality  :  Constructor
 Member of      :  CWaitEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CWaitEntity::CWaitEntity(void)
 {
@@ -596,12 +617,12 @@ CWaitEntity::CWaitEntity(void)
 Function Name  :  ~CWaitEntity
 Input(s)       :  -
 Output         :  -
-Functionality  :  Destructor 
+Functionality  :  Destructor
 Member of      :  CWaitEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CWaitEntity::~CWaitEntity(void)
 {
@@ -611,12 +632,12 @@ CWaitEntity::~CWaitEntity(void)
 Function Name  :  CWaitEntity
 Input(s)       :  CWaitEntity& RefObj
 Output         :  -
-Functionality  :  Copy Constructor 
+Functionality  :  Copy Constructor
 Member of      :  CWaitEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CWaitEntity::CWaitEntity(const CWaitEntity& RefObj)
 {
@@ -627,16 +648,15 @@ CWaitEntity::CWaitEntity(const CWaitEntity& RefObj)
 Function Name  :  operator=
 Input(s)       :  CWaitEntity& RefObj
 Output         :  CWaitEntity&
-Functionality  :  = operator overloading 
+Functionality  :  = operator overloading
 Member of      :  CWaitEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CWaitEntity& CWaitEntity::operator=(CWaitEntity& RefObj)
 {
-    
     m_ouData = RefObj.m_ouData;
     return *this;
 }
@@ -645,30 +665,28 @@ CWaitEntity& CWaitEntity::operator=(CWaitEntity& RefObj)
 Function Name  :  GetData
 Input(s)       :  MSXML2::IXMLDOMNodePtr& pIDomNode
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CWaitEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CWaitEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
 {
     _bstr_t bstrNodeName;
-    CComVariant NodeValue;	
+    CComVariant NodeValue;
     MSXML2::IXMLDOMNamedNodeMapPtr pDOMWaitAtrributes;
     pDOMWaitAtrributes = pIDomNode->Getattributes();
     MSXML2::IXMLDOMNodePtr pIDOMChildNode;
-
     //bstrNodeName = L"purpose";
-	bstrNodeName.Assign(SysAllocString(CT2W("purpose")));
+    bstrNodeName.Assign(SysAllocString(CT2W("purpose")));
     pIDOMChildNode = pDOMWaitAtrributes->getNamedItem(bstrNodeName);
-    pIDOMChildNode->get_nodeTypedValue(&NodeValue);		
-	m_ouData.m_omPurpose = strCopyBSTRToCString(NodeValue);
-    
+    pIDOMChildNode->get_nodeTypedValue(&NodeValue);
+    m_ouData.m_omPurpose = strCopyBSTRToCString(NodeValue);
     pIDomNode->get_nodeTypedValue(&NodeValue);
-	CString strTemp;	
-	strTemp = strCopyBSTRToCString(NodeValue);
+    CString strTemp;
+    strTemp = strCopyBSTRToCString(NodeValue);
     //W4 Removal - Type Conversion No problem.
     m_ouData.m_ushDuration = (USHORT)atoi((LPCSTR)strTemp);
     pIDOMChildNode.Release();
@@ -680,12 +698,12 @@ HRESULT CWaitEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
 Function Name  :  GetEntityData
 Input(s)       :  eTYPE_ENTITY eCurrEntityType, void* pvEntityData
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CWaitEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CWaitEntity::GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData)
 {
@@ -694,6 +712,7 @@ HRESULT CWaitEntity::GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityD
         *((CWaitEntityData*)pvEntityData) = m_ouData;
         return S_OK;
     }
+
     return S_FALSE;
 }
 
@@ -701,12 +720,12 @@ HRESULT CWaitEntity::GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityD
 Function Name  :  GetEntityType
 Input(s)       :  -
 Output         :  eTYPE_ENTITY
-Functionality  :  returns the entity type 
+Functionality  :  returns the entity type
 Member of      :  CWaitEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 eTYPE_ENTITY CWaitEntity::GetEntityType(void)
 {
@@ -717,33 +736,35 @@ eTYPE_ENTITY CWaitEntity::GetEntityType(void)
 Function Name  :  SetData
 Input(s)       :  MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CWaitEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CWaitEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode)
 {
     CString omstrTemp;
     MSXML2::IXMLDOMDocumentPtr pIDOMDoc;
     pIDOMDoc.CreateInstance(L"Msxml2.DOMDocument");
+
     if (pIDOMDoc != NULL)
     {
         MSXML2::IXMLDOMElementPtr pIDomWaitNode =  pIDOMDoc->createElement(_bstr_t(def_STR_WAIT_NODE));
-
         MSXML2::IXMLDOMAttributePtr pIDomTSAtrrib = pIDOMDoc->createAttribute(def_STR_STTRIB_PURPOSE);
+
         if(pIDomTSAtrrib!= NULL)
-	    {
+        {
             pIDomTSAtrrib->value = _bstr_t(m_ouData.m_omPurpose);
-		    pIDomWaitNode->setAttributeNode(pIDomTSAtrrib);
-	    }
+            pIDomWaitNode->setAttributeNode(pIDomTSAtrrib);
+        }
+
         omstrTemp.Format("%d", m_ouData.m_ushDuration);
         pIDomWaitNode->Puttext(_bstr_t(omstrTemp));
-
         pIDomTestCaseNode->appendChild(pIDomWaitNode);
     }
+
     return S_OK;
 }
 
@@ -752,12 +773,12 @@ Function Name  :  SetEntityData
 Input(s)       :  eTYPE_ENTITY eCurrEntityType
                   void* pvEntityData
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CWaitEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CWaitEntity::SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData)
 {
@@ -766,6 +787,7 @@ HRESULT CWaitEntity::SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityD
         m_ouData = *((CWaitEntityData*)pvEntityData);
         return S_OK;
     }
+
     return S_FALSE;
 }
 
@@ -774,12 +796,12 @@ HRESULT CWaitEntity::SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityD
 Function Name  :  CWaitEntityData
 Input(s)       :  -
 Output         :  -
-Functionality  :  Constructor 
+Functionality  :  Constructor
 Member of      :  CWaitEntityData
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CWaitEntityData::CWaitEntityData(VOID)
 {
@@ -792,12 +814,12 @@ CWaitEntityData::CWaitEntityData(VOID)
 Function Name  :  ~CWaitEntityData
 Input(s)       :  -
 Output         :  -
-Functionality  :  Destructor 
+Functionality  :  Destructor
 Member of      :  CWaitEntityData
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CWaitEntityData::~CWaitEntityData()
 {
@@ -807,30 +829,30 @@ CWaitEntityData::~CWaitEntityData()
 Function Name  :  operator=
 Input(s)       :  const CWaitEntityData& RefObj
 Output         :  CWaitEntityData&
-Functionality  :  = operator overloading 
+Functionality  :  = operator overloading
 Member of      :  CWaitEntityData
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CWaitEntityData& CWaitEntityData::operator=(const CWaitEntityData& RefObj)
 {
     m_omPurpose = RefObj.m_omPurpose;
     m_ushDuration = RefObj.m_ushDuration;
-	return  *this;
+    return  *this;
 }
 
 /******************************************************************************
 Function Name  :  CReplayEntity
 Input(s)       :  -
 Output         :  -
-Functionality  :  Constructor 
+Functionality  :  Constructor
 Member of      :  CReplayEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CReplayEntity::CReplayEntity(void)
 {
@@ -841,12 +863,12 @@ CReplayEntity::CReplayEntity(void)
 Function Name  :  ~CReplayEntity
 Input(s)       :  -
 Output         :  -
-Functionality  :  Destructor 
+Functionality  :  Destructor
 Member of      :  CReplayEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CReplayEntity::~CReplayEntity()
 {
@@ -856,12 +878,12 @@ CReplayEntity::~CReplayEntity()
 Function Name  :  CReplayEntity
 Input(s)       :  CReplayEntity& RefObj
 Output         :  -
-Functionality  :  copy constructor 
+Functionality  :  copy constructor
 Member of      :  CReplayEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CReplayEntity::CReplayEntity(const CReplayEntity& RefObj)
 {
@@ -877,31 +899,30 @@ Member of      :  CReplayEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CReplayEntity& CReplayEntity::operator=(CReplayEntity& RefObj)
 {
-    
     m_omFilePath = RefObj.m_omFilePath;
     return *this;
-}    
+}
 
 /******************************************************************************
 Function Name  :  GetData
 Input(s)       :  MSXML2::IXMLDOMNodePtr& pIDomNode
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CReplayEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CReplayEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
 {
     CComVariant NodeValue;
-    pIDomNode->get_nodeTypedValue(&NodeValue);		
-	m_omFilePath = strCopyBSTRToCString(NodeValue);
+    pIDomNode->get_nodeTypedValue(&NodeValue);
+    m_omFilePath = strCopyBSTRToCString(NodeValue);
     m_omFilePath.Remove('\"');
     return S_OK;
 }
@@ -911,12 +932,12 @@ Function Name  :  GetEntityData
 Input(s)       :  eTYPE_ENTITY eCurrEntityType - Entity Type
                   void* pvEntityData
 Output         :  HRESULT
-Functionality  :  Return the entity data 
+Functionality  :  Return the entity data
 Member of      :  CReplayEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CReplayEntity::GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData)
 {
@@ -925,6 +946,7 @@ HRESULT CReplayEntity::GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntit
         *((CString*)pvEntityData) =  m_omFilePath;
         return S_OK;
     }
+
     return S_FALSE;
 }
 
@@ -932,12 +954,12 @@ HRESULT CReplayEntity::GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntit
 Function Name  :  GetEntityType
 Input(s)       :  -
 Output         :  eTYPE_ENTITY
-Functionality  :  returns the entity type 
+Functionality  :  returns the entity type
 Member of      :  CReplayEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 eTYPE_ENTITY CReplayEntity::GetEntityType(void)
 {
@@ -948,24 +970,26 @@ eTYPE_ENTITY CReplayEntity::GetEntityType(void)
 Function Name  :  SetData
 Input(s)       :  MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CReplayEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CReplayEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode)
 {
     CString omstrTemp;
     MSXML2::IXMLDOMDocumentPtr pIDOMDoc;
     pIDOMDoc.CreateInstance(L"Msxml2.DOMDocument");
+
     if (pIDOMDoc != NULL)
     {
         MSXML2::IXMLDOMElementPtr pIDomWaitNode =  pIDOMDoc->createElement(_bstr_t(def_STR_REPLAY_NODE));
         pIDomWaitNode->Puttext(_bstr_t(m_omFilePath));
         pIDomTestCaseNode->appendChild(pIDomWaitNode);
     }
+
     return S_OK;
 }
 
@@ -979,7 +1003,7 @@ Member of      :  CReplayEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 Codetag        :  CS009
 ******************************************************************************/
 HRESULT CReplayEntity::SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData)
@@ -989,6 +1013,7 @@ HRESULT CReplayEntity::SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntit
         m_omFilePath = *((CString*)pvEntityData);
         return S_OK;
     }
+
     return S_FALSE;
 }
 
@@ -997,7 +1022,7 @@ HRESULT CReplayEntity::SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntit
 Function Name  :  CTestCaseData
 Input(s)       :  -
 Output         :  -
-Functionality  :  Constructor 
+Functionality  :  Constructor
 Member of      :  CTestCaseData
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
@@ -1017,38 +1042,39 @@ CTestCaseData::CTestCaseData(void)
 Function Name  :  ~CTestCaseData
 Input(s)       :  -
 Output         :  -
-Functionality  :  Destructor 
+Functionality  :  Destructor
 Member of      :  CTestCaseData
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CTestCaseData::~CTestCaseData()
 {
-   
 }
 
 /******************************************************************************
 Function Name  :  vRemoveAll
 Input(s)       :  -
 Output         :  void
-Functionality  :  Removes all entries 
+Functionality  :  Removes all entries
 Member of      :  CTestCaseData
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTestCaseData::vRemoveAll(void)
 {
     INT nCount = (INT)m_odTAEntityList.GetCount();
+
     for(INT i = 0; i < nCount; i++)
     {
         POSITION pos = m_odTAEntityList.FindIndex(i);
         CBaseEntityTA* pEntity = m_odTAEntityList.GetAt(pos);
         delete pEntity;
     }
+
     m_odTAEntityList.RemoveAll();
 }
 
@@ -1056,12 +1082,12 @@ void CTestCaseData::vRemoveAll(void)
 Function Name  :  operator=
 Input(s)       :  CTestCaseData& RefObj
 Output         :  CTestCaseData&
-Functionality  :  = operator overloading 
+Functionality  :  = operator overloading
 Member of      :  CTestCaseData
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CTestCaseData& CTestCaseData::operator=(const CTestCaseData& RefObj)
 {
@@ -1070,11 +1096,13 @@ CTestCaseData& CTestCaseData::operator=(const CTestCaseData& RefObj)
     m_omTitle = RefObj.m_omTitle;
     m_odTAEntityList.RemoveAll();
     INT nCount = (INT)RefObj.m_odTAEntityList.GetCount();
+
     for(int i=0; i<nCount; i++)
     {
         POSITION pos = RefObj.m_odTAEntityList.FindIndex(i);
         CBaseEntityTA* pEntity = RefObj.m_odTAEntityList.GetAt(pos);
-        m_odTAEntityList.AddTail(pEntity);   
+        m_odTAEntityList.AddTail(pEntity);
     }
-	return  *this;
+
+    return  *this;
 }

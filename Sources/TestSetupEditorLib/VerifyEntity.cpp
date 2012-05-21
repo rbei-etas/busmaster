@@ -28,14 +28,14 @@
 
 /******************************************************************************
 Function Name  :  CVerifyEntity
-Input(s)       :  
+Input(s)       :
 Output         :  -
-Functionality  :   
+Functionality  :
 Member of      :  CVerifyEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CVerifyEntity::CVerifyEntity(void)
 {
@@ -45,14 +45,14 @@ CVerifyEntity::CVerifyEntity(void)
 
 /******************************************************************************
 Function Name  :  ~CVerifyEntity
-Input(s)       :  
+Input(s)       :
 Output         :  -
-Functionality  :   
+Functionality  :
 Member of      :  CVerifyEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CVerifyEntity::~CVerifyEntity(void)
 {
@@ -63,12 +63,12 @@ CVerifyEntity::~CVerifyEntity(void)
 Function Name  :  CVerifyEntity
 Input(s)       :  CVerifyEntity& RefObj
 Output         :  -
-Functionality  :   
+Functionality  :
 Member of      :  CVerifyEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CVerifyEntity::CVerifyEntity(const CVerifyEntity& RefObj)
 {
@@ -79,16 +79,15 @@ CVerifyEntity::CVerifyEntity(const CVerifyEntity& RefObj)
 Function Name  :  operator=
 Input(s)       :  CVerifyEntity& RefObj
 Output         :  -
-Functionality  :   
+Functionality  :
 Member of      :  CVerifyEntity&
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CVerifyEntity& CVerifyEntity::operator= (CVerifyEntity& RefObj)
 {
-    
     m_ouData = RefObj.m_ouData;
     return *this;
 }
@@ -96,19 +95,18 @@ CVerifyEntity& CVerifyEntity::operator= (CVerifyEntity& RefObj)
 
 /******************************************************************************
 Function Name  :  AddSubEntry
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CVerifyEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CVerifyEntity::AddSubEntry(CBaseEntityTA* pouSubEntryObj)
 {
-
-	CVerify_MessageEntity &odVerify_MessageEntity = *((CVerify_MessageEntity*)(pouSubEntryObj));
+    CVerify_MessageEntity& odVerify_MessageEntity = *((CVerify_MessageEntity*)(pouSubEntryObj));
     m_ouData.m_odVerify_MessageEntityList.AddTail(odVerify_MessageEntity);
     return  S_OK;
 }
@@ -116,25 +114,27 @@ HRESULT CVerifyEntity::AddSubEntry(CBaseEntityTA* pouSubEntryObj)
 
 /******************************************************************************
 Function Name  :  DeleteSubEntry
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CVerifyEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 Codetag        :  CS017
 ******************************************************************************/
 HRESULT CVerifyEntity::DeleteSubEntry(CBaseEntityTA* pouSubEntryObj)
 {
-   if(pouSubEntryObj!= NULL)
-    { 
+    if(pouSubEntryObj!= NULL)
+    {
         INT nCount = (INT)m_ouData.m_odVerify_MessageEntityList.GetCount();
+
         for(int i = 0; i < nCount; i++)
         {
             POSITION pos = m_ouData.m_odVerify_MessageEntityList.FindIndex(i);
-            CVerify_MessageEntity &pEntity = m_ouData.m_odVerify_MessageEntityList.GetAt(pos);
+            CVerify_MessageEntity& pEntity = m_ouData.m_odVerify_MessageEntityList.GetAt(pos);
+
             if(pEntity.GetID() == pouSubEntryObj->GetID())
             {
                 m_ouData.m_odVerify_MessageEntityList.RemoveAt(pos);
@@ -142,19 +142,20 @@ HRESULT CVerifyEntity::DeleteSubEntry(CBaseEntityTA* pouSubEntryObj)
             }
         }
     }
+
     return S_FALSE;
 }
 
 /******************************************************************************
 Function Name  :  DeleteSubEntry
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CVerifyEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CVerifyEntity::DeleteSubEntry(INT index)
 {
@@ -165,83 +166,89 @@ HRESULT CVerifyEntity::DeleteSubEntry(INT index)
 
 /******************************************************************************
 Function Name  :  GetSubEntityObj
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CVerifyEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 const HRESULT CVerifyEntity::GetSubEntityObj(UINT unIndex, CBaseEntityTA**  pouSubEntity)
 {
     POSITION pos = m_ouData.m_odVerify_MessageEntityList.FindIndex(unIndex);
+
     if(pos != NULL)
     {
-        CVerify_MessageEntity &VerifyMsgentity = (m_ouData.m_odVerify_MessageEntityList.GetAt(pos));
+        CVerify_MessageEntity& VerifyMsgentity = (m_ouData.m_odVerify_MessageEntityList.GetAt(pos));
         *pouSubEntity = &VerifyMsgentity;
-	    return  S_OK;
+        return  S_OK;
     }
+
     return ERR_WRONG_INDEX;
 }
 
 /******************************************************************************
 Function Name  :  GetSubEntryCount
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CVerifyEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CVerifyEntity::GetSubEntryCount(UINT& unTotal)
 {
     unTotal = (UINT)m_ouData.m_odVerify_MessageEntityList.GetCount();
-	return  S_OK;
+    return  S_OK;
 }
 
 
 /******************************************************************************
 Function Name  :  RepositionSubEntity
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CVerifyEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 Codetag        :  CS020
 ******************************************************************************/
 HRESULT CVerifyEntity::RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, CBaseEntityTA* pouCurrSubEntity)
 {
     UINT unCount = (INT)m_ouData.m_odVerify_MessageEntityList.GetCount();
     CVerify_MessageEntity ouSendEntity = *((CVerify_MessageEntity*)pouRefSubEntity);
+
     for(UINT i=0; i<unCount; i++)
     {
         POSITION pos = m_ouData.m_odVerify_MessageEntityList.FindIndex(i);
         CVerify_MessageEntity& ouSendMsgEntity = m_ouData.m_odVerify_MessageEntityList.GetAt(pos);
+
         if(ouSendMsgEntity.GetID() == pouRefSubEntity->GetID())
         {
             m_ouData.m_odVerify_MessageEntityList.RemoveAt(pos);
             break;
         }
     }
+
     POSITION posNew = NULL;
+
     if(pouCurrSubEntity == NULL)        //Insert At First Index;
     {
         posNew =  m_ouData.m_odVerify_MessageEntityList.AddHead(ouSendEntity);
     }
-    
     else
     {
         for(UINT i=0; i<unCount; i++)
         {
             POSITION pos = m_ouData.m_odVerify_MessageEntityList.FindIndex(i);
             CVerify_MessageEntity& ouSendMsgEntity = m_ouData.m_odVerify_MessageEntityList.GetAt(pos);
+
             if(ouSendMsgEntity.GetID() == pouCurrSubEntity->GetID())
             {
                 posNew =  m_ouData.m_odVerify_MessageEntityList.InsertAfter(pos, ouSendEntity);
@@ -249,39 +256,40 @@ HRESULT CVerifyEntity::RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, CBase
             }
         }
     }
+
     if(posNew != NULL)
     {
-        CVerify_MessageEntity &odSendMsgData = m_ouData.m_odVerify_MessageEntityList.GetAt(posNew);
+        CVerify_MessageEntity& odSendMsgData = m_ouData.m_odVerify_MessageEntityList.GetAt(posNew);
         return odSendMsgData.GetID();
     }
+
     return S_FALSE;
 }
 
 /******************************************************************************
 Function Name  :  GetData
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CVerifyEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CVerifyEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
 {
     _bstr_t bstrNodeName = def_STR_VERIFYMSG_NODE;
-    CComVariant NodeValue;	
+    CComVariant NodeValue;
     MSXML2::IXMLDOMNamedNodeMapPtr pDOMVerifyAtrributes;
     MSXML2::IXMLDOMNodePtr pIDOMChildNode;
-
     pDOMVerifyAtrributes = pIDomNode->Getattributes();
-	//bstrNodeName = L"failure";
-	bstrNodeName.Assign(SysAllocString(CT2W("failure")));
+    //bstrNodeName = L"failure";
+    bstrNodeName.Assign(SysAllocString(CT2W("failure")));
     pIDOMChildNode = pDOMVerifyAtrributes->getNamedItem(bstrNodeName);
-    pIDOMChildNode->get_nodeTypedValue(&NodeValue);    
-	CString strTemp;	
-	strTemp = strCopyBSTRToCString(NodeValue);
+    pIDOMChildNode->get_nodeTypedValue(&NodeValue);
+    CString strTemp;
+    strTemp = strCopyBSTRToCString(NodeValue);
 
     if(strTemp == "SUCCESS")
     {
@@ -299,36 +307,38 @@ HRESULT CVerifyEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
     {
         m_ouData.m_eAttributeError = FATAL;
     }
+
     MSXML2::IXMLDOMNodeListPtr pIDOMSendList;
-    
     LONG lCount;
     //bstrNodeName = def_STR_VERIFYMSG_NODE;
-	bstrNodeName.Assign(SysAllocString(CT2W(def_STR_VERIFYMSG_NODE)));
+    bstrNodeName.Assign(SysAllocString(CT2W(def_STR_VERIFYMSG_NODE)));
     pIDOMSendList = pIDomNode->selectNodes(bstrNodeName);
     pIDOMSendList->get_length(&lCount);
-    
+
     for(int i = 0; i < lCount; i++)
     {
         CVerify_MessageEntity odVerify_MessageEntity;
         MSXML2::IXMLDOMNodePtr pIXMLDOMVerifyMsgEntity;
         pIXMLDOMVerifyMsgEntity = pIDOMSendList->Getitem(i);
+
         if(odVerify_MessageEntity.GetData(pIXMLDOMVerifyMsgEntity) == S_OK)
         {
             m_ouData.m_odVerify_MessageEntityList.AddTail(odVerify_MessageEntity);
         }
     }
+
     return S_OK;
 }
 /******************************************************************************
 Function Name  :  GetEntityData
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CVerifyEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CVerifyEntity::GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData)
 {
@@ -336,66 +346,70 @@ HRESULT CVerifyEntity::GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntit
     {
         *((CVerifyData*)pvEntityData) = m_ouData;
     }
+
     return  S_OK;
 }
 /******************************************************************************
 Function Name  :  GetEntityType
-Input(s)       :  
+Input(s)       :
 Output         :  eTYPE_ENTITY
-Functionality  :   
+Functionality  :
 Member of      :  CVerifyEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 eTYPE_ENTITY CVerifyEntity::GetEntityType(void)
 {
     return m_eType;
-}	
+}
 
 /******************************************************************************
 Function Name  :  SetData
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CVerifyEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CVerifyEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode)
 {
     CString omstrTemp;
     MSXML2::IXMLDOMDocumentPtr pIDOMDoc;
     pIDOMDoc.CreateInstance(L"Msxml2.DOMDocument");
-    
-
     INT lCount = (INT)m_ouData.m_odVerify_MessageEntityList.GetCount();
     MSXML2::IXMLDOMElementPtr pIDomSendNode =  pIDOMDoc->createElement(_bstr_t(def_STR_VERIFY_NODE));
     MSXML2::IXMLDOMAttributePtr pIDomTSAtrrib = pIDOMDoc->createAttribute(def_STR_ATTRIB_FAIL);
+
     if(pIDomTSAtrrib!= NULL)
-	{
+    {
         switch(m_ouData.m_eAttributeError)
         {
             case SUCCESS:
                 omstrTemp = "SUCCESS";
                 break;
+
             case WARNING:
                 omstrTemp = "WARNING";
                 break;
+
             case FATAL:
                 omstrTemp = "FATAL";
                 break;
+
             case ERRORS:
             default:
                 omstrTemp = "ERRORS";
                 break;
         }
+
         pIDomTSAtrrib->value = _bstr_t(omstrTemp);
-		pIDomSendNode->setAttributeNode(pIDomTSAtrrib);
-	}
+        pIDomSendNode->setAttributeNode(pIDomTSAtrrib);
+    }
 
     for(INT i=0; i<lCount; i++)
     {
@@ -403,51 +417,55 @@ HRESULT CVerifyEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode)
         CVerify_MessageEntity& ouVerifyMsgEntity = m_ouData.m_odVerify_MessageEntityList.GetAt(pos);
         ouVerifyMsgEntity.SetData(pIDomSendNode);
     }
+
     pIDomTestCaseNode->appendChild(pIDomSendNode);
     return S_OK;
 }
 
 /******************************************************************************
 Function Name  :  SetEntityData
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CVerifyEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 Codetag        :  CS015
 ******************************************************************************/
 HRESULT CVerifyEntity::SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData)
 {
-     if(eCurrEntityType == VERIFY && pvEntityData != NULL)
+    if(eCurrEntityType == VERIFY && pvEntityData != NULL)
     {
         m_ouData = *((CVerifyData*)pvEntityData);
     }
+
     return  S_OK;
 }
 
 /******************************************************************************
 Function Name  :  ValidateEntity
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CVerifyEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  13/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :  CS030
 ******************************************************************************/
 HRESULT CVerifyEntity::ValidateEntity(CString& omStrResult)
 {
     UINT unVerifyMessageCount;
     GetSubEntryCount(unVerifyMessageCount);
+
     if(unVerifyMessageCount <= 0)
     {
         omStrResult += (_T("Error: Has No Verify Messages\r\n"));       //CS030
         return ERR_VALID_ERROR;
     }
+
     return ERR_VALID_SUCCESS;
 }
