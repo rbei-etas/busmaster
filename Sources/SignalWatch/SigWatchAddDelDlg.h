@@ -21,8 +21,13 @@
  *
  * Interface file for CSigWatchAddDelDlg class
  */
+#if !defined(AFX_SIGWATCHADDDELDLG_H__4DC6FFE9_566B_47FB_850E_D746C0B37B40__INCLUDED_)
+#define AFX_SIGWATCHADDDELDLG_H__4DC6FFE9_566B_47FB_850E_D746C0B37B40__INCLUDED_
 
+#if _MSC_VER > 1000
 #pragma once
+#endif // _MSC_VER > 1000
+// SigWatchAddDelDlg.h : header file
 
 #include "SignalWatch_Resource.h"
 
@@ -31,11 +36,11 @@
 
 class CSigWatchAddDelDlg : public CDialog
 {
-    // Construction
+// Construction
 public:
     CSigWatchAddDelDlg(CWnd* pParent, CMainEntryList* psMainFrameSignalWatchList);   // standard constructor
 
-    // Dialog Data
+// Dialog Data
     //{{AFX_DATA(CSigWatchAddDelDlg)
     enum { IDD = IDD_DLG_ADD_DEL_SIGNALS };
     CListCtrl   m_omListCtrlSignalWatch;
@@ -44,14 +49,14 @@ public:
     //}}AFX_DATA
 
 
-    // Overrides
+// Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CSigWatchAddDelDlg)
-protected:
+    protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-    // Implementation
+// Implementation
 protected:
 
     // Generated message map functions
@@ -94,9 +99,9 @@ private:
     // Delete temp list. Called from Close and Delete All
     BOOL bDeleteTempList();
     // Fun to get Msg and Signal name from Signal Watch List
-    BOOL bGetMainSubName(const CString& omMsgStr,
-                         CString& omMsg,
-                         CString& omSig);
+    BOOL bGetMainSubName(const CString &omMsgStr, 
+                           CString &omMsg, 
+                           CString &omSig);
     // For deleting a signal from the Signal Watch List
     BOOL bDeleteSubEntry(UINT unMsgID, const CString& omSignal);
     // For enabling/ diabling buttons
@@ -109,5 +114,11 @@ private:
     void vPopulateSelSubEntryList();
     //Extract Id from Message name [MsgName0xID]
     UINT unGetMainEntryIDFromName(CString omMsgName);
-    void vAdjustWidthMessageComboBox();
+	// To adjust the width of the combo box based on its contents
+	void vAdjustWidthMessageComboBox();
 };
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_SIGWATCHADDDELDLG_H__4DC6FFE9_566B_47FB_850E_D746C0B37B40__INCLUDED_)

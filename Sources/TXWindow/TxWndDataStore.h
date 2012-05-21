@@ -18,8 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-
-#pragma once
+#if !defined TXWND_DATASTORE_H_INCLUDED_
+#define TXWND_DATASTORE_H_INCLUDED_
 
 typedef enum eTXWNDDETAILS
 {
@@ -42,14 +42,14 @@ public:
     BOOL    bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList);
     // releases the multiple message structure pointer that is passed..
     void    vReleaseMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList);
-    // gets the multiple message info ..
+     // gets the multiple message info ..
     BOOL    bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList);
     PSMSGBLOCKLIST psReturnMsgBlockPointer();
     BOOL bGetDefaultTXSplitterPostion(CRect omWndSize, LPVOID* psSplitterData);
     BYTE* pbySetConfigData(BYTE* pbyConfigData, INT nConfigSize);
     BYTE* pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize);
 private:
-
+    
     UINT               m_unNumberOfMsgBlockCount;
     BOOL               m_bIsConfigurationModified;
     // Tx Msg Splitter Position
@@ -61,3 +61,5 @@ private:
     void vInitialiseMsgDetails(PSTXCANMSGLIST& psMsgDetails);
     void vInitialiseMsgBlock(PSMSGBLOCKLIST& psMsgBlockList);
 };
+
+#endif //TXWND_DATASTORE_H_INCLUDED_

@@ -18,8 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-
-#pragma once
+#if !defined TXWND_EXTERN_H__INCLUDED_
+#define TXWND_EXTERN_H__INCLUDED_
 
 #if defined USAGEMODE
 #undef USAGEMODE
@@ -35,23 +35,25 @@
 extern "C" {  // only need to export C interface if used by C++ source code
 #endif
 
-    USAGEMODE HRESULT TX_vSetMsgDBPtrInDetailsView(void* pMsgDB);
-    USAGEMODE HRESULT TX_vShowConfigureMsgWindow(void* pParentWnd);
-    USAGEMODE HRESULT TX_vSetClientID(DWORD dwClientID);
-    USAGEMODE HRESULT TX_vSetDILInterfacePtr(void* ptrDILIntrf);
-    USAGEMODE HRESULT TX_vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM lParam);
-    USAGEMODE HRESULT TX_hConfigWindowShown();
-    USAGEMODE HRESULT TX_vStartTransmission(UCHAR ucKeyVal);
-    USAGEMODE HRESULT TX_bAllocateMemoryForGlobalTxList();
-    USAGEMODE HRESULT TX_vAssignMsgBlockList();
-    USAGEMODE HRESULT TX_vDeleteTxBlockMemory();
-    USAGEMODE HRESULT TX_vStopTransmission(UINT unMaxWaitTime);
-    USAGEMODE HRESULT TX_vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize);
-    USAGEMODE HRESULT TX_vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize);
-    USAGEMODE UINT    TX_unGetTxBlockCount(void);
-    USAGEMODE HRESULT TX_vSetTxStopFlag(BOOL bStartStop);
-    USAGEMODE BOOL    TX_bGetTxStopFlag();
-
+USAGEMODE HRESULT TX_vSetMsgDBPtrInDetailsView(void* pMsgDB);
+USAGEMODE HRESULT TX_vShowConfigureMsgWindow(void* pParentWnd);
+USAGEMODE HRESULT TX_vSetClientID(DWORD dwClientID);
+USAGEMODE HRESULT TX_vSetDILInterfacePtr(void* ptrDILIntrf);
+USAGEMODE HRESULT TX_vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM lParam);
+USAGEMODE HRESULT TX_hConfigWindowShown();
+USAGEMODE HRESULT TX_vStartTransmission(UCHAR ucKeyVal);
+USAGEMODE HRESULT TX_bAllocateMemoryForGlobalTxList();
+USAGEMODE HRESULT TX_vAssignMsgBlockList();
+USAGEMODE HRESULT TX_vDeleteTxBlockMemory();
+USAGEMODE HRESULT TX_vStopTransmission(UINT unMaxWaitTime);
+USAGEMODE HRESULT TX_vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize);
+USAGEMODE HRESULT TX_vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize);
+USAGEMODE UINT    TX_unGetTxBlockCount(void);
+USAGEMODE HRESULT TX_vSetTxStopFlag(BOOL bStartStop);
+USAGEMODE BOOL    TX_bGetTxStopFlag();
+ 
 #ifdef __cplusplus
 }
 #endif
+
+#endif //TXWND_EXTERN_H__INCLUDED_

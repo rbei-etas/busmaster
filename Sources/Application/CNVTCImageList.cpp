@@ -24,82 +24,81 @@
 #include "stdafx.h"
 #include "CNVTCImageList.h"
 
+#ifdef _DEBUG
+#undef THIS_FILE
+static char THIS_FILE[]=__FILE__;
+#define new DEBUG_NEW
+#endif
+
 //Constructor
 CNVTCImageList::CNVTCImageList()
 {
+
 }
 
 //Destructor
 CNVTCImageList::~CNVTCImageList()
 {
+
 }
 
 BOOL CNVTCImageList::bCreateCNVTC(UINT nTBID, int nCX, int nCY)
 {
-    return bCreateCNVTC(nTBID, nCY, nCX, RGB(255,255,255));
+	return bCreateCNVTC(nTBID, nCY, nCX, RGB(255,255,255));
 }
 
 BOOL CNVTCImageList::bCreateCNVTC(UINT nTBID, int nCX, COLORREF clrMask)
 {
-    return bCreateCNVTC(nTBID, nCX, nCX, clrMask);
+	return bCreateCNVTC(nTBID, nCX, nCX, clrMask);
 }
 
 BOOL CNVTCImageList::bCreateCNVTC(UINT nTBID, int nCX, int nCY, COLORREF clrMask)
 {
-    if(CImageList::Create(nCX, nCY,ILC_MASK | ILC_COLOR32,0,0))
-    {
-        CBitmap bmpRes;
-
-        if(bmpRes.LoadBitmap(nTBID))
-        {
-            Add(&bmpRes, clrMask);
-            return TRUE;
-        }
-        else
-        {
-            return FALSE;
-        }
-    }
-    else
-    {
-        return FALSE;
-    }
+	if(CImageList::Create(nCX, nCY,ILC_MASK | ILC_COLOR32,0,0))		
+	{
+		CBitmap bmpRes;
+		if(bmpRes.LoadBitmap(nTBID))
+		{
+			Add(&bmpRes, clrMask);	
+			return TRUE;
+		}
+		else
+			return FALSE;
+	}
+	else
+		return FALSE;
 }
 
 BOOL CNVTCImageList::bCreateCNVTC(UINT nTBID, COLORREF clrMask)
 {
-    CBitmap objRes;
-
-    if(objRes.LoadBitmap(nTBID))
-    {
-        BITMAP bmpRes;
-        objRes.GetBitmap(&bmpRes);
-        return bCreateCNVTC(nTBID, bmpRes.bmHeight, bmpRes.bmHeight, clrMask);
-    }
-    else
-    {
-        return FALSE;
-    }
+	CBitmap objRes;
+	if(objRes.LoadBitmap(nTBID))	
+	{	
+		BITMAP bmpRes;
+		objRes.GetBitmap(&bmpRes);		
+		
+		return bCreateCNVTC(nTBID, bmpRes.bmHeight, bmpRes.bmHeight, clrMask);
+	}
+	else
+		return FALSE;
 }
 
 BOOL CNVTCImageList::bCreateCNVTC(UINT nTBID, int nCX)
 {
-    return bCreateCNVTC(nTBID, nCX, nCX, RGB(255,255,255));
+	return bCreateCNVTC(nTBID, nCX, nCX, RGB(255,255,255));
 }
 
 BOOL CNVTCImageList::bCreateCNVTC(UINT nTBID)
-{
-    CBitmap objRes;
+{	
+	CBitmap objRes;
+	if(objRes.LoadBitmap(nTBID))		
+	{
+		BITMAP bmpRes;
+		objRes.GetBitmap(&bmpRes);		
 
-    if(objRes.LoadBitmap(nTBID))
-    {
-        BITMAP bmpRes;
-        objRes.GetBitmap(&bmpRes);
-        return bCreateCNVTC(nTBID, bmpRes.bmHeight, bmpRes.bmHeight, RGB(255,255,255));
-    }
-    else
-    {
-        return FALSE;
-    }
+		return bCreateCNVTC(nTBID, bmpRes.bmHeight, bmpRes.bmHeight, RGB(255,255,255));
+	}
+	else
+		return FALSE;
 }
 

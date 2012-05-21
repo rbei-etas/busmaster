@@ -22,34 +22,41 @@
  * This file contains definition of CComboItem class
  */
 
+#if !defined(AFX_COMBOITEM_H__834127E7_9297_11D5_8AFA_DAC6E5A1C54B__INCLUDED_)
+#define AFX_COMBOITEM_H__834127E7_9297_11D5_8AFA_DAC6E5A1C54B__INCLUDED_
+
+#if _MSC_VER > 1000
 #pragma once
+#endif // _MSC_VER > 1000
+// ComboItem.h : header file
+//
 
 /////////////////////////////////////////////////////////////////////////////
 // CComboItem window
 
 class CComboItem : public CComboBox
 {
-    // Construction
+// Construction
 public:
     CComboItem( int nItem,              // Row
                 int nSubItem,           // Sub Item
                 const CStringArray& psList,   // List of strings to populate list box
                 const CString& omStrText,      // Selected text
                 BOOL bIsEditable);      // Editable list or not
-    // Attributes
+// Attributes
 public:
 
-    // Operations
+// Operations
 public:
 
-    // Overrides
+// Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CComboItem)
-public:
+    public:
     virtual BOOL PreTranslateMessage(MSG* pMsg);
     //}}AFX_VIRTUAL
 
-    // Implementation
+// Implementation
 public:
     virtual ~CComboItem();
 
@@ -71,3 +78,10 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 };
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_COMBOITEM_H__834127E7_9297_11D5_8AFA_DAC6E5A1C54B__INCLUDED_)

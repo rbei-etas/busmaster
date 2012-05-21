@@ -22,33 +22,46 @@
  * This contains project configuration class definition.
  */
 
+// ProjConfig.h: interface for the ProjConfig class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#if !defined(AFX_PROJCONFIG_H__B9B4B9B5_BA2F_47AC_98D9_8933DB6DFC55__INCLUDED_)
+#define AFX_PROJCONFIG_H__B9B4B9B5_BA2F_47AC_98D9_8933DB6DFC55__INCLUDED_
+
+
+#if _MSC_VER > 1000
 #pragma once
+#endif // _MSC_VER > 1000
 
-typedef map <string, SECTIONDATA*> SECTIONMAP;
+
+typedef std::map <string, SECTIONDATA*> SECTIONMAP;
 
 
-class CProjConfig
+class CProjConfig  
 {
 private:
 
     PROJECTDATA m_sProjectDetails;
-    SECTIONMAP m_MapOfSection;
+	SECTIONMAP m_MapOfSection;
 
-    void vClearMap(void);
+	void vClearMap(void);
 
 public:
 
     // Constructor and destructor
-    CProjConfig();
-    virtual ~CProjConfig();
+	CProjConfig();
+	virtual ~CProjConfig();
 
     // All the getters
-    int GetSectionCount();
-    void GetProjectDetail(PROJECTDATA& ProjData);
-    int GetSectionList(list<string>& SectionList);
-    bool GetSectionData(string SectionName, SECTIONDATA& SectionData);
+	int GetSectionCount();
+	void GetProjectDetail(PROJECTDATA &ProjData);
+	int GetSectionList(list<string>& SectionList);
+	bool GetSectionData(string SectionName, SECTIONDATA &SectionData);
 
     // All the setters
-    bool AddModifySectionDetail(const SECTIONDATA& SectionData);
-    void ModifyProjValues(const PROJECTDATA& ProjDATA);
+	bool AddModifySectionDetail(const SECTIONDATA& SectionData);
+	void ModifyProjValues(const PROJECTDATA& ProjDATA);
 };
+
+#endif // !defined(AFX_PROJCONFIG_H__B9B4B9B5_BA2F_47AC_98D9_8933DB6DFC55__INCLUDED_)

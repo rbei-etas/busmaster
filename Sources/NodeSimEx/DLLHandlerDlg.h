@@ -21,18 +21,27 @@
  *
  * This file contain declaration of CDLLHandlerDlg class.
  */
+#if !defined(AFX_DLLHANDLERDLG_H__38C4D236_3752_11D7_80A0_0010B599CE39__INCLUDED_)
+#define AFX_DLLHANDLERDLG_H__38C4D236_3752_11D7_80A0_0010B599CE39__INCLUDED_
 
+#if _MSC_VER > 1000
 #pragma once
+#endif // _MSC_VER > 1000
+// DLLHandlerDlg.h : header file
+//
+
+/////////////////////////////////////////////////////////////////////////////
+// CDLLHandlerDlg dialog
 
 class CDLLHandlerDlg : public CDialog
 {
-    // Construction
+// Construction
 public:
     CStringArray m_omStrArrayDLLHandler;
 
     CDLLHandlerDlg(BYTE byType, CFunctionEditorDoc* pDoc, CWnd* pParent = NULL, BOOL bIsDelete = FALSE);   // standard constructor
 
-    // Dialog Data
+// Dialog Data
     //{{AFX_DATA(CDLLHandlerDlg)
     enum { IDD = IDD_DLG_DLL_HANDLER };
     CButton m_omCheckDLLUnLoad;
@@ -43,20 +52,20 @@ public:
     //}}AFX_DATA
 
 
-    // Overrides
+// Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CDLLHandlerDlg)
-protected:
+    protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-    // Implementation
+// Implementation
 protected:
 
     // Generated message map functions
     //{{AFX_MSG(CDLLHandlerDlg)
-    //    afx_msg void OnCbtnDllCancel();
-    //    afx_msg void OnCbtnDllOk();
+//    afx_msg void OnCbtnDllCancel();
+//    afx_msg void OnCbtnDllOk();
     virtual BOOL OnInitDialog();
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
@@ -69,3 +78,8 @@ public:
     afx_msg void OnBnClickedOk();
     afx_msg void OnCbtnDllCancel();
 };
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_DLLHANDLERDLG_H__38C4D236_3752_11D7_80A0_0010B599CE39__INCLUDED_)

@@ -21,11 +21,19 @@
  *
  * This header file contains the defintion of class
  */
+#if !defined(AFX_MSGSGTREEVIEW_H__9861E0E5_241D_11D6_A618_00D0B76BEBF5__INCLUDED_)
+#define AFX_MSGSGTREEVIEW_H__9861E0E5_241D_11D6_A618_00D0B76BEBF5__INCLUDED_
 
+#if _MSC_VER > 1000
 #pragma once
-
+#endif // _MSC_VER > 1000
+// MsgSgTreeView.h : header file
+//
 #include <afxcview.h>
 #include "CFilesDefs_CAN.h"
+//#include "TreeToolTips.h"
+/////////////////////////////////////////////////////////////////////////////
+// CMsgSgTreeView view
 
 class CMsgSgTreeView : public CTreeView
 {
@@ -36,13 +44,13 @@ protected:
     CMsgSgTreeView();           // protected constructor used by dynamic creation
     DECLARE_DYNCREATE(CMsgSgTreeView)
 
-    // Attributes
+// Attributes
 private:
     SDBPARAMS m_sDbParams;
 public:
     static SDBPARAMS sm_sDbParams;
-
-    // Operations
+    
+// Operations
 public:
 
     CString m_omSelectedItemText;
@@ -52,17 +60,17 @@ public:
     BOOL m_bIsNewMessage;
     void vSetMessageName(CString omStrMsgName);
 
-    // Overrides
+// Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMsgSgTreeView)
-public:
+    public:
     virtual void OnInitialUpdate();
-protected:
+    protected:
     virtual void OnDraw(CDC* pDC);      // overridden to draw this view
     virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
     //}}AFX_VIRTUAL
 
-    // Implementation
+// Implementation
 protected:
     virtual ~CMsgSgTreeView();
 #ifdef _DEBUG
@@ -82,16 +90,23 @@ protected:
     afx_msg void OnNewMessage();
     afx_msg void OnInfoToolTip(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnEditMsg();
-    afx_msg void OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult);
-    afx_msg void OnTvnKeydown(NMHDR* pNMHDR, LRESULT* pResult);
-    //}}AFX_MSG
+	afx_msg void OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnTvnKeydown(NMHDR* pNMHDR, LRESULT* pResult);
+	//}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
     void vAddEditMessage(BOOL bMode);
-    //  CToolTipCtrl* m_pomToolTip;
+//  CToolTipCtrl* m_pomToolTip;
     CPoint m_omRightClickPoint;
     CPoint m_omLeftCLickPoint;
     CImageList m_omImageList;
-    HTREEITEM m_hTreeItem;
+    HTREEITEM m_hTreeItem; 
     BOOL bPopulateTree();
 };
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_MSGSGTREEVIEW_H__9861E0E5_241D_11D6_A618_00D0B76BEBF5__INCLUDED_)

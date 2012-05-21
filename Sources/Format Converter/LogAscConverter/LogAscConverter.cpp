@@ -176,8 +176,14 @@ HRESULT CLogAscConverter::ConvertFile(string& chInputFile, string& chOutputFile)
         if(NULL != fpOutputFile)
         {
             //yydebug = 1;
-            nConvertFile(fpInputFile, fpOutputFile);
-            m_omstrConversionStatus = "Conversion Completed Successfully";
+            if (nConvertFile(fpInputFile, fpOutputFile) == -2)
+			{
+				m_omstrConversionStatus = "Conversion May not be work with CANoe since the input file is logged in system mode";
+			}
+			else
+			{
+				m_omstrConversionStatus = "Conversion Completed Successfully";
+			}
             fclose(fpInputFile);
             fclose(fpOutputFile);
         }

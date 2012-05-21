@@ -15,14 +15,14 @@
 
 /**
  * \file      Export_UserDll.h
- * \brief     This header file contains name and prototype of the
+ * \brief     This header file contains name and prototype of the 
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This header file contains name and prototype of the
+ * This header file contains name and prototype of the 
  */
-
-#pragma once
+#ifndef EXPORT_USERDLL_H__INCLUDED_
+#define EXPORT_USERDLL_H__INCLUDED_
 
 typedef int (*LOGENABLE) (BOOL);
 // Prototype of the exported function from user-defined DLL
@@ -71,7 +71,7 @@ typedef void (*DLLGETNODEHANDLER)(GETNODEHANDLER);
 // Name of the exported function from user-defined DLL
 #define NAME_FUNC_LOG_DISABLE           "vSetDisableLoggingProcAddress"
 #define NAME_FUNC_LOG_ENABLE            "vSetEnableLoggingProcAddress"
-#define NAME_FUNC_LOG_FILE              "vSetWriteToLogFileProcAddress"
+#define NAME_FUNC_LOG_FILE	            "vSetWriteToLogFileProcAddress"
 #define NAME_FUNC_TRACE                 "vSetTraceProcAddress"
 #define NAME_FUNC_START_TIMER           "vSetStartTimerProcAddress"
 #define NAME_FUNC_STOP_TIMER            "vSetStopTimerProcAddress"
@@ -83,3 +83,5 @@ typedef void (*DLLGETNODEHANDLER)(GETNODEHANDLER);
 #define defNAME_FUNC_GET_PRG_VER        "bGetProgramVersion"
 #define NAME_FUNC_MSGTX_ON_OFF          "vSetEnableDisableMsgTxProcAddress"
 #define NAME_FUNC_SETDLLHANDLE          "vSetGetDllHandleProcAddress"
+
+#endif //EXPORT_USERDLL_H__INCLUDED_

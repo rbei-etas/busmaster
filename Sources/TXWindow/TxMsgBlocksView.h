@@ -22,7 +22,12 @@
  * Interface file for CTxMsgBlocksView class
  */
 
+#if !defined(AFX_TXMSGBLOCKSVIEW_H__781C8957_456A_4F37_ACEC_A94CFFA454E1__INCLUDED_)
+#define AFX_TXMSGBLOCKSVIEW_H__781C8957_456A_4F37_ACEC_A94CFFA454E1__INCLUDED_
+
+#if _MSC_VER > 1000
 #pragma once
+#endif // _MSC_VER > 1000
 
 #ifndef __AFXEXT_H__
 #include <afxext.h>
@@ -34,7 +39,7 @@
 
 class CTxMsgBlocksView : public CFormView
 {
-    // Form Data
+// Form Data
 public:
     //{{AFX_DATA(CTxMsgBlocksView)
     enum { IDD = IDD_DLG_TX_MSG_BLOCKS };
@@ -56,7 +61,7 @@ public:
     //BOOL    m_bTXAllFrame;
     //}}AFX_DATA
 
-    // Attributes
+// Attributes
 public:
     // To denote modifications after connect
     BOOL m_bModified;
@@ -70,7 +75,7 @@ public:
     // To keep track of message block count
     UINT m_unMsgBlockCount;
 
-    // Operations
+// Operations
 public:
     // To get message block pointer denoted by the index from the given
     // list of blocks
@@ -85,12 +90,12 @@ public:
     // To set control properties like limit text, base etc.
     void vSetControlProperties();
 
-    // Overrides
+// Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CTxMsgBlocksView)
-public:
+    public:
     virtual void OnInitialUpdate();
-protected:
+    protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
@@ -99,7 +104,7 @@ protected:
     CTxMsgBlocksView();
     DECLARE_DYNCREATE(CTxMsgBlocksView)
 
-    // Implementation
+// Implementation
 protected:
     virtual ~CTxMsgBlocksView();
 
@@ -130,7 +135,7 @@ private:
     // To store trigger type of message block
     unsigned char m_nRBTNTriggerType;
 
-    // Functions
+// Functions
     // To add a message block
     BOOL bAddBlock(SMSGBLOCKLIST* &psMsgCurrentBlock);
     // To initialise message block with default values
@@ -138,16 +143,16 @@ private:
     // To delete selected message block
     BOOL bDeleteBlock();
     // To get parent window pointer
-    CWnd* pomGetParentWindow() const;
+    CWnd * pomGetParentWindow() const;
     // To get CTxMsgListView pointer
-    CWnd* pomGetListViewPointer() const;
+    CWnd * pomGetListViewPointer() const;
     // To get CTxFunctionsView Pointer
-    CWnd* pomGetFunctionsViewPointer() const;
+    CWnd * pomGetFunctionsViewPointer() const;
     // To get CTxMsgDetailsView Pointer
-    CWnd* pomGetDetailsViewPointer() const;
+    CWnd * pomGetDetailsViewPointer() const;
     // To show popup memu
     BOOL bDisplayPopMenu(CListCtrl& omList, UINT nIDResource );
-    // Save the current msg block
+    // Save the current msg block 
     void vSaveCurrentBlockFirst(void);
 public:
     afx_msg void OnBnClickedRadiomonoshot();
@@ -155,3 +160,10 @@ public:
     CComboBox m_omComboAllMsgs;
     afx_msg void OnCbnSelchangeComboMsgs();
 };
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_TXMSGBLOCKSVIEW_H__781C8957_456A_4F37_ACEC_A94CFFA454E1__INCLUDED_)

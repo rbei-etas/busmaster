@@ -18,17 +18,19 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-
-#pragma once
+#if !defined REPLAY_STRUCT_H_
+#define REPLAY_STRUCT_H_
 
 class CBaseAppServices;
 typedef enum
 {
     eINIT_ALL,
     eINIT_TRACE
-} eREPLAY_INIT;
+}eREPLAY_INIT;
 
 typedef struct
 {
     CBaseAppServices*   m_pouITraceWndPtr;
-} SREPLAYINIT;
+}SREPLAYINIT;
+
+#endif //REPLAY_STRUCT_H_
