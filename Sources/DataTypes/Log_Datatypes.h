@@ -22,17 +22,18 @@
  * Definition file for log data types.
  */
 
-#pragma once
+#if !defined LOG_DATATYPES_H__INCLUDED_
+#define LOG_DATATYPES_H__INCLUDED_
 
 #include "include/BaseDefs.h"
 
-// Triggering means the state to which logging operation should transit.
+// Triggering means the state to which logging operation should transit. 
 typedef enum eLogTriggerState
 {
-    NONE    = 0,
-    START   = 1,    // To start logging
-    STOP    = 2,    // To stop logging
-    BOTH    = 3,    // Shuttle.
+	NONE	= 0,
+	START	= 1,    // To start logging
+	STOP	= 2,    // To stop logging
+	BOTH	= 3,    // Shuttle.
     STOPPED = 4     // Logging already stopped
 } ELOGTRIGGERSTATE;
 
@@ -40,26 +41,26 @@ typedef enum eLogTriggerState
 typedef struct tagLogTrigger
 {
     ELOGTRIGGERSTATE m_unTriggerType; // 0 - None, 1 - Start, 2 - Stop, 3 - Both
-    UINT             m_unStartID;     // Start Trigger Id
-    UINT             m_unStopID;      // Stop Trigger Id
+	UINT             m_unStartID;     // Start Trigger Id
+	UINT             m_unStopID;      // Stop Trigger Id
 } SLOGTRIGGER,*PSLOGTRIGGER;
 
 const USHORT ID_INVALID = (USHORT) -1;
 const USHORT ID_MAX = (USHORT) ~0;
 
-// The below structure describes a logging block fulfilling the condition of
+// The below structure describes a logging block fulfilling the condition of 
 // necessity and sufficience.
 typedef struct tagLogInfo
 {
     USHORT       m_ushID;            // Logging block identifier
     BOOL         m_bIsUpdated;       // To indicate if it needs updation
     BOOL         m_bEnabled;         // To indicate if its enabled
-    eTimerMode   m_eLogTimerMode;    // The time mode - system / relative
-    eFormat      m_eNumFormat;       // Numeric mode - hexadecimal / decimal
-    eMode        m_eFileMode;        // Mode - overwrite / append
+    eTimerMode	 m_eLogTimerMode;    // The time mode - system / relative
+	eFormat		 m_eNumFormat;       // Numeric mode - hexadecimal / decimal
+	eMode		 m_eFileMode;        // Mode - overwrite / append
     BOOL         m_bResetAbsTimeStamp; // To indicate if Absolute Time Stamp is Reseted
     TYPE_CHANNEL m_ChannelSelected;  // The current channel
-    char        m_sLogFileName[_MAX_PATH]; // Log file name with absolute path
+	TCHAR		 m_sLogFileName[_MAX_PATH]; // Log file name with absolute path
     SLOGTRIGGER  m_sLogTrigger;      // The triggering condition
 
     tagLogInfo();                    // Standard constructor
@@ -69,3 +70,5 @@ typedef struct tagLogInfo
     BYTE* pbSetConfigData(BYTE* pbTarget, BYTE bytLogVersion); // To set configuration data
 
 } SLOGINFO,*PSLOGINFO;
+
+#endif // LOG_DATATYPES_H__INCLUDED_

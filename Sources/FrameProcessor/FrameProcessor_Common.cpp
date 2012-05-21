@@ -36,66 +36,65 @@
 /* Log version..applicable for log files before ver 1.6.2 */
 /*#define VERSION_CURR    0x01*/
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
 // CFrameProcessor_Common
 
 
 DWORD WINAPI DataCopyThreadProc(LPVOID pVoid)
 {
-    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
-
+    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC *) pVoid;
     if (pThreadParam == NULL)
     {
         // TBD
     }
-
-    CFrameProcessor_Common* pCurrObj = (CFrameProcessor_Common*) pThreadParam->m_pBuffer;
-
-    if (pCurrObj == NULL)
-    {
+    CFrameProcessor_Common* pCurrObj = (CFrameProcessor_Common *) pThreadParam->m_pBuffer;
+	if (pCurrObj == NULL)
+	{
         // TBD
-    }
+	}
 
     //pThreadParam->m_unActionCode = INACTION;
+
     bool bLoopON = true;
 
-    while (bLoopON)
-    {
+	while (bLoopON)
+	{
         WaitForSingleObject(pThreadParam->m_hActionEvent, INFINITE);
 
         switch (pThreadParam->m_unActionCode)
-        {
-            case INVOKE_FUNCTION:
-            {
-                // Retrieve message from the driver
+		{
+			case INVOKE_FUNCTION:
+			{
+				// Retrieve message from the driver
                 pCurrObj->vRetrieveDataFromBuffer();
                 ResetEvent(pThreadParam->m_hActionEvent);
-            }
-            break;
-
-            case EXIT_THREAD:
-            {
-                bLoopON = false;
-            }
-            break;
-
+			}
+			break;
+			case EXIT_THREAD:
+			{
+				bLoopON = false;
+			}
+			break;
             case CREATE_TIME_MAP:
             {
                 pCurrObj->InitTimeParams();
                 pThreadParam->m_unActionCode = INVOKE_FUNCTION;
-                SetEvent(pThreadParam->m_hActionEvent);
+				SetEvent(pThreadParam->m_hActionEvent);
             }
             break;
-
-            default:
-            case INACTION:
-            {
-                // nothing right at this moment
-            }
-            break;
-        }
-    }
-
+			default:
+			case INACTION:
+			{
+				// nothing right at this moment
+			}
+			break;
+		}
+	}
     SetEvent(pThreadParam->hGetExitNotifyEvent());
+
     return 0;
 }
 
@@ -103,8 +102,8 @@ DWORD WINAPI DataCopyThreadProc(LPVOID pVoid)
 
 CFrameProcessor_Common::CFrameProcessor_Common()
 {
-    // TODO: add construction code here,
-    // Place all significant initialization in InitInstance
+	// TODO: add construction code here,
+	// Place all significant initialization in InitInstance
     m_bLogEnabled = FALSE;
     m_bFilterON = FALSE;
     m_bClientBufferON = TRUE;
@@ -114,22 +113,24 @@ CFrameProcessor_Common::CFrameProcessor_Common()
 
 CFrameProcessor_Common::~CFrameProcessor_Common()
 {
-    // TODO: add construction code here,
-    // Place all significant initialization in InitInstance
+	// TODO: add construction code here,
+	// Place all significant initialization in InitInstance
 }
 
 HRESULT CFrameProcessor_Common::DoInitialisation(void)
 {
-    m_sDataCopyThread.m_unActionCode = CREATE_TIME_MAP;
+    m_sDataCopyThread.m_unActionCode = CREATE_TIME_MAP;	
+
     return S_OK;
 }
 
 void CFrameProcessor_Common::vCopyLogObjArray(
-    CLogObjArray& omLogObjArrayTarget, const CLogObjArray& omLogObjArraySrc)
+       CLogObjArray& omLogObjArrayTarget, const CLogObjArray& omLogObjArraySrc)
 {
     // First empty the target log object array
     vEmptyLogObjArray(omLogObjArrayTarget);
-    USHORT ushBlocks = (USHORT) (omLogObjArraySrc.GetSize());
+
+	USHORT ushBlocks = (USHORT) (omLogObjArraySrc.GetSize());
 
     if (ushBlocks > 0)
     {
@@ -150,13 +151,15 @@ BOOL CFrameProcessor_Common::InitInstance(void)
     m_sDataCopyThread.m_pBuffer = (LPVOID) this;
     m_sDataCopyThread.m_unActionCode = INACTION;
     BOOL Result = m_sDataCopyThread.bStartThread(DataCopyThreadProc);
-    return Result;
+
+	return Result;
 }
 
 int CFrameProcessor_Common::ExitInstance(void)
 {
     // TODO: Add your specialized code here and/or call the base class
     m_sDataCopyThread.bTerminateThread();
+
     return 0;
 }
 
@@ -167,12 +170,11 @@ UINT CFrameProcessor_Common::unGetBufSize(void)
 {
     UINT unBufSize = sizeof(BYTE);  // Version information
     unBufSize += sizeof(USHORT);    // Logging blocks
-    USHORT ushLogBlks = GetLoggingBlockCount();
 
+	USHORT ushLogBlks = GetLoggingBlockCount();
     for (USHORT i = 0; i < ushLogBlks; i++)
     {
         CBaseLogObject* pouCurrLogObj = FindLoggingBlock(i);
-
         if (NULL != pouCurrLogObj)
         {
             unBufSize += pouCurrLogObj->unGetBufSize();
@@ -186,7 +188,7 @@ UINT CFrameProcessor_Common::unGetBufSize(void)
 void CFrameProcessor_Common::InitTimeParams(void)
 {
     SYSTEMTIME CurrSysTime;
-    UINT64 unAbsTime;
+    UINT64 unAbsTime;    
     CreateTimeModeMapping(CurrSysTime, unAbsTime);
     CRefTimeKeeper::vSetTimeParams(CurrSysTime, unAbsTime);
 }
@@ -195,46 +197,36 @@ void CFrameProcessor_Common::InitTimeParams(void)
 void CFrameProcessor_Common::vUpdateLoggingFlag(void)
 {
     BYTE* pbCurrFlag = m_bEditingON ? &m_bLogFlagTmp : &m_bExprnFlag_Log;
+
     CLEAR_EXPR_FLAG(*pbCurrFlag);
+
     USHORT ushLogBlocks = GetLoggingBlockCount();
 
     for (USHORT i = 0; i < ushLogBlocks; i++)
     {
         SLOGINFO sLogInfo;
         GetLoggingBlock(i, sLogInfo);
-
         if (sLogInfo.m_bEnabled == FALSE)
         {
             continue;
         }
 
-        BYTE* pbResFlag = sLogInfo.m_bResetAbsTimeStamp ? &m_bLogFlagTmp : &m_bExprnFlag_Log;
+		BYTE* pbResFlag = sLogInfo.m_bResetAbsTimeStamp ? &m_bLogFlagTmp : &m_bExprnFlag_Log;
 
-        switch (sLogInfo.m_eLogTimerMode)
+		switch (sLogInfo.m_eLogTimerMode)
         {
-            case TIME_MODE_ABSOLUTE:
-                SET_TM_ABS(*pbCurrFlag);
-                SET_TM_ABS_RES(*pbResFlag);
-                break;
+            case TIME_MODE_ABSOLUTE: 
+				SET_TM_ABS(*pbCurrFlag); 
+				SET_TM_ABS_RES(*pbResFlag); 
+				break;
 
-            case TIME_MODE_RELATIVE:
-                SET_TM_REL(*pbCurrFlag);
-                break;
-
-            case TIME_MODE_SYSTEM:
-                SET_TM_SYS(*pbCurrFlag);
-                break;
+            case TIME_MODE_RELATIVE: SET_TM_REL(*pbCurrFlag); break;
+            case TIME_MODE_SYSTEM:   SET_TM_SYS(*pbCurrFlag); break;
         }
-
         switch (sLogInfo.m_eNumFormat)
         {
-            case HEXADECIMAL:
-                SET_NUM_HEX(*pbCurrFlag);
-                break;
-
-            case DEC:
-                SET_NUM_DEC(*pbCurrFlag);
-                break;
+            case HEXADECIMAL: SET_NUM_HEX(*pbCurrFlag); break;
+            case DEC: SET_NUM_DEC(*pbCurrFlag); break;
         }
     }
 }
@@ -242,9 +234,9 @@ void CFrameProcessor_Common::vUpdateLoggingFlag(void)
 CBaseLogObject* CFrameProcessor_Common::FindLoggingBlock(USHORT ushID)
 {
     CLogObjArray* pomCurrArray = GetActiveLogObjArray();
-    CBaseLogObject* Result = NULL;
-    USHORT Blocks = (USHORT) (pomCurrArray->GetSize());
 
+    CBaseLogObject* Result = NULL;
+	USHORT Blocks = (USHORT) (pomCurrArray->GetSize());
     if (Blocks > ushID)
     {
         CBaseLogObject* pouCurrLogObj = pomCurrArray->GetAt(ushID);
@@ -257,19 +249,18 @@ CBaseLogObject* CFrameProcessor_Common::FindLoggingBlock(USHORT ushID)
 USHORT CFrameProcessor_Common::GetUniqueID(void)
 {
     USHORT Result = ID_INVALID;
+
 #if 0
     int Blocks = (int) (m_omLogObjectArray.GetCount());
     bool bNewIDFound = false;
-    USHORT CurrID = 0;
 
+    USHORT CurrID = 0; 
     while ((CurrID < ID_MAX) && (false == bNewIDFound))
     {
         bNewIDFound = true; // Assuming this ID is unique, keep validating
-
-        for (int i = 0; (i < Blocks) && (true == bNewIDFound); i++)
-        {
-            CLogObject& ouCurrLogObj = m_omLogObjectArray.GetAt(i);
-
+	    for (int i = 0; (i < Blocks) && (true == bNewIDFound); i++)
+	    {
+		    CLogObject& ouCurrLogObj = m_omLogObjectArray.GetAt(i);
             if (ouCurrLogObj.GetID() == CurrID)
             {
                 bNewIDFound = false; // This ID is already taken. Try another
@@ -277,13 +268,12 @@ USHORT CFrameProcessor_Common::GetUniqueID(void)
             }
         }
     }
-
     if (bNewIDFound == true)
     {
         Result = CurrID; // Result of the function
     }
-
 #endif
+
     return Result;
 }
 
@@ -304,14 +294,16 @@ CLogObjArray* CFrameProcessor_Common::GetActiveLogObjArray(void)
 HRESULT CFrameProcessor_Common::EnableLogging(BOOL bEnable)
 {
     HRESULT hResult = S_FALSE;
-    /* Modus operandi: If logging is to be enabled, then first perform the initial
-    tasks and then assign TRUE to m_bLogEnabled. If logging is to be disabled,
-    first assign FALSE to m_bLogEnabled and then only perform the other tasks. Else
-    crash / unexpected behaviour may result */
-    USHORT ushBlocks = (USHORT) (m_omLogObjectArray.GetSize());
-    //update reset flag
-    m_bResetAbsTime = bEnable;
-    GetLocalTime(&m_LogSysTime);
+
+/* Modus operandi: If logging is to be enabled, then first perform the initial
+tasks and then assign TRUE to m_bLogEnabled. If logging is to be disabled,
+first assign FALSE to m_bLogEnabled and then only perform the other tasks. Else
+crash / unexpected behaviour may result */
+	USHORT ushBlocks = (USHORT) (m_omLogObjectArray.GetSize());
+
+	//update reset flag
+	m_bResetAbsTime = bEnable;
+	GetLocalTime(&m_LogSysTime);
 
     if (ushBlocks > 0)
     {
@@ -319,7 +311,6 @@ HRESULT CFrameProcessor_Common::EnableLogging(BOOL bEnable)
         {
             m_bLogEnabled = bEnable;
         }
-
         for (USHORT i = 0; i < ushBlocks; i++)
         {
             CBaseLogObject* pouCurrLogObj = m_omLogObjectArray.GetAt(i);
@@ -333,19 +324,18 @@ HRESULT CFrameProcessor_Common::EnableLogging(BOOL bEnable)
                 pouCurrLogObj->bStopLogging();
             }
         }
-
         if (TRUE == bEnable)
         {
             m_bLogEnabled = bEnable;
-            m_sDataCopyThread.m_unActionCode = CREATE_TIME_MAP;
+			m_sDataCopyThread.m_unActionCode = CREATE_TIME_MAP;
         }
 
         hResult = S_OK;
     }
-    else
-   {
-	m_bLogEnabled = FALSE; //desable the control
-   }
+	else
+	{
+		m_bLogEnabled = FALSE; //desable the control
+	}
     return hResult;
 }
 
@@ -355,12 +345,12 @@ HRESULT CFrameProcessor_Common::EnableFilter(USHORT ushBlk, BOOL bEnable)
     // Check if at least one filtering datum is available.
     // If so, return S_OK else S_FALSE
     m_bFilterON = bEnable;
-    USHORT ushLogBlks = (USHORT) (m_omLogObjectArray.GetSize());
 
-    for (USHORT i = 0; i < ushLogBlks; i++)
-    {
-        CBaseLogObject* pouCurrLogObj = m_omLogObjectArray.GetAt(i);
+	USHORT ushLogBlks = (USHORT) (m_omLogObjectArray.GetSize());
 
+	for (USHORT i = 0; i < ushLogBlks; i++)
+	{
+		CBaseLogObject* pouCurrLogObj = m_omLogObjectArray.GetAt(i);
         if (FOR_ALL == ushBlk)
         {
             pouCurrLogObj->EnableFilter(bEnable);
@@ -373,14 +363,14 @@ HRESULT CFrameProcessor_Common::EnableFilter(USHORT ushBlk, BOOL bEnable)
                 break;
             }
         }
-    }
+	}
 
     return hResult;
 }
 
 USHORT CFrameProcessor_Common::GetLoggingBlockCount(void)
 {
-    return (USHORT) (GetActiveLogObjArray()->GetSize());
+	return (USHORT) (GetActiveLogObjArray()->GetSize());
 }
 
 HRESULT CFrameProcessor_Common::ClearLoggingBlockList(void)
@@ -401,7 +391,8 @@ HRESULT CFrameProcessor_Common::ClearLoggingBlockList(void)
 
 HRESULT CFrameProcessor_Common::GetLoggingBlock(USHORT ushBlk, SLOGINFO& sLogObject)
 {
-    HRESULT hResult = S_FALSE;
+	HRESULT hResult = S_FALSE;
+
     CBaseLogObject* pouLogObj = FindLoggingBlock(ushBlk);
 
     if (pouLogObj != NULL)
@@ -410,7 +401,7 @@ HRESULT CFrameProcessor_Common::GetLoggingBlock(USHORT ushBlk, SLOGINFO& sLogObj
         hResult = S_OK;
     }
 
-    return hResult;
+	return hResult;
 }
 
 HRESULT CFrameProcessor_Common::SetLoggingBlock(USHORT ushBlk, const SLOGINFO& sLogObject)
@@ -428,24 +419,27 @@ HRESULT CFrameProcessor_Common::SetLoggingBlock(USHORT ushBlk, const SLOGINFO& s
         }
     }
 
-    return hResult;
+	return hResult;
 }
 
 // Getter for the logging configuration data
 HRESULT CFrameProcessor_Common::GetConfigData(BYTE** ppvConfigData, UINT& unLength)
 {
-    BYTE* pbBuff = new BYTE[unGetBufSize()];
+	BYTE *pbBuff = new BYTE[unGetBufSize()];
     *ppvConfigData = pbBuff;
+
     CLogObjArray* pomCurrArray = GetActiveLogObjArray();
+
     BYTE bVersion = VERSION_CURR;
     COPY_DATA(pbBuff, &bVersion, sizeof(bVersion));
-    USHORT ushLogBlks = (USHORT) (pomCurrArray->GetSize());
+
+	USHORT ushLogBlks = (USHORT) (pomCurrArray->GetSize());
+
     COPY_DATA(pbBuff, &ushLogBlks, sizeof(ushLogBlks));
 
-    for (USHORT i = 0; i < ushLogBlks; i++)
-    {
+	for (USHORT i = 0; i < ushLogBlks; i++)
+	{
         CBaseLogObject* pouLogObj = pomCurrArray->GetAt(i);
-
         if (NULL != pouLogObj)
         {
             pbBuff = pouLogObj->GetConfigData(pbBuff);
@@ -454,9 +448,10 @@ HRESULT CFrameProcessor_Common::GetConfigData(BYTE** ppvConfigData, UINT& unLeng
         {
             ASSERT(FALSE);
         }
-    }
+	}
 
     unLength = unGetBufSize();
+
     return S_OK;
 }
 
@@ -469,19 +464,21 @@ HRESULT CFrameProcessor_Common::SetConfigData(BYTE* pvDataStream, const CString&
     }
 
     ClearLoggingBlockList();
-    BYTE* pbBuff = pvDataStream;
+
+    BYTE *pbBuff = pvDataStream;
     BYTE bVersion = 0;
-    USHORT ushLogBlks = 0;
+	USHORT ushLogBlks = 0;
+
     COPY_DATA_2(&bVersion, pbBuff, sizeof(bVersion));
     COPY_DATA_2(&ushLogBlks, pbBuff, sizeof(ushLogBlks));
 
-    m_omStrVersion = omStrVersion;
-    for (USHORT i = 0; i < ushLogBlks; i++)
-    {
+	m_omStrVersion = omStrVersion;
+	for (USHORT i = 0; i < ushLogBlks; i++)
+	{
         CBaseLogObject* pouBaseLogObj = CreateNewLogObj(m_omStrVersion);
-        pbBuff = pouBaseLogObj->SetConfigData(pbBuff, bVersion);
+		pbBuff = pouBaseLogObj->SetConfigData(pbBuff, bVersion);
         m_omLogListTmp.Add(pouBaseLogObj);
-    }
+	}
 
     return S_OK;
 }
@@ -493,13 +490,13 @@ BOOL CFrameProcessor_Common::IsClientBufferON(void)
 
 HRESULT CFrameProcessor_Common::LogString(CString& omStr)
 {
-    USHORT ushLogBlks = (USHORT) (m_omLogObjectArray.GetSize());
+	USHORT ushLogBlks = (USHORT) (m_omLogObjectArray.GetSize());
 
-    for (USHORT i = 0; i < ushLogBlks; i++)
-    {
-        CBaseLogObject* pouCurrLogObj = m_omLogObjectArray.GetAt(i);
+	for (USHORT i = 0; i < ushLogBlks; i++)
+	{
+		CBaseLogObject* pouCurrLogObj = m_omLogObjectArray.GetAt(i);
         pouCurrLogObj->bLogString(omStr);
-    }
+	}
 
     return S_OK;
 }
@@ -517,6 +514,7 @@ BOOL CFrameProcessor_Common::IsFilterON(void)
 HRESULT CFrameProcessor_Common::EnableLoggingBlock(USHORT ushBlk, BOOL bEnable)
 {
     HRESULT hResult = S_FALSE;
+
     CBaseLogObject* pouLogObj = FindLoggingBlock(ushBlk);
 
     if (NULL != pouLogObj)
@@ -543,17 +541,16 @@ HRESULT CFrameProcessor_Common::AddLoggingBlock(const SLOGINFO& sLogObject)
     if (bIsEditingON())
     {
 		CBaseLogObject* pouCurrLogBlk = CreateNewLogObj(m_omStrVersion);
-
-        if (NULL != pouCurrLogBlk)
-        {
-            pouCurrLogBlk->SetLogInfo(sLogObject);
-            m_omLogListTmp.Add(pouCurrLogBlk);
-            hResult = S_OK;
-        }
-        else
-        {
-            ASSERT(FALSE);
-        }
+		if (NULL != pouCurrLogBlk)
+		{
+			pouCurrLogBlk->SetLogInfo(sLogObject);
+			m_omLogListTmp.Add(pouCurrLogBlk);
+			hResult = S_OK;
+		}
+		else
+		{
+			ASSERT(FALSE);
+		}
     }
 
     return hResult;
@@ -572,7 +569,7 @@ HRESULT CFrameProcessor_Common::RemoveLoggingBlock(USHORT ushBlk)
         }
     }
 
-    return hResult;
+	return hResult;
 }
 
 HRESULT CFrameProcessor_Common::Reset(void)
@@ -581,6 +578,7 @@ HRESULT CFrameProcessor_Common::Reset(void)
     //m_omLogListTmp.Copy(m_omLogObjectArray);
     vCopyLogObjArray(m_omLogListTmp, m_omLogObjectArray);
     m_bLogFlagTmp = m_bExprnFlag_Log;
+
     return S_OK;
 }
 
@@ -605,6 +603,7 @@ HRESULT CFrameProcessor_Common::StartEditingSession(void)
 {
     Reset();
     m_bEditingON = TRUE;
+
     return S_OK;
 }
 
@@ -618,7 +617,6 @@ HRESULT CFrameProcessor_Common::StopEditingSession(BOOL bConfirm)
         {
             hResult = Confirm();
         }
-
         if (S_OK == hResult) // Wrap up only if everything is successful
         {
             vEmptyLogObjArray(m_omLogListTmp); // Clean the temporary repository
@@ -629,55 +627,54 @@ HRESULT CFrameProcessor_Common::StopEditingSession(BOOL bConfirm)
     {
         hResult = S_FALSE; // Not supposed to call otherwise
     }
-
+ 
     return hResult;
 }
 
 HRESULT CFrameProcessor_Common::SetDatabaseFiles(const CStringArray& omList)
 {
-    HRESULT hResult = S_OK; // Success is default assumption
-    CLogObjArray* pomCurrArray = GetActiveLogObjArray();
+	HRESULT hResult = S_OK; // Success is default assumption
 
-    if (NULL != pomCurrArray)
-    {
-        for (int nIdx = 0; nIdx < pomCurrArray->GetSize(); nIdx++)
-        {
-            CBaseLogObject* pouCurrLogObj = pomCurrArray->GetAt(nIdx);
+	CLogObjArray* pomCurrArray = GetActiveLogObjArray();
+	if (NULL != pomCurrArray)
+	{
+		for (int nIdx = 0; nIdx < pomCurrArray->GetSize(); nIdx++)
+		{
+			CBaseLogObject* pouCurrLogObj = pomCurrArray->GetAt(nIdx);
 
-            if (NULL != pouCurrLogObj)
-            {
-                pouCurrLogObj->Der_SetDatabaseFiles(omList);
-            }
-        }
-    }
+			if (NULL != pouCurrLogObj)
+			{
+				pouCurrLogObj->Der_SetDatabaseFiles(omList);
+			}
+		}
+	}
 
-    return hResult;
+	return hResult;
 }
 
-void CFrameProcessor_Common::GetDatabaseFiles(CStringArray& /*omList*/)
+void CFrameProcessor_Common::GetDatabaseFiles(CStringArray& omList)
 {
-    //return m_omListDBFiles;
+	//return m_omListDBFiles;
 }
 
 void CFrameProcessor_Common::SetChannelBaudRateDetails
-(SCONTROLLER_DETAILS* controllerDetails,
- int nNumChannels)
+							(SCONTROLER_DETAILS* controllerDetails, 
+							int nNumChannels)
 {
-    CLogObjArray* pomCurrArray = GetActiveLogObjArray();
+	CLogObjArray* pomCurrArray = GetActiveLogObjArray();
+	if (NULL != pomCurrArray)
+	{
+		for (int nIdx = 0; nIdx < pomCurrArray->GetSize(); nIdx++)
+		{
+			CBaseLogObject* pouCurrLogObj = pomCurrArray->GetAt(nIdx);
 
-    if (NULL != pomCurrArray)
-    {
-        for (int nIdx = 0; nIdx < pomCurrArray->GetSize(); nIdx++)
-        {
-            CBaseLogObject* pouCurrLogObj = pomCurrArray->GetAt(nIdx);
-
-            if (NULL != pouCurrLogObj)
-            {
-                pouCurrLogObj->Der_SetChannelBaudRateDetails(controllerDetails,
-                        nNumChannels);
-            }
-        }
-    }
+			if (NULL != pouCurrLogObj)
+			{
+				pouCurrLogObj->Der_SetChannelBaudRateDetails(controllerDetails,
+															nNumChannels);
+			}
+		}
+	}
 }
 
 /* End of alias functions in CFrameProcessor_Common */

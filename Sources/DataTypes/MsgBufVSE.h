@@ -16,17 +16,24 @@
 /**
  * \file      MsgBufVSE.h
  * \brief     Defines concrete class for circular queue in VSE.
- * \author    Pradeep Kadoor, Tobias Lorenz
+ * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Defines concrete class for circular queue in VSE.
  */
 
-#pragma once
 
-/* Project includes */
+#if !defined MSGBUFVSE_H__INCLUDED_
+#define MSGBUFVSE_H__INCLUDED_
+
 #include "BaseMsgBufAll.h"
 
+/////////////////////////////////////////////////////////////////////////////////////
+/**********************************************************************************
+Class Name      :   CMsgBufVSE
+Authors         :   Pradeep Kadoor
+Date Created    :   22/06/2009
+************************************************************************************/
 class CMsgBufVSE : public CBaseMsgBufVSE
 {
 private:
@@ -49,7 +56,7 @@ private:
 public:
     CMsgBufVSE();
     ~CMsgBufVSE();
-    /* Reads current message from the buffer.
+    /* Reads current message from the buffer. 
     Caller has to allocate memory for the out parameter */
     HRESULT ReadFromBuffer(INT& nType, BYTE* psMsg, INT& nSize);
     /* Writes message into the buffer. Caller needs to allocate memory for the
@@ -71,3 +78,5 @@ public:
     /* Gets no of skipped msgs because of buffer overrun */
     int GetSkippedMsgCount(void) const;
 };
+
+#endif // MSGBUFVSE_H__INCLUDED_

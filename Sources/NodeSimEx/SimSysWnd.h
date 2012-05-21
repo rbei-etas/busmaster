@@ -22,56 +22,69 @@
  * Interface file for CSimSysWnd class
  */
 
-#pragma once
+#if !defined(AFX_SIMSYSWND_H__DD755039_8690_4732_8F81_7463F8690F70__INCLUDED_)
+#define AFX_SIMSYSWND_H__DD755039_8690_4732_8F81_7463F8690F70__INCLUDED_
 
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
+// SimSysWnd.h : header file
+//
 #include "Sim_MDIChildBase.h"
 /////////////////////////////////////////////////////////////////////////////
 // CSimSysWnd frame
 
 class CSimSysWnd : public CMDIChildBase
 {
-    DECLARE_DYNCREATE(CSimSysWnd)
+	DECLARE_DYNCREATE(CSimSysWnd)
 protected:
-
-
-    // Attributes
+	
+	
+	// Attributes
 public:
-
-    // Operations
+	
+	// Operations
 public:
-    // Default constructor
-    CSimSysWnd(ETYPE_BUS eBus = CAN);
-    // Standard destructor
-    virtual ~CSimSysWnd();
-    // To update window size and splitter after loading a conf file
-    void vUpdateWinStatus();
-    // To save window size and splitter postion before unloading a conf file
-    void vUpdateWndCo_Ords();
-
-    // Overrides
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CSimSysWnd)
+	// Default constructor
+	CSimSysWnd(ETYPE_BUS eBus = CAN);
+	// Standard destructor
+	virtual ~CSimSysWnd();
+	// To update window size and splitter after loading a conf file
+	void vUpdateWinStatus();
+	// To save window size and splitter postion before unloading a conf file
+	void vUpdateWndCo_Ords();
+	
+	// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CSimSysWnd)
 protected:
-    virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
-    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-    //}}AFX_VIRTUAL
-
-    // Implementation
+	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
+	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	//}}AFX_VIRTUAL
+	
+	// Implementation
 protected:
-    // Generated message map functions
-    //{{AFX_MSG(CSimSysWnd)
-    afx_msg void OnClose();
-    //}}AFX_MSG
-    DECLARE_MESSAGE_MAP()
+	// Generated message map functions
+	//{{AFX_MSG(CSimSysWnd)
+	afx_msg void OnClose();
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
 private:
-    ETYPE_BUS m_eBus;
+	ETYPE_BUS m_eBus;
     BOOL m_bSplitWndCreated;
     CSplitterWnd m_omSplitterWnd;
     // To calculate the splitter position when the window is resized.
-    void vCalculateSplitterPosition(CSize& cSize);
+	void vCalculateSplitterPosition(CSize& cSize);
     void vSaveSimSysFIles();
-
+    
 public:
     WINDOWPLACEMENT m_wWndPlacement;
     afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 };
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_SIMSYSWND_H__DD755039_8690_4732_8F81_7463F8690F70__INCLUDED_)

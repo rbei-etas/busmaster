@@ -22,31 +22,39 @@
  * Definition file for CNumEdit
  */
 
-#pragma once
+#if !defined(AFX_NUMEDIT_H__834127E5_9297_11D5_8AFA_DAC6E5A1C54B__INCLUDED_)
+#define AFX_NUMEDIT_H__834127E5_9297_11D5_8AFA_DAC6E5A1C54B__INCLUDED_
 
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
+// EditItem.h : header file
+
+/////////////////////////////////////////////////////////////////////////////
+// CEditItem window
 #include "Utility_structs.h"
 #include "RadixEdit.h"
 #include "NumSpinCtrl.h"
 class CNumEdit : public CRadixEdit
 {
-    // Construction
+// Construction
 public:
-    CNumEdit(int nItem, int nSubItem, CString& sContent, const SNUMERICINFO& sInfo);
+    CNumEdit(int nItem, int nSubItem, CString &sContent, const SNUMERICINFO& sInfo);
 
-    // Attributes
-public:
-
-    // Operations
+// Attributes
 public:
 
-    // Overrides
+// Operations
+public:
+
+// Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CEditItem)
-public:
+    public:
     virtual BOOL PreTranslateMessage(MSG* pMsg);
     //}}AFX_VIRTUAL
 
-    // Implementation
+// Implementation
 public:
     virtual ~CNumEdit();
 
@@ -55,7 +63,7 @@ protected:
     int     m_nItem;            // Item Index
     int     m_nSubItem;         // Sub Item index
     CString m_sContent;         // Initial text
-    CNumSpinCtrl* m_pomSpin;    // Pointer to Buddy control
+    CNumSpinCtrl *m_pomSpin;    // Pointer to Buddy control
     BOOL    m_bVK_ESCAPE;       // To store the Cancel status
     SNUMERICINFO    m_sInfo;    // To store numeric information
     //{{AFX_MSG(CEditItem)
@@ -67,3 +75,10 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 };
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_NUMEDIT_H__834127E5_9297_11D5_8AFA_DAC6E5A1C54B__INCLUDED_)

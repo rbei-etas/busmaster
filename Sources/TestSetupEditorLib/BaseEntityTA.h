@@ -21,8 +21,8 @@
  *
  * Contains The CBaseEntityTA Class Declarations.
  */
-
-#pragma once
+#if !defined(_TSEDITORlib_BASEENTITY_H_INCLUDED_)
+#define _TSEDITORlib_BASEENTITY_H_INCLUDED_
 
 #include <afxtempl.h>
 #include "DataBaseMsgList.h"
@@ -31,27 +31,27 @@
 
 class CBaseEntityTA
 {
-    //Member function
+//Member function
 public:
-    CBaseEntityTA(void);
-    virtual ~CBaseEntityTA(void);
+	CBaseEntityTA(void);
+	virtual ~CBaseEntityTA(void);
     CBaseEntityTA(const CBaseEntityTA& RefObj);
     CBaseEntityTA& operator=(const CBaseEntityTA& RefObj);
 
-    virtual HRESULT AddSubEntry(CBaseEntityTA* pouSubEntryObj);
-    virtual HRESULT DeleteSubEntry(CBaseEntityTA* pouSubEntryObj);
+	virtual HRESULT AddSubEntry(CBaseEntityTA* pouSubEntryObj);
+	virtual HRESULT DeleteSubEntry(CBaseEntityTA* pouSubEntryObj);
     virtual HRESULT DeleteSubEntry(INT index);
     virtual HRESULT GetData(MSXML2::IXMLDOMNodePtr& /*pIDomNode*/);
-    virtual HRESULT GetEntityData(eTYPE_ENTITY /*eCurrEntityType*/, void* /*pvEntityData*/);
+	virtual HRESULT GetEntityData(eTYPE_ENTITY /*eCurrEntityType*/, void* /*pvEntityData*/);
     virtual const HRESULT GetSubEntityObj(UINT unIndex, CBaseEntityTA**  pouSubEntity);
     virtual HRESULT GetSubEntryCount(UINT& unTotal);
     virtual HRESULT RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, CBaseEntityTA* pouCurrSubEntity);
     virtual HRESULT SetData(MSXML2::IXMLDOMElementPtr& /*pIDomTestCaseNode*/);
-    virtual HRESULT SetEntityData(eTYPE_ENTITY /*eCurrEntityType*/, void* /*pvEntityData*/);
+	virtual HRESULT SetEntityData(eTYPE_ENTITY /*eCurrEntityType*/, void* /*pvEntityData*/);
     virtual HRESULT RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, UINT unNewPosIndex);
     virtual HRESULT ValidateEntity(CString& omStrResult);
-    virtual eTYPE_ENTITY GetEntityType(void);
-
+	virtual eTYPE_ENTITY GetEntityType(void);
+    
 
     HRESULT SearchEntityObject(DWORD dwId, CBaseEntityTA** pEnityObject);
     HRESULT SetDatabaseFile(CString& omstrDataBasePath);
@@ -60,14 +60,15 @@ public:
     void vEnableEntity(BOOL bEnable);
     BOOL bGetEnableStatus(void);
     DWORD GetID(void);
-
-    //Member variables
+   
+//Member variables
 public:
     static CDataBaseMsgList m_ouDataBaseManager;
 private:
-    static DWORD m_dwNextID;
+	static DWORD m_dwNextID;
 protected:
     BOOL m_bEnable;
-    DWORD m_dwID;
-    eTYPE_ENTITY m_eType;
+	DWORD m_dwID;
+	eTYPE_ENTITY m_eType;
 };
+#endif // !defined(EA_6EF063BF_CCEA_475f_9A0F_6AEE3025CBDB__INCLUDED_)

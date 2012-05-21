@@ -1,0 +1,298 @@
+.rn '' }`
+''' $RCSfile$$Revision$$Date$
+'''
+''' $Log$
+'''
+.de Sh
+.br
+.if t .Sp
+.ne 5
+.PP
+\fB\\$1\fR
+.PP
+..
+.de Sp
+.if t .sp .5v
+.if n .sp
+..
+.de Ip
+.br
+.ie \\n(.$>=3 .ne \\$3
+.el .ne 3
+.IP "\\$1" \\$2
+..
+.de Vb
+.ft CW
+.nf
+.ne \\$1
+..
+.de Ve
+.ft R
+
+.fi
+..
+'''
+'''
+'''     Set up \*(-- to give an unbreakable dash;
+'''     string Tr holds user defined translation string.
+'''     Bell System Logo is used as a dummy character.
+'''
+.tr \(*W-|\(bv\*(Tr
+.ie n \{\
+.ds -- \(*W-
+.ds PI pi
+.if (\n(.H=4u)&(1m=24u) .ds -- \(*W\h'-12u'\(*W\h'-12u'-\" diablo 10 pitch
+.if (\n(.H=4u)&(1m=20u) .ds -- \(*W\h'-12u'\(*W\h'-8u'-\" diablo 12 pitch
+.ds L" ""
+.ds R" ""
+'''   \*(M", \*(S", \*(N" and \*(T" are the equivalent of
+'''   \*(L" and \*(R", except that they are used on ".xx" lines,
+'''   such as .IP and .SH, which do another additional levels of
+'''   double-quote interpretation
+.ds M" """
+.ds S" """
+.ds N" """""
+.ds T" """""
+.ds L' '
+.ds R' '
+.ds M' '
+.ds S' '
+.ds N' '
+.ds T' '
+'br\}
+.el\{\
+.ds -- \(em\|
+.tr \*(Tr
+.ds L" ``
+.ds R" ''
+.ds M" ``
+.ds S" ''
+.ds N" ``
+.ds T" ''
+.ds L' `
+.ds R' '
+.ds M' `
+.ds S' '
+.ds N' `
+.ds T' '
+.ds PI \(*p
+'br\}
+.\"	If the F register is turned on, we'll generate
+.\"	index entries out stderr for the following things:
+.\"		TH	Title 
+.\"		SH	Header
+.\"		Sh	Subsection 
+.\"		Ip	Item
+.\"		X<>	Xref  (embedded
+.\"	Of course, you have to process the output yourself
+.\"	in some meaninful fashion.
+.if \nF \{
+.de IX
+.tm Index:\\$1\t\\n%\t"\\$2"
+..
+.nr % 0
+.rr F
+.\}
+.TH ADDR2LINE 1 "binutils-2.11.90" "14/Sep/101" "GNU"
+.UC
+.if n .hy 0
+.ds C+ C\v'-.1v'\h'-1p'\s-2+\h'-1p'+\s0\v'.1v'\h'-1p'
+.de CQ          \" put $1 in typewriter font
+.ft CW
+'if n "\c
+'if t \\&\\$1\c
+'if n \\&\\$1\c
+'if n \&"
+\\&\\$2 \\$3 \\$4 \\$5 \\$6 \\$7
+'.ft R
+..
+.\" @(#)ms.acc 1.5 88/02/08 SMI; from UCB 4.2
+.	\" AM - accent mark definitions
+.bd B 3
+.	\" fudge factors for nroff and troff
+.if n \{\
+.	ds #H 0
+.	ds #V .8m
+.	ds #F .3m
+.	ds #[ \f1
+.	ds #] \fP
+.\}
+.if t \{\
+.	ds #H ((1u-(\\\\n(.fu%2u))*.13m)
+.	ds #V .6m
+.	ds #F 0
+.	ds #[ \&
+.	ds #] \&
+.\}
+.	\" simple accents for nroff and troff
+.if n \{\
+.	ds ' \&
+.	ds ` \&
+.	ds ^ \&
+.	ds , \&
+.	ds ~ ~
+.	ds ? ?
+.	ds ! !
+.	ds /
+.	ds q
+.\}
+.if t \{\
+.	ds ' \\k:\h'-(\\n(.wu*8/10-\*(#H)'\'\h"|\\n:u"
+.	ds ` \\k:\h'-(\\n(.wu*8/10-\*(#H)'\`\h'|\\n:u'
+.	ds ^ \\k:\h'-(\\n(.wu*10/11-\*(#H)'^\h'|\\n:u'
+.	ds , \\k:\h'-(\\n(.wu*8/10)',\h'|\\n:u'
+.	ds ~ \\k:\h'-(\\n(.wu-\*(#H-.1m)'~\h'|\\n:u'
+.	ds ? \s-2c\h'-\w'c'u*7/10'\u\h'\*(#H'\zi\d\s+2\h'\w'c'u*8/10'
+.	ds ! \s-2\(or\s+2\h'-\w'\(or'u'\v'-.8m'.\v'.8m'
+.	ds / \\k:\h'-(\\n(.wu*8/10-\*(#H)'\z\(sl\h'|\\n:u'
+.	ds q o\h'-\w'o'u*8/10'\s-4\v'.4m'\z\(*i\v'-.4m'\s+4\h'\w'o'u*8/10'
+.\}
+.	\" troff and (daisy-wheel) nroff accents
+.ds : \\k:\h'-(\\n(.wu*8/10-\*(#H+.1m+\*(#F)'\v'-\*(#V'\z.\h'.2m+\*(#F'.\h'|\\n:u'\v'\*(#V'
+.ds 8 \h'\*(#H'\(*b\h'-\*(#H'
+.ds v \\k:\h'-(\\n(.wu*9/10-\*(#H)'\v'-\*(#V'\*(#[\s-4v\s0\v'\*(#V'\h'|\\n:u'\*(#]
+.ds _ \\k:\h'-(\\n(.wu*9/10-\*(#H+(\*(#F*2/3))'\v'-.4m'\z\(hy\v'.4m'\h'|\\n:u'
+.ds . \\k:\h'-(\\n(.wu*8/10)'\v'\*(#V*4/10'\z.\v'-\*(#V*4/10'\h'|\\n:u'
+.ds 3 \*(#[\v'.2m'\s-2\&3\s0\v'-.2m'\*(#]
+.ds o \\k:\h'-(\\n(.wu+\w'\(de'u-\*(#H)/2u'\v'-.3n'\*(#[\z\(de\v'.3n'\h'|\\n:u'\*(#]
+.ds d- \h'\*(#H'\(pd\h'-\w'~'u'\v'-.25m'\f2\(hy\fP\v'.25m'\h'-\*(#H'
+.ds D- D\\k:\h'-\w'D'u'\v'-.11m'\z\(hy\v'.11m'\h'|\\n:u'
+.ds th \*(#[\v'.3m'\s+1I\s-1\v'-.3m'\h'-(\w'I'u*2/3)'\s-1o\s+1\*(#]
+.ds Th \*(#[\s+2I\s-2\h'-\w'I'u*3/5'\v'-.3m'o\v'.3m'\*(#]
+.ds ae a\h'-(\w'a'u*4/10)'e
+.ds Ae A\h'-(\w'A'u*4/10)'E
+.ds oe o\h'-(\w'o'u*4/10)'e
+.ds Oe O\h'-(\w'O'u*4/10)'E
+.	\" corrections for vroff
+.if v .ds ~ \\k:\h'-(\\n(.wu*9/10-\*(#H)'\s-2\u~\d\s+2\h'|\\n:u'
+.if v .ds ^ \\k:\h'-(\\n(.wu*10/11-\*(#H)'\v'-.4m'^\v'.4m'\h'|\\n:u'
+.	\" for low resolution devices (crt and lpr)
+.if \n(.H>23 .if \n(.V>19 \
+\{\
+.	ds : e
+.	ds 8 ss
+.	ds v \h'-1'\o'\(aa\(ga'
+.	ds _ \h'-1'^
+.	ds . \h'-1'.
+.	ds 3 3
+.	ds o a
+.	ds d- d\h'-1'\(ga
+.	ds D- D\h'-1'\(hy
+.	ds th \o'bp'
+.	ds Th \o'LP'
+.	ds ae ae
+.	ds Ae AE
+.	ds oe oe
+.	ds Oe OE
+.\}
+.rm #[ #] #H #V #F C
+.SH "NAME"
+addr2line \- convert addresses into file names and line numbers.
+.SH "SYNOPSIS"
+addr2line [\fB\-b\fR \fIbfdname\fR|\fB--target=\fR\fIbfdname\fR]
+          [\fB\-C\fR|\fB--demangle\fR[=\fIstyle\fR]
+          [\fB\-e\fR \fIfilename\fR|\fB--exe=\fR\fIfilename\fR]
+          [\fB\-f\fR|\fB--functions\fR] [\fB\-s\fR|\fB--basename\fR]
+          [\fB\-H\fR|\fB--help\fR] [\fB\-V\fR|\fB--version\fR]
+          [addr addr ...]
+.SH "DESCRIPTION"
+\fBaddr2line\fR translates program addresses into file names and line
+numbers.  Given an address and an executable, it uses the debugging
+information in the executable to figure out which file name and line
+number are associated with a given address.
+.PP
+The executable to use is specified with the \fB\-e\fR option.  The
+default is the file \fIa.out\fR.
+.PP
+\fBaddr2line\fR has two modes of operation.
+.PP
+In the first, hexadecimal addresses are specified on the command line,
+and \fBaddr2line\fR displays the file name and line number for each
+address.
+.PP
+In the second, \fBaddr2line\fR reads hexadecimal addresses from
+standard input, and prints the file name and line number for each
+address on standard output.  In this mode, \fBaddr2line\fR may be used
+in a pipe to convert dynamically chosen addresses.
+.PP
+The format of the output is \fBFILENAME:LINENO\fR.  The file name and
+line number for each address is printed on a separate line.  If the
+\fB\-f\fR option is used, then each \fBFILENAME:LINENO\fR line is
+preceded by a \fBFUNCTIONNAME\fR line which is the name of the function
+containing the address.
+.PP
+If the file name or function name can not be determined,
+\fBaddr2line\fR will print two question marks in their place.  If the
+line number can not be determined, \fBaddr2line\fR will print 0.
+.SH "OPTIONS"
+The long and short forms of options, shown here as alternatives, are
+equivalent.
+.Ip "\fB\-b\fR \fIbfdname\fR" 4
+.Ip "\fB--target=\fR\fIbfdname\fR" 4
+Specify that the object-code format for the object files is
+\fIbfdname\fR.
+.Ip "\fB\-C\fR" 4
+.Ip "\fB--demangle[=\fR\fIstyle\fR\fB]\fR" 4
+Decode (\fIdemangle\fR) low-level symbol names into user-level names.
+Besides removing any initial underscore prepended by the system, this
+makes \*(C+ function names readable.  Different compilers have different
+mangling styles. The optional demangling style argument can be used to 
+choose an appropriate demangling style for your compiler. 
+.Ip "\fB\-e\fR \fIfilename\fR" 4
+.Ip "\fB--exe=\fR\fIfilename\fR" 4
+Specify the name of the executable for which addresses should be
+translated.  The default file is \fIa.out\fR.
+.Ip "\fB\-f\fR" 4
+.Ip "\fB--functions\fR" 4
+Display function names as well as file and line number information.
+.Ip "\fB\-s\fR" 4
+.Ip "\fB--basenames\fR" 4
+Display only the base of each file name.
+.SH "SEE ALSO"
+Info entries for \fIbinutils\fR.
+.SH "COPYRIGHT"
+Copyright (c) 1991, 92, 93, 94, 95, 96, 97, 98, 99, 2000, 2001 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled \*(L"GNU Free Documentation License\*(R".
+
+.rn }` ''
+.IX Title "ADDR2LINE 1"
+.IX Name "addr2line - convert addresses into file names and line numbers."
+
+.IX Header "NAME"
+
+.IX Header "SYNOPSIS"
+
+.IX Header "DESCRIPTION"
+
+.IX Header "OPTIONS"
+
+.IX Item "\fB\-b\fR \fIbfdname\fR"
+
+.IX Item "\fB--target=\fR\fIbfdname\fR"
+
+.IX Item "\fB\-C\fR"
+
+.IX Item "\fB--demangle[=\fR\fIstyle\fR\fB]\fR"
+
+.IX Item "\fB\-e\fR \fIfilename\fR"
+
+.IX Item "\fB--exe=\fR\fIfilename\fR"
+
+.IX Item "\fB\-f\fR"
+
+.IX Item "\fB--functions\fR"
+
+.IX Item "\fB\-s\fR"
+
+.IX Item "\fB--basenames\fR"
+
+.IX Header "SEE ALSO"
+
+.IX Header "COPYRIGHT"
+

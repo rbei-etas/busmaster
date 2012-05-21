@@ -41,18 +41,17 @@ if @error Then
 EndIf
 
 ; BUSMASTER Setup: Installation Options
-WinWaitActive("BUSMASTER Setup: Installation Options", "", 3)
-if @error Then
-	ConsoleWriteError("Installation Options didn't activate" & @CRLF)
-	Exit
-EndIf
-send("{DOWN}") ; Full
-send("!N") ; Next
-WinWaitClose("BUSMASTER Setup: Installation Options", "", 3)
-if @error Then
-	ConsoleWriteError("Installation Options didn't close" & @CRLF)
-	Exit
-EndIf
+;WinWaitActive("BUSMASTER Setup: Installation Options", "", 3)
+;if @error Then
+;	ConsoleWriteError("Installation Options didn't activate" & @CRLF)
+;	Exit
+;EndIf
+;send("!N") ; Next
+;WinWaitClose("BUSMASTER Setup: Installation Options", "", 3)
+;if @error Then
+;	ConsoleWriteError("Installation Options didn't close" & @CRLF)
+;	Exit
+;EndIf
 
 ; BUSMASTER Setup: Installation Folder
 WinWaitActive("BUSMASTER Setup: Installation Folder", "", 3)
@@ -89,39 +88,5 @@ send("!C") ; Close
 WinWaitClose("BUSMASTER Setup: Completed", "", 3)
 if @error Then
 	ConsoleWriteError("Completed didn't close" & @CRLF)
-	Exit
-EndIf
-
-; Check installation
-If Not FileExists(@ProgramFilesDir & "\BUSMASTER\DMGraph.dll") Then
-	ConsoleWriteError("DMGraph.dll didn't install" & @CRLF)
-	Exit
-EndIf
-If Not FileExists(@ProgramFilesDir & "\BUSMASTER\ETASneo40.dll") Then
-	ConsoleWriteError("ETASneo40.dll didn't install" & @CRLF)
-	Exit
-EndIf
-If Not FileExists(@ProgramFilesDir & "\BUSMASTER\icsneo40.dll") Then
-	ConsoleWriteError("icsneo40.dll didn't install" & @CRLF)
-	Exit
-EndIf
-If Not FileExists(@ProgramFilesDir & "\BUSMASTER\canlib32.dll") Then
-	ConsoleWriteError("canlib32.dll didn't install" & @CRLF)
-	Exit
-EndIf
-If Not FileExists(@ProgramFilesDir & "\BUSMASTER\mhstcan.dll") Then
-	ConsoleWriteError("mhstcan.dll didn't install" & @CRLF)
-	Exit
-EndIf
-If Not FileExists(@ProgramFilesDir & "\BUSMASTER\CanApi2.dll") Then
-	ConsoleWriteError("CanApi2.dll didn't install" & @CRLF)
-	Exit
-EndIf
-If Not FileExists(@ProgramFilesDir & "\BUSMASTER\vxlapi.dll") Then
-	ConsoleWriteError("vxlapi.dll didn't install" & @CRLF)
-	Exit
-EndIf
-If Not FileExists(@ProgramFilesDir & "\BUSMASTER\MinGW") Then
-	ConsoleWriteError("MinGW didn't install" & @CRLF)
 	Exit
 EndIf

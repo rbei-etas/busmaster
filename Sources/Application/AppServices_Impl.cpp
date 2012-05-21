@@ -25,7 +25,7 @@
 #include "StdAfx.h"
 #include "include/Error.h"
 
-#include "UIThread.h"
+#include "TraceWnd/UIThread.h"
 #include "AppServices_Impl.h"
 
 
@@ -53,7 +53,7 @@ CAppServices_Impl::~CAppServices_Impl()
  *
  * Character buffer to be written on trace
  */
-BOOL CAppServices_Impl::bWriteToTrace(char* pcTraceStr)
+BOOL CAppServices_Impl::bWriteToTrace(TCHAR* pcTraceStr)
 {
     BOOL Result = FALSE;
 
@@ -63,6 +63,5 @@ BOOL CAppServices_Impl::bWriteToTrace(char* pcTraceStr)
         m_podUIThread->vAddString(omStr);
         Result = TRUE;
     }
-
     return Result;
 }

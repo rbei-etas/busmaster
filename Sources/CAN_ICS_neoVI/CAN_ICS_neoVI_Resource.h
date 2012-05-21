@@ -18,9 +18,10 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-
-#pragma once
-
+//{{NO_DEPENDENCIES}}
+// Microsoft Visual C++ generated include file.
+// Used by ConfigDialogsDIL.rc
+//
 #define IDC_BUT_REMOVE                  3
 #define IDC_BUT_SELECT                  5
 #define IDD_PPAGE_CONTROLLER            107
@@ -92,3 +93,14 @@
 #define IDC_CHECK_SELF_REC              3010
 #define IDC_COMB_SAMPOINT               3011
 #define IDC_EDIT_CHANNEL_DESC           3012
+
+// Next default values for new objects
+// 
+#ifdef APSTUDIO_INVOKED
+#ifndef APSTUDIO_READONLY_SYMBOLS
+#define _APS_NEXT_RESOURCE_VALUE        3008
+#define _APS_NEXT_COMMAND_VALUE         32771
+#define _APS_NEXT_CONTROL_VALUE         3013
+#define _APS_NEXT_SYMED_VALUE           3000
+#endif
+#endif

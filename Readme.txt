@@ -18,6 +18,3 @@
 
 7. BUSMASTER Uses the following opensource code taken from Codeproject and its license can be found at http://www.codeproject.com/info/cpol10.aspx
 	7.1. Dm Graph  		: The Complete source code can be downloaded from http://www.codeproject.com/KB/miscctrl/ntgraph_activex.aspx 
-	7.2. Colourpicker	: The Complete source code can be downloaded from http://www.codeproject.com/KB/miscctrl/colour_picker.aspx
-	7.3. Colourpopup	: The Complete source code can be downloaded from http://www.codeproject.com/KB/miscctrl/colour_picker.aspx
-	7.4. Memdc			: The Complete source code can be downloaded from http://www.codeproject.com/KB/GDI/flickerfree.aspx?msg=1737391

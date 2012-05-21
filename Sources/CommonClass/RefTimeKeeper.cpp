@@ -25,35 +25,52 @@
 #include "CommonClass_stdafx.h"
 #include "reftimekeeper.h"
 
-/**
- * \brief Constructor
- *
- * Constructor
- */
+
+/*******************************************************************************
+  Function Name  : CRefTimeKeeper
+  Input(s)       : -
+  Output         : -
+  Functionality  : Constructor
+  Member of      : CRefTimeKeeper
+  Author(s)      : Anish
+  Date Created   : 09.2.2010
+  Modifications  : 
+*******************************************************************************/
 CRefTimeKeeper::CRefTimeKeeper(void)
 {
     m_qwRefSysTime  = 0;
     m_qwAbsBaseTime = 0;
 }
 
-/**
- * \brief Destructor
- *
- * Destructor
- */
+/*******************************************************************************
+  Function Name  : ~CRefTimeKeeper
+  Input(s)       : -
+  Output         : -
+  Functionality  : Destructor
+  Member of      : CRefTimeKeeper
+  Author(s)      : Anish
+  Date Created   : 09.2.2010
+  Modifications  : 
+*******************************************************************************/
 CRefTimeKeeper::~CRefTimeKeeper(void)
 {
 }
 
-/**
- * \brief Set Time Parameters
- *
- * Save current system time and connection time
- */
+
+/*******************************************************************************
+  Function Name  : vSetTimeParams
+  Input(s)       : -
+  Output         : -
+  Functionality  : Save current system time and connection time
+  Member of      : CRefTimeKeeper
+  Author(s)      : Anish
+  Date Created   : 09.2.2010
+  Modifications  : 
+*******************************************************************************/
 void CRefTimeKeeper::vSetTimeParams(SYSTEMTIME& CurrSysTime, UINT64 qwConnectTime)
 {
     m_qwRefSysTime = (CurrSysTime.wHour * 3600 + CurrSysTime.wMinute * 60 +
-                      + CurrSysTime.wSecond) * 10000 + CurrSysTime.wMilliseconds * 10;
+               + CurrSysTime.wSecond) * 10000 + CurrSysTime.wMilliseconds * 10;
     m_qwAbsBaseTime = qwConnectTime;
 }
 

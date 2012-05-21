@@ -22,7 +22,8 @@
  * Definition file for CFrameProcessor_CAN class.
  */
 
-#pragma once
+#if !defined FRAMEPROCESSOR_CAN_H__INCLUDED_
+#define FRAMEPROCESSOR_CAN_H__INCLUDED_
 
 #include "Include/BaseDefs.h"
 #include "BaseFrameProcessor_CAN.h"
@@ -35,18 +36,18 @@
 class CFrameProcessor_CAN : public CBaseFrameProcessor_CAN, CFrameProcessor_Common
 {
 private:
-    SCANPROC_PARAMS     m_sCANProcParams;
-    CCANBufFSE          m_ouFSEBufCAN;
+	SCANPROC_PARAMS		m_sCANProcParams;
+	CCANBufFSE			m_ouFSEBufCAN;
     CFormatMsgCAN       m_ouFormatMsgCAN;
     CBaseDIL_CAN*       m_pouDilCanInterface;
     void vEmptyLogObjArray(CLogObjArray& omLogObjArray);
-    // To create a new logging object
-    CBaseLogObject* CreateNewLogObj(const CString& omStrVersion);
+	// To create a new logging object
+	CBaseLogObject* CreateNewLogObj(const CString& omStrVersion);
     // To delete a logging object
     void DeleteLogObj(CBaseLogObject*& pouLogObj);
 
     // To create the time mode mapping
-    void CreateTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& unAbsTime);
+	void CreateTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& unAbsTime);
 
 
 public:
@@ -54,9 +55,9 @@ public:
     CFrameProcessor_CAN();      // Constructor
     ~CFrameProcessor_CAN();     // Destructor
 
-    BOOL InitInstance(void);
+	BOOL InitInstance(void);
     int ExitInstance(void);
-    void vRetrieveDataFromBuffer(void);
+	void vRetrieveDataFromBuffer(void);
 
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     // To initialise this module
@@ -67,7 +68,7 @@ public:
                                      const SFILTERAPPLIED_CAN& sFilterObj);
 
     // Getter for the filtering scheme of a logging block
-    HRESULT FPC_GetFilteringScheme(USHORT ushLogBlk,
+    HRESULT FPC_GetFilteringScheme(USHORT ushLogBlk, 
                                    SFILTERAPPLIED_CAN& sFilterObj);
 
     // To enable/disable updation of the client flexray frame buffer.
@@ -93,7 +94,7 @@ public:
     // Query function - client flexray buffer updation status (OFF/ON)
     BOOL FPC_IsClientCANBufON(void);
 
-    // Query function - current logging status (OFF/ON).
+    // Query function - current logging status (OFF/ON). 
     BOOL FPC_IsLoggingON(void);
 
     // Query function - current filtering status
@@ -138,12 +139,14 @@ public:
     // Setter for the logging configuration data
     HRESULT FPC_SetConfigData(BYTE* pvDataStream, const CString& omStrVersion);
 
-    // To update the associated database list to logger
-    HRESULT FPC_SetDatabaseFiles(const CStringArray& omList);
+	// To update the associated database list to logger
+	HRESULT FPC_SetDatabaseFiles(const CStringArray& omList);
 
-    // To update the channel baud rate info to logger
-    HRESULT FPC_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
-                                          int nNumChannels);
+	// To update the channel baud rate info to logger
+	HRESULT FPC_SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
+															int nNumChannels);
 
-    /* ENDS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
+	/* ENDS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
 };
+
+#endif // FRAMEPROCESSOR_CAN_H__INCLUDED_

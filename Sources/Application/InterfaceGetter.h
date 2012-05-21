@@ -22,7 +22,8 @@
  * Declaration file for getter functions for various interfaces.
  */
 
-#pragma once
+#if !defined INTERFACEGETTER_H__INCLUDED_
+#define INTERFACEGETTER_H__INCLUDED_
 
 // All forward declarations
 class CBaseFrameProcessor_CAN;
@@ -47,3 +48,6 @@ extern CBaseNodeSim* GetICANNodeSim(void);
 extern CBaseNodeSim* GetIJ1939NodeSim(void);
 extern CMsgSignal* GetIMsgDB(void);
 extern DWORD dwGetMonitorClientID(void);
+
+
+#endif // INTERFACEGETTER_H__INCLUDED_

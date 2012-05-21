@@ -28,9 +28,7 @@
 #include "ProjConfig.h"
 
 /**
- * \brief Constructor
- *
- * Constructor
+ * \brief Construction
  */
 CProjConfig::CProjConfig()
 {
@@ -38,124 +36,91 @@ CProjConfig::CProjConfig()
 }
 
 /**
- * \brief Destructor
- *
- * Destructor
+ * \brief Destruction
  */
 CProjConfig::~CProjConfig()
 {
-    vClearMap();
+	vClearMap();
 }
 
-/**
- * \brief Clear Map
- *
- * Clear the map of each section.
- */
 void CProjConfig::vClearMap(void)
 {
-    for (SECTIONMAP::iterator i = m_MapOfSection.begin(); i != m_MapOfSection.end(); ++i)
-    {
-        delete i->second;
-        i->second = NULL;
-    }
-
+	for (SECTIONMAP::iterator i = m_MapOfSection.begin(); 
+		 i != m_MapOfSection.end(); i++)
+	{
+		delete i->second;
+		i->second = NULL;
+	}
     m_MapOfSection.clear();
 }
 
-/**
- * \brief Get Section Count
- *
- * Gets the section count.
- */
+// Getters
+
 int CProjConfig::GetSectionCount()
 {
     return m_MapOfSection.size();
 }
 
-/**
- * \brief Get Project Details
- *
- * Gets the project details.
- */
-void CProjConfig::GetProjectDetail(PROJECTDATA& ProjDATA)
+void CProjConfig::GetProjectDetail(PROJECTDATA &ProjDATA)
 {
     ProjDATA = m_sProjectDetails;
 }
 
-/**
- * \brief Get Section List
- *
- * Gets the section list.
- */
 int CProjConfig::GetSectionList(list<string>& SectionList)
 {
     SectionList.empty();
-
-    for (SECTIONMAP::iterator i = m_MapOfSection.begin(); i != m_MapOfSection.end(); ++i)
-    {
+	for (SECTIONMAP::iterator i = m_MapOfSection.begin();
+         i != m_MapOfSection.end(); i++)
+	{
         SectionList.push_front(i->first);
-    }
+	}
 
     return GetSectionCount();
 }
 
-/**
- * \brief Get Section Data
- *
- * Gets the section data.
- */
-bool CProjConfig::GetSectionData(string SectionName, SECTIONDATA& SectionData)
+bool CProjConfig::GetSectionData(string SectionName, SECTIONDATA &SectionData)
 {
     bool bResult = false;
-    SECTIONMAP::const_iterator i;
-    i = m_MapOfSection.find(SectionName);
 
+    SECTIONMAP::const_iterator i;
+	i = m_MapOfSection.find(SectionName);
     if (i != m_MapOfSection.end())
     {
         SectionData = *(i->second);
         bResult = true;
     }
-    else
-    {
-        //MessageBox(NULL, "not found", "", MB_OK);
-    }
-
+	else
+	{
+		//MessageBox(NULL, "not found", "", MB_OK);
+	}
     return bResult;
 }
 
-/**
- * \brief Add/Modify Section Detail
- *
- * Adds or modifies the section details.
- */
+
+// Setters
+
 bool CProjConfig::AddModifySectionDetail(const SECTIONDATA& SectionData)
 {
     bool bAdded = false;
-    SECTIONMAP::iterator i;
-    i = m_MapOfSection.find(SectionData.m_omSectionName);
 
+	SECTIONMAP::iterator i;
+	i = m_MapOfSection.find(SectionData.m_omSectionName);
     if (i != m_MapOfSection.end())
     {
         *(i->second) = SectionData;
     }
     else
     {
-        SECTIONDATA* pNewSection = new SECTIONDATA;
-        *pNewSection = SectionData;
-        m_MapOfSection.insert(SECTIONMAP::value_type(SectionData.m_omSectionName,
-                              pNewSection));
+		SECTIONDATA* pNewSection = new SECTIONDATA;
+		*pNewSection = SectionData;
+        m_MapOfSection.insert(SECTIONMAP::value_type(SectionData.m_omSectionName, 
+                                                     pNewSection));
         bAdded = true;
     }
 
     return bAdded;
 }
 
-/**
- * \brief Modify Project Values
- *
- * Modifies the project values.
- */
 void CProjConfig::ModifyProjValues(const PROJECTDATA& ProjDATA)
 {
     m_sProjectDetails = ProjDATA;

@@ -21,8 +21,14 @@
  *
  * Interface file for CMessageList class
  */
+#if !defined(AFX_MESSAGELIST_H__5E48819F_A933_4E00_A57F_BE7B97361541__INCLUDED_)
+#define AFX_MESSAGELIST_H__5E48819F_A933_4E00_A57F_BE7B97361541__INCLUDED_
 
+#if _MSC_VER > 1000
 #pragma once
+#endif // _MSC_VER > 1000
+// MessageList.h : header file
+//
 
 // Definition of Flicker Free List Control
 #include "Utility/FFListCtrl.h"
@@ -35,58 +41,60 @@ private:
     // GDI Objects for background and selection brush
     HBRUSH m_hWhiteBrush, m_hBlueBrush;
 
-    // Construction
+// Construction
 public:
     CMessageList();
 
-    void OnChar(UINT nChar, UINT nRepeatCount, UINT nflags);
+	void OnChar(UINT nChar, UINT nRepeatCount, UINT nflags);
 	void OnKeyDown(UINT nChar, UINT nRepeatCount, UINT nflags);
-    // Attributes
+
+
+// Attributes
 public:
 
-    // Operations
+// Operations
 public:
 
-    // Overrides
+// Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMessageList)
     //}}AFX_VIRTUAL
 
 protected:
-    struct ColumnTitleState
-    {
-        ColumnTitleState()
-            :m_bVisible(false)
-            ,m_nOrigPosition(-1)
-            ,m_nOrigWidth(0)
-        {}
-        bool m_bVisible;
-        int  m_nOrigWidth;      // Width of the column before being hidden
-        int  m_nOrigPosition;   // Position of the column before being hidden
-    };
+	struct ColumnTitleState
+	{
+		ColumnTitleState()
+			:m_bVisible(false) 
+			,m_nOrigPosition(-1)
+			,m_nOrigWidth(0)			
+		{}
+		bool m_bVisible;
+		int  m_nOrigWidth;	    // Width of the column before being hidden
+		int  m_nOrigPosition;	// Position of the column before being hidden
+	};	
 
-    void InsertColumnTitleState(int nCol, bool bVisible, int nOrgWidth = 0);
-    void DeleteColumnTitleState(int nCol);
-    ColumnTitleState& GetColumnTitleState(int nCol);
-    int GetColumnTitleStateCount();
-    CArray<ColumnTitleState, ColumnTitleState>  m_ColumnTitleStates;
-public:
-    bool IsColumnShown(int nCol);
+	void InsertColumnTitleState(int nCol, bool bVisible, int nOrgWidth = 0);
+	void DeleteColumnTitleState(int nCol);
+	ColumnTitleState& GetColumnTitleState(int nCol);
+	int GetColumnTitleStateCount();
+	CArray<ColumnTitleState, ColumnTitleState>	m_ColumnTitleStates;	
+public: 
+	bool IsColumnShown(int nCol);
 
-    // Implementation
+// Implementation
 public:
     virtual ~CMessageList();
-    BOOL MakeColumnVisible(int nCol, bool bShow);
+	BOOL MakeColumnVisible(int nCol, bool bShow);
 
     // Generated message map functions
 protected:
     // Overwride to implement custom draw
     virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
-    virtual afx_msg void OnContextMenu(CWnd*, CPoint point);
-    virtual afx_msg LRESULT OnInsertColumn(WPARAM wParam, LPARAM lParam);
-    virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
-    virtual afx_msg BOOL OnHeaderEndDrag(UINT id, NMHDR* pNmhdr, LRESULT* pResult);
-    virtual afx_msg BOOL OnHeaderBeginResize(UINT id, NMHDR* pNmhdr, LRESULT* pResult);
+	virtual afx_msg void OnContextMenu(CWnd*, CPoint point);
+	virtual afx_msg LRESULT OnInsertColumn(WPARAM wParam, LPARAM lParam);
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+	virtual afx_msg BOOL OnHeaderEndDrag(UINT id, NMHDR* pNmhdr, LRESULT* pResult);
+	virtual afx_msg BOOL OnHeaderBeginResize(UINT id, NMHDR* pNmhdr, LRESULT* pResult);
 
     //{{AFX_MSG(CMessageList)
     afx_msg void OnDestroy();
@@ -94,3 +102,10 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 };
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_MESSAGELIST_H__5E48819F_A933_4E00_A57F_BE7B97361541__INCLUDED_)

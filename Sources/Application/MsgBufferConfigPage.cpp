@@ -21,41 +21,57 @@
  *
  * This file contain definition of all function of
  */
+#include "stdafx.h"                 // For standard include
+#include "BUSMASTER.h"            // For App definition
+#include "MsgBufferConfigPage.h"    // For class definition
 
-/* Project includes */
-#include "stdafx.h"                 /* For standard include */
-#include "BUSMASTER.h"              /* For App definition   */
-#include "MsgBufferConfigPage.h"    /* For class definition */
-
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 extern CCANMonitorApp theApp;
+/////////////////////////////////////////////////////////////////////////////
+// CMsgBufferConfigPage property page
 
 IMPLEMENT_DYNCREATE(CMsgBufferConfigPage, CPropertyPage)
 
-/**
- * \brief Standard default constructor
- *
- * Initialises data members
- */
-CMsgBufferConfigPage::CMsgBufferConfigPage() :
-    CPropertyPage(CMsgBufferConfigPage::IDD,
-                  IDS_PPAGE_TITLE_BUFFER)
+/******************************************************************************
+ Function Name  :   CMsgBufferConfigPage
+
+ Description    :   Standard default constructor
+ Member of      :   CMsgBufferConfigPage
+ Functionality  :   Initialises data members
+
+ Author(s)      :   Raja N
+ Date Created   :   22.07.2004
+ Modifications  :   
+******************************************************************************/
+CMsgBufferConfigPage::CMsgBufferConfigPage() : 
+                    CPropertyPage(CMsgBufferConfigPage::IDD,
+                        IDS_PPAGE_TITLE_BUFFER)
 {
+    //{{AFX_DATA_INIT(CMsgBufferConfigPage)
     m_unAppendSize = 0;
     m_unOverWriteSize = 0;
     m_unDisplayUpdateRate = 0;
-    m_pnBufferSize = NULL;
+    //}}AFX_DATA_INIT
 }
-
 void CMsgBufferConfigPage::vSetBufferSize(INT* pnBufferSize)
 {
     m_pnBufferSize = pnBufferSize;
 }
 
-/**
- * \brief Standard destructor
- *
- * Standard destructor
- */
+/******************************************************************************
+ Function Name  :   ~CMsgBufferConfigPage
+
+ Description    :   Standard destructor
+ Member of      :   CMsgBufferConfigPage
+
+ Author(s)      :   Raja N
+ Date Created   :   22.07.2004
+ Modifications  :
+******************************************************************************/
 CMsgBufferConfigPage::~CMsgBufferConfigPage()
 {
 }
@@ -63,37 +79,47 @@ CMsgBufferConfigPage::~CMsgBufferConfigPage()
 void CMsgBufferConfigPage::DoDataExchange(CDataExchange* pDX)
 {
     CPropertyPage::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CMsgBufferConfigPage)
     DDX_Text(pDX, IDC_EDIT_APPEND_SIZE, m_unAppendSize);
     DDV_MinMaxUInt(pDX, m_unAppendSize, defMIN_BUFFER_SIZE, defMAX_BUFFER_SIZE);
     DDX_Text(pDX, IDC_EDIT_OVERWRITE_SIZE, m_unOverWriteSize);
     DDV_MinMaxUInt(pDX, m_unOverWriteSize, defMIN_BUFFER_SIZE, defMAX_BUFFER_SIZE);
     DDX_Text(pDX, IDC_EDIT_DISPLAY_UPDATE, m_unDisplayUpdateRate);
     DDV_MinMaxUInt(pDX, m_unDisplayUpdateRate, defMIN_DISPLAY_UPDATE_TIME, defMAX_DISPLAY_UPDATE_TIME);
+    //}}AFX_DATA_MAP
 }
 
+
 BEGIN_MESSAGE_MAP(CMsgBufferConfigPage, CPropertyPage)
+    //{{AFX_MSG_MAP(CMsgBufferConfigPage)
     ON_BN_CLICKED(IDC_CBTN_SET_DEFAULT, OnCbtnSetDefault)
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-/**
- * \brief On OK
- *
- * Virtual Function. This handler will be called when the user
- * selects Ok from the property sheet. This will update the user
- * data in to the configuration class.
- */
-void CMsgBufferConfigPage::OnOK()
+/////////////////////////////////////////////////////////////////////////////
+// CMsgBufferConfigPage message handlers
+
+/*******************************************************************************
+ Function Name  : OnOK
+ Description    : Virtual Function. This handler will be called when the user
+                  selects Ok from the property sheet. This will update the user
+                  data in to the configuration class.
+ Member of      : CFlexListCtrl
+ Author(s)      : Raja N
+ Date Created   : 22.07.2004
+ Modifications  : Raja N on 31.07.2004, Removed unused local variable
+*******************************************************************************/
+void CMsgBufferConfigPage::OnOK() 
 {
     // Update Global Data Here
     UpdateData( TRUE );
-
     // Check for data boundary condition
     if( m_unAppendSize >= defMIN_BUFFER_SIZE &&
-            m_unAppendSize <= defMAX_BUFFER_SIZE &&
-            m_unOverWriteSize >= defMIN_BUFFER_SIZE &&
-            m_unOverWriteSize <= defMAX_BUFFER_SIZE &&
-            m_unDisplayUpdateRate >= defMIN_DISPLAY_UPDATE_TIME &&
-            m_unDisplayUpdateRate <= defMAX_DISPLAY_UPDATE_TIME )
+        m_unAppendSize <= defMAX_BUFFER_SIZE &&
+        m_unOverWriteSize >= defMIN_BUFFER_SIZE && 
+        m_unOverWriteSize <= defMAX_BUFFER_SIZE &&
+        m_unDisplayUpdateRate >= defMIN_DISPLAY_UPDATE_TIME &&
+        m_unDisplayUpdateRate <= defMAX_DISPLAY_UPDATE_TIME )
     {
         // Append Bufer Size
         m_pnBufferSize[defAPPEND_DATA_INDEX] = m_unAppendSize;
@@ -102,18 +128,23 @@ void CMsgBufferConfigPage::OnOK()
         // Display Update Rate
         m_pnBufferSize[ defDISPLAY_UPDATE_DATA_INDEX ] = m_unDisplayUpdateRate;
     }
-
     CPropertyPage::OnOK();
 }
 
-/**
- * \brief On Init Dialog
- *
- * This function will be called during initialization of dialog
- * box. This function will load the initial data from
- * configuration module
- */
-BOOL CMsgBufferConfigPage::OnInitDialog()
+/*******************************************************************************
+Function Name    : OnInitDialog
+Input(s)         : 
+Output           : 
+Functionality    : This function will be called during initialization of dialog
+                   box. This function will load the initial data from
+                   configuration module
+Member of        : CMsgBufferConfigPage
+Friend of        :  -
+Author(s)        : Raja N
+Date Created     : 22.07.2004
+Modifications    : 
+*******************************************************************************/
+BOOL CMsgBufferConfigPage::OnInitDialog() 
 {
     CPropertyPage::OnInitDialog();
     // Update the UI controls
@@ -121,21 +152,28 @@ BOOL CMsgBufferConfigPage::OnInitDialog()
     m_unOverWriteSize = m_pnBufferSize[defOVERWRITE_DATE_INDEX];
     m_unDisplayUpdateRate = m_pnBufferSize[defDISPLAY_UPDATE_DATA_INDEX];
     UpdateData(FALSE);
+        
     return TRUE;  // return TRUE unless you set the focus to a control
-    // EXCEPTION: OCX Property Pages should return FALSE
+                  // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-/**
- * \brief On Button Set Default
- *
- * This function will be called if the user selects the
- * SetDefault button. This will set the default value of the
- * various parameters
- */
-void CMsgBufferConfigPage::OnCbtnSetDefault()
+/*******************************************************************************
+Function Name    : OnCbtnSetDefault
+Input(s)         : -
+Output           : -
+Functionality    : This function will be called if the user selects the
+                   SetDefault button. This will set the default value of the
+                   various parameters
+Member of        : CMsgBufferConfigPage
+Friend of        :  -
+Author(s)        : Raja N
+Date Created     : 22.07.2004
+Modifications    : 
+*******************************************************************************/
+void CMsgBufferConfigPage::OnCbtnSetDefault() 
 {
     m_unAppendSize = defDEF_APPEND_BUFFER_SIZE;
     m_unOverWriteSize = defDEF_OVERWRITE_BUFFER_SIZE;
-    m_unDisplayUpdateRate = defDEF_DISPLAY_UPDATE_TIME;
+    m_unDisplayUpdateRate = defDEF_DISPLAY_UPDATE_TIME; 
     UpdateData( FALSE );
 }

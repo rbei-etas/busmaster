@@ -1,0 +1,88 @@
+*asm:
+
+
+*asm_final:
+
+
+*cpp:
+-remap %(cpp_cpu) %{posix:-D_POSIX_SOURCE} %{mthreads:-D_MT}         %{static:-D__STATIC__} 
+
+*cc1:
+%(cc1_spec) 
+
+*cc1plus:
+
+
+*endfile:
+
+
+*link:
+%{mwindows:--subsystem windows}                    %{mconsole:--subsystem console}                    %{shared: %{mdll: %eshared and mdll are not compatible}}                    %{shared: --shared} %{mdll:--dll}                    %{static:-Bstatic} %{!static:-Bdynamic}                    %{shared|mdll: -e _DllMainCRTStartup@12}
+
+*lib:
+%{pg:-lgmon} %{mwindows:-lgdi32 -lcomdlg32}                   -luser32 -lkernel32 -ladvapi32 -lshell32
+
+*libgcc:
+%{mthreads:-lmingwthrd} -lmingw32 -lgcc -lmoldname -lmsvcrt
+
+*startfile:
+%{shared|mdll:dllcrt2%O%s} %{!shared:%{!mdll:crt2%O%s}} %{pg:gcrt2%O%s}
+
+*switches_need_spaces:
+
+
+*signed_char:
+%{funsigned-char:-D__CHAR_UNSIGNED__}
+
+*predefines:
+-Di386 -D_WIN32 -DWIN32 -D__WIN32__   -D__MINGW32__=1.0 -D__MSVCRT__ -DWINNT  -D_X86_=1 -D__STDC__=1  -D__stdcall=__attribute__((__stdcall__))   -D_stdcall=__attribute__((__stdcall__))   -D__cdecl=__attribute__((__cdecl__))   -D__declspec(x)=__attribute__((x))   -Asystem(winnt) -Acpu(i386) -Amachine(i386)
+
+*cross_compile:
+0
+
+*version:
+2.95.3-6
+
+*multilib:
+. ;
+
+*multilib_defaults:
+
+
+*multilib_extra:
+
+
+*multilib_matches:
+
+
+*linker:
+collect2
+
+*cpp_486:
+%{!ansi:-Di486} -D__i486 -D__i486__
+
+*cpp_586:
+%{!ansi:-Di586 -Dpentium} 	-D__i586 -D__i586__ -D__pentium -D__pentium__
+
+*cpp_k6:
+%{!ansi:-Di586 -Dk6} 	-D__i586 -D__i586__ -D__k6 -D__k6__
+
+*cpp_686:
+%{!ansi:-Di686 -Dpentiumpro} 	-D__i686 -D__i686__ -D__pentiumpro -D__pentiumpro__
+
+*cpp_cpu_default:
+
+
+*cpp_cpu:
+-Acpu(i386) -Amachine(i386) %{!ansi:-Di386} -D__i386 -D__i386__ %{mcpu=i486:%(cpp_486)} %{m486:%(cpp_486)} %{mpentium:%(cpp_586)} %{mcpu=pentium:%(cpp_586)} %{mpentiumpro:%(cpp_686)} %{mcpu=pentiumpro:%(cpp_686)} %{mcpu=k6:%(cpp_k6)} %{!mcpu*:%{!m486:%{!mpentium*:%(cpp_cpu_default)}}}
+
+*cc1_cpu:
+%{!mcpu*: %{m386:-mcpu=i386 -march=i386} %{m486:-mcpu=i486 -march=i486} %{mpentium:-mcpu=pentium} %{mpentiumpro:-mcpu=pentiumpro}}
+
+*mingw_include_path:
+mingw32
+
+*link_command:
+%{!fsyntax-only:  %{!c:%{!M:%{!MM:%{!E:%{!S:%(linker) %l %X %{o*} %{A} %{d} %{e*} %{m} %{N} %{n} 			%{r} %{s} %{t} %{u*} %{x} %{z} %{Z}			%{!A:%{!nostdlib:%{!nostartfiles:%S}}}			%{static:} %{L*} %D %o			%{!nostdlib:%{!nodefaultlibs:%G %L %G}}			%{!A:%{!nostdlib:%{!nostartfiles:%E}}}			%{T*}			
+ }}}}}}
+
