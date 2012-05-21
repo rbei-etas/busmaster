@@ -27,6 +27,14 @@
 #include "Hashdefines.h"
 #include "Sim_MDIChildBase.h"       // For MDI Base class definition
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+
+
 IMPLEMENT_DYNCREATE(CMDIChildBase, CMDIChildWnd)
 
 /*******************************************************************************
@@ -94,12 +102,11 @@ END_MESSAGE_MAP()
   Member of      : CMDIChildBase
   Author(s)      : Raja N
   Date Created   : 18.4.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
-void CMDIChildBase::OnShowWindow(BOOL bShow, UINT nStatus)
+void CMDIChildBase::OnShowWindow(BOOL bShow, UINT nStatus) 
 {
     CMDIChildWnd::OnShowWindow(bShow, nStatus);
-
     // If it is show window set appropriate window postion
     if (bShow == TRUE )
     {
@@ -123,7 +130,7 @@ void CMDIChildBase::OnShowWindow(BOOL bShow, UINT nStatus)
   Member of      : CMDIChildBase
   Author(s)      : Raja N
   Date Created   : 18.4.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 void CMDIChildBase::vGetWinStatus()
 {
@@ -139,7 +146,7 @@ void CMDIChildBase::vGetWinStatus()
   Member of      : CMDIChildBase
   Author(s)      : Raja N
   Date Created   : 18.4.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 void CMDIChildBase::vSaveWinStatus()
 {
@@ -150,7 +157,6 @@ void CMDIChildBase::vSaveWinStatus()
     GetWindowPlacement(&sCurrentPlacement);
     // Set the flag
     sCurrentPlacement.flags |= WPF_SETMINPOSITION;
-
     // Check for difference
     if( memcmp( &sCurrentPlacement,
                 &m_sWindowPlacement,
@@ -163,7 +169,6 @@ void CMDIChildBase::vSaveWinStatus()
         // Update configuration module
         theApp.bSetData( m_eWindowIdentity, (void*)&m_sWindowPlacement);
     }
-
 #endif
 }
 
@@ -171,16 +176,15 @@ void CMDIChildBase::vSaveWinStatus()
   Function Name  : OnCreate
   Input(s)       : -
   Output         : -
-  Functionality  :
+  Functionality  : 
   Member of      : CMDIChildBase
   Author(s)      : Raja N
   Date Created   : 18.4.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
-int CMDIChildBase::OnCreate(LPCREATESTRUCT lpCreateStruct)
+int CMDIChildBase::OnCreate(LPCREATESTRUCT lpCreateStruct) 
 {
     int nCreate = -1;
-
     // Call base member for window creation
     if (CMDIChildWnd::OnCreate(lpCreateStruct) != -1)
     {
@@ -189,7 +193,6 @@ int CMDIChildBase::OnCreate(LPCREATESTRUCT lpCreateStruct)
         // Set the resule to success
         nCreate = 0;
     }
-
     // Return the result
     return nCreate;
 }
@@ -204,7 +207,7 @@ int CMDIChildBase::OnCreate(LPCREATESTRUCT lpCreateStruct)
   Member of      : CMDIChildBase
   Author(s)      : Raja N
   Date Created   : 18.4.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 void CMDIChildBase::vUpdateWndCo_Ords()
 {
@@ -221,7 +224,7 @@ void CMDIChildBase::vUpdateWndCo_Ords()
   Member of      : CMDIChildBase
   Author(s)      : Raja N
   Date Created   : 18.4.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 void CMDIChildBase::vUpdateWinStatus()
 {

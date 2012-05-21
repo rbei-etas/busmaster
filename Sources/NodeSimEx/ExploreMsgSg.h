@@ -21,8 +21,8 @@
  *
  * This header file contains the defintion of class
  */
-
-#pragma once
+#if !defined(AFX_EXPLOREMSGSG_H__BEB9A624_2CC3_11D6_A620_00D0B76BEBF5__INCLUDED_)
+#define AFX_EXPLOREMSGSG_H__BEB9A624_2CC3_11D6_A620_00D0B76BEBF5__INCLUDED_
 
 #include "HashDefines.h"    // #define file
 #include "GlobalObj.h"
@@ -32,23 +32,23 @@
 
 class CExploreMsgSg : public CDialog
 {
-    // Construction
+// Construction
 public:
     // Holds selected message name
     CString m_omStrMessageName;
 
     // Holds selected item, message or signal
     CString m_omStrSelectedItemText;
-
+    
     // Overrided constructor
     CExploreMsgSg(CFunctionEditorDoc* pDoc,
                   CMsgNameMsgCodeList& odMsgNameCodelist,
                   BOOL bCheckRequired,
-                  eMESSAGEFROM,
+                  eMESSAGEFROM, 
                   eSELTYPE,
                   CWnd* pParent = NULL);
 
-    // Dialog Data
+// Dialog Data
     //{{AFX_DATA(CExploreMsgSg)
     enum { IDD = IDD_MSG_SG_DLG };
     CListBox    m_omSignalListBox;
@@ -57,14 +57,14 @@ public:
     //}}AFX_DATA
 
 
-    // Overrides
+// Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CExploreMsgSg)
-protected:
+    protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-    // Implementation
+// Implementation
 protected:
 
     // Generated message map functions
@@ -74,9 +74,9 @@ protected:
     afx_msg void OnSelect();
     virtual BOOL OnInitDialog();
     afx_msg void OnCbtnCancel();
-    afx_msg void OnItemchangedLstcMsgs(NMHDR* pNMHDR, LRESULT* pResult);
-    afx_msg void OnClickLstcMsgs(NMHDR* pNMHDR, LRESULT* pResult);
-    //}}AFX_MSG
+	afx_msg void OnItemchangedLstcMsgs(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnClickLstcMsgs(NMHDR* pNMHDR, LRESULT* pResult);
+	//}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 
 private:
@@ -86,7 +86,7 @@ private:
     eMESSAGEFROM m_eWindow;
     // Flag to enable check box option
     BOOL m_bCheckRequired;
-    // enum to indicate whether to
+    // enum to indicate whether to 
     // select message or signal
     eSELTYPE m_eSelectType;
     // Store last selected message item
@@ -94,3 +94,8 @@ private:
     //Get Signal Names from Message Id
     void vGetSigNamesFromMsgCode(DWORD dwMsgCode, CStringList& omSignalNames);
 };
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_EXPLOREMSGSG_H__BEB9A624_2CC3_11D6_A620_00D0B76BEBF5__INCLUDED_)

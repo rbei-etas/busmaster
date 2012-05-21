@@ -23,38 +23,44 @@
 #include "TSEditorGUI_Definitions.h"
 #include ".\tseditorgui_settingsdlg.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
 IMPLEMENT_DYNCREATE(CTSEditorSettingsDlg, CDialog)
 
 BEGIN_MESSAGE_MAP(CTSEditorSettingsDlg, CDialog)
-    ON_BN_CLICKED(ID_DEFAULT, OnBnClickedDefault)
+    ON_BN_CLICKED(ID_DEFAULT, OnBnClickedDefault)    
 END_MESSAGE_MAP()
 /******************************************************************************
 Function Name  :  CTSEditorSettingsDlg
-Input(s)       :
+Input(s)       :  
 Output         :  -
-Functionality  :
+Functionality  :   
 Member of      :  CTSEditorSettingsDlg
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :
+Modifications  :  
 ******************************************************************************/
 CTSEditorSettingsDlg::CTSEditorSettingsDlg(CWnd* /*pParent*/ /*=NULL*/)
-    : CDialog(CTSEditorSettingsDlg::IDD)
-    , m_bQueryConfirm(FALSE)
+	: CDialog(CTSEditorSettingsDlg::IDD)
+    , m_bQueryConfirm(FALSE)    
 {
 }
 
 /******************************************************************************
 Function Name  :  ~CTSEditorSettingsDlg
-Input(s)       :
+Input(s)       :  
 Output         :  -
-Functionality  :
+Functionality  :   
 Member of      :  CTSEditorSettingsDlg
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :
+Modifications  :  
 ******************************************************************************/
 CTSEditorSettingsDlg::~CTSEditorSettingsDlg()
 {
@@ -62,14 +68,14 @@ CTSEditorSettingsDlg::~CTSEditorSettingsDlg()
 
 /******************************************************************************
 Function Name  :  DoDataExchange
-Input(s)       :
+Input(s)       :  
 Output         :  void
-Functionality  :
+Functionality  :   
 Member of      :  CTSEditorSettingsDlg
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :
+Modifications  :  
 ******************************************************************************/
 void CTSEditorSettingsDlg::DoDataExchange(CDataExchange* pDX)
 {
@@ -84,14 +90,14 @@ void CTSEditorSettingsDlg::DoDataExchange(CDataExchange* pDX)
 
 /******************************************************************************
 Function Name  :  OnInitDialog
-Input(s)       :
+Input(s)       :  
 Output         :  BOOL
-Functionality  :
+Functionality  :   
 Member of      :  CTSEditorSettingsDlg
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :
+Modifications  :  
 ******************************************************************************/
 BOOL CTSEditorSettingsDlg::OnInitDialog()
 {
@@ -100,14 +106,14 @@ BOOL CTSEditorSettingsDlg::OnInitDialog()
 }
 /******************************************************************************
 Function Name  :  OnBnClickedDefault
-Input(s)       :
+Input(s)       :  
 Output         :  void
-Functionality  :
+Functionality  :   
 Member of      :  CTSEditorSettingsDlg
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :
+Modifications  :  
 ******************************************************************************/
 void CTSEditorSettingsDlg::OnBnClickedDefault()
 {

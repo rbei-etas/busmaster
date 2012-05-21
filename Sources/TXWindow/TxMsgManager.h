@@ -22,8 +22,13 @@
  * Interface file for CTxMsgManager class
  */
 
-#pragma once
 
+#if !defined(AFX_TXMSGMANAGER_H__7EAA7CD8_1350_469D_A668_A624E3125348__INCLUDED_)
+#define AFX_TXMSGMANAGER_H__7EAA7CD8_1350_469D_A668_A624E3125348__INCLUDED_
+
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
 #include "TxFlags.h"
 #include "Utility/Utility_Thread.h"
 
@@ -31,7 +36,7 @@ class CTxMsgManager
 {
 public:
     // To get singleton Instange
-    static CTxMsgManager* s_podGetTxMsgManager();
+    static CTxMsgManager * s_podGetTxMsgManager();
     // To clear memory used by the singleton object
     static BOOL s_bDeleteTxMsgManager();
     // Static Tx Thread Functions
@@ -56,10 +61,10 @@ public:
     BOOL bIsTxWndConfigChanged();
     void vSetTxStopFlag(BOOL bStartStop);
     BOOL bGetTxStopFlag();
-    void vSetClientID(DWORD dwClientID);
-    void vSetDILInterfacePtr(void* ptrDILIntrf);
+	void vSetClientID(DWORD dwClientID);
+	void vSetDILInterfacePtr(void* ptrDILIntrf);
 
-    // proc for getting CAN DIL Interface pointer
+	// proc for getting CAN DIL Interface pointer
     static void* pGetDILInterfacePtr();
 
 public:
@@ -75,13 +80,15 @@ public:
     static CTxMsgManager* m_spodInstance;
     static STHREADINFO    s_sUtilThread;
     static CEvent         s_omState;
-
+    
 private:
     // Map to store Monoshot blocks
-    CMap<void*, void*, BOOL, BOOL> m_omMonoshotBlocks;
+    CMap<void *, void *, BOOL, BOOL> m_omMonoshotBlocks;
     //Tx Message List Pointer
     PSTXMSG m_psTxMsgBlockList;
     // Flag for breaking the loop of message transmission for message blocks
     BOOL m_bStopMsgBlockTx;
-    int nGetSizeOfTxWndConfigData();
+    int nGetSizeOfTxWndConfigData();    
 };
+
+#endif // !defined(AFX_TXMSGMANAGER_H__7EAA7CD8_1350_469D_A668_A624E3125348__INCLUDED_)

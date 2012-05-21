@@ -22,7 +22,14 @@
  * This file contain the definition of CFFListCtrl class
  */
 
+#if !defined(AFX_FFLISTCTRL_H__7E863E67_7E2C_4E67_9628_DC9F9D6CC6D0__INCLUDED_)
+#define AFX_FFLISTCTRL_H__7E863E67_7E2C_4E67_9628_DC9F9D6CC6D0__INCLUDED_
+
+#if _MSC_VER > 1000
 #pragma once
+#endif // _MSC_VER > 1000
+// FFListCtrl.h : header file
+//
 
 /////////////////////////////////////////////////////////////////////////////
 // CFFListCtrl window
@@ -31,22 +38,22 @@ class CFFListCtrl : public CListCtrl
 {
     // Screen Rectangle
     CRect m_rectClient;
-    // Construction
+// Construction
 public:
     CFFListCtrl();
     VOID vInitMemDCRect();
-    // Attributes
+// Attributes
 public:
 
-    // Operations
+// Operations
 public:
 
-    // Overrides
+// Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CFFListCtrl)
     //}}AFX_VIRTUAL
 
-    // Implementation
+// Implementation
 public:
     virtual ~CFFListCtrl();
 
@@ -60,3 +67,10 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 };
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_FFLISTCTRL_H__7E863E67_7E2C_4E67_9628_DC9F9D6CC6D0__INCLUDED_)

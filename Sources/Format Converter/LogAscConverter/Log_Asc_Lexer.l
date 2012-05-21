@@ -7,8 +7,10 @@ char x[5] = "Hi";
 %}
 DIGIT		[0-9]
 ALPHA		[A-Fa-f]
+HEX			0[Xx][0-9a-fA-F]+
+DEC			[0-9]+
 HEXTAIL		({DIGIT}|{ALPHA})+
-HEX			{HEXTAIL}
+HEXNUMBER	{HEXTAIL}
 %%
 "***[START LOGGING SESSION]***"		yylval = _strdup(yytext); return BEGINLOGTOKEN;
 "***[STOP LOGGING SESSION]***"			yylval = _strdup(yytext);return ENDLOGTOKEN;
@@ -19,8 +21,10 @@ HEX			{HEXTAIL}
 ("***RELATIVE MODE***") 	yylval = _strdup(yytext);return TIMEMODE;
 ("***ABSOLUTE MODE***") 	yylval = _strdup(yytext);return TIMEMODE;
 ("***SYSTEM MODE***") 		yylval = _strdup(yytext);return TIMEMODE;
-{HEX}						yylval =_strdup(yytext);return NUMBER;
+{HEXTAIL}						yylval =_strdup(yytext);return NUMBER;
+"0x"						;
 [0-9]+\.?[0-9]*				yylval =_strdup(yytext);return DOUBLEVAL;
+
 \:							yylval =_strdup(yytext);return COLON;
 "s"							yylval =_strdup(yytext);return STDMSG;
 "x"							yylval =_strdup(yytext);return EXTMSG;

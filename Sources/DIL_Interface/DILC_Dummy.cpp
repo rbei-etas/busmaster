@@ -14,15 +14,13 @@
  */
 
 /**
- * \file      DILC_Dummy.cpp
+ * \file      DIL_Interface/DILC_Dummy.cpp
  * \brief     Source file for dummy DIL functions
  * \authors   Ratnadip Choudhury, Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Source file for dummy DIL functions
  */
-
-/* Project includes */
 #include "DIL_Interface_stdafx.h"
 #include "DILC_Dummy.h"
 #include "include/Error.h"
@@ -41,7 +39,7 @@ HRESULT CDIL_CAN_DUMMY::CAN_PerformClosureOperations(void)
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_CAN_DUMMY::CAN_GetTimeModeMapping(SYSTEMTIME& /*CurrSysTime*/, UINT64& /*TimeStamp*/, long long int* /*QueryTickCount*/)
+HRESULT CDIL_CAN_DUMMY::CAN_GetTimeModeMapping(SYSTEMTIME& /*CurrSysTime*/, UINT64& /*TimeStamp*/, LARGE_INTEGER* /*QueryTickCount*/)
 {
     return WARN_DUMMY_API;
 }
@@ -101,14 +99,39 @@ HRESULT CDIL_CAN_DUMMY::CAN_GetCurrStatus(s_STATUSMSG& /*StatusData*/)
     return WARN_DUMMY_API;
 }
 
+HRESULT CDIL_CAN_DUMMY::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
+{
+    return WARN_DUMMY_API;
+}
+
 HRESULT CDIL_CAN_DUMMY::CAN_SendMsg(DWORD /*dwClientID*/, const STCAN_MSG& /*sCanTxMsg*/)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_CAN_DUMMY::CAN_GetLastErrorString(string& /*acErrorStr*/)
+HRESULT CDIL_CAN_DUMMY::CAN_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
 {
     return WARN_DUMMY_API;
+}
+
+HRESULT CDIL_CAN_DUMMY::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
+{
+    return WARN_DUMMY_API;
+}
+
+HRESULT CDIL_CAN_DUMMY::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
+{
+    return WARN_DUMMY_API;
+}
+
+HRESULT CDIL_CAN_DUMMY::CAN_GetLastErrorString(CHAR* /*acErrorStr*/, int /*nLength*/)
+{
+    return WARN_DUMMY_API;
+}
+
+HRESULT CDIL_CAN_DUMMY::CAN_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
+{
+	return WARN_DUMMY_API;
 }
 
 HRESULT CDIL_CAN_DUMMY::CAN_ManageMsgBuf(BYTE /*bAction*/, DWORD /*ClientID*/, CBaseCANBufFSE* /*pBufObj*/)
@@ -116,7 +139,7 @@ HRESULT CDIL_CAN_DUMMY::CAN_ManageMsgBuf(BYTE /*bAction*/, DWORD /*ClientID*/, C
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_CAN_DUMMY::CAN_RegisterClient(BOOL /*bRegister*/, DWORD& /*ClientID*/, string /*pacClientName*/)
+HRESULT CDIL_CAN_DUMMY::CAN_RegisterClient(BOOL /*bRegister*/, DWORD& /*ClientID*/, TCHAR* /*pacClientName*/)
 {
     return WARN_DUMMY_API;
 }
@@ -131,7 +154,7 @@ HRESULT CDIL_CAN_DUMMY::CAN_GetControllerParams(LONG& /*lParam*/, UINT /*nChanne
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_CAN_DUMMY::CAN_SetAppParams(HWND /*hWndOwner*/, Base_WrapperErrorLogger* /*pILog*/)
+HRESULT CDIL_CAN_DUMMY::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
 {
     return WARN_DUMMY_API;
 }

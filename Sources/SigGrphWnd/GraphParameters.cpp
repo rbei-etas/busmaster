@@ -3,10 +3,22 @@
   FileName      :  GraphParameters.cpp
   Description   :  Implementation file for CGraphParameters class
   $Log:   X:/Archive/Sources/SigGrphWnd/GraphParameters.cpv  $
+   
+      Rev 1.1   15 Apr 2011 19:43:32   rac2kor
+   Inserted RBEI Copyright information text into the file header.
+   
+      Rev 1.0   13 Dec 2010 22:00:36   CANMNTTM
+    
+   
+      Rev 1.1   18 Aug 2010 19:01:06   CANMNTTM
+   Default configuration function has been implemented
+   
+      Rev 1.0   16 Aug 2010 21:20:32   rac2kor
+    
 
   Author(s)     :  Raja N
   Date Created  :  01.12.2004
-  Modified By   :
+  Modified By   :  
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved
  *********************************************************************/
 
@@ -14,6 +26,12 @@
 #include "SigGrphWnd_stdafx.h"
 // For CGraphParameters class declaration
 #include "GraphParameters.h"
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char THIS_FILE[]=__FILE__;
+#define new DEBUG_NEW
+#endif
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -28,7 +46,7 @@
  Member of      : CGraphParameters
  Author(s)      : Raja N
  Date Created   : 01.12.2004
- Modifications  :
+ Modifications  : 
 *******************************************************************************/
 CGraphParameters::CGraphParameters()
 {
@@ -61,8 +79,8 @@ void CGraphParameters::vInitialize(void)
     m_nAction = defTRACK_MODE_NONE; // None
     // Grid Setting
     m_bShowGrid = TRUE;
-    //Graph Line Display
-    m_eDisplayType = eDISPLAY_NORMAL;
+	//Graph Line Display
+	m_eDisplayType = eDISPLAY_NORMAL;	
 }
 /*******************************************************************************
  Function Name  : ~CGraphParameters
@@ -73,22 +91,22 @@ void CGraphParameters::vInitialize(void)
  Member of      : CGraphParameters
  Author(s)      : Raja N
  Date Created   : 01.12.2004
- Modifications  :
+ Modifications  : 
 *******************************************************************************/
 CGraphParameters::~CGraphParameters()
 {
+
 }
 BYTE* CGraphParameters::pbyGetConfigData(BYTE* pbyTrgtData)
 {
     BYTE* pbyTemp = pbyTrgtData;
-
     if (pbyTemp != NULL)
     {
         // Set the def
         COPY_DATA(pbyTemp, &m_nBufferSize, sizeof(int));
         // Display ref
         COPY_DATA(pbyTemp, &m_nRefreshRate, sizeof(int));
-        // View Style
+        // View Style 
         // Frame Color
         COPY_DATA(pbyTemp, &m_nFrameColor, sizeof(int));
         // Frame Style
@@ -109,23 +127,21 @@ BYTE* CGraphParameters::pbyGetConfigData(BYTE* pbyTrgtData)
         COPY_DATA(pbyTemp, &m_nAction, sizeof(int));
         // Grid Setting
         COPY_DATA(pbyTemp, &m_bShowGrid, sizeof(BOOL));
-        //Line Display type
-        COPY_DATA(pbyTemp, &m_eDisplayType, sizeof(eDISPLAY_TYPE));
+		//Line Display type
+		COPY_DATA(pbyTemp, &m_eDisplayType, sizeof(eDISPLAY_TYPE));		
     }
-
     return pbyTemp;
 }
 BYTE* CGraphParameters::pbySetConfigData(BYTE* pbyTrgtData)
 {
     BYTE* pbyTemp = pbyTrgtData;
-
     if (pbyTemp != NULL)
     {
         // Set the def
         COPY_DATA_2(&m_nBufferSize, pbyTemp, sizeof(int));
         // Display ref
         COPY_DATA_2(&m_nRefreshRate, pbyTemp, sizeof(int));
-        // View Style
+        // View Style 
         // Frame Color
         COPY_DATA_2(&m_nFrameColor, pbyTemp, sizeof(int));
         // Frame Style
@@ -146,10 +162,9 @@ BYTE* CGraphParameters::pbySetConfigData(BYTE* pbyTrgtData)
         COPY_DATA_2(&m_nAction, pbyTemp, sizeof(int));
         // Grid Setting
         COPY_DATA_2(&m_bShowGrid, pbyTemp, sizeof(BOOL));
-        //Line Display type
-        COPY_DATA_2(&m_eDisplayType, pbyTemp, sizeof(eDISPLAY_TYPE));
+		//Line Display type
+		COPY_DATA_2(&m_eDisplayType, pbyTemp, sizeof(eDISPLAY_TYPE));	
     }
-
     return pbyTemp;
 }
 /*******************************************************************************
@@ -160,12 +175,11 @@ BYTE* CGraphParameters::pbySetConfigData(BYTE* pbyTrgtData)
  Member of      : CGraphParameters
  Author(s)      : Raja N
  Date Created   : 01.12.2004
- Modifications  :
+ Modifications  : 
 *******************************************************************************/
 int CGraphParameters::nSerialize(CArchive& omArchive)
 {
     int nReturn = 0;
-
     try
     {
         // If it is storing
@@ -175,7 +189,7 @@ int CGraphParameters::nSerialize(CArchive& omArchive)
             omArchive << m_nBufferSize;
             // Display ref
             omArchive << m_nRefreshRate;
-            // View Style
+            // View Style 
             // Frame Color
             omArchive << m_nFrameColor;
             // Frame Style
@@ -204,7 +218,7 @@ int CGraphParameters::nSerialize(CArchive& omArchive)
             omArchive >> m_nBufferSize;
             // Display ref
             omArchive >> m_nRefreshRate;
-            // View Style
+            // View Style 
             // Frame Color
             omArchive >> m_nFrameColor;
             // Frame Style
@@ -233,7 +247,6 @@ int CGraphParameters::nSerialize(CArchive& omArchive)
         nReturn = poArchExcep->m_cause;
         poArchExcep->Delete();
     }
-
     // Return the result
     return nReturn;
 }

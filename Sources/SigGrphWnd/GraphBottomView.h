@@ -1,28 +1,34 @@
-/*
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+/*******************************************************************************
+  Project       :  Auto-SAT_Tools
+  FileName      :  Bottom.h
+  Description   :  Interface file for CGraphBottomView class
+  $Log:   X:/Archive/Sources/SigGrphWnd/GraphBottomView.h_v  $
+ * 
+ *    Rev 1.2   15 Apr 2011 19:43:30   rac2kor
+ * Inserted RBEI Copyright information text into the file header.
+ * 
+ *    Rev 1.1   23 Dec 2010 18:04:44   CANMNTTM
+ * Updated to support cursors feature in 
+ * graph control.
+ * 
+ *    Rev 1.0   13 Dec 2010 22:00:34   CANMNTTM
+ *  
+ * 
+ *    Rev 1.0   16 Aug 2010 21:20:30   rac2kor
+ *  
 
-/**
- * \file      GraphBottomView.h
- * \brief     Interface file for CGraphBottomView class
- * \author    Raja N
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
- *
- * Interface file for CGraphBottomView class
- */
+  Author(s)     :  Raja N
+  Date Created  :  10/12/2004
+  Modified By   :  
+  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
+*******************************************************************************/
 
+#if !defined(AFX_BOTTOM_H__9573691F_DD7A_46ED_AA0E_379F80C167A9__INCLUDED_)
+#define AFX_BOTTOM_H__9573691F_DD7A_46ED_AA0E_379F80C167A9__INCLUDED_
+
+#if _MSC_VER > 1000
 #pragma once
+#endif // _MSC_VER > 1000
 
 #ifndef __AFXEXT_H__
 #include <afxext.h>
@@ -35,7 +41,7 @@
 
 class CGraphBottomView : public CFormView
 {
-    // Form Data
+// Form Data
 public:
     //{{AFX_DATA(CGraphBottomView)
     enum { IDD = IDD_DLG_GRAPH_RIGHT_BOTTOM };
@@ -49,25 +55,25 @@ public:
     double  m_dRangeTo;
     //}}AFX_DATA
 
-    // Attributes
+// Attributes
 public:
 
-    // Operations
+// Operations
 public:
     // To Initialise graph control with view style parameters
     void vInitGraphControl();
     // To Handle Connection change event
     void vHandleConnectionStatusChange(BOOL bConnectStatus);
-    // Overrides
+// Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CGraphBottomView)
-public:
+    public:
     virtual void OnInitialUpdate();
-protected:
+    protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-    // Implementation
+// Implementation
 protected:
     // protected constructor used by dynamic creation
     CGraphBottomView();
@@ -103,7 +109,7 @@ protected:
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
-    // To Update the changes in Configuration Module
+    // To Update the changes in Configuration Module 
     void vSaveChangedInToConfig();
     // To Enable/ Disable Axis controls
     void vEnableAxisControls(BOOL bEnable);
@@ -115,25 +121,32 @@ private:
     void vSetAction();
     // To set Show/Hide Grid button text
     void vSetShowButtonState(BOOL bShow);
-    //SGW Code commented by Arun 21-10-2010
+	//SGW Code commented by Arun 21-10-2010
     // To maintaing Main frame pointer
     //CMainFrame * m_pMainFrame;
-    //SGW Code commented by Arun 21-10-2010
+	//SGW Code commented by Arun 21-10-2010
     // To have reference of Graph Control interface
     IDMGraphCtrl* m_pDMGraphCtrl;
     // To store Update Timer ID
     int nTimerID;
-    // To get parent window pointer
-    CWnd* pomGetParentWindow() const;
-    //Gets text extent for a string
-    int nGetListCtrlTextExtent(CString omColTitle);
-    void vCreateColumns();
+	// To get parent window pointer 
+    CWnd * pomGetParentWindow() const;
+	//Gets text extent for a string
+	int nGetListCtrlTextExtent(CString omColTitle);
+	void vCreateColumns();		
 public:
-    void vUpdateCursordetails(double X, double Y, short shCursorID);
-    void vUpdateSignalData();
-    double dRound(double val, unsigned int decimals);
-    void vInsertSignalData();
-    double m_dblarrTime[2];
-    double m_dblDeltaTime;
-    CMessageList m_lstSignalDetails;
+	void vUpdateCursordetails(double X, double Y, short shCursorID);
+	void vUpdateSignalData();
+	double dRound(double val, unsigned int decimals);	
+	void vInsertSignalData();
+	double m_dblarrTime[2];	 
+	double m_dblDeltaTime;
+	CMessageList m_lstSignalDetails;
 };
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_BOTTOM_H__9573691F_DD7A_46ED_AA0E_379F80C167A9__INCLUDED_)

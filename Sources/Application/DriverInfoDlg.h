@@ -21,30 +21,39 @@
  *
  * This file contain the definition of CDriverInfoDlg class
  */
+#if !defined(AFX_DRIVERINFODLG_H__D4CDB944_66E6_11D6_A64C_00D0B76BEBF5__INCLUDED_)
+#define AFX_DRIVERINFODLG_H__D4CDB944_66E6_11D6_A64C_00D0B76BEBF5__INCLUDED_
 
+#if _MSC_VER > 1000
 #pragma once
+#endif // _MSC_VER > 1000
+// DriverInfoDlg.h : header file
+//
+
+/////////////////////////////////////////////////////////////////////////////
+// CDriverInfoDlg dialog
 
 class CDriverInfoDlg : public CDialog
 {
-    // Construction
+// Construction
 public:
     CDriverInfoDlg(CWnd* pParent = NULL);   // standard constructor
 
-    // Dialog Data
+// Dialog Data
     //{{AFX_DATA(CDriverInfoDlg)
     enum { IDD = IDD_DLG_DRIVERINFO };
     CString m_omStrDriverInfo;
     //}}AFX_DATA
 
 
-    // Overrides
+// Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CDriverInfoDlg)
-protected:
+    protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-    // Implementation
+// Implementation
 protected:
 
     // Generated message map functions
@@ -53,3 +62,8 @@ protected:
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 };
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_DRIVERINFODLG_H__D4CDB944_66E6_11D6_A64C_00D0B76BEBF5__INCLUDED_)

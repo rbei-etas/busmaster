@@ -24,7 +24,11 @@
 
 #pragma once
 
-#include "resource.h"       // main symbols
+#ifndef __AFXWIN_H__
+	#error include 'stdafx.h' before including this file for PCH
+#endif
+
+#include "resource.h"		// main symbols
 
 
 // CPSDI_CANApp
@@ -34,11 +38,11 @@
 class CPSDI_CANApp : public CWinApp
 {
 public:
-    CPSDI_CANApp();
+	CPSDI_CANApp();
 
-    // Overrides
+// Overrides
 public:
-    virtual BOOL InitInstance();
+	virtual BOOL InitInstance();
 
-    DECLARE_MESSAGE_MAP()
+	DECLARE_MESSAGE_MAP()
 };

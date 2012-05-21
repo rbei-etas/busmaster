@@ -47,21 +47,18 @@ TSExecutorHandler::TSExecutorHandler(void)
 
 TSExecutorHandler::~TSExecutorHandler(void)
 {
-    if ( m_hTSExecutorHandle != NULL )
-    {
+    if ( m_hTSExecutorHandle != NULL )            
         FreeLibrary(m_hTSExecutorHandle);
-    }
 }
 void TSExecutorHandler::vLoadTSExecutor_DLL()
 {
     if ( m_hTSExecutorHandle != NULL )
     {
         FreeLibrary(m_hTSExecutorHandle);
-        m_hTSExecutorHandle = NULL;
+		m_hTSExecutorHandle = NULL;
     }
-
-    m_hTSExecutorHandle = LoadLibrary(def_STR_TESTSIUTEEXECUTORDLL);
-    vloadFuncPtrAddress();
+	m_hTSExecutorHandle = LoadLibrary(def_STR_TESTSIUTEEXECUTORDLL);
+	vloadFuncPtrAddress();
 }
 void TSExecutorHandler::vInitializeFuncPtrs()
 {
@@ -72,7 +69,7 @@ void TSExecutorHandler::vInitializeFuncPtrs()
     pfTSStartStopReadThread = NULL;
     pfTSDoInitialization = NULL;
     pfTSBusConnected = NULL;
-    pfTSSetVersion = NULL;
+	pfTSSetVersion = NULL;
 }
 void TSExecutorHandler::vloadFuncPtrAddress()
 {
@@ -83,7 +80,7 @@ void TSExecutorHandler::vloadFuncPtrAddress()
     pfTSStartStopReadThread = (PFTSSTARTSTOPREADTHREAD)GetProcAddress(m_hTSExecutorHandle, "TS_StartStopReadThread");
     pfTSDoInitialization = (PTSDOINITIALIZATION)GetProcAddress(m_hTSExecutorHandle, "TS_DoInitialization");
     pfTSBusConnected = (PTSBUSCONNECTED)GetProcAddress(m_hTSExecutorHandle, "TS_BUSConnected");
-    pfTSSetVersion = (PTSSETVERSIONINFO)GetProcAddress(m_hTSExecutorHandle, "TS_SetBUSMASTERVersionInfo");
+	pfTSSetVersion = (PTSSETVERSIONINFO)GetProcAddress(m_hTSExecutorHandle, "TS_SetBUSMASTERVersionInfo");
 }
 void TSExecutorHandler::vShowTSExecutorWindow(void* pParentWnd)
 {
@@ -103,10 +100,10 @@ void TSExecutorHandler::vGetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSiz
 
 void TSExecutorHandler::vSetConfigurationData(BYTE*& pSrcBuffer, UINT& unBuffSize)
 {
-    if(pfTSExecutorSetConfigdata!= NULL)
-    {
-        pfTSExecutorSetConfigdata(pSrcBuffer, unBuffSize);
-    }
+	if(pfTSExecutorSetConfigdata!= NULL)
+	{
+		pfTSExecutorSetConfigdata(pSrcBuffer, unBuffSize);
+	}
 }
 void TSExecutorHandler::vStartStopReadThread(ETYPE_BUS eBus, BOOL bStart)
 {
@@ -132,8 +129,8 @@ void TSExecutorHandler::vBusConnected(BOOL bConnected)
 }
 void TSExecutorHandler::vSetTSEVersionInfo(BYTE bytMajor, BYTE bytMinor, BYTE bytBuild)
 {
-    if(pfTSSetVersion != NULL)
-    {
-        pfTSSetVersion(bytMajor, bytMinor, bytBuild);
-    }
+	if(pfTSSetVersion != NULL)
+	{
+		pfTSSetVersion(bytMajor, bytMinor, bytBuild);
+	}
 }

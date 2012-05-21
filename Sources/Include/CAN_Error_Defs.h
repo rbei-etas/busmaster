@@ -18,14 +18,14 @@
  * \author    Pemmaiah BD
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-
-#pragma once
+#ifndef __CAN_ERROR_DEFS__
+#define __CAN_ERROR_DEFS__
 
 //Error Val Interpretation
 #define ERROR_BUS                       0x01
 #define ERROR_DEVICE_BUFF_OVERFLOW      0x02
 #define ERROR_DRIVER_BUFF_OVERFLOW      0x03
-#define ERROR_WARNING_LIMIT_REACHED     0x04
+#define ERROR_WARNING_LIMIT_REACHED 	0x04
 #define ERROR_APPLICATION_BUFF_OVERFLOW 0x05
 #define ERROR_TX_TIMEOUT                0x06
 #define ERROR_INTERRUPT                 0x07
@@ -49,10 +49,17 @@
 
 //These codes are returned by DIL_nMsgWrite func
 #define DIL_ERR_WRITE_SYS               0xF001
-#define DIL_ERR_DEVICE_BUSY             0xF002
+#define DIL_ERR_DEVICE_BUSY				0xF002
 //#define DIL_ERR_READ_BYTE_MISMATCH      0xF002
 
 
 //These error codes are returned by DIL_nMsgRead func
 #define DIL_ERR_READ_SYS                0xFFF0
 #define DIL_ERR_READ_BYTE_MISMATCH      0xFFF1
+
+
+
+
+
+
+#endif //__CAN_ERROR_DEFS__

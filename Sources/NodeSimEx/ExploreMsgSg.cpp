@@ -15,17 +15,25 @@
 
 /**
  * \file      ExploreMsgSg.cpp
- * \brief     This file contain definition of all function of
+ * \brief     This file contain definition of all function of 
  * \author    Amarnath Shastry
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contain definition of all function of
+ * This file contain definition of all function of 
  */
 
 #include "NodeSimEx_stdafx.h"             // Standard include header file
 #include "NodeSimEx_resource.h"
 #include "FunctionEditorDoc.h"  // Document defintion file
 #include "ExploreMsgSg.h"       // Class defintion file
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+
 
 /******************************************************************************/
 /*  Function Name    :  CExploreMsgSg                                         */
@@ -38,13 +46,13 @@
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  01.03.2002                                            */
-/*  Modifications    :
+/*  Modifications    :  
 /******************************************************************************/
 
 CExploreMsgSg::CExploreMsgSg( CFunctionEditorDoc* pDoc,
-                              CMsgNameMsgCodeList& odMsgNameCodelist,
+                              CMsgNameMsgCodeList& odMsgNameCodelist,  
                               BOOL bCheckRequired,
-                              eMESSAGEFROM eWindow,
+                              eMESSAGEFROM eWindow, 
                               eSELTYPE eSelType,
                               CWnd* pParent /*=NULL*/)
     : CDialog(CExploreMsgSg::IDD, pParent),
@@ -93,7 +101,7 @@ END_MESSAGE_MAP()
 /*  Input(s)         :  NMHDR* pNMHDR, LRESULT* pResult                       */
 /*  Output           :                                                        */
 /*  Functionality    :  Called when the user double clicks on a message,      */
-/*                      and calls OnSelect() function                         */
+/*                      and calls OnSelect() function                         */  
 /*  Member of        :  CExploreMsgSg                                         */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
@@ -109,19 +117,18 @@ END_MESSAGE_MAP()
 /*                      Added check for message list view dbl click on msg for*/
 /*                      Global variable addition                              */
 /******************************************************************************/
-void CExploreMsgSg::OnDblclkListMsgs(NMHDR* /*pNMHDR*/, LRESULT* pResult)
+void CExploreMsgSg::OnDblclkListMsgs(NMHDR* /*pNMHDR*/, LRESULT* pResult) 
 {
     if(m_omMsgList.GetNextItem(-1, LVNI_SELECTED) == -1)
     {
         m_omMsgList.SetItemState(m_nMsgIndex, LVNI_SELECTED | LVNI_FOCUSED,
-                                 LVNI_SELECTED | LVNI_FOCUSED);
+                                              LVNI_SELECTED | LVNI_FOCUSED);
     }
 
     if ( m_eSelectType == SEL_MESSAGE || m_eSelectType == SEL_GLOBAL_MESSAGE )
     {
         OnSelect();
     }
-
     *pResult = 0;
 }
 /******************************************************************************/
@@ -130,7 +137,7 @@ void CExploreMsgSg::OnDblclkListMsgs(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 /*  Input(s)         :  NMHDR* pNMHDR, LRESULT* pResult                       */
 /*  Output           :                                                        */
 /*  Functionality    :  Called when the user double clicks on a signal,       */
-/*                      and calls OnSelect() function                         */
+/*                      and calls OnSelect() function                         */  
 /*  Member of        :  CExploreMsgSg                                         */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
@@ -141,7 +148,7 @@ void CExploreMsgSg::OnDblclkListMsgs(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 /*                      user wants to select singal.                          */
 /******************************************************************************/
 
-void CExploreMsgSg::OnDblclkListSignals()
+void CExploreMsgSg::OnDblclkListSignals() 
 {
     if ( m_eSelectType == SEL_SIGNAL )
     {
@@ -153,23 +160,23 @@ void CExploreMsgSg::OnDblclkListSignals()
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Called when the user clicks on Select button. This
+/*  Functionality    :  Called when the user clicks on Select button. This 
                         function gets the selected message or signal.
                         Associates signal with the message if the selection
                         mode is SEL_SIGNAL. Also forms the structure variable
                         if that option is checked for that message
-                                                                              */
+                                                                              */  
 /*  Member of        :  CExploreMsgSg                                         */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  01.03.2002                                            */
 /*  Modifications    :  Amitesh Bharti
-                        13.06.2002 While making message structure string,
+                        13.06.2002 While making message structure string, 
                         the message name is replace with MSG_STRUCT_VAR for
                         both message selection and signal selection if user
                         choose to create message structure.Space and Semi Colon
-                        is removed from #define MSG_STRUCT_VAR and put
+                        is removed from #define MSG_STRUCT_VAR and put 
                         seperatly.
 /*  Modifications    :  Raja N                                                */
 /*                      10/03/2004 Modified the message and signal structure  */
@@ -179,13 +186,13 @@ void CExploreMsgSg::OnDblclkListSignals()
 /*                      for Global variable addition                          */
 /******************************************************************************/
 
-void CExploreMsgSg::OnSelect()
+void CExploreMsgSg::OnSelect() 
 {
     UpdateData(TRUE);
-    UCHAR ucChannelId = '1';
+	UCHAR ucChannelId = '1';
+
     // Get Main Frame Window Pointer
     CFunctionEditorDoc* pDoc = NULL;
-
     // For global variable addition structure is required
     if( m_eSelectType == SEL_GLOBAL_MESSAGE)
     {
@@ -195,10 +202,10 @@ void CExploreMsgSg::OnSelect()
         m_bWantStructure = TRUE;
     }
 
-    if(IsDlgButtonChecked(IDC_RBTN_CHANNEL2))
-    {
-        ucChannelId='2';
-    }
+	if(IsDlgButtonChecked(IDC_RBTN_CHANNEL2))
+	{
+		ucChannelId='2';
+	}
 
     // Get the Document Object
     if (m_bWantStructure == TRUE)
@@ -210,29 +217,28 @@ void CExploreMsgSg::OnSelect()
     {
         // Get selected message text
         m_omStrMessageName = m_omStrSelectedItemText =
-                                 m_omMsgList.GetItemText( m_nMsgIndex, 0);
+                             m_omMsgList.GetItemText( m_nMsgIndex, 0);
         UINT unMsgID = (COMMANUINT)m_omMsgList.GetItemData(m_nMsgIndex);
 
         if (m_bWantStructure == TRUE)
         {
             // Get the Initialised string from document
             if (pDoc != NULL)
-            {
-                //To pass the actual name of message
-                int nIndex = m_omStrMessageName.ReverseFind(defMSGID_NAME_START_CHAR);
+			{				
+				//To pass the actual name of message
+				int nIndex = m_omStrMessageName.ReverseFind(defMSGID_NAME_START_CHAR);
+				if(nIndex != -1)
+				{
+					m_omStrSelectedItemText = m_omStrMessageName.Left(nIndex);
+					m_omStrMessageName = m_omStrSelectedItemText;
+				}
 
-                if(nIndex != -1)
-                {
-                    m_omStrSelectedItemText = m_omStrMessageName.Left(nIndex);
-                    m_omStrMessageName = m_omStrSelectedItemText;
-                }
-
-                CString omStrMsgStructure =
-                    pDoc->omStrGetInitialisedMessage(unMsgID,
-                                                     m_omStrSelectedItemText,
-                                                     MSG_STRUCT_VAR,TRUE,ucChannelId);
-                m_omStrSelectedItemText = omStrMsgStructure;
-            }
+				CString omStrMsgStructure = 
+					pDoc->omStrGetInitialisedMessage(unMsgID,
+					m_omStrSelectedItemText,
+					MSG_STRUCT_VAR,TRUE,ucChannelId);
+				m_omStrSelectedItemText = omStrMsgStructure;
+			}
         }
     }
     else
@@ -241,7 +247,7 @@ void CExploreMsgSg::OnSelect()
         CString omStrMsg = m_omMsgList.GetItemText(m_nMsgIndex, 0);
         UINT unMsgID = (COMMANUINT)m_omMsgList.GetItemData(m_nMsgIndex);
         int nSgIndex = (COMMANUINT)m_omSignalListBox.GetCurSel();
-
+        
         if ( nSgIndex != -1 )
         {
             // Get selected signal text
@@ -250,31 +256,27 @@ void CExploreMsgSg::OnSelect()
 
             if ( m_bWantStructure )
             {
-                omStrSgName.Insert( 0, (char)PERIOD );
-                ////To pass the actual name of message
-                int nIndex = omStrMsg.ReverseFind(defMSGID_NAME_START_CHAR);
-
-                if( nIndex!=NULL )
-                {
-                    omStrMsg = omStrMsg.Left(nIndex);
-                }
+                omStrSgName.Insert( 0, (TCHAR)PERIOD );
+				
+				////To pass the actual name of message
+				int nIndex = omStrMsg.ReverseFind(defMSGID_NAME_START_CHAR);
+				if( nIndex!=NULL )
+				omStrMsg = omStrMsg.Left(nIndex);
 
                 // Get the Initialised string from document
-                CString omStrMsgStructure =
-                    pDoc->omStrGetInitialisedMessage(unMsgID,
-                                                     omStrMsg,
-                                                     MSG_STRUCT_VAR,TRUE,ucChannelId);
+                CString omStrMsgStructure = 
+                        pDoc->omStrGetInitialisedMessage(unMsgID,
+                                            omStrMsg,
+                                            MSG_STRUCT_VAR,TRUE,ucChannelId);
                 // Form the declaration and signal access statements
                 m_omStrSelectedItemText.Format(defFNS_INIT_SIG_FORMAT,
-                                               omStrMsgStructure,
-                                               MSG_STRUCT_VAR,
-                                               defSIGNALMEMBER);
+                                                 omStrMsgStructure,
+                                                 MSG_STRUCT_VAR,
+                                                 defSIGNALMEMBER);
             }
-
             m_omStrSelectedItemText += omStrSgName;
         }
     }
-
     CDialog::OnOK();
 }
 
@@ -283,8 +285,8 @@ void CExploreMsgSg::OnSelect()
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Initialises the dialog with all the messages of active*/
-/*                      database. Disables signal ist if the user asks for the*/
+/*  Functionality    :  Initialises the dialog with all the messages of active*/ 
+/*                      database. Disables signal ist if the user asks for the*/ 
 /*                      message name.                                         */
 /*  Member of        :  CExploreMsgSg                                         */
 /*  Friend of        :      -                                                 */
@@ -300,10 +302,9 @@ void CExploreMsgSg::OnSelect()
 /*                      Corrected the positioning problem with control in     */
 /*                      case of font change.                                  */
 /******************************************************************************/
-BOOL CExploreMsgSg::OnInitDialog()
+BOOL CExploreMsgSg::OnInitDialog() 
 {
     CDialog::OnInitDialog();
-
     // Disable the chck if not required
     if ( m_bCheckRequired )
     {
@@ -313,18 +314,19 @@ BOOL CExploreMsgSg::OnInitDialog()
     {
         GetDlgItem(IDC_CHKB_WANT_STRUCTURE)->EnableWindow( FALSE );
     }
-
     // Disable the signal list box
     // if the user wants message list only
     if ( m_eSelectType == SEL_MESSAGE )
     {
         GetDlgItem(IDC_LSTB_SIGNAL)->EnableWindow( FALSE );
+
     }
     else if( m_eSelectType == SEL_GLOBAL_MESSAGE)
     {
         CRect omDRect, omLRect, omBRect;
-        CWnd* pWnd = GetDlgItem(IDC_CHKB_WANT_STRUCTURE);
 
+
+        CWnd * pWnd = GetDlgItem(IDC_CHKB_WANT_STRUCTURE);
         if( pWnd != NULL )
         {
             // Hide want structure item
@@ -332,25 +334,21 @@ BOOL CExploreMsgSg::OnInitDialog()
             // Store window rect to resize the list control
             pWnd->GetWindowRect(&omBRect);
             ScreenToClient(&omBRect);
+            
             // Get Dialog size
             GetWindowRect(&omDRect);
             //Get Channel selection radio buttons
             pWnd = GetDlgItem(IDC_STAT_SELCHANNEL);
-
             if (pWnd != NULL)
             {
                 pWnd->ShowWindow(FALSE);
             }
-
             pWnd = GetDlgItem(IDC_RBTN_CHANNEL1);
-
             if (pWnd != NULL)
             {
                 pWnd->ShowWindow(FALSE);
             }
-
             pWnd = GetDlgItem(IDC_RBTN_CHANNEL2);
-
             if (pWnd != NULL)
             {
                 pWnd->ShowWindow(FALSE);
@@ -358,7 +356,6 @@ BOOL CExploreMsgSg::OnInitDialog()
 
             // Get list control size
             pWnd = GetDlgItem(IDC_LSTC_MSGS);
-
             if( pWnd != NULL )
             {
                 // Convert it in to client co ordiantes
@@ -367,19 +364,22 @@ BOOL CExploreMsgSg::OnInitDialog()
                 // The new bottom equal to the check box item bottom
                 omLRect.bottom = omBRect.bottom;
                 pWnd->MoveWindow(omLRect);
+                
                 // Change the postion of select button
                 pWnd = GetDlgItem(IDC_CBTN_OK);
-
                 if( pWnd != NULL )
                 {
                     pWnd->GetWindowRect(&omBRect);
                     ScreenToClient(&omBRect);
                     // Reduce the size by half and add right margin
                     int nDialogWidth = (omDRect.Width() / 2) + omLRect.left - 1;
+
                     MoveWindow( omDRect.left, omDRect.top,
                                 nDialogWidth, omDRect.Height());
+        
                     // Move Select button
                     nDialogWidth = nDialogWidth / 2 - omBRect.Width() / 2;
+        
                     pWnd->MoveWindow( nDialogWidth, omBRect.top,
                                       omBRect.Width(), omBRect.Height());
                     // Remove the text "Signal" from the caption
@@ -395,19 +395,22 @@ BOOL CExploreMsgSg::OnInitDialog()
 
     //  Get the msg list rectangle
     RECT rRect;
+    
     GetDlgItem(IDC_LSTC_MSGS)->GetWindowRect(&rRect);
+
     ScreenToClient(&rRect);
+
     // Insert a column to the list control
     m_omMsgList.InsertColumn( 0, STR_EMPTY, LVCFMT_LEFT, rRect.bottom );
+
     m_omMsgList.DeleteAllItems();
+
     // Init last selection to -1
     m_nMsgIndex = -1;
-
     if (m_odMsgNameCodeList.GetCount() > 0)
     {
         POSITION pos = m_odMsgNameCodeList.GetHeadPosition();
         int nIndex = 0;
-
         while (pos != NULL)
         {
             SMSG_NAME_CODE& sMsgNameCode = m_odMsgNameCodeList.GetNext(pos);
@@ -416,17 +419,17 @@ BOOL CExploreMsgSg::OnInitDialog()
             int nInsertedIndex = m_omMsgList.InsertItem( nIndex++, omMsgWithId);
             m_omMsgList.SetItemData(nInsertedIndex, sMsgNameCode.m_dwMsgCode);
         }
-
         m_nMsgIndex = 0;
-        m_omMsgList.SetItemState(m_nMsgIndex, LVIS_SELECTED|LVIS_FOCUSED,
-                                 LVIS_SELECTED|LVIS_FOCUSED);
+	    m_omMsgList.SetItemState(m_nMsgIndex, LVIS_SELECTED|LVIS_FOCUSED,
+	                                LVIS_SELECTED|LVIS_FOCUSED);
     }
+	
+	//Set Default channel as Channel 1
+	CButton *pButtn=(CButton *)GetDlgItem(IDC_RBTN_CHANNEL1);
+	pButtn->SetCheck(BST_CHECKED);
 
-    //Set Default channel as Channel 1
-    CButton* pButtn=(CButton*)GetDlgItem(IDC_RBTN_CHANNEL1);
-    pButtn->SetCheck(BST_CHECKED);
     return FALSE;  // return TRUE unless you set the focus to a control
-    // EXCEPTION: OCX Property Pages should return FALSE
+                  // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 
@@ -443,7 +446,7 @@ BOOL CExploreMsgSg::OnInitDialog()
 /*  Date Created     :  19.04.2002                                            */
 /*  Modifications    :                                                        */
 /******************************************************************************/
-void CExploreMsgSg::OnCbtnCancel()
+void CExploreMsgSg::OnCbtnCancel() 
 {
     CDialog::OnCancel();
 }
@@ -453,7 +456,7 @@ void CExploreMsgSg::OnCbtnCancel()
 /*  Input(s)         :  NMHDR* pNMHDR, LRESULT* pResult                       */
 /*  Output           :                                                        */
 /*  Functionality    :  Called when the user changes selection on a message,  */
-/*                      and displays corresponding signals in signal list     */
+/*                      and displays corresponding signals in signal list     */  
 /*  Member of        :  CExploreMsgSg                                         */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
@@ -463,7 +466,7 @@ void CExploreMsgSg::OnCbtnCancel()
 /*                      Included assignment of selected item variable while   */
 /*                      the item selection got changed                        */
 /******************************************************************************/
-void CExploreMsgSg::OnItemchangedLstcMsgs(NMHDR* pNMHDR, LRESULT* pResult)
+void CExploreMsgSg::OnItemchangedLstcMsgs(NMHDR* pNMHDR, LRESULT* pResult) 
 {
     NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 
@@ -474,19 +477,23 @@ void CExploreMsgSg::OnItemchangedLstcMsgs(NMHDR* pNMHDR, LRESULT* pResult)
         {
             // Delete every other item from the list box.
             m_omSignalListBox.ResetContent();
+
             // Get handle to selected message item
             int hSelItem = pNMListView->iItem;
 
             if ( (hSelItem != -1) )
             {
                 CStringList omSignalNames;
+
                 omSignalNames.RemoveAll();
+
                 // Store last selection
                 m_nMsgIndex = hSelItem;
+
                 // Get selected message name
                 m_omStrMessageName = m_omMsgList.GetItemText( hSelItem, 0 );
                 DWORD dwMsgCode = (COMMANDWORD)m_omMsgList.GetItemData(hSelItem);
-                vGetSigNamesFromMsgCode(dwMsgCode, omSignalNames);
+			    vGetSigNamesFromMsgCode(dwMsgCode, omSignalNames);
                 // Add signal names into the list box
                 POSITION pos = omSignalNames.GetHeadPosition();
 
@@ -494,48 +501,46 @@ void CExploreMsgSg::OnItemchangedLstcMsgs(NMHDR* pNMHDR, LRESULT* pResult)
                 {
                     m_omSignalListBox.AddString( omSignalNames.GetNext(pos));
                 }
-
+            
                 m_omSignalListBox.SetCurSel( 0 );
+
                 // Set horizontal extent of the list
                 // box to max string availaable
                 // so that user can scroll
                 CSize   sz;
                 CString omStrText;
                 CDC*  pDC = m_omSignalListBox.GetDC();
-
                 if ( pDC != NULL)
                 {
                     int nDx = 0;
-
                     for (int nCount = 0;
-                            nCount < m_omSignalListBox.GetCount();
-                            nCount++)
+                         nCount < m_omSignalListBox.GetCount();
+                         nCount++)
                     {
-                        m_omSignalListBox.GetText( nCount, omStrText );
-                        // remove space
-                        omStrText.TrimRight();
-                        sz = pDC->GetTextExtent(omStrText);
-
-                        if (sz.cx > nDx)
-                        {
-                            nDx = sz.cx;
-                        }
+                             m_omSignalListBox.GetText( nCount, omStrText );
+                             // remove space
+                             omStrText.TrimRight();
+                             sz = pDC->GetTextExtent(omStrText);
+                             if (sz.cx > nDx)
+                             {
+                                 nDx = sz.cx;
+                             }
                     }
-
                     m_omSignalListBox.ReleaseDC(pDC);
                     // Set the horizontal extent so every character of all
                     // strings can be scrolled to.
                     m_omSignalListBox.SetHorizontalExtent(nDx);
                 }
+
             }
+
         }
     }
-    else
-    {
-        // Store last selection
-        m_nMsgIndex = pNMListView->iItem ;
-    }
-
+	else
+	{
+		// Store last selection
+         m_nMsgIndex = pNMListView->iItem ;
+	}
     *pResult = 0;
 }
 
@@ -545,7 +550,7 @@ void CExploreMsgSg::OnItemchangedLstcMsgs(NMHDR* pNMHDR, LRESULT* pResult)
 /*  Input(s)         :  NMHDR* pNMHDR, LRESULT* pResult                       */
 /*  Output           :                                                        */
 /*  Functionality    :  Called when the user changes selection on a message,  */
-/*                      and this will store the selection. If the user clicks */
+/*                      and this will store the selection. If the user clicks */  
 /*                      clicks outside this will set the focus to the last    */
 /*                      selected item                                         */
 /*  Member of        :  CExploreMsgSg                                         */
@@ -555,20 +560,19 @@ void CExploreMsgSg::OnItemchangedLstcMsgs(NMHDR* pNMHDR, LRESULT* pResult)
 /*  Date Created     :  11.03.2004                                            */
 /*  Modifications    :                                                        */
 /******************************************************************************/
-void CExploreMsgSg::OnClickLstcMsgs(NMHDR* /*pNMHDR*/, LRESULT* pResult)
+void CExploreMsgSg::OnClickLstcMsgs(NMHDR* /*pNMHDR*/, LRESULT* pResult) 
 {
     int nIndex = m_omMsgList.GetNextItem(-1, LVNI_SELECTED);
 
     if( nIndex == -1)
     {
-        m_omMsgList.SetItemState(m_nMsgIndex, LVNI_SELECTED | LVNI_FOCUSED,
-                                 LVNI_SELECTED | LVNI_FOCUSED);
+            m_omMsgList.SetItemState(m_nMsgIndex, LVNI_SELECTED | LVNI_FOCUSED,
+                                                 LVNI_SELECTED | LVNI_FOCUSED);
     }
     else
     {
         m_nMsgIndex = nIndex;
     }
-
     *pResult = 0;
 }
 
@@ -578,10 +582,9 @@ void CExploreMsgSg::vGetSigNamesFromMsgCode(DWORD dwMsgCode, CStringList& omSign
     omSignalNames.RemoveAll();
     sMsgCodeName.m_dwMsgCode = dwMsgCode;
     POSITION pos = m_odMsgNameCodeList.Find(sMsgCodeName);
-
     if (pos != NULL)
     {
         sMsgCodeName = m_odMsgNameCodeList.GetAt(pos);
         omSignalNames.AddTail(&(sMsgCodeName.m_omSignalNames));
-    }
+    }   
 }
