@@ -22,7 +22,10 @@
  * Definition of CFormatMsgCAN class
  */
 
-#pragma once
+#if !defined  FORMAT_MSG_CAN_H_INCLUDED_
+#define FORMAT_MSG_CAN_H_INCLUDED_
+
+
 
 #include "GUI_FormatMsgCommon.h"
 #include "include/BaseDefs.h"
@@ -33,12 +36,14 @@ class CFormatMsgCAN : public CFormatMsgCommon
 private:
     void vFormatTime(BYTE bExprnFlag, SFORMATTEDDATA_CAN* CurrDataCAN);
     void vFormatDataAndId(BYTE bExprnFlag, SFORMATTEDDATA_CAN* CurrDataCAN);
-    USHORT usProcessCurrErrorEntry(SERROR_INFO& sErrorInfo);
-    char* vFormatCurrErrorEntry(USHORT usErrorID);
+	USHORT usProcessCurrErrorEntry(SERROR_INFO& sErrorInfo);
+	TCHAR* vFormatCurrErrorEntry(USHORT usErrorID);
 public:
     CFormatMsgCAN(void);
     ~CFormatMsgCAN(void);
-    void vFormatCANDataMsg(STCANDATA* pMsgCAN,
+    void vFormatCANDataMsg(STCANDATA* pMsgCAN, 
                            SFORMATTEDDATA_CAN* CurrDataCAN,
                            BYTE bExprnFlag_Log);
 };
+
+#endif //FORMAT_MSG_CAN_H_INCLUDED_

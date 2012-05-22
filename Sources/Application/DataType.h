@@ -15,20 +15,22 @@
 
 /**
  * \file      DataType.h
- * \brief     This header file contains definitions of necessary user
+ * \brief     This header file contains definitions of necessary user 
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This header file contains definitions of necessary user
+ * This header file contains definitions of necessary user 
  */
 
-#pragma once
+#ifndef _INCLUDE_DATATYPE_H
+#define _INCLUDE_DATATYPE_H
+
 
 const int DATA_BUFFER_LENGTH = 120;
 const int DATA_LENGTH_MAX = 8;
 const int DATA_TX_FLAG = 3;
 
-typedef struct tagMsgParameters
+typedef struct tagMsgParameters 
 {
     unsigned int unMessageID;
     unsigned char ucDLC;
@@ -44,3 +46,6 @@ typedef struct tagCanIDList
     unsigned int nCANID;
     COLORREF Colour;
 } SCanIDList;
+
+
+#endif  //#define _INCLUDE_DATATYPE_H

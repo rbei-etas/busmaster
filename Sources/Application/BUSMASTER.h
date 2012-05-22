@@ -21,8 +21,16 @@
  *
  * This header file for CCANMonitorApp class
  */
+#if !defined(AFX_CAN_MONITOR_H__E02A6C5C_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)
+#define AFX_CAN_MONITOR_H__E02A6C5C_1005_11D6_A606_00D0B76BEBF5__INCLUDED_
 
+#if _MSC_VER > 1000
 #pragma once
+#endif // _MSC_VER > 1000
+
+#ifndef __AFXWIN_H__
+    #error include 'stdafx.h' before including this file for PCH
+#endif
 
 #include "resource.h"       // main symbols
 #include "MsgSignal.h"      // Added by ClassView
@@ -60,10 +68,10 @@ public:
     BOOL bGetDefaultSplitterPostion(eCONFIGDETAILS eParam, CRect omWindowSize,
                                     LPVOID* pData);
 
-    //PSSIMSYSARRAY psReturnSimsysArrayPtr();
+	//PSSIMSYSARRAY psReturnSimsysArrayPtr();
 
 public:
-    //CExecutefunc
+	//CExecutefunc
     STHREADINFO m_asUtilThread[defEVENT_TOTAL-defOFFSET_TXMSG];
     CEvent m_aomState[defEVENT_TOTAL];
     VOID vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode);
@@ -82,30 +90,30 @@ public:
     //CString m_omStrUnionPath;
     BOOL m_bFromAutomation;
 
-    // Overrides
+// Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CCANMonitorApp)
-public:
+    public:
     virtual BOOL InitInstance();
     virtual void WinHelp(DWORD dwData, UINT nCmd = HELP_CONTEXT);
     virtual int ExitInstance();
     virtual CWnd* GetMainWnd();
     //}}AFX_VIRTUAL
 
-    // Implementation
+// Implementation
     //{{AFX_MSG(CCANMonitorApp)
     afx_msg void OnAppAbout();
     afx_msg void OnFileOpen();
     afx_msg void OnFileNew();
-    // NOTE - the ClassWizard will add and remove member functions here.
-    //    DO NOT EDIT what you see in these blocks of generated code !
+        // NOTE - the ClassWizard will add and remove member functions here.
+        //    DO NOT EDIT what you see in these blocks of generated code !
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
-    BOOL bInitialiseConfiguration(BOOL bFromCom);
+	BOOL bInitialiseConfiguration(BOOL bFromCom);
     void vSetFileStorageInfo(CString oCfgFilename);
     void vDisplayConfigErrMsgbox(UINT unErrorCode, BOOL bOperation);
-
+    
     CString m_ostrConfigFilename;
     CString m_omConfigErr;
     BOOL m_bIsConfigFileLoaded;
@@ -123,3 +131,11 @@ public:
     INT COM_nSaveConfiguration(CString omStrCfgFilename);
     BOOL bWriteIntoTraceWnd(char* omText);
 };
+
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_CAN_MONITOR_H__E02A6C5C_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)

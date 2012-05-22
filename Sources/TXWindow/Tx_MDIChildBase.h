@@ -22,7 +22,12 @@
  * Interface file for CMDIChildBase class
  */
 
+#if !defined(AFX_MDICHILDBASE_H__B09E3A76_DB04_4D31_A000_150658B2128F__INCLUDED_)
+#define AFX_MDICHILDBASE_H__B09E3A76_DB04_4D31_A000_150658B2128F__INCLUDED_
+
+#if _MSC_VER > 1000
 #pragma once
+#endif // _MSC_VER > 1000
 
 #include "Application/hashdefines.h"
 
@@ -39,12 +44,12 @@ public:
     void vUpdateWndCo_Ords();
     // To save window co-ordinates in to Configuration module
     void vUpdateWinStatus();
-    // Overrides
+// Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMDIChildBase)
     //}}AFX_VIRTUAL
 
-    // Implementation
+// Implementation
 protected:
     // helping function to Save and loading window postion from
     // configuration module
@@ -57,7 +62,7 @@ protected:
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 
-    // Attributes
+// Attributes
     // Make members as protected so that derivation of this class shall use
     // if it wants
     // Window placement Attribute
@@ -65,3 +70,10 @@ protected:
     // Set the window identity parameter
     eCONFIGDETAILS  m_eWindowIdentity;
 };
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_MDICHILDBASE_H__B09E3A76_DB04_4D31_A000_150658B2128F__INCLUDED_)

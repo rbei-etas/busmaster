@@ -15,7 +15,6 @@ Sources/Application/BUSMASTER_Interface.h
 Sources/BusEmulation/BusEmulation.h
 Sources/BusEmulation/BusEmulation_i.c
 Sources/BusEmulation/BusEmulation_p.c
-Sources/BusEmulation/dlldata.c
 EXTERNAL_SOURCE/DmGraph/DMGraph.h
 EXTERNAL_SOURCE/DmGraph/DMGraph.tlb
 EXTERNAL_SOURCE/DmGraph/DMGraph_i.c
@@ -23,14 +22,9 @@ EXTERNAL_SOURCE/DmGraph/DMGraph_p.c
 EXTERNAL_SOURCE/DmGraph/dlldata.c
 Sources/Format Converter/AscLogConverter/Asc_Log_Lexer.c
 Sources/Format Converter/AscLogConverter/asc_log_parser.c
-Sources/Format Converter/AscLogConverter/asc_log_parser.h
-Sources/Format Converter/CAPL2CConverter/lexer.h
+Sources/Format Converter/CAPL2CConvereter/lexer.h
 Sources/Format Converter/LogAscConverter/Log_Asc_Lexer.c
 Sources/Format Converter/LogAscConverter/log_asc_parser.c
-Sources/Format Converter/LogAscConverter/log_asc_parser.h
-Sources/TestSuiteExecutorGUI/lexer.c
-Sources/TestSuiteExecutorGUI/parser.c
-Sources/TestSuiteExecutorGUI/parser.h
 
 # Release dirs (except BIN)
 Sources/Application/Release
@@ -114,11 +108,10 @@ Sources/BIN/*/CAN_Vector_XL.dll
 Sources/BIN/*/Changelog.txt
 Sources/BIN/*/ConfigDialogsDIL.dll
 Sources/BIN/*/ConverterPlugins/AscLogConverter.dll
-Sources/BIN/*/ConverterPlugins/CAPL2CConverter.dll
+Sources/BIN/*/ConverterPlugins/CAPL2CConvereter.dll
 Sources/BIN/*/ConverterPlugins/DBC2DBFConverter.dll
 Sources/BIN/*/ConverterPlugins/DBF2DBCConverter.dll
 Sources/BIN/*/ConverterPlugins/LogAscConverter.dll
-Sources/BIN/*/ConverterPlugins/LogToExcelConverter.dll
 Sources/BIN/*/DIL_Interface.dll
 Sources/BIN/*/DIL_J1939.dll
 Sources/BIN/*/DMGraph.dll
@@ -190,12 +183,9 @@ Documents/5 Source Code Documentation/out
 Tests/AStyle/new.txt
 Tests/AStyle/report.html
 Tests/AutoIt/*/out
-Tests/AutoIt/report.html
 Tests/CCCC/files.txt
 Tests/CCCC/report
 Tests/Cppcheck/cppcheck.xml
 Tests/Cppcheck/report
-Tests/PMD/cpd.html
 Tests/PMD/cpd.xml
-Tests/PMD/cpd-fixed.xml
 Tests/Requirements Traceability Matrix/report.html

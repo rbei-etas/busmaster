@@ -19,7 +19,8 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
-#pragma once
+#if !defined(_TSEDITORLIB_TESTSETUPCVerifyResponse_H_INCLUDED_)
+#define _TSEDITORLIB_TESTSETUPCVerifyResponse_H_INCLUDED_
 
 #include "VerifyEntity.h"
 
@@ -38,21 +39,22 @@ public:
     CVerifyMsgMap m_ouVerifyMsgMap;
     USHORT m_ushDuration;
 public:
-    CVerifyResponse(void);
+	CVerifyResponse(void);
     CVerifyResponse& operator= (CVerifyResponse& RefObj);
     CVerifyResponse(const CVerifyResponse& RefObj);
-    //HRESULT AddSubEntry(CBaseEntityTA* pouSubEntryObj);
-    //HRESULT DeleteSubEntry(CBaseEntityTA* pouSubEntryObj);
+	//HRESULT AddSubEntry(CBaseEntityTA* pouSubEntryObj);
+	//HRESULT DeleteSubEntry(CBaseEntityTA* pouSubEntryObj);
     //HRESULT DeleteSubEntry(INT index);
-    HRESULT GetData(MSXML2::IXMLDOMNodePtr& pIDomNode);
-    HRESULT GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
-    eTYPE_ENTITY GetEntityType(void);
-    //const HRESULT GetSubEntityObj(UINT unIndex, CBaseEntityTA**  pouSubEntity);
-    //HRESULT GetSubEntryCount(UINT& unTotal);
-    //HRESULT RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, CBaseEntityTA* pouCurrSubEntity);
-    HRESULT SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode);
-    HRESULT SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
+	HRESULT GetData(MSXML2::IXMLDOMNodePtr& pIDomNode);
+	HRESULT GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
+	eTYPE_ENTITY GetEntityType(void);
+	//const HRESULT GetSubEntityObj(UINT unIndex, CBaseEntityTA**  pouSubEntity);
+	//HRESULT GetSubEntryCount(UINT& unTotal);
+	//HRESULT RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, CBaseEntityTA* pouCurrSubEntity);
+	HRESULT SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode);
+	HRESULT SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
     HRESULT GetMessageFromId(UINT& unId, CVerify_MessageData* ouData);
     HRESULT ValidateEntity(CString& omStrResult);
     virtual ~CVerifyResponse(void);
 };
+#endif

@@ -22,7 +22,12 @@
  * Interface file for CGraphList class
  */
 
+#if !defined(AFX_GRAPHLIST_H__C6AC1275_DE31_4030_AF09_EB1388DE879D__INCLUDED_)
+#define AFX_GRAPHLIST_H__C6AC1275_DE31_4030_AF09_EB1388DE879D__INCLUDED_
+
+#if _MSC_VER > 1000
 #pragma once
+#endif // _MSC_VER > 1000
 
 class CGraphList
 {
@@ -41,3 +46,5 @@ public:
     // Graph element array
     CArray<CGraphElement, CGraphElement&> m_omElementList;
 };
+
+#endif // !defined(AFX_GRAPHLIST_H__C6AC1275_DE31_4030_AF09_EB1388DE879D__INCLUDED_)

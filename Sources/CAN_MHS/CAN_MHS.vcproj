@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="CAN_MHS"
 	ProjectGUID="{EFB39D0A-C032-436C-81FB-7A02C7851D00}"
 	RootNamespace="CAN_MHS"
@@ -51,7 +51,10 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
+				UsePrecompiledHeader="1"
+				PrecompiledHeaderThrough="CAN_MHS_StdAfx.h"
 				WarningLevel="4"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -131,12 +134,15 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
+				Optimization="2"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
+				UsePrecompiledHeader="1"
+				PrecompiledHeaderThrough="CAN_MHS_StdAfx.h"
 				WarningLevel="4"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
 			/>
 			<Tool
@@ -160,7 +166,7 @@
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 				GenerateManifest="true"
 				ModuleDefinitionFile=""
-				GenerateDebugInformation="true"
+				GenerateDebugInformation="false"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -204,6 +210,14 @@
 				RelativePath=".\CAN_MHS.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\CAN_MHS.rc"
+				>
+			</File>
+			<File
+				RelativePath=".\CAN_MHS_stdafx.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -223,19 +237,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\can_types.h"
+				RelativePath=".\CAN_MHS_stdafx.h"
 				>
 			</File>
 			<File
 				RelativePath=".\mhstcan.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Resource Files"
-			>
-			<File
-				RelativePath=".\CAN_MHS.rc"
 				>
 			</File>
 		</Filter>

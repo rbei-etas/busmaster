@@ -31,6 +31,12 @@
 // Interface file for CUIThread class
 #include "UIThread.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
 /////////////////////////////////////////////////////////////////////////////
 // CUIThread
 
@@ -45,8 +51,8 @@ IMPLEMENT_DYNCREATE(CUIThread, CWinThread)
     Member of        :  CUIThread
     Author(s)        :  Ratnadip Choudhury
     Date Created     :  29-01-2004
-    Modified by      :
-    Modification     :
+    Modified by      :  
+    Modification     :  
 /*****************************************************************************/
 CUIThread::CUIThread()
 {
@@ -62,8 +68,8 @@ CUIThread::CUIThread()
     Member of        :  CUIThread
     Author(s)        :  Ratnadip Choudhury
     Date Created     :  29-01-2004
-    Modified by      :
-    Modification     :
+    Modified by      :  
+    Modification     :  
 /*****************************************************************************/
 CUIThread::~CUIThread()
 {
@@ -73,13 +79,13 @@ CUIThread::~CUIThread()
     Function Name    :  InitInstance
     Input(s)         :  -
     Output           :  TRUE if successful, else FALSE
-    Functionality    :  Overridden to initialize each new instance of this
+    Functionality    :  Overridden to initialize each new instance of this 
                         user interface thread
     Member of        :  CUIThread
     Author(s)        :  Ratnadip Choudhury
     Date Created     :  29-01-2004
-    Modified by      :
-    Modification     :
+    Modified by      :  
+    Modification     :  
 /*****************************************************************************/
 BOOL CUIThread::InitInstance()
 {
@@ -96,14 +102,15 @@ BOOL CUIThread::InitInstance()
     Member of        :  CUIThread
     Author(s)        :  Ratnadip Choudhury
     Date Created     :  29-01-2004
-    Modified by      :
-    Modification     :
+    Modified by      :  
+    Modification     :  
 /*****************************************************************************/
 int CUIThread::ExitInstance()
 {
     // TODO:  perform any per-thread cleanup here
     m_podTraceWinObj->PostMessage(WM_DESTROY, 0, 0);
     Sleep(0);
+
     return CWinThread::ExitInstance();
 }
 /******************************************************************************
@@ -114,8 +121,8 @@ int CUIThread::ExitInstance()
     Member of        :  CUIThread
     Author(s)        :  Ratnadip Choudhury
     Date Created     :  29-01-2004
-    Modified by      :
-    Modification     :
+    Modified by      :  
+    Modification     :  
 /*****************************************************************************/
 BOOL CUIThread::bCreateTraceWindow(CMDIFrameWnd* pomParentWnd)
 {
@@ -124,12 +131,10 @@ BOOL CUIThread::bCreateTraceWindow(CMDIFrameWnd* pomParentWnd)
     if (m_podTraceWinObj == NULL)
     {
         m_podTraceWinObj = new CNotificWnd();
-
         if (m_podTraceWinObj != NULL)
         {
             m_pMainWnd = m_podTraceWinObj;
             bResult = m_podTraceWinObj->bCreateNotificWindow(pomParentWnd);
-
             if (bResult == TRUE)
             {
                 m_podTraceWinObj->ShowWindow(SW_SHOW);
@@ -146,13 +151,13 @@ BOOL CUIThread::bCreateTraceWindow(CMDIFrameWnd* pomParentWnd)
     Function Name    :  vUpdateWndCo_Ords
     Input(s)         :  -
     Output           :  -
-    Functionality    :  Called to save trace window status info into the
+    Functionality    :  Called to save trace window status info into the 
                         current configuration file.
     Member of        :  CUIThread
     Author(s)        :  Ratnadip Choudhury
     Date Created     :  29-01-2004
-    Modified by      :
-    Modification     :
+    Modified by      :  
+    Modification     :  
 /*****************************************************************************/
 void CUIThread::vUpdateWndCo_Ords(WINDOWPLACEMENT& wndPlacement, BOOL bLoadIntoTrace)
 {
@@ -164,13 +169,12 @@ void CUIThread::vUpdateWndCo_Ords(WINDOWPLACEMENT& wndPlacement, BOOL bLoadIntoT
             {
                 CRect omRect;
                 GetClientRect(m_pMainWnd->GetParent()->GetSafeHwnd(), &omRect);
-                omRect.top   += static_cast<LONG> ( omRect.Height() *
-                                                    defCHILD_FRAME_PROP_H);
-                omRect.right = static_cast<LONG> ( omRect.right *
-                                                   defREPLAY_WND_PROP_X);
+                omRect.top   += static_cast<LONG> ( omRect.Height() * 
+                    defCHILD_FRAME_PROP_H);
+                omRect.right = static_cast<LONG> ( omRect.right * 
+                    defREPLAY_WND_PROP_X);
                 wndPlacement.rcNormalPosition = omRect;
             }
-
             m_podTraceWinObj->SetWindowPlacement(&wndPlacement);
         }
         else
@@ -190,10 +194,10 @@ void CUIThread::vUpdateWndCo_Ords(WINDOWPLACEMENT& wndPlacement, BOOL bLoadIntoT
 
 BEGIN_MESSAGE_MAP(CUIThread, CWinThread)
     //{{AFX_MSG_MAP(CUIThread)
-    // NOTE - the ClassWizard will add and remove mapping macros here.
-    ON_THREAD_MESSAGE(WM_LOAD_SAVE_WINSTATUS, vUpdateWinStatusFromCfg)
-    ON_THREAD_MESSAGE(WM_THREADMSG_PROC, vProcessThreadMsg)
-    ON_THREAD_MESSAGE(WM_WRITE_TO_TRACE, vWriteTextToTrace)
+        // NOTE - the ClassWizard will add and remove mapping macros here.
+        ON_THREAD_MESSAGE(WM_LOAD_SAVE_WINSTATUS, vUpdateWinStatusFromCfg)
+        ON_THREAD_MESSAGE(WM_THREADMSG_PROC, vProcessThreadMsg)
+        ON_THREAD_MESSAGE(WM_WRITE_TO_TRACE, vWriteTextToTrace)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -202,9 +206,9 @@ END_MESSAGE_MAP()
 
 /******************************************************************************
     Function Name    :  vUpdateWinStatusFromCfg
-    Input(s)         :  unParam - TRUE when window status info is to
+    Input(s)         :  unParam - TRUE when window status info is to 
                                   be retrieved from the configuration file.
-                                  FALSE when window status info is to
+                                  FALSE when window status info is to 
                                   be saved into the configuration file.
     Output           :  -
     Functionality    :  Handler for the user defined message WM_LOAD_SAVE_WINSTATUS
@@ -212,8 +216,8 @@ END_MESSAGE_MAP()
     Member of        :  CUIThread
     Author(s)        :  Ratnadip Choudhury
     Date Created     :  29-01-2004
-    Modified by      :
-    Modification     :
+    Modified by      :  
+    Modification     :  
 /*****************************************************************************/
 void CUIThread::vUpdateWinStatusFromCfg(UINT /*unParam*/, LONG lParam)
 {
@@ -230,13 +234,13 @@ void CUIThread::vUpdateWinStatusFromCfg(UINT /*unParam*/, LONG lParam)
                                   SW_HIDE if trace window is to be hidden
                         lParam - Unused
     Output           :  -
-    Functionality    :  Handler for the user defined message
+    Functionality    :  Handler for the user defined message 
                         WM_MODIFY_VISIBILITY sent to show/hide trace window
     Member of        :  CUIThread
     Author(s)        :  Ratnadip Choudhury
     Date Created     :  29-01-2004
-    Modified by      :
-    Modification     :
+    Modified by      :  
+    Modification     :  
 /*****************************************************************************/
 
 /******************************************************************************
@@ -247,8 +251,8 @@ void CUIThread::vUpdateWinStatusFromCfg(UINT /*unParam*/, LONG lParam)
     Member of        :  CUIThread
     Author(s)        :  Ratnadip Choudhury
     Date Created     :  10-11-2008
-    Modified by      :
-    Modification     :
+    Modified by      :  
+    Modification     :  
 /*****************************************************************************/
 void CUIThread::vAddString(CString omStr)
 {
@@ -266,7 +270,7 @@ BOOL CUIThread::bIsTraceWindowVisible(void)
 void CUIThread::vWriteTextToTrace(UINT /*unParam*/, LONG lParam)
 {
     //CHAR* pacText = (CHAR*)lParam;
-    CString strText((CHAR*)lParam);
+	CString strText((CHAR*)lParam);
     m_podTraceWinObj->vDisplayString(strText);
 }
 
@@ -279,11 +283,9 @@ void CUIThread::vProcessThreadMsg(UINT unParam, LONG lParam)
             PostQuitMessage(0);
         }
         break;
-
         case WM_MODIFY_VISIBILITY:
         {
             m_podTraceWinObj->ShowWindow(lParam);
-
             if (lParam == SW_SHOW)
             {
                 m_podTraceWinObj->SendMessage(WM_NCPAINT, 1, 0);
@@ -295,15 +297,15 @@ void CUIThread::vProcessThreadMsg(UINT unParam, LONG lParam)
 
 /******************************************************************************
     Function Name    :  hGetHandleTraceWnd
-    Input(s)         :
+    Input(s)         :  
     Output           :  HWND (Window handle of the trace window)
     Functionality    :  returns window handle of the trace window
     Member of        :  CUIThread
     Author(s)        :  Pradeep Kadoor
     Date Created     :  19-01-2009
-    Modification     :
+    Modification     :  
 /*****************************************************************************/
 HWND CUIThread::hGetHandleTraceWnd(void)
 {
-    return m_podTraceWinObj->m_hWnd;
+	return m_podTraceWinObj->m_hWnd;
 }

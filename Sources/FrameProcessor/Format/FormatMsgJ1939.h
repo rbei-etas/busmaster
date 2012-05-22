@@ -1,28 +1,24 @@
-/*
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 
-/**
- * \file      FormatMsgJ1939.h
- * \brief     Definition of CFormatMsgJ1939 class.
- * \author    Anish Kumar
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
- *
- * Definition of CFormatMsgJ1939 class.
- */
+/******************************************************************************
+  Project       :  Auto-SAT_Tools
+  FileName      :  FormatMsgJ1939.h
+  Description   :  Definition of CFormatMsgJ1939 class.
+  $Log:   X:/Archive/Sources/FrameProcessor/FormatMsgJ1939.h_v  $
+ * 
+ *    Rev 1.1   15 Apr 2011 19:19:42   rac2kor
+ * Inserted RBEI Copyright information text into the file header.
+ * 
+ *    Rev 1.0   06 Dec 2010 18:56:20   rac2kor
+ *  
 
-#pragma once
+  Author(s)     :  Ratnadip Choudhury
+  Date Created  :  1.12.2010
+  Modified By   :  
+  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
+******************************************************************************/
+
+#ifndef FORMAT_MSG_J1939_H_INCLUDED
+#define FORMAT_MSG_J1939_H_INCLUDED
 
 #include "Datatypes/J1939_Datatypes.h"
 #include "FormatMsgCommon.h"
@@ -35,13 +31,15 @@ private:
     void vFormatTime(BYTE bExprnFlag, PSTJ1939_MSG psJ1939BData,
                      PSFORMATTEDATA_J1939 psJ1939FData);
     void vFormatDataAndId(BYTE bExprnFlag, PSTJ1939_MSG psJ1939BData,
-                          PSFORMATTEDATA_J1939 psJ1939FData);
+                     PSFORMATTEDATA_J1939 psJ1939FData);
 public:
     CFormatMsgJ1939(void);
     ~CFormatMsgJ1939(void);
-
+    
     void vInit(/*CJ1939MessageMap* podMsgMap*/);
-    void vFormatJ1939DataMsg(STJ1939_MSG* pMsgMcANet,
+    void vFormatJ1939DataMsg(STJ1939_MSG* pMsgMcANet, 
                              SFORMATTEDATA_J1939* CurrDataJ1939,
                              BYTE bExprnFlag_Log);
 };
+
+#endif//FORMAT_MSG_J1939_H_INCLUDED

@@ -19,7 +19,8 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
-#pragma once
+#if !defined(_TSEDITORLIB_SENDMESSAGE_H_INCLUDED_)
+#define _TSEDITORLIB_SENDMESSAGE_H_INCLUDED_
 
 #include "BaseEntityTA.h"
 #include "TSdefinitions.h"
@@ -30,14 +31,14 @@
 class CSignalData
 {
 public:
-    CSignalData(void);
-    CSignalData& operator=(const CSignalData& RefObj);
+	CSignalData(void);
+	CSignalData& operator=(const CSignalData& RefObj);
     virtual ~CSignalData(void);
 
-    //Atributes
+//Atributes
 public:
     CString m_omSigName;
-    tagUSIGNALVALUE m_uValue;
+	tagUSIGNALVALUE m_uValue;
 };
 typedef CList<CSignalData, CSignalData&> CSignalDataList;
 
@@ -47,20 +48,20 @@ typedef CList<CSignalData, CSignalData&> CSignalDataList;
 class CSend_MessageData
 {
 public:
-    CSend_MessageData(void);
-    CSend_MessageData& operator=(const CSend_MessageData& RefObj);
+	CSend_MessageData(void);
+	CSend_MessageData& operator=(const CSend_MessageData& RefObj);
     virtual ~CSend_MessageData(void);
 public:
     //Message ID
     DWORD m_dwMessageID;
     //Message Name
-    CString m_omMessageName;
+	CString m_omMessageName;
     //Signal Type
-    eTYPE_UNIT_SIGNAL m_eSignalUnitType;
+	eTYPE_UNIT_SIGNAL m_eSignalUnitType;
     //Signal Data List
-    CSignalDataList m_odSignalDataList;
+	CSignalDataList m_odSignalDataList;
     //Signal Vlaue
-    tagUSIGNALVALUE m_uDefaultSignalValue;
+	tagUSIGNALVALUE m_uDefaultSignalValue;
 };
 typedef CList<CSend_MessageData, CSend_MessageData&> CSend_MessageDataList;
 
@@ -69,15 +70,15 @@ typedef CList<CSend_MessageData, CSend_MessageData&> CSend_MessageDataList;
 /////////////////////////////////////////////////////////
 class CSend_MessageEntity : public CBaseEntityTA
 {
-    //Member Function
+//Member Function
 public:
-    CSend_MessageEntity(void);
-    CSend_MessageEntity& operator=(const CSend_MessageEntity& RefObj);
+	CSend_MessageEntity(void);
+  	CSend_MessageEntity& operator=(const CSend_MessageEntity& RefObj);
     CSend_MessageEntity(const CSend_MessageEntity& RefObj);
-    HRESULT GetData(MSXML2::IXMLDOMNodePtr& pIDomNode);
-    HRESULT GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
-    HRESULT SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode);
-    HRESULT SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
+	HRESULT GetData(MSXML2::IXMLDOMNodePtr& pIDomNode);
+	HRESULT GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
+	HRESULT SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode);
+	HRESULT SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
     HRESULT ValidateEntity(CString& /*omStrResult*/);
     eTYPE_ENTITY GetEntityType(void);
     virtual ~CSend_MessageEntity(void);
@@ -85,10 +86,10 @@ private:
     VOID vRetriveSignalValue(IXMLDOMNode* pIDOMSChildSignal, CSignalData& m_ouSignal);
     INT nUpdateSignals(CSend_MessageData& ouData);
 
-    //Attributes
+//Attributes
 private:
     //Send Message Data
-    CSend_MessageData m_ouData;
+	CSend_MessageData m_ouData;
 };
 typedef CList<CSend_MessageEntity, CSend_MessageEntity&> CSend_MessageEntityList;
 
@@ -99,8 +100,9 @@ class CSendData
 {
 
 public:
-    CSendData(void);
-    CSend_MessageEntityList m_odSend_MessageDataList;
-    CSendData& operator=(const CSendData& RefObj);
+	CSendData(void);
+	CSend_MessageEntityList m_odSend_MessageDataList;
+	CSendData& operator=(const CSendData& RefObj);
     virtual ~CSendData(void);
 };
+#endif
