@@ -22,8 +22,12 @@
  * Interface file for CTxFunctionsView class
  */
 
-#pragma once
+#if !defined(AFX_TXFUNCTIONSVIEW_H__443DECC3_4220_4BF0_99C0_DF653DA74D1D__INCLUDED_)
+#define AFX_TXFUNCTIONSVIEW_H__443DECC3_4220_4BF0_99C0_DF653DA74D1D__INCLUDED_
 
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
 // TxFunctionsView.h : header file
 #include "TxWindow_resource.h"
 
@@ -36,25 +40,25 @@
 
 class CTxFunctionsView : public CFormView
 {
-    // Form Data
+// Form Data
 public:
     //{{AFX_DATA(CTxFunctionsView)
     enum { IDD = IDD_DLG_TX_FUNCTIONS };
     CButton m_omButtonApply;
     //}}AFX_DATA
 
-    // Attributes
+// Attributes
 public:
 
-    // Operations
+// Operations
 public:
 
-    // Overrides
+// Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CTxFunctionsView)
-public:
+    public:
     virtual void OnInitialUpdate();
-protected:
+    protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
@@ -62,7 +66,7 @@ protected:
     // protected constructor used by dynamic creation
     CTxFunctionsView();
     DECLARE_DYNCREATE(CTxFunctionsView)
-    // Implementation
+// Implementation
 protected:
     virtual ~CTxFunctionsView();
 #ifdef _DEBUG
@@ -83,11 +87,18 @@ private:
     // To reload TxMsg window with the configuration module Tx data
     void vReloadData();
     // To Get Parent window pointer. That is pointer of CTxMsgChildFrame
-    CWnd* pomGetParentWindow() const;
+    CWnd * pomGetParentWindow() const;
     // To Get CTxMsgBlocksView Pointer
-    CWnd* pomGetBlocksViewPointer() const;
+    CWnd * pomGetBlocksViewPointer() const;
     // To Get CTxMsgListView Pointer
-    CWnd* pomGetListViewPointer() const;
+    CWnd * pomGetListViewPointer() const;
     // To Get CTxMsgDetailsView Pointer
-    CWnd* pomGetDetailsViewPointer() const;
+    CWnd * pomGetDetailsViewPointer() const;
 };
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_TXFUNCTIONSVIEW_H__443DECC3_4220_4BF0_99C0_DF653DA74D1D__INCLUDED_)

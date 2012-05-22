@@ -21,13 +21,19 @@
  *
  * Interface file for CHardwareListing class
  */
+#if !defined(AFX_HARDWARELISTING_H__87D35685_F751_4B55_A2F6_347FFFA3B77A__INCLUDED_)
+#define AFX_HARDWARELISTING_H__87D35685_F751_4B55_A2F6_347FFFA3B77A__INCLUDED_
 
+#if _MSC_VER > 1000
 #pragma once
+#endif // _MSC_VER > 1000
+// HardwareListing.h : header file
 
 // For resource symbols
 #include "CAN_Vector_XL_Resource.h"
 // For DIL datatypes
 #include "DataTypes/DIL_Datatypes.h"
+#include "Include/CanUsbDefs.h"
 #include <map>
 /////////////////////////////////////////////////////////////////////////////
 // CHardwareListing dialog
@@ -43,17 +49,17 @@ public:
     // To update selected hardware detaisl
     void vUpdateHwDetails( int nIndex );
     // To set List of hardware handles
-    void vSetHardwareList(INTERFACE_HW*, int );
+    void vSetHardwareList(INTERFACE_HW *, int );
     // Constructor
-    CHardwareListing(INTERFACE_HW*, int , int*, CWnd* pParent = NULL);
+    CHardwareListing(INTERFACE_HW *, int , int*, CWnd* pParent = NULL);
     // standard constructor
     CHardwareListing();
     //Get selection list
     INT nGetSelectedList(int* pnList);
-    //Set selection list
-    void vSetSelectedList();
+	//Set selection list
+	void vSetSelectedList();
 
-    // Dialog Data
+// Dialog Data
     //{{AFX_DATA(CHardwareListing)
     enum { IDD = IDD_DLG_HW_LISTING };
     CListCtrl   m_omSelectedHwList;
@@ -64,14 +70,14 @@ public:
     //}}AFX_DATA
 
 
-    // Overrides
+// Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CHardwareListing)
-protected:
+    protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-    // Implementation
+// Implementation
 protected:
 
     // Generated message map functions
@@ -89,7 +95,7 @@ protected:
 private:
     void vEnableDisableButtons();
     // Pointer to Hardware List
-    INTERFACE_HW* m_psHwInterface;
+    INTERFACE_HW * m_psHwInterface;
     // Size of the array
     int m_nSize;
     //Number of selected items
@@ -101,26 +107,31 @@ private:
     // Pointer to Selected List
     int* m_pnSelList;
 public:
-    afx_msg void OnNMClickLstcHwList(NMHDR* pNMHDR, LRESULT* pResult);
-    afx_msg void OnNMClickLstcSelectedHwList(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnNMClickLstcHwList(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnNMClickLstcSelectedHwList(NMHDR *pNMHDR, LRESULT *pResult);
 
 public:
-    // Hardware CONTAINER
-    typedef struct tagHardwareContainer
-    {
-        int     m_omDriverId;
-        CString     m_omHardwareName;
-        CString     m_omFirmware;
-        CString     m_omHardwareDesc;
+	// Hardware CONTAINER
+	typedef struct tagHardwareContainer
+	{
+		int		m_omDriverId;
+		CString		m_omHardwareName;
+		CString		m_omFirmware;
+		CString		m_omHardwareDesc;
+	
+	}HARDWARE_CONTAINER, *PHARDWARE_CONTAINER;
 
-    } HARDWARE_CONTAINER, *PHARDWARE_CONTAINER;
-
-    typedef pair <int, PHARDWARE_CONTAINER> Int_Pair;
-    map <int, PHARDWARE_CONTAINER>::iterator m_pIter;
-    map <int, PHARDWARE_CONTAINER> mHardwareListMap;
+	typedef std::pair <int, PHARDWARE_CONTAINER> Int_Pair;
+	std::map <int, PHARDWARE_CONTAINER>::iterator m_pIter;
+	std::map <int, PHARDWARE_CONTAINER> mHardwareListMap;
 
     //Hardware container object
-    PHARDWARE_CONTAINER m_pouHardwareContainer;
-    void vSortHardwareItems();
+	PHARDWARE_CONTAINER m_pouHardwareContainer;
+	void vSortHardwareItems();
 
 };
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_HARDWARELISTING_H__87D35685_F751_4B55_A2F6_347FFFA3B77A__INCLUDED_)

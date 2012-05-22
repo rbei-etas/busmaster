@@ -1,25 +1,22 @@
-/*
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+/******************************************************************************
+  Project       :  Auto-SAT_Tools
+  FileName      :  SignalWatch_J1939.h
+  Description   :  
+  $Log:   X:/Archive/Sources/SignalWatch/SignalWatch_J1939.h_v  $
+ * 
+ *    Rev 1.1   15 Apr 2011 19:18:46   CANMNTTM
+ * Added RBEI Copyright information.
+ * 
+ *    Rev 1.0   01 Mar 2011 17:05:30   CANMNTTM
+ *  
 
-/**
- * \file      SignalWatch_J1939.h
- * \author    Ratnadip Choudhury
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
- */
-
-#pragma once
+  Author(s)     :  Pradeep Kadoor
+  Date Created  :  16/02/2011
+  Modified By   :  
+  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
+******************************************************************************/
+#if !defined SIGNALWATCH_J1939_H__INCLUDED_
+#define SIGNALWATCH_J1939_H__INCLUDED_
 
 #include "SignalWatch_Resource.h"
 #include "Include/Basedefs.h"
@@ -54,8 +51,6 @@ private:
     CRITICAL_SECTION m_omCritSecSW;
 
 public:
-    CSignalWatch_J1939(void) {};
-    ~CSignalWatch_J1939(void) {};
     BOOL InitInstance(void);
     int ExitInstance(void);
 
@@ -64,15 +59,17 @@ public:
     HRESULT SW_ShowSigWatchWnd(CWnd* pParent, INT nCmd);
     HRESULT SW_SetDisplayMode(BOOL bHex);
     HRESULT SW_GetConfigSize(void);
-    HRESULT SW_GetConfigData(void* pbyConfigData);
+    HRESULT SW_GetConfigData(void* pbyConfigData);    
     HRESULT SW_SetConfigData(const void* pbyConfigData);
     HRESULT SW_ClearSigWatchWnd(void);
     HRESULT SW_UpdateMsgInterpretObj(void* RefObj);
     BOOL    SW_IsWindowVisible(void);
     void vDisplayInSigWatchWnd(STJ1939_MSG& sMsg);
-    void vDeleteRemovedListEntries();
+	void vDeleteRemovedListEntries();
 
 private:
     BOOL bStartSigWatchReadThread(void);
 
 };
+
+#endif //SIGNALWATCH_J1939_H__INCLUDED_

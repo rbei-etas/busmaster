@@ -22,14 +22,17 @@
  * Definition file for CFlickerFreeTree class.
  */
 
-#pragma once
+#if !defined FLICKERFREETREE_H__INCLUDED_
+#define FLICKERFREETREE_H__INCLUDED_
 
 class CFlickerFreeTree : public CTreeCtrl
 {
 public:
-    CRect m_rectClient;
-    DECLARE_MESSAGE_MAP()
-    afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-    afx_msg void OnSize(UINT nType, int cx, int cy);
-    afx_msg void OnPaint();
+	CRect m_rectClient; 
+	DECLARE_MESSAGE_MAP()
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnPaint();
 };
+
+#endif // FLICKERFREETREE_H__INCLUDED_

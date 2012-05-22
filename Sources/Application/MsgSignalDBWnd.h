@@ -21,40 +21,49 @@
  *
  * This header file contains the defintion of class
  */
+#if !defined(AFX_MSGSIGNALDBWND_H__9861E0E3_241D_11D6_A618_00D0B76BEBF5__INCLUDED_)
+#define AFX_MSGSIGNALDBWND_H__9861E0E3_241D_11D6_A618_00D0B76BEBF5__INCLUDED_
 
+#if _MSC_VER > 1000
 #pragma once
-
+#endif // _MSC_VER > 1000
+// MsgSignalDBWnd.h : header file
+//
 #include "CFilesDefs_CAN.h"
+#include "MsgSgDetView.h"       // Forms the right pane
+/////////////////////////////////////////////////////////////////////////////
+// CMsgSignalDBWnd frame
 
 class CMsgSignalDBWnd : public CMDIChildWnd
 {
     DECLARE_DYNCREATE(CMsgSignalDBWnd)
 protected:
-    // protected constructor used by dynamic creation
+               // protected constructor used by dynamic creation
 
-    // Attributes
+// Attributes
 public:
     static BOOL sm_bValidJ1939Wnd;
 public:
     SDBPARAMS m_sDbParams;
-    // Operations
+// Operations
 public:
     CMsgSignalDBWnd();
     CMsgSignalDBWnd(const SDBPARAMS& sDbParams);
     virtual ~CMsgSignalDBWnd();
     void vSetDBName(CString& omDBName);
-    afx_msg LRESULT OnSaveDBJ1939(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnSaveDBJ1939(WPARAM wParam, LPARAM lParam);
     void vSaveModifiedDBs(CMsgSignal** & ppTempMsgSg);
-    // Overrides
+	CWnd* GetWorkingView();
+// Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMsgSignalDBWnd)
-public:
-protected:
+    public:
+    protected:
     virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
     virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
     //}}AFX_VIRTUAL
 
-    // Implementation
+// Implementation
 protected:
 
     // Generated message map functions
@@ -67,3 +76,10 @@ private:
     BOOL m_bSplitWndCreated;
     CSplitterWnd m_omSplitterWnd;
 };
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_MSGSIGNALDBWND_H__9861E0E3_241D_11D6_A618_00D0B76BEBF5__INCLUDED_)

@@ -42,11 +42,11 @@ HWND CGlobalObj::sm_hWndMDIParentFrame = NULL;
 CBaseAppServices* CGlobalObj::sm_pouITraceWndPtr = NULL;
 CBaseDIL_CAN* CGlobalObj::sm_pouDilCanInterface = NULL;
 
-static void sg_vDataConfEventFnJ1939(DWORD dwClient, UINT32 unPGN, BYTE bySrc,
-                                     BYTE byDest, BOOL bSuccess)
+static void sg_vDataConfEventFnJ1939(DWORD dwClient, UINT32 unPGN, BYTE bySrc, 
+                                BYTE byDest, BOOL bSuccess)
 {
-    CExecuteManager::ouGetExecuteManager(J1939).vManageOnDataConfHandlerJ1939(dwClient, unPGN, bySrc,
-            byDest, bSuccess);
+    CExecuteManager::ouGetExecuteManager(J1939).vManageOnDataConfHandlerJ1939(dwClient, unPGN, bySrc, 
+                                                                              byDest, bSuccess);
 }
 static void sg_vAddressClaimEventFnJ1939(DWORD dwClient, BYTE byAddress)
 {
@@ -58,7 +58,7 @@ CGlobalObj::CGlobalObj(ETYPE_BUS eBus)
     m_eBus = eBus;
     m_pEditorDocTemplate = NULL;
     m_pomSimSysWnd = NULL;
-    m_omStrSourceFilePathName = "";
+    m_omStrSourceFilePathName = _T("");
     m_ArrAPIsList.RemoveAll();
     m_ArrAPIFuncNames.RemoveAll();
     m_omDefinedMsgHeaders.RemoveAll();
@@ -76,7 +76,7 @@ CGlobalObj::CGlobalObj(ETYPE_BUS eBus)
     m_omFnEditHelpText.RemoveAll();
     m_pSimSysDataPtr = NULL;
     m_nSimSysDataSize = 0;
-    m_omAppDirectory = "";
+    m_omAppDirectory = _T("");
     memset(&m_wWindowPlacement, 0, sizeof(WINDOWPLACEMENT));
 }
 
@@ -89,7 +89,6 @@ CBaseDIL_CAN* CGlobalObj::GetICANDIL()
     {
         DIL_GetInterface(CAN, (void**)&(sm_pouDilCanInterface));
     }
-
     return sm_pouDilCanInterface;
 }
 CBaseDILI_J1939* CGlobalObj::GetIJ1939DIL(void)
@@ -100,30 +99,25 @@ CBaseDILI_J1939* CGlobalObj::GetIJ1939DIL(void)
 }
 CFunctionEditorDoc* CGlobalObj::pGetDocPtrOfFile(CString strTempName)
 {
-    CString strPath = "";
+    CString strPath = _T("");
     CFunctionEditorDoc* pDocRet = NULL;
     CFunctionEditorDoc* pDoc = NULL;
-
     if (m_pEditorDocTemplate != NULL)
     {
         POSITION pos = m_pEditorDocTemplate->GetFirstDocPosition();
-
         while (pos && !pDocRet)
         {
-            pDoc = static_cast<CFunctionEditorDoc*> (m_pEditorDocTemplate->GetNextDoc(pos));
-
+            pDoc = (CFunctionEditorDoc*)m_pEditorDocTemplate->GetNextDoc(pos);
             if (pDoc->IsKindOf(RUNTIME_CLASS(CFunctionEditorDoc)))
             {
                 strPath = pDoc->GetPathName();
-
                 if (!(strPath.Compare(strTempName)))
                 {
                     pDocRet = pDoc;
                 }
             }
         }
-    }
-
+    }  
     return pDocRet;
 }
 CFunctionEditorDoc* CGlobalObj::podGetFunctionEditorDoc()
@@ -131,16 +125,14 @@ CFunctionEditorDoc* CGlobalObj::podGetFunctionEditorDoc()
     CFunctionEditorDoc* pDoc = NULL;
     //Get the active window frame and document attached to it
     CFrameWnd* pParent = (CFrameWnd*)CWnd::FromHandle(sm_hWndMDIParentFrame);
-    CEditFrameWnd* pWnd = static_cast<CEditFrameWnd*> (pParent->GetActiveFrame());
-
+    CEditFrameWnd* pWnd = (CEditFrameWnd*)pParent->GetActiveFrame();
     if (pWnd != NULL)
     {
         if (pWnd->IsKindOf(RUNTIME_CLASS(CEditFrameWnd)))
         {
-            pDoc = static_cast<CFunctionEditorDoc*> (pWnd->GetActiveDocument());
+            pDoc = (CFunctionEditorDoc*)pWnd->GetActiveDocument();         
         }
     }
-
     return pDoc;
 }
 CFunctionView* CGlobalObj::podGetFunctionViewPtr()
@@ -148,25 +140,21 @@ CFunctionView* CGlobalObj::podGetFunctionViewPtr()
     CView* pTempView = NULL;
     CFunctionView* pFunctionView = NULL;
     BOOL bFound = FALSE;
-    //Get the active document and find the CFunctionView attached to it
+     //Get the active document and find the CFunctionView attached to it
     CFunctionEditorDoc* pDoc = podGetFunctionEditorDoc();
-
     if (pDoc != NULL)
     {
         POSITION pos = pDoc->GetFirstViewPosition();
-
         while (pos && !bFound)
         {
             pTempView = pDoc->GetNextView(pos);
-
             if (pTempView->IsKindOf(RUNTIME_CLASS(CFunctionView)))
             {
-                pFunctionView = static_cast<CFunctionView*> (pTempView);
+                pFunctionView = (CFunctionView*)pTempView;
                 bFound = TRUE;
             }
         }
     }
-
     return pFunctionView;
 }
 CFnsTreeView* CGlobalObj::podGetFuncsTreeViewPtr()
@@ -176,51 +164,44 @@ CFnsTreeView* CGlobalObj::podGetFuncsTreeViewPtr()
     BOOL bFound = FALSE;
     //Get the active document and find the FunctionTreeView attached to it
     CFunctionEditorDoc* pDoc = podGetFunctionEditorDoc();
-
     if (pDoc != NULL)
     {
         POSITION pos = pDoc->GetFirstViewPosition();
-
         while (pos && !bFound)
         {
             pTempView = pDoc->GetNextView(pos);
-
             if (pTempView->IsKindOf(RUNTIME_CLASS(CFnsTreeView)))
             {
-                pFnTreeView = static_cast<CFnsTreeView*> (pTempView);
+                pFnTreeView = (CFnsTreeView*)pTempView;
                 bFound = TRUE;
             }
         }
     }
-
     return pFnTreeView;
 }
 BOOL CGlobalObj::bOpenFunctioneditorfile(CString omStrNewCFileName)
-{
+{   
     BOOL bFileFound = TRUE;
-    CFunctionEditorDoc* pDoc = CFunctionEditorBase::pCreateNewDocument(m_eBus);
 
+    CFunctionEditorDoc* pDoc = CFunctionEditorBase::pCreateNewDocument(m_eBus);
     // file-attribute information
     if (pDoc != NULL)
     {
         CEditFrameWnd::sm_eBus = m_eBus;
         struct _tfinddata_t fileinfo;
-
         // Check if file exists
         if (_tfindfirst( omStrNewCFileName.GetBuffer(MAX_PATH), &fileinfo) == -1L)
         {
             bFileFound = pDoc->bCreateNewDocument(omStrNewCFileName);
         }
-
         if (bFileFound == TRUE)
         {
-            //// Now open the selected file
+            //// Now open the selected file           
             pDoc->OnOpenDocument(omStrNewCFileName);
             CMultiDocTemplate* pTemplate = m_pEditorDocTemplate;
             CEditFrameWnd* pNewFrame
-                = static_cast<CEditFrameWnd*> (pTemplate->CreateNewFrame(pDoc, NULL));
-
-            //If null is passed as parameter the m_pdoc->GetNextView(pos)  will
+                = (CEditFrameWnd*)(pTemplate->CreateNewFrame(pDoc, NULL));
+            //If null is passed as parameter the m_pdoc->GetNextView(pos)  will 
             // give null value
             if (pNewFrame != NULL)
             {
@@ -229,7 +210,6 @@ BOOL CGlobalObj::bOpenFunctioneditorfile(CString omStrNewCFileName)
             }
         }
     }
-
     return bFileFound;
 }
 CFileView* CGlobalObj::podGetFileViewPtr()
@@ -237,67 +217,59 @@ CFileView* CGlobalObj::podGetFileViewPtr()
     CFileView* pFileView = NULL;
     CView* pTempView = NULL;
     BOOL bFound = FALSE;
-    //Get the active document and find the CFileView attached to it
+     //Get the active document and find the CFileView attached to it
     CFunctionEditorDoc* pDoc = podGetFunctionEditorDoc();
-
     if (pDoc != NULL)
     {
         POSITION pos = pDoc->GetFirstViewPosition();
-
         while (pos && !bFound)
         {
             pTempView = pDoc->GetNextView(pos);
-
             if (pTempView->IsKindOf(RUNTIME_CLASS(CFileView)))
             {
-                pFileView = static_cast<CFileView*> (pTempView);
+                pFileView = (CFileView*)pTempView;
                 bFound = TRUE;
             }
         }
     }
-
     return pFileView;
 }
-BOOL CGlobalObj::bGetDefaultValue(eCONFIGDETAILS eParam, WINDOWPLACEMENT& sPosition)
+BOOL CGlobalObj::bGetDefaultValue(eCONFIGDETAILS eParam, WINDOWPLACEMENT &sPosition)
 {
     BOOL bSizeFound = TRUE;
     CRect omMainFrameSize;
     // Get Main Frame Size
     GetClientRect( sm_hWndMDIParentFrame, &omMainFrameSize );
-    omMainFrameSize.NormalizeRect();
-
+    omMainFrameSize.NormalizeRect(); 
     switch( eParam )
     {
-        case OUT_WND_PLACEMENT:
+    case OUT_WND_PLACEMENT:
         {
             CRect omRect = omMainFrameSize;
-            omRect.top   += static_cast<LONG> ( omRect.Height() *
-                                                defCHILD_FRAME_PROP_H );
+            omRect.top   += static_cast<LONG> ( omRect.Height() * 
+				defCHILD_FRAME_PROP_H );
             omRect.right -= static_cast<LONG> ( omRect.right *
-                                                defOUTPUT_WND_PROP_X );
+				defOUTPUT_WND_PROP_X );
             sPosition.rcNormalPosition = omRect;
             /*sPosition.rcNormalPosition.top -= 2 * omToolBarRect.Height();
             sPosition.rcNormalPosition.bottom -= 2 * omToolBarRect.Height();*/
         }
         break;
-
-        case SIMSYS_WND_PLACEMENT:
-        {
-            CRect omRect = omMainFrameSize;
+	case SIMSYS_WND_PLACEMENT:
+		{
+			CRect omRect = omMainFrameSize;
             // Reduce the size propotionally
             omRect.bottom -= (LONG)(omRect.Height() * defTX_SIM_WND_BOTTOM_MARGIN);
             omRect.right -= (LONG)(omRect.Width() * defTX_SIM_WND_RIGHT_MARGIN);
             // Update the size
             sPosition.rcNormalPosition = omRect;
-        }
+		}
+		break;
+    default:
+        ASSERT( FALSE );
+        bSizeFound = FALSE;
         break;
-
-        default:
-            ASSERT( FALSE );
-            bSizeFound = FALSE;
-            break;
     }
-
     return bSizeFound;
 }
 
@@ -312,7 +284,6 @@ CGlobalObj& CGlobalObj::ouGetObj(ETYPE_BUS eBus)
     {
         sm_pThis[eBus] = new CGlobalObj(eBus);
     }
-
     return *(sm_pThis[eBus]);
 }
 void CGlobalObj::vClearAll(void)
@@ -328,7 +299,6 @@ void CGlobalObj::vClearAll(void)
 CString CGlobalObj::omGetBusName(ETYPE_BUS eBus)
 {
     CString omBusName;
-
     switch (eBus)
     {
         case CAN:
@@ -336,21 +306,18 @@ CString CGlobalObj::omGetBusName(ETYPE_BUS eBus)
             omBusName = _T("CAN Bus");
         }
         break;
-
         case J1939:
         {
             omBusName = _T("J1939 Bus");
         }
         break;
     }
-
     return omBusName;
 }
 
 CString CGlobalObj::omGetBusSpecMsgHndlrName(ETYPE_BUS eBus)
 {
     CString omName;
-
     switch (eBus)
     {
         case CAN:
@@ -358,20 +325,17 @@ CString CGlobalObj::omGetBusSpecMsgHndlrName(ETYPE_BUS eBus)
             omName = defMESSAGE_HANDLER;
         }
         break;
-
         case J1939:
         {
             omName = defPGN_HANDLER;
         }
         break;
     }
-
     return omName;
 }
 CString CGlobalObj::omGetBusSpecMsgFieldName(ETYPE_BUS eBus)
 {
     CString omName;
-
     switch (eBus)
     {
         case CAN:
@@ -379,61 +343,55 @@ CString CGlobalObj::omGetBusSpecMsgFieldName(ETYPE_BUS eBus)
             omName = _T("Message");
         }
         break;
-
         case J1939:
         {
             omName = _T("PGN");
         }
         break;
     }
-
     return omName;
 }
 HRESULT CGlobalObj::RegisterNodeToDIL(BOOL bRegister, PSNODEINFO pNodeInfo)
 {
     VALIDATE_POINTER_RETURN_VAL(pNodeInfo, S_FALSE);
     HRESULT hResult = S_FALSE;
-
     switch (m_eBus)
     {
         case CAN:
         {
-            hResult = CGlobalObj::GetICANDIL()->DILC_RegisterClient(bRegister,
-                      pNodeInfo->m_dwClientId,
-                      pNodeInfo->m_omStrNodeName.GetBuffer(MAX_PATH));
-
+            hResult = CGlobalObj::GetICANDIL()->DILC_RegisterClient(bRegister, 
+                                                        pNodeInfo->m_dwClientId,
+                                                        pNodeInfo->m_omStrNodeName.GetBuffer(MAX_PATH));
             if ((hResult == S_OK) && (bRegister == TRUE))
             {
                 //Set the buffer
-                hResult = CGlobalObj::GetICANDIL()->DILC_ManageMsgBuf(MSGBUF_ADD,
-                          pNodeInfo->m_dwClientId, &(pNodeInfo->m_ouCanBufFSE));
+                hResult = CGlobalObj::GetICANDIL()->DILC_ManageMsgBuf(MSGBUF_ADD, 
+                                    pNodeInfo->m_dwClientId, &(pNodeInfo->m_ouCanBufFSE));
             }
         }
         break;
-
         case J1939:
         {
-            hResult = CGlobalObj::GetIJ1939DIL()->DILIJ_RegisterClient(bRegister,
-                      pNodeInfo->m_omStrNodeName.GetBuffer(MAX_CHAR),
-                      pNodeInfo->m_unEcuName,
-                      pNodeInfo->m_byPrefAddress,
-                      pNodeInfo->m_dwClientId);
-
+            hResult = CGlobalObj::GetIJ1939DIL()->DILIJ_RegisterClient(bRegister, 
+									pNodeInfo->m_omStrNodeName.GetBuffer(MAX_CHAR),
+                                                        pNodeInfo->m_unEcuName,
+                                                        pNodeInfo->m_byPrefAddress,
+                                                        pNodeInfo->m_dwClientId);
             if (((hResult == S_OK) || (hResult == ERR_CLIENT_EXISTS)) && (bRegister == TRUE))
             {
                 //Set the buffer
-                hResult = CGlobalObj::GetIJ1939DIL()->DILIJ_ManageMsgBuf(MSGBUF_ADD,
-                          pNodeInfo->m_dwClientId, &(pNodeInfo->m_ouMsgBufVSE));
-                GetIJ1939DIL()->DILIJ_SetCallBckFuncPtr(pNodeInfo->m_dwClientId,
-                                                        CLBCK_FN_LDATA_CONF, (PCLBCK_FN_LDATA_CONF)sg_vDataConfEventFnJ1939);
-                GetIJ1939DIL()->DILIJ_SetCallBckFuncPtr(pNodeInfo->m_dwClientId,
-                                                        CLBCK_FN_BC_LDATA_CONF, (PCLBCK_FN_BC_LDATA_CONF)sg_vDataConfEventFnJ1939);
-                GetIJ1939DIL()->DILIJ_SetCallBckFuncPtr(pNodeInfo->m_dwClientId,
-                                                        CLBCK_FN_NM_ACL, (PCLBCK_FN_NM_ACL)sg_vAddressClaimEventFnJ1939);
+                hResult = CGlobalObj::GetIJ1939DIL()->DILIJ_ManageMsgBuf(MSGBUF_ADD, 
+                                    pNodeInfo->m_dwClientId, &(pNodeInfo->m_ouMsgBufVSE));
+
+                GetIJ1939DIL()->DILIJ_SetCallBckFuncPtr(pNodeInfo->m_dwClientId, 
+                                                            CLBCK_FN_LDATA_CONF, (PCLBCK_FN_LDATA_CONF)sg_vDataConfEventFnJ1939);
+                GetIJ1939DIL()->DILIJ_SetCallBckFuncPtr(pNodeInfo->m_dwClientId, 
+                                                            CLBCK_FN_BC_LDATA_CONF, (PCLBCK_FN_BC_LDATA_CONF)sg_vDataConfEventFnJ1939);
+                GetIJ1939DIL()->DILIJ_SetCallBckFuncPtr(pNodeInfo->m_dwClientId, 
+                                                            CLBCK_FN_NM_ACL, (PCLBCK_FN_NM_ACL)sg_vAddressClaimEventFnJ1939);
             }
         }
         break;
     }
-
     return hResult;
 }

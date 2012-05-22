@@ -18,8 +18,8 @@
  * \author    Venkatanarayana makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-
-#pragma once
+#if !defined(_TSEDITORLIB_TESTSETUPVERIFYENTITY_H_INCLUDED_)
+#define _TSEDITORLIB_TESTSETUPVERIFYENTITY_H_INCLUDED_
 
 #include "TestCaseEntity.h"
 #include "Verify_MessageEntity.h"
@@ -28,20 +28,21 @@ class CVerifyEntity : public CBaseEntityTA
 public:
     CVerifyData m_ouData;
 public:
-    CVerifyEntity(void);
+	CVerifyEntity(void);
     CVerifyEntity& operator= (CVerifyEntity& RefObj);
     CVerifyEntity(const CVerifyEntity& RefObj);
-    virtual HRESULT AddSubEntry(CBaseEntityTA* pouSubEntryObj);
-    virtual HRESULT DeleteSubEntry(CBaseEntityTA* pouSubEntryObj);
+	virtual HRESULT AddSubEntry(CBaseEntityTA* pouSubEntryObj);
+	virtual HRESULT DeleteSubEntry(CBaseEntityTA* pouSubEntryObj);
     virtual HRESULT DeleteSubEntry(INT index);
-    HRESULT GetData(MSXML2::IXMLDOMNodePtr& pIDomNode);
-    HRESULT GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
-    eTYPE_ENTITY GetEntityType(void);
-    virtual const HRESULT GetSubEntityObj(UINT unIndex, CBaseEntityTA**  pouSubEntity);
-    virtual HRESULT GetSubEntryCount(UINT& unTotal);
-    virtual HRESULT RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, CBaseEntityTA* pouCurrSubEntity);
-    HRESULT SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode);
-    HRESULT SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
+	HRESULT GetData(MSXML2::IXMLDOMNodePtr& pIDomNode);
+	HRESULT GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
+	eTYPE_ENTITY GetEntityType(void);
+	virtual const HRESULT GetSubEntityObj(UINT unIndex, CBaseEntityTA**  pouSubEntity);
+	virtual HRESULT GetSubEntryCount(UINT& unTotal);
+	virtual HRESULT RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, CBaseEntityTA* pouCurrSubEntity);
+	HRESULT SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode);
+	HRESULT SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
     HRESULT ValidateEntity(CString& omStrResult);
     virtual ~CVerifyEntity(void);
 };
+#endif

@@ -1,14 +1,14 @@
 #Make file for building DLL
 
-<FILENAME>.dll : <INSTALLDIR>\MINGW\Obj\wrapper_CAN.o <FILENAME>.o 
+<FILENAME>.dll : <INSTALLDIR>\SimulatedSystems\Obj\wrapper_CAN.o <FILENAME>.o 
 	dllwrap --def=<SRCDIR>\<FILENAME>.def \
---dllname=<SRCDIR>\<FILENAME>.dll --driver-name=gcc <INSTALLDIR>\MINGW\Obj\wrapper_CAN.o <SRCDIR>\<FILENAME>.o 
+--dllname=<SRCDIR>\<FILENAME>.dll --driver-name=gcc <INSTALLDIR>\SimulatedSystems\Obj\wrapper_CAN.o <SRCDIR>\<FILENAME>.o 
 
 
 #wrapper_CAN.o : c:\test\wrapper_CAN.c c:\test\wrapper_CAN.h
 #	gcc -c c:\test\wrapper_CAN.c -o C:\test\wrapper_CAN.o -mwindows
 
 <FILENAME>.o : <SRCDIR>\<FILENAME>.c
-	gcc -c <SRCDIR>\<FILENAME>.c  -o <SRCDIR>\<FILENAME>.o -mwindows
+	gcc -c -I<INSTALLDIR>\SimulatedSystems\include <SRCDIR>\<FILENAME>.c  -o <SRCDIR>\<FILENAME>.o -mwindows
 
 

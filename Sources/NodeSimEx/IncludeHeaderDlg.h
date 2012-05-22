@@ -15,14 +15,18 @@
 
 /**
  * \file      IncludeHeaderDlg.h
- * \brief     This header file contains the defintion of class
+ * \brief     This header file contains the defintion of class 
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This header file contains the defintion of class
+ * This header file contains the defintion of class 
  */
+#if !defined(AFX_INCLUDEHEADERDLG_H__C0FAD574_3631_11D6_A628_00D0B76BEBF5__INCLUDED_)
+#define AFX_INCLUDEHEADERDLG_H__C0FAD574_3631_11D6_A628_00D0B76BEBF5__INCLUDED_
 
+#if _MSC_VER > 1000
 #pragma once
+#endif // _MSC_VER > 1000
 
 #include "NodeSimEx_resource.h"
 
@@ -30,25 +34,25 @@ class CIncludeHeaderDlg : public CDialog
 {
 private:
     CFunctionEditorDoc* m_pDoc;
-    // Construction
+// Construction
 public:
     CIncludeHeaderDlg(CFunctionEditorDoc* pDoc, CWnd* pParent = NULL);   // standard constructor
 
-    // Dialog Data
+// Dialog Data
     //{{AFX_DATA(CIncludeHeaderDlg)
     enum { IDD = IDD_DLG_INCLUDE_HEADERS };
     CString m_omStrIncludeFilename;
     //}}AFX_DATA
 
 
-    // Overrides
+// Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CIncludeHeaderDlg)
-protected:
+    protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-    // Implementation
+// Implementation
 protected:
 
     // Generated message map functions
@@ -60,3 +64,8 @@ protected:
     DECLARE_MESSAGE_MAP()
 private:
 };
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_INCLUDEHEADERDLG_H__C0FAD574_3631_11D6_A628_00D0B76BEBF5__INCLUDED_)

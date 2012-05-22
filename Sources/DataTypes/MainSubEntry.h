@@ -18,21 +18,21 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-
-#pragma once
+#if !defined MAINSUBENTRY_H__INCLUDED_
+#define MAINSUBENTRY_H__INCLUDED_
 
 struct SGUIPARAMS
 {
-    char       m_acTitleName[MAX_PATH];
-    char       m_acMainListName[MAX_PATH];
-    char       m_acUnSelListName[MAX_PATH];
-    char       m_acSelListName[MAX_PATH];
+    TCHAR       m_acTitleName[MAX_PATH];
+    TCHAR       m_acMainListName[MAX_PATH];
+    TCHAR       m_acUnSelListName[MAX_PATH];
+    TCHAR       m_acSelListName[MAX_PATH];
 
     CImageList* m_pomImageList;     //Pointer to loaded imagelist
     INT         m_unUnSelIconIndex; // Icon will appear in left list cntrl
     INT         m_unSelIconIndex;   // Icon will appear in rightlist cntrl
-    BOOL        m_bCombine;  // Whether Main Entry should be combined with subentry name
-    // while displaying in the list
+    BOOL        m_bCombine;  // Whether Main Entry should be combined with subentry name 
+                       // while displaying in the list
     SGUIPARAMS();
 };
 
@@ -66,3 +66,5 @@ typedef struct tagMainEntry
 } SMAINENTRY;
 
 typedef CList<SMAINENTRY, SMAINENTRY&> CMainEntryList;
+
+#endif // MAINSUBENTRY_H__INCLUDED_

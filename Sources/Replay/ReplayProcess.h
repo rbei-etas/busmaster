@@ -22,10 +22,15 @@
  * Interface file for CReplayProcess class
  */
 
+#if !defined(AFX_REPLAYPROCESS_H__68EEB748_6BF1_444D_8B0C_91C4B664FE5B__INCLUDED_)
+#define AFX_REPLAYPROCESS_H__68EEB748_6BF1_444D_8B0C_91C4B664FE5B__INCLUDED_
+
+#if _MSC_VER > 1000
 #pragma once
+#endif // _MSC_VER > 1000
 
 class CBaseDIL_CAN;
-class CReplayProcess
+class CReplayProcess  
 {
 public:
     // Standard constructor and destructor
@@ -58,7 +63,7 @@ private:
     // Reference to CReplayFile
     CReplayFile m_ouReplayFile;
     // Window Pointer
-    CWnd* m_pReplayWndPtr;
+    CWnd * m_pReplayWndPtr;
     // String Array for replay file entries
     CStringArray m_omEntries;
     // Parsed details
@@ -73,7 +78,7 @@ private:
 
     // Local Variables
     BOOL m_bReplayHexON;
-    //Replay flag mode
+    //Replay flag mode 
     WORD m_wLogReplayTimeMode;
     // Index
     int m_nCurrentIndex;
@@ -91,3 +96,5 @@ private:
     void vFormatCANDataMsg(STCANDATA* pMsgCAN, tagSFRAMEINFO_BASIC_CAN* CurrDataCAN);
 
 };
+
+#endif // !defined(AFX_REPLAYPROCESS_H__68EEB748_6BF1_444D_8B0C_91C4B664FE5B__INCLUDED_)

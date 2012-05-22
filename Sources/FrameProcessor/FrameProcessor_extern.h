@@ -15,14 +15,15 @@
 
 /**
  * \file      FrameProcessor_extern.h
- * \brief     Declaration file for the exported function used to get the
+ * \brief     Declaration file for the exported function used to get the 
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Declaration file for the exported function used to get the
+ * Declaration file for the exported function used to get the 
  */
 
-#pragma once
+#if !defined FRAMEPROCESSOR_EXTERN_H__INCLUDED_
+#define FRAMEPROCESSOR_EXTERN_H__INCLUDED_
 
 #include "../Include/ModuleID.h"
 
@@ -41,9 +42,11 @@
 extern "C" {  // only need to export C interface if used by C++ source code
 #endif
 
-    /*  Exported function list */
-    USAGEMODE HRESULT FP_GetInterface(eID_COMPONENT bInterfaceID, void** ppvInterface);
+/*  Exported function list */
+USAGEMODE HRESULT FP_GetInterface(eID_COMPONENT bInterfaceID, void** ppvInterface);
 
 #ifdef __cplusplus
 }
 #endif
+
+#endif // FRAMEPROCESSOR_EXTERN_H__INCLUDED_

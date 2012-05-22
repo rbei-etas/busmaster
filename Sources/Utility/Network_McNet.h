@@ -15,14 +15,15 @@
 
 /**
  * \file      Network_McNet.h
- * \brief     This contains definitions of some classes/ structures
+ * \brief     This contains definitions of some classes/ structures 
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This contains definitions of some classes/ structures
+ * This contains definitions of some classes/ structures 
  */
 
-#pragma once
+#if !defined NETWORK_MCNETRULES_H_INCLUDED_
+#define NETWORK_MCNETRULES_H_INCLUDED_
 
 #include "AfxTempl.h"
 #include "DataTypes/McNet_Datatypes.h"
@@ -31,7 +32,7 @@ using namespace MSXML2;
 
 const DWORD LCN_INVALID_VALUE = (DWORD)-1;
 const DWORD CANID_INVALID_VALUE = (DWORD)-1;
-#define LCN_INVALID_NAME        ""
+#define LCN_INVALID_NAME        _T("")
 
 
 typedef enum eTYPE_MCNET_CONN
@@ -145,3 +146,5 @@ public:
     // Call this to check presence of the LCN
     BOOL bIsNodePresent(DWORD dwLCN) const;
 };
+
+#endif // NETWORK_MCNETRULES_H_INCLUDED_

@@ -22,16 +22,18 @@
  * Definition file for CPARAM_THREADPROC class.
  */
 
-#pragma once
+
+#if !defined UTILITY_THREAD_H__INCLUDED_
+#define UTILITY_THREAD_H__INCLUDED_
 
 #if !defined _ETHREAD_ACTION_
 #define _ETHREAD_ACTION_
 enum eTHREAD_ACTION
 {
-    EXIT_THREAD = 0,
-    INVOKE_FUNCTION,
+	EXIT_THREAD = 0,
+	INVOKE_FUNCTION,
     CREATE_TIME_MAP,
-    INACTION,
+	INACTION,
     IDLE
 };
 #endif
@@ -57,28 +59,32 @@ public:
     HANDLE m_hThread2Owner;  // Communication event from thread to owner
     HANDLE m_hOwner2Thread;  // Communication event from owner to thread
 
-    CPARAM_THREADPROC(void)
-    {
-        vInitialise();
-        m_hNotifyExit = CreateEvent(NULL, FALSE, FALSE, NULL);
-        //ASSERT(NULL != m_hNotifyExit);
-        m_hThread2Owner = CreateEvent(NULL, FALSE, FALSE, NULL);
-        //ASSERT(NULL != m_hThread2Owner);
-        m_hOwner2Thread = CreateEvent(NULL, FALSE, FALSE, NULL);
-        //ASSERT(NULL != m_hOwner2Thread);
-    }
+	CPARAM_THREADPROC(void)
+	{
+		vInitialise();
+		m_hNotifyExit = CreateEvent(NULL, FALSE, FALSE, NULL);
+		//ASSERT(NULL != m_hNotifyExit);
+
+		m_hThread2Owner = CreateEvent(NULL, FALSE, FALSE, NULL);
+		//ASSERT(NULL != m_hThread2Owner);
+
+		m_hOwner2Thread = CreateEvent(NULL, FALSE, FALSE, NULL);
+		//ASSERT(NULL != m_hOwner2Thread);
+	}
     ~CPARAM_THREADPROC(void)
-    {
-        CloseHandle(m_hNotifyExit);
-        m_hNotifyExit = NULL;
-        CloseHandle(m_hThread2Owner);
-        m_hThread2Owner = NULL;
-        CloseHandle(m_hOwner2Thread);
-        m_hOwner2Thread = NULL;
-    }
+	{
+		CloseHandle(m_hNotifyExit);
+		m_hNotifyExit = NULL;
+
+		CloseHandle(m_hThread2Owner);
+		m_hThread2Owner = NULL;
+
+		CloseHandle(m_hOwner2Thread);
+		m_hOwner2Thread = NULL;
+	}
 
     BOOL bStartThread(LPTHREAD_START_ROUTINE NewThreadProc);
-    BOOL bStartThreadEx(LPTHREAD_START_ROUTINE NewThreadProc,
+    BOOL bStartThreadEx(LPTHREAD_START_ROUTINE NewThreadProc, 
                         HANDLE hActionEvent, LPVOID pvBuffer);
     BOOL bTerminateThread(void);
     HANDLE hGetExitNotifyEvent(void);
@@ -88,3 +94,5 @@ public:
     BOOL bTransitToActiveState(void); // This function brings the thread back
     // into the previous state.
 };
+
+#endif  //UTILITY_THREAD_H__INCLUDED_

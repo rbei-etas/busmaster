@@ -18,11 +18,9 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
+#if !defined FILTER_DEFINES_H__INCLUDED_
+#define FILTER_DEFINES_H__INCLUDED_
 
-#pragma once
-
-/* C++ includes */
-#include <string>
 
 // Filter
 #define defFILTER_TYPE_SINGLE_ID                0
@@ -90,15 +88,15 @@
 #define MAX_LMT_FOR_STD_MSG_ID  2048
 #define defMAX_LMT_EXTD_MSG_ID 0x20000000
 
-class tagFilterDisplayInfo
+
+struct tagFilterDisplayInfo
 {
-public:
-    string  m_omStrMsgIDFrom;
-    string  m_omStrMsgIDTo;
-    string  m_omStrMsgIDType;
-    string  m_omStrMsgType;
-    string  m_omStrMsgDirection;
-    string  m_omStrMsgChannel;
+    CString m_omStrMsgIDFrom;
+    CString m_omStrMsgIDTo;
+    CString m_omStrMsgIDType;
+    CString m_omStrMsgType;
+    CString m_omStrMsgDirection;
+    CString m_omStrMsgChannel;
     int     m_nImageIndex;
 };
 
@@ -111,11 +109,11 @@ typedef SFILTERDISPLAYINFO* PSFILTERDISPLAYINFO;
 // details of the message filters
 struct sMESSAGEFILTERDETAILS
 {
-    UINT*    m_punUndefinedMsgID;       // ID's of undefined messages. The
-    // first element will have the count of
-    // message ID's.
-    CStringArray    m_omMsgNameArray;   // the database message names in the
-    // filter list
+    UINT    *m_punUndefinedMsgID;       // ID's of undefined messages. The 
+                                        // first element will have the count of
+                                        // message ID's.
+    CStringArray    m_omMsgNameArray;   // the database message names in the 
+                                        // filter list
     INT     m_nRangeFrom;               // range start information
     INT     m_nRangeTo;                 // range end information
     UINT    m_unCount;                  // count information of message names
@@ -124,3 +122,5 @@ struct sMESSAGEFILTERDETAILS
 };
 typedef sMESSAGEFILTERDETAILS   SMESSAGE_FILTER_DETAILS;
 typedef sMESSAGEFILTERDETAILS*   PSMESSAGE_FILTER_DETAILS;
+
+#endif //FILTER_DEFINES_H__INCLUDED_

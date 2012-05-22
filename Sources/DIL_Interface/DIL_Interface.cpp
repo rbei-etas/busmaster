@@ -14,7 +14,7 @@
  */
 
 /**
- * \file      DIL_Interface.cpp
+ * \file      DIL_Interface/DIL_Interface.cpp
  * \brief     Source file for the exported function used to retrieve the
  * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
@@ -22,7 +22,8 @@
  * Source file for the exported function used to retrieve the
  */
 
-/* Project includes */
+
+// DIL_Interface.cpp : 
 #include "DIL_Interface_stdafx.h"
 #include "Include/BaseDefs.h"
 
@@ -30,8 +31,10 @@
 #include "DIL_Interface_extern.h"
 
 #include "DIL_CAN.h"
+
 #include "DILI_J1939.h"
 #include "DIL_Interface.h"
+
 
 static CDIL_CAN* sg_pouDIL_CAN = NULL;
 
@@ -72,7 +75,6 @@ BOOL CDILApp::InitInstance()
 int CDILApp::ExitInstance()
 {
     INT nResult = -1;
-
     // TODO: Add your specialized code here and/or call the base class
     if (NULL != sg_pouDIL_CAN)
     {
@@ -80,7 +82,6 @@ int CDILApp::ExitInstance()
         delete sg_pouDIL_CAN;
         sg_pouDIL_CAN = NULL;
     }
-
     return nResult;
 }
 
@@ -104,16 +105,13 @@ USAGEMODE HRESULT DIL_GetInterface(ETYPE_BUS eBusType, void** ppvInterface)
                     sg_pouDIL_CAN->InitInstance();
                 }
             }
-
             // Else the object has been existing already
-            *ppvInterface = (void*) sg_pouDIL_CAN;
-            /* Doesn't matter even if sg_pouFP_CAN is null */
+            *ppvInterface = (void *) sg_pouDIL_CAN; /* Doesn't matter even 
+                                                if sg_pouFP_CAN is null */
         }
         break;
-
         case MCNET:
-            break;
-
+       break;
         case J1939:
         {
             if (NULL == sg_pouDILI_J1939)
@@ -128,14 +126,12 @@ USAGEMODE HRESULT DIL_GetInterface(ETYPE_BUS eBusType, void** ppvInterface)
                     sg_pouDILI_J1939->InitInstance();
                 }
             }
-
             // Else the object has been existing already
-            *ppvInterface = (void*) sg_pouDILI_J1939;
-            /* Doesn't matter even if sg_pouFP_CAN is null */
+            *ppvInterface = (void *) sg_pouDILI_J1939; /* Doesn't matter even 
+                                                if sg_pouFP_CAN is null */
         }
         break;
-
-        default:
+        default: 
         {
             hResult = S_FALSE;
         }

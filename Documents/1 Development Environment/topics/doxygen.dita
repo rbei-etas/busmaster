@@ -21,65 +21,39 @@
     </section>
     <section>
       <title>Installation</title>
-      <p>Execute <filepath>doxygen-1.7.5.1-setup.exe</filepath> to install the application. The standard installation folder is <filepath>%ProgramFiles%\doxygen</filepath>. It will also be added to the %PATH% environment variable.</p>
+      <p>Execute <filepath>doxygen-1.7.5.1-setup.exe</filepath> to install the application. The standard installation folder is <filepath>C:\Program Files\doxygen</filepath>. It will also be added to the %PATH% environment variable.</p>
     </section>
     <section>
       <title>Configuration</title>
       <p>Doxygen requires no specific configuration beside the files provided in the <filepath>BUSMASTER\Documents\5 Source Code Documentation\Doxyfiles\*</filepath>.</p>
-      <p>It is helpful to add Doxygen to the list of external tools in the <uicontrol>Tools</uicontrol> menu within the Visual C++ IDE.</p>
-      <p>For BUSMASTER we defined two specific tags (see below for examples):</p>
-      <ul>
-        <li><cmdname>copyright</cmdname>: This contains a copyright note</li>
-        <li><cmdname>req</cmdname>: This contains a requirement tag and a brief tag description. The requirement tag must be character-identical to the tags in the requirement specification.</li>
-      </ul>
+      <p>It is helpful to add Doxygen to the list of external tools in the <uicontrol>tools</uicontrol> menu within the Visual C++ IDE.</p>
     </section>
     <section>
       <title>Usage</title>
-      <p>BUSMASTER comes with a <filepath>build.bat</filepath> script that automatically calls Doxygen in the right way. However if doxygen is not in your <filepath>%PATH%</filepath> environment variable you need to adjust the script accordingly. After running Doxygen the output for each module is placed in the folder <filepath>Documents\5 Source Code Documentation\out</filepath>. An <filepath>index.html</filepath> is provided as convenient entry point to the generated documentations.</p>
-      <p>The preferred Doxygen file header contains:</p>
+      <p>BUSMASTER comes with a <filepath>build.bat</filepath> script that automatically calls Doxygen in the right way. However if doxygen is not in your %PATH% environment variable you need to adjust the script accordingly. After running Doxygen the output for each module is placed in the folder <filepath>Documents\5 Source Code Documentation\out</filepath>. An <filepath>index.html</filepath> is provided as convenient entry point to the generated documentations.</p>
+      <p>The preferred Doxygen file header is:</p>
       <codeblock>/**
  * \file      &lt;filename&gt;
  * \brief     &lt;brief description&gt;
- * \authors   &lt;author&gt;                    [if there is only one author]
+ * \author    &lt;author&gt;                    [if there is only one author]
  * \authors   &lt;author 1&gt;, &lt;author 2&gt;, ... [if there are multiple authors]
  * \copyright Copyright (c) 2011, Robert Bosch Engineering
  *            and Business Solutions. All rights reserved.
  *
  * &lt;long description&gt;
  */</codeblock>
-      <p>The preferred Doxygen function header contains:</p>
+      <p>The preferred Doxygen function header is:</p>
       <codeblock>/**
  * \brief         &lt;brief description&gt;
- * \req           &lt;req tag&gt; - &lt;brief tag description&gt;
- * \param[in]     &lt;param name&gt; &lt;description&gt; [if that is inbound]
- * \param[out]    &lt;param name&gt; &lt;description&gt; [if that is outbound]
- * \param[in,out] &lt;param name&gt; &lt;description&gt; [if that is bidirectional]
+ * \param[in]     &lt;param name&gt; &lt;description&gt; [if thats inbound]
+ * \param[out]    &lt;param name&gt; &lt;description&gt; [if thats outbound]
+ * \param[in,out] &lt;param name&gt; &lt;description&gt; [if thats in- and outbound]
  * \param         &lt;param name&gt; &lt;description&gt; [if direction is unspecified]
  * \return        &lt;description&gt;
  *
- * &lt;long description&gt;
+ * If a long description is necessary, put it here.
  */
-&lt;return type&gt; foobar(&lt;param type&gt; &lt;param name&gt;, ...)</codeblock>
-      <p>The shortest version in case you have no brief description, no parameters (<cmdname>void</cmdname>) or no return (<cmdname>void</cmdname>) contains just:</p>
-      <codeblock>/**
- * &lt;long description&gt;
- */
-void foobar(void)</codeblock>
-      <p>Detailed example:</p>
-      <codeblock>/**
- * \brief     Converter from foo to bar
- * \req       RS_12_34 - Converter from foo to bar
- * \param[in] fooFile Input file in foo format
- * \param[in] barFile Output file in bar format
- * \return    Result code
- *
- * This function converts the contents of fooFile in foo format to barFile
- * in bar format. fooFile and barFile need to be opened.
- */
-int converter_foo2bar(fstream&amp; fooFile, fstream&amp; barFile)
-{
-    /* do something */
-}</codeblock>
+void foobar( void )</codeblock>
     </section>
   </body>
 </topic>

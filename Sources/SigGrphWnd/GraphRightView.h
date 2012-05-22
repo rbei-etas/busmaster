@@ -1,28 +1,38 @@
-/*
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+/*******************************************************************************
+  Project       :  Auto-SAT_Tools
+  FileName      :  RightView.h
+  Description   :  Interface file for CGraphRightView class 
+  $Log:   X:/Archive/Sources/SigGrphWnd/GraphRightView.h_v  $
+ * 
+ *    Rev 1.2   15 Apr 2011 19:43:32   rac2kor
+ * Inserted RBEI Copyright information text into the file header.
+ * 
+ *    Rev 1.1   23 Dec 2010 18:04:44   CANMNTTM
+ * Updated to support cursors feature in 
+ * graph control.
+ * 
+ *    Rev 1.0   13 Dec 2010 22:00:36   CANMNTTM
+ *  
+ * 
+ *    Rev 1.0   16 Aug 2010 21:20:34   rac2kor
+ *  
 
-/**
- * \file      RightView.h
- * \brief     Interface file for CGraphRightView class
- * \author    Raja N
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
- *
- * Interface file for CGraphRightView class
- */
+  Author        :  Raja N
+  Date Created  :  10/12/2004
+  Modified By   :  
+  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
+*******************************************************************************/
 
+//{{AFX_INCLUDES()
+//}}AFX_INCLUDES
+#if !defined(AFX_RIGHTVIEW_H__AAAA44BC_7F6F_4721_A794_63BA29612960__INCLUDED_)
+#define AFX_RIGHTVIEW_H__AAAA44BC_7F6F_4721_A794_63BA29612960__INCLUDED_
+
+#if _MSC_VER > 1000
 #pragma once
+#endif // _MSC_VER > 1000
+// RightView.h : header file
+//
 
 /////////////////////////////////////////////////////////////////////////////
 // CRightView form view
@@ -41,28 +51,28 @@ protected:
     CGraphRightView();
     DECLARE_DYNCREATE(CGraphRightView)
 
-    // Form Data
+// Form Data
 public:
     //{{AFX_DATA(CGraphRightView)
-    enum { IDD = IDD_DLG_GRAPH_RIGHT_TOP };
+    enum { IDD = IDD_DLG_GRAPH_RIGHT_TOP };    
     //}}AFX_DATA
 
-    // Attributes
+// Attributes
 public:
 
-    // Operations
+// Operations
 public:
 
-    // Overrides
+// Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CRightView)
-public:
+    public:
     virtual void OnInitialUpdate();
-protected:
+    protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-    // Implementation
+// Implementation
 protected:
     virtual ~CGraphRightView();
 #ifdef _DEBUG
@@ -77,20 +87,27 @@ protected:
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
-    // To get parent window pointer
-    CWnd* pomGetParentWindow() const;
-    CGraphChildFrame* m_pParentWnd;
+	// To get parent window pointer
+    CWnd * pomGetParentWindow() const;
+	CGraphChildFrame* m_pParentWnd;
 
-    //Pointer to hold CGraphSink class pointer
-    CGraphSink* m_pGraphSink;
-    //Get hold of the Sink cookie ID
-    DWORD m_dwCookie;
-    CWnd* m_pWndGraphCtrl;
+	//Pointer to hold CGraphSink class pointer
+	CGraphSink* m_pGraphSink;
+	//Get hold of the Sink cookie ID
+	DWORD m_dwCookie;
+	CWnd* m_pWndGraphCtrl;
 public:
-    DECLARE_EVENTSINK_MAP()
-    void CursorPositionGraphCtrl(double X, double Y, short shCursorID);
-    IDMGraphCtrl* m_pDMGraphCtrl;
+	DECLARE_EVENTSINK_MAP()
+	void CursorPositionGraphCtrl(double X, double Y, short shCursorID);	
+	IDMGraphCtrl* m_pDMGraphCtrl;	
 public:
-    afx_msg void OnDestroy();
-    void vHandleConnectionStatusChange(BOOL bConnectStatus);
+	afx_msg void OnDestroy();
+	void vHandleConnectionStatusChange(BOOL bConnectStatus);
 };
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_RIGHTVIEW_H__AAAA44BC_7F6F_4721_A794_63BA29612960__INCLUDED_)

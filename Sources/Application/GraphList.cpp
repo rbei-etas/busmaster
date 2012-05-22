@@ -32,6 +32,12 @@
 // For CGraphList class declaration
 #include "GraphList.h"
 
+#ifdef _DEBUG
+#undef THIS_FILE
+static char THIS_FILE[]=__FILE__;
+#define new DEBUG_NEW
+#endif
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -47,6 +53,7 @@
 *******************************************************************************/
 CGraphList::CGraphList()
 {
+
 }
 
 /*******************************************************************************
@@ -59,22 +66,26 @@ CGraphList::CGraphList()
 *******************************************************************************/
 CGraphList::~CGraphList()
 {
+
 }
 
 UINT CGraphList::unGetConfigSize(BYTE byVersion)
 {
     UINT unSize = 0;
     /* GRAPH PARAMETERS*/
-    unSize = m_odGraphParameters.unGetConfigSize(byVersion);
+	unSize = m_odGraphParameters.unGetConfigSize(byVersion);
+
     unSize += sizeof(int);//To store the count of Graph elements
     /* GRAPH ELEMENTS*/
-    unSize += CGraphElement::unGetConfigSize(byVersion) * m_omElementList.GetSize();
+	unSize += CGraphElement::unGetConfigSize(byVersion) * m_omElementList.GetSize();
+
     return unSize;
 }
 BYTE* CGraphList::pbyGetConfigData(BYTE* pbyTrgtData, BYTE byVersion)
 {
     BYTE* pbyTemp = pbyTrgtData;
     pbyTemp = m_odGraphParameters.pbyGetConfigData(pbyTemp, byVersion);
+
     // Save the list element count
     // Get list size
     int nElementCount = m_omElementList.GetSize();
@@ -85,7 +96,6 @@ BYTE* CGraphList::pbyGetConfigData(BYTE* pbyTrgtData, BYTE byVersion)
     if( nElementCount > 0 )
     {
         CGraphElement odTemp;
-
         for( int nIndex = 0; nIndex < nElementCount;
                 nIndex++ )
         {
@@ -94,8 +104,7 @@ BYTE* CGraphList::pbyGetConfigData(BYTE* pbyTrgtData, BYTE byVersion)
             // Save the element
             pbyTemp = odTemp.pbyGetConfigData( pbyTemp, byVersion);
         }
-    }
-
+    }    
     return pbyTemp;
 }
 
@@ -103,10 +112,11 @@ BYTE* CGraphList::pbySetConfigData(BYTE* pbyTrgtData, BYTE byVersion)
 {
     BYTE* pbyTemp = pbyTrgtData;
     pbyTemp = m_odGraphParameters.pbySetConfigData(pbyTemp, byVersion);
+
     // Get element count
     int nElementCount = 0;
     COPY_DATA_2(&nElementCount, pbyTemp, sizeof (int));
-
+    
     // Load list if element count is more then 0
     if ( nElementCount > 0 )
     {
@@ -115,7 +125,7 @@ BYTE* CGraphList::pbySetConfigData(BYTE* pbyTrgtData, BYTE byVersion)
         int nExistingElements = m_omElementList.GetSize();
 
         // Reuse existing items in the list
-
+        
         // Add / remove extra items
         if( nElementCount > nExistingElements )
         {
@@ -132,7 +142,6 @@ BYTE* CGraphList::pbySetConfigData(BYTE* pbyTrgtData, BYTE byVersion)
         {
             // Get the extra elements count
             int nDifference = nExistingElements - nElementCount;
-
             // Remove extra elements. Removing it from the list.
             // Remove the head element instead of any other index.
             // Because list index might become invalid if the
@@ -165,23 +174,21 @@ BYTE* CGraphList::pbySetConfigData(BYTE* pbyTrgtData, BYTE byVersion)
 /*******************************************************************************
   Function Name  : nSerialize
   Input(s)       : omArch - Object to CArchive
-  Output         :
+  Output         : 
   Functionality  : This class will serialise graph list using CArchive object
   Member of      : CGraphList
   Author(s)      : Raja N
   Date Created   : 01/12/2004
-  Modifications  :
+  Modifications  : 
  *******************************************************************************/
 int CGraphList::nSerialize(CArchive& omArch)
 {
     int nReturn = 0;
     int nElementCount = 0;
-
     try
     {
         // Load/Store Graph Control Parameters
         nReturn = m_odGraphParameters.nSerialize( omArch );
-
         if( nReturn == 0 )
         {
             // Saving
@@ -197,9 +204,8 @@ int CGraphList::nSerialize(CArchive& omArch)
                 if( nElementCount > 0 )
                 {
                     CGraphElement odTemp;
-
                     for( int nIndex = 0; nReturn == 0 && nIndex < nElementCount;
-                            nIndex++ )
+                         nIndex++ )
                     {
                         // Get the object from the list
                         odTemp = m_omElementList.GetAt( nIndex );
@@ -213,7 +219,6 @@ int CGraphList::nSerialize(CArchive& omArch)
             {
                 // Get element count
                 omArch >> nElementCount;
-
                 // Load list if element count is more then 0
                 if ( nElementCount > 0 )
                 {
@@ -222,7 +227,7 @@ int CGraphList::nSerialize(CArchive& omArch)
                     int nExistingElements = m_omElementList.GetSize();
 
                     // Reuse existing items in the list
-
+                    
                     // Add / remove extra items
                     if( nElementCount > nExistingElements )
                     {
@@ -239,7 +244,6 @@ int CGraphList::nSerialize(CArchive& omArch)
                     {
                         // Get the extra elements count
                         int nDifference = nExistingElements - nElementCount;
-
                         // Remove extra elements. Removing it from the list.
                         // Remove the head element instead of any other index.
                         // Because list index might become invalid if the
@@ -254,7 +258,7 @@ int CGraphList::nSerialize(CArchive& omArch)
 
                     // Now populate list
                     for( int nIndex = 0; nReturn == 0 && nIndex < nElementCount;
-                            nIndex++ )
+                         nIndex++ )
                     {
                         // Read element from the archive
                         nReturn =

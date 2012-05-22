@@ -21,10 +21,15 @@
  *
  * Interface file for CNodeDetailsDlg class
  */
+#if !defined(AFX_NODEDETAILSDLG_H__D0159585_D173_4BD3_809C_2384AD5EFEF4__INCLUDED_)
+#define AFX_NODEDETAILSDLG_H__D0159585_D173_4BD3_809C_2384AD5EFEF4__INCLUDED_
 
+#if _MSC_VER > 1000
 #pragma once
-
-#include "SimSysNodeInfo.h"     // For CSimSysNodeInfo class decl
+#endif // _MSC_VER > 1000
+// NodeDetailsDlg.h : header file
+//
+#include "SimSysNodeInfo.h"		// For CSimSysNodeInfo class decl
 #include "NodeSimEx_resource.h"
 #include "Utility\radixedit.h"
 /////////////////////////////////////////////////////////////////////////////
@@ -32,45 +37,50 @@
 
 class CNodeDetailsDlg : public CDialog
 {
-    // Construction
+// Construction
 public:
-    CNodeDetailsDlg(ETYPE_BUS eBus, PSNODEINFO pNode = NULL,CWnd* pParent = NULL);
-    BOOL m_bIsNodeModified;  //Track the change
+CNodeDetailsDlg(ETYPE_BUS eBus, PSNODEINFO pNode = NULL,CWnd* pParent = NULL);
+BOOL m_bIsNodeModified;  //Track the change
 
-    // Dialog Data
-    //{{AFX_DATA(CNodeDetailsDlg)
-    enum { IDD = IDD_NODE_DEATILS };
-    CString m_omStrDllPath;
-    CString m_omStrNodeName;
-    //}}AFX_DATA
+// Dialog Data
+	//{{AFX_DATA(CNodeDetailsDlg)
+	enum { IDD = IDD_NODE_DEATILS };
+	CString	m_omStrDllPath;
+	CString	m_omStrNodeName;
+	//}}AFX_DATA
 
 
-    // Overrides
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CNodeDetailsDlg)
-public:
-    virtual BOOL PreTranslateMessage(MSG* pMsg);
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CNodeDetailsDlg)
+	public:
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	//}}AFX_VIRTUAL
+
+// Implementation
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-    //}}AFX_VIRTUAL
 
-    // Implementation
-protected:
-
-    // Generated message map functions
-    //{{AFX_MSG(CNodeDetailsDlg)
-    virtual void OnCancel();
-    virtual BOOL OnInitDialog();
-    virtual void OnOK();
-    afx_msg void OnBrowse();
-    afx_msg void OnClear();
-    //}}AFX_MSG
-    DECLARE_MESSAGE_MAP()
+	// Generated message map functions
+	//{{AFX_MSG(CNodeDetailsDlg)
+	virtual void OnCancel();
+	virtual BOOL OnInitDialog();
+	virtual void OnOK();
+	afx_msg void OnBrowse();
+	afx_msg void OnClear();
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
 private:
     ETYPE_BUS m_eBus;
     PSNODEINFO m_psNodeStuctPtr;
-    void vEnableClearButton(BOOL bEnable);
+	void vEnableClearButton(BOOL bEnable);
 public:
     CRadixEdit m_omPreferedAddress;
     CRadixEdit m_omEcuName;
 };
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_NODEDETAILSDLG_H__D0159585_D173_4BD3_809C_2384AD5EFEF4__INCLUDED_)
