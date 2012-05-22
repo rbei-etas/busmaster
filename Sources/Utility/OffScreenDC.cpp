@@ -27,6 +27,13 @@
 // OffScreenDC class definition File
 #include "OffScreenDC.h"
 
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
 // For common definitions
 #define WHITE_COLOR             RGB(255,255,255)
 //////////////////////////////////////////////////////////////////////
@@ -46,14 +53,14 @@
 COffScreenDC::COffScreenDC(CDC* pDC, const CRect& rcBounds) : CDC()
 {
     CreateCompatibleDC(pDC);
+    
     // Store the screen DC
     m_pDC = pDC;
     // Store Screen Area Rectangle
     m_rcBounds = rcBounds;
     // Create a new bitmap for offscreen
     m_bCreateSuccess = m_omBitmap.CreateCompatibleBitmap( pDC, rcBounds.Width(),
-                       rcBounds.Height());
-
+                                                          rcBounds.Height());
     // If the creation is success
     if( m_bCreateSuccess == TRUE )
     {
@@ -74,7 +81,6 @@ COffScreenDC::COffScreenDC(CDC* pDC, const CRect& rcBounds) : CDC()
         // CDC object
         m_hAttribDC = pDC->m_hAttribDC;
     }
-
     // To change the background replace it with approp. background color
     FillSolidRect( &rcBounds, WHITE_COLOR );
 }
@@ -121,7 +127,7 @@ COffScreenDC::~COffScreenDC()
  Author(s)      : Raja N
  Date Created   : 23.06.2004
 *******************************************************************************/
-COffScreenDC* COffScreenDC::operator->()
+COffScreenDC * COffScreenDC::operator->()
 {
     return this;
 }

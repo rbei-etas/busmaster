@@ -18,8 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-
-#pragma once
+#ifndef APPSERVICESCAN_H__INCLUDED_
+#define APPSERVICESCAN_H__INCLUDED_
 
 #include "AppServices.h"
 //Send can message
@@ -30,3 +30,5 @@ void gvResetController_CAN(BOOL);
 BOOL gvSetControllerMode_CAN(BOOL);
 // To connect/diaconnect with the Hardware
 BOOL gbStartStopHardware_CAN(BOOL) ;
+
+#endif // APPSERVICESCAN_H__INCLUDED_

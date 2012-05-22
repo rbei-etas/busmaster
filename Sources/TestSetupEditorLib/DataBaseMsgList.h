@@ -18,8 +18,8 @@
  * \author    Venkatanarayana makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-
-#pragma once
+#if !defined(_TSEDITORGUI_DATABASEMSGLIST_H_INCLUDED_)
+#define _TSEDITORGUI_DATABASEMSGLIST_H_INCLUDED_
 
 #include "DataTypes\MsgSignal_Datatypes.h"
 #include "Application\DataType.h"
@@ -28,7 +28,7 @@
 
 class CDataBaseMsgList
 {
-    //Member Functions
+//Member Functions
 public:
     CDataBaseMsgList(void);
     virtual ~CDataBaseMsgList(void);
@@ -43,10 +43,11 @@ public:
     INT nGetMessageInfo(CString omstrMsgName, sMESSAGE& sMsg);
     UINT unGetMessageID(CString omstrMsgName);
     sMESSAGE* unGetMsg(UINT unMsgId);
-    //Member Variables
+//Member Variables
 private:
-    sMESSAGE* m_psMessages;
+    sMESSAGE *m_psMessages;
     UINT    m_unMessageCount;
 private:
-
+    
 };
+#endif

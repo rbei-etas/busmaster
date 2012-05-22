@@ -34,82 +34,83 @@
 
 /******************************************************************************
 Function Name  :  SInfo
-Input(s)       :
+Input(s)       :  
 Output         :  -
-Functionality  :
+Functionality  :   
 Member of      :  SInfo
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  14/04/2011
-Modifications  :
+Modifications  :  
 Code Tag       :
 ******************************************************************************/
 SInfo::SInfo()
 {
+
 }
 
 
 /******************************************************************************
 Function Name  :  ~SInfo
-Input(s)       :
+Input(s)       :  
 Output         :  -
-Functionality  :
+Functionality  :   
 Member of      :  SInfo
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  14/04/2011
-Modifications  :
+Modifications  :  
 Code Tag       :
 ******************************************************************************/
-SInfo::~SInfo()
-{
+SInfo::~SInfo(){
+
 }
 
 /******************************************************************************
 Function Name  :  vInitialise
-Input(s)       :
+Input(s)       :  
 Output         :  VOID
-Functionality  :
+Functionality  :   
 Member of      :  SInfo
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  14/04/2011
-Modifications  :
+Modifications  :  
 Code Tag       :
 ******************************************************************************/
 VOID SInfo::vInitialise(CString omCategory, CString omValue)
 {
     m_omCategory = omCategory;
     m_omValue = omValue;
-}
+}    
 
 
 /******************************************************************************
 Function Name  :  tagUSIGNALVALUE
-Input(s)       :
+Input(s)       :  
 Output         :  -
-Functionality  :
+Functionality  :   
 Member of      :  tagUSIGNALVALUE
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  14/04/2011
-Modifications  :
+Modifications  :  
 Code Tag       :
 ******************************************************************************/
-tagUSIGNALVALUE::tagUSIGNALVALUE()
-{
+tagUSIGNALVALUE::tagUSIGNALVALUE(){
+
 }
 
 /******************************************************************************
 Function Name  :  SReportFile
-Input(s)       :
+Input(s)       :  
 Output         :  -
-Functionality  :
+Functionality  :   
 Member of      :  SReportFile
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  14/04/2011
-Modifications  :
+Modifications  :  
 Code Tag       : CS026
 ******************************************************************************/
 SReportFile::SReportFile()
@@ -121,14 +122,14 @@ SReportFile::SReportFile()
 
 /******************************************************************************
 Function Name  :  ~SReportFile
-Input(s)       :
+Input(s)       :  
 Output         :  -
-Functionality  :
+Functionality  :   
 Member of      :  SReportFile
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  14/04/2011
-Modifications  :
+Modifications  :  
 Code Tag       :
 ******************************************************************************/
 SReportFile::~SReportFile()
@@ -137,14 +138,14 @@ SReportFile::~SReportFile()
 
 /******************************************************************************
 Function Name  :  vInitialise
-Input(s)       :
+Input(s)       :  
 Output         :  VOID
-Functionality  :
+Functionality  :   
 Member of      :  SReportFile
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  14/04/2011
-Modifications  :
+Modifications  :  
 Code Tag       :
 ******************************************************************************/
 VOID SReportFile::vInitialise(eTYPE_REPORT eType, CString omPath, eTIME_MODE eTimeMode)
@@ -154,32 +155,5 @@ VOID SReportFile::vInitialise(eTYPE_REPORT eType, CString omPath, eTIME_MODE eTi
     m_omPath = omPath;
 }
 
-/******************************************************************************
-Function Name  :  strCopyBSTRToCString
-Input(s)       :  CComVariant& varSrc
-Output         :  CString
-Functionality  :  Copies BSTR to CString
-Member of      :  -
-Friend of      :  -
-Author(s)      :  Arunkumar K
-Date Created   :  20/07/2011
-Modifications  :
-Codetag        :
-******************************************************************************/
-CString strCopyBSTRToCString(CComVariant& varSrc)
-{
-    CString strDest ;
-    char tChar = NULL;
-    _bstr_t bstrNodeValue(varSrc.bstrVal);
-    ULONG ulLen = bstrNodeValue.length();
 
-    for (unsigned int i = 0; i< ulLen*2; i+=2)
-    {
-        tChar = (char)*(varSrc.pcVal+i);
-        strDest.Insert(i/2, tChar);
-    }
 
-    tChar = NULL;
-    strDest.Insert(ulLen, tChar);
-    return strDest;
-}

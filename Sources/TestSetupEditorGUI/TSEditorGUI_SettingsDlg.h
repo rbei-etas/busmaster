@@ -18,8 +18,8 @@
  * \author    Venkatanarayana makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-
-#pragma once
+#if !defined TSEDITOR_SETTINGSDLG_H__INCLUDED_
+#define TSEDITOR_SETTINGSDLG_H__INCLUDED_
 
 #include "TSEditorGUI_resource.h"
 #include "Utility/ColorSelector.h"
@@ -27,25 +27,27 @@
 
 class CTSEditorSettingsDlg : public CDialog
 {
-    DECLARE_DYNCREATE(CTSEditorSettingsDlg)
+	DECLARE_DYNCREATE(CTSEditorSettingsDlg)
 public:
-	CColorSelector m_ouBkColorBtn;
+    CColorSelector m_ouBkColorBtn;
     CColorSelector m_ouTxtColorBtn;
     BOOL m_bQueryConfirm;
     CColorSelector m_Row1Color;
     CColorSelector m_Row2Color;
     CButton m_omDefaultVal;
-
+    
     // Dialog Data
-    enum { IDD = IDD_SETTINGS};
+	enum { IDD = IDD_SETTINGS};
 public:
-    CTSEditorSettingsDlg(CWnd* pParent = NULL);   // standard constructor
-    virtual ~CTSEditorSettingsDlg();
+	CTSEditorSettingsDlg(CWnd* pParent = NULL);   // standard constructor
+	virtual ~CTSEditorSettingsDlg();
     afx_msg void OnBnClickedDefault();
 
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-    virtual BOOL OnInitDialog();
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual BOOL OnInitDialog();
 
-    DECLARE_MESSAGE_MAP()
+	DECLARE_MESSAGE_MAP()
 };
+
+#endif

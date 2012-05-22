@@ -22,13 +22,18 @@
  * Interface file for CGraphParameters class
  */
 
+#if !defined(AFX_GRAPHPARAMETERS_H__2CC21E72_BC35_4502_9FB7_DB030798AC4A__INCLUDED_)
+#define AFX_GRAPHPARAMETERS_H__2CC21E72_BC35_4502_9FB7_DB030798AC4A__INCLUDED_
+
+#if _MSC_VER > 1000
 #pragma once
+#endif // _MSC_VER > 1000
 
 typedef enum eDISPLAY_TYPE
 {
-    eDISPLAY_NORMAL,
-    eDISPLAY_STEPMODE_XY,
-    eDISPLAY_STEPMODE_YX
+	eDISPLAY_NORMAL,
+	eDISPLAY_STEPMODE_XY,
+	eDISPLAY_STEPMODE_YX
 };
 
 class CGraphParameters
@@ -36,7 +41,7 @@ class CGraphParameters
 public:
     // To serialize class members
     void vInitialize(void);
-    UINT unGetConfigSize(BYTE byVersion);
+	UINT unGetConfigSize(BYTE byVersion);
     int nSerialize(CArchive& omArchive);
     BYTE* pbySetConfigData(BYTE* pbyTrgtData, BYTE byVersion);
     BYTE* pbyGetConfigData(BYTE* pbyTrgtData, BYTE byVersion);
@@ -70,6 +75,8 @@ public:
     int m_nAction;
     // Grid Setting
     BOOL m_bShowGrid;
-    //Graph Line Display
-    eDISPLAY_TYPE m_eDisplayType;
+	//Graph Line Display
+	eDISPLAY_TYPE m_eDisplayType;	
 };
+
+#endif // !defined(AFX_GRAPHPARAMETERS_H__2CC21E72_BC35_4502_9FB7_DB030798AC4A__INCLUDED_)

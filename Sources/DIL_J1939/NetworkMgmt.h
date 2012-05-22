@@ -1,43 +1,72 @@
-/*
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 
-/**
- * \file      NetworkMgmt.h
- * \brief     Definition file for NetworkMgmt
- * \author    Anish Kumar
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
- *
- * Definition file for NetworkMgmt
- */
+/******************************************************************************
+  Project       :  Frame_McNet
+  FileName      :  NetworkMgmt.h
+  Description   :  Network management layer services
+  $Log:   X:/Archive/Sources/DIL_J1939/NetworkMgmt.h_v  $
+ * 
+ *    Rev 1.7   15 Apr 2011 18:48:38   CANMNTTM
+ * Added RBEI Copyright information.
+ * 
+ *    Rev 1.6   02 Mar 2011 11:36:44   CANMNTTM
+ * SetCallBackFuncPtr function is added.
+ * 
+ *    Rev 1.5   13 Jan 2011 14:47:00   CANMNTTM
+ * GoOnline() return value is used.
+ * 
+ *    Rev 1.4   22 Dec 2010 19:23:42   CANMNTTM
+ * 1. Implemented Call back mechanism.
+ * 2. Exported function SetClBckFnPtrs and GetTimeOut added.
+ * 
+ *    Rev 1.3   15 Dec 2010 16:22:58   CANMNTTM
+ * Added new function to remove all the register nodes.
+ * 
+ *    Rev 1.2   13 Dec 2010 18:46:54   CANMNTTM
+ * New API DILJ_bIsOnline(void) added
+ * 
+ *    Rev 1.1   13 Dec 2010 16:37:06   CANMNTTM
+ * Nodes are made independent of channel.
+ * Now nodes can send message in any channel.
+ * 
+ *    Rev 1.0   06 Dec 2010 18:47:22   rac2kor
+ *  
+ * 
+ *    Rev 1.4   12 Jan 2010 14:22:46   mcnetpl
+ * Bugfixing
+ * 
+ *    Rev 1.3   04 Jan 2010 14:46:12   mcnetpl
+ *  
+ * 
+ *    Rev 1.1   07 Dec 2009 13:02:00   mcnetpl
+ * Bugfix
+ * 
+ *    Rev 1.0   02 Dec 2009 17:53:04   mcnetpl
+ * Initial version
 
-#pragma once
+  Author(s)     :  Anish Kumar
+  Date Created  :  15/09/2009
+  Modified By   :  
+  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
+******************************************************************************/
 
-/* Project includes */
+#if !defined NETWORKMGMT_H__INCLUDED
+#define NETWORKMGMT_H__INCLUDED
+
 #include "NodeConManager.h"
 #include "DIL_J1939_Extern.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
 #include "ConnectionDet.h"
 #include "ReadCanMsg.h"
 
-typedef enum
+
+
+typedef enum 
 {
     CB_CON_CON,
     CB_CON_IND,
     CB_CONTEST_CON,
     CB_CONTEST_IND
-} E_NW_CALLBK_TYPE;
+}E_NW_CALLBK_TYPE;
 
 typedef CMap<UINT, UINT, short, short> CCombineLCsToConNoMap;
 typedef CMap<UINT64, UINT64, BYTE, BYTE> CNameAddressMap;
@@ -54,7 +83,7 @@ private:
     int m_nConMgrCnt;
     CNameAddressMap m_odClaimedAdresMap;
     BOOL m_bOnline;
-
+    
 public:
     static UINT sg_unTO_BROADCAST;
     static UINT sg_unTO_RESPONSE;
@@ -81,17 +110,17 @@ public:
     void vMConnectionInd(short sLocalLc, short sRemoteLc, eCON_STATUS eConStatus);
     ////////////////////////////////////////////////////////////////////
     CNodeConManager* pouGetConMagrObj(DWORD dwClientId);
-    CNodeConManager* pouGetConMagrObj(char* pacClientName);
+    CNodeConManager* pouGetConMagrObj(TCHAR* pacClientName);
     CNodeConManager* pouGetConMagrObj(BYTE byIndex);
     BYTE byGetConMagrNumber(short shConNumber);
-    //Singleton Class
+    //Singleton Class 
     static CNetworkMgmt& ouGetNWManagementObj();
     //
     void vSetLogAndICANPtr(Base_WrapperErrorLogger* pILog, CBaseDIL_CAN* pouIDIL_CAN);
-    LONG lCreateNodeConManager(char* pacNodeName,
-                               UINT64 un64ECUName,
-                               BYTE byPrefAdres,
-                               DWORD& dwClientId);
+    LONG lCreateNodeConManager(TCHAR* pacNodeName, 
+                                UINT64 un64ECUName, 
+                                BYTE byPrefAdres,
+                                DWORD& dwClientId);
     void vRemoveAllNodes(void);
     LONG lRemoveNodeConManager(DWORD dwClientId);
     BOOL bRemoveConnectionFromConMap(short shConnectionNo);
@@ -100,7 +129,7 @@ public:
     void vReinitAdresClaimProc(DWORD dwClient);
     void vUpdateAddressMap(UINT64 un64EcuName, BYTE byNodeAddress);
     BOOL bIsAddressClaimed(BYTE byAddress);
-    void vGetNodeName(BYTE byAddress, char* acNodeName);
+    void vGetNodeName(BYTE byAddress, TCHAR* acNodeName);
     BYTE byGetNodeAddress(DWORD dwClient);
     void vInitializeAllNodes(void);
     void vUnInitializeAllNodes(void);
@@ -111,3 +140,5 @@ public:
     HRESULT GoOnline(BOOL bStart);
     BOOL bIsOnline(void);
 };
+
+#endif //NETWORKMGMT_H__INCLUDED

@@ -16,17 +16,24 @@
 /**
  * \file      MsgBufVVSE.h
  * \brief     Defines a variant of circular queue class in VSE.
- * \author    Pradeep Kadoor, Tobias Lorenz
+ * \author    Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Defines a variant of circular queue class in VSE.
  */
 
-#pragma once
 
-/* Project includes */
+#if !defined MSGBUFVVSE_H__INCLUDED_
+#define MSGBUFVVSE_H__INCLUDED_
+
 #include "BaseMsgBufAll.h"
 
+/////////////////////////////////////////////////////////////////////////////////////
+/**********************************************************************************
+Class Name      :   CMsgBufVVSE
+Authors         :   Pradeep Kadoor
+Date Created    :   22/06/2009
+************************************************************************************/
 class CMsgBufVVSE : public CBaseMsgBufVVSE
 {
 private:
@@ -43,13 +50,13 @@ private:
     HANDLE m_hNotifyingEvent;
 
     /* Helper function to advance the nIndex to next msg*/
-    int nAdvanceReadIndex(int& nIndex);
+    int nAdvanceReadIndex(int& nIndex);    
     /* Helper function to read msg from the circular buffer from the index nIndex*/
     HRESULT ReadBuffer(INT& nType, BYTE* pbyMsg, INT& nSize, INT& nIndex);
     /* Helper function to write msg into the circular buffer*/
     int nWriteBuffer(INT nType, BYTE* pbyMsg, INT nSize);
     /* Helper function construct header with TYPE and DATA LENGTH*/
-    int nConstructHeader(INT nType, INT nSize, BYTE* pbyHeader);
+    int nConstructHeader(INT nType, INT nSize, BYTE* pbyHeader);    
     /* Helper function to get header of 'nIndex'th message*/
     int nGetCurrMsgHeader(int nIndex, BYTE* pbyHeader);
     /* Move the temporary read index if required whenever overrun happens*/
@@ -59,7 +66,7 @@ private:
 public:
     CMsgBufVVSE();
     ~CMsgBufVVSE();
-
+    
     /* Writes message into the buffer. Caller needs to allocate memory for the
     out parameter */
     int WriteIntoBuffer(INT nType, BYTE* ps_Msg, INT nSize);
@@ -81,3 +88,5 @@ public:
        user will have an option set the next entry as start pos*/
     HRESULT ReadEntry(int& nType, BYTE* pbyMsg, int& nSize, int nEntry, BOOL bSetNextIndexStartPos);
 };
+
+#endif // MSGBUFVVSE_H__INCLUDED_

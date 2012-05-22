@@ -20,6 +20,7 @@ int nNumLines = 0;
 char data[256];
 int nNumModeProcd = 0;
 int nTimeModeProcd = 0;
+int nRetval = 1;
 extern FILE *yyin, *yyout;
 
 void yyerror(const char *str)
@@ -30,7 +31,7 @@ void yyerror(const char *str)
 int yywrap()
 {
 	fprintf(yyout, "End TriggerBlock\n");
-	return 1;	//1 Sepcifies conversion is over.
+	return nRetval;	//1 Sepcifies conversion is over.
 				//0 specifies the parser start the conversion from different
 				//Input
 }
@@ -92,7 +93,7 @@ int nConvertFile(FILE* fpInputFile, FILE* fpOutputFile)
 		yyout = fpOutputFile;
 		yyparse();
 	}
-	return 0;
+	return nRetval;
 }
 %}
 
@@ -190,6 +191,10 @@ TimeStamp_Mode:
 			else if(strcmp((char*)$1 ,"***ABSOLUTE MODE***") == 0)
 			{
 				fprintf(yyout, "timestamps absolute\n");
+			}
+			else
+			{
+				nRetval = -2;
 			}
 			fprintf(yyout, "no internal events logged\n");
 			fprintf(yyout, "// version 7.1.0\n");

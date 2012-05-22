@@ -18,9 +18,7 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-
 #pragma once
-
 #pragma pack(8)
 //#pragma pack(show)
 
@@ -32,26 +30,26 @@
 class CConfigData : public CComputeCheckSum
 {
 private:
-    CString m_omStrCurrFileName;
-    string m_strCurrProjName;
-    static CConfigData m_ouConfigDetails;
-    CConfigData(void);
+	CString m_omStrCurrFileName;
+	string m_strCurrProjName;
+	static CConfigData m_ouConfigDetails;
+	CConfigData(void);
 public:
-    static CConfigData& ouGetConfigDetailsObject();
-    ~CConfigData(void);
+	static CConfigData& ouGetConfigDetailsObject();
+	~CConfigData(void);
+	
+	int SetConfigDatastorage(DATASTORAGEINFO* StorageInfo);
+	int GetConfigDatastorage(DATASTORAGEINFO* StorageInfo);
 
-    int SetConfigDatastorage(DATASTORAGEINFO* StorageInfo);
-    int GetConfigDatastorage(DATASTORAGEINFO* StorageInfo);
+	void vReadConfigFile();
+	void vSaveConfigFile();
+	void vCloseConfigFile();
 
-    void vReadConfigFile();
-    void vSaveConfigFile();
-    void vCloseConfigFile();
+	void vSetCurrProjName(string strCurrProjName);
+	string GetCurrProjName();
+	BOOL bSetCurrProjInfo(PROJECTDATA* ProjData);
+	BOOL bGetCurrProjInfo(PROJECTDATA* ProjData);
 
-    void vSetCurrProjName(string strCurrProjName);
-    string GetCurrProjName();
-    BOOL bSetCurrProjInfo(PROJECTDATA* ProjData);
-    BOOL bGetCurrProjInfo(PROJECTDATA* ProjData);
-
-    BOOL bSetData(LPVOID lpVoid, int nStreamLength, string strSectionName);
-    BOOL bGetData(void *& lpData,int& nStreamLength, string strSectionName);
+	BOOL bSetData(LPVOID lpVoid, int nStreamLength, string strSectionName);
+	BOOL bGetData(void *& lpData,int &nStreamLength, string strSectionName);
 };

@@ -20,48 +20,27 @@
     </section>
     <section>
       <title>Installation</title>
-      <p>Extract the <filepath>AStyle_2.02_windows.zip</filepath> file to <filepath>%ProgramFiles%\AStyle</filepath>. It will create the following folders:</p>
+      <p>Extract the <filepath>AStyle_2.02_windows.zip</filepath> file. It will create the following folders:</p>
       <ul>
         <li><filepath>bin</filepath>: Contains the program <filepath>AStyle.exe</filepath>.</li>
         <li><filepath>build</filepath> : Contains files to build the source code of AStyle. This is not necessary for BUSMASTER.</li>
         <li><filepath>doc</filepath>: Contains the documentation, which could be helpful for the usage.</li>
         <li><filepath>src</filepath>: Contains the source code of AStyle. This is not necessary for BUSMASTER.</li>
       </ul>
-      <p>Only the program <filepath>AStyle.exe</filepath> is necessary for the usage with BUSMASTER. It&apos;s recommended to add the <filepath>bin</filepath> folder to your %PATH% environmental variable.</p>
+      <p>Only the program <filepath>AStyle.exe</filepath> is necessary for the usage with BUSMASTER. It&apos;s recommended to copy to an existing folder that is in your %PATH% environmental variable.</p>
     </section>
     <section>
       <title>Configuration</title>
-      <p>For BUSMASTER certain AStyle options have been selected based on the ETAS profile:</p>
-      <p><codeblock># Bracket Style Options
---style=ansi
-
-# Tab Options
-
-# Indentation Options
---indent-switches
-#--indent-namespaces# deleted from ETAS profile
---indent-preprocessor
---indent-col1-comments# added to BUSMASTER profile
-
-# Padding Options
---break-blocks
---delete-empty-lines
-
-# Formatting Options
---add-brackets
---convert-tabs
---align-pointer=type
-
-# Other Options</codeblock></p>
+      <p>There is no specific configuration necessary. Everything can be done on the command line.</p>
     </section>
-    <p>Options can either be given on the command line or via an options file.</p>
-    <p>AStyle is also used as part of the static code test bench. The options file with the contents given above is located at <filepath>Tests/AStyle/astyle.txt</filepath>.</p>
     <section>
       <title>Usage</title>
-      <p>Go to your command line (e.g. by executing <filepath>cmd</filepath> in the start menu) and type (path to options file need to be adapted):</p>
-      <p><cmdname>astyle --options=astyle.txt --recursive *.cpp *.h</cmdname></p>
-      <p>This will recursively run over all source code files of BUSMASTER and will adjust the style as necessary. The modifications will be directly done in the respective file. The original unmodified files are available with the file name extension <filepath>.orig</filepath>.</p>
-      <p>Before you commit these file to the project repository, make sure that the modifications are useful or adjust them if necessary.</p>
+      <p>Go to your command line (e.g. by executing <filepath>cmd</filepath> in the start menu). And type:</p>
+      <p><cmdname>astyle -r -s4 -S *.cpp *.h</cmdname></p>
+      <p>This will recursively run over all source code files of BUSMASTER and will adjust the style as necessary. The modifications will directly done in the respective file. The original unmodified files are available with the file name extension <filepath>.orig</filepath>.</p>
+      <p>Before you commit these file to the project repository, make sure that the modifications are useful and adjust them if necessary. This could be necessary, e.g. in case you want to define an <codeph>enum</codeph> with &quot;<codeph>=</codeph>&quot; signs all in a row.</p>
+      <p>The recommended options for C++ software at ETAS are:</p>
+      <p><cmdname>astyle --style=ansi --delete-empty-lines --break-blocks --add-brackets --indent-namespaces --indent-preprocessor --indent-switches --convert-tabs --align-pointer=type *.cpp *.h</cmdname></p>
     </section>
   </body>
 </topic>

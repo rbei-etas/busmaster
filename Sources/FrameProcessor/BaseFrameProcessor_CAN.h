@@ -22,7 +22,8 @@
  * Definition file for CBaseFrameProcessor_CAN class which des-
  */
 
-#pragma once
+#if !defined BASEFRAMEPROCESSOR_CAN_H__INCLUDED_
+#define BASEFRAMEPROCESSOR_CAN_H__INCLUDED_
 
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/Log_DataTypes.h"
@@ -32,7 +33,7 @@
 
 typedef struct tagCANPROC_PARAMS
 {
-    char m_acVersion[MAX_PATH];        // Version info of the application suite
+	TCHAR m_acVersion[MAX_PATH];        // Version info of the application suite
     CBaseCANBufFSE* m_pouCANBuffer;     // Client frame buffer to update
     Base_WrapperErrorLogger* m_pILog;   // Error logger module
     //CNetworkStats* m_pouNetworkStat;    // Network statistics object
@@ -42,8 +43,7 @@ typedef struct tagCANPROC_PARAMS
         m_pouCANBuffer = NULL;
         m_pILog = NULL;
         dwClientID = 0;
-
-        for (int i = 0; i < MAX_PATH; i++)
+		for (int i = 0; i < MAX_PATH; i++)
         {
             m_acVersion[i] = L'\0';
         }
@@ -82,7 +82,7 @@ public:
     // Query function - client flexray buffer updation status (OFF/ON)
     virtual BOOL FPC_IsClientCANBufON(void) = 0;
 
-    // Query function - current logging status (OFF/ON).
+    // Query function - current logging status (OFF/ON). 
     virtual BOOL FPC_IsLoggingON(void) = 0;
 
     // Query function - current filtering status
@@ -110,16 +110,16 @@ public:
     virtual HRESULT FPC_GetLoggingBlock(USHORT ushBlk, SLOGINFO& sLogObject) = 0;
 
     // Setter for a logging block by specifying its index in the list
-    virtual HRESULT FPC_SetLoggingBlock(USHORT ushBlk,
-                                        const SLOGINFO& sLogObject) = 0;
+    virtual HRESULT FPC_SetLoggingBlock(USHORT ushBlk, 
+                                    const SLOGINFO& sLogObject) = 0;
 
     // To modify the filtering scheme of a logging block
     virtual HRESULT FPC_ApplyFilteringScheme(USHORT ushLogBlkID,
-            const SFILTERAPPLIED_CAN& sFilterObj) = 0;
+                                     const SFILTERAPPLIED_CAN& sFilterObj) = 0;
 
     // Getter for the filtering scheme of a logging block
-    virtual HRESULT FPC_GetFilteringScheme(USHORT ushLogBlk,
-                                           SFILTERAPPLIED_CAN& sFilterObj) = 0;
+    virtual HRESULT FPC_GetFilteringScheme(USHORT ushLogBlk, 
+                                       SFILTERAPPLIED_CAN& sFilterObj) = 0;
 
     // Getter for the logging configuration data
     virtual HRESULT FPC_GetConfigData(BYTE** ppvConfigData, UINT& unLength) = 0;
@@ -138,11 +138,13 @@ public:
 
     // To stop logging block editing session
     virtual HRESULT FPC_StopEditingSession(BOOL bConfirm) = 0;
+    
+	// To update the associated database list to logger
+	virtual HRESULT FPC_SetDatabaseFiles(const CStringArray& omList) = 0;
 
-    // To update the associated database list to logger
-    virtual HRESULT FPC_SetDatabaseFiles(const CStringArray& omList) = 0;
-
-    // To update the channel baud rate info to logger
-    virtual HRESULT FPC_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
-            int nNumChannels) = 0;
+	// To update the channel baud rate info to logger
+	virtual HRESULT FPC_SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
+														int nNumChannels) = 0;
 };
+
+#endif // BASEFRAMEPROCESSOR_CAN_H__INCLUDED_

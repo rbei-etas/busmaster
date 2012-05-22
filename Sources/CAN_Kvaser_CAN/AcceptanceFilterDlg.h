@@ -21,9 +21,14 @@
  *
  * This file contain the declaration of CAcceptanceFilterDlg class
  */
+#if !defined(AFX_ACCEPTANCEFILTERDLG_H__80C9C246_59BF_11D7_80AD_0010B599CE39__INCLUDED_)
+#define AFX_ACCEPTANCEFILTERDLG_H__80C9C246_59BF_11D7_80AD_0010B599CE39__INCLUDED_
 
+#if _MSC_VER > 1000
 #pragma once
-
+#endif // _MSC_VER > 1000
+// AcceptanceFilterDlg.h : header file
+//
 #include "CAN_Kvaser_CAN_Resource.h"
 /////////////////////////////////////////////////////////////////////////////
 // CAcceptanceFilterDlg dialog
@@ -31,13 +36,13 @@
 class CAcceptanceFilterDlg : public CDialog//CPropertyPage
 {
     //DECLARE_DYNCREATE(CAcceptanceFilterDlg)
-    // Construction
+// Construction
 public:
     // standard constructor
-    CAcceptanceFilterDlg(CWnd* pParent = NULL,
-                         PSCONTROLLER_DETAILS psAccFilterInfo = NULL);
+    CAcceptanceFilterDlg(CWnd* pParent = NULL, 
+                         PSCONTROLER_DETAILS psAccFilterInfo = NULL); 
     virtual ~CAcceptanceFilterDlg();
-    // Dialog Data
+// Dialog Data
     //{{AFX_DATA(CAcceptanceFilterDlg)
     enum { IDD = IDD_DLG_ACCEPTANCE };
     CRadixEdit  m_omEditAccMaskByte4;
@@ -57,27 +62,27 @@ public:
     CString m_omStrAccMaskByte3;
     CString m_omStrAccMaskByte4;
 
-    CString m_omStrLocalAccCodeByte1[CAN_MSG_IDS];
+	CString m_omStrLocalAccCodeByte1[CAN_MSG_IDS];
     CString m_omStrLocalAccCodeByte2[CAN_MSG_IDS];
     CString m_omStrLocalAccCodeByte3[CAN_MSG_IDS];
     CString m_omStrLocalAccCodeByte4[CAN_MSG_IDS];
     CString m_omStrLocalAccMaskByte1[CAN_MSG_IDS];
     CString m_omStrLocalAccMaskByte2[CAN_MSG_IDS];
     CString m_omStrLocalAccMaskByte3[CAN_MSG_IDS];
-    CString m_omStrLocalAccMaskByte4[CAN_MSG_IDS];
+    CString m_omStrLocalAccMaskByte4[CAN_MSG_IDS];	
     //}}AFX_DATA
 
 
-    // Overrides
+// Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CAcceptanceFilterDlg)
-public:
+    public:
     virtual void OnOK();
-protected:
+    protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-    // Implementation
+// Implementation
 protected:
 
     // Generated message map functions
@@ -95,16 +100,21 @@ protected:
     DECLARE_MESSAGE_MAP()
 private:
     BOOL m_bAccFilterMode;
-    eHW_FILTER_TYPES m_enmHWFilterType[CAN_MSG_IDS];
-    PSCONTROLLER_DETAILS m_psControllerInfo;
-    afx_msg void OnBnClickedRbtnDualFilterMode();
-    afx_msg void OnBnClickedRbtnSingleFilterMode();
-    afx_msg void OnBnClickedRbtnFilterAcceptAll();
-    afx_msg void OnBnClickedRbtnFilterRejectAll();
-    afx_msg void OnBnClickedRbtnFilterManualSet();
+	eHW_FILTER_TYPES m_enmHWFilterType[CAN_MSG_IDS];
+    PSCONTROLER_DETAILS m_psControllerInfo;
+	afx_msg void OnBnClickedRbtnDualFilterMode();
+	afx_msg void OnBnClickedRbtnSingleFilterMode();
+	afx_msg void OnBnClickedRbtnFilterAcceptAll();
+	afx_msg void OnBnClickedRbtnFilterRejectAll();
+	afx_msg void OnBnClickedRbtnFilterManualSet();
 
-    void vSetFilterDetails(bool bSave);
-    void vSaveFilterDetails(BOOL bAccFilterMode);
-    void vEnableDisableCodeMaskFields(bool bEnable);
-    void vSetHWFilterTypeDetails();
+	void vSetFilterDetails(bool bSave);
+	void vSaveFilterDetails(BOOL bAccFilterMode);
+	void vEnableDisableCodeMaskFields(bool bEnable);
+	void vSetHWFilterTypeDetails();
 };
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_ACCEPTANCEFILTERDLG_H__80C9C246_59BF_11D7_80AD_0010B599CE39__INCLUDED_)

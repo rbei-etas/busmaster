@@ -23,7 +23,7 @@
  */
 
 #include "Replay_stdafx.h"             // For standard includes
-#include "Replay_resource.h"
+#include "Replay_resource.h"        
 #include "ReplayFile.h"         // For Replay File class declaration
 #include "MsgReplayWnd.h"       // For message Window class declaration
 #include "ReplayManager.h"      // For Replay Manager class declaration
@@ -32,6 +32,13 @@
 #include "ReplayProcess.h"      // For Replay Process class declaration
 #include "DataTypes/BaseAppServices.h"
 #include "Filter/Filter_extern.h"
+
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char THIS_FILE[]=__FILE__;
+#define new DEBUG_NEW
+#endif
 
 // Flag to indicate object creation
 BOOL CReplayManager::m_bCreated = FALSE;
@@ -64,6 +71,7 @@ CReplayManager::CReplayManager()
     m_sWndPlacement.length = 0;
     // Initialize Manager
     vInitReplayManager();
+
 }
 
 /*******************************************************************************
@@ -87,7 +95,7 @@ CReplayManager::~CReplayManager()
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 CReplayManager& CReplayManager::ouGetReplayManager()
 {
@@ -104,16 +112,15 @@ CReplayManager& CReplayManager::ouGetReplayManager()
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 void CReplayManager::vCopyReplayManager( CReplayManager& ouDest,
-        const CReplayManager& ouSrc ) const
+                         const CReplayManager& ouSrc ) const
 {
     // Clear destination list
     ouDest.m_omReplayFiles.RemoveAll();
     // Copy Replay File List
     int nSize = (int)ouSrc.m_omReplayFiles.GetSize();
-
     // Iterate through the list and copy
     for( int nIndex = 0; nIndex < nSize; nIndex++ )
     {
@@ -129,7 +136,7 @@ void CReplayManager::vCopyReplayManager( CReplayManager& ouDest,
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 DWORD CReplayManager::dShowReplayConfigurationDlg(const SFILTERAPPLIED_CAN* psFilterConfigured)
 {
@@ -139,14 +146,13 @@ DWORD CReplayManager::dShowReplayConfigurationDlg(const SFILTERAPPLIED_CAN* psFi
     vCopyReplayManager( ouTemp, *this );
     // Show configuration dialog
     CReplayFileConfigDlg omDlg( ouTemp,  psFilterConfigured);
-    dwResult = (DWORD)omDlg.DoModal();
 
+    dwResult = (DWORD)omDlg.DoModal();
     if( dwResult == IDOK )
     {
         // Copy the user selection
         vCopyReplayManager( *this, ouTemp );
     }
-
     // Return the result
     return dwResult;
 }
@@ -159,12 +165,11 @@ DWORD CReplayManager::dShowReplayConfigurationDlg(const SFILTERAPPLIED_CAN* psFi
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 BOOL CReplayManager::Serialize(CArchive& omArchive)
 {
     BOOL bResult = FALSE;
-
     // Loading
     if( omArchive.IsLoading() )
     {
@@ -172,7 +177,6 @@ BOOL CReplayManager::Serialize(CArchive& omArchive)
         m_omReplayFiles.RemoveAll();
         int nSize = 0;
         omArchive >> nSize;
-
         // Serialise each log files
         for( int nIndex = 0; nIndex < nSize; nIndex++ )
         {
@@ -180,7 +184,6 @@ BOOL CReplayManager::Serialize(CArchive& omArchive)
             ouFile.bSerialize( omArchive );
             m_omReplayFiles.Add( ouFile );
         }
-
         // Set the result to true
         bResult = TRUE;
     }
@@ -190,17 +193,14 @@ BOOL CReplayManager::Serialize(CArchive& omArchive)
         // Serialise Log Files
         int nSize = (int)m_omReplayFiles.GetSize();
         omArchive << nSize;
-
         // Serialise each log files
         for( int nIndex = 0; nIndex < nSize; nIndex++ )
         {
             m_omReplayFiles.ElementAt( nIndex ).bSerialize( omArchive );
         }
-
         // Set the result to true
         bResult = TRUE;
     }
-
     return bResult;
 }
 
@@ -212,7 +212,7 @@ BOOL CReplayManager::Serialize(CArchive& omArchive)
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 VOID CReplayManager::vInitReplayManager()
 {
@@ -236,25 +236,22 @@ VOID CReplayManager::vInitReplayManager()
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 VOID CReplayManager::vShowInteractiveReplayWindows()
 {
     // Get the number of replay files in the list
     int nSize = (int)m_omReplayFiles.GetSize();
-
     for( int nIndex = 0; nIndex < nSize; nIndex++ )
     {
         const CReplayFile& omFile = m_omReplayFiles.ElementAt( nIndex );
-
         // If it is enabled and interactive
         if( omFile.m_bEnabled == TRUE &&
-                omFile.m_bInteractive == TRUE )
+            omFile.m_bInteractive == TRUE )
         {
             // Create, load and show the window
-            CMsgReplayWnd* pWnd =
+            CMsgReplayWnd * pWnd =
                 new CMsgReplayWnd( omFile, m_sWndPlacement);
-
             if( pWnd != NULL )
             {
                 m_omReplayWindowArray.Add( pWnd );
@@ -273,30 +270,26 @@ VOID CReplayManager::vShowInteractiveReplayWindows()
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 VOID CReplayManager::vStartNonInteractiveReplays()
 {
     // Get the replay list size
     int nSize = (int)m_omReplayFiles.GetSize();
     int nIndex;     //nIndex declared outside loop
-
     for( int nIndex = 0; nIndex < nSize; nIndex++ )
     {
         const CReplayFile& omFile = m_omReplayFiles.ElementAt( nIndex );
-
         // If it is enabled non interactive replay
         if( omFile.m_bEnabled == TRUE &&
-                omFile.m_bInteractive == FALSE )
+            omFile.m_bInteractive == FALSE )
         {
             // Create replay process
-            CReplayProcess* pNewProcess = new CReplayProcess( omFile );
-
+            CReplayProcess * pNewProcess = new CReplayProcess( omFile );
             if( pNewProcess != NULL )
             {
                 // Load the replay file
                 BOOL bResult = pNewProcess->bOpenReplayFile();
-
                 // if loading is success
                 if( bResult == TRUE )
                 {
@@ -306,8 +299,8 @@ VOID CReplayManager::vStartNonInteractiveReplays()
                         // Show the message in Trace Window
                         CString omStrErr;
                         omStrErr.Format( defSTR_REPLAY_ERROR,
-                                         pNewProcess->m_ouReplayFile.m_omStrFileName, // File
-                                         defSTR_REPLAY_FILE_EMPTY );
+                            pNewProcess->m_ouReplayFile.m_omStrFileName, // File
+                            defSTR_REPLAY_FILE_EMPTY );
                         vSendToTrace(omStrErr.GetBuffer(MAX_PATH));
                         //gbSendStrToTrace( (char *)omStrErr.operator LPCTSTR());
                         bResult = FALSE;
@@ -324,25 +317,23 @@ VOID CReplayManager::vStartNonInteractiveReplays()
                     // Show Error message
                     CString omStrErr;
                     omStrErr.Format(defSTR_REPLAY_ERROR,
-                                    omFile.m_omStrFileName, // File Name
-                                    pNewProcess->m_omStrError );    // Error Message
+                        omFile.m_omStrFileName, // File Name
+                        pNewProcess->m_omStrError );    // Error Message
                     vSendToTrace(omStrErr.GetBuffer(MAX_PATH));
                     //gbSendStrToTrace( (char *)omStrErr.operator LPCTSTR() );
                 }
-
                 if( bResult == FALSE )
                 {
                     // Delete the memory
                     delete pNewProcess;
                 }
             }
+
         }
     }
-
     // Start all replay threads
     nSize = (int)m_omReplayProcess.GetSize();
-
-    for(nIndex = 0; nIndex < nSize; nIndex++ )
+    for(nIndex = 0; nIndex < nSize; nIndex++ )     
     {
         m_omReplayProcess[ nIndex ]->bStartNIReplay();
     }
@@ -357,9 +348,9 @@ VOID CReplayManager::vStartNonInteractiveReplays()
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
-VOID CReplayManager::vSetActiveReplayWindow(CMsgReplayWnd* pomWindow)
+VOID CReplayManager::vSetActiveReplayWindow(CMsgReplayWnd * pomWindow)
 {
     m_pomActiveWindow = pomWindow;
 }
@@ -372,7 +363,7 @@ VOID CReplayManager::vSetActiveReplayWindow(CMsgReplayWnd* pomWindow)
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 VOID CReplayManager::vCmdStep()
 {
@@ -391,7 +382,7 @@ VOID CReplayManager::vCmdStep()
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 VOID CReplayManager::vCmdSkip()
 {
@@ -410,7 +401,7 @@ VOID CReplayManager::vCmdSkip()
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 VOID CReplayManager::vCmdGo()
 {
@@ -429,7 +420,7 @@ VOID CReplayManager::vCmdGo()
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 VOID CReplayManager::vCmdStop()
 {
@@ -448,18 +439,16 @@ VOID CReplayManager::vCmdStop()
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 BOOL CReplayManager::bGetUIStateCmdStep()
 {
     BOOL bEnable = FALSE;
-
     // If tool is connected
     if( m_bConnection == TRUE && m_pomActiveWindow != NULL )
     {
         bEnable = m_pomActiveWindow->bGetUIStateCmdStep();
     }
-
     return bEnable;
 }
 
@@ -471,17 +460,15 @@ BOOL CReplayManager::bGetUIStateCmdStep()
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 BOOL CReplayManager::bGetUIStateCmdSkip()
 {
     BOOL bEnable = FALSE;
-
     if( m_bConnection == TRUE && m_pomActiveWindow != NULL )
     {
         bEnable = m_pomActiveWindow->bGetUIStateCmdSkip();
     }
-
     return bEnable;
 }
 
@@ -493,17 +480,15 @@ BOOL CReplayManager::bGetUIStateCmdSkip()
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 BOOL CReplayManager::bGetUIStateCmdGo()
 {
     BOOL bEnable = FALSE;
-
     if( m_bConnection == TRUE && m_pomActiveWindow != NULL )
     {
         bEnable = m_pomActiveWindow->bGetUIStateCmdGo();
     }
-
     return bEnable;
 }
 
@@ -515,17 +500,15 @@ BOOL CReplayManager::bGetUIStateCmdGo()
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 BOOL CReplayManager::bGetUIStateCmdStop()
 {
     BOOL bEnable = FALSE;
-
     if( m_bConnection == TRUE && m_pomActiveWindow != NULL )
     {
         bEnable = m_pomActiveWindow->bGetUIStateCmdStop();
     }
-
     return bEnable;
 }
 
@@ -538,16 +521,14 @@ BOOL CReplayManager::bGetUIStateCmdStop()
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
-BOOL CReplayManager::bRemovePointerFromList(CWnd* pWnd)
+BOOL CReplayManager::bRemovePointerFromList(CWnd * pWnd)
 {
     BOOL bFound = FALSE;
-
     if( pWnd != NULL )
     {
         int nSize = (int)m_omReplayWindowArray.GetSize();
-
         for( int nIndex = 0; bFound == FALSE && nIndex < nSize; nIndex++ )
         {
             if( m_omReplayWindowArray[ nIndex ] == pWnd )
@@ -557,7 +538,6 @@ BOOL CReplayManager::bRemovePointerFromList(CWnd* pWnd)
             }
         }
     }
-
     return bFound;
 }
 
@@ -569,26 +549,24 @@ BOOL CReplayManager::bRemovePointerFromList(CWnd* pWnd)
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 void CReplayManager::vSetThreadStopSignal()
 {
     // Interactive replays
     int nSize = (int)m_omReplayWindowArray.GetSize();
-    int nIndex;
-
+    int nIndex;     
     for( nIndex = 0; nIndex < nSize; nIndex++ )
     {
         m_omReplayWindowArray.ElementAt( nIndex )->bSetThreadStopSignal();
     }
-
     // Non Interactive replays
     nSize = (int)m_omReplayProcess.GetSize();
-
     for( nIndex = 0; nIndex < nSize; nIndex++ ) //nIndex declared outside
     {
         m_omReplayProcess.ElementAt( nIndex )->bSetThreadStopSignal();
     }
+
 }
 
 /*******************************************************************************
@@ -599,14 +577,13 @@ void CReplayManager::vSetThreadStopSignal()
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 void CReplayManager::vStopReplayThread()
 {
     // Interactive dispalys
     int nSize = (int)m_omReplayWindowArray.GetSize();
     int nIndex;     //nIndex declared outside loop
-
     for( nIndex = 0; nIndex < nSize; nIndex++ )
     {
         // Use index 0. Because Destroy Window will remove the pointer
@@ -616,26 +593,22 @@ void CReplayManager::vStopReplayThread()
         // Destroy the window. This will remove itself from the list
         m_omReplayWindowArray.ElementAt( 0 )->DestroyWindow();
     }
-
     // Remove elements from the list if any
     m_omReplayWindowArray.RemoveAll();
+
     // Non Interactive threads
     nSize = (int)m_omReplayProcess.GetSize();
-
     for( nIndex = 0; nIndex < nSize; nIndex++ )
     {
         m_omReplayProcess.ElementAt( nIndex )->bStopReplayThread();
     }
-
     // Clear NI Thread Pool
     nSize = (int)m_omReplayProcess.GetSize();
-
     // Delete memory allocated for NI threads
     for( nIndex = 0; nIndex < nSize; nIndex++ )
     {
         delete m_omReplayProcess.ElementAt( nIndex );
     }
-
     // Clear NI thread pool
     m_omReplayProcess.RemoveAll();
 }
@@ -643,13 +616,12 @@ void CReplayManager::vStopReplayThread()
 void CReplayManager::vSetConfiguredFilter(const void* pvFilterConfigured)
 {
     SFILTERAPPLIED_CAN* psFilterConfigured = (SFILTERAPPLIED_CAN*)pvFilterConfigured;
-    UINT unFileCount = (UINT)m_omReplayFiles.GetSize();
-
+	UINT unFileCount = (UINT)m_omReplayFiles.GetSize();
     for (UINT i = 0; i < unFileCount; i++)
     {
         CReplayFile ouRepFile = m_omReplayFiles.GetAt(i);
-        Filter_ReUpdateAppliedFilter(&(ouRepFile.m_sFilterApplied),
-                                     psFilterConfigured, CAN);
+        Filter_ReUpdateAppliedFilter(&(ouRepFile.m_sFilterApplied), 
+                                psFilterConfigured, CAN);
     }
 }
 
@@ -661,7 +633,7 @@ void CReplayManager::vSetConfiguredFilter(const void* pvFilterConfigured)
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 void CReplayManager::vHandleConnectionStatusChange(BOOL bConnect )
 {
@@ -679,7 +651,7 @@ void CReplayManager::vHandleConnectionStatusChange(BOOL bConnect )
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 void CReplayManager::vStartStopReplay( BOOL bStart )
 {
@@ -708,14 +680,13 @@ void CReplayManager::vStartStopReplay( BOOL bStart )
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 void CReplayManager::vGetReplayFileNameList(CStringArray& omList)
 {
     omList.RemoveAll();
     // Populate the list
     int nSize = (int)m_omReplayFiles.GetSize();
-
     for( int nIndex = 0; nIndex < nSize; nIndex++ )
     {
         CReplayFile& ouFile = m_omReplayFiles.ElementAt( nIndex );
@@ -731,7 +702,7 @@ void CReplayManager::vGetReplayFileNameList(CStringArray& omList)
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 19.7.2005
-  Modifications  :
+  Modifications  : 
 *******************************************************************************/
 void CReplayManager::vAddOlderVersionReplayInformation()
 {
@@ -761,19 +732,18 @@ void CReplayManager::vGetReplayConfigData(BYTE*& pDesBuffer, int& nBuffSize)
     //For storing nSize value
     unToatalDataSize += sizeof(nSize);
     CReplayFile ouFile;
-
     for( int nIndex = 0; nIndex < nSize; nIndex++ )
     {
         ouFile = m_omReplayFiles.ElementAt( nIndex );
         unToatalDataSize += ouFile.unGetConfigSize();
     }
-
     unToatalDataSize += sizeof (WINDOWPLACEMENT);
     pDesBuffer = new BYTE[unToatalDataSize];
     nBuffSize = unToatalDataSize;
     BYTE* pbyTemp = pDesBuffer;
     BYTE byVersion = 0x1;
     COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+
     COPY_DATA(pbyTemp, &nSize, sizeof(nSize));
 
     for( int nIndex = 0; nIndex < nSize; nIndex++ )
@@ -781,12 +751,10 @@ void CReplayManager::vGetReplayConfigData(BYTE*& pDesBuffer, int& nBuffSize)
         ouFile = m_omReplayFiles.ElementAt( nIndex );
         pbyTemp = ouFile.pbySaveConfig(pbyTemp);
     }
-
     if (m_pomActiveWindow != NULL)
     {
         m_pomActiveWindow->GetWindowPlacement(&m_sWndPlacement);
     }
-
     COPY_DATA(pbyTemp, &m_sWndPlacement, sizeof (WINDOWPLACEMENT));
 }
 
@@ -795,22 +763,21 @@ void CReplayManager::vSetReplayConfigData(BYTE* pSrcBuffer, int /*nBuffSize*/)
     //Before loading another config initialize the display
     vStopReplayThread();
     vInitReplayManager();
-
     if (NULL != pSrcBuffer)
     {
         //Now load new config
         BYTE byVersion = 0;
         COPY_DATA_2(&byVersion, pSrcBuffer, sizeof(BYTE));
+
         int nSize;
         COPY_DATA_2(&nSize, pSrcBuffer, sizeof(nSize));
+        
         CReplayFile ouFile;
-
         for( int nIndex = 0; nIndex < nSize; nIndex++ )
         {
             pSrcBuffer = ouFile.pbyLoadConfig(pSrcBuffer);
             m_omReplayFiles.Add(ouFile);
         }
-
         COPY_DATA_2(&m_sWndPlacement, pSrcBuffer, sizeof(WINDOWPLACEMENT));
     }
 }
@@ -825,7 +792,6 @@ BOOL CReplayManager::bIsReplayConfigChanged()
     int nRplayCnt = 0;
     memcpy(&nRplayCnt, pOldConfigBuff, sizeof(nRplayCnt));
     int nSize = (int)m_omReplayFiles.GetSize();
-
     if (nSize == nRplayCnt)
     {
         for( int nIndex = 0; nIndex < nSize; nIndex++ )
@@ -838,7 +804,6 @@ BOOL CReplayManager::bIsReplayConfigChanged()
     {
         bReturn = FALSE;
     }
-
     return bReturn;
 }
 
@@ -847,7 +812,7 @@ void CReplayManager::vSetTraceObjPtr( PVOID pvObj)
     g_pouITracePtr = (CBaseAppServices*) pvObj;
 }
 
-void CReplayManager::vSendToTrace(char* pcString)
+void CReplayManager::vSendToTrace(TCHAR* pcString)
 {
     if (NULL != g_pouITracePtr)
     {

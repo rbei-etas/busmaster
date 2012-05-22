@@ -20,86 +20,69 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Contains project configuration manager class implementation.
- * Implementation of the CProjConfigManager class.
  */
+
+// projConfigManager.cpp: implementation of the CProjConfigManager class.
+//
+//////////////////////////////////////////////////////////////////////
 
 #include "StdAfx_ProjectConfiguration.h"
 #include "ProjectConfiguration_extern.h"
 #include "ProjConfig.h"
 #include "projConfigManager.h"
 
-/**
- * \brief Constructor
- *
- * Construction
- */
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
 CProjConfigManager::CProjConfigManager()
 {
     m_MapOfProject.clear();
 }
 
-/**
- * \brief Destructor
- *
- * Destruction
- */
 CProjConfigManager::~CProjConfigManager()
 {
-    // ENSURE DESTRUCTOR OF CProjConfig IS CALLED
+	// ENSURE DESTRUCTOR OF CProjConfig IS CALLED
     m_MapOfProject.clear();
 }
 
-/**
- * \brief Get Project Configuration
- *
- * Gets the project configuration.
- */
+
 bool CProjConfigManager::GetProjectConfig(string ProjectName, CProjConfig *& ProjConfig)
 {
     bool bResult = false;
-    PROJECTMAP::iterator i = m_MapOfProject.begin();
-
+	PROJECTMAP::iterator i = m_MapOfProject.begin();
     if (i != m_MapOfProject.end())
     {
         bResult = true;
         ProjConfig = &(i->second);
     }
-
-    //else
-    //{
-    //  if (m_MapOfProject.size() > 0)
-    //  {
-    //      PROJECTDATA xyz;
-    //      PROJECTMAP::iterator i1 = m_MapOfProject.begin();
-    //      CProjConfig *ProjConfig = &(i1->second);
-    //      ProjConfig->GetProjectDetail(xyz);
-    //      string ab;//= xyz.m_ProjectName;
-    //      ab = i1->first;
-    //  }
-    //}
+	//else
+	//{ 
+	//	if (m_MapOfProject.size() > 0)
+	//	{
+	//		PROJECTDATA xyz;
+	//		PROJECTMAP::iterator i1 = m_MapOfProject.begin();
+	//		CProjConfig *ProjConfig = &(i1->second);
+	//		ProjConfig->GetProjectDetail(xyz);
+	//		string ab;//= xyz.m_ProjectName;
+	//		ab = i1->first; 
+	//	}
+	//}
     return bResult;
 }
 
-/**
- * \brief Get Project Count
- *
- * Gets the project count.
- */
+// Getters
+
 int CProjConfigManager::GetProjectCount()
 {
     return m_MapOfProject.size();
 }
 
-/**
- * \brief Get Project List
- *
- * Gets the project list.
- */
 int CProjConfigManager::GetProjectList(list<string>& ProjectList)
 {
-    ProjectList.clear();
-
-    for (PROJECTMAP::iterator i = m_MapOfProject.begin(); i != m_MapOfProject.end(); ++i)
+	ProjectList.clear();
+    for (PROJECTMAP::iterator i = m_MapOfProject.begin();
+         i != m_MapOfProject.end(); i++)
     {
         ProjectList.push_front(i->first);
     }
@@ -107,18 +90,12 @@ int CProjConfigManager::GetProjectList(list<string>& ProjectList)
     return GetProjectCount();
 }
 
-/**
- * \brief Get Project Data
- *
- * Gets the project data.
- */
 bool CProjConfigManager::GetProjectData(string ProjName, PROJECTDATA& ProjData)
 {
     bool bResult = false;
-    PROJECTMAP::iterator i = m_MapOfProject.find(ProjName);
-    bResult = (i != m_MapOfProject.end());
 
-    if (bResult)
+    PROJECTMAP::iterator i = m_MapOfProject.find(ProjName);
+    if (bResult = (i != m_MapOfProject.end()))
     {
         i->second.GetProjectDetail(ProjData);
     }
@@ -126,16 +103,11 @@ bool CProjConfigManager::GetProjectData(string ProjName, PROJECTDATA& ProjData)
     return bResult;
 }
 
-/**
- * \brief Get Section Count
- *
- * Gets the section count.
- */
 int CProjConfigManager::GetSectionCount(string ProjectName)
 {
     int nResult = 0;
-    CProjConfig* ProjConfig = NULL;
 
+    CProjConfig *ProjConfig = NULL;
     if (GetProjectConfig(ProjectName, ProjConfig))
     {
         nResult = ProjConfig->GetSectionCount();
@@ -144,52 +116,38 @@ int CProjConfigManager::GetSectionCount(string ProjectName)
     return nResult;
 }
 
-/**
- * \brief Get Section List
- *
- * Gets the section list.
- */
 int CProjConfigManager::GetSectionList(string ProjectName, list<string>& SectionList)
 {
     int nResult = 0;
-    CProjConfig* ProjConfig = NULL;
 
+    CProjConfig *ProjConfig = NULL;
     if (GetProjectConfig(ProjectName, ProjConfig))
     {
         nResult = ProjConfig->GetSectionList(SectionList);
     }
 
-    return nResult;
+    return nResult; 
 }
 
-/**
- * \brief Get Section Data
- *
- * Gets the section data.
- */
-bool CProjConfigManager::GetSectionData(string ProjectName, string SectionName,
+bool CProjConfigManager::GetSectionData(string ProjectName, string SectionName, 
                                         SECTIONDATA& Sectiondata)
 {
     bool bResult = false;
-    CProjConfig* ProjConfig = NULL;
 
+    CProjConfig *ProjConfig = NULL;
     if (GetProjectConfig(ProjectName, ProjConfig))
     {
         bResult = ProjConfig->GetSectionData(SectionName, Sectiondata);
     }
-
-    return bResult;
+    return bResult; 
 }
 
-/**
- * \brief Add/Modify Project Data
- *
- * Adds or modifies the project data.
- */
+
+// Setters
+
 void CProjConfigManager::AddModifyProjDetail(const PROJECTDATA& NewProjData)
 {
-    CProjConfig* pProjConfig = NULL;
-
+    CProjConfig *pProjConfig = NULL;
     if (GetProjectConfig(NewProjData.m_ProjectName, pProjConfig))
     {
         pProjConfig->ModifyProjValues(NewProjData);
@@ -199,21 +157,16 @@ void CProjConfigManager::AddModifyProjDetail(const PROJECTDATA& NewProjData)
         CProjConfig NewProjConfig;
         NewProjConfig.ModifyProjValues(NewProjData);
         m_MapOfProject.insert(PROJECTMAP::value_type(NewProjData.m_ProjectName,
-                              NewProjConfig));
+                                                     NewProjConfig));
     }
 }
 
-/**
- * \brief Add/Modify Section
- *
- * Adds or modifies the section.
- */
-bool CProjConfigManager::AddModifySection(string ProjectName,
-        const SECTIONDATA& SectionData)
+bool CProjConfigManager::AddModifySection(string ProjectName, 
+                                          const SECTIONDATA& SectionData)
 {
     bool bResult = false;
-    CProjConfig* ProjConfig = NULL;
 
+    CProjConfig *ProjConfig = NULL;
     if (GetProjectConfig(ProjectName, ProjConfig))
     {
         bResult = ProjConfig->AddModifySectionDetail(SectionData);
@@ -222,22 +175,13 @@ bool CProjConfigManager::AddModifySection(string ProjectName,
     return bResult;
 }
 
-/**
- * \brief Delete Project Table
- *
- * Deletes the project table.
- */
 void CProjConfigManager::DeleteProjectTable(string ProjectName)
 {
     m_MapOfProject.erase(ProjectName);
 }
 
-/**
- * \brief Delete All Project Table
- *
- * Deletes all project tables.
- */
 void CProjConfigManager::DeleteAllProjectTable(void)
 {
     m_MapOfProject.clear();
 }
+

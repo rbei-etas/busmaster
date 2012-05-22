@@ -22,7 +22,9 @@
  * This file contains utility function declarations
  */
 
-#pragma once
+// Deaclaration of utility functions 
+#if !defined _UTILITY_H_INCLUDED_
+#define _UTILITY_H_INCLUDED_
 
 #include <cstringt.h>
 #include <atlstr.h>
@@ -33,18 +35,18 @@
 #define INITIALISE_ARRAY(Array) memset(Array, 0, sizeof(Array))
 
 bool BSTR_2_PCHAR(BSTR bstrSrcStr, char acTargetStr[], int nTargetStrLen);
-BOOL WORD_2_CHAR(char acCharDat[], int nCharDatLen,
+BOOL WORD_2_CHAR(char acCharDat[], int nCharDatLen, 
                  WORD awWordDat[], int nWordDatLen);
-BOOL CHAR_2_WORD(WORD awWordDat[], int nWordDatLen,
+BOOL CHAR_2_WORD(WORD awWordDat[], int nWordDatLen, 
                  char acCharDat[], int nCharDatLen);
 void FilterOut_NonHexChar(char acSource[]);
 int CalculateGCF(int anNumbers[], int Length);
 
-// Top mask unwanted bit of the data
+    // Top mask unwanted bit of the data
 void vRemoveUnwantedBits(__int64& n64rData, int nLength);
 void vExtendSignBit( __int64& n64Val, int nSize);
 //bool bGetSystemErrorString(HRESULT hResult, CHAR acErrStr[256]);
-bool bGetSystemErrorString(HRESULT hResult, char acErrStr[256]);
+bool bGetSystemErrorString(HRESULT hResult, TCHAR acErrStr[256]);
 //bool bGetSystemErrorString(CHAR acErrStr[256]);
 
 //// To copy the text into the clipboard
@@ -62,4 +64,5 @@ void s_vExtendSignBit( __int64& n64Val, int nSize);
 // To conver string to __int64. The string value could be in Hex or dec
 BOOL bConvertStringToInt64( CString omStrHexNo,    // String
                             __int64& n64Value,     // Value
-                            int nBase);
+                            int nBase);       
+#endif //_UTILITY_H_INCLUDED_

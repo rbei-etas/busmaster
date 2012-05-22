@@ -18,8 +18,9 @@
  * \author    Venkatanarayana makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
+#if !defined DEFINES_TSEXECUTORGUI_EXECUTORLIB_H__INCLUDED_
+#define DEFINES_TSEXECUTORGUI_EXECUTORLIB_H__INCLUDED_
 
-#pragma once
 
 //TODO::revise the inclusion
 #include "Include/Utils_macro.h"
@@ -34,7 +35,7 @@ typedef struct _STestSetupInfo
     BOOL m_bEnable;
     INT m_nTCCount;
     //Result;
-} STestSetupInfo;
+}STestSetupInfo;
 typedef CList<CTestSetupEntity, CTestSetupEntity&> CTestSetupEntiyList;
 
 class CTSExecutorLIB
@@ -70,10 +71,11 @@ public:
     HRESULT GetTestSetupCount(INT& nCount);
     HRESULT Execute( /*PFCALLBACKRESULTTC pfResultTC*/);
     HRESULT SetResultDisplayWnd(CListCtrl* pWnd);
-    void vSetVersionInfo(CString& omStrVersionInfo);
-    virtual ~CTSExecutorLIB(void);
+	void vSetVersionInfo(CString& omStrVersionInfo);
+	virtual ~CTSExecutorLIB(void);
 private:
     BOOL bExecuteTestSetup(CTestSetupEntity& pEntiy );
     BOOL bExecuteTestCase(CBaseEntityTA* pTCEntity, CResultTc& ouTestCaseResult);
 
 };
+#endif //DEFINES_TSEXECUTORGUI_EXECUTORLIB_H__INCLUDED_
