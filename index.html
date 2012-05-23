@@ -50,6 +50,7 @@ margin: 0 auto;
 margin-top: 25px;
 background-image: url(index_files/background_imagegreenw.jpg);
 background-color: #FFFFFF;
+background-repeat: no-repeat;
 border: 2px solid #01965f;
 color: #FFFFFF;
 }
@@ -70,10 +71,7 @@ text-decoration: underline;
 margin: 100px 0 0 0 ;
 }
 
-
-
-#header_description
-{
+#header_description{
 padding: 10px 5px 10px 0px;
 background-image: url(index_files/white50.png);
 background-repeat: repeat;
@@ -98,14 +96,13 @@ background-color: #01965f;
 background-image: url(index_files/white50.png);
 background-repeat: repeat;
 margin: 10px 0 0 0;
-
 }
 
-.box_links ul, #footer_links ul {
+.box_links ul, .footer_links ul {
 padding: 10px 0 10px 10px;
 }
 
-.box_links li, #footer_links li{
+.box_links li, .footer_links li{
 margin: 0 0 5px 0;
 }
 
@@ -114,17 +111,19 @@ margin: 0 5px 0 0;
 }
 
 #footer{
-margin: 25px 0 0 0;
-
+margin: 25px 0 25px 0;
+width: 800px;
 }
 
-#footer_headline{
+.footer_headline{
 background-color: #01965f;
 }
 
-#footer_links{
+.footer_links{
 margin: 10px 0 0 0;
-background-color: #6b8289;
+background-image: url(index_files/white50.png);
+background-repeat: repeat;
+color: #6b8289;
 }
 
 #support{
@@ -173,8 +172,6 @@ float: left;
 margin: 30px 0 0 375px;
 }
 
-
-
 .clear{
 clear: both;
 }
@@ -185,21 +182,15 @@ clear: both;
 <a href="http://github.com/rbei-etas/busmaster"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
 <div id="wrapper">
 <div id="wrapper_inner">
+	
 <div id="header">
-
 <div id="header_description">
-<p>
-BUSMASTER is an Open Source Software tool to simulate, analyze and test data bus systems such as CAN.
-</p>
-<p>
-&nbsp;
-</p>
-<p>
-Download, run, study, redistribute and modify. Join the BUSMASTER community!
-</p>
+<p>BUSMASTER is an Open Source Software tool to simulate, analyze and test data bus systems such as CAN.</p>
+<p>&nbsp;</p>
+<p>Download, run, study, redistribute and modify. Join the BUSMASTER community!</p>
+</div>
 </div>
 
-</div>
 <div id="content">
 <div class="content_box">
 <div class="box_headline">
@@ -207,15 +198,15 @@ Download, run, study, redistribute and modify. Join the BUSMASTER community!
 </div>
 <div class="box_links">
 <ul>
-<li><img class="arrow" src="index_files/arrow.png"/><a href="https://github.com/rbei-etas/busmaster/downloads">Downloads</a> (Newest Release: v1.6.0)</li>
+<li><img class="arrow" src="index_files/arrow.png"/><a href="https://github.com/rbei-etas/busmaster/downloads">Downloads</a> <span style="color:red;">(Newest Release: v1.6.3)</span></li>
 <li><img class="arrow" src="index_files/arrow.png"/><a href="https://github.com/downloads/rbei-etas/busmaster/4%20Help.pdf">User Manual</a></li>
 <li><img class="arrow" src="index_files/arrow.png"/><a href="https://github.com/rbei-etas/busmaster/wiki/Hardware-support">Hardware Support</a></li>
 <li><img class="arrow" src="index_files/arrow.png"/><a href="https://github.com/rbei-etas/busmaster/issues/milestones">Milestone Plan</a></li>
 <li><img class="arrow" src="index_files/arrow.png"/><a href="https://github.com/rbei-etas/busmaster/issues?labels=1+bug+fix&state=open">Bug Reports</a></li>
-<li><img class="arrow" src="index_files/arrow.png"/><a href="http://rbei-etas.github.com/busmaster/news.html">News</a></li>
+<li><img class="arrow" src="index_files/arrow.png"/><a href="news.html">News</a></li>
 </ul>
-</div>
-</div>
+</div> <!-- box_links -->
+</div> <!-- content_box -->
 <div class="content_box" style="margin: 0 0 0 20px">
 <div class="box_headline">
 <h2>Developer Information</h2>
@@ -229,11 +220,12 @@ Download, run, study, redistribute and modify. Join the BUSMASTER community!
 <li><img class="arrow" src="index_files/arrow.png"/><a href="https://github.com/rbei-etas/busmaster/issues">Issue Tracker</a></li>
 <li><img class="arrow" src="index_files/arrow.png"/><a href="https://github.com/rbei-etas/busmaster/contributors">Contributors</a></li>
 </ul>
-</div>
-</div>
+</div> <!-- box_links -->
+</div> <!-- content_box -->
 <div class="clear"></div>
-</div>
-<!-- <div id="footer">
+</div> <!-- content -->
+
+<!-- div id="footer">
 <div id="footer_headline">
 <h2>Professional support and engineering services</h2>
 </div>
@@ -242,6 +234,8 @@ Download, run, study, redistribute and modify. Join the BUSMASTER community!
 <li><img class="arrow" src="index_files/arrow.png"/><a href="#">ETAS Marketplace</a></li>
 </ul>
 </div>
+</div -->
+
 </div>
 -->
 <div id="support">
@@ -255,22 +249,25 @@ BUSMASTER was conceptualized, designed and implemented by Robert Bosch Engineeri
 </p>
 </div>
 <div id="support_logos_img">
-
 <div id="boschlogo">
-<a href="http://www.boschindia.com/content/language1/html/9766.htm" target="blank"><img src="index_files/bosch_logo.png"/></a>
+<a href="http://www.boschindia.com/content/language1/html/9766.htm" target="blank"><img src="index_files/_bosch_logo.png"/></a>
 </div>
 <div id="etaslogo">
-<a href="http://www.etas.com" target="blank"><img src="index_files/etas_logo.png"/></a>
+<a href="http://www.etas.com/en/products/applications_open_source.php" target="blank"><img src="index_files/etas_logo.png"/></a>
 </div>
+<div class="clear"></div>
+<hr style="width:300px;"/>
+<div class="clear"></div>
 <div id="mhslogo">
-<a href="http://www.mhs-elektronik.de/cgi-bin/mhs.pl?id1=2&id2=0 " target="blank"><img src="index_files/mhs_logo.png"/></a>
+<a href="http://www.mhs-elektronik.de/cgi-bin/mhs.pl?id1=2&id2=0" target="blank"><img src="index_files/mhs_logo.png"/></a>
 </div>
 <div class="clear"></div>
-</div>
-</div>
+</div> <!-- support_logos_claim -->
+</div> <!-- support_logos -->
 <div class="clear"></div>
-</div>
-</div>
-</div>
+</div> <!-- support -->
+
+</div> <!-- wrapper_inner -->
+</div> <!-- wrapper -->
 </body>
 </html>
