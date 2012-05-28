@@ -1452,10 +1452,10 @@ HRESULT CDIL_CAN_VectorXL::CAN_StopHardware(void)
 */
 HRESULT CDIL_CAN_VectorXL::CAN_ResetHardware(void)
 {
-	HRESULT hResult = S_FALSE;
+	HRESULT hResult = S_OK;
 
     /* Stop the hardware if connected */
-    hResult = CAN_StopHardware(); // return value not necessary
+    /*hResult = */CAN_StopHardware(); // return value not necessary ..fix for git issue 204 by Srinivas
 
     return hResult;
 }
