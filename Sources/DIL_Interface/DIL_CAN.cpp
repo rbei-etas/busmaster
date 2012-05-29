@@ -37,7 +37,8 @@
 #include "CAN_Kvaser_CAN/CAN_Kvaser_CAN_Extern.h"
 #include "Dil_CAN.h"
 
-typedef HRESULT (__stdcall *GETIDIL_CAN_CONTROLLER)(void** ppvInterface);
+// typedef HRESULT (__stdcall *GETIDIL_CAN_CONTROLLER)(void** ppvInterface);
+typedef __declspec(dllimport) HRESULT (*GETIDIL_CAN_CONTROLLER)(void** ppvInterface);
 static GETIDIL_CAN_CONTROLLER pfGetIDILCAN_Controller;
 static CDIL_CAN_DUMMY* sg_pouDIL_CAN_DUMMY = new CDIL_CAN_DUMMY;
 
@@ -55,6 +56,7 @@ static ENTRY_DIL sg_ListDIL[] =
     {DRIVER_CAN_ETAS_BOA,   _T("ETAS BOA")         },    
     {DRIVER_CAN_ETAS_ES581, _T("ETAS ES581")       },
     {DRIVER_CAN_ICS_NEOVI,  _T("IntrepidCS neoVI") },
+    {DRIVER_CAN_IXXAT,      _T("IXXAT VCI")        },
     {DRIVER_CAN_KVASER_CAN, _T("Kvaser CAN")       },
     {DRIVER_CAN_MHS,        _T("MHS Tiny-CAN")     },
     {DRIVER_CAN_PEAK_USB,   _T("PEAK USB")         },
@@ -197,12 +199,16 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
 			//Load the Kvaser DIL
 			m_hDll = LoadLibrary(_T("CAN_Kvaser_CAN.dll"));
 		}
-        else if (dwDriverID == DRIVER_CAN_STUB)
-        {
+    else if (dwDriverID == DRIVER_CAN_IXXAT)
+    {
+      m_hDll = LoadLibrary("CAN_IXXAT_VCI.dll");
+    }
+    else if (dwDriverID == DRIVER_CAN_STUB)
+    {
 			//Load the CAN STUB DIL
 			m_hDll = LoadLibrary(_T("CAN_STUB.dll"));
-        }
-        else if (dwDriverID == DRIVER_CAN_MHS)
+    }
+    else if (dwDriverID == DRIVER_CAN_MHS)
 		{
 			//Load the MHS-Elektronik Tiny-CAN DIL
 			m_hDll = LoadLibrary(_T("CAN_MHS.dll"));
