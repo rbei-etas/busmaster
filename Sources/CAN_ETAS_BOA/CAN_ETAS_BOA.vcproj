@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="CAN_ETAS_BOA"
 	ProjectGUID="{72D02354-C749-45CC-AE1A-A8445CF3984D}"
 	RootNamespace="CAN_ETAS_BOA"
@@ -264,6 +264,14 @@
 				RelativePath=".\HardwareListing.h"
 				>
 			</File>
+			<File
+				RelativePath=".\resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\resource.hm"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -273,6 +281,14 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\res\bmp_net.bmp"
+			>
+		</File>
+		<File
+			RelativePath=".\res\BUSMASTERDoc.ico"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

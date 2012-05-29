@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="DMGraph"
 	ProjectGUID="{9D8AF453-01BC-44C9-9753-568BCEA38D4E}"
 	RootNamespace="DMGraph"
@@ -82,6 +82,7 @@
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
+				IgnoreDefaultLibraryNames="atlthunk.lib"
 				ModuleDefinitionFile=".\DMGraph.def"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\DebugU/DMGraph.pdb"
@@ -183,6 +184,7 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
+				IgnoreDefaultLibraryNames="atlthunk.lib"
 				ModuleDefinitionFile=".\DMGraph.def"
 				GenerateDebugInformation="false"
 				ProgramDatabaseFile=".\ReleaseUMinSize/DMGraph.pdb"

@@ -1,10 +1,10 @@
 // Microsoft Visual C++ generated resource script.
 //
-#include "CAN_ETAS_BOA_Resource.h"
+#include "resource.h"
 
 // Generated Help ID header file
 #define APSTUDIO_HIDDEN_SYMBOLS
-#include "CAN_ETAS_BOA_Resource.hm"
+#include "resource.hm"
 #undef APSTUDIO_HIDDEN_SYMBOLS
 
 #define APSTUDIO_READONLY_SYMBOLS
