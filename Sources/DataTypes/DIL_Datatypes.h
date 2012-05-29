@@ -96,7 +96,8 @@ enum
     DRIVER_CAN_ETAS_ES581,
     DRIVER_CAN_VECTOR_XL,
     DRIVER_CAN_KVASER_CAN,
-	DRIVER_CAN_MHS,
+	  DRIVER_CAN_MHS,
+    DRIVER_CAN_IXXAT,
     DIL_TOTAL,          // Its value must be <= MAX_DILS
     DAL_NONE            = ~0x0
 };
