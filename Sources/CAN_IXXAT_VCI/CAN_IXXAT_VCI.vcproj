@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="FrameProcessor"
-	ProjectGUID="{7D22D906-7B65-42C4-B08B-52D8B6D728CE}"
-	RootNamespace="FrameProcessor"
+	Name="CAN_IXXAT_VCI"
+	ProjectGUID="{F920F538-A4B0-4EB6-81FC-6011E9C1806F}"
+	RootNamespace="CAN_IXXAT_VCI"
 	Keyword="MFCDLLProj"
 	TargetFrameworkVersion="131072"
 	>
@@ -21,7 +21,6 @@
 			OutputDirectory="Debug"
 			IntermediateDirectory="Debug"
 			ConfigurationType="2"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="2"
 			CharacterSet="2"
 			>
@@ -45,16 +44,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(SolutionDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
-				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL;WINVER=0x0500"
+				AdditionalIncludeDirectories=".; &quot;$(SolutionDir)&quot;; $(IXXAT_VCI_SDK)\inc; ..\include"
+				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderThrough="FrameProcessor_StdAfx.h"
+				UsePrecompiledHeader="1"
+				PrecompiledHeaderThrough="CAN_IXXAT_VCI_stdAfx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -71,18 +68,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_Interface.lib&quot;"
-				OutputFile="$(SolutionDir)/bin/$(OutDir)/FrameProcessor.dll"
+				OutputFile="$(SolutionDir)/bin/$(OutDir)/$(ProjectName).dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
-				ModuleDefinitionFile=""
+				AdditionalLibraryDirectories=""
+				ModuleDefinitionFile=".\CAN_IXXAT_VCI.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
-				EntryPointSymbol=""
-				BaseAddress="0x61000000"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/FrameProcessor.lib"
+				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -112,9 +104,9 @@
 			OutputDirectory="Release"
 			IntermediateDirectory="Release"
 			ConfigurationType="2"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="2"
 			CharacterSet="2"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -135,15 +127,16 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="$(SolutionDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
-				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0500"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories=".; &quot;$(SolutionDir)&quot;; $(IXXAT_VCI_SDK)\inc; ..\include"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
 				RuntimeLibrary="2"
-				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="FrameProcessor_StdAfx.h"
-				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="0"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderThrough="CAN_IXXAT_VCI_StdAfx.h"
+				WarningLevel="3"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -159,20 +152,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_Interface.lib&quot;"
-				OutputFile="$(SolutionDir)/bin/$(OutDir)/FrameProcessor.dll"
+				OutputFile="$(SolutionDir)/bin/$(OutDir)/$(ProjectName).dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
-				GenerateManifest="true"
-				ModuleDefinitionFile=""
-				GenerateDebugInformation="false"
+				AdditionalLibraryDirectories=""
+				ModuleDefinitionFile=".\CAN_IXXAT_VCI.def"
+				GenerateDebugInformation="true"
+				GenerateMapFile="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				BaseAddress="0x61000000"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/FrameProcessor.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -203,79 +191,63 @@
 	<Files>
 		<Filter
 			Name="Source Files"
-			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\BaseLogObject.cpp"
+				RelativePath=".\CAN_IXXAT_VCI.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Format\FormatMsgCAN.cpp"
+				RelativePath=".\CAN_IXXAT_VCI.def"
 				>
+			</File>
+			<File
+				RelativePath=".\CAN_IXXAT_VCI_stdafx.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						PrecompiledHeaderThrough="../FrameProcessor_StdAfx.h"
+						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\Format\FormatMsgCommon.cpp"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PrecompiledHeaderThrough="../FrameProcessor_StdAfx.h"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\Format\FormatMsgJ1939.cpp"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PrecompiledHeaderThrough="../FrameProcessor_StdAfx.h"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\FrameProcessor.cpp"
+				RelativePath=".\CANControllerConfigDlg.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\FrameProcessor_CAN.cpp"
+				RelativePath=".\CANSelectDlg.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\FrameProcessor_Common.cpp"
+				RelativePath=".\ClientBuffer.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\FrameProcessor_J1939.cpp"
+				RelativePath=".\ClientList.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\FrameProcessor_stdafx.cpp"
+				RelativePath=".\DIL_CAN_IXXAT_VCI.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\LogObjectCAN.cpp"
+				RelativePath=".\IxxatCanChannel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\LogObjectJ1939.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\RefTimeKeeper.cpp"
+				RelativePath=".\vcinpldynl.cpp"
 				>
 			</File>
 		</Filter>
@@ -285,77 +257,77 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\BaseFrameProcessor_CAN.h"
+				RelativePath=".\AllIncludes.h"
 				>
 			</File>
 			<File
-				RelativePath=".\BaseFrameProcessor_J1939.h"
+				RelativePath=".\CAN_IXXAT_VCI.h"
 				>
 			</File>
 			<File
-				RelativePath=".\BaseLogObject.h"
+				RelativePath=".\CAN_IXXAT_VCI_Extern.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Format\FormatMsgCAN.h"
+				RelativePath=".\CAN_IXXAT_VCI_stdafx.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Format\FormatMsgCommon.h"
+				RelativePath=".\CANControllerConfigDlg.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Format\FormatMsgJ1939.h"
+				RelativePath=".\CANSelectDlg.h"
 				>
 			</File>
 			<File
-				RelativePath=".\FrameProcessor.h"
+				RelativePath=".\ClientBuffer.h"
 				>
 			</File>
 			<File
-				RelativePath=".\FrameProcessor_CAN.h"
+				RelativePath=".\ClientList.h"
 				>
 			</File>
 			<File
-				RelativePath=".\FrameProcessor_Common.h"
+				RelativePath=".\DIL_CAN_IXXAT_VCI.h"
 				>
 			</File>
 			<File
-				RelativePath=".\FrameProcessor_extern.h"
+				RelativePath=".\IxxatCanChannel.h"
 				>
 			</File>
 			<File
-				RelativePath=".\FrameProcessor_J1939.h"
+				RelativePath=".\Resource.h"
 				>
 			</File>
 			<File
-				RelativePath=".\FrameProcessor_stdafx.h"
+				RelativePath=".\targetver.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Logger_CommonDataTypes.h"
-				>
-			</File>
-			<File
-				RelativePath=".\LogObjectCAN.h"
-				>
-			</File>
-			<File
-				RelativePath=".\LogObjectJ1939.h"
-				>
-			</File>
-			<File
-				RelativePath=".\RefTimeKeeper.h"
+				RelativePath=".\vcinpldynl.h"
 				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath=".\CAN_IXXAT_VCI.rc"
+				>
+			</File>
 		</Filter>
+		<File
+			RelativePath=".\ReadMe.txt"
+			>
+		</File>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="CAN_IXXAT_VCI.rc"
+		/>
 	</Globals>
 </VisualStudioProject>

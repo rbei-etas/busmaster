@@ -30,6 +30,7 @@ doxygen Doxyfiles\TestSetupEditorLib
 doxygen Doxyfiles\TestSuiteExecutorGUI
 doxygen Doxyfiles\TXWindow
 doxygen Doxyfiles\Utility
+doxygen Doxyfiles\CAN_IXXAT_VCI
 
 if not exist "out\Format Converter" mkdir "out\Format Converter"
 doxygen "Doxyfiles\Format Converter\AscLogConverter"
