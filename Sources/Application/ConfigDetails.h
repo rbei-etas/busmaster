@@ -21,8 +21,8 @@
  *
  * This header file contains the definition of the class
  */
-#ifndef __CCONFIGDETAILS_H__
-#define __CCONFIGDETAILS_H__
+
+#pragma once
 
 // For Graph Parameter Class
 #include "GraphParameters.h"
@@ -186,7 +186,7 @@ private:
     // ouput, replay and message window coords
     SWND_CO_ORDINATES       m_sWindowCoOrdinates; 
     // baud rate details written/read from configuration
-    SCONTROLER_DETAILS      m_sControllerDetails[ defNO_OF_CHANNELS ];
+    SCONTROLLER_DETAILS      m_sControllerDetails[ defNO_OF_CHANNELS ];
     // send multiple msgs written/read from configuration
     PSMSGBLOCKLIST          m_psMsgBlockList;
     UINT                    m_unNumberOfMsgBlockCount;
@@ -322,5 +322,3 @@ public:
 
 	
 };
-
-#endif //__CCONFIGDETAILS_H__

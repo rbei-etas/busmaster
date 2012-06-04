@@ -22,13 +22,7 @@
  * Interface file for CUtilFunctions class
  */
 
-
-#if !defined(AFX_UTILFUNCTIONS_H__38F67345_0E25_4FAD_A33C_24EFA2697689__INCLUDED_)
-#define AFX_UTILFUNCTIONS_H__38F67345_0E25_4FAD_A33C_24EFA2697689__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 class CUtilFunctions  
 {
@@ -45,5 +39,3 @@ private:
     CUtilFunctions();
     virtual ~CUtilFunctions();
 };
-
-#endif // !defined(AFX_UTILFUNCTIONS_H__38F67345_0E25_4FAD_A33C_24EFA2697689__INCLUDED_)

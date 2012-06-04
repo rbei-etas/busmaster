@@ -371,11 +371,12 @@ void CConverter::GenerateMessageList(fstream& fileInput)
     string local_copy;
     char* pcTok;
     int flag=0;
+	int _flag_BS_= 0; //possible values 0,1,2// this flag is used to check if parsing is done in between NS_: and BS_:  #git issue 174
 
     // parsing the input file
     while(fileInput.getline(acLine, defCON_MAX_LINE_LEN))
     {
-        char* pcToken, *pcLine;
+        char* pcToken=0, *pcLine=0;
 
         for (;;)
         {
@@ -409,9 +410,19 @@ void CConverter::GenerateMessageList(fstream& fileInput)
         if(pcToken)
         {
             //compare token to known types to interpret the line further
+			if(strstr(pcToken, "BS_") != NULL)  // git issue #174
+            {
+                if (_flag_BS_ == 1 )
+					_flag_BS_ = 2; // this means just NS_ and BS_ are done.
+            }
+			if(strstr(pcToken, "NS_") != NULL)
+            {
+                if (_flag_BS_ == 0 )
+					_flag_BS_ = 1; // this means just NS_ is hit and BS_ is still due.
+            }
 
             // new line - skip
-            if(strcmp(pcToken, "\n") == 0)
+            else if(strcmp(pcToken, "\n") == 0)
             {
                 continue;
             }
@@ -746,14 +757,14 @@ void CConverter::GenerateMessageList(fstream& fileInput)
             {
                 create_Node_List(pcLine + strlen(pcToken)+1);
             }
-            else if ((strcmp(pcToken, "BA_DEF_")==0) || (strcmp(pcToken, "BA_DEF_REL_")==0))
+            else if ( ( (strcmp(pcToken, "BA_DEF_")==0) || (strcmp(pcToken, "BA_DEF_REL_")==0)) && _flag_BS_ > 1)
             {
                 CParameter pObj;
                 pObj.Format(pcLine + strlen(pcToken) + 1); // to get next token
                 m_listParameters.push_back(pObj);
             }
             //Param Initial Values
-            else if(strcmp(pcToken, "BA_DEF_DEF_")==0 )
+            else if(strcmp(pcToken, "BA_DEF_DEF_")==0 && _flag_BS_ > 1 )
             {
                 char acTemp[defCON_TEMP_LEN],*pcTemp;
                 pcTemp = acTemp;
@@ -793,7 +804,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 }
             }
             //RX,Tx Parameter Definition
-            else if(strcmp(pcToken,"BA_DEF_DEF_REL_")==0)
+            else if(strcmp(pcToken,"BA_DEF_DEF_REL_")==0 && _flag_BS_ > 1)
             {
                 char acTemp[defCON_TEMP_LEN],*pcTemp;
                 pcTemp = acTemp;

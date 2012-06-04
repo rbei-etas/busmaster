@@ -22,15 +22,13 @@
  * Definition of CMsgContainerCAN class
  */
 
-#if !defined  MSGCONTAINER_H_INCLUDED_
-#define MSGCONTAINER_H_INCLUDED_
+#pragma once
 
 #include "afxtempl.h"
 #include "Utility/Utility_Thread.h"
 #include "Application/MsgWndHdrInfo.h"
 #include "CommonClass/GUI_FormatMsgCAN.h"
 #include "include/BaseDefs.h"
-#include "Include/CanUsbDefs.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/MsgBufCANVFSE.h"
 #include "DataTypes/MsgBufVVSE.h"
@@ -101,8 +99,8 @@ public:
     BOOL bStopReadThread();
     //void vSetRelBaseTime(__int64 nTimeStamp);
 
-    void vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL &sHdrColStruct,
-                                     TCHAR *pomDataPtrArr[MAX_MSG_WND_COL_CNT], 
+    void vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL& sHdrColStruct,
+                                     char* pomDataPtrArr[MAX_MSG_WND_COL_CNT],
                                      BYTE bExprnFlag_Disp);
     HRESULT hReadFromOWBuffer(void *psMsg, __int64 nMapIndex);
 	HRESULT hReadFromAppendBuffer(void *psMsg, int nMsgIndex);
@@ -124,6 +122,3 @@ public:
     HRESULT EnableFilterApplied(BOOL bEnable);
 	__int64 nCreateMapIndexKey( LPVOID pMsgData );
 };
-
-
-#endif //MSGCONTAINER_H_INCLUDED_

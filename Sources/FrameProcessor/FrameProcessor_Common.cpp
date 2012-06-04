@@ -36,10 +36,6 @@
 /* Log version..applicable for log files before ver 1.6.2 */
 /*#define VERSION_CURR    0x01*/
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 // CFrameProcessor_Common
 
 
@@ -50,7 +46,11 @@ DWORD WINAPI DataCopyThreadProc(LPVOID pVoid)
     {
         // TBD
     }
-    CFrameProcessor_Common* pCurrObj = (CFrameProcessor_Common *) pThreadParam->m_pBuffer;
+    CFrameProcessor_Common* pCurrObj = NULL;
+	if(pThreadParam != NULL)
+	{
+		pCurrObj = (CFrameProcessor_Common*) pThreadParam->m_pBuffer;
+	}
 	if (pCurrObj == NULL)
 	{
         // TBD
@@ -220,13 +220,24 @@ void CFrameProcessor_Common::vUpdateLoggingFlag(void)
 				SET_TM_ABS_RES(*pbResFlag); 
 				break;
 
-            case TIME_MODE_RELATIVE: SET_TM_REL(*pbCurrFlag); break;
-            case TIME_MODE_SYSTEM:   SET_TM_SYS(*pbCurrFlag); break;
+            case TIME_MODE_RELATIVE:
+                SET_TM_REL(*pbCurrFlag);
+                break;
+
+            case TIME_MODE_SYSTEM:
+                SET_TM_SYS(*pbCurrFlag);
+                break;
         }
+
         switch (sLogInfo.m_eNumFormat)
         {
-            case HEXADECIMAL: SET_NUM_HEX(*pbCurrFlag); break;
-            case DEC: SET_NUM_DEC(*pbCurrFlag); break;
+            case HEXADECIMAL:
+                SET_NUM_HEX(*pbCurrFlag);
+                break;
+
+            case DEC:
+                SET_NUM_DEC(*pbCurrFlag);
+                break;
         }
     }
 }
@@ -291,7 +302,7 @@ CLogObjArray* CFrameProcessor_Common::GetActiveLogObjArray(void)
 
 /* Start of alias functions in CFrameProcessor_Common */
 
-HRESULT CFrameProcessor_Common::EnableLogging(BOOL bEnable)
+HRESULT CFrameProcessor_Common::EnableLogging(BOOL bEnable, ETYPE_BUS eBus)
 {
     HRESULT hResult = S_FALSE;
 
@@ -317,7 +328,7 @@ crash / unexpected behaviour may result */
 
             if (TRUE == bEnable)
             {
-                pouCurrLogObj->bStartLogging();
+                pouCurrLogObj->bStartLogging(eBus);
             }
             else
             {
@@ -560,14 +571,14 @@ HRESULT CFrameProcessor_Common::RemoveLoggingBlock(USHORT ushBlk)
 {
     HRESULT hResult = S_FALSE;
 
-    if (bIsEditingON())
-    {
+    //if (bIsEditingON())
+    //{
         if (FindLoggingBlock(ushBlk) != NULL)
         {
             GetActiveLogObjArray()->RemoveAt(ushBlk);
             hResult = S_OK;
         }
-    }
+    //}
 
 	return hResult;
 }
@@ -658,7 +669,7 @@ void CFrameProcessor_Common::GetDatabaseFiles(CStringArray& omList)
 }
 
 void CFrameProcessor_Common::SetChannelBaudRateDetails
-							(SCONTROLER_DETAILS* controllerDetails, 
+							(SCONTROLLER_DETAILS* controllerDetails, 
 							int nNumChannels)
 {
 	CLogObjArray* pomCurrArray = GetActiveLogObjArray();

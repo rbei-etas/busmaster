@@ -45,12 +45,12 @@ CProjConfig::~CProjConfig()
 
 void CProjConfig::vClearMap(void)
 {
-	for (SECTIONMAP::iterator i = m_MapOfSection.begin(); 
-		 i != m_MapOfSection.end(); i++)
-	{
-		delete i->second;
-		i->second = NULL;
-	}
+    for (SECTIONMAP::iterator i = m_MapOfSection.begin(); i != m_MapOfSection.end(); ++i)
+    {
+        delete i->second;
+        i->second = NULL;
+    }
+
     m_MapOfSection.clear();
 }
 
@@ -69,9 +69,9 @@ void CProjConfig::GetProjectDetail(PROJECTDATA &ProjDATA)
 int CProjConfig::GetSectionList(list<string>& SectionList)
 {
     SectionList.empty();
-	for (SECTIONMAP::iterator i = m_MapOfSection.begin();
-         i != m_MapOfSection.end(); i++)
-	{
+
+    for (SECTIONMAP::iterator i = m_MapOfSection.begin(); i != m_MapOfSection.end(); ++i)
+    {
         SectionList.push_front(i->first);
 	}
 

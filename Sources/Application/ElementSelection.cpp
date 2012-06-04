@@ -43,12 +43,6 @@
 extern CBaseDIL_CAN* g_pouDIL_CAN_Interface;
 extern UINT unGetMsgIDFromName(CString omMsgName);
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 // Application object Declaration
 extern CCANMonitorApp theApp;
 
@@ -979,9 +973,11 @@ void CElementSelection::OnBtnDelete()
                 CString omStrMsg = m_omElementList.GetItemText( nSelItem, 0 );
                 CString omStrSig = m_omElementList.GetItemText( nSelItem, 1 );
 
-				//Remove the Hexadecimal value in braces
-				if(omStrMsg.Find('[') != -1)	
-					omStrMsg = omStrMsg.Left(omStrMsg.Find('['));
+                //Remove the Hexadecimal value in braces
+                if(omStrMsg.Find('[') != -1)
+                {
+                    omStrMsg = omStrMsg.Left(omStrMsg.Find('['));
+                }
 
                 // remove the entry from UI List
                 m_omElementList.DeleteItem( nSelItem );
@@ -1017,10 +1013,12 @@ void CElementSelection::OnBtnDelete()
                 // Order is not important
                 CString omStrMsg = m_omElementList.GetItemText( nSelItem, 0 );
                 CString omStrSig = m_omElementList.GetItemText( nSelItem, 1 );
-				
-				//Remove the Hexadecimal value in braces
-				if(omStrMsg.Find('[') != -1)	
-					omStrMsg = omStrMsg.Left(omStrMsg.Find('['));
+
+                //Remove the Hexadecimal value in braces
+                if(omStrMsg.Find('[') != -1)
+                {
+                    omStrMsg = omStrMsg.Left(omStrMsg.Find('['));
+                }
 
                 // remove the entry from UI List
                 m_omElementList.DeleteItem( nSelItem );
@@ -1088,9 +1086,13 @@ HTREEITEM CElementSelection::hGetElementHandle( const CString &omStrMsg,
     while( hCurrent != NULL )
     {
         CString omStrEntry = m_omTreeEntries.GetItemText( hCurrent );
-		//Remove the Hexadecimal value in braces for comparision only
-		if(omStrEntry.Find('[') != -1)	
-			omStrEntry = omStrEntry.Left(omStrEntry.Find('['));
+
+        //Remove the Hexadecimal value in braces for comparision only
+        if(omStrEntry.Find('[') != -1)
+        {
+            omStrEntry = omStrEntry.Left(omStrEntry.Find('['));
+        }
+
         if( omStrEntry == omStrMsg )
         {
             hMessage = hCurrent;

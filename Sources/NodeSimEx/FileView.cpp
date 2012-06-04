@@ -47,6 +47,7 @@ BEGIN_MESSAGE_MAP(CFileView, CScrollView)
     ON_COMMAND(ID_FILE_PRINT, CScrollView::OnFilePrint)
     ON_COMMAND(ID_FILE_PRINT_DIRECT, CScrollView::OnFilePrint)
     ON_COMMAND(ID_FILE_PRINT_PREVIEW, CScrollView::OnFilePrintPreview)
+	ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -134,7 +135,7 @@ void CFileView::OnDraw(CDC* pDC)
     pomDC = &omMemDC;
     if(pomDoc != NULL)
     {
-        TCHAR acSourceLineNo[10]  = STR_EMPTY;
+        char acSourceLineNo[10]  = STR_EMPTY;
         long lLineCount          = LONG_INIT;
         long lCurrentWarnLineNum = LONG_INIT;
         int  nTabStopPositions   = INT_INIT;
@@ -565,4 +566,16 @@ BOOL CFileView::OnEraseBkgnd(CDC* pDC)
     // Return TRUE here as erasing is taken care in Draw Handler
     UNUSED_ALWAYS( pDC);
     return TRUE;
+}
+
+BOOL CFileView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	// Get the scroll position
+	int nScrollPos = GetScrollPos(SB_VERT);
+	// Increment the scroll position
+	SetScrollPos(SB_VERT, nScrollPos - zDelta);
+	// Refresh the window
+	RedrawWindow();
+	
+	return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
 }

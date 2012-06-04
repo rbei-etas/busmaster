@@ -18,6 +18,9 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
+
+#pragma once
+
 #include "SignalWatch_Resource.h"
 #include "Datatypes/MsgBufAll_Datatypes.h"
 #include "Datatypes/SigWatch_Datatypes.h"

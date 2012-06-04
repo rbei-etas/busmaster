@@ -58,8 +58,8 @@ CUtlityDlg::CUtlityDlg(CFunctionEditorDoc* pDoc, CWnd* pParent /*=NULL*/)
     : CDialog(CUtlityDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CUtlityDlg)
-    m_omStrFunctionName = _T("");
-    m_omStrUtilsFunText = _T("");
+    m_omStrFunctionName = "";
+    m_omStrUtilsFunText = "";
     //}}AFX_DATA_INIT
 	m_bChangeUtilFunc = FALSE;
 	m_omStrTempReturnType = STR_EMPTY ;
@@ -123,11 +123,11 @@ END_MESSAGE_MAP()
 void CUtlityDlg::OnOk() 
 {
 	BOOL bRetVal = TRUE;
-    CString omFuncName = _T("");
+    CString omFuncName = "";
 	UpdateData(TRUE);
 	if ( m_omStrFunctionName.GetAt(0) == SPACE )    
 	{
-		AfxMessageBox(_T("Invalid character found"), MB_OK|MB_ICONINFORMATION);
+		AfxMessageBox("Invalid character found", MB_OK|MB_ICONINFORMATION);
 		GetDlgItem(IDC_EDIT_FN_PROTO)->SetFocus();
 	}
 	else
@@ -159,7 +159,7 @@ void CUtlityDlg::OnOk()
 					{
 						// Insert a space in the end
 						omStrSelDataType.Insert( 
-							omStrSelDataType.GetLength(),(TCHAR)SPACE);
+							omStrSelDataType.GetLength(),(char)SPACE);
 						// Form prototype
 						omStrSelDataType += m_omStrUtilsFunText;
 						omStrSelDataType +=m_omStrFunctionName;

@@ -99,32 +99,18 @@ HRESULT CDIL_CAN_DUMMY::CAN_GetCurrStatus(s_STATUSMSG& /*StatusData*/)
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_CAN_DUMMY::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
-{
-    return WARN_DUMMY_API;
-}
+
 
 HRESULT CDIL_CAN_DUMMY::CAN_SendMsg(DWORD /*dwClientID*/, const STCAN_MSG& /*sCanTxMsg*/)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_CAN_DUMMY::CAN_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
-{
-    return WARN_DUMMY_API;
-}
 
-HRESULT CDIL_CAN_DUMMY::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
-{
-    return WARN_DUMMY_API;
-}
 
-HRESULT CDIL_CAN_DUMMY::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
-{
-    return WARN_DUMMY_API;
-}
 
-HRESULT CDIL_CAN_DUMMY::CAN_GetLastErrorString(CHAR* /*acErrorStr*/, int /*nLength*/)
+
+HRESULT CDIL_CAN_DUMMY::CAN_GetLastErrorString(string& /*acErrorStr*/)
 {
     return WARN_DUMMY_API;
 }
@@ -139,7 +125,7 @@ HRESULT CDIL_CAN_DUMMY::CAN_ManageMsgBuf(BYTE /*bAction*/, DWORD /*ClientID*/, C
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_CAN_DUMMY::CAN_RegisterClient(BOOL /*bRegister*/, DWORD& /*ClientID*/, TCHAR* /*pacClientName*/)
+HRESULT CDIL_CAN_DUMMY::CAN_RegisterClient(BOOL /*bRegister*/, DWORD& /*ClientID*/, char* /*pacClientName*/)
 {
     return WARN_DUMMY_API;
 }

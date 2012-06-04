@@ -126,14 +126,14 @@ struct tagClientBufMap
     DWORD dwClientID;
     BYTE hClientHandle;
     CBaseCANBufFSE* pClientBuf[MAX_BUFF_ALLOWED];
-    TCHAR pacClientName[MAX_PATH];
+    char pacClientName[MAX_PATH];
     UINT unBufCount;
     tagClientBufMap()
     {
         dwClientID = 0;
         hClientHandle = NULL;
         unBufCount = 0;
-        memset(pacClientName, 0, sizeof (TCHAR) * MAX_PATH);
+        memset(pacClientName, 0, sizeof (char) * MAX_PATH);
         for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
         {
             pClientBuf[i] = NULL;
@@ -198,7 +198,7 @@ static CNetwork sg_odSimulationNetwork;
 const int ENTRIES_IN_GBUF       = 2000;
 static int sg_nFRAMES = 128;
 static STCANDATA sg_asMsgBuffer[ENTRIES_IN_GBUF];
-static SCONTROLER_DETAILS sg_ControllerDetails[defNO_OF_CHANNELS];
+static SCONTROLLER_DETAILS sg_ControllerDetails[defNO_OF_CHANNELS];
 static INTERFACE_HW sg_HardwareIntr[defNO_OF_CHANNELS];
 
 /**
@@ -220,7 +220,7 @@ static TCANTimestamp sg_sTime;
 // static global variables ends
 
 const int SIZE_WORD     = sizeof(WORD);
-const int SIZE_CHAR     = sizeof(TCHAR);
+const int SIZE_CHAR     = sizeof(char);
 
 // TZM specific Global variables
 #define CAN_MAX_ERRSTR 256
@@ -271,7 +271,7 @@ static UCHAR sg_ucNoOfHardware = 0;
 
 static int nGetChannelsInNeoVI(int nDevIndex);
 static void vMapDeviceChannelIndex();
-HRESULT hFillHardwareDesc(PSCONTROLER_DETAILS pControllerDetails);
+HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails);
 
 /*Please recheck and retain only necessary variables*/
 
@@ -304,7 +304,7 @@ static BYTE m_bytNetworkIDs[MAX_DEVICES] = {0};
 static unsigned char m_ucNetworkID[NETWORKS_COUNT] = {0};
 static int m_anhObject[MAX_DEVICES][NETWORKS_COUNT+1] = {0};
 static int m_anhWriteObject[MAX_DEVICES] = {0};
-static TCHAR m_omErrStr[MAX_STRING] = {0};
+static char m_omErrStr[MAX_STRING] = {0};
 static BOOL m_bInSimMode = FALSE;
 //static CWinThread* m_pomDatInd = NULL;
 static int s_anErrorCodes[TOTAL_ERROR] = {0};
@@ -367,8 +367,8 @@ typedef int (__stdcall *GETLASTAPIERROR)(int hObject, unsigned long *pErrorNumbe
 static GETLASTAPIERROR icsneoGetLastAPIError;
 typedef int (__stdcall *GETERRMSGS)(int hObject, int * pErrorMsgs, int * pNumberOfErrors);
 static GETERRMSGS icsneoGetErrorMessages;
-typedef int (__stdcall *GETERRORINFO)(int lErrorNumber, TCHAR *szErrorDescriptionShort,
-                                      TCHAR *szErrorDescriptionLong, int * lMaxLengthShort,
+typedef int (__stdcall *GETERRORINFO)(int lErrorNumber, char *szErrorDescriptionShort,
+                                      char *szErrorDescriptionLong, int * lMaxLengthShort,
                                       int * lMaxLengthLong,int * lErrorSeverity,int * lRestartNeeded);
 static GETERRORINFO icsneoGetErrorInfo;
 
@@ -421,7 +421,7 @@ public:
 	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
 	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
 	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
-	HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength);
+	HRESULT CAN_GetLastErrorString(string& acErrorStr);
 	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
 	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -429,7 +429,7 @@ public:
 	// Specific function set	
 	HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);	
 	HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
-	HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
+	HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
 	HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
 	HRESULT CAN_LoadDriverLibrary(void);
 	HRESULT CAN_UnloadDriverLibrary(void);
@@ -686,7 +686,7 @@ static void vCreateTimeModeMapping()
 }
 
 
-static BOOL bLoadDataFromContr(PSCONTROLER_DETAILS pControllerDetails)
+static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
 {
     BOOL bReturn = FALSE;
     // If successful
@@ -694,7 +694,7 @@ static BOOL bLoadDataFromContr(PSCONTROLER_DETAILS pControllerDetails)
     {
         for( int nIndex = 0; nIndex < defNO_OF_CHANNELS; nIndex++ )
         {
-            TCHAR* pcStopStr = NULL;
+            char* pcStopStr = NULL;
             CChannel& odChannel = sg_odHardwareNetwork.m_aodChannels[ nIndex ];
 
             // Get Warning Limit
@@ -1129,7 +1129,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
                 {
                     sg_asClientToBufMap[unClientIndex].dwClientID = 0;
                     sg_asClientToBufMap[unClientIndex].hClientHandle = NULL;
-                    memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (TCHAR) * MAX_PATH);
+                    memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                     for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                     {
                         sg_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
@@ -1145,7 +1145,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
             else
             {
                 sg_asClientToBufMap[unClientIndex].dwClientID = 0;
-                memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (TCHAR) * MAX_PATH);
+                memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                 for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                 {
                     sg_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
@@ -1354,8 +1354,8 @@ static int nAddChanneltoHWInterfaceList(int narrNetwordID[], int nCntNtwIDs, int
 {
 	int nResult = 0;
 	int hObject = NULL;
-	TCHAR acTempStr[512] = {_T('\0')};
-	TCHAR acFirmware[128] = {_T("X.X")};
+	char acTempStr[512] = {'\0'};
+	char acFirmware[128] = {"X.X"};
 
 	nResult = (*icsneoOpenNeoDevice)(&sg_ndNeoToOpen[nDevID], &hObject, NULL, 1, 0);
 	if (nResult == NEOVI_OK && hObject!=NULL)
@@ -1621,7 +1621,7 @@ static int nInitHwNetwork()
     sg_ucNoOfHardware = (UCHAR)nDevices;
     // Capture only Driver Not Running event
     // Take action based on number of Hardware Available
-    TCHAR acNo_Of_Hw[MAX_STRING] = {0};
+    char acNo_Of_Hw[MAX_STRING] = {0};
     _stprintf(acNo_Of_Hw, _T("Number of neoVIs Available: %d"), nDevices);
     // No Hardware found
 
@@ -2268,7 +2268,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SetConfigData(PCHAR ConfigFile, int Length)
     USES_CONVERSION;
 
 	/* Fill the hardware description details */
-	hFillHardwareDesc((PSCONTROLER_DETAILS)ConfigFile);
+	hFillHardwareDesc((PSCONTROLLER_DETAILS)ConfigFile);
 
     HRESULT hResult = S_FALSE;
     memcpy((void*)sg_ControllerDetails, (void*)ConfigFile, Length);
@@ -2296,7 +2296,7 @@ BOOL Callback_DILTZM(BYTE /*Argument*/, PBYTE pDatStream, int /*Length*/)
  * Displays the configuration dialog for controller
  */
 int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/, 
-                            PSCONTROLER_DETAILS pControllerDetails, UINT nCount)
+                            PSCONTROLLER_DETAILS pControllerDetails, UINT nCount)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     int nResult = WARNING_NOTCONFIRMED;
@@ -2312,7 +2312,7 @@ int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/,
 /**
 *  Function to fill the hardware description details
 */
-HRESULT hFillHardwareDesc(PSCONTROLER_DETAILS pControllerDetails)
+HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
 {
     /* First initialize with existing hw description */
     for (UINT i = 0; i < (UINT)sg_ucNoOfHardware; i++)
@@ -2495,7 +2495,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_DisplayConfigDlg(PCHAR& InitData, int& Length)
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
     VALIDATE_POINTER_RETURN_VAL(InitData, Result);
-    PSCONTROLER_DETAILS pControllerDetails = (PSCONTROLER_DETAILS)InitData;
+    PSCONTROLLER_DETAILS pControllerDetails = (PSCONTROLLER_DETAILS)InitData;
 
 	/* Fill the hardware description details */
 	hFillHardwareDesc(pControllerDetails);
@@ -2514,10 +2514,10 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_DisplayConfigDlg(PCHAR& InitData, int& Length)
             case INFO_INIT_DATA_CONFIRMED:
             {
                 bLoadDataFromContr(pControllerDetails);
-                memcpy(sg_ControllerDetails, pControllerDetails, sizeof (SCONTROLER_DETAILS) * defNO_OF_CHANNELS);
+                memcpy(sg_ControllerDetails, pControllerDetails, sizeof (SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
                 nSetApplyConfiguration();
-                memcpy(InitData, (void*)sg_ControllerDetails, sizeof (SCONTROLER_DETAILS) * defNO_OF_CHANNELS);
-                Length = sizeof(SCONTROLER_DETAILS) * defNO_OF_CHANNELS;
+                memcpy(InitData, (void*)sg_ControllerDetails, sizeof (SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
+                Length = sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS;
                 Result = INFO_INITDAT_CONFIRM_CONFIG;
             }
             break;
@@ -2620,11 +2620,11 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_StopHardware(void)
     return hResult;
 }
 
-static BOOL bClientExist(TCHAR* pcClientName, INT& Index)
+static BOOL bClientExist(string pcClientName, INT& Index)
 {
     for (UINT i = 0; i < sg_unClientCnt; i++)
     {
-        if (!_tcscmp(pcClientName, sg_asClientToBufMap[i].pacClientName))
+        if (!_tcscmp(pcClientName.c_str(), sg_asClientToBufMap[i].pacClientName))
         {
             Index = i;
             return TRUE;
@@ -2825,16 +2825,9 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
 /**
  * Function to retreive error string of last occurred error
  */
-HRESULT CDIL_CAN_ICSNeoVI::CAN_GetLastErrorString(CHAR* acErrorStr, int nLength)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_GetLastErrorString(string& acErrorStr)
 {
-    // TODO: Add your implementation code here
-    int nCharToCopy = (int) (strlen(sg_acErrStr));
-    if (nCharToCopy > nLength)
-    {
-        nCharToCopy = nLength;
-    }
-    strncpy(acErrorStr, sg_acErrStr, nCharToCopy);
-
+	acErrorStr = sg_acErrStr;
     return S_OK;
 }
 
@@ -2894,7 +2887,7 @@ static DWORD dwGetAvailableClientSlot()
 /**
  * Register Client
  */
-HRESULT CDIL_CAN_ICSNeoVI::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, TCHAR* pacClientName)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, char* pacClientName)
 {
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;

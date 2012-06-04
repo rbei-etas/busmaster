@@ -45,7 +45,7 @@ const BYTE MSG_FRMT_WND_VERSION = 0x1;
 struct sERRORMSGINFO
 {
     unsigned short m_usErrorCode; // Error code
-    TCHAR* m_ptcErorMsg;          // Error message
+    char* m_ptcErorMsg;          // Error message
 };
 typedef sERRORMSGINFO SERRORMSGINFO;
 typedef sERRORMSGINFO* PERRORMSGINFO;
@@ -71,7 +71,7 @@ static SERRORMSGINFO sg_asErrorEntry[ERRORS_DEFINED] =
 //Structure for SubErrors
 struct sSUBERRORMSGINFO
 {
-    TCHAR* m_ptcSubErorMsg;          // SubError message
+    char* m_ptcSubErorMsg;          // SubError message
 };
 typedef sSUBERRORMSGINFO SSUBERRORMSGINFO;
 typedef sSUBERRORMSGINFO* PSUBERRORMSGINFO;
@@ -220,8 +220,10 @@ CMsgFrmtWnd::CMsgFrmtWnd(ETYPE_BUS eBusType): m_sCurrEntry(sDummy0002), m_ouMsgA
 	m_bConnected = FALSE;
 	m_pExpandedMapIndexes = NULL;
     m_ppMsgDB = NULL;
-	for(int i=0;i<MAX_MSG_WND_COL_CNT;i++)
-		m_pomDataPtrArr[i] = NULL;
+    for(int i=0; i<MAX_MSG_WND_COL_CNT; i++)
+    {
+        m_pomDataPtrArr[i] = NULL;
+    }
 	m_nIndex = 0;
 	m_unCurrInterpretedMsgID = static_cast < UINT > (-1);
 	m_podMsgIntprtnDlg = NULL;
@@ -301,8 +303,10 @@ BOOL CMsgFrmtWnd::Create(LPCTSTR szTitle, LONG style, const RECT& rect,
                               CMDIFrameWnd* parent)
 {
    // Setup the shared menu
-   if (menu.m_hMenu == NULL)
-      menu.LoadMenu(IDR_MAINFRAME);
+    if (menu.m_hMenu == NULL)
+    {
+        menu.LoadMenu(IDR_MAINFRAME);
+    }
    m_hMenuShared = menu.m_hMenu;
 
    // Register a custom WndClass and create a window.
@@ -329,8 +333,10 @@ BOOL CMsgFrmtWnd::Create(LPCTSTR szTitle, LONG style, const RECT& rect,
 *******************************************************************************/
 int CMsgFrmtWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	if (CMDIChildWnd::OnCreate(lpCreateStruct) == -1)
-		return -1;
+    if (CMDIChildWnd::OnCreate(lpCreateStruct) == -1)
+    {
+        return -1;
+    }
 
 	RECT ClientRect; 
 	GetClientRect(&ClientRect);
@@ -356,13 +362,18 @@ int CMsgFrmtWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 		m_lstMsg.vShowHideBlankcolumn(m_bInterPretMsg);
 	}
-	else
-		AfxMessageBox(_T("Not able to create the list control."));
+    else
+    {
+        AfxMessageBox(_T("Not able to create the list control."));
+    }
 
-	m_podMsgIntprtnDlg = new CMessageInterpretation(this);
-	m_podMsgIntprtnDlg->vCreateMsgIntrprtnDlg(this, FALSE);
-	if(m_eBusType == J1939)
-		m_podMsgIntprtnDlg->vSetCaption(_T("PGN"));
+    m_podMsgIntprtnDlg = new CMessageInterpretation(this);
+    m_podMsgIntprtnDlg->vCreateMsgIntrprtnDlg(this, FALSE);
+
+    if(m_eBusType == J1939)
+    {
+        m_podMsgIntprtnDlg->vSetCaption(_T("PGN"));
+    }
 
 	m_objToolTip.Create(this);
 	m_objToolTip.Activate(TRUE);
@@ -607,8 +618,10 @@ LRESULT CMsgFrmtWnd::vOnExpandCollapseMsg(WPARAM wParam, LPARAM lParam)
 LRESULT CMsgFrmtWnd::vOnSetFocusMsgList(WPARAM wParam, LPARAM /*lParam*/)
 {	
 	bool bSetFocus = wParam!=0 ? true:false;
-	if(bSetFocus)
-		m_lstMsg.SetFocus();
+    if(bSetFocus)
+    {
+        m_lstMsg.SetFocus();
+    }
 	return 0;
 }
 
@@ -661,8 +674,10 @@ void CMsgFrmtWnd::OnEditClearAll()
     m_omMsgDispMap.RemoveAll();
     m_omMgsIndexVec.clear();
 	PSDI_GetInterface(m_eBusType, (void**)&m_pouMsgContainerIntrf);		
-	if(m_pouMsgContainerIntrf != NULL)
-		m_pouMsgContainerIntrf->vEditClearAll();
+    if(m_pouMsgContainerIntrf != NULL)
+    {
+        m_pouMsgContainerIntrf->vEditClearAll();
+    }
     m_lstMsg.DeleteAllItems();
 	m_lstMsg.Invalidate();
 }
@@ -742,10 +757,12 @@ void CMsgFrmtWnd::OnParentNotify(UINT message, LPARAM lParam)
 				else
 				{
 					__int64 nMapIndex = m_omMgsIndexVec[nIndex];
-					if (nMapIndex != nInvalidKey)					
-						::PostMessage(this->m_hWnd, WM_LSTC_DBLCLK, nIndex, NULL);
-				}
-			}
+                    if (nMapIndex != nInvalidKey)
+                    {
+                        ::PostMessage(this->m_hWnd, WM_LSTC_DBLCLK, nIndex, NULL);
+                    }
+                }
+            }
         }
     }
 	else if (nEvent == WM_RBUTTONDOWN) 
@@ -755,8 +772,10 @@ void CMsgFrmtWnd::OnParentNotify(UINT message, LPARAM lParam)
 		// Get the mouse click coordinates and get the list ctrl header rectangle
 		CPoint tmpPoint = CPoint(LOWORD(lParam), HIWORD(lParam));
 		CRect headerRect;
-		if (m_lstMsg.m_hWnd != NULL)
-			m_lstMsg.GetHeaderCtrl()->GetClientRect(&headerRect);
+        if (m_lstMsg.m_hWnd != NULL)
+        {
+            m_lstMsg.GetHeaderCtrl()->GetClientRect(&headerRect);
+        }
 
 		// Check if the mouse click point is within the header rectangle
 		if (!headerRect.PtInRect(tmpPoint))
@@ -1133,9 +1152,11 @@ LRESULT CMsgFrmtWnd::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
         case eWINID_MSG_WND_GET_BUFFER_DETAILS:
         {
             INT* pMsgBuffSize = (INT*)lParam;
-			//If it is NULL values.i.e user did not configure buffer details.
-			if(pMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] == 0)
-				break;
+            //If it is NULL values.i.e user did not configure buffer details.
+            if(pMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] == 0)
+            {
+                break;
+            }
 			vUpdateMsgBufferDetails(pMsgBuffSize);
         }
         break;
@@ -1218,10 +1239,12 @@ LRESULT CMsgFrmtWnd::OnListCtrlMsgDblClick(WPARAM wParam, LPARAM lParam)
 		if ( nIndex >= 0 )
 		{
 			//Return if clicked on first column.
-			if (nFlag == LVHT_ONITEMICON)			
-				return 0;			
-		}
-	}
+            if (nFlag == LVHT_ONITEMICON)
+            {
+                return 0;
+            }
+        }
+    }
 
 	if( IS_MODE_APPEND(m_bExprnFlag_Disp) )
     {		
@@ -1327,11 +1350,15 @@ LRESULT CMsgFrmtWnd::vUpdateMsgClr(WPARAM wParam, LPARAM /*lParam*/)
                                                    nMsgCode,
                                                    m_bExprnFlag_Disp);
 
-		if(nMsgCode!=-1 && hResult == S_FALSE)	//Erroneous Message
-			m_lstMsg.vSetMsgColor(COLOUR_ERROR_MSG);
-		else
-			m_lstMsg.vSetMsgColor(m_ouMsgAttr.GetCanIDColour(nMsgCode));		
-	}
+        if(nMsgCode!=-1 && hResult == S_FALSE)  //Erroneous Message
+        {
+            m_lstMsg.vSetMsgColor(COLOUR_ERROR_MSG);
+        }
+        else
+        {
+            m_lstMsg.vSetMsgColor(m_ouMsgAttr.GetCanIDColour(nMsgCode));
+        }
+    }
     else if(m_omMgsIndexVec.size() > wParam)
 	{
 		__int64 nMsgKey = m_omMgsIndexVec[(int)wParam];
@@ -1348,14 +1375,19 @@ LRESULT CMsgFrmtWnd::vUpdateMsgClr(WPARAM wParam, LPARAM /*lParam*/)
 				                                           nMsgCode,
 						                                   m_bExprnFlag_Disp);
 
-				if(nMsgCode!=-1 && hResult == S_FALSE)	//Erroneous Message
-					m_lstMsg.vSetMsgColor(COLOUR_ERROR_MSG);
-				else
-					m_lstMsg.vSetMsgColor(m_ouMsgAttr.GetCanIDColour(nMsgCode));
-			}
-		}
-	}	
-	return 0;
+                if(nMsgCode!=-1 && hResult == S_FALSE)  //Erroneous Message
+                {
+                    m_lstMsg.vSetMsgColor(COLOUR_ERROR_MSG);
+                }
+                else
+                {
+                    m_lstMsg.vSetMsgColor(m_ouMsgAttr.GetCanIDColour(nMsgCode));
+                }
+            }
+        }
+    }
+
+    return 0;
 }
 
 /*******************************************************************************
@@ -1376,24 +1408,32 @@ LRESULT CMsgFrmtWnd::vOnGetNextPrevMsgIndex(WPARAM wParam, LPARAM lParam)
 	int* pIndex = (int*)lParam; 
 	if(bNext)
 	{
-		for(UINT i= *pIndex+1;i < m_omMgsIndexVec.size();i++)
-		{
-			if(m_omMgsIndexVec[i] == 0)	//If the Index contains Signal Interpretation, Skip the Index
-				*pIndex = *pIndex +1;
-			else
-				break;
-		}
-	}
+        for(UINT i= *pIndex+1; i < m_omMgsIndexVec.size(); i++)
+        {
+            if(m_omMgsIndexVec[i] == 0) //If the Index contains Signal Interpretation, Skip the Index
+            {
+                *pIndex = *pIndex +1;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
 	else
 	{
-		for(int i= *pIndex-1;i>=0;i--)
-		{
-			if(m_omMgsIndexVec[i] == 0)	//If the Index contains Signal Interpretation, Skip the Index
-				*pIndex = *pIndex -1;
-			else
-				break;
-		}
-	}
+        for(int i= *pIndex-1; i>=0; i--)
+        {
+            if(m_omMgsIndexVec[i] == 0) //If the Index contains Signal Interpretation, Skip the Index
+            {
+                *pIndex = *pIndex -1;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
 	return 0;
 }
 
@@ -1421,14 +1461,16 @@ LRESULT CMsgFrmtWnd::vUpdateFormattedMsgStruct(WPARAM wParam, LPARAM /*lParam*/)
         hResult = m_pouMsgContainerIntrf->hUpdateFormattedMsgStruct(psParam->m_nListIndex, 
                                                    nMsgCode,
                                                    m_bExprnFlag_Disp);
-		if( hResult == S_FALSE && nMsgCode!= -1)
-		{
-			//Handle Error Msg display
-			vFormatCurrErrorEntry((USHORT)nMsgCode, 0);			
-			m_pouMsgContainerIntrf->vSetCurrMsgName(sg_omColmStr);		
-		}
-		else
-			m_pouMsgContainerIntrf->vSetCurrMsgName(strGetMsgNameOrCode(nMsgCode));		
+        if( hResult == S_FALSE && nMsgCode!= -1)
+        {
+            //Handle Error Msg display
+            vFormatCurrErrorEntry((USHORT)nMsgCode, 0);
+            m_pouMsgContainerIntrf->vSetCurrMsgName(sg_omColmStr);
+        }
+        else
+        {
+            m_pouMsgContainerIntrf->vSetCurrMsgName(strGetMsgNameOrCode(nMsgCode));
+        }
     }
     else if(m_omMgsIndexVec.size() > psParam->m_nListIndex)
     {
@@ -1454,8 +1496,10 @@ LRESULT CMsgFrmtWnd::vUpdateFormattedMsgStruct(WPARAM wParam, LPARAM /*lParam*/)
 					vFormatCurrErrorEntry((USHORT)nMsgCode, 0);			
 					m_pouMsgContainerIntrf->vSetCurrMsgName(sg_omColmStr);		
 				}
-				else
-					m_pouMsgContainerIntrf->vSetCurrMsgName(strGetMsgNameOrCode(nMsgCode));
+                else
+                {
+                    m_pouMsgContainerIntrf->vSetCurrMsgName(strGetMsgNameOrCode(nMsgCode));
+                }
 				
                 if (hResult == S_OK)
                 {
@@ -1651,9 +1695,9 @@ void CMsgFrmtWnd::vUpdateStatistics( char cTxMode )
   Modifications  : 
 *******************************************************************************/
 CString CMsgFrmtWnd::strGetMsgNameOrCode(UINT nMsgCode)
-{	
-    CString omName = _T("");
-    
+{
+    CString omName = "";
+
     if (NULL != m_ppMsgDB)
     {
         if ( !(*m_ppMsgDB)->bMessageNameFromMsgCode(nMsgCode, omName))
@@ -1778,7 +1822,7 @@ void CMsgFrmtWnd::vSetDefaultHeaders()
 *******************************************************************************/
 void CMsgFrmtWnd::vRearrangeCols()
 {
-    CString omArrColTitle[MAX_MSG_WND_COL_CNT] = {_T("")};
+    CString omArrColTitle[MAX_MSG_WND_COL_CNT] = {""};
     int nCount = 0;
     m_MsgHdrInfo.vGetHdrColNames(omArrColTitle, nCount); 
     vSetColTitles(omArrColTitle, nCount);
@@ -1840,7 +1884,7 @@ void CMsgFrmtWnd::vCreateCols()
 
     omTmpColTitle = _T("bl");
     lvcolumn.iSubItem = 0;
-    lvcolumn.pszText = _T("");   
+    lvcolumn.pszText = "";
     lvcolumn.cchTextMax = _tcslen(omTmpColTitle.GetBuffer(MAX_PATH));
     lvcolumn.cx = nGetListCtrlTextExtent(omTmpColTitle);
 
@@ -2066,12 +2110,14 @@ void CMsgFrmtWnd::vOnRxMsg(void* pMsg)
 		}
 	}    
 
-	if( IS_MODE_APPEND(m_bExprnFlag_Disp) )
-	{
-		if( m_unCurrInterpretedMsgID == nMsgCode && 
-			m_unCurrInterpretedMapIndex == dwMapIndex)
-			m_nIndex = m_lstMsg.GetItemCount();		
-	}
+    if( IS_MODE_APPEND(m_bExprnFlag_Disp) )
+    {
+        if( m_unCurrInterpretedMsgID == nMsgCode &&
+                m_unCurrInterpretedMapIndex == dwMapIndex)
+        {
+            m_nIndex = m_lstMsg.GetItemCount();
+        }
+    }
 
 	m_bUpdate = TRUE;	
 }
@@ -2250,9 +2296,12 @@ LRESULT CMsgFrmtWnd::ModifyMsgWndProperty(WPARAM wParam, LPARAM lParam)
             //m_ouMsgStore.vFormatDisplayBuffers(NUMERIC, m_bExprnFlag_Disp);
             bToUpdate = TRUE;
         }
-		vUpdateAllTreeWnd();
-		if(m_podMsgIntprtnDlg->IsWindowVisible())			
-			vShowUpdateMsgIntrpDlg(m_unCurrInterpretedMapIndex);
+        vUpdateAllTreeWnd();
+
+        if(m_podMsgIntprtnDlg->IsWindowVisible())
+        {
+            vShowUpdateMsgIntrpDlg(m_unCurrInterpretedMapIndex);
+        }
     }
 
     if (byModes & TIME_MODE)
@@ -2311,8 +2360,10 @@ LRESULT CMsgFrmtWnd::ModifyMsgWndProperty(WPARAM wParam, LPARAM lParam)
 				m_bInterPretMsg = TRUE;				
                 nMsgCount = m_omMgsIndexVec.size();
 
-				if( m_nField != -1)
-					::SendMessage( m_hWnd, WM_PARENT_SORT_COLUMN, (WPARAM)m_nField, (LPARAM)m_bAscending);		
+                if( m_nField != -1)
+                {
+                    ::SendMessage( m_hWnd, WM_PARENT_SORT_COLUMN, (WPARAM)m_nField, (LPARAM)m_bAscending);
+                }
 				m_nIndex = 0;
 				::SendMessage( m_hWnd, WM_UPDATE_TREE_ITEMS_POS, 0, 0);				
             }
@@ -2572,8 +2623,10 @@ void CMsgFrmtWnd::vExpandMsgEntry( SMSGDISPMAPENTRY &sEntry,
     CRect omTreeRect;
     vGetTreeRect(nMsgIndex, nIndexShift, omTreeRect);
 
-	if(m_nIndex > nMsgIndex)
-		m_nIndex += nIndexShift;
+    if(m_nIndex > nMsgIndex)
+    {
+        m_nIndex += nIndexShift;
+    }
 
     //Keep the key of map
     if( nMsgIndex  < (nArrSize - nIndexShift))
@@ -2629,8 +2682,10 @@ void CMsgFrmtWnd::vExpandMsgEntry( SMSGDISPMAPENTRY &sEntry,
 							sJ1939Msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN());
 		}
 	}
-	else
-		rgbTreeItem = RGB(0,0,0);
+    else
+    {
+        rgbTreeItem = RGB(0,0,0);
+    }
     sEntry.m_opTreeWndParam = new CTreeItemParam (&m_lstMsg, omSigStrArray,
 		omTreeRect, rgbTreeItem);			
     m_lstMsg.SetItemCountEx(nArrSize);
@@ -2778,8 +2833,10 @@ void CMsgFrmtWnd::vContractMsgEntry(SMSGDISPMAPENTRY &sEntry, int nMsgIndex)
         CRect omTreeRect;
         vGetTreeRect(nMsgIndex, nIndexShift, omTreeRect); 
 
-		if(m_nIndex > nMsgIndex)
-			m_nIndex -= nIndexShift;
+        if(m_nIndex > nMsgIndex)
+        {
+            m_nIndex -= nIndexShift;
+        }
 
         //If it is not the last msg
         if( ( nMsgIndex + nIndexShift + 1 ) != nSize)
@@ -3129,8 +3186,10 @@ void CMsgFrmtWnd::vUpdateAllTreeWnd()
 										sJ1939Msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN());
 					}
 				}
-				else
-					rgbTreeItem = RGB(0,0,0);
+                else
+                {
+                    rgbTreeItem = RGB(0,0,0);
+                }
 
 				SSignalInfoArray SigInfoArray;
 				vGetSignalInfoArray(n64Temp, SigInfoArray);	
@@ -3182,8 +3241,10 @@ void CMsgFrmtWnd::vUpdateMsgTreeWnd(__int64 nMapIndex)
 									sJ1939Msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN());
 				}
 			}
-			else                            //may not be required
-				rgbTreeItem = RGB(0,0,0);
+            else                            //may not be required
+            {
+                rgbTreeItem = RGB(0,0,0);
+            }
 
 			SSignalInfoArray SigInfoArray;
 			vGetSignalInfoArray(nMapIndex, SigInfoArray);	
@@ -3243,11 +3304,15 @@ LRESULT CMsgFrmtWnd::OnShowHideMessageWindow(WPARAM wParam, LPARAM lParam)
 	else //Update UI
 	{
 		CCmdUI* pCmdUI = (CCmdUI*)lParam;
-		if(IsWindowVisible())
-			pCmdUI->SetCheck(1);
-		else
-			pCmdUI->SetCheck(0);
-	}
+        if(IsWindowVisible())
+        {
+            pCmdUI->SetCheck(1);
+        }
+        else
+        {
+            pCmdUI->SetCheck(0);
+        }
+    }
 
 	return 0;
 }
@@ -3268,25 +3333,34 @@ void CMsgFrmtWnd::OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI)
 	{
 		case ID_SHOWMESSAGEWINDOW_CAN:
 		{
-			if(m_eBusType == CAN)
-			{
-				if(IsWindowVisible())
-					pCmdUI->SetCheck(1);
-				else
-					pCmdUI->SetCheck(0);
-			}
-		}
-		break;
-		case ID_SHOWMESSAGEWINDOW_J1939:
-		{
-			if(m_eBusType == J1939)
-			{
-				if(IsWindowVisible())
-					pCmdUI->SetCheck(1);
-				else
-					pCmdUI->SetCheck(0);
-			}
-		}
+            if(m_eBusType == CAN)
+            {
+                if(IsWindowVisible())
+                {
+                    pCmdUI->SetCheck(1);
+                }
+                else
+                {
+                    pCmdUI->SetCheck(0);
+                }
+            }
+        }
+        break;
+
+        case ID_SHOWMESSAGEWINDOW_J1939:
+        {
+            if(m_eBusType == J1939)
+            {
+                if(IsWindowVisible())
+                {
+                    pCmdUI->SetCheck(1);
+                }
+                else
+                {
+                    pCmdUI->SetCheck(0);
+                }
+            }
+        }
 		break;
 		default: 
         {
@@ -3317,8 +3391,10 @@ void CMsgFrmtWnd::OnMsgwndResetColumns()
 		m_lstMsg.GetColumnOrderArray(pnOrder, nColumnCount);
 
 		int i;
-		for (i = 0 ; i < nColumnCount; i++)		
-			pnOrder[i] = i;
+        for (i = 0 ; i < nColumnCount; i++)
+        {
+            pnOrder[i] = i;
+        }
 		m_lstMsg.SetColumnOrderArray(nColumnCount, pnOrder);		
 		free(pnOrder);
 		m_lstMsg.Invalidate();
@@ -3338,8 +3414,10 @@ void CMsgFrmtWnd::OnMsgwndResetColumns()
 void CMsgFrmtWnd::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeactivateWnd)
 {
 	CMDIChildWnd::OnMDIActivate(bActivate, pActivateWnd, pDeactivateWnd);
-	if(bActivate)
-		m_lstMsg.SetFocus();	
+    if(bActivate)
+    {
+        m_lstMsg.SetFocus();
+    }
 }
 
 /*******************************************************************************
@@ -3406,12 +3484,18 @@ HRESULT CMsgFrmtWnd::GetConfigData(BYTE* pvDataStream)
 
 	//Storing Time Display.	
 	BYTE byTimeDisplay;
-	if(IS_TM_ABS_SET(m_bExprnFlag_Disp))
-		byTimeDisplay = BIT_TM_ABS;
-	else if(IS_TM_REL_SET(m_bExprnFlag_Disp))
-		byTimeDisplay = BIT_TM_REL;
-	else if(IS_TM_SYS_SET(m_bExprnFlag_Disp))
-		byTimeDisplay = BIT_TM_SYS;
+    if(IS_TM_ABS_SET(m_bExprnFlag_Disp))
+    {
+        byTimeDisplay = BIT_TM_ABS;
+    }
+    else if(IS_TM_REL_SET(m_bExprnFlag_Disp))
+    {
+        byTimeDisplay = BIT_TM_REL;
+    }
+    else if(IS_TM_SYS_SET(m_bExprnFlag_Disp))
+    {
+        byTimeDisplay = BIT_TM_SYS;
+    }
 	COPY_DATA(pByteTrgt, &byTimeDisplay, sizeof(BYTE));
 
     WINDOWPLACEMENT sMsgWndPlacement;
@@ -3482,35 +3566,52 @@ HRESULT CMsgFrmtWnd::SetConfigData(BYTE* pvDataStream)
 
 			CLEAR_EXPR_NUM_BITS(m_bExprnFlag_Disp);
             //m_bExprnFlag_Disp |= (wArguments & BITS_NUM);
-			if(bHexDec)
-				SET_NUM_HEX(m_bExprnFlag_Disp);
-			else
-				SET_NUM_DEC(m_bExprnFlag_Disp);			
+            if(bHexDec)
+            {
+                SET_NUM_HEX(m_bExprnFlag_Disp);
+            }
+            else
+            {
+                SET_NUM_DEC(m_bExprnFlag_Disp);
+            }
 
 			//Reading Overwrite/Append Mode.
 			bool bOvrwAppend = false;
 			COPY_DATA_2(&bOvrwAppend, pByteSrc, sizeof(bool));	
-			if(bOvrwAppend)
-				SET_MODE_APPEND(m_bExprnFlag_Disp);
-			else
-				SET_MODE_OVER(m_bExprnFlag_Disp);
+            if(bOvrwAppend)
+            {
+                SET_MODE_APPEND(m_bExprnFlag_Disp);
+            }
+            else
+            {
+                SET_MODE_OVER(m_bExprnFlag_Disp);
+            }
 
-			//Reading Interpret Status if in overwrite Mode.			
-			COPY_DATA_2(&m_bInterPretMsg, pByteSrc, sizeof(bool));			
-			if(m_bInterPretMsg)			
-				SET_MODE_INTRP(m_bExprnFlag_Disp);			 
+            //Reading Interpret Status if in overwrite Mode.
+            COPY_DATA_2(&m_bInterPretMsg, pByteSrc, sizeof(bool));
 
-			//Reading Time Display.	
-			BYTE byTimeDisplay;
-			COPY_DATA_2(&byTimeDisplay, pByteSrc, sizeof(bool));	
+            if(m_bInterPretMsg)
+            {
+                SET_MODE_INTRP(m_bExprnFlag_Disp);
+            }
 
-			CLEAR_EXPR_TM_BITS(m_bExprnFlag_Disp);
-			if(byTimeDisplay == BIT_TM_ABS)
-				SET_TM_ABS(m_bExprnFlag_Disp);
-			else if(byTimeDisplay == BIT_TM_REL)
-				SET_TM_REL(m_bExprnFlag_Disp);
-			else if(byTimeDisplay == BIT_TM_SYS)
-				SET_TM_SYS(m_bExprnFlag_Disp);
+            //Reading Time Display.
+            BYTE byTimeDisplay;
+            COPY_DATA_2(&byTimeDisplay, pByteSrc, sizeof(bool));
+            CLEAR_EXPR_TM_BITS(m_bExprnFlag_Disp);
+
+            if(byTimeDisplay == BIT_TM_ABS)
+            {
+                SET_TM_ABS(m_bExprnFlag_Disp);
+            }
+            else if(byTimeDisplay == BIT_TM_REL)
+            {
+                SET_TM_REL(m_bExprnFlag_Disp);
+            }
+            else if(byTimeDisplay == BIT_TM_SYS)
+            {
+                SET_TM_SYS(m_bExprnFlag_Disp);
+            }
 
             WINDOWPLACEMENT sMsgWndPlacement;
 
@@ -3523,8 +3624,10 @@ HRESULT CMsgFrmtWnd::SetConfigData(BYTE* pvDataStream)
             SetWindowPlacement(&sMsgWndPlacement);
 
 			//Regain the window's visibility status.
-			if(!bVisible)
-				ShowWindow(SW_HIDE);
+            if(!bVisible)
+            {
+                ShowWindow(SW_HIDE);
+            }
 
 			COPY_DATA_2(&m_sMsgIntrpWndPlacement, pByteSrc, sizeof(WINDOWPLACEMENT));																						
 		}
@@ -3697,12 +3800,10 @@ void CMsgFrmtWnd::vDisplayToolTip(MSG* pMsg)
 	GetClassName(pMsg->hwnd,lpszClassName,nMaxCount);
 	strClassName.ReleaseBuffer();
 
-	if (strClassName==_T("SysListView32")) 
-	{
-		CRxMsgList* ptrListCtrl = (CRxMsgList*)CRxMsgList::FromHandle(pMsg->hwnd);		
-
-
-		POINT pt(pMsg->pt);
+    if (strClassName==_T("SysListView32"))
+    {
+        CRxMsgList* ptrListCtrl = static_cast<CRxMsgList*> (CRxMsgList::FromHandle(pMsg->hwnd));
+        POINT pt(pMsg->pt);
 		ptrListCtrl->ScreenToClient(&pt); // ItemFromPoint needs coords converted with 0,0 as upper left most of listbox
 				
 		UINT nFlag; 
@@ -3781,12 +3882,14 @@ LRESULT CMsgFrmtWnd::OnToggleInterpretStatusAllEntries (WPARAM wParam, LPARAM /*
 			
 			if (m_ppMsgDB != NULL)
 			{
-				if ((*m_ppMsgDB)->bMessageNameFromMsgCode(nMsgCode, msgName))
-				{
-					sEntry.m_eInterpretMode = INTERPRETABLE;				
-				}
-				else
-					sEntry.m_eInterpretMode = NON_INTERPRETABLE;	
+                if ((*m_ppMsgDB)->bMessageNameFromMsgCode(nMsgCode, msgName))
+                {
+                    sEntry.m_eInterpretMode = INTERPRETABLE;
+                }
+                else
+                {
+                    sEntry.m_eInterpretMode = NON_INTERPRETABLE;
+                }
 
 				m_omMsgDispMap[n64Temp] = sEntry;
 			}
@@ -3809,11 +3912,13 @@ LRESULT CMsgFrmtWnd::OnToggleInterpretStatusAllEntries (WPARAM wParam, LPARAM /*
             m_omMsgDispMap.GetNextAssoc( pos, n64Temp, sEntry );
 			
 			nMsgCode = nGetCodefromMapKey(n64Temp);	
-			if (m_ppMsgDB != NULL)
-			{
-				if ((*m_ppMsgDB)->bMessageNameFromMsgCode(nMsgCode, msgName))				
-					continue;				
-			}
+            if (m_ppMsgDB != NULL)
+            {
+                if ((*m_ppMsgDB)->bMessageNameFromMsgCode(nMsgCode, msgName))
+                {
+                    continue;
+                }
+            }
 
             //If entry is expanded then contract
             if (sEntry.m_eInterpretMode == INTERPRETING)

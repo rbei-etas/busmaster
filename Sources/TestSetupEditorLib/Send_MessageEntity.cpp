@@ -524,8 +524,8 @@ Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
 Modifications  :  
 ******************************************************************************/
-CSendData& CSendData::operator=(const CSendData& RefObj){
-
+CSendData& CSendData::operator=(const CSendData& RefObj)
+{
     m_odSend_MessageDataList.RemoveAll();
     INT Count = (INT)RefObj.m_odSend_MessageDataList.GetCount();
     for(INT i=0;i<Count; i++)

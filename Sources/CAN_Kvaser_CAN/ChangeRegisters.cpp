@@ -42,12 +42,12 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 
-long lFromStrTCHAR_2_Long(TCHAR acStr[], TCHAR** pccEndPtr, int nBase)
+long lFromStrTCHAR_2_Long(TCHAR acStr[], char** pccEndPtr, int nBase)
 {
     return _tcstol(acStr, pccEndPtr, nBase);
 }
 
-long lFromCString_2_Long(CString omStr, TCHAR** pccEndPtr, int nBase)
+long lFromCString_2_Long(CString omStr, char** pccEndPtr, int nBase)
 {
     return _tcstol(omStr.GetBuffer(MAX_PATH), pccEndPtr, nBase);
 }
@@ -72,18 +72,18 @@ long lFromCString_2_Long(CString omStr, TCHAR** pccEndPtr, int nBase)
 /*                      m_pControllerDetails                                  */
 /******************************************************************************/
 //IMPLEMENT_DYNAMIC(CChangeRegisters, CPropertyPage)
-CChangeRegisters::CChangeRegisters(CWnd* pParent /*=NULL*/, PSCONTROLER_DETAILS psControllerDetails, UINT nCount)
+CChangeRegisters::CChangeRegisters(CWnd* pParent /*=NULL*/, PSCONTROLLER_DETAILS psControllerDetails, UINT nCount)
     : CDialog(CChangeRegisters::IDD, pParent)
     //: CPropertyPage(CChangeRegisters::IDD, IDS_PPAGE_CHANGE_REGISTER)
 {    
     //{{AFX_DATA_INIT(CChangeRegisters)
     m_byEditBRP = 1;
-    m_omStrEditBTR0 = _T("");
-    m_omStrEditBTR1 = _T("");
-    m_omStrComboSampling = _T("");
-    m_omStrEditBaudRate = _T("");
+    m_omStrEditBTR0 = "";
+    m_omStrEditBTR1 = "";
+    m_omStrComboSampling = "";
+    m_omStrEditBaudRate = "";
     m_omStrComboClock = defCLOCK;
-    m_omStrEditWarningLimit = _T("");
+    m_omStrEditWarningLimit = "";
     //}}AFX_DATA_INIT
     m_unCombClock      = 0;
     m_bDialogCancel    = FALSE;    
@@ -185,18 +185,18 @@ END_MESSAGE_MAP()
 BOOL CChangeRegisters::OnInitDialog() 
 {
     CDialog::OnInitDialog();
-    TCHAR caColumnName[5][50] = { defSTR_BTR0_COL_HEADING,
+    char caColumnName[5][50] = { defSTR_BTR0_COL_HEADING,
                                  defSTR_BTR1_COL_HEADING,
                                  defSTR_SAMPLE_POINT_COL_HEADING,
                                  defSTR_NBT_COL_HEADING,
                                  defSTR_SJW_COL_HEADING };
-    CString omStrClock          = _T("");
-    CString omStrBaudRate       = _T("");
-    CString omStrAcceptanceMask = _T("");
-    CString omStrAcceptanceCode = _T("");
-    CString omStrBrp            = _T("");
-    CString omStrBtr0           = _T("");
-    CString omStrBtr1           = _T("");
+    CString omStrClock          = "";
+    CString omStrBaudRate       = "";
+    CString omStrAcceptanceMask = "";
+    CString omStrAcceptanceCode = "";
+    CString omStrBrp            = "";
+    CString omStrBtr0           = "";
+    CString omStrBtr1           = "";
 
     INT nColumnSize             = 0;
     INT nTotalColunmSize        = 0;
@@ -217,7 +217,7 @@ BOOL CChangeRegisters::OnInitDialog()
     // Assign the image list to the control
     m_omChannelList.SetImageList(&m_omChannelImageList, LVSIL_NORMAL );
     // Insert empty column
-    m_omChannelList.InsertColumn( 0, _T("") );
+    m_omChannelList.InsertColumn( 0, "" );
     // Insert all channel information
     // Insert only for available channel information
     int nAvailableHardware = m_unHardwareCount;//g_podHardwareInterface->nGetNoOfHardware();
@@ -225,7 +225,7 @@ BOOL CChangeRegisters::OnInitDialog()
          nChannel < nAvailableHardware;
          nChannel++ )
     {
-        CString omStrChannel(_T(""));
+        CString omStrChannel("");
         // Create Channel String
         omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
                         defSTR_CHANNEL_NAME,
@@ -358,10 +358,10 @@ void CChangeRegisters:: vDisplayListBox(INT nIndex,INT nItemFocus )
 
 //    if (bResult == FALSE) return;
 
-    CString cStrText    = _T("");
+    CString cStrText    = "";
     INT nItem           = -1;
-    CString omStrBTR0   = _T("");
-    CString omStrBTR1   = _T("");
+    CString omStrBTR0   = "";
+    CString omStrBTR1   = "";
 
     // Clear list box first
     m_omListCtrlBitTime.DeleteAllItems();
@@ -462,8 +462,8 @@ void CChangeRegisters:: vDisplayListBox(INT nIndex,INT nItemFocus )
 /******************************************************************************/
 void CChangeRegisters::OnKillfocusEditBaudRate() 
 {
-    CString omStrBaudRate   =_T("");
-    CString omStrValid      =_T("");
+    CString omStrBaudRate   ="";
+    CString omStrValid      ="";
     INT     nLength         = 0;
 
     m_omEditBaudRate.GetWindowText(omStrBaudRate);
@@ -538,8 +538,8 @@ void CChangeRegisters::OnKillfocusEditBaudRate()
 /******************************************************************************/
 void CChangeRegisters::OnKillfocusEditBTR0() 
 {
-    CString omStrBtr0Get    =_T("");
-    CString omStrValidBtr0  =_T("");
+    CString omStrBtr0Get    ="";
+    CString omStrValidBtr0  ="";
     INT     nLength         = 0;
 
     m_omEditBTR0.GetWindowText(omStrBtr0Get);
@@ -597,8 +597,8 @@ void CChangeRegisters::OnKillfocusEditBTR0()
 /******************************************************************************/
 void CChangeRegisters::OnKillfocusEditBTR1() 
 {
-    CString omStrBtr1Get    =_T("");
-    CString omStrValidBtr1  =_T("");
+    CString omStrBtr1Get    ="";
+    CString omStrValidBtr1  ="";
     INT     nLength         = 0;
 
     m_omEditBTR1.GetWindowText(omStrBtr1Get);
@@ -657,7 +657,7 @@ void CChangeRegisters::OnKillfocusEditBTR1()
 void CChangeRegisters::OnSelchangeCombSampling() 
 { 
     INT nGetValue               = 0;
-    CString omStrComboEditItem  =_T("");
+    CString omStrComboEditItem  ="";
 
     nGetValue =  m_omCombSampling.GetCurSel();
     if (nGetValue !=CB_ERR)
@@ -688,7 +688,7 @@ void CChangeRegisters::OnSelchangeCombSampling()
 void CChangeRegisters::vChangeListBoxValues(INT nflag) 
 {
     UINT unIndex                = 0;  
-    CString omStrComboEditItem  =_T("");
+    CString omStrComboEditItem  ="";
     INT nGetValue               = 0;
     INT nSample                 = 0;
     INT nReturn                 = 0;
@@ -772,9 +772,9 @@ void CChangeRegisters::OnSetfocusEditBaudRate()
 void CChangeRegisters:: vUpdateBTRsBRPEditWindow(INT /*nColumnCount*/, INT nItem)
 {
     CString omStrItems[defNUMBER_OF_COLUMNS];
-    CString omStrBaudRate   =_T("");
-    CString omStrClockFreq  =_T("");
-    CString omStrBrp        =_T("");
+    CString omStrBaudRate   ="";
+    CString omStrClockFreq  ="";
+    CString omStrBrp        ="";
 
     DOUBLE  dBaudRate       = 0;
     UINT    unBrp           = 0;
@@ -802,13 +802,13 @@ void CChangeRegisters:: vUpdateBTRsBRPEditWindow(INT /*nColumnCount*/, INT nItem
     unNbt      = _tstoi(omStrItems[defNBT_COLUNM_POS-1].GetBuffer(MAX_PATH));
     if(unNbt>0)
     {
-        TCHAR* pcStopStr = NULL;
+        char* pcStopStr = NULL;
         uBtr0.ucBTR0 = (UCHAR) lFromCString_2_Long(
                  omStrItems[defBRT0_COLUNM_POS-1], &pcStopStr, defHEXADECIMAL);
         unBrp = uBtr0.sBTR0Bit.ucBRPbit + 1;
     }
     //Convert UINT to string.
-    TCHAR acBrpStr[32] = {L'\0'};
+    char acBrpStr[32] = {L'\0'};
     _itot(unBrp, acBrpStr, 10);
     omStrBrp = acBrpStr;
     m_omEditBRP.SetWindowText(omStrBrp);   
@@ -830,13 +830,13 @@ void CChangeRegisters:: vUpdateBTRsBRPEditWindow(INT /*nColumnCount*/, INT nItem
 /******************************************************************************/
 void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
 {
-    CString omStrBaudRate   =_T("");
-    CString omStrClockFreq  =_T("");
-    CString omStrBtr1       =_T("");
-    CString omStrLocalBtr0  =_T("");
-    CString omStrLocalBtr1  =_T("");
-    CString omStrBrp        =_T("");
-    CString omStrNbt        =_T("");
+    CString omStrBaudRate   ="";
+    CString omStrClockFreq  ="";
+    CString omStrBtr1       ="";
+    CString omStrLocalBtr0  ="";
+    CString omStrLocalBtr1  ="";
+    CString omStrBrp        ="";
+    CString omStrNbt        ="";
 
     DOUBLE  dBaudRate       = 0;
     UINT    unClockFreq     = 0;
@@ -845,7 +845,7 @@ void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
     UINT    unBrp           = 0;
     UINT    unProductNbtNBrp= 0;
     uBTR0   sBtr0Reg    ;
-    TCHAR* pcStopStr         = NULL;
+    char* pcStopStr         = NULL;
 
     // Get the baudrate for BTR0 and BTR1 values.
     dBaudRate = dCalculateBaudRateFromBTRs(omStrBtr0,m_omStrEditBTR1);
@@ -931,7 +931,7 @@ void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
                  {
                     unBrp     = unProductNbtNBrp/unNbt;
                  }
-                 TCHAR acStrBrp[32] = {L'\0'};
+                 char acStrBrp[32] = {L'\0'};
                  _itot(unBrp, acStrBrp, 10);
                  omStrBrp = acStrBrp;
 
@@ -971,14 +971,14 @@ void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
 /******************************************************************************/
 void CChangeRegisters:: vCalculateBaudRateNBTR0(CString omStrBtr1)
 {
-    CString omStrBaudRate       = _T("");
-    CString omStrClockFreq      = _T("");
-    CString omStrBtr0           = _T("");
-    CString omStrLocalBtr1      = _T("");
-    CString omStrLocalBtr0      = _T("");
-    CString omStrBrp            = _T("");
-    CString omStrNbt            = _T("");
-    CString omStrComboEditItem  = _T("");
+    CString omStrBaudRate       = "";
+    CString omStrClockFreq      = "";
+    CString omStrBtr0           = "";
+    CString omStrLocalBtr1      = "";
+    CString omStrLocalBtr0      = "";
+    CString omStrBrp            = "";
+    CString omStrNbt            = "";
+    CString omStrComboEditItem  = "";
     DOUBLE  dBaudRate           = 0;
     UINT    unClockFreq         = 0;
     UINT    unNbt               = 0;
@@ -988,7 +988,7 @@ void CChangeRegisters:: vCalculateBaudRateNBTR0(CString omStrBtr1)
     INT     nSample             = 0;
     INT     nSampleChange       = 0;
     INT     nGetValue           = 0;
-    TCHAR*  pcStopStr           = NULL;
+    char*  pcStopStr           = NULL;
 
     uBTR1   sBtr1Reg;
     uBTR0   sBtr0Reg;
@@ -1113,7 +1113,7 @@ void CChangeRegisters:: vCalculateBaudRateNBTR0(CString omStrBtr1)
                   unBrp     = usProductNbtNBrp/unNbt;
                  }
 
-                 TCHAR acStrBrp[32] = {L'\0'};
+                 char acStrBrp[32] = {L'\0'};
                  _itot(unBrp, acStrBrp, 10);
                  omStrBrp = acStrBrp;
                  m_omEditBRP.SetWindowText(omStrBrp);
@@ -1159,8 +1159,8 @@ void CChangeRegisters::vSelSetFocusItemList(INT nItemCount,INT nItem)
 		/* Make the current BTR0, BTR1 values as default selection */
 		CString omStrItems[defNUMBER_OF_COLUMNS];
 
-	    CString omStrBTR0   = _T("");
-		CString omStrBTR1   = _T("");
+	    CString omStrBTR0   = "";
+		CString omStrBTR1   = "";
 
 		m_omEditBTR0.GetWindowText(omStrBTR0);
 		m_omEditBTR1.GetWindowText(omStrBTR1);
@@ -1251,14 +1251,14 @@ void CChangeRegisters::OnSetfocusEditBTR1()
 /******************************************************************************/
 void CChangeRegisters::vValidateBaudRate()
 {
-    CString omStrBaudRate       = _T("");
-    CString omStrPrvBaudRate    = _T("");
-    CString omStrClockFreq      = _T("");
+    CString omStrBaudRate       = "";
+    CString omStrPrvBaudRate    = "";
+    CString omStrClockFreq      = "";
     DOUBLE  dBaudRate           = 0;
     UINT    unClockFreq         = 0;
     UINT    unProductNbtNBrp    = 0;
     DOUBLE  dProductNbtNBrp     = 0; 
-    CString omStrMessage        = _T("");
+    CString omStrMessage        = "";
     //INT     nUserOption         = 0;
    
    
@@ -1401,7 +1401,7 @@ void CChangeRegisters::OnSelchangeCombClock()
 {
     UINT unSelClock             = 0;
     INT nGetValue               = 0;
-    CString omStrComboEditItem  = _T("");
+    CString omStrComboEditItem  = "";
 
     nGetValue =  m_omCombClock.GetCurSel();
     if (nGetValue !=CB_ERR)
@@ -1496,7 +1496,7 @@ DOUBLE CChangeRegisters::dCalculateBaudRateFromBTRs(CString omStrBTR0,
     BYTE   byNBT        = 0;
     BYTE   byTSEG1      = 0;
     BYTE   byTSEG2      = 0;
-    TCHAR* pcStopStr     = NULL;
+    char* pcStopStr     = NULL;
     
     uBTR0val.ucBTR0 = (UCHAR) lFromCString_2_Long(omStrBTR0, &pcStopStr,defHEXADECIMAL);
     uBTR1val.ucBTR1 = (UCHAR) lFromCString_2_Long(omStrBTR1, &pcStopStr,defHEXADECIMAL);
@@ -1745,7 +1745,7 @@ void CChangeRegisters::vFillControllerConfigDetails()
     {
         pWnd->SetWindowText(m_pControllerDetails[nIndex].m_omHardwareDesc);
     }
-    TCHAR* pcStopStr     = NULL;
+    char* pcStopStr     = NULL;
     
     m_omStrEditBaudRate     = m_pControllerDetails[ nIndex ].m_omStrBaudrate;
     m_omStrEditBTR0         = m_pControllerDetails[ nIndex ].m_omStrBTR0;
@@ -1815,12 +1815,12 @@ void CChangeRegisters::vFillControllerConfigDetails()
 *******************************************************************************/
 void CChangeRegisters::vUpdateControllerDetails()
 {
-    TCHAR* pcStopStr                = NULL;
-    CString omStrComboSampling      = _T("");
-    CString omStrEditBtr0           = _T("");
-    CString omStrEditBtr1           = _T("");
-    CString omStrEditAcceptanceCode = _T("");
-    CString omStrEditAcceptanceMask = _T("");
+    char* pcStopStr                = NULL;
+    CString omStrComboSampling      = "";
+    CString omStrEditBtr0           = "";
+    CString omStrEditBtr1           = "";
+    CString omStrEditAcceptanceCode = "";
+    CString omStrEditAcceptanceMask = "";
     // Update the data members before writing into ini file or registry.
     UpdateData(TRUE);
 
@@ -1873,7 +1873,7 @@ void CChangeRegisters::vUpdateControllerDetails()
     else
     {
         // Invalid Warning Limit Error Message
-        CString omStrMsg = _T("");
+        CString omStrMsg = "";
         omStrMsg.Format( defWARNINGLIMIT_MSG, m_omStrEditWarningLimit,
                          defWARNING_LIMIT_MIN,
                          defWARNING_LIMIT_MAX );
@@ -2071,7 +2071,7 @@ BOOL CChangeRegisters::bGetFilterFromCom(BOOL  &bExtended, double  &dBeginMsgId,
 	if(m_pControllerDetails != NULL)
 	{
 		
-		TCHAR* pcStopStr = NULL;
+		char* pcStopStr = NULL;
 		//Change to separate integer value for each byte
         int nAccCodeByte1 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte1[0], &pcStopStr, defHEXADECIMAL);
         int nAccCodeByte2 = lFromStrTCHAR_2_Long(m_pControllerDetails[0].m_omStrAccCodeByte2[0], &pcStopStr, defHEXADECIMAL);

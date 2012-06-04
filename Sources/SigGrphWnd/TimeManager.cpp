@@ -38,16 +38,6 @@
 #include "DataTypes/DIL_Datatypes.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
 // Initialise the static members
 
 // Initialise absolute Time
@@ -121,10 +111,6 @@ void CTimeManager::vFormatTimeStamp(int nTimeStamp, BOOL bOverWrite,
                                     __int64 /*n64OverWriteMapKey*/,
                                     CString &omStrTime)
 {
-    // Static variables to reduce the creation time
-    static int nTemp, nMicSec, nSec, nMinute, nHour;
-
-
     int nRefTime = 0;
 
     // Find reference time stamp for relative mode

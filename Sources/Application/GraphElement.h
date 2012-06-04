@@ -22,12 +22,7 @@
  * Interface file for CGraphElement class
  */
 
-#if !defined(AFX_GRAPHELEMENT_H__36E59C90_39E0_404A_A291_7AF5129AA682__INCLUDED_)
-#define AFX_GRAPHELEMENT_H__36E59C90_39E0_404A_A291_7AF5129AA682__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 typedef enum eELEMENT_TYPE
 {
@@ -82,5 +77,3 @@ public:
 	static UINT unGetConfigSize(BYTE byVersion);
 
 };
-
-#endif // !defined(AFX_GRAPHELEMENT_H__36E59C90_39E0_404A_A291_7AF5129AA682__INCLUDED_)

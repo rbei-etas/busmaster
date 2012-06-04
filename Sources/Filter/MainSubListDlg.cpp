@@ -28,12 +28,6 @@
 #include "FilterWatchDefs.h"
 #include "MainSubListDlg.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 // Critical Section for Signal Watch
 extern UINT unGetMainEntryIDFromName(CString omMsgName);
 /////////////////////////////////////////////////////////////////////////////
@@ -145,7 +139,8 @@ BOOL CMainSubListDlg::OnInitDialog()
             {
                 SMAINENTRY& sMainEntry = m_podTempCallerList->GetNext(pos);
                 CString omMainEntryName = sMainEntry.m_omMainEntryName;
-				CString omMainEntryId = _T("");
+                CString omMainEntryId = "";
+
                 if (m_sGuiParams.m_bCombine == TRUE)
                 {
                     omMainEntryId.Format(defSTR_MSG_ID_IN_HEX,sMainEntry.m_unMainEntryID);
@@ -1155,7 +1150,8 @@ void CMainSubListDlg::vPopulateSelSubEntryList()
             SMAINENTRY& sMainEntry = m_podTempCallerList->GetNext(pos);
             if( sMainEntry.m_omMainEntryName != STR_EMPTY)
             {
-                CString omNameWithId = _T("");
+                CString omNameWithId = "";
+
                 if (m_sGuiParams.m_bCombine == TRUE)
                 {
                     omNameWithId.Format(defSTR_MSG_ID_IN_HEX,sMainEntry.m_unMainEntryID);
@@ -1215,9 +1211,9 @@ BOOL CMainSubListDlg::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
 
 UINT CMainSubListDlg::unGetMainEntryIDFromName(CString omMainEntryName)
 {
-	CString omMainEntryId;
-	UINT unMainEntryID = (UINT)-1;
-	TCHAR* pcStopStr = NULL;
+    CString omMainEntryId;
+    UINT unMainEntryID = (UINT)-1;
+    char* pcStopStr = NULL;
     int nIndex = omMainEntryName.Find(defMSGID_EXTENDED);
     int nCloseBraceIndex = omMainEntryName.Find(defMSG_NAME_END_CHAR);
 	if((nIndex != -1) && (nCloseBraceIndex != -1))

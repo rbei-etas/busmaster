@@ -41,12 +41,6 @@
 #include "MainFrm.h"
 #include "common.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 // Appliction global object
 extern CCANMonitorApp theApp;
 
@@ -75,7 +69,8 @@ CPPageMessage::~CPPageMessage()
 {
 	if(m_pRGBColors)
 	{
-		delete[] m_pRGBColors;
+		//delete[] m_pRGBColors;
+		free(m_pRGBColors);
 		m_pRGBColors = NULL;
 	}
 }
@@ -217,7 +212,7 @@ int CPPageMessage::nEnterMessageAttrib(const SCanIDList& sMsgAttrib, int nItem)
     int nResult;
 
     // Copy message ID
-    sprintf(m_acMsgEntry, "  %X", sMsgAttrib.nCANID);
+    sprintf_s(m_acMsgEntry, 128, "  %X", sMsgAttrib.nCANID);
     nResult = m_odMsgList.InsertItem(LVIF_STATE | LVIF_TEXT| LVIF_PARAM, nItem,
         m_acMsgEntry, LVIS_FOCUSED | LVIS_SELECTED, 0x7, 0, sMsgAttrib.Colour);	
 
@@ -229,14 +224,18 @@ int CPPageMessage::nEnterMessageAttrib(const SCanIDList& sMsgAttrib, int nItem)
         {
             CharToCopy = 128;
         }
-        strncpy(m_acMsgEntry, (LPCTSTR) sMsgAttrib.omCANIDName, CharToCopy);
+
+        strncpy_s(m_acMsgEntry, 128, (LPCTSTR) sMsgAttrib.omCANIDName, CharToCopy);
 
         if (m_odMsgList.SetItemText(nItem, 1, m_acMsgEntry) == FALSE)
         {
             nResult = -1;
         }
-		if(m_pRGBColors)
-			m_pRGBColors[nResult] = sMsgAttrib.Colour;
+
+        if(m_pRGBColors)
+        {
+            m_pRGBColors[nResult] = sMsgAttrib.Colour;
+        }
     }
     return nResult;
 }
@@ -254,8 +253,10 @@ void CPPageMessage::OnButtonAdd()
         because the validation is already done */
         CMessageAttrib::ouGetHandle(m_eBusType).nAddNewAttrib(m_sNewItem);
 
-		if(m_pRGBColors == NULL)
-			m_pRGBColors = (COLORREF*)malloc(sizeof(COLORREF));
+        if(m_pRGBColors == NULL)
+        {
+            m_pRGBColors = (COLORREF*)malloc(sizeof(COLORREF));
+        }
 		else
 		{
 			m_pRGBColors = (COLORREF*)realloc(m_pRGBColors, (m_odMsgList.GetItemCount()+1)* sizeof(COLORREF));
@@ -276,7 +277,7 @@ void CPPageMessage::OnButtonEdit()
         CString omARow = m_odMsgList.GetItemText(nCurrSel, 0);
 
         UINT unMsgID;
-        sscanf((LPCTSTR) omARow, "%X", &unMsgID);
+        sscanf_s((LPCTSTR) omARow, "%X", &unMsgID);
         ouMsg.nGetAttrib(unMsgID, m_sNewItem);
 
         CMsgIDAttr odMsgDlg(m_eBusType);
@@ -311,7 +312,7 @@ void CPPageMessage::OnButtonRemove()
 		
         CString omARow = m_odMsgList.GetItemText(nCurrSel, 0);
         UINT unMsgID;
-        sscanf((LPCTSTR) omARow, "%X", &unMsgID);
+        sscanf_s((LPCTSTR) omARow, "%X", &unMsgID);
         ouMsg.nGetAttrib(unMsgID, m_sNewItem);
 
        /* CString omWarningMsg;
@@ -346,15 +347,19 @@ void CPPageMessage::OnOK()
 {
     CMessageAttrib::ouGetHandle(m_eBusType).vDoCommit();
     CMessageAttrib::ouGetHandle(m_eBusType).vSaveMessageAttribData();
-	CPropertyPage::OnOK();
-	//Added by Arun
-	for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
-	{
-		HWND hWnd;
-		hWnd = ((CMainFrame*)AfxGetMainWnd())->m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);					
-		if(hWnd)
-			::PostMessage(hWnd,WM_INVALIDATE_LIST_DISPLAY, 0 , 0);			
-	}		
+    CPropertyPage::OnOK();
+
+    //Added by Arun
+    for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
+    {
+        HWND hWnd;
+        hWnd = (static_cast<CMainFrame*> (AfxGetMainWnd()))->m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
+
+        if(hWnd)
+        {
+            ::PostMessage(hWnd,WM_INVALIDATE_LIST_DISPLAY, 0 , 0);
+        }
+    }
 }
 
 void CPPageMessage::OnItemchangedListMessage(NMHDR* /*pNMHDR*/, LRESULT* pResult) 
@@ -405,8 +410,10 @@ void CPPageMessage::OnNMCustomdrawListMessage(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 	else if (pNMCD->nmcd.dwDrawStage == CDDS_ITEMPREPAINT)
 	{
-		if(m_pRGBColors)
-			pNMCD->clrText = m_pRGBColors[pNMCD->nmcd.dwItemSpec];
+        if(m_pRGBColors)
+        {
+            pNMCD->clrText = m_pRGBColors[pNMCD->nmcd.dwItemSpec];
+        }
 		*pResult = CDRF_DODEFAULT;
 	}
     else if (pNMCD->nmcd.dwDrawStage == (CDDS_ITEMPREPAINT | CDDS_SUBITEM))

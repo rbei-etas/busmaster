@@ -81,7 +81,7 @@ public:
      *  1 registeration successful
      *  2 Client already registered
      * -2 No more clients are allowed to register*/
-    HRESULT DILC_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
+    HRESULT DILC_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
 
 	/**
 	 * This function manages the target message buffer list. The two combinations
@@ -157,42 +157,21 @@ public:
 	 */
     HRESULT DILC_ResetHardware(void);
 
-    /**
-	 * Call to receive list of the transmittable messages
-	 */
-    HRESULT DILC_GetTxMsgBuffer(BYTE*& pbyFlxTxMsgBuffer);
-
+   
     /**
 	 * Send messages
 	 */
     HRESULT DILC_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
 
     /**
-	 * Get basic info of the board
-	 */
-    HRESULT DILC_GetBoardInfo(s_BOARDINFO& BoardInfo);
-
-    /**
-	 * Get salient informations on current bus configuration
-	 */
-    HRESULT DILC_GetBusConfigInfo(BYTE* pbyBusInfo);
-
-    /**
-	 * Call to receive the version informations
-	 */
-    HRESULT DILC_GetVersionInfo(VERSIONINFO& sVerInfo);
-
-    /**
 	 * Call to get descriptive string of the last error occurred
 	 */
-    HRESULT DILC_GetLastErrorString(char acErrorStr[], int nLength);
+    HRESULT DILC_GetLastErrorString(string& acErrorStr);
 
     /**
 	 * Call to set PASS/STOP filter
 	 */
-    HRESULT DILC_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIDs, UINT nLength);
-
-	/**
+    /**
 	 * Call to get controller status. Caller has to give the handle of a 
      * event which will set whenever the controller changes the state.
      * #define defCONTROLLER_ACTIVE                   1
@@ -235,7 +214,7 @@ private:
     HRESULT (*m_pfGetLastErrorString)(CHAR *acErrorStr, int nLength);
     HRESULT (*m_pfFilterFrames)(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIDs, UINT nLength);
     HRESULT (*m_pfManageMsgBuf)(BYTE, DWORD ClientID, CBaseCANBufFSE*);
-    HRESULT (*m_pfRegisterClient)(BOOL bRegister, DWORD&, TCHAR*);
+    HRESULT (*m_pfRegisterClient)(BOOL bRegister, DWORD&, char*);
     HRESULT (*m_pfGetCntrlStatus)(const HANDLE& hEvent, UINT& unCntrlStatus);
     HRESULT (*m_pfGetControllerParams)(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     HRESULT (*m_pfGetErrorCount)(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);

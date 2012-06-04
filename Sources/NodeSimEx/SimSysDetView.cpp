@@ -33,13 +33,13 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-TCHAR* pcHandlerNames[] =                   {_T("Message Handlers"),
-                                             _T("Timer Handlers"),
-                                             _T("Key Handlers"),
-                                             _T("Error Handlers")};
+char* pcHandlerNames[] =                   {"Message Handlers",
+                                             "Timer Handlers",
+                                             "Key Handlers",
+                                             "Error Handlers"};
 
-#define defStrEnabled                    _T("Enabled")
-#define defStrDisabled                   _T("Disabled")
+#define defStrEnabled                    "Enabled"
+#define defStrDisabled                   "Disabled"
 
 /////////////////////////////////////////////////////////////////////////////
 // CSimSysDetView
@@ -73,8 +73,8 @@ CSimSysDetView::CSimSysDetView(): CFormView(CSimSysDetView::IDD)
 	
     
 	//{{AFX_DATA_INIT(CSimSysDetView)
-	m_omStrNodeName = _T("");
-	m_omStrCFile = _T("");
+	m_omStrNodeName = "";
+	m_omStrCFile = "";
 	//}}AFX_DATA_INIT
 }
 /******************************************************************************/
@@ -554,7 +554,127 @@ void CSimSysDetView::OnButtonOpenfile()
                 CString omStrNewCFileName = fileDlg.GetPathName();
                 CString omStrTitle = STR_EMPTY;
                 omStrTitle = fileDlg.GetFileTitle();
-            
+
+				/*Getting the Protocol from the .c file*/
+				// For File I/O
+				CStdioFile o_File;				
+
+				// Open File
+				BOOL bIsFileOpen = FALSE;
+				
+				// Opening the file
+				bIsFileOpen = o_File.Open(
+					omStrNewCFileName, CFile::modeRead|CFile::typeText );
+				if(bIsFileOpen != FALSE )
+				{
+					// read subsequent info from the file
+					/* Read Database version number*/
+					int nIndex = -1;
+					CString strProtocolInfo;
+
+					CString omstrBusName;
+
+					omstrBusName.Empty();
+
+					if(m_eBus == CAN)
+					{
+						// If CAN
+						omstrBusName = "BUSMASTER";
+					}
+					else if(m_eBus == J1939)
+					{
+						// If J1939
+						omstrBusName = "J1939";
+					}
+
+					// If Bus is selected
+					if(omstrBusName.IsEmpty() == FALSE)
+					{
+						nIndex = -1;
+						CString omstrProtocolValue;
+
+						// Check if the PROTOCOL tag exists in the .c file
+						while( nIndex == -1 && o_File.ReadString( omstrProtocolValue ))
+						{   
+							// Checking if the .c file is of which Protocol
+							nIndex = omstrProtocolValue.Find(PROTOCOL_TAB);
+						}
+
+						if(nIndex != -1)
+						{
+							int nPlaceLeftParanth = omstrProtocolValue.Find('[');
+							int nPlaceRightParanth = omstrProtocolValue.Find(']');
+							if(nPlaceLeftParanth != -1 && nPlaceRightParanth != -1)
+							{
+								omstrProtocolValue = omstrProtocolValue.Mid(nPlaceLeftParanth+1, (nPlaceRightParanth - nPlaceLeftParanth -1));
+
+								// If CAN protocol is selected
+								if(omstrProtocolValue == _T("CAN"))
+								{
+									if(m_eBus == J1939)
+									{
+										// If the .c file is not related to J1939
+										AfxMessageBox("File " + omStrNewCFileName + " s not created for J1939.\r\nPlease open the .c file created for J1939.");
+										return;
+									}
+								}
+
+								// If J1939 protocol is selected
+								if(omstrProtocolValue == _T("J1939"))
+								{
+									// If CAN protocol is selected
+									if(m_eBus == CAN)
+									{
+										// If the .c file is not related to CAN
+										AfxMessageBox("File " + omStrNewCFileName + " is not created for CAN.\r\nPlease open the .c file created for CAN.");
+										return;
+									}
+								}
+							}							
+
+							// Closing the file opened
+							o_File.Close();
+						}
+						else
+						{
+							o_File.SeekToBegin();
+
+							CString omTemp1 = BUS_INCLUDE_HDR;
+							// Preparing the header to be searched for in .c file
+							// to get the Protocol name
+							omTemp1.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), omstrBusName);
+
+							nIndex = -1;
+
+							while( nIndex == -1 && o_File.ReadString( strProtocolInfo ))
+							{   
+								// Checking if the .c file is of which Protocol
+								nIndex = strProtocolInfo.Find(omTemp1);
+							}
+
+							// Closing the file opened
+							o_File.Close();
+
+							if (nIndex == -1)
+							{
+								// If CAN protocol is selected
+								if(m_eBus == CAN)
+								{
+									// If the .c file is not related to CAN
+									AfxMessageBox("File " + omStrNewCFileName + " is not created for CAN.\r\nPlease open the .c file created for CAN.");
+									return;
+								}
+								// If J1939 protocol is selected
+								else if(m_eBus == J1939)
+								{
+									// If the .c file is not related to J1939
+									AfxMessageBox("File " + omStrNewCFileName + " s not created for J1939.\r\nPlease open the .c file created for J1939.");
+									return;
+								}
+							}
+						}
+					}
+				}
 /*
                 // file-attribute information
                 _findfirst fileinfo;
@@ -1526,13 +1646,13 @@ void CSimSysDetView::vSetHandlerDetailRowText(int nRow, int nNoOfHandler, BOOL b
 {
     if (nRow >= 0)
     {
-        CString strHandlerCount = _T("");
+        CString strHandlerCount = "";
         CString strEnabled = defStrDisabled;
         if (bEnabled)
         {
             strEnabled = defStrEnabled; 
         }
-        strHandlerCount.Format(_T("%d"), nNoOfHandler);
+        strHandlerCount.Format("%d", nNoOfHandler);
         //Handler counts in 2nd row(0 based)
         m_omListCtrlHanDet.SetItemText(nRow, 1, strHandlerCount);
         //State in 3rd row

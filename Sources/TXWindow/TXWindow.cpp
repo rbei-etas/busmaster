@@ -29,10 +29,6 @@
 #include "TxMsgManager.h"
 #include "TxMsgChildFrame.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 static AFX_EXTENSION_MODULE TXWindowDLL = { NULL, NULL };
 
 extern "C" int APIENTRY
@@ -46,8 +42,10 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 		TRACE0("TXWindow.DLL Initializing!\n");
 		
 		// Extension DLL one-time initialization
-		if (!AfxInitExtensionModule(TXWindowDLL, hInstance))
-			return 0;
+        if (!AfxInitExtensionModule(TXWindowDLL, hInstance))
+        {
+            return 0;
+        }
 
 		// Insert this DLL into the resource chain
 		// NOTE: If this Extension DLL is being implicitly linked to by
@@ -88,8 +86,10 @@ USAGEMODE HRESULT TX_vSetMsgDBPtrInDetailsView(void* pMsgDB)
 	HINSTANCE hInst = AfxGetResourceHandle();
 	AfxSetResourceHandle(TXWindowDLL.hResource);
 
-	if(g_pomTxMsgChildWindow)
-		g_pomTxMsgChildWindow->vSetMsgDBPtrInDetailsView(pMsgDB);
+    if(g_pomTxMsgChildWindow)
+    {
+        g_pomTxMsgChildWindow->vSetMsgDBPtrInDetailsView(pMsgDB);
+    }
 
 	//Place this at the end of the export function.
 	//switch back to previous resource handle.
@@ -148,8 +148,10 @@ USAGEMODE HRESULT TX_vShowConfigureMsgWindow(void* pParentWnd)
                 g_pomTxMsgChildWindow->ShowWindow( SW_SHOW);
             }
         }
-		else 
-			return S_FALSE;
+        else
+        {
+            return S_FALSE;
+        }
     }
 	// If already exist then activate and set the focus
     else
@@ -178,17 +180,23 @@ USAGEMODE HRESULT TX_vSetDILInterfacePtr(void* ptrDILIntrf)
 
 USAGEMODE HRESULT TX_vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	if(g_pomTxMsgChildWindow)
-		g_pomTxMsgChildWindow->PostMessage(msg, wParam, lParam);
+    if(g_pomTxMsgChildWindow)
+    {
+        g_pomTxMsgChildWindow->PostMessage(msg, wParam, lParam);
+    }
 	return S_OK;
 }
 
 USAGEMODE HRESULT TX_hConfigWindowShown()
 {
-	if(g_pomTxMsgChildWindow)
-		return S_OK;
-	else
-		return S_FALSE;
+    if(g_pomTxMsgChildWindow)
+    {
+        return S_OK;
+    }
+    else
+    {
+        return S_FALSE;
+    }
 }
 
 USAGEMODE HRESULT TX_vStartTransmission(UCHAR ucKeyVal)
@@ -199,10 +207,14 @@ USAGEMODE HRESULT TX_vStartTransmission(UCHAR ucKeyVal)
 
 USAGEMODE HRESULT TX_bAllocateMemoryForGlobalTxList()
 {
-	if(CTxMsgManager::s_podGetTxMsgManager()->bAllocateMemoryForGlobalTxList())
-		return S_OK;
-	else
-		return S_FALSE;
+    if(CTxMsgManager::s_podGetTxMsgManager()->bAllocateMemoryForGlobalTxList())
+    {
+        return S_OK;
+    }
+    else
+    {
+        return S_FALSE;
+    }
 }
 
 USAGEMODE HRESULT TX_vAssignMsgBlockList()
@@ -225,8 +237,10 @@ USAGEMODE HRESULT TX_vStopTransmission(UINT unMaxWaitTime)
 
 USAGEMODE HRESULT TX_vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize)
 {
-	if(g_pomTxMsgChildWindow)
-		g_pomTxMsgChildWindow->vUpdateWndCo_Ords();
+    if(g_pomTxMsgChildWindow)
+    {
+        g_pomTxMsgChildWindow->vUpdateWndCo_Ords();
+    }
 	CTxMsgManager::s_podGetTxMsgManager()->vGetTxWndConfigData(pDesBuffer, nBuffSize);
 	return S_OK;
 }

@@ -27,7 +27,7 @@
 #include "BaseLogObject.h"            // For CBaseLogObject class declaration
 #include "../DataTypes/DIL_Datatypes.h"
 
-const int SIZE_CHAR = sizeof(TCHAR);
+const int SIZE_CHAR = sizeof(char);
 #define ENOENT          2
 
 #define DEFAULT_FILE_SIZE_IN_MBYTES       50 //MB 
@@ -57,6 +57,7 @@ const UINT DEFAULT_FILE_SIZE_IN_BYTES = DEFAULT_FILE_SIZE_IN_MBYTES * MB_VALUE;
 #define BUS_LOG_BAUDRATR_END	_T("***END CHANNEL BAUD RATE***")
 #define BUS_LOG_CHANNEL			_T("***CHANNEL %d - %s - %s Kbps***")
 
+#define PROTOCOL _T("***PROTOCOL");
 
 //********************************************************************************
 //	Function Name	 	: CBaseLogObject
@@ -102,9 +103,7 @@ Modifications   :
 void CBaseLogObject::vResetValues(void)
 {
     m_sLogInfo.vClear();    // Initialise the logging block
-
-    m_omCurrLogFile = _T("");
-
+    m_omCurrLogFile = "";
     m_pLogFile = NULL;
     m_CurrTriggerType = NONE;
     m_nCurrFileCnt = 0;
@@ -251,7 +250,7 @@ BOOL CBaseLogObject::bLogString(CString& omStr)
     return TRUE;
 }
 
-void CBaseLogObject::vWriteTextToFile(CString& om_LogText)
+void CBaseLogObject::vWriteTextToFile(CString& om_LogText, ETYPE_BUS eBus)
 {
     DWORD dwBytes2Write = om_LogText.GetLength()* SIZE_CHAR; //no of bytes
 
@@ -271,7 +270,7 @@ void CBaseLogObject::vWriteTextToFile(CString& om_LogText)
         {
             m_sLogInfo.m_eFileMode = OVERWRITE_MODE;
         }
-        bStartLogging();
+        bStartLogging(eBus);
         //Save the triggering type
         m_CurrTriggerType = LastTriggerType;
         //Revert back to the original mode
@@ -311,7 +310,7 @@ void CBaseLogObject::vSetNextFileName(void)
     }
 }
 
-CString CBaseLogObject::omAddGroupCountToFileName(int nCount, TCHAR sFileName[])
+CString CBaseLogObject::omAddGroupCountToFileName(int nCount, char sFileName[])
 {
     CString omFileName = sFileName;
     //Add the file count with "_"
@@ -344,34 +343,37 @@ CString CBaseLogObject::omRemoveGroupCountFromFileName(CString FileName)
  *
  * To do actions before logging starts.
  */
-BOOL CBaseLogObject::bStartLogging(void)
+BOOL CBaseLogObject::bStartLogging(ETYPE_BUS eBus)
 {
     BOOL bResult = FALSE;
     if ((m_pLogFile == NULL) && (m_sLogInfo.m_bEnabled))
     {
         // This function should be called every time logging is started
         m_CurrTriggerType = m_sLogInfo.m_sLogTrigger.m_unTriggerType;
-        TCHAR Mode[2] =  _T(" ");
-		Mode[0] = (m_sLogInfo.m_eFileMode == APPEND_MODE) ? L'a' : L'w';
+        char Mode[2] =  _T(" ");
+        Mode[0] = (m_sLogInfo.m_eFileMode == APPEND_MODE) ? L'a' : L'w';
         EnterCriticalSection(&m_CritSection);
-        
         //In case user has deleted the content of the file
         m_dTotalBytes = dwGetFileSize(m_omCurrLogFile);
-		//If it is new session always overwrite the file
-		if (m_dTotalBytes >= DEFAULT_FILE_SIZE_IN_BYTES && m_bNewSession)
-		{			
-			Mode[0] = L'w';
-			m_dTotalBytes = 0;
-		}
-		if (m_sLogInfo.m_eFileMode == OVERWRITE_MODE)
-		{
-			m_dTotalBytes = 0;
-		}
-		m_pLogFile = _tfopen(m_omCurrLogFile, Mode);
-		if (m_pLogFile != NULL)
-		{
-			CString omHeader = _T("");
-			vFormatHeader(omHeader);
+
+        //If it is new session always overwrite the file
+        if (m_dTotalBytes >= DEFAULT_FILE_SIZE_IN_BYTES && m_bNewSession)
+        {
+            Mode[0] = L'w';
+            m_dTotalBytes = 0;
+        }
+
+        if (m_sLogInfo.m_eFileMode == OVERWRITE_MODE)
+        {
+            m_dTotalBytes = 0;
+        }
+
+        fopen_s(&m_pLogFile, m_omCurrLogFile, Mode);
+
+        if (m_pLogFile != NULL)
+        {
+            CString omHeader = "";
+			vFormatHeader(omHeader, eBus);
             _ftprintf(m_pLogFile,  _T("%s"), omHeader.GetBuffer(MAX_PATH));
             bResult = TRUE;
         }
@@ -393,11 +395,9 @@ BOOL CBaseLogObject::bStopLogging()
     if ((m_pLogFile != NULL) && (m_sLogInfo.m_bEnabled))
     {
         m_CurrTriggerType = NONE;
-
-		CString omFooter = _T("");
-		vFormatFooter(omFooter);
-
-		_ftprintf(m_pLogFile,  _T("%s\n"), omFooter.GetBuffer(MAX_PATH));
+        CString omFooter = "";
+        vFormatFooter(omFooter);
+        _ftprintf(m_pLogFile,  _T("%s\n"), omFooter.GetBuffer(MAX_PATH));
         fclose(m_pLogFile);
         m_pLogFile = NULL;
         bResult = TRUE;
@@ -488,13 +488,25 @@ DWORD CBaseLogObject::dwGetFileSize(CString omFileName)
     return dwFileSize;
 }
 
-void CBaseLogObject::vFormatHeader(CString& omHeader)
+void CBaseLogObject::vFormatHeader(CString& omHeader, ETYPE_BUS eBus)
 {
     omHeader = _T("***BUSMASTER ");
 
     omHeader += m_omVersion;
     omHeader += _T("***");
     omHeader += L'\n';
+	if(eBus == CAN)
+	{
+		omHeader += PROTOCOL;
+		omHeader += _T(" CAN***");
+		omHeader += L'\n';
+	}
+	else if(eBus == J1939)
+	{
+		omHeader += PROTOCOL;
+		omHeader += _T(" J1939***");
+		omHeader += L'\n';
+	}
     omHeader += BUS_LOG_HEADER;
     omHeader += L'\n';
     omHeader += BUS_LOG_START;
@@ -514,15 +526,26 @@ void CBaseLogObject::vFormatHeader(CString& omHeader)
     omHeader += L'\n';
     switch (m_sLogInfo.m_eLogTimerMode) // Time Mode
     {
-        case TIME_MODE_ABSOLUTE: omHeader += BUS_LOG_ABSMODE; break;
-        case TIME_MODE_RELATIVE: omHeader += BUS_LOG_RELMODE; break;
-        case TIME_MODE_SYSTEM:   omHeader += BUS_LOG_SYSMODE; break;
-        default: ASSERT(FALSE); break;
+        case TIME_MODE_ABSOLUTE:
+            omHeader += BUS_LOG_ABSMODE;
+            break;
+
+        case TIME_MODE_RELATIVE:
+            omHeader += BUS_LOG_RELMODE;
+            break;
+
+        case TIME_MODE_SYSTEM:
+            omHeader += BUS_LOG_SYSMODE;
+            break;
+
+        default:
+            ASSERT(FALSE);
+            break;
     }
     omHeader += L'\n';
 
 	// Update the channel and its baudrate information	
-	sCONTROLERDETAILS controllerDetails[defNO_OF_CHANNELS];
+	sCONTROLLERDETAILS controllerDetails[defNO_OF_CHANNELS];
 	int nNumChannels = 0;
 	GetChannelBaudRateDetails(controllerDetails, nNumChannels);
 	omHeader += BUS_LOG_BAUDRATE_START;
@@ -581,7 +604,7 @@ void CBaseLogObject::SetDatabaseFiles(const CStringArray& omList)
 
 // Set the baud rate details for each channel
 void CBaseLogObject::Der_SetChannelBaudRateDetails
-					(SCONTROLER_DETAILS* controllerDetails, 
+					(SCONTROLLER_DETAILS* controllerDetails, 
 					int nNumChannels)
 {
 	Der_SetChannelBaudRateDetails(controllerDetails, nNumChannels);
@@ -589,7 +612,7 @@ void CBaseLogObject::Der_SetChannelBaudRateDetails
 
 // To get the channel baud rate
 void CBaseLogObject::GetChannelBaudRateDetails
-					(SCONTROLER_DETAILS* controllerDetails, int& nNumChannels)
+					(SCONTROLLER_DETAILS* controllerDetails, int& nNumChannels)
 {
 	Der_GetChannelBaudRateDetails(controllerDetails, nNumChannels);
 }

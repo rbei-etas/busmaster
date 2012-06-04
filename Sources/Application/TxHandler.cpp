@@ -65,8 +65,10 @@ CTxHandler::CTxHandler(void)
 
 CTxHandler::~CTxHandler(void)
 {
-	if ( m_hTxHandle != NULL )            
-        FreeLibrary(m_hTxHandle);    
+    if ( m_hTxHandle != NULL )
+    {
+        FreeLibrary(m_hTxHandle);
+    }
 }
 
 /*******************************************************************************
@@ -164,8 +166,10 @@ void CTxHandler::vloadFuncPtrAddress()
 *******************************************************************************/
 void CTxHandler::vSetMsgDBPtrInDetailsView(void* pMsgDB)
 {
-	if(pfSetMsgDBPtrInDetailsView != NULL)
-		pfSetMsgDBPtrInDetailsView(pMsgDB);
+    if(pfSetMsgDBPtrInDetailsView != NULL)
+    {
+        pfSetMsgDBPtrInDetailsView(pMsgDB);
+    }
 }
 
 /*******************************************************************************
@@ -180,8 +184,10 @@ void CTxHandler::vSetMsgDBPtrInDetailsView(void* pMsgDB)
 *******************************************************************************/
 void CTxHandler::vShowConfigureMsgWindow(void* pParentWnd)
 {
-	if(pfShowConfigureMsgWindow != NULL)
-		pfShowConfigureMsgWindow(pParentWnd);
+    if(pfShowConfigureMsgWindow != NULL)
+    {
+        pfShowConfigureMsgWindow(pParentWnd);
+    }
 }
 
 /*******************************************************************************
@@ -196,8 +202,10 @@ void CTxHandler::vShowConfigureMsgWindow(void* pParentWnd)
 *******************************************************************************/
 void CTxHandler::vSetClientID(DWORD dwClientID)
 {
-	if(pfSetClientId != NULL)
-		pfSetClientId(dwClientID);
+    if(pfSetClientId != NULL)
+    {
+        pfSetClientId(dwClientID);
+    }
 }
 
 /*******************************************************************************
@@ -212,8 +220,10 @@ void CTxHandler::vSetClientID(DWORD dwClientID)
 *******************************************************************************/
 void CTxHandler::vSetDILInterfacePtr(void* ptrDILIntrf)
 {
-	if(pfSetDILInterfacePtr != NULL)
-		pfSetDILInterfacePtr(ptrDILIntrf);
+    if(pfSetDILInterfacePtr != NULL)
+    {
+        pfSetDILInterfacePtr(ptrDILIntrf);
+    }
 }
 
 /*******************************************************************************
@@ -228,8 +238,10 @@ void CTxHandler::vSetDILInterfacePtr(void* ptrDILIntrf)
 *******************************************************************************/
 void CTxHandler::vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	if(pfPostMessageToTxWnd != NULL)
-		pfPostMessageToTxWnd(msg, wParam, lParam);
+    if(pfPostMessageToTxWnd != NULL)
+    {
+        pfPostMessageToTxWnd(msg, wParam, lParam);
+    }
 }
 
 /*******************************************************************************
@@ -244,10 +256,14 @@ void CTxHandler::vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM lParam)
 *******************************************************************************/
 HRESULT CTxHandler::hConfigWindowShown()
 {
-	HRESULT hResult = S_FALSE;
-	if(pfConfigWindowShown != NULL)
-		hResult = pfConfigWindowShown();
-	return hResult;
+    HRESULT hResult = S_FALSE;
+
+    if(pfConfigWindowShown != NULL)
+    {
+        hResult = pfConfigWindowShown();
+    }
+
+    return hResult;
 }
 
 /*******************************************************************************
@@ -262,8 +278,10 @@ HRESULT CTxHandler::hConfigWindowShown()
 *******************************************************************************/
 void CTxHandler::vStartTransmission(UCHAR ucKeyVal)
 {
-	if(pfStartTransmission != NULL)
-		pfStartTransmission(ucKeyVal);
+    if(pfStartTransmission != NULL)
+    {
+        pfStartTransmission(ucKeyVal);
+    }
 }
 
 /*******************************************************************************
@@ -280,9 +298,12 @@ HRESULT CTxHandler::hAllocateMemoryForGlobalTxList()
 {
 	HRESULT hResult = S_OK; 
 
-	if(pfAllocateMemoryForGlobalTxList != NULL)
-		hResult = pfAllocateMemoryForGlobalTxList();
-	return hResult;
+    if(pfAllocateMemoryForGlobalTxList != NULL)
+    {
+        hResult = pfAllocateMemoryForGlobalTxList();
+    }
+
+    return hResult;
 }
 
 /*******************************************************************************
@@ -296,9 +317,11 @@ HRESULT CTxHandler::hAllocateMemoryForGlobalTxList()
   Modifications  : 
 *******************************************************************************/
 void CTxHandler::vAssignMsgBlockList()
-{	
-	if(pfAssignMsgBlockList != NULL)
-		pfAssignMsgBlockList();
+{
+    if(pfAssignMsgBlockList != NULL)
+    {
+        pfAssignMsgBlockList();
+    }
 }
 
 /*******************************************************************************
@@ -312,9 +335,11 @@ void CTxHandler::vAssignMsgBlockList()
   Modifications  : 
 *******************************************************************************/
 void CTxHandler::vDeleteTxBlockMemory()
-{	
-	if(pfDeleteTxBlockMemory != NULL)
-		pfDeleteTxBlockMemory();
+{
+    if(pfDeleteTxBlockMemory != NULL)
+    {
+        pfDeleteTxBlockMemory();
+    }
 }
 
 /*******************************************************************************
@@ -328,9 +353,11 @@ void CTxHandler::vDeleteTxBlockMemory()
   Modifications  : 
 *******************************************************************************/
 void CTxHandler::vStopTransmission(UINT unMaxWaitTime)
-{	
-	if(pfStopTransmission != NULL)
-		pfStopTransmission(unMaxWaitTime);
+{
+    if(pfStopTransmission != NULL)
+    {
+        pfStopTransmission(unMaxWaitTime);
+    }
 }
 
 /*******************************************************************************
@@ -344,9 +371,11 @@ void CTxHandler::vStopTransmission(UINT unMaxWaitTime)
   Modifications  : 
 *******************************************************************************/
 void CTxHandler::vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize)
-{	
-	if(pfGetTxWndConfigData != NULL)
-		pfGetTxWndConfigData(pDesBuffer, nBuffSize);
+{
+    if(pfGetTxWndConfigData != NULL)
+    {
+        pfGetTxWndConfigData(pDesBuffer, nBuffSize);
+    }
 }
 
 /*******************************************************************************
@@ -360,9 +389,11 @@ void CTxHandler::vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize)
   Modifications  : 
 *******************************************************************************/
 void CTxHandler::vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize)
-{	
-	if(pfSetTxWndConfigData != NULL)
-		pfSetTxWndConfigData(pSrcBuffer, nBuffSize);
+{
+    if(pfSetTxWndConfigData != NULL)
+    {
+        pfSetTxWndConfigData(pSrcBuffer, nBuffSize);
+    }
 }
 
 /*******************************************************************************

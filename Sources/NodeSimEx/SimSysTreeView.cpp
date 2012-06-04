@@ -1628,7 +1628,7 @@ void CSimSysTreeView::OnNodeErrorhandlers()
     //Assuming a node as selected 
     CString omStrSimSysName = om_Tree.GetItemText(hParent);
     CString omStrNodeName = om_Tree.GetItemText(hSelectedItem);
-    CString omStrMenuText = _T("");
+    CString omStrMenuText = "";
 
     CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
@@ -1676,7 +1676,7 @@ void CSimSysTreeView::OnNodeKeyhandlers()
     //Assuming a node as selected 
     CString omStrSimSysName = om_Tree.GetItemText(hParent);
     CString omStrNodeName = om_Tree.GetItemText(hSelectedItem);
-    CString omStrMenuText = _T("");
+    CString omStrMenuText = "";
 
     CSimSysNodeInfo* pSimsysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
@@ -2173,11 +2173,11 @@ void CSimSysTreeView::OnSimsysBuildall()
     {       
 
         CString omStrErrorMsg =_T("Following file(s) are not properly build:");
-        CString omStrErrorMsgDummy=_T("");
+        CString omStrErrorMsgDummy="";
         for(int i = 0 ;i < nFailure; i++)
         {
             
-           omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+           omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
            omStrErrorMsg += omStrErrorMsgDummy;
         }
          
@@ -2442,8 +2442,8 @@ void CSimSysTreeView::OnSimsysLoadall()
     if(nFailure > 0)  // if the load is not successfull
     {       
 
-        CString omStrErrorMsg =_T("Following file(s) are not properly loaded:");
-        CString omStrErrorMsgDummy=_T("");
+        CString omStrErrorMsg ="Following file(s) are not properly loaded:";
+        CString omStrErrorMsgDummy="";
         for(int i = 0 ;i < nFailure; i++)
         {
             
@@ -2623,11 +2623,11 @@ void CSimSysTreeView::OnSimsysUnloadall()
     }
     if(nFailure > 0)  // if the load is not successfull
     {
-        CString omStrErrorMsg = _T("Following file(s) are not properly unloaded:");
-        CString omStrErrorMsgDummy = _T("");
+        CString omStrErrorMsg = "Following file(s) are not properly unloaded:";
+        CString omStrErrorMsgDummy = "";
         for(int i = 0 ;i < nFailure; i++)
         {            
-           omStrErrorMsgDummy.Format(_T("\n%s"), omStrUnLoadFiles.GetAt(i));
+           omStrErrorMsgDummy.Format("\n%s", omStrUnLoadFiles.GetAt(i));
            omStrErrorMsg += omStrErrorMsgDummy;
         }
          

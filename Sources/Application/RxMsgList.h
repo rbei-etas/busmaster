@@ -22,10 +22,6 @@
  * Definition of CRxMsgList class
  */
 
-
-#if !defined RXMSGLIST_H__INCLUDED_
-#define RXMSGLIST_H__INCLUDED_
-
 #pragma once
 #include "Utility/flickerfreelistctrl.h"
 #include "include/BaseDefs.h"
@@ -40,13 +36,13 @@ private:
     int m_nIconBlank;
     BOOL m_bDispModeChanged;    
     CImageList m_ImageList;
-    TCHAR* m_pomDataPtrArr[MAX_MSG_WND_COL_CNT];	
-	COLORREF m_clrMsg;	
-	bool* m_pbSortableColumn;
-	bool* m_pbAscendingOrder;
-	int m_nSortedColumn;
-	CPoint m_lClkPoint;
-	CFont m_omNewFont;
+    char* m_pomDataPtrArr[MAX_MSG_WND_COL_CNT];
+    COLORREF m_clrMsg;
+    bool* m_pbSortableColumn;
+    bool* m_pbAscendingOrder;
+    int m_nSortedColumn;
+    CPoint m_lClkPoint;
+    CFont m_omNewFont;
 
 protected:
 	struct ColumnState
@@ -107,11 +103,11 @@ private:
 	bool m_bConnected;
 
 public:
-	// Member data
-	CListHdrCtrl m_wndHeader;
-	CRxMsgList();	
-	virtual ~CRxMsgList(void);
-    void vSetDsipItemDataPtrArr(TCHAR* pomDataPtrArr[MAX_MSG_WND_COL_CNT]);
+    // Member data
+    CListHdrCtrl m_wndHeader;
+    CRxMsgList();
+    virtual ~CRxMsgList(void);
+    void vSetDsipItemDataPtrArr(char* pomDataPtrArr[MAX_MSG_WND_COL_CNT]);
     void vDoInitialization();
 	void vSetMsgColor(COLORREF color);	
 	void vShowHideBlankcolumn(BOOL bInterpretON);
@@ -132,5 +128,3 @@ public:
 	void SetConnectionStatus(bool bConnected);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 };
-
-#endif //RXMSGLIST_H__INCLUDED_

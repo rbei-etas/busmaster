@@ -1199,7 +1199,9 @@ void CSignalDetailsDlg::OnOK()
                     pSg->m_byStartBit               = m_byStartBit;
 
                     if ( m_unMode == MD_ADD )
+                    {
                         m_omStrPrevSignalName = STR_EMPTY;
+                    }
 
                     // Fill the matrix for edited signal
                     pTempMsgSg->vUpdateSignalDetails( m_omStrMsgName,
@@ -1362,7 +1364,9 @@ BOOL CSignalDetailsDlg::PreTranslateMessage(MSG* pMsg)
         }
     }
     if ( bSkip == FALSE)
+    {
         bSkip = CDialog::PreTranslateMessage(pMsg);
+    }
 
     return bSkip;
 }

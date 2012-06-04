@@ -21,21 +21,22 @@
  *
  * This file contain the definition of all structures used in 
  */
+
+#pragma once
+
 #include "include/Struct_CAN.h"
 #include "HashDefines.h"
 //#include "canapi2.h"
 #include "include/Basedefs.h"
 #include "DataTypes/Filter_DataTypes.h"
 
-#ifndef _STRUCT_H_
-#define _STRUCT_H_
 // All function prototype is used in function editor.
-typedef VOID (__cdecl *PFMSG_HANDLER)(STCAN_MSG Rx_Msg); 
-typedef VOID (__cdecl *PFTIMER_HANDLER)(); 
-typedef VOID (__cdecl *PFKEY_HANDLER)(UCHAR ucKeyVal);
-typedef VOID (__cdecl *PFERROR_HANDLER)(SCAN_ERR ErrorMsg);
-typedef VOID (__cdecl *PFDLL_HANDLER)();
-typedef BOOL (__cdecl *PFGET_PRG_VER)(int*,int*,HMODULE);
+typedef VOID (*PFMSG_HANDLER)(STCAN_MSG Rx_Msg);
+typedef VOID (*PFTIMER_HANDLER)();
+typedef VOID (*PFKEY_HANDLER)(UCHAR ucKeyVal);
+typedef VOID (*PFERROR_HANDLER)(SCAN_ERR ErrorMsg);
+typedef VOID (*PFDLL_HANDLER)();
+typedef BOOL (*PFGET_PRG_VER)(int*,int*,HMODULE);
 // Used is application call back function
 typedef VOID (CALLBACK *APPTIMERPOINTER)(UINT,UINT,DWORD,DWORD,DWORD);
 
@@ -427,32 +428,33 @@ typedef union tagUBYTE
 
 // Types of Network Statistics parameters
 #define defSTAT_PARAMETERS_COUNT        24
-const char acStatParams[ defSTAT_PARAMETERS_COUNT ][25] = {
-                       "Total Messages",
-                      "Message Rate",
-                      "Total Errors",
-                      "Error Rate",
-                      "Network Load",
-                      "Peak Network Load",
-                      "Tx Message Total",
-                      "Standard Tx Message",
-                      "Standard Tx Rate",
-                      "Extended Tx Message",
-                      "Extended Tx Rate",
-                      "Standard.Tx RTR",
-                      "Extended Tx RTR",
-                      "Tx Errors",
-                      "Tx Error Rate",
-                      "Rx Message Total",
-                      "Standard Rx Message",
-                      "Standard Rx Rate",
-                      "Extended Rx Message",
-                      "Extended Rx Rate",
-                      "Standard.Rx RTR",
-                      "Extended Rx RTR",
-                      "Rx Errors",
-                      "Rx Error Rate",
-                     };
+const char acStatParams[ defSTAT_PARAMETERS_COUNT ][25] =
+{
+    "Total Messages",
+    "Message Rate",
+    "Total Errors",
+    "Error Rate",
+    "Network Load",
+    "Peak Network Load",
+    "Tx Message Total",
+    "Standard Tx Message",
+    "Standard Tx Rate",
+    "Extended Tx Message",
+    "Extended Tx Rate",
+    "Standard.Tx RTR",
+    "Extended Tx RTR",
+    "Tx Errors",
+    "Tx Error Rate",
+    "Rx Message Total",
+    "Standard Rx Message",
+    "Standard Rx Rate",
+    "Extended Rx Message",
+    "Extended Rx Rate",
+    "Standard.Rx RTR",
+    "Extended Rx RTR",
+    "Rx Errors",
+    "Rx Error Rate",
+};
 
 struct sPropertiesList
 {
@@ -481,11 +483,11 @@ typedef sTxMsgSplitterData STXMSGSPLITTERDATA;
 typedef STXMSGSPLITTERDATA * PSTXMSGSPLITTERDATA;
 
 // Graph window splitter details
-struct tagGraphSplitterData
+typedef struct tagGraphSplitterData
 {
     int m_nRootSplitterData[2][2];
     int m_nRightViewSplitterData[2][2];
-};
+} tagGraphSplitterData;
 
 typedef tagGraphSplitterData sGraphSplitterData;
 typedef sGraphSplitterData SGRAPHSPLITTERDATA;
@@ -532,14 +534,14 @@ typedef tagFilterList sFilterList;
 typedef sFilterList SFILTERLIST;
 typedef SFILTERLIST* PSFILTERLIST;
 
-struct tagModuleFilter
+typedef struct tagModuleFilter
 {
     char    m_omFilterName[LENGTH_FILTERNAME];
     BOOL    m_bEnabled;
 
     tagModuleFilter& operator=(tagModuleFilter& TempObj)
     {
-        _tcscpy(m_omFilterName, TempObj.m_omFilterName);
+        strcpy_s(m_omFilterName, LENGTH_FILTERNAME, TempObj.m_omFilterName);
         m_bEnabled = TempObj.m_bEnabled;
         return *this;
     }
@@ -563,7 +565,7 @@ struct tagModuleFilter
     {
         return !(*this == TempObj);
     }
-};
+} tagModuleFilter;
 
 typedef tagModuleFilter sModuleFilter;
 typedef sModuleFilter SMODULEFILTER;
@@ -635,5 +637,3 @@ enum eLogFileStates { LOGGING_YET_TO_START, LOGGING_STARTED, LOGGING_STOPPED } ;
 
 // Replay States
 enum eReplayStates { REPLAY_TO_START, REPLAY_RUNNING, REPLAY_INVALID };
-
-#endif

@@ -290,8 +290,8 @@ Date Created   :  06/04/2011
 Modifications  :  
 Codetag        :  CS022
 ******************************************************************************/
-HRESULT CTestSetupEntity::RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, CBaseEntityTA* pouCurrSubEntity){
-
+HRESULT CTestSetupEntity::RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, CBaseEntityTA* pouCurrSubEntity)
+{
     UINT unCount = (UINT)m_odTestCaseEntityList.GetCount();
     CTestCaseEntity ouTCEntity = *((CTestCaseEntity*)pouRefSubEntity);
     for(UINT i=0; i<unCount; i++)
@@ -836,10 +836,13 @@ INT CTestSetupEntity::nLoadHeader(MSXML2::IXMLDOMNodePtr& pHeaderDOMNode)
 
     
     if(omStrExt == "HTM")
+    {
         m_ouTestSetupHeader.m_sReportFile.m_eType = HTM;
+    }
     else
+    {
         m_ouTestSetupHeader.m_sReportFile.m_eType = TXT;
-
+    }
 
     //bstrNodeName = def_STR_REPORT_PATH;
 	bstrNodeName.Assign(SysAllocString(CT2W(def_STR_REPORT_PATH)));
@@ -973,7 +976,7 @@ INT CTestSetupEntity::nSaveHeader(MSXML2::IXMLDOMElementPtr& pIDomHeaderNode, CS
                 break;
         };
 
-        if(m_ouTestSetupHeader.m_sReportFile.m_omPath == _T(""))
+        if(m_ouTestSetupHeader.m_sReportFile.m_omPath == "")
         {
             CString omReportPath(omStrFilePath);
             int nIndex = omReportPath.Find(".xml");

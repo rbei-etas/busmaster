@@ -93,15 +93,13 @@ CFrameProcessor_J1939::CFrameProcessor_J1939()
     ASSERT(NULL != m_pbyJ1939Data);
 
     USHORT Length = ushCalculateStrLen(true, MAX_DATA_LEN_J1939);
-    m_sCurrFormatDat.m_pcDataHex = new TCHAR[Length];
+    m_sCurrFormatDat.m_pcDataHex = new char[Length];
     ASSERT(NULL != m_sCurrFormatDat.m_pcDataHex);
-    memset(m_sCurrFormatDat.m_pcDataHex, '\0', Length * sizeof(TCHAR));
-
+    memset(m_sCurrFormatDat.m_pcDataHex, '\0', Length * sizeof(char));
     Length = ushCalculateStrLen(false, MAX_DATA_LEN_J1939);
-    m_sCurrFormatDat.m_pcDataDec = new TCHAR[Length];
+    m_sCurrFormatDat.m_pcDataDec = new char[Length];
     ASSERT(NULL != m_sCurrFormatDat.m_pcDataDec);
-    memset(m_sCurrFormatDat.m_pcDataDec, '\0', Length * sizeof(TCHAR));
-
+    memset(m_sCurrFormatDat.m_pcDataDec, '\0', Length * sizeof(char));
     m_sDataCopyThread.m_hActionEvent = m_ouVSEBufJ1939.hGetNotifyingEvent();
 }
 
@@ -318,7 +316,7 @@ HRESULT CFrameProcessor_J1939::FPJ1_EnableLoggingBlock(USHORT ushBlk, BOOL bEnab
 // To enable/disable logging
 HRESULT CFrameProcessor_J1939::FPJ1_EnableLogging(BOOL bEnable)
 {
-    return EnableLogging(bEnable);
+    return EnableLogging(bEnable, J1939);
 }
 
 /* Call to enable/disable logging for a particular block. Having ushBlk equal
@@ -443,7 +441,7 @@ HRESULT CFrameProcessor_J1939::FPJ1_SetDatabaseFiles(const CStringArray& omList)
 
 // To update the channel baud rate info to logger
 HRESULT CFrameProcessor_J1939::FPJ1_SetChannelBaudRateDetails
-							(SCONTROLER_DETAILS* controllerDetails, 
+							(SCONTROLLER_DETAILS* controllerDetails, 
 							int nNumChannels)
 {
 	HRESULT hResult = S_OK;

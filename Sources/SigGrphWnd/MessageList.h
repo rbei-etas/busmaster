@@ -1,31 +1,28 @@
-/*********************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  MessageList.h
-  Description   :  Interface file for CMessageList class
-  $Log:   X:/Archive/Sources/SigGrphWnd/MessageList.h_v  $
- * 
- *    Rev 1.1   15 Apr 2011 19:43:34   rac2kor
- * Inserted RBEI Copyright information text into the file header.
- * 
- *    Rev 1.0   13 Dec 2010 22:00:36   CANMNTTM
- *  
- * 
- *    Rev 1.0   16 Aug 2010 21:20:36   rac2kor
- *  
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-  Author(s)     :  Ratnadip Choudhury
-  Date Created  :  31.01.2004
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
- *********************************************************************/
-#if !defined(AFX_MESSAGELIST_H__5E48819F_A933_4E00_A57F_BE7B97361541__INCLUDED_)
-#define AFX_MESSAGELIST_H__5E48819F_A933_4E00_A57F_BE7B97361541__INCLUDED_
+/**
+ * \file      MessageList.h
+ * \brief     Interface file for CMessageList class
+ * \author    Ratnadip Choudhury
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Interface file for CMessageList class
+ */
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// MessageList.h : header file
-//
 
 // Definition of Flicker Free List Control
 #include "Utility/FFListCtrl.h"
@@ -68,10 +65,3 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_MESSAGELIST_H__5E48819F_A933_4E00_A57F_BE7B97361541__INCLUDED_)

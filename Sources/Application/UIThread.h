@@ -22,20 +22,9 @@
  * This is the interface file for CNotificWnd class
  */
 
-#if !defined(AFX_UITHREAD_H__35BE3D97_728D_431E_AD3A_323E93D32A2B__INCLUDED_)
-#define AFX_UITHREAD_H__35BE3D97_728D_431E_AD3A_323E93D32A2B__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// UIThread.h : header file
-//
 
-// Interface file for class CNotificWnd
 #include "NotificWnd.h"
-
-/////////////////////////////////////////////////////////////////////////////
-// CUIThread thread
 
 class CUIThread : public CWinThread
 {
@@ -83,10 +72,3 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_UITHREAD_H__35BE3D97_728D_431E_AD3A_323E93D32A2B__INCLUDED_)

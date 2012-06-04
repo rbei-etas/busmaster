@@ -16,7 +16,7 @@
 /**
  * \file      SigWatchDlg.cpp
  * \brief     Implementation file for CSigWatchDlg class
- * \authors   RBIN/EMC2 - Amarnath Shastri, Ratnadip Choudhury
+ * \authors   Amarnath Shastri, Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for CSigWatchDlg class
@@ -31,13 +31,6 @@
 #include "SigWatchDlg.h"
 #include "..\Application\HashDefines.h"
 // Interface file for CMsgInterpretation class
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 
 static const int LSB_MOTOROLA = 0x7; // 7th bit is the LSB for motorola
 
@@ -544,16 +537,16 @@ BOOL CSigWatchDlg::OnInitDialog()
 *******************************************************************************/
 void CSigWatchDlg::vInitSignalWatchList()
 {
-    TCHAR caColumnName[][50] = { defSTR_SW_MSG_NAME,
+    char caColumnName[][50] = { defSTR_SW_MSG_NAME,
                                 defSTR_SW_SIG_NAME,
                                 defSTR_SW_PHY_VALUE,
-                                defSTR_SW_RAW_VALUE };
+                                defSTR_SW_RAW_VALUE
+                              };
     INT nColumnFormat[]     = { LVCFMT_LEFT,
                                 LVCFMT_LEFT,
                                 LVCFMT_LEFT,
-                                LVCFMT_CENTER };
-
-
+                                LVCFMT_CENTER
+                              };
     RECT rListCtrlRect;
     INT nTotalColunmSize = 0;
     INT nTotalStrLengthPixel = 0;

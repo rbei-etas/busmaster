@@ -27,10 +27,6 @@
 #include "MsgContainer_CAN.h"
 #include "MsgContainer_J1939.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 #define USAGE_EXPORT
 #include "Application/PSDI_Extern.h"
 //
@@ -186,15 +182,18 @@ USAGEMODE HRESULT PSDI_StopReadThread()
     return S_OK;
 }
 
-
-// Get the data pointers for displaying the message formatted data
-USAGEMODE HRESULT PSDI_GetUpdatedCurrDataPtrArray( SMSGWNDHDRCOL &sHdrColStruct,
-                                                   TCHAR *pomDataPtrArr[MAX_MSG_WND_COL_CNT], 
-                                                   BYTE bExprnFlag_Disp)
+/**
+ * \brief Get Updated Current Data Pointer Array
+ *
+ * Get the data pointers for displaying the message formatted data
+ */
+USAGEMODE HRESULT PSDI_GetUpdatedCurrDataPtrArray( SMSGWNDHDRCOL& sHdrColStruct,
+        char* pomDataPtrArr[MAX_MSG_WND_COL_CNT],
+        BYTE bExprnFlag_Disp)
 {
     sg_pouMsgContainer_CAN->vGetUpdatedCurrDataPtrArray( sHdrColStruct,
-                                               pomDataPtrArr, 
-                                               bExprnFlag_Disp);
+            pomDataPtrArr,
+            bExprnFlag_Disp);
     return S_OK;
 }
 

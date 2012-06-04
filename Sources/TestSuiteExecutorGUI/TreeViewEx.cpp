@@ -343,13 +343,24 @@ HTREEITEM CTreeViewEx::DragMoveItem(HTREEITEM hDraggingItem, HTREEITEM hDropping
     CTreeCtrl &omTreeCtrl = GetTreeCtrl();
     
     if(eDropping == NO_DROPPING)
-		return NULL;
-	if(bAnscestor(hDraggingItem, hDroppingItem) || !IsItemCanDropOn(hDraggingItem, hDroppingItem))
-		return NULL;
+    {
+        return NULL;
+    }
+
+    if(bAnscestor(hDraggingItem, hDroppingItem) || !IsItemCanDropOn(hDraggingItem, hDroppingItem))
+    {
+        return NULL;
+    }
+
     if(bSuccessor(hDraggingItem, hDroppingItem) && (eDropping == DROPPING_ABOVE))
+    {
         return NULL;
+    }
+
     if(hDraggingItem == hDroppingItem)
+    {
         return NULL;
+    }
 
 	if(!hDroppingItem && eDropping == DROPPING_BELOW)
 		for(hDroppingItem = omTreeCtrl.GetRootItem(); omTreeCtrl.GetNextSiblingItem(hDroppingItem) != 0; hDroppingItem = omTreeCtrl.GetNextSiblingItem(hDroppingItem));
@@ -366,8 +377,10 @@ HTREEITEM CTreeViewEx::DragMoveItem(HTREEITEM hDraggingItem, HTREEITEM hDropping
 
 		case DROPPING_ABOVE:
 			hInsertAfter = omTreeCtrl.GetPrevSiblingItem(hDroppingItem);
-			if(!hInsertAfter)
-				hInsertAfter = TVI_FIRST;
+            if(!hInsertAfter)
+            {
+                hInsertAfter = TVI_FIRST;
+            }
 			hParent = omTreeCtrl.GetParentItem(hDroppingItem);
 			break;
 
@@ -453,9 +466,13 @@ void CTreeViewEx::DragMove(CPoint /*point*/)
 void CTreeViewEx::SetDraggingCursor(eTYPE_DROPPING eDropping) 
 {
     if(eDropping == NO_DROPPING)
+    {
         SetCursor(m_hCurNoDrop);
+    }
     else
+    {
         SetCursor(m_hOrigCursor);
+    }
 }
 HTREEITEM CTreeViewEx::GetDropItem(eTYPE_DROPPING & eDroppingPos) 
 {
@@ -510,7 +527,9 @@ BOOL CTreeViewEx::bAnscestor(HTREEITEM hItem, HTREEITEM hCheck)
 	for(HTREEITEM hParent = hCheck; hParent != 0; hParent = omTreeCtrl.GetParentItem(hParent))
     {		
         if(hParent == hItem)
-			return TRUE;
+        {
+            return TRUE;
+        }
     }
 	return FALSE;
 }
@@ -540,14 +559,19 @@ CTreeViewEx::eTYPE_DROPPING CTreeViewEx::GetDroppingPosition(UINT flags)
             ::GetCursorPos(&omCurrentPoint);
             ScreenToClient(&omCurrentPoint);
             if((omCurrentPoint.y - omItemRect.top) > (omItemRect.bottom - omCurrentPoint.y))
+            {
                 eDroppingPos = DROPPING_BELOW;
+            }
             else
+            {
                 eDroppingPos = DROPPING_ABOVE;
-		} 
+            }
+        }
         else
-			eDroppingPos = DROPPING_ABOVE;
-
-	} 
+        {
+            eDroppingPos = DROPPING_ABOVE;
+        }
+    }
     else if((flags & TVHT_NOWHERE))
     {
 		// below the last item
@@ -563,12 +587,20 @@ INT CTreeViewEx::SetImageList(CImageList *pomImageListNormal, CImageList *pomIma
     
     pomOldImageList = GetTreeCtrl().SetImageList(pomImageListNormal, TVSIL_NORMAL);
     if( pomOldImageList != NULL )
+    {
         delete pomOldImageList;
-    
+    }
+
     if(pomImageListNormal != NULL)
-    pomOldImageList = GetTreeCtrl().SetImageList(pomImageListState, TVSIL_STATE);
-        if( pomOldImageList != NULL )
-            delete pomOldImageList;
+    {
+        pomOldImageList = GetTreeCtrl().SetImageList(pomImageListState, TVSIL_STATE);
+    }
+
+    if( pomOldImageList != NULL )
+    {
+        delete pomOldImageList;
+    }
+
     return 0;
 }
 
@@ -647,7 +679,7 @@ void CTreeViewEx::OnNMRclick(NMHDR* /*pNMHDR*/, LRESULT *pResult)
             if(omTempTreeCtrl.GetItemData(hParentItem) == def_ID_TESTSUITE)
             {
                 VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_TESTSETUP_DELETE, _T("Delete")));
-                VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_TESTSETUP_MODIFY, _T("Modify...")));
+                VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_TESTSETUP_MODIFY, _T("Reload File")));
             }
         }
         omContextMenu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);

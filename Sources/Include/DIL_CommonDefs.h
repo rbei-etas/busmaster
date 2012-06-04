@@ -22,8 +22,7 @@
  * Some macro definitions necessary
  */
 
-#if !defined DIL_COMMONDEFS_H__INCLUDED_
-#define DIL_COMMONDEFS_H__INCLUDED_
+#pragma once
 
 /* Common DIL macros starts*/
 #include "DataTypes/DIL_Datatypes.h"
@@ -46,5 +45,3 @@ static bool bIs_NULL_Pointer(char* /*PtrName*/, void* Ptr)
 //#define INITIALISE_ARRAY(Array) memset(Array, 0, sizeof(Data))
 #define MAX_HW_INTERFACE 4
 /* Common DIL macros ends*/
-
-#endif // DIL_COMMONDEFS_H__INCLUDED_

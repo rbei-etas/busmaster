@@ -16,7 +16,7 @@
 /**
  * \file      RadixEdit.cpp
  * \brief     This file contains the implementation of CRadixEdit class
- * \authors   RBIN/EMC2 - Soj Thomas, Ratnadip Choudhury, Amarnath Shastry
+ * \authors   Soj Thomas, Ratnadip Choudhury, Amarnath Shastry
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This file contains the implementation of CRadixEdit class
@@ -27,13 +27,6 @@
 #include "Utils_stdafx.h"
 // Interface file for CRadixEdit class
 #include "RadixEdit.h"
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 
 /////////////////////////////////////////////////////////////////////////////
 // CRadixEdit
@@ -303,7 +296,7 @@ int CRadixEdit::nGetBase()
 void CRadixEdit::OnChange() 
 {
     int nBufLength = LineLength() + 1;
-    TCHAR* acBuffer = new TCHAR[nBufLength];
+    char* acBuffer = new char[nBufLength];
 
     if (acBuffer != NULL)
     {
@@ -335,7 +328,7 @@ void CRadixEdit::OnChange()
                     }
                     else if(acBuffer[nCurrentPost] != '-')
                     {
-                        acBuffer[nCurrentPost] = (TCHAR)(tolower(acBuffer[nCurrentPost]));
+                        acBuffer[nCurrentPost] = (char)(tolower(acBuffer[nCurrentPost]));
                         acBuffer[nCurrentPost] -= 87;
                     }
                     else
@@ -402,39 +395,38 @@ __int64 CRadixEdit::lGetValue()
 ******************************************************************************/
 void CRadixEdit::vSetValue(__int64 n64NewVal)
 {
-
-	// rajesh: 05.03.2003: BEGIN: formating changed slightly to accomodate 
-	// full 32 bits for signed and unsigned numbers
-
-	// if the number is having negative value
-    TCHAR acFormat[8] = {NULL};
+    // rajesh: 05.03.2003: BEGIN: formating changed slightly to accomodate
+    // full 32 bits for signed and unsigned numbers
+    // if the number is having negative value
+    char acFormat[8] = {NULL};
 
     if (m_nBase == BASE_DECIMAL) 
     {
         if(m_bSigned == true)
-		{
-			_tcscpy(acFormat, _T("%I64d"));
-		}
-		else
-		{
-			_tcscpy(acFormat, _T("%I64u"));
-		}
+        {
+            strcpy_s(acFormat, 8,  _T("%I64d"));
+        }
+        else
+        {
+            strcpy_s(acFormat, 8,  _T("%I64u"));
+        }
     }
     else 
     {
-        if (m_bSigned == true && n64NewVal < 0) 
+        if (m_bSigned == true && n64NewVal < 0)
         {
-             _tcscpy(acFormat, _T("-"));
-             n64NewVal = -n64NewVal;
+            strcpy_s(acFormat, 8, _T("-"));
+            n64NewVal = -n64NewVal;
         }
+
         if (m_nBase == BASE_HEXADECIMAL)
         {
-            _tcscat(acFormat, _T("%I64X"));
+            strcat_s(acFormat, 8, _T("%I64X"));
         }
         else if (m_nBase == BASE_OCTAL) 
         {
-            _tcscat(acFormat, _T("%I64o"));
-        }       
+            strcat_s(acFormat, 8, _T("%I64o"));
+        }
     }
 	// rajesh: 05.03.2003: END:
 

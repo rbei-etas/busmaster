@@ -32,12 +32,6 @@
 #include "DIL_Interface/BaseDIL_CAN.h"
 #include "include/CAN_Error_Defs.h"
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 //CLient Id from the DIL
 static DWORD g_dwClientID = 0;
 //DIL Interface	
@@ -475,9 +469,9 @@ BOOL CTxMsgManager::bAllocateMemoryForGlobalTxList()
 //           InitializeCriticalSection(&psTxMsgMem->m_sMsgBlocksCriticalSection);
             // Set the maximum count to two
             psTxMsgMem->m_hSemaphore = CreateSemaphore( NULL,
-                                              defTX_BLOCK_SEM_MAX_COUNT,
-                                              defTX_BLOCK_SEM_MAX_COUNT,
-                                              _T(""));
+                                       defTX_BLOCK_SEM_MAX_COUNT,
+                                       defTX_BLOCK_SEM_MAX_COUNT,
+                                       "");
             psTxMsgMem->m_psTxCANMsgList         = NULL;
             psTxMsgMem->m_unTimeInterval         = 0;
             psTxMsgMem->m_sTimerThreadInfo.m_hThread  = NULL;
@@ -789,14 +783,17 @@ UINT CTxMsgManager::s_unSendMsgBlockOnTime(LPVOID pParam )
         }
         CloseHandle(hEventWait);
     }
-    psTxMsg->m_omTxBlockTimerEvent.SetEvent();
-    if(psTxMsg->m_sTimerThreadInfo.m_pvThread != NULL )
-    {
-        // Delete the pointer in case there is any memory allocated and used
-        // inside the thread function.
-        psTxMsg->m_sTimerThreadInfo.m_pvThread = NULL;
-    }
-    psTxMsg->m_sTimerThreadInfo.m_hThread = NULL;
+	if(psTxMsg != NULL)
+	{
+	    psTxMsg->m_omTxBlockTimerEvent.SetEvent();
+	    if(psTxMsg->m_sTimerThreadInfo.m_pvThread != NULL )
+	    {
+	        // Delete the pointer in case there is any memory allocated and used
+	        // inside the thread function.
+	        psTxMsg->m_sTimerThreadInfo.m_pvThread = NULL;
+	    }
+	    psTxMsg->m_sTimerThreadInfo.m_hThread = NULL;
+	}
     return 0;
 }
 
@@ -951,18 +948,21 @@ UINT CTxMsgManager::s_unSendMsgBlockOnKey(LPVOID pParam )
             }// while
         }
     }
-    // if thread is about to close, set the event. 
-    psTxMsg->m_omKeyEvent.SetEvent();
-    psTxMsg->m_omTxBlockKeyEvent.SetEvent();
-    // Clear any memory used
-    if(psTxMsg->m_sKeyThreadInfo.m_pvThread != NULL )
-    {
-        // Delete the pointer in case there is any memory allocated and used
-        // inside the thread function.
-        psTxMsg->m_sKeyThreadInfo.m_pvThread = NULL;
-    }
-    // Set the thread handle to NULL
-    psTxMsg->m_sKeyThreadInfo.m_hThread = NULL;
+	if(psTxMsg != NULL)
+	{
+	    // if thread is about to close, set the event. 
+	    psTxMsg->m_omKeyEvent.SetEvent();
+	    psTxMsg->m_omTxBlockKeyEvent.SetEvent();
+	    // Clear any memory used
+	    if(psTxMsg->m_sKeyThreadInfo.m_pvThread != NULL )
+	    {
+	        // Delete the pointer in case there is any memory allocated and used
+	        // inside the thread function.
+	        psTxMsg->m_sKeyThreadInfo.m_pvThread = NULL;
+	    }
+	    // Set the thread handle to NULL
+	    psTxMsg->m_sKeyThreadInfo.m_hThread = NULL;
+	}
     return 0;
 }
 
@@ -1041,25 +1041,25 @@ void CTxMsgManager::vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize)
     }*/
 }
 
-BOOL CTxMsgManager::bIsTxWndConfigChanged()
-{
-    BOOL bReturn = TRUE;
+//BOOL CTxMsgManager::bIsTxWndConfigChanged()
+//{
+//    BOOL bReturn = TRUE;
     /**************Get the old buffer pointer and then proceed *********/
-    BYTE* pOldConfigBuff = NULL;
-    int nOldBufferCount = 0;
+//    BYTE* pOldConfigBuff = NULL;
+//    int nOldBufferCount = 0;
     /**************Get the old buffer pointer and then proceed *********/
-    BYTE* pCurrConfigBuff = NULL;
-    int nCurrBuffSize = 0;
-    vGetTxWndConfigData(pCurrConfigBuff, nCurrBuffSize);
-    if (nCurrBuffSize == nOldBufferCount)
-    {
-        if ( !memcmp (pCurrConfigBuff,pOldConfigBuff, nCurrBuffSize))
-        {
-            bReturn = FALSE;
-        }
-    }
-    return bReturn;
-}
+//    BYTE* pCurrConfigBuff = NULL;
+//    int nCurrBuffSize = 0;
+//    vGetTxWndConfigData(pCurrConfigBuff, nCurrBuffSize);
+//    if (nCurrBuffSize == nOldBufferCount)
+//    {
+//        if ( !memcmp (pCurrConfigBuff,pOldConfigBuff, nCurrBuffSize))
+//        {
+//            bReturn = FALSE;
+//    }
+//
+//    return bReturn;
+//}
 
 void CTxMsgManager::vSetTxStopFlag(BOOL bStartStop)
 {

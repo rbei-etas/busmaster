@@ -22,13 +22,7 @@
  * This file contain the interface for COffScreenDC class
  */
 
-#if !defined OFFSCREENDC_H__INCLUDED_
-#define OFFSCREENDC_H__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-
 
 class COffScreenDC : public CDC
 {
@@ -53,5 +47,3 @@ private:
     // Rectangle of the screen or Drawing area
     CRect       m_rcBounds;
 };
-
-#endif // OFFSCREENDC_H__INCLUDED_

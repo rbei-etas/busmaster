@@ -30,13 +30,6 @@
 // For replay manager class declaration
 #include "ReplayManager.h"
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 extern BOOL bGetMsgInfoFromMsgStr(CONST CString& omSendMsgLine,
                            PSTCANDATA psCANData,
                            BOOL bHexON);
@@ -475,8 +468,12 @@ VOID CMsgReplayWnd::vCmdStep()
                 if( pThread != NULL )
                 {
                     m_ouReplayDetails.m_hThread = pThread->m_hThread;
-					if(m_eReplayState != REPLAY_TO_START)
-						m_eReplayState = REPLAY_RUNNING;
+
+                    if(m_eReplayState != REPLAY_TO_START)
+                    {
+                        m_eReplayState = REPLAY_RUNNING;
+                    }
+
                     m_ouReplayDetails.m_bStopReplayThread = FALSE;
                 }
             }

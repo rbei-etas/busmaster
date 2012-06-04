@@ -22,9 +22,7 @@
  * This header file contains definitions of necessary user 
  */
 
-#ifndef _INCLUDE_DATATYPE_H
-#define _INCLUDE_DATATYPE_H
-
+#pragma once
 
 const int DATA_BUFFER_LENGTH = 120;
 const int DATA_LENGTH_MAX = 8;
@@ -46,6 +44,3 @@ typedef struct tagCanIDList
     unsigned int nCANID;
     COLORREF Colour;
 } SCanIDList;
-
-
-#endif  //#define _INCLUDE_DATATYPE_H

@@ -86,14 +86,14 @@ CSignalDetailsDlg::CSignalDetailsDlg(eMODES eMode,
     //{{AFX_DATA_INIT(CSignalDetailsDlg)
     m_byByteIndex = 1;
     m_unSgLen = 1;
-    m_omStrSignalName = _T("");
+    m_omStrSignalName = "";
     m_byStartBit = 0;
-    m_omStrUnit = _T("");
+    m_omStrUnit = "";
     m_nMsgLength = nMsgLen;
     m_omStrMsgName = omStrMsgName;
     m_bIsCanceled = FALSE;
     m_bIsDataSaved = TRUE;
-    m_omStrPrevSignalName = _T("");
+    m_omStrPrevSignalName = "";
     m_unMode = eMode;
     m_nDataFormat = nDataFormat;
     m_omStrSgType = omStrSignalType;
@@ -999,8 +999,7 @@ void CSignalDetailsDlg::OnSelchangeCombSgtype()
         pCancelButton2 = static_cast<CButton*>(GetDlgItem(IDCANCEL));
         if ( pCancelButton1 != pCancelButton2 )
         {
-            CString omStrPrevSgName = _T("");
-
+            CString omStrPrevSgName = "";
             m_omComboSgType.GetWindowText(omStrPrevSgName);
 
             if ( !omStrPrevSgName.IsEmpty() 
@@ -1178,8 +1177,8 @@ void CSignalDetailsDlg::OnOK()
                 if ( pSg != NULL )
                 {
                     pSg->m_eFormat = m_nDataFormat;
-                    CString omStrSgType = _T("");
-                    m_omComboSgType.GetLBText( 
+                    CString omStrSgType = "";
+                    m_omComboSgType.GetLBText(
                         m_omComboSgType.GetCurSel(), omStrSgType );
                     if ( !omStrSgType.CompareNoCase(defBOOLEAN) )
                     {
@@ -1229,7 +1228,9 @@ void CSignalDetailsDlg::OnOK()
                     pSg->m_byStartBit               = m_byStartBit;
 
                     if ( m_unMode == MD_ADD )
-                        m_omStrPrevSignalName = _T("");
+                    {
+                        m_omStrPrevSignalName = "";
+                    }
 
                     // Fill the matrix for edited signal
                     pTempMsgSg->vUpdateSignalDetails( m_omStrMsgName,
@@ -1277,8 +1278,7 @@ void CSignalDetailsDlg::vCalculateMaxMinValues(SIG_VALUE &rMinVal,
                                                SIG_VALUE &rMaxVal)
 {
     // Get signal type
-    CString omStrSgType = _T("");
-
+    CString omStrSgType = "";
     m_omComboSgType.GetWindowText(omStrSgType );
     
     // if signal type is bool and signal length is 1
@@ -1393,7 +1393,9 @@ BOOL CSignalDetailsDlg::PreTranslateMessage(MSG* pMsg)
         }
     }
     if ( bSkip == FALSE)
+    {
         bSkip = CDialog::PreTranslateMessage(pMsg);
+    }
 
     return bSkip;
 }

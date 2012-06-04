@@ -23,8 +23,8 @@
  */
 
 #include "TxWindow_stdafx.h"             // For standard include
-#include "TxWindow_resource.h"  
-#include "SignalMatrix.h"       // For Signal Matrix Class Definition
+#include "TxWindow_resource.h"
+#include "Utility/SignalMatrix.h"       // For Signal Matrix Class Definition
 #include "Utility/ComboItem.h"          // For Custom Combobox Implementation
 #include "Utility/EditItem.h"           // For Custom Editbox Implementation
 #include "Utility/RadixEdit.h"          // For the RAdix Edit control definition
@@ -34,13 +34,6 @@
 #include "FlexListCtrl.h"       // For editable list control implementation
 #include "TxMsgListView.h"      // For CTxMsgListView class definition
 #include "TxMsgChildFrame.h"    // For Tx Child Window definition
-
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 // For Glodal Application Object
 //extern CCANMonitorApp theApp;
@@ -162,13 +155,15 @@ void CTxMsgListView::OnInitialUpdate()
 
     // Init Message List Control
     CRect rListCtrlRect;
-    CHAR caColumnName[defMESSAGE_FRAME_COLUMN][defSTRING_SIZE] = {
-            defMESSAGE_ID,
-            defSTR_CHANNEL_NAME,
-            defMESSAGE_TYPE,
-            defMESSSAGE_DLC,
-            defMESSAGE_DATA_BYTES };
-    //Calculate the total size of all column header   
+    CHAR caColumnName[defMESSAGE_FRAME_COLUMN][defSTRING_SIZE] =
+    {
+        defMESSAGE_ID,
+        defSTR_CHANNEL_NAME,
+        defMESSAGE_TYPE,
+        defMESSSAGE_DLC,
+        defMESSAGE_DATA_BYTES
+    };
+    //Calculate the total size of all column header
     m_omLctrMsgList.GetWindowRect( &rListCtrlRect);
     int nTotalColunmSize     = rListCtrlRect.right - rListCtrlRect.left;
     int nTotalStrLengthPixel = 0;
@@ -310,6 +305,17 @@ void CTxMsgListView::OnColumnclickLstcMsgDetails(NMHDR* pNMHDR, LRESULT* pResult
                 pHeader->SetItem(0, &hditem );
                 // Update Message Check Value
                 vSetMessageCheckValue( bToBeChecked );
+
+				CTxFunctionsView * pView = (CTxFunctionsView *)
+                                                pomGetFunctionsViewPointer();
+
+				if( pView != NULL )
+				{
+					if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)
+					{
+						pView->vAccessButtonApply();
+					}
+				}
             }
         }
     }
@@ -383,7 +389,8 @@ void CTxMsgListView::vSetMessageCheckValue(BOOL bCheck)
             if( bModified == TRUE )
             {
                 // If data is modified then update apply button
-                pomFunctionsView->m_omButtonApply.EnableWindow();
+				if(pomFunctionsView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+					pomFunctionsView->m_omButtonApply.EnableWindow();
             }
         }
     }
@@ -510,17 +517,28 @@ void CTxMsgListView::OnItemchangedLstcMsgDetails(NMHDR* pNMHDR,
                     {
                         psTxMsgList->m_sTxMsgDetails.m_bEnabled = nCurrentState;
                         // Enable Update Button
-                        pView->m_omButtonApply.EnableWindow();
+						if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+							pView->m_omButtonApply.EnableWindow();
                     }
                 }
                 else
                 {
-                    m_omLctrMsgList.SetCheck( pNMListView->iItem,
-                                    psTxMsgList->m_sTxMsgDetails.m_bEnabled );
-                }
-            }
+					m_omLctrMsgList.SetCheck( pNMListView->iItem,
+						psTxMsgList->m_sTxMsgDetails.m_bEnabled );
+				}
+
+				if( pView != NULL )
+				{
+					if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)
+					{
+						pView->vAccessButtonApply();
+					}
+				}
+			}
 
         }
+
+		
 
     }
     *pResult = 0;    
@@ -835,7 +853,8 @@ void CTxMsgListView::OnDeleteSelectedMsg()
                         bReturn = bDeleteMsgFromBlock(psCurrentMsgBlock);
                         if(bReturn == TRUE )
                         {
-                            pomFunctionsView->m_omButtonApply.
+							if(pomFunctionsView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+								pomFunctionsView->m_omButtonApply.
                                                         EnableWindow(TRUE);
 
                             pomDetailsView->vEnableAddButton( TRUE );
@@ -853,7 +872,16 @@ void CTxMsgListView::OnDeleteSelectedMsg()
                                                        m_nSelectedMsgIndex,
                                                        LVIS_SELECTED,
                                                        LVIS_SELECTED);
-                        }
+						}
+						//changes added to update the Global in case of autoupdate
+						CTxFunctionsView * pView = 
+							( CTxFunctionsView * )pomGetFunctionsViewPointer();
+						if( pView != NULL )
+						{
+							if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)
+								pView->vAccessButtonApply();
+						}
+						
                     }
                 }
             }
@@ -1009,13 +1037,23 @@ void CTxMsgListView::OnDeleteAllMsg()
                         m_omButtonDeleteAllMsg.EnableWindow(FALSE);
                         m_omButtonDeleteSelMsg.EnableWindow(FALSE);
                         
-                        pomFunctionsView->m_omButtonApply.EnableWindow(TRUE);
+						if(pomFunctionsView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+							pomFunctionsView->m_omButtonApply.EnableWindow(TRUE);
                         // Update Add button status
                         pomDetailsView->vEnableAddButton( TRUE );
                         // Update Modified Flag
                         pomBlocksView->m_bModified = TRUE;
                     }
 					m_omButtonSendMsg.EnableWindow(FALSE);
+
+					//changes added to update the Global in case of autoupdate
+					CTxFunctionsView * pView = 
+						( CTxFunctionsView * )pomGetFunctionsViewPointer();
+					if( pView != NULL )
+					{
+						if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)
+							pView->vAccessButtonApply();
+					}
                 }
             }
         }
@@ -1142,9 +1180,9 @@ VOID CTxMsgListView::vUpdateMsgListDisplay(sTXCANMSGDETAILS sMsgDetail,
 
     // Format Message Type
     omStrFormat.Insert(omStrFormat.GetLength(),defEMPTY_CHAR);
+    CString omStrTemp = "";
 
-    CString omStrTemp = _T("");
-    for(INT i=0; i<sMsgDetail.m_sTxMsg.m_ucDataLen;i++)
+    for(INT i=0; i<sMsgDetail.m_sTxMsg.m_ucDataLen; i++)
     {
        omStrTemp.Format(omStrFormat,sMsgDetail.m_sTxMsg.m_ucData[i]);
        omStrMsgData +=  omStrTemp;

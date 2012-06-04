@@ -3,19 +3,6 @@
   FileName      :  GraphRightView.cpp
   Description   :  Implementation file for CGraphRightView class
   $Log:   X:/Archive/Sources/SigGrphWnd/GraphRightView.cpv  $
-   
-      Rev 1.2   15 Apr 2011 19:43:32   rac2kor
-   Inserted RBEI Copyright information text into the file header.
-   
-      Rev 1.1   23 Dec 2010 18:04:44   CANMNTTM
-   Updated to support cursors feature in 
-   graph control.
-   
-      Rev 1.0   13 Dec 2010 22:00:36   CANMNTTM
-    
-   
-      Rev 1.0   16 Aug 2010 21:20:32   rac2kor
-    
 
   Author(s)     :  Raja N
   Date Created  :  10/12/2004 
@@ -30,12 +17,6 @@
 #include "GraphRightView.h"
 #include ".\graphrightview.h"
 #include "GraphBottomView.h"
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 IMPLEMENT_DYNCREATE(CGraphRightView, CFormView)
 
@@ -312,8 +293,10 @@ void CGraphRightView::vHandleConnectionStatusChange(BOOL bConnectStatus)
 
 		CComPtr<IDMGraphCollection> spGraphCollection;		
 		HRESULT hr = m_pDMGraphCtrl->get_Elements(&spGraphCollection);
-		if(FAILED(hr))
-			return;		
+        if(FAILED(hr))
+        {
+            return;
+        }
 		long lngCount;
 		spGraphCollection->get_Count(&lngCount);
         // Add items to the list
@@ -333,8 +316,10 @@ void CGraphRightView::vHandleConnectionStatusChange(BOOL bConnectStatus)
 
 		CComPtr<IDMGraphCollection> spGraphCollection;		
 		HRESULT hr = m_pDMGraphCtrl->get_Elements(&spGraphCollection);
-		if(FAILED(hr))
-			return;
+        if(FAILED(hr))
+        {
+            return;
+        }
 		
 		long lngCount;
 		spGraphCollection->get_Count(&lngCount);

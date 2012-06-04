@@ -25,12 +25,6 @@
 #include "Utils_stdafx.h"       // For standard include
 #include "ComboItem.h"          // Definition of class
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 /////////////////////////////////////////////////////////////////////////////
 // CComboItem
 
@@ -163,7 +157,10 @@ void CComboItem::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
     if(nChar == VK_ESCAPE || nChar == VK_RETURN)
     {
         if( nChar == VK_ESCAPE)
+        {
             m_bVK_ESCAPE = 1;
+        }
+
         GetParent()->SetFocus();
         return; 
     }
@@ -306,9 +303,11 @@ void CComboItem::OnCloseup()
 int CComboItem::OnCreate(LPCREATESTRUCT lpCreateStruct) 
 {
     if (CComboBox::OnCreate(lpCreateStruct) == -1)
+    {
         return -1;
-    
-    CFont* font = GetParent()->GetFont();   
+    }
+
+    CFont* font = GetParent()->GetFont();
     SetFont(font);
     //add the items from CStringlist
     INT nItems = (INT)m_sList.GetSize();

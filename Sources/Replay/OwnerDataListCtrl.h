@@ -22,12 +22,7 @@
  * Interface file for COwnerDataListCtrl class
  */
 
-#if !defined(AFX_OWNERDATALISTCTRL_H__0689C361_D454_4BF8_8131_8665F56EBB69__INCLUDED_)
-#define AFX_OWNERDATALISTCTRL_H__0689C361_D454_4BF8_8131_8665F56EBB69__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "Utility/FFListCtrl.h" // For flicker free list class
 
@@ -67,10 +62,3 @@ private:
     // Methods
     // Data
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_OWNERDATALISTCTRL_H__0689C361_D454_4BF8_8131_8665F56EBB69__INCLUDED_)

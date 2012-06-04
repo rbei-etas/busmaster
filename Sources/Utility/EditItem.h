@@ -25,15 +25,7 @@
 	http://www.codeguru.com/Cpp/controls/listview/editingitemsandsubitem/article.php/c923 
 	Written by Zafir Anjum	*/
 
-
-#if !defined(AFX_EDITITEM_H__834127E5_9297_11D5_8AFA_DAC6E5A1C54B__INCLUDED_)
-#define AFX_EDITITEM_H__834127E5_9297_11D5_8AFA_DAC6E5A1C54B__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// EditItem.h : header file
-//
 
 /////////////////////////////////////////////////////////////////////////////
 // CEditItem window
@@ -80,10 +72,3 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_EDITITEM_H__834127E5_9297_11D5_8AFA_DAC6E5A1C54B__INCLUDED_)

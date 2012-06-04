@@ -327,8 +327,10 @@ void CWaveFormDataHandler::vGetAllDefinedSignalsNames(CStringArray& omSignalName
 
 			CString omWaveformDetails; // Other information accompanies the signal
 			
-			if(!bIsSignalInMsgFoundInDB(ouCurrMsg.m_nMsgID, ouCurrSig.m_omSigName))
-				continue;
+            if(!bIsSignalInMsgFoundInDB(ouCurrMsg.m_nMsgID, ouCurrSig.m_omSigName))
+            {
+                continue;
+            }
 
 			omWaveformDetails.Format(_T("%X ->%s (%s)"), ouCurrMsg.m_nMsgID, 
 					ouCurrSig.m_omSigName, 
@@ -354,8 +356,10 @@ bool CWaveFormDataHandler::bIsSignalInMsgFoundInDB(UINT& nMsgID, CString& strSig
             {
                 SSUBENTRY& sSubEntry = sMainEntry.m_odUnSelEntryList.GetNext(SubPos);
 				
-				if( strSignalName.Compare(sSubEntry.m_omSubEntryName) == 0)				
-					return true;								
+                if( strSignalName.Compare(sSubEntry.m_omSubEntryName) == 0)
+                {
+                    return true;
+                }
             }
         }
     }
@@ -453,7 +457,7 @@ HRESULT CWaveFormDataHandler::SetConfigData(BYTE* pvDataStream)
 				for(UINT j=0;j<nSigCount;j++)
 				{
 					sSigWaveMap objSigWaveMap;
-					objSigWaveMap.m_omSigName = _T("");
+                    objSigWaveMap.m_omSigName = "";
 
 					//Reading Signal Name Size.
 					BYTE bytSignalSize = 0;
@@ -641,13 +645,17 @@ void CWaveFormDataHandler::vGetAvailableSignalsInMsgID(UINT& nMsgID,
                 SSUBENTRY& sSubEntry = sMainEntry.m_odUnSelEntryList.GetNext(SubPos);
 				
 				//If the Signal Name for nMsgID is not defined, then only add it.
-				if(bExcludeDefinedSignals )
-				{
-					if(! bIsSignalInMsgIDDefined(nMsgID, sSubEntry.m_omSubEntryName))
-						arrAvailableSignals.Add(sSubEntry.m_omSubEntryName);
-				}
-				else
-					arrAvailableSignals.Add(sSubEntry.m_omSubEntryName);
+                if(bExcludeDefinedSignals )
+                {
+                    if(! bIsSignalInMsgIDDefined(nMsgID, sSubEntry.m_omSubEntryName))
+                    {
+                        arrAvailableSignals.Add(sSubEntry.m_omSubEntryName);
+                    }
+                }
+                else
+                {
+                    arrAvailableSignals.Add(sSubEntry.m_omSubEntryName);
+                }
             }
         }
     }

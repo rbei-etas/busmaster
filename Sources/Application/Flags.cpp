@@ -28,12 +28,6 @@
 // Definition of CFlags class
 #include "Flags.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 extern CCANMonitorApp theApp;
 
 CFlags CFlags::sm_ouSingletonObj(NULL);     // Create singleton object here
@@ -287,7 +281,10 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
 
     switch( eWhichFlag )
     {
-        case LOGTODISPLAY: m_bLogToWindow = nValue; break;
+        case LOGTODISPLAY:
+            m_bLogToWindow = nValue;
+            break;
+
         case LOGTOFILE:
         {
             if (m_bLogEnable != nValue)
@@ -297,8 +294,15 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
             m_bLogEnable    = nValue ;
         }
         break;
-        case REPLAYMODE: m_wReplayMode = (WORD)nValue ; break;
-        case REPLAYFILESELECTED: m_bReplayFileSelected = nValue; break;
+
+        case REPLAYMODE:
+            m_wReplayMode = (WORD)nValue ;
+            break;
+
+        case REPLAYFILESELECTED:
+            m_bReplayFileSelected = nValue;
+            break;
+
         case LOGFILTER:
             if ( m_bLogFilterOn  != nValue )
             {
@@ -370,7 +374,11 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
                 theApp.vSetConfigurationModified();
             }
             break;
-        case SENDMESG: m_bMessageSelected = nValue; break;
+
+        case SENDMESG:
+            m_bMessageSelected = nValue;
+            break;
+
         case OVERWRITE:
             if ( m_bOverwriteEnable != nValue )
             {
@@ -378,16 +386,43 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
             }
             m_bOverwriteEnable = nValue;
             break;
-        case TIME_DELAY_REPLAY_FILE: 
-                               m_bTimeDelayReplayFile = nValue; break;
-        case PASS_STOP_FILTER: m_bStopFilter = nValue; break;
-        case CONNECTED:        m_bConnected = nValue; break;
-        case KEY_HANDLER_ON:   m_bKeyHandlerOn = nValue; break;
-        case ERROR_HANDLER:    m_bErrorHandlerOn = nValue; break;
-        case DLL_HANDLER:      m_bDLLHandlerOn = nValue; break;
-        case ALL_HANDLER:      m_bALLHandler = nValue; break;
-        case CONTROLLER_MODE:  m_wControllerMode = static_cast<WORD>(nValue); break;
-        case PARALLEL_PORT_EPP:m_bParallelPortEPP = nValue; break;
+
+        case TIME_DELAY_REPLAY_FILE:
+            m_bTimeDelayReplayFile = nValue;
+            break;
+
+        case PASS_STOP_FILTER:
+            m_bStopFilter = nValue;
+            break;
+
+        case CONNECTED:
+            m_bConnected = nValue;
+            break;
+
+        case KEY_HANDLER_ON:
+            m_bKeyHandlerOn = nValue;
+            break;
+
+        case ERROR_HANDLER:
+            m_bErrorHandlerOn = nValue;
+            break;
+
+        case DLL_HANDLER:
+            m_bDLLHandlerOn = nValue;
+            break;
+
+        case ALL_HANDLER:
+            m_bALLHandler = nValue;
+            break;
+
+        case CONTROLLER_MODE:
+            m_wControllerMode = static_cast<WORD>(nValue);
+            break;
+
+        case PARALLEL_PORT_EPP:
+            m_bParallelPortEPP = nValue;
+            break;
+
         case LOGHEXON:
             if (m_bLogHexON != nValue )
             {
@@ -402,11 +437,25 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
             }
             m_wLogTimeMode = static_cast<WORD>(nValue);
             break;
-        case eLOGOVERWRITEMODEON: m_bLogOverWriteON = nValue; break;
-        case eLOGREPLAYMSGTYPE: m_nReplayMsgType = nValue; break;
-		case SEND_SIGNAL_MSG: m_bSendSignalMSg = nValue; break;
-        case ACTIVATED_J1939: m_bActivatedJ1939 = (BOOL) nValue; break;
-        default: ASSERT(FALSE); // Invalid flag enum value
+
+        case eLOGOVERWRITEMODEON:
+            m_bLogOverWriteON = nValue;
+            break;
+
+        case eLOGREPLAYMSGTYPE:
+            m_nReplayMsgType = nValue;
+            break;
+
+        case SEND_SIGNAL_MSG:
+            m_bSendSignalMSg = nValue;
+            break;
+
+        case ACTIVATED_J1939:
+            m_bActivatedJ1939 = (BOOL) nValue;
+            break;
+
+        default:
+            ASSERT(FALSE); // Invalid flag enum value
     }
     m_omCriticalSec.Unlock();
 }

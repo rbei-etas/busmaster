@@ -239,13 +239,17 @@ void CSignalDefinerDlg::vGenerateWave()
 	/*For variant packing purpose*/
 	CComVariant varrX, varrY;
 	varrX.parray = SafeArrayCreateVector(VT_R8, 0, nPointCount);
-	if(varrX.parray == NULL)
-		return;
+    if(varrX.parray == NULL)
+    {
+        return;
+    }
 	varrX.vt = VT_ARRAY|VT_R8;
 
 	varrY.parray = SafeArrayCreateVector(VT_R8, 0, nPointCount);
-	if(varrY.parray == NULL)
-		return;
+    if(varrY.parray == NULL)
+    {
+        return;
+    }
 	varrY.vt = VT_ARRAY|VT_R8;
 
 	LONG lngCount = 0;
@@ -350,9 +354,11 @@ void CSignalDefinerDlg::SetGraphData(VARIANT* pvarrX, VARIANT* pvarrY)
 			pDMGraphCtrl->AutoRange();
 			return;
 		}
-		else
-			spGraphElement = NULL;
-	}
+        else
+        {
+            spGraphElement = NULL;
+        }
+    }
 	if(bReplace == FALSE || spGraphElement == NULL)
 	{
 		CComPtr<IDispatch> spDispatch;

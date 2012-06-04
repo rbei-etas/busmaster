@@ -162,7 +162,7 @@ struct tagClientBufMap
     HANDLE hClientHandle;
     HANDLE hPipeFileHandle;
     CBaseCANBufFSE* pClientBuf[MAX_BUFF_ALLOWED];
-    TCHAR pacClientName[MAX_PATH];
+    char pacClientName[MAX_PATH];
     UINT unBufCount;
     tagClientBufMap()
     {
@@ -170,7 +170,7 @@ struct tagClientBufMap
         hClientHandle = NULL;
         hPipeFileHandle = NULL;
         unBufCount = 0;
-        memset(pacClientName, 0, sizeof (TCHAR) * MAX_PATH);
+        memset(pacClientName, 0, sizeof (char) * MAX_PATH);
         for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
         {
             pClientBuf[i] = NULL;
@@ -242,7 +242,7 @@ public:
 	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
 	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
 	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
-	HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength);
+	HRESULT CAN_GetLastErrorString(string& acErrorStr);
 	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
 	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -250,7 +250,7 @@ public:
 	// Specific function set	
 	HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);	
 	HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
-	HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
+	HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
 	HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
 	HRESULT CAN_LoadDriverLibrary(void);
 	HRESULT CAN_UnloadDriverLibrary(void);
@@ -582,11 +582,11 @@ HRESULT CDIL_CAN_STUB::CAN_DisplayConfigDlg(PCHAR& InitData, int& Length)
     return Result;
 }
 
-static BOOL bClientExist(TCHAR* pcClientName, INT& Index)
+static BOOL bClientExist(string pcClientName, INT& Index)
 {    
     for (UINT i = 0; i < sg_unClientCnt; i++)
     {
-        if (!_tcscmp(pcClientName, sg_asClientToBufMap[i].pacClientName))
+		if (!_tcscmp(pcClientName.c_str(), sg_asClientToBufMap[i].pacClientName))
         {
             Index = i;
             return TRUE;
@@ -629,7 +629,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
                 sg_asClientToBufMap[unClientIndex].hClientHandle = NULL;
                 sg_asClientToBufMap[unClientIndex].hPipeFileHandle = NULL;
 
-                memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (TCHAR) * MAX_PATH);
+                memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                 for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                 {
                     sg_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
@@ -675,7 +675,7 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
 /**
  * Register Client
  */
-HRESULT CDIL_CAN_STUB::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, TCHAR* pacClientName)
+HRESULT CDIL_CAN_STUB::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, char* pacClientName)
 {
     USES_CONVERSION;    
     HRESULT hResult = S_FALSE;
@@ -830,7 +830,7 @@ HRESULT CDIL_CAN_STUB::CAN_SetConfigData(PCHAR ConfigFile, int /*Length*/)
 	/* Fill the hardware description details */
     for (UINT nCount = 0; nCount < defNO_OF_CHANNELS; nCount++)
 	{		
-		_tcscpy(((PSCONTROLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc, 
+		_tcscpy(((PSCONTROLLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc, 
 				"Simulation");		
 	}    
 
@@ -950,16 +950,9 @@ HRESULT CDIL_CAN_STUB::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
     return S_FALSE;
 }
 
-HRESULT CDIL_CAN_STUB::CAN_GetLastErrorString(CHAR* acErrorStr, int nLength)
+HRESULT CDIL_CAN_STUB::CAN_GetLastErrorString(string& acErrorStr)
 {
-    // TODO: Add your implementation code here
-    int nCharToCopy = (int) (strlen(sg_acErrStr));
-    if (nCharToCopy > nLength)
-    {
-        nCharToCopy = nLength;
-    }
-    strncpy(acErrorStr, sg_acErrStr, nCharToCopy);
-
+	acErrorStr = sg_acErrStr;
     return S_OK;
 }
 
@@ -1007,7 +1000,7 @@ HRESULT CDIL_CAN_STUB::CAN_PerformClosureOperations(void)
     //First remove all the client
     for (UINT nCount = 0; nCount < sg_unClientCnt; nCount++)
     {
-        CAN_RegisterClient(FALSE, sg_asClientToBufMap[nCount].dwClientID, _T(""));
+        CAN_RegisterClient(FALSE, sg_asClientToBufMap[nCount].dwClientID, "");
     }    
     // First disconnect from the simulation engine
     CAN_DeselectHwInterface();

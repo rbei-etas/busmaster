@@ -128,7 +128,7 @@ BOOL COutWnd::bAddString(CStringArray& omStrArray)
     // Set horizontal extent of the list box to max string availaable
     // so that user can scroll
     CSize   sz(0,0);
-    CString omStrText   = _T("");
+    CString omStrText   = "";
     CDC*  pDC = m_omListBox.GetDC();
 	TEXTMETRIC   tm;
 	pDC->GetTextMetrics(&tm);
@@ -340,10 +340,10 @@ void COutWnd::OnDbClick()
     nSelectIndex = m_omListBox.GetCurSel();
     if(nSelectIndex!=LB_ERR )
     {
-        CString omStrLineNumber = _T("");
+        CString omStrLineNumber = "";
         INT     nIndex          = 0;
         UINT    unLineNumber    = 0;
-        TCHAR*   pcStopStr       = NULL;
+        char*   pcStopStr       = NULL;
 
         m_omListBox.GetText(nSelectIndex,omStrSelectedItem);
         CString omStrFilePath;

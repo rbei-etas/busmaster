@@ -21,13 +21,8 @@
  *
  * Interface file for CSigWatchAddDelDlg class
  */
-#if !defined(AFX_SIGWATCHADDDELDLG_H__4DC6FFE9_566B_47FB_850E_D746C0B37B40__INCLUDED_)
-#define AFX_SIGWATCHADDDELDLG_H__4DC6FFE9_566B_47FB_850E_D746C0B37B40__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// SigWatchAddDelDlg.h : header file
 
 #include "SignalWatch_Resource.h"
 
@@ -117,8 +112,3 @@ private:
 	// To adjust the width of the combo box based on its contents
 	void vAdjustWidthMessageComboBox();
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_SIGWATCHADDDELDLG_H__4DC6FFE9_566B_47FB_850E_D746C0B37B40__INCLUDED_)

@@ -29,13 +29,6 @@
 // Interface file for CMessageAttrib class
 #include "MessageAttrib.h"
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
-
 extern CCANMonitorApp theApp;
 
 // Message Attribute singleton
@@ -664,7 +657,7 @@ BOOL CMessageAttrib::bMsgIDFromMsgName(const CString &omMsgName, UINT &unMsgID
 
     if (bFound == FALSE) 
     {
-        if (sscanf((LPCTSTR) omMsgName, m_acMsgIDFormat, &unMsgID) == 1)
+        if (sscanf_s((LPCTSTR) omMsgName, m_acMsgIDFormat, &unMsgID) == 1)
         {
             bFound = TRUE;
         }
@@ -718,10 +711,12 @@ void CMessageAttrib::vChangeNumericalMode(BOOL bHexON)
 {
     if(bHexON == TRUE)
     {
-        strcpy(m_acMsgIDFormat,"%X");
+		//Tobias - venkat
+        strcpy_s(m_acMsgIDFormat, 3, "%X");
     }
     else
     {
-        strcpy(m_acMsgIDFormat,"%d");
+		//Tobias - venkat
+		strcpy_s(m_acMsgIDFormat, 3, "%d");
     }
 }

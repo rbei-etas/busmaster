@@ -31,7 +31,7 @@
 struct sERRORMSGINFO
 {
     unsigned short m_usErrorCode; // Error code
-    TCHAR* m_ptcErorMsg;          // Error message
+    char* m_ptcErorMsg;          // Error message
 };
 typedef sERRORMSGINFO SERRORMSGINFO;
 typedef sERRORMSGINFO* PERRORMSGINFO;
@@ -138,7 +138,8 @@ void CFormatMsgCAN::vFormatDataAndId(BYTE bExprnFlag,
 {
     if (IS_NUM_HEX_SET(bExprnFlag))
     {
-        _stprintf(CurrDataCAN->m_acMsgIDHex, FORMAT_STR_ID_HEX, CurrDataCAN->m_dwMsgID);
+        sprintf_s(CurrDataCAN->m_acMsgIDHex, FORMAT_STR_ID_HEX, CurrDataCAN->m_dwMsgID);
+
         //If an RTR message, Databyte(s) not required to be displayed
         if ( ! ( CurrDataCAN->m_byMsgType & TYPE_MSG_CAN_RTR ) )
         {
@@ -157,7 +158,7 @@ void CFormatMsgCAN::vFormatDataAndId(BYTE bExprnFlag,
 
     if (IS_NUM_DEC_SET(bExprnFlag))
     {
-        _stprintf(CurrDataCAN->m_acMsgIDDec, FORMAT_STR_ID_DEC, CurrDataCAN->m_dwMsgID);
+        sprintf_s(CurrDataCAN->m_acMsgIDDec, FORMAT_STR_ID_DEC, CurrDataCAN->m_dwMsgID);
 
         //If an RTR message, Databyte(s) not required to be displayed
         if ( ! ( CurrDataCAN->m_byMsgType & TYPE_MSG_CAN_RTR ) )
@@ -224,21 +225,23 @@ USHORT CFormatMsgCAN::usProcessCurrErrorEntry(SERROR_INFO& sErrorInfo)
   Date Created   : 08-09-2010
   Modifications  : 
 *******************************************************************************/
-TCHAR* CFormatMsgCAN::vFormatCurrErrorEntry(USHORT usErrorID)
-{    
+char* CFormatMsgCAN::vFormatCurrErrorEntry(USHORT usErrorID)
+{
     BOOL bErrProcessed = FALSE;
     int nCount = 0;
 
     while ((nCount < ERRORS_DEFINED) && (bErrProcessed == FALSE))
     {
-		if (usErrorID == sg_asErrorEntry[nCount].m_usErrorCode)
+        if (usErrorID == sg_asErrorEntry[nCount].m_usErrorCode)
         {
-			bErrProcessed = TRUE;
-            return sg_asErrorEntry[nCount].m_ptcErorMsg;            
+            bErrProcessed = TRUE;
+            return sg_asErrorEntry[nCount].m_ptcErorMsg;
         }
+
         nCount++;
     }
-	return NULL;        
+
+    return NULL;
 }
 
 /*******************************************************************************
@@ -272,7 +275,7 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
     TYPE_CHANNEL CurrChannel = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucChannel;
     if ((CurrChannel >= CHANNEL_CAN_MIN) && (CurrChannel <= CHANNEL_CAN_MAX ))
     {
-        _stprintf(CurrDataCAN->m_acChannel, _T("%d"), CurrChannel);
+        sprintf_s(CurrDataCAN->m_acChannel, _T("%d"), CurrChannel);
     }
 
 	memset(CurrDataCAN->m_acType,_T('\0'),sizeof(CurrDataCAN->m_acType));
@@ -292,10 +295,10 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
         CurrDataCAN->m_byMsgType |= TYPE_MSG_CAN_RTR;
         CurrDataCAN->m_acType[1] = _T('r');
     }
-    _itot(pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen, CurrDataCAN->m_acDataLen, 10);	
-    _tcscpy(CurrDataCAN->m_acMsgDesc, _T("Description"));	
 
-    CurrDataCAN->m_u64TimeStamp = pMsgCAN->m_lTickCount.QuadPart;
+    _itoa_s(pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen, CurrDataCAN->m_acDataLen, 10);
+    strcpy_s(CurrDataCAN->m_acMsgDesc, LENGTH_STR_DESCRIPTION_CAN, _T("Description"));
+	CurrDataCAN->m_u64TimeStamp = pMsgCAN->m_lTickCount.QuadPart;
     CurrDataCAN->m_dwMsgID = pMsgCAN->m_uDataInfo.m_sCANMsg.m_unMsgID;
     CurrDataCAN->m_byDataLength = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen;
 
@@ -309,22 +312,23 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
 
 		if( usErrCode != ERROR_UNKNOWN )
         {
-			// Format error message
-			TCHAR* ptrStrErrName = NULL;
-            ptrStrErrName = vFormatCurrErrorEntry(usErrCode);	
-			if(ptrStrErrName)
-			{
-				_tcscpy(CurrDataCAN->m_acDataDec, ptrStrErrName);			
-				_tcscpy(CurrDataCAN->m_acDataHex, ptrStrErrName);			
-			}
-		}
-		CurrDataCAN->m_dwMsgID = pMsgCAN->m_uDataInfo.m_sCANMsg.m_unMsgID;
-		_stprintf(CurrDataCAN->m_acMsgIDDec, FORMAT_STR_ID_DEC, CurrDataCAN->m_dwMsgID);
-		
-		_tcscpy(CurrDataCAN->m_acType, _T("ERR"));					
-	}
-	/* PROCESS ERROR MSGS ENDS */
+            // Format error message
+            char* ptrStrErrName = NULL;
+            ptrStrErrName = vFormatCurrErrorEntry(usErrCode);
 
-	vFormatTime(bExprnFlag_Log, CurrDataCAN);
+            if(ptrStrErrName)
+            {
+                strcpy_s(CurrDataCAN->m_acDataDec, LENGTH_STR_DATA_CAN, ptrStrErrName);
+                strcpy_s(CurrDataCAN->m_acDataHex, LENGTH_STR_DATA_CAN, ptrStrErrName);
+            }
+        }
+
+        CurrDataCAN->m_dwMsgID = pMsgCAN->m_uDataInfo.m_sCANMsg.m_unMsgID;
+        sprintf_s(CurrDataCAN->m_acMsgIDDec, FORMAT_STR_ID_DEC, CurrDataCAN->m_dwMsgID);
+        strcpy_s(CurrDataCAN->m_acType, LENGTH_STR_TYPE_CAN, _T("ERR"));
+    }
+
+    /* PROCESS ERROR MSGS ENDS */
+    vFormatTime(bExprnFlag_Log, CurrDataCAN);
     vFormatDataAndId(bExprnFlag_Log, CurrDataCAN);
 }

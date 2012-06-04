@@ -33,11 +33,6 @@
 #include "Utility/NumEdit.h"                // For Custom Numeric Edit control Impl
 #include "FlexListCtrl.h"           // Interface file for Flex List Control
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 // ID for Combobox
 #define IDC_CONTROL 0x12345
 
@@ -150,7 +145,10 @@ void CFlexListCtrl::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
     // Set the focus to list control. This will hide any controls that
     // are all visible at this time
     if( GetFocus() != this)
+    {
         SetFocus();
+    }
+
     CListCtrl::OnHScroll(nSBCode, nPos, pScrollBar);
 }
 
@@ -461,8 +459,11 @@ CComboItem * CFlexListCtrl::pomComboItem(int nItem,
     //basic code start
     CRect omRect;
     // Make sure that the item is visible
-    if( !EnsureVisible(nItem, TRUE)) 
+    if( !EnsureVisible(nItem, TRUE))
+    {
         return NULL;
+    }
+
     // Get the size of the list item
     GetSubItemRect(nItem, nSubItem, LVIR_BOUNDS, omRect);
     // Now scroll if we need to expose the column
@@ -549,8 +550,11 @@ CComboItem * CFlexListCtrl::pomComboList( int nItem,
     //basic code start
     CRect omRect;
     // Make sure that the item is visible
-    if( !EnsureVisible(nItem, TRUE)) 
+    if( !EnsureVisible(nItem, TRUE))
+    {
         return NULL;
+    }
+
     // Get the size of the list item
     GetSubItemRect(nItem, nSubItem, LVIR_BOUNDS, omRect);
     // Now scroll if we need to expose the column

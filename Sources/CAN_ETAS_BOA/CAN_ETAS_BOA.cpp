@@ -23,6 +23,14 @@
  * Defines the initialization routines for the DLL.
  */
 
+/* C includes */
+#include <search.h>             /* For qsort */
+
+/* C++ includes */
+#include <string>
+#include <vector>
+
+/* Project includes */
 #include "CAN_ETAS_BOA_stdafx.h"
 #include "CAN_ETAS_BOA.h"
 #include "DataTypes/Base_WrapperErrorLogger.h"
@@ -32,18 +40,15 @@
 #include "Include/DIL_CommonDefs.h"
 #include "EXTERNAL_INCLUDE/OCI/ocican.h"
 #include "EXTERNAL_INCLUDE/CSI/csisfs.h"
-#include "Include/CanUsbDefs.h"
 #include "Include/Can_Error_Defs.h"
 #include "DIL_Interface/BaseDIL_CAN_Controller.h"
 #include "HardwareListing.h"
 #include "ChangeRegisters_CAN_ETAS_BOA.h"
 
-#include <search.h>				//For qsort
-
 #define USAGE_EXPORT
 #include "CAN_ETAS_BOA_Extern.h"
 
-// CCAN_ETAS_BOA
+using namespace std;
 
 BEGIN_MESSAGE_MAP(CCAN_ETAS_BOA, CWinApp)
 END_MESSAGE_MAP()
@@ -110,28 +115,31 @@ typedef struct tagCHANNEL
 #define MAX_BUFF_ALLOWED 16
 #define MAX_CLIENT_ALLOWED 16
 static UINT sg_unClientCnt = 0;
-typedef struct tagClientBufMap
+
+class SCLIENTBUFMAP
 {
+public:
     DWORD m_dwClientID;
     CBaseCANBufFSE* m_pClientBuf[MAX_BUFF_ALLOWED];
-    TCHAR m_acClientName[MAX_PATH];
+    string m_acClientName;
     UINT m_unBufCount;
-    tagClientBufMap()
+    SCLIENTBUFMAP()
     {
         m_dwClientID = 0;
         m_unBufCount = 0;
-        memset(m_acClientName, 0, sizeof (TCHAR) * MAX_PATH);
+        m_acClientName = "";
+
         for (INT i = 0; i < MAX_BUFF_ALLOWED; i++)
         {
             m_pClientBuf[i] = NULL;
         }
     }
-}SCLIENTBUFMAP;
+};
 
 /**
  * Array of clients
  */
-static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED];
+static vector<SCLIENTBUFMAP> sg_asClientToBufMap(MAX_CLIENT_ALLOWED);
 
 const INT MAX_MAP_SIZE = 3000;
 
@@ -147,14 +155,14 @@ typedef struct tagAckMap
     }
 }SACK_MAP;
 
-typedef std::list<SACK_MAP> CACK_MAP_LIST;
+typedef list<SACK_MAP> CACK_MAP_LIST;
 static CACK_MAP_LIST sg_asAckMapBuf;
 static  CRITICAL_SECTION sg_CritSectForAckBuf;       // To make it thread safe
 
 /**
  * Channel instances
  */
-static SCHANNEL sg_asChannel[defNO_OF_CHANNELS];
+static vector<SCHANNEL> sg_asChannel(defNO_OF_CHANNELS);
 
 /**
  * Number of current channel selected
@@ -162,11 +170,6 @@ static SCHANNEL sg_asChannel[defNO_OF_CHANNELS];
 static UINT sg_nNoOfChannels = 0;
 
 static BOOL sg_bIsDriverRunning = FALSE;
-
-/**
- * Controller configuration details
- */
-static SCONTROLER_DETAILS sg_asControllerDets[defNO_OF_CHANNELS];
 
 static HWND sg_hOwnerWnd = NULL;
 
@@ -266,20 +269,15 @@ public:
 	HRESULT CAN_StopHardware(void);
 	HRESULT CAN_ResetHardware(void);
 	HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
-	HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
 	HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
-	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
-	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
-	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
-	HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength);
-	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
+	HRESULT CAN_GetLastErrorString(string& acErrorStr);
 	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
 	// Specific function set	
 	HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);	
 	HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
-	HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
+	HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
 	HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
 	HRESULT CAN_LoadDriverLibrary(void);
 	HRESULT CAN_UnloadDriverLibrary(void);
@@ -305,10 +303,12 @@ void vBlinkHw(INTERFACE_HW s_HardwareIntr)
 			Sleep(500);
 			if ((*(sBOA_PTRS.m_sOCI.closeCANController))(ouOCI_HwHandle) == OCI_SUCCESS)
             {
-				(*(sBOA_PTRS.m_sOCI.destroyCANController))(ouOCI_HwHandle) == OCI_SUCCESS;
-			}
-		}	
-	}
+                if ((*(sBOA_PTRS.m_sOCI.destroyCANController))(ouOCI_HwHandle) == OCI_SUCCESS)
+                {
+                }
+            }
+        }
+    }
 }
 static CDIL_CAN_ETAS_BOA* sg_pouDIL_CAN_ETAS_BOA = NULL;
 
@@ -392,25 +392,24 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
 /**
  * Gets the CSI API function pointer from the cslproxy.dll
  */
-BOOL bGetBOAInstallationPath(TCHAR* pcPath, INT& nSize)
+BOOL bGetBOAInstallationPath(char* pcPath, INT& nSize)
 {
     USES_CONVERSION;
 
     BOOL bResult = FALSE;
     LONG lError = 0;    
     HKEY sKey;
-    BYTE acGCCPath[1024];
-    DWORD dwSize = sizeof(BYTE[1024]) ;
-    ULONG ulType = REG_SZ;
     // Get the installation path for BOA 1.4
     lError = RegOpenKeyEx( HKEY_LOCAL_MACHINE, BOA_REGISTRY_LOCATION, 0, KEY_READ, &sKey);
     // If the registry key open successfully, get the value in "path" 
     // sub key
     if(lError==ERROR_SUCCESS)
     {
-        lError = RegQueryValueEx(sKey,"path",0, &ulType, acGCCPath,&dwSize);
-        nSize = (INT)dwSize;
-        _tcscpy(pcPath, A2T((char*)acGCCPath));
+        ULONG ulType = REG_SZ;
+        BYTE acGCCPath[1024];
+        DWORD dwSize = sizeof(acGCCPath);
+        lError = RegQueryValueEx(sKey, "path", 0, &ulType, acGCCPath, &dwSize);
+        strcpy_s(pcPath, MAX_PATH, A2T((char*)acGCCPath));
         RegCloseKey(sKey);
         bResult = TRUE;
     }
@@ -646,7 +645,8 @@ BOA_ResultCode OCI_FindCANController(OCI_URIName uriName[], INT nSize, INT* nFou
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
 {
     BOOL bResult = FALSE;
-    for (UINT i = 0; i < sg_unClientCnt; i++)
+
+    for (UINT i = 0; i < sg_asClientToBufMap.size(); i++)
     {
         if (sg_asClientToBufMap[i].m_dwClientID == dwClientID)
         {
@@ -663,11 +663,11 @@ static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
  *
  * Checks for the existance of the client with the name pcClientName.
  */
-static BOOL bClientExist(TCHAR* pcClientName, INT& Index)
+static BOOL bClientExist(string pcClientName, INT& Index)
 {    
     for (UINT i = 0; i < sg_unClientCnt; i++)
     {
-        if (!_tcscmp(pcClientName, sg_asClientToBufMap[i].m_acClientName))
+        if (pcClientName == sg_asClientToBufMap[i].m_acClientName)
         {
             Index = i;
             return TRUE;
@@ -690,7 +690,8 @@ static BOOL bRemoveClient(DWORD dwClientId)
         if (bGetClientObj(dwClientId, unClientIndex))
         {   
             sg_asClientToBufMap[unClientIndex].m_dwClientID = 0;
-            memset (sg_asClientToBufMap[unClientIndex].m_acClientName, 0, sizeof (TCHAR) * MAX_PATH);
+            sg_asClientToBufMap[unClientIndex].m_acClientName = "";
+
             for (INT i = 0; i < MAX_BUFF_ALLOWED; i++)
             {
                 sg_asClientToBufMap[unClientIndex].m_pClientBuf[i] = NULL;
@@ -1500,7 +1501,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
  * Registers a client to the DIL. ClientID will have client id
  * which will be used for further client related calls
  */
-HRESULT CDIL_CAN_ETAS_BOA::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName)
 {
     HRESULT hResult = S_FALSE;
     if (bRegister)
@@ -1515,7 +1516,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, T
                 {
                     //First slot is reserved to monitor node
                     ClientID = 1;
-                    _tcscpy(sg_asClientToBufMap[0].m_acClientName, pacClientName);                
+                    sg_asClientToBufMap[0].m_acClientName = pacClientName;                
                     sg_asClientToBufMap[0].m_dwClientID = ClientID;
                     sg_asClientToBufMap[0].m_unBufCount = 0;
                 }
@@ -1530,7 +1531,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, T
                         Index = sg_unClientCnt;
                     }
                     ClientID = dwGetAvailableClientSlot();
-                    _tcscpy(sg_asClientToBufMap[Index].m_acClientName, pacClientName);
+					sg_asClientToBufMap[Index].m_acClientName = pacClientName;
             
                     sg_asClientToBufMap[Index].m_dwClientID = ClientID;
                     sg_asClientToBufMap[Index].m_unBufCount = 0;
@@ -1587,12 +1588,12 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_LoadDriverLibrary(void)
     HRESULT hResult = S_FALSE;
 
     /* Get BOA installation path from the registery */
-    TCHAR acPath[MAX_PATH] = {'\0'};
+    char acPath[MAX_PATH] = {'\0'};
     INT nSize = 0;
     bGetBOAInstallationPath(acPath, nSize);
 
     /* Load cslproxy.dll library */
-    TCHAR acLIB_CSL[MAX_PATH] = {'\0'};
+    char acLIB_CSL[MAX_PATH] = {'\0'};
     sprintf_s(acLIB_CSL, sizeof(acLIB_CSL), "%s\\%s", acPath, LIB_CSL_NAME);
     /* LoadLibraryEx instead of LoadLibrary seems to be necessary under Windows 7 when the library is not in DLL search path (system32) */
     sg_hLibCSI = LoadLibraryEx(acLIB_CSL, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
@@ -1603,7 +1604,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_LoadDriverLibrary(void)
         /* Load the OCI library to use CAN controller */
         if (hResult == S_OK)
         {  
-            TCHAR acLIB_OCI[MAX_PATH] = {'\0'};
+            char acLIB_OCI[MAX_PATH] = {'\0'};
             sprintf_s(acLIB_OCI, sizeof(acLIB_OCI), "%s\\%s", acPath, LIB_OCI_NAME);
             sg_hLibOCI = LoadLibraryEx(acLIB_OCI, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
             if (sg_hLibOCI != NULL)
@@ -1686,13 +1687,13 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_PerformInitOperations(void)
  * Copies the controller config values into channel's
  * controller config structure.
  */
-static BOOL bLoadDataFromContr(PSCONTROLER_DETAILS pControllerDetails)
+static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
 {
     BOOL bReturn = FALSE;    
     // If successful
     if (pControllerDetails != NULL)
     {
-        TCHAR* pcStopStr = NULL;
+        char* pcStopStr = NULL;
         for( INT i = 0; i < defNO_OF_CHANNELS; i++ )
         {            
             sg_asChannel[i].m_OCI_CANConfig.baudrate = 
@@ -1828,9 +1829,9 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 			{                
                 psHWInterface[i].m_dwIdInterface = 0;
                 psHWInterface[i].m_dwVendor = 0;
-                _tcscpy(psHWInterface[i].m_acDeviceName, _T(""));
-				_tcscpy(psHWInterface[i].m_acNameInterface, A2T(acURI[i]));
-				_tcscpy(psHWInterface[i].m_acDescription, A2T(acURI[i]));
+                strcpy_s(psHWInterface[i].m_acDeviceName, MAX_CHAR_SHORT, "");
+				strcpy_s(psHWInterface[i].m_acNameInterface,MAX_CHAR_SHORT, A2T(acURI[i]));
+				strcpy_s(psHWInterface[i].m_acDescription, MAX_CHAR_LONG, A2T(acURI[i]));
 			}
 			if (nCount > 1)// List hw interface if there are more than one hw
 			{
@@ -1875,7 +1876,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SelectHwInterface(const INTERFACE_HW_LIST& asSelH
     //First select only supported number of HW interfaces
     for (UINT i = 0; i < sg_nNoOfChannels; i++)
     {
-        TCHAR acTmpURL[MAX_CHAR_SHORT] = {_T('\0')};
+        char acTmpURL[MAX_CHAR_SHORT] = {_T('\0')};
         _tcscpy(acTmpURL, asSelHwInterface[i].m_acNameInterface);
         strcpy(sg_asChannel[i].m_acURI, T2A(acTmpURL));
     }
@@ -2017,7 +2018,7 @@ BOOL Callback_DILBOA(BYTE /*Argument*/, PBYTE pDatStream, INT /*Length*/)
  * Displays the configuration dialog for controller
  */
 int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/, 
-                            PSCONTROLER_DETAILS pControllerDetails, UINT nCount)
+                            PSCONTROLLER_DETAILS pControllerDetails, UINT nCount)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     int nResult = WARNING_NOTCONFIRMED;
@@ -2044,7 +2045,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
     USES_CONVERSION;
 
     INT Result = WARN_INITDAT_NCONFIRM;
-    PSCONTROLER_DETAILS psContrlDets = (PSCONTROLER_DETAILS)InitData;
+    PSCONTROLLER_DETAILS psContrlDets = (PSCONTROLLER_DETAILS)InitData;
     //First initialize with existing hw description
     for (INT i = 0; i < min(Length, (INT)sg_nNoOfChannels); i++)
     {   
@@ -2063,7 +2064,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
 			break;
 			case INFO_INIT_DATA_CONFIRMED:
 			{    
-				Length = sizeof(SCONTROLER_DETAILS) * defNO_OF_CHANNELS;
+				Length = sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS;
 				Result = CAN_SetConfigData(InitData, Length);
                 if (Result == S_OK)
                 {
@@ -2102,7 +2103,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SetConfigData(PCHAR pInitData, INT /*Length*/)
     VALIDATE_POINTER_RETURN_VAL(pInitData, hResult);
 
     BOA_ResultCode ErrCode = OCI_FAILURE;
-    PSCONTROLER_DETAILS pControllerDetails = (PSCONTROLER_DETAILS)pInitData;
+    PSCONTROLLER_DETAILS pControllerDetails = (PSCONTROLLER_DETAILS)pInitData;
     bLoadDataFromContr(pControllerDetails);
     for (UINT i = 0; i < sg_nNoOfChannels; i++)
     {
@@ -2118,7 +2119,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SetConfigData(PCHAR pInitData, INT /*Length*/)
                                                     &(sg_asChannel[i].m_OCI_CntrlProp));
 
 		/* Fill the hardware description details */
-		_tcscpy(((PSCONTROLER_DETAILS)pInitData)[i].m_omHardwareDesc, 
+		_tcscpy(((PSCONTROLLER_DETAILS)pInitData)[i].m_omHardwareDesc, 
 				sg_asChannel[i].m_acURI);	
 
         if (ErrCode == OCI_SUCCESS)
@@ -2279,15 +2280,6 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ResetHardware(void)
     return WARN_DUMMY_API;
 }
 
-/**
- * \return S_OK for success, S_FALSE for failure
- *
- * Gets the Tx queue configured.
- */
-HRESULT CDIL_CAN_ETAS_BOA::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
-{
-    return WARN_DUMMY_API;
-}
 
 /**
  * Sends STCAN_MSG structure from the client dwClientID.
@@ -2335,43 +2327,11 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTx
     return hResult;
 }
 
-/**
- * Gets board info.
- */
-HRESULT CDIL_CAN_ETAS_BOA::CAN_GetBoardInfo(s_BOARDINFO& /*BoardInfo*/)
-{
-    return WARN_DUMMY_API;
-}
-
-/**
- * Gets bus config info.
- */
-HRESULT CDIL_CAN_ETAS_BOA::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
-{
-    return WARN_DUMMY_API;
-}
-
-/**
- * Gets driver version info.
- */
-HRESULT CDIL_CAN_ETAS_BOA::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
-{
-    return WARN_DUMMY_API;
-}
 
 /**
  * Gets last occured error and puts inside acErrorStr.
  */
-HRESULT CDIL_CAN_ETAS_BOA::CAN_GetLastErrorString(CHAR* /*acErrorStr*/, INT /*nLength*/)
-{
-    return WARN_DUMMY_API;
-}
-
-/**
- * Applies FilterType(PASS/STOP) filter for corresponding
- * channel. Frame ids are supplied by punMsgIds.
- */
-HRESULT CDIL_CAN_ETAS_BOA::CAN_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_GetLastErrorString(string& /*acErrorStr*/)
 {
     return WARN_DUMMY_API;
 }

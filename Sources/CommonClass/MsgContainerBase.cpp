@@ -40,7 +40,11 @@ DWORD WINAPI DataCopyThreadProc(LPVOID pVoid)
     {
         // TBD
     }
-    CMsgContainerBase* pCurrObj = (CMsgContainerBase *) pThreadParam->m_pBuffer;
+    CMsgContainerBase* pCurrObj = NULL;
+	if(pThreadParam != NULL)
+	{
+		pCurrObj = (CMsgContainerBase*) pThreadParam->m_pBuffer;
+	}
 	if (pCurrObj == NULL)
 	{
         // TBD
@@ -159,28 +163,24 @@ BOOL CMsgContainerBase:: bStopReadThread()
     return bReturn;
 }
 
-/******************************************************************************
-    Function Name    :  bCopyStringToTCHARArr
-    Input(s)         :  TCHAR acDesStr[], CString omSrc, int MaxDesLen
-    Output           :  BOOL
-    Functionality    :  String to TCHAR
-    Member of        :  CMsgContainerBase
-    Friend of        :      -
-    Author(s)        :  ArunKumar K 
-    Date Created     :  20.01.2011
-******************************************************************************/
-BOOL CMsgContainerBase::bCopyStringToTCHARArr( TCHAR acDesStr[], CString omSrc, int MaxDesLen )
+/**
+ * \brief Copy String to char array
+ *
+ * String to char
+ */
+BOOL CMsgContainerBase::bCopyStringTocharArr( char acDesStr[], CString omSrc, int MaxDesLen )
 {
     BOOL bReturn = TRUE;
     memset (acDesStr, _T('\0'), MaxDesLen);
+
     if (MaxDesLen <= omSrc.GetLength())
     {
         //One for null char
         omSrc = omSrc.Left(MaxDesLen - 1);
         bReturn = FALSE;
     }
-	_tcscpy(acDesStr, omSrc.GetBuffer(MAX_PATH));
 
+    strcpy(acDesStr, omSrc.GetBuffer(MAX_PATH));
     return bReturn;
 }
 

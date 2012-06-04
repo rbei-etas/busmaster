@@ -58,10 +58,14 @@ float CWaveformTransmitter::fRound(float val, unsigned int decimals)
 	unsigned int tempint = (unsigned int)tempval;
 	float decimalpart = tempval-tempint;//obtain just the decimal part
 
-	if(decimalpart>=0.5)//next integer number if greater or equal to 0.5
-		tempval = ceil(tempval);
-	else
-		tempval = floor(tempval);//otherwise stay in the current interger part
+    if(decimalpart>=0.5)//next integer number if greater or equal to 0.5
+    {
+        tempval = ceil(tempval);
+    }
+    else
+    {
+        tempval = floor(tempval);    //otherwise stay in the current interger part
+    }
 
 	return (tempval*pow((float)10,-(float)decimals))*sign;//shift again to the normal decimal places
 }
@@ -91,14 +95,17 @@ UINT64 CWaveformTransmitter::u64GetCurrAmplitude(int CurrItr,
             Result *= ouCurrSig.m_fAmplitude;
         }
         break;
-        default: ASSERT(FALSE);
+        default:
+            ASSERT(FALSE);
     }
 	//ArunKumar K: Currently using the Peak to Peak Amplitude as 0 to 2*Amplitude 
 	//instead of -Amplitude to +Amplitude
 	Result += ouCurrSig.m_fAmplitude;
 
-	if(Result!=0)
-		Result = fRound(Result, 0);
+    if(Result!=0)
+    {
+        Result = fRound(Result, 0);
+    }
 
     return (UINT64) Result;
 }
@@ -211,7 +218,7 @@ DWORD WINAPI TransmissionThreadProc(LPVOID pVoid)
 	pThreadParam = (CPARAM_THREADPROC*) pVoid;
     ASSERT(NULL != pThreadParam);
 
-	CWaveformTransmitter* pCurrObj = (CWaveformTransmitter *) pThreadParam->m_pBuffer;
+    CWaveformTransmitter* pCurrObj = static_cast<CWaveformTransmitter*> (pThreadParam->m_pBuffer);
     ASSERT(NULL != pCurrObj);
 
 	UINT SamplingRate = pCurrObj->shGetSamplingTimePeriod();
@@ -290,9 +297,10 @@ CWaveformTransmitter::CWaveformTransmitter()
 {	
     m_bEnabled = FALSE;
     m_bTxON = FALSE;
-	m_pWaveDataHandler      = NULL;
-	m_pouDIL_CAN_Interface  = NULL;
-	m_ppouDBPtr             = NULL;
+    m_nIterLimit = 0;
+    m_pWaveDataHandler      = NULL;
+    m_pouDIL_CAN_Interface  = NULL;
+    m_ppouDBPtr             = NULL;
 }
 
 CWaveformTransmitter::~CWaveformTransmitter()

@@ -1,30 +1,28 @@
-/*********************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  GraphElement.h
-  Description   :  Interface file for CGraphElement class
-  $Log:   X:/Archive/Sources/SigGrphWnd/GraphElement.h_v  $
- * 
- *    Rev 1.1   15 Apr 2011 19:43:30   rac2kor
- * Inserted RBEI Copyright information text into the file header.
- * 
- *    Rev 1.0   13 Dec 2010 22:00:34   CANMNTTM
- *  
- * 
- *    Rev 1.0   16 Aug 2010 21:20:32   rac2kor
- *  
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-  Author(s)     :  Raja N
-  Date Created  :  01.12.2004
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
- *********************************************************************/
+/**
+ * \file      GraphElement.h
+ * \brief     Interface file for CGraphElement class
+ * \author    Raja N
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Interface file for CGraphElement class
+ */
 
-#if !defined(AFX_GRAPHELEMENT_H__36E59C90_39E0_404A_A291_7AF5129AA682__INCLUDED_)
-#define AFX_GRAPHELEMENT_H__36E59C90_39E0_404A_A291_7AF5129AA682__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "SigGrphWnd_Defines.h"
 
@@ -71,5 +69,3 @@ public:
     virtual ~CGraphElement();
 
 };
-
-#endif // !defined(AFX_GRAPHELEMENT_H__36E59C90_39E0_404A_A291_7AF5129AA682__INCLUDED_)

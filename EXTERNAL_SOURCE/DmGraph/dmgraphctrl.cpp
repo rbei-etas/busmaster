@@ -101,7 +101,7 @@ CDMGraphCtrl::CDMGraphCtrl()
 	ZeroMemory(&m_ti, sizeof(TOOLINFO));
 	m_ti.cbSize = sizeof(TOOLINFO);
 	m_ti.lpszText = m_ToolTipText;
-	m_ToolTipText[0] = '\0';
+	m_ToolTipText[0] = _T('\0');
 
 	m_nCursorCount = 0;	
 }

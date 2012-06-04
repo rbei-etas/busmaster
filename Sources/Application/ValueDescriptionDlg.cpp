@@ -27,12 +27,6 @@
 #include "MainFrm.h"                // Hex validation definition is here
 #include "HashDefines.h"            // All hash defines sre here
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 extern CCANMonitorApp theApp;
 /////////////////////////////////////////////////////////////////////////////
 // CValueDescriptionDlg dialog
@@ -60,8 +54,8 @@ CValueDescriptionDlg::CValueDescriptionDlg(const SDBPARAMS& sDbParams,
     : CDialog(CValueDescriptionDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CValueDescriptionDlg)
-    m_omStrValueDescriptor = _T("");
-    m_omStrValue = _T("");
+    m_omStrValueDescriptor = "";
+    m_omStrValue = "";
     m_bIsCanceled = FALSE;
     m_omStrMessageCode = omStrMessageCode;
     m_omStrSgName = omStrSgName;
@@ -191,8 +185,9 @@ void CValueDescriptionDlg::OnClickedOk()
                     {
                         // Update the desc into the data structure
                         CSignalDescVal* pNew = new CSignalDescVal;
-                        CMainFrame* pMainFrame = 
-                            (CMainFrame*)AfxGetApp()->m_pMainWnd; 
+                        CMainFrame* pMainFrame =
+                            static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
+
                         if ( pNew       != NULL &&
                              pMainFrame != NULL)
                         {
@@ -307,11 +302,10 @@ BOOL CValueDescriptionDlg::PreTranslateMessage(MSG* pMsg)
             {
                 bSkip = FALSE;
             }
-            else
-            if ( ( pMsg->wParam >= 0x61 && pMsg->wParam<=0x66 )||// A-F
-                 ( pMsg->wParam >= 0x41 && pMsg->wParam<=0x46 )||// a-f
-                 ( pMsg->wParam >= '0' && pMsg->wParam <='9' ) ||// 0-9
-                   pMsg->wParam == 0x08 )// BackSpace
+            else if ( ( pMsg->wParam >= 0x61 && pMsg->wParam<=0x66 )|| // A-F
+                      ( pMsg->wParam >= 0x41 && pMsg->wParam<=0x46 )||// a-f
+                      ( pMsg->wParam >= '0' && pMsg->wParam <='9' ) ||// 0-9
+                      pMsg->wParam == 0x08 )// BackSpace
             {
                 bSkip = FALSE;
             }
@@ -322,6 +316,9 @@ BOOL CValueDescriptionDlg::PreTranslateMessage(MSG* pMsg)
         }
     }
     if ( bSkip == FALSE )
+    {
         bSkip = CDialog::PreTranslateMessage(pMsg);
+    }
+
     return bSkip;
 }

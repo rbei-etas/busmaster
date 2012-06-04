@@ -81,7 +81,7 @@ public:
     long m_lCurrentWarningLineNum;
     POSITION SetPosToFirstLine();
     int nGetDocumentSize();
-    const TCHAR* pcGetLine(POSITION &rPosition);
+    const char* pcGetLine(POSITION &rPosition);
     DWORD dwGetLineCount();
     BOOL bInitBusSpecificInfo(SBUS_SPECIFIC_INFO& sBusSpecInfo);
     BOOL bGetBusSpecificInfo(SBUS_SPECIFIC_INFO& sBusSpecInfo);
@@ -109,6 +109,8 @@ private:
     CStringArray m_omIncludeFileArray ;
     SBUS_SPECIFIC_INFO m_sBusSpecInfo;
 
+	// To get the application version
+	CString GetApplicationVersion();
     void vInitialiseBusSpecStructure(CString& omStrTemp, UCHAR unChannel, 
                                      SMSG_NAME_CODE& sMsgNameCode, BOOL bInitData);
 protected:

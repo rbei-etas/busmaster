@@ -21,17 +21,8 @@
  *
  * Interface file for CMessageInterpretation class
  */
-#if !defined(AFX_MESSAGEINTERPRETATION_H__23786D9A_35B8_41B8_8B9A_14DE30FE8FE6__INCLUDED_)
-#define AFX_MESSAGEINTERPRETATION_H__23786D9A_35B8_41B8_8B9A_14DE30FE8FE6__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// MessageInterpretation.h : header file
-//
-
-/////////////////////////////////////////////////////////////////////////////
-// CMessageInterpretation dialog
 
 typedef struct tagSMESSAGE_ENTRY_INFO
 {
@@ -43,7 +34,7 @@ typedef struct tagSMESSAGE_ENTRY_INFO
     tagSMESSAGE_ENTRY_INFO() 
     { 
         m_unMessageID     = 0;
-        m_omMessageName   = _T("");
+        m_omMessageName   = "";
         m_ucDataLen = 0;
         memset(m_ucData,0,8);
     }
@@ -118,8 +109,3 @@ public:
 	afx_msg void OnMove(int x, int y);
 	CString m_strCaption;
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_MESSAGEINTERPRETATION_H__23786D9A_35B8_41B8_8B9A_14DE30FE8FE6__INCLUDED_)

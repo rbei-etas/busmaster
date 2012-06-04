@@ -22,14 +22,6 @@
  * Include file for precompiled header
  */
 
-
-// stdafx.h : include file for standard system include files,
-// or project specific include files that are used frequently, but
-// are changed infrequently
-//
-#if !defined DATATYPES_STDAFX_H__INCLUDED_
-#define DATATYPES_STDAFX_H__INCLUDED_
-
 #pragma once
 
 
@@ -40,10 +32,6 @@
 #define VC_EXTRALEAN        // Exclude rarely-used stuff from Windows headers
 #endif
 
-#ifndef _CRT_SECURE_NO_DEPRECATE
-#define _CRT_SECURE_NO_DEPRECATE
-#endif
-
 #include <afx.h>
 #include <afxwin.h>         // MFC core and standard components
 #include <afxtempl.h>
@@ -52,7 +40,3 @@
 #include <wtypes.h>
 #include <string>
 #include <list>
-
-
-// TODO: reference additional headers your program requires here
-#endif // DATATYPES_STDAFX_H__INCLUDED_

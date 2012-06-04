@@ -21,12 +21,8 @@
  *
  * Interface file for CTxMsgListView class
  */
-#if !defined(AFX_TXMSGLISTVIEW_H__7F979084_0D03_40F0_97FF_4204F550F5BF__INCLUDED_)
-#define AFX_TXMSGLISTVIEW_H__7F979084_0D03_40F0_97FF_4204F550F5BF__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #ifndef __AFXEXT_H__
 #include <afxext.h>
@@ -119,10 +115,3 @@ private:
     // For Header control image list
     CImageList m_omHeaderImageList;
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_TXMSGLISTVIEW_H__7F979084_0D03_40F0_97FF_4204F550F5BF__INCLUDED_)

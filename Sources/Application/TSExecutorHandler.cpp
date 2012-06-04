@@ -47,8 +47,10 @@ TSExecutorHandler::TSExecutorHandler(void)
 
 TSExecutorHandler::~TSExecutorHandler(void)
 {
-    if ( m_hTSExecutorHandle != NULL )            
+    if ( m_hTSExecutorHandle != NULL )
+    {
         FreeLibrary(m_hTSExecutorHandle);
+    }
 }
 void TSExecutorHandler::vLoadTSExecutor_DLL()
 {

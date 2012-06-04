@@ -18,9 +18,8 @@
  * \author    Venkatanarayana Makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined(_TSEDITORGUI_CHILDFRAME_H_INCLUDED_)
-#define _TSEDITORGUI_CHILDFRAME_H_INCLUDED_
 
+#pragma once
 
 #include "TSEditorGUI_PropertyView.h"
 #include "TestSetupEditorLib/TestSetupEntity.h"
@@ -159,5 +158,3 @@ public:
     afx_msg void OnHelpTesteditorhelp();
     afx_msg void OnClose();
 };
-#endif
-

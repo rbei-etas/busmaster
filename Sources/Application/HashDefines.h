@@ -22,8 +22,7 @@
  * This header file contains the hash define               
  */
 
-#ifndef _DEFINES_H_
-#define _DEFINES_H_
+#pragma once
 
 //#define defNO_OF_CHANNELS           2
 #define MAX_PROTOCOL			   20
@@ -175,8 +174,8 @@ void newFuncName( )\n{\n\n}")
 #define defMAX_TEXT_ACCEPTANCE  2
 #define EXPORTS     _T("EXPORTS")
 
-typedef VOID (__cdecl *MSGFNPTR)(unsigned short, unsigned char, unsigned char*); 
-typedef VOID (__cdecl *TIMERFNPTR)();
+typedef VOID (*MSGFNPTR)(unsigned short, unsigned char, unsigned char*);
+typedef VOID (*TIMERFNPTR)();
 //For an integer list
 typedef CList<int,int>      defomIntegerList;
 
@@ -269,7 +268,7 @@ typedef CList<int,int>      defomIntegerList;
 
 
 
-#define STR_EMPTY               _T("")
+#define STR_EMPTY               ""
 //Initializer constants
 #define INT_INIT                (INT)0
 #define LONG_INIT               (LONG)0
@@ -425,7 +424,16 @@ function(s) is(are) ignored during initialisation.")
 #define DefSPL_LINE              "***"
 #define NUMBER_OF_MESSAGES      _T("NUMBER_OF_MESSAGES")
 #define DATABASE_VERSION        _T("[DATABASE_VERSION]")
-#define DATABASE_VERSION_NO     _T("1.2")
+#define DATABASE_PREVIOUS_VERSION_NO  _T("1.2")
+
+// Added protocol and application version information
+#define DATABASE_VERSION_NO     _T("1.3")
+#define DATABASE_PROTOCOL       _T("[PROTOCOL]")
+#define APPLICATION_VERSION     _T("[BUSMASTER_VERSION]")
+#define APPLICATION_VERSION_NO     _T("[PLACE_HOLDER_FOR_APPLICATION_VERSION]")
+#define APPLICATION_VERSION_PLACE_HOLDER _T("PLACE_HOLDER_FOR_APPLICATION_VERSION")
+#define DATABASE_PROTOCOL_CAN   _T("CAN")
+#define DATABASE_PROTOCOL_J1939 _T("J1939")
 #define MSG_START_ID            _T("[START_MSG] ")
 #define SG_START_ID             _T("[START_SIGNALS] ")
 #define SG_DESC_START_ID        _T("[VALUE_DESCRIPTION] ")
@@ -838,7 +846,7 @@ details since message length\nfor the selected message is zero!")
 #define defCOPYRIGHT        _T("(c)Robert Bosch India Limited, Bangalore")
 #define defTMPFILEEXTN      _T("tmp")
 #define defTMPFILEATTRIB    FILE_ATTRIBUTE_HIDDEN
-#define defEMPTYSTR         _T("")
+#define defEMPTYSTR         ""
 #define defSAVECONFIGERRSTR _T("Error while saving file. Restoring old data")
 
 #define defCHILD_FRAME_PROP_H 0.75
@@ -1737,7 +1745,10 @@ transmission is ON.\nDo you want to ignore the changes ?")
 #define defSTR_BUSMASTER_VERSION_STRING    _T("BUSMASTER Ver ")
 #define defSTR_FILE_OPEN_ERROR          _T("Input file open error")
 #define defSTR_LOG_FILE_UNSUPPORTED     _T("Unsupported version log file")
+#define defSTR_LOG_PRTOCOL_MISMATCH     _T("Protocol Mismatch \nSession(s) cannot be replayed")
 #define defSTR_MIXED_MODE_WARNING       _T("Mode Mismatch\n%d session(s) cannot be replayed")
+#define defSTR_PROTOCOL_USED            _T("PROTOCOL ")
+#define defSTR_PROTOCOL_CAN             _T("PROTOCOL CAN")
 
 
 #define defINTERACTIVE_THREAD_WAIT_TIME                 500
@@ -1761,6 +1772,3 @@ transmission is ON.\nDo you want to ignore the changes ?")
 #define defMINOR_VERSION_POSITION                   0
 //This line is used to separate two files Build,Build&load messages on output window
 #define defSTR_BUILD_TRACE_LINE_MARK               _T(" ")
-
-
-#endif

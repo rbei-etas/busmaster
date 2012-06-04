@@ -33,13 +33,6 @@
 #include "DataTypes/BaseAppServices.h"
 #include "Filter/Filter_extern.h"
 
-
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 // Flag to indicate object creation
 BOOL CReplayManager::m_bCreated = FALSE;
 // One instance of Replay Manager
@@ -782,37 +775,37 @@ void CReplayManager::vSetReplayConfigData(BYTE* pSrcBuffer, int /*nBuffSize*/)
     }
 }
 
-BOOL CReplayManager::bIsReplayConfigChanged()
-{
-    BOOL bReturn = TRUE;
+//BOOL CReplayManager::bIsReplayConfigChanged()
+//{
+//    BOOL bReturn = TRUE;
     /**************Get the old buffer pointer and then proceed *********/
-    BYTE* pOldConfigBuff = NULL;
+//    BYTE* pOldConfigBuff = NULL;
     /**************Get the old buffer pointer and then proceed *********/
     // Populate the list
-    int nRplayCnt = 0;
-    memcpy(&nRplayCnt, pOldConfigBuff, sizeof(nRplayCnt));
-    int nSize = (int)m_omReplayFiles.GetSize();
-    if (nSize == nRplayCnt)
-    {
-        for( int nIndex = 0; nIndex < nSize; nIndex++ )
-        {
-            CReplayFile& ouFile = m_omReplayFiles.ElementAt( nIndex );
-            bReturn = ouFile.bisConfigChanged(pOldConfigBuff);
-        }
-    }
-    else
-    {
-        bReturn = FALSE;
-    }
-    return bReturn;
-}
+//    int nRplayCnt = 0;
+//    memcpy(&nRplayCnt, pOldConfigBuff, sizeof(nRplayCnt));
+//    int nSize = (int)m_omReplayFiles.GetSize();
+//    if (nSize == nRplayCnt)
+//    {
+//        for( int nIndex = 0; nIndex < nSize; nIndex++ )
+//        {
+//            CReplayFile& ouFile = m_omReplayFiles.ElementAt( nIndex );
+//            bReturn = ouFile.bisConfigChanged(pOldConfigBuff);
+//        }
+//    }
+//    else
+//    {
+//        bReturn = FALSE;
+//
+//    return bReturn;
+//}
 
 void CReplayManager::vSetTraceObjPtr( PVOID pvObj)
 {
     g_pouITracePtr = (CBaseAppServices*) pvObj;
 }
 
-void CReplayManager::vSendToTrace(TCHAR* pcString)
+void CReplayManager::vSendToTrace(char* pcString)
 {
     if (NULL != g_pouITracePtr)
     {

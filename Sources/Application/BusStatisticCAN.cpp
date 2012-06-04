@@ -38,12 +38,12 @@ void* CBusStatisticCAN:: sm_pouBSCan;
  */
 int ReadBSDataBuffer(CBusStatisticCAN* pBSCan)
 {
-
     ASSERT(pBSCan != NULL);
     while (pBSCan->m_ouCanBufFSE.GetMsgCount() > 0)
     {
         static STCANDATA sCanData;
-        sCanData.m_lTickCount.QuadPart;
+		//Tobias- Venkat
+        //sCanData.m_lTickCount.QuadPart;
         int Result = pBSCan->m_ouCanBufFSE.ReadFromBuffer(&sCanData);
         if (Result == ERR_READ_MEMORY_SHORT)
         {
@@ -75,7 +75,9 @@ DWORD WINAPI BSDataReadThreadProc(LPVOID pVoid)
     {
         return ((DWORD)-1);
     }
-    CBusStatisticCAN* pBusStatistics = (CBusStatisticCAN*)pThreadParam->m_pBuffer;
+
+    CBusStatisticCAN* pBusStatistics = static_cast<CBusStatisticCAN*> (pThreadParam->m_pBuffer);
+
     if (pBusStatistics == NULL)
     {
         return ((DWORD)-1);
@@ -127,15 +129,12 @@ CBusStatisticCAN::CBusStatisticCAN(void)
     InitializeCriticalSection(&m_omCritSecBS);
     m_ouReadThread.m_hActionEvent = m_ouCanBufFSE.hGetNotifyingEvent();
     m_nTimerHandle = NULL;
-
     //Initialise Number of Bits in Standard Message
     UINT unBitsStdMsg[] = {51, 60, 70, 79, 89, 99, 108, 118, 127};
     memcpy(m_unBitsStdMsg, unBitsStdMsg, 9*sizeof(UINT));
-    
     //Initialise Number of Bits in Standard Message
     UINT unBitsEtdMsg[] = {75, 84, 94, 103, 113, 123, 132, 142, 151};
     memcpy(m_unBitsExdMsg, unBitsEtdMsg, 9*sizeof(UINT));
-    
 }
 
 /**
@@ -149,7 +148,9 @@ CBusStatisticCAN::~CBusStatisticCAN(void)
     m_ouCanBufFSE.vClearMessageBuffer();    // clear can buffer
     DeleteCriticalSection(&m_omCritSecBS);  // delete critical section
     if( m_nTimerHandle != NULL )
+    {
         KillTimer(NULL, m_nTimerHandle);
+    }
 }
 
 /**
@@ -777,8 +778,7 @@ HRESULT CBusStatisticCAN::BSC_GetBusStatistics(UINT unChannelIndex, SBUSSTATISTI
  */
 void CALLBACK CBusStatisticCAN::OnTimeWrapper(HWND, UINT, UINT_PTR, DWORD)
 {
-
-    CBusStatisticCAN *pTempClass = (CBusStatisticCAN*)sm_pouBSCan; // cast the void pointer
+    CBusStatisticCAN* pTempClass = static_cast<CBusStatisticCAN*> (sm_pouBSCan); // cast the void pointer
     pTempClass->vCalculateBusParametres(); // call non-static function
 }
 

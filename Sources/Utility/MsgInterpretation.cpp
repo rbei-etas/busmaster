@@ -26,12 +26,6 @@
 #include "UtilFunctions.h"      // For all utility functions implementation
 #include "include/utils_macro.h"
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 //Later put in a different file
 #define defSTR_FORMAT_PHY_VALUE_WITH_UNIT_FOR_IPT  _T("%-16s %s")
 #define defMAX_BITS             64
@@ -55,10 +49,10 @@ static char THIS_FILE[]=__FILE__;
 #define defFORMAT_INT64_HEX     _T("%I64X")
 #define defFORMAT_MSGID_HEX     _T("0x%X")
 #define defFORMAT_MSGID_HEX_STR _T("%X")
-#define defFORMAT_DATA_FLOAT    _T("%f")
-#define defNUMBER_OF_BIT_TO_SHIFT           3
-#define defSTR_FORMAT_PHY_VALUE  _T("%.3f")
-#define STR_EMPTY _T("")
+#define defFORMAT_DATA_FLOAT _T("%f")
+#define defNUMBER_OF_BIT_TO_SHIFT 3
+#define defSTR_FORMAT_PHY_VALUE _T("%.3f")
+#define STR_EMPTY ""
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -875,7 +869,10 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
         }
     }
 
-    if (NULL == pMsgs) return FALSE; // Return if the message entry isn't found
+    if (NULL == pMsgs)
+    {
+        return FALSE; // Return if the message entry isn't found
+    }
 
     omStrMsgName = pMsgs->m_omStrMessageName;
 
@@ -979,7 +976,10 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
         }
     }
 
-    if (NULL == pMsgs) return FALSE; // Return if the message entry isn't found
+    if (NULL == pMsgs)
+    {
+        return FALSE; // Return if the message entry isn't found
+    }
 
     omStrMsgName = pMsgs->m_omStrMessageName;
 
@@ -1118,11 +1118,14 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
             //Mask extra FFs with signal value
             n64SigVal = n64SigVal &  nWidthMask;*/
 
-			if(eNumFormat == HEXADECIMAL)
-				sSigInfoTmp.m_omRawValue.Format(_T("0x%X"), n64SigVal);
-			else
-				sSigInfoTmp.m_omRawValue.Format(_T("%d"), n64SigVal);
-
+            if(eNumFormat == HEXADECIMAL)
+            {
+                sSigInfoTmp.m_omRawValue.Format(_T("0x%X"), n64SigVal);
+            }
+            else
+            {
+                sSigInfoTmp.m_omRawValue.Format(_T("%d"), n64SigVal);
+            }
 
             // Assign the unit, if there is any
             sSigInfoTmp.m_omUnit = psCurrSignal->m_omStrSignalUnit;
@@ -1251,11 +1254,14 @@ BOOL CMsgInterpretationJ1939::bInterPretJ1939_MSGS(
             //Mask extra FFs with signal value
             n64SigVal = n64SigVal &  nWidthMask;
 
-			if(eNumFormat == HEXADECIMAL)
-				sSigInfoTmp.m_omRawValue.Format(_T("0x%X"), n64SigVal);
-			else
-				sSigInfoTmp.m_omRawValue.Format(_T("%d"), n64SigVal);
-
+            if(eNumFormat == HEXADECIMAL)
+            {
+                sSigInfoTmp.m_omRawValue.Format(_T("0x%X"), n64SigVal);
+            }
+            else
+            {
+                sSigInfoTmp.m_omRawValue.Format(_T("%d"), n64SigVal);
+            }
 
             // Assign the unit, if there is any
             sSigInfoTmp.m_omUnit = psCurrSignal->m_omStrSignalUnit;

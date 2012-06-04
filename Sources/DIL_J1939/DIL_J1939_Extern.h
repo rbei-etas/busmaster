@@ -90,7 +90,7 @@ Return value:
 3. ERR_NO_ MORE_CLIENT_ALLOWED  or
 4. S_OK.
 */
-USAGEMODE HRESULT DILJ_RegisterClient(BOOL bRegister, TCHAR* pacNodeName, 
+USAGEMODE HRESULT DILJ_RegisterClient(BOOL bRegister, char* pacNodeName, 
                                       UINT64 un64ECUName, BYTE byPrefAdres, 
                                       DWORD& dwClientId);
 
@@ -193,7 +193,7 @@ Return value:
 1.S_OK for success or
 2.S_FALSE for failure.
 */
-USAGEMODE HRESULT DILJ_NM_GetNodeName(BYTE byAddress, TCHAR* acNodeName);
+USAGEMODE HRESULT DILJ_NM_GetNodeName(BYTE byAddress, char* acNodeName);
 
 /*Gets the 8 bit address from node name from J1939 network.
 Parameters: 

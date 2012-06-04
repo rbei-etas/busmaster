@@ -52,8 +52,6 @@
 				RuntimeLibrary="3"
 				StructMemberAlignment="0"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="TestSetupEditorLib_stdafx.h"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
@@ -119,12 +117,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="TestSetupEditorLib_stdafx.h"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
@@ -189,10 +186,6 @@
 			</File>
 			<File
 				RelativePath=".\TestCaseEntity.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\TestSetupEditorLib_stdafx.cpp"
 				>
 			</File>
 			<File

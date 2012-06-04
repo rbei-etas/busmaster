@@ -25,12 +25,6 @@
 #include "BUSMASTER.h"
 #include "MessageList.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 /*******************************************************************************
   Function Name  : CMessageList
   Description    : Standard default constructor
@@ -296,30 +290,34 @@ void CMessageList::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 				{
 					UINT uFlags = MF_BYPOSITION | MF_STRING;
 
-					// Put check-box on context-menu
-					if (IsColumnShown(i))
-						uFlags |= MF_CHECKED;
-					else
-						uFlags |= MF_UNCHECKED;
+                    // Put check-box on context-menu
+                    if (IsColumnShown(i))
+                    {
+                        uFlags |= MF_CHECKED;
+                    }
+                    else
+                    {
+                        uFlags |= MF_UNCHECKED;
+                    }
 
-					if(i == 0)		//Disable 'Time' column
-						break;
+                    if(i == 0)      //Disable 'Time' column
+                    {
+                        break;
+                    }
 
-					// Retrieve column-title
-					LVCOLUMN lvc = {0};
-					lvc.mask = LVCF_TEXT;
-					TCHAR sColText[256];
-					lvc.pszText = sColText;
-				
-					lvc.cchTextMax = 15;	//Set the Width of Menu Items here
-					//venkat
-					if(GetColumn(i, &lvc) != 0)
-					{
-						menu.InsertMenu(0, uFlags, i, lvc.pszText);		
-					}
+                    // Retrieve column-title
+                    LVCOLUMN lvc = {0};
+                    lvc.mask = LVCF_TEXT;
+                    char sColText[256];
+                    lvc.pszText = sColText;
+                    lvc.cchTextMax = 15;    //Set the Width of Menu Items here
 
-										
-				}
+                    //venkat
+                    if(GetColumn(i, &lvc) != 0)
+                    {
+                        menu.InsertMenu(0, uFlags, i, lvc.pszText);
+                    }
+                }
 
 				menu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this, 0);
 			}
@@ -375,22 +373,24 @@ BOOL CMessageList::MakeColumnVisible(int nCol, bool bShow)
 		int nCurIndex = -1;
 		for(int i = 0; i < nColumnCount ; ++i)
 		{
-			if (pnOrderArray[i]==nCol)
-				nCurIndex = i;
-			else if (nCurIndex!=-1)
-			{
-				// We want to move it to the original position,
-				// and after the last hidden column
-				if ( (i <= columnTitleState.m_nOrigPosition)
-				  || !IsColumnShown(pnOrderArray[i])
-				  || (IsColumnShown(pnOrderArray[i]) && pnOrderArray[i] < columnTitleState.m_nOrigPosition)
-				   )
-				{
-					pnOrderArray[nCurIndex] = pnOrderArray[i];
-					pnOrderArray[i] = nCol;
-					nCurIndex = i;
-				}
-			}
+            if (pnOrderArray[i]==nCol)
+            {
+                nCurIndex = i;
+            }
+            else if (nCurIndex!=-1)
+            {
+                // We want to move it to the original position,
+                // and after the last hidden column
+                if ( (i <= columnTitleState.m_nOrigPosition)
+                        || !IsColumnShown(pnOrderArray[i])
+                        || (IsColumnShown(pnOrderArray[i]) && pnOrderArray[i] < columnTitleState.m_nOrigPosition)
+                   )
+                {
+                    pnOrderArray[nCurIndex] = pnOrderArray[i];
+                    pnOrderArray[i] = nCol;
+                    nCurIndex = i;
+                }
+            }
 		}
 	}
 	else
@@ -454,14 +454,18 @@ LRESULT CMessageList::OnInsertColumn(WPARAM wParam, LPARAM lParam)
 	// Let the base class CListCtrl handle this event
 	LRESULT lReturn = DefWindowProc(LVM_INSERTCOLUMN, wParam, lParam);
 
-	if (lReturn == -1)
-		return -1;
+    if (lReturn == -1)
+    {
+        return -1;
+    }
 
 	int nColumn = (int)lReturn;
 
-	// Save details of columns
-	if (GetHeaderCtrl()->GetItemCount() > GetColumnTitleStateCount())
-		InsertColumnTitleState((int)nColumn, true);	// Set default visibility 
+    // Save details of columns
+    if (GetHeaderCtrl()->GetItemCount() > GetColumnTitleStateCount())
+    {
+        InsertColumnTitleState((int)nColumn, true);    // Set default visibility
+    }
 
 	return lReturn;
 }
@@ -497,8 +501,10 @@ BOOL CMessageList::OnHeaderEndDrag(UINT, NMHDR* pNMHDR, LRESULT* /*pResult*/)
 			if (IsColumnShown(pOrderArray[i]))
 			{
                 pNMHeader->pitem->iOrder = max(pNMHeader->pitem->iOrder,i);
-				if(pNMHeader->pitem->iOrder == 0)
-					pNMHeader->pitem->iOrder++;
+                if(pNMHeader->pitem->iOrder == 0)
+                {
+                    pNMHeader->pitem->iOrder++;
+                }
 				break;
 			}
 		}

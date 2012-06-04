@@ -25,7 +25,7 @@
 struct sERRORMSGINFO
 {
     unsigned short m_usErrorCode; // Error code
-    TCHAR* m_ptcErorMsg;          // Error message
+    char* m_ptcErorMsg;          // Error message
 };
 typedef sERRORMSGINFO SERRORMSGINFO;
 typedef sERRORMSGINFO* PERRORMSGINFO;
@@ -134,15 +134,14 @@ void CFormatMsgJ1939::vFormatDataAndId(BYTE bExprnFlag,
 {
 	if (IS_NUM_HEX_SET(bExprnFlag))
     {
-        _stprintf(psJ1939FData->m_acPGNHex, FORMAT_PGN_ID_HEX, 
+        sprintf_s(psJ1939FData->m_acPGNHex, FORMAT_PGN_ID_HEX,
                   psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN());
-
-		_stprintf(psJ1939FData->m_acMsgIDHex, FORMAT_STR_ID_HEX, psJ1939FData->m_dwMsgID);
+        sprintf_s(psJ1939FData->m_acMsgIDHex, FORMAT_STR_ID_HEX, psJ1939FData->m_dwMsgID);
         USHORT j  = 0;  //j is declared outside the for loop.
         for (USHORT i = 0; i < psJ1939BData->m_unDLC; i++)
         {
             BYTE CurrDat = *(psJ1939BData->m_pbyData + i);
-            _stprintf(&(psJ1939FData->m_pcDataHex[j]), FORMAT_STR_DATA_HEX, CurrDat);
+            sprintf_s(&(psJ1939FData->m_pcDataHex[j]), MAX_DATA_LEN_J1939-j, FORMAT_STR_DATA_HEX, CurrDat);
             j += 3;
         }
         psJ1939FData->m_pcDataHex[j] = L'\0';
@@ -150,16 +149,15 @@ void CFormatMsgJ1939::vFormatDataAndId(BYTE bExprnFlag,
 
     if (IS_NUM_DEC_SET(bExprnFlag))
     {
-        _stprintf(psJ1939FData->m_acPGNDec, FORMAT_PGN_ID_DEC, 
+        sprintf_s(psJ1939FData->m_acPGNDec, FORMAT_PGN_ID_DEC,
                   psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN());
-
-		_stprintf(psJ1939FData->m_acMsgIDDec, FORMAT_STR_ID_DEC, psJ1939FData->m_dwMsgID);
+        sprintf_s(psJ1939FData->m_acMsgIDDec, FORMAT_STR_ID_DEC, psJ1939FData->m_dwMsgID);
         USHORT j = 0;   // j is declared outside of the for loop
         for (USHORT i = 0; i < psJ1939BData->m_unDLC; i++)
         {
             BYTE CurrDat = *(psJ1939BData->m_pbyData + i);
-            _stprintf(&(psJ1939FData->m_pcDataDec[j]), FORMAT_STR_DATA_DEC, CurrDat);
-			psJ1939FData->m_pcDataDec[j + 3] = L' ';
+            sprintf_s(&(psJ1939FData->m_pcDataDec[j]), MAX_DATA_LEN_J1939-j , FORMAT_STR_DATA_DEC, CurrDat);
+            psJ1939FData->m_pcDataDec[j + 3] = L' ';
             j += 4;
         }
         psJ1939FData->m_pcDataDec[j] = L'\0';
@@ -202,19 +200,15 @@ USHORT CFormatMsgJ1939::usProcessCurrErrorEntry(SERROR_INFO& sErrorInfo)
     return usErrorID;
 }
 
-/*******************************************************************************
-  Function Name  : vFormatCurrErrorEntry
-  Input(s)       : usErrorID
-  Output         : TCHAR* (Error Name)
-  Functionality  : Gets the pointer to Message data Buffer from PSDI_CAN DLL
-				   and updates the same in List Control.
-  Member of      : CFormatMsgJ1939
-  Author(s)      : Arun kumar K
-  Date Created   : 24.01.2011
-  Modifications  : 
-*******************************************************************************/
-TCHAR* CFormatMsgJ1939::vFormatCurrErrorEntry(USHORT usErrorID)
-{    
+/**
+ * \brief  Format Current Error Entry
+ * \return Error Name
+ *
+ * Gets the pointer to Message data Buffer from PSDI_CAN DLL
+ * and updates the same in List Control.
+ */
+char* CFormatMsgJ1939::vFormatCurrErrorEntry(USHORT usErrorID)
+{
     BOOL bErrProcessed = FALSE;
     int nCount = 0;
 
@@ -256,17 +250,18 @@ void CFormatMsgJ1939::vFormatJ1939DataMsg(PSTJ1939_MSG psJ1939BData,
 
     if (IS_NUM_HEX_SET(bExprnFlag_Log))
     {
-        _stprintf(psJ1939FData->m_acSrcHex, FORMAT_STR_DATA_HEX, psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_bySrcAddress);
-        _stprintf(psJ1939FData->m_acDestHex, FORMAT_STR_DATA_HEX, psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Specific);
+        sprintf_s(psJ1939FData->m_acSrcHex, FORMAT_STR_DATA_HEX, psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_bySrcAddress);
+        sprintf_s(psJ1939FData->m_acDestHex, FORMAT_STR_DATA_HEX, psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Specific);
     }
 
     if (IS_NUM_DEC_SET(bExprnFlag_Log))
     {
-        _stprintf(psJ1939FData->m_acSrcDec, FORMAT_STR_DATA_DEC, psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_bySrcAddress);
-        _stprintf(psJ1939FData->m_acDestDec, FORMAT_STR_DATA_DEC, psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Specific);
+        sprintf_s(psJ1939FData->m_acSrcDec, FORMAT_STR_DATA_DEC, psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_bySrcAddress);
+        sprintf_s(psJ1939FData->m_acDestDec, FORMAT_STR_DATA_DEC, psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Specific);
     }
 
-    _stprintf(psJ1939FData->m_acPriority, FORMAT_STR_DATA_DEC, psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_uPGN.m_sPGN.m_byPriority);
+    sprintf_s(psJ1939FData->m_acPriority, FORMAT_STR_DATA_DEC, psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_uPGN.m_sPGN.m_byPriority);
+
     if (DIR_RX == psJ1939BData->m_sMsgProperties.m_eDirection)
     {
         psJ1939FData->m_acMsgDir[0] = L'R';
@@ -279,8 +274,8 @@ void CFormatMsgJ1939::vFormatJ1939DataMsg(PSTJ1939_MSG psJ1939BData,
     {
         ASSERT(FALSE);
     }
-    _itot(psJ1939BData->m_unDLC, psJ1939FData->m_acDataLen, 10);
 
+    _itoa_s(psJ1939BData->m_unDLC, psJ1939FData->m_acDataLen, LEN_STR_DLC_J1939, 10);
     vFormatTime(bExprnFlag_Log, psJ1939BData, psJ1939FData);
     vFormatDataAndId(bExprnFlag_Log, psJ1939BData, psJ1939FData);
 }

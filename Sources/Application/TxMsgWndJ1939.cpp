@@ -228,7 +228,9 @@ DWORD WINAPI Cyclic_Transmission_Thread(LPVOID pVoid)
     {
         return (DWORD)-1;
     }
-    CTxMsgWndJ1939* pTxMsgWndJ1939 = (CTxMsgWndJ1939*) pThreadParam->m_pBuffer;
+
+    CTxMsgWndJ1939* pTxMsgWndJ1939 = static_cast<CTxMsgWndJ1939*> (pThreadParam->m_pBuffer);
+
     if (pTxMsgWndJ1939 == NULL)
     {
         return (DWORD)-1;
@@ -272,8 +274,12 @@ DWORD WINAPI Cyclic_Transmission_Thread(LPVOID pVoid)
                     bLoopON = false;
                 }
                 break;
-                case IDLE: break;
-                default: break;
+
+                case IDLE:
+                    break;
+
+                default:
+                    break;
             }
         }
     }
@@ -286,8 +292,8 @@ DWORD WINAPI Cyclic_Transmission_Thread(LPVOID pVoid)
 
 IMPLEMENT_DYNAMIC(CTxMsgWndJ1939, CDialog)
 CTxMsgWndJ1939::CTxMsgWndJ1939(CWnd* pParent /*=NULL*/, SJ1939CLIENTPARAM& sClientParam)
-	: CDialog(CTxMsgWndJ1939::IDD, pParent)
-    , m_omMsgDataEditVal(_T(""))
+    : CDialog(CTxMsgWndJ1939::IDD, pParent)
+    , m_omMsgDataEditVal("")
     , m_unDataLength(0)
     , m_nMsgTypeIndex(0)
     , m_sClientParams(sClientParam)
@@ -392,8 +398,8 @@ BOOL CTxMsgWndJ1939::OnInitDialog()
 static BYTE byExtractAddress(CString& omText)
 {
     BYTE byAddress = ADDRESS_NULL;
-	CString omTemp;
-	TCHAR* pcStopStr = NULL;
+    CString omTemp;
+    char* pcStopStr = NULL;
     int nIndex = omText.Find(defMSGID_EXTENDED);
     int nCloseBraceIndex = omText.Find(defMSG_NAME_END_CHAR);
 	if((nIndex != -1) && (nCloseBraceIndex != -1))
@@ -523,7 +529,7 @@ void CTxMsgWndJ1939::OnBnClickedSend()
             }
             else
             {
-                vSetStatusBarText(_T("")); //Clear status bar.
+                vSetStatusBarText(""); //Clear status bar.
                 SendSavedMessage();
             }
         }
@@ -779,8 +785,7 @@ void CTxMsgWndJ1939::OnCbnSelchangeComboMsgtype()
         {
             m_omDLCEdit.vSetValue(0x3);
             m_omMsgDataEdit.vSetValue(0);
-            m_omMsgDataEdit.SetWindowText(_T(""));
-
+            m_omMsgDataEdit.SetWindowText("");
             m_omDLCEdit.SetReadOnly(TRUE);
             m_omMsgDataEdit.SetReadOnly(TRUE);
         }
@@ -821,7 +826,7 @@ ESTATE_TRANS CTxMsgWndJ1939::eGetTransState(void)
 {
     return m_eTransState;
 }
-void CTxMsgWndJ1939::vSetStatusBarText(const TCHAR* pacText)
+void CTxMsgWndJ1939::vSetStatusBarText(const char* pacText)
 {
     CWnd* pWnd = GetDlgItem(IDC_STATUSBAR);
     pWnd->SetWindowText(pacText);
@@ -946,6 +951,8 @@ void CTxMsgWndJ1939::vSetDatabaseInfo(const SMSGENTRY* psMsgEntry)
 }
 void CTxMsgWndJ1939::vUpdateDataStore(const SMSGENTRY* psMsgEntry)
 {
+	// Clearing the message entries
+	vClearDataStore();
     const SMSGENTRY* psTemp = psMsgEntry;
     while (psTemp != NULL)
     {

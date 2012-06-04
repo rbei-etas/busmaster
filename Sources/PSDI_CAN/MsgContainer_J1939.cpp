@@ -57,9 +57,8 @@ CMsgContainerJ1939::CMsgContainerJ1939(void)
 {
     InitializeCriticalSection(&m_sCritSecDataSync);
     InitializeCriticalSection(&m_omCritSecFilter);
-	m_pouDIL_J1939 = NULL;
-
-	// Allocate necessary amount of memory.
+    m_pouDIL_J1939 = NULL;
+    // Allocate necessary amount of memory.
     m_sJ1939Data.m_unDLC = MAX_DATA_LEN_J1939;
     m_sJ1939Data.m_pbyData = new BYTE[m_sJ1939Data.m_unDLC];// For basic data object
     ASSERT(NULL != m_sJ1939Data.m_pbyData);
@@ -67,16 +66,14 @@ CMsgContainerJ1939::CMsgContainerJ1939(void)
     // For raw data bytes. It should be equal to the size of m_sJ1939Data
 	m_pbyJ1939Data = new BYTE[MAX_MSG_LEN_J1939 +  sizeof(__int64)];
     ASSERT(NULL != m_pbyJ1939Data);
-
-	USHORT Length = ushCalculateStrLen(true, MAX_DATA_LEN_J1939);
-    m_sOutFormattedData.m_pcDataHex = new TCHAR[Length];
+    USHORT Length = ushCalculateStrLen(true, MAX_DATA_LEN_J1939);
+    m_sOutFormattedData.m_pcDataHex = new char[Length];
     ASSERT(NULL != m_sOutFormattedData.m_pcDataHex);
-    memset(m_sOutFormattedData.m_pcDataHex, '\0', Length * sizeof(TCHAR));
-
+    memset(m_sOutFormattedData.m_pcDataHex, '\0', Length * sizeof(char));
     Length = ushCalculateStrLen(false, MAX_DATA_LEN_J1939);
-    m_sOutFormattedData.m_pcDataDec = new TCHAR[Length];
+    m_sOutFormattedData.m_pcDataDec = new char[Length];
     ASSERT(NULL != m_sOutFormattedData.m_pcDataDec);
-    memset(m_sOutFormattedData.m_pcDataDec, '\0', Length * sizeof(TCHAR));
+    memset(m_sOutFormattedData.m_pcDataDec, '\0', Length * sizeof(char));
 }
 
 /******************************************************************************
@@ -215,10 +212,14 @@ void CMsgContainerJ1939::vRetrieveDataFromBuffer()
 
 static bool bIsErrorMsg(EJ1939_MSG_TYPE eType)
 {
-	if(eType == MSG_TYPE_NONE)
-		return true;
-	else
-		return false;
+    if(eType == MSG_TYPE_NONE)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 int stJ1939MsgSpl::nGetSize() const
@@ -688,7 +689,7 @@ HRESULT CMsgContainerJ1939::hUpdateFormattedMsgStruct(int nListIndex,
 ******************************************************************************/
 void CMsgContainerJ1939::vSetCurrMsgName(CString strMsgNameOrCode)
 {
-	CMsgContainerBase::bCopyStringToTCHARArr (m_sOutFormattedData.m_acMsgName, strMsgNameOrCode, 
+	CMsgContainerBase::bCopyStringTocharArr (m_sOutFormattedData.m_acMsgName, strMsgNameOrCode, 
                            sizeof(m_sOutFormattedData.m_acMsgName));
 }
 /******************************************************************************
@@ -703,25 +704,26 @@ void CMsgContainerJ1939::vSetCurrMsgName(CString strMsgNameOrCode)
 ******************************************************************************/
 void CMsgContainerJ1939::vClearFormattedMsgStruct()
 {
-	_tcscpy(m_sOutFormattedData.m_acTimeAbs,  _T(""));
-	_tcscpy(m_sOutFormattedData.m_acTimeRel,  _T(""));
-	_tcscpy(m_sOutFormattedData.m_acTimeSys,  _T(""));	
-	_tcscpy(m_sOutFormattedData.m_pcDataHex,  _T(""));	
-	_tcscpy(m_sOutFormattedData.m_acMsgIDHex, _T(""));	
-	_tcscpy(m_sOutFormattedData.m_acPGNHex,   _T(""));	
-	_tcscpy(m_sOutFormattedData.m_acSrcHex,   _T(""));	
-	_tcscpy(m_sOutFormattedData.m_acDestHex,  _T(""));	
-	_tcscpy(m_sOutFormattedData.m_pcDataDec,  _T(""));	
-	_tcscpy(m_sOutFormattedData.m_acMsgIDDec, _T(""));	
-	_tcscpy(m_sOutFormattedData.m_acPGNDec,   _T(""));	
-	_tcscpy(m_sOutFormattedData.m_acSrcDec,   _T(""));	
-	_tcscpy(m_sOutFormattedData.m_acDestDec,  _T(""));	
-	_tcscpy(m_sOutFormattedData.m_acDataLen,  _T(""));	
-	_tcscpy(m_sOutFormattedData.m_acMsgType,  _T(""));	
-	_tcscpy(m_sOutFormattedData.m_acMsgDir,   _T(""));	
-	_tcscpy(m_sOutFormattedData.m_acChannel,  _T(""));	
-	_tcscpy(m_sOutFormattedData.m_acPriority, _T(""));	
-	_tcscpy(m_sOutFormattedData.m_acMsgName,  _T(""));	
+	//Tobias - venkat
+    strcpy_s(m_sOutFormattedData.m_acTimeAbs,  sizeof(m_sOutFormattedData.m_acTimeAbs),  "");
+    strcpy_s(m_sOutFormattedData.m_acTimeRel,  sizeof(m_sOutFormattedData.m_acTimeRel),  "");
+    strcpy_s(m_sOutFormattedData.m_acTimeSys,  sizeof(m_sOutFormattedData.m_acTimeSys),  "");
+    strcpy_s(m_sOutFormattedData.m_pcDataHex,  MAX_DATA_LEN_J1939,  "");
+    strcpy_s(m_sOutFormattedData.m_acMsgIDHex, sizeof(m_sOutFormattedData.m_acPGNHex), "");
+    strcpy_s(m_sOutFormattedData.m_acPGNHex,   sizeof(m_sOutFormattedData.m_acPGNHex),   "");
+    strcpy_s(m_sOutFormattedData.m_acSrcHex,   sizeof(m_sOutFormattedData.m_acSrcHex),   "");
+    strcpy_s(m_sOutFormattedData.m_acDestHex,  sizeof(m_sOutFormattedData.m_acDestHex),  "");
+    strcpy_s(m_sOutFormattedData.m_pcDataDec,  MAX_DATA_LEN_J1939,  "");
+    strcpy_s(m_sOutFormattedData.m_acMsgIDDec, sizeof(m_sOutFormattedData.m_acMsgIDDec), "");
+    strcpy_s(m_sOutFormattedData.m_acPGNDec,   sizeof(m_sOutFormattedData.m_acPGNDec),   "");
+    strcpy_s(m_sOutFormattedData.m_acSrcDec,   sizeof(m_sOutFormattedData.m_acSrcDec),   "");
+    strcpy_s(m_sOutFormattedData.m_acDestDec,  sizeof(m_sOutFormattedData.m_acDestDec),  "");
+    strcpy_s(m_sOutFormattedData.m_acDataLen,  sizeof(m_sOutFormattedData.m_acDataLen),  "");
+    strcpy_s(m_sOutFormattedData.m_acMsgType,  sizeof(m_sOutFormattedData.m_acMsgType),  "");
+    strcpy_s(m_sOutFormattedData.m_acMsgDir,   sizeof(m_sOutFormattedData.m_acMsgDir),   "");
+    strcpy_s(m_sOutFormattedData.m_acChannel,  sizeof(m_sOutFormattedData.m_acChannel),  "");
+    strcpy_s(m_sOutFormattedData.m_acPriority, sizeof(m_sOutFormattedData.m_acPriority), "");
+    strcpy_s(m_sOutFormattedData.m_acMsgName,  sizeof(m_sOutFormattedData.m_acMsgName),  "");
 }
 /******************************************************************************
     Function Name    :  vGetUpdatedCurrDataPtrArray
@@ -733,9 +735,9 @@ void CMsgContainerJ1939::vClearFormattedMsgStruct()
     Author(s)        :  Arun kumar K
     Date Created     :  20.01.2011
 ******************************************************************************/
-void CMsgContainerJ1939::vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL &sHdrColStruct,
-                                                TCHAR *pomDataPtrArr[MAX_MSG_WND_COL_CNT],
-                                                BYTE bExprnFlag_Disp)
+void CMsgContainerJ1939::vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL& sHdrColStruct,
+        char* pomDataPtrArr[MAX_MSG_WND_COL_CNT],
+        BYTE bExprnFlag_Disp)
 {
     //Time mode
     if (IS_TM_ABS_SET(bExprnFlag_Disp))

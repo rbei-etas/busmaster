@@ -18,12 +18,15 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined TXWND_DEFS_H_
-#define TXWND_DEFS_H_
+
+#pragma once
 
 #include "include/struct_can.h"
-#define defTX_MSG_WND_BOTTOM_MARGIN        0.14
-#define defTX_MSG_WND_RIGHT_MARGIN         0.17
+#define defTX_MSG_WND_BOTTOM_MARGIN     0.14
+#define defTX_MSG_WND_RIGHT_MARGIN      0.17
+//#define defTX_MSG_WND_VERSION			0x01 // Initial version
+#define defTX_MSG_WND_VERSION			0x02 // Added auto save option
+
 // Tx window spilitter details
 struct tagTxMsgSplitterData
 {
@@ -84,7 +87,7 @@ typedef sTXCANMSGLIST* PSTXCANMSGLIST;
 
 struct sMSGBLOCKLIST
 {
-    TCHAR m_acStrBlockName[defBLOCKNAME_SIZE];
+    char m_acStrBlockName[defBLOCKNAME_SIZE];
     unsigned char m_ucTrigger;
     BOOL m_bType;
     BOOL m_bActive;
@@ -106,8 +109,7 @@ struct sMSGBLOCKLIST
         m_psTxCANMsgList      = NULL;
         m_ucKeyValue          = 0;
         m_unTimeInterval      = defDEFAULT_TIME_VAL;
-        _tcscpy( m_acStrBlockName, defDEFAULT_MSG_BLOCK_NAME);
-
+        strcpy_s(m_acStrBlockName, defBLOCKNAME_SIZE, defDEFAULT_MSG_BLOCK_NAME);
     }
 };
 typedef sMSGBLOCKLIST SMSGBLOCKLIST;
@@ -155,6 +157,10 @@ private:
 public:
     sTXMSGINFO()
     {
+        m_sTimerThreadInfo.m_hThread = NULL;
+        m_sTimerThreadInfo.m_pvThread = NULL;
+        m_sKeyThreadInfo.m_hThread = NULL;
+        m_sKeyThreadInfo.m_pvThread = NULL;
         m_hSemaphore = NULL;
         m_psTxCANMsgList = NULL;
         m_psNextTxMsgInfo = NULL;
@@ -292,6 +298,3 @@ typedef union tagUBYTE
 
 
 #define CHAR_INT                'I'
-
-
-#endif //TXWND_DEFS_H_

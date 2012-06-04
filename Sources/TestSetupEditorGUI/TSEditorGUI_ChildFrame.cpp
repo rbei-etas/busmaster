@@ -30,10 +30,6 @@
 #include "TSEditorGUI_MDIChildBase.h"
 #include <htmlhelp.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 #define def_STR_SIGNAL_FORMAT   _T("%-50s %8d %8d %8d\r\n")
 #define def_STR_SIGNAL_HEADING  _T("%-50s %8s %8s %8s\r\n\r\n")
 #define CHECKENTITY(pEntity) if( pEntity == NULL){return;}
@@ -1317,7 +1313,8 @@ void CTSEditorChildFrame::vSaveHeaderInfo(INT /*nTestSetupIndex*/)
     }
     
     //File Format
-    TCHAR *pchExten = PathFindExtension(ouHeaderInfo.m_sReportFile.m_omPath);
+    char* pchExten = PathFindExtension(ouHeaderInfo.m_sReportFile.m_omPath);
+
     //omStrTemp = omTempListCtrl.GetItemText(def_TS_ROWNUM_FILEFORMAT, 1);
     if((strcmp(pchExten, _T(".HTML")) == 0)||(strcmp(pchExten, _T(".html")) == 0))
     {
@@ -1694,7 +1691,8 @@ void CTSEditorChildFrame::vHandleTestSetup(LPNMLISTVIEW pNMLV)
         CString omstrDatabaseName = m_odPropertyView->m_omPropertyList.GetItemText(def_TS_ROWNUM_DATABASE, 1);
         CTestSetupHeader ouHeaderInfo;
         m_ouTSEntity.GetHeaderData(ouHeaderInfo);
-        if(ouHeaderInfo.m_omDatabasePath == _T(""))
+
+        if(ouHeaderInfo.m_omDatabasePath == "")
         {
             ouHeaderInfo.m_omDatabasePath = omstrDatabaseName;
             m_ouTSEntity.m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(omstrDatabaseName);
@@ -2322,7 +2320,7 @@ Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::OnUpdateFileSaveas(CCmdUI *pCmdUI)
 {
-    if(m_omCurrentTSFile == def_EMPTYFILENAME || m_omCurrentTSFile == _T(""))
+    if(m_omCurrentTSFile == def_EMPTYFILENAME || m_omCurrentTSFile == "")
     {
         pCmdUI->Enable(FALSE);
     }
@@ -2622,21 +2620,29 @@ BOOL CTSEditorChildFrame::isParentChild(eTYPE_ENTITY eParent, eTYPE_ENTITY eChil
         case WAIT:
         case REPLAY:
         case VERIFYRESPONSE:
-            {
+        {
             if(eParent == TEST_CASE)
+            {
                 bRetVal = TRUE;
             }
+        }
         break;
         case SEND_MESSAGE:
         {
             if(eParent == SEND)
+            {
                 bRetVal = TRUE;
+            }
+
             break;
         }
         case VERIFY_MESSAGE:
         {
             if(eParent == VERIFY || eParent == VERIFYRESPONSE)
+            {
                 bRetVal = TRUE;
+            }
+
             break;
         }
         default:

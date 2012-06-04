@@ -255,7 +255,7 @@ bool bGetSystemErrorString(HRESULT hResult, CHAR acErrStr[256])
     else
     {
         LPSTR pBuf = T2A((LPTSTR) lpMsgBuf);
-        _tcscpy(acErrStr, pBuf);
+        strcpy(acErrStr, pBuf);
         LocalFree(lpMsgBuf); // Free the buffer.
     }
 
@@ -263,7 +263,7 @@ bool bGetSystemErrorString(HRESULT hResult, CHAR acErrStr[256])
 }
 #endif
 
-bool bGetSystemErrorString(HRESULT hResult, TCHAR acErrStr[256])
+bool bGetSystemErrorString(HRESULT hResult, char acErrStr[256])
 {
     bool bResult = true;
 
@@ -278,12 +278,12 @@ bool bGetSystemErrorString(HRESULT hResult, TCHAR acErrStr[256])
                     (LPTSTR) &lpMsgBuf, 0, NULL );
     if (dwResult <= 0)
     {
-        _tcscpy(acErrStr, _T("system error message retrieval operation failed"));
+        strcpy_s(acErrStr, 256, _T("system error message retrieval operation failed"));
         bResult = false;
     }
     else
     {
-        _tcscpy(acErrStr, (LPTSTR) lpMsgBuf);
+        strcpy_s(acErrStr, 256, (LPTSTR) lpMsgBuf);
         LocalFree(lpMsgBuf); // Free the buffer.
     }
 
@@ -312,9 +312,13 @@ BOOL CopyTextToClipboard(LPSTR lpstrText, HWND hWnd = NULL)
 	// Allocate Global Memory which is required to store the text
 	hGlobal = GlobalAlloc(GMEM_ZEROINIT, (nSize + 1));
 
-	if (hGlobal == NULL) return FALSE;
-	// Lock the memory and store the text into it
-	lpszData = (LPSTR) GlobalLock(hGlobal);
+    if (hGlobal == NULL)
+    {
+        return FALSE;
+    }
+
+    // Lock the memory and store the text into it
+    lpszData = (LPSTR) GlobalLock(hGlobal);
     strcpy(lpszData, lpstrText);
     //_tcsncpy(lpszData, lpctstrText, nSize + 1);
 
@@ -343,11 +347,16 @@ BOOL CopyTextToClipboard(LPCTSTR lpctstrText, HWND hWnd = NULL)
 	// Allocate Global Memory which is required to store the text
 	hGlobal = GlobalAlloc(GMEM_ZEROINIT, nSize+1);
 
-	if (hGlobal == NULL) return FALSE;
-	// Lock the memory and store the text into it
-	lpszData = (LPSTR)GlobalLock(hGlobal);
-	for (UINT i = 0; i < nSize + 1; ++i)
-	{
+    if (hGlobal == NULL)
+    {
+        return FALSE;
+    }
+
+    // Lock the memory and store the text into it
+    lpszData = (LPSTR)GlobalLock(hGlobal);
+
+    for (UINT i = 0; i < nSize + 1; ++i)
+    {
         *(lpszData + i) = *(lpctstrText + i);
 	}
 	// Unlock the memory
@@ -379,7 +388,7 @@ __int64 nConvertStringToInt(LPCTSTR omStrHexNo)
     int nLength = (int) _tcslen(omStrHexNo);
     for (int nCount = 0; nCount < nLength; nCount++)
     {
-        TCHAR cChar = omStrHexNo[nCount];
+        char cChar = omStrHexNo[nCount];
 
         if ( cChar == '0' )
         {
@@ -563,8 +572,8 @@ BOOL bConvertStringToInt64( CString omStrHexNo,
     for (int nCount = 0; nCount < nStrLength; nCount++)
     {
         // Get the charector
-        TCHAR cChar = omStrHexNo.GetAt( nCount);
-        
+        char cChar = omStrHexNo.GetAt( nCount);
+
         // Check for 0 - 9 range
         if( cChar >= '0' && cChar <= '9')
         {

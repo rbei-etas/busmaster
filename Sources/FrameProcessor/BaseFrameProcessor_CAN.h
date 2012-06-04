@@ -22,8 +22,7 @@
  * Definition file for CBaseFrameProcessor_CAN class which des-
  */
 
-#if !defined BASEFRAMEPROCESSOR_CAN_H__INCLUDED_
-#define BASEFRAMEPROCESSOR_CAN_H__INCLUDED_
+#pragma once
 
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/Log_DataTypes.h"
@@ -33,7 +32,7 @@
 
 typedef struct tagCANPROC_PARAMS
 {
-	TCHAR m_acVersion[MAX_PATH];        // Version info of the application suite
+    char m_acVersion[MAX_PATH];        // Version info of the application suite
     CBaseCANBufFSE* m_pouCANBuffer;     // Client frame buffer to update
     Base_WrapperErrorLogger* m_pILog;   // Error logger module
     //CNetworkStats* m_pouNetworkStat;    // Network statistics object
@@ -143,8 +142,6 @@ public:
 	virtual HRESULT FPC_SetDatabaseFiles(const CStringArray& omList) = 0;
 
 	// To update the channel baud rate info to logger
-	virtual HRESULT FPC_SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
+	virtual HRESULT FPC_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
 														int nNumChannels) = 0;
 };
-
-#endif // BASEFRAMEPROCESSOR_CAN_H__INCLUDED_

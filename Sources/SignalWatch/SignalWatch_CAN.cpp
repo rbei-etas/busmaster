@@ -21,7 +21,7 @@
 #include "SignalWatch_stdafx.h"
 #include "Include/Utils_macro.h"
 #include "SignalWatch_CAN.h"
-
+#include "Utility/MsgInterpretation.h"
 int ReadCANDataBuffer(CSignalWatch_CAN* pSWCan)
 {
     ASSERT(pSWCan != NULL);

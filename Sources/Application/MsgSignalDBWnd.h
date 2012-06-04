@@ -21,14 +21,9 @@
  *
  * This header file contains the defintion of class
  */
-#if !defined(AFX_MSGSIGNALDBWND_H__9861E0E3_241D_11D6_A618_00D0B76BEBF5__INCLUDED_)
-#define AFX_MSGSIGNALDBWND_H__9861E0E3_241D_11D6_A618_00D0B76BEBF5__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// MsgSignalDBWnd.h : header file
-//
+
 #include "CFilesDefs_CAN.h"
 #include "MsgSgDetView.h"       // Forms the right pane
 /////////////////////////////////////////////////////////////////////////////
@@ -76,10 +71,3 @@ private:
     BOOL m_bSplitWndCreated;
     CSplitterWnd m_omSplitterWnd;
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_MSGSIGNALDBWND_H__9861E0E3_241D_11D6_A618_00D0B76BEBF5__INCLUDED_)

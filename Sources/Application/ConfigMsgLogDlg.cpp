@@ -66,18 +66,18 @@ IMPLEMENT_DYNAMIC(CConfigMsgLogDlg, CDialog)
 
 CConfigMsgLogDlg::CConfigMsgLogDlg(ETYPE_BUS eCurrBus,void* pouBaseLogger, BOOL& bLogOnConnect,
                                    CWnd* pParent, const void* psFilter)
-      : CDialog(CConfigMsgLogDlg::IDD, pParent), m_eCurrBus(eCurrBus)
-      , m_omControlParam(_T(""))
-      , m_bLogOnConnect(bLogOnConnect)
-      , m_omControlParam2(_T(""))
-      , m_unChannelCount(0)
+    : CDialog(CConfigMsgLogDlg::IDD, pParent), m_eCurrBus(eCurrBus)
+    , m_omControlParam("")
+    , m_bLogOnConnect(bLogOnConnect)
+    , m_omControlParam2("")
+    , m_unChannelCount(0)
 {
     switch (m_eCurrBus)
     {
         case CAN:
         {
-            m_pouFProcCAN = (CBaseFrameProcessor_CAN *) pouBaseLogger;
-            m_psFilterConfigured = (SFILTERAPPLIED_CAN *) psFilter;
+            m_pouFProcCAN = static_cast<CBaseFrameProcessor_CAN*> (pouBaseLogger);
+            m_psFilterConfigured = (SFILTERAPPLIED_CAN*) (psFilter);
             m_strCurrWndText =_T("Configure Logging for CAN");
             m_omControlParam = _T("Start on Reception of ID 0x");
             m_omControlParam2 = _T("Stop on Reception of ID 0x");
@@ -92,7 +92,9 @@ CConfigMsgLogDlg::CConfigMsgLogDlg(ETYPE_BUS eCurrBus,void* pouBaseLogger, BOOL&
             m_omControlParam2 = _T("Stop on Reception of PGN 0x");
         }
         break;
-        default: ASSERT(FALSE);
+
+        default:
+            ASSERT(FALSE);
     }
     m_nLogIndexSel = -1;
     m_bUpdatingUI = FALSE;
@@ -154,12 +156,18 @@ void CConfigMsgLogDlg::SetGUIFromTimeMode(ETIMERMODE eTimeMode)
     switch (eTimeMode)
     {
         case TIME_MODE_ABSOLUTE:
-			m_omComboTimeMode.SetCurSel(TIME_ABS_INDEX);
-			m_ChkbResetTimeStamp.EnableWindow(1); 
-			break;
-        case TIME_MODE_RELATIVE: m_omComboTimeMode.SetCurSel(TIME_REL_INDEX); break;
-        case TIME_MODE_SYSTEM: 
-        default: m_omComboTimeMode.SetCurSel(TIME_SYS_INDEX); break;
+            m_omComboTimeMode.SetCurSel(TIME_ABS_INDEX);
+            m_ChkbResetTimeStamp.EnableWindow(1);
+            break;
+
+        case TIME_MODE_RELATIVE:
+            m_omComboTimeMode.SetCurSel(TIME_REL_INDEX);
+            break;
+
+        case TIME_MODE_SYSTEM:
+        default:
+            m_omComboTimeMode.SetCurSel(TIME_SYS_INDEX);
+            break;
     }
 }
 
@@ -205,12 +213,21 @@ void CConfigMsgLogDlg::vEnableDisableControl(int nControlID,
         {
             switch (eCtrlType)
             {
-                case EDITCTRL: 
-                case COMBOBOX: pWnd->SetWindowText(NULL); break;
+                case EDITCTRL:
+                case COMBOBOX:
+                    pWnd->SetWindowText(NULL);
+                    break;
+
                 case RADIOBUTTON:
-                case CHECKBOX: ((CButton*) pWnd)->SetCheck(0); break;
-                case BUTTON: break;
-                case STATICTEXT: break;
+                case CHECKBOX:
+                    ((CButton*) pWnd)->SetCheck(0);
+                    break;
+
+                case BUTTON:
+                    break;
+
+                case STATICTEXT:
+                    break;
             }
         }
     }
@@ -235,12 +252,23 @@ void CConfigMsgLogDlg::vUpdateControl(int nControlID, ECONTROLTYPE eCtrlType,
             switch (eCtrlType)
             {
                 case EDITCTRL:
-                case COMBOBOX: pWnd->SetWindowText(NULL); break;
+                case COMBOBOX:
+                    pWnd->SetWindowText(NULL);
+                    break;
+
                 case RADIOBUTTON:
-                case CHECKBOX: ((CButton*) pWnd)->SetCheck(0); break;
-                case BUTTON: break;
-                case STATICTEXT: break;
-                default: ASSERT(FALSE);
+                case CHECKBOX:
+                    ((CButton*) pWnd)->SetCheck(0);
+                    break;
+
+                case BUTTON:
+                    break;
+
+                case STATICTEXT:
+                    break;
+
+                default:
+                    ASSERT(FALSE);
             }
         }
     }
@@ -322,15 +350,15 @@ BOOL CConfigMsgLogDlg::FoundInLogList(CString omFullPath, CString omFileName)
 
 CString CConfigMsgLogDlg::GetUniqueLogFilePath(void)
 {
-    CString omStrFullPath = _T("");
-
-    TCHAR acPathBuffer[MAX_PATH] = {L'\0'};      // Get current working
+    CString omStrFullPath = "";
+    char acPathBuffer[MAX_PATH] = {L'\0'};      // Get current working
     GetCurrentDirectory(MAX_PATH, acPathBuffer); // directory
     BOOL bFound = TRUE; // Means - "found unique name"
 
     for (USHORT Count = 0; bFound == TRUE; Count++)
     {
-        CString omNewLogFileName = _T("");  // New Log file name
+        CString omNewLogFileName = "";  // New Log file name
+
         // Contrive a log file name on interation index
         if (CAN == m_eCurrBus)
         {
@@ -379,15 +407,23 @@ void CConfigMsgLogDlg::vUpdate_GUI_From_Datastore(USHORT usIndex)
     CheckBox = (APPEND_MODE == sLogStruct.m_eFileMode) ? IDC_RBTN_APPEND : IDC_RBTN_OVERWRITE;
     CheckRadioButton(IDC_RBTN_APPEND, IDC_RBTN_OVERWRITE, CheckBox);
 
-	if(sLogStruct.m_eLogTimerMode  == TIME_MODE_ABSOLUTE)
-		m_ChkbResetTimeStamp.EnableWindow(1);
-	else
-		m_ChkbResetTimeStamp.EnableWindow(0);
+    if(sLogStruct.m_eLogTimerMode  == TIME_MODE_ABSOLUTE)
+    {
+        m_ChkbResetTimeStamp.EnableWindow(1);
+    }
+    else
+    {
+        m_ChkbResetTimeStamp.EnableWindow(0);
+    }
 
-	if(sLogStruct.m_bResetAbsTimeStamp == TRUE)
-		m_ChkbResetTimeStamp.SetCheck(1);
-	else
-		m_ChkbResetTimeStamp.SetCheck(0);
+    if(sLogStruct.m_bResetAbsTimeStamp == TRUE)
+    {
+        m_ChkbResetTimeStamp.SetCheck(1);
+    }
+    else
+    {
+        m_ChkbResetTimeStamp.SetCheck(0);
+    }
 
     if (sTrigger.m_unTriggerType != NONE)
     {
@@ -437,7 +473,10 @@ void CConfigMsgLogDlg::vUpdate_GUI_From_Datastore(USHORT usIndex)
 
 void CConfigMsgLogDlg::vUpdate_Datastore_From_GUI(USHORT ushIndex, int CtrlID)
 {
-    if (m_bEditingON == FALSE) return;
+    if (m_bEditingON == FALSE)
+    {
+        return;
+    }
 
     SLOGINFO sLogStruct;
     GetLoggingBlock(ushIndex, sLogStruct);
@@ -466,10 +505,14 @@ void CConfigMsgLogDlg::vUpdate_Datastore_From_GUI(USHORT ushIndex, int CtrlID)
         break;
         case IDC_CHECK_RESET_TIMESTAMP:
         {
-			if(m_ChkbResetTimeStamp.GetCheck()) 
-	            sLogStruct.m_bResetAbsTimeStamp = TRUE;
-			else
-	            sLogStruct.m_bResetAbsTimeStamp = FALSE;
+            if(m_ChkbResetTimeStamp.GetCheck())
+            {
+                sLogStruct.m_bResetAbsTimeStamp = TRUE;
+            }
+            else
+            {
+                sLogStruct.m_bResetAbsTimeStamp = FALSE;
+            }
         }
         break;
         case IDC_COMB_TIMEMODE:
@@ -477,16 +520,20 @@ void CConfigMsgLogDlg::vUpdate_Datastore_From_GUI(USHORT ushIndex, int CtrlID)
             switch (m_omComboTimeMode.GetCurSel())
             {
                 case TIME_ABS_INDEX:
-					sLogStruct.m_eLogTimerMode = TIME_MODE_ABSOLUTE;
-					m_ChkbResetTimeStamp.EnableWindow(1); 
-					break;
-                case TIME_REL_INDEX: sLogStruct.m_eLogTimerMode = TIME_MODE_RELATIVE;
-					m_ChkbResetTimeStamp.EnableWindow(0); 
-					break;
-                case TIME_SYS_INDEX: 
-                default: sLogStruct.m_eLogTimerMode = TIME_MODE_SYSTEM; 
-					m_ChkbResetTimeStamp.EnableWindow(0); 
-					break;
+                    sLogStruct.m_eLogTimerMode = TIME_MODE_ABSOLUTE;
+                    m_ChkbResetTimeStamp.EnableWindow(1);
+                    break;
+
+                case TIME_REL_INDEX:
+                    sLogStruct.m_eLogTimerMode = TIME_MODE_RELATIVE;
+                    m_ChkbResetTimeStamp.EnableWindow(0);
+                    break;
+
+                case TIME_SYS_INDEX:
+                default:
+                    sLogStruct.m_eLogTimerMode = TIME_MODE_SYSTEM;
+                    m_ChkbResetTimeStamp.EnableWindow(0);
+                    break;
             }
         }
         break;
@@ -522,7 +569,7 @@ void CConfigMsgLogDlg::vUpdate_Datastore_From_GUI(USHORT ushIndex, int CtrlID)
         break;
         case IDC_EDIT_LOGFILEPATH:
         {
-            int MaxCount = sizeof(sLogStruct.m_sLogFileName) / sizeof(TCHAR);
+            int MaxCount = sizeof(sLogStruct.m_sLogFileName) / sizeof(char);
             (GetDlgItem(IDC_EDIT_LOGFILEPATH))->GetWindowText(
                                         sLogStruct.m_sLogFileName, MaxCount);
         }
@@ -588,7 +635,8 @@ void CConfigMsgLogDlg::OnBnClickedCbtnAddlog(void)
     SLOGINFO sLogStruct;
     //Select All CAN channels
     sLogStruct.m_ChannelSelected = CAN_CHANNEL_ALL;
-    _tcscpy(sLogStruct.m_sLogFileName, omFilePathNewLog.GetBuffer(MAX_PATH));
+	//Tobias - venkat
+    strcpy_s(sLogStruct.m_sLogFileName, _MAX_PATH, omFilePathNewLog.GetBuffer(_MAX_PATH));
     AddLoggingBlock(sLogStruct);
 
     // Added in data store updated. Now do the same in the GUI
@@ -610,7 +658,11 @@ void CConfigMsgLogDlg::OnBnClickedCbtnRemovelog(void)
     m_bUpdatingUI = FALSE;
     if (GetLoggingBlockCount() > 0)
     {
-        m_nLogIndexSel = 0;
+        m_nLogIndexSel--;
+		if(m_nLogIndexSel < 0)
+		{
+			m_nLogIndexSel = 0;
+		}
         m_omListLogFiles.SetItemState(m_nLogIndexSel, 
                    LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
     }
@@ -626,7 +678,7 @@ void CConfigMsgLogDlg::OnBnClickedCbtnLogFilePath(void)
 {
     USES_CONVERSION;
 
-	CString omStrLogFile = _T("");
+	CString omStrLogFile = "";
     (GetDlgItem(IDC_EDIT_LOGFILEPATH))->GetWindowText(omStrLogFile);
 
     // Show File Selection Dialog to select Log File
@@ -674,13 +726,15 @@ void CConfigMsgLogDlg::OnLvnItemchangedLogBlockLst(NMHDR *pNMHDR, LRESULT *pResu
             // Update selected Log file details
             vUpdate_GUI_From_Datastore((USHORT) m_nLogIndexSel);
 
-			if(m_bLogON)
-			{
-				m_bEditingON = FALSE;
-				GetDlgItem(IDC_CHECK_RESET_TIMESTAMP)->EnableWindow(FALSE);
-			}
-			else
-				m_bEditingON = TRUE;
+            if(m_bLogON)
+            {
+                m_bEditingON = FALSE;
+                GetDlgItem(IDC_CHECK_RESET_TIMESTAMP)->EnableWindow(FALSE);
+            }
+            else
+            {
+                m_bEditingON = TRUE;
+            }
         }
         else if (pNMListView->uNewState & MASK_CHECK_UNCHECK)
         {
@@ -726,8 +780,9 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
     m_omComboChannel.InsertString(0, _T("ALL"));
     for (UINT i = 1; i <= m_unChannelCount; i++)
     {
-        CString omChannel; omChannel.Format("%d", i);
-        m_omComboChannel.InsertString(i, omChannel.GetBuffer(MAX_PATH)); 
+        CString omChannel;
+        omChannel.Format("%d", i);
+        m_omComboChannel.InsertString(i, omChannel.GetBuffer(MAX_PATH));
     }
     m_omComboChannel.SetCurSel(0);
 
@@ -767,6 +822,11 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
 						LogBlocks = GetLoggingBlockCount(); //refresh the log count
 					}
 				}
+				else //not a valid filepath / file folder is removed
+				{
+					RemoveLoggingBlock(i--); //remove the old log data
+					LogBlocks = GetLoggingBlockCount(); //refresh the log count
+				}
 			}
 			else ///file found add in the list
 			{
@@ -792,20 +852,23 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
 
     SetWindowText(m_strCurrWndText);
 
-	if (m_bLogON)
-	{
-		vEnableDisableControls(FALSE);
-		if(m_omListLogFiles.GetItemCount()>0)
-			vUpdate_GUI_From_Datastore(0);
-		GetDlgItem(IDC_CBTN_ADDLOG)->EnableWindow(FALSE);
-		GetDlgItem(IDC_CHECK_RESET_TIMESTAMP)->EnableWindow(FALSE);
+    if (m_bLogON)
+    {
+        vEnableDisableControls(FALSE);
 
-		GetWindowText(m_strCurrWndText);
-		m_strCurrWndText+=_T(" - Read Only as Logging is ON");
-		//SetWindowText(m_strCurrWndText);
-		SetWindowText(_T(""));
-		m_unDispUpdateTimerId = SetTimer(600, 600, NULL);		
-	}
+        if(m_omListLogFiles.GetItemCount()>0)
+        {
+            vUpdate_GUI_From_Datastore(0);
+        }
+
+        GetDlgItem(IDC_CBTN_ADDLOG)->EnableWindow(FALSE);
+        GetDlgItem(IDC_CHECK_RESET_TIMESTAMP)->EnableWindow(FALSE);
+        GetWindowText(m_strCurrWndText);
+        m_strCurrWndText+=_T(" - Read Only as Logging is ON");
+        //SetWindowText(m_strCurrWndText);
+        SetWindowText("");
+        m_unDispUpdateTimerId = SetTimer(600, 600, NULL);
+    }
 
 	// Hide or show the Filters button in the dialog based on the protocol
 	if (CAN == m_eCurrBus)
@@ -823,28 +886,28 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
 // Unpunctual codes
 
 void CConfigMsgLogDlg::OnTimer(UINT nIDEvent)
-{		
-	if (nIDEvent == m_unDispUpdateTimerId) 
-	{
-		static bool bSwitchDisplay = true;
+{
+    if (nIDEvent == m_unDispUpdateTimerId)
+    {
+        static bool bSwitchDisplay = true;
+        CDC* pdc= GetWindowDC();
+        pdc->SetTextColor(RGB(253,153,4));
+        pdc->SetBkMode(TRANSPARENT);
 
-		CDC* pdc= GetWindowDC();
-		pdc->SetTextColor(RGB(253,153,4));
-		pdc->SetBkMode(TRANSPARENT);
-		if(bSwitchDisplay)
-		{
-			SetWindowText(_T(""));
-			pdc->DrawText(m_strCurrWndText,CRect(4,4,400,50),DT_END_ELLIPSIS);	
-			bSwitchDisplay = false;
-		}
-		else
-		{
-			pdc->DrawText(m_strCurrWndText,CRect(4,4,400,50),DT_END_ELLIPSIS);	
-			SetWindowText(_T(""));
-			//SetWindowText(m_strCurrWndText);
-			bSwitchDisplay = true;
-		}
-	}
+        if(bSwitchDisplay)
+        {
+            SetWindowText("");
+            pdc->DrawText(m_strCurrWndText,CRect(4,4,400,50),DT_END_ELLIPSIS);
+            bSwitchDisplay = false;
+        }
+        else
+        {
+            pdc->DrawText(m_strCurrWndText,CRect(4,4,400,50),DT_END_ELLIPSIS);
+            SetWindowText("");
+            //SetWindowText(m_strCurrWndText);
+            bSwitchDisplay = true;
+        }
+    }
 
 	CDialog::OnTimer(nIDEvent);
 }
@@ -959,9 +1022,16 @@ USHORT CConfigMsgLogDlg::GetLoggingBlockCount(void)
     USHORT Result = 0x0;
     switch (m_eCurrBus)
     {
-        case CAN: Result = m_pouFProcCAN->FPC_GetLoggingBlockCount(); break;
-        case J1939: Result = m_pouLoggerJ1939->FPJ1_GetLoggingBlockCount(); break;
-        default: ASSERT(FALSE);
+        case CAN:
+            Result = m_pouFProcCAN->FPC_GetLoggingBlockCount();
+            break;
+
+        case J1939:
+            Result = m_pouLoggerJ1939->FPJ1_GetLoggingBlockCount();
+            break;
+
+        default:
+            ASSERT(FALSE);
     }
     return Result;
 }
@@ -971,9 +1041,16 @@ HRESULT CConfigMsgLogDlg::GetLoggingBlock(USHORT ushBlk, SLOGINFO& sLogObject)
     HRESULT Result = S_FALSE;
     switch (m_eCurrBus)
     {
-        case CAN: Result = m_pouFProcCAN->FPC_GetLoggingBlock(ushBlk, sLogObject); break;
-        case J1939: Result = m_pouLoggerJ1939->FPJ1_GetLoggingBlock(ushBlk, sLogObject); break;
-        default: ASSERT(FALSE);
+        case CAN:
+            Result = m_pouFProcCAN->FPC_GetLoggingBlock(ushBlk, sLogObject);
+            break;
+
+        case J1939:
+            Result = m_pouLoggerJ1939->FPJ1_GetLoggingBlock(ushBlk, sLogObject);
+            break;
+
+        default:
+            ASSERT(FALSE);
     }
     return Result;
 }
@@ -983,9 +1060,16 @@ HRESULT CConfigMsgLogDlg::SetLoggingBlock(USHORT ushBlk, const SLOGINFO& sLogObj
     HRESULT Result = S_FALSE;
     switch (m_eCurrBus)
     {
-        case CAN: Result = m_pouFProcCAN->FPC_SetLoggingBlock(ushBlk, sLogObject); break;
-        case J1939: Result = m_pouLoggerJ1939->FPJ1_SetLoggingBlock(ushBlk, sLogObject); break;
-        default: ASSERT(FALSE);
+        case CAN:
+            Result = m_pouFProcCAN->FPC_SetLoggingBlock(ushBlk, sLogObject);
+            break;
+
+        case J1939:
+            Result = m_pouLoggerJ1939->FPJ1_SetLoggingBlock(ushBlk, sLogObject);
+            break;
+
+        default:
+            ASSERT(FALSE);
     }
     return Result;
 }
@@ -995,9 +1079,16 @@ HRESULT CConfigMsgLogDlg::AddLoggingBlock(const SLOGINFO& sLogObject)
     HRESULT Result = S_FALSE;
     switch (m_eCurrBus)
     {
-        case CAN: Result = m_pouFProcCAN->FPC_AddLoggingBlock(sLogObject); break;
-        case J1939: Result = m_pouLoggerJ1939->FPJ1_AddLoggingBlock(sLogObject); break;
-        default: ASSERT(FALSE);
+        case CAN:
+            Result = m_pouFProcCAN->FPC_AddLoggingBlock(sLogObject);
+            break;
+
+        case J1939:
+            Result = m_pouLoggerJ1939->FPJ1_AddLoggingBlock(sLogObject);
+            break;
+
+        default:
+            ASSERT(FALSE);
     }
     return Result;
 }
@@ -1007,9 +1098,16 @@ HRESULT CConfigMsgLogDlg::RemoveLoggingBlock(USHORT ushBlk)
     HRESULT Result = S_FALSE;
     switch (m_eCurrBus)
     {
-        case CAN: Result = m_pouFProcCAN->FPC_RemoveLoggingBlock(ushBlk); break;
-        case J1939: Result = m_pouLoggerJ1939->FPJ1_RemoveLoggingBlock(ushBlk); break;
-        default: ASSERT(FALSE);
+        case CAN:
+            Result = m_pouFProcCAN->FPC_RemoveLoggingBlock(ushBlk);
+            break;
+
+        case J1939:
+            Result = m_pouLoggerJ1939->FPJ1_RemoveLoggingBlock(ushBlk);
+            break;
+
+        default:
+            ASSERT(FALSE);
     }
     return Result;
 }
@@ -1032,7 +1130,9 @@ HRESULT CConfigMsgLogDlg::ApplyFilteringScheme(USHORT ushLogBlkID, const void* p
                                  *((const SFILTERAPPLIED_J1939*) psFilterObj));
         }
         break;
-        default: ASSERT(FALSE);
+
+        default:
+            ASSERT(FALSE);
     }
 
     return Result;
@@ -1056,7 +1156,9 @@ HRESULT CConfigMsgLogDlg::GetFilteringScheme(USHORT ushLogBlk, void* psFilterObj
                                       *((SFILTERAPPLIED_J1939 *) psFilterObj));
         }
         break;
-        default: ASSERT(FALSE);
+
+        default:
+            ASSERT(FALSE);
     }
 
     return Result;

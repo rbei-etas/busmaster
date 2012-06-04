@@ -51,7 +51,7 @@ CIncludeHeaderDlg::CIncludeHeaderDlg(CFunctionEditorDoc* pDoc, CWnd* pParent /*=
     : CDialog(CIncludeHeaderDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CIncludeHeaderDlg)
-    m_omStrIncludeFilename = _T("");
+    m_omStrIncludeFilename = "";
     //}}AFX_DATA_INIT
     m_pDoc = pDoc;
 }
@@ -97,9 +97,9 @@ void CIncludeHeaderDlg::OnOk()
     if (!m_omStrIncludeFilename.IsEmpty())
     {
         // check if first char starts with '<' or '"'
-        TCHAR cFirstChar = m_omStrIncludeFilename.GetAt( 0 );
+        char cFirstChar = m_omStrIncludeFilename.GetAt( 0 );
         // check if last char '>' or '"'
-        TCHAR cLastChar = 
+        char cLastChar = 
             m_omStrIncludeFilename.GetAt( m_omStrIncludeFilename.GetLength() - 1 );
 
         if ( cFirstChar != '<')

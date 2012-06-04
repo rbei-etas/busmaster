@@ -18,8 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined REPLAY_EXTERN__H_INCLUDED_
-#define REPLAY_EXTERN__H_INCLUDED_
+
+#pragma once
 
 #include "Replay_Struct.h"
 
@@ -61,5 +61,3 @@ USAGEMODE void vREP_SetConfiguredFilter(const void* pvFilterConfigured);
 #ifdef __cplusplus
 }
 #endif
-
-#endif // REPLAY_EXTERN__H_INCLUDED_

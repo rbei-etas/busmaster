@@ -93,19 +93,9 @@
 #define IDC_RADIO_MOTOROLA              1307
 #define IDI_ICO_SEND                    17000
 #define IDI_ICO_SEND_MSG                17000
+#define IDC_CHECK_AUTO_UPDATE           17000
 #define IDM_ADD_MSG_BLOCK               32810
 #define IDM_DELETE_SEL_MSG_BLOCK        32816
 #define IDM_DELETE_SEL_MSG              32892
 #define IDM_SEND_SEL_MSG                32897
 #define IDM_DELETE_ALL_MSG              32944
-
-// Next default values for new objects
-// 
-#ifdef APSTUDIO_INVOKED
-#ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        17001
-#define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         17000
-#define _APS_NEXT_SYMED_VALUE           17000
-#endif
-#endif

@@ -26,14 +26,9 @@
 #include "Utils_StdAfx.h"         // Standard include
 #include "Utility_Structs.h"
 #include "NumSpinCtrl.h"    // Class definition file
-#include "Utility.h"         
+#include "Utility.h"
 //#include "UtilFunctions.h"  // For all utility functions
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 // Epsilon Value. Used for floating value Comparison
 // This has been taken from  ** Float.h **
 #define defEPS 2.2204460492503131e-016 /* smallest such that 1.0+DBL_EPSILON != 1.0 */
@@ -238,7 +233,7 @@ double CNumSpinCtrl::dGetPos()
 {
     // Get the text control first to get the value
     CWnd* pomEdit = GetBuddy();
-    TCHAR * pDummy = NULL;
+    char* pDummy = NULL;
     double dVal = 0.0;
     // If the buddy is set then proceed
     if (pomEdit)
@@ -337,8 +332,8 @@ BOOL CNumSpinCtrl::bConvertStringToInt64( CString omStrHexNo,
     for (int nCount = 0; nCount < nStrLength; nCount++)
     {
         // Get the charector
-        TCHAR cChar = omStrHexNo.GetAt( nCount);
-        
+        char cChar = omStrHexNo.GetAt( nCount);
+
         // Check for 0 - 9 range
         if( cChar >= '0' && cChar <= '9')
         {

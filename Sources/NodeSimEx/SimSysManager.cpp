@@ -205,7 +205,7 @@ UINT CSimSysManager::unGetStoreSIMFBufferSize()
     unTotalSize += sizeof(BYTE);//Configuration version
     unTotalSize += sizeof(WINDOWPLACEMENT);
 	unTotalSize += sizeof(UINT); // Count
-	unTotalSize += (nCount * (sizeof (TCHAR) * MAX_PATH));
+	unTotalSize += (nCount * (sizeof (char) * MAX_PATH));
 	return unTotalSize;
 }
 
@@ -239,9 +239,9 @@ void CSimSysManager::SaveSIMDataIntoBuffer(BYTE* DesBuffer)
 	{
 		UINT unSize = 0;
 		CString omTmp = pSimSysInfo->m_omStrSimSysName;		
-		TCHAR acFilename[MAX_PATH];
+		char acFilename[MAX_PATH];
         _tcscpy(acFilename, omTmp.GetBuffer(MAX_PATH));
-		COPY_DATA(tempBuffAddress, acFilename, sizeof(TCHAR) * MAX_PATH);
+		COPY_DATA(tempBuffAddress, acFilename, sizeof(char) * MAX_PATH);
 		pSimSysInfo = pSimSysInfo->m_psSimsysNext;
 	}
 
@@ -338,11 +338,11 @@ void CSimSysManager :: CopySIMDataFromBuffer(BYTE* SrcBuffer)
 	UINT UnCount = 0;
 	COPY_DATA_2(&UnCount, tempBuffAddress, sizeof(UINT));
 	
-	CString omTmp = _T("");
+	CString omTmp = "";
 	for (UINT i = 0; i < UnCount; i++)
 	{		
-        TCHAR acFilename[MAX_PATH] = {_T('\0')};
-		COPY_DATA_2(acFilename, tempBuffAddress, sizeof (TCHAR) * MAX_PATH);
+        char acFilename[MAX_PATH] = {'\0'};
+		COPY_DATA_2(acFilename, tempBuffAddress, sizeof (char) * MAX_PATH);
         omTmp.Format("%s", acFilename);
         //Add the simsys file details
         vLoadSimInfoFromConfiguration(omTmp);
@@ -404,10 +404,10 @@ BOOL CSimSysManager :: bIsConfigChanged()
 				UINT nSize = 0;
 				memcpy(&nSize, tempBuffAddress, sizeof(UINT));
 				tempBuffAddress += sizeof(UINT);
-				CString omTmp = _T("");
-				TCHAR *pFileLen = new TCHAR[nSize];
-				memcpy(pFileLen, tempBuffAddress, sizeof(TCHAR) * nSize);
-				tempBuffAddress += sizeof(TCHAR) * nSize;
+				CString omTmp = "";
+				char *pFileLen = new TCHAR[nSize];
+				memcpy(pFileLen, tempBuffAddress, sizeof(char) * nSize);
+				tempBuffAddress += sizeof(char) * nSize;
 				omTmp = pFileLen;
 				if (pSimSysInfo->m_omStrSimSysName != omTmp)
 				{

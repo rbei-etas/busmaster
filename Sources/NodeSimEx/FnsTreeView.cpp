@@ -1564,7 +1564,7 @@ void CFnsTreeView::vOnNewKeyHandler()
 {
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
     
-    TCHAR* pcCharacter = new TCHAR[2];
+    char* pcCharacter = new char[2];
     pcCharacter[1] = '\0';
 
     if ( pcCharacter != NULL )
@@ -1577,7 +1577,7 @@ void CFnsTreeView::vOnNewKeyHandler()
         {
             // Construct Function name
             CString omStrFuncName   = defKEY_HANDLER;
-            CString omStrKeyPressed = _T("");
+            CString omStrKeyPressed = "";
             if(pcCharacter[0] == '*')
             {
                 omStrKeyPressed = "All";
@@ -1942,7 +1942,7 @@ void CFnsTreeView::vOnNewUtilityFunction()
 
                 if ( pos != NULL )
                 {
-                    CString omStrReplace = _T("");
+                    CString omStrReplace = "";
                     omStrReplace  = od_Dlg.m_omStrFunPrototype;
                     omStrReplace += SEMI_COLON; 
                     pDoc->m_omSourceCodeTextList.InsertBefore(
@@ -2241,7 +2241,7 @@ void CFnsTreeView::vEditUtilityFunc(HTREEITEM hItem)
 
 					if ( pos != NULL )
 					{
-						CString omStrReplace = _T("");
+						CString omStrReplace = "";
 						omStrReplace  = od_Dlg.m_omStrFunPrototype;
 						omStrReplace += SEMI_COLON; 
 						pDoc->m_omSourceCodeTextList.SetAt(pos,omStrReplace );
@@ -2499,7 +2499,7 @@ BOOL CFnsTreeView::bDeleteHandlerInArray(const CStringArray &omStrArray,
     if(pDoc != NULL )
     {
         INT nCount = (COMMANINT)omStrArray.GetSize();
-        CString omStrFunctionName = _T("");
+        CString omStrFunctionName = "";
         for(int i = 0; i<nCount; i++)
         {
            bReturn =  bDeleteHandler(omStrArray.GetAt(i),pDoc);

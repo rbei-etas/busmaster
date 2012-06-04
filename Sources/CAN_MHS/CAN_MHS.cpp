@@ -107,13 +107,13 @@ typedef struct tagClientBufMap
   {
   DWORD m_dwClientID;
   CBaseCANBufFSE* m_pClientBuf[MAX_BUFF_ALLOWED];
-  TCHAR m_acClientName[MAX_PATH];
+  char m_acClientName[MAX_PATH];
   UINT m_unBufCount;
   tagClientBufMap()
    {
     m_dwClientID = 0;
     m_unBufCount = 0;
-    memset(m_acClientName, 0, sizeof (TCHAR) * MAX_PATH);
+    memset(m_acClientName, 0, sizeof (char) * MAX_PATH);
     for (INT i = 0; i < MAX_BUFF_ALLOWED; i++)
       m_pClientBuf[i] = NULL;
     }
@@ -171,7 +171,7 @@ public:
 	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
 	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
 	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
-	HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength);
+	HRESULT CAN_GetLastErrorString(string& acErrorStr);
 	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
 	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -179,7 +179,7 @@ public:
 	// Specific function set
 	HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
 	HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
-	HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
+	HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
 	HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
 	HRESULT CAN_LoadDriverLibrary(void);
 	HRESULT CAN_UnloadDriverLibrary(void);
@@ -198,7 +198,7 @@ static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFS
 static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED], UINT& unCount, CBaseCANBufFSE* BufferToRemove);
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex);
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex);
-static BOOL bClientExist(TCHAR* pcClientName, INT& Index);
+static BOOL bClientExist(string pcClientName, INT& Index);
 static BOOL bRemoveClient(DWORD dwClientId);
 static BOOL bClientIdExist(const DWORD& dwClientId);
 static DWORD dwGetAvailableClientSlot(void);
@@ -219,7 +219,7 @@ HRESULT hResult;
 hResult = S_OK;
 if (!g_pouDIL_CAN_MHS)
   {
-  g_pouDIL_CAN_MHS = new CDIL_CAN_MHS;
+// g_pouDIL_CAN_MHS = new CDIL_CAN_MHS;
   if (!(g_pouDIL_CAN_MHS))
     hResult = S_FALSE;
   }
@@ -335,7 +335,7 @@ return(hResult);
  * Registers a client to the DIL. ClientID will have client id
  * which will be used for further client related calls
  */
-HRESULT CDIL_CAN_MHS::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
+HRESULT CDIL_CAN_MHS::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName)
 {
 HRESULT hResult = S_FALSE;
 INT Index;
@@ -561,7 +561,7 @@ return hResult;
 
 /**
 * \brief         Displays the controller configuration dialog.
-* \param[out]    InitData, is SCONTROLER_DETAILS structure
+* \param[out]    InitData, is SCONTROLLER_DETAILS structure
 * \param[out]    Length , is INT
 * \return        S_OK for success
 */
@@ -570,11 +570,11 @@ HRESULT CDIL_CAN_MHS::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
 (void)Length;
 HRESULT result;
 struct TMhsCanCfg cfg;
-SCONTROLER_DETAILS* cntrl;
-TCHAR *str;
+SCONTROLLER_DETAILS* cntrl;
+char *str;
 
 result = WARN_INITDAT_NCONFIRM;
-cntrl = (SCONTROLER_DETAILS*)InitData;
+cntrl = (SCONTROLLER_DETAILS*)InitData;
 if (!str_has_char(cntrl[0].m_omStrBaudrate))
   {
   cfg.CanSpeed = _tcstol(cntrl[0].m_omStrBaudrate, &str, 0);
@@ -608,18 +608,18 @@ return(result);
 
 /**
 * \brief         Sets the controller configuration data supplied by ConfigFile.
-* \param[in]     ConfigFile, is SCONTROLER_DETAILS structure
+* \param[in]     ConfigFile, is SCONTROLLER_DETAILS structure
 * \param[in]     Length , is INT
 * \return        S_OK for success
 */
 HRESULT CDIL_CAN_MHS::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
 {
 (void)Length;
-SCONTROLER_DETAILS* cntrl;
-TCHAR *str;
+SCONTROLLER_DETAILS* cntrl;
+char *str;
 
 //VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
-cntrl = (SCONTROLER_DETAILS*)ConfigFile;
+cntrl = (SCONTROLLER_DETAILS*)ConfigFile;
 if (!str_has_char(cntrl[0].m_omStrBaudrate))
   {
   sg_MhsCanCfg.CanSpeed = _tcstol(cntrl[0].m_omStrBaudrate, &str, 0);
@@ -933,18 +933,9 @@ return(S_OK);
 * \param[in]     nLength, is INT
 * \return        S_OK for success, S_FALSE for failure
 */
-HRESULT CDIL_CAN_MHS::CAN_GetLastErrorString(CHAR* acErrorStr, INT nLength)
+HRESULT CDIL_CAN_MHS::CAN_GetLastErrorString(string& acErrorStr)
 {
-(void)acErrorStr;
-(void)nLength;
-/*int nCharToCopy;
-
-nCharToCopy = (int) (strlen(sg_acErrStr));
-if (nCharToCopy > nLength)
-  nCharToCopy = nLength;
-strncpy(acErrorStr, sg_acErrStr, nCharToCopy);
-*/
-return(S_OK);
+	return WARN_DUMMY_API;
 }
 
 
@@ -1093,12 +1084,12 @@ return(bResult);
  *
  * Checks for the existance of the client with the name pcClientName.
  */
-static BOOL bClientExist(TCHAR* pcClientName, INT& Index)
+static BOOL bClientExist(string pcClientName, INT& Index)
 {
 UINT i;
 for (i = 0; i < sg_unClientCnt; i++)
   {
-  if (!_tcscmp(pcClientName, sg_asClientToBufMap[i].m_acClientName))
+  if (!_tcscmp(pcClientName.c_str(), sg_asClientToBufMap[i].m_acClientName))
     {
     Index = i;
     return(TRUE);
@@ -1125,7 +1116,7 @@ if (sg_unClientCnt > 0)
   if (bGetClientObj(dwClientId, unClientIndex))
     {
     sg_asClientToBufMap[unClientIndex].m_dwClientID = 0;
-    memset (sg_asClientToBufMap[unClientIndex].m_acClientName, 0, sizeof (TCHAR) * MAX_PATH);
+    memset (sg_asClientToBufMap[unClientIndex].m_acClientName, 0, sizeof (char) * MAX_PATH);
     for (i = 0; i < MAX_BUFF_ALLOWED; i++)
       sg_asClientToBufMap[unClientIndex].m_pClientBuf[i] = NULL;
     sg_asClientToBufMap[unClientIndex].m_unBufCount = 0;

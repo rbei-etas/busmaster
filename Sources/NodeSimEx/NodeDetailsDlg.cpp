@@ -54,8 +54,8 @@ CNodeDetailsDlg::CNodeDetailsDlg(ETYPE_BUS eBus, PSNODEINFO pNode /*=NULL*/,
                                  
 {
     //{{AFX_DATA_INIT(CNodeDetailsDlg)
-    m_omStrDllPath = _T("");
-    m_omStrNodeName = _T("");
+    m_omStrDllPath = "";
+    m_omStrNodeName = "";
     //}}AFX_DATA_INIT
     m_psNodeStuctPtr = pNode;
     m_bIsNodeModified = FALSE;
@@ -346,13 +346,13 @@ void CNodeDetailsDlg::OnBrowse()
     {
         CFileDialog om_Dlg( TRUE,  //open an existing file
                             NULL,  //extension to file
-                            _T(""),  //initial file name
+                            "",  //initial file name
                             OFN_FILEMUSTEXIST| OFN_HIDEREADONLY|
                             OFN_PATHMUSTEXIST, 
-                            _T("Dll Files(*.dll)|*.dll||"), 
+                            "Dll Files(*.dll)|*.dll||", 
                             NULL );
         // Set caption text
-        om_Dlg.m_ofn.lpstrTitle = _T("Select the Dll");
+        om_Dlg.m_ofn.lpstrTitle = "Select the Dll";
         
         if ( om_Dlg.DoModal() == IDOK )
         {

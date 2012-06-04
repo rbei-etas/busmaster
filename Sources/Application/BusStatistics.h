@@ -21,10 +21,7 @@
  *
  * contains the BS_GetInterface declaration.
  */
-#if !defined BUSSTATISTICS_H__INCLUDED_
-#define BUSSTATISTICS_H__INCLUDED_
 
+#pragma once
 
 HRESULT BS_GetInterface(ETYPE_BUS eBus, void** ppvInterface);
-
-#endif //BUSSTATISTICS_EXTERN_H__INCLUDED_

@@ -91,59 +91,68 @@ BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
         return FALSE;
     }
 
-    CString omLogText = _T("");
-
-    TCHAR* pTimeData = NULL;
-    TCHAR acID[16] = {'\0'};
-    TCHAR* pPGN = NULL;
-    TCHAR* pData = NULL;
-    TCHAR* psSrcNode = NULL;
-    TCHAR* psDestNode = NULL;
+    CString omLogText = "";
+    char* pTimeData = NULL;
+    char acID[16] = {'\0'};
+    char* pPGN = NULL;
+    char* pData = NULL;
+    char* psSrcNode = NULL;
+    char* psDestNode = NULL;
 
     switch (m_sLogInfo.m_eLogTimerMode) // Time Mode
     {
         case TIME_MODE_ABSOLUTE: 
         {
-			if(m_sLogInfo.m_bResetAbsTimeStamp)
-				pTimeData = (TCHAR *) (sDataJ1939.m_acTimeAbsReset);
-			else
-				pTimeData = (TCHAR *) (sDataJ1939.m_acTimeAbs);            
+            if(m_sLogInfo.m_bResetAbsTimeStamp)
+            {
+                pTimeData = (char*) (sDataJ1939.m_acTimeAbsReset);
+            }
+            else
+            {
+                pTimeData = (char*) (sDataJ1939.m_acTimeAbs);
+            }
         }
         break;
         case TIME_MODE_RELATIVE: 
         {
-            pTimeData = (TCHAR *) (sDataJ1939.m_acTimeRel);
+            pTimeData = (char*) (sDataJ1939.m_acTimeRel);
         }
         break;
         case TIME_MODE_SYSTEM:
         {
-            pTimeData = (TCHAR *) (sDataJ1939.m_acTimeSys);
+            pTimeData = (char*) (sDataJ1939.m_acTimeSys);
         }
         break;
-        default: ASSERT(FALSE); break;
+
+        default:
+            ASSERT(FALSE);
+            break;
     }
 
     switch (m_sLogInfo.m_eNumFormat)
     {
         case HEXADECIMAL: 
         {
-            sprintf(acID, "%x", sDataJ1939.m_dwMsgID);
-            pPGN = (TCHAR *) (sDataJ1939.m_acPGNHex);
-            pData = (TCHAR *) (sDataJ1939.m_pcDataHex);
-            psSrcNode = (TCHAR *) (sDataJ1939.m_acSrcHex);
-            psDestNode = (TCHAR *) (sDataJ1939.m_acDestHex);
+            sprintf_s(acID, "%x", sDataJ1939.m_dwMsgID);
+            pPGN = (char*) (sDataJ1939.m_acPGNHex);
+            pData = (char*) (sDataJ1939.m_pcDataHex);
+            psSrcNode = (char*) (sDataJ1939.m_acSrcHex);
+            psDestNode = (char*) (sDataJ1939.m_acDestHex);
         }
         break;
         case DEC: 
         {
-            sprintf(acID, "%d", sDataJ1939.m_dwMsgID);
-            pPGN = (TCHAR *) (sDataJ1939.m_acPGNDec);
-            pData = (TCHAR *) (sDataJ1939.m_pcDataDec);
-            psSrcNode = (TCHAR *) (sDataJ1939.m_acSrcDec);
-            psDestNode = (TCHAR *) (sDataJ1939.m_acDestDec);
+            sprintf_s(acID, "%d", sDataJ1939.m_dwMsgID);
+            pPGN = (char*) (sDataJ1939.m_acPGNDec);
+            pData = (char*) (sDataJ1939.m_pcDataDec);
+            psSrcNode = (char*) (sDataJ1939.m_acSrcDec);
+            psDestNode = (char*) (sDataJ1939.m_acDestDec);
         }
         break;
-        default: ASSERT(FALSE); break;
+
+        default:
+            ASSERT(FALSE);
+            break;
     }
 
     // First put everything in a string to get the length
@@ -161,7 +170,7 @@ BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
                        sDataJ1939.m_acDataLen,
                        pData);
 
-    vWriteTextToFile(omLogText);
+    vWriteTextToFile(omLogText, J1939);
 
     return TRUE;
 }
@@ -169,7 +178,7 @@ BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
 // To format the header 
 void CLogObjectJ1939::vFormatHeader(CString& omHeader)
 {
-    CBaseLogObject::vFormatHeader(omHeader);
+    CBaseLogObject::vFormatHeader(omHeader, J1939);
     omHeader += J1939_LOG_COLUMNS;
     omHeader += L'\n';
 }
@@ -221,7 +230,9 @@ BOOL CLogObjectJ1939::bToBeLogged(SFRAMEINFO_BASIC_J1939& J1939Info_Basic)
     // Check for the triggering conditions
     switch (m_CurrTriggerType)
     {
-        case NONE: break;
+        case NONE:
+            break;
+
         case STOPPED:
         {
             //If the log file is stopped then don't log
@@ -261,7 +272,10 @@ BOOL CLogObjectJ1939::bToBeLogged(SFRAMEINFO_BASIC_J1939& J1939Info_Basic)
             }
         }
         break;
-        default: ASSERT(FALSE); break;
+
+        default:
+            ASSERT(FALSE);
+            break;
     }
 
     return TRUE;
@@ -324,7 +338,7 @@ void CLogObjectJ1939::Der_GetDatabaseFiles(CStringArray& omList)
 }
 
 void CLogObjectJ1939::Der_SetChannelBaudRateDetails
-						(SCONTROLER_DETAILS* controllerDetails,
+						(SCONTROLLER_DETAILS* controllerDetails,
 						int nNumChannels)
 {
 	if (NULL != m_pasControllerDetails)
@@ -333,23 +347,23 @@ void CLogObjectJ1939::Der_SetChannelBaudRateDetails
 	}
 	m_pasControllerDetails = NULL;
 
-	m_pasControllerDetails = new SCONTROLER_DETAILS [nNumChannels];
+	m_pasControllerDetails = new SCONTROLLER_DETAILS [nNumChannels];
 	for (int nIdx = 0; nIdx < nNumChannels; nIdx++)
 	{
-		memcpy(m_pasControllerDetails + nIdx, controllerDetails + nIdx, sizeof(SCONTROLER_DETAILS));
+		memcpy(m_pasControllerDetails + nIdx, controllerDetails + nIdx, sizeof(SCONTROLLER_DETAILS));
 	}
 	m_nNumChannels = nNumChannels;
 }
 
 // To get the channel baud rate info for each channel
 void CLogObjectJ1939::Der_GetChannelBaudRateDetails
-					(SCONTROLER_DETAILS* controllerDetails, int& nNumChannels)
+					(SCONTROLLER_DETAILS* controllerDetails, int& nNumChannels)
 {
 	if (NULL != m_pasControllerDetails)
 	{
 		for (int nIdx = 0; nIdx < m_nNumChannels; nIdx++)
 		{
-			memcpy(controllerDetails + nIdx, m_pasControllerDetails + nIdx, sizeof(SCONTROLER_DETAILS));
+			memcpy(controllerDetails + nIdx, m_pasControllerDetails + nIdx, sizeof(SCONTROLLER_DETAILS));
 		}		
 		nNumChannels = m_nNumChannels;
 	}

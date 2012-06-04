@@ -80,7 +80,7 @@ tagMainEntry::~tagMainEntry()
 void tagMainEntry::vResetAll(void)
 {
     m_unMainEntryID = 0;
-    m_omMainEntryName = _T("");
+    m_omMainEntryName = "";
     m_odUnSelEntryList.RemoveAll();
     m_odSelEntryList.RemoveAll();
 }

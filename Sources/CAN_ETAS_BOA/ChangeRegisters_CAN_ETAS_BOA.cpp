@@ -45,20 +45,20 @@ static char THIS_FILE[] = __FILE__;
 /*  Modifications    :  Raja N on 14.03.2005, Added init of member variable   */
 /*                      m_pControllerDetails                                  */
 /******************************************************************************/
-CChangeRegisters_CAN_ETAS_BOA::CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent /*=NULL*/, PSCONTROLER_DETAILS psControllerDetails, UINT nHardwareCount)
+CChangeRegisters_CAN_ETAS_BOA::CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent /*=NULL*/, PSCONTROLLER_DETAILS psControllerDetails, UINT nHardwareCount)
     : CDialog(CChangeRegisters_CAN_ETAS_BOA::IDD, pParent)
-    , m_omStrSamplePoint(_T("70"))
-    , m_omStrSJW(_T(""))
+    , m_omStrSamplePoint("70")
+    , m_omStrSJW("")
 {
     //{{AFX_DATA_INIT(CChangeRegisters_CAN_ETAS_BOA)
     //m_omStrEditBTR0 = _T("");
     //m_omStrEditBTR1 = _T("");
-    m_omStrEditCNF1 = _T("");
-    m_omStrEditCNF2 = _T("");
-    m_omStrEditCNF3 = _T("");
-    m_omStrComboSampling = _T("");
-    m_omStrEditBaudRate = _T("");
-    m_omStrEditWarningLimit = _T("");
+    m_omStrEditCNF1 = "";
+    m_omStrEditCNF2 = "";
+    m_omStrEditCNF3 = "";
+    m_omStrComboSampling = "";
+    m_omStrEditBaudRate = "";
+    m_omStrEditWarningLimit = "";
     //}}AFX_DATA_INIT
     m_unCombClock      = 32;
     m_bDialogCancel    = FALSE;
@@ -175,12 +175,12 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
 {
     CDialog::OnInitDialog();
     CString omStrClock          = defCLOCK;
-    CString omStrBaudRate       = _T("");
-    CString omStrAcceptanceMask = _T("");
-    CString omStrAcceptanceCode = _T("");
-    CString omStrBrp            = _T("");
-    CString omStrBtr0           = _T("");
-    CString omStrBtr1           = _T("");
+    CString omStrBaudRate       = "";
+    CString omStrAcceptanceMask = "";
+    CString omStrAcceptanceCode = "";
+    CString omStrBrp            = "";
+    CString omStrBtr0           = "";
+    CString omStrBtr1           = "";
 
     // Init Channel List box
 
@@ -196,7 +196,7 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
     // Assign the image list to the control
     m_omChannelList.SetImageList(&m_omChannelImageList, LVSIL_NORMAL);
     // Insert empty column
-    m_omChannelList.InsertColumn( 0, _T(""));
+    m_omChannelList.InsertColumn( 0, "");
     // Insert all channel information
     // Insert only for available channel information
     int nAvailableHardware = m_nNoHardware;//g_podHardwareInterface->nGetNoOfHardware();
@@ -204,7 +204,7 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
          nChannel < nAvailableHardware;
          nChannel++)
     {
-        CString omStrChannel(_T(""));
+        CString omStrChannel("");
         // Create Channel String
         omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
                         defSTR_CHANNEL_NAME,
@@ -344,7 +344,7 @@ void CChangeRegisters_CAN_ETAS_BOA::OnOK()
 /*****************************************************************************/
 CString CChangeRegisters_CAN_ETAS_BOA::omGetFormattedRegVal(UCHAR ucRegVal)
 {
-    CString omStr = _T("");
+    CString omStr = "";
     omStr.Format(TEXT("0x%X"), ucRegVal);
     // Insert one zero to format the sigle digit value to 0x05 etc.
     if (omStr.GetLength() == 3)
@@ -378,8 +378,8 @@ CString CChangeRegisters_CAN_ETAS_BOA::omGetFormattedRegVal(UCHAR ucRegVal)
 /******************************************************************************/
 void CChangeRegisters_CAN_ETAS_BOA::OnKillfocusEditBaudRate() 
 {
-    CString omStrBaudRate   =_T("");
-    CString omStrValid      =_T("");
+    CString omStrBaudRate   ="";
+    CString omStrValid      ="";
     INT     nLength         = 0;
 
     m_omEditBaudRate.GetWindowText(omStrBaudRate);    
@@ -455,7 +455,7 @@ void CChangeRegisters_CAN_ETAS_BOA::OnKillfocusEditBaudRate()
 void CChangeRegisters_CAN_ETAS_BOA::OnSelchangeCombSampling()
 { 
     INT nGetValue               = 0;
-    CString omStrComboEditItem  =_T("");
+    CString omStrComboEditItem  ="";
 
     nGetValue =  m_omCombSampling.GetCurSel();
     if (nGetValue != CB_ERR)
@@ -517,15 +517,15 @@ void CChangeRegisters_CAN_ETAS_BOA::OnSetfocusEditBaudRate()
 /******************************************************************************/
 void CChangeRegisters_CAN_ETAS_BOA::vValidateBaudRate()
 {
-    CString omStrBaudRate       = _T("");
-    CString omStrPrvBaudRate    = _T("");
-    CString omStrClockFreq      = _T("");
+    CString omStrBaudRate       = "";
+    CString omStrPrvBaudRate    = "";
+    CString omStrClockFreq      = "";
     DOUBLE  dBaudRate           = 0;
     //UINT    unClockFreq         = 0;
     //UINT    unClockPrevValue    = 0 ;
     UINT    unProductNbtNBrp    = 0;
     DOUBLE  dProductNbtNBrp     = 0; 
-    CString omStrMessage        = _T("");
+    CString omStrMessage        = "";
    
     m_omEditBaudRate.GetWindowText(omStrBaudRate);
     dBaudRate           = (FLOAT)_tstof(omStrBaudRate);
@@ -889,12 +889,12 @@ void CChangeRegisters_CAN_ETAS_BOA::vFillControllerConfigDetails()
 *******************************************************************************/
 void CChangeRegisters_CAN_ETAS_BOA::vUpdateControllerDetails()
 {
-    TCHAR*    pcStopStr              = NULL;
-    CString omStrComboSampling      = _T("");
-    CString omStrEditBtr0           = _T("");
-    CString omStrEditBtr1           = _T("");
-    CString omStrEditAcceptanceCode = _T("");
-    CString omStrEditAcceptanceMask = _T("");
+    char*    pcStopStr              = NULL;
+    CString omStrComboSampling      = "";
+    CString omStrEditBtr0           = "";
+    CString omStrEditBtr1           = "";
+    CString omStrEditAcceptanceCode = "";
+    CString omStrEditAcceptanceMask = "";
     
     // Update the data members before writing into ini file or registry.
     UpdateData(TRUE);
@@ -937,7 +937,7 @@ void CChangeRegisters_CAN_ETAS_BOA::vUpdateControllerDetails()
     else
     {
         // Invalid Warning Limit Error Message
-        CString omStrMsg = _T("");
+        CString omStrMsg = "";
         omStrMsg.Format( defWARNINGLIMIT_MSG, m_omStrEditWarningLimit,
                          defWARNING_LIMIT_MIN,
                          defWARNING_LIMIT_MAX);
@@ -1075,7 +1075,7 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::bGetFilterFromCom(BOOL  &bExtended, double  
     if (m_pControllerDetails != NULL)
     {
         
-        TCHAR* pcStopStr ;
+        char* pcStopStr ;
         //Change to separate integer value for each byte
         int nAccCodeByte1 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte1,
                         &pcStopStr,defHEXADECIMAL);
@@ -1190,7 +1190,7 @@ int CChangeRegisters_CAN_ETAS_BOA::nGetValueFromComboBox(CComboBox& omComboBox)
     int nCurrSel =  omComboBox.GetCurSel();
     if (nCurrSel != CB_ERR)
     {
-        CString omCurText = _T("");
+        CString omCurText = "";
         omComboBox.GetLBText(nCurrSel, omCurText);
         if (omCurText != _T("ALL"))
         {

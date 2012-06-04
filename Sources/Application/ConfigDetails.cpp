@@ -515,8 +515,8 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
         case CONTROLLER_DETAILS:
         {
             *lpData = NULL;
-            PSCONTROLER_DETAILS  psControllerDetails = 
-                new SCONTROLER_DETAILS[ defNO_OF_CHANNELS ];
+            PSCONTROLLER_DETAILS  psControllerDetails = 
+                new SCONTROLLER_DETAILS[ defNO_OF_CHANNELS ];
             // baud rate information
             if (psControllerDetails != NULL)
             {
@@ -1073,8 +1073,8 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
             case CONTROLLER_DETAILS:
             {
                 // baud rate information
-                PSCONTROLER_DETAILS pSrc = 
-                    static_cast<PSCONTROLER_DETAILS>(lpVoid);
+                PSCONTROLLER_DETAILS pSrc = 
+                    static_cast<PSCONTROLLER_DETAILS>(lpVoid);
                 // packed value of bit timing register 0 
                 // and bit timing register 1
                 for (int nIndex = 0; nIndex < defNO_OF_CHANNELS; nIndex++)
@@ -1388,7 +1388,9 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
     if (bRetVal == FALSE)
     {
         if (theApp.m_bFromAutomation == FALSE)
-        AfxMessageBox(_T("Error while updating data"), MB_OK);
+        {
+            AfxMessageBox(_T("Error while updating data"), MB_OK);
+        }
     }
     return bRetVal;
 }
@@ -1459,7 +1461,8 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
 INT  CConfigDetails::
 nLoadConfiguration(CString& omStrFilename/*= defDEFAULTCFGFILE*/)
 {
-    CMainFrame* pMainFrm = (CMainFrame*)theApp.m_pMainWnd;
+    CMainFrame* pMainFrm = static_cast<CMainFrame*> (theApp.m_pMainWnd);
+
     //CSimSysWnd* pSimSysWnd = NULL;
     //CSimSysTreeView* pSimSysTree = NULL;
     // If the user loads configuration file,
@@ -2503,7 +2506,7 @@ void CConfigDetails::vInitToolbarInfo()
 /******************************************************************************/
 
 static void vReadControllerDetails(CArchive& roCfgArchive, int& nIndex,
-                                   PSCONTROLER_DETAILS psControllerDetails)
+                                   PSCONTROLLER_DETAILS psControllerDetails)
 {
     // the item under focus
     roCfgArchive >> psControllerDetails[ nIndex ].m_nItemUnderFocus;
@@ -2589,7 +2592,7 @@ void CConfigDetails::vLoadStoreBaudRateDetails(CArchive& roCfgArchive)
         // distrubed
         if (bDummyRead == TRUE)
         {
-            sCONTROLERDETAILS sDummy;
+            sCONTROLLERDETAILS sDummy;
             
             for (int nIndex = 0; nIndex < nTimes; nIndex++)
             {
@@ -3134,8 +3137,9 @@ static BOOL bLoadFilterDets(CArchive& romArchive, SFILTERAPPLIED_CAN& sFilterCon
         // Get Filter Name
         CString omStrFilterName = STR_EMPTY;
         romArchive >> omStrFilterName;
-        _tcscpy(sFilterConfigured.m_psFilters[nIndex].m_sFilterName.m_acFilterName, 
-                                                                    omStrFilterName);
+		//Tobias - venkat
+        strcpy_s(sFilterConfigured.m_psFilters[nIndex].m_sFilterName.m_acFilterName, LENGTH_FILTERNAME,
+			omStrFilterName.GetBuffer(LENGTH_FILTERNAME));
         // Read Filter Type first
         romArchive >> sFilterConfigured.m_psFilters[nIndex].m_sFilterName.m_bFilterType;
         // Serialize filter array
@@ -3700,7 +3704,9 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                                     psDesTxMsgList->m_psNextMsgDetails;
                             }
                         }
-                    }while(psSrcTxMsgList!= NULL  && bRetVal == TRUE);
+                    }
+                    while(psSrcTxMsgList!= NULL  && bRetVal == TRUE);
+
                     // Delete the extra element if user has reduced the size.
                     if (psDesTxMsgList->m_psNextMsgDetails != NULL)
                     {
@@ -3757,9 +3763,9 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
             {
                 psTxMsg = psTxMsg->m_psNextTxMsgInfo;
             }
-        }while( psSrcMsgBlockList != NULL 
-            && bRetVal == TRUE);
-        
+        }
+        while( psSrcMsgBlockList != NULL
+                && bRetVal == TRUE);
     }
     else
     {
@@ -3813,14 +3819,15 @@ void CConfigDetails::vReleaseMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                     delete psCurrentTxCANMsgList;
                     psCurrentTxCANMsgList = NULL;
                     psCurrentTxCANMsgList = psNextTxCANMsgList;
-                }while(psNextTxCANMsgList != NULL);
-                
+                }
+                while(psNextTxCANMsgList != NULL);
             }
             psNextMsgBlockList = psCurrentMsgBlockList->m_psNextMsgBlocksList;
             delete psCurrentMsgBlockList;
             psCurrentMsgBlockList = NULL;
             psCurrentMsgBlockList = psNextMsgBlockList;
-        }while(psNextMsgBlockList != NULL);
+        }
+        while(psNextMsgBlockList != NULL);
     }
 }
 
@@ -4251,8 +4258,8 @@ void CConfigDetails::vRelease(eCONFIGDETAILS eParam, LPVOID* lpDataPtr)
         {
             if (*lpDataPtr != NULL)
             {
-                PSCONTROLER_DETAILS  psControllerDetails =
-                    static_cast<PSCONTROLER_DETAILS>( *lpDataPtr);
+                PSCONTROLLER_DETAILS  psControllerDetails =
+                    static_cast<PSCONTROLLER_DETAILS>( *lpDataPtr);
                 delete [] psControllerDetails;
                 *lpDataPtr = NULL;
             }
@@ -4955,8 +4962,10 @@ void CConfigDetails::vInitGraphParamenters()
     CGraphParameters odDefaultParams;
     m_odGraphList.m_odGraphParameters = odDefaultParams;
     // Clear graph signal list
-	if(m_odGraphList.m_omElementList.GetSize()>0)
-		m_odGraphList.m_omElementList.RemoveAll();
+    if(m_odGraphList.m_omElementList.GetSize()>0)
+    {
+        m_odGraphList.m_omElementList.RemoveAll();
+    }
 }
 
 /*******************************************************************************
@@ -5168,8 +5177,9 @@ BOOL CConfigDetails::bGetDefaultValue(eCONFIGDETAILS eParam,
     int nBorderWidth = defBORDER_WIDTH_FACTOR *
         GetSystemMetrics( SM_CXBORDER);
     // Get Main Frame window size and toolbar size
-    CMainFrame * pMainFrame = NULL;
-    pMainFrame = (CMainFrame *)theApp.m_pMainWnd;
+    CMainFrame* pMainFrame = NULL;
+    pMainFrame = static_cast<CMainFrame*> (theApp.m_pMainWnd);
+
     // If it is a valid window pointer
     if (pMainFrame != NULL &&
         IsWindow(pMainFrame->m_hWnd))
@@ -5424,12 +5434,14 @@ BOOL static bLogFileSerialize(CArchive& omArchive, SLOGFILEDETS& sLogFileDets)
         // Get the filters
         for( int nIndex = 0; nIndex < nSize; nIndex++ )
         {
-            SMODULEFILTER sFilter = {_T(""), FALSE};
+            SMODULEFILTER sFilter = {"", FALSE};
+
             if( omArchive.IsLoading() )
             {
                 CString omTemp;
                 omArchive >> omTemp;
-                strcpy (sFilter.m_omFilterName, omTemp.GetBuffer(MAX_PATH));
+				//Tobias - venkat
+                strcpy_s(sFilter.m_omFilterName, LENGTH_FILTERNAME, omTemp.GetBuffer(LENGTH_FILTERNAME));
                 omArchive >> sFilter.m_bEnabled;
             }
             sLogFileDets.m_omFilter.Add( sFilter );
@@ -5523,8 +5535,8 @@ static BOOL bLoadReplayFile(CArchive& omArchive, SREPLAYFILE& sRepalyFile)
         CString omFilterName;
         omArchive >> omFilterName;
         omArchive >> sFilter.m_bEnabled;
-        
-        strcpy(sFilter.m_omFilterName, omFilterName.GetBuffer(MAX_PATH));
+		//Tobias - venkat
+        strcpy_s(sFilter.m_omFilterName, omFilterName.GetBuffer(MAX_PATH));
         // Add the filter in to the list
         sRepalyFile.m_omFilter.Add( sFilter );
     }

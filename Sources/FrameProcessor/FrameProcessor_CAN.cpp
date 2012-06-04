@@ -100,8 +100,8 @@ void CFrameProcessor_CAN::CreateTimeModeMapping(SYSTEMTIME& CurrSysTime,
 void CFrameProcessor_CAN::vRetrieveDataFromBuffer(void)
 {
     static SFORMATTEDDATA_CAN CurrDataCAN = {0, 0, DIR_RX, CAN_CHANNEL_ALL, 0, 
-            {'\0'}, TYPE_ID_CAN_NONE, TYPE_MSG_CAN_NONE, _T(" x"), {'\0'}, {'\0'}, _T(""), _T(""),_T(""), _T(""), 
-            _T(""), _T(""),  _T(""),  _T(""), 0, RGB(0, 0, 0) };
+            {'\0'}, TYPE_ID_CAN_NONE, TYPE_MSG_CAN_NONE, " x", {'\0'}, {'\0'}, "", "","", "", 
+            "", "",  "",  "", 0, RGB(0, 0, 0) };
     static sTCANDATA CurrMsgCAN;
 
     while (m_ouFSEBufCAN.GetMsgCount() > 0)
@@ -190,25 +190,35 @@ HRESULT CFrameProcessor_CAN::FPC_ApplyFilteringScheme(USHORT ushLogBlkID,
                                         const SFILTERAPPLIED_CAN& sFilterObj)
 {
 	HRESULT hResult = S_FALSE;
+    CLogObjectCAN* pLogObj = NULL;
 
     if (bIsEditingON())
     {
 		if (m_omLogListTmp.GetSize() > ushLogBlkID)
 	    {
             CBaseLogObject* pouBaseLogObj = m_omLogListTmp.GetAt(ushLogBlkID);
-            CLogObjectCAN* pLogObj = static_cast<CLogObjectCAN *> (pouBaseLogObj);
-
-            if (NULL != pLogObj)
-            {
-                pLogObj->SetFilterInfo(sFilterObj);
-                hResult = S_OK;
-            }
-            else
-            {
-                ASSERT(FALSE);
-            }
+            pLogObj = static_cast<CLogObjectCAN *> (pouBaseLogObj);
 	    }
     }
+	else
+	{
+		if (m_omLogObjectArray.GetSize() > ushLogBlkID)
+		{
+			CBaseLogObject* pouBaseLogObj = m_omLogObjectArray.GetAt(ushLogBlkID);
+			pLogObj = static_cast<CLogObjectCAN *> (pouBaseLogObj);
+		}
+	}
+
+	//update the filters
+	if (NULL != pLogObj)
+	{
+		pLogObj->SetFilterInfo(sFilterObj);
+		hResult = S_OK;
+	}
+	else
+	{
+		ASSERT(FALSE);
+	}
 
 	return hResult;
 }
@@ -274,7 +284,7 @@ HRESULT CFrameProcessor_CAN::FPC_EnableLoggingBlock(USHORT ushBlk, BOOL bEnable)
 // To enable/disable logging
 HRESULT CFrameProcessor_CAN::FPC_EnableLogging(BOOL bEnable)
 {
-    return EnableLogging(bEnable);
+    return EnableLogging(bEnable, CAN);
 }
 
 /* Call to enable/disable logging for a particular block. Having ushBlk equal
@@ -405,7 +415,7 @@ HRESULT CFrameProcessor_CAN::FPC_SetDatabaseFiles(const CStringArray& omList)
 
 // To update the channel baud rate info to logger
 HRESULT CFrameProcessor_CAN::FPC_SetChannelBaudRateDetails
-							(SCONTROLER_DETAILS* controllerDetails, 
+							(SCONTROLLER_DETAILS* controllerDetails, 
 							int nNumChannels)
 {
 	HRESULT hResult = S_OK;

@@ -26,7 +26,7 @@
 // Starts CSignalDescVal
 CSignalDescVal::CSignalDescVal()
 {
-    m_omStrSignalDescriptor = _T("");
+    m_omStrSignalDescriptor = "";
     m_n64SignalVal = 0x0;
     m_pouNextSignalSignalDescVal = NULL;
 }
@@ -96,7 +96,7 @@ sWaveformInfo& sWaveformInfo::operator=(const sWaveformInfo& RefObj)
 
 CString sWaveformInfo::omGetWaveformName(eWAVEFORMTYPE eWaveform)
 {
-    CString Result = _T("");
+    CString Result = "";
 
     switch (eWaveform)
     {
@@ -113,7 +113,7 @@ CString sWaveformInfo::omGetWaveformName(eWAVEFORMTYPE eWaveform)
 // Starts sSigWaveMap
 sSigWaveMap::sSigWaveMap()
 {
-    m_omSigName = _T("");
+    m_omSigName = "";
 }
 
 sSigWaveMap& sSigWaveMap::operator=(const sSigWaveMap& RefObj)

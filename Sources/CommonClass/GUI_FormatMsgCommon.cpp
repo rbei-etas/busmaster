@@ -71,8 +71,8 @@ CFormatMsgCommon::~CFormatMsgCommon(void)
     Author(s)        :  Anish kumar
     Date Created     :  01.04.2010
 ******************************************************************************/
-void CFormatMsgCommon::vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp, 
-                                             TCHAR acTime[])
+void CFormatMsgCommon::vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,
+        char acTime[])
 {
     /* In order to make this function work properly ENSURE bExprnFlag has ONLY
     1 time mode bit up */
@@ -99,20 +99,16 @@ void CFormatMsgCommon::vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,
     vFormatTimeStamp(dwTSTmp, acTime);
 }
 
-/******************************************************************************
-    Function Name    :  vFormatTimeStamp
-    Input(s)         :  dwTimeStamp - time stamp to be formatted
-                        acTime - Buffer to store formatted time
-    Output           :  
-    Functionality    :  Format time details
-    Member of        :  CFormatMsgCommon
-    Friend of        :      -
-    Author(s)        :  Anish kumar
-    Date Created     :  01.04.2010
-******************************************************************************/
-void CFormatMsgCommon::vFormatTimeStamp(DWORD dwTimeStamp, TCHAR acTime[])
+/**
+ * \brief      Format Time Stamp
+ * \param[in]  dwTimeStamp time stamp to be formatted
+ * \param[out] acTime Buffer to store formatted time
+ *
+ * Format Time Stamp
+ */
+void CFormatMsgCommon::vFormatTimeStamp(DWORD dwTimeStamp, char acTime[])
 {
-     // Static variables to reduce the creation time
+    // Static variables to reduce the creation time
     static int nTemp, nMicSec, nSec, nMinute, nHour;
 
     nMicSec = dwTimeStamp % 10000;  // hundreds of microseconds left
@@ -121,8 +117,7 @@ void CFormatMsgCommon::vFormatTimeStamp(DWORD dwTimeStamp, TCHAR acTime[])
     nTemp = nTemp / 60;         // expressed in minutes
     nMinute = nTemp % 60;       // minutes left
     nHour = nTemp / 60;         // expressed in hours
-
-    _stprintf(acTime, _T("%02d:%02d:%02d:%04d"), nHour, nMinute, nSec, nMicSec);
+    sprintf(acTime, _T("%02d:%02d:%02d:%04d"), nHour, nMinute, nSec, nMicSec);
 }
 
 /******************************************************************************

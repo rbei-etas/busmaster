@@ -2,6 +2,8 @@
 
 // CSignalGeneration wrapper class
 
+#pragma once
+
 class CSignalGeneration : public COleDispatchDriver
 {
 public:

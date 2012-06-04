@@ -33,13 +33,6 @@
 #include "SignalDefiner/SignalDefiner_Extern.h"
 #include <atlconv.h>
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 /////////////////////////////////////////////////////////////////////////////
 // CWaveformSelectionDlg dialog
 
@@ -116,8 +109,10 @@ BOOL CWaveformSelectionDlg::OnInitDialog()
 
 	CStringArray arrMsgIDsList;
 	m_pWaveDataHandler->vGetCompleteMsgList(arrMsgIDsList);
-	for(int i = 0; i<arrMsgIDsList.GetSize(); i++)
-		m_omCombMessage.AddString(arrMsgIDsList.GetAt(i));
+    for(int i = 0; i<arrMsgIDsList.GetSize(); i++)
+    {
+        m_omCombMessage.AddString(arrMsgIDsList.GetAt(i));
+    }
 	m_omCombMessage.SetCurSel(0);
 	m_omCombMessage.SetFocus();	
 
@@ -197,8 +192,10 @@ void CWaveformSelectionDlg::vPopulateUnSelSubEntryList(UINT unMainEntryID)
 	{		
 		UINT unLen = m_omListCtrlSignal.GetStringWidth(arrSignalsList.GetAt(nCount));
 		// Save the length if it is the max.
-        if(unMaxLen < unLen )        
+        if(unMaxLen < unLen )
+        {
             unMaxLen = unLen;
+        }
 		m_omListCtrlSignal.InsertItem(nCount, arrSignalsList.GetAt(nCount));		
 	}
 	// Set the column width if it is valid
@@ -347,10 +344,14 @@ void CWaveformSelectionDlg::DefineUpdateWave(CListCtrl* pListCtrl, UINT nMsgID,
 			SignalDefiner_GetAmplitude(&objWaveInfo.m_fAmplitude);
 			SignalDefiner_GetFrequency(&objWaveInfo.m_fFrequency);
 
-			if(pListCtrl == &m_omListCtrlSignal)
-				m_pWaveDataHandler->bAddSignalToDefinedWavesList(nMsgID, strSignalName, objWaveInfo);
-			else
-				m_pWaveDataHandler->vSetSignalWavePatternDetails(nMsgID, strSignalName, objWaveInfo);
+            if(pListCtrl == &m_omListCtrlSignal)
+            {
+                m_pWaveDataHandler->bAddSignalToDefinedWavesList(nMsgID, strSignalName, objWaveInfo);
+            }
+            else
+            {
+                m_pWaveDataHandler->vSetSignalWavePatternDetails(nMsgID, strSignalName, objWaveInfo);
+            }
 
             // Force a setting of sampling time period.typecast to remove compiler warning
 			int nTimePeriod;
@@ -379,10 +380,10 @@ Modification on  : K ArunKumar
 *******************************************************************************/
 void CWaveformSelectionDlg::vInterPretSignalNameMsgID(CString strInterpretData, CString& strSigName, UINT& nMsgID)
 {
-	CString omMsgId;	
-	TCHAR* pcStopStr = NULL;
+    CString omMsgId;
+    char* pcStopStr = NULL;
     int nIndex = -1;
-	nIndex = strInterpretData.Find(_T("->"));
+    nIndex = strInterpretData.Find(_T("->"));
 	if(nIndex != -1)
 	{
 		omMsgId = strInterpretData.Left(nIndex);
@@ -391,10 +392,14 @@ void CWaveformSelectionDlg::vInterPretSignalNameMsgID(CString strInterpretData, 
 		strTemp= strInterpretData.Right(strInterpretData.GetLength()-(nIndex+2));
 		//Now remove the Wave form name.
 		nIndex = strTemp.Find(_T("("));
-		if(nIndex!=-1)
-			strSigName = strTemp.Left(nIndex-1);
-		else
-			strSigName = strTemp;
+        if(nIndex!=-1)
+        {
+            strSigName = strTemp.Left(nIndex-1);
+        }
+        else
+        {
+            strSigName = strTemp;
+        }
 	}
 }
 
@@ -606,8 +611,10 @@ void CWaveformSelectionDlg::vPopulateSelSubEntryList()
 	{		
 		UINT unLen = m_omListCtrlSignalWatch.GetStringWidth(arrAllDefinedSignals.GetAt(nCount));
 		// Save the length if it is the max.
-        if(unMaxLen < unLen )        
+        if(unMaxLen < unLen )
+        {
             unMaxLen = unLen;
+        }
 		m_omListCtrlSignalWatch.InsertItem(nCount, arrAllDefinedSignals.GetAt(nCount));		
 	}
 	// Set the column width if it is valid
@@ -639,9 +646,9 @@ BOOL CWaveformSelectionDlg::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
 
 UINT CWaveformSelectionDlg::unGetMainEntryIDFromName(CString omMainEntryName)
 {
-	CString omMainEntryId;
-	UINT unMainEntryID = (UINT)-1;
-	TCHAR* pcStopStr = NULL;
+    CString omMainEntryId;
+    UINT unMainEntryID = (UINT)-1;
+    char* pcStopStr = NULL;
     int nIndex = omMainEntryName.Find(defMSGID_EXTENDED);
     int nCloseBraceIndex = omMainEntryName.Find(defMSG_NAME_END_CHAR);
 	if((nIndex != -1) && (nCloseBraceIndex != -1))

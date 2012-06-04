@@ -16,6 +16,7 @@
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 // CJ1939TimeOutCfg dialog
+#pragma once
 #include "Utility/RadixEdit.h"
 class CJ1939TimeOutCfg : public CDialog
 {

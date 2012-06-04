@@ -25,13 +25,6 @@
 #include "Include/BaseDefs.h"
 #include "CMsgSignalTemp.h"      // Class defintion file
 
-
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 static CHAR s_acTraceStr[1024] = {""};
 
 /* Helper function to calculate how many bytes the signal consumes */
@@ -193,9 +186,9 @@ void CMsgSignal::unListGetMessageIDs(UINT *omListId)
   Modifications    :  Anish
 					  13.12.2006,Changed code for Multiple DB concept
 ******************************************************************************/
- CString CMsgSignal::omStrGetMessageNameFromMsgCodeInactive( UINT unMsgCode)
- {
-	  CString strMsgName = _T("");
+CString CMsgSignal::omStrGetMessageNameFromMsgCodeInactive( UINT unMsgCode)
+{
+    CString strMsgName = "";
 
     // validate message code
     if (unMsgCode >= 0)
@@ -232,17 +225,20 @@ void CMsgSignal::unListGetMessageIDs(UINT *omListId)
 ******************************************************************************/
 CString CMsgSignal::omStrGetMessageNameFromMsgCode( UINT unMsgCode)
 {
-	CString strMsgName = _T("");
-	if (unMsgCode >= 0)
-	{
-		sMESSAGE* psMsgStruct = NULL; 
-		m_omMsgDetailsIDMap.Lookup(unMsgCode,psMsgStruct);
-		if(psMsgStruct != NULL)
-		{
-			strMsgName = psMsgStruct->m_omStrMessageName;
-		}
-	}
-	return strMsgName;
+    CString strMsgName = "";
+
+    if (unMsgCode >= 0)
+    {
+        sMESSAGE* psMsgStruct = NULL;
+        m_omMsgDetailsIDMap.Lookup(unMsgCode,psMsgStruct);
+
+        if(psMsgStruct != NULL)
+        {
+            strMsgName = psMsgStruct->m_omStrMessageName;
+        }
+    }
+
+    return strMsgName;
 }
 
 /******************************************************************************

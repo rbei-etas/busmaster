@@ -18,14 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined(AFX_MSGSIGNAL_H_TEMP__INCLUDED_)
-#define AFX_MSGSIGNAL_H_TEMP__INCLUDED_
 
-///////////////////////////////////////////
-//***************************************
-/*  ADDED ONLY FOR REMOVING COMPILATION ERROR *
-********************************************/
-///////////////////////////////////////////
+#pragma once
 
 #include "include/BaseDefs.h"
 #include "Datatypes/MsgSignal_Datatypes.h"
@@ -251,5 +245,3 @@ private:
     BOOL bValidateDatabaseFile(CString strFileName);
 
 };
-
-#endif

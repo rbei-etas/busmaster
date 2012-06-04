@@ -37,13 +37,6 @@
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 #endif
 
-#ifndef _CRT_SECURE_NO_DEPRECATE
-#define _CRT_SECURE_NO_DEPRECATE
-#endif
-
-// Disable warning messages C4996
-#pragma warning(disable: 4996)
-
 #include <math.h>           // For abs function call
 #include <afx.h>
 #include <afxwin.h>         // MFC core and standard components

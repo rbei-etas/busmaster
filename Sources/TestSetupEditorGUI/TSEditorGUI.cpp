@@ -26,13 +26,6 @@
 #include "TSEditorGUI_ChildFrame.h"
 #include "TSEditorGUI_resource.h"
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
-
-
 BYTE* m_pbyTEConfigData = NULL;
 UINT m_unTEConfigSize = 0;
 
@@ -49,8 +42,10 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 		TRACE0("TestSetupEditor.DLL Initializing!\n");
 		m_hDllInstance = hInstance;
 		// Extension DLL one-time initialization
-		if (!AfxInitExtensionModule(TestSetupEditor, hInstance))
-			return 0;
+        if (!AfxInitExtensionModule(TestSetupEditor, hInstance))
+        {
+            return 0;
+        }
 
 		// Insert this DLL into the resource chain
 		// NOTE: If this Extension DLL is being implicitly linked to by
@@ -157,17 +152,23 @@ USAGEMODE HRESULT TS_vSetDILInterfacePtr(void* /*ptrDILIntrf*/)
 
 USAGEMODE HRESULT TS_vPostMessageToTSWnd(UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	if(g_pomTSEditorChildWindow)
-		g_pomTSEditorChildWindow->PostMessage(msg, wParam, lParam);
+    if(g_pomTSEditorChildWindow)
+    {
+        g_pomTSEditorChildWindow->PostMessage(msg, wParam, lParam);
+    }
 	return S_OK;
 }
 
 USAGEMODE HRESULT TS_hTSEditorWindowShown()
 {
-	if(g_pomTSEditorChildWindow)
-		return S_OK;
-	else
-		return S_FALSE;
+    if(g_pomTSEditorChildWindow)
+    {
+        return S_OK;
+    }
+    else
+    {
+        return S_FALSE;
+    }
 }
 USAGEMODE HRESULT TS_hLoadTestSetupFile(CString omFilePath)
 {

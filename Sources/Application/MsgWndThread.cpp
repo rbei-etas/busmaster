@@ -77,10 +77,9 @@ BOOL CMsgWndThread::CreateMsgWnd(HWND hFrameWnd, eTYPE_BUS eBusType, DWORD dwCli
 	strWndText+= g_arrstrBusNames.GetAt((int)eBusType);
 
     m_bAutoDelete = TRUE;
-	m_pMsgWnd[eBusType] = new CMsgFrmtWnd(eBusType);
-	m_pMainWnd = m_pMsgWnd[eBusType];
-	
-    CString omArrColTitle[MAX_MSG_WND_COL_CNT] = {_T("")};
+    m_pMsgWnd[eBusType] = new CMsgFrmtWnd(eBusType);
+    m_pMainWnd = m_pMsgWnd[eBusType];
+    CString omArrColTitle[MAX_MSG_WND_COL_CNT] = {""};
     int nCount = 0;
 	CMsgWndHdrInfo objMsgHdrInfo;
     objMsgHdrInfo.vGetHdrColNames(omArrColTitle, nCount); 
@@ -128,16 +127,22 @@ void CMsgWndThread::vModifyVisibilityStatus(UINT unParam, LONG lParam)
 
 HWND CMsgWndThread::hGetHandleMsgWnd(eTYPE_BUS eBusType)
 {
-	if(m_pMsgWnd[eBusType])
-		return m_pMsgWnd[eBusType]->GetSafeHwnd();
-	else
-		return NULL;
+    if(m_pMsgWnd[eBusType])
+    {
+        return m_pMsgWnd[eBusType]->GetSafeHwnd();
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 void CMsgWndThread::vSetDILInterfacePointer(eTYPE_BUS eBusType, void** ppvJ1939DIL)
-{	
-	if(m_pMsgWnd[eBusType])
-		m_pMsgWnd[eBusType]->vSetDILInterfacePointer(ppvJ1939DIL);
+{
+    if(m_pMsgWnd[eBusType])
+    {
+        m_pMsgWnd[eBusType]->vSetDILInterfacePointer(ppvJ1939DIL);
+    }
 }
 
 /*void CMsgWndThread::vShutdownThread(UINT unParam, LONG lParam)

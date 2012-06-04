@@ -84,15 +84,17 @@ BOOL CDatabaseDissociateDlg::OnInitDialog()
 		m_omDissociateDbLst.AddString(omStrText);
 		sz = pDC->GetTextExtent(omStrText);
 
-		if (sz.cx > nDx)
-			nDx = sz.cx;
+        if (sz.cx > nDx)
+        {
+            nDx = sz.cx;
+        }
+    }
 
-	}
-	m_omDissociateDbLst.ReleaseDC(pDC);
-	// Set the horizontal extent so every character of all strings 
-	// can be scrolled to.
-	m_omDissociateDbLst.SetHorizontalExtent(nDx);
-	return TRUE;
+    m_omDissociateDbLst.ReleaseDC(pDC);
+    // Set the horizontal extent so every character of all strings
+    // can be scrolled to.
+    m_omDissociateDbLst.SetHorizontalExtent(nDx);
+    return TRUE;
 }
 
 /******************************************************************************
@@ -110,64 +112,73 @@ BOOL CDatabaseDissociateDlg::OnInitDialog()
 ******************************************************************************/
 void CDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
 {
-	//TO store the path of files dissociated
-	CStringArray aomStrFilesDissociated;
-	CMainFrame* pMainFrame = (CMainFrame*)theApp.m_pMainWnd;
-	// Get the indexes of all the selected items.
-	int nCount = m_omDissociateDbLst.GetSelCount();
-	if(nCount > 0)
-	{
-		// Array of selected item's position
-		CArray<int,int> aomListBoxSel;
-		aomListBoxSel.SetSize(nCount);
-		//Pass the array pointer to get the selected item's positions
-		m_omDissociateDbLst.GetSelItems(nCount, aomListBoxSel.GetData());
-		aomStrFilesDissociated.RemoveAll();
-		for(int nTempCnt = 0 ; nTempCnt < nCount ; nTempCnt++)
-		{
-			BOOL bDBDeleted = FALSE;
-			CString omstrDBPath ;
-			//Selected file's index
-			int nSelectedPos = aomListBoxSel.GetAt(nTempCnt);
-			//Find the length of string to pass the buffer to have the selected File path
-			int nBufferSize = m_omDissociateDbLst.GetTextLen(nSelectedPos);
-			m_omDissociateDbLst.GetText(nSelectedPos,omstrDBPath.GetBuffer(nBufferSize));
-			bDBDeleted = (*(CMsgSignal**)(m_sDbParams.m_ppvImportedDBs))->bDeAllocateMemory(omstrDBPath.GetBuffer(0));
-			if(TRUE == bDBDeleted)
-			{
-				aomStrFilesDissociated.Add(omstrDBPath.GetBuffer(0));
-			}
-		}
-		//To remove from theApp class
-		CStringArray aomstrDBFiles;
-		(*(CMsgSignal**)(m_sDbParams.m_ppvImportedDBs))->vGetDataBaseNames(&aomstrDBFiles);
-		//Delete the file path from the List box
-		int nTotalCount = aomStrFilesDissociated.GetSize();
-		CString omStrTempFile;
-		for(int nCount=0 ; nCount<nTotalCount ; nCount++)
-		{
-			omStrTempFile = aomStrFilesDissociated.GetAt(nCount);
-			int nIndex = 0;
-			if( (nIndex = m_omDissociateDbLst.FindString(0,
-				omStrTempFile)) != LB_ERR )
-			{
-				//Delete the file path from the list box
-				m_omDissociateDbLst.DeleteString(nIndex);
-				int nStoredFile = aomstrDBFiles.GetSize();
-				CString omStrTemp;
-				BOOL bRemoved = FALSE;
-				for(int nTemp = 0 ; nTemp < nStoredFile && bRemoved != TRUE; nTemp++)
-				{
-					omStrTemp = aomstrDBFiles.GetAt(nTemp);
-					if(!(omStrTemp.Compare(omStrTempFile)))
-					{
-						aomstrDBFiles.RemoveAt(nTemp);
-						bRemoved = TRUE;
-					}
-				}
-			}
-		}
-		//Set the new file name array
+    //TO store the path of files dissociated
+    CStringArray aomStrFilesDissociated;
+    CMainFrame* pMainFrame = static_cast<CMainFrame*> (theApp.m_pMainWnd);
+    // Get the indexes of all the selected items.
+    int nCount = m_omDissociateDbLst.GetSelCount();
+
+    if(nCount > 0)
+    {
+        // Array of selected item's position
+        CArray<int,int> aomListBoxSel;
+        aomListBoxSel.SetSize(nCount);
+        //Pass the array pointer to get the selected item's positions
+        m_omDissociateDbLst.GetSelItems(nCount, aomListBoxSel.GetData());
+        aomStrFilesDissociated.RemoveAll();
+
+        for(int nTempCnt = 0 ; nTempCnt < nCount ; nTempCnt++)
+        {
+            BOOL bDBDeleted = FALSE;
+            CString omstrDBPath ;
+            //Selected file's index
+            int nSelectedPos = aomListBoxSel.GetAt(nTempCnt);
+            //Find the length of string to pass the buffer to have the selected File path
+            int nBufferSize = m_omDissociateDbLst.GetTextLen(nSelectedPos);
+            m_omDissociateDbLst.GetText(nSelectedPos,omstrDBPath.GetBuffer(nBufferSize));
+            bDBDeleted = (*(CMsgSignal**)(m_sDbParams.m_ppvImportedDBs))->bDeAllocateMemory(omstrDBPath.GetBuffer(0));
+
+            if(TRUE == bDBDeleted)
+            {
+                aomStrFilesDissociated.Add(omstrDBPath.GetBuffer(0));
+            }
+        }
+
+        //To remove from theApp class
+        CStringArray aomstrDBFiles;
+        (*(CMsgSignal**)(m_sDbParams.m_ppvImportedDBs))->vGetDataBaseNames(&aomstrDBFiles);
+        //Delete the file path from the List box
+        int nTotalCount = aomStrFilesDissociated.GetSize();
+        CString omStrTempFile;
+
+        for(int nCount=0 ; nCount<nTotalCount ; nCount++)
+        {
+            omStrTempFile = aomStrFilesDissociated.GetAt(nCount);
+            int nIndex = 0;
+
+            if( (nIndex = m_omDissociateDbLst.FindString(0,
+                          omStrTempFile)) != LB_ERR )
+            {
+                //Delete the file path from the list box
+                m_omDissociateDbLst.DeleteString(nIndex);
+                int nStoredFile = aomstrDBFiles.GetSize();
+                CString omStrTemp;
+                BOOL bRemoved = FALSE;
+
+                for(int nTemp = 0 ; nTemp < nStoredFile && bRemoved != TRUE; nTemp++)
+                {
+                    omStrTemp = aomstrDBFiles.GetAt(nTemp);
+
+                    if(!(omStrTemp.Compare(omStrTempFile)))
+                    {
+                        aomstrDBFiles.RemoveAt(nTemp);
+                        bRemoved = TRUE;
+                    }
+                }
+            }
+        }
+
+        //Set the new file name array
         (*(CMsgSignal**)(m_sDbParams.m_ppvImportedDBs))->vSetDataBaseNames(&aomstrDBFiles);
 		// Send a message to Tx Window about database change
 		if( pMainFrame != NULL)
@@ -195,8 +206,10 @@ void CDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
 		//Added by Arun to update Data Handler Main entry list.		
 		pMainFrame->vUpdateMainEntryListInWaveDataHandler();
 		pMainFrame->vClearSignalInfoList();
-		if(!pMainFrame->m_ouWaveTransmitter.bIsBlockEnabled())
-			theApp.pouGetFlagsPtr()->vSetFlagStatus( SEND_SIGNAL_MSG, FALSE );
+        if(!pMainFrame->m_ouWaveTransmitter.bIsBlockEnabled())
+        {
+            theApp.pouGetFlagsPtr()->vSetFlagStatus( SEND_SIGNAL_MSG, FALSE );
+        }
 
 		//Update Message windows
 		pMainFrame->vUpdateAllMsgWndInterpretStatus(FALSE);
@@ -216,8 +229,10 @@ void CDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
 				if(bUserOption == TRUE )
 				{
 					// Clear Graph List for all buses.
-					for(register int nID = CAN; nID < AVAILABLE_PROTOCOLS; nID++)
-						pMainFrame->m_odGraphList[nID].m_omElementList.RemoveAll();
+                    for(register int nID = CAN; nID < AVAILABLE_PROTOCOLS; nID++)
+                    {
+                        pMainFrame->m_odGraphList[nID].m_omElementList.RemoveAll();
+                    }
 
 					// Send the Message to the Left View to Update List for all buses
 					if( pMainFrame != NULL )

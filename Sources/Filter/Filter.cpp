@@ -18,8 +18,6 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-// Filter.cpp : Defines the initialization routines for the DLL.
-//
 
 #include "Filter_stdafx.h"
 #include <afxdllx.h>
@@ -28,9 +26,6 @@
 #include "MainSubListDlg.h"
 #define USAGE_EXPORT
 #include "Filter_extern.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 static AFX_EXTENSION_MODULE FilterDLL = { NULL, NULL };
 
@@ -40,13 +35,15 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 	// Remove this if you use lpReserved
 	UNREFERENCED_PARAMETER(lpReserved);
 
-	if (dwReason == DLL_PROCESS_ATTACH)
-	{
-		TRACE0("Filter.DLL Initializing!\n");
-		
-		// Extension DLL one-time initialization
-		if (!AfxInitExtensionModule(FilterDLL, hInstance))
-			return 0;
+    if (dwReason == DLL_PROCESS_ATTACH)
+    {
+        TRACE0("Filter.DLL Initializing!\n");
+
+        // Extension DLL one-time initialization
+        if (!AfxInitExtensionModule(FilterDLL, hInstance))
+        {
+            return 0;
+        }
 
 		// Insert this DLL into the resource chain
 		// NOTE: If this Extension DLL is being implicitly linked to by
@@ -124,10 +121,10 @@ USAGEMODE HRESULT Filter_ShowSelDlg(CWnd* pParent, CMainEntryList* podMainSubLis
     /* Update GUI related information */
     /* 1. Title Name, Main entry combo box name, 
             Name of the list controls */
-    _tcscpy(sGuiParams.m_acTitleName, _T("Filter Selection Dialog"));
-    _tcscpy(sGuiParams.m_acMainListName, _T("Bus"));
-    _tcscpy(sGuiParams.m_acUnSelListName, _T("Configured Filters"));
-    _tcscpy(sGuiParams.m_acSelListName, _T("Selected Filters"));
+    strcpy_s(sGuiParams.m_acTitleName, MAX_PATH, _T("Filter Selection Dialog"));
+    strcpy_s(sGuiParams.m_acMainListName, MAX_PATH, _T("Bus"));
+    strcpy_s(sGuiParams.m_acUnSelListName, MAX_PATH, _T("Configured Filters"));
+    strcpy_s(sGuiParams.m_acSelListName, MAX_PATH, _T("Selected Filters"));
     /* Whether to combine main entry Id with sub entry name or not*/
     sGuiParams.m_bCombine = FALSE;
     /* What image to be loaded */

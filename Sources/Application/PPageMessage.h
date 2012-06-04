@@ -18,17 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined(AFX_PPAGEMESSAGE_H__32CE8AE5_32C9_47C1_86BD_E2E8A6D269A1__INCLUDED_)
-#define AFX_PPAGEMESSAGE_H__32CE8AE5_32C9_47C1_86BD_E2E8A6D269A1__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// PPageMessage.h : header file
-//
-
-/////////////////////////////////////////////////////////////////////////////
-// CPPageMessage dialog
 
 class CPPageMessage : public CPropertyPage
 {
@@ -88,8 +79,3 @@ protected:
     BOOL bIsMsgIDPresent(UINT*, UINT, UINT) const;
     int nEnterMessageAttrib(const SCanIDList& sMsgAttrib, int nItem);
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_PPAGEMESSAGE_H__32CE8AE5_32C9_47C1_86BD_E2E8A6D269A1__INCLUDED_)
