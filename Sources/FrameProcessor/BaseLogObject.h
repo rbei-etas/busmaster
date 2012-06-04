@@ -43,7 +43,7 @@ private:
     // i.e., file name which contains max file count
     void vGetNameAndSizeOfCurrentLogFile();
     DWORD dwGetFileSize(CString omFileName); // Get size of the file
-    CString omAddGroupCountToFileName(int nCount, TCHAR FileName[]);
+    CString omAddGroupCountToFileName(int nCount, char FileName[]);
     CString omRemoveGroupCountFromFileName(CString FileName);
     void vSetNextFileName(void);
     // Reset certain data member values
@@ -60,12 +60,12 @@ protected:
     ELOGTRIGGERSTATE m_CurrTriggerType;
 
 	// To format the header 
-	virtual void vFormatHeader(CString& omHeader);
+	virtual void vFormatHeader(CString& omHeader, ETYPE_BUS);
 
 	// To format the footer 
 	virtual void vFormatFooter(CString& omFooter);
 
-    void vWriteTextToFile(CString& om_LogText);
+    void vWriteTextToFile(CString& om_LogText, ETYPE_BUS);
 
     // To copy specific data pertaining to the conrete class.
     virtual void Der_CopySpecificData(const CBaseLogObject* pouLogObjSrc) = 0;
@@ -89,7 +89,7 @@ public:
     CBaseLogObject& operator=(const CBaseLogObject& RefObj);
 
     // To do actions before logging starts
-    BOOL bStartLogging(void);
+	BOOL bStartLogging(ETYPE_BUS);
 
     // To do actions before logging stop
     BOOL bStopLogging(void);
@@ -132,16 +132,16 @@ public:
 	void SetDatabaseFiles(const CStringArray& omList);
 
 	// To update the channel baud rate info to logger
-	virtual void Der_SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
+	virtual void Der_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
 											int nNumChannels) = 0;
 	// To update the channel baud rate info to logger
-	void SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails, 
+	void SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails, 
 									int nNumChannels);
 	// To update the channel baud rate info to logger
-	virtual void Der_GetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
+	virtual void Der_GetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
 											int& nNumChannels) = 0;
 	// To get the channel baud rate
-	void GetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails, 
+	void GetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails, 
 									int& nNumChannels);
 };
 

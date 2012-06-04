@@ -22,21 +22,25 @@
  * This file contains the codes when configuration procedure 
  */
 
-
 #include "StdAfx_ProjectConfiguration.h"
 #include "ProjectConfiguration_extern.h"
 #include "ProjConfig.h"
 #include "projConfigManager.h"
 
-#define _CRT_SECURE_NO_WARNINGS
 #define DATABASE_SIGNATURE    "/************* FrameFileDB **************/"
-#define VERSIONLINE           "/************* Version 1.0 **************/"
+
+// Application version is added in the version 1.1
+#define VERSIONLINE           "/************* Version 1.1 **************/"
+#define APPLICATION_VERSION   "/************* BUSMASTER [1.6.4] ************************/"
+#define OLDVERSIONLINE           "/************* Version 1.0 **************/"
 #define PROJECT_TABLE_SIG     "  PROJECT_TABLE :: PROJECT_TABLE "
 #define DB_END_SIGNATURE      "/*********** FrameFileDB_END ************/"
 #define LEN_SIG_FILE_START                      sizeof(DATABASE_SIGNATURE)
 #define LEN_SIG_FILE_END                        sizeof(DB_END_SIGNATURE)
 #define LEN_SIG_PROJ_TABLE                      sizeof(PROJECT_TABLE_SIG)
 #define LEN_VERSION                             sizeof(VERSIONLINE)
+#define LEN_OLDER_VERSION                       sizeof(OLDVERSIONLINE)
+#define LEN_APPLICATION_VERSION	                sizeof(APPLICATION_VERSION)
 #define OPENING_FILE_ERROR                      1
 #define FILE_NOT_PRESENT                       -1
 #define PROBLEM_IN_WRITING_READING              2
@@ -238,6 +242,42 @@ static int ReadWriteASection(bool bToRead, short SectionID,
             {
                 char acBuffer[LEN_VERSION] = {'\0'};
                 nResult = ReadAndValidateString(pFile, acBuffer, VERSIONLINE);
+				if(nResult != 0)
+				{
+					CString strVer = (const char *)acBuffer;
+					strVer.Remove('.');
+					strVer.Remove('*');
+					strVer.Remove('/');
+					strVer.Replace(_T("Version"), "");
+					strVer.Remove(' ');
+
+					// Get the cfx version info
+					INT nVer = 0;
+					
+					nVer = atoi(strVer);
+
+					switch (nVer)
+					{
+					case 10:
+						// Successfull
+						nResult = 0;
+						break;
+					default:
+						// Invalid
+						nResult = INVALID_FORMAT_FILE;
+						break;
+					}
+				}
+				
+				// If the newer version[1.1] file is opened
+				else
+				{
+					char acBuffer[LEN_APPLICATION_VERSION] = {'\0'};
+
+					// Reading Application version
+					ReadAndValidateString(pFile, acBuffer, APPLICATION_VERSION);
+				}
+
 				if (nResult != 0)
 				{
 					ReadWriteASection(bToRead, SECTION_FILE_INVALID, NULL);
@@ -246,6 +286,8 @@ static int ReadWriteASection(bool bToRead, short SectionID,
             else
             {
                 nResult = WriteAString(pFile, VERSIONLINE);
+				// Writing Application version is added in the Version 1.1
+				nResult = WriteAString(pFile, APPLICATION_VERSION);
             }
             if (nResult == 0)
             {
@@ -329,9 +371,8 @@ static int ReadWriteASection(bool bToRead, short SectionID,
                 bool bAllWell = true;
                 LISTSTR ProjectList;
                 g_ProjCfgManager.GetProjectList(ProjectList);
-                
-                for (LISTSTR::iterator i = ProjectList.begin();
-                     (i != ProjectList.end()) && bAllWell; i++)
+
+                for (LISTSTR::iterator i = ProjectList.begin(); (i != ProjectList.end()) && bAllWell; ++i)
                 {
                     PROJECTDATA ProjData;
                     if (bAllWell = g_ProjCfgManager.GetProjectData(*i, ProjData))
@@ -395,8 +436,8 @@ static int ReadWriteASection(bool bToRead, short SectionID,
             {
                 LISTSTR ProjectList;
                 g_ProjCfgManager.GetProjectList(ProjectList);
-                for (LISTSTR::iterator i = ProjectList.begin();
-                     (i != ProjectList.end()) && bAllWell; i++)
+
+                for (LISTSTR::iterator i = ProjectList.begin(); (i != ProjectList.end()) && bAllWell; ++i)
                 {
                     const char* str = i->c_str();
                     if ((nResult = WriteAString(pFile, (char *) str)) == 0)
@@ -408,8 +449,8 @@ static int ReadWriteASection(bool bToRead, short SectionID,
                         {
                             bAllWell = false;
                         }
-                        for (LISTSTR::iterator j = SectionList.begin();
-                             (j != SectionList.end()) && bAllWell; j++)
+
+                        for (LISTSTR::iterator j = SectionList.begin(); (j != SectionList.end()) && bAllWell; ++j)
                         {
                             SECTIONDATA CurrSecData;
                             bAllWell = g_ProjCfgManager.GetSectionData(*i, *j, CurrSecData);

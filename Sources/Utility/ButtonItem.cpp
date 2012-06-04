@@ -46,8 +46,9 @@ void CBrowseEditItem::OnKillFocus(CWnd* pNewWnd)
         && pNewWnd->GetDlgCtrlID() != IDCANCEL ) // For Cancel condition
     {
         AfxTrace("In if Condition\n");
-        CString str;    GetWindowText(str);
-        // Send Notification to parent of ListView ctrl 
+        CString str;
+        GetWindowText(str);
+        // Send Notification to parent of ListView ctrl
         LV_DISPINFO lvDispInfo;
         lvDispInfo.hdr.hwndFrom = GetParent()->m_hWnd;
         lvDispInfo.hdr.idFrom = GetDlgCtrlID(); 
@@ -68,7 +69,9 @@ void CBrowseEditItem::OnKillFocus(CWnd* pNewWnd)
     if(pNewWnd != NULL)
     {
         if(m_pomButton->GetSafeHwnd() == pNewWnd->GetSafeHwnd())
+        {
             return;
+        }
     }
    if((((CButtonItem*)m_pomButton)->m_bButtonclicked == FALSE) && (m_bKillFocus ==  TRUE))
     {
@@ -110,7 +113,9 @@ void CButtonItem::OnKillFocus(CWnd* pNewWnd)
     if(pNewWnd != NULL)
     {
         if(m_pomEditItem->GetSafeHwnd() == pNewWnd->GetSafeHwnd())
+        {
             return;
+        }
     }
     if((m_bButtonclicked == FALSE)&&(m_bKillFocus == TRUE))
     {

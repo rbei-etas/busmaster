@@ -23,7 +23,7 @@
  */
 
 #include "TxWindow_stdafx.h"             // For Standard Includes
-#include "SignalMatrix.h"       // For Signal Matrix Class Definition
+#include "Utility/SignalMatrix.h"       // For Signal Matrix Class Definition
 #include "Utility/ComboItem.h"          // For Custom Combobox Implementation
 #include "Utility/EditItem.h"           // For Custom Editbox Implementation
 #include "Utility/RadixEdit.h"          // For the RAdix Edit control definition
@@ -33,13 +33,6 @@
 #include "FlexListCtrl.h"       // For editable list control implementation
 #include "TxFunctionsView.h"    // For Tx Function View class declaration
 #include "TxMsgChildFrame.h"    // For Parent Window class declaration
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 
 IMPLEMENT_DYNCREATE(CTxFunctionsView, CFormView)
 
@@ -86,10 +79,11 @@ CTxFunctionsView::~CTxFunctionsView()
 *******************************************************************************/
 void CTxFunctionsView::DoDataExchange(CDataExchange* pDX)
 {
-    CFormView::DoDataExchange(pDX);
-    //{{AFX_DATA_MAP(CTxFunctionsView)
-    DDX_Control(pDX, IDC_BTN_UPDATE, m_omButtonApply);
-    //}}AFX_DATA_MAP
+	CFormView::DoDataExchange(pDX);
+	//{{AFX_DATA_MAP(CTxFunctionsView)
+	DDX_Control(pDX, IDC_BTN_UPDATE, m_omButtonApply);
+	//}}AFX_DATA_MAP
+	DDX_Control(pDX, IDC_CHECK_AUTO_UPDATE, m_CheckBoxAutoUpdate);
 }
 
 
@@ -99,6 +93,7 @@ BEGIN_MESSAGE_MAP(CTxFunctionsView, CFormView)
     ON_BN_CLICKED(IDC_BTN_UPDATE, OnButtonApply)
     ON_BN_CLICKED(IDC_BTN_CLOSE, OnBtnClose)
     //}}AFX_MSG_MAP
+	ON_BN_CLICKED(IDC_CHECK_AUTO_UPDATE, /*&CTxFunctionsView::*/OnBnClickedCheckAutoUpdate)
 END_MESSAGE_MAP()
 
 
@@ -202,6 +197,18 @@ void CTxFunctionsView::OnInitialUpdate()
     }
     // Disable Update Button
     m_omButtonApply.EnableWindow( FALSE );
+
+	if(CTxWndDataStore::ouGetTxWndDataStoreObj().m_bAutoSavedEnabled) 
+	{
+		m_CheckBoxAutoUpdate.SetCheck(BST_CHECKED);
+		GetDlgItem(IDC_BTN_UPDATE)->EnableWindow(FALSE);
+		OnBnClickedCheckAutoUpdate();					//call this function exclusively 
+	}
+	else
+	{
+		m_CheckBoxAutoUpdate.SetCheck(BST_UNCHECKED);
+		GetDlgItem(IDC_BTN_UPDATE)->EnableWindow(TRUE);
+	}
 }
 
 
@@ -616,3 +623,50 @@ void CTxFunctionsView::OnBtnClose()
         ((CTxMsgChildFrame *)pWnd)->PostMessage( WM_CLOSE );
     }
 }
+
+/*******************************************************************************
+  Function Name  : OnBnClickedCheckAutoUpdate
+  Input(s)       : -
+  Output         : -
+  Functionality  : This checkbox updates the content automaticallyan stores it in 
+				   global store
+  Member of      : CTxFunctionsView
+  Author(s)      : Ashwin. R. Uchil
+  Date Created   : 28.5.2012
+  Modifications  : 
+*******************************************************************************/
+void CTxFunctionsView::OnBnClickedCheckAutoUpdate()
+{
+	CTxMsgBlocksView* pBlocksView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
+	if (NULL != pBlocksView)
+	{
+		if (NULL == pBlocksView->m_psMsgBlockList)
+		{
+			GetDlgItem(IDC_BTN_UPDATE)->EnableWindow(FALSE);
+		}
+		else
+		{
+			GetDlgItem(IDC_BTN_UPDATE)->EnableWindow(TRUE);
+		}
+	}
+	else
+	{
+		GetDlgItem(IDC_BTN_UPDATE)->EnableWindow(FALSE);
+	}
+
+	if((m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED))
+	{			
+		vAccessButtonApply();
+		CTxWndDataStore::ouGetTxWndDataStoreObj().m_bAutoSavedEnabled = true;
+	}
+	else
+	{		
+		CTxWndDataStore::ouGetTxWndDataStoreObj().m_bAutoSavedEnabled = false;
+	}
+}
+
+void CTxFunctionsView::vAccessButtonApply()
+{
+	OnButtonApply();
+}
+

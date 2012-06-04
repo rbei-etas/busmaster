@@ -22,12 +22,7 @@
  * Interface file for CGraphParameters class
  */
 
-#if !defined(AFX_GRAPHPARAMETERS_H__2CC21E72_BC35_4502_9FB7_DB030798AC4A__INCLUDED_)
-#define AFX_GRAPHPARAMETERS_H__2CC21E72_BC35_4502_9FB7_DB030798AC4A__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 typedef enum eDISPLAY_TYPE
 {
@@ -78,5 +73,3 @@ public:
 	//Graph Line Display
 	eDISPLAY_TYPE m_eDisplayType;	
 };
-
-#endif // !defined(AFX_GRAPHPARAMETERS_H__2CC21E72_BC35_4502_9FB7_DB030798AC4A__INCLUDED_)

@@ -142,14 +142,14 @@ typedef struct tagClientBufMap
     DWORD dwClientID;
     BYTE hClientHandle;
     CBaseCANBufFSE* pClientBuf[MAX_BUFF_ALLOWED];
-    TCHAR pacClientName[MAX_PATH];
+    char pacClientName[MAX_PATH];
     UINT unBufCount;
     tagClientBufMap()
     {
         dwClientID = 0;
         hClientHandle = NULL;
         unBufCount = 0;
-        memset(pacClientName, 0, sizeof (TCHAR) * MAX_PATH);
+        memset(pacClientName, 0, sizeof (char) * MAX_PATH);
         for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
         {
             pClientBuf[i] = NULL;
@@ -166,7 +166,7 @@ static XLOPENDRIVER            xlDllOpenDriver = NULL;
 static int nInitHwNetwork();
 static BOOL bRemoveClient(DWORD dwClientId);
 static DWORD dwGetAvailableClientSlot();
-static BOOL bClientExist(TCHAR* pcClientName, INT& Index);
+static BOOL bClientExist(string pcClientName, INT& Index);
 static BOOL bClientIdExist(const DWORD& dwClientId);
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex);
 static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line);
@@ -184,7 +184,7 @@ static CPARAM_THREADPROC sg_sParmRThread;
 static int sg_nFRAMES = 128;
 const int ENTRIES_IN_GBUF       = 2000;
 static STCANDATA sg_asCANMsg;
-static SCONTROLER_DETAILS sg_ControllerDetails[defNO_OF_CHANNELS];
+static SCONTROLLER_DETAILS sg_ControllerDetails[defNO_OF_CHANNELS];
 static INTERFACE_HW sg_HardwareIntr[defNO_OF_CHANNELS];
 
 
@@ -238,7 +238,7 @@ public:
 	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
 	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
 	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
-	HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength);
+	HRESULT CAN_GetLastErrorString(string& acErrorStr);
 	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
 	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -246,7 +246,7 @@ public:
 	// Specific function set	
 	HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);	
 	HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
-	HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
+	HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
 	HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
 	HRESULT CAN_LoadDriverLibrary(void);
 	HRESULT CAN_UnloadDriverLibrary(void);
@@ -281,7 +281,7 @@ USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
  */
 static UINT sg_nNoOfChannels = 0;
 
-static TCHAR sg_omErrStr[MAX_STRING] = {0};
+static char sg_omErrStr[MAX_STRING] = {0};
 
 // Count variables
 static UCHAR sg_ucNoOfHardware = 0;
@@ -536,7 +536,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-HRESULT CDIL_CAN_VectorXL::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
+HRESULT CDIL_CAN_VectorXL::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName)
 {
 	USES_CONVERSION;
     HRESULT hResult = S_FALSE;
@@ -892,7 +892,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_DeselectHwInterface(void)
 
 /**
 * \brief         Displays the controller configuration dialog.
-* \param[out]    InitData, is SCONTROLER_DETAILS structure
+* \param[out]    InitData, is SCONTROLLER_DETAILS structure
 * \param[out]    Length , is INT
 * \return        S_OK for success
 * \authors       Arunkumar Karri
@@ -903,7 +903,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_DisplayConfigDlg(PCHAR& InitData, INT& /*Length*/
 	xlPopupHwConfig(NULL, INFINITE);
 
 	//Get back the baud rate from controller
-	SCONTROLER_DETAILS* pCntrlDetails = (SCONTROLER_DETAILS*)InitData;		
+	SCONTROLLER_DETAILS* pCntrlDetails = (SCONTROLLER_DETAILS*)InitData;		
 	XLstatus xlStatus;
 
 	xlStatus = xlGetDriverConfig(&g_xlDrvConfig);
@@ -919,7 +919,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_DisplayConfigDlg(PCHAR& InitData, INT& /*Length*/
 
 /**
 * \brief         Sets the controller configuration data supplied by ConfigFile.
-* \param[in]     ConfigFile, is SCONTROLER_DETAILS structure
+* \param[in]     ConfigFile, is SCONTROLLER_DETAILS structure
 * \param[in]     Length , is INT
 * \return        S_OK for success
 * \authors       Arunkumar Karri
@@ -934,7 +934,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
 	/* Fill the hardware description details */
     for (UINT nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
 	{		
-		_tcscpy(((PSCONTROLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc, 
+		_tcscpy(((PSCONTROLLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc, 
 				sg_ControllerDetails[nCount].m_omHardwareDesc);		
 	}
 
@@ -1628,16 +1628,10 @@ HRESULT CDIL_CAN_VectorXL::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-HRESULT CDIL_CAN_VectorXL::CAN_GetLastErrorString(CHAR* acErrorStr, INT nLength)
+HRESULT CDIL_CAN_VectorXL::CAN_GetLastErrorString(string& acErrorStr)
 {
-    int nCharToCopy = (int) (strlen(sg_acErrStr));
-    if (nCharToCopy > nLength)
-    {
-        nCharToCopy = nLength;
-    }
-    strncpy(acErrorStr, sg_acErrStr, nCharToCopy);
-
-    return S_OK;    
+    acErrorStr = sg_acErrStr;
+	return S_OK;    
 }
 
 /**
@@ -2001,7 +1995,7 @@ static int nInitHwNetwork()
     /* Capture only Driver Not Running event
      * Take action based on number of Hardware Available
      */
-    TCHAR acNo_Of_Hw[MAX_STRING] = {0};
+    char acNo_Of_Hw[MAX_STRING] = {0};
     _stprintf(acNo_Of_Hw, _T("Number of Vector hardwares Available: %d"), nChannelCount);
 
     /* No Hardware found */
@@ -2037,11 +2031,11 @@ static int nInitHwNetwork()
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-static BOOL bClientExist(TCHAR* pcClientName, INT& Index)
+static BOOL bClientExist(string pcClientName, INT& Index)
 {
     for (UINT i = 0; i < sg_unClientCnt; i++)
     {
-        if (!_tcscmp(pcClientName, sg_asClientToBufMap[i].pacClientName))
+        if (!_tcscmp(pcClientName.c_str(), sg_asClientToBufMap[i].pacClientName))
         {
             Index = i;
             return TRUE;
@@ -2098,7 +2092,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
                 {
                     sg_asClientToBufMap[unClientIndex].dwClientID = 0;
                     sg_asClientToBufMap[unClientIndex].hClientHandle = NULL;
-                    memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (TCHAR) * MAX_PATH);
+                    memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                     for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                     {
                         sg_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
@@ -2114,7 +2108,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
             else
             {
                 sg_asClientToBufMap[unClientIndex].dwClientID = 0;
-                memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (TCHAR) * MAX_PATH);
+                memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                 for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                 {
                     sg_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;

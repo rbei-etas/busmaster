@@ -22,15 +22,7 @@
  * Definition of the Class SInfo
  */
 
-
-///////////////////////////////////////////////////////////
-//  TSDefinitions.h
-//  Implementation of the Class SInfo
-//  Created on:      07-Jan-2011 2:30:36 PM
-///////////////////////////////////////////////////////////
-
-#if !defined(EA_47288A79_6FB2_4aa2_B39A_D3383261A7A7__INCLUDED_)
-#define EA_47288A79_6FB2_4aa2_B39A_D3383261A7A7__INCLUDED_
+#pragma once
 
 #include "include/error.h"
 #define WM_TS_SELCHANGED           0X402
@@ -165,5 +157,3 @@ public:
 	virtual ~SReportFile();
     VOID vInitialise(eTYPE_REPORT eType = TXT, CString omPath = CString(""), eTIME_MODE eTimeMode = ABS);
 };
-
-#endif // !defined(EA_47288A79_6FB2_4aa2_B39A_D3383261A7A7__INCLUDED_)

@@ -24,6 +24,7 @@
 
 #include "NodeSimEx_stdafx.h"
 #include "GlobalObj.h"
+#include "Application/StdAfx.h"
 #include "Export_userdllCAN.h"     // For getting name of a permanent exported 
                                 // function from the user-defined DLL.
 #include "FunctionEditorDoc.h"
@@ -100,11 +101,41 @@ BOOL CFunctionEditorDoc::bCreateNewDocument(CString& omStrFileName )
     FILE * pCFile = fopen( /*T2A*/(omStrFileName.GetBuffer(MAX_PATH)), "at");
     CString omStrCFileName = STR_EMPTY;
     CString omStr = STR_EMPTY;
+	// To get the application version
+	CString omstrAppVersion = GetApplicationVersion();
+
     if( pCFile != NULL )
     {
         bSuccess = TRUE;
        
         char buffer[2500]= {'\0'};
+		// Adding the version and Protocol information to the .c file
+		CString omstrCopyWriteInformation = COPYWRITE_INFORMATION;
+		CString omstrCFileVersion = C_FILE_VERSION;
+		CString omstrBusMasterVersion = BUSMASTER_VERSION;	
+		CString omstrProtocol = PROTOCOL;
+
+		// Adding Protocol information
+		if(m_sBusSpecInfo.m_eBus == CAN)
+		{
+			omstrProtocol.Replace(_T("PLACE_HOLDER_FOR_PROTOCOL_VALUE"), DATABASE_PROTOCOL_CAN);
+		}
+		else if(m_sBusSpecInfo.m_eBus == J1939)
+		{
+			omstrProtocol.Replace(_T("PLACE_HOLDER_FOR_PROTOCOL_VALUE"), DATABASE_PROTOCOL_J1939);
+		}
+
+		// adding application version information
+		omstrBusMasterVersion.Replace(_T("PLACE_HOLDER_FOR_BUSMASTER_VERSION"), omstrAppVersion);
+		
+		omstrCFileVersion.Replace(_T("PLACE_HOLDER_FOR_C_FILE_VERSION"), C_FILE_VERSION_VALUE);
+
+		strcat(buffer, (omstrCopyWriteInformation.GetBuffer(MAX_PATH)));
+		strcat(buffer, (omstrCFileVersion.GetBuffer(MAX_PATH)));
+		strcat(buffer, (omstrBusMasterVersion.GetBuffer(MAX_PATH)));
+		strcat(buffer, (omstrProtocol.GetBuffer(MAX_PATH)));
+		strcat(buffer, _T("\n\n"));
+
         CString omStr = BUS_INCLUDE_HDR;
         omStr.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), m_sBusSpecInfo.m_omBusName);
         strcat(buffer ,/*T2A*/(omStr.GetBuffer(MAX_PATH)));
@@ -429,7 +460,7 @@ void CFunctionEditorDoc::Serialize(CArchive& ar)
 
                     m_omSourceCodeTextList.AddTail(omTextLine);
                     m_dwSourceCodeLineNo++;
-                    CString omTextLineTemp =_T("");
+                    CString omTextLineTemp ="";
                     omTextLineTemp = omTextLine.Left(omTextLine.Find('_')+1);
 
                     if ( omTextLineTemp.Find(CGlobalObj::omGetBusSpecMsgHndlrName(m_sBusSpecInfo.m_eBus)) != -1 )
@@ -478,7 +509,7 @@ void CFunctionEditorDoc::Serialize(CArchive& ar)
         {
             if(pomE != NULL)
             {
-                TCHAR acError[1024];
+                char acError[1024];
                 // Get error
                 pomE->GetErrorMessage( acError, sizeof(acError));
 
@@ -538,7 +569,7 @@ DWORD CFunctionEditorDoc::dwGetLineCount()
 /*  Date Created     :  05.03.2002                                            */
 /*  Modifications    :  
 /******************************************************************************/
-const TCHAR* CFunctionEditorDoc::pcGetLine(POSITION &rPosition)
+const char* CFunctionEditorDoc::pcGetLine(POSITION &rPosition)
 {
     return(m_omSourceCodeTextList.GetNext(rPosition));
 }
@@ -906,7 +937,7 @@ void CFunctionEditorDoc::vUpdateDEFFile(CString omStrFileName)
         {
             if(pomE != NULL)
             {
-                TCHAR acError[1024];
+                char acError[1024];
                 // Get error
                 pomE->GetErrorMessage( acError, sizeof(acError));
 
@@ -1372,4 +1403,14 @@ void CFunctionEditorDoc::vInitialiseBusSpecStructure(CString& omStrTemp, UCHAR u
 CStringArray* CFunctionEditorDoc::omStrGetEventIndPrototypes()
 {
     return (&m_omEventIndArray);
+}
+// To get the BUSMASTER version
+CString CFunctionEditorDoc::GetApplicationVersion()
+{
+	CString strVersion;
+
+	// Application version
+	strVersion.Format("%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
+
+	return strVersion;
 }

@@ -22,12 +22,7 @@
  * This file contain the definition of CMainFrame class
  */
 
-#if !defined(AFX_MAINFRM_H__E02A6C60_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)
-#define AFX_MAINFRM_H__E02A6C60_1005_11D6_A606_00D0B76BEBF5__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "Flags.h"                  // Definition of CFlags class
 #include "SectionNames.h"           // Different section names and section ID
@@ -53,7 +48,7 @@
 //#include "GraphChildframe.h"        // For Graph Child Window
 ////#include "GraphUIThread.h"          // For Graph UI Thread Definition
 #include "CGCtrl.h"                 // For BUSMASTER Graph Control interface
-#include "TraceWnd/UIThread.h"      // For Trace window UI Thread definition
+#include "UIThread.h"               // For Trace window UI Thread definition
 #include "Utility/FlexListCtrl.h"   // For editable list control implementation
 #include "Utility/Utility_Thread.h"
 
@@ -169,6 +164,7 @@ public:
 public:
 	
     CWaveformTransmitter m_ouWaveTransmitter;
+	USHORT vCheckValidLogFiles(USHORT iCount); 
 
 	//Get Message Window Thread
 	inline CMsgWndThread* pGetMessageWndThread()
@@ -200,8 +196,8 @@ public:
     void vFreeSignalWatchMemorySpace();
 
     // Gets pointer to specified signal
-    sSIGNALS* poGetSignalPointer( BOOL, const UINT &unMsgID,
-        const CString &omStrSignalName);
+    sSIGNALS* poGetSignalPointer( BOOL, const UINT& unMsgID,
+                                  const CString& omStrSignalName);
 
     VOID vSetMessageData(BYTE*  pbMessageData);
     // Creates message window
@@ -333,7 +329,7 @@ protected:
     afx_msg void OnDllUnloadJ1939();
     afx_msg void OnMessageInterpretation();
     afx_msg void OnAddSignalToSignalWindow();
-    afx_msg void OnMessageFilter();
+    //afx_msg void OnMessageFilter();
     afx_msg void OnLogFilter();
     afx_msg void OnSelectMessage();
     afx_msg void OnAboutApplication();    
@@ -348,12 +344,12 @@ protected:
     afx_msg void OnUpdateMessageInterpret(CCmdUI* pCmdUI);
     afx_msg void OnUpdateExecuteMessagehandlers(CCmdUI* pCmdUI);
     afx_msg void OnUpdateLogFilter(CCmdUI* pCmdUI);
-    afx_msg void OnUpdateMessageFilter(CCmdUI* pCmdUI);
+    //afx_msg void OnUpdateMessageFilter(CCmdUI* pCmdUI);
     afx_msg void OnUpdateExecuteMessagehandlersButton(CCmdUI* pCmdUI);
     afx_msg void OnExecuteMessagehandlersButton();
     afx_msg void OnSendMessage(); 
-    afx_msg void OnLogFilterButton();
-    afx_msg void OnUpdateLogFilterButton(CCmdUI* pCmdUI);
+    //afx_msg void OnLogFilterButton();
+    //afx_msg void OnUpdateLogFilterButton(CCmdUI* pCmdUI);
     afx_msg void OnMessageFilterButton();
     afx_msg void OnUpdateMessageFilterButton(CCmdUI* pCmdUI);
     afx_msg void OnUpdateExecuteTimerhandler(CCmdUI* pCmdUI);
@@ -489,7 +485,7 @@ private:
     WINDOWPLACEMENT m_sGraphWndPlacement[AVAILABLE_PROTOCOLS];
     SGRAPHSPLITTERDATA m_sGraphSplitterPos[AVAILABLE_PROTOCOLS];
 
-    SCONTROLER_DETAILS m_asControllerDetails[defNO_OF_CHANNELS];
+    SCONTROLLER_DETAILS m_asControllerDetails[defNO_OF_CHANNELS];
     SFILTERAPPLIED_CAN m_sFilterAppliedCAN; // Filter applied struct for CAN
     SFILTERAPPLIED_J1939 m_sFilterAppliedJ1939; // Filter applied struct for J1939
     CMsgInterpretation m_ouMsgInterpretSW_C; //Msg interpretation object for signal watch CAN
@@ -714,10 +710,3 @@ public:
 	afx_msg void OnUpdateToolbarCanDatabase(CCmdUI *pCmdUI);
 	afx_msg void OnFileConverter();
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_MAINFRM_H__E02A6C60_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)

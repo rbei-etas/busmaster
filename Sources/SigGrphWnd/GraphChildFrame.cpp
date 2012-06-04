@@ -3,39 +3,6 @@
   FileName      :  GraphChildFrm.cpp
   Description   :  Implementation file for CGraphChildFrame class
   $Log:   X:/Archive/Sources/SigGrphWnd/GraphChildFrame.cpv  $
-   
-      Rev 1.6   06 Sep 2011 20:09:22   CANMNTTM
-   CANvas Name is changed to BUSMASTER
-   
-      Rev 1.5   08 Aug 2011 13:06:04   CANMNTTM
-   Updated function 'vUserCommand(..)'with following changes:
-   1. Improve readability by inserting a space after a keyword, using braces in if .... else statements.
-   2. Exlored the two variable usage with if ... else and made more straightforward.
-   
-      Rev 1.4   25 Jul 2011 11:44:54   CANMNTTM
-   Updated to make the graph clearing done only in two scenarios:
-   1. When initially connected.
-   2. DIsconnected and connected back.
-   
-      Rev 1.3   15 Apr 2011 19:43:30   rac2kor
-   Inserted RBEI Copyright information text into the file header.
-   
-      Rev 1.2   01 Feb 2011 18:04:58   CANMNTTM
-   Updated vHandleConFigChange() with call to
-   vInsertSignalData() function in bottom view.
-   
-      Rev 1.1   14 Dec 2010 17:08:36   CANMNTTM
-   Updated functionality to solve the 
-   default window positioning issue.
-   
-      Rev 1.0   13 Dec 2010 22:00:34   CANMNTTM
-    
-   
-      Rev 1.1   18 Aug 2010 18:59:42   CANMNTTM
-   Graph related configuration saving functions have been implemented
-   
-      Rev 1.0   16 Aug 2010 21:20:32   rac2kor
-    
 
   Author(s)     :  Raja N
   Date Created  :  10/12/2004
@@ -61,12 +28,6 @@
 #include "GraphChildFrame.h"
 
 #include "TimeManager.h"
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 IMPLEMENT_DYNCREATE(CGraphChildFrame, CMDIChildBase)
 
@@ -428,7 +389,8 @@ void CGraphChildFrame::vHandleConnectChange(BOOL bConnect)
     CGraphBottomView * pBottomView = (CGraphBottomView *)
         pomGetRightBottomViewPointer();
     // Update Bottom View
-    pBottomView->vHandleConnectionStatusChange( bConnect );    }
+    pBottomView->vHandleConnectionStatusChange( bConnect );
+}
 
 /*******************************************************************************
   Function Name  : vHandleConFigChange
@@ -655,9 +617,10 @@ void CGraphChildFrame::vGetSplitterConfig(SGRAPHSPLITTERDATA& sSplitterPostion)
 *******************************************************************************/
 void CGraphChildFrame::vSetSignalListDetails(CGraphList* pGraphList)
 {
-	if(pGraphList!=NULL)
-		m_pGraphList = pGraphList;
-
+    if(pGraphList!=NULL)
+    {
+        m_pGraphList = pGraphList;
+    }
 }
 
 /*******************************************************************************
@@ -672,7 +635,10 @@ void CGraphChildFrame::vSetSignalListDetails(CGraphList* pGraphList)
 *******************************************************************************/
 CGraphList* CGraphChildFrame::pGetSignalListDetails()
 {
-	if(m_pGraphList!=NULL)
-		return m_pGraphList;
-	return NULL;
+    if(m_pGraphList!=NULL)
+    {
+        return m_pGraphList;
+    }
+
+    return NULL;
 }

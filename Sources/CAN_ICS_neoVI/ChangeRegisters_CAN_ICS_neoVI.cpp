@@ -45,22 +45,23 @@ static char THIS_FILE[] = __FILE__;
 /*  Modifications    :  Raja N on 14.03.2005, Added init of member variable   */
 /*                      m_pControllerDetails                                  */
 /******************************************************************************/
-CChangeRegisters_CAN_ICS_neoVI::CChangeRegisters_CAN_ICS_neoVI(CWnd* pParent /*=NULL*/, PSCONTROLER_DETAILS psControllerDetails, UINT nHardwareCount)
+CChangeRegisters_CAN_ICS_neoVI::CChangeRegisters_CAN_ICS_neoVI(CWnd* pParent /*=NULL*/, PSCONTROLLER_DETAILS psControllerDetails, UINT nHardwareCount)
     : CDialog(CChangeRegisters_CAN_ICS_neoVI::IDD, pParent)
     //, m_nClock(32)
-    , m_omStrPropDelay(_T(""))
-    , m_omStrSJW(_T(""))
+    , m_omStrPropDelay("")
+    , m_omStrSJW("")
 {
     //{{AFX_DATA_INIT(CChangeRegisters_CAN_ICS_neoVI)
     //m_omStrEditBTR0 = _T("");
     //m_omStrEditBTR1 = _T("");
-    m_omStrEditCNF1 = _T("");
-    m_omStrEditCNF2 = _T("");
-    m_omStrEditCNF3 = _T("");
-    m_omStrComboSampling = _T("");
-    m_omStrEditBaudRate = _T("");
-    m_omStrComboClock = _T("32");
-    m_omStrEditWarningLimit = _T("");
+    m_omStrEditCNF1 = "";
+    m_omStrEditCNF2 = "";
+    m_omStrEditCNF3 = "";
+    m_omStrComboSampling = "";
+    /*m_omStrEditBaudRate = _T("");*/
+	m_omStrcombBaudRate = "";
+    m_omStrComboClock = "32";
+    m_omStrEditWarningLimit = "";
     //}}AFX_DATA_INIT
     m_unCombClock      = 32;
     m_bDialogCancel    = FALSE;
@@ -102,10 +103,10 @@ void CChangeRegisters_CAN_ICS_neoVI::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_EDIT_WARNING_LIMIT, m_omEditWarningLimit);
     DDX_Control(pDX, IDC_COMB_SAMPLING, m_omCombSampling);
     DDX_Control(pDX, IDC_LSTC_BTR_LIST, m_omListCtrlBitTime);
-    DDX_Control(pDX, IDC_EDIT_BAUD_RATE, m_omEditBaudRate);
+    DDX_Control(pDX, IDC_COMB_BAUD_RATE, m_omCombBaudRate);
     DDX_CBString(pDX, IDC_COMB_SAMPLING, m_omStrComboSampling);
-    DDV_MaxChars(pDX, m_omStrComboSampling, 1);
-    DDX_Text(pDX, IDC_EDIT_BAUD_RATE, m_omStrEditBaudRate);
+    DDV_MaxChars(pDX, m_omStrComboSampling, 1);    
+	DDX_CBString(pDX, IDC_COMB_BAUD_RATE, m_omStrcombBaudRate);
     DDX_CBString(pDX, IDC_COMB_CLOCK, m_omStrComboClock);
     DDX_Text(pDX, IDC_EDIT_WARNING_LIMIT, m_omStrEditWarningLimit);
     DDX_Control(pDX, IDC_COMB_PROPDELAY, m_omCtrlPropDelay);
@@ -118,10 +119,9 @@ void CChangeRegisters_CAN_ICS_neoVI::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CChangeRegisters_CAN_ICS_neoVI, CDialog)
-    //{{AFX_MSG_MAP(CChangeRegisters_CAN_ICS_neoVI)
-    ON_EN_KILLFOCUS(IDC_EDIT_BAUD_RATE, OnKillfocusEditBaudRate)
-    ON_CBN_SELCHANGE(IDC_COMB_SAMPLING, OnSelchangeCombSampling)
-    ON_EN_SETFOCUS(IDC_EDIT_BAUD_RATE, OnSetfocusEditBaudRate)
+    //{{AFX_MSG_MAP(CChangeRegisters_CAN_ICS_neoVI)    	
+	ON_CBN_SELCHANGE(IDC_COMB_BAUD_RATE, OnSelchangeCombBaudRate)	
+    ON_CBN_SELCHANGE(IDC_COMB_SAMPLING, OnSelchangeCombSampling)    
     ON_BN_CLICKED(IDC_ButtonOK, OnClickedOK)
     ON_CBN_SETFOCUS(IDC_COMB_SAMPLING, OnSetfocusCombSampling)
     ON_WM_HELPINFO()
@@ -181,7 +181,7 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::OnInitDialog()
 {
     CDialog::OnInitDialog();
     
-    TCHAR acColumnName[defNUMBER_OF_COLUMNS_CAN_ICS_neoVI][50] = { 
+    char acColumnName[defNUMBER_OF_COLUMNS_CAN_ICS_neoVI][50] = { 
                                  defSTR_CNF1_COL_HEADING,
                                  defSTR_CNF2_COL_HEADING,
                                  defSTR_CNF3_COL_HEADING,
@@ -189,12 +189,12 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::OnInitDialog()
                                  defSTR_NBT_COL_HEADING,
                                  defSTR_BRP_COL_HEADING };
     CString omStrClock          = defCLOCK;
-    CString omStrBaudRate       = _T("");
-    CString omStrAcceptanceMask = _T("");
-    CString omStrAcceptanceCode = _T("");
-    CString omStrBrp            = _T("");
-    CString omStrBtr0           = _T("");
-    CString omStrBtr1           = _T("");
+    CString omStrBaudRate       = "";
+    CString omStrAcceptanceMask = "";
+    CString omStrAcceptanceCode = "";
+    CString omStrBrp            = "";
+    CString omStrBtr0           = "";
+    CString omStrBtr1           = "";
 
     INT nColumnSize             = 0;
     INT nTotalColunmSize        = 0;
@@ -215,7 +215,7 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::OnInitDialog()
     // Assign the image list to the control
     m_omChannelList.SetImageList(&m_omChannelImageList, LVSIL_NORMAL);
     // Insert empty column
-    m_omChannelList.InsertColumn( 0, _T(""));
+    m_omChannelList.InsertColumn( 0, "");
     // Insert all channel information
     // Insert only for available channel information
     int nAvailableHardware = m_nNoHardware;//g_podHardwareInterface->nGetNoOfHardware();
@@ -223,7 +223,7 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::OnInitDialog()
          nChannel < nAvailableHardware;
          nChannel++)
     {
-        CString omStrChannel(_T(""));
+        CString omStrChannel("");
         // Create Channel String
         omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
                         defSTR_CHANNEL_NAME,
@@ -235,9 +235,12 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::OnInitDialog()
     // Set the selected item index to zero
     m_nLastSelection = 0;
 
-    m_omEditBaudRate.vSetBase( BASE_DECIMAL);
-    m_omEditBaudRate.vSetSigned(FALSE);
-    m_omEditBaudRate.vAcceptFloatingNum( TRUE);
+	/*m_omCombBaudRate.SetCurSel(0);*/
+	int nIdx = m_omCombBaudRate.FindString(0, m_omStrcombBaudRate);
+	if (nIdx < 0)
+		nIdx = 0;
+	m_omCombBaudRate.SetCurSel(nIdx);
+	/*m_omCombBaudRate.SetWindowTextA(m_omStrcombBaudRate);*/
    
     m_omEditWarningLimit.vSetBase( BASE_DECIMAL);
     m_omEditWarningLimit.vSetSigned(FALSE);
@@ -384,7 +387,7 @@ void CChangeRegisters_CAN_ICS_neoVI::OnOK()
 /*****************************************************************************/
 CString CChangeRegisters_CAN_ICS_neoVI::omGetFormattedRegVal(UCHAR ucRegVal)
 {
-    CString omStr = _T("");
+    CString omStr = "";
     omStr.Format(TEXT("0x%X"), ucRegVal);
     // Insert one zero to format the sigle digit value to 0x05 etc.
     if (omStr.GetLength() == 3)
@@ -418,7 +421,7 @@ CString CChangeRegisters_CAN_ICS_neoVI::omGetFormattedRegVal(UCHAR ucRegVal)
 /******************************************************************************/
 void CChangeRegisters_CAN_ICS_neoVI:: vDisplayListBox(INT nEntries, INT nItemFocus)
 {
-    CString cStrText    = _T("");
+    CString cStrText    = "";
 
     // Clear list box first
     m_omListCtrlBitTime.DeleteAllItems();
@@ -478,36 +481,27 @@ void CChangeRegisters_CAN_ICS_neoVI:: vDisplayListBox(INT nEntries, INT nItemFoc
 }
 
 /******************************************************************************/
-/*  Function Name    :  OnKillfocusEditBaudRate                               */
+/*  Function Name    :  OnSelchangeCombBaudRate                               */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Validate the buadrate on kill focus of this edit      */
-/*                      control                                               */
-/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                                      */
+/*  Functionality    :  Validate the buadrate on kill focus of this combo     */
+/*                      box	                                                  */
+/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                        */
 /*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  19.02.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  22.03.2002, Validation for hexadecimal in CRadixEdit  */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  27.05.2002, Validation for zero value entered         */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  29.05.2002,Don't validate if CANCEL button is clicked */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  12.12.2002, negative value of baudrate will not be    */
-/*                      acceptect.Also the range is fixed to 1000kbps         */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  14.03.2005, Added code to update list control for the */
-/*                      values updated in the baud rate edit control          */
+/*  Author(s)        :  Saravanan	                                          */
+/*  Date Created     :  29.05.2012                                            */
 /******************************************************************************/
-void CChangeRegisters_CAN_ICS_neoVI::OnKillfocusEditBaudRate() 
+void CChangeRegisters_CAN_ICS_neoVI::OnSelchangeCombBaudRate() 
 {
-    CString omStrBaudRate   =_T("");
-    CString omStrValid      =_T("");
-    INT     nLength         = 0;
+	UpdateData(TRUE);
 
-    m_omEditBaudRate.GetWindowText(omStrBaudRate);    
+    CString omStrBaudRate   ="";
+    CString omStrValid      ="";
+    INT     nLength         = 0;
+    
+	m_omCombBaudRate.GetWindowText(omStrBaudRate);    
     nLength             = omStrBaudRate.GetLength();
+	m_omStrcombBaudRate = omStrBaudRate;
     
     CButton* pomButtonCancel = (CButton*) GetDlgItem(IDCANCEL);
     // To get the state of CANCEL button. A non zero value if the button is 
@@ -522,43 +516,45 @@ void CChangeRegisters_CAN_ICS_neoVI::OnKillfocusEditBaudRate()
             // Validate for empty string and if zero value is entered.
             DOUBLE dBaudRate = (FLOAT)_tstof(omStrBaudRate);
             if (nLength == 0 || dBaudRate <= 0 || dBaudRate > 1000.0)
-            {   
-                m_omEditBaudRate.SetWindowText(m_omStrEditBaudRate);
-                AfxMessageBox(defVALIDATION_MSG_BAUD_RATE);
-                m_omEditBaudRate.SetFocus();
-                m_omEditBaudRate.SetSel(0, -1,FALSE);
+			{
+				int nIndex = m_omCombBaudRate.FindString(0, m_omStrcombBaudRate);
+				if (nIndex < 0)
+					nIndex = 0;
+				m_omCombBaudRate.SetCurSel(nIndex);
+				/*m_omCombBaudRate.SetWindowText(m_omStrcombBaudRate);*/
+                AfxMessageBox(defVALIDATION_MSG_BAUD_RATE);                
+				m_omCombBaudRate.SetFocus();                
             }
             else
-            {
-                
-                m_dEditBaudRate     = (FLOAT)_tstof(m_omStrEditBaudRate);
+            {                
+                m_dEditBaudRate     = (FLOAT)_tstof(m_omStrcombBaudRate);
 
                 // Call if string is valid to validate the baud rate value and 
                 // suggest  a next valid baud rate
                 //Validate only if previous value in edit control is not the
                 //  same as the one changed by user
-                if (m_dEditBaudRate != dBaudRate && dBaudRate>0 
-                    && m_dEditBaudRate > 0 )
-                {
-                    vValidateBaudRate();
-                    // Update List items only it is from edit box
-                    vChangeListBoxValues(-1); 
-                    CButton* pomButtonoK = (CButton*) GetDlgItem(IDC_ButtonOK);
-                    CButton* pomFocusWnd     = (CButton*)GetFocus();
+                vValidateBaudRate();
+                // Update List items only it is from edit box
+                vChangeListBoxValues(-1); 
+                CButton* pomButtonoK = (CButton*) GetDlgItem(IDC_ButtonOK);
+                CButton* pomFocusWnd     = (CButton*)GetFocus();
 
-                    if (pomButtonoK ==pomFocusWnd)
-                    {
-                        // Close the dialog if the user 
-                        // has pressed OK button
-                        OnClickedOK();
-                    }
-                }
+                if (pomButtonoK ==pomFocusWnd)
+                {
+                    // Close the dialog if the user 
+                    // has pressed OK button
+                    OnClickedOK();
+                }                
             }
         }
     }
     else
-    {
-      m_omEditBaudRate.SetWindowText(m_omStrEditBaudRate);
+    {      
+		int nIndex = m_omCombBaudRate.FindString(0, m_omStrcombBaudRate);
+		if (nIndex < 0)
+			nIndex = 0;
+		m_omCombBaudRate.SetCurSel(nIndex);
+	  /*m_omCombBaudRate.SetWindowText(m_omStrcombBaudRate);*/
     }
 }
 
@@ -579,7 +575,7 @@ void CChangeRegisters_CAN_ICS_neoVI::OnKillfocusEditBaudRate()
 void CChangeRegisters_CAN_ICS_neoVI::OnSelchangeCombSampling()
 { 
     INT nGetValue               = 0;
-    CString omStrComboEditItem  =_T("");
+    CString omStrComboEditItem  ="";
 
     nGetValue =  m_omCombSampling.GetCurSel();
     if (nGetValue != CB_ERR)
@@ -717,20 +713,20 @@ void CChangeRegisters_CAN_ICS_neoVI::vSelSetFocusItemList(INT nItemCount,INT nIt
 /******************************************************************************/
 void CChangeRegisters_CAN_ICS_neoVI::vValidateBaudRate()
 {
-    CString omStrBaudRate       = _T("");
-    CString omStrPrvBaudRate    = _T("");
-    CString omStrClockFreq      = _T("");
+    CString omStrBaudRate       = "";
+    CString omStrPrvBaudRate    = "";
+    CString omStrClockFreq      = "";
     DOUBLE  dBaudRate           = 0;
     //UINT    unClockFreq         = 0;
     //UINT    unClockPrevValue    = 0 ;
     UINT    unProductNbtNBrp    = 0;
     DOUBLE  dProductNbtNBrp     = 0; 
-    CString omStrMessage        = _T("");
-   
-   
-    m_omEditBaudRate.GetWindowText(omStrBaudRate);
+    CString omStrMessage        = "";
+         
+	m_omCombBaudRate.GetWindowText(omStrBaudRate);    
+	m_omStrcombBaudRate = omStrBaudRate;
     dBaudRate           = (FLOAT)_tstof(omStrBaudRate);
-    m_dEditBaudRate     = (FLOAT)_tstof(m_omStrEditBaudRate);
+    m_dEditBaudRate     = (FLOAT)_tstof(m_omStrcombBaudRate);
 
     //m_omCombClock.GetWindowText(omStrClockFreq);
     //unClockFreq          = _tstoi(omStrClockFreq);
@@ -787,18 +783,23 @@ void CChangeRegisters_CAN_ICS_neoVI::vValidateBaudRate()
         FLOAT  fTempBaudRate;
         fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
         fTempBaudRate = fTempBaudRate/100000;
-        omStrBaudRate.Format(_T("%.4f"),fTempBaudRate);   
+        omStrBaudRate.Format(_T("%.3f"),fTempBaudRate);   
         
         omStrMessage.Format(defBAUD_RATE_MESSAGE,omStrBaudRate);
-        omStrPrvBaudRate = m_omStrEditBaudRate;
+        omStrPrvBaudRate = m_omStrcombBaudRate;
         //unClockPrevValue = m_unCombClock;
         
-        // set the baudrate
-        m_omEditBaudRate.SetWindowText(omStrBaudRate);
+        // set the baudrate        
+		int nIndex = m_omCombBaudRate.FindString(0, omStrBaudRate);
+		if (nIndex < 0)
+			nIndex = 0;
+		m_omCombBaudRate.SetCurSel(nIndex);
+		/*m_omCombBaudRate.SetWindowText(omStrBaudRate);*/
+
         }// End if
     // Change the list of BTR0, BTR1, SJW, NBT and sampling if user selected YES
     m_dEditBaudRate     = dBaudRate;
-    m_omStrEditBaudRate = omStrBaudRate;
+    m_omStrcombBaudRate = omStrBaudRate;
     //m_unCombClock       = unClockFreq;
 }
 /******************************************************************************/
@@ -895,7 +896,7 @@ DOUBLE CChangeRegisters_CAN_ICS_neoVI::dCalculateBaudRateFromBTRs(CString omStrC
     uCNF3 uCNF3val;
     DOUBLE dBaudRate = 0;
     BYTE   bTSEG2 = 0;
-    TCHAR* pcStopStr = NULL;
+    char* pcStopStr = NULL;
     
     uCNF1val.ucCNF1 = 
         static_cast <UCHAR >(_tcstol((LPCTSTR)omStrCNF1.GetBuffer(MAX_PATH),&pcStopStr,defHEXADECIMAL));
@@ -1127,7 +1128,7 @@ void CChangeRegisters_CAN_ICS_neoVI::vFillControllerConfigDetails()
         pWnd->SetWindowText(m_pControllerDetails[nIndex].m_omHardwareDesc);
     }
 
-    m_omStrEditBaudRate     = m_pControllerDetails[ nIndex ].m_omStrBaudrate;
+    m_omStrcombBaudRate     = m_pControllerDetails[ nIndex ].m_omStrBaudrate;
     m_omStrEditCNF1         = m_pControllerDetails[ nIndex ].m_omStrCNF1;
     m_omStrEditCNF2         = m_pControllerDetails[ nIndex ].m_omStrCNF2;
     m_omStrEditCNF3         = m_pControllerDetails[ nIndex ].m_omStrCNF3;
@@ -1182,12 +1183,12 @@ void CChangeRegisters_CAN_ICS_neoVI::vFillControllerConfigDetails()
 *******************************************************************************/
 void CChangeRegisters_CAN_ICS_neoVI::vUpdateControllerDetails()
 {
-    TCHAR*    pcStopStr              = NULL;
-    CString omStrComboSampling      = _T("");
-    CString omStrEditBtr0           = _T("");
-    CString omStrEditBtr1           = _T("");
-    CString omStrEditAcceptanceCode = _T("");
-    CString omStrEditAcceptanceMask = _T("");
+    char*    pcStopStr              = NULL;
+    CString omStrComboSampling      = "";
+    CString omStrEditBtr0           = "";
+    CString omStrEditBtr1           = "";
+    CString omStrEditAcceptanceCode = "";
+    CString omStrEditAcceptanceMask = "";
     
     // Update the data members before writing into ini file or registry.
     UpdateData(TRUE);
@@ -1214,7 +1215,7 @@ void CChangeRegisters_CAN_ICS_neoVI::vUpdateControllerDetails()
         
         m_pControllerDetails[ m_nLastSelection ].m_nItemUnderFocus   =
                                                             nItemUnderFocus;
-        _tcscpy(m_pControllerDetails[ m_nLastSelection ].m_omStrBaudrate, m_omStrEditBaudRate.GetBuffer(MAX_PATH));
+		_tcscpy(m_pControllerDetails[ m_nLastSelection ].m_omStrBaudrate, m_omStrcombBaudRate.GetBuffer(MAX_PATH));
         //m_pControllerDetails[ m_nLastSelection ].m_omStrClock        =
         //                                                    m_omStrComboClock;
         _tcscpy(m_pControllerDetails[m_nLastSelection].m_omStrCNF1, m_omStrEditCNF1.GetBuffer(MAX_PATH));
@@ -1229,7 +1230,7 @@ void CChangeRegisters_CAN_ICS_neoVI::vUpdateControllerDetails()
     else
     {
         // Invalid Warning Limit Error Message
-        CString omStrMsg = _T("");
+        CString omStrMsg = "";
         omStrMsg.Format( defWARNINGLIMIT_MSG, m_omStrEditWarningLimit,
                          defWARNING_LIMIT_MIN,
                          defWARNING_LIMIT_MAX);
@@ -1437,7 +1438,7 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::bGetFilterFromCom(BOOL  &bExtended, double 
     if (m_pControllerDetails != NULL)
     {
         
-        TCHAR* pcStopStr ;
+        char* pcStopStr ;
         //Change to separate integer value for each byte
         int nAccCodeByte1 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte1,
                         &pcStopStr,defHEXADECIMAL);
@@ -1712,9 +1713,9 @@ int CChangeRegisters_CAN_ICS_neoVI::nGetValueFromComboBox(CComboBox& omComboBox)
     int nCurrSel =  omComboBox.GetCurSel();
     if (nCurrSel != CB_ERR)
     {
-        CString omCurText = _T("");
+        CString omCurText = "";
         omComboBox.GetLBText(nCurrSel, omCurText);
-        if (omCurText != _T("ALL"))
+        if (omCurText != "ALL")
         {
             nResult = _tstoi(omCurText);
         }

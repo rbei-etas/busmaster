@@ -21,12 +21,8 @@
  *
  * Contains CFlags class definition
  */
-#if !defined (_FLAGS_H_INCLUDED_)
-#define _FLAGS_H_INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 // Definition of PSTOOLBARINFO structure is here
 #include "struct.h"
@@ -132,4 +128,3 @@ private:
     CFlags(PSTOOLBARINFO psToolBarInfo);
     static CFlags sm_ouSingletonObj;
 };
-#endif //#define _FLAGS_H_INCLUDED_

@@ -18,8 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined UTILITY_REPLAY__H_
-#define UTILITY_REPLAY__H_
+
+#pragma once
 
 #include "include/struct_can.h"
 
@@ -39,5 +39,3 @@ UINT unTimeDiffBetweenMsg( CString& omStrNextMsg,
 BOOL bIsModeMismatch( ifstream& omInReplayFile,
                       BOOL bReplayHexON,
                       WORD wLogReplayTimeMode);
-
-#endif  //UTILITY_REPLAY__H_

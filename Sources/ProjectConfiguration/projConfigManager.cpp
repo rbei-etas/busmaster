@@ -30,6 +30,7 @@
 #include "ProjectConfiguration_extern.h"
 #include "ProjConfig.h"
 #include "projConfigManager.h"
+#include "Application/StdAfx.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -80,9 +81,9 @@ int CProjConfigManager::GetProjectCount()
 
 int CProjConfigManager::GetProjectList(list<string>& ProjectList)
 {
-	ProjectList.clear();
-    for (PROJECTMAP::iterator i = m_MapOfProject.begin();
-         i != m_MapOfProject.end(); i++)
+    ProjectList.clear();
+
+    for (PROJECTMAP::iterator i = m_MapOfProject.begin(); i != m_MapOfProject.end(); ++i)
     {
         ProjectList.push_front(i->first);
     }
@@ -95,7 +96,9 @@ bool CProjConfigManager::GetProjectData(string ProjName, PROJECTDATA& ProjData)
     bool bResult = false;
 
     PROJECTMAP::iterator i = m_MapOfProject.find(ProjName);
-    if (bResult = (i != m_MapOfProject.end()))
+    bResult = (i != m_MapOfProject.end());
+
+    if (bResult)
     {
         i->second.GetProjectDetail(ProjData);
     }

@@ -22,13 +22,7 @@
  * Interface file for CTxMsgChildFrame class
  */
 
-#if !defined(AFX_TXMSGCHILDFRAME_H__6BC3D181_A6A5_4914_B169_E90937519928__INCLUDED_)
-#define AFX_TXMSGCHILDFRAME_H__6BC3D181_A6A5_4914_B169_E90937519928__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-
 
 #include "Tx_MDIChildBase.h"       // For Common base class defintion
 #include "TxFunctionsView.h"    // For CTxFunctionsView class defintions
@@ -110,10 +104,3 @@ public:
 public:
     afx_msg void OnSize(UINT nType, int cx, int cy);
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_TXMSGCHILDFRAME_H__6BC3D181_A6A5_4914_B169_E90937519928__INCLUDED_)

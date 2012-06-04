@@ -18,8 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined TXWND_EXTERN_H__INCLUDED_
-#define TXWND_EXTERN_H__INCLUDED_
+
+#pragma once
 
 #if defined USAGEMODE
 #undef USAGEMODE
@@ -55,5 +55,3 @@ USAGEMODE BOOL    TX_bGetTxStopFlag();
 #ifdef __cplusplus
 }
 #endif
-
-#endif //TXWND_EXTERN_H__INCLUDED_

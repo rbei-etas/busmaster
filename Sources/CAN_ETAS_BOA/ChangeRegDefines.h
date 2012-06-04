@@ -39,12 +39,12 @@
 
 #define  defDEFAUT_BAUDRATE           0x4716
 
-#define  defHEX_STRING                _T("0x")
-#define  defEMPTY_STRING              _T("")
-#define  defBAUD_RATE_MESSAGE         _T("Nearest Valid Baud Rate is %s kBit/s. Do You want to change it ?")
-#define  defVALIDATION_MSG_BAUD_RATE  _T("Not a valid Decimal Numerals or out of range. !!! \n\nEnter only positive Decimal Numerals upto 1000kbps.")
-#define  defVALIDATION_MESSAGE        _T("Not a valid value. !!! \n\nEnter only Hexadecimal Value.")
-#define  defERRORMSG_INSERT           _T("Error In Inserting SubItems")
+#define  defHEX_STRING                "0x"
+#define  defEMPTY_STRING              ""
+#define  defBAUD_RATE_MESSAGE         "Nearest Valid Baud Rate is %s kBit/s. Do You want to change it ?"
+#define  defVALIDATION_MSG_BAUD_RATE  "Not a valid Decimal Numerals or out of range. !!! \n\nEnter only positive Decimal Numerals upto 1000kbps."
+#define  defVALIDATION_MESSAGE        "Not a valid value. !!! \n\nEnter only Hexadecimal Value."
+#define  defERRORMSG_INSERT           "Error In Inserting SubItems"
 
 #define  defBRT0_COLUNM_POS              1
 #define  defBRT1_COLUNM_POS              2

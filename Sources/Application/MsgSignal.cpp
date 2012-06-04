@@ -30,13 +30,6 @@
 #include "MessageAttrib.h"   //Saving contents on dissocation of database
 #include "BUSMASTER.h"
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
-
 static CHAR s_acTraceStr[1024] = {""};
 
 //Trace window ptr
@@ -209,7 +202,7 @@ CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
 	//Add header for ifndef condition
 	CString omStrHeaderString   = STR_EMPTY;
     CString omStrHeaderFileName = defHEADER_FILE_NAME;
-    TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+    char  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
     CFileException   omException  ;
     CStdioFile omHeaderFile;
     omStrHeaderFileName = omStrActiveDataBase.Left(
@@ -389,8 +382,10 @@ BOOL CMsgSignal::bValidateDatabaseFile(CString strFileName)
 
     if (strFileName.IsEmpty())
     {
-        strcpy(s_acTraceStr, "Database filename is empty.");
-		if (m_bAutoServerMode == FALSE)
+		//Tobias - venkat
+        strcpy_s(s_acTraceStr,1024, "Database filename is empty.");
+
+        if (m_bAutoServerMode == FALSE)
         {
             //vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM) s_acTraceStr);
         }
@@ -402,7 +397,8 @@ BOOL CMsgSignal::bValidateDatabaseFile(CString strFileName)
 
         if ( nIndex == -1 ) // not found
         {
-			strcpy(s_acTraceStr, "Invalid database filename");
+			//Tobias - venkat
+			strcpy_s(s_acTraceStr, 1024, "Invalid database filename");
 		    if(m_bAutoServerMode == FALSE)
             {
                 //vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, 
@@ -417,7 +413,8 @@ BOOL CMsgSignal::bValidateDatabaseFile(CString strFileName)
 
             if ( sFileExtn != DATABASE_EXTN)
             {
-				strcpy(s_acTraceStr, "Invalid database filename");
+				//Tobias - venkat
+				strcpy_s(s_acTraceStr, 1024, "Invalid database filename");
 		        if(m_bAutoServerMode == FALSE)
                 {
                     //vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, 
@@ -461,10 +458,10 @@ BOOL CMsgSignal::bValidateDatabaseFile(CString strFileName)
                     {
                         if(pomE != NULL )
                         {
-                            LPTSTR lpszError = _T("");
+                            LPTSTR lpszError = "";
                             // Get error
                             pomE->GetErrorMessage( lpszError, defSIZE_OF_ERROR_BUFFER);
-							strcpy(s_acTraceStr, T2A("lpszError"));
+							strcpy_s(s_acTraceStr, 1024, T2A("lpszError"));
 		                    if(m_bAutoServerMode == FALSE)
                             {
                                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, 
@@ -517,8 +514,9 @@ BOOL CMsgSignal::bAllocateMemory(BOOL nMode)
     if (pNewMsgArray == NULL)
     {
         if (!m_bAutoServerMode)
-        {          
-            strcpy (s_acTraceStr, T2A(MSG_MEMORY_CONSTRAINT));
+        {
+			//Tobias- venkat 
+            strcpy_s (s_acTraceStr, 1024,  T2A(MSG_MEMORY_CONSTRAINT));
             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
         }
         bReturnValue = FALSE;
@@ -590,8 +588,9 @@ BOOL CMsgSignal::bAllocateMemory(BOOL nMode)
         else
         {
             if (!m_bAutoServerMode)
-            {          
-                strcpy (s_acTraceStr, T2A(MSG_MEMORY_CONSTRAINT));
+            {
+				//Tobias - venkat
+                strcpy_s (s_acTraceStr, 1024, T2A(MSG_MEMORY_CONSTRAINT));
                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
             }
             bReturnValue = FALSE;
@@ -1096,6 +1095,32 @@ BOOL CMsgSignal::bCreateDataBase(CString omStrFilename)
 			strBuffer += DATABASE_VERSION_NO;
 			strBuffer += NEW_LINE; 
 			strBuffer += NEW_LINE; 
+			// Adding Protocol information in the version 1.3
+			strBuffer += DATABASE_PROTOCOL;
+			strBuffer += NEW_LINE; 
+			strBuffer += DATABASE_PROTOCOL_CAN;
+
+			strBuffer += NEW_LINE; 
+			strBuffer += NEW_LINE; 
+
+			
+			// Adding Application version information in the version 1.3
+			CString omstrAppVersion = APPLICATION_VERSION_NO;
+
+			CString omstrVersion;
+
+			// Application version
+			omstrVersion.Format("%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
+
+			omstrAppVersion.Replace(APPLICATION_VERSION_PLACE_HOLDER, omstrVersion);
+
+			// Adding Application Version
+			strBuffer += APPLICATION_VERSION;
+			strBuffer += SPACE;
+			strBuffer += omstrAppVersion;
+
+			strBuffer += NEW_LINE; 
+			strBuffer += NEW_LINE;  
 
 			o_File.WriteString( strBuffer );
 
@@ -1116,8 +1141,9 @@ BOOL CMsgSignal::bCreateDataBase(CString omStrFilename)
             omStrFilename += " created successfully.";
 
             if (!m_bAutoServerMode)
-            {          
-                strcpy (s_acTraceStr, T2A(omStrFilename.GetBuffer(MAX_PATH)));
+            {
+				//Tobias - venkat
+                strcpy_s (s_acTraceStr, 1024, T2A(omStrFilename.GetBuffer(MAX_PATH)));
                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
             }
         }
@@ -1126,12 +1152,13 @@ BOOL CMsgSignal::bCreateDataBase(CString omStrFilename)
     {
         if(pomE != NULL )
         {
-            LPTSTR lpszError = _T("");;
+            LPTSTR lpszError = "";;
             // Get error
             pomE->GetErrorMessage( lpszError, 255);
             if (!m_bAutoServerMode)
-            {          
-                strcpy (s_acTraceStr, T2A(lpszError));
+            {
+                //Tobias - venkat
+                strcpy_s (s_acTraceStr, 1024,  T2A(lpszError));
                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
             }
             pomE->Delete();
@@ -1237,7 +1264,7 @@ void CMsgSignal::vGetSignalNames( UINT unMsgID,
 					  Initialize m_unMessageCount before operating on new DB
 					  to solve bug due to invalid DB file
 ******************************************************************************/
-BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
+BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProtocol eProtocolName)
 {
     USES_CONVERSION;
     BOOL bReturnValue   = TRUE;
@@ -1261,6 +1288,7 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
             {
                 CString sFirstLine  = STR_EMPTY;
                 CString omDBVerLine  = STR_EMPTY;
+				CString omstrDBVersion = STR_EMPTY;
                 // read subsequent info from the file
                 /* Read Database version number*/
                 int nIndex = -1;
@@ -1277,13 +1305,17 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
 					} 
                     CString omDbVerNo = 
                             omDBVerLine.Right( omDBVerLine.GetLength() - (nPlace+2));
+					omstrDBVersion = omDbVerNo;
 					fDBVerNum = (FLOAT)atof(T2A(omDbVerNo.GetBuffer(MAX_PATH)));
                     fCurrDBVer = (FLOAT)atof(T2A(DATABASE_VERSION_NO));
                     if (fDBVerNum < fCurrDBVer)
+					// Updated for checking the dbf version with Previous version
+                    if (fDBVerNum < fCurrDBVer && omDbVerNo != DATABASE_PREVIOUS_VERSION_NO)
                     {
                         if (!m_bAutoServerMode)
-                        {          
-                            strcpy (s_acTraceStr, T2A(DATABASE_MISMATCH));
+                        {
+							//Tobias - venkat
+                            strcpy_s (s_acTraceStr, 1024, T2A(DATABASE_MISMATCH));
                             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                             m_bIsDatabaseSaved = FALSE;                            
                         }
@@ -1292,13 +1324,85 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                     {
                         if (!m_bAutoServerMode)
                         {
-                            strcpy(s_acTraceStr, "DATABASE_CORRUPT");
+							//Tobias - venkat
+                            strcpy_s(s_acTraceStr, 1024, "DATABASE_CORRUPT");
                             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                             return FALSE;
                         }
                     }
                 }
                 /* Reading of database version number ends */
+				/*Reading Database Protocol and Application version starts here*/
+				if(omstrDBVersion == DATABASE_VERSION_NO)
+				{
+					o_File.SeekToBegin();
+					CString strDatabaseProtocol, omstrApplicationVersion;
+
+					// Reading Database Protocol
+					nIndex = -1;
+					while( nIndex == -1 && o_File.ReadString( strDatabaseProtocol ))
+					{   
+						// Getting the PROTOCOL name from the loaded dbf file
+						nIndex = strDatabaseProtocol.Find(DATABASE_PROTOCOL);
+					}
+
+					if ( nIndex != -1 )
+					{
+						int nPlace = strDatabaseProtocol.Find('=');
+						if(nPlace == -1)
+						{
+							nPlace = strDatabaseProtocol.Find(']');
+						}
+						CString omstrDatabaseProtocol;
+
+						// Getting the PROTOCOL name
+						omstrDatabaseProtocol = strDatabaseProtocol.Right( strDatabaseProtocol.GetLength() - (nPlace+2));
+
+						if(omstrDatabaseProtocol.IsEmpty() == FALSE)
+						{
+							// On Open can database
+							if(eProtocolName == PROTOCOL_CAN)
+							{
+								// If the loaded file is not CAN database file
+								if(omstrDatabaseProtocol != DATABASE_PROTOCOL_CAN)
+								{
+									strcpy(s_acTraceStr, "Database file loaded is not created for CAN. Please load CAN related dbf file.");
+									vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
+									return FALSE;
+								}
+							}
+							// On Open J1939 database
+							else if(eProtocolName == PROTOCOL_J1939)
+							{
+								// If the loaded file is not J1939 database file
+								if(omstrDatabaseProtocol != DATABASE_PROTOCOL_J1939)
+								{
+									strcpy(s_acTraceStr, "Database file loaded is not created for J1939. Please load J1939 related dbf file.");
+									vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
+									return FALSE;
+								}
+							}
+						}
+					}
+
+					// Reading Application version
+					nIndex = -1;
+					while( nIndex == -1 && o_File.ReadString( omstrApplicationVersion ))
+					{   
+						// Getting the PROTOCOL name from the loaded dbf file
+						nIndex = omstrApplicationVersion.Find(APPLICATION_VERSION);
+					}
+
+					int nPlace = omstrApplicationVersion.Find('=');
+					if(nPlace == -1)
+					{
+						nPlace = omstrApplicationVersion.Find(']');
+					}
+					
+					// Getting the PROTOCOL name
+					omstrApplicationVersion = omstrApplicationVersion.Right( omstrApplicationVersion.GetLength() - (nPlace+2));
+				}
+				/*Reading of database Protocol ends here*/
                 //int nCount = 0;
 	            
 				nIndex = -1;
@@ -1334,6 +1438,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                         }
 
                         UINT unMsgCount = 0;
+						// To check if the Message length exceeds 8
+						BOOL bIsMessageLengthExceeds = FALSE;
 
                         // start getting message information with in the 
                         // message boundary. The message count is included to
@@ -1376,7 +1482,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                     {
                                         if (!m_bAutoServerMode)
                                         {
-                                            strcpy(s_acTraceStr, "Database file corrupted");
+										 	//Tobias - venkat
+                                            strcpy_s(s_acTraceStr, 1024, "Database file corrupted");
                                             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                         }
                                         bReturnValue = FALSE;
@@ -1400,7 +1507,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                     {
                                         if (!m_bAutoServerMode)
                                         {
-                                            strcpy(s_acTraceStr, "Database file corrupted");
+											//Tobias - venkat
+                                            strcpy_s(s_acTraceStr, 1024, "Database file corrupted");
                                             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                         }
                                         bReturnValue = FALSE;
@@ -1418,13 +1526,25 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                         // Msg length   
                                         m_psMessages[unMsgCount].m_unMessageLength = atoi(strTmp);
 
+										if(eProtocolName != PROTOCOL_J1939)
+										{
+											// If message length exceeds 8 stop opening the .dbf file
+											if( m_psMessages[unMsgCount].m_unMessageLength > 8)
+											{
+												bIsMessageLengthExceeds = TRUE;
+
+												bReturnValue = FALSE;
+												break;
+											}
+										}
                                         sMsgDet = sMsgDet.Right(sMsgDet.GetLength() - nIndex - 1);
                                     }
                                     else
                                     {
                                         if (!m_bAutoServerMode)
                                         {
-                                            strcpy(s_acTraceStr, "Database file corrupted");
+											//Tobias - venkat
+                                            strcpy_s(s_acTraceStr, 1024,  "Database file corrupted");
                                             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                         }
                                         bReturnValue = FALSE;
@@ -1446,7 +1566,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                     {
                                         if (!m_bAutoServerMode)
                                         {
-                                            strcpy(s_acTraceStr, "Database file corrupted");
+											//Tobias - venkat
+                                            strcpy_s(s_acTraceStr, 1024, "Database file corrupted");
                                             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                         }                                        
                                         bReturnValue = FALSE;
@@ -1469,7 +1590,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                     {
                                         if (!m_bAutoServerMode)
                                         {
-                                            strcpy(s_acTraceStr, "Database file corrupted");
+											//Tobias - venkat
+                                            strcpy_s(s_acTraceStr, 1024,  "Database file corrupted");
                                             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                         }
                                         bReturnValue = FALSE;
@@ -1481,7 +1603,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                     {
                                         if (!m_bAutoServerMode)
                                         {
-                                            strcpy(s_acTraceStr, "Database file corrupted");
+											//Tobias - venkat
+                                            strcpy_s(s_acTraceStr, 1024, "Database file corrupted");
                                             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                         }
                                         bReturnValue = FALSE;
@@ -1501,7 +1624,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                     {
                                         if (!m_bAutoServerMode)
                                         {
-                                            strcpy(s_acTraceStr, "Database file corrupted");
+											//Tobias- venkat
+                                            strcpy_s(s_acTraceStr, 1024, "Database file corrupted");
                                             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                         }
                                         bReturnValue = FALSE;
@@ -1521,9 +1645,10 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
 
                                             while (unNumberofSignalsRead < m_psMessages[unMsgCount].m_unNumberOfSignals)
                                             {
-                                                if (!bLineRead)
-                                                    o_File.ReadString( sFirstLine );
-                                            
+                                            if (!bLineRead)
+                                            {
+                                                o_File.ReadString( sFirstLine );
+                                            }
                                                 int nIndex = sFirstLine.Find( SG_START_ID, 0 );
                                             
                                                 if ( nIndex != -1)
@@ -1531,56 +1656,53 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                     // Allocate memory for signal
                                                     sSIGNALS* sTempSg = new sSIGNALS;
 
-                                                    if (sTempSg == NULL)
+                                                if (sTempSg == NULL)
+                                                {
+                                                    if (!m_bAutoServerMode)
                                                     {
-                                                        if (!m_bAutoServerMode)
-                                                        {
-                                                            strcpy(s_acTraceStr, T2A(MSG_MEMORY_CONSTRAINT));
-                                                            vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
-                                                        }
-                                                        bReturnValue = FALSE;
-                                                        break;
+														//Tobias- venkat
+                                                        strcpy_s(s_acTraceStr, 1024, T2A(MSG_MEMORY_CONSTRAINT));
+                                                        vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                     }
-                                                    else
+
+                                                    bReturnValue = FALSE;
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    sTempSg->m_psNextSignalList = NULL;
+                                                    CString sMsgDet = sFirstLine;
+                                                    nIndex = sMsgDet.Find( SPACE );
+
+                                                    // Find Signal Name
+                                                    if (  nIndex != -1 )
                                                     {
-                                                        sTempSg->m_psNextSignalList = NULL;
+                                                        CString strTmp = sMsgDet.Right(sMsgDet.GetLength() - nIndex);
+                                                        strTmp.TrimLeft();
+                                                        sMsgDet = strTmp;
+                                                        nIndex = strTmp.Find( ',' );
 
-                                                        CString sMsgDet = sFirstLine;
-
-                                                        nIndex = sMsgDet.Find( SPACE );
-                                                        // Find Signal Name
-                                                        if (  nIndex != -1 )
+                                                        // Find and get signal name
+                                                        if ( nIndex != -1 )
                                                         {
-                                                            CString strTmp = sMsgDet.Right(sMsgDet.GetLength() - nIndex);
-                                                        
-                                                            strTmp.TrimLeft();
+                                                            CString sTmp = sMsgDet.Left(nIndex);
+                                                            sTempSg->m_omStrSignalName = sTmp;
+                                                            sMsgDet = sMsgDet.Right(sMsgDet.GetLength() - nIndex - 1);
+                                                        }
+                                                        else
+                                                        {
+                                                            if (!m_bAutoServerMode)
+                                                            {
+                                                                strcpy_s(s_acTraceStr, "Database file corrupted");
+                                                                vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
+                                                            }
 
-                                                            sMsgDet = strTmp;
-                                                        
-                                                            nIndex = strTmp.Find( ',' );
-                                                        
-                                                            // Find and get signal name
-                                                            if ( nIndex != -1 )
-                                                            {
-                                                                CString sTmp = sMsgDet.Left(nIndex);
-                                                            
-                                                                sTempSg->m_omStrSignalName = sTmp;
-                                                            
-                                                                sMsgDet = sMsgDet.Right(sMsgDet.GetLength() - nIndex - 1);
-                                                            }
-                                                            else
-                                                            {
-                                                                if (!m_bAutoServerMode)
-                                                                {
-                                                                    strcpy(s_acTraceStr, "Database file corrupted");
-                                                                    vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
-                                                                }
-                                                                bReturnValue = FALSE;
-                                                                break;
-                                                            }
-                                            
-                                                            // Find and get SIGNAL LENGTH
-                                                            nIndex = sMsgDet.Find( ',' );
+                                                            bReturnValue = FALSE;
+                                                            break;
+                                                        }
+
+                                                        // Find and get SIGNAL LENGTH
+                                                        nIndex = sMsgDet.Find( ',' );
 
                                                             if (  nIndex != -1 )
                                                             {
@@ -1592,7 +1714,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                             {
                                                                 if (!m_bAutoServerMode)
                                                                 {
-                                                                    strcpy(s_acTraceStr, "Database file corrupted");
+																	//Tobias- venkat
+                                                                    strcpy_s(s_acTraceStr, 1024, "Database file corrupted");
                                                                     vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                                 }
                                                                 bReturnValue = FALSE;
@@ -1602,24 +1725,24 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                             // Find and get byte info from which signal has started
                                                             nIndex = sMsgDet.Find( ',' );
 
-                                                            if (  nIndex != -1 )
+                                                        if (  nIndex != -1 )
+                                                        {
+                                                            CString sTmp = sMsgDet.Left(nIndex);
+                                                            sTempSg->m_unStartByte =  atoi( (const char*) sTmp );
+                                                            sMsgDet = sMsgDet.Right(sMsgDet.GetLength() - nIndex - 1);
+                                                        }
+                                                        else
+                                                        {
+                                                            if (!m_bAutoServerMode)
                                                             {
-                                                                CString sTmp = sMsgDet.Left(nIndex);
-                                                            
-                                                                sTempSg->m_unStartByte =  atoi( (const char*) sTmp );
-                                                            
-                                                                sMsgDet = sMsgDet.Right(sMsgDet.GetLength() - nIndex - 1);
+																//Tobias- venkat
+                                                                strcpy_s(s_acTraceStr, 1024, "Database file corrupted");
+                                                                vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                             }
-                                                            else
-                                                            {
-                                                                if (!m_bAutoServerMode)
-                                                                {
-                                                                    strcpy(s_acTraceStr, "Database file corrupted");
-                                                                    vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
-                                                                }
-                                                                bReturnValue = FALSE;
-                                                                break;
-                                                            }
+
+                                                            bReturnValue = FALSE;
+                                                            break;
+                                                        }
 
                                                             // Find and get signal start bit 
                                                             nIndex = sMsgDet.Find( ',' );
@@ -1636,7 +1759,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                             {
                                                                 if (!m_bAutoServerMode)
                                                                 {
-                                                                    strcpy(s_acTraceStr, "Database file corrupted");
+																	////Tobias- venkat
+                                                                	strcpy_s(s_acTraceStr, 1024, "Database file corrupted");
                                                                     vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                                 }
                                                                 bReturnValue = FALSE;
@@ -1660,7 +1784,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                             {
                                                                 if (!m_bAutoServerMode)
                                                                 {
-                                                                    strcpy(s_acTraceStr, "Database file corrupted");
+																	//Tobias- venkat
+                                                                	strcpy_s(s_acTraceStr, 1024, "Database file corrupted");
                                                                     vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                                 }
                                                                 bReturnValue = FALSE;
@@ -1689,7 +1814,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                             {
                                                                 if (!m_bAutoServerMode)
                                                                 {
-                                                                    strcpy(s_acTraceStr, "Database file corrupted");
+																	//Tobias- venkat
+                                                                	strcpy_s(s_acTraceStr, 1024, "Database file corrupted");
                                                                     vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                                 }
                                                                 bReturnValue = FALSE;
@@ -1719,7 +1845,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                             {
                                                                 if (!m_bAutoServerMode)
                                                                 {
-                                                                    strcpy(s_acTraceStr, "Database file corrupted");
+																	//Tobias- venkat
+                                                                	strcpy_s(s_acTraceStr, 1024, "Database file corrupted");
                                                                     vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                                 }
                                                                 bReturnValue = FALSE;
@@ -1749,7 +1876,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                             {
                                                                 if (!m_bAutoServerMode)
                                                                 {
-                                                                    strcpy(s_acTraceStr, "Database file corrupted");
+																	//Tobias- venkat
+                                                                	strcpy_s(s_acTraceStr, 1024, "Database file corrupted");
                                                                     vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                                 }
                                                                 bReturnValue = FALSE;
@@ -1772,7 +1900,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                             {
                                                                 if (!m_bAutoServerMode)
                                                                 {
-                                                                    strcpy(s_acTraceStr, "Database file corrupted");
+																	//Tobias- venkat
+                                                                	strcpy_s(s_acTraceStr, 1024, "Database file corrupted");
                                                                     vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                                 }
                                                                 bReturnValue = FALSE;
@@ -1795,7 +1924,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                             {
                                                                 if (!m_bAutoServerMode)
                                                                 {
-                                                                    strcpy(s_acTraceStr, "Database file corrupted");
+																	//Tobias- venkat
+                                                                	strcpy_s(s_acTraceStr, 1024, "Database file corrupted");
                                                                     vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                                 }
                                                                 bReturnValue = FALSE;
@@ -1847,9 +1977,10 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                             {
                                                                 int nFoundIndex = sFirstLine.Find( SG_DESC_START_ID ,0 );
 
-                                                                if ( nFoundIndex != -1)
-                                                                    nFoundIndex = sFirstLine.Find( " " );
-                                            
+	                                                            if ( nFoundIndex != -1)
+	                                                            {
+	                                                                nFoundIndex = sFirstLine.Find( " " );
+	                                                            }
                                                                 if (nFoundIndex != -1 )
                                                                 {
                                                                     CSignalDescVal* pomSgDescVal = 
@@ -1883,7 +2014,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                                     {
                                                                         if (!m_bAutoServerMode)
                                                                         {
-                                                                            strcpy(s_acTraceStr, "Database file corrupted");
+																			//Tobias- venkat
+                                                                        	strcpy_s(s_acTraceStr, 1024, "Database file corrupted");
                                                                             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                                         }
                                                                         bReturnValue = FALSE;
@@ -1893,9 +2025,10 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                               
                                                                     if ( pomSgDescValNext != NULL)
                                                                     {
-                                                                        while ( pomSgDescValNext->m_pouNextSignalSignalDescVal != NULL )
-                                                                            pomSgDescValNext = pomSgDescValNext->m_pouNextSignalSignalDescVal;
-                                                                    
+	                                                                    while ( pomSgDescValNext->m_pouNextSignalSignalDescVal != NULL )
+	                                                                    {
+	                                                                        pomSgDescValNext = pomSgDescValNext->m_pouNextSignalSignalDescVal;
+	                                                                    }
                                                                         pomSgDescValNext->m_pouNextSignalSignalDescVal = pomSgDescVal;
                                                                     }
                                                                     else
@@ -1918,9 +2051,10 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                         // allocate memory for next signal
                                                         if ( pNext != NULL )
                                                         {
-                                                            while( pNext->m_psNextSignalList != NULL )
-                                                                pNext = pNext->m_psNextSignalList;
-                                                            
+	                                                        while( pNext->m_psNextSignalList != NULL )
+	                                                        {
+	                                                            pNext = pNext->m_psNextSignalList;
+	                                                        }
                                                             pNext->m_psNextSignalList = sTempSg;
                                                         
                                                         }
@@ -1938,9 +2072,11 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                 }// if signal found
                                             }
 
-                                            if (bReturnValue == FALSE)
-                                                break;
-                                        }
+	                                        if (bReturnValue == FALSE)
+	                                        {
+	                                            break;
+	                                        }
+	                                    }
                                         else // No signals defined.
                                         {
                                             m_psMessages[unMsgCount].m_psSignals = NULL;
@@ -1953,33 +2089,37 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                                 }// message not found
 
                             }// while read message
-							//Create one DB structure and add it to the list
-							sDBFileStruct* psDBStruct = new sDBFileStruct;
-							if(psDBStruct != NULL)
+							if(bIsMessageLengthExceeds == FALSE)
 							{
-								psDBStruct->m_omStrDatabasePath = strFileName;
-								psDBStruct->m_unMessageCount = m_unMessageCount;
-								psDBStruct->m_psMessages = m_psMessages;
-								//Add the structure at the begining of list so that while 
-								//making the CMap,the message id of first added DB should be present 
-								psDBStruct->m_psNextDBFileStruct = m_psDatbaseStructList;
-								m_psDatbaseStructList = psDBStruct;
-							}
-							else
-							{
-                                if (!m_bAutoServerMode)
-                                {
-                                    strcpy(s_acTraceStr, T2A(MSG_MEMORY_CONSTRAINT));
-                                    vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
-                                }
-								bReturnValue = FALSE;
+								//Create one DB structure and add it to the list
+								sDBFileStruct* psDBStruct = new sDBFileStruct;
+								if(psDBStruct != NULL)
+								{
+									psDBStruct->m_omStrDatabasePath = strFileName;
+									psDBStruct->m_unMessageCount = m_unMessageCount;
+									psDBStruct->m_psMessages = m_psMessages;
+									//Add the structure at the begining of list so that while 
+									//making the CMap,the message id of first added DB should be present 
+									psDBStruct->m_psNextDBFileStruct = m_psDatbaseStructList;
+									m_psDatbaseStructList = psDBStruct;
+								}
+								else
+								{
+									if (!m_bAutoServerMode)
+									{
+										strcpy(s_acTraceStr, T2A(MSG_MEMORY_CONSTRAINT));
+										vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
+									}
+									bReturnValue = FALSE;
+								}
 							}
 					}
                     else
                     {
                         if (!m_bAutoServerMode)
                         {
-                            strcpy(s_acTraceStr, T2A(MSG_MEMORY_CONSTRAINT));
+							//Tobias- venkat
+                            strcpy_s(s_acTraceStr, 1024, T2A(MSG_MEMORY_CONSTRAINT));
                             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                         }
                         bReturnValue = FALSE;
@@ -1993,11 +2133,12 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
             }
             else
             {
-                CString omStrErrorMsg = _T("");
+                CString omStrErrorMsg = "";
                 omStrErrorMsg.Format("Error in opening %s database file",strFileName);
                 if (!m_bAutoServerMode)
                 {
-                    strcpy(s_acTraceStr, T2A(omStrErrorMsg.GetBuffer(MAX_PATH)));
+					//Tobias- venkat
+                    strcpy_s(s_acTraceStr, 1024, T2A(omStrErrorMsg.GetBuffer(MAX_PATH)));
                     vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                 }
             }
@@ -2006,12 +2147,13 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
         {
             if(pomE != NULL )
             {
-                LPTSTR lpszError = _T("");
+                LPTSTR lpszError = "";
                 // Get error
                 pomE->GetErrorMessage( lpszError, defSIZE_OF_ERROR_BUFFER);
                 if (!m_bAutoServerMode)
                 {
-                    strcpy(s_acTraceStr, T2A(lpszError));
+					//Tobias- venkat
+                    strcpy_s(s_acTraceStr, 1024, T2A(lpszError));
                     vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                 }
                 pomE->Delete();
@@ -2031,8 +2173,9 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
     {
         // Delete occupied memory
         bDeAllocateMemory(strFileName);
-		strFileName += _T(" Is Inavlid DBF File");
-        strcpy (s_acTraceStr, strFileName);
+        strFileName += " Is Inavlid DBF File";
+		//Tobias- venkat
+        strcpy_s(s_acTraceStr, 1024, strFileName);
         vWriteTextToTrace();
     }
     else
@@ -2058,7 +2201,7 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName)
                       04.03.2003 Rajesh Kumar
                       Modified - MIN-MAX values w.r.t change in sSIGNALS struct
 ******************************************************************************/
-BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName)
+BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName, eProtocol eProtocolName)
 {
     BOOL bRetVal = FALSE;
 
@@ -2088,6 +2231,42 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName)
 			strBuffer += NEW_LINE; 
 			strBuffer += NEW_LINE; 
 
+			// Adding database Protocol in the version 1.3
+			strBuffer += DATABASE_PROTOCOL;
+			strBuffer += SPACE;
+
+			if(eProtocolName == PROTOCOL_CAN)
+			{
+				strBuffer += DATABASE_PROTOCOL_CAN;
+			}
+			else if(eProtocolName == PROTOCOL_J1939)
+			{
+				strBuffer += DATABASE_PROTOCOL_J1939;
+			}
+
+			strBuffer += NEW_LINE; 
+			strBuffer += NEW_LINE; 
+
+			// Start Adding Application version in the version 1.3
+			
+			// Adding Application version information in the version 1.3
+			CString omstrAppVersion = APPLICATION_VERSION_NO;
+
+			CString omstrVersion;
+
+			// Application version
+			omstrVersion.Format("%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
+
+			omstrAppVersion.Replace(APPLICATION_VERSION_PLACE_HOLDER, omstrVersion);
+
+			// Adding Application Version
+			strBuffer += APPLICATION_VERSION;
+			strBuffer += SPACE;
+			strBuffer += omstrAppVersion;
+
+			strBuffer += NEW_LINE; 
+			strBuffer += NEW_LINE; 
+			// End of Adding Application version in the version 1.3
 			o_File.WriteString( strBuffer );
 
 
@@ -2102,9 +2281,7 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName)
                 char buff[256];
 
                 buff[255] = '\0';
-
-                sprintf( buff, "%d", m_unMessageCount );
-
+                sprintf_s( buff, 255, "%d", m_unMessageCount );
                 strBuffer += buff;
             }
         
@@ -2131,36 +2308,28 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName)
                 char buff[10];
 
                 buff[9] = '\0';
-
-                sprintf( buff, "%d", m_psMessages[nMsgIndex].m_unMessageCode);
-
+                sprintf_s( buff, "%d", m_psMessages[nMsgIndex].m_unMessageCode);
                 sMsgDetails += buff;
 
                 sMsgDetails += ",";
 
                 // Msg Length
                 buff[1] = '\0';
-
-                sprintf( buff, "%d", m_psMessages[nMsgIndex].m_unMessageLength);
-
+                sprintf_s( buff, "%d", m_psMessages[nMsgIndex].m_unMessageLength);
                 sMsgDetails += buff;
 
                 sMsgDetails += ",";
 
                 // Number of Signals
                 buff[2] = '\0';
-
-                sprintf( buff, "%d", m_psMessages[nMsgIndex].m_unNumberOfSignals);
-
+                sprintf_s( buff, "%d", m_psMessages[nMsgIndex].m_unNumberOfSignals);
                 sMsgDetails += buff;
             
                 sMsgDetails += ",";
 
                 // Message data format
                 buff[2] = '\0';
-
-                sprintf( buff, "%d", m_psMessages[nMsgIndex].m_nMsgDataFormat);
-
+                sprintf_s( buff, "%d", m_psMessages[nMsgIndex].m_nMsgDataFormat);
                 sMsgDetails += buff;
 
                 // rajesh: 03-03-2003: BEGIN: added FrameFormat
@@ -2195,22 +2364,17 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName)
                         char temp[25];
 
                         temp[9] = '\0';
-
-                        sprintf( temp, "%d", pTempSg->m_unSignalLength );
-
+                        sprintf_s( temp, "%d", pTempSg->m_unSignalLength );
                         sSgDetails += temp;
 
                         sSgDetails += ",";
 
                         // Signal at which byte
-                        sprintf( buff, "%d", pTempSg->m_unStartByte );
-
+                        sprintf_s( buff, "%d", pTempSg->m_unStartByte );
                         sSgDetails += buff;
 
                         sSgDetails += ",";
-
-                        sprintf( buff, "%d", pTempSg->m_byStartBit );
-
+                        sprintf_s( buff, "%d", pTempSg->m_byStartBit );
                         sSgDetails += buff;
 
                         sSgDetails += ",";
@@ -2227,11 +2391,11 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName)
 
                         if(pTempSg->m_bySignalType == CHAR_INT)
                         {
-                            sprintf( temp, "%I64d", pTempSg->m_SignalMaxValue.n64Value);
+                            sprintf_s( temp, "%I64d", pTempSg->m_SignalMaxValue.n64Value);
                         }
                         else
                         {
-                            sprintf( temp, "%I64d", pTempSg->m_SignalMaxValue.un64Value);
+                            sprintf_s( temp, "%I64d", pTempSg->m_SignalMaxValue.un64Value);
                         }
                         
                         sSgDetails += temp;
@@ -2241,33 +2405,30 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName)
                         // Signal min val
                         if(pTempSg->m_bySignalType == CHAR_INT)
                         {
-                            sprintf( temp, "%I64d", pTempSg->m_SignalMinValue.n64Value);
+                            sprintf_s( temp, "%I64d", pTempSg->m_SignalMinValue.n64Value);
                         }
                         else
                         {
-                            sprintf( temp, "%I64d", pTempSg->m_SignalMinValue.un64Value);
+                            sprintf_s( temp, "%I64d", pTempSg->m_SignalMinValue.un64Value);
                         }
                         sSgDetails += temp;
 
                         sSgDetails += ",";
 
                         // Signal data format
-                        sprintf( temp, "%d", pTempSg->m_eFormat);
-
+                        sprintf_s( temp, "%d", pTempSg->m_eFormat);
                         sSgDetails += temp;
 
                         sSgDetails += ",";
 
                         // Signal offset value
-                        sprintf( temp, "%f", pTempSg->m_fSignalOffset );
-
+                        sprintf_s( temp, "%f", pTempSg->m_fSignalOffset );
                         sSgDetails += temp;
 
                         sSgDetails += ",";
 
                         // Signal factor value
-                        sprintf( temp, "%f", pTempSg->m_fSignalFactor );
-
+                        sprintf_s( temp, "%f", pTempSg->m_fSignalFactor );
                         sSgDetails += temp;
 
                         sSgDetails += ",";
@@ -2300,9 +2461,7 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName)
                             char type[24];
 
                             type[19] = '\0';
-                        
-                            sprintf( type, "%I64d", pTempIDVal->m_n64SignalVal );
-
+                            sprintf_s( type, "%I64d", pTempIDVal->m_n64SignalVal );
                             sSgTypeInfo += type;
 
                             o_File.WriteString( sSgTypeInfo );
@@ -2336,11 +2495,11 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName)
         }
         else
         {
-            CString omStrErrorMsg = _T("");
+            CString omStrErrorMsg = "";
             omStrErrorMsg.Format("Error in opening %s database file",strFileName);
             if (!m_bAutoServerMode)
             {
-                strcpy(s_acTraceStr, T2A(omStrErrorMsg.GetBuffer(MAX_PATH)));
+                strcpy_s(s_acTraceStr, 1024, T2A(omStrErrorMsg.GetBuffer(MAX_PATH)));
                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
             }
             
@@ -2357,11 +2516,11 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName)
         // Get error
         if(pomE != NULL )
         {
-            LPTSTR lpszError = _T("");
+            LPTSTR lpszError = "";
             pomE->GetErrorMessage( lpszError, defSIZE_OF_ERROR_BUFFER);
             if (!m_bAutoServerMode)
-            {          
-                strcpy (s_acTraceStr, T2A(lpszError));
+            {
+                strcpy_s(s_acTraceStr, 1024, T2A(lpszError));
                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
             }
             pomE->Delete();
@@ -2489,7 +2648,9 @@ BOOL CMsgSignal::bUpdateMsg( eMSG_CHANGES_IN eNum,
     }
 
     if ( bReturnValue == TRUE)
+    {
         m_bIsDatabaseSaved = FALSE;
+    }
 
     return bReturnValue;
 }
@@ -2535,8 +2696,8 @@ BOOL CMsgSignal::bDeleteMsg( CString omStrMsgToBeDeleted )
         else
         {
             if (!m_bAutoServerMode)
-            {          
-                strcpy (s_acTraceStr, T2A(MSG_MSG_NOT_FOUND));
+            {
+                strcpy_s(s_acTraceStr, 1024, T2A(MSG_MSG_NOT_FOUND));
                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
             }
             bReturnValue = FALSE;
@@ -2544,7 +2705,9 @@ BOOL CMsgSignal::bDeleteMsg( CString omStrMsgToBeDeleted )
     }
 
     if ( bReturnValue == TRUE)
+    {
         m_bIsDatabaseSaved = FALSE;
+    }
 
     return bReturnValue;
 }
@@ -2592,7 +2755,9 @@ BOOL CMsgSignal::bIsDuplicateMessageName( int nMsgId, CString strMsgName)
                 }
                 
                 if (bReturnValue)
+                {
                     break;
+                }
             }
             else
             {
@@ -2644,20 +2809,21 @@ BOOL CMsgSignal::bIsDuplicateSignalName( CString strMsgName, CString strSgName)
                 {
                     break;
                 }
-                
+
                 // Duplicate found, skip rest of the message
                 if ( bReturnValue == TRUE )
+                {
                     break;
+                }
             }// end if
-
         }// end for
 
     }// end if
     else
     {
         if (!m_bAutoServerMode)
-        {          
-            strcpy (s_acTraceStr, "Insufficient Data");
+        {
+            strcpy_s(s_acTraceStr, 1024, "Insufficient Data");
             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
         }
     }
@@ -2697,8 +2863,8 @@ BOOL CMsgSignal::bIsDuplicateMessageCode( CString omStrMsgName, UINT unMsgCode)
     else
     {
         if (!m_bAutoServerMode)
-        {          
-            strcpy (s_acTraceStr, "Invalid message code");
+        {
+            strcpy_s(s_acTraceStr, 1024, "Invalid message code");
             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
         }
     }
@@ -2782,7 +2948,9 @@ BOOL CMsgSignal::bAddSignalToMsg( CString omStrMsgName )
                     sSIGNALS* pSgTemp = pSg->m_psNextSignalList;
 
                     if ( pSg->m_psNextSignalList != NULL )
+                    {
                         pSg = pSgTemp;
+                    }
                     else
                     {
                         // create new signal and append the data
@@ -2804,8 +2972,8 @@ BOOL CMsgSignal::bAddSignalToMsg( CString omStrMsgName )
                         else// create signal failed
                         {
                             if (!m_bAutoServerMode)
-                            {          
-                                strcpy (s_acTraceStr, T2A(MSG_MEMORY_CONSTRAINT));
+                            {
+                                strcpy_s(s_acTraceStr, 1024,  T2A(MSG_MEMORY_CONSTRAINT));
                                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                             }
                             bReturnValue = FALSE;
@@ -2832,8 +3000,8 @@ BOOL CMsgSignal::bAddSignalToMsg( CString omStrMsgName )
                 else // create signal failed
                 {
                     if (!m_bAutoServerMode)
-                    {          
-                        strcpy (s_acTraceStr, T2A(MSG_MEMORY_CONSTRAINT));
+                    {
+                        strcpy_s(s_acTraceStr, 1024,  T2A(MSG_MEMORY_CONSTRAINT));
                         vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                     }
                     bReturnValue = FALSE;
@@ -2843,8 +3011,8 @@ BOOL CMsgSignal::bAddSignalToMsg( CString omStrMsgName )
         else // no message found
         {
             if (!m_bAutoServerMode)
-            {          
-                strcpy (s_acTraceStr, T2A(MSG_MSG_NOT_FOUND));
+            {
+                strcpy_s(s_acTraceStr, 1024, T2A(MSG_MSG_NOT_FOUND));
                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
             }
             bReturnValue = FALSE;
@@ -2856,7 +3024,9 @@ BOOL CMsgSignal::bAddSignalToMsg( CString omStrMsgName )
     }
 
     if ( bReturnValue == TRUE)
+    {
         m_bIsDatabaseSaved = FALSE;
+    }
 
     return bReturnValue;
 }
@@ -2988,8 +3158,9 @@ BOOL CMsgSignal::bDeleteSignalFromMsg( int nIndexOfWhichItem,
                         pPrev = pCurr;
 
                         if ( pCurr->m_psNextSignalList )
+                        {
                             pCurr = tmp;
-
+                        }
                     }// while ( pCurr != NULL )
 
                     bReturnValue = TRUE;
@@ -3000,13 +3171,17 @@ BOOL CMsgSignal::bDeleteSignalFromMsg( int nIndexOfWhichItem,
                     pSg = pSg->m_psNextSignalList;
                 }
                 if ( bReturnValue == TRUE)
+                {
                     break;
+                }
             }// while ( pSg != NULL )
         }
     }
 
     if ( bReturnValue == TRUE)
+    {
         m_bIsDatabaseSaved = FALSE;
+    }
 
     return bReturnValue;
 }
@@ -3094,8 +3269,8 @@ void CMsgSignal::vUpdateSignalDetails( CString omStrMsgName,
     else
     {
         if (!m_bAutoServerMode)
-        {          
-            strcpy (s_acTraceStr, "Insufficient Data");
+        {
+            strcpy_s(s_acTraceStr, 1024, "Insufficient Data");
             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
         }
     }
@@ -3191,15 +3366,17 @@ BOOL CMsgSignal::bAddSgDescVal( CString omStrMessageCode,
     {
         bReturnValue = FALSE;
         if (!m_bAutoServerMode)
-        {          
-            strcpy (s_acTraceStr, "Insufficient Data");
+        {
+            strcpy_s(s_acTraceStr, 1024, "Insufficient Data");
             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
         }
     }
 
     if ( bReturnValue == TRUE)
+    {
         m_bIsDatabaseSaved = FALSE;
-    
+    }
+
     return bReturnValue;
 }
 /******************************************************************************
@@ -3277,14 +3454,16 @@ BOOL CMsgSignal::bUpdateSgDescVal( CString omStrMessageCode,
     {
         bReturnValue = FALSE;
         if (!m_bAutoServerMode)
-        {          
-            strcpy (s_acTraceStr, "Insufficient Data");
+        {
+            strcpy_s(s_acTraceStr, 1024, "Insufficient Data");
             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
         }
     }
     
     if ( bReturnValue == TRUE)
+    {
         m_bIsDatabaseSaved = FALSE;
+    }
 
     return bReturnValue;
 }
@@ -3350,7 +3529,9 @@ BOOL CMsgSignal::bDeleteSgDescVal( int nIndexOfItem,
                     CSignalDescVal *tmp;
 
                     if ( pCurr != NULL )
+                    {
                         tmp = pCurr->m_pouNextSignalSignalDescVal;
+                    }
 
                     // Seek to the edited Prm Values in the data structure
                     while ( pCurr != NULL )
@@ -3386,8 +3567,9 @@ BOOL CMsgSignal::bDeleteSgDescVal( int nIndexOfItem,
                         pPrev = pCurr;
 
                         if ( pCurr->m_pouNextSignalSignalDescVal )
+                        {
                             pCurr = tmp;
-                        
+                        }
                     }// while ( pCurr != NULL )
 
                     break;
@@ -3404,14 +3586,16 @@ BOOL CMsgSignal::bDeleteSgDescVal( int nIndexOfItem,
     {
         bReturnValue = FALSE;
         if (!m_bAutoServerMode)
-        {          
-            strcpy (s_acTraceStr, "Insufficient Data");
+        {
+            strcpy_s(s_acTraceStr, 1024, "Insufficient Data");
             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
         }
     }
     
     if ( bReturnValue == TRUE)
+    {
         m_bIsDatabaseSaved = FALSE;
+    }
 
     return bReturnValue;
 }
@@ -3466,7 +3650,7 @@ void CMsgSignal::vConvertExtendedToStandardFrameFormat(int& nMsgCode)
 
         // if the first char is less than '2'
         // then extract 4 digits else extract 3
-        TCHAR cChar = omStrMsgCode.GetAt(0);
+        char cChar = omStrMsgCode.GetAt(0);
 
         if ( cChar > '1' )
         {
@@ -3801,7 +3985,9 @@ BOOL CMsgSignal::bItemCanHaveSignalDesc(CString omStrMsgName,
                                 n64ItemCount = n64ItemCount + un64PossibleSgDescMinVal + 1;
                             }
                             if ( n64ItemCount >0 )
+                            {
                                 bRetVal = TRUE;
+                            }
 
                             p_Sg = NULL;
 

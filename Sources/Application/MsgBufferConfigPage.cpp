@@ -25,11 +25,6 @@
 #include "BUSMASTER.h"            // For App definition
 #include "MsgBufferConfigPage.h"    // For class definition
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 extern CCANMonitorApp theApp;
 /////////////////////////////////////////////////////////////////////////////
 // CMsgBufferConfigPage property page
@@ -51,11 +46,10 @@ CMsgBufferConfigPage::CMsgBufferConfigPage() :
                     CPropertyPage(CMsgBufferConfigPage::IDD,
                         IDS_PPAGE_TITLE_BUFFER)
 {
-    //{{AFX_DATA_INIT(CMsgBufferConfigPage)
     m_unAppendSize = 0;
     m_unOverWriteSize = 0;
     m_unDisplayUpdateRate = 0;
-    //}}AFX_DATA_INIT
+    m_pnBufferSize = NULL;
 }
 void CMsgBufferConfigPage::vSetBufferSize(INT* pnBufferSize)
 {

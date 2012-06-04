@@ -22,9 +22,7 @@
  * Include file containing all the macro definitions
  */
 
-
-#if !defined(_TSEDITORGUI_DEFINITIONS_H_INCLUDED_)
-#define _TSEDITORGUI_DEFINITIONS_H_INCLUDED_
+#pragma once
 
 //List Control
 #define def_COLOR_FIRSTROW      RGB(237, 239, 254)
@@ -110,7 +108,3 @@
 #define def_NAME_SEND           "Send"      
 #define def_NAME_VERIFY         "verify"
 #define def_NAME_VERIFYRESPONSE "verifyResponse"
-
-
-
-#endif

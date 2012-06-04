@@ -53,7 +53,7 @@ CAppServices_Impl::~CAppServices_Impl()
  *
  * Character buffer to be written on trace
  */
-BOOL CAppServices_Impl::bWriteToTrace(TCHAR* pcTraceStr)
+BOOL CAppServices_Impl::bWriteToTrace(char* pcTraceStr)
 {
     BOOL Result = FALSE;
 

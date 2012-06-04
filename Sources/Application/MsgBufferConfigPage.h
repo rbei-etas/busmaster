@@ -22,17 +22,7 @@
  * This file contain the definition of CMsgBufferConfigPage
  */
 
-#if !defined(AFX_MSGBUFFERCONFIGPAGE_H__1359F520_F69A_4723_A3D4_FDC3C886E5D4__INCLUDED_)
-#define AFX_MSGBUFFERCONFIGPAGE_H__1359F520_F69A_4723_A3D4_FDC3C886E5D4__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// MsgBufferConfigPage.h : header file
-//
-
-/////////////////////////////////////////////////////////////////////////////
-// CMsgBufferConfigPage dialog
 
 class CMsgBufferConfigPage : public CPropertyPage
 {
@@ -74,8 +64,3 @@ protected:
     DECLARE_MESSAGE_MAP()
 
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_MSGBUFFERCONFIGPAGE_H__1359F520_F69A_4723_A3D4_FDC3C886E5D4__INCLUDED_)

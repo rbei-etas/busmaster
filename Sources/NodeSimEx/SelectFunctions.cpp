@@ -204,25 +204,25 @@ BOOL CSelectFunctions::bFormatFunctionPrototype(CString &omStrFunctionPrototype)
 {
     BOOL bReturn = TRUE;
     CStringArray omStrArrayParaType;
-    CString omStrReturnType = _T("");
-    CString omStrFuncName   = _T("");
+    CString omStrReturnType = "";
+    CString omStrFuncName   = "";
     if(m_omStrSelectedText.IsEmpty() == 0 )
     {
         CString omStrTemp =    m_omStrSelectedText;
         omStrTemp = omStrTemp.Right(omStrTemp.GetLength() - 
-                                    omStrTemp.Find(_T(" ")) - 1 );
+                                    omStrTemp.Find(" ") - 1 );
         omStrTemp.TrimLeft();
         omStrTemp.TrimRight();
         omStrReturnType = m_omStrSelectedText;
-        omStrReturnType.Replace(omStrTemp, _T(""));
+        omStrReturnType.Replace(omStrTemp, "");
         INT nIndex = 0;
-        nIndex = omStrTemp.Find(_T("("));
+        nIndex = omStrTemp.Find("(");
         omStrFuncName = omStrTemp.Left(nIndex);
         omStrTemp = omStrTemp.Right(omStrTemp.GetLength() - nIndex - 1);
-        omStrTemp = omStrTemp.Left( omStrTemp.Find(_T(")")));
+        omStrTemp = omStrTemp.Left( omStrTemp.Find(")"));
         while(omStrTemp.IsEmpty() == 0)
         {
-            nIndex = omStrTemp.Find(_T(","));
+            nIndex = omStrTemp.Find(",");
             if(nIndex != -1)
             {
                 omStrArrayParaType.Add(omStrTemp.Left(nIndex));
@@ -230,7 +230,7 @@ BOOL CSelectFunctions::bFormatFunctionPrototype(CString &omStrFunctionPrototype)
             else
             {
                 omStrArrayParaType.Add(omStrTemp);
-                omStrTemp = _T("");
+                omStrTemp = "";
             }
             omStrTemp = omStrTemp.Right(omStrTemp.GetLength() - nIndex - 1 );
         }
@@ -256,14 +256,14 @@ BOOL CSelectFunctions::bFormatFunctionPrototype(CString &omStrFunctionPrototype)
             omStrTemp.TrimLeft();
             omStrTemp.TrimRight();
             omStrFunctionPrototype += defNEW_LINE;
-            omStrFunctionPrototype += _T("/* ");
+            omStrFunctionPrototype += "/* ";
             omStrFunctionPrototype += omStrTemp;
 
-            omStrTemp               = _T("");
+            omStrTemp               = "";
             omStrTemp.Format(defPARAMETER_NAME,i+1);
-            omStrFunctionPrototype += _T(" ");
+            omStrFunctionPrototype += " ";
             omStrFunctionPrototype +=omStrTemp; 
-            omStrFunctionPrototype += _T(" ;*/");
+            omStrFunctionPrototype += " ;*/";
 
             omStrFuncName +=omStrTemp;
             if(i != unCount - 1 )

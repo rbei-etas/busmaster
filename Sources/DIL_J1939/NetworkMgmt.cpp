@@ -278,7 +278,7 @@ BYTE CNetworkMgmt::byGetNodeAddress(DWORD dwClient)
     }
     return byAddress;
 }
-void CNetworkMgmt::vGetNodeName(BYTE byAddress, TCHAR* acNodeName)
+void CNetworkMgmt::vGetNodeName(BYTE byAddress, char* acNodeName)
 {
     for (int i = 0; i < m_nConMgrCnt; i++)
     {
@@ -466,7 +466,7 @@ BOOL CNetworkMgmt::bRemoveConnectionFromConMap(short shConnectionNo)
     return bReturn;
 }
 
-CNodeConManager* CNetworkMgmt::pouGetConMagrObj(TCHAR* pacClientName)
+CNodeConManager* CNetworkMgmt::pouGetConMagrObj(char* pacClientName)
 {
     CNodeConManager* pNodeConMgr = NULL;
     for(int i = 0; i < DEF_MAX_SIMULATED_NODE; i++)
@@ -531,7 +531,7 @@ BYTE CNetworkMgmt::byGetConMagrNumber(short shConNumber)
 
 /**************************************************************
 ************************************************************** */
-LONG CNetworkMgmt::lCreateNodeConManager(TCHAR* pacNodeName, 
+LONG CNetworkMgmt::lCreateNodeConManager(char* pacNodeName, 
                                          UINT64 un64ECUName,
                                          BYTE   byPrefAdres,
                                          DWORD& dwClientId)
@@ -646,7 +646,7 @@ LONG CNetworkMgmt::lRemoveNodeConManager(DWORD dwClientId)
                     m_ouReadCANMsg.bDeleteEventHandle(handle);
                     TRACE("Called bDeleteEventHandle\n");
                 }
-                CString omClientName = _T("");
+                CString omClientName = "";
                 if (m_ConMgrArr[i]->m_dwClientID != CAN_MONITOR_CLIENT_ID) //Do not remove client from CAN if monitor
                 {
 					m_pIDIL_CAN->DILC_RegisterClient(FALSE, m_ConMgrArr[i]->m_dwClientID, omClientName.GetBuffer(MAX_CHAR));
@@ -686,7 +686,7 @@ void CNetworkMgmt::vRemoveAllNodes(void)
                 m_ouReadCANMsg.bDeleteEventHandle(handle);
                 TRACE("Called bDeleteEventHandle\n");
             }
-            CString omClientName = _T("");
+            CString omClientName = "";
             
             if (m_ConMgrArr[i]->m_dwClientID != CAN_MONITOR_CLIENT_ID) 
             {

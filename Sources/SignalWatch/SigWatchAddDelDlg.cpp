@@ -28,12 +28,6 @@
 #include "SignalWatchDefs.h"
 #include "SigWatchAddDelDlg.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 // Critical Section for Signal Watch
 extern CRITICAL_SECTION g_CritSectionForSW;
 /////////////////////////////////////////////////////////////////////////////
@@ -1194,9 +1188,9 @@ BOOL CSigWatchAddDelDlg::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
 
 UINT CSigWatchAddDelDlg::unGetMainEntryIDFromName(CString omMainEntryName)
 {
-	CString omMainEntryId;
-	UINT unMainEntryID = (UINT)-1;
-	TCHAR* pcStopStr = NULL;
+    CString omMainEntryId;
+    UINT unMainEntryID = (UINT)-1;
+    char* pcStopStr = NULL;
     int nIndex = omMainEntryName.Find(defMSGID_EXTENDED);
     int nCloseBraceIndex = omMainEntryName.Find(defMSG_NAME_END_CHAR);
 	if((nIndex != -1) && (nCloseBraceIndex != -1))

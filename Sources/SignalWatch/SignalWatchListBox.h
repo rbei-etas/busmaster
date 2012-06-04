@@ -16,19 +16,13 @@
 /**
  * \file      SignalWatchListBox.h
  * \brief     Interface file for CSignalWatchListBox class
- * \authors   RBIN/EMC2 - Ratnadip Choudhury, Amarnath Shastri
+ * \authors   Ratnadip Choudhury, Amarnath Shastri
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Interface file for CSignalWatchListBox class
  */
 
-
-#if !defined(AFX_SIGNALWATCHLISTBOX_H__B3BAC2B6_452A_11D6_9670_0002A5838FC1__INCLUDED_)
-#define AFX_SIGNALWATCHLISTBOX_H__B3BAC2B6_452A_11D6_9670_0002A5838FC1__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 // For Flicker Free List Control Definiton
 #include "Utility/FFListCtrl.h"
@@ -65,10 +59,3 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_SIGNALWATCHLISTBOX_H__B3BAC2B6_452A_11D6_9670_0002A5838FC1__INCLUDED_)

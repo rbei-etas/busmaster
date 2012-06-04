@@ -52,12 +52,6 @@
 #include <math.h>
 #include "GraphRightView.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 IMPLEMENT_DYNCREATE(CGraphBottomView, CFormView)
 
 /*******************************************************************************
@@ -310,11 +304,15 @@ void CGraphBottomView::vInsertSignalData()
 	CGraphChildFrame* pParentWnd = NULL;
 	pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
 
-	if(pParentWnd != NULL)
-		podList = pParentWnd->pGetSignalListDetails();
-	else
-		return;
-	
+    if(pParentWnd != NULL)
+    {
+        podList = pParentWnd->pGetSignalListDetails();
+    }
+    else
+    {
+        return;
+    }
+
     CGraphElement odTemp;
     if( podList != NULL )
     {
@@ -412,8 +410,10 @@ void CGraphBottomView::vUpdateSignalData()
 
 		dblDiff = dblValue2 - dblValue1;
 		
-		if( dblDiff < 0)
-			dblDiff = -dblDiff;
+        if( dblDiff < 0)
+        {
+            dblDiff = -dblDiff;
+        }
 
 		dRound(dblValue1, 3);
 		dRound(dblValue2, 3);		
@@ -506,10 +506,14 @@ void CGraphBottomView::OnBtnConfigure()
 	CGraphChildFrame* pParentWnd = NULL;
 	pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
 
-	if(pParentWnd != NULL)
-		podList = pParentWnd->pGetSignalListDetails();
-	else
-		return; 
+    if(pParentWnd != NULL)
+    {
+        podList = pParentWnd->pGetSignalListDetails();
+    }
+    else
+    {
+        return;
+    }
 
 	CGraphParameters par;
 	//omGraphConf.vSetValues(podList->m_odGraphParameters);
@@ -585,10 +589,14 @@ void CGraphBottomView::OnBtnGrid()
 	CGraphChildFrame* pParentWnd = NULL;
 	pParentWnd = (CGraphChildFrame*)pomGetParentWindow();	
 
-	if(pParentWnd != NULL)
-		podList = pParentWnd->pGetSignalListDetails();
-	else
-		return; 
+    if(pParentWnd != NULL)
+    {
+        podList = pParentWnd->pGetSignalListDetails();
+    }
+    else
+    {
+        return;
+    }
 
     if( podList != NULL)
     {
@@ -802,10 +810,14 @@ void CGraphBottomView::vInitGraphControl()
 	CGraphChildFrame* pParentWnd = NULL;
 	pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
 
-	if(pParentWnd != NULL)
-		podList = pParentWnd->pGetSignalListDetails();
-	else
-		return; 
+    if(pParentWnd != NULL)
+    {
+        podList = pParentWnd->pGetSignalListDetails();
+    }
+    else
+    {
+        return;
+    }
 
     if( podList != NULL )
     {
@@ -1171,15 +1183,22 @@ void CGraphBottomView::vHandleConnectionStatusChange(BOOL bConnectStatus)
 
 		CGraphList * podList = NULL;
 
-		if(pParentWnd != NULL)
-			pParentWnd->m_pomBottomView = this;	
+        if(pParentWnd != NULL)
+        {
+            pParentWnd->m_pomBottomView = this;
+        }
 
-		if(pParentWnd != NULL)
-			podList = pParentWnd->pGetSignalListDetails();
-		else
-			return; 
-		//int nTimeDelay = podList->m_odGraphParameters.m_nRefreshRate;
-		//nTimerID = SetTimer( defUPDATE_TIMER_ID , nTimeDelay, NULL );
+        if(pParentWnd != NULL)
+        {
+            podList = pParentWnd->pGetSignalListDetails();
+        }
+        else
+        {
+            return;
+        }
+
+        //int nTimeDelay = podList->m_odGraphParameters.m_nRefreshRate;
+        //nTimerID = SetTimer( defUPDATE_TIMER_ID , nTimeDelay, NULL );
     }
     else
     {
@@ -1264,10 +1283,14 @@ void CGraphBottomView::vSaveChangedInToConfig()
 	CGraphChildFrame* pParentWnd = NULL;
 	pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
 
-	if(pParentWnd != NULL)
-		podList = pParentWnd->pGetSignalListDetails();
-	else
-		return; 
+    if(pParentWnd != NULL)
+    {
+        podList = pParentWnd->pGetSignalListDetails();
+    }
+    else
+    {
+        return;
+    }
 
     CGraphParameters * pEnv = &(podList->m_odGraphParameters);
     if( pEnv != NULL )
@@ -1308,16 +1331,21 @@ void CGraphBottomView::vUpdateCursordetails(double X, double /*Y*/, short shCurs
 {
 	m_dblarrTime[shCursorID - 1] = X;
 
-	if( m_dblarrTime[1] != 0)
-	{
-		m_dblDeltaTime = m_dblarrTime[1] - m_dblarrTime[0];
-		vUpdateSignalData();
-	}
-	if( m_dblarrTime[0] == 0 && m_dblarrTime[1] == 0 )
-		vUpdateSignalData();
+    if( m_dblarrTime[1] != 0)
+    {
+        m_dblDeltaTime = m_dblarrTime[1] - m_dblarrTime[0];
+        vUpdateSignalData();
+    }
 
-	if( m_dblarrTime[0] == 0)
-		m_dblDeltaTime = 0;
+    if( m_dblarrTime[0] == 0 && m_dblarrTime[1] == 0 )
+    {
+        vUpdateSignalData();
+    }
+
+    if( m_dblarrTime[0] == 0)
+    {
+        m_dblDeltaTime = 0;
+    }
 
 	m_dblarrTime[0] = dRound(m_dblarrTime[0], 3);
 	m_dblarrTime[1] = dRound(m_dblarrTime[1], 3);
@@ -1345,13 +1373,19 @@ double CGraphBottomView::dRound(double val, unsigned int decimals)
 		unsigned int tempint = (unsigned int)tempval;
 		double decimalpart = tempval-tempint;//obtain just the decimal part
 
-		if(decimalpart>=0.5)//next integer number if greater or equal to 0.5
-			tempval = ceil(tempval);
-		else
-			tempval = floor(tempval);//otherwise stay in the current interger part
+        if(decimalpart>=0.5)//next integer number if greater or equal to 0.5
+        {
+            tempval = ceil(tempval);
+        }
+        else
+        {
+            tempval = floor(tempval);    //otherwise stay in the current interger part
+        }
 
-		return (tempval*pow((double)10,-(double)decimals))*sign;//shift again to the normal decimal places
-	}
-	else
-		return 0;
+        return (tempval*pow((double)10,-(double)decimals))*sign;//shift again to the normal decimal places
+    }
+    else
+    {
+        return 0;
+    }
 }

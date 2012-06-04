@@ -98,7 +98,7 @@ CExecuteFunc::CExecuteFunc(ETYPE_BUS eBus, CONST CString& omStrDllFileName) :
                            m_psOnEventHandlers(NULL),
                            m_hDllModule(NULL),
                            m_omStrDllFileName(omStrDllFileName),
-                           m_omStrGenericHandlerName(_T("")),
+                           m_omStrGenericHandlerName(""),
                            m_pFGenericKeyHandler(NULL),
                            m_psOnDLLHandlers(NULL),
 						   m_bDllLoaded(TRUE),
@@ -895,7 +895,7 @@ BOOL CExecuteFunc::bReadDefFile(CStringArray &omErrorArray)
         {
          if(pomException != NULL )
          {
-             TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+             char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
              // Get the exception error message
              pomException->GetErrorMessage(acErrorMsg,sizeof(acErrorMsg));
              omStrErrorMessage = acErrorMsg;
@@ -997,8 +997,8 @@ BOOL CExecuteFunc::bInitMSGStruct(CStringArray &omErrorArray)
                 {
                     if(pomException != NULL )
                     {
-                        TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
-                        CString omStrErrorMessage =_T("");
+                        char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                        CString omStrErrorMessage ="";
                         // Get the exception error message
                         pomException->GetErrorMessage(acErrorMsg,
                                                        sizeof(acErrorMsg));
@@ -1078,7 +1078,7 @@ BOOL CExecuteFunc::bInitOnKeyStruct(CStringArray &omErrorArray)
                     unKeyCount++    )
             {
                 UCHAR ucKeyVal = 0;
-                CString omStrKeyHanlderName = _T("");
+                CString omStrKeyHanlderName = "";
                 INT nIndex      = 0;
                 omStrKeyHanlderName = m_omStrArrayKeyHandlers.GetAt(unKeyCount);
                 TRY
@@ -1125,8 +1125,8 @@ BOOL CExecuteFunc::bInitOnKeyStruct(CStringArray &omErrorArray)
                 {
                     if(pomException != NULL )
                     {
-                        TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
-                        CString omStrErrorMessage =_T("");
+                        char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                        CString omStrErrorMessage ="";
                         // Get the exception error message
                         pomException->GetErrorMessage(acErrorMsg,
                                                        sizeof(acErrorMsg));
@@ -1173,9 +1173,9 @@ BOOL CExecuteFunc::bInitOnKeyStruct(CStringArray &omErrorArray)
 BOOL CExecuteFunc::bInitTimerStruct(CStringArray &omErrorArray)
 {
     BOOL bReturn = TRUE;
-    CString omStrTimerHandlerName = _T("");
+    CString omStrTimerHandlerName = "";
     INT nTotalNumberOfTimer = (COMMANINT)m_omStrArrayTimerHandlers.GetSize();
-    CString omStrErrorMessage =_T("");
+    CString omStrErrorMessage ="";
    
 	//PSTIMERSTRUCTURE psTimerStruct;
     for(INT nTimerCount = 0;
@@ -1201,7 +1201,7 @@ BOOL CExecuteFunc::bInitTimerStruct(CStringArray &omErrorArray)
 					else
 					{
 						INT nIndex = 0;
-						CString omStrTimerValue = _T("");
+						CString omStrTimerValue = "";
 						UINT unTimerValue = 0;
 						
 						nIndex = omStrTimerHandlerName.ReverseFind('_');
@@ -1243,7 +1243,8 @@ BOOL CExecuteFunc::bInitTimerStruct(CStringArray &omErrorArray)
 				{
 					if(pomException != NULL)
 					{
-						TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                        char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+						 acErrorMsg[defSIZE_OF_ERROR_BUFFER];
 						// Get the exception error message
 						pomException->GetErrorMessage(
 							acErrorMsg,sizeof(acErrorMsg));
@@ -1304,7 +1305,7 @@ BOOL CExecuteFunc::bInitErrorStruct(CStringArray &omErrorArray)
                     unErrorCount++    )
             {
                 eERROR_STATE eErrorCode  = ERROR_FRAME;
-                CString omStrErrorHandlerName = _T("");
+                CString omStrErrorHandlerName = "";
                 omStrErrorHandlerName = 
                     m_omStrArrayErrorHandlers.GetAt(unErrorCount);
                 TRY
@@ -1343,8 +1344,9 @@ BOOL CExecuteFunc::bInitErrorStruct(CStringArray &omErrorArray)
                 {
                     if(pomException != NULL )
                     {
-                        TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
-                        CString omStrErrorMessage =_T("");
+                        char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                         acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                        CString omStrErrorMessage ="";
                         // Get the exception error message
                         pomException->GetErrorMessage(acErrorMsg,
                                                        sizeof(acErrorMsg));
@@ -1401,7 +1403,7 @@ BOOL CExecuteFunc::bInitEventStructJ1939(CStringArray &omErrorArray)
         {
             for(UINT unCount = 0; unCount < unEventHandlerCount; unCount++)
             {
-                CString omStrEventHandlerName = _T("");
+                CString omStrEventHandlerName = "";
                 omStrEventHandlerName = 
                     m_omStrArrayEventHandlers.GetAt(unCount);
                 TRY
@@ -1430,8 +1432,9 @@ BOOL CExecuteFunc::bInitEventStructJ1939(CStringArray &omErrorArray)
                 {
                     if(pomException != NULL )
                     {
-                        TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
-                        CString omStrErrorMessage =_T("");
+                        char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                         acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                        CString omStrErrorMessage ="";
                         // Get the exception error message
                         pomException->GetErrorMessage(acErrorMsg,
                                                        sizeof(acErrorMsg));
@@ -1495,7 +1498,7 @@ BOOL CExecuteFunc::bInitDLLStruct(CStringArray &omErrorArray)
                     unDLLCount++    )
             {
                 eDLLHANDLER eDLLCode  = DLL_UNLOAD ;
-                CString omStrDLLHandlerName = _T("");
+                CString omStrDLLHandlerName = "";
                 omStrDLLHandlerName = m_omStrArrayDLLHandlers.GetAt(unDLLCount);
                 TRY
                 {                    
@@ -1520,8 +1523,9 @@ BOOL CExecuteFunc::bInitDLLStruct(CStringArray &omErrorArray)
                 {
                     if(pomException != NULL )
                     {
-                        TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
-                        CString omStrErrorMessage =_T("");
+                        char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                         acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                        CString omStrErrorMessage ="";
                         // Get the exception error message
                         pomException->GetErrorMessage(acErrorMsg,
                                                        sizeof(acErrorMsg));
@@ -1736,11 +1740,11 @@ BOOL CExecuteFunc::bAllocateMemory(UINT unMsgRangeCount)
 BOOL CExecuteFunc::bInitMsgIDandNameHandlStruct(UINT unMsgIDandNameCount, 
                                                 CStringArray &omErrorArray)
 {    
-    CString omStrFuncName     = _T("");
-    CString omStrMsgIDType    = _T("");
-    CString omStrMsgNameType  = _T("");
-    CString omStrTemp         = _T("");
-    CString omStrMsgNameOrID  = _T("");
+    CString omStrFuncName     = "";
+    CString omStrMsgIDType    = "";
+    CString omStrMsgNameType  = "";
+    CString omStrTemp         = "";
+    CString omStrMsgNameOrID  = "";
     BOOL    bReturn           = TRUE;
 
     omStrMsgIDType    = CGlobalObj::omGetBusSpecMsgHndlrName(m_eBus);
@@ -1775,7 +1779,7 @@ BOOL CExecuteFunc::bInitMsgIDandNameHandlStruct(UINT unMsgIDandNameCount,
             }
             else if(omStrTemp.Compare(omStrMsgIDType) == 0 )
             {
-                TCHAR* pcStopStr = NULL;
+                char* pcStopStr = NULL;
                 nMsgID = static_cast <INT> 
                     (_tcstol(omStrMsgNameOrID,&pcStopStr,16) );
             }
@@ -1821,7 +1825,7 @@ BOOL CExecuteFunc::bInitMsgIDandNameHandlStruct(UINT unMsgIDandNameCount,
                 if(pomException != NULL )
                 {
                     TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
-                    CString omStrErrorMessage =_T("");
+                    CString omStrErrorMessage ="";
                     // Get the exception error message
                     pomException->GetErrorMessage(acErrorMsg,
                                                    sizeof(acErrorMsg));
@@ -1859,10 +1863,10 @@ BOOL CExecuteFunc::bInitMsgIDandNameHandlStruct(UINT unMsgIDandNameCount,
 BOOL CExecuteFunc::bInitMsgIDRangeHandlStruct(UINT unMsgIDRangeCount, 
                                               CStringArray &omErrorArray)
 {
-    CString omStrFuncName     = _T("");
-    CString omStrMsgIDFrom    = _T("");
-    CString omStrMsgIDTo      = _T("");
-    CString omStrTemp         = _T("");
+    CString omStrFuncName     = "";
+    CString omStrMsgIDFrom    = "";
+    CString omStrMsgIDTo      = "";
+    CString omStrTemp         = "";
     BOOL    bReturn           = TRUE;
 
     if(m_psMsgHandlersInfo != NULL )
@@ -1873,12 +1877,12 @@ BOOL CExecuteFunc::bInitMsgIDRangeHandlStruct(UINT unMsgIDRangeCount,
             omStrFuncName    = m_omStrArrayMsgRange.GetAt(i);
             // Get the message ID from the string
             omStrTemp        = omStrFuncName.Right(omStrFuncName.GetLength() -
-                                                 omStrFuncName.Find(_T("_")) - 1 );
-            omStrMsgIDFrom = omStrTemp.Left(omStrTemp.Find(_T("_")));
+                                                 omStrFuncName.Find("_") - 1 );
+            omStrMsgIDFrom = omStrTemp.Left(omStrTemp.Find("_"));
             omStrMsgIDTo   = omStrTemp;
-            omStrMsgIDTo.Replace(omStrMsgIDFrom,_T(""));
-            omStrMsgIDTo.Replace(_T("_"),_T(""));
-            TCHAR* pcStopStr = NULL;
+            omStrMsgIDTo.Replace(omStrMsgIDFrom,"");
+            omStrMsgIDTo.Replace("_","");
+            char* pcStopStr = NULL;
             UINT unMsgIDFrom  = _tcstol((LPCTSTR )omStrMsgIDFrom,&pcStopStr,16);
             UINT unMsgIDTo = _tcstol((LPCTSTR )omStrMsgIDTo,&pcStopStr,16);
             TRY
@@ -1924,8 +1928,8 @@ BOOL CExecuteFunc::bInitMsgIDRangeHandlStruct(UINT unMsgIDRangeCount,
             {
                 if(pomException != NULL )
                 {
-                    TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
-                    CString omStrErrorMessage =_T("");
+                    char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                    CString omStrErrorMessage ="";
                     // Get the exception error message
                     pomException->GetErrorMessage(acErrorMsg,
                                                    sizeof(acErrorMsg));

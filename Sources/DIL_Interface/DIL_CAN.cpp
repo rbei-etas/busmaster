@@ -44,7 +44,7 @@ static CDIL_CAN_DUMMY* sg_pouDIL_CAN_DUMMY = new CDIL_CAN_DUMMY;
 typedef struct
 {
     DWORD           m_dwDIL;
-    TCHAR           m_acDIL[MAX_DILNAME];
+    char           m_acDIL[MAX_DILNAME];
 } ENTRY_DIL;
 
 static ENTRY_DIL sg_ListDIL[] =
@@ -282,7 +282,7 @@ HRESULT CDIL_CAN::DILC_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE
  * This function registers the client. Only registered client's buffer will be
  * updated on receive of a msg in the bus.
  */
-HRESULT CDIL_CAN::DILC_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
+HRESULT CDIL_CAN::DILC_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName)
 {
 	return m_pBaseDILCAN_Controller->CAN_RegisterClient(bRegister, ClientID, pacClientName);    
 }
@@ -444,15 +444,6 @@ HRESULT CDIL_CAN::DILC_ResetHardware(void)
 	return m_pBaseDILCAN_Controller->CAN_ResetHardware();    
 }
 
-/**
- * \brief     Get transmittable messages
- *
- * Call to receive list of the transmittable messages
- */
-HRESULT CDIL_CAN::DILC_GetTxMsgBuffer(BYTE*& pouTxMsgBuffer)
-{
-	return m_pBaseDILCAN_Controller->CAN_GetTxMsgBuffer(pouTxMsgBuffer);    
-}
 
 /**
  * \brief     Send messages
@@ -466,37 +457,9 @@ HRESULT CDIL_CAN::DILC_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
 	return m_pBaseDILCAN_Controller->CAN_SendMsg(dwClientID, sCanTxMsg);    
 }
 
-/**
- * \brief     Get basic board info
- *
- * Get basic information of the board
- */
-HRESULT CDIL_CAN::DILC_GetBoardInfo(s_BOARDINFO& RBIN_BoardInfo)
-{	
-	return m_pBaseDILCAN_Controller->CAN_GetBoardInfo(RBIN_BoardInfo);    
-}
 
-/**
- * \brief     Get bus configuration info
- *
- * Get salient informations on current bus configuration
- */
-HRESULT CDIL_CAN::DILC_GetBusConfigInfo(BYTE* RBIN_BusInfo)
-{
-	return m_pBaseDILCAN_Controller->CAN_GetBusConfigInfo(RBIN_BusInfo);    
-}
 
-/**
- * \brief     Get version information
- * \req       RSI_14_018 - DILC_GetVersionInfo
- * \req       RS_23_20 - Getter for the version information of the DIL for the present bus
- *
- * Call to receive the version informations
- */
-HRESULT CDIL_CAN::DILC_GetVersionInfo(VERSIONINFO& sVerInfo)
-{
-	return m_pBaseDILCAN_Controller->CAN_GetVersionInfo(sVerInfo);    
-}
+
 
 /**
  * \brief     Get last error as string
@@ -505,9 +468,9 @@ HRESULT CDIL_CAN::DILC_GetVersionInfo(VERSIONINFO& sVerInfo)
  *
  * Call to get descriptive string of the last error occurred
  */
-HRESULT CDIL_CAN::DILC_GetLastErrorString(char acErrorStr[], int nLength)
+HRESULT CDIL_CAN::DILC_GetLastErrorString(string& acErrorStr)
 {
-	return m_pBaseDILCAN_Controller->CAN_GetLastErrorString(acErrorStr, nLength);    
+	return m_pBaseDILCAN_Controller->CAN_GetLastErrorString(acErrorStr);    
 }
 
 /**
@@ -545,11 +508,6 @@ HRESULT CDIL_CAN::DILC_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_P
  *
  * Call to set PASS/STOP filter
  */
-HRESULT CDIL_CAN::DILC_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIDs, UINT nLength)
-{
-	return m_pBaseDILCAN_Controller->CAN_FilterFrames(FilterType, Channel, punMsgIDs, nLength);    
-}
-
 /**
  * \brief     Get error counts
  * \req       RSI_14_023 - DILC_GetErrorCount

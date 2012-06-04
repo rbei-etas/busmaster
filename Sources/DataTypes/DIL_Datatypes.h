@@ -22,9 +22,15 @@
  * Defines DIL related data types
  */
 
+#pragma once
 
-#if !defined DIL_DATATYPES_H__INCLUDED_
-#define DIL_DATATYPES_H__INCLUDED_
+/* C++ includes */
+#include <string>
+
+/* Project includes */
+#include "../Include/BaseDefs.h"
+
+using namespace std;
 
 #define NO_SELECTION_HI 0xCDCD
 
@@ -38,14 +44,26 @@ const UINT64 J1939_ECU_NAME     = 0x8000000000000001;
 const BYTE MSGBUF_ADD = 0x1;
 const BYTE MSGBUF_CLEAR = 0x0;
 
-enum
+enum ECONTR_STATUS
 {
-    RESET_STATE = 0, INITIALISED, WAITING, NORMAL_ACTIVE, NORMAL_PASSIVE, NOT_DEFINED
+    RESET_STATE = 0,    // reset
+    INITIALISED,        // stopped / initialized
+    WAITING,            // started / waiting for startup completion
+    NORMAL_ACTIVE,      // started / normal active (running)
+    NORMAL_PASSIVE,     // started / normal passiv
+    NOT_DEFINED,        // started / halt mode
 };
 
 enum ECONTR_PARAM
 {
-    NUMBER_HW = 0, NUMBER_CONNECTED_HW, PEAK_ERR_CNT, DRIVER_STATUS, ERR_CNT, HW_MODE, CNTR_STATUS, CON_TEST
+    NUMBER_HW = 0,
+    NUMBER_CONNECTED_HW,
+    PEAK_ERR_CNT,
+    DRIVER_STATUS,
+    ERR_CNT,
+    HW_MODE,
+    CNTR_STATUS,
+    CON_TEST,
 };
 
 //----------------------------------------------------------------------------
@@ -115,16 +133,16 @@ typedef enum TXMODE
 
 #define  MAX_CHAR_SHORT       128
 #define  MAX_CHAR_LONG        512
-#define  MAX_CHAR			  1024
+#define  MAX_CHAR             1024
 
 typedef struct tagHwInterface
 {
    DWORD    m_dwIdInterface;
    DWORD    m_dwVendor;
    BYTE     m_bytNetworkID;   
-   TCHAR    m_acNameInterface[MAX_CHAR_SHORT];
-   TCHAR    m_acDescription[MAX_CHAR_LONG];
-   TCHAR    m_acDeviceName[MAX_CHAR_SHORT];
+   char    m_acNameInterface[MAX_CHAR_SHORT];
+   char    m_acDescription[MAX_CHAR_LONG];
+   char    m_acDeviceName[MAX_CHAR_SHORT];
 } INTERFACE_HW;
 
 const int MAX_HW = 32;
@@ -143,12 +161,9 @@ typedef struct tagVersionInfo
 
 typedef struct 
 {
-    TCHAR   m_acName[MAX_DILNAME];
+    char   m_acName[MAX_DILNAME];
     DWORD   m_dwDriverID;
     UINT    m_ResourceID;
 } DILINFO;
 
 typedef DILINFO DILLIST[MAX_DILS];
-
-
-#endif // DIL_DATATYPES_H__INCLUDED_

@@ -394,11 +394,15 @@ HRESULT CMsgContainerCAN:: hToggleDILBufferRead(BOOL bRead)
 {
 	HRESULT hResult = S_FALSE;
     if (NULL != m_pouDIL_CAN_Interface)
-    {		
-		if(bRead)
-			hResult = m_pouDIL_CAN_Interface->DILC_ManageMsgBuf(MSGBUF_ADD, m_dwClientId, &m_ouMCCanBufFSE);
-		else
-			hResult = m_pouDIL_CAN_Interface->DILC_ManageMsgBuf(MSGBUF_CLEAR, m_dwClientId, &m_ouMCCanBufFSE);
+    {
+        if(bRead)
+        {
+            hResult = m_pouDIL_CAN_Interface->DILC_ManageMsgBuf(MSGBUF_ADD, m_dwClientId, &m_ouMCCanBufFSE);
+        }
+        else
+        {
+            hResult = m_pouDIL_CAN_Interface->DILC_ManageMsgBuf(MSGBUF_CLEAR, m_dwClientId, &m_ouMCCanBufFSE);
+        }
     }
     return hResult;
 }
@@ -525,7 +529,7 @@ void CMsgContainerCAN::vSaveOWandGetDetails( void *pMsg,
                                           int &nBufferIndex )
 {
     STCANDATA* pouCANData = (STCANDATA*)pMsg;
-    dwTimeStamp = pouCANData->m_lTickCount.QuadPart;
+	dwTimeStamp = pouCANData->m_lTickCount.QuadPart;
     nMsgCode   = pouCANData->m_uDataInfo.m_sCANMsg.m_unMsgID;
     dwMapIndex =  nCreateMapIndexKey((LPVOID)pouCANData);
     //Now write into the array
@@ -539,9 +543,11 @@ HRESULT CMsgContainerCAN::ApplyFilterScheme(void* pvFilterApplied)
     if (psFilterCAN != NULL)
     {
         EnterCriticalSection(&m_omCritSecFilter);
-        if (m_sFilterCAN.bClone(*psFilterCAN) == TRUE)
+//        if (m_sFilterCAN.bClone(*psFilterCAN) == TRUE)
+        if (m_sFilterCAN.bClone(*psFilterCAN) == true)
         {
-            hResult = TRUE;
+//            hResult = TRUE;
+            hResult = S_OK;
         }
         LeaveCriticalSection(&m_omCritSecFilter);
     }
@@ -553,9 +559,11 @@ HRESULT CMsgContainerCAN::GetFilterScheme(void* pvFilterApplied)
     SFILTERAPPLIED_CAN* psFilterCAN = (SFILTERAPPLIED_CAN*)pvFilterApplied;
     if (psFilterCAN != NULL)
     {
-        if (psFilterCAN->bClone(m_sFilterCAN) == TRUE)
+//        if (psFilterCAN->bClone(m_sFilterCAN) == TRUE)
+        if (psFilterCAN->bClone(m_sFilterCAN) == true)
         {
-            hResult = TRUE;
+            //hResult = TRUE;
+            hResult = S_OK;
         }
     }
     return hResult;
@@ -599,7 +607,7 @@ HRESULT CMsgContainerCAN::hUpdateFormattedMsgStruct(int nListIndex,
         if (IS_TM_REL_SET(bExprnFlag_Disp))
         {
             //If relative time then the time will be delta time, for formatting
-            sCANCurrData.m_lTickCount.QuadPart = sCANCurrDataSpl.m_nDeltime;
+			sCANCurrData.m_lTickCount.QuadPart = sCANCurrDataSpl.m_nDeltime;
         }
     }
     else
@@ -610,7 +618,7 @@ HRESULT CMsgContainerCAN::hUpdateFormattedMsgStruct(int nListIndex,
             if (IS_TM_REL_SET(bExprnFlag_Disp))
             {
                 //If relative time then the time will be delta time, for formatting
-                sCANCurrData.m_lTickCount.QuadPart -= nTimeOffset;
+				sCANCurrData.m_lTickCount.QuadPart -= nTimeOffset;
             }
         }
     }
@@ -652,7 +660,7 @@ HRESULT CMsgContainerCAN::hUpdateFormattedMsgStruct(int nListIndex,
 ******************************************************************************/
 void CMsgContainerCAN::vSetCurrMsgName(CString strMsgNameOrCode)
 {
-	CMsgContainerBase::bCopyStringToTCHARArr (m_sOutFormattedData.m_acMsgDesc, strMsgNameOrCode, 
+	CMsgContainerBase::bCopyStringTocharArr (m_sOutFormattedData.m_acMsgDesc, strMsgNameOrCode, 
                            sizeof(m_sOutFormattedData.m_acMsgDesc));	
 }
 
@@ -733,9 +741,9 @@ void CMsgContainerCAN::vClearFormattedMsgStruct()
     Author(s)        :  Anish kumar
     Date Created     :  01.04.2010
 ******************************************************************************/
-void CMsgContainerCAN::vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL &sHdrColStruct,
-                                                TCHAR *pomDataPtrArr[MAX_MSG_WND_COL_CNT],
-                                                BYTE bExprnFlag_Disp)
+void CMsgContainerCAN::vGetUpdatedCurrDataPtrArray(SMSGWNDHDRCOL& sHdrColStruct,
+        char* pomDataPtrArr[MAX_MSG_WND_COL_CNT],
+        BYTE bExprnFlag_Disp)
 {
     //Time mode
     if (IS_TM_ABS_SET(bExprnFlag_Disp)) //for Absolute non-reset timestamp

@@ -10,13 +10,13 @@
  *    Rev 1.0   01 Mar 2011 17:05:30   CANMNTTM
  *  
 
-  Author(s)     :  Pradeep Kadoor
-  Date Created  :  16/02/2011
-  Modified By   :  
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
-******************************************************************************/
-#if !defined SIGNALWATCH_J1939_H__INCLUDED_
-#define SIGNALWATCH_J1939_H__INCLUDED_
+/**
+ * \file      SignalWatch_J1939.h
+ * \author    Ratnadip Choudhury
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ */
+
+#pragma once
 
 #include "SignalWatch_Resource.h"
 #include "Include/Basedefs.h"
@@ -51,6 +51,8 @@ private:
     CRITICAL_SECTION m_omCritSecSW;
 
 public:
+    CSignalWatch_J1939(void) {};
+    ~CSignalWatch_J1939(void) {};
     BOOL InitInstance(void);
     int ExitInstance(void);
 
@@ -71,5 +73,3 @@ private:
     BOOL bStartSigWatchReadThread(void);
 
 };
-
-#endif //SIGNALWATCH_J1939_H__INCLUDED_

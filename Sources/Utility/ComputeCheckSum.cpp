@@ -16,7 +16,7 @@
 /**
  * \file      ComputeCheckSum.cpp
  * \brief     This file contains implementation of CComputeCheckSum class
- * \author    Anish Kumar
+ * \author    Anish Kumar, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This file contains implementation of CComputeCheckSum class
@@ -24,13 +24,6 @@
 
 #include "Utils_stdafx.h"
 #include "ComputeCheckSum.h"    // For CComputeCheckSum class definition
-
-
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
 
 #define defSIZE_OF_ERROR_BUFFER 1024
 #define defPROJECT_NAME         _T("MCNet")
@@ -129,9 +122,8 @@ BOOL CComputeCheckSum::bGetCheckSum(CString &omStrConfigFileName,
     DWORD dwRead                 = 0;
     BOOL bReturn                 = FALSE;
     BOOL bFileOpen               = FALSE;
-    CString omStrErrorMessage    = _T("");
-    TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
-
+    CString omStrErrorMessage    = "";
+    char  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
     // Open the configration file.
     TRY
     {
@@ -214,9 +206,8 @@ BOOL CComputeCheckSum::bSetCheckSum(CString &omStrConfigFileName,
     DWORD dwRead                 = 0;
     BOOL bReturn                 = FALSE;
     BOOL bFileOpen               = FALSE;
-    CString omStrStrErrorMessage = _T("");
-    TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
-
+    CString omStrStrErrorMessage = "";
+    char  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
     // Open the configration file template.
     TRY
     {
@@ -312,9 +303,8 @@ BOOL CComputeCheckSum::COM_bSetCheckSum(CString &omStrConfigFileName,
     DWORD dwRead                 = 0;
     BOOL bReturn                 = FALSE;
     BOOL bFileOpen               = FALSE;
-    CString omStrStrErrorMessage = _T("");
-    TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
-
+    CString omStrStrErrorMessage = "";
+    char  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
     // Open the configration file template.
     TRY
     {

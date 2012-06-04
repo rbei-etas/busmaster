@@ -53,14 +53,18 @@ public:
         const RECT& rect,
         CWnd* pParentWnd, UINT nID,
         CCreateContext* /*pContext = NULL*/)
-    { return CreateControl(GetClsid(), lpszWindowName, dwStyle, rect, pParentWnd, nID); }
+    {
+        return CreateControl(GetClsid(), lpszWindowName, dwStyle, rect, pParentWnd, nID);
+    }
 
     BOOL Create(LPCTSTR lpszWindowName, DWORD dwStyle,
         const RECT& rect, CWnd* pParentWnd, UINT nID,
         CFile* pPersist = NULL, BOOL bStorage = FALSE,
         BSTR bstrLicKey = NULL)
-    { return CreateControl(GetClsid(), lpszWindowName, dwStyle, rect, pParentWnd, nID,
-        pPersist, bStorage, bstrLicKey); }
+    {
+        return CreateControl(GetClsid(), lpszWindowName, dwStyle, rect, pParentWnd, nID,
+                             pPersist, bStorage, bstrLicKey);
+    }
 
 // Attributes
 public:

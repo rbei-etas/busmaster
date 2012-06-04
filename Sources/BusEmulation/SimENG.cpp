@@ -22,13 +22,32 @@
  * Implementation of CSimENG
  */
 
-#include "stdafx_BusSim.h"
+#define STRICT
+#define _ATL_APARTMENT_THREADED
+#define _ATL_NO_AUTOMATIC_NAMESPACE
+#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS  // some CString constructors will be explicit
+// turns off ATL's hiding of some common and often safely ignored warning messages
+#define _ATL_ALL_WARNINGS
+
+/* MFC includes */
+#include <atlbase.h>
+#include <atlcom.h>
+#include <time.h>
+
+using namespace ATL;
+
+/* C++ includes */
+#include <map>
+
+/* Project includes */
+#include "resource_BusSim.h"
 #include "DataTypes/MsgBufVSE.h"
 #include "DataTypes/DIL_Datatypes.h"
 #include "SimENG.h"
 #include "Utility/Utility.h"
 #include "Utility/Utility_Thread.h"
 
+using namespace std;
 
 #define BASE_PIPENAME   "\\\\.\\Pipe\\"
 #define PIPE_TIMEOUT    500
@@ -46,7 +65,7 @@ typedef struct
 
 } SPARAM_CLIENT;
 
-typedef std::map<USHORT, SPARAM_CLIENT> CLIENT_MAP;
+typedef map<USHORT, SPARAM_CLIENT> CLIENT_MAP;
 
 static CLIENT_MAP  sg_ClientMap;
 static CMsgBufVSE sg_MessageBuf;
@@ -57,11 +76,11 @@ static LARGE_INTEGER sg_lnCurrCounter;
 static LARGE_INTEGER sg_lnTimeStamp;
 static SYSTEMTIME sg_CurrSysTime;
 
-const int MAX_STRING    = 256;
+
 //#define INITIALISE_DATA(Data)   memset(Data, 0, sizeof(Data))
 
 // Buffer for the driver operation related error messages
-static CHAR sg_acErrStr[MAX_STRING] = {'\0'};
+static string sg_acErrStr;
 
 static CRITICAL_SECTION sg_CriticalSection;
 
@@ -90,13 +109,12 @@ static void GetSystemErrorString()
         NULL );
     if (dwResult <= 0)
     {
-        strcpy(sg_acErrStr, "system error message retrieval operation failed");
+        sg_acErrStr = "system error message retrieval operation failed";
     }
     else
     {
         LPSTR pBuf = T2A((LPTSTR) lpMsgBuf);
-        INITIALISE_DATA(sg_acErrStr);
-        lstrcpy(sg_acErrStr, pBuf);
+        sg_acErrStr = pBuf;
         // Free the buffer.
         LocalFree(lpMsgBuf);
     }
@@ -370,19 +388,19 @@ STDMETHODIMP CSimENG::RegisterClient(USHORT Bus, USHORT MaxLenFrame,
     // Generate a unique random number as client identifier
     USHORT ushTempID;
     // Zero has a special meaning; hence can't be taken as a client ID
-    do 
+    do
     {
         ushTempID = (USHORT) rand();
-    } while ((sg_ClientMap.find(ushTempID) != sg_ClientMap.end()) && (ushTempID != 0x0));
+    }
+    while ((sg_ClientMap.find(ushTempID) != sg_ClientMap.end()) && (ushTempID != 0x0));
 
     // From the client identifier we will now generate a pipe & mutex name
     // First generate mutex name
     char EventName[32] = {'\0'};
-    sprintf(EventName, "%X", ushTempID);
+    sprintf_s(EventName, "%X", ushTempID);
     // followed by the pipe name
     char PipeName[64] = BASE_PIPENAME;
-    strcat(PipeName, EventName);
-
+    strcat_s(PipeName, EventName);
     // Pipe name; convert from ASCII string to BSTR
     BSTR bstrPipe = A2BSTR(PipeName);
     // Mutex name; convert from ASCII string to BSTR
@@ -417,7 +435,7 @@ STDMETHODIMP CSimENG::RegisterClient(USHORT Bus, USHORT MaxLenFrame,
         {
             bProceed = false;
             GetSystemErrorString();
-            MessageBox(NULL, sg_acErrStr, "Error", MB_OK);
+            MessageBox(NULL, sg_acErrStr.c_str(), "Error", MB_OK);
         }
 
         if (bProceed)

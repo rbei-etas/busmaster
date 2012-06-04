@@ -42,14 +42,6 @@
 #include "DataTypes/MsgBufAll_Datatypes.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
 
-
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 // Definition for image indices
 #define defIMAGE_DIRTY 2
 #define defIMAGE_GOOD  0
@@ -176,37 +168,28 @@ BEGIN_MESSAGE_MAP(CTxMsgDetailsView, CFormView)
     ON_EN_UPDATE(IDC_EDIT_DB8, OnUpdateEditDataBytes)
     ON_BN_CLICKED(IDC_RBTN_MSGTYPE_EXTD, OnRbtnMsgtypeStd)
     ON_CBN_SELCHANGE(IDC_COMB_CHANNEL_ID, OnSelchangeCombChannelId)
-    //}}AFX_MSG_MAP
+
+    ON_EN_KILLFOCUS(IDC_EDIT_DLC, /*&CTxMsgDetailsView::*/vAutoUpdateModifyChanges)
+	ON_EN_KILLFOCUS(IDC_EDIT_DB1, /*&CTxMsgDetailsView::*/vAutoUpdateModifyChanges)
+	ON_EN_KILLFOCUS(IDC_EDIT_DB2, /*&CTxMsgDetailsView::*/vAutoUpdateModifyChanges)
+	ON_EN_KILLFOCUS(IDC_EDIT_DB3, /*&CTxMsgDetailsView::*/vAutoUpdateModifyChanges)
+	ON_EN_KILLFOCUS(IDC_EDIT_DB4, /*&CTxMsgDetailsView::*/vAutoUpdateModifyChanges)
+	ON_EN_KILLFOCUS(IDC_EDIT_DB5, /*&CTxMsgDetailsView::*/vAutoUpdateModifyChanges)
+	ON_EN_KILLFOCUS(IDC_EDIT_DB6, /*&CTxMsgDetailsView::*/vAutoUpdateModifyChanges)
+	ON_EN_KILLFOCUS(IDC_EDIT_DB7, /*&CTxMsgDetailsView::*/vAutoUpdateModifyChanges)
+	ON_EN_KILLFOCUS(IDC_EDIT_DB8, /*&CTxMsgDetailsView::*/vAutoUpdateModifyChanges)
 END_MESSAGE_MAP()
 
-#ifdef _DEBUG
-void CTxMsgDetailsView::AssertValid() const
-{
-    CFormView::AssertValid();
-}
-
-void CTxMsgDetailsView::Dump(CDumpContext& dc) const
-{
-    CFormView::Dump(dc);
-}
-#endif //_DEBUG
-
-
-/*******************************************************************************
-  Function Name  : OnInitialUpdate
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called by the framework during initial
-                   show of this view. This function will register iteself in to
-                   parent window class so that other views shall access it. And
-                   this function will initialise signal list, message ID/Name
-                   combobox and other UI components
-  Member of      : CTxMsgDetailsView
-  Author(s)      : Raja N
-  Date Created   : 27.4.2005
-  Modifications  : 
-*******************************************************************************/
-void CTxMsgDetailsView::OnInitialUpdate() 
+/**
+ * \brief On Initial Update
+ *
+ * This function will be called by the framework during initial
+ * show of this view. This function will register iteself in to
+ * parent window class so that other views shall access it. And
+ * this function will initialise signal list, message ID/Name
+ * combobox and other UI components
+ */
+void CTxMsgDetailsView::OnInitialUpdate()
 {
     // Call Parent function to do init
     CFormView::OnInitialUpdate();
@@ -388,17 +371,17 @@ void CTxMsgDetailsView::vSetControlProperties()
 *******************************************************************************/
 void CTxMsgDetailsView::vInitSignalListCtrl()
 {
-    CHAR caColumnName[][defSIGNAL_LIST_STRING_MAX_LENGTH] 
-                            = { defSTR_COL_SIGNAL_NAME,
-                                defSTR_RAW_COLUMN,
-                                defSTR_PHYSICAL_COLUMN,
-                                defSTR_SIGNAL_UNIT };
+    CHAR caColumnName[][defSIGNAL_LIST_STRING_MAX_LENGTH]
+        = { defSTR_COL_SIGNAL_NAME,
+            defSTR_RAW_COLUMN,
+            defSTR_PHYSICAL_COLUMN,
+            defSTR_SIGNAL_UNIT
+          };
     INT nColumnFormat[]     = { LVCFMT_LEFT,
                                 LVCFMT_CENTER,
                                 LVCFMT_CENTER,
-                                LVCFMT_LEFT};
-
-
+                                LVCFMT_LEFT
+                              };
     RECT rListCtrlRect;
     INT nTotalColunmSize = 0;
     INT nTotalStrLengthPixel = 0;
@@ -1022,6 +1005,7 @@ void CTxMsgDetailsView::vEnableAddButton(BOOL bEnable)
             ( CTxFunctionsView * )pomGetFunctionsViewPointer();
         if( pView != NULL )
         {
+			if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
             pView->m_omButtonApply.EnableWindow( TRUE );
         }
     }
@@ -1096,7 +1080,8 @@ BOOL CTxMsgDetailsView::vUpdateSelectedMessageDetails()
                 ( CTxFunctionsView * )pomGetFunctionsViewPointer();
             if( pView != NULL )
             {
-                pView->m_omButtonApply.EnableWindow( TRUE );
+				if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+					pView->m_omButtonApply.EnableWindow( TRUE );
             }
         }
     }
@@ -1228,7 +1213,9 @@ void CTxMsgDetailsView::vShowSignalValues(const CSignalInfoArray &romSigInfo)
                         break;
                     }
                     else
+                    {
                         psSignal = psSignal->m_psNextSignalList;
+                    }
                 }
                 // If signal information found
                 if( psSignal != NULL )
@@ -1250,8 +1237,9 @@ void CTxMsgDetailsView::vShowSignalValues(const CSignalInfoArray &romSigInfo)
                             sColType.m_omEntries.Add(
                                 pomDS->m_omStrSignalDescriptor );
                             // Use signal descriptor value as current physical
-                            if( sSignalInfo.m_dPhyValue == 
-                                        pomDS->m_n64SignalVal )
+//                            if( sSignalInfo.m_dPhyValue == 
+                            if( sSignalInfo.m_un64RawValue == 
+								pomDS->m_n64SignalVal )
                             {
                                 omStrFormat = pomDS->m_omStrSignalDescriptor;
                                 bFound = TRUE;
@@ -1290,10 +1278,10 @@ void CTxMsgDetailsView::vShowSignalValues(const CSignalInfoArray &romSigInfo)
                             sNumInfo.m_byFlag |= SIGNED_VAL;
                         }
                         // For floating point check
-                        if( psSignal->m_fSignalFactor - 
-                            ((int) psSignal->m_fSignalFactor) != 0.0f ||
-                            psSignal->m_fSignalOffset - 
-                            ((int) psSignal->m_fSignalOffset) != 0.0f )
+                        if( ((psSignal->m_fSignalFactor - 
+                            ((int) psSignal->m_fSignalFactor)) != 0.0f) ||
+                            ((psSignal->m_fSignalOffset - 
+                            ((int) psSignal->m_fSignalOffset)) != 0.0f ))
                         {
                             sNumInfo.m_byFlag |= FLOAT_VAL;
                         }
@@ -1598,20 +1586,13 @@ CWnd * CTxMsgDetailsView::pomGetFunctionsViewPointer() const
     return pView;
 }
 
-/******************************************************************************/
-/*  Function Name    :  bValidateData                                         */
-/*  Input(s)         :                                                        */
-/*  Output           :  TRUE or FALSE                                         */
-/*  Functionality    :  This function will validate if the user has entered   */
-/*                        valid data in Code and DLC edit controls            */
-/*                                                                            */
-/*  Member of        :  CTxMsgDetailsView                                     */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */    
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
-/******************************************************************************/
+/**
+ * \brief  Validate Data
+ * \return TRUE or FALSE
+ *
+ * This function will validate if the user has entered
+ * valid data in Code and DLC edit controls
+ */
 BOOL CTxMsgDetailsView::bValidateData()
 {
     // Assume Failure
@@ -1619,7 +1600,7 @@ BOOL CTxMsgDetailsView::bValidateData()
     // Selected Message Code
     int nMsgCode = -1;
     // User has to input atleast msg code and dlc
-    CString omStr = _T("");
+    CString omStr = "";
     UpdateData(TRUE);
     // Get the message ID.
     nMsgCode = nGetMessageID();
@@ -1792,10 +1773,11 @@ void CTxMsgDetailsView::vAdjustWidthMessageComboBox()
 
 		// Add the avg width to prevent clipping
 		sz.cx += tm.tmAveCharWidth;
-		if (sz.cx > dx)
-			dx = sz.cx;
-	}
-
+        if (sz.cx > dx)
+        {
+            dx = sz.cx;
+        }
+    }
 
 	// Select the old font back into the DC
 	pDC->SelectObject(pOldFont);
@@ -1914,11 +1896,21 @@ void CTxMsgDetailsView::OnSelchangeCombMsgIdName()
                             ( CTxFunctionsView * )pomGetFunctionsViewPointer();
                         if( pView != NULL )
                         {
-                            pView->m_omButtonApply.EnableWindow( TRUE );
+							if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+								pView->m_omButtonApply.EnableWindow( TRUE );
                         }
                     }
                 }
+
             }
+
+			int				nCurrentIndex = -1;
+			nCurrentIndex = pomListView ->m_omLctrMsgList.GetNextItem(nCurrentIndex,
+                                                            LVNI_SELECTED );
+			if(nCurrentIndex != -1)
+			{
+				vCallApplyChanges();
+			}
         }
         else
         {
@@ -2159,6 +2151,8 @@ void CTxMsgDetailsView::OnRbtnMsgtypeStd()
         {
             bSetStatusText(defSTR_INVALID_DLC);
         }
+
+		vCallApplyChanges();
     }
     else
     {
@@ -2249,6 +2243,7 @@ void CTxMsgDetailsView::OnChkbMsgtypeRtr()
         {
             bSetStatusText(defSTR_INVALID_DLC);
         }
+		vCallApplyChanges();
     }
     else
     {
@@ -2302,8 +2297,11 @@ void CTxMsgDetailsView::OnButtonAddMsg()
             ( CTxFunctionsView * )pomGetFunctionsViewPointer();
         if( pView != NULL )
         {
-            pView->m_omButtonApply.EnableWindow( TRUE );
+			if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+				pView->m_omButtonApply.EnableWindow( TRUE );
         }
+		//Update the global message store 
+		vCallApplyChanges();
     }
 	vUpdateStateDataBytes();
 }
@@ -2445,8 +2443,8 @@ void CTxMsgDetailsView::OnItemchangedLstcSigDetails( NMHDR* pNMHDR,
                     break;
             }
         }
+		vCallApplyChanges();
     }
-	vUpdateStateDataBytes();
 
     *pResult = 0;
 }
@@ -2984,32 +2982,20 @@ void CTxMsgDetailsView::vUpdateStateDataBytes()
 	m_odDB8.SetReadOnly(dlc < 8);
 }
 
-/******************************************************************************/
-/*  Function Name    :  vSetValues                                            */
-/*  Input(s)         :  psTxMsg : pointer to message frame detail             */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will format the data passed as parameter*/
-/*                      and update the details into the controls below the    */
-/*                      message frame list.                                   */
-/*                                                                            */
-/*  Member of        :  CTxMsgDetailsView                                     */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  22.07.2004, Added init of DLC field on Message ID chg */
-/*  Modification By  :  ANISH                                                 */
-/*  Modification on  :  18.12.2006,Changed for MDB,show Msg Name with ID in   */
-/*						in combobox											  */
-/*  Modification By  :  ANISH                                                 */
-/*  Modification on  :  09.01.2007,Added UpdateData to fix the bug related to */
-/*						extended msg ID 									  */
-/******************************************************************************/
+/**
+ * \brief     Set Values
+ * \param[in] psTxMsg pointer to message frame detail
+ *
+ * This function will format the data passed as parameter
+ * and update the details into the controls below the
+ * message frame list.
+ */
 void CTxMsgDetailsView::vSetValues(STXCANMSGDETAILS* psTxMsg)
 {
-    CString omStr            = _T("");
-    CString omFormat         = _T("");
-    CString omStrFormatData  = _T("");
+    CString omStr            = "";
+    CString omFormat         = "";
+    CString omStrFormatData  = "";
+
     // If the pointer is null
     // then clear the contents of all the undefined msg controls
     if ( psTxMsg != NULL)
@@ -3066,7 +3052,7 @@ void CTxMsgDetailsView::vSetValues(STXCANMSGDETAILS* psTxMsg)
             {
                 if(i>= psTxMsg->m_sTxMsg.m_ucDataLen)
                 {
-                    omStr = _T("");
+                    omStr = "";
                 }
                 else
                 {
@@ -3185,6 +3171,7 @@ void CTxMsgDetailsView::OnSelchangeCombChannelId()
             // Update global message details
             bEntryValid = vUpdateSelectedMessageDetails();
         }
+		vCallApplyChanges();
     }
 
     // Enable/Disable Add Button
@@ -3280,3 +3267,51 @@ BOOL CTxMsgDetailsView::PreTranslateMessage(MSG* pMsg)
     // Send the result
     return bSkip;
 }
+
+/*******************************************************************************
+  Function Name  : vCallApplyChanges
+  Input(s)       : -
+  Output         : -
+  Functionality  : Used to update the changes to global list
+  Member of      : CTxMsgDetailsView
+  Author(s)      : Ashwin R Uchil
+  Date Created   : 31.5.2012 
+  Modifications  : 
+*******************************************************************************/
+void CTxMsgDetailsView::vCallApplyChanges()
+{
+	CTxFunctionsView * pView = 
+		( CTxFunctionsView * )pomGetFunctionsViewPointer();
+	if( pView != NULL )
+	{
+		if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)
+			pView->vAccessButtonApply();
+	}
+}
+
+/*******************************************************************************
+  Function Name  : vAutoUpdateModifyChanges
+  Input(s)       : -
+  Output         : -
+  Functionality  : Called by Parameters when they are out of focus so as to update
+					values
+  Member of      : CTxMsgDetailsView
+  Author(s)      : Ashwin R Uchil
+  Date Created   : 31.5.2012 
+  Modifications  : 
+*******************************************************************************/
+void CTxMsgDetailsView::vAutoUpdateModifyChanges()
+{
+	CTxMsgListView * pomListView = NULL;
+    pomListView = (CTxMsgListView * )pomGetListViewPointer();
+
+	int				nCurrentIndex = -1;
+	nCurrentIndex = pomListView ->m_omLctrMsgList.GetNextItem(nCurrentIndex,
+		LVNI_SELECTED );
+	if(nCurrentIndex != -1)
+	{
+		vCallApplyChanges();
+	}
+}
+
+

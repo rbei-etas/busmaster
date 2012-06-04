@@ -18,8 +18,8 @@
  * \author    Pemmaiah BD
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#ifndef __CAN_ERROR_DEFS__
-#define __CAN_ERROR_DEFS__
+
+#pragma once
 
 //Error Val Interpretation
 #define ERROR_BUS                       0x01
@@ -56,10 +56,3 @@
 //These error codes are returned by DIL_nMsgRead func
 #define DIL_ERR_READ_SYS                0xFFF0
 #define DIL_ERR_READ_BYTE_MISMATCH      0xFFF1
-
-
-
-
-
-
-#endif //__CAN_ERROR_DEFS__

@@ -30,14 +30,6 @@
 //#include "MsgSgDetView.h"       // Forms the right pane
 #include "Flags.h"              // DBOPEN flag to be set/reset is defined here
 
-
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 extern CCANMonitorApp theApp;
 
 SDBPARAMS CMsgSgTreeView::sm_sDbParams = sg_asDbParams[CAN];
@@ -244,9 +236,9 @@ void CMsgSignalDBWnd::vCalculateSplitterPosition(CSize &cSize)
 void CMsgSignalDBWnd::OnClose() 
 {
     // Get active frame
-    CMainFrame *pFrame = 
-                (CMainFrame*)AfxGetApp()->m_pMainWnd;
-    
+    CMainFrame* pFrame =
+        static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
+
     if (pFrame != NULL)
     {
         // Get appropriate data structure
@@ -328,7 +320,8 @@ LRESULT CMsgSignalDBWnd::OnSaveDBJ1939(WPARAM wParam, LPARAM /*lParam*/)
 			vSaveModifiedDBs(ppTempMsgSg);
 		}
 		// delete previously allocated memory if any
-		(*ppTempMsgSg)->bDeAllocateMemoryInactive();
+		// After save need not deallocate memory
+		//(*ppTempMsgSg)->bDeAllocateMemoryInactive();
 	}
 
 	return 0;
@@ -338,7 +331,7 @@ void CMsgSignalDBWnd::vSaveModifiedDBs(CMsgSignal** & ppTempMsgSg)
 {
 	// Get active frame
 	CMainFrame *pFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
-	(*ppTempMsgSg)->bWriteIntoDatabaseFileFromDataStructure(m_sDbParams.m_omDBPath );
+	(*ppTempMsgSg)->bWriteIntoDatabaseFileFromDataStructure(m_sDbParams.m_omDBPath, PROTOCOL_J1939 );
 
 	if ((*ppTempMsgSg)->bGetDBAcitveFlagStatus() == TRUE)
 	{
@@ -361,9 +354,9 @@ void CMsgSignalDBWnd::vSaveModifiedDBs(CMsgSignal** & ppTempMsgSg)
 				omImportedDBNames.GetAt(nDBCount))
 			{
 				CString omText;
-				omText.Format( _T("File  \"%s\"  has been modified which is currently being loaded.\nDo you want to re-import it to reflect the changes?"), 
+				omText.Format( "File  \"%s\"  has been modified which is currently being loaded.\nDo you want to re-import it to reflect the changes?", 
 					m_sDbParams.m_omDBPath);
-				if (MessageBox(omText, _T(""), MB_ICONQUESTION | MB_YESNO) == IDYES)
+				if (MessageBox(omText, "", MB_ICONQUESTION | MB_YESNO) == IDYES)
 				{
 					switch (m_sDbParams.m_eBus)
 					{

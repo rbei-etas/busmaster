@@ -19,17 +19,10 @@
  * \authors   RBIN/EMC2 - Soj Thomas, Ratnadip Choudhury, Amarnath Shastry
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contains the definition of CRadixEdit class     
+ * This file contains the definition of CRadixEdit class
  */
 
-#if !defined(AFX_RADIXEDIT_H__94B30BC2_94A2_4FC4_9BCB_F936A1F85728__INCLUDED_)
-#define AFX_RADIXEDIT_H__94B30BC2_94A2_4FC4_9BCB_F936A1F85728__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// RadixEdit.h : header file
-//
 
 static const int BASE_HEXADECIMAL  = 0x10;
 static const int BASE_DECIMAL      = 0x0A;
@@ -93,10 +86,3 @@ private:
     bool m_bFloatAllowed;
     int m_nCtrlID;
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_RADIXEDIT_H__94B30BC2_94A2_4FC4_9BCB_F936A1F85728__INCLUDED_)

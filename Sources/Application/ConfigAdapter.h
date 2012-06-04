@@ -20,6 +20,8 @@
  */
 /* CConfigAdapter class is used for converting old configuration file into new format.*/
 
+#pragma once
+
 class CConfigAdapter
 {
 public:

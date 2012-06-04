@@ -32,9 +32,6 @@
 
 static CSignalWatch_CAN* sg_pouSW_CAN = NULL;
 static CSignalWatch_J1939* sg_pouSW_J1939 = NULL;
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 //
 //	Note!
@@ -157,8 +154,11 @@ USAGEMODE HRESULT SW_GetInterface(ETYPE_BUS eBus,
                                                 if sg_pouFP_CAN is null */
         }
         break;
-        case MCNET:  
-        default: hResult = S_FALSE; break;
+
+        case MCNET:
+        default:
+            hResult = S_FALSE;
+            break;
     }
 
     return hResult;

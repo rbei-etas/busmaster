@@ -22,12 +22,8 @@
  * This file contain the definition of CFlexListCtrl class
  */
 
-#if !defined(AFX_FLEXLISTCTRL_H__4F3F3BEF_36FF_4155_AD97_09A7A7E21D71__INCLUDED_)
-#define AFX_FLEXLISTCTRL_H__4F3F3BEF_36FF_4155_AD97_09A7A7E21D71__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
 // FlexListCtrl.h : header file
 #include "Utility/Utility_Structs.h"                 // For data struct definition
 #include "Utility/ComboItem.h"
@@ -118,10 +114,3 @@ private:
     long lGetMapID(int nRow, int nCol);
     DECLARE_MESSAGE_MAP()
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_FLEXLISTCTRL_H__4F3F3BEF_36FF_4155_AD97_09A7A7E21D71__INCLUDED_)

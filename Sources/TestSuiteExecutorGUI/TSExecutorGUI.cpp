@@ -24,9 +24,6 @@
 #include "TSExecutorGUI_Extern.h"
 #include "TSExecutionCAN.h" 
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 #include <afxdllx.h>
 static AFX_EXTENSION_MODULE TestSuiteExecutor = { NULL, NULL };
 
@@ -47,8 +44,10 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 		TRACE0("TestSuiteexecutor.DLL Initializing!\n");
 		
 		// Extension DLL one-time initialization
-		if (!AfxInitExtensionModule(TestSuiteExecutor, hInstance))
-			return 0;
+        if (!AfxInitExtensionModule(TestSuiteExecutor, hInstance))
+        {
+            return 0;
+        }
 
 		// Insert this DLL into the resource chain
 		// NOTE: If this Extension DLL is being implicitly linked to by
@@ -140,17 +139,24 @@ USAGEMODE HRESULT TS_vSetDILInterfacePtr(void* /*ptrDILIntrf*/)
 
 USAGEMODE HRESULT TS_vPostMessageToTSWnd(UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	if(g_pomTSExecutorChildWindow)
-		g_pomTSExecutorChildWindow->PostMessage(msg, wParam, lParam);
-	return S_OK;
+    if(g_pomTSExecutorChildWindow)
+    {
+        g_pomTSExecutorChildWindow->PostMessage(msg, wParam, lParam);
+    }
+
+    return S_OK;
 }
 
 USAGEMODE HRESULT TS_hTSEexecutorWindowShown()
 {
-	if(g_pomTSExecutorChildWindow)
-		return S_OK;
-	else
-		return S_FALSE;
+    if(g_pomTSExecutorChildWindow)
+    {
+        return S_OK;
+    }
+    else
+    {
+        return S_FALSE;
+    }
 }
 USAGEMODE HRESULT TS_hGetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize)
 {

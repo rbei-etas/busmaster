@@ -22,11 +22,7 @@
  * Definition of CRefTimeKeeper class
  */
 
-#if !defined REF_TIME_KEEPER_H_INCLUDED_
-#define REF_TIME_KEEPER_H_INCLUDED_
-
-
-
+#pragma once
 
 class CRefTimeKeeper
 {
@@ -40,5 +36,3 @@ public:
     
     //static void vGetTimeParams(UINT64& qwRefSysTime, UINT64& qwAbsBaseTime);
 };
-
-#endif //REF_TIME_KEEPER_H_INCLUDED_

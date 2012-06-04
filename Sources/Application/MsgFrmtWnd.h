@@ -120,12 +120,12 @@ private:
 	USHORT usProcessCurrErrorEntry(void);
 	// To format sg_omColmStr to display error message on message window
     void vFormatCurrErrorEntry(USHORT, INT);
-	void vSetDefaultConfigValues();
-	TCHAR* m_pomDataPtrArr[MAX_MSG_WND_COL_CNT];
-	int m_nIndex;	
-	void vShowUpdateMsgIntrpDlg(__int64 nMapIndex);
-	void vUpdateMsgTreeWnd(__int64 nMapIndex);
-	void vUpdateAllTreeWnd();	
+    void vSetDefaultConfigValues();
+    char* m_pomDataPtrArr[MAX_MSG_WND_COL_CNT];
+    int m_nIndex;
+    void vShowUpdateMsgIntrpDlg(__int64 nMapIndex);
+    void vUpdateMsgTreeWnd(__int64 nMapIndex);
+    void vUpdateAllTreeWnd();
 
 	UINT m_unCurrInterpretedMsgID;
 	__int64 m_unCurrInterpretedMapIndex;

@@ -18,8 +18,8 @@
  * \author    Venkatanarayana makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined TSEDITOR_PROPERTYVIEW_H__INCLUDED_
-#define TSEDITOR_PROPERTYVIEW_H__INCLUDED_
+
+#pragma once
 
 #include "TSEditorGUI_resource.h"
 #include "afxcmn.h"
@@ -66,7 +66,3 @@ private:
     CTSEditorChildFrame* GetEditorWindow();
     CString m_omstrHelpString;
 };
-
-
-
-#endif

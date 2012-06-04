@@ -29,12 +29,6 @@
 #include "GraphElement.h"
 #include "InterfaceGetter.h"
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 /*******************************************************************************
  Function Name  : CGraphElement
  Description    : Standard default constructor
@@ -96,9 +90,10 @@ BYTE* CGraphElement::pbyGetConfigData(BYTE* pbyTrgData, BYTE byVersion)
         // Frame Format - Standard
         COPY_DATA(pbyTemp, &m_nFrameFormat, sizeof(short));
         // Element Name String
-        TCHAR acName[MAX_PATH] = {_T('\0')};
-        _tcscpy(acName, m_omStrElementName.GetBuffer(MAX_PATH));
-        COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+		//Tobias - venkat
+        char acName[MAX_PATH] = {'\0'};
+        strcpy_s(acName, MAX_PATH, m_omStrElementName.GetBuffer(MAX_PATH));
+        COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
         // Type of the element val
         COPY_DATA(pbyTemp, &m_nValueType, sizeof(int));
         // Line type of the elemen
@@ -113,15 +108,17 @@ BYTE* CGraphElement::pbyGetConfigData(BYTE* pbyTrgData, BYTE byVersion)
         COPY_DATA(pbyTemp, &m_bVisible, sizeof(BOOL));
         // Enabled or not
         COPY_DATA(pbyTemp, &m_bEnabled, sizeof(BOOL));
-		if(byVersion == 2)
-		{
-			// Message Name	 
-			TCHAR MsgName[MAX_PATH] = {_T('\0')};
-			_tcscpy(MsgName, m_strMsgName.GetBuffer(MAX_PATH));
-			COPY_DATA(pbyTemp, MsgName, (sizeof(TCHAR) * MAX_PATH));
-			//Line Display type
-			COPY_DATA(pbyTemp, &m_eDisplayType, sizeof(eDISPLAY_TYPE));		
-		}
+
+        if(byVersion == 2)
+        {
+            // Message Name
+            char MsgName[MAX_PATH] = {'\0'};
+            //Tobias - venkat
+			strcpy_s(MsgName,MAX_PATH,  m_strMsgName.GetBuffer(MAX_PATH));
+            COPY_DATA(pbyTemp, MsgName, (sizeof(char) * MAX_PATH));
+            //Line Display type
+            COPY_DATA(pbyTemp, &m_eDisplayType, sizeof(eDISPLAY_TYPE));
+        }
     }
     return pbyTemp;
 }
@@ -137,8 +134,8 @@ BYTE* CGraphElement::pbySetConfigData(BYTE* pbyTrgData, BYTE byVersion)
         // Frame Format - Standard
         COPY_DATA_2(&m_nFrameFormat, pbyTemp, sizeof(short));
         // Element Name String
-        TCHAR acName[MAX_PATH] = {_T('\0')};
-        COPY_DATA_2(acName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
+        char acName[MAX_PATH] = {_T('\0')};
+        COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
         m_omStrElementName.Format("%s", acName);
         // Type of the element val
         COPY_DATA_2(&m_nValueType, pbyTemp, sizeof(int));
@@ -154,20 +151,21 @@ BYTE* CGraphElement::pbySetConfigData(BYTE* pbyTrgData, BYTE byVersion)
         COPY_DATA_2(&m_bVisible, pbyTemp, sizeof(BOOL));
         // Enabled or not
         COPY_DATA_2(&m_bEnabled, pbyTemp, sizeof(BOOL));
-		if(byVersion == 2)
-		{
-			//Message Name		
-			TCHAR MsgName[MAX_PATH] = {_T('\0')};
-			COPY_DATA_2(MsgName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
-			m_strMsgName.Format("%s", MsgName);
-			//Line Display type
-			COPY_DATA_2(&m_eDisplayType, pbyTemp, sizeof(eDISPLAY_TYPE));		
-		}
-		else if(byVersion == 1)
-		{
-			m_strMsgName = GetIMsgDB()->omStrGetMessageNameFromMsgCode(m_nMsgID);	
-			m_eDisplayType = eDISPLAY_NORMAL;
-		}
+
+        if(byVersion == 2)
+        {
+            //Message Name
+            char MsgName[MAX_PATH] = {_T('\0')};
+            COPY_DATA_2(MsgName, pbyTemp, (sizeof(char) * MAX_PATH));
+            m_strMsgName.Format("%s", MsgName);
+            //Line Display type
+            COPY_DATA_2(&m_eDisplayType, pbyTemp, sizeof(eDISPLAY_TYPE));
+        }
+        else if(byVersion == 1)
+        {
+            m_strMsgName = GetIMsgDB()->omStrGetMessageNameFromMsgCode(m_nMsgID);
+            m_eDisplayType = eDISPLAY_NORMAL;
+        }
     }
     return pbyTemp;
 }
@@ -266,7 +264,7 @@ UINT CGraphElement::unGetConfigSize(BYTE byVersion)
     // Frame Format - Standard or Extended
     unSize += sizeof(short);//   m_nFrameFormat;
     // Element Name String
-    unSize += (sizeof(TCHAR) * MAX_PATH);//m_omStrElementName
+    unSize += (sizeof(char) * MAX_PATH);//m_omStrElementName
     // Type of the element value
     // 0 - network statistics parameter
     // 1 - Raw Value of the Signal
@@ -284,13 +282,14 @@ UINT CGraphElement::unGetConfigSize(BYTE byVersion)
     unSize += sizeof(BOOL);//    m_bVisible;
     // Enabled or not
     unSize += sizeof(BOOL);//    m_bEnabled;
-	if(byVersion == 2)
-	{
-		// Line Display
-		unSize += sizeof(int);//    m_eDisplayType;
-		//Message Name String
-		unSize += (sizeof(TCHAR) * MAX_PATH);//m_strMsgName
-	}
+
+    if(byVersion == 2)
+    {
+        // Line Display
+        unSize += sizeof(int);//    m_eDisplayType;
+        //Message Name String
+        unSize += (sizeof(char) * MAX_PATH);//m_strMsgName
+    }
 
 	return unSize;
 }

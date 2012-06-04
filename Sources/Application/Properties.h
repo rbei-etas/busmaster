@@ -21,17 +21,8 @@
  *
  * This file contain the definition of CProperties class
  */
-#if !defined(AFX_Properties_H__64B10A15_0100_11D7_8071_0010B599CE39__INCLUDED_)
-#define AFX_Properties_H__64B10A15_0100_11D7_8071_0010B599CE39__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// Properties.h : header file
-//
-
-/////////////////////////////////////////////////////////////////////////////
-// CProperties dialog
 
 class CProperties : public CDialog
 {
@@ -66,8 +57,3 @@ private:
     CImageList m_omTreeImageList;
     SPROPERTIESLIST m_sProperties;
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_Properties_H__64B10A15_0100_11D7_8071_0010B599CE39__INCLUDED_)

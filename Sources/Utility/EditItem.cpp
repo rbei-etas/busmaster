@@ -28,12 +28,6 @@
 #include "Utils_stdafx.h"         // For standard include
 #include "EditItem.h"       // Definition of class
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 /////////////////////////////////////////////////////////////////////////////
 // CEditItem
 /*******************************************************************************
@@ -114,8 +108,11 @@ BOOL CEditItem::PreTranslateMessage(MSG* pMsg)
             ::DispatchMessage(pMsg);
             return 1;
         }
+
         if(pMsg->wParam == VK_TAB)
+        {
             MessageBeep(0);
+        }
     }
 
     return CEdit::PreTranslateMessage(pMsg);
@@ -141,7 +138,10 @@ void CEditItem::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
         nChar == VK_RETURN) 
     {       
         if( nChar == VK_ESCAPE)
-            m_bVK_ESCAPE = 1;       
+        {
+            m_bVK_ESCAPE = 1;
+        }
+
         GetParent()->SetFocus();
         return; 
     }
@@ -169,11 +169,16 @@ void CEditItem::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
     // and whether there is space to grow   
     if(size.cx > rect.Width())  
     {
-		if( size.cx + rect.left < parentrect.right )
-            rect.right = rect.left + size.cx;       
-        else            
-			rect.right = parentrect.right;
-        MoveWindow(&rect);  
+        if( size.cx + rect.left < parentrect.right )
+        {
+            rect.right = rect.left + size.cx;
+        }
+        else
+        {
+            rect.right = parentrect.right;
+        }
+
+        MoveWindow(&rect);
     }
     
 //  CEdit::OnChar(nChar, nRepCnt, nFlags);
@@ -223,8 +228,9 @@ void CEditItem::OnKillFocus(CWnd* pNewWnd)
         && pNewWnd != GetParent()->GetParent() //For Dialog Close using X Button
         && pNewWnd->GetDlgCtrlID() != IDCANCEL ) // For Cancel condition
     {
-        CString str;    GetWindowText(str);
-        // Send Notification to parent of ListView ctrl 
+        CString str;
+        GetWindowText(str);
+        // Send Notification to parent of ListView ctrl
         LV_DISPINFO lvDispInfo;
         lvDispInfo.hdr.hwndFrom = GetParent()->m_hWnd;
         lvDispInfo.hdr.idFrom = GetDlgCtrlID(); 
@@ -259,7 +265,9 @@ void CEditItem::OnKillFocus(CWnd* pNewWnd)
 int CEditItem::OnCreate(LPCREATESTRUCT lpCreateStruct) 
 {
     if (CEdit::OnCreate(lpCreateStruct) == -1)
-        return -1;  
+    {
+        return -1;
+    }
 
     CFont* font = GetParent()->GetFont();
     SetFont(font);

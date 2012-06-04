@@ -21,12 +21,9 @@
  *
  * Interface file for MessageDetailsDlg class
  */
-#if !defined(AFX_MESSAGEDETAILSDLG_H__E8195086_60DB_11D6_A64B_00D0B76BEBF5__INCLUDED_)
-#define AFX_MESSAGEDETAILSDLG_H__E8195086_60DB_11D6_A64B_00D0B76BEBF5__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
 #include "MsgSignal.h"
 #include "Utility/AlphanumiricEdit.h"
 #include "CFilesDefs_CAN.h"
@@ -74,8 +71,3 @@ private:
 	CAlphanumiricEdit m_odMsgNumericEdit;
     SDBPARAMS m_sDbParams;
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_MESSAGEDETAILSDLG_H__E8195086_60DB_11D6_A64B_00D0B76BEBF5__INCLUDED_)

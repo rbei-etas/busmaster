@@ -205,11 +205,13 @@ DWORD WINAPI The_Worker_Thread(LPVOID pVoid)
                 case INACTION:
                 {
                     // Signal the owner
-                    SetEvent(pThreadParam->m_hThread2Owner); Sleep(0);
+                    SetEvent(pThreadParam->m_hThread2Owner);
+                    Sleep(0);
                     // Wait until owner signals back.
                     WaitForSingleObject(pThreadParam->m_hOwner2Thread, INFINITE);
                     // Signal the owner
-                    SetEvent(pThreadParam->m_hThread2Owner); Sleep(0);
+                    SetEvent(pThreadParam->m_hThread2Owner);
+                    Sleep(0);
                 }
                 break;
                 case EXIT_THREAD:
@@ -217,8 +219,12 @@ DWORD WINAPI The_Worker_Thread(LPVOID pVoid)
                     bLoopON = false;
                 }
                 break;
-                case IDLE: break;
-                default: break;
+
+                case IDLE:
+                    break;
+
+                default:
+                    break;
             }
         }
         SetEvent(pThreadParam->hGetExitNotifyEvent()); // Signal the owner that the thread

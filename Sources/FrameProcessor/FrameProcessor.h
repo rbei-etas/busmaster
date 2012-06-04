@@ -22,18 +22,7 @@
  * Definition file for CFrameProcessorApp class.
  */
 
-// FrameProcessor.h : main header file for the FrameProcessor DLL
-//
-
 #pragma once
-
-#ifndef __AFXWIN_H__
-	#error include 'FrameProcessor_stdafx.h' before including this file for PCH
-#endif
-
-// CFrameProcessorApp
-// See FrameProcessor.cpp for the implementation of this class
-//
 
 class CFrameProcessorApp : public CWinApp
 {

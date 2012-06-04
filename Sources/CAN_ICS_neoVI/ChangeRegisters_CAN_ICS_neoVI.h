@@ -105,7 +105,7 @@ public:
     // To Fill controller information taken from configuration module
     BOOL   bFillControllerConfig();
     // standard constructor
-    CChangeRegisters_CAN_ICS_neoVI(CWnd* pParent = NULL, PSCONTROLER_DETAILS psControllerDetails = NULL, UINT nHardwareCount = 0);
+    CChangeRegisters_CAN_ICS_neoVI(CWnd* pParent = NULL, PSCONTROLLER_DETAILS psControllerDetails = NULL, UINT nHardwareCount = 0);
     virtual ~CChangeRegisters_CAN_ICS_neoVI();
     BOOL bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1);
     BOOL bGetBaudRateFromCom(int nChannel,BYTE &bBTR0,BYTE &bBTR1);
@@ -122,14 +122,16 @@ protected:
     CRadixEdit  m_omEditWarningLimit;
     CComboBox   m_omCombSampling;
     CListCtrl   m_omListCtrlBitTime;
-    CRadixEdit   m_omEditBaudRate;
+    /*CRadixEdit  m_omEditBaudRate;*/
+	CComboBox	m_omCombBaudRate;
     CString m_omStrEditBTR0;
     CString m_omStrEditBTR1;
     CString m_omStrEditCNF1;
     CString m_omStrEditCNF2;
     CString m_omStrEditCNF3;
     CString m_omStrComboSampling;
-    CString m_omStrEditBaudRate;
+    /*CString m_omStrEditBaudRate;*/
+	CString m_omStrcombBaudRate;
     CString m_omStrComboClock;
     CString m_omStrEditWarningLimit;
     CString m_omStrPropDelay;
@@ -154,6 +156,7 @@ private:
     virtual void OnOK();
     virtual BOOL OnInitDialog();
     afx_msg void OnKillfocusEditBaudRate();
+	afx_msg void OnSelchangeCombBaudRate();
     afx_msg void OnSelchangeCombSampling();
     afx_msg void OnSetfocusEditBaudRate();
     afx_msg void OnClickedOK();
@@ -166,7 +169,7 @@ private:
     DECLARE_MESSAGE_MAP()
 private:
     // Pointer to hold controller information
-    PSCONTROLER_DETAILS  m_pControllerDetails;
+    PSCONTROLLER_DETAILS  m_pControllerDetails;
     int m_nLastSelection;
     CImageList m_omChannelImageList;
     SACC_FILTER_INFO m_sAccFilterInfo;

@@ -22,14 +22,9 @@
  * Definition file for CFrameProcessor_Common class realising 
  */
 
-// FrameProcessor.h : main header file for the FrameProcessor DLL
-//
+#pragma once
 
-#if !defined FRAMEPROCESSOR_COMMON_H__INCLUDED
-#define FRAMEPROCESSOR_COMMON_H__INCLUDED
-
-
-//#include "FrameProcessor_resource.h"		// main symbols
+//#include "FrameProcessor_resource.h"      // main symbols
 #include "Utility/Utility_Thread.h"
 #include "include/BaseDefs.h"
 #include "BaseLogObject.h"
@@ -80,7 +75,7 @@ protected:
 public:
     // Alias functions - start
     HRESULT EnableLoggingBlock(USHORT ushBlk, BOOL bEnable);
-    HRESULT EnableLogging(BOOL bEnable);
+	HRESULT EnableLogging(BOOL bEnable, ETYPE_BUS);
     HRESULT EnableFilter(USHORT ushBlk, BOOL bEnable);
     BOOL IsClientBufferON(void);
     BOOL IsLoggingON(void);
@@ -100,7 +95,7 @@ public:
     HRESULT StopEditingSession(BOOL bConfirm);
 	HRESULT SetDatabaseFiles(const CStringArray& omList);
 	void GetDatabaseFiles(CStringArray& omList);
-	void SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails, 
+	void SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails, 
 									int nNumChannels);
     // Alias functions - end
 
@@ -116,5 +111,3 @@ public:
 	virtual BOOL InitInstance(void);
     virtual int ExitInstance(void);
 };
-
-#endif // FRAMEPROCESSOR_COMMON_H__INCLUDED

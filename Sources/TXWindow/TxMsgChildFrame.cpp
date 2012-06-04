@@ -22,18 +22,12 @@
  * Implementation file for CTxMsgChildFrame class
  */
 
-#include "TxWindow_stdafx.h"             // Stander Header file
-#include "TxWindow_resource.h"  
-#include "SignalMatrix.h"       // For Signal Matrix declaration
-#include "TxMsgChildFrame.h"    // For CTxMsgChildFrame class defintions
+#include "TxWindow_stdafx.h"       // Stander Header file
+#include "TxWindow_resource.h"
+#include "Utility/SignalMatrix.h"  // For Signal Matrix declaration
+#include "TxMsgChildFrame.h"       // For CTxMsgChildFrame class defintions
 
 extern CTxMsgChildFrame* g_pomTxMsgChildWindow;
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 // Application object declaration
 //extern CCANMonitorApp theApp;

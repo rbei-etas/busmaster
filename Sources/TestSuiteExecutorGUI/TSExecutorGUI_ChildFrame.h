@@ -18,8 +18,8 @@
  * \author    Venkatanarayana makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined DEFINES_TSEXECUTORGUI_CHILDFRAME_H__INCLUDED_
-#define DEFINES_TSEXECUTORGUI_CHILDFRAME_H__INCLUDED_
+
+#pragma once
 
 #include "TreeViewEx.h"
 #include "TSExecutorLIB.h"
@@ -88,6 +88,3 @@ public:
     afx_msg HRESULT OnExecutionOver(WPARAM wparam, LPARAM lparam);
     afx_msg void OnClose();
 };
-
-#endif
-

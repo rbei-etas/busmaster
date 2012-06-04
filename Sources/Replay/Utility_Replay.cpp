@@ -47,11 +47,11 @@ BOOL bGetMsgInfoFromMsgStr( CONST CString& omSendMsgLine,
                             PSTCANDATA psCANData,
                             BOOL bHexON)
 {
-    CString omStrTemp       =_T("");
-    CString omStrMsgID      =_T("");
-    CString omStrDLC        =_T("");
-    CString omStrData       =_T("");
-    CString omStrMsgIDType  =_T("");
+    CString omStrTemp       ="";
+    CString omStrMsgID      ="";
+    CString omStrDLC        ="";
+    CString omStrData       ="";
+    CString omStrMsgIDType  ="";
     CHAR* pcStopString      = NULL;
     BOOL nReturn            = FALSE;
 
@@ -196,7 +196,7 @@ void vConvStrtoByteArray(CByteArray* pomByteArrayBufTx,
                          CHAR* pctempBuf, 
                          BOOL bHexON)
 {
-    TCHAR tCh = ' ';
+    char tCh = ' ';
     UINT unCount=0;
     UCHAR ucFirstCh = '\0';
     UCHAR ucSecondCh = '\0';
@@ -313,20 +313,27 @@ BOOL bIsModeMismatch( ifstream &omInReplayFile,
         while( bLine &&  ! omInReplayFile.eof())
         {
             
-           omInReplayFile.getline( Line, sizeof(Line));
-           omStrLine = Line;
-           if( omStrLine.Find(HEX_MODE) == 0)
-           {
-               bLogModeChecked = TRUE;
-               if(bReplayHexON != TRUE)
-                    bFlag = TRUE;  
-           }
-           else if (omStrLine.Find(DEC_MODE) == 0)
-           {
-               bLogModeChecked = TRUE;
-               if(bReplayHexON != FALSE)
-                    bFlag = TRUE;  
-           }
+            omInReplayFile.getline( Line, sizeof(Line));
+            omStrLine = Line;
+
+            if( omStrLine.Find(HEX_MODE) == 0)
+            {
+                bLogModeChecked = TRUE;
+
+                if(bReplayHexON != TRUE)
+                {
+                    bFlag = TRUE;
+                }
+            }
+            else if (omStrLine.Find(DEC_MODE) == 0)
+            {
+                bLogModeChecked = TRUE;
+
+                if(bReplayHexON != FALSE)
+                {
+                    bFlag = TRUE;
+                }
+            }
            if( omStrLine.Find(SYSTEM_MODE) == 0)
            {
                bReplayMsgTypeChecked = TRUE;
@@ -385,10 +392,9 @@ UINT unTimeDiffBetweenMsg( CString& omStrNextMsg,
                            WORD wLogReplyTimeMode)
 {
     UINT unTimeDifference    = 0;
-    CString omStrMsgCurTime  =_T("");
-    CString omStrMsgNextTime  =_T("");
-    CString omStrTemp        =_T("");
-
+    CString omStrMsgCurTime  ="";
+    CString omStrMsgNextTime  ="";
+    CString omStrTemp        ="";
     DOUBLE dCurTime          = 0;
     DOUBLE dNextTime         = 0;
     // Multiplication factors for HR, MIN, SECOND, and MILLI SECOND

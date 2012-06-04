@@ -25,6 +25,12 @@
 
 
 #include "Filter_stdafx.h"
+
+/* C++ includes */
+#include <sstream>
+#include <string>
+
+/* Project includes */
 #include "Filter_resource.h"
 #include "Include/CanUsbDefs.h"
 #include "FilterConfigDlg.h"        // For Filter Configuration Dialog
@@ -48,13 +54,6 @@ UINT unGetMsgIDFromName(CString omMsgName)
 	}
 	return unMsgID;
 }
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 
 /**
  * Standard default constructor
@@ -195,13 +194,13 @@ BOOL CFilterConfigDlg::bCreateImageList()
 BOOL CFilterConfigDlg::bCreateNamedFilterList()
 {
     BOOL bReturn = TRUE;
-
-    CHAR caColumnName[][defSIGNAL_LIST_STRING_MAX_LENGTH] 
-                            = { defSTR_FILTER_NAME,
-                                defSTR_FILTER_TYPE };
+    CHAR caColumnName[][defSIGNAL_LIST_STRING_MAX_LENGTH]
+        = { defSTR_FILTER_NAME,
+            defSTR_FILTER_TYPE
+          };
     INT nColumnFormat[]     = { LVCFMT_LEFT,
-                                LVCFMT_LEFT };
-
+                                LVCFMT_LEFT
+                              };
     RECT rListCtrlRect;
     INT nTotalColunmSize = 0;
     INT nTotalStrLengthPixel = 0;
@@ -241,21 +240,21 @@ BOOL CFilterConfigDlg::bCreateNamedFilterList()
 BOOL CFilterConfigDlg::bCreateFilterDetailsList()
 {
     BOOL bReturn = TRUE;
-    CHAR caColumnName[][defSIGNAL_LIST_STRING_MAX_LENGTH] 
-                            = { defSTR_FILTER_DETAILS_ID_FROM,
-                            defSTR_FILTER_DETAILS_ID_TO,
-                            defSTR_FILTER_DETAILS_ID_TYPE,
-                            defSTR_FILTER_DETAILS_MSG_TYPE,
-                            defSTR_FILTER_DETAILS_MSG_DIRECTION,
-                            defSTR_FILTER_DETAILS_MSG_CHANNEL };
-    
+    CHAR caColumnName[][defSIGNAL_LIST_STRING_MAX_LENGTH]
+        = { defSTR_FILTER_DETAILS_ID_FROM,
+            defSTR_FILTER_DETAILS_ID_TO,
+            defSTR_FILTER_DETAILS_ID_TYPE,
+            defSTR_FILTER_DETAILS_MSG_TYPE,
+            defSTR_FILTER_DETAILS_MSG_DIRECTION,
+            defSTR_FILTER_DETAILS_MSG_CHANNEL
+          };
     INT nColumnFormat[]     = { LVCFMT_LEFT,
                                 LVCFMT_LEFT,
                                 LVCFMT_CENTER,
                                 LVCFMT_CENTER,
                                 LVCFMT_CENTER,
-                                LVCFMT_CENTER };
-
+                                LVCFMT_CENTER
+                              };
     RECT rListCtrlRect;
     INT nTotalColunmSize = 0;
     INT nTotalStrLengthPixel = 0;
@@ -559,27 +558,30 @@ void CFilterConfigDlg::vFormatDisplayString(
 
         if( omStr != STR_EMPTY )
         {
-            sFilterDisplyInfo.m_omStrMsgIDFrom.Format(
-                                        defSTR_MSG_ID_FORMAT_DB,
-                                        sFilter.m_dwMsgIDFrom, omStr );
+            ostringstream oss;
+            oss << hex << sFilter.m_dwMsgIDFrom;
+            oss << " [" << omStr << "]";
+            sFilterDisplyInfo.m_omStrMsgIDFrom = oss.str();
             // Update Image Index
             sFilterDisplyInfo.m_nImageIndex = defFILTER_IMAGE_INDEX_DB;
         }
         else
         {
-            sFilterDisplyInfo.m_omStrMsgIDFrom.Format(
-                                        defSTR_MSG_ID_FORMAT_NDB,
-                                        sFilter.m_dwMsgIDFrom );
-        }        
+            ostringstream oss;
+            oss << hex << sFilter.m_dwMsgIDFrom;
+            sFilterDisplyInfo.m_omStrMsgIDFrom = oss.str();
+        }
     }
     else
     {
         // Range of messages
         // Format ID FRom
-        sFilterDisplyInfo.m_omStrMsgIDFrom.Format( defSTR_MSG_ID_FORMAT_NDB,
-                                                 sFilter.m_dwMsgIDFrom );
-        sFilterDisplyInfo.m_omStrMsgIDTo.Format( defSTR_MSG_ID_FORMAT_NDB,
-                                                 sFilter.m_dwMsgIDTo );
+        ostringstream oss1;
+        oss1 << hex << sFilter.m_dwMsgIDFrom;
+        sFilterDisplyInfo.m_omStrMsgIDFrom = oss1.str();
+        ostringstream oss2;
+        oss2 << hex << sFilter.m_dwMsgIDTo;
+        sFilterDisplyInfo.m_omStrMsgIDTo = oss2.str();
         // Update Image Index
         sFilterDisplyInfo.m_nImageIndex = defFILTER_IMAGE_INDEX_ID_RANGE;
     }
@@ -647,8 +649,9 @@ void CFilterConfigDlg::vFormatDisplayString(
     else
     {
         // Format Channel ID String Say 1,2,...
-        
-        sFilterDisplyInfo.m_omStrMsgChannel.Format( defFORMAT_MSGID_DECIMAL, sFilter.m_eChannel);
+        ostringstream oss;
+        oss << dec << sFilter.m_eChannel;
+        sFilterDisplyInfo.m_omStrMsgChannel = oss.str();
     }
 }
 
@@ -668,27 +671,27 @@ void CFilterConfigDlg::vUpdateFilterListDetails( int nIndex,
     // ID From
     m_omLstcFilterDetails.SetItemText( nIndex,
                                        0,
-                                       sDisplayInfo.m_omStrMsgIDFrom );
+                                       sDisplayInfo.m_omStrMsgIDFrom.c_str());
     // ID To
     m_omLstcFilterDetails.SetItemText( nIndex,
                                        1,
-                                       sDisplayInfo.m_omStrMsgIDTo );
+                                       sDisplayInfo.m_omStrMsgIDTo.c_str());
     // ID Type
     m_omLstcFilterDetails.SetItemText( nIndex,
                                        2,
-                                       sDisplayInfo.m_omStrMsgIDType );
+                                       sDisplayInfo.m_omStrMsgIDType.c_str());
     // Message Type
     m_omLstcFilterDetails.SetItemText( nIndex,
                                        3,
-                                       sDisplayInfo.m_omStrMsgType );
+                                       sDisplayInfo.m_omStrMsgType.c_str());
     // Message Direction
     m_omLstcFilterDetails.SetItemText( nIndex,
                                        4,
-                                       sDisplayInfo.m_omStrMsgDirection );
+                                       sDisplayInfo.m_omStrMsgDirection.c_str());
     // Channel Number
     m_omLstcFilterDetails.SetItemText( nIndex,
                                        5,
-                                       sDisplayInfo.m_omStrMsgChannel );
+                                       sDisplayInfo.m_omStrMsgChannel.c_str());
     // Update image Index
     LVITEM sItem;
     sItem.mask      = LVIF_IMAGE;
@@ -777,7 +780,7 @@ void CFilterConfigDlg::vUpdateFromFilterName(int nItem, int nSubItem)
                 psTemp = SFILTERSET::psGetFilterSetPointer(m_psFilterApplied->m_psFilters, 
                                     m_psFilterApplied->m_ushTotal,m_omStrSelectedFilterNameBeforeEdit.GetBuffer(MAX_PATH));
                 ASSERT(psTemp != NULL);
-                _tcscpy(psTemp->m_sFilterName.m_acFilterName, omStrNewName.GetBuffer(MAX_PATH));
+                strcpy_s(psTemp->m_sFilterName.m_acFilterName,LENGTH_FILTERNAME, omStrNewName.GetBuffer(MAX_PATH));
                 m_omStrSelectedFilterNameBeforeEdit = omStrNewName;
             }
         }
@@ -919,48 +922,52 @@ void CFilterConfigDlg::vUpdateFilterComponents(const SFILTER_CAN& sFilter)
     // Update
     // ID Type
     INT Index = 0; // Id type standard
-    if (sFilter.m_byIDType == TYPE_ID_CAN_EXTENDED)
+
+    switch(sFilter.m_byIDType)
     {
-        Index = 1; // Id type extended
+        case TYPE_ID_CAN_EXTENDED:
+            Index = 1; // Id type extended
+            break;
+
+        case TYPE_ID_CAN_ALL:
+            Index = 2; // Id Type all
+            break;
     }
-    else if (sFilter.m_byIDType == TYPE_ID_CAN_ALL)
-    {
-        Index = 2; // Id Type all
-    }        
+
     m_omMsgIDType.SetCurSel(Index);
     // Message Type
     Index = 0;// Non RTR
-    if (sFilter.m_byMsgType == TYPE_MSG_CAN_RTR)
-    {   
-        Index = 1;// RTR
-    }
-    else if (sFilter.m_byMsgType == TYPE_MSG_CAN_ALL)
+
+    switch(sFilter.m_byMsgType)
     {
-        Index = 2; // All
+        case TYPE_MSG_CAN_RTR:
+            Index = 1;// RTR
+            break;
+
+        case TYPE_MSG_CAN_ALL:
+            Index = 2; // All
+            break;
     }
     m_omMsgType.SetCurSel(Index);
     // Message Direction
     // Set the Direction
     switch( sFilter.m_eDrctn )
     {
-    case DIR_ALL: // All
-        {
+        case DIR_ALL: // All
             m_omMsgDirection.SetCurSel( 2 );
-        }
-        break;
-    case DIR_TX: // Tx Msg from UI
-        {
+            break;
+
+        case DIR_TX: // Tx Msg from UI
             m_omMsgDirection.SetCurSel( 1 );
-        }
-        break;
-    case DIR_RX: // All Msg from UI
-        {
+            break;
+
+        case DIR_RX: // All Msg from UI
             m_omMsgDirection.SetCurSel( 0 );
-        }
-        break;
-    default:    // Invalid Option
-        ASSERT( FALSE );
-        break;
+            break;
+
+        default:    // Invalid Option
+            ASSERT( FALSE );
+            break;
     }
     UINT Channel = sFilter.m_eChannel;
 
@@ -1312,61 +1319,51 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_CAN& sFilter)
                 switch (nExtendedID)
                 {
                     case 0: // Standard
-                    {
                         sFilter.m_byIDType = TYPE_ID_CAN_STANDARD;
-                    }
-                    break;
+                        break;
+
                     case 1: // Extended
-                    {
                         sFilter.m_byIDType = TYPE_ID_CAN_EXTENDED;
-                    }
-                    break;
+                        break;
+
                     case 2: //ALL
-                    {
                         sFilter.m_byIDType = TYPE_ID_CAN_ALL;
-                    }
-                    break;
+                        break;
                 }
                 INT MsgType = m_omMsgType.GetCurSel();
                 switch (MsgType)
                 {
                     case 0: // NON RTR
-                    {
                         sFilter.m_byMsgType = TYPE_MSG_CAN_NON_RTR;
-                    }
-                    break;
+                        break;
+
                     case 1: // RTR
-                    {
                         sFilter.m_byMsgType = TYPE_MSG_CAN_RTR;
-                    }
-                    break;
+                        break;
+
                     case 2: // ALL
-                    {
                         sFilter.m_byMsgType = TYPE_MSG_CAN_ALL;
-                    }
-                    break;
+                        break;
                 }
+
                 // Set the Direction
                 switch( m_omMsgDirection.GetCurSel())
                 {
                     case 0: // Rx Msg from UI
-                    {
                         sFilter.m_eDrctn = DIR_RX;
-                    }
-                    break;
-                case 1: // Tx Msg from UI
-                    {
+                        break;
+
+                    case 1: // Tx Msg from UI
                         sFilter.m_eDrctn = DIR_TX;
-                    }
-                    break;
-                case 2: // All Msg from UI
-                    {
+                        break;
+
+                    case 2: // All Msg from UI
                         sFilter.m_eDrctn = DIR_ALL;
-                    }
-                    break;
-                default:    // Invalid Option
-                    ASSERT( FALSE );
-                    break;
+                        break;
+
+                    default:    // Invalid Option
+                        ASSERT( FALSE );
+                        break;
                 }
                 // Set Channel
                 UINT Index = static_cast<UCHAR>( m_omMsgChannel.GetCurSel());
@@ -1467,70 +1464,59 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_CAN& sFilter)
             switch (nExtendedID)
             {
                 case 0: // Standard
-                {
                     sFilter.m_byIDType = TYPE_ID_CAN_STANDARD;
-                }
-                break;
+                    break;
+
                 case 1: // Extended
-                {
                     sFilter.m_byIDType = TYPE_ID_CAN_EXTENDED;
-                }
-                break;
+                    break;
+
                 case 2: //ALL
-                {
                     sFilter.m_byIDType = TYPE_ID_CAN_ALL;
-                }
-                break;
+                    break;
             }
+
             INT MsgType = m_omMsgType.GetCurSel();
+
             switch (MsgType)
             {
                 case 0: // Standard
-                {
                     sFilter.m_byMsgType = TYPE_MSG_CAN_NON_RTR;
-                }
-                break;
+                    break;
+
                 case 1: // Extended
-                {
                     sFilter.m_byMsgType = TYPE_MSG_CAN_RTR;
-                }
-                break;
+                    break;
+
                 case 2:
-                {
                     sFilter.m_byMsgType = TYPE_MSG_CAN_ALL;
-                }
-                break;
+                    break;
+
                 default:    // Invalid Option
-                {
                     ASSERT( FALSE );
                     break;
-                }
             }
 
             // Set the Direction
             switch( m_omMsgDirection.GetCurSel())
             {
                 case 0: // Rx Msg from UI
-                {
                     sFilter.m_eDrctn = DIR_RX;
-                }
-                break;
+                    break;
+
                 case 1: // Tx Msg from UI
-                {
                     sFilter.m_eDrctn = DIR_TX;
-                }
-                break;
+                    break;
+
                 case 2: // All Msg from UI
-                {
                     sFilter.m_eDrctn = DIR_ALL;
-                }
-                break;
+                    break;
+
                 default:    // Invalid Option
-                {
                     ASSERT( FALSE );
                     break;
-                }
             }
+
             // Set Channel
             UINT Index = static_cast<UCHAR>( m_omMsgChannel.GetCurSel());
             if (Index == 0)
@@ -1912,7 +1898,7 @@ void CFilterConfigDlg::OnBtnAdd()
         {
             psSetIndex->m_sFilterName.m_bFilterType = 0;  // Stop Filter
             // Add the filter in to the map
-            _tcscpy(psSetIndex->m_sFilterName.m_acFilterName, omStrFilterName.GetBuffer(MAX_PATH));
+            strcpy_s(psSetIndex->m_sFilterName.m_acFilterName, LENGTH_FILTERNAME, omStrFilterName.GetBuffer(MAX_PATH));
             ++(m_psFilterApplied->m_ushTotal);
 
             m_psFilterApplied->m_psFilters = psNewSet;

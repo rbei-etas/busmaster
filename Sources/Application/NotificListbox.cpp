@@ -31,12 +31,6 @@
 // Utility functions
 #include "Utility/Utility.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 /////////////////////////////////////////////////////////////////////////////
 // CNotificListbox
 
@@ -170,23 +164,25 @@ void CNotificListbox::OnNotificwndSelectall()
 
 /* OnClick menu Copy Text */
 void CNotificListbox::OnNotificwndCopytoclipboard()
-{    
-	
-	CString omFullText = _T("");
-	for (int i = 0; i < GetCount(); i++)
-	{
-		if (GetSel(i))
-		{		
-			CString omText = _T("");
-			GetText(i, omText);
-			if (!omText.IsEmpty())
-			{
-				//omText = omText + L"\r\n";				
-				omText.Format(_T("%s\r\n"), omText);
-				omFullText = omFullText + omText;				
-			}
-		}
-	}
+{
+    CString omFullText = "";
+
+    for (int i = 0; i < GetCount(); i++)
+    {
+        if (GetSel(i))
+        {
+            CString omText = "";
+            GetText(i, omText);
+
+            if (!omText.IsEmpty())
+            {
+                //omText = omText + L"\r\n";
+                omText.Format(_T("%s\r\n"), omText);
+                omFullText = omFullText + omText;
+            }
+        }
+    }
+
     CopyTextToClipboard(omFullText.GetBuffer(MAX_PATH), NULL);
 }
 

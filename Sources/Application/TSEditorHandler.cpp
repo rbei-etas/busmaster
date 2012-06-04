@@ -48,8 +48,10 @@ TSEditorHandler::TSEditorHandler(void)
 
 TSEditorHandler::~TSEditorHandler(void)
 {
-    if ( m_hTSEditorHandle != NULL )            
+    if ( m_hTSEditorHandle != NULL )
+    {
         FreeLibrary(m_hTSEditorHandle);
+    }
 }
 void TSEditorHandler::vLoadTSEditor_DLL()
 {

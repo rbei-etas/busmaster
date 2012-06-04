@@ -88,6 +88,8 @@ private:
     int     m_nCharHeight;
     // character width information
     int     m_nCharWidth;
+public:
+	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 };
 
 #endif // !defined(AFX_FILEVIEW_H__E02A6C66_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)

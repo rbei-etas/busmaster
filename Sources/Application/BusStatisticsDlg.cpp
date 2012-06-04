@@ -38,11 +38,6 @@
 
 #include "BusStatisticsDlg.h"
 #include ".\busstatisticsdlg.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CBusStatisticsDlg dialog
@@ -607,11 +602,13 @@ BOOL CBusStatisticsDlg::OnInitDialog()
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
+    GetWindowPlacement(&sm_sBusSerializationData.m_sDefaultBusStatsDlgCoOrd);
 
-	GetWindowPlacement(&sm_sBusSerializationData.m_sDefaultBusStatsDlgCoOrd);
-	if(sm_sBusSerializationData.m_sBusStatsDlgCoOrd.rcNormalPosition.left == 0)
-		sm_sBusSerializationData.m_sBusStatsDlgCoOrd = sm_sBusSerializationData.m_sDefaultBusStatsDlgCoOrd;
-	
+    if(sm_sBusSerializationData.m_sBusStatsDlgCoOrd.rcNormalPosition.left == 0)
+    {
+        sm_sBusSerializationData.m_sBusStatsDlgCoOrd = sm_sBusSerializationData.m_sDefaultBusStatsDlgCoOrd;
+    }
+
     // Set the focus to the list
     m_omStatList.SetFocus();
     return FALSE;
@@ -766,12 +763,12 @@ HRESULT CBusStatisticsDlg::SetConfigData(BYTE* pvDataStream)
 					m_omStatList.SetColumnOrderArray(nColumnCount, pnOrder);
 					free(pnOrder);
 				}
-				else //Saved channel count differs from current channel count.
-					vLoadDefaultValues();
-
+                else //Saved channel count differs from current channel count.
+                {
+                    vLoadDefaultValues();
+                }
 			}
             WINDOWPLACEMENT sMsgWndPlacement;
-
             COPY_DATA_2(&sMsgWndPlacement, pByteSrc, sizeof(WINDOWPLACEMENT));
             SetWindowPlacement(&sMsgWndPlacement);			
 		}

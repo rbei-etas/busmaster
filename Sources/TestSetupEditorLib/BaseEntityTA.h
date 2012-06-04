@@ -21,8 +21,8 @@
  *
  * Contains The CBaseEntityTA Class Declarations.
  */
-#if !defined(_TSEDITORlib_BASEENTITY_H_INCLUDED_)
-#define _TSEDITORlib_BASEENTITY_H_INCLUDED_
+
+#pragma once
 
 #include <afxtempl.h>
 #include "DataBaseMsgList.h"
@@ -71,4 +71,3 @@ protected:
 	DWORD m_dwID;
 	eTYPE_ENTITY m_eType;
 };
-#endif // !defined(EA_6EF063BF_CCEA_475f_9A0F_6AEE3025CBDB__INCLUDED_)

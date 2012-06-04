@@ -3,32 +3,6 @@
   FileName      :  GraphLeftView.cpp
   Description   :  Implementation file for CGraphLeftView class
   $Log:   X:/Archive/Sources/SigGrphWnd/GraphLeftView.cpv  $
-   
-      Rev 1.5   08 Aug 2011 13:04:32   CANMNTTM
-   Updated function 'vPopulateGraphControl()'with following changes:
-   1. Removed dead code
-   2. Improve readability by inserting a space after a keyword, using braces in if .... else statements.
-   
-      Rev 1.4   25 Jul 2011 11:44:54   CANMNTTM
-   Updated to make the graph clearing done only in two scenarios:
-   1. When initially connected.
-   2. DIsconnected and connected back.
-   
-      Rev 1.3   06 Jun 2011 11:51:38   CANMNTTM
-    
-   
-      Rev 1.2   15 Apr 2011 19:43:32   rac2kor
-   Inserted RBEI Copyright information text into the file header.
-   
-      Rev 1.1   23 Dec 2010 18:04:44   CANMNTTM
-   Updated to support cursors feature in 
-   graph control.
-   
-      Rev 1.0   13 Dec 2010 22:00:34   CANMNTTM
-    
-   
-      Rev 1.0   16 Aug 2010 21:20:32   rac2kor
-    
 
   Author(s)     :  Raja N
   Date Created  :  09/12/2004
@@ -51,12 +25,6 @@
 #include "GraphBottomView.h"
 #include ".\graphleftview.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 // Local definitions
 #define defFROM_LINE_COLOR        0
 #define defFROM_LINE_TYPE         1
@@ -65,7 +33,7 @@ static char THIS_FILE[] = __FILE__;
 #define defFROM_VISIBLE           4
 #define defFROM_ENABLE            5
 #define defFRM_ELEMENT_SELECTION  6
-#define defFROM_LINE_DISPLAY	  7
+#define defFROM_LINE_DISPLAY      7
 
 IMPLEMENT_DYNCREATE(CGraphLeftView, CFormView)
 
@@ -188,10 +156,10 @@ void CGraphLeftView::OnInitialUpdate()
     if( pWnd != NULL )
     {
         // Register view pointer
-		((CGraphChildFrame *)pWnd)->m_pomLeftView = this;
-		// Get Graph Control Pointer
-		m_pDMGraphCtrl = ((CGraphChildFrame *)pWnd)->m_pDMGraphCtrl;
-    }	
+        (static_cast<CGraphChildFrame*>(pWnd))->m_pomLeftView = this;
+        // Get Graph Control Pointer
+        m_pDMGraphCtrl = (static_cast<CGraphChildFrame*>(pWnd))->m_pDMGraphCtrl;
+    }
 }
 
 /*******************************************************************************
@@ -241,19 +209,21 @@ void CGraphLeftView::vPopulateElementList()
     // Remove All items in the list
     m_omSignalList.DeleteAllItems();
     // Get List pointer
-	
-	CGraphChildFrame* pParentWnd = NULL;
-	pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+    CGraphChildFrame* pParentWnd = NULL;
+    pParentWnd = static_cast<CGraphChildFrame*>(pomGetParentWindow());
 
-	if(pParentWnd != NULL)
-		podList = pParentWnd->pGetSignalListDetails();
-	else
-		return;
-	
+    if(pParentWnd != NULL)
+    {
+        podList = pParentWnd->pGetSignalListDetails();
+    }
+    else
+    {
+        return;
+    }
+
     CGraphElement odTemp;
     if( podList != NULL )
     {
-        UINT unMsgID = 0;
         CString omStrName;
         int nItemCount  = (int)podList->m_omElementList.GetSize();
         // Add items to the list
@@ -278,8 +248,7 @@ void CGraphLeftView::vPopulateElementList()
                 m_omSignalList.SetItemData( nIndex, odTemp.m_nLineColor );
             }
             else
-            {						
-                unMsgID = odTemp.m_nMsgID;
+            {
                 // Get Message Name
 				omStrName = odTemp.m_strMsgName;
                 // Add Element Catogory
@@ -329,14 +298,19 @@ void CGraphLeftView::OnItemchangedListSignals(NMHDR* pNMHDR, LRESULT* /*pResult*
         if ( hSelItem != -1 )
         {				
             // Update selected element deteils
-            CGraphList * podList = NULL;
-			CGraphChildFrame* pParentWnd = NULL;
-			pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+            CGraphList* podList = NULL;
+            CGraphChildFrame* pParentWnd = NULL;
+            pParentWnd = static_cast<CGraphChildFrame*>(pomGetParentWindow());
 
-			if(pParentWnd != NULL)
-				podList = pParentWnd->pGetSignalListDetails();
-			else
-				return;            
+            if(pParentWnd != NULL)
+            {
+                podList = pParentWnd->pGetSignalListDetails();
+            }
+            else
+            {
+                return;
+            }
+
             // Update Element Details
             if( podList != NULL )
             {
@@ -423,15 +397,19 @@ void CGraphLeftView::OnSelchangeComboType()
     int hSelItem = m_omSignalList.GetNextItem(-1, LVNI_SELECTED);
 
     if ( hSelItem != -1 )
-    {		
-        CGraphList * podList = NULL;        		    
-		CGraphChildFrame* pParentWnd = NULL;
-		pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+    {
+        CGraphList* podList = NULL;
+        CGraphChildFrame* pParentWnd = NULL;
+        pParentWnd = static_cast<CGraphChildFrame*>(pomGetParentWindow());
 
-		if(pParentWnd != NULL)
-			podList = pParentWnd->pGetSignalListDetails();
-		else
-			return; 
+        if(pParentWnd != NULL)
+        {
+            podList = pParentWnd->pGetSignalListDetails();
+        }
+        else
+        {
+            return;
+        }
 
         // Update Element Details
         if( podList != NULL )
@@ -471,14 +449,20 @@ void CGraphLeftView::OnSelchangeComboSymbol()
     int hSelItem = m_omSignalList.GetNextItem(-1, LVNI_SELECTED);
 
     if ( hSelItem != -1 )
-    {		
-        CGraphList * podList = NULL;				 	
-		CGraphChildFrame* pParentWnd = NULL;
-		pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
-		if(pParentWnd != NULL)
-			podList = pParentWnd->pGetSignalListDetails();
-		else
-			return; 
+    {
+        CGraphList* podList = NULL;
+        CGraphChildFrame* pParentWnd = NULL;
+        pParentWnd = static_cast<CGraphChildFrame*>(pomGetParentWindow());
+
+        if(pParentWnd != NULL)
+        {
+            podList = pParentWnd->pGetSignalListDetails();
+        }
+        else
+        {
+            return;
+        }
+
         // Update Element Details
         if( podList != NULL )
         {
@@ -514,14 +498,18 @@ void CGraphLeftView::OnBtnEnable()
     if ( hSelItem != -1 )
     {		
         // Get graph list from main frame
-        CGraphList * podList = NULL;		
-		CGraphChildFrame* pParentWnd = NULL;
-		pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+        CGraphList* podList = NULL;
+        CGraphChildFrame* pParentWnd = NULL;
+        pParentWnd = static_cast<CGraphChildFrame*>(pomGetParentWindow());
 
-		if(pParentWnd != NULL)
-			podList = pParentWnd->pGetSignalListDetails();
-		else
-			return; 
+        if(pParentWnd != NULL)
+        {
+            podList = pParentWnd->pGetSignalListDetails();
+        }
+        else
+        {
+            return;
+        }
 
         // Update Element Details
         if( podList != NULL )
@@ -578,14 +566,18 @@ void CGraphLeftView::OnBtnVisible()
     if ( hSelItem != -1 )
     {		
         // Get Graph List from main frame
-        CGraphList * podList = NULL;		
-		CGraphChildFrame* pParentWnd = NULL;
-		pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+        CGraphList* podList = NULL;
+        CGraphChildFrame* pParentWnd = NULL;
+        pParentWnd = static_cast<CGraphChildFrame*>(pomGetParentWindow());
 
-		if(pParentWnd != NULL)
-			podList = pParentWnd->pGetSignalListDetails();
-		else
-			return; 
+        if(pParentWnd != NULL)
+        {
+            podList = pParentWnd->pGetSignalListDetails();
+        }
+        else
+        {
+            return;
+        }
 
         // Update Element Details
         if( podList != NULL )
@@ -634,16 +626,20 @@ void CGraphLeftView::OnBtnVisible()
   Modifications  : 
 *******************************************************************************/
 void CGraphLeftView::vEnableDisableControls()
-{	
-	CGraphList * podList = NULL;
-	CGraphChildFrame* pParentWnd = NULL;
-	pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+{
+    CGraphList* podList = NULL;
+    CGraphChildFrame* pParentWnd = NULL;
+    pParentWnd = static_cast<CGraphChildFrame*>(pomGetParentWindow());
 
-	if(pParentWnd != NULL)
-		podList = pParentWnd->pGetSignalListDetails();
-	else
-		return;
-    
+    if(pParentWnd != NULL)
+    {
+        podList = pParentWnd->pGetSignalListDetails();
+    }
+    else
+    {
+        return;
+    }
+
     // Update UI Elements
     if( podList != NULL )
     {
@@ -731,15 +727,19 @@ LRESULT CGraphLeftView::OnColorChange(WPARAM /*wparam*/, LPARAM lparam)
     
     if ( hSelItem != -1 )
     {
-        CGraphList * podList = NULL;
-       	CGraphChildFrame* pParentWnd = NULL;
-		pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
+        CGraphList* podList = NULL;
+        CGraphChildFrame* pParentWnd = NULL;
+        pParentWnd = static_cast<CGraphChildFrame*>(pomGetParentWindow());
 
-		if(pParentWnd != NULL)
-			podList = pParentWnd->pGetSignalListDetails();
-		else
-			return 0;
-        
+        if(pParentWnd != NULL)
+        {
+            podList = pParentWnd->pGetSignalListDetails();
+        }
+        else
+        {
+            return 0;
+        }
+
         // Update Element Details
         if( podList != NULL )
         {
@@ -762,10 +762,10 @@ LRESULT CGraphLeftView::OnColorChange(WPARAM /*wparam*/, LPARAM lparam)
                         // Update Control
                         vUpdateGraphControl( defFROM_LINE_COLOR,
                                              odSelectedElement.m_nLineColor );
-						((CGraphBottomView*)pParentWnd->m_pomBottomView)
-													->vInsertSignalData();
-						((CGraphBottomView*)pParentWnd->m_pomBottomView)
-													->vUpdateSignalData();
+                        (static_cast<CGraphBottomView*>(pParentWnd->m_pomBottomView))
+                        ->vInsertSignalData();
+                        (static_cast<CGraphBottomView*>(pParentWnd->m_pomBottomView))
+                        ->vUpdateSignalData();
                         break;
                     // Update Sample point color
                     case IDC_POINT_COLOR:
@@ -811,21 +811,34 @@ HRESULT CGraphLeftView::GetCurrentElement(IDMGraphCtrl* pGraphCtrl, IDMGraphElem
 	long nSelected = 0;
 
     HRESULT hr;
-	hr = pGraphCtrl->get_Elements(&spElements);
-	if(FAILED(hr))
-		return hr;
-	hr = spElements->get_Selected(&nSelected);
-	
-	if(FAILED(hr))
-		return hr;
-	if(nSelected <0 )
-		return S_FALSE;
+    hr = pGraphCtrl->get_Elements(&spElements);
 
-	CComPtr<IDispatch> spDispatch;
-	hr = spElements->get_Item(nSelected, &spDispatch);
-	if(FAILED(hr))
-		return hr;
-	return spDispatch.QueryInterface(ppGraphElement);
+    if(FAILED(hr))
+    {
+        return hr;
+    }
+
+    hr = spElements->get_Selected(&nSelected);
+
+    if(FAILED(hr))
+    {
+        return hr;
+    }
+
+    if(nSelected <0 )
+    {
+        return S_FALSE;
+    }
+
+    CComPtr<IDispatch> spDispatch;
+    hr = spElements->get_Item(nSelected, &spDispatch);
+
+    if(FAILED(hr))
+    {
+        return hr;
+    }
+
+    return spDispatch.QueryInterface(ppGraphElement);
 }
 
 /*******************************************************************************
@@ -845,8 +858,8 @@ void CGraphLeftView::vUpdateGraphControl(int nFromControl, long lValue)
 {
     if( m_pDMGraphCtrl != NULL )
     {
-		CComPtr<IDMGraphElement> spElement;
-		HRESULT hr = GetCurrentElement(m_pDMGraphCtrl, &spElement);
+        CComPtr<IDMGraphElement> spElement;
+        GetCurrentElement(m_pDMGraphCtrl, &spElement);
 
         switch( nFromControl )
         {
@@ -898,8 +911,10 @@ void CGraphLeftView::vUpdateGraphControl(int nFromControl, long lValue)
 				HRESULT hr;
 				CComPtr<IDMGraphCollection> spGraphCollection;
 				hr = m_pDMGraphCtrl->get_Elements(&spGraphCollection);
-				if(FAILED(hr))
-					return;
+                if(FAILED(hr))
+                {
+                    return;
+                }
 				// Select New Element
 				hr = spGraphCollection->put_Selected(lValue);	
 
@@ -934,30 +949,32 @@ void CGraphLeftView::vPopulateGraphControl()
     {		
         // Get Element List from Main Frame
         CGraphList* podList = NULL;
-		CGraphChildFrame* pParentWnd = NULL;
-		pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
-		if (pParentWnd != NULL)
-		{
-			podList = pParentWnd->pGetSignalListDetails();
-		}
-		else
-		{
-			ASSERT(FALSE);
-		}
+        CGraphChildFrame* pParentWnd = NULL;
+        pParentWnd = static_cast<CGraphChildFrame*>(pomGetParentWindow());
+
+        if (pParentWnd != NULL)
+        {
+            podList = pParentWnd->pGetSignalListDetails();
+        }
+        else
+        {
+            ASSERT(FALSE);
+        }
+
         CGraphElement odTemp;
 
         if ( podList != NULL )
         {
-            UINT unMsgID = 0;
             CString omStrName;
             int nItemCount  = (int)podList->m_omElementList.GetSize();
             // Get Buffer Size
-            int nBufferSize = podList->m_odGraphParameters.m_nBufferSize;
+            CComPtr<IDMGraphCollection> spGraphCollection;
+            HRESULT hr = m_pDMGraphCtrl->get_Elements(&spGraphCollection);
 
-			CComPtr<IDMGraphCollection> spGraphCollection;
-			HRESULT hr = m_pDMGraphCtrl->get_Elements(&spGraphCollection);
-			if(FAILED(hr))
-				return;
+            if(FAILED(hr))
+            {
+                return;
+            }
 
             // Add items to the list
             for ( int nIndex = 0; nIndex < nItemCount; nIndex++ )
@@ -1041,27 +1058,35 @@ void CGraphLeftView::vHandleConnectionStatusChange(BOOL bConnect)
     // Update Local Instance
     m_bConnectionStatus = bConnect;
     // Update Configuration Controls
-	if(bEnable)
-	{
-		CGraphList * podList = NULL;
-		CGraphChildFrame* pParentWnd = NULL;
-		pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
-		if(pParentWnd != NULL)
-			podList = pParentWnd->pGetSignalListDetails();
-		else
-			ASSERT(FALSE);	    
-		// Update UI Elements
-		if( podList != NULL )
-		{
-			if( podList->m_omElementList.GetSize() > 0 &&
-				m_omSignalList.GetSelectedCount() > 0 )
-			{
-				vEnableControls( bEnable );
-			}
-		}    
-	}
-	else
-		vEnableControls( bEnable );
+    if(bEnable)
+    {
+        CGraphList* podList = NULL;
+        CGraphChildFrame* pParentWnd = NULL;
+        pParentWnd = static_cast<CGraphChildFrame*>(pomGetParentWindow());
+
+        if(pParentWnd != NULL)
+        {
+            podList = pParentWnd->pGetSignalListDetails();
+        }
+        else
+        {
+            ASSERT(FALSE);
+        }
+
+        // Update UI Elements
+        if( podList != NULL )
+        {
+            if( podList->m_omElementList.GetSize() > 0 &&
+                    m_omSignalList.GetSelectedCount() > 0 )
+            {
+                vEnableControls( bEnable );
+            }
+        }
+    }
+    else
+    {
+        vEnableControls( bEnable );
+    }
 
     // Disable Configure button
     CWnd *pWnd = NULL;

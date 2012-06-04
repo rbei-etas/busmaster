@@ -1738,15 +1738,32 @@ BOOL CExecuteManager::bDLLBuildAll(CStringArray *pomStrErrorFiles)
 							//if the file is opened save it
 							if(!(omStrFileName.Compare(omStrWndName)))
 							{
-								CDocument*(pDoc) = CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate->OpenDocumentFile(pTempNode->
-															m_sNodeInfo.m_omStrFileName);
-								if(pDoc!=NULL)
+								// PTV To check if the file is already opened 
+								CFunctionEditorDoc* pDocCheck = CGlobalObj::ouGetObj(m_eBus).pGetDocPtrOfFile(pTempNode->
+									m_sNodeInfo.m_omStrFileName);
+								if (pDocCheck != NULL)
 								{
-									// If file name is not empty generate new def file
-									pDoc->OnSaveDocument(pTempNode->
-										     m_sNodeInfo.m_omStrFileName);
+									//If file is opened then get its frame and activate it
+									{
+										POSITION pos = pDocCheck->GetFirstViewPosition();
+										if (pos)
+										{
+											pDocCheck->GetNextView(pos)->GetParentFrame()->ActivateFrame();
+										}
+									}
 								}
-								break;
+								else
+								{
+									CDocument*(pDoc) = CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate->OpenDocumentFile(pTempNode->
+										m_sNodeInfo.m_omStrFileName);
+									if(pDoc!=NULL)
+									{
+										// If file name is not empty generate new def file
+										pDoc->OnSaveDocument(pTempNode->
+											m_sNodeInfo.m_omStrFileName);
+									}
+									break;
+								}
 							}
 							pWnd = pWnd->GetNextWindow();
 						}

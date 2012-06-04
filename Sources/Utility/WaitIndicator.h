@@ -40,9 +40,9 @@ public:
 	//Construction
 	CWaitIndicator();
 
-	//To Activater and to Show the Window
-	BOOL DisplayWindow(CString strTitle, CWnd* pParentWnd, UINT nID = 0);
-    void SetWindowText(TCHAR* acText);
+    //To Activater and to Show the Window
+    BOOL DisplayWindow(CString strTitle, CWnd* pParentWnd, UINT nID = 0);
+    void SetWindowText(char* acText);
     void PaintWindow(CDC& dc);
 
 

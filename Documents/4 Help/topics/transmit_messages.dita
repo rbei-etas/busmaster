@@ -32,6 +32,7 @@
         <li>Selecting Add Message button will add a new message entry.</li>
         <li>Database messages can be directly entered by name or ID in the Message ID/ Name combo box or can be selected from the combo box list items.</li>
         <li>Signal Matrix will show the bit pattern of the data bytes.</li>
+        <li>Instead of using Update button, Auto Update option can be selected to dynamically save the data. </li>
         <li>Select Update button to save the changes and press the toolbar button shown in the figure below.<image href="../images/sendmessagetoolbar.bmp" placement="break"/></li>
       </ul>
       <note>

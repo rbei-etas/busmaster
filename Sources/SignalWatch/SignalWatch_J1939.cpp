@@ -1,25 +1,12 @@
 /******************************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  SignalWatch_J1939.cpp
-  Description   :  
+  Description   :
   $Log:   X:/Archive/Sources/SignalWatch/SignalWatch_J1939.cpv  $
-   
-      Rev 1.3   03 Nov 2011 14:31:14   CANMNTTM
-   SW_SetConfigData is updated to solve the conguration
-   saving problem.
-   
-      Rev 1.2   06 Jun 2011 12:08:32   CANMNTTM
-    
-   
-      Rev 1.1   15 Apr 2011 19:18:46   CANMNTTM
-   Added RBEI Copyright information.
-   
-      Rev 1.0   01 Mar 2011 17:05:30   CANMNTTM
-    
 
   Author(s)     :  Pradeep Kadoor
   Date Created  :  16/02/2011
-  Modified By   : 
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 #include "SignalWatch_stdafx.h"
@@ -150,8 +137,9 @@ void CSignalWatch_J1939::vDisplayInSigWatchWnd(STJ1939_MSG& sMsg)
         static CString omMsgName;
         static SSignalInfoArray omSigInfoArray;
         static CStringArray omSigNames, omRawValues, omPhyValues;
-
-        omSigNames.RemoveAll(); omRawValues.RemoveAll(); omPhyValues.RemoveAll();
+        omSigNames.RemoveAll();
+        omRawValues.RemoveAll();
+        omPhyValues.RemoveAll();
 
         if (m_pMsgInterPretObj_J->bInterPretJ1939_MSGS(m_bHex ? HEXADECIMAL : DEC,
                                                        sMsg.m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN(),

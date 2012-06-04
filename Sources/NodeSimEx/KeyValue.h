@@ -41,7 +41,7 @@ private:
 public:
     // standard constructor
     CKeyValue(CFnsTreeView* pFnsTreeView, CFunctionEditorDoc* pDoc,
-              CWnd* pParent = NULL,TCHAR* pcKeyVal = (TCHAR*)NULL);
+              CWnd* pParent = NULL,char* pcKeyVal = (char*)NULL);
 
 // Dialog Data
     //{{AFX_DATA(CKeyValue)
@@ -71,7 +71,7 @@ protected:
 	//}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
-    TCHAR* m_pcKeyVal;
+    char* m_pcKeyVal;
     BOOL bValidateDuplicateKeyHandler(CFunctionEditorDoc* pDoc);
 
 };

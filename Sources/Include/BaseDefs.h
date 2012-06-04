@@ -22,8 +22,7 @@
  * This contains various basic definitions.
  */
 
-#if !defined BASEDEFS_H__INCLUDED_
-#define BASEDEFS_H__INCLUDED_
+#pragma once
 
 #include "Struct_CAN.h"
 
@@ -34,6 +33,13 @@
 #define MAX_DATA_LEN_J1939 1785
 /*Maximum possible length of a MCNET*/
 #define MAX_DATA_LEN_MCNET 0x7FFF
+
+typedef enum eProtocol
+{
+	PROTOCOL_CAN    = 0,
+	PROTOCOL_J1939,
+	PROTOCOL_UNKNOWN
+};
 
 typedef enum eTYPE_BUS
 {
@@ -75,31 +81,36 @@ typedef enum eMSG_WND_PROPERTY
     DISPLAY_MODE = 0x4
 };
 
-typedef enum  eTimerMode{
+typedef enum eTimerMode
+{
     TIME_MODE_RELATIVE = 0,
     TIME_MODE_SYSTEM,
     TIME_MODE_ABSOLUTE
 } ETIMERMODE;
 
-typedef enum eFormat {
+typedef enum eFormat
+{
     HEXADECIMAL = 0,
     DEC
 } EFORMAT;
 
-enum eMode {
+enum eMode
+{
     APPEND_MODE = 0,
     OVERWRITE_MODE,
     OVERWRITE_INTERPRET_MODE
 };
 
-enum eScroll {
+enum eScroll
+{
     SCROLL = 0,
     FREEZE
 };
 
-enum eTreeItemStates { TREESTATE_TOGGLE, 
-					   TREESTATE_EXPAND, 
-					   TREESTATE_COLLAPSE };
+enum eTreeItemStates { TREESTATE_TOGGLE,
+                       TREESTATE_EXPAND,
+                       TREESTATE_COLLAPSE
+                     };
 
 
 typedef UINT TYPE_CHANNEL;
@@ -124,7 +135,6 @@ const BYTE TYPE_MSG_CAN_RTR         = 0x1;
 const BYTE TYPE_MSG_CAN_NON_RTR     = 0x2;
 const BYTE TYPE_MSG_CAN_ALL         = 0x3;
 
-
 #define LENGTH_STR_TIMESTAMP_CAN        16
 #define LENGTH_STR_DATA_CAN             32
 #define LENGTH_STR_ID_CAN               16
@@ -146,27 +156,30 @@ typedef struct tagFormattedData_CAN
     BYTE            m_byIDType;                     // Type of the ID (STD or EXTENDED)
     BYTE            m_byMsgType;                    // Type of the message (RTR or NRTR)
 
-    TCHAR	m_acMsgDir[LENGTH_STR_DIRECTION_CAN];     // "Tx" or "Rx"
-    TCHAR	m_acChannel[LENGTH_STR_CHANNEL_CAN];      // "1" or "2"
-    TCHAR	m_acType[LENGTH_STR_TYPE_CAN];            // s / x / r
-    TCHAR	m_acDataLen[LENGTH_STR_DLC_CAN];          // DLC always in dec
-    TCHAR	m_acMsgDesc[LENGTH_STR_DESCRIPTION_CAN];  // Message description
+    char   m_acMsgDir[LENGTH_STR_DIRECTION_CAN];     // "Tx" or "Rx"
+    char   m_acChannel[LENGTH_STR_CHANNEL_CAN];      // "1" or "2"
+    char   m_acType[LENGTH_STR_TYPE_CAN];            // s / x / r
+    char   m_acDataLen[LENGTH_STR_DLC_CAN];          // DLC always in dec
+    char   m_acMsgDesc[LENGTH_STR_DESCRIPTION_CAN];  // Message description
 
-    TCHAR	m_acMsgIDHex[LENGTH_STR_ID_CAN];          // Identifier in hex
-    TCHAR	m_acMsgIDDec[LENGTH_STR_ID_CAN];          // Identifier in dec
+    char   m_acMsgIDHex[LENGTH_STR_ID_CAN];          // Identifier in hex
+    char   m_acMsgIDDec[LENGTH_STR_ID_CAN];          // Identifier in dec
 
-    TCHAR	m_acDataHex[LENGTH_STR_DATA_CAN];         // Data in hex
-    TCHAR	m_acDataDec[LENGTH_STR_DATA_CAN];         // Data in dec
+    char   m_acDataHex[LENGTH_STR_DATA_CAN];         // Data in hex
+    char   m_acDataDec[LENGTH_STR_DATA_CAN];         // Data in dec
 
-    TCHAR	m_acTimeAbsReset[LENGTH_STR_TIMESTAMP_CAN];    // Absolute time stamp Reset
-    TCHAR	m_acTimeAbs[LENGTH_STR_TIMESTAMP_CAN];    // Absolute time stamp 
-    TCHAR	m_acTimeRel[LENGTH_STR_TIMESTAMP_CAN];    // Relative time stamp
-    TCHAR	m_acTimeSys[LENGTH_STR_TIMESTAMP_CAN];    // System time stamp
+    char   m_acTimeAbsReset[LENGTH_STR_TIMESTAMP_CAN];    // Absolute time stamp Reset
+    char   m_acTimeAbs[LENGTH_STR_TIMESTAMP_CAN];    // Absolute time stamp
+    char   m_acTimeRel[LENGTH_STR_TIMESTAMP_CAN];    // Relative time stamp
+    char   m_acTimeSys[LENGTH_STR_TIMESTAMP_CAN];    // System time stamp
 
     __int64         m_n64MapId;                     // Map id of the message
     COLORREF        m_ColourCode;                   // Colour code associated
 
-} SFORMATTEDDATA_CAN;
+    
+};
+
+typedef tagFormattedData_CAN SFORMATTEDDATA_CAN;
 
 typedef struct sWMUpdatePtrPara
 {
@@ -207,6 +220,4 @@ typedef struct sMsgWndHdrCol
 		m_byDestPos     = (BYTE) -1;
 		m_byPriorityPos = (BYTE) -1;		
     }
-}SMSGWNDHDRCOL;
-
-#endif // BASEDEFS_H__INCLUDED_
+} SMSGWNDHDRCOL;

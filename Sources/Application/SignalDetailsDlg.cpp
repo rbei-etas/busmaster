@@ -29,11 +29,6 @@
 #include "MainFrm.h"            // Hex validation is defined here
 #include "Utility/UtilFunctions.h"      // For Utility Functions
 #include ".\signaldetailsdlg.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 extern CCANMonitorApp theApp;
 /////////////////////////////////////////////////////////////////////////////
@@ -70,14 +65,14 @@ CSignalDetailsDlg::CSignalDetailsDlg(const SDBPARAMS& sDbParams,
     //{{AFX_DATA_INIT(CSignalDetailsDlg)
     m_byByteIndex = 0;
     m_unSgLen = 1;
-    m_omStrSignalName = _T("");
+    m_omStrSignalName = "";
     m_byStartBit = 0;
-    m_omStrUnit = _T("");
+    m_omStrUnit = "";
     m_nMsgLength = nMsgLen;
     m_omStrMsgName = omStrMsgName;
     m_bIsCanceled = FALSE;
     m_bIsDataSaved = TRUE;
-    m_omStrPrevSignalName = _T("");
+    m_omStrPrevSignalName = "";
     m_unMode = eMode;
     m_nDataFormat = nDataFormat;
     m_omStrSgType = omStrSignalType;
@@ -1204,7 +1199,9 @@ void CSignalDetailsDlg::OnOK()
                     pSg->m_byStartBit               = m_byStartBit;
 
                     if ( m_unMode == MD_ADD )
+                    {
                         m_omStrPrevSignalName = STR_EMPTY;
+                    }
 
                     // Fill the matrix for edited signal
                     pTempMsgSg->vUpdateSignalDetails( m_omStrMsgName,
@@ -1367,7 +1364,9 @@ BOOL CSignalDetailsDlg::PreTranslateMessage(MSG* pMsg)
         }
     }
     if ( bSkip == FALSE)
+    {
         bSkip = CDialog::PreTranslateMessage(pMsg);
+    }
 
     return bSkip;
 }
@@ -1392,7 +1391,8 @@ BOOL CSignalDetailsDlg::bIsMaximumValueValid()
     SIG_VALUE  minVal,maxVal;
     CString strSignalType;
     m_omComboSgType.GetLBText(m_omComboSgType.GetCurSel(), strSignalType);
-    CMainFrame* pMainFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+    CMainFrame* pMainFrame = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
+
     if(strSignalType == defSIGNED_INT)
     {
         __int64 n64;         
@@ -1500,7 +1500,8 @@ BOOL CSignalDetailsDlg::bIsMinimumValueValid()
     SIG_VALUE  minVal,maxVal;
     CString strSignalType;
     m_omComboSgType.GetLBText(m_omComboSgType.GetCurSel(), strSignalType);
-    CMainFrame* pMainFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+    CMainFrame* pMainFrame = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
+
     if(strSignalType == defSIGNED_INT)
     {
         __int64 n64 = 0;

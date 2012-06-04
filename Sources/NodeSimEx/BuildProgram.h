@@ -49,7 +49,7 @@ public:
 private:
     ETYPE_BUS m_eBus;
     DWORD dwConvertShortPathName(CONST CString& omStrToConvert,
-                                    TCHAR* pcStrShortPath);
+                                    char* pcStrShortPath);
     // Create output window
     VOID vCreateOutputWindow();
     // Get strings from file and add it to string array

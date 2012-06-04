@@ -22,8 +22,7 @@
  * Declaration file for the exported function used to get the 
  */
 
-#if !defined FRAMEPROCESSOR_EXTERN_H__INCLUDED_
-#define FRAMEPROCESSOR_EXTERN_H__INCLUDED_
+#pragma once
 
 #include "../Include/ModuleID.h"
 
@@ -48,5 +47,3 @@ USAGEMODE HRESULT FP_GetInterface(eID_COMPONENT bInterfaceID, void** ppvInterfac
 #ifdef __cplusplus
 }
 #endif
-
-#endif // FRAMEPROCESSOR_EXTERN_H__INCLUDED_

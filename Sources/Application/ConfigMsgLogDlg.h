@@ -22,9 +22,7 @@
  * This is the class definition file for log configuration
  */
 
-#if !defined CONFIGMSGLOGDLG_H__INCLUDED_
-#define CONFIGMSGLOGDLG_H__INCLUDED_
-
+#pragma once
 
 typedef enum ECONTROLTYPE
 {
@@ -156,6 +154,3 @@ protected:
 public:
     afx_msg void OnBnClickedOk();
 };
-
-#endif // CONFIGMSGLOGDLG_H__INCLUDED_
-

@@ -551,7 +551,7 @@ BEGIN
     PUSHBUTTON      "",IDC_POINT_COLOR,242,113,39,12
     PUSHBUTTON      "&Visible",IDC_BTN_VISIBLE,205,137,45,14
     PUSHBUTTON      "&Enable",IDC_BTN_ENABLE,270,137,45,14
-    PUSHBUTTON      "Configure ...",IDC_BTN_CONFIGURE,234,178,57,14
+    PUSHBUTTON      "Configure Signals...",IDC_BTN_CONFIGURE,234,178,75,14
     GROUPBOX        "Element List",IDC_STATIC,20,48,144,145
     GROUPBOX        "Properties",IDC_STATIC,189,48,145,114
     LTEXT           "&Line type:",IDC_STATIC,196,58,37,8
@@ -562,7 +562,7 @@ BEGIN
     COMBOBOX        IDC_COMBO_BUS_TYPE,77,13,87,70,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     GROUPBOX        "Configured Elements:",IDC_STATIC,11,36,334,166
     GROUPBOX        "Graph Display",IDC_STATIC,189,9,156,27
-    PUSHBUTTON      "Configure",IDC_BUTTON_GRP_DISP_CONFIG,235,19,60,13
+    PUSHBUTTON      "Configure Display",IDC_BUTTON_GRP_DISP_CONFIG,235,19,65,13
 END
 
 IDD_DLG_TX DIALOGEX 0, 0, 381, 245
@@ -690,13 +690,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 1.6.3"
+            VALUE "FileVersion", "Ver 1.6.4"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 1.6.3"
+            VALUE "ProductVersion", "Ver 1.6.4"
         END
     END
     BLOCK "VarFileInfo"
@@ -998,6 +998,7 @@ BEGIN
     BEGIN
         MENUITEM "&Connect           F2",       62454,MFT_STRING,MFS_ENABLED
         MENUITEM "Start &Logging",              32806,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
+	MENUITEM "&Hex",                        32839, MFT_STRING,MFS_CHECKED
         POPUP "&Transmit",                      65535,MFT_STRING,MFS_ENABLED
         BEGIN
             MENUITEM "&Normal Blocks",              32873,MFT_STRING,MFS_CHECKED
@@ -1589,7 +1590,7 @@ BEGIN
     IDS_INVALID_DB_PROMPT   "Invalid database filename"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "Message Name"
-    IDS_VERSION             "Ver 1.6.3"
+    IDS_VERSION             "Ver 1.6.4"
     IDS_HEADER              "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n\n\n***[START LOGGING SESSION]***\n"
     IDS_FOOTER              "***[END LOGGING SESSION]***"
     IDS_CONNECT             "&Connect\tF2"

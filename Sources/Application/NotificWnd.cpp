@@ -29,13 +29,6 @@
 #include "Common.h"
 #include "resource.h"
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #define NOTIFIC_WND_CONFIG_SECTION_NAME "NotificWndProperty"
 #define TIMER_INVALID       0x0
 using namespace std;
@@ -110,23 +103,22 @@ END_MESSAGE_MAP()
 /******************************************************************************/
 VOID CNotificWnd::vSetWindowFont()
 {
-   // Set the font of replay window list box
-   LOGFONT LF;
-   memset(&LF, 0, sizeof(LF));  //zero out structure
+    // Set the font of replay window list box
+    LOGFONT LF;
+    memset(&LF, 0, sizeof(LF));  //zero out structure
+    LF.lfHeight = 14;
+    LF.lfWidth  = 0;
+    LF.lfItalic = FALSE;
+    LF.lfUnderline = FALSE;
+    LF.lfStrikeOut = FALSE;
+    LF.lfOutPrecision = OUT_CHARACTER_PRECIS;
+    LF.lfClipPrecision = CLIP_CHARACTER_PRECIS;
+    LF.lfPitchAndFamily  = FIXED_PITCH | FF_SWISS;
+    strcpy_s(LF.lfFaceName, LF_FACESIZE, "Tahoma");
+    LF.lfWeight = FW_NORMAL;
 
-   LF.lfHeight = 14;
-   LF.lfWidth  = 0;
-   LF.lfItalic = FALSE;
-   LF.lfUnderline = FALSE;
-   LF.lfStrikeOut = FALSE;
-   LF.lfOutPrecision = OUT_CHARACTER_PRECIS;
-   LF.lfClipPrecision = CLIP_CHARACTER_PRECIS;
-   LF.lfPitchAndFamily  = FIXED_PITCH | FF_SWISS;
-   _tcscpy(LF.lfFaceName, _T("Tahoma"));
-
-   LF.lfWeight = FW_NORMAL; 
-   if (m_omNewFont.CreateFontIndirect(&LF) == TRUE) 
-   {
+    if (m_omNewFont.CreateFontIndirect(&LF) == TRUE)
+    {
         // font setting.
         m_omListBox.SetFont(&m_omNewFont, TRUE);
    }

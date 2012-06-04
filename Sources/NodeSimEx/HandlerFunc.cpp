@@ -412,6 +412,9 @@ UINT unTimerHandlerProc(LPVOID pParam)
 			}
 			
 		}
-        psTimerStruct->pomThreadHandle=NULL;
+		if(psTimerStruct != NULL)
+		{
+        	psTimerStruct->pomThreadHandle=NULL;
+		}
 		return 0;
 }

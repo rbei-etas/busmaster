@@ -22,9 +22,7 @@
  * This contains various necessary macro definitions.
  */
 
-
-#if !defined UTILS_MACRO_H__INCLUDED_
-#define UTILS_MACRO_H__INCLUDED_
+#pragma once
 
 #define FORMAT_STR_ID_HEX		_T("0x%03X")
 #define FORMAT_STR_ID_DEC       _T("%04d")
@@ -88,17 +86,15 @@ const BYTE BITS_EXPRN           = (BITS_TM | BITS_NUM);
 #define UNUSED_INTENTIONALLY(X)    (X)
 
 #define DELETE_PTR(PtrVal)      {                                       \
-                                    if (NULL != PtrVal)                 \
-                                    {                                   \
-                                        delete PtrVal; PtrVal = NULL;   \
-                                    }                                   \
-                                }
+        if (NULL != PtrVal)                 \
+        {                                   \
+            delete PtrVal; PtrVal = NULL;   \
+        }                                   \
+    }
 
 #define DELETE_ARRAY(PtrVal)    {                                       \
-                                    if (NULL != PtrVal)                 \
-                                    {                                   \
-                                        delete[] PtrVal; PtrVal = NULL; \
-                                    }                                   \
-                                }
-
-#endif // UTILS_MACRO_H__INCLUDED_
+        if (NULL != PtrVal)                 \
+        {                                   \
+            delete[] PtrVal; PtrVal = NULL; \
+        }                                   \
+    }

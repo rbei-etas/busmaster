@@ -73,7 +73,7 @@ CSetResetTimer::CSetResetTimer(ETYPE_BUS eBus, CWnd* pParent /*=NULL*/)
 {
     m_eBus = eBus;
     //{{AFX_DATA_INIT(CSetResetTimer)
-	m_omStrNodeName = _T("");
+	m_omStrNodeName = "";
 	//}}AFX_DATA_INIT
 //	 m_omApptEvent = CreateEvent(NULL,TRUE,FALSE,NULL); 
 
@@ -230,7 +230,10 @@ BOOL CSetResetTimer::OnInitDialog()
 					psCurrTimerListPtr=psCurrTimerListPtr->psNextTimerListPtr;
 				}
 			}
-			m_psSelectedNodeTimerListPtr= psCurrTimerListPtr->psTimerListPtr;
+			if(psCurrTimerListPtr != NULL)
+			{
+				m_psSelectedNodeTimerListPtr= psCurrTimerListPtr->psTimerListPtr;
+			}
 			m_nSelectedNode=0;
 		}
 

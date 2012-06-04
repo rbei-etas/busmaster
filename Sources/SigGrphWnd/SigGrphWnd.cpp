@@ -1,33 +1,12 @@
 /*********************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  SigGrphWnd.cpp
-  Description   :  
+  Description   :
   $Log:   X:/Archive/Sources/SigGrphWnd/SigGrphWnd.cpv  $
-   
-      Rev 1.10   22 Jul 2011 11:46:06   CANMNTTM
-   Updation of SIgnal plotter thread: Timings of signal data plotting.
-   
-      Rev 1.9   09 Jun 2011 18:05:32   CANMNTTM
-   All errors in VS2005 are removed
-   
-      Rev 1.8   06 Jun 2011 11:51:38   CANMNTTM
-    
-   
-      Rev 1.7   06 May 2011 14:29:52   CANMNTTM
-   Updated with resource switch.
-   
-      Rev 1.6   06 May 2011 14:24:04   CANMNTTM
-   Updated with resource switching code in necessary functions.
-   
-      Rev 1.5   21 Apr 2011 14:28:08   CANMNTTM
-   Updated SG_GetWindowSplitterPos(..) function to get window config data from datastore.
-   
-      Rev 1.4   15 Apr 2011 19:43:34   rac2kor
-   Inserted RBEI Copyright information text into the file header.
 
-  Author(s)     :  
-  Date Created  :  
-  Modified By   :  
+  Author(s)     :
+  Date Created  :
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved
 *********************************************************************/
 
@@ -52,11 +31,6 @@
 #include "TimeManager.h"
 #include "Include/BaseDefs.h"
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 static AFX_EXTENSION_MODULE SigGrphWndDLL = { NULL, NULL };
 WINDOWPLACEMENT m_sGraphWndPlacement[AVAILABLE_PROTOCOLS];
 SGRAPHSPLITTERDATA m_sGraphSplitterPos[AVAILABLE_PROTOCOLS];
@@ -72,8 +46,10 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 		TRACE0("SigGrphWnd.DLL Initializing!\n");
 		
 		// Extension DLL one-time initialization
-		if (!AfxInitExtensionModule(SigGrphWndDLL, hInstance))
-			return 0;
+        if (!AfxInitExtensionModule(SigGrphWndDLL, hInstance))
+        {
+            return 0;
+        }
 
 		// Insert this DLL into the resource chain
 		// NOTE: If this Extension DLL is being implicitly linked to by
@@ -218,18 +194,22 @@ USAGEMODE HRESULT SG_ShowGraphWindow( short eBusType,  BOOL bShow)
 
 USAGEMODE BOOL SG_IsWindowVisible( short eBusType)
 {
-	if(m_pomGraphWindows[eBusType]!=NULL)
-	{
-		if(m_pomGraphWindows[eBusType]->IsWindowVisible())
-			return TRUE;		
-	}	
+    if(m_pomGraphWindows[eBusType]!=NULL)
+    {
+        if(m_pomGraphWindows[eBusType]->IsWindowVisible())
+        {
+            return TRUE;
+        }
+    }
 	return FALSE;
 }
 
 USAGEMODE HRESULT SG_SetSignalListDetails(  short eBusType,  CGraphList * pSignalList)
 {
-	if(m_pomGraphWindows[eBusType] == NULL)
-		return S_FALSE;
+    if(m_pomGraphWindows[eBusType] == NULL)
+    {
+        return S_FALSE;
+    }
 
 	m_pomGraphWindows[eBusType]->vSetSignalListDetails(pSignalList);
 	// Update List Control
@@ -265,11 +245,13 @@ USAGEMODE HRESULT SG_vPostMessageToSGWnd( short eBusType, UINT msg, WPARAM wPara
 		{
 			case eCONNECTCMD:
 				bConnect = (BOOL)lParam;
-				if(bConnect)
-				{
-					if(m_ouGraphReadThread.m_unActionCode != CREATE_TIME_MAP)
-						bStartGraphReadThread();
-				}
+                if(bConnect)
+                {
+                    if(m_ouGraphReadThread.m_unActionCode != CREATE_TIME_MAP)
+                    {
+                        bStartGraphReadThread();
+                    }
+                }
 				else
 				{
 					bStopGraphReadThread();
@@ -356,19 +338,19 @@ DWORD WINAPI SignalDataPlotterThread(LPVOID pVoid)
     {
         return (DWORD)-1;
     }
-	
-	pThreadParam->m_unActionCode = CREATE_TIME_MAP;
-	int nRefreshTime = 0;	
-	int nBufferSize = 0;
-	for(int nBUSId = 0; nBUSId<AVAILABLE_PROTOCOLS; nBUSId++)
-	{
-		if(m_pomGraphWindows[nBUSId] != NULL)
-		{
-			nRefreshTime =
-				m_pomGraphWindows[nBUSId]->m_pGraphList->m_odGraphParameters.m_nRefreshRate;
-			nBufferSize = m_pomGraphWindows[nBUSId]->m_pGraphList->m_odGraphParameters.m_nBufferSize;
-		}
-	}
+
+    pThreadParam->m_unActionCode = CREATE_TIME_MAP;
+    int nBufferSize = 0;
+
+    for(int nBUSId = 0; nBUSId<AVAILABLE_PROTOCOLS; nBUSId++)
+    {
+        if(m_pomGraphWindows[nBUSId] != NULL)
+        {
+            int nRefreshTime =
+                m_pomGraphWindows[nBUSId]->m_pGraphList->m_odGraphParameters.m_nRefreshRate;
+            nBufferSize = m_pomGraphWindows[nBUSId]->m_pGraphList->m_odGraphParameters.m_nBufferSize;
+        }
+    }
 
 	//Clear the buffer with previous contents if any.
 	m_ouMsgInterpretBuffer.vClearMessageBuffer();
@@ -438,8 +420,10 @@ DWORD WINAPI SignalDataPlotterThread(LPVOID pVoid)
 					CComPtr<IDispatch> spDispatch;
 					CComPtr<IDMGraphElement> spGraphElement;
 					hResult = spGraphCollection->get_Item(nIndex, &spDispatch);
-					if ( spDispatch == NULL )
-						return 0;
+                    if ( spDispatch == NULL )
+                    {
+                        return 0;
+                    }
 					hResult = spDispatch.QueryInterface(&spGraphElement);					
 
 					odTemp = podList->m_omElementList[ nIndex ];

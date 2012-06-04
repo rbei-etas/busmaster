@@ -18,8 +18,8 @@
  * \author    Venkatanarayana makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined(_TSEDITORLIB_TESTSETUPVERIFYENTITY_H_INCLUDED_)
-#define _TSEDITORLIB_TESTSETUPVERIFYENTITY_H_INCLUDED_
+
+#pragma once
 
 #include "TestCaseEntity.h"
 #include "Verify_MessageEntity.h"
@@ -45,4 +45,3 @@ public:
     HRESULT ValidateEntity(CString& omStrResult);
     virtual ~CVerifyEntity(void);
 };
-#endif

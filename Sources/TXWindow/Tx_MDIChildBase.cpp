@@ -27,12 +27,6 @@
 #include "Tx_MDIChildBase.h"       // For MDI Base class definition
 #include "TxWndDataStore.h"     // For Tx Window Configuration
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 IMPLEMENT_DYNCREATE(CMDIChildBase, CMDIChildWnd)
 
 /*******************************************************************************

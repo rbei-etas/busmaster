@@ -265,8 +265,8 @@ HRESULT CTSExecutorChildFrame::OnAddTestSetup(WPARAM wparam, LPARAM lparam)
     
 //For Multiple File Select - Hint From Msdn
     const int nSize =  _MAX_PATH  * _MAX_PATH ;  //Total 260 Files
-    TCHAR *szTempBuf = new TCHAR[nSize];
-    memset(szTempBuf, 0, sizeof(TCHAR) * nSize);
+    char* szTempBuf = new char[nSize];
+    memset(szTempBuf, 0, sizeof(char) * nSize);
     omTestSetupBrowser.m_ofn.lpstrFile = szTempBuf;
     omTestSetupBrowser.m_ofn.nMaxFile = nSize - 1;
 

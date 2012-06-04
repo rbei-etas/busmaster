@@ -51,8 +51,6 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="FrameProcessor_StdAfx.h"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
@@ -135,12 +133,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
 				AdditionalIncludeDirectories="$(SolutionDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="FrameProcessor_StdAfx.h"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="0"
@@ -213,38 +210,14 @@
 			<File
 				RelativePath=".\Format\FormatMsgCAN.cpp"
 				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PrecompiledHeaderThrough="../FrameProcessor_StdAfx.h"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\Format\FormatMsgCommon.cpp"
 				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PrecompiledHeaderThrough="../FrameProcessor_StdAfx.h"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\Format\FormatMsgJ1939.cpp"
 				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PrecompiledHeaderThrough="../FrameProcessor_StdAfx.h"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\FrameProcessor.cpp"
@@ -260,10 +233,6 @@
 			</File>
 			<File
 				RelativePath=".\FrameProcessor_J1939.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\FrameProcessor_stdafx.cpp"
 				>
 			</File>
 			<File

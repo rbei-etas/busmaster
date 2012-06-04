@@ -21,12 +21,8 @@
  *
  * This file contain the definition of all global utility function 
  */
-#if !defined _UTILITY_H_
-#define _UTILITY_H_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "HashDefines.h"
 // Global flag user for terminating the thread and disabling GUI.
@@ -88,8 +84,3 @@ UINT unTimerHandlerProc(LPVOID pParam);
 UINT unReadNodeMsgHandlerBuffer(LPVOID pParam);
 // to read ExecuteManager buffer of message queue
 UINT unReadDllMsgBuffer(LPVOID pParam);
-
-	
-	
-
-#endif

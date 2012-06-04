@@ -37,6 +37,7 @@ CTxWndDataStore::CTxWndDataStore(void)
     m_sTxWndPlacement.rcNormalPosition.top = -1;
     m_sTxWndPlacement.length = 0;
     m_sTxMsgWndSplitterPos.m_nRootSplitterData[0][0] = -1;
+	m_bAutoSavedEnabled = false;
 }
 
 CTxWndDataStore::~CTxWndDataStore(void)
@@ -76,7 +77,9 @@ BOOL CTxWndDataStore::bGetTxData(eTXWNDDETAILS  eParam, LPVOID* lpData)
             *psData = m_sTxMsgWndSplitterPos;
         }
         break;
-        case TX_SEND_MULTI_MSGS:{
+
+        case TX_SEND_MULTI_MSGS:
+        {
             *lpData = NULL;
             PSMSGBLOCKLIST psMsgBlockList  = new SMSGBLOCKLIST;
             if (psMsgBlockList != NULL)
@@ -111,6 +114,12 @@ BOOL CTxWndDataStore::bGetTxData(eTXWNDDETAILS  eParam, LPVOID* lpData)
             *psData = m_sTxWndPlacement;
         }
         break;
+		case TX_AUTO_UPDATE_ENABLE:
+			{
+				bool *psData = static_cast<bool*>(*lpData);
+				*psData = m_bAutoSavedEnabled;
+				break;
+			}
         default:
         {
             ASSERT(FALSE);
@@ -175,6 +184,13 @@ BOOL CTxWndDataStore::bSetTxData(eTXWNDDETAILS  eParam, LPVOID lpVoid)
             m_bIsConfigurationModified = TRUE;
         }
         break;
+		case TX_AUTO_UPDATE_ENABLE:
+			{
+				bool *psData = static_cast<bool*>(lpVoid);
+				*psData = m_bAutoSavedEnabled;
+				 m_bIsConfigurationModified = TRUE;
+				break;
+			}
         default:
         {
             ASSERT(FALSE);
@@ -196,6 +212,7 @@ BYTE* CTxWndDataStore::pbySetConfigData(BYTE* pbyConfigData, INT /*nConfigSize*/
     {
         BYTE byVersion = 0;
         COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
+		int nVersion = (int)byVersion;
 
         COPY_DATA_2(&m_unNumberOfMsgBlockCount, pbyTemp, sizeof(UINT));
 
@@ -203,9 +220,9 @@ BYTE* CTxWndDataStore::pbySetConfigData(BYTE* pbyConfigData, INT /*nConfigSize*/
         for (UINT i = 0; i < m_unNumberOfMsgBlockCount; i++)
         {        
             PSMSGBLOCKLIST psTempBlock = new SMSGBLOCKLIST;
-            TCHAR acName[MAX_PATH] = {_T('\0')};
-            COPY_DATA_2(acName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
-            _tcscpy(psTempBlock->m_acStrBlockName, acName);
+            char acName[MAX_PATH] = {_T('\0')};
+            COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
+            strcpy_s(psTempBlock->m_acStrBlockName, defBLOCKNAME_SIZE, acName);
             COPY_DATA_2(&(psTempBlock->m_ucTrigger),pbyTemp,  sizeof(UCHAR));
             COPY_DATA_2(&(psTempBlock->m_bActive), pbyTemp, sizeof(BOOL));
             COPY_DATA_2(&(psTempBlock->m_ucKeyValue), pbyTemp, sizeof(UCHAR));
@@ -247,6 +264,12 @@ BYTE* CTxWndDataStore::pbySetConfigData(BYTE* pbyConfigData, INT /*nConfigSize*/
         STXMSGSPLITTERDATA sTxSpliiterData;
         COPY_DATA_2(&sTxSpliiterData, pbyTemp,  sizeof(STXMSGSPLITTERDATA));
         bSetTxData(TX_WND_SPLITTER_DATA, &sTxSpliiterData);
+		
+		if(nVersion >= 2)
+		{
+			COPY_DATA_2(&m_bAutoSavedEnabled, pbyTemp,  sizeof(bool));
+			bSetTxData(TX_AUTO_UPDATE_ENABLE, &m_bAutoSavedEnabled);		//save the status of auto save
+		}
     }
     return pbyTemp; 
 }
@@ -263,8 +286,8 @@ BYTE* CTxWndDataStore::pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize)
 
     PSMSGBLOCKLIST psTemp = m_psMsgBlockList;
     while (psTemp != NULL && unBlockCount > 0)
-    {                    
-        unSize += (sizeof(TCHAR) * MAX_PATH); // To store the block name
+    {
+        unSize += (sizeof(char) * MAX_PATH); // To store the block name
         unSize += sizeof(UCHAR); // To store the trigger
         unSize += sizeof(BOOL); // To store active or not
         unSize += sizeof(UCHAR); // To store the key value
@@ -280,22 +303,23 @@ BYTE* CTxWndDataStore::pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize)
 
     unSize += sizeof(WINDOWPLACEMENT);
     unSize += sizeof(STXMSGSPLITTERDATA);
+	unSize += sizeof(bool);					//allocation for auto update
 
     //ALLOCATE THE MEMORY
     pbyCfgData = new BYTE[unSize];
     BYTE* pbyTemp = pbyCfgData;
 
-    BYTE byVersion = 0x1;
-    COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+    BYTE byVersion = defTX_MSG_WND_VERSION;
+	COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
     COPY_DATA(pbyTemp, &unBlockCount, sizeof(UINT));
 
     PSMSGBLOCKLIST psTempBlock = m_psMsgBlockList;
     while (psTempBlock != NULL && unBlockCount > 0)
     {    
         CString m_omStrBlockName;
-        TCHAR acName[MAX_PATH] = {_T('\0')};
-        _tcscpy(acName, psTempBlock->m_acStrBlockName);
-        COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+        char acName[MAX_PATH] = {_T('\0')};
+        strcpy_s(acName, MAX_PATH, psTempBlock->m_acStrBlockName);
+        COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
         COPY_DATA(pbyTemp, &(psTempBlock->m_ucTrigger), sizeof(UCHAR));
         COPY_DATA(pbyTemp, &(psTempBlock->m_bActive), sizeof(BOOL));
         COPY_DATA(pbyTemp, &(psTempBlock->m_ucKeyValue), sizeof(UCHAR));
@@ -319,6 +343,9 @@ BYTE* CTxWndDataStore::pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize)
 
     //Get the Tx splitter position
     COPY_DATA(pbyTemp, &m_sTxMsgWndSplitterPos, sizeof(STXMSGSPLITTERDATA));
+
+	//Get the Auto save option
+	COPY_DATA(pbyTemp, &m_bAutoSavedEnabled, sizeof(bool)); 
 
     //Update the OUT PARAMETERS
     pbyConfigData = pbyCfgData;
@@ -383,9 +410,8 @@ BOOL CTxWndDataStore::bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList)
                 psSrcMsgBlockList->m_unMsgCount;
             psDestMsgBlockList->m_unTimeInterval = 
                 psSrcMsgBlockList->m_unTimeInterval;
-
-            _tcscpy( psDestMsgBlockList->m_acStrBlockName, 
-                psSrcMsgBlockList->m_acStrBlockName);
+            strcpy_s( psDestMsgBlockList->m_acStrBlockName, defBLOCKNAME_SIZE,
+                      psSrcMsgBlockList->m_acStrBlockName);
 
             if (psSrcMsgBlockList->m_unMsgCount > 0)
             {
@@ -470,8 +496,7 @@ BOOL CTxWndDataStore::bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList)
 static void vCopyBlockDetails(PSMSGBLOCKLIST psDest, const PSMSGBLOCKLIST psSrc)
 {
     ASSERT((psDest != NULL) && (psSrc != NULL));
-
-    _tcscpy(psDest->m_acStrBlockName, psSrc->m_acStrBlockName);
+    strcpy_s(psDest->m_acStrBlockName, defBLOCKNAME_SIZE, psSrc->m_acStrBlockName);
     psDest->m_bActive              = psSrc->m_bActive;
     psDest->m_bTxAllFrame          = psSrc->m_bTxAllFrame;
     psDest->m_bType                = psSrc->m_bType;    
@@ -774,14 +799,15 @@ void CTxWndDataStore::vReleaseMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                     delete psCurrentTxCANMsgList;
                     psCurrentTxCANMsgList = NULL;
                     psCurrentTxCANMsgList = psNextTxCANMsgList;
-                }while(psNextTxCANMsgList != NULL);
-                
+                }
+                while(psNextTxCANMsgList != NULL);
             }
             psNextMsgBlockList = psCurrentMsgBlockList->m_psNextMsgBlocksList;
             delete psCurrentMsgBlockList;
             psCurrentMsgBlockList = NULL;
             psCurrentMsgBlockList = psNextMsgBlockList;
-        }while(psNextMsgBlockList != NULL);
+        }
+        while(psNextMsgBlockList != NULL);
     }
 }
 void CTxWndDataStore::vInitialiseMsgDetails(PSTXCANMSGLIST& psMsgDetails)
@@ -805,7 +831,7 @@ void CTxWndDataStore::vInitialiseMsgBlock(PSMSGBLOCKLIST& psMsgBlockList)
         psMsgBlockList->m_psTxCANMsgList      = NULL;
         psMsgBlockList->m_ucKeyValue          = defDEFAULT_KEY_VAL;
         psMsgBlockList->m_unTimeInterval      = defDEFAULT_TIME_VAL;
-        _tcscpy( psMsgBlockList->m_acStrBlockName, defDEFAULT_MSG_BLOCK_NAME);
+        strcpy_s( psMsgBlockList->m_acStrBlockName, defBLOCKNAME_SIZE, defDEFAULT_MSG_BLOCK_NAME);
     }
 }
 

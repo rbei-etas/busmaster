@@ -3,6 +3,7 @@
 //
 #define HIDCANCEL                       0x80e40002    // IDD_DLG_CHANGE_REGISTERS
 #define HIDC_ButtonOK                   0x80e40424    // IDD_DLG_CHANGE_REGISTERS
+#define HIDC_COMB_BAUD_RATE             0x8bbb0bc5    // IDD_DLG_CHANGE_REGISTERS_CAN_ICS_NEOVI
 #define HIDC_COMB_BTL                   0x8bbc0400    // IDD_DLG_CHANGE_REGISTERS_CAN_ETAS_BOA
 #define HIDC_COMB_CLOCK                 0x80e403fc    // IDD_DLG_CHANGE_REGISTERS
 #define HIDC_COMB_PROPDELAY             0x8bbc03fd    // IDD_DLG_CHANGE_REGISTERS_CAN_ICS_NEOVI

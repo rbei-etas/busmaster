@@ -26,8 +26,7 @@
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 
-#if !defined BASEFRAMEPROCESSOR_J1939_H__INCLUDED_
-#define BASEFRAMEPROCESSOR_J1939_H__INCLUDED_
+#pragma once
 
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/MsgBufVSE.h"
@@ -130,9 +129,7 @@ public:
 	virtual HRESULT FPJ1_SetDatabaseFiles(const CStringArray& omList) = 0;
 
 	// To update the channel baud rate info to logger
-	virtual HRESULT FPJ1_SetChannelBaudRateDetails(SCONTROLER_DETAILS* controllerDetails,
+	virtual HRESULT FPJ1_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
 														int nNumChannels) = 0;
 
 };
-
-#endif // BASEFRAMEPROCESSOR_J1939_H__INCLUDED_

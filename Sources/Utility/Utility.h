@@ -22,9 +22,7 @@
  * This file contains utility function declarations
  */
 
-// Deaclaration of utility functions 
-#if !defined _UTILITY_H_INCLUDED_
-#define _UTILITY_H_INCLUDED_
+#pragma once
 
 #include <cstringt.h>
 #include <atlstr.h>
@@ -46,7 +44,7 @@ int CalculateGCF(int anNumbers[], int Length);
 void vRemoveUnwantedBits(__int64& n64rData, int nLength);
 void vExtendSignBit( __int64& n64Val, int nSize);
 //bool bGetSystemErrorString(HRESULT hResult, CHAR acErrStr[256]);
-bool bGetSystemErrorString(HRESULT hResult, TCHAR acErrStr[256]);
+bool bGetSystemErrorString(HRESULT hResult, char acErrStr[256]);
 //bool bGetSystemErrorString(CHAR acErrStr[256]);
 
 //// To copy the text into the clipboard
@@ -64,5 +62,4 @@ void s_vExtendSignBit( __int64& n64Val, int nSize);
 // To conver string to __int64. The string value could be in Hex or dec
 BOOL bConvertStringToInt64( CString omStrHexNo,    // String
                             __int64& n64Value,     // Value
-                            int nBase);       
-#endif //_UTILITY_H_INCLUDED_
+                            int nBase);

@@ -80,13 +80,6 @@
 #include <DataTypes/SigGrphWnd_Datatypes.h>
 #include "J1939TimeOutCfg.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 // For bus statistics information
 extern SBUSSTATISTICS g_sBusStatistics[ defNO_OF_CHANNELS ];
 
@@ -184,7 +177,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_DLL_UNLOAD_ALL, OnDllUnload)
     ON_COMMAND(IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, OnMessageInterpretation)
     ON_COMMAND(IDM_SIGNALWATCH_ADDSIGNAL, OnAddSignalToSignalWindow)
-    ON_COMMAND(IDM_FILTER_MESSAGEFILTEROFF, OnMessageFilter)
+    ON_COMMAND(IDM_FILTER_MESSAGEFILTEROFF, OnMessageFilterButton)
     ON_COMMAND(IDM_FILTER_LOGFILTEROFF, OnLogFilter)
     ON_COMMAND(IDM_FILTER_MESSAGE_SELECTMESSAGES, OnSelectMessage)
     ON_COMMAND(IDM_APP_ABOUT, OnAboutApplication)
@@ -201,12 +194,14 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, OnUpdateMessageInterpret)
     ON_UPDATE_COMMAND_UI(IDM_EXECUTE_MESSAGEHANDLERS, OnUpdateExecuteMessagehandlers)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_LOGFILTEROFF, OnUpdateLogFilter)
-    ON_UPDATE_COMMAND_UI(IDM_FILTER_MESSAGEFILTEROFF, OnUpdateMessageFilter)
+    ON_UPDATE_COMMAND_UI(IDM_FILTER_MESSAGEFILTEROFF, OnUpdateMessageFilterButton)
     ON_UPDATE_COMMAND_UI(IDM_EXECUTE_MESSAGEHANDLERS_BUTTON, OnUpdateExecuteMessagehandlersButton)
     ON_COMMAND(IDM_EXECUTE_MESSAGEHANDLERS_BUTTON, OnExecuteMessagehandlersButton)
     ON_COMMAND(IDR_TOOL_SENDMSG, OnSendMessage)
-    ON_COMMAND(IDM_FILTER_LOGFILTEROFF_BUTTON, OnLogFilterButton)
-    ON_UPDATE_COMMAND_UI(IDM_FILTER_LOGFILTEROFF_BUTTON, OnUpdateLogFilterButton)
+    ON_COMMAND(IDM_FILTER_LOGFILTEROFF_BUTTON, OnLogFilter)
+//    ON_COMMAND(IDM_FILTER_LOGFILTEROFF_BUTTON, OnLogFilterButton)
+    ON_UPDATE_COMMAND_UI(IDM_FILTER_LOGFILTEROFF_BUTTON, OnUpdateLogFilter)
+//    ON_UPDATE_COMMAND_UI(IDM_FILTER_LOGFILTEROFF_BUTTON, OnUpdateLogFilterButton)
     ON_COMMAND(IDM_FILTER_MESSAGEFILTEROFF_BUTTON, OnMessageFilterButton)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_MESSAGEFILTEROFF_BUTTON, OnUpdateMessageFilterButton)
     ON_UPDATE_COMMAND_UI(IDM_EXECUTE_TIMERHANDLER, OnUpdateExecuteTimerhandler)
@@ -453,7 +448,7 @@ CMainFrame::CMainFrame()
     m_unReplayTimeDelay             = 50;
     m_unCycleTimeDelay              = 0;
     m_unTimerSB                     = 0;
-    m_omStrPrevLoadedDll            = _T("");
+    m_omStrPrevLoadedDll            = "";
     m_bIsSendingMsg                 = FALSE;
     m_bMessageName                  = TRUE;
     //m_bDateActive                   = FALSE;
@@ -519,8 +514,7 @@ CMainFrame::CMainFrame()
     INITIALISE_ARRAY(m_asControllerDetails);
     //Default Hw mode
     m_byControllerMode = defMODE_ACTIVE;
-
-    TCHAR acTmp[MAX_PATH] = {'\0'};
+    char acTmp[MAX_PATH] = {'\0'};
     GetCurrentDirectory(MAX_PATH, acTmp);
     m_omAppDirectory = acTmp;
 	m_bInterPretMsg = FALSE;
@@ -612,17 +606,20 @@ CMainFrame::~CMainFrame()
 ******************************************************************************/
 int CMainFrame::nFindMenuItem(CMenu* Menu, LPCTSTR MenuString)
 {
-   ASSERT(Menu);
-   ASSERT(::IsMenu(Menu->GetSafeHmenu()));
+    ASSERT(Menu);
+    ASSERT(::IsMenu(Menu->GetSafeHmenu()));
+    int count = Menu->GetMenuItemCount();
 
-   int count = Menu->GetMenuItemCount();
-   for (int i = 0; i < count; i++)
-   {
-      CString str;
-      if (Menu->GetMenuString(i, str, MF_BYPOSITION) &&
-         (strcmp(str, MenuString) == 0))
-         return i;
-   }
+    for (int i = 0; i < count; i++)
+    {
+        CString str;
+
+        if (Menu->GetMenuString(i, str, MF_BYPOSITION) &&
+                (strcmp(str, MenuString) == 0))
+        {
+            return i;
+        }
+    }
 
    return -1;
 }
@@ -762,7 +759,9 @@ Modifications    : ArunKumar K
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
     if (CMDIFrameWnd::OnCreate(lpCreateStruct) == -1)
+    {
         return -1;
+    }
 
 	 // The node simulation toolbar	
     CREATE_TOOLBAR(this, m_wndToolbarNodeSimul, IDR_NODE_SIMULATION, _T("Node Simulation"));		
@@ -1072,7 +1071,7 @@ database that is already open?", MB_YESNO, MB_ICONINFORMATION);
             {
                 // Load the File & fill the Structure
                 if (theApp.m_pouMsgSgInactive->
-                        bFillDataStructureFromDatabaseFile(strDbName))
+					bFillDataStructureFromDatabaseFile(strDbName, PROTOCOL_CAN))
                 {
                     // No corruption in database, display the editor
                     bDisplayEditor = TRUE;
@@ -1219,7 +1218,7 @@ void CMainFrame::OnCloseDatabase()
                 BeginWaitCursor();
                 pTempMsgSg->
                      bWriteIntoDatabaseFileFromDataStructure(
-                                                        m_omStrDatabaseName);
+                                                        m_omStrDatabaseName, PROTOCOL_CAN);
                 if (pTempMsgSg->bGetDBAcitveFlagStatus() == TRUE)
                 {
                     vPostMsgToSendMsgDlg(CAN);
@@ -1452,10 +1451,13 @@ void CMainFrame::OnImportDatabase()
 			}
 		}
 
-		HWND hWnd;
-		hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);					
-		if(hWnd)
-			::SendMessage(hWnd, WM_DATABASE_CHANGE, (WPARAM)TRUE, NULL);
+        HWND hWnd;
+        hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+
+        if(hWnd)
+        {
+            ::SendMessage(hWnd, WM_DATABASE_CHANGE, (WPARAM)TRUE, NULL);
+        }
 
 		//Added by Arun to update Data Handler Main entry list.
 		vUpdateMainEntryListInWaveDataHandler();
@@ -1501,7 +1503,7 @@ DWORD CMainFrame::dLoadJ1939DBFile(CString omStrActiveDataBase,BOOL bFrmCom)
 	    {	
 			    // Fill data struct with new data base info
 			    bRetVal = m_pouMsgSigJ1939->bFillDataStructureFromDatabaseFile(
-				    omStrActiveDataBase);
+					omStrActiveDataBase, PROTOCOL_J1939);
                 if((bRetVal != FALSE)&&(bFilePresent != TRUE))
                 {
                     m_pouMsgSigJ1939->bAddDbNameEntry(omStrActiveDataBase);
@@ -1580,30 +1582,34 @@ DWORD CMainFrame::dLoadDataBaseFile(CString omStrActiveDataBase,BOOL /*bFrmCom*/
 		{
 			// Fill data struct with new data base info
 			bRetVal = theApp.m_pouMsgSignal->bFillDataStructureFromDatabaseFile(
-				omStrActiveDataBase);
-			// Create Unions.h in local directory
-			// and fill the file with the latest data structure
-			theApp.m_pouMsgSignal->bWriteDBHeader(omStrActiveDataBase);
-               //Update Defined Msg Headers
-        m_sExFuncPtr[CAN].m_omDefinedMsgHeaders.RemoveAll();
-        CStringArray omDatabaseNames;
-        theApp.m_pouMsgSignal->vGetDataBaseNames(&omDatabaseNames);
-		for (int i = 0; i < omDatabaseNames.GetSize(); i++)
-        {
-            CString omHeaderPath = omStrGetUnionFilePath(omDatabaseNames.GetAt(i));
-            m_sExFuncPtr[CAN].m_omDefinedMsgHeaders.Add(omHeaderPath);
-        }
-        //Update in NodeSimEx
-        GetICANNodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[CAN].m_omDefinedMsgHeaders), UPDATE_UNIONS_HEADER_FILES);
-        //Update Msg Name<-->Msg Code List
-        vUpdateMsgNameCodeList(theApp.m_pouMsgSignal, m_sExFuncPtr[CAN].m_odMsgNameMsgCodeList);
-        //Update in NodeSimEx
-        GetICANNodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[CAN].m_odMsgNameMsgCodeList), UPDATE_DATABASE_MSGS);
-			
-			// User can open the active DB
-		theApp.pouGetFlagsPtr()->vSetFlagStatus(SELECTDATABASEFILE, TRUE );
-		//venkat update signal watch
-        vUpdateSWList();
+				omStrActiveDataBase, PROTOCOL_CAN);
+			// If dbf file loaded successfully
+			if(TRUE == bRetVal)
+			{
+				// Create Unions.h in local directory
+				// and fill the file with the latest data structure
+				theApp.m_pouMsgSignal->bWriteDBHeader(omStrActiveDataBase);
+				//Update Defined Msg Headers
+				m_sExFuncPtr[CAN].m_omDefinedMsgHeaders.RemoveAll();
+				CStringArray omDatabaseNames;
+				theApp.m_pouMsgSignal->vGetDataBaseNames(&omDatabaseNames);
+				for (int i = 0; i < omDatabaseNames.GetSize(); i++)
+				{
+					CString omHeaderPath = omStrGetUnionFilePath(omDatabaseNames.GetAt(i));
+					m_sExFuncPtr[CAN].m_omDefinedMsgHeaders.Add(omHeaderPath);
+				}
+				//Update in NodeSimEx
+				GetICANNodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[CAN].m_omDefinedMsgHeaders), UPDATE_UNIONS_HEADER_FILES);
+				//Update Msg Name<-->Msg Code List
+				vUpdateMsgNameCodeList(theApp.m_pouMsgSignal, m_sExFuncPtr[CAN].m_odMsgNameMsgCodeList);
+				//Update in NodeSimEx
+				GetICANNodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[CAN].m_odMsgNameMsgCodeList), UPDATE_DATABASE_MSGS);
+
+				// User can open the active DB
+				theApp.pouGetFlagsPtr()->vSetFlagStatus(SELECTDATABASEFILE, TRUE );
+				//venkat update signal watch
+				vUpdateSWList();
+			}
 
 		}
 		theApp.vPopulateCANIDList();
@@ -1657,8 +1663,7 @@ __int64 CMainFrame::nConvertStringToInt(CString omStrHexNo)
     
     for (int nCount = 0; nCount < omStrHexNo.GetLength(); nCount++)
     {
-        
-        TCHAR cChar = omStrHexNo.GetAt( nCount);
+        char cChar = omStrHexNo.GetAt( nCount);
 
         if ( cChar == '0' )
         {
@@ -1750,7 +1755,7 @@ __int64 CMainFrame::nConvertStringToInt(CString omStrHexNo)
 void CMainFrame::OnConfigBaudrate() 
 {
     PCHAR pInitData = (PCHAR)m_asControllerDetails;
-    int nSize = sizeof(SCONTROLER_DETAILS) * defNO_OF_CHANNELS;
+    int nSize = sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS;
     if (g_pouDIL_CAN_Interface->DILC_DisplayConfigDlg(pInitData, nSize) == S_OK)
     {
         //Set Controller to ConfigDetails
@@ -1792,9 +1797,11 @@ void CMainFrame::OnConfigChannelSelection()
 	INT nCount = CHANNEL_ALLOWED;
 	HRESULT hResult = g_pouDIL_CAN_Interface->DILC_DeselectHwInterfaces();
 
-	// If the deselection of interfaces is not appropriate the dont proceed further
-	if (S_OK != hResult)
-		return;
+    // If the deselection of interfaces is not appropriate the dont proceed further
+    if (S_OK != hResult)
+    {
+        return;
+    }
 
     if (g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount) == S_OK)
     {					
@@ -2017,7 +2024,7 @@ void CMainFrame::OnConfigDatabaseSaveAs()
         {
             BeginWaitCursor( );
             // save into the file
-            pTempMsgSg->bWriteIntoDatabaseFileFromDataStructure( strDbName );
+			pTempMsgSg->bWriteIntoDatabaseFileFromDataStructure( strDbName, PROTOCOL_CAN );
             if (pTempMsgSg->bGetDBAcitveFlagStatus() == TRUE)
             {
                 vPostMsgToSendMsgDlg(CAN);
@@ -2036,13 +2043,16 @@ void CMainFrame::OnConfigDatabaseSaveAs()
             // Now set the root item in the tree view to 
             // selected name
             if ( m_pomMsgSgTreeViews[CAN] != NULL)
-                  m_pomMsgSgTreeViews[CAN]->vSetRootItemText(m_omStrDatabaseName);
+            {
+                m_pomMsgSgTreeViews[CAN]->vSetRootItemText(m_omStrDatabaseName);
+            }
 
             // Set all the items in the tree view to normal font
             if ( m_pomMsgSgTreeViews[CAN] != NULL)
-                 m_pomMsgSgTreeViews[CAN]->vSetAllItemsNormal();
+            {
+                m_pomMsgSgTreeViews[CAN]->vSetAllItemsNormal();
+            }
         }
-        
     }
 }
 /******************************************************************************
@@ -2088,7 +2098,7 @@ void CMainFrame::OnConfigDatabaseSave()
                     // save into the file
                     pTempMsgSg->
                         bWriteIntoDatabaseFileFromDataStructure(
-                                                        m_omStrDatabaseName);
+						m_omStrDatabaseName, PROTOCOL_CAN);
                     if (pTempMsgSg->bGetDBAcitveFlagStatus() == TRUE)
                     {
                         vPostMsgToSendMsgDlg(CAN);
@@ -2107,9 +2117,10 @@ void CMainFrame::OnConfigDatabaseSave()
                                 omImportedDBNames.GetAt(nDBCount))
                             {
                                 CString omText;
-                                omText.Format( _T("File  \"%s\"  has been modified which is currently being loaded.\nDo you want to re-import it to reflect the changes?"), 
-                                                m_omStrDatabaseName);
-                                if (MessageBox(omText, _T(""), MB_ICONQUESTION | MB_YESNO) == IDYES)
+                                omText.Format( _T("File  \"%s\"  has been modified which is currently being loaded.\nDo you want to re-import it to reflect the changes?"),
+                                               m_omStrDatabaseName);
+
+                                if (MessageBox(omText, "", MB_ICONQUESTION | MB_YESNO) == IDYES)
                                 {
                                     dLoadDataBaseFile(m_omStrDatabaseName, FALSE);
                                 }
@@ -2122,7 +2133,9 @@ void CMainFrame::OnConfigDatabaseSave()
                     EndWaitCursor( );
                     // Set all the items in the tree view to normal font
                     if ( m_pomMsgSgTreeViews[CAN] != NULL)
+                    {
                         m_pomMsgSgTreeViews[CAN]->vSetAllItemsNormal();
+                    }
 
 					pTempMsgSg->vSetModifiedFlag(TRUE);
                 }
@@ -2343,8 +2356,9 @@ void CMainFrame::OnDLLBuildLoad()
     {
 		int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are either not properly build or loaded:");
-        CString omStrErrorMsgDummy=_T("");
-        for(int i = 0 ;i < nFailure; i++)
+        CString omStrErrorMsgDummy="";
+
+        for(int i = 0 ; i < nFailure; i++)
         {
             
            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
@@ -2486,8 +2500,9 @@ BOOL CMainFrame::bDLLBuildLoad(CStringArray* /*omStrBuildFiles*/)
     {       
         int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are not properly build:");
-        CString omStrErrorMsgDummy=_T("");
-        for(int i = 0 ;i < nFailure; i++)
+        CString omStrErrorMsgDummy="";
+
+        for(int i = 0 ; i < nFailure; i++)
         {
            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
            omStrErrorMsg += omStrErrorMsgDummy;
@@ -2623,8 +2638,9 @@ void CMainFrame::OnDllLoad()
     {       
 		int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are not properly loaded:");
-        CString omStrErrorMsgDummy=_T("");
-        for(int i = 0 ;i < nFailure; i++)
+        CString omStrErrorMsgDummy="";
+
+        for(int i = 0 ; i < nFailure; i++)
         {
             
            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
@@ -2825,8 +2841,9 @@ void CMainFrame::OnDllUnload()
     {       
 		int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are not properly unloaded:");
-        CString omStrErrorMsgDummy=_T("");
-        for(int i = 0 ;i < nFailure; i++)
+        CString omStrErrorMsgDummy="";
+
+        for(int i = 0 ; i < nFailure; i++)
         {
             
            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
@@ -2856,12 +2873,12 @@ void CMainFrame::OnDllUnloadJ1939()
     {       
 		int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are not properly unloaded:");
-        CString omStrErrorMsgDummy=_T("");
-        for(int i = 0 ;i < nFailure; i++)
-        { 
-            
-           omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
-           omStrErrorMsg += omStrErrorMsgDummy;
+        CString omStrErrorMsgDummy="";
+
+        for(int i = 0 ; i < nFailure; i++)
+        {
+            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsg += omStrErrorMsgDummy;
         }
         AfxMessageBox(omStrErrorMsg);
     }
@@ -3120,10 +3137,10 @@ void CMainFrame::OnAddSignalToSignalWindow()
     Date Created     :  05.03.2002
     Modifications    :  Amitesh Bharti, 26.12.2002, Function name is changed.
 ******************************************************************************/
-void CMainFrame::OnMessageFilter() 
-{
-    OnMessageFilterButton();
-}
+//void CMainFrame::OnMessageFilter() 
+//{
+//    OnMessageFilterButton();
+//}
 /******************************************************************************
     Function Name    :  OnLogFilter
     Input(s)         :  void
@@ -3229,35 +3246,52 @@ void CMainFrame::OnSelectMessage()
     {
         GetICANDIL()->DILC_GetControllerParams(lParam, NULL, NUMBER_HW);
     }
-    Filter_ShowConfigDlg((void*)&m_sFilterAppliedCAN, psMsgEntry, CAN, (UINT)lParam, this);
+
+    HRESULT hResult = Filter_ShowConfigDlg((void*)&m_sFilterAppliedCAN, psMsgEntry, CAN, (UINT)lParam, this);
     SMSGENTRY::vClearMsgList(psMsgEntry);
     psMsgEntry = NULL;
 
-    //Indicate to the modules
-    //1. Log
-    if (sg_pouFrameProcCAN != NULL)
-    {
-        UINT unLogCount = sg_pouFrameProcCAN->FPC_GetLoggingBlockCount();
-        for (USHORT i = 0; i < unLogCount; i++)       //for (UINT i = 0; i < unLogCount; i++)    
-        {
-            SFILTERAPPLIED_CAN sFilterCan;
-            sg_pouFrameProcCAN->FPC_GetFilteringScheme(i, sFilterCan);
-            Filter_ReUpdateAppliedFilter(&sFilterCan, &m_sFilterAppliedCAN, CAN);
-            sg_pouFrameProcCAN->FPC_StartEditingSession();
-            sg_pouFrameProcCAN->FPC_ApplyFilteringScheme(i, sFilterCan);
-            sg_pouFrameProcCAN->FPC_StopEditingSession(TRUE);
-        }
-    }
-    //2. Replay
-    vREP_SetConfiguredFilter(&m_sFilterAppliedCAN);
-    //3. Message window
-    if (m_podMsgWndThread != NULL)
-    {
-        SFILTERAPPLIED_CAN sMsgWndFilter;
-        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_GET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
-        Filter_ReUpdateAppliedFilter(&sMsgWndFilter, &m_sFilterAppliedCAN, CAN);
-        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
-    }
+	if(hResult == S_OK)//if some changes occurs in filters, update it in all related modules
+	{
+		//Indicate to the modules
+		//1. Log
+		if (sg_pouFrameProcCAN != NULL)
+		{
+			UINT unLogCount = sg_pouFrameProcCAN->FPC_GetLoggingBlockCount();
+
+			for (USHORT i = 0; i < unLogCount; i++)  
+			{
+				SFILTERAPPLIED_CAN sFilterCan;
+				sg_pouFrameProcCAN->FPC_GetFilteringScheme(i, sFilterCan);
+				Filter_ReUpdateAppliedFilter(&sFilterCan, &m_sFilterAppliedCAN, CAN);
+	//            sg_pouFrameProcCAN->FPC_StartEditingSession(); //editing is not required here
+				sg_pouFrameProcCAN->FPC_ApplyFilteringScheme(i, sFilterCan);
+	//            sg_pouFrameProcCAN->FPC_StopEditingSession(TRUE);
+			}
+		}
+		//2. Replay
+		vREP_SetConfiguredFilter(&m_sFilterAppliedCAN);
+		//3. Message window
+		if (m_podMsgWndThread != NULL)
+		{
+			SFILTERAPPLIED_CAN sMsgWndFilter;
+			::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_GET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
+			Filter_ReUpdateAppliedFilter(&sMsgWndFilter, &m_sFilterAppliedCAN, CAN);
+			::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
+
+			//if msg filter is enable, disable it and then re-enable it to affect the changes
+			if(theApp.pouGetFlagsPtr()->nGetFlagStatus(DISPLAYFILTERON))
+			{
+				//Disable the msg filter, so it will update the modified changes
+				theApp.pouGetFlagsPtr()->vSetFlagStatus(DISPLAYFILTERON, FALSE);
+				::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)FALSE, NULL);
+
+				//re-enable the msg filter, so it will show the modified changes
+				theApp.pouGetFlagsPtr()->vSetFlagStatus(DISPLAYFILTERON, TRUE);
+				::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)TRUE, NULL);
+			}
+		}
+	}
 }
 
 /******************************************************************************/
@@ -3570,78 +3604,82 @@ CString CMainFrame::omStrConvByteArrToStr(CByteArray *byteArr)
 ******************************************************************************/
 void CMainFrame::vConvStrtoByteArray(CByteArray* bufferTx, char* tempBuf)
 {
-   //Copy the modified string to a local Cstring
-   //variable and remove all white spaces
-   CString strTemp(tempBuf);
-   TCHAR ch = ' ';
-   strTemp.Remove(ch);
+    //Copy the modified string to a local Cstring
+    //variable and remove all white spaces
+    CString strTemp(tempBuf);
+    char ch = ' ';
+    strTemp.Remove(ch);
+    unsigned int ncount=0;
+    int nStrLength = strTemp.GetLength();
+    unsigned char firstCh;
+    unsigned char secondCh;
 
-   unsigned int ncount=0;
-   int nStrLength = strTemp.GetLength();
-   unsigned char firstCh;
-   unsigned char secondCh;
-   
-   //Take two characters at a time and then
-   //start converting them into a byte.
-   //   do
-   while (nStrLength)
-   {
-      //get the first char
-      firstCh = strTemp.GetAt(ncount++);
-      ASSERT(AfxCheckMemory());
-      //get the second char
-      //if the value is greater than or equal to zero or
-      //less than or equal to nine, get the value by
-      //subtracting the ASCII value of '0'
-      if (('0' <= firstCh) && (firstCh <= '9'))
-         {
-         firstCh -='0';
-         }
-      else
-         {
-         //The character is between 'a' to 'f'. First
-         //convert to lowercase and deduct 87 which
-         //will give the correct value for the char
-         //as the ASCII value of 'a' is 97.
-         firstCh = (UCHAR)tolower (firstCh);
-         firstCh-= (UCHAR)87;
-         }
-      //if the value is greater than or equal to zero or
-      //less than or equal to nine, get the value by
-      //subtracting the ASCII value of '0'
-      nStrLength --;
-      if(nStrLength)
-      {
-          secondCh = strTemp.GetAt(ncount++);
-          ASSERT(AfxCheckMemory());
-     
-          if (('0' <= secondCh) && (secondCh <= '9'))
-             {
-             secondCh -='0';
-             }
-          else
-             {
-             //The character is between 'a' to 'f'. First
-             //convert to lowercase and deduct 87 which
-             //will give the correct value for the char
-             //as the ASCII value of 'a' is 97.
-             secondCh = (UCHAR)tolower (secondCh);
-             secondCh-= 87;
-             }
-          //Left shift first char by 4 bits and do
-          //a logical "OR" with the second char
-          firstCh <<= 4;
-          firstCh |= secondCh;
-          //firstCh = McnetCharSet[secondCh][firstCh];
-          //end of insertion
-          //Now add the byte to the byte array
-          bufferTx->Add(firstCh);
-          //Deduct the value of string length by 2
-          nStrLength --;
-      }
-   }
-   //while (nStrLength);
-   return;
+    //Take two characters at a time and then
+    //start converting them into a byte.
+    //   do
+    while (nStrLength)
+    {
+        //get the first char
+        firstCh = strTemp.GetAt(ncount++);
+        ASSERT(AfxCheckMemory());
+
+        //get the second char
+        //if the value is greater than or equal to zero or
+        //less than or equal to nine, get the value by
+        //subtracting the ASCII value of '0'
+        if (('0' <= firstCh) && (firstCh <= '9'))
+        {
+            firstCh -='0';
+        }
+        else
+        {
+            //The character is between 'a' to 'f'. First
+            //convert to lowercase and deduct 87 which
+            //will give the correct value for the char
+            //as the ASCII value of 'a' is 97.
+            firstCh = (UCHAR)tolower (firstCh);
+            firstCh-= (UCHAR)87;
+        }
+
+        //if the value is greater than or equal to zero or
+        //less than or equal to nine, get the value by
+        //subtracting the ASCII value of '0'
+        nStrLength --;
+
+        if(nStrLength)
+        {
+            secondCh = strTemp.GetAt(ncount++);
+            ASSERT(AfxCheckMemory());
+
+            if (('0' <= secondCh) && (secondCh <= '9'))
+            {
+                secondCh -='0';
+            }
+            else
+            {
+                //The character is between 'a' to 'f'. First
+                //convert to lowercase and deduct 87 which
+                //will give the correct value for the char
+                //as the ASCII value of 'a' is 97.
+                secondCh = (UCHAR)tolower (secondCh);
+                secondCh-= 87;
+            }
+
+            //Left shift first char by 4 bits and do
+            //a logical "OR" with the second char
+            firstCh <<= 4;
+            firstCh |= secondCh;
+            //firstCh = McnetCharSet[secondCh][firstCh];
+            //end of insertion
+            //Now add the byte to the byte array
+            bufferTx->Add(firstCh);
+            //Deduct the value of string length by 2
+            nStrLength --;
+        }
+    }
+
+    //while (nStrLength);
+    return;
 }
 /******************************************************************************/
 /*  Function Name    :  vGetReferenceToToolBarCtrl                            */
@@ -4013,7 +4051,7 @@ BOOL CMainFrame::bIsHexNumber(CString omStrHexNumber)
     
     for ( int nCount = 0; nCount < omStrHexNumber.GetLength(); nCount++ )
     {
-        TCHAR t_cChar = omStrHexNumber.GetAt(nCount);
+        char t_cChar = omStrHexNumber.GetAt(nCount);
 
         if ( ( t_cChar >= 'A' && t_cChar <= 'F' ) ||
              ( t_cChar >= '0' && t_cChar <= '9' ) ||
@@ -4433,8 +4471,10 @@ void CMainFrame::OnDisplayMessagewindowOverwrite()
 			//Verifying the Interpretation Check condition.
 			CStringArray aomstrTempDBFiles;
 			theApp.m_pouMsgSignal->vGetDataBaseNames(&aomstrTempDBFiles);
-			if (!(aomstrTempDBFiles.GetSize() > 0))
-				m_bInterPretMsg = FALSE;
+            if (!(aomstrTempDBFiles.GetSize() > 0))
+            {
+                m_bInterPretMsg = FALSE;
+            }
             if (m_bInterPretMsg)
             {
                 SET_MODE_INTRP(byGetDispFlag);
@@ -4523,8 +4563,10 @@ void CMainFrame::OnUpdateMessageInterpret(CCmdUI* pCmdUI)
 		theApp.m_pouMsgSignal->vGetDataBaseNames(&aomstrTempDBFilesCAN);
 
 		CStringArray aomstrTempDBFilesJ1939;
-		if(m_pouMsgSigJ1939)
-			m_pouMsgSigJ1939->vGetDataBaseNames(&aomstrTempDBFilesJ1939);
+        if(m_pouMsgSigJ1939)
+        {
+            m_pouMsgSigJ1939->vGetDataBaseNames(&aomstrTempDBFilesJ1939);
+        }
 		
 		if (aomstrTempDBFilesCAN.GetSize() > 0 ||
 			aomstrTempDBFilesJ1939.GetSize() > 0)
@@ -4615,13 +4657,13 @@ void CMainFrame::OnUpdateLogFilter(CCmdUI* pCmdUI)
     Date Created     :  23.03.2002
     Modifications    :  Amitesh Bharti, 26.12.2002, File name is changed
 ******************************************************************************/
-void CMainFrame::OnUpdateMessageFilter(CCmdUI* pCmdUI) 
-{
-    // Check or uncheck message filter
-    // menu item
-    pCmdUI->SetCheck( 
-        theApp.pouGetFlagsPtr()->nGetFlagStatus( DISPLAYFILTERON ) );
-}
+//void CMainFrame::OnUpdateMessageFilter(CCmdUI* pCmdUI) 
+//{
+//    // Check or uncheck message filter
+//    // menu item
+//    pCmdUI->SetCheck( 
+//        theApp.pouGetFlagsPtr()->nGetFlagStatus( DISPLAYFILTERON ) );
+//}
 /******************************************************************************
     Function Name    :  OnUpdateExecuteMessagehandlersButton
 
@@ -4677,10 +4719,10 @@ void CMainFrame::OnExecuteMessagehandlersButton()
     Date Created     :  23.03.2002
     Modifications    :  Amitesh Bharti, 26.12.2002, File name is changed
 ******************************************************************************/
-void CMainFrame::OnLogFilterButton() 
-{
-    OnLogFilter();
-}
+//void CMainFrame::OnLogFilterButton() 
+//{
+//    OnLogFilter();
+//}
 /******************************************************************************
     Function Name    :  OnUpdateLogFilterButton
 
@@ -4694,11 +4736,11 @@ void CMainFrame::OnLogFilterButton()
     Date Created     :  23.03.2002
     Modifications    :  
 ******************************************************************************/
-void CMainFrame::OnUpdateLogFilterButton(CCmdUI* pCmdUI) 
-{
-    // Toggle log filter button status
-    pCmdUI->SetCheck(theApp.pouGetFlagsPtr()->nGetFlagStatus(LOGFILTER));
-}
+//void CMainFrame::OnUpdateLogFilterButton(CCmdUI* pCmdUI) 
+//{
+//    // Toggle log filter button status
+//    pCmdUI->SetCheck(theApp.pouGetFlagsPtr()->nGetFlagStatus(LOGFILTER));
+//}
 /******************************************************************************
     Function Name    :  OnMessageFilterButton
 
@@ -4795,9 +4837,11 @@ void CMainFrame::OnClearMsgWindow()
 	{
 		HWND hWnd;
 		hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);					
-		if(hWnd)
-			::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, NULL, NULL);
-	}
+        if(hWnd)
+        {
+            ::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, NULL, NULL);
+        }
+    }
 }
 
 /*******************************************************************************
@@ -4818,17 +4862,21 @@ void CMainFrame::OnShowHideMessageWindow(UINT nID)
 		{
 			HWND hWnd;
 			hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);					
-			if(hWnd)
-				::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)TRUE, NULL);
-		}
+            if(hWnd)
+            {
+                ::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)TRUE, NULL);
+            }
+        }
 		break;
 		case ID_SHOWMESSAGEWINDOW_J1939:
 		{
 			HWND hWnd;
 			hWnd = m_podMsgWndThread->hGetHandleMsgWnd(J1939);					
-			if(hWnd)
-				::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)TRUE, NULL);
-		}
+            if(hWnd)
+            {
+                ::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)TRUE, NULL);
+            }
+        }
 		break;
 		default:
 		{
@@ -4856,17 +4904,21 @@ void CMainFrame::OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI)
 		{
 			HWND hWnd;
 			hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);					
-			if(hWnd)
-				::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)FALSE, (LPARAM)pCmdUI); //Set WPARAM FALSE for update UI
-		}
+            if(hWnd)
+            {
+                ::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)FALSE, (LPARAM)pCmdUI);    //Set WPARAM FALSE for update UI
+            }
+        }
 		break;
 		case ID_SHOWMESSAGEWINDOW_J1939:
 		{
 			HWND hWnd;
 			hWnd = m_podMsgWndThread->hGetHandleMsgWnd(J1939);					
-			if(hWnd)
-				::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)FALSE, (LPARAM)pCmdUI); //Set WPARAM FALSE for update UI
-		}
+            if(hWnd)
+            {
+                ::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)FALSE, (LPARAM)pCmdUI);    //Set WPARAM FALSE for update UI
+            }
+        }
 		break;
 		default: 
         {
@@ -4962,9 +5014,13 @@ sSIGNALS* CMainFrame::poGetSignalPointer(
             while ( (pSignal != NULL) && (!bFound) )
             {
                 if ( pSignal->m_omStrSignalName == omStrSignalName )
+                {
                     bFound = TRUE;
+                }
                 else
+                {
                     pSignal = pSignal->m_psNextSignalList;
+                }
             }
         }
     }
@@ -5042,7 +5098,7 @@ void CMainFrame::OnUpdateLogOnOff(CCmdUI* pCmdUI)
     {
         //pCmdUI->SetCheck(sg_pouFrameProcCAN->FPC_IsLoggingON());
 		USHORT ushCount =  sg_pouFrameProcCAN->FPC_GetLoggingBlockCount();
-
+		ushCount = vCheckValidLogFiles(ushCount);
 		if(ushCount>0)//log files found
 		{
 			pCmdUI->Enable(TRUE);
@@ -5061,6 +5117,38 @@ void CMainFrame::OnUpdateLogOnOff(CCmdUI* pCmdUI)
 		pCmdUI->SetCheck(FALSE);
 	}
     //pCmdUI->SetCheck(theApp.pouGetFlagsPtr()->nGetFlagStatus(LOGTOFILE));
+}
+
+USHORT CMainFrame::vCheckValidLogFiles(USHORT LogBlocks) 
+{
+	if (LogBlocks > 0)
+	{
+		for (USHORT i = 0; i < LogBlocks; i++)
+		{
+			SLOGINFO sLogObject;
+			HANDLE hFind; 
+			WIN32_FIND_DATA FindData; 
+		    CStdioFile omStdiofile;
+
+			sg_pouFrameProcCAN->FPC_GetLoggingBlock(i, sLogObject);
+
+			// check for valid log file
+			CString strTempLog = sLogObject.m_sLogFileName;
+		
+		    hFind = FindFirstFile(strTempLog, &FindData); 
+
+			if(hFind == INVALID_HANDLE_VALUE )//file not found
+			{
+				DWORD dError = GetLastError();
+				if(dError == ERROR_PATH_NOT_FOUND)//not a valid filepath
+				{
+					sg_pouFrameProcCAN->FPC_RemoveLoggingBlock(i--); //remove the old log data
+					LogBlocks = sg_pouFrameProcCAN->FPC_GetLoggingBlockCount();; //refresh the log count
+				}
+			}
+		}
+	}
+	return LogBlocks;
 }
 /******************************************************************************/
 /*  Function Name    :  PreTranslateMessage                                   */
@@ -5708,8 +5796,8 @@ void CMainFrame::vWriteNewLogFilenameInRegistry( CString omLogFilename )
     BOOL bAlphaCharFound = FALSE;
 
     UINT unCount = 0;
-    TCHAR tChar  = ' ';
-    
+    char tChar  = ' ';
+
     while ( bAlphaCharFound != TRUE &&
            (unCount < (UINT)omStrDummy.GetLength()))
     {
@@ -5848,7 +5936,9 @@ DWORD WINAPI InterpretThreadProc(LPVOID pVoid)
     {
         return (DWORD)-1;
     }
-    CMainFrame* pouMainFrm =  (CMainFrame*)pThreadParam->m_pBuffer;
+
+    CMainFrame* pouMainFrm = static_cast<CMainFrame*> (pThreadParam->m_pBuffer);
+
     if (pouMainFrm == NULL)
     {
         return (DWORD)-1;
@@ -6041,7 +6131,8 @@ void CMainFrame::vUpdateGraphData(const STCANDATA &sCanData)
 
 					sInterpretList.unMsgID = sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID;
 					sInterpretList.m_nTimeStamp = sCanData.m_lTickCount.QuadPart;
-					strcpy(sInterpretList.m_acSigName,odElement.m_omStrElementName);
+					//Tobias - venkat
+					strcpy_s(sInterpretList.m_acSigName,64, odElement.m_omStrElementName.GetBuffer(64));
                     switch( odElement.m_nValueType )
                     {
 						case eRAW_VALUE:
@@ -6204,10 +6295,12 @@ void CMainFrame::OnFileConnect()
 			{
 				hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
 				//Update Message Window
-				if(hWnd)
-					::SendMessage(hWnd, WM_UPDATE_CONNECT_STATUS, bConnected, NULL);	
-			}
-		}
+                if(hWnd)
+                {
+                    ::SendMessage(hWnd, WM_UPDATE_CONNECT_STATUS, bConnected, NULL);
+                }
+            }
+        }
 
         if( bConnected == TRUE)
         {
@@ -6350,10 +6443,14 @@ void CMainFrame::OnFileConnect()
 
             // Load the required bitmap to 
             // show connect/disconnect state
-			if(!bConnected)
-				m_wndToolBar.bLoadCNVTCToolBar(20, IDB_MAINFRAME,IDB_MAINFRAME_HOT, IDB_MAINFRAME_DISABLED);	
-			else
-				m_wndToolBar.bLoadCNVTCToolBar(20, IDB_MAINFRAMEDSC,IDB_MAINFRAMEDSC_HOT, IDB_MAINFRAMEDSC_DISABLED);	
+            if(!bConnected)
+            {
+                m_wndToolBar.bLoadCNVTCToolBar(20, IDB_MAINFRAME,IDB_MAINFRAME_HOT, IDB_MAINFRAME_DISABLED);
+            }
+            else
+            {
+                m_wndToolBar.bLoadCNVTCToolBar(20, IDB_MAINFRAMEDSC,IDB_MAINFRAMEDSC_HOT, IDB_MAINFRAMEDSC_DISABLED);
+            }
 
             // Press / Unpress the button if Connected / Disconnected
             omRefToolBarCtrl.PressButton(IDM_FILE_CONNECT, bConnected);
@@ -6403,7 +6500,7 @@ void CMainFrame::OnUpdateFileConnect(CCmdUI* pCmdUI)
         UINT unConnected = bConnected ? IDS_DISCONNECT : IDS_CONNECT;
 
         // And initialise a CString with the string.
-        CString omMenuItemText(_T(""));
+        CString omMenuItemText("");
         omMenuItemText.Format(unConnected);
         // And finally set the menu text.
         if(pCmdUI !=NULL)
@@ -6670,7 +6767,7 @@ void CMainFrame::OnNewConfigFile()
 //                    m_asControllerDetails[i].vIntialize();
 //                }
 //                if (g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)m_asControllerDetails, 
-//                                sizeof(SCONTROLER_DETAILS)) == S_OK)
+//                                sizeof(SCONTROLLER_DETAILS)) == S_OK)
 //                {
 //                    bReturn = TRUE;
 //                }
@@ -6926,9 +7023,13 @@ void CMainFrame::OnUpdateMruList (CCmdUI* pCmdUI)
     {
         // Check whether Tx msg window is present or not
         //BOOL bSendMsgDialog = ( m_pomTxMsgChildWindow != NULL );
-		BOOL bSendMsgDialog = FALSE;;
-		if(m_objTxHandler.hConfigWindowShown() == S_OK)
-			bSendMsgDialog = TRUE;
+        BOOL bSendMsgDialog = FALSE;;
+
+        if(m_objTxHandler.hConfigWindowShown() == S_OK)
+        {
+            bSendMsgDialog = TRUE;
+        }
+
         // Check connection status
         bConnect    = pouFlag->nGetFlagStatus(CONNECTED);
         // Disable menu if the tool is connected or Tx msg window is active or
@@ -6988,7 +7089,9 @@ void CMainFrame::vPushConfigFilenameDown(CString omStrConfigFilename )
                 omStrNames[unCount] = m_omStrMRU_ConfigurationFiles[unCount];
                 // Store the count
                 if ( omStrNames[unCount] == omStrConfigFilename )
+                {
                     unIndex = unCount;
+                }
             }
 
             if ( unIndex != -1 )// If this is not newly loaded file
@@ -7053,9 +7156,13 @@ void CMainFrame::OnUpdateConfigLoad(CCmdUI* pCmdUI)
         BOOL bEnable = FALSE;
         // Check whether Tx msg window is visible or not
         //BOOL bSendMsgDialog = (m_pomTxMsgChildWindow != NULL );
-		BOOL bSendMsgDialog = FALSE;;
-		if(m_objTxHandler.hConfigWindowShown() == S_OK)
-			bSendMsgDialog = TRUE;
+        BOOL bSendMsgDialog = FALSE;;
+
+        if(m_objTxHandler.hConfigWindowShown() == S_OK)
+        {
+            bSendMsgDialog = TRUE;
+        }
+
         // Enable only if Tx window is not present
         bEnable = m_bCfgLoadMenuOption && !bSendMsgDialog;
         pCmdUI->Enable( bEnable );
@@ -7079,9 +7186,13 @@ void CMainFrame::OnUpdateConfigNew(CCmdUI* pCmdUI)
     {
         BOOL bEnable = FALSE;
         //BOOL bSendMsgDialog = (m_pomTxMsgChildWindow != NULL );
-		BOOL bSendMsgDialog = FALSE;;
-		if(m_objTxHandler.hConfigWindowShown() == S_OK)
-			bSendMsgDialog = TRUE;
+        BOOL bSendMsgDialog = FALSE;;
+
+        if(m_objTxHandler.hConfigWindowShown() == S_OK)
+        {
+            bSendMsgDialog = TRUE;
+        }
+
         bEnable = m_bCfgNewMenuOption && !bSendMsgDialog;
         pCmdUI->Enable( bEnable );
     }
@@ -7100,7 +7211,9 @@ void CMainFrame::OnUpdateConfigNew(CCmdUI* pCmdUI)
 void CMainFrame::OnUpdateConfigSave(CCmdUI* pCmdUI) 
 {
     if ( pCmdUI != NULL )
+    {
         pCmdUI->Enable( m_bCfgSaveMenuOption );
+    }
 }
 /******************************************************************************
     Function Name    :  OnUpdateConfigSaveAs
@@ -7116,7 +7229,9 @@ void CMainFrame::OnUpdateConfigSave(CCmdUI* pCmdUI)
 void CMainFrame::OnUpdateConfigSaveAs(CCmdUI* pCmdUI) 
 {
     if ( pCmdUI != NULL )
+    {
         pCmdUI->Enable( m_bCfgSaveAsMenuOption );
+    }
 }
 /******************************************************************************
     Function Name    :  OnFilePropeties
@@ -7159,7 +7274,7 @@ void CMainFrame::OnFilePropeties()
 
     // Get Controller information
 
-    PSCONTROLER_DETAILS  pBaudDetails = NULL;
+    PSCONTROLLER_DETAILS  pBaudDetails = NULL;
     UINT nHardware = 0;
     LONG lParam = 0;
     if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
@@ -7411,8 +7526,8 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 ******************************************************************************/
 void CMainFrame::OnDropFiles(HDROP hDropInfo) 
 {
-    CString omStrFileName = _T("");
-    CString omStrFileExt  = _T("");
+    CString omStrFileName = "";
+    CString omStrFileExt  = "";
     BOOL bEditOn          = FALSE;
     CHAR acFileName[1024];
     CFlags* pouFlag = theApp.pouGetFlagsPtr();
@@ -7613,7 +7728,9 @@ void CMainFrame::OnUpdateConfigureModeActive(CCmdUI* pCmdUI)
             }
         }
         else
+        {
             pCmdUI->SetCheck(FALSE);
+        }
     }
 }
 /******************************************************************************/
@@ -7661,8 +7778,10 @@ void CMainFrame::OnNetworkStatisticsWnd()
             else
             {
                 // Show the error information to the user
-				if(theApp.m_bFromAutomation == FALSE)
-                AfxMessageBox( defSTR_STAT_WINDOW_CREATION_FAILED );
+                if(theApp.m_bFromAutomation == FALSE)
+                {
+                    AfxMessageBox( defSTR_STAT_WINDOW_CREATION_FAILED );
+                }
             }
         }
     }
@@ -7734,8 +7853,7 @@ BOOL CMainFrame::bEnableDisableLog(BOOL bStart)
     {                                           //to enable
         bRetval = FALSE ;
     }
-    else 
-    if ( (bStart == FALSE) && (bLogging == FALSE) ) //If logging disabled and trying
+    else if ( (bStart == FALSE) && (bLogging == FALSE) ) //If logging disabled and trying
     {                                             //to disable
         bRetval = FALSE ;
     }
@@ -7869,8 +7987,7 @@ LRESULT CMainFrame::vDisconnect(WPARAM , LPARAM lParam)
     {                                                //trying to connect
         bRetval = FALSE ;
     }
-    else 
-    if ( (bActiveState == FALSE) && (bState == TRUE) ) //If already disconnected and 
+    else if ( (bActiveState == FALSE) && (bState == TRUE) ) //If already disconnected and
     {                                                //again trying to disconnect
         bRetval = FALSE ;
     }
@@ -7908,7 +8025,8 @@ BOOL gbSendStrToTrace(CHAR* pcOutStrTrace)
 
     if (g_dwUIThread == 0)
     {
-        CMainFrame* pMainFrm = (CMainFrame* )theApp.GetMainWnd();
+        CMainFrame* pMainFrm = static_cast<CMainFrame*> (theApp.GetMainWnd());
+
         if (pMainFrm != NULL)
         {
             pMainFrm->SendMessage(WM_CREATE_TRACEWIN, 0, 0);
@@ -7922,9 +8040,9 @@ BOOL gbSendStrToTrace(CHAR* pcOutStrTrace)
         {
              static CHAR s_acTraceStr[1024] = {""};
             WaitForSingleObject(g_hSemaphore, MAX_TIME_LIMIT);
-			//CHAR *p_acTraceStr = new CHAR[1024];
-            strncpy(s_acTraceStr,pcOutStrTrace,1024);
-            bResult = ::PostThreadMessage(g_dwUIThread, WM_WRITE_TO_TRACE, 0, 
+            //CHAR *p_acTraceStr = new CHAR[1024];
+            strncpy_s(s_acTraceStr,pcOutStrTrace,1024);
+            bResult = ::PostThreadMessage(g_dwUIThread, WM_WRITE_TO_TRACE, 0,
                                           (LPARAM) s_acTraceStr);
             Sleep(0);
         }
@@ -8000,7 +8118,9 @@ void CMainFrame::OnUpdateConfigurePassive(CCmdUI* pCmdUI)
             }
         }
         else
+        {
             pCmdUI->SetCheck(FALSE);
+        }
     }
 }
 /******************************************************************************/
@@ -8079,7 +8199,9 @@ void CMainFrame::OnCheckHwInterface()
     LONG nIconType = MB_ICONINFORMATION;
     // Get the selected hardware status from Hardware interface layer
     HRESULT hReturn = S_OK;
-    LONG lParam = 0; INT unHwCount = 0;
+    LONG lParam = 0;
+    INT unHwCount = 0;
+
     if (g_pouDIL_CAN_Interface->DILC_GetControllerParams( lParam, NULL, NUMBER_HW ) == S_OK)
     {
         unHwCount = (INT)lParam;
@@ -8124,8 +8246,10 @@ void CMainFrame::OnCheckHwInterface()
         omStrMsg += defSTR_HW_TEST_SUCCESS;
     }
     // Display the information
-	if(theApp.m_bFromAutomation == FALSE)
-    AfxMessageBox(omStrMsg, nIconType, 0);
+    if(theApp.m_bFromAutomation == FALSE)
+    {
+        AfxMessageBox(omStrMsg, nIconType, 0);
+    }
 }
 /******************************************************************************/
 /*  Function Name    :  OnParallelPortNonepp                                  */
@@ -8499,8 +8623,9 @@ void CMainFrame::vToolBarDropDownMenu(UINT unControlID, int nButtonID)
                                     this,
                                     NULL);
         if (m_pomContextMenu != NULL )
+        {
             delete m_pomContextMenu;
-
+        }
     }
 }
 /******************************************************************************
@@ -8835,12 +8960,17 @@ VOID CMainFrame::vAssignMsgBlockList()
 BOOL CMainFrame::bAllocateMemoryForGlobalTxList()
 {
     //return m_podTxMsgManager->bAllocateMemoryForGlobalTxList();
-	HRESULT hResult = S_FALSE;
-	hResult = m_objTxHandler.hAllocateMemoryForGlobalTxList();
-	if(hResult == S_OK)
-		return TRUE;
-	else 
-		return FALSE;
+    HRESULT hResult = S_FALSE;
+    hResult = m_objTxHandler.hAllocateMemoryForGlobalTxList();
+
+    if(hResult == S_OK)
+    {
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
 }
 /******************************************************************************
     Function Name    :  vNotificationFromOtherWin
@@ -8913,8 +9043,9 @@ BOOL CMainFrame::bCreateTraceWindow(void)
 
     if (m_podUIThread == NULL)
     {
-        m_podUIThread = (CUIThread *) AfxBeginThread(RUNTIME_CLASS(CUIThread), 
-                                                 THREAD_PRIORITY_NORMAL, 0, 0);
+        m_podUIThread = static_cast<CUIThread*> (AfxBeginThread(RUNTIME_CLASS(CUIThread),
+                        THREAD_PRIORITY_NORMAL, 0, 0));
+
         if (m_podUIThread != NULL)
         {
             bResult = m_podUIThread->bCreateTraceWindow(this);
@@ -9028,13 +9159,13 @@ Modifications    : Anish on 05.02.2007
 //    BOOL bReturn = FALSE;
 //    // Fill the controller configuration information
 //
-//    PSCONTROLER_DETAILS pControllerDetails = NULL;
+//    PSCONTROLLER_DETAILS pControllerDetails = NULL;
 //    //theApp.bGetData(CONTROLLER_DETAILS, (void**) &pControllerDetails);
 //    //HRESULT hResult = S_FALSE;
 //    if (pControllerDetails != NULL)
 //    {
 //        if (g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)pControllerDetails, 
-//                        sizeof(SCONTROLER_DETAILS)) == S_OK)
+//                        sizeof(SCONTROLLER_DETAILS)) == S_OK)
 //        {
 ////            theApp.vRelease(CONTROLLER_DETAILS, (void**) &pControllerDetails);
 //            bReturn = TRUE;
@@ -9236,9 +9367,11 @@ void CMainFrame::vSetControllerParameters()
          nNoOfHardware == 0 )
     {
         // Inform the user about this
-		if(theApp.m_bFromAutomation == FALSE)
-        AfxMessageBox( defSTR_MODE_MISMATCH );
-        
+        if(theApp.m_bFromAutomation == FALSE)
+        {
+            AfxMessageBox( defSTR_MODE_MISMATCH );
+        }
+
         // Set the mode to Simulation
         m_byControllerMode = defMODE_SIMULATE;
         IntializeDIL();
@@ -9289,10 +9422,12 @@ void CMainFrame::vClearOnConfLoad()
 		{
 			HWND hWnd;
 			hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);					
-			if(hWnd)
-				::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, NULL, NULL);
-		}		
-	}
+            if(hWnd)
+            {
+                ::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, NULL, NULL);
+            }
+        }
+    }
 
     // Clear Message Interpretation Window Content
     //vClearInterpretationWindow();
@@ -9425,8 +9560,10 @@ void CMainFrame::vUpdateGraphStatsData()
 
 	for(int nBusType = CAN; nBusType<AVAILABLE_PROTOCOLS; nBusType++)
 	{
-		if(m_objSigGrphHandler.bIsWindowVisible((SHORT)nBusType) == FALSE)
-			continue;
+        if(m_objSigGrphHandler.bIsWindowVisible((SHORT)nBusType) == FALSE)
+        {
+            continue;
+        }
 		CGraphList * pList = &(m_odGraphList[nBusType]);  
         // Get the element count
         int nCount = pList->m_omElementList.GetSize();
@@ -9445,7 +9582,7 @@ void CMainFrame::vUpdateGraphStatsData()
 				SBUSSTATISTICS sBusStats;
 				GetICANBusStat()->BSC_GetBusStatistics(odTemp.m_nFrameFormat, sBusStats);
 				
-				strcpy(sInterpretList.m_acSigName , "");
+                strcpy_s(sInterpretList.m_acSigName , 64, "");
 				sInterpretList.m_shType = eSTAT_PARAM;
 
 				sInterpretList.m_unValue.m_nRawValue = -1;
@@ -9900,9 +10037,11 @@ void CMainFrame::vUpdateAllMsgWndInterpretStatus(BOOL /*bAssociate*/)
 	for(register int nBusID = CAN; nBusID < AVAILABLE_PROTOCOLS; nBusID++)
 	{
 		hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)nBusID);					
-		if(hWnd)
-			::SendMessage(hWnd, WM_DATABASE_CHANGE, (WPARAM)FALSE, NULL);
-	}
+        if(hWnd)
+        {
+            ::SendMessage(hWnd, WM_DATABASE_CHANGE, (WPARAM)FALSE, NULL);
+        }
+    }
 }
 
 /******************************************************************************
@@ -9932,7 +10071,7 @@ void CMainFrame::OnFileConverter()
 
 	// Get the working directory
 	CString strPath;
-	TCHAR* pstrExePath = strPath.GetBuffer (MAX_PATH);
+    char* pstrExePath = strPath.GetBuffer (MAX_PATH);
 	::GetModuleFileName (0, pstrExePath, MAX_PATH);
 	strPath.ReleaseBuffer ();	
 	strPath = strPath.Left(strPath.ReverseFind(92));	
@@ -10181,7 +10320,7 @@ HRESULT CMainFrame::IntializeDIL(void)
                     if ((hResult == S_OK)|| (hResult == ERR_CLIENT_EXISTS))
                     {				
 		                g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)m_asControllerDetails, 
-															sizeof(SCONTROLER_DETAILS) * nCount);
+															sizeof(SCONTROLLER_DETAILS) * nCount);
 
                         bInitFrameProcCAN(); // Initialize logger module											
                         vReRegisterAllCANNodes();//Reinitialize node simulation												
@@ -10297,9 +10436,9 @@ void CMainFrame::vUpdateHWStatusInfo(void)
 	{
 		if ( m_dwDriverId == m_ouList[i].m_dwDriverID )
 		{
-			if ( _tcscmp(m_asControllerDetails->m_omStrBaudrate, _T("")) == 0)
+			if ( _tcscmp(m_asControllerDetails->m_omStrBaudrate, "") == 0)
 			{
-				_tcscpy(m_asControllerDetails->m_omStrBaudrate, _T("500"));
+				_tcscpy(m_asControllerDetails->m_omStrBaudrate, "500");
 			}
 			omStrChannelDriver.Format(  _T("%s - %s - %s Kbps (Allowed channels:%d)"), 
 							 omStrChannels, m_ouList[i].m_acName, 
@@ -10324,14 +10463,15 @@ BOOL CMainFrame::bInitFrameProcCAN(void)
     BOOL bReturn = FALSE;
     if (FP_GetInterface(FRAMEPROC_CAN, (void**)&sg_pouFrameProcCAN) == S_OK)
     {      
-		CString omVerStr(_T(""));
+        CString omVerStr("");
         SCANPROC_PARAMS sCANProcParams;
 		    
-		omVerStr.Format(IDS_VERSION);
-		strncpy(sCANProcParams.m_acVersion, omVerStr, omVerStr.GetLength());		
+        omVerStr.Format(IDS_VERSION);
+        strncpy_s(sCANProcParams.m_acVersion, 64, omVerStr, omVerStr.GetLength());
         sCANProcParams.dwClientID = g_dwClientID;
         sCANProcParams.m_pouCANBuffer = &g_ouCANBufFSE;
         sCANProcParams.m_pILog = &m_ouWrapperLogger;
+
         if (sg_pouFrameProcCAN->FPC_DoInitialisation(&sCANProcParams) == S_OK)
         {
             bReturn = TRUE;
@@ -10584,7 +10724,8 @@ void CMainFrame::vUpdateMsgNameCodeList(CMsgSignal* pMsgSig, CMsgNameMsgCodeList
         pMsgSig->omStrListGetMessageNames(omDefMsgs);
         POSITION pos = omDefMsgs.GetHeadPosition();
         // Insert every message name into the message list box
-        CString omStrMsgName = _T("");
+        CString omStrMsgName = "";
+
         while ( pos != NULL )
         {
             SMSG_NAME_CODE sMsgNameCode;
@@ -10726,13 +10867,14 @@ INT CMainFrame::LoadConfiguration(void)
         /* call even if pbyConfigData is NULL to load the default configuration*/		
         vSetCurrentSessionData(eSecId, pbyConfigData, nSize);		
         //All done now release the memory
-		try{
-			delete[] pbyConfigData;
-		}
-		catch(...)
-		{
+        try
+        {
+            delete[] pbyConfigData;
+        }
+        catch(...)
+        {
+        }
 
-		}
         pbyConfigData = NULL;
         
         eSecId = static_cast<eSECTION_ID>(eSecId + 1);
@@ -10743,14 +10885,13 @@ INT CMainFrame::LoadConfiguration(void)
 void CMainFrame::vSetFileStorageInfo(CString oCfgFilename)
 {
     USES_CONVERSION;
-
-	DATASTORAGEINFO stempDataInfo;
-	FILESTORAGEINFO FileStoreInfo;
-	strcpy (FileStoreInfo.m_FilePath, T2A(oCfgFilename.GetBuffer(MAX_PATH)));
-	stempDataInfo.FSInfo = &FileStoreInfo;
-	stempDataInfo.m_Datastore = FILEMODE;
-	CConfigData::ouGetConfigDetailsObject().SetConfigDatastorage(&stempDataInfo);
-	CConfigData::ouGetConfigDetailsObject().vSetCurrProjName(DEFAULT_PROJECT_NAME);
+    DATASTORAGEINFO stempDataInfo;
+    FILESTORAGEINFO FileStoreInfo;
+    strcpy_s(FileStoreInfo.m_FilePath, _MAX_PATH, T2A(oCfgFilename.GetBuffer(MAX_PATH)));
+    stempDataInfo.FSInfo = &FileStoreInfo;
+    stempDataInfo.m_Datastore = FILEMODE;
+    CConfigData::ouGetConfigDetailsObject().SetConfigDatastorage(&stempDataInfo);
+    CConfigData::ouGetConfigDetailsObject().vSetCurrProjName(DEFAULT_PROJECT_NAME);
     vPushConfigFilenameDown(oCfgFilename);
 }
 void CMainFrame::vSetCurrProjInfo(float fAppVersion)
@@ -10873,7 +11014,7 @@ BOOL CMainFrame::bIsConfigurationModified(void)
 }
 void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData, UINT nSize)
 {
-	CString omVerStr(_T(""));
+	CString omVerStr("");
 	omVerStr.Format(IDS_VERSION);
 
     switch (eSecId)
@@ -10884,12 +11025,11 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             {
 				BYTE* pbyTemp = pbyConfigData;
 
-				BYTE byVersion = 0;
-				COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
-
-				TCHAR acName[MAX_PATH] = {_T('\0')};
-				COPY_DATA_2(acName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
-				m_omMRU_C_Filename.Format("%s", acName);
+                BYTE byVersion = 0;
+                COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
+                char acName[MAX_PATH] = {_T('\0')};
+                COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
+                m_omMRU_C_Filename.Format("%s", acName);
 
 				COPY_DATA_2(&m_sToolBarInfo, pbyTemp, sizeof(STOOLBARINFO));
 				theApp.pouGetFlagsPtr()->vSetToolbarButtonStatus(&m_sToolBarInfo);				
@@ -11000,13 +11140,15 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
 
                 //Msg Attributes
-                SMESSAGE_ATTRIB sMsgAttrib; sMsgAttrib.m_psMsgAttribDetails = NULL; sMsgAttrib.m_usMsgCount = 0;
+                SMESSAGE_ATTRIB sMsgAttrib;
+                sMsgAttrib.m_psMsgAttribDetails = NULL;
+                sMsgAttrib.m_usMsgCount = 0;
                 COPY_DATA_2(&(sMsgAttrib.m_usMsgCount), pbyTemp, sizeof(UINT));
                 PSMESSAGEATTR pMessageAtt = new SMESSAGEATTR[sMsgAttrib.m_usMsgCount];
                 for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
                 {
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
-                    COPY_DATA_2(acName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
+                    char acName[MAX_PATH] = {_T('\0')};
+                    COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
                     pMessageAtt[i].omStrMsgname.Format("%s", acName);
 
                     COPY_DATA_2(&(pMessageAtt[i].unMsgID), pbyTemp, sizeof(UINT));
@@ -11075,14 +11217,16 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
 
 				 //Msg Attributes
-                SMESSAGE_ATTRIB sMsgAttrib; sMsgAttrib.m_psMsgAttribDetails = NULL; sMsgAttrib.m_usMsgCount = 0;
+                SMESSAGE_ATTRIB sMsgAttrib;
+                sMsgAttrib.m_psMsgAttribDetails = NULL;
+                sMsgAttrib.m_usMsgCount = 0;
                 COPY_DATA_2(&(sMsgAttrib.m_usMsgCount), pbyTemp, sizeof(UINT));
 
                 PSMESSAGEATTR pMessageAtt = new SMESSAGEATTR[sMsgAttrib.m_usMsgCount];
                 for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
                 {
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
-                    COPY_DATA_2(acName, pbyTemp, (sizeof(TCHAR) * MAX_PATH));
+                    char acName[MAX_PATH] = {_T('\0')};
+                    COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
                     pMessageAtt[i].omStrMsgname.Format("%s", acName);
 
                     COPY_DATA_2(&(pMessageAtt[i].unMsgID), pbyTemp, sizeof(UINT));
@@ -11137,16 +11281,17 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 {
                     SMAINENTRY sMainEntry;
                     COPY_DATA_2(&(sMainEntry.m_unMainEntryID),pbyTemp, (sizeof (UINT)));
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
-                    COPY_DATA_2(acName, pbyTemp, (sizeof (TCHAR) * MAX_PATH));
+                    char acName[MAX_PATH] = {_T('\0')};
+                    COPY_DATA_2(acName, pbyTemp, (sizeof (char) * MAX_PATH));
                     sMainEntry.m_omMainEntryName.Format("%s", acName);
                     UINT nSelCount = 0;
                     COPY_DATA_2(&nSelCount,pbyTemp, sizeof (UINT));
+
                     for (UINT nSelIndex = 0; nSelIndex < nSelCount; nSelIndex++)
                     {
                         SSUBENTRY sSelEntry;
                         COPY_DATA_2(&(sSelEntry.m_unSubEntryID),pbyTemp, (sizeof (UINT)));
-                        COPY_DATA_2(acName, pbyTemp, (sizeof (TCHAR) * MAX_PATH));
+                        COPY_DATA_2(acName, pbyTemp, (sizeof (char) * MAX_PATH));
                         sSelEntry.m_omSubEntryName.Format("%s", acName);
                         sMainEntry.m_odSelEntryList.AddTail(sSelEntry);
                     }
@@ -11197,16 +11342,17 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 {
                     SMAINENTRY sMainEntry;
                     COPY_DATA_2(&(sMainEntry.m_unMainEntryID),pbyTemp, (sizeof (UINT)));
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
-                    COPY_DATA_2(acName, pbyTemp, (sizeof (TCHAR) * MAX_PATH));
+                    char acName[MAX_PATH] = {_T('\0')};
+                    COPY_DATA_2(acName, pbyTemp, (sizeof (char) * MAX_PATH));
                     sMainEntry.m_omMainEntryName.Format("%s", acName);
                     UINT nSelCount = 0;
                     COPY_DATA_2(&nSelCount,pbyTemp, sizeof (UINT));
+
                     for (UINT nSelIndex = 0; nSelIndex < nSelCount; nSelIndex++)
                     {
                         SSUBENTRY sSelEntry;
                         COPY_DATA_2(&(sSelEntry.m_unSubEntryID),pbyTemp, (sizeof (UINT)));
-                        COPY_DATA_2(acName, pbyTemp, (sizeof (TCHAR) * MAX_PATH));
+                        COPY_DATA_2(acName, pbyTemp, (sizeof (char) * MAX_PATH));
                         sSelEntry.m_omSubEntryName.Format("%s", acName);
                         sMainEntry.m_odSelEntryList.AddTail(sSelEntry);
                     }
@@ -11257,12 +11403,12 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
  
                 COPY_DATA_2(&m_dwDriverId, pbyTemp, sizeof(DWORD));
                 COPY_DATA_2(&m_byControllerMode, pbyTemp, sizeof(BYTE));
-                COPY_DATA_2(m_asControllerDetails, pbyTemp, (sizeof(SCONTROLER_DETAILS) * unChannelCount));
+                COPY_DATA_2(m_asControllerDetails, pbyTemp, (sizeof(SCONTROLLER_DETAILS) * unChannelCount));
                 IntializeDIL();
                 ASSERT(g_pouDIL_CAN_Interface != NULL);
                 //HRESULT hResult = 
                 g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)m_asControllerDetails, 
-                                                    sizeof(SCONTROLER_DETAILS) * defNO_OF_CHANNELS);
+                                                    sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
 
             }
             else
@@ -11272,11 +11418,12 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 IntializeDIL();							
                 for (UINT i = 0; i < defNO_OF_CHANNELS; i++)
                 {
-                    m_asControllerDetails[i].vIntialize();
-                }				
-                //HRESULT hResult = 
-                g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)m_asControllerDetails, 
-                                                    sizeof(SCONTROLER_DETAILS) * defNO_OF_CHANNELS);
+                    m_asControllerDetails[i].vInitialize();
+                }
+
+                //HRESULT hResult =
+                g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)m_asControllerDetails,
+                        sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
                 //Set default settings
             }
         }
@@ -11316,8 +11463,10 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
 				for(int nBUSID=0;nBUSID<AVAILABLE_PROTOCOLS;nBUSID++)
 				{
 					m_odGraphList[nBUSID].m_odGraphParameters.vInitialize();
-					if(m_odGraphList[nBUSID].m_omElementList.GetSize()>0)
-						m_odGraphList[nBUSID].m_omElementList.RemoveAll();
+                    if(m_odGraphList[nBUSID].m_omElementList.GetSize()>0)
+                    {
+                        m_odGraphList[nBUSID].m_omElementList.RemoveAll();
+                    }
 
 					m_sGraphWndPlacement[nBUSID].length = 0;
 					m_sGraphWndPlacement[nBUSID].rcNormalPosition.top = -1;
@@ -11371,8 +11520,8 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 COPY_DATA_2(&unCount, pbyTemp, sizeof (UINT));
                 for (UINT i = 0; i < unCount; i++)
                 {
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
-                    COPY_DATA_2(acName, pbyTemp, (sizeof (TCHAR) * MAX_PATH));
+                    char acName[MAX_PATH] = {_T('\0')};
+                    COPY_DATA_2(acName, pbyTemp, (sizeof (char) * MAX_PATH));
                     CString omDbName;
                     omDbName.Format("%s", acName);
                     omDBNames.Add(omDbName);
@@ -11417,8 +11566,8 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 COPY_DATA_2(&unCount, pbyTemp, sizeof (UINT));
                 for (UINT i = 0; i < unCount; i++)
                 {
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
-                    COPY_DATA_2(acName, pbyTemp, (sizeof (TCHAR) * MAX_PATH));
+                    char acName[MAX_PATH] = {_T('\0')};
+                    COPY_DATA_2(acName, pbyTemp, (sizeof (char) * MAX_PATH));
                     CString omDbName;
                     omDbName.Format("%s", acName);
                     omDBNames.Add(omDbName);
@@ -11465,10 +11614,12 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
 					BYTE* pbyTemp = pbyConfigData;					
 					CBusStatisticsDlg::vSaveDataToStore(pbyTemp);
 				}	
-				else
-					CBusStatisticsDlg::vSetDefaultsToStore();
-			}
-		}
+                else
+                {
+                    CBusStatisticsDlg::vSetDefaultsToStore();
+                }
+            }
+        }
 		break;
         //venkat
         case TEST_SETUP_EDITOR_SECTION_ID:
@@ -11496,7 +11647,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
         case MAINFRAME_SECTION_ID:
         {
             nSize += sizeof(BYTE); //Configuration version
-            nSize += (sizeof(TCHAR) * MAX_PATH) + sizeof(STOOLBARINFO) + sizeof(WINDOWPLACEMENT) + sizeof (BOOL) * BUS_TOTAL;
+            nSize += (sizeof(char) * MAX_PATH) + sizeof(STOOLBARINFO) + sizeof(WINDOWPLACEMENT) + sizeof (BOOL) * BUS_TOTAL;
             pbyConfigData = new BYTE[nSize];
 
             
@@ -11507,9 +11658,9 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 BYTE byVersion = 0x2;
                 COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
 
-                TCHAR acName[MAX_PATH] = {_T('\0')};
-                _tcscpy(acName, m_omMRU_C_Filename.GetBuffer(MAX_PATH));
-                COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+                char acName[MAX_PATH] = {_T('\0')};
+                strcpy_s(acName, MAX_PATH, m_omMRU_C_Filename.GetBuffer(MAX_PATH));
+                COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
 
                 
                 theApp.pouGetFlagsPtr()->vGetToolbarButtonStatus(&m_sToolBarInfo);
@@ -11569,11 +11720,13 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             nSize += sizeof(BYTE); // Configuration version
 
             nSize += sizeof (UINT);// To store count of MsgAttribs
-            SMESSAGE_ATTRIB sMsgAttrib; sMsgAttrib.m_psMsgAttribDetails = NULL; sMsgAttrib.m_usMsgCount = 0;
+            SMESSAGE_ATTRIB sMsgAttrib;
+            sMsgAttrib.m_psMsgAttribDetails = NULL;
+            sMsgAttrib.m_usMsgCount = 0;
             CMessageAttrib::ouGetHandle(CAN).vGetMessageAttribData(sMsgAttrib);
             UINT nCount = sMsgAttrib.m_usMsgCount;
-                            //Count             To store Msg Name         MsgId        Msg Color
-            nSize += (nCount * ((sizeof (TCHAR) * MAX_PATH) + sizeof(UINT) + sizeof (COLORREF)));
+            //Count             To store Msg Name         MsgId        Msg Color
+            nSize += (nCount * ((sizeof (char) * MAX_PATH) + sizeof(UINT) + sizeof (COLORREF)));
             //Msg Buffer size
             nSize += (sizeof (INT) * defDISPLAY_CONFIG_PARAM);
             //Msg Filter size
@@ -11606,10 +11759,10 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
 				COPY_DATA(pbyTemp, &unTempMsgCount, sizeof(UINT));
                 for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
                 {
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
+                    char acName[MAX_PATH] = {_T('\0')};
                     
-                    _tcscpy(acName, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_PATH));
-                    COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+                    strcpy_s(acName, MAX_PATH, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_PATH));
+                    COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
 
                     COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].unMsgID), sizeof(UINT));
                     COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].sColor), sizeof(COLORREF));
@@ -11638,13 +11791,14 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             //FIRST CALC SIZE
             nSize += sizeof(BYTE); // Configuration version
 
-			nSize += sizeof (UINT);// To store count of MsgAttribs
-            SMESSAGE_ATTRIB sMsgAttrib; sMsgAttrib.m_psMsgAttribDetails = NULL; sMsgAttrib.m_usMsgCount = 0;
+            nSize += sizeof (UINT);// To store count of MsgAttribs
+            SMESSAGE_ATTRIB sMsgAttrib;
+            sMsgAttrib.m_psMsgAttribDetails = NULL;
+            sMsgAttrib.m_usMsgCount = 0;
             CMessageAttrib::ouGetHandle(J1939).vGetMessageAttribData(sMsgAttrib);
             UINT nCount = sMsgAttrib.m_usMsgCount;
-                            //Count             To store Msg Name         MsgId        Msg Color
-            nSize += (nCount * ((sizeof (TCHAR) * MAX_PATH) + sizeof(UINT) + sizeof (COLORREF)));
-
+            //Count             To store Msg Name         MsgId        Msg Color
+            nSize += (nCount * ((sizeof (char) * MAX_PATH) + sizeof(UINT) + sizeof (COLORREF)));
             //MsgFormat window config data
             UINT unMsgFrmtWndCfgSize = 0;
             ASSERT(m_podMsgWndThread != NULL);
@@ -11672,11 +11826,10 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 
                 for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
                 {
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
+                    char acName[MAX_PATH] = {_T('\0')};
                     
-					_tcscpy(acName, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_CHAR));
-                    COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
-
+                    strcpy_s(acName, MAX_PATH, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_CHAR));
+                    COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
                     COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].unMsgID), sizeof(UINT));
                     COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].sColor), sizeof(COLORREF));
                 }
@@ -11706,14 +11859,14 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             while (pos)
             {
                 nSize += sizeof (UINT);
-                nSize += (sizeof (TCHAR) * MAX_PATH);
+                nSize += (sizeof (char) * MAX_PATH);
                 SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
+                nSize += (sizeof (char) * MAX_PATH);//To store number of selected entries
 
-                nSize += (sizeof (TCHAR) * MAX_PATH);//To store number of selected entries
                 for (UINT nSelIndex = 0; nSelIndex < (UINT)sMainEntry.m_odSelEntryList.GetCount(); nSelIndex++)
                 {
                     nSize += sizeof (UINT);
-                    nSize += (sizeof (TCHAR) * MAX_PATH);
+                    nSize += (sizeof (char) * MAX_PATH);
                 }
             }
             //BYTE* pbySWWndPlacement = NULL;
@@ -11736,10 +11889,9 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             {
                 SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
                 COPY_DATA(pbyTemp, &(sMainEntry.m_unMainEntryID), sizeof(UINT));
-                TCHAR acName[MAX_PATH] = {_T('\0')};
-                _tcscpy(acName, sMainEntry.m_omMainEntryName.GetBuffer(MAX_CHAR));
-                COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
-
+                char acName[MAX_PATH] = {_T('\0')};
+                strcpy_s(acName, MAX_PATH, sMainEntry.m_omMainEntryName.GetBuffer(MAX_CHAR));
+                COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
                 UINT unSelCount = sMainEntry.m_odSelEntryList.GetCount();
                 COPY_DATA(pbyTemp, &unSelCount, sizeof(UINT));
                 POSITION SelPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
@@ -11747,8 +11899,8 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 {
                     SSUBENTRY sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SelPos);
                     COPY_DATA(pbyTemp, &(sSubEntry.m_unSubEntryID), sizeof(UINT));
-                    _tcscpy(acName, sSubEntry.m_omSubEntryName.GetBuffer(MAX_CHAR));
-                    COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+					strcpy_s(acName, MAX_PATH, sSubEntry.m_omSubEntryName.GetBuffer(MAX_CHAR));
+                    COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
                 }
             }
 
@@ -11773,14 +11925,14 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             while (pos)
             {
                 nSize += sizeof (UINT);
-                nSize += (sizeof (TCHAR) * MAX_PATH);
+                nSize += (sizeof (char) * MAX_PATH);
                 SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
+                nSize += (sizeof (char) * MAX_PATH);//To store number of selected entries
 
-                nSize += (sizeof (TCHAR) * MAX_PATH);//To store number of selected entries
                 for (UINT nSelIndex = 0; nSelIndex < (UINT)sMainEntry.m_odSelEntryList.GetCount(); nSelIndex++)
                 {
                     nSize += sizeof (UINT);
-                    nSize += (sizeof (TCHAR) * MAX_PATH);
+                    nSize += (sizeof (char) * MAX_PATH);
                 }
             }
             //BYTE* pbySWWndPlacement = NULL;
@@ -11803,9 +11955,9 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             {
                 SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
                 COPY_DATA(pbyTemp, &(sMainEntry.m_unMainEntryID), sizeof(UINT));
-                TCHAR acName[MAX_PATH] = {_T('\0')};
-                _tcscpy(acName, sMainEntry.m_omMainEntryName.GetBuffer(MAX_PATH));
-                COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+                char acName[MAX_PATH] = {_T('\0')};
+                strcpy_s(acName, MAX_PATH, sMainEntry.m_omMainEntryName.GetBuffer(MAX_PATH));
+                COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
 
                 UINT unSelCount = sMainEntry.m_odSelEntryList.GetCount();
                 COPY_DATA(pbyTemp, &unSelCount, sizeof(UINT));
@@ -11814,8 +11966,8 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 {
                     SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SelPos);
                     COPY_DATA(pbyTemp, &(sSubEntry.m_unSubEntryID), sizeof(UINT));
-                    _tcscpy(acName, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
-                    COPY_DATA(pbyTemp, acName, (sizeof(TCHAR) * MAX_PATH));
+					strcpy_s(acName, MAX_PATH, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
+                    COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
                 }
             }
 
@@ -11832,7 +11984,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             nSize = sizeof(BYTE);//configuration version
             nSize += sizeof(DWORD);// Driver Id
             nSize += sizeof(BYTE); // Controller mode
-            nSize += sizeof(SCONTROLER_DETAILS) * CHANNEL_ALLOWED;
+            nSize += sizeof(SCONTROLLER_DETAILS) * CHANNEL_ALLOWED;
             pbyConfigData = new BYTE[nSize];
             
             if (pbyConfigData != NULL)
@@ -11843,7 +11995,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
                 COPY_DATA(pbyTemp, &m_dwDriverId, sizeof(DWORD));
                 COPY_DATA(pbyTemp, &m_byControllerMode, sizeof(BYTE));
-                COPY_DATA(pbyTemp, m_asControllerDetails, (sizeof(SCONTROLER_DETAILS) * CHANNEL_ALLOWED));
+                COPY_DATA(pbyTemp, m_asControllerDetails, (sizeof(SCONTROLLER_DETAILS) * CHANNEL_ALLOWED));
             }        
         }
         break;
@@ -11906,8 +12058,8 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             {
                 m_pouMsgSigJ1939->vGetDataBaseNames(&omDbNames);
             }
-            nSize += sizeof(UINT) + ((sizeof(TCHAR) * MAX_PATH) * omDbNames.GetSize());
-            
+
+            nSize += sizeof(UINT) + ((sizeof(char) * MAX_PATH) * omDbNames.GetSize());
             pbyConfigData = new BYTE[nSize];
             
             if (pbyConfigData != NULL)
@@ -11922,10 +12074,9 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 for (UINT i = 0; i < unCount; i++)
                 {
                     CString omDbName = omDbNames.GetAt(i);
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
-                    _tcscpy(acName, omDbName.GetBuffer(MAX_CHAR));
-
-                    COPY_DATA(pbyTemp, acName, (sizeof (TCHAR) * MAX_PATH));
+                    char acName[MAX_PATH] = {_T('\0')};
+                    strcpy_s(acName, MAX_PATH, omDbName.GetBuffer(MAX_CHAR));
+                    COPY_DATA(pbyTemp, acName, (sizeof (char) * MAX_PATH));
                 }
             }
         }
@@ -11939,8 +12090,8 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             {
                 theApp.m_pouMsgSignal->vGetDataBaseNames(&omDbNames);
             }
-			nSize += sizeof(UINT) + ((sizeof(TCHAR) * MAX_PATH) * omDbNames.GetSize());
-            
+
+            nSize += sizeof(UINT) + ((sizeof(char) * MAX_PATH) * omDbNames.GetSize());
             pbyConfigData = new BYTE[nSize];
             
             if (pbyConfigData != NULL)
@@ -11955,10 +12106,9 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 for (UINT i = 0; i < unCount; i++)
                 {
                     CString omDbName = omDbNames.GetAt(i);
-                    TCHAR acName[MAX_PATH] = {_T('\0')};
-                    _tcscpy(acName, omDbName.GetBuffer(MAX_PATH));
-
-                    COPY_DATA(pbyTemp, acName, (sizeof (TCHAR) * MAX_PATH));
+                    char acName[MAX_PATH] = {_T('\0')};
+                    strcpy_s(acName, MAX_PATH, omDbName.GetBuffer(MAX_PATH));
+                    COPY_DATA(pbyTemp, acName, (sizeof (char) * MAX_PATH));
                 }
             }
         }        
@@ -12015,11 +12165,11 @@ void CMainFrame::OnSelectDriver(UINT nID)
     {		
         m_dwDriverId =  psCurrDIL->m_dwDriverID;
 
-		//Retain default values for all channels
-		for (int i = 0; i < defNO_OF_CHANNELS; i++)
-		{
-			m_asControllerDetails[i].vIntialize();
-		}
+        //Retain default values for all channels
+        for (int i = 0; i < defNO_OF_CHANNELS; i++)
+        {
+            m_asControllerDetails[i].vInitialize();
+        }
 
         IntializeDIL();
     }    
@@ -12333,8 +12483,10 @@ void CMainFrame::OnConfigureSignalgraphwindow()
 	CSigGrphConfigDlg objSigGrphCnfg(nHardware);
 	objSigGrphCnfg.m_pMainFrame = this;
 	objSigGrphCnfg.DoModal();
-	for(short eBusType = CAN; eBusType< MAX_PROTOCOL; eBusType++)
-		m_objSigGrphHandler.SetSignalListDetails(eBusType, &m_odGraphList[eBusType]);
+    for(short eBusType = CAN; eBusType< MAX_PROTOCOL; eBusType++)
+    {
+        m_objSigGrphHandler.SetSignalListDetails(eBusType, &m_odGraphList[eBusType]);
+    }
 }
 
 void CMainFrame::OnUpdateConfigureSignalgraphwindow(CCmdUI* /*pCmdUI*/)
@@ -12611,7 +12763,7 @@ HRESULT CMainFrame::ProcessJ1939Interfaces(void)
                     J1939_MONITOR_NODE, J1939_ECU_NAME, 0, m_sJ1939ClientParam.m_dwClientId);
             if (Result == S_OK || Result == ERR_CLIENT_EXISTS)
             {
-                _tcscpy(m_sJ1939ClientParam.m_acName, J1939_MONITOR_NODE);
+                strcpy_s(m_sJ1939ClientParam.m_acName, MAX_PATH, J1939_MONITOR_NODE);
                 m_sJ1939ClientParam.m_unEcuName = J1939_ECU_NAME;
 				m_podMsgWndThread->vUpdateClientID(J1939, m_sJ1939ClientParam.m_dwClientId);
 				m_podMsgWndThread->vSetDILInterfacePointer(J1939, (void**)&(sg_pouIJ1939DIL));
@@ -12644,10 +12796,9 @@ HRESULT CMainFrame::ProcessJ1939Interfaces(void)
 
                 // Next initialise the interface
                 CParamLoggerJ1939 ouParam;
-
-                CString omVerStr(_T(""));       // First get the version information
+                CString omVerStr("");       // First get the version information
                 omVerStr.Format(IDS_VERSION);   // string from the rsource
-				_tcscpy(ouParam.m_acVersion, omVerStr.GetBuffer(MAX_CHAR));
+				strcpy_s(ouParam.m_acVersion, MAX_PATH, omVerStr.GetBuffer(MAX_CHAR));
 
                 ouParam.m_pILog = &m_ouWrapperLogger;
                 ouParam.dwClientID = m_sJ1939ClientParam.m_dwClientId;
@@ -12943,7 +13094,7 @@ void CMainFrame::OnJ1939DBOpen()
                 m_pouActiveDbJ1939 = new CMsgSignal(sg_asDbParams[J1939], FALSE);
             }
             if (m_pouActiveDbJ1939->
-                    bFillDataStructureFromDatabaseFile(strDbName))
+                    bFillDataStructureFromDatabaseFile(strDbName, PROTOCOL_J1939))
             {
                 // No corruption in database, display the editor
                 bDisplayEditor = TRUE;
@@ -13047,7 +13198,7 @@ void CMainFrame::OnJ1939DBAssociate()
 {
     CStringArray strFilePathArray;
     // Display a open file dialog
-    TCHAR szFilters[] = _T("All Supported DataBaseFiles (*.dbf;*.dbc)|*.dbf; *.dbc|J1939 Database File(s)(*.dbf)|*.dbf|CANoe Database File(s) (*.dbc)|*.dbc||");
+    char szFilters[] = _T("All Supported DataBaseFiles (*.dbf;*.dbc)|*.dbf; *.dbc|J1939 Database File(s)(*.dbf)|*.dbf|CANoe Database File(s) (*.dbc)|*.dbc||");
     CFileDialog fileDlg( TRUE,      // Open File dialog
                             "dbf",     // Default Extension,
                             NULL,                              
@@ -13143,11 +13294,11 @@ void CMainFrame::OnJ1939LoadAll()
     {       
 		int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are not properly loaded:");
-        CString omStrErrorMsgDummy=_T("");
+        CString omStrErrorMsgDummy="";
         for(int i = 0 ;i < nFailure; i++)
         {
             
-           omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+           omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
            omStrErrorMsg += omStrErrorMsgDummy;
         }
         AfxMessageBox(omStrErrorMsg);
@@ -13167,11 +13318,11 @@ void CMainFrame::OnJ1939UnloadAll()
     {       
 		int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are not properly unloaded:");
-        CString omStrErrorMsgDummy=_T("");
+        CString omStrErrorMsgDummy="";
         for(int i = 0 ;i < nFailure; i++)
         {
             
-           omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+           omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
            omStrErrorMsg += omStrErrorMsgDummy;
         }
         AfxMessageBox(omStrErrorMsg);
@@ -13192,7 +13343,7 @@ void CMainFrame::OnJ1939BuildAndLoadAll()
     {
 		int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are either not properly build or loaded:");
-        CString omStrErrorMsgDummy=_T("");
+        CString omStrErrorMsgDummy="";
         for(int i = 0 ;i < nFailure; i++)
         {
             
@@ -13217,7 +13368,7 @@ void CMainFrame::OnJ1939BuildAll()
     {
 		int nFailure = omStrBuildFiles.GetSize();
         CString omStrErrorMsg =_T("Following file(s) are either not properly build or loaded:");
-        CString omStrErrorMsgDummy=_T("");
+        CString omStrErrorMsgDummy="";
         for(int i = 0 ;i < nFailure; i++)
         {
             

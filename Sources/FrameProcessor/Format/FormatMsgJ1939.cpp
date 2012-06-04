@@ -96,7 +96,6 @@ void CFormatMsgJ1939::vFormatDataAndId(BYTE bExprnFlag,
         }
         psJ1939FData->m_pcDataHex[j] = L'\0';
     }
-
     if (IS_NUM_DEC_SET(bExprnFlag))
     {
         _stprintf(psJ1939FData->m_acPGNDec, FORMAT_PGN_ID_DEC, 
@@ -105,7 +104,8 @@ void CFormatMsgJ1939::vFormatDataAndId(BYTE bExprnFlag,
         for (USHORT i = 0; i < psJ1939BData->m_unDLC; i++)
         {
             BYTE CurrDat = *(psJ1939BData->m_pbyData + i);
-            _stprintf(&(psJ1939FData->m_pcDataDec[j]), FORMAT_STR_DATA_DEC, CurrDat);
+           _stprintf(&(psJ1939FData->m_pcDataDec[j]), FORMAT_STR_DATA_DEC, CurrDat);
+			psJ1939FData->m_pcDataDec[j + 3] = L' '; //known issue #51 srinivas R 
             j += 4;
         }
         psJ1939FData->m_pcDataDec[j] = L'\0';

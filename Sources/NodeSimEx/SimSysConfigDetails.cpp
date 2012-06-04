@@ -27,6 +27,7 @@
 #include "GlobalObj.h"
 #include "SimSysConfigDetails.h"// definition of the class CSimSysConfigDetails
 #include "SimSysManager.h"
+#include "Application/StdAfx.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -294,6 +295,37 @@ int CSimSysConfigDetails::nLoadStoreData(UINT unArchiveMode ,
 				// extract the header information
 				oSimCfgArchive >> m_fSimSysVersion;
                 oSimCfgArchive >> omCopyRight;
+				// PTV
+				if ((m_fSimSysVersion == static_cast<FLOAT> (defSIMSYSVERSION_ALL_BUS)))
+				{
+					oSimCfgArchive >> m_omstrProtocolName;
+					oSimCfgArchive >> m_omBusmasterVersion;
+
+					CString omBusNameSel;
+
+					if(m_eBus == CAN)
+					{
+						omBusNameSel = "CAN";
+					}
+					else if(m_eBus == J1939)
+					{
+						omBusNameSel = "J1939";
+					}
+
+					if(m_omstrProtocolName != omBusNameSel)
+					{
+						if(m_eBus == CAN)
+						{
+							AfxMessageBox("File " + omStrSimSysPath + " selected is not created for CAN.\r\nPlease load .sim file created for CAN.");
+							return defCONFIG_FILE_OPEN_FAILED;
+						}
+						else if(m_eBus == J1939)
+						{
+							AfxMessageBox("File " + omStrSimSysPath + " selected is not created for J1939.\r\nPlease load .sim file created for J1939.");
+							return defCONFIG_FILE_OPEN_FAILED;
+						}
+					}
+				}
                 
                 //If loading create new simsysinfo and add it to the list later
                 psCurrSimSys = new sSIMSYSINFO;
@@ -315,6 +347,26 @@ int CSimSysConfigDetails::nLoadStoreData(UINT unArchiveMode ,
 				m_fSimSysVersion = static_cast<FLOAT> (defSIMSYSVERSION_ALL_BUS);
 				oSimCfgArchive << m_fSimSysVersion;
                 oSimCfgArchive << omCopyRight;
+				// PTV
+				if(m_eBus == CAN)
+				{
+					CString omStrCanProtocol = "CAN";
+
+					oSimCfgArchive << omStrCanProtocol;
+				}
+				else if(m_eBus == J1939)
+				{
+					CString omStrJ1939Protocol = "J1939";
+
+					oSimCfgArchive << omStrJ1939Protocol;
+				}
+
+				CString strVersion;
+
+				// Application version
+				strVersion.Format("%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
+
+				oSimCfgArchive << strVersion;
 			}
     		
 			if( psCurrSimSys != NULL )

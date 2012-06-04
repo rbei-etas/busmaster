@@ -85,7 +85,7 @@ BOOL CCAN_Kvaser_CAN::InitInstance()
  */
 static UINT sg_nNoOfChannels = 0;
 
-static TCHAR sg_omErrStr[MAX_STRING] = {0};
+static char sg_omErrStr[MAX_STRING] = {0};
 
 // Count variables
 static UCHAR sg_ucNoOfHardware = 0;
@@ -149,7 +149,7 @@ struct CChannel
 {
 	/* Kvaser channel details */
 	int        m_nChannel;
-	TCHAR      m_strName[MAX_CHAR_LONG];
+	char      m_strName[MAX_CHAR_LONG];
 	DWORD      m_dwHwType;
 	canHandle  m_hnd;
 	int        m_nHwIndex;
@@ -245,14 +245,14 @@ typedef struct tagClientBufMap
     DWORD dwClientID;
     BYTE hClientHandle;
     CBaseCANBufFSE* pClientBuf[MAX_BUFF_ALLOWED];
-    TCHAR pacClientName[MAX_PATH];
+    char pacClientName[MAX_PATH];
     UINT unBufCount;
     tagClientBufMap()
     {
         dwClientID = 0;
         hClientHandle = NULL;
         unBufCount = 0;
-        memset(pacClientName, 0, sizeof (TCHAR) * MAX_PATH);
+        memset(pacClientName, 0, sizeof (char) * MAX_PATH);
         for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
         {
             pClientBuf[i] = NULL;
@@ -276,7 +276,7 @@ static Base_WrapperErrorLogger* sg_pIlog   = NULL;
 static int nInitHwNetwork();
 static BOOL bRemoveClient(DWORD dwClientId);
 static DWORD dwGetAvailableClientSlot();
-static BOOL bClientExist(TCHAR* pcClientName, INT& Index);
+static BOOL bClientExist(string pcClientName, INT& Index);
 static BOOL bClientIdExist(const DWORD& dwClientId);
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex);
 static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line);
@@ -296,7 +296,7 @@ static int sg_nFRAMES = 128;
 const int ENTRIES_IN_GBUF       = 2000;
 static STCANDATA sg_asCANMsg;
 static STCAN_MSG sg_ReadMsg;
-static SCONTROLER_DETAILS sg_ControllerDetails[defNO_OF_CHANNELS];
+static SCONTROLLER_DETAILS sg_ControllerDetails[defNO_OF_CHANNELS];
 static INTERFACE_HW sg_HardwareIntr[defNO_OF_CHANNELS];
 
 /* CDIL_CAN_Kvaser class definition */
@@ -321,7 +321,7 @@ public:
 	HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
 	HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
 	HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
-	HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength);
+	HRESULT CAN_GetLastErrorString(string& acErrorStr);
 	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
 	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -329,7 +329,7 @@ public:
 	// Specific function set	
 	HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);	
 	HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
-	HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
+	HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
 	HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
 	HRESULT CAN_LoadDriverLibrary(void);
 	HRESULT CAN_UnloadDriverLibrary(void);
@@ -494,7 +494,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCAN
 * \authors       Arunkumar Karri
 * \date          12.10.2011 Created
 */
-HRESULT CDIL_CAN_Kvaser::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
+HRESULT CDIL_CAN_Kvaser::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName)
 {
 	USES_CONVERSION;
     HRESULT hResult = S_FALSE;
@@ -612,7 +612,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_PerformInitOperations(void)
  * Copies the controller config values into channel's
  * controller config structure.
  */
-static BOOL bLoadDataFromContr(PSCONTROLER_DETAILS pControllerDetails)
+static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
 {
     BOOL bReturn = FALSE;    
     // If successful
@@ -620,7 +620,7 @@ static BOOL bLoadDataFromContr(PSCONTROLER_DETAILS pControllerDetails)
     {
         for( UINT nIndex = 0; nIndex < sg_nNoOfChannels ; nIndex++ )
         {
-            TCHAR* pcStopStr = NULL;
+            char* pcStopStr = NULL;
             CChannel& odChannel = sg_aodChannels[ nIndex ];
 
             // Baudrate in BTR0BTR1 format          
@@ -833,7 +833,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_DeselectHwInterface(void)
 
 /**
 * \brief         Callback function for configuration dialog
-* \param[in]     pDatStream, contains SCONTROLER_DETAILS structure
+* \param[in]     pDatStream, contains SCONTROLLER_DETAILS structure
 * \return        TRUE if CAN_SetConfigData call succeeds, else FALSE
 * \authors       Arunkumar Karri
 * \date          12.10.2011 Created
@@ -845,14 +845,14 @@ BOOL Callback_DILTZM(BYTE /*Argument*/, PBYTE pDatStream, int /*Length*/)
 
 /**
 * \brief         Helper function to display configuration dialog
-* \param[in]     pControllerDetails, is SCONTROLER_DETAILS structure
+* \param[in]     pControllerDetails, is SCONTROLLER_DETAILS structure
 * \param[in]     nCount , is the channel count
 * \return        returns configuration confirmation status
 * \authors       Arunkumar Karri
 * \date          12.10.2011 Created
 */
 int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/, 
-                            PSCONTROLER_DETAILS pControllerDetails, UINT nCount)
+                            PSCONTROLLER_DETAILS pControllerDetails, UINT nCount)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     int nResult = WARNING_NOTCONFIRMED;
@@ -866,7 +866,7 @@ int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/,
 
 /**
 * \brief         Displays the controller configuration dialog.
-* \param[out]    InitData, is SCONTROLER_DETAILS structure
+* \param[out]    InitData, is SCONTROLLER_DETAILS structure
 * \param[out]    Length , is INT
 * \return        S_OK for success
 * \authors       Arunkumar Karri
@@ -879,7 +879,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
 
     HRESULT Result = S_FALSE;
     
-    PSCONTROLER_DETAILS pControllerDetails = (PSCONTROLER_DETAILS)InitData;
+    PSCONTROLLER_DETAILS pControllerDetails = (PSCONTROLLER_DETAILS)InitData;
     //First initialize with existing hw description
     for (INT i = 0; i < min(Length, (INT)sg_nNoOfChannels); i++)
     {   
@@ -899,9 +899,9 @@ HRESULT CDIL_CAN_Kvaser::CAN_DisplayConfigDlg(PCHAR& InitData, INT& Length)
             case INFO_INIT_DATA_CONFIRMED:
             {
                 bLoadDataFromContr(pControllerDetails);
-                memcpy(sg_ControllerDetails, pControllerDetails, sizeof (SCONTROLER_DETAILS) * defNO_OF_CHANNELS);                
-                memcpy(InitData, (void*)sg_ControllerDetails, sizeof (SCONTROLER_DETAILS) * defNO_OF_CHANNELS);
-                Length = sizeof(SCONTROLER_DETAILS) * defNO_OF_CHANNELS;
+                memcpy(sg_ControllerDetails, pControllerDetails, sizeof (SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);                
+                memcpy(InitData, (void*)sg_ControllerDetails, sizeof (SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
+                Length = sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS;
                 Result = S_OK;
             }
             break;
@@ -1087,7 +1087,7 @@ static int nSetApplyConfiguration()
 
 /**
 * \brief         Sets the controller configuration data supplied by ConfigFile.
-* \param[in]     ConfigFile, is SCONTROLER_DETAILS structure
+* \param[in]     ConfigFile, is SCONTROLLER_DETAILS structure
 * \param[in]     Length , is INT
 * \return        S_OK for success
 * \authors       Arunkumar Karri
@@ -1102,7 +1102,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_SetConfigData(PCHAR ConfigFile, INT Length)
 	/* Fill the hardware description details */
     for (UINT nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
 	{		
-		_tcscpy(((PSCONTROLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc, 
+		_tcscpy(((PSCONTROLLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc, 
 				sg_aodChannels[nCount].m_strName);		
 	}
 
@@ -1738,7 +1738,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_GetVersionInfo(VERSIONINFO& /*sVerInfo*/)
 * \authors       Arunkumar Karri
 * \date          12.10.2011 Created
 */
-HRESULT CDIL_CAN_Kvaser::CAN_GetLastErrorString(CHAR* /*acErrorStr*/, INT /*nLength*/)
+HRESULT CDIL_CAN_Kvaser::CAN_GetLastErrorString(string& /*acErrorStr*/)
 {
     return WARN_DUMMY_API;
 }
@@ -2090,7 +2090,7 @@ int ListHardwareInterfaces(HWND hParent, DWORD /*dwDriver*/, INTERFACE_HW* psInt
 static int nCreateMultipleHardwareNetwork()
 {
 	int nHwCount = sg_ucNoOfHardware;	
-	TCHAR acVendor[MAX_CHAR_LONG];
+	char acVendor[MAX_CHAR_LONG];
 	DWORD dwFirmWare[2];
 
     // Get Hardware Network Map
@@ -2146,7 +2146,7 @@ static int nCreateSingleHardwareNetwork()
 
 	/* Update channel info */
 
-	TCHAR acVendor[MAX_CHAR_LONG];
+	char acVendor[MAX_CHAR_LONG];
 	DWORD dwFirmWare[2];
 
 	canGetChannelData(0, canCHANNELDATA_CARD_SERIAL_NO,
@@ -2222,7 +2222,7 @@ static int nInitHwNetwork()
     /* Capture only Driver Not Running event
      * Take action based on number of Hardware Available
      */
-    TCHAR acNo_Of_Hw[MAX_STRING] = {0};
+    char acNo_Of_Hw[MAX_STRING] = {0};
     _stprintf(acNo_Of_Hw, _T("Number of Kvaser hardwares Available: %d"), nChannelCount);
 
     /* No Hardware found */
@@ -2273,7 +2273,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
                 {
                     sg_asClientToBufMap[unClientIndex].dwClientID = 0;
                     sg_asClientToBufMap[unClientIndex].hClientHandle = NULL;
-                    memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (TCHAR) * MAX_PATH);
+                    memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                     for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                     {
                         sg_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
@@ -2289,7 +2289,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
             else
             {
                 sg_asClientToBufMap[unClientIndex].dwClientID = 0;
-                memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (TCHAR) * MAX_PATH);
+                memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                 for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                 {
                     sg_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
@@ -2437,11 +2437,11 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
 * \authors       Arunkumar Karri
 * \date          12.10.2011 Created
 */
-static BOOL bClientExist(TCHAR* pcClientName, INT& Index)
+static BOOL bClientExist(string pcClientName, INT& Index)
 {
     for (UINT i = 0; i < sg_unClientCnt; i++)
     {
-        if (!_tcscmp(pcClientName, sg_asClientToBufMap[i].pacClientName))
+		if (!_tcscmp(pcClientName.c_str(), sg_asClientToBufMap[i].pacClientName))
         {
             Index = i;
             return TRUE;

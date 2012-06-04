@@ -47,6 +47,8 @@ private:
     ETYPE_BUS m_eBus;
 	// version information
     float m_fSimSysVersion;		
+	CString m_omstrProtocolName;
+	CString m_omBusmasterVersion;
 	// To Initialise simulated system details after configuration load/create
 	// method to search and open/create the configuration file.
     INT nIsCfgFileFound (CString omStrFilename);

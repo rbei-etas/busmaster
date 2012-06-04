@@ -34,12 +34,6 @@
 // DIL CAN interface
 extern CBaseDIL_CAN* g_pouDIL_CAN_Interface;
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 /////////////////////////////////////////////////////////////////////////////
 // CDriverInfoDlg dialog
 
@@ -63,9 +57,7 @@ CDriverInfoDlg::CDriverInfoDlg(CWnd* pParent /*=NULL*/)
     m_omStrDriverInfo = STR_EMPTY;
     //}}AFX_DATA_INIT
     CString omStrFormatDriverInfo;
-
-    // Use DILC_GetVersionInfo to retrieve driver info
-    m_omStrDriverInfo = _T("");
+    m_omStrDriverInfo = "";
 }
 
 

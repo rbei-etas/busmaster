@@ -32,12 +32,6 @@
 #include "Filter/Filter_extern.h"
 
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #define defREPLAY_FILE_IMAGE_INDEX          3
 #define defREPLAY_FILE_COL_WIDTH_PROPOTION  0.95
 

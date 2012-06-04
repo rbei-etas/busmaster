@@ -38,12 +38,6 @@
 #include "include/CAN_Error_Defs.h"         // For Errors
 #include "Utility_Replay.h"
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 using namespace std;
 
 
@@ -187,8 +181,8 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
                 HRESULT hRet =  s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID,
                                 pReplayDetails->m_omMsgList[ nCurrentIndex ].
                                 m_uDataInfo.m_sCANMsg );
-                
-                if (hRet != defERR_OK)
+
+                if (hRet != 0)
                 {
                     //::PostMessage(GUI_hDisplayWindow, WM_ERROR, 
                     //            ERROR_DRIVER_API_FAIL, nZERO);
@@ -329,7 +323,8 @@ UINT CReplayProcess::sunReplayCyclicThreadFunc( LPVOID pParam )
                 // Use HIL Function to send CAN message
                 HRESULT hRet = s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID,
                                pReplayDetails->m_omMsgList[ nCurrentIndex ].m_uDataInfo.m_sCANMsg );
-                if (hRet != defERR_OK)
+
+                if (hRet != 0)
                 {
                     //::PostMessage(GUI_hDisplayWindow, WM_ERROR, 
                     //            ERROR_DRIVER_API_FAIL, nZERO);
@@ -440,6 +435,7 @@ BOOL CReplayProcess::bOpenReplayFile()
             BOOL bMsgModeFound = FALSE;
             BOOL bOldVersionFile = FALSE;
             BOOL bVersionFound = FALSE;
+			BOOL bProtocolFound = FALSE;
             while ( bOldVersionFile == FALSE &&
                     (!omInReplayFile.eof()) &&
                     ( bMsgModeFound == FALSE  ||
@@ -450,6 +446,17 @@ BOOL CReplayProcess::bOpenReplayFile()
                 omStrLine = Line;
                 omStrLine.TrimLeft();
                 omStrLine.TrimRight();
+				// Check if Protocol exists in the log file
+				if( omStrLine.Find(defSTR_PROTOCOL_USED) != -1)
+				{
+					// If can related log file
+					if( omStrLine.Find(defSTR_PROTOCOL_CAN) == -1)
+					{					
+						m_omStrError = defSTR_LOG_PRTOCOL_MISMATCH;
+						bReturn = FALSE ;
+						bFileEndFlag = TRUE;
+					}
+				}
                 // Version check
                 if( omStrLine.Find(defSTR_BUSMASTER_VERSION_STRING) != -1 )
                 {
@@ -551,11 +558,13 @@ BOOL CReplayProcess::bOpenReplayFile()
                        while (! omInReplayFile.eof() && bEndBlock == FALSE)
                        {
                            omInReplayFile.getline( Line, sizeof(Line));
-                           if( omStrEndBlock.Compare(Line) == 0)
+                            if( omStrEndBlock.Compare(Line) == 0)
+                            {
                                 bEndBlock = TRUE;
-                       }
-                   }
-               }
+                            }
+                        }
+                    }
+                }
             }// while
         }
     }
@@ -676,7 +685,8 @@ UINT CReplayProcess::sunNIReplayThreadFunc( LPVOID pParam )
             {
                 // Use HIL Function to send CAN message
                 HRESULT hRet = s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID, pReplayDetails->m_omMsgList[ nIndex ].m_uDataInfo.m_sCANMsg);
-                if (hRet != defERR_OK)
+
+                if (hRet != 0)
                 {
                     //::PostMessage(GUI_hDisplayWindow, WM_ERROR, 
                     //            ERROR_DRIVER_API_FAIL, nZERO);

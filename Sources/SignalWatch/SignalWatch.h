@@ -18,16 +18,10 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-// SignalWatch.h : main header file for the SignalWatch DLL
-//
 
 #pragma once
 
-#ifndef __AFXWIN_H__
-	#error include 'stdafx.h' before including this file for PCH
-#endif
-
-#include "SignalWatch_resource.h"		// main symbols
+#include "SignalWatch_resource.h"       // main symbols
 
 
 // CSignalWatchApp

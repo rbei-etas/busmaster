@@ -146,9 +146,10 @@ void CRxMsgList::OnLvnGetdispinfo(NMHDR *pNMHDR, LRESULT *pResult)
             //pItem->pszText can not display more than 260 chars
             //when copied more than 260 chars the application was getting closed abruptly
             CString str(m_pomDataPtrArr[pItem->iSubItem-1]);
+
             if (nMAX_PSZTEXT_SIZE >= str.GetLength())
             {
-                _tcscpy(pItem->pszText, m_pomDataPtrArr[pItem->iSubItem-1]);
+                strcpy(pItem->pszText, m_pomDataPtrArr[pItem->iSubItem-1]);
             }
             else
             {
@@ -159,8 +160,10 @@ void CRxMsgList::OnLvnGetdispinfo(NMHDR *pNMHDR, LRESULT *pResult)
         {
 			BOOL bInterpret = FALSE;
 			::SendMessage( m_hParent, WM_GET_INTERPRET_STATE, (WPARAM)&bInterpret, 0);
-			if(!bInterpret)
-				return;
+            if(!bInterpret)
+            {
+                return;
+            }
             if (sParam.m_eInPretMode  == INTERPRETABLE)
             {
                 pItem->iImage = m_nIconPlus;
@@ -190,12 +193,14 @@ void CRxMsgList::OnLvnGetdispinfo(NMHDR *pNMHDR, LRESULT *pResult)
 *******************************************************************************/
 void CRxMsgList::vShowHideBlankcolumn(BOOL bInterpretON)
 {	
-	if(bInterpretON)
-		ShowColumn(0,TRUE);	
-	else if(IsColumnVisible(0) )
-	{
-		ShowColumn(0,FALSE);	
-	}
+    if(bInterpretON)
+    {
+        ShowColumn(0,TRUE);
+    }
+    else if(IsColumnVisible(0) )
+    {
+        ShowColumn(0,FALSE);
+    }
 }
 
 /**********************************************************************************
@@ -221,8 +226,10 @@ void CRxMsgList::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 	{
         
 		::SendMessage( m_hParent, WM_PARENT_UPDATE_MSG_CLR, (WPARAM)pNMCD->nmcd.dwItemSpec, 0);
-		if(m_clrMsg)
-			pNMCD->clrText = m_clrMsg;
+        if(m_clrMsg)
+        {
+            pNMCD->clrText = m_clrMsg;
+        }
 		*pResult = CDRF_DODEFAULT;
 	}
     else if (pNMCD->nmcd.dwDrawStage == (CDDS_ITEMPREPAINT | CDDS_SUBITEM))
@@ -353,14 +360,16 @@ void CRxMsgList::OnHdnItemchanged(NMHDR* /*pNMHDR*/, LRESULT *pResult)
 
 UINT UpDateThread(LPVOID lParams)
 {
-	CRxMsgList* pList = (CRxMsgList*)lParams;	
-	for(int i =0 ;i<3;i++)
-	{
-		Sleep(50);
-		::SendMessage( pList->m_hParent, WM_UPDATE_TREE_ITEMS_POS, 0, 0);	
-		pList->RedrawWindow();
-	}
-	return 0;
+    CRxMsgList* pList = static_cast<CRxMsgList*> (lParams);
+
+    for(int i =0 ; i<3; i++)
+    {
+        Sleep(50);
+        ::SendMessage( pList->m_hParent, WM_UPDATE_TREE_ITEMS_POS, 0, 0);
+        pList->RedrawWindow();
+    }
+
+    return 0;
 }
 
 /*******************************************************************************
@@ -402,8 +411,10 @@ BOOL CRxMsgList::OnMouseWheel(UINT /*nFlags*/, short /*zDelta*/, CPoint /*pt*/)
 {
 	BOOL bInterpret = FALSE;
 	::SendMessage( m_hParent, WM_GET_INTERPRET_STATE, (WPARAM)&bInterpret, 0);
-	if ( bInterpret )		
-		AfxBeginThread(UpDateThread, (LPVOID)this);			
+    if ( bInterpret )
+    {
+        AfxBeginThread(UpDateThread, (LPVOID)this);
+    }
 	return FALSE;
 	//return CFlickerFreeListCtrl::OnMouseWheel(nFlags, zDelta, pt);
 }
@@ -444,7 +455,7 @@ void CRxMsgList::OnLButtonDblClk(UINT nFlags, CPoint point)
   Date Created   : 20-05-2010
   Modifications  : 
 *******************************************************************************/
-void CRxMsgList::vSetDsipItemDataPtrArr(TCHAR* pomDataPtrArr[MAX_MSG_WND_COL_CNT])
+void CRxMsgList::vSetDsipItemDataPtrArr(char* pomDataPtrArr[MAX_MSG_WND_COL_CNT])
 {
     memcpy(m_pomDataPtrArr, pomDataPtrArr, sizeof (m_pomDataPtrArr));
 }
@@ -498,10 +509,11 @@ BOOL CRxMsgList::ShowColumn(int nCol, bool bShow)
 		int nCurIndex = -1;
 		for(int i = 0; i < nColCount ; ++i)
 		{
-			if (pOrderArray[i]==nCol)
-				nCurIndex = i;
-			else
-			if (nCurIndex!=-1)
+            if (pOrderArray[i]==nCol)
+            {
+                nCurIndex = i;
+            }
+            else if (nCurIndex!=-1)
 			{
 				// We want to move it to the original position,
 				// and after the last hidden column
@@ -528,13 +540,12 @@ BOOL CRxMsgList::ShowColumn(int nCol, bool bShow)
 				columnState.m_OrgPosition = i;
 				nCurIndex = i;
 			}
-			else
-			if (nCurIndex!=-1)
-			{
-				pOrderArray[nCurIndex] = pOrderArray[i];
-				pOrderArray[i] = nCol;
-				nCurIndex = i;
-			}
+            else if (nCurIndex!=-1)
+            {
+                pOrderArray[nCurIndex] = pOrderArray[i];
+                pOrderArray[i] = nCol;
+                nCurIndex = i;
+            }
 		}
 	}
 
@@ -550,8 +561,10 @@ BOOL CRxMsgList::ShowColumn(int nCol, bool bShow)
 	else
 	{
 		// Backup the column width
-		if(GetColumnWidth(nCol) == 0)
-			columnState.m_Visible = false;
+        if(GetColumnWidth(nCol) == 0)
+        {
+            columnState.m_Visible = false;
+        }
 		else
 		{
 			int orgWidth = GetColumnWidth(nCol);
@@ -587,11 +600,15 @@ BOOL CRxMsgList::SetColumnWidthAuto(int nCol, bool includeHeader)
 	}
 	else
 	{
-		if (includeHeader)
-			return SetColumnWidth(nCol, LVSCW_AUTOSIZE_USEHEADER);
-		else
-			return SetColumnWidth(nCol, LVSCW_AUTOSIZE);
-	}
+        if (includeHeader)
+        {
+            return SetColumnWidth(nCol, LVSCW_AUTOSIZE_USEHEADER);
+        }
+        else
+        {
+            return SetColumnWidth(nCol, LVSCW_AUTOSIZE);
+        }
+    }
 }
 
 /*******************************************************************************
@@ -728,19 +745,25 @@ void CRxMsgList::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 					UINT uFlags = MF_BYPOSITION | MF_STRING;
 
 					// Put check-box on context-menu
-					if (IsColumnVisible(i))
-						uFlags |= MF_CHECKED;
-					else
-						uFlags |= MF_UNCHECKED;
+                    if (IsColumnVisible(i))
+                    {
+                        uFlags |= MF_CHECKED;
+                    }
+                    else
+                    {
+                        uFlags |= MF_UNCHECKED;
+                    }
 
-					if(i == 0)		//Disable 'Time' column
-						break;
+                    if(i == 0)      //Disable 'Time' column
+                    {
+                        break;
+                    }
 
-					// Retrieve column-title
-					LVCOLUMN lvc = {0};
-					lvc.mask = LVCF_TEXT;
-					TCHAR sColText[256];
-					lvc.pszText = sColText;
+                    // Retrieve column-title
+                    LVCOLUMN lvc = {0};
+                    lvc.mask = LVCF_TEXT;
+                    char sColText[256];
+                    lvc.pszText = sColText;
 				
 					lvc.cchTextMax = 15;	//Set the Width of Menu Items here
 					//lvc.cchTextMax = sizeof(sColText)-1;
@@ -803,7 +826,8 @@ void CRxMsgList::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				SetColumnWidthAuto(-1);
 				return;
 			}
-		} break;
+        }
+        break;
 		case VK_UP:
 		{			
 			BOOL bInterpret = FALSE;
@@ -874,10 +898,11 @@ void CRxMsgList::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		{
 			BOOL bInterpret = FALSE;
 			::SendMessage( m_hParent, WM_GET_INTERPRET_STATE, (WPARAM)&bInterpret, 0);
-			if ( bInterpret )		
-				AfxBeginThread(UpDateThread, (LPVOID)this);	
-		}
-																			
+            if ( bInterpret )
+            {
+                AfxBeginThread(UpDateThread, (LPVOID)this);
+            }
+        }
 	}
 	CListCtrl::OnKeyDown(nChar, nRepCnt, nFlags);
 }
@@ -958,8 +983,10 @@ BOOL CRxMsgList::OnHeaderEndDrag(UINT, NMHDR* pNMHDR, LRESULT* /*pResult*/)
 			if (IsColumnVisible(pOrderArray[i]))
 			{
                 pNMH->pitem->iOrder = max(pNMH->pitem->iOrder,i);
-				if(pNMH->pitem->iOrder == 0)
-					pNMH->pitem->iOrder++;
+                if(pNMH->pitem->iOrder == 0)
+                {
+                    pNMH->pitem->iOrder++;
+                }
 				break;
 			}
 		}
@@ -999,8 +1026,10 @@ LRESULT CRxMsgList::OnDeleteColumn(WPARAM wParam, LPARAM lParam)
 {
 	// Let the CListCtrl handle the event
 	LRESULT lRet = DefWindowProc(LVM_DELETECOLUMN, wParam, lParam);
-	if (lRet == FALSE)
-		return FALSE;
+    if (lRet == FALSE)
+    {
+        return FALSE;
+    }
 
 	// Book keeping of columns
 	DeleteColumnState((int)wParam);
@@ -1021,14 +1050,18 @@ LRESULT CRxMsgList::OnInsertColumn(WPARAM wParam, LPARAM lParam)
 {
 	// Let the CListCtrl handle the event
 	LRESULT lRet = DefWindowProc(LVM_INSERTCOLUMN, wParam, lParam);
-	if (lRet == -1)
-		return -1;
+    if (lRet == -1)
+    {
+        return -1;
+    }
 
-	int nCol = (int)lRet;
+    int nCol = (int)lRet;
 
-	// Book keeping of columns
-	if (GetColumnStateCount() < GetHeaderCtrl()->GetItemCount())
-		InsertColumnState((int)nCol, true);	// Insert as visible
+    // Book keeping of columns
+    if (GetColumnStateCount() < GetHeaderCtrl()->GetItemCount())
+    {
+        InsertColumnState((int)nCol, true);    // Insert as visible
+    }
 
 	return lRet;
 }
@@ -1303,24 +1336,27 @@ void CRxMsgList::CListHdrCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	dc.FillRect(rc, &brush);
 
 	// get the column text and format.
-	TCHAR szText[ 256 ];
-	HD_ITEM hditem;
+    char szText[ 256 ];
+    HD_ITEM hditem;
+    hditem.mask = HDI_TEXT | HDI_FORMAT;
+    hditem.pszText = szText;
+    hditem.cchTextMax = 255;
+    GetItem(lpDrawItemStruct->itemID, &hditem);
+    // determine the format for drawing the column label.
+    UINT uFormat = DT_SINGLELINE | DT_NOPREFIX | DT_NOCLIP | DT_VCENTER | DT_END_ELLIPSIS ;
 
-	hditem.mask = HDI_TEXT | HDI_FORMAT;
-	hditem.pszText = szText;
-	hditem.cchTextMax = 255;
-
-	GetItem(lpDrawItemStruct->itemID, &hditem);
-
-	// determine the format for drawing the column label.
-	UINT uFormat = DT_SINGLELINE | DT_NOPREFIX | DT_NOCLIP | DT_VCENTER | DT_END_ELLIPSIS ;
-
-	if(hditem.fmt & HDF_CENTER)
-		uFormat |= DT_CENTER;
-	else if(hditem.fmt & HDF_RIGHT)
-		uFormat |= DT_RIGHT;
-	else
-		uFormat |= DT_LEFT;
+    if(hditem.fmt & HDF_CENTER)
+    {
+        uFormat |= DT_CENTER;
+    }
+    else if(hditem.fmt & HDF_RIGHT)
+    {
+        uFormat |= DT_RIGHT;
+    }
+    else
+    {
+        uFormat |= DT_LEFT;
+    }
 
 	// adjust the rect if the mouse button is pressed on it.
 	if(lpDrawItemStruct->itemState == ODS_SELECTED)
@@ -1334,15 +1370,19 @@ void CRxMsgList::CListHdrCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	const int nOffset = (rcIcon.bottom - rcIcon.top) / 4;
 
 	// adjust the rect further if the sort arrow is to be displayed.
-	if(lpDrawItemStruct->itemID == (UINT)m_nSortCol)
-		rc.right -= 3 * nOffset;
+    if(lpDrawItemStruct->itemID == (UINT)m_nSortCol)
+    {
+        rc.right -= 3 * nOffset;
+    }
 
-	rc.left += nOffset;
-	rc.right -= nOffset;
+    rc.left += nOffset;
+    rc.right -= nOffset;
 
-	// draw the column label.
-	if(rc.left < rc.right)
-		dc.DrawText(szText, -1, rc, uFormat);
+    // draw the column label.
+    if(rc.left < rc.right)
+    {
+        dc.DrawText(szText, -1, rc, uFormat);
+    }
 
 	// draw the sort arrow.
 	if(lpDrawItemStruct->itemID == (UINT)m_nSortCol)
