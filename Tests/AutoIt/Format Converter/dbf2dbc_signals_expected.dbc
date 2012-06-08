@@ -1,0 +1,171 @@
+VERSION ""
+
+
+BS_:
+
+BU_:
+
+
+BO_ 1606 Message_64_6: 8 Vector__XXX
+ SG_ Signal_64_Motorola_Unsigned : 7|64@0+ (1,0) [0|9.22337e+018] "" Vector__XXX
+
+BO_ 1605 Message_64_5: 8 Vector__XXX
+ SG_ Signal_64_Motorola_Signed : 7|64@0- (1,0) [-9.22337e+018|9.22337e+018] "" Vector__XXX
+
+BO_ 1604 Message_64_4: 8 Vector__XXX
+ SG_ Signal_64_Motorola_Double : 7|64@0- (1,0) [0|0] "" Vector__XXX
+
+BO_ 1603 Message_64_3: 8 Vector__XXX
+ SG_ Signal_64_Intel_Unsigned : 0|64@1+ (1,0) [0|9.22337e+018] "" Vector__XXX
+
+BO_ 1602 Message_64_2: 8 Vector__XXX
+ SG_ Signal_64_Intel_Signed : 0|64@1- (1,0) [-9.22337e+018|9.22337e+018] "" Vector__XXX
+
+BO_ 1601 Message_64_1: 8 Vector__XXX
+ SG_ Signal_64_Intel_Double : 0|64@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 1588 Message_63_4: 8 Vector__XXX
+ SG_ Signal_63_Motorola_Unsigned : 7|63@0+ (1,0) [0|4.61169e+018] "" Vector__XXX
+
+BO_ 1587 Message_63_3: 8 Vector__XXX
+ SG_ Signal_63_Motorola_Signed : 7|63@0- (1,0) [-4.61169e+018|4.61169e+018] "" Vector__XXX
+
+BO_ 1586 Message_63_2: 8 Vector__XXX
+ SG_ Signal_63_Intel_Unsigned : 0|63@1+ (1,0) [0|4.61169e+018] "" Vector__XXX
+
+BO_ 1585 Message_63_1: 8 Vector__XXX
+ SG_ Signal_63_Intel_Signed : 0|63@1- (1,0) [-4.61169e+018|4.61169e+018] "" Vector__XXX
+
+BO_ 820 Message_33_4: 4 Vector__XXX
+ SG_ Signal_33_Motorola_Unsigned : 7|32@0+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 819 Message_33_3: 5 Vector__XXX
+ SG_ Signal_33_Motorola_Signed : 7|33@0- (1,0) [-4.29497e+009|4.29497e+009] "" Vector__XXX
+
+BO_ 818 Message_33_2: 5 Vector__XXX
+ SG_ Signal_33_Intel_Unsigned : 0|33@1+ (1,0) [0|4.29497e+009] "" Vector__XXX
+
+BO_ 817 Message_33_1: 5 Vector__XXX
+ SG_ Signal_33_Intel_Signed : 0|33@1- (1,0) [-4.29497e+009|4.29497e+009] "" Vector__XXX
+
+BO_ 806 Message_32_6: 4 Vector__XXX
+ SG_ Signal_32_Motorola_Unsigned : 7|32@0+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 805 Message_32_5: 4 Vector__XXX
+ SG_ Signal_32_Motorola_Signed : 7|32@0- (1,0) [-2.14748e+009|2.14748e+009] "" Vector__XXX
+
+BO_ 804 Message_32_4: 4 Vector__XXX
+ SG_ Signal_32_Motorola_Float : 7|32@0- (1,0) [0|0] "" Vector__XXX
+
+BO_ 803 Message_32_3: 4 Vector__XXX
+ SG_ Signal_32_Intel_Unsigned : 0|32@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 802 Message_32_2: 4 Vector__XXX
+ SG_ Signal_32_Intel_Signed : 0|32@1- (1,0) [-2.14748e+009|2.14748e+009] "" Vector__XXX
+
+BO_ 801 Message_32_1: 4 Vector__XXX
+ SG_ Signal_32_Intel_Float : 0|32@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 788 Message_31_4: 4 Vector__XXX
+ SG_ Signal_31_Motorola_Unsigned : 7|31@0+ (1,0) [0|2.14748e+009] "" Vector__XXX
+
+BO_ 787 Message_31_3: 4 Vector__XXX
+ SG_ Signal_31_Motorola_Signed : 7|31@0- (1,0) [-1.07374e+009|1.07374e+009] "" Vector__XXX
+
+BO_ 786 Message_31_2: 4 Vector__XXX
+ SG_ Signal_31_Intel_Unsigned : 0|31@1+ (1,0) [0|2.14748e+009] "" Vector__XXX
+
+BO_ 785 Message_31_1: 4 Vector__XXX
+ SG_ Signal_31_Intel_Signed : 0|31@1- (1,0) [-1.07374e+009|1.07374e+009] "" Vector__XXX
+
+BO_ 372 Message_17_4: 3 Vector__XXX
+ SG_ Signal_17_Motorola_Unsigned : 7|17@0+ (1,0) [0|131071] "" Vector__XXX
+
+BO_ 371 Message_17_3: 3 Vector__XXX
+ SG_ Signal_17_Motorola_Signed : 7|17@0- (1,0) [-65536|65535] "" Vector__XXX
+
+BO_ 370 Message_17_2: 3 Vector__XXX
+ SG_ Signal_17_Intel_Unsigned : 0|17@1+ (1,0) [0|131071] "" Vector__XXX
+
+BO_ 369 Message_17_1: 3 Vector__XXX
+ SG_ Signal_17_Intel_Signed : 0|17@1- (1,0) [-65536|65535] "" Vector__XXX
+
+BO_ 356 Message_16_4: 2 Vector__XXX
+ SG_ Signal_16_Motorola_Unsigned : 7|16@0+ (1,0) [0|65535] "" Vector__XXX
+
+BO_ 355 Message_16_3: 2 Vector__XXX
+ SG_ Signal_16_Motorola_Signed : 7|16@0- (1,0) [-32768|32767] "" Vector__XXX
+
+BO_ 354 Message_16_2: 2 Vector__XXX
+ SG_ Signal_16_Intel_Unsigned : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
+
+BO_ 353 Message_16_1: 2 Vector__XXX
+ SG_ Signal_16_Intel_Signed : 0|16@1- (1,0) [-32768|32767] "" Vector__XXX
+
+BO_ 340 Message_15_4: 2 Vector__XXX
+ SG_ Signal_15_Motorola_Unsigned : 7|15@0+ (1,0) [0|32767] "" Vector__XXX
+
+BO_ 339 Message_15_3: 2 Vector__XXX
+ SG_ Signal_15_Motorola_Signed : 7|15@0- (1,0) [-16384|16383] "" Vector__XXX
+
+BO_ 338 Message_15_2: 2 Vector__XXX
+ SG_ Signal_15_Intel_Unsigned : 0|15@1+ (1,0) [0|32767] "" Vector__XXX
+
+BO_ 337 Message_15_1: 2 Vector__XXX
+ SG_ Signal_15_Intel_Signed : 0|15@1- (1,0) [-16384|16383] "" Vector__XXX
+
+BO_ 148 Message_09_4: 2 Vector__XXX
+ SG_ Signal_09_Motorola_Unsigned : 7|9@0+ (1,0) [0|511] "" Vector__XXX
+
+BO_ 147 Message_09_3: 2 Vector__XXX
+ SG_ Signal_09_Motorola_Signed : 7|9@0- (1,0) [-256|255] "" Vector__XXX
+
+BO_ 146 Message_09_2: 2 Vector__XXX
+ SG_ Signal_09_Intel_Unsigned : 0|9@1+ (1,0) [0|511] "" Vector__XXX
+
+BO_ 145 Message_09_1: 2 Vector__XXX
+ SG_ Signal_09_Intel_Signed : 0|9@1- (1,0) [-256|255] "" Vector__XXX
+
+BO_ 132 Message_08_4: 1 Vector__XXX
+ SG_ Signal_08_Motorola_Unsigned : 7|8@0+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 131 Message_08_3: 1 Vector__XXX
+ SG_ Signal_08_Motorola_Signed : 7|8@0- (1,0) [-128|127] "" Vector__XXX
+
+BO_ 130 Message_08_2: 1 Vector__XXX
+ SG_ Signal_08_Intel_Unsigned : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 129 Message_08_1: 1 Vector__XXX
+ SG_ Signal_08_Intel_Signed : 0|8@1- (1,0) [-128|127] "" Vector__XXX
+
+BO_ 116 Message_07_4: 1 Vector__XXX
+ SG_ Signal_07_Motorola_Unsigned : 7|7@0+ (1,0) [0|127] "" Vector__XXX
+
+BO_ 115 Message_07_3: 1 Vector__XXX
+ SG_ Signal_07_Motorola_Signed : 7|7@0- (1,0) [-64|63] "" Vector__XXX
+
+BO_ 114 Message_07_2: 1 Vector__XXX
+ SG_ Signal_07_Intel_Unsigned : 0|7@1+ (1,0) [0|127] "" Vector__XXX
+
+BO_ 113 Message_07_1: 1 Vector__XXX
+ SG_ Signal_07_Intel_Signed : 0|7@1- (1,0) [-64|63] "" Vector__XXX
+
+BO_ 20 Message_01_4: 1 Vector__XXX
+ SG_ Signal_01_Motorola_Unsigned : 7|1@0+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 19 Message_01_3: 1 Vector__XXX
+ SG_ Signal_01_Motorola_Signed : 7|1@0- (1,0) [0|1] "" Vector__XXX
+
+BO_ 18 Message_01_2: 1 Vector__XXX
+ SG_ Signal_01_Intel_Unsigned : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 17 Message_01_1: 1 Vector__XXX
+ SG_ Signal_01_Intel_Signed : 0|1@1- (1,0) [0|1] "" Vector__XXX
+
+
+
+SIG_VALTYPE_ 1604 Signal_64_Motorola_Double : 2;
+SIG_VALTYPE_ 1601 Signal_64_Intel_Double : 2;
+SIG_VALTYPE_ 804 Signal_32_Motorola_Float : 1;
+SIG_VALTYPE_ 801 Signal_32_Intel_Float : 1;
+

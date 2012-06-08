@@ -50,15 +50,14 @@ If @error Then
 EndIf
 
 ; There should be no crash window
-WinWaitActive("", "debug", 3)
-If Not @error Then
-	ConsoleWriteError("Format Conversions crashed after close" & @CRLF)
-	Send("{ENTER}")
-EndIf
+;WinWaitActive("", "debug", 3)
+;If Not @error Then
+;	ConsoleWriteError("Format Conversions crashed after close" & @CRLF)
+;	Send("{ENTER}")
+;EndIf
 
 ; Compare generated/expected log file
-$Ret = RunWait(@ComSpec & " /c FC /B out\" & $TestName & ".log " & $TestName & "_expected.log", @ScriptDir, @SW_HIDE)
-If $Ret Then
+If FileExists($TestName & ".log") Then
 	ConsoleWriteError("Unexpected log file" & @CRLF)
 EndIf
 

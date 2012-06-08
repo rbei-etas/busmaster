@@ -25,7 +25,20 @@
     </section>
     <section>
       <title>Configuration</title>
-      <p>Make the changes in following 3 files listed below in <filepath>C:\WinDDK\7600.16385.1\inc\atl71</filepath> folder:</p>
+      <p>The changes described below will be executed  in a form of a patch file and  two scripts, one for patching and one for reverting the patch. These files are located at:</p>
+      <ul>
+        <li>
+          <filepath>Documents/1 Development Environment/files/WinDDK_7600.16385.1.diff</filepath>
+        </li>
+        <li>
+          <filepath>Documents/1 Development Environment/files/WinDDK_7600.16385.1_patch.bat</filepath>
+        </li>
+        <li>
+          <filepath>Documents/1 Development Environment/files/WinDDK_7600.16385.1_unpatch.bat</filepath>
+        </li>
+      </ul>
+      <p>The patch scripts assume that you have installed WinDDK in the standard installation folder <filepath>C:\WinDDK</filepath> and that you have installed Git in the standard installation folder <filepath>C:\Program Files\Git</filepath>. If any of these paths differ you need to modify the scripts before using them.</p>
+      <p>The following changes in following 3 files listed below are made in <filepath>C:\WinDDK\7600.16385.1\inc\atl71</filepath> folder:</p>
       <ul>
         <li>
           <p><filepath>Atlchecked.h</filepath>: Add the following definition in this file which is missing: <codeblock>#define AFX_CRT_ERRORCHECK(expr) AtlCrtErrorCheck(expr)</codeblock></p>
@@ -37,7 +50,7 @@
           <p><filepath>Cstringt.h</filepath>: Substancial parts of the file must be replaced to eliminate errors which creep in while using <apiname>CString</apiname>.</p>
         </li>
       </ul>
-      <p>Make the changes in following 5 files listed below in <filepath>C:\WinDDK\7600.16385.1\inc\mfc42</filepath> folder:</p>
+      <p>The following changes in following 5 files listed below are made in <filepath>C:\WinDDK\7600.16385.1\inc\mfc42</filepath> folder:</p>
       <ul>
         <li>
           <p><filepath>Afx.h</filepath>: Comment the function call <apiname>::AfxThrowInvalidArgException()</apiname> as it is not supported in MFC 6.0 version.</p>
@@ -51,19 +64,8 @@
         <li><filepath>Atlconv.h</filepath>: Substitute the references to the folder <filepath>atl30</filepath> with <filepath>atl71</filepath>.</li>
         <li><filepath>Atldef.h</filepath>: Substitute the references to the folder <filepath>atl30</filepath> with <filepath>atl71</filepath>.</li>
       </ul>
-      <p>All changes described above are provided in a form of a patch file and  two scripts, one for patching and one for reverting the patch. These files are located at:</p>
-      <ul>
-        <li>
-          <filepath>Documents/1 Development Environment/files/WinDDK_7600.16385.1.diff</filepath>
-        </li>
-        <li>
-          <filepath>Documents/1 Development Environment/files/WinDDK_7600.16385.1_patch.bat</filepath>
-        </li>
-        <li>
-          <filepath>Documents/1 Development Environment/files/WinDDK_7600.16385.1_unpatch.bat</filepath>
-        </li>
-      </ul>
-      <p>The patch scripts assume that you have installed WinDDK in the standard installation folder <filepath>C:\WinDDK</filepath> and that you have installed Git in the standard installation folder <filepath>C:\Program Files\Git</filepath>. If any of these paths differ you need to modify the scripts before using them.</p>
+      <p>The BUSMASTER project files and the solution file should automatically use WinDDK if it is installed in the standard installation folder. You need to adjust it if necessary.</p>
+      <p>If the usual registration does not work for you, read on and learn how to register WinDDK manually in your Visual C++ 2008 environment.</p>
       <p>A couple of directory paths from WinDDK are need to be added to the project configuration, to instruct Visual C++ where the MFC related files are found. This can be done by selecting the <uicontrol>Options...</uicontrol> menu item occurring under the <uicontrol>Tools</uicontrol> menu, like shown in the image below:</p>
       <image href="../images/vc_options.png" placement="break"/>
       <p>Clicking the menu item <uicontrol>Options...</uicontrol> will result in the following dialog box:</p>
@@ -103,7 +105,7 @@
       <p>BUSMASTER project consists of a multitude of sub-projects of various types namely, dynamic link libraries (Win32 DLL, regular DLL using MFC and MFC extension DLL), static link libraries, out-of-proc servers and executables. For obvious reason there are dependencies. For example the static link libraries are the helper libraries employed by all the other modules / components. That&apos;s why all the project dependencies must be suitably defined. The following two guidelines must be strictly adhered throughout the development process:</p>
       <ul>
         <li>Ensure every individual sub-project is buildable from a clean state (which means no relevant object files are available prior to the building process).</li>
-        <li>The above must hold for both debug and release modes.</li>
+        <li>The above must hold for both release and debug modes.</li>
       </ul>
     </section>
   </body>
