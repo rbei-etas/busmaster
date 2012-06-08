@@ -209,30 +209,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\lexer.c"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\parser.c"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath=".\ResultView.cpp"
 				>
 			</File>
@@ -272,10 +248,6 @@
 			>
 			<File
 				RelativePath=".\ExpressionExecutor.h"
-				>
-			</File>
-			<File
-				RelativePath=".\parser.h"
 				>
 			</File>
 			<File
@@ -340,6 +312,38 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Generated Files"
+			>
+			<File
+				RelativePath=".\lexer.c"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\parser.c"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\parser.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\lexer.l"
 			>
@@ -348,7 +352,7 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="..\..\Tools\flex\flex.exe -olexer.c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					CommandLine="..\..\Tools\flex\flex.exe -i -L -olexer.c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
 					Outputs="lexer.c"
 				/>
 			</FileConfiguration>
@@ -361,7 +365,7 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="..\..\Tools\bison\bison.exe -d --output=parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					CommandLine="set BISON_SIMPLE=..\..\Tools\bison\bison.simple&#x0D;&#x0A;..\..\Tools\bison\bison.exe -d -l --output=parser.c &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
 					Outputs="parser.c,parser.h"
 				/>
 			</FileConfiguration>

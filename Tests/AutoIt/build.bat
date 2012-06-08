@@ -8,10 +8,17 @@ cd Installer
 
 REM --- List of tests to be executed ---
 call:testgroup "Installer"
+call:test "install_minimal"
+call:test "uninstall"
+call:test "install_typical"
+call:test "uninstall"
 call:test "install_full"
 
 call:testgroup "Format Converter"
-call:test "dbc2dbf_001"
+call:test "dbc2dbf_messages"
+call:test "dbc2dbf_signals"
+call:test "dbf2dbc_messages"
+call:test "dbf2dbc_signals"
 
 call:testgroup "Installer"
 call:test "uninstall"
@@ -35,6 +42,9 @@ goto:eof
 :test
 set TEST=%~1
 echo   %TEST%
+del out\%TEST%_stdout.txt 2> NUL
+del out\%TEST%_stderr.txt 2> NUL
+if not exist %TEST%.au3 goto:eof
 call autoit3 %TEST%.au3 > out\%TEST%_stdout.txt 2> out\%TEST%_stderr.txt
 call:htmltestresult
 goto:eof
