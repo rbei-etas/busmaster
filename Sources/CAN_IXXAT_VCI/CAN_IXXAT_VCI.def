@@ -1,0 +1,7 @@
+; CAN_IXXAT_VCI.def : Declares the module parameters for the DLL.
+
+LIBRARY      "CAN_IXXAT_VCI"
+
+EXPORTS
+  GetIDIL_CAN_Controller
+    ; Explicit exports can go here
