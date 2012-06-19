@@ -494,7 +494,7 @@ HRESULT CIxxatCanChannel::CreateCANChannel()
 {
   HRESULT hResult = ERR_LOAD_HW_INTERFACE;
 
-  if (!m_hVciDevice) 
+  if (m_hVciDevice) 
   {
     // no channel existing, but device accessed
     if (!m_hCANChannel)
